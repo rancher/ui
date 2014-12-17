@@ -3,6 +3,8 @@ Rancher UI
 
 Perhaps you like managing cattle.
 
+[![Build Status](http://drone.rancher.io/api/badge/github.com/rancherio/ui/status.svg?branch=master)](http://drone.rancher.io/github.com/rancherio/ui)
+
 ## Usage
 
 Prerequisites:
@@ -14,6 +16,8 @@ Install dependencies:
 ```bash
   git clone 'https://github.com/rancherio/ui'
   cd 'ui'
+  git submodule init
+  git submodule update
   npm install
   bower install
   brew install watchman # (or https://facebook.github.io/watchman/docs/install.html)
