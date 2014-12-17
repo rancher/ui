@@ -16,6 +16,8 @@ Install dependencies:
 ```bash
   git clone 'https://github.com/rancherio/ui'
   cd 'ui'
+  git submodule init
+  git submodule update
   npm install
   bower install
   brew install watchman # (or https://facebook.github.io/watchman/docs/install.html)
