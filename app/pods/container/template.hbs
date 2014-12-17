@@ -1,0 +1,94 @@
+{{partial "transitioning-progress"}}
+
+<section>
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>{{displayName}}</h3>
+      <div class="text-muted">
+        {{displayIp}}
+      </div>
+    </div>
+    <div class="col-sm-6 text-right">
+      <h3 {{bind-attr class=":instance-status stateColor"}}>
+        <i {{bind-attr class=":fa stateIcon"}}></i> {{displayState}}
+      </h3>
+      <div {{bind-attr class=":force-wrap isError:text-danger:text-muted showTransitioningMessage::hide"}}>
+        {{transitioningMessage}}
+      </div>
+      <div class="instance-actions">
+        {{partial "container/actions"}}
+      </div>
+    </div>
+  </div>
+</section>
+
+{{#if description}}
+  <section>
+    <div class="well">
+      <label>Description</label>
+      {{description}}
+    </div>
+  </section>
+{{/if}}
+
+<section>
+  <div class="well">
+    <label>Volume Mounts</label>
+    <table class="table fixed">
+      <tr>
+        <th width="120">State</th>
+        <th>Mount Point</th>
+        <th>Volume</th>
+        <th width="100">Writable</th>
+        <th class="text-right">Shared With</th>
+      </tr>
+      {{#each mount in mounts itemController="mount"}}
+        <tr>
+          <td {{bind-attr class="mount.stateColor"}}>
+            <i {{bind-attr class=":fa mount.stateIcon"}}></i> {{mount.displayState}}
+          </td>
+          <td>
+            {{mount.path}}
+          </td>
+          <td>
+            <div class="force-wrap">
+              {{#with mount.volume as volume controller="volume"}}
+                {{volume.displayName}}
+              {{/with}}
+            </div>
+          </td>
+          <td>
+            {{#if mount.isReadWrite}}
+              <i class="fa fa-check"></i>
+            {{else}}
+              <i class="fa fa-times text-muted"></i>
+            {{/if}}
+          </td>
+          <td class="text-right">
+            <ul class="list-unstyled">
+            {{#each container in mount.volume.sharedWith itemController="container"}}
+              <li>
+                {{#link-to "container" container.id}}{{container.displayName}}{{/link-to}}
+              </li>
+            {{else}}
+              <li class="text-muted">None</li>
+            {{/each}}
+            </ul>
+          </td>
+        </tr>
+      {{else}}
+        <tr>
+          <td colspan="5">
+            {{#if mountError}}
+              <div class="text-danger text-center">Error: {{mountError.message}}</div>
+            {{else}}
+              <div class="text-muted text-center">This container has no volumes.</div>
+            {{/if}}
+          </td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
+</section>
+
+{{partial "stats-cpu-memory"}}

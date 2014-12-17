@@ -1,0 +1,58 @@
+{{#if isTransitioning}}
+<div>
+  <div class="progress progress-striped active">
+    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=displayProgress style=progressStyle}}>
+      <span class="sr-only">{{displayProgress}}% Complete</span>
+    </div>
+  </div>
+</div>
+{{/if}}
+
+<section>
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>{{displayName}}</h3>
+      <div class="text-muted">
+        {{displayIp}}
+      </div>
+    </div>
+    <div class="col-sm-6 text-right">
+      <h3 {{bind-attr class=":instance-status stateColor"}}>
+        <i {{bind-attr class=":fa stateIcon"}}></i> {{displayState}}
+      </h3>
+      <div {{bind-attr class=":force-wrap isError:text-danger:text-muted showTransitioningMessage::hide"}}>
+        {{transitioningMessage}}
+      </div>
+      <div class="host-actions">
+        {{partial "host/actions"}}
+      </div>
+    </div>
+  </div>
+</section>
+
+{{#if description}}
+  <section>
+    <div class="well">
+      <label>Description</label>
+      {{description}}
+    </div>
+  </section>
+{{/if}}
+
+<section>
+  <div class="well instances">
+    <label>Containers</label>
+    {{#each col in view.columns}}
+      <div class="instance-column">
+        {{each col itemViewClass="host/instance" itemController="container"}}
+      </div>
+    {{else}}
+      <div style="padding: 20px; text-align: center;" class="text-muted">
+        No Containers yet.
+      </div>
+    {{/each}}
+  </div>
+</section>
+
+{{partial "stats-cpu-memory"}}
+{{partial "stats-filesystem"}}

@@ -1,0 +1,74 @@
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="hostname">Host Name</label>
+      {{input id="hostname" type="text" value=hostname classNames="form-control" placeholder="e.g. web01"}}
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="domainName">Domain Name</label>
+      {{input id="domainName" type="text" value=domainName classNames="form-control" placeholder="e.g. example.com"}}
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md-6">
+    <label>
+      Resolving Servers
+      <button class="btn btn-link btn-sm" {{action "addDns" target="view"}}><i class="fa fa-plus"></i> Add</button>
+    </label>
+    {{#if dnsArray.length}}
+      <table class="table fixed no-lines no-top-padding tight">
+        {{#each dns in dnsArray}}
+          <tr>
+            <td width="80%">
+              {{input type="text" value=dns.value classNames="form-control dns-value input-sm" placeholder="e.g. 8.8.4.4"}}
+            </td>
+            <td class="text-right">
+              <button {{action "removeDns" dns}} class="btn btn-default btn-sm" type="button" tooltip="Remove this DNS server" tabindex="-1">
+                <i class="fa fa-times"></i>
+              </button>
+              </div>
+            </td>
+          </tr>
+        {{/each}}
+      <tr>
+      </table>
+    {{else}}
+      <div class="text-muted text-italic">
+        None
+      </div>
+    {{/if}}
+  </div>
+
+  <div class="col-md-6">
+    <label>
+      Search Domains
+      <button class="btn btn-link btn-sm" {{action "addDnsSearch" target="view"}}><i class="fa fa-plus"></i> Add</button>
+    </label>
+    {{#if dnsSearchArray.length}}
+      <table class="table fixed no-lines no-top-padding tight">
+        {{#each dnsSearch in dnsSearchArray}}
+          <tr>
+            <td width="80%">
+              {{input type="text" value=dnsSearch.value classNames="form-control dns-search-value input-sm" placeholder="e.g. prod.example.com"}}
+            </td>
+            <td class="text-right">
+              <button {{action "removeDnsSearch" dnsSearch}} class="btn btn-default btn-sm" type="button" tooltip="Remove this search domain" tabindex="-1">
+                <i class="fa fa-times"></i>
+              </button>
+              </div>
+            </td>
+          </tr>
+        {{/each}}
+      <tr>
+      </table>
+    {{else}}
+      <div class="text-muted text-italic">
+        None
+      </div>
+    {{/if}}
+  </div>
+</div>

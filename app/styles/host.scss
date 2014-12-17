@@ -1,0 +1,220 @@
+$host-column-width: 268px;
+$instance-column-width: $host-column-width - 20px;
+
+.zone LABEL {
+  color: #60676d;
+}
+
+.hosts {
+  overflow: visible;
+  white-space: no-wrap;
+}
+
+.host-zone {
+  border-bottom: 1px solid #dde0e5;
+
+  &:last-child {
+    border-bottom: 0;
+  }
+
+  H3 {
+    font-weight: normal;
+    color: #60676d;
+    margin: 10px 0;
+  }
+}
+
+.host-column {
+  width: $host-column-width;
+  margin: 0 10px 10px 0;
+  display: inline-block;
+  vertical-align: top;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.instance-column {
+  @extend .host-column;
+  width: $instance-column-width;
+}
+
+.host {
+  padding: 10px 10px 5px 10px;
+  margin-bottom: 10px;
+  background-color: #e7eaee;
+  border: 1px solid #e7eaee;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: #e2e5e8;
+  }
+
+  .host-header {
+    display: block;
+    position: relative;
+    font-weight: normal;
+  }
+
+  /* Add margin-right so the name can't overlap the actions */
+  &:hover .host-name {
+    margin-right: 47px;
+  }
+
+  .add-to-host {
+    color: #d6dbe0;
+    text-align: center;
+    cursor: pointer;
+    cursor: hand;
+
+    &:hover {
+      color: #5fcf80;
+    }
+
+    A {
+      color: white;
+    }
+  }
+}
+
+.instance {
+  &:hover .instance-name {
+    margin-right: 95px;
+  }
+}
+
+.host-name,
+.instance-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  A {
+    color: inherit;
+  }
+}
+
+.host-ip {
+  color: black;
+}
+
+.host .host-actions,
+.instance .instance-actions {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.host-actions,
+.instance-actions {
+  BUTTON {
+    color: #444;
+    padding: 0;
+  }
+
+  BUTTON:hover {
+    color: #1d6fa5;
+  }
+}
+
+.instance-actions {
+  padding: 5px 10px 5px 0;
+}
+
+.instance-detail .instance-actions {
+  padding: 0;
+}
+
+.instance {
+  position: relative;
+  border: 1px solid #e7eaee;
+  margin: 5px 0;
+  padding: 5px 10px;
+  border-radius: 5px;
+  background-color: white;
+  box-shadow: 1px 1px 1px #dde1e7;
+
+  &:hover {
+    background-color: #f8f9fa;
+  }
+
+  .progress {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 6px;
+    margin: 0;
+  }
+
+  .progress,
+  .progress-bar {
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+  }
+
+  .progress-striped .progress-bar {
+    -webkit-animation: progress-bar-stripes-reverse 1.5s linear infinite;
+    animation: progress-bar-stripes-reverse 1.5s linear infinite;
+
+    background-image: -webkit-linear-gradient(45deg, 
+      rgba(255, 255, 255, 0.55) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.55) 50%,
+      rgba(255, 255, 255, 0.55) 75%,
+      transparent 75%,
+      transparent);
+    background-image: linear-gradient(45deg,
+      rgba(255, 255, 255, 0.55) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.55) 50%,
+      rgba(255, 255, 255, 0.55) 75%,
+      transparent 75%, 
+      transparent);
+
+    background-size: 40px 40px;
+  }
+}
+
+/* Hover actions on devices with mice, always shown on devices with touch */
+.no-touch {
+  .host-actions,
+  .instance-actions {
+    display: none;
+  }
+}
+
+.host:hover .host-actions,
+.instance:hover .instance-actions,
+.host-detail .host-actions,
+.instance-detail .instance-actions {
+  display: block;
+}
+
+
+.dot {
+  float: left;
+  margin: 2px;
+  font-size: 11px;
+}
+
+.instance-detail H1,
+.instance-detail H2,
+.instance-detail H3,
+.instance-detail H4,
+.instance-detail H5 {
+  margin: 0;
+}
+
+.console-body {
+  margin: 20px auto;
+  width: 540px;
+}
+
+.console-status {
+  position: absolute;
+  margin: 10px 0;
+}

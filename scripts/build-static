@@ -1,0 +1,67 @@
+#!/bin/bash
+set -e
+
+# cd to app root
+CWD=$(dirname $0)
+if [ `basename $(pwd)` = 'scripts' ]; then
+  cd ../
+else
+  cd `dirname $CWD`
+fi
+
+#BRANCH=$(echo $GIT_BRANCH | sed -e 's/^origin\///')
+#if [ "$BRANCH" = "HEAD" ]; then
+#  BRANCH="master"
+#fi
+
+VERSION=$(cat package.json | grep version | cut -f4 -d'"' | sed 's/-/_/g')
+ENVIRONMENT="production"
+BUILD_DIR="dist/static/${VERSION}"
+CDN="cdn.rancher.io/ui"
+URL="/static"
+UPLOAD=0
+
+echo "Branch: ${BRANCH}"
+echo "Version: ${VERSION}"
+echo "Build Dir: ${BUILD_DIR}"
+
+while getopts "u" opt;do
+    case $opt in
+    u)
+        UPLOAD=1
+        ;;
+    \?)
+        echo "Invalid arguemnts"
+        print_help
+        exit 1
+        ;;
+    :)
+        echo "Option -${OPTARG} requires arguement." >&2
+        print_help
+        exit 1
+        ;;
+    esac
+    shift 1
+done
+
+function exec() {
+  $@
+  if [ $? -ne 0 ]; then
+    echo "Command: $@ failed"
+    exit 2
+  fi
+}
+
+echo "Testing..."
+exec ember test
+
+echo "Building..."
+RANCHER_ENDPOINT="" BASE_URL="$URL" BASE_ASSETS="//${CDN}/${VERSION}" exec ember build --environment=$ENVIRONMENT --output-path=$BUILD_DIR
+
+# Replace the version in the static file that cattle serves up
+sed -i.bak s/VERSION/$VERSION/g "$BUILD_DIR/static/index.html"
+
+if [ $UPLOAD -eq 1 ]; then
+  echo "Uploading..."
+  exec gsutil -m cp -R $BUILD_DIR "gs://${CDN}"
+fi

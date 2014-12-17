@@ -1,0 +1,26 @@
+<div class="host-header">
+  <div {{bind-attr class=":host-name stateColor"}}>
+    <i {{bind-attr class=":fa stateIcon" tooltip="displayState"}}></i>
+    {{#link-to "host.index" this.id}}
+      {{displayName}}
+    {{/link-to}}
+    <div class="host-ip">{{displayIp}}</div>
+  </div>
+
+  <div class="host-actions">
+    {{partial "host/actions"}}
+  </div>
+</div>
+
+{{#each instances itemController="container"}}
+  {{view "host/instance"}}
+{{else}}
+  <div class="text-center text-muted">No containers yet.</div>
+{{/each}}
+
+{{#link-to "hosts.containerNew" this.id tagName="div" classNames="add-to-host" tooltip="Create Container"}}
+  <span class="fa-stack fa-lg">
+    <i class="fa fa-circle-thin fa-stack-2x"></i>
+    <i class="fa fa-plus fa-stack-1x"></i>
+  </span>
+{{/link-to}}

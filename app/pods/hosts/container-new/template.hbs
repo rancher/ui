@@ -1,0 +1,134 @@
+<h2>Create Container</h2>
+
+{{#if error}}
+  <div class="alert alert-danger">
+    <i style="float: left;" class="fa fa-exclamation-circle"></i>
+    <p style="margin-left: 50px">{{error}}</p>
+  </div>
+{{/if}}
+
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-3" style="padding-left: 0">
+      <div class="list-group">
+        <!-- @TODO: department of redundancy department -->
+        <a href="#" class="tab list-group-item" data-section="basic" {{action "selectTab" "basic" target=view}}>The Basics</a>
+        <a href="#" class="tab list-group-item" data-section="ports" {{action "selectTab" "ports" target=view}}>Ports</a>
+        <a href="#" class="tab list-group-item" data-section="command" {{action "selectTab" "command" target=view}}>Command</a>
+        <a href="#" class="tab list-group-item" data-section="links" {{action "selectTab" "links" target=view}}>Links</a>
+        <a href="#" class="tab list-group-item" data-section="volumes" {{action "selectTab" "volumes" target=view}}>Volumes</a>
+        <a href="#" class="tab list-group-item" data-section="dns" {{action "selectTab" "dns" target=view}}>DNS</a>
+        <a href="#" class="tab list-group-item" data-section="security" {{action "selectTab" "security" target=view}}>Security</a>
+      </div>
+    </div>
+
+    <div class="col-sm-9">
+      <div class="row section" data-section="basic">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="name">Name</label>
+            {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. web01"}}
+          </div>
+          <div class="form-group">
+            <label for="description">Description</label>
+            {{textarea id="description" value=description classNames="form-control no-resize" rows="3" placeholder="e.g. It serves the webs"}}
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          {{partial "container/edit-image"}}
+
+          <div class="form-group">
+            <label for="networkId">Network</label>
+            {{view "select"
+              class="form-control"
+              disabled=editing
+              id="networkId"
+              content=networks
+              optionLabelPath="content.displayName"
+              optionValuePath="content.id"
+              value=networkId
+              prompt="Select a Network to join the container to..."
+            }}
+          </div>
+        </div>
+      </div>
+
+      <div class="section" data-section="ports">
+        <label>
+          Port Bindings
+          <button class="btn btn-link btn-sm" {{action "addPort" target="view"}}><i class="fa fa-plus"></i> Add</button>
+        </label>
+        {{partial "container/edit-ports"}}
+
+        <hr/>
+
+        <label for="publishAllPorts">{{input type="checkbox" id="publishAllPorts" checked=publishAllPorts}} Publish all other ports exposed by the image on a random host port</label>
+      </div>
+
+      <div class="section" data-section="command">
+        {{partial "container/edit-command"}}
+        <hr/>
+        {{partial "container/edit-arguments"}}
+        <hr/>
+        {{partial "container/edit-environment"}}
+      </div>
+
+      <div class="section" data-section="links">
+        <label>
+          Links
+          <button class="btn btn-link btn-sm" {{action "addLink" target="view"}}><i class="fa fa-plus"></i> Add</button>
+        </label>
+        {{partial "container/edit-links"}}
+      </div>
+
+      <div class="section" data-section="volumes">
+        {{partial "container/edit-volumes"}}
+        <hr/>
+        {{partial "container/edit-volumes-from"}}
+      </div>
+
+      <div class="section" data-section="dns">
+        {{partial "container/edit-dns"}}
+      </div>
+
+      <div class="section" data-section="security">
+        <div class="row">
+          <div class="col-md-6">
+            <label for="privileged">Privileged</label>
+            <div class="checkbox">
+              <label for="privileged">{{input type="checkbox" id="privileged" checked=privileged}} Give the container full access to the host</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="form-group">
+              <label for="cpuSet">Restrict to CPUs</label>
+              {{input id="cpuSet" type="text" value=cpuSet classNames="form-control" placeholder="e.g. 0,1,3"}}
+            </div>
+          </div>
+        </div>
+
+        <hr/>
+
+        <div class="row">
+          <div class="col-md-6">
+            <label class="block">Add Capability</label>
+            {{view "select" class="form-control select-cap-add" content=capabilityChoices selection=capAdd multiple="true" optionValuePath="content" optionLabelPath="content"}}
+          </div>
+          <div class="col-md-6">
+            <label class="block">Drop Capability</label>
+            {{view "select" class="form-control select-cap-drop" content=capabilityChoices selection=capDrop multiple="true" optionValuePath="content" optionLabelPath="content"}}
+          </div>
+        </div>
+        <span class="help-block">
+          Capabilities allow you to provide fine-grained control over superuser privileges available to the container.
+          <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank">More information</a>
+        </span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{{partial "save-cancel"}}
+{{partial "overlay-close"}}

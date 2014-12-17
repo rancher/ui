@@ -1,0 +1,269 @@
+/**********
+* Body
+**********/
+BODY {
+  background-color: #eceff4;
+}
+
+/**********
+* Navigation (left side bar)
+**********/
+$nav_bg: #384047;
+$nav_text: #60676d;
+$nav_width: 72px;
+$nav_width_expanded: 150px;
+
+NAV {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 2;
+  width: $nav_width;
+  margin: 0;
+  background-color: $nav_bg;
+  color: $nav_text;
+
+  LABEL {
+    display: none;
+    font-weight: normal;
+  }
+
+  .logo {
+    padding: 20px;
+  }
+
+  UL {
+    margin: 0;
+    padding: 0;
+  }
+
+  LI {
+    margin: 0;
+    padding: 20px;
+    list-style-type: none;
+    border-left: 2px solid transparent;
+    cursor: pointer;
+  }
+
+  A,
+  A:active,
+  A:hover,
+  A:visited {
+    color: $nav_text;
+    text-decoration: none;
+  }
+
+  LI:hover,
+  LI.active {
+    background-color: #283036;
+  }
+
+  LI:hover {
+    border-left: 2px solid #1cd36e;
+    border-right: 2px solid #1cd36e;
+    color: white;
+  }
+
+  LI:hover A,
+  LI:hover A:active,
+  LI:hover A:hover,
+  LI:hover A:visited {
+    color: white;
+  }
+}
+
+.nav-expand NAV {
+  width: $nav_width_expanded;
+}
+
+.nav-expand NAV LABEL {
+  display: inline;
+}
+
+.nav-expand MAIN,
+.nav-expand HEADER {
+  margin-left: $nav_width_expanded;
+}
+
+.nav-expander {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+/**********
+* Header (top bar)
+**********/
+$header_height: 61px;
+$header_bg: #e6e9ef;
+
+HEADER {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: $header_height;
+  line-height: $header_height;
+  z-index: 2;
+  margin-left: $nav_width;
+  background-color: $header_bg;
+  padding: 0 20px;
+
+  H2 {
+    font-weight: normal;
+    margin: 0;
+    line-height: $header_height;
+  }
+}
+
+/**********
+* Main body
+**********/
+MAIN {
+  margin-top: $header_height;
+  margin-left: $nav_width;
+}
+
+/**********
+* Section (within Main)
+**********/
+SECTION {
+  padding: 20px 20px 0 20px;
+}
+
+
+/**********
+* Aside (to the right of Main)
+**********/
+MAIN.with-aside {
+  margin-right: 200px;
+}
+
+ASIDE {
+  position: absolute;
+  top: 0; 
+  right: 0;
+  width: 200px;
+  background-color: #f0f4f9;
+}
+
+/**********
+* Misc common global things
+**********/
+.footer-actions {
+  margin: 20px 0;
+  text-align: center;
+}
+
+.input-list {
+  margin: 5px 0;
+}
+
+.loading-overlay {
+  position: absolute;
+  top: 100px;
+  left: 0;
+  right: 0;
+  text-align: center;
+  width: 250px;
+  padding: 20px;
+  margin: 0 auto;
+  background-color: rgba(0, 0, 0, 0.9);
+  border-radius: 10px;
+  color: #eee;
+  z-index: 13;
+
+  H3 {
+    font-family: Helvetica;
+  }
+}
+
+.no-resize {
+  resize: none;
+}
+
+.fixed {
+  table-layout: fixed;
+}
+
+.clip {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  word-wrap: break-word;
+}
+
+.force-wrap {
+  word-wrap: break-word;
+}
+
+.main-jumbotron {
+  min-height: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 0;
+  background-repeat: no-repeat;
+  background-position: top center;
+  color: white;
+  padding: 1px 30px;
+}
+
+.well {
+  border-radius: 5px;
+}
+
+.radio-well {
+  padding: 10px;
+  font-size: 14px;
+
+  LABEL {
+  font-weight: normal;
+  display: block;
+  /* the radio button gets clipped with no padding */
+  padding-left: 2px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  word-wrap: break-word;
+  }
+}
+
+.text-mono {
+  font-family: Consolas, "Andale Mono", "Lucida Console",  Monaco, "Courier New", Courier, monospace;
+}
+
+SECTION .well > LABEL,
+.graphs LABEL {
+  font-weight: normal;
+  color: #da8456;
+  display: block;
+  margin-bottom: 5px;
+}
+
+TABLE.graphs {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.fail-whale {
+  background-color: #85a514;
+  background-image: url('images/background.jpg');
+  background-position: top center;
+  background-repeat: no-repeat;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+
+  SECTION {
+    width: 50%;
+    margin: 50px auto 0 auto;
+    background-color: white;
+    border-radius: 5px;
+    padding: 30px;
+  }
+}

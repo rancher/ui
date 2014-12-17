@@ -1,0 +1,19 @@
+<div {{bind-attr class=":instance-name stateColor"}}>
+  <i {{bind-attr class=":fa stateIcon" tooltip=displayState}}></i>
+  {{#link-to "container" this.id}}{{displayName}}{{/link-to}}
+</div>
+<div class="instance-actions">
+  {{partial "container/actions"}}
+</div>
+
+<div {{bind-attr class="isOn::text-muted"}}>{{displayIp}}</div>
+
+<div {{bind-attr class=":force-wrap isError:text-danger:text-muted showTransitioningMessage::hide"}}>
+  {{transitioningMessage}}
+</div>
+
+<div {{bind-attr class="isTransitioning::hide :progress :progress-striped :active"}}>
+  <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=displayProgress style=progressStyle}}>
+    <span class="sr-only">{{displayProgress}}% Complete</span>
+  </div>
+</div>

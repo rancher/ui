@@ -1,0 +1,36 @@
+<h1>{{#if justCreated}}API Key Created{{else}}Edit API Key{{/if}}</h1>
+
+<div class="form-group">
+  <label>Username (Access Key)</label>
+  <h3 class="form-control-static">{{originalModel.publicValue}}</h3>
+</div>
+
+<div class="form-group">
+  <label>Password (Secret Key)</label>
+  {{#if originalModel.secretValue}}
+    <h3 class="form-control-static">{{originalModel.secretValue}}</h3>
+  {{else}}
+    <p class="form-control-static text-muted text-italic">Not available; If you forgot the password you'll need to create a new API key.</p>
+  {{/if}}
+</div>
+
+{{#if justCreated}}
+  <div class="alert alert-warning">
+    <i style="float: left;" class="fa fa-exclamation-circle fa-3x"></i>
+    <p style="margin-left: 50px">Save the username and password above!  This is the only time you'll be able to see the password.</p>
+    <p style="margin-left: 50px">If you lose it, you'll have to create a new API key.</p>
+  </div>
+  <p>If you like, you can give this key an optional name &amp; description to help keep yourself organized:</p>
+{{/if}}
+
+<div class="form-group">
+  <label for="name">Name</label>
+  {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. App Servers"}}
+</div>
+
+<div class="form-group">
+  <label for="description">Description</label>
+  {{textarea id="description" value=description classNames="form-control no-resize" rows="5" placeholder="e.g. This key is used by the app servers to deploy containers"}}
+</div>
+
+{{partial "save-cancel"}}

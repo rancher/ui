@@ -1,0 +1,25 @@
+<label>
+  Volumes
+  <button class="btn btn-link btn-sm" {{action "addVolume" target="view"}}><i class="fa fa-plus"></i> Add</button>
+</label>
+
+{{#if volumesArray.length}}
+  <table class="table fixed no-lines no-top-padding tight">
+    {{#each vol in volumesArray}}
+      <tr>
+        <td width="90%">
+          {{input type="text" class="form-control volume-path input-sm" value=vol.value placeholder="e.g. /path/in/container[:/path/on/host][:ro]"}}
+        </td>
+        <td class="text-center">
+          <button {{action "removeVolume" vol}} class="btn btn-default btn-sm" type="button" tooltip="Remove this volume" tabindex="-1">
+            <i class="fa fa-times"></i>
+          </button>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+{{else}}
+  <div class="text-muted text-italic">
+    None
+  </div>
+{{/if}}

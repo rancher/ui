@@ -1,0 +1,81 @@
+<h1>{{#if editing}}Edit{{else}}Add{{/if}} Container</h1>
+
+{{#if error}}
+  <div class="alert alert-danger">
+    <i style="float: left;" class="fa fa-exclamation-circle"></i>
+    <p style="margin-left: 50px">{{error}}</p>
+  </div>
+{{/if}}
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="name">Name</label>
+      {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. web01"}}
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+      {{textarea id="description" value=description classNames="form-control no-resize" rows="5" placeholder="e.g. It serves the webs"}}
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    {{#if editing}}
+      <label>Port Bindings</label>
+      <div class="well">
+        {{partial "container/edit-ports"}}
+      </div>
+
+      <label>Links</label>
+      <div class="well">
+        {{partial "container/edit-links"}}
+      </div>
+    {{else}}
+      <div class="form-group">
+        <label for="networkId"><i class="fa fa-sitemap"></i> Network</label>
+        {{view "select"
+          class="form-control"
+          disabled=editing
+          id="networkId"
+          content=networks
+          optionLabelPath="content.displayName"
+          optionValuePath="content.id"
+          value=networkId
+          prompt="Select a Network to join the Instance to..."
+        }}
+      </div>
+      {{partial "container/edit-image"}}
+    {{/if}}
+  </div>
+</div>
+
+{{#unless editing}}
+  <div class="row">
+    <div class="col-md-6">
+      {{partial "container/edit-ports"}}
+    </div>
+
+    <div class="col-md-6">
+      {{partial "container/edit-links"}}
+    </div>
+  </div>
+
+  <div class="advanced-toggle">
+    <a href="#" {{action "showAdvanced" target=view}}>Advanced options</a>
+  </div>
+  <div class="advanced" style="display: none">
+    <div class="row">
+
+      <div class="col-md-6">
+        {{partial "container/edit-command"}}
+      </div>
+
+      <div class="col-md-6">
+        {{partial "container/edit-environment"}}
+      </div>
+    </div>
+  </div>
+{{/unless}}
+
+{{partial "save-cancel"}}
+{{partial "overlay-close"}}

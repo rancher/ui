@@ -1,0 +1,39 @@
+<div class="logo">
+  <img src="{{unbound app.baseAssets}}/assets/images/rancher.png"/>
+  <label><img src="{{unbound app.baseAssets}}/assets/images/rancher-text.png"/></label>
+</div>
+
+<ul>
+  {{#link-to "hosts" tagName="li" title="Hosts"}}
+    <a {{bind-attr href="view.href"}}>
+      <i class="fa fa-fw fa-lg text-bold fa-cubes"></i>
+      <label>Hosts</label>
+    </a>
+  {{/link-to}}
+
+  {{#link-to "volumes" tagName="li" title="Volumes"}}
+    <a {{bind-attr href="view.href"}}>
+      <i class="fa fa-fw fa-lg text-bold fa-floppy-o"></i>
+      <label>Volumes</label>
+    </a>
+  {{/link-to}}
+
+  {{#link-to "apikeys" tagName="li" title="API"}}
+    <a {{bind-attr href="view.href"}}>
+      <i class="fa fa-fw fa-lg text-bold fa-code"></i>
+      <label>API</label>
+    </a>
+  {{/link-to}}
+</ul>
+
+<ul class="nav-expander">
+  <li {{action "toggleExpand"}} title="Expand">
+    {{#if expand}}
+      <i class="fa fa-fw fa-lg text-bold fa-arrow-circle-left"></i>
+      <label>Collapse</label>
+    {{else}}
+      <i class="fa fa-fw fa-lg text-bold fa-arrow-circle-right"></i>
+      <label>Expand</label>
+    {{/if}}
+  </li>
+</ul>

@@ -1,0 +1,60 @@
+<section>
+  <div class="row">
+    <div class="col-md-6">
+      <label>Endpoint</label>
+      <div class="well">
+        <a href="{{unbound endpoint}}" target="_blank">{{unbound endpoint}}</a>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label>Documentation</label>
+      <div class="well">
+        <span class="text-muted">Coming Soon&trade;</span>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <div class="clear-fix">
+      <label><i class="fa fa-code"></i> API Keys</label>
+      <div style="float: right">
+        <button {{action "newApikey"}} class="btn btn-primary"><i class="fa fa-plus"></i> Create an API key</button>
+      </div>
+    </div>
+    <table class="table fixed" style="margin-bottom: 0">
+      <tr>
+        <th width="120">State</th>
+        <th>Name<br/><span class="text-muted">Description</span></th>
+        <th>Created<br/><span class="text-muted">Username</span></th>
+        <th width="140">&nbsp;</th>
+      </tr>
+      {{#each key in dataSource itemController="apikey"}}
+        <tr>
+          <td {{bind-attr class="key.stateColor"}}>
+            <i {{bind-attr class=":fa key.stateIcon"}}></i> {{key.displayState}}
+          </td>
+          <td>
+            {{#if key.name}}{{key.displayName}}{{else}}<span class="text-muted text-italic">No name</span>{{/if}}
+            <p class="text-muted">{{#if key.description}}{{key.description}}{{else}}<span class="text-italic">No description</span>{{/if}}</p>
+
+          </td>
+          <td>
+            <div class="text-muted">{{date-calendar key.created}}</div>
+            <div>{{#if key.publicValue}}{{key.publicValue}}{{else}}<span class="text-muted text-italic">No public value</span>{{/if}}</div>
+          </td>
+          <td align="right">
+            <button {{bind-attr class=":btn :btn-sm :btn-info key.actions.update::hide"}} {{action "edit"}} tooltip="Edit"><i class="fa fa-edit"></i></button>
+            <button {{bind-attr class=":btn :btn-sm :btn-info key.actions.activate::hide"}} {{action "activate"}} tooltip="Activate"><i class="fa fa-play"></i></button>
+            <button {{bind-attr class=":btn :btn-sm :btn-info key.actions.deactivate::hide"}} {{action "deactivate"}} tooltip="Deactivate"><i class="fa fa-pause"></i></button>
+            <button {{bind-attr class=":btn :btn-sm :btn-info key.actions.remove::hide"}} {{action "delete"}} tooltip="Delete"><i class="fa fa-trash-o"></i></button>
+            <button {{bind-attr class=":btn :btn-sm :btn-info key.actions.restore::hide"}} {{action "restore"}} tooltip="Restore"><i class="fa fa-ambulance"></i></button>
+            <button {{bind-attr class=":btn :btn-sm :btn-info key.actions.purge::hide"}} {{action "purge"}} tooltip="Purge"><i class="fa fa-fire"></i></button>
+          </td>
+        </tr>
+      {{else}}
+        <tr><td colspan="4" class="text-center text-muted">You don't have any API keys yet.</td></tr>
+      {{/each}}
+    </table>
+  </div>
+</section>

@@ -1,0 +1,48 @@
+<section>
+  <table class="table fixed" style="margin-bottom: 0">
+    <tr>
+      <th width="120">State</th>
+      <th>Name</th>
+      <th>Containers</th>
+      <th>Created</th>
+      <th width="140">&nbsp;</th>
+    </tr>
+    <tr class="no-lines">
+      <th colspan="5" class="text-muted">Host Path
+    </tr>
+    {{#each volume in nonRootVolumes itemController="volume"}}
+      <tr>
+        <td {{bind-attr class="volume.stateColor"}}>
+          <i {{bind-attr class=":fa volume.stateIcon"}}></i> {{volume.displayState}}
+        </td>
+
+        <td>
+          {{volume.displayName}}
+        </td>
+
+        <td>
+          {{#if volume.activeMounts.length}}
+            {{volume.activeMounts.length}}
+          {{else}}
+            <span class="text-muted">None</span>
+          {{/if}}
+        </td>
+
+        <td>
+          <div class="text-muted">{{date-calendar volume.created}}</div>
+        </td>
+
+        <td align="right">
+          <button type="button" {{bind-attr class=":btn :btn-sm :btn-info volume.canDelete::hide"}} {{action "promptDelete"}} tooltip="Delete"><i class="fa fa-trash-o"></i></button>
+          <button type="button" {{bind-attr class=":btn :btn-sm :btn-info volume.actions.restore::hide"}} {{action "restore"}} tooltip="Restore"><i class="fa fa-ambulance"></i></button>
+          <button type="button" {{bind-attr class=":btn :btn-sm :btn-info volume.actions.purge::hide"}} {{action "purge"}} tooltip="Purge"><i class="fa fa-fire"></i></button>
+        </td>
+      </tr>
+      <tr class="no-lines">
+        <td colspan="5" class="text-muted clip">
+          {{volume.displayUri}}
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+</section>

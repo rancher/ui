@@ -1,0 +1,33 @@
+<label>
+  Volumes from another Container
+  <button class="btn btn-link btn-sm" {{action "addVolumeFrom" target="view"}}><i class="fa fa-plus"></i> Add</button>
+</label>
+
+{{#if volumesFromArray.length}}
+  <table class="table fixed no-lines no-top-padding tight">
+    {{#each vol in volumesFromArray}}
+      <tr>
+        <td width="90%">
+          {{display-name-select
+            classNames="form-control input-sm volumefrom-container"
+            prompt="Select a container..."
+            value=vol.value
+            content=hostContainerChoices
+            optionValuePath="content.id"
+            optionLabelPath="content.name"
+            optionGroupPath="group"
+          }}
+        </td>
+        <td class="text-center">
+          <button {{action "removeVolumeFrom" vol}} class="btn btn-default btn-sm" type="button" tooltip="Remove this volume" tabindex="-1">
+            <i class="fa fa-times"></i>
+          </button>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+{{else}}
+  <div class="text-muted text-italic">
+    None
+  </div>
+{{/if}}
