@@ -11,14 +11,14 @@
   <div class="row">
     <div class="col-sm-3" style="padding-left: 0">
       <div class="list-group">
-        <!-- @TODO: department of redundancy department -->
+        {{! @TODO: department of redundancy department }}
         <a href="#" class="tab list-group-item" data-section="basic" {{action "selectTab" "basic" target=view}}>The Basics</a>
         <a href="#" class="tab list-group-item" data-section="ports" {{action "selectTab" "ports" target=view}}>Ports</a>
         <a href="#" class="tab list-group-item" data-section="command" {{action "selectTab" "command" target=view}}>Command</a>
         <a href="#" class="tab list-group-item" data-section="links" {{action "selectTab" "links" target=view}}>Links</a>
         <a href="#" class="tab list-group-item" data-section="volumes" {{action "selectTab" "volumes" target=view}}>Volumes</a>
         <a href="#" class="tab list-group-item" data-section="dns" {{action "selectTab" "dns" target=view}}>DNS</a>
-        <a href="#" class="tab list-group-item" data-section="security" {{action "selectTab" "security" target=view}}>Security</a>
+        <a href="#" class="tab list-group-item" data-section="security" {{action "selectTab" "security" target=view}}>Security/Host</a>
       </div>
     </div>
 
@@ -27,7 +27,7 @@
         <div class="col-md-6">
           <div class="form-group">
             <label for="name">Name</label>
-            {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. web01"}}
+            {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. app01"}}
           </div>
           <div class="form-group">
             <label for="description">Description</label>
@@ -39,10 +39,21 @@
           {{partial "container/edit-image"}}
 
           <div class="form-group">
+            <label>Console</label>
+            {{view "select"
+              class="form-control"
+              id="terminal"
+              content=terminalChoices
+              optionLabelPath="content.label"
+              optionValuePath="content.value"
+              value=terminal
+            }}
+          </div>
+
+          <div class="form-group">
             <label for="networkId">Network</label>
             {{view "select"
               class="form-control"
-              disabled=editing
               id="networkId"
               content=networks
               optionLabelPath="content.displayName"
@@ -95,34 +106,48 @@
       <div class="section" data-section="security">
         <div class="row">
           <div class="col-md-6">
-            <label for="privileged">Privileged</label>
+            <div class="form-group">
+              <label for="memoryMb">Limit Memory Usage</label>
+              <div class="input-group">
+                {{input id="memoryMb" type="number" min="1" step="1" value=memoryMb classNames="form-control" placeholder="No limit"}}
+                <div class="input-group-addon">MB</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="cpuSet">Pin to Physical CPU(s)</label>
+              {{input id="cpuSet" type="text" value=cpuSet classNames="form-control" placeholder="e.g. 0,1,3"}}
+            </div>
+
+          </div>
+          <div class="col-md-6">
+            <label>Privileged</label>
             <div class="checkbox">
               <label for="privileged">{{input type="checkbox" id="privileged" checked=privileged}} Give the container full access to the host</label>
             </div>
-          </div>
-          <div class="col-md-6">
+
             <div class="form-group">
-              <label for="cpuSet">Restrict to CPUs</label>
-              {{input id="cpuSet" type="text" value=cpuSet classNames="form-control" placeholder="e.g. 0,1,3"}}
+              <label {{bind-attr class=":block privileged:text-muted"}}>Add Capability</label>
+              {{view "select" class="form-control select-cap-add" content=capabilityChoices selection=capAdd multiple="true" optionValuePath="content" optionLabelPath="content"}}
             </div>
+
+            <div class="form-group">
+              <label {{bind-attr class=":block privileged:text-muted"}}>Drop Capability</label>
+              {{view "select" class="form-control select-cap-drop" content=capabilityChoices selection=capDrop multiple="true" optionValuePath="content" optionLabelPath="content"}}
+            </div>
+
+            <span class="help-block">
+              Capabilities allow you to provide fine-grained control over superuser privileges available to the container.
+              <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank">More information</a>
+            </span>
           </div>
         </div>
 
         <hr/>
-
-        <div class="row">
-          <div class="col-md-6">
-            <label class="block">Add Capability</label>
-            {{view "select" class="form-control select-cap-add" content=capabilityChoices selection=capAdd multiple="true" optionValuePath="content" optionLabelPath="content"}}
-          </div>
-          <div class="col-md-6">
-            <label class="block">Drop Capability</label>
-            {{view "select" class="form-control select-cap-drop" content=capabilityChoices selection=capDrop multiple="true" optionValuePath="content" optionLabelPath="content"}}
-          </div>
-        </div>
+        {{partial "container/edit-lxc"}}
         <span class="help-block">
-          Capabilities allow you to provide fine-grained control over superuser privileges available to the container.
-          <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank">More information</a>
+          This allows you to directly set or override any low-level options for the container.  Do not include the leading &quot;lxc.&quot;
+          <a href="http://man7.org/linux/man-pages/man5/lxc.container.conf.5.html" target="_blank">More information</a>
         </span>
       </div>
 
