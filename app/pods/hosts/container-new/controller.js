@@ -65,6 +65,13 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
     removeDnsSearch: function(obj) {
       this.get('dnsSearchArray').removeObject(obj);
     },
+
+    addLxc: function() {
+      this.get('lxcArray').pushObject({key: '', value: ''});
+    },
+    removeLxc: function(obj) {
+      this.get('lxcArray').removeObject(obj);
+    },
   },
 
   validate: function() {
@@ -85,6 +92,7 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
     this.initDns();
     this.initDnsSearch();
     this.initCapability();
+    this.initLxc();
     this.userImageUuidDidChange();
   },
 
@@ -112,7 +120,7 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
   // Environment Vars
   environmentArray: null,
   initEnvironment: function() {
-    var obj = this.get('environment')||[];
+    var obj = this.get('environment')||{};
     var keys = Object.keys(obj);
     var out = [];
     keys.forEach(function(key) {
@@ -324,4 +332,61 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
     this.set('capAdd',[]);
     this.set('capDrop',[]);
   },
+
+  // Memory
+  memoryDidChange: function() {
+    // The actual parameter we're interested in is 'memorySwap', in bytes.
+    var mem = parseInt(this.get('memoryMb'),10);
+    if ( isNaN(mem) )
+    {
+      this.set('memoryMb','');
+      this.set('memorySwap',null);
+    }
+    else
+    {
+      this.set('memorySwap', mem * 1024 * 1024);
+    }
+  }.observes('memoryMb'),
+
+  // Terminal
+  terminal: 'both',
+  terminalChoices: [
+    {label: 'Yes (-i and -t)', value: 'both'},
+    {label: 'Interactive (-i)', value: 'interactive'},
+    {label: 'TTY (-t)', value: 'terminal'},
+    {label: 'No', value: 'none'},
+  ],
+  terminalDidChange: function() {
+    var val = this.get('terminal');
+    var stdinOpen = ( val === 'interactive' || val === 'both' );
+    var tty = (val === 'tty' || val === 'both');
+    this.set('tty', tty);
+    this.set('stdinOpen', stdinOpen);
+  }.observes('terminal'),
+
+  // LXC Config
+  lxcArray: null,
+  initLxc: function() {
+    var obj = this.get('lxcConf')||{};
+    var keys = Object.keys(obj);
+    var out = [];
+    keys.forEach(function(key) {
+      out.push({ key: key, value: obj[key] });
+    });
+
+    this.set('lxcArray', out);
+  },
+
+  lxcChanged: function() {
+    // Sync with the actual environment object
+    var out = {};
+    this.get('lxcArray').forEach(function(row) {
+      if ( row.key )
+      {
+        out[row.key] = row.value;
+      }
+    });
+    this.set('lxcConf', out);
+  }.observes('lxcArray.@each.{key,value}'),
+
 });

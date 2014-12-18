@@ -69,6 +69,14 @@ export default OverlayEdit.extend({
       });
     },
 
+    addLxc: function() {
+      var self = this;
+      this.controller.send('addLxc');
+      Ember.run.next(function() {
+        self.$('.lxc-key').last().focus();
+      });
+    },
+
     selectTab: function(name) {
       this.set('context.tab',name);
       this.$('.tab').removeClass('active');
@@ -86,7 +94,7 @@ export default OverlayEdit.extend({
 
     var opts = {
       maxHeight: 200,
-      buttonClass: 'btn btn-default btn-sm',
+      buttonClass: 'btn btn-default',
       buttonWidth: '100%',
       numberDisplayed: 2,
 
@@ -134,5 +142,23 @@ export default OverlayEdit.extend({
 
     this.$('.select-cap-add').multiselect(opts);
     this.$('.select-cap-drop').multiselect(opts);
-  }
+  },
+
+  priviligedDidChange: function() {
+    var add = this.$('.select-cap-add');
+    var drop = this.$('.select-cap-drop');
+    if ( add && drop )
+    {
+      if ( this.get('controller.privileged') )
+      {
+        add.multiselect('disable');
+        drop.multiselect('disable');
+      }
+      else
+      {
+        add.multiselect('enable');
+        drop.multiselect('enable');
+      }
+    }
+  }.observes('controller.privileged')
 });
