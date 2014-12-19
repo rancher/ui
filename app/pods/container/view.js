@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Stats from '../../utils/stats';
+import Stats from 'ui/utils/stats';
 
 export default Ember.View.extend({
   classNames: ['instance-detail'],

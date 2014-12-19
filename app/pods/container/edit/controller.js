@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import NewOrEditContainer from '../../container/edit/new-or-edit';
+import NewOrEditContainer from './new-or-edit';
 
 export default Ember.ObjectController.extend(NewOrEditContainer, {
   editing: true,

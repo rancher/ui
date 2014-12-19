@@ -1,4 +1,4 @@
-import Cattle from '../../utils/cattle';
+import Cattle from 'ui/utils/cattle';
 import Ember from 'ember';
 
 var VolumeController = Cattle.TransitioningResourceController.extend({

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import NewOrEditContainer from '../../container/edit/new-or-edit';
+import NewOrEditContainer from 'ui/pods/container/edit/new-or-edit';
 
 export default Ember.ObjectController.extend(NewOrEditContainer, {
   needs: ['networks'],
