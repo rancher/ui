@@ -1,7 +1,33 @@
-<div class="pull-right hide">
-    <span class="fa-stack fa-lg">
-      <i class="fa fa-circle-o fa-stack-2x"></i>
-      <i class="fa fa-user fa-stack-1x"></i>
-    </span>
-</div>
-<h2>{{pageName}}</h2>
+{{#if app.hasAuthentication}}
+  {{#if app.authenticationEnabled}}
+    <div class="pull-right">
+      <div class="dropdown">
+        <span class="fa-stack fa-lg hand" id="user-dropdown" data-toggle="dropdown" aria-expanded="true">
+          <i class="fa fa-circle-o fa-stack-2x"></i>
+          <i class="fa fa-user fa-stack-1x"></i>
+        </span>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="user-dropdown">
+          <li role="presentation" class="disabled">
+            <a role="menuitem" tabindex="-1">Settings</a>
+          </li>
+
+          <li role="presentation">
+            {{#link-to "settings.auth" role="menuitem" tabindex="-1"}}Access Control{{/link-to}}
+          </li>
+
+          <li role="presentation" class="divider"></li>
+          <li role="presentation">{{#link-to "logout" tabindex="-1"}}Log Out{{/link-to}}</li>
+        </ul>
+      </div>
+    </div>
+  {{else}}
+    <div class="pull-right">
+      <div class="alert alert-warning" role="alert" style="padding: 0 15px;">
+        <i class="fa fa-exclamation-triangle"></i>
+        Access Control is not configured&nbsp;&nbsp;
+        {{#link-to "settings.auth"}}Settings{{/link-to}}
+      </div>
+    </div>
+  {{/if}}
+  <h2>{{pageName}}</h2>
+{{/if}}

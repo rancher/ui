@@ -1,0 +1,176 @@
+import Ember from 'ember';
+
+export default Ember.ObjectController.extend({
+  confirmDisable: false,
+  error: null,
+
+  createIncomplete: function() {
+    var id = (this.get('clientId')||'').trim();
+    var secret = (this.get('clientSecret')||'').trim();
+    return id.length < 20 ||secret.length < 40;
+  }.property('clientId','clientSecret'),
+
+  destinationUrl: function() {
+    return window.location.origin+'/';
+  }.property(),
+
+  actions: {
+    test: function() {
+      var self = this;
+
+      var model = this.get('model');
+      model.set('clientId', model.get('clientId').trim());
+      model.set('clientSecret', model.get('clientSecret').trim());
+      model.set('enabled',false); // It should already be, but just in case..
+      model.set('allowOrganizations',null);
+      model.set('allowUsers',null);
+
+      model.save().then(function() {
+        self.send('authenticate');
+      }).catch(function(err) {
+        self.send('gotError', err);
+      });
+    },
+
+    authenticate: function() {
+      var self = this;
+      self.get('torii').open('github-oauth2').then(function(github){
+        return self.get('store').rawRequest({
+          url: 'token',
+          method: 'POST',
+          data: {
+            code: github.authorizationCode,
+          }
+        }).then(function(res) {
+          var auth = JSON.parse(res.xhr.responseText);
+          self.send('authenticationSucceeded', auth);
+        }).catch(function(err) {
+          // Github auth succeeded but didn't get back a token
+          self.send('gotError', err);
+        });
+      })
+      .catch(function(err) {
+        // Github auth failed.. try again
+        self.send('gotError', err);
+      });
+    },
+
+    authenticationSucceeded: function(auth) {
+      console.log('Authentication succeeded');
+      var self = this;
+      var session = self.get('session');
+
+      session.set('token', auth.jwt);
+      session.set('isLoggedIn',1);
+
+      var model = this.get('model');
+      model.set('enabled',true);
+      model.set('allowOrganizations', auth.orgs||[]);
+      model.set('allowUsers', [auth.user]);
+      model.save().then(function() {
+        self.send('waitAndRefresh', true);
+      }).catch(function() {
+        // @TODO something
+      });
+    },
+
+    waitAndRefresh: function(expect,limit) {
+      console.log('Wait and refresh',expect,limit);
+      var self = this;
+      if ( limit === undefined )
+      {
+        limit = 5;
+      }
+      else if ( limit === 0 )
+      {
+        self.send('error', 'Timed out waiting for access control to turn ' + (expect ? 'on' : 'off'));
+        return;
+      }
+
+      setTimeout(function() {
+        self.get('store').rawRequest({
+          url: 'schemas',
+          headers: { 'authorization': undefined }
+        }).then(function() {
+          if ( expect === false )
+          {
+            window.location.href = window.location.href;
+          }
+          else
+          {
+            self.send('waitAndRefresh',expect,limit-1);
+          }
+        }).catch(function() {
+          if ( expect === true )
+          {
+            window.location.href = window.location.href;
+          }
+          else
+          {
+            self.send('waitAndRefresh',expect,limit-1);
+          }
+        });
+      }, 5000/limit);
+    },
+
+    addUser: function() {
+      var str = (this.get('addUser')||'').trim();
+      if ( str )
+      {
+        this.get('allowUsers').pushObject(str);
+        this.set('addUser','');
+      }
+    },
+
+    removeUser: function(user) {
+      this.get('allowUsers').removeObject(user);
+    },
+
+    addOrg: function() {
+      var str = (this.get('addOrg')||'').trim();
+      if ( str )
+      {
+        this.get('allowOrganizations').pushObject(str);
+        this.set('addOrg','');
+      }
+    },
+
+    removeOrg: function(org) {
+      this.get('allowOrganizations').removeObject(org);
+    },
+
+    saveAuthorization: function() {
+      var self = this;
+      var model = self.get('model');
+      model.save().then(function() {
+        self.send('waitAndRefresh', true);
+      }).catch(function(err) {
+        self.send('gotError', err);
+      });
+    },
+
+    promptDisable: function() {
+      this.set('confirmDisable',true);
+    },
+
+    gotError: function(err) {
+      this.set('error', err.message);
+      window.scrollY = 0;
+    },
+
+    disable: function() {
+      var self = this;
+
+      var model = this.get('model');
+      model.set('allowOrganizations',[]);
+      model.set('allowUsers',[]);
+      model.set('enabled',false);
+
+      model.save().then(function() {
+        self.send('waitAndRefresh', false);
+      }).catch(function(err) {
+        self.send('gotError', err);
+      });
+    },
+  },
+});

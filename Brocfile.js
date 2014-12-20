@@ -49,5 +49,7 @@ app.import('bower_components/c3/c3.css');
 app.import('vendor/term.js/src/term.js');
 app.import('bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js');
 app.import('bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css');
+app.import('bower_components/bootstrap-switch/dist/js/bootstrap-switch.js');
+app.import('bower_components/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.css');
 
 module.exports = app.toTree();
