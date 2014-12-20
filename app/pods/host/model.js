@@ -1,4 +1,4 @@
-import Cattle from '../../utils/cattle';
+import Cattle from 'ui/utils/cattle';
 
 var Host = Cattle.TransitioningResource.extend({
   type: 'host',
