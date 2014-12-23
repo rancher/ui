@@ -2,9 +2,9 @@ import Ember from 'ember';
 import NewOrEditContainer from 'ui/pods/container/edit/new-or-edit';
 
 export default Ember.ObjectController.extend(NewOrEditContainer, {
-  needs: ['networks'],
-  queryParams: ['tab'],
+  queryParams: ['tab','hostId'],
   tab: 'basic',
+  hostId: null,
   editing: false,
   saving: false,
   originalModel: null,
@@ -94,10 +94,14 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
     this.initCapability();
     this.initLxc();
     this.userImageUuidDidChange();
+    this.terminalDidChange();
   },
 
   // Network
+  networkChoices: null,
+  networkId: null,
   initNetwork: function() {
+    //this.set('networkChoices', this.get('store').all('network'));
     var networkIds = this.get('networkIds');
     if ( networkIds && networkIds.length > 0 )
     {
@@ -109,8 +113,6 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
     }
   },
 
-  networkId: null,
-  networks: Ember.computed.alias('controllers.networks'),
   networkIdDidChange: function() {
     var ary = this.get('networkIds')||[];
     ary.length = 0;
@@ -204,7 +206,7 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
   }.observes('linksArray.@each.{linkName,targetInstanceId}'),
 
   // Image
-  userImageUuid: 'dockerfile/ghost:latest',
+  userImageUuid: 'ubuntu:14.04.1',
   userImageUuidDidChange: function() {
     var image = this.get('userImageUuid');
     if ( image.indexOf('docker:') === 0 )

@@ -7,30 +7,26 @@ export default Ember.Route.extend({
     },
   },
 
-  model: function(params/*, transition*/) {
+  model: function(/*params, transition*/) {
     var self = this;
 
     var dependencies = [
-      this.get('store').find('network'),
-      this.get('store').find('host', params.host_id),
+      this.get('store').find('network', null, {forceReload: true}),
     ];
 
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then(function(results) {
       var networks = results[0];
-      var networkController = self.controllerFor('networks');
-      var host = results[1];
 
-      networkController.set('model', networks);
+      self.set('networkChoices', networks);
 
       var networkId = self.get('lastNetworkId');
       if ( !networkId )
       {
-        networkId = networkController.get('firstObject.id');
+        networkId = networks.get('firstObject.id');
       }
 
       var model = self.get('store').createRecord({
         type: 'container',
-        requestedHostId: host.get('id'),
         commandArgs: [],
         networkIds: [networkId],
         environment: {}
@@ -49,6 +45,8 @@ export default Ember.Route.extend({
   },
 
   setupController: function(controller, model) {
+    model.set('requestedHostId', controller.get('hostId'));
+    controller.set('networkChoices', this.get('networkChoices'));
     controller.set('originalModel', null);
     controller.set('model', model);
     controller.initFields();

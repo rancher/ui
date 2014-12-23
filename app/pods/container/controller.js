@@ -29,8 +29,8 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
       return this.doAction('purge');
     },
 
-    console: function() {
-      this.transitionToRoute('container.console', this.get('model'));
+    shell: function() {
+      this.transitionToRoute('container.shell', this.get('model'));
     },
 
     edit: function() {

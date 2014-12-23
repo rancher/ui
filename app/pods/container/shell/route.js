@@ -18,7 +18,7 @@ export default Ember.Route.extend({
   },
 
   renderTemplate: function() {
-    this.render('container/console', {into: 'application', outlet: 'overlay'});
+    this.render('container/shell', {into: 'application', outlet: 'overlay'});
   },
 
   actions: {

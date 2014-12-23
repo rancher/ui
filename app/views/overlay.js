@@ -23,7 +23,7 @@ export default Ember.View.extend({
   },
 
   animateIn: function(done) {
-    $('#underlay').fadeIn({duration: 200, queue: false});
+    $('#underlay').removeClass('hide').fadeIn({duration: 200, queue: false});
     this.$().slideDown({duration: 200, queue: false, easing: 'linear', complete: done});
   },
 

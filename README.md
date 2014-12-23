@@ -30,6 +30,11 @@ Run development server
 
 Connect to UI at http://localhost:8000/ .  The server automatically picks up file changes, restarts itself, and reloads the web browser.
 
+Run development server pointed at another instance of the Rancher API
+```bash
+  RANCHER_ENDPOINT="http://rancher:8080/" npm start
+```
+
 ### Compiling for distribution
 
 The built-in cattle server expects to be run from `/static/` and hosted on a CDN.  To generate the CDN files, run:
@@ -39,6 +44,7 @@ The built-in cattle server expects to be run from `/static/` and hosted on a CDN
 
 ### Running Tests
 
+* `ember test`
 * `ember test`
 * `ember test --server`
 
