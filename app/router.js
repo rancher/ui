@@ -13,9 +13,9 @@ Router.map(function() {
       this.route('delete');
     });
 
-    this.route('containerNew', {path: '/new-container/:host_id'});
+    this.route('containerNew', {path: '/containers/new'});
     this.resource('container', { path: '/containers/:container_id' }, function() {
-      this.route('console');
+      this.route('shell');
       this.route('edit');
       this.route('delete');
     });

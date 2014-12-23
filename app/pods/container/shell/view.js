@@ -1,7 +1,7 @@
 import Overlay from 'ui/views/overlay';
 
 export default Overlay.extend({
-  templateName: 'container/console',
+  templateName: 'container/shell',
 
   ctrlAltDeleteDisabled: true,
 
