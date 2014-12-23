@@ -7,7 +7,7 @@ export default Cattle.CollectionController.extend({
     var url = this.get('app.endpoint');
     if ( url.indexOf('http') !== 0 )
     {
-      url += window.location.origin;
+      url = window.location.origin + '/' + url.replace(/^\/+/,'');
     }
 
     return url;
