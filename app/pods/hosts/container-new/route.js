@@ -15,7 +15,7 @@ export default Ember.Route.extend({
     ];
 
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then(function(results) {
-      var networks = results[0];
+      var networks = results[0].sortBy('name','id');
 
       self.set('networkChoices', networks);
 
