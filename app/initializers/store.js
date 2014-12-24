@@ -1,10 +1,11 @@
 import Ember from 'ember';
 
-export function initialize(container/*, application*/) {
+export function initialize(container, application) {
   var store = container.lookup('store:main');
   store.set('removeAfterDelete', false);
 
   store.reopen({
+    baseUrl: application.apiEndpoint,
     reallyAll: store.all,
     all: function(type) {
       type = this.normalizeType(type);

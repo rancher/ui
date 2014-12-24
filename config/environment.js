@@ -33,6 +33,7 @@ module.exports = function(environment) {
       version: pkg.version,
       appName: 'Rancher',
       endpoint: 'http://localhost:8080',
+      apiEndpoint: '/v1',
       wsEndpoint: '/v1/subscribe?include=hosts&include=instances&include=instanceLinks&eventNames=resource.change',
       baseAssets: '',
     },
@@ -74,9 +75,8 @@ module.exports = function(environment) {
   }
   else if (environment === 'production')
   {
-    ENV.APP.endpoint = '/v1';
+    ENV.APP.endpoint = '';
   }
-
 
   ENV.APP.baseURL = ENV.baseURL;
 

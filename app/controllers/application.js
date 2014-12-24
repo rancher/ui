@@ -13,4 +13,15 @@ export default Ember.Controller.extend({
       expires: inAYear
     });
   }.observes('navExpand'),
+
+
+  absoluteEndpoint: function() {
+    var url = this.get('app.endpoint');
+    if ( url.indexOf('http') !== 0 )
+    {
+      url = window.location.origin + '/' + url.replace(/^\/+/,'');
+    }
+
+    return url;
+  }.property('app.endpoint'),
 });

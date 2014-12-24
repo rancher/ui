@@ -58,10 +58,15 @@ exec ember test
 echo "Building..."
 RANCHER_ENDPOINT="" BASE_URL="$URL" BASE_ASSETS="//${CDN}/${VERSION}" exec ember build --environment=$ENVIRONMENT --output-path=$BUILD_DIR
 
+# Create a file containing the version
+echo "${VERSION}" > $BUILD_DIR/VERSION
+
 # Replace the version in the static file that cattle serves up
 sed -i.bak s/VERSION/$VERSION/g "$BUILD_DIR/static/index.html"
 
 if [ $UPLOAD -eq 1 ]; then
   echo "Uploading..."
   exec gsutil -m cp -R $BUILD_DIR "gs://${CDN}"
+  echo "Updating latest..."
+  exec gsutil rsync -d -r "gs://${CDN}/${VERSION}" "gs://${CDN}/latest"
 fi

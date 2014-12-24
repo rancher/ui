@@ -4,9 +4,7 @@ import {
 } from 'ember-qunit';
 
 moduleFor('controller:container', 'ContainerController', {
-  // Specify the other units that are required for this test.
-  // needs: ['controller:foo']
-  needs: ['controller:hosts']
+  needs: ['controller:hosts', 'controller:application']
 });
 
 // Replace this with your real tests.

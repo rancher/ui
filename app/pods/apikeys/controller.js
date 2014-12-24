@@ -1,15 +1,9 @@
 import Cattle from 'ui/utils/cattle';
 
 export default Cattle.CollectionController.extend({
+  needs: ['application'],
   itemController: 'apikey',
-
   endpoint: function() {
-    var url = this.get('app.endpoint');
-    if ( url.indexOf('http') !== 0 )
-    {
-      url = window.location.origin + '/' + url.replace(/^\/+/,'');
-    }
-
-    return url;
-  }.property('app.endpoint')
+    return this.get('controllers.application.absoluteEndpoint').replace(/\/+$/,'') + this.get('app.apiEndpoint');
+  }.property('controllers.application.absoluteEndpoint','app.apiEndpoint')
 });

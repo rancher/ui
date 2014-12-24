@@ -3,11 +3,12 @@ import Resource from 'ember-api-store/models/resource';
 import ApiError from 'ember-api-store/models/error';
 
 var ResourceController = Ember.ObjectController.extend({
+  needs: ['application'],
   actions: {
     goToApi: function() {
-      var url = this.get('links.self');
-      var endpoint = this.get('app.endpoint');
-      url = url.replace(/https?:\/\/[^\/]+/,endpoint);
+      var url = this.get('links.self'); // http://a.b.c.d/v1/things/id, a.b.c.d is where the UI is running
+      var endpoint = this.get('controllers.application.absoluteEndpoint'); // http://e.f.g.h/ , does not include version.  e.f.g.h is where the API actually is.
+      url = url.replace(/https?:\/\/[^\/]+\/?/,endpoint);
       window.open(url, '_blank');
     },
   },
