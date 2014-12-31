@@ -12,13 +12,15 @@ Prerequisites:
 * [Node.js](http://nodejs.org/) (with NPM)
 * [Bower](http://bower.io/)
 
-Install dependencies:
+If you're on a Mac and use Homebrew, you can follow these steps:
 ```bash
   git clone 'https://github.com/rancherio/ui'
   cd 'ui'
   git submodule init
   git submodule update
+  brew install node
   npm install
+  npm install -g bower
   bower install
   brew install watchman # (or https://facebook.github.io/watchman/docs/install.html)
 ```
