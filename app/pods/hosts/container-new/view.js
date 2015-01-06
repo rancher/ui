@@ -77,6 +77,14 @@ export default OverlayEdit.extend({
       });
     },
 
+    addDevice: function() {
+      var self = this;
+      this.controller.send('addDevice');
+      Ember.run.next(function() {
+        self.$('.device-host').last().focus();
+      });
+    },
+
     selectTab: function(name) {
       this.set('context.tab',name);
       this.$('.tab').removeClass('active');

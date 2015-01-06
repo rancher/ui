@@ -1,4 +1,4 @@
-import Overlay from './overlay';
+import Overlay from 'ui/views/overlay';
 
 export default Overlay.extend({
   templateName: 'confirm-delete',

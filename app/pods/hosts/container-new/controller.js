@@ -72,6 +72,13 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
     removeLxc: function(obj) {
       this.get('lxcArray').removeObject(obj);
     },
+
+    addDevice: function() {
+      this.get('devicesArray').pushObject({host: '', container: '', permissions: 'rwm'});
+    },
+    removeDevice: function(obj) {
+      this.get('devicesArray').removeObject(obj);
+    },
   },
 
   validate: function() {
@@ -93,9 +100,37 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
     this.initDnsSearch();
     this.initCapability();
     this.initLxc();
+    this.initDevices();
     this.userImageUuidDidChange();
     this.terminalDidChange();
+    this.restartDidChange();
   },
+
+  // Restart
+  restart: 'no',
+  restartLimit: 5,
+
+  restartDidChange: function() {
+    var policy = {};
+    var name = this.get('restart');
+    var limit = parseInt(this.get('restartLimit'),10);
+
+    if ( policy === 'on-failure-cond' )
+    {
+      name = 'on-failure';
+      if ( limit > 0 )
+      {
+        policy.maximumRetryCount = limit;
+      }
+    }
+
+    policy.name = name;
+    this.set('restartPolicy', policy);
+  }.observes('restart','restartLimit'),
+
+  restartLimitDidChange: function() {
+    this.set('restart', 'on-failure-cond');
+  }.observes('restartLimit'),
 
   // Network
   networkChoices: null,
@@ -390,5 +425,24 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
     });
     this.set('lxcConf', out);
   }.observes('lxcArray.@each.{key,value}'),
+
+  // Devices
+  devicesArray: null,
+  initDevices: function() {
+    this.set('devices', []);
+    this.set('devicesArray', []);
+  },
+  devicesDidChange: function() {
+    var out = this.get('devices');
+    out.beginPropertyChanges();
+    out.clear();
+    this.get('devicesArray').forEach(function(row) {
+      if ( row.host )
+      {
+        out.push(row.host+":"+row.container+":"+row.permissions);
+      }
+    });
+    out.endPropertyChanges();
+  }.observes('devicesArray.@each.{host,container,permissions}'),
 
 });
