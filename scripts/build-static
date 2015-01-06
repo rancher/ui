@@ -3,30 +3,32 @@ set -e
 
 # cd to app root
 CWD=$(dirname $0)
-if [ `basename $(pwd)` = 'scripts' ]; then
+if [[ `basename $(pwd)` = 'scripts' ]]; then
   cd ../
 else
   cd `dirname $CWD`
 fi
 
-#BRANCH=$(echo $GIT_BRANCH | sed -e 's/^origin\///')
-#if [ "$BRANCH" = "HEAD" ]; then
-#  BRANCH="master"
-#fi
+# Why are you trying to do a build when there are uncommitted changes?
+if [[ `git status --porcelain` ]]; then
+  echo "There are uncommited changes.  Please check the number and try again."
+#  exit 1;
+fi
 
-VERSION=$(cat package.json | grep version | cut -f4 -d'"' | sed 's/-/_/g')
-ENVIRONMENT="production"
-BUILD_DIR="dist/static/${VERSION}"
-CDN="cdn.rancher.io/ui"
-URL="/static"
+# Parse options
+BRANCH=$(git symbolic-ref HEAD | sed -e "s/^refs\/heads\///")
+PKG_VERSION=$(cat package.json | grep version | cut -f4 -d'"' | sed 's/-/_/g')
+LATEST=0
 UPLOAD=0
-
-echo "Branch: ${BRANCH}"
-echo "Version: ${VERSION}"
-echo "Build Dir: ${BUILD_DIR}"
-
-while getopts "u" opt;do
+TAG=0
+while getopts "ltu" opt;do
     case $opt in
+    l)
+        LATEST=1
+        ;;
+    t)
+        TAG=1
+        ;;
     u)
         UPLOAD=1
         ;;
@@ -36,7 +38,7 @@ while getopts "u" opt;do
         exit 1
         ;;
     :)
-        echo "Option -${OPTARG} requires arguement." >&2
+        echo "Option -${OPTARG} requires an argument." >&2
         print_help
         exit 1
         ;;
@@ -44,29 +46,70 @@ while getopts "u" opt;do
     shift 1
 done
 
-function exec() {
-  $@
-  if [ $? -ne 0 ]; then
-    echo "Command: $@ failed"
-    exit 2
-  fi
-}
+# Sanity checking
+if [[ $LATEST -eq 1 ]] && [[ $TAG -eq 1 ]]; then
+  echo "You can't tag latest."
+  exit 1
+fi
+
+if ( [[ $TAG -eq 1 ]] || [[ $UPLOAD -eq 1 ]] ) && [[ "${BRANCH}" != "master" ]]; then
+  echo "You can only tag or upload the master branch (you are on '${BRANCH}')."
+  exit 1
+fi
+
+if [[ $LATEST -eq 1 ]]; then
+  VERSION="latest"
+else
+  VERSION=${PKG_VERSION}
+fi
+
+ENVIRONMENT="production"
+BUILD_DIR="dist/static/${VERSION}"
+CDN="cdn.rancher.io/ui"
+URL="/static"
+
+echo "Branch: ${BRANCH}"
+echo "Version: ${VERSION} (${PKG_VERSION})"
+echo "Build Dir: ${BUILD_DIR}"
+
 
 echo "Testing..."
 exec ember test
 
 echo "Building..."
-RANCHER_ENDPOINT="" BASE_URL="$URL" BASE_ASSETS="//${CDN}/${VERSION}" exec ember build --environment=$ENVIRONMENT --output-path=$BUILD_DIR
+RANCHER_ENDPOINT="" BASE_URL="${URL}" BASE_ASSETS="//${CDN}/${VERSION}" exec ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
 
 # Create a file containing the version
-echo "${VERSION}" > $BUILD_DIR/VERSION
+echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION
 
-# Replace the version in the static file that cattle serves up
-sed -i.bak s/VERSION/$VERSION/g "$BUILD_DIR/static/index.html"
+# Replace the version token in the static file that cattle serves up
+sed -i.bak s/VERSION/${VERSION}/g "${BUILD_DIR}/static/index.html"
 
-if [ $UPLOAD -eq 1 ]; then
-  echo "Uploading..."
-  exec gsutil -m cp -R $BUILD_DIR "gs://${CDN}"
-  echo "Updating latest..."
-  exec gsutil rsync -d -r "gs://${CDN}/${VERSION}" "gs://${CDN}/latest"
+if [[ $TAG -eq 1 ]]; then
+  exec git tag v${VERSION}
+  exec git push --tags
 fi
+
+# For use on your laptop, manually
+if [[ $UPLOAD -eq 1 ]]; then
+  echo "Uploading..."
+  exec gsutil -m cp -R ${BUILD_DIR} "gs://${CDN}"
+fi
+
+# For use from Drone, automatically
+if [[ $CDN_UPLOAD_CI -eq 1 ]]; then
+  echo "Updating latest on CDN..."
+  echo "@TODO SOMETHING"
+fi
+
+# -------------------------------------
+
+# Execute something ane exit if it fails
+function exec() {
+  $@
+  if [[ $? -ne 0 ]]; then
+    echo "Command: $@ failed"
+    exit 2
+  fi
+}
+

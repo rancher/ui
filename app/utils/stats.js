@@ -1,5 +1,5 @@
 import Ember from "ember";
-import Socket from "./socket";
+import Socket from "ui/utils/socket";
 
 /*
   Usage:

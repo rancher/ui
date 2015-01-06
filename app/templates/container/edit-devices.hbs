@@ -1,0 +1,38 @@
+{{#if devicesArray.length}}
+  <table class="table fixed no-lines no-top-padding tight">
+    <tr class="text-muted">
+      <th width="30%">Path in Host</th>
+      <th>&nbsp;</th>
+      <th width="30%">Path in Container</th>
+      <th>&nbsp;</th>
+      <th width="15%">Permissions</th>
+      <th>&nbsp;</th>
+    </tr>
+    {{#each device in devicesArray}}
+      <tr>
+        <td>
+          {{input class="form-control input-sm device-host" type="text" value=device.host placeholder="e.g. /dev/sdc"}}
+        </td>
+        <td style="text-align: center">
+          <p class="form-control-static input-sm"><i class="fa fa-arrow-right"></i></p>
+        </td>
+        <td>
+          {{input class="form-control input-sm" type="text" value=device.container placeholder="e.g. /dev/xsdc"}}
+        </td>
+        <td>&nbsp;</td>
+        <td>
+          {{device-permissions buttonClass="btn-sm" selectionAsString=device.permissions}}
+        </td>
+        <td class="text-right">
+          <button {{action "removeDevice" device}} class="btn btn-default btn-sm" type="button" tooltip="Remove this device" tabindex="-1">
+            <i class="fa fa-times"></i>
+          </button>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+{{else}}
+  <div class="text-muted text-italic">
+    None
+  </div>
+{{/if}}
