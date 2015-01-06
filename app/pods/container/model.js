@@ -16,5 +16,7 @@ export default Cattle.TransitioningResource.extend({
   ports: null,
   instanceLinks: null,
   dataVolumes: null,
-  dataVolumesFrom: null
+  dataVolumesFrom: null,
+  devices: null,
+  restartPolicy: null,
 });

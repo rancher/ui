@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import Socket from '../utils/socket';
-import Util from '../utils/util';
+import Socket from 'ui/utils/socket';
+import Util from 'ui/utils/util';
 
 export default Ember.Route.extend({
   socket: null,
