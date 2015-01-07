@@ -20,6 +20,9 @@ export default Ember.Controller.extend({
     if ( url.indexOf('http') !== 0 )
     {
       url = window.location.origin + '/' + url.replace(/^\/+/,'');
+    } 
+    else if ( url.charAt(url.length-1) !== '/' ) {
+      url = url + "/";
     }
 
     return url;
