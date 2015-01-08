@@ -3,4 +3,11 @@ set -e
 
 cd $(dirname $0)/..
 
+
+# Requires Access to the Source tree. Can not be used when building docker image. 302 wmaxwell
+npm install
+bower --allow-root install
+git submodule init
+git submodule update
+
 npm build

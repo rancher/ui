@@ -3,6 +3,10 @@ set -e
 
 cd $(dirname $0)
 
+if [ "${ENABLE_DOCKER}" == "true" ]; then
+    wrapdocker
+fi
+
 ./clean
 ./bootstrap
 ./build
