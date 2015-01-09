@@ -30,7 +30,7 @@
         <th width="140">&nbsp;</th>
       </tr>
       {{#each key in dataSource itemController="apikey"}}
-        <tr>
+        <tr class="resource-action-hover">
           <td {{bind-attr class="key.stateColor"}}>
             <i {{bind-attr class=":fa key.stateIcon"}}></i> {{key.displayState}}
           </td>
@@ -44,12 +44,7 @@
             <div>{{#if key.publicValue}}{{key.publicValue}}{{else}}<span class="text-muted text-italic">No public value</span>{{/if}}</div>
           </td>
           <td align="right">
-            <button {{bind-attr class=":btn :btn-sm :btn-info key.actions.update::hide"}} {{action "edit"}} tooltip="Edit"><i class="fa fa-edit"></i></button>
-            <button {{bind-attr class=":btn :btn-sm :btn-info key.actions.activate::hide"}} {{action "activate"}} tooltip="Activate"><i class="fa fa-play"></i></button>
-            <button {{bind-attr class=":btn :btn-sm :btn-info key.actions.deactivate::hide"}} {{action "deactivate"}} tooltip="Deactivate"><i class="fa fa-pause"></i></button>
-            <button {{bind-attr class=":btn :btn-sm :btn-info key.actions.remove::hide"}} {{action "delete"}} tooltip="Delete"><i class="fa fa-trash-o"></i></button>
-            <button {{bind-attr class=":btn :btn-sm :btn-info key.actions.restore::hide"}} {{action "restore"}} tooltip="Restore"><i class="fa fa-ambulance"></i></button>
-            <button {{bind-attr class=":btn :btn-sm :btn-info key.actions.purge::hide"}} {{action "purge"}} tooltip="Purge"><i class="fa fa-fire"></i></button>
+            {{resource-actions model=key}}
           </td>
         </tr>
       {{else}}

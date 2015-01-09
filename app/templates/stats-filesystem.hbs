@@ -9,12 +9,12 @@
             <th width="150">Size</th>
             <th>Usage</th>
           </tr>
-          {{#each view.stats.filesystem}}
+          {{#each fs in view.stats.filesystem}}
             <tr>
-              <td>{{device}}</td>
-              <td>{{size_gb}} GB</td>
+              <td>{{fs.device}}</td>
+              <td>{{fs.size_gb}} GB</td>
               <td>
-                {{progress-bar value=used_percent textSuffix="% Used"}}
+                {{progress-bar value=fs.used_percent textSuffix="% Used"}}
               </td>
             </tr>
           {{/each}}

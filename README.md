@@ -8,24 +8,27 @@ Perhaps you like managing cattle.
 ## Usage
 
 Prerequisites:
+* [Bower](from http://bower.io/)
 * [Git](http://git-scm.com/)
 * [Node.js](http://nodejs.org/) (with NPM)
-* [Bower](http://bower.io/)
 
 If you're on a Mac and use Homebrew, you can follow these steps:
+```bash
+  brew install node watchman
+  npm install -g bower
+```
+
+Setup:
 ```bash
   git clone 'https://github.com/rancherio/ui'
   cd 'ui'
   git submodule init
   git submodule update
-  brew install node
   npm install
-  npm install -g bower
   bower install
-  brew install watchman # (or https://facebook.github.io/watchman/docs/install.html)
 ```
 
-Run development server
+Run development server:
 ```bash
   npm start
 ```
@@ -45,6 +48,10 @@ The built-in cattle server expects to be run from `/static/` and hosted on a CDN
 ```
 
 ### Running Tests
+
+```bash
+  npm install -g ember-cli
+```
 
 * `ember test`
 * `ember test`

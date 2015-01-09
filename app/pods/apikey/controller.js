@@ -26,6 +26,19 @@ var ApikeyController = Cattle.TransitioningResourceController.extend({
       this.transitionToRoute('apikey.delete',this.get('model'));
     },
   },
+
+  availableActions: function() {
+    var a = this.get('actions');
+
+    return [
+      { tooltip: 'Edit',          icon: 'fa-edit',          action: 'edit',         enabled: !!a.update },
+      { tooltip: 'Activate',      icon: 'fa-play',          action: 'activate',     enabled: !!a.activate },
+      { tooltip: 'Deactivate',    icon: 'fa-pause',         action: 'deactivate',   enabled: !!a.deactivate },
+      { tooltip: 'Restore',       icon: 'fa-ambulance',     action: 'restore',      enabled: !!a.restore },
+      { tooltip: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
+      { tooltip: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge },
+    ];
+  }.property('actions.{update,activate,deactivate,restore,remove,purge}'),
 });
 
 ApikeyController.reopenClass({

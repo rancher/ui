@@ -4,6 +4,8 @@ export default Ember.Component.extend({
   icon: 'fa-square',
   tooltip: '',
   enabled: true,
+  actionArg: null,
+  altActionArg: null,
 
   tagName: 'button',
   type: 'button',
@@ -12,13 +14,13 @@ export default Ember.Component.extend({
   attributeBindings: ['tooltip'],
 
   click : function(event) {
-    if ( event.altKey )
+    if ( event.altKey && this.get('altActionArg'))
     {
-      this.sendAction('altAction');
+      this.sendAction('action', this.get('altActionArg'));
     }
     else
     {
-      this.sendAction();
+      this.sendAction('action', this.get('actionArg'));
     }
   },
 

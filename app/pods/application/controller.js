@@ -17,6 +17,8 @@ export default Ember.Controller.extend({
 
   absoluteEndpoint: function() {
     var url = this.get('app.endpoint');
+
+    // If the URL is relative, add on the current base URL from the browser
     if ( url.indexOf('http') !== 0 )
     {
       url = window.location.origin + '/' + url.replace(/^\/+/,'');
@@ -24,6 +26,9 @@ export default Ember.Controller.extend({
     else if ( url.charAt(url.length-1) !== '/' ) {
       url = url + "/";
     }
+
+    // Url must end in a single slash
+    url = url.replace(/\/+$/,'') + '/';
 
     return url;
   }.property('app.endpoint'),

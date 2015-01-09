@@ -200,6 +200,24 @@ var TransitioningResourceController = ResourceController.extend({
     return model.doAction.apply(model,arguments);
   },
 
+  availableActions: function() {
+    /*
+      Override me and return [
+        {
+          enabled: true/false,    // Whether it's enabled or greyed out
+          detail: true/false,     // If true, this action will only be shown on detailed screens
+          tooltip: 'Delete',      // Tooltip shown on hover
+          icon: 'fa-trash-o',     // Icon shown on screen
+          action: 'promptDelete', // Action to call on the controller when clicked
+          altAction: 'delete'     // Action to call on the controller when alt+clicked
+        },
+        ...
+      ]
+    */
+
+    return [];
+  },
+
   displayProgress: function() {
     var progress = this.get('transitioningProgress');
     if ( isNaN(progress) || !progress )
