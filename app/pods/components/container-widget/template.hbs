@@ -1,0 +1,17 @@
+<div {{bind-attr class=":instance-name model.stateColor"}}>
+  <i {{bind-attr class=":fa model.stateIcon" tooltip=model.displayState}}></i>
+  {{#link-to "container" model.id}}{{model.displayName}}{{/link-to}}
+</div>
+{{resource-actions model=model}}
+
+<div {{bind-attr class="isOn::text-muted"}}>{{model.displayIp}}</div>
+
+<div {{bind-attr class=":force-wrap model.isError:text-danger:text-muted model.showTransitioningMessage::hide"}}>
+  {{model.transitioningMessage}}
+</div>
+
+<div {{bind-attr class="model.isTransitioning::hide :progress :progress-striped :active"}}>
+  <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=model.displayProgress style=model.progressStyle}}>
+    <span class="sr-only">{{model.displayProgress}}% Complete</span>
+  </div>
+</div>

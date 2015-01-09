@@ -1,0 +1,46 @@
+.resource-actions {
+  BUTTON {
+    color: #444;
+    padding: 0;
+  }
+
+  BUTTON:hover {
+    color: #1d6fa5;
+  }
+}
+
+/*
+  Hover actions on devices with mice, always shown on devices with touch.
+
+  Put .resource-action-hover on a parent node that you want to trigger display of the actions on.
+
+  If there are nested nodes with actions, put .no-resource-action-hover on a node that wraps the inner nodes
+  to prevent hover on the parent from triggering hover on the children.
+*/
+.no-touch {
+  .resource-action-hover {
+    .resource-actions {
+      display: none;
+    }
+
+    &:hover {
+      .resource-actions {
+        display: block;
+      }
+
+      .no-resource-action-hover {
+        .resource-actions {
+          display: none;
+        }
+      }
+    }
+
+    .no-resource-action-hover {
+      .resource-action-hover:hover {
+        .resource-actions {
+          display: block;
+        }
+      }
+    }
+  }
+}

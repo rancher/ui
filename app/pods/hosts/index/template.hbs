@@ -10,7 +10,9 @@
             {{each host.instances itemViewClass="instanceDot" itemController="container"}}
           {{/each}}
         {{else}}
-          {{each col itemViewClass="hosts/item" itemController="host"}}
+          {{#each host in col itemController="host"}}
+            {{host-widget model=host}}
+          {{/each}}
         {{/if}}
       </div>
     {{/each}}

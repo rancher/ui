@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
 var ContainerController = Cattle.TransitioningResourceController.extend({
@@ -29,18 +30,45 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
       return this.doAction('purge');
     },
 
+    redirectTo: function(name) {
+      // @TODO Fix this hackery for nested components...
+      // http://emberjs.jsbin.com/mecesakase
+      if ( Ember.Component.detectInstance(this.get('target')) )
+      {
+        this.set('target', window.l('router:main'));
+      }
+
+      this.transitionToRoute(name, this.get('id'));
+    },
+
     shell: function() {
-      this.transitionToRoute('container.shell', this.get('model'));
+      this.send('redirectTo','container.shell');
     },
 
     edit: function() {
-      this.transitionToRoute('container.edit', this.get('model'));
+      this.send('redirectTo','container.edit');
     },
 
     promptDelete: function() {
-      this.transitionToRoute('container.delete', this.get('model'));
+      this.send('redirectTo','container.delete');
     },
   },
+
+  availableActions: function() {
+    var a = this.get('actions');
+
+    return [
+      { tooltip: 'Edit',          icon: 'fa-edit',          action: 'edit',         enabled: !!a.update },
+      { tooltip: 'View in API',   icon: 'fa-external-link', action: 'goToApi',      enabled: true,            detail: true },
+      { tooltip: 'Execute Shell', icon: 'fa-terminal',      action: 'shell',        enabled: !!a.execute },
+      { tooltip: 'Restart',       icon: 'fa-refresh',       action: 'restart',      enabled: !!a.restart },
+      { tooltip: 'Start',         icon: 'fa-arrow-up',      action: 'start',        enabled: !!a.start },
+      { tooltip: 'Stop',          icon: 'fa-arrow-down',    action: 'stop',         enabled: !!a.stop },
+      { tooltip: 'Restore',       icon: 'fa-ambulance',     action: 'restore',      enabled: !!a.restore },
+      { tooltip: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
+      { tooltip: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge },
+    ];
+  }.property('actions.{update,execute,restart,start,stop,restore,purge}','canDelete'),
 
   isOn: function() {
     return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;

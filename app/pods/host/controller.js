@@ -2,15 +2,38 @@ import Cattle from 'ui/utils/cattle';
 
 var HostController = Cattle.TransitioningResourceController.extend({
   actions: {
-    activate:   function() { return this.doAction('activate'); },
-    deactivate: function() { return this.doAction('deactivate'); },
-    delete:     function() { return this.delete(); },
-    purge:      function() { return this.doAction('purge'); },
+    activate: function() {
+      return this.doAction('activate');
+    },
+
+    deactivate: function() {
+      return this.doAction('deactivate');
+    },
+
+    delete: function() {
+      return this.delete();
+    },
+
+    purge: function() {
+      return this.doAction('purge');
+    },
 
     promptDelete: function() {
       this.transitionToRoute('host.delete', this.get('model'));
     },
   },
+
+  availableActions: function() {
+    var a = this.get('actions');
+
+    return [
+      { tooltip: 'View in API',   icon: 'fa-external-link', action: 'goToApi',      enabled: true,            detail: true },
+      { tooltip: 'Activate',      icon: 'fa-arrow-up',      action: 'activate',     enabled: !!a.activate },
+      { tooltip: 'Deactivate',    icon: 'fa-arrow-down',    action: 'deactivate',   enabled: !!a.deactivate },
+      { tooltip: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
+      { tooltip: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge },
+    ];
+  }.property('actions.{activate,deactivate,remove,purge}'),
 
   displayIp: function() {
     var obj = (this.get('ipAddresses')||[]).get('firstObject');

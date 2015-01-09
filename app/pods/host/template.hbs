@@ -24,7 +24,7 @@
         {{transitioningMessage}}
       </div>
       <div class="host-actions">
-        {{partial "host/actions"}}
+        {{resource-actions model=this}}
       </div>
     </div>
   </div>
@@ -44,7 +44,9 @@
     <label>Containers</label>
     {{#each col in view.columns}}
       <div class="instance-column">
-        {{each col itemViewClass="host/instance" itemController="container"}}
+        {{#each item in col itemController="container"}}
+          {{container-widget model=item}}
+        {{/each}}
       </div>
     {{else}}
       <div style="padding: 20px; text-align: center;" class="text-muted">
