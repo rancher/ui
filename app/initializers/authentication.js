@@ -8,8 +8,8 @@ export function initialize(container, application) {
 
   // Find out if auth is enabled
   store.rawRequest({
-    url: 'token', // Base url, which will be /v1
-    headers: { 'authorization': undefined }
+    url: 'token',
+    headers: { 'authorization': undefined } // Explicitly not send the auth token
   })
   .then(function(obj) {
     var body = JSON.parse(obj.xhr.responseText);
