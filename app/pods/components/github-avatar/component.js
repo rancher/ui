@@ -5,21 +5,24 @@ export default Ember.Component.extend({
   login: null,
 
   classNames: ['gh-avatar'],
-  name: 'Loading...',
+  name: 'Checking...',
   avatarUrl: null,
 
   nameChanged: function() {
     var self = this;
-    var url = 'https://api.github.com/' + this.get('type') + 's/' + this.get('login') + '?s=40';
+    var login = this.get('login');
+    var type = this.get('type');
+    var url = 'https://api.github.com/' + type + 's/' + login;
 
     Ember.$.ajax({url: url, dataType: 'json'}).then(function(body) {
       self.set('name', body.name);
-      self.set('avatarUrl', body.avatar_url);
-    }, function() {
-      var type = self.get('type');
-      type = type.substr(0,1).toUpperCase() + type.substr(1);
 
-      self.set('name', 'Warning: ' + type + ' not found');
+      var avatarUrl = body.avatar_url;
+      avatarUrl += (avatarUrl.indexOf('?') >= 0 ? '&' : '?') + 's=40';
+      self.set('avatarUrl', avatarUrl);
+    }, function() {
+      self.set('name', '(Not found)');
+      self.sendAction('notFound', login);
     });
   }.observes('login','type').on('init'),
 

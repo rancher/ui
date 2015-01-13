@@ -3,12 +3,17 @@ import Ember from 'ember';
 export default Ember.ObjectController.extend({
   confirmDisable: false,
   error: null,
+  testing: false,
+  saving: false,
+  saved: true,
 
-  createIncomplete: function() {
+  createDisabled: function() {
     var id = (this.get('clientId')||'').trim();
     var secret = (this.get('clientSecret')||'').trim();
-    return id.length < 20 ||secret.length < 40;
-  }.property('clientId','clientSecret'),
+    return id.length < 20 ||secret.length < 40 || this.get('testing');
+  }.property('clientId','clientSecret','testing'),
+
+  saveDisabled: Ember.computed.or('saving','saved'),
 
   destinationUrl: function() {
     return window.location.origin+'/';
@@ -17,8 +22,10 @@ export default Ember.ObjectController.extend({
   actions: {
     test: function() {
       var self = this;
+      self.send('clearError');
+      self.set('testing',true);
 
-      var model = this.get('model');
+      var model = self.get('model');
       model.set('clientId', model.get('clientId').trim());
       model.set('clientSecret', model.get('clientSecret').trim());
       model.set('enabled',false); // It should already be, but just in case..
@@ -34,7 +41,8 @@ export default Ember.ObjectController.extend({
 
     authenticate: function() {
       var self = this;
-      self.get('torii').open('github-oauth2').then(function(github){
+      self.send('clearError');
+      self.get('torii').open('github-oauth2',{width: 1024, height: 500}).then(function(github){
         return self.get('store').rawRequest({
           url: 'token',
           method: 'POST',
@@ -52,18 +60,21 @@ export default Ember.ObjectController.extend({
       .catch(function(err) {
         // Github auth failed.. try again
         self.send('gotError', err);
+      })
+      .finally(function() {
+        self.set('testing',false);
       });
     },
 
     authenticationSucceeded: function(auth) {
-      console.log('Authentication succeeded');
       var self = this;
-      var session = self.get('session');
+      self.send('clearError');
 
+      var session = self.get('session');
       session.set('token', auth.jwt);
       session.set('isLoggedIn',1);
 
-      var model = this.get('model');
+      var model = self.get('model');
       model.set('enabled',true);
       model.set('allowOrganizations', auth.orgs||[]);
       model.set('allowUsers', [auth.user]);
@@ -75,7 +86,6 @@ export default Ember.ObjectController.extend({
     },
 
     waitAndRefresh: function(expect,limit) {
-      console.log('Wait and refresh',expect,limit);
       var self = this;
       if ( limit === undefined )
       {
@@ -114,6 +124,9 @@ export default Ember.ObjectController.extend({
     },
 
     addUser: function() {
+      this.send('clearError');
+      this.set('saved',false);
+
       var str = (this.get('addUser')||'').trim();
       if ( str )
       {
@@ -122,11 +135,15 @@ export default Ember.ObjectController.extend({
       }
     },
 
-    removeUser: function(user) {
-      this.get('allowUsers').removeObject(user);
+    removeUser: function(login) {
+      this.set('saved',false);
+      this.get('allowUsers').removeObject(login);
     },
 
     addOrg: function() {
+      this.send('clearError');
+      this.set('saved',false);
+
       var str = (this.get('addOrg')||'').trim();
       if ( str )
       {
@@ -135,17 +152,34 @@ export default Ember.ObjectController.extend({
       }
     },
 
-    removeOrg: function(org) {
-      this.get('allowOrganizations').removeObject(org);
+    removeOrg: function(login) {
+      this.set('saved',false);
+      this.get('allowOrganizations').removeObject(login);
+    },
+
+    userNotFound: function(login) {
+      this.send('showError',"User '"+ login + "' not found");
+      this.send('removeUser',login);
+    },
+
+    orgNotFound: function(login) {
+      this.send('showError',"Organization '"+ login + "' not found");
+      this.send('removeOrg',login);
     },
 
     saveAuthorization: function() {
       var self = this;
+      self.send('clearError');
+      self.set('saving',true);
+      self.set('saved',false);
+
       var model = self.get('model');
       model.save().then(function() {
-        self.send('waitAndRefresh', true);
+        self.set('saved',true);
       }).catch(function(err) {
         self.send('gotError', err);
+      }).finally(function() {
+        self.set('saving',false);
       });
     },
 
@@ -154,12 +188,21 @@ export default Ember.ObjectController.extend({
     },
 
     gotError: function(err) {
-      this.set('error', err.message);
+      this.send('showError', err.message);
+    },
+
+    showError: function(msg) {
+      this.set('error', msg);
       window.scrollY = 0;
+    },
+
+    clearError: function() {
+      this.set('error', '');
     },
 
     disable: function() {
       var self = this;
+      self.send('clearError');
 
       var model = this.get('model');
       model.set('allowOrganizations',[]);

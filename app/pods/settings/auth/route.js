@@ -11,5 +11,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin,{
   setupController: function(controller, model) {
     this._super(controller,model);
     controller.set('confirmDisable',false);
+    controller.set('saving',false);
+    controller.set('saved',true);
+    controller.set('testing',false);
+    controller.set('error',null);
   }
 });

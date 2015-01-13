@@ -1,23 +1,29 @@
-<div style="padding: 20px 20px 0 20px;">
+<section>
+  {{#if error}}
+    <div class="alert alert-danger">
+      <i style="float: left;" class="fa fa-lg fa-exclamation-circle"></i>
+      <p style="margin-left: 50px">{{error}}</p>
+    </div>
+  {{/if}}
+
   <div class="well">
     <h2>Access Control is {{#if app.authenticationEnabled}}<b>enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
-    <p>
+    <div>
       {{#if app.authenticationEnabled}}
         Rancher is configured to restrict access to the GitHub users and organization members below.
       {{else}}
         Rancher can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.
       {{/if}}
-    </p>
+    </div>
   </div>
 
-  {{#if error}}
-    <div class="alert alert-danger">
-      <i style="float: left;" class="fa fa-exclamation-circle"></i>
-      <p style="margin-left: 50px">{{error}}</p>
-    </div>
-  {{/if}}
-
   {{#if app.authenticationEnabled}}
+    <div class="well">
+      <h4>Authentication</h4>
+      <hr/>
+      <p>To change the configured GitHub application, disable access control below and then set it up again.</p>
+      <div><b>Client ID: </b> <span class="text-muted">{{clientId}}</span></div>
+    </div>
 
     <div class="well">
       <h4>Configure Authorization</h4>
@@ -27,7 +33,7 @@
         <div class="col-sm-6">
           <label>Users</label>
 
-          <form {{action "addUser"}}>
+          <form {{action "addUser" on="submit"}}>
             <div class="input-group">
               {{input type="text" value=addUser placeholder="Add GitHub username" class="form-control"}}
               <div class="input-group-btn">
@@ -41,7 +47,7 @@
           <ul class="list-unstyled gh-avatar-list">
             {{#each user in allowUsers}}
               <li>
-                {{#github-avatar type="user" login=user}}
+                {{#github-avatar type="user" login=user notFound="userNotFound"}}
                   <button class="btn btn-danger btn-sm pull-right gh-action" {{action "removeUser" user}}>Remove</button>
                 {{/github-avatar}}
               </li>
@@ -54,7 +60,7 @@
         <div class="col-sm-6">
           <label>Organizations</label>
 
-          <form {{action "addOrg"}}>
+          <form {{action "addOrg" on="submit"}}>
             <div class="input-group">
               {{input type="text" value=addOrg placeholder="Add GitHub organization name" class="form-control"}}
               <div class="input-group-btn">
@@ -68,7 +74,7 @@
           <ul class="list-unstyled gh-avatar-list">
             {{#each org in allowOrganizations}}
               <li>
-                {{#github-avatar type="org" login=org}}
+                {{#github-avatar type="org" login=org notFound="orgNotFound"}}
                   <button class="btn btn-danger btn-sm pull-right gh-action" {{action "removeOrg" org}}>Remove</button>
                 {{/github-avatar}}
               </li>
@@ -81,8 +87,16 @@
 
       <hr/>
 
-      <button class="btn btn-primary" {{action "saveAuthorization"}}>
-        Save Authorization Configuration
+      <button class="btn btn-primary" {{bind-attr disabled=saveDisabled}} {{action "saveAuthorization"}}>
+        {{#if saved}}
+          Saved
+        {{else}}
+          {{#if saving}}
+            <i class="fa fa-spinner fa-spin"></i> Saving...</i>
+          {{else}}
+            Save authorization configuration
+          {{/if}}
+        {{/if}}
       </button>
     </div>
 
@@ -96,11 +110,11 @@
 
       {{#if confirmDisable}}
         <button class="btn btn-danger" {{action "disable"}}>
-          <i class="fa fa-fire"></i> Are you sure?  Click again to really disable Access Control
+          <i class="fa fa-fire"></i> Are you sure?  Click again to really disable access control
         </button>
       {{else}}
         <button class="btn btn-danger" {{action "promptDisable"}}>
-          <i class="fa fa-fire"></i> Disable Access Control
+          <i class="fa fa-fire"></i> Disable access control
         </button>
       {{/if}}
 
@@ -160,11 +174,15 @@
           <p>Check that your application is configured correctly by testing authentication with it:</p>
         </div>
         <div class="col-md-6">
-          <button {{bind-attr disabled=createIncomplete}} class="btn btn-primary" {{action "test"}}>
-            <i class="fa fa-github"></i> Authenticate with GitHub
+          <button {{bind-attr disabled=createDisabled}} class="btn btn-primary" {{action "test"}}>
+            {{#if testing}}
+              <i class="fa fa-spinner fa-spin"></i> Waiting to hear back from GitHub
+            {{else}}
+              <i class="fa fa-github"></i> Authenticate with GitHub
+            {{/if}}
           </button>
         </div>
       </div>
     </div>
   {{/unless}}
-</div>
+</section>
