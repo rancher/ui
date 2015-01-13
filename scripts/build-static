@@ -46,13 +46,19 @@ while getopts "ltu" opt;do
     shift 1
 done
 
+# UPLOAD_LATEST=true is set by Drone for auto upload to CDN
+if [[ "${BRANCH}" == "master" ]] && [[ "${UPLOAD_LATEST}" == "true" ]]; then
+  UPLOAD=2
+  LATEST=1
+fi
+
 # Sanity checking
 if [[ $LATEST -eq 1 ]] && [[ $TAG -eq 1 ]]; then
   echo "You can't tag latest."
   exit 1
 fi
 
-if ( [[ $TAG -eq 1 ]] || [[ $UPLOAD -eq 1 ]] ) && [[ "${BRANCH}" != "master" ]]; then
+if ( [[ $TAG -eq 1 ]] || [[ $UPLOAD -ne 0 ]] ) && [[ "${BRANCH}" != "master" ]]; then
   echo "You can only tag or upload the master branch (you are on '${BRANCH}')."
   exit 1
 fi
@@ -69,9 +75,12 @@ CDN="cdn.rancher.io/ui"
 URL="/static"
 
 echo "Branch: ${BRANCH}"
-echo "Version: ${VERSION} (${PKG_VERSION})"
+if [[ "${VERSION}" != "${PKG_VERSION}" ]]; then
+  echo "Package Version: ${PKG_VERSION}"
+fi
+echo "Version: ${VERSION}"
 echo "Build Dir: ${BUILD_DIR}"
-
+echo "Options: Latest=${LATEST}, Tag=${TAG}, Upload=${UPLOAD}"
 
 echo "Testing..."
 exec ember test
@@ -97,9 +106,9 @@ if [[ $UPLOAD -eq 1 ]]; then
 fi
 
 # For use from Drone, automatically
-if [[ $CDN_UPLOAD_CI -eq 1 ]]; then
-  echo "Updating latest on CDN..."
-  echo "@TODO SOMETHING"
+if [[ $UPLOAD -eq 2 ]]; then
+  echo "Updating latest thru Docker..."
+  exec docker run --rm -v ${BUILD_DIR}:/latest google/cloud-sdk gsutil -m rsync -r /latest "gs://${CDN}/latest"
 fi
 
 # -------------------------------------

@@ -3,11 +3,18 @@ set -e
 
 cd $(dirname $0)
 
-if [ "${ENABLE_DOCKER}" == "true" ]; then
-    wrapdocker
+if [[ "${ENABLE_DOCKER}" == "true" ]]; then
+  wrapdocker
+  docker pull google/cloud-sdk
 fi
 
 ./clean
 ./bootstrap
-./build
-./test
+
+if [[ "${UPLOAD_LATEST}" == "true" ]] && [[ "${ENABLE_DOCKER}" == "true" ]]; then
+  ./build-static -l -u
+  # (build-static contains a call to test)
+else
+  ./build
+  ./test
+fi
