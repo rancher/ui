@@ -6,7 +6,7 @@ export default Ember.Route.extend({
 
     Ember.run(function() {
       $('#loading-underlay').show().fadeIn({duration: 100, queue: false, easing: 'linear', complete: function() {
-        $('#loading-overlay').fadeIn({duration: 200, queue: false, easing: 'linear'});
+        $('#loading-overlay').show().fadeIn({duration: 200, queue: false, easing: 'linear'});
       }});
     });
   },

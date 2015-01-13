@@ -26,7 +26,7 @@ module.exports = function(app, options) {
   });
 
   proxy.on('error', function onProxyError(err, req, res) {
-    console.log('Proxy Error:', err);
+    console.log('Proxy Error: on', req.method,'to', req.url,':', err);
     var error = {
       type: 'error',
       status: 500,

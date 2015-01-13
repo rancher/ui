@@ -1,6 +1,14 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  enter: function() {
+    $('BODY').addClass('farm');
+  },
+
+  exit: function() {
+    $('BODY').removeClass('farm');
+  },
+
   model: function() {
     return this.controllerFor('application').get('error');
   },
@@ -8,7 +16,7 @@ export default Ember.Route.extend({
   afterModel: function(model) {
     if ( !model )
     {
-      this.transitionTo('hosts');
+//      this.transitionTo('hosts');
     }
   }
 });

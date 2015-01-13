@@ -16,12 +16,17 @@ module.exports = function(environment) {
       }
     },
 
+    torii: {
+      // This is configured at runtime, but torii complains
+      // on startup if there's no entry in the environment
+    },
+
     contentSecurityPolicy: {
       // Allow the occasional <elem style="blah">...
       'style-src':  "'self' cdn.rancher.io 'unsafe-inline'",
       'font-src':   "'self' cdn.rancher.io",
       'script-src': "'self' cdn.rancher.io",
-      'img-src':    "'self' cdn.rancher.io",
+      'img-src':    "'self' cdn.rancher.io avatars.githubusercontent.com",
 
       // Allow connect to anywhere, for console and event stream socket
       'connect-src': '*'
@@ -43,7 +48,7 @@ module.exports = function(environment) {
     // ENV.APP.LOG_RESOLVER = true;
     ENV.APP.LOG_ACTIVE_GENERATION = true;
     ENV.APP.LOG_TRANSITIONS = true;
-    // ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
+    ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     ENV.APP.LOG_VIEW_LOOKUPS = true;
     ENV.contentSecurityPolicy['script-src'] = ENV.contentSecurityPolicy['script-src'] + " 'unsafe-eval'";
   }
