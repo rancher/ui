@@ -16,7 +16,7 @@ export default Ember.Route.extend({
   afterModel: function(model) {
     if ( !model )
     {
-//      this.transitionTo('hosts');
+      this.transitionTo('index');
     }
   }
 });
