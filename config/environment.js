@@ -23,10 +23,10 @@ module.exports = function(environment) {
 
     contentSecurityPolicy: {
       // Allow the occasional <elem style="blah">...
-      'style-src':  "'self' cdn.rancher.io 'unsafe-inline'",
-      'font-src':   "'self' cdn.rancher.io",
-      'script-src': "'self' cdn.rancher.io",
-      'img-src':    "'self' cdn.rancher.io avatars.githubusercontent.com",
+      'style-src':  "'self' cdn.rancher.io storage.googleapis.com 'unsafe-inline'",
+      'font-src':   "'self' cdn.rancher.io storage.googleapis.com ",
+      'script-src': "'self' cdn.rancher.io storage.googleapis.com ",
+      'img-src':    "'self' cdn.rancher.io storage.googleapis.com avatars.githubusercontent.com",
 
       // Allow connect to anywhere, for console and event stream socket
       'connect-src': '*'
