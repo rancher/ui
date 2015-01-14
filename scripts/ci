@@ -1,20 +1,27 @@
 #!/bin/bash
 set -e
 
-cd $(dirname $0)
+# cd to app root
+CWD=$(dirname $0)
+if [[ `basename $(pwd)` = 'scripts' ]]; then
+  cd ../
+else
+  cd `dirname $CWD`
+fi
 
 if [[ "${ENABLE_DOCKER}" == "true" ]]; then
   wrapdocker
   docker pull google/cloud-sdk
 fi
 
-./clean
-./bootstrap
+./scripts/clean
+./scripts/bootstrap
 
 if [[ "${UPLOAD_LATEST}" == "true" ]] && [[ "${ENABLE_DOCKER}" == "true" ]]; then
-  ./build-static -l -u
+  ./scripts/build
+  ./scripts/build-static -l -u
   # (build-static contains a call to test)
 else
-  ./build
-  ./test
+  ./scripts/build
+  ./scripts/test
 fi

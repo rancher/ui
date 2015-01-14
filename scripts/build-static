@@ -1,5 +1,9 @@
 #!/bin/bash
 set -e
+set -u
+
+: ${CI_BRANCH=""}
+: ${UPLOAD_LATEST=""}
 
 # cd to app root
 CWD=$(dirname $0)
@@ -9,14 +13,39 @@ else
   cd `dirname $CWD`
 fi
 
+# -------------------------------------
+
+# Execute something and exit if it fails
+function runCmd() {
+  $@
+  if [[ $? -ne 0 ]]; then
+    echo "Command: $@ failed"
+    exit 2
+  fi
+}
+
+# -------------------------------------
+
 # Why are you trying to do a build when there are uncommitted changes?
 if [[ `git status --porcelain` ]]; then
   echo "There are uncommited changes.  Please check the number and try again."
 #  exit 1;
 fi
 
+echo "Environment Variables:"
+env
+
 # Parse options
-BRANCH=$(git symbolic-ref HEAD | sed -e "s/^refs\/heads\///")
+BRANCH=$CI_BRANCH
+
+if [[ -z "$BRANCH" ]]; then
+  BRANCH=$(git symbolic-ref HEAD | sed -e "s/^refs\/heads\///")
+fi
+
+if [[ -z "$BRANCH" ]]; then
+  BRANCH="master"
+fi
+
 PKG_VERSION=$(cat package.json | grep version | cut -f4 -d'"' | sed 's/-/_/g')
 LATEST=0
 UPLOAD=0
@@ -81,44 +110,35 @@ fi
 echo "Version: ${VERSION}"
 echo "Build Dir: ${BUILD_DIR}"
 echo "Options: Latest=${LATEST}, Tag=${TAG}, Upload=${UPLOAD}"
+echo "Current Directory: $(pwd)"
 
 echo "Testing..."
-exec ember test
+runCmd ./node_modules/.bin/ember test
+echo "Done Testing."
 
-echo "Building..."
-RANCHER_ENDPOINT="" BASE_URL="${URL}" BASE_ASSETS="//${CDN}/${VERSION}" exec ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
+echo "Building Static..."
+RANCHER_ENDPOINT="" BASE_URL="${URL}" BASE_ASSETS="//${CDN}/${VERSION}" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
 
 # Create a file containing the version
-echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION
+echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
 
 # Replace the version token in the static file that cattle serves up
 sed -i.bak s/VERSION/${VERSION}/g "${BUILD_DIR}/static/index.html"
 
 if [[ $TAG -eq 1 ]]; then
-  exec git tag v${VERSION}
-  exec git push --tags
+  runCmd git tag v${VERSION}
+  runCmd git push --tags
 fi
 
 # For use on your laptop, manually
 if [[ $UPLOAD -eq 1 ]]; then
   echo "Uploading..."
-  exec gsutil -m cp -R ${BUILD_DIR} "gs://${CDN}"
+  runCmd gsutil -m cp -R ${BUILD_DIR} "gs://${CDN}"
 fi
 
 # For use from Drone, automatically
 if [[ $UPLOAD -eq 2 ]]; then
-  echo "Updating latest thru Docker..."
-  exec docker run --rm -v ${BUILD_DIR}:/latest google/cloud-sdk gsutil -m rsync -r /latest "gs://${CDN}/latest"
+  LATEST_DIR="$(pwd)/${BUILD_DIR}"
+  echo "Updating latest ($LATEST_DIR) thru Docker..."
+  runCmd docker run --rm -v $LATEST_DIR:/latest google/cloud-sdk gsutil -m rsync -c -r -d /latest "gs://${CDN}/latest"
 fi
-
-# -------------------------------------
-
-# Execute something ane exit if it fails
-function exec() {
-  $@
-  if [[ $? -ne 0 ]]; then
-    echo "Command: $@ failed"
-    exit 2
-  fi
-}
-
