@@ -83,10 +83,10 @@ echo "Build Dir: ${BUILD_DIR}"
 echo "Options: Latest=${LATEST}, Tag=${TAG}, Upload=${UPLOAD}"
 
 echo "Testing..."
-exec ember test
+exec npm test
 
 echo "Building..."
-RANCHER_ENDPOINT="" BASE_URL="${URL}" BASE_ASSETS="//${CDN}/${VERSION}" exec ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
+RANCHER_ENDPOINT="" BASE_URL="${URL}" BASE_ASSETS="//${CDN}/${VERSION}" exec npm build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
 
 # Create a file containing the version
 echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION
