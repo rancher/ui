@@ -1,9 +1,7 @@
-import Overlay from 'ui/views/overlay';
+import Overlay from 'ui/pods/overlay/view';
 
 export default Overlay.extend({
   templateName: 'container/shell',
-
-  ctrlAltDeleteDisabled: true,
 
   status: 'Connecting...',
   socket: null,
@@ -13,9 +11,6 @@ export default Overlay.extend({
     overlayClose: function() {
       this.get('controller').send('cancel');
     },
-
-    ctrlAltDelete: function() {
-    }
   },
 
   didInsertElement: function() {

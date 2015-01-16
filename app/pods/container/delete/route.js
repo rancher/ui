@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import OverlayRoute from 'ui/pods/overlay/route';
 
-export default Ember.Route.extend({
+export default OverlayRoute.extend({
   renderTemplate: function() {
     this.render('confirmDelete', {
       into: 'application',
@@ -12,11 +12,11 @@ export default Ember.Route.extend({
   actions: {
     confirm: function() {
       this.controllerFor('container').send('delete');
-      this.transitionTo('hosts');
+      this.send('goToPrevious');
     },
 
     cancel: function() {
-      this.transitionTo('hosts');
+      this.send('goToPrevious');
     }
   }
 });

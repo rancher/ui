@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   actions: {
     beforeModel: function() {
+      this._super.apply(this,arguments);
       var err = this.get('app.initError');
       if ( err )
       {
