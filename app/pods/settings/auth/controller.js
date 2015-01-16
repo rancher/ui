@@ -29,8 +29,8 @@ export default Ember.ObjectController.extend({
       model.set('clientId', model.get('clientId').trim());
       model.set('clientSecret', model.get('clientSecret').trim());
       model.set('enabled',false); // It should already be, but just in case..
-      model.set('allowOrganizations',null);
-      model.set('allowUsers',null);
+      model.set('allowedOrganizations',null);
+      model.set('allowedUsers',null);
 
       model.save().then(function() {
         self.send('authenticate');
@@ -76,8 +76,8 @@ export default Ember.ObjectController.extend({
 
       var model = self.get('model');
       model.set('enabled',true);
-      model.set('allowOrganizations', auth.orgs||[]);
-      model.set('allowUsers', [auth.user]);
+      model.set('allowedOrganizations', auth.orgs||[]);
+      model.set('allowedUsers', [auth.user]);
       model.save().then(function() {
         self.send('waitAndRefresh', true);
       }).catch(function() {
@@ -130,14 +130,14 @@ export default Ember.ObjectController.extend({
       var str = (this.get('addUser')||'').trim();
       if ( str )
       {
-        this.get('allowUsers').pushObject(str);
+        this.get('allowedUsers').pushObject(str);
         this.set('addUser','');
       }
     },
 
     removeUser: function(login) {
       this.set('saved',false);
-      this.get('allowUsers').removeObject(login);
+      this.get('allowedUsers').removeObject(login);
     },
 
     addOrg: function() {
@@ -147,14 +147,14 @@ export default Ember.ObjectController.extend({
       var str = (this.get('addOrg')||'').trim();
       if ( str )
       {
-        this.get('allowOrganizations').pushObject(str);
+        this.get('allowedOrganizations').pushObject(str);
         this.set('addOrg','');
       }
     },
 
     removeOrg: function(login) {
       this.set('saved',false);
-      this.get('allowOrganizations').removeObject(login);
+      this.get('allowedOrganizations').removeObject(login);
     },
 
     userNotFound: function(login) {
@@ -205,8 +205,8 @@ export default Ember.ObjectController.extend({
       self.send('clearError');
 
       var model = this.get('model');
-      model.set('allowOrganizations',[]);
-      model.set('allowUsers',[]);
+      model.set('allowedOrganizations',[]);
+      model.set('allowedUsers',[]);
       model.set('enabled',false);
 
       model.save().then(function() {
