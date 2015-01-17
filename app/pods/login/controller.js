@@ -55,7 +55,7 @@ export default Ember.Controller.extend({
           headers: headers,
           data: {
             code: github.authorizationCode,
-          }
+          },
         }).then(function(res) {
           var auth = JSON.parse(res.xhr.responseText);
           session.setProperties(auth);

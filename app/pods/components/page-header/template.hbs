@@ -26,6 +26,38 @@
         </ul>
       </div>
     </div>
+    {{#if app.projectsEnabled}}
+      <div class="right" style="padding-right: 0;">
+        <div class="btn-group">
+          <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            {{#if project}}
+              {{#with project as p controller="project"}}
+                <i {{bind-attr class=":fa :fa-fw p.icon"}}></i>&nbsp;{{p.displayName}}
+              {{/with}}
+            {{else}}
+              {{#with defaultProject as p controller="project"}}
+                <i {{bind-attr class=":fa :fa-fw p.icon"}}></i>&nbsp;{{p.displayName}}
+              {{/with}}
+            {{/if}}
+            <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            <li role="presentation" class="dropdown-header">Available Projects:</li>
+            {{#each p in projectChoices itemController="project"}}
+              <li {{bind-attr class="p.active:disabled p.active:selected"}}>
+                <a {{action "switchProject" p.id}}>
+                  <i {{bind-attr class=":fa :fa-fw p.listIcon"}}></i>
+                  &nbsp;
+                  {{p.displayName}}
+                </a>
+              </li>
+            {{/each}}
+            <li role="presentation" class="divider"></li>
+            <li>{{#link-to "projects"}}Manage Projects{{/link-to}}</li>
+          </ul>
+        </div>
+      </div>
+    {{/if}}
   {{else}}
     <div class="pull-right full-height">
       <div class="alert alert-warning" role="alert" style="padding: 0 15px;">

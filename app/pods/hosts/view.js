@@ -8,10 +8,19 @@ export default Ember.View.extend({
   didInsertElement: function() {
     this._super();
 
-    this.set('resizeFn', this.onResize.bind(this));
+    this.set('resizeFn', this.triggerResize.bind(this));
     $(window).on('resize', this.get('resizeFn'));
     this.onResize();
   },
+
+  triggerResize: function() {
+    Ember.run.throttle(this, 'onResize', 200);
+  },
+
+  onResize: function() {
+    this.set('sectionWidth', $('.hosts').width());
+  },
+
 
   willDestroyElement: function() {
     $(window).off('resize', this.get('resizeFn'));
@@ -20,16 +29,12 @@ export default Ember.View.extend({
   sectionWidth: null, // Will be reset on didInsertElement and resize
   columnWidth: 265, // Must also change public/css/host.css .host-column
 
-  onResize: function() {
-    this.set('sectionWidth', $('.hosts').width());
-  },
-
   columnCount: function() {
     var colWidth = this.get('columnWidth');
     var mainWidth = this.get('sectionWidth');
     if ( !mainWidth )
     {
-      // The width isn't known until after the first render...
+      // The width isn't known until after the first render... so just pick something
       return 3;
     }
 

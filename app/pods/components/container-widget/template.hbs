@@ -1,17 +1,32 @@
-<div {{bind-attr class=":instance-name model.stateColor"}}>
-  <i {{bind-attr class=":fa model.stateIcon" tooltip=model.displayState}}></i>
-  {{#link-to "container" model.id}}{{model.displayName}}{{/link-to}}
+<div class="instance-name" {{action "showActions"}}>
+  <i {{bind-attr class=":fa model.stateIcon model.stateColor" tooltip=model.displayState}}></i>
+  {{model.displayName}}
 </div>
-{{resource-actions model=model}}
-
-<div {{bind-attr class="isOn::text-muted"}}>{{model.displayIp}}</div>
-
-<div {{bind-attr class=":force-wrap model.isError:text-danger:text-muted model.showTransitioningMessage::hide"}}>
-  {{model.transitioningMessage}}
-</div>
-
-<div {{bind-attr class="model.isTransitioning::hide :progress :progress-striped :active"}}>
-  <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=model.displayProgress style=model.progressStyle}}>
-    <span class="sr-only">{{model.displayProgress}}% Complete</span>
+{{#if model.showTransitioningMessage}}
+  <div {{bind-attr class=":instance-message :clip model.isError:text-danger:text-muted model.showTransitioningMessage::hide"}}>
+    {{model.transitioningMessage}}
   </div>
+{{else}}
+  <div class="instance-ip">
+    {{model.displayIp}}
+  </div>
+{{/if}}
+
+<div class="instance-actions-trigger" {{action "showActions"}}>
+  <i class="fa fa-chevron-right"></i>
+</div>
+
+{{#if model.isTransitioning}}
+  <div class="corner-triangle"></div>
+  <div class="corner-triangle-content">
+    {{#if model.hasProgress}}
+      {{model.transitioningProgress}}%
+    {{else}}
+      <i class="fa fa-spinner fa-spin fa-lg" style="padding: 5px;"></i>
+    {{/if}}
+  </div>
+{{/if}}
+
+<div {{bind-attr class=":instance-actions stateBackground :hide"}} {{action "hideActions"}}>
+  {{resource-actions model=model choices=model.primaryActions}}
 </div>

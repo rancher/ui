@@ -52,12 +52,18 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
     promptDelete: function() {
       this.send('redirectTo','container.delete');
     },
+
+    detail: function() {
+      Ember.run.next(this, function() {
+        this.send('redirectTo','container');
+      });
+    },
   },
 
   availableActions: function() {
     var a = this.get('actions');
 
-    return [
+    var choices = [
       { tooltip: 'Edit',          icon: 'fa-edit',          action: 'edit',         enabled: !!a.update },
       { tooltip: 'View in API',   icon: 'fa-external-link', action: 'goToApi',      enabled: true,            detail: true },
       { tooltip: 'Execute Shell', icon: 'fa-terminal',      action: 'shell',        enabled: !!a.execute },
@@ -68,7 +74,45 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
       { tooltip: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
       { tooltip: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge },
     ];
+
+    return choices;
   }.property('actions.{update,execute,restart,start,stop,restore,purge}','canDelete'),
+
+  primaryActions: function() {
+    var a = this.get('availableActions');
+    var choices = [];
+
+    if ( this.get('canDelete') )
+    {
+      var primary = ifEnabled('restart') || ifEnabled('start') || ifEnabled('stop');
+      if ( primary )
+      {
+        choices.push(primary);
+      }
+
+      choices.push(byName('promptDelete'));
+    }
+    else
+    {
+      choices.push(byName('restore'));
+      choices.push(byName('purge'));
+    }
+
+    choices.push({ tooltip: 'Details',         icon: 'fa-chevron-right',          action: 'detail',        enabled: true });
+    return choices;
+
+    function byName(name) {
+      return a.filterProperty('action',name)[0];
+    }
+
+    function ifEnabled(name) {
+      var action = byName(name);
+      if ( action && !!action.enabled )
+      {
+        return action;
+      }
+    }
+  }.property('availableActions.[]','availableActions.@each.enabled'),
 
   isOn: function() {
     return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;

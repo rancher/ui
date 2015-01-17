@@ -210,6 +210,11 @@ var TransitioningResourceController = ResourceController.extend({
     return [];
   },
 
+  hasProgress: function() {
+    var progress = this.get('transitioningProgress');
+    return progress && !isNaN(progress) && progress >= 0;
+  }.property('transitioningProgress'),
+
   displayProgress: function() {
     var progress = this.get('transitioningProgress');
     if ( isNaN(progress) || !progress )
