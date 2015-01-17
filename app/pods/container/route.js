@@ -75,10 +75,4 @@ export default Ember.Route.extend({
     this.render('container', {into: 'hosts'});
     this.send('setPageName','Container');
   },
-
-  actions: {
-    cancel: function() {
-      this.transitionTo('hosts');
-    },
-  }
 });

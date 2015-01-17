@@ -1,10 +1,18 @@
 import Ember from 'ember';
-import OverlayEdit from "ui/views/overlay-edit";
+import Overlay from 'ui/pods/overlay/view';
 
-export default OverlayEdit.extend({
+export default Overlay.extend({
   templateName: 'hosts/container-new',
 
   actions: {
+    overlayClose: function() {
+      this.get('controller').send('cancel');
+    },
+
+    overlayEnter: function() {
+      this.get('controller').send('save');
+    },
+
     addArgument: function() {
       var self = this;
       this.controller.send('addArgument');

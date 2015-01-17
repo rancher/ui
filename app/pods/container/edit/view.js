@@ -1,5 +1,19 @@
-import OverlayEdit from "ui/views/overlay-edit";
+import Overlay from "ui/pods/overlay/view";
 
-export default OverlayEdit.extend({
-  templateName: 'container/edit'
+export default Overlay.extend({
+  templateName: 'container/edit',
+
+  actions: {
+    overlayClose: function() {
+      this.get('controller').send('cancel');
+    },
+
+    overlayEnter: function() {
+      this.get('controller').send('save');
+    },
+
+    showAdvanced: function() {
+      this.get('context').set('advanced',true);
+    }
+  }
 });

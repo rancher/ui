@@ -1,6 +1,6 @@
-import Ember from 'ember';
+import OverlayRoute from 'ui/pods/overlay/route';
 
-export default Ember.Route.extend({
+export default OverlayRoute.extend({
   model: function() {
     var container = this.modelFor('container');
     var opt = {
@@ -23,7 +23,7 @@ export default Ember.Route.extend({
 
   actions: {
     cancel: function() {
-      this.transitionTo('hosts');
+      this.send('goToPrevious');
     },
   }
 });
