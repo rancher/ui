@@ -4,6 +4,7 @@ export default Overlay.extend({
   templateName: 'container/shell',
 
   status: 'Connecting...',
+  useClosed: false,
   socket: null,
   term: null,
 
@@ -49,13 +50,17 @@ export default Overlay.extend({
       socket.onclose = function() {
         self.set('status','Closed');
         term.destroy();
-        self.send('overlayClose');
+        if ( !self.get('userClosed') )
+        {
+          self.send('overlayClose');
+        }
       };
     };
   },
 
   willDestroyElement: function() {
     this.set('status','Closed');
+    this.set('userClosed',true);
 
     var term = this.get('term');
     if (term)

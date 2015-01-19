@@ -27,18 +27,19 @@ export default Ember.Route.extend({
 
   actions: {
     goToPrevious: function() {
-      var route = this.get('previousRoute');
+      var self = this;
+      var route = self.get('previousRoute');
       if ( route === 'loading' )
       {
         route = 'index';
       }
 
-      var args = (this.get('previousParams')||[]).slice();
+      var args = (self.get('previousParams')||[]).slice();
       args.unshift(route);
-      var res = this.transitionTo.apply(this,args);
+      var res = self.transitionTo.apply(self,args);
 
       res.catch(function() {
-        this.transitionTo('index');
+        self.transitionTo('index');
       });
     },
   }
