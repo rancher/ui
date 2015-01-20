@@ -24,6 +24,16 @@ function runCmd() {
   fi
 }
 
+function printHelp() {
+    cat 1>&2 <<EOF
+build-static Usage:
+  -l - Build as "latest" instead of the version in package.json
+  -u - Upload to GCE
+  -t - Tag and push tag
+EOF
+  exit 1;
+}
+
 # -------------------------------------
 
 # Why are you trying to do a build when there are uncommitted changes?
@@ -50,7 +60,7 @@ PKG_VERSION=$(cat package.json | grep version | cut -f4 -d'"' | sed 's/-/_/g')
 LATEST=0
 UPLOAD=0
 TAG=0
-while getopts "ltu" opt;do
+while getopts ":lut" opt;do
     case $opt in
     l)
         LATEST=1
@@ -63,16 +73,15 @@ while getopts "ltu" opt;do
         ;;
     \?)
         echo "Invalid arguemnts"
-        print_help
+        printHelp
         exit 1
         ;;
     :)
         echo "Option -${OPTARG} requires an argument." >&2
-        print_help
+        printHelp
         exit 1
         ;;
     esac
-    shift 1
 done
 
 # UPLOAD_LATEST=true is set by Drone for auto upload to CDN
