@@ -1,4 +1,6 @@
 import Ember from 'ember';
+import config from 'torii/configuration';
+import githubOauth from 'torii/providers/github-oauth2';
 
 export default Ember.ObjectController.extend({
   confirmDisable: false,
@@ -23,18 +25,21 @@ export default Ember.ObjectController.extend({
     test: function() {
       var self = this;
       self.send('clearError');
-      self.set('testing',true);
+      self.set('testing', true);
 
       var model = self.get('model');
-      model.set('clientId', model.get('clientId').trim());
-      model.set('clientSecret', model.get('clientSecret').trim());
-      model.set('enabled',false); // It should already be, but just in case..
-      model.set('allowedOrganizations',null);
-      model.set('allowedUsers',null);
+      model.setProperties({
+        'clientId': model.get('clientId').trim(),
+        'clientSecret': model.get('clientSecret').trim(),
+        'enabled': false, // It should already be, but just in case..
+        'allowedOrganizations': [],
+        'allowedUsers': []
+      });
 
       model.save().then(function() {
         self.send('authenticate');
       }).catch(function(err) {
+        self.set('testing', false);
         self.send('gotError', err);
       });
     },
@@ -42,6 +47,10 @@ export default Ember.ObjectController.extend({
     authenticate: function() {
       var self = this;
       self.send('clearError');
+
+      config.providers['github-oauth2'].apiKey = this.get('model.clientId');
+      githubOauth.state = Math.random()+"";
+
       self.get('torii').open('github-oauth2',{width: 1024, height: 500}).then(function(github){
         return self.get('store').rawRequest({
           url: 'token',
@@ -52,8 +61,9 @@ export default Ember.ObjectController.extend({
         }).then(function(res) {
           var auth = JSON.parse(res.xhr.responseText);
           self.send('authenticationSucceeded', auth);
-        }).catch(function(err) {
+        }).catch(function(res) {
           // Github auth succeeded but didn't get back a token
+          var err = JSON.parse(res.xhr.responseText);
           self.send('gotError', err);
         });
       })
@@ -62,7 +72,7 @@ export default Ember.ObjectController.extend({
         self.send('gotError', err);
       })
       .finally(function() {
-        self.set('testing',false);
+        self.set('testing', false);
       });
     },
 
@@ -72,12 +82,15 @@ export default Ember.ObjectController.extend({
 
       var session = self.get('session');
       session.set('token', auth.jwt);
-      session.set('isLoggedIn',1);
+      session.set('isLoggedIn', 1);
 
       var model = self.get('model');
-      model.set('enabled',true);
-      model.set('allowedOrganizations', auth.orgs||[]);
-      model.set('allowedUsers', [auth.user]);
+      model.setProperties({
+        'enabled': true,
+        'allowedOrganizations': auth.orgs||[],
+        'allowedUsers': [auth.user],
+      });
+
       model.save().then(function() {
         self.send('waitAndRefresh', true);
       }).catch(function() {
@@ -125,7 +138,7 @@ export default Ember.ObjectController.extend({
 
     addUser: function() {
       this.send('clearError');
-      this.set('saved',false);
+      this.set('saved', false);
 
       var str = (this.get('addUser')||'').trim();
       if ( str )
@@ -136,13 +149,13 @@ export default Ember.ObjectController.extend({
     },
 
     removeUser: function(login) {
-      this.set('saved',false);
+      this.set('saved', false);
       this.get('allowedUsers').removeObject(login);
     },
 
     addOrg: function() {
       this.send('clearError');
-      this.set('saved',false);
+      this.set('saved', false);
 
       var str = (this.get('addOrg')||'').trim();
       if ( str )
@@ -153,7 +166,7 @@ export default Ember.ObjectController.extend({
     },
 
     removeOrg: function(login) {
-      this.set('saved',false);
+      this.set('saved', false);
       this.get('allowedOrganizations').removeObject(login);
     },
 
@@ -170,25 +183,32 @@ export default Ember.ObjectController.extend({
     saveAuthorization: function() {
       var self = this;
       self.send('clearError');
-      self.set('saving',true);
-      self.set('saved',false);
+      self.set('saving', true);
+      self.set('saved', false);
 
       var model = self.get('model');
       model.save().then(function() {
-        self.set('saved',true);
+        self.set('saved', true);
       }).catch(function(err) {
         self.send('gotError', err);
       }).finally(function() {
-        self.set('saving',false);
+        self.set('saving', false);
       });
     },
 
     promptDisable: function() {
-      this.set('confirmDisable',true);
+      this.set('confirmDisable', true);
     },
 
     gotError: function(err) {
-      this.send('showError', err.message);
+      if ( err.message )
+      {
+        this.send('showError', err.message);
+      }
+      else
+      {
+        this.send('showError', 'Error ('+err.status + ' - ' + err.code+')');
+      }
     },
 
     showError: function(msg) {
@@ -205,9 +225,11 @@ export default Ember.ObjectController.extend({
       self.send('clearError');
 
       var model = this.get('model');
-      model.set('allowedOrganizations',[]);
-      model.set('allowedUsers',[]);
-      model.set('enabled',false);
+      model.setProperties({
+        'allowedOrganizations': [],
+        'allowedUsers': [],
+        'enabled': false,
+      });
 
       model.save().then(function() {
         self.send('waitAndRefresh', false);
