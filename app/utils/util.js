@@ -29,7 +29,7 @@ export function popupWindowOptions(width,height) {
   var s = window.screen;
   var opt = {
     width: Math.min(s.width, width||1040),
-    height: Math.min(s.height, width||768),
+    height: Math.min(s.height, height||768),
     resizable: 1,
     scrollbars: 1,
   };
