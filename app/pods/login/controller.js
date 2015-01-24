@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import util from 'ui/utils/util';
 
 export default Ember.Controller.extend({
   queryParams: ['timedOut'],
@@ -41,7 +42,7 @@ export default Ember.Controller.extend({
       self.set('timedOut', false);
       self.set('waiting', true);
 
-      self.get('torii').open('github-oauth2',{width: 1024, height: 500}).then(function(github){
+      self.get('torii').open('github-oauth2',{windowOptions: util.popupWindowOptions()}).then(function(github){
         return self.get('store').rawRequest({
           url: 'token',
           method: 'POST',
