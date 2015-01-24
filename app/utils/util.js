@@ -25,10 +25,30 @@ export function download(url) {
   iframe.src = url;
 }
 
+export function popupWindowOptions(width,height) {
+  var s = window.screen;
+  var opt = {
+    width: Math.min(s.width, width||1040),
+    height: Math.min(s.height, width||768),
+    resizable: 1,
+    scrollbars: 1,
+  };
+
+  opt.left = Math.max(0, (s.width-opt.width)/2);
+  opt.top = Math.max(0, (s.height-opt.height)/2);
+
+  var optStr = Object.keys(opt).map(function(k) {
+    return k+'='+opt[k];
+  }).join(',');
+
+  return optStr;
+}
+
 var Util = {
   arrayDiff: arrayDiff,
   arrayIntersect: arrayIntersect,
-  download: download
+  download: download,
+  popupWindowOptions: popupWindowOptions
 };
 
 window.Util = Util;

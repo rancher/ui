@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import config from 'torii/configuration';
 import githubOauth from 'torii/providers/github-oauth2';
+import util from 'ui/utils/util';
 
 export default Ember.ObjectController.extend({
   confirmDisable: false,
@@ -36,9 +37,11 @@ export default Ember.ObjectController.extend({
         'allowedUsers': []
       });
 
-      model.save().then(function() {
-        self.send('authenticate');
-      }).catch(function(err) {
+      // Send authenticate immediately so that the popup isn't blocked,
+      // even though the config isn't necessarily saved yet...
+      self.send('authenticate');
+
+      model.save().catch(function(err) {
         self.set('testing', false);
         self.send('gotError', err);
       });
@@ -51,7 +54,7 @@ export default Ember.ObjectController.extend({
       config.providers['github-oauth2'].apiKey = this.get('model.clientId');
       githubOauth.state = Math.random()+"";
 
-      self.get('torii').open('github-oauth2',{width: 1024, height: 500}).then(function(github){
+      self.get('torii').open('github-oauth2',{windowOptions: util.popupWindowOptions()}).then(function(github){
         return self.get('store').rawRequest({
           url: 'token',
           method: 'POST',
