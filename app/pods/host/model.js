@@ -10,9 +10,10 @@ var Host = Cattle.TransitioningResource.extend({
 
   state: function() {
     var host = this.get('hostState');
-    if ( host === 'active' )
+    var agent = this.get('agent.state');
+    if ( host === 'active' && agent  )
     {
-      return this.get('agent.state');
+      return agent;
     }
     else
     {
@@ -22,7 +23,8 @@ var Host = Cattle.TransitioningResource.extend({
 
   transitioning: function() {
     var host = this.get('hostTransitioning');
-    if ( host === 'no' )
+    var agent = this.get('agent.transitioning');
+    if ( host === 'no' && agent )
     {
       return this.get('agent.transitioning');
     }
@@ -33,7 +35,7 @@ var Host = Cattle.TransitioningResource.extend({
   }.property('hostTransitioning','agent.transitioning'),
 
   transitioningMessage: function() {
-    if ( this.get('hostTransitioning') === 'no' )
+    if ( this.get('hostTransitioning') === 'no' && this.get('agent.transitioning'))
     {
       return this.get('agent.transitioningMessage');
     }
@@ -41,10 +43,10 @@ var Host = Cattle.TransitioningResource.extend({
     {
       return this.get('hostTransitioningMessage');
     }
-  }.property('hostTransitioningMessage','agent.transitioningMessage'),
+  }.property('hostTransitioningMessage','agent.{transitioning,transitioningMessage}'),
 
   transitioningProgress: function() {
-    if ( this.get('hostTransitioning') === 'no' )
+    if ( this.get('hostTransitioning') === 'no' && this.get('agent.transitioning'))
     {
       return this.get('agent.transitioningProgress');
     }
@@ -52,7 +54,7 @@ var Host = Cattle.TransitioningResource.extend({
     {
       return this.get('hostTransitioningProgress');
     }
-  }.property('hostTransitioningProgress','agent.transitioningProgress'),
+  }.property('hostTransitioningProgress','agent.{transitioning,transitioningProgress}'),
 });
 
 Host.reopenClass({

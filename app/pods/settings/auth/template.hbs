@@ -31,11 +31,10 @@
       <p>Configure what users and organization members should be allowed to use Rancher.</p>
       <div class="row">
         <div class="col-sm-6">
-          <label>Users</label>
 
           <form {{action "addUser" on="submit"}}>
             <div class="input-group">
-              {{input type="text" value=addUser placeholder="Add GitHub username" class="form-control"}}
+              {{input type="text" value=addUser placeholder="Add a GitHub username" class="form-control"}}
               <div class="input-group-btn">
                 <button class="btn btn-primary" {{action "addUser"}}><i class="fa fa-plus"></i></button>
               </div>
@@ -43,6 +42,7 @@
           </form>
 
           <hr/>
+          <label>Authorized Users</label>
 
           <ul class="list-unstyled gh-avatar-list">
             {{#each user in allowedUsers}}
@@ -58,11 +58,10 @@
         </div>
 
         <div class="col-sm-6">
-          <label>Organizations</label>
 
           <form {{action "addOrg" on="submit"}}>
             <div class="input-group">
-              {{input type="text" value=addOrg placeholder="Add GitHub organization name" class="form-control"}}
+              {{input type="text" value=addOrg placeholder="Add a GitHub organization name" class="form-control"}}
               <div class="input-group-btn">
                 <button class="btn btn-primary" {{action "addOrg"}}><i class="fa fa-plus"></i></button>
               </div>
@@ -70,6 +69,7 @@
           </form>
 
           <hr/>
+          <label>Authorized Organizations</label>
 
           <ul class="list-unstyled gh-avatar-list">
             {{#each org in allowedOrganizations}}

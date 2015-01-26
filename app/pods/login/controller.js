@@ -41,6 +41,7 @@ export default Ember.Controller.extend({
 
       self.set('timedOut', false);
       self.set('waiting', true);
+      self.set('errorMsg', null);
 
       self.get('torii').open('github-oauth2',{windowOptions: util.popupWindowOptions()}).then(function(github){
         return self.get('store').rawRequest({
@@ -71,9 +72,17 @@ export default Ember.Controller.extend({
           var body = JSON.parse(res.xhr.responseText);
           self.set('errorMsg', body.message);
         }
-        else
+        else if ( res.err )
         {
           self.set('errorMsg', res.err);
+        }
+        else if ( res.message )
+        {
+          self.set('errorMsg', res.message);
+        }
+        else
+        {
+          self.set('errorMsg', res);
         }
       }).finally(function() {
         self.set('waiting', false);

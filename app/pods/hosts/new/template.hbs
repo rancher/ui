@@ -1,0 +1,21 @@
+<h2>Register A New Host</h2>
+
+{{#if error}}
+  <div class="alert alert-danger">
+    <i style="float: left;" class="fa fa-exclamation-circle"></i>
+    <p style="margin-left: 50px">{{error}}</p>
+  </div>
+{{/if}}
+
+<ol>
+  <li>Start up a server somewhere &amp; install the latest version of <a href="http://www.docker.com/" target="_blank">Docker</a> on it</li>
+  <li>Copy, paste, and run the command below to register the host with Rancher:
+    <pre style="font-size: 11px; margin: 10px 0; white-space: pre-wrap;">{{#if registrationUrl}}docker run --rm -it --privileged -v /var/run/docker.sock:/var/run/docker.sock rancher/agent {{registrationUrl}}{{else}}Reticulating Splines...{{/if}}</pre>
+  </li>
+  <li>Close this window.  The new host should show up on the {{#link-to "hosts"}}Hosts{{/link-to}} screen within a minute.</li>
+</ol>
+
+<div class="footer-actions">
+  <button {{action "cancel"}} class="btn btn-primary">Close</button>
+</div>
+{{partial "overlay-close"}}

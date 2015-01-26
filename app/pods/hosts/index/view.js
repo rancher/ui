@@ -37,39 +37,26 @@ export default Ember.View.extend({
     return Math.max(1,Math.floor(mainWidth/colWidth));
   }.property('sectionWidth','columnWidth'),
 
-  sections: function() {
-    var sections = this.get('context.byZone');
+  columns: function() {
+    var hosts = this.get('context');
     var columnCount = this.get('columnCount');
+    var i;
 
-    var out = Object.keys(sections).map(function(zoneId) {
-      var zone = sections[zoneId].zone;
-      var hosts = sections[zoneId].hosts;
-      var columns = [];
-      var idx;
+    var columns = [];
+    // Pre-initialize all the columns
+    for ( i = 0 ; i < columnCount ; i++ )
+    {
+      columns[i] = [];
+    }
 
-      for ( var i = 0 ; i < hosts.get('length') ; i++ )
-      {
-        idx = i % columnCount;
-        if ( !columns[idx] )
-        {
-          columns[idx] = [];
-        }
+    for ( i = 0 ; i < hosts.get('length') ; i++ )
+    {
+      columns[i % columnCount].push(hosts.objectAt(i));
+    }
 
-        columns[idx].push(hosts.objectAt(i));
-      }
+    // Add a placeholder for where to put the 'Add a host' button
+    columns[i % columnCount].push(Ember.Object.create({isNewHostPlaceHolder: true}));
 
-      return {
-        zone: zone,
-        columns: columns
-      };
-    });
-
-    out.sort(function(a,b) {
-      var an = a.zone.get('name');
-      var bn = b.zone.get('name');
-      return (an < bn ? -1 : (an > bn ? 1 : 0) );
-    });
-
-    return out;
-  }.property('context.byZone.[]','columnCount'),
+    return columns;
+  }.property('context.[]','columnCount'),
 });

@@ -7,7 +7,12 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   socket: null,
 
   model: function() {
-    return this.get('store').find('schema', null, {url: 'schemas'}).then(function() {
+    var self = this;
+    var store = this.get('store');
+    return store.find('schema', null, {url: 'schemas'}).then(function(/*schemas*/) {
+      // Save whether the user is an admin or not
+      self.set('app.isAuthenticationAdmin', store.hasRecordFor('schema','githubconfig'));
+
       return Ember.RSVP.resolve();
     });
   },

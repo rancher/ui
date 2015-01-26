@@ -10,11 +10,19 @@
 </div>
 
 <div class="no-resource-action-hover">
-  {{#each item in model.instances itemController="container"}}
-    {{container-widget model=item}}
+  {{#if dot}}
+    <div class="clearfix">
+      {{#each item in model.instances itemController="container"}}
+        {{container-dot model=item}}
+      {{/each}}
+    </div>
   {{else}}
-    <div class="text-center text-muted">No containers yet.</div>
-  {{/each}}
+    {{#each item in model.instances itemController="container"}}
+      {{container-widget model=item}}
+    {{else}}
+      <div class="text-center text-muted">No containers yet.</div>
+    {{/each}}
+  {{/if}}
 </div>
 
 {{#link-to "hosts.containerNew" (query-params hostId=model.id tab="basic") tagName="div" classNames="add-to-host" tooltip="Create Container"}}

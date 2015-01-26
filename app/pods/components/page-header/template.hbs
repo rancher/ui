@@ -10,15 +10,17 @@
           <i class="fa fa-chevron-down"></i>
         </span>
         <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="user-dropdown">
-          <li role="presentation" class="disabled">
-            <a role="menuitem" tabindex="-1">Settings</a>
-          </li>
+          {{#if app.isAuthenticationAdmin}}
+            <li role="presentation" class="disabled">
+              <a role="menuitem" tabindex="-1">Settings</a>
+            </li>
 
-          <li role="presentation">
-            {{#link-to "settings.auth" role="menuitem" tabindex="-1"}}Access Control{{/link-to}}
-          </li>
+            <li role="presentation">
+              {{#link-to "settings.auth" role="menuitem" tabindex="-1"}}Access Control{{/link-to}}
+            </li>
 
-          <li role="presentation" class="divider"></li>
+            <li role="presentation" class="divider"></li>
+          {{/if}}
           <li role="presentation">{{#link-to "logout" tabindex="-1"}}Log Out{{/link-to}}</li>
         </ul>
       </div>
