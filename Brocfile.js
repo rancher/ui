@@ -17,6 +17,11 @@ var app = new EmberApp({
     keepUncompressed: true
   },
   */
+
+  sourcemaps: {
+    enabled: true,
+    extensions: ['js']
+  }
 });
 
 var appConfig = require('./config/environment')(app.env).APP;
