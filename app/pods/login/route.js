@@ -7,5 +7,10 @@ export default Ember.Route.extend({
     {
       this.transitionTo('index');
     }
-  }
+  },
+
+  setupController: function(controller /*, model */) {
+    this._super.apply(this,arguments);
+    controller.set('errorMsg',null);
+  },
 });

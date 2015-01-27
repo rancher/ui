@@ -1,20 +1,11 @@
-{{#each section in view.sections}}
-  <div class="host-zone">
-    {{#with section.zone as zone controller="zone"}}
-      <h3>{{#if zone.icon}}<i {{bind-attr class=":fa zone.icon"}}></i>{{/if}} {{zone.displayName}}</h3>
-    {{/with}}
-    {{#each col in section.columns}}
-      <div class="host-column">
-        {{#if dot}}
-          {{#each host in col itemController="host"}}
-            {{each host.instances itemViewClass="instanceDot" itemController="container"}}
-          {{/each}}
-        {{else}}
-          {{#each host in col itemController="host"}}
-            {{host-widget model=host}}
-          {{/each}}
-        {{/if}}
-      </div>
+{{#each col in view.columns}}
+  <div class="host-column">
+    {{#each host in col itemController="host"}}
+      {{#if host.isNewHostPlaceHolder}}
+        {{add-host-widget}}
+      {{else}}
+        {{host-widget model=host dot=dot}}
+      {{/if}}
     {{/each}}
   </div>
 {{else}}

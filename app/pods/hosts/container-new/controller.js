@@ -287,7 +287,7 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
       {
         var containers = (host.get('instances')||[]).filter(function(instance) {
           // You can't mount volumes from other types of instances
-          return instance.get('kind') === 'container';
+          return instance.get('type') === 'container';
         });
 
         list.pushObjects(containers.map(function(container) {

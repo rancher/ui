@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {normalizeType} from 'ember-api-store/utils/normalize';
 
 export function initialize(container, application) {
   var store = container.lookup('store:main');
@@ -30,7 +31,7 @@ export function initialize(container, application) {
 
     reallyAll: store.all,
     all: function(type) {
-      type = this.normalizeType(type);
+      type = normalizeType(type);
       var group = this._group(type);
       var proxy = Ember.ArrayProxy.create({
         allContent: group,

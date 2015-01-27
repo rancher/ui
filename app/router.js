@@ -17,6 +17,7 @@ Router.map(function() {
     });
 
     this.resource('hosts', { path: '/hosts'}, function() {
+      this.route('new', {path: '/new'});
       this.resource('host', { path: '/:host_id' }, function() {
         this.route('delete');
       });

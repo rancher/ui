@@ -90,7 +90,7 @@ export default Ember.ObjectController.extend({
       var model = self.get('model');
       model.setProperties({
         'enabled': true,
-        'allowedOrganizations': auth.orgs||[],
+        'allowedOrganizations': [],
         'allowedUsers': [auth.user],
       });
 
