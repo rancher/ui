@@ -52,7 +52,7 @@ export default Ember.Controller.extend({
           }
         }).then(function(res) {
           var auth = JSON.parse(res.xhr.responseText);
-          session.set('token', auth.jwt);
+          session.setFlattenedProperties(auth);
           session.set('isLoggedIn',1);
           var transition = app.get('afterLoginTransition');
           if ( transition )

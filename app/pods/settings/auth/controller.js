@@ -10,6 +10,10 @@ export default Ember.ObjectController.extend({
   saving: false,
   saved: true,
 
+  organizations: null,
+  addUserInput: '',
+  addOrgInput: '',
+
   createDisabled: function() {
     var id = (this.get('clientId')||'').trim();
     var secret = (this.get('clientSecret')||'').trim();
@@ -84,8 +88,10 @@ export default Ember.ObjectController.extend({
       self.send('clearError');
 
       var session = self.get('session');
-      session.set('token', auth.jwt);
+      session.setFlattenedProperties(auth);
       session.set('isLoggedIn', 1);
+
+      self.set('organizations', auth.orgs);
 
       var model = self.get('model');
       model.setProperties({
@@ -143,11 +149,11 @@ export default Ember.ObjectController.extend({
       this.send('clearError');
       this.set('saved', false);
 
-      var str = (this.get('addUser')||'').trim();
+      var str = (this.get('addUserInput')||'').trim();
       if ( str )
       {
         this.get('allowedUsers').pushObject(str);
-        this.set('addUser','');
+        this.set('addUserInput','');
       }
     },
 
@@ -156,15 +162,15 @@ export default Ember.ObjectController.extend({
       this.get('allowedUsers').removeObject(login);
     },
 
-    addOrg: function() {
+    addOrg: function(str) {
       this.send('clearError');
       this.set('saved', false);
 
-      var str = (this.get('addOrg')||'').trim();
+      str = (str||'').trim();
       if ( str )
       {
         this.get('allowedOrganizations').pushObject(str);
-        this.set('addOrg','');
+        this.set('addOrgInput','');
       }
     },
 
