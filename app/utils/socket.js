@@ -22,7 +22,9 @@ export default Ember.Object.extend(Ember.Evented, {
     self.set('socket', socket);
 
     socket.onmessage = function(event) {
-      self.trigger('message',event);
+      Ember.run(function() {
+        self.trigger('message',event);
+      });
     };
 
     socket.onopen = function() {

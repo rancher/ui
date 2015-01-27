@@ -22,9 +22,13 @@ var ApikeyController = Cattle.TransitioningResourceController.extend({
       this.transitionToRoute('apikey.edit',this.get('model'));
     },
 
-    delete: function() {
+    promptDelete: function() {
       this.transitionToRoute('apikey.delete',this.get('model'));
     },
+
+    delete: function() {
+      return this.delete();
+    }
   },
 
   availableActions: function() {

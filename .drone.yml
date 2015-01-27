@@ -1,3 +1,11 @@
 image: rancher/docker-dind-base:v0.4.1
 script:
   - ./scripts/ci
+notify:
+  slack:
+    webhook_url: $$SLACK_URL
+    username: 'drone'
+    channel: '#ui'
+    on_started: true
+    on_success: true
+    on_failure: true
