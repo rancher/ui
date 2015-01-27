@@ -30,6 +30,23 @@ export default Ember.Object.extend({
 
     sessionStorage.clear();
     this.endPropertyChanges();
+  },
+
+  setFlattenedProperties(data,prefix) {
+    var self = this;
+    Object.keys(data).forEach(function(k) {
+      var v = Ember.get(data,k);
+      var nestedKey = (prefix ? prefix + ':' : '') + k;
+
+      if ( v && typeof v === 'object' && !Ember.isArray(v) )
+      {
+        self.setFlattenedProperties(v, nestedKey+':');
+      }
+      else
+      {
+        self.set(nestedKey, v);
+      }
+    });
   }
 });
 

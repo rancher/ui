@@ -14,10 +14,10 @@ export function initialize(container, application) {
         'x-api-no-challenge': 'true',  // Don't send me www-authenticate headers
       };
 
-      var token = session.get('token');
-      if ( token )
+      var jwt = session.get('jwt');
+      if ( jwt )
       {
-        out['authorization'] = 'Bearer ' + token;
+        out['authorization'] = 'Bearer ' + jwt;
       }
 
       var accountId = session.get('accountId');

@@ -34,7 +34,7 @@
 
           <form {{action "addUser" on="submit"}}>
             <div class="input-group">
-              {{input type="text" value=addUser placeholder="Add a GitHub username" class="form-control"}}
+              {{input type="text" value=addUserInput placeholder="Add a GitHub username" class="form-control"}}
               <div class="input-group-btn">
                 <button class="btn btn-primary" {{action "addUser"}}><i class="fa fa-plus"></i></button>
               </div>
@@ -61,9 +61,16 @@
 
           <form {{action "addOrg" on="submit"}}>
             <div class="input-group">
-              {{input type="text" value=addOrg placeholder="Add a GitHub organization name" class="form-control"}}
+              {{input type="text" value=addOrgInput placeholder="Add a GitHub organization name" class="form-control"}}
               <div class="input-group-btn">
-                <button class="btn btn-primary" {{action "addOrg"}}><i class="fa fa-plus"></i></button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                  <li role="presentation" class="dropdown-header">Your Orgs</li>
+                  {{#each org in organizations}}
+                    <li><a {{action "addOrg" org}}>{{org}}</a></li>
+                  {{/each}}
+                </ul>
+                <button class="btn btn-primary" {{action "addOrg" addOrgInput}}><i class="fa fa-plus"></i></button>
               </div>
             </div>
           </form>

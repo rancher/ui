@@ -14,6 +14,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin,{
     controller.set('saving',false);
     controller.set('saved',true);
     controller.set('testing',false);
+    controller.set('organizations', (this.get('session.orgs')||'').split(/,/));
     controller.set('error',null);
   }
 });
