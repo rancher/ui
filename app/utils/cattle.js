@@ -27,14 +27,6 @@ var ResourceController = Ember.ObjectController.extend({
 
 var CollectionController = Ember.ArrayController.extend({
   sortProperties: ['name','id'],
-  dataSource: Ember.computed.alias('notPurged'),
-
-  notPurged: function() {
-    return this.get('arrangedContent').filter(function(item) {
-      var state = (item.get('state')||'').toLowerCase();
-      return state !== 'purged';
-    });
-  }.property('arrangedContent.@each.state')
 });
 
 var NewOrEditMixin = Ember.Mixin.create({

@@ -18,16 +18,20 @@ Router.map(function() {
 
     this.resource('hosts', { path: '/hosts'}, function() {
       this.route('new', {path: '/new'});
-      this.resource('host', { path: '/:host_id' }, function() {
-        this.route('delete');
-      });
 
-      this.route('containerNew', {path: '/containers/new'});
-      this.resource('container', { path: '/containers/:container_id' }, function() {
-        this.route('shell');
-        this.route('edit');
-        this.route('delete');
+      this.resource('containers', { path: '/'}, function() {
+        this.route('new', {path: '/new-container'});
       });
+    });
+
+    this.resource('host', { path: '/hosts/:host_id' }, function() {
+      this.route('delete');
+    });
+
+    this.resource('container', { path: '/containers/:container_id' }, function() {
+      this.route('shell');
+      this.route('edit');
+      this.route('delete');
     });
 
     this.resource('apikeys', {path: '/api'}, function() {

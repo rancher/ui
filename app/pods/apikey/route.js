@@ -2,6 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function(params) {
-    return this.modelFor('apikeys').findById(params.apikey_id);
+    return this.get('store').find('apikey', params.apikey_id);
   }
 });

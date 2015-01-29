@@ -2,8 +2,6 @@ import Ember from 'ember';
 import Overlay from 'ui/pods/overlay/view';
 
 export default Overlay.extend({
-  templateName: 'hosts/container-new',
-
   actions: {
     overlayClose: function() {
       this.get('controller').send('cancel');

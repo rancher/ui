@@ -72,7 +72,7 @@ export default Ember.Route.extend({
   },
 
   renderTemplate: function() {
-    this.render('container', {into: 'hosts'});
+    this._super();
     this.send('setPageName','Container');
   },
 });

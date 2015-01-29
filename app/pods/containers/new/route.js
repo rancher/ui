@@ -54,6 +54,6 @@ export default OverlayRoute.extend({
   },
 
   renderTemplate: function() {
-    this.render('hosts/containerNew', {into: 'application', outlet: 'overlay'});
+    this.render('containers/new', {into: 'application', outlet: 'overlay'});
   },
 });
