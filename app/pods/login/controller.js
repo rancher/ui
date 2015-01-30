@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import util from 'ui/utils/util';
+import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   queryParams: ['timedOut'],
@@ -44,16 +45,21 @@ export default Ember.Controller.extend({
       self.set('errorMsg', null);
 
       self.get('torii').open('github-oauth2',{windowOptions: util.popupWindowOptions()}).then(function(github){
+        var headers = {};
+        headers[C.AUTH_HEADER] = undefined; // Explictly not send auth
+        headers[C.PROJECT_HEADER] = undefined; // Explictly not send project
+
         return self.get('store').rawRequest({
           url: 'token',
           method: 'POST',
+          headers: headers,
           data: {
             code: github.authorizationCode,
           }
         }).then(function(res) {
           var auth = JSON.parse(res.xhr.responseText);
-          session.setFlattenedProperties(auth);
-          session.set('isLoggedIn',1);
+          session.setProperties(auth);
+          session.set(C.LOGGED_IN, true);
           var transition = app.get('afterLoginTransition');
           if ( transition )
           {

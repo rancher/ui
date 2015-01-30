@@ -2,6 +2,7 @@ import Ember from 'ember';
 import config from 'torii/configuration';
 import githubOauth from 'torii/providers/github-oauth2';
 import util from 'ui/utils/util';
+import C from 'ui/utils/constants';
 
 export default Ember.ObjectController.extend({
   confirmDisable: false,
@@ -88,8 +89,8 @@ export default Ember.ObjectController.extend({
       self.send('clearError');
 
       var session = self.get('session');
-      session.setFlattenedProperties(auth);
-      session.set('isLoggedIn', 1);
+      session.setProperties(auth);
+      session.set(C.LOGGED_IN, true);
 
       self.set('organizations', auth.orgs);
 
@@ -120,9 +121,13 @@ export default Ember.ObjectController.extend({
       }
 
       setTimeout(function() {
+        var headers = {};
+        headers[C.AUTH_HEADER] = undefined; // Explicitly not send auth
+        headers[C.PROJECT_HEADER] = undefined; // Explicitly not send project
+
         self.get('store').rawRequest({
           url: 'schemas',
-          headers: { 'authorization': undefined }
+          headers: headers
         }).then(function() {
           if ( expect === false )
           {

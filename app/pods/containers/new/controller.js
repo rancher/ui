@@ -8,6 +8,7 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
   editing: false,
   saving: false,
   originalModel: null,
+  memoryMb: null,
 
   actions: {
     addArgument: function() {

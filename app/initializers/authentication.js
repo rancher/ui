@@ -1,15 +1,19 @@
 import Ember from 'ember';
 import config from 'torii/configuration';
 import bootstrap from 'torii/bootstrap/torii';
+import C from 'ui/utils/constants';
 
 export function initialize(container, application) {
   application.deferReadiness();
   var store = container.lookup('store:main');
+  var headers = {};
+  headers[C.AUTH_HEADER] = undefined; // Explicitly not send auth
+  headers[C.PROJECT_HEADER] = undefined; // Explicitly not send project
 
   // Find out if auth is enabled
   store.rawRequest({
     url: 'token',
-    headers: { 'authorization': undefined } // Explicitly not send the auth token
+    headers: headers
   })
   .then(function(obj) {
     var body = JSON.parse(obj.xhr.responseText);

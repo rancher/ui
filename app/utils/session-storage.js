@@ -2,17 +2,33 @@ import Ember from "ember";
 
 export default Ember.Object.extend({
   unknownProperty: function(key) {
-    return sessionStorage[key];
+    var val; // = undefined;
+    var str = sessionStorage.getItem(key);
+    if ( str )
+    {
+      try
+      {
+        val = JSON.parse(str);
+      }
+      catch (e)
+      {
+        console.log("Error parsing sessionStorage['"+key+"']");
+        sessionStorage.removeItem(key);
+        this.notifyPropertyChange(key);
+      }
+    }
+
+    return val;
   },
 
   setUnknownProperty: function(key, value) {
-    if( Ember.isNone(value) )
+    if ( value === undefined )
     {
-      delete sessionStorage[key];
+      sessionStorage.removeItem(key);
     }
     else
     {
-      sessionStorage[key] = value;
+      sessionStorage.setItem(key, JSON.stringify(value));
     }
 
     this.notifyPropertyChange(key);
@@ -31,22 +47,5 @@ export default Ember.Object.extend({
     sessionStorage.clear();
     this.endPropertyChanges();
   },
-
-  setFlattenedProperties(data,prefix) {
-    var self = this;
-    Object.keys(data).forEach(function(k) {
-      var v = Ember.get(data,k);
-      var nestedKey = (prefix ? prefix + ':' : '') + k;
-
-      if ( v && typeof v === 'object' && !Ember.isArray(v) )
-      {
-        self.setFlattenedProperties(v, nestedKey+':');
-      }
-      else
-      {
-        self.set(nestedKey, v);
-      }
-    });
-  }
 });
 
