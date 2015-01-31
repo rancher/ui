@@ -1,18 +1,19 @@
 {{#if app.hasAuthentication}}
   {{#if app.authenticationEnabled}}
-    <div class="pull-right">
+    <div class="right">
       <div class="dropdown">
-        <span class="hand" id="user-dropdown" data-toggle="dropdown" aria-expanded="true">
-          <span class="fa-stack fa-lg">
-            <i class="fa fa-circle-o fa-stack-2x"></i>
-            <i class="fa fa-user fa-stack-1x"></i>
-          </span>
-          <i class="fa fa-chevron-down"></i>
+        <span class="hand clearfix" id="user-dropdown" data-toggle="dropdown" aria-expanded="true">
+          {{github-avatar link=false login=session.user}}
         </span>
         <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="user-dropdown">
+          <li role="presentation" style="padding: 0 20px;">
+            {{github-block login=session.user avatar=false}}
+          </li>
+
+          <li role="presentation" class="divider"></li>
           {{#if app.isAuthenticationAdmin}}
-            <li role="presentation" class="disabled">
-              <a role="menuitem" tabindex="-1">Settings</a>
+            <li role="presentation" class="dropdown-header">
+              Settings
             </li>
 
             <li role="presentation">
