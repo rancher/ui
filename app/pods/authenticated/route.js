@@ -126,10 +126,17 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     var boundTypeify = store._typeify.bind(store);
 
     var url = "ws://"+window.location.host + this.get('app.wsEndpoint');
-    var jwt = this.get('session.jwt');
+    var session = this.get('session');
+    var jwt = session.get('jwt');
     if ( jwt )
     {
       url += (url.indexOf('?') >= 0 ? '&' : '?') + 'token=' + encodeURIComponent(jwt);
+    }
+
+    var projectId = session.get('projectId');
+    if ( projectId )
+    {
+      url += (url.indexOf('?') >= 0 ? '&' : '?') + 'projectId=' + encodeURIComponent(projectId);
     }
 
     var socket = Socket.create({

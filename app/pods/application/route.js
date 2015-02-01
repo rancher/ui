@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   actions: {
@@ -18,7 +19,9 @@ export default Ember.Route.extend({
     },
 
     logout: function(transition,timedOut) {
-      this.set('session.isLoggedIn',0);
+      var session = this.get('session');
+      session.clear();
+      session.set(C.LOGGED_IN, false);
       this.set('app.afterLoginTransition', transition);
       var params = {queryParams: {}};
 

@@ -44,12 +44,12 @@
           <hr/>
           <label>Authorized Users</label>
 
-          <ul class="list-unstyled gh-avatar-list">
+          <ul class="list-unstyled gh-block-list">
             {{#each user in allowedUsers}}
               <li>
-                {{#github-avatar type="user" login=user notFound="userNotFound"}}
+                {{#github-block type="user" login=user notFound="userNotFound"}}
                   <button class="btn btn-danger btn-sm pull-right gh-action" {{action "removeUser" user}}>Remove</button>
-                {{/github-avatar}}
+                {{/github-block}}
               </li>
             {{else}}
               <span class="text-muted">No Users</span>
@@ -63,6 +63,7 @@
             <div class="input-group">
               {{input type="text" value=addOrgInput placeholder="Add a GitHub organization name" class="form-control"}}
               <div class="input-group-btn">
+                <button class="btn btn-primary" {{action "addOrg" addOrgInput}}><i class="fa fa-plus"></i></button>
                 <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
                 <ul class="dropdown-menu dropdown-menu-right" role="menu">
                   <li role="presentation" class="dropdown-header">Your Orgs</li>
@@ -70,7 +71,6 @@
                     <li><a {{action "addOrg" org}}>{{org}}</a></li>
                   {{/each}}
                 </ul>
-                <button class="btn btn-primary" {{action "addOrg" addOrgInput}}><i class="fa fa-plus"></i></button>
               </div>
             </div>
           </form>
@@ -78,12 +78,12 @@
           <hr/>
           <label>Authorized Organizations</label>
 
-          <ul class="list-unstyled gh-avatar-list">
+          <ul class="list-unstyled gh-block-list">
             {{#each org in allowedOrganizations}}
               <li>
-                {{#github-avatar type="org" login=org notFound="orgNotFound"}}
+                {{#github-block type="org" login=org notFound="orgNotFound"}}
                   <button class="btn btn-danger btn-sm pull-right gh-action" {{action "removeOrg" org}}>Remove</button>
-                {{/github-avatar}}
+                {{/github-block}}
               </li>
             {{else}}
               <span class="text-muted">No Organizations</span>
