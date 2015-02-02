@@ -14,6 +14,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       self.set('app.isAuthenticationAdmin', store.hasRecordFor('schema','githubconfig'));
 
       return Ember.RSVP.resolve();
+    }).catch((err) => {
+      this.send('error',err);
     });
   },
 
