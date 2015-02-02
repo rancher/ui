@@ -2,7 +2,6 @@ module.exports = function(app, options) {
   var path = require('path');
   var ForeverAgent = require('forever-agent');
   var HttpProxy = require('http-proxy');
-  var proxyPath = '/v1';
   var httpServer = options.httpServer;
 
   var config = require('../../config/environment')().APP;
@@ -14,11 +13,23 @@ module.exports = function(app, options) {
 
   console.log('Proxying to', config.endpoint);
 
-  app.use(proxyPath, function(req, res, next){
+  var apiPath = '/v1';
+  app.use(apiPath, function(req, res, next) {
     // include root path in proxied request
-    req.url = path.join(proxyPath, req.url);
+    req.url = path.join(apiPath, req.url);
 
     req.headers['user-agent'] = 'Rancher UI';
+    delete req.headers['cookie'];
+
+    console.log('Proxy', req.method, 'to', req.url);
+    proxy.web(req, res, {target: config.endpoint});
+  });
+
+  var githubPath = '/github';
+  app.use(githubPath, function(req, res, next) {
+    // include root path in proxied request
+    req.url = path.join(githubPath, req.url);
+
     delete req.headers['cookie'];
 
     console.log('Proxy', req.method, 'to', req.url);

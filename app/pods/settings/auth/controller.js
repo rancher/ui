@@ -29,11 +29,10 @@ export default Ember.ObjectController.extend({
 
   actions: {
     test: function() {
-      var self = this;
-      self.send('clearError');
-      self.set('testing', true);
+      this.send('clearError');
+      this.set('testing', true);
 
-      var model = self.get('model');
+      var model = this.get('model');
       model.setProperties({
         'clientId': model.get('clientId').trim(),
         'clientSecret': model.get('clientSecret').trim(),
@@ -44,107 +43,105 @@ export default Ember.ObjectController.extend({
 
       // Send authenticate immediately so that the popup isn't blocked,
       // even though the config isn't necessarily saved yet...
-      self.send('authenticate');
+      this.send('authenticate');
 
-      model.save().catch(function(err) {
-        self.set('testing', false);
-        self.send('gotError', err);
+      model.save().catch(err => {
+        this.set('testing', false);
+        this.send('gotError', err);
       });
     },
 
     authenticate: function() {
-      var self = this;
-      self.send('clearError');
+      this.send('clearError');
 
       config.providers['github-oauth2'].apiKey = this.get('model.clientId');
       githubOauth.state = Math.random()+"";
 
-      self.get('torii').open('github-oauth2',{windowOptions: util.popupWindowOptions()}).then(function(github){
-        return self.get('store').rawRequest({
+      this.get('torii').open('github-oauth2',{windowOptions: util.popupWindowOptions()}).then(github => {
+        var headers = {};
+        headers[C.AUTH_HEADER] = undefined; // Explicitly not send auth
+        headers[C.PROJECT_HEADER] = undefined; // Explicitly not send project
+
+        return this.get('store').rawRequest({
           url: 'token',
           method: 'POST',
+          headers: headers,
           data: {
             code: github.authorizationCode,
           }
-        }).then(function(res) {
+        }).then(res => {
           var auth = JSON.parse(res.xhr.responseText);
-          self.send('authenticationSucceeded', auth);
-        }).catch(function(res) {
+          this.send('authenticationSucceeded', auth);
+        }).catch(res => {
           // Github auth succeeded but didn't get back a token
           var err = JSON.parse(res.xhr.responseText);
-          self.send('gotError', err);
+          this.send('gotError', err);
         });
       })
-      .catch(function(err) {
+      .catch(err => {
         // Github auth failed.. try again
-        self.send('gotError', err);
+        this.send('gotError', err);
       })
-      .finally(function() {
-        self.set('testing', false);
+      .finally(() => {
+        this.set('testing', false);
       });
     },
 
     authenticationSucceeded: function(auth) {
-      var self = this;
-      self.send('clearError');
+      this.send('clearError');
 
-      var session = self.get('session');
+      var session = this.get('session');
       session.setProperties(auth);
       session.set(C.LOGGED_IN, true);
 
-      self.set('organizations', auth.orgs);
+      this.set('organizations', auth.orgs);
 
-      var model = self.get('model');
+      var model = this.get('model');
       model.setProperties({
         'enabled': true,
         'allowedOrganizations': [],
         'allowedUsers': [auth.user],
       });
 
-      model.save().then(function() {
-        self.send('waitAndRefresh', true);
-      }).catch(function() {
-        // @TODO something
+      model.save().then(() => {
+        this.send('waitAndRefresh', true);
+      }).catch((err) => {
+        this.send('gotError', err);
       });
     },
 
-    waitAndRefresh: function(expect,limit) {
-      var self = this;
-      if ( limit === undefined )
+    waitAndRefresh: function(expect,limit=5) {
+      if ( limit === 0 )
       {
-        limit = 5;
-      }
-      else if ( limit === 0 )
-      {
-        self.send('error', 'Timed out waiting for access control to turn ' + (expect ? 'on' : 'off'));
+        this.send('error', 'Timed out waiting for access control to turn ' + (expect ? 'on' : 'off'));
         return;
       }
 
-      setTimeout(function() {
+      setTimeout(() => {
         var headers = {};
         headers[C.AUTH_HEADER] = undefined; // Explicitly not send auth
         headers[C.PROJECT_HEADER] = undefined; // Explicitly not send project
 
-        self.get('store').rawRequest({
+        this.get('store').rawRequest({
           url: 'schemas',
           headers: headers
-        }).then(function() {
+        }).then(() => {
           if ( expect === false )
           {
             window.location.href = window.location.href;
           }
           else
           {
-            self.send('waitAndRefresh',expect,limit-1);
+            this.send('waitAndRefresh',expect,limit-1);
           }
-        }).catch(function() {
+        }).catch(() => {
           if ( expect === true )
           {
             window.location.href = window.location.href;
           }
           else
           {
-            self.send('waitAndRefresh',expect,limit-1);
+            this.send('waitAndRefresh',expect,limit-1);
           }
         });
       }, 5000/limit);
@@ -195,18 +192,17 @@ export default Ember.ObjectController.extend({
     },
 
     saveAuthorization: function() {
-      var self = this;
-      self.send('clearError');
-      self.set('saving', true);
-      self.set('saved', false);
+      this.send('clearError');
+      this.set('saving', true);
+      this.set('saved', false);
 
-      var model = self.get('model');
-      model.save().then(function() {
-        self.set('saved', true);
-      }).catch(function(err) {
-        self.send('gotError', err);
-      }).finally(function() {
-        self.set('saving', false);
+      var model = this.get('model');
+      model.save().then(() => {
+        this.set('saved', true);
+      }).catch((err) => {
+        this.send('gotError', err);
+      }).finally(() => {
+        this.set('saving', false);
       });
     },
 
@@ -235,8 +231,7 @@ export default Ember.ObjectController.extend({
     },
 
     disable: function() {
-      var self = this;
-      self.send('clearError');
+      this.send('clearError');
 
       var model = this.get('model');
       model.setProperties({
@@ -245,10 +240,10 @@ export default Ember.ObjectController.extend({
         'enabled': false,
       });
 
-      model.save().then(function() {
-        self.send('waitAndRefresh', false);
-      }).catch(function(err) {
-        self.send('gotError', err);
+      model.save().then(() => {
+        this.send('waitAndRefresh', false);
+      }).catch((err) => {
+        this.send('gotError', err);
       });
     },
   },
