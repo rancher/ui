@@ -111,6 +111,9 @@ ENVIRONMENT="production"
 BUILD_DIR="dist/static/${VERSION}"
 CDN="cdn.rancher.io/ui"
 URL="/static"
+GS_URL="gs://${CDN}"
+CACHE="Cache-Control:no-cache,must-revalidate"
+GZIP="html,js,css,xml,txt,map,svg,ttf,woff,woff2"
 
 echo "Branch: ${BRANCH}"
 if [[ "${VERSION}" != "${PKG_VERSION}" ]]; then
@@ -142,12 +145,26 @@ fi
 # For use on your laptop, manually
 if [[ $UPLOAD -eq 1 ]]; then
   echo "Uploading..."
-  runCmd gsutil -m cp -R ${BUILD_DIR} "gs://${CDN}"
+  if [[ $LATEST -eq 1 ]]; then
+    runCmd gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R ${BUILD_DIR} "${GS_URL}/_latest"
+    runCmd gsutil -h "${CACHE}" -m rsync -c -r -d "${GS_URL}/_latest" "${GS_URL}/latest"
+    runCmd gsutil rm -a -f -R "${GS_URL}/_latest"
+  else
+    runCmd gsutil -m cp -z "${GZIP}" -R ${BUILD_DIR} ${GS_URL}
+  fi
 fi
 
 # For use from Drone, automatically
 if [[ $UPLOAD -eq 2 ]]; then
   LATEST_DIR="$(pwd)/${BUILD_DIR}"
   echo "Updating latest ($LATEST_DIR) thru Docker..."
-  runCmd docker run --rm -v $LATEST_DIR:/latest google/cloud-sdk gsutil -m rsync -c -r -d /latest "gs://${CDN}/latest"
+
+  # Upload new files, with gzip headers (rsync doesn't have this)
+  runCmd docker run --rm -v $LATEST_DIR:/latest google/cloud-sdk gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R /latest "${GS_URL}/_latest"
+
+  # Rsync new files into latest dif
+  runCmd docker run --rm -v $LATEST_DIR:/latest google/cloud-sdk gsutil -h "${CACHE}" -m rsync -c -r -d "${GS_URL}/_latest" "${GS_URL}/latest"
+
+  # Remove temp dir
+  runCmd docker run --rm -v $LATEST_DIR:/latest google/cloud-sdk gsutil rm -a -f -R "${GS_URL}/_latest"
 fi
