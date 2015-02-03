@@ -96,6 +96,9 @@ export default Ember.ObjectController.extend({
 
       this.set('organizations', auth.orgs);
 
+      // Set this to true so the token will be sent with the request
+      this.set('app.authenticationEnabled',true);
+
       var model = this.get('model');
       model.setProperties({
         'enabled': true,
@@ -106,6 +109,7 @@ export default Ember.ObjectController.extend({
       model.save().then(() => {
         this.send('waitAndRefresh', true);
       }).catch((err) => {
+        this.set('app.authenticationEnabled',false);
         this.send('gotError', err);
       });
     },
@@ -113,8 +117,13 @@ export default Ember.ObjectController.extend({
     waitAndRefresh: function(expect,limit=5) {
       if ( limit === 0 )
       {
+        hide();
         this.send('error', 'Timed out waiting for access control to turn ' + (expect ? 'on' : 'off'));
         return;
+      }
+      else
+      {
+        $('#loading-underlay, #loading-overlay').removeClass('hide');
       }
 
       setTimeout(() => {
@@ -128,7 +137,7 @@ export default Ember.ObjectController.extend({
         }).then(() => {
           if ( expect === false )
           {
-            window.location.href = window.location.href;
+            hide();
           }
           else
           {
@@ -137,7 +146,7 @@ export default Ember.ObjectController.extend({
         }).catch(() => {
           if ( expect === true )
           {
-            window.location.href = window.location.href;
+            hide();
           }
           else
           {
@@ -145,6 +154,10 @@ export default Ember.ObjectController.extend({
           }
         });
       }, 5000/limit);
+
+      function hide() {
+        $('#loading-underlay, #loading-overlay').addClass('hide');
+      }
     },
 
     addUser: function() {
@@ -240,10 +253,14 @@ export default Ember.ObjectController.extend({
         'enabled': false,
       });
 
+
       model.save().then(() => {
+        this.set('app.authenticationEnabled',false);
         this.send('waitAndRefresh', false);
       }).catch((err) => {
         this.send('gotError', err);
+      }).finally(() => {
+        this.set('confirmDisable', false);
       });
     },
   },

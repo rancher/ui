@@ -1,5 +1,9 @@
-$host-column-width: 268px;
-$instance-column-width: $host-column-width - 20px;
+$host_column_width: 265px;
+$instance_column_width: $host_column_width - 20px;
+$host_border: #f9fafc;
+$host_bg: white;
+$instance_ip: #9a9a9a;
+$instance_action: #ededed;
 
 .zone LABEL {
   color: #60676d;
@@ -25,7 +29,7 @@ $instance-column-width: $host-column-width - 20px;
 }
 
 .host-column {
-  width: $host-column-width;
+  width: $host_column_width;
   margin: 0 10px 10px 0;
   display: inline-block;
   vertical-align: top;
@@ -37,29 +41,84 @@ $instance-column-width: $host-column-width - 20px;
 
 .instance-column {
   @extend .host-column;
-  width: $instance-column-width;
+  width: $instance_column_width;
+}
+
+.instances .instance-column {
+  margin-bottom: 0;
+  width: ceil($instance_column_width/2);
+}
+
+.instances .instance {
+  margin-bottom: 10px;
 }
 
 .host {
-  padding: 10px 10px 5px 10px;
+  position: relative;
   margin-bottom: 10px;
-  background-color: #e7eaee;
-  border: 1px solid #e7eaee;
+  background-color: $host_bg;
+  border: 1px solid $host_border;
+  border-top-width: 2px;
   border-radius: 5px;
-
-  &:hover {
-    background-color: #e2e5e8;
-  }
+  min-height: 140px;
 
   .host-header {
     display: block;
+    background-color: #f8f9fa;
     position: relative;
     font-weight: normal;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $host_border;
+
+    .host-state {
+      font-size: 12px;
+      text-align: center;
+      padding: 0 10px;
+      vertical-align: top;
+      display: inline-block;
+      border-bottom-left-radius: 3px;
+      border-bottom-right-radius: 3px;
+    }
+
+    .host-icon,
+    .host-name {
+      text-align: center;
+    }
   }
 
-  /* Add margin-right so the name can't overlap the actions */
-  &:hover .host-name {
-    margin-right: 47px;
+  .host-info {
+    padding: 10px;
+    text-align: center;
+
+    .host-info-item {
+      padding: 0 5px 5px 0;
+      display: inline-block;
+      font-size: 12px;
+      color: #8a919c;
+    }
+  }
+
+  .host-overlay {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 74px;
+    z-index: 1;
+    padding-top: 15px;
+    text-align: center;
+  }
+
+  &.hover {
+    .host-name,
+    .host-ip {
+      color: white;
+    }
+
+    .host-overlay {
+      display: block;
+    }
   }
 
   .add-to-host {
@@ -93,12 +152,6 @@ $instance-column-width: $host-column-width - 20px;
   }
 }
 
-.instance {
-  &:hover .instance-name {
-    margin-right: 95px;
-  }
-}
-
 .host-name,
 .instance-name {
   overflow: hidden;
@@ -110,60 +163,72 @@ $instance-column-width: $host-column-width - 20px;
   }
 }
 
-.host-ip {
-  color: black;
+.instance-name {
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.instance-ip {
+  color: $instance_ip;
+}
+
+.instance-ip,
+.instance-message {
+  font-size: 12px;
+}
+
+.instance-actions-trigger {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  width: 11px;
+  line-height: 45px;
+  color: $instance_action;
+  cursor: pointer;
 }
 
 .instance {
   position: relative;
-  border: 1px solid #e7eaee;
-  margin: 5px 0;
   padding: 5px 10px;
-  border-radius: 5px;
   background-color: white;
-  box-shadow: 1px 1px 1px #dde1e7;
-
-  &:hover {
-    background-color: #f8f9fa;
-  }
-
-  .progress {
+  border: 1px solid $host_border;
+  .instance-actions {
     position: absolute;
-    bottom: -1px;
-    left: 0;
+    top: 0;
     right: 0;
-    height: 6px;
-    margin: 0;
+    height: 45px;
+    line-height: 45px;
+    text-align: right;
+
+    .resource-actions {
+      padding-right: 10px;
+    }
+  }
+}
+
+.host .instance {
+  width: 50%;
+  float: left;
+  border: none;
+  border-bottom: 1px solid $host_border;
+
+  &:nth-child(odd) {
+    border-right: 1px solid $host_border;
   }
 
-  .progress,
-  .progress-bar {
+  &:last-child,
+  &:nth-last-child(2):nth-child(odd) {
+    border-bottom: none;
+  }
+
+  &:nth-last-child(2):nth-child(odd),
+  &:last-child:nth-child(odd) {
     border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
   }
 
-  .progress-striped .progress-bar {
-    -webkit-animation: progress-bar-stripes-reverse 1.5s linear infinite;
-    animation: progress-bar-stripes-reverse 1.5s linear infinite;
-
-    background-image: -webkit-linear-gradient(45deg,
-      rgba(255, 255, 255, 0.55) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(255, 255, 255, 0.55) 50%,
-      rgba(255, 255, 255, 0.55) 75%,
-      transparent 75%,
-      transparent);
-    background-image: linear-gradient(45deg,
-      rgba(255, 255, 255, 0.55) 25%,
-      transparent 25%,
-      transparent 50%,
-      rgba(255, 255, 255, 0.55) 50%,
-      rgba(255, 255, 255, 0.55) 75%,
-      transparent 75%, 
-      transparent);
-
-    background-size: 40px 40px;
+  &:last-child:nth-child(even) {
+    border-bottom-right-radius: 5px;
   }
 }
 
@@ -191,13 +256,20 @@ $instance-column-width: $host-column-width - 20px;
   margin: 10px 0;
 }
 
-.host .resource-actions,
-.instance .resource-actions {
+.corner-triangle {
   position: absolute;
   top: 0;
   right: 0;
+  width: 0;
+  height: 0;
+  border-left: 40px solid transparent;
+  border-top: 40px solid rgba(255,0,0,0.8);
 }
 
-.instance .resource-actions {
-  padding: 5px 10px 5px 0;
+.corner-triangle-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 11px;
+  color: white;
 }

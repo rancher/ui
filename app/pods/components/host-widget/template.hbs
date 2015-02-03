@@ -1,33 +1,27 @@
-<div class="host-header resource-action-hover">
-  <div {{bind-attr class=":host-name model.stateColor"}}>
-    <i {{bind-attr class=":fa model.stateIcon" tooltip=model.displayState}}></i>
-    {{#link-to "host.index" model.id}}
-      {{model.displayName}}
-    {{/link-to}}
-    <div class="host-ip">{{model.displayIp}}</div>
+<div class="host-header">
+  <div {{bind-attr class=":host-overlay stateBackground"}}>
+    {{resource-actions model=model choices=model.primaryActions big=true}}
   </div>
-  {{resource-actions model=model}}
+
+  <div {{bind-attr class=":host-state stateBackground"}}>{{model.displayState}}</div>
+  <div class="host-icon"><i {{bind-attr class=":fa :fa-lg model.stateIcon iconColor"}}></i></div>
+  <div class="host-name">{{model.displayName}}</div>
 </div>
 
-<div class="no-resource-action-hover">
+<div class="host-info clearfix">
+  <div class="host-info-item"><i class="fa fa-sm fa-link"></i> {{model.displayIp}}</div>
+</div>
+
+<div class="clearfix">
   {{#if dot}}
-    <div class="clearfix">
-      {{#each item in model.instances itemController="container"}}
-        {{container-dot model=item}}
-      {{/each}}
-    </div>
+    {{#each item in model.arrangedInstances itemController="container"}}
+      {{container-dot model=item}}
+    {{/each}}
   {{else}}
-    {{#each item in model.instances itemController="container"}}
+    {{#each item in model.arrangedInstances itemController="container"}}
       {{container-widget model=item}}
     {{else}}
-      <div class="text-center text-muted">No containers yet.</div>
+      <div class="text-center text-muted">No containers</div>
     {{/each}}
   {{/if}}
 </div>
-
-{{#link-to "containers.new" (query-params hostId=model.id tab="basic") tagName="div" classNames="add-to-host" tooltip="Create Container"}}
-  <span class="fa-stack fa-lg">
-    <i class="fa fa-circle-thin fa-stack-2x"></i>
-    <i class="fa fa-plus fa-stack-1x"></i>
-  </span>
-{{/link-to}}

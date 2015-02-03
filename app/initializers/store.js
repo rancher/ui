@@ -14,16 +14,20 @@ export function initialize(container, application) {
       var out = {};
       out[C.NO_CHALLENGE_HEADER] = C.NO_CHALLENGE_VALUE;
 
-      var authValue = session.get(C.AUTH_SESSION_KEY);
-      if ( authValue )
+      // Never send token or project ID if auth isn't on
+      if ( application.get('authenticationEnabled') )
       {
-        out[C.AUTH_HEADER] = C.AUTH_TYPE + ' ' + authValue;
-      }
+        var authValue = session.get(C.AUTH_SESSION_KEY);
+        if ( authValue )
+        {
+          out[C.AUTH_HEADER] = C.AUTH_TYPE + ' ' + authValue;
+        }
 
-      var projectId = session.get(C.PROJECT_SESSION_KEY);
-      if ( projectId )
-      {
-        out[C.PROJECT_HEADER] = projectId;
+        var projectId = session.get(C.PROJECT_SESSION_KEY);
+        if ( projectId )
+        {
+          out[C.PROJECT_HEADER] = projectId;
+        }
       }
 
       return out;

@@ -1,8 +1,53 @@
+$body_bg: #f4f5f8;
+$header_height: 53px;
+$header_text: #343434;
+$nav_width: 90px;
+//$nav_bg: #26c0c9;
+//$nav_text: #81e6e6;
+//$nav_bg_hover: #167287;
+//$nav_text_hover: white;
+$nav_bg: #283036;
+$nav_text: #919AA1;
+$nav_bg_hover: #283036;
+$nav_text_hover: white;
+
+/**********
+* Fonts
+**********/
+@font-face {
+    font-family: 'open_sansregular';
+    src: url('fonts/opensans-regular-webfont.eot');
+    src: url('fonts/opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/opensans-regular-webfont.woff2') format('woff2'),
+         url('fonts/opensans-regular-webfont.woff') format('woff'),
+         url('fonts/opensans-regular-webfont.ttf') format('truetype'),
+         url('fonts/opensans-regular-webfont.svg#open_sansregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'open_sanssemibold';
+    src: url('fonts/opensans-semibold-webfont.eot');
+    src: url('fonts/opensans-semibold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('fonts/opensans-semibold-webfont.woff2') format('woff2'),
+         url('fonts/opensans-semibold-webfont.woff') format('woff'),
+         url('fonts/opensans-semibold-webfont.ttf') format('truetype'),
+         url('fonts/opensans-semibold-webfont.svg#open_sanssemibold') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
 /**********
 * Body
 **********/
+HTML {
+  height: 100%;
+}
+
 BODY {
-  background-color: #eceff4;
+  background-color: $body_bg;
+  min-height: 100%;
 }
 
 .farm {
@@ -15,29 +60,29 @@ BODY {
 /**********
 * Navigation (left side bar)
 **********/
-$nav_bg: #384047;
-$nav_text: #60676d;
-$nav_width: 72px;
-$nav_width_expanded: 150px;
-
 NAV {
-  position: fixed;
+  position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
   z-index: 2;
   width: $nav_width;
   margin: 0;
-  background-color: $nav_bg;
   color: $nav_text;
 
-  LABEL {
-    display: none;
-    font-weight: normal;
-  }
+  //@include diagonal-gradient-3(#28d5cc, #24acc6, #28c0d4);
+  background-color: #384047;
 
   .logo {
-    padding: 20px;
+    padding: 15px 0;
+    text-align: center;
+    background-color: #202020;
+  }
+
+  LABEL {
+    font-weight: normal;
+    font-size: 12px;
+    display: block;
   }
 
   UL {
@@ -47,74 +92,56 @@ NAV {
 
   LI {
     margin: 0;
-    padding: 20px;
+    padding: 15px 0 0 0;
     list-style-type: none;
-    border-left: 2px solid transparent;
+    text-align: center;
     cursor: pointer;
   }
 
   A,
   A:active,
   A:hover,
-  A:visited {
+  A:visited,
+  .fa-stack-1x {
     color: $nav_text;
     text-decoration: none;
   }
 
+  .fa-stack-2x {
+    color: $nav_bg;
+    text-decoration: none;
+  }
+
   LI:hover,
-  LI.active {
-    background-color: #283036;
-  }
-
-  LI:hover {
-    border-left: 2px solid #1cd36e;
-    border-right: 2px solid #1cd36e;
-    color: white;
-  }
-
+  LI.active,
+  LI.active A,
+  LI.active A:active,
+  LI.active A:hover,
+  LI.active A:visited,
   LI:hover A,
   LI:hover A:active,
   LI:hover A:hover,
   LI:hover A:visited {
-    color: white;
+    color: $nav_text_hover;
+
+    .fa-stack-2x {
+      color: $nav_bg_hover;
+    }
+
+    .fa-stack-1x {
+      color: $nav_text_hover;
+    }
   }
-}
-
-.nav-expand NAV {
-  width: $nav_width_expanded;
-}
-
-.nav-expand NAV LABEL {
-  display: inline;
-}
-
-.nav-expand MAIN,
-.nav-expand HEADER {
-  margin-left: $nav_width_expanded;
-}
-
-.nav-expander {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
 }
 
 /**********
 * Header (top bar)
 **********/
-$header_height: 61px;
-$header_bg: #e6e9ef;
-
 HEADER {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
+  margin-left: $nav_width;
   height: $header_height;
   z-index: 2;
-  margin-left: $nav_width;
-  background-color: $header_bg;
+  background-color: $body_bg;
 
   .full-height {
     line-height: $header_height;
@@ -124,12 +151,13 @@ HEADER {
     font-weight: normal;
     margin: 0;
     line-height: $header_height;
+    color: $header_text;
     padding-left: 20px;
   }
 
   .right {
     float: right;
-    padding: 10px 20px;
+    padding: 10px 20px 10px 0;
   }
 }
 
@@ -137,7 +165,6 @@ HEADER {
 * Main body
 **********/
 MAIN {
-  margin-top: $header_height;
   margin-left: $nav_width;
 }
 
@@ -146,22 +173,6 @@ MAIN {
 **********/
 SECTION {
   padding: 20px 20px 0 20px;
-}
-
-
-/**********
-* Aside (to the right of Main)
-**********/
-MAIN.with-aside {
-  margin-right: 200px;
-}
-
-ASIDE {
-  position: absolute;
-  top: 0; 
-  right: 0;
-  width: 200px;
-  background-color: #f0f4f9;
 }
 
 /**********

@@ -2,21 +2,68 @@ import Ember from 'ember';
 import Socket from 'ui/utils/socket';
 import Util from 'ui/utils/util';
 import AuthenticatedRouteMixin from 'ui/mixins/authenticated-route';
+import C from 'ui/utils/constants';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
   socket: null,
 
-  model: function() {
-    var self = this;
+  model: function(params, transition) {
     var store = this.get('store');
-    return store.find('schema', null, {url: 'schemas'}).then(function(/*schemas*/) {
+    return store.find('schema', null, {url: 'schemas'}).then((/*schemas*/) => {
       // Save whether the user is an admin or not
-      self.set('app.isAuthenticationAdmin', store.hasRecordFor('schema','githubconfig'));
+      this.set('app.isAuthenticationAdmin', store.hasRecordFor('schema','githubconfig'));
 
-      return Ember.RSVP.resolve();
+      // Load all the projects
+      var supportsProjects = store.hasRecordFor('schema','project');
+      this.set('app.projectsEnabled', supportsProjects);
+
+      if ( supportsProjects )
+      {
+        return store.find('project');
+      }
+      else
+      {
+        return Ember.RSVP.resolve();
+      }
     }).catch((err) => {
-      this.send('error',err);
+      if ( err.status === 401 )
+      {
+        this.send('logout',transition,true);
+      }
+      else
+      {
+        this.send('error',err);
+      }
     });
+  },
+
+  setupController: function(controller /*, model*/) {
+    this._super.apply(this,arguments);
+
+    if ( this.get('app.projectsEnabled') )
+    {
+      var all = this.get('store').all('project');
+      controller.set('projects', all);
+
+      var projectId = this.get('session').get(C.PROJECT_SESSION_KEY);
+      if ( projectId )
+      {
+        var project = all.filterBy('id', projectId)[0];
+        if ( project )
+        {
+          controller.set('project', project);
+        }
+        else
+        {
+          this.get('session').set(C.PROJECT_SESSION_KEY, undefined);
+          this.set('project', null);
+        }
+      }
+      else
+      {
+        controller.set('project', null);
+      }
+    }
   },
 
   actions: {
@@ -32,6 +79,12 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         // Bubble up
         return true;
       }
+    },
+
+    switchProject: function(projectId) {
+      this.get('session').set(C.PROJECT_SESSION_KEY, projectId);
+      this.get('store').reset();
+      this.transitionTo('index');
     },
 
     setPageName: function(str) {

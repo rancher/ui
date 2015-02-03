@@ -3,6 +3,9 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   icon: 'fa-square',
   tooltip: '',
+  color: '',
+  colors: true,
+  big: false,
   enabled: true,
   actionArg: null,
   altActionArg: null,
@@ -25,7 +28,23 @@ export default Ember.Component.extend({
   },
 
   render: function(buffer) {
-    buffer.push('<i class="fa '+ this.get('icon') +'"></i>');
+    var color = null;
+    if ( this.get('colors') )
+    {
+      color = this.get('color');
+    }
+
+    if ( this.get('big') )
+    {
+      buffer.push('<span class="fa-stack fa-lg">');
+        buffer.push('<i class="fa fa-circle fa-stack-2x'+ (color ? ' ' + color : '') +'"></i>');
+        buffer.push('<i class="fa fa-stack-1x fa-inverse '+ this.get('icon') +'"></i>');
+      buffer.push('</span>');
+    }
+    else
+    {
+      buffer.push('<i class="fa '+ this.get('icon') + (color ? ' ' + color : '') + '"></i>');
+    }
   },
 
   iconChanged: function() {

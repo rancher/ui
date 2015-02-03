@@ -30,7 +30,7 @@ export default Ember.View.extend({
   },
 
   sectionWidth: null, // Will be reset on didInsertElement and resize
-  columnWidth: 245, // Must also change public/css/host.css .instance-column
+  columnWidth: 134, // Must also change public/css/host.css .instance-column
 
   onResize: function() {
     this.set('sectionWidth', $('.instances').width());

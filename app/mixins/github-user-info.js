@@ -15,6 +15,11 @@ export default Ember.Mixin.create({
     var cache = self.get('session').get('avatarCache')||{};
 
     var login = this.get('login');
+    if ( !login )
+    {
+      return;
+    }
+
     var type = this.get('type');
     var key = type + ':' + login;
 

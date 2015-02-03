@@ -14,6 +14,9 @@ Router.map(function() {
   this.route('authenticated', { path: '/'}, function() {
     this.resource('settings', function() {
       this.route('auth');
+      this.resource('projects', function() {
+        this.route('new');
+      });
     });
 
     this.resource('hosts', { path: '/hosts'}, function() {
