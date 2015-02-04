@@ -53,13 +53,15 @@ export default Ember.View.extend({
 
     var out = [];
     var i;
+
+    for ( i = 0 ; i < columnCount ; i++ )
+    {
+      out.push([]);
+    }
+
     var instances = this.get('context.instances');
     if ( instances )
     {
-      for ( i = 0 ; i < columnCount ; i++ )
-      {
-        out.push([]);
-      }
 
       for ( i = 0 ; i < instances.get('length') ; i++ )
       {

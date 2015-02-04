@@ -10,6 +10,10 @@ export default {
 
   PROJECT_HEADER: 'x-api-project-id',
   PROJECT_SESSION_KEY: 'projectId',
+  PROJECT_TYPE_DEFAULT: 'default',
+  PROJECT_TYPE_USER:    'project:github_user',
+  PROJECT_TYPE_TEAM:    'project:github_team',
+  PROJECT_TYPE_ORG:     'project:github_org',
 
   NO_CHALLENGE_HEADER: 'x-api-no-challenge',
   NO_CHALLENGE_VALUE: 'true',

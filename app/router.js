@@ -14,9 +14,15 @@ Router.map(function() {
   this.route('authenticated', { path: '/'}, function() {
     this.resource('settings', function() {
       this.route('auth');
-      this.resource('projects', function() {
-        this.route('new');
-      });
+    });
+
+    this.resource('projects', { path: '/projects' }, function() {
+      this.route('new');
+    });
+
+    this.resource("project", { path: '/projects/:project_id' }, function() {
+      this.route("edit");
+      this.route("delete");
     });
 
     this.resource('hosts', { path: '/hosts'}, function() {

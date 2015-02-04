@@ -61,7 +61,7 @@ var HostController = Cattle.TransitioningResourceController.extend({
       choices.push(byName('promptDelete'));
     }
 
-    choices.push({ tooltip: 'Details',         icon: 'fa-chevron-right',          action: 'detail',        enabled: true });
+    choices.push({ tooltip: 'Details',         icon: 'fa-info',          action: 'detail',        enabled: true });
     return choices;
 
     function byName(name) {

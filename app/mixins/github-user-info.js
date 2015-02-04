@@ -6,22 +6,45 @@ export default Ember.Mixin.create({
   login: null,
   size: 40,
 
-  name: 'Loading...',
+  name: null,
+  description: 'Loading...',
   _avatarUrl: null,
 
   loginOrTypeChanged: function() {
     var self = this;
+    var session = this.get('session');
 
-    var cache = self.get('session').get('avatarCache')||{};
-
+    var cache = session.get('avatarCache')||{};
     var login = this.get('login');
-    if ( !login )
+    var type = this.get('type');
+    var key = type + ':' + login;
+
+    if ( !type || !login )
     {
       return;
     }
 
-    var type = this.get('type');
-    var key = type + ':' + login;
+    // Teams can't be looked up without auth...
+    if ( type === 'team' )
+    {
+      var entry = (session.get('teams')||[]).filterProperty('name', login)[0];
+      this.set('_avatarUrl', null);
+      if ( entry )
+      {
+        this.set('name', entry.name);
+        this.set('description', entry.org + ' team');
+      }
+      else
+      {
+        this.set('name', '('+ login + ')');
+        this.set('description', '(Unknown team id)');
+      }
+
+      return;
+    }
+
+    this.set('name', login);
+
 
     if ( cache[key] )
     {
@@ -30,21 +53,21 @@ export default Ember.Mixin.create({
     else
     {
       var url = C.GITHUB_API_URL + type + 's/' + login;
-      Ember.$.ajax({url: url, dataType: 'json'}).then(function(body) {
+      Ember.$.ajax({url: url, dataType: 'json'}).then((body) => {
         cache[key] = body;
 
         // Sub-keys don't get automatically persisted to the session...
-        self.get('session').set('avatarCache', cache);
+       session.set('avatarCache', cache);
 
         gotInfo(body);
-      }, function() {
-        self.sendAction('notFound', login);
+      }, () => {
+        this.sendAction('notFound', login);
       });
     }
 
     function gotInfo(body)
     {
-      self.set('name', body.name);
+      self.set('description', body.name);
       self.set('_avatarUrl', body.avatar_url);
     }
   }.observes('login','type').on('init'),

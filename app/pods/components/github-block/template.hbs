@@ -2,21 +2,39 @@
 {{#if avatar}}
   <div class="gh-avatar">
     {{#if avatarUrl}}
-      <a {{bind-attr href=url}} target="_blank">
+      {{#if link}}
+        <a {{bind-attr href=url}} target="_blank">
+          <img {{bind-attr src=avatarUrl width=size height=size}}>
+        </a>
+      {{else}}
         <img {{bind-attr src=avatarUrl width=size height=size}}>
-      </a>
+      {{/if}}
     {{else}}
-      <div class="gh-placeholder"></div>
+      {{#if isTeam}}
+        <div class="gh-placeholder">
+          <i class="fa fa-2x fa-github-alt"></i>
+        </div>
+      {{else}}
+        <div class="gh-placeholder"></div>
+      {{/if}}
     {{/if}}
   </div>
 {{/if}}
 <div class="gh-block-content">
   <div class="clip">
-    <a {{bind-attr href=url}} target="_blank">{{login}}</a>
+    {{#if isTeam}}
+      {{name}}
+    {{else}}
+      {{#if link}}
+        <a {{bind-attr href=url}} target="_blank">{{name}}</a>
+      {{else}}
+        {{name}}
+      {{/if}}
+    {{/if}}
   </div>
   <div class="text-muted clip">
-    {{#if name}}
-      {{name}}
+    {{#if description}}
+      {{description}}
     {{else}}
       <i>No Name</i>
     {{/if}}
