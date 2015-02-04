@@ -98,7 +98,7 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
       choices.push(byName('purge'));
     }
 
-    choices.push({ tooltip: 'Details',         icon: 'fa-chevron-right',          action: 'detail',        enabled: true });
+    choices.push({ tooltip: 'Details',         icon: 'fa-info-circle',          action: 'detail',        enabled: true });
     return choices;
 
     function byName(name) {

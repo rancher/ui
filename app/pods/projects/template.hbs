@@ -1,1 +1,49 @@
-{{outlet}}
+<section>
+  {{#if error}}
+    <div class="alert alert-danger">
+      <i style="float: left;" class="fa fa-lg fa-exclamation-circle"></i>
+      <p style="margin-left: 50px">{{error}}</p>
+    </div>
+  {{/if}}
+
+  <div class="well">
+    <p>Rancher supports grouping resources into multiple <b>projects</b>.  Each project is owned by a GitHub user{{!, team,}} or organization, and has its own hosts and other resources.</p>
+    <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; projects to keep logical environments isolated from each other, and restrict the &quot;production&quot; project to a small team of people.</p>
+    <p><b>Note:</b> You cannot currently delete projects.  (The cloud only scales up)</p>
+  </div>
+
+  <div>
+    <div class="clearfix">
+      <div style="float: right">
+        <button {{action "newProject"}} class="btn btn-primary"><i class="fa fa-plus"></i> Create a project</button>
+      </div>
+    </div>
+    <table class="table fixed" style="margin-bottom: 0">
+      <tr>
+        <th width="120">State</th>
+        <th>Name<br/><span class="text-muted">Description</span></th>
+        <th>Owner</th>
+        <th width="140">&nbsp;</th>
+      </tr>
+      {{#each p in arrangedContent itemController="project"}}
+        <tr class="resource-action-hover">
+          <td {{bind-attr class="p.stateColor"}}>
+            <i {{bind-attr class=":fa p.stateIcon"}}></i> {{p.displayState}}
+          </td>
+          <td>
+            {{#if p.name}}{{p.displayName}}{{else}}<span class="text-muted text-italic">No name</span>{{/if}}
+            <p class="text-muted">{{#if p.description}}{{p.description}}{{else}}<span class="text-italic">No description</span>{{/if}}</p>
+          </td>
+          <td>
+            {{github-block type=p.githubType login=p.githubLogin}}
+          </td>
+          <td align="right">
+            {{resource-actions model=p choices=p.availableActions}}
+          </td>
+        </tr>
+      {{else}}
+        <tr><td colspan="5" class="text-center text-muted">You don't have any Projects yet.</td></tr>
+      {{/each}}
+    </table>
+  </div>
+</section>
