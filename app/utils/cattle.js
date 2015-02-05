@@ -122,6 +122,68 @@ var TransitioningResource = Resource.extend({
   transitioning: null,
   transitioningMessage: null,
   transitioningProgress: null,
+
+  replaceWith: function() {
+    this._super.apply(this,arguments);
+    this.transitioningChanged();
+  },
+
+  pollDelayTimer: null,
+  pollTimer: null,
+  reservedKeys: ['pollDelayTimer','pollTimer'],
+  transitioningChanged: function() {
+    //console.log('Transitioning changed', this.toString(), this.get('transitioning'), this.get('pollDelayTimer'),this.get('pollTimer'));
+
+    clearTimeout(this.get('pollDelayTimer'));
+    clearTimeout(this.get('pollTimer'));
+
+    if ( !this.isInStore() )
+    {
+      //console.log('This resource is not in the store');
+      return;
+    }
+
+    var delay = this.constructor.pollTransitioningDelay;
+    var interval = this.constructor.pollTransitioningInterval;
+    if ( delay > 0 && interval > 0 && this.get('transitioning') === 'yes' )
+    {
+      //console.log('Starting poll timer', this.toString());
+      this.set('pollDelayTimer', setTimeout(function() {
+        //console.log('1 expired');
+        this.transitioningPoll();
+      }.bind(this), delay));
+    }
+  }.observes('transitioning'),
+
+  transitioningPoll: function() {
+    clearTimeout(this.get('pollTimer'));
+
+    //console.log('Checking', this.toString());
+
+    if ( this.get('transitioning') !== 'yes' || !this.isInStore() )
+    {
+      return;
+    }
+
+    //console.log('Polling', this.toString());
+    this.reload().then((/*newData*/) => {
+      //console.log('Poll Finished', this.toString());
+      if ( this.get('transitioning') === 'yes' )
+      {
+        //console.log('Rescheduling', this.toString());
+        this.set('pollTimer', setTimeout(function() {
+          //console.log('2 expired');
+          this.transitioningPoll();
+        }.bind(this), this.constructor.pollTransitioningInterval));
+      }
+    });
+  },
+
+});
+
+TransitioningResource.reopenClass({
+  pollTransitioningDelay: 10000,
+  pollTransitioningInterval: 10000,
 });
 
 var TransitioningResourceController = ResourceController.extend({
@@ -185,8 +247,6 @@ var TransitioningResourceController = ResourceController.extend({
     return this.constructor.defaultStateColor;
   }.property('state','transitioning'),
 
-  isTransitioning: Ember.computed.equal('transitioning','yes'),
-
   doAction: function(/*arguments*/) {
     var model = this.get('model');
     return model.doAction.apply(model,arguments);
@@ -228,6 +288,7 @@ var TransitioningResourceController = ResourceController.extend({
   progressStyle: function() {
     return 'width: '+ this.get('displayProgress') +'%';
   }.property('displayProgress'),
+
 });
 
 // Override stateMap with a map of state -> icon classes

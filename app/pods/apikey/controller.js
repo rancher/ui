@@ -47,11 +47,11 @@ var ApikeyController = Cattle.TransitioningResourceController.extend({
 
 ApikeyController.reopenClass({
   stateMap: {
-    'active':     {icon: 'fa-circle-o', color: 'text-success'},
-    'inactive':   {icon: 'fa-circle',   color: 'text-muted'},
-    'purged':     {icon: 'fa-fire',     color: 'text-danger'},
-    'removed':    {icon: 'fa-trash-o',  color: 'text-danger'},
-    'requested':  {icon: 'fa-ticket',   color: 'text-info'},
+    'active':     {icon: 'fa-circle-o',   color: 'text-success'},
+    'inactive':   {icon: 'fa-circle',     color: 'text-muted'},
+    'purged':     {icon: 'fa-fire',       color: 'text-danger'},
+    'removed':    {icon: 'fa-trash-o',    color: 'text-danger'},
+    'requested':  {icon: 'fa-ticket',     color: 'text-info'},
   }
 });
 

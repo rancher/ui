@@ -14,7 +14,7 @@ export default Ember.Mixin.create({
     var self = this;
     var session = this.get('session');
 
-    var cache = session.get('avatarCache')||{};
+    var cache = session.get('githubCache')||{};
     var login = this.get('login');
     var type = this.get('type');
     var key = type + ':' + login;
@@ -27,7 +27,7 @@ export default Ember.Mixin.create({
     // Teams can't be looked up without auth...
     if ( type === 'team' )
     {
-      var entry = (session.get('teams')||[]).filterProperty('name', login)[0];
+      var entry = (session.get('teams')||[]).filterProperty('id', login)[0];
       this.set('_avatarUrl', null);
       if ( entry )
       {
@@ -52,15 +52,15 @@ export default Ember.Mixin.create({
     }
     else
     {
-      var url = C.GITHUB_API_URL + type + 's/' + login;
-      Ember.$.ajax({url: url, dataType: 'json'}).then((body) => {
+      var url = C.GITHUB_PROXY_URL + type + 's/' + login;
+      this.request(url).then((body) => {
         cache[key] = body;
 
         // Sub-keys don't get automatically persisted to the session...
-       session.set('avatarCache', cache);
+       session.set('githubCache', cache);
 
         gotInfo(body);
-      }, () => {
+      }, (/*err*/) => {
         this.sendAction('notFound', login);
       });
     }
@@ -84,4 +84,16 @@ export default Ember.Mixin.create({
   url: function() {
     return C.GITHUB_URL + encodeURIComponent(this.get('login'));
   }.property('login'),
+
+  request: function(url) {
+    var headers = {};
+
+    var authValue = this.get('session').get(C.AUTH_SESSION_KEY);
+    if ( authValue )
+    {
+      headers[C.AUTH_HEADER] = C.AUTH_TYPE + ' ' + authValue;
+    }
+
+    return Ember.$.ajax({url: url, headers: headers, dataType: 'json'});
+  },
 });

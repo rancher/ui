@@ -7,9 +7,9 @@
   {{/if}}
 
   <div class="well">
-    <p>Rancher supports grouping resources into multiple <b>projects</b>.  Each project is owned by a GitHub user{{!, team,}} or organization, and has its own hosts and other resources.</p>
-    <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; projects to keep logical environments isolated from each other, and restrict the &quot;production&quot; project to a small team of people.</p>
-    <p><b>Note:</b> You cannot currently delete projects.  (The cloud only scales up)</p>
+    <p>Rancher supports grouping resources into multiple <b>projects</b>.  Each project gets its own set of hosts and other resources, and is owned by a single GitHub user, team or organization.</p>
+    <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; projects to keep logical environments isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; project to a small team.</p>
+    <p><b>Note:</b> You cannot currently delete projects.  (The cloud only scales up&trade;)</p>
   </div>
 
   <div>
@@ -31,7 +31,7 @@
             <i {{bind-attr class=":fa p.stateIcon"}}></i> {{p.displayState}}
           </td>
           <td>
-            {{#if p.name}}{{p.displayName}}{{else}}<span class="text-muted text-italic">No name</span>{{/if}}
+            {{p.displayName}}
             <p class="text-muted">{{#if p.description}}{{p.description}}{{else}}<span class="text-italic">No description</span>{{/if}}</p>
           </td>
           <td>
@@ -42,7 +42,7 @@
           </td>
         </tr>
       {{else}}
-        <tr><td colspan="5" class="text-center text-muted">You don't have any Projects yet.</td></tr>
+        <tr><td colspan="4" class="text-center text-muted">You don't have any Projects yet.</td></tr>
       {{/each}}
     </table>
   </div>

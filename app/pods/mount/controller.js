@@ -10,8 +10,8 @@ var MountController = Cattle.TransitioningResourceController.extend({
 
 MountController.reopenClass({
   stateMap: {
-   'active':  {icon: 'fa-circle-o', color: 'text-info'},
-   'inactive': {icon: 'fa-circle',   color: 'text-danger'},
+   'active':  {icon: 'fa-circle-o', color: 'text-sucess'},
+   'inactive': {icon: 'fa-circle',  color: 'text-danger'},
    'removed': {icon: 'fa-trash',    color: 'text-danger'},
    'purged':  {icon: 'fa-fire',     color: 'text-danger'}
   },

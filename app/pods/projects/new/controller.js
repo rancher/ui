@@ -28,16 +28,14 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
       active: (externalIdType === C.PROJECT_TYPE_USER && externalId === this.get('session.user')),
     });
 
-    /* @TODO fix team uniqueness, https://github.com/rancherio/cattle/issues/215
     out.pushObjects(this.get('session.teams').map(function(team) {
       return {
         type: C.PROJECT_TYPE_TEAM,
         githubType: 'team',
-        login: team.name,
-        active: (externalIdType === C.PROJECT_TYPE_TEAM && externalId === team.name),
+        login: team.id,
+        active: (externalIdType === C.PROJECT_TYPE_TEAM && externalId === team.id),
       };
     }));
-    */
 
     out.pushObjects(this.get('session.orgs').map(function(org) {
       return {

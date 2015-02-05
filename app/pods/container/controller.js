@@ -129,7 +129,7 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
 
 ContainerController.reopenClass({
   stateMap: {
-   'running': {icon: 'fa-circle-o', color: 'text-info'},
+   'running': {icon: 'fa-circle-o', color: 'text-success'},
    'stopped': {icon: 'fa-circle',   color: 'text-danger'},
    'removed': {icon: 'fa-trash',    color: 'text-danger'},
    'purged':  {icon: 'fa-fire',     color: 'text-danger'}
