@@ -26,7 +26,10 @@ Router.map(function() {
     });
 
     this.resource('hosts', { path: '/hosts'}, function() {
-      this.route('new', {path: '/new'});
+      this.route('new', {path: '/new'}, function() {
+        this.route('digitalocean');
+        this.route('custom');
+      });
 
       this.resource('host', { path: '/:host_id' }, function() {
         this.route('index', { path: '/monitoring'});

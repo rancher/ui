@@ -1,0 +1,65 @@
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="name">Name</label>
+      {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. host01"}}
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+        {{textarea id="description" value=description classNames="form-control no-resize" rows="3" placeholder="e.g. My DigitalOcean host"}}
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="accessToken">Access Token</label>
+      {{input id="accessToken" type="text" value=digitaloceanConfig.accessToken classNames="form-control" placeholder="Your DigitalOcean API access token"}}
+      <p class="help-block">A <b>Personal Access Token</b> from the DigitalOcean <a href="https://cloud.digitalocean.com/settings/applications" target="_blank">Apps & API</a> page</p>
+
+    </div>
+
+    <div class="row">
+
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="region">Region</label>
+          {{view "select"
+            class="form-control"
+            id="region"
+            content=regionChoices
+            optionValuePath="content.id"
+            optionLabelPath="content.name"
+            value=digitaloceanConfig.region
+          }}
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="size">Size</label>
+          {{view "select"
+            class="form-control"
+            id="size"
+            content=sizeChoices
+            value=digitaloceanConfig.size
+          }}
+        </div>
+      </div>
+
+      <div class="col-sm-4">
+        <div class="form-group">
+          <label for="image">Image</label>
+          {{view "select"
+            class="form-control"
+            id="image"
+            content=imageChoices
+            value=digitaloceanConfig.image
+          }}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+{{partial "save-cancel"}}
