@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   choices: null,
   big: false,
 
-  classNames: ['resource-actions'],
+  classNames: ['resource-actions','btn-group'],
 
   activeActions: function() {
     return (this.get('choices')||[]).filter(function(act) {

@@ -1,7 +1,6 @@
 import Ember from "ember";
 
-// Toggle position:relative on the main page container depending on the height of the content
-// so that the NAV bar always covers the full height of the page.
+//   Toggle position:relative on the main page container depending on the height of the content
 var cur = null;
 function relativeRelative() {
   var auth = $('.authenticated');

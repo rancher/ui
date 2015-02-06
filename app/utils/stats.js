@@ -312,6 +312,15 @@ var Stats = Ember.Object.extend({
       },
       transition: { duration: 0 },
       tooltip: { show: false },
+      legend: {
+        position: 'inset',
+      },
+      padding: {
+        left: 40,
+        right: 0,
+        top: 0,
+        bottom: 0,
+      },
       axis: {
         x: {
           type: 'timeseries',
@@ -347,6 +356,15 @@ var Stats = Ember.Object.extend({
         type: 'area-step',
         x: 'x',
         rows: this.get('memoryData'),
+      },
+      legend: {
+        position: 'inset',
+      },
+      padding: {
+        left: 80,
+        right: 0,
+        top: 0,
+        bottom: 0,
       },
       transition: { duration: 0 },
       tooltip: { show: false },

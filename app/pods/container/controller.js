@@ -64,15 +64,15 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions');
 
     var choices = [
-      { tooltip: 'Edit',          icon: 'fa-edit',          action: 'edit',         enabled: !!a.update },
-      { tooltip: 'View in API',   icon: 'fa-external-link', action: 'goToApi',      enabled: true,            detail: true },
-      { tooltip: 'Execute Shell', icon: 'fa-terminal',      action: 'shell',        enabled: !!a.execute },
-      { tooltip: 'Restart',       icon: 'fa-refresh',       action: 'restart',      enabled: !!a.restart },
-      { tooltip: 'Start',         icon: 'fa-arrow-up',      action: 'start',        enabled: !!a.start },
-      { tooltip: 'Stop',          icon: 'fa-arrow-down',    action: 'stop',         enabled: !!a.stop },
-      { tooltip: 'Restore',       icon: 'fa-ambulance',     action: 'restore',      enabled: !!a.restore },
-      { tooltip: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
-      { tooltip: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge },
+      { label: 'Edit',          icon: 'fa-edit',          action: 'edit',         enabled: !!a.update },
+      { label: 'View in API',   icon: 'fa-external-link', action: 'goToApi',      enabled: true,            detail: true },
+      { label: 'Execute Shell', icon: 'fa-terminal',      action: 'shell',        enabled: !!a.execute },
+      { label: 'Restart',       icon: 'fa-refresh',       action: 'restart',      enabled: !!a.restart },
+      { label: 'Start',         icon: 'fa-arrow-up',      action: 'start',        enabled: !!a.start },
+      { label: 'Stop',          icon: 'fa-arrow-down',    action: 'stop',         enabled: !!a.stop },
+      { label: 'Restore',       icon: 'fa-ambulance',     action: 'restore',      enabled: !!a.restore },
+      { label: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
+      { label: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge },
     ];
 
     return choices;
@@ -98,7 +98,7 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
       choices.push(byName('purge'));
     }
 
-    choices.push({ tooltip: 'Details',         icon: 'fa-info-circle',          action: 'detail',        enabled: true });
+    choices.push({ label: 'Details',         icon: 'fa-info-circle',          action: 'detail',        enabled: true });
     return choices;
 
     function byName(name) {

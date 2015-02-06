@@ -2,20 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   model: null,
-  classNames: ['host'],
+  classNames: ['host','resource-action-hover'],
   classNameBindings: ['stateBorder'],
-  boundEnter: null,
-  boundLeave: null,
-
-  actions: {
-    showActions: function() {
-      this.$().addClass('hover');
-    },
-
-    hideActions: function() {
-      this.$().removeClass('hover');
-    },
-  },
 
   stateBackground: function() {
     return this.get('model.stateColor').replace("text-","bg-");
@@ -33,27 +21,19 @@ export default Ember.Component.extend({
     }
   }.property('model.stateColor'),
 
+  boundLeave: null,
   didInsertElement: function() {
-    var boundEnter = onEnter.bind(this);
-    var boundLeave = onLeave.bind(this);
+    var self = this;
 
-    this.set('boundEnter', boundEnter);
-    this.set('boundLeave', boundLeave);
+    // Close the actions menu when leaving the host so it doens't show back up on enter
+    var boundLeave = function() {
+      self.$('.host-header .resource-actions').removeClass('open');
+    }.bind(this);
 
-    this.$('.host-header').on('mouseenter', boundEnter);
-    this.$('.host-header').on('mouseleave', boundLeave);
-
-    function onEnter() {
-      this.send('showActions');
-    }
-
-    function onLeave() {
-      this.send('hideActions');
-    }
+    this.$().on('mouseleave', boundLeave);
   },
 
   willDestroyElement: function() {
-    this.$('.host-header').off('mouseenter', this.get('boundEnter'));
-    this.$('.host-header').off('mouseleave', this.get('boundLeave'));
-  },
+    this.$().off('mouseleave', this.get('boundLeave'));
+  }
 });
