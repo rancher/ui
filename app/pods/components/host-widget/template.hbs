@@ -1,19 +1,16 @@
 <div class="host-header">
-  <div {{bind-attr class=":host-overlay stateBackground"}}>
-    <div class="host-name">{{model.displayName}}</div>
-    {{resource-actions model=model choices=model.primaryActions big=true}}
-  </div>
+  {{resource-actions-menu model=model choices=model.availableActions}}
 
   <div {{bind-attr class=":host-state stateBackground"}}>{{model.displayState}}</div>
   <div class="host-icon"><i {{bind-attr class=":fa :fa-lg model.stateIcon iconColor"}}></i></div>
-  <div class="host-name">{{model.displayName}}</div>
+  <div class="host-name">{{#link-to "host" model.id}}{{model.displayName}}{{/link-to}}</div>
 </div>
 
 <div class="host-info clearfix">
   <div class="host-info-item"><i class="fa fa-sm fa-link"></i> {{model.displayIp}}</div>
 </div>
 
-<div class="clearfix">
+<div class="clearfix no-resource-action-hover">
   {{#if dot}}
     {{#each item in model.arrangedInstances itemController="container"}}
       {{container-dot model=item}}

@@ -26,9 +26,9 @@ var VolumeController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions');
 
     return [
-      { tooltip: 'Restore',       icon: 'fa-ambulance',     action: 'restore',      enabled: !!a.restore },
-      { tooltip: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
-      { tooltip: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge },
+      { label: 'Restore',       icon: 'fa-ambulance',     action: 'restore',      enabled: !!a.restore },
+      { label: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
+      { label: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge },
     ];
   }.property('actions.{restore,purge}','canDelete'),
 

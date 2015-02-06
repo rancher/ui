@@ -69,6 +69,12 @@ $instance_action: #ededed;
     padding-bottom: 10px;
     border-bottom: 1px solid $host_border;
 
+    .resource-actions {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
+
     .host-state {
       font-size: 12px;
       text-align: center;
@@ -88,6 +94,7 @@ $instance_action: #ededed;
   .host-info {
     padding: 10px;
     text-align: center;
+    border-bottom: 1px solid #f9fafc;
 
     .host-info-item {
       padding: 0 5px 5px 0;
@@ -175,33 +182,57 @@ $instance_action: #ededed;
   font-size: 12px;
 }
 
-.instance-actions-trigger {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  width: 11px;
-  line-height: 45px;
-  color: $instance_action;
-  cursor: pointer;
-}
-
 .instance {
   position: relative;
   padding: 5px 10px;
   background-color: white;
   border: 1px solid $host_border;
-  .instance-actions {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 45px;
-    line-height: 45px;
-    text-align: right;
 
-    .resource-actions {
-      padding-right: 10px;
-    }
+  &:hover {
+    padding-right: 31px;
+  }
+
+  .resource-actions {
+    position: absolute;
+    top: 11px;
+    right: 5px;
+    text-align: right;
+  }
+
+  .progress {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 4px;
+    margin: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .progress-striped .progress-bar {
+    -webkit-animation: progress-bar-stripes-reverse 1.5s linear infinite;
+    animation: progress-bar-stripes-reverse 1.5s linear infinite;
+
+    background-image: -webkit-linear-gradient(45deg,
+      rgba(255, 255, 255, 0.55) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.55) 50%,
+      rgba(255, 255, 255, 0.55) 75%,
+      transparent 75%,
+      transparent);
+    background-image: linear-gradient(45deg,
+      rgba(255, 255, 255, 0.55) 25%,
+      transparent 25%,
+      transparent 50%,
+      rgba(255, 255, 255, 0.55) 50%,
+      rgba(255, 255, 255, 0.55) 75%,
+      transparent 75%, 
+      transparent);
+
+    background-size: 40px 40px;
   }
 }
 
@@ -223,10 +254,18 @@ $instance_action: #ededed;
   &:nth-last-child(2):nth-child(odd),
   &:last-child:nth-child(odd) {
     border-bottom-left-radius: 5px;
+
+    .progress, .progress-bar {
+      border-bottom-left-radius: 5px;
+    }
   }
 
   &:last-child:nth-child(even) {
     border-bottom-right-radius: 5px;
+
+    .progress, .progress-bar {
+      border-bottom-right-radius: 5px;
+    }
   }
 }
 
@@ -252,22 +291,4 @@ $instance_action: #ededed;
 .console-status {
   position: absolute;
   margin: 10px 0;
-}
-
-.corner-triangle {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 0;
-  height: 0;
-  border-left: 40px solid transparent;
-  border-top: 40px solid rgba(255,0,0,0.8);
-}
-
-.corner-triangle-content {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 11px;
-  color: white;
 }

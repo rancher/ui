@@ -134,8 +134,8 @@ var TransitioningResourceController = ResourceController.extend({
 
   showTransitioningMessage: function() {
     var trans = this.get('transitioning');
-    return (trans === 'yes' || trans === 'error');
-  }.property('transitioning'),
+    return (trans === 'yes' || trans === 'error') && (this.get('transitioningMessage')||'').length > 0;
+  }.property('transitioning','transitioningMessage'),
 
   stateIcon: function() {
     var trans = this.get('transitioning');
@@ -198,7 +198,7 @@ var TransitioningResourceController = ResourceController.extend({
         {
           enabled: true/false,    // Whether it's enabled or greyed out
           detail: true/false,     // If true, this action will only be shown on detailed screens
-          tooltip: 'Delete',      // Tooltip shown on hover
+          label: 'Delete',      // Label shown on hover or in menu
           icon: 'fa-trash-o',     // Icon shown on screen
           action: 'promptDelete', // Action to call on the controller when clicked
           altAction: 'delete'     // Action to call on the controller when alt+clicked

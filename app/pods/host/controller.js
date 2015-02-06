@@ -36,46 +36,14 @@ var HostController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions');
 
     return [
-      { tooltip: 'View in API',   icon: 'fa-external-link', action: 'goToApi',      enabled: true,            detail: true },
-      { tooltip: 'Activate',      icon: 'fa-arrow-up',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
-      { tooltip: 'Deactivate',    icon: 'fa-arrow-down',    action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
-      { tooltip: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
-      { tooltip: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge, color: 'text-danger' },
+      { label: 'Add Container', icon: 'fa-plus',          action: 'newContainer', enabled: true,            color: 'text-primary' },
+      { label: 'View in API',   icon: 'fa-external-link', action: 'goToApi',      enabled: true},
+      { label: 'Activate',      icon: 'fa-arrow-up',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
+      { label: 'Deactivate',    icon: 'fa-arrow-down',    action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
+      { label: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge, color: 'text-danger' },
     ];
   }.property('actions.{activate,deactivate,remove,purge}'),
-
-  primaryActions: function() {
-    var a = this.get('availableActions');
-    var choices = [];
-
-    choices.push({ tooltip: 'Add Container',         icon: 'fa-plus',          action: 'newContainer',        enabled: true, color: 'text-primary' });
-
-    var primary = ifEnabled('activate') || ifEnabled('deactivate');
-    if ( primary )
-    {
-      choices.push(primary);
-    }
-
-    if ( ifEnabled('promptDelete') )
-    {
-      choices.push(byName('promptDelete'));
-    }
-
-    choices.push({ tooltip: 'Details',         icon: 'fa-info',          action: 'detail',        enabled: true });
-    return choices;
-
-    function byName(name) {
-      return a.filterProperty('action',name)[0];
-    }
-
-    function ifEnabled(name) {
-      var action = byName(name);
-      if ( action && !!action.enabled )
-      {
-        return action;
-      }
-    }
-  }.property('availableActions.[]','availableActions.@each.enabled'),
 
   displayIp: function() {
     var obj = (this.get('ipAddresses')||[]).get('firstObject');
