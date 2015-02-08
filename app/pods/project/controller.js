@@ -84,7 +84,7 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions');
 
     var choices = [
-//      { label: 'Edit',          icon: 'fa-edit',          action: 'edit',         enabled: !!a.update },
+      { label: 'Edit',          icon: 'fa-edit',          action: 'edit',         enabled: !!a.update },
       { label: 'Restore',       icon: 'fa-ambulance',     action: 'restore',      enabled: !!a.restore },
       { label: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
       { label: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge },
@@ -97,7 +97,7 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
 ProjectController.reopenClass({
   stateMap: {
     'activating':       {icon: 'fa-ticket',       color: 'text-danger'},
-    'active':           {icon: 'fa-circle-o',     color: 'text-info'},
+    'active':           {icon: 'fa-circle-o',     color: 'text-success'},
     'deactivating':     {icon: 'fa-adjust',       color: 'text-danger'},
     'inactive':         {icon: 'fa-stop',         color: 'text-danger'},
     'purged':           {icon: 'fa-fire',         color: 'text-danger'},
@@ -107,7 +107,7 @@ ProjectController.reopenClass({
     'removing':         {icon: 'fa-trash',        color: 'text-danger'},
     'requested':        {icon: 'fa-ticket',       color: 'text-danger'},
     'restoring':        {icon: 'fa-trash',        color: 'text-danger'},
-    'updating-active':  {icon: 'fa-circle-o',     color: 'text-info'},
+    'updating-active':  {icon: 'fa-circle-o',     color: 'text-success'},
     'updating-inactive':{icon: 'fa-warning',      color: 'text-danger'},
   }
 });

@@ -5,7 +5,7 @@ export default Ember.Route.extend({
     var self = this;
     var cred = this.get('store').createRecord({type:'apikey'});
 
-    return cred.save().then(function(/*newData*/) {
+    return cred.save().then(function(/*newCred*/) {
       return cred;
     }).catch(function(err) {
       self.send('error', err);

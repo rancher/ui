@@ -58,7 +58,7 @@ var VolumeController = Cattle.TransitioningResourceController.extend({
 
 VolumeController.reopenClass({
   stateMap: {
-   'active':    {icon: 'fa-circle-o', color: 'text-info'},
+   'active':    {icon: 'fa-circle-o', color: 'text-success'},
    'inactive':  {icon: 'fa-circle',   color: 'text-danger'},
    'removed':   {icon: 'fa-trash',    color: 'text-danger'},
    'purged':    {icon: 'fa-fire',     color: 'text-danger'}

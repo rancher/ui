@@ -3,10 +3,15 @@ export default {
 
   GITHUB_URL: 'https://www.github.com/',
   GITHUB_API_URL: 'https://api.github.com/',
+  GITHUB_PROXY_URL: '/github/',
 
   AUTH_HEADER: 'authorization',
   AUTH_SESSION_KEY: 'jwt',
   AUTH_TYPE: 'Bearer',
+
+  USER_TYPE_NORMAL: 'user',
+  USER_TYPE_ADMIN: 'admin',
+  USER_TYPE_SESSION_KEY: 'userType',
 
   PROJECT_HEADER: 'x-api-project-id',
   PROJECT_SESSION_KEY: 'projectId',
