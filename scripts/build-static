@@ -56,7 +56,7 @@ if [[ -z "$BRANCH" ]]; then
   BRANCH="master"
 fi
 
-PKG_VERSION=$(cat package.json | grep version | cut -f4 -d'"' | sed 's/-/_/g')
+PKG_VERSION=$(cat package.json | grep version | head -n 1 | cut -f4 -d'"' | sed 's/-/_/g')
 LATEST=0
 UPLOAD=0
 TAG=0
