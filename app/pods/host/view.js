@@ -1,20 +1,14 @@
 import Ember from 'ember';
 import Stats from 'ui/utils/stats';
+import ThrottledResize from 'ui/mixins/throttled-resize';
 
-export default Ember.View.extend({
+export default Ember.View.extend(ThrottledResize, {
   classNames: ['host-detail'],
-  isDetail: true,
-
-  resizeFn: null,
 
   stats: null,
 
   didInsertElement: function() {
     this._super();
-
-    this.set('resizeFn', this.onResize.bind(this));
-    $(window).on('resize', this.get('resizeFn'));
-    this.onResize();
 
     this.set('stats', Stats.create({
       resource: this.get('context.model'),
@@ -25,7 +19,7 @@ export default Ember.View.extend({
   },
 
   willDestroyElement: function() {
-    $(window).off('resize', this.get('resizeFn'));
+    this._super();
     this.get('stats').disconnect();
   },
 
@@ -33,6 +27,7 @@ export default Ember.View.extend({
   columnWidth: 134, // Must also change public/css/host.css .instance-column
 
   onResize: function() {
+    console.log('onResize 2');
     this.set('sectionWidth', $('.instances').width());
   },
 

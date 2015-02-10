@@ -36,7 +36,7 @@ var HostController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions');
 
     return [
-      { label: 'Add Container', icon: 'fa-plus',          action: 'newContainer', enabled: true,            color: 'text-primary' },
+//      { label: 'Add Container', icon: 'fa-plus',          action: 'newContainer', enabled: true,            color: 'text-primary' },
       { label: 'View in API',   icon: 'fa-external-link', action: 'goToApi',      enabled: true},
       { label: 'Activate',      icon: 'fa-arrow-up',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
       { label: 'Deactivate',    icon: 'fa-arrow-down',    action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},

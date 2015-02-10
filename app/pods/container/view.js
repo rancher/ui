@@ -3,7 +3,6 @@ import Stats from 'ui/utils/stats';
 
 export default Ember.View.extend({
   classNames: ['instance-detail'],
-  isDetail: true,
 
   stats: null,
 

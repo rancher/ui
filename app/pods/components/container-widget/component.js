@@ -1,7 +1,8 @@
 import Ember from 'ember';
+import HoverActions from 'ui/mixins/hover-actions';
 
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(HoverActions, {
   model: null,
   classNames: ['instance','resource-action-hover'],
 
@@ -16,20 +17,4 @@ export default Ember.Component.extend({
   stateBackground: function() {
     return this.get('model.stateColor').replace("text-","bg-");
   }.property('model.stateColor'),
-
-  boundLeave: null,
-  didInsertElement: function() {
-    var self = this;
-
-    // Close the actions menu when leaving the host so it doens't show back up on enter
-    var boundLeave = function() {
-      self.$('.resource-actions').removeClass('open');
-    }.bind(this);
-
-    this.$().on('mouseleave', boundLeave);
-  },
-
-  willDestroyElement: function() {
-    this.$().off('mouseleave', this.get('boundLeave'));
-  }
 });

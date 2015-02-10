@@ -39,6 +39,7 @@ Router.map(function() {
 
     this.resource('container', { path: '/containers/:container_id' }, function() {
       this.route('shell');
+      this.route('logs');
       this.route('edit');
       this.route('delete');
     });

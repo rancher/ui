@@ -3,9 +3,9 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   model: null,
   choices: null,
-  big: false,
+  addAction: null,
 
-  classNames: ['resource-actions','btn-group'],
+  classNames: ['resource-actions'],
 
   activeActions: function() {
     return (this.get('choices')||[]).filter(function(act) {
@@ -14,6 +14,10 @@ export default Ember.Component.extend({
   }.property('choices.[]','choices.@each.enabled'),
 
   actions: {
+    add: function() {
+      this.get('model').send(this.get('addAction'));
+    },
+
     clicked: function(actionName) {
       this.get('model').send(actionName);
     }

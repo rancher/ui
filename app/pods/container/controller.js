@@ -45,6 +45,10 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
       this.send('redirectTo','container.shell');
     },
 
+    logs: function() {
+      this.send('redirectTo','container.logs');
+    },
+
     edit: function() {
       this.send('redirectTo','container.edit');
     },
@@ -67,6 +71,7 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
       { label: 'Edit',          icon: 'fa-edit',          action: 'edit',         enabled: !!a.update },
       { label: 'View in API',   icon: 'fa-external-link', action: 'goToApi',      enabled: true,            detail: true },
       { label: 'Execute Shell', icon: 'fa-terminal',      action: 'shell',        enabled: !!a.execute },
+      { label: 'View Logs',     icon: 'fa-file-text-o',   action: 'logs',         enabled: !!a.logs },
       { label: 'Restart',       icon: 'fa-refresh',       action: 'restart',      enabled: !!a.restart },
       { label: 'Start',         icon: 'fa-arrow-up',      action: 'start',        enabled: !!a.start },
       { label: 'Stop',          icon: 'fa-arrow-down',    action: 'stop',         enabled: !!a.stop },
@@ -119,7 +124,7 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
   }.property('state'),
 
   displayIp: function() {
-    return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress');
+    return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress') || '(No IP Address)';
   }.property('primaryIpAddress','primaryAssociatedIpAddress'),
 
   canDelete: function() {
