@@ -4,7 +4,6 @@ export default Overlay.extend({
   templateName: 'container/shell',
 
   status: 'Connecting...',
-  useClosed: false,
   socket: null,
   term: null,
 

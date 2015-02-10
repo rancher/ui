@@ -1,29 +1,12 @@
 import Ember from 'ember';
+import ThrottledResize from 'ui/mixins/throttled-resize';
 
-export default Ember.View.extend({
+export default Ember.View.extend(ThrottledResize, {
   classNames: ['hosts','clearfix'],
   tagName: 'section',
 
-  resizeFn: null,
-  didInsertElement: function() {
-    this._super();
-
-    this.set('resizeFn', this.triggerResize.bind(this));
-    $(window).on('resize', this.get('resizeFn'));
-    this.onResize();
-  },
-
-  triggerResize: function() {
-    Ember.run.throttle(this, 'onResize', 200);
-  },
-
   onResize: function() {
     this.set('sectionWidth', $('.hosts').width());
-  },
-
-
-  willDestroyElement: function() {
-    $(window).off('resize', this.get('resizeFn'));
   },
 
   sectionWidth: null, // Will be reset on didInsertElement and resize
