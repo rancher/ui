@@ -135,7 +135,7 @@ RANCHER_ENDPOINT="" BASE_URL="${URL}" BASE_ASSETS="//${CDN}/${VERSION}" runCmd .
 echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
 
 # Replace the version token in the static file that cattle serves up
-sed -i.bak s/VERSION/${VERSION}/g "${BUILD_DIR}/static/index.html"
+runCmd sed -i.bak s/VERSION/${VERSION}/g "${BUILD_DIR}/static/index.html"
 
 if [[ $TAG -eq 1 ]]; then
   runCmd git tag v${VERSION}
