@@ -397,7 +397,7 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
   terminalDidChange: function() {
     var val = this.get('terminal');
     var stdinOpen = ( val === 'interactive' || val === 'both' );
-    var tty = (val === 'tty' || val === 'both');
+    var tty = (val === 'terminal' || val === 'both');
     this.set('tty', tty);
     this.set('stdinOpen', stdinOpen);
   }.observes('terminal'),
