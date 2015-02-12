@@ -23,8 +23,8 @@ module.exports = function(environment) {
 
     contentSecurityPolicy: {
       // Allow the occasional <elem style="blah">...
-      'style-src':  "'self' cdn.rancher.io storage.googleapis.com 'unsafe-inline'",
-      'font-src':   "'self' cdn.rancher.io storage.googleapis.com ",
+      'style-src':  "'self' cdn.rancher.io storage.googleapis.com fonts.googleapis.com 'unsafe-inline'",
+      'font-src':   "'self' cdn.rancher.io storage.googleapis.com fonts.googleapis.com fonts.gstatic.com",
       'script-src': "'self' cdn.rancher.io storage.googleapis.com ",
       'img-src':    "'self' cdn.rancher.io storage.googleapis.com avatars.githubusercontent.com",
 

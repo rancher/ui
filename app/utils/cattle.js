@@ -122,6 +122,7 @@ var TransitioningResource = Resource.extend({
   transitioning: null,
   transitioningMessage: null,
   transitioningProgress: null,
+  isTransitioning: Ember.computed.equal('transitioning','yes'),
 
   replaceWith: function() {
     this._super.apply(this,arguments);

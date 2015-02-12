@@ -12,33 +12,6 @@ $nav_bg_hover: #283036;
 $nav_text_hover: white;
 
 /**********
-* Fonts
-**********/
-@font-face {
-    font-family: 'open_sansregular';
-    src: url('fonts/opensans-regular-webfont.eot');
-    src: url('fonts/opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/opensans-regular-webfont.woff2') format('woff2'),
-         url('fonts/opensans-regular-webfont.woff') format('woff'),
-         url('fonts/opensans-regular-webfont.ttf') format('truetype'),
-         url('fonts/opensans-regular-webfont.svg#open_sansregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'open_sanssemibold';
-    src: url('fonts/opensans-semibold-webfont.eot');
-    src: url('fonts/opensans-semibold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/opensans-semibold-webfont.woff2') format('woff2'),
-         url('fonts/opensans-semibold-webfont.woff') format('woff'),
-         url('fonts/opensans-semibold-webfont.ttf') format('truetype'),
-         url('fonts/opensans-semibold-webfont.svg#open_sanssemibold') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-
-/**********
 * Body
 **********/
 HTML {
@@ -48,6 +21,11 @@ HTML {
 BODY {
   background-color: $body_bg;
   min-height: 100%;
+  font-weight: 400;
+}
+
+B {
+  font-weight: 600;
 }
 
 .farm {
@@ -108,17 +86,37 @@ NAV {
   }
 
   LI:hover,
-  LI.active,
-  LI.active A,
-  LI.active A:active,
-  LI.active A:hover,
-  LI.active A:visited,
-  LI:hover A,
-  LI:hover A:active,
-  LI:hover A:hover,
-  LI:hover A:visited {
+  LI.active {
     color: $nav_text_hover;
     background-color: $nav_bg_hover;
+
+    A, A:active, A:hover, A:visited {
+      color: $nav_text_hover;
+    }
+  }
+}
+
+.nav-hosts {
+  border-left: 2px solid #44b4a2;
+
+  &.active {
+    background-color: #44b4a2;
+  }
+}
+
+.nav-volumes {
+  border-left: 2px solid #fbc57e;
+
+  &.active {
+    background-color: #fbc57e;
+  }
+}
+
+.nav-api {
+  border-left: 2px solid #8be5ff;
+
+  &.active {
+    background-color: #8be5ff;
   }
 }
 
