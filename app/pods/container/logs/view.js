@@ -1,9 +1,26 @@
+import Ember from 'ember';
 import Overlay from 'ui/pods/overlay/view';
 import ThrottledResize from 'ui/mixins/throttled-resize';
+import Util from 'ui/utils/util';
+
+var typeClass = {
+  0: 'log-combined',
+  1: 'log-stdout',
+  2: 'log-stderr',
+};
 
 export default Overlay.extend(ThrottledResize,{
   status: 'Connecting...',
   socket: null,
+
+  onlyCombinedLog: Ember.computed.alias('context.instance.tty'),
+  which: 'combined',
+  isCombined: Ember.computed.equal('which','combined'),
+  isStdOut: Ember.computed.equal('which','stdout'),
+  isStdErr: Ember.computed.equal('which','stderr'),
+
+  stdErrVisible: true,
+  stdOutVisible: true,
 
   actions: {
     overlayClose: function() {
@@ -17,18 +34,25 @@ export default Overlay.extend(ThrottledResize,{
     },
 
     scrollToTop: function() {
-      var body = this.$('.log-body')[0];
-      body.scrollTop = 0;
+      this.$('.log-body').animate({ scrollTop: '0px'});
     },
 
     scrollToBottom: function() {
-      var body = this.$('.log-body')[0];
-      body.scrollTop = body.scrollHeight;
-    }
+      var body = this.$('.log-body');
+      body.stop().animate({ scrollTop: body[0].scrollHeight+'px'});
+    },
+
+    changeShow: function(which) {
+      this.set('which',which);
+      this.set('stdErrVisible', (which === 'combined' || which === 'stderr') );
+      this.set('stdOutVisible', (which === 'combined' || which === 'stdout') );
+      Ember.run.next(this, function() {
+        this.send('scrollToBottom');
+      });
+    },
   },
 
   didInsertElement: function() {
-    var self = this;
     this._super();
 
     var url = this.get('context.url') +'?token='+ encodeURIComponent(this.get('context.token'));
@@ -38,18 +62,28 @@ export default Overlay.extend(ThrottledResize,{
     var body = this.$('.log-body')[0];
     var $body = $(body);
 
-    self.set('status','Initializing...');
-    socket.onopen = function() {
-      self.set('status','Connected');
+    this.set('status','Initializing...');
+    socket.onopen = () => {
+      this.set('status','Connected');
     };
 
-    socket.onmessage = function(message) {
-      self.set('status','Connected');
+    socket.onmessage = (message) => {
+      this.set('status','Connected');
 
       var isFollow = ($body.scrollTop() + $body.outerHeight() + 10) >= body.scrollHeight;
 
-      message.data.trim().split(/\n/).forEach(function(line) {
-        body.insertAdjacentHTML('beforeend', '<div class="log-msg">' + line + '</div>');
+      //var framingVersion = message.data.substr(0,1); -- Always 0
+      var type = parseInt(message.data.substr(1,1),10); // 0 = combined, 1 = stdout, 2 = stderr
+
+      message.data.substr(2).trim().split(/\n/).forEach((line) => {
+        var [match, dateStr] = line.trim().match(/^\[?([^ \]]+)\]? /);
+        var date = new Date(dateStr);
+        body.insertAdjacentHTML('beforeend',
+          '<div class="log-msg '+ typeClass[type]  +'">' +
+            '<span class="log-date">' + Util.escapeHtml(date.toLocaleDateString()) + ' ' + Util.escapeHtml(date.toLocaleTimeString()) + '</span>' +
+            Util.escapeHtml(line.substr(match.length)) +
+          '</div>'
+        );
       });
 
       if ( isFollow )
@@ -58,16 +92,17 @@ export default Overlay.extend(ThrottledResize,{
       }
     };
 
-    socket.onclose = function() {
-      self.set('status','Disconnected');
+    socket.onclose = () => {
+      this.set('status','Disconnected');
     };
   },
 
   onResize: function() {
-    this.$('.log-body').css('max-height', ($(window).height() - 200) + 'px');
+    this.$('.log-body').css('max-height', Math.max(200, ($(window).height() - 230)) + 'px');
   },
 
   willDestroyElement: function() {
+    this._super();
     this.set('status','Closed');
 
     var socket = this.get('socket');

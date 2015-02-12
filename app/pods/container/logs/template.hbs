@@ -1,7 +1,18 @@
 {{#with instance as container controller="container"}}
-  <h1><i class="fa fa-file-text-o"></i> Logs: {{container.displayName}}</h1>
+  <h2>
+    <i class="fa fa-file-text-o"></i> Logs: {{container.displayName}}
+  </h2>
 {{/with}}
-<pre class="log-body">
+{{#if view.onlyCombinedLog}}
+  <div class="text-muted"><b>Note:</b> Only combined stdout/stderr logs are available for this container because it was run with the TTY (-t) flag.</div>
+{{else}}
+  <ul class="nav nav-tabs">
+    <li role="presentation" {{bind-attr class="view.isCombined:active"}}><a {{action "changeShow" "combined" target="view"}}>Combined</a></li>
+    <li role="presentation" {{bind-attr class="view.isStdOut:active"}}><a {{action "changeShow" "stdout" target="view"}}>StdOut</a></li>
+    <li role="presentation" {{bind-attr class="view.isStdErr:active"}}><a {{action "changeShow" "stderr" target="view"}}>StdErr</a></li>
+  </ul>
+{{/if}}
+<pre {{bind-attr class=":log-body view.stdErrVisible::hide-stderr view.stdOutVisible::hide-stdout"}}>
 </pre>
 <div class="footer-actions">
   <div class="console-status text-muted">{{view.status}}</div>

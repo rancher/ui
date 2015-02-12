@@ -44,11 +44,26 @@ export function popupWindowOptions(width,height) {
   return optStr;
 }
 
+var entityMap = {
+  "&": "&amp;",
+  "<": "&lt;",
+  ">": "&gt;",
+  '"': '&quot;',
+  "'": '&#39;',
+  "/": '&#x2F;'
+};
+export function escapeHtml(html) {
+  return String(html).replace(/[&<>"'\/]/g, function (s) {
+    return entityMap[s];
+  });
+}
+
 var Util = {
   arrayDiff: arrayDiff,
   arrayIntersect: arrayIntersect,
   download: download,
-  popupWindowOptions: popupWindowOptions
+  popupWindowOptions: popupWindowOptions,
+  escapeHtml: escapeHtml
 };
 
 window.Util = Util;
