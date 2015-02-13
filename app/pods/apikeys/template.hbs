@@ -30,7 +30,7 @@
         <th width="140">&nbsp;</th>
       </tr>
       {{#each key in arrangedContent itemController="apikey"}}
-        <tr class="resource-action-hover">
+        <tr>
           <td {{bind-attr class="key.stateColor"}}>
             <i {{bind-attr class=":fa key.stateIcon"}}></i> {{key.displayState}}
           </td>
@@ -44,7 +44,7 @@
             <div>{{#if key.publicValue}}{{key.publicValue}}{{else}}<span class="text-muted text-italic">No public value</span>{{/if}}</div>
           </td>
           <td align="right">
-            {{resource-actions model=key choices=key.availableActions}}
+            {{resource-actions-menu model=key choices=key.availableActions}}
           </td>
         </tr>
       {{else}}

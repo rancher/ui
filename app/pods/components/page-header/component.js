@@ -22,10 +22,13 @@ export default Ember.Component.extend({
   },
 
   projectChoices: function() {
-    var out = this.get('projects').slice();
+    var out = this.get('projects').slice().filter(function(item) {
+      return item.get('state') === 'active';
+    });
     out.unshift(this.get('defaultProject'));
+
     return out;
-  }.property('defaultProject','projects.@each.{id,displayName}'),
+  }.property('defaultProject','projects.@each.{id,displayName,state}'),
 
   actions: {
     switchProject: function(id) {

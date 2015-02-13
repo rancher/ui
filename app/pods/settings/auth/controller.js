@@ -137,7 +137,7 @@ export default Ember.ObjectController.extend({
         }).then(() => {
           if ( expect === false )
           {
-            hide();
+            window.location.href = window.location.href;
           }
           else
           {
@@ -146,7 +146,7 @@ export default Ember.ObjectController.extend({
         }).catch(() => {
           if ( expect === true )
           {
-            hide();
+            window.location.href = window.location.href;
           }
           else
           {
