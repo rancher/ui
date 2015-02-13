@@ -9,7 +9,16 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     },
 
     delete: function() {
-      return this.delete();
+      return this.delete().then(() => {
+        if ( this.get('id') === this.get('session.projectId') )
+        {
+          this.send('switchProject', undefined);
+        }
+      });
+    },
+
+    activate: function() {
+      return this.doAction('activate');
     },
 
     restore: function() {
@@ -80,18 +89,23 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     return this.get('session.projectId') === this.get('id');
   }.property('session.projectId','id'),
 
+  canRemove: function() {
+    return ['removing','removed','purging','purged'].indexOf(this.get('state')) === -1;
+  }.property('state'),
+
   availableActions: function() {
     var a = this.get('actions');
 
     var choices = [
       { label: 'Edit',          icon: 'fa-edit',          action: 'edit',         enabled: !!a.update },
+      { label: 'Activate',      icon: 'fa-arrow-up',      action: 'activate',     enabled: !!a.activate},
       { label: 'Restore',       icon: 'fa-ambulance',     action: 'restore',      enabled: !!a.restore },
-      { label: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
+      { label: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: this.get('canRemove'), altAction: 'delete' },
       { label: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge },
     ];
 
     return choices;
-  }.property('actions.{update,restore,remove,purge}'),
+  }.property('actions.{update,restore,remove,purge}','canRemove'),
 });
 
 ProjectController.reopenClass({

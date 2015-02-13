@@ -9,7 +9,6 @@
   <div class="well">
     <p>Rancher supports grouping resources into multiple <b>projects</b>.  Each project gets its own set of hosts and other resources, and is owned by a single GitHub user, team or organization.</p>
     <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; projects to keep logical environments isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; project to a small team.</p>
-    <p><b>Note:</b> You cannot currently delete projects.  (The cloud only scales up&trade;)</p>
   </div>
 
   <div>
@@ -26,7 +25,7 @@
         <th width="140">&nbsp;</th>
       </tr>
       {{#each p in arrangedContent itemController="project"}}
-        <tr class="resource-action-hover">
+        <tr>
           <td {{bind-attr class="p.stateColor"}}>
             <i {{bind-attr class=":fa p.stateIcon"}}></i> {{p.displayState}}
           </td>
@@ -38,7 +37,7 @@
             {{github-block type=p.githubType login=p.githubLogin}}
           </td>
           <td align="right">
-            {{resource-actions model=p choices=p.availableActions}}
+            {{resource-actions-menu model=p choices=p.availableActions}}
           </td>
         </tr>
       {{else}}
