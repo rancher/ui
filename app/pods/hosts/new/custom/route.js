@@ -1,6 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  activate: function() {
+    this.controllerFor('hosts/new').set('lastRoute','hosts.new.custom');
+  },
+
   model: function() {
     var self = this;
     return self.get('store').find('registrationToken').then(function(tokens) {

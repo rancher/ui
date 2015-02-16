@@ -28,6 +28,7 @@ Router.map(function() {
     this.resource('hosts', { path: '/hosts'}, function() {
       this.route('new', {path: '/new'}, function() {
         this.route('digitalocean');
+        this.route('openstack');
         this.route('custom');
       });
 

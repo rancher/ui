@@ -27,12 +27,14 @@
         <th width="120">State</th>
         <th>Name<br/><span class="text-muted">Description</span></th>
         <th>Created<br/><span class="text-muted">Username</span></th>
-        <th width="140">&nbsp;</th>
+        <th width="50">&nbsp;</th>
       </tr>
       {{#each key in arrangedContent itemController="apikey"}}
         <tr>
-          <td {{bind-attr class="key.stateColor"}}>
-            <i {{bind-attr class=":fa key.stateIcon"}}></i> {{key.displayState}}
+          <td>
+            <span {{bind-attr class=":badge :state key.stateBackground"}}>
+              {{key.displayState}}
+            </span>
           </td>
           <td>
             {{#if key.name}}{{key.displayName}}{{else}}<span class="text-muted text-italic">No name</span>{{/if}}

@@ -1,16 +1,28 @@
+<section class="grid-header">
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>Containers ({{instances.length}})</h3>
+    </div>
+    <div class="col-sm-6 text-right">
+      <button {{action "newContainer"}} class="btn btn-sm btn-primary">Add Container</button>
+    </div>
+  </div>
+</section>
 <section class="instances">
-  <table class="table fixed" style="margin-bottom: 0">
+  <table class="table fixed" style="margin-bottom: 0;">
     <tr>
       <th width="120">State</th>
       <th>Name</th>
       <th>IP Address</th>
       <th>Created</th>
-      <th width="140">&nbsp;</th>
+      <th width="50">&nbsp;</th>
     </tr>
     {{#each container in instances itemController="container"}}
       <tr>
-        <td {{bind-attr class="container.stateColor"}}>
-          <i {{bind-attr class=":fa container.stateIcon"}}></i> {{container.displayState}}
+        <td>
+          <span {{bind-attr class=":badge :state container.stateBackground"}}>
+            {{container.displayState}}
+          </span>
         </td>
         <td>
           {{#link-to "container" container.id}}{{container.displayName}}{{/link-to}}

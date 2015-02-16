@@ -13,13 +13,13 @@ export default Ember.Route.extend({
     },
 
     loading: function(transition/*, originRoute*/) {
-      console.log('Loading action...');
+      //console.log('Loading action...');
       $('#loading-underlay').show().fadeIn({duration: 100, queue: false, easing: 'linear', complete: function() {
         $('#loading-overlay').show().fadeIn({duration: 200, queue: false, easing: 'linear'});
       }});
 
       transition.finally(function() {
-        console.log('Loading action done...');
+        //console.log('Loading action done...');
         $('#loading-underlay').fadeOut({duration: 100, queue: false, easing: 'linear', complete: function() {
           $('#loading-overlay').fadeOut({duration: 200, queue: false, easing: 'linear'});
         }});

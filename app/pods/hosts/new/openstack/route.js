@@ -2,23 +2,25 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   activate: function() {
-    this.controllerFor('hosts/new').set('lastRoute','hosts.new.digitalocean');
+    this.controllerFor('hosts/new').set('lastRoute','hosts.new.openstack');
   },
 
   model: function() {
     var store = this.get('store');
 
     var config = store.createRecord({
-      type: 'digitaloceanConfig',
-      accessToken: '',
-      size: '512mb',
-      region: 'nyc3',
-      image: 'ubuntu-14-04-x64'
+      type: 'openstackConfig',
+      authUrl: '',
+      username: '',
+      password: '',
+      tenantName: '',
+      flavorName: '',
+      imageName: '',
     });
 
     return this.get('store').createRecord({
       type: 'machine',
-      digitaloceanConfig: config,
+      openstackConfig: config,
     });
   },
 
@@ -28,6 +30,6 @@ export default Ember.Route.extend({
   },
 
   renderTemplate: function() {
-    this.render('hosts/new/digitalocean', {into: 'hosts/new'});
+    this.render('hosts/new/openstack', {into: 'hosts/new'});
   },
 });

@@ -1,12 +1,14 @@
 import Ember from 'ember';
 
 var DRIVERS = [
-  {route: 'hosts.new.digitalocean',  label: 'DigitalOcean'},
-  {route: 'hosts.new.custom',        label: 'Custom/Bare Metal'},
+  {route: 'hosts.new.digitalocean',   label: 'DigitalOcean'},
+  {route: 'hosts.new.openstack',      label: 'OpenStack'},
+  {route: 'hosts.new.custom',         label: 'Custom/Bare Metal'},
 ];
 
 export default Ember.ObjectController.extend({
   needs: ['application'],
+  lastRoute: 'hosts.new.digitalocean',
   drivers: DRIVERS,
 
   registrationUrl: function() {
