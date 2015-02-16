@@ -2,7 +2,6 @@ import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
 var ContainerController = Cattle.TransitioningResourceController.extend({
-  needs: ['hosts'],
   icon: 'fa-tint',
 
   actions: {

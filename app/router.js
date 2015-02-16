@@ -34,8 +34,10 @@ Router.map(function() {
         this.route('delete');
       });
 
-      this.resource('containers', { path: '/containers'}, function() {
-        this.route('new', {path: '/new'});
+      this.route('index', {path: '/'}, function() {
+        this.resource('containers', { path: '/containers'}, function() {
+          this.route('new', {path: '/new'});
+        });
       });
     });
 
