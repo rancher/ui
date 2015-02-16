@@ -28,15 +28,15 @@ Router.map(function() {
     this.resource('hosts', { path: '/hosts'}, function() {
       this.route('new', {path: '/new'});
 
-      this.resource('containers', { path: '/'}, function() {
-        this.route('new', {path: '/new-container'});
+      this.resource('host', { path: '/:host_id' }, function() {
+        this.route('index', { path: '/monitoring'});
+        this.route('containers', { path: '/containers'});
+        this.route('delete');
       });
-    });
 
-    this.resource('host', { path: '/hosts/:host_id' }, function() {
-      this.route('index', { path: '/monitoring'});
-      this.route('containers', { path: '/containers'});
-      this.route('delete');
+      this.resource('containers', { path: '/containers'}, function() {
+        this.route('new', {path: '/new'});
+      });
     });
 
     this.resource('container', { path: '/containers/:container_id' }, function() {

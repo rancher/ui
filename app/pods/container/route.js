@@ -71,8 +71,7 @@ export default Ember.Route.extend({
     });
   },
 
-  render: function() {
-    this._super.apply(this,arguments);
+  activate: function() {
     this.send('setPageLayout', {label: 'Container', backRoute: 'hosts'});
   },
 });
