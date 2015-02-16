@@ -16,6 +16,13 @@ module.exports = function(environment) {
       }
     },
 
+    minifyCSS: {
+        enabled: false
+    },
+    minifyJS: {
+        enabled: false
+    },
+
     torii: {
       // This is configured at runtime, but torii complains
       // on startup if there's no entry in the environment
