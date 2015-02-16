@@ -1,5 +1,5 @@
 <div class="host-header">
-  {{resource-actions-menu model=model choices=model.availableActions addAction="newContainer"}}
+  {{resource-actions-menu model=model choices=model.availableActions}}
 
   <div {{bind-attr class=":host-state stateBackground"}}>{{model.displayState}}</div>
   <div class="host-icon"><i {{bind-attr class=":fa :fa-lg model.stateIcon iconColor"}}></i></div>
@@ -18,8 +18,7 @@
   {{else}}
     {{#each item in model.arrangedInstances itemController="container"}}
       {{container-widget model=item}}
-    {{else}}
-      <div class="text-center text-muted">No containers</div>
     {{/each}}
+    {{add-container-widget action="newContainer"}}
   {{/if}}
 </div>
