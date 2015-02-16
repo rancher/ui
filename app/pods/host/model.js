@@ -58,7 +58,7 @@ var Host = Cattle.TransitioningResource.extend({
 });
 
 Host.reopenClass({
-  alwaysInclude: ['agent','instances','zone','ipAddresses'],
+  alwaysInclude: ['agent','instances','ipAddresses'],
 
   // Remap the host fields to host+[Field] so that the regular names can be a computed combination of host + agent status.
   mangleIn: function(data) {

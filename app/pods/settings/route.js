@@ -1,8 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  renderTemplate: function() {
-    this.send('setPageName','Settings');
-    this._super();
+  activate: function() {
+    this.send('setPageLayout', {label: 'Settings'});
   },
 });

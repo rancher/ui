@@ -97,6 +97,20 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.controller.set('pageName',str);
     },
 
+    setPageLayout: function(opt) {
+      this.controller.set('pageName', opt.label || '');
+      this.controller.set('backRoute', opt.backRoute || null);
+
+      if ( typeof opt.hasAside === 'undefined' )
+      {
+        this.controller.set('hasAside', false);
+      }
+      else
+      {
+        this.controller.set('hasAside', !!opt.hasAside);
+      }
+    },
+
     // Raw message from the WebSocket
     wsMessage: function(/*data*/) {
       //console.log('wsMessage',data);

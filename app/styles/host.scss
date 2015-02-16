@@ -1,36 +1,16 @@
-$host_column_width: 265px;
-$instance_column_width: $host_column_width - 20px;
+$instance_column_width: 240px;
 $host_border: #f9fafc;
 $host_bg: white;
 $instance_ip: #9a9a9a;
 $instance_action: #ededed;
-
-.zone LABEL {
-  color: #60676d;
-}
 
 .hosts {
   overflow: visible;
   white-space: nowrap;
 }
 
-.host-zone {
-  border-bottom: 1px solid #dde0e5;
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  H3 {
-    font-weight: normal;
-    color: #60676d;
-    margin: 10px 0;
-  }
-}
-
 .host-column {
-  width: $host_column_width;
-  margin: 0 10px 10px 0;
+  /* width and margin are set dynamically in pods/hosts/view.js */
   display: inline-block;
   vertical-align: top;
 
@@ -40,8 +20,14 @@ $instance_action: #ededed;
 }
 
 .instance-column {
-  @extend .host-column;
   width: $instance_column_width;
+
+  display: inline-block;
+  vertical-align: top;
+
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
 .instances .instance-column {
@@ -133,13 +119,31 @@ $instance_action: #ededed;
 }
 
 .add-host {
-  color: #5fcf80;
+  color: #d2d7de;
   background-color: transparent;
   border: 2px dashed;
   text-align: center;
   cursor: pointer;
   cursor: hand;
   padding: 10px;
+  min-height: 200px;
+  padding-top: 65px;
+
+  &:hover {
+    color: #999;
+  }
+}
+
+.add-container {
+  font-size: 13px;
+  color: #d2d7de;
+  background-color: transparent;
+  border: 2px dashed !important;
+  cursor: pointer;
+  cursor: hand;
+  text-align: center;
+  font-size: 13px;
+  line-height: 29px;
 
   &:hover {
     color: #999;
@@ -174,6 +178,7 @@ $instance_action: #ededed;
 .instance {
   position: relative;
   padding: 5px 10px;
+  min-height: 45px;
   background-color: white;
   border: 1px solid $host_border;
 
@@ -225,6 +230,10 @@ $instance_action: #ededed;
 .instance:hover,
 .touch .instance {
   padding-right: 31px;
+
+  &.add-container {
+    padding-right: 10px;
+  }
 }
 
 
@@ -258,6 +267,11 @@ $instance_action: #ededed;
     .progress, .progress-bar {
       border-bottom-right-radius: 5px;
     }
+  }
+
+  &:nth-child(odd).add-container {
+    width: 100%;
+    border-bottom-right-radius: 5px;
   }
 }
 

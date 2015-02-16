@@ -1,6 +1,7 @@
 $body_bg: #f4f5f8;
 $header_height: 53px;
 $header_text: #343434;
+$header_link_text: #afb9c8;
 $nav_width: 90px;
 //$nav_bg: #26c0c9;
 //$nav_text: #81e6e6;
@@ -10,33 +11,7 @@ $nav_bg: #283036;
 $nav_text: white;
 $nav_bg_hover: #283036;
 $nav_text_hover: white;
-
-/**********
-* Fonts
-**********/
-@font-face {
-    font-family: 'open_sansregular';
-    src: url('fonts/opensans-regular-webfont.eot');
-    src: url('fonts/opensans-regular-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/opensans-regular-webfont.woff2') format('woff2'),
-         url('fonts/opensans-regular-webfont.woff') format('woff'),
-         url('fonts/opensans-regular-webfont.ttf') format('truetype'),
-         url('fonts/opensans-regular-webfont.svg#open_sansregular') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'open_sanssemibold';
-    src: url('fonts/opensans-semibold-webfont.eot');
-    src: url('fonts/opensans-semibold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('fonts/opensans-semibold-webfont.woff2') format('woff2'),
-         url('fonts/opensans-semibold-webfont.woff') format('woff'),
-         url('fonts/opensans-semibold-webfont.ttf') format('truetype'),
-         url('fonts/opensans-semibold-webfont.svg#open_sanssemibold') format('svg');
-    font-weight: normal;
-    font-style: normal;
-}
+$aside_width: 200px;
 
 /**********
 * Body
@@ -48,6 +23,11 @@ HTML {
 BODY {
   background-color: $body_bg;
   min-height: 100%;
+  font-weight: 400;
+}
+
+B {
+  font-weight: 600;
 }
 
 .farm {
@@ -92,7 +72,7 @@ NAV {
 
   LI {
     margin: 0;
-    padding: 10px 0 5px 0;
+    padding: 15px 0 5px 0;
     list-style-type: none;
     text-align: center;
     cursor: pointer;
@@ -108,17 +88,13 @@ NAV {
   }
 
   LI:hover,
-  LI.active,
-  LI.active A,
-  LI.active A:active,
-  LI.active A:hover,
-  LI.active A:visited,
-  LI:hover A,
-  LI:hover A:active,
-  LI:hover A:hover,
-  LI:hover A:visited {
+  LI.active {
     color: $nav_text_hover;
     background-color: $nav_bg_hover;
+
+    A, A:active, A:hover, A:visited {
+      color: $nav_text_hover;
+    }
   }
 }
 
@@ -126,21 +102,33 @@ NAV {
 * Header (top bar)
 **********/
 HEADER {
-  margin-left: $nav_width;
   height: $header_height;
   z-index: 2;
   background-color: $body_bg;
+
+  margin-left: $nav_width;
+  &.has-aside {
+    margin-left: $nav_width + $aside_width;
+  }
 
   .full-height {
     line-height: $header_height - 1;
   }
 
-  H2 {
+  H3 {
     font-weight: normal;
     margin: 0;
     line-height: $header_height - 1;
     color: $header_text;
     padding-left: 20px;
+
+    A,
+    A:visited,
+    A:hover,
+    A:focus {
+      text-decoration: none;
+      color: $header_link_text;
+    }
   }
 
   .right {
@@ -154,6 +142,10 @@ HEADER {
 **********/
 MAIN {
   margin-left: $nav_width;
+
+  &.has-aside {
+    margin-left: ($nav_width + $aside_width);
+  }
 }
 
 /**********
@@ -162,6 +154,91 @@ MAIN {
 SECTION {
   padding: 20px 20px 0 20px;
 }
+
+/**********
+* Aside (secondary bar next to left NAV)
+**********/
+ASIDE {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: $nav_width;
+  width: $aside_width;
+  z-index: 2;
+  padding: 20px 20px 0 20px;
+  color: white;
+
+  UL.links {
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    LI {
+      padding: 5px 0 4px 8px;
+      cursor: pointer;
+
+      &.active {
+        background-color: #5ebeaf;
+        border-radius: 4px;
+      }
+
+      A,
+      A:hover,
+      A:focus,
+      A:visited {
+        font-weight: 600;
+        color: white;
+        text-decoration: none;
+
+        I {
+          margin-right: 5px;
+        }
+
+        clear: both;
+        .badge {
+          float: right;
+          background-color: transparent;
+        }
+      }
+    }
+  }
+
+  UL.info {
+
+  }
+
+  LABEL {
+    color: #b4e1da
+  }
+
+}
+
+/**********
+* Colors for NAV and ASIDE
+**********/
+.nav-hosts {
+  border-left: 2px solid #44b4a2;
+
+  &.active {
+    background-color: #44b4a2;
+  }
+}
+
+.nav-volumes {
+  border-left: 2px solid #fbc57e;
+
+  &.active {
+    background-color: #fbc57e;
+  }
+}
+
+.nav-api {
+  border-left: 2px solid #8be5ff;
+
+  &.active {
+    background-color: #8be5ff;
+  }
+}
+
 
 /**********
 * Misc common global things
@@ -284,12 +361,3 @@ TABLE.graphs {
   cursor: pointer;
   cursor: hand;
 }
-
-@media screen and (-webkit-min-device-pixel-ratio:0) { 
-  select:focus,
-  textarea:focus,
-  input:focus {
-    font-size: 1em;
-  }
-}
-

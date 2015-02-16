@@ -1,0 +1,33 @@
+<section class="instances">
+  <table class="table fixed" style="margin-bottom: 0">
+    <tr>
+      <th width="120">State</th>
+      <th>Name</th>
+      <th>IP Address</th>
+      <th>Created</th>
+      <th width="140">&nbsp;</th>
+    </tr>
+    {{#each container in instances itemController="container"}}
+      <tr>
+        <td {{bind-attr class="container.stateColor"}}>
+          <i {{bind-attr class=":fa container.stateIcon"}}></i> {{container.displayState}}
+        </td>
+        <td>
+          {{#link-to "container" container.id}}{{container.displayName}}{{/link-to}}
+        </td>
+        <td>
+          {{container.displayIp}}
+        </td>
+        <td>
+          <div class="text-muted">{{date-calendar container.created}}</div>
+        </td>
+        <td align="right">
+          {{resource-actions-menu model=container choices=container.availableActions}}
+        </td>
+      </tr>
+    {{else}}
+      <tr><td colspan="4" class="text-center text-muted">This host does not have any containers yet.</td></tr>
+    {{/each}}
+  </table>
+</section>
+

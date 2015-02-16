@@ -4,9 +4,11 @@ import Project from "ui/pods/project/model";
 export default Ember.Component.extend({
   project: null,
   projects: null,
+  hasAside: null,
 
   tagName: 'header',
   classNames: ['clearfix'],
+  classNameBindings: ['hasAside'],
 
   defaultProject: null,
   init: function() {

@@ -4,8 +4,9 @@ export default Ember.Component.extend({
   model: null,
   currentController: null,
 
-  classNames: ['host','add-host'],
+  classNames: ['instance','add-container'],
+
   click: function() {
-    this.get('currentController').transitionToRoute('hosts.new');
+    this.sendAction();
   }
 });

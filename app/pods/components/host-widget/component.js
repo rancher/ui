@@ -6,6 +6,12 @@ export default Ember.Component.extend(HoverActions,{
   classNames: ['host','resource-action-hover'],
   classNameBindings: ['stateBorder'],
 
+  actions: {
+    newContainer: function() {
+      this.get('model').send('newContainer');
+    },
+  },
+
   stateBackground: function() {
     return this.get('model.stateColor').replace("text-","bg-");
   }.property('model.stateColor'),
