@@ -1,0 +1,52 @@
+<div class="row">
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="name">Name</label>
+      {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. host01"}}
+    </div>
+    <div class="form-group">
+      <label for="description">Description</label>
+        {{textarea id="description" value=description classNames="form-control no-resize" rows="3" placeholder="e.g. My OpenStack host"}}
+    </div>
+  </div>
+
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="authUrl">Keystone URL</label>
+      {{input id="authUrl" type="text" value=openstackConfig.authUrl classNames="form-control" placeholder="The URL for your Keystone endpoint"}}
+    </div>
+
+    <div class="row">
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="username">Username</label>
+          {{input id="username" type="text" value=openstackConfig.username classNames="form-control" placeholder="Keystone Username"}}
+        </div>
+      </div>
+      <div class="col-sm-6">
+        <div class="form-group">
+          <label for="password">Password</label>
+          {{input id="password" type="password" value=openstackConfig.password classNames="form-control" placeholder="Keystone Password"}}
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="tenantName">Tenant Name</label>
+      {{input id="tenantName" type="text" value=openstackConfig.tenantName classNames="form-control" placeholder="Name of the tenant to deploy into"}}
+    </div>
+
+    <div class="form-group">
+      <label for="flavorName">Flavor Name</label>
+      {{input id="flavorName" type="text" value=openstackConfig.flavorName classNames="form-control" placeholder="Name of the flavor to use"}}
+    </div>
+
+    <div class="form-group">
+      <label for="imageName">Image Name</label>
+      {{input id="imageName" type="text" value=openstackConfig.imageName classNames="form-control" placeholder="Name of the image to use"}}
+    </div>
+
+  </div>
+</div>
+{{partial "save-cancel"}}

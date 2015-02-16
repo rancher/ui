@@ -17,11 +17,13 @@ export default Ember.View.extend(ThrottledResize, {
 
     //console.log('section:',sectionWidth,'margin:',columnMargin,'logical:',logicalWidth,'count:',columnCount,'width:',columnWidth);
 
-    this.$('.host-column').css('width', columnWidth+'px');
-
     this.setProperties({
       sectionWidth: sectionWidth,
       columnCount: columnCount
+    });
+
+    Ember.run.next(this, () => {
+      this.$('.host-column').css('width', columnWidth+'px');
     });
   },
 

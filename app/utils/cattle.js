@@ -248,6 +248,11 @@ var TransitioningResourceController = ResourceController.extend({
     return this.constructor.defaultStateColor;
   }.property('state','transitioning'),
 
+  stateBackground: function() {
+    return this.get('stateColor').replace("text-","bg-");
+  }.property('stateColor'),
+
+
   doAction: function(/*arguments*/) {
     var model = this.get('model');
     return model.doAction.apply(model,arguments);

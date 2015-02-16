@@ -8,7 +8,8 @@ export default Ember.Mixin.create({
 
     this.set('boundResize', this.triggerResize.bind(this));
     $(window).on('resize', this.get('boundResize'));
-    this.onResize();
+    $(window).on('focus', this.get('boundResize'));
+    Ember.run.next(this,'onResize');
   },
 
   triggerResize: function() {
@@ -21,5 +22,6 @@ export default Ember.Mixin.create({
 
   willDestroyElement: function() {
     $(window).off('resize', this.get('boundResize'));
+    $(window).off('focus', this.get('boundResize'));
   },
 });

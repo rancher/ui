@@ -28,7 +28,7 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
       var obj = port.obj;
       if ( neu !== Ember.get(obj,'publicPort') )
       {
-        console.log('Changing port',obj.serialize(),'to',neu);
+        //console.log('Changing port',obj.serialize(),'to',neu);
         obj.set('publicPort', neu);
         promises.push(obj.save());
       }
@@ -44,7 +44,7 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
       var obj = link.obj;
       if ( neu !== Ember.get(obj,'targetInstanceId') )
       {
-        console.log('Changing link',obj.serialize(),'to',neu);
+        //console.log('Changing link',obj.serialize(),'to',neu);
         obj.set('targetInstanceId', neu);
         promises.push(obj.save());
       }

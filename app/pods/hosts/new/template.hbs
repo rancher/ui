@@ -7,15 +7,15 @@
   </div>
 {{/if}}
 
-<ol>
-  <li>Start up a server somewhere &amp; install the latest version of <a href="http://www.docker.com/" target="_blank">Docker</a> on it</li>
-  <li>Copy, paste, and run the command below to register the host with Rancher:
-    <pre style="font-size: 11px; margin: 10px 0; white-space: pre-wrap;">{{#if registrationUrl}}docker run --rm -it --privileged -v /var/run/docker.sock:/var/run/docker.sock rancher/agent {{registrationUrl}}{{else}}Reticulating Splines...{{/if}}</pre>
-  </li>
-  <li>Close this window.  The new host should show up on the {{#link-to "hosts"}}Hosts{{/link-to}} screen within a minute.</li>
-</ol>
+<ul class="nav nav-tabs">
+  {{#each driver in drivers}}
+    {{#link-to driver.route tagName="li" href=false}}
+      <a {{bind-attr href=view.href}}>{{driver.label}}</a>
+    {{/link-to}}
+  {{/each}}
+</ul>
 
-<div class="footer-actions">
-  <button {{action "cancel"}} class="btn btn-primary">Close</button>
-</div>
+<section>
+  {{outlet}}
+</section>
 {{partial "overlay-close"}}
