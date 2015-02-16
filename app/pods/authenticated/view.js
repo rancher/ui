@@ -15,7 +15,6 @@ function relativeRelative() {
 
 export default Ember.View.extend({
   classNames: ['authenticated'],
-  classNameBindings: ['context.navExpand:nav-expand'],
   timer: null,
 
   didInsertElement: function() {

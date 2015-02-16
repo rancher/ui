@@ -5,9 +5,9 @@ export default Ember.Route.extend({
     return this.get('store').findAll('apikey');
   },
 
-  renderTemplate: function() {
-    this._super();
-    this.send('setPageName','API');
+  render: function() {
+    this._super.apply(this,arguments);
+    this.send('setPageLayout', {label: 'API'});
   },
 
   actions: {

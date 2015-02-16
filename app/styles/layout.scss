@@ -1,6 +1,7 @@
 $body_bg: #f4f5f8;
 $header_height: 53px;
 $header_text: #343434;
+$header_link_text: #afb9c8;
 $nav_width: 90px;
 //$nav_bg: #26c0c9;
 //$nav_text: #81e6e6;
@@ -10,6 +11,7 @@ $nav_bg: #283036;
 $nav_text: white;
 $nav_bg_hover: #283036;
 $nav_text_hover: white;
+$aside_width: 200px;
 
 /**********
 * Body
@@ -70,7 +72,7 @@ NAV {
 
   LI {
     margin: 0;
-    padding: 10px 0 5px 0;
+    padding: 15px 0 5px 0;
     list-style-type: none;
     text-align: center;
     cursor: pointer;
@@ -96,6 +98,123 @@ NAV {
   }
 }
 
+/**********
+* Header (top bar)
+**********/
+HEADER {
+  height: $header_height;
+  z-index: 2;
+  background-color: $body_bg;
+
+  margin-left: $nav_width;
+  &.has-aside {
+    margin-left: $nav_width + $aside_width;
+  }
+
+  .full-height {
+    line-height: $header_height - 1;
+  }
+
+  H3 {
+    font-weight: normal;
+    margin: 0;
+    line-height: $header_height - 1;
+    color: $header_text;
+    padding-left: 20px;
+
+    A,
+    A:visited,
+    A:hover,
+    A:focus {
+      text-decoration: none;
+      color: $header_link_text;
+    }
+  }
+
+  .right {
+    float: right;
+    padding: 10px 20px 10px 0;
+  }
+}
+
+/**********
+* Main body
+**********/
+MAIN {
+  margin-left: $nav_width;
+
+  &.has-aside {
+    margin-left: ($nav_width + $aside_width);
+  }
+}
+
+/**********
+* Section (within Main)
+**********/
+SECTION {
+  padding: 20px 20px 0 20px;
+}
+
+/**********
+* Aside (secondary bar next to left NAV)
+**********/
+ASIDE {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: $nav_width;
+  width: $aside_width;
+  z-index: 2;
+  padding: 20px 20px 0 20px;
+  color: white;
+
+  UL.links {
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    LI {
+      padding: 5px 0 4px 8px;
+      cursor: pointer;
+
+      &.active {
+        background-color: #5ebeaf;
+        border-radius: 4px;
+      }
+
+      A,
+      A:hover,
+      A:focus,
+      A:visited {
+        font-weight: 600;
+        color: white;
+        text-decoration: none;
+
+        I {
+          margin-right: 5px;
+        }
+
+        clear: both;
+        .badge {
+          float: right;
+          background-color: transparent;
+        }
+      }
+    }
+  }
+
+  UL.info {
+
+  }
+
+  LABEL {
+    color: #b4e1da
+  }
+
+}
+
+/**********
+* Colors for NAV and ASIDE
+**********/
 .nav-hosts {
   border-left: 2px solid #44b4a2;
 
@@ -120,46 +239,6 @@ NAV {
   }
 }
 
-/**********
-* Header (top bar)
-**********/
-HEADER {
-  margin-left: $nav_width;
-  height: $header_height;
-  z-index: 2;
-  background-color: $body_bg;
-
-  .full-height {
-    line-height: $header_height - 1;
-  }
-
-  H2 {
-    font-weight: normal;
-    margin: 0;
-    line-height: $header_height - 1;
-    color: $header_text;
-    padding-left: 20px;
-  }
-
-  .right {
-    float: right;
-    padding: 10px 20px 10px 0;
-  }
-}
-
-/**********
-* Main body
-**********/
-MAIN {
-  margin-left: $nav_width;
-}
-
-/**********
-* Section (within Main)
-**********/
-SECTION {
-  padding: 20px 20px 0 20px;
-}
 
 /**********
 * Misc common global things

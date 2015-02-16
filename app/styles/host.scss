@@ -1,36 +1,16 @@
-$host_column_width: 265px;
-$instance_column_width: $host_column_width - 20px;
+$instance_column_width: 240px;
 $host_border: #f9fafc;
 $host_bg: white;
 $instance_ip: #9a9a9a;
 $instance_action: #ededed;
-
-.zone LABEL {
-  color: #60676d;
-}
 
 .hosts {
   overflow: visible;
   white-space: nowrap;
 }
 
-.host-zone {
-  border-bottom: 1px solid #dde0e5;
-
-  &:last-child {
-    border-bottom: 0;
-  }
-
-  H3 {
-    font-weight: normal;
-    color: #60676d;
-    margin: 10px 0;
-  }
-}
-
 .host-column {
-  width: $host_column_width;
-  margin: 0 10px 10px 0;
+  /* width and margin are set dynamically in pods/hosts/view.js */
   display: inline-block;
   vertical-align: top;
 
@@ -40,8 +20,14 @@ $instance_action: #ededed;
 }
 
 .instance-column {
-  @extend .host-column;
   width: $instance_column_width;
+
+  display: inline-block;
+  vertical-align: top;
+
+  &:last-child {
+    margin-right: 0;
+  }
 }
 
 .instances .instance-column {

@@ -34,6 +34,8 @@ Router.map(function() {
     });
 
     this.resource('host', { path: '/hosts/:host_id' }, function() {
+      this.route('index', { path: '/monitoring'});
+      this.route('containers', { path: '/containers'});
       this.route('delete');
     });
 

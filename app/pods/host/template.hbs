@@ -1,63 +1,54 @@
-{{#if isTransitioning}}
-<div>
-  <div class="progress progress-striped active">
-    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=displayProgress style=progressStyle}}>
-      <span class="sr-only">{{displayProgress}}% Complete</span>
-    </div>
+<aside class="nav-hosts active">
+  <label>Host</label>
+  <h3>{{displayName}}</h3>
+
+  {{#if description}}
+    <label style="margin-top: 10px;">Description</label>
+    <p>{{description}}</p>
+  {{/if}}
+
+  <ul class="list-unstyled links">
+    {{#link-to "host.index" tagName="li"}}
+      <a {{bind-attr href="view.href"}}>
+        <i class="ss-barchart"></i> Monitoring
+      </a>
+    {{/link-to}}
+    {{#link-to "host.containers" tagName="li"}}
+      <a {{bind-attr href="view.href"}}>
+        <i class="ss-box" style="position: relative; top: 1px"></i> Containers <span class="badge">{{arrangedInstances.length}}</span>
+      </a>
+    {{/link-to}}
+  </ul>
+
+  <div class="clearfix">
+    <label>Info</label>
+    {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
   </div>
-</div>
-{{/if}}
 
-<section>
-  <div class="row">
-    <div class="col-sm-6">
-      <h3>{{displayName}}</h3>
-      <div class="text-muted">
-        {{displayIp}}
+  <ul class="list-unstyled info">
+    <li>
+      <i {{bind-attr class=":fa :fa-fw stateIcon"}}></i>
+      {{displayState}}
+    </li>
+    <li>
+      <i class="fa-fw ss-link"></i>
+      {{displayIp}}
+    </li>
+  </ul>
+
+  {{#if isTransitioning}}
+    <div>
+      <div class="progress progress-striped active">
+        <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=displayProgress style=progressStyle}}>
+          <span class="sr-only">{{displayProgress}}% Complete</span>
+        </div>
       </div>
     </div>
-    <div class="col-sm-6 text-right">
-      <h3 {{bind-attr class=":instance-status stateColor"}}>
-        <i {{bind-attr class=":fa stateIcon"}}></i> {{displayState}}
-      </h3>
-      <div {{bind-attr class=":force-wrap isError:text-danger:text-muted showTransitioningMessage::hide"}}>
-        {{transitioningMessage}}
-      </div>
-      <div class="host-actions">
-        {{resource-actions model=this choices=availableActions colors=false}}
-      </div>
-    </div>
+  {{/if}}
+  <div {{bind-attr class=":force-wrap isError:text-danger:text-muted showTransitioningMessage::hide"}}>
+    {{transitioningMessage}}
   </div>
-</section>
 
-{{#if description}}
-  <section>
-    <div class="well">
-      <label>Description</label>
-      {{description}}
-    </div>
-  </section>
-{{/if}}
+</aside>
 
-<section>
-  <div class="well instances">
-    <div class="clearfix">
-      <div class="pull-right">{{#link-to "containers.new" (query-params hostId=model.id) class="btn btn-primary btn-sm"}}<i class="fa fa-plus"></i> Add a Container{{/link-to}}</div>
-      <label>Containers</label>
-    </div>
-    {{#each col in view.columns}}
-      <div class="instance-column">
-        {{#each item in col itemController="container"}}
-          {{container-widget model=item}}
-        {{/each}}
-      </div>
-    {{else}}
-      <div style="padding: 20px; text-align: center;" class="text-muted">
-        No Containers yet.
-      </div>
-    {{/each}}
-  </div>
-</section>
-
-{{partial "stats-cpu-memory"}}
-{{partial "stats-filesystem"}}
+{{outlet}}

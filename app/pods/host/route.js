@@ -6,7 +6,7 @@ export default Ember.Route.extend({
   },
 
   render: function() {
-    this._super();
-    this.send('setPageName','Hosts');
+    this._super.apply(this,arguments);
+    this.send('setPageLayout', {label: 'All Hosts', backRoute: 'hosts', hasAside: true});
   },
 });

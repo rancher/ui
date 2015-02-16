@@ -12,8 +12,8 @@ export default Ember.Route.extend({
     return this.get('store').findAll('host');
   },
 
-  renderTemplate: function() {
-    this._super();
-    this.send('setPageName','Hosts');
+  render: function() {
+    this._super.apply(this,arguments);
+    this.send('setPageLayout', {label: 'Hosts'});
   },
 });
