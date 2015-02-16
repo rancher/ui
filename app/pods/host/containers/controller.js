@@ -6,4 +6,4 @@ export default Ember.ObjectController.extend({
       this.transitionToRoute('containers.new', {queryParams: {hostId: this.get('id')}});
     },
   },
-})
+});
