@@ -52,6 +52,7 @@ app.import('bower_components/d3/d3.js');
 app.import('bower_components/c3/c3.js');
 app.import('bower_components/c3/c3.css');
 app.import('vendor/term.js/src/term.js');
+app.import('vendor/jquery.initialize/jquery.initialize.js');
 app.import('bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js');
 app.import('bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css');
 app.import('bower_components/bootstrap-switch/dist/js/bootstrap-switch.js');

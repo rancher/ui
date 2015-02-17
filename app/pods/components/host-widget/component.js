@@ -4,13 +4,20 @@ import HoverActions from 'ui/mixins/hover-actions';
 export default Ember.Component.extend(HoverActions,{
   model: null,
   classNames: ['host','resource-action-hover'],
-  classNameBindings: ['stateBorder'],
+  classNameBindings: ['stateBorder','isMachine:machine-host'],
 
   actions: {
     newContainer: function() {
       this.get('model').send('newContainer');
     },
   },
+
+  isMachine: Ember.computed.equal('model.type','machine'),
+  isActive: Ember.computed.equal('model.state','active'),
+
+  showAdd: function() {
+    return this.get('isActive') && !this.get('isMachine');
+  }.property('isActive','isMachine'),
 
   stateBackground: function() {
     return this.get('model.stateColor').replace("text-","bg-");
