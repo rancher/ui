@@ -1,8 +1,13 @@
 import {
+  moduleFor,
+  test
+} from 'ember-qunit';
+
+import {
   dateStr
 } from 'ui/helpers/date-str';
 
-module('DateStrHelper');
+moduleFor('helper:date-str');
 
 // Replace this with your real tests.
 test('it works', function(assert) {

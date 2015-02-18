@@ -162,7 +162,7 @@ if [[ $UPLOAD -eq 2 ]]; then
   # Upload new files, with gzip headers (rsync doesn't have this)
   runCmd docker run --rm -v $LATEST_DIR:/latest google/cloud-sdk gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R /latest "${GS_URL}/_latest"
 
-  # Rsync new files into latest dif
+  # Rsync new files into latest diff
   # Beware of the leopard: -m will break rsync on versioned buckets.
   runCmd docker run --rm -v $LATEST_DIR:/latest google/cloud-sdk gsutil -h "${CACHE}" rsync -c -r -d "${GS_URL}/_latest" "${GS_URL}/latest"
 
