@@ -8,7 +8,7 @@ moduleFor('route:container/edit', 'ContainerEditRoute', {
   // needs: ['controller:foo']
 });
 
-test('it exists', function() {
+test('it exists', function(assert) {
   var route = this.subject();
-  ok(route);
+  assert.ok(route);
 });

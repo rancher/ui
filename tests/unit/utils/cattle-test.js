@@ -1,9 +1,14 @@
+import {
+  moduleFor,
+  test
+} from 'ember-qunit';
+
 import cattle from 'ui/utils/cattle';
 
-module('cattle');
+moduleFor('util:cattle');
 
 // Replace this with your real tests.
-test('it works', function() {
+test('it works', function(assert) {
   var result = cattle.ResourceController;
-  ok(result);
+  assert.ok(result);
 });

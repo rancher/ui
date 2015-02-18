@@ -1,11 +1,16 @@
 import {
+  moduleFor,
+  test
+} from 'ember-qunit';
+
+import {
   ucFirst
 } from 'ui/helpers/uc-first';
 
-module('UcFirstHelper');
+moduleFor('helper:uc-first');
 
 // Replace this with your real tests.
-test('it works', function() {
+test('it works', function(assert) {
   var result = ucFirst("things and stuff");
-  ok(result === "Things and stuff");
+  assert.ok(result === "Things and stuff");
 });

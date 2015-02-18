@@ -12,7 +12,7 @@ export default OverlayRoute.extend({
     var self = this;
 
     var dependencies = [
-      this.get('store').find('network', null, {forceReload: true}),
+      this.get('store').find('network')
     ];
 
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then(function(results) {

@@ -1,9 +1,14 @@
+import {
+  moduleFor,
+  test
+} from 'ember-qunit';
+
 import Ember from 'ember';
 import { initialize } from 'ui/initializers/touch';
 
 var container, application;
 
-module('TouchInitializer', {
+moduleFor('initializer:touch', {
   setup: function() {
     Ember.run(function() {
       container = new Ember.Container();
@@ -14,10 +19,10 @@ module('TouchInitializer', {
 });
 
 // Replace this with your real tests.
-test('it works', function() {
+test('it works', function(assert) {
   initialize(container, application);
 
   // you would normally confirm the results of the initializer here
-  ok(true);
+  assert.ok(true);
 });
 

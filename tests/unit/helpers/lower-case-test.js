@@ -1,11 +1,16 @@
 import {
+  moduleFor,
+  test
+} from 'ember-qunit';
+
+import {
   lowerCase
 } from 'ui/helpers/lower-case';
 
-module('LowerCaseHelper');
+moduleFor('helper:lower-case');
 
 // Replace this with your real tests.
-test('it works with strings', function() {
+test('it works with strings', function(assert) {
   var result = lowerCase("HELLO");
-  ok(result === "hello");
+  assert.ok(result === "hello");
 });
