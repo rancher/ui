@@ -9,9 +9,11 @@
 
 <ul class="nav nav-tabs">
   {{#each driver in drivers}}
-    {{#link-to driver.route tagName="li" href=false}}
-      <a {{bind-attr href=view.href}}>{{driver.label}}</a>
-    {{/link-to}}
+    {{#if driver.available}}
+      {{#link-to driver.route tagName="li" href=false}}
+        <a {{bind-attr href=view.href}}>{{driver.label}}</a>
+      {{/link-to}}
+    {{/if}}
   {{/each}}
 </ul>
 

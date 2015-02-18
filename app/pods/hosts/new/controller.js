@@ -1,14 +1,14 @@
 import Ember from 'ember';
 
 var DRIVERS = [
-  {route: 'hosts.new.digitalocean',   label: 'DigitalOcean'},
-  {route: 'hosts.new.openstack',      label: 'OpenStack'},
-  {route: 'hosts.new.custom',         label: 'Custom/Bare Metal'},
+  {route: 'hosts.new.digitalocean',   label: 'DigitalOcean',      available: false },
+  {route: 'hosts.new.openstack',      label: 'OpenStack',         available: false },
+  {route: 'hosts.new.custom',         label: 'Custom/Bare Metal', available: true  },
 ];
 
 export default Ember.ObjectController.extend({
   needs: ['application'],
-  lastRoute: 'hosts.new.digitalocean',
+  lastRoute: DRIVERS.filter((driver) => { return driver.available; })[0].route,
   drivers: DRIVERS,
 
   registrationUrl: function() {
