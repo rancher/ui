@@ -1,6 +1,6 @@
-import Cattle from 'ui/utils/cattle';
+import Ember from 'ember';
 
-export default Cattle.CollectionController.extend({
+export default Ember.ObjectController.extend({
   dot: false,
   queryParams: ['dot'],
 });

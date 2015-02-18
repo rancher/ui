@@ -3,22 +3,51 @@
 
   <div {{bind-attr class=":host-state stateBackground"}}>{{model.displayState}}</div>
   <div class="host-icon"><i {{bind-attr class=":fa :fa-lg model.stateIcon iconColor"}}></i></div>
-  <div class="host-name">{{#link-to "host" model.id}}{{model.displayName}}{{/link-to}}</div>
-</div>
-
-<div class="host-info clearfix">
-  <div class="host-info-item"><i class="ss-link"></i> {{model.displayIp}}</div>
-</div>
-
-<div class="clearfix no-resource-action-hover">
-  {{#if dot}}
-    {{#each item in model.arrangedInstances itemController="container"}}
-      {{container-dot model=item}}
-    {{/each}}
-  {{else}}
-    {{#each item in model.arrangedInstances itemController="container"}}
-      {{container-widget model=item}}
-    {{/each}}
-    {{add-container-widget action="newContainer"}}
+  <div class="host-name">
+    {{#if isMachine}}
+      {{model.displayName}}
+    {{else}}
+      {{#link-to "host" model.id}}{{model.displayName}}{{/link-to}}
+    {{/if}}
+  </div>
+  {{#if model.isTransitioning}}
+    <div class="progress progress-striped active">
+      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=model.displayProgress style=model.progressStyle}}>
+        <span class="sr-only">{{model.displayProgress}}% Complete</span>
+      </div>
+    </div>
   {{/if}}
 </div>
+
+{{#if isMachine}}
+  <div class="machine-info">
+    <i class="fa fa-spinner fa-spin"></i>
+    {{#if isActive}}
+      Waiting for host to check in&hellip;
+    {{else}}
+      Setting up machine&hellip;
+    {{/if}}
+  </div>
+{{else}}
+  <div class="host-info clearfix">
+      <div class="host-info-item"><i class="ss-link"></i> {{model.displayIp}}</div>
+      {{#if model.machine}}
+        <div class="host-info-item"><i class="ss-microwave"></i> {{model.machine.driver}}</div>
+      {{/if}}
+  </div>
+
+  <div class="clearfix no-resource-action-hover">
+    {{#if dot}}
+      {{#each item in model.arrangedInstances itemController="container"}}
+        {{container-dot model=item}}
+      {{/each}}
+    {{else}}
+      {{#each item in model.arrangedInstances itemController="container"}}
+        {{container-widget model=item}}
+      {{/each}}
+      {{#if showAdd}}
+        {{add-container-widget action="newContainer"}}
+      {{/if}}
+    {{/if}}
+  </div>
+{{/if}}

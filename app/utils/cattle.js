@@ -183,8 +183,8 @@ var TransitioningResource = Resource.extend({
 });
 
 TransitioningResource.reopenClass({
-  pollTransitioningDelay: 10000,
-  pollTransitioningInterval: 10000,
+  pollTransitioningDelay: 30000,
+  pollTransitioningInterval: 30000,
 });
 
 var TransitioningResourceController = ResourceController.extend({

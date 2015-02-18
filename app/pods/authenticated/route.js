@@ -162,6 +162,21 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     },
     */
 
+    machineChanged: function(change) {
+      console.log('machine changed:',change);
+    },
+
+    hostChanged: function(change) {
+      // If the host has a physicalHostId, ensure it is in the machine's hosts array.
+      var host = change.data.resource;
+      var machine = this.get('store').getById('machine', host.get('physicalHostId'));
+      if ( machine )
+      {
+        machine.get('hosts').addObject(host);
+      }
+      console.log('host changed:',change);
+    },
+
     containerChanged:       function(change) {
       this._instanceChanged(change);
     },

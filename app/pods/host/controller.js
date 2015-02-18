@@ -12,7 +12,15 @@ var HostController = Cattle.TransitioningResourceController.extend({
     },
 
     delete: function() {
-      return this.delete();
+      var machine = this.get('machine');
+      if ( machine )
+      {
+        return machine.delete();
+      }
+      else
+      {
+        return this.delete();
+      }
     },
 
     purge: function() {
@@ -51,6 +59,10 @@ var HostController = Cattle.TransitioningResourceController.extend({
     {
       return obj.get('address');
     }
+    else if ( this.hasLink('ipAddresses') )
+    {
+      this.importLink('ipAddresses');
+    }
 
     return null;
   }.property('ipAddresses','ipAddresses.[]'),
@@ -61,6 +73,17 @@ var HostController = Cattle.TransitioningResourceController.extend({
       sortProperties: ['name','id']
     });
   }.property('instances.[]','instances.@each.{name,id}'),
+
+  machine: function() {
+    var phid = this.get('physicalHostId');
+    if ( !phid )
+    {
+      return null;
+    }
+
+    var machine = this.get('store').getById('machine', phid);
+    return machine;
+  }.property('physicalHostId')
 });
 
 HostController.reopenClass({

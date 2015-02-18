@@ -1,10 +1,18 @@
 {{#each col in view.columns}}
   <div class="host-column">
-    {{#each host in col itemController="host"}}
-      {{#if host.isNewHostPlaceHolder}}
+    {{#each item in col}}
+      {{#if item.isNewHostPlaceHolder}}
         {{add-host-widget currentController=controller}}
       {{else}}
-        {{host-widget model=host dot=dot}}
+        {{#if item.isPendingMachine}}
+          {{#with item.machine as machine controller="machine"}}
+            {{host-widget model=machine dot=dot}}
+          {{/with}}
+        {{else}}
+          {{#with item as host controller="host"}}
+            {{host-widget model=host dot=dot}}
+          {{/with}}
+        {{/if}}
       {{/if}}
     {{/each}}
   </div>
