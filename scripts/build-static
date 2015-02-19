@@ -164,7 +164,7 @@ if [[ $UPLOAD -eq 2 ]]; then
 
   # Rsync new files into latest diff
   # Beware of the leopard: -m will break rsync on versioned buckets.
-  runCmd docker run --rm -v $LATEST_DIR:/latest google/cloud-sdk gsutil -h "${CACHE}" rsync -c -r -d "${GS_URL}/_latest" "${GS_URL}/latest"
+  runCmd docker run --rm -v $LATEST_DIR:/latest google/cloud-sdk gsutil -h "${CACHE}" rsync -c -r "${GS_URL}/_latest" "${GS_URL}/latest"
 
   # Remove temp dir
   runCmd docker run --rm -v $LATEST_DIR:/latest google/cloud-sdk gsutil rm -a -f -R "${GS_URL}/_latest"
