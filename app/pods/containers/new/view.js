@@ -13,7 +13,7 @@ export default Overlay.extend({
 
     addArgument: function() {
       var self = this;
-      this.controller.send('addArgument');
+      this.get('controller').send('addArgument');
       Ember.run.next(function() {
         self.$('.argument-name').last().focus();
       });
@@ -21,7 +21,7 @@ export default Overlay.extend({
 
     addEnvironment: function() {
       var self = this;
-      this.controller.send('addEnvironment');
+      this.get('controller').send('addEnvironment');
       Ember.run.next(function() {
         self.$('.environment-name').last().focus();
       });
@@ -29,7 +29,7 @@ export default Overlay.extend({
 
     addPort: function() {
       var self = this;
-      this.controller.send('addPort');
+      this.get('controller').send('addPort');
       Ember.run.next(function() {
         self.$('.port-public').last().focus();
       });
@@ -37,7 +37,7 @@ export default Overlay.extend({
 
     addLink: function() {
       var self = this;
-      this.controller.send('addLink');
+      this.get('controller').send('addLink');
       Ember.run.next(function() {
         self.$('.link-container').last().focus();
       });
@@ -45,7 +45,7 @@ export default Overlay.extend({
 
     addVolume: function() {
       var self = this;
-      this.controller.send('addVolume');
+      this.get('controller').send('addVolume');
       Ember.run.next(function() {
         self.$('.volume-path').last().focus();
       });
@@ -53,7 +53,7 @@ export default Overlay.extend({
 
     addVolumeFrom: function() {
       var self = this;
-      this.controller.send('addVolumeFrom');
+      this.get('controller').send('addVolumeFrom');
       Ember.run.next(function() {
         self.$('.volumefrom-container').last().focus();
       });
@@ -61,7 +61,7 @@ export default Overlay.extend({
 
     addDns: function() {
       var self = this;
-      this.controller.send('addDns');
+      this.get('controller').send('addDns');
       Ember.run.next(function() {
         self.$('.dns-value').last().focus();
       });
@@ -69,7 +69,7 @@ export default Overlay.extend({
 
     addDnsSearch: function() {
       var self = this;
-      this.controller.send('addDnsSearch');
+      this.get('controller').send('addDnsSearch');
       Ember.run.next(function() {
         self.$('.dns-search-value').last().focus();
       });
@@ -77,7 +77,7 @@ export default Overlay.extend({
 
     addLxc: function() {
       var self = this;
-      this.controller.send('addLxc');
+      this.get('controller').send('addLxc');
       Ember.run.next(function() {
         self.$('.lxc-key').last().focus();
       });
@@ -85,7 +85,7 @@ export default Overlay.extend({
 
     addDevice: function() {
       var self = this;
-      this.controller.send('addDevice');
+      this.get('controller').send('addDevice');
       Ember.run.next(function() {
         self.$('.device-host').last().focus();
       });
