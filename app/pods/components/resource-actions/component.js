@@ -3,7 +3,6 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   model: null,
   choices: null,
-  big: false,
 
   classNames: ['resource-actions'],
 

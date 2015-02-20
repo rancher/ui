@@ -204,11 +204,11 @@ var TransitioningResourceController = ResourceController.extend({
     var trans = this.get('transitioning');
     if ( trans === 'yes' )
     {
-      return 'fa-cog fa-spin';
+      return 'fa fa-cog fa-spin';
     }
     else if ( trans === 'error' )
     {
-      return 'fa-exclamation-circle text-danger';
+      return 'fa fa-exclamation-circle text-danger';
     }
     else
     {
@@ -300,7 +300,7 @@ var TransitioningResourceController = ResourceController.extend({
 // Override stateMap with a map of state -> icon classes
 TransitioningResourceController.reopenClass({
   stateMap: null,
-  defaultStateIcon: 'fa-question-circle',
+  defaultStateIcon: 'fa fa-question-circle',
   defaultStateColor: ''
 });
 

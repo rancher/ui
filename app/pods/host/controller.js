@@ -44,12 +44,12 @@ var HostController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions');
 
     return [
-//      { label: 'Add Container', icon: 'fa-plus',          action: 'newContainer', enabled: true,            color: 'text-primary' },
-      { label: 'View in API',   icon: 'fa-external-link', action: 'goToApi',      enabled: true},
-      { label: 'Activate',      icon: 'fa-arrow-up',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
-      { label: 'Deactivate',    icon: 'fa-arrow-down',    action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
-      { label: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
-      { label: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge, color: 'text-danger' },
+//      { label: 'Add Container', icon: 'ss-plus',      action: 'newContainer', enabled: true,            color: 'text-primary' },
+      { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true},
+      { label: 'Activate',      icon: 'ss-play',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
+      { label: 'Deactivate',    icon: 'ss-pause',     action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
+      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'Purge',         icon: 'ss-tornado',   action: 'purge',        enabled: !!a.purge, color: 'text-danger' },
     ];
   }.property('actions.{activate,deactivate,remove,purge}'),
 
@@ -88,20 +88,20 @@ var HostController = Cattle.TransitioningResourceController.extend({
 
 HostController.reopenClass({
   stateMap: {
-    'requested':        {icon: 'fa-ticket',       color: 'text-danger'},
-    'registering':      {icon: 'fa-ticket',       color: 'text-danger'},
-    'activating':       {icon: 'fa-ticket',       color: 'text-danger'},
-    'active':           {icon: 'fa-desktop',      color: 'text-success'},
-    'reconnecting':     {icon: 'fa-cog fa-spin',  color: 'text-danger'},
-    'updating-active':  {icon: 'fa-desktop',      color: 'text-success'},
-    'updating-inactive':{icon: 'fa-warning',      color: 'text-danger'},
-    'deactivating':     {icon: 'fa-adjust',       color: 'text-danger'},
-    'inactive':         {icon: 'fa-stop',         color: 'text-danger'},
-    'removing':         {icon: 'fa-trash',        color: 'text-danger'},
-    'removed':          {icon: 'fa-trash',        color: 'text-danger'},
-    'purging':          {icon: 'fa-fire',         color: 'text-danger'},
-    'purged':           {icon: 'fa-fire',         color: 'text-danger'},
-    'restoring':        {icon: 'fa-trash',        color: 'text-danger'},
+    'requested':        {icon: 'ss-tag',            color: 'text-danger'},
+    'registering':      {icon: 'ss-tag',            color: 'text-danger'},
+    'activating':       {icon: 'ss-tag',            color: 'text-danger'},
+    'active':           {icon: 'ss-desktop',        color: 'text-success'},
+    'reconnecting':     {icon: 'fa fa-cog fa-spin', color: 'text-danger'},
+    'updating-active':  {icon: 'ss-desktop',        color: 'text-success'},
+    'updating-inactive':{icon: 'ss-alert',          color: 'text-danger'},
+    'deactivating':     {icon: 'ss-down',           color: 'text-danger'},
+    'inactive':         {icon: 'fa fa-circle',      color: 'text-danger'},
+    'removing':         {icon: 'ss-trash',          color: 'text-danger'},
+    'removed':          {icon: 'ss-trash',          color: 'text-danger'},
+    'purging':          {icon: 'ss-tornado',        color: 'text-danger'},
+    'purged':           {icon: 'ss-tornado',        color: 'text-danger'},
+    'restoring':        {icon: 'ss-medicalcross',   color: 'text-danger'},
   }
 });
 

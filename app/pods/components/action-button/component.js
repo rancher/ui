@@ -1,9 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  icon: 'fa-square',
+  icon: 'ss-help',
   tooltip: '',
-  big: false,
   enabled: true,
   actionArg: null,
   altActionArg: null,
@@ -26,17 +25,7 @@ export default Ember.Component.extend({
   },
 
   render: function(buffer) {
-    if ( this.get('big') )
-    {
-      buffer.push('<span class="fa-stack fa-lg">');
-        buffer.push('<i class="fa fa-circle fa-stack-2x"></i>');
-        buffer.push('<i class="fa fa-stack-1x fa-inverse '+ this.get('icon') +'"></i>');
-      buffer.push('</span>');
-    }
-    else
-    {
-      buffer.push('<i class="fa '+ this.get('icon') + '"></i>');
-    }
+    buffer.push('<i class="'+ this.get('icon') + '"></i>');
   },
 
   iconChanged: function() {

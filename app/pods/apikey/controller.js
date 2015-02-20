@@ -35,23 +35,23 @@ var ApikeyController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions');
 
     return [
-      { label: 'Edit',          icon: 'fa-edit',          action: 'edit',         enabled: !!a.update },
-      { label: 'Activate',      icon: 'fa-play',          action: 'activate',     enabled: !!a.activate },
-      { label: 'Deactivate',    icon: 'fa-pause',         action: 'deactivate',   enabled: !!a.deactivate },
-      { label: 'Restore',       icon: 'fa-ambulance',     action: 'restore',      enabled: !!a.restore },
-      { label: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
-      { label: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge },
+      { label: 'Edit',          icon: 'ss-write',         action: 'edit',         enabled: !!a.update },
+      { label: 'Activate',      icon: 'ss-play',          action: 'activate',     enabled: !!a.activate },
+      { label: 'Deactivate',    icon: 'ss-pause',         action: 'deactivate',   enabled: !!a.deactivate },
+      { label: 'Restore',       icon: 'ss-medicalcross',  action: 'restore',      enabled: !!a.restore },
+      { label: 'Delete',        icon: 'ss-trash',         action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
+      { label: 'Purge',         icon: 'ss-tornado',       action: 'purge',        enabled: !!a.purge },
     ];
   }.property('actions.{update,activate,deactivate,restore,remove,purge}'),
 });
 
 ApikeyController.reopenClass({
   stateMap: {
-    'active':     {icon: 'fa-circle-o',   color: 'text-success'},
-    'inactive':   {icon: 'fa-circle',     color: 'text-muted'},
-    'purged':     {icon: 'fa-fire',       color: 'text-danger'},
-    'removed':    {icon: 'fa-trash-o',    color: 'text-danger'},
-    'requested':  {icon: 'fa-ticket',     color: 'text-info'},
+    'active':     {icon: 'ss-record',     color: 'text-success'},
+    'inactive':   {icon: 'fa fa-circle',  color: 'text-muted'},
+    'purged':     {icon: 'ss-tornado',    color: 'text-danger'},
+    'removed':    {icon: 'ss-trash',      color: 'text-danger'},
+    'requested':  {icon: 'ss-tag',        color: 'text-info'},
   }
 });
 

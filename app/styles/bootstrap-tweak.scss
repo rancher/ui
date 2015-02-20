@@ -6,19 +6,31 @@ H1, H2, H3, H4, H5, H6 {
   cursor: not-allowed;
 }
 
-.btn {
-  border-width: 1px;
-  border-style: solid;
-}
-
 .btn-block {
   padding-left: 10px;
   padding-right: 10px;
 }
 
+.btn-lg, .btn-group-lg > .btn {
+  padding: ($padding-large-vertical - 1) $padding-large-horizontal;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+}
+
+.btn-sm, .btn-group-sm > .btn {
+  padding: ($padding-small-vertical - 1) $padding-small-horizontal;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+}
+
+.btn-xs, .btn-group-xs > .btn {
+  padding: ($padding-xs-vertical - 1) $padding-xs-horizontal;
+  border-top-width: 2px;
+  border-bottom-width: 2px;
+}
+
 .form-control {
   font-size: 13px;
-  border-radius: 0;
   border-color: #ddd;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);
@@ -48,6 +60,10 @@ H1, H2, H3, H4, H5, H6 {
 .text-center { text-align: center; }
 .text-right  { text-align: right; }
 
+.btn-primary {
+  border-bottom-color: #2da0c3;
+}
+
 .bg-primary { background-color: $brand-primary; }
 .bg-success { background-color: $brand-success; }
 .bg-danger  { background-color: $brand-danger; }
@@ -75,44 +91,51 @@ H1, H2, H3, H4, H5, H6 {
   box-shadow: none;
 }
 
-.table > THEAD > TR > TH,
-.table > THEAD > TR > TD,
-.table > TBODY > TR > TH,
-.table > TFOOT > TR > TH,
-.table > TBODY + TBODY,
-.table.no-lines > TBODY > TR > TD,
-.table.no-lines > TFOOT > TR > TD {
-  border-top: none;
-  font-weight: 600;
-  text-transform: uppercase;
-}
+.table {
+  & > THEAD > TR > TH,
+  & > THEAD > TR > TD,
+  & > TBODY > TR > TH,
+  & > TFOOT > TR > TH,
+  & > TBODY + TBODY,
+  &.no-lines > TBODY > TR > TD,
+  &.no-lines > TFOOT > TR > TD {
+    border-top: none;
+    font-weight: 600;
+    text-transform: uppercase;
+  }
 
-.table > THEAD > TR.no-lines > TH,
-.table > THEAD > TR.no-lines > TD,
-.table > TBODY > TR.no-lines > TH,
-.table > TBODY > TR.no-lines > TD,
-.table > TFOOT > TR.no-lines > TH,
-.table > TFOOT > TR.no-lines > TD {
-  border-top: none;
-  padding-top: 0;
-}
+  & > THEAD > TR.no-lines > TH,
+  & > THEAD > TR.no-lines > TD,
+  & > TBODY > TR.no-lines > TH,
+  & > TBODY > TR.no-lines > TD,
+  & > TFOOT > TR.no-lines > TH,
+  & > TFOOT > TR.no-lines > TD {
+    border-top: none;
+    padding-top: 0;
+  }
 
-.table.no-top-padding TH {
-  padding-top: 0;
-}
+  & > THEAD > TR > TH {
+    border-bottom: 0;
+  }
 
-.table.tight TH,
-.table.tight TD {
-  padding: 3px 0;
+  &.no-top-padding TH {
+    padding-top: 0;
+  }
+
+  &.tight TH,
+  &.tight TD {
+    padding: 3px 0;
+  }
+
+  .form-group {
+    margin-bottom: 0;
+  }
 }
 
 .well > .table {
   margin-bottom: 0;
 }
 
-.table .form-group {
-  margin-bottom: 0;
-}
 
 HR {
   margin: 10px 0;
@@ -142,8 +165,9 @@ HR {
   color: inherit;
 }
 
+// SS-Gizmo doesn't know how to vertical align..
 .ss-icon, [class^="ss-"] {
-  vertical-align: middle;
+  vertical-align: -5%;
 }
 
 .badge.state {

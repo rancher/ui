@@ -9,37 +9,41 @@
   </div>
 </section>
 <section class="instances">
-  <table class="table fixed" style="margin-bottom: 0;">
-    <tr>
-      <th width="120">State</th>
-      <th>Name</th>
-      <th>IP Address</th>
-      <th>Created</th>
-      <th width="50">&nbsp;</th>
-    </tr>
-    {{#each container in instances itemController="container"}}
+  <table class="grid fixed" style="margin-bottom: 0;">
+    <thead>
       <tr>
-        <td>
-          <span {{bind-attr class=":badge :state container.stateBackground"}}>
-            {{container.displayState}}
-          </span>
-        </td>
-        <td>
-          {{#link-to "container" container.id}}{{container.displayName}}{{/link-to}}
-        </td>
-        <td>
-          {{container.displayIp}}
-        </td>
-        <td>
-          <div class="text-muted">{{date-calendar container.created}}</div>
-        </td>
-        <td align="right">
-          {{resource-actions-menu model=container choices=container.availableActions}}
-        </td>
+        <th width="120">State</th>
+        <th>Name</th>
+        <th>IP Address</th>
+        <th>Created</th>
+        <th class="actions" width="50">&nbsp;</th>
       </tr>
-    {{else}}
-      <tr><td colspan="4" class="text-center text-muted">This host does not have any containers yet.</td></tr>
-    {{/each}}
+    </thead>
+    <tbody>
+      {{#each container in instances itemController="container"}}
+        <tr>
+          <td>
+            <span {{bind-attr class=":badge :state container.stateBackground"}}>
+              {{container.displayState}}
+            </span>
+          </td>
+          <td>
+            {{#link-to "container" container.id}}{{container.displayName}}{{/link-to}}
+          </td>
+          <td>
+            {{container.displayIp}}
+          </td>
+          <td>
+            <div class="text-muted">{{date-calendar container.created}}</div>
+          </td>
+          <td class="actions">
+            {{resource-actions-menu model=container choices=container.availableActions}}
+          </td>
+        </tr>
+      {{else}}
+        <tr><td colspan="4" class="text-center text-muted">This host does not have any containers yet.</td></tr>
+      {{/each}}
+    </tbody>
   </table>
 </section>
 

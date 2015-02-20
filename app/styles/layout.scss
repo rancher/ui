@@ -7,7 +7,7 @@ $nav_width: 90px;
 //$nav_text: #81e6e6;
 //$nav_bg_hover: #167287;
 //$nav_text_hover: white;
-$nav_bg: #283036;
+$nav_bg: #393d47;
 $nav_text: white;
 $nav_bg_hover: #283036;
 $nav_text_hover: white;
@@ -37,6 +37,10 @@ B {
   background-repeat: no-repeat;
 }
 
+.white {
+  background-color: white;
+}
+
 /**********
 * Navigation (left side bar)
 **********/
@@ -50,13 +54,14 @@ NAV {
   margin: 0;
   color: $nav_text;
 
-  //@include diagonal-gradient-3(#28d5cc, #24acc6, #28c0d4);
-  background-color: #384047;
+  background-color: $nav_bg;
 
   .logo {
-    padding: 15px 0;
-    text-align: center;
-    background-color: #202020;
+    height: 53px;
+    background-image: url('images/logo.svg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-color: #212121;
   }
 
   LABEL {
@@ -80,6 +85,7 @@ NAV {
 
     A,
     A:active,
+    A:focus,
     A:hover,
     A:visited {
       text-decoration: none;
@@ -92,7 +98,7 @@ NAV {
     color: $nav_text_hover;
     background-color: $nav_bg_hover;
 
-    A, A:active, A:hover, A:visited {
+    A, A:active, A:focus, A:hover, A:visited {
       color: $nav_text_hover;
     }
   }
@@ -134,6 +140,13 @@ HEADER {
   .right {
     float: right;
     padding: 10px 20px 10px 0;
+  }
+
+  .corner-warning {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 3;
   }
 }
 
@@ -207,8 +220,36 @@ ASIDE {
   }
 
   UL.info {
+    margin-top: 10px;
+    font-weight: 600;
+
     LI {
-      margin: 10px 0;
+      background-image: url('images/info-bubble.svg');
+      background-repeat: no-repeat;
+      min-height: 45px;
+      padding-top: 5px;
+      position: relative;
+      padding-left: 45px;
+      font-size: 14px;
+
+      I {
+        @extend .no-select;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 34px;
+        line-height: 38px;
+        font-size: 16px;
+
+        &.fa {
+          /* Font-Awesome knows how to center things properly.. */
+          line-height: 34px;
+        }
+      }
+
+      &:last-child {
+        min-height: 34px;
+      }
     }
   }
 
@@ -375,3 +416,69 @@ TABLE.graphs {
 .grid-header H3 {
   color: #49bdaa;
 }
+
+.no-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.grid {
+  @extend .table;
+//  min-width: 600px;
+
+  & > THEAD > TR > TH,
+  & > THEAD > TR > TD,
+  & > TBODY > TR > TH,
+  & > TBODY > TR > TD,
+  & > TFOOT > TR > TH,
+  & > TFOOT > TR > TD {
+    padding: 8px 2px;
+    font-size: 13px;
+    vertical-align: top;
+  }
+
+  .actions {
+    text-align: right;
+  }
+}
+
+@media (max-width: 701px) {
+  .grid {
+    & > THEAD > TR > TH,
+    & > THEAD > TR > TD,
+    & > TBODY > TR > TH,
+    & > TBODY > TR > TD,
+    & > TFOOT > TR > TH,
+    & > TFOOT > TR > TD {
+      display: block;
+      border-top: 0;
+      padding: 2px;
+
+      &:first-child {
+        border-top: 1px solid #ddd;
+      }
+    }
+
+    TH.actions {
+      display: none;
+    }
+
+    & > THEAD > TR,
+    & > TBODY > TR,
+    & > TFOOT > TR {
+      position: relative;
+      display: block;
+    }
+
+    TD.actions {
+      position: absolute;
+      top: 2px;
+      right: 2px;
+    }
+  }
+}
+

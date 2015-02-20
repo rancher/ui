@@ -1,30 +1,18 @@
 <div class="well">
-  <table class="graphs">
-    <tr>
-      <td width="50%">
-        <label class="section">CPU Utilization</label>
-      </td>
-      <td width="50%">
-        <label class="section">Memory Utilization</label>
-      </td>
-    </tr>
-    <tr {{bind-attr class="view.stats.active::hide"}}>
-      <td>
-        <div id="cpuGraph"></div>
-      </td>
-      <td>
-        <div id="memoryGraph"></div>
-      </td>
-    </tr>
-    <tr {{bind-attr class="view.stats.loading::hide"}}>
-      <td colspan="2" style="padding: 20px; text-align: center;" class="text-muted">
-        <i class="fa fa-spinner fa-spin"></i> Connecting...
-      </td>
-    </tr>
-    <tr {{bind-attr class="view.stats.available:hide"}}>
-      <td colspan="2" style="padding: 20px; text-align: center;" class="text-muted">
-        Utilization stats are only available while active/running.
-      </td>
-    </tr>
-  </table>
+  <div {{bind-attr class=":row view.stats.active::hide"}}>
+    <div class="col-sm-6">
+      <label class="section">CPU Utilization</label>
+      <div id="cpuGraph"></div>
+    </div>
+    <div class="col-sm-6">
+      <label class="section">Memory Utilization</label>
+      <div id="memoryGraph"></div>
+    </div>
+  </div>
+  <div {{bind-attr class=":text-center :text-muted view.stats.loading::hide" style="padding: 20px;"}}>
+    <i class="fa fa-spinner fa-spin"></i> Connecting...
+  </div>
+  <div {{bind-attr class=":text-center :text-muted view.stats.available:hide"}} style="padding: 20px;">
+    Utilization stats are only available while active/running.
+  </div>
 </div>

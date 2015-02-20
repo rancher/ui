@@ -2,12 +2,15 @@
 <div class="well">
   {{#if view.stats.available}}
     {{#if view.stats.active}}
-      <table class="table" width="100%">
-        <tr>
-          <th>Device</th>
-          <th width="150">Size</th>
-          <th>Usage</th>
-        </tr>
+      <table class="grid fixed" width="100%">
+        <thead>
+          <tr>
+            <th>Device</th>
+            <th width="100">Size</th>
+            <th width="120">Usage</th>
+          </tr>
+        </thead>
+        <tbody>
         {{#each fs in view.stats.filesystem}}
           <tr>
             <td>{{fs.device}}</td>
@@ -17,6 +20,7 @@
             </td>
           </tr>
         {{/each}}
+        </tbody>
       </table>
     {{else}}
       <div style="padding: 20px; text-align: center;" class="text-muted">
