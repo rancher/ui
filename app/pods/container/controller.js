@@ -2,8 +2,6 @@ import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
 var ContainerController = Cattle.TransitioningResourceController.extend({
-  icon: 'fa-tint',
-
   actions: {
     restart: function() {
       return this.doAction('restart');
@@ -67,56 +65,20 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions');
 
     var choices = [
-      { label: 'Edit',          icon: 'fa-edit',          action: 'edit',         enabled: !!a.update },
-      { label: 'View in API',   icon: 'fa-external-link', action: 'goToApi',      enabled: true,            detail: true },
-      { label: 'Execute Shell', icon: 'fa-terminal',      action: 'shell',        enabled: !!a.execute },
-      { label: 'View Logs',     icon: 'fa-file-text-o',   action: 'logs',         enabled: !!a.logs },
-      { label: 'Restart',       icon: 'fa-refresh',       action: 'restart',      enabled: !!a.restart },
-      { label: 'Start',         icon: 'fa-arrow-up',      action: 'start',        enabled: !!a.start },
-      { label: 'Stop',          icon: 'fa-arrow-down',    action: 'stop',         enabled: !!a.stop },
-      { label: 'Restore',       icon: 'fa-ambulance',     action: 'restore',      enabled: !!a.restore },
-      { label: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
-      { label: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge },
+      { label: 'Edit',          icon: 'ss-write',             action: 'edit',         enabled: !!a.update },
+      { label: 'View in API',   icon: 'fa fa-external-link',  action: 'goToApi',      enabled: true,            detail: true },
+      { label: 'Execute Shell', icon: 'fa fa-terminal',       action: 'shell',        enabled: !!a.execute },
+      { label: 'View Logs',     icon: 'ss-file',              action: 'logs',         enabled: !!a.logs },
+      { label: 'Restart',       icon: 'ss-refresh',           action: 'restart',      enabled: !!a.restart },
+      { label: 'Start',         icon: 'ss-play',              action: 'start',        enabled: !!a.start },
+      { label: 'Stop',          icon: 'ss-stop',              action: 'stop',         enabled: !!a.stop },
+      { label: 'Restore',       icon: 'ss-medicalcross',      action: 'restore',      enabled: !!a.restore },
+      { label: 'Delete',        icon: 'ss-trash',             action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
+      { label: 'Purge',         icon: 'ss-tornado',           action: 'purge',        enabled: !!a.purge },
     ];
 
     return choices;
   }.property('actions.{update,execute,restart,start,stop,restore,purge}','canDelete'),
-
-  primaryActions: function() {
-    var a = this.get('availableActions');
-    var choices = [];
-
-    if ( this.get('canDelete') )
-    {
-      var primary = ifEnabled('restart') || ifEnabled('start') || ifEnabled('stop');
-      if ( primary )
-      {
-        choices.push(primary);
-      }
-
-      choices.push(byName('promptDelete'));
-    }
-    else
-    {
-      choices.push(byName('restore'));
-      choices.push(byName('purge'));
-    }
-
-    choices.push({ label: 'Details',         icon: 'fa-info-circle',          action: 'detail',        enabled: true });
-    return choices;
-
-    function byName(name) {
-      return a.filterProperty('action',name)[0];
-    }
-
-    function ifEnabled(name) {
-      var action = byName(name);
-      if ( action && !!action.enabled )
-      {
-        return action;
-      }
-    }
-  }.property('availableActions.[]','availableActions.@each.enabled'),
 
   isOn: function() {
     return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;
@@ -133,10 +95,10 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
 
 ContainerController.reopenClass({
   stateMap: {
-   'running': {icon: 'fa-circle-o', color: 'text-success'},
-   'stopped': {icon: 'fa-circle',   color: 'text-danger'},
-   'removed': {icon: 'fa-trash',    color: 'text-danger'},
-   'purged':  {icon: 'fa-fire',     color: 'text-danger'}
+   'running': {icon: 'ss-record',   color: 'text-success'},
+   'stopped': {icon: 'fa fa-circle',color: 'text-danger'},
+   'removed': {icon: 'ss-trash',    color: 'text-danger'},
+   'purged':  {icon: 'ss-tornado',  color: 'text-danger'}
   },
 });
 

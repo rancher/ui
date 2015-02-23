@@ -1,19 +1,16 @@
 <section>
-  <table class="table fixed" style="margin-bottom: 0">
-    <tbody>
+  <table class="grid fixed">
+    <thead>
       <tr>
-        <th width="120">State</th>
+        <th width="120">State<br><span class="text-muted">Host Path</span></th>
         <th>Name</th>
         <th>Containers</th>
         <th>Created</th>
-        <th width="140">&nbsp;</th>
+        <th class="actions" width="50">&nbsp;</th>
       </tr>
-      <tr class="no-lines">
-        <th colspan="5" class="text-muted">Host Path</th>
-      </tr>
-    </tbody>
-    {{#each volume in nonRootVolumes itemController="volume"}}
-      <tbody>
+    </thead>
+    <tbody>
+      {{#each volume in nonRootVolumes itemController="volume"}}
         <tr>
           <td>
             <span {{bind-attr class=":badge :state volume.stateBackground"}}>
@@ -46,7 +43,7 @@
             {{volume.displayUri}}
           </td>
         </tr>
-      </tbody>
-    {{/each}}
+      {{/each}}
+    </tbody>
   </table>
 </section>

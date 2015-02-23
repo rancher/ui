@@ -2,7 +2,7 @@ import Cattle from 'ui/utils/cattle';
 import Ember from 'ember';
 
 var VolumeController = Cattle.TransitioningResourceController.extend({
-  icon: 'fa-database',
+  icon: 'ss-hdd',
 
   actions: {
     delete: function() {
@@ -26,9 +26,9 @@ var VolumeController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions');
 
     return [
-      { label: 'Restore',       icon: 'fa-ambulance',     action: 'restore',      enabled: !!a.restore },
-      { label: 'Delete',        icon: 'fa-trash-o',       action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
-      { label: 'Purge',         icon: 'fa-fire',          action: 'purge',        enabled: !!a.purge },
+      { label: 'Restore',       icon: 'ss-medicalcross',  action: 'restore',      enabled: !!a.restore },
+      { label: 'Delete',        icon: 'ss-trash',         action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
+      { label: 'Purge',         icon: 'ss-tornado',       action: 'purge',        enabled: !!a.purge },
     ];
   }.property('actions.{restore,purge}','canDelete'),
 
@@ -58,10 +58,10 @@ var VolumeController = Cattle.TransitioningResourceController.extend({
 
 VolumeController.reopenClass({
   stateMap: {
-   'active':    {icon: 'fa-circle-o', color: 'text-success'},
-   'inactive':  {icon: 'fa-circle',   color: 'text-danger'},
-   'removed':   {icon: 'fa-trash',    color: 'text-danger'},
-   'purged':    {icon: 'fa-fire',     color: 'text-danger'}
+   'active':    {icon: 'ss-record',   color: 'text-success'},
+   'inactive':  {icon: 'fa fa-circle',color: 'text-danger'},
+   'removed':   {icon: 'ss-trash',    color: 'text-danger'},
+   'purged':    {icon: 'ss-tornado',  color: 'text-danger'}
   },
 });
 

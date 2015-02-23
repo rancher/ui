@@ -4,11 +4,11 @@ var NetworkController = Cattle.TransitioningResourceController.extend();
 
 NetworkController.reopenClass({
   stateMap: {
-    'active':     {icon: 'fa-code-fork',  color: 'text-success'},
-    'inactive':   {icon: 'fa-pause',      color: 'text-muted'},
-    'purged':     {icon: 'fa-fire',       color: 'text-danger'},
-    'removed':    {icon: 'fa-fire',       color: 'text-danger'},
-    'requested':  {icon: 'fa-ticket',     color: 'text-info'},
+    'active':     {icon: 'ss-headphones', color: 'text-success'},
+    'inactive':   {icon: 'fa fa-circle',  color: 'text-muted'},
+    'purged':     {icon: 'ss-tornado',    color: 'text-danger'},
+    'removed':    {icon: 'ss-trash',      color: 'text-danger'},
+    'requested':  {icon: 'ss-tag',        color: 'text-info'},
   }
 });
 

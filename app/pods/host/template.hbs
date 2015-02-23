@@ -27,24 +27,21 @@
 
   <ul class="list-unstyled info">
     <li>
-      <i {{bind-attr class=":fa :fa-fw stateIcon"}}></i>
+      <i {{bind-attr class=":fa-fw stateIcon"}}></i>
       {{displayState}}
-    </li>
-
-    {{#if isTransitioning}}
-      <li>
+      {{#if isTransitioning}}
         <div class="progress progress-striped active" style="height: 10px; border: 0;">
           <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=displayProgress style=progressStyle}}>
             <span class="sr-only">{{displayProgress}}% Complete</span>
           </div>
         </div>
-      </li>
-    {{/if}}
-    {{#if showTransitioningMessage}}
-      <li class="force-wrap">
-        {{transitioningMessage}}
-      </li>
-    {{/if}}
+      {{/if}}
+      {{#if showTransitioningMessage}}
+        <div class="force-wrap">
+          {{transitioningMessage}}
+        </div>
+      {{/if}}
+    </li>
 
     <li>
       <i class="fa-fw ss-link"></i>

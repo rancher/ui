@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  icon: 'fa-square',
+  icon: 'ss-help',
   label: '',
   enabled: true,
   actionArg: null,
@@ -22,7 +22,7 @@ export default Ember.Component.extend({
   },
 
   render: function(buffer) {
-    buffer.push('<i class="fa fa-fw '+ this.get('icon') + '"></i> ' + this.get('label'));
+    buffer.push('<i class="fa-fw '+ this.get('icon') + '"></i> ' + this.get('label'));
   },
 
   iconChanged: function() {
