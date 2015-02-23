@@ -208,7 +208,7 @@ var TransitioningResourceController = ResourceController.extend({
     }
     else if ( trans === 'error' )
     {
-      return 'fa fa-exclamation-circle text-danger';
+      return 'ss-alert text-danger';
     }
     else
     {
