@@ -59,7 +59,7 @@ var HostController = Cattle.TransitioningResourceController.extend({
     {
       return obj.get('address');
     }
-    else if ( this.hasLink('ipAddresses') )
+    else if ( this && this.hasLink && this.hasLink('ipAddresses') )
     {
       this.importLink('ipAddresses');
     }
