@@ -68,7 +68,7 @@ The built-in cattle server expects to be run from `/static/` and hosted on a CDN
 
 License
 =======
-Copyright (c) 2014 [Rancher Labs, Inc.](http://rancher.com)
+Copyright (c) 2014-2015 [Rancher Labs, Inc.](http://rancher.com)
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
