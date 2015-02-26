@@ -177,12 +177,17 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       console.log('host changed:',change);
     },
 
-    containerChanged:       function(change) {
-      this._instanceChanged(change);
+    containerChanged: function(change) {
+      this._includeChanged('host', 'hosts', 'instances', 'hosts', change.data.resource);
     },
 
-    instanceChanged:        function(change) {
-      this._instanceChanged(change);
+    instanceChanged: function(change) {
+      this._includeChanged('host', 'hosts', 'instances', 'hosts', change.data.resource);
+    },
+
+    ipAddressChanged: function(change) {
+      this._includeChanged('host', 'hosts', 'ipAddresses', 'hosts', change.data.resource);
+//      this._includeChanged('container', 'container', 'ipAddresses', 'containers', change.data.resource);
     },
 
     mountChanged: function(change) {
@@ -211,7 +216,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   enter: function() {
-    var self = this;
     var store = this.get('store');
     var boundTypeify = store._typeify.bind(store);
 
@@ -233,9 +237,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       url: url
     });
 
-    socket.on('message', function(event) {
+    socket.on('message', (event) => {
       var d = JSON.parse(event.data, boundTypeify);
-      self._trySend('wsMessage',d);
+      this._trySend('wsMessage',d);
 
       var str = d.name;
       if ( d.resourceType )
@@ -260,16 +264,16 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
       if ( action )
       {
-        self._trySend(action,d);
+        this._trySend(action,d);
       }
     });
 
-    socket.on('connected', function(tries, after) {
-      self._trySend('wsConnected', tries, after);
+    socket.on('connected', (tries, after) => {
+      this._trySend('wsConnected', tries, after);
     });
 
-    socket.on('disconnected', function() {
-      self._trySend('wsDisconnected', self.get('tries'));
+    socket.on('disconnected', () => {
+      this._trySend('wsDisconnected', this.get('tries'));
     });
 
     this.set('socket', socket);
@@ -312,73 +316,74 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     return existing;
   },
 
-  _instanceChanged: function(change) {
-    if (!change || !change.data || !change.data.resource)
+  // Update the `?include=`-ed arrays of a host,
+  // e.g. when an instance changes:
+  //   Update the destProperty='instances' array on all models of type resourceName='hosts' and in controllerName='hosts' 
+  //   to match the list in the the 'changed' resource's expectedProperty='hosts'
+  // _includeChanged(       'host',       'hosts',        'instances', 'hosts',          instance)
+  _includeChanged: function(resourceName, controllerName, destProperty, expectedProperty, changed) {
+    if (!changed)
     {
       return;
     }
 
-    //console.log('Instance Changed:',change);
-    var self = this;
-    var instance = change.data.resource;
-    var id = instance.get('id');
+    var changedId = changed.get('id');
 
-    // All the hosts
-    var allHosts = self.get('store').all('host');
+    // All the resources
+    var all = this.get('store').all(resourceName);
 
-    // Host IDs the instance should be on
-    var expectedHostIds = [];
-    if ( instance.get('state') !== 'purged' )
+    // IDs the resource should be on
+    var expectedIds = [];
+    if ( changed.get('state') !== 'purged' )
     {
-      expectedHostIds = (instance.get('hosts')||[]).map(function(host) {
-        return host.get('id');
+      expectedIds = (changed.get(expectedProperty)||[]).map(function(item) {
+        return item.get('id');
       });
     }
 
-    // Host IDs it is currently on
-    var curHostIds = [];
-    allHosts.forEach(function(host) {
-      var existing = (host.get('instances')||[]).filterBy('id', id);
+    // IDs it is currently on
+    var curIds = [];
+    all.forEach(function(item) {
+      var existing = (item.get(destProperty)||[]).filterBy('id', changedId);
       if ( existing.length )
       {
-        curHostIds.push(host.get('id'));
+        curIds.push(item.get('id'));
       }
     });
 
-    // Remove from hosts the instance shouldn't be on
-    var remove = Util.arrayDiff(curHostIds, expectedHostIds);
-    remove.forEach(function(hostId) {
-      var host = self._findInCollection('hosts',hostId);
-      if ( host )
+    // Remove from resources the changed shouldn't be on
+    var remove = Util.arrayDiff(curIds, expectedIds);
+    remove.forEach((id) => {
+      var item = this._findInCollection(controllerName,id);
+      if ( item )
       {
-        var instances = host.get('instances');
-        if ( !instances )
+        var list = item.get(destProperty);
+        if ( list )
         {
-          return;
+          list.removeObjects(list.filterBy('id', changedId));
         }
-
-        instances.removeObjects(instances.filterBy('id', id));
       }
     });
 
-    // Add or update hosts the instance should be on
-    expectedHostIds.forEach(function(hostId) {
-      var host = self._findInCollection('hosts',hostId);
-      if ( host )
+    // Add or update resources the changed should be on
+    expectedIds.forEach((id) => {
+      var item = this._findInCollection(controllerName, id);
+      if ( item )
       {
-        var instances = host.get('instances');
-        if ( !instances )
+        var list = item.get(destProperty);
+        if ( list )
         {
-          instances = [];
-          host.set('instances',instances);
+          var existing = list.filterBy('id', id);
+          if ( existing.length === 0)
+          {
+            list.pushObject(changed);
+          }
         }
-
-        var existing = instances.filterBy('id', id);
-        if ( existing.length === 0)
+        else
         {
-          instances.pushObject(instance);
+          item.set(destProperty, []);
         }
       }
     });
-  }
+  },
 });
