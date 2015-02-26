@@ -32,6 +32,7 @@ module.exports = function(environment) {
       'style-src':  "'self' cdn.rancher.io storage.googleapis.com fonts.googleapis.com 'unsafe-inline'",
       'font-src':   "'self' cdn.rancher.io storage.googleapis.com fonts.googleapis.com fonts.gstatic.com",
       'script-src': "'self' cdn.rancher.io storage.googleapis.com ",
+      'object-src': "'self' cdn.rancher.io storage.googleapis.com ",
       'img-src':    "'self' cdn.rancher.io storage.googleapis.com avatars.githubusercontent.com",
 
       // Allow connect to anywhere, for console and event stream socket
@@ -45,7 +46,7 @@ module.exports = function(environment) {
       appName: 'Rancher',
       endpoint: 'http://localhost:8080',
       apiEndpoint: '/v1',
-      wsEndpoint: '/v1/subscribe?include=hosts&include=instances&include=instanceLinks&eventNames=resource.change',
+      wsEndpoint: '/v1/subscribe?include=hosts&include=instances&include=instanceLinks&include=ipAddresses&eventNames=resource.change',
       baseAssets: '',
     },
   };
