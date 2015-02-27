@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { isAlternate } from 'ui/utils/platform';
 
 export default Ember.Component.extend({
   icon: 'ss-help',
@@ -11,7 +12,7 @@ export default Ember.Component.extend({
   classNameBindings: ['enabled::hide'],
 
   click : function(event) {
-    if ( event.altKey && this.get('altActionArg'))
+    if ( isAlternate(event) && this.get('altActionArg'))
     {
       this.sendAction('action', this.get('altActionArg'));
     }

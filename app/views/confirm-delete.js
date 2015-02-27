@@ -1,8 +1,11 @@
 import Overlay from 'ui/pods/overlay/view';
+import { alternateLabel } from 'ui/utils/platform';
 
 export default Overlay.extend({
   templateName: 'confirm-delete',
   classNames: ['overlay-small'],
+
+  alternateLabel: alternateLabel,
 
   actions: {
     overlayClose: function() {

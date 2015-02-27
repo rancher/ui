@@ -61,20 +61,23 @@ export default Ember.Component.extend({
   },
 
   render: function (buffer) {
-    var icon = this.get('icon');
-    var label = this.get('label');
-    if ( icon )
+    if ( this.get('text') )
     {
-      buffer.push('<i class="'+ this.get('icon') + '"></i> ');
-    }
+      var icon = this.get('icon');
+      var label = this.get('label');
+      if ( icon )
+      {
+        buffer.push('<i class="'+ this.get('icon') + '"></i> ');
+      }
 
-    if ( label )
-    {
-      buffer.push(label);
+      if ( label )
+      {
+        buffer.push(label);
+      }
     }
   },
 
   stateChanged: function() {
       this.rerender();
-  }.observes('icon','label')
+  }.observes('icon','label','text')
 });
