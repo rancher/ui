@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import config from 'torii/configuration';
-import githubOauth from 'torii/providers/github-oauth2';
 import util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
@@ -55,9 +54,13 @@ export default Ember.ObjectController.extend({
       this.send('clearError');
 
       config.providers['github-oauth2'].apiKey = this.get('model.clientId');
-      githubOauth.state = Math.random()+"";
 
-      this.get('torii').open('github-oauth2',{windowOptions: util.popupWindowOptions()}).then(github => {
+      var torii = this.get('torii');
+      var provider = torii.container.lookup('torii-provider:github-oauth2');
+      provider.set('clientId', this.get('model.clientId'));
+      provider.set('state', Math.random()+"");
+
+      torii.open('github-oauth2',{windowOptions: util.popupWindowOptions()}).then(github => {
         var headers = {};
         headers[C.AUTH_HEADER] = undefined; // Explicitly not send auth
         headers[C.PROJECT_HEADER] = undefined; // Explicitly not send project
