@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Mixin.create({
   boundResize: null,
+  throttleTimer: null,
 
   didInsertElement: function() {
     this._super();
@@ -13,7 +14,8 @@ export default Ember.Mixin.create({
   },
 
   triggerResize: function() {
-    Ember.run.throttle(this, 'onResize', 200, false);
+    var timer = Ember.run.throttle(this, 'onResize', 200, false);
+    this.set('throttleTimer', timer);
   },
 
   onResize: function() {
@@ -21,6 +23,7 @@ export default Ember.Mixin.create({
   },
 
   willDestroyElement: function() {
+    Ember.run.cancel(this.get('throttleTimer'));
     $(window).off('resize', this.get('boundResize'));
     $(window).off('focus', this.get('boundResize'));
   },
