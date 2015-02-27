@@ -163,7 +163,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     */
 
     machineChanged: function(change) {
-      console.log('machine changed:',change);
+      console.log('Machine changed:',change);
     },
 
     hostChanged: function(change) {
@@ -174,19 +174,19 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       {
         machine.get('hosts').addObject(host);
       }
-      console.log('host changed:',change);
+      console.log('Host changed:',change);
     },
 
     containerChanged: function(change) {
-      this._includeChanged('host', 'hosts', 'instances', 'hosts', change.data.resource);
+      this._includeChanged('host', 'instances', 'hosts', change.data.resource);
     },
 
     instanceChanged: function(change) {
-      this._includeChanged('host', 'hosts', 'instances', 'hosts', change.data.resource);
+      this._includeChanged('host', 'instances', 'hosts', change.data.resource);
     },
 
     ipAddressChanged: function(change) {
-      this._includeChanged('host', 'hosts', 'ipAddresses', 'hosts', change.data.resource);
+      this._includeChanged('host', 'ipAddresses', 'hosts', change.data.resource);
 //      this._includeChanged('container', 'container', 'ipAddresses', 'containers', change.data.resource);
     },
 
@@ -310,33 +310,31 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
 
-  _findInCollection: function(collectionName,id) {
-    var collection = this.controllerFor(collectionName);
-    var existing = collection.filterBy('id',id).get('firstObject');
-    return existing;
-  },
-
   // Update the `?include=`-ed arrays of a host,
   // e.g. when an instance changes:
-  //   Update the destProperty='instances' array on all models of type resourceName='hosts' and in controllerName='hosts' 
+  //   Update the destProperty='instances' array on all models of type resourceName='hosts'.
   //   to match the list in the the 'changed' resource's expectedProperty='hosts'
   // _includeChanged(       'host',       'hosts',        'instances', 'hosts',          instance)
-  _includeChanged: function(resourceName, controllerName, destProperty, expectedProperty, changed) {
+  _includeChanged: function(resourceName, destProperty, expectedProperty, changed) {
     if (!changed)
     {
       return;
     }
 
     var changedId = changed.get('id');
+    var store = this.get('store');
+
+    //console.log('Include changed',resourceName,destProperty,expectedProperty,changedId);
 
     // All the resources
-    var all = this.get('store').all(resourceName);
+    var all = store.all(resourceName);
 
     // IDs the resource should be on
     var expectedIds = [];
+    var expected = changed.get(expectedProperty)||[];
     if ( changed.get('state') !== 'purged' )
     {
-      expectedIds = (changed.get(expectedProperty)||[]).map(function(item) {
+      expectedIds = expected.map(function(item) {
         return item.get('id');
       });
     }
@@ -354,36 +352,36 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     // Remove from resources the changed shouldn't be on
     var remove = Util.arrayDiff(curIds, expectedIds);
     remove.forEach((id) => {
-      var item = this._findInCollection(controllerName,id);
-      if ( item )
-      {
+      //console.log('Remove',id);
+      store.find(resourceName, id).then((item) => {
         var list = item.get(destProperty);
         if ( list )
         {
+          //console.log('Removing',changedId,'from',item.get('id'));
           list.removeObjects(list.filterBy('id', changedId));
         }
-      }
+      }).catch(() => {});
     });
 
     // Add or update resources the changed should be on
     expectedIds.forEach((id) => {
-      var item = this._findInCollection(controllerName, id);
-      if ( item )
-      {
+      //console.log('Expect',id);
+      store.find(resourceName, id).then((item) => {
         var list = item.get(destProperty);
-        if ( list )
+        if ( !list )
         {
-          var existing = list.filterBy('id', changedId);
-          if ( existing.length === 0)
-          {
-            list.pushObject(changed);
-          }
+          list = [];
+          //console.log('Adding empty to',item.get('id'), destProperty);
+          item.set(destProperty, list);
         }
-        else
+
+        var existing = list.filterBy('id', changedId);
+        if ( existing.length === 0)
         {
-          item.set(destProperty, []);
+          //console.log('Adding',changedId,'to',item.get('id'), destProperty);
+          list.pushObject(changed);
         }
-      }
+      }).catch(() => {});
     });
   },
 });

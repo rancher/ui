@@ -16,23 +16,27 @@ export default Ember.View.extend(ThrottledResize, {
   tagName: 'section',
 
   onResize: function() {
-    var sectionWidth = $('.hosts').width();
+    try {
+      var sectionWidth = $('.hosts').width();
 
-    var logicalWidth = (sectionWidth + 10); // Add one extra columnMargin because the last column doesn't actually have one
-    var columnCount = Math.floor(logicalWidth/(minWidth+columnMargin));
+      var logicalWidth = (sectionWidth + 10); // Add one extra columnMargin because the last column doesn't actually have one
+      var columnCount = Math.floor(logicalWidth/(minWidth+columnMargin));
 
-    columnWidth = Math.floor(logicalWidth/columnCount) - columnMargin - columnCount;
+      columnWidth = Math.floor(logicalWidth/columnCount) - columnMargin - columnCount;
 
-    //console.log('section:',sectionWidth,'margin:',columnMargin,'logical:',logicalWidth,'count:',columnCount,'width:',columnWidth);
+      //console.log('section:',sectionWidth,'margin:',columnMargin,'logical:',logicalWidth,'count:',columnCount,'width:',columnWidth);
 
-    if ( this.get('columnCount') !== columnCount )
-    {
-      this.set('columnCount', columnCount);
+      if ( this.get('columnCount') !== columnCount )
+      {
+        this.set('columnCount', columnCount);
+      }
+
+      Ember.run(this, () => {
+        this.$(selector).css('width', columnWidth+'px');
+      });
+    } catch (e) {
+      // Just in case..
     }
-
-    Ember.run(this, () => {
-      this.$(selector).css('width', columnWidth+'px');
-    });
   },
 
   columnCount: 3, // Will be reset on didInsertElement and resize
