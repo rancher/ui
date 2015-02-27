@@ -38,19 +38,21 @@ Router.map(function() {
         this.route('delete');
       });
 
-      this.route('index', {path: '/'}, function() {
-        this.resource('containers', { path: '/containers'}, function() {
-          this.route('new', {path: '/new'});
-        });
+      this.route('index', {path: '/'});
+    });
+
+    this.resource('containers', { path: '/containers'}, function() {
+      this.route('new', {path: '/new'});
+      this.route('index', {path: '/'});
+
+      this.resource('container', { path: '/:container_id' }, function() {
+        this.route('shell');
+        this.route('logs');
+        this.route('edit');
+        this.route('delete');
       });
     });
 
-    this.resource('container', { path: '/containers/:container_id' }, function() {
-      this.route('shell');
-      this.route('logs');
-      this.route('edit');
-      this.route('delete');
-    });
 
     this.resource('apikeys', {path: '/api'}, function() {
       this.route('new', {path: '/api/new'});

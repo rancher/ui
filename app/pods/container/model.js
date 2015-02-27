@@ -1,6 +1,6 @@
 import Cattle from 'ui/utils/cattle';
 
-export default Cattle.TransitioningResource.extend({
+var Container = Cattle.TransitioningResource.extend({
   // Common to all instances
   requestedHostId: null,
   networkIds: null,
@@ -20,3 +20,9 @@ export default Cattle.TransitioningResource.extend({
   devices: null,
   restartPolicy: null,
 });
+
+Container.reopenClass({
+  alwaysInclude: ['hosts'],
+});
+
+export default Container;

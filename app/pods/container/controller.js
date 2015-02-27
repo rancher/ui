@@ -90,7 +90,9 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
 
   canDelete: function() {
     return ['removed','removing','purging','purged'].indexOf(this.get('state')) === -1;
-  }.property('state')
+  }.property('state'),
+
+  primaryHost: Ember.computed.alias('hosts.firstObject'),
 });
 
 ContainerController.reopenClass({

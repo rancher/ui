@@ -373,7 +373,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         var list = item.get(destProperty);
         if ( list )
         {
-          var existing = list.filterBy('id', id);
+          var existing = list.filterBy('id', changedId);
           if ( existing.length === 0)
           {
             list.pushObject(changed);
