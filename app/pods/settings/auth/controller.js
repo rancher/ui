@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import config from 'torii/configuration';
-import githubOauth from 'torii/providers/github-oauth2';
 import util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
