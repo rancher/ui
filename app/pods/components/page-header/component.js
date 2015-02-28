@@ -35,6 +35,10 @@ export default Ember.Component.extend({
   actions: {
     switchProject: function(id) {
       this.sendAction('switchProject', id);
+    },
+
+    goToPrevious: function() {
+      this.sendAction('goToPrevious');
     }
   },
 });

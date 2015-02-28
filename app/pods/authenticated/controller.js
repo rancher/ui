@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
   activeTab: '',
   pageName: '',
   backRoute: null,
+  backPrevious: null,
   hasAside: false,
 
   projects: null,

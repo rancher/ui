@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  /*
   previousRoute: null,
   previousParams: null,
 
@@ -43,4 +44,5 @@ export default Ember.Route.extend({
       });
     },
   }
+  */
 });

@@ -2,16 +2,10 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
-  actions: {
-    beforeModel: function() {
-      this._super.apply(this,arguments);
-      var err = this.get('app.initError');
-      if ( err )
-      {
-        this.send('error',err);
-      }
-    },
+  previousParams: null,
+  previousRoute: null,
 
+  actions: {
     loading: function(transition/*, originRoute*/) {
       //console.log('Loading action...');
       $('#loading-underlay').show().fadeIn({duration: 100, queue: false, easing: 'linear', complete: function() {
@@ -29,9 +23,24 @@ export default Ember.Route.extend({
     },
 
     error: function(err) {
-      this.controller.set('error',err);
+      this.controllerFor('application').set('error',err);
       this.transitionTo('failWhale');
       console.log('Application ' + err.stack);
+    },
+
+    goToPrevious: function() {
+      var route = this.get('previousRoute');
+      if ( route === 'loading' )
+      {
+        route = 'index';
+      }
+
+      var args = (this.get('previousParams')||[]).slice();
+      args.unshift(route);
+
+      this.transitionTo.apply(this,args).catch(() => {
+        this.transitionTo('index');
+      });
     },
 
     logout: function(transition,timedOut) {
