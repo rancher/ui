@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Mixin.create({
   boundResize: null,
   throttleTimer: null,
+  resizeInterval: 200,
 
   didInsertElement: function() {
     this._super();
@@ -14,7 +15,7 @@ export default Ember.Mixin.create({
   },
 
   triggerResize: function() {
-    var timer = Ember.run.throttle(this, 'onResize', 200, false);
+    var timer = Ember.run.throttle(this, 'onResize', this.get('resizeInterval'), false);
     this.set('throttleTimer', timer);
   },
 
