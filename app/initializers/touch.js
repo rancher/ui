@@ -1,11 +1,15 @@
 export function initialize(/*container, application*/) {
+  // Add 'touch' or 'no-touch' to the <body> so CSS can depend on the devicve type.
+
   var body = $('BODY');
   if ('ontouchstart' in document.documentElement)
   {
+    // Has touch, like an iPad
     body.addClass('touch');
   }
   else
   {
+    // Does not have touch, like a desktop
     body.addClass('no-touch');
   }
 }

@@ -16,6 +16,7 @@ export function initialize(container, application) {
     headers: headers
   })
   .then(function(obj) {
+    // If we get a good response back, the API supports authentication
     var body = JSON.parse(obj.xhr.responseText);
     var token = body.data[0];
 
@@ -26,6 +27,7 @@ export function initialize(container, application) {
     return Ember.RSVP.resolve(undefined,'API supports authentication');
   })
   .catch(function(obj) {
+    // Otherwise this API is too old to do auth.
     application.set('hasAuthentication', false);
     application.set('authenticationEnabled', false);
     application.set('initError', obj);

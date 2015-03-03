@@ -1,4 +1,5 @@
 export function initialize(/* container, application */) {
+  // Define some more easings and inject into jQuery
   jQuery.extend(jQuery.easing, {
     easeOutBack: function (x, t, b, c, d, s) {
       if (s === undefined) {
