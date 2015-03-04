@@ -3,7 +3,7 @@ import NewOrEditContainer from 'ui/pods/container/edit/new-or-edit';
 
 export default Ember.ObjectController.extend(NewOrEditContainer, {
   queryParams: ['tab','hostId'],
-  tab: 'basic',
+  tab: 'command',
   hostId: null,
   editing: false,
   saving: false,
@@ -279,30 +279,27 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
 
   // Volumes From
   hostContainerChoices: function() {
-    var self = this;
     var list = [];
 
-    this.get('controllers.hosts').forEach(function(host) {
-      // You can only mount volumes from the host the container will go on
-      if ( host.get('id') === self.get('requestedHostId'))
-      {
-        var containers = (host.get('instances')||[]).filter(function(instance) {
-          // You can't mount volumes from other types of instances
-          return instance.get('type') === 'container';
-        });
+    this.get('allHosts').filter((host) => {
+      return host.get('id') === this.get('requestedHostId');
+    }).map((host) => {
+      var containers = (host.get('instances')||[]).filter(function(instance) {
+        // You can't mount volumes from other types of instances
+        return instance.get('type') === 'container';
+      });
 
-        list.pushObjects(containers.map(function(container) {
-          return {
-            group: host.get('displayName'),
-            id: container.get('id'),
-            name: container.get('name')
-          };
-        }));
-      }
+      list.pushObjects(containers.map(function(container) {
+        return {
+          group: host.get('name') || '('+host.get('id')+')',
+          id: container.get('id'),
+          name: container.get('name')
+        };
+      }));
     });
 
-    return list.sortBy('group','container.name','container.id');
-  }.property('controllers.hosts.@each.[]','controllers.hosts.@each.instancesUpdated').volatile(),
+    return list.sortBy('group','name','id');
+  }.property('allHosts.@each.instancesUpdated').volatile(),
 
   volumesFromArray: null,
   initVolumesFrom: function() {
@@ -388,12 +385,6 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
 
   // Terminal
   terminal: 'both',
-  terminalChoices: [
-    {label: 'Yes (-i and -t)', value: 'both'},
-    {label: 'Interactive (-i)', value: 'interactive'},
-    {label: 'TTY (-t)', value: 'terminal'},
-    {label: 'No', value: 'none'},
-  ],
   terminalDidChange: function() {
     var val = this.get('terminal');
     var stdinOpen = ( val === 'interactive' || val === 'both' );

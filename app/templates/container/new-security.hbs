@@ -1,0 +1,109 @@
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label for="memoryMb" class="form-control-static">Memory Limit</label>
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    <div class="input-group">
+      {{input id="memoryMb" type="number" min="1" step="1" value=memoryMb classNames="form-control" placeholder="Default: No limit"}}
+      <div class="input-group-addon">MB</div>
+    </div>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label for="cpuSet" class="form-control-static">CPU Pinning</label>
+  </div>
+
+
+  <div class="col-sm-12 col-md-4">
+    {{input id="cpuSet" type="text" value=cpuSet classNames="form-control" placeholder="e.g. 0,1,3; Default: all CPUs"}}
+  </div>
+  <div class="col-sm-12 col-md-1 form-label" style="text-align: left">
+    <label for="cpuShares" class="form-control-static">Shares</label>
+  </div>
+  <div class="col-sm-12 col-md-3">
+    {{input id="cpuShares" type="number" value=cpuShares step=128 min=0 classNames="form-control" placeholder="Default: 1024"}}
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label for="privileged" class="form-control-static">Privileged</label>
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    <div class="checkbox form-control-static">
+      <label for="privileged">{{input type="checkbox" id="privileged" checked=privileged}} Give the container full access to the host</label>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">Capabilities</label>
+  </div>
+
+  <div class="col-sm-12 col-md-4">
+    {{view "select" class="form-control select-cap-add" content=capabilityChoices selection=capAdd multiple="true" optionValuePath="content" optionLabelPath="content"}}
+  </div>
+
+  <div class="col-sm-12 col-md-4">
+    {{view "select" class="form-control select-cap-drop" content=capabilityChoices selection=capDrop multiple="true" optionValuePath="content" optionLabelPath="content"}}
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 col-md-8 col-md-offset-2">
+    <span class="help-block">
+      Capabilities allow you to provide fine-grained control over superuser privileges available to the container.
+      <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank">More information</a>
+    </span>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">Device Binding</label>
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    <div class="form-control-static">
+      <button class="btn btn-circle" {{action "addDevice" target="view"}}><i class="ss-plus"></i></button>
+    </div>
+    {{#if devicesArray.length}}
+      <table class="table fixed no-lines no-top-padding tight small">
+        <tr class="text-muted">
+          <th>Path in Host</th>
+          <th width="30">&nbsp;</th>
+          <th>Path in Container</th>
+          <th width="30">&nbsp;</th>
+          <th>Permissions</th>
+          <th width="30">&nbsp;</th>
+        </tr>
+        {{#each device in devicesArray}}
+          <tr>
+            <td>
+              {{input class="form-control input-sm device-host" type="text" value=device.host placeholder="e.g. /dev/sdc"}}
+            </td>
+            <td style="text-align: center">
+              <p class="form-control-static input-sm"><i class="ss-right"></i></p>
+            </td>
+            <td>
+              {{input class="form-control input-sm" type="text" value=device.container placeholder="e.g. /dev/xsdc"}}
+            </td>
+            <td>&nbsp;</td>
+            <td>
+              {{device-permissions buttonClass="btn-sm" selectionAsString=device.permissions}}
+            </td>
+            <td class="text-right">
+              <button {{action "removeDevice" device}} class="btn btn-default btn-sm" type="button" tooltip="Remove this device" tabindex="-1">
+                <i class="ss-delete"></i>
+              </button>
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    {{/if}}
+  </div>
+</div>

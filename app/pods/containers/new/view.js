@@ -1,95 +1,26 @@
 import Ember from 'ember';
-import Overlay from 'ui/pods/overlay/view';
 
-export default Overlay.extend({
+function addAction(action, selector) {
+  return function() {
+    this.get('controller').send(action);
+    Ember.run.next(this, function() {
+      this.$(selector).last().focus();
+    });
+  };
+}
+
+export default Ember.View.extend({
   actions: {
-    overlayClose: function() {
-      this.get('controller').send('cancel');
-    },
-
-    overlayEnter: function() {
-      this.get('controller').send('save');
-    },
-
-    addArgument: function() {
-      var self = this;
-      this.get('controller').send('addArgument');
-      Ember.run.next(function() {
-        self.$('.argument-name').last().focus();
-      });
-    },
-
-    addEnvironment: function() {
-      var self = this;
-      this.get('controller').send('addEnvironment');
-      Ember.run.next(function() {
-        self.$('.environment-name').last().focus();
-      });
-    },
-
-    addPort: function() {
-      var self = this;
-      this.get('controller').send('addPort');
-      Ember.run.next(function() {
-        self.$('.port-public').last().focus();
-      });
-    },
-
-    addLink: function() {
-      var self = this;
-      this.get('controller').send('addLink');
-      Ember.run.next(function() {
-        self.$('.link-container').last().focus();
-      });
-    },
-
-    addVolume: function() {
-      var self = this;
-      this.get('controller').send('addVolume');
-      Ember.run.next(function() {
-        self.$('.volume-path').last().focus();
-      });
-    },
-
-    addVolumeFrom: function() {
-      var self = this;
-      this.get('controller').send('addVolumeFrom');
-      Ember.run.next(function() {
-        self.$('.volumefrom-container').last().focus();
-      });
-    },
-
-    addDns: function() {
-      var self = this;
-      this.get('controller').send('addDns');
-      Ember.run.next(function() {
-        self.$('.dns-value').last().focus();
-      });
-    },
-
-    addDnsSearch: function() {
-      var self = this;
-      this.get('controller').send('addDnsSearch');
-      Ember.run.next(function() {
-        self.$('.dns-search-value').last().focus();
-      });
-    },
-
-    addLxc: function() {
-      var self = this;
-      this.get('controller').send('addLxc');
-      Ember.run.next(function() {
-        self.$('.lxc-key').last().focus();
-      });
-    },
-
-    addDevice: function() {
-      var self = this;
-      this.get('controller').send('addDevice');
-      Ember.run.next(function() {
-        self.$('.device-host').last().focus();
-      });
-    },
+    addArgument:    addAction('addArgument',    '.argument-name'),
+    addEnvironment: addAction('addEnvironment', '.environment-nam'),
+    addPort:        addAction('addPort',        '.port-public'),
+    addLink:        addAction('addLink',        '.link-container'),
+    addVolume:      addAction('addVolume',      '.volume-path'),
+    addVolumeFrom:  addAction('addVolumeFrom',  '.volumefrom-container'),
+    addDns:         addAction('addDns',         '.dns-value'),
+    addDnsSearch:   addAction('addDnsSearch',   '.dns-search-value'),
+    addLxc:         addAction('addLxc',         '.lxc-key'),
+    addDevice:      addAction('addDevice',      '.device-host'),
 
     selectTab: function(name) {
       this.set('context.tab',name);
@@ -101,19 +32,47 @@ export default Overlay.extend({
   },
 
   didInsertElement: function() {
+    $('BODY').addClass('white');
     this._super();
     this.send('selectTab',this.get('context.tab'));
 
+    // Cap add/drop multiselects
+    this.initMultiselect();
+
+  },
+
+  willDestroyElement: function() {
+    $('BODY').removeClass('white');
+  },
+
+  initMultiselect: function() {
     var view = this;
 
     var opts = {
       maxHeight: 200,
       buttonClass: 'btn btn-default',
       buttonWidth: '100%',
-      numberDisplayed: 2,
 
       templates: {
         li: '<li><a><label></label></a></li>',
+      },
+
+      buttonText: function(options, select) {
+        var label = (select.hasClass('select-cap-add') ? 'Add' : 'Drop') + ": ";
+        if ( options.length === 0 )
+        {
+          label += 'None';
+        }
+        else if ( options.length === 1 )
+        {
+          label += $(options[0]).text();
+        }
+        else
+        {
+          label += options.length + ' Selected';
+        }
+
+        return label;
       },
 
       onChange: function(/*option, checked*/) {

@@ -70,10 +70,15 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   },
 
   // Links
+  allHosts: function() {
+    return this.get('store').all('host');
+  }.property(),
+
   containerChoices: function() {
     var list = [];
     var id = this.get('id');
-    this.get('controllers.hosts').forEach(function(host) {
+
+    this.get('allHosts').map((host) => {
       var containers = (host.get('instances')||[]).filter(function(instance) {
         // You can't link to yourself, or to other types of instances
         return instance.get('id') !== id && instance.get('kind') === 'container';
@@ -81,15 +86,15 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
 
       list.pushObjects(containers.map(function(container) {
         return {
-          group: host.get('displayName'),
+          group: host.get('name') || '('+host.get('id')+')',
           id: container.get('id'),
           name: container.get('name')
         };
       }));
     });
 
-    return list;
-  }.property('controllers.hosts.@each.[]','controllers.hosts.@each.instancesUpdated').volatile(),
+    return list.sortBy('group','name','id');
+  }.property('allHosts.@each.instancesUpdated').volatile(),
 
   linksArray: null,
   linksAsStrArray: null,
