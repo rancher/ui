@@ -3,7 +3,9 @@ import OverlayRoute from 'ui/pods/overlay/route';
 export default OverlayRoute.extend({
   actions: {
     cancel: function() {
-      this.send('goToPrevious');
+      // @TODO don't remember switches between tabs as previous routes
+      //this.send('goToPrevious');
+      this.transitionTo('hosts');
     }
   },
 
