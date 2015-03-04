@@ -1,7 +1,10 @@
 import Ember from 'ember';
-import OverlayRoute from 'ui/pods/overlay/route';
 
-export default OverlayRoute.extend({
+export default Ember.Route.extend({
+  activate: function() {
+    this.send('setPageLayout', {label: 'Back', backPrevious: true});
+  },
+
   actions: {
     cancel: function() {
       this.send('goToPrevious');
@@ -12,7 +15,8 @@ export default OverlayRoute.extend({
     var self = this;
 
     var dependencies = [
-      this.get('store').find('network')
+      this.get('store').find('network'),
+      this.get('store').find('host')
     ];
 
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then(function(results) {
@@ -51,9 +55,5 @@ export default OverlayRoute.extend({
     controller.set('originalModel', null);
     controller.set('model', model);
     controller.initFields();
-  },
-
-  renderTemplate: function() {
-    this.render('containers/new', {into: 'application', outlet: 'overlay'});
   },
 });

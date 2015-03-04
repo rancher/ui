@@ -1,12 +1,12 @@
 {{#if portsArray.length}}
-  <table class="table fixed no-lines no-top-padding tight">
+  <table class="table fixed no-lines no-top-padding tight small">
     <tr class="text-muted">
-      <th width="30%">Public (on Host)</th>
-      <th>&nbsp;</th>
-      <th width="30%">Private (in Container)</th>
-      <th>&nbsp;</th>
-      <th width="15%">Protocol</th>
-      <th>&nbsp;</th>
+      <th>Public (on Host)</th>
+      <th width="30">&nbsp;</th>
+      <th>Private (in Container)</th>
+      <th width="30">&nbsp;</th>
+      <th width="60">Protocol</th>
+      <th width="30">&nbsp;</th>
     </tr>
     {{#each port in portsArray}}
       {{#if port.existing}}
@@ -14,7 +14,7 @@
           <td>
             {{input class="form-control input-sm port-public" type="number" min="1" max="65535" value=port.public placeholder="e.g. 80"}}
           </td>
-          <td style="text-align: center">
+          <td class="text-center">
             <div class="form-group">
               <p class="form-control-static"><i class="ss-right"></i></p>
             </div>
@@ -22,7 +22,7 @@
           <td>
             <div class="form-control-static text-muted">{{port.private}}</div>
           </td>
-          <td>&nbsp;</td>
+          <td class="text-center">/</td>
           <td>
             <div class="form-control-static text-muted">
               {{upper-case port.protocol}}
@@ -35,18 +35,18 @@
           <td>
             {{input class="form-control input-sm port-public" type="number" min="1" max="65535" value=port.public placeholder="e.g. 80"}}
           </td>
-          <td style="text-align: center">
+          <td class="text-center">
             <p class="form-control-static input-sm"><i class="ss-right"></i></p>
           </td>
           <td>
             {{input class="form-control input-sm" type="number" min="1" max="65535" value=port.private placeholder="e.g. 8080"}}
           </td>
-          <td>&nbsp;</td>
+          <td class="text-center">/</td>
           <td>
             {{view "select" class="form-control input-sm" content=protocolOptions value=port.protocol optionValuePath="content.value" optionLabelPath="content.label"}}
           </td>
           <td class="text-right">
-            <button {{action "removePort" port}} class="btn btn-default btn-sm" type="button" tooltip="Remove this port" tabindex="-1">
+            <button {{action "removePort" port}} class="btn btn-circle" type="button" tabindex="-1">
               <i class="ss-delete"></i>
             </button>
           </td>
@@ -54,8 +54,4 @@
       {{/if}}
     {{/each}}
   </table>
-{{else}}
-  <div class="text-muted text-italic">
-    None
-  </div>
 {{/if}}

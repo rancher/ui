@@ -1,0 +1,111 @@
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label for="networkId" class="form-control-static">Network</label>
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    {{view "select"
+      class="form-control"
+      id="networkId"
+      content=networkChoices
+      optionLabelPath="content.name"
+      optionValuePath="content.id"
+      value=networkId
+      prompt="Select a Network to join the container to..."
+    }}
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">Links</label>
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    <div class="form-control-static">
+      {{#if containerChoices.length}}
+        <button class="btn btn-circle" {{action "addLink" target="view"}}><i class="ss-plus"></i></button>
+      {{else}}
+        <span class="text-muted">There are no other containers to link to.</span>
+      {{/if}}
+    </div>
+    {{partial "container/edit-links"}}
+  </div>
+</div>
+
+
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label for="hostname" class="form-control-static">Host Name</label>
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    {{input id="hostname" type="text" value=hostname classNames="form-control" placeholder="e.g. web01"}}
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label for="domainName" class="form-control-static">Domain Name</label>
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    {{input id="domainName" type="text" value=domainName classNames="form-control" placeholder="e.g. example.com"}}
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">Resolving Servers</label>
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    <div class="form-control-static">
+      <button class="btn btn-circle" {{action "addDns" target="view"}}><i class="ss-plus"></i></button>
+    </div>
+    {{#if dnsArray.length}}
+      <table class="table fixed no-lines no-top-padding tight">
+        {{#each dns in dnsArray}}
+          <tr>
+            <td>
+              {{input type="text" value=dns.value classNames="form-control dns-value input-sm" placeholder="e.g. 8.8.4.4"}}
+            </td>
+            <td width="30" class="text-right">
+              <button {{action "removeDns" dns}} class="btn btn-circle" type="button" tabindex="-1">
+                <i class="ss-delete"></i>
+              </button>
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    {{/if}}
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">Search Domains</label>
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    <div class="form-control-static">
+      <button class="btn btn-circle" {{action "addDnsSearch" target="view"}}><i class="ss-plus"></i></button>
+    </div>
+    {{#if dnsSearchArray.length}}
+      <table class="table fixed no-lines no-top-padding tight">
+        {{#each dnsSearch in dnsSearchArray}}
+          <tr>
+            <td>
+              {{input type="text" value=dnsSearch.value classNames="form-control dns-search-value input-sm" placeholder="e.g. prod.example.com"}}
+            </td>
+            <td width="30" class="text-right">
+              <button {{action "removeDnsSearch" dnsSearch}} class="btn btn-circle" type="button" tabindex="-1">
+                <i class="ss-delete"></i>
+              </button>
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    {{/if}}
+  </div>
+</div>

@@ -1,6 +1,11 @@
 <ol>
   <li>Start up a Linux machine somewhere and install the latest version of <a href="http://www.docker.com/" target="_blank">Docker</a> on it.</li>
-  <li>Make sure any security groups or firewalls allow traffic from the internet to <code>TCP</code> ports <code>9345</code> and <code>9346</code>.</li>
+  <li>Make sure any security groups or firewalls allow traffic:
+    <ul>
+      <li>From the internet to <code>TCP</code> ports <code>9345</code> and <code>9346</code> <span class="text-muted">(for UI hosts stats/graphs)</span></li>
+      <li>From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+    </ul>
+  </li>
   <li>Copy, paste, and run the command below to register the host with Rancher:
     {{#if registrationCommand}}
       <div class="copy-pre"><pre>{{registrationCommand}}</pre>{{zero-clipboard text=registrationCommand block=true label=false}}</div>

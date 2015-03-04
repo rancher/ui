@@ -3,10 +3,6 @@ $header_height: 53px;
 $header_text: #343434;
 $header_link_text: #afb9c8;
 $nav_width: 90px;
-//$nav_bg: #26c0c9;
-//$nav_text: #81e6e6;
-//$nav_bg_hover: #167287;
-//$nav_text_hover: white;
 $nav_bg: #393d47;
 $nav_text: white;
 $nav_bg_hover: #283036;
@@ -111,7 +107,6 @@ HEADER {
   }
 
   H3 {
-    font-weight: normal;
     margin: 0;
     line-height: $header_height - 1;
     color: $header_text;
@@ -353,14 +348,14 @@ $nav-4: #8be5ff;
   font-size: 14px;
 
   LABEL {
-  font-weight: normal;
-  display: block;
-  /* the radio button gets clipped with no padding */
-  padding-left: 2px;
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  word-wrap: break-word;
+    font-weight: normal;
+    display: block;
+    /* the radio button gets clipped with no padding */
+    padding-left: 2px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    word-wrap: break-word;
   }
 }
 
@@ -405,10 +400,6 @@ TABLE.graphs {
   cursor: hand;
 }
 
-.grid-header H3 {
-  color: #49bdaa;
-}
-
 .no-select {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -416,6 +407,31 @@ TABLE.graphs {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+// SS-Gizmo doesn't know how to vertical align..
+.ss-icon, [class^="ss-"] {
+  vertical-align: -5%;
+}
+
+.btn-circle {
+  display: inline-block;
+  color: $link-color;
+  background-color: white;
+  width: 21px;
+  height: 21px;
+  padding: 0;
+  border: 1px solid $link-color;
+  border-radius: 50%;
+  font-size: 15px;
+  text-decoration: none;
+}
+
+/**********
+* Grid
+**********/
+.grid-header H3 {
+  color: #49bdaa;
 }
 
 .grid {
@@ -474,3 +490,45 @@ TABLE.graphs {
   }
 }
 
+/**********
+* Form
+**********/
+.over-hr {
+  position: relative;
+
+  HR {
+    position: absolute;
+    top: 2px;
+    left: 0;
+    right: 0;
+  }
+
+  SPAN {
+    position: relative;
+    display: inline-block;
+    padding: 0 20px;
+    margin-left: -25%;
+    left: 50%;
+    background-color: white;
+    z-index: 1;
+    color: #798194;
+  }
+}
+
+.horizontal-form {
+  .form-label {
+    text-align: right;
+  }
+
+  HR {
+    margin: 0 0 15px 0;
+  }
+}
+
+@media (max-width: $screen-md) {
+  .horizontal-form {
+    .form-label {
+      text-align: left;
+    }
+  }
+}
