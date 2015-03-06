@@ -2,20 +2,18 @@ import Ember from 'ember';
 import NewOrEditContainer from 'ui/pods/container/edit/new-or-edit';
 
 export default Ember.ObjectController.extend(NewOrEditContainer, {
-  queryParams: ['tab','hostId'],
+  queryParams: ['tab','hostId','advanced'],
   tab: 'command',
   hostId: null,
+  advanced: false,
   editing: false,
   saving: false,
   originalModel: null,
   memoryMb: null,
 
   actions: {
-    addArgument: function() {
-      this.get('argsArray').pushObject({value: ''});
-    },
-    removeArg: function(obj) {
-      this.get('argsArray').removeObject(obj);
+    toggleAdvanced: function() {
+      this.set('advanced', !this.get('advanced'));
     },
 
     addEnvironment: function() {
@@ -92,7 +90,6 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
   initFields: function() {
     this.initNetwork();
     this.initEnvironment();
-    this.initArgs();
     this.initPorts();
     this.initLinks();
     this.initVolumes();
@@ -179,32 +176,6 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
     });
     this.set('environment', out);
   }.observes('environmentArray.@each.{key,value}'),
-
-  // Command Arguments
-  argsArray: null,
-  initArgs: function() {
-    var out = [];
-    var args = this.get('commandArgs')||[];
-    args.forEach(function(value) {
-      out.push({value: value});
-    });
-
-    this.set('argsArray', out);
-  },
-
-  argsChanged: function() {
-    // Sync with the actual environment
-    var out = [];
-    var ary = this.get('argsArray');
-    ary.forEach(function(row) {
-      if ( row.value )
-      {
-        out.push(row.value);
-      }
-    });
-
-    this.set('commandArgs', out);
-  }.observes('argsArray.@each.value'),
 
   // Ports
   portsAsStrArray: null,

@@ -33,10 +33,14 @@
 
   <div class="col-sm-12 col-md-8">
       <div class="form-control-static">
-        {{#if hostContainerChoices.length}}
-          <button class="btn btn-circle" {{action "addVolumeFrom" target="view"}}><i class="ss-plus"></i></button>
+        {{#if hostId}}
+          {{#if hostContainerChoices.length}}
+            <button class="btn btn-circle" {{action "addVolumeFrom" target="view"}}><i class="ss-plus"></i></button>
+          {{else}}
+            <span class="text-muted">This host has no containers to use the volumes from.</span>
+          {{/if}}
         {{else}}
-          <span class="text-muted">This host has no containers to use the volumes from.</span>
+            <span class="text-muted">Only available when adding a container to a particular host.</span>
         {{/if}}
       </div>
     {{#if volumesFromArray.length}}

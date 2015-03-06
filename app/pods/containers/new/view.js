@@ -11,7 +11,6 @@ function addAction(action, selector) {
 
 export default Ember.View.extend({
   actions: {
-    addArgument:    addAction('addArgument',    '.argument-name'),
     addEnvironment: addAction('addEnvironment', '.environment-nam'),
     addPort:        addAction('addPort',        '.port-public'),
     addLink:        addAction('addLink',        '.link-container'),
