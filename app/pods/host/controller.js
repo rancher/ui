@@ -83,7 +83,53 @@ var HostController = Cattle.TransitioningResourceController.extend({
 
     var machine = this.get('store').getById('machine', phid);
     return machine;
-  }.property('physicalHostId')
+  }.property('physicalHostId'),
+
+  osBlurb: function() {
+    if ( this.get('info.osInfo') )
+    {
+      return this.get('info.osInfo.distribution') + ' ' + this.get('info.osInfo.version');
+    }
+  }.property('info.osInfo.{distribution,version}'),
+
+  cpuBlurb: function() {
+    if ( this.get('info.cpuInfo') )
+    {
+      var ghz = Math.round(this.get('info.cpuInfo.mhz')/10)/100;
+
+      if ( this.get('info.cpuInfo.count') > 1 )
+      {
+        return this.get('info.cpuInfo.count')+'x' + ghz + ' GHz';
+      }
+      else
+      {
+        return ghz + ' GHz';
+      }
+    }
+  }.property('info.cpuInfo.{count,mhz}'),
+
+  memoryBlurb: function() {
+    if ( this.get('info.memoryInfo') )
+    {
+      var gb = Math.round((this.get('info.memoryInfo.memTotal')/1024)*100)/100;
+
+      return gb + ' GiB';
+    }
+  }.property('info.memoryInfo.memTotal'),
+
+  diskBlurb: function() {
+    if ( this.get('info.diskInfo') )
+    {
+      var totalMb = 0;
+      var mounts = this.get('info.diskInfo.mountPoints');
+      Object.keys(mounts).forEach((mountPoint) => {
+        totalMb += mounts[mountPoint].total;
+      });
+
+      var gb = Math.round((totalMb/1024)*10)/10;
+      return gb + ' GiB';
+    }
+  }.property('info.diskInfo.mountPoints.@each.total'),
 });
 
 HostController.reopenClass({

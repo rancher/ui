@@ -56,4 +56,11 @@ export default Ember.Route.extend({
     controller.set('model', model);
     controller.initFields();
   },
+
+  resetController: function (controller, isExiting/*, transition*/) {
+    if (isExiting)
+    {
+      controller.set('tab', 'command');
+    }
+  }
 });

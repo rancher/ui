@@ -18,15 +18,6 @@
       </div>
     </div>
 
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label for="description" class="form-control-static">Description</label>
-      </div>
-      <div class="col-sm-12 col-md-8">
-        {{textarea id="description" value=description classNames="form-control no-resize" rows="2" placeholder="e.g. It serves the website"}}
-      </div>
-    </div>
-
     <div class="row">
       <div class="col-xs-10 col-xs-offset-1">
         <hr/>
@@ -79,7 +70,7 @@
       </div>
       <div class="col-xs-2 col-md-4">
         <div class="form-control-static clearfix">
-          <button class="btn btn-circle" {{action "addPort" target="view"}}><i class="ss-plus"></i></button>
+          <button class="btn-circle-plus" {{action "addPort" target="view"}}></button>
         </div>
       </div>
       <div class="col-sm-4">
@@ -94,31 +85,43 @@
   </div>
 </section>
 
-<section class="text-center" style="padding: 0;">
-  <ul class="nav nav-pills" style="display: inline-block">
-    <li role="presentation" class="tab" data-section="command" {{action "selectTab" "command" target=view}}><a>Command</a></li>
-    <li role="presentation" class="tab" data-section="volumes" {{action "selectTab" "volumes" target=view}}><a>Volumes</a></li>
-    <li role="presentation" class="tab" data-section="network" {{action "selectTab" "network" target=view}}><a>Networking</a></li>
-    <li role="presentation" class="tab" data-section="security" {{action "selectTab" "security" target=view}}><a>Security/Host</a></li>
-  </ul>
-</section>
-
-<section class="horizontal-form" style="background-color: #f8f9fa; margin-top: -7px;">
-  <div class="section container-fluid" data-section="command">
-    {{partial "container/new-command"}}
+<div class="row">
+  <div class="col-xs-10 col-xs-offset-1">
+    <hr/>
   </div>
+</div>
 
-  <div class="section container-fluid" data-section="volumes">
-    {{partial "container/new-volumes"}}
-  </div>
+<div class="toggle-advanced">
+  <a {{action "toggleAdvanced"}}>Advanced Options {{#if advanced}}<i class="ss-navigateup"></i>{{else}}<i class="ss-navigatedown"></i>{{/if}}</a>
+</div>
 
-  <div class="section container-fluid" data-section="network">
-    {{partial "container/new-network"}}
-  </div>
+<div {{bind-attr class="advanced::hide"}}>
+  <section class="text-center" style="padding: 0;">
+    <ul class="nav nav-pills" style="display: inline-block">
+      <li role="presentation" class="tab" data-section="command" {{action "selectTab" "command" target=view}}><a>Command</a></li>
+      <li role="presentation" class="tab" data-section="volumes" {{action "selectTab" "volumes" target=view}}><a>Volumes</a></li>
+      <li role="presentation" class="tab" data-section="network" {{action "selectTab" "network" target=view}}><a>Networking</a></li>
+      <li role="presentation" class="tab" data-section="security" {{action "selectTab" "security" target=view}}><a>Security/Host</a></li>
+    </ul>
+  </section>
 
-  <div class="section" data-section="security">
-    {{partial "container/new-security"}}
-  </div>
-</section>
+  <section class="horizontal-form" style="background-color: #f8f9fa; margin-top: -7px;">
+    <div class="section container-fluid" data-section="command">
+      {{partial "container/new-command"}}
+    </div>
+
+    <div class="section container-fluid" data-section="volumes">
+      {{partial "container/new-volumes"}}
+    </div>
+
+    <div class="section container-fluid" data-section="network">
+      {{partial "container/new-network"}}
+    </div>
+
+    <div class="section" data-section="security">
+      {{partial "container/new-security"}}
+    </div>
+  </section>
+</div>
 
 {{partial "save-cancel"}}

@@ -11,9 +11,5 @@ export default Overlay.extend({
     overlayEnter: function() {
       this.get('controller').send('save');
     },
-
-    showAdvanced: function() {
-      this.get('context').set('advanced',true);
-    }
   }
 });

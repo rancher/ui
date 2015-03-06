@@ -30,10 +30,26 @@
   </div>
 {{else}}
   <div class="host-info clearfix">
+    <div class="host-info-line">
       <div class="host-info-item"><i class="ss-link"></i> {{model.displayIp}}</div>
+      {{#if model.osBlurb}}
+        <div class="host-info-item"><i class="fa fa-linux"></i> {{model.osBlurb}}</div>
+      {{/if}}
       {{#if model.machine}}
         <div class="host-info-item"><i class="ss-microwave"></i> {{model.machine.driver}}</div>
       {{/if}}
+    </div>
+    <div class="host-info-line">
+      {{#if model.cpuBlurb}}
+        <div class="host-info-item"><i class="fa fa-tachometer" style="position: relative; top: -1px;"></i> {{model.cpuBlurb}}</div>
+      {{/if}}
+      {{#if model.memoryBlurb}}
+        <div class="host-info-item"><i class="ss-microchip"></i> {{model.memoryBlurb}}</div>
+      {{/if}}
+      {{#if model.diskBlurb}}
+        <div class="host-info-item"><i class="ss-hdd"></i> {{model.diskBlurb}}</div>
+      {{/if}}
+    </div>
   </div>
 
   <div class="clearfix no-resource-action-hover">

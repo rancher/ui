@@ -14,78 +14,6 @@
   </div>
 </div>
 
-<div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label for="arguments" class="form-control-static">Arguments</label>
-  </div>
-
-  <div class="col-sm-12 col-md-8">
-    <div class="form-control-static">
-      <button class="btn btn-circle" {{action "addArgument" target="view"}}><i class="ss-plus"></i></button>
-    </div>
-    {{#if argsArray.length}}
-      <table class="table fixed no-lines no-top-padding tight">
-        {{#each arg in argsArray}}
-          <tr>
-            <td>
-              {{input type="text" class="form-control input-sm argument-name" value=arg.value placeholder="e.g. -f httpd.conf"}}
-            </td>
-            <td width="30" class="text-right">
-              <button {{action "removeArg" arg}} class="btn btn-circle" type="button" tabindex="-1">
-                <i class="ss-delete"></i>
-              </button>
-            </td>
-          </tr>
-        {{/each}}
-      </table>
-    {{/if}}
-  </div>
-</div>
-
-<div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Environment Vars</label>
-  </div>
-
-  <div class="col-sm-12 col-md-8">
-    <div class="form-control-static">
-      <button class="btn btn-circle" {{action "addEnvironment" target="view"}}><i class="ss-plus"></i></button>
-    </div>
-
-    {{#if environmentArray.length}}
-      <table class="table fixed no-lines no-top-padding tight small">
-        <tr class="text-muted">
-          <th>Name</th>
-          <th width="30">&nbsp;</th>
-          <th>Value</th>
-          <th width="30">&nbsp;</th>
-        </tr>
-        {{#each env in environmentArray}}
-          <tr>
-            <td>
-              {{input class="form-control input-sm environment-name" type="text" value=env.key placeholder="e.g. SECRET"}}
-            </td>
-
-            <td class="text-center">
-              <p class="form-control-static input-sm">=</p>
-            </td>
-
-            <td>
-              {{input class="form-control input-sm" type="text" value=env.value placeholder="e.g. kwyjibo"}}
-            </td>
-
-            <td class="text-right">
-              <button {{action "removeEnvironment" env}} class="btn btn-circle" type="button" tabindex="-1">
-                <i class="ss-delete"></i>
-              </button>
-            </td>
-          </tr>
-        {{/each}}
-      </table>
-    {{/if}}
-  </div>
-</div>
-
 <div class="row">
   <div class="col-sm-12 col-md-2 form-label">
     <label>Console</label>
@@ -145,3 +73,46 @@
     </div>
   </div>
 </div>
+
+<div class="row">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">Environment Vars</label>
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    <div class="form-control-static">
+      <button class="btn-circle-plus" {{action "addEnvironment" target="view"}}></button>
+    </div>
+
+    {{#if environmentArray.length}}
+      <table class="table fixed no-lines no-top-padding tight small">
+        <tr class="text-muted">
+          <th>Name</th>
+          <th width="30">&nbsp;</th>
+          <th>Value</th>
+          <th width="30">&nbsp;</th>
+        </tr>
+        {{#each env in environmentArray}}
+          <tr>
+            <td>
+              {{input class="form-control input-sm environment-name" type="text" value=env.key placeholder="e.g. SECRET"}}
+            </td>
+
+            <td class="text-center">
+              <p class="form-control-static input-sm">=</p>
+            </td>
+
+            <td>
+              {{input class="form-control input-sm" type="text" value=env.value placeholder="e.g. kwyjibo"}}
+            </td>
+
+            <td class="text-right">
+              <button {{action "removeEnvironment" env}} class="btn-circle-x" type="button" tabindex="-1"></button>
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    {{/if}}
+  </div>
+</div>
+
