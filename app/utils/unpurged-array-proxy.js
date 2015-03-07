@@ -10,7 +10,7 @@ export default Ember.ArrayProxy.extend({
 
   sourceContentChanged: function() {
     var x = this.get('sourceContent').filter(function(item) {
-      return item.get('state').toLowerCase() !== 'purged';
+      return (item.get('state')||'').toLowerCase() !== 'purged';
     });
     this.set('content', x);
   }.observes('sourceContent.@each.state').on('init'),

@@ -37,7 +37,7 @@ export default Ember.View.extend({
 
     // Cap add/drop multiselects
     this.initMultiselect();
-
+    this.$('INPUT')[0].focus();
   },
 
   willDestroyElement: function() {

@@ -86,14 +86,15 @@ var HostController = Cattle.TransitioningResourceController.extend({
   }.property('physicalHostId'),
 
   osBlurb: function() {
-    if ( this.get('info.osInfo') )
+    // @TODO this always sends back Ubuntu
+    if ( false && this.get('info.osInfo') )
     {
       return this.get('info.osInfo.distribution') + ' ' + this.get('info.osInfo.version');
     }
   }.property('info.osInfo.{distribution,version}'),
 
   cpuBlurb: function() {
-    if ( this.get('info.cpuInfo') )
+    if ( this.get('info.cpuInfo.count') )
     {
       var ghz = Math.round(this.get('info.cpuInfo.mhz')/10)/100;
 
@@ -118,10 +119,10 @@ var HostController = Cattle.TransitioningResourceController.extend({
   }.property('info.memoryInfo.memTotal'),
 
   diskBlurb: function() {
-    if ( this.get('info.diskInfo') )
+    if ( this.get('info.diskInfo.mountPoints') )
     {
       var totalMb = 0;
-      var mounts = this.get('info.diskInfo.mountPoints');
+      var mounts = this.get('info.diskInfo.mountPoints')||[];
       Object.keys(mounts).forEach((mountPoint) => {
         totalMb += mounts[mountPoint].total;
       });
