@@ -22,4 +22,6 @@ export default {
 
   NO_CHALLENGE_HEADER: 'x-api-no-challenge',
   NO_CHALLENGE_VALUE: 'true',
+
+  SETTING_API_HOST: 'api.host',
 };

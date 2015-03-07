@@ -5,7 +5,7 @@
 
   <div class="col-sm-12 col-md-8">
     <div class="form-control-static">
-      <button class="btn btn-circle" {{action "addVolume" target="view"}}><i class="ss-plus"></i></button>
+      <button class="btn-circle-plus" {{action "addVolume" target="view"}}></button>
     </div>
     {{#if volumesArray.length}}
       <table class="table fixed no-lines no-top-padding tight">
@@ -15,9 +15,7 @@
               {{input type="text" class="form-control volume-path input-sm" value=vol.value placeholder="e.g. [/path/on/host]:/path/in/container[:ro]"}}
             </td>
             <td width="30" class="text-right">
-              <button {{action "removeVolume" vol}} class="btn btn-circle" type="button" tabindex="-1">
-                <i class="ss-delete"></i>
-              </button>
+              <button {{action "removeVolume" vol}} class="btn-circle-x" type="button" tabindex="-1"></button>
             </td>
           </tr>
         {{/each}}
@@ -35,7 +33,7 @@
       <div class="form-control-static">
         {{#if hostId}}
           {{#if hostContainerChoices.length}}
-            <button class="btn btn-circle" {{action "addVolumeFrom" target="view"}}><i class="ss-plus"></i></button>
+            <button class="btn btn-circle-plus" {{action "addVolumeFrom" target="view"}}></button>
           {{else}}
             <span class="text-muted">This host has no containers to use the volumes from.</span>
           {{/if}}
@@ -59,9 +57,7 @@
               }}
             </td>
             <td width="30" class="text-right">
-              <button {{action "removeVolumeFrom" vol}} class="btn btn-circle" type="button" tabindex="-1">
-                <i class="ss-delete"></i>
-              </button>
+              <button {{action "removeVolumeFrom" vol}} class="btn-circle-x" type="button" tabindex="-1"></button>
             </td>
           </tr>
         {{/each}}

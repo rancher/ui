@@ -11,10 +11,12 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     var store = this.get('store');
     var session = this.get('session');
 
+    // Load schemas
     return store.find('schema', null, {url: 'schemas'}).then((/*schemas*/) => {
+      var isAdmin = session.get(C.USER_TYPE_SESSION_KEY) === C.USER_TYPE_ADMIN;
       // Save whether the user is an admin or not.
       // For cattle >= v0.6 the token response will have userType: admin/user, for older look for a schema
-      this.set('app.isAuthenticationAdmin', session.get(C.USER_TYPE_SESSION_KEY) === C.USER_TYPE_ADMIN || store.hasRecordFor('schema','githubconfig'));
+      this.set('app.isAuthenticationAdmin', isAdmin || store.hasRecordFor('schema','githubconfig'));
 
       // Load all the projects
       var supportsProjects = this.get('app.authenticationEnabled') && store.hasRecordFor('schema','project');
