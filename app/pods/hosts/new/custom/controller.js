@@ -19,11 +19,18 @@ export default Ember.ObjectController.extend({
   }.property('links.registrationUrl','controllers.application.absoluteEndpoint'),
 
   registrationCommand: function() {
-    var url = this.get('registrationUrl');
-    if ( url )
+    if ( this.get('command') )
     {
-      return `sudo docker run --rm -it --privileged -v /var/run/docker.sock:/var/run/docker.sock rancher/agent ${url}`;
+      return this.get('command');
     }
-  }.property('registrationUrl'),
+    else
+    {
+      var url = this.get('registrationUrl');
+      if ( url )
+      {
+        return `sudo docker run --rm -it --privileged -v /var/run/docker.sock:/var/run/docker.sock rancher/agent ${url}`;
+      }
+    }
+  }.property('command','registrationUrl'),
 
 });
