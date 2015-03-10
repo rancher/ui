@@ -10,6 +10,7 @@ var Container = Cattle.TransitioningResource.extend({
   // Container-specific
   type: 'container',
   imageUuid: null,
+  registryCredentialId: null,
   command: null,
   commandArgs: null,
   environment: null,

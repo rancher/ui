@@ -51,12 +51,46 @@
 
         <div class="form-group">
           <div class="input-group">
-            <span class="input-group-addon">docker:</span>
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span> {{displayPrefix}}</button>
+              <ul class="dropdown-menu" role="menu">
+                <li {{action "chooseRegistry" null}}><a>Docker</a></li>
+                {{#if registryChoices}}
+                  <li class="divider"></li>
+                  {{#each choice in registryChoices itemController="registry"}}
+                    <li {{action "chooseRegistry" choice}} {{bind-attr class="choice.active:active"}}>
+                      <a>{{choice.displayName}}</a>
+                    </li>
+                  {{/each}}
+                {{/if}}
+              </ul>
+            </div>
             {{input id="userImageUuid" disabled=isRancher type="text" class="form-control" value=userImageUuid placeholder="e.g. stackbrew/ubuntu:14.04"}}
           </div>
         </div>
       </div>
     </div>
+
+    {{#if showCredentials}}
+      <div class="row">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label for="registryCredentialId" class="form-control-static">Credential</label>
+        </div>
+        <div class="col-sm-12 col-md-8">
+          <div class="form-group">
+            {{view "select"
+              class="form-control"
+              id="registryCredentialId"
+              content=credentialChoices
+              optionLabelPath="content.publicValue"
+              optionValuePath="content.id"
+              value=registryCredentialId
+              prompt="None"
+            }}
+          </div>
+        </div>
+      </div>
+    {{/if}}
 
     <div class="row">
       <div class="col-xs-10 col-xs-offset-1">

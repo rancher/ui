@@ -78,6 +78,35 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
     removeDevice: function(obj) {
       this.get('devicesArray').removeObject(obj);
     },
+
+    chooseRegistry: function(registry) {
+      var found = false;
+      this.get('registryChoices').forEach((choice) => {
+        var prefix = choice.get('serverAddress')+':';
+
+        if ( registry && choice.get('id') === registry.get('id') )
+        {
+          found = true;
+          choice.set('active', true);
+          this.set('displayPrefix', prefix);
+          this.set('selectedRegistry', choice);
+          this.set('credentialChoices', choice.get('credentials'));
+        }
+        else
+        {
+          choice.set('active', false);
+        }
+      });
+
+      if (!found)
+      {
+        this.set('displayPrefix', 'docker:');
+        this.set('selectedRegistry', null);
+        this.set('credentialChoices', null);
+      }
+
+      this.set('registryCredentialId', this.get('credentialChoices.firstObject.id'));
+    },
   },
 
   validate: function() {
@@ -213,20 +242,69 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
   }.observes('linksArray.@each.{linkName,targetInstanceId}'),
 
   // Image
+  registryChoices: null,
+  displayPrefix: 'docker:',
   userImageUuid: 'ubuntu:14.04.1',
+  credentialChoices: null,
+  showCredentials: Ember.computed.gt('credentialChoices.length',1),
   userImageUuidDidChange: function() {
-    var image = this.get('userImageUuid');
-    if ( image.indexOf('docker:') === 0 )
+    var input = this.get('userImageUuid');
+    var choices = this.get('registryChoices')||[];
+
+    // Look for a private registry with the matching prefix
+    var prefix, choice, found=false;
+    for ( var i = 0 ; i < choices.get('length') ; i++ )
     {
-      this.set('userImageUuid', image.replace(/^docker:/,''));
-    }
-    else
-    {
-      image = 'docker:' + image;
+      choice = choices.objectAt(i);
+      prefix = choice.get('serverAddress')+':';
+      choice.set('selected', false);
+      if ( input.indexOf(prefix) === 0 )
+      {
+        this.set('userImageUuid', input.substr(prefix.length));
+        this.send('chooseRegistry', choice);
+      }
     }
 
-    this.set('imageUuid', image);
+    if ( found )
+    {
+      return;
+    }
+
+    prefix = 'docker:';
+    if ( input.indexOf(prefix) === 0 )
+    {
+      this.set('userImageUuid', input.substr(prefix.length));
+      this.send('chooseRegistry', null);
+    }
   }.observes('userImageUuid'),
+
+  updateImageUuid: function() {
+    var uuid = 'docker:';
+    var registry = this.get('selectedRegistry.serverAddress');
+    if ( registry )
+    {
+      uuid += registry + '/';
+    }
+    uuid += this.get('userImageUuid');
+
+    this.set('imageUuid', uuid);
+  }.observes('selectedRegistry.serverAddress','userImageUuid'),
+
+  credentialChoicesChanged: function() {
+    var found = false;
+    var id = this.get('registryCredentialId');
+    (this.get('credentialChoices')||[]).forEach((choice) => {
+      if ( choice.get('id') === id )
+      {
+        found = true;
+      }
+    });
+
+    if ( !found )
+    {
+      this.set('registryCredentialId',null);
+    }
+  }.observes('credentialChoices.@each.id','registryCredentialId'),
 
   // Volumes
   volumesArray: null,

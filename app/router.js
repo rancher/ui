@@ -69,6 +69,21 @@ Router.map(function() {
       });
     });
 
+    this.resource('registries', function() {
+      this.route('new');
+    });
+
+    this.resource('registry', {path: '/registries/:registry_id'}, function() {
+      this.route('edit');
+      this.route('delete');
+      this.route('new-credential', {path: '/new-credential'});
+
+      this.resource('registryCredential', {path: '/registry-credentials/:credential_id'}, function() {
+  //      this.route('edit');
+        this.route('delete');
+      });
+    });
+
   });
 });
 
