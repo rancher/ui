@@ -1,0 +1,43 @@
+<section>
+  <div class="clearfix">
+    <div style="float: right">
+      <button {{action "newRegistry"}} class="btn btn-primary"><i class="ss-plus"></i> Add a Private Registry</button>
+    </div>
+  </div>
+  <table class="grid fixed" style="margin-bottom: 0">
+    <thead>
+      <tr>
+        <th width="120">State</th>
+        <th>Name<br/><span class="text-muted">Description</span></th>
+        <th>Address<br/><span class="text-muted">Created</span></th>
+        <th width="80">Credentials</th>
+        <th width="50">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each registry in arrangedContent itemController="registry"}}
+        <tr>
+          <td>
+            <span {{bind-attr class=":badge :state registry.stateBackground"}}>
+              {{registry.displayState}}
+            </span>
+          </td>
+          <td>
+            {{#link-to "registry" registry.id}}{{registry.displayName}}{{/link-to}}
+            <p class="text-muted">{{#if registry.description}}{{registry.description}}{{else}}<span class="text-italic">No description</span>{{/if}}</p>
+          </td>
+          <td>
+            {{registry.serverAddress}}
+            <p class="text-muted">{{date-calendar registry.created}}</p>
+          </td>
+          <td>{{#if registry.credentials}}{{registry.credentials.length}}{{else}}<i class="text-muted">None</i>{{/if}}</td>
+          <td align="right">
+            {{resource-actions-menu model=registry choices=registry.availableActions}}
+          </td>
+        </tr>
+      {{else}}
+        <tr><td colspan="4" class="text-center text-muted">You don't have any private registries yet.</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>

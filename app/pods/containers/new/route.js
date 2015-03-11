@@ -1,6 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  networkChoices: null,
+  registryChoices: null,
+
   activate: function() {
     this.send('setPageLayout', {label: 'Back', backPrevious: true});
   },
@@ -16,13 +19,21 @@ export default Ember.Route.extend({
 
     var dependencies = [
       this.get('store').find('network'),
-      this.get('store').find('host')
+      this.get('store').find('host'),
+      this.get('store').find('registry'),
     ];
 
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then(function(results) {
-      var networks = results[0].sortBy('name','id');
+      var networks = results[0].sortBy('name','id').filter((network) => {
+        return network.get('state') === 'active';
+      });
+
+      var registries = results[2].sortBy('serverAddress').filter((registry) => {
+        return registry.get('state') === 'active';
+      });
 
       self.set('networkChoices', networks);
+      self.set('registryChoices', registries);
 
       var networkId = self.get('lastNetworkId');
       if ( !networkId )
@@ -52,6 +63,7 @@ export default Ember.Route.extend({
   setupController: function(controller, model) {
     model.set('requestedHostId', controller.get('hostId'));
     controller.set('networkChoices', this.get('networkChoices'));
+    controller.set('registryChoices', this.get('registryChoices'));
     controller.set('originalModel', null);
     controller.set('model', model);
     controller.initFields();

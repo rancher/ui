@@ -1,0 +1,80 @@
+{{partial "transitioning-progress"}}
+
+<section>
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>{{displayName}}</h3>
+    </div>
+    <div class="col-sm-6 text-right">
+      <h3 {{bind-attr class=":instance-status stateColor"}}>
+        <i {{bind-attr class="stateIcon"}}></i> {{displayState}}
+      </h3>
+      <div {{bind-attr class=":force-wrap isError:text-danger:text-muted"}}>
+        {{#if showTransitioningMessage}}{{transitioningMessage}}{{else}}&nbsp;{{/if}}
+      </div>
+      <div class="instance-actions">
+        {{resource-actions model=this choices=availableActions}}
+      </div>
+    </div>
+  </div>
+</section>
+
+{{#if description}}
+  <section>
+    <div class="well">
+      <label>Description</label>
+      {{description}}
+    </div>
+  </section>
+{{/if}}
+
+<section>
+  <div class="well">
+    <div class="clearfix">
+      <div style="float: right">
+        <button {{action "newCredential"}} class="btn btn-primary"><i class="ss-plus"></i> Add a Credential</button>
+      </div>
+      <label>Credentials</label>
+    </div>
+    <table class="grid fixed">
+      <thead>
+        <tr>
+          <th width="120">State</th>
+          <th>Username</th>
+          <th>Email</th>
+          <th width="30">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each credential in credentials itemController="registryCredential"}}
+          <tr>
+            <td>
+              <span {{bind-attr class=":badge :state credential.stateBackground"}}>
+                {{credential.displayState}}
+              </span>
+            </td>
+            <td>
+              {{credential.publicValue}}
+            </td>
+            <td>
+              {{credential.email}}
+            </td>
+            <td class="actions">
+              {{resource-actions-menu model=credential choices=credential.availableActions}}
+            </td>
+          </tr>
+        {{else}}
+          <tr>
+            <td colspan="5">
+              {{#if mountError}}
+                <div class="text-danger text-center">Error: {{mountError.message}}</div>
+              {{else}}
+                <div class="text-muted text-center">This container has no credentials.</div>
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</section>

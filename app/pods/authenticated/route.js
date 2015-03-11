@@ -215,6 +215,17 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
           mounts.pushObject(mount);
         }
       }
+    },
+
+    registryCredentialChanged: function(change) {
+      // @TODO Change to registryId when the backend changes
+      var key = 'registryId';
+      if ( Object.keys(change.data.resource).indexOf(key) === -1 )
+      {
+        key = 'storagePoolId';
+      }
+
+      this._includeChanged('registry', 'credentials', key, change.data.resource);
     }
   },
 
@@ -335,10 +346,22 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     // IDs the resource should be on
     var expectedIds = [];
     var expected = changed.get(expectedProperty)||[];
+    if ( !Ember.isArray(expected) )
+    {
+      expected = [expected];
+    }
+
     if ( changed.get('state') !== 'purged' )
     {
       expectedIds = expected.map(function(item) {
-        return item.get('id');
+        if ( typeof item === 'object' )
+        {
+          return item.get('id');
+        }
+        else
+        {
+          return item;
+        }
       });
     }
 
