@@ -264,10 +264,11 @@ var TransitioningResourceController = ResourceController.extend({
         {
           enabled: true/false,    // Whether it's enabled or greyed out
           detail: true/false,     // If true, this action will only be shown on detailed screens
-          label: 'Delete',      // Label shown on hover or in menu
+          label: 'Delete',        // Label shown on hover or in menu
           icon: 'fa-trash-o',     // Icon shown on screen
           action: 'promptDelete', // Action to call on the controller when clicked
           altAction: 'delete'     // Action to call on the controller when alt+clicked
+          divider: true,          // Just this will make a divider
         },
         ...
       ]

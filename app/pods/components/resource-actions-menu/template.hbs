@@ -6,14 +6,18 @@
 <button type="button" class="btn-circle-menu dropdown-toggle" data-toggle="dropdown" aria-expanded="false"></button>
 <ul class="dropdown-menu dropdown-menu-right" role="menu">
   {{#each item in activeActions}}
-    <li>
-      {{action-menu-item
-        label=item.label
-        icon=item.icon
-        action="clicked"
-        actionArg=item.action
-        altActionArg=item.altAction
-      }}
-    </li>
+    {{#if item.divider}}
+      <li class="divider"></li>
+    {{else}}
+      <li>
+        {{action-menu-item
+          label=item.label
+          icon=item.icon
+          action="clicked"
+          actionArg=item.action
+          altActionArg=item.altAction
+        }}
+      </li>
+    {{/if}}
   {{/each}}
 </ul>

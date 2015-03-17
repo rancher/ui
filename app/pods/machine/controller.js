@@ -11,8 +11,9 @@ var MachineController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions')||{};
 
     return [
-      { label: 'View in API',   icon: 'fa fa-external-link',  action: 'goToApi',      enabled: true},
-      { label: 'Delete',        icon: 'ss-trash',             action: 'delete',       enabled: !!a.remove},
+      { label: 'Delete',        icon: 'ss-trash',   action: 'delete',       enabled: !!a.remove},
+      { divider: true },
+      { label: 'View in API',   icon: '',           action: 'goToApi',      enabled: true},
     ];
   }.property('actions.remove'),
 });

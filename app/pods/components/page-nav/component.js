@@ -5,6 +5,7 @@ export default Ember.Component.extend({
 
   tagName: 'nav',
   hasRegistries: function() {
-    return this.get('store').hasRecordFor('schema','registry');
+    var store = this.get('store');
+    return store && store.hasRecordFor('schema','registry');
   }.property(),
 });

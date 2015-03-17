@@ -45,11 +45,12 @@ var HostController = Cattle.TransitioningResourceController.extend({
 
     return [
 //      { label: 'Add Container', icon: 'ss-plus',      action: 'newContainer', enabled: true,            color: 'text-primary' },
-      { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true},
       { label: 'Activate',      icon: 'ss-play',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
       { label: 'Deactivate',    icon: 'ss-pause',     action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
       { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
-      { label: 'Purge',         icon: 'ss-tornado',   action: 'purge',        enabled: !!a.purge, color: 'text-danger' },
+      { divider: true },
+      { label: 'View in API',   icon: '', action: 'goToApi',      enabled: true},
+      { label: 'Purge',         icon: '',   action: 'purge',        enabled: !!a.purge, color: 'text-danger' },
     ];
   }.property('actions.{activate,deactivate,remove,purge}'),
 
@@ -138,9 +139,9 @@ HostController.reopenClass({
     'requested':        {icon: 'ss-tag',            color: 'text-danger'},
     'registering':      {icon: 'ss-tag',            color: 'text-danger'},
     'activating':       {icon: 'ss-tag',            color: 'text-danger'},
-    'active':           {icon: 'ss-desktop',        color: 'text-success'},
+    'active':           {icon: 'ss-database',       color: 'text-success'},
     'reconnecting':     {icon: 'fa fa-cog fa-spin', color: 'text-danger'},
-    'updating-active':  {icon: 'ss-desktop',        color: 'text-success'},
+    'updating-active':  {icon: 'ss-database',       color: 'text-success'},
     'updating-inactive':{icon: 'ss-alert',          color: 'text-danger'},
     'deactivating':     {icon: 'ss-down',           color: 'text-danger'},
     'inactive':         {icon: 'fa fa-circle',      color: 'text-danger'},
