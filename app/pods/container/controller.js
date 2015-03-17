@@ -65,16 +65,18 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions');
 
     var choices = [
-      { label: 'Edit',          icon: 'ss-write',             action: 'edit',         enabled: !!a.update },
-      { label: 'View in API',   icon: 'fa fa-external-link',  action: 'goToApi',      enabled: true,            detail: true },
-      { label: 'Execute Shell', icon: 'fa fa-terminal',       action: 'shell',        enabled: !!a.execute },
-      { label: 'View Logs',     icon: 'ss-file',              action: 'logs',         enabled: !!a.logs },
-      { label: 'Restart',       icon: 'ss-refresh',           action: 'restart',      enabled: !!a.restart },
-      { label: 'Start',         icon: 'ss-play',              action: 'start',        enabled: !!a.start },
-      { label: 'Stop',          icon: 'ss-stop',              action: 'stop',         enabled: !!a.stop },
-      { label: 'Restore',       icon: 'ss-medicalcross',      action: 'restore',      enabled: !!a.restore },
-      { label: 'Delete',        icon: 'ss-trash',             action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
-      { label: 'Purge',         icon: 'ss-tornado',           action: 'purge',        enabled: !!a.purge },
+      { label: 'Restart',       icon: 'ss-refresh',   action: 'restart',      enabled: !!a.restart },
+      { label: 'Start',         icon: 'ss-play',      action: 'start',        enabled: !!a.start },
+      { label: 'Stop',          icon: 'ss-stop',      action: 'stop',         enabled: !!a.stop },
+      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
+      { divider: true },
+      { label: 'View in API',   icon: '',             action: 'goToApi',      enabled: true,            detail: true },
+      { label: 'Execute Shell', icon: '',             action: 'shell',        enabled: !!a.execute },
+      { label: 'View Logs',     icon: '',             action: 'logs',         enabled: !!a.logs },
+      { label: 'Restore',       icon: '',             action: 'restore',      enabled: !!a.restore },
+      { label: 'Purge',         icon: '',             action: 'purge',        enabled: !!a.purge },
+      { divider: true },
+      { label: 'Edit',          icon: '',             action: 'edit',         enabled: !!a.update },
     ];
 
     return choices;

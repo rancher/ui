@@ -97,11 +97,13 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions');
 
     var choices = [
-      { label: 'Edit',          icon: 'ss-write',         action: 'edit',         enabled: !!a.update },
-      { label: 'Activate',      icon: 'ss-play',          action: 'activate',     enabled: !!a.activate},
-      { label: 'Restore',       icon: 'ss-medicalcross',  action: 'restore',      enabled: !!a.restore },
-      { label: 'Delete',        icon: 'ss-trash',         action: 'promptDelete', enabled: this.get('canRemove'), altAction: 'delete' },
-      { label: 'Purge',         icon: 'ss-tornado',       action: 'purge',        enabled: !!a.purge },
+      { label: 'Activate',      icon: 'ss-play',  action: 'activate',     enabled: !!a.activate},
+      { label: 'Delete',        icon: 'ss-trash', action: 'promptDelete', enabled: this.get('canRemove'), altAction: 'delete' },
+      { divider: true },
+      { label: 'Restore',       icon: '',         action: 'restore',      enabled: !!a.restore },
+      { label: 'Purge',         icon: '',         action: 'purge',        enabled: !!a.purge },
+      { divider: true },
+      { label: 'Edit',          icon: '',         action: 'edit',         enabled: !!a.update },
     ];
 
     return choices;

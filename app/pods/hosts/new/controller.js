@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 var DRIVERS = [
   {route: 'hosts.new.digitalocean',   label: 'DigitalOcean',      available: true },
@@ -9,4 +10,10 @@ var DRIVERS = [
 export default Ember.ObjectController.extend({
   lastRoute: 'hosts.new.custom',
   drivers: DRIVERS,
+
+  isAdmin: function() {
+    var userType = this.get('session').get(C.USER_TYPE_SESSION_KEY);
+    var isAdmin = userType === undefined || userType === C.USER_TYPE_ADMIN;
+    return isAdmin;
+  }.property(),
 });
