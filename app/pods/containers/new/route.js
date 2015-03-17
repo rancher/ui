@@ -20,17 +20,25 @@ export default Ember.Route.extend({
     var dependencies = [
       this.get('store').find('network'),
       this.get('store').find('host'),
-      this.get('store').find('registry'),
     ];
+
+    if ( this.get('store').hasRecordFor('schema','registry') )
+    {
+      dependencies.push(this.get('store').find('registry'));
+    }
 
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then(function(results) {
       var networks = results[0].sortBy('name','id').filter((network) => {
         return network.get('state') === 'active';
       });
 
-      var registries = results[2].sortBy('serverAddress').filter((registry) => {
-        return registry.get('state') === 'active';
-      });
+      var registries = [];
+      if ( results[2] )
+      {
+        registries = results[2].sortBy('serverAddress').filter((registry) => {
+          return registry.get('state') === 'active';
+        });
+      }
 
       self.set('networkChoices', networks);
       self.set('registryChoices', registries);

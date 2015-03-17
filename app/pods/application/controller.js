@@ -18,4 +18,10 @@ export default Ember.Controller.extend({
 
     return url;
   }.property('app.endpoint'),
+
+  endpointHost: function() {
+    var a = document.createElement('a');
+    a.href = this.get('absoluteEndpoint');
+    return a.host;
+  }.property('absoluteEndpoint')
 });

@@ -4,6 +4,7 @@ import util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
 export default Ember.ObjectController.extend({
+  needs: ['application'],
   confirmDisable: false,
   error: null,
   testing: false,
@@ -110,7 +111,19 @@ export default Ember.ObjectController.extend({
       });
 
       model.save().then(() => {
-        this.send('waitAndRefresh', true);
+        return this.get('store').find('setting', C.SETTING_API_HOST).then((setting) => {
+          if ( setting.get('value') )
+          {
+            this.send('waitAndRefresh', true);
+          }
+          else
+          {
+            setting.set('value', this.get('controllers.application.endpointHost'));
+            return setting.save().then(() => {
+              this.send('waitAndRefresh', true);
+            });
+          }
+        });
       }).catch((err) => {
         this.set('app.authenticationEnabled',false);
         this.send('gotError', err);
@@ -126,7 +139,7 @@ export default Ember.ObjectController.extend({
       }
       else
       {
-        $('#loading-underlay, #loading-overlay').removeClass('hide');
+        $('#loading-underlay, #loading-overlay').removeClass('hide').show();
       }
 
       setTimeout(() => {
