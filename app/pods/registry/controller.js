@@ -43,10 +43,10 @@ var RegistryController = Cattle.TransitioningResourceController.extend({
       { label: 'Deactivate',    icon: 'ss-pause', action: 'deactivate',   enabled: !!a.deactivate },
       { label: 'Delete',        icon: 'ss-trash', action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
       { divider: true },
-      { label: 'Purge',         icon: '',         action: 'purge',        enabled: !!a.purge },
-      { label: 'Restore',       icon: '',         action: 'restore',      enabled: !!a.restore },
+      { label: 'Purge',         icon: 'ss-tornado', action: 'purge',        enabled: !!a.purge },
+      { label: 'Restore',       icon: 'ss-medicalcross', action: 'restore',      enabled: !!a.restore },
       { divider: true },
-      { label: 'Edit',          icon: '',         action: 'edit',         enabled: !!a.update },
+      { label: 'Edit',          icon: 'ss-write', action: 'edit',         enabled: !!a.update },
     ];
   }.property('actions.{update,activate,deactivate,restore,remove,purge}'),
 });
