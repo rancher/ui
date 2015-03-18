@@ -123,6 +123,7 @@ var TransitioningResource = Resource.extend({
   transitioningMessage: null,
   transitioningProgress: null,
   isTransitioning: Ember.computed.equal('transitioning','yes'),
+  isError: Ember.computed.equal('transitioning','error'),
 
   replaceWith: function() {
     this._super.apply(this,arguments);
@@ -192,8 +193,6 @@ var TransitioningResourceController = ResourceController.extend({
     var state = this.get('state')||'';
     return state.substr(0,1).toUpperCase() + state.substr(1);
   }.property('state'),
-
-  isError: Ember.computed.equal('transitioning','error'),
 
   showTransitioningMessage: function() {
     var trans = this.get('transitioning');
