@@ -13,6 +13,7 @@ var regionChoices = Regions.regions.filter(function(region) {
 
 export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   needs: ['hosts/new'],
+  error: null,
   regionChoices: regionChoices,
 
   sizeChoices: function() {
@@ -58,13 +59,13 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
     var accessToken = this.get('digitaloceanConfig.accessToken')||'';
     if ( accessToken.length === 0 )
     {
-      this.controllerFor('hosts/new').set('error', "Access Token is required");
+      this.set('error', "Access Token is required");
       return false;
     }
 
     if ( accessToken.length !== 64 )
     {
-      this.controllerFor('hosts/new').set('error', "That doesn't look like a valid access token");
+      this.set('error', "That doesn't look like a valid access token");
       return false;
     }
 

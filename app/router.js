@@ -17,7 +17,7 @@ Router.map(function() {
     });
 
     this.resource('projects', { path: '/projects' }, function() {
-      this.route('new');
+      this.route('new', {route: '/add'});
     });
 
     this.resource("project", { path: '/projects/:project_id' }, function() {
@@ -27,7 +27,7 @@ Router.map(function() {
 
     this.resource('hosts', { path: '/hosts'}, function() {
       this.route('setup', {path: '/setup'});
-      this.route('new', {path: '/new'}, function() {
+      this.route('new', {path: '/add'}, function() {
         this.route('digitalocean');
         this.route('openstack');
         this.route('custom');
@@ -43,7 +43,7 @@ Router.map(function() {
     });
 
     this.resource('containers', { path: '/containers'}, function() {
-      this.route('new', {path: '/new'});
+      this.route('new', {path: '/add'});
       this.route('index', {path: '/'});
 
       this.resource('container', { path: '/:container_id' }, function() {
@@ -56,7 +56,7 @@ Router.map(function() {
 
 
     this.resource('apikeys', {path: '/api'}, function() {
-      this.route('new', {path: '/api/new'});
+      this.route('new', {path: '/api/add'});
       this.resource('apikey', {path: '/:apikey_id'}, function() {
         this.route('edit');
         this.route('delete');
@@ -70,13 +70,13 @@ Router.map(function() {
     });
 
     this.resource('registries', function() {
-      this.route('new');
+      this.route('new', {path: '/add'});
     });
 
     this.resource('registry', {path: '/registries/:registry_id'}, function() {
       this.route('edit');
       this.route('delete');
-      this.route('new-credential', {path: '/new-credential'});
+      this.route('new-credential', {path: '/add-credential'});
 
       this.resource('registryCredential', {path: '/registry-credentials/:credential_id'}, function() {
   //      this.route('edit');

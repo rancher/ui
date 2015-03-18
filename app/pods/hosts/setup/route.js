@@ -7,7 +7,14 @@ export default OverlayRoute.extend({
   },
 
   setupController: function(controller, model) {
-    controller.set('customValue', this.controllerFor('application').get('endpointHost'));
+    var thisPage = window.location.host;
+    controller.set('thisPage', thisPage);
+    var endpoint = this.controllerFor('application').get('endpointHost');
+    if ( endpoint !== thisPage )
+    {
+      controller.set('customValue', endpoint);
+    }
+
     controller.set('model', model);
     var value = model.get('value');
     if ( value )

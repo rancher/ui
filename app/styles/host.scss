@@ -1,5 +1,5 @@
 $instance_column_width: 240px;
-$host_border: #f9fafc;
+$host_border: #f0f3f5;
 $host_bg: white;
 $instance_ip: #9a9a9a;
 $instance_action: #ededed;
@@ -224,6 +224,12 @@ $instance_action: #ededed;
   padding-left: 16px;
 }
 
+.host-message {
+  @extend .clip;
+  text-align: center;
+  font-size: 12px;
+}
+
 .instance {
   position: relative;
   padding: 5px 10px;
@@ -322,4 +328,29 @@ $instance_action: #ededed;
 .console-status {
   position: absolute;
   margin: 10px 0;
+}
+
+.machine-driver {
+  background-position: center center;
+  background-size: 90%;
+  background-repeat: no-repeat;
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+
+  &.digitalocean {
+    background-image: url('images/providers/digitalocean.svg');
+  }
+
+  &.openstack {
+    background-image: url('images/providers/openstack.svg');
+  }
+
+  &.custom {
+    background-image: url('images/providers/custom.svg');
+  }
+}
+
+.nav-boxes .active .machine-driver {
+  filter: none;
+  -webkit-filter: none;
 }

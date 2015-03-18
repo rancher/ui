@@ -2,9 +2,9 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 var DRIVERS = [
-  {route: 'hosts.new.digitalocean',   label: 'DigitalOcean',      available: true },
-  {route: 'hosts.new.openstack',      label: 'OpenStack',         available: false },
-  {route: 'hosts.new.custom',         label: 'Custom/Bare Metal', available: true  },
+  {route: 'hosts.new.digitalocean', label: 'DigitalOcean',  css: 'digitalocean', available: true },
+  {route: 'hosts.new.openstack',    label: 'OpenStack',     css: 'openstack',    available: false },
+  {route: 'hosts.new.custom',       label: 'Custom',        css: 'custom',       available: true  },
 ];
 
 export default Ember.ObjectController.extend({

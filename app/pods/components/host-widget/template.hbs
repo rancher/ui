@@ -10,6 +10,11 @@
       {{#link-to "host" model.id}}{{model.displayName}}{{/link-to}}
     {{/if}}
   </div>
+  {{#if model.showTransitioningMessage}}
+    <div {{bind-attr class=":host-message model.isError:text-danger:text-muted"}}>
+      {{model.transitioningMessage}}
+    </div>
+  {{/if}}
   {{#if model.isTransitioning}}
     <div class="progress progress-striped active">
       <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=model.displayProgress style=model.progressStyle}}>

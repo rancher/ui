@@ -1,64 +1,93 @@
-<div class="row">
-
-  <div class="col-md-6">
-    <div class="form-group">
-      <label for="name">Name</label>
-      {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. host01"}}
-    </div>
-    <div class="form-group">
-      <label for="description">Description</label>
-        {{textarea id="description" value=description classNames="form-control no-resize" rows="3" placeholder="e.g. My DigitalOcean host"}}
-    </div>
+{{#if error}}
+  <div class="alert alert-danger">
+    <i style="float: left;" class="ss-alert"></i>
+    <p style="margin-left: 50px">{{error}}</p>
   </div>
+{{/if}}
 
-  <div class="col-md-6">
-    <div class="form-group">
-      <label for="accessToken">Access Token</label>
-      {{input id="accessToken" type="text" value=digitaloceanConfig.accessToken classNames="form-control" placeholder="Your DigitalOcean API access token"}}
-      <p class="help-block">A <b>Personal Access Token</b> from the <a href="https://cloud.digitalocean.com/settings/applications" target="_blank">Apps & API</a> screen</p>
+<section class="horizontal-form">
+  <div class="container-fluid">
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="name" class="form-control-static">Name</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. app01"}}
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="description" class="form-control-static">Description</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{textarea id="description" value=description classNames="form-control no-resize" rows="3" placeholder="e.g. My DigitalOcean host"}}
+      </div>
     </div>
 
     <div class="row">
-
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label for="region">Region</label>
-          {{view "select"
-            class="form-control"
-            id="region"
-            content=regionChoices
-            optionValuePath="content.id"
-            optionLabelPath="content.name"
-            value=digitaloceanConfig.region
-          }}
-        </div>
+      <div class="col-xs-10 col-xs-offset-1">
+        <hr/>
       </div>
+    </div>
 
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label for="size">Size</label>
-          {{view "select"
-            class="form-control"
-            id="size"
-            content=sizeChoices
-            value=digitaloceanConfig.size
-          }}
-        </div>
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="accessToken" class="form-control-static">Access Token</label>
       </div>
-
-      <div class="col-sm-4">
-        <div class="form-group">
-          <label for="image">Image</label>
-          {{view "select"
-            class="form-control"
-            id="image"
-            content=imageChoices
-            value=digitaloceanConfig.image
-          }}
-        </div>
+      <div class="col-sm-12 col-md-8">
+        {{input id="accessToken" type="text" value=digitaloceanConfig.accessToken classNames="form-control" placeholder="Your DigitalOcean API access token"}}
+        <p class="help-block">A Personal Access Token from the DigitalOcean <a href="https://cloud.digitalocean.com/settings/applications" target="_blank">Apps & API</a> screen</p>
       </div>
+    </div>
 
+    <div class="row">
+      <div class="col-xs-10 col-xs-offset-1">
+        <hr/>
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="image" class="form-control-static">Image</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{view "select"
+          class="form-control"
+          id="image"
+          content=imageChoices
+          value=digitaloceanConfig.image
+        }}
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="size" class="form-control-static">Size</label>
+      </div>
+      <div class="col-sm-12 col-md-4">
+        {{view "select"
+          class="form-control"
+          id="size"
+          content=sizeChoices
+          value=digitaloceanConfig.size
+        }}
+      </div>
+      <div class="col-sm-12 col-md-1 form-label" style="text-align: left">
+        <label for="region" class="form-control-static">Region</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        {{view "select"
+          class="form-control"
+          id="region"
+          content=regionChoices
+          optionValuePath="content.id"
+          optionLabelPath="content.name"
+          value=digitaloceanConfig.region
+        }}
+      </div>
     </div>
   </div>
-</div>
-{{partial "save-cancel"}}
+
+  {{partial "save-cancel"}}
+</section>

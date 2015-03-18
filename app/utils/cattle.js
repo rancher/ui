@@ -193,7 +193,7 @@ var TransitioningResourceController = ResourceController.extend({
     return state.substr(0,1).toUpperCase() + state.substr(1);
   }.property('state'),
 
-  isError: Ember.computed.alias('transitioning','error'),
+  isError: Ember.computed.equal('transitioning','error'),
 
   showTransitioningMessage: function() {
     var trans = this.get('transitioning');

@@ -1,29 +1,27 @@
-<h2>Register A New Host</h2>
+<section class="horizontal-form" style="background-color: white;">
+  <h2>Add Host</h2>
 
-{{#if error}}
-  <div class="alert alert-danger">
-    <i style="float: left;" class="ss-alert"></i>
-    <p style="margin-left: 50px">{{error}}</p>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label class="form-control-static">Provider</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        <ul class="nav nav-boxes" id="providers">
+          {{#each driver in drivers}}
+            {{#if driver.available}}
+              {{#link-to driver.route tagName="li" href=false}}
+                <a {{bind-attr alt=driver.label class=":machine-driver driver.css"}}></a>
+              {{/link-to}}
+            {{/if}}
+          {{/each}}
+        </ul>
+      </div>
+    </div>
   </div>
-{{/if}}
-
-<ul class="nav nav-tabs">
-  {{#each driver in drivers}}
-    {{#if driver.available}}
-      {{#link-to driver.route tagName="li" href=false}}
-        <a>{{driver.label}}</a>
-      {{/link-to}}
-    {{/if}}
-  {{/each}}
-
-  {{#if isAdmin}}
-    {{#link-to "hosts.setup" tagName="li" href=false class="pull-right"}}
-      <a>Setup</a>
-    {{/link-to}}
-  {{/if}}
-</ul>
+<div style="width: 10px; height: 10px; margin: 0 auto; border: 10px solid white; border-bottom-color: #f4f5f8; border-top: 0;"></div>
+</section>
 
 <section>
   {{outlet}}
 </section>
-{{partial "overlay-close"}}
