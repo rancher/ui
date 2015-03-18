@@ -8,13 +8,13 @@
       {{model.displayName}}
     {{else}}
       {{#link-to "host" model.id}}{{model.displayName}}{{/link-to}}
+      {{#if model.showTransitioningMessage}}
+        <div {{bind-attr class=":host-message model.isError:text-danger:text-muted"}}>
+          {{model.transitioningMessage}}
+        </div>
+      {{/if}}
     {{/if}}
   </div>
-  {{#if model.showTransitioningMessage}}
-    <div {{bind-attr class=":host-message model.isError:text-danger:text-muted"}}>
-      {{model.transitioningMessage}}
-    </div>
-  {{/if}}
   {{#if model.isTransitioning}}
     <div class="progress progress-striped active">
       <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=model.displayProgress style=model.progressStyle}}>
@@ -26,11 +26,20 @@
 
 {{#if isMachine}}
   <div class="machine-info">
-    <i class="fa fa-spinner fa-spin"></i>
     {{#if isActive}}
+      <i class="fa fa-spinner fa-spin"></i>
       Waiting for host to check in&hellip;
     {{else}}
-      Setting up machine&hellip;
+      {{#if model.isError}}
+        {{#if model.transitioningMessage}}
+          <span class="text-danger">{{model.transitioningMessage}}</span>
+        {{else}}
+          <span class="text-danger">Error creating machine</span>
+        {{/if}}
+      {{else}}
+        <div class="color:black;">Setting up machine&hellip;</div>
+        {{model.transitioningMessage}}
+      {{/if}}
     {{/if}}
   </div>
 {{else}}

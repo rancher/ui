@@ -34,7 +34,6 @@ export default {
         "1gb",
         "4gb",
         "8gb",
-        "512mb",
         "64gb",
         "48gb"
       ],
@@ -55,7 +54,6 @@ export default {
         "1gb",
         "4gb",
         "8gb",
-        "512mb",
         "64gb",
         "48gb"
       ],
@@ -78,7 +76,6 @@ export default {
         "1gb",
         "4gb",
         "8gb",
-        "512mb",
         "64gb",
         "48gb"
       ],
@@ -101,7 +98,6 @@ export default {
         "1gb",
         "4gb",
         "8gb",
-        "512mb",
         "64gb",
         "48gb"
       ],

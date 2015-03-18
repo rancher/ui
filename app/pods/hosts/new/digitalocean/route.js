@@ -11,7 +11,7 @@ export default Ember.Route.extend({
     var config = store.createRecord({
       type: 'digitaloceanConfig',
       accessToken: '',
-      size: '512mb',
+      size: '1gb',
       region: 'nyc3',
       image: 'ubuntu-14-04-x64'
     });
