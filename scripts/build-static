@@ -108,7 +108,8 @@ else
 fi
 
 ENVIRONMENT="production"
-BUILD_DIR="dist/static/${VERSION}"
+BUILD_PAR="dist/static"
+BUILD_DIR="${BUILD_PAR}/${VERSION}"
 CDN="cdn.rancher.io/ui"
 URL="/static"
 GS_URL="gs://${CDN}"
@@ -136,6 +137,8 @@ echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
 
 # Replace the version token in the static file that cattle serves up
 runCmd sed -i.bak s/VERSION/${VERSION}/g "${BUILD_DIR}/static/index.html"
+
+runCmd tar -czf ${BUILD_PAR}/${VERSION}.tar.gz ${BUILD_DIR}
 
 if [[ $TAG -eq 1 ]]; then
   runCmd git tag v${VERSION}
