@@ -14,7 +14,7 @@ export default Ember.ObjectController.extend({
   looksPublic: looksPublic,
   editing: true,
   saving: false,
-  thisPage: window.location.host,
+  thisPage: '',
   customValue: '',
 
   actions: {

@@ -1,20 +1,36 @@
-<ol>
-  <li>Start up a Linux machine somewhere and install the latest version of <a href="http://www.docker.com/" target="_blank">Docker</a> on it.</li>
-  <li>Make sure any security groups or firewalls allow traffic:
-    <ul>
-      <li>From the internet to <code>TCP</code> ports <code>9345</code> and <code>9346</code> <span class="text-muted">(for UI hosts stats/graphs)</span></li>
-      <li>From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
-    </ul>
-  </li>
-  <li>Copy, paste, and run the command below to register the host with Rancher:
-    {{#if registrationCommand}}
-      <div class="copy-pre"><pre>{{registrationCommand}}</pre>{{zero-clipboard text=registrationCommand block=true label=false}}</div>
-    {{else}}
-      <div><i class="fa fa-gear fa-spin"></i> Generating registration URL...</div>
-    {{/if}}
-  </li>
-  <li>Close this window.  The new host should pop up on the {{#link-to "hosts"}}Hosts{{/link-to}} screen within a minute.</li>
-</ol>
+<div class="container-fluid">
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-8 col-md-offset-2">
+      <ul class="list-circles list-circles-clear">
+        <li>
+          <i>1</i>
+          Start up a Linux machine somewhere and install the latest version of <a href="http://www.docker.com/" target="_blank">Docker</a> on it.
+        </li>
+        <li>
+          <i>2</i>
+          Make sure any security groups or firewalls allow traffic:
+          <ul>
+            <li>From the internet to <code>TCP</code> ports <code>9345</code> and <code>9346</code> <span class="text-muted">(for UI hosts stats/graphs)</span></li>
+            <li>From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+          </ul>
+        </li>
+        <li>
+          <i>3</i>
+          Copy, paste, and run the command below to register the host with Rancher:
+          {{#if registrationCommand}}
+            <div class="copy-pre"><pre>{{registrationCommand}}</pre>{{zero-clipboard text=registrationCommand block=true label=false}}</div>
+          {{else}}
+            <div><i class="fa fa-gear fa-spin"></i> Generating registration URL...</div>
+          {{/if}}
+        </li>
+        <li>
+          <i>4</i>
+          Click close below.  The new host should pop up on the {{#link-to "hosts"}}Hosts{{/link-to}} screen within a minute.
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
 
 <div class="footer-actions">
   <button {{action "cancel"}} class="btn btn-primary">Close</button>

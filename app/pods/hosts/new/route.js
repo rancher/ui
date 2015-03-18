@@ -1,8 +1,7 @@
-import OverlayRoute from 'ui/pods/overlay/route';
 import C from 'ui/utils/constants';
 import Ember from 'ember';
 
-export default OverlayRoute.extend({
+export default Ember.Route.extend({
   model: function() {
     var userType = this.get('session').get(C.USER_TYPE_SESSION_KEY);
     var isAdmin = userType === undefined || userType === C.USER_TYPE_ADMIN;
@@ -29,7 +28,7 @@ export default OverlayRoute.extend({
     }
   },
 
-  renderTemplate: function() {
-    this.render('hosts/new', {into: 'application', outlet: 'overlay'});
+  activate: function() {
+    this.send('setPageLayout', {label: 'All Hosts', backRoute: 'hosts'});
   },
 });
