@@ -8,7 +8,7 @@ var DRIVERS = [
 ];
 
 export default Ember.ObjectController.extend({
-  lastRoute: 'hosts.new.custom',
+  lastRoute: 'hosts.new.digitalocean',
   drivers: DRIVERS,
 
   isAdmin: function() {
