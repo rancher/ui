@@ -3,6 +3,8 @@ import {
   test
 } from 'ember-qunit';
 
+import Ember from 'ember';
+
 moduleForComponent('page-header', 'PageHeaderComponent', {
   // specify the other units that are required for this test
   // needs: ['component:foo', 'helper:bar']
@@ -12,7 +14,12 @@ test('it renders', function(assert) {
   assert.expect(2);
 
   // creates the component instance
-  var component = this.subject();
+  var component = this.subject({
+    store: Ember.Object.create({
+      hasRecordFor: function() {}
+    }),
+    session:Ember.Object.create(),
+  });
   assert.equal(component._state, 'preRender');
 
   // appends the component to the page

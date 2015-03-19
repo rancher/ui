@@ -22,6 +22,10 @@ BODY {
   font-weight: 400;
 }
 
+.authenticated, #application {
+  height: 100%;
+}
+
 B {
   font-weight: 600;
 }
@@ -40,17 +44,57 @@ B {
 /**********
 * Navigation (left side bar)
 **********/
-NAV {
+.articles {
+  position: relative;
+  z-index: 3;
+  background-color: white;
+
+  ARTICLE {
+    position: relative;
+    padding: 7px 10px;
+    text-align: center;
+
+    &.close {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      padding: 8px 10px;
+    }
+
+    &.warning {
+      background-color: #e0717b;
+      color: white;
+
+      A,
+      A:hover,
+      A:focus,
+      A:active,
+      A:visited{
+        color: white;
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.nav-background {
   position: absolute;
   top: 0;
   left: 0;
   bottom: 0;
+  width: $nav_width;
+  background-color: $nav_bg;
+  z-index: 1;
+}
+
+NAV {
+  position: absolute;
   z-index: 2;
   width: $nav_width;
   margin: 0;
   color: $nav_text;
-
-  background-color: $nav_bg;
 
   .logo {
     height: 53px;
@@ -124,14 +168,7 @@ HEADER {
 
   .right {
     float: right;
-    padding: 10px 20px 10px 0;
-  }
-
-  .corner-warning {
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 3;
+    padding: 6px 20px 0 0;
   }
 }
 
@@ -140,6 +177,7 @@ HEADER {
 **********/
 MAIN {
   margin-left: $nav_width;
+  position: relative;
 
   &.has-aside {
     margin-left: ($nav_width + $aside_width);
@@ -160,11 +198,21 @@ SECTION {
 /**********
 * Aside (secondary bar next to left NAV)
 **********/
-ASIDE {
+.aside-background {
   position: absolute;
   top: 0;
-  bottom: 0;
   left: $nav_width;
+  bottom: 0;
+  width: $aside_width;
+  background-color: transparent;
+  z-index: 1;
+}
+
+ASIDE {
+  position: absolute;
+  top: -1*$header_height;
+  bottom: 0;
+  left: -1*$aside_width;
   width: $aside_width;
   z-index: 2;
   padding: 20px 20px 0 20px;

@@ -1,35 +1,5 @@
-import Ember from "ember";
+import BrowserStore from 'ui/utils/browser-storage';
 
-export default Ember.Object.extend({
-  unknownProperty: function(key) {
-    return localStorage[key];
-  },
-
-  setUnknownProperty: function(key, value) {
-    if( Ember.isNone(value) )
-    {
-      delete localStorage[key];
-    }
-    else
-    {
-      localStorage[key] = value;
-    }
-
-    this.notifyPropertyChange(key);
-    return value;
-  },
-
-  clear: function() {
-    var i;
-
-    this.beginPropertyChanges();
-    for ( i = 0 ; i < localStorage.length ; i++ )
-    {
-      this.set(localStorage.key(i));
-    }
-
-    localStorage.clear();
-    this.endPropertyChanges();
-  }
+export default BrowserStore.extend({
+  backing: window.localStorage
 });
-

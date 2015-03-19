@@ -107,10 +107,12 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       if ( typeof opt.hasAside === 'undefined' )
       {
         this.controller.set('hasAside', false);
+        this.controller.set('asideColor', '');
       }
       else
       {
         this.controller.set('hasAside', !!opt.hasAside);
+        this.controller.set('asideColor', opt.hasAside||'');
       }
     },
 

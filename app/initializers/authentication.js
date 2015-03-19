@@ -20,7 +20,6 @@ export function initialize(container, application) {
     var body = JSON.parse(obj.xhr.responseText);
     var token = body.data[0];
 
-    application.set('hasAuthentication', true);
     application.set('authenticationEnabled', token.security);
     configureTorii(token.clientId);
 
@@ -28,7 +27,6 @@ export function initialize(container, application) {
   })
   .catch(function(obj) {
     // Otherwise this API is too old to do auth.
-    application.set('hasAuthentication', false);
     application.set('authenticationEnabled', false);
     application.set('initError', obj);
     return Ember.RSVP.resolve(undefined,'Error determining API authentication');

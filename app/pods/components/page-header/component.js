@@ -1,5 +1,6 @@
-import Ember from "ember";
-import Project from "ui/pods/project/model";
+import Ember from 'ember';
+import Project from 'ui/pods/project/model';
+import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   project: null,
@@ -22,6 +23,14 @@ export default Ember.Component.extend({
 
     this.set('defaultProject', project);
   },
+
+  showHostSetup: function() {
+    var userType = this.get('session').get(C.USER_TYPE_SESSION_KEY);
+    var isAdmin = userType === undefined || userType === C.USER_TYPE_ADMIN;
+    return isAdmin && this.get('store').hasRecordFor('schema','setting');
+  }.property(),
+
+  showSettings: Ember.computed.or('app.isAuthenticationAdmin','showHostSetup'),
 
   projectChoices: function() {
     var out = this.get('projects').slice().filter(function(item) {
