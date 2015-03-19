@@ -1,72 +1,89 @@
-{{#if app.hasAuthentication}}
-  {{#if app.authenticationEnabled}}
-    <div class="right">
-      <div class="dropdown">
-        <span class="hand clearfix" id="user-dropdown" data-toggle="dropdown" aria-expanded="true">
-          {{github-avatar link=false login=session.user}}
-        </span>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="user-dropdown">
-          <li role="presentation" style="padding: 0 20px;">
-            {{github-block login=session.user avatar=false}}
-          </li>
-
-          <li role="presentation" class="divider"></li>
-          {{#if app.isAuthenticationAdmin}}
-            <li role="presentation" class="dropdown-header">
-              Settings
-            </li>
-
-            <li role="presentation">
-              {{#link-to "settings.auth" role="menuitem" tabindex="-1"}}Access Control{{/link-to}}
-            </li>
-
-            <li role="presentation" class="divider"></li>
-          {{/if}}
-          <li role="presentation">{{#link-to "logout" tabindex="-1"}}Log Out{{/link-to}}</li>
-        </ul>
-      </div>
-    </div>
-    {{#if app.projectsEnabled}}
-      <div class="right" style="padding-right: 0;">
-        <div class="btn-group">
-          <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            {{#if project}}
-              {{#with project as p controller="project"}}
-                <i {{bind-attr class=":fa-fw p.icon"}}></i>&nbsp;{{p.displayName}}
-              {{/with}}
-            {{else}}
-              {{#with defaultProject as p controller="project"}}
-                <i {{bind-attr class=":fa-fw p.icon"}}></i>&nbsp;{{p.displayName}}
-              {{/with}}
-            {{/if}}
-            <span class="caret"></span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-right" role="menu">
-            <li role="presentation" class="dropdown-header">Available Projects:</li>
-            {{#each p in projectChoices itemController="project"}}
-              <li {{bind-attr class="p.active:disabled p.active:selected"}}>
-                <a {{action "switchProject" p.id}}>
-                  <i {{bind-attr class=":fa-fw p.listIcon"}}></i>
-                  &nbsp;
-                  {{p.displayName}}
-                </a>
-              </li>
-            {{/each}}
-            <li role="presentation" class="divider"></li>
-            <li>{{#link-to "projects"}}Manage Projects{{/link-to}}</li>
-          </ul>
+<div class="right">
+  <div class="dropdown">
+    <span class="hand clearfix" id="user-dropdown" data-toggle="dropdown" aria-expanded="true">
+      {{#if app.authenticationEnabled}}
+        {{github-avatar link=false login=session.user}}
+      {{else}}
+        <div class="gh-avatar">
+          <div class="gh-placeholder">
+            <i class="ss-businessuser"></i>
+          </div>
         </div>
-      </div>
-    {{/if}}
-  {{else}}
-    <div class="corner-warning">
-      <div class="alert alert-warning" role="alert" style="padding: 0 15px;">
-        <i class="ss-alert"></i>
-        Access Control is not configured&nbsp;&nbsp;
-        {{#link-to "settings.auth"}}Settings{{/link-to}}
-      </div>
+      {{/if}}
+    </span>
+    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="user-dropdown">
+      <li role="presentation" style="padding: 0 20px;">
+        {{#if app.authenticationEnabled}}
+          {{github-block login=session.user avatar=false}}
+        {{else}}
+          <div class="gh-block">
+            <div class="gh-block-content text-muted">
+              Access Control
+              <div class="text-muted">
+                is not configured
+              </div>
+            </div>
+          </div>
+        {{/if}}
+      </li>
+
+      {{#if showSettings}}
+        <li role="presentation" class="divider"></li>
+        <li role="presentation" class="dropdown-header">
+          Settings
+        </li>
+
+        {{#if app.isAuthenticationAdmin}}
+          <li role="presentation">
+            {{#link-to "settings.auth" role="menuitem" tabindex="-1"}}Access Control{{/link-to}}
+          </li>
+        {{/if}}
+
+        {{#if showHostSetup}}
+          <li role="presentation">
+            {{#link-to "hosts.setup" role="menuitem" tabindex="-1"}}Host Registration{{/link-to}}
+          </li>
+        {{/if}}
+      {{/if}}
+
+      {{#if app.authenticationEnabled}}
+        <li role="presentation" class="divider"></li>
+        <li role="presentation">{{#link-to "logout" tabindex="-1"}}Log Out{{/link-to}}</li>
+      {{/if}}
+    </ul>
+  </div>
+</div>
+{{#if app.projectsEnabled}}
+  <div class="right" style="padding-right: 0;">
+    <div class="btn-group">
+      <button type="button" class="btn btn-link dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        {{#if project}}
+          {{#with project as p controller="project"}}
+            <i {{bind-attr class=":fa-fw p.icon"}}></i>&nbsp;{{p.displayName}}
+          {{/with}}
+        {{else}}
+          {{#with defaultProject as p controller="project"}}
+            <i {{bind-attr class=":fa-fw p.icon"}}></i>&nbsp;{{p.displayName}}
+          {{/with}}
+        {{/if}}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        <li role="presentation" class="dropdown-header">Available Projects:</li>
+        {{#each p in projectChoices itemController="project"}}
+          <li {{bind-attr class="p.active:disabled p.active:selected"}}>
+            <a {{action "switchProject" p.id}}>
+              <i {{bind-attr class=":fa-fw p.listIcon"}}></i>
+              &nbsp;
+              {{p.displayName}}
+            </a>
+          </li>
+        {{/each}}
+        <li role="presentation" class="divider"></li>
+        <li>{{#link-to "projects"}}Manage Projects{{/link-to}}</li>
+      </ul>
     </div>
-  {{/if}}
+  </div>
 {{/if}}
 <h3>
   {{#if backRoute}}

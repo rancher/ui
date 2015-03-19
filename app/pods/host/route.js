@@ -6,6 +6,6 @@ export default Ember.Route.extend({
   },
 
   activate: function() {
-    this.send('setPageLayout', {label: 'All Hosts', backRoute: 'hosts', hasAside: true});
+    this.send('setPageLayout', {label: 'All Hosts', backRoute: 'hosts', hasAside: 'nav-hosts active'});
   },
 });

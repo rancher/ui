@@ -1,5 +1,6 @@
 export default {
   LOGGED_IN: 'isLoggedIn',
+  ACCESS_WARNING: 'accessWarning',
 
   GITHUB_URL: 'https://www.github.com/',
   GITHUB_API_URL: 'https://api.github.com/',
