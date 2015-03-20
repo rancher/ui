@@ -7,7 +7,7 @@ export default Ember.Route.extend({
 
   model: function() {
     var self = this;
-    return self.get('store').find('registrationToken').then(function(tokens) {
+    return self.get('store').find('registrationToken',null,{forceReload: true}).then(function(tokens) {
       if ( tokens.get('length') === 0 )
       {
         // There should always be one already, but if there isn't go create one...

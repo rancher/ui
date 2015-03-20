@@ -1,20 +1,33 @@
 import Cattle from 'ui/utils/cattle';
+import util from 'ui/utils/util';
 
 var MachineController = Cattle.TransitioningResourceController.extend({
   actions: {
     delete: function() {
       return this.delete();
     },
+
+    machineConfig: function() {
+      util.download(this.get('links.config'));
+    }
   },
 
   availableActions: function() {
     var a = this.get('actions')||{};
 
-    return [
+    var out = [
       { label: 'Delete',        icon: 'ss-trash',   action: 'delete',       enabled: !!a.remove},
       { divider: true },
-      { label: 'View in API',   icon: '',           action: 'goToApi',      enabled: true},
     ];
+
+    if ( this.get('links.config') )
+    {
+      out.push({ label: 'Machine Config',   icon: 'ss-download', action: 'machineConfig',      enabled: true});
+    }
+
+    out.push({ label: 'View in API',   icon: '',           action: 'goToApi',      enabled: true});
+
+    return out;
   }.property('actions.remove'),
 });
 

@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
+import util from 'ui/utils/util';
 
 var HostController = Cattle.TransitioningResourceController.extend({
   actions: {
@@ -38,20 +39,32 @@ var HostController = Cattle.TransitioningResourceController.extend({
     detail: function() {
       this.transitionToRoute('host', this.get('id'));
     },
+
+    machineConfig: function() {
+      util.download(this.get('machine.links.config'));
+    }
   },
 
   availableActions: function() {
     var a = this.get('actions');
 
-    return [
+    var out = [
 //      { label: 'Add Container', icon: 'ss-plus',      action: 'newContainer', enabled: true,            color: 'text-primary' },
       { label: 'Activate',      icon: 'ss-play',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
       { label: 'Deactivate',    icon: 'ss-pause',     action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
       { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
       { divider: true },
-      { label: 'View in API',   icon: '', action: 'goToApi',      enabled: true},
-      { label: 'Purge',         icon: '',   action: 'purge',        enabled: !!a.purge, color: 'text-danger' },
     ];
+
+    if ( this.get('machine.links.config') )
+    {
+      out.push({ label: 'Machine Config',   icon: 'ss-download', action: 'machineConfig',      enabled: true});
+    }
+
+    out.push({ label: 'View in API',   icon: '', action: 'goToApi',      enabled: true});
+    out.push({ label: 'Purge',         icon: '',   action: 'purge',        enabled: !!a.purge, color: 'text-danger'});
+
+    return out;
   }.property('actions.{activate,deactivate,remove,purge}'),
 
   displayIp: function() {
