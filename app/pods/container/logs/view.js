@@ -76,12 +76,24 @@ export default Overlay.extend(ThrottledResize,{
       var type = parseInt(message.data.substr(1,1),10); // 0 = combined, 1 = stdout, 2 = stderr
 
       message.data.substr(2).trim().split(/\n/).forEach((line) => {
-        var [match, dateStr] = line.trim().match(/^\[?([^ \]]+)\]? /);
-        var date = new Date(dateStr);
+        var match = line.match(/^\[?([^ \]]+)\]? /);
+        var dateStr, msg;
+        if ( match )
+        {
+          msg = line.substr(match[0].length);
+          var date = new Date(match[1]);
+          dateStr = '<span class="log-date">' + Util.escapeHtml(date.toLocaleDateString()) + ' ' + Util.escapeHtml(date.toLocaleTimeString()) + '</span>';
+        }
+        else
+        {
+          msg = line;
+          dateStr = '<span class="log-date">Unknown Date</span>';
+        }
+
         body.insertAdjacentHTML('beforeend',
           '<div class="log-msg '+ typeClass[type]  +'">' +
-            '<span class="log-date">' + Util.escapeHtml(date.toLocaleDateString()) + ' ' + Util.escapeHtml(date.toLocaleTimeString()) + '</span>' +
-            Util.escapeHtml(line.substr(match.length)) +
+            dateStr +
+            Util.escapeHtml(msg) +
           '</div>'
         );
       });
