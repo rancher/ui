@@ -1,13 +1,13 @@
-$body_bg: #f4f5f8;
-$header_height: 53px;
-$header_text: #343434;
-$header_link_text: #afb9c8;
-$nav_width: 90px;
-$nav_bg: #393d47;
-$nav_text: white;
-$nav_bg_hover: #283036;
-$nav_text_hover: white;
-$aside_width: 200px;
+$body-bg: #f4f5f8;
+$header-height: 53px;
+$header-text: #343434;
+$header-link-text: #afb9c8;
+$nav-width: 90px;
+$nav-bg: #393d47;
+$nav-text: white;
+$nav-bg-hover: #283036;
+$nav-text-hover: white;
+$aside-width: 200px;
 
 /**********
 * Body
@@ -17,7 +17,7 @@ HTML {
 }
 
 BODY {
-  background-color: $body_bg;
+  background-color: $body-bg;
   min-height: 100%;
   font-weight: 400;
 }
@@ -84,17 +84,17 @@ B {
   top: 0;
   left: 0;
   bottom: 0;
-  width: $nav_width;
-  background-color: $nav_bg;
+  width: $nav-width;
+  background-color: $nav-bg;
   z-index: 1;
 }
 
 NAV {
   position: absolute;
   z-index: 2;
-  width: $nav_width;
+  width: $nav-width;
   margin: 0;
-  color: $nav_text;
+  color: $nav-text;
 
   .logo {
     height: 53px;
@@ -117,19 +117,19 @@ NAV {
   A:visited {
     display: block;
     text-decoration: none;
-    color: $nav_text;
+    color: $nav-text;
     margin: 0;
     padding: 15px 0 5px 0;
     list-style-type: none;
     text-align: center;
     cursor: pointer;
-    color: $nav_text;
+    color: $nav-text;
   }
 
   A:hover,
   A.active {
-    color: $nav_text_hover;
-    background-color: $nav_bg_hover;
+    color: $nav-text-hover;
+    background-color: $nav-bg-hover;
   }
 }
 
@@ -137,23 +137,23 @@ NAV {
 * Header (top bar)
 **********/
 HEADER {
-  height: $header_height;
+  height: $header-height;
   z-index: 2;
-  background-color: $body_bg;
+  background-color: $body-bg;
 
-  margin-left: $nav_width;
+  margin-left: $nav-width;
   &.has-aside {
-    margin-left: $nav_width + $aside_width;
+    margin-left: $nav-width + $aside-width;
   }
 
   .full-height {
-    line-height: $header_height - 1;
+    line-height: $header-height - 1;
   }
 
   H3 {
     margin: 0;
-    line-height: $header_height - 1;
-    color: $header_text;
+    line-height: $header-height - 1;
+    color: $header-text;
     padding-left: 20px;
 
     A,
@@ -162,7 +162,7 @@ HEADER {
     A:focus {
       cursor: pointer;
       text-decoration: none;
-      color: $header_link_text;
+      color: $header-link-text;
     }
   }
 
@@ -176,11 +176,11 @@ HEADER {
 * Main body
 **********/
 MAIN {
-  margin-left: $nav_width;
+  margin-left: $nav-width;
   position: relative;
 
   &.has-aside {
-    margin-left: ($nav_width + $aside_width);
+    margin-left: ($nav-width + $aside-width);
   }
 }
 
@@ -201,19 +201,19 @@ SECTION {
 .aside-background {
   position: absolute;
   top: 0;
-  left: $nav_width;
+  left: $nav-width;
   bottom: 0;
-  width: $aside_width;
+  width: $aside-width;
   background-color: transparent;
   z-index: 1;
 }
 
 ASIDE {
   position: absolute;
-  top: -1*$header_height;
+  top: -1*$header-height;
   bottom: 0;
-  left: -1*$aside_width;
-  width: $aside_width;
+  left: -1*$aside-width;
+  width: $aside-width;
   z-index: 2;
   padding: 20px 20px 0 20px;
   color: white;
@@ -230,7 +230,7 @@ ASIDE {
 
       &.active {
         opacity: 1.0;
-        background-color: #5ebeaf;
+        background-color: rgba(255,255,255,0.1);
         border-radius: 4px;
       }
     }
@@ -319,10 +319,11 @@ UL.list-circles {
 /**********
 * Colors for NAV and ASIDE
 **********/
+$nav-2: #fa7f70;
 $nav-1: #44b4a2;
-$nav-2: #fbc57e;
-$nav-3: #cd95e9;
-$nav-4: #8be5ff;
+$nav-3: #fbc57e;
+$nav-4: #cd95e9;
+$nav-5: #8be5ff;
 
 .nav-hosts {
   border-left: 2px solid $nav-1;
@@ -339,9 +340,14 @@ $nav-4: #8be5ff;
   &.active { background-color: $nav-3; }
 }
 
-.nav-api {
+.nav-registries {
   border-left: 2px solid $nav-4;
   &.active { background-color: $nav-4; }
+}
+
+.nav-api {
+  border-left: 2px solid $nav-5;
+  &.active { background-color: $nav-5; }
 }
 
 
@@ -512,6 +518,10 @@ TABLE.graphs {
 .btn-circle-menu {
   @extend .btn-circle;
   background-image: url('images/circle-menu.svg');
+}
+
+ASIDE .btn-circle-menu {
+  background-image: url('images/circle-menu-white.svg');
 }
 
 /**********

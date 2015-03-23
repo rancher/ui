@@ -203,7 +203,7 @@ var TransitioningResourceController = ResourceController.extend({
     var trans = this.get('transitioning');
     if ( trans === 'yes' )
     {
-      return 'fa fa-cog fa-spin';
+      return 'fa fa-circle-o-notch fa-spin';
     }
     else if ( trans === 'error' )
     {
