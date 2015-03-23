@@ -1,8 +1,8 @@
-$instance_column_width: 240px;
-$host_border: #f0f3f5;
-$host_bg: white;
-$instance_ip: #9a9a9a;
-$instance_action: #ededed;
+$instance-column-width: 240px;
+$host-border: #f0f3f5;
+$host-broder-dark: #e9edf1;
+$host-bg: white;
+$instance-ip: #9a9a9a;
 
 .hosts {
   overflow: visible;
@@ -22,7 +22,7 @@ $instance_action: #ededed;
 }
 
 .instance-column {
-  width: $instance_column_width;
+  width: $instance-column-width;
 
   display: inline-block;
   vertical-align: top;
@@ -44,9 +44,10 @@ $instance_action: #ededed;
 .host {
   position: relative;
   margin-bottom: 10px;
-  background-color: $host_bg;
-  border: 1px solid $host_border;
+  background-color: $host-bg;
+  border: 1px solid $host-border;
   border-top-width: 2px;
+  border-bottom: 2px solid $host-broder-dark;
   border-radius: 5px;
 
   .host-header {
@@ -55,7 +56,7 @@ $instance_action: #ededed;
     position: relative;
     font-weight: normal;
     padding-bottom: 10px;
-    border-bottom: 1px solid $host_border;
+    border-bottom: 1px solid $host-border;
 
     .resource-actions {
       position: absolute;
@@ -98,7 +99,7 @@ $instance_action: #ededed;
   .host-info {
     padding: 5px;
     text-align: center;
-    border-bottom: 1px solid $host_border;
+    border-bottom: 1px solid $host-border;
 
     .host-info-item {
       margin-top: 5px;
@@ -194,6 +195,10 @@ $instance_action: #ededed;
 
   A {
     color: inherit;
+
+    &:hover {
+      color: $link-hover-color;
+    }
   }
 }
 
@@ -203,6 +208,7 @@ $instance_action: #ededed;
 
   I {
     font-size: 12px;
+    text-align: center;
 
     &.fa {
       font-size: 11px;
@@ -216,7 +222,7 @@ $instance_action: #ededed;
 }
 
 .instance-ip {
-  color: $instance_ip;
+  color: $instance-ip;
 }
 
 .instance-ip,
@@ -236,7 +242,7 @@ $instance_action: #ededed;
   padding: 5px 10px;
   min-height: 49px;
   background-color: white;
-  border: 1px solid $host_border;
+  border: 1px solid $host-border;
 
   .resource-actions {
     position: absolute;
@@ -273,10 +279,10 @@ $instance_action: #ededed;
   width: 50%;
   float: left;
   border: none;
-  border-bottom: 1px solid $host_border;
+  border-bottom: 1px solid $host-border;
 
   &:nth-child(odd) {
-    border-right: 1px solid $host_border;
+    border-right: 1px solid $host-border;
   }
 
   &:last-child,
