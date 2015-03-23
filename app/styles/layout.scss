@@ -3,6 +3,7 @@ $header-height: 53px;
 $header-text: #343434;
 $header-link-text: #afb9c8;
 $nav-width: 90px;
+$main-padding: 20px;
 $nav-bg: #393d47;
 $nav-text: white;
 $nav-bg-hover: #283036;
@@ -35,10 +36,6 @@ B {
   background-image: url('images/background.jpg');
   background-position: top center;
   background-repeat: no-repeat;
-}
-
-.white {
-  background-color: white;
 }
 
 /**********
@@ -183,6 +180,24 @@ MAIN {
     margin-left: ($nav-width + $aside-width);
   }
 }
+
+BODY.white MAIN {
+  margin-top: $main-padding;
+  margin-right: $main-padding;
+  margin-bottom: $main-padding;
+  margin-left: $nav-width + $main-padding;
+  background-color: white;
+  border-radius: 5px;
+
+  &.has-aside {
+    margin-left: ($nav-width + $aside-width + $main-padding);
+
+    ASIDE {
+      left: -1 * ($aside-width + $main-padding);
+    }
+  }
+}
+
 
 /**********
 * Section (within Main)
