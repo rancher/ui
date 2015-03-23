@@ -24,7 +24,7 @@
       </div>
     </div>
 
-    <div class="row">
+    <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
         <label for="userImageUuid" class="form-control-static">Select Image</label>
       </div>
@@ -49,35 +49,36 @@
           </div>
         -->
 
-        <div class="form-group">
-          <div class="input-group">
-            <div class="input-group-btn">
-              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span> {{displayPrefix}}</button>
-              <ul class="dropdown-menu" role="menu">
-                <li {{action "chooseRegistry" null}}><a>Docker</a></li>
-                {{#if registryChoices}}
-                  <li class="divider"></li>
-                  {{#each choice in registryChoices itemController="registry"}}
-                    <li {{action "chooseRegistry" choice}} {{bind-attr class="choice.active:active"}}>
-                      <a>{{choice.displayName}}</a>
-                    </li>
-                  {{/each}}
-                {{/if}}
-              </ul>
-            </div>
-            {{input id="userImageUuid" disabled=isRancher type="text" class="form-control" value=userImageUuid placeholder="e.g. stackbrew/ubuntu:14.04"}}
+        <div class="input-group">
+          <div class="input-group-btn">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="border-right: 0;"><span class="caret"></span> {{displayPrefix}}</button>
+            <ul class="dropdown-menu" role="menu">
+              <li role="presentation" class="dropdown-header">
+                Select A Registry:
+              </li>
+              <li {{action "chooseRegistry" null}}><a><span class="text-muted">DockerHub &ndash; </span> docker:</a></li>
+              {{#if registryChoices}}
+                <li class="divider"></li>
+                {{#each choice in registryChoices itemController="registry"}}
+                  <li {{action "chooseRegistry" choice}} {{bind-attr class="choice.active:active"}}>
+                    <a><span class="text-muted">{{choice.displayName}} &ndash; </span> {{choice.serverAddress}}:</a>
+                  </li>
+                {{/each}}
+              {{/if}}
+            </ul>
           </div>
+          {{input id="userImageUuid" disabled=isRancher type="text" class="form-control" value=userImageUuid placeholder="e.g. stackbrew/ubuntu:14.04"}}
         </div>
       </div>
     </div>
 
-    {{#if showCredentials}}
-      <div class="row">
+    {{#if showCredentialChoice}}
+      <div class="row form-group">
         <div class="col-sm-12 col-md-2 form-label">
           <label for="registryCredentialId" class="form-control-static">Credential</label>
         </div>
         <div class="col-sm-12 col-md-8">
-          <div class="form-group">
+          <div>
             {{view "select"
               class="form-control"
               id="registryCredentialId"
@@ -90,6 +91,17 @@
           </div>
         </div>
       </div>
+    {{else}}
+      {{#if showCredential}}
+        <div class="row form-group">
+          <div class="col-sm-12 col-md-2 form-label">
+            <label class="form-control-static">Credential</label>
+          </div>
+          <div class="col-sm-12 col-md-8">
+            <div class="form-control-static text-muted">{{credentialChoices.firstObject.email}} &ndash; {{credentialChoices.firstObject.publicValue}}</div>
+          </div>
+        </div>
+      {{/if}}
     {{/if}}
 
     <div class="row">
