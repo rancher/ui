@@ -22,7 +22,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
       cred.set('publicValue', (cred.get('publicValue')||'').trim());
       cred.set('secretValue', (cred.get('secretValue')||'').trim());
       return cred.get('email').length < 1;
-    })
+    });
 
     if ( badCredentials.length === 0 )
     {
