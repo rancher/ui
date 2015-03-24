@@ -1,80 +1,91 @@
-{{partial "transitioning-progress"}}
+<aside>
+  <label>Registry</label>
+  {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
+  <h3>{{displayName}}</h3>
 
-<section>
+  <hr/>
+
+  {{#if description}}
+    <label style="margin-top: 10px;">Description</label>
+    <p>{{description}}</p>
+    <hr/>
+  {{/if}}
+
+  <div class="clearfix">
+    <label>Info</label>
+  </div>
+
+  <ul class="list-circles">
+    <li>
+      <i {{bind-attr class=":fa-fw stateIcon"}}></i>
+      {{displayState}}
+      {{#if isTransitioning}}
+        <div class="progress progress-striped active" style="height: 10px; border: 0;">
+          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=displayProgress style=progressStyle}}>
+            <span class="sr-only">{{displayProgress}}% Complete</span>
+          </div>
+        </div>
+      {{/if}}
+      {{#if showTransitioningMessage}}
+        <div class="force-wrap">
+          {{transitioningMessage}}
+        </div>
+      {{/if}}
+    </li>
+
+    <li>
+      <i class="fa-fw ss-link"></i>
+      {{serverAddress}}
+    </li>
+  </ul>
+</aside>
+
+<section class="grid-header">
   <div class="row">
     <div class="col-sm-6">
-      <h3>{{displayName}}</h3>
+      <h3>Credentials ({{#if credentials.length}}{{credentials.length}}{{else}}0{{/if}})</h3>
     </div>
     <div class="col-sm-6 text-right">
-      <h3 {{bind-attr class=":instance-status stateColor"}}>
-        <i {{bind-attr class="stateIcon"}}></i> {{displayState}}
-      </h3>
-      <div {{bind-attr class=":force-wrap isError:text-danger:text-muted"}}>
-        {{#if showTransitioningMessage}}{{transitioningMessage}}{{else}}&nbsp;{{/if}}
-      </div>
-      <div class="instance-actions">
-        {{resource-actions model=this choices=availableActions}}
-      </div>
+      <button {{action "newCredential"}} class="btn btn-sm btn-primary">Add Credential</button>
     </div>
   </div>
 </section>
 
-{{#if description}}
-  <section>
-    <div class="well">
-      <label>Description</label>
-      {{description}}
-    </div>
-  </section>
-{{/if}}
-
 <section>
-  <div class="well">
-    <div class="clearfix">
-      <div style="float: right">
-        <button {{action "newCredential"}} class="btn btn-primary"><i class="ss-plus"></i> Add a Credential</button>
-      </div>
-      <label>Credentials</label>
-    </div>
-    <table class="grid fixed">
-      <thead>
+  <table class="grid fixed">
+    <thead>
+      <tr>
+        <th width="120">State</th>
+        <th>Email</th>
+        <th>Username</th>
+        <th width="30">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each credential in credentials itemController="registryCredential"}}
         <tr>
-          <th width="120">State</th>
-          <th>Username</th>
-          <th>Email</th>
-          <th width="30">&nbsp;</th>
+          <td>
+            <span {{bind-attr class=":badge :state credential.stateBackground"}}>
+              {{credential.displayState}}
+            </span>
+          </td>
+          <td>
+            {{credential.email}}
+          </td>
+          <td>
+            {{credential.publicValue}}
+          </td>
+          <td class="actions">
+            {{resource-actions-menu model=credential choices=credential.availableActions}}
+          </td>
         </tr>
-      </thead>
-      <tbody>
-        {{#each credential in credentials itemController="registryCredential"}}
-          <tr>
-            <td>
-              <span {{bind-attr class=":badge :state credential.stateBackground"}}>
-                {{credential.displayState}}
-              </span>
-            </td>
-            <td>
-              {{credential.publicValue}}
-            </td>
-            <td>
-              {{credential.email}}
-            </td>
-            <td class="actions">
-              {{resource-actions-menu model=credential choices=credential.availableActions}}
-            </td>
-          </tr>
-        {{else}}
-          <tr>
-            <td colspan="5">
-              {{#if mountError}}
-                <div class="text-danger text-center">Error: {{mountError.message}}</div>
-              {{else}}
-                <div class="text-muted text-center">This container has no credentials.</div>
-              {{/if}}
-            </td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </div>
+      {{else}}
+        <tr>
+          <td colspan="4">
+            <div class="text-muted text-center">This registry has no credentials.</div>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
 </section>

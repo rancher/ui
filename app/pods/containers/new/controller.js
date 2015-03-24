@@ -93,7 +93,9 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
           var credentials = choice.get('credentials');
           if ( credentials )
           {
-            credentials = credentials.sortBy('email','publicValue','id');
+            credentials = credentials.filter((cred) => {
+              return cred.get('state') === 'active';
+            }).sortBy('email','publicValue','id');
           }
           this.set('credentialChoices', credentials);
         }

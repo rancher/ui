@@ -1,4 +1,11 @@
-<h1>{{#if editing}}Edit Registry{{else}}Add Private Registry{{/if}}</h1>
+<h1>{{#if editing}}Edit Registry{{else}}Add Registry{{/if}}</h1>
+
+{{#if error}}
+  <div class="alert alert-danger">
+    <i style="float: left;" class="ss-alert"></i>
+    <p style="margin-left: 50px">{{error}}</p>
+  </div>
+{{/if}}
 
 <div class="row">
   <div class="col-md-6">
@@ -57,7 +64,7 @@
           </td>
           <td>&nbsp;</td>
           <td>
-            {{input type="text" class="form-control input-sm" value=credential.secretValue placeholder="e.g. password"}}
+            {{input type="password" class="form-control input-sm" value=credential.secretValue placeholder="e.g. password"}}
           </td>
           <td>&nbsp;</td>
           <td>
