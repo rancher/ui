@@ -90,7 +90,14 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
           choice.set('active', true);
           this.set('displayPrefix', prefix);
           this.set('selectedRegistry', choice);
-          this.set('credentialChoices', choice.get('credentials'));
+          var credentials = choice.get('credentials');
+          if ( credentials )
+          {
+            credentials = credentials.filter((cred) => {
+              return cred.get('state') === 'active';
+            }).sortBy('email','publicValue','id');
+          }
+          this.set('credentialChoices', credentials);
         }
         else
         {
@@ -246,7 +253,8 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
   displayPrefix: 'docker:',
   userImageUuid: 'ubuntu:14.04.1',
   credentialChoices: null,
-  showCredentials: Ember.computed.gt('credentialChoices.length',1),
+  showCredential: Ember.computed.gt('credentialChoices.length',0),
+  showCredentialChoice: Ember.computed.gt('credentialChoices.length',1),
   userImageUuidDidChange: function() {
     var input = this.get('userImageUuid');
     var choices = this.get('registryChoices')||[];

@@ -1,7 +1,7 @@
 <section>
   <div class="clearfix">
     <div style="float: right">
-      <button {{action "newRegistry"}} class="btn btn-primary"><i class="ss-plus"></i> Add a Private Registry</button>
+      <button {{action "newRegistry"}} class="btn btn-sm btn-primary"><i class="ss-plus"></i> Add Registry</button>
     </div>
   </div>
   <table class="grid fixed" style="margin-bottom: 0">
@@ -15,7 +15,7 @@
       </tr>
     </thead>
     <tbody>
-      {{#each registry in arrangedContent itemController="registry"}}
+      {{#each registry in this}}
         <tr>
           <td>
             <span {{bind-attr class=":badge :state registry.stateBackground"}}>
@@ -36,7 +36,7 @@
           </td>
         </tr>
       {{else}}
-        <tr><td colspan="4" class="text-center text-muted">You don't have any private registries yet.</td></tr>
+        <tr><td colspan="4" class="text-center text-muted">You don't have any registries yet.</td></tr>
       {{/each}}
     </tbody>
   </table>

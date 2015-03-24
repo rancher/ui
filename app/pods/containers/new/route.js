@@ -35,7 +35,7 @@ export default Ember.Route.extend({
       var registries = [];
       if ( results[2] )
       {
-        registries = results[2].sortBy('serverAddress').filter((registry) => {
+        registries = results[2].sortBy('name','serverAddress','id').filter((registry) => {
           return registry.get('state') === 'active';
         });
       }

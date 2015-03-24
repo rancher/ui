@@ -31,6 +31,19 @@ var RegistryController = Cattle.TransitioningResourceController.extend({
     }
   },
 
+  displayName: function() {
+    var email = this.get('email')+'';
+    var pub = this.get('publicValue')+'';
+    if ( email || pub )
+    {
+      return email + (pub ? ' - ' : '') + pub;
+    }
+    else
+    {
+      return '(' + this.get('id') + ')';
+    }
+  }.property('email','publicValue','id'),
+
   availableActions: function() {
     var a = this.get('actions');
 

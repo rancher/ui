@@ -26,6 +26,7 @@ Router.map(function() {
     });
 
     this.resource('hosts', { path: '/hosts'}, function() {
+      this.route('index', {path: '/'});
       this.route('setup', {path: '/setup'});
       this.route('new', {path: '/add'}, function() {
         this.route('digitalocean');
@@ -38,8 +39,6 @@ Router.map(function() {
         this.route('hostContainers', { path: '/containers'});
         this.route('delete');
       });
-
-      this.route('index', {path: '/'});
     });
 
     this.resource('containers', { path: '/containers'}, function() {
@@ -69,18 +68,19 @@ Router.map(function() {
       });
     });
 
-    this.resource('registries', function() {
+    this.resource('registries', {path: '/registries'}, function() {
       this.route('new', {path: '/add'});
-    });
+      this.route('index', {path: '/'});
 
-    this.resource('registry', {path: '/registries/:registry_id'}, function() {
-      this.route('edit');
-      this.route('delete');
-      this.route('new-credential', {path: '/add-credential'});
-
-      this.resource('registryCredential', {path: '/registry-credentials/:credential_id'}, function() {
-  //      this.route('edit');
+      this.resource('registry', {path: '/:registry_id'}, function() {
+        this.route('edit');
         this.route('delete');
+        this.route('new-credential', {path: '/add-credential'});
+
+        this.resource('registryCredential', {path: '/credentials/:credential_id'}, function() {
+    //      this.route('edit');
+          this.route('delete');
+        });
       });
     });
 

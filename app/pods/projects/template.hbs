@@ -14,35 +14,39 @@
   <div>
     <div class="clearfix">
       <div style="float: right">
-        <button {{action "newProject"}} class="btn btn-primary"><i class="ss-plus"></i> Create a project</button>
+        <button {{action "newProject"}} class="btn btn-primary"><i class="ss-plus"></i> Add a project</button>
       </div>
     </div>
     <table class="table fixed" style="margin-bottom: 0">
-      <tr>
-        <th width="120">State</th>
-        <th>Name<br/><span class="text-muted">Description</span></th>
-        <th>Owner</th>
-        <th width="140">&nbsp;</th>
-      </tr>
-      {{#each p in arrangedContent itemController="project"}}
+      <thead>
         <tr>
-          <td {{bind-attr class="p.stateColor"}}>
-            <i {{bind-attr class="p.stateIcon"}}></i> {{p.displayState}}
-          </td>
-          <td>
-            {{p.displayName}}
-            <p class="text-muted">{{#if p.description}}{{p.description}}{{else}}<span class="text-italic">No description</span>{{/if}}</p>
-          </td>
-          <td>
-            {{github-block type=p.githubType login=p.githubLogin}}
-          </td>
-          <td align="right">
-            {{resource-actions-menu model=p choices=p.availableActions}}
-          </td>
+          <th width="120">State</th>
+          <th>Name<br/><span class="text-muted">Description</span></th>
+          <th>Owner</th>
+          <th width="140">&nbsp;</th>
         </tr>
-      {{else}}
-        <tr><td colspan="4" class="text-center text-muted">You don't have any Projects yet.</td></tr>
-      {{/each}}
+      </thead>
+      <tbody>
+        {{#each p in this}}
+          <tr>
+            <td {{bind-attr class="p.stateColor"}}>
+              <i {{bind-attr class="p.stateIcon"}}></i> {{p.displayState}}
+            </td>
+            <td>
+              {{p.displayName}}
+              <p class="text-muted">{{#if p.description}}{{p.description}}{{else}}<span class="text-italic">No description</span>{{/if}}</p>
+            </td>
+            <td>
+              {{github-block type=p.githubType login=p.githubLogin}}
+            </td>
+            <td align="right">
+              {{resource-actions-menu model=p choices=p.availableActions}}
+            </td>
+          </tr>
+        {{else}}
+          <tr><td colspan="4" class="text-center text-muted">You don't have any Projects yet.</td></tr>
+        {{/each}}
+      </tbody>
     </table>
   </div>
 </section>

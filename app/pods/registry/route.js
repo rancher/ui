@@ -6,6 +6,6 @@ export default Ember.Route.extend({
   },
 
   activate: function() {
-    this.send('setPageLayout', {label: 'Private Registry', backRoute: 'registries'});
+    this.send('setPageLayout', {label: 'Registries', backRoute: 'registries', hasAside: 'nav-registries active'});
   },
 });
