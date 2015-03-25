@@ -1,16 +1,22 @@
-<section>
-  <div class="clearfix">
-    <div style="float: right">
+<section class="grid-header">
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>All Registries ({{length}})</h3>
+    </div>
+    <div class="col-sm-6 text-right">
       <button {{action "newRegistry"}} class="btn btn-sm btn-primary"><i class="ss-plus"></i> Add Registry</button>
     </div>
   </div>
+</section>
+<section>
   <table class="grid fixed" style="margin-bottom: 0">
     <thead>
       <tr>
         <th width="120">State</th>
-        <th>Name<br/><span class="text-muted">Description</span></th>
-        <th>Address<br/><span class="text-muted">Created</span></th>
-        <th width="80">Credentials</th>
+        <th>Name</th>
+        <th>Address</th>
+        <th width="100">Credentials</th>
+        <th>Created</th>
         <th width="50">&nbsp;</th>
       </tr>
     </thead>
@@ -24,13 +30,16 @@
           </td>
           <td>
             {{#link-to "registry" registry.id}}{{registry.displayName}}{{/link-to}}
-            <p class="text-muted">{{#if registry.description}}{{registry.description}}{{else}}<span class="text-italic">No description</span>{{/if}}</p>
           </td>
           <td>
             {{registry.serverAddress}}
-            <p class="text-muted">{{date-calendar registry.created}}</p>
           </td>
-          <td>{{#if registry.credentials}}{{registry.credentials.length}}{{else}}<i class="text-muted">None</i>{{/if}}</td>
+          <td>
+            {{#if registry.credentials}}{{registry.credentials.length}}{{else}}<i class="text-muted">None</i>{{/if}}
+          </td>
+          <td>
+            {{date-calendar registry.created}}
+          </td>
           <td align="right">
             {{resource-actions-menu model=registry choices=registry.availableActions}}
           </td>

@@ -14,21 +14,31 @@
       </div>
     </div>
   </div>
+</section>
 
-  <div>
-    <div class="clearfix">
-      <label><i class="fa fa-code"></i> API Keys</label>
-      <div style="float: right">
-        <button {{action "newApikey"}} class="btn btn-primary"><i class="ss-plus"></i> Create an API key</button>
-      </div>
+<section class="grid-header">
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>All API Keys ({{length}})</h3>
     </div>
-    <table class="table fixed" style="margin-bottom: 0">
+    <div class="col-sm-6 text-right">
+      <button {{action "newApikey"}} class="btn btn-primary"><i class="ss-plus"></i> Create an API key</button>
+    </div>
+  </div>
+</section>
+
+<section>
+  <table class="grid fixed" style="margin-bottom: 0">
+    <thead>
       <tr>
         <th width="120">State</th>
-        <th>Name<br/><span class="text-muted">Description</span></th>
-        <th>Created<br/><span class="text-muted">Username</span></th>
+        <th>Name</th>
+        <th>Username</th>
+        <th>Created</th>
         <th width="50">&nbsp;</th>
       </tr>
+    </thead>
+    <tbody>
       {{#each key in this}}
         <tr>
           <td>
@@ -38,12 +48,12 @@
           </td>
           <td>
             {{#if key.name}}{{key.displayName}}{{else}}<span class="text-muted text-italic">No name</span>{{/if}}
-            <p class="text-muted">{{#if key.description}}{{key.description}}{{else}}<span class="text-italic">No description</span>{{/if}}</p>
-
+          </td>
+          <td>
+            {{#if key.publicValue}}{{key.publicValue}}{{else}}<span class="text-muted text-italic">No public value</span>{{/if}}
           </td>
           <td>
             <div class="text-muted">{{date-calendar key.created}}</div>
-            <div>{{#if key.publicValue}}{{key.publicValue}}{{else}}<span class="text-muted text-italic">No public value</span>{{/if}}</div>
           </td>
           <td align="right">
             {{resource-actions-menu model=key choices=key.availableActions}}
@@ -52,6 +62,6 @@
       {{else}}
         <tr><td colspan="4" class="text-center text-muted">You don't have any API keys yet.</td></tr>
       {{/each}}
-    </table>
-  </div>
+    </tbody>
+  </table>
 </section>
