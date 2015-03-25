@@ -94,6 +94,8 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
     return ['removed','removing','purging','purged'].indexOf(this.get('state')) === -1;
   }.property('state'),
 
+  isManaged: Ember.computed.notEmpty('systemContainer'),
+
   primaryHost: Ember.computed.alias('hosts.firstObject'),
 });
 

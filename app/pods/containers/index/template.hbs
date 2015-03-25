@@ -38,7 +38,9 @@
             <div class="text-muted">{{date-calendar container.created}}</div>
           </td>
           <td class="actions">
-            {{resource-actions-menu model=container choices=container.availableActions}}
+            {{#unless container.isManaged}}
+              {{resource-actions-menu model=container choices=container.availableActions}}
+            {{/unless}}
           </td>
         </tr>
       {{else}}
