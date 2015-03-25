@@ -186,6 +186,10 @@ H1, H2, H3, H4, H5, H6 {
   }
 }
 
+table a:not(.btn), .table a:not(.btn), .grid a:not(.btn) {
+  text-decoration: none;
+}
+
 .well > .table {
   margin-bottom: 0;
 }
@@ -203,31 +207,43 @@ HR {
   padding: 10px;
 }
 
-.dropdown-menu > li > a {
-  cursor: pointer;
-  cursor: hand;
-}
+.dropdown-menu {
+  @include box-shadow(0 2px 2px rgba(0,0,0,0.1));
 
-.dropdown-menu > li.selected > a,
-.dropdown-menu > li.selected > a:hover,
-.dropdown-menu > li.selected > a:focus {
-  color: $brand-success;
-  font-weight: bold;
+  .divider {
+    margin: 6px 5px;
+  }
 
-  .text-muted {
-    color: 
+  & > li > a {
+    cursor: pointer;
+    cursor: hand;
+  }
+
+  & > li.selected > a,
+  & > li.selected > a:hover,
+  & > li.selected > a:focus {
+    color: $brand-success;
+    font-weight: bold;
+
+    .text-muted {
+      color: 
+    }
+  }
+
+  & .active .text-muted,
+  & A:hover .text-muted {
+    color: inherit;
   }
 }
 
-.dropdown-menu .active .text-muted,
-.dropdown-menu A:hover .text-muted,
 .list-group-item.active .text-muted {
   color: inherit;
 }
 
 .badge.state {
   border-radius: 3px;
-  font-weight: 600;
+  font-size: 11px;
+  font-weight: 400;
   text-transform: uppercase;
   color: white;
 }
