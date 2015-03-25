@@ -4,6 +4,6 @@ export default Cattle.TransitioningResource.extend({
   type: 'registryCredential',
   name: '',
   publicValue: '',
-  privateValue: '',
+  secretValue: '',
   email: ''
 });
