@@ -1,6 +1,6 @@
-import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import util from 'ui/utils/util';
+import UnmanagedProxy from 'ui/utils/unmanaged-array-proxy';
 
 var HostController = Cattle.TransitioningResourceController.extend({
   actions: {
@@ -82,11 +82,12 @@ var HostController = Cattle.TransitioningResourceController.extend({
   }.property('ipAddresses','ipAddresses.[]'),
 
   arrangedInstances: function() {
-    return Ember.ArrayController.create({
-      content: this.get('instances'),
-      sortProperties: ['name','id']
+    var filtered = UnmanagedProxy.create({
+      sortProperties: ['name','id'],
+      sourceContent: this.get('instances')
     });
-  }.property('instances.[]','instances.@each.{name,id}'),
+    return filtered;
+  }.property('instances.@each.{name,id,systemContainer}'),
 
   machine: function() {
     var phid = this.get('physicalHostId');
