@@ -1,7 +1,7 @@
 <section class="grid-header">
   <div class="row">
     <div class="col-sm-6">
-      <h3>Containers ({{unmanagedInstances.length}})</h3>
+      <h3>Containers ({{instances.length}})</h3>
     </div>
     <div class="col-sm-6 text-right">
       <button {{action "newContainer"}} class="btn btn-sm btn-primary">Add Container</button>
@@ -20,7 +20,7 @@
       </tr>
     </thead>
     <tbody>
-      {{#each container in unmanagedInstances itemController="container"}}
+      {{#each container in instances itemController="container"}}
         <tr>
           <td>
             <span {{bind-attr class=":badge :state container.stateBackground"}}>
@@ -37,7 +37,9 @@
             <div class="text-muted">{{date-calendar container.created}}</div>
           </td>
           <td class="actions">
-            {{resource-actions-menu model=container choices=container.availableActions}}
+            {{#unless container.isManaged}}
+              {{resource-actions-menu model=container choices=container.availableActions}}
+            {{/unless}}
           </td>
         </tr>
       {{else}}
