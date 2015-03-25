@@ -6,7 +6,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     var cred = this.get('store').createRecord({
       type:'registryCredential',
       publicValue: '',
-      privateValue: '',
+      secretValue: '',
       email: '',
     });
 
