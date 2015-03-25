@@ -24,7 +24,7 @@ export default Overlay.extend(ThrottledResize,{
 
   actions: {
     overlayClose: function() {
-      this.send('cancel');
+      this.get('controller').send('cancel');
     },
 
     clear: function() {

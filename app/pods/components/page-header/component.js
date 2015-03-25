@@ -35,7 +35,7 @@ export default Ember.Component.extend({
   projectChoices: function() {
     var out = this.get('projects').slice().filter(function(item) {
       return item.get('state') === 'active';
-    });
+    }).sortBy('name','id');
     out.unshift(this.get('defaultProject'));
 
     return out;
