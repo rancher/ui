@@ -8,7 +8,7 @@ export default Ember.Component.extend({
   hasAside: null,
 
   tagName: 'header',
-  classNames: ['clearfix'],
+  classNames: ['clearfix','no-select'],
   classNameBindings: ['hasAside'],
 
   defaultProject: null,

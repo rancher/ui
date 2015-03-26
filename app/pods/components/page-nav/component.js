@@ -2,6 +2,7 @@ import Ember from "ember";
 
 export default Ember.Component.extend({
   activeTab: null,
+  classNames: ['no-select'],
 
   tagName: 'nav',
   hasRegistries: function() {
