@@ -81,6 +81,7 @@ export default Ember.Route.extend({
     if (isExiting)
     {
       controller.set('tab', 'command');
+      controller.set('advanced', false);
     }
   }
 });

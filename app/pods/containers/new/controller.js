@@ -124,6 +124,7 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
   },
 
   initFields: function() {
+    this.set('error',null);
     this.initNetwork();
     this.initEnvironment();
     this.initPorts();
@@ -138,11 +139,16 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
     this.userImageUuidDidChange();
     this.terminalDidChange();
     this.restartDidChange();
+    this.send('chooseRegistry', this.get('selectedRegistry'));
+    this.updateImageUuid();
+    this.set('restartLimit', 5);
+    this.set('restart', 'no'); // This has to come after restartLimit because changing the limit sets restart.
+    this.set('terminal', 'both');
   },
 
   // Restart
-  restart: 'no',
-  restartLimit: 5,
+  restart: null, //'no',
+  restartLimit: null, //5,
 
   restartDidChange: function() {
     var policy = {};
@@ -250,7 +256,8 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
 
   // Image
   registryChoices: null,
-  displayPrefix: 'docker:',
+  selectedRegistry: null,
+  displayPrefix: '',
   userImageUuid: 'ubuntu:14.04.1',
   credentialChoices: null,
   showCredential: Ember.computed.gt('credentialChoices.length',0),
@@ -441,7 +448,7 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
   }.observes('memoryMb'),
 
   // Terminal
-  terminal: 'both',
+  terminal: null, //'both',
   terminalDidChange: function() {
     var val = this.get('terminal');
     var stdinOpen = ( val === 'interactive' || val === 'both' );
