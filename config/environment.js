@@ -4,7 +4,6 @@ var pkg = require('../package.json');
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'ui',
-    podModulePrefix: 'ui/pods',
     environment: environment,
     baseURL: '/',
     locationType: 'auto',
