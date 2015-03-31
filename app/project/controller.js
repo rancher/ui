@@ -10,6 +10,7 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
 
     delete: function() {
       return this.delete().then(() => {
+        // If you're in the project that was deleted, go back to the default project
         if ( this.get('id') === this.get('session.projectId') )
         {
           this.send('switchProject', undefined);
@@ -19,18 +20,6 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
 
     activate: function() {
       return this.doAction('activate');
-    },
-
-    restore: function() {
-      return this.doAction('restore');
-    },
-
-    purge: function() {
-      return this.doAction('purge');
-    },
-
-    promptDelete: function() {
-      this.transitionToRoute('project.delete', this.get('id'));
     },
   },
 

@@ -34,6 +34,7 @@ var NewOrEditMixin = Ember.Mixin.create({
   error: null,
   saving: false,
   editing: true,
+  primaryResource: Ember.computed.alias('model'),
 
   validate: function() {
     return true;
@@ -75,7 +76,6 @@ var NewOrEditMixin = Ember.Mixin.create({
       this.set('error', str);
     },
 
-    primaryResource: Ember.computed.alias('model'), 
     save: function() {
       var self = this;
 
@@ -197,6 +197,34 @@ TransitioningResource.reopenClass({
 });
 
 var TransitioningResourceController = ResourceController.extend({
+  actions: {
+    // Common actions that almost all types have in common...
+    promptDelete: function() {
+      this.send('openOverlay', 'confirm-delete', 'confirm-delete', this.get('model'), this);
+    },
+
+    confirmDelete: function() {
+      this.send('delete');
+      this.send('closeOverlay');
+    },
+
+    cancelDelete: function() {
+      this.send('closeOverlay');
+    },
+
+    delete: function() {
+      return this.delete();
+    },
+
+    restore: function() {
+      return this.doAction('restore');
+    },
+
+    purge: function() {
+      return this.doAction('purge');
+    },
+
+  },
   displayState: function() {
     var state = this.get('state')||'';
     return state.substr(0,1).toUpperCase() + state.substr(1);

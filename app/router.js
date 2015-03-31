@@ -22,7 +22,6 @@ Router.map(function() {
 
     this.resource("project", { path: '/projects/:project_id' }, function() {
       this.route("edit");
-      this.route("delete");
     });
 
     this.resource('hosts', { path: '/hosts'}, function() {
@@ -38,7 +37,6 @@ Router.map(function() {
       this.resource('host', { path: '/:host_id' }, function() {
         this.route('index', { path: '/monitoring'});
         this.route('hostContainers', { path: '/containers'});
-        this.route('delete');
       });
     });
 
@@ -50,7 +48,6 @@ Router.map(function() {
         this.route('shell');
         this.route('logs');
         this.route('edit');
-        this.route('delete');
       });
     });
 
@@ -59,13 +56,11 @@ Router.map(function() {
       this.route('new', {path: '/api/add'});
       this.resource('apikey', {path: '/:apikey_id'}, function() {
         this.route('edit');
-        this.route('delete');
       });
     });
 
     this.resource('volumes', {path: '/volumes'}, function() {
       this.resource('volume', {path: '/:volume_id'}, function() {
-        this.route('delete');
       });
     });
 
@@ -75,12 +70,10 @@ Router.map(function() {
 
       this.resource('registry', {path: '/:registry_id'}, function() {
         this.route('edit');
-        this.route('delete');
         this.route('new-credential', {path: '/add-credential'});
 
         this.resource('registryCredential', {path: '/credentials/:credential_id'}, function() {
     //      this.route('edit');
-          this.route('delete');
         });
       });
     });

@@ -3,10 +3,6 @@ import util from 'ui/utils/util';
 
 var MachineController = Cattle.TransitioningResourceController.extend({
   actions: {
-    delete: function() {
-      return this.delete();
-    },
-
     machineConfig: function() {
       util.download(this.get('links.config'));
     }
@@ -16,7 +12,7 @@ var MachineController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions')||{};
 
     var out = [
-      { label: 'Delete',        icon: 'ss-trash',   action: 'delete',       enabled: !!a.remove},
+      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
       { divider: true },
     ];
 

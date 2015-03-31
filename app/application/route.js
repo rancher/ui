@@ -22,6 +22,24 @@ export default Ember.Route.extend({
       return true;
     },
 
+    openOverlay: function(template, view, model, controller) {
+      view = view || 'overlay';
+      return this.render(template, {
+        into: 'application',
+        outlet: 'overlay',
+        view: view,
+        model: model,
+        controller: controller,
+      });
+    },
+
+    closeOverlay: function() {
+      return this.disconnectOutlet({
+        parentView: 'application',
+        outlet: 'overlay'
+      });
+    },
+
     error: function(err) {
       this.controllerFor('application').set('error',err);
       this.transitionTo('failWhale');

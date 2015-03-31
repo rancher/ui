@@ -25,11 +25,15 @@ var HostController = Cattle.TransitioningResourceController.extend({
     },
 
     purge: function() {
-      return this.doAction('purge');
-    },
-
-    promptDelete: function() {
-      this.transitionToRoute('host.delete', this.get('id'));
+      var machine = this.get('machine');
+      if ( machine )
+      {
+        return machine.doAction('purge');
+      }
+      else
+      {
+        return this.doAction('purge');
+      }
     },
 
     newContainer: function() {

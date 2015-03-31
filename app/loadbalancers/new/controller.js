@@ -151,12 +151,12 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
             return balancer.doAction('sethosts', {
               hostIds: this.get('hostIds'),
             }).then(() => {
-              return;
+              return null;
             });
-          });;
+          });
         });
       });
-    })
+    });
   },
 
   doneSaving: function() {
