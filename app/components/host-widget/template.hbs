@@ -1,15 +1,15 @@
-<div class="host-header">
+<div class="pod-header">
   {{resource-actions-menu model=model choices=model.availableActions}}
 
-  <div {{bind-attr class=":host-state stateBackground"}}><span>{{model.displayState}}</span></div>
-  <div class="host-icon"><i {{bind-attr class=":fa-lg model.stateIcon iconColor"}}></i></div>
-  <div class="host-name">
+  <div {{bind-attr class=":pod-state stateBackground"}}><span>{{model.displayState}}</span></div>
+  <div class="pod-icon"><i {{bind-attr class=":fa-lg model.stateIcon iconColor"}}></i></div>
+  <div class="pod-name">
     {{#if isMachine}}
       {{model.displayName}}
     {{else}}
       {{#link-to "host" model.id}}{{model.displayName}}{{/link-to}}
       {{#if model.showTransitioningMessage}}
-        <div {{bind-attr class=":host-message model.isError:text-danger:text-muted"}}>
+        <div {{bind-attr class=":pod-message model.isError:text-danger:text-muted"}}>
           {{model.transitioningMessage}}
         </div>
       {{/if}}
@@ -43,25 +43,25 @@
     {{/if}}
   </div>
 {{else}}
-  <div class="host-info clearfix">
-    <div class="host-info-line">
-      <div class="host-info-item"><i class="ss-link"></i> {{model.displayIp}}</div>
+  <div class="pod-info clearfix">
+    <div class="pod-info-line">
+      <div class="pod-info-item"><i class="ss-link"></i> {{model.displayIp}}</div>
       {{#if model.osBlurb}}
-        <div class="host-info-item"><i class="fa fa-linux"></i> {{model.osBlurb}}</div>
+        <div class="pod-info-item"><i class="fa fa-linux"></i> {{model.osBlurb}}</div>
       {{/if}}
       {{#if model.machine}}
-        <div class="host-info-item"><i class="ss-microwave"></i> {{model.machine.driver}}</div>
+        <div class="pod-info-item"><i class="ss-microwave"></i> {{model.machine.driver}}</div>
       {{/if}}
     </div>
-    <div class="host-info-line">
+    <div class="pod-info-line">
       {{#if model.cpuBlurb}}
-        <div class="host-info-item"><i class="fa fa-tachometer" style="position: relative; top: -1px;"></i> {{model.cpuBlurb}}</div>
+        <div class="pod-info-item"><i class="fa fa-tachometer" style="position: relative; top: -1px;"></i> {{model.cpuBlurb}}</div>
       {{/if}}
       {{#if model.memoryBlurb}}
-        <div class="host-info-item"><i class="ss-microchip"></i> {{model.memoryBlurb}}</div>
+        <div class="pod-info-item"><i class="ss-microchip"></i> {{model.memoryBlurb}}</div>
       {{/if}}
       {{#if model.diskBlurb}}
-        <div class="host-info-item"><i class="ss-hdd"></i> {{model.diskBlurb}}</div>
+        <div class="pod-info-item"><i class="ss-hdd"></i> {{model.diskBlurb}}</div>
       {{/if}}
     </div>
   </div>
@@ -76,7 +76,7 @@
         {{container-widget model=item}}
       {{/each}}
       {{#if showAdd}}
-        {{add-container-widget action="newContainer"}}
+        {{add-subpod action="newContainer" label="Add Container"}}
       {{/if}}
     {{/if}}
   </div>

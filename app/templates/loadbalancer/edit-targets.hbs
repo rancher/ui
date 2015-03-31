@@ -1,0 +1,26 @@
+{{#if targetsArray.length}}
+  <table class="table fixed no-lines no-top-padding tight">
+    {{#each tgt in targetsArray}}
+      <tr>
+        <td>
+          {{#if tgt.isIp}}
+            {{input type="text" class="form-control input-sm lb-target" value=tgt.value placeholder="e.g. 192.0.2.24"}}
+          {{else}}
+            {{display-name-select
+              classNames="form-control input-sm lb-target"
+              prompt="Select a container..."
+              value=tgt.value
+              content=targetChoices
+              optionValuePath="content.id"
+              optionLabelPath="content.name"
+              optionGroupPath="group"
+            }}
+          {{/if}}
+        </td>
+        <td width="30" class="text-right">
+          <button {{action "removeTarget" tgt}} class="btn-circle-x" type="button" tabindex="-1"></button>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+{{/if}}

@@ -3,9 +3,11 @@ import Project from 'ui/project/model';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
+  pageName: null,
   project: null,
   projects: null,
   hasAside: null,
+  addRoute: null,
 
   tagName: 'header',
   classNames: ['clearfix','no-select'],
@@ -29,8 +31,6 @@ export default Ember.Component.extend({
     var isAdmin = userType === undefined || userType === C.USER_TYPE_ADMIN;
     return isAdmin && this.get('store').hasRecordFor('schema','setting');
   }.property(),
-
-  showSettings: Ember.computed.or('app.isAuthenticationAdmin','showHostSetup'),
 
   projectChoices: function() {
     var out = this.get('projects').slice().filter(function(item) {

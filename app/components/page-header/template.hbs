@@ -1,54 +1,48 @@
 <div class="right">
   <div class="dropdown">
-    <span class="hand clearfix" id="user-dropdown" data-toggle="dropdown" aria-expanded="true">
+    <span class="user-toggle" id="user-dropdown" data-toggle="dropdown" aria-expanded="true">
       {{#if app.authenticationEnabled}}
         {{github-avatar link=false login=session.user}}
+        <i class="ss-navigatedown user-dropdown-arrow"></i>
       {{else}}
         <div class="gh-avatar">
           <div class="gh-placeholder">
             <i class="ss-businessuser"></i>
           </div>
         </div>
+        <i class="ss-navigatedown user-dropdown-arrow"></i>
       {{/if}}
     </span>
-    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="user-dropdown">
-      <li role="presentation" style="padding: 0 20px;">
-        {{#if app.authenticationEnabled}}
+    <ul class="dropdown-menu dropdown-menu-right user-menu" role="menu" aria-labelledby="user-dropdown">
+      {{#if app.authenticationEnabled}}
+        <li role="presentation" class="user-auth">
           {{github-block login=session.user avatar=false}}
-        {{else}}
-          <div class="gh-block">
-            <div class="gh-block-content text-muted">
-              Access Control
-              <div class="text-muted">
-                is not configured
-              </div>
-            </div>
-          </div>
-        {{/if}}
-      </li>
-
-      {{#if showSettings}}
-        <li role="presentation" class="divider"></li>
-        <li role="presentation" class="dropdown-header">
-          Settings
+          {{#link-to "logout" tabindex="-1" class="user-logout"}}<i class="ss-logout"></i><br/>Log Out{{/link-to}}
         </li>
-
-        {{#if app.isAuthenticationAdmin}}
-          <li role="presentation">
-            {{#link-to "settings.auth" role="menuitem" tabindex="-1"}}Access Control{{/link-to}}
-          </li>
-        {{/if}}
-
-        {{#if showHostSetup}}
-          <li role="presentation">
-            {{#link-to "hosts.setup" role="menuitem" tabindex="-1"}}Host Registration{{/link-to}}
-          </li>
-        {{/if}}
+      {{else}}
+        <li role="presentation" class="user-noauth">
+          <i class="ss-alert"></i> Access is not configured
+        </li>
       {{/if}}
 
-      {{#if app.authenticationEnabled}}
-        <li role="presentation" class="divider"></li>
-        <li role="presentation">{{#link-to "logout" tabindex="-1"}}Log Out{{/link-to}}</li>
+      <li role="presentation" class="dropdown-header">
+        SETTINGS
+      </li>
+
+      <li role="presentation">
+        {{#link-to "apikeys" role="menuitem" tabindex="-1"}}API Keys{{/link-to}}
+      </li>
+
+      {{#if app.isAuthenticationAdmin}}
+        <li role="presentation">
+          {{#link-to "settings.auth" role="menuitem" tabindex="-1"}}Access Control{{/link-to}}
+        </li>
+      {{/if}}
+
+      {{#if showHostSetup}}
+        <li role="presentation">
+          {{#link-to "hosts.setup" role="menuitem" tabindex="-1"}}Host Registration{{/link-to}}
+        </li>
       {{/if}}
     </ul>
   </div>
@@ -92,5 +86,8 @@
     <a {{action "goToPrevious"}}><i class="ss-navigateleft"></i>{{pageName}}</a>
   {{else}}
     {{pageName}}
+  {{/if}}
+  {{#if addRoute}}
+    {{#link-to addRoute classNames="btn-circle-plus"}}{{/link-to}}
   {{/if}}
 </h3>

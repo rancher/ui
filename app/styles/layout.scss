@@ -184,6 +184,80 @@ HEADER {
     float: right;
     padding: 6px 20px 0 0;
   }
+
+  .user-toggle {
+    cursor: pointer;
+    position: relative;
+    z-index: 4;
+  }
+
+  .user-menu {
+    margin-top: -7px;
+    margin-right: -10px;
+    z-index: 3;
+    padding-top: 0;
+    width: 250px;
+    border-radius: 5px;
+  }
+
+  .user-dropdown-arrow {
+    position: relative;
+    left: -2px;
+  }
+
+  .user-noauth,
+  .user-auth {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    color: white;
+  }
+
+  .user-noauth {
+    background-color: #de6e79;
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  .user-auth {
+    position: relative;
+    background-color: #9eadb6;
+    padding: 10px 0 10px 20px;
+
+    .gh-block {
+      margin-right: 60px;
+    }
+
+    .gh-block-name {
+      A, A:hover, A:focus, A:visited, A:active {
+        color: white;
+      }
+    }
+
+    .gh-block-detail {
+      color: #dfe9ee;
+    }
+
+    .user-logout {
+      background-color: #899ba7;
+      border-top-right-radius: 5px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      padding: 14px 0 0 0;
+      width: 60px;
+      color: #dfe9ee;
+      font-size: 12px;
+      text-align: center;
+
+      I {
+        font-size: 24px;
+        line-height: 20px;
+        position: relative;
+        left: 3px;
+      }
+    }
+  }
 }
 
 /**********
@@ -211,6 +285,7 @@ BODY.white MAIN {
 
     ASIDE {
       left: -1 * ($aside-width + $main-padding);
+      top: -1*$header-height - $main-padding/2;
     }
   }
 }
@@ -247,7 +322,7 @@ ASIDE {
   left: -1*$aside-width;
   width: $aside-width;
   z-index: 2;
-  padding: 0px 20px 0 20px;
+  padding: 17px 20px 0 20px;
   color: white;
 
   HR {
@@ -358,6 +433,8 @@ $nav-2: #f58485;
 $nav-3: #b49ac3;
 $nav-4: #fabc6f;
 $nav-5: #66b0cb;
+$nav-6: #444;
+$nav-7: #444;
 
 .nav-hosts {
   border-left-color: $nav-1;
@@ -369,17 +446,17 @@ $nav-5: #66b0cb;
   &.active { background-color: $nav-2; }
 }
 
-.nav-volumes {
+.nav-balancing {
   border-left-color: $nav-3;
   &.active { background-color: $nav-3; }
 }
 
-.nav-registries {
+.nav-volumes {
   border-left-color: $nav-4;
   &.active { background-color: $nav-4; }
 }
 
-.nav-api {
+.nav-registries {
   border-left-color: $nav-5;
   &.active { background-color: $nav-5; }
 }
@@ -537,6 +614,16 @@ TABLE.graphs {
   padding: 0;
   border: 0;
   text-decoration: none;
+
+  &[disabled] {
+    opacity: 0.5;
+  }
+}
+
+.btn-circle-text {
+  width: auto;
+  padding-left: 25px;
+  color: #37B7E1;
 }
 
 .btn-circle-plus {

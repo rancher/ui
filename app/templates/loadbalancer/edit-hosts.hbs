@@ -1,0 +1,21 @@
+{{#if hostsArray.length}}
+  <table class="table fixed no-lines no-top-padding tight">
+    {{#each host in hostsArray}}
+      <tr>
+        <td>
+          {{display-name-select
+            classNames="form-control input-sm lb-host"
+            prompt="Select a host..."
+            value=host.value
+            content=hostChoices
+            optionValuePath="content.id"
+            optionLabelPath="content.name"
+          }}
+        </td>
+        <td width="30" class="text-right">
+          <button {{action "removeHost" host}} class="btn-circle-x" type="button" tabindex="-1"></button>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+{{/if}}

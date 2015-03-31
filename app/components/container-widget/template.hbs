@@ -2,18 +2,18 @@
   {{resource-actions-menu model=model choices=model.availableActions}}
 {{/unless}}
 
-<div class="instance-name">
+<div class="subpod-name">
     <i {{bind-attr class="model.stateIcon model.stateColor" tooltip=model.displayState}}></i>
   {{#link-to "container" model.id}}
     {{model.displayName}}
   {{/link-to}}
 </div>
 {{#if model.showTransitioningMessage}}
-  <div {{bind-attr class=":instance-message :clip model.isError:text-danger:text-muted model.showTransitioningMessage::hide"}}>
+  <div {{bind-attr class=":subpod-detail :clip model.isError:text-danger"}}>
     {{model.transitioningMessage}}
   </div>
 {{else}}
-  <div class="instance-ip">
+  <div class="subpod-detail">
     {{model.displayIp}}
   </div>
 {{/if}}

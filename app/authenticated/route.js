@@ -103,6 +103,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.controller.set('pageName', opt.label || '');
       this.controller.set('backRoute', opt.backRoute || null);
       this.controller.set('backPrevious', opt.backPrevious || null);
+      this.controller.set('addRoute', opt.addRoute || null);
 
       if ( typeof opt.hasAside === 'undefined' )
       {

@@ -1,0 +1,254 @@
+$pod-border: #f0f3f5;
+$pod-border-dark: #e9edf1;
+$pod-bg: white;
+$subpod-detail: #9a9a9a;
+
+.pods {
+  overflow: visible;
+  white-space: nowrap;
+}
+
+.pod-column {
+  /* width is set dynamically */
+  width: 260px;
+  display: inline-block;
+  vertical-align: top;
+  margin: 0 10px 10px 0;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
+.pod {
+  position: relative;
+  margin-bottom: 10px;
+  background-color: $pod-bg;
+  border: 1px solid $pod-border;
+  border-top-width: 2px;
+  border-bottom: 2px solid $pod-border-dark;
+  border-radius: 5px;
+
+  .pod-header {
+    display: block;
+    background-color: #f8f9fa;
+    position: relative;
+    font-weight: normal;
+    padding-bottom: 10px;
+    border-bottom: 1px solid $pod-border;
+
+    .resource-actions {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+    }
+  }
+
+  .pod-state {
+    font-size: 11px;
+    text-align: center;
+    padding: 0 10px;
+    vertical-align: top;
+    display: inline-block;
+    border-bottom-left-radius: 3px;
+    border-bottom-right-radius: 3px;
+    color: white;
+    font-weight: 400;
+    text-transform: uppercase;
+
+    SPAN {
+      position: relative;
+      top: -1px;
+    }
+  }
+
+  .pod-icon,
+  .pod-name {
+    text-align: center;
+  }
+
+  .pod-info {
+    padding: 5px;
+    text-align: center;
+    border-bottom: 1px solid $pod-border;
+
+    .pod-info-item {
+      margin-top: 5px;
+      padding: 0 5px;
+      display: inline-block;
+      font-size: 12px;
+      color: #8a919c;
+      border-right: 1px solid #edf2f5;
+
+      &:last-of-type {
+        border-right: 0;
+      }
+    }
+  }
+
+  .pod-message {
+    @extend .clip;
+    text-align: center;
+    font-size: 12px;
+  }
+
+  .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 5px;
+  }
+
+  .add-to-pod {
+    color: #d2d7de;
+    background-color: transparent;
+    border: 1px dashed !important;
+    cursor: pointer;
+    cursor: hand;
+    text-align: center;
+    font-size: 13px;
+    line-height: 34px;
+
+    &:hover {
+      color: #999;
+    }
+
+    A {
+      color: white;
+    }
+  }
+}
+
+.pod-name,
+.subpod-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  A {
+    color: inherit;
+
+    &:hover {
+      color: $link-hover-color;
+    }
+  }
+}
+
+.subpod-name {
+  font-size: 13px;
+  cursor: pointer;
+
+  I {
+    font-size: 12px;
+    text-align: center;
+
+    &.fa {
+      font-size: 11px;
+      min-width: 12px;
+
+      &.fa-spin {
+        font-size: 13px
+      }
+    }
+  }
+}
+
+.subpod {
+  position: relative;
+  width: 50%;
+  float: left;
+  padding: 5px 10px;
+  min-height: 49px;
+  background-color: white;
+  border: none;
+  border-bottom: 1px solid $pod-border;
+
+  &:nth-child(odd) {
+    border-right: 1px solid $pod-border;
+  }
+
+  &:last-child,
+  &:nth-last-child(2):nth-child(odd) {
+    border-bottom: none;
+  }
+
+  &:nth-last-child(2):nth-child(odd),
+  &:last-child:nth-child(odd) {
+    border-bottom-left-radius: 5px;
+
+    .progress, .progress-bar {
+      border-bottom-left-radius: 5px;
+    }
+  }
+
+  &:last-child:nth-child(even) {
+    border-bottom-right-radius: 5px;
+
+    .progress, .progress-bar {
+      border-bottom-right-radius: 5px;
+    }
+  }
+
+  &:nth-child(odd).add-to-pod {
+    width: 100%;
+    border-bottom-right-radius: 5px;
+  }
+
+  .resource-actions {
+    position: absolute;
+    top: 11px;
+    right: 5px;
+    text-align: right;
+  }
+
+  .progress {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 5px;
+    margin: 0;
+    border-bottom: 0;
+    border-left: 0;
+    border-right: 0;
+  }
+
+  .subpod-detail {
+    color: $subpod-detail;
+    font-size: 12px;
+    padding-left: 16px;
+  }
+
+  &.managed A {
+    color: $subpod-detail;
+  }
+}
+
+.add-pod {
+  color: #d2d7de;
+  background-color: transparent;
+  border: 1px dashed #d2d7de;
+  min-height: 168px;
+  text-align: center;
+  cursor: pointer;
+  cursor: hand;
+  padding: 10px;
+  padding-top: 65px;
+
+  &:hover {
+    color: #999;
+  }
+}
+
+/* Make room for the menu button when showing it */
+.no-touch .subpod:hover,
+.touch .subpod {
+  padding-right: 31px;
+
+  &.add-to-pod,
+  &.managed {
+    padding-right: 10px;
+  }
+}
+

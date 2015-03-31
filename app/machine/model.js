@@ -5,6 +5,7 @@ var pendingStates = [
   'created',
   'creating',
   'requested',
+  'error'
 ];
 
 var Machine = Cattle.TransitioningResource.extend({
@@ -29,6 +30,7 @@ var Machine = Cattle.TransitioningResource.extend({
 
 Machine.reopenClass({
   alwaysInclude: ['hosts'],
+  reservedKeys: ['hostsUpdated','hosts','isPending'],
   pollTransitioningDelay: 60000,
   pollTransitioningInterval: 60000,
 

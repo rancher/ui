@@ -3,7 +3,7 @@ import HoverActions from 'ui/mixins/hover-actions';
 
 export default Ember.Component.extend(HoverActions,{
   model: null,
-  classNames: ['host','resource-action-hover'],
+  classNames: ['pod','host','resource-action-hover'],
   classNameBindings: ['stateBorder','isMachine:machine-host'],
 
   actions: {

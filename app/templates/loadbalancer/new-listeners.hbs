@@ -1,0 +1,37 @@
+{{#if listenersArray.length}}
+  <table class="table fixed no-lines no-top-padding tight">
+    <thead>
+      <tr>
+        <th>Source</th>
+        <th width="20"></th>
+        <th>&nbsp;</th>
+        <th width="20"></th>
+        <th>Target</th>
+        <th width="20"></th>
+        <th>&nbsp;</th>
+        <th>Algorithm</th>
+        <th width="30">&nbsp;</th>
+      </tr>
+    </thead>
+    {{#each listener in listenersArray}}
+      <tr>
+        <td>{{input type="number" min="1" max="65535" step="1" value=listener.sourcePort}}</td>
+        <td>/</td>
+        <td></td>
+        <td><i class="ss-right"></i></td>
+        <td>{{input type="number" min="1" max="65535" step="1" value=listener.sourcePort}}</td>
+        <td>/</td>
+        <td></td>
+        <td>{{select
+            prompt="Balancing Algorithm"
+            value=listener.algorithm
+            content=algorithmOptions
+          }}
+        </td>
+        <td class="text-right">
+          <button {{action "removeListener" listener}} class="btn-circle-x" type="button" tabindex="-1"></button>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+{{/if}}

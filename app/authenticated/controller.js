@@ -7,6 +7,7 @@ export default Ember.Controller.extend({
   pageName: '',
   backRoute: null,
   backPrevious: null,
+  addRoute: null,
   hasAside: false,
   asideColor: '',
 
