@@ -30,6 +30,7 @@ Router.map(function() {
       this.route('setup', {path: '/setup'});
       this.route('new', {path: '/add'}, function() {
         this.route('digitalocean');
+        this.route('amazon');
         this.route('openstack');
         this.route('custom');
       });
@@ -84,6 +85,15 @@ Router.map(function() {
       });
     });
 
+    this.resource('balancing', {path: '/balancing'}, function() {
+      this.resource('loadbalancers', {path: '/balancers'}, function() {
+        this.route('new', {path: '/add'});
+        this.route('index', {path: '/'});
+
+        this.resource('loadbalancer', {path: '/:loadbalancer_id'}, function() {
+        });
+      });
+    });
   });
 });
 

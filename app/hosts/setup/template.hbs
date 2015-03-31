@@ -1,0 +1,31 @@
+<h2>Host Setup</h2>
+<h4>We need to know a little about how your environment is set up before you can register hosts.</h4>
+
+{{partial "top-error"}}
+
+<h5 style="margin-top: 30px;">What DNS name or IP address and port should hosts use to connect to the Rancher API?</h5>
+
+<div style="margin-top: 15px;">
+  <label>{{radio-button selection=customRadio value="no"}} This site's address:</label>
+  <code class="form-control-static">{{thisPage}}</code>
+</div>
+
+<div style="margin-top: 10px;">
+  <label>{{radio-button selection=customRadio value="yes"}} Something else:</label>
+  {{input type="text" class="form-control" value=customValue placeholder="e.g. rancher.mydomain.com" style="max-width: 300px; display: inline-block;"}}
+</div>
+
+{{#unless looksPublic}}
+  {{#unless custom}}
+    <div class="alert alert-info" style="margin-top: 30px;">
+      <i class="ss-info" style="font-size: 35px; float: left;"></i>
+      <p style="margin-left: 50px;">
+         Are you sure all hosts you create will be able to reach <code>{{thisPage}}</code>?<br/>It looks like a private IP or local network.
+      </p>
+    </div>
+  {{/unless}}
+{{/unless}}
+
+<div class="footer-actions">
+  {{partial "save-cancel"}}
+</div>

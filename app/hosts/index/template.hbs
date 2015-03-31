@@ -1,0 +1,21 @@
+{{#each col in view.columns}}
+  <div class="pod-column">
+    {{#each item in col}}
+      {{#if item.isNewHostPlaceHolder}}
+        {{add-pod currentController=controller label="Add Host" route="hosts.new"}}
+      {{else}}
+        {{#if item.isPendingMachine}}
+          {{#with item.machine as machine controller="machine"}}
+            {{host-widget model=machine dot=dot}}
+          {{/with}}
+        {{else}}
+          {{#with item as host controller="host"}}
+            {{host-widget model=host dot=dot}}
+          {{/with}}
+        {{/if}}
+      {{/if}}
+    {{/each}}
+  </div>
+{{else}}
+  <div class="text-center text-muted">No hosts or containers yet.</div>
+{{/each}}

@@ -1,0 +1,32 @@
+<h1>{{#if editing}}Edit Credential{{else}}Add Credential{{/if}}</h1>
+{{partial "top-error"}}
+
+<div class="form-group">
+  <label for="publicValue">Username</label>
+  {{#if editing}}
+    <div class="form-control-static">{{serverAddress}}</div>
+  {{else}}
+    {{input id="publicValue" type="text" value=publicValue classNames="form-control" placeholder="e.g. myusername"}}
+  {{/if}}
+</div>
+
+<div class="form-group">
+  <label for="secretValue">Password</label>
+  {{#if editing}}
+    <div class="form-control-static">{{serverAddress}}</div>
+  {{else}}
+    {{input id="secretValue" type="password" value=secretValue classNames="form-control" placeholder="e.g. mypassword"}}
+  {{/if}}
+</div>
+
+<div class="form-group">
+  <label for="email">Email</label>
+  {{#if editing}}
+    <div class="form-control-static">{{serverAddress}}</div>
+  {{else}}
+    {{input id="email" type="text" value=email classNames="form-control" placeholder="e.g. me@domain.com"}}
+  {{/if}}
+</div>
+
+{{partial "save-cancel"}}
+

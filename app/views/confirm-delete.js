@@ -1,4 +1,4 @@
-import Overlay from 'ui/pods/overlay/view';
+import Overlay from 'ui/overlay/view';
 import { alternateLabel } from 'ui/utils/platform';
 
 export default Overlay.extend({

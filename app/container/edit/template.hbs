@@ -1,0 +1,40 @@
+<h1>Edit Container</h1>
+{{partial "top-error"}}
+
+<form>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="name">Name</label>
+        {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. web01"}}
+      </div>
+      <div class="form-group">
+        <label for="description">Description</label>
+        {{textarea id="description" value=description classNames="form-control no-resize" rows="5" placeholder="e.g. It serves the webs"}}
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <label>Port Bindings</label>
+      <div class="well">
+        {{#if portsArray.length}}
+          {{partial "container/edit-ports"}}
+        {{else}}
+          <span class="text-muted">This container has no ports.</span>
+        {{/if}}
+      </div>
+
+      <label>Links</label>
+      <div class="well">
+        {{#if linksArray.length}}
+          {{partial "container/edit-links"}}
+        {{else}}
+          <span class="text-muted">This container has no links.</span>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  {{partial "save-cancel"}}
+</form>
+{{partial "overlay-close"}}

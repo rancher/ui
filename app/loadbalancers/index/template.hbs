@@ -1,0 +1,13 @@
+{{#each col in view.columns}}
+  <div class="pod-column">
+    {{#each item in col}}
+      {{#if item.isNewPlaceHolder}}
+        {{add-pod currentController=controller label="Add Load Balancer" route="loadbalancers.new"}}
+      {{else}}
+        {{#with item as balancer controller="loadbalancer"}}
+          {{loadbalancer-pod model=balancer}}
+        {{/with}}
+      {{/if}}
+    {{/each}}
+  </div>
+{{/each}}
