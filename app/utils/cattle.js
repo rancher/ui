@@ -75,6 +75,7 @@ var NewOrEditMixin = Ember.Mixin.create({
       this.set('error', str);
     },
 
+    primaryResource: Ember.computed.alias('model'), 
     save: function() {
       var self = this;
 
@@ -94,7 +95,7 @@ var NewOrEditMixin = Ember.Mixin.create({
 
       this.set('saving',true);
 
-      var model = this.get('model');
+      var model = this.get('primaryResource');
 
       return model.save().then(function(newData) {
         var original = self.get('originalModel');

@@ -34,6 +34,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     controller.initFields();
   },
 
+  resetController: function (controller, isExisting/*, transition*/) {
+    if (isExisting)
+    {
+      controller.set('tab', 'listeners');
+    }
+  },
+
   activate: function() {
     this.send('setPageLayout', {label: 'Back', backPrevious: true, hasAside: 'nav-balancing active'});
   },

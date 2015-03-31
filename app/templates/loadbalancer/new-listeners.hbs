@@ -3,27 +3,60 @@
     <thead>
       <tr>
         <th>Source</th>
-        <th width="20"></th>
-        <th>&nbsp;</th>
-        <th width="20"></th>
+        <th width="30"></th>
         <th>Target</th>
-        <th width="20"></th>
-        <th>&nbsp;</th>
+        <th width="30"></th>
         <th>Algorithm</th>
-        <th width="30">&nbsp;</th>
+        <th width="40">&nbsp;</th>
       </tr>
     </thead>
     {{#each listener in listenersArray}}
       <tr>
-        <td>{{input type="number" min="1" max="65535" step="1" value=listener.sourcePort}}</td>
-        <td>/</td>
-        <td></td>
-        <td><i class="ss-right"></i></td>
-        <td>{{input type="number" min="1" max="65535" step="1" value=listener.sourcePort}}</td>
-        <td>/</td>
-        <td></td>
-        <td>{{select
-            prompt="Balancing Algorithm"
+        <td>
+          <div class="input-group input-group-sm">
+            {{input type="text" classNames="form-control lb-listener-source-port" min="1" max="65535" step="1" value=listener.sourcePort}}
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="border-left: 0;">/{{listener.sourceProtocol}} <span class="caret"></span></button>
+              <ul class="dropdown-menu" role="menu">
+                <li role="presentation" class="dropdown-header">
+                  Select a protocol:
+                </li>
+                {{#each choice in sourceProtocolOptions}}
+                  <li {{action "chooseProtocol" listener "sourceProtocol" choice}}>
+                    <a>{{choice}}</a>
+                  </li>
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        </td>
+
+        <td class="text-center"><i class="ss-right"></i></td>
+
+        <td>
+          <div class="input-group input-group-sm">
+            {{input type="text" classNames="form-control lb-listener-target-port" min="1" max="65535" step="1" value=listener.targetPort}}
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="border-left: 0;">/{{listener.targetProtocol}} <span class="caret"></span></button>
+              <ul class="dropdown-menu" role="menu">
+                <li role="presentation" class="dropdown-header">
+                  Select a protocol:
+                </li>
+                {{#each choice in targetProtocolOptions}}
+                  <li {{action "chooseProtocol" listener "targetProtocol" choice}}>
+                    <a>{{choice}}</a>
+                  </li>
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        </td>
+
+        <td>&nbsp;</td>
+
+        <td>
+          {{view "select"
+            class="form-control input-sm"
             value=listener.algorithm
             content=algorithmOptions
           }}
