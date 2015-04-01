@@ -16,15 +16,21 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         config: store.createRecord({
           type: 'loadBalancerConfig',
           healthCheck: store.createRecord({
-            type: 'loadBalancerHealthCheck'
+            type: 'loadBalancerHealthCheck',
+            interval: 2000,
+            responseTimeout: 2000,
+            healthyThreshold: 2,
+            unhealthyThreshold: 3,
           }),
-          appCookieStickinessPolicy: store.createRecord({
-            type: 'loadBalancerAppCookieStickinessPolicy'
-          }),
-          lbCookieStickinessPolicy: store.createRecord({
-            type: 'loadBalancerCookieStickinessPolicy'
-          }),
-        })
+          appCookieStickinessPolicy: null,
+          lbCookieStickinessPolicy: null,
+        }),
+        appCookie: store.createRecord({
+          type: 'loadBalancerAppCookieStickinessPolicy'
+        }),
+        lbCookie: store.createRecord({
+          type: 'loadBalancerCookieStickinessPolicy'
+        }),
       };
     });
   },
@@ -38,15 +44,12 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     if (isExisting)
     {
       controller.set('tab', 'listeners');
+      controller.set('stickiness', 'none');
     }
   },
 
   activate: function() {
-    this.send('setPageLayout', {label: 'Back', backPrevious: true, hasAside: 'nav-balancing active'});
-  },
-
-  renderTemplate: function() {
-    this.render('loadbalancers/new', {into: 'balancing'});
+    this.send('setPageLayout', {label: 'Back', backPrevious: true});
   },
 
   actions: {

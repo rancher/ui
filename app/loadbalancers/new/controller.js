@@ -116,6 +116,34 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
 
   listenersArray: null,
 
+  stickiness: 'none',
+  isStickyNone: Ember.computed.equal('stickiness','none'),
+  isStickyLbCookie: Ember.computed.equal('stickiness','lbCookie'),
+  isStickyAppCookie: Ember.computed.equal('stickiness','appCookie'),
+  cookieModeChoices: [
+    {value: 'rewrite', label: 'Rewrite'},
+    {value: 'insert', label: 'Insert'},
+    {value: 'prefix', label: 'Prefix'},
+  ],
+  stickinessDidChange: function() {
+    var stickiness = this.get('stickiness');
+    if ( stickiness === 'none' )
+    {
+      this.set('config.lbCookieStickinessPolicy', null);
+      this.set('config.appCookieStickinessPolicy', null);
+    }
+    else if ( stickiness === 'lbCookie' )
+    {
+      this.set('config.lbCookieStickinessPolicy', this.get('lbCookie'));
+      this.set('config.appCookieStickinessPolicy', null);
+    }
+    else if ( stickiness === 'appCookie' )
+    {
+      this.set('config.lbCookieStickinessPolicy', null);
+      this.set('config.appCookieStickinessPolicy', this.get('appCookie'));
+    }
+  }.observes('stickiness'),
+
   validate: function() {
     var config = this.get('model.config');
     var balancer = this.get('model.balancer');
@@ -144,15 +172,10 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
         });
 
         return config.doAction('setlisteners',{loadBalancerListenerIds: ids}).then(() => {
-          return balancer.doAction('settargets', {
+          return balancer.doAction('updateall', {
+            hostIds: this.get('hostIds'),
             instanceIds: this.get('targetContainerIds'),
             ipAddresses: this.get('targetIpAddresses'),
-          }).then(() => {
-            return balancer.doAction('sethosts', {
-              hostIds: this.get('hostIds'),
-            }).then(() => {
-              return null;
-            });
           });
         });
       });

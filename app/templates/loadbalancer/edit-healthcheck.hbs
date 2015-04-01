@@ -1,0 +1,44 @@
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label for="uri" class="form-control-static">Check URL</label>
+  </div>
+  <div class="col-sm-12 col-md-8">
+    {{input type="text" id="uri" classNames="form-control" placeholder="e.g. http://example.com/health-check" value=config.healthCheck.uri}}
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label for="interval" class="form-control-static">Check Interval</label>
+  </div>
+  <div class="col-sm-12 col-md-3">
+    <div class="input-group">
+      {{input type="number" min=1 step=1000 id="interval" classNames="form-control" value=config.healthCheck.interval}}
+      <span class="input-group-addon">ms</span>
+    </div>
+  </div>
+  <div class="col-sm-12 col-md-2 form-label">
+    <label for="responseTimeout" class="form-control-static">Timeout</label>
+  </div>
+  <div class="col-sm-12 col-md-3">
+    <div class="input-group">
+      {{input type="number" min=1 step=100 id="responseTimeout" classNames="form-control" value=config.healthCheck.responseTimeout}}
+      <span class="input-group-addon">ms</span>
+    </div>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-sm-12 col-md-3 form-label">
+    <label for="healthyThreshold" class="form-control-static">Healthy Threshold</label>
+  </div>
+  <div class="col-sm-12 col-md-2">
+    {{input type="number" min=1 step=1 id="healthyThreshold" classNames="form-control" value=config.healthCheck.healthyThreshold}}
+  </div>
+  <div class="col-sm-12 col-md-3 form-label">
+    <label for="unhealthyThreshold" class="form-control-static">Unealthy Threshold</label>
+  </div>
+  <div class="col-sm-12 col-md-2">
+    {{input type="number" min=1 step=1 id="unhealthyThreshold" classNames="form-control" value=config.healthCheck.unhealthyThreshold}}
+  </div>
+</div>

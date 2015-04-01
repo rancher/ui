@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
 var LoadBalancerController = Cattle.TransitioningResourceController.extend({
@@ -22,6 +23,20 @@ var LoadBalancerController = Cattle.TransitioningResourceController.extend({
 
     return out;
   }.property('actions.{activate,deactivate,remove,purge}'),
+
+  arrangedTargets: function() {
+    var targets = this.get('loadBalancerTargets');
+
+    return Ember.ArrayController.create({
+      content: targets,
+      sortProperties: ['name','id']
+    });
+  }.property('instances.[]','loadBalancerTargets.@each.{name,id}'),
+
+  hostsBlurb: function() {
+    var cnt = this.get('hosts.length');
+    return cnt + ' Host' + (cnt === 1 ? '' : 's');
+  }.property('hosts.length'),
 });
 
 LoadBalancerController.reopenClass({

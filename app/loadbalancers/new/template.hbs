@@ -78,33 +78,28 @@
   </ul>
 </section>
 
-<section class="horizontal-form" style="background-color: #f8f9fa; margin: -7px 10px 0 10px;">
+<section class="horizontal-form tab-section" style="background-color: #f8f9fa; margin: -7px 10px 0 10px;">
   <div class="section container-fluid" data-section="listeners">
     <div class="row">
-      <div class="col-xs-6 col-md-2 form-label">
+      <div class="col-xs-12">
         <label>Listening Ports</label>
-      </div>
-      <div class="col-xs-6 col-md-8">
+        &nbsp;
         <button class="btn-circle-plus" {{action "addListener" target="view"}}></button>
       </div>
     </div>
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-8 col-md-offset-2">
+    <div class="row">
+      <div class="col-xs-12 col-md-8 col-md-offset-2">
         {{partial "loadbalancer/new-listeners"}}
       </div>
     </div>
   </div>
 
-  <div class="section container-fluid" data-section="healthcheck">
-    <p>Health Check</p>
+  <div class="section container-fluid tab-section" data-section="healthcheck">
+    {{partial "loadbalancer/edit-healthcheck"}}
   </div>
 
-  <div class="section container-fluid" data-section="stickiness">
-    <p>Stickiness</p>
-  </div>
-
-  <div class="section" data-section="security">
-    {{partial "container/new-security"}}
+  <div class="section container-fluid tab-section" data-section="stickiness">
+    {{partial "loadbalancer/edit-stickiness"}}
   </div>
 </section>
 

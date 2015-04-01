@@ -14,7 +14,7 @@ var ResourceController = Ember.ObjectController.extend({
   },
 
   displayName: function() {
-    return this.get('name') || this.get('id');
+    return this.get('name') || '('+this.get('id')+')';
   }.property('name','id'),
 
   delete: function() {
