@@ -1,0 +1,68 @@
+<div {{bind-attr class=":row isStickyNone::form-group"}}>
+  <div class="col-sm-12 col-md-2 form-label">
+    <label for="name">Stickiness</label>
+  </div>
+  <div class="col-sm-4 col-md-2 radio">
+    <label>{{radio-button selection=stickiness value="none"}} None</label>
+  </div>
+  <div class="col-sm-4 col-md-3 radio">
+    <label>{{radio-button selection=stickiness value="appCookie"}} Use existing cookie</label>
+  </div>
+  <div class="col-sm-4 col-md-3 radio">
+    <label>{{radio-button selection=stickiness value="lbCookie"}} Create new cookie</label>
+  </div>
+</div>
+
+<div {{bind-attr class="isStickyAppCookie::hide"}}>
+  Cookie...
+</div>
+
+<div {{bind-attr class="isStickyLbCookie::hide"}}>
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label for="lb_cookie" class="form-control-static">Cookie Name</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{input type="text" id="lb_cookie" classNames="form-control" value=lbCookie.cookie}}
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label for="lb_domain" class="form-control-static">Domain</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{input type="text" id="lb_domain" classNames="form-control" value=lbCookie.domain}}
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label for="lb_mode" class="form-control-static">Mode</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      {{view "select"
+        class="form-control"
+        id="lb_mode"
+        content=cookieModeChoices
+        optionLabelPath="content.label"
+        optionValuePath="content.value"
+        value=lbCookie.mode
+      }}
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">Options</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      <div class="checkbox">
+        <label>{{input type="checkbox" checked=lbCookie.indirect}} Indirect</label>
+      </div>
+      <div class="checkbox">
+        <label>{{input type="checkbox" checked=lbCookie.nocache}} Send no-cache header</label>
+      </div>
+      <div class="checkbox">
+        <label>{{input type="checkbox" checked=lbCookie.postonly}} Only set cookie on POST</label>
+      </div>
+    </div>
+  </div>
+</div>

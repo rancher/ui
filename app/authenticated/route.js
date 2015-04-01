@@ -196,6 +196,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 //      this._includeChanged('container', 'container', 'ipAddresses', 'containers', change.data.resource);
     },
 
+    loadBalancerTargetChanged: function(change) {
+      this._includeChanged('loadBalancer', 'loadBalancerTargets', 'loadBalancerId', change.data.resource);
+    },
+
     mountChanged: function(change) {
       var mount = change.data.resource;
       var volume = this.get('store').getById('volume', mount.get('volumeId'));

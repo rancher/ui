@@ -14,7 +14,7 @@ var ResourceController = Ember.ObjectController.extend({
   },
 
   displayName: function() {
-    return this.get('name') || this.get('id');
+    return this.get('name') || '('+this.get('id')+')';
   }.property('name','id'),
 
   delete: function() {
@@ -34,6 +34,7 @@ var NewOrEditMixin = Ember.Mixin.create({
   error: null,
   saving: false,
   editing: true,
+  primaryResource: Ember.computed.alias('model'),
 
   validate: function() {
     return true;
@@ -94,7 +95,7 @@ var NewOrEditMixin = Ember.Mixin.create({
 
       this.set('saving',true);
 
-      var model = this.get('model');
+      var model = this.get('primaryResource');
 
       return model.save().then(function(newData) {
         var original = self.get('originalModel');
@@ -196,6 +197,34 @@ TransitioningResource.reopenClass({
 });
 
 var TransitioningResourceController = ResourceController.extend({
+  actions: {
+    // Common actions that almost all types have in common...
+    promptDelete: function() {
+      this.send('openOverlay', 'confirm-delete', 'confirm-delete', this.get('model'), this);
+    },
+
+    confirmDelete: function() {
+      this.send('delete');
+      this.send('closeOverlay');
+    },
+
+    cancelDelete: function() {
+      this.send('closeOverlay');
+    },
+
+    delete: function() {
+      return this.delete();
+    },
+
+    restore: function() {
+      return this.doAction('restore');
+    },
+
+    purge: function() {
+      return this.doAction('purge');
+    },
+
+  },
   displayState: function() {
     var state = this.get('state')||'';
     return state.substr(0,1).toUpperCase() + state.substr(1);

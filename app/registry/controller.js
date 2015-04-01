@@ -14,25 +14,9 @@ var RegistryController = Cattle.TransitioningResourceController.extend({
       return this.doAction('activate');
     },
 
-    restore: function() {
-      return this.doAction('restore');
-    },
-
-    purge: function() {
-      return this.doAction('purge');
-    },
-
     edit: function() {
       this.transitionToRoute('registry.edit',this.get('id'));
     },
-
-    promptDelete: function() {
-      this.transitionToRoute('registry.delete',this.get('id'));
-    },
-
-    delete: function() {
-      return this.delete();
-    }
   },
 
   availableActions: function() {

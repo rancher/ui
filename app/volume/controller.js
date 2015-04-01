@@ -4,24 +4,6 @@ import Ember from 'ember';
 var VolumeController = Cattle.TransitioningResourceController.extend({
   icon: 'ss-hdd',
 
-  actions: {
-    delete: function() {
-      return this.delete();
-    },
-
-    purge: function() {
-      return this.doAction('purge');
-    },
-
-    restore: function() {
-      return this.doAction('restore');
-    },
-
-    promptDelete: function() {
-      this.transitionToRoute('volume.delete', this.get('model'));
-    },
-  },
-
   availableActions: function() {
     var a = this.get('actions');
 

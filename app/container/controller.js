@@ -15,16 +15,15 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
       return this.doAction('stop');
     },
 
-    delete: function() {
-      return this.delete();
-    },
+    promptDelete: function() {
+      // @TODO Fix this hackery for nested components...
+      // http://emberjs.jsbin.com/mecesakase
+      if ( Ember.Component.detectInstance(this.get('target')) )
+      {
+        this.set('target', window.l('router:main'));
+      }
 
-    restore: function() {
-      return this.doAction('restore');
-    },
-
-    purge: function() {
-      return this.doAction('purge');
+      this._super();
     },
 
     redirectTo: function(name) {
@@ -48,10 +47,6 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
 
     edit: function() {
       this.send('redirectTo','container.edit');
-    },
-
-    promptDelete: function() {
-      this.send('redirectTo','container.delete');
     },
 
     detail: function() {

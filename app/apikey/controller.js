@@ -10,25 +10,9 @@ var ApikeyController = Cattle.TransitioningResourceController.extend({
       return this.doAction('activate');
     },
 
-    restore: function() {
-      return this.doAction('restore');
-    },
-
-    purge: function() {
-      return this.doAction('purge');
-    },
-
     edit: function() {
       this.transitionToRoute('apikey.edit',this.get('model'));
     },
-
-    promptDelete: function() {
-      this.transitionToRoute('apikey.delete',this.get('model'));
-    },
-
-    delete: function() {
-      return this.delete();
-    }
   },
 
   availableActions: function() {

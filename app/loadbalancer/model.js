@@ -5,6 +5,7 @@ var LoadBalancer = Cattle.TransitioningResource.extend({
 });
 
 LoadBalancer.reopenClass({
+  alwaysInclude: ['loadBalancerConfig','loadBalancerTargets','hosts'],
 });
 
 export default LoadBalancer;

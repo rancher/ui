@@ -5,7 +5,7 @@ export default ColumnView.extend({
   columns: function() {
     var boxCount = 0;
     var idx = 0;
-    var balancers = (this.get('context.balancers')||[]).sortBy('name');
+    var balancers = (this.get('context')||[]).sortBy('name');
     var columnCount = this.get('columnCount');
     var i;
 

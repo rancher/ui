@@ -2,9 +2,11 @@ import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
 export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
+  queryParams: ['tab'],
+  tab: 'listeners',
   error: null,
-  credentials: null,
   editing: false,
+  primaryResource: Ember.computed.alias('model.config'),
 
   actions: {
     addHost: function() {
@@ -23,16 +25,35 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
     removeTarget: function(obj) {
       this.get('targetsArray').removeObject(obj);
     },
+
+    addListener: function() {
+      this.get('listenersArray').pushObject(this.get('store').createRecord({
+        type: 'loadBalancerListener',
+        sourcePort: '',
+        sourceProtocol: 'tcp',
+        targetPort: '',
+        targetProtocol: 'tcp',
+        algorithm: 'roundrobin',
+      }));
+    },
+
+    removeListener: function(obj) {
+      this.get('listenersArray').removeObject(obj);
+    },
+
+    chooseProtocol: function(listener, key, val) {
+      listener.set(key,val);
+    },
   },
 
   initFields: function() {
-    this.initHosts();
-    this.initTargets();
+    this.set('hostsArray', []);
+    this.set('targetsArray', []);
+    this.set('listenersArray', []);
   },
 
   hostsArray: null,
   initHosts: function() {
-    this.set('hostsArray', []);
   },
   hostDisabled: Ember.computed.equal('hostChoices.length',0),
   hostChoices: function() {
@@ -40,6 +61,12 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
       return host.get('state') === 'active';
     }).sortBy('name','id');
   }.property('allHosts.@each.{id,name,state}'),
+
+  hostIds: function() {
+    return this.get('hostsArray').map((host) => {
+      return Ember.get(host,'value');
+    });
+  }.property('hostsArray.@each.id'),
 
   targetsArray: null,
   targetChoices: function() {
@@ -63,9 +90,17 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
     return list.sortBy('group','name','id');
   }.property('hostChoices.@each.instancesUpdated').volatile(),
 
-  initTargets: function() {
-    this.set('targetsArray', []);
-  },
+  targetContainerIds: function() {
+    return this.get('targetsArray').filterProperty('isContainer',true).map((choice) => {
+      return Ember.get(choice,'value');
+    });
+  }.property('targetsArray.@each.{isIp,isContainer,value}'),
+
+  targetIpAddresses: function() {
+    return this.get('targetsArray').filterProperty('isIp',true).map((choice) => {
+      return Ember.get(choice,'value');
+    });
+  }.property('targetsArray.@each.{isIp,isContainer,value}'),
 
   sourceProtocolOptions: function() {
     return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.sourceProtocol.options');
@@ -78,6 +113,74 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   algorithmOptions: function() {
     return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.algorithm.options');
   }.property(),
+
+  listenersArray: null,
+
+  stickiness: 'none',
+  isStickyNone: Ember.computed.equal('stickiness','none'),
+  isStickyLbCookie: Ember.computed.equal('stickiness','lbCookie'),
+  isStickyAppCookie: Ember.computed.equal('stickiness','appCookie'),
+  cookieModeChoices: [
+    {value: 'rewrite', label: 'Rewrite'},
+    {value: 'insert', label: 'Insert'},
+    {value: 'prefix', label: 'Prefix'},
+  ],
+  stickinessDidChange: function() {
+    var stickiness = this.get('stickiness');
+    if ( stickiness === 'none' )
+    {
+      this.set('config.lbCookieStickinessPolicy', null);
+      this.set('config.appCookieStickinessPolicy', null);
+    }
+    else if ( stickiness === 'lbCookie' )
+    {
+      this.set('config.lbCookieStickinessPolicy', this.get('lbCookie'));
+      this.set('config.appCookieStickinessPolicy', null);
+    }
+    else if ( stickiness === 'appCookie' )
+    {
+      this.set('config.lbCookieStickinessPolicy', null);
+      this.set('config.appCookieStickinessPolicy', this.get('appCookie'));
+    }
+  }.observes('stickiness'),
+
+  validate: function() {
+    var config = this.get('model.config');
+    var balancer = this.get('model.balancer');
+
+    config.set('name', balancer.get('name'));
+    config.set('description', balancer.get('description'));
+
+    return true;
+  },
+
+  didSave: function() {
+    var balancer = this.get('model.balancer');
+    var config = this.get('model.config');
+    var listeners = this.get('listenersArray');
+
+    balancer.set('loadBalancerConfigId', config.get('id'));
+    return balancer.save().then(() => {
+      var promises = [];
+      listeners.forEach((listener) => {
+        promises.push(listener.save());
+      });
+
+      return Ember.RSVP.all(promises).then((listeners) => {
+        var ids = listeners.map((listener) => {
+          return listener.get('id');
+        });
+
+        return config.doAction('setlisteners',{loadBalancerListenerIds: ids}).then(() => {
+          return balancer.doAction('updateall', {
+            hostIds: this.get('hostIds'),
+            instanceIds: this.get('targetContainerIds'),
+            ipAddresses: this.get('targetIpAddresses'),
+          });
+        });
+      });
+    });
+  },
 
   doneSaving: function() {
     this.transitionToRoute('loadbalancers');

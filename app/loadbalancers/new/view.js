@@ -28,6 +28,7 @@ export default Ember.View.extend({
   didInsertElement: function() {
     $('BODY').addClass('white');
     this._super();
+    this.send('selectTab',this.get('context.tab'));
 
     this.$('INPUT')[0].focus();
   },
