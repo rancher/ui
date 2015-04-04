@@ -61,7 +61,8 @@ var NewOrEditMixin = Ember.Mixin.create({
       }
       else
       {
-
+        console.log(err);
+        this.set('error', err);
       }
     },
 
@@ -140,7 +141,7 @@ var TransitioningResource = Resource.extend({
 
   pollDelayTimer: null,
   pollTimer: null,
-  reservedKeys: ['pollDelayTimer','pollTimer'],
+  reservedKeys: ['pollDelayTimer','pollTimer','waitInterval','waitTimeout'],
   transitioningChanged: function() {
     //console.log('Transitioning changed', this.toString(), this.get('transitioning'), this.get('pollDelayTimer'),this.get('pollTimer'));
 
@@ -189,6 +190,54 @@ var TransitioningResource = Resource.extend({
     });
   },
 
+  // You really shouldn't have to use any of these.
+  // Needing these is a sign that the API is bad and should feel bad.
+  // Yet here they are, nonetheless.
+  waitInterval: 1000,
+  waitTimeout: 30000,
+  _waitForTestFn: function(testFn, msg) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      var timeout = setTimeout(() =>  {
+        clearInterval(interval);
+        clearTimeout(timeout);
+        reject(this);
+      }, this.get('waitTimeout'));
+
+      var interval = setInterval(() => {
+        if ( testFn.apply(this) )
+        {
+          clearInterval(interval);
+          clearTimeout(timeout);
+          resolve(this);
+        }
+      }, this.get('waitInterval'));
+    }, msg||'Wait for it...');
+  },
+
+  waitForState: function(state) {
+    return this._waitForTestFn(function() {
+      return this.get('state') === state;
+    }, 'Wait for state='+state);
+  },
+
+  waitForNotTransitioning: function() {
+    return this._waitForTestFn(function() {
+      return this.get('transitioning') !== 'yes';
+    }, 'Wait for not transitioning');
+  },
+
+  waitForAction: function(name) {
+    return this._waitForTestFn(function() {
+      console.log('waitForAction('+name+'):', this.hasAction(name));
+      return this.hasAction(name);
+    }, 'Wait for action='+name);
+  },
+
+  waitForAndDoAction: function(name, data) {
+    return this.waitForAction(name).then(() => {
+      return this.doAction(name, data);
+    }, 'Wait for and do action='+name);
+  },
 });
 
 TransitioningResource.reopenClass({

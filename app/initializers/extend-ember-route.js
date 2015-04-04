@@ -25,10 +25,55 @@ export function initialize(/* container, application */) {
           }
         }
 
-        appRoute.set('previousRoute', info.name);
-        appRoute.set('previousParams', params);
-        //console.log('Set previous route to', info.name, params);
+        if ( !info || !info.name.match(/\.?loading$/) )
+        {
+          appRoute.set('previousRoute', info.name);
+          appRoute.set('previousParams', params);
+          console.log('Set previous route to', info.name, params);
+        }
       }
+    },
+
+    getParentRoute: function(){
+      var infos = this.router.router.currentHandlerInfos;
+      var parent, current;
+
+      for ( var i=0 ; i < infos.length ; i++ )
+      {
+        current = infos[i].handler;
+        if ( (current.routeName == this.routeName)
+             || (current.routeName.match(/./) && current.routeName.split('.')[1] == this.routeName )
+           )
+        {
+          if ( parent )
+          {
+            return parent.routeName;
+          }
+        }
+        parent = current;
+      }
+
+      return 'index';
+    },
+
+    goToPrevious: function() {
+      var appRoute = this.container.lookup('route:application');
+      var route = appRoute.get('previousRoute');
+      if ( !route || route === 'loading' )
+      {
+        return this.goToParent();
+      }
+
+      var args = (appRoute.get('previousParams')||[]).slice();
+      args.unshift(route);
+
+      this.transitionTo.apply(this,args).catch(() => {
+        this.transitionTo('index');
+      });
+    },
+
+    goToParent: function() {
+      this.transitionTo(this.getParentRoute());
     },
   });
 }

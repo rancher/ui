@@ -22,14 +22,23 @@
 
 <div class="pod-info clearfix">
   <div class="pod-info-line">
-    <div class="pod-info-item"><i class="ss-database"></i> {{hostsBlurb}}</div>
+    <div class="pod-info-item"><i class="ss-database"></i> {{model.hostsBlurb}}</div>
   </div>
 </div>
 
 <div class="clearfix no-resource-action-hover">
-  {{#each item in model.arrangedTargets itemController="container"}}
-    {{!loadbalancertarget-subpod model=item}}
-    <p>{{item.id}}</p>
+  {{#each item in model.arrangedTargets}}
+    {{#if item.ipAddress}}
+      <p>IP: {{item.ipAddress}}</p>
+    {{else}}
+      {{#if item.instance}}
+        {{#with item.instance as c controller="container"}}
+          <p>Container: {{c.displayName}}</p>
+        {{/with}}
+      {{else}}
+        <p>Instance?: {{item.instanceId}}</p>
+      {{/if}}
+    {{/if}}
   {{/each}}
   {{#if showAdd}}
     {{add-subpod action="newTarget" label="Add Target"}}

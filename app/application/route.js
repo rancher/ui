@@ -47,18 +47,7 @@ export default Ember.Route.extend({
     },
 
     goToPrevious: function() {
-      var route = this.get('previousRoute');
-      if ( route === 'loading' )
-      {
-        route = 'index';
-      }
-
-      var args = (this.get('previousParams')||[]).slice();
-      args.unshift(route);
-
-      this.transitionTo.apply(this,args).catch(() => {
-        this.transitionTo('index');
-      });
+      this.goToPrevious();
     },
 
     logout: function(transition,timedOut) {

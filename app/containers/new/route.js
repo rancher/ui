@@ -10,7 +10,7 @@ export default Ember.Route.extend({
 
   actions: {
     cancel: function() {
-      this.send('goToPrevious');
+      this.goToPrevious();
     },
   },
 

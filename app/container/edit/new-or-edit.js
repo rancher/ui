@@ -23,7 +23,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
 
   doneSaving: function() {
     var out = this._super();
-    this.send('goToPrevious');
+    this.goToPrevious();
     return out;
   },
 

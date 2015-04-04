@@ -29,6 +29,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
     addListener: function() {
       this.get('listenersArray').pushObject(this.get('store').createRecord({
         type: 'loadBalancerListener',
+        name: 'uilistener',
         sourcePort: '',
         sourceProtocol: 'tcp',
         targetPort: '',
@@ -49,7 +50,17 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   initFields: function() {
     this.set('hostsArray', []);
     this.set('targetsArray', []);
-    this.set('listenersArray', []);
+    this.set('listenersArray', [
+      this.get('store').createRecord({
+        type: 'loadBalancerListener',
+        name: 'uilistener',
+        sourcePort: '',
+        sourceProtocol: 'tcp',
+        targetPort: '',
+        targetProtocol: 'tcp',
+        algorithm: 'roundrobin',
+      })
+    ]);
   },
 
   hostsArray: null,
@@ -82,7 +93,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
         return {
           group: host.get('name') || ('(Host '+host.get('id')+')'),
           id: container.get('id'),
-          name: container.get('name') || ('(Container ' + container.get('id') + ')')
+          name: container.get('name') || ('(' + container.get('id') + ')')
         };
       }));
     });
@@ -172,10 +183,13 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
         });
 
         return config.doAction('setlisteners',{loadBalancerListenerIds: ids}).then(() => {
-          return balancer.doAction('updateall', {
+          return balancer.doAction('sethosts', {
             hostIds: this.get('hostIds'),
-            instanceIds: this.get('targetContainerIds'),
-            ipAddresses: this.get('targetIpAddresses'),
+          }).then(() => {
+            return balancer.doAction('settargets', {
+              instanceIds: this.get('targetContainerIds'),
+              ipAddresses: this.get('targetIpAddresses'),
+            });
           });
         });
       });

@@ -1,0 +1,59 @@
+<section class="text-right">
+  <button {{action "editConfig"}} class="btn btn-sm btn-primary">Edit Configuration</button>
+</section>
+<div class="well section">
+  <div class="row">
+    <div class="col-sm-6">
+      <h4>Listeners ({{listeners.length}})</h4>
+    </div>
+  </div>
+
+  <table class="grid fixed" style="margin-bottom: 0;">
+    <thead>
+      <tr>
+        <th width="120">State</th>
+        <th>Source</th>
+        <th width="30"></th>
+        <th>Target</th>
+        <th>Algorithm</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each listener in listeners itemController="loadbalancerlistener"}}
+        <tr>
+          <td>
+            <span {{bind-attr class=":badge :state listener.stateBackground"}}>
+              {{listener.displayState}}
+            </span>
+          </td>
+          <td>
+            {{listener.sourcePort}}/{{listener.sourceProtocol}}
+          </td>
+          <td>
+            <i class="ss-arrow-right"></i>
+          </td>
+          <td>
+            {{listener.targetPort}}/{{listener.targetProtocol}}
+          </td>
+          <td>
+            {{listener.algorithm}}
+          </td>
+        </tr>
+      {{else}}
+        <tr><td colspan="4" class="text-center text-muted">This host does not have any containers yet.</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</div>
+
+<div class="well section">
+  <h4>Health Check</h4>
+  {{config.healthCheck}}
+</div>
+
+<div class="well section">
+  <h4>Stickiness</h4>
+  {{config.appCookieStickinessPolicy}}
+  <br/>
+  {{config.lbCookieStickinessPolicy}}
+</div>
