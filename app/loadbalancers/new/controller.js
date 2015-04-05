@@ -131,10 +131,14 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   isStickyNone: Ember.computed.equal('stickiness','none'),
   isStickyLbCookie: Ember.computed.equal('stickiness','lbCookie'),
   isStickyAppCookie: Ember.computed.equal('stickiness','appCookie'),
-  cookieModeChoices: [
+  lbCookieModeChoices: [
     {value: 'rewrite', label: 'Rewrite'},
     {value: 'insert', label: 'Insert'},
     {value: 'prefix', label: 'Prefix'},
+  ],
+  appCookieModeChoices: [
+    {value: 'path_parameters', label: 'Path Parameter'},
+    {value: 'query_string', label: 'Query String'},
   ],
   stickinessDidChange: function() {
     var stickiness = this.get('stickiness');

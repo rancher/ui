@@ -26,7 +26,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
           lbCookieStickinessPolicy: null,
         }),
         appCookie: store.createRecord({
-          type: 'loadBalancerAppCookieStickinessPolicy'
+          type: 'loadBalancerAppCookieStickinessPolicy',
+          mode: 'path_parameters',
+          requestLearn: true,
+          timeout: 3600000,
         }),
         lbCookie: store.createRecord({
           type: 'loadBalancerCookieStickinessPolicy'
@@ -49,7 +52,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   activate: function() {
-    this.send('setPageLayout', {label: 'Back', backPrevious: true});
+    this.send('setPageLayout', {label: 'Back', backRoute: 'loadbalancers'});
   },
 
   actions: {

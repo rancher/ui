@@ -15,7 +15,7 @@
         <th>Source</th>
         <th width="30"></th>
         <th>Target</th>
-        <th>Algorithm</th>
+        <th class="text-right">Algorithm</th>
       </tr>
     </thead>
     <tbody>
@@ -35,7 +35,7 @@
           <td>
             {{listener.targetPort}}/{{listener.targetProtocol}}
           </td>
-          <td>
+          <td class="text-right">
             {{listener.algorithm}}
           </td>
         </tr>
@@ -47,13 +47,91 @@
 </div>
 
 <div class="well section">
-  <h4>Health Check</h4>
-  {{config.healthCheck}}
+  <h4 style="margin-bottom: 20px;">Health Check</h4>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-3">
+      <label>URL</label>
+    </div>
+    <div class="col-sm-12 col-md-9">
+      <span class="form-control-static">
+        {{#if config.healthCheck.uri}}
+          {{config.healthCheck.uri}}
+        {{else}}
+          <i>None</i>
+        {{/if}}
+      </span>
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-3">
+      <label>Check Interval</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      <span class="form-control-static">{{config.healthCheck.interval}}ms</span>
+    </div>
+
+    <div class="col-sm-12 col-md-3">
+      <label>Timeout</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      <span class="form-control-static">{{config.healthCheck.responseTimeout}}ms</span>
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-3">
+      <label>Healthy Threshold</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      <span class="form-control-static">{{config.healthCheck.healthyThreshold}}ms</span>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      <label>Unealthy Threshold</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      <span class="form-control-static">{{config.healthCheck.unhealthyThreshold}}ms</span>
+    </div>
+  </div>
 </div>
 
 <div class="well section">
   <h4>Stickiness</h4>
-  {{config.appCookieStickinessPolicy}}
-  <br/>
-  {{config.lbCookieStickinessPolicy}}
+  {{#if config.appCookieStickinessPolicy}}
+  {{else}}
+    {{#if config.lbCookieStickinessPolicy}}
+      <div class="row form-group">
+        <div class="col-sm-12 col-md-3">
+          <label>Cookie Name</label>
+        </div>
+        <div class="col-sm-12 col-md-9">
+          <span class="form-control-static">{{config.lbCookieStickinessPolicy.cookie}}</span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-12 col-md-3">
+          <label>Cookie Domain</label>
+        </div>
+        <div class="col-sm-12 col-md-9">
+          <span class="form-control-static">{{config.lbCookieStickinessPolicy.domain}}</span>
+        </div>
+      </div>
+      <div class="row form-group">
+        <div class="col-sm-12 col-md-3">
+          <label>Mode</label>
+        </div>
+        <div class="col-sm-12 col-md-9">
+          <span class="form-control-static">
+            {{config.lbCookieStickinessPolicy.mode}}
+            {{#if config.lbCookieStickinessPolicy.indirect}}, indirect{{/if}}
+            {{#if config.lbCookieStickinessPolicy.nocache}}, no-cache{{/if}}
+            {{#if config.lbCookieStickinessPolicy.postonly}}, POST only{{/if}}
+          </span>
+        </div>
+      </div>
+    {{else}}
+      <span class="text-muted">Stickiness is not configured.</span>
+    {{/if}}
+  {{/if}}
 </div>

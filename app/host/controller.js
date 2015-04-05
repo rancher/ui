@@ -13,6 +13,7 @@ var HostController = Cattle.TransitioningResourceController.extend({
     },
 
     delete: function() {
+      debugger;
       var machine = this.get('machine');
       if ( machine )
       {

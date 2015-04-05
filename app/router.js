@@ -95,6 +95,11 @@ Router.map(function() {
           this.route('edit');
         });
       });
+
+      this.resource('loadbalancerconfigs', {path: '/configs'}, function() {
+        this.route('new', {path: '/add'});
+        this.route('index', {path: '/'});
+      });
     });
   });
 });
