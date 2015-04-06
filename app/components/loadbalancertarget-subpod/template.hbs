@@ -1,0 +1,41 @@
+{{resource-actions-menu model=model choices=model.availableActions}}
+
+<div class="subpod-name">
+  {{#if model.isIp}}
+    <i class="ss-record text-success"></i>
+    {{model.ipAddress}}
+  {{else}}
+    {{#if model.instance}}
+      {{#with model.instance as container controller="container"}}
+        <i {{bind-attr class="container.stateIcon container.stateColor" tooltip=container.displayState}}></i>
+        {{#link-to "container" model.instanceId}}
+          {{container.displayName}}
+        {{/link-to}}
+      {{/with}}
+    {{else}}
+      <i class="ss-record-text-success" style="visibility: hidden"></i>
+      <span class="text-muted">Loading...</span>
+    {{/if}}
+  {{/if}}
+</div>
+{{#if model.showTransitioningMessage}}
+  <div {{bind-attr class=":subpod-detail :clip model.isError:text-danger"}}>
+    {{model.transitioningMessage}}
+  </div>
+{{else}}
+  <div class="subpod-detail">
+    {{#if model.isIp}}
+      IP Address
+    {{else}}
+      Container
+    {{/if}}
+  </div>
+{{/if}}
+
+{{#if model.isTransitioning}}
+  <div class="progress progress-striped active">
+    <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=model.displayProgress style=model.progressStyle}}>
+      <span class="sr-only">{{model.displayProgress}}% Complete</span>
+    </div>
+  </div>
+{{/if}}

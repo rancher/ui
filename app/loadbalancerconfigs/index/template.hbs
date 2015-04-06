@@ -1,3 +1,56 @@
 {{partial "balancing-aside"}}
 
-Configs grid...
+<section>
+  <table class="grid fixed" style="margin-bottom: 0">
+    <thead>
+      <tr>
+        <th width="120">State</th>
+        <th>Name</th>
+        <th width="100">Listeners</th>
+        <th width="100">Stickiness</th>
+        <th width="150">Used by</th>
+        <th width="50">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each config in this}}
+        <tr>
+          <td>
+            <span {{bind-attr class=":badge :state config.stateBackground"}}>
+              {{config.displayState}}
+            </span>
+          </td>
+          <td>
+            {{#link-to "loadbalancerconfig" config.id}}{{config.displayName}}{{/link-to}}
+          </td>
+          <td>
+            {{#if config.loadBalancerListeners}}{{config.loadBalancerListeners.length}}{{else}}<i class="text-muted">None</i>{{/if}}
+          </td>
+          <td>
+            {{#if config.appCookieStickinessPolicy}}
+              Create Cookie
+            {{else}}
+              {{#if config.lbCookieStickinessPolicy}}
+                Use existing cookie
+              {{else}}
+                None
+              {{/if}}
+            {{/if}}
+          </td>
+          <td>
+            {{#each balancer in config.loadBalancers itemController="loadbalancer"}}
+              <p>{{#link-to "loadbalancer" balancer.id}}{{balancer.displayName}}{{/link-to}}</p>
+            {{else}}
+              <span class="text-muted">None</span>
+            {{/each}}
+          </td>
+          <td align="right">
+            {{resource-actions-menu model=config choices=config.availableActions}}
+          </td>
+        </tr>
+      {{else}}
+        <tr><td colspan="4" class="text-center text-muted">You don't have any registries yet.</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>

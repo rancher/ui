@@ -13,14 +13,19 @@ var LoadBalancerTargetController = Cattle.TransitioningResourceController.extend
     });
   },
 
+  actions: {
+    delete: function() {
+      this.delete();
+    }
+  },
+
   availableActions: function() {
+
     var a = this.get('actions');
 
     var choices = [
-      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete',        enabled: !!a.remove, altAction: 'delete' },
+      { label: 'Remove Target', icon: 'ss-trash',     action: 'promptDelete',        enabled: true, altAction: 'delete' },
       { label: 'Purge',         icon: 'ss-tornado',          action: 'purge',        enabled: !!a.purge },
-      { divider: true },
-      { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true,            detail: true },
     ];
 
     return choices;

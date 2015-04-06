@@ -1,7 +1,7 @@
 <section class="grid-header">
   <div class="row">
     <div class="col-sm-6">
-      <h3>Targets ({{loadBalancerTargets.length}})</h3>
+      <h3>Targets ({{arrangedTargets.length}})</h3>
     </div>
     <div class="col-sm-6 text-right">
       <button {{action "newTarget"}} class="btn btn-sm btn-primary" {{bind-attr disabled="addDisabled:disabled"}}>Add Targets</button>
@@ -19,7 +19,7 @@
       </tr>
     </thead>
     <tbody>
-      {{#each target in loadBalancerTargets itemController="loadbalancertarget"}}
+      {{#each target in arrangedTargets itemController="loadbalancertarget"}}
         <tr>
           <td>
             <span {{bind-attr class=":badge :state target.stateBackground"}}>
@@ -34,9 +34,13 @@
               Container
             </td>
             <td>
-              {{#with target.instance as c controller="container"}}
-                {{#link-to "container" c.id}}{{c.displayName}}{{/link-to}}
-              {{/with}}
+              {{#if target.instance}}
+                {{#with target.instance as c controller="container"}}
+                  {{#link-to "container" c.id}}{{c.displayName}}{{/link-to}}
+                {{/with}}
+              {{else}}
+                <span class="text-muted">Loading...</span>
+              {{/if}}
             </td>
           {{/if}}
           <td class="actions">

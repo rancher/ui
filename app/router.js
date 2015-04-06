@@ -99,6 +99,11 @@ Router.map(function() {
       this.resource('loadbalancerconfigs', {path: '/configs'}, function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
+
+        this.resource('loadbalancerconfig', {path: '/:loadbalancerconfig_id'}, function() {
+          this.route('index', {path: '/'});
+          this.route('edit');
+        });
       });
     });
   });

@@ -27,18 +27,8 @@
 </div>
 
 <div class="clearfix no-resource-action-hover">
-  {{#each item in model.arrangedTargets}}
-    {{#if item.ipAddress}}
-      <p>IP: {{item.ipAddress}}</p>
-    {{else}}
-      {{#if item.instance}}
-        {{#with item.instance as c controller="container"}}
-          <p>Container: {{c.displayName}}</p>
-        {{/with}}
-      {{else}}
-        <p>Instance?: {{item.instanceId}}</p>
-      {{/if}}
-    {{/if}}
+  {{#each item in model.arrangedTargets itemController="loadbalancertarget"}}
+    {{loadbalancertarget-subpod model=item}}
   {{/each}}
   {{#if showAdd}}
     {{add-subpod action="newTarget" label="Add Target"}}

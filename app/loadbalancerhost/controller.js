@@ -17,7 +17,7 @@ export default HostController.extend({
 
   availableActions: function() {
     var choices = [
-      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete',        enabled: true, altAction: 'delete' },
+      { label: 'Remove Host',        icon: 'ss-trash',     action: 'promptDelete',        enabled: true, altAction: 'delete' },
     ];
 
     return choices;
