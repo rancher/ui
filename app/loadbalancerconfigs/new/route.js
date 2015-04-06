@@ -5,35 +5,29 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   model: function(/*params, transition*/) {
     var store = this.get('store');
 
-    var dependencies = [
-      store.findAll('host'),
-    ];
-
-    return Ember.RSVP.all(dependencies, 'Load dependencies').then(function(results) {
-      return {
-        config: store.createRecord({
-          type: 'loadBalancerConfig',
-          healthCheck: store.createRecord({
-            type: 'loadBalancerHealthCheck',
-            interval: 2000,
-            responseTimeout: 2000,
-            healthyThreshold: 2,
-            unhealthyThreshold: 3,
-          }),
-          appCookieStickinessPolicy: null,
-          lbCookieStickinessPolicy: null,
+    return {
+      config: store.createRecord({
+        type: 'loadBalancerConfig',
+        healthCheck: store.createRecord({
+          type: 'loadBalancerHealthCheck',
+          interval: 2000,
+          responseTimeout: 2000,
+          healthyThreshold: 2,
+          unhealthyThreshold: 3,
         }),
-        appCookie: store.createRecord({
-          type: 'loadBalancerAppCookieStickinessPolicy',
-          mode: 'path_parameters',
-          requestLearn: true,
-          timeout: 3600000,
-        }),
-        lbCookie: store.createRecord({
-          type: 'loadBalancerCookieStickinessPolicy'
-        }),
-      };
-    });
+        appCookieStickinessPolicy: null,
+        lbCookieStickinessPolicy: null,
+      }),
+      appCookie: store.createRecord({
+        type: 'loadBalancerAppCookieStickinessPolicy',
+        mode: 'path_parameters',
+        requestLearn: true,
+        timeout: 3600000,
+      }),
+      lbCookie: store.createRecord({
+        type: 'loadBalancerCookieStickinessPolicy'
+      }),
+    };
   },
 
   setupController: function(controller, model) {

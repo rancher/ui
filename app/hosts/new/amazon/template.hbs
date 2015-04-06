@@ -20,12 +20,9 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-xs-10 col-xs-offset-1">
-        <hr/>
-      </div>
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Account Access</span>
     </div>
-
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
@@ -51,11 +48,45 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-xs-10 col-xs-offset-1">
-        <hr/>
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Instance</span>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="ami" class="form-control-static">AMI</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        {{input type="text" id="ami" classNames="form-control" placeholder="" value=amazonec2Config.ami}}
+      </div>
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="rootSize" class="form-control-static">Root Size</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        {{input type="text" id="rootSize" classNames="form-control" placeholder="" value=amazonec2Config.rootSize}}
       </div>
     </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="instanceType" class="form-control-static">Instance Type</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        {{input type="text" id="instanceType" classNames="form-control" placeholder="" value=amazonec2Config.instanceType}}
+      </div>
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="iamInstanceProfile" class="form-control-static">IAM Profile</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        {{input type="text" id="iamInstanceProfile" classNames="form-control" placeholder="" value=amazonec2Config.iamInstanceProfile}}
+      </div>
+    </div>
+
+
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Region</span>
+    </div>
+
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
@@ -72,24 +103,16 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-xs-10 col-xs-offset-1">
-        <hr/>
-      </div>
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Network</span>
     </div>
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="vpcId" class="form-control-static">VPC ID*</label>
+        <label for="vpcOrSubnetId" class="form-control-static">VPC or Subnet ID*</label>
       </div>
-      <div class="col-sm-12 col-md-3">
-        {{input type="text" id="vpcId" classNames="form-control" placeholder="" value=amazonec2Config.vpcId}}
-      </div>
-      <div class="col-sm-12 col-md-2 form-label">
-        <label for="subnetId" class="form-control-static">Subnet ID</label>
-      </div>
-      <div class="col-sm-12 col-md-3">
-        {{input type="text" id="subnetId" classNames="form-control" placeholder="" value=amazonec2Config.subnetId}}
+      <div class="col-sm-12 col-md-8">
+        {{input type="text" id="vpcOrSubnetId" classNames="form-control" placeholder="Provide a VPC ID or Subnet ID to attach the Instance to" value=vpcOrSubnetId}}
       </div>
     </div>
 
@@ -97,53 +120,10 @@
       <div class="col-sm-12 col-md-2 form-label">
         <label for="securityGroup" class="form-control-static">Security Group</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-sm-12 col-md-8">
         {{input type="text" id="securityGroup" classNames="form-control" placeholder="" value=amazonec2Config.securityGroup}}
-      </div>
-      <div class="col-sm-12 col-md-2 form-label">
-        <label for="iamInstanceProfile" class="form-control-static">IAM Profile</label>
-      </div>
-      <div class="col-sm-12 col-md-3">
-        {{input type="text" id="iamInstanceProfile" classNames="form-control" placeholder="" value=amazonec2Config.iamInstanceProfile}}
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-xs-10 col-xs-offset-1">
-        <hr/>
-      </div>
-    </div>
-
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label for="instanceType" class="form-control-static">Instance Type</label>
-      </div>
-      <div class="col-sm-12 col-md-3">
-        {{input type="text" id="instanceType" classNames="form-control" placeholder="" value=amazonec2Config.instanceType}}
-      </div>
-      <div class="col-sm-12 col-md-2 form-label">
-        <label for="rootSize" class="form-control-static">Root Size</label>
-      </div>
-      <div class="col-sm-12 col-md-3">
-        {{input type="text" id="rootSize" classNames="form-control" placeholder="" value=amazonec2Config.rootSize}}
-      </div>
-    </div>
-
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label for="ami" class="form-control-static">AMI</label>
-      </div>
-      <div class="col-sm-12 col-md-3">
-        {{input type="text" id="ami" classNames="form-control" placeholder="" value=amazonec2Config.ami}}
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="col-xs-10 col-xs-offset-1">
-        <hr/>
       </div>
     </div>
   </div>
-
   {{partial "save-cancel"}}
 </section>

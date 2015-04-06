@@ -5,7 +5,6 @@ var LoadBalancerListenerController = Cattle.TransitioningResourceController.exte
   isIp: Ember.computed.notEmpty('ipAddress'),
 
   delete: function() {
-    debugger;
     return this.get('store').find('loadbalancer', this.get('loadBalancerId')).then((lb) => {
       return lb.waitForAndDoAction('removetarget',{
         instanceId: this.get('instanceId'),
