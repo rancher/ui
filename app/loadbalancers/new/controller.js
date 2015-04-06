@@ -1,12 +1,12 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
+import EditLoadBalancerConfig from 'ui/mixins/edit-loadbalancerconfig';
 
-export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
+export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBalancerConfig, {
   queryParams: ['tab'],
   tab: 'listeners',
   error: null,
   editing: false,
-  primaryResource: Ember.computed.alias('model.config'),
 
   actions: {
     addHost: function() {
@@ -25,32 +25,27 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
     removeTarget: function(obj) {
       this.get('targetsArray').removeObject(obj);
     },
-
-    addListener: function() {
-      this.get('listenersArray').pushObject(this.get('store').createRecord({
-        type: 'loadBalancerListener',
-        sourcePort: '',
-        sourceProtocol: 'tcp',
-        targetPort: '',
-        targetProtocol: 'tcp',
-        algorithm: 'roundrobin',
-      }));
-    },
-
-    removeListener: function(obj) {
-      this.get('listenersArray').removeObject(obj);
-    },
-
-    chooseProtocol: function(listener, key, val) {
-      listener.set(key,val);
-    },
   },
 
   initFields: function() {
     this.set('hostsArray', []);
     this.set('targetsArray', []);
-    this.set('listenersArray', []);
+    this.set('listenersArray', [
+      this.get('store').createRecord({
+        type: 'loadBalancerListener',
+        name: 'uilistener',
+        sourcePort: '',
+        sourceProtocol: 'tcp',
+        targetPort: '',
+        targetProtocol: 'tcp',
+        algorithm: 'roundrobin',
+      })
+    ]);
   },
+
+  useExisting: 'no',
+  isUseExisting: Ember.computed.equal('useExisting','yes'),
+  existingConfigId: null,
 
   hostsArray: null,
   initHosts: function() {
@@ -82,7 +77,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
         return {
           group: host.get('name') || ('(Host '+host.get('id')+')'),
           id: container.get('id'),
-          name: container.get('name') || ('(Container ' + container.get('id') + ')')
+          name: container.get('name') || ('(' + container.get('id') + ')')
         };
       }));
     });
@@ -91,93 +86,89 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   }.property('hostChoices.@each.instancesUpdated').volatile(),
 
   targetContainerIds: function() {
-    return this.get('targetsArray').filterProperty('isContainer',true).map((choice) => {
+    return this.get('targetsArray').filterProperty('isContainer',true).filterProperty('value').map((choice) => {
       return Ember.get(choice,'value');
     });
   }.property('targetsArray.@each.{isIp,isContainer,value}'),
 
   targetIpAddresses: function() {
-    return this.get('targetsArray').filterProperty('isIp',true).map((choice) => {
+    return this.get('targetsArray').filterProperty('isIp',true).filterProperty('value').map((choice) => {
       return Ember.get(choice,'value');
     });
   }.property('targetsArray.@each.{isIp,isContainer,value}'),
 
-  sourceProtocolOptions: function() {
-    return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.sourceProtocol.options');
-  }.property(),
-
-  targetProtocolOptions: function() {
-    return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.targetProtocol.options');
-  }.property(),
-
-  algorithmOptions: function() {
-    return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.algorithm.options');
-  }.property(),
-
-  listenersArray: null,
-
-  stickiness: 'none',
-  isStickyNone: Ember.computed.equal('stickiness','none'),
-  isStickyLbCookie: Ember.computed.equal('stickiness','lbCookie'),
-  isStickyAppCookie: Ember.computed.equal('stickiness','appCookie'),
-  cookieModeChoices: [
-    {value: 'rewrite', label: 'Rewrite'},
-    {value: 'insert', label: 'Insert'},
-    {value: 'prefix', label: 'Prefix'},
-  ],
-  stickinessDidChange: function() {
-    var stickiness = this.get('stickiness');
-    if ( stickiness === 'none' )
+  willSave: function() {
+    if ( !this._super() )
     {
-      this.set('config.lbCookieStickinessPolicy', null);
-      this.set('config.appCookieStickinessPolicy', null);
+      // Validaton failed
+      return false;
     }
-    else if ( stickiness === 'lbCookie' )
-    {
-      this.set('config.lbCookieStickinessPolicy', this.get('lbCookie'));
-      this.set('config.appCookieStickinessPolicy', null);
-    }
-    else if ( stickiness === 'appCookie' )
-    {
-      this.set('config.lbCookieStickinessPolicy', null);
-      this.set('config.appCookieStickinessPolicy', this.get('appCookie'));
-    }
-  }.observes('stickiness'),
 
-  validate: function() {
-    var config = this.get('model.config');
-    var balancer = this.get('model.balancer');
+    if ( !this.get('isUseExisting') )
+    {
+      // If creating a config, name it after the balancer
+      var config = this.get('model.config');
+      var balancer = this.get('model.balancer');
 
-    config.set('name', balancer.get('name'));
-    config.set('description', balancer.get('description'));
+      config.set('name', balancer.get('name') + "'s config");
+      config.set('description', balancer.get('description'));
+    }
 
     return true;
   },
 
-  didSave: function() {
+  doSave: function() {
     var balancer = this.get('model.balancer');
     var config = this.get('model.config');
     var listeners = this.get('listenersArray');
 
-    balancer.set('loadBalancerConfigId', config.get('id'));
-    return balancer.save().then(() => {
-      var promises = [];
-      listeners.forEach((listener) => {
-        promises.push(listener.save());
-      });
+    if ( this.get('isUseExisting') )
+    {
+      // Use an existing config
+      balancer.set('loadBalancerConfigId', this.get('existingConfigId'));
 
-      return Ember.RSVP.all(promises).then((listeners) => {
-        var ids = listeners.map((listener) => {
-          return listener.get('id');
+      // Create balancer
+      return balancer.save();
+    }
+    else
+    {
+      // Create a new config
+      return config.save().then(() => {
+        var promises = [];
+        listeners.forEach((listener) => {
+          promises.push(listener.save());
         });
 
-        return config.doAction('setlisteners',{loadBalancerListenerIds: ids}).then(() => {
-          return balancer.doAction('updateall', {
-            hostIds: this.get('hostIds'),
-            instanceIds: this.get('targetContainerIds'),
-            ipAddresses: this.get('targetIpAddresses'),
+        // Create listeners
+        return Ember.RSVP.all(promises).then((listeners) => {
+          var ids = listeners.map((listener) => {
+            return listener.get('id');
+          });
+
+          // Apply listeners to the config
+          return config.doAction('setlisteners',{loadBalancerListenerIds: ids}).then(() => {
+
+            // Apply config to the balancer
+            balancer.set('loadBalancerConfigId', config.get('id'));
+
+            // Create balancer
+            return balancer.save();
           });
         });
+      });
+    }
+  },
+
+  didSave: function() {
+    var balancer = this.get('model.balancer');
+    // Set balancer hosts
+    return balancer.doAction('sethosts', {
+      hostIds: this.get('hostIds'),
+    }).then(() => {
+      // Set balancer targets
+      return balancer.doAction('settargets', {
+        instanceIds: this.get('targetContainerIds'),
+        ipAddresses: this.get('targetIpAddresses'),
       });
     });
   },

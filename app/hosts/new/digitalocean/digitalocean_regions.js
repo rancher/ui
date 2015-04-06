@@ -66,7 +66,7 @@ export default {
         "ipv6",
         "metadata"
       ],
-      "available": true
+      "available": false
     },
     {
       "name": "New York 3",
@@ -92,8 +92,77 @@ export default {
       "available": true
     },
     {
+      "name": "Amsterdam 2",
+      "slug": "ams2",
+      "sizes": [
+        "32gb",
+        "16gb",
+        "2gb",
+        "1gb",
+        "4gb",
+        "8gb",
+        "512mb",
+        "64gb",
+        "48gb"
+      ],
+      "features": [
+        "virtio",
+        "private_networking",
+        "backups",
+        "ipv6",
+        "metadata"
+      ],
+      "available": true
+    },
+    {
       "name": "Amsterdam 3",
       "slug": "ams3",
+      "sizes": [
+        "32gb",
+        "16gb",
+        "2gb",
+        "1gb",
+        "4gb",
+        "8gb",
+        "512mb",
+        "64gb",
+        "48gb"
+      ],
+      "features": [
+        "virtio",
+        "private_networking",
+        "backups",
+        "ipv6",
+        "metadata"
+      ],
+      "available": true
+    },
+    {
+      "name": "London 1",
+      "slug": "lon1",
+      "sizes": [
+        "32gb",
+        "16gb",
+        "2gb",
+        "1gb",
+        "4gb",
+        "8gb",
+        "512mb",
+        "64gb",
+        "48gb"
+      ],
+      "features": [
+        "virtio",
+        "private_networking",
+        "backups",
+        "ipv6",
+        "metadata"
+      ],
+      "available": true
+    },
+    {
+      "name": "Singapore 1",
+      "slug": "sgp1",
       "sizes": [
         "32gb",
         "16gb",

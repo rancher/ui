@@ -110,7 +110,7 @@ export default Overlay.extend(ThrottledResize,{
   },
 
   onResize: function() {
-    this.$('.log-body').css('max-height', Math.max(200, ($(window).height() - 230)) + 'px');
+    this.$('.log-body').css('height', Math.max(200, ($(window).height() - 230)) + 'px');
   },
 
   willDestroyElement: function() {

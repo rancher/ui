@@ -7,11 +7,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     var dependencies = [
       store.findAll('host'),
+      store.findAll('loadbalancerconfig'),
     ];
 
     return Ember.RSVP.all(dependencies, 'Load dependencies').then(function(results) {
       return {
         allHosts: results[0],
+        allConfigs: results[1],
         balancer: store.createRecord({type: 'loadBalancer'}),
         config: store.createRecord({
           type: 'loadBalancerConfig',
@@ -26,7 +28,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
           lbCookieStickinessPolicy: null,
         }),
         appCookie: store.createRecord({
-          type: 'loadBalancerAppCookieStickinessPolicy'
+          type: 'loadBalancerAppCookieStickinessPolicy',
+          mode: 'path_parameters',
+          requestLearn: true,
+          timeout: 3600000,
         }),
         lbCookie: store.createRecord({
           type: 'loadBalancerCookieStickinessPolicy'
@@ -45,11 +50,12 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     {
       controller.set('tab', 'listeners');
       controller.set('stickiness', 'none');
+      controller.set('useExisting', 'no');
     }
   },
 
   activate: function() {
-    this.send('setPageLayout', {label: 'Back', backPrevious: true});
+    this.send('setPageLayout', {label: 'Back', backRoute: 'loadbalancers'});
   },
 
   actions: {

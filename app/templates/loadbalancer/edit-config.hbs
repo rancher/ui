@@ -1,0 +1,33 @@
+<section class="text-center" style="padding: 0;">
+  <ul class="nav nav-pills" style="display: inline-block">
+    <li role="presentation" class="tab" data-section="listeners" {{action "selectTab" "listeners" target=view}}><a>Listeners</a></li>
+    <li role="presentation" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck" target=view}}><a>Health Check</a></li>
+    <li role="presentation" class="tab" data-section="stickiness" {{action "selectTab" "stickiness" target=view}}><a>Stickiness</a></li>
+  </ul>
+</section>
+
+<section class="horizontal-form tab-section" style="background-color: #f8f9fa; margin: -7px 10px 0 10px;">
+  <div class="section container-fluid" data-section="listeners">
+    <div class="row">
+      <div class="col-xs-12">
+        <label>Listening Ports</label>
+        &nbsp;
+        <button class="btn-circle-plus" {{action "addListener" target="view"}}></button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-md-8 col-md-offset-2">
+        {{partial "loadbalancer/new-listeners"}}
+      </div>
+    </div>
+  </div>
+
+  <div class="section container-fluid tab-section" data-section="healthcheck">
+    {{partial "loadbalancer/edit-healthcheck"}}
+  </div>
+
+  <div class="section container-fluid tab-section" data-section="stickiness">
+    {{partial "loadbalancer/edit-stickiness"}}
+  </div>
+</section>
+

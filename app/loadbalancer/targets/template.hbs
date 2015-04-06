@@ -1,0 +1,56 @@
+<section class="grid-header">
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>Targets ({{arrangedTargets.length}})</h3>
+    </div>
+    <div class="col-sm-6 text-right">
+      <button {{action "newTarget"}} class="btn btn-sm btn-primary" {{bind-attr disabled="addDisabled:disabled"}}>Add Targets</button>
+    </div>
+  </div>
+</section>
+<section>
+  <table class="grid fixed" style="margin-bottom: 0;">
+    <thead>
+      <tr>
+        <th width="120">State</th>
+        <th>Type</th>
+        <th>Target</th>
+        <th class="actions" width="50">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each target in arrangedTargets itemController="loadbalancertarget"}}
+        <tr>
+          <td>
+            <span {{bind-attr class=":badge :state target.stateBackground"}}>
+              {{target.displayState}}
+            </span>
+          </td>
+          {{#if target.isIp}}
+            <td>IP Address</td>
+            <td>{{target.ipAddress}}</td>
+          {{else}}
+            <td>
+              Container
+            </td>
+            <td>
+              {{#if target.instance}}
+                {{#with target.instance as c controller="container"}}
+                  {{#link-to "container" c.id}}{{c.displayName}}{{/link-to}}
+                {{/with}}
+              {{else}}
+                <span class="text-muted">Loading...</span>
+              {{/if}}
+            </td>
+          {{/if}}
+          <td class="actions">
+            {{resource-actions-menu model=target choices=target.availableActions}}
+          </td>
+        </tr>
+      {{else}}
+        <tr><td colspan="4" class="text-center text-muted">This balancer does not have any targets yet.</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>
+

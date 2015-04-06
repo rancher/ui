@@ -3,7 +3,7 @@ import OverlayRoute from 'ui/overlay/route';
 export default OverlayRoute.extend({
   actions: {
     cancel: function() {
-      this.send('goToPrevious');
+      this.goToPrevious();
     },
   },
 

@@ -61,7 +61,8 @@ var NewOrEditMixin = Ember.Mixin.create({
       }
       else
       {
-
+        console.log(err);
+        this.set('error', err);
       }
     },
 
@@ -79,31 +80,13 @@ var NewOrEditMixin = Ember.Mixin.create({
     save: function() {
       var self = this;
 
-      this.set('error',null);
-      var ok = this.validate();
-      if ( !ok )
+      if ( !this.willSave() )
       {
-        // Validation failed
+        // Validation or something else said not to save
         return;
       }
 
-      if ( this.get('saving') )
-      {
-        // Already saving
-        return;
-      }
-
-      this.set('saving',true);
-
-      var model = this.get('primaryResource');
-
-      return model.save().then(function(newData) {
-        var original = self.get('originalModel');
-        if ( original )
-        {
-          original.merge(newData);
-        }
-      })
+      this.doSave()
       .then(this.didSave.bind(this))
       .then(this.doneSaving.bind(this))
       .catch(function(err) {
@@ -112,6 +95,37 @@ var NewOrEditMixin = Ember.Mixin.create({
         self.set('saving',false);
       });
     }
+  },
+
+  // willSave happens before save and can stop the save from happening
+  willSave: function() {
+    this.set('error',null);
+    var ok = this.validate();
+    if ( !ok )
+    {
+      // Validation failed
+      return false;
+    }
+
+    if ( this.get('saving') )
+    {
+      // Already saving
+      return false;
+    }
+
+    this.set('saving',true);
+    return true;
+  },
+
+  doSave: function() {
+    var model = this.get('primaryResource');
+    return model.save().then((newData) => {
+      var original = this.get('originalModel');
+      if ( original )
+      {
+        original.merge(newData);
+      }
+    });
   },
 
   // didSave can be used to do additional saving of dependent resources
@@ -140,7 +154,7 @@ var TransitioningResource = Resource.extend({
 
   pollDelayTimer: null,
   pollTimer: null,
-  reservedKeys: ['pollDelayTimer','pollTimer'],
+  reservedKeys: ['pollDelayTimer','pollTimer','waitInterval','waitTimeout'],
   transitioningChanged: function() {
     //console.log('Transitioning changed', this.toString(), this.get('transitioning'), this.get('pollDelayTimer'),this.get('pollTimer'));
 
@@ -189,6 +203,54 @@ var TransitioningResource = Resource.extend({
     });
   },
 
+  // You really shouldn't have to use any of these.
+  // Needing these is a sign that the API is bad and should feel bad.
+  // Yet here they are, nonetheless.
+  waitInterval: 1000,
+  waitTimeout: 30000,
+  _waitForTestFn: function(testFn, msg) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      var timeout = setTimeout(() =>  {
+        clearInterval(interval);
+        clearTimeout(timeout);
+        reject(this);
+      }, this.get('waitTimeout'));
+
+      var interval = setInterval(() => {
+        if ( testFn.apply(this) )
+        {
+          clearInterval(interval);
+          clearTimeout(timeout);
+          resolve(this);
+        }
+      }, this.get('waitInterval'));
+    }, msg||'Wait for it...');
+  },
+
+  waitForState: function(state) {
+    return this._waitForTestFn(function() {
+      return this.get('state') === state;
+    }, 'Wait for state='+state);
+  },
+
+  waitForNotTransitioning: function() {
+    return this._waitForTestFn(function() {
+      return this.get('transitioning') !== 'yes';
+    }, 'Wait for not transitioning');
+  },
+
+  waitForAction: function(name) {
+    return this._waitForTestFn(function() {
+      console.log('waitForAction('+name+'):', this.hasAction(name));
+      return this.hasAction(name);
+    }, 'Wait for action='+name);
+  },
+
+  waitForAndDoAction: function(name, data) {
+    return this.waitForAction(name).then(() => {
+      return this.doAction(name, data);
+    }, 'Wait for and do action='+name);
+  },
 });
 
 TransitioningResource.reopenClass({

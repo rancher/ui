@@ -40,12 +40,12 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   }.property('digitaloceanConfig.region'),
 
   imageChoices: [
-    'coreos-stable',
-    'coreos-alpha',
-    'coreos-beta',
-    'centos-7-0-x64',
-    'debian-7-0-x64',
-    'fedora-21-x64',
+//    'coreos-stable',
+//    'coreos-alpha',
+//    'coreos-beta',
+//    'centos-7-0-x64',
+//    'debian-7-0-x64',
+//    'fedora-21-x64',
     'ubuntu-14-04-x64',
     'ubuntu-14-10-x64',
   ],

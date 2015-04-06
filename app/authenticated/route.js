@@ -200,6 +200,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this._includeChanged('loadBalancer', 'loadBalancerTargets', 'loadBalancerId', change.data.resource);
     },
 
+    loadBalancerConfigChanged: function(change) {
+      this._includeChanged('loadBalancer', 'loadBalancerListeners', 'loadBalancerListeners', change.data.resource);
+    },
+
     mountChanged: function(change) {
       var mount = change.data.resource;
       var volume = this.get('store').getById('volume', mount.get('volumeId'));

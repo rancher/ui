@@ -13,14 +13,6 @@ var LoadBalancerController = Cattle.TransitioningResourceController.extend({
       { label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: true },
     ];
 
-    if ( this.get('machine.links.config') )
-    {
-      out.push({ label: 'Machine Config',   icon: 'ss-download', action: 'machineConfig',      enabled: true});
-    }
-
-    out.push({ label: 'View in API',   icon: '', action: 'goToApi',      enabled: true});
-    out.push({ label: 'Purge',         icon: '',   action: 'purge',        enabled: !!a.purge, color: 'text-danger'});
-
     return out;
   }.property('actions.{activate,deactivate,remove,purge}'),
 
@@ -29,14 +21,21 @@ var LoadBalancerController = Cattle.TransitioningResourceController.extend({
 
     return Ember.ArrayController.create({
       content: targets,
-      sortProperties: ['name','id']
+      sortProperties: ['ipAddress', 'instance.name', 'instance.id', 'instanceId']
     });
-  }.property('instances.[]','loadBalancerTargets.@each.{name,id}'),
+  }.property('instances.[]','loadBalancerTargets.@each.{instanceId,ipAddress}'),
 
   hostsBlurb: function() {
-    var cnt = this.get('hosts.length');
-    return cnt + ' Host' + (cnt === 1 ? '' : 's');
-  }.property('hosts.length'),
+    var cnt = this.get('hosts.length')||0;
+    if ( cnt )
+    {
+      return cnt + ' Host' + (cnt === 1 ? '' : 's');
+    }
+    else
+    {
+      return 'No Hosts';
+    }
+  }.property('hosts.[]'),
 });
 
 LoadBalancerController.reopenClass({

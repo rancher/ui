@@ -45,7 +45,15 @@ module.exports = function(environment) {
       appName: 'Rancher',
       endpoint: 'http://localhost:8080',
       apiEndpoint: '/v1',
-      wsEndpoint: '/v1/subscribe?include=hosts&include=instances&include=instanceLinks&include=ipAddresses&eventNames=resource.change',
+      wsEndpoint: '/v1/subscribe?eventNames=resource.change' +
+                    '&include=hosts' +
+                    '&include=instances' +
+                    '&include=instance' +
+                    '&include=loadBalancerConfig' +
+                    '&include=loadBalancerTargets' +
+                    '&include=loadBalancerListeners' +
+                    '&include=instanceLinks' +
+                    '&include=ipAddresses',
       baseAssets: '',
     },
   };

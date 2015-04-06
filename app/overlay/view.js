@@ -58,10 +58,18 @@ export default Ember.View.extend({
   actions: {
     overlayClose: function() {
       // Override me
+      try {
+        this.get('controller').send('cancel');
+      } catch(e) {
+      }
     },
 
     overlayEnter: function() {
       // Override me
+      try {
+        this.get('controller').send('save');
+      } catch(e) {
+      }
     }
   }
 });

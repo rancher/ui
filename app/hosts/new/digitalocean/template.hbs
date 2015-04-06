@@ -20,10 +20,8 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-xs-10 col-xs-offset-1">
-        <hr/>
-      </div>
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Account Access</span>
     </div>
 
     <div class="row form-group">
@@ -36,17 +34,15 @@
       </div>
     </div>
 
-    <div class="row">
-      <div class="col-xs-10 col-xs-offset-1">
-        <hr/>
-      </div>
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Instance</span>
     </div>
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
         <label for="image" class="form-control-static">Image</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-sm-12 col-md-3">
         {{view "select"
           class="form-control"
           id="image"
@@ -54,13 +50,10 @@
           value=digitaloceanConfig.image
         }}
       </div>
-    </div>
-
-    <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
         <label for="size" class="form-control-static">Size</label>
       </div>
-      <div class="col-sm-12 col-md-4">
+      <div class="col-sm-12 col-md-3">
         {{view "select"
           class="form-control"
           id="size"
@@ -68,10 +61,17 @@
           value=digitaloceanConfig.size
         }}
       </div>
-      <div class="col-sm-12 col-md-1 form-label" style="text-align: left">
+    </div>
+
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Region</span>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
         <label for="region" class="form-control-static">Region</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-sm-12 col-md-8">
         {{view "select"
           class="form-control"
           id="region"
@@ -82,6 +82,30 @@
         }}
       </div>
     </div>
+
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Options</span>
+    </div>
+
+    <table style="margin: 0 auto;">
+      <tr>
+        <td style="padding: 0 10px;">
+          <div class="form-label checkbox">
+            <label>{{input type="checkbox" checked=digitaloceanConfig.backups}} Enable Backups</label>
+          </div>
+        </td>
+        <td style="padding: 0 10px;">
+          <div class="form-label checkbox">
+            <label>{{input type="checkbox" checked=digitaloceanConfig.ipv6}} Enable IPv6</label>
+          </div>
+        </td>
+        <td style="padding: 0 10px;">
+          <div class="form-label checkbox">
+            <label>{{input type="checkbox" checked=digitaloceanConfig.privateNetworking}} Enable Private Networking</label>
+          </div>
+        </td>
+      </tr>
+    </table>
   </div>
 
   {{partial "save-cancel"}}

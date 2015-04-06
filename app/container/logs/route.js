@@ -21,7 +21,7 @@ export default OverlayRoute.extend({
 
   actions: {
     cancel: function() {
-      this.send('goToPrevious');
+      this.goToPrevious();
     },
   }
 });
