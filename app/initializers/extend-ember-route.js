@@ -41,8 +41,7 @@ export function initialize(/* container, application */) {
       for ( var i=0 ; i < infos.length ; i++ )
       {
         current = infos[i].handler;
-        if ( (current.routeName == this.routeName)
-             || (current.routeName.match(/./) && current.routeName.split('.')[1] == this.routeName )
+        if ( (current.routeName === this.routeName) || (current.routeName.match(/./) && current.routeName.split('.')[1] === this.routeName )
            )
         {
           if ( parent )

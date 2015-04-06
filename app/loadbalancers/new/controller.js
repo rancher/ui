@@ -7,7 +7,6 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
   tab: 'listeners',
   error: null,
   editing: false,
-  primaryResource: Ember.computed.alias('model.config'),
 
   actions: {
     addHost: function() {
@@ -43,6 +42,10 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
       })
     ]);
   },
+
+  useExisting: 'no',
+  isUseExisting: Ember.computed.equal('useExisting','yes'),
+  existingConfigId: null,
 
   hostsArray: null,
   initHosts: function() {
@@ -83,54 +86,89 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
   }.property('hostChoices.@each.instancesUpdated').volatile(),
 
   targetContainerIds: function() {
-    return this.get('targetsArray').filterProperty('isContainer',true).map((choice) => {
+    return this.get('targetsArray').filterProperty('isContainer',true).filterProperty('value').map((choice) => {
       return Ember.get(choice,'value');
     });
   }.property('targetsArray.@each.{isIp,isContainer,value}'),
 
   targetIpAddresses: function() {
-    return this.get('targetsArray').filterProperty('isIp',true).map((choice) => {
+    return this.get('targetsArray').filterProperty('isIp',true).filterProperty('value').map((choice) => {
       return Ember.get(choice,'value');
     });
   }.property('targetsArray.@each.{isIp,isContainer,value}'),
 
-  validate: function() {
-    var config = this.get('model.config');
-    var balancer = this.get('model.balancer');
+  willSave: function() {
+    if ( !this._super() )
+    {
+      // Validaton failed
+      return false;
+    }
 
-    config.set('name', balancer.get('name'));
-    config.set('description', balancer.get('description'));
+    if ( !this.get('isUseExisting') )
+    {
+      // If creating a config, name it after the balancer
+      var config = this.get('model.config');
+      var balancer = this.get('model.balancer');
+
+      config.set('name', balancer.get('name') + "'s config");
+      config.set('description', balancer.get('description'));
+    }
 
     return true;
   },
 
-  didSave: function() {
+  doSave: function() {
     var balancer = this.get('model.balancer');
     var config = this.get('model.config');
     var listeners = this.get('listenersArray');
 
-    balancer.set('loadBalancerConfigId', config.get('id'));
-    return balancer.save().then(() => {
-      var promises = [];
-      listeners.forEach((listener) => {
-        promises.push(listener.save());
-      });
+    if ( this.get('isUseExisting') )
+    {
+      // Use an existing config
+      balancer.set('loadBalancerConfigId', this.get('existingConfigId'));
 
-      return Ember.RSVP.all(promises).then((listeners) => {
-        var ids = listeners.map((listener) => {
-          return listener.get('id');
+      // Create balancer
+      return balancer.save();
+    }
+    else
+    {
+      // Create a new config
+      return config.save().then(() => {
+        var promises = [];
+        listeners.forEach((listener) => {
+          promises.push(listener.save());
         });
 
-        return config.doAction('setlisteners',{loadBalancerListenerIds: ids}).then(() => {
-          return balancer.doAction('sethosts', {
-            hostIds: this.get('hostIds'),
-          }).then(() => {
-            return balancer.doAction('settargets', {
-              instanceIds: this.get('targetContainerIds'),
-              ipAddresses: this.get('targetIpAddresses'),
-            });
+        // Create listeners
+        return Ember.RSVP.all(promises).then((listeners) => {
+          var ids = listeners.map((listener) => {
+            return listener.get('id');
+          });
+
+          // Apply listeners to the config
+          return config.doAction('setlisteners',{loadBalancerListenerIds: ids}).then(() => {
+
+            // Apply config to the balancer
+            balancer.set('loadBalancerConfigId', config.get('id'));
+
+            // Create balancer
+            return balancer.save();
           });
         });
+      });
+    }
+  },
+
+  didSave: function() {
+    var balancer = this.get('model.balancer');
+    // Set balancer hosts
+    return balancer.doAction('sethosts', {
+      hostIds: this.get('hostIds'),
+    }).then(() => {
+      // Set balancer targets
+      return balancer.doAction('settargets', {
+        instanceIds: this.get('targetContainerIds'),
+        ipAddresses: this.get('targetIpAddresses'),
       });
     });
   },

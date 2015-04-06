@@ -36,4 +36,16 @@ export default Ember.View.extend({
   willDestroyElement: function() {
     $('BODY').removeClass('white');
   },
+
+  useExistingDidChange: function() {
+    if ( !this.get('context.isUseExisting') )
+    {
+      Ember.run.scheduleOnce('afterRender', this, function() {
+        if ( !this.get('isDestroying') )
+        {
+          this.send('selectTab','listeners');
+        }
+      });
+    }
+  }.observes('context.isUseExisting')
 });

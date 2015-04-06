@@ -1,13 +1,10 @@
-import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
 var LoadBalancerConfigController = Cattle.TransitioningResourceController.extend({
   availableActions: function() {
-    var a = this.get('actions');
-
     var out = [
 //      { label: 'Add Container', icon: 'ss-plus',      action: 'newContainer', enabled: true,            color: 'text-primary' },
-      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete', color: 'text-warning' },
       { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true,            detail: true },
       { divider: true },
       { label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: true },
@@ -15,6 +12,10 @@ var LoadBalancerConfigController = Cattle.TransitioningResourceController.extend
 
     return out;
   }.property('actions.{activate,deactivate,remove,purge}'),
+
+  canDelete: function() {
+    return !!this.get('actions.remove') && !this.get('loadBalancers.length');
+  }.property('actions.remove','loadBalancers.[]'),
 });
 
 LoadBalancerConfigController.reopenClass({

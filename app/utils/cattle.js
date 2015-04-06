@@ -80,31 +80,13 @@ var NewOrEditMixin = Ember.Mixin.create({
     save: function() {
       var self = this;
 
-      this.set('error',null);
-      var ok = this.validate();
-      if ( !ok )
+      if ( !this.willSave() )
       {
-        // Validation failed
+        // Validation or something else said not to save
         return;
       }
 
-      if ( this.get('saving') )
-      {
-        // Already saving
-        return;
-      }
-
-      this.set('saving',true);
-
-      var model = this.get('primaryResource');
-
-      return model.save().then(function(newData) {
-        var original = self.get('originalModel');
-        if ( original )
-        {
-          original.merge(newData);
-        }
-      })
+      this.doSave()
       .then(this.didSave.bind(this))
       .then(this.doneSaving.bind(this))
       .catch(function(err) {
@@ -113,6 +95,37 @@ var NewOrEditMixin = Ember.Mixin.create({
         self.set('saving',false);
       });
     }
+  },
+
+  // willSave happens before save and can stop the save from happening
+  willSave: function() {
+    this.set('error',null);
+    var ok = this.validate();
+    if ( !ok )
+    {
+      // Validation failed
+      return false;
+    }
+
+    if ( this.get('saving') )
+    {
+      // Already saving
+      return false;
+    }
+
+    this.set('saving',true);
+    return true;
+  },
+
+  doSave: function() {
+    var model = this.get('primaryResource');
+    return model.save().then((newData) => {
+      var original = this.get('originalModel');
+      if ( original )
+      {
+        original.merge(newData);
+      }
+    });
   },
 
   // didSave can be used to do additional saving of dependent resources

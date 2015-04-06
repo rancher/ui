@@ -7,11 +7,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     var dependencies = [
       store.findAll('host'),
+      store.findAll('loadbalancerconfig'),
     ];
 
     return Ember.RSVP.all(dependencies, 'Load dependencies').then(function(results) {
       return {
         allHosts: results[0],
+        allConfigs: results[1],
         balancer: store.createRecord({type: 'loadBalancer'}),
         config: store.createRecord({
           type: 'loadBalancerConfig',
@@ -48,6 +50,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     {
       controller.set('tab', 'listeners');
       controller.set('stickiness', 'none');
+      controller.set('useExisting', 'no');
     }
   },
 

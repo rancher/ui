@@ -62,6 +62,18 @@
       {{partial "loadbalancer/edit-targets"}}
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-xs-12 col-md-2 form-label">
+      <label>Configuration</label>
+    </div>
+    <div class="col-xs-6 col-md-4 radio">
+      <label>{{radio-button selection=useExisting value="yes"}} Re-use existing Configuration</label>
+    </div>
+    <div class="col-xs-6 col-md-4 radio">
+      <label>{{radio-button selection=useExisting value="no"}} Create a new Configuration</label>
+    </div>
+  </div>
 </section>
 
 <div class="row">
@@ -70,6 +82,21 @@
   </div>
 </div>
 
-{{partial "loadbalancer/edit-config"}}
+{{#if isUseExisting}}
+  <div class="row">
+    <div class="col-xs-12 col-md-8 col-md-offset-2">
+      <label>Choose an existing Balancer Configuration</label>
+      {{view "select"
+        class="form-control"
+        content=allConfigs
+        optionLabelPath="content.name"
+        optionValuePath="content.id"
+        value=existingConfigId
+      }}
+    </div>
+  </div>
+{{else}}
+  {{partial "loadbalancer/edit-config"}}
+{{/if}}
 
 {{partial "save-cancel"}}

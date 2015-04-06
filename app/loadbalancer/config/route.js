@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model: function(params) {
+  model: function(/*params*/) {
     var balancer = this.modelFor('loadbalancer');
     var config = balancer.get('loadBalancerConfig');
     return config.followLink('loadBalancerListeners').then((listeners) => {
@@ -9,7 +9,7 @@ export default Ember.Route.extend({
         balancer: balancer,
         config: config,
         listeners: listeners
-      }
+      };
     });
   },
 });
