@@ -4,7 +4,7 @@
   <div class="container-fluid">
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="name" class="form-control-static">Name</label>
+        <label for="name" class="form-control-static">Name*</label>
       </div>
       <div class="col-sm-12 col-md-8">
         {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. app01"}}
@@ -57,7 +57,7 @@
         <label for="ami" class="form-control-static">AMI</label>
       </div>
       <div class="col-sm-12 col-md-3">
-        {{input type="text" id="ami" classNames="form-control" placeholder="" value=amazonec2Config.ami}}
+        {{input type="text" id="ami" classNames="form-control" placeholder="An Ubuntu AMI" value=amazonec2Config.ami}}
       </div>
       <div class="col-sm-12 col-md-2 form-label">
         <label for="rootSize" class="form-control-static">Root Size</label>
@@ -109,7 +109,7 @@
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="vpcOrSubnetId" class="form-control-static">VPC or Subnet ID*</label>
+        <label for="vpcOrSubnetId" class="form-control-static">VPC/Subnet ID*</label>
       </div>
       <div class="col-sm-12 col-md-8">
         {{input type="text" id="vpcOrSubnetId" classNames="form-control" placeholder="Provide a VPC ID or Subnet ID to attach the Instance to" value=vpcOrSubnetId}}
@@ -122,6 +122,12 @@
       </div>
       <div class="col-sm-12 col-md-8">
         {{input type="text" id="securityGroup" classNames="form-control" placeholder="" value=amazonec2Config.securityGroup}}
+        <p style="margin: 10px 0 0 0;">Your security group will need to allow traffic:</p>
+        <ul>
+          <li>From the internet to <code>TCP</code> ports <code>9345</code> and <code>9346</code> <span class="text-muted">(for UI hosts stats/graphs)</span></li>
+          <li>From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+        </ul>
+        <p style="margin: 0;">Machine will automatically create this group if needed, but will <b>not</b> add these rules.</p>
       </div>
     </div>
   </div>
