@@ -12,8 +12,10 @@ export default Ember.Route.extend({
       type: 'amazonec2Config',
       region: 'us-east-1',
       instanceType: 't2.micro',
+      securityGroup: 'docker-machine',
       zone: 'a',
       rootSize: 16
+
     });
 
     return this.get('store').createRecord({
