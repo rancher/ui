@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import NewOrEditContainer from 'ui/container/edit/new-or-edit';
+import ShellQuote from 'npm:shell-quote';
 
 export default Ember.ObjectController.extend(NewOrEditContainer, {
   queryParams: ['tab','hostId','advanced'],
@@ -500,5 +501,18 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
     });
     out.endPropertyChanges();
   }.observes('devicesArray.@each.{host,container,permissions}'),
+
+  strEntryPoint: '',
+  strEntryPointDidChange: function() {
+    var out = ShellQuote.parse(this.get('strEntryPoint').trim()||'');
+    if ( out.length )
+    {
+      this.set('entryPoint', out);
+    }
+    else
+    {
+      this.set('entryPoint', null);
+    }
+  }.observes('strEntryPoint'),
 
 });
