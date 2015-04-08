@@ -5,6 +5,6 @@ export default Ember.Route.extend({
   },
 
   activate: function() {
-    this.send('setPageLayout', {label: 'Load Balancing', hasAside: 'nav-balancing active'});
+    this.send('setPageLayout', {label: 'About Load Balancing', hasAside: 'nav-balancing active'});
   },
 });
