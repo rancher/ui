@@ -204,6 +204,26 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this._includeChanged('loadBalancer', 'loadBalancerListeners', 'loadBalancerListeners', change.data.resource);
     },
 
+    loadBalancerChanged: function(change) {
+      var balancer = change.data.resource;
+      var config = balancer.get('loadBalancerConfig');
+      var balancers = config.get('loadBalancers');
+      if ( !balancers )
+      {
+        balancers = [];
+        config.set('loadBalancers',balancers);
+      }
+
+      if ( config.get('state') === 'removed' )
+      {
+        balancers.removeObject(balancer);
+      }
+      else
+      {
+        balancers.addObject(balancer);
+      }
+    },
+
     mountChanged: function(change) {
       var mount = change.data.resource;
       var volume = this.get('store').getById('volume', mount.get('volumeId'));

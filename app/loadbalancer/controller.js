@@ -2,6 +2,12 @@ import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
 var LoadBalancerController = Cattle.TransitioningResourceController.extend({
+  actions: {
+    newTarget: function() {
+      this.transitionToRoute('loadbalancer.targets.new', this.get('id'));
+    },
+  },
+
   availableActions: function() {
     var a = this.get('actions');
 

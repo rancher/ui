@@ -5,6 +5,8 @@ var LoadBalancerListener = Cattle.TransitioningResource.extend({
 });
 
 LoadBalancerListener.reopenClass({
+  pollTransitioningDelay: 1000,
+  pollTransitioningInterval: 5000,
 });
 
 export default LoadBalancerListener;

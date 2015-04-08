@@ -148,7 +148,16 @@ var TransitioningResource = Resource.extend({
   isError: Ember.computed.equal('transitioning','error'),
 
   replaceWith: function() {
+    //console.log('1 replaceWith', this.get('id'));
     this._super.apply(this,arguments);
+    this.transitioningChanged();
+  },
+
+  wasAdded: function() {
+    this.transitioningChanged();
+  },
+
+  wasRemoved: function() {
     this.transitioningChanged();
   },
 
@@ -156,16 +165,21 @@ var TransitioningResource = Resource.extend({
   pollTimer: null,
   reservedKeys: ['pollDelayTimer','pollTimer','waitInterval','waitTimeout'],
   transitioningChanged: function() {
-    //console.log('Transitioning changed', this.toString(), this.get('transitioning'), this.get('pollDelayTimer'),this.get('pollTimer'));
+    //console.log('Transitioning changed', this.toString(), this.get('transitioning'), this.get('pollDelayTimer'), this.get('pollTimer'));
 
-    clearTimeout(this.get('pollDelayTimer'));
-    clearTimeout(this.get('pollTimer'));
-
-    if ( !this.isInStore() )
+    if ( this.get('transitioning') !== 'yes' || !this.isInStore() )
     {
-      //console.log('This resource is not in the store');
+      clearTimeout(this.get('pollDelayTimer'));
+      clearTimeout(this.get('pollTimer'));
       return;
     }
+
+    if ( this.get('pollDelayTimer') )
+    {
+      // Already polling or waiting, just let that one finish
+      return;
+    }
+
 
     var delay = this.constructor.pollTransitioningDelay;
     var interval = this.constructor.pollTransitioningInterval;
@@ -173,15 +187,27 @@ var TransitioningResource = Resource.extend({
     {
       //console.log('Starting poll timer', this.toString());
       this.set('pollDelayTimer', setTimeout(function() {
-        //console.log('1 expired');
+        //console.log('1 expired', this.toString());
         this.transitioningPoll();
       }.bind(this), delay));
+    }
+    else
+    {
+      //console.log('Not polling', this.toString());
+      clearTimeout(this.get('pollDelayTimer'));
+      this.set('pollDelayTimer', null);
     }
   }.observes('transitioning'),
 
   transitioningPoll: function() {
-    clearTimeout(this.get('pollTimer'));
+    var self = this;
+    function reset() {
+      clearTimeout(self.get('pollDelayTimer'));
+      self.set('pollDelayTimer',null);
+    }
 
+    clearTimeout(this.get('pollTimer'));
+    this.set('pollTimer',null);
     //console.log('Checking', this.toString());
 
     if ( this.get('transitioning') !== 'yes' || !this.isInStore() )
@@ -196,10 +222,16 @@ var TransitioningResource = Resource.extend({
       {
         //console.log('Rescheduling', this.toString());
         this.set('pollTimer', setTimeout(function() {
-          //console.log('2 expired');
+          //console.log('2 expired', this.toString());
           this.transitioningPoll();
         }.bind(this), this.constructor.pollTransitioningInterval));
       }
+      else
+      {
+        reset();
+      }
+    }).catch(() => {
+      reset();
     });
   },
 
@@ -241,7 +273,7 @@ var TransitioningResource = Resource.extend({
 
   waitForAction: function(name) {
     return this._waitForTestFn(function() {
-      console.log('waitForAction('+name+'):', this.hasAction(name));
+      //console.log('waitForAction('+name+'):', this.hasAction(name));
       return this.hasAction(name);
     }, 'Wait for action='+name);
   },
