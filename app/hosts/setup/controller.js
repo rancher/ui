@@ -48,7 +48,7 @@ export default Ember.ObjectController.extend({
     },
 
     cancel: function() {
-      this.goToPrevious();
+      this.send('goToPrevious');
     }
   },
 
