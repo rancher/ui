@@ -97,6 +97,12 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
     });
   }.property('targetsArray.@each.{isIp,isContainer,value}'),
 
+  activeConfigs: function() {
+    return this.get('allConfigs').filter((config) => {
+      return config.get('state') === 'active';
+    });
+  }.property('allConfigs.@each.state'),
+
   willSave: function() {
     if ( !this._super() )
     {

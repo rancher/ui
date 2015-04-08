@@ -9,11 +9,11 @@ export default Overlay.extend({
 
   actions: {
     overlayClose: function() {
-      this.get('controller').send('cancel');
+      this.get('controller').send('cancelDelete');
     },
 
     overlayEnter: function() {
-      this.get('controller').send('confirm');
+      this.get('controller').send('confirmDelete');
     }
   }
 });
