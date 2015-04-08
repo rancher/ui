@@ -1,11 +1,17 @@
 {{partial "balancing-aside"}}
 <section>
-  <h3>Some introduction stuff</h3>
-  <p>Telling you about balancing, what listeners and configs are, GLB vs LB, etc.</p>
-  <p>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur finibus dictum elit, id vulputate orci lobortis nec. Mauris odio elit, vehicula eget semper gravida, ultricies eu odio. Integer eget mattis nibh. Etiam tristique dapibus odio, quis pellentesque urna iaculis sed. Proin purus elit, accumsan lobortis nulla sed, interdum mattis elit. Vestibulum imperdiet orci vel est semper, non placerat quam cursus. In interdum eros nec suscipit ultricies. Pellentesque lobortis elementum lacinia. Donec tempus ultrices ligula, in laoreet lectus dictum vitae. Nunc eu lobortis augue. Fusce facilisis ullamcorper tellus. Curabitur bibendum pretium nisl, sit amet aliquam nibh congue ut. Integer arcu turpis, tempor quis varius id, bibendum a tellus. In hac habitasse platea dictumst.
-  </p>
-  <p>
-  Sed elementum dui vitae lacus ultricies, in tempor urna facilisis. In vitae porttitor risus. Vivamus non tellus pretium, elementum turpis vel, luctus odio. Curabitur consectetur eu dui a tincidunt. In scelerisque tortor mauris, non imperdiet nunc ultricies vitae. Suspendisse eget ligula sit amet purus sagittis pharetra. Nam varius, erat vel volutpat elementum, felis dolor facilisis erat, vitae vulputate ipsum nunc ac ipsum. In ac cursus lorem. Duis tempus efficitur arcu, eu sodales orci pulvinar ac. Maecenas in egestas diam, vitae consequat augue. Nam suscipit tincidunt turpis, eu venenatis nunc porta sed. Aliquam laoreet, est eget dignissim aliquet, lacus arcu posuere quam, et imperdiet arcu tortor sit amet metus. Praesent molestie ex ac enim pulvinar luctus id quis turpis. Etiam egestas aliquet leo sit amet mattis. Nunc convallis, ipsum auctor finibus vestibulum, nibh lectus tempus diam, eu tempor sem purus ut nibh.
-  </p>
-</section
+  <h4 class="text-bold">Load Balancers</h4>
+  <p>Our Load Balancer distributes network traffic across a number of containers. This is a key requirement for developers and ops who want to deploy large-scale applications. Load balancing support is notoriously uneven across different clouds. By offering a uniform, simple, and powerful load balancer solution, Rancher makes it possible for Docker developers to port applications easily across multiple clouds, or to use different cloud providers as independent resource pools to host highly-available applications.</p>
+
+  <p>The Load Balancer is created and managed by Rancher. For each host selected for a Load Balancer, a "LB Agent" (i.e. Load Balancer Agent) container is started and HAProxy software is installed in it. This container treated like a Rancher Container.</p>
+  <br/>
+
+  <h4 class="text-bold">Load Balancer Configurations</h4>
+  <p>A Load Balancer Config is a configuration that is used to set up a Load Balancer. The Load Balancer Config includes Load Balancer Listener(s), a Health Check Policy and cookie policies (i.e. Stickiness). When a Load Balancer is created, the Load Balancer Config is used to create the HAProxy config in the HA Proxy software inside the LB Agent. The Load Balancer Config can be used in multiple Load Balancers.</p>
+
+  <p>Note: If any change is made to the Load Balancer Config, it will be propagated on all Load Balancers using that Load Balancer Config.</p>
+  <br/>
+
+  <h4 class="text-bold">Load Balancer Listeners</h4>
+  <p>A Load Balancer Listener is a process that listens for connection requests. It is a one to one mapping of a port for the sources (i.e. hosts) to a port for the targets (i.e. containers/external public IPs) with protocols established for each port. An algorithm is also selected for each listener to determine which target should be used.</p>
+</section>
