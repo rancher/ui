@@ -9,10 +9,8 @@ export default Ember.Component.extend(HoverActions,{
   actions: {
   },
 
-/*
   isActive: Ember.computed.equal('model.state','active'),
   showAdd: Ember.computed.alias('isActive'),
-*/
 
   stateBackground: function() {
     return this.get('model.stateColor').replace("text-","bg-");

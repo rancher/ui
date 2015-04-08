@@ -1,17 +1,33 @@
-import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
 var ServiceController = Cattle.TransitioningResourceController.extend({
+  actions: {
+    activate: function() {
+      return this.doAction('activate');
+    },
+
+    deactivate: function() {
+      return this.doAction('deactivate');
+    },
+  },
+
   availableActions: function() {
 
     var a = this.get('actions');
 
     var choices = [
+      { label: 'Activate',      icon: 'ss-play',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
+      { label: 'Deactivate',    icon: 'ss-stop',      action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
+      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
       { label: 'Purge',         icon: 'ss-tornado',          action: 'purge',        enabled: !!a.purge },
+      { divider: true },
+      { label: 'View in API',   icon: '',                    action: 'goToApi',      enabled: true},
+      //{ divider: true },
+      //{ label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: !!a.update },
     ];
 
     return choices;
-  }.property('actions.{remove,purge}'),
+  }.property('actions.{activate,deactivate,update,remove,purge}'),
 });
 
 ServiceController.reopenClass({

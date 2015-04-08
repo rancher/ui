@@ -107,11 +107,16 @@ Router.map(function() {
       });
     });
 
-    this.resource('servicediscovery.new-environment', {path: '/servicediscovery/add-environment'});
-    this.resource('servicediscovery', {path: '/servicediscovery'}, function() {
+    this.resource('environments.new', {path: '/environments/add'});
+    this.resource('environments', {path: '/environments'}, function() {
       this.route('index', {path: '/'});
       this.resource('environment', {path: '/:environment_id'}, function() {
         this.route('edit');
+
+        this.resource('services', {path: '/services'}, function() {
+          this.resource('service', {path: '/:service_id'}, function() {
+          });
+        });
       });
     });
   });

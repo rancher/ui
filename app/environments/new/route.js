@@ -8,12 +8,12 @@ export default Ember.Route.extend({
   },
 
   activate: function() {
-    this.send('setPageLayout', {label: 'Back', backRoute: 'servicediscovery'});
+    this.send('setPageLayout', {label: 'Back', backRoute: 'environments'});
   },
 
   actions: {
     cancel: function() {
-      this.transitionTo('servicediscovery');
+      this.transitionTo('environments');
     },
   }
 });

@@ -53,6 +53,7 @@ module.exports = function(environment) {
                     '&include=loadBalancerTargets' +
                     '&include=loadBalancerListeners' +
                     '&include=instanceLinks' +
+                    '&include=consumedservices' +
                     '&include=ipAddresses',
       baseAssets: '',
     },
