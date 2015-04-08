@@ -257,7 +257,11 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       }
 
       this._includeChanged('registry', 'credentials', key, change.data.resource);
-    }
+    },
+
+    serviceChanged: function(change) {
+      this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
+    },
   },
 
   enter: function() {

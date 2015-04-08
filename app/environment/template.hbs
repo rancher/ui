@@ -1,0 +1,15 @@
+{{#each col in view.columns}}
+  <div class="pod-column">
+    {{#each item in col}}
+      {{#if item.isNewPlaceHolder}}
+        {{add-pod currentController=controller label="Add Service" route="hosts.new"}}
+      {{else}}
+        {{#with item as service controller="service"}}
+          {{service-pod model=service}}
+        {{/with}}
+      {{/if}}
+    {{/each}}
+  </div>
+{{else}}
+  <div class="text-center text-muted">No services yet.</div>
+{{/each}}
