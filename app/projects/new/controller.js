@@ -51,7 +51,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
 
   doneSaving: function() {
     var out = this._super();
-    this.goToPrevious();
+    this.transitionToRoute('projects');
     return out;
   },
 });
