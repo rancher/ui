@@ -18,7 +18,6 @@ export default Ember.View.extend({
     addVolumeFrom:  addAction('addVolumeFrom',  '.volumefrom-container'),
     addDns:         addAction('addDns',         '.dns-value'),
     addDnsSearch:   addAction('addDnsSearch',   '.dns-search-value'),
-    addLxc:         addAction('addLxc',         '.lxc-key'),
     addDevice:      addAction('addDevice',      '.device-host'),
 
     selectTab: function(name) {

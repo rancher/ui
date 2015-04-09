@@ -111,13 +111,15 @@ Router.map(function() {
     this.resource('environments', {path: '/environments'}, function() {
       this.route('index', {path: '/'});
       this.resource('environment', {path: '/:environment_id'}, function() {
+        this.route('index', {path: '/'});
         this.route('edit');
+        this.route('new-service', { path: '/services/add'});
 
-        this.resource('services', {path: '/services'}, function() {
-          this.resource('service', {path: '/:service_id'}, function() {
-          });
+        this.resource('service', {path: '/services/:service_id'}, function() {
+
         });
       });
+
     });
   });
 });

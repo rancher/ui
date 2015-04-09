@@ -18,13 +18,13 @@
 
 
   <div class="col-sm-12 col-md-4">
-    {{input id="cpuSet" type="text" value=cpuSet classNames="form-control" placeholder="e.g. 0,1,3; Default: all CPUs"}}
+    {{input id="cpuSet" type="text" value=instance.cpuSet classNames="form-control" placeholder="e.g. 0,1,3; Default: all CPUs"}}
   </div>
   <div class="col-sm-12 col-md-1 form-label" style="text-align: left">
     <label for="cpuShares" class="form-control-static">Shares</label>
   </div>
   <div class="col-sm-12 col-md-3">
-    {{input id="cpuShares" type="number" value=cpuShares step=128 min=0 classNames="form-control" placeholder="Default: 1024"}}
+    {{input id="cpuShares" type="number" value=instance.cpuShares step=128 min=0 classNames="form-control" placeholder="Default: 1024"}}
   </div>
 </div>
 
@@ -35,7 +35,7 @@
 
   <div class="col-sm-12 col-md-8">
     <div class="checkbox form-control-static">
-      <label for="privileged">{{input type="checkbox" id="privileged" checked=privileged}} Give the container full access to the host</label>
+      <label for="privileged">{{input type="checkbox" id="privileged" checked=instance.privileged}} Give the container full access to the host</label>
     </div>
   </div>
 </div>
@@ -46,11 +46,11 @@
   </div>
 
   <div class="col-sm-12 col-md-4">
-    {{view "select" class="form-control select-cap-add" content=capabilityChoices selection=capAdd multiple="true" optionValuePath="content" optionLabelPath="content"}}
+    {{view "select" class="form-control select-cap-add" content=capabilityChoices selection=instance.capAdd multiple="true" optionValuePath="content" optionLabelPath="content"}}
   </div>
 
   <div class="col-sm-12 col-md-4">
-    {{view "select" class="form-control select-cap-drop" content=capabilityChoices selection=capDrop multiple="true" optionValuePath="content" optionLabelPath="content"}}
+    {{view "select" class="form-control select-cap-drop" content=capabilityChoices selection=instance.capDrop multiple="true" optionValuePath="content" optionLabelPath="content"}}
   </div>
 </div>
 <div class="row">

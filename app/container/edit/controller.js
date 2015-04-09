@@ -1,13 +1,8 @@
 import Ember from 'ember';
-import NewOrEditContainer from './new-or-edit';
+import EditContainer from 'ui/mixins/edit-container';
 
-export default Ember.ObjectController.extend(NewOrEditContainer, {
+export default Ember.ObjectController.extend(EditContainer, {
   editing: true,
-
-  initFields: function() {
-    this.initPorts();
-    this.initLinks();
-  },
 
   didSave: function() {
     return Ember.RSVP.all([

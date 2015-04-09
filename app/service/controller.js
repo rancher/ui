@@ -28,6 +28,10 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
 
     return choices;
   }.property('actions.{activate,deactivate,update,remove,purge}'),
+
+  getEnvironment: function() {
+    return this.get('store').find('environment', this.get('environmentId'));
+  },
 });
 
 ServiceController.reopenClass({

@@ -95,10 +95,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.transitionTo('index');
     },
 
-    setPageName: function(str) {
-      this.controller.set('pageName',str);
-    },
-
     setPageLayout: function(opt) {
       this.controller.set('pageName', opt.label || '');
       this.controller.set('backRoute', opt.backRoute || null);
