@@ -40,7 +40,9 @@ export default {
       ],
       "features": [
         "virtio",
+        "private_networking",
         "backups",
+        "ipv6",
         "metadata"
       ],
       "available": true
