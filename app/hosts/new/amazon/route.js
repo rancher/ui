@@ -27,6 +27,7 @@ export default Ember.Route.extend({
   setupController: function(controller/*, model*/) {
     this._super.apply(this, arguments);
     controller.set('editing', false);
+    controller.set('vpcOrSubnetId', null);
   },
 
   renderTemplate: function() {

@@ -145,6 +145,7 @@ export default Ember.ObjectController.extend(NewOrEditContainer, {
     this.set('restartLimit', 5);
     this.set('restart', 'no'); // This has to come after restartLimit because changing the limit sets restart.
     this.set('terminal', 'both');
+    this.set('strEntryPoint','');
   },
 
   // Restart

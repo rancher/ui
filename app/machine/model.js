@@ -10,6 +10,7 @@ var pendingStates = [
 
 var Machine = Cattle.TransitioningResource.extend({
   type: 'machine',
+  reservedKeys: ['hostsUpdated','hosts','isPending'],
 
   hostsUpdated: 0,
   onHostChanged: function() {
@@ -30,7 +31,6 @@ var Machine = Cattle.TransitioningResource.extend({
 
 Machine.reopenClass({
   alwaysInclude: ['hosts'],
-  reservedKeys: ['hostsUpdated','hosts','isPending'],
   pollTransitioningDelay: 60000,
   pollTransitioningInterval: 60000,
 
