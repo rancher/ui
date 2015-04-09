@@ -140,7 +140,7 @@ var NewOrEditMixin = Ember.Mixin.create({
 
 // Cattle resources that transition have these
 var TransitioningResource = Resource.extend({
-  reservedKeys: ['state','transitioning','transitioningMessage','transitioningProgress','pollDelayTimer','pollTimer','waitInterval','waitTimeout'],
+  reservedKeys: ['pollDelayTimer','pollTimer','waitInterval','waitTimeout'],
 
   state: null,
   transitioning: null,
