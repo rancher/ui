@@ -14,6 +14,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   setupController: function(controller, model) {
     controller.set('credentials', []);
     controller.set('model',model);
+    controller.initFields();
   },
 
   renderTemplate: function() {

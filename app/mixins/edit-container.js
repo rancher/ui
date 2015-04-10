@@ -113,7 +113,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // Setup
   // ----------------------------------
   initFields: function() {
-    this.set('error',null);
+    this._super();
     this.initPorts();
     this.initLinks();
 

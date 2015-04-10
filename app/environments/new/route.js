@@ -7,6 +7,12 @@ export default Ember.Route.extend({
     });
   },
 
+  setupController: function(controller, model) {
+    controller.set('originalModel',null);
+    controller.set('model', model);
+    controller.initFields();
+  },
+
   activate: function() {
     this.send('setPageLayout', {label: 'Back', backRoute: 'environments'});
   },

@@ -10,6 +10,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
   primaryResource: Ember.computed.alias('model.config'),
 
   initFields: function() {
+    this._super();
     this.set('listenersArray', [
       this.get('store').createRecord({
         type: 'loadBalancerListener',

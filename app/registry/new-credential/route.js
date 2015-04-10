@@ -17,6 +17,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     controller.set('model',model);
     var registryId = this.modelFor('registry').get('id');
     model.set('registryId', registryId);
+    controller.initFields();
   },
 
   renderTemplate: function() {
