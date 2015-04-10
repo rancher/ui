@@ -1,55 +1,72 @@
-{{#if portsArray.length}}
-  <table class="table fixed no-lines no-top-padding tight small">
-    <tr class="text-muted">
-      <th>Public (on Host)</th>
-      <th width="30">&nbsp;</th>
-      <th>Private (in Container)</th>
-      <th width="30">&nbsp;</th>
-      <th width="60">Protocol</th>
-      <th width="30">&nbsp;</th>
-    </tr>
-    {{#each port in portsArray}}
-      {{#if port.existing}}
-        <tr>
-          <td>
-            {{input class="form-control input-sm port-public" type="number" min="1" max="65535" value=port.public placeholder="e.g. 80"}}
-          </td>
-          <td class="text-center">
-            <div class="form-group">
-              <p class="form-control-static"><i class="ss-right"></i></p>
-            </div>
-          </td>
-          <td>
-            <div class="form-control-static text-muted">{{port.private}}</div>
-          </td>
-          <td class="text-center">/</td>
-          <td>
-            <div class="form-control-static text-muted">
-              {{upper-case port.protocol}}
-            </div>
-          </td>
-          <td>&nbsp;</td>
+<div class="row form-group">
+  <div class="col-xs-6 col-md-2 form-label">
+    <label class="form-control-static">Port Map</label>
+  </div>
+  <div class="col-xs-2 col-md-4">
+    <div class="form-control-static clearfix">
+      <button class="btn-circle-plus" {{action "addPort" target="view"}}></button>
+    </div>
+  </div>
+  <div class="col-sm-4">
+      <div class="form-control-static checkbox small pull-right"><label>{{input type="checkbox" checked=instance.publishAllPorts}} Publish all ports to random host port</label></div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 col-md-8 col-md-offset-2">
+    {{#if portsArray.length}}
+      <table class="table fixed no-lines no-top-padding tight small">
+        <tr class="text-muted">
+          <th>Public (on Host)</th>
+          <th width="30">&nbsp;</th>
+          <th>Private (in Container)</th>
+          <th width="30">&nbsp;</th>
+          <th width="60">Protocol</th>
+          <th width="30">&nbsp;</th>
         </tr>
-      {{else}}
-        <tr>
-          <td>
-            {{input class="form-control input-sm port-public" type="number" min="1" max="65535" value=port.public placeholder="e.g. 80"}}
-          </td>
-          <td class="text-center">
-            <p class="form-control-static input-sm"><i class="ss-right"></i></p>
-          </td>
-          <td>
-            {{input class="form-control input-sm" type="number" min="1" max="65535" value=port.private placeholder="e.g. 8080"}}
-          </td>
-          <td class="text-center">/</td>
-          <td>
-            {{view "select" class="form-control input-sm" content=protocolOptions value=port.protocol optionValuePath="content.value" optionLabelPath="content.label"}}
-          </td>
-          <td class="text-right">
-            <button {{action "removePort" port}} class="btn-circle-x" type="button" tabindex="-1"></button>
-          </td>
-        </tr>
-      {{/if}}
-    {{/each}}
-  </table>
-{{/if}}
+        {{#each port in portsArray}}
+          {{#if port.existing}}
+            <tr>
+              <td>
+                {{input class="form-control input-sm port-public" type="number" min="1" max="65535" value=port.public placeholder="e.g. 80"}}
+              </td>
+              <td class="text-center">
+                <div class="form-group">
+                  <p class="form-control-static"><i class="ss-right"></i></p>
+                </div>
+              </td>
+              <td>
+                <div class="form-control-static text-muted">{{port.private}}</div>
+              </td>
+              <td class="text-center">/</td>
+              <td>
+                <div class="form-control-static text-muted">
+                  {{upper-case port.protocol}}
+                </div>
+              </td>
+              <td>&nbsp;</td>
+            </tr>
+          {{else}}
+            <tr>
+              <td>
+                {{input class="form-control input-sm port-public" type="number" min="1" max="65535" value=port.public placeholder="e.g. 80"}}
+              </td>
+              <td class="text-center">
+                <p class="form-control-static input-sm"><i class="ss-right"></i></p>
+              </td>
+              <td>
+                {{input class="form-control input-sm" type="number" min="1" max="65535" value=port.private placeholder="e.g. 8080"}}
+              </td>
+              <td class="text-center">/</td>
+              <td>
+                {{view "select" class="form-control input-sm" content=protocolOptions value=port.protocol optionValuePath="content.value" optionLabelPath="content.label"}}
+              </td>
+              <td class="text-right">
+                <button {{action "removePort" port}} class="btn-circle-x" type="button" tabindex="-1"></button>
+              </td>
+            </tr>
+          {{/if}}
+        {{/each}}
+      </table>
+    {{/if}}
+  </div>
+</div>

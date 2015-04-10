@@ -449,7 +449,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     var list = [];
 
     this.get('hostChoices').filter((host) => {
-      return host.get('id') === this.get('requestedHostId');
+      return host.get('id') === this.get('instance.requestedHostId');
     }).map((host) => {
       var containers = (host.get('instances')||[]).filter(function(instance) {
         // You can't mount volumes from other types of instances
@@ -458,7 +458,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
 
       list.pushObjects(containers.map(function(container) {
         return {
-          group: host.get('name') || '('+host.get('id')+')',
+          group: 'Host: ' + (host.get('name') || '('+host.get('id')+')'),
           id: container.get('id'),
           name: container.get('name')
         };
@@ -618,6 +618,8 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
       this.set('instance.ports', this.get('portsAsStrArray'));
       this.set('instance.instanceLinks', this.get('linksAsMap'));
     }
+
+    return true;
   },
 
   doneSaving: function() {

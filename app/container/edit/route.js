@@ -20,7 +20,9 @@ export default OverlayRoute.extend({
 
   setupController: function(controller, model) {
     controller.set('originalModel',model);
-    controller.set('model', model.clone());
+    controller.set('model', Ember.Object.create({
+      instance: model.clone()
+    }));
     controller.initFields();
   },
 
