@@ -11,18 +11,24 @@ export default OverlayRoute.extend({
   model: function() {
     var model = this.modelFor('container');
     return Ember.RSVP.all([
-      model.importLink('ports'),
-      model.importLink('instanceLinks')
-    ]).then(function() {
-      return model;
+      model.followLink('ports'),
+      model.followLink('instanceLinks'),
+      this.get('store').findAll('host'), // Need inactive ones in case a link points to an inactive host
+    ]).then(function(results) {
+      return Ember.Object.create({
+        instance: model,
+        ports: results[0],
+        instanceLinks: results[1],
+        hostChoices: results[2],
+      });
     });
   },
 
   setupController: function(controller, model) {
-    controller.set('originalModel',model);
-    controller.set('model', Ember.Object.create({
-      instance: model.clone()
-    }));
+    var instance = model.get('instance');
+    controller.set('originalModel', instance);
+    model.set('instance', instance.clone());
+    controller.set('model', model);
     controller.initFields();
   },
 

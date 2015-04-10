@@ -266,6 +266,10 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     var list = [];
     var id = this.get('id');
 
+    var expectContainerIds = (this.get('linksArray')||[]).map(function(obj) {
+      return Ember.get(obj,'targetInstanceId');
+    });
+
     this.get('hostChoices').map((host) => {
       var containers = (host.get('instances')||[]).filter(function(instance) {
         // You can't link to yourself, or to other types of instances, or to system containers
@@ -274,14 +278,41 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
                !instance.get('systemContainer');
       });
 
+      var hostLabel = 'Host: ' + (host.get('name') || '('+host.get('id')+')');
+      if ( host.get('state') !== 'active' )
+      {
+        hostLabel += ' (' + host.get('state') + ')';
+      }
+
       list.pushObjects(containers.map(function(container) {
+        expectContainerIds.removeObject(container.get('id'));
+
+        var containerLabel = (container.get('name') || '('+container.get('id')+')');
+        if ( container.get('state') !== 'running' )
+        {
+          containerLabel += ' (' + container.get('state') + ')';
+        }
+
         return {
-          group: 'Host: ' + (host.get('name') || '('+host.get('id')+')'),
+          group: hostLabel,
           id: container.get('id'),
-          name: container.get('name')
+          name: containerLabel,
         };
       }));
     });
+
+    if ( expectContainerIds.get('length') )
+    {
+      // There are some links to containers which are not in the list somehow..
+      expectContainerIds.forEach((id) => {
+        var container = this.get('store').getById('container',id);
+        return {
+          group: 'Host: ???',
+          id: id,
+          name: (container && container.get('name') ? container.get('name') : '('+id+')')
+        };
+      });
+    }
 
     return list.sortBy('group','name','id');
   }.property('hostChoices.@each.instancesUpdated').volatile(),
@@ -619,7 +650,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
       this.set('instance.instanceLinks', this.get('linksAsMap'));
     }
 
-    return true;
+    return this._super();
   },
 
   doneSaving: function() {

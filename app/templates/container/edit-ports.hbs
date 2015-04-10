@@ -1,18 +1,18 @@
-<div class="row form-group">
-  <div class="col-xs-6 col-md-2 form-label">
+<div class="row">
+  <div class="col-sm-12 col-md-2 form-label">
     <label class="form-control-static">Port Map</label>
   </div>
-  <div class="col-xs-2 col-md-4">
-    <div class="form-control-static clearfix">
-      <button class="btn-circle-plus" {{action "addPort" target="view"}}></button>
-    </div>
-  </div>
-  <div class="col-sm-4">
-      <div class="form-control-static checkbox small pull-right"><label>{{input type="checkbox" checked=instance.publishAllPorts}} Publish all ports to random host port</label></div>
-  </div>
-</div>
-<div class="row">
-  <div class="col-sm-12 col-md-8 col-md-offset-2">
+  <div class="col-sm-12 col-md-8">
+    {{#unless editing}}
+      <div>
+        <div class="form-control-static clearfix">
+          <button class="btn-circle-plus" {{action "addPort" target="view"}}></button>
+        </div>
+        <div class="form-control-static checkbox small pull-right">
+          <label>{{input type="checkbox" checked=instance.publishAllPorts}} Publish all ports to random host port</label>
+        </div>
+      </div>
+    {{/unless}}
     {{#if portsArray.length}}
       <table class="table fixed no-lines no-top-padding tight small">
         <tr class="text-muted">
@@ -67,6 +67,10 @@
           {{/if}}
         {{/each}}
       </table>
+    {{else}}
+      {{#if editing}}
+        <span class="text-center text-muted">This container has no port maps.</span>
+      {{/if}}
     {{/if}}
   </div>
 </div>

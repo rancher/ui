@@ -17,7 +17,7 @@ export default Ember.Route.extend({
 
     var dependencies = [
       store.findAllActive('network'),
-      store.findAllActive('host'),
+      store.findAll('host'), // Need inactive ones in case a link points to an inactive host
       store.findAllActive('registry'),
     ];
 
