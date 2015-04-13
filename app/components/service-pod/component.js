@@ -10,6 +10,7 @@ export default Ember.Component.extend(HoverActions,{
   },
 
   isActive: Ember.computed.equal('model.state','active'),
+  isInactive: Ember.computed.equal('model.state','inactive'),
   showAdd: Ember.computed.alias('isActive'),
 
   stateBackground: function() {

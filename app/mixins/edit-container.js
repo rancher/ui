@@ -270,7 +270,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
       return Ember.get(obj,'targetInstanceId');
     });
 
-    this.get('hostChoices').map((host) => {
+    this.get('allHosts').map((host) => {
       var containers = (host.get('instances')||[]).filter(function(instance) {
         // You can't link to yourself, or to other types of instances, or to system containers
         return instance.get('id') !== id &&
@@ -315,7 +315,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     }
 
     return list.sortBy('group','name','id');
-  }.property('hostChoices.@each.instancesUpdated').volatile(),
+  }.property('allHosts.@each.instancesUpdated').volatile(),
 
   linksArray: null,
   linksAsMap: null,
@@ -479,7 +479,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   hostContainerChoices: function() {
     var list = [];
 
-    this.get('hostChoices').filter((host) => {
+    this.get('allHosts').filter((host) => {
       return host.get('id') === this.get('instance.requestedHostId');
     }).map((host) => {
       var containers = (host.get('instances')||[]).filter(function(instance) {
@@ -497,7 +497,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     });
 
     return list.sortBy('group','name','id');
-  }.property('hostChoices.@each.instancesUpdated').volatile(),
+  }.property('allHosts.@each.instancesUpdated').volatile(),
 
   volumesFromArray: null,
   initVolumesFrom: function() {
@@ -589,6 +589,26 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
       this.set('instance.memorySwap', mem * 1024 * 1024);
     }
   }.observes('memoryMb'),
+
+  // ----------------------------------
+  // Hosts
+  // ----------------------------------
+  hostChoices: function() {
+    var list = this.get('allHosts').map((host) => {
+      var hostLabel = (host.get('name') || '('+host.get('id')+')');
+      if ( host.get('state') !== 'active' )
+      {
+        hostLabel += ' (' + host.get('state') + ')';
+      }
+
+      return {
+        id: host.get('id'),
+        name: hostLabel,
+      };
+    });
+
+    return list.sortBy('name','id');
+  }.property('allHosts.@each.{id,name,state}'),
 
   // ----------------------------------
   // Terminal

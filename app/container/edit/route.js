@@ -19,7 +19,7 @@ export default OverlayRoute.extend({
         instance: model,
         ports: results[0],
         instanceLinks: results[1],
-        hostChoices: results[2],
+        allHosts: results[2],
       });
     });
   },

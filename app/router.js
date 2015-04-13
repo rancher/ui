@@ -108,19 +108,20 @@ Router.map(function() {
     });
 
     this.resource('environments.new', {path: '/environments/add'});
+    this.resource('service.new', {path: '/environments/add-service'});
     this.resource('environments', {path: '/environments'}, function() {
       this.route('index', {path: '/'});
       this.resource('environment', {path: '/:environment_id'}, function() {
         this.route('index', {path: '/'});
         this.route('edit');
-        this.route('new-service', { path: '/services/add'});
 
         this.resource('service', {path: '/services/:service_id'}, function() {
 
         });
       });
-
     });
+
+    // End: Authenticated
   });
 });
 

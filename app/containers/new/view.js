@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-function addAction(action, selector) {
+export function addAction(action, selector) {
   return function() {
     this.get('controller').send(action);
     Ember.run.next(this, function() {

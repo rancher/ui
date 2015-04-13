@@ -24,45 +24,84 @@
   </div>
 </div>
 
-<div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Volumes From</label>
-  </div>
+{{#if model.service}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">Volumes From</label>
+    </div>
 
-  <div class="col-sm-12 col-md-8">
-      <div class="form-control-static">
-        {{#if hostId}}
-          {{#if hostContainerChoices.length}}
-            <button class="btn btn-circle-plus" {{action "addVolumeFrom" target="view"}}></button>
+    <div class="col-sm-12 col-md-8">
+        <div class="form-control-static">
+          {{#if serviceChoices.length}}
+            <button class="btn btn-circle-plus" {{action "addVolumeFromService" target="view"}}></button>
           {{else}}
-            <span class="text-muted">This host has no containers to use the volumes from.</span>
+            <span class="text-muted">There are no services to use the volumes from.</span>
           {{/if}}
-        {{else}}
-            <span class="text-muted">Only available when adding a container to a particular host.</span>
-        {{/if}}
-      </div>
-    {{#if volumesFromArray.length}}
-      <table class="table fixed no-lines no-top-padding tight">
-        {{#each vol in volumesFromArray}}
-          <tr>
-            <td>
-              {{display-name-select
-                classNames="form-control input-sm volumefrom-container"
-                prompt="Select a container..."
-                value=vol.value
-                content=hostContainerChoices
-                optionValuePath="content.id"
-                optionLabelPath="content.name"
-                optionGroupPath="group"
-              }}
-            </td>
-            <td width="30" class="text-right">
-              <button {{action "removeVolumeFrom" vol}} class="btn-circle-x" type="button" tabindex="-1"></button>
-            </td>
-          </tr>
-        {{/each}}
-      </table>
-    {{/if}}
+        </div>
+      {{#if volumesFromServiceArray.length}}
+        <table class="table fixed no-lines no-top-padding tight">
+          {{#each vol in volumesFromServiceArray}}
+            <tr>
+              <td>
+                {{display-name-select
+                  classNames="form-control input-sm volumefrom-container"
+                  prompt="Select a service..."
+                  value=vol.value
+                  content=serviceChoices
+                  optionValuePath="content.id"
+                  optionLabelPath="content.name"
+                  optionGroupPath="group"
+                }}
+              </td>
+              <td width="30" class="text-right">
+                <button {{action "removeVolumeFromService" vol}} class="btn-circle-x" type="button" tabindex="-1"></button>
+              </td>
+            </tr>
+          {{/each}}
+        </table>
+      {{/if}}
+    </div>
   </div>
-</div>
+{{else}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">Volumes From</label>
+    </div>
 
+    <div class="col-sm-12 col-md-8">
+        <div class="form-control-static">
+          {{#if hostId}}
+            {{#if hostContainerChoices.length}}
+              <button class="btn btn-circle-plus" {{action "addVolumeFrom" target="view"}}></button>
+            {{else}}
+              <span class="text-muted">This host has no containers to use the volumes from.</span>
+            {{/if}}
+          {{else}}
+              <span class="text-muted">Only available when adding a container to a particular host.</span>
+          {{/if}}
+        </div>
+      {{#if volumesFromArray.length}}
+        <table class="table fixed no-lines no-top-padding tight">
+          {{#each vol in volumesFromArray}}
+            <tr>
+              <td>
+                {{display-name-select
+                  classNames="form-control input-sm volumefrom-container"
+                  prompt="Select a container..."
+                  value=vol.value
+                  content=hostContainerChoices
+                  optionValuePath="content.id"
+                  optionLabelPath="content.name"
+                  optionGroupPath="group"
+                }}
+              </td>
+              <td width="30" class="text-right">
+                <button {{action "removeVolumeFrom" vol}} class="btn-circle-x" type="button" tabindex="-1"></button>
+              </td>
+            </tr>
+          {{/each}}
+        </table>
+      {{/if}}
+    </div>
+  </div>
+{{/if}}

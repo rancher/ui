@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
   backRoute: null,
   backPrevious: null,
   addRoute: null,
+  addParams: null,
   hasAside: false,
   asideColor: '',
 

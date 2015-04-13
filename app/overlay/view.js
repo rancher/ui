@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.View.extend({
   classNames: ['overlay'],
@@ -33,14 +34,14 @@ export default Ember.View.extend({
   },
 
   keyDown: function(event) {
-    if ( event.keyCode === 27 ) // Escape
+    if ( event.which === C.KEY_ESCAPE ) // Escape
     {
       this.send('overlayClose');
     }
-    else if ( event.keyCode === 13 || event.keyCode === 10 ) // Enter
+    else if ( event.which === C.KEY_CR || event.which === C.KEY_LF ) // Enter
     {
       // Ignore enters on links and in textareas
-      if ( event.target.tagName === 'A' || event.target.tagName === 'TEXTAREA' )
+      if ( ['A','BUTTON','TEXTAREA'].indexOf(event.target.tagName) >= 0 )
       {
         return true;
       }

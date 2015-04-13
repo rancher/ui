@@ -20,7 +20,12 @@ export default Ember.Route.extend({
     didTransition: function() {
       this.send('setPageLayout', {
         label: this.get('controller.name'),
-        addRoute: 'environment.new-service',
+        addRoute: 'service.new',
+        addParams: {
+          queryParams: {
+            environmentId: this.get('controller.id'),
+          },
+        },
         hasAside: 'nav-services active'
       });
     },
