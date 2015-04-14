@@ -2,18 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   actions: {
-    activateServices: function() {
-      return this.get('controller').doAction('activateservices');
-    },
-
-    deactivateServices: function() {
-      return this.get('controller').doAction('deactivateservices');
-    },
-
-    download: function() {
-      alert('Coming soon');
-    },
-
     didTransition: function() {
       this.send('setPageLayout', {
         label: this.get('controller.name'),

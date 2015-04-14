@@ -5,7 +5,9 @@ export default Ember.Route.extend({
     return this.get('store').findAll('environment');
   },
 
-  activate: function() {
-    this.send('setPageLayout', {label: 'Services', hasAside: 'nav-services active'});
+  actions: {
+    didTransition: function() {
+      this.send('setPageLayout', {label: 'Services', hasAside: 'nav-services active'});
+    }
   },
 });

@@ -3,7 +3,10 @@
   <hr/>
   <div class="links">
     {{#each env in this itemController="environment"}}
-      {{#link-to "environment" env.id classNames="resource-action-hover"}}<i class="ss-globe"></i> {{env.displayName}} {{resource-actions-menu model=env choices=env.availableActions}}{{/link-to}}
+      <div class="link-with-actions resource-action-hover">
+        {{#link-to "environment" env.id}}<i class="ss-globe"></i> {{env.displayName}}{{/link-to}}
+        {{resource-actions-menu model=env choices=env.availableActions}}
+      </div>
     {{/each}}
   </div>
   <hr/>

@@ -45,12 +45,4 @@ export default Ember.Component.extend({
       this.get('model').send(actionName);
     }
   },
-
-  didInsertElement: function() {
-    this.$('.dropdown-toggle').on('click', (event) => {
-      event.preventDefault();
-      event.stopPropagation();
-      this.$('.dropdown-menu').dropdown('toggle');
-    });
-  }
 });

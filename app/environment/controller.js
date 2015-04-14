@@ -1,16 +1,41 @@
-import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
 var EnvironmentController = Cattle.TransitioningResourceController.extend({
+  actions: {
+    activateServices: function() {
+      return this.doAction('activateservices');
+    },
+
+    deactivateServices: function() {
+      return this.doAction('deactivateservices');
+    },
+
+    addService: function() {
+      this.transitionTo('service.new', {
+        queryParams: {
+          environmentId: this.get('id'),
+        },
+      });
+    },
+
+    edit: function() {
+      this.transitionTo('environment.edit', this.get('id'));
+    },
+
+    exportConfig: function() {
+      alert('Coming soon');
+    },
+  },
+
   availableActions: function() {
     var a = this.get('actions');
 
     var out = [
-      { label: 'Activate Services', icon: 'ss-arrow-up',      action: 'activateServices',   enabled: this.get('canActivate') },
-      { label: 'Deactivate Services', icon: 'ss-arrow-down',  action: 'deactivateServices', enabled: this.get('canDeactivate') },
-      { label: 'Export Config', icon: 'ss-download',          action: 'exportConfig',       enabled: !!a.exportconfig },
+      { label: 'Start Services', icon: 'ss-up',        action: 'activateServices',   enabled: this.get('canActivate') },
+      { label: 'Stop Services', icon: 'ss-down',       action: 'deactivateServices', enabled: this.get('canDeactivate') },
+      { label: 'Export Config', icon: 'ss-download',         action: 'exportConfig',       enabled: !!a.exportconfig },
       { divider: true },
-      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'Delete',        icon: 'ss-trash',            action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
       { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true },
       { divider: true },
       { label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: true },
@@ -31,9 +56,8 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
       return false;
     }
 
-    return this.get('services').filterProperty('state','active').get('length') !== count;
+    return this.get('services').filterProperty('actions.activate').get('length') > 0;
   }.property('services.@each.state','actions.activateservices'),
-  activateDisabled: Ember.computed.not('canActivate'),
 
   canDeactivate: function() {
     if ( !this.hasAction('deactivateservices') )
@@ -47,9 +71,8 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
       return false;
     }
 
-    return this.get('services').filterProperty('state','inactive').get('length') !== count;
+    return this.get('services').filterProperty('actions.deactivate').get('length') > 0;
   }.property('services.@each.state','actions.deactivateservices'),
-  deactivateDisabled: Ember.computed.not('canDectivate'),
 });
 
 EnvironmentController.reopenClass({
