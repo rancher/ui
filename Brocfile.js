@@ -57,5 +57,7 @@ app.import('vendor/term.js/src/term.js');
 app.import('vendor/jquery.initialize/jquery.initialize.js');
 app.import('bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js');
 app.import('bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css');
+app.import('bower_components/prism/prism.js');
+app.import('bower_components/prism/components/prism-yaml.js');
 
 module.exports = app.toTree();

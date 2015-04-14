@@ -2,15 +2,6 @@ import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
 var EnvironmentController = Cattle.TransitioningResourceController.extend({
-  actions: {
-    activateServices: function() {
-      return this.doAction('activateservices');
-    },
-
-    deactivateServices: function() {
-      return this.doAction('deactivateservices');
-    },
-  },
   availableActions: function() {
     var a = this.get('actions');
 

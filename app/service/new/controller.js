@@ -26,17 +26,10 @@ export default Ember.ObjectController.extend(EditContainer, {
   // Services
   // ----------------------------------
   serviceChoices: function() {
-    var envNames = {};
-    this.get('allEnvironments').forEach((env) => {
-      var name = 'Environment:' + (env.get('name') || '('+env.get('id')+')');
-      if ( env.get('id') === this.get('environmentId') )
-      {
-        name += ' (current)';
-      }
-      envNames[env.get('id')] = name;
-    });
+    var env = this.get('selectedEnvironment');
+    var group = 'Environment: ' + (env.get('name') || '('+env.get('id')+')');
 
-    var list = this.get('allServices').map((service) => {
+    var list = (env.get('services')||[]).map((service) => {
       var serviceLabel = (service.get('name') || '('+service.get('id')+')');
       if ( service.get('state') !== 'active' )
       {
@@ -44,14 +37,14 @@ export default Ember.ObjectController.extend(EditContainer, {
       }
 
       return {
-        group: envNames[ service.get('environmentId') ] || '???',
+        group: group,
         id: service.get('id'),
         name: serviceLabel,
       };
     });
 
     return list.sortBy('group','name','id');
-  }.property('allHosts.@each.{id,name,state}'),
+  }.property('environment.services.@each.{id,name,state}'),
 
   serviceLinksArray: null,
   initServiceLinks: function() {

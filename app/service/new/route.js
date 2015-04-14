@@ -18,16 +18,16 @@ export default Ember.Route.extend({
       store.findAllActive('network'),
       store.findAll('host'), // Need inactive ones in case a link points to an inactive host
       store.findAllActive('registry'),
-      store.findAll('service'),
-      store.findAll('environment'),
+      store.find('environment', params.environmentId).then(function(env) {
+        return env.importLink('services');
+      })
     ];
 
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
       var networkChoices = results[0];
       var allHosts = results[1];
       var registryChoices = results[2];
-      var allServices = results[3];
-      var allEnvironments = results[4];
+      var environment = results[3];
 
       registryChoices.set('sortProperties',['name','serverAddress','id']);
 
@@ -52,8 +52,7 @@ export default Ember.Route.extend({
         networkChoices: networkChoices,
         allHosts: allHosts,
         registryChoices: registryChoices,
-        allServices: allServices,
-        allEnvironments: allEnvironments
+        selectedEnvironment: environment,
       });
     });
   },

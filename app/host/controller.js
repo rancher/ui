@@ -25,15 +25,7 @@ var HostController = Cattle.TransitioningResourceController.extend({
     },
 
     purge: function() {
-      var machine = this.get('machine');
-      if ( machine )
-      {
-        return machine.doAction('purge');
-      }
-      else
-      {
-        return this.doAction('purge');
-      }
+      return this.doAction('purge');
     },
 
     newContainer: function() {
