@@ -15,7 +15,7 @@ export default Ember.Component.extend({
     }
     else
     {
-      console.error('No route set for add-pod component');
+      this.sendAction();
     }
   }
 });

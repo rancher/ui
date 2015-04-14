@@ -5,8 +5,8 @@ export default Ember.Component.extend({
   classNames: ['no-select'],
 
   tagName: 'nav',
-  hasRegistries: function() {
+  hasServices: function() {
     var store = this.get('store');
-    return store && store.hasRecordFor('schema','registry');
+    return store && store.hasRecordFor('schema','service');
   }.property(),
 });

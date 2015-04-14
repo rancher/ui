@@ -38,6 +38,7 @@ export default Ember.Controller.extend({
   },
 
   initFields: function() {
+    this._super();
     this.set('targetsArray', []);
   },
 

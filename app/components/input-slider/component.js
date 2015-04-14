@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 function clientX(event) {
   if ( typeof event.clientX !== 'undefined' )
@@ -27,23 +28,54 @@ export default Ember.Component.extend({
   classNames: ['slider'],
   classNameBindings: ['disabled','active'],
 
-  active: false,
   disabled: false,
-  value: 0,
-  valueMin: 0,
+  value: null,  // Bind something to this to get the value
+  valueMin: 0,  // The smallest and biggest value is allowed to be
   valueMax: 100,
-  step: 1,
+  scaleMin: null, // The smallest and biggest values shown on the display.  If these are not equal to valueMin/max then there will be
+  scaleMax: null, // a part of the slider that the user can't select, e.g. if you want to show 0 but have a minimum value of 1.
+  step: 1, // Increment
+
+  active: false,
+  dragFn: null,
+  upFn: null,
 
   didInsertElement: function() {
     this._super();
+    this.valueChanged();
   },
+
+  willDestroyElement: function() {
+    $('BODY').off('mousemove', this.get('dragFn'));
+    $('BODY').off('mouseup', this.get('upFn'));
+  },
+
+  _scaleMin: function() {
+    var min = this.get('scaleMin');
+    if ( min === null )
+    {
+      min = this.get('valueMin');
+    }
+
+    return min;
+  }.property('scaleMin','valueMin'),
+
+  _scaleMax: function() {
+    var min = this.get('scaleMax');
+    if ( min === null )
+    {
+      min = this.get('valueMax');
+    }
+
+    return min;
+  }.property('scaleMax','valueMax'),
 
   percent: function() {
     var cur = this.get('value');
-    var min = this.get('valueMin');
-    var max = this.get('valueMax');
+    var min = Math.min(this.get('_scaleMin'), this.get('valueMin'));
+    var max = Math.max(this.get('_scaleMax'), this.get('valueMax'));
     return  (((cur-min)/(max-min))*100).toFixed(3);
-  }.property('value','valueMin','valueMax'),
+  }.property('value','valueMin','valueMax','_scaleMin','_scaleMax'),
 
   alignValue: function(val) {
     var step = this.get('step');
@@ -81,8 +113,8 @@ export default Ember.Component.extend({
 
     var x = screenX - offset.left;
     var percent = Math.max(0, Math.min(x/width , 1));
-    var min = this.get('valueMin');
-    var max = this.get('valueMax');
+    var min = this.get('_scaleMin');
+    var max = this.get('_scaleMax');
 
     var rawValue = min + (percent * (max-min));
     var aligned = this.alignValue(rawValue);
@@ -98,9 +130,10 @@ export default Ember.Component.extend({
 
     var value = this.pointToValue(clientX(event));
     this.set('value', value);
+    this.$('.slider-handle').focus();
   },
 
-  dragStart: function(/*event*/) {
+  mouseDown: function(event) {
     console.log('drag start');
     if ( this.get('disabled') )
     {
@@ -108,10 +141,24 @@ export default Ember.Component.extend({
     }
 
     this.set('active',true);
+    if ( !this.get('dragFn') )
+    {
+      this.set('dragFn', this.drag.bind(this));
+    }
+
+    if ( !this.get('upFn') )
+    {
+      this.set('upFn', this.mouseUp.bind(this));
+    }
+
+    $('BODY').on('mousemove', this.get('dragFn'));
+    $('BODY').on('mouseup', this.get('upFn'));
+    this.drag(event);
   },
 
   drag: function(event) {
     console.log('drag');
+    event.preventDefault();
     if ( this.get('disabled') )
     {
       return false;
@@ -124,22 +171,46 @@ export default Ember.Component.extend({
 
   },
 
-  dragEnd: function(/*event*/) {
+  mouseUp: function(/*event*/) {
+    $('BODY').off('mousemove', this.get('dragFn'));
+    $('BODY').off('mouseup', this.get('upFn'));
     console.log('drag end');
     this.set('active',false);
+  },
 
-    if ( this.get('disabled') )
+  keyDown: function(event) {
+    switch ( event.which )
     {
-      return false;
+      case C.KEY_LEFT:
+        this.decrementProperty('value', this.get('step'));
+        break;
+      case C.KEY_RIGHT:
+        this.incrementProperty('value', this.get('step'));
+        break;
+      case C.KEY_UP:
+        this.set('value', this.get('valueMax'));
+        break;
+      case C.KEY_DOWN:
+        this.set('value', this.get('valueMin'));
+        break;
     }
 
+    event.preventDefault();
   },
 
   valueChanged: function() {
+    var orig = this.get('value');
+    var value = Math.max(this.get('valueMin'), Math.min(orig, this.get('valueMax')));
+    if ( orig !== value )
+    {
+      this.set('value', value);
+      return;
+    }
+
     var percent = this.get('percent');
     this.$('.slider-bar').css('width', percent+'%');
     this.$('.slider-handle').css('left', percent+'%');
-  }.observes('value','percent'),
+  }.observes('value','valueMin','valueMax','percent'),
 
 
 });

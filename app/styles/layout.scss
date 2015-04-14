@@ -334,36 +334,48 @@ ASIDE {
   }
 
   .links {
-    A {
+    & > A,
+    & > .link-with-actions > A{
       display: block;
       padding: 5px 0 4px 8px;
       cursor: pointer;
-      opacity: 0.5;
+      font-weight: 600;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
       font-size: 14px;
+      clear: both;
 
       &.active {
-        opacity: 1.0;
+        color: white;
         background-color: rgba(255,255,255,0.1);
         border-radius: 4px;
       }
-    }
 
-    A,
-    A:hover,
-    A:focus,
-    A:visited {
-      font-weight: 600;
-      color: white;
-      text-decoration: none;
+      .resource-actions {
+        float: right;
+        position: relative;
+        top: -3px;
+        right: 3px;
+      }
 
       I {
         margin-right: 5px;
       }
 
-      clear: both;
       .badge {
         float: right;
         background-color: transparent;
+      }
+
+    }
+
+    .link-with-actions {
+      position: relative;
+
+      .resource-actions {
+        position: absolute;
+        top: 3px;
+        right: 3px;
       }
     }
   }
@@ -371,7 +383,6 @@ ASIDE {
   LABEL {
     color: rgba(255,255,255,0.5);
   }
-
 }
 
 UL.list-circles {
@@ -435,8 +446,8 @@ UL.list-circles {
 $nav-1: #44b4a2;
 $nav-2: #f58485;
 $nav-3: #b49ac3;
-$nav-4: #fabc6f;
-$nav-5: #66b0cb;
+$nav-4: #66b0cb;
+$nav-5: #fabc6f;
 $nav-6: #444;
 $nav-7: #444;
 
@@ -455,12 +466,12 @@ $nav-7: #444;
   &.active { background-color: $nav-3; }
 }
 
-.nav-volumes {
+.nav-services {
   border-left-color: $nav-4;
   &.active { background-color: $nav-4; }
 }
 
-.nav-registries {
+.nav-volumes {
   border-left-color: $nav-5;
   &.active { background-color: $nav-5; }
 }
@@ -645,14 +656,29 @@ TABLE.graphs {
   background-image: url('images/circle-menu.svg');
 }
 
-ASIDE .btn-circle-menu {
-  background-image: url('images/circle-menu-white.svg');
+ASIDE {
+  .btn-circle-menu {
+    background-image: url('images/circle-menu-white.svg');
+  }
+
+  .btn-circle-plus {
+    background-image: url('images/circle-plus-white.svg');
+  }
+
+  .btn-circle-text {
+    color: white;
+  }
 }
 
 /**********
 * Grid
 **********/
-.grid-header H3 {
+.grid-header H1,
+.grid-header H2,
+.grid-header H3,
+.grid-header H4,
+.grid-header H5,
+.grid-header H6,{
   color: #49bdaa;
 }
 

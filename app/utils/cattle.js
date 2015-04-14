@@ -36,6 +36,12 @@ var NewOrEditMixin = Ember.Mixin.create({
   editing: true,
   primaryResource: Ember.computed.alias('model'),
 
+  initFields: function() {
+    this._super();
+    this.set('error',null);
+    this.set('saving',false);
+  },
+
   validate: function() {
     return true;
   },
@@ -382,6 +388,10 @@ var TransitioningResourceController = ResourceController.extend({
     return this.get('stateColor').replace("text-","bg-");
   }.property('stateColor'),
 
+  hasAction: function(/*arguments*/) {
+    var model = this.get('model');
+    return model.hasAction.apply(model,arguments);
+  },
 
   doAction: function(/*arguments*/) {
     var model = this.get('model');

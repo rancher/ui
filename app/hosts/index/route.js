@@ -17,6 +17,6 @@ export default Ember.Route.extend({
   },
 
   activate: function() {
-    this.send('setPageLayout', {label: 'Hosts'});
+    this.send('setPageLayout', {label: 'Hosts', addRoute: 'hosts.new'});
   },
 });

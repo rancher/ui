@@ -28,6 +28,7 @@ export default Ember.Route.extend({
     this._super.apply(this, arguments);
     controller.set('editing', false);
     controller.set('vpcOrSubnetId', null);
+    controller.initFields();
   },
 
   renderTemplate: function() {

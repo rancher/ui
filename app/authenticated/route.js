@@ -95,15 +95,12 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.transitionTo('index');
     },
 
-    setPageName: function(str) {
-      this.controller.set('pageName',str);
-    },
-
     setPageLayout: function(opt) {
       this.controller.set('pageName', opt.label || '');
       this.controller.set('backRoute', opt.backRoute || null);
       this.controller.set('backPrevious', opt.backPrevious || null);
       this.controller.set('addRoute', opt.addRoute || null);
+      this.controller.set('addParams', opt.addParams || null);
 
       if ( typeof opt.hasAside === 'undefined' )
       {
@@ -257,7 +254,11 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       }
 
       this._includeChanged('registry', 'credentials', key, change.data.resource);
-    }
+    },
+
+    serviceChanged: function(change) {
+      this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
+    },
   },
 
   enter: function() {

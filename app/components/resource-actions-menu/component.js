@@ -44,5 +44,5 @@ export default Ember.Component.extend({
     clicked: function(actionName) {
       this.get('model').send(actionName);
     }
-  }
+  },
 });

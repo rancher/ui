@@ -8,6 +8,7 @@ export default Ember.Route.extend({
   setupController: function(controller, model) {
     controller.set('originalModel',model);
     controller.set('model', model.clone());
+    controller.initFields();
   },
 
   renderTemplate: function() {

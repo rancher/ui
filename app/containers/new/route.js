@@ -1,9 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  networkChoices: null,
-  registryChoices: null,
-
   activate: function() {
     this.send('setPageLayout', {label: 'Back', backPrevious: true});
   },
@@ -14,64 +11,41 @@ export default Ember.Route.extend({
     },
   },
 
-  model: function(/*params, transition*/) {
+  model: function(params/*, transition*/) {
     var self = this;
+    var store = this.get('store');
 
     var dependencies = [
-      this.get('store').find('network'),
-      this.get('store').find('host'),
+      store.findAllActive('network'),
+      store.findAll('host'), // Need inactive ones in case a link points to an inactive host
+      store.findAllActive('registry'),
     ];
 
-    if ( this.get('store').hasRecordFor('schema','registry') )
-    {
-      dependencies.push(this.get('store').find('registry'));
-    }
-
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then(function(results) {
-      var networks = results[0].sortBy('name','id').filter((network) => {
-        return network.get('state') === 'active';
-      });
+      var networkChoices = results[0];
+      var allHosts = results[1];
+      var registryChoices = results[2];
 
-      var registries = [];
-      if ( results[2] )
-      {
-        registries = results[2].sortBy('name','serverAddress','id').filter((registry) => {
-          return registry.get('state') === 'active';
-        });
-      }
+      registryChoices.set('sortProperties',['name','serverAddress','id']);
 
-      self.set('networkChoices', networks);
-      self.set('registryChoices', registries);
-
-      var networkId = self.get('lastNetworkId');
-      if ( !networkId )
-      {
-        networkId = networks.get('firstObject.id');
-      }
-
-      var model = self.get('store').createRecord({
+      var container = self.get('store').createRecord({
         type: 'container',
+        requestedHostId: params.hostId,
         commandArgs: [],
-        networkIds: [networkId],
+        networkIds: [networkChoices.get('firstObject.id')],
         environment: {}
       });
 
-      return model;
+      return Ember.Object.create({
+        instance: container,
+        networkChoices: networkChoices,
+        allHosts: allHosts,
+        registryChoices: registryChoices,
+      });
     });
   },
 
-  lastNetworkId: null,
-  exit: function() {
-    this._super();
-
-    // Remember defaults for future creates
-    this.set('lastNetworkId', (this.get('controllernetworkIds')||[])[0]);
-  },
-
   setupController: function(controller, model) {
-    model.set('requestedHostId', controller.get('hostId'));
-    controller.set('networkChoices', this.get('networkChoices'));
-    controller.set('registryChoices', this.get('registryChoices'));
     controller.set('originalModel', null);
     controller.set('model', model);
     controller.initFields();
@@ -82,6 +56,7 @@ export default Ember.Route.extend({
     {
       controller.set('tab', 'command');
       controller.set('advanced', false);
+      controller.set('hostId', null);
     }
   }
 });

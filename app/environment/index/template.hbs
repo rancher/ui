@@ -1,0 +1,21 @@
+<div style="margin-bottom: 20px;">
+  {{#with model as env controller="environment"}}
+    {{environment-header model=env}}
+  {{/with}}
+</div>
+
+{{#each col in view.columns}}
+  <div class="pod-column">
+    {{#each item in col}}
+      {{#if item.isNewPlaceHolder}}
+        {{add-pod action="addService" label="Add Service"}}
+      {{else}}
+        {{#with item as service controller="service"}}
+          {{service-pod model=service}}
+        {{/with}}
+      {{/if}}
+    {{/each}}
+  </div>
+{{else}}
+  <div class="text-center text-muted">No services yet.</div>
+{{/each}}

@@ -1,0 +1,82 @@
+{{partial "transitioning-progress"}}
+
+<section>
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>{{displayName}}</h3>
+      <div class="text-muted">{{launchConfig.imageUuid}} {{zero-clipboard text=launchConfig.imageUuid}}</div>
+    </div>
+    <div class="col-sm-6 text-right">
+      <h3 {{bind-attr class=":instance-status stateColor"}}>
+        <i {{bind-attr class="stateIcon"}}></i> {{displayState}}
+      </h3>
+      <div {{bind-attr class=":force-wrap isError:text-danger:text-muted showTransitioningMessage::hide"}}>
+        {{transitioningMessage}}
+      </div>
+      <div class="instance-actions">
+        {{resource-actions model=this choices=availableActions}}
+      </div>
+    </div>
+  </div>
+</section>
+
+{{#if description}}
+  <section>
+    <div class="well">
+      <label>Description</label>
+      {{description}}
+    </div>
+  </section>
+{{/if}}
+
+<section>
+  <div class="well">
+    <div class="grid-header">
+      <div class="row">
+        <div class="col-sm-6">
+          <h4>Containers ({{instances.length}})</h4>
+        </div>
+      </div>
+    </div>
+    <div class="instances">
+      <table class="grid fixed" style="margin-bottom: 0;">
+        <thead>
+          <tr>
+            <th width="120">State</th>
+            <th>Name</th>
+            <th>IP Address</th>
+            <th>Created</th>
+            <th class="actions" width="50">&nbsp;</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each container in instances itemController="container"}}
+            <tr>
+              <td>
+                <span {{bind-attr class=":badge :state container.stateBackground"}}>
+                  {{container.displayState}}
+                </span>
+              </td>
+              <td>
+                {{#link-to "container" container.id}}{{container.displayName}}{{/link-to}}
+              </td>
+              <td>
+                {{container.displayIp}}
+              </td>
+              <td>
+                <div class="text-muted">{{date-calendar container.created}}</div>
+              </td>
+              <td class="actions">
+                {{#unless container.isManaged}}
+                  {{resource-actions-menu model=container choices=container.availableActions}}
+                {{/unless}}
+              </td>
+            </tr>
+          {{else}}
+            <tr><td colspan="4" class="text-center text-muted">This service does not have any containers yet.</td></tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

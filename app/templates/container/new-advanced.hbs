@@ -1,0 +1,32 @@
+<div class="toggle-advanced">
+  <a {{action "toggleAdvanced"}}>Advanced Options {{#if advanced}}<i class="ss-navigateup"></i>{{else}}<i class="ss-navigatedown"></i>{{/if}}</a>
+</div>
+
+<div {{bind-attr class="advanced::hide"}}>
+  <section class="text-center" style="padding: 0;">
+    <ul class="nav nav-pills" style="display: inline-block">
+      <li role="presentation" class="tab" data-section="command" {{action "selectTab" "command" target=view}}><a>Command</a></li>
+      <li role="presentation" class="tab" data-section="volumes" {{action "selectTab" "volumes" target=view}}><a>Volumes</a></li>
+      <li role="presentation" class="tab" data-section="network" {{action "selectTab" "network" target=view}}><a>Networking</a></li>
+      <li role="presentation" class="tab" data-section="security" {{action "selectTab" "security" target=view}}><a>Security/Host</a></li>
+    </ul>
+  </section>
+
+  <section class="horizontal-form" style="background-color: #f8f9fa; margin: -7px 10px 0 10px;">
+    <div class="section container-fluid" data-section="command">
+      {{partial "container/new-command"}}
+    </div>
+
+    <div class="section container-fluid" data-section="volumes">
+      {{partial "container/new-volumes"}}
+    </div>
+
+    <div class="section container-fluid" data-section="network">
+      {{partial "container/new-network"}}
+    </div>
+
+    <div class="section" data-section="security">
+      {{partial "container/new-security"}}
+    </div>
+  </section>
+</div>

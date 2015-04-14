@@ -25,4 +25,12 @@ export default {
   NO_CHALLENGE_VALUE: 'true',
 
   SETTING_API_HOST: 'api.host',
+
+  KEY_LEFT: 37,
+  KEY_UP: 38,
+  KEY_RIGHT: 39,
+  KEY_DOWN: 40,
+  KEY_ESCAPE: 27,
+  KEY_CR: 13,
+  KEY_LF: 10,
 };

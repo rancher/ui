@@ -1,0 +1,14 @@
+<aside>
+  <h4>Environments</h4>
+  <hr/>
+  <div class="links">
+    {{#each env in this itemController="environment"}}
+      <div class="link-with-actions resource-action-hover">
+        {{#link-to "environment" env.id}}<i class="ss-globe"></i> {{env.displayName}}{{/link-to}}
+        {{resource-actions-menu model=env choices=env.availableActions}}
+      </div>
+    {{/each}}
+  </div>
+  <hr/>
+  {{#link-to "environments.new" class="btn-circle-plus btn-circle-text"}}Add Environment{{/link-to}}
+</aside>

@@ -28,6 +28,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
   },
 
   initFields: function() {
+    this._super();
     this.set('hostsArray', []);
     this.set('targetsArray', []);
     this.set('listenersArray', [

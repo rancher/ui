@@ -21,6 +21,7 @@ export default OverlayRoute.extend({
     this._super();
     controller.set('model', model);
     controller.set('editing',false);
+    controller.initFields();
   },
 
   renderTemplate: function() {

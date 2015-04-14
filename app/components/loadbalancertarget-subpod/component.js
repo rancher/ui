@@ -1,8 +1,6 @@
 import Ember from 'ember';
-import HoverActions from 'ui/mixins/hover-actions';
 
-
-export default Ember.Component.extend(HoverActions, {
+export default Ember.Component.extend({
   model: null,
   classNames: ['subpod','resource-action-hover'],
 

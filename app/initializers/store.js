@@ -1,5 +1,7 @@
+import Ember from 'ember';
 import {normalizeType} from 'ember-api-store/utils/normalize';
 import UnpurgedArrayProxy from 'ui/utils/unpurged-array-proxy';
+import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
 
 export function initialize(container, application) {
@@ -42,6 +44,32 @@ export function initialize(container, application) {
     all: function(type) {
       type = normalizeType(type);
       var proxy = UnpurgedArrayProxy.create({
+        sourceContent: this._group(type)
+      });
+
+      return proxy;
+    },
+
+    // find(type) && return allActive(type)
+    findAllActive: function(type) {
+      type = normalizeType(type);
+      var self = this;
+
+      if ( self.haveAll(type) )
+      {
+        return Ember.RSVP.resolve(self.allActive(type),'All '+ type + ' already cached');
+      }
+      else
+      {
+        return this.find(type).then(function() {
+          return self.allActive(type);
+        });
+      }
+    },
+
+    allActive: function(type) {
+      type = normalizeType(type);
+      var proxy = ActiveArrayProxy.create({
         sourceContent: this._group(type)
       });
 
