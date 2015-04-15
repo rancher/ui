@@ -3,7 +3,7 @@ import ColumnView from 'ui/utils/column-view';
 
 export default ColumnView.extend({
   columns: function() {
-    var boxCount = 0;
+    var podCount = 0;
     var idx = 0;
     var services = (this.get('context.services')||[]).sortBy('name');
     var columnCount = this.get('columnCount');
@@ -25,7 +25,7 @@ export default ColumnView.extend({
     // Add a placeholder for where to put the 'Add Service' button
     columns[nextIndex()].push(Ember.Object.create({isNewPlaceHolder: true}));
 
-    this.set('boxCount', boxCount);
+    this.set('podCount', podCount);
 
     return columns;
 
@@ -33,7 +33,7 @@ export default ColumnView.extend({
       var out = idx;
 
       idx++;
-      boxCount++;
+      podCount++;
       if ( idx >= columnCount )
       {
         idx = 0;

@@ -9,6 +9,10 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
     deactivate: function() {
       return this.doAction('deactivate');
     },
+
+    scaleUp: function() {
+      alert('Coming soon');
+    }
   },
 
   availableActions: function() {
@@ -16,8 +20,8 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions');
 
     var choices = [
-      { label: 'Activate',      icon: 'ss-play',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
-      { label: 'Deactivate',    icon: 'ss-pause',     action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
+      { label: 'Start',         icon: 'ss-play',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
+      { label: 'Stop',          icon: 'ss-pause',     action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
       { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
       { label: 'Purge',         icon: 'ss-tornado',   action: 'purge',        enabled: !!a.purge },
       { divider: true },

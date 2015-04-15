@@ -2,6 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
-    return this.get('store').findAll('loadbalancer');
+    return this.get('store').findAllUnremoved('loadbalancer');
   },
 });

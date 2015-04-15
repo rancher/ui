@@ -8,7 +8,7 @@ if ( hostname.match(/^(localhost|192\.168\.|172\.1{6789}\.|172\.2{0123456789}\.|
 }
 
 export default Ember.ObjectController.extend({
-  error: null,
+  errors: null,
   customRadio: (looksPublic ? 'no' : 'yes'),
   custom: Ember.computed.equal('customRadio', 'yes'),
   looksPublic: looksPublic,
@@ -25,7 +25,7 @@ export default Ember.ObjectController.extend({
         var value = this.get('customValue').trim();
         if ( !value )
         {
-          this.set('error', 'Please provide a DNS name or IP address');
+          this.set('errors', ['Please provide a DNS name or IP address']);
           return;
         }
 
@@ -40,7 +40,7 @@ export default Ember.ObjectController.extend({
       model.save().then(() => {
         this.transitionTo('hosts.new');
       }).catch((err) => {
-        this.set('error', err);
+        this.set('errors', [err]);
       }).finally(() => {
         this.set('saving', false);
       });

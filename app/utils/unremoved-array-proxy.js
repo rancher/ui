@@ -14,7 +14,7 @@ export default Ember.ArrayProxy.extend(Ember.SortableMixin, {
 
   sourceContentChanged: function() {
     var x = (this.get('sourceContent')||[]).filter(function(item) {
-      return (Ember.get(item,'state')||'').toLowerCase() === 'active';
+      return ['removed','purging','purged'].indexOf((Ember.get(item,'state')||'').toLowerCase()) === -1;
     });
     this.set('content', x);
   }.observes('sourceContent.@each.state').on('init'),

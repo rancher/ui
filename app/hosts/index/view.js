@@ -3,7 +3,7 @@ import ColumnView from 'ui/utils/column-view';
 
 export default ColumnView.extend({
   columns: function() {
-    var boxCount = 0;
+    var podCount = 0;
     var idx = 0;
     var hosts = this.get('context.hosts').sortBy('name');
     var machines = this.get('context.machines').sortBy('name');
@@ -37,7 +37,7 @@ export default ColumnView.extend({
     // Add a placeholder for where to put the 'Add a host' button
     columns[nextIndex()].push(Ember.Object.create({isNewHostPlaceHolder: true}));
 
-    this.set('boxCount', boxCount);
+    this.set('podCount', podCount);
 
     return columns;
 
@@ -45,7 +45,7 @@ export default ColumnView.extend({
       var out = idx;
 
       idx++;
-      boxCount++;
+      podCount++;
       if ( idx >= columnCount )
       {
         idx = 0;

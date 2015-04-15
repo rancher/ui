@@ -2,10 +2,9 @@ import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
 export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
-  error: null,
-  editing: false,
+  editing: true,
 
   doneSaving: function() {
-    return this.transitionToRoute('environment', this.get('primaryResource.id'));
-  },
+    this.send('goToPrevious');
+  }
 });

@@ -1,11 +1,15 @@
-import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
+import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 
 var LoadBalancerController = Cattle.TransitioningResourceController.extend({
   actions: {
     newTarget: function() {
       this.transitionToRoute('loadbalancer.targets.new', this.get('id'));
     },
+
+    edit: function() {
+      this.transitionToRoute('loadbalancer.edit', this.get('id'));
+    }
   },
 
   availableActions: function() {
@@ -23,25 +27,24 @@ var LoadBalancerController = Cattle.TransitioningResourceController.extend({
   }.property('actions.{activate,deactivate,remove,purge}'),
 
   arrangedTargets: function() {
-    var targets = this.get('loadBalancerTargets');
-
-    return Ember.ArrayController.create({
-      content: targets,
+    return UnremovedArrayProxy.create({
+      sourceContent: this.get('loadBalancerTargets'),
       sortProperties: ['ipAddress', 'instance.name', 'instance.id', 'instanceId']
     });
   }.property('instances.[]','loadBalancerTargets.@each.{instanceId,ipAddress}'),
 
-  hostsBlurb: function() {
-    var cnt = this.get('hosts.length')||0;
-    if ( cnt )
-    {
-      return cnt + ' Host' + (cnt === 1 ? '' : 's');
-    }
-    else
-    {
-      return 'No Hosts';
-    }
-  }.property('hosts.[]'),
+  hostsBlurbs: function() {
+    var ips = [];
+    (this.get('hosts')||[]).forEach((host) => {
+      var ip = host.get('ipAddresses.firstObject.address');
+      if ( ip )
+      {
+        ips.push(ip);
+      }
+    });
+
+    return ips;
+  }.property('hosts.[]').volatile(),
 });
 
 LoadBalancerController.reopenClass({

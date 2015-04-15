@@ -7,6 +7,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
   tab: 'listeners',
   error: null,
   editing: false,
+  primaryResource: Ember.computed.alias('model.balancer'),
 
   actions: {
     addHost: function() {
@@ -29,8 +30,8 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
 
   initFields: function() {
     this._super();
-    this.set('hostsArray', []);
-    this.set('targetsArray', []);
+    this.set('hostsArray', [{value: null}]);
+    this.set('targetsArray', [{isContainer: true, value: null}]);
     this.set('listenersArray', [
       this.get('store').createRecord({
         type: 'loadBalancerListener',
@@ -42,10 +43,12 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
         algorithm: 'roundrobin',
       })
     ]);
+    this.initUri();
   },
 
   useExisting: 'no',
   isUseExisting: Ember.computed.equal('useExisting','yes'),
+  hasNoExisting: Ember.computed.equal('activeConfigs.length',0),
   existingConfigId: null,
 
   hostsArray: null,
@@ -59,10 +62,10 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
   }.property('allHosts.@each.{id,name,state}'),
 
   hostIds: function() {
-    return this.get('hostsArray').map((host) => {
+    return this.get('hostsArray').filterProperty('value').map((host) => {
       return Ember.get(host,'value');
-    });
-  }.property('hostsArray.@each.id'),
+    }).uniq();
+  }.property('hostsArray.@each.value'),
 
   targetsArray: null,
   targetChoices: function() {
@@ -70,8 +73,8 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
 
     this.get('hostChoices').map((host) => {
       var containers = (host.get('instances')||[]).filter(function(instance) {
-        // You can't balance other types of instances, or system containers
-        return instance.get('type') === 'container' && instance.get('systemContainer') === null;
+        // You can't balance other types of instances, or system containers, or containers on unmanaged network
+        return instance.get('type') === 'container' && instance.get('systemContainer') === null && instance.get('hasManagedNetwork');
       });
 
       list.pushObjects(containers.map(function(container) {
@@ -89,13 +92,13 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
   targetContainerIds: function() {
     return this.get('targetsArray').filterProperty('isContainer',true).filterProperty('value').map((choice) => {
       return Ember.get(choice,'value');
-    });
+    }).uniq();
   }.property('targetsArray.@each.{isIp,isContainer,value}'),
 
   targetIpAddresses: function() {
     return this.get('targetsArray').filterProperty('isIp',true).filterProperty('value').map((choice) => {
       return Ember.get(choice,'value');
-    });
+    }).uniq();
   }.property('targetsArray.@each.{isIp,isContainer,value}'),
 
   activeConfigs: function() {
@@ -104,25 +107,73 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
     });
   }.property('allConfigs.@each.state'),
 
-  willSave: function() {
-    if ( !this._super() )
+  validate: function() {
+    this._super();
+    var errors = this.get('errors')||[];
+
+    if ( !this.get('balancer.name') )
     {
-      // Validaton failed
-      return false;
+      errors.push('Name is required');
     }
 
-    if ( !this.get('isUseExisting') )
+    if ( !this.get('hostIds.length') )
     {
-      // If creating a config, name it after the balancer
-      var config = this.get('model.config');
-      var balancer = this.get('model.balancer');
+      errors.push('Choose one or more hosts to run balancing agents on');
+    }
 
-      config.set('name', balancer.get('name') + "'s config");
-      config.set('description', balancer.get('description'));
+    if ( !this.get('targetContainerIds.length') && !this.get('targetIpAddresses.length') )
+    {
+      errors.push('Choose one or more targets to send traffic to');
+    }
+
+    if ( this.get('isUseExisting') )
+    {
+      if ( !this.get('existingConfigId') )
+      {
+        errors.push('Choose an existing balancer configuation to re-use');
+      }
+    }
+    else
+    {
+      if (!this.get('listenersArray.length') )
+      {
+        errors.push('One or more listening ports are required');
+      }
+    }
+
+    errors.pushObjects(this.get('balancer').validationErrors());
+    errors.pushObjects(this.get('config').validationErrors());
+    this.get('listenersArray').forEach((listener) => {
+      errors.pushObjects(listener.validationErrors());
+    });
+
+    if ( (this.get('listenersArray')||[]).filterProperty('sourcePort',8080).get('length') > 0 )
+    {
+      errors.push('Port 8080 cannot currently be used as a source port');
+    }
+
+    if ( errors.length )
+    {
+      this.set('errors',errors.uniq());
+      return false;
     }
 
     return true;
   },
+
+  has8080: function() {
+    // The port might be an int or a string due to validation..
+    return ( (this.get('listenersArray')||[]).filterProperty('sourcePort','8080').get('length') > 0 ) ||
+           ( (this.get('listenersArray')||[]).filterProperty('sourcePort',8080).get('length') > 0 );
+  }.property('listenersArray.@each.sourcePort'),
+
+  nameChanged: function() {
+    this.set('config.name', this.get('balancer.name'));
+  }.observes('balancer.name'),
+
+  descriptionChanged: function() {
+    this.set('config.description', this.get('balancer.description'));
+  }.observes('balancer.description'),
 
   doSave: function() {
     var balancer = this.get('model.balancer');

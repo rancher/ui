@@ -91,4 +91,8 @@ export default Ember.ObjectController.extend(EditContainer, {
 
     return Ember.RSVP.all(promises);
   },
+
+  doneSaving: function() {
+    return this.transitionToRoute('environment', this.get('selectedEnvironment.id'));
+  },
 });

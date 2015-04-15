@@ -21,6 +21,14 @@ export default Ember.Mixin.create({
     chooseProtocol: function(listener, key, val) {
       listener.set(key,val);
     },
+
+    chooseUriMethod: function(method) {
+      this.set('uriMethod', method);
+    },
+
+    chooseUriVersion: function(version) {
+      this.set('uriVersion', version);
+    },
   },
 
   listenersArray: null,
@@ -36,6 +44,46 @@ export default Ember.Mixin.create({
   algorithmOptions: function() {
     return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.algorithm.options');
   }.property(),
+
+  uriMethodChoices: ['OPTIONS','GET','HEAD','POST','PUT','DELETE','TRACE','CONNECT'],
+  uriVersionChoices: ['HTTP/1.0','HTTP/1.1'],
+
+  uriMethod: null,
+  uriPath: null,
+  uriVersion: null,
+  uriHost: null,
+  showUriHost: Ember.computed.equal('uriVersion','HTTP/1.1'),
+
+  uriDidChange: function() {
+    var out = '';
+    var method = (this.get('uriMethod')||'').trim();
+    var path = (this.get('uriPath')||'').trim();
+    var version = (this.get('uriVersion')||'').trim();
+    var host = (this.get('uriHost')||'').trim();
+    if ( path )
+    {
+      out = method + ' ' + path + ' ' + version;
+      if ( host )
+      {
+        out += '\r\nHost:\\ ' + host;
+      }
+    }
+
+    if ( this.get('config.healthCheck') )
+    {
+      this.set('config.healthCheck.uri', out);
+    }
+  }.observes('uriMethod','uriPath','uriVersion','uriHost'),
+
+  initUri: function() {
+    this.setProperties({
+      uriMethod: 'OPTIONS',
+      uriPath: '',
+      uriVersion: 'HTTP/1.0',
+      uriHost: ''
+    });
+    this.uriDidChange();
+  },
 
   stickiness: 'none',
   isStickyNone: Ember.computed.equal('stickiness','none'),

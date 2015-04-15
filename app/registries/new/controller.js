@@ -9,31 +9,33 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
     addCredential: function() {
       this.get('credentials').pushObject(this.get('store').createRecord({
         type: 'registryCredential',
+        registryId: 'tbd', // This will be overwritten by didSave
         publicValue: '',
         secretValue: '',
         email: ''
       }));
+    },
+
+    removeCredential: function(obj) {
+      this.get('credentials').removeObject(obj);
     }
   },
 
   validate: function() {
-    var badCredentials = (this.get('credentials')||[]).filter((cred) => {
-      cred.set('email', (cred.get('email')||'').trim());
-      cred.set('publicValue', (cred.get('publicValue')||'').trim());
-      cred.set('secretValue', (cred.get('secretValue')||'').trim());
-      return cred.get('email').length < 1;
+    this._super();
+    var errors = this.get('errors')||[];
+
+    this.get('credentials').forEach((cred) => {
+      errors.pushObjects(cred.validationErrors());
     });
 
-    if ( badCredentials.length === 0 )
+    if ( errors.get('length') > 0 )
     {
-      this.set('error','');
-      return true;
-    }
-    else
-    {
-      this.set('error','Email address is required on credentials');
+      this.set('errors', errors.uniq());
       return false;
     }
+
+    return true;
   },
 
   didSave: function() {

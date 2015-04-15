@@ -16,7 +16,7 @@
       <tr>
         <td>
           <div class="input-group input-group-sm">
-            {{input type="text" classNames="form-control lb-listener-source-port" min="1" max="65535" step="1" value=listener.sourcePort}}
+            {{input type="text" classNames="form-control lb-listener-source-port" min="1" max="65535" step="1" value=listener.sourcePort placeholder="e.g. 80"}}
             <div class="input-group-btn">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="border-left: 0;">/{{listener.sourceProtocol}} <span class="caret"></span></button>
               <ul class="dropdown-menu" role="menu">
@@ -37,7 +37,7 @@
 
         <td>
           <div class="input-group input-group-sm">
-            {{input type="text" classNames="form-control lb-listener-target-port" min="1" max="65535" step="1" value=listener.targetPort}}
+            {{input type="text" classNames="form-control lb-listener-target-port" min="1" max="65535" step="1" value=listener.targetPort placeholder="e.g. 8080"}}
             <div class="input-group-btn">
               <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="border-left: 0;">/{{listener.targetProtocol}} <span class="caret"></span></button>
               <ul class="dropdown-menu" role="menu">
@@ -70,3 +70,6 @@
     {{/each}}
   </tbody>
 </table>
+{{#if has8080}}
+  <p class="help-text text-center"><b>Note:</b> Port 8080 cannot currently be used as a source port.</p>
+{{/if}}

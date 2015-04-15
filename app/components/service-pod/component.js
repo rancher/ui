@@ -6,6 +6,9 @@ export default Ember.Component.extend({
   classNameBindings: ['stateBorder'],
 
   actions: {
+    scaleUp: function() {
+      this.get('model').send('scaleUp');
+    }
   },
 
   isActive: Ember.computed.equal('model.state','active'),

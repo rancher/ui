@@ -20,6 +20,11 @@ var Container = Cattle.TransitioningResource.extend({
   dataVolumesFrom: null,
   devices: null,
   restartPolicy: null,
+
+  // Hacks
+  hasManagedNetwork: function() {
+    return this.get('primaryIpAddress') && this.get('primaryIpAddress').indexOf('10.') === 0;
+  }.property('primaryIpAddress'),
 });
 
 Container.reopenClass({
