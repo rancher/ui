@@ -5,7 +5,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   error: null,
   editing: false,
 
-  doneSaving: function(env) {
+  doneSaving: function() {
     return this.transitionToRoute('environment', this.get('primaryResource.id'));
   },
 });

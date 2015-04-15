@@ -9,6 +9,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
     addCredential: function() {
       this.get('credentials').pushObject(this.get('store').createRecord({
         type: 'registryCredential',
+        registryId: 'tbd', // This will be overwritten by didSave
         publicValue: '',
         secretValue: '',
         email: ''
@@ -21,19 +22,16 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   },
 
   validate: function() {
-    if ( !this._super() )
-    {
-      return false;
-    }
-
+    this._super();
     var errors = this.get('errors')||[];
+
     this.get('credentials').forEach((cred) => {
       errors.pushObjects(cred.validationErrors());
     });
 
     if ( errors.get('length') > 0 )
     {
-      this.set('errors', errors);
+      this.set('errors', errors.uniq());
       return false;
     }
 

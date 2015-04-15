@@ -55,7 +55,7 @@ export default Ember.Mixin.create({
   showUriHost: Ember.computed.equal('uriVersion','HTTP/1.1'),
 
   uriDidChange: function() {
-    var out = null;
+    var out = '';
     var method = (this.get('uriMethod')||'').trim();
     var path = (this.get('uriPath')||'').trim();
     var version = (this.get('uriVersion')||'').trim();
@@ -65,7 +65,7 @@ export default Ember.Mixin.create({
       out = method + ' ' + path + ' ' + version;
       if ( host )
       {
-        out += '\r\nHost: ' + host;
+        out += '\r\nHost:\\ ' + host;
       }
     }
 
@@ -82,6 +82,7 @@ export default Ember.Mixin.create({
       uriVersion: 'HTTP/1.0',
       uriHost: ''
     });
+    this.uriDidChange();
   },
 
   stickiness: 'none',

@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 

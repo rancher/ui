@@ -62,7 +62,7 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
     var choices = [
       { label: 'Restart',       icon: 'ss-refresh',   action: 'restart',      enabled: !!a.restart },
       { label: 'Start',         icon: 'ss-play',      action: 'start',        enabled: !!a.start },
-      { label: 'Stop',          icon: 'ss-stop',      action: 'stop',         enabled: !!a.stop },
+      { label: 'Stop',          icon: 'ss-pause',     action: 'stop',         enabled: !!a.stop },
       { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
       { divider: true },
       { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true,            detail: true },

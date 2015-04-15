@@ -31,8 +31,8 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
     var a = this.get('actions');
 
     var out = [
-      { label: 'Start Services', icon: 'ss-up',        action: 'activateServices',   enabled: this.get('canActivate') },
-      { label: 'Stop Services', icon: 'ss-down',       action: 'deactivateServices', enabled: this.get('canDeactivate') },
+      { label: 'Start Services', icon: 'ss-play',        action: 'activateServices',   enabled: this.get('canActivate') },
+      { label: 'Stop Services', icon: 'ss-pause',       action: 'deactivateServices', enabled: this.get('canDeactivate') },
       { label: 'Export Config', icon: 'ss-download',         action: 'exportConfig',       enabled: !!a.exportconfig },
       { divider: true },
       { label: 'Delete',        icon: 'ss-trash',            action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
