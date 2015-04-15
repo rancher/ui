@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import EditLoadBalancerConfig from 'ui/mixins/edit-loadbalancerconfig';
+import TargetChoices from 'ui/mixins/target-choices';
 
-export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBalancerConfig, {
+export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBalancerConfig, TargetChoices, {
   queryParams: ['tab'],
   tab: 'listeners',
   error: null,
@@ -68,27 +69,6 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
   }.property('hostsArray.@each.value'),
 
   targetsArray: null,
-  targetChoices: function() {
-    var list = [];
-
-    this.get('hostChoices').map((host) => {
-      var containers = (host.get('instances')||[]).filter(function(instance) {
-        // You can't balance other types of instances, or system containers, or containers on unmanaged network
-        return instance.get('type') === 'container' && instance.get('systemContainer') === null && instance.get('hasManagedNetwork');
-      });
-
-      list.pushObjects(containers.map(function(container) {
-        return {
-          group: host.get('name') || ('(Host '+host.get('id')+')'),
-          id: container.get('id'),
-          name: container.get('name') || ('(' + container.get('id') + ')')
-        };
-      }));
-    });
-
-    return list.sortBy('group','name','id');
-  }.property('hostChoices.@each.instancesUpdated').volatile(),
-
   targetContainerIds: function() {
     return this.get('targetsArray').filterProperty('isContainer',true).filterProperty('value').map((choice) => {
       return Ember.get(choice,'value');
