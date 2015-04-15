@@ -1,4 +1,5 @@
 import Cattle from 'ui/utils/cattle';
+import { download } from 'ui/utils/util';
 
 var EnvironmentController = Cattle.TransitioningResourceController.extend({
   actions: {
@@ -23,7 +24,11 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
     },
 
     exportConfig: function() {
-      alert('Coming soon');
+      download(this.linkFor('dockerComposeConfig'));
+      setTimeout(() => {
+        // The 2nd download needs a different iframe id or it will overwrite the first before downloading
+        download(this.linkFor('rancherComposeConfig'), '__downloadIframe2');
+      }, 250);
     },
   },
 

@@ -22,7 +22,47 @@ var ResourceController = Ember.ObjectController.extend({
   },
 
   isDeleted: Ember.computed.equal('state','removed'),
-  isPurged: Ember.computed.equal('state','purged')
+  isPurged: Ember.computed.equal('state','purged'),
+
+  hasAction: function(/*arguments*/) {
+    var model = this.get('model');
+    return model.hasAction.apply(model,arguments);
+  },
+
+  doAction: function(/*arguments*/) {
+    var model = this.get('model');
+    return model.doAction.apply(model,arguments);
+  },
+
+  linkFor: function() {
+    var model = this.get('model');
+    return model.linkFor.apply(model,arguments);
+  },
+
+  hasLink: function() {
+    var model = this.get('model');
+    return model.hasLink.apply(model,arguments);
+  },
+
+  availableActions: function() {
+    /*
+      Override me and return [
+        {
+          enabled: true/false,    // Whether it's enabled or greyed out
+          detail: true/false,     // If true, this action will only be shown on detailed screens
+          label: 'Delete',        // Label shown on hover or in menu
+          icon: 'fa-trash-o',     // Icon shown on screen
+          action: 'promptDelete', // Action to call on the controller when clicked
+          altAction: 'delete'     // Action to call on the controller when alt+clicked
+          divider: true,          // Just this will make a divider
+        },
+        ...
+      ]
+    */
+
+    return [];
+  },
+
 });
 
 var CollectionController = Ember.ArrayController.extend({
@@ -401,35 +441,6 @@ var TransitioningResourceController = ResourceController.extend({
   stateBackground: function() {
     return this.get('stateColor').replace("text-","bg-");
   }.property('stateColor'),
-
-  hasAction: function(/*arguments*/) {
-    var model = this.get('model');
-    return model.hasAction.apply(model,arguments);
-  },
-
-  doAction: function(/*arguments*/) {
-    var model = this.get('model');
-    return model.doAction.apply(model,arguments);
-  },
-
-  availableActions: function() {
-    /*
-      Override me and return [
-        {
-          enabled: true/false,    // Whether it's enabled or greyed out
-          detail: true/false,     // If true, this action will only be shown on detailed screens
-          label: 'Delete',        // Label shown on hover or in menu
-          icon: 'fa-trash-o',     // Icon shown on screen
-          action: 'promptDelete', // Action to call on the controller when clicked
-          altAction: 'delete'     // Action to call on the controller when alt+clicked
-          divider: true,          // Just this will make a divider
-        },
-        ...
-      ]
-    */
-
-    return [];
-  },
 
   hasProgress: function() {
     var progress = this.get('transitioningProgress');

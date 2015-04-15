@@ -33,6 +33,7 @@ module.exports = function(environment) {
       'script-src': "'self' releases.rancher.com storage.googleapis.com ",
       'object-src': "'self' releases.rancher.com storage.googleapis.com ",
       'img-src':    "'self' releases.rancher.com storage.googleapis.com avatars.githubusercontent.com",
+      'frame-src':  "'self'",
 
       // Allow connect to anywhere, for console and event stream socket
       'connect-src': '*'
