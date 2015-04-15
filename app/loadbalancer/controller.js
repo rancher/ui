@@ -34,17 +34,18 @@ var LoadBalancerController = Cattle.TransitioningResourceController.extend({
     });
   }.property('instances.[]','loadBalancerTargets.@each.{instanceId,ipAddress}'),
 
-  hostsBlurb: function() {
-    var cnt = this.get('hosts.length')||0;
-    if ( cnt )
-    {
-      return cnt + ' Host' + (cnt === 1 ? '' : 's');
-    }
-    else
-    {
-      return 'No Hosts';
-    }
-  }.property('hosts.[]'),
+  hostsBlurbs: function() {
+    var ips = [];
+    (this.get('hosts')||[]).forEach((host) => {
+      var ip = host.get('ipAddresses.firstObject.address');
+      if ( ip )
+      {
+        ips.push(ip);
+      }
+    });
+
+    return ips;
+  }.property('hosts.[]').volatile(),
 });
 
 LoadBalancerController.reopenClass({

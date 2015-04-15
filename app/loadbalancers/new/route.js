@@ -23,6 +23,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
             responseTimeout: 2000,
             healthyThreshold: 2,
             unhealthyThreshold: 3,
+            uri: null,
           }),
           appCookieStickinessPolicy: null,
           lbCookieStickinessPolicy: null,

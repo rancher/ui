@@ -106,6 +106,7 @@ var NewOrEditMixin = Ember.Mixin.create({
       .then(this.doneSaving.bind(this))
       .catch(function(err) {
         self.send('error', err);
+        self.errorSaving(err);
       }).finally(function() {
         self.set('saving',false);
       });
@@ -150,6 +151,10 @@ var NewOrEditMixin = Ember.Mixin.create({
   // doneSaving happens after didSave
   doneSaving: function() {
     return this.get('originalModel') || this.get('model');
+  },
+
+  // errorSaving cna be used to do additional cleanup of dependent resources on failure
+  errorSaving: function(/*err*/) {
   },
 });
 

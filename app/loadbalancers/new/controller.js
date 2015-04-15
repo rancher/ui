@@ -43,6 +43,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
         algorithm: 'roundrobin',
       })
     ]);
+    this.initUri();
   },
 
   useExisting: 'no',
@@ -107,7 +108,8 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
   }.property('allConfigs.@each.state'),
 
   validate: function() {
-    var errors = [];
+    this._super();
+    var errors = this.get('errors')||[];
 
     if ( !this.get('name') )
     {
@@ -145,6 +147,11 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
       errors.pushObjects(listener.validationErrors());
     });
 
+    if ( (this.get('listenersArray')||[]).filterProperty('sourcePort',8080).get('length') > 0 )
+    {
+      errors.push('Port 8080 cannot currently be used as a source port');
+    }
+
     if ( errors.length )
     {
       this.set('errors',errors);
@@ -153,6 +160,12 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
 
     return true;
   },
+
+  has8080: function() {
+    // The port might be an int or a string due to validation..
+    return ( (this.get('listenersArray')||[]).filterProperty('sourcePort','8080').get('length') > 0 ) ||
+           ( (this.get('listenersArray')||[]).filterProperty('sourcePort',8080).get('length') > 0 );
+  }.property('listenersArray.@each.sourcePort'),
 
   willSave: function() {
     if ( !this._super() )

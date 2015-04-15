@@ -37,6 +37,41 @@ export default Ember.Mixin.create({
     return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.algorithm.options');
   }.property(),
 
+  uriMethodChoices: ['OPTIONS','GET','HEAD','POST','PUT','DELETE','TRACE','CONNECT'],
+  uriVersionChoices: ['HTTP/1.0','HTTP/1.1'],
+
+  uriMethod: null,
+  uriPath: null,
+  uriVersion: null,
+  uriHost: null,
+
+  uriDidChange: function() {
+    var out = null;
+    var method = (this.get('uriMethod')||'').trim();
+    var path = (this.get('uriPath')||'').trim();
+    var version = (this.get('uriVersion')||'').trim();
+    var host = (this.get('uriHost')||'').trim();
+    if ( path )
+    {
+      out = method + ' ' + path + ' ' + version;
+      if ( host )
+      {
+        out += '\r\nHost: ' + host;
+      }
+    }
+
+    this.set('config.healthCheck.uri', out);
+  }.property('uriMethod','uriPath','uriVersion','uriHost'),
+
+  initUri: function() {
+    this.setProperties({
+      uriMethod: 'OPTIONS',
+      uriPath: '',
+      uriVersion: 'HTTP/1.0',
+      uriHost: ''
+    });
+  },
+
   stickiness: 'none',
   isStickyNone: Ember.computed.equal('stickiness','none'),
   isStickyLbCookie: Ember.computed.equal('stickiness','lbCookie'),
