@@ -21,6 +21,14 @@ export default Ember.Mixin.create({
     chooseProtocol: function(listener, key, val) {
       listener.set(key,val);
     },
+
+    chooseUriMethod: function(method) {
+      this.set('uriMethod', method);
+    },
+
+    chooseUriVersion: function(version) {
+      this.set('uriVersion', version);
+    },
   },
 
   listenersArray: null,
@@ -44,6 +52,7 @@ export default Ember.Mixin.create({
   uriPath: null,
   uriVersion: null,
   uriHost: null,
+  showUriHost: Ember.computed.equal('uriVersion','HTTP/1.1'),
 
   uriDidChange: function() {
     var out = null;
@@ -60,8 +69,11 @@ export default Ember.Mixin.create({
       }
     }
 
-    this.set('config.healthCheck.uri', out);
-  }.property('uriMethod','uriPath','uriVersion','uriHost'),
+    if ( this.get('config.healthCheck') )
+    {
+      this.set('config.healthCheck.uri', out);
+    }
+  }.observes('uriMethod','uriPath','uriVersion','uriHost'),
 
   initUri: function() {
     this.setProperties({

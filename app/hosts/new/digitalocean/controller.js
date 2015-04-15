@@ -51,15 +51,11 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   ],
 
   validate: function() {
-    if ( !this._super() )
-    {
-      return false;
-    }
-
-    var accessToken = this.get('digitaloceanConfig.accessToken')||'';
+    this._super();
     var errors = this.get('errors')||[];
 
-    if ( accessToken.length !== 64 )
+    var accessToken = this.get('digitaloceanConfig.accessToken')||'';
+    if ( accessToken && accessToken.length !== 64 )
     {
       errors.push("That doesn't look like a valid access token");
     }

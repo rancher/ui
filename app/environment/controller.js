@@ -11,7 +11,7 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
     },
 
     addService: function() {
-      this.transitionTo('service.new', {
+      this.transitionToRoute('service.new', {
         queryParams: {
           environmentId: this.get('id'),
         },
@@ -19,7 +19,7 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
     },
 
     edit: function() {
-      this.transitionTo('environment.edit', this.get('id'));
+      this.transitionToRoute('environment.edit', this.get('id'));
     },
 
     exportConfig: function() {

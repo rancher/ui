@@ -70,6 +70,11 @@ export function initialize(/* container, application */) {
         field = fields[key];
         val = this.get(key);
 
+        if ( val === undefined )
+        {
+          val = null;
+        }
+
         if ( field.type.indexOf('[') >= 0 )
         {
           // array, map, reference

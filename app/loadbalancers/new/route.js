@@ -14,7 +14,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       return {
         allHosts: results[0],
         allConfigs: results[1],
-        balancer: store.createRecord({type: 'loadBalancer'}),
+        balancer: store.createRecord({
+          type: 'loadBalancer',
+          loadBalancerConfigId: 'tbd', // This will be filled in by creating a new config or choosing an existing
+        }),
         config: store.createRecord({
           type: 'loadBalancerConfig',
           healthCheck: store.createRecord({

@@ -65,7 +65,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
     return this.get('hostsArray').filterProperty('value').map((host) => {
       return Ember.get(host,'value');
     }).uniq();
-  }.property('hostsArray.@each.id'),
+  }.property('hostsArray.@each.value'),
 
   targetsArray: null,
   targetChoices: function() {
@@ -111,7 +111,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
     this._super();
     var errors = this.get('errors')||[];
 
-    if ( !this.get('name') )
+    if ( !this.get('balancer.name') )
     {
       errors.push('Name is required');
     }
@@ -154,7 +154,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
 
     if ( errors.length )
     {
-      this.set('errors',errors);
+      this.set('errors',errors.uniq());
       return false;
     }
 
@@ -167,25 +167,13 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
            ( (this.get('listenersArray')||[]).filterProperty('sourcePort',8080).get('length') > 0 );
   }.property('listenersArray.@each.sourcePort'),
 
-  willSave: function() {
-    if ( !this._super() )
-    {
-      // Validaton failed
-      return false;
-    }
+  nameChanged: function() {
+    this.set('config.name', this.get('balancer.name'));
+  }.observes('balancer.name'),
 
-    if ( !this.get('isUseExisting') )
-    {
-      // If creating a config, name it after the balancer
-      var config = this.get('model.config');
-      var balancer = this.get('model.balancer');
-
-      config.set('name', (balancer.get('name') || ('('+ balancer.get('id') + ')')) + "'s config");
-      config.set('description', balancer.get('description'));
-    }
-
-    return true;
-  },
+  descriptionChanged: function() {
+    this.set('config.description', this.get('balancer.description'));
+  }.observes('balancer.description'),
 
   doSave: function() {
     var balancer = this.get('model.balancer');
