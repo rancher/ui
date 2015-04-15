@@ -13,27 +13,31 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
         secretValue: '',
         email: ''
       }));
+    },
+
+    removeCredential: function(obj) {
+      this.get('credentials').removeObject(obj);
     }
   },
 
   validate: function() {
-    var badCredentials = (this.get('credentials')||[]).filter((cred) => {
-      cred.set('email', (cred.get('email')||'').trim());
-      cred.set('publicValue', (cred.get('publicValue')||'').trim());
-      cred.set('secretValue', (cred.get('secretValue')||'').trim());
-      return cred.get('email').length < 1;
-    });
-
-    if ( badCredentials.length === 0 )
+    if ( !this._super() )
     {
-      this.set('error','');
-      return true;
-    }
-    else
-    {
-      this.set('error','Email address is required on credentials');
       return false;
     }
+
+    var errors = this.get('errors')||[];
+    this.get('credentials').forEach((cred) => {
+      errors.pushObjects(cred.validationErrors());
+    });
+
+    if ( errors.get('length') > 0 )
+    {
+      this.set('errors', errors);
+      return false;
+    }
+
+    return true;
   },
 
   didSave: function() {

@@ -1,5 +1,5 @@
 <section class="horizontal-form container-fluid">
-  <h2>Add Balancer Config</h2>
+  <h2>{{#if editing}}Edit{{else}}Add{{/if}} Load Balancer Configuration</h2>
   {{top-errors errors=errors}}
 
   <div class="row form-group">
@@ -7,7 +7,7 @@
       <label for="name">Name</label>
     </div>
     <div class="col-sm-12 col-md-8">
-      {{input id="name" type="text" value=config.name classNames="form-control" placeholder="e.g. Web balancer config"}}
+      {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. Website"}}
     </div>
   </div>
 
@@ -16,13 +16,9 @@
       <label for="description">Description</label>
     </div>
     <div class="col-sm-12 col-md-8">
-      {{textarea id="description" value=config.description classNames="form-control no-resize" rows="5" placeholder="e.g. HTTP balancing for www.example.com"}}
+      {{textarea id="description" value=description classNames="form-control no-resize" rows="5" placeholder="e.g. Balancer for mycompany.com"}}
     </div>
   </div>
-
-  {{partial "form-divider"}}
 </section>
-
-{{partial "loadbalancer/edit-config"}}
 
 {{partial "save-cancel"}}

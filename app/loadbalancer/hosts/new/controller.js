@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  error: null,
+  errors: null,
   editing: false,
 
   actions: {
@@ -30,7 +30,7 @@ export default Ember.Controller.extend({
       return Ember.RSVP.all(promises,'Add multiple hosts').then(() => {
         this.send('cancel');
       }).catch((err) => {
-        this.set('error', err);
+        this.set('errors', [err]);
       });
     },
   },

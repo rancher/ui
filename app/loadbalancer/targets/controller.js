@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 
 export default Ember.ObjectController.extend({
   addDisabled: function() {
@@ -6,10 +7,8 @@ export default Ember.ObjectController.extend({
   }.property('actions.settargets'),
 
   arrangedTargets: function() {
-    var targets = this.get('loadBalancerTargets');
-
-    return Ember.ArrayController.create({
-      content: targets,
+    return UnremovedArrayProxy.create({
+      sourceContent: this.get('loadBalancerTargets'),
       sortProperties: ['ipAddress', 'instance.name', 'instance.id', 'instanceId']
     });
   }.property('instances.[]','loadBalancerTargets.@each.{instanceId,ipAddress}'),

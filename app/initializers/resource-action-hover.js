@@ -12,7 +12,6 @@ export function initialize(/* container, application */) {
     $this.data('isMouseIn', false);
     if ( !$this.data('isMenuShown') )
     {
-      console.log('remove hover');
       $this.removeClass('hover');
     }
   });

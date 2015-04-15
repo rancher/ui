@@ -1,6 +1,13 @@
 import Cattle from 'ui/utils/cattle';
+import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 
 var LoadBalancerConfigController = Cattle.TransitioningResourceController.extend({
+  actions: {
+    edit: function() {
+      this.transitionToRoute('loadbalancerconfig.edit', this.get('id'));
+    }
+  },
+
   availableActions: function() {
     var out = [
 //      { label: 'Add Container', icon: 'ss-plus',      action: 'newContainer', enabled: true,            color: 'text-primary' },
@@ -14,8 +21,14 @@ var LoadBalancerConfigController = Cattle.TransitioningResourceController.extend
   }.property('actions.{activate,deactivate,remove,purge}'),
 
   canDelete: function() {
-    return !!this.get('actions.remove') && !this.get('loadBalancers.length');
+    return !!this.get('actions.remove') && !this.get('unremovedBalancers.length');
   }.property('actions.remove','loadBalancers.[]'),
+
+  unremovedBalancers: function() {
+    return UnremovedArrayProxy.create({
+      sourceContent: this.get('loadBalancers'),
+    });
+  }.property('loadBalancers'),
 });
 
 LoadBalancerConfigController.reopenClass({

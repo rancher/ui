@@ -4,6 +4,7 @@ import Cattle from 'ui/utils/cattle';
 var LoadBalancerTargetController = Cattle.TransitioningResourceController.extend({
   isIp: Ember.computed.notEmpty('ipAddress'),
 
+
   delete: function() {
     return this.get('store').find('loadbalancer', this.get('loadBalancerId')).then((lb) => {
       return lb.waitForAndDoAction('removetarget',{
@@ -14,6 +15,17 @@ var LoadBalancerTargetController = Cattle.TransitioningResourceController.extend
   },
 
   actions: {
+    promptDelete: function() {
+      // @TODO Fix this hackery for nested components...
+      // http://emberjs.jsbin.com/mecesakase
+      if ( Ember.Component.detectInstance(this.get('target')) )
+      {
+        this.set('target', window.l('router:main'));
+      }
+
+      this._super();
+    },
+
     delete: function() {
       this.delete();
     }

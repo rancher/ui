@@ -31,18 +31,27 @@ var CollectionController = Ember.ArrayController.extend({
 
 var NewOrEditMixin = Ember.Mixin.create({
   originalModel: null,
-  error: null,
+  errors: null,
   saving: false,
   editing: true,
   primaryResource: Ember.computed.alias('model'),
 
   initFields: function() {
     this._super();
-    this.set('error',null);
+    this.set('errors',null);
     this.set('saving',false);
   },
 
   validate: function() {
+    var model = this.get('primaryResource');
+    var errors = model.validationErrors();
+    if ( errors.get('length') )
+    {
+      this.set('errors', errors);
+      return false;
+    }
+
+    this.set('errors', null);
     return true;
   },
 
@@ -62,13 +71,13 @@ var NewOrEditMixin = Ember.Mixin.create({
             str += ' (' + err.get('detail') + ')';
           }
 
-          this.set('error', str);
+          this.set('errors', [str]);
         }
       }
       else
       {
         console.log(err);
-        this.set('error', err);
+        this.set('errors', [err]);
       }
     },
 
@@ -80,7 +89,7 @@ var NewOrEditMixin = Ember.Mixin.create({
         str += ' (' + err.get('detail') + ')';
       }
 
-      this.set('error', str);
+      this.set('errors', [str]);
     },
 
     save: function() {
@@ -105,7 +114,7 @@ var NewOrEditMixin = Ember.Mixin.create({
 
   // willSave happens before save and can stop the save from happening
   willSave: function() {
-    this.set('error',null);
+    this.set('errors',null);
     var ok = this.validate();
     if ( !ok )
     {

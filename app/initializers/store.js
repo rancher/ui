@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import {normalizeType} from 'ember-api-store/utils/normalize';
 import UnpurgedArrayProxy from 'ui/utils/unpurged-array-proxy';
+import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
 
@@ -57,7 +58,7 @@ export function initialize(container, application) {
 
       if ( self.haveAll(type) )
       {
-        return Ember.RSVP.resolve(self.allActive(type),'All '+ type + ' already cached');
+        return Ember.RSVP.resolve(self.allActive(type),'All active '+ type + ' already cached');
       }
       else
       {
@@ -70,6 +71,31 @@ export function initialize(container, application) {
     allActive: function(type) {
       type = normalizeType(type);
       var proxy = ActiveArrayProxy.create({
+        sourceContent: this._group(type)
+      });
+
+      return proxy;
+    },
+
+    findAllUnremoved: function(type) {
+      type = normalizeType(type);
+      var self = this;
+
+      if ( self.haveAll(type) )
+      {
+        return Ember.RSVP.resolve(self.allUnremoved(type),'All unremoved '+ type + ' already cached');
+      }
+      else
+      {
+        return this.find(type).then(function() {
+          return self.allUnremoved(type);
+        });
+      }
+    },
+
+    allUnremoved: function(type) {
+      type = normalizeType(type);
+      var proxy = UnremovedArrayProxy.create({
         sourceContent: this._group(type)
       });
 
