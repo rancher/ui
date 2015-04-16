@@ -119,18 +119,19 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
       {
         errors.push('One or more listening ports are required');
       }
+
+      errors.pushObjects(this.get('config').validationErrors());
+      this.get('listenersArray').forEach((listener) => {
+        errors.pushObjects(listener.validationErrors());
+      });
+
+      if ( (this.get('listenersArray')||[]).filterProperty('sourcePort',8080).get('length') > 0 )
+      {
+        errors.push('Port 8080 cannot currently be used as a source port');
+      }
     }
 
     errors.pushObjects(this.get('balancer').validationErrors());
-    errors.pushObjects(this.get('config').validationErrors());
-    this.get('listenersArray').forEach((listener) => {
-      errors.pushObjects(listener.validationErrors());
-    });
-
-    if ( (this.get('listenersArray')||[]).filterProperty('sourcePort',8080).get('length') > 0 )
-    {
-      errors.push('Port 8080 cannot currently be used as a source port');
-    }
 
     if ( errors.length )
     {
