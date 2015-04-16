@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import TargetChoices from 'ui/mixins/target-choices';
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(TargetChoices, {
   error: null,
   editing: false,
 
@@ -50,26 +51,6 @@ export default Ember.Controller.extend({
   }.property('allHosts.@each.{id,name,state}'),
 
   targetsArray: null,
-  targetChoices: function() {
-    var list = [];
-
-    this.get('hostChoices').map((host) => {
-      var containers = (host.get('instances')||[]).filter(function(instance) {
-        // You can't balance other types of instances, or system containers
-        return instance.get('type') === 'container' && instance.get('systemContainer') === null;
-      });
-
-      list.pushObjects(containers.map(function(container) {
-        return {
-          group: host.get('name') || ('(Host '+host.get('id')+')'),
-          id: container.get('id'),
-          name: container.get('name') || ('(' + container.get('id') + ')')
-        };
-      }));
-    });
-
-    return list.sortBy('group','name','id');
-  }.property('hostChoices.@each.instancesUpdated').volatile(),
 
   targetContainerIds: function() {
     return this.get('targetsArray').filterProperty('isContainer',true).map((choice) => {

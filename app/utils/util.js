@@ -11,8 +11,7 @@ export function arrayIntersect(a, b) {
   });
 }
 
-export function download(url) {
-  var id = '__downloadIframe';
+export function download(url, id='__downloadIframe') {
   var iframe = document.getElementById(id);
   if ( !iframe )
   {

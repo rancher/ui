@@ -151,7 +151,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   showCredential: Ember.computed.gt('credentialChoices.length',0),
   showCredentialChoice: Ember.computed.gt('credentialChoices.length',1),
   userImageUuidDidChange: function() {
-    var input = this.get('userImageUuid');
+    var input = (this.get('userImageUuid')||'').trim();
     var choices = this.get('registryChoices')||[];
 
     var uuid = 'docker:';
@@ -181,15 +181,23 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
       }
     }
 
-    // Update the actual uuid on the container
-    var registry = this.get('selectedRegistry.serverAddress');
-    if ( registry )
+    if ( input  && input.length )
     {
-      uuid += registry + '/';
-    }
-    uuid += this.get('userImageUuid');
+      // Update the actual uuid on the container
+      var registry = this.get('selectedRegistry.serverAddress');
+      if ( registry )
+      {
+        uuid += registry + '/';
+      }
 
-    this.set('instance.imageUuid', uuid);
+      uuid += input;
+
+      this.set('instance.imageUuid', uuid);
+    }
+    else
+    {
+      this.set('instance.imageUuid', null);
+    }
   }.observes('selectedRegistry.serverAddress','userImageUuid'),
 
   credentialChoicesChanged: function() {
