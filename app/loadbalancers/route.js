@@ -2,6 +2,9 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
-    return this.get('store').findAllUnremoved('loadbalancer');
+    var store = this.get('store');
+    return store.findAllUnremoved('host').then(() => {
+      return store.findAllUnremoved('loadbalancer');
+    });
   },
 });

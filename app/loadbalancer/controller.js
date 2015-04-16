@@ -32,19 +32,6 @@ var LoadBalancerController = Cattle.TransitioningResourceController.extend({
       sortProperties: ['ipAddress', 'instance.name', 'instance.id', 'instanceId']
     });
   }.property('instances.[]','loadBalancerTargets.@each.{instanceId,ipAddress}'),
-
-  hostsBlurbs: function() {
-    var ips = [];
-    (this.get('hosts')||[]).forEach((host) => {
-      var ip = host.get('ipAddresses.firstObject.address');
-      if ( ip )
-      {
-        ips.push(ip);
-      }
-    });
-
-    return ips;
-  }.property('hosts.[]').volatile(),
 });
 
 LoadBalancerController.reopenClass({
