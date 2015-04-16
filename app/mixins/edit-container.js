@@ -659,11 +659,11 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     var out = ShellQuote.parse(this.get('strEntryPoint').trim()||'');
     if ( out.length )
     {
-      this.set('entryPoint', out);
+      this.set('instance.entryPoint', out);
     }
     else
     {
-      this.set('entryPoint', null);
+      this.set('instance.entryPoint', null);
     }
   }.observes('strEntryPoint'),
 

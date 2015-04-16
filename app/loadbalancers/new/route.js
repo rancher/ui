@@ -35,6 +35,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
           type: 'loadBalancerAppCookieStickinessPolicy',
           mode: 'path_parameters',
           requestLearn: true,
+          prefix: false,
           timeout: 3600000,
         }),
         lbCookie: store.createRecord({

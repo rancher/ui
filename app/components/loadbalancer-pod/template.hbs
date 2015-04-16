@@ -21,11 +21,11 @@
 </div>
 
 <div class="pod-info clearfix">
-  <div class="pod-info-line">
-    {{#each host in model.hosts}}
-      <div class="pod-info-item"><i class="ss-link"></i> {{host.ipAddresses.firstObject.address}}</div>
-    {{/each}}
-  </div>
+  {{#each host in model.hosts itemController="host"}}
+    <div class="pod-info-line clip">
+      <div class="pod-info-item"><i class="ss-link"></i> {{host.displayName}}: {{host.displayIp}}</div>
+    </div>
+  {{/each}}
 </div>
 
 <div class="clearfix no-resource-action-hover">
