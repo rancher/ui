@@ -1,5 +1,4 @@
 export default {
-  {
   "images": [{
     "id": 11374310,
     "name": "647.0.0 (alpha)",
@@ -221,9 +220,8 @@ export default {
     "min_disk_size": 20,
     "type": "snapshot"
   }],
-  "links": {}
-},
-"meta": {
-  "total": 22
-}
+  "links": {},
+  "meta": {
+    "total": 22
+  }
 };
