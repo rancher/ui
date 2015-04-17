@@ -2,6 +2,13 @@ import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import ApiError from 'ember-api-store/models/error';
 
+function modelProxy(methodName) {
+  return function(/*arguments*/) {
+    var model = this.get('model');
+    return model[methodName].apply(model,arguments);
+  };
+}
+
 var ResourceController = Ember.ObjectController.extend({
   needs: ['application'],
   actions: {
@@ -17,32 +24,19 @@ var ResourceController = Ember.ObjectController.extend({
     return this.get('name') || '('+this.get('id')+')';
   }.property('name','id'),
 
-  delete: function() {
-    return this.get('model').delete();
-  },
-
   isDeleted: Ember.computed.equal('state','removed'),
   isPurged: Ember.computed.equal('state','purged'),
 
-  hasAction: function(/*arguments*/) {
-    var model = this.get('model');
-    return model.hasAction.apply(model,arguments);
-  },
-
-  doAction: function(/*arguments*/) {
-    var model = this.get('model');
-    return model.doAction.apply(model,arguments);
-  },
-
-  linkFor: function() {
-    var model = this.get('model');
-    return model.linkFor.apply(model,arguments);
-  },
-
-  hasLink: function() {
-    var model = this.get('model');
-    return model.hasLink.apply(model,arguments);
-  },
+  hasAction:  modelProxy('hasAction'),
+  doAction:   modelProxy('doAction'),
+  linkFor:    modelProxy('linkFor'),
+  hasLink:    modelProxy('hasLink'),
+  importLink: modelProxy('importLink'),
+  followLink: modelProxy('followLink'),
+  save:       modelProxy('save'),
+  delete:     modelProxy('delete'),
+  reload:     modelProxy('reload'),
+  isInStore:  modelProxy('isInStore'),
 
   availableActions: function() {
     /*

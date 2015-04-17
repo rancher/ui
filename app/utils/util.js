@@ -57,12 +57,17 @@ export function escapeHtml(html) {
   });
 }
 
+export function addQueryParam(url, key, val) {
+  return url + (url.indexOf('?') >= 0 ? '&' : '?') + key + '=' + encodeURIComponent(val);
+}
+
 var Util = {
   arrayDiff: arrayDiff,
   arrayIntersect: arrayIntersect,
   download: download,
   popupWindowOptions: popupWindowOptions,
-  escapeHtml: escapeHtml
+  escapeHtml: escapeHtml,
+  addQueryParam: addQueryParam
 };
 
 window.Util = Util;

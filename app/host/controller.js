@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
-import util from 'ui/utils/util';
+import DownloadMachineConfig from 'ui/mixins/download-machine-config';
 
-var HostController = Cattle.TransitioningResourceController.extend({
+var HostController = Cattle.TransitioningResourceController.extend(DownloadMachineConfig, {
   actions: {
     activate: function() {
       return this.doAction('activate');
@@ -35,10 +35,6 @@ var HostController = Cattle.TransitioningResourceController.extend({
     detail: function() {
       this.transitionToRoute('host', this.get('id'));
     },
-
-    machineConfig: function() {
-      util.download(this.get('machine.links.config'));
-    }
   },
 
   availableActions: function() {

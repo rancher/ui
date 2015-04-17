@@ -1,7 +1,9 @@
 import Cattle from 'ui/utils/cattle';
-import { download } from 'ui/utils/util';
+import Util from 'ui/utils/util';
 
 var EnvironmentController = Cattle.TransitioningResourceController.extend({
+  needs: ['authenticated'],
+
   actions: {
     activateServices: function() {
       return this.doAction('activateservices');
@@ -24,10 +26,15 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
     },
 
     exportConfig: function() {
-      download(this.linkFor('dockerComposeConfig'));
+      var auth = this.get('controllers.authenticated');
+
+      var compose = auth.addAuthParams(this.linkFor('dockerComposeConfig'));
+      var rancher = auth.addAuthParams(this.linkFor('rancherComposeConfig'));
+
+      Util.download(compose);
       setTimeout(() => {
         // The 2nd download needs a different iframe id or it will overwrite the first before downloading
-        download(this.linkFor('rancherComposeConfig'), '__downloadIframe2');
+        Util.download(rancher, '__downloadIframe2');
       }, 250);
     },
   },

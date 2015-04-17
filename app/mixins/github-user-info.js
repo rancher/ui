@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 export default Ember.Mixin.create({
   type: 'user',
@@ -76,7 +77,7 @@ export default Ember.Mixin.create({
     var url = this.get('_avatarUrl');
     if ( url )
     {
-      url += (url.indexOf('?') >= 0 ? '&' : '?') + 's=' + this.get('size');
+      url = Util.addQueryParam(url, 's', this.get('size'));
     }
     return url;
   }.property('_avatarUrl','size'),

@@ -1,13 +1,7 @@
 import Cattle from 'ui/utils/cattle';
-import util from 'ui/utils/util';
+import DownloadMachineConfig from 'ui/mixins/download-machine-config';
 
-var MachineController = Cattle.TransitioningResourceController.extend({
-  actions: {
-    machineConfig: function() {
-      util.download(this.get('links.config'));
-    }
-  },
-
+var MachineController = Cattle.TransitioningResourceController.extend(DownloadMachineConfig,{
   availableActions: function() {
     var a = this.get('actions')||{};
 
