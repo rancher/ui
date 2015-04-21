@@ -61,13 +61,19 @@ export function addQueryParam(url, key, val) {
   return url + (url.indexOf('?') >= 0 ? '&' : '?') + key + '=' + encodeURIComponent(val);
 }
 
+export function ucFirst(str) {
+  str = str||'';
+  return str.substr(0,1).toUpperCase() + str.substr(1);
+}
+
 var Util = {
   arrayDiff: arrayDiff,
   arrayIntersect: arrayIntersect,
   download: download,
   popupWindowOptions: popupWindowOptions,
   escapeHtml: escapeHtml,
-  addQueryParam: addQueryParam
+  addQueryParam: addQueryParam,
+  ucFirst: ucFirst
 };
 
 window.Util = Util;

@@ -1,53 +1,123 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Cattle from 'ui/utils/cattle';
+import Util from 'ui/utils/util';
+import GithubLookup from 'ui/utils/github-lookup';
 
 export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
+  githubLookup: null,
+  isAdding: false,
+
   actions: {
-    selectOwner: function(type,login) {
-      this.beginPropertyChanges();
-      this.set('externalId', login);
-      this.set('externalIdType', type);
-      this.endPropertyChanges();
+    addMember: function(item) {
+      if ( item && typeof item === 'object' )
+      {
+        this.send('maybeAddMember', Ember.Object.create({
+          externalId: item.get('id'),
+          externalIdType: item.get('type'),
+          role: C.PROJECT.ROLE_MEMBER,
+        }));
+      }
+      else if ( item && item.length )
+      {
+        var lookup = this.get('githubLookup');
+        if ( !lookup )
+        {
+          lookup = GithubLookup.create();
+          this.set('githubLookup', lookup);
+        }
+
+        this.set('isAdding', true);
+        lookup.find('user', item).then((info) => {
+          this.set('addMemberInput','');
+          this.send('maybeAddMember', Ember.Object.create({
+            externalId: info.get('id'),
+            externalIdType: (info.get('type') == 'user' ? C.PROJECT.TYPE_USER : C.PROJECT.TYPE_ORG),
+            role: C.PROJECT.ROLE_MEMBER,
+          }));
+        }).catch(() => {
+          this.send('error','Unable to find user/org: ' + item);
+        }).finally(() => {
+          this.set('isAdding', false);
+        });
+      }
+    },
+
+    maybeAddMember: function(member) {
+      var existing = this.get('membersArray')
+                      .filterProperty('externalIdType', member.get('externalIdType'))
+                      .filterProperty('externalId', member.get('externalId'));
+
+      if ( existing.get('length') )
+      {
+        this.send('error','Member is already in the list');
+        return;
+      }
+
+      this.send('error',null);
+      this.get('membersArray').pushObject(member);
+    },
+
+    removeMember: function(item) {
+      this.get('membersArray').removeObject(item);
     },
   },
 
-  typeUser: C.PROJECT_TYPE_USER,
-  typeTeam: C.PROJECT_TYPE_TEAM,
-  typeOrg: C.PROJECT_TYPE_ORG,
+  membersArray: null,
+  initFields: function() {
+    var me;
+    if ( this.get('app.authenticationEnabled') )
+    {
+      me = Ember.Object.create({
+        externalId: this.get('session').get(C.SESSION.USER_ID),
+        externalIdType: C.PROJECT.TYPE_USER,
+        role: C.PROJECT.ROLE_OWNER
+      });
+    }
+    else
+    {
+      me = Ember.Object.create({
+        externalId: this.get('session').get(C.SESSION.ACCOUNT_ID),
+        externalIdType: C.PROJECT.TYPE_RANCHER,
+        role: C.PROJECT.ROLE_OWNER
+      });
+    }
 
-  ownerChoices: function() {
-    var out = [];
-    var externalIdType = this.get('externalIdType');
-    var externalId = this.get('externalId');
+    this.set('membersArray', [me]);
+  },
 
-    out.pushObject({
-      type: C.PROJECT_TYPE_USER,
-      githubType: 'user',
-      login: this.get('session.user'),
-      active: (externalIdType === C.PROJECT_TYPE_USER && externalId === this.get('session.user')),
+  roleOptions: function() {
+    return this.get('store').getById('schema','projectmember').get('resourceFields.role.options').map((role) => {
+      return {
+        label: Util.ucFirst(role),
+        value: role
+      };
+    });
+  }.property(),
+
+  orgChoices: function() {
+    var orgs = this.get('session.orgs').slice().sort().map(function(id) {
+      return Ember.Object.create({
+        id: id,
+        type: C.PROJECT.TYPE_ORG,
+        teams: []
+      });
     });
 
-    out.pushObjects(this.get('session.teams').map(function(team) {
-      return {
-        type: C.PROJECT_TYPE_TEAM,
-        githubType: 'team',
-        login: team.id,
-        active: (externalIdType === C.PROJECT_TYPE_TEAM && externalId === team.id),
-      };
-    }));
+    this.get('session.teams').forEach(function(team) {
+      var org = orgs.filterProperty('id', team.org)[0];
+      if ( org )
+      {
+        org.teams.pushObject(Ember.Object.create({
+          id: team.id,
+          type: C.PROJECT.TYPE_TEAM,
+          name: team.name,
+        }));
+      }
+    });
 
-    out.pushObjects(this.get('session.orgs').map(function(org) {
-      return {
-        type: C.PROJECT_TYPE_ORG,
-        githubType: 'org',
-        login: org,
-        active: (externalIdType === C.PROJECT_TYPE_ORG && externalId === org),
-      };
-    }));
-
-    return out;
-  }.property('session.user','session.teams.@each.name','session.orgs.[]','externalId','externalIdType'),
+    return orgs;
+  }.property('session.orgs.[]','session.teams.[]'),
 
   doneSaving: function() {
     var out = this._super();

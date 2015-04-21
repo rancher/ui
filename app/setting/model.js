@@ -6,7 +6,7 @@ var Setting = Cattle.TransitioningResource.extend({
 
 Setting.reopenClass({
   headers: {
-    [C.PROJECT_HEADER]: undefined, // Don't send project ID header for any requests to that type
+    [C.HEADER.PROJECT]: undefined, // Don't send project ID header for any requests to that type
   }
 });
 

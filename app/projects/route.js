@@ -9,7 +9,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   model: function() {
-    return this.get('store').findAll('project');
+    return this.get('store').find('project', null, {filter: {all: 'true'}, forceReload: true});
   },
 
   activate: function() {

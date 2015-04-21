@@ -5,7 +5,11 @@
     <h2>Access Control is {{#if app.authenticationEnabled}}<b>enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
     <div>
       {{#if app.authenticationEnabled}}
-        Rancher is configured to restrict access to the GitHub users and organization members below.
+        {{#if isRestricted}}
+          Rancher is configured to restrict access to the GitHub users and organization members below.
+        {{else}}
+          Rancher is configured to allow access to any GitHub user.
+        {{/if}}
       {{else}}
         Rancher can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.
       {{/if}}
@@ -16,76 +20,85 @@
     <div class="well">
       <h4>Authentication</h4>
       <hr/>
-      <p>To change the configured GitHub application, disable access control below and then set it up again.</p>
       <div><b>Client ID: </b> <span class="text-muted">{{clientId}}</span></div>
+      <p class="help-block">To change the configured GitHub application, disable access control below and then set it up again.</p>
     </div>
 
     <div class="well">
       <h4>Configure Authorization</h4>
       <hr/>
-      <p>Configure what users and organization members should be allowed to use Rancher.</p>
-      <div class="row">
-        <div class="col-sm-6">
-
-          <form {{action "addUser" on="submit"}}>
-            <div class="input-group">
-              {{input type="text" value=addUserInput placeholder="Add a GitHub username" class="form-control"}}
-              <div class="input-group-btn">
-                <button class="btn btn-primary" {{action "addUser"}}><i class="ss-plus"></i></button>
-              </div>
-            </div>
-          </form>
-
-          <hr/>
-          <label>Authorized Users</label>
-
-          <ul class="list-unstyled gh-block-list">
-            {{#each user in allowedUsers}}
-              <li>
-                {{#github-block type="user" login=user notFound="userNotFound"}}
-                  <button class="btn btn-danger btn-sm pull-right gh-action" {{action "removeUser" user}}>Remove</button>
-                {{/github-block}}
-              </li>
-            {{else}}
-              <span class="text-muted">No Users</span>
-            {{/each}}
-          </ul>
-        </div>
-
-        <div class="col-sm-6">
-
-          <form {{action "addOrg" on="submit"}}>
-            <div class="input-group">
-              {{input type="text" value=addOrgInput placeholder="Add a GitHub organization name" class="form-control"}}
-              <div class="input-group-btn">
-                <button class="btn btn-primary" {{action "addOrg" addOrgInput}}><i class="ss-plus"></i></button>
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-                <ul class="dropdown-menu dropdown-menu-right" role="menu">
-                  <li role="presentation" class="dropdown-header">Your Orgs</li>
-                  {{#each org in organizations}}
-                    <li><a {{action "addOrg" org}}>{{org}}</a></li>
-                  {{/each}}
-                </ul>
-              </div>
-            </div>
-          </form>
-
-          <hr/>
-          <label>Authorized Organizations</label>
-
-          <ul class="list-unstyled gh-block-list">
-            {{#each org in allowedOrganizations}}
-              <li>
-                {{#github-block type="org" login=org notFound="orgNotFound"}}
-                  <button class="btn btn-danger btn-sm pull-right gh-action" {{action "removeOrg" org}}>Remove</button>
-                {{/github-block}}
-              </li>
-            {{else}}
-              <span class="text-muted">No Organizations</span>
-            {{/each}}
-          </ul>
-        </div>
+      <p>Configure who should be allowed to log in and use Rancher.</p>
+      <div class="radio">
+        <label>{{radio-button selection=accessMode value="unrestricted"}} Allow any GitHub user</label>
       </div>
+      <div class="radio">
+        <label>{{radio-button selection=accessMode value="restricted"}} Restrict to specific GitHub users and organization members:</label>
+      </div>
+
+      {{#if isRestricted}}
+        <div class="row">
+          <div class="col-sm-6">
+
+            <form {{action "addUser" on="submit"}}>
+              <div class="input-group">
+                {{input type="text" value=addUserInput placeholder="Add a GitHub user name" class="form-control"}}
+                <div class="input-group-btn">
+                  <button class="btn btn-primary" {{action "addUser"}}><i class="ss-plus"></i></button>
+                </div>
+              </div>
+            </form>
+
+            <hr/>
+            <h5>Authorized Users</h5>
+
+            <ul class="list-unstyled gh-block-list">
+              {{#each user in allowedUsers}}
+                <li>
+                  {{#github-block type="user" login=user notFound="userNotFound"}}
+                    <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeUser" user}}></button>
+                  {{/github-block}}
+                </li>
+              {{else}}
+                <span class="text-muted">No Users</span>
+              {{/each}}
+            </ul>
+          </div>
+
+          <div class="col-sm-6">
+
+            <form {{action "addOrg" on="submit"}}>
+              <div class="input-group">
+                {{input type="text" value=addOrgInput placeholder="Add a GitHub organization name" class="form-control"}}
+                <div class="input-group-btn">
+                  <button class="btn btn-primary" {{action "addOrg" addOrgInput}}><i class="ss-plus"></i></button>
+                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+                  <ul class="dropdown-menu dropdown-menu-right" role="menu">
+                    <li role="presentation" class="dropdown-header">Your Orgs</li>
+                    {{#each org in organizations}}
+                      <li><a {{action "addOrg" org}}>{{org}}</a></li>
+                    {{/each}}
+                  </ul>
+                </div>
+              </div>
+            </form>
+
+            <hr/>
+            <h5>Authorized Organizations</h5>
+
+            <ul class="list-unstyled gh-block-list">
+              {{#each org in allowedOrganizations}}
+                <li>
+                  {{#github-block type="org" login=org notFound="orgNotFound"}}
+                    <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeOrg" org}}></button>
+                  {{/github-block}}
+                </li>
+              {{else}}
+                <span class="text-muted">No Organizations</span>
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+      {{/if}}
 
       <hr/>
 

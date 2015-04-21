@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Socket from 'ui/utils/socket';
 import Util from 'ui/utils/util';
 import AuthenticatedRouteMixin from 'ui/mixins/authenticated-route';
+import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
@@ -12,27 +13,14 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     var session = this.get('session');
 
     // Load schemas
-    return store.find('schema', null, {url: 'schemas'}).then((/*schemas*/) => {
-      var isAdmin = session.get(C.USER_TYPE_SESSION_KEY) === C.USER_TYPE_ADMIN;
-      // Save whether the user is an admin or not.
-      // For cattle >= v0.6 the token response will have userType: admin/user, for older look for a schema
-      this.set('app.isAuthenticationAdmin', isAdmin || store.hasRecordFor('schema','githubconfig'));
+    return store.find('schema', null, {url: 'schemas'}).then((schemas) => {
+      session.set(C.SESSION.ACCOUNT_ID, schemas.xhr.getResponseHeader(C.HEADER.ACCOUNT_ID));
 
-      // Load all the projects
-      var supportsProjects = this.get('app.authenticationEnabled') && store.hasRecordFor('schema','project');
-      this.set('app.projectsEnabled', supportsProjects);
+      var type = session.get(C.SESSION.USER_TYPE);
+      var isAdmin = (type === C.USER.TYPE_ADMIN) || (!type && store.hasRecordFor('schema','githubconfig'));
+      this.set('app.isAuthenticationAdmin', isAdmin);
 
-      if ( supportsProjects )
-      {
-        return store.find('project').catch(() => {
-          this.set('app.projectsEnabled', false);
-          return Ember.RSVP.resolve();
-        });
-      }
-      else
-      {
-        return Ember.RSVP.resolve();
-      }
+      return store.find('project', null, {forceReload: true});
     }).catch((err) => {
       if ( err.status === 401 )
       {
@@ -45,32 +33,52 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     });
   },
 
-  setupController: function(controller /*, model*/) {
+  setupController: function(controller, model) {
     this._super.apply(this,arguments);
 
-    if ( this.get('app.projectsEnabled') )
-    {
-      var all = this.get('store').all('project');
-      controller.set('projects', all);
+    // Load all the active projects
+    var active = ActiveArrayProxy.create({sourceContent: model});
+    controller.set('projects', active);
 
-      var projectId = this.get('session').get(C.PROJECT_SESSION_KEY);
-      if ( projectId )
+    var session = this.get('session');
+
+    // Figure out the active project
+    var project = null;
+
+    // Try the currently selected one in the session
+    var projectId = session.get(C.SESSION.PROJECT);
+    if ( projectId )
+    {
+      project = active.filterBy('id', projectId)[0];
+    }
+
+    // Then the default for the user from the token/session
+    if ( !project )
+    {
+      var defaultProjectId = session.get(C.SESSION.PROJECT_DEFAULT);
+      if ( defaultProjectId )
       {
-        var project = all.filterBy('id', projectId)[0];
-        if ( project )
-        {
-          controller.set('project', project);
-        }
-        else
-        {
-          this.get('session').set(C.PROJECT_SESSION_KEY, undefined);
-          this.set('project', null);
-        }
+        project = active.filterBy('id', defaultProjectId)[0];
       }
-      else
-      {
-        controller.set('project', null);
-      }
+    }
+
+    // Then how about the first one...
+    if ( !project )
+    {
+      project = active.get('firstObject');
+    }
+
+    // Store the current project and update the session
+    if ( project )
+    {
+      session.set(C.SESSION.PROJECT, project.get('id'));
+      controller.set('project', project);
+    }
+    else
+    {
+      // @TODO Then cry?  What happens if you delete the last project?
+      session.set(C.SESSION.PROJECT, undefined);
+      controller.set('project', null);
     }
   },
 
@@ -89,8 +97,14 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       }
     },
 
+    refreshProjectDropdown: function() {
+      this.get('store').find('project', null, {forceReload: true}).then((res) => {
+        this.get('controller.projects.sourceContent', res);
+      });
+    },
+
     switchProject: function(projectId) {
-      this.get('session').set(C.PROJECT_SESSION_KEY, projectId);
+      this.get('session').set(C.SESSION.PROJECT, projectId);
       this.get('store').reset();
       this.transitionTo('index');
     },
@@ -267,13 +281,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     var url = "ws://"+window.location.host + this.get('app.wsEndpoint');
     var session = this.get('session');
-    var token = session.get(C.AUTH_SESSION_KEY);
+    var token = session.get(C.SESSION.TOKEN);
     if ( token )
     {
       url = Util.addQueryParam(url, 'token', token);
     }
 
-    var projectId = session.get(C.PROJECT_SESSION_KEY);
+    var projectId = session.get(C.SESSION.PROJECT);
     if ( projectId )
     {
       url = Util.addQueryParam(url, 'projectId', projectId);

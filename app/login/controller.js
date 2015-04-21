@@ -46,8 +46,8 @@ export default Ember.Controller.extend({
 
       self.get('torii').open('github-oauth2',{windowOptions: util.popupWindowOptions()}).then(function(github){
         var headers = {};
-        headers[C.AUTH_HEADER] = undefined; // Explictly not send auth
-        headers[C.PROJECT_HEADER] = undefined; // Explictly not send project
+        headers[C.HEADER.AUTH] = undefined; // Explictly not send auth
+        headers[C.HEADER.PROJECT] = undefined; // Explictly not send project
 
         return self.get('store').rawRequest({
           url: 'token',

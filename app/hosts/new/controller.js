@@ -16,8 +16,8 @@ export default Ember.ObjectController.extend({
   }.property(),
 
   isAdmin: function() {
-    var userType = this.get('session').get(C.USER_TYPE_SESSION_KEY);
-    var isAdmin = userType === undefined || userType === C.USER_TYPE_ADMIN;
+    var userType = this.get('session').get(C.SESSION.USER_TYPE);
+    var isAdmin = userType === undefined || userType === C.USER.TYPE_ADMIN;
     return isAdmin;
   }.property(),
 });

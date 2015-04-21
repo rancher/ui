@@ -17,24 +17,20 @@ export function initialize(container, application) {
       var out = {};
 
       // Please don't send us www-authenticate headers
-      out[C.NO_CHALLENGE_HEADER] = C.NO_CHALLENGE_VALUE;
+      out[C.HEADER.NO_CHALLENGE] = C.HEADER.NO_CHALLENGE_VALUE;
 
-      // Never send token or project ID if auth isn't on
-      if ( application.get('authenticationEnabled') )
+      // Send the token as the Authorization header
+      var authValue = session.get(C.SESSION.TOKEN);
+      if ( authValue )
       {
-        // Send the token as the Authorization header
-        var authValue = session.get(C.AUTH_SESSION_KEY);
-        if ( authValue )
-        {
-          out[C.AUTH_HEADER] = C.AUTH_TYPE + ' ' + authValue;
-        }
+        out[C.HEADER.AUTH] = C.HEADER.AUTH_TYPE + ' ' + authValue;
+      }
 
-        // Send the current project id as a header if in a project
-        var projectId = session.get(C.PROJECT_SESSION_KEY);
-        if ( projectId )
-        {
-          out[C.PROJECT_HEADER] = projectId;
-        }
+      // Send the current project id as a header if in a project
+      var projectId = session.get(C.SESSION.PROJECT);
+      if ( projectId )
+      {
+        out[C.HEADER.PROJECT] = projectId;
       }
 
       return out;

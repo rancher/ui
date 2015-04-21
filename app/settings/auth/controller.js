@@ -23,9 +23,15 @@ export default Ember.ObjectController.extend({
 
   saveDisabled: Ember.computed.or('saving','saved'),
 
+  isRestricted: Ember.computed.equal('accessMode','restricted'),
+
   destinationUrl: function() {
     return window.location.origin+'/';
   }.property(),
+
+  accessModeChanged: function() {
+    this.set('saved',false);
+  }.observes('accessMode'),
 
   actions: {
     test: function() {
@@ -37,6 +43,7 @@ export default Ember.ObjectController.extend({
         'clientId': model.get('clientId').trim(),
         'clientSecret': model.get('clientSecret').trim(),
         'enabled': false, // It should already be, but just in case..
+        'accessMode': 'unrestricted',
         'allowedOrganizations': [],
         'allowedUsers': []
       });
@@ -63,8 +70,8 @@ export default Ember.ObjectController.extend({
 
       torii.open('github-oauth2',{windowOptions: util.popupWindowOptions()}).then(github => {
         var headers = {};
-        headers[C.AUTH_HEADER] = undefined; // Explicitly not send auth
-        headers[C.PROJECT_HEADER] = undefined; // Explicitly not send project
+        headers[C.HEADER.AUTH] = undefined; // Explicitly not send auth
+        headers[C.HEADER.PROJECT] = undefined; // Explicitly not send project
 
         return this.get('store').rawRequest({
           url: 'token',
@@ -106,12 +113,13 @@ export default Ember.ObjectController.extend({
       var model = this.get('model');
       model.setProperties({
         'enabled': true,
+        'accessMode': 'restricted',
         'allowedOrganizations': [],
         'allowedUsers': [auth.user],
       });
 
       model.save().then(() => {
-        return this.get('store').find('setting', C.SETTING_API_HOST).then((setting) => {
+        return this.get('store').find('setting', C.SETTING.API_HOST).then((setting) => {
           if ( setting.get('value') )
           {
             this.send('waitAndRefresh', true);
@@ -144,8 +152,8 @@ export default Ember.ObjectController.extend({
 
       setTimeout(() => {
         var headers = {};
-        headers[C.AUTH_HEADER] = undefined; // Explicitly not send auth
-        headers[C.PROJECT_HEADER] = undefined; // Explicitly not send project
+        headers[C.HEADER.AUTH] = undefined; // Explicitly not send auth
+        headers[C.HEADER.PROJECT] = undefined; // Explicitly not send project
 
         this.get('store').rawRequest({
           url: 'schemas',
@@ -266,6 +274,7 @@ export default Ember.ObjectController.extend({
       model.setProperties({
         'allowedOrganizations': [],
         'allowedUsers': [],
+        'accessMode': 'unrestricted',
         'enabled': false,
       });
 

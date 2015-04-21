@@ -182,19 +182,19 @@ export default Ember.Component.extend({
     var handled = false;
     switch ( event.which )
     {
-      case C.KEY_LEFT:
+      case C.KEY.LEFT:
         this.decrementProperty('value', this.get('step'));
         handled = true;
         break;
-      case C.KEY_RIGHT:
+      case C.KEY.RIGHT:
         this.incrementProperty('value', this.get('step'));
         handled = true;
         break;
-      case C.KEY_UP:
+      case C.KEY.UP:
         this.set('value', this.get('valueMax'));
         handled = true;
         break;
-      case C.KEY_DOWN:
+      case C.KEY.DOWN:
         this.set('value', this.get('valueMin'));
         handled = true;
         break;

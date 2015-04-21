@@ -1,29 +1,101 @@
-<h2>{{#if editing}}Edit{{else}}Add{{/if}} Project</h2>
-{{top-errors errors=errors}}
+<section class="horizontal-form container-fluid">
+  <h2>{{#if editing}}Edit{{else}}Add{{/if}} Project</h2>
+  {{top-errors errors=errors}}
 
-<div class="row">
-  <div class="col-md-6">
-    <div class="form-group">
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
       <label for="name">Name</label>
-      {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. lab"}}
     </div>
-    <div class="form-group">
-      <label for="description">Description</label>
-      {{textarea id="description" value=description classNames="form-control no-resize" rows="3" placeholder="e.g. Project for developer experimentation"}}
+    <div class="col-sm-12 col-md-8">
+      {{input id="name" type="text" value=balancer.name classNames="form-control" placeholder="e.g. Lab"}}
     </div>
   </div>
 
-  <div class="col-md-6">
-    <label for="name">Choose an Owner</label>
-    <div class="list-group" id="ownerChoices">
-      {{#each choice in ownerChoices}}
-        <a {{action "selectOwner" choice.type choice.login}} {{bind-attr class=":list-group-item choice.active:active"}}>
-          {{github-block link=false type=choice.githubType login=choice.login}}
-        </a>
-      {{/each}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label for="description">Description</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{textarea id="description" value=balancer.description classNames="form-control no-resize" rows="5" placeholder="e.g. Project for developer experimentation"}}
     </div>
   </div>
-</div>
+
+  {{partial "form-divider"}}
+
+  {{#if app.authenticationEnabled}}
+    <div class="row">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label>Members</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        <form {{action "addMember" on="submit"}}>
+          <div class="input-group">
+            {{input type="text" value=addMemberInput placeholder="Add a GitHub user or organization name" class="form-control"}}
+            <div class="input-group-btn">
+              {{#if isAdding}}
+                <button class="btn btn-primary btn-disabled"><i class="ss-loading fa-spin"></i></button>
+              {{else}}
+                <button class="btn btn-primary" {{action "addMember" addMemberInput}}><i class="ss-plus"></i></button>
+              {{/if}}
+              <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+              <ul class="dropdown-menu dropdown-menu-right" role="menu" style="min-width: 250px;">
+                <li role="presentation" class="dropdown-header">Your Organizations and Teams</li>
+                {{#each item in orgChoices}}
+                  <li>
+                    <a {{action "addMember" item}}>
+                        {{github-block type="org" login=item.id link=false}}
+                    </a>
+                  </li>
+                  {{#each team in item.teams}}
+                    <li style="margin-left: 15px;">
+                      <a {{action "addMember" team}}>
+                        <i class="ss-users"></i> {{team.name}}
+                      </a>
+                    </li>
+                  {{/each}}
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        </form>
+        {{#if membersArray.length}}
+          <table class="table fixed no-lines no-top-padding tight small vertical-middle">
+            <thead>
+              <tr class="text-muted">
+                <th>Name</th>
+                <th width="100">Type</th>
+                <th width="100">Role</th>
+                <th width="40">&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+            {{#each member in membersArray itemController="projectmember"}}
+              <tr>
+                <td>
+                  {{github-block type=member.githubType login=member.externalId}}
+                </td>
+                <td>{{member.displayType}}</td>
+                <td>
+                  {{view "select"
+                    class="form-control input-sm"
+                    content=roleOptions
+                    value=member.role
+                    optionValuePath="content.value"
+                    optionLabelPath="content.label"
+                  }}
+                </td>
+                <td><button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeMember" member}}></button></td>
+              </tr>
+            {{/each}}
+            </tbody>
+          </table>
+        {{else}}
+          <div class="text-muted">No members.</div>
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
+</section>
 
 {{partial "save-cancel"}}
 {{partial "overlay-close"}}

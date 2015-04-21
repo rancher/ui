@@ -19,13 +19,13 @@ export default Ember.Controller.extend({
 
   addAuthParams: function(url) {
     var session = this.get('session');
-    var token = session.get(C.AUTH_SESSION_KEY);
+    var token = session.get(C.SESSION.TOKEN);
     if ( token )
     {
       url = Util.addQueryParam(url, 'token', token);
     }
 
-    var projectId = session.get(C.PROJECT_SESSION_KEY);
+    var projectId = session.get(C.SESSION.PROJECT);
     if ( projectId )
     {
       url = Util.addQueryParam(url, 'projectId', projectId);

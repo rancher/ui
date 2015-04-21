@@ -21,26 +21,30 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     activate: function() {
       return this.doAction('activate');
     },
+
+    deactivate: function() {
+      return this.doAction('deactivate');
+    },
+
+    switchTo: function() {
+      this.send('switchProject', this.get('id'));
+    },
   },
 
-  isDefault:  Ember.computed.equal('externalIdType', C.PROJECT_TYPE_DEFAULT),
-  isUser:     Ember.computed.equal('externalIdType', C.PROJECT_TYPE_USER),
-  isTeam:     Ember.computed.equal('externalIdType', C.PROJECT_TYPE_TEAM),
-  isOrg:      Ember.computed.equal('externalIdType', C.PROJECT_TYPE_ORG),
+  isUser:     Ember.computed.equal('externalIdType', C.PROJECT.TYPE_USER),
+  isTeam:     Ember.computed.equal('externalIdType', C.PROJECT.TYPE_TEAM),
+  isOrg:      Ember.computed.equal('externalIdType', C.PROJECT.TYPE_ORG),
 
   icon: function() {
-    var icon = 'ss-help';
-
-    switch ( this.get('externalIdType') )
+    if ( this.get('active') )
     {
-      case C.PROJECT_TYPE_DEFAULT:  icon = 'ss-home';  break;
-      case C.PROJECT_TYPE_USER:     icon = 'ss-user';  break;
-      case C.PROJECT_TYPE_TEAM:     icon = 'ss-users'; break;
-      case C.PROJECT_TYPE_ORG:      icon = 'ss-usergroup'; break;
+      return 'ss-openfolder';
     }
-
-    return icon;
-  }.property('externalIdType'),
+    else
+    {
+      return 'ss-folder';
+    }
+  }.property('active'),
 
   listIcon: function() {
     if ( this.get('active') )
@@ -53,40 +57,20 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     }
   }.property('icon','active'),
 
-  githubType: function() {
-    switch (this.get('externalIdType') )
-    {
-      case C.PROJECT_TYPE_DEFAULT: return 'user';
-      case C.PROJECT_TYPE_USER: return 'user';
-      case C.PROJECT_TYPE_TEAM: return 'team';
-      case C.PROJECT_TYPE_ORG: return 'org';
-    }
-  }.property('externalIdType'),
-
-  githubLogin: function() {
-    var type = this.get('externalIdType');
-
-    if ( type === C.PROJECT_TYPE_DEFAULT )
-    {
-        return this.get('session.user');
-    }
-
-    return this.get('externalId');
-  }.property('externalIdType', 'externalId'),
-
   active: function() {
     return this.get('session.projectId') === this.get('id');
   }.property('session.projectId','id'),
 
   canRemove: function() {
-    return ['removing','removed','purging','purged'].indexOf(this.get('state')) === -1;
-  }.property('state'),
+    return !!this.get('actions.remove') && ['removing','removed','purging','purged'].indexOf(this.get('state')) === -1;
+  }.property('state','actions.remove'),
 
   availableActions: function() {
     var a = this.get('actions');
 
     var choices = [
       { label: 'Activate',      icon: 'ss-play',  action: 'activate',     enabled: !!a.activate},
+      { label: 'Deactivate',    icon: 'ss-pause', action: 'deactivate',     enabled: !!a.deactivate},
       { label: 'Delete',        icon: 'ss-trash', action: 'promptDelete', enabled: this.get('canRemove'), altAction: 'delete' },
       { divider: true },
       { label: 'Restore',       icon: '',         action: 'restore',      enabled: !!a.restore },
@@ -95,8 +79,13 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
       { label: 'Edit',          icon: '',         action: 'edit',         enabled: !!a.update },
     ];
 
+    if ( this.get('app.isAuthenticationAdmin') )
+    {
+      choices.pushObject({label: 'Switch to Project', icon: 'ss-openfolder', action: 'switchTo', enabled: this.get('state') === 'active' });
+    }
+
     return choices;
-  }.property('actions.{update,restore,remove,purge}','canRemove'),
+  }.property('actions.{activate,deactivate,update,restore,purge}','canRemove'),
 });
 
 ProjectController.reopenClass({

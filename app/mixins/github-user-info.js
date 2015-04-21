@@ -53,7 +53,7 @@ export default Ember.Mixin.create({
     }
     else
     {
-      var url = C.GITHUB_PROXY_URL + type + 's/' + login;
+      var url = C.GITHUB.PROXY_URL + type + 's/' + login;
       this.request(url).then((body) => {
         cache[key] = body;
 
@@ -83,16 +83,16 @@ export default Ember.Mixin.create({
   }.property('_avatarUrl','size'),
 
   url: function() {
-    return C.GITHUB_URL + encodeURIComponent(this.get('login'));
+    return C.GITHUB.URL + encodeURIComponent(this.get('login'));
   }.property('login'),
 
   request: function(url) {
     var headers = {};
 
-    var authValue = this.get('session').get(C.AUTH_SESSION_KEY);
+    var authValue = this.get('session').get(C.SESSION.TOKEN);
     if ( authValue )
     {
-      headers[C.AUTH_HEADER] = C.AUTH_TYPE + ' ' + authValue;
+      headers[C.HEADER.AUTH] = C.HEADER.AUTH_TYPE + ' ' + authValue;
     }
 
     return Ember.$.ajax({url: url, headers: headers, dataType: 'json'});
