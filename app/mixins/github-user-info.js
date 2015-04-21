@@ -83,7 +83,18 @@ export default Ember.Mixin.create({
   }.property('_avatarUrl','size'),
 
   url: function() {
-    return C.GITHUB.URL + encodeURIComponent(this.get('login'));
+    if ( this.get('type') === 'team' )
+    {
+      var entry = (this.get('session.teams')||[]).filterProperty('id', this.get('login'))[0];
+      if ( entry && entry.slug )
+      {
+        return C.GITHUB.URL + 'orgs/' + encodeURIComponent(entry.org) + '/teams/' + encodeURIComponent(entry.slug);
+      }
+    }
+    else
+    {
+      return C.GITHUB.URL + encodeURIComponent(this.get('login'));
+    }
   }.property('login'),
 
   request: function(url) {

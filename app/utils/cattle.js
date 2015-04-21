@@ -108,10 +108,13 @@ var NewOrEditMixin = Ember.Mixin.create({
           this.set('errors', [str]);
         }
       }
+      else if (err)
+      {
+        this.set('errors', [err]);
+      }
       else
       {
-        console.log(err);
-        this.set('errors', [err]);
+        this.set('errors', null);
       }
     },
 

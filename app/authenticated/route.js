@@ -99,7 +99,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     refreshProjectDropdown: function() {
       this.get('store').find('project', null, {forceReload: true}).then((res) => {
-        this.get('controller.projects.sourceContent', res);
+        this.set('controller.projects.sourceContent', res);
       });
     },
 

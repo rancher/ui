@@ -75,7 +75,15 @@ export default Ember.Object.extend({
 
       function success(body, textStatus, xhr) {
         Ember.run(function() {
-          resolve(body,'AJAX Reponse: '+url + '(' + xhr.status + ')');
+          // @TODO GitHub proxy doesn't return correct status code: #575
+          if ( body && body.id )
+          {
+            resolve(body,'AJAX Reponse: '+url + '(' + xhr.status + ')');
+          }
+          else
+          {
+            reject({xhr: xhr, textStatus: textStatus, err: 'Not Found'}, 'AJAX Error:' + url + '(' + xhr.status + ')');
+          }
         });
       }
 
