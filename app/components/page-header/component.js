@@ -26,6 +26,10 @@ export default Ember.Component.extend({
     }).sortBy('name','id');
   }.property('projects.@each.{id,displayName,state}'),
 
+  projectIsMissing: function() {
+    return this.get('projectChoices').filterProperty('id', this.get('project.id')).get('length') === 0;
+  }.property('project.id','projectChoices.@each.id'),
+
   actions: {
     add: function() {
       var params = this.get('addParams');

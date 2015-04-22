@@ -48,7 +48,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     this._super();
     var errors = this.get('errors')||[];
 
-    if ( !this.get('hasOwner') )
+    if ( !this.get('hasOwner') && this.get('app.authenticationEnabled') )
     {
       errors.push('You must add at least one owner');
     }

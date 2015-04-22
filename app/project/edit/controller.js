@@ -5,6 +5,9 @@ export default Ember.ObjectController.extend(EditProject, {
   editing: true,
 
   didSave: function() {
-    return this.get('model').doAction('setmembers',{members: this.get('members')});
+    if ( this.get('app.authenticationEnabled') )
+    {
+      return this.get('model').doAction('setmembers',{members: this.get('members')});
+    }
   },
 });

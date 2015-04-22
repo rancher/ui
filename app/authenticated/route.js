@@ -53,43 +53,53 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     var session = this.get('session');
     var active = controller.get('projects');
 
-    // Figure out the active project
-    var project = null;
+    // Try the project ID in the session
+    this.activeProjectFromId(session.get(C.SESSION.PROJECT)).then(select)
+    .catch(() => {
+      // Then the default project ID from the session
+      this.activeProjectFromId(session.get(C.SESSION.PROJECT_DEFAULT)).then(select)
+      .catch(() => {
+        // Then the first active project
+        var project = active.get('firstObject');
+        if ( project )
+        {
+          select(project);
+        }
+        else
+        {
+          // Then cry
+          this.send('logout');
+        }
+      });
+    });
 
-    // Try the currently selected one in the session
-    var projectId = session.get(C.SESSION.PROJECT);
-    if ( projectId )
-    {
-      project = active.filterBy('id', projectId)[0];
-    }
-
-    // Then the default for the user from the token/session
-    if ( !project )
-    {
-      var defaultProjectId = session.get(C.SESSION.PROJECT_DEFAULT);
-      if ( defaultProjectId )
-      {
-        project = active.filterBy('id', defaultProjectId)[0];
-      }
-    }
-
-    // Then how about the first one...
-    if ( !project )
-    {
-      project = active.get('firstObject');
-    }
-
-    // Store the current project and update the session
-    if ( project )
-    {
+    function select(project) {
       session.set(C.SESSION.PROJECT, project.get('id'));
       controller.set('project', project);
     }
-    else
-    {
-      // @TODO Then cry?  What happens if you delete the last project?
-      this.send('logout');
-    }
+  },
+
+  activeProjectFromId: function(projectId) {
+    // Try the currently selected one in the session
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      if ( !projectId )
+      {
+        reject();
+      }
+
+      this.get('store').find('project', projectId).then((project) => {
+        if ( project.get('state') === 'active' )
+        {
+          resolve(project);
+        }
+        else
+        {
+          reject();
+        }
+      }).catch(() => {
+        reject();
+      });
+    });
   },
 
   actions: {
@@ -105,10 +115,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         // Bubble up
         return true;
       }
-    },
-
-    selectDefaultProject: function() {
-      return this.selectDefaultProject(this.get('controller'));
     },
 
     refreshProjectDropdown: function() {

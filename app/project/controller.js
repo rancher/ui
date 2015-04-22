@@ -31,6 +31,15 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
       });
     },
 
+    setAsDefault: function() {
+      var headers = {};
+      headers[C.HEADER.PROJECT] = C.HEADER.PROJECT_USER_SCOPE;
+
+      return this.doAction('setasdefault', undefined, headers).then(() => {
+        this.get('session').set(C.SESSION.PROJECT_DEFAULT, this.get('id'));
+      });
+    },
+
     switchTo: function() {
       this.send('switchProject', this.get('id'));
     },
@@ -67,6 +76,10 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     return !!this.get('actions.remove') && ['removing','removed','purging','purged'].indexOf(this.get('state')) === -1;
   }.property('state','actions.remove'),
 
+  canSetDefault: function() {
+    return this.get('state') === 'active' && this.hasAction('setasdefault') && !this.get('isDefault');
+  }.property('state','actions.setasdefault','isDefault'),
+
   availableActions: function() {
     var a = this.get('actions');
 
@@ -82,8 +95,13 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
 
     choices.pushObject({label: 'Switch to this Project', icon: '', action: 'switchTo', enabled: this.get('state') === 'active' });
 
+    if ( this.get('app.authenticationEnabled') )
+    {
+      choices.pushObject({label: 'Set as my default Project', icon: '', action: 'setAsDefault', enabled: this.get('canSetDefault')});
+    }
+
     return choices;
-  }.property('actions.{activate,deactivate,update,restore,purge}','canRemove'),
+  }.property('actions.{activate,deactivate,update,restore,purge}','canRemove','canSetDefault'),
 });
 
 ProjectController.reopenClass({

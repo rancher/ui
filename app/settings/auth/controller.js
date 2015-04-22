@@ -54,7 +54,7 @@ export default Ember.ObjectController.extend({
       {
         show = true;
       }
-      else if ( this.get('allowedUsers.firstObject') != this.get('session').get(C.SESSION.USER_ID) )
+      else if ( this.get('allowedUsers.firstObject') !== this.get('session').get(C.SESSION.USER_ID) )
       {
         show = true;
       }
