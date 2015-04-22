@@ -19,11 +19,16 @@ export function initialize(container, application) {
       // Please don't send us www-authenticate headers
       out[C.HEADER.NO_CHALLENGE] = C.HEADER.NO_CHALLENGE_VALUE;
 
-      // Send the token as the Authorization header
       var authValue = session.get(C.SESSION.TOKEN);
       if ( authValue )
       {
+        // Send the token as the Authorization header if present
         out[C.HEADER.AUTH] = C.HEADER.AUTH_TYPE + ' ' + authValue;
+      }
+      else
+      {
+        // And something else if not present, so the browser can't send cached basic creds
+        out[C.HEADER.AUTH] = 'None';
       }
 
       // Send the current project id as a header if in a project

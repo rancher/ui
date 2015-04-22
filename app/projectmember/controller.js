@@ -7,13 +7,17 @@ export default Ember.ObjectController.extend({
   isTeam: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_TEAM),
   isOrg: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_ORG),
 
+  isMyRancher: function() {
+    return this.get('externalIdType') === C.PROJECT.TYPE_RANCHER && this.get('externalId') === this.get('session').get(C.SESSION.ACCOUNT_ID);
+  }.property('externalId','externalIdType'),
+
   githubType: function() {
     switch ( this.get('externalIdType') )
     {
       case C.PROJECT.TYPE_USER:     return 'user';
       case C.PROJECT.TYPE_TEAM:     return 'team';
       case C.PROJECT.TYPE_ORG:      return 'org';
-      case C.PROJECT.TYPE_RANCHER:  return '';
+      case C.PROJECT.TYPE_RANCHER:  return null;
     }
   }.property('type'),
 

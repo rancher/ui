@@ -3,42 +3,29 @@ import C from 'ui/utils/constants';
 
 export default Ember.Object.extend({
   find: function(type, id) {
-    var session = window.l('session:main');
-    var cache = session.get('githubCache')||{};
-
     if ( type === 'team' )
     {
-      var entry = (session.get('teams')||[]).filterProperty('id', id)[0];
+      var entry = this.teamById(id);
       if ( entry )
       {
         return Ember.RSVP.resolve(Ember.Object.create({
           id: id,
           name: entry.name,
           type: 'team',
-          description: entry.org + ' team',
+          org: entry.org,
           avatarUrl: null,
         }));
       }
       else
       {
-        return Ember.RSVP.resolve(Ember.Object.create({
-          id: id,
-          name: '(' + id + ')',
-          type: 'team',
-          description: '(Unknown team)',
-          avatarUrl: null
-        }));
+        return Ember.RSVP.reject('Team ' + id + ' not found');
       }
     }
-    else
-    {
-      type = 'user_or_org';
-    }
 
-    var key = type +':'+ id;
-    if ( cache[id] )
+    var cached = this.getCache(id);
+    if ( cached )
     {
-      return Ember.RSVP.resolve(cache[id]);
+      return Ember.RSVP.resolve(cached);
     }
 
     var url = C.GITHUB.PROXY_URL + 'users/' + id;
@@ -51,18 +38,36 @@ export default Ember.Object.extend({
         avatarUrl: body.avatar_url,
       });
 
-      cache[key] = out;
-
-      // Sub-keys don't get automatically persisted to the session...
-      session.set('githubCache', cache);
-
+      this.setCache(id,out);
       return out;
     });
   },
 
+  getCache: function(id) {
+    var cache = this.get('session').get(C.SESSION.GITHUB_CACHE)||{};
+    var entry = cache[id];
+    if ( entry )
+    {
+      return Ember.Object.create(entry);
+    }
+  },
+
+  setCache: function(id, value) {
+    var session = this.get('session');
+    var cache = session.get(C.SESSION.GITHUB_CACHE)||{};
+    cache[id] = value;
+
+    // Sub-keys don't get automatically persisted to the session...
+    session.set(C.SESSION.GITHUB_CACHE, cache);
+  },
+
+  teamById: function(id) {
+    return (this.get('session.teams')||[]).filterProperty('id', id)[0];
+  },
+
   request: function(url) {
     var headers = {};
-    var session = window.l('session:main');
+    var session = this.get('session');
 
     var authValue = session.get(C.SESSION.TOKEN);
     if ( authValue )

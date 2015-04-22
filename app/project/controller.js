@@ -11,9 +11,9 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     delete: function() {
       return this.delete().then(() => {
         // If you're in the project that was deleted, go back to the default project
-        if ( this.get('id') === this.get('session.projectId') )
+        if ( this.get('id') === this.get('session.'+ C.SESSION.PROJECT) )
         {
-          this.send('switchProject', undefined);
+          window.location.href = window.location.href;
         }
       });
     },
@@ -23,7 +23,12 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     },
 
     deactivate: function() {
-      return this.doAction('deactivate');
+      return this.doAction('deactivate').then(() => {
+        if ( this.get('id') === this.get('session.'+ C.SESSION.PROJECT) )
+        {
+          window.location.href = window.location.href;
+        }
+      });
     },
 
     switchTo: function() {
@@ -36,7 +41,11 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
   isOrg:      Ember.computed.equal('externalIdType', C.PROJECT.TYPE_ORG),
 
   icon: function() {
-    if ( this.get('active') )
+    if ( this.get('isDefault') )
+    {
+      return 'ss-home';
+    }
+    else if ( this.get('active') )
     {
       return 'ss-openfolder';
     }
@@ -44,22 +53,15 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     {
       return 'ss-folder';
     }
-  }.property('active'),
+  }.property('active','isDefault'),
 
-  listIcon: function() {
-    if ( this.get('active') )
-    {
-      return 'ss-check';
-    }
-    else
-    {
-      return this.get('icon');
-    }
-  }.property('icon','active'),
+  isDefault: function() {
+    return this.get('session.' + C.SESSION.PROJECT_DEFAULT) === this.get('id');
+  }.property('session.' + C.SESSION.PROJECT_DEFAULT, 'id'),
 
   active: function() {
-    return this.get('session.projectId') === this.get('id');
-  }.property('session.projectId','id'),
+    return this.get('session.' + C.SESSION.PROJECT) === this.get('id');
+  }.property('session' + C.SESSION.PROJECT, 'id'),
 
   canRemove: function() {
     return !!this.get('actions.remove') && ['removing','removed','purging','purged'].indexOf(this.get('state')) === -1;
@@ -75,14 +77,10 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
       { divider: true },
       { label: 'Restore',       icon: '',         action: 'restore',      enabled: !!a.restore },
       { label: 'Purge',         icon: '',         action: 'purge',        enabled: !!a.purge },
-      { divider: true },
       { label: 'Edit',          icon: '',         action: 'edit',         enabled: !!a.update },
     ];
 
-    if ( this.get('app.isAuthenticationAdmin') )
-    {
-      choices.pushObject({label: 'Switch to Project', icon: 'ss-openfolder', action: 'switchTo', enabled: this.get('state') === 'active' });
-    }
+    choices.pushObject({label: 'Switch to this Project', icon: '', action: 'switchTo', enabled: this.get('state') === 'active' });
 
     return choices;
   }.property('actions.{activate,deactivate,update,restore,purge}','canRemove'),

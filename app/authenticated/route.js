@@ -13,11 +13,17 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     var session = this.get('session');
 
     // Load schemas
-    return store.find('schema', null, {url: 'schemas'}).then((schemas) => {
-      session.set(C.SESSION.ACCOUNT_ID, schemas.xhr.getResponseHeader(C.HEADER.ACCOUNT_ID));
+    var headers = {};
+    headers[C.HEADER.PROJECT] = C.HEADER.PROJECT_USER_SCOPE;
+    return store.find('schema', null, {url: 'schemas', headers: headers}).then((schemas) => {
+      if ( schemas && schemas.xhr )
+      {
+        // Save the account ID into session
+        session.set(C.SESSION.ACCOUNT_ID, schemas.xhr.getResponseHeader(C.HEADER.ACCOUNT_ID));
+      }
 
       var type = session.get(C.SESSION.USER_TYPE);
-      var isAdmin = (type === C.USER.TYPE_ADMIN) || (!type && store.hasRecordFor('schema','githubconfig'));
+      var isAdmin = (type === C.USER.TYPE_ADMIN) || (!this.get('app.authenticationEnabled'));
       this.set('app.isAuthenticationAdmin', isAdmin);
 
       return store.find('project', null, {forceReload: true});
@@ -40,7 +46,12 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     var active = ActiveArrayProxy.create({sourceContent: model});
     controller.set('projects', active);
 
+    this.selectDefaultProject(controller);
+  },
+
+  selectDefaultProject: function(controller) {
     var session = this.get('session');
+    var active = controller.get('projects');
 
     // Figure out the active project
     var project = null;
@@ -77,8 +88,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     else
     {
       // @TODO Then cry?  What happens if you delete the last project?
-      session.set(C.SESSION.PROJECT, undefined);
-      controller.set('project', null);
+      this.send('logout');
     }
   },
 
@@ -97,17 +107,27 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       }
     },
 
+    selectDefaultProject: function() {
+      return this.selectDefaultProject(this.get('controller'));
+    },
+
     refreshProjectDropdown: function() {
       this.get('store').find('project', null, {forceReload: true}).then((res) => {
         this.set('controller.projects.sourceContent', res);
+        this.selectDefaultProject(this.get('controller'));
       });
     },
 
-    switchProject: function(projectId) {
+    switchProject: function(projectId,route) {
       this.get('session').set(C.SESSION.PROJECT, projectId);
       this.get('store').reset();
-      this.transitionTo('index');
+      if ( !projectId )
+      {
+        this.selectDefaultProject();
+      }
+      this.transitionTo(route||'index');
     },
+
 
     setPageLayout: function(opt) {
       this.controller.set('pageName', opt.label || '');

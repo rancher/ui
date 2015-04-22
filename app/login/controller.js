@@ -58,7 +58,14 @@ export default Ember.Controller.extend({
           },
         }).then(function(res) {
           var auth = JSON.parse(res.xhr.responseText);
-          session.setProperties(auth);
+          var interesting = {};
+          C.TOKEN_TO_SESSION_KEYS.forEach((key) => {
+            if ( typeof auth[key] !== 'undefined' )
+            {
+              interesting[key] = auth[key];
+            }
+          });
+          session.setProperties(interesting);
           session.set(C.LOGGED_IN, true);
           var transition = app.get('afterLoginTransition');
           if ( transition )

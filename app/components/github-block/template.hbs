@@ -33,10 +33,18 @@
     {{/if}}
   </div>
   <div class="gh-block-detail clip">
-    {{#if description}}
-      {{description}}
+    {{#if isTeam}}
+      {{#if org}}
+        Team in <a {{bind-attr href=orgUrl}} target="_blank">{{org}}</a> org
+      {{else}}
+        You are not a member of this team.
+      {{/if}}
     {{else}}
-      <i>No Name</i>
+      {{#if description}}
+        {{description}}
+      {{else}}
+        <i>No Name</i>
+      {{/if}}
     {{/if}}
   </div>
 </div>
