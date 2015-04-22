@@ -25,64 +25,73 @@
     </div>
 
     <div class="well">
-      <h4>Authorization</h4>
-      <hr/>
+      <h4>Site Access</h4>
+      {{#if showingAccessControl}}
+        <p class="help-block">
+          Configure who should be allowed to log in and user Rancher.  <b>Note:</b> Members added to projects are automatically allowed.
+        </p>
+        <hr/>
 
-      <div class="row">
-        <div class="col-md-6">
-          <p>Configure who should be allowed to log in and use Rancher.</p>
-          <div class="radio">
-            <label>{{radio-button selection=accessMode value="unrestricted"}} Allow any GitHub user</label>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="radio">
+              <label>{{radio-button selection=accessMode value="unrestricted"}} Allow any GitHub user</label>
+            </div>
+            <div class="radio">
+              <label>{{radio-button selection=accessMode value="restricted"}} Restrict to specific GitHub users and organization members{{#if isRestricted}}:{{/if}}</label>
+            </div>
           </div>
-          <div class="radio">
-            <label>{{radio-button selection=accessMode value="restricted"}} Restrict to specific GitHub users and organization members{{#if isRestricted}}:{{/if}}</label>
-          </div>
-        </div>
-        <div class="col-md-6">
-          {{#if isRestricted}}
-            {{input-github allowTeams=false action="addAuthorized" onError="showError"}}
+          <div class="col-md-6">
+            {{#if isRestricted}}
+              {{input-github allowTeams=false action="addAuthorized" onError="showError"}}
 
-            <hr/>
-            <h5>Authorized Users and Organizations</h5>
+              <hr/>
+              <h5>Authorized Users and Organizations</h5>
 
-            <ul class="list-unstyled gh-block-list">
-              {{#each user in allowedUsers}}
-                <li>
-                  {{#github-block login=user}}
-                    <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeUser" user}}></button>
-                  {{/github-block}}
-                </li>
-              {{/each}}
-              {{#each org in allowedOrganizations}}
-                <li>
-                  {{#github-block login=org}}
-                    <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeOrg" org}}></button>
-                  {{/github-block}}
-                </li>
-              {{/each}}
-            </ul>
-            {{#unless allowedUsers.length}}
-              {{#unless allowedOrganizations.length}}
-                <span class="text-muted">None</span>
+              <ul class="list-unstyled gh-block-list">
+                {{#each user in allowedUsers}}
+                  <li>
+                    {{#github-block login=user}}
+                      <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeUser" user}}></button>
+                    {{/github-block}}
+                  </li>
+                {{/each}}
+                {{#each org in allowedOrganizations}}
+                  <li>
+                    {{#github-block login=org}}
+                      <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeOrg" org}}></button>
+                    {{/github-block}}
+                  </li>
+                {{/each}}
+              </ul>
+              {{#unless allowedUsers.length}}
+                {{#unless allowedOrganizations.length}}
+                  <span class="text-muted">None</span>
+                {{/unless}}
               {{/unless}}
-            {{/unless}}
-          {{/if}}
+            {{/if}}
+          </div>
         </div>
-      </div>
 
-      <hr/>
+        <hr/>
 
-      <button class="btn btn-primary" {{bind-attr disabled=saveDisabled}} {{action "saveAuthorization"}}>
-        {{#if saved}}
-          Saved
-        {{else}}
-          {{#if saving}}
-            <i class="fa fa-spinner fa-spin"></i> Saving...
+        <button class="btn btn-primary" {{bind-attr disabled=saveDisabled}} {{action "saveAuthorization"}}>
+          {{#if saved}}
+            Saved
           {{else}}
-            Save authorization configuration
+            {{#if saving}}
+              <i class="fa fa-spinner fa-spin"></i> Saving...
+            {{else}}
+              Save authorization configuration
+            {{/if}}
           {{/if}}
-        {{/if}}
-      </button>
+        </button>
+      {{else}}
+        <p class="help-block">
+          By default, only users that are a member of a project are allowed to log in and access Rancher.
+        </p>
+        <button class="btn btn-primary" {{action "showAccessControl"}}>Customize</button>
+      {{/if}}
     </div>
 
     <div class="well">

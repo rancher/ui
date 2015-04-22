@@ -29,26 +29,45 @@ export default Ember.ObjectController.extend({
     var users = this.get('originalModel.allowedUsers.length');
     var orgs = this.get('originalModel.allowedOrganizations.length');
 
-    var str = '';
+    var str = 'project members';
     if ( users )
     {
-      str += users + ' GitHub user' + (users === 1 ? '' : 's');
+      str += (orgs ? ', ' : ' and ') +  users + ' GitHub user' + (users === 1 ? '' : 's');
     }
 
     if ( orgs )
     {
-      if ( users )
-      {
-        str += ' and ' + orgs + ' organization' + ( orgs === 1 ? '' : 's');
-      }
-      else
-      {
-        str += orgs + ' GitHub organization' + ( orgs === 1 ? '' : 's');
-      }
+      str += ' and ' + orgs + ' organization' + ( orgs === 1 ? '' : 's');
     }
 
     return str;
   }.property('originalModel.allowedUsers.[]','originalModel.allowedOrganizations.[]','wasRestricted'),
+
+  wasShowing: false,
+  showingAccessControl: function() {
+    var show = this.get('wasShowing');
+    var restricted = this.get('isRestricted');
+
+    if ( restricted )
+    {
+      if ( (this.get('allowedUsers.length') + this.get('allowedOrganizations.length')) > 1 )
+      {
+        show = true;
+      }
+      else if ( this.get('allowedUsers.firstObject') != this.get('session').get(C.SESSION.USER_ID) )
+      {
+        show = true;
+      }
+    }
+    else
+    {
+      show = true;
+    }
+
+
+    this.set('wasShowing', show);
+    return show;
+  }.property('allowedUsers.[]','allowedOrganizations.[]','isRestricted','wasShowing'),
 
   destinationUrl: function() {
     return window.location.origin+'/';
@@ -310,6 +329,10 @@ export default Ember.ObjectController.extend({
       }).finally(() => {
         this.set('confirmDisable', false);
       });
+    },
+
+    showAccessControl: function() {
+      this.set('wasShowing',true);
     },
   },
 });
