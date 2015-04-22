@@ -5,6 +5,11 @@ export default Ember.Route.extend({
     cancel: function() {
       this.goToPrevious();
     },
+
+    didTransition: function() {
+      this._super();
+      this.send('setPageLayout', {label: 'Back', backToPrevious: true});
+    },
   },
 
   model: function(/*params, transition*/) {
@@ -29,9 +34,5 @@ export default Ember.Route.extend({
     neu.set('members', members);
     controller.set('model', neu);
     controller.initFields();
-  },
-
-  renderTemplate: function() {
-    this.render('projects/new', {controller: 'project/edit'});
   },
 });

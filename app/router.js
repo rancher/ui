@@ -21,6 +21,7 @@ Router.map(function() {
       this.route('index', {path: '/'});
 
       this.resource("project", { path: '/:project_id' }, function() {
+        this.route('index', {path: '/'});
         this.route("edit");
       });
     });

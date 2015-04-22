@@ -15,6 +15,7 @@ test('it renders', function(assert) {
 
   // creates the component instance
   var component = this.subject({
+    projects: [],
     store: Ember.Object.create({
       hasRecordFor: function() {}
     }),

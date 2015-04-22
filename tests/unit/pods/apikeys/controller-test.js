@@ -4,7 +4,7 @@ import {
 } from 'ember-qunit';
 
 moduleFor('controller:apikeys', 'ApikeysController', {
-  needs: ['controller:application']
+  needs: ['controller:application','controller:authenticated']
 });
 
 // Replace this with your real tests.
