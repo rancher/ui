@@ -20,7 +20,7 @@ export default Ember.Component.extend({
         this.set('addInput','');
         this.send('addObject', info);
       }).catch(() => {
-        this.sendAction('onError','Unable to find: ' + input);
+        this.sendAction('onError','User or or organizatio not found: ' + input);
       }).finally(() => {
         this.set('checking', false);
       });
