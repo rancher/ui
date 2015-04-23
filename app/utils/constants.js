@@ -19,6 +19,7 @@ export default {
   HEADER: {
     AUTH: 'authorization',
     AUTH_TYPE: 'Bearer',
+    AUTH_FAKE_USER: 'x-api-bearer',
 
     PROJECT: 'x-api-project-id',
     PROJECT_USER_SCOPE: 'user',
