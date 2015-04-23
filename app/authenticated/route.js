@@ -23,11 +23,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         session.set(C.SESSION.ACCOUNT_ID, schemas.xhr.getResponseHeader(C.HEADER.ACCOUNT_ID));
       }
 
+      // Save whether the user is admin
       var type = session.get(C.SESSION.USER_TYPE);
       var isAdmin = (type === C.USER.TYPE_ADMIN) || !isAuthEnabled;
       this.set('app.isAuthenticationAdmin', isAdmin);
 
-      return store.find('project', null, {forceReload: true});
+      // Return the list of projects as the model
+      return this.findUserProjects();
     }).catch((err) => {
       if ( err.status === 401 )
       {
@@ -71,7 +73,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         }
         else if ( this.get('app.isAuthenticationAdmin') )
         {
-          this.get('store').find('project', null, {filter: {all: 'true'}, forceReload: true}).then((all) => {
+          this.findUserProjects().then((all) => {
             var firstActive = all.filterProperty('state','active')[0];
             if ( firstActive )
             {
@@ -143,6 +145,16 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     });
   },
 
+  findUserProjects: function() {
+    var opt = {forceReload: true};
+    if ( !this.get('app.authenticationEnabled') )
+    {
+      opt.filter = {all: 'true'};
+    }
+
+    return this.get('store').find('project', null, opt);
+  },
+
   actions: {
     error: function(err,transition) {
       // Unauthorized error, send back to login screen
@@ -159,7 +171,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     },
 
     refreshProjectDropdown: function() {
-      this.get('store').find('project', null, {forceReload: true}).then((res) => {
+      this.findUserProjects().then((res) => {
         this.set('controller.projects.sourceContent', res);
         this.selectDefaultProject(this.get('controller'));
       });

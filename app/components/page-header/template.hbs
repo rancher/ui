@@ -74,7 +74,13 @@
       </button>
       <ul class="dropdown-menu dropdown-menu-right" role="menu">
         {{#if projectChoices.length}}
-          <li role="presentation" class="dropdown-header">Your Projects:</li>
+          <li role="presentation" class="dropdown-header">
+            {{#if app.authenticationEnabled}}
+              Your Projects:
+            {{else}}
+              All Projects:
+            {{/if}}
+          </li>
           {{#each p in projectChoices itemController="project"}}
             <li {{bind-attr class="p.active:disabled p.active:selected"}}>
               <a {{action "switchProject" p.id}} class="clip">
@@ -85,7 +91,9 @@
             </li>
           {{/each}}
         {{/if}}
-        <li role="presentation" class="divider"></li>
+        {{#if projectChoices.length}}
+          <li role="presentation" class="divider"></li>
+        {{/if}}
         {{#if projectIsMissing}}
           <li role="presentation" class="dropdown-header">Not Your Project:</li>
           {{#with project as p controller="project"}}
