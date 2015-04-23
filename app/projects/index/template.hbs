@@ -1,6 +1,9 @@
 <section>
   <p>Rancher supports grouping resources into multiple <b>projects</b>.  Each project gets its own set of hosts and other resources, and is owned by a single GitHub user, team or organization.</p>
   <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; projects to keep logical environments isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; project to a small team.</p>
+  {{#unless controllers.authenticated.project}}
+    <div class="alert alert-danger"><i class="ss-alert"></i> There are no active projects.  You will need to create or activate one before you can do anything else.</div>
+  {{/unless}}
 </section>
 
 <section class="grid-header">
