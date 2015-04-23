@@ -61,6 +61,30 @@ export function addQueryParam(url, key, val) {
   return url + (url.indexOf('?') >= 0 ? '&' : '?') + key + '=' + encodeURIComponent(val);
 }
 
+export function absoluteUrl(url) {
+  var a = document.createElement('a');
+  a.href = url;
+  return a.cloneNode(false).href;
+}
+
+export function addAuthorization(url, user, pass) {
+  url = absoluteUrl(url);
+  var pos = url.indexOf('//');
+  if ( pos >= 0 )
+  {
+    url = url.substr(0,pos+2) +
+          (user ? encodeURIComponent(user) : '') +
+          (pass ? ':' + encodeURIComponent(pass) : '') +
+          '@' + url.substr(pos+2);
+  }
+  else
+  {
+    throw new Error("That doesn't look like a URL: " + url);
+  }
+
+  return url;
+}
+
 export function ucFirst(str) {
   str = str||'';
   return str.substr(0,1).toUpperCase() + str.substr(1);
@@ -73,6 +97,8 @@ var Util = {
   popupWindowOptions: popupWindowOptions,
   escapeHtml: escapeHtml,
   addQueryParam: addQueryParam,
+  absoluteUrl: absoluteUrl,
+  addAuthorization: addAuthorization,
   ucFirst: ucFirst
 };
 

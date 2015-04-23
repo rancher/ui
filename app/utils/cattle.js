@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import ApiError from 'ember-api-store/models/error';
+import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 function modelProxy(methodName) {
   return function(/*arguments*/) {
@@ -10,12 +12,18 @@ function modelProxy(methodName) {
 }
 
 var ResourceController = Ember.ObjectController.extend({
-  needs: ['application'],
+  needs: ['application','authenticated'],
   actions: {
     goToApi: function() {
       var url = this.get('links.self'); // http://a.b.c.d/v1/things/id, a.b.c.d is where the UI is running
       var endpoint = this.get('controllers.application.absoluteEndpoint'); // http://e.f.g.h/ , does not include version.  e.f.g.h is where the API actually is.
       url = url.replace(/https?:\/\/[^\/]+\/?/,endpoint);
+
+      if ( this.get('app.authenticationEnabled') )
+      {
+        url = Util.addAuthorization(url, C.HEADER.AUTH_FAKE_USER +'=' + this.get('session.'+C.SESSION.PROJECT), this.get('session.'+C.SESSION.TOKEN));
+      }
+
       window.open(url, '_blank');
     },
   },

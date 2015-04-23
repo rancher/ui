@@ -1,5 +1,6 @@
 import Cattle from 'ui/utils/cattle';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 export default Cattle.CollectionController.extend({
   needs: ['application','authenticated'],
@@ -17,15 +18,13 @@ export default Cattle.CollectionController.extend({
   }.property('controllers.application.absoluteEndpoint','app.apiEndpoint'),
 
   endpointWithAuth: function() {
-    var session = this.get('session');
-    var endpoint = this.get('endpoint');
-    var pos = endpoint.indexOf('//');
+    var url = this.get('endpoint');
 
-    endpoint = endpoint.substr(0,pos+2) +
-               'x-api-bearer=' + session.get(C.SESSION.PROJECT) +
-               ':' + session.get(C.SESSION.TOKEN) +
-               '@' + endpoint.substr(pos+2);
+    if ( this.get('app.authenticationEnabled') )
+    {
+      url = Util.addAuthorization(url, C.HEADER.AUTH_FAKE_USER +'=' + this.get('session.'+C.SESSION.PROJECT), this.get('session.'+C.SESSION.TOKEN));
+    }
 
-    return endpoint;
+    return url;
   }.property('endpoint', 'session.'+C.SESSION.TOKEN,'session.'+C.SESSION.PROJECT)
 });

@@ -19,7 +19,9 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     },
 
     activate: function() {
-      return this.doAction('activate');
+      return this.doAction('activate').then(() => {
+        this.send('refreshProjectDropdown');
+      });
     },
 
     deactivate: function() {
