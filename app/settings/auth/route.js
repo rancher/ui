@@ -1,9 +1,14 @@
 import AuthenticatedRouteMixin from 'ui/mixins/authenticated-route';
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin,{
   model: function() {
-    return this.get('store').find('githubconfig', null, {forceReload: true}).then(function(collection) {
+
+    var headers = {};
+    headers[C.HEADER.PROJECT] = C.HEADER.PROJECT_USER_SCOPE;
+
+    return this.get('store').find('githubconfig', null, {headers: headers, forceReload: true}).then(function(collection) {
       return collection.get('firstObject');
     });
   },

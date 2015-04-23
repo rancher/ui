@@ -1,13 +1,15 @@
 import Cattle from 'ui/utils/cattle';
 import C from 'ui/utils/constants';
 
-var Setting = Cattle.TransitioningResource.extend({
+var GithubConfig = Cattle.TransitioningResource.extend({
+  type: 'githubConfig',
 });
 
-Setting.reopenClass({
+// Projects don't get pushed by /subscribe WS, so refresh more often
+GithubConfig.reopenClass({
   headers: {
     [C.HEADER.PROJECT]: C.HEADER.PROJECT_USER_SCOPE, // Requests for projects use the user's scope, not the project
   }
 });
 
-export default Setting;
+export default GithubConfig;
