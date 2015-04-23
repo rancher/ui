@@ -1,0 +1,32 @@
+<form {{action "add" on="submit"}}>
+  <div class="input-group">
+    {{input type="text" value=addInput placeholder="Add a GitHub user or organization name" class="form-control"}}
+    <div class="input-group-btn">
+      {{#if checking}}
+        <button class="btn btn-primary btn-disabled"><i class="fa fa-circle-o-notch fa-spin"></i></button>
+      {{else}}
+        <button class="btn btn-primary" {{action "add"}}><i class="ss-plus"></i></button>
+      {{/if}}
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+      <ul class="dropdown-menu dropdown-menu-right" role="menu" style="min-width: 250px; max-height: 300px; overflow-y: auto;">
+        <li role="presentation" class="dropdown-header">Your Organizations{{#if allowTeams}} and Teams{{/if}}</li>
+        {{#each item in orgChoices}}
+          <li>
+            <a {{action "addObject" item}}>
+                {{github-block login=item.id link=false}}
+            </a>
+          </li>
+          {{#if allowTeams}}
+            {{#each team in item.teams}}
+              <li style="margin-left: 15px;">
+                <a {{action "addObject" team}}>
+                  <i class="ss-users"></i> {{team.name}}
+                </a>
+              </li>
+            {{/each}}
+          {{/if}}
+        {{/each}}
+      </ul>
+    </div>
+  </div>
+</form>

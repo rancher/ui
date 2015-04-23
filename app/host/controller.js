@@ -59,14 +59,16 @@ var HostController = Cattle.TransitioningResourceController.extend(DownloadMachi
     return out;
   }.property('actions.{activate,deactivate,remove,purge}'),
 
+  triedToGetIp: false,
   displayIp: function() {
     var obj = (this.get('ipAddresses')||[]).get('firstObject');
     if ( obj )
     {
       return obj.get('address');
     }
-    else if ( this && this.hasLink && this.hasLink('ipAddresses') )
+    else if ( this && this.hasLink && this.hasLink('ipAddresses') && !this.get('triedToGetIp'))
     {
+      this.set('triedToGetIp',true);
       this.importLink('ipAddresses');
     }
 

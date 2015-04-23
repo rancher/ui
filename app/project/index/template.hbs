@@ -1,0 +1,69 @@
+{{partial "transitioning-progress"}}
+
+<section>
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>
+        {{displayName}}
+        {{resource-actions-menu model=this choices=availableActions style="display: inline"}}
+      </h3>
+    </div>
+    <div class="col-sm-6 text-right">
+      <h3 {{bind-attr class=":instance-status stateColor"}}>
+        <i {{bind-attr class="stateIcon"}}></i> {{displayState}}
+      </h3>
+      <div {{bind-attr class=":force-wrap isError:text-danger:text-muted showTransitioningMessage::hide"}}>
+        {{transitioningMessage}}
+      </div>
+    </div>
+  </div>
+</section>
+
+{{#if description}}
+  <section>
+    <div class="well">
+      <label>Description</label>
+      <p>{{description}}</p>
+    </div>
+  </section>
+{{/if}}
+
+<section>
+  <div class="well">
+    <label>Members</label>
+    <table class="grid fixed" style="margin-bottom: 0;">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each member in projectMembers itemController="projectmember"}}
+          <tr>
+            <td>
+              {{#if member.isRancher}}
+                {{#if member.isMyRancher}}
+                  My Rancher Account
+                {{else}}
+                  Rancher Account: {{member.name}} ({{member.externalId}})
+                {{/if}}
+              {{else}}
+                {{github-block type=member.githubType login=member.externalId fallback=member.name}}
+              {{/if}}
+            </td>
+            <td>{{member.displayType}}</td>
+            <td>
+              {{uc-first member.role}}
+            </td>
+          </tr>
+        {{else}}
+          <tr>
+            <td colspan="3" class="text-center text-muted">This project has no members.</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</section>

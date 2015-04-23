@@ -15,9 +15,8 @@ Project.reopenClass({
   pollTransitioningInterval: 5000,
 
   headers: {
-    [C.PROJECT_HEADER]: undefined, // Don't send project ID header for any requests to that type
+    [C.HEADER.PROJECT]: C.HEADER.PROJECT_USER_SCOPE, // Requests for projects use the user's scope, not the project
   }
-
 });
 
 export default Project;

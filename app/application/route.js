@@ -42,8 +42,9 @@ export default Ember.Route.extend({
 
     error: function(err) {
       this.controllerFor('application').set('error',err);
+      this.set('app.showArticles',false);
       this.transitionTo('failWhale');
-      console.log('Application ' + err.stack);
+      console.log('Application Error', (err ? err.stack : undefined));
     },
 
     goToPrevious: function() {

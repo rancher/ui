@@ -1,23 +1,38 @@
-import OverlayRoute from 'ui/overlay/route';
+import Ember from 'ember';
 
-export default OverlayRoute.extend({
+export default Ember.Route.extend({
   actions: {
     cancel: function() {
       this.goToPrevious();
     },
+
+    didTransition: function() {
+      this._super();
+      this.send('setPageLayout', {label: 'Back', backPrevious: true});
+    },
   },
 
   model: function(/*params, transition*/) {
-    return this.modelFor('project');
+    var project = this.modelFor('project');
+    return project.followLink('projectMembers').then(function(members) {
+      return {
+        project: project,
+        members: members,
+      };
+    });
   },
 
-  setupController: function(controller,model) {
-    this._super();
-    controller.set('model', model);
-    controller.set('editing',true);
-  },
+  setupController: function(controller, model) {
+    var project = model.project;
+    controller.set('originalModel', project);
 
-  renderTemplate: function() {
-    this.render('projects/new', {into: 'application', outlet: 'overlay', controller: 'project/edit'});
+    var neu = project.clone();
+    var members = [];
+    model.members.forEach(function(member) {
+      members.push(member.clone());
+    });
+    neu.set('members', members);
+    controller.set('model', neu);
+    controller.initFields();
   },
 });

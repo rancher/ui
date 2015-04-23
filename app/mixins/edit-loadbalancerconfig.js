@@ -71,7 +71,7 @@ export default Ember.Mixin.create({
 
     if ( this.get('config.healthCheck') )
     {
-      this.set('config.healthCheck.uri', out);
+      this.set('config.healthCheck.requestLine', out);
     }
   }.observes('uriMethod','uriPath','uriVersion','uriHost'),
 

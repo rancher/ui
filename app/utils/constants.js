@@ -2,35 +2,69 @@ export default {
   LOGGED_IN: 'isLoggedIn',
   ACCESS_WARNING: 'accessWarning',
 
-  GITHUB_URL: 'https://www.github.com/',
-  GITHUB_API_URL: 'https://api.github.com/',
-  GITHUB_PROXY_URL: '/github/',
+  SESSION: {
+    TOKEN: 'jwt',
+    USER_ID: 'user',
+    ACCOUNT_ID: 'accountId',
+    USER_TYPE: 'userType',
+    PROJECT: 'projectId',
+    PROJECT_DEFAULT: 'defaultProject',
+    GITHUB_CACHE: 'githubCache',
+    GITHUB_ORGS: 'orgs',
+    GITHUB_TEAMS: 'teams',
+  },
 
-  AUTH_HEADER: 'authorization',
-  AUTH_SESSION_KEY: 'jwt',
-  AUTH_TYPE: 'Bearer',
+  TOKEN_TO_SESSION_KEYS: ['accountId', 'defaultProject','jwt','orgs','teams','user','userType'],
 
-  USER_TYPE_NORMAL: 'user',
-  USER_TYPE_ADMIN: 'admin',
-  USER_TYPE_SESSION_KEY: 'userType',
+  HEADER: {
+    AUTH: 'authorization',
+    AUTH_TYPE: 'Bearer',
 
-  PROJECT_HEADER: 'x-api-project-id',
-  PROJECT_SESSION_KEY: 'projectId',
-  PROJECT_TYPE_DEFAULT: 'default',
-  PROJECT_TYPE_USER:    'project:github_user',
-  PROJECT_TYPE_TEAM:    'project:github_team',
-  PROJECT_TYPE_ORG:     'project:github_org',
+    PROJECT: 'x-api-project-id',
+    PROJECT_USER_SCOPE: 'user',
 
-  NO_CHALLENGE_HEADER: 'x-api-no-challenge',
-  NO_CHALLENGE_VALUE: 'true',
+    NO_CHALLENGE: 'x-api-no-challenge',
+    NO_CHALLENGE_VALUE: 'true',
 
-  SETTING_API_HOST: 'api.host',
+    ACCOUNT_ID: 'x-api-account-id',
+  },
 
-  KEY_LEFT: 37,
-  KEY_UP: 38,
-  KEY_RIGHT: 39,
-  KEY_DOWN: 40,
-  KEY_ESCAPE: 27,
-  KEY_CR: 13,
-  KEY_LF: 10,
+  USER: {
+    TYPE_NORMAL: 'user',
+    TYPE_ADMIN: 'admin',
+  },
+
+  GITHUB: {
+    URL: 'https://www.github.com/',
+    API_URL: 'https://api.github.com/',
+    PROXY_URL: '/github/',
+  },
+
+  PROJECT: {
+    TYPE_RANCHER: 'rancher_id',
+    TYPE_USER:    'github_user',
+    TYPE_TEAM:    'github_team',
+    TYPE_ORG:     'github_org',
+    ROLE_MEMBER:  'member',
+    ROLE_OWNER:   'owner',
+    FROM_GITHUB: {
+      'user': 'github_user',
+      'team': 'github_team',
+      'org': 'github_org',
+    },
+  },
+
+  SETTING: {
+    API_HOST: 'api.host',
+  },
+
+  KEY: {
+    LEFT: 37,
+    UP: 38,
+    RIGHT: 39,
+    DOWN: 40,
+    ESCAPE: 27,
+    CR: 13,
+    LF: 10,
+  }
 };

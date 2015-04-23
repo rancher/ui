@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import GithubUserInfoMixin from 'ui/mixins/github-user-info';
+import GithubInfoMixin from 'ui/mixins/github-info';
 
-export default Ember.Component.extend(GithubUserInfoMixin,{
+export default Ember.Component.extend(GithubInfoMixin,{
   classNames: ['gh-avatar'],
   link: true,
 });

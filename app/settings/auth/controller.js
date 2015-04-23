@@ -6,7 +6,7 @@ import C from 'ui/utils/constants';
 export default Ember.ObjectController.extend({
   needs: ['application'],
   confirmDisable: false,
-  error: null,
+  errors: null,
   testing: false,
   saving: false,
   saved: true,
@@ -22,10 +22,60 @@ export default Ember.ObjectController.extend({
   }.property('clientId','clientSecret','testing'),
 
   saveDisabled: Ember.computed.or('saving','saved'),
+  isRestricted: Ember.computed.equal('accessMode','restricted'),
+
+  wasRestricted: Ember.computed.equal('originalModel.accessMode','restricted'),
+  wasRestrictedMsg: function() {
+    var users = this.get('originalModel.allowedUsers.length');
+    var orgs = this.get('originalModel.allowedOrganizations.length');
+
+    var str = 'project members';
+    if ( users )
+    {
+      str += (orgs ? ', ' : ' and ') +  users + ' GitHub user' + (users === 1 ? '' : 's');
+    }
+
+    if ( orgs )
+    {
+      str += ' and ' + orgs + ' organization' + ( orgs === 1 ? '' : 's');
+    }
+
+    return str;
+  }.property('originalModel.allowedUsers.[]','originalModel.allowedOrganizations.[]','wasRestricted'),
+
+  wasShowing: false,
+  showingAccessControl: function() {
+    var show = this.get('wasShowing');
+    var restricted = this.get('isRestricted');
+
+    if ( restricted )
+    {
+      if ( (this.get('allowedUsers.length') + this.get('allowedOrganizations.length')) > 1 )
+      {
+        show = true;
+      }
+      else if ( this.get('allowedUsers.firstObject') !== this.get('session').get(C.SESSION.USER_ID) )
+      {
+        show = true;
+      }
+    }
+    else
+    {
+      show = true;
+    }
+
+
+    this.set('wasShowing', show);
+    return show;
+  }.property('allowedUsers.[]','allowedOrganizations.[]','isRestricted','wasShowing'),
 
   destinationUrl: function() {
     return window.location.origin+'/';
   }.property(),
+
+  accessModeChanged: function() {
+    this.set('saved',false);
+  }.observes('accessMode'),
 
   actions: {
     test: function() {
@@ -37,6 +87,7 @@ export default Ember.ObjectController.extend({
         'clientId': model.get('clientId').trim(),
         'clientSecret': model.get('clientSecret').trim(),
         'enabled': false, // It should already be, but just in case..
+        'accessMode': 'unrestricted',
         'allowedOrganizations': [],
         'allowedUsers': []
       });
@@ -63,8 +114,8 @@ export default Ember.ObjectController.extend({
 
       torii.open('github-oauth2',{windowOptions: util.popupWindowOptions()}).then(github => {
         var headers = {};
-        headers[C.AUTH_HEADER] = undefined; // Explicitly not send auth
-        headers[C.PROJECT_HEADER] = undefined; // Explicitly not send project
+        headers[C.HEADER.AUTH] = undefined; // Explicitly not send auth
+        headers[C.HEADER.PROJECT] = undefined; // Explicitly not send project
 
         return this.get('store').rawRequest({
           url: 'token',
@@ -106,12 +157,13 @@ export default Ember.ObjectController.extend({
       var model = this.get('model');
       model.setProperties({
         'enabled': true,
+        'accessMode': 'restricted',
         'allowedOrganizations': [],
         'allowedUsers': [auth.user],
       });
 
       model.save().then(() => {
-        return this.get('store').find('setting', C.SETTING_API_HOST).then((setting) => {
+        return this.get('store').find('setting', C.SETTING.API_HOST).then((setting) => {
           if ( setting.get('value') )
           {
             this.send('waitAndRefresh', true);
@@ -144,8 +196,8 @@ export default Ember.ObjectController.extend({
 
       setTimeout(() => {
         var headers = {};
-        headers[C.AUTH_HEADER] = undefined; // Explicitly not send auth
-        headers[C.PROJECT_HEADER] = undefined; // Explicitly not send project
+        headers[C.HEADER.AUTH] = undefined; // Explicitly not send auth
+        headers[C.HEADER.PROJECT] = undefined; // Explicitly not send project
 
         this.get('store').rawRequest({
           url: 'schemas',
@@ -176,16 +228,23 @@ export default Ember.ObjectController.extend({
       }
     },
 
-    addUser: function() {
+    addAuthorized: function(data) {
       this.send('clearError');
       this.set('saved', false);
 
-      var str = (this.get('addUserInput')||'').trim();
-      if ( str )
+      if ( data.type === 'user' )
       {
-        this.get('allowedUsers').pushObject(str);
-        this.set('addUserInput','');
+        this.get('allowedUsers').pushObject(data.id);
       }
+      else
+      {
+        this.get('allowedOrganizations').pushObject(data.id);
+      }
+    },
+
+    githubNotFound: function(login) {
+      this.send('showError',"User '"+ login + "' not found");
+      this.send('removeUser',login);
     },
 
     removeUser: function(login) {
@@ -193,40 +252,28 @@ export default Ember.ObjectController.extend({
       this.get('allowedUsers').removeObject(login);
     },
 
-    addOrg: function(str) {
-      this.send('clearError');
-      this.set('saved', false);
-
-      str = (str||'').trim();
-      if ( str )
-      {
-        this.get('allowedOrganizations').pushObject(str);
-        this.set('addOrgInput','');
-      }
-    },
-
     removeOrg: function(login) {
       this.set('saved', false);
       this.get('allowedOrganizations').removeObject(login);
     },
 
-    userNotFound: function(login) {
-      this.send('showError',"User '"+ login + "' not found");
-      this.send('removeUser',login);
-    },
-
-    orgNotFound: function(login) {
-      this.send('showError',"Organization '"+ login + "' not found");
-      this.send('removeOrg',login);
-    },
-
     saveAuthorization: function() {
       this.send('clearError');
+
+      if ( this.get('isRestricted') && !this.get('allowedUsers.length') && !this.get('allowedOrganizations.length'))
+      {
+        this.send('showError','Add at least one authorized user or organization');
+        return;
+      }
+
       this.set('saving', true);
       this.set('saved', false);
 
       var model = this.get('model');
       model.save().then(() => {
+        this.get('originalModel').replaceWith(model);
+        this.set('originalModel.allowedOrganizations', this.get('allowedOrganizations').slice());
+        this.set('originalModel.allowedUsers', this.get('allowedUsers').slice());
         this.set('saved', true);
       }).catch((err) => {
         this.send('gotError', err);
@@ -237,6 +284,9 @@ export default Ember.ObjectController.extend({
 
     promptDisable: function() {
       this.set('confirmDisable', true);
+      Ember.run.later(this, function() {
+        this.set('confirmDisable', false);
+      }, 10000);
     },
 
     gotError: function(err) {
@@ -251,12 +301,12 @@ export default Ember.ObjectController.extend({
     },
 
     showError: function(msg) {
-      this.set('error', msg);
+      this.set('errors', [msg]);
       window.scrollY = 0;
     },
 
     clearError: function() {
-      this.set('error', '');
+      this.set('errors', null);
     },
 
     disable: function() {
@@ -266,6 +316,7 @@ export default Ember.ObjectController.extend({
       model.setProperties({
         'allowedOrganizations': [],
         'allowedUsers': [],
+        'accessMode': 'unrestricted',
         'enabled': false,
       });
 
@@ -278,6 +329,10 @@ export default Ember.ObjectController.extend({
       }).finally(() => {
         this.set('confirmDisable', false);
       });
+    },
+
+    showAccessControl: function() {
+      this.set('wasShowing',true);
     },
   },
 });

@@ -12,7 +12,7 @@
     {{else}}
       {{#if isTeam}}
         <div class="gh-placeholder">
-          <i class="fa fa-2x fa-users"></i>
+          <i class="fa-2x ss-users"></i>
         </div>
       {{else}}
         <div class="gh-placeholder"></div>
@@ -22,21 +22,29 @@
 {{/if}}
 <div class="gh-block-content">
   <div class="clip gh-block-name">
-    {{#if isTeam}}
-      {{name}}
-    {{else}}
+    {{#if url}}
       {{#if link}}
         <a {{bind-attr href=url}} target="_blank">{{name}}</a>
       {{else}}
         {{name}}
       {{/if}}
+    {{else}}
+      {{name}}
     {{/if}}
   </div>
   <div class="gh-block-detail clip">
-    {{#if description}}
-      {{description}}
+    {{#if isTeam}}
+      {{#if org}}
+        Team in <a {{bind-attr href=orgUrl}} target="_blank">{{org}}</a> org
+      {{else}}
+        You are not a member of this team.
+      {{/if}}
     {{else}}
-      <i>No Name</i>
+      {{#if description}}
+        {{description}}
+      {{else}}
+        <i>No Name</i>
+      {{/if}}
     {{/if}}
   </div>
 </div>

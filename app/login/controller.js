@@ -46,8 +46,8 @@ export default Ember.Controller.extend({
 
       self.get('torii').open('github-oauth2',{windowOptions: util.popupWindowOptions()}).then(function(github){
         var headers = {};
-        headers[C.AUTH_HEADER] = undefined; // Explictly not send auth
-        headers[C.PROJECT_HEADER] = undefined; // Explictly not send project
+        headers[C.HEADER.AUTH] = undefined; // Explictly not send auth
+        headers[C.HEADER.PROJECT] = undefined; // Explictly not send project
 
         return self.get('store').rawRequest({
           url: 'token',
@@ -58,7 +58,14 @@ export default Ember.Controller.extend({
           },
         }).then(function(res) {
           var auth = JSON.parse(res.xhr.responseText);
-          session.setProperties(auth);
+          var interesting = {};
+          C.TOKEN_TO_SESSION_KEYS.forEach((key) => {
+            if ( typeof auth[key] !== 'undefined' )
+            {
+              interesting[key] = auth[key];
+            }
+          });
+          session.setProperties(interesting);
           session.set(C.LOGGED_IN, true);
           var transition = app.get('afterLoginTransition');
           if ( transition )

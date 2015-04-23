@@ -11,7 +11,8 @@ export default Ember.Component.extend({
   },
 
   showAccessWarning: function() {
-    return !this.get('app.authenticationEnabled') &&
+    return this.get('app.showArticles') !== false &&
+           !this.get('app.authenticationEnabled') &&
            this.get('prefs.'+C.ACCESS_WARNING) !== false;
-  }.property('app.authenticationEnabled','prefs.'+C.ACCESS_WARNING)
+  }.property('app.showArticles','app.authenticationEnabled','prefs.'+C.ACCESS_WARNING)
 });

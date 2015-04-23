@@ -11,9 +11,9 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     delete: function() {
       return this.delete().then(() => {
         // If you're in the project that was deleted, go back to the default project
-        if ( this.get('id') === this.get('session.projectId') )
+        if ( this.get('id') === this.get('session.'+ C.SESSION.PROJECT) )
         {
-          this.send('switchProject', undefined);
+          window.location.href = window.location.href;
         }
       });
     },
@@ -21,82 +21,87 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     activate: function() {
       return this.doAction('activate');
     },
+
+    deactivate: function() {
+      return this.doAction('deactivate').then(() => {
+        if ( this.get('id') === this.get('session.'+ C.SESSION.PROJECT) )
+        {
+          window.location.href = window.location.href;
+        }
+      });
+    },
+
+    setAsDefault: function() {
+      var headers = {};
+      headers[C.HEADER.PROJECT] = C.HEADER.PROJECT_USER_SCOPE;
+
+      return this.doAction('setasdefault', undefined, headers).then(() => {
+        this.get('session').set(C.SESSION.PROJECT_DEFAULT, this.get('id'));
+      });
+    },
+
+    switchTo: function() {
+      this.send('switchProject', this.get('id'));
+    },
   },
 
-  isDefault:  Ember.computed.equal('externalIdType', C.PROJECT_TYPE_DEFAULT),
-  isUser:     Ember.computed.equal('externalIdType', C.PROJECT_TYPE_USER),
-  isTeam:     Ember.computed.equal('externalIdType', C.PROJECT_TYPE_TEAM),
-  isOrg:      Ember.computed.equal('externalIdType', C.PROJECT_TYPE_ORG),
+  isUser:     Ember.computed.equal('externalIdType', C.PROJECT.TYPE_USER),
+  isTeam:     Ember.computed.equal('externalIdType', C.PROJECT.TYPE_TEAM),
+  isOrg:      Ember.computed.equal('externalIdType', C.PROJECT.TYPE_ORG),
 
   icon: function() {
-    var icon = 'ss-help';
-
-    switch ( this.get('externalIdType') )
+    if ( this.get('isDefault') )
     {
-      case C.PROJECT_TYPE_DEFAULT:  icon = 'ss-home';  break;
-      case C.PROJECT_TYPE_USER:     icon = 'ss-user';  break;
-      case C.PROJECT_TYPE_TEAM:     icon = 'ss-users'; break;
-      case C.PROJECT_TYPE_ORG:      icon = 'ss-usergroup'; break;
+      return 'ss-home';
     }
-
-    return icon;
-  }.property('externalIdType'),
-
-  listIcon: function() {
-    if ( this.get('active') )
+    else if ( this.get('active') )
     {
-      return 'ss-check';
+      return 'ss-openfolder';
     }
     else
     {
-      return this.get('icon');
+      return 'ss-folder';
     }
-  }.property('icon','active'),
+  }.property('active','isDefault'),
 
-  githubType: function() {
-    switch (this.get('externalIdType') )
-    {
-      case C.PROJECT_TYPE_DEFAULT: return 'user';
-      case C.PROJECT_TYPE_USER: return 'user';
-      case C.PROJECT_TYPE_TEAM: return 'team';
-      case C.PROJECT_TYPE_ORG: return 'org';
-    }
-  }.property('externalIdType'),
-
-  githubLogin: function() {
-    var type = this.get('externalIdType');
-
-    if ( type === C.PROJECT_TYPE_DEFAULT )
-    {
-        return this.get('session.user');
-    }
-
-    return this.get('externalId');
-  }.property('externalIdType', 'externalId'),
+  isDefault: function() {
+    return this.get('session.' + C.SESSION.PROJECT_DEFAULT) === this.get('id');
+  }.property('session.' + C.SESSION.PROJECT_DEFAULT, 'id'),
 
   active: function() {
-    return this.get('session.projectId') === this.get('id');
-  }.property('session.projectId','id'),
+    return this.get('session.' + C.SESSION.PROJECT) === this.get('id');
+  }.property('session' + C.SESSION.PROJECT, 'id'),
 
   canRemove: function() {
-    return ['removing','removed','purging','purged'].indexOf(this.get('state')) === -1;
-  }.property('state'),
+    return !!this.get('actions.remove') && ['removing','removed','purging','purged'].indexOf(this.get('state')) === -1;
+  }.property('state','actions.remove'),
+
+  canSetDefault: function() {
+    return this.get('state') === 'active' && this.hasAction('setasdefault') && !this.get('isDefault');
+  }.property('state','actions.setasdefault','isDefault'),
 
   availableActions: function() {
     var a = this.get('actions');
 
     var choices = [
       { label: 'Activate',      icon: 'ss-play',  action: 'activate',     enabled: !!a.activate},
+      { label: 'Deactivate',    icon: 'ss-pause', action: 'deactivate',     enabled: !!a.deactivate},
       { label: 'Delete',        icon: 'ss-trash', action: 'promptDelete', enabled: this.get('canRemove'), altAction: 'delete' },
       { divider: true },
       { label: 'Restore',       icon: '',         action: 'restore',      enabled: !!a.restore },
       { label: 'Purge',         icon: '',         action: 'purge',        enabled: !!a.purge },
-      { divider: true },
       { label: 'Edit',          icon: '',         action: 'edit',         enabled: !!a.update },
     ];
 
+    choices.pushObject({label: 'Switch to this Project', icon: '', action: 'switchTo', enabled: this.get('state') === 'active' });
+
+    if ( this.get('app.authenticationEnabled') )
+    {
+      choices.pushObject({label: 'Set as my default Project', icon: '', action: 'setAsDefault', enabled: this.get('canSetDefault')});
+    }
+
     return choices;
-  }.property('actions.{update,restore,remove,purge}','canRemove'),
+  }.property('actions.{activate,deactivate,update,restore,purge}','canRemove','canSetDefault'),
 });
 
 ProjectController.reopenClass({

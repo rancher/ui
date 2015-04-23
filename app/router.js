@@ -18,10 +18,12 @@ Router.map(function() {
 
     this.resource('projects', { path: '/projects' }, function() {
       this.route('new', {route: '/add'});
-    });
+      this.route('index', {path: '/'});
 
-    this.resource("project", { path: '/projects/:project_id' }, function() {
-      this.route("edit");
+      this.resource("project", { path: '/:project_id' }, function() {
+        this.route('index', {path: '/'});
+        this.route("edit");
+      });
     });
 
     this.resource('hosts', { path: '/hosts'}, function() {

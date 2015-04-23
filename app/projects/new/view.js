@@ -1,13 +1,14 @@
-import Overlay from 'ui/overlay/view';
+import Ember from 'ember';
 
-export default Overlay.extend({
-  actions: {
-    overlayClose: function() {
-      this.get('controller').send('cancel');
-    },
+export default Ember.View.extend({
+  didInsertElement: function() {
+    $('BODY').addClass('white');
+    this.$('INPUT')[0].focus();
+    this._super();
+  },
 
-    overlayEnter: function() {
-      this.get('controller').send('save');
-    },
+  willDestroyElement: function() {
+    $('BODY').removeClass('white');
+    this._super();
   },
 });

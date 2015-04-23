@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Socket from 'ui/utils/socket';
 import Util from 'ui/utils/util';
 import AuthenticatedRouteMixin from 'ui/mixins/authenticated-route';
+import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
@@ -12,27 +13,20 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     var session = this.get('session');
 
     // Load schemas
-    return store.find('schema', null, {url: 'schemas'}).then((/*schemas*/) => {
-      var isAdmin = session.get(C.USER_TYPE_SESSION_KEY) === C.USER_TYPE_ADMIN;
-      // Save whether the user is an admin or not.
-      // For cattle >= v0.6 the token response will have userType: admin/user, for older look for a schema
-      this.set('app.isAuthenticationAdmin', isAdmin || store.hasRecordFor('schema','githubconfig'));
-
-      // Load all the projects
-      var supportsProjects = this.get('app.authenticationEnabled') && store.hasRecordFor('schema','project');
-      this.set('app.projectsEnabled', supportsProjects);
-
-      if ( supportsProjects )
+    var headers = {};
+    headers[C.HEADER.PROJECT] = C.HEADER.PROJECT_USER_SCOPE;
+    return store.find('schema', null, {url: 'schemas', headers: headers}).then((schemas) => {
+      if ( schemas && schemas.xhr )
       {
-        return store.find('project').catch(() => {
-          this.set('app.projectsEnabled', false);
-          return Ember.RSVP.resolve();
-        });
+        // Save the account ID into session
+        session.set(C.SESSION.ACCOUNT_ID, schemas.xhr.getResponseHeader(C.HEADER.ACCOUNT_ID));
       }
-      else
-      {
-        return Ember.RSVP.resolve();
-      }
+
+      var type = session.get(C.SESSION.USER_TYPE);
+      var isAdmin = (type === C.USER.TYPE_ADMIN) || (!this.get('app.authenticationEnabled'));
+      this.set('app.isAuthenticationAdmin', isAdmin);
+
+      return store.find('project', null, {forceReload: true});
     }).catch((err) => {
       if ( err.status === 401 )
       {
@@ -45,33 +39,67 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     });
   },
 
-  setupController: function(controller /*, model*/) {
+  setupController: function(controller, model) {
     this._super.apply(this,arguments);
 
-    if ( this.get('app.projectsEnabled') )
-    {
-      var all = this.get('store').all('project');
-      controller.set('projects', all);
+    // Load all the active projects
+    var active = ActiveArrayProxy.create({sourceContent: model});
+    controller.set('projects', active);
 
-      var projectId = this.get('session').get(C.PROJECT_SESSION_KEY);
-      if ( projectId )
-      {
-        var project = all.filterBy('id', projectId)[0];
+    this.selectDefaultProject(controller);
+  },
+
+  selectDefaultProject: function(controller) {
+    var session = this.get('session');
+    var active = controller.get('projects');
+
+    // Try the project ID in the session
+    this.activeProjectFromId(session.get(C.SESSION.PROJECT)).then(select)
+    .catch(() => {
+      // Then the default project ID from the session
+      this.activeProjectFromId(session.get(C.SESSION.PROJECT_DEFAULT)).then(select)
+      .catch(() => {
+        // Then the first active project
+        var project = active.get('firstObject');
         if ( project )
         {
-          controller.set('project', project);
+          select(project);
         }
         else
         {
-          this.get('session').set(C.PROJECT_SESSION_KEY, undefined);
-          this.set('project', null);
+          // Then cry
+          this.send('logout');
         }
-      }
-      else
-      {
-        controller.set('project', null);
-      }
+      });
+    });
+
+    function select(project) {
+      session.set(C.SESSION.PROJECT, project.get('id'));
+      controller.set('project', project);
     }
+  },
+
+  activeProjectFromId: function(projectId) {
+    // Try the currently selected one in the session
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      if ( !projectId )
+      {
+        reject();
+      }
+
+      this.get('store').find('project', projectId).then((project) => {
+        if ( project.get('state') === 'active' )
+        {
+          resolve(project);
+        }
+        else
+        {
+          reject();
+        }
+      }).catch(() => {
+        reject();
+      });
+    });
   },
 
   actions: {
@@ -89,11 +117,23 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       }
     },
 
-    switchProject: function(projectId) {
-      this.get('session').set(C.PROJECT_SESSION_KEY, projectId);
-      this.get('store').reset();
-      this.transitionTo('index');
+    refreshProjectDropdown: function() {
+      this.get('store').find('project', null, {forceReload: true}).then((res) => {
+        this.set('controller.projects.sourceContent', res);
+        this.selectDefaultProject(this.get('controller'));
+      });
     },
+
+    switchProject: function(projectId,route) {
+      this.get('session').set(C.SESSION.PROJECT, projectId);
+      this.get('store').reset();
+      if ( !projectId )
+      {
+        this.selectDefaultProject();
+      }
+      this.transitionTo(route||'index');
+    },
+
 
     setPageLayout: function(opt) {
       this.controller.set('pageName', opt.label || '');
@@ -267,13 +307,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     var url = "ws://"+window.location.host + this.get('app.wsEndpoint');
     var session = this.get('session');
-    var token = session.get(C.AUTH_SESSION_KEY);
+    var token = session.get(C.SESSION.TOKEN);
     if ( token )
     {
       url = Util.addQueryParam(url, 'token', token);
     }
 
-    var projectId = session.get(C.PROJECT_SESSION_KEY);
+    var projectId = session.get(C.SESSION.PROJECT);
     if ( projectId )
     {
       url = Util.addQueryParam(url, 'projectId', projectId);

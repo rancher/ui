@@ -7,8 +7,8 @@ export function initialize(container, application) {
   application.deferReadiness();
   var store = container.lookup('store:main');
   var headers = {};
-  headers[C.AUTH_HEADER] = undefined; // Explicitly not send auth
-  headers[C.PROJECT_HEADER] = undefined; // Explicitly not send project
+  headers[C.HEADER.AUTH] = undefined; // Explicitly not send auth
+  headers[C.HEADER.PROJECT] = undefined; // Explicitly not send project
 
   // Find out if auth is enabled
   store.rawRequest({

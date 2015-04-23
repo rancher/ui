@@ -26,7 +26,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
             responseTimeout: 2000,
             healthyThreshold: 2,
             unhealthyThreshold: 3,
-            uri: null,
+            requestLine: null,
           }),
           appCookieStickinessPolicy: null,
           lbCookieStickinessPolicy: null,
@@ -37,6 +37,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
           requestLearn: true,
           prefix: false,
           timeout: 3600000,
+          maxLength: 1024,
         }),
         lbCookie: store.createRecord({
           type: 'loadBalancerCookieStickinessPolicy'
