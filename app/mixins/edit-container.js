@@ -137,6 +137,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
       this.set('restart', 'no'); // This has to come after restartLimit because changing the limit sets restart.
       this.set('terminal', 'both');
       this.set('memoryMb',null);
+      this.set('strCommand','');
       this.set('strEntryPoint','');
     }
   },
@@ -650,6 +651,31 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     });
     out.endPropertyChanges();
   }.observes('devicesArray.@each.{host,container,permissions}'),
+
+  // ----------------------------------
+  // Command
+  // ----------------------------------
+  strCommand: '',
+  strCommandDidChange: function() {
+    var str = this.get('strCommand').trim()||'';
+    // @TODO remove after v0.18
+    if ( this.get('store').get('store').getById('schema','container').get('resourceFields.command.type') === 'string' )
+    {
+      this.set('instance.command', str);
+    }
+    else
+    {
+      var out = ShellQuote.parse(str);
+      if ( out.length )
+      {
+        this.set('instance.command', out);
+      }
+      else
+      {
+        this.set('instance.command', null);
+      }
+    }
+  }.observes('strCommand'),
 
   // ----------------------------------
   // Entry Point
