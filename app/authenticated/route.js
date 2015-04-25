@@ -350,7 +350,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     },
 
     serviceChanged: function(change) {
+      var service = change.data.resource;
       this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
+      service.importLink('consumedservices');
     },
   },
 

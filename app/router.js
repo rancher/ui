@@ -116,6 +116,7 @@ Router.map(function() {
       this.resource('environment', {path: '/:environment_id'}, function() {
         this.route('index', {path: '/'});
         this.route('code', {path: '/code'});
+        this.route('graph', {path: '/graph'});
         this.route('edit');
 
         this.resource('service', {path: '/services/:service_id'}, function() {

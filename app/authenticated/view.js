@@ -14,10 +14,10 @@ function relativeRelative() {
     auth.css({position: pos});
   }
 
-  var white = $('BODY').hasClass('white');
+  var fullHeight = $('BODY').hasClass('white') | $('BODY').hasClass('full-height');
   var main = $('MAIN');
   var height = null;
-  if ( white )
+  if ( fullHeight )
   {
     height = winHeight - main.position().top - parseInt(main.css('margin-top'),10) - parseInt(main.css('margin-bottom'),10);
   }
