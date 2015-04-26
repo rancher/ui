@@ -10,6 +10,10 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
       return this.doAction('deactivate');
     },
 
+    edit: function() {
+      this.transitionToRoute('service.edit', this.get('id'));
+    },
+
     scaleUp: function() {
       alert('Coming soon');
     }
@@ -26,8 +30,8 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
       { label: 'Purge',         icon: 'ss-tornado',   action: 'purge',        enabled: !!a.purge },
       { divider: true },
       { label: 'View in API',   icon: '',             action: 'goToApi',      enabled: true},
-      //{ divider: true },
-      //{ label: 'Edit',          icon: 'ss-write',     action: 'edit',         enabled: !!a.update },
+      { divider: true },
+      { label: 'Edit',          icon: 'ss-write',     action: 'edit',         enabled: !!a.update },
     ];
 
     return choices;
