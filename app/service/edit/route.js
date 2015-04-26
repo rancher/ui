@@ -1,13 +1,29 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model: function() {
-    return this.modelFor('service');
+  model: function(/*params, transition*/) {
+    var store = this.get('store');
+    var service = this.modelFor('service');
+
+    var dependencies = [
+      store.find('environment', service.get('environmentId')).then(function(env) {
+        return env.importLink('services');
+      })
+    ];
+
+    return Ember.RSVP.all(dependencies, 'Load service dependencies').then((results) => {
+      return Ember.Object.create({
+        service: service,
+        selectedEnvironment: results[0],
+      });
+    });
   },
 
   setupController: function(controller, model) {
-    controller.set('originalModel',model);
-    controller.set('model', model.clone());
+    var service = model.get('service');
+    model.set('service', service.clone());
+    controller.set('originalModel', service);
+    controller.set('model', model);
     controller.initFields();
   },
 

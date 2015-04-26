@@ -4,15 +4,13 @@
   </div>
 
   <div class="col-sm-12 col-md-8">
-    {{#unless editing}}
-      <div class="form-control-static">
-        {{#if serviceChoices.length}}
-          <button class="btn-circle-plus" {{action "addServiceLink" target="view"}}></button>
-        {{else}}
-          <span class="text-muted">There are no other services to link to.</span>
-        {{/if}}
-      </div>
-    {{/unless}}
+    <div class="form-control-static">
+      {{#if serviceChoices.length}}
+        <button class="btn-circle-plus" {{action "addServiceLink" target="view"}}></button>
+      {{else}}
+        <span class="text-muted">There are no other services to link to.</span>
+      {{/if}}
+    </div>
     {{#if serviceLinksArray.length}}
       <table class="table fixed no-lines no-top-padding tight small">
         <tr class="text-muted">
@@ -33,9 +31,7 @@
               }}
             </td>
             <td class="text-right">
-              {{#unless link.existing}}
-                <button {{action "removeServiceLink" link}} class="btn-circle-x" type="button" tabindex="-1"></button>
-              {{/unless}}
+              <button {{action "removeServiceLink" link}} class="btn-circle-x" type="button" tabindex="-1"></button>
             </td>
           </tr>
         {{/each}}
