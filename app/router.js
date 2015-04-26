@@ -120,7 +120,7 @@ Router.map(function() {
         this.route('edit');
 
         this.resource('service', {path: '/services/:service_id'}, function() {
-
+          this.route('edit');
         });
       });
     });

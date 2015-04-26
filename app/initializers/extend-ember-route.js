@@ -34,27 +34,6 @@ export function initialize(/* container, application */) {
       }
     },
 
-    getParentRoute: function(){
-      var infos = this.router.router.currentHandlerInfos;
-      var parent, current;
-
-      for ( var i=0 ; i < infos.length ; i++ )
-      {
-        current = infos[i].handler;
-        if ( (current.routeName === this.routeName) || (current.routeName.match(/./) && current.routeName.split('.')[1] === this.routeName )
-           )
-        {
-          if ( parent )
-          {
-            return parent.routeName;
-          }
-        }
-        parent = current;
-      }
-
-      return 'index';
-    },
-
     goToPrevious: function() {
       var appRoute = this.container.lookup('route:application');
       var route = appRoute.get('previousRoute');
@@ -72,7 +51,26 @@ export function initialize(/* container, application */) {
     },
 
     goToParent: function() {
-      this.transitionTo(this.getParentRoute());
+      var infos = this.router.router.currentHandlerInfos;
+
+      var args = [];
+      var info;
+      for ( var i = 0 ; i < infos.length - 1 ; i++ )
+      {
+        info = infos[i];
+        if ( info._names && info._names.length )
+        {
+          for ( var j = 0 ; j < info._names.length ; j++ )
+          {
+            args.push(info.params[ info._names[j] ]);
+          }
+        }
+      }
+
+      args.unshift(info.name);
+      this.transitionTo.apply(this,args).catch(() => {
+        this.transitionTo('index');
+      });
     },
   });
 }
