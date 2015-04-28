@@ -18,6 +18,7 @@ export default Ember.View.extend(ThrottledResize,{
   didInsertElement: function() {
     this._super();
     var elem = $('<div id="environment-graph"></div>').appendTo('BODY');
+    elem.css('top', $('MAIN').position().top + $('MAIN').height() + 'px');
     this.set('cyElem', elem[0]);
 
     Ember.run.later(this,'graph',250);
