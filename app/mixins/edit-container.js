@@ -659,7 +659,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   strCommandDidChange: function() {
     var str = this.get('strCommand').trim()||'';
     // @TODO remove after v0.18
-    if ( this.get('store').get('store').getById('schema','container').get('resourceFields.command.type') === 'string' )
+    if ( this.get('store').getById('schema','container').get('resourceFields.command.type') === 'string' )
     {
       this.set('instance.command', str);
     }
