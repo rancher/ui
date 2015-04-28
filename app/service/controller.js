@@ -15,7 +15,8 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
     },
 
     scaleUp: function() {
-      alert('Coming soon');
+      this.incrementProperty('scale');
+      return this.save();
     }
   },
 
