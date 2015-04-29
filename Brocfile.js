@@ -59,7 +59,9 @@ app.import('bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect
 app.import('bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css');
 app.import('bower_components/prism/prism.js');
 app.import('bower_components/prism/components/prism-yaml.js');
-app.import('bower_components/cytoscape/dist/cytoscape.js');
-app.import('bower_components/cytoscape/lib/dagre.js');
+app.import('bower_components/lodash/dist/lodash.js');
+app.import('bower_components/graphlib/dist/graphlib.core.js');
+app.import('bower_components/dagre/dist/dagre.core.js');
+app.import('bower_components/dagre-d3/dist/dagre-d3.core.js');
 
 module.exports = app.toTree();
