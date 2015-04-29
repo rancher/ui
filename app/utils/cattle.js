@@ -127,11 +127,23 @@ var NewOrEditMixin = Ember.Mixin.create({
     },
 
     validationError: function(err) {
-      var str = 'Validation failed: ' + err.get('fieldName');
+      var str = 'Validation failed:';
+      var something = false;
+      if ( err.get('fieldName') )
+      {
+        str += ' ' + err.get('fieldName');
+        something = true;
+      }
 
       if ( err.get('detail') )
       {
         str += ' (' + err.get('detail') + ')';
+        something = true;
+      }
+
+      if ( !something )
+      {
+        str += ' (' + err.get('code') + ')';
       }
 
       this.set('errors', [str]);

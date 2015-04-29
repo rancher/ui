@@ -32,6 +32,7 @@ Router.map(function() {
       this.route('new', {path: '/add'}, function() {
         this.route('digitalocean');
         this.route('amazon');
+        this.route('packet');
         this.route('openstack');
         this.route('custom');
       });
