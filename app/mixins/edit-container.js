@@ -665,7 +665,16 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     }
     else
     {
-      var out = ShellQuote.parse(str);
+      var out = ShellQuote.parse(str).map(function(piece) {
+        if ( typeof piece === 'object' && piece && piece.op )
+        {
+          return piece.op;
+        }
+        else
+        {
+          return piece;
+        }
+      });
       if ( out.length )
       {
         this.set('instance.command', out);
