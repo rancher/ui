@@ -6,26 +6,38 @@ export default {
     "features": ["virtio", "backups"],
     "available": false
   }, {
-    "name": "Amsterdam 1",
-    "slug": "ams1",
-    "sizes": [],
-    "features": ["virtio", "backups"],
-    "available": false
-  }, {
-    "name": "San Francisco 1",
-    "slug": "sfo1",
-    "sizes": ["32gb", "16gb", "2gb", "1gb", "4gb", "8gb", "512mb", "64gb", "48gb"],
-    "features": ["virtio", "private_networking", "backups", "ipv6", "metadata"],
-    "available": true
-  }, {
     "name": "New York 2",
     "slug": "nyc2",
     "sizes": ["32gb", "16gb", "2gb", "1gb", "4gb", "8gb", "512mb", "64gb", "48gb"],
     "features": ["virtio", "private_networking", "backups"],
     "available": true
   }, {
+    "name": "New York 3",
+    "slug": "nyc3",
+    "sizes": ["32gb", "16gb", "2gb", "1gb", "4gb", "8gb", "512mb", "64gb", "48gb"],
+    "features": ["virtio", "private_networking", "backups", "ipv6", "metadata"],
+    "available": true
+  }, {
+    "name": "Amsterdam 1",
+    "slug": "ams1",
+    "sizes": [],
+    "features": ["virtio", "backups"],
+    "available": false
+  }, {
     "name": "Amsterdam 2",
     "slug": "ams2",
+    "sizes": ["32gb", "16gb", "2gb", "1gb", "4gb", "8gb", "512mb", "64gb", "48gb"],
+    "features": ["virtio", "private_networking", "backups", "ipv6", "metadata"],
+    "available": true
+  }, {
+    "name": "Amsterdam 3",
+    "slug": "ams3",
+    "sizes": ["32gb", "16gb", "2gb", "1gb", "4gb", "8gb", "512mb", "64gb", "48gb"],
+    "features": ["virtio", "private_networking", "backups", "ipv6", "metadata"],
+    "available": true
+  }, {
+    "name": "San Francisco 1",
+    "slug": "sfo1",
     "sizes": ["32gb", "16gb", "2gb", "1gb", "4gb", "8gb", "512mb", "64gb", "48gb"],
     "features": ["virtio", "private_networking", "backups", "ipv6", "metadata"],
     "available": true
@@ -38,18 +50,6 @@ export default {
   }, {
     "name": "London 1",
     "slug": "lon1",
-    "sizes": ["32gb", "16gb", "2gb", "1gb", "4gb", "8gb", "512mb", "64gb", "48gb"],
-    "features": ["virtio", "private_networking", "backups", "ipv6", "metadata"],
-    "available": true
-  }, {
-    "name": "New York 3",
-    "slug": "nyc3",
-    "sizes": ["32gb", "16gb", "2gb", "1gb", "4gb", "8gb", "512mb", "64gb", "48gb"],
-    "features": ["virtio", "private_networking", "backups", "ipv6", "metadata"],
-    "available": true
-  }, {
-    "name": "Amsterdam 3",
-    "slug": "ams3",
     "sizes": ["32gb", "16gb", "2gb", "1gb", "4gb", "8gb", "512mb", "64gb", "48gb"],
     "features": ["virtio", "private_networking", "backups", "ipv6", "metadata"],
     "available": true
