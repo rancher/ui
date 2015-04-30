@@ -1,0 +1,101 @@
+{{top-errors errors=errors}}
+
+<section class="horizontal-form">
+  <div class="container-fluid">
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="name" class="form-control-static">Name*</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. app01"}}
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="description" class="form-control-static">Description</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{textarea id="description" value=description classNames="form-control no-resize" rows="3" placeholder="e.g. My Packet host"}}
+      </div>
+    </div>
+
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Account Access</span>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="apiKey" class="form-control-static">Access Token*</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{input id="apiKey" type="text" value=packetConfig.apiKey classNames="form-control" placeholder="Your Packet API key"}}
+        <p class="help-block">From the Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> screen</p>
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="projectId" class="form-control-static">Project*</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{input id="projectId" type="text" value=packetConfig.projectId classNames="form-control" placeholder="Your Packet project ID"}}
+      </div>
+    </div>
+
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Instance</span>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="os" class="form-control-static">Image</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        {{view "select"
+          class="form-control"
+          id="os"
+          content=osChoices
+          optionValuePath="content.slug"
+          optionLabelPath="content.name"
+          value=packetConfig.os
+        }}
+      </div>
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="plan" class="form-control-static">Size</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        {{view "select"
+          class="form-control"
+          id="plan"
+          content=planChoices
+          optionValuePath="content.slug"
+          optionLabelPath="content.name"
+          value=packetConfig.plan
+        }}
+      </div>
+    </div>
+
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Region</span>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="region" class="form-control-static">Region</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{view "select"
+          class="form-control"
+          id="region"
+          content=facilityChoices
+          optionValuePath="content.code"
+          optionLabelPath="content.name"
+          value=packetConfig.facility
+        }}
+      </div>
+    </div>
+  </div>
+
+  {{partial "save-cancel"}}
+</section>

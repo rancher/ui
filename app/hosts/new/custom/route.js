@@ -23,6 +23,6 @@ export default Ember.Route.extend({
   },
 
   renderTemplate: function() {
-    this.render('hosts/new/custom', {into: 'hosts/new'});
+    this.render({into: 'hosts/new'});
   },
 });
