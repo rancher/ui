@@ -3,8 +3,14 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   model: function(params) {
     var store = this.get('store');
+    var ports;
 
     return store.find('container', params.container_id).then(function(container) {
+      return container.followLink('ports').then(function(p) {
+        ports = p;
+        return container;
+      });
+    }).then(function(container) {
       var opt = {
         include: ['volume'],
         filter: {instanceId: container.get('id')}
@@ -60,18 +66,32 @@ export default Ember.Route.extend({
           return volumes;
         });
       }).then(function(volumesWithInstances) {
-        container.set('relatedVolumes', volumesWithInstances);
-        return container;
+        return Ember.Object.create({
+          container: container,
+          relatedVolumes: volumesWithInstances,
+          ports: ports,
+        });
       }).catch(function(err) {
-        container.set('mountError',err);
-        container.set('mounts',[]);
-        container.set('relatedVolumes',[]);
-        return container;
+        return Ember.Object.create({
+          container: container,
+          mountError: err,
+          relatedVolumes: [],
+          ports: [],
+        });
       });
     });
   },
 
+  setupController: function(controller, data) {
+    this._super(controller, data.get('container'));
+    controller.setProperties({
+      mountError: data.get('mountError'),
+      relatedVolumes: data.get('relatedVolumes'),
+      ports: data.get('ports'),
+    });
+  },
+
   activate: function() {
-    this.send('setPageLayout', {label: 'Container', backPrevious: true});
+    this.send('setPageLayout', {label: 'Container', backPrevious: true, hasAside: 'nav-containers active'});
   },
 });

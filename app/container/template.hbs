@@ -1,36 +1,98 @@
-{{partial "transitioning-progress"}}
+<aside>
+  <label>Container</label>
+  {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
+  <h3 class="force-wrap">{{displayName}}</h3>
+
+  <hr/>
+
+  {{#if description}}
+    <label style="margin-top: 10px;">Description</label>
+    <p>{{description}}</p>
+    <hr/>
+  {{/if}}
+
+  <div class="clearfix">
+    <label>Info</label>
+  </div>
+
+  <ul class="list-circles">
+    <li>
+      <i {{bind-attr class=":fa-fw stateIcon"}}></i>
+      {{displayState}}
+      {{#if isTransitioning}}
+        <div class="progress progress-striped active" style="height: 10px; border: 0;">
+          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=displayProgress style=progressStyle}}>
+            <span class="sr-only">{{displayProgress}}% Complete</span>
+          </div>
+        </div>
+      {{/if}}
+      {{#if showTransitioningMessage}}
+        <div class="force-wrap">
+          {{transitioningMessage}}
+        </div>
+      {{/if}}
+    </li>
+
+    <li>
+      <i class="fa-fw ss-link"></i>
+      {{displayIp}}
+    </li>
+  </ul>
+</aside>
 
 <section>
-  <div class="row">
-    <div class="col-sm-6">
-      <h3>{{displayName}}</h3>
-      <div class="text-muted">
-        {{displayIp}} {{zero-clipboard text=displayIp}}
-      </div>
-      <div class="text-muted">{{imageUuid}} {{zero-clipboard text=imageUuid}}</div>
-    </div>
-    <div class="col-sm-6 text-right">
-      <h3 {{bind-attr class=":instance-status stateColor"}}>
-        <i {{bind-attr class="stateIcon"}}></i> {{displayState}}
-      </h3>
-      <div {{bind-attr class=":force-wrap isError:text-danger:text-muted showTransitioningMessage::hide"}}>
-        {{transitioningMessage}}
-      </div>
-      <div class="instance-actions">
-        {{resource-actions model=this choices=availableActions}}
-      </div>
-    </div>
-  </div>
+  <div class="text-muted">{{imageUuid}} {{zero-clipboard text=imageUuid}}</div>
 </section>
 
-{{#if description}}
-  <section>
-    <div class="well">
-      <label>Description</label>
-      {{description}}
-    </div>
-  </section>
-{{/if}}
+<section>
+  {{partial "stats-cpu-memory"}}
+</section>
+
+<section>
+  <div class="well">
+    <label>Ports</label>
+    <table class="grid fixed">
+      <thead>
+        <tr>
+          <th width="120">State</th>
+          <th>IP Address</th>
+          <th>Public (on Host)</th>
+          <th>Private (in Container)</th>
+          <th>Protocol</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each port in ports itemController="port"}}
+          <tr>
+            <td>
+              <span {{bind-attr class=":badge :state port.stateBackground"}}>
+                {{port.displayState}}
+              </span>
+            </td>
+            <td>
+              {{port.displayPublicIp}}
+            </td>
+            <td>
+              {{port.publicPort}}
+            </td>
+            <td>
+              {{port.privatePort}}
+            </td>
+            <td>
+              {{upper-case port.protocol}}
+            </td>
+          </tr>
+        {{else}}
+          <tr>
+            <td colspan="5">
+              <div class="text-muted text-center">This container has no ports.</div>
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</section>
 
 <section>
   <div class="well">
@@ -92,8 +154,4 @@
       </tbody>
     </table>
   </div>
-</section>
-
-<section>
-  {{partial "stats-cpu-memory"}}
 </section>
