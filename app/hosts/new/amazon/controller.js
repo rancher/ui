@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
+import NewHost from 'ui/mixins/new-host';
 
-export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
+export default Ember.ObjectController.extend(NewHost, {
   needs: ['hosts/new'],
 
   validate: function() {

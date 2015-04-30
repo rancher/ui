@@ -90,6 +90,31 @@ export function ucFirst(str) {
   return str.substr(0,1).toUpperCase() + str.substr(1);
 }
 
+export function strPad(str, toLength, padChars, right)
+{
+  str = str+'';
+  padChars = padChars||' ';
+
+  if ( str.length >= toLength )
+  {
+    return str;
+  }
+
+  var neededLen = toLength - str.length + 1;
+  var padStr = (new Array(neededLen)).join(padChars);
+  padStr = padStr.substr(0,neededLen);
+
+  if ( right )
+  {
+    return str + padStr;
+  }
+  else
+  {
+    return padStr + str;
+  }
+}
+
+
 var Util = {
   arrayDiff: arrayDiff,
   arrayIntersect: arrayIntersect,
@@ -99,7 +124,8 @@ var Util = {
   addQueryParam: addQueryParam,
   absoluteUrl: absoluteUrl,
   addAuthorization: addAuthorization,
-  ucFirst: ucFirst
+  ucFirst: ucFirst,
+  strPad: strPad
 };
 
 window.Util = Util;

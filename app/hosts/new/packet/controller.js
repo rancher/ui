@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
+import NewHost from 'ui/mixins/new-host';
 
 import Plans from './packet_plans';
 import Facilities from './packet_facilities';
@@ -9,7 +9,7 @@ var osChoices = OSes.filter(function(os) {
   return (os.distro||'').toLowerCase() === 'ubuntu';
 });
 
-export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
+export default Ember.ObjectController.extend(NewHost, {
   needs: ['hosts/new'],
   error: null,
   facilityChoices: Facilities,
