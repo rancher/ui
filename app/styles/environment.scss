@@ -20,10 +20,28 @@
       stroke: #ff0000;
     }
 
-    g div {
-      width: 100px;
-      height: 40px;
-      padding: 10px 5px;
+    g {
+      foreignobject {
+        overflow: visible;
+      }
+
+      div {
+        width: 110px;
+        height: 70px;
+        padding: 5px;
+
+        $dark: #f8f9fa;
+        $light: #ffffff;
+
+        background: #dddddd; /* Old browsers */
+        background: -moz-linear-gradient(top, $dark 0%, $dark 50%, $light 51%, $light 100%); /* FF3.6+ */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$dark), color-stop(50%,$dark), color-stop(51%,$light), color-stop(100%,$light)); /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top, $dark 0%,$dark 50%,$light 51%,$light 100%); /* Chrome10+,Safari5.1+ */
+        background: -o-linear-gradient(top, $dark 0%,$dark 50%,$light 51%,$light 100%); /* Opera 11.10+ */
+        background: -ms-linear-gradient(top, $dark 0%,$dark 50%,$light 51%,$light 100%); /* IE10+ */
+        background: linear-gradient(to bottom, $dark 0%,$dark 50%,$light 51%,$light 100%); /* W3C */
+        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$dark', endColorstr='$light',GradientType=0 ); /* IE6-9 */
+      }
     }
 
     .label {
@@ -38,11 +56,45 @@
       white-space: initial;
       vertical-align: initial;
       border-radius: initial;
+
+      I.icon {
+        display: block;
+        line-height: 14px;
+      }
+
+      H4 {
+        font-size: 16px;
+      }
+
+      .count {
+        padding: 7px 0 7px 0;
+        font-size: 12px;
+      }
+
+      .state {
+        color: white;
+        padding: 0 5px;
+        font-size: 11px;
+        font-weight: 600;
+        text-transform: uppercase;
+
+        &.green {
+          background-color: #41c77d;
+        }
+
+        &.yellow {
+          background-color: #f3bd24;
+        }
+
+        &.red {
+          background-color: #ff0000;
+        }
+      }
     }
 
     rect {
       fill: #fff;
-      stroke-width: 3px;
+      stroke-width: 2.5px;
       color: black;
     }
   }
@@ -51,7 +103,7 @@
     path.path {
       stroke: #333;
       fill: none;
-      stroke-width: 3px;
+      stroke-width: 2.5px;
     }
 
     &.green path.path {

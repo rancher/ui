@@ -27,15 +27,8 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
 
     exportConfig: function() {
       var auth = this.get('controllers.authenticated');
-
-      var compose = auth.addAuthParams(this.linkFor('dockerComposeConfig'));
-      var rancher = auth.addAuthParams(this.linkFor('rancherComposeConfig'));
-
-      Util.download(compose);
-      setTimeout(() => {
-        // The 2nd download needs a different iframe id or it will overwrite the first before downloading
-        Util.download(rancher, '__downloadIframe2');
-      }, 250);
+      var url = auth.addAuthParams(this.linkFor('composeConfig'));
+      Util.download(url);
     },
   },
 
