@@ -2,7 +2,7 @@ import OverlayRoute from 'ui/overlay/route';
 
 export default OverlayRoute.extend({
   model: function() {
-    var container = this.modelFor('container');
+    var container = this.modelFor('container').get('container');
     var opt = {
       follow: true,
       lines: 500,
