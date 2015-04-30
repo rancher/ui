@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
 import Regions from './digitalocean_regions';
+import NewHost from 'ui/mixins/new-host';
 
 var regionChoices = Regions.regions.filter(function(region) {
   return region.available;
@@ -11,7 +11,7 @@ var regionChoices = Regions.regions.filter(function(region) {
   };
 });
 
-export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
+export default Ember.ObjectController.extend(NewHost, {
   needs: ['hosts/new'],
   error: null,
   regionChoices: regionChoices,
