@@ -2,6 +2,10 @@ import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
 var ContainerController = Cattle.TransitioningResourceController.extend({
+  mountError: null,
+  relatedVolumes: null,
+  ports: null,
+
   actions: {
     restart: function() {
       return this.doAction('restart');

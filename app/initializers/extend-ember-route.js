@@ -55,9 +55,16 @@ export function initialize(/* container, application */) {
 
       var args = [];
       var info;
-      for ( var i = 0 ; i < infos.length - 1 ; i++ )
+      var max = infos.length - 1;
+      if (infos[infos.length - 1].name === infos[infos.length-2].name+'.index' )
+      {
+        max--;
+      }
+
+      for ( var i = 0 ; i < max ; i++ )
       {
         info = infos[i];
+
         if ( info._names && info._names.length )
         {
           for ( var j = 0 ; j < info._names.length ; j++ )

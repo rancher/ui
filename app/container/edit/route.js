@@ -9,7 +9,8 @@ export default OverlayRoute.extend({
   },
 
   model: function() {
-    var model = this.modelFor('container');
+    var data = this.modelFor('container');
+    var model = data.get('container');
     return Ember.RSVP.all([
       model.followLink('ports'),
       model.followLink('instanceLinks'),
