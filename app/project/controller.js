@@ -74,8 +74,8 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
   }.property('state','actions.remove'),
 
   canSetDefault: function() {
-    return this.get('state') === 'active' && this.hasAction('setasdefault') && !this.get('isDefault');
-  }.property('state','actions.setasdefault','isDefault'),
+    return this.get('state') === 'active' && !this.get('isDefault');
+  }.property('state','isDefault'),
 
   availableActions: function() {
     var a = this.get('actions');
