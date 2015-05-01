@@ -111,14 +111,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     function fail() {
       // Then cry
       select(null);
-      if ( self.get('app.authenticationEnabled') && !self.get('app.isAuthenticationAdmin') )
-      {
-        self.send('logout');
-      }
-      else
-      {
-        self.transitionTo('projects');
-      }
+      self.transitionTo('projects');
     }
   },
 
