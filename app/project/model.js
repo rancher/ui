@@ -15,7 +15,7 @@ Project.reopenClass({
   pollTransitioningInterval: 5000,
 
   headers: {
-    [C.HEADER.PROJECT]: C.HEADER.PROJECT_USER_SCOPE, // Requests for projects use the user's scope, not the project
+    [C.HEADER.PROJECT]: undefined, // Requests for projects use the user's scope, not the project
   }
 });
 

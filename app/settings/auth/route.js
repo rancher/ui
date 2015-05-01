@@ -6,7 +6,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin,{
   model: function() {
 
     var headers = {};
-    headers[C.HEADER.PROJECT] = C.HEADER.PROJECT_USER_SCOPE;
+    headers[C.HEADER.PROJECT] = undefined;
 
     return this.get('store').find('githubconfig', null, {headers: headers, forceReload: true}).then(function(collection) {
       return collection.get('firstObject');

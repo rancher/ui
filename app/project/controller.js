@@ -34,12 +34,7 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     },
 
     setAsDefault: function() {
-      var headers = {};
-      headers[C.HEADER.PROJECT] = C.HEADER.PROJECT_USER_SCOPE;
-
-      return this.doAction('setasdefault', undefined, headers).then(() => {
-        this.get('session').set(C.SESSION.PROJECT_DEFAULT, this.get('id'));
-      });
+      this.get('prefs').set(C.PREFS.PROJECT_DEFAULT, this.get('id'));
     },
 
     switchTo: function() {
@@ -67,8 +62,8 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
   }.property('active','isDefault'),
 
   isDefault: function() {
-    return this.get('session.' + C.SESSION.PROJECT_DEFAULT) === this.get('id');
-  }.property('session.' + C.SESSION.PROJECT_DEFAULT, 'id'),
+    return this.get('prefs.' + C.PREFS.PROJECT_DEFAULT) === this.get('id');
+  }.property('prefs.' + C.PREFS.PROJECT_DEFAULT, 'id'),
 
   active: function() {
     return this.get('session.' + C.SESSION.PROJECT) === this.get('id');
