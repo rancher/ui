@@ -9,7 +9,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
       var member = Ember.Object.create({
         externalId: obj.get('id'),
         externalIdType: C.PROJECT.FROM_GITHUB[ obj.get('type') ],
-        role: C.PROJECT.ROLE_MEMBER
+        role: (this.get('members.length') === 0 ? C.PROJECT.ROLE_OWNER : C.PROJECT.ROLE_MEMBER)
       });
 
       var existing = this.get('members')
@@ -65,7 +65,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   doneSaving: function() {
     var out = this._super();
     this.transitionToRoute('projects');
-    this.send('refreshProjectDropdown');
+    this.send('refreshProjects');
     return out;
   },
 });
