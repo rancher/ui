@@ -91,11 +91,7 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     ];
 
     choices.pushObject({label: 'Switch to this Project', icon: '', action: 'switchTo', enabled: this.get('state') === 'active' });
-
-    if ( this.get('app.authenticationEnabled') )
-    {
-      choices.pushObject({label: 'Set as my default Project', icon: '', action: 'setAsDefault', enabled: this.get('canSetDefault')});
-    }
+    choices.pushObject({label: 'Set as my default Project', icon: '', action: 'setAsDefault', enabled: this.get('canSetDefault')});
 
     return choices;
   }.property('actions.{activate,deactivate,update,restore,purge}','canRemove','canSetDefault'),
