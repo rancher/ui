@@ -12,10 +12,10 @@ export default Ember.Controller.extend({
   infoColor: function() {
     if ( this.get('errorMsg') )
     {
-      return 'alert-warning';
+      return 'alert-danger';
     }
     {
-      return 'alert-info';
+      return 'alert-warning';
     }
   }.property('errorMsg'),
 
