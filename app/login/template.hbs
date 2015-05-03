@@ -1,25 +1,23 @@
-<div class="row">
-  <div class="col-sm-3"></div>
-  <div class="col-sm-6">
-    <div class="farm-box">
-      <section>
-        <h1>Welcome to Rancher</h1>
-        <br/>
+<div style="max-width: 360px; margin: 100px auto 0 auto;">
+  <div class="farm-box login top-colors">
+    <section>
+      {{inline-svg "assets/images/logo" class="logo"}}
 
-        {{#if infoMsg}}
-          <div {{bind-attr class=":alert infoColor"}} role="alert">{{infoMsg}}</div>
-        {{/if}}
+      <h1>Welcome to Rancher</h1>
+      <br/>
 
-        <p>Rancher uses GitHub to manage acounts and teams.  Click this comically large button to log in and give Rancher read-only access to your GitHub account.</p>
-        <br/>
+      <p>Rancher uses GitHub to manage acounts and teams.  Click the button below to log in and give us read-only access to your basic GitHub account information.</p>
+      <br/>
 
-        <p class="text-center">
-          <button {{bind-attr disabled=waiting}} class="btn btn-lg btn-primary" {{action "authenticate"}}>
-            <i class="fa fa-github"></i> Authenticate with GitHub
-          </button>
-        </p>
-      </section>
-    </div>
+      {{#if infoMsg}}
+        <div {{bind-attr class=":alert infoColor"}} role="alert">{{infoMsg}}</div>
+      {{/if}}
+
+      <p class="text-center">
+        <button {{bind-attr disabled=waiting}} class="btn btn-primary" {{action "authenticate"}}>
+          <i class="fa fa-github"></i> Authenticate with GitHub
+        </button>
+      </p>
+    </section>
   </div>
-  <div class="col-sm-3"></div>
 </div>
