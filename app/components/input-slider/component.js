@@ -122,7 +122,6 @@ export default Ember.Component.extend({
   },
 
   click: function(event) {
-    console.log('click',event);
     if ( this.get('disabled') )
     {
       return false;
@@ -134,7 +133,6 @@ export default Ember.Component.extend({
   },
 
   mouseDown: function(event) {
-    console.log('drag start');
     if ( this.get('disabled') )
     {
       return false;
@@ -157,7 +155,6 @@ export default Ember.Component.extend({
   },
 
   drag: function(event) {
-    console.log('drag');
     event.preventDefault();
     if ( this.get('disabled') )
     {
@@ -165,7 +162,6 @@ export default Ember.Component.extend({
     }
 
     var value = this.pointToValue(clientX(event));
-    console.log('drag', clientX(event), value);
 
     this.set('value', value);
 
@@ -174,7 +170,6 @@ export default Ember.Component.extend({
   mouseUp: function(/*event*/) {
     $('BODY').off('mousemove', this.get('dragFn'));
     $('BODY').off('mouseup', this.get('upFn'));
-    console.log('drag end');
     this.set('active',false);
   },
 

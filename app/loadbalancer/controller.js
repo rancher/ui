@@ -9,7 +9,7 @@ var LoadBalancerController = Cattle.TransitioningResourceController.extend({
 
     edit: function() {
       this.transitionToRoute('loadbalancer.edit', this.get('id'));
-    }
+    },
   },
 
   availableActions: function() {
