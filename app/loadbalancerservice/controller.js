@@ -1,6 +1,6 @@
 import Cattle from 'ui/utils/cattle';
 
-var ServiceController = Cattle.TransitioningResourceController.extend({
+var LoadBalancerServiceController = Cattle.TransitioningResourceController.extend({
   actions: {
     activate: function() {
       return this.doAction('activate');
@@ -43,14 +43,12 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
   },
 });
 
-ServiceController.reopenClass({
+LoadBalancerServiceController.reopenClass({
   stateMap: {
     'requested':        {icon: 'ss-tag',            color: 'text-danger'},
     'registering':      {icon: 'ss-tag',            color: 'text-danger'},
     'activating':       {icon: 'ss-tag',            color: 'text-danger'},
     'active':           {icon: 'ss-layergroup',     color: 'text-success'},
-    'updating-active':  {icon: 'ss-tag',            color: 'text-success'},
-    'updating-inactive':{icon: 'ss-tag',            color: 'text-danger'},
     'deactivating':     {icon: 'ss-down',           color: 'text-danger'},
     'inactive':         {icon: 'fa fa-circle',      color: 'text-danger'},
     'removing':         {icon: 'ss-trash',          color: 'text-danger'},
@@ -58,4 +56,4 @@ ServiceController.reopenClass({
   }
 });
 
-export default ServiceController;
+export default LoadBalancerServiceController;

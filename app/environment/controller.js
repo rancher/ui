@@ -21,6 +21,14 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
       });
     },
 
+    addBalancer: function() {
+      this.transitionToRoute('service.new-balancer', {
+        queryParams: {
+          environmentId: this.get('id'),
+        },
+      });
+    },
+
     edit: function() {
       this.transitionToRoute('environment.edit', this.get('id'));
     },
