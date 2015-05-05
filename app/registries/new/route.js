@@ -8,17 +8,20 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       serverAddress: '',
     });
 
-    return registry;
+    var credential = this.get('store').createRecord({
+      type:'registryCredential',
+      serverAddress: '',
+    });
+
+    return Ember.Object.create({
+      registry: registry,
+      credential: credential
+    });
   },
 
   setupController: function(controller, model) {
-    controller.set('credentials', []);
     controller.set('model',model);
     controller.initFields();
-  },
-
-  renderTemplate: function() {
-    this.render({into: 'application', outlet: 'overlay'});
   },
 
   actions: {

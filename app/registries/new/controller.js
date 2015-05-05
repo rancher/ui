@@ -5,29 +5,21 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   error: null,
   credentials: null,
   editing: false,
-  actions: {
-    addCredential: function() {
-      this.get('credentials').pushObject(this.get('store').createRecord({
-        type: 'registryCredential',
-        registryId: 'tbd', // This will be overwritten by didSave
-        publicValue: '',
-        secretValue: '',
-        email: ''
-      }));
-    },
+  primaryResource: Ember.computed.alias('model.registry'),
 
-    removeCredential: function(obj) {
-      this.get('credentials').removeObject(obj);
-    }
-  },
+  drivers: function() {
+    return [
+      {route: 'dockerhub', label: 'DockerHub',  css: 'dockerhub', available: true  },
+      {route: 'quay',      label: 'Quay.io',  css: 'quay', available: true  },
+      {route: 'custom',    label: 'Custom',  css: 'custom', available: true  },
+    ];
+  }.property(),
 
   validate: function() {
     this._super();
     var errors = this.get('errors')||[];
 
-    this.get('credentials').forEach((cred) => {
-      errors.pushObjects(cred.validationErrors());
-    });
+    errors.pushObjects(this.get('model.credential').validationErrors());
 
     if ( errors.get('length') > 0 )
     {
@@ -39,15 +31,12 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   },
 
   didSave: function() {
-    var registry = this.get('model');
+    var registry = this.get('model.registry');
+    var cred = this.get('model.credential');
     var id = registry.get('id');
-    var promises = [];
-    this.get('credentials').forEach((cred) => {
-      cred.set('registryId', id);
-      promises.push(cred.save());
-    });
 
-    return Ember.RSVP.all(promises);
+    cred.set('registryId', id);
+    return cred.save();
   },
 
   doneSaving: function() {
