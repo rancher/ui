@@ -10,6 +10,8 @@ export default Ember.ObjectController.extend({
   testing: false,
   saving: false,
   saved: true,
+  error: null,
+  originalModel: null,
 
   organizations: null,
   addUserInput: '',
