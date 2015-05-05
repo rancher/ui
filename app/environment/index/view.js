@@ -22,8 +22,9 @@ export default ColumnView.extend({
       columns[nextIndex()].push(services.objectAt(i));
     }
 
-    // Add a placeholder for where to put the 'Add Service' button
-    columns[nextIndex()].push(Ember.Object.create({isNewPlaceHolder: true}));
+    // Add a placeholder for where to put the 'Add Service' and 'Add Balancer' buttons
+    columns[nextIndex()].push(Ember.Object.create({isNewPlaceHolder: true, isService: true}));
+    columns[nextIndex()].push(Ember.Object.create({isNewPlaceHolder: true, isBalancer: true}));
 
     this.set('podCount', podCount);
 

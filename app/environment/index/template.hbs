@@ -8,7 +8,12 @@
   <div class="pod-column">
     {{#each item in col}}
       {{#if item.isNewPlaceHolder}}
-        {{add-pod action="addService" label="Add Service"}}
+        {{#if item.isService}}
+          {{add-pod action="addService" label="Add Service"}}
+        {{/if}}
+        {{#if  item.isBalancer}}
+          {{add-pod action="addBalancer" label="Add Load Balancer"}}
+        {{/if}}
       {{else}}
         {{#with item as service controller="service"}}
           {{service-pod model=service}}

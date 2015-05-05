@@ -1,0 +1,56 @@
+<section class="horizontal-form container-fluid">
+  <h2>Add Load Balancer</h2>
+  {{top-errors errors=errors}}
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label for="name">Name</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{input id="name" type="text" value=balancer.name classNames="form-control" placeholder="e.g. Website"}}
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label for="description">Description</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{textarea id="description" value=balancer.description classNames="form-control no-resize" rows="5" placeholder="e.g. Balancer for mycompany.com"}}
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>Scale</label>
+    </div>
+    <div class="col-sm-2 col-md-1">
+      {{balancer.scale}}
+    </div>
+    <div class="col-sm-10 col-md-7">
+      {{input-slider value=balancer.scale valueMin=1 valueMax=10 scaleMin=0}}
+    </div>
+  </div>
+
+  {{partial "form-divider"}}
+
+  <div class="row">
+    <div class="col-xs-6 col-md-2 form-label">
+      <label>Targets</label>
+    </div>
+    <div class="col-xs-6 col-md-8">
+      <button class="btn-circle-plus btn-circle-text" style="margin-right: 20px;" {{action "addTargetService" target="view"}}>Add Service</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-md-offset-2">
+      {{partial "loadbalancer/edit-targets"}}
+    </div>
+  </div>
+</section>
+
+{{partial "form-divider"}}
+
+{{partial "loadbalancer/edit-config"}}
+
+{{partial "save-cancel"}}

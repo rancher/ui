@@ -6,5 +6,8 @@ export default Ember.ObjectController.extend({
     addService: function() {
       this.get('controllers.environment').send('addService');
     },
+    addBalancer: function() {
+      this.get('controllers.environment').send('addBalancer');
+    },
   },
 });

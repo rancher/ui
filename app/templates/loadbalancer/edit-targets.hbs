@@ -6,15 +6,27 @@
           {{#if tgt.isIp}}
             {{input type="text" class="form-control input-sm lb-target" value=tgt.value placeholder="e.g. 192.0.2.24"}}
           {{else}}
-            {{display-name-select
-              classNames="form-control input-sm lb-target"
-              prompt="Select a container..."
-              value=tgt.value
-              content=targetChoices
-              optionValuePath="content.id"
-              optionLabelPath="content.name"
-              optionGroupPath="group"
-            }}
+            {{#if model.isService}}
+              {{display-name-select
+                classNames="form-control input-sm lb-target"
+                prompt="Select a service..."
+                value=tgt.value
+                content=targetChoices
+                optionValuePath="content.id"
+                optionLabelPath="content.name"
+                optionGroupPath="group"
+              }}
+            {{else}}
+              {{display-name-select
+                classNames="form-control input-sm lb-target"
+                prompt="Select a container..."
+                value=tgt.value
+                content=targetChoices
+                optionValuePath="content.id"
+                optionLabelPath="content.name"
+                optionGroupPath="group"
+              }}
+            {{/if}}
           {{/if}}
         </td>
         <td width="30" class="text-right">
