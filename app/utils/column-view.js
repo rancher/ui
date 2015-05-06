@@ -39,6 +39,11 @@ export default Ember.View.extend(ThrottledResize, {
     }
   },
 
+  didInsertElement: function() {
+    this._super();
+    this.onResize();
+  },
+
   columnCount: 3, // Will be reset on didInsertElement and resize
   podCount: 0, // Will be reset by columns()
 
