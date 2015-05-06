@@ -73,11 +73,6 @@ Router.map(function() {
 
       this.resource('registry', {path: '/:registry_id'}, function() {
         this.route('edit');
-        this.route('new-credential', {path: '/add-credential'});
-
-        this.resource('registryCredential', {path: '/credentials/:credential_id'}, function() {
-    //      this.route('edit');
-        });
       });
     });
 

@@ -6,14 +6,32 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   credentials: null,
   editing: false,
   primaryResource: Ember.computed.alias('model.registry'),
+  activeDriver: null,
+
+  isCustom: Ember.computed.equal('activeDriver','custom'),
+
+  actions: {
+    selectDriver: function(name) {
+      var driver = this.get('drivers').filterProperty('name',name)[0];
+      this.set('activeDriver', driver.name);
+      this.set('registry.serverAddress', driver.value);
+    }
+  },
 
   drivers: function() {
-    return [
-      {route: 'dockerhub', label: 'DockerHub',  css: 'dockerhub', available: true  },
-      {route: 'quay',      label: 'Quay.io',  css: 'quay', available: true  },
-      {route: 'custom',    label: 'Custom',  css: 'custom', available: true  },
+    var drivers = [
+      {name: 'dockerhub', label: 'DockerHub',  css: 'dockerhub', value: 'index.docker.io', available: true  },
+      {name: 'quay',      label: 'Quay.io',    css: 'quay',      value: 'quay.io',         available: true  },
+      {name: 'custom',    label: 'Custom',     css: 'custom',    value: '',                available: true  },
     ];
-  }.property(),
+
+    var active = this.get('activeDriver');
+    drivers.forEach(function(driver) {
+      driver.active = ( active === driver.name );
+    });
+
+    return drivers;
+  }.property('activeDriver'),
 
   validate: function() {
     this._super();
@@ -28,6 +46,16 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
     }
 
     return true;
+  },
+
+  willSave: function() {
+    this._super();
+    if ( this.get('isCustom') )
+    {
+    }
+    else
+    {
+    }
   },
 
   didSave: function() {

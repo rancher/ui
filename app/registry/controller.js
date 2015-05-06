@@ -2,10 +2,6 @@ import Cattle from 'ui/utils/cattle';
 
 var RegistryController = Cattle.TransitioningResourceController.extend({
   actions: {
-    newCredential: function() {
-      this.transitionToRoute('registry.new-credential');
-    },
-
     deactivate: function() {
       return this.doAction('deactivate');
     },
@@ -34,6 +30,10 @@ var RegistryController = Cattle.TransitioningResourceController.extend({
       { label: 'Edit',          icon: 'ss-write', action: 'edit',         enabled: !!a.update },
     ];
   }.property('actions.{update,activate,deactivate,restore,remove,purge}'),
+
+  credential: function() {
+    return this.get('credentials.firstObject');
+  }.property(),
 });
 
 RegistryController.reopenClass({
