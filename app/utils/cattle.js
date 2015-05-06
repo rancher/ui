@@ -19,10 +19,7 @@ var ResourceController = Ember.ObjectController.extend({
       var endpoint = this.get('controllers.application.absoluteEndpoint'); // http://e.f.g.h/ , does not include version.  e.f.g.h is where the API actually is.
       url = url.replace(/https?:\/\/[^\/]+\/?/,endpoint);
 
-      if ( this.get('app.authenticationEnabled') )
-      {
-        url = Util.addAuthorization(url, C.HEADER.AUTH_FAKE_USER +'=' + this.get('session.'+C.SESSION.PROJECT), this.get('session.'+C.SESSION.TOKEN));
-      }
+      url = Util.addAuthorization(url, C.HEADER.AUTH_FAKE_USER +'=' + this.get('session.'+C.SESSION.PROJECT), this.get('session.'+C.SESSION.TOKEN)||'');
 
       window.open(url, '_blank');
     },
@@ -249,12 +246,14 @@ var TransitioningResource = Resource.extend({
     {
       clearTimeout(this.get('pollDelayTimer'));
       clearTimeout(this.get('pollTimer'));
+      this.set('pollDelayTimer',null);
       return;
     }
 
     if ( this.get('pollDelayTimer') )
     {
       // Already polling or waiting, just let that one finish
+      this.set('pollDelayTimer',null);
       return;
     }
 

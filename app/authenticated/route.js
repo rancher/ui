@@ -15,7 +15,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     // Load schemas
     var headers = {};
-    headers[C.HEADER.PROJECT] = C.HEADER.PROJECT_USER_SCOPE;
+    headers[C.HEADER.PROJECT] = undefined;
     return store.find('schema', null, {url: 'schemas', headers: headers}).then((schemas) => {
       if ( schemas && schemas.xhr )
       {
@@ -63,7 +63,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     this.activeProjectFromId(session.get(C.SESSION.PROJECT)).then(select)
     .catch(() => {
       // Then the default project ID from the session
-      this.activeProjectFromId(session.get(C.SESSION.PROJECT_DEFAULT)).then(select)
+      this.activeProjectFromId(this.get('prefs').get(C.PREFS.PROJECT_DEFAULT)).then(select)
       .catch(() => {
         // Then the first active project
         var project = active.get('firstObject');
@@ -111,14 +111,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     function fail() {
       // Then cry
       select(null);
-      if ( self.get('app.authenticationEnabled') && !self.get('app.isAuthenticationAdmin') )
-      {
-        self.send('logout');
-      }
-      else
-      {
-        self.transitionTo('projects');
-      }
+      self.transitionTo('projects');
     }
   },
 

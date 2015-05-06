@@ -8,10 +8,13 @@ export default {
     ACCOUNT_ID: 'accountId',
     USER_TYPE: 'userType',
     PROJECT: 'projectId',
-    PROJECT_DEFAULT: 'defaultProject',
     GITHUB_CACHE: 'githubCache',
     GITHUB_ORGS: 'orgs',
     GITHUB_TEAMS: 'teams',
+  },
+
+  PREFS: {
+    PROJECT_DEFAULT: 'defaultProjectId',
   },
 
   TOKEN_TO_SESSION_KEYS: ['accountId', 'defaultProject','jwt','orgs','teams','user','userType'],
@@ -22,7 +25,6 @@ export default {
     AUTH_FAKE_USER: 'x-api-bearer',
 
     PROJECT: 'x-api-project-id',
-    PROJECT_USER_SCOPE: 'user',
 
     NO_CHALLENGE: 'x-api-no-challenge',
     NO_CHALLENGE_VALUE: 'true',
