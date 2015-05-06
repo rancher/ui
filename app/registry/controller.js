@@ -15,6 +15,22 @@ var RegistryController = Cattle.TransitioningResourceController.extend({
     },
   },
 
+  displayAddress: function() {
+    var address = this.get('serverAddress').toLowerCase();
+    if ( address === 'index.docker.io' )
+    {
+      return 'DockerHub';
+    }
+    else if ( address === 'quay.io' )
+    {
+      return 'Quay';
+    }
+    else
+    {
+      return address;
+    }
+  }.property('serverAddress'),
+
   availableActions: function() {
     var a = this.get('actions');
 

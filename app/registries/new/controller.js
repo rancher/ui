@@ -48,16 +48,6 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
     return true;
   },
 
-  willSave: function() {
-    this._super();
-    if ( this.get('isCustom') )
-    {
-    }
-    else
-    {
-    }
-  },
-
   didSave: function() {
     var registry = this.get('model.registry');
     var cred = this.get('model.credential');

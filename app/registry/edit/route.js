@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
-    var registry =  this.modelFor('registry')
+    var registry =  this.modelFor('registry');
     return Ember.Object.create({
       registry: registry,
       credential: registry.get('credentials.firstObject')
