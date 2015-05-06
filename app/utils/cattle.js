@@ -246,12 +246,14 @@ var TransitioningResource = Resource.extend({
     {
       clearTimeout(this.get('pollDelayTimer'));
       clearTimeout(this.get('pollTimer'));
+      this.set('pollDelayTimer',null);
       return;
     }
 
     if ( this.get('pollDelayTimer') )
     {
       // Already polling or waiting, just let that one finish
+      this.set('pollDelayTimer',null);
       return;
     }
 
