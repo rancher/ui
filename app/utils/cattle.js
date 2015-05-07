@@ -214,7 +214,7 @@ var NewOrEditMixin = Ember.Mixin.create({
 
 // Cattle resources that transition have these
 var TransitioningResource = Resource.extend({
-  reservedKeys: ['pollDelayTimer','pollTimer','waitInterval','waitTimeout'],
+  reservedKeys: ['delayTimer','pollTimer','waitInterval','waitTimeout'],
 
   state: null,
   transitioning: null,
@@ -237,55 +237,56 @@ var TransitioningResource = Resource.extend({
     this.transitioningChanged();
   },
 
-  pollDelayTimer: null,
+  delayTimer: null,
+  clearDelay: function() {
+    clearTimeout(this.get('delayTimer'));
+    this.set('delayTimer', null);
+  },
+
   pollTimer: null,
+  clearPoll: function() {
+    clearTimeout(this.get('pollTimer'));
+    this.set('pollTimer', null);
+  },
+
   transitioningChanged: function() {
-    //console.log('Transitioning changed', this.toString(), this.get('transitioning'), this.get('pollDelayTimer'), this.get('pollTimer'));
-
-    if ( this.get('transitioning') !== 'yes' || !this.isInStore() )
-    {
-      clearTimeout(this.get('pollDelayTimer'));
-      clearTimeout(this.get('pollTimer'));
-      this.set('pollDelayTimer',null);
-      return;
-    }
-
-    if ( this.get('pollDelayTimer') )
-    {
-      // Already polling or waiting, just let that one finish
-      this.set('pollDelayTimer',null);
-      return;
-    }
-
-
     var delay = this.constructor.pollTransitioningDelay;
     var interval = this.constructor.pollTransitioningInterval;
-    if ( delay > 0 && interval > 0 && this.get('transitioning') === 'yes' )
+
+    // This resource doesn't want polling
+    if ( !delay || !interval )
     {
-      //console.log('Starting poll timer', this.toString());
-      this.set('pollDelayTimer', setTimeout(function() {
-        //console.log('1 expired', this.toString());
-        this.transitioningPoll();
-      }.bind(this), delay));
+      //console.log('return 1', this.toString());
+      return;
     }
-    else
+
+    // This resource isn't transitioning or isn't in the store
+    if ( this.get('transitioning') !== 'yes' || !this.isInStore() )
     {
-      //console.log('Not polling', this.toString());
-      clearTimeout(this.get('pollDelayTimer'));
-      this.set('pollDelayTimer', null);
+      //console.log('return 2', this.toString());
+      this.clearPoll();
+      this.clearDelay();
+      return;
     }
+
+    // We're already polling or waiting, just let that one finish
+    if ( this.get('delayTimer') )
+    {
+      //console.log('return 3', this.toString());
+      return;
+    }
+
+    //console.log('Transitioning poll', this.toString());
+
+    this.set('delayTimer', setTimeout(function() {
+      //console.log('1 expired', this.toString());
+      this.transitioningPoll();
+    }.bind(this), Util.timerFuzz(delay)));
   }.observes('transitioning'),
 
   transitioningPoll: function() {
-    var self = this;
-    function reset() {
-      clearTimeout(self.get('pollDelayTimer'));
-      self.set('pollDelayTimer',null);
-    }
-
-    clearTimeout(this.get('pollTimer'));
-    this.set('pollTimer',null);
-    //console.log('Checking', this.toString());
+    //console.log('Maybe polling', this.toString(), this.get('transitioning'), this.isInStore());
+    this.clearPoll();
 
     if ( this.get('transitioning') !== 'yes' || !this.isInStore() )
     {
@@ -301,14 +302,18 @@ var TransitioningResource = Resource.extend({
         this.set('pollTimer', setTimeout(function() {
           //console.log('2 expired', this.toString());
           this.transitioningPoll();
-        }.bind(this), this.constructor.pollTransitioningInterval));
+        }.bind(this), Util.timerFuzz(this.constructor.pollTransitioningInterval)));
       }
       else
       {
-        reset();
+        // If not transitioning anymore, stop polling
+        this.clearPoll();
+        this.clearDelay();
       }
     }).catch(() => {
-      reset();
+      // If reloading fails, stop polling
+      this.clearPoll();
+      // but leave delay set so that it doesn't restart, (don't clearDelay())
     });
   },
 

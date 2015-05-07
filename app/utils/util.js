@@ -114,6 +114,12 @@ export function strPad(str, toLength, padChars, right)
   }
 }
 
+export function timerFuzz(ms, maxFuzz=0.1)
+{
+  var factor = Math.random()*2*maxFuzz + (1-maxFuzz);
+  return Math.max(1, ms * factor);
+}
+
 
 var Util = {
   arrayDiff: arrayDiff,
@@ -125,7 +131,8 @@ var Util = {
   absoluteUrl: absoluteUrl,
   addAuthorization: addAuthorization,
   ucFirst: ucFirst,
-  strPad: strPad
+  strPad: strPad,
+  timerFuzz: timerFuzz
 };
 
 window.Util = Util;
