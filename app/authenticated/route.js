@@ -45,19 +45,21 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     });
   },
 
-  setupController: function(controller, model) {
-    this._super.apply(this,arguments);
+  afterModel: function(model) {
+    this.selectDefaultProject(model);
+  },
 
+  setupController: function(controller, model) {
     // Load all the active projects
     var active = ActiveArrayProxy.create({sourceContent: model});
     controller.set('projects', active);
 
-    this.selectDefaultProject(controller);
+    this.selectDefaultProject(active, controller);
+    this._super.apply(this,arguments);
   },
 
-  selectDefaultProject: function(controller) {
+  selectDefaultProject: function(active, controller) {
     var session = this.get('session');
-    var active = controller.get('projects');
 
     // Try the project ID in the session
     this.activeProjectFromId(session.get(C.SESSION.PROJECT)).then(select)
@@ -98,12 +100,18 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       if ( project )
       {
         session.set(C.SESSION.PROJECT, project.get('id'));
-        controller.set('project', project);
+        if ( controller )
+        {
+          controller.set('project', project);
+        }
       }
       else
       {
         session.set(C.SESSION.PROJECT, undefined);
-        controller.set('project', null);
+        if ( controller )
+        {
+          controller.set('project', null);
+        }
       }
     }
 
@@ -166,7 +174,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     refreshProjectDropdown: function() {
       this.findUserProjects().then((res) => {
         this.set('controller.projects.sourceContent', res);
-        this.selectDefaultProject(this.get('controller'));
+        this.selectDefaultProject(this.get('controller.projects'), this.get('controller'));
       });
     },
 
@@ -175,7 +183,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.get('store').reset();
       if ( !projectId )
       {
-        this.selectDefaultProject();
+        this.selectDefaultProject(this.get('controller.projects'), this.get('controller'));
       }
       this.transitionTo(route||'index');
     },
