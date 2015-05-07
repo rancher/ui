@@ -88,6 +88,7 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
       { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true },
       { label: 'Clone',         icon: 'ss-copier',           action: 'clone',        enabled: true },
       { label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: !!a.update },
+      { label: 'Clone',         icon: 'ss-copier',           action: 'clone',        enabled: true },
     ];
 
     return choices;
