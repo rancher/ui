@@ -94,7 +94,7 @@ export default Ember.View.extend({
           });
 
           // @TODO Figure out why deslect()/select() doesn't fix the state in the ember object and remove this hackery...
-          var ary = view.get('context.' + (this.$select.hasClass('select-cap-add') ? 'capAdd' : 'capDrop'));
+          var ary = view.get('context.instance.' + (this.$select.hasClass('select-cap-add') ? 'capAdd' : 'capDrop'));
           ary.clear();
           ary.pushObject('ALL');
         }

@@ -85,23 +85,18 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     {
       this.initNetwork();
       this.initEnvironment();
-      this.initPorts();
-      this.initLinks();
       this.initVolumes();
       this.initVolumesFrom();
       this.initDns();
       this.initDnsSearch();
       this.initCapability();
       this.initDevices();
-      this.userImageUuidDidChange();
-      this.terminalDidChange();
-      this.restartDidChange();
-      this.set('restartLimit', 5);
-      this.set('restart', 'no'); // This has to come after restartLimit because changing the limit sets restart.
-      this.set('terminal', 'both');
-      this.set('memoryMb',null);
-      this.set('strCommand','');
-      this.set('strEntryPoint','');
+      this.initUuid();
+      this.initTerminal();
+      this.initRestart();
+      this.initCommand();
+      this.initEntryPoint();
+      this.initMemory();
     }
   },
 
@@ -109,6 +104,13 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // Image
   // ----------------------------------
   userImageUuid: 'ubuntu:14.04.2',
+  initUuid: function() {
+    if ( this.get('instance.imageUuid') )
+    {
+      this.set('userImageUuid', this.get('instance.imageUuid'));
+    }
+    this.userImageUuidDidChange();
+  },
   userImageUuidDidChange: function() {
     var input = (this.get('userImageUuid')||'').trim();
     var uuid = 'docker:';
@@ -137,6 +139,25 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // ----------------------------------
   restart: null, //'no',
   restartLimit: null, //5,
+
+  initRestart: function() {
+    var name = this.get('instance.restartPolicy.name');
+    var count = this.get('instance.restartPolicy.maximumRetryCount');
+    if ( name === 'on-failure' && count !== undefined )
+    {
+      this.setProperties({
+        'restart': 'on-failure-cond',
+        'restartLimit': parseInt(count, 10),
+      });
+    }
+    else
+    {
+      this.setProperties({
+        'restart': name || 'no',
+        'restartLimit': 5,
+      });
+    }
+  },
 
   restartDidChange: function() {
     var policy = {};
@@ -289,7 +310,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // ----------------------------------
   environmentArray: null,
   initEnvironment: function() {
-    var obj = this.get('environment')||{};
+    var obj = this.get('instance.environment')||{};
     var keys = Object.keys(obj);
     var out = [];
     keys.forEach(function(key) {
@@ -341,7 +362,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   portsArray: null,
   initPorts: function() {
     var out = [];
-    var ports = this.get('ports')||[];
+    var ports = this.get('instance.ports')||[];
 
     ports.forEach(function(value) {
       // Objects, from edit
@@ -379,8 +400,9 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // ----------------------------------
   volumesArray: null,
   initVolumes: function() {
-    this.set('instance.dataVolumes', []);
-    this.set('volumesArray', []);
+    this.set('volumesArray', (this.get('instance.dataVolumes')||[]).map(function(vol) {
+      return {value: vol};
+    }));
   },
 
   volumesDidChange: function() {
@@ -424,8 +446,9 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
 
   volumesFromArray: null,
   initVolumesFrom: function() {
-    this.set('instance.dataVolumesFrom', []);
-    this.set('volumesFromArray', []);
+    this.set('volumesFromArray', (this.get('instance.dataVolumesFrom')||[]).map(function(vol) {
+      return {value: vol};
+    }));
   },
 
   volumesFromDidChange: function() {
@@ -446,8 +469,9 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // ----------------------------------
   dnsArray: null,
   initDns: function() {
-    this.set('instance.dns', []);
-    this.set('dnsArray', []);
+    this.set('dnsArray', (this.get('instance.dns')||[]).map(function(entry) {
+      return {value: entry};
+    }));
   },
 
   dnsDidChange: function() {
@@ -468,8 +492,9 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // ----------------------------------
   dnsSearchArray: null,
   initDnsSearch: function() {
-    this.set('instance.dnsSearch', []);
-    this.set('dnsSearchArray', []);
+    this.set('dnsSearchArray', (this.get('instance.dnsSearch')||[]).map(function(entry) {
+      return {value: entry};
+    }));
   },
   dnsSearchDidChange: function() {
     var out = this.get('instance.dnsSearch');
@@ -489,16 +514,28 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // ----------------------------------
   capabilityChoices: null,
   initCapability: function() {
+    this.set('instance.capAdd', this.get('instance.capAdd') || []);
+    this.set('instance.capDrop', this.get('instance.capDrop') || []);
     var choices = this.get('store').getById('schema','container').get('resourceFields.capAdd').options.sort();
     this.set('capabilityChoices',choices);
-    this.set('instance.capAdd',[]);
-    this.set('instance.capDrop',[]);
   },
 
   // ----------------------------------
   // Memory
   // ----------------------------------
   memoryMb: null,
+  initMemory: function() {
+    var b = this.get('instance.memorySwap');
+    if ( b )
+    {
+      this.set('memoryMb', parseInt(b,10)/(1024*1024));
+    }
+    else
+    {
+      this.set('memoryMb',null);
+    }
+
+  },
   memoryDidChange: function() {
     // The actual parameter we're interested in is 'memorySwap', in bytes.
     var mem = parseInt(this.get('memoryMb'),10);
@@ -537,6 +574,35 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // Terminal
   // ----------------------------------
   terminal: null, //'both',
+  initTerminal: function() {
+    var instance = this.get('instance');
+    var tty = instance.get('tty');
+    var stdin = instance.get('stdinOpen');
+    var out = 'both';
+
+    if ( tty !== undefined || stdin !== undefined )
+    {
+      if ( tty && stdin )
+      {
+        out = 'both';
+      }
+      else if ( tty )
+      {
+        out = 'terminal';
+      }
+      else if ( stdin )
+      {
+        out = 'interactive';
+      }
+      else
+      {
+        out = 'none';
+      }
+    }
+
+    this.set('terminal', out);
+    this.terminalDidChange();
+  },
   terminalDidChange: function() {
     var val = this.get('terminal');
     var stdinOpen = ( val === 'interactive' || val === 'both' );
@@ -550,8 +616,10 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // ----------------------------------
   devicesArray: null,
   initDevices: function() {
-    this.set('instance.devices', []);
-    this.set('devicesArray', []);
+    this.set('devicesArray', (this.get('instance.devices')||[]).map(function(dev) {
+      var parts = dev.split(':');
+      return {host: parts[0], container: parts[1], permissions: parts[2]};
+    }));
   },
   devicesDidChange: function() {
     var out = this.get('instance.devices');
@@ -570,6 +638,17 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // Command
   // ----------------------------------
   strCommand: '',
+  initCommand: function() {
+    var ary = this.get('instance.command');
+    if ( ary )
+    {
+      this.set('strCommand', ShellQuote.quote(ary));
+    }
+    else
+    {
+      this.set('strCommand','');
+    }
+  },
   strCommandDidChange: function() {
     var str = this.get('strCommand').trim()||'';
     // @TODO remove after v0.18
@@ -604,6 +683,17 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // Entry Point
   // ----------------------------------
   strEntryPoint: '',
+  initEntryPoint: function() {
+    var ary = this.get('instance.entryPoint');
+    if ( ary )
+    {
+      this.set('strEntryPoint', ShellQuote.quote(ary));
+    }
+    else
+    {
+      this.set('strEntryPoint','');
+    }
+  },
   strEntryPointDidChange: function() {
     var out = ShellQuote.parse(this.get('strEntryPoint').trim()||'');
     if ( out.length )

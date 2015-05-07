@@ -58,6 +58,17 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
         this.send('redirectTo','container');
       });
     },
+
+    clone: function() {
+      // @TODO Fix this hackery for nested components...
+      // http://emberjs.jsbin.com/mecesakase
+      if ( Ember.Component.detectInstance(this.get('target')) )
+      {
+        this.set('target', window.l('router:main'));
+      }
+
+      this.transitionToRoute('containers.new', {queryParams: {containerId: this.get('id')}});
+    },
   },
 
   availableActions: function() {
@@ -76,6 +87,7 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
       { label: 'Purge',         icon: 'ss-tornado',          action: 'purge',        enabled: !!a.purge },
       { divider: true },
       { label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: !!a.update },
+      { label: 'Clone',         icon: 'ss-copier',           action: 'clone',        enabled: true },
     ];
 
     return choices;
