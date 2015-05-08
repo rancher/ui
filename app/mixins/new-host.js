@@ -62,7 +62,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin,{
     var parts = this.get('nameParts');
     if ( typeof parts.name !== 'undefined' || !parts.prefix )
     {
-      this.set('primaryResource.name', '');
+      this.set('primaryResource.name', parts.name || '');
     }
     else
     {

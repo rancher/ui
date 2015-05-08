@@ -9,7 +9,7 @@ var regionChoices = Regions.regions.filter(function(region) {
     id: region.slug,
     name: region.name,
   };
-});
+}).sortBy('name');
 
 export default Ember.ObjectController.extend(NewHost, {
   needs: ['hosts/new'],
