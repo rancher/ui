@@ -44,6 +44,13 @@ export default Ember.Route.extend({
     controller.initFields();
   },
 
+  resetController: function (controller, isExiting/*, transition*/) {
+    if (isExiting)
+    {
+      controller.set('machineId', null);
+    }
+  }
+
   renderTemplate: function() {
     this.render({into: 'hosts/new'});
   },

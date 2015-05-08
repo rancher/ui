@@ -77,6 +77,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin,{
   initFields: function() {
     this._super();
     this.set('count', 1);
+    this.set('prefix','');
   },
 
   willSave: function() {

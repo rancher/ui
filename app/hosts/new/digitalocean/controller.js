@@ -3,7 +3,7 @@ import Regions from './digitalocean_regions';
 import NewHost from 'ui/mixins/new-host';
 
 var regionChoices = Regions.regions.filter(function(region) {
-  return region.available;
+  return region.available && (region.features.indexOf('metadata') >= 0);
 }).map(function(region) {
   return {
     id: region.slug,
