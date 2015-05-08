@@ -5,21 +5,37 @@ export default Ember.Route.extend({
     this.controllerFor('hosts/new').set('lastRoute','hosts.new.digitalocean');
   },
 
-  model: function() {
+  model: function(params/*,transition*/) {
     var store = this.get('store');
 
-    var config = store.createRecord({
-      type: 'digitaloceanConfig',
-      accessToken: '',
-      size: '1gb',
-      region: 'nyc3',
-      image: 'ubuntu-14-04-x64'
-    });
+    if ( params.machineId )
+    {
+      return store.find('machine', params.machineId).then((machine) => {
+        return store.createRecord({
+          type: 'machine',
+          digitaloceanConfig: machine.serialize().digitaloceanConfig,
+        });
+      }).catch(() => {
+        return neu();
+      });
+    }
 
-    return this.get('store').createRecord({
-      type: 'machine',
-      digitaloceanConfig: config,
-    });
+    return neu();
+
+    function neu() {
+      var config = store.createRecord({
+        type: 'digitaloceanConfig',
+        accessToken: '',
+        size: '1gb',
+        region: 'nyc3',
+        image: 'ubuntu-14-04-x64'
+      });
+
+      return this.get('store').createRecord({
+        type: 'machine',
+        digitaloceanConfig: config,
+      });
+    }
   },
 
   setupController: function(controller/*, model*/) {

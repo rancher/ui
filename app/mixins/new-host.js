@@ -3,6 +3,9 @@ import Cattle from 'ui/utils/cattle';
 import Util from 'ui/utils/util';
 
 export default Ember.Mixin.create(Cattle.NewOrEditMixin,{
+  queryParams: ['machineId'],
+  machineId: null,
+
   count: null,
   prefix: null,
   multiTemplate: null,

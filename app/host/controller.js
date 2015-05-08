@@ -35,6 +35,12 @@ var HostController = Cattle.TransitioningResourceController.extend(DownloadMachi
     detail: function() {
       this.transitionToRoute('host', this.get('id'));
     },
+
+    clone: function() {
+      var machine = this.get('machine');
+      var driver = machine.get('driver');
+      this.transitionToRoute('hosts.new.'+driver, {queryParams: {machineId: machine.get('id')}});
+    },
   },
 
   availableActions: function() {
@@ -45,19 +51,23 @@ var HostController = Cattle.TransitioningResourceController.extend(DownloadMachi
       { label: 'Activate',      icon: 'ss-play',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
       { label: 'Deactivate',    icon: 'ss-pause',     action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
       { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'Purge',         icon: '',   action: 'purge',        enabled: !!a.purge, color: 'text-danger'},
       { divider: true },
     ];
 
-    if ( this.get('machine.links.config') )
+    out.push({ label: 'View in API',   icon: '', action: 'goToApi',      enabled: true});
+    if ( this.get('machine') )
     {
-      out.push({ label: 'Machine Config',   icon: 'ss-download', action: 'machineConfig',      enabled: true});
+      if ( this.get('machine.links.config') )
+      {
+        out.push({ label: 'Machine Config',   icon: 'ss-download', action: 'machineConfig',      enabled: true});
+      }
+
+      out.push({ label: 'Clone',         icon: 'ss-copier',           action: 'clone',        enabled: true });
     }
 
-    out.push({ label: 'View in API',   icon: '', action: 'goToApi',      enabled: true});
-    out.push({ label: 'Purge',         icon: '',   action: 'purge',        enabled: !!a.purge, color: 'text-danger'});
-
     return out;
-  }.property('actions.{activate,deactivate,remove,purge}'),
+  }.property('actions.{activate,deactivate,remove,purge}','machine','machine.links.config'),
 
   triedToGetIp: false,
   displayIp: function() {
