@@ -17,6 +17,12 @@ export default Ember.Object.extend(Ember.Evented, {
     }
 
     var url = this.get('url');
+    // If the site is SSL, the WebSocket should be too...
+    if ( window.location.protocol === 'https:' && url.indexOf('ws://') === 0 )
+    {
+      url = 'wss://' + url.substr(5);
+    }
+
     console.log('Socket connect to',url);
     socket = new WebSocket(url);
     self.set('socket', socket);
