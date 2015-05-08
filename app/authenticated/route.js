@@ -46,7 +46,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   afterModel: function(model) {
-    this.selectDefaultProject(model);
+    return this.selectDefaultProject(model);
   },
 
   setupController: function(controller, model) {
@@ -62,11 +62,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     var session = this.get('session');
 
     // Try the project ID in the session
-    this.activeProjectFromId(session.get(C.SESSION.PROJECT)).then(select)
+    return this.activeProjectFromId(session.get(C.SESSION.PROJECT)).then(select)
     .catch(() => {
       // Then the default project ID from the session
-      this.activeProjectFromId(this.get('prefs').get(C.PREFS.PROJECT_DEFAULT)).then(select)
+      return this.activeProjectFromId(this.get('prefs').get(C.PREFS.PROJECT_DEFAULT)).then(select)
       .catch(() => {
+        this.get('prefs').set(C.PREFS.PROJECT_DEFAULT, undefined);
+
         // Then the first active project
         var project = active.get('firstObject');
         if ( project )
@@ -75,7 +77,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         }
         else if ( this.get('app.isAuthenticationAdmin') )
         {
-          this.findUserProjects().then((all) => {
+          return this.findUserProjects().then((all) => {
             var firstActive = all.filterProperty('state','active')[0];
             if ( firstActive )
             {
