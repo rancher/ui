@@ -71,42 +71,6 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     removeDevice: function(obj) {
       this.get('devicesArray').removeObject(obj);
     },
-
-    chooseRegistry: function(registry) {
-      var found = false;
-      this.get('registryChoices').forEach((choice) => {
-        var prefix = choice.get('serverAddress')+':';
-
-        if ( registry && choice.get('id') === registry.get('id') )
-        {
-          found = true;
-          choice.set('active', true);
-          this.set('displayPrefix', prefix);
-          this.set('selectedRegistry', choice);
-          var credentials = choice.get('credentials');
-          if ( credentials )
-          {
-            credentials = credentials.filter((cred) => {
-              return cred.get('state') === 'active';
-            }).sortBy('email','publicValue','id');
-          }
-          this.set('credentialChoices', credentials);
-        }
-        else
-        {
-          choice.set('active', false);
-        }
-      });
-
-      if (!found)
-      {
-        this.set('displayPrefix', 'docker:');
-        this.set('selectedRegistry', null);
-        this.set('credentialChoices', null);
-      }
-
-      this.set('instance.registryCredentialId', this.get('credentialChoices.firstObject.id'));
-    },
   },
 
   // ----------------------------------
@@ -132,7 +96,6 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
       this.userImageUuidDidChange();
       this.terminalDidChange();
       this.restartDidChange();
-      this.send('chooseRegistry', null);
       this.set('restartLimit', 5);
       this.set('restart', 'no'); // This has to come after restartLimit because changing the limit sets restart.
       this.set('terminal', 'both');
@@ -145,77 +108,28 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // ----------------------------------
   // Image
   // ----------------------------------
-  selectedRegistry: null,
-  displayPrefix: '',
-  userImageUuid: 'ubuntu:14.04.1',
-  credentialChoices: null,
-  showCredential: Ember.computed.gt('credentialChoices.length',0),
-  showCredentialChoice: Ember.computed.gt('credentialChoices.length',1),
+  userImageUuid: 'ubuntu:14.04.2',
   userImageUuidDidChange: function() {
     var input = (this.get('userImageUuid')||'').trim();
-    var choices = this.get('registryChoices')||[];
-
     var uuid = 'docker:';
 
     // Look for a redundant docker: pasted in
     if ( input.indexOf(uuid) === 0 )
     {
-      this.send('chooseRegistry', null);
-      this.set('userImageUuid', input.substr(uuid.length));
-      return;
-      // We'll be back around again because userImageUuid was re-changed
+      //this.set('userImageUuid', input.substr(uuid.length));
+      //return;
+      uuid = input;
+      this.set('instance.imageUuid', input);
     }
-
-    // Look for a private registry with the matching prefix
-    var prefix, choice;
-    for ( var i = 0 ; i < choices.get('length') ; i++ )
+    else if ( input && input.length )
     {
-      choice = choices.objectAt(i);
-      prefix = choice.get('serverAddress')+'/';
-      choice.set('selected', false);
-      if ( input.indexOf(prefix) === 0 )
-      {
-        this.send('chooseRegistry', choice);
-        this.set('userImageUuid', input.substr(prefix.length));
-        return;
-        // We'll be back around again because userImageUuid was re-changed
-      }
-    }
-
-    if ( input  && input.length )
-    {
-      // Update the actual uuid on the container
-      var registry = this.get('selectedRegistry.serverAddress');
-      if ( registry )
-      {
-        uuid += registry + '/';
-      }
-
-      uuid += input;
-
-      this.set('instance.imageUuid', uuid);
+      this.set('instance.imageUuid', uuid+input);
     }
     else
     {
       this.set('instance.imageUuid', null);
     }
-  }.observes('selectedRegistry.serverAddress','userImageUuid'),
-
-  credentialChoicesChanged: function() {
-    var found = false;
-    var id = this.get('instance.registryCredentialId');
-    (this.get('credentialChoices')||[]).forEach((choice) => {
-      if ( choice.get('id') === id )
-      {
-        found = true;
-      }
-    });
-
-    if ( !found )
-    {
-      this.set('instance.registryCredentialId',null);
-    }
-  }.observes('credentialChoices.@each.id','instance.registryCredentialId'),
+  }.observes('userImageUuid'),
 
 
   // ----------------------------------
