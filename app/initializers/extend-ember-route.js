@@ -6,7 +6,10 @@ export function initialize(/* container, application */) {
     // Remember the current route (into the application route's previousRoute/Params properties)
     beforeModel: function() {
       this._super.apply(this,arguments);
+      this.rememberPrevious();
+    },
 
+    rememberPrevious: function() {
       var appRoute = this.container.lookup('route:application');
       var infos = this.router.router.currentHandlerInfos;
       if ( infos && infos.length )
