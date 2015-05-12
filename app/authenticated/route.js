@@ -46,7 +46,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   afterModel: function(model) {
-    return this.selectDefaultProject(model);
+    return this.loadPreferences().then(() => {
+      return this.selectDefaultProject(model);
+    });
   },
 
   setupController: function(controller, model) {
@@ -56,6 +58,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     this.selectDefaultProject(active, controller);
     this._super.apply(this,arguments);
+  },
+
+  loadPreferences: function() {
+    return this.get('store').find('userpreference', null, {forceReload: true});
   },
 
   selectDefaultProject: function(active, controller) {
