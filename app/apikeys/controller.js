@@ -14,8 +14,15 @@ export default Cattle.CollectionController.extend({
     // And strip leading slashes off the API endpoint
     url += this.get('app.apiEndpoint').replace(/^\/+/,'');
 
+    // Go to the project-specific version
+    var projectId = this.get('session').get(C.SESSION.PROJECT);
+    if ( projectId )
+    {
+      url += '/projects/' + projectId;
+    }
+
     return url;
-  }.property('controllers.application.absoluteEndpoint','app.apiEndpoint'),
+  }.property('controllers.application.absoluteEndpoint','app.apiEndpoint','session.'+C.SESSION.PROJECT),
 
   endpointWithAuth: function() {
     var url = this.get('endpoint');
