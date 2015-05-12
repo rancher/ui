@@ -71,6 +71,57 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     removeDevice: function(obj) {
       this.get('devicesArray').removeObject(obj);
     },
+
+    pastedEnviromentVars: function(str, target) {
+      var ary = this.get('environmentArray');
+      str = str.trim();
+      if ( str.indexOf('=') === -1 )
+      {
+        // Just pasting a key
+        $(target).val(str);
+        return;
+      }
+
+      var lines = str.split(/\r?\n/);
+      lines.forEach((line) => {
+        line = line.trim();
+        if ( !line )
+        {
+          return;
+        }
+
+        var idx = line.indexOf('=');
+        var key = '';
+        var val = '';
+        if ( idx > 0 )
+        {
+          key = line.substr(0,idx).trim();
+          val = line.substr(idx+1).trim();
+        }
+        else
+        {
+          key = line.trim();
+          val = '';
+        }
+
+        var existing = ary.filterProperty('key',key)[0];
+        if ( existing )
+        {
+          Ember.set(existing,'value',val);
+        }
+        else
+        {
+          ary.pushObject({key: key, value: val});
+        }
+      });
+
+      ary.forEach((item) => {
+        if ( !item.key && !item.value )
+        {
+          ary.removeObject(item);
+        }
+      });
+    }
   },
 
   // ----------------------------------
