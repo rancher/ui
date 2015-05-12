@@ -400,7 +400,14 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // ----------------------------------
   volumesArray: null,
   initVolumes: function() {
-    this.set('volumesArray', (this.get('instance.dataVolumes')||[]).map(function(vol) {
+    var ary = this.get('instance.dataVolumes');
+    if ( !ary )
+    {
+      ary = [];
+      this.set('instance.dataVolumes',ary);
+    }
+
+    this.set('volumesArray', ary.map(function(vol) {
       return {value: vol};
     }));
   },
@@ -446,7 +453,14 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
 
   volumesFromArray: null,
   initVolumesFrom: function() {
-    this.set('volumesFromArray', (this.get('instance.dataVolumesFrom')||[]).map(function(vol) {
+    var ary = this.get('instance.dataVolumesFrom');
+    if ( !ary )
+    {
+      ary = [];
+      this.set('instance.dataVolumesFrom',ary);
+    }
+
+    this.set('volumesFromArray', ary.map(function(vol) {
       return {value: vol};
     }));
   },
@@ -469,7 +483,14 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // ----------------------------------
   dnsArray: null,
   initDns: function() {
-    this.set('dnsArray', (this.get('instance.dns')||[]).map(function(entry) {
+    var ary = this.get('instance.dns');
+    if ( !ary )
+    {
+      ary = [];
+      this.set('instance.dns',ary);
+    }
+
+    this.set('dnsArray', ary.map(function(entry) {
       return {value: entry};
     }));
   },
@@ -492,7 +513,14 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // ----------------------------------
   dnsSearchArray: null,
   initDnsSearch: function() {
-    this.set('dnsSearchArray', (this.get('instance.dnsSearch')||[]).map(function(entry) {
+    var ary = this.get('instance.dnsSearch');
+    if ( !ary )
+    {
+      ary = [];
+      this.set('instance.dnsSearch',ary);
+    }
+
+    this.set('dnsSearchArray', ary.map(function(entry) {
       return {value: entry};
     }));
   },
@@ -616,7 +644,14 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // ----------------------------------
   devicesArray: null,
   initDevices: function() {
-    this.set('devicesArray', (this.get('instance.devices')||[]).map(function(dev) {
+    var ary = this.get('instance.devices');
+    if ( !ary )
+    {
+      ary = [];
+      this.set('instance.devices',ary);
+    }
+
+    this.set('devicesArray', ary.map(function(dev) {
       var parts = dev.split(':');
       return {host: parts[0], container: parts[1], permissions: parts[2]};
     }));

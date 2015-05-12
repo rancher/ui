@@ -1,13 +1,10 @@
-import Ember from 'ember';
+import DriverRoute from 'ui/hosts/new/driver-route';
 
-export default Ember.Route.extend({
-  activate: function() {
-    this.controllerFor('hosts/new').set('lastRoute','hosts.new.packet');
-  },
+export default DriverRoute.extend({
+  driverName: 'packet',
 
-  model: function() {
+  newModel: function() {
     var store = this.get('store');
-
     var config = store.createRecord({
       type: 'packetConfig',
       apiKey: '',
@@ -22,15 +19,5 @@ export default Ember.Route.extend({
       type: 'machine',
       packetConfig: config,
     });
-  },
-
-  setupController: function(controller/*, model*/) {
-    this._super.apply(this, arguments);
-    controller.set('editing', false);
-    controller.initFields();
-  },
-
-  renderTemplate: function() {
-    this.render({into: 'hosts/new'});
-  },
+  }
 });
