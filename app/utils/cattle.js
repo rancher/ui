@@ -19,7 +19,14 @@ var ResourceController = Ember.ObjectController.extend({
       var endpoint = this.get('controllers.application.absoluteEndpoint'); // http://e.f.g.h/ , does not include version.  e.f.g.h is where the API actually is.
       url = url.replace(/https?:\/\/[^\/]+\/?/,endpoint);
 
-      url = Util.addAuthorization(url, C.HEADER.AUTH_FAKE_USER +'=' + this.get('session.'+C.SESSION.PROJECT), this.get('session.'+C.SESSION.TOKEN)||'');
+      // Go to the project-specific version
+      var projectId = this.get('session').get(C.SESSION.PROJECT);
+      if ( projectId )
+      {
+        url = url.replace(/(.*?\/v1)(.*)/,"$1/projects/"+projectId+"$2");
+      }
+
+      url = Util.addAuthorization(url, C.HEADER.AUTH_FAKE_USER, this.get('session.'+C.SESSION.TOKEN)||'');
 
       window.open(url, '_blank');
     },
