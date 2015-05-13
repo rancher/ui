@@ -10,6 +10,7 @@ export function initialize(container, application) {
   var prefs = UserPreferences.create({
     // Store isn't automatically injected in
     store: container.lookup('store:main'),
+    app: application,
   });
 
   // Inject GitHub lookup as 'github' property
