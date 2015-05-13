@@ -61,7 +61,17 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   loadPreferences: function() {
-    return this.get('store').find('userpreference', null, {forceReload: true});
+    var store = this.get('store');
+    if ( store.hasRecordFor('schema','userpreference') )
+    {
+      this.set('app.hasUserPreferences', true);
+      return this.get('store').find('userpreference', null, {forceReload: true});
+    }
+    else
+    {
+      this.set('app.hasUserPreferences', false);
+      return Ember.RSVP.resolve();
+    }
   },
 
   selectDefaultProject: function(active, controller) {

@@ -32,7 +32,7 @@ export default Ember.Route.extend({
       var data;
       if ( params.containerId )
       {
-        data = results[3].serializeForNew();
+        data = results[2].serializeForNew();
       }
       else
       {

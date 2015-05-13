@@ -1,23 +1,34 @@
 import Ember from "ember";
 import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
+import LocalStorage from 'ui/utils/local-storage';
+
+var localStore = LocalStorage.create();
 
 export default Ember.Object.extend({
+  app: null,
   store: null,
+  localStore: null,
+
+  init: function() {
+    this._super();
+  },
 
   unremoved: function() {
-    console.log('unremoved');
     return UnremovedArrayProxy.create({
       sourceContent: this.get('store').all('userpreference')
     });
   }.property(),
 
   findByName: function(key) {
-    console.log('findByName',key);
     return this.get('unremoved').filterProperty('name',key)[0];
   },
 
   unknownProperty: function(key) {
-    console.log('unknownProperty',key);
+    if ( !this.get('app.hasUserPreferences') )
+    {
+      return localStore.get(key);
+    }
+
     var value; // = undefined;
 
     var existing = this.findByName(key);
@@ -38,7 +49,13 @@ export default Ember.Object.extend({
   },
 
   setUnknownProperty: function(key, value) {
-    console.log('setUnknownProperty', key, value);
+    if ( !this.get('app.hasUserPreferences') )
+    {
+      var out = localStore.set(key,value);
+      this.notifyPropertyChange(key);
+      return out;
+    }
+
     var obj = this.findByName(key);
 
     // Delete by set to undefined
@@ -69,7 +86,11 @@ export default Ember.Object.extend({
   },
 
   clear: function() {
-    console.log('clear');
+    if ( !this.get('app.hasUserPreferences') )
+    {
+      return localStore.clear();
+    }
+
     this.beginPropertyChanges();
 
     this.get('unremoved').forEach((obj) => {
