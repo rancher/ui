@@ -6,7 +6,7 @@ export default Ember.ObjectController.extend({
   drivers: function() {
     var hasOpenStack = this.get('store').hasRecordFor('schema','openstackconfig');
     var hasAmazon = this.get('store').hasRecordFor('schema','amazonec2config');
-    var hasPacket = this.get('store').hasRecordFor('schema','packetconfig') && false;
+    var hasPacket = this.get('store').hasRecordFor('schema','packetconfig');
 
     return [
       {route: 'hosts.new.digitalocean', label: 'DigitalOcean',  css: 'digitalocean', available: true  },
