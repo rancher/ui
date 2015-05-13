@@ -8,17 +8,25 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       serverAddress: '',
     });
 
-    return registry;
+    var credential = this.get('store').createRecord({
+      type:'registryCredential',
+      registryId: 'tbd',
+    });
+
+    return Ember.Object.create({
+      registry: registry,
+      credential: credential
+    });
   },
 
   setupController: function(controller, model) {
-    controller.set('credentials', []);
     controller.set('model',model);
     controller.initFields();
+    controller.send('selectDriver','dockerhub');
   },
 
-  renderTemplate: function() {
-    this.render({into: 'application', outlet: 'overlay'});
+  activate: function() {
+    this.send('setPageLayout', {label: 'All Registries', backRoute: 'registries'});
   },
 
   actions: {

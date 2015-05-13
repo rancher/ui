@@ -13,9 +13,9 @@
     <thead>
       <tr>
         <th width="120">State</th>
-        <th>Name</th>
         <th>Address</th>
-        <th width="100">Credentials</th>
+        <th>Email</th>
+        <th>Username</th>
         <th>Created</th>
         <th width="50">&nbsp;</th>
       </tr>
@@ -29,13 +29,13 @@
             </span>
           </td>
           <td>
-            {{#link-to "registry" registry.id}}{{registry.displayName}}{{/link-to}}
+            {{registry.displayAddress}}
           </td>
           <td>
-            {{registry.serverAddress}}
+            {{#if registry.credential.email}}{{registry.credential.email}}{{else}}<i class="text-muted">None</i>{{/if}}
           </td>
           <td>
-            {{#if registry.credentials}}{{registry.credentials.length}}{{else}}<i class="text-muted">None</i>{{/if}}
+            {{#if registry.credential.publicValue}}{{registry.credential.publicValue}}{{else}}<i class="text-muted">None</i>{{/if}}
           </td>
           <td>
             {{date-calendar registry.created}}

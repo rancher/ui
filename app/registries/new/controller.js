@@ -5,29 +5,39 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   error: null,
   credentials: null,
   editing: false,
-  actions: {
-    addCredential: function() {
-      this.get('credentials').pushObject(this.get('store').createRecord({
-        type: 'registryCredential',
-        registryId: 'tbd', // This will be overwritten by didSave
-        publicValue: '',
-        secretValue: '',
-        email: ''
-      }));
-    },
+  primaryResource: Ember.computed.alias('model.registry'),
+  activeDriver: null,
 
-    removeCredential: function(obj) {
-      this.get('credentials').removeObject(obj);
+  isCustom: Ember.computed.equal('activeDriver','custom'),
+
+  actions: {
+    selectDriver: function(name) {
+      var driver = this.get('drivers').filterProperty('name',name)[0];
+      this.set('activeDriver', driver.name);
+      this.set('registry.serverAddress', driver.value);
     }
   },
+
+  drivers: function() {
+    var drivers = [
+      {name: 'dockerhub', label: 'DockerHub',  css: 'dockerhub', value: 'index.docker.io', available: true  },
+      {name: 'quay',      label: 'Quay.io',    css: 'quay',      value: 'quay.io',         available: true  },
+      {name: 'custom',    label: 'Custom',     css: 'custom',    value: '',                available: true  },
+    ];
+
+    var active = this.get('activeDriver');
+    drivers.forEach(function(driver) {
+      driver.active = ( active === driver.name );
+    });
+
+    return drivers;
+  }.property('activeDriver'),
 
   validate: function() {
     this._super();
     var errors = this.get('errors')||[];
 
-    this.get('credentials').forEach((cred) => {
-      errors.pushObjects(cred.validationErrors());
-    });
+    errors.pushObjects(this.get('model.credential').validationErrors());
 
     if ( errors.get('length') > 0 )
     {
@@ -39,15 +49,12 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   },
 
   didSave: function() {
-    var registry = this.get('model');
+    var registry = this.get('model.registry');
+    var cred = this.get('model.credential');
     var id = registry.get('id');
-    var promises = [];
-    this.get('credentials').forEach((cred) => {
-      cred.set('registryId', id);
-      promises.push(cred.save());
-    });
 
-    return Ember.RSVP.all(promises);
+    cred.set('registryId', id);
+    return cred.save();
   },
 
   doneSaving: function() {

@@ -18,15 +18,11 @@ export default Ember.Route.extend({
     var dependencies = [
       store.findAllActive('network'),
       store.findAll('host'), // Need inactive ones in case a link points to an inactive host
-      store.findAllActive('registry'),
     ];
 
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then(function(results) {
       var networkChoices = results[0];
       var allHosts = results[1];
-      var registryChoices = results[2];
-
-      registryChoices.set('sortProperties',['name','serverAddress','id']);
 
       var container = self.get('store').createRecord({
         type: 'container',
@@ -40,7 +36,6 @@ export default Ember.Route.extend({
         instance: container,
         networkChoices: networkChoices,
         allHosts: allHosts,
-        registryChoices: registryChoices,
       });
     });
   },

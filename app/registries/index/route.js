@@ -8,6 +8,6 @@ export default Ember.Route.extend({
   },
 
   activate: function() {
-    this.send('setPageLayout', {label: 'Registries'});
+    this.send('setPageLayout', {label: 'Registries', addRoute: 'registries.new'});
   },
 });

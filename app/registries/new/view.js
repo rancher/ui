@@ -1,21 +1,15 @@
-import Overlay from "ui/overlay/view";
 import Ember from 'ember';
 
-export default Overlay.extend({
-  actions: {
-    addCredential: function() {
-      this.get('controller').send('addCredential');
-      Ember.run.next(this, function() {
-        this.$('.email').last().focus();
-      });
-    },
+export default Ember.View.extend({
+  didInsertElement: function() {
+    this._super();
 
-    overlayClose: function() {
-      this.get('controller').send('cancel');
-    },
+    var numDrivers = this.get('context.drivers').filter((driver) => {
+      return Ember.get(driver,'available');
+    }).length;
 
-    overlayEnter: function() {
-      this.get('controller').send('save');
-    },
+    var width = this.$('#providers LI').width();
+    this.$('#providers').css('margin','0 auto');
+    this.$('#providers').css('max-width', Math.min(numDrivers, 4) * width + 'px');
   }
 });

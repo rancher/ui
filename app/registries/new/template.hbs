@@ -1,91 +1,74 @@
-<section class="horizontal-form container-fluid">
+<section class="horizontal-form" style="background-color: white;">
   <h2>{{#if editing}}Edit Registry{{else}}Add Registry{{/if}}</h2>
   {{top-errors errors=errors}}
 
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="name">Name</label>
-    </div>
-    <div class="col-sm-12 col-md-8">
-      {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. MyCompany Registry"}}
-    </div>
-  </div>
-
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="description">Description</label>
-    </div>
-    <div class="col-sm-12 col-md-8">
-      {{textarea id="description" value=description classNames="form-control no-resize" rows="5" placeholder="e.g. This registry stores all MyCompany images"}}
-    </div>
-  </div>
-
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="serverAddress">Registry Address*</label>
-    </div>
-    <div class="col-sm-12 col-md-8">
-      {{#if editing}}
-        <div class="form-control-static">{{serverAddress}}</div>
-      {{else}}
-        {{input id="serverAddress" type="text" value=serverAddress classNames="form-control" placeholder="e.g. quay.io"}}
-      {{/if}}
-    </div>
-  </div>
-
   {{#unless editing}}
-    {{partial "form-divider"}}
-
-    <div class="row form-group">
-      <div class="col-xs-6 col-md-2 form-label">
-        <label class="form-control-static">Credentials</label>
-      </div>
-      <div class="col-xs-2">
-        <div class="form-control-static clearfix">
-          <button class="btn-circle-plus" {{action "addCredential" target="view"}}></button>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">Provider</label>
+        </div>
+        <div class="col-sm-12 col-md-8">
+          <ul class="nav nav-boxes checked-active" id="providers">
+            {{#each driver in drivers}}
+              {{#if driver.available}}
+                <li {{bind-attr class="driver.active:active"}}>
+                  <a {{action "selectDriver" driver.name}} {{bind-attr alt=driver.label class=":driver :registry-driver driver.css"}}></a>
+                </li>
+              {{/if}}
+            {{/each}}
+          </ul>
         </div>
       </div>
     </div>
+  {{/unless}}
+  <div style="width: 10px; height: 10px; margin: 0 auto; border: 10px solid white; border-bottom-color: #f4f5f8; border-top: 0;"></div>
+</section>
 
-    <div class="row">
-      <div class="col-sm-12 col-md-8 col-md-offset-2">
-        {{#if credentials.length}}
-          <table class="table fixed no-lines no-top-padding tight small">
-            <tr class="text-muted">
-              <th>Email*</th>
-              <th width="30">&nbsp;</th>
-              <th>Username</th>
-              <th width="30">&nbsp;</th>
-              <th>Password</th>
-              <th width="30">&nbsp;</th>
-              <th width="30">&nbsp;</th>
-            </tr>
-            {{#each credential in credentials}}
-              <tr>
-                <td>
-                  {{input type="text" class="form-control input-sm email" value=credential.email placeholder="e.g. you@domain.com"}}
-                </td>
-                <td>&nbsp;</td>
-                <td>
-                  {{input type="text" class="form-control input-sm" value=credential.publicValue placeholder="e.g. username"}}
-                </td>
-                <td>&nbsp;</td>
-                <td>
-                  {{input type="password" class="form-control input-sm" value=credential.secretValue placeholder="e.g. password"}}
-                </td>
-                <td>&nbsp;</td>
-                <td class="text-right">
-                  <button {{action "removeCredential" credential}} class="btn-circle-x" type="button" tabindex="-1"></button>
-                </td>
-              </tr>
-            {{/each}}
-          </table>
-        {{else}}
-          <div class="text-muted">If your registry requires authentication, add one or more credentials here.</div>
-        {{/if}}
+<section class="horizontal-form">
+  <div class="container-fluid">
+    {{#if isCustom}}
+      <div class="row form-group">
+        <div class="col-sm-12 col-md-2 form-label form-control-static">
+          <label for="serverAddress">Address{{#if isCustom}}*{{/if}}</label>
+        </div>
+        <div class="col-sm-12 col-md-8">
+          {{#if editing}}
+            <div class="form-control-static">{{registry.serverAddress}}</div>
+          {{else}}
+            {{input id="serverAddress" type="text" value=registry.serverAddress classNames="form-control" placeholder="e.g. registry.example.com"}}
+          {{/if}}
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label form-control-static">
+        <label for="email">Email*</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{input id="email" type="text" class="form-control email" value=credential.email placeholder="e.g. you@example.com"}}
       </div>
     </div>
-  {{/unless}}
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label form-control-static">
+        <label for="publicValue">Username</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{input id="publicValue" type="text" class="form-control" value=credential.publicValue placeholder="e.g. username"}}
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label form-control-static">
+        <label for="email">Password</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{input id="privateValue" type="password" class="form-control" value=credential.secretValue placeholder="e.g. password"}}
+      </div>
+    </div>
+  </div>
 </section>
 
 {{partial "save-cancel"}}
