@@ -63,6 +63,7 @@ app.import('bower_components/lodash/dist/lodash.js');
 app.import('bower_components/graphlib/dist/graphlib.core.js');
 app.import('bower_components/dagre/dist/dagre.core.js');
 app.import('bower_components/dagre-d3/dist/dagre-d3.core.js');
+app.import('bower_components/async/lib/async.js');
 app.import('vendor/aws-sdk-ec2.js');
 
 module.exports = app.toTree();

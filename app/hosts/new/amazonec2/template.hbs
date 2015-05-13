@@ -2,38 +2,163 @@
 
 <section class="horizontal-form">
   <div class="container-fluid">
-    {{partial "host/add-common"}}
-
     <div class="over-hr" style="margin: 20px 0;">
       <span>Account Access</span>
     </div>
 
-    <div class="row form-group">
+    <div {{bind-attr class=":row isStep1:form-group"}}>
+      {{#if isStep1}}
+        <p class="help-text text-center">Paste in an AWS key pair here.  We'll use this key to create your new Instances.</p>
+      {{/if}}
       <div class="col-sm-12 col-md-2 form-label">
         <label for="accessKey" class="form-control-static">Access Key*</label>
       </div>
-      <div class="col-sm-12 col-md-3">
-        {{input type="text" id="accessKey" classNames="form-control" placeholder="Your AWS access key" value=amazonec2Config.accessKey}}
+      <div class="col-sm-12 col-md-8">
+        {{#if isStep1}}
+          {{input type="text" id="accessKey" classNames="form-control" placeholder="Your AWS access key" value=amazonec2Config.accessKey}}
+        {{else}}
+          <div class="form-control-static">{{amazonec2Config.accessKey}}</div>
+        {{/if}}
       </div>
+    </div>
+    <div {{bind-attr class=":row isStep1:form-group"}}>
       <div class="col-sm-12 col-md-2 form-label">
         <label for="secretKey" class="form-control-static">Secret Key*</label>
       </div>
-      <div class="col-sm-12 col-md-3">
-        {{input type="password" id="secretKey" classNames="form-control" placeholder="Your AWS secret key" value=amazonec2Config.secretKey}}
+      <div class="col-sm-12 col-md-8">
+        {{#if isStep1}}
+          {{input type="password" id="secretKey" classNames="form-control" placeholder="Your AWS secret key" value=amazonec2Config.secretKey}}
+        {{else}}
+          <div class="form-control-static">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div>
+        {{/if}}
       </div>
     </div>
+  </div>
+  {{#if isStep1}}
+    <div class="text-center">
+      <button {{action "awsLogin"}} class="btn btn-primary">Next: Authenticate &amp; select a network</button>
+      <button {{action "cancel"}} class="btn btn-link">Cancel</button>
+    </div>
+  {{/if}}
+</section>
+
+<section {{bind-attr class=":horizontal-form isStep2::hide"}} style="padding-top: 0">
+  <div class="text-center">
+    <i class="fa fa-circle-o-notch fa-spin"></i> Loading Availablility Zone and VPC info from EC2...
+  </div>
+</section>
+
+<section {{bind-attr class=":horizontal-form isGteStep3::hide"}} style="padding-top: 0">
+  <div class="container-fluid">
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Availability Zone &amp; VPC</span>
+    </div>
+    {{#if isStep3}}
+      <p class="help-text text-center">Select a VPC or a Subnet here.  This also determines what Availablity Zone the Instance will be created in.</p>
+    {{/if}}
+
+    <div {{bind-attr class=":row isStep3:form-group"}}>
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="subnet" class="form-control-static">VPC/Subnet</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{#if isStep3}}
+          {{view "select"
+            class="form-control"
+            id="subnet"
+            content=subnetChoices
+            value=selectedSubnet
+            optionLabelPath="content.label"
+            optionValuePath="content.value"
+            optionGroupPath="group"
+          }}
+        {{else}}
+          <div class="form-control-static">
+            {{#if amazonec2Config.subnetId}}
+              {{amazonec2Config.subnetId}}
+            {{else}}
+              {{amazonec2Config.vpcId}}
+            {{/if}}
+            in {{amazonec2Config.region}}{{amazonec2Config.zone}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  {{#if isStep3}}
+    <div class="text-center">
+      <button {{action "selectSubnet"}} class="btn btn-primary">Next: Select a Security Group</button>
+      <button {{action "cancel"}} class="btn btn-link">Cancel</button>
+    </div>
+  {{/if}}
+</section>
+
+<section {{bind-attr class=":horizontal-form isGteStep4::hide"}} style="padding-top: 0">
+  <div class="container-fluid">
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Security Group</span>
+    </div>
+
+    <div {{bind-attr class=":row isStep4:form-group"}}>
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="securityGroup" class="form-control-static">Security Group</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="default"}} Default: Use or automatically create the <code>{{defaultSecurityGroup}}</code> group</label></div>
+
+        <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="custom"}} Custom: Choose an existing group{{#if isCustomSecurityGroup}}:{{/if}}</label></div>
+        {{#if isCustomSecurityGroup}}
+          {{view "select"
+            class="form-control"
+            id="subnet"
+            content=allSecurityGroups
+            value=selectedSecurityGroup
+            optionLabelPath="content.name"
+            optionValuePath="content.id"
+          }}
+
+          <p style="margin: 10px 0 0 0;">For Rancher to work correctly your security group will need to allow traffic:</p>
+          <ul>
+            <li>From the internet to <code>TCP</code> ports <code>9345</code> and <code>9346</code> <span class="text-muted">(for UI hosts stats/graphs)</span></li>
+            <li>From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+          </ul>
+          <p style="margin: 0;">Machine will automatically create this group if needed, but will <b>not</b> add these rules.</p>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  {{#if isStep4}}
+    <div class="text-center">
+      <button {{action "selectSecurityGroup"}} class="btn btn-primary">Next: Set Instance options</button>
+      <button {{action "cancel"}} class="btn btn-link">Cancel</button>
+    </div>
+  {{/if}}
+</section>
+
+<section {{bind-attr class=":horizontal-form isGteStep5::hide"}} style="padding-top: 0;">
+  <div class="container-fluid">
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Instance</span>
+    </div>
+
+    {{partial "host/add-common"}}
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="sessionToken" class="form-control-static">Session Token</label>
+        <label for="instanceType" class="form-control-static">Instance Type</label>
       </div>
       <div class="col-sm-12 col-md-3">
-        {{input type="text" id="sessionToken" classNames="form-control" placeholder="" value=amazonec2Config.sessionToken}}
+        {{input type="text" id="instanceType" classNames="form-control" placeholder="" value=amazonec2Config.instanceType}}
       </div>
-    </div>
-
-    <div class="over-hr" style="margin: 20px 0;">
-      <span>Instance</span>
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="rootSize" class="form-control-static">Root Size</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        <div class="input-group">
+          {{input type="text" id="rootSize" classNames="form-control" placeholder="" value=amazonec2Config.rootSize}}
+          <span class="input-group-addon">GB</span>
+        </div>
+      </div>
     </div>
 
     <div class="row form-group">
@@ -44,74 +169,10 @@
         {{input type="text" id="ami" classNames="form-control" placeholder="An Ubuntu AMI" value=amazonec2Config.ami}}
       </div>
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="rootSize" class="form-control-static">Root Size</label>
-      </div>
-      <div class="col-sm-12 col-md-3">
-        {{input type="text" id="rootSize" classNames="form-control" placeholder="" value=amazonec2Config.rootSize}}
-      </div>
-    </div>
-
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label for="instanceType" class="form-control-static">Instance Type</label>
-      </div>
-      <div class="col-sm-12 col-md-3">
-        {{input type="text" id="instanceType" classNames="form-control" placeholder="" value=amazonec2Config.instanceType}}
-      </div>
-      <div class="col-sm-12 col-md-2 form-label">
         <label for="iamInstanceProfile" class="form-control-static">IAM Profile</label>
       </div>
       <div class="col-sm-12 col-md-3">
         {{input type="text" id="iamInstanceProfile" classNames="form-control" placeholder="" value=amazonec2Config.iamInstanceProfile}}
-      </div>
-    </div>
-
-
-    <div class="over-hr" style="margin: 20px 0;">
-      <span>Region</span>
-    </div>
-
-
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label for="region" class="form-control-static">Region</label>
-      </div>
-      <div class="col-sm-12 col-md-3">
-        {{input type="text" id="region" classNames="form-control" placeholder="" value=amazonec2Config.region}}
-      </div>
-      <div class="col-sm-12 col-md-2 form-label">
-        <label for="zone" class="form-control-static">Zone</label>
-      </div>
-      <div class="col-sm-12 col-md-3">
-        {{input type="text" id="zone" classNames="form-control" placeholder="" value=amazonec2Config.zone}}
-      </div>
-    </div>
-
-    <div class="over-hr" style="margin: 20px 0;">
-      <span>Network</span>
-    </div>
-
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label for="vpcOrSubnetId" class="form-control-static">VPC/Subnet ID*</label>
-      </div>
-      <div class="col-sm-12 col-md-8">
-        {{input type="text" id="vpcOrSubnetId" classNames="form-control" placeholder="Provide a VPC ID or Subnet ID to attach the Instance to" value=vpcOrSubnetId}}
-      </div>
-    </div>
-
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label for="securityGroup" class="form-control-static">Security Group</label>
-      </div>
-      <div class="col-sm-12 col-md-8">
-        {{input type="text" id="securityGroup" classNames="form-control" placeholder="" value=amazonec2Config.securityGroup}}
-        <p style="margin: 10px 0 0 0;">Your security group will need to allow traffic:</p>
-        <ul>
-          <li>From the internet to <code>TCP</code> ports <code>9345</code> and <code>9346</code> <span class="text-muted">(for UI hosts stats/graphs)</span></li>
-          <li>From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
-        </ul>
-        <p style="margin: 0;">Machine will automatically create this group if needed, but will <b>not</b> add these rules.</p>
       </div>
     </div>
   </div>

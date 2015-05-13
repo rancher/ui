@@ -1,0 +1,43 @@
+import C from 'ui/utils/constants';
+
+export function initialize(container/*, application */) {
+  // Monkey patch AWS SDK to go through our proxy
+  var orig = AWS.XHRClient.prototype.handleRequest;
+  AWS.XHRClient.prototype.handleRequest = function handleRequest(httpRequest, httpOptions, callback, errCallback) {
+    httpRequest.endpoint.protocol = 'http:';
+    httpRequest.endpoint.port = 80;
+    httpRequest.headers['X-API-Headers-Restrict'] = 'Content-Length';
+    httpRequest.headers['X-API-AUTH-HEADER'] = httpRequest.headers['Authorization'];
+    httpRequest.headers['Content-Type'] = 'rancher:' + httpRequest.headers['Content-Type'];
+
+    if ( httpRequest.path.indexOf('/proxy/') !== 0 )
+    {
+      httpRequest.path = '/proxy/' + httpRequest.endpoint.hostname + httpRequest.path;
+    }
+
+    httpRequest.endpoint.protocol = window.location.protocol;
+    httpRequest.endpoint.hostname = window.location.hostname;
+    httpRequest.endpoint.host = window.location.host;
+    httpRequest.endpoint.port = window.location.port;
+
+    var session = container.lookup('session:main');
+    var authValue = session.get(C.SESSION.TOKEN);
+    if ( authValue )
+    {
+      // Send the token as the Authorization header if present
+      httpRequest.headers['Authorization'] = C.HEADER.AUTH_TYPE + ' ' + authValue;
+    }
+    else
+    {
+      // And something else if not present, so the browser can't send cached basic creds
+      //httpRequest.headers['Authorization'] = 'None';
+    }
+
+    return orig.call(this, httpRequest, httpOptions, callback, errCallback);
+  };
+}
+
+export default {
+  name: 'aws-sdk',
+  initialize: initialize
+};
