@@ -90,17 +90,6 @@ export default Ember.ObjectController.extend(NewHost, {
         }
 
         self.set('allSubnets', subnets);
-        var preferred = self.get('amazonec2Config.region');
-        var match = self.get('subnetChoices').filterProperty('group',preferred);
-        if ( match.length )
-        {
-          self.set('selectedSubnet', match.filterProperty('type','vpc')[0]);
-        }
-        else
-        {
-          self.set('selectedZone', self.get('subnetChoices')[0]);
-        }
-
         self.set('step', 3);
       }
     },
@@ -171,12 +160,45 @@ export default Ember.ObjectController.extend(NewHost, {
     },
   },
 
+  selectedZone: function(key, val, oldVal) {
+    var config = this.get('amazonec2Config');
+    if ( arguments.length > 1 )
+    {
+      if ( val && val.length )
+      {
+        config.setProperties({
+          region: val.substr(0, val.length - 1),
+          zone:   val.substr(val.length - 1)
+        });
+      }
+      else
+      {
+        config.setProperties({
+          region: null,
+          zone:   null,
+        });
+      }
+    }
+
+    if ( config.get('region') && config.get('zone') )
+    {
+      return config.get('region') + config.get('zone');
+    }
+    else
+    {
+      return null;
+    }
+  }.property('amazonec2Config.{region,zone}'),
+
+  zoneChoices: function() {
+    return this.get('allSubnets').map((subnet) => {return subnet.get('zone');}).sort().uniq();
+  }.property('allSubnets.@each.{zone}'),
+
   subnetChoices: function() {
     var out = [];
     var seenVpcs = [];
 
-    this.get('allSubnets').forEach((subnet) => {
-      var region = subnet.get('region');
+    this.get('allSubnets').filterProperty('zone', this.get('selectedZone')).forEach((subnet) => {
       var vpcId = subnet.get('vpcId');
       var subnetId = subnet.get('subnetId');
 
@@ -184,25 +206,23 @@ export default Ember.ObjectController.extend(NewHost, {
       {
         seenVpcs.pushObject(vpcId);
         out.pushObject({
-          group: region,
-          sortKey: region + ' ' + vpcId,
+          sortKey: vpcId,
           label: vpcId,
           value: vpcId,
-          type: 'vpc',
+          isVpc: true
         });
       }
 
       out.pushObject({
-          group: region,
-          sortKey: region + ' ' + vpcId + ' ' + subnetId,
-          label: '&nbsp;&nbsp;&nbsp;&nbsp;'+subnetId,
+          sortKey: vpcId + ' ' + subnetId,
+          label: subnetId,
           value: subnetId,
-          type: 'subnet'
+          isVpc: false,
       });
     });
 
     return out.sortBy('sortKey');
-  }.property('allSubnets.@each.{subnetId,vpcId,zone}'),
+  }.property('selectedZone','allSubnets.@each.{subnetId,vpcId,zone}'),
 
   initFields: function() {
     this._super();

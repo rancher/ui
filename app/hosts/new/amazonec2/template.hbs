@@ -29,7 +29,7 @@
         {{#if isStep1}}
           {{input type="password" id="secretKey" classNames="form-control" placeholder="Your AWS secret key" value=amazonec2Config.secretKey}}
         {{else}}
-          <div class="form-control-static">&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;</div>
+          <div class="form-control-static text-muted text-italic">Saved</div>
         {{/if}}
       </div>
     </div>
@@ -53,25 +53,46 @@
     <div class="over-hr" style="margin: 20px 0;">
       <span>Availability Zone &amp; VPC</span>
     </div>
-    {{#if isStep3}}
-      <p class="help-text text-center">Select a VPC or a Subnet here.  This also determines what Availablity Zone the Instance will be created in.</p>
-    {{/if}}
-
+    <div {{bind-attr class=":row isStep3:form-group"}}>
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="selectedZone" class="form-control-static">Availability Zone</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{#if isStep3}}
+          {{view "select"
+            class="form-control"
+            id="selectedZone"
+            content=zoneChoices
+            value=selectedZone
+            optionLabelPath="content"
+            optionValuePath="content"
+          }}
+        {{else}}
+          <div class="form-control-static">
+            {{amazonec2Config.region}}{{amazonec2Config.zone}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
     <div {{bind-attr class=":row isStep3:form-group"}}>
       <div class="col-sm-12 col-md-2 form-label">
         <label for="subnet" class="form-control-static">VPC/Subnet</label>
       </div>
       <div class="col-sm-12 col-md-8">
         {{#if isStep3}}
-          {{view "select"
-            class="form-control"
-            id="subnet"
-            content=subnetChoices
-            value=selectedSubnet
-            optionLabelPath="content.label"
-            optionValuePath="content.value"
-            optionGroupPath="group"
-          }}
+          {{#if subnetChoices.length}}
+            {{#each choice in subnetChoices}}
+              {{#if choice.isVpc}}
+                <div class="radio"><label class="text-bold">
+                  {{radio-button selection=selectedSubnet value=choice.value}} {{choice.label}}
+                </label></div>
+              {{else}}
+                <div class="radio"><label class="text-bold" style="padding-left: 20px;">
+                  {{radio-button selection=selectedSubnet value=choice.value}} {{choice.label}}
+                </label></div>
+              {{/if}}
+            {{/each}}
+          {{/if}}
         {{else}}
           <div class="form-control-static">
             {{#if amazonec2Config.subnetId}}
@@ -79,7 +100,6 @@
             {{else}}
               {{amazonec2Config.vpcId}}
             {{/if}}
-            in {{amazonec2Config.region}}{{amazonec2Config.zone}}
           </div>
         {{/if}}
       </div>

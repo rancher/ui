@@ -4,6 +4,7 @@ export default DriverRoute.extend({
   driverName: 'amazonec2',
   newModel: function() {
     var store = this.get('store');
+    var pref = this.get('prefs.amazonec2')||{};
 
     var config = store.createRecord({
       type: 'amazonec2Config',
@@ -12,8 +13,8 @@ export default DriverRoute.extend({
       securityGroup: 'docker-machine',
       zone: 'a',
       rootSize: 16,
-      accessKey: '',
-      secretKey: ''
+      accessKey: pref.accessKey||'',
+      secretKey: pref.secretKey||'',
     });
 
     return this.get('store').createRecord({
