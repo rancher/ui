@@ -12,8 +12,8 @@ export default DriverRoute.extend({
       securityGroup: 'docker-machine',
       zone: 'a',
       rootSize: 16,
-      accessKey: 'AKIAJIMOGKSK5IBNAEMA',
-      secretKey: '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'
+      accessKey: '',
+      secretKey: ''
     });
 
     return this.get('store').createRecord({
