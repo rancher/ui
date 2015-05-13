@@ -10,8 +10,6 @@ var osChoices = OSes.filter(function(os) {
 });
 
 export default Ember.ObjectController.extend(NewHost, {
-  needs: ['hosts/new'],
-  error: null,
   facilityChoices: Facilities,
   planChoices: Plans,
   osChoices: osChoices,

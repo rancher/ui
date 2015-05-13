@@ -1,11 +1,9 @@
-import Ember from 'ember';
+import DriverRoute from 'ui/hosts/new/driver-route';
 
-export default Ember.Route.extend({
-  activate: function() {
-    this.controllerFor('hosts/new').set('lastRoute','hosts.new.digitalocean');
-  },
+export default DriverRoute.extend({
+  driverName: 'digitalocean',
 
-  model: function() {
+  newModel: function() {
     var store = this.get('store');
 
     var config = store.createRecord({
@@ -16,19 +14,9 @@ export default Ember.Route.extend({
       image: 'ubuntu-14-04-x64'
     });
 
-    return this.get('store').createRecord({
+    return store.createRecord({
       type: 'machine',
       digitaloceanConfig: config,
     });
-  },
-
-  setupController: function(controller/*, model*/) {
-    this._super.apply(this, arguments);
-    controller.set('editing', false);
-    controller.initFields();
-  },
-
-  renderTemplate: function() {
-    this.render({into: 'hosts/new'});
-  },
+  }
 });

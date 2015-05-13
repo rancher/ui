@@ -188,6 +188,15 @@ export function initialize(/* container, application */) {
       }
 
       return errors;
+    },
+
+    serializeForNew: function() {
+      var copy = this.serialize();
+      delete copy.id;
+      delete copy.actions;
+      delete copy.links;
+      delete copy.uuid;
+      return copy;
     }
   });
 }

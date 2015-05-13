@@ -10,7 +10,7 @@ export default Ember.ObjectController.extend({
 
     return [
       {route: 'hosts.new.digitalocean', label: 'DigitalOcean',  css: 'digitalocean', available: true  },
-      {route: 'hosts.new.amazon',       label: 'Amazon EC2',    css: 'amazon',       available: hasAmazon  },
+      {route: 'hosts.new.amazonec2',    label: 'Amazon EC2',    css: 'amazon',       available: hasAmazon  },
       {route: 'hosts.new.packet',       label: 'Packet',        css: 'packet',       available: hasPacket },
       {route: 'hosts.new.openstack',    label: 'OpenStack',     css: 'openstack',    available: hasOpenStack },
       {route: 'hosts.new.custom',       label: 'Custom',        css: 'custom',       available: true  },

@@ -3,7 +3,7 @@ import Regions from './digitalocean_regions';
 import NewHost from 'ui/mixins/new-host';
 
 var regionChoices = Regions.regions.filter(function(region) {
-  return region.available;
+  return region.available && (region.features.indexOf('metadata') >= 0);
 }).map(function(region) {
   return {
     id: region.slug,
@@ -12,8 +12,7 @@ var regionChoices = Regions.regions.filter(function(region) {
 }).sortBy('name');
 
 export default Ember.ObjectController.extend(NewHost, {
-  needs: ['hosts/new'],
-  error: null,
+
   regionChoices: regionChoices,
 
   sizeChoices: function() {
@@ -53,6 +52,17 @@ export default Ember.ObjectController.extend(NewHost, {
   validate: function() {
     this._super();
     var errors = this.get('errors')||[];
+
+    var name = this.get('name')||'';
+    if ( name.length > 200 )
+    {
+      errors.push('"name" should be 1-200 characters long');
+    }
+
+    if ( name.match(/[^a-z0-9-]/i) )
+    {
+      errors.push('"name" can only contain letters, numbers, and hyphen');
+    }
 
     var accessToken = this.get('digitaloceanConfig.accessToken')||'';
     if ( accessToken && accessToken.length !== 64 )

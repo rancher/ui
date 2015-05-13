@@ -1,11 +1,8 @@
-import Ember from 'ember';
+import DriverRoute from 'ui/hosts/new/driver-route';
 
-export default Ember.Route.extend({
-  activate: function() {
-    this.controllerFor('hosts/new').set('lastRoute','hosts.new.amazon');
-  },
-
-  model: function() {
+export default DriverRoute.extend({
+  driverName: 'amazonec2',
+  newModel: function() {
     var store = this.get('store');
 
     var config = store.createRecord({
@@ -15,7 +12,6 @@ export default Ember.Route.extend({
       securityGroup: 'docker-machine',
       zone: 'a',
       rootSize: 16
-
     });
 
     return this.get('store').createRecord({
@@ -25,10 +21,8 @@ export default Ember.Route.extend({
   },
 
   setupController: function(controller/*, model*/) {
-    this._super.apply(this, arguments);
-    controller.set('editing', false);
     controller.set('vpcOrSubnetId', null);
-    controller.initFields();
+    this._super.apply(this, arguments);
   },
 
   renderTemplate: function() {

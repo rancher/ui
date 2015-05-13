@@ -58,6 +58,17 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
         this.send('redirectTo','container');
       });
     },
+
+    clone: function() {
+      // @TODO Fix this hackery for nested components...
+      // http://emberjs.jsbin.com/mecesakase
+      if ( Ember.Component.detectInstance(this.get('target')) )
+      {
+        this.set('target', window.l('router:main'));
+      }
+
+      this.transitionToRoute('containers.new', {queryParams: {containerId: this.get('id')}});
+    },
   },
 
   availableActions: function() {
@@ -68,13 +79,14 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
       { label: 'Start',         icon: 'ss-play',      action: 'start',        enabled: !!a.start },
       { label: 'Stop',          icon: 'ss-pause',     action: 'stop',         enabled: !!a.stop },
       { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
-      { divider: true },
-      { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true,            detail: true },
-      { label: 'Execute Shell', icon: 'fa fa-terminal',      action: 'shell',        enabled: !!a.execute },
-      { label: 'View Logs',     icon: 'ss-file',             action: 'logs',         enabled: !!a.logs },
       { label: 'Restore',       icon: 'ss-medicalcross',     action: 'restore',      enabled: !!a.restore },
       { label: 'Purge',         icon: 'ss-tornado',          action: 'purge',        enabled: !!a.purge },
       { divider: true },
+      { label: 'Execute Shell', icon: 'fa fa-terminal',      action: 'shell',        enabled: !!a.execute },
+      { label: 'View Logs',     icon: 'ss-file',             action: 'logs',         enabled: !!a.logs },
+      { divider: true },
+      { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true },
+      { label: 'Clone',         icon: 'ss-copier',           action: 'clone',        enabled: true },
       { label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: !!a.update },
     ];
 

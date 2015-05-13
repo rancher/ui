@@ -89,10 +89,25 @@ module.exports = function(environment) {
     ENV.APP.baseAssets = process.env.BASE_ASSETS;
   }
 
-  // Override the endpoint with 
-  if (process.env.RANCHER_ENDPOINT)
+  // Override the endpoint with environment var
+  var endpoint = process.env.RANCHER_ENDPOINT;
+  if ( endpoint )
   {
-    ENV.APP.endpoint = process.env.RANCHER_ENDPOINT;
+    // variable can be an ip "1.2.3.4" -> http://1.2.3.4:8080
+    // or a URL+port
+    if ( endpoint.indexOf('http') !== 0 )
+    {
+      if ( endpoint.indexOf(':') === -1 )
+      {
+        endpoint = 'http://' + endpoint + ':8080';
+      }
+      else
+      {
+        endpoint = 'http://' + endpoint;
+      }
+    }
+
+    ENV.APP.endpoint = endpoint;
   }
   else if (environment === 'production')
   {

@@ -3,6 +3,11 @@ import Cattle from 'ui/utils/cattle';
 import Util from 'ui/utils/util';
 
 export default Ember.Mixin.create(Cattle.NewOrEditMixin,{
+  needs: ['hosts/new'],
+  queryParams: ['machineId'],
+  machineId: null,
+  error: null,
+
   count: null,
   prefix: null,
   multiTemplate: null,
@@ -74,6 +79,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin,{
   initFields: function() {
     this._super();
     this.set('count', 1);
+    this.set('prefix', this.get('primaryResource.name')||'');
   },
 
   willSave: function() {

@@ -38,7 +38,7 @@ export default Ember.ObjectController.extend({
 
       this.set('saving', true);
       model.save().then(() => {
-        this.transitionTo('hosts.new');
+        this.transitionToRoute('hosts.new');
       }).catch((err) => {
         this.set('errors', [err]);
       }).finally(() => {

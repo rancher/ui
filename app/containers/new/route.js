@@ -20,20 +20,31 @@ export default Ember.Route.extend({
       store.findAll('host'), // Need inactive ones in case a link points to an inactive host
     ];
 
+    if ( params.containerId )
+    {
+      dependencies.pushObject(store.find('container', params.containerId, {include: ['ports']}));
+    }
+
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then(function(results) {
       var networkChoices = results[0];
       var allHosts = results[1];
 
-      var container = self.get('store').createRecord({
-        type: 'container',
-        requestedHostId: params.hostId,
-        commandArgs: [],
-        networkIds: [networkChoices.get('firstObject.id')],
-        environment: {}
-      });
+      var data;
+      if ( params.containerId )
+      {
+        data = results[3].serializeForNew();
+      }
+      else
+      {
+        data = {
+          type: 'container',
+          requestedHostId: params.hostId,
+          networkIds: [networkChoices.get('firstObject.id')],
+        };
+      }
 
       return Ember.Object.create({
-        instance: container,
+        instance: self.get('store').createRecord(data),
         networkChoices: networkChoices,
         allHosts: allHosts,
       });
@@ -52,6 +63,8 @@ export default Ember.Route.extend({
       controller.set('tab', 'command');
       controller.set('advanced', false);
       controller.set('hostId', null);
+      controller.set('environmentId', null);
+      controller.set('containerId', null);
     }
   }
 });

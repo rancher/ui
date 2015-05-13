@@ -1,4 +1,10 @@
 import SessionStorage from 'ui/utils/session-storage';
+import Serializable from 'ember-api-store/mixins/serializable';
+
+// Don't serialize the injected session
+Serializable.reopen({
+  reservedKeys: ['session'],
+});
 
 export function initialize(container, application) {
   // Inject HTML5 session storage into all the things as 'session' property

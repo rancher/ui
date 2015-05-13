@@ -2,7 +2,10 @@ import Ember from 'ember';
 import NewHost from 'ui/mixins/new-host';
 
 export default Ember.ObjectController.extend(NewHost, {
-  needs: ['hosts/new'],
+  initFields: function() {
+    this._super();
+    this.set('vpcOrSubnetId', this.get('amazonec2Config.subnetId') || this.get('amazonec2Config.vpcId'));
+  },
 
   validate: function() {
     return this._super();
