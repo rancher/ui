@@ -1,4 +1,4 @@
-import LocalStorage from 'ui/utils/local-storage';
+import UserPreferences from 'ui/utils/user-preferences';
 import Serializable from 'ember-api-store/mixins/serializable';
 
 // Don't serialize the injected prefs
@@ -7,8 +7,13 @@ Serializable.reopen({
 });
 
 export function initialize(container, application) {
-  // Inject HTML5 session storage into all the things as 'session' property
-  container.register('prefs:main', LocalStorage);
+  var prefs = UserPreferences.create({
+    // Store isn't automatically injected in
+    store: container.lookup('store:main'),
+  });
+
+  // Inject GitHub lookup as 'github' property
+  container.register('prefs:main',   prefs,  {instantiate: false});
   application.inject('controller',  'prefs', 'prefs:main');
   application.inject('route',       'prefs', 'prefs:main');
   application.inject('model',       'prefs', 'prefs:main');
@@ -17,6 +22,6 @@ export function initialize(container, application) {
 
 export default {
   name: 'prefs',
-  before: 'store',
+  after: 'store',
   initialize: initialize
 };
