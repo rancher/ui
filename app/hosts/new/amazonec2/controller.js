@@ -2,6 +2,7 @@ import Ember from 'ember';
 import NewHost from 'ui/mixins/new-host';
 
 var RANCHER_TAG = 'rancher-ui';
+var RANCHER_GROUP = 'rancher-machine';
 var RANCHER_INGRESS_RULES = [
   {
     FromPort: 9345,
@@ -23,15 +24,27 @@ var RANCHER_INGRESS_RULES = [
   }
 ];
 
+var INSTANCE_TYPES = [
+  't2.micro','t2.small','t2.medium',
+  'm3.medium','m3.large','m3.xlarge','m3.2xlarge',
+  'c4.large','c4.xlarge','c4.2xlarge','c4.4xlarge','c4.8xlarge',
+  'c3.large','c3.xlarge','c3.2xlarge','c3.4xlarge','c3.8xlarge',
+  'r3.large','r3.xlarge','r3.2xlarge','r3.4xlarge','r3.8xlarge',
+  'g2.2xlarge','g2.8xlarge',
+  'i2.xlarge','i2.2xlarge','i2.4xlarge','i2.8xlarge',
+  'd2.xlarge','d2.2xlarge','d2.4xlarge','d2.8xlarge',
+];
+
 export default Ember.ObjectController.extend(NewHost, {
   clients: null,
   allSubnets: null,
   allSecurityGroups: null,
   selectedSecurityGroup: null,
   defaultSecurityGroup: null,
-  defaultSecurityGroupName: 'rancher-machine',
+  defaultSecurityGroupName: RANCHER_GROUP,
   whichSecurityGroup: 'default',
   isCustomSecurityGroup: Ember.computed.equal('whichSecurityGroup','custom'),
+  instanceTypes: INSTANCE_TYPES,
 
   step: 1,
   isStep1: Ember.computed.equal('step',1),
@@ -212,7 +225,7 @@ export default Ember.ObjectController.extend(NewHost, {
       function addRules(groupId, cb) {
         async.each(RANCHER_INGRESS_RULES, function(item, cb) {
           var params = JSON.parse(JSON.stringify(item)); // Don't change the original
-          params.GroupId = groupId,
+          params.GroupId = groupId;
           ec2.authorizeSecurityGroupIngress(params, cb);
         }, function(err) {
           if ( err )
