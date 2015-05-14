@@ -1,13 +1,35 @@
 import Ember from 'ember';
 import NewHost from 'ui/mixins/new-host';
 
+var RANCHER_TAG = 'rancher-ui';
+var RANCHER_INGRESS_RULES = [
+  {
+    FromPort: 9345,
+    ToPort: 9346,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'tcp'
+  },
+  {
+    FromPort: 500,
+    ToPort: 500,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'udp'
+  },
+  {
+    FromPort: 4500,
+    ToPort: 4500,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'udp'
+  }
+];
+
 export default Ember.ObjectController.extend(NewHost, {
   clients: null,
   allSubnets: null,
-  selectedSubnet: null,
   allSecurityGroups: null,
   selectedSecurityGroup: null,
-  defaultSecurityGroup: 'docker-machine',
+  defaultSecurityGroup: null,
+  defaultSecurityGroupName: 'rancher-machine',
   whichSecurityGroup: 'default',
   isCustomSecurityGroup: Ember.computed.equal('whichSecurityGroup','custom'),
 
@@ -17,9 +39,11 @@ export default Ember.ObjectController.extend(NewHost, {
   isStep3: Ember.computed.equal('step',3),
   isStep4: Ember.computed.equal('step',4),
   isStep5: Ember.computed.equal('step',5),
+  isStep6: Ember.computed.equal('step',5),
   isGteStep3: Ember.computed.gte('step',3),
   isGteStep4: Ember.computed.gte('step',4),
   isGteStep5: Ember.computed.gte('step',5),
+  isGteStep6: Ember.computed.gte('step',6),
 
   actions: {
     awsLogin: function() {
@@ -95,33 +119,22 @@ export default Ember.ObjectController.extend(NewHost, {
     },
 
     selectSubnet: function() {
-      var selected = this.get('selectedSubnet');
-      var subnet;
-      var isSubnet = false;
-      if ( selected.indexOf('vpc-') === 0 )
+      if ( !this.get('selectedZone') )
       {
-        subnet = this.get('allSubnets').filterProperty('vpcId',selected)[0];
-      }
-      else
-      {
-        isSubnet = true;
-        subnet = this.get('allSubnets').filterProperty('subnetId',selected)[0];
+        this.set('errors', ['Select an Availability Zone']);
+        return;
       }
 
-      var zoneStr = subnet.get('zone');
-      var region = zoneStr.substr(0, zoneStr.length - 1);
-      var zone = zoneStr.substr(zoneStr.length - 1);
+      if ( !this.get('selectedSubnet') )
+      {
+        this.set('errors', ['Select a VPC or Subnet']);
+        return;
+      }
 
-      this.get('amazonec2Config').setProperties({
-        region: region,
-        zone: zone,
-        subnetId: (isSubnet ? subnet.get('subnetId') : null),
-        vpcId: subnet.get('vpcId'),
-      });
-
-      var ec2 = this.get('clients').get(region);
+      var ec2 = this.get('clients').get(this.get('amazonec2Config.region'));
       ec2.describeSecurityGroups({}, (err, data) => {
         var groups = [];
+        var defaultGroup = null;
 
         data.SecurityGroups.forEach((group) => {
           var tags = {};
@@ -130,37 +143,104 @@ export default Ember.ObjectController.extend(NewHost, {
             tags[tag.Key] = tag.Value;
           });
 
-          groups.push({
+          var obj = {
             id: group.GroupId,
             name: group.GroupName,
             description: group.Description,
-            isRancher: (typeof tags['rancher-ui'] !== 'undefined')
-          });
+            isDefault: group.GroupName === this.get('defaultSecurityGroupName'),
+            isRancher: (typeof tags[RANCHER_TAG] !== 'undefined')
+          };
+
+          groups.push(obj);
+          if ( obj.isDefault && !defaultGroup)
+          {
+            defaultGroup = obj;
+          }
         });
 
         this.set('step', 4);
         this.set('allSecurityGroups', groups);
+        this.set('defaultSecurityGroup', defaultGroup);
       });
     },
 
     selectSecurityGroup: function() {
+      var self = this;
+      var ec2 = this.get('clients').get(this.get('amazonec2Config.region'));
+
       if ( this.get('isCustomSecurityGroup') )
       {
         this.set('amazonec2Config.securityGroup', this.get('selectSecurityGroup'));
-        this.set('step', 5);
+        done();
       }
       else
       {
-        /*
-        var existing = this.get('allSecurityGroups').filter((sg) => {
-          return sg.name;
+        this.set('step', 5);
+        this.set('amazonec2Config.securityGroup', this.get('defaultSecurityGroupName'));
+        var group = this.get('defaultSecurityGroup');
+        if ( group )
+        {
+          if ( group.isRancher )
+          {
+            this.set('amazonec2Config.securityGroup', group.name);
+            done();
+          }
+          else
+          {
+            addRules(group.id, done);
+          }
+        }
+        else
+        {
+          ec2.createSecurityGroup({
+            GroupName: this.get('defaultSecurityGroupName'),
+            Description: 'Rancher default security group',
+            VpcId: this.get('amazonec2Config.vpcId'),
+          }, function(err, data) {
+            if ( err )
+            {
+              return done(err);
+            }
+            else
+            {
+              return addRules(data.GroupId, done);
+            }
+          });
+        }
+      }
+
+      function addRules(groupId, cb) {
+        async.each(RANCHER_INGRESS_RULES, function(item, cb) {
+          var params = JSON.parse(JSON.stringify(item)); // Don't change the original
+          params.GroupId = groupId,
+          ec2.authorizeSecurityGroupIngress(params, cb);
+        }, function(err) {
+          if ( err )
+          {
+            return cb(err);
+          }
+
+          ec2.createTags({
+            Resources: [groupId],
+            Tags: [ {Key: RANCHER_TAG, Value: self.get('app.version') }]
+          }, cb);
         });
-        */
+      }
+
+      function done(err) {
+        if ( err )
+        {
+          this.set('errors', [err]);
+        }
+        else
+        {
+          self.set('step', 6);
+        }
       }
     },
   },
 
-  selectedZone: function(key, val, oldVal) {
+  selectedZone: function(key, val/*, oldVal*/) {
     var config = this.get('amazonec2Config');
     if ( arguments.length > 1 )
     {
@@ -168,7 +248,9 @@ export default Ember.ObjectController.extend(NewHost, {
       {
         config.setProperties({
           region: val.substr(0, val.length - 1),
-          zone:   val.substr(val.length - 1)
+          zone:   val.substr(val.length - 1),
+          vpcId:  null,
+          subnetId:  null,
         });
       }
       else
@@ -224,35 +306,53 @@ export default Ember.ObjectController.extend(NewHost, {
     return out.sortBy('sortKey');
   }.property('selectedZone','allSubnets.@each.{subnetId,vpcId,zone}'),
 
+  selectedSubnet: function(key, val/*, oldVal*/) {
+    var config = this.get('amazonec2Config');
+    if ( arguments.length > 1 )
+    {
+      if ( val && val.length )
+      {
+        if ( val.indexOf('vpc-') === 0 )
+        {
+          config.setProperties({
+            vpcId: val,
+            subnetId: null,
+          });
+        }
+        else
+        {
+          var subnet = this.subnetById(val);
+          config.setProperties({
+            vpcId: subnet.vpcId,
+            subnetId: subnet.subnetId,
+          });
+        }
+      }
+      else
+      {
+        config.setProperties({
+          vpcId: null,
+          subnetId: null,
+        });
+      }
+    }
+
+    return config.get('subnetId') || config.get('vpcId');
+  }.property('amazonec2Config.{subnetId,vpcId}'),
+
+  subnetById: function(id) {
+    return this.get('allSubnets').filterProperty('subnetId',id)[0];
+  },
+
   initFields: function() {
     this._super();
     this.set('clients', Ember.Object.create());
     this.set('allSubnets', []);
-    this.set('vpcOrSubnetId', this.get('amazonec2Config.subnetId') || this.get('amazonec2Config.vpcId'));
   },
 
   validate: function() {
     return this._super();
   },
-
-  vpcOrSubnetId: null,
-  vpcOrSubnetIdChanged: function() {
-    var val = (this.get('vpcOrSubnetId')||'').trim();
-    var vpcId = null;
-    var subnetId = null;
-
-    if ( val.indexOf('vpc-') === 0 )
-    {
-      vpcId = val;
-    }
-    else if ( val.indexOf('subnet-') === 0 )
-    {
-      subnetId = val;
-    }
-
-    this.set('amazonec2Config.vpcId', vpcId);
-    this.set('amazonec2Config.subnetId', subnetId);
-  }.observes('vpcOrSubnetId'),
 
   doneSaving: function() {
     var out = this._super();

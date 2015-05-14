@@ -23,22 +23,16 @@ export default DriverRoute.extend({
     });
   },
 
-  setupController: function(controller/*, model*/) {
-    controller.set('vpcOrSubnetId', null);
-    this._super.apply(this, arguments);
-  },
-
   resetController: function (controller, isExiting/*, transition*/) {
     this._super();
     if (isExiting)
     {
       controller.setProperties({
+        step: 1,
         machineId: null,
         clients: null,
         allSubnets: null,
-        selectedSubnet: null,
         allSecurityGroups: null,
-        selectedSecurityGroup: null,
         whichSecurityGroup: 'default',
       });
     }

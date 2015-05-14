@@ -11,7 +11,7 @@
         <p class="help-text text-center">Paste in an AWS key pair here.  We'll use this key to create your new Instances.</p>
       {{/if}}
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="accessKey" class="form-control-static">Access Key*</label>
+        <label for="accessKey" class="form-control-static">Access Key</label>
       </div>
       <div class="col-sm-12 col-md-8">
         {{#if isStep1}}
@@ -23,7 +23,7 @@
     </div>
     <div {{bind-attr class=":row isStep1:form-group"}}>
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="secretKey" class="form-control-static">Secret Key*</label>
+        <label for="secretKey" class="form-control-static">Secret Key</label>
       </div>
       <div class="col-sm-12 col-md-8">
         {{#if isStep1}}
@@ -35,7 +35,7 @@
     </div>
   </div>
   {{#if isStep1}}
-    <div class="text-center">
+    <div class="footer-actions">
       <button {{action "awsLogin"}} class="btn btn-primary">Next: Authenticate &amp; select a network</button>
       <button {{action "cancel"}} class="btn btn-link">Cancel</button>
     </div>
@@ -87,7 +87,7 @@
                   {{radio-button selection=selectedSubnet value=choice.value}} {{choice.label}}
                 </label></div>
               {{else}}
-                <div class="radio"><label class="text-bold" style="padding-left: 20px;">
+                <div class="radio"><label class="text-bold" style="margin-left: 20px;">
                   {{radio-button selection=selectedSubnet value=choice.value}} {{choice.label}}
                 </label></div>
               {{/if}}
@@ -106,7 +106,7 @@
     </div>
   </div>
   {{#if isStep3}}
-    <div class="text-center">
+    <div class="footer-actions">
       <button {{action "selectSubnet"}} class="btn btn-primary">Next: Select a Security Group</button>
       <button {{action "cancel"}} class="btn btn-link">Cancel</button>
     </div>
@@ -124,38 +124,55 @@
         <label for="securityGroup" class="form-control-static">Security Group</label>
       </div>
       <div class="col-sm-12 col-md-8">
-        <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="default"}} Default: Use or automatically create the <code>{{defaultSecurityGroup}}</code> group</label></div>
+        {{#if isStep4}}
+          <div class="radio"><label>
+            {{radio-button selection=whichSecurityGroup value="default"}} Default:
+            {{#if defaultSecurityGroup}}
+              Use the existing <code>{{defaultSecurityGroupName}}</code> group
+            {{else}}
+              Automatically create a <code>{{defaultSecurityGroupName}}</code> group
+            {{/if}}
+          </label></div>
 
-        <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="custom"}} Custom: Choose an existing group{{#if isCustomSecurityGroup}}:{{/if}}</label></div>
-        {{#if isCustomSecurityGroup}}
-          {{view "select"
-            class="form-control"
-            id="subnet"
-            content=allSecurityGroups
-            value=selectedSecurityGroup
-            optionLabelPath="content.name"
-            optionValuePath="content.id"
-          }}
+          <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="custom"}} Custom: Choose an existing group{{#if isCustomSecurityGroup}}:{{/if}}</label></div>
+          {{#if isCustomSecurityGroup}}
+            {{view "select"
+              class="form-control"
+              id="subnet"
+              content=allSecurityGroups
+              value=selectedSecurityGroup
+              optionLabelPath="content.name"
+              optionValuePath="content.id"
+            }}
 
-          <p style="margin: 10px 0 0 0;">For Rancher to work correctly your security group will need to allow traffic:</p>
-          <ul>
-            <li>From the internet to <code>TCP</code> ports <code>9345</code> and <code>9346</code> <span class="text-muted">(for UI hosts stats/graphs)</span></li>
-            <li>From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
-          </ul>
-          <p style="margin: 0;">Machine will automatically create this group if needed, but will <b>not</b> add these rules.</p>
+            <p style="margin: 10px 0 0 0;">For Rancher to work correctly your security group will need to allow traffic:</p>
+            <ul>
+              <li>From the internet to <code>TCP</code> ports <code>9345</code> and <code>9346</code> <span class="text-muted">(for UI hosts stats/graphs)</span></li>
+              <li>From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+            </ul>
+            <p style="margin: 0;">Machine will automatically create this group if needed, but will <b>not</b> add these rules.</p>
+          {{/if}}
+        {{else}}
+          <div class="form-control-static">{{amazonec2Config.securityGroup}}</div>
         {{/if}}
       </div>
     </div>
   </div>
   {{#if isStep4}}
-    <div class="text-center">
+    <div class="footer-actions">
       <button {{action "selectSecurityGroup"}} class="btn btn-primary">Next: Set Instance options</button>
       <button {{action "cancel"}} class="btn btn-link">Cancel</button>
     </div>
   {{/if}}
 </section>
 
-<section {{bind-attr class=":horizontal-form isGteStep5::hide"}} style="padding-top: 0;">
+<section {{bind-attr class=":horizontal-form isStep5::hide"}} style="padding-top: 0">
+  <div class="text-center">
+    <i class="fa fa-circle-o-notch fa-spin"></i> {{#if defaultSecurityGroup}}Updating{{else}}Creating{{/if}} Security Group...
+  </div>
+</section>
+
+<section {{bind-attr class=":horizontal-form isGteStep6::hide"}} style="padding-top: 0;">
   <div class="container-fluid">
     <div class="over-hr" style="margin: 20px 0;">
       <span>Instance</span>
