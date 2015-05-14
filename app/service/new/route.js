@@ -31,7 +31,9 @@ export default Ember.Route.extend({
         type: 'container',
         commandArgs: [],
         networkIds: [networkChoices.get('firstObject.id')],
-        environment: {}
+        environment: {},
+        tty: true,
+        stdinOpen: true,
       });
 
       var service = store.createRecord({
