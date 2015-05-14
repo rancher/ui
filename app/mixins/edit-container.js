@@ -148,6 +148,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
       this.initCommand();
       this.initEntryPoint();
       this.initMemory();
+      this.initLabels();
     }
   },
 
@@ -244,12 +245,18 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     }
     else
     {
-      this.set('networkId', null);
+      this.set('networkId', this.get('networkChoices.firstObject.id'));
     }
   },
 
   networkIdDidChange: function() {
-    var ary = this.get('instance.networkIds')||[];
+    var ary = this.get('instance.networkIds');
+    if ( !ary )
+    {
+      ary = [];
+      this.set('instance.networkIds', ary);
+    }
+
     ary.clear();
     ary.push(this.get('networkId'));
   }.observes('networkId'),
@@ -791,6 +798,33 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
       this.set('instance.entryPoint', null);
     }
   }.observes('strEntryPoint'),
+
+  // ----------------------------------
+  // Labels
+  // ----------------------------------
+  labelsArray: null,
+  initLabels: function() {
+    var obj = this.get('instance.labels')||{};
+    var keys = Object.keys(obj);
+    var out = [];
+    keys.forEach(function(key) {
+      out.push({ key: key, value: obj[key] });
+    });
+
+    this.set('labelsArray', out);
+  },
+
+  labelsChanged: function() {
+    // Sync with the actual environment object
+    var out = {};
+    this.get('labelsArray').forEach(function(row) {
+      if ( row.key )
+      {
+        out[row.key] = row.value;
+      }
+    });
+    this.set('instance.labels', out);
+  }.observes('labelsArray.@each.{key,value}'),
 
   // ----------------------------------
   // Save

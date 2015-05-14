@@ -18,6 +18,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
       var launchConfig = store.createRecord({
         type: 'container',
+        commandArgs: [],
+        environment: {},
+        tty: true,
+        stdinOpen: true,
       });
 
       var lbConfig = store.createRecord({

@@ -40,6 +40,8 @@ export default Ember.Route.extend({
           type: 'container',
           requestedHostId: params.hostId,
           networkIds: [networkChoices.get('firstObject.id')],
+          tty: true,
+          stdinOpen: true,
         };
       }
 

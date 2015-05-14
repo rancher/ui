@@ -29,7 +29,7 @@ export default Cattle.CollectionController.extend({
 
     if ( this.get('app.authenticationEnabled') )
     {
-      url = Util.addAuthorization(url, C.HEADER.AUTH_FAKE_USER +'=' + this.get('session.'+C.SESSION.PROJECT), this.get('session.'+C.SESSION.TOKEN));
+      url = Util.addAuthorization(url, C.HEADER.AUTH_FAKE_USER, this.get('session.'+C.SESSION.TOKEN));
     }
 
     return url;
