@@ -1,7 +1,7 @@
 import Cattle from 'ui/utils/cattle';
 
 var LoadBalancerService = Cattle.TransitioningResource.extend({
-  type: 'service',
+  type: 'loadBalancerService',
 
   consumedServicesUpdated: 0,
   onConsumedServicesChanged: function() {

@@ -36,7 +36,11 @@ export function initialize(/* container, application */) {
         else if ( val && typeof val === 'object' )
         {
           Object.keys(val).forEach(function(key) {
-            Ember.set(val, key, recurse(val[key]));
+            // Skip keys with dots in them, like container labels
+            if ( key.indexOf('.') === -1 )
+            {
+              Ember.set(val, key, recurse(val[key]));
+            }
           });
           return val;
         }
