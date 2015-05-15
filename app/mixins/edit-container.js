@@ -247,6 +247,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     {
       this.set('networkId', this.get('networkChoices.firstObject.id'));
     }
+    this.networkIdDidChange();
   },
 
   networkIdDidChange: function() {

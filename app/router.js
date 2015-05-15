@@ -30,10 +30,11 @@ Router.map(function() {
       this.route('index', {path: '/'});
       this.route('setup', {path: '/setup'});
       this.route('new', {path: '/add'}, function() {
+        this.route('amazonec2');
         this.route('digitalocean');
-        this.route('amazonec2', {path: '/amazon'});
         this.route('packet');
         this.route('openstack');
+        this.route('rackspace');
         this.route('custom');
       });
 
