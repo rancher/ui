@@ -1,8 +1,7 @@
 $body-bg: #f4f5f8;
-$header-height: 53px;
+$header-height: 100px;
 $header-text: #343434;
 $header-link-text: #afb9c8;
-$nav-width: 90px;
 $main-padding: 20px;
 $nav-bg: #393d47;
 $nav-text: #788188;
@@ -78,91 +77,55 @@ B {
 }
 
 /**********
-* Navigation (left side bar)
-**********/
-.nav-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: $nav-width;
-  background-color: $nav-bg;
-  z-index: 1;
-}
-
-NAV {
-  position: absolute;
-  z-index: 2;
-  width: $nav-width;
-  margin: 0;
-  color: $nav-text;
-
-  .logo {
-    height: 53px;
-    background-image: url('images/logo.svg');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-color: #212121;
-  }
-
-  LABEL {
-    font-weight: 400;
-    font-size: 12px;
-    display: block;
-    position: relative;
-    top: -2px;
-  }
-
-  A,
-  A:active,
-  A:focus,
-  A:hover,
-  A:visited {
-    display: block;
-    text-decoration: none;
-    color: $nav-text;
-    border-bottom: 1px solid #4a4f59;
-    border-left-width: 2px;
-    border-left-style: solid;
-    margin: 0;
-    padding: 13px 0 8px 0;
-    list-style-type: none;
-    text-align: center;
-    cursor: pointer;
-  }
-
-  A:hover,
-  A.active {
-    color: $nav-text-hover;
-    background-color: $nav-bg-hover;
-  }
-
-  I {
-    font-size: 16px;
-    position: relative;
-    top: 3px;
-
-    &.fa {
-      top: 0;
-    }
-  }
-}
-
-/**********
 * Header (top bar)
 **********/
 HEADER {
   height: $header-height;
   z-index: 2;
-  background-color: $body-bg;
+  background-color: #393d48;
 
-  margin-left: $nav-width;
-  &.has-aside {
-    margin-left: $nav-width + $aside-width;
-  }
+  .top-row {
+    height: ($header-height/2);
 
-  .full-height {
-    line-height: $header-height - 1;
+    .logo {
+      display: inline-block;
+      height: ($header-height/2);
+      width: 87px;
+      background-image: url('images/logo.svg');
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-color: #212121;
+    }
+
+    A.nav {
+      display: inline-block;
+      height: ($header-height/2);
+      line-height: ($header-height/2);
+      padding: 0 20px;
+      vertical-align: top;
+      color: white;
+      text-transform: uppercase;
+
+      &
+      &:hover,
+      &:focus,
+      &:visited,
+      &:active {
+        color: white;
+      }
+
+      &.active:after {
+        content: '';
+        width: 7px;
+        height: 7px;
+        background-color: #2894d9;
+        display: inline-block;
+        border-radius: 100%;
+        position: relative;
+        top: -10px;
+        right: -3px;
+      }
+    }
   }
 
   H3 {
@@ -287,28 +250,25 @@ HEADER {
 * Main body
 **********/
 MAIN {
-  margin-left: $nav-width;
   position: relative;
 
   &.has-aside {
-    margin-left: ($nav-width + $aside-width);
+    margin-left: $aside-width;
   }
 }
 
-BODY.white MAIN,
-BODY.full-height MAIN {
+BODY.white MAIN {
   margin-top: $main-padding/2;
   margin-right: $main-padding;
   margin-bottom: $main-padding;
-  margin-left: $nav-width + $main-padding;
+  margin-left: $main-padding;
   border-radius: 5px;
 
   &.has-aside {
-    margin-left: ($nav-width + $aside-width + $main-padding);
+    margin-left: ($aside-width + $main-padding);
 
     ASIDE {
       left: -1 * ($aside-width + $main-padding);
-      top: -1*$header-height - $main-padding/2;
     }
   }
 }
@@ -356,8 +316,8 @@ SECTION {
 **********/
 .aside-background {
   position: absolute;
-  top: 0;
-  left: $nav-width;
+  top: $header-height;
+  left: 0;
   bottom: 0;
   width: $aside-width;
   background-color: transparent;
@@ -366,11 +326,11 @@ SECTION {
 
 ASIDE {
   position: absolute;
-  top: -1*$header-height;
+  top: 0;
   bottom: 0;
   left: -1*$aside-width;
   width: $aside-width;
-  z-index: 2;
+  z-index: 1;
   padding: 17px 20px 0 20px;
   color: white;
 

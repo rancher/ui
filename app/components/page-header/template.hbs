@@ -1,116 +1,125 @@
-<div class="right">
-  <div class="dropdown">
-    <span class="user-toggle" id="user-dropdown" data-toggle="dropdown" aria-expanded="true">
-      {{#if app.authenticationEnabled}}
-        {{github-avatar link=false login=session.user}}
-        <i class="ss-navigatedown user-dropdown-arrow"></i>
-      {{else}}
-        <div class="gh-avatar">
-          <div class="gh-placeholder">
-            <i class="ss-businessuser"></i>
+<div class="top-row">
+  <div class="logo"></div>
+  {{#link-to "environments" classNames="nav"}}Services{{/link-to}}
+  {{#link-to "hosts" classNames="nav"}}Infrastructure{{/link-to}}
+
+  <div class="right">
+    <div class="dropdown">
+      <span class="user-toggle" id="user-dropdown" data-toggle="dropdown" aria-expanded="true">
+        {{#if app.authenticationEnabled}}
+          {{github-avatar link=false login=session.user}}
+          <i class="ss-navigatedown user-dropdown-arrow"></i>
+        {{else}}
+          <div class="gh-avatar">
+            <div class="gh-placeholder">
+              <i class="ss-businessuser"></i>
+            </div>
           </div>
-        </div>
-        <i class="ss-navigatedown user-dropdown-arrow"></i>
-      {{/if}}
-    </span>
-    <ul class="dropdown-menu dropdown-menu-right user-menu" role="menu" aria-labelledby="user-dropdown">
-      {{#if app.authenticationEnabled}}
-        <li role="presentation" class="user-auth">
-          {{github-block login=session.user avatar=false}}
-          {{#link-to "logout" tabindex="-1" class="user-logout"}}<i class="ss-logout"></i><br/>Log Out{{/link-to}}
-        </li>
-      {{else}}
-        <li role="presentation" class="user-noauth">
-          <i class="ss-alert"></i> Access is not configured
-        </li>
-      {{/if}}
-
-      <li role="presentation" class="dropdown-header">
-        SETTINGS
-      </li>
-
-      <li role="presentation">
-        {{#link-to "projects" role="menuitem" tabindex="-1"}}Manage Projects{{/link-to}}
-      </li>
-
-      <li role="presentation">
-        {{#link-to "apikeys" role="menuitem" tabindex="-1"}}API &amp; Keys{{/link-to}}
-      </li>
-
-      {{#if app.isAuthenticationAdmin}}
-        <li class="divider"></li>
-      {{else}}
-        {{#if showHostSetup}}
-          <li class="divider"></li>
+          <i class="ss-navigatedown user-dropdown-arrow"></i>
         {{/if}}
-      {{/if}}
+      </span>
+      <ul class="dropdown-menu dropdown-menu-right user-menu" role="menu" aria-labelledby="user-dropdown">
+        {{#if app.authenticationEnabled}}
+          <li role="presentation" class="user-auth">
+            {{github-block login=session.user avatar=false}}
+            {{#link-to "logout" tabindex="-1" class="user-logout"}}<i class="ss-logout"></i><br/>Log Out{{/link-to}}
+          </li>
+        {{else}}
+          <li role="presentation" class="user-noauth">
+            <i class="ss-alert"></i> Access is not configured
+          </li>
+        {{/if}}
 
-      {{#if app.isAuthenticationAdmin}}
-        <li role="presentation">
-          {{#link-to "settings.auth" role="menuitem" tabindex="-1"}}Access Control{{/link-to}}
+        <li role="presentation" class="dropdown-header">
+          SETTINGS
         </li>
-      {{/if}}
 
-      {{#if showHostSetup}}
         <li role="presentation">
-          {{#link-to "hosts.setup" role="menuitem" tabindex="-1"}}Host Registration{{/link-to}}
+          {{#link-to "projects" role="menuitem" tabindex="-1"}}Manage Projects{{/link-to}}
         </li>
-      {{/if}}
-    </ul>
+
+        <li role="presentation">
+          {{#link-to "apikeys" role="menuitem" tabindex="-1"}}API &amp; Keys{{/link-to}}
+        </li>
+
+        {{#if app.isAuthenticationAdmin}}
+          <li class="divider"></li>
+        {{else}}
+          {{#if showHostSetup}}
+            <li class="divider"></li>
+          {{/if}}
+        {{/if}}
+
+        {{#if app.isAuthenticationAdmin}}
+          <li role="presentation">
+            {{#link-to "settings.auth" role="menuitem" tabindex="-1"}}Access Control{{/link-to}}
+          </li>
+        {{/if}}
+
+        {{#if showHostSetup}}
+          <li role="presentation">
+            {{#link-to "hosts.setup" role="menuitem" tabindex="-1"}}Host Registration{{/link-to}}
+          </li>
+        {{/if}}
+      </ul>
+    </div>
+  </div>
+
+  <div class="right" style="padding-right: 0;">
+    {{#if project}}
+      <div class="btn-group project-btn">
+        <button type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-expanded="false">
+          <div class="text-muted">Project:</div>
+          {{#if project}}
+            {{#with project as p controller="project"}}
+              <i {{bind-attr class=":fa-fw p.icon"}}></i>&nbsp;{{p.displayName}}
+            {{/with}}
+          {{/if}}
+          <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+          {{#if projectChoices.length}}
+            <li role="presentation" class="dropdown-header">
+              {{#if app.authenticationEnabled}}
+                Your Projects:
+              {{else}}
+                All Projects:
+              {{/if}}
+            </li>
+            {{#each p in projectChoices itemController="project"}}
+              <li {{bind-attr class="p.active:disabled p.active:selected"}}>
+                <a {{action "switchProject" p.id}} class="clip">
+                  <i {{bind-attr class=":fa-fw p.icon"}}></i>
+                  &nbsp;
+                  {{p.displayName}}
+                </a>
+              </li>
+            {{/each}}
+          {{/if}}
+          {{#if projectChoices.length}}
+            <li role="presentation" class="divider"></li>
+          {{/if}}
+          {{#if projectIsMissing}}
+            <li role="presentation" class="dropdown-header">Not Your Project:</li>
+            {{#with project as p controller="project"}}
+              <li {{bind-attr class="p.active:disabled p.active:selected"}}>
+                <a {{action "switchProject" p.id}} class="clip">
+                  <i {{bind-attr class=":fa-fw p.icon"}}></i>
+                  &nbsp;
+                  {{p.displayName}}
+                </a>
+              </li>
+            {{/with}}
+            <li role="presentation" class="divider"></li>
+          {{/if}}
+          <li>{{#link-to "projects"}}Manage Projects{{/link-to}}</li>
+        </ul>
+      </div>
+    {{/if}}
   </div>
 </div>
 
-<div class="right" style="padding-right: 0;">
-  {{#if project}}
-    <div class="btn-group project-btn">
-      <button type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-expanded="false">
-        <div class="text-muted">Project:</div>
-        {{#if project}}
-          {{#with project as p controller="project"}}
-            <i {{bind-attr class=":fa-fw p.icon"}}></i>&nbsp;{{p.displayName}}
-          {{/with}}
-        {{/if}}
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right" role="menu">
-        {{#if projectChoices.length}}
-          <li role="presentation" class="dropdown-header">
-            {{#if app.authenticationEnabled}}
-              Your Projects:
-            {{else}}
-              All Projects:
-            {{/if}}
-          </li>
-          {{#each p in projectChoices itemController="project"}}
-            <li {{bind-attr class="p.active:disabled p.active:selected"}}>
-              <a {{action "switchProject" p.id}} class="clip">
-                <i {{bind-attr class=":fa-fw p.icon"}}></i>
-                &nbsp;
-                {{p.displayName}}
-              </a>
-            </li>
-          {{/each}}
-        {{/if}}
-        {{#if projectChoices.length}}
-          <li role="presentation" class="divider"></li>
-        {{/if}}
-        {{#if projectIsMissing}}
-          <li role="presentation" class="dropdown-header">Not Your Project:</li>
-          {{#with project as p controller="project"}}
-            <li {{bind-attr class="p.active:disabled p.active:selected"}}>
-              <a {{action "switchProject" p.id}} class="clip">
-                <i {{bind-attr class=":fa-fw p.icon"}}></i>
-                &nbsp;
-                {{p.displayName}}
-              </a>
-            </li>
-          {{/with}}
-          <li role="presentation" class="divider"></li>
-        {{/if}}
-        <li>{{#link-to "projects"}}Manage Projects{{/link-to}}</li>
-      </ul>
-    </div>
-  {{/if}}
+<div class="bottom-row">
 </div>
 
 <h3>

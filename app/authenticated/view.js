@@ -14,7 +14,7 @@ function relativeRelative() {
     auth.css({position: pos});
   }
 
-  var fullHeight = $('BODY').hasClass('white') | $('BODY').hasClass('full-height');
+  var fullHeight = $('BODY').hasClass('white');
   var main = $('MAIN');
   var height = null;
   if ( fullHeight )
