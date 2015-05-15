@@ -470,23 +470,18 @@ var TransitioningResourceController = ResourceController.extend({
     return this.get('stateColor').replace("text-","bg-");
   }.property('stateColor'),
 
-  hasProgress: function() {
-    var progress = this.get('transitioningProgress');
-    return progress && !isNaN(progress) && progress >= 0;
-  }.property('transitioningProgress'),
-
   displayProgress: function() {
     var progress = this.get('transitioningProgress');
-    if ( isNaN(progress) || !progress )
+    if ( progress === null || isNaN(progress) )
     {
-      progress = 100;
+      progress = 0;
     }
 
-    return Math.max(2,Math.min(progress, 100));
+    return Math.max(0,Math.min(progress, 100));
   }.property('transitioningProgress'),
 
   progressStyle: function() {
-    return 'width: '+ this.get('displayProgress') +'%';
+    return 'width: '+ Math.max(2, this.get('displayProgress')) +'%';
   }.property('displayProgress'),
 
 });
