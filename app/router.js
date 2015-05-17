@@ -106,11 +106,12 @@ Router.map(function() {
       });
     });
 
-    this.resource('environments.new', {path: '/environments/add'});
     this.resource('service.new', {path: '/environments/add-service'});
     this.resource('service.new-balancer', {path: '/environments/add-balancer'});
     this.resource('environments', {path: '/environments'}, function() {
       this.route('index', {path: '/'});
+      this.route('new', {path: '/add'});
+
       this.resource('environment', {path: '/:environment_id'}, function() {
         this.route('index', {path: '/'});
         this.route('code', {path: '/code'});

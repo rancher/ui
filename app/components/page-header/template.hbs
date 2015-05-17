@@ -3,7 +3,7 @@
   {{#link-to "environments" classNames="nav"}}Services{{/link-to}}
   {{#link-to "hosts" classNames="nav"}}Infrastructure{{/link-to}}
 
-  <div class="right">
+  <div class="right" >
     <div class="dropdown">
       <span class="user-toggle" id="user-dropdown" data-toggle="dropdown" aria-expanded="true">
         {{#if app.authenticationEnabled}}
@@ -69,15 +69,16 @@
     {{#if project}}
       <div class="btn-group project-btn">
         <button type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-expanded="false">
-          <div class="text-muted">Project:</div>
           {{#if project}}
             {{#with project as p controller="project"}}
               <i {{bind-attr class=":fa-fw p.icon"}}></i>&nbsp;{{p.displayName}}
             {{/with}}
+            <span class="caret"></span>
+          {{else}}
+            <i>No Project</i>
           {{/if}}
-          <span class="caret"></span>
         </button>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
           {{#if projectChoices.length}}
             <li role="presentation" class="dropdown-header">
               {{#if app.authenticationEnabled}}
@@ -120,17 +121,17 @@
 </div>
 
 <div class="bottom-row">
+  <h3>
+    {{#if backRoute}}
+      {{#link-to backRoute}}<i class="ss-navigateleft"></i>{{pageName}}{{/link-to}}
+    {{else if backPrevious}}
+      <a {{action "goToPrevious"}}><i class="ss-navigateleft"></i>{{pageName}}</a>
+    {{else}}
+      {{pageName}}
+    {{/if}}
+    {{#if addRoute}}
+      <a {{action "add"}} class="btn-circle-plus"></a>
+    {{/if}}
+  </h3>
 </div>
 
-<h3>
-  {{#if backRoute}}
-    {{#link-to backRoute}}<i class="ss-navigateleft"></i>{{pageName}}{{/link-to}}
-  {{else if backPrevious}}
-    <a {{action "goToPrevious"}}><i class="ss-navigateleft"></i>{{pageName}}</a>
-  {{else}}
-    {{pageName}}
-  {{/if}}
-  {{#if addRoute}}
-    <a {{action "add"}} class="btn-circle-plus"></a>
-  {{/if}}
-</h3>
