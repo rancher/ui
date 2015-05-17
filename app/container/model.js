@@ -3,7 +3,6 @@ import Cattle from 'ui/utils/cattle';
 var Container = Cattle.TransitioningResource.extend({
   // Common to all instances
   requestedHostId: null,
-  networkIds: null,
   primaryIpAddress: null,
   primaryAssociatedIpAddress: null,
 
