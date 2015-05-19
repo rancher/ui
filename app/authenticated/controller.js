@@ -3,6 +3,9 @@ import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
+  needs: ['application'],
+  currentPath: Ember.computed.alias('controllers.application.currentPath'),
+
   error: null,
 
   activeTab: '',

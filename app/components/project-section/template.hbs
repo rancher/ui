@@ -1,1 +1,10 @@
-Environment: {{model.id}} - {{model.name}}
+<div {{bind-attr class=":pod-state model.stateBackground"}}><span>{{model.displayState}}</span></div>
+
+<h4>
+  <span class="right-divider">{{model.name}}</span>
+  {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-sm btn-default right-divider-btn"}}Add Service{{/link-to}}
+</h4>
+<h6>
+  <span class="right-divider" tooltip="Service Count"><i class="ss-layers"></i> {{model.services.length}}</span>
+  <span><i class="ss-database" tooltip="Container Count"></i> {{instanceCount}}</span>
+</h6>

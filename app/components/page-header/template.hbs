@@ -1,9 +1,25 @@
 <div class="top-row">
   <div class="logo"></div>
-  {{#link-to "environments" classNames="nav"}}Services{{/link-to}}
-  {{#link-to "hosts" classNames="nav"}}Infrastructure{{/link-to}}
+  <nav>
+    {{#link-to "environments"}}Services{{/link-to}}
+    {{#link-to "hosts"}}Infrastructure{{/link-to}}
+  </nav>
 
-  <div class="right" >
+  <h3 class="pull-left">
+    {{#if backRoute}}
+      {{#link-to backRoute}}<i class="ss-navigateleft"></i>{{pageName}}{{/link-to}}
+    {{else if backPrevious}}
+      <a {{action "goToPrevious"}}><i class="ss-navigateleft"></i>{{pageName}}</a>
+    {{else}}
+      {{pageName}}
+    {{/if}}
+    {{#if addRoute}}
+      <a {{action "add"}} class="btn-circle-plus"></a>
+    {{/if}}
+  </h3>
+
+
+  <div class="right">
     <div class="dropdown">
       <span class="user-toggle" id="user-dropdown" data-toggle="dropdown" aria-expanded="true">
         {{#if app.authenticationEnabled}}
@@ -35,7 +51,7 @@
         </li>
 
         <li role="presentation">
-          {{#link-to "projects" role="menuitem" tabindex="-1"}}Manage Projects{{/link-to}}
+          {{#link-to "projects" role="menuitem" tabindex="-1"}}Manage Environments{{/link-to}}
         </li>
 
         <li role="presentation">
@@ -58,7 +74,7 @@
 
         {{#if showHostSetup}}
           <li role="presentation">
-            {{#link-to "hosts.setup" role="menuitem" tabindex="-1"}}Host Registration{{/link-to}}
+            {{#link-to "settings.host" role="menuitem" tabindex="-1"}}Host Registration{{/link-to}}
           </li>
         {{/if}}
       </ul>
@@ -75,16 +91,16 @@
             {{/with}}
             <span class="caret"></span>
           {{else}}
-            <i>No Project</i>
+            <i>No Environment</i>
           {{/if}}
         </button>
         <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
           {{#if projectChoices.length}}
             <li role="presentation" class="dropdown-header">
               {{#if app.authenticationEnabled}}
-                Your Projects:
+                Your Environment:
               {{else}}
-                All Projects:
+                All Environments:
               {{/if}}
             </li>
             {{#each p in projectChoices itemController="project"}}
@@ -113,7 +129,7 @@
             {{/with}}
             <li role="presentation" class="divider"></li>
           {{/if}}
-          <li>{{#link-to "projects"}}Manage Projects{{/link-to}}</li>
+          <li>{{#link-to "projects"}}Manage Environments{{/link-to}}</li>
         </ul>
       </div>
     {{/if}}
@@ -121,17 +137,12 @@
 </div>
 
 <div class="bottom-row">
-  <h3>
-    {{#if backRoute}}
-      {{#link-to backRoute}}<i class="ss-navigateleft"></i>{{pageName}}{{/link-to}}
-    {{else if backPrevious}}
-      <a {{action "goToPrevious"}}><i class="ss-navigateleft"></i>{{pageName}}</a>
-    {{else}}
-      {{pageName}}
+  <nav>
+    {{#if isInfrastructure}}
+      {{#link-to "hosts"}}<i class="ss-database"></i> Hosts{{/link-to}}
+      {{#link-to "containers"}}<i class="ss-box"></i> Containers{{/link-to}}
+      {{#link-to "volumes"}}<i class="ss-hdd"></i> Volumes{{/link-to}}
+      {{#link-to "balancing"}}<i class="ss-fork"></i> Balancing{{/link-to}}
     {{/if}}
-    {{#if addRoute}}
-      <a {{action "add"}} class="btn-circle-plus"></a>
-    {{/if}}
-  </h3>
+  </nav>
 </div>
-

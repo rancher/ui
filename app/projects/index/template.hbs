@@ -1,20 +1,15 @@
 <section>
-  <p>Rancher supports grouping resources into multiple <b>projects</b>.  Each project gets its own set of hosts and other resources, and is owned by a single GitHub user, team or organization.</p>
-  <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; projects to keep logical environments isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; project to a small team.</p>
-  {{#unless controllers.authenticated.project}}
-    <div class="alert alert-danger"><i class="ss-alert"></i> There are no active projects.  You will need to create or activate one before you can do anything else.</div>
-  {{/unless}}
+  <h3>
+    <span class="right-divider">Environments</span>
+    {{#link-to "projects.new" class="btn btn-sm btn-primary"}}Add Environment{{/link-to}}
+  </h3>
 </section>
-
-<section class="grid-header">
-  <div class="row">
-    <div class="col-sm-6">
-      <h3>All Projects ({{length}})</h3>
-    </div>
-    <div class="col-sm-6 text-right">
-      <button {{action "newProject"}} class="btn btn-sm btn-primary"><i class="ss-plus"></i> Add Project</button>
-    </div>
-  </div>
+<section>
+  <p>Rancher supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
+  <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
+  {{#unless controllers.authenticated.project}}
+    <div class="alert alert-danger"><i class="ss-alert"></i> There are no active environments.  You will need to create or activate one before you can do anything else.</div>
+  {{/unless}}
 </section>
 
 <section>
@@ -48,7 +43,7 @@
           </td>
         </tr>
       {{else}}
-        <tr><td colspan="4" class="text-center text-muted">You don't have any Projects yet.</td></tr>
+        <tr><td colspan="4" class="text-center text-muted">You don't have any environments yet.</td></tr>
       {{/each}}
     </tbody>
   </table>

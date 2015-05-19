@@ -2,6 +2,7 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
+  currentPath: null,
   pageName: null,
   project: null,
   projects: null,
@@ -29,6 +30,10 @@ export default Ember.Component.extend({
   projectIsMissing: function() {
     return this.get('projectChoices').filterProperty('id', this.get('project.id')).get('length') === 0;
   }.property('project.id','projectChoices.@each.id'),
+
+  isInfrastructure: function() {
+    return this.get('currentPath').indexOf('authenticated.infrastructure') === 0;
+  }.property('currentPath'),
 
   actions: {
     add: function() {

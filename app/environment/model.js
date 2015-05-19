@@ -5,6 +5,7 @@ var Environment = Cattle.TransitioningResource.extend({
 });
 
 Environment.reopenClass({
+  alwaysInclude: ['services'],
 });
 
 export default Environment;
