@@ -1,44 +1,61 @@
 import Ember from 'ember';
 
-var hostname = window.location.hostname;
-var looksPublic = true;
-if ( hostname.match(/^(localhost|192\.168\.|172\.1{6789}\.|172\.2{0123456789}\.|172\.3{01}\.|10\.)/) )
-{
-  looksPublic = false;
+function isPublic(name) {
+  if ( (name||'').trim().match(/^(localhost|192\.168\.|172\.1[6789]\.|172\.2[0123456789]\.|172\.3[01]\.|10\.)/) )
+  {
+    return false;
+  }
+
+  return true;
 }
 
 export default Ember.ObjectController.extend({
+  thisPage: '', // Set by route
+
   errors: null,
-  customRadio: (looksPublic ? 'no' : 'yes'),
+  customRadio: null,
   custom: Ember.computed.equal('customRadio', 'yes'),
-  looksPublic: looksPublic,
   editing: true,
   saving: false,
-  thisPage: '',
   customValue: '',
+
+  looksPublic: function() {
+    return isPublic(this.get('activeValue'));
+  }.property('activeValue'),
+
+  activeValue: function() {
+    if ( this.get('custom') )
+    {
+      return this.get('customValue').trim();
+    }
+    else
+    {
+      return this.get('thisPage');
+    }
+  }.property('custom','customValue','thisPage'),
 
   actions: {
     save: function() {
       var model = this.get('model');
-      if ( this.get('custom') )
-      {
-        var value = this.get('customValue').trim();
-        if ( !value )
-        {
-          this.set('errors', ['Please provide a DNS name or IP address']);
-          return;
-        }
+      var value = this.get('activeValue');
 
-        model.set('value', value);
-      }
-      else
+      if ( !value )
       {
-        model.set('value', this.get('thisPage'));
+        this.set('errors', ['Please provide a DNS name or IP address']);
+        return;
       }
+
+      // If your really want to set it to nothing...
+      if ( value === '__NONE__' )
+      {
+        value = '';
+      }
+
+      model.set('value', value);
 
       this.set('saving', true);
       model.save().then(() => {
-        this.transitionToRoute('hosts.new');
+        this.send('goToPrevious');
       }).catch((err) => {
         this.set('errors', [err]);
       }).finally(() => {

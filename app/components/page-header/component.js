@@ -35,6 +35,10 @@ export default Ember.Component.extend({
     return this.get('currentPath').indexOf('authenticated.infrastructure') === 0;
   }.property('currentPath'),
 
+  isServices: function() {
+    return this.get('currentPath').indexOf('authenticated.services') === 0;
+  }.property('currentPath'),
+
   actions: {
     add: function() {
       var params = this.get('addParams');

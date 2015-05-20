@@ -4,6 +4,14 @@ import Util from 'ui/utils/util';
 var EnvironmentController = Cattle.TransitioningResourceController.extend({
   needs: ['authenticated'],
 
+  init: function() {
+    this._super();
+    if ( !this.get('services') )
+    {
+      this.set('services',[]);
+    }
+  },
+
   actions: {
     activateServices: function() {
       return this.doAction('activateservices');

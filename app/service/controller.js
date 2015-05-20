@@ -1,6 +1,10 @@
+import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
 var ServiceController = Cattle.TransitioningResourceController.extend({
+  needs: ['environment'],
+  environment: Ember.computed.alias('controllers.environment'),
+
   actions: {
     activate: function() {
       return this.doAction('activate');
@@ -37,10 +41,6 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
 
     return choices;
   }.property('actions.{activate,deactivate,update,remove,purge}'),
-
-  getEnvironment: function() {
-    return this.get('store').find('environment', this.get('environmentId'));
-  },
 });
 
 ServiceController.reopenClass({

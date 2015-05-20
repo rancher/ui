@@ -13,10 +13,6 @@ export default Ember.Route.extend({
     controller.initFields();
   },
 
-  activate: function() {
-    this.send('setPageLayout', {label: 'Back', backRoute: 'environments'});
-  },
-
   actions: {
     cancel: function() {
       this.transitionTo('environments');

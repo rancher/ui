@@ -43,10 +43,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     }
   },
 
-  activate: function() {
-    this.send('setPageLayout', {label: 'Back', backRoute: 'loadbalancers'});
-  },
-
   actions: {
     cancel: function() {
       this.transitionTo('loadbalancers');

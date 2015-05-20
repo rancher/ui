@@ -12,6 +12,7 @@ Router.map(function() {
   this.route('login');
   this.route('logout');
   this.route('authenticated', { path: '/'}, function() {
+    // Settings
     this.resource('settings', function() {
       this.route('auth');
       this.route('host');
@@ -43,6 +44,7 @@ Router.map(function() {
       });
     });
 
+    // Infrastructure
     this.resource('infrastructure', function() {
       this.resource('hosts', { path: '/hosts'}, function() {
         this.route('index', {path: '/'});
@@ -108,20 +110,23 @@ Router.map(function() {
       });
     });
 
-    this.resource('service.new', {path: '/projects/add-service'});
-    this.resource('service.new-balancer', {path: '/projects/add-balancer'});
-    this.resource('environments', {path: '/projects'}, function() {
-      this.route('index', {path: '/'});
-      this.route('new', {path: '/add'});
-
-      this.resource('environment', {path: '/:environment_id'}, function() {
+    // Services
+    this.resource('services', function() {
+      this.resource('service.new', {path: '/projects/add-service'});
+      this.resource('service.new-balancer', {path: '/projects/add-balancer'});
+      this.resource('environments', {path: '/projects'}, function() {
         this.route('index', {path: '/'});
-        this.route('code', {path: '/code'});
-        this.route('graph', {path: '/graph'});
-        this.route('edit');
+        this.route('new', {path: '/add'});
 
-        this.resource('service', {path: '/services/:service_id'}, function() {
+        this.resource('environment', {path: '/:environment_id'}, function() {
+          this.route('index', {path: '/'});
+          this.route('code', {path: '/code'});
+          this.route('graph', {path: '/graph'});
           this.route('edit');
+
+          this.resource('service', {path: '/services/:service_id'}, function() {
+            this.route('edit');
+          });
         });
       });
     });

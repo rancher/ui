@@ -3,7 +3,9 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   model: null,
-  classNames: ['pod','project','resource-action-hover'],
+  collapseId: null,
+
+  classNames: ['pod','project'],
   classNameBindings: ['stateBorder'],
 
   stateBorder: function() {
@@ -12,7 +14,7 @@ export default Ember.Component.extend({
 
   instanceCount: function() {
     var count = 0;
-    this.get('model.services').forEach((service) => {
+    (this.get('model.services')||[]).forEach((service) => {
       count += service.get('scale')||0;
     });
 

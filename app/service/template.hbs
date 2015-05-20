@@ -3,7 +3,9 @@
 <section>
   <div class="row">
     <div class="col-sm-6">
-      <h3>{{displayName}}</h3>
+      {{#with environment as env controller="environment"}}
+        <h3>{{#link-to "environments"}}Projects:{{/link-to}} {{#link-to "environment" env.id}}{{env.displayName}}:{{/link-to}} {{displayName}}</h3>
+      {{/with}}
       <div class="text-muted">{{launchConfig.imageUuid}} {{zero-clipboard text=launchConfig.imageUuid}}</div>
     </div>
     <div class="col-sm-6 text-right">

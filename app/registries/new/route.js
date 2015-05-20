@@ -25,10 +25,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     controller.send('selectDriver','dockerhub');
   },
 
-  activate: function() {
-    this.send('setPageLayout', {label: 'All Registries', backRoute: 'registries'});
-  },
-
   actions: {
     cancel: function() {
       this.transitionTo('registries');

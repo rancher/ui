@@ -10,19 +10,4 @@ export default Ember.Route.extend({
       });
     });
   },
-
-  actions: {
-    didTransition: function() {
-      this.send('setPageLayout', {
-        label: this.get('controller.environment.name'),
-        addRoute: 'service.new',
-        addParams: {
-          queryParams: {
-            environmentId: this.get('controller.environment.id'),
-          },
-        },
-        hasAside: 'nav-services active'
-      });
-    },
-  }
 });

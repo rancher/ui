@@ -5,11 +5,6 @@ export default Ember.Route.extend({
     cancel: function() {
       this.goToPrevious();
     },
-
-    didTransition: function() {
-      this._super();
-      this.send('setPageLayout', {label: 'Back', backPrevious: true});
-    },
   },
 
   model: function(/*params, transition*/) {

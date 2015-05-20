@@ -1,7 +1,7 @@
-import OverlayRoute from 'ui/overlay/route';
+import Ember from 'ember';
 import C from 'ui/utils/constants';
 
-export default OverlayRoute.extend({
+export default Ember.Route.extend({
   model: function() {
     return this.get('store').find('setting', C.SETTING.API_HOST);
   },
@@ -20,10 +20,11 @@ export default OverlayRoute.extend({
     if ( value )
     {
       controller.set('customValue', value);
+      controller.set('customRadio', 'yes');
     }
-  },
-
-  renderTemplate: function() {
-    this.render({into: 'application', outlet: 'overlay'});
+    else
+    {
+      controller.set('customRadio', 'no');
+    }
   },
 });
