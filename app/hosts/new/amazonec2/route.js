@@ -4,14 +4,17 @@ export default DriverRoute.extend({
   driverName: 'amazonec2',
   newModel: function() {
     var store = this.get('store');
+    var pref = this.get('prefs.amazonec2')||{};
 
     var config = store.createRecord({
       type: 'amazonec2Config',
-      region: 'us-east-1',
+      region: 'us-west-2',
       instanceType: 't2.micro',
       securityGroup: 'docker-machine',
       zone: 'a',
-      rootSize: 16
+      rootSize: 16,
+      accessKey: pref.accessKey||'',
+      secretKey: pref.secretKey||'',
     });
 
     return this.get('store').createRecord({
@@ -20,9 +23,19 @@ export default DriverRoute.extend({
     });
   },
 
-  setupController: function(controller/*, model*/) {
-    controller.set('vpcOrSubnetId', null);
-    this._super.apply(this, arguments);
+  resetController: function (controller, isExiting/*, transition*/) {
+    this._super();
+    if (isExiting)
+    {
+      controller.setProperties({
+        step: 1,
+        machineId: null,
+        clients: null,
+        allSubnets: null,
+        allSecurityGroups: null,
+        whichSecurityGroup: 'default',
+      });
+    }
   },
 
   renderTemplate: function() {
