@@ -8,15 +8,6 @@ export default Ember.Controller.extend({
 
   error: null,
 
-  activeTab: '',
-  pageName: '',
-  backRoute: null,
-  backPrevious: null,
-  addRoute: null,
-  addParams: null,
-  hasAside: false,
-  asideColor: '',
-
   projects: null,
   project: null,
 

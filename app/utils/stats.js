@@ -309,6 +309,10 @@ var Stats = Ember.Object.extend({
         x: 'x',
         rows: this.get('cpuData'),
         groups: [['User','System']],
+        colors: {
+            User: '#61d4bf',
+            System: '#00ff00',
+        },
       },
       transition: { duration: 0 },
       tooltip: { show: false },
@@ -324,10 +328,6 @@ var Stats = Ember.Object.extend({
       axis: {
         x: {
           type: 'timeseries',
-          tick: {
-            culling: { max: 4 },
-            format: '%H:%M:%S',
-          }
         },
         y: {
           min: 0,
@@ -356,6 +356,9 @@ var Stats = Ember.Object.extend({
         type: 'area-step',
         x: 'x',
         rows: this.get('memoryData'),
+        colors: {
+            Used: '#c6b2e7',
+        },
       },
       legend: {
         position: 'inset',
@@ -371,10 +374,6 @@ var Stats = Ember.Object.extend({
       axis: {
         x: {
           type: 'timeseries',
-          tick: {
-            culling: { max: 4 },
-            format: '%H:%M:%S',
-          }
         },
         y: {
           padding: {
@@ -382,7 +381,7 @@ var Stats = Ember.Object.extend({
             bottom: 0
           },
           tick: {
-            format: function(label) { return label + ' MB'; }
+            format: function(label) { return (label > 1024 ? Math.round(label/102.4)/10 + 'GB' : label + ' MB'); }
           }
         },
       }

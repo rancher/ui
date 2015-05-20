@@ -1,0 +1,48 @@
+<div class="row">
+  <div class="row-same-height row-full-height">
+    <div class="col-sm-12 col-md-4 col-md-height col-md-full-height col-top" style="margin-bottom: 20px;">
+      <div class="well no-padding-margin" style="height: 100%;">
+        <div style="padding: 20px;">
+          <label class="section">Info</label>
+          <div>
+            {{yield}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4 col-md-height col-md-full-height col-top" style="margin-bottom: 20px;">
+      <div class="well no-padding-margin" style="height: 100%;">
+        <div style="padding: 20px;">
+          <label class="section">CPU Utilization</label>
+          <div {{bind-attr class="stats.active::hide"}}>
+            <div id="cpuGraph"></div>
+          </div>
+          <div {{bind-attr class=":text-center :text-muted stats.loading::hide" style="height: 320px; line-height: 320px;"}}>
+            <i class="fa fa-spinner fa-spin"></i> Connecting...
+          </div>
+          <div {{bind-attr class=":text-center :text-muted stats.available:hide"}} style="height: 320px; line-height: 320px;">
+            Utilization stats are only available while active/running.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-4 col-md-height col-md-full-height col-top" style="margin-bottom: 20px;">
+      <div class="well no-padding-margin" style="height: 100%;">
+        <div style="padding: 20px;">
+          <label class="section">Memory Utilization</label>
+          <div {{bind-attr class="stats.active::hide"}}>
+            <div id="memoryGraph"></div>
+          </div>
+          <div {{bind-attr class=":text-center :text-muted stats.loading::hide" style="height: 320px; line-height: 320px;"}}>
+            <i class="fa fa-spinner fa-spin"></i> Connecting...
+          </div>
+          <div {{bind-attr class=":text-center :text-muted stats.available:hide"}} style="height: 320px; line-height: 320px;">
+            Utilization stats are only available while active/running.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

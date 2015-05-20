@@ -3,13 +3,9 @@ import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   currentPath: null,
-  pageName: null,
   project: null,
   projects: null,
-  hasAside: null,
   authController: null,
-  addRoute: null,
-  addParams: null,
 
   tagName: 'header',
   classNames: ['clearfix','no-select'],
@@ -40,18 +36,6 @@ export default Ember.Component.extend({
   }.property('currentPath'),
 
   actions: {
-    add: function() {
-      var params = this.get('addParams');
-      if ( params )
-      {
-        this.get('authController').transitionToRoute(this.get('addRoute'), this.get('addParams'));
-      }
-      else
-      {
-        this.get('authController').transitionToRoute(this.get('addRoute'));
-      }
-    },
-
     switchProject: function(id) {
       this.sendAction('switchProject', id);
     },

@@ -58,8 +58,6 @@ Router.map(function() {
         });
 
         this.resource('host', { path: '/:host_id' }, function() {
-          this.route('index', { path: '/monitoring'});
-          this.route('hostContainers', { path: '/containers'});
         });
       });
 
