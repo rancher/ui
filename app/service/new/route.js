@@ -11,7 +11,6 @@ export default Ember.Route.extend({
     var store = this.get('store');
 
     var dependencies = [
-      store.findAllActive('network'),
       store.findAll('host'), // Need inactive ones in case a link points to an inactive host
       store.find('environment', params.environmentId).then(function(env) {
         return env.importLink('services');
@@ -19,14 +18,12 @@ export default Ember.Route.extend({
     ];
 
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
-      var networkChoices = results[0];
-      var allHosts = results[1];
-      var environment = results[2];
+      var allHosts = results[0];
+      var environment = results[1];
 
       var container = store.createRecord({
         type: 'container',
         commandArgs: [],
-        networkIds: [networkChoices.get('firstObject.id')],
         environment: {},
         tty: true,
         stdinOpen: true,
@@ -43,7 +40,6 @@ export default Ember.Route.extend({
       return Ember.Object.create({
         service: service,
         instance: container, // but mixins/edit-container expects to find the instance here, so link both to the same object
-        networkChoices: networkChoices,
         allHosts: allHosts,
         selectedEnvironment: environment,
       });

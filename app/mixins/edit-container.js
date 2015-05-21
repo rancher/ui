@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import ShellQuote from 'npm:shell-quote';
+import Util from 'ui/utils/util';
 
 export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   needs: ['hosts'],
@@ -236,31 +237,13 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // ----------------------------------
   // Network
   // ----------------------------------
-  networkId: null,
+  networkChoices: null,
   initNetwork: function() {
-    var networkIds = this.get('instance.networkIds');
-    if ( networkIds && networkIds.length > 0 )
-    {
-      this.set('networkId', networkIds[0]);
-    }
-    else
-    {
-      this.set('networkId', this.get('networkChoices.firstObject.id'));
-    }
-    this.networkIdDidChange();
+    var choices = this.get('store').getById('schema','container').get('resourceFields.networkMode').options.sort();
+    this.set('networkChoices',choices.map((option) => {
+      return {label: Util.ucFirst(option), value: option};
+    }));
   },
-
-  networkIdDidChange: function() {
-    var ary = this.get('instance.networkIds');
-    if ( !ary )
-    {
-      ary = [];
-      this.set('instance.networkIds', ary);
-    }
-
-    ary.clear();
-    ary.push(this.get('networkId'));
-  }.observes('networkId'),
 
   // ----------------------------------
   // Links
