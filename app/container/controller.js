@@ -91,14 +91,14 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
     ];
 
     return choices;
-  }.property('actions.{update,execute,restart,start,stop,restore,purge}','canDelete'),
+  }.property('actions.{restart,start,stop,restore,purge,execute,logs,update}','canDelete'),
 
   isOn: function() {
     return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;
   }.property('state'),
 
   displayIp: function() {
-    return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress') || '(No IP Address)';
+    return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress') || new Ember.Handlebars.SafeString('<span class="text-muted">None</span>');
   }.property('primaryIpAddress','primaryAssociatedIpAddress'),
 
   canDelete: function() {

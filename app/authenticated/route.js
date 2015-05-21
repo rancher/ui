@@ -206,26 +206,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.transitionTo(route||'index');
     },
 
-
-    setPageLayout: function(opt) {
-      this.controller.set('pageName', opt.label || '');
-      this.controller.set('backRoute', opt.backRoute || null);
-      this.controller.set('backPrevious', opt.backPrevious || null);
-      this.controller.set('addRoute', opt.addRoute || null);
-      this.controller.set('addParams', opt.addParams || null);
-
-      if ( typeof opt.hasAside === 'undefined' )
-      {
-        this.controller.set('hasAside', false);
-        this.controller.set('asideColor', '');
-      }
-      else
-      {
-        this.controller.set('hasAside', !!opt.hasAside);
-        this.controller.set('asideColor', opt.hasAside||'');
-      }
-    },
-
     // Raw message from the WebSocket
     wsMessage: function(/*data*/) {
       //console.log('wsMessage',data);

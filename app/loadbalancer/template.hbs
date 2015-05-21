@@ -1,62 +1,21 @@
-<aside>
-  <label>Load Balancer</label>
-  {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
-  <h3 class="force-wrap">{{displayName}}</h3>
+<section class="header">
+  <h3>
+    {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
+    <div {{bind-attr class=":state stateColor"}}>
+      <i {{bind-attr class="stateIcon"}}></i> {{displayState}}
+    </div>
+    <span class="right-divider">{{#link-to "loadbalancers"}}Load Balancers:{{/link-to}} {{displayName}}</span>
+  </h3>
+  {{partial "description"}}
+</section>
 
-  <hr/>
-
-  {{#if description}}
-    <label style="margin-top: 10px;">Description</label>
-    <p>{{description}}</p>
-    <hr/>
-  {{/if}}
-
-  <div class="links">
-    {{#link-to "loadbalancer.index"}}
-      <i class="ss-barchart"></i> Monitoring
-    {{/link-to}}
-    {{#link-to "loadbalancer.hosts"}}
-      <i class="ss-database" style="position: relative; top: 1px"></i> Hosts <span class="badge">{{hosts.length}}</span>
-    {{/link-to}}
-    {{#link-to "loadbalancer.targets"}}
-      <i class="ss-target" style="position: relative; top: 1px"></i> Targets <span class="badge">{{loadBalancerTargets.length}}</span>
-    {{/link-to}}
-    {{#link-to "loadbalancer.config"}}
-      <i class="ss-file"></i> Configuration
-    {{/link-to}}
-  </div>
-
-  <hr/>
-
-  <div class="clearfix">
-    <label>Info</label>
-  </div>
-
-  <ul class="list-circles">
-    <li>
-      <i {{bind-attr class=":fa-fw stateIcon"}}></i>
-      {{displayState}}
-      {{#if isTransitioning}}
-        <div class="progress progress-striped active" style="height: 10px; border: 0;">
-          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=displayProgress style=progressStyle}}>
-            <span class="sr-only">{{displayProgress}}% Complete</span>
-          </div>
-        </div>
-      {{/if}}
-      {{#if showTransitioningMessage}}
-        <div class="force-wrap">
-          {{transitioningMessage}}
-        </div>
-      {{/if}}
-    </li>
-
-    {{#if hostsBlurb}}
-      <li>
-        <i class="fa-fw ss-database"></i>
-        {{hostsBlurb}}
-      </li>
-    {{/if}}
+<section>
+  <ul class="nav nav-tabs nav-tabs-well">
+    {{#link-to "loadbalancer.hosts" tagName="li" href=false}}<a><i class="ss-database"></i> Hosts</a>{{/link-to}}
+    {{#link-to "loadbalancer.targets" tagName="li" href=false}}<a><i class="ss-box"></i> Targets</a>{{/link-to}}
+    {{#link-to "loadbalancer.config" tagName="li" href=false}}<a><i class="ss-file"></i> Config</a>{{/link-to}}
   </ul>
-</aside>
-
-{{outlet}}
+  <div class="well nav-well">
+    {{outlet}}
+  </div>
+</section>

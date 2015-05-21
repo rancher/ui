@@ -3,16 +3,10 @@ import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
-  error: null,
+  needs: ['application'],
+  currentPath: Ember.computed.alias('controllers.application.currentPath'),
 
-  activeTab: '',
-  pageName: '',
-  backRoute: null,
-  backPrevious: null,
-  addRoute: null,
-  addParams: null,
-  hasAside: false,
-  asideColor: '',
+  error: null,
 
   projects: null,
   project: null,

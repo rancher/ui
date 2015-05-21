@@ -4,6 +4,14 @@ import Util from 'ui/utils/util';
 var EnvironmentController = Cattle.TransitioningResourceController.extend({
   needs: ['authenticated'],
 
+  init: function() {
+    this._super();
+    if ( !this.get('services') )
+    {
+      this.set('services',[]);
+    }
+  },
+
   actions: {
     activateServices: function() {
       return this.doAction('activateservices');
@@ -38,20 +46,30 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
       var url = auth.addAuthParams(this.linkFor('composeConfig'));
       Util.download(url);
     },
+
+    viewCode: function() {
+      this.transitionTo('environment.code', this.get('id'));
+    },
+
+    viewGraph: function() {
+      this.transitionTo('environment.graph', this.get('id'));
+    },
   },
 
   availableActions: function() {
     var a = this.get('actions');
 
     var out = [
-      { label: 'Start Services', icon: 'ss-play',        action: 'activateServices',   enabled: this.get('canActivate') },
-      { label: 'Stop Services', icon: 'ss-pause',       action: 'deactivateServices', enabled: this.get('canDeactivate') },
-      { label: 'Export Config', icon: 'ss-download',         action: 'exportConfig',       enabled: !!a.exportconfig },
+      { label: 'Start Services', icon: 'ss-play',            action: 'activateServices',    enabled: this.get('canActivate') },
+      { label: 'Stop Services', icon: 'ss-pause',            action: 'deactivateServices',  enabled: this.get('canDeactivate') },
+      { label: 'View Graph',    icon: 'ss-share',            action: 'viewGraph',            enabled: true },
+      { label: 'View Config',   icon: 'ss-files',            action: 'viewCode',            enabled: true },
+      { label: 'Export Config', icon: 'ss-download',         action: 'exportConfig',        enabled: !!a.exportconfig },
       { divider: true },
-      { label: 'Delete',        icon: 'ss-trash',            action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
-      { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true },
+      { label: 'Delete',        icon: 'ss-trash',            action: 'promptDelete',        enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',             enabled: true },
       { divider: true },
-      { label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: true },
+      { label: 'Edit',          icon: 'ss-write',            action: 'edit',                enabled: true },
     ];
 
     return out;

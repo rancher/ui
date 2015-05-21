@@ -111,6 +111,14 @@ var HostController = Cattle.TransitioningResourceController.extend(DownloadMachi
     }
   }.property('info.osInfo.{distribution,version}'),
 
+  dockerBlurb: function() {
+    // @TODO this always sends back Ubuntu
+    if ( this.get('info.osInfo') )
+    {
+      return this.get('info.osInfo.dockerVersion').replace(/^Docker version\s*/i,'');
+    }
+  }.property('info.osInfo.{dockerVersion}'),
+
   cpuBlurb: function() {
     if ( this.get('info.cpuInfo.count') )
     {
@@ -156,7 +164,7 @@ HostController.reopenClass({
     'requested':        {icon: 'ss-tag',            color: 'text-danger'},
     'registering':      {icon: 'ss-tag',            color: 'text-danger'},
     'activating':       {icon: 'ss-tag',            color: 'text-danger'},
-    'active':           {icon: 'ss-database',       color: 'text-success'},
+    'active':           {icon: 'ss-record',         color: 'text-success'},
     'reconnecting':     {icon: 'fa fa-circle-o-notch fa-spin', color: 'text-danger'},
     'updating-active':  {icon: 'ss-database',       color: 'text-success'},
     'updating-inactive':{icon: 'ss-alert',          color: 'text-danger'},

@@ -90,8 +90,4 @@ export default Ember.Route.extend({
       ports: data.get('ports'),
     });
   },
-
-  activate: function() {
-    this.send('setPageLayout', {label: 'Container', backPrevious: true, hasAside: 'nav-containers active'});
-  },
 });

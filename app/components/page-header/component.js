@@ -2,13 +2,10 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
-  pageName: null,
+  currentPath: null,
   project: null,
   projects: null,
-  hasAside: null,
   authController: null,
-  addRoute: null,
-  addParams: null,
 
   tagName: 'header',
   classNames: ['clearfix','no-select'],
@@ -30,19 +27,15 @@ export default Ember.Component.extend({
     return this.get('projectChoices').filterProperty('id', this.get('project.id')).get('length') === 0;
   }.property('project.id','projectChoices.@each.id'),
 
-  actions: {
-    add: function() {
-      var params = this.get('addParams');
-      if ( params )
-      {
-        this.get('authController').transitionToRoute(this.get('addRoute'), this.get('addParams'));
-      }
-      else
-      {
-        this.get('authController').transitionToRoute(this.get('addRoute'));
-      }
-    },
+  isInfrastructure: function() {
+    return this.get('currentPath').indexOf('authenticated.infrastructure') === 0;
+  }.property('currentPath'),
 
+  isServices: function() {
+    return this.get('currentPath').indexOf('authenticated.services') === 0;
+  }.property('currentPath'),
+
+  actions: {
     switchProject: function(id) {
       this.sendAction('switchProject', id);
     },

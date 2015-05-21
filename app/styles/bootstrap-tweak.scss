@@ -1,3 +1,6 @@
+$normal-weight: 400;
+$bold-weight: 600;
+
 a:focus {
   outline: none;
 }
@@ -5,10 +8,38 @@ a:focus {
 H1, H2, H3, H4, H5, H6 {
   margin: 0;
   cursor: normal;
+
+  .btn {
+    margin-left: 10px;
+  }
+
+  SPAN.right-divider {
+    display: inline-block;
+    padding-right: 10px;
+    margin-right: 10px;
+    max-width: 50%;
+    vertical-align: middle;
+
+    &:not(:last-child) {
+      border-right: 1px solid #e3e5e6;
+    }
+  }
+
+  .right-divider-btn {
+    margin-left: 0;
+    vertical-align: middle;
+    position: relative;
+    left: -4px;
+  }
 }
 
-.btn-disabled {
+.btn-disabled,
+.btn.disabled,
+.btn[disabled],
+fieldset[disabled] .btn {
   cursor: not-allowed;
+  opacity: 0.35;
+  filter: alpha(opacity=35);
 }
 
 .btn-block {
@@ -16,19 +47,19 @@ H1, H2, H3, H4, H5, H6 {
   padding-right: 10px;
 }
 
-.btn-lg, .btn-group-lg > .btn {
+.btn-lg.btn-primary, .btn-group-lg > .btn.btn-primary {
   padding: ($padding-large-vertical - 1) $padding-large-horizontal;
   border-top-width: 2px;
   border-bottom-width: 2px;
 }
 
-.btn-sm, .btn-group-sm > .btn {
+.btn-sm.btn-primary, .btn-group-sm > .btn.btn-primary {
   padding: ($padding-small-vertical - 1) $padding-small-horizontal;
   border-top-width: 2px;
   border-bottom-width: 2px;
 }
 
-.btn-xs, .btn-group-xs > .btn {
+.btn-xs.btn-primary, .btn-group-xs > .btn.btn-primary {
   padding: ($padding-xs-vertical - 1) $padding-xs-horizontal;
   border-top-width: 2px;
   border-bottom-width: 2px;
@@ -95,7 +126,7 @@ H1, H2, H3, H4, H5, H6 {
 
 .text-bold {
   font-family: "Open Sans", "Helvetica Neue Light", "Helvetica Neue", "Helvetica", Calibri, Candara, Arial, sans-serif;
-  font-weight: 600;
+  font-weight: $bold-weight;
 }
 
 .text-italic { font-style: italic; }
@@ -145,7 +176,7 @@ H1, H2, H3, H4, H5, H6 {
   & > TFOOT > TR > TH,
   & > TBODY + TBODY {
     border-top: none;
-    font-weight: 600;
+    font-weight: $bold-weight;
     text-transform: uppercase;
     vertical-align: top;
   }
@@ -192,7 +223,7 @@ H1, H2, H3, H4, H5, H6 {
   &.small TH,
   &.small TD {
     font-size: 12px;
-    font-weight: 400;
+    font-weight: $normal-weight;
   }
 
   .form-group {
@@ -241,7 +272,7 @@ HR {
   & > li.selected > a:hover,
   & > li.selected > a:focus {
     color: $brand-success;
-    font-weight: 600;
+    font-weight: $bold-weight;
 
     .text-muted {
       color: 
@@ -261,7 +292,7 @@ HR {
 .badge.state {
   border-radius: 3px;
   font-size: 11px;
-  font-weight: 400;
+  font-weight: $normal-weight;
   text-transform: uppercase;
   color: white;
 }
@@ -270,12 +301,16 @@ HR {
   margin-top: 0;
 }
 
+LABEL {
+  font-weight: $bold-weight;
+}
+
 FORM LABEL,
 .horizontal-form LABEL,
 .form-group LABEL {
   color: #abb6b9;
   text-transform: uppercase;
-  font-weight: 400;
+  font-weight: $normal-weight;
 }
 
 .dropdown-menu LABEL,
@@ -310,3 +345,68 @@ FORM LABEL,
   }
 }
 
+// Equal height columns
+.row-full-height {
+  height: 100%;
+}
+
+.col-full-height {
+  height: 100%;
+  vertical-align: middle;
+}
+
+.row-same-height {
+  display: table;
+  width: 100%;
+  /* fix overflow */
+  table-layout: fixed;
+}
+.col-xs-height {
+  display: table-cell;
+  float: none !important;
+}
+
+.col-xs-full-height {
+  height: 100%;
+}
+
+@media (min-width: $screen-sm) {
+  .col-sm-height {
+    display: table-cell;
+    float: none !important;
+  }
+
+  .col-sm-full-height {
+    height: 100%;
+  }
+}
+@media (min-width: $screen-md) {
+  .col-md-height {
+    display: table-cell;
+    float: none !important;
+  }
+
+  .col-md-full-height {
+    height: 100%;
+  }
+}
+@media (min-width: $screen-lg) {
+  .col-lg-height {
+    display: table-cell;
+    float: none !important;
+  }
+
+  .col-lg-full-height {
+    height: 100%;
+  }
+}
+
+.col-top {
+  vertical-align: top;
+}
+.col-middle {
+  vertical-align: middle;
+}
+.col-bottom {
+  vertical-align: bottom;
+}

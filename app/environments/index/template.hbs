@@ -1,12 +1,17 @@
 <section>
-<h4 class="text-bold">Environments</h4>
-<p>Our environments are the namespaces where services are deployed. By having multiple namespaces, you can have different sets of services, which gives the user more flexibility.</p>
+  <h3>
+    <span class="right-divider">Projects</span>
+    {{#link-to "environments.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add Project{{/link-to}}
+  </h3>
+</section>
 
-<p>Within each environment, you can add as many services as you’d like. We also provide a Docker compose template based on the services added. This template can be exported and used outside of Rancher by docker-compose.</p>
-
-<h4 class="text-bold">Services</h4>
-
-<p>For each service, you can determine the number of containers you want deployed and link different services together.</p>
-
-<p>By default, the service is not active until you request to start the service. Each service can be started independently or all services in an environment can be started at once. When a service is started, the containers in the service are deployed randomly on any active host(s). Similarly, you can stop an individual service or stop all services in an environment at once.</p>
+<section>
+{{#each item in this itemController="environment"}}
+  {{project-section model=item collapseId=(dom-id item)}}
+  {{#columns-section pods=item.services id=(dom-id item) classNames="collapse" emptyMessage="No services yet." as |item| }}
+    {{#with item as service controller="service"}}
+      {{service-pod model=service}}
+    {{/with}}
+  {{/columns-section}}
+{{/each}}
 </section>

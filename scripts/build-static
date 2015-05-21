@@ -36,15 +36,6 @@ EOF
 
 # -------------------------------------
 
-# Why are you trying to do a build when there are uncommitted changes?
-if [[ `git status --porcelain` ]]; then
-  echo "There are uncommited changes.  Please check the number and try again."
-  exit 1;
-fi
-
-echo "Environment Variables:"
-env
-
 # Parse options
 BRANCH=$CI_BRANCH
 
@@ -57,11 +48,17 @@ if [[ -z "$BRANCH" ]]; then
 fi
 
 PKG_VERSION=$(cat package.json | grep version | head -n 1 | cut -f4 -d'"' | sed 's/-/_/g')
+FORCE=0
 LATEST=0
 UPLOAD=0
 TAG=0
-while getopts ":lut" opt;do
+: ${FORCE_VERSION:=""}
+
+while getopts ":lutfv:" opt;do
     case $opt in
+    f)
+        FORCE=1
+        ;;
     l)
         LATEST=1
         ;;
@@ -71,8 +68,11 @@ while getopts ":lut" opt;do
     u)
         UPLOAD=1
         ;;
+    v)
+        FORCE_VERSION=$OPTARG
+        ;;
     \?)
-        echo "Invalid arguemnts"
+        echo "Invalid arguemnt: ${OPTARG}"
         printHelp
         exit 1
         ;;
@@ -84,6 +84,14 @@ while getopts ":lut" opt;do
     esac
 done
 
+# Why are you trying to do a build when there are uncommitted changes?
+if [[ `git status --porcelain` ]]; then
+  echo "There are uncommited changes.  Please check the number and try again."
+  if [[ $FORCE -ne 1 ]]; then
+    exit 1;
+  fi
+fi
+
 # UPLOAD_LATEST=true is set by Drone for auto upload to CDN
 if [[ "${BRANCH}" == "master" ]] && [[ "${UPLOAD_LATEST}" == "true" ]]; then
   UPLOAD=2
@@ -93,18 +101,26 @@ fi
 # Sanity checking
 if [[ $LATEST -eq 1 ]] && [[ $TAG -eq 1 ]]; then
   echo "You can't tag latest."
-  exit 1
+  if [[ $FORCE -ne 1 ]]; then
+    exit 1;
+  fi
 fi
 
 if ( [[ $TAG -eq 1 ]] || [[ $UPLOAD -ne 0 ]] ) && [[ "${BRANCH}" != "master" ]]; then
   echo "You can only tag or upload the master branch (you are on '${BRANCH}')."
-  exit 1
+  if [[ $FORCE -ne 1 ]]; then
+    exit 1;
+  fi
 fi
 
-if [[ $LATEST -eq 1 ]]; then
-  VERSION="latest"
+if [[ "${FORCE_VERSION}" != "" ]]; then
+  VERSION=${FORCE_VERSION}
 else
-  VERSION=${PKG_VERSION}
+  if [[ $LATEST -eq 1 ]]; then
+    VERSION="latest"
+  else
+    VERSION=${PKG_VERSION}
+  fi
 fi
 
 ENVIRONMENT="production"
@@ -122,7 +138,7 @@ if [[ "${VERSION}" != "${PKG_VERSION}" ]]; then
 fi
 echo "Version: ${VERSION}"
 echo "Build Dir: ${BUILD_DIR}"
-echo "Options: Latest=${LATEST}, Tag=${TAG}, Upload=${UPLOAD}"
+echo "Options: Force=${FORCE}, Latest=${LATEST}, Upload=${UPLOAD}, Tag=${TAG}"
 echo "Current Directory: $(pwd)"
 
 echo "Testing..."
@@ -149,9 +165,9 @@ fi
 if [[ $UPLOAD -eq 1 ]]; then
   echo "Uploading..."
   if [[ $LATEST -eq 1 ]]; then
-    runCmd gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R ${BUILD_DIR} "${GS_URL}/_latest"
-    runCmd gsutil -h "${CACHE}" -m rsync -c -r -d "${GS_URL}/_latest" "${GS_URL}/latest"
-    runCmd gsutil rm -a -f -R "${GS_URL}/_latest"
+    runCmd gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R ${BUILD_DIR} "${GS_URL}/_upload"
+    runCmd gsutil -h "${CACHE}" -m rsync -c -r -d "${GS_URL}/_latest" "${GS_URL}/${VERSION}"
+    runCmd gsutil rm -a -f -R "${GS_URL}/_upload"
   else
     runCmd gsutil -m cp -z "${GZIP}" -R ${BUILD_DIR} ${GS_URL}
   fi
@@ -159,16 +175,16 @@ fi
 
 # For use from Drone, automatically
 if [[ $UPLOAD -eq 2 ]]; then
-  LATEST_DIR="$(pwd)/${BUILD_DIR}"
-  echo "Updating latest ($LATEST_DIR) thru Docker..."
+  ABS_BUILD_DIR="$(pwd)/${BUILD_DIR}"
+  echo "Updating latest ($ABS_BUILD_DIR) thru Docker..."
 
   # Upload new files, with gzip headers (rsync doesn't have this)
-  runCmd docker run --rm -v $LATEST_DIR:/latest google/cloud-sdk gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R /latest "${GS_URL}/_latest"
+  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload google/cloud-sdk gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R /upload "${GS_URL}/_upload"
 
   # Rsync new files into latest diff
   # Beware of the leopard: -m will break rsync on versioned buckets.
-  runCmd docker run --rm -v $LATEST_DIR:/latest google/cloud-sdk gsutil -h "${CACHE}" rsync -c -r "${GS_URL}/_latest" "${GS_URL}/latest"
+  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload google/cloud-sdk gsutil -h "${CACHE}" rsync -c -r "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
 
   # Remove temp dir
-  runCmd docker run --rm -v $LATEST_DIR:/latest google/cloud-sdk gsutil rm -a -f -R "${GS_URL}/_latest"
+  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload google/cloud-sdk gsutil rm -a -f -R "${GS_URL}/_upload"
 fi

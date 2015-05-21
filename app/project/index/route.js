@@ -11,11 +11,4 @@ export default Ember.Route.extend({
   renderTemplate: function() {
     this.render({controller: 'project'});
   },
-
-  actions: {
-    didTransition: function() {
-      this._super();
-      this.send('setPageLayout', {label: 'All Projects', backRoute: 'projects'});
-    },
-  },
 });

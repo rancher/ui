@@ -1,90 +1,91 @@
-<aside>
-  <label>Host</label>
-  {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
-  <h3 class="force-wrap">{{displayName}}</h3>
+<section class="header">
+  <h3>
+    {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
+    <div {{bind-attr class=":state stateColor"}}>
+      <i {{bind-attr class="stateIcon"}}></i> {{displayState}}
+    </div>
+    <span class="right-divider">{{#link-to "hosts"}}Hosts:{{/link-to}} {{displayName}}</span>
+    {{#link-to "containers.new" (query-params hostId=id) classNames="btn btn-sm btn-primary right-divider-btn"}}Add Container{{/link-to}}
+  </h3>
+  {{partial "description"}}
+</section>
 
-  <hr/>
-
-  {{#if description}}
-    <label style="margin-top: 10px;">Description</label>
-    <p>{{description}}</p>
-    <hr/>
-  {{/if}}
-
-  <div class="links">
-    {{#link-to "host.index"}}
-      <i class="ss-barchart"></i> Monitoring
-    {{/link-to}}
-    {{#link-to "host.hostContainers"}}
-      <i class="ss-box" style="position: relative; top: 1px"></i> Containers <span class="badge">{{arrangedInstances.length}}</span>
-    {{/link-to}}
-  </div>
-
-  <hr/>
-
-  <div class="clearfix">
-    <label>Info</label>
-  </div>
-
-  <ul class="list-circles">
-    <li>
-      <i {{bind-attr class=":fa-fw stateIcon"}}></i>
-      {{displayState}}
-      {{#if isTransitioning}}
-        <div class="progress progress-striped active" style="height: 10px; border: 0;">
-          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=displayProgress style=progressStyle}}>
-            <span class="sr-only">{{displayProgress}}% Complete</span>
-          </div>
-        </div>
-      {{/if}}
+<section>
+  {{#info-stats model=this}}
+    <ul class="list-lines">
       {{#if showTransitioningMessage}}
-        <div class="force-wrap">
-          {{transitioningMessage}}
-        </div>
+        <li>
+          <label>Message</label>
+          <span class="force-wrap">
+            {{transitioningMessage}}
+          </span>
+        </li>
       {{/if}}
-    </li>
 
-    <li>
-      <i class="fa-fw ss-link"></i>
-      {{displayIp}}
-    </li>
-
-    {{#if machine}}
       <li>
-        <i class="fa-fw ss-microwave"></i>
-        {{machine.driver}}
+        <label>IP Address</label>
+        {{displayIp}} {{zero-clipboard text=displayIp}}
       </li>
-    {{/if}}
 
-    {{#if osBlurb}}
-      <li>
-        <i class="fa fa-fw fa-linux"></i>
-        {{osBlurb}}
-      </li>
-    {{/if}}
+      {{#if machine}}
+        <li>
+          <label>Provider</label>
+          {{machine.driver}}
+        </li>
+      {{/if}}
 
-    {{#if cpuBlurb}}
-      <li>
-        <i class="fa fa-fw fa-tachometer" style="top: -2px;"></i>
-        {{cpuBlurb}}
-      </li>
-    {{/if}}
+      {{#if cpuBlurb}}
+        <li>
+          <label>CPU</label>
+          {{cpuBlurb}}
+        </li>
+      {{/if}}
 
-    {{#if memoryBlurb}}
-      <li>
-        <i class="fa-fw ss-microchip"></i>
-        {{memoryBlurb}}
-      </li>
-    {{/if}}
+      {{#if memoryBlurb}}
+        <li>
+          <label>Memory</label>
+          {{memoryBlurb}}
+        </li>
+      {{/if}}
 
-    {{#if diskBlurb}}
-      <li>
-        <i class="fa-fw ss-hdd"></i>
-        {{diskBlurb}}
-      </li>
-    {{/if}}
+      {{#if diskBlurb}}
+        <li>
+          <label>Storage</label>
+          {{diskBlurb}}
+        </li>
+      {{/if}}
+
+      {{#if osBlurb}}
+        <li>
+          <label>OS</label>
+          {{osBlurb}}
+        </li>
+      {{/if}}
+
+      {{#if info.osInfo.kernelVersion}}
+        <li>
+          <label>Kernel</label>
+          {{info.osInfo.kernelVersion}}
+        </li>
+      {{/if}}
+
+      {{#if dockerBlurb}}
+        <li>
+          <label>Docker</label>
+          {{dockerBlurb}}
+        </li>
+      {{/if}}
+
+    </ul>
+  {{/info-stats}}
+</section>
+
+<section>
+  <ul class="nav nav-tabs nav-tabs-well">
+    {{#link-to "host.containers" tagName="li" href=false}}<a><i class="ss-box"></i> Containers</a>{{/link-to}}
+    {{#link-to "host.storage" tagName="li" href=false}}<a><i class="ss-hdd"></i> Storage</a>{{/link-to}}
   </ul>
-
-</aside>
-
-{{outlet}}
+  <div class="well nav-well">
+    {{outlet}}
+  </div>
+</section>

@@ -28,8 +28,4 @@ export default Ember.Route.extend({
       this.transitionTo('hosts');
     }
   },
-
-  activate: function() {
-    this.send('setPageLayout', {label: 'All Hosts', backRoute: 'hosts'});
-  },
 });

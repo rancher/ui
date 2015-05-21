@@ -1,8 +1,6 @@
 $body-bg: #f4f5f8;
-$header-height: 53px;
-$header-text: #343434;
+$header-height: 100px;
 $header-link-text: #afb9c8;
-$nav-width: 90px;
 $main-padding: 20px;
 $nav-bg: #393d47;
 $nav-text: #788188;
@@ -20,7 +18,7 @@ HTML {
 BODY {
   background-color: $body-bg;
   min-height: 100%;
-  font-weight: 400;
+  font-weight: $normal-weight;
 }
 
 .authenticated, #application {
@@ -28,7 +26,7 @@ BODY {
 }
 
 B {
-  font-weight: 600;
+  font-weight: $bold-weight;
 }
 
 .farm {
@@ -71,214 +69,8 @@ B {
       A:active,
       A:visited{
         color: white;
-        font-weight: 600;
+        font-weight: $bold-weight;
       }
-    }
-  }
-}
-
-/**********
-* Navigation (left side bar)
-**********/
-.nav-background {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: $nav-width;
-  background-color: $nav-bg;
-  z-index: 1;
-}
-
-NAV {
-  position: absolute;
-  z-index: 2;
-  width: $nav-width;
-  margin: 0;
-  color: $nav-text;
-
-  .logo {
-    height: 53px;
-    background-image: url('images/logo.svg');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-color: #212121;
-  }
-
-  LABEL {
-    font-weight: 400;
-    font-size: 12px;
-    display: block;
-    position: relative;
-    top: -2px;
-  }
-
-  A,
-  A:active,
-  A:focus,
-  A:hover,
-  A:visited {
-    display: block;
-    text-decoration: none;
-    color: $nav-text;
-    border-bottom: 1px solid #4a4f59;
-    border-left-width: 2px;
-    border-left-style: solid;
-    margin: 0;
-    padding: 13px 0 8px 0;
-    list-style-type: none;
-    text-align: center;
-    cursor: pointer;
-  }
-
-  A:hover,
-  A.active {
-    color: $nav-text-hover;
-    background-color: $nav-bg-hover;
-  }
-
-  I {
-    font-size: 16px;
-    position: relative;
-    top: 3px;
-
-    &.fa {
-      top: 0;
-    }
-  }
-}
-
-/**********
-* Header (top bar)
-**********/
-HEADER {
-  height: $header-height;
-  z-index: 2;
-  background-color: $body-bg;
-
-  margin-left: $nav-width;
-  &.has-aside {
-    margin-left: $nav-width + $aside-width;
-  }
-
-  .full-height {
-    line-height: $header-height - 1;
-  }
-
-  H3 {
-    margin: 0;
-    line-height: $header-height - 1;
-    color: $header-text;
-    padding-left: 20px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-
-    A,
-    A:visited,
-    A:hover,
-    A:focus {
-      cursor: pointer;
-      text-decoration: none;
-      color: $header-link-text;
-    }
-  }
-
-  .right {
-    float: right;
-    padding: 4px 20px 0 0;
-  }
-
-  .user-toggle {
-    cursor: pointer;
-    position: relative;
-    z-index: 4;
-  }
-
-  .user-menu {
-    margin-top: -7px;
-    margin-right: -10px;
-    z-index: 3;
-    padding-top: 0;
-    width: 250px;
-    border-radius: 5px;
-  }
-
-  .user-dropdown-arrow {
-    position: relative;
-    left: -2px;
-  }
-
-  .user-noauth,
-  .user-auth {
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    color: white;
-  }
-
-  .user-noauth {
-    background-color: #de6e79;
-    text-align: center;
-    padding: 20px 0;
-  }
-
-  .user-auth {
-    position: relative;
-    background-color: #9eadb6;
-    padding: 10px 0 10px 20px;
-
-    .gh-block {
-      margin-right: 60px;
-    }
-
-    .gh-block-name {
-      A, A:hover, A:focus, A:visited, A:active {
-        color: white;
-      }
-    }
-
-    .gh-block-detail {
-      color: #dfe9ee;
-    }
-
-    .user-logout {
-      background-color: #899ba7;
-      border-top-right-radius: 5px;
-      position: absolute;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      padding: 14px 0 0 0;
-      width: 60px;
-      color: #dfe9ee;
-      font-size: 12px;
-      text-align: center;
-
-      I {
-        font-size: 24px;
-        line-height: 20px;
-        position: relative;
-        left: 3px;
-      }
-    }
-  }
-
-  .project-btn {
-    border: 1px solid #ddd;
-    margin-right: 20px;
-    padding: 0 10px;
-    border-radius: 3px;
-    max-width: 200px;
-
-    .dropdown-toggle {
-      padding: 0;
-      max-width: 100%;
-    }
-
-    .dropdown-menu {
-      max-height: 300px;
-      max-width: 300px;
-      overflow-y: auto;
     }
   }
 }
@@ -287,28 +79,25 @@ HEADER {
 * Main body
 **********/
 MAIN {
-  margin-left: $nav-width;
   position: relative;
 
   &.has-aside {
-    margin-left: ($nav-width + $aside-width);
+    margin-left: $aside-width;
   }
 }
 
-BODY.white MAIN,
-BODY.full-height MAIN {
+BODY.white MAIN {
   margin-top: $main-padding/2;
   margin-right: $main-padding;
   margin-bottom: $main-padding;
-  margin-left: $nav-width + $main-padding;
+  margin-left: $main-padding;
   border-radius: 5px;
 
   &.has-aside {
-    margin-left: ($nav-width + $aside-width + $main-padding);
+    margin-left: ($aside-width + $main-padding);
 
     ASIDE {
       left: -1 * ($aside-width + $main-padding);
-      top: -1*$header-height - $main-padding/2;
     }
   }
 }
@@ -322,6 +111,10 @@ BODY.white MAIN {
 **********/
 SECTION {
   padding: 20px 20px 0 20px;
+
+  &.well {
+    margin: 20px;
+  }
 
   &.tab-section {
     padding: 20px;
@@ -352,12 +145,12 @@ SECTION {
 }
 
 /**********
-* Aside (secondary bar next to left NAV)
+* Aside (side bar on the left next to left)
 **********/
 .aside-background {
   position: absolute;
-  top: 0;
-  left: $nav-width;
+  top: $header-height;
+  left: 0;
   bottom: 0;
   width: $aside-width;
   background-color: transparent;
@@ -366,11 +159,11 @@ SECTION {
 
 ASIDE {
   position: absolute;
-  top: -1*$header-height;
+  top: 0;
   bottom: 0;
   left: -1*$aside-width;
   width: $aside-width;
-  z-index: 2;
+  z-index: 1;
   padding: 17px 20px 0 20px;
   color: white;
 
@@ -384,7 +177,7 @@ ASIDE {
       display: block;
       padding: 5px 0 4px 8px;
       cursor: pointer;
-      font-weight: 600;
+      font-weight: $bold-weight;
       color: rgba(255,255,255,0.5);
       text-decoration: none;
       font-size: 14px;
@@ -433,7 +226,7 @@ ASIDE {
 UL.list-circles {
   @extend .list-unstyled;
   margin-top: 10px;
-  font-weight: 600;
+  font-weight: $bold-weight;
 
   &>LI {
     background-image: url('images/info-bubble.svg');
@@ -470,7 +263,7 @@ UL.list-circles {
 
   &.list-circles-clear > LI {
     background-image: url('images/info-bubble-clear.svg');
-    font-weight: 400;
+    font-weight: $normal-weight;
     padding-bottom: 20px;
 
     &:last-child {
@@ -484,48 +277,22 @@ UL.list-circles {
   }
 }
 
+UL.list-lines {
+  @extend .list-unstyled;
 
-/**********
-* Colors for NAV and ASIDE
-**********/
-$nav-1: #44b4a2;
-$nav-2: #f58485;
-$nav-3: #b49ac3;
-$nav-4: #66b0cb;
-$nav-5: #fabc6f;
-$nav-6: #df6490;
-$nav-7: #444;
+  &>LI {
+    margin-top: 5px;
+    border-bottom: 1px solid #e8ecf2;
+    font-size: $font-size-small;
 
-.nav-hosts {
-  border-left-color: $nav-1;
-  &.active { background-color: $nav-1; }
+    LABEL {
+      font-weight: $normal-weight;
+      color: #9da0ae;
+      display: inline-block;
+      width: 100px;
+    }
+  }
 }
-
-.nav-containers {
-  border-left-color: $nav-2;
-  &.active { background-color: $nav-2; }
-}
-
-.nav-balancing {
-  border-left-color: $nav-3;
-  &.active { background-color: $nav-3; }
-}
-
-.nav-services {
-  border-left-color: $nav-4;
-  &.active { background-color: $nav-4; }
-}
-
-.nav-registries {
-  border-left-color: $nav-4;
-  &.active { background-color: $nav-4; }
-}
-
-.nav-volumes {
-  border-left-color: $nav-5;
-  &.active { background-color: $nav-5; }
-}
-
 
 /**********
 * Misc common global things
@@ -541,7 +308,7 @@ $nav-7: #444;
 
 .loading-overlay {
   position: absolute;
-  top: 100px;
+  top: 150px;
   left: 0;
   right: 0;
   text-align: center;
@@ -594,6 +361,11 @@ $nav-7: #444;
 
 .well {
   border-radius: 5px;
+
+  &.no-padding-margin {
+    padding: 0;
+    margin: 0;
+  }
 }
 
 .radio-well {
@@ -601,7 +373,7 @@ $nav-7: #444;
   font-size: 14px;
 
   LABEL {
-    font-weight: 400;
+    font-weight: $normal-weight;
     display: block;
     /* the radio button gets clipped with no padding */
     padding-left: 2px;
@@ -618,7 +390,7 @@ $nav-7: #444;
 
 SECTION .well H5,
 .graphs LABEL {
-  font-weight: 400;
+  font-weight: $normal-weight;
   color: #da8456;
   display: block;
   margin-bottom: 5px;
@@ -788,6 +560,11 @@ ASIDE {
   .actions {
     text-align: right;
   }
+
+  .state {
+    max-width: 100%;
+    @extend .clip;
+  }
 }
 
 @media (max-width: 701px) {
@@ -890,7 +667,7 @@ ASIDE {
 .toggle-advanced {
   text-align: center;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: $bold-weight;
   color: #868f99;
 
   A,
@@ -910,7 +687,7 @@ ASIDE {
 **********/
 .nav-boxes {
   & > LI.active > A {
-    border-color: $nav-1;
+    border-color: #44b4a2;
   }
 
   .driver {
@@ -936,5 +713,69 @@ ASIDE {
     background-color: white;
     height: 33px;
     border-radius: 50%;
+  }
+}
+
+/**********
+* Nav Tabs with active white
+**********/
+.nav-tabs-well {
+  UL {
+    border-bottom: 0;
+  }
+
+  LI {
+    margin-right: 6px;
+
+    A {
+      border: 0 !important;
+      background-color: #e5eaee;
+      color: #bfc9d1;
+      text-transform: uppercase;
+    }
+
+    &.active A,
+    &.active A:hover {
+      background-color: white;
+      color: #de733d;
+    }
+  }
+}
+
+.nav-well {
+  position: relative;
+  top: -1px;
+  border: 0;
+  border-top-left-radius: 0;
+}
+
+/**********
+* Collapse/expand toggle
+**********/
+.collapser {
+  &:after {
+    font-family: "SSGizmo";
+    content: '\F501';
+  }
+
+  &.collapsed:after {
+    font-family: "SSGizmo";
+    content: '\F500';
+  }
+}
+
+.well.description {
+  margin-top: 10px;
+  margin-bottom: 0;
+  
+  P {
+    margin: 0;
+  }
+}
+
+SECTION.header H3 {
+  .state {
+    float: right;
+    margin-right: 10px;
   }
 }

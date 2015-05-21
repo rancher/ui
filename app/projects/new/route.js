@@ -39,8 +39,4 @@ export default Ember.Route.extend({
     controller.set('isAdding',false);
     controller.initFields();
   },
-
-  activate: function() {
-    this.send('setPageLayout', {label: 'All Projects', backRoute: 'projects'});
-  },
 });

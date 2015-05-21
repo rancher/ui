@@ -304,11 +304,18 @@ var Stats = Ember.Object.extend({
 
     var cpuGraph = c3.generate({
       bindto: this.get('cpuCanvas'),
+      size: {
+        height: 210,
+      },
       data: {
         type: 'area-step',
         x: 'x',
         rows: this.get('cpuData'),
         groups: [['User','System']],
+        colors: {
+            User: '#61d4bf',
+            System: '#00ff00',
+        },
       },
       transition: { duration: 0 },
       tooltip: { show: false },
@@ -316,18 +323,14 @@ var Stats = Ember.Object.extend({
         position: 'inset',
       },
       padding: {
-        left: 40,
+        left: 50,
         right: 0,
-        top: 0,
-        bottom: 0,
+        top: 2,
+        bottom: -20,
       },
       axis: {
         x: {
           type: 'timeseries',
-          tick: {
-            culling: { max: 4 },
-            format: '%H:%M:%S',
-          }
         },
         y: {
           min: 0,
@@ -352,29 +355,31 @@ var Stats = Ember.Object.extend({
 
     var memoryGraph = c3.generate({
       bindto: this.get('memoryCanvas'),
+      size: {
+        height: 210,
+      },
       data: {
         type: 'area-step',
         x: 'x',
         rows: this.get('memoryData'),
+        colors: {
+            Used: '#c6b2e7',
+        },
       },
       legend: {
         position: 'inset',
       },
       padding: {
-        left: 80,
+        left: 40,
         right: 0,
-        top: 0,
-        bottom: 0,
+        top: 2,
+        bottom: -20,
       },
       transition: { duration: 0 },
       tooltip: { show: false },
       axis: {
         x: {
           type: 'timeseries',
-          tick: {
-            culling: { max: 4 },
-            format: '%H:%M:%S',
-          }
         },
         y: {
           padding: {
@@ -382,7 +387,7 @@ var Stats = Ember.Object.extend({
             bottom: 0
           },
           tick: {
-            format: function(label) { return label + ' MB'; }
+            format: function(label) { return Math.round(label/102.4)/10 + ' GiB'; }
           }
         },
       }

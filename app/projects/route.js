@@ -21,8 +21,4 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       return store.allUnremoved('project');
     });
   },
-
-  activate: function() {
-    this.send('setPageLayout', {label: 'Manage Projects'});
-  },
 });

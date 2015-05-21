@@ -25,12 +25,4 @@ export default Ember.Component.extend({
   stateBorder: function() {
     return this.get('model.stateColor').replace("text-","border-top-");
   }.property('model.stateColor'),
-
-  iconColor: function() {
-    var color = this.get('model.stateColor');
-    if ( color.indexOf('danger') >= 0 )
-    {
-      return color;
-    }
-  }.property('model.stateColor'),
 });

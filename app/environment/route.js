@@ -1,21 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  actions: {
-    didTransition: function() {
-      this.send('setPageLayout', {
-        label: this.get('controller.name'),
-        addRoute: 'service.new',
-        addParams: {
-          queryParams: {
-            environmentId: this.get('controller.id'),
-          },
-        },
-        hasAside: 'nav-services active'
-      });
-    },
-  },
-
   model: function(params) {
     var store = this.get('store');
     return store.find('environment', params.environment_id).then((env) => {
