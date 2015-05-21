@@ -86,7 +86,6 @@ Router.map(function() {
 
         this.resource('loadbalancer', {path: '/:loadbalancer_id'}, function() {
           this.route('edit');
-          this.route('index', { path: '/monitoring'});
           this.route('config', { path: '/config'});
           this.route('hosts', { path: '/hosts'}, function() {
             this.route('new', { path: '/add'});
