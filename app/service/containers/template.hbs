@@ -1,11 +1,4 @@
-<section>
-  <h3>
-    <span class="right-divider">Containers</span>
-    {{#link-to "containers.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add Container{{/link-to}}
-  </h3>
-</section>
-
-<section class="well instances">
+<section class="instances">
   <table class="grid fixed" style="margin-bottom: 0;">
     <thead>
       <tr>
@@ -18,7 +11,7 @@
       </tr>
     </thead>
     <tbody>
-      {{#each container in model itemController="container"}}
+      {{#each container in instances itemController="container"}}
         <tr>
           <td>
             <span {{bind-attr class=":badge :state container.stateBackground"}}>
@@ -42,15 +35,12 @@
             {{/if}}
           </td>
           <td class="actions">
-            {{#unless container.isManaged}}
-              {{resource-actions-menu model=container choices=container.availableActions}}
-            {{/unless}}
+            {{resource-actions-menu model=container choices=container.availableActions}}
           </td>
         </tr>
       {{else}}
-        <tr><td colspan="5" class="text-center text-muted">You do not have any containers yet.</td></tr>
+        <tr><td colspan="6" class="text-center text-muted">This service does not have any containers yet.</td></tr>
       {{/each}}
     </tbody>
   </table>
 </section>
-

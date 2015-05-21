@@ -1,38 +1,12 @@
-<aside>
-  <label>Balancer Config</label>
-  {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
-  <h3 class="force-wrap">{{displayName}}</h3>
+<section class="header">
+  <h3>
+    {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
+    <div {{bind-attr class=":state stateColor"}}>
+      <i {{bind-attr class="stateIcon"}}></i> {{displayState}}
+    </div>
+    <span>{{#link-to "loadbalancerconfigs"}}LB Configs:{{/link-to}} {{displayName}}</span>
+  </h3>
+  {{partial "description"}}
+</section>
 
-  <hr/>
-
-  {{#if description}}
-    <label style="margin-top: 10px;">Description</label>
-    <p>{{description}}</p>
-    <hr/>
-  {{/if}}
-
-  <div class="clearfix">
-    <label>Info</label>
-  </div>
-
-  <ul class="list-circles">
-    <li>
-      <i {{bind-attr class=":fa-fw stateIcon"}}></i>
-      {{displayState}}
-      {{#if isTransitioning}}
-        <div class="progress progress-striped active" style="height: 10px; border: 0;">
-          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=displayProgress style=progressStyle}}>
-            <span class="sr-only">{{displayProgress}}% Complete</span>
-          </div>
-        </div>
-      {{/if}}
-      {{#if showTransitioningMessage}}
-        <div class="force-wrap">
-          {{transitioningMessage}}
-        </div>
-      {{/if}}
-    </li>
-  </ul>
-</aside>
-
-{{outlet}}
+{{partial "loadbalancer/config-detail"}}

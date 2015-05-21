@@ -1,151 +1,172 @@
-<aside>
-  <label>Container</label>
-  {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
-  <h3 class="force-wrap">{{displayName}}</h3>
+{{#with primaryHost as host controller="host"}}
+  <section class="header">
+    <h3>
+      {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
+      <div {{bind-attr class=":state stateColor"}}>
+        <i {{bind-attr class="stateIcon"}}></i> {{displayState}}
+      </div>
+      <span>{{#link-to "hosts"}}Hosts:{{/link-to}} {{#link-to "host" host.id}}{{host.displayName}}:{{/link-to}} {{displayName}}</span>
+    </h3>
+    {{partial "description"}}
+  </section>
 
-  <hr/>
+  <section>
+    {{#info-stats model=this}}
+      <ul class="list-lines">
+        {{#if showTransitioningMessage}}
+          <li>
+            <label>Message</label>
+            <span class="force-wrap">
+              {{transitioningMessage}}
+            </span>
+          </li>
+        {{/if}}
 
-  {{#if description}}
-    <label style="margin-top: 10px;">Description</label>
-    <p>{{description}}</p>
-    <hr/>
-  {{/if}}
+        <li>
+          <label>Host IP</label>
+          {{host.displayIp}} {{zero-clipboard text=host.displayIp}}
+        </li>
 
-  <div class="clearfix">
-    <label>Info</label>
-  </div>
+        <li>
+          <label>Container IP</label>
+          {{displayIp}} {{zero-clipboard text=displayIp}}
+        </li>
 
-  <ul class="list-circles">
-    <li>
-      <i {{bind-attr class=":fa-fw stateIcon"}}></i>
-      {{displayState}}
-      {{#if isTransitioning}}
-        <div class="progress progress-striped active" style="height: 10px; border: 0;">
-          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=displayProgress style=progressStyle}}>
-            <span class="sr-only">{{displayProgress}}% Complete</span>
-          </div>
-        </div>
-      {{/if}}
-      {{#if showTransitioningMessage}}
-        <div class="force-wrap">
-          {{transitioningMessage}}
-        </div>
-      {{/if}}
-    </li>
+        <li>
+          <label>Image</label>
+          <span class="force-wrap">
+            {{display-image imageUuid}} {{zero-clipboard text=imageUuid}}
+          </span>
+        </li>
 
-    <li>
-      <i class="fa-fw ss-link"></i>
-      {{displayIp}}
-    </li>
-  </ul>
-</aside>
+        <li>
+          <label>Entrypoint</label>
+          <span class="force-wrap">
+            {{#if entryPoint}}
+              {{entryPoint}}
+            {{else}}
+              <span class="text-muted">None</span>
+            {{/if}}
+          </span>
+        </li>
+        <li>
+          <label>Command</label>
+          <span class="force-wrap">
+            {{#if command}}
+              {{command}}
+            {{else}}
+              <span class="text-muted">None</span>
+            {{/if}}
+          </span>
+        </li>
 
-<section>
-  <div class="text-muted">{{imageUuid}} {{zero-clipboard text=imageUuid}}</div>
+      </ul>
+    {{/info-stats}}
+  </section>
 
-  {{partial "stats-cpu-memory"}}
-
-  <div class="well">
-    <label>Ports</label>
-    <table class="grid fixed">
-      <thead>
-        <tr>
-          <th width="120">State</th>
-          <th>IP Address</th>
-          <th>Public (on Host)</th>
-          <th>Private (in Container)</th>
-          <th>Protocol</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each port in ports itemController="port"}}
+  <section>
+    <div class="well">
+      <label>Ports</label>
+      <table class="grid fixed">
+        <thead>
           <tr>
-            <td>
-              <span {{bind-attr class=":badge :state port.stateBackground"}}>
-                {{port.displayState}}
-              </span>
-            </td>
-            <td>
-              {{port.displayPublicIp}}
-            </td>
-            <td>
-              {{port.publicPort}}
-            </td>
-            <td>
-              {{port.privatePort}}
-            </td>
-            <td>
-              {{upper-case port.protocol}}
-            </td>
+            <th width="90">State</th>
+            <th width="150">IP Address</th>
+            <th>Public (on Host)</th>
+            <th>Private (in Container)</th>
+            <th width="90" class="text-right">Protocol</th>
           </tr>
-        {{else}}
-          <tr>
-            <td colspan="5">
-              <div class="text-muted text-center">This container has no ports.</div>
-            </td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </div>
+        </thead>
+        <tbody>
+          {{#each port in ports itemController="port"}}
+            <tr>
+              <td>
+                <span {{bind-attr class=":badge :state port.stateBackground"}}>
+                  {{port.displayState}}
+                </span>
+              </td>
+              <td>
+                {{port.displayPublicIp}}
+              </td>
+              <td>
+                {{#if port.publicPort}}
+                  {{port.publicPort}}
+                {{else}}
+                  <span class="text-muted">None</span>
+                {{/if}}
+              </td>
+              <td>
+                {{#if port.privatePort}}
+                  {{port.privatePort}}
+                {{else}}
+                  <span class="text-muted">None</span>
+                {{/if}}
+              </td>
+              <td class="text-right">
+                {{upper-case port.protocol}}
+              </td>
+            </tr>
+          {{else}}
+            <tr>
+              <td colspan="5">
+                <div class="text-muted text-center">This container has no ports.</div>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
 
-  <div class="well">
-    <label>Volume Mounts</label>
-    <table class="grid fixed">
-      <thead>
-        <tr>
-          <th width="120">State</th>
-          <th>Mount Point</th>
-          <th>Volume</th>
-          <th width="80">Writable</th>
-          <th class="text-right">Shared With</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each mount in mounts itemController="mount"}}
+    <div class="well">
+      <label>Volumes</label>
+      <table class="grid fixed">
+        <thead>
           <tr>
-            <td>
-              <span {{bind-attr class=":badge :state mount.stateBackground"}}>
-                {{mount.displayState}}
-              </span>
-            </td>
-            <td>
-              {{mount.path}}
-            </td>
-            <td>
-              <div class="force-wrap">
-                {{#with mount.volume as volume controller="volume"}}
-                  {{volume.displayName}}
-                {{/with}}
-              </div>
-            </td>
-            <td>
-              <i {{bind-attr class="mount.isReadWrite:ss-check:ss-delete mount.isReadWrite::text-muted"}}></i>
-            </td>
-            <td class="text-right">
-              <ul class="list-unstyled">
-              {{#each container in mount.volume.sharedWith itemController="container"}}
-                <li>
-                  {{#link-to "container" container.id}}{{container.displayName}}{{/link-to}}
-                </li>
-              {{else}}
-                <li class="text-muted">None</li>
-              {{/each}}
-              </ul>
-            </td>
+            <th width="90">State</th>
+            <th>Mount Point</th>
+            <th>Shared With</th>
+            <th class="text-right" width="80">Writable</th>
           </tr>
-        {{else}}
-          <tr>
-            <td colspan="5">
-              {{#if mountError}}
-                <div class="text-danger text-center">Error: {{mountError.message}}</div>
-              {{else}}
-                <div class="text-muted text-center">This container has no volumes.</div>
-              {{/if}}
-            </td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </div>
-</section>
+        </thead>
+        <tbody>
+          {{#each mount in mounts itemController="mount"}}
+            <tr>
+              <td>
+                <span {{bind-attr class=":badge :state mount.stateBackground"}}>
+                  {{mount.displayState}}
+                </span>
+              </td>
+              <td>
+                {{mount.path}}
+              </td>
+              <td>
+                <ul class="list-unstyled">
+                {{#each container in mount.volume.sharedWith itemController="container"}}
+                  <li>
+                    {{#link-to "container" container.id}}{{container.displayName}}{{/link-to}}
+                  </li>
+                {{else}}
+                  <li class="text-muted">No other containers</li>
+                {{/each}}
+                </ul>
+              </td>
+              <td class="text-right">
+                <i {{bind-attr class="mount.isReadWrite:ss-check:ss-delete mount.isReadWrite::text-muted"}}></i>
+              </td>
+            </tr>
+          {{else}}
+            <tr>
+              <td colspan="4">
+                {{#if mountError}}
+                  <div class="text-danger text-center">Error: {{mountError.message}}</div>
+                {{else}}
+                  <div class="text-muted text-center">This container has no volumes.</div>
+                {{/if}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </div>
+  </section>
+{{/with}}

@@ -34,15 +34,8 @@
 
   <ul class="list-circles">
     <li>
-      <i {{bind-attr class=":fa-fw stateIcon"}}></i>
+      <i {{bind-attr class="stateIcon :fa-fw"}}></i>
       {{displayState}}
-      {{#if isTransitioning}}
-        <div class="progress progress-striped active" style="height: 10px; border: 0;">
-          <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=displayProgress style=progressStyle}}>
-            <span class="sr-only">{{displayProgress}}% Complete</span>
-          </div>
-        </div>
-      {{/if}}
       {{#if showTransitioningMessage}}
         <div class="force-wrap">
           {{transitioningMessage}}

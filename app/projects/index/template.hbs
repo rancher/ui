@@ -5,14 +5,17 @@
   </h3>
 </section>
 <section>
-  <p>Rancher supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
-  <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
+  <div class="well">
+    <p>Rancher supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
+    <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
+  </div>
+
   {{#unless controllers.authenticated.project}}
     <div class="alert alert-danger"><i class="ss-alert"></i> There are no active environments.  You will need to create or activate one before you can do anything else.</div>
   {{/unless}}
 </section>
 
-<section>
+<section class="well">
   <table class="grid fixed" style="margin-bottom: 0">
     <thead>
       <tr>
@@ -26,8 +29,10 @@
     <tbody>
       {{#each p in this}}
         <tr>
-          <td {{bind-attr class="p.stateColor"}}>
-            <i {{bind-attr class="p.stateIcon"}}></i> {{p.displayState}}
+          <td>
+            <span {{bind-attr class=":badge :state p.stateBackground"}}>
+              {{p.displayState}}
+            </span>
           </td>
           <td>
             {{#link-to "project" p.id}}{{p.displayName}}{{/link-to}}
@@ -36,7 +41,7 @@
             {{#if p.description}}{{p.description}}{{else}}<span class="text-italic">No description</span>{{/if}}
           </td>
             <td>
-              {{#if p.isDefault}}<i class="ss-check"></i>{{/if}}
+              {{#if p.isDefault}}<i class="ss-check"></i>{{else}}<span class="text-muted">&ndash;</span>{{/if}}
             </td>
           <td align="right">
             {{resource-actions-menu model=p choices=p.availableActions}}

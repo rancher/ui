@@ -98,7 +98,7 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
   }.property('state'),
 
   displayIp: function() {
-    return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress') || '(No IP Address)';
+    return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress') || new Ember.Handlebars.SafeString('<span class="text-muted">None</span>');
   }.property('primaryIpAddress','primaryAssociatedIpAddress'),
 
   canDelete: function() {

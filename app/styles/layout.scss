@@ -18,7 +18,7 @@ HTML {
 BODY {
   background-color: $body-bg;
   min-height: 100%;
-  font-weight: 400;
+  font-weight: $normal-weight;
 }
 
 .authenticated, #application {
@@ -26,7 +26,7 @@ BODY {
 }
 
 B {
-  font-weight: 600;
+  font-weight: $bold-weight;
 }
 
 .farm {
@@ -69,7 +69,7 @@ B {
       A:active,
       A:visited{
         color: white;
-        font-weight: 600;
+        font-weight: $bold-weight;
       }
     }
   }
@@ -111,6 +111,10 @@ BODY.white MAIN {
 **********/
 SECTION {
   padding: 20px 20px 0 20px;
+
+  &.well {
+    margin: 20px;
+  }
 
   &.tab-section {
     padding: 20px;
@@ -173,7 +177,7 @@ ASIDE {
       display: block;
       padding: 5px 0 4px 8px;
       cursor: pointer;
-      font-weight: 600;
+      font-weight: $bold-weight;
       color: rgba(255,255,255,0.5);
       text-decoration: none;
       font-size: 14px;
@@ -222,7 +226,7 @@ ASIDE {
 UL.list-circles {
   @extend .list-unstyled;
   margin-top: 10px;
-  font-weight: 600;
+  font-weight: $bold-weight;
 
   &>LI {
     background-image: url('images/info-bubble.svg');
@@ -259,7 +263,7 @@ UL.list-circles {
 
   &.list-circles-clear > LI {
     background-image: url('images/info-bubble-clear.svg');
-    font-weight: 400;
+    font-weight: $normal-weight;
     padding-bottom: 20px;
 
     &:last-child {
@@ -273,48 +277,22 @@ UL.list-circles {
   }
 }
 
+UL.list-lines {
+  @extend .list-unstyled;
 
-/**********
-* Colors for NAV and ASIDE
-**********/
-$nav-1: #44b4a2;
-$nav-2: #f58485;
-$nav-3: #b49ac3;
-$nav-4: #66b0cb;
-$nav-5: #fabc6f;
-$nav-6: #df6490;
-$nav-7: #444;
+  &>LI {
+    margin-top: 5px;
+    border-bottom: 1px solid #e8ecf2;
+    font-size: $font-size-small;
 
-.nav-hosts {
-  border-left-color: $nav-1;
-  &.active { background-color: $nav-1; }
+    LABEL {
+      font-weight: $normal-weight;
+      color: #9da0ae;
+      display: inline-block;
+      width: 100px;
+    }
+  }
 }
-
-.nav-containers {
-  border-left-color: $nav-2;
-  &.active { background-color: $nav-2; }
-}
-
-.nav-balancing {
-  border-left-color: $nav-3;
-  &.active { background-color: $nav-3; }
-}
-
-.nav-services {
-  border-left-color: $nav-4;
-  &.active { background-color: $nav-4; }
-}
-
-.nav-registries {
-  border-left-color: $nav-4;
-  &.active { background-color: $nav-4; }
-}
-
-.nav-volumes {
-  border-left-color: $nav-5;
-  &.active { background-color: $nav-5; }
-}
-
 
 /**********
 * Misc common global things
@@ -395,7 +373,7 @@ $nav-7: #444;
   font-size: 14px;
 
   LABEL {
-    font-weight: 400;
+    font-weight: $normal-weight;
     display: block;
     /* the radio button gets clipped with no padding */
     padding-left: 2px;
@@ -412,7 +390,7 @@ $nav-7: #444;
 
 SECTION .well H5,
 .graphs LABEL {
-  font-weight: 400;
+  font-weight: $normal-weight;
   color: #da8456;
   display: block;
   margin-bottom: 5px;
@@ -582,6 +560,11 @@ ASIDE {
   .actions {
     text-align: right;
   }
+
+  .state {
+    max-width: 100%;
+    @extend .clip;
+  }
 }
 
 @media (max-width: 701px) {
@@ -684,7 +667,7 @@ ASIDE {
 .toggle-advanced {
   text-align: center;
   text-transform: uppercase;
-  font-weight: 600;
+  font-weight: $bold-weight;
   color: #868f99;
 
   A,
@@ -704,7 +687,7 @@ ASIDE {
 **********/
 .nav-boxes {
   & > LI.active > A {
-    border-color: $nav-1;
+    border-color: #44b4a2;
   }
 
   .driver {
@@ -734,7 +717,40 @@ ASIDE {
 }
 
 /**********
-* Nav boxes (chooes a host/registry driver)
+* Nav Tabs with active white
+**********/
+.nav-tabs-well {
+  UL {
+    border-bottom: 0;
+  }
+
+  LI {
+    margin-right: 6px;
+
+    A {
+      border: 0 !important;
+      background-color: #e5eaee;
+      color: #bfc9d1;
+      text-transform: uppercase;
+    }
+
+    &.active A,
+    &.active A:hover {
+      background-color: white;
+      color: #de733d;
+    }
+  }
+}
+
+.nav-well {
+  position: relative;
+  top: -1px;
+  border: 0;
+  border-top-left-radius: 0;
+}
+
+/**********
+* Collapse/expand toggle
 **********/
 .collapser {
   &:after {
@@ -751,4 +767,15 @@ ASIDE {
 .well.description {
   margin-top: 10px;
   margin-bottom: 0;
+  
+  P {
+    margin: 0;
+  }
+}
+
+SECTION.header H3 {
+  .state {
+    float: right;
+    margin-right: 10px;
+  }
 }

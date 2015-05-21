@@ -58,10 +58,12 @@ Router.map(function() {
         });
 
         this.resource('host', { path: '/:host_id' }, function() {
+          this.route('containers');
+          this.route('storage', {path: '/storage'});
         });
       });
 
-      this.resource('containers', { path: '/containers'}, function() {
+      this.resource('containers', function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
 
@@ -73,37 +75,35 @@ Router.map(function() {
       });
 
 
-      this.resource('volumes', {path: '/volumes'}, function() {
+      this.resource('volumes', function() {
         this.resource('volume', {path: '/:volume_id'}, function() {
         });
       });
 
-      this.resource('balancing', {path: '/balancing'}, function() {
-        this.resource('loadbalancers', {path: '/balancers'}, function() {
-          this.route('new', {path: '/add'});
-          this.route('index', {path: '/'});
+      this.resource('loadbalancers', {path: '/balancers'}, function() {
+        this.route('new', {path: '/add'});
+        this.route('index', {path: '/'});
 
-          this.resource('loadbalancer', {path: '/:loadbalancer_id'}, function() {
-            this.route('edit');
-            this.route('index', { path: '/monitoring'});
-            this.route('config', { path: '/config'});
-            this.route('hosts', { path: '/hosts'}, function() {
-              this.route('new', { path: '/add'});
-            });
-            this.route('targets', { path: '/targets'}, function() {
-              this.route('new', { path: '/add'});
-            });
+        this.resource('loadbalancer', {path: '/:loadbalancer_id'}, function() {
+          this.route('edit');
+          this.route('index', { path: '/monitoring'});
+          this.route('config', { path: '/config'});
+          this.route('hosts', { path: '/hosts'}, function() {
+            this.route('new', { path: '/add'});
+          });
+          this.route('targets', { path: '/targets'}, function() {
+            this.route('new', { path: '/add'});
           });
         });
+      });
 
-        this.resource('loadbalancerconfigs', {path: '/configs'}, function() {
-          this.route('new', {path: '/add'});
+      this.resource('loadbalancerconfigs', {path: '/balancer-configs'}, function() {
+        this.route('new', {path: '/add'});
+        this.route('index', {path: '/'});
+
+        this.resource('loadbalancerconfig', {path: '/:loadbalancerconfig_id'}, function() {
           this.route('index', {path: '/'});
-
-          this.resource('loadbalancerconfig', {path: '/:loadbalancerconfig_id'}, function() {
-            this.route('index', {path: '/'});
-            this.route('edit');
-          });
+          this.route('edit');
         });
       });
     });
@@ -123,6 +123,7 @@ Router.map(function() {
           this.route('edit');
 
           this.resource('service', {path: '/services/:service_id'}, function() {
+            this.route('containers');
             this.route('edit');
           });
         });

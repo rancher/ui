@@ -2,7 +2,7 @@
   {{resource-actions-menu model=model choices=model.availableActions}}
 
   <div {{bind-attr class=":pod-state stateBackground"}}><span>{{model.displayState}}</span></div>
-  <div class="pod-icon"><i {{bind-attr class=":fa-lg model.stateIcon iconColor"}}></i></div>
+  <div class="pod-icon"><i {{bind-attr class="model.stateIcon :fa-lg model.stateColor"}}></i></div>
   <div class="pod-name">
     {{#if isMachine}}
       {{model.displayName}}
@@ -15,13 +15,6 @@
       {{/if}}
     {{/if}}
   </div>
-  {{#if model.isTransitioning}}
-    <div class="progress progress-striped active">
-      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" {{bind-attr aria-valuenow=model.displayProgress style=model.progressStyle}}>
-        <span class="sr-only">{{model.displayProgress}}% Complete</span>
-      </div>
-    </div>
-  {{/if}}
 </div>
 
 {{#if isMachine}}

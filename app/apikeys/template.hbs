@@ -1,38 +1,26 @@
-<section>
-  <div class="row">
-    <div class="col-md-6">
-      <label>Endpoint</label>
-      <div class="well">
-        <a {{bind-attr href=endpointWithAuth}} target="_blank">{{endpoint}}</a>
-      </div>
-    </div>
+{{#with controllers.authenticated.project as p controller="project"}}
+  <section class="header">
+    <h3>
+      <span class="right-divider">API Keys for &quot;{{p.displayName}}&quot;</span>
+      {{#link-to "apikeys.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add API Key{{/link-to}}
+    </h3>
+  </section>
+{{/with}}
 
-    <div class="col-md-6">
-      <label>Documentation</label>
-      <div class="well">
-        <span class="text-muted">Coming Soon&trade;</span>
-      </div>
-    </div>
+<section class="well">
+  <label>Endpoint</label>
+  <div>
+    <a {{bind-attr href=endpointWithAuth}} target="_blank">{{endpoint}}</a>
   </div>
 </section>
 
-<section class="grid-header">
-  <div class="row">
-    <div class="col-md-9 col-sm-6">
-      <h3>API Keys for &quot;{{#with controllers.authenticated.project as p controller="project"}}{{p.displayName}}{{/with}}&quot; ({{length}})</h3>
-    </div>
-    <div class="col-md-3 col-sm-6 text-right">
-      <button {{action "newApikey"}} class="btn btn-primary"><i class="ss-plus"></i> Create an API key</button>
-    </div>
-  </div>
-</section>
-
-<section>
+<section class="well">
   <table class="grid fixed" style="margin-bottom: 0">
     <thead>
       <tr>
         <th width="120">State</th>
         <th>Name</th>
+        <th>Description</th>
         <th>Username</th>
         <th>Created</th>
         <th width="50">&nbsp;</th>
@@ -47,10 +35,13 @@
             </span>
           </td>
           <td>
-            {{#if key.name}}{{key.displayName}}{{else}}<span class="text-muted text-italic">No name</span>{{/if}}
+            {{#if key.description}}{{key.description}}{{else}}<span class="text-muted">None</span>{{/if}}
           </td>
           <td>
-            {{#if key.publicValue}}{{key.publicValue}}{{else}}<span class="text-muted text-italic">No public value</span>{{/if}}
+            {{#if key.name}}{{key.displayName}}{{else}}<span class="text-muted">None</span>{{/if}}
+          </td>
+          <td>
+            {{#if key.publicValue}}{{key.publicValue}}{{else}}<span class="text-muted">No public value</span>{{/if}}
           </td>
           <td>
             <div class="text-muted">{{date-calendar key.created}}</div>

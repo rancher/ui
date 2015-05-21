@@ -304,6 +304,9 @@ var Stats = Ember.Object.extend({
 
     var cpuGraph = c3.generate({
       bindto: this.get('cpuCanvas'),
+      size: {
+        height: 210,
+      },
       data: {
         type: 'area-step',
         x: 'x',
@@ -320,10 +323,10 @@ var Stats = Ember.Object.extend({
         position: 'inset',
       },
       padding: {
-        left: 40,
+        left: 50,
         right: 0,
-        top: 0,
-        bottom: 0,
+        top: 2,
+        bottom: -20,
       },
       axis: {
         x: {
@@ -352,6 +355,9 @@ var Stats = Ember.Object.extend({
 
     var memoryGraph = c3.generate({
       bindto: this.get('memoryCanvas'),
+      size: {
+        height: 210,
+      },
       data: {
         type: 'area-step',
         x: 'x',
@@ -364,10 +370,10 @@ var Stats = Ember.Object.extend({
         position: 'inset',
       },
       padding: {
-        left: 80,
+        left: 40,
         right: 0,
-        top: 0,
-        bottom: 0,
+        top: 2,
+        bottom: -20,
       },
       transition: { duration: 0 },
       tooltip: { show: false },
@@ -381,7 +387,7 @@ var Stats = Ember.Object.extend({
             bottom: 0
           },
           tick: {
-            format: function(label) { return (label > 1024 ? Math.round(label/102.4)/10 + 'GB' : label + ' MB'); }
+            format: function(label) { return Math.round(label/102.4)/10 + ' GiB'; }
           }
         },
       }

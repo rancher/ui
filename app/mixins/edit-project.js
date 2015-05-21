@@ -64,7 +64,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
 
   doneSaving: function() {
     var out = this._super();
-    this.transitionToRoute('projects');
+    this.send('goToPrevious');
     this.send('refreshProjects');
     return out;
   },

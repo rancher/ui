@@ -21,11 +21,15 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
     scaleUp: function() {
       this.incrementProperty('scale');
       return this.save();
+    },
+
+    scaleDown: function() {
+      this.decrementProperty('scale');
+      return this.save();
     }
   },
 
   availableActions: function() {
-
     var a = this.get('actions');
 
     var choices = [
@@ -41,6 +45,10 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
 
     return choices;
   }.property('actions.{activate,deactivate,update,remove,purge}'),
+
+  displayType: function() {
+    return (this.get('type').toLowerCase() === 'loadbalancerservice' ? 'Load Balancer' : 'Container');
+  }.property('type'),
 });
 
 ServiceController.reopenClass({

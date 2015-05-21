@@ -8,7 +8,7 @@ export default Ember.Component.extend({
   tooltip: Ember.computed.alias('model.displayName'),
 
   render: function (buffer) {
-    buffer.push('<i class="fa '+ this.get('model.stateIcon') + ' ' + this.get('model.stateColor') + '"></i>');
+    buffer.push('<i class="'+ this.get('model.stateIcon') + ' fa ' + this.get('model.stateColor') + '"></i>');
   },
 
   stateChanged: function() {
