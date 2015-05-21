@@ -10,20 +10,28 @@ export default Ember.Route.extend({
     var thisPage = window.location.host;
     controller.set('thisPage', thisPage);
     var endpoint = this.controllerFor('application').get('endpointHost');
+    var isDifferent = endpoint !== thisPage;
     if ( endpoint !== thisPage )
     {
       controller.set('customValue', endpoint);
     }
 
     controller.set('model', model);
+    controller.set('error', null);
     var value = model.get('value');
     if ( value )
     {
       controller.set('customValue', value);
       controller.set('customRadio', 'yes');
     }
+    else if ( isDifferent )
+    {
+      controller.set('customValue', endpoint);
+      controller.set('customRadio', 'yes');
+    }
     else
     {
+      controller.set('customValue', '');
       controller.set('customRadio', 'no');
     }
   },
