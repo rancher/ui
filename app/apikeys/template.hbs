@@ -1,7 +1,7 @@
 {{#with controllers.authenticated.project as p controller="project"}}
   <section class="header">
     <h3>
-      <span class="right-divider">API Keys for &quot;{{p.displayName}}&quot;</span>
+      <span class="right-divider">API &amp; Keys for &quot;{{p.displayName}}&quot; Environment</span>
       {{#link-to "apikeys.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add API Key{{/link-to}}
     </h3>
   </section>
@@ -35,10 +35,10 @@
             </span>
           </td>
           <td>
-            {{#if key.description}}{{key.description}}{{else}}<span class="text-muted">None</span>{{/if}}
+            {{#if key.name}}{{key.displayName}}{{else}}<span class="text-muted">None</span>{{/if}}
           </td>
           <td>
-            {{#if key.name}}{{key.displayName}}{{else}}<span class="text-muted">None</span>{{/if}}
+            {{#if key.description}}{{key.description}}{{else}}<span class="text-muted">None</span>{{/if}}
           </td>
           <td>
             {{#if key.publicValue}}{{key.publicValue}}{{else}}<span class="text-muted">No public value</span>{{/if}}

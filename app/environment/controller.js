@@ -6,10 +6,6 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
 
   init: function() {
     this._super();
-    if ( !this.get('services') )
-    {
-      this.set('services',[]);
-    }
   },
 
   actions: {

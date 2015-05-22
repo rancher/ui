@@ -5,4 +5,10 @@ export default Ember.View.extend({
     this._super();
     this.$('INPUT')[0].focus();
   },
+
+  stepDidChange: function() {
+    Ember.run.scheduleOnce('afterRender', this, function() {
+      document.body.scrollTop = document.body.scrollHeight;
+    });
+  }.observes('context.step'),
 });

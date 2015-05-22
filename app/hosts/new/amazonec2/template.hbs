@@ -29,7 +29,7 @@
         {{#if isStep1}}
           {{input type="password" id="secretKey" classNames="form-control" placeholder="Your AWS secret key" value=amazonec2Config.secretKey}}
         {{else}}
-          <div class="form-control-static text-muted text-italic">Saved</div>
+          <div class="form-control-static text-muted text-italic">Provided</div>
         {{/if}}
       </div>
     </div>
@@ -113,20 +113,26 @@
   {{/if}}
 </section>
 
-<section {{bind-attr class=":horizontal-form isGteStep4::hide"}} style="padding-top: 0">
+<section {{bind-attr class=":horizontal-form isStep4::hide"}} style="padding-top: 0">
+  <div class="text-center">
+    <i class="fa fa-circle-o-notch fa-spin"></i> Loading security group info from EC2...
+  </div>
+</section>
+
+<section {{bind-attr class=":horizontal-form isGteStep5::hide"}} style="padding-top: 0">
   <div class="container-fluid">
     <div class="over-hr" style="margin: 20px 0;">
       <span>Security Group</span>
     </div>
 
-    <div {{bind-attr class=":row isStep4:form-group"}}>
+    <div {{bind-attr class=":row isStep5:form-group"}}>
       <div class="col-sm-12 col-md-2 form-label">
         <label for="securityGroup" class="form-control-static">Security Group</label>
       </div>
       <div class="col-sm-12 col-md-8">
-        {{#if isStep4}}
+        {{#if isStep5}}
           <div class="radio"><label>
-            {{radio-button selection=whichSecurityGroup value="default"}} Default:
+            {{radio-button selection=whichSecurityGroup value="default"}} Standard:
             {{#if defaultSecurityGroup}}
               Use the existing <code>{{defaultSecurityGroupName}}</code> group
             {{else}}
@@ -142,7 +148,7 @@
               content=allSecurityGroups
               value=selectedSecurityGroup
               optionLabelPath="content.name"
-              optionValuePath="content.id"
+              optionValuePath="content.name"
             }}
 
             <p style="margin: 10px 0 0 0;">For Rancher to work correctly your security group will need to allow traffic:</p>
@@ -153,12 +159,14 @@
             <p style="margin: 0;">Machine will automatically create this group if needed, but will <b>not</b> add these rules.</p>
           {{/if}}
         {{else}}
-          <div class="form-control-static">{{amazonec2Config.securityGroup}}</div>
+          <div class="form-control-static">
+            {{amazonec2Config.securityGroup}}
+          </div>
         {{/if}}
       </div>
     </div>
   </div>
-  {{#if isStep4}}
+  {{#if isStep5}}
     <div class="footer-actions">
       <button {{action "selectSecurityGroup"}} class="btn btn-primary">Next: Set Instance options</button>
       <button {{action "cancel"}} class="btn btn-link">Cancel</button>
@@ -166,13 +174,13 @@
   {{/if}}
 </section>
 
-<section {{bind-attr class=":horizontal-form isStep5::hide"}} style="padding-top: 0">
+<section {{bind-attr class=":horizontal-form isStep6::hide"}} style="padding-top: 0">
   <div class="text-center">
     <i class="fa fa-circle-o-notch fa-spin"></i> {{#if defaultSecurityGroup}}Updating{{else}}Creating{{/if}} Security Group...
   </div>
 </section>
 
-<section {{bind-attr class=":horizontal-form isGteStep6::hide"}} style="padding-top: 0;">
+<section {{bind-attr class=":horizontal-form isGteStep7::hide"}} style="padding-top: 0;">
   <div class="container-fluid">
     <div class="over-hr" style="margin: 20px 0;">
       <span>Instance</span>

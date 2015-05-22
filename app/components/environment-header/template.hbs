@@ -1,20 +1,16 @@
-<section>
+<section class="header">
   <h3>
-    <div class="btn-group pull-right">
+    {{resource-actions-menu model=model choices=model.availableActions classNames="pull-right"}}
+    <div {{bind-attr class=":state model.stateColor"}}>
+      <i {{bind-attr class="model.stateIcon"}}></i> {{model.displayState}}
+    </div>
+    <span class="right-divider">{{#link-to "environments"}}Projects:{{/link-to}} {{model.displayName}}</span>
+    <div class="btn-group right-divider" style="margin: 0 10px 0 -5px;">
       {{#link-to "environment.index" classNames="btn btn-sm btn-default"}}<i class="ss-thumbnails"></i>{{/link-to}}
       {{#link-to "environment.graph" classNames="btn btn-sm btn-default"}}<i class="ss-share"></i>{{/link-to}}
       {{#link-to "environment.code" classNames="btn btn-sm btn-default"}}<i class="ss-file"></i>{{/link-to}}
     </div>
-
-    <span class="right-divider">{{#link-to "environments"}}Projects:{{/link-to}} {{model.displayName}}</span>
     {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-sm btn-primary right-divider-btn"}}Add Service{{/link-to}}
     {{#link-to "service.new-balancer" (query-params environmentId=model.id) classNames="btn btn-sm btn-primary right-divider-btn"}}Add Balancer{{/link-to}}
-    {{#if model.canActivate}}
-      <button class="btn btn-sm btn-primary right-divider-btn" {{action "activateServices" target=env}}><i class="ss-up"></i> Start Services</button>
-    {{/if}}
-    {{#if model.canDeactivate}}
-      <button class="btn btn-sm btn-danger right-divider-btn" {{action "deactivateServices" target=env}}><i class="ss-down"></i> Stop Services</button>
-    {{/if}}
-    <button class="btn btn-sm btn-default right-divider-btn" {{action "exportConfig" target=env}}><i class="ss-download"></i> Export Config</button>
   </h3>
 </section>
