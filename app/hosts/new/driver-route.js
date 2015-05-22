@@ -19,8 +19,8 @@ export default Ember.Route.extend({
       return store.find('machine', params.machineId).then((machine) => {
         if ( machine.get('driver') === this.get('driverName') )
         {
-          var copy = machine.serializeForNew();
-          return store.createRecord(copy);
+          var copy = machine.cloneForNew();
+          return copy;
         }
         else
         {

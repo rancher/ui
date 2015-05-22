@@ -194,6 +194,15 @@ export function initialize(/* container, application */) {
       return errors;
     },
 
+    cloneForNew: function() {
+      var copy = this.clone();
+      delete copy.id;
+      delete copy.actions;
+      delete copy.links;
+      delete copy.uuid;
+      return copy;
+    },
+
     serializeForNew: function() {
       var copy = this.serialize();
       delete copy.id;

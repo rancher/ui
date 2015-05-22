@@ -203,7 +203,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       {
         this.selectDefaultProject(this.get('controller.projects'), this.get('controller'));
       }
-      this.transitionTo(route||'index');
+      this.transitionTo(route||'authenticated.index');
     },
 
     // Raw message from the WebSocket

@@ -52,16 +52,19 @@ export default Ember.ObjectController.extend(NewHost, {
   isStep3: Ember.computed.equal('step',3),
   isStep4: Ember.computed.equal('step',4),
   isStep5: Ember.computed.equal('step',5),
-  isStep6: Ember.computed.equal('step',5),
+  isStep6: Ember.computed.equal('step',6),
+  isStep7: Ember.computed.equal('step',7),
   isGteStep3: Ember.computed.gte('step',3),
   isGteStep4: Ember.computed.gte('step',4),
   isGteStep5: Ember.computed.gte('step',5),
   isGteStep6: Ember.computed.gte('step',6),
+  isGteStep7: Ember.computed.gte('step',7),
 
   actions: {
     awsLogin: function() {
       var self = this;
-      this.set('step', 2);
+      this.set('errors',null);
+      this.set('step',2);
 
       var ec2 = new AWS.EC2({
         accessKeyId: this.get('amazonec2Config.accessKey'),
@@ -74,7 +77,7 @@ export default Ember.ObjectController.extend(NewHost, {
       ec2.describeRegions({}, (err, data) => {
         if ( err )
         {
-          this.set('errors', [err]);
+          done(err);
           return;
         }
 
@@ -123,6 +126,7 @@ export default Ember.ObjectController.extend(NewHost, {
           var errors = self.get('errors')||[];
           errors.pushObject(err);
           self.set('errors', errors);
+          self.set('step', 1);
           return;
         }
 
@@ -132,6 +136,8 @@ export default Ember.ObjectController.extend(NewHost, {
     },
 
     selectSubnet: function() {
+      this.set('errors',null);
+
       if ( !this.get('selectedZone') )
       {
         this.set('errors', ['Select an Availability Zone']);
@@ -144,8 +150,17 @@ export default Ember.ObjectController.extend(NewHost, {
         return;
       }
 
+      this.set('step', 4);
+
       var ec2 = this.get('clients').get(this.get('amazonec2Config.region'));
       ec2.describeSecurityGroups({}, (err, data) => {
+        if ( err )
+        {
+          this.set('errors',[err]);
+          this.set('step', 3);
+          return;
+        }
+
         var groups = [];
         var defaultGroup = null;
 
@@ -171,24 +186,26 @@ export default Ember.ObjectController.extend(NewHost, {
           }
         });
 
-        this.set('step', 4);
+        this.set('step', 5);
         this.set('allSecurityGroups', groups);
         this.set('defaultSecurityGroup', defaultGroup);
       });
     },
 
     selectSecurityGroup: function() {
+      this.set('errors',null);
+
       var self = this;
       var ec2 = this.get('clients').get(this.get('amazonec2Config.region'));
 
       if ( this.get('isCustomSecurityGroup') )
       {
-        this.set('amazonec2Config.securityGroup', this.get('selectSecurityGroup'));
+        this.set('amazonec2Config.securityGroup', this.get('selectedSecurityGroup'));
         done();
       }
       else
       {
-        this.set('step', 5);
+        this.set('step', 6);
         this.set('amazonec2Config.securityGroup', this.get('defaultSecurityGroupName'));
         var group = this.get('defaultSecurityGroup');
         if ( group )
@@ -244,10 +261,11 @@ export default Ember.ObjectController.extend(NewHost, {
         if ( err )
         {
           this.set('errors', [err]);
+          self.set('step', 5);
         }
         else
         {
-          self.set('step', 6);
+          self.set('step', 7);
         }
       }
     },
@@ -286,14 +304,14 @@ export default Ember.ObjectController.extend(NewHost, {
   }.property('amazonec2Config.{region,zone}'),
 
   zoneChoices: function() {
-    return this.get('allSubnets').map((subnet) => {return subnet.get('zone');}).sort().uniq();
+    return (this.get('allSubnets')||[]).map((subnet) => {return subnet.get('zone');}).sort().uniq();
   }.property('allSubnets.@each.{zone}'),
 
   subnetChoices: function() {
     var out = [];
     var seenVpcs = [];
 
-    this.get('allSubnets').filterProperty('zone', this.get('selectedZone')).forEach((subnet) => {
+    (this.get('allSubnets')||[]).filterProperty('zone', this.get('selectedZone')).forEach((subnet) => {
       var vpcId = subnet.get('vpcId');
       var subnetId = subnet.get('subnetId');
 
@@ -354,7 +372,7 @@ export default Ember.ObjectController.extend(NewHost, {
   }.property('amazonec2Config.{subnetId,vpcId}'),
 
   subnetById: function(id) {
-    return this.get('allSubnets').filterProperty('subnetId',id)[0];
+    return (this.get('allSubnets')||[]).filterProperty('subnetId',id)[0];
   },
 
   initFields: function() {
