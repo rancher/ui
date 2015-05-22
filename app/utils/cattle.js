@@ -150,6 +150,12 @@ var NewOrEditMixin = Ember.Mixin.create({
         str += ' (' + err.get('code') + ')';
       }
 
+      switch ( err.get('code') )
+      {
+        case 'NotUnique':
+          str += ' is not unique'; break;
+      }
+
       this.set('errors', [str]);
     },
 

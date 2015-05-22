@@ -32,16 +32,20 @@
           </li>
         {{/if}}
 
-        <li role="presentation" class="dropdown-header">
-          SETTINGS
-        </li>
-
-        <li role="presentation">
-          {{#link-to "projects" role="menuitem" tabindex="-1"}}Manage Environments{{/link-to}}
+        <li role="presentation" class="dropdown-header text-uppercase">
+          Settings
         </li>
 
         <li role="presentation">
           {{#link-to "apikeys" role="menuitem" tabindex="-1"}}API &amp; Keys{{/link-to}}
+        </li>
+
+        <li role="presentation">
+          {{#link-to "projects" role="menuitem" tabindex="-1"}}Environments{{/link-to}}
+        </li>
+
+        <li role="presentation">
+          {{#link-to "registries" role="menuitem" tabindex="-1"}}Registries{{/link-to}}
         </li>
 
         {{#if app.isAuthenticationAdmin}}
@@ -52,6 +56,9 @@
           {{/if}}
         {{/if}}
 
+        <li role="presentation" class="dropdown-header text-uppercase">
+          Administration
+        </li>
         {{#if app.isAuthenticationAdmin}}
           <li role="presentation">
             {{#link-to "settings.auth" role="menuitem" tabindex="-1"}}Access Control{{/link-to}}
@@ -82,11 +89,11 @@
         </button>
         <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
           {{#if projectChoices.length}}
-            <li role="presentation" class="dropdown-header">
+            <li role="presentation" class="dropdown-header text-uppercase">
               {{#if app.authenticationEnabled}}
-                Your Environment:
+                Your Environments
               {{else}}
-                All Environments:
+                All Environments
               {{/if}}
             </li>
             {{#each p in projectChoices itemController="project"}}
@@ -103,7 +110,7 @@
             <li role="presentation" class="divider"></li>
           {{/if}}
           {{#if projectIsMissing}}
-            <li role="presentation" class="dropdown-header">Not Your Project:</li>
+            <li role="presentation" class="dropdown-header text-uppercase">Selected Environment:</li>
             {{#with project as p controller="project"}}
               <li {{bind-attr class="p.active:disabled p.active:selected"}}>
                 <a {{action "switchProject" p.id}} class="clip">
