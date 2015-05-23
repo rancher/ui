@@ -7,6 +7,7 @@ export default Ember.Object.extend(Ember.Evented, {
   connected: false,
   tries: 0,
   disconnectedAt: null,
+  disconnectCb: null,
 
   connect: function() {
     var self = this;
@@ -69,15 +70,36 @@ export default Ember.Object.extend(Ember.Evented, {
         setTimeout(self.connect.bind(self), delay);
       }
 
-      self.trigger('disconnected', self.get('tries'));
+      if ( self.get('disconnectCb') )
+      {
+        self.get('disconnectCb')();
+      }
+      else
+      {
+        self.trigger('disconnected', self.get('tries'));
+      }
     };
   },
 
-  disconnect: function() {
+  disconnect: function(cb) {
     var self = this;
     //console.log('Socket disconnect');
+    if ( !this.get('connected') )
+    {
+      if ( cb )
+      {
+        cb();
+      }
+      return;
+    }
+
     this.set('connected', false);
     this.set('autoReconnect',false);
+    if ( typeof cb === 'function' )
+    {
+      this.set('disconnectCb', cb);
+    }
+
     var socket = this.get('socket');
     if ( socket )
     {

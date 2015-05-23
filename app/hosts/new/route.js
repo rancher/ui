@@ -15,7 +15,7 @@ export default Ember.Route.extend({
         }
         else
         {
-          this.transitionTo('settings.host');
+          this.transitionTo('settings.host', {queryParams: {backToAdd: true}});
         }
       });
     }

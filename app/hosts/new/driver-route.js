@@ -44,6 +44,8 @@ export default Ember.Route.extend({
     if (isExiting)
     {
       controller.set('machineId', null);
+      controller.set('prefix', null);
+      controller.set('count', 1);
     }
   },
 

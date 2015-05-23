@@ -10,6 +10,8 @@ function isPublic(name) {
 }
 
 export default Ember.ObjectController.extend({
+  queryParams: ['backToAdd'],
+  backToAdd: false,
   thisPage: '', // Set by route
 
   errors: null,
@@ -55,7 +57,14 @@ export default Ember.ObjectController.extend({
 
       this.set('saving', true);
       model.save().then(() => {
-        this.send('goToPrevious');
+        if ( this.get('backToAdd') )
+        {
+          this.transitionToRoute('hosts.new');
+        }
+        else
+        {
+          this.send('goToPrevious');
+        }
       }).catch((err) => {
         this.set('errors', [err]);
       }).finally(() => {
