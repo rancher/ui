@@ -21,8 +21,16 @@ export default Ember.Route.extend({
     var value = model.get('value');
     if ( value )
     {
-      controller.set('customValue', value);
-      controller.set('customRadio', 'yes');
+      if ( value === thisPage )
+      {
+        controller.set('customValue', '');
+        controller.set('customRadio', 'no');
+      }
+      else
+      {
+        controller.set('customValue', value);
+        controller.set('customRadio', 'yes');
+      }
     }
     else if ( isDifferent )
     {
@@ -35,4 +43,11 @@ export default Ember.Route.extend({
       controller.set('customRadio', 'no');
     }
   },
+
+  resetController: function (controller, isExiting/*, transition*/) {
+    if (isExiting)
+    {
+      controller.set('backToAdd', false);
+    }
+  }
 });

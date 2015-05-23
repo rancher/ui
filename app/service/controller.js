@@ -15,7 +15,7 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
     },
 
     edit: function() {
-      this.transitionToRoute('service.edit', this.get('id'));
+      this.transitionToRoute('service.edit', this.get('environmentId'), this.get('id'));
     },
 
     scaleUp: function() {

@@ -196,14 +196,15 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       });
     },
 
-    switchProject: function(projectId,route) {
+    switchProject: function(projectId) {
+      this.intermediateTransitionTo('authenticated');
       this.get('session').set(C.SESSION.PROJECT, projectId);
       this.get('store').reset();
       if ( !projectId )
       {
         this.selectDefaultProject(this.get('controller.projects'), this.get('controller'));
       }
-      this.transitionTo(route||'authenticated.index');
+      this.refresh();
     },
 
     // Raw message from the WebSocket
@@ -346,6 +347,12 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       }
 
       this._includeChanged('registry', 'credentials', key, change.data.resource);
+    },
+
+    loadBalancerServiceChanged: function(change) {
+      var service = change.data.resource;
+      this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
+      service.importLink('consumedservices');
     },
 
     serviceChanged: function(change) {
