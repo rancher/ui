@@ -323,7 +323,7 @@ var Stats = Ember.Object.extend({
         position: 'inset',
       },
       padding: {
-        left: 50,
+        left: 40,
         right: 0,
         top: 2,
         bottom: -20,
@@ -370,7 +370,6 @@ var Stats = Ember.Object.extend({
         position: 'inset',
       },
       padding: {
-        left: 40,
         right: 0,
         top: 2,
         bottom: -20,
@@ -387,7 +386,16 @@ var Stats = Ember.Object.extend({
             bottom: 0
           },
           tick: {
-            format: function(label) { return Math.round(label/102.4)/10 + ' GiB'; }
+            format: function(label) { 
+              if ( label> 10240 ) 
+              {
+                return Math.round(label/1024) + 'GiB';
+              }
+              else
+              {
+                return Math.ceil(label/102.4)/10 + 'GiB';
+              }
+            }
           }
         },
       }

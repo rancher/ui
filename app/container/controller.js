@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
+import C from 'ui/utils/constants';
 
 var ContainerController = Cattle.TransitioningResourceController.extend({
   mountError: null,
@@ -73,6 +74,8 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
 
   availableActions: function() {
     var a = this.get('actions');
+    var isSystem = this.get('systemContainer') !== null;
+    var isService = Object.keys(this.get('labels')||{}).indexOf(C.LABEL.SERVICE_NAME) >= 0;
 
     var choices = [
       { label: 'Restart',       icon: 'ss-refresh',   action: 'restart',      enabled: !!a.restart },
@@ -86,12 +89,12 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
       { label: 'View Logs',     icon: 'ss-file',             action: 'logs',         enabled: !!a.logs },
       { divider: true },
       { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true },
-      { label: 'Clone',         icon: 'ss-copier',           action: 'clone',        enabled: true },
+      { label: 'Clone',         icon: 'ss-copier',           action: 'clone',        enabled: !isSystem && !isService },
       { label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: !!a.update },
     ];
 
     return choices;
-  }.property('actions.{restart,start,stop,restore,purge,execute,logs,update}','canDelete'),
+  }.property('actions.{restart,start,stop,restore,purge,execute,logs,update}','canDelete','systemContainer','labels'),
 
   isOn: function() {
     return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;
