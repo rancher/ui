@@ -5,6 +5,12 @@ var RANCHER_TAG = 'rancher-ui';
 var RANCHER_GROUP = 'rancher-machine';
 var RANCHER_INGRESS_RULES = [
   {
+    FromPort: 22,
+    ToPort: 22,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'tcp'
+  },
+  {
     FromPort: 9345,
     ToPort: 9346,
     CidrIp: '0.0.0.0/0',
@@ -280,16 +286,18 @@ export default Ember.ObjectController.extend(NewHost, {
         config.setProperties({
           region: val.substr(0, val.length - 1),
           zone:   val.substr(val.length - 1),
-          vpcId:  null,
-          subnetId:  null,
         });
-      }
-      else
-      {
-        config.setProperties({
-          region: null,
-          zone:   null,
-        });
+
+        var selectedSubnet = this.get('selectedSubnet');
+        if ( this.get('subnetChoices').filterProperty('value', selectedSubnet).length === 0 )
+        {
+          config.setProperties({
+            region: val.substr(0, val.length - 1),
+            zone:   val.substr(val.length - 1),
+            vpcId:  null,
+            subnetId:  null,
+          });
+        }
       }
     }
 
@@ -379,6 +387,21 @@ export default Ember.ObjectController.extend(NewHost, {
     this._super();
     this.set('clients', Ember.Object.create());
     this.set('allSubnets', []);
+    var cur = this.get('amazonec2Config.securityGroup');
+    if ( cur === RANCHER_GROUP )
+    {
+      this.setProperties({
+        whichSecurityGroup: 'default',
+        selectedSecurityGroup: null,
+      });
+    }
+    else
+    {
+      this.setProperties({
+        whichSecurityGroup: 'custom',
+        selectedSecurityGroup: cur,
+      });
+    }
   },
 
   validate: function() {

@@ -7,9 +7,6 @@
     </div>
 
     <div {{bind-attr class=":row isStep1:form-group"}}>
-      {{#if isStep1}}
-        <p class="help-text text-center">Paste in an AWS key pair here.  We'll use this key to create your new Instances.</p>
-      {{/if}}
       <div class="col-sm-12 col-md-2 form-label">
         <label for="accessKey" class="form-control-static">Access Key</label>
       </div>
@@ -30,6 +27,9 @@
           {{input type="password" id="secretKey" classNames="form-control" placeholder="Your AWS secret key" value=amazonec2Config.secretKey}}
         {{else}}
           <div class="form-control-static text-muted text-italic">Provided</div>
+        {{/if}}
+        {{#if isStep1}}
+          <p class="help-block">Paste in your AWS key pair here.  We'll use this key to create your new Instances.</p>
         {{/if}}
       </div>
     </div>
@@ -153,6 +153,7 @@
 
             <p style="margin: 10px 0 0 0;">For Rancher to work correctly your security group will need to allow traffic:</p>
             <ul>
+              <li>From the rancher server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span></li>
               <li>From the internet to <code>TCP</code> ports <code>9345</code> and <code>9346</code> <span class="text-muted">(for UI hosts stats/graphs)</span></li>
               <li>From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
             </ul>

@@ -2,6 +2,12 @@ import Cattle from 'ui/utils/cattle';
 import DownloadMachineConfig from 'ui/mixins/download-machine-config';
 
 var MachineController = Cattle.TransitioningResourceController.extend(DownloadMachineConfig,{
+  actions: {
+    clone: function() {
+      this.transitionToRoute('hosts.new.'+this.get('driver'), {queryParams: {machineId: this.get('id')}});
+    },
+  },
+
   availableActions: function() {
     var a = this.get('actions')||{};
 
@@ -18,7 +24,7 @@ var MachineController = Cattle.TransitioningResourceController.extend(DownloadMa
     out.push({ label: 'View in API',   icon: '',           action: 'goToApi',      enabled: true});
 
     return out;
-  }.property('actions.remove'),
+  }.property('actions.remove', 'links.config'),
 });
 
 MachineController.reopenClass({

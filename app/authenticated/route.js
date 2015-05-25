@@ -31,17 +31,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       // Return the list of projects as the model
       return this.findUserProjects();
     }).catch((err) => {
-      if ( err.status === 401 )
+      if ( [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
       {
-        if ( isAuthEnabled )
-        {
-          this.send('logout',transition,true);
-        }
-        else
-        {
-          this.send('error',err);
-        }
+        this.send('logout',transition,true);
+        return;
       }
+
+      this.send('error',err);
     });
   },
 

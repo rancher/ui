@@ -69,5 +69,9 @@ export default {
     ESCAPE: 27,
     CR: 13,
     LF: 10,
-  }
+  },
+
+  LABEL: {
+    SERVICE_NAME: 'io.rancher.service.name',
+  },
 };

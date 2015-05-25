@@ -183,9 +183,10 @@ export function initialize(/* container, application */) {
           if ( test.length )
           {
             var regex = new RegExp('('+ test.join('|') + ')');
-            if ( regex.test(val) )
+            var match = val.match(regex);
+            if ( match )
             {
-              errors.push('key' + ' contains invalid characters');
+              errors.push(key + " contains invalid character: '" + match[1] + '"');
             }
           }
         }
