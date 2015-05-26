@@ -71,6 +71,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   selectDefaultProject: function(active, controller) {
+    var self = this;
     var session = this.get('session');
 
     // Try the project ID in the session
@@ -129,7 +130,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       }
     }
 
-    var self = this;
     function fail() {
       // Then cry
       select(null);

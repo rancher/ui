@@ -1,6 +1,4 @@
 import Ember from 'ember';
-import config from 'torii/configuration';
-import bootstrap from 'torii/bootstrap/torii';
 import C from 'ui/utils/constants';
 
 export function initialize(container, application) {
@@ -21,7 +19,8 @@ export function initialize(container, application) {
     var token = body.data[0];
 
     application.set('authenticationEnabled', token.security);
-    configureTorii(token.clientId);
+    application.set('githubClientId', token.clientId);
+    application.set('githubHostname', token.hostname );
 
     return Ember.RSVP.resolve(undefined,'API supports authentication');
   })
@@ -34,16 +33,6 @@ export function initialize(container, application) {
   .finally(function() {
     application.advanceReadiness();
   });
-
-  function configureTorii(clientId) {
-    config.providers['github-oauth2'] = {
-      apiKey: clientId,
-      scope: 'read:org'
-    };
-
-    bootstrap(container);
-    application.inject('controller',  'torii',  'torii:main');
-  }
 }
 
 export default {

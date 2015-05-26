@@ -1,8 +1,14 @@
 import Ember from "ember";
 
 export default Ember.Controller.extend({
+  // GitHub auth params
+  queryParams: ['error_description','state','code','isTest'],
+
   error: null,
-  requiresAuthentication: null,
+  error_description: null,
+  state: null,
+  code: null,
+  isTest: null,
 
   absoluteEndpoint: function() {
     var url = this.get('app.endpoint');

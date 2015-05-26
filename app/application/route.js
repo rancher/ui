@@ -51,11 +51,15 @@ export default Ember.Route.extend({
       this.goToPrevious();
     },
 
-    logout: function(transition,timedOut) {
+    logout: function(transition, timedOut, errorMsg) {
       var session = this.get('session');
       session.clear();
-      session.set(C.LOGGED_IN, false);
-      this.set('app.afterLoginTransition', transition);
+      session.set(C.SESSION.LOGGED_IN, false);
+      if ( transition )
+      {
+        session.set(C.SESSION.BACK_TO, window.location.href);
+      }
+
       var params = {queryParams: {}};
 
       if ( timedOut )
@@ -63,7 +67,80 @@ export default Ember.Route.extend({
         params.queryParams.timedOut = true;
       }
 
+      if ( errorMsg )
+      {
+        params.queryParams.errorMsg = errorMsg;
+      }
+
       this.transitionTo('login', params);
     }
   },
+
+  model: function(params, transition) {
+    var github = this.get('github');
+    var session = this.get('session');
+    var stateMsg = 'Authorization state did not match, please try again.';
+
+    if ( params.isTest )
+    {
+      if ( github.stateMatches(params.state) )
+      {
+        return reply(params.error_description, params.code);
+      }
+      else
+      {
+        return reply(stateMsg);
+      }
+    }
+    else if ( params.code )
+    {
+      if ( github.stateMatches(params.state) )
+      {
+        return github.login(params.code).then(() => {
+          var backTo = session.get(C.SESSION.BACK_TO);
+          session.set(C.SESSION.BACK_TO, undefined);
+
+          if ( backTo )
+          {
+            window.location.href = backTo;
+          }
+          else
+          {
+            this.transitionTo('index');
+          }
+        }).catch((err) => {
+          this.controllerFor('application').setProperties({
+            state: null,
+            code: null,
+          });
+          transition.send('logout', null, null, err.message);
+        });
+      }
+      else
+      {
+        var obj = {message: stateMsg, code: 'StateMismatch'};
+        this.controllerFor('application').set('error', obj);
+        return Ember.RSVP.reject(obj);
+      }
+    }
+
+    function reply(err,code) {
+      try {
+        window.opener.window.onGithubTest(err,code);
+        setTimeout(function() {
+          window.close();
+        },250);
+        return new Ember.RSVP.promise();
+      }
+      catch(e) {
+        window.close();
+      }
+    }
+  },
+
+  setupController: function(controller/*, model*/) {
+    controller.set('code',null);
+    controller.set('state',null);
+    controller.set('error_description',null);
+  }
 });

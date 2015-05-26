@@ -186,7 +186,7 @@ export function initialize(/* container, application */) {
             var match = val.match(regex);
             if ( match )
             {
-              errors.push(key + " contains invalid character: '" + match[1] + '"');
+              errors.push(key + " contains invalid character: '" + match[1] + "'");
             }
           }
         }

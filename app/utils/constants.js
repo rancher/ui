@@ -1,8 +1,7 @@
 export default {
-  LOGGED_IN: 'isLoggedIn',
-  ACCESS_WARNING: 'accessWarning',
-
   SESSION: {
+    LOGGED_IN: 'isLoggedIn',
+    BACK_TO: 'backTo',
     TOKEN: 'jwt',
     USER_ID: 'user',
     ACCOUNT_ID: 'accountId',
@@ -14,6 +13,7 @@ export default {
   },
 
   PREFS: {
+    ACCESS_WARNING: 'accessWarning',
     PROJECT_DEFAULT: 'defaultProjectId',
   },
 
@@ -39,8 +39,10 @@ export default {
 
   GITHUB: {
     URL: 'https://www.github.com/',
-    API_URL: 'https://api.github.com/',
+    DEFAULT_HOSTNAME: 'github.com',
+    AUTH_PATH: '/login/oauth/authorize',
     PROXY_URL: '/github/',
+    SCOPE: 'read:org',
   },
 
   PROJECT: {

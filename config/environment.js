@@ -21,11 +21,6 @@ module.exports = function(environment) {
         enabled: false
     },
 
-    torii: {
-      // This is configured at runtime, but torii complains
-      // on startup if there's no entry in the environment
-    },
-
     contentSecurityPolicy: {
       // Allow the occasional <elem style="blah">...
       'style-src':  "'self' releases.rancher.com storage.googleapis.com fonts.googleapis.com 'unsafe-inline'",
