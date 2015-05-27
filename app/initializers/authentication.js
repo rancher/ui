@@ -4,6 +4,7 @@ import C from 'ui/utils/constants';
 export function initialize(container, application) {
   application.deferReadiness();
   var store = container.lookup('store:main');
+  var github = container.lookup('github:main');
   var headers = {};
   headers[C.HEADER.AUTH] = undefined; // Explicitly not send auth
   headers[C.HEADER.PROJECT] = undefined; // Explicitly not send project
@@ -13,7 +14,7 @@ export function initialize(container, application) {
     url: 'token',
     headers: headers
   })
-  .then(function(obj) {
+  .then((obj) => {
     // If we get a good response back, the API supports authentication
     var body = JSON.parse(obj.xhr.responseText);
     var token = body.data[0];
@@ -22,9 +23,14 @@ export function initialize(container, application) {
     application.set('githubClientId', token.clientId);
     application.set('githubHostname', token.hostname );
 
+    if ( !token.security )
+    {
+      github.clearSessionKeys();
+    }
+
     return Ember.RSVP.resolve(undefined,'API supports authentication');
   })
-  .catch(function(obj) {
+  .catch((obj) => {
     // Otherwise this API is too old to do auth.
     application.set('authenticationEnabled', false);
     application.set('initError', obj);
@@ -37,6 +43,6 @@ export function initialize(container, application) {
 
 export default {
   name: 'authentication',
-  after: 'store',
+  after: ['store','github'],
   initialize: initialize
 };
