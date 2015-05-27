@@ -246,6 +246,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // Network
   // ----------------------------------
   networkChoices: null,
+  isManagedNetwork: Ember.computed.equal('instance.networkMode','managed'),
   initNetwork: function() {
     var choices = this.get('store').getById('schema','container').get('resourceFields.networkMode').options.sort();
     this.set('networkChoices',choices.map((option) => {
