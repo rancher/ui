@@ -1,8 +1,7 @@
-import AuthenticatedRouteMixin from 'ui/mixins/authenticated-route';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
-export default Ember.Route.extend(AuthenticatedRouteMixin,{
+export default Ember.Route.extend({
   model: function() {
 
     var headers = {};
@@ -14,14 +13,17 @@ export default Ember.Route.extend(AuthenticatedRouteMixin,{
   },
 
   setupController: function(controller, model) {
-    controller.set('model', model.clone());
-    controller.set('originalModel', model);
-    controller.set('confirmDisable',false);
-    controller.set('saving',false);
-    controller.set('saved',true);
-    controller.set('testing',false);
-    controller.set('wasShowing',false);
-    controller.set('organizations', this.get('session.orgs')||[]);
-    controller.set('error',null);
+    controller.setProperties({
+      model: model.clone(),
+      originalModel: model,
+      confirmDisable: false,
+      saving: false,
+      saved: true,
+      testing: false,
+      wasShowing: false,
+      organizations: this.get('session.orgs')||[],
+      error: null,
+      isEnterprise: (model.get('hostname') ? true : false),
+    });
   }
 });

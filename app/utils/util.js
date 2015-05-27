@@ -61,6 +61,14 @@ export function addQueryParam(url, key, val) {
   return url + (url.indexOf('?') >= 0 ? '&' : '?') + key + '=' + encodeURIComponent(val);
 }
 
+export function addQueryParams(url, params) {
+  Object.keys(params).forEach(function(key) {
+    url = addQueryParam(url, key, params[key]);
+  });
+
+  return url;
+}
+
 export function absoluteUrl(url) {
   var a = document.createElement('a');
   a.href = url;
@@ -128,6 +136,7 @@ var Util = {
   popupWindowOptions: popupWindowOptions,
   escapeHtml: escapeHtml,
   addQueryParam: addQueryParam,
+  addQueryParams: addQueryParams,
   absoluteUrl: absoluteUrl,
   addAuthorization: addAuthorization,
   ucFirst: ucFirst,

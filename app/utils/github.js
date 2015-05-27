@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
+import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
 
 export default Ember.Object.extend({
   find: function(type, id) {
@@ -75,20 +77,92 @@ export default Ember.Object.extend({
       headers[C.HEADER.AUTH] = C.HEADER.AUTH_TYPE + ' ' + authValue;
     }
 
-    return new Ember.RSVP.Promise(function(resolve,reject) {
-      Ember.$.ajax({url: url, headers: headers, dataType: 'json'}).then(success,fail);
-
-      function success(body, textStatus, xhr) {
-        Ember.run(function() {
-          resolve(body,'AJAX Reponse: '+url + '(' + xhr.status + ')');
-        });
-      }
-
-      function fail(xhr, textStatus, err) {
-        Ember.run(function() {
-          reject({xhr: xhr, textStatus: textStatus, err: err}, 'AJAX Error:' + url + '(' + xhr.status + ')');
-        });
-      }
-    },'Raw AJAX Request: '+url);
+    return ajaxPromise({url: url, headers: headers, dataType: 'json'}, true);
   },
+
+  generateState: function() {
+    var state = Math.random()+'';
+    this.get('session').set('githubState', state);
+    return state;
+  },
+
+  stateMatches: function(actual) {
+    var expected = this.get('session.githubState');
+    return actual && expected === actual;
+  },
+
+  getAuthorizeUrl: function(test) {
+    var redirect = this.get('session').get(C.SESSION.BACK_TO) || window.location.href;
+
+    if ( test )
+    {
+      redirect = Util.addQueryParam(redirect, 'isTest', 1);
+    }
+
+    var url = Util.addQueryParams('https://' + (this.get('app.githubHostname') || C.GITHUB.DEFAULT_HOSTNAME) + C.GITHUB.AUTH_PATH, {
+      client_id: this.get('app.githubClientId'),
+      state: this.generateState(),
+      scope: C.GITHUB.SCOPE,
+      redirect_uri: redirect
+    });
+
+    return url;
+  },
+
+  authorizeRedirect: function() {
+    window.location.href = this.getAuthorizeUrl();
+  },
+
+  authorizeTest: function(cb) {
+    var responded = false;
+    window.onGithubTest = function(err,code) {
+      if ( !responded )
+      {
+        responded = true;
+        cb(err,code);
+      }
+    };
+
+    var popup = window.open(this.getAuthorizeUrl(true), 'rancherAuth', Util.popupWindowOptions());
+    popup.onBeforeUnload = function() {
+      if( !responded )
+      {
+        responded = true;
+        cb('Github access was not authorized');
+      }
+    };
+  },
+
+  login: function(code) {
+    var session = this.get('session');
+
+    var headers = {};
+    headers[C.HEADER.AUTH] = undefined; // Explictly not send auth
+    headers[C.HEADER.PROJECT] = undefined; // Explictly not send project
+
+    return this.get('store').rawRequest({
+      url: 'token',
+      method: 'POST',
+      headers: headers,
+      data: {
+        code: code
+      },
+    }).then(function(res) {
+      var auth = JSON.parse(res.xhr.responseText);
+      var interesting = {};
+      C.TOKEN_TO_SESSION_KEYS.forEach((key) => {
+        if ( typeof auth[key] !== 'undefined' )
+        {
+          interesting[key] = auth[key];
+        }
+      });
+
+      interesting[C.SESSION.LOGGED_IN] = true;
+      session.setProperties(interesting);
+      return res;
+    }).catch((res) => {
+      var err = JSON.parse(res.xhr.responseText);
+      return Ember.RSVP.reject(err);
+    });
+  }
 });

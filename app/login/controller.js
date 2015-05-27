@@ -1,9 +1,7 @@
 import Ember from 'ember';
-import util from 'ui/utils/util';
-import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
-  queryParams: ['timedOut'],
+  queryParams: ['timedOut','errorMsg'],
 
   timedOut: false,
   waiting: false,
@@ -36,70 +34,13 @@ export default Ember.Controller.extend({
 
   actions: {
     authenticate: function() {
-      var self = this;
-      var session = self.get('session');
-      var app = self.get('app');
+      this.set('timedOut', false);
+      this.set('waiting', true);
+      this.set('errorMsg', null);
 
-      self.set('timedOut', false);
-      self.set('waiting', true);
-      self.set('errorMsg', null);
-
-      self.get('torii').open('github-oauth2',{windowOptions: util.popupWindowOptions()}).then(function(github){
-        var headers = {};
-        headers[C.HEADER.AUTH] = undefined; // Explictly not send auth
-        headers[C.HEADER.PROJECT] = undefined; // Explictly not send project
-
-        return self.get('store').rawRequest({
-          url: 'token',
-          method: 'POST',
-          headers: headers,
-          data: {
-            code: github.authorizationCode,
-          },
-        }).then(function(res) {
-          var auth = JSON.parse(res.xhr.responseText);
-          var interesting = {};
-          C.TOKEN_TO_SESSION_KEYS.forEach((key) => {
-            if ( typeof auth[key] !== 'undefined' )
-            {
-              interesting[key] = auth[key];
-            }
-          });
-          session.setProperties(interesting);
-          session.set(C.LOGGED_IN, true);
-          var transition = app.get('afterLoginTransition');
-          if ( transition )
-          {
-            app.set('afterLoginTransition', null);
-            transition.retry();
-          }
-          else
-          {
-            self.transitionToRoute('index');
-          }
-        });
-      })
-      .catch(function(res) {
-        if ( res.xhr && res.xhr.responseText )
-        {
-          var body = JSON.parse(res.xhr.responseText);
-          self.set('errorMsg', body.message);
-        }
-        else if ( res.err )
-        {
-          self.set('errorMsg', res.err);
-        }
-        else if ( res.message )
-        {
-          self.set('errorMsg', res.message);
-        }
-        else
-        {
-          self.set('errorMsg', res);
-        }
-      }).finally(function() {
-        self.set('waiting', false);
-      });
+      Ember.run.later(() => {
+        this.get('github').authorizeRedirect();
+      }, 10);
     }
   }
 });

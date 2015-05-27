@@ -20,6 +20,9 @@
     <div class="well">
       <h4>Authentication</h4>
       <hr/>
+      {{#if hostname}}
+        <div><b>Enterprise Host: </b> <span class="text-muted">{{hostname}}</span></div>
+      {{/if}}
       <div><b>Client ID: </b> <span class="text-muted">{{clientId}}</span></div>
       <p class="help-block">To change the configured GitHub application, disable access control below and then set it up again.</p>
     </div>
@@ -147,15 +150,30 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label for="client-id">Client ID</label>
-            {{input id="client-id" type="text" value=clientId classNames="form-control"}}
+            <label for="clientId">Client ID*</label>
+            {{input id="clientId" type="text" value=clientId classNames="form-control"}}
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label for="client-secret">Client Secret</label>
-            {{input id="client-secret" type="text" value=clientSecret classNames="form-control"}}
+            <label for="clientSecret">Client Secret*</label>
+            {{input id="clientSecret" type="text" value=clientSecret classNames="form-control"}}
           </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="checkbox">
+            <label>{{input type="checkbox" checked=isEnterprise}} Use a private GitHub Enterprise installation</label>
+          </div>
+        </div>
+        <div class="col-md-6">
+          {{#if isEnterprise}}
+            <div class="form-group">
+              <label for="hostname">Enterprise Host*</label>
+              {{input id="hostname" type="text" value=hostname classNames="form-control" placeholder="e.g. github.example.com"}}
+            </div>
+          {{/if}}
         </div>
       </div>
     </div>
@@ -170,7 +188,7 @@
         <div class="col-md-6">
           <button {{bind-attr disabled=createDisabled}} class="btn btn-primary" {{action "test"}}>
             {{#if testing}}
-              <i class="fa fa-spinner fa-spin"></i> Waiting to hear back from GitHub
+              <i class="fa fa-circle-o-notch fa-spin"></i> Waiting to hear back from GitHub
             {{else}}
               <i class="fa fa-github"></i> Authenticate with GitHub
             {{/if}}

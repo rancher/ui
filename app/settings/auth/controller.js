@@ -1,6 +1,4 @@
 import Ember from 'ember';
-import config from 'torii/configuration';
-import util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
 export default Ember.ObjectController.extend({
@@ -18,10 +16,15 @@ export default Ember.ObjectController.extend({
   addOrgInput: '',
 
   createDisabled: function() {
+    if ( this.get('isEnterprise') && !this.get('hostname') )
+    {
+      return true;
+    }
+
     var id = (this.get('clientId')||'').trim();
     var secret = (this.get('clientSecret')||'').trim();
     return id.length < 20 ||secret.length < 40 || this.get('testing');
-  }.property('clientId','clientSecret','testing'),
+  }.property('clientId','clientSecret','testing','hostname','isEnterprise'),
 
   saveDisabled: Ember.computed.or('saving','saved'),
   isRestricted: Ember.computed.equal('accessMode','restricted'),
@@ -79,6 +82,23 @@ export default Ember.ObjectController.extend({
     this.set('saved',false);
   }.observes('accessMode'),
 
+  isEnterprise: false,
+  enterpriseDidChange: function() {
+    if ( !this.get('isEnterprise') )
+    {
+      this.set('hostname', null);
+    }
+  }.observes('isEnterprise'),
+
+  hostnameDidChange: function() {
+    var cur = this.get('hostname')||'';
+    var neu = cur.replace(/^https?:\/\//ig,'').replace(/\/.*$/,'');
+    if ( cur !== neu )
+    {
+      this.set('hostname', neu);
+    }
+  }.observes('hostname'),
+
   actions: {
     test: function() {
       this.send('clearError');
@@ -96,6 +116,8 @@ export default Ember.ObjectController.extend({
 
       // Send authenticate immediately so that the popup isn't blocked,
       // even though the config isn't necessarily saved yet...
+      this.set('app.githubHostname', model.get('hostname'));
+      this.set('app.githubClientId', model.get('clientId'));
       this.send('authenticate');
 
       model.save().catch(err => {
@@ -106,51 +128,31 @@ export default Ember.ObjectController.extend({
 
     authenticate: function() {
       this.send('clearError');
-
-      config.providers['github-oauth2'].apiKey = this.get('model.clientId');
-
-      var torii = this.get('torii');
-      var provider = torii.container.lookup('torii-provider:github-oauth2');
-      provider.set('clientId', this.get('model.clientId'));
-      provider.set('state', Math.random()+"");
-
-      torii.open('github-oauth2',{windowOptions: util.popupWindowOptions()}).then(github => {
-        var headers = {};
-        headers[C.HEADER.AUTH] = undefined; // Explicitly not send auth
-        headers[C.HEADER.PROJECT] = undefined; // Explicitly not send project
-
-        return this.get('store').rawRequest({
-          url: 'token',
-          method: 'POST',
-          headers: headers,
-          data: {
-            code: github.authorizationCode,
-          }
-        }).then(res => {
-          var auth = JSON.parse(res.xhr.responseText);
-          this.send('authenticationSucceeded', auth);
-        }).catch(res => {
-          // Github auth succeeded but didn't get back a token
-          var err = JSON.parse(res.xhr.responseText);
+      this.get('github').authorizeTest((err,code) => {
+        if ( err )
+        {
           this.send('gotError', err);
-        });
-      })
-      .catch(err => {
-        // Github auth failed.. try again
+        }
+        else
+        {
+          this.send('gotCode', code);
+        }
+      });
+    },
+
+    gotCode: function(code) {
+      this.get('github').login(code).then(res => {
+        var auth = JSON.parse(res.xhr.responseText);
+        this.send('authenticationSucceeded', auth);
+      }).catch(res => {
+        // Github auth succeeded but didn't get back a token
+        var err = JSON.parse(res.xhr.responseText);
         this.send('gotError', err);
-      })
-      .finally(() => {
-        this.set('testing', false);
       });
     },
 
     authenticationSucceeded: function(auth) {
       this.send('clearError');
-
-      var session = this.get('session');
-      session.setProperties(auth);
-      session.set(C.LOGGED_IN, true);
-
       this.set('organizations', auth.orgs);
 
       // Set this to true so the token will be sent with the request
@@ -172,6 +174,7 @@ export default Ember.ObjectController.extend({
           }
           else
           {
+            // Default the api.host so the user won't have to set it in most cases
             setting.set('value', this.get('controllers.application.endpointHost'));
             return setting.save().then(() => {
               this.send('waitAndRefresh', true);
@@ -300,6 +303,9 @@ export default Ember.ObjectController.extend({
       {
         this.send('showError', 'Error ('+err.status + ' - ' + err.code+')');
       }
+
+      this.set('testing', false);
+      this.set('saving', false);
     },
 
     showError: function(msg) {

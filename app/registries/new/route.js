@@ -1,7 +1,6 @@
-import AuthenticatedRouteMixin from 'ui/mixins/authenticated-route';
 import Ember from 'ember';
 
-export default Ember.Route.extend(AuthenticatedRouteMixin, {
+export default Ember.Route.extend({
   model: function(/*params, transition*/) {
     var registry = this.get('store').createRecord({
       type:'registry',
