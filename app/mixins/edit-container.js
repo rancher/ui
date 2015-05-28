@@ -500,7 +500,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     });
 
     return list.sortBy('group','name','id');
-  }.property('allHosts.@each.instancesUpdated').volatile(),
+  }.property('instance.requestedHostId','allHosts.@each.instancesUpdated'),
 
   volumesFromArray: null,
   initVolumesFrom: function() {

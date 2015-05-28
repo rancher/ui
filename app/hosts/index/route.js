@@ -2,16 +2,16 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
-    var hosts = this.modelFor('hosts');
-    return this.get('store').find('machine').then((machines) => {
+    var store = this.get('store');
+    var promises = [
+      store.find('machine'),
+      store.find('host'),
+    ];
+
+    return Ember.RSVP.all(promises).then((results) => {
       return {
-        hosts: hosts,
-        machines: machines
-      };
-    }).catch(() => {
-      return {
-        hosts: hosts,
-        machines: []
+        machines: results[0],
+        hosts: results[1],
       };
     });
   },
