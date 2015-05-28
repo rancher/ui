@@ -33,16 +33,19 @@ export default Ember.ObjectController.extend({
   wasRestrictedMsg: function() {
     var users = this.get('originalModel.allowedUsers.length');
     var orgs = this.get('originalModel.allowedOrganizations.length');
+    var enterprise = !!this.get('originalModel.hostname');
+
+    var github = 'GitHub' + ( enterprise ? ' Enterprise' : '');
 
     var str = 'project members';
     if ( users )
     {
-      str += (orgs ? ', ' : ' and ') +  users + ' GitHub user' + (users === 1 ? '' : 's');
+      str += (orgs ? ', ' : ' and ') +  users + ' ' + github + ' user' + (users === 1 ? '' : 's');
     }
 
     if ( orgs )
     {
-      str += ' and ' + orgs + ' organization' + ( orgs === 1 ? '' : 's');
+      str += ' and ' + orgs + (users ? '' : ' ' + github) + ' organization' + ( orgs === 1 ? '' : 's');
     }
 
     return str;
@@ -157,6 +160,9 @@ export default Ember.ObjectController.extend({
 
       // Set this to true so the token will be sent with the request
       this.set('app.authenticationEnabled',true);
+
+      // Clear the GitHub cache in case the hostname has changed
+      this.get('github').clearCache();
 
       var model = this.get('model');
       model.setProperties({

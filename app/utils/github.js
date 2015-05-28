@@ -63,6 +63,10 @@ export default Ember.Object.extend({
     session.set(C.SESSION.GITHUB_CACHE, cache);
   },
 
+  clearCache: function() {
+    this.get('session').set(C.SESSION.GITHUB_CACHE, {});
+  },
+
   teamById: function(id) {
     return (this.get('session.teams')||[]).filterProperty('id', id)[0];
   },
@@ -164,5 +168,15 @@ export default Ember.Object.extend({
       var err = JSON.parse(res.xhr.responseText);
       return Ember.RSVP.reject(err);
     });
-  }
+  },
+
+  clearSessionKeys: function() {
+    var values = {};
+    C.TOKEN_TO_SESSION_KEYS.forEach((key) => {
+      values[key] = undefined;
+    });
+
+    values[C.SESSION.LOGGED_IN] = false;
+    this.get('session').setProperties(values);
+  },
 });

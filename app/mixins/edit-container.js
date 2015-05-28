@@ -52,6 +52,13 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
       this.get('volumesFromArray').removeObject(obj);
     },
 
+    addVolumeFromService: function() {
+      this.get('volumesFromServiceArray').pushObject({value: ''});
+    },
+    removeVolumeFromService: function(obj) {
+      this.get('volumesFromServiceArray').removeObject(obj);
+    },
+
     addDns: function() {
       this.get('dnsArray').pushObject({value: ''});
     },
@@ -139,6 +146,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
       this.initEnvironment();
       this.initVolumes();
       this.initVolumesFrom();
+      this.initVolumesFromService();
       this.initDns();
       this.initDnsSearch();
       this.initCapability();
@@ -238,6 +246,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // Network
   // ----------------------------------
   networkChoices: null,
+  isManagedNetwork: Ember.computed.equal('instance.networkMode','managed'),
   initNetwork: function() {
     var choices = this.get('store').getById('schema','container').get('resourceFields.networkMode').options.sort();
     this.set('networkChoices',choices.map((option) => {
@@ -491,7 +500,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     });
 
     return list.sortBy('group','name','id');
-  }.property('allHosts.@each.instancesUpdated').volatile(),
+  }.property('instance.requestedHostId','allHosts.@each.instancesUpdated'),
 
   volumesFromArray: null,
   initVolumesFrom: function() {
@@ -519,6 +528,36 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
     });
     out.endPropertyChanges();
   }.observes('volumesFromArray.@each.value'),
+
+  // ----------------------------------
+  // Volumes From Service
+  // ----------------------------------
+  volumesFromServiceArray: null,
+  initVolumesFromService: function() {
+    var ary = this.get('instance.dataVolumesFromService');
+    if ( !ary )
+    {
+      ary = [];
+      this.set('instance.dataVolumesFromService',ary);
+    }
+
+    this.set('volumesFromServiceArray', ary.map(function(vol) {
+      return {value: vol};
+    }));
+  },
+
+  volumesFromServiceDidChange: function() {
+    var out = this.get('instance.dataVolumesFromService');
+    out.beginPropertyChanges();
+    out.clear();
+    this.get('volumesFromServiceArray').forEach(function(row) {
+      if ( row.value )
+      {
+        out.push(row.value);
+      }
+    });
+    out.endPropertyChanges();
+  }.observes('volumesFromServiceArray.@each.value'),
 
   // ----------------------------------
   // DNS

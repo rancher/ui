@@ -1,11 +1,13 @@
 import Cattle from 'ui/utils/cattle';
 
 var pendingStates = [
-  'bootstrapping',
-  'created',
-  'creating',
   'requested',
-  'error'
+  'bootstrapping',
+  'creating',
+  'created',
+  'erroring',
+  'error',
+  'updating'
 ];
 
 var Machine = Cattle.TransitioningResource.extend({

@@ -1,11 +1,4 @@
-import Cattle from 'ui/utils/cattle';
+import Ember from 'ember';
 
-export default Cattle.CollectionController.extend({
-  itemController: 'host',
-
-  actions: {
-    goToContainer: function(id) {
-      this.transitionToRoute('container', id);
-    }
-  }
+export default Ember.ObjectController.extend({
 });
