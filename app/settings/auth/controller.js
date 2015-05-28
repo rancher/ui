@@ -161,6 +161,9 @@ export default Ember.ObjectController.extend({
       // Set this to true so the token will be sent with the request
       this.set('app.authenticationEnabled',true);
 
+      // Clear the GitHub cache in case the hostname has changed
+      this.get('github').clearCache();
+
       var model = this.get('model');
       model.setProperties({
         'enabled': true,

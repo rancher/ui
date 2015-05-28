@@ -63,6 +63,10 @@ export default Ember.Object.extend({
     session.set(C.SESSION.GITHUB_CACHE, cache);
   },
 
+  clearCache: function() {
+    this.get('session').set(C.SESSION.GITHUB_CACHE, {});
+  },
+
   teamById: function(id) {
     return (this.get('session.teams')||[]).filterProperty('id', id)[0];
   },
