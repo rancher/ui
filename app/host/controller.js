@@ -70,7 +70,7 @@ var HostController = Cattle.TransitioningResourceController.extend(DownloadMachi
       out.push({ label: 'Clone',         icon: 'ss-copier',           action: 'clone',        enabled: true });
     }
 
-    out.push({ label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: !!a.update })
+    out.push({ label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: !!a.update });
 
     return out;
   }.property('actions.{activate,deactivate,remove,purge,update}','machine','machine.links.config'),
