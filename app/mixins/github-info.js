@@ -65,8 +65,7 @@ export default Ember.Mixin.create({
     var url = this.get('_avatarUrl');
     if ( url )
     {
-      url = Util.addQueryParam(url, 's', this.get('size') * 2);`
-
+      url = Util.addQueryParam(url, 's', this.get('size') * 2);
     }
     return url;
   }.property('_avatarUrl','size'),
