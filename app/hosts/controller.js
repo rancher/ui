@@ -1,4 +1,4 @@
-import Cattle from 'ui/utils/cattle';
+import Ember from 'ember';
 
 export default Ember.ObjectController.extend({
 });
