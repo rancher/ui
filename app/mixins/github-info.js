@@ -5,7 +5,7 @@ import Util from 'ui/utils/util';
 export default Ember.Mixin.create({
   type: 'user_or_org',
   login: null, // This can't be called id because Ember uses that property..
-  size: 40,
+  size: 36,
   fallback: null,
 
   name: null,
@@ -65,7 +65,7 @@ export default Ember.Mixin.create({
     var url = this.get('_avatarUrl');
     if ( url )
     {
-      url = Util.addQueryParam(url, 's', this.get('size'));
+      url = Util.addQueryParam(url, 's', this.get('size') * 2);
     }
     return url;
   }.property('_avatarUrl','size'),
