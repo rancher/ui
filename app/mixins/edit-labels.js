@@ -73,7 +73,7 @@ export default Ember.Mixin.create({
   },
 
   initLabels: function() {
-    var obj = this.get('primaryResource.labels')||{};
+    var obj = this.get('instance.labels')||{};
     var keys = Object.keys(obj);
     var out = [];
     keys.forEach(function(key) {
@@ -92,7 +92,7 @@ export default Ember.Mixin.create({
         out[row.key] = row.value;
       }
     });
-    this.set('primaryResource.labels', out);
+    this.set('instance.labels', out);
   }.observes('labelArray.@each.{key,value}'),
 
 });
