@@ -70,6 +70,17 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
 
       this.transitionToRoute('containers.new', {queryParams: {containerId: this.get('id')}});
     },
+
+    cloneToService: function() {
+      // @TODO Fix this hackery for nested components...
+      // http://emberjs.jsbin.com/mecesakase
+      if ( Ember.Component.detectInstance(this.get('target')) )
+      {
+        this.set('target', window.l('router:main'));
+      }
+
+      this.transitionToRoute('service.new', {queryParams: {containerId: this.get('id')}});
+    },
   },
 
   availableActions: function() {
@@ -90,6 +101,7 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
       { divider: true },
       { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true },
       { label: 'Clone',         icon: 'ss-copier',           action: 'clone',        enabled: !isSystem && !isService },
+//      { label: 'Clone to Service', icon: 'ss-copier',           action: 'cloneToService', enabled: !isSystem && !isService },
       { label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: !!a.update },
     ];
 

@@ -534,29 +534,35 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   // ----------------------------------
   volumesFromServiceArray: null,
   initVolumesFromService: function() {
-    var ary = this.get('instance.dataVolumesFromService');
-    if ( !ary )
+    if ( this.get('service') )
     {
-      ary = [];
-      this.set('instance.dataVolumesFromService',ary);
-    }
+      var ary = this.get('service.dataVolumesFromService');
+      if ( !ary )
+      {
+        ary = [];
+        this.set('service.dataVolumesFromService',ary);
+      }
 
-    this.set('volumesFromServiceArray', ary.map(function(vol) {
-      return {value: vol};
-    }));
+      this.set('volumesFromServiceArray', ary.map(function(vol) {
+        return {value: vol};
+      }));
+    }
   },
 
   volumesFromServiceDidChange: function() {
-    var out = this.get('instance.dataVolumesFromService');
-    out.beginPropertyChanges();
-    out.clear();
-    this.get('volumesFromServiceArray').forEach(function(row) {
-      if ( row.value )
-      {
-        out.push(row.value);
-      }
-    });
-    out.endPropertyChanges();
+    if ( this.get('service') )
+    {
+      var out = this.get('service.dataVolumesFromService');
+      out.beginPropertyChanges();
+      out.clear();
+      this.get('volumesFromServiceArray').forEach(function(row) {
+        if ( row.value )
+        {
+          out.push(row.value);
+        }
+      });
+      out.endPropertyChanges();
+    }
   }.observes('volumesFromServiceArray.@each.value'),
 
   // ----------------------------------

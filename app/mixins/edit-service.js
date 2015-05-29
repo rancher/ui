@@ -51,7 +51,7 @@ export default Ember.Mixin.create({
       var id;
       if ( typeof value === 'object' )
       {
-        id = value.get('id');
+        id = Ember.get(value,'id');
         if ( id )
         {
           out.push(Ember.Object.create({
