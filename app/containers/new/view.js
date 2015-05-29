@@ -19,6 +19,7 @@ export default Ember.View.extend({
     addDns:         addAction('addDns',         '.dns-value'),
     addDnsSearch:   addAction('addDnsSearch',   '.dns-search-value'),
     addDevice:      addAction('addDevice',      '.device-host'),
+    addLabel:       addAction('addLabel',      '.label-key'),
 
     selectTab: function(name) {
       this.set('context.tab',name);

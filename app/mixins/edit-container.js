@@ -823,32 +823,6 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
   }.observes('strEntryPoint'),
 
   // ----------------------------------
-  // Labels
-  // ----------------------------------
-  labelsArray: null,
-  initLabels: function() {
-    var obj = this.get('instance.labels')||{};
-    var keys = Object.keys(obj);
-    var out = [];
-    keys.forEach(function(key) {
-      out.push({ key: key, value: obj[key] });
-    });
-
-    this.set('labelsArray', out);
-  },
-
-  labelsChanged: function() {
-    // Sync with the actual environment object
-    var out = {};
-    this.get('labelsArray').forEach(function(row) {
-      if ( row.key )
-      {
-        out[row.key] = row.value;
-      }
-    });
-    this.set('instance.labels', out);
-  }.observes('labelsArray.@each.{key,value}'),
-
   // ----------------------------------
   // Save
   // ----------------------------------

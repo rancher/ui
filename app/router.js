@@ -37,9 +37,9 @@ Router.map(function() {
         this.route('new', {route: '/add'});
         this.route('index', {path: '/'});
 
-        this.resource("project", { path: '/:project_id' }, function() {
+        this.resource('project', { path: '/:project_id' }, function() {
           this.route('index', {path: '/'});
-          this.route("edit");
+          this.route('edit');
         });
       });
     });
@@ -58,6 +58,7 @@ Router.map(function() {
         });
 
         this.resource('host', { path: '/:host_id' }, function() {
+          this.route('edit');
           this.route('containers');
           this.route('storage', {path: '/storage'});
         });

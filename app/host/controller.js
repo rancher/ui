@@ -41,6 +41,10 @@ var HostController = Cattle.TransitioningResourceController.extend(DownloadMachi
       var driver = machine.get('driver');
       this.transitionToRoute('hosts.new.'+driver, {queryParams: {machineId: machine.get('id')}});
     },
+
+    edit: function() {
+      this.transitionToRoute('host.edit', this.get('id'));
+    },
   },
 
   availableActions: function() {
@@ -53,9 +57,9 @@ var HostController = Cattle.TransitioningResourceController.extend(DownloadMachi
       { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
       { label: 'Purge',         icon: '',   action: 'purge',        enabled: !!a.purge, color: 'text-danger'},
       { divider: true },
+      { label: 'View in API',   icon: '', action: 'goToApi',      enabled: true},
     ];
 
-    out.push({ label: 'View in API',   icon: '', action: 'goToApi',      enabled: true});
     if ( this.get('machine') )
     {
       if ( this.get('machine.links.config') )
@@ -66,8 +70,10 @@ var HostController = Cattle.TransitioningResourceController.extend(DownloadMachi
       out.push({ label: 'Clone',         icon: 'ss-copier',           action: 'clone',        enabled: true });
     }
 
+    out.push({ label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: !!a.update });
+
     return out;
-  }.property('actions.{activate,deactivate,remove,purge}','machine','machine.links.config'),
+  }.property('actions.{activate,deactivate,remove,purge,update}','machine','machine.links.config'),
 
   triedToGetIp: false,
   displayIp: function() {

@@ -131,6 +131,7 @@ URL="/static"
 GS_URL="gs://${CDN}"
 CACHE="Cache-Control:no-cache,must-revalidate"
 GZIP="html,js,css,xml,txt,map,svg,ttf,woff,woff2"
+GCLOUD_UUID="google/cloud-sdk:sha256:506775439bd4f44d90a3f6784f2b625e55c43635f9f2c4cae24ac4b3dea0277a"
 
 echo "Branch: ${BRANCH}"
 if [[ "${VERSION}" != "${PKG_VERSION}" ]]; then
@@ -179,12 +180,12 @@ if [[ $UPLOAD -eq 2 ]]; then
   echo "Updating latest ($ABS_BUILD_DIR) thru Docker..."
 
   # Upload new files, with gzip headers (rsync doesn't have this)
-  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload google/cloud-sdk gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R /upload "${GS_URL}/_upload"
+  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R /upload "${GS_URL}/_upload"
 
   # Rsync new files into latest diff
   # Beware of the leopard: -m will break rsync on versioned buckets.
-  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload google/cloud-sdk gsutil -h "${CACHE}" rsync -c -r "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
+  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil -h "${CACHE}" rsync -c -r "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
 
   # Remove temp dir
-  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload google/cloud-sdk gsutil rm -a -f -R "${GS_URL}/_upload"
+  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil rm -a -f -R "${GS_URL}/_upload"
 fi
