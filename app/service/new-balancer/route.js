@@ -11,37 +11,68 @@ export default Ember.Route.extend({
       })
     ];
 
+    if ( params.serviceId )
+    {
+      dependencies.pushObject(store.find('service', params.serviceId, {include: ['loadbalancerlisteners','consumedservices']}));
+    }
+
     return Ember.RSVP.all(dependencies, 'Load dependencies').then(function(results) {
       var allHosts = results[0];
       var environment = results[1];
+      var existing = results[2];
 
-      var launchConfig = store.createRecord({
-        type: 'container',
-        commandArgs: [],
-        environment: {},
-        tty: true,
-        stdinOpen: true,
-      });
+      var launchConfig, lbConfig, balancer, appCookie, lbCookie;
+      if ( existing )
+      {
+        balancer = existing.cloneForNew();
+        launchConfig = balancer.get('launchConfig');
+        launchConfig.set('type','container');
+        launchConfig = store.createRecord(launchConfig);
 
-      var lbConfig = store.createRecord({
-        type: 'loadBalancerConfig',
-        healthCheck: store.createRecord({
-          type: 'loadBalancerHealthCheck',
-          interval: 2000,
-          responseTimeout: 2000,
-          healthyThreshold: 2,
-          unhealthyThreshold: 3,
-          requestLine: null,
-        }),
-        appCookieStickinessPolicy: null,
-        lbCookieStickinessPolicy: null,
-      });
+        lbConfig = balancer.get('loadBalancerConfig');
+        lbConfig.set('type','loadBalancerConfig');
+        lbConfig = store.createRecord(lbConfig);
+        lbConfig.set('loadBalancerListeners', balancer.get('loadBalancerListeners'));
 
-      return {
-        isService: true,
-        allHosts: allHosts,
-        environment: environment,
-        balancer: store.createRecord({
+        appCookie = lbConfig.get('appCookieStickinessPolicy');
+        if ( appCookie )
+        {
+          appCookie.set('type','loadBalancerAppCookieStickinessPolicy');
+          appCookie = store.createRecord(appCookie);
+        }
+
+        lbCookie = lbConfig.get('lbCookieStickinessPolicy');
+        if ( lbCookie )
+        {
+          lbCookie.set('type','loadBalancerCookieStickinessPolicy');
+          lbCookie = store.createRecord(lbCookie);
+        }
+      }
+      else
+      {
+        launchConfig = store.createRecord({
+          type: 'container',
+          commandArgs: [],
+          environment: {},
+          tty: true,
+          stdinOpen: true,
+        });
+
+        lbConfig = store.createRecord({
+          type: 'loadBalancerConfig',
+          healthCheck: store.createRecord({
+            type: 'loadBalancerHealthCheck',
+            interval: 2000,
+            responseTimeout: 2000,
+            healthyThreshold: 2,
+            unhealthyThreshold: 3,
+            requestLine: null,
+          }),
+          appCookieStickinessPolicy: null,
+          lbCookieStickinessPolicy: null,
+        });
+
+        balancer = store.createRecord({
           type: 'loadBalancerService',
           name: '',
           description: '',
@@ -49,20 +80,37 @@ export default Ember.Route.extend({
           environmentId: environment.get('id'),
           launchConfig: launchConfig,
           loadBalancerConfig: lbConfig,
-        }),
-        config: lbConfig,
-        launchConfig: launchConfig,
-        appCookie: store.createRecord({
+        });
+      }
+
+      if ( !appCookie )
+      {
+        appCookie = store.createRecord({
           type: 'loadBalancerAppCookieStickinessPolicy',
           mode: 'path_parameters',
           requestLearn: true,
           prefix: false,
           timeout: 3600000,
           maxLength: 1024,
-        }),
-        lbCookie: store.createRecord({
+        });
+      }
+
+      if ( !lbCookie )
+      {
+        lbCookie = store.createRecord({
           type: 'loadBalancerCookieStickinessPolicy'
-        }),
+        });
+      }
+
+      return {
+        isService: true,
+        allHosts: allHosts,
+        environment: environment,
+        balancer: balancer,
+        config: lbConfig,
+        launchConfig: launchConfig,
+        appCookie: appCookie,
+        lbCookie: lbCookie,
       };
     });
   },
@@ -77,6 +125,8 @@ export default Ember.Route.extend({
     {
       controller.set('tab', 'listeners');
       controller.set('stickiness', 'none');
+      controller.set('environmentId', null);
+      controller.set('serviceId', null);
     }
   },
 

@@ -26,7 +26,22 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
     scaleDown: function() {
       this.decrementProperty('scale');
       return this.save();
-    }
+    },
+
+    clone: function() {
+      var route;
+      switch ( this.get('type') )
+      {
+        case 'service': route = 'service.new'; break;
+        case 'loadBalancerService': route = 'service.new-balancer'; break;
+        default: return void this.send('error','Unknown service type: ' + this.get('type'));
+      }
+
+      this.transitionToRoute(route, {queryParams: {
+        serviceId: this.get('id'),
+        environmentId: this.get('environmentId'),
+      }});
+    },
   },
 
   availableActions: function() {
@@ -38,8 +53,8 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
       { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
       { label: 'Purge',         icon: 'ss-tornado',   action: 'purge',        enabled: !!a.purge },
       { divider: true },
-      { label: 'View in API',   icon: '',             action: 'goToApi',      enabled: true},
-      { divider: true },
+      { label: 'View in API',   icon: '',             action: 'goToApi',      enabled: true },
+      { label: 'Clone',         icon: 'ss-copier',    action: 'clone',        enabled: true },
       { label: 'Edit',          icon: 'ss-write',     action: 'edit',         enabled: !!a.update },
     ];
 

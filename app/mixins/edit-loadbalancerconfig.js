@@ -32,6 +32,36 @@ export default Ember.Mixin.create({
   },
 
   listenersArray: null,
+  initListeners: function() {
+    var store = this.get('store');
+    var existing = this.get('balancer.loadBalancerListeners');
+    var out = [];
+    if ( existing )
+    {
+      existing.forEach((listener) => {
+        var neu = listener.cloneForNew();
+        neu.setProperties({
+          serviceId: null,
+          name: null,
+        });
+        out.push(neu);
+      });
+    }
+    else
+    {
+      out.push(store.createRecord({
+        type: 'loadBalancerListener',
+        name: 'uilistener',
+        sourcePort: '',
+        sourceProtocol: 'http',
+        targetPort: '',
+        targetProtocol: 'http',
+        algorithm: 'roundrobin',
+      }));
+    }
+
+    this.set('listenersArray', out);
+  },
 
   sourceProtocolOptions: function() {
     return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.sourceProtocol.options');
@@ -76,12 +106,38 @@ export default Ember.Mixin.create({
   }.observes('uriMethod','uriPath','uriVersion','uriHost'),
 
   initUri: function() {
-    this.setProperties({
-      uriMethod: 'OPTIONS',
-      uriPath: '',
-      uriVersion: 'HTTP/1.0',
-      uriHost: ''
-    });
+    var existing = this.get('config.healthCheck.requestLine');
+    if ( existing )
+    {
+      var match;
+      var host = '';
+      var lines = existing.split(/[\r\n]+/);
+      if ( lines.length > 1 )
+      {
+        match = lines[1].match(/^Host:\\ (.*)$/);
+        if ( match )
+        {
+          host = match[1];
+        }
+      }
+
+      match = lines[0].match(/^([^\s]+)\s+(.*)\s+(HTTP\/[0-9\.]+)/);
+      this.setProperties({
+        uriMethod: match[1],
+        uriPath: match[2],
+        uriVersion: match[3],
+        uriHost: host,
+      });
+    }
+    else
+    {
+      this.setProperties({
+        uriMethod: 'OPTIONS',
+        uriPath: '',
+        uriVersion: 'HTTP/1.0',
+        uriHost: ''
+      });
+    }
     this.uriDidChange();
   },
 
@@ -100,6 +156,21 @@ export default Ember.Mixin.create({
     {value: 'path_parameters', label: 'Path Parameter'},
     {value: 'query_string', label: 'Query String'},
   ],
+
+  initStickiness: function() {
+    if ( this.get('config.appCookieStickinessPolicy') )
+    {
+      this.set('stickiness', 'appCookie');
+    }
+    else if ( this.get('config.lbCookieStickinessPolicy') )
+    {
+      this.set('stickiness', 'lbCookie');
+    }
+    else
+    {
+      this.set('stickiness','none');
+    }
+  },
 
   stickinessDidChange: function() {
     var stickiness = this.get('stickiness');
