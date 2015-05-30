@@ -3,8 +3,9 @@ import Cattle from 'ui/utils/cattle';
 import EditLoadBalancerConfig from 'ui/mixins/edit-loadbalancerconfig';
 
 export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBalancerConfig, {
-  queryParams: ['environmentId','tab'],
+  queryParams: ['environmentId','serviceId','tab'],
   environmentId: null,
+  serviceId: null,
   tab: 'listeners',
   error: null,
   editing: false,
@@ -21,19 +22,10 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
 
   initFields: function() {
     this._super();
-    this.set('targetsArray', [{isService: true, value: null}]);
-    this.set('listenersArray', [
-      this.get('store').createRecord({
-        type: 'loadBalancerListener',
-        name: 'uilistener',
-        sourcePort: '',
-        sourceProtocol: 'http',
-        targetPort: '',
-        targetProtocol: 'http',
-        algorithm: 'roundrobin',
-      })
-    ]);
+    this.initListeners();
+    this.initTargets();
     this.initUri();
+    this.initStickiness();
   },
 
   useExisting: 'no',
@@ -51,6 +43,23 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
   }.property('allHosts.@each.{id,name,state}'),
 
   targetsArray: null,
+  initTargets: function() {
+    var existing = this.get('balancer.consumedservices');
+    var out = [];
+    if ( existing )
+    {
+      existing.forEach((service) => {
+        out.push({ isService: true, value: Ember.get(service,'id') });
+      });
+    }
+    else
+    {
+      out.push({isService: true, value: null});
+    }
+
+    this.set('targetsArray', out);
+  },
+
   targetServiceIds: function() {
     return this.get('targetsArray').filterProperty('isService',true).filterProperty('value').map((choice) => {
       return Ember.get(choice,'value');

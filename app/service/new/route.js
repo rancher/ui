@@ -31,30 +31,6 @@ export default Ember.Route.extend({
       var environment = results[1];
       var serviceOrContainer = results[2];
 
-      /*
-      var data;
-      if ( params.containerId )
-      {
-        data = results[1].serializeForNew();
-      }
-      else
-      {
-        data = {
-          type: 'container',
-          requestedHostId: params.hostId,
-          tty: true,
-          stdinOpen: true,
-        };
-      }
-
-      return Ember.Object.create({
-        instance: self.get('store').createRecord(data),
-        allHosts: allHosts,
-      });
-    });
-
-      */
-
       var instanceData;
       var serviceData;
       if ( serviceOrContainer )
