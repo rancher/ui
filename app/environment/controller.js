@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import Util from 'ui/utils/util';
 
@@ -100,6 +101,8 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
 
     return this.get('services').filterProperty('actions.deactivate').get('length') > 0;
   }.property('services.@each.state','actions.deactivateservices'),
+
+  state: Ember.computed.alias('model.combinedState'),
 });
 
 EnvironmentController.reopenClass({
@@ -109,6 +112,7 @@ EnvironmentController.reopenClass({
     'active':           {icon: 'ss-globe',          color: 'text-success'},
     'removing':         {icon: 'ss-trash',          color: 'text-danger'},
     'removed':          {icon: 'ss-trash',          color: 'text-danger'},
+    'degraded':         {icon: 'ss-notifications',  color: 'text-danger'},
   }
 });
 

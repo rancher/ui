@@ -24,6 +24,27 @@ var Container = Cattle.TransitioningResource.extend({
   hasManagedNetwork: function() {
     return this.get('primaryIpAddress') && this.get('primaryIpAddress').indexOf('10.') === 0;
   }.property('primaryIpAddress'),
+
+  combinedState: function() {
+    var resource = this.get('state');
+    var health = this.get('healthState');
+
+    if ( ['running','active','updating-active'].indexOf(resource) >= 0 )
+    {
+      if ( health === 'healthy' )
+      {
+        return resource;
+      }
+      else
+      {
+        return health;
+      }
+    }
+    else
+    {
+      return resource;
+    }
+  }.property('state', 'healthState'),
 });
 
 Container.reopenClass({

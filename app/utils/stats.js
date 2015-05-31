@@ -184,7 +184,7 @@ var Stats = Ember.Object.extend({
   },
 
   available: function() {
-    return ['running','updating-running','active','updating-active'].indexOf(this.get('resource.state')) >= 0;
+    return ['running','updating-running','active','updating-active','unhealthy'].indexOf(this.get('resource.state')) >= 0;
   }.property('resource.state'),
 
   active: Ember.computed.and('available', 'statsSocket.connected','renderOk'),
@@ -197,7 +197,10 @@ var Stats = Ember.Object.extend({
     //console.log('Available changed', this.get('available'));
     if ( this.get('available') )
     {
-      this.setUp();
+      if ( !this.get('statsSocket') )
+      {
+        this.setUp();
+      }
     }
     else
     {
@@ -216,9 +219,13 @@ var Stats = Ember.Object.extend({
     {
       this.initMemoryGraph();
     }
-    var stats = StatsSocket.create({resource: this.get('resource')});
-    this.set('statsSocket',stats);
-    stats.on('dataPoint', this.onDataPoint.bind(this));
+
+    if ( !this.get('statsSocket') )
+    {
+      var stats = StatsSocket.create({resource: this.get('resource')});
+      this.set('statsSocket',stats);
+      stats.on('dataPoint', this.onDataPoint.bind(this));
+    }
   },
 
   onDataPoint: function(data) {
@@ -413,6 +420,7 @@ var Stats = Ember.Object.extend({
     if ( socket )
     {
       socket.disconnect();
+      this.set('statsSocket', null);
     }
 
     var cpuGraph = this.get('cpuGraph');

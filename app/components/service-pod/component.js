@@ -11,7 +11,10 @@ export default Ember.Component.extend({
     }
   },
 
-  isActive: Ember.computed.equal('model.state','active'),
+  isActive: function() {
+    return ['active','degraded','updating-active'].indexOf(this.get('model.state')) >= 0;
+  }.property('model.state'),
+
   isInactive: Ember.computed.equal('model.state','inactive'),
   showAdd: Ember.computed.alias('isActive'),
 

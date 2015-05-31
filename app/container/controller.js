@@ -3,6 +3,8 @@ import Cattle from 'ui/utils/cattle';
 import C from 'ui/utils/constants';
 
 var ContainerController = Cattle.TransitioningResourceController.extend({
+  state: Ember.computed.alias('model.combinedState'),
+
   mountError: null,
   relatedVolumes: null,
   ports: null,
@@ -109,7 +111,7 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
   }.property('actions.{restart,start,stop,restore,purge,execute,logs,update}','canDelete','systemContainer','labels'),
 
   isOn: function() {
-    return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;
+    return ['running','updating-running','migrating','restarting','unhealthy'].indexOf(this.get('state')) >= 0;
   }.property('state'),
 
   displayIp: function() {
@@ -130,7 +132,8 @@ ContainerController.reopenClass({
    'running': {icon: 'ss-record',   color: 'text-success'},
    'stopped': {icon: 'fa fa-circle',color: 'text-danger'},
    'removed': {icon: 'ss-trash',    color: 'text-danger'},
-   'purged':  {icon: 'ss-tornado',  color: 'text-danger'}
+   'purged':  {icon: 'ss-tornado',  color: 'text-danger'},
+   'unhealthy': {icon: 'ss-notifications',   color: 'text-danger'},
   },
 });
 
