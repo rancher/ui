@@ -1,11 +1,7 @@
 import Ember from 'ember';
+import DriverView from 'ui/hosts/new/driver-view';
 
-export default Ember.View.extend({
-  didInsertElement: function() {
-    this._super();
-    this.$('INPUT')[0].focus();
-  },
-
+export default DriverView.extend({
   stepDidChange: function() {
     Ember.run.scheduleOnce('afterRender', this, function() {
       document.body.scrollTop = document.body.scrollHeight;

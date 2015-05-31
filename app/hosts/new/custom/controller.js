@@ -1,36 +1,31 @@
 import Ember from 'ember';
+import EditLabels from 'ui/mixins/edit-labels';
+import Util from 'ui/utils/util';
 
-export default Ember.ObjectController.extend({
+export default Ember.ObjectController.extend(EditLabels, {
+  primaryResource: Ember.computed.alias('model'),
   needs: ['application'],
 
-  registrationUrl: function() {
-    // http://a.b.c.d/v1/registrationTokens/blah, a.b.c.d is where the UI is running
-    var url = this.get('links.registrationUrl');
-    if ( !url )
+  registrationCommand: function() {
+    var cmd = this.get('command');
+    if ( !cmd )
     {
       return null;
     }
 
-    // http://e.f.g.h/ , does not include version.  e.f.g.h is where the API actually is.
-    var endpoint = this.get('controllers.application.absoluteEndpoint'); 
-
-    url = url.replace(/https?:\/\/[^\/]+\/?/,endpoint);
-    return url;
-  }.property('links.registrationUrl','controllers.application.absoluteEndpoint'),
-
-  registrationCommand: function() {
-    if ( this.get('command') )
+    var env = Util.addQueryParams('', this.get('model.labels')||{});
+    if ( env )
     {
-      return this.get('command');
-    }
-    else
-    {
-      var url = this.get('registrationUrl');
-      if ( url )
+      env = env.substr(1); // Strip off the leading '?'
+      var lookFor = 'docker run';
+      var idx = cmd.indexOf(lookFor);
+      if ( idx >= 0 )
       {
-        return `sudo docker run --rm -it --privileged -v /var/run/docker.sock:/var/run/docker.sock rancher/agent ${url}`;
+        cmd = cmd.substr(0, idx + lookFor.length) + " -e CATTLE_HOST_LABELS='" + env + "'" + cmd.substr(idx + lookFor.length);
       }
     }
-  }.property('command','registrationUrl'),
+
+    return cmd;
+  }.property('command','model.labels'),
 
 });

@@ -1,14 +1,5 @@
-import Ember from 'ember';
 import Overlay from 'ui/overlay/view';
-
-export function addAction(action, selector) {
-  return function() {
-    this.get('controller').send(action);
-    Ember.run.next(this, function() {
-      this.$(selector).last().focus();
-    });
-  };
-}
+import { addAction } from 'ui/utils/add-view-action';
 
 export default Overlay.extend({
   actions: {
