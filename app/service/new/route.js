@@ -69,6 +69,7 @@ export default Ember.Route.extend({
       service.set('launchConfig', instance); // Creating a service needs the isntance definition here
 
       return Ember.Object.create({
+        isService: true,
         service: service,
         instance: instance, // but mixins/edit-container expects to find the instance here, so link both to the same object
         allHosts: allHosts,

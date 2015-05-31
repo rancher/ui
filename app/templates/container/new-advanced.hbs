@@ -10,6 +10,9 @@
       <li role="presentation" class="tab" data-section="network" {{action "selectTab" "network" target=view}}><a>Networking</a></li>
       <li role="presentation" class="tab" data-section="security" {{action "selectTab" "security" target=view}}><a>Security/Host</a></li>
       <li role="presentation" class="tab" data-section="labels" {{action "selectTab" "labels" target=view}}><a>Labels</a></li>
+      {{#if isService}}
+        <li role="presentation" class="tab" data-section="scheduling" {{action "selectTab" "scheduling" target=view}}><a>Scheduling</a></li>
+      {{/if}}
     </ul>
   </section>
 
@@ -40,5 +43,12 @@
         </div>
       </div>
     </div>
+
+    {{#if isService}}
+      <div class="section" data-section="scheduling">
+        {{partial "container/new-scheduling"}}
+      </div>
+    {{/if}}
+
   </section>
 </div>

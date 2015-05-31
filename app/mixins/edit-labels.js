@@ -3,10 +3,19 @@ import Ember from 'ember';
 export default Ember.Mixin.create({
   actions: {
     addLabel: function() {
-      this.get('labelArray').pushObject({
+      this.get('labelArray').pushObject(Ember.Object.create({
+        isUser: true,
         key: '',
         value: '',
-      });
+      }));
+    },
+
+    addSystemLabel: function(key, value) {
+      this.get('labelArray').pushObject(Ember.Object.create({
+        isUser: false,
+        key: key,
+        value: value,
+      }));
     },
 
     removeLabel: function(obj) {
@@ -52,7 +61,7 @@ export default Ember.Mixin.create({
         }
         else
         {
-          ary.pushObject({key: key, value: val});
+          ary.pushObject(Ember.Object.create({key: key, value: val}));
         }
       });
 
@@ -67,17 +76,25 @@ export default Ember.Mixin.create({
 
   labelArray: null,
 
+  userLabelArray: function() {
+    return (this.get('labelArray')||[]).filterProperty('isUser',true);
+  }.property('labelArray.@each.isUser'),
+
   initFields: function() {
     this._super();
     this.initLabels();
   },
 
   initLabels: function() {
-    var obj = this.get('instance.labels')||{};
+    var obj = this.get('primaryResource.labels')||{};
     var keys = Object.keys(obj);
     var out = [];
     keys.forEach(function(key) {
-      out.push({ key: key, value: obj[key] });
+      out.push(Ember.Object.create({
+        key: key,
+        value: obj[key],
+        isUser: key.indexOf('io.rancher') !== 0,
+      }));
     });
 
     this.set('labelArray', out);
@@ -92,7 +109,52 @@ export default Ember.Mixin.create({
         out[row.key] = row.value;
       }
     });
-    this.set('instance.labels', out);
+    this.set('primaryResource.labels', out);
   }.observes('labelArray.@each.{key,value}'),
 
+  getLabel: function(key) {
+    key = (key||'').toLowerCase();
+    var ary = this.get('labelArray');
+    var item;
+    for ( var i = 0 ; i < ary.get('length') ; i++ )
+    {
+      item = ary.objectAt(i);
+      if ( item.get('key').toLowerCase() === key )
+      {
+        return item;
+      }
+    }
+
+    return null;
+  },
+
+  setLabel: function(key, value, user) {
+    key = (key||'').toLowerCase();
+    var existing = this.getLabel(key);
+    if ( existing )
+    {
+      Ember.setProperties(existing,{
+        value: value,
+        isUser: !!user
+      });
+    }
+    else
+    {
+      existing = this.get('labelArray').pushObject(Ember.Object.create({
+        key: key,
+        value: value,
+        isUser: !!user
+      }));
+    }
+
+    return existing;
+  },
+
+  removeLabel: function(key) {
+    var existing = this.getLabel(key);
+    if ( existing )
+    {
+      this.get('labelArray').removeObject(existing);
+    }
+  },
 });

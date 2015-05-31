@@ -132,7 +132,7 @@ export default Ember.Mixin.create({
     else
     {
       this.setProperties({
-        uriMethod: 'OPTIONS',
+        uriMethod: 'GET',
         uriPath: '',
         uriVersion: 'HTTP/1.0',
         uriHost: ''

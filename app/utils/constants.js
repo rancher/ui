@@ -75,5 +75,6 @@ export default {
 
   LABEL: {
     SERVICE_NAME: 'io.rancher.service.name',
+    SCHED_GLOBAL: 'io.rancher.scheduler.global',
   },
 };
