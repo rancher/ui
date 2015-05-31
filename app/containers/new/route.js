@@ -8,7 +8,6 @@ export default Ember.Route.extend({
   },
 
   model: function(params/*, transition*/) {
-    var self = this;
     var store = this.get('store');
 
     var dependencies = [
@@ -23,10 +22,12 @@ export default Ember.Route.extend({
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then(function(results) {
       var allHosts = results[0];
 
-      var data;
+      var data, healthCheckData;
       if ( params.containerId )
       {
         data = results[1].serializeForNew();
+        healthCheckData = data.healthCheck;
+        delete  data.healthCheck;
       }
       else
       {
@@ -38,8 +39,25 @@ export default Ember.Route.extend({
         };
       }
 
+      if ( !healthCheckData )
+      {
+        healthCheckData = {
+          type: 'instanceHealthCheck',
+          interval: 2000,
+          responseTimeout: 2000,
+          healthyThreshold: 2,
+          unhealthyThreshold: 3,
+          requestLine: null,
+        };
+      }
+
+      var healthCheck = store.createRecord(healthCheckData);
+      var instance = store.createRecord(data);
+      instance.set('healthCheck', healthCheck);
+
       return Ember.Object.create({
-        instance: self.get('store').createRecord(data),
+        instance: instance,
+        healthCheck: healthCheck,
         allHosts: allHosts,
       });
     });

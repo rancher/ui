@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Mixin.create({
   primaryResource: Ember.computed.alias('model.service'),
@@ -15,6 +16,7 @@ export default Ember.Mixin.create({
   initFields: function() {
     this._super();
     this.initServiceLinks();
+    this.initScheduling();
   },
 
   // ----------------------------------
@@ -69,6 +71,26 @@ export default Ember.Mixin.create({
 
     this.set('serviceLinksArray', out);
   },
+
+  // ----------------------------------
+  // Scheduling
+  // ----------------------------------
+  isGlobal: null,
+  initScheduling: function() {
+    var existing = this.get(C.LABEL.SCHED_GLOBAL);
+    this.set('isGlobal', !!existing);
+  },
+
+  globalDidChange: function() {
+    if ( this.get('isGlobal') )
+    {
+      this.setLabel(C.LABEL.SCHED_GLOBAL,'true');
+    }
+    else
+    {
+      this.removeLabel(C.LABEL.SCHED_GLOBAL);
+    }
+  }.observes('isGlobal'),
 
   // ----------------------------------
   // Save

@@ -9,6 +9,15 @@ export default Ember.Route.extend({
       store.findAll('loadbalancerconfig'),
     ];
 
+    var healthCheck = store.createRecord({
+      type: 'loadBalancerHealthCheck',
+      interval: 2000,
+      responseTimeout: 2000,
+      healthyThreshold: 2,
+      unhealthyThreshold: 3,
+      requestLine: null,
+    });
+
     return Ember.RSVP.all(dependencies, 'Load dependencies').then(function(results) {
       return {
         allHosts: results[0],
@@ -19,17 +28,11 @@ export default Ember.Route.extend({
         }),
         config: store.createRecord({
           type: 'loadBalancerConfig',
-          healthCheck: store.createRecord({
-            type: 'loadBalancerHealthCheck',
-            interval: 2000,
-            responseTimeout: 2000,
-            healthyThreshold: 2,
-            unhealthyThreshold: 3,
-            requestLine: null,
-          }),
+          healthCheck: healthCheck,
           appCookieStickinessPolicy: null,
           lbCookieStickinessPolicy: null,
         }),
+        healthCheck: healthCheck,
         appCookie: store.createRecord({
           type: 'loadBalancerAppCookieStickinessPolicy',
           mode: 'path_parameters',
