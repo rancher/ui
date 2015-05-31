@@ -21,7 +21,7 @@ export default Ember.Route.extend({
       var environment = results[1];
       var existing = results[2];
 
-      var launchConfig, lbConfig, balancer, appCookie, lbCookie;
+      var launchConfig, lbConfig, balancer, appCookie, lbCookie, healthCheck;
       if ( existing )
       {
         balancer = existing.cloneForNew();
@@ -31,6 +31,11 @@ export default Ember.Route.extend({
 
         lbConfig = balancer.get('loadBalancerConfig');
         lbConfig.set('type','loadBalancerConfig');
+        lbConfig = store.createRecord(lbConfig);
+        lbConfig.set('loadBalancerListeners', balancer.get('loadBalancerListeners'));
+
+        healthCheck = lbConfig.get('healthCheck');
+        lbConfig.set('type','healthCheck');
         lbConfig = store.createRecord(lbConfig);
         lbConfig.set('loadBalancerListeners', balancer.get('loadBalancerListeners'));
 
@@ -58,16 +63,18 @@ export default Ember.Route.extend({
           stdinOpen: true,
         });
 
+        healthCheck = store.createRecord({
+          type: 'loadBalancerHealthCheck',
+          interval: 2000,
+          responseTimeout: 2000,
+          healthyThreshold: 2,
+          unhealthyThreshold: 3,
+          requestLine: null,
+        });
+
         lbConfig = store.createRecord({
           type: 'loadBalancerConfig',
-          healthCheck: store.createRecord({
-            type: 'loadBalancerHealthCheck',
-            interval: 2000,
-            responseTimeout: 2000,
-            healthyThreshold: 2,
-            unhealthyThreshold: 3,
-            requestLine: null,
-          }),
+          healthCheck: healthCheck,
           appCookieStickinessPolicy: null,
           lbCookieStickinessPolicy: null,
         });
@@ -107,6 +114,7 @@ export default Ember.Route.extend({
         allHosts: allHosts,
         environment: environment,
         balancer: balancer,
+        healthCheck: healthCheck,
         config: lbConfig,
         launchConfig: launchConfig,
         appCookie: appCookie,

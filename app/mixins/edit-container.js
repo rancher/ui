@@ -2,8 +2,9 @@ import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import ShellQuote from 'npm:shell-quote';
 import Util from 'ui/utils/util';
+import EditHealthCheck from 'ui/mixins/edit-healthcheck';
 
-export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
+export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, {
   needs: ['hosts'],
   queryParams: ['tab','hostId','advanced'],
   tab: 'command',
@@ -158,6 +159,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
       this.initEntryPoint();
       this.initMemory();
       this.initLabels();
+      this.initHealthCheck();
     }
   },
 
@@ -838,6 +840,16 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
       // 'ports' and 'instanceLinks' need to be strings for create
       this.set('instance.ports', this.get('portsAsStrArray'));
       this.set('instance.instanceLinks', this.get('linksAsMap'));
+
+      var healthCheck = this.get('healthCheck');
+      if ( healthCheck.get('port') )
+      {
+        this.set('instance.healthCheck', healthCheck);
+      }
+      else
+      {
+        this.set('instance.healthCheck', null);
+      }
     }
 
     return this._super();

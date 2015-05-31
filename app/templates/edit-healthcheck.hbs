@@ -1,3 +1,14 @@
+{{#if isInstanceCheck}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label for="checkPort" class="form-control-static">Port*</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{input type="number" min="1" max="65535" id="checkPort" classNames="form-control" placeholder="e.g. 80" value=healthCheck.port}}
+    </div>
+  </div>
+{{/if}}
+
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
     <label for="uri" class="form-control-static">HTTP Check</label>
@@ -54,7 +65,7 @@
   </div>
   <div class="col-sm-12 col-md-3">
     <div class="input-group">
-      {{input type="number" min=1 step=1000 id="interval" classNames="form-control" value=config.healthCheck.interval}}
+      {{input type="number" min=1 step=1000 id="interval" classNames="form-control" value=healthCheck.interval}}
       <span class="input-group-addon">ms</span>
     </div>
   </div>
@@ -63,7 +74,7 @@
   </div>
   <div class="col-sm-12 col-md-3">
     <div class="input-group">
-      {{input type="number" min=1 step=100 id="responseTimeout" classNames="form-control" value=config.healthCheck.responseTimeout}}
+      {{input type="number" min=1 step=100 id="responseTimeout" classNames="form-control" value=healthCheck.responseTimeout}}
       <span class="input-group-addon">ms</span>
     </div>
   </div>
@@ -74,12 +85,12 @@
     <label for="healthyThreshold" class="form-control-static">Healthy Threshold</label>
   </div>
   <div class="col-sm-12 col-md-2">
-    {{input type="number" min=1 step=1 id="healthyThreshold" classNames="form-control" value=config.healthCheck.healthyThreshold}}
+    {{input type="number" min=1 step=1 id="healthyThreshold" classNames="form-control" value=healthCheck.healthyThreshold}}
   </div>
   <div class="col-sm-12 col-md-3 form-label">
     <label for="unhealthyThreshold" class="form-control-static">Unhealthy Threshold</label>
   </div>
   <div class="col-sm-12 col-md-2">
-    {{input type="number" min=1 step=1 id="unhealthyThreshold" classNames="form-control" value=config.healthCheck.unhealthyThreshold}}
+    {{input type="number" min=1 step=1 id="unhealthyThreshold" classNames="form-control" value=healthCheck.unhealthyThreshold}}
   </div>
 </div>
