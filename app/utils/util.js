@@ -58,7 +58,7 @@ export function escapeHtml(html) {
 }
 
 export function addQueryParam(url, key, val) {
-  return url + (url.indexOf('?') >= 0 ? '&' : '?') + key + '=' + encodeURIComponent(val);
+  return url + (url.indexOf('?') >= 0 ? '&' : '?') + encodeURIComponent(key) + '=' + encodeURIComponent(val);
 }
 
 export function addQueryParams(url, params) {

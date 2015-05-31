@@ -10,6 +10,6 @@ export default Ember.View.extend({
 
     var width = this.$('#providers LI').width();
     this.$('#providers').css('margin','0 auto');
-    this.$('#providers').css('max-width', Math.min(numDrivers, 5) * width + 'px');
+    this.$('#providers').css('max-width', Math.min(numDrivers, 6) * width + 'px');
   }
 });

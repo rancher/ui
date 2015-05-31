@@ -1,5 +1,5 @@
 import Overlay from "ui/overlay/view";
-import { addAction } from 'ui/containers/new/view';
+import { addAction } from 'ui/utils/add-view-action';
 
 export default Overlay.extend({
   actions: {
