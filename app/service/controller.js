@@ -20,12 +20,12 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
 
     scaleUp: function() {
       this.incrementProperty('scale');
-      return this.save();
+      this.saveScale();
     },
 
     scaleDown: function() {
       this.decrementProperty('scale');
-      return this.save();
+      this.saveScale();
     },
 
     clone: function() {
@@ -42,6 +42,20 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
         environmentId: this.get('environmentId'),
       }});
     },
+  },
+
+  scaleTimer: null,
+  saveScale: function() {
+    if ( this.get('scaleTimer') )
+    {
+      Ember.run.cancel(this.get('scaleTimer'));
+    }
+
+    var timer = Ember.run.later(this, function() {
+      this.save();
+    }, 500);
+
+    this.set('scaleTimer', timer);
   },
 
   availableActions: function() {
@@ -64,6 +78,8 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
   displayType: function() {
     return (this.get('type').toLowerCase() === 'loadbalancerservice' ? 'Load Balancer' : 'Container');
   }.property('type'),
+
+  state: Ember.computed.alias('model.combinedState'),
 });
 
 ServiceController.reopenClass({
@@ -78,6 +94,7 @@ ServiceController.reopenClass({
     'inactive':         {icon: 'fa fa-circle',      color: 'text-danger'},
     'removing':         {icon: 'ss-trash',          color: 'text-danger'},
     'removed':          {icon: 'ss-trash',          color: 'text-danger'},
+    'degraded':         {icon: 'ss-notifications',  color: 'text-danger'},
   }
 });
 

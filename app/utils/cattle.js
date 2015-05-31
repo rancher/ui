@@ -414,9 +414,12 @@ var TransitioningResourceController = ResourceController.extend({
     },
 
   },
+
   displayState: function() {
     var state = this.get('state')||'';
-    return state.substr(0,1).toUpperCase() + state.substr(1);
+    return state.split(/-/).map((word) => {
+      return Util.ucFirst(word);
+    }).join('-');
   }.property('state'),
 
   showTransitioningMessage: function() {
