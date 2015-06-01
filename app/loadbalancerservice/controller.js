@@ -48,7 +48,7 @@ LoadBalancerServiceController.reopenClass({
     'requested':        {icon: 'ss-tag',            color: 'text-danger'},
     'registering':      {icon: 'ss-tag',            color: 'text-danger'},
     'activating':       {icon: 'ss-tag',            color: 'text-danger'},
-    'active':           {icon: 'ss-layergroup',     color: 'text-success'},
+    'active':           {icon: 'ss-fork',           color: 'text-success'},
     'deactivating':     {icon: 'ss-down',           color: 'text-danger'},
     'inactive':         {icon: 'fa fa-circle',      color: 'text-danger'},
     'removing':         {icon: 'ss-trash',          color: 'text-danger'},

@@ -4,17 +4,19 @@
 
   {{partial "container/edit-name"}}
 
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label>Scale</label>
+  {{#if hasScale}}
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label>Scale</label>
+      </div>
+      <div class="col-sm-2 col-md-1">
+        {{service.scale}}
+      </div>
+      <div class="col-sm-10 col-md-7">
+        {{input-slider value=service.scale valueMin=1 valueMax=11 scaleMin=0 scaleMax=12}}
+      </div>
     </div>
-    <div class="col-sm-2 col-md-1">
-      {{service.scale}}
-    </div>
-    <div class="col-sm-10 col-md-7">
-      {{input-slider value=service.scale valueMin=1 valueMax=11 scaleMin=0 scaleMax=12}}
-    </div>
-  </div>
+  {{/if}}
 
   {{partial "form-divider"}}
 

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
-var ServiceController = Cattle.TransitioningResourceController.extend({
+var DnsServiceController = Cattle.TransitioningResourceController.extend({
   needs: ['environment'],
   environment: Ember.computed.alias('controllers.environment'),
 
@@ -16,32 +16,6 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
 
     edit: function() {
       this.transitionToRoute('service.edit', this.get('environmentId'), this.get('id'));
-    },
-
-    scaleUp: function() {
-      this.incrementProperty('scale');
-      this.saveScale();
-    },
-
-    scaleDown: function() {
-      this.decrementProperty('scale');
-      this.saveScale();
-    },
-
-    clone: function() {
-      var route;
-      switch ( this.get('type') )
-      {
-        case 'service':             route = 'service.new';          break;
-        case 'dnsService':          route = 'service.new-dns';      break;
-        case 'loadBalancerService': route = 'service.new-balancer'; break;
-        default: return void this.send('error','Unknown service type: ' + this.get('type'));
-      }
-
-      this.transitionToRoute(route, {queryParams: {
-        serviceId: this.get('id'),
-        environmentId: this.get('environmentId'),
-      }});
     },
   },
 
@@ -58,14 +32,6 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
 
     this.set('scaleTimer', timer);
   },
-
-  hasScale: function() {
-    return this.get('type') !== 'dnsService';
-  }.property('type'),
-
-  hasImage: function() {
-    return this.get('type') === 'service';
-  }.property('type'),
 
   availableActions: function() {
     var a = this.get('actions');
@@ -84,39 +50,15 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
     return choices;
   }.property('actions.{activate,deactivate,update,remove,purge}'),
 
-  displayType: function() {
-    var out;
-    switch ( this.get('type').toLowerCase() )
-    {
-      case 'loadbalancerservice': out = 'Load Balancer'; break;
-      case 'dnsservice':          out = 'DNS'; break;
-      default:                    out = 'Container'; break;
-    }
-
-    return out;
-  }.property('type'),
-
   state: Ember.computed.alias('model.combinedState'),
 });
 
-function activeIcon(service)
-{
-  var out = 'ss-layergroup';
-  switch ( service.get('type') )
-  {
-    case 'loadBalancerService': out = 'ss-fork';    break;
-    case 'dnsService':          out = 'ss-compass'; break;
-  }
-
-  return out;
-}
-
-ServiceController.reopenClass({
+DnsServiceController.reopenClass({
   stateMap: {
     'requested':        {icon: 'ss-tag',            color: 'text-danger'},
     'registering':      {icon: 'ss-tag',            color: 'text-danger'},
     'activating':       {icon: 'ss-tag',            color: 'text-danger'},
-    'active':           {icon: activeIcon,          color: 'text-success'},
+    'active':           {icon: 'ss-compass',        color: 'text-success'},
     'updating-active':  {icon: 'ss-tag',            color: 'text-success'},
     'updating-inactive':{icon: 'ss-tag',            color: 'text-danger'},
     'deactivating':     {icon: 'ss-down',           color: 'text-danger'},
@@ -127,4 +69,4 @@ ServiceController.reopenClass({
   }
 });
 
-export default ServiceController;
+export default DnsServiceController;

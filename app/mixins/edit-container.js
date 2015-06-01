@@ -3,8 +3,9 @@ import Cattle from 'ui/utils/cattle';
 import ShellQuote from 'npm:shell-quote';
 import Util from 'ui/utils/util';
 import EditHealthCheck from 'ui/mixins/edit-healthcheck';
+import EditLabels from 'ui/mixins/edit-labels';
 
-export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, {
+export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLabels, {
   needs: ['hosts'],
   queryParams: ['tab','hostId','advanced'],
   tab: 'command',

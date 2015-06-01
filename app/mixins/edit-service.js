@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import EditLabels from 'ui/mixins/edit-labels';
 
-export default Ember.Mixin.create({
+export default Ember.Mixin.create(EditLabels, {
   primaryResource: Ember.computed.alias('model.service'),
 
   actions: {

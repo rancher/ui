@@ -24,14 +24,16 @@
 {{/if}}
 
 <div class="clearfix no-resource-action-hover">
-  {{#each item in model.instances itemController="container"}}
-    {{container-subpod model=item}}
-  {{else}}
-    {{#unless showAdd}}
-      <div class="text-center text-muted" style="margin: 20px 0">No containers{{#if isInactive}} yet.  <a class="hand" {{action "activate" target=model}}>Start</a>{{/if}}</div>
-    {{/unless}}
-  {{/each}}
-  {{#if showAdd}}
-    {{add-subpod action="scaleUp" label="Scale Up"}}
+  {{#if hasBody}}
+    {{#each item in model.instances itemController="container"}}
+      {{container-subpod model=item}}
+    {{else}}
+      {{#unless showAdd}}
+        <div class="text-center text-muted" style="margin: 20px 0">No containers{{#if isInactive}} yet.  <a class="hand" {{action "activate" target=model}}>Start</a>{{/if}}</div>
+      {{/unless}}
+    {{/each}}
+    {{#if showAdd}}
+      {{add-subpod action="scaleUp" label="Scale Up"}}
+    {{/if}}
   {{/if}}
 </div>
