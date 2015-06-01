@@ -334,27 +334,30 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
     var out = [];
     var links = this.get('instance.instanceLinks')||[];
 
-    links.forEach(function(value) {
-      // Objects, from edit
-      if ( typeof value === 'object' )
-      {
-        out.push({
-          existing: (value.id ? true : false),
-          obj: value,
-          linkName: value.linkName,
-          targetInstanceId: value.targetInstanceId,
-        });
-      }
-      else
-      {
-        // Strings, from create maybe
-        var match = value.match(/^([^:]+):(.*)$/);
-        if ( match )
+    if ( Ember.isArray(links) )
+    {
+      links.forEach(function(value) {
+        // Objects, from edit
+        if ( typeof value === 'object' )
         {
-          out.push({linkName: match[1], targetInstanceId: match[2], existing: false});
+          out.push({
+            existing: (value.id ? true : false),
+            obj: value,
+            linkName: value.linkName,
+            targetInstanceId: value.targetInstanceId,
+          });
         }
-      }
-    });
+        else
+        {
+          // Strings, from create maybe
+          var match = value.match(/^([^:]+):(.*)$/);
+          if ( match )
+          {
+            out.push({linkName: match[1], targetInstanceId: match[2], existing: false});
+          }
+        }
+      });
+    }
 
     this.set('linksArray', out);
   },
