@@ -66,6 +66,7 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
   hasImage: function() {
     return this.get('type') === 'service';
   }.property('type'),
+  hasLabels: Ember.computed.alias('hasImage'),
 
   availableActions: function() {
     var a = this.get('actions');
