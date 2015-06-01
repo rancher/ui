@@ -112,7 +112,7 @@ EnvironmentController.reopenClass({
     'active':           {icon: 'ss-globe',          color: 'text-success'},
     'removing':         {icon: 'ss-trash',          color: 'text-danger'},
     'removed':          {icon: 'ss-trash',          color: 'text-danger'},
-    'degraded':         {icon: 'ss-notifications',  color: 'text-danger'},
+    'degraded':         {icon: 'ss-notifications',  color: 'text-warning'},
   }
 });
 
