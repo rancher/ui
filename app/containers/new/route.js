@@ -16,7 +16,7 @@ export default Ember.Route.extend({
 
     if ( params.containerId )
     {
-      dependencies.pushObject(store.find('container', params.containerId, {include: ['ports']}));
+      dependencies.pushObject(store.find('container', params.containerId, {include: ['ports','instanceLinks']}));
     }
 
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then(function(results) {
@@ -26,6 +26,16 @@ export default Ember.Route.extend({
       if ( params.containerId )
       {
         data = results[1].serializeForNew();
+        data.ports = (data.ports||[]).map((port) => {
+          delete port.id;
+          return port;
+        });
+
+        data.instanceLinks = (data.instanceLinks||[]).map((link) => {
+          delete link.id;
+          return link;
+        });
+
         healthCheckData = data.healthCheck;
         delete  data.healthCheck;
       }
