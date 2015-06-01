@@ -332,14 +332,14 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
 
   initLinks: function() {
     var out = [];
-    var links = this.get('instanceLinks')||[];
+    var links = this.get('instance.instanceLinks')||[];
 
     links.forEach(function(value) {
       // Objects, from edit
-      if ( value.id )
+      if ( typeof value === 'object' )
       {
         out.push({
-          existing: true,
+          existing: (value.id ? true : false),
           obj: value,
           linkName: value.linkName,
           targetInstanceId: value.targetInstanceId,
@@ -420,10 +420,10 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
 
     ports.forEach(function(value) {
       // Objects, from edit
-      if ( value.id )
+      if ( typeof value === 'object' )
       {
         out.push({
-          existing: true,
+          existing: (value.id ? true : false),
           obj: value,
           public: value.publicPort,
           private: value.privatePort,
