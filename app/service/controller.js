@@ -94,7 +94,7 @@ ServiceController.reopenClass({
     'inactive':         {icon: 'fa fa-circle',      color: 'text-danger'},
     'removing':         {icon: 'ss-trash',          color: 'text-danger'},
     'removed':          {icon: 'ss-trash',          color: 'text-danger'},
-    'degraded':         {icon: 'ss-notifications',  color: 'text-danger'},
+    'degraded':         {icon: 'ss-notifications',  color: 'text-warning'},
   }
 });
 
