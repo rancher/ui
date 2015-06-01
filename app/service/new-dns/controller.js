@@ -63,7 +63,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
 
     env.get('services').map((service) => {
       list.pushObject({
-        group: 'Environment: ' + envName,
+        group: 'Project: ' + envName,
         id: service.get('id'),
         name: service.get('name') || ('(' + service.get('id') + ')')
       });
