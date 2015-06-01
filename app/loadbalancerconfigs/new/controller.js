@@ -23,7 +23,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
       })
     ]);
 
-    this.initUri();
+    this.initHealthCheck();
   },
 
   didSave: function() {

@@ -44,7 +44,8 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
         algorithm: 'roundrobin',
       })
     ]);
-    this.initUri();
+
+    this.initHealthCheck();
   },
 
   useExisting: 'no',

@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import EditLoadBalancerConfig from 'ui/mixins/edit-loadbalancerconfig';
+import EditHealthCheck from 'ui/mixins/edit-healthcheck';
 
-export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBalancerConfig, {
+export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBalancerConfig, EditHealthCheck, {
   queryParams: ['environmentId','serviceId','tab'],
   environmentId: null,
   serviceId: null,
@@ -24,7 +25,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
     this._super();
     this.initListeners();
     this.initTargets();
-    this.initUri();
+    this.initHealthCheck();
     this.initStickiness();
   },
 
