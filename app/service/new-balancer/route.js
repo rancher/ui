@@ -140,7 +140,7 @@ export default Ember.Route.extend({
 
   actions: {
     cancel: function() {
-      this.transitionTo('loadbalancers');
+      this.goToPrevious();
     },
   }
 });

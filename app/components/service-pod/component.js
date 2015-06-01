@@ -16,7 +16,14 @@ export default Ember.Component.extend({
   }.property('model.state'),
 
   isInactive: Ember.computed.equal('model.state','inactive'),
-  showAdd: Ember.computed.alias('isActive'),
+
+  hasBody: function() {
+    return this.get('model.type') !== 'dnsService';
+  }.property('model.type'),
+
+  showAdd: function() {
+    return this.get('isActive') && this.get('model.type') !== 'dnsService';
+  }.property('isActive','model.type'),
 
   stateBackground: function() {
     return this.get('model.stateColor').replace("text-","bg-");

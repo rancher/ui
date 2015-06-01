@@ -26,42 +26,48 @@
         <label>Type</label>
         {{displayType}}
       </li>
-      <li>
-        <label>Scale</label>
-        {{scale}}
-        &nbsp;
-        &nbsp;
-        <button class="btn btn-default btn-xs" {{action "scaleDown"}}><i class="ss-hyphen"></i></button>
-        <button class="btn btn-default btn-xs" {{action "scaleUp"}}><i class="ss-plus"></i></button>
-      </li>
 
-      <li>
-        <label>Image</label>
-        <span class="force-wrap">
-          {{display-image launchConfig.imageUuid}} {{zero-clipboard text=launchConfig.imageUuid}}
-        </span>
-      </li>
+      {{#if hasScale}}
+        <li>
+          <label>Scale</label>
+          {{scale}}
+          &nbsp;
+          &nbsp;
+          <button class="btn btn-default btn-xs" {{action "scaleDown"}}><i class="ss-hyphen"></i></button>
+          <button class="btn btn-default btn-xs" {{action "scaleUp"}}><i class="ss-plus"></i></button>
+        </li>
+      {{/if}}
 
-      <li>
-        <label>Entrypoint</label>
-        <span class="force-wrap">
-          {{#if launchConfig.entryPoint}}
-            {{launchConfig.entryPoint}}
-          {{else}}
-            <span class="text-muted">None</span>
-          {{/if}}
-        </span>
-      </li>
-      <li>
-        <label>Command</label>
-        <span class="force-wrap">
-          {{#if launchConfig.command}}
-            {{launchConfig.command}}
-          {{else}}
-            <span class="text-muted">None</span>
-          {{/if}}
-        </span>
-      </li>
+      {{#if hasImage}}
+        <li>
+          <label>Image</label>
+          <span class="force-wrap">
+            {{display-image launchConfig.imageUuid}} {{zero-clipboard text=launchConfig.imageUuid}}
+          </span>
+        </li>
+
+        <li>
+          <label>Entrypoint</label>
+          <span class="force-wrap">
+            {{#if launchConfig.entryPoint}}
+              {{launchConfig.entryPoint}}
+            {{else}}
+              <span class="text-muted">None</span>
+            {{/if}}
+          </span>
+        </li>
+
+        <li>
+          <label>Command</label>
+          <span class="force-wrap">
+            {{#if launchConfig.command}}
+              {{launchConfig.command}}
+            {{else}}
+              <span class="text-muted">None</span>
+            {{/if}}
+          </span>
+        </li>
+      {{/if}}
 
     </ul>
   </section>

@@ -53,12 +53,22 @@ export function initialize(/* container, application */) {
 
     validationErrors: function() {
       var errors = [];
-      var type = normalizeType(this.get('type'));
+      var type = this.get('type');
+      if ( type )
+      {
+        type = normalizeType(this.get('type'));
+      }
+      else
+      {
+        console.warn('No type found to validate', this);
+        return [];
+      }
+
       var schema = this.get('store').getById('schema', type);
       if ( !schema )
       {
         console.warn('No schema found to validate', type, this);
-        return null;
+        return [];
       }
 
       // Trim all the values to start so that empty strings become nulls

@@ -1,12 +1,7 @@
-import Cattle from 'ui/utils/cattle';
+import Service from 'ui/service/model';
 
-var LoadBalancerService = Cattle.TransitioningResource.extend({
+var LoadBalancerService = Service.extend({
   type: 'loadBalancerService',
-
-  consumedServicesUpdated: 0,
-  onConsumedServicesChanged: function() {
-    this.incrementProperty('consumedServicesUpdated');
-  }.observes('consumedservices.@each.{id,name,state}'),
 });
 
 LoadBalancerService.reopenClass({

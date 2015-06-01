@@ -112,6 +112,7 @@ Router.map(function() {
     this.resource('services', function() {
       this.resource('service.new', {path: '/projects/add-service'});
       this.resource('service.new-balancer', {path: '/projects/add-balancer'});
+      this.resource('service.new-dns', {path: '/projects/add-dns'});
       this.resource('environments', {path: '/projects'}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
