@@ -39,6 +39,7 @@ export default Ember.Route.extend({
           serviceData = serviceOrContainer.serializeForNew();
           instanceData = serviceData.launchConfig;
           delete serviceData.launchConfig;
+          delete serviceData.instances;
         }
         else
         {

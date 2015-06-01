@@ -26,7 +26,7 @@ export default Ember.Mixin.create(EditLabels, {
   // ----------------------------------
   serviceChoices: function() {
     var env = this.get('selectedEnvironment');
-    var group = 'Environment: ' + (env.get('name') || '('+env.get('id')+')');
+    var group = 'Project: ' + (env.get('name') || '('+env.get('id')+')');
 
     var list = (env.get('services')||[]).map((service) => {
       var serviceLabel = (service.get('name') || '('+service.get('id')+')');
