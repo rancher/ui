@@ -4,6 +4,7 @@ import EditLabels from 'ui/mixins/edit-labels';
 
 export default Ember.Mixin.create(EditLabels, {
   primaryResource: Ember.computed.alias('model.service'),
+  labelResource: Ember.computed.alias('model.service.launchConfig'),
 
   actions: {
     addServiceLink: function() {

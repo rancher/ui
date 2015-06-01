@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
+  labelResource: Ember.computed.alias('primaryResource'),
+
   actions: {
     addLabel: function() {
       this.get('labelArray').pushObject(Ember.Object.create({
@@ -86,7 +88,7 @@ export default Ember.Mixin.create({
   },
 
   initLabels: function() {
-    var obj = this.get('primaryResource.labels')||{};
+    var obj = this.get('labelResource.labels')||{};
     var keys = Object.keys(obj);
     var out = [];
     keys.forEach(function(key) {
@@ -109,7 +111,7 @@ export default Ember.Mixin.create({
         out[row.key] = row.value;
       }
     });
-    this.set('primaryResource.labels', out);
+    this.set('labelResource.labels', out);
   }.observes('labelArray.@each.{key,value}'),
 
   getLabel: function(key) {
