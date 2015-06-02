@@ -4,7 +4,7 @@ import C from 'ui/utils/constants';
 export default Ember.ObjectController.extend({
   lastRoute: 'hosts.new.digitalocean',
   drivers: function() {
-    var hasOpenStack = this.get('store').hasRecordFor('schema','openstackconfig');
+    var hasOpenStack = this.get('store').hasRecordFor('schema','openstackconfig') && false;
     var hasAmazon = this.get('store').hasRecordFor('schema','amazonec2config');
     var hasPacket = this.get('store').hasRecordFor('schema','packetconfig');
     var hasRackSpace = this.get('store').hasRecordFor('schema','rackspaceconfig');
