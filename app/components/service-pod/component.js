@@ -1,7 +1,10 @@
 import Ember from 'ember';
+import ReadLabels from 'ui/mixins/read-labels';
+import C from 'ui/utils/constants';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(ReadLabels, {
   model: null,
+  labelResource: Ember.computed.alias('model.launchConfig'),
   classNames: ['pod','service','resource-action-hover'],
   classNameBindings: ['stateBorder'],
 
@@ -22,7 +25,14 @@ export default Ember.Component.extend({
   }.property('model.type'),
 
   showAdd: function() {
-    return this.get('isActive') && this.get('model.type') !== 'dnsService';
+    if ( this.get('isActive') && this.get('model.type') !== 'dnsService' )
+    {
+      return this.getLabel(C.LABEL.SCHED_GLOBAL) === null;
+    }
+    else
+    {
+      return false;
+    }
   }.property('isActive','model.type'),
 
   stateBackground: function() {
