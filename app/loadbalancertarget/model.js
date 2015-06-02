@@ -24,7 +24,7 @@ var LoadBalancerTarget = Cattle.TransitioningResource.extend({
 
 LoadBalancerTarget.reopenClass({
   pollTransitioningDelay: 1000,
-  pollTransitioningInterval: 5000,
+  pollTransitioningInterval: 10000,
 });
 
 export default LoadBalancerTarget;

@@ -77,10 +77,12 @@ export default Ember.Mixin.create(EditLabels, {
   // ----------------------------------
   // Scheduling
   // ----------------------------------
-  isGlobal: null,
+  isScalePlural: Ember.computed.gt('service.scale', 1),
+  isGlobalStr: null,
+  isGlobal: Ember.computed.equal('isGlobalStr','yes'),
   initScheduling: function() {
-    var existing = this.get(C.LABEL.SCHED_GLOBAL);
-    this.set('isGlobal', !!existing);
+    var existing = this.getLabel(C.LABEL.SCHED_GLOBAL);
+    this.set('isGlobalStr', (!!existing ? 'yes' : 'no'));
   },
 
   globalDidChange: function() {
