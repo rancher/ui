@@ -15,6 +15,7 @@ export default {
   PREFS: {
     ACCESS_WARNING: 'accessWarning',
     PROJECT_DEFAULT: 'defaultProjectId',
+    I_HATE_SPINNERS: 'iHateSpinners',
   },
 
   TOKEN_TO_SESSION_KEYS: ['accountId', 'defaultProject','jwt','orgs','teams','user','userType'],
