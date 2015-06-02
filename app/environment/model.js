@@ -7,9 +7,17 @@ var Environment = Cattle.TransitioningResource.extend({
     // Get the state of each instance
     var services = this.get('services')||[];
     var healthy = 0;
+    var unremoved = 0;
     services.forEach((service) => {
       var resource = service.get('state');
       var health = service.get('healthState');
+
+      if ( ['removing','removed','purging','purged'].indexOf(resource) >= 0 )
+      {
+        return;
+      }
+
+      unremoved++;
 
       if ( ['running','active','updating-active'].indexOf(resource) >= 0 && health === 'healthy' )
       {
@@ -17,7 +25,7 @@ var Environment = Cattle.TransitioningResource.extend({
       }
     });
 
-    if ( healthy >= services.get('length') )
+    if ( healthy >= unremoved )
     {
       return 'healthy';
     }
