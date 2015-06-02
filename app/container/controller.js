@@ -87,6 +87,11 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
 
   availableActions: function() {
     var a = this.get('actions');
+    if ( !a )
+    {
+      return [];
+    }
+
     var isSystem = this.get('systemContainer') !== null;
     var isService = Object.keys(this.get('labels')||{}).indexOf(C.LABEL.SERVICE_NAME) >= 0;
 
