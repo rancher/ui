@@ -61,7 +61,14 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     if ( store.hasRecordFor('schema','userpreference') )
     {
       this.set('app.hasUserPreferences', true);
-      return this.get('store').find('userpreference', null, {forceReload: true});
+      return this.get('store').find('userpreference', null, {forceReload: true}).then((prefs) => {
+        if ( this.get('prefs.'+C.PREFS.I_HATE_SPINNERS) )
+        {
+          $('BODY').addClass('no-spin');
+        }
+
+        return prefs;
+      });
     }
     else
     {

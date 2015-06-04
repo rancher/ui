@@ -131,7 +131,15 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
           ary.removeObject(item);
         }
       });
-    }
+    },
+
+    addSchedulingRule: function() {
+      this.send('addSystemLabel');
+    },
+
+    removeSchedulingRule: function(obj) {
+      this.send('removeLabel', obj);
+    },
   },
 
   // ----------------------------------
@@ -161,6 +169,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
       this.initMemory();
       this.initLabels();
       this.initHealthCheck();
+      this.initScheduling();
     }
   },
 
@@ -835,6 +844,36 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
   }.observes('strEntryPoint'),
 
   // ----------------------------------
+  // Scheduling
+  // ----------------------------------
+  initScheduling: function() {
+    if ( this.get('instance.requestedHostId') )
+    {
+      this.set('isRequestedHost',true);
+    }
+    else
+    {
+      this.set('isRequestedHost',false);
+    }
+
+    // @TODO import existing for clone
+  },
+
+  isRequestedHost: null,
+  isRequestedHostDidChange: function() {
+    if ( this.get('isRequestedHost') )
+    {
+      if ( !this.get('instance.requestedHostId') )
+      {
+        this.set('instance.requestedHostId', this.get('hostChoices.firstObject.id'));
+      }
+    }
+    else
+    {
+      this.set('instance.requestedHostId', null);
+    }
+  }.observes('isRequestedHost'),
+
   // ----------------------------------
   // Save
   // ----------------------------------

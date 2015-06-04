@@ -1,0 +1,125 @@
+<td><div class="form-control-static input-sm">The host</div></td>
+<td>
+  {{view "select"
+    class="form-control input-sm"
+    content=schedulingRuleSuffixChoices
+    value=suffix
+    optionValuePath="content.value"
+    optionLabelPath="content.label"
+  }}
+</td>
+<td><div class="form-control-static text-center input-sm">have a</div></td>
+<td>
+  {{view "select"
+    class="form-control input-sm"
+    content=schedulingRuleKindChoices
+    value=kind
+    optionValuePath="content.value"
+    optionLabelPath="content.label"
+  }}
+</td>
+<td>
+  {{#if (not (or (eq kind "service_name") (eq kind "container_name")))}}
+    <div class="form-control-static text-center input-sm">of</div>
+  {{/if}}
+</td>
+<td>
+  {{#if (eq kind "host_label")}}
+    <div class="input-group">
+      {{input type="text" class="form-control input-sm" value=userKey}}
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+          {{#each key in hostLabelKeyChoices}}
+            <li><a {{action "setKey" key}}>{{key}}</a></li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+  {{/if}}
+  {{#if (eq kind "container_label")}}
+    <div class="input-group">
+      {{input type="text" class="form-control input-sm" value=userKey}}
+      <div class="input-group-btn">
+        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+          {{#each key in containerLabelKeyChoices}}
+            <li><a {{action "setKey" key}}>{{key}}</a></li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+  {{/if}}
+</td>
+<td>
+  {{#if (not (or (eq kind "service_name") (eq kind "container_name")))}}
+    <div class="form-control-static text-center input-sm">=</div>
+  {{/if}}
+</td>
+<td>
+  {{#if (eq kind "host_label")}}
+    <div {{bind-attr class="hostLabelValueChoices:input-group"}}>
+      {{input type="text" class="form-control input-sm" value=userValue}}
+      {{#if hostLabelValueChoices.length}}
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            {{#each value in hostLabelValueChoices}}
+              <li><a {{action "setValue" value}}>{{value}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
+      {{/if}}
+    </div>
+  {{/if}}
+  {{#if (eq kind "container_label")}}
+    <div {{bind-attr class="containerLabelValueChoices:input-group"}}>
+      {{input type="text" class="form-control input-sm" value=userValue}}
+      {{#if containerLabelValueChoices.length}}
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            {{#each value in containerLabelValueChoices}}
+              <li><a {{action "setValue" value}}>{{value}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
+      {{/if}}
+    </div>
+  {{/if}}
+  {{#if (eq kind "service_name")}}
+    <div {{bind-attr class="serviceValueChoices:input-group"}}>
+      {{input type="text" class="form-control input-sm" value=userValue}}
+       {{#if serviceValueChoices.length}}
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            {{#each value in serviceValueChoices}}
+              <li><a {{action "setValue" value}}>{{value}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
+      {{/if}}
+    </div>
+  {{/if}}
+  {{#if (eq kind "container_name")}}
+    <div {{bind-attr class="containerValueChoices:input-group"}}>
+      {{input type="text" class="form-control input-sm" value=userValue}}
+       {{#if containerValueChoices.length}}
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            {{#each value in containerValueChoices}}
+              <li><a {{action "setValue" value}}>{{value}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
+      {{/if}}
+    </div>
+  {{/if}}
+</td>
+<td class="text-right">
+  <div class="form-control-static input-sm">
+    <button {{action "remove"}} class="btn-circle-x" type="button" tabindex="-1"></button>
+  </div>
+</td>

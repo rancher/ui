@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Mixin.create({
   labelResource: Ember.computed.alias('primaryResource'),
@@ -82,6 +83,10 @@ export default Ember.Mixin.create({
     return (this.get('labelArray')||[]).filterProperty('isUser',true);
   }.property('labelArray.@each.isUser'),
 
+  systemLabelArray: function() {
+    return (this.get('labelArray')||[]).filterProperty('isUser',false);
+  }.property('labelArray.@each.isUser'),
+
   initFields: function() {
     this._super();
     this.initLabels();
@@ -95,7 +100,7 @@ export default Ember.Mixin.create({
       out.push(Ember.Object.create({
         key: key,
         value: obj[key],
-        isUser: key.indexOf('io.rancher') !== 0,
+        isUser: key.indexOf(C.LABEL.SYSTEM_PREFIX) !== 0,
       }));
     });
 
@@ -108,7 +113,11 @@ export default Ember.Mixin.create({
     this.get('labelArray').forEach(function(row) {
       if ( row.key )
       {
-        out[row.key] = row.value;
+        // System labels have to have a value before they're added, users ones can be just key.
+        if ( row.isUser || row.value )
+        {
+          out[row.key] = row.value;
+        }
       }
     });
     this.set('labelResource.labels', out);

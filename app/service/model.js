@@ -1,4 +1,5 @@
 import Cattle from 'ui/utils/cattle';
+import C from 'ui/utils/constants';
 
 var Service = Cattle.TransitioningResource.extend({
   type: 'service',
@@ -9,9 +10,12 @@ var Service = Cattle.TransitioningResource.extend({
   }.observes('consumedservices.@each.{id,name,state}'),
 
   healthState: function() {
+    var isGlobal = Object.keys(this.get('labels')||{}).indexOf(C.LABEL.SCHED_GLOBAL) >= 0;
+    var instances = this.get('instances')||[];
+
     // Get the state of each instance
     var healthy = 0;
-    (this.get('instances')||[]).forEach((instance) => {
+    instances.forEach((instance) => {
       var resource = instance.get('state');
       var health = instance.get('healthState');
 
@@ -21,7 +25,7 @@ var Service = Cattle.TransitioningResource.extend({
       }
     });
 
-    if ( healthy >= this.get('scale') )
+    if ( (isGlobal && healthy >= instances.get('length')) || (!isGlobal && healthy >= this.get('scale')) )
     {
       return 'healthy';
     }
@@ -34,6 +38,7 @@ var Service = Cattle.TransitioningResource.extend({
   combinedState: function() {
     var service = this.get('state');
     var health = this.get('healthState');
+
     if ( ['active','updating-active'].indexOf(service) === -1 )
     {
       // If the service isn't active, return its state

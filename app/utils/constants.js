@@ -15,6 +15,7 @@ export default {
   PREFS: {
     ACCESS_WARNING: 'accessWarning',
     PROJECT_DEFAULT: 'defaultProjectId',
+    I_HATE_SPINNERS: 'iHateSpinners',
   },
 
   TOKEN_TO_SESSION_KEYS: ['accountId', 'defaultProject','jwt','orgs','teams','user','userType'],
@@ -74,7 +75,11 @@ export default {
   },
 
   LABEL: {
+    SYSTEM_PREFIX: 'io.rancher.',
     SERVICE_NAME: 'io.rancher.service.name',
     SCHED_GLOBAL: 'io.rancher.scheduler.global',
+    SCHED_CONTAINER: 'io.rancher.scheduler.affinity:container',
+    SCHED_HOST_LABEL: 'io.rancher.scheduler.affinity:host_label',
+    SCHED_CONTAINER_LABEL: 'io.rancher.scheduler.affinity:container_label',
   },
 };

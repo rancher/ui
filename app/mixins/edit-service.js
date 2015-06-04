@@ -77,24 +77,35 @@ export default Ember.Mixin.create(EditLabels, {
   // ----------------------------------
   // Scheduling
   // ----------------------------------
-  isScalePlural: Ember.computed.gt('service.scale', 1),
-  isGlobalStr: null,
-  isGlobal: Ember.computed.equal('isGlobalStr','yes'),
+  isGlobal: null,
   initScheduling: function() {
     var existing = this.getLabel(C.LABEL.SCHED_GLOBAL);
-    this.set('isGlobalStr', (!!existing ? 'yes' : 'no'));
+    this.set('isGlobal', !!existing);
+    this._super();
+    if ( this.get('isRequestedHost') )
+    {
+      this.set('isGlobal', false);
+    }
   },
 
   globalDidChange: function() {
     if ( this.get('isGlobal') )
     {
       this.setLabel(C.LABEL.SCHED_GLOBAL,'true');
+      this.set('isRequestedHost', false);
     }
     else
     {
       this.removeLabel(C.LABEL.SCHED_GLOBAL);
     }
   }.observes('isGlobal'),
+
+  isRequestedHostDidChangeGlobal: function() {
+    if ( this.get('isRequestedHost') )
+    {
+      this.set('isGlobal', false);
+    }
+  }.observes('isRequestedHost'),
 
   // ----------------------------------
   // Save

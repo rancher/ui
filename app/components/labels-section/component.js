@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   model: null,
@@ -8,7 +9,7 @@ export default Ember.Component.extend({
     var obj = this.get('model')||{};
     var keys = Ember.keys(obj);
     keys.forEach(function(key) {
-      var isUser = key.indexOf('io.rancher') !== 0;
+      var isUser = key.indexOf(C.LABEL.SYSTEM_PREFIX) !== 0;
       out.push(Ember.Object.create({
         key: key,
         value: obj[key],
