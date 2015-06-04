@@ -9,12 +9,21 @@ export default Ember.Component.extend({
     var obj = this.get('model')||{};
     var keys = Ember.keys(obj);
     keys.forEach(function(key) {
-      var isUser = key.indexOf(C.LABEL.SYSTEM_PREFIX) !== 0;
+      var type = 'user';
+      if ( key.indexOf(C.LABEL.SCHED_AFFINITY) === 0 )
+      {
+        type = 'affinity';
+      }
+      else if ( key.indexOf(C.LABEL.SYSTEM_PREFIX) === 0 )
+      {
+        type = 'system';
+      }
+
       out.push(Ember.Object.create({
         key: key,
         value: obj[key],
-        isUser: isUser,
-        kind: (isUser ? 'User' : 'System'),
+        type: type,
+        isUser: (type === 'user'),
       }));
     });
 

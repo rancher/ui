@@ -134,7 +134,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
     },
 
     addSchedulingRule: function() {
-      this.send('addSystemLabel');
+      this.send('addSystemLabel','','','affinity');
     },
 
     removeSchedulingRule: function(obj) {
@@ -167,7 +167,6 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
       this.initCommand();
       this.initEntryPoint();
       this.initMemory();
-      this.initLabels();
       this.initHealthCheck();
       this.initScheduling();
     }
