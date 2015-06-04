@@ -207,7 +207,6 @@ export default Ember.ObjectController.extend({
 
       setTimeout(() => {
         var headers = {};
-        headers[C.HEADER.AUTH] = undefined; // Explicitly not send auth
         headers[C.HEADER.PROJECT] = undefined; // Explicitly not send project
 
         this.get('store').rawRequest({

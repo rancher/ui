@@ -1,6 +1,5 @@
 import Cattle from 'ui/utils/cattle';
 import C from 'ui/utils/constants';
-import Util from 'ui/utils/util';
 
 export default Cattle.CollectionController.extend({
   needs: ['application','authenticated'],
@@ -26,12 +25,6 @@ export default Cattle.CollectionController.extend({
 
   endpointWithAuth: function() {
     var url = this.get('endpoint');
-
-    if ( this.get('app.authenticationEnabled') )
-    {
-      url = Util.addAuthorization(url, C.HEADER.AUTH_FAKE_USER, this.get('session.'+C.SESSION.TOKEN));
-    }
-
     return url;
   }.property('endpoint', 'session.'+C.SESSION.TOKEN,'session.'+C.SESSION.PROJECT)
 });

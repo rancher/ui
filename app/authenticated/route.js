@@ -361,11 +361,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     var url = "ws://"+window.location.host + this.get('app.wsEndpoint');
     var session = this.get('session');
-    var token = session.get(C.SESSION.TOKEN);
-    if ( token )
-    {
-      url = Util.addQueryParam(url, 'token', token);
-    }
 
     var projectId = session.get(C.SESSION.PROJECT);
     if ( projectId )

@@ -6,7 +6,6 @@ export function initialize(container, application) {
   var store = container.lookup('store:main');
   var github = container.lookup('github:main');
   var headers = {};
-  headers[C.HEADER.AUTH] = undefined; // Explicitly not send auth
   headers[C.HEADER.PROJECT] = undefined; // Explicitly not send project
 
   // Find out if auth is enabled

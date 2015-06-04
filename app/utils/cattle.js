@@ -26,8 +26,6 @@ var ResourceController = Ember.ObjectController.extend({
         url = url.replace(/(.*?\/v1)(.*)/,"$1/projects/"+projectId+"$2");
       }
 
-      url = Util.addAuthorization(url, C.HEADER.AUTH_FAKE_USER, this.get('session.'+C.SESSION.TOKEN)||'');
-
       window.open(url, '_blank');
     },
   },

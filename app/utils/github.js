@@ -2,6 +2,7 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
+import Cookie from 'ui/utils/cookie';
 
 export default Ember.Object.extend({
   find: function(type, id) {
@@ -72,16 +73,7 @@ export default Ember.Object.extend({
   },
 
   request: function(url) {
-    var headers = {};
-    var session = this.get('session');
-
-    var authValue = session.get(C.SESSION.TOKEN);
-    if ( authValue )
-    {
-      headers[C.HEADER.AUTH] = C.HEADER.AUTH_TYPE + ' ' + authValue;
-    }
-
-    return ajaxPromise({url: url, headers: headers, dataType: 'json'}, true).catch((obj) => {
+    return ajaxPromise({url: url, dataType: 'json'}, true).catch((obj) => {
       if ( obj.xhr.status === 401 )
       {
         this.send('logout',null,true);
@@ -166,6 +158,8 @@ export default Ember.Object.extend({
         }
       });
 
+      Cookie.set(C.HEADER.AUTH_TYPE, 'Bearer '+auth[C.SESSION.TOKEN], null, '/', null, window.location.protocol === 'https:');
+
       interesting[C.SESSION.LOGGED_IN] = true;
       session.setProperties(interesting);
       return res;
@@ -183,5 +177,7 @@ export default Ember.Object.extend({
 
     values[C.SESSION.LOGGED_IN] = false;
     this.get('session').setProperties(values);
+
+    Cookie.remove(C.HEADER.AUTH_TYPE);
   },
 });

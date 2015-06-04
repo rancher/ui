@@ -18,11 +18,11 @@ export default {
     I_HATE_SPINNERS: 'iHateSpinners',
   },
 
-  TOKEN_TO_SESSION_KEYS: ['accountId', 'defaultProject','jwt','orgs','teams','user','userType'],
+  TOKEN_TO_SESSION_KEYS: ['accountId', 'defaultProject','orgs','teams','user','userType'],
 
   HEADER: {
-    AUTH: 'authorization',
-    AUTH_TYPE: 'Bearer',
+    AUTH: 'cookie',
+    AUTH_TYPE: 'token',
     AUTH_FAKE_USER: 'x-api-bearer',
 
     PROJECT: 'x-api-project-id',

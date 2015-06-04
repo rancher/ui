@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
+import Cookie from 'ui/utils/cookie';
 
 export default Ember.Controller.extend({
   needs: ['application'],
@@ -13,7 +14,7 @@ export default Ember.Controller.extend({
 
   addAuthParams: function(url) {
     var session = this.get('session');
-    var token = session.get(C.SESSION.TOKEN);
+    var token = Cookie.get(C.HEADER.AUTH_TYPE);
     if ( token )
     {
       url = Util.addQueryParam(url, 'token', token);
