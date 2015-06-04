@@ -50,9 +50,9 @@
         </thead>
         <tbody>
           {{#each rule in labelArray}}
-            {{#unless rule.isUser}}
+            {{#if (eq rule.type "affinity")}}
               {{scheduling-rule-row rule=rule allHosts=allHosts remove="removeSchedulingRule"}}
-            {{/unless}}
+            {{/if}}
           {{/each}}
         </tbody>
       </table>

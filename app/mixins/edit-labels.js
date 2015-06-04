@@ -8,14 +8,21 @@ export default Ember.Mixin.create({
     addLabel: function() {
       this.get('labelArray').pushObject(Ember.Object.create({
         isUser: true,
+        type: 'user',
         key: '',
         value: '',
       }));
     },
 
-    addSystemLabel: function(key, value) {
+    addSystemLabel: function(key, value, type) {
+      if ( !type )
+      {
+        type = ((key||'').indexOf(C.LABEL.SCHED_AFFINITY) === 0 ? 'affinity' : 'system');
+      }
+
       this.get('labelArray').pushObject(Ember.Object.create({
         isUser: false,
+        type: type,
         key: key,
         value: value,
       }));
@@ -97,10 +104,21 @@ export default Ember.Mixin.create({
     var keys = Object.keys(obj);
     var out = [];
     keys.forEach(function(key) {
+      var type = 'user';
+      if ( key.indexOf(C.LABEL.SCHED_AFFINITY) === 0 )
+      {
+        type = 'affinity';
+      }
+      else if ( key.indexOf(C.LABEL.SYSTEM_PREFIX) === 0 )
+      {
+        type = 'system';
+      }
+
       out.push(Ember.Object.create({
         key: key,
         value: obj[key],
-        isUser: key.indexOf(C.LABEL.SYSTEM_PREFIX) !== 0,
+        type: type,
+        isUser: (type === 'user'),
       }));
     });
 
@@ -139,14 +157,25 @@ export default Ember.Mixin.create({
     return null;
   },
 
-  setLabel: function(key, value, user) {
+  setLabel: function(key, value) {
     key = (key||'').toLowerCase();
+    var type = 'user';
+    if ( key.indexOf(C.LABEL.SCHED_AFFINITY) === 0 )
+    {
+      type = 'affinity';
+    }
+    else if ( key.indexOf(C.LABEL.SYSTEM_PREFIX) === 0 )
+    {
+      type = 'system';
+    }
+
     var existing = this.getLabel(key);
     if ( existing )
     {
       Ember.setProperties(existing,{
         value: value,
-        isUser: !!user
+        type: type,
+        isUser: (type === 'user'),
       });
     }
     else
@@ -154,7 +183,8 @@ export default Ember.Mixin.create({
       existing = this.get('labelArray').pushObject(Ember.Object.create({
         key: key,
         value: value,
-        isUser: !!user
+        type: type,
+        isUser: (type === 'user'),
       }));
     }
 
