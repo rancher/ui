@@ -138,7 +138,11 @@ export default Ember.Mixin.create({
         }
       }
     });
-    this.set('labelResource.labels', out);
+
+    if ( this.get('labelResource') )
+    {
+      this.set('labelResource.labels', out);
+    }
   }.observes('labelArray.@each.{key,value}'),
 
   getLabel: function(key) {
