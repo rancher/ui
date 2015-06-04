@@ -4,10 +4,10 @@ export default Ember.Component.extend({
   tagName: 'input',
   type: 'radio',
   disabled: false,
-  attributeBindings: ['name', 'type', 'value', 'checked:checked', 'disabled:disabled'],
+  attributeBindings: ['name', 'type', 'checked:checked', 'disabled:disabled'],
 
   click : function() {
-    this.set('selection', this.$().val());
+    this.set('selection', this.get('value'));
   },
 
   checked : function() {

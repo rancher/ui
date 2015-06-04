@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Mixin.create({
   labelResource: null,
@@ -8,7 +9,7 @@ export default Ember.Mixin.create({
     var obj = this.get('labelResource.labels')||{};
     var keys = Ember.keys(obj).sort();
     keys.forEach(function(key) {
-      var isUser = key.indexOf('io.rancher') !== 0;
+      var isUser = key.indexOf(C.LABEL.SYSTEM_PREFIX) !== 0;
       out.push(Ember.Object.create({
         key: key,
         value: obj[key],
