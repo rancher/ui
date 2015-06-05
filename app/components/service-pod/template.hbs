@@ -35,12 +35,22 @@
     {{#each item in model.instances itemController="container"}}
       {{container-subpod model=item}}
     {{else}}
-      {{#unless showScaleUp}}
-        <div class="text-center text-muted" style="margin: 20px 0">No containers{{#if isInactive}} yet.  <a class="hand" {{action "activate" target=model}}>Start</a>{{/if}}</div>
-      {{/unless}}
+      <div class="text-center text-muted" style="margin: 20px 0">
+        No containers yet.
+        {{#if isInactive}}
+          <a class="hand" {{action "activate" target=model}}>Start</a>
+        {{else}}
+        {{/if}}
+      </div>
     {{/each}}
     {{#if showScaleUp}}
       {{add-subpod action="scaleUp" label="Scale Up"}}
+    {{/if}}
+  {{else}}
+    {{#if isInactive}}
+      <div class="text-center text-muted" style="margin: 20px 0">
+        Inactive.  <a class="hand" {{action "activate" target=model}}>Start</a>
+      </div>
     {{/if}}
   {{/if}}
 </div>

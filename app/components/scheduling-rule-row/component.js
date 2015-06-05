@@ -18,6 +18,7 @@ export default Ember.Component.extend({
 
   tagName: 'TR',
 
+  isGlobal: null,
   kind: null,
   suffix: null,
   userKey: null,
@@ -140,19 +141,56 @@ export default Ember.Component.extend({
     });
   }.observes('kind','suffix','userKey','userValue'),
 
-  schedulingRuleSuffixChoices: [
-    {label: 'must',       value: ''},
-    {label: 'should',     value: '_soft'},
-    {label: 'should not', value: '_soft_ne'},
-    {label: 'must not',   value: '_ne'},
-  ],
+  isGlobalChanged: function() {
+    if ( this.get('isGlobal') )
+    {
+      var kindChoices = this.get('schedulingRuleKindChoices').map((choice) => { return choice.value; });
 
-  schedulingRuleKindChoices: [
-    {label: 'host label',               value: 'host_label'},
-    {label: 'container with label',     value: 'container_label'},
-    {label: 'service with the name',    value: 'service_name'},
-    {label: 'container with the name',  value: 'container_name'},
-  ],
+      if ( kindChoices.indexOf(this.get('kind')) === -1 )
+      {
+        // This rule isn't allowed in global
+        this.send('remove');
+        return;
+      }
+
+      // 'Should' isn't allowed in global
+      this.set('suffix', this.get('suffix').replace(/_soft/,''));
+    }
+  }.observes('isGlobal'),
+
+  schedulingRuleSuffixChoices: function() {
+    var out = [
+      {label: 'must',       value: ''},
+    ];
+
+    if ( !this.get('isGlobal') )
+    {
+      out.pushObjects([
+        {label: 'should',     value: '_soft'},
+        {label: 'should not', value: '_soft_ne'},
+      ]);
+    }
+
+    out.push({label: 'must not',   value: '_ne'});
+    return out;
+  }.property('isGlobal'),
+
+  schedulingRuleKindChoices: function() {
+    var out = [
+      {label: 'host label',               value: 'host_label'},
+    ];
+
+    if ( !this.get('isGlobal') )
+    {
+      out.pushObjects([
+        {label: 'container with label',     value: 'container_label'},
+        {label: 'service with the name',    value: 'service_name'},
+        {label: 'container with the name',  value: 'container_name'},
+      ]);
+    }
+
+    return out;
+  }.property('isGlobal'),
 
   hostLabelKeyChoices: function() {
     var out = [];

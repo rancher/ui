@@ -94,6 +94,10 @@ export default Ember.Mixin.create({
     return (this.get('labelArray')||[]).filterProperty('isUser',false);
   }.property('labelArray.@each.isUser'),
 
+  affinityLabelArray: function() {
+    return (this.get('labelArray')||[]).filterProperty('type','affinity');
+  }.property('labelArray.@each.type'),
+
   initFields: function() {
     this._super();
     this.initLabels();

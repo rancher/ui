@@ -61,7 +61,6 @@ export default Ember.Mixin.create(EditLabels, {
         if ( id )
         {
           out.push(Ember.Object.create({
-            existing: true,
             obj: value,
             serviceId: id,
           }));
@@ -69,7 +68,7 @@ export default Ember.Mixin.create(EditLabels, {
       }
       else
       {
-        out.push(Ember.Object.create({serviceId: value, existing: false}));
+        out.push(Ember.Object.create({serviceId: value}));
       }
     });
 
