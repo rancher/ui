@@ -15,8 +15,10 @@
       <table class="table fixed no-lines no-top-padding tight small">
         <tr class="text-muted">
           <th>Destination Service</th>
-          <th width="30">&nbsp;</th>
-          <th>As Name</th>
+          {{#if (eq type "service")}}
+            <th width="30">&nbsp;</th>
+            <th>As Name</th>
+          {{/if}}
           <th width="30">&nbsp;</th>
         </tr>
         {{#each link in serviceLinksArray}}
@@ -32,20 +34,16 @@
                 optionGroupPath="group"
               }}
             </td>
-            <td class="text-center">
-              <p class="form-control-static"><i class="ss-right"></i></p>
-            </td>
-            <td>
-              {{#if link.existing}}
-                <p class="form-control-static input-sm text-muted">{{link.linkName}}</p>
-              {{else}}
+            {{#if (eq type "service")}}
+              <td class="text-center">
+                <p class="form-control-static"><i class="ss-right"></i></p>
+              </td>
+              <td>
                 {{input class="form-control input-sm" type="text" value=link.linkName placeholder="e.g. database"}}
-              {{/if}}
-            </td>
+              </td>
+            {{/if}}
             <td class="text-right">
-              {{#unless link.existing}}
-                <button {{action "removeServiceLink" link}} class="btn-circle-x" type="button" tabindex="-1"></button>
-              {{/unless}}
+              <button {{action "removeServiceLink" link}} class="btn-circle-x" type="button" tabindex="-1"></button>
             </td>
           </tr>
         {{/each}}

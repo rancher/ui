@@ -33,7 +33,7 @@
     <div class="form-control-static">
       <button class="btn-circle-plus" {{action "addSchedulingRule" target="view"}}></button>
     </div>
-    {{#if systemLabelArray.length}}
+    {{#if affinityLabelArray.length}}
       <table class="table fixed no-lines no-top-padding tight small">
         <thead>
           <tr class="text-muted">
@@ -51,7 +51,7 @@
         <tbody>
           {{#each rule in labelArray}}
             {{#if (eq rule.type "affinity")}}
-              {{scheduling-rule-row rule=rule allHosts=allHosts remove="removeSchedulingRule"}}
+              {{scheduling-rule-row rule=rule allHosts=allHosts remove="removeSchedulingRule" isGlobal=isGlobal}}
             {{/if}}
           {{/each}}
         </tbody>
