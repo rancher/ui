@@ -141,7 +141,10 @@ export default Ember.Mixin.create(EditLabels, {
   // ----------------------------------
   didSave: function() {
     var service = this.get('model.service');
-    return service.doAction('setservicelinks', {serviceLinks: this.get('serviceLinksAsMap')});
+    if ( service.get('type').toLowerCase() !== 'externalservice')
+    {
+      return service.doAction('setservicelinks', {serviceLinks: this.get('serviceLinksAsMap')});
+    }
   },
 
 });

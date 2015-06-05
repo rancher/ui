@@ -4,7 +4,7 @@
 
   {{partial "container/edit-name"}}
 
-  {{#if hasScale}}
+  {{#if canScale}}
     {{partial "form-divider"}}
 
     <div class="row">
@@ -28,7 +28,12 @@
 
   {{partial "form-divider"}}
 
-  {{partial "container/edit-services"}}
+  {{#if hasServiceLinks}}
+    {{partial "container/edit-services"}}
+  {{/if}}
+  {{#if hasTargetIp}}
+    {{partial "container/edit-targetip"}}
+  {{/if}}
 </section>
 
 {{partial "save-cancel"}}

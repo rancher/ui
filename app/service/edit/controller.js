@@ -1,9 +1,10 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import EditService from 'ui/mixins/edit-service';
+import EditTargetIp from 'ui/mixins/edit-targetip';
 import C from 'ui/utils/constants';
 
-export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditService, {
+export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditService, EditTargetIp, {
   editing: true,
 
   canScale: function() {
@@ -15,6 +16,14 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditService,
     {
       return false;
     }
+  }.property('service.type'),
+
+  hasServiceLinks: function() {
+    return this.get('service.type').toLowerCase() !== 'externalservice';
+  }.property('service.type'),
+
+  hasTargetIp: function() {
+    return this.get('service.type').toLowerCase() === 'externalservice';
   }.property('service.type'),
 
   doneSaving: function() {

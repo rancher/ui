@@ -85,11 +85,6 @@ var ServiceController = Cattle.TransitioningResourceController.extend(ReadLabels
 
   availableActions: function() {
     var a = this.get('actions');
-    var edit = !!a.update;
-    if ( this.get('type').toLowerCase() === 'externalservice' )
-    {
-      edit = false;
-    }
 
     var choices = [
       { label: 'Start',         icon: 'ss-play',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
@@ -99,7 +94,7 @@ var ServiceController = Cattle.TransitioningResourceController.extend(ReadLabels
       { divider: true },
       { label: 'View in API',   icon: '',             action: 'goToApi',      enabled: true },
       { label: 'Clone',         icon: 'ss-copier',    action: 'clone',        enabled: true },
-      { label: 'Edit',          icon: 'ss-write',     action: 'edit',         enabled: edit },
+      { label: 'Edit',          icon: 'ss-write',     action: 'edit',         enabled: !!a.update },
     ];
 
     return choices;
