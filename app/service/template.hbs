@@ -27,7 +27,7 @@
         {{displayType}}
       </li>
 
-      {{#if hasScale}}
+      {{#if canScale}}
         <li>
           <label>Scale</label>
           {{scale}}
@@ -79,12 +79,14 @@
     </section>
   {{/if}}
 
-  <section>
-    <ul class="nav nav-tabs nav-tabs-well">
-      {{#link-to "service.containers" tagName="li" href=false}}<a><i class="ss-box"></i> Containers</a>{{/link-to}}
-    </ul>
-    <div class="well nav-well">
-      {{outlet}}
-    </div>
-  </section>
+  {{#if hasContainers}}
+    <section>
+      <ul class="nav nav-tabs nav-tabs-well">
+        {{#link-to "service.containers" tagName="li" href=false}}<a><i class="ss-box"></i> Containers</a>{{/link-to}}
+      </ul>
+      <div class="well nav-well">
+        {{outlet}}
+      </div>
+    </section>
+  {{/if}}
 {{/with}}

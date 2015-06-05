@@ -224,10 +224,8 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
     }
     else
     {
-      this.setProperties({
-        'restart': name || 'no',
-        'restartLimit': 5,
-      });
+      this.set('restartLimit',5);
+      this.set('restart', name || 'no');
     }
   },
 

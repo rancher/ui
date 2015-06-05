@@ -10,8 +10,16 @@
       {{#link-to "environment.graph" classNames="btn btn-sm btn-default"}}<i class="ss-share"></i>{{/link-to}}
       {{#link-to "environment.code" classNames="btn btn-sm btn-default"}}<i class="ss-file"></i>{{/link-to}}
     </div>
-    {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-sm btn-primary right-divider-btn"}}Add Service{{/link-to}}
-    {{#link-to "service.new-balancer" (query-params environmentId=model.id) classNames="btn btn-sm btn-primary right-divider-btn"}}Add Balancer{{/link-to}}
-    {{#link-to "service.new-dns" (query-params environmentId=model.id) classNames="btn btn-sm btn-primary right-divider-btn"}}Add DNS{{/link-to}}
+    <div class="btn-group">
+      <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        Add&hellip; <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu">
+        <li>{{#link-to "service.new" (query-params environmentId=model.id)}}Service{{/link-to}}</li>
+        <li>{{#link-to "service.new-balancer" (query-params environmentId=model.id)}}Balancer Service{{/link-to}}</li>
+        <li>{{#link-to "service.new-external" (query-params environmentId=model.id)}}External Service{{/link-to}}</li>
+        <li>{{#link-to "service.new-alias" (query-params environmentId=model.id)}}Service Alias{{/link-to}}</li>
+      </ul>
+    </div>
   </h3>
 </section>

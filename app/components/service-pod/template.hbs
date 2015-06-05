@@ -13,26 +13,33 @@
   </div>
 </div>
 
-{{#if model.consumedservices.length}}
+{{#if (or model.consumedservices.length model.externalIpAddresses.length)}}
   <div class="pod-info clearfix">
     <div class="pod-info-line">
       {{#each item in model.consumedservices itemController="service"}}
         <div class="pod-info-item">{{#link-to "service" item.environmentId item.id}}<i class="ss-layergroup"></i> {{item.displayName}}{{/link-to}}</div>
       {{/each}}
     </div>
+    {{#if model.externalIpAddresses.length}}
+      {{#each ip in model.externalIpAddresses}}
+        <div class="pod-info-line">
+          <div class="pod-info-item"><i class="ss-link"></i> {{ip}}</div>
+        </div>
+      {{/each}}
+    {{/if}}
   </div>
 {{/if}}
 
 <div class="clearfix no-resource-action-hover">
-  {{#if hasBody}}
+  {{#if hasContainers}}
     {{#each item in model.instances itemController="container"}}
       {{container-subpod model=item}}
     {{else}}
-      {{#unless showAdd}}
+      {{#unless showScaleUp}}
         <div class="text-center text-muted" style="margin: 20px 0">No containers{{#if isInactive}} yet.  <a class="hand" {{action "activate" target=model}}>Start</a>{{/if}}</div>
       {{/unless}}
     {{/each}}
-    {{#if showAdd}}
+    {{#if showScaleUp}}
       {{add-subpod action="scaleUp" label="Scale Up"}}
     {{/if}}
   {{/if}}

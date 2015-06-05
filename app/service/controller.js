@@ -1,9 +1,12 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
+import C from 'ui/utils/constants';
+import ReadLabels from 'ui/mixins/read-labels';
 
-var ServiceController = Cattle.TransitioningResourceController.extend({
+var ServiceController = Cattle.TransitioningResourceController.extend(ReadLabels, {
   needs: ['environment'],
   environment: Ember.computed.alias('controllers.environment'),
+  labelResource: Ember.computed.alias('model.launchConfig'),
 
   actions: {
     activate: function() {
@@ -30,11 +33,12 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
 
     clone: function() {
       var route;
-      switch ( this.get('type') )
+      switch ( this.get('type').toLowerCase() )
       {
         case 'service':             route = 'service.new';          break;
-        case 'dnsService':          route = 'service.new-dns';      break;
-        case 'loadBalancerService': route = 'service.new-balancer'; break;
+        case 'dnsservice':          route = 'service.new-alias';    break;
+        case 'loadbalancerservice': route = 'service.new-balancer'; break;
+        case 'externalservice':     route = 'service.new-external'; break;
         default: return void this.send('error','Unknown service type: ' + this.get('type'));
       }
 
@@ -59,8 +63,19 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
     this.set('scaleTimer', timer);
   },
 
-  hasScale: function() {
-    return this.get('type') !== 'dnsService';
+  canScale: function() {
+    if ( ['service','loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0 )
+    {
+      return !this.getLabel(C.LABEL.SCHED_GLOBAL);
+    }
+    else
+    {
+      return false;
+    }
+  }.property('type'),
+
+  hasContainers: function() {
+    return ['service','loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0;
   }.property('type'),
 
   hasImage: function() {
@@ -70,6 +85,11 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
 
   availableActions: function() {
     var a = this.get('actions');
+    var edit = !!a.update;
+    if ( this.get('type').toLowerCase() === 'externalservice' )
+    {
+      edit = false;
+    }
 
     var choices = [
       { label: 'Start',         icon: 'ss-play',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
@@ -79,7 +99,7 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
       { divider: true },
       { label: 'View in API',   icon: '',             action: 'goToApi',      enabled: true },
       { label: 'Clone',         icon: 'ss-copier',    action: 'clone',        enabled: true },
-      { label: 'Edit',          icon: 'ss-write',     action: 'edit',         enabled: !!a.update },
+      { label: 'Edit',          icon: 'ss-write',     action: 'edit',         enabled: edit },
     ];
 
     return choices;
@@ -91,6 +111,7 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
     {
       case 'loadbalancerservice': out = 'Load Balancer'; break;
       case 'dnsservice':          out = 'DNS'; break;
+      case 'externalservice':     out = 'External'; break;
       default:                    out = 'Container'; break;
     }
 
@@ -103,10 +124,11 @@ var ServiceController = Cattle.TransitioningResourceController.extend({
 function activeIcon(service)
 {
   var out = 'ss-layergroup';
-  switch ( service.get('type') )
+  switch ( service.get('type').toLowerCase() )
   {
-    case 'loadBalancerService': out = 'ss-fork';    break;
-    case 'dnsService':          out = 'ss-compass'; break;
+    case 'loadbalancerservice': out = 'ss-fork';    break;
+    case 'dnsservice':          out = 'ss-compass'; break;
+    case 'externalservice':     out = 'ss-cloud';   break;
   }
 
   return out;
