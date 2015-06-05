@@ -20,12 +20,12 @@ export default Ember.Component.extend(ReadLabels, {
 
   isInactive: Ember.computed.equal('model.state','inactive'),
 
-  hasBody: function() {
-    return this.get('model.type') !== 'dnsService';
+  hasContainers: function() {
+    return ['service','loadbalancerservice'].indexOf(this.get('model.type').toLowerCase()) !== -1;
   }.property('model.type'),
 
-  showAdd: function() {
-    if ( this.get('isActive') && this.get('model.type') !== 'dnsService' )
+  showScaleUp: function() {
+    if ( this.get('isActive') && this.get('hasContainers') )
     {
       return this.getLabel(C.LABEL.SCHED_GLOBAL) === null;
     }
@@ -33,7 +33,7 @@ export default Ember.Component.extend(ReadLabels, {
     {
       return false;
     }
-  }.property('isActive','model.type'),
+  }.property('isActive','hasBody','model.labels'),
 
   stateBackground: function() {
     return this.get('model.stateColor').replace("text-","bg-");
