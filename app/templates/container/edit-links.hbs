@@ -16,10 +16,10 @@
     {{#if linksArray.length}}
       <table class="table fixed no-lines no-top-padding tight small">
         <tr class="text-muted">
-          <th width="40%">Destination Container</th>
-          <th>&nbsp;</th>
-          <th width="40%">As Name</th>
-          <th>&nbsp;</th>
+          <th>Destination Container</th>
+          <th width="30">&nbsp;</th>
+          <th>As Name</th>
+          <th width="30">&nbsp;</th>
         </tr>
         {{#each link in linksArray}}
           <tr>
@@ -35,16 +35,14 @@
               }}
             </td>
             <td class="text-center">
-              <p class="form-control-static input-sm"><i class="ss-right"></i></p>
+              <p class="form-control-static"><i class="ss-right"></i></p>
             </td>
             <td>
-              <div class="input-group">
-                {{#if link.existing}}
-                  <p class="form-control-static input-sm text-muted">{{link.linkName}}</p>
-                {{else}}
-                  {{input class="form-control input-sm" type="text" value=link.linkName placeholder="e.g. database"}}
-                {{/if}}
-              </div>
+              {{#if link.existing}}
+                <p class="form-control-static input-sm text-muted">{{link.linkName}}</p>
+              {{else}}
+                {{input class="form-control input-sm" type="text" value=link.linkName placeholder="e.g. database"}}
+              {{/if}}
             </td>
             <td class="text-right">
               {{#unless link.existing}}

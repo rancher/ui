@@ -8,7 +8,7 @@ export default Ember.Mixin.create(EditLabels, {
 
   actions: {
     addServiceLink: function() {
-      this.get('serviceLinksArray').pushObject(Ember.Object.create({serviceId: null}));
+      this.get('serviceLinksArray').pushObject(Ember.Object.create({serviceId: null, linkName: null}));
     },
     removeServiceLink: function(obj) {
       this.get('serviceLinksArray').removeObject(obj);
@@ -35,17 +35,19 @@ export default Ember.Mixin.create(EditLabels, {
         serviceLabel += ' (' + service.get('state') + ')';
       }
 
-      return {
+      return Ember.Object.create({
         group: group,
         id: service.get('id'),
         name: serviceLabel,
-      };
+        obj: service,
+      });
     });
 
     return list.sortBy('group','name','id');
   }.property('environment.services.@each.{id,name,state}'),
 
   serviceLinksArray: null,
+  serviceLinksAsMap: null,
   initServiceLinks: function() {
     var out = [];
     var links = this.get('service.consumedservices')||[];
@@ -73,6 +75,33 @@ export default Ember.Mixin.create(EditLabels, {
 
     this.set('serviceLinksArray', out);
   },
+
+  serviceLinksDidChange: function() {
+    // Sync with the actual environment
+    var out = {};
+    this.get('serviceLinksArray').forEach((row) => {
+      if ( row.serviceId )
+      {
+        var name = row.linkName;
+        if ( !name )
+        {
+          // If no name is given, use the name of the service
+          var service = this.get('serviceChoices').filterProperty('id', row.serviceId)[0];
+          if ( service )
+          {
+            name = service.get('obj.name');
+          }
+        }
+
+        if ( name )
+        {
+          out[name] = row.serviceId;
+        }
+      }
+    });
+
+    this.set('serviceLinksAsMap', out);
+  }.observes('serviceLinksArray.@each.{linkName,serviceId}'),
 
   // ----------------------------------
   // Scheduling
@@ -112,11 +141,7 @@ export default Ember.Mixin.create(EditLabels, {
   // ----------------------------------
   didSave: function() {
     var service = this.get('model.service');
-    var ids = this.get('serviceLinksArray').map(function(link) {
-      return link.get('serviceId');
-    }).uniq();
-
-    return service.doAction('setservicelinks', {serviceIds: ids});
+    return service.doAction('setservicelinks', {serviceLinks: this.get('serviceLinksAsMap')});
   },
 
 });
