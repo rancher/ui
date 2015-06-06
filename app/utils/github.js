@@ -158,7 +158,7 @@ export default Ember.Object.extend({
         }
       });
 
-      Cookie.set(C.HEADER.AUTH_TYPE, 'Bearer '+auth[C.SESSION.TOKEN], null, '/', null, window.location.protocol === 'https:');
+      Cookie.set(C.HEADER.AUTH_TYPE, auth[C.SESSION.TOKEN], null, '/', null, window.location.protocol === 'https:');
 
       interesting[C.SESSION.LOGGED_IN] = true;
       session.setProperties(interesting);
