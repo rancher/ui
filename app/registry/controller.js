@@ -48,14 +48,19 @@ var RegistryController = Cattle.TransitioningResourceController.extend({
   }.property('actions.{update,activate,deactivate,restore,remove,purge}'),
 
   credential: function() {
-    return this.get('credentials.firstObject');
-  }.property(),
+    var credentials = this.get('credentials');
+    if ( credentials )
+    {
+      return credentials.objectAt(0);
+    }
+
+  }.property('credentials.@each.{publicValue,email}'),
 });
 
 RegistryController.reopenClass({
   stateMap: {
     'active':     {icon: 'ss-record',     color: 'text-success'},
-    'inactive':   {icon: 'fa fa-circle',  color: 'text-muted'},
+    'inactive':   {icon: 'fa fa-circle',  color: 'text-danger'},
     'purged':     {icon: 'ss-tornado',    color: 'text-danger'},
     'removed':    {icon: 'ss-trash',      color: 'text-danger'},
     'requested':  {icon: 'ss-tag',        color: 'text-info'},

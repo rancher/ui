@@ -3,9 +3,19 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   model: null,
   choices: null,
-  addAction: null,
 
   classNames: ['resource-actions'],
+
+  open: false,
+  didInsertElement: function() {
+    this.$().on('show.bs.dropdown', () => {
+      this.set('open', true);
+    });
+
+    this.$().on('hidden.bs.dropdown', () => {
+      this.set('open', false);
+    });
+  },
 
   activeActions: function() {
     var list =  (this.get('choices')||[]).filter(function(act) {
