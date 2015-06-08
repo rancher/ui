@@ -211,9 +211,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     },
 
     // Raw message from the WebSocket
-    wsMessage: function(/*data*/) {
+    //wsMessage: function(/*data*/) {
       //console.log('wsMessage',data);
-    },
+    //},
 
     // WebSocket connected
     wsConnected: function(tries,msec) {
@@ -393,7 +393,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     socket.on('message', (event) => {
       var d = JSON.parse(event.data, boundTypeify);
-      this._trySend('wsMessage',d);
+      //this._trySend('wsMessage',d);
 
       var str = d.name;
       if ( d.resourceType )
