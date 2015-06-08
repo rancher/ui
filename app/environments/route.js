@@ -4,7 +4,7 @@ export default Ember.Route.extend({
   model: function() {
     var store = this.get('store');
     return store.findAllUnremoved('environment').then((environments) => {
-      var promises = []
+      var promises = [];
       environments.forEach((env) => {
         var promise = store.find('service', null, {
           filter: {
