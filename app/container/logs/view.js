@@ -76,7 +76,7 @@ export default Overlay.extend(ThrottledResize,{
       var type = parseInt(message.data.substr(1,1),10); // 0 = combined, 1 = stdout, 2 = stderr
 
       message.data.substr(2).trim().split(/\n/).forEach((line) => {
-        var match = line.match(/^\[?([^ \]]+)\]? /);
+        var match = line.match(/^\[?([^ \]]+)\]?\s?/);
         var dateStr, msg;
         if ( match )
         {
