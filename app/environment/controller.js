@@ -3,7 +3,7 @@ import Cattle from 'ui/utils/cattle';
 import Util from 'ui/utils/util';
 
 var EnvironmentController = Cattle.TransitioningResourceController.extend({
-  needs: ['authenticated'],
+  needs: ['authenticated','application'],
 
   init: function() {
     this._super();
@@ -50,6 +50,15 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
 
     viewGraph: function() {
       this.transitionTo('environment.graph', this.get('id'));
+    },
+
+    delete: function() {
+      return this._super().then(() => {
+        if ( this.get('controllers.application.currentRouteName') === 'environment.index' )
+        {
+          this.transitionToRoute('environments');
+        }
+      });
     },
   },
 

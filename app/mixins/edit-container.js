@@ -156,7 +156,6 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
       this.initEnvironment();
       this.initVolumes();
       this.initVolumesFrom();
-      this.initVolumesFromService();
       this.initDns();
       this.initDnsSearch();
       this.initCapability();
@@ -179,7 +178,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
   initUuid: function() {
     if ( this.get('instance.imageUuid') )
     {
-      this.set('userImageUuid', this.get('instance.imageUuid'));
+      this.set('userImageUuid', (this.get('instance.imageUuid')||'').replace(/^docker:/,''));
     }
     this.userImageUuidDidChange();
   },
@@ -256,12 +255,29 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
   // ----------------------------------
   networkChoices: null,
   isManagedNetwork: Ember.computed.equal('instance.networkMode','managed'),
+  isContainerNetwork: Ember.computed.equal('instance.networkMode','container'),
   initNetwork: function() {
+    var isService = this.get('isService')||false;
     var choices = this.get('store').getById('schema','container').get('resourceFields.networkMode').options.sort();
-    this.set('networkChoices',choices.map((option) => {
-      return {label: Util.ucFirst(option), value: option};
-    }));
+    var out = [];
+    choices.forEach((option) => {
+      if ( isService && option === 'container' )
+      {
+        return;
+      }
+
+      out.push({label: Util.ucFirst(option), value: option});
+    });
+
+    this.set('networkChoices', out);
   },
+
+  networkModeChanged: function() {
+    if ( this.get('instance.networkMode') !== 'container' )
+    {
+      this.set('instance.networkContainerId', null);
+    }
+  }.observes('instance.networkMode'),
 
   // ----------------------------------
   // Links
@@ -540,42 +556,6 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
     });
     out.endPropertyChanges();
   }.observes('volumesFromArray.@each.value'),
-
-  // ----------------------------------
-  // Volumes From Service
-  // ----------------------------------
-  volumesFromServiceArray: null,
-  initVolumesFromService: function() {
-    if ( this.get('service') )
-    {
-      var ary = this.get('service.dataVolumesFromService');
-      if ( !ary )
-      {
-        ary = [];
-        this.set('service.dataVolumesFromService',ary);
-      }
-
-      this.set('volumesFromServiceArray', ary.map(function(vol) {
-        return {value: vol};
-      }));
-    }
-  },
-
-  volumesFromServiceDidChange: function() {
-    if ( this.get('service') )
-    {
-      var out = this.get('service.dataVolumesFromService');
-      out.beginPropertyChanges();
-      out.clear();
-      this.get('volumesFromServiceArray').forEach(function(row) {
-        if ( row.value )
-        {
-          out.push(row.value);
-        }
-      });
-      out.endPropertyChanges();
-    }
-  }.observes('volumesFromServiceArray.@each.value'),
 
   // ----------------------------------
   // DNS

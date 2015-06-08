@@ -3,7 +3,7 @@
     <label for="networkMode" class="form-control-static">Network</label>
   </div>
 
-  <div class="col-sm-12 col-md-8">
+  <div {{bind-attr class=":col-sm-12 isContainerNetwork:col-md-3:col-md-8"}}>
     {{view "select"
       class="form-control"
       id="networkMode"
@@ -13,6 +13,22 @@
       value=instance.networkMode
     }}
   </div>
+
+  {{#if isContainerNetwork}}
+    <div class="col-sm-12 col-md-2 form-label">
+      <label for="networkContainerId" class="form-control-static">Container</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      {{view "select"
+        class="form-control"
+        id="networkContainerId"
+        content=containerChoices
+        optionLabelPath="content.name"
+        optionValuePath="content.id"
+        value=instance.networkContainerId
+      }}
+    </div>
+  {{/if}}
 </div>
 
 {{#unless isService}}
