@@ -303,7 +303,7 @@ export default Ember.ObjectController.extend({
     gotError: function(err) {
       if ( err.message )
       {
-        this.send('showError', err.message);
+        this.send('showError', err.message + (err.detail? '('+err.detail+')' : ''));
       }
       else
       {

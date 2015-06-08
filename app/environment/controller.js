@@ -45,11 +45,11 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
     },
 
     viewCode: function() {
-      this.transitionTo('environment.code', this.get('id'));
+      this.transitionToRoute('environment.code', this.get('id'));
     },
 
     viewGraph: function() {
-      this.transitionTo('environment.graph', this.get('id'));
+      this.transitionToRoute('environment.graph', this.get('id'));
     },
 
     delete: function() {

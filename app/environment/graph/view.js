@@ -3,6 +3,7 @@ import Util from 'ui/utils/util';
 import ThrottledResize from 'ui/mixins/throttled-resize';
 
 export default Ember.View.extend(ThrottledResize,{
+  classNames: ['environment-graph'],
   graphZoom: null,
   graphInner: null,
   graphOuter: null,
@@ -11,14 +12,14 @@ export default Ember.View.extend(ThrottledResize,{
 
   didInsertElement: function() {
     this._super();
-    var elem = $('<div id="environment-graph"><svg style="width: 100%; height: 100%;"><g/></svg></div>').appendTo('BODY');
+    var elem = $('<div id="environment-svg"><svg style="width: 100%; height: 100%;"><g/></svg></div>').appendTo('BODY');
     this.set('graphElem', elem[0]);
 
     Ember.run.later(this,'initGraph',100);
   },
 
   onResize: function() {
-    $('#environment-graph').css('top', $('MAIN').position().top + 55 + 'px');
+    $('#environment-svg').css('top', $('MAIN').position().top + 55 + 'px');
     if ( this.get('graph') )
     {
       this.renderGraph();
@@ -26,7 +27,7 @@ export default Ember.View.extend(ThrottledResize,{
   },
 
   initGraph: function() {
-    var outer = d3.select("#environment-graph svg");
+    var outer = d3.select("#environment-svg svg");
     var inner = outer.select("g");
     var zoom = d3.behavior.zoom().on("zoom", function() {
        inner.attr("transform", "translate(" + d3.event.translate + ")" +
@@ -93,6 +94,7 @@ export default Ember.View.extend(ThrottledResize,{
         var color = (target.get('state') === 'active' ? 'green' : (target.get('state') === 'inactive' ? 'red' : 'yellow'));
 
         g.setEdge(serviceId, targetId, {
+          arrowhead: 'vee',
           lineInterpolate: 'bundle',
           class: color,
         });
@@ -129,8 +131,8 @@ export default Ember.View.extend(ThrottledResize,{
     var zoomScale = zoom.scale();
     var graphWidth = g.graph().width;
     var graphHeight = g.graph().height;
-    var width = $('#environment-graph').width();
-    var height = $('#environment-graph').height();
+    var width = $('#environment-svg').width();
+    var height = $('#environment-svg').height();
     zoomScale = Math.min(2.0, Math.min(width / graphWidth, height / graphHeight));
     var translate = [(width/2) - ((graphWidth*zoomScale)/2), (height/2) - ((graphHeight*zoomScale)/2)];
     zoom.translate(translate);

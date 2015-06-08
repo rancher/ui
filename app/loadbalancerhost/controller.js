@@ -10,7 +10,7 @@ export default HostController.extend({
   },
 
   delete: function() {
-    return this.controllerFor('loadbalancer').doAction('removehost',{
+    return this.get('controllers.loadbalancer').doAction('removehost',{
       hostId: this.get('id'),
     });
   },
