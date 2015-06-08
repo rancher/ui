@@ -332,6 +332,8 @@ export default Ember.ObjectController.extend({
         'allowedUsers': [],
         'accessMode': 'unrestricted',
         'enabled': false,
+        'hostname': null,
+        'clientSecret': '',
       });
 
 

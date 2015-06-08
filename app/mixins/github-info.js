@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
 export default Ember.Mixin.create({
@@ -61,6 +60,10 @@ export default Ember.Mixin.create({
     });
   }.observes('login','type','fallback').on('init'),
 
+  baseUrl: function() {
+    return 'https://' + (this.get('app.githubHostname')||'github.com') + '/';
+  }.property('app.githubHostname'),
+
   avatarUrl: function(){
     var url = this.get('_avatarUrl');
     if ( url )
@@ -74,7 +77,7 @@ export default Ember.Mixin.create({
     var org = this.get('org');
     if ( org && this.get('type') === 'team' )
     {
-      return C.GITHUB.URL + 'orgs/' + encodeURIComponent(org);
+      return this.get('baseUrl') + 'orgs/' + encodeURIComponent(org);
     }
   }.property('type','org'),
 
@@ -84,12 +87,12 @@ export default Ember.Mixin.create({
       var entry = this.get('github').teamById(this.get('login'));
       if ( entry && entry.slug )
       {
-        return C.GITHUB.URL + 'orgs/' + encodeURIComponent(entry.org) + '/teams/' + encodeURIComponent(entry.slug);
+        return this.get('baseUrl')+ 'orgs/' + encodeURIComponent(entry.org) + '/teams/' + encodeURIComponent(entry.slug);
       }
     }
     else
     {
-      return C.GITHUB.URL + encodeURIComponent(this.get('login'));
+      return this.get('baseUrl') + encodeURIComponent(this.get('login'));
     }
   }.property('login'),
 });

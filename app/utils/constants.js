@@ -39,7 +39,6 @@ export default {
   },
 
   GITHUB: {
-    URL: 'https://www.github.com/',
     DEFAULT_HOSTNAME: 'github.com',
     AUTH_PATH: '/login/oauth/authorize',
     PROXY_URL: '/github/',
