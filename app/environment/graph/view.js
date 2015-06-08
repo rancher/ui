@@ -110,7 +110,7 @@ export default Ember.View.extend(ThrottledResize,{
     });
 
     unexpectedEdges.forEach(function(edge) {
-      g.removeNode(edge.v, edge.w);
+      g.removeEdge(edge.v, edge.w);
     });
 
     this.renderGraph();
