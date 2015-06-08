@@ -72,7 +72,7 @@ export default Ember.View.extend(ThrottledResize,{
       var instances = service.get('instances.length')||'No';
 
       var html =  '<i class="icon ss-layergroup"></i>' +
-                  '<h4>'+ Util.escapeHtml(service.get('name')) + '</h4>' +
+                  '<h4 class="clip">'+ Util.escapeHtml(service.get('name')) + '</h4>' +
                   '<h6 class="count"><b>' + instances + '</b> container' + (instances === 1 ? '' : 's') + '</h6>' +
                   '<h6><span class="state '+ color +'">' + Util.escapeHtml(Util.ucFirst(service.get('state'))) + '</span></h6>';
 
