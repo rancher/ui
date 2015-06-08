@@ -18,6 +18,6 @@ export default Ember.View.extend({
       }
     });
 
-    return out.sortBy('name');
-  }.property('context.hosts.[]','context.machines.@each.isPending'),
+    return out.sortBy('name','id');
+  }.property('context.hosts.@each.{name,id}','context.machines.@each.{name,id,isPending}'),
 });

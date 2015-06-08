@@ -27,7 +27,7 @@ export default OverlayRoute.extend({
 
   actions: {
     cancel: function() {
-      this.goToPrevious();
+      this.transitionTo('loadbalancer.hosts');
     },
   }
 });
