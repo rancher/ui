@@ -342,14 +342,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     },
 
     registryCredentialChanged: function(change) {
-      // @TODO Change to registryId when the backend changes
-      var key = 'registryId';
-      if ( Object.keys(change.data.resource).indexOf(key) === -1 )
-      {
-        key = 'storagePoolId';
-      }
-
-      this._includeChanged('registry', 'credentials', key, change.data.resource);
+      this._includeChanged('registry', 'credentials', 'registryId', change.data.resource);
     },
 
     loadBalancerServiceChanged: function(change) {

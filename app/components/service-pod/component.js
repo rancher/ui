@@ -45,7 +45,7 @@ export default Ember.Component.extend(ReadLabels, {
 
   iconColor: function() {
     var color = this.get('model.stateColor');
-    if ( color.indexOf('danger') >= 0 )
+    if ( color.indexOf('danger') >= 0 || color.indexOf('warning') >= 0 )
     {
       return color;
     }

@@ -28,7 +28,7 @@ var Machine = Cattle.TransitioningResource.extend({
     {
       return this.get('state') === 'active' && this.get('hosts.length') === 0;
     }
-  }.property('state','hosts.[]'),
+  }.property('state','hosts.[]','hostsUpdated'),
 });
 
 Machine.reopenClass({

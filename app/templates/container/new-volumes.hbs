@@ -24,45 +24,7 @@
   </div>
 </div>
 
-{{#if model.service}}
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Volumes From</label>
-    </div>
-
-    <div class="col-sm-12 col-md-8">
-        <div class="form-control-static">
-          {{#if serviceChoices.length}}
-            <button class="btn btn-circle-plus" {{action "addVolumeFromService" target="view"}}></button>
-          {{else}}
-            <span class="text-muted">There are no services to use the volumes from.</span>
-          {{/if}}
-        </div>
-      {{#if volumesFromServiceArray.length}}
-        <table class="table fixed no-lines no-top-padding tight">
-          {{#each vol in volumesFromServiceArray}}
-            <tr>
-              <td>
-                {{display-name-select
-                  classNames="form-control input-sm volumefrom-container"
-                  prompt="Select a service..."
-                  value=vol.value
-                  content=serviceChoices
-                  optionValuePath="content.id"
-                  optionLabelPath="content.name"
-                  optionGroupPath="group"
-                }}
-              </td>
-              <td width="30" class="text-right">
-                <button {{action "removeVolumeFromService" vol}} class="btn-circle-x" type="button" tabindex="-1"></button>
-              </td>
-            </tr>
-          {{/each}}
-        </table>
-      {{/if}}
-    </div>
-  </div>
-{{else}}
+{{#unless model.service}}
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
       <label class="form-control-static">Volumes From</label>
@@ -104,4 +66,4 @@
       {{/if}}
     </div>
   </div>
-{{/if}}
+{{/unless}}

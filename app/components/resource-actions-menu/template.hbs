@@ -1,23 +1,18 @@
-{{#if addAction}}
-  <button type="button" class="btn btn-default" {{action "add"}}>
-    <i class="fa-fw ss-plus"></i>
-  </button>
-{{/if}}
 <button type="button" class="btn-circle-menu dropdown-toggle" data-toggle="dropdown" aria-expanded="false"></button>
 <ul class="dropdown-menu dropdown-menu-right" role="menu">
-  {{#each item in activeActions}}
-    {{#if item.divider}}
-      <li class="divider"></li>
-    {{else}}
-      <li>
-        {{action-menu-item
-          label=item.label
-          icon=item.icon
-          action="clicked"
-          actionArg=item.action
-          altActionArg=item.altAction
-        }}
-      </li>
-    {{/if}}
-  {{/each}}
+    {{#each item in activeActions}}
+      {{#if item.divider}}
+        <li class="divider"></li>
+      {{else}}
+        <li>
+          {{action-menu-item
+            label=item.label
+            icon=item.icon
+            action="clicked"
+            actionArg=item.action
+            altActionArg=item.altAction
+          }}
+        </li>
+      {{/if}}
+    {{/each}}
 </ul>

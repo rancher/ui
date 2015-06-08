@@ -170,7 +170,7 @@ HostController.reopenClass({
     'requested':        {icon: 'ss-tag',            color: 'text-danger'},
     'registering':      {icon: 'ss-tag',            color: 'text-danger'},
     'activating':       {icon: 'ss-tag',            color: 'text-danger'},
-    'active':           {icon: 'ss-record',         color: 'text-success'},
+    'active':           {icon: 'ss-database',       color: 'text-success'},
     'reconnecting':     {icon: 'fa fa-circle-o-notch fa-spin', color: 'text-danger'},
     'updating-active':  {icon: 'ss-database',       color: 'text-success'},
     'updating-inactive':{icon: 'ss-alert',          color: 'text-danger'},
