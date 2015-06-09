@@ -4,6 +4,7 @@ import TargetChoices from 'ui/mixins/target-choices';
 export default Ember.Controller.extend(TargetChoices, {
   error: null,
   editing: false,
+  saving: false,
 
   actions: {
     addTargetContainer: function() {
@@ -17,6 +18,8 @@ export default Ember.Controller.extend(TargetChoices, {
     },
 
     save: function() {
+      this.set('saving',true);
+      this.set('errors', null);
       var promises = [];
       var balancer = this.get('model');
 
@@ -34,6 +37,24 @@ export default Ember.Controller.extend(TargetChoices, {
 
       return Ember.RSVP.all(promises,'Add multiple targets').then(() => {
         this.send('cancel');
+      }).catch((err) => {
+        if ( err.status === 422 && err.code === 'NotUnique' )
+        {
+          if ( this.get('targetsArray.length') > 1 )
+          {
+            this.set('errors',['This load balancer is already has one or more of the specified targets']);
+          }
+          else
+          {
+            this.set('errors',['This load balancer already has the specified targets']);
+          }
+        }
+        else
+        {
+          this.set('errors', [err]);
+        }
+      }).finally(() => {
+        this.set('saving', false);
       });
     },
   },

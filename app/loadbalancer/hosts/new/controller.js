@@ -15,6 +15,7 @@ export default Ember.Controller.extend({
     },
 
     save: function() {
+      this.set('errors', null);
       this.set('saving',true);
       var promises = [];
       var balancer = this.get('model');

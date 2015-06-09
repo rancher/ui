@@ -4,6 +4,15 @@ import Ember from 'ember';
 var MountController = Cattle.TransitioningResourceController.extend({
   isReadWrite: Ember.computed.equal('permissions','rw'),
   isReadOnly:  Ember.computed.equal('permissions','ro'),
+
+  instance: function() {
+    var proxy = Ember.ObjectProxy.create({content: {}});
+    this.get('store').find('container', this.get('instanceId')).then((container) => {
+      proxy.set('content', container);
+    });
+
+    return proxy;
+  }.property('instanceId'),
 });
 
 MountController.reopenClass({

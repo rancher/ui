@@ -25,6 +25,13 @@ export default OverlayRoute.extend({
     this.render({into: 'application', outlet: 'overlay'});
   },
 
+  resetController: function (controller, isExisting/*, transition*/) {
+    if (isExisting)
+    {
+      controller.set('errors', null);
+    }
+  },
+
   actions: {
     cancel: function() {
       this.goToPrevious();

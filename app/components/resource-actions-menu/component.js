@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   choices: null,
 
   classNames: ['resource-actions'],
+  classNameBindings: ['activeActions.length::hide'],
 
   open: false,
   didInsertElement: function() {
