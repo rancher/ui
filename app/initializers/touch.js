@@ -1,5 +1,5 @@
 export function initialize(/*container, application*/) {
-  // Add 'touch' or 'no-touch' to the <body> so CSS can depend on the devicve type.
+  // Add 'touch' or 'no-touch' to the <body> so CSS can depend on the device type.
 
   var body = $('BODY');
   if ('ontouchstart' in document.documentElement)

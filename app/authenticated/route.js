@@ -323,7 +323,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       if ( volume )
       {
         var mounts = volume.get('mounts');
-        if ( !Ember.isArray('mounts') )
+        if ( !Ember.isArray(mounts) )
         {
           mounts = [];
           volume.set('mounts',mounts);
