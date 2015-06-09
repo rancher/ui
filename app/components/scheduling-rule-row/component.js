@@ -43,7 +43,7 @@ export default Ember.Component.extend({
 
     var key = this.get('rule.key')||'';
     var value = this.get('rule.value')||'';
-    var splitValue = splitEquals(value);
+    var splitValue = splitEquals(value)||['',''];
 
     var match = key.match(/((_soft)?(_ne)?)$/);
     if ( match )

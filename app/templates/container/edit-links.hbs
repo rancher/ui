@@ -6,7 +6,7 @@
   <div class="col-sm-12 col-md-8">
     {{#unless editing}}
       <div>
-        {{#if containerChoices.length}}
+        {{#if containersOnRequestedHostIfUnmanaged.length}}
           <button class="btn-circle-plus" {{action "addLink" target="view"}}></button>
         {{else}}
           <span class="text-muted">There are no other containers to link to.</span>
@@ -28,7 +28,7 @@
                 classNames="form-control link-container input-sm"
                 prompt="Select a container..."
                 value=link.targetInstanceId
-                content=containerChoices
+                content=containersOnRequestedHostIfUnmanaged
                 optionValuePath="content.id"
                 optionLabelPath="content.name"
                 optionGroupPath="group"

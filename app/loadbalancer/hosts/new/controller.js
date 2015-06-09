@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   errors: null,
   editing: false,
+  saving: false,
 
   actions: {
     addHost: function() {
@@ -14,6 +15,7 @@ export default Ember.Controller.extend({
     },
 
     save: function() {
+      this.set('saving',true);
       var promises = [];
       var balancer = this.get('model');
 
@@ -30,7 +32,23 @@ export default Ember.Controller.extend({
       return Ember.RSVP.all(promises,'Add multiple hosts').then(() => {
         this.send('cancel');
       }).catch((err) => {
-        this.set('errors', [err]);
+        if ( err.status === 422 && err.code === 'NotUnique' )
+        {
+          if ( this.get('hostsArray.length') > 1 )
+          {
+            this.set('errors',['This load balancer is already on one or more of the specified hosts']);
+          }
+          else
+          {
+            this.set('errors',['This load balancer is already on the specified host']);
+          }
+        }
+        else
+        {
+          this.set('errors', [err]);
+        }
+      }).finally(() => {
+        this.set('saving', false);
       });
     },
   },

@@ -81,7 +81,12 @@ export default Ember.Object.extend({
       headers[C.HEADER.AUTH] = C.HEADER.AUTH_TYPE + ' ' + authValue;
     }
 
-    return ajaxPromise({url: url, headers: headers, dataType: 'json'}, true);
+    return ajaxPromise({url: url, headers: headers, dataType: 'json'}, true).catch((obj) => {
+      if ( obj.xhr.status === 401 )
+      {
+        this.send('logout',null,true);
+      }
+    });
   },
 
   generateState: function() {

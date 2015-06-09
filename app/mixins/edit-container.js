@@ -315,6 +315,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
 
         return {
           group: hostLabel,
+          hostId: host.get('id'),
           id: container.get('id'),
           name: containerLabel,
         };
@@ -328,6 +329,7 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
         var container = this.get('store').getById('container',id);
         return {
           group: 'Host: ???',
+          hostId: null,
           id: id,
           name: (container && container.get('name') ? container.get('name') : '('+id+')')
         };
@@ -336,6 +338,35 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
 
     return list.sortBy('group','name','id');
   }.property('allHosts.@each.instancesUpdated').volatile(),
+
+  containersOnRequestedHost: function() {
+    var requestedHostId = this.get('instance.requestedHostId');
+    var all = this.get('containerChoices');
+
+    if ( requestedHostId )
+    {
+      return all.filterProperty('hostId', requestedHostId);
+    }
+    else
+    {
+      return all;
+    }
+  }.property('containerChoices.@each.hostId','instance.requestedHostId'),
+
+  containersOnRequestedHostIfUnmanaged: function() {
+    var requestedHostId = this.get('instance.requestedHostId');
+    var all = this.get('containerChoices');
+    var isManagedNetwork = this.get('isManagedNetwork');
+
+    if ( requestedHostId && !isManagedNetwork )
+    {
+      return all.filterProperty('hostId', requestedHostId);
+    }
+    else
+    {
+      return all;
+    }
+  }.property('containerChoices.@each.hostId','instance.requestedHostId','isManagedNetwork'),
 
   linksArray: null,
   linksAsMap: null,

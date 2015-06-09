@@ -7,8 +7,10 @@ export default Ember.Mixin.create({
 
     this.get('hostChoices').map((host) => {
       var containers = (host.get('instances')||[]).filter(function(instance) {
-        // You can't balance other types of instances, or system containers, or containers on unmanaged network
-        return instance.get('type') === 'container' && instance.get('systemContainer') === null && instance.get('hasManagedNetwork');
+        return instance.get('type') === 'container' && // You can't balance other types of instances
+               instance.get('systemContainer') === null && // or system containers
+               instance.get('hasManagedNetwork') && // or unmanaged network containers
+               ['removed','purging','purged'].indexOf(instance.get('state')) === -1; // or removed containers
       });
 
       list.pushObjects(containers.map(function(container) {
