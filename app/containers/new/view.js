@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import { addAction } from 'ui/utils/add-view-action';
+import SelectTab from 'ui/mixins/select-tab';
 
-export default Ember.View.extend({
+export default Ember.View.extend(SelectTab, {
   actions: {
     addEnvironment: addAction('addEnvironment', '.environment-name'),
     addPort:        addAction('addPort',        '.port-public'),
@@ -13,14 +14,6 @@ export default Ember.View.extend({
     addDevice:      addAction('addDevice',      '.device-host'),
     addLabel:       addAction('addLabel',      '.label-key'),
     addSchedulingRule:     addAction('addSchedulingRule',  '.schedule-rule'),
-
-    selectTab: function(name) {
-      this.set('context.tab',name);
-      this.$('.tab').removeClass('active');
-      this.$('.tab[data-section="'+name+'"]').addClass('active');
-      this.$('.section').addClass('hide');
-      this.$('.section[data-section="'+name+'"]').removeClass('hide');
-    }
   },
 
   didInsertElement: function() {
@@ -109,7 +102,7 @@ export default Ember.View.extend({
     this.$('.select-cap-drop').multiselect(opts);
   },
 
-  priviligedDidChange: function() {
+  privilegedDidChange: function() {
     var add = this.$('.select-cap-add');
     var drop = this.$('.select-cap-drop');
     if ( add && drop )

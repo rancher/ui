@@ -1,7 +1,7 @@
 <div class="well section">
   <div class="row">
     <div class="col-sm-6">
-      <h4>Listeners ({{listeners.length}})</h4>
+      <h4>Listeners ({{unremovedListeners.length}})</h4>
     </div>
   </div>
 
@@ -16,7 +16,7 @@
       </tr>
     </thead>
     <tbody>
-      {{#each listener in listeners itemController="loadbalancerlistener"}}
+      {{#each listener in unremovedListeners itemController="loadbalancerlistener"}}
         <tr>
           <td>
             <span {{bind-attr class=":badge :state listener.stateBackground"}}>
@@ -82,13 +82,13 @@
       <label>Healthy Threshold</label>
     </div>
     <div class="col-sm-12 col-md-3">
-      <span class="form-control-static">{{config.healthCheck.healthyThreshold}}ms</span>
+      <span class="form-control-static">{{config.healthCheck.healthyThreshold}}</span>
     </div>
     <div class="col-sm-12 col-md-3">
       <label>Unhealthy Threshold</label>
     </div>
     <div class="col-sm-12 col-md-3">
-      <span class="form-control-static">{{config.healthCheck.unhealthyThreshold}}ms</span>
+      <span class="form-control-static">{{config.healthCheck.unhealthyThreshold}}</span>
     </div>
   </div>
 </div>
