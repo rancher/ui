@@ -51,6 +51,12 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     });
   },
 
+  setupController: function(controller, model) {
+    controller.set('projects', model);
+    this.selectDefaultProject(model, controller);
+    this._super.apply(this,arguments);
+  },
+
   loadPreferences: function() {
     var store = this.get('store');
     if ( store.hasRecordFor('schema','userpreference') )
