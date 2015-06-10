@@ -56,7 +56,8 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
     var existing = this.get('allRegistries').filterProperty('serverAddress', registry.get('serverAddress'))[0];
     if ( existing )
     {
-      return Ember.RSVP.resolve(existing);
+      this.set('model.registry', existing);
+      return Ember.RSVP.resolve();
     }
     else
     {
@@ -64,7 +65,8 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
     }
   },
 
-  didSave: function(registry) {
+  didSave: function() {
+    var registry = this.get('model.registry');
     var cred = this.get('model.credential');
     var id = registry.get('id');
 

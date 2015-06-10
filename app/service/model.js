@@ -19,7 +19,7 @@ var Service = Cattle.TransitioningResource.extend({
       var resource = instance.get('state');
       var health = instance.get('healthState');
 
-      if ( ['running','active','updating-active'].indexOf(resource) >= 0 && health === 'healthy' )
+      if ( ['running','active','updating-active'].indexOf(resource) >= 0 && (health === 'healthy' || health === null) )
       {
         healthy++;
       }

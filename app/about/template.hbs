@@ -1,0 +1,53 @@
+<div class="parachute"></div>
+<div class="text-center">
+  <img src="assets/images/logo_text.svg" width="300">
+  <br/>
+  <br/>
+</div>
+
+<table align="center" class="fixed">
+  <tr>
+    <th width="50%" style="border-bottom: 1px solid #eff2f6;">Component</th>
+    <th width="50%" style="border-bottom: 1px solid #eff2f6;">Version</th>
+  </tr>
+
+  {{#if rancherVersion}}
+    <tr>
+      <td><a href="https://github.com/rancherio/rancher">Rancher</a></td>
+      <td>{{rancherVersion}}</td>
+    </tr>
+  {{/if}}
+  {{#if cattleVersion}}
+    <tr>
+      <td><a href="https://github.com/rancherio/cattle">Cattle</a></td>
+      <td>{{cattleVersion}}</td>
+    </tr>
+  {{/if}}
+  {{#if uiVersion}}
+    <tr>
+      <td><a href="https://github.com/rancherio/ui">User Interface</a></td>
+      <td>{{uiVersion}}</td>
+    </tr>
+  {{/if}}
+  {{#if composeVersion}}
+    <tr>
+      <td><a href="https://github.com/rancherio/rancher-compose">Rancher Compose</a></td>
+      <td>{{composeVersion}}</td>
+    </tr>
+  {{/if}}
+  {{#if goMachineVersion}}
+    <tr>
+      <td><a href="https://github.com/rancherio/go-machine-service">Machine Service</a></td>
+      <td>
+        {{goMachineVersion}}
+        {{#if dockerMachineVersion}}
+          (<a href="https://github.com/docker/machine">docker-machine</a> {{dockerMachineVersion}})
+        {{/if}}
+      </td>
+    </tr>
+  {{/if}}
+</table>
+
+<div class="footer-actions">
+  <button {{action "cancel"}} class="btn btn-primary">Close</button>
+</div>

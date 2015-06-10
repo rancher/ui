@@ -31,7 +31,7 @@ var Container = Cattle.TransitioningResource.extend({
 
     if ( ['running','active','updating-active'].indexOf(resource) >= 0 )
     {
-      if ( health === 'healthy' )
+      if ( health === null || health === 'healthy' )
       {
         return resource;
       }
