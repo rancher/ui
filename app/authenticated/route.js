@@ -29,7 +29,11 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.set('app.isAuthenticationAdmin', isAdmin);
 
       // Return the list of projects as the model
-      return this.findUserProjects();
+      return this.findUserProjects().then((all) => {
+        // Load all the active projects
+        var active = ActiveArrayProxy.create({sourceContent: all});
+        return active;
+      });
     }).catch((err) => {
       if ( [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
       {
@@ -45,15 +49,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     return this.loadPreferences().then(() => {
       return this.selectDefaultProject(model);
     });
-  },
-
-  setupController: function(controller, model) {
-    // Load all the active projects
-    var active = ActiveArrayProxy.create({sourceContent: model});
-    controller.set('projects', active);
-
-    this.selectDefaultProject(active, controller);
-    this._super.apply(this,arguments);
   },
 
   loadPreferences: function() {
