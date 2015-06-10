@@ -29,6 +29,12 @@ var LoadBalancerConfigController = Cattle.TransitioningResourceController.extend
       sourceContent: this.get('loadBalancers'),
     });
   }.property('loadBalancers'),
+
+  unremovedListeners: function() {
+    return UnremovedArrayProxy.create({
+      sourceContent: this.get('listeners'),
+    });
+  }.property('listeners'),
 });
 
 LoadBalancerConfigController.reopenClass({

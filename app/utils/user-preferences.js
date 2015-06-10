@@ -80,8 +80,9 @@ export default Ember.Object.extend({
     }
 
     obj.set('value', JSON.stringify(value));
-    obj.save();
-    this.notifyPropertyChange(key);
+    obj.save().then(() => {
+      this.notifyPropertyChange(key);
+    });
     return value;
   },
 

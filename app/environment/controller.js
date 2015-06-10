@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import Util from 'ui/utils/util';
+import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 
 var EnvironmentController = Cattle.TransitioningResourceController.extend({
   needs: ['authenticated','application'],
@@ -112,6 +113,10 @@ var EnvironmentController = Cattle.TransitioningResourceController.extend({
   }.property('services.@each.state','actions.deactivateservices'),
 
   state: Ember.computed.alias('model.combinedState'),
+
+  unremovedServices: function() {
+    return UnremovedArrayProxy.create({sourceContent: this.get('services')});
+  }.property('services')
 });
 
 EnvironmentController.reopenClass({

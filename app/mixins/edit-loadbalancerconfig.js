@@ -27,11 +27,12 @@ export default Ember.Mixin.create(EditHealthCheck,{
   listenersArray: null,
   initListeners: function() {
     var store = this.get('store');
-    var existing = this.get('balancer.loadBalancerListeners');
     var out = [];
-    if ( existing )
+    var existingService = this.get('balancer.loadBalancerListeners');
+    var existingRegular = this.get('listeners');
+    if ( existingService )
     {
-      existing.forEach((listener) => {
+      existingService.forEach((listener) => {
         var neu = listener.cloneForNew();
         neu.setProperties({
           serviceId: null,
@@ -39,6 +40,10 @@ export default Ember.Mixin.create(EditHealthCheck,{
         });
         out.push(neu);
       });
+    }
+    else if ( existingRegular )
+    {
+      out.pushObjects(existingRegular);
     }
     else
     {

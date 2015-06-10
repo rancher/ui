@@ -472,12 +472,12 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
   portsArray: null,
   initPorts: function() {
     var out = [];
-    var ports = this.get('instance.ports')||[];
 
-    ports.forEach(function(value) {
+    var ports = this.get('ports');
+    if ( ports )
+    {
       // Objects, from edit
-      if ( typeof value === 'object' )
-      {
+      ports.forEach(function(value) {
         out.push({
           existing: (value.id ? true : false),
           obj: value,
@@ -485,22 +485,38 @@ export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditHealthCheck, EditLa
           private: value.privatePort,
           protocol: value.protocol,
         });
-      }
-      else
-      {
-        // Strings, from create maybe
-        var match = value.match(/^(\d+):(\d+)\/(.*)$/);
-        if ( match )
+      });
+    }
+    else
+    {
+      ports = this.get('instance.ports')||[];
+      ports.forEach(function(value) {
+        if ( typeof value === 'object' )
         {
+          // Objects, from clone
           out.push({
             existing: false,
-            public: match[1],
-            private: match[2],
-            protocol: match[3],
+            public: value.publicPort,
+            private: value.privatePort,
+            protocol: value.protocol,
           });
         }
-      }
-    });
+        else
+        {
+          // Strings, from create maybe
+          var match = value.match(/^(\d+):(\d+)\/(.*)$/);
+          if ( match )
+          {
+            out.push({
+              existing: false,
+              public: match[1],
+              private: match[2],
+              protocol: match[3],
+            });
+          }
+        }
+      });
+    }
 
     this.set('portsArray', out);
   },
