@@ -1,7 +1,7 @@
 export var platform = (navigator.platform||'').toLowerCase();
-//export var isLinuxy = platform.indexOf('linux') >= 0;
+export var isLinuxy = platform.indexOf('linux') >= 0 || platform.indexOf('unix') >= 0;
 export var isMac = platform.indexOf('mac') >= 0;
-//var isWin = platform.indexOf('win') >= 0;
+export var isWin = platform.indexOf('win') >= 0;
 
 export var alternateKey = 'ctrlKey';
 export var alternateLabel = 'Control';
