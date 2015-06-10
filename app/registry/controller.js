@@ -51,7 +51,7 @@ var RegistryController = Cattle.TransitioningResourceController.extend({
     var credentials = this.get('credentials');
     if ( credentials )
     {
-      return credentials.objectAt(0);
+      return credentials.objectAt(credentials.get('length')-1);
     }
 
   }.property('credentials.@each.{publicValue,email}'),

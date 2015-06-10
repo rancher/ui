@@ -37,7 +37,10 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
     this._super();
     var errors = this.get('errors')||[];
 
-    errors.pushObjects(this.get('model.credential').validationErrors());
+    var cred = this.get('model.credential');
+    cred.set('registryId', 'tbd');
+
+    errors.pushObjects(cred.validationErrors());
 
     if ( errors.get('length') > 0 )
     {
@@ -48,8 +51,20 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
     return true;
   },
 
-  didSave: function() {
+  doSave: function() {
     var registry = this.get('model.registry');
+    var existing = this.get('allRegistries').filterProperty('serverAddress', registry.get('serverAddress'))[0];
+    if ( existing )
+    {
+      return Ember.RSVP.resolve(existing);
+    }
+    else
+    {
+      return this._super();
+    }
+  },
+
+  didSave: function(registry) {
     var cred = this.get('model.credential');
     var id = registry.get('id');
 

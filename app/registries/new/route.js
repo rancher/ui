@@ -12,9 +12,12 @@ export default Ember.Route.extend({
       registryId: 'tbd',
     });
 
-    return Ember.Object.create({
-      registry: registry,
-      credential: credential
+    return this.store.find('registry').then((registries) => {
+      return Ember.Object.create({
+        allRegistries: registries,
+        registry: registry,
+        credential: credential
+      });
     });
   },
 
