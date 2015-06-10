@@ -68,10 +68,18 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
   didSave: function() {
     var registry = this.get('model.registry');
     var cred = this.get('model.credential');
-    var id = registry.get('id');
 
-    cred.set('registryId', id);
-    return cred.save();
+    var existing = registry.get('credentials.lastObject');
+    if ( existing )
+    {
+      existing.merge(cred);
+      return existing.save()
+    }
+    else
+    {
+      cred.set('registryId', registry.get('id'));
+      return cred.save();
+    }
   },
 
   doneSaving: function() {
