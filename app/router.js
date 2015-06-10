@@ -12,6 +12,8 @@ Router.map(function() {
   this.route('login');
   this.route('logout');
   this.route('authenticated', { path: '/'}, function() {
+    this.resource('about');
+
     // Settings
     this.resource('settings', function() {
       this.route('auth');
