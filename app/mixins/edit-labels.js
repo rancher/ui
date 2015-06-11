@@ -71,7 +71,7 @@ export default Ember.Mixin.create({
         }
         else
         {
-          ary.pushObject(Ember.Object.create({key: key, value: val}));
+          ary.pushObject(Ember.Object.create({key: key, value: val, isUser: true, type: 'user'}));
         }
       });
 

@@ -73,7 +73,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
     if ( existing )
     {
       existing.merge(cred);
-      return existing.save()
+      return existing.save();
     }
     else
     {
