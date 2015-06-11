@@ -72,7 +72,6 @@ export default Ember.Route.extend({
       if ( !healthCheckData )
       {
         healthCheckData = {
-          type: 'instanceHealthCheck',
           interval: 2000,
           responseTimeout: 2000,
           healthyThreshold: 2,
@@ -80,6 +79,9 @@ export default Ember.Route.extend({
           requestLine: null,
         };
       }
+
+      // The type isn't set on an existing one
+      healthCheckData.type = 'instanceHealthCheck';
 
       var instance = this.get('store').createRecord(instanceData);
 
