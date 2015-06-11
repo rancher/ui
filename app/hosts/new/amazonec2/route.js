@@ -10,7 +10,7 @@ export default DriverRoute.extend({
       type: 'amazonec2Config',
       region: 'us-west-2',
       instanceType: 't2.micro',
-      securityGroup: 'docker-machine',
+      securityGroup: 'rancher-machine',
       zone: 'a',
       rootSize: 16,
       accessKey: pref.accessKey||'',
