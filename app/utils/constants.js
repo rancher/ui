@@ -76,6 +76,7 @@ export default {
   LABEL: {
     SYSTEM_PREFIX: 'io.rancher.',
     SERVICE_NAME: 'io.rancher.service.name',
+    PROJECT_NAME: 'io.rancher.project.name',
     SCHED_GLOBAL: 'io.rancher.scheduler.global',
     SCHED_AFFINITY: 'io.rancher.scheduler.affinity:',
     SCHED_CONTAINER: 'io.rancher.scheduler.affinity:container',
