@@ -8,9 +8,10 @@ export default Ember.Route.extend({
         filter: {
           environmentId: env.get('id'),
         },
-        include: ['consumedservices','instances']
+        include: ['instances']
       }).then((services) => {
         env.set('services', services||[]);
+        env.set('services.sortProperties', ['name','id']);
         return env;
       });
     });

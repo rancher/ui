@@ -13,7 +13,7 @@ export default Ember.Route.extend({
 
     if ( params.serviceId )
     {
-      dependencies.pushObject(store.find('service', params.serviceId, {include: ['consumedservices']}));
+      dependencies.pushObject(store.find('service', params.serviceId));
     }
 
     return Ember.RSVP.all(dependencies, 'Load dependencies').then(function(results) {

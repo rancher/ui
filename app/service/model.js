@@ -1,13 +1,85 @@
+import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import C from 'ui/utils/constants';
+
+var _allMaps;
+var _allServices;
+var _allLbServices;
+var _allExternalServices;
+var _allDnsServices;
 
 var Service = Cattle.TransitioningResource.extend({
   type: 'service',
 
+  _allMaps: null,
   consumedServicesUpdated: 0,
+  serviceLinks: null, // Used for clone
+  reservedKeys: ['_allMaps','consumedServicesUpdated','serviceLinks'],
+
+  init: function() {
+    this._super();
+
+    // Hack: keep only one copy of all the services and serviceconsumemaps
+    // But you have to load service and serviceconsumemap beforehand somewhere...
+    // Bonus hack: all('services') doesn't include the other kinds of services, so load all those too.
+    if ( !_allMaps )
+    {
+      _allMaps = this.get('store').allUnremoved('serviceconsumemap');
+    }
+
+    this.set('_allMaps', _allMaps);
+
+    if ( !_allServices )
+    {
+      _allServices = this.get('store').allUnremoved('service');
+    }
+
+    if ( !_allLbServices )
+    {
+      _allLbServices = this.get('store').allUnremoved('loadbalancerservice');
+    }
+
+    if ( !_allExternalServices )
+    {
+      _allExternalServices = this.get('store').allUnremoved('externalservice');
+    }
+
+    if ( !_allDnsServices )
+    {
+      _allDnsServices = this.get('store').allUnremoved('dnsservice');
+    }
+  },
+
+  consumedServicesWithNames: function() {
+    var all = [_allServices, _allLbServices, _allExternalServices, _allDnsServices];
+
+    return this.get('_allMaps').filterProperty('serviceId', this.get('id')).map((map) => {
+      var i = 0;
+      var service = null;
+      while ( i < all.length && !service )
+      {
+        service = all[i].filterProperty('id', map.get('consumedServiceId'))[0];
+        i++;
+      }
+
+      return Ember.Object.create({
+        name: map.get('name'),
+        service: service
+      });
+    }).filter((obj) => {
+      return obj.get('service.id');
+    });
+  }.property('id','_allMaps.@each.{name,serviceId,consumedServiceId}'),
+
+  consumedServices: function() {
+    return this.get('consumedServicesWithNames').map((obj) => {
+      return obj.get('service');
+    });
+  }.property('consumedServicesWithNames.@each.service'),
+
   onConsumedServicesChanged: function() {
     this.incrementProperty('consumedServicesUpdated');
-  }.observes('consumedservices.@each.{id,name,state}'),
+  }.observes('consumedServicesWithNames.@each.{name,service}'),
 
   healthState: function() {
     var isGlobal = Object.keys(this.get('labels')||{}).indexOf(C.LABEL.SCHED_GLOBAL) >= 0;

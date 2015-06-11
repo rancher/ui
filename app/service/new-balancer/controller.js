@@ -45,7 +45,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBala
 
   targetsArray: null,
   initTargets: function() {
-    var existing = this.get('balancer.consumedservices');
+    var existing = this.get('balancer.consumedServices');
     var out = [];
     if ( existing )
     {

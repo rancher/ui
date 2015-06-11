@@ -347,26 +347,19 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     },
 
     loadBalancerServiceChanged: function(change) {
-      var service = change.data.resource;
       this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
-      service.importLink('consumedservices');
+    },
+
+    dnsServiceChanged: function(change) {
+      this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
+    },
+
+    externalServiceChanged: function(change) {
+      this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
     },
 
     serviceChanged: function(change) {
-      var service = change.data.resource;
       this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
-
-      // Remove the service from depenedent services
-      if ( ['removed','purged','purging'].indexOf(service.get('state')) >= 0 )
-      {
-        ['service','loadBalancerService','dnsService','externalService'].forEach((type) => {
-          this.get('store').all(type).forEach((otherService) => {
-            (otherService.get('consumedservices')||[]).removeObject(service);
-          });
-        });
-      }
-
-      service.importLink('consumedservices');
     },
   },
 
