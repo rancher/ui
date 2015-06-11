@@ -40,6 +40,7 @@ export default Ember.Route.extend({
           instanceData = serviceData.launchConfig;
           delete serviceData.launchConfig;
           delete serviceData.instances;
+          delete serviceData.secondaryLaunchConfigs;
         }
         else
         {
