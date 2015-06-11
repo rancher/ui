@@ -140,6 +140,10 @@
             {{/if}}
           </label></div>
 
+          {{#unless isCustomSecurityGroup}}
+            <p class="help-block"><a href="https://rancherio.github.io/rancher/docs/infrastructure/hosts/amazon/#EC2Ports" target="_blank">Learn more</a> about the ports that will be opened.</p>
+          {{/unless}}
+
           <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="custom"}} Custom: Choose an existing group{{#if isCustomSecurityGroup}}:{{/if}}</label></div>
           {{#if isCustomSecurityGroup}}
             {{view "select"
