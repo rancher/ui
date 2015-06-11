@@ -72,6 +72,8 @@ export default Ember.ObjectController.extend(NewHost, {
       this.set('errors',null);
       this.set('step',2);
 
+      this.get('amazonec2Config').trimValues();
+
       var ec2 = new AWS.EC2({
         accessKeyId: this.get('amazonec2Config.accessKey'),
         secretAccessKey: this.get('amazonec2Config.secretKey'),
