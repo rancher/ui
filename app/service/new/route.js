@@ -30,6 +30,7 @@ export default Ember.Route.extend({
       var allHosts = results[0];
       var environment = results[1];
       var serviceOrContainer = results[2];
+      var serviceLinks = [];
 
       var instanceData, serviceData, healthCheckData;
       if ( serviceOrContainer )
@@ -37,6 +38,7 @@ export default Ember.Route.extend({
         if ( serviceOrContainer.get('type') === 'service' )
         {
           serviceData = serviceOrContainer.serializeForNew();
+          serviceLinks = serviceOrContainer.get('consumedServicesWithNames');
           instanceData = serviceData.launchConfig;
           delete serviceData.launchConfig;
           delete serviceData.instances;
@@ -80,7 +82,10 @@ export default Ember.Route.extend({
       }
 
       var instance = this.get('store').createRecord(instanceData);
+
       var service = store.createRecord(serviceData);
+      service.set('serviceLinks', serviceLinks);
+
       var healthCheck = store.createRecord(healthCheckData);
       instance.set('healthCheck', healthCheck);
       service.set('launchConfig', instance); // Creating a service needs the isntance definition here

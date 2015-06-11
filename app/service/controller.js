@@ -114,9 +114,13 @@ var ServiceController = Cattle.TransitioningResourceController.extend(ReadLabels
   }.property('type'),
 
   state: Ember.computed.alias('model.combinedState'),
+
+  activeIcon: function() {
+    return activeIcon(this.get('model'));
+  }.property('type'),
 });
 
-function activeIcon(service)
+export function activeIcon(service)
 {
   var out = 'ss-layergroup';
   switch ( service.get('type').toLowerCase() )

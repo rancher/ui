@@ -34,7 +34,7 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
 
   targetsArray: null,
   initTargets: function() {
-    var existing = this.get('dns.consumedservices');
+    var existing = this.get('dns.consumedServices');
     var out = [];
     if ( existing )
     {

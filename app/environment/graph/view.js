@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
 import ThrottledResize from 'ui/mixins/throttled-resize';
+import { activeIcon } from 'ui/service/controller';
 
 export default Ember.View.extend(ThrottledResize,{
   classNames: ['environment-graph'],
@@ -72,7 +73,7 @@ export default Ember.View.extend(ThrottledResize,{
       var color = (service.get('state') === 'active' ? 'green' : (service.get('state') === 'inactive' ? 'red' : 'yellow'));
       var instances = service.get('instances.length')||'No';
 
-      var html =  '<i class="icon ss-layergroup"></i>' +
+      var html =  '<i class="icon '+ activeIcon(service) +'"></i>' +
                   '<h4 class="clip">'+ Util.escapeHtml(service.get('name')) + '</h4>' +
                   '<h6 class="count"><b>' + instances + '</b> container' + (instances === 1 ? '' : 's') + '</h6>' +
                   '<h6><span class="state '+ color +'">' + Util.escapeHtml(Util.ucFirst(service.get('state'))) + '</span></h6>';
@@ -89,15 +90,24 @@ export default Ember.View.extend(ThrottledResize,{
 
     unremovedServices.forEach(function(service) {
       var serviceId = service.get('id');
-      (service.get('consumedservices')||[]).map(function(target) {
+      (service.get('consumedServicesWithNames')||[]).map(function(map) {
+        var target = map.get('service');
         var targetId = target.get('id');
         var color = (target.get('state') === 'active' ? 'green' : (target.get('state') === 'inactive' ? 'red' : 'yellow'));
 
-        g.setEdge(serviceId, targetId, {
+        var edgeOpts = {
           arrowhead: 'vee',
           lineInterpolate: 'bundle',
           class: color,
-        });
+        };
+
+        var mapName = map.get('name');
+        if ( mapName && mapName !== target.get('name') )
+        {
+          edgeOpts.label = mapName;
+        }
+
+        g.setEdge(serviceId, targetId, edgeOpts);
 
         var existing = unexpectedEdges.filter(function(edge) {
           return edge.v === serviceId && edge.w === targetId;

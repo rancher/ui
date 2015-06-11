@@ -50,26 +50,27 @@ export default Ember.Mixin.create(EditLabels, {
   serviceLinksAsMap: null,
   initServiceLinks: function() {
     var out = [];
-    var links = this.get('service.consumedservices')||[];
+    var links;
+    if ( this.get('service.id') )
+    {
+      // Edit
+      links = this.get('service.consumedServicesWithNames')||[];
+    }
+    else
+    {
+      // New / Clone
+      links = this.get('service.serviceLinks')||[];
+    }
 
-    links.forEach(function(value) {
-      // Objects, from edit
-      var id;
-      if ( typeof value === 'object' )
-      {
-        id = Ember.get(value,'id');
-        if ( id )
-        {
-          out.push(Ember.Object.create({
-            obj: value,
-            serviceId: id,
-          }));
-        }
-      }
-      else
-      {
-        out.push(Ember.Object.create({serviceId: value}));
-      }
+    links.forEach(function(obj) {
+      var linkName = obj.get('name');
+      var service = obj.get('service');
+
+      out.push(Ember.Object.create({
+        linkName: (linkName === service.get('name') ? '' : linkName),
+        obj: service,
+        serviceId: service.get('id'),
+      }));
     });
 
     this.set('serviceLinksArray', out);

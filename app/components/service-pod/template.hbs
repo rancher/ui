@@ -13,11 +13,22 @@
   </div>
 </div>
 
-{{#if (or model.consumedservices.length model.externalIpAddresses.length)}}
+{{#if (or model.consumedServicesWithNames.length model.externalIpAddresses.length)}}
   <div class="pod-info clearfix">
     <div class="pod-info-line">
-      {{#each item in model.consumedservices itemController="service"}}
-        <div class="pod-info-item">{{#link-to "service" item.environmentId item.id}}<i class="ss-layergroup"></i> {{item.displayName}}{{/link-to}}</div>
+      {{#each map in model.consumedServicesWithNames}}
+        {{#with map.service as service controller="service"}}
+          <div class="pod-info-item">
+            {{#link-to "service" service.environmentId service.id}}
+              <i {{bind-attr class="service.activeIcon"}}></i>
+              {{#if (eq map.name service.displayName)}}
+                {{map.name}}
+              {{else}}
+                {{service.displayName}}{{#if map.name}} <span class="text-muted">(as {{map.name}})</span>{{/if}}
+              {{/if}}
+            {{/link-to}}
+          </div>
+        {{/with}}
       {{/each}}
     </div>
     {{#if model.externalIpAddresses.length}}
