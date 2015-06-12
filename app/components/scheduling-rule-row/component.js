@@ -107,28 +107,28 @@ export default Ember.Component.extend({
         key = C.LABEL.SCHED_HOST_LABEL;
         if ( userKey && userValue )
         {
-          value = encodeURIComponent(userKey) + '=' + encodeURIComponent(userValue);
+          value = userKey + '=' + userValue;
         }
         break;
       case 'container_label':
         key = C.LABEL.SCHED_CONTAINER_LABEL;
         if ( userKey && userValue )
         {
-          value = encodeURIComponent(userKey) + '=' + encodeURIComponent(userValue);
+          value = userKey + '=' + userValue;
         }
         break;
       case 'container_name':
         key = C.LABEL.SCHED_CONTAINER;
         if ( userValue )
         {
-          value = encodeURIComponent(userValue);
+          value = userValue;
         }
         break;
       case 'service_name':
         key = C.LABEL.SCHED_CONTAINER_LABEL;
         if ( userValue )
         {
-          value = encodeURIComponent(C.LABEL.SERVICE_NAME) + '=' + encodeURIComponent(userValue);
+          value = C.LABEL.SERVICE_NAME + '=' + userValue;
         }
         break;
     }
