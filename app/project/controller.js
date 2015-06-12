@@ -91,7 +91,7 @@ var ProjectController = Cattle.TransitioningResourceController.extend({
     ];
 
     choices.pushObject({label: 'Switch to this Environment', icon: '', action: 'switchTo', enabled: this.get('state') === 'active' });
-    choices.pushObject({label: 'Set as my login Environment', icon: '', action: 'setAsDefault', enabled: this.get('canSetDefault')});
+    choices.pushObject({label: 'Set as default login Environment', icon: '', action: 'setAsDefault', enabled: this.get('canSetDefault')});
 
     return choices;
   }.property('actions.{activate,deactivate,update,restore,purge}','canRemove','canSetDefault'),

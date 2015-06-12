@@ -94,7 +94,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
         var project = active.get('firstObject');
         if ( project )
         {
-          select(project);
+          select(project, true);
         }
         else if ( this.get('app.isAuthenticationAdmin') )
         {
@@ -102,7 +102,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
             var firstActive = all.filterProperty('state','active')[0];
             if ( firstActive )
             {
-              select(firstActive);
+              select(firstActive, true);
             }
             else
             {
@@ -119,10 +119,18 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       });
     });
 
-    function select(project) {
+    function select(project, overwriteDefault) {
       if ( project )
       {
         session.set(C.SESSION.PROJECT, project.get('id'));
+
+        // If there is no default project, set it
+        var def = self.get('prefs').get(C.PREFS.PROJECT_DEFAULT);
+        if ( !def || overwriteDefault === true )
+        {
+          self.get('prefs').set(C.PREFS.PROJECT_DEFAULT, project.get('id'));
+        }
+
         if ( controller )
         {
           controller.set('project', project);

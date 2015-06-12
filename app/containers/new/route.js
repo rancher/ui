@@ -61,6 +61,9 @@ export default Ember.Route.extend({
         };
       }
 
+      // The type isn't set on an existing one
+      healthCheckData.type = 'instanceHealthCheck';
+
       var healthCheck = store.createRecord(healthCheckData);
       var instance = store.createRecord(data);
       instance.set('healthCheck', healthCheck);

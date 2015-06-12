@@ -20,11 +20,13 @@ export default Ember.Route.extend({
       var allHosts = results[0];
       var environment = results[1];
       var existing = results[2];
+      var serviceLinks = [];
 
       var dns;
       if ( existing )
       {
         dns = existing.cloneForNew();
+        serviceLinks = existing.get('consumedServicesWithNames');
       }
       else
       {
@@ -35,6 +37,8 @@ export default Ember.Route.extend({
           environmentId: environment.get('id'),
         });
       }
+
+      dns.set('serviceLinks', serviceLinks);
 
       return {
         isService: true,
