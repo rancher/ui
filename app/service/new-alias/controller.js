@@ -34,12 +34,12 @@ export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
 
   targetsArray: null,
   initTargets: function() {
-    var existing = this.get('dns.consumedServices');
+    var existing = this.get('dns.serviceLinks');
     var out = [];
     if ( existing )
     {
-      existing.forEach((service) => {
-        out.push({ isService: true, value: Ember.get(service,'id') });
+      existing.forEach((map) => {
+        out.push({ isService: true, value: Ember.get(map,'service.id') });
       });
     }
     else
