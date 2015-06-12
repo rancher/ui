@@ -12,18 +12,6 @@ var HostController = Cattle.TransitioningResourceController.extend(DownloadMachi
       return this.doAction('deactivate');
     },
 
-    delete: function() {
-      var machine = this.get('machine');
-      if ( machine )
-      {
-        return machine.delete();
-      }
-      else
-      {
-        return this.delete();
-      }
-    },
-
     purge: function() {
       return this.doAction('purge');
     },
