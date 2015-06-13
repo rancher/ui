@@ -112,6 +112,7 @@ Router.map(function() {
 
     // Services
     this.resource('services', function() {
+      this.resource('splash', {path: '/welcome'});
       this.resource('service.new', {path: '/projects/add-service'});
       this.resource('service.new-balancer', {path: '/projects/add-balancer'});
       this.resource('service.new-alias', {path: '/projects/add-alias'});
