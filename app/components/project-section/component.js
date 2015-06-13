@@ -15,9 +15,9 @@ export default Ember.Component.extend({
   instanceCount: function() {
     var count = 0;
     (this.get('model.services')||[]).forEach((service) => {
-      count += service.get('scale')||0;
+      count += service.get('instances.length')||0;
     });
 
     return count;
-  }.property('model.services.@each.scale'),
+  }.property('model.services.@each.healthState'),
 });
