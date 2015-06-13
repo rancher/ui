@@ -88,7 +88,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       // Then the default project ID from the session
       return this.activeProjectFromId(this.get('prefs').get(C.PREFS.PROJECT_DEFAULT)).then(select)
       .catch(() => {
-        this.get('prefs').set(C.PREFS.PROJECT_DEFAULT, undefined);
+        this.get('prefs').set(C.PREFS.PROJECT_DEFAULT, "");
 
         // Then the first active project
         var project = active.get('firstObject');

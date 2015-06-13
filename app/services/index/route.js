@@ -2,6 +2,14 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   beforeModel: function() {
-    this.transitionTo('environments');
+    var main = this.modelFor('services');
+    if ( main.get('services.length') )
+    {
+      this.transitionTo('environments');
+    }
+    else
+    {
+      this.transitionTo('splash');
+    }
   }
 });
