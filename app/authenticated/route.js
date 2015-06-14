@@ -7,6 +7,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
   socket: null,
+  pingTimer: null,
 
   model: function(params, transition) {
     var store = this.get('store');
@@ -220,13 +221,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     },
 
     // Raw message from the WebSocket
-    //wsMessage: function(/*data*/) {
-      //console.log('wsMessage',data);
+    //subscribeMessage: function(/*data*/) {
+      //console.log('subscribeMessage',data);
     //},
 
     // WebSocket connected
-    wsConnected: function(tries,msec) {
-      var msg = 'WebSocket connected';
+    subscribeConnected: function(tries,msec) {
+      var msg = 'Subscribe connected';
       if (tries > 0)
       {
         msg += ' (after '+ tries + ' ' + (tries === 1 ? 'try' : 'tries');
@@ -241,37 +242,21 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     },
 
     // WebSocket disconnected
-    wsDisconnected: function() {
-      console.log('WebSocket disconnected');
+    subscribeDisconnected: function() {
+      console.log('Subscribe disconnected');
     },
 
-    wsPing: function() {
-      console.log('WebSocket ping');
-    },
-
-    /*
-    agentChanged: function(change) {
-      if (!change || !change.data || !change.data.resource)
+    subscribePing: function() {
+      console.log('Subscribe ping');
+      if ( this.get('pingTimer') )
       {
-        return;
+        Ember.run.cancel(this.get('pingTimer'));
       }
-      //console.log('Agent Changed:', change);
-      var agent = change.data.resource;
-      var id = agent.id;
-      delete agent.hosts;
 
-      var hosts = this.controllerFor('hosts');
-      hosts.forEach(function(host) {
-        if ( host.get('agent.id') === id )
-        {
-          host.get('agent').setProperties(agent);
-        }
-      });
-    },
-    */
-
-    machineChanged: function(change) {
-      console.log('Machine changed:',change);
+      this.set('pingTimer', Ember.run.later(this, function() {
+        console.log('Subscribe missed 2 pings...');
+        this.get('socket').connect();
+      }, 11000));
     },
 
     hostChanged: function(change) {
@@ -282,7 +267,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       {
         machine.get('hosts').addObject(host);
       }
-      console.log('Host changed:',change);
     },
 
     containerChanged: function(change) {
@@ -395,7 +379,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
     socket.on('message', (event) => {
       var d = JSON.parse(event.data, boundTypeify);
-      //this._trySend('wsMessage',d);
+      //this._trySend('subscribeMessage',d);
 
       var str = d.name;
       if ( d.resourceType )
@@ -415,7 +399,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       }
       else if ( d.name === 'ping' )
       {
-        action = 'wsPing';
+        action = 'subscribePing';
       }
 
       if ( action )
@@ -425,11 +409,11 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     });
 
     socket.on('connected', (tries, after) => {
-      this._trySend('wsConnected', tries, after);
+      this._trySend('subscribeConnected', tries, after);
     });
 
     socket.on('disconnected', () => {
-      this._trySend('wsDisconnected', this.get('tries'));
+      this._trySend('subscribeDisconnected', this.get('tries'));
     });
 
     this.set('socket', socket);
