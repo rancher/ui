@@ -75,7 +75,11 @@ module.exports = function(app, options) {
       detail: err.toString()
     }
 
-    if ( !req.upgrade )
+    if ( req.upgrade )
+    {
+      res.end();
+    }
+    else
     {
       res.writeHead(500, {'Content-Type': 'application/json'});
       res.end(JSON.stringify(error));
