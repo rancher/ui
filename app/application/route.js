@@ -138,6 +138,14 @@ export default Ember.Route.extend({
     }
   },
 
+  beforeModel: function() {
+    var agent = window.navigator.userAgent.toLowerCase();
+    if ( agent.indexOf('msie ') >= 0 || agent.indexOf('trident/') >= 0 || agent.indexOf('edge/') >= 0 )
+    {
+      this.transitionTo('ie');
+    }
+  },
+
   setupController: function(controller/*, model*/) {
     controller.set('code',null);
     controller.set('state',null);
