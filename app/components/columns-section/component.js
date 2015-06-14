@@ -92,4 +92,9 @@ export default Ember.Component.extend(ThrottledResize, {
       return out;
     }
   }.property('pods.[]','columnCount'),
+
+  didInsertElement: function() {
+    this._super();
+    this.onResize();
+  },
 });
