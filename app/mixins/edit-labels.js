@@ -118,12 +118,15 @@ export default Ember.Mixin.create({
         type = 'system';
       }
 
-      out.push(Ember.Object.create({
-        key: key,
-        value: obj[key],
-        type: type,
-        isUser: (type === 'user'),
-      }));
+      var values = (obj[key]||'').split(/,/);
+      values.forEach(function(value) {
+        out.push(Ember.Object.create({
+          key: key,
+          value: value,
+          type: type,
+          isUser: (type === 'user'),
+        }));
+      });
     });
 
     this.set('labelArray', out);
@@ -138,7 +141,14 @@ export default Ember.Mixin.create({
         // System labels have to have a value before they're added, users ones can be just key.
         if ( row.isUser || row.value )
         {
-          out[row.key] = row.value;
+          if ( out[row.key] )
+          {
+            out[row.key] = out[row.key]+',' + row.value;
+          }
+          else
+          {
+            out[row.key] = row.value;
+          }
         }
       }
     });
