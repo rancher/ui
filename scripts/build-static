@@ -27,9 +27,12 @@ function runCmd() {
 function printHelp() {
     cat 1>&2 <<EOF
 build-static Usage:
+  -d - Build debug instead of production build
+  -f - Force: Turn off checks that prevent you from doing bad things
   -l - Build as "latest" instead of the version in package.json
-  -u - Upload to GCE
   -t - Tag and push tag
+  -u - Upload to GCE
+  -v=VERSION - Force version to be VERSION instead of what is in package.json
 EOF
   exit 1;
 }
@@ -52,10 +55,14 @@ FORCE=0
 LATEST=0
 UPLOAD=0
 TAG=0
+ENVIRONMENT="production"
 : ${FORCE_VERSION:=""}
 
 while getopts ":lutfv:" opt;do
     case $opt in
+    d)
+        ENVIRONMENT="development"
+        ;;
     f)
         FORCE=1
         ;;
@@ -123,7 +130,6 @@ else
   fi
 fi
 
-ENVIRONMENT="production"
 BUILD_PAR="dist/static"
 BUILD_DIR="${BUILD_PAR}/${VERSION}"
 CDN="releases.rancher.com/ui"
@@ -167,7 +173,7 @@ if [[ $UPLOAD -eq 1 ]]; then
   echo "Uploading..."
   if [[ $LATEST -eq 1 ]]; then
     runCmd gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R ${BUILD_DIR} "${GS_URL}/_upload"
-    runCmd gsutil -h "${CACHE}" -m rsync -c -r -d "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
+    runCmd gsutil -h "${CACHE}" rsync -c -r -d "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
     runCmd gsutil rm -a -f -R "${GS_URL}/_upload"
   else
     runCmd gsutil -m cp -z "${GZIP}" -R ${BUILD_DIR} ${GS_URL}
