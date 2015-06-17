@@ -56,6 +56,9 @@ export default Ember.Route.extend({
 
     logout: function(transition, timedOut, errorMsg) {
       var session = this.get('session');
+      // This needs to change first so that other tabs get notified and logout
+      session.set(C.SESSION.ACCOUNT_ID,null);
+
       session.clear();
       this.get('cookies').remove(C.COOKIE.TOKEN);
 
