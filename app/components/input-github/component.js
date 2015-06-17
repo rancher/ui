@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  github: Ember.inject.service(),
+
   allowTeams: true,
 
   checking: false,

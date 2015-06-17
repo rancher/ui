@@ -4,7 +4,7 @@ import C from 'ui/utils/constants';
 export function initialize(container, application) {
   application.deferReadiness();
   var store = container.lookup('store:main');
-  var github = container.lookup('github:main');
+  var github = container.lookup('service:github');
   var headers = {};
   headers[C.HEADER.PROJECT] = undefined; // Explicitly not send project
 
@@ -42,6 +42,6 @@ export function initialize(container, application) {
 
 export default {
   name: 'authentication',
-  after: ['store','github'],
+  after: ['store','config'],
   initialize: initialize
 };

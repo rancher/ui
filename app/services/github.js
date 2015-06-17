@@ -2,9 +2,11 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
-import Cookie from 'ui/utils/cookie';
 
-export default Ember.Object.extend({
+export default Ember.Service.extend({
+  cookies: Ember.inject.service(),
+  session: Ember.inject.service(),
+
   find: function(type, id) {
     if ( type === 'team' )
     {
@@ -138,7 +140,6 @@ export default Ember.Object.extend({
     var session = this.get('session');
 
     var headers = {};
-    headers[C.HEADER.AUTH] = undefined; // Explictly not send auth
     headers[C.HEADER.PROJECT] = undefined; // Explictly not send project
 
     return this.get('store').rawRequest({
@@ -148,7 +149,7 @@ export default Ember.Object.extend({
       data: {
         code: code
       },
-    }).then(function(res) {
+    }).then((res) => {
       var auth = JSON.parse(res.xhr.responseText);
       var interesting = {};
       C.TOKEN_TO_SESSION_KEYS.forEach((key) => {
@@ -158,9 +159,11 @@ export default Ember.Object.extend({
         }
       });
 
-      Cookie.set(C.HEADER.AUTH_TYPE, auth[C.SESSION.TOKEN], null, '/', null, window.location.protocol === 'https:');
+      this.get('cookies').set(C.COOKIE.TOKEN, auth['jwt'], {
+        path: '/',
+        secure: window.location.protocol === 'https:'
+      });
 
-      interesting[C.SESSION.LOGGED_IN] = true;
       session.setProperties(interesting);
       return res;
     }).catch((res) => {
@@ -175,9 +178,7 @@ export default Ember.Object.extend({
       values[key] = undefined;
     });
 
-    values[C.SESSION.LOGGED_IN] = false;
     this.get('session').setProperties(values);
-
-    Cookie.remove(C.HEADER.AUTH_TYPE);
+    this.get('cookies').remove(C.COOKIE.TOKEN);
   },
 });

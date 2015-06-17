@@ -7,7 +7,7 @@ import C from 'ui/utils/constants';
 
 export function initialize(container, application) {
   var store = container.lookup('store:main');
-  var session = container.lookup('session:main');
+  var session = container.lookup('service:session');
   store.set('removeAfterDelete', false);
 
   store.reopen({

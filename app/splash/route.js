@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
-    var main = this.modelFor('services');
+    var main = this.modelFor('services-tab');
     if ( main.get('environments.length') === 0 )
     {
       var env = this.get('store').createRecord({

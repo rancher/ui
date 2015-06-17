@@ -2,6 +2,8 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.ObjectController.extend({
+  github: Ember.inject.service(),
+
   needs: ['application'],
   confirmDisable: false,
   errors: null,
@@ -176,14 +178,14 @@ export default Ember.ObjectController.extend({
         return this.get('store').find('setting', C.SETTING.API_HOST).then((setting) => {
           if ( setting.get('value') )
           {
-            this.send('waitAndRefresh', true);
+            this.send('waitAndRefresh');
           }
           else
           {
             // Default the api.host so the user won't have to set it in most cases
             setting.set('value', this.get('controllers.application.endpointHost'));
             return setting.save().then(() => {
-              this.send('waitAndRefresh', true);
+              this.send('waitAndRefresh');
             });
           }
         });
@@ -193,49 +195,11 @@ export default Ember.ObjectController.extend({
       });
     },
 
-    waitAndRefresh: function(expect,limit=5) {
-      if ( limit === 0 )
-      {
-        hide();
-        this.send('error', 'Timed out waiting for access control to turn ' + (expect ? 'on' : 'off'));
-        return;
-      }
-      else
-      {
-        $('#loading-underlay, #loading-overlay').removeClass('hide').show();
-      }
-
-      setTimeout(() => {
-        var headers = {};
-        headers[C.HEADER.PROJECT] = undefined; // Explicitly not send project
-
-        this.get('store').rawRequest({
-          url: 'schemas',
-          headers: headers
-        }).then(() => {
-          if ( expect === false )
-          {
-            window.location.href = window.location.href;
-          }
-          else
-          {
-            this.send('waitAndRefresh',expect,limit-1);
-          }
-        }).catch(() => {
-          if ( expect === true )
-          {
-            window.location.href = window.location.href;
-          }
-          else
-          {
-            this.send('waitAndRefresh',expect,limit-1);
-          }
-        });
-      }, 5000/limit);
-
-      function hide() {
-        $('#loading-underlay, #loading-overlay').addClass('hide');
-      }
+    waitAndRefresh: function() {
+      $('#loading-underlay, #loading-overlay').removeClass('hide').show();
+      setTimeout(function() {
+        window.location.href = window.location.href;
+      }, 1000);
     },
 
     addAuthorized: function(data) {
@@ -337,8 +301,9 @@ export default Ember.ObjectController.extend({
 
 
       model.save().then(() => {
+        this.get('github').clearSessionKeys();
         this.set('app.authenticationEnabled',false);
-        this.send('waitAndRefresh', false);
+        this.send('waitAndRefresh');
       }).catch((err) => {
         this.send('gotError', err);
       }).finally(() => {

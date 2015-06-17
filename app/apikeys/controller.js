@@ -1,7 +1,10 @@
+import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 export default Cattle.CollectionController.extend({
+  cookies: Ember.inject.service(),
   needs: ['application','authenticated'],
   itemController: 'apikey',
   endpoint: function() {
@@ -25,6 +28,17 @@ export default Cattle.CollectionController.extend({
 
   endpointWithAuth: function() {
     var url = this.get('endpoint');
+
+    // For local development where API doesn't match origin, add basic auth token
+    if ( url.indexOf(window.location.origin) !== 0 )
+    {
+      var token = this.get('cookies').get(C.COOKIE.TOKEN);
+      if ( token )
+      {
+        url = Util.addAuthorization(url, C.USER.BASIC_BEARER, token);
+      }
+    }
+
     return url;
   }.property('endpoint', 'session.'+C.SESSION.TOKEN,'session.'+C.SESSION.PROJECT)
 });
