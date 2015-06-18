@@ -1,8 +1,16 @@
-export default {
+var C = {
+  PREFS: {
+    ACCESS_WARNING: 'accessWarning',
+    PROJECT_DEFAULT: 'defaultProjectId',
+    I_HATE_SPINNERS: 'iHateSpinners',
+  },
+
+  COOKIE: {
+    TOKEN: 'token',
+  },
+
   SESSION: {
-    LOGGED_IN: 'isLoggedIn',
     BACK_TO: 'backTo',
-    TOKEN: 'jwt',
     USER_ID: 'user',
     ACCOUNT_ID: 'accountId',
     USER_TYPE: 'userType',
@@ -12,30 +20,17 @@ export default {
     GITHUB_TEAMS: 'teams',
   },
 
-  PREFS: {
-    ACCESS_WARNING: 'accessWarning',
-    PROJECT_DEFAULT: 'defaultProjectId',
-    I_HATE_SPINNERS: 'iHateSpinners',
-  },
-
-  TOKEN_TO_SESSION_KEYS: ['accountId', 'defaultProject','jwt','orgs','teams','user','userType'],
-
   HEADER: {
-    AUTH: 'authorization',
-    AUTH_TYPE: 'Bearer',
-    AUTH_FAKE_USER: 'x-api-bearer',
-
     PROJECT: 'x-api-project-id',
-
     NO_CHALLENGE: 'x-api-no-challenge',
     NO_CHALLENGE_VALUE: 'true',
-
     ACCOUNT_ID: 'x-api-account-id',
   },
 
   USER: {
     TYPE_NORMAL: 'user',
     TYPE_ADMIN: 'admin',
+    BASIC_BEARER: 'x-api-bearer',
   },
 
   GITHUB: {
@@ -84,3 +79,13 @@ export default {
     SCHED_CONTAINER_LABEL: 'io.rancher.scheduler.affinity:container_label',
   },
 };
+
+C.TOKEN_TO_SESSION_KEYS = [
+  C.SESSION.ACCOUNT_ID,
+  C.SESSION.USER_ID,
+  C.SESSION.USER_TYPE,
+  C.SESSION.GITHUB_TEAMS,
+  C.SESSION.GITHUB_ORGS
+];
+
+export default C;

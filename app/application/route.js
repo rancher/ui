@@ -2,6 +2,9 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
+  cookies: Ember.inject.service(),
+  github: Ember.inject.service(),
+
   previousParams: null,
   previousRoute: null,
 
@@ -53,8 +56,12 @@ export default Ember.Route.extend({
 
     logout: function(transition, timedOut, errorMsg) {
       var session = this.get('session');
+      // This needs to change first so that other tabs get notified and logout
+      session.set(C.SESSION.ACCOUNT_ID,null);
+
       session.clear();
-      session.set(C.SESSION.LOGGED_IN, false);
+      this.get('cookies').remove(C.COOKIE.TOKEN);
+
       if ( transition )
       {
         session.set(C.SESSION.BACK_TO, window.location.href);

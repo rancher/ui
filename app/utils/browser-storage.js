@@ -1,6 +1,6 @@
 import Ember from "ember";
 
-export default Ember.Object.extend({
+export default Ember.Mixin.create({
   backing: 'overrideMe with window.localStorage or window.sessionStorage',
 
   unknownProperty: function(key) {

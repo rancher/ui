@@ -48,7 +48,7 @@ Router.map(function() {
     });
 
     // Infrastructure
-    this.resource('infrastructure', function() {
+    this.resource('infrastructure-tab', {path: '/infrastructure'}, function() {
       this.resource('hosts', { path: '/hosts'}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'}, function() {
@@ -112,7 +112,7 @@ Router.map(function() {
     });
 
     // Services
-    this.resource('services', function() {
+    this.resource('services-tab', {path: '/services'}, function() {
       this.resource('splash', {path: '/welcome'});
       this.resource('service.new', {path: '/projects/add-service'});
       this.resource('service.new-balancer', {path: '/projects/add-balancer'});

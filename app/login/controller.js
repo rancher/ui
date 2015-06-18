@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  github: Ember.inject.service(),
   queryParams: ['timedOut','errorMsg'],
 
   timedOut: false,

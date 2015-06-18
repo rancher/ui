@@ -19,7 +19,6 @@ module.exports = function(app, options) {
     req.url = path.join(apiPath, req.url);
 
     req.headers['user-agent'] = 'Rancher UI';
-    delete req.headers['cookie'];
 
     console.log('API Proxy', req.method, 'to', req.url);
     proxy.web(req, res, {target: config.endpoint});
@@ -30,8 +29,6 @@ module.exports = function(app, options) {
     // include root path in proxied request
     req.url = path.join(githubPath, req.url);
 
-    delete req.headers['cookie'];
-
     console.log('Github Proxy', req.method, 'to', req.url);
     proxy.web(req, res, {target: config.endpoint});
   });
@@ -40,8 +37,6 @@ module.exports = function(app, options) {
   app.use(genericProxyPath, function(req, res, next) {
     // include root path in proxied request
     req.url = path.join(genericProxyPath, req.url);
-
-    delete req.headers['cookie'];
 
     // @TODO remove this... --v
     var tmp = req.headers['x-api-headers-restrict'];

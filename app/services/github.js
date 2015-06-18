@@ -3,7 +3,10 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
 
-export default Ember.Object.extend({
+export default Ember.Service.extend({
+  cookies: Ember.inject.service(),
+  session: Ember.inject.service(),
+
   find: function(type, id) {
     if ( type === 'team' )
     {
@@ -72,16 +75,7 @@ export default Ember.Object.extend({
   },
 
   request: function(url) {
-    var headers = {};
-    var session = this.get('session');
-
-    var authValue = session.get(C.SESSION.TOKEN);
-    if ( authValue )
-    {
-      headers[C.HEADER.AUTH] = C.HEADER.AUTH_TYPE + ' ' + authValue;
-    }
-
-    return ajaxPromise({url: url, headers: headers, dataType: 'json'}, true).catch((obj) => {
+    return ajaxPromise({url: url, dataType: 'json'}, true).catch((obj) => {
       if ( obj.xhr.status === 401 )
       {
         this.send('logout',null,true);
@@ -146,7 +140,6 @@ export default Ember.Object.extend({
     var session = this.get('session');
 
     var headers = {};
-    headers[C.HEADER.AUTH] = undefined; // Explictly not send auth
     headers[C.HEADER.PROJECT] = undefined; // Explictly not send project
 
     return this.get('store').rawRequest({
@@ -156,7 +149,7 @@ export default Ember.Object.extend({
       data: {
         code: code
       },
-    }).then(function(res) {
+    }).then((res) => {
       var auth = JSON.parse(res.xhr.responseText);
       var interesting = {};
       C.TOKEN_TO_SESSION_KEYS.forEach((key) => {
@@ -166,7 +159,11 @@ export default Ember.Object.extend({
         }
       });
 
-      interesting[C.SESSION.LOGGED_IN] = true;
+      this.get('cookies').set(C.COOKIE.TOKEN, auth['jwt'], {
+        path: '/',
+        secure: window.location.protocol === 'https:'
+      });
+
       session.setProperties(interesting);
       return res;
     }).catch((res) => {
@@ -181,7 +178,7 @@ export default Ember.Object.extend({
       values[key] = undefined;
     });
 
-    values[C.SESSION.LOGGED_IN] = false;
     this.get('session').setProperties(values);
+    this.get('cookies').remove(C.COOKIE.TOKEN);
   },
 });

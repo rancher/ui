@@ -12,6 +12,8 @@ function modelProxy(methodName) {
 }
 
 var ResourceController = Ember.ObjectController.extend({
+  cookies: Ember.inject.service(),
+
   needs: ['application','authenticated'],
   actions: {
     goToApi: function() {
@@ -26,7 +28,15 @@ var ResourceController = Ember.ObjectController.extend({
         url = url.replace(/(.*?\/v1)(.*)/,"$1/projects/"+projectId+"$2");
       }
 
-      url = Util.addAuthorization(url, C.HEADER.AUTH_FAKE_USER, this.get('session.'+C.SESSION.TOKEN)||'');
+      // For local development where API doesn't match origin, add basic auth token
+      if ( url.indexOf(window.location.origin) !== 0 )
+      {
+        var token = this.get('cookies').get(C.COOKIE.TOKEN);
+        if ( token )
+        {
+          url = Util.addAuthorization(url, C.USER.BASIC_BEARER, token);
+        }
+      }
 
       window.open(url, '_blank');
     },

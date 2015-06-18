@@ -2,10 +2,11 @@ import Ember from "ember";
 import C from 'ui/utils/constants';
 
 export default Ember.Mixin.create({
+  cookies: Ember.inject.service(),
+
   beforeModel: function(transition) {
     this._super.apply(this,arguments);
-    var session = this.get('session');
-    var isLoggedIn = (session.get(C.SESSION.LOGGED_IN) === true) && session.get('jwt');
+    var isLoggedIn = !!this.get('cookies').get(C.COOKIE.TOKEN);
     if ( this.get('app.authenticationEnabled') && !isLoggedIn )
     {
       transition.send('logout', transition, isLoggedIn);

@@ -2,6 +2,8 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 
 export default Ember.Mixin.create({
+  github: Ember.inject.service(),
+
   type: 'user_or_org',
   login: null, // This can't be called id because Ember uses that property..
   size: 36,
