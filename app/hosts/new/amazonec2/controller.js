@@ -11,12 +11,6 @@ var RANCHER_INGRESS_RULES = [
     IpProtocol: 'tcp'
   },
   {
-    FromPort: 9345,
-    ToPort: 9346,
-    CidrIp: '0.0.0.0/0',
-    IpProtocol: 'tcp'
-  },
-  {
     FromPort: 500,
     ToPort: 500,
     CidrIp: '0.0.0.0/0',
