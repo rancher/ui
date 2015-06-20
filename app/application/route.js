@@ -113,7 +113,7 @@ export default Ember.Route.extend({
           }
           else
           {
-            this.transitionTo('index');
+            this.replaceWith('index');
           }
         }).catch((err) => {
           this.controllerFor('application').setProperties({
@@ -149,7 +149,7 @@ export default Ember.Route.extend({
     var agent = window.navigator.userAgent.toLowerCase();
     if ( agent.indexOf('msie ') >= 0 || agent.indexOf('trident/') >= 0 || agent.indexOf('edge/') >= 0 )
     {
-      this.transitionTo('ie');
+      this.replaceWith('ie');
     }
   },
 
