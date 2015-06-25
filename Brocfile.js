@@ -47,7 +47,7 @@ app.import('bower_components/bootstrap-sass-official/assets/javascripts/bootstra
 app.import('bower_components/jgrowl/jquery.jgrowl.js');
 app.import('bower_components/jgrowl/jquery.jgrowl.css');
 app.import('bower_components/jquery.cookie/jquery.cookie.js');
-app.import('bower_components/ember-animate/ember-animate.js');
+//app.import('bower_components/ember-animate/ember-animate.js');
 app.import('bower_components/d3/d3.js');
 app.import('bower_components/c3/c3.js');
 app.import('bower_components/c3/c3.css');

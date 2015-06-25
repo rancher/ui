@@ -6,6 +6,8 @@ import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
+  prefs: Ember.inject.service(),
+
   socket: null,
   pingTimer: null,
 
@@ -188,6 +190,77 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   actions: {
+    activate: function() {
+      var store = this.get('store');
+      var boundTypeify = store._typeify.bind(store);
+
+      var url = "ws://"+window.location.host + this.get('app.wsEndpoint');
+      var session = this.get('session');
+
+      var projectId = session.get(C.SESSION.PROJECT);
+      if ( projectId )
+      {
+        url = Util.addQueryParam(url, 'projectId', projectId);
+      }
+
+      var socket = Socket.create({
+        url: url
+      });
+
+      socket.on('message', (event) => {
+        var d = JSON.parse(event.data, boundTypeify);
+        //this._trySend('subscribeMessage',d);
+
+        var str = d.name;
+        if ( d.resourceType )
+        {
+          str += ' ' + d.resourceType;
+
+          if ( d.resourceId )
+          {
+            str += ' ' + d.resourceId;
+          }
+        }
+
+        var action;
+        if ( d.name === 'resource.change' )
+        {
+          action = d.resourceType+'Changed';
+        }
+        else if ( d.name === 'ping' )
+        {
+          action = 'subscribePing';
+        }
+
+        if ( action )
+        {
+          this._trySend(action,d);
+        }
+      });
+
+      socket.on('connected', (tries, after) => {
+        this._trySend('subscribeConnected', tries, after);
+      });
+
+      socket.on('disconnected', () => {
+        this._trySend('subscribeDisconnected', this.get('tries'));
+      });
+
+      this.set('socket', socket);
+      socket.connect();
+    },
+
+    deactivate: function() {
+      var socket = this.get('socket');
+      if ( socket )
+      {
+        socket.disconnect();
+      }
+
+      // Forget all the things
+      this.get('store').reset();
+    },
+
     error: function(err,transition) {
       // Unauthorized error, send back to login screen
       if ( err.status === 401 )
@@ -353,77 +426,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     serviceChanged: function(change) {
       this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
     },
-  },
-
-  enter: function() {
-    var store = this.get('store');
-    var boundTypeify = store._typeify.bind(store);
-
-    var url = "ws://"+window.location.host + this.get('app.wsEndpoint');
-    var session = this.get('session');
-
-    var projectId = session.get(C.SESSION.PROJECT);
-    if ( projectId )
-    {
-      url = Util.addQueryParam(url, 'projectId', projectId);
-    }
-
-    var socket = Socket.create({
-      url: url
-    });
-
-    socket.on('message', (event) => {
-      var d = JSON.parse(event.data, boundTypeify);
-      //this._trySend('subscribeMessage',d);
-
-      var str = d.name;
-      if ( d.resourceType )
-      {
-        str += ' ' + d.resourceType;
-
-        if ( d.resourceId )
-        {
-          str += ' ' + d.resourceId;
-        }
-      }
-
-      var action;
-      if ( d.name === 'resource.change' )
-      {
-        action = d.resourceType+'Changed';
-      }
-      else if ( d.name === 'ping' )
-      {
-        action = 'subscribePing';
-      }
-
-      if ( action )
-      {
-        this._trySend(action,d);
-      }
-    });
-
-    socket.on('connected', (tries, after) => {
-      this._trySend('subscribeConnected', tries, after);
-    });
-
-    socket.on('disconnected', () => {
-      this._trySend('subscribeDisconnected', this.get('tries'));
-    });
-
-    this.set('socket', socket);
-    socket.connect();
-  },
-
-  exit: function() {
-    var socket = this.get('socket');
-    if ( socket )
-    {
-      socket.disconnect();
-    }
-
-    // Forget all the things
-    this.get('store').reset();
   },
 
   _trySend: function(/*arguments*/) {

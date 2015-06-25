@@ -1,6 +1,9 @@
+import Ember from 'ember';
 import DriverRoute from 'ui/hosts/new/driver-route';
 
 export default DriverRoute.extend({
+  prefs: Ember.inject.service(),
+
   driverName: 'amazonec2',
   newModel: function() {
     var store = this.get('store');

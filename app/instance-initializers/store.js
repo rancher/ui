@@ -5,7 +5,9 @@ import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
 
-export function initialize(container, application) {
+export function initialize(instance) {
+  var container = instance.container;
+  var application = container.lookup('application:main');
   var store = container.lookup('store:main');
   var session = container.lookup('service:session');
   store.set('removeAfterDelete', false);

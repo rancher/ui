@@ -488,21 +488,6 @@ var TransitioningResourceController = ResourceController.extend({
   stateBackground: function() {
     return this.get('stateColor').replace("text-","bg-");
   }.property('stateColor'),
-
-  displayProgress: function() {
-    var progress = this.get('transitioningProgress');
-    if ( progress === null || isNaN(progress) )
-    {
-      progress = 0;
-    }
-
-    return Math.max(0,Math.min(progress, 100));
-  }.property('transitioningProgress'),
-
-  progressStyle: function() {
-    return 'width: '+ Math.max(2, this.get('displayProgress')) +'%';
-  }.property('displayProgress'),
-
 });
 
 // Override stateMap with a map of state -> icon classes

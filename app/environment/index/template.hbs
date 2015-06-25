@@ -1,8 +1,8 @@
-{{#with model as env controller="environment"}}
+{{#with model controller="environment" as |env|}}
   {{environment-header model=env}}
 
   {{#columns-section pods=view.pods emptyMessage="No services yet." as |item| }}
-    {{#with item as service controller="service"}}
+    {{#with item controller="service" as |service|}}
       {{service-pod model=service}}
     {{/with}}
   {{/columns-section}}

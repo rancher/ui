@@ -1,14 +1,7 @@
-import Ember from "ember";
+import Ember from 'ember';
 import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 
-export default Ember.Object.extend({
-  app: null,
-  store: null,
-
-  init: function() {
-    this._super();
-  },
-
+export default Ember.Service.extend({
   unremoved: function() {
     return UnremovedArrayProxy.create({
       sourceContent: this.get('store').all('userpreference')
@@ -80,4 +73,3 @@ export default Ember.Object.extend({
     this.endPropertyChanges();
   },
 });
-

@@ -81,7 +81,7 @@
       <div class="btn-group project-btn">
         <button type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-expanded="false">
           {{#if project}}
-            {{#with project as p controller="project"}}
+            {{#with project controller="project" as |p|}}
               <i {{bind-attr class=":fa-fw p.icon"}}></i>&nbsp;{{p.displayName}}
             {{/with}}
             <span class="caret"></span>
@@ -113,7 +113,7 @@
           {{/if}}
           {{#if projectIsMissing}}
             <li role="presentation" class="dropdown-header text-uppercase">Selected Environment:</li>
-            {{#with project as p controller="project"}}
+            {{#with project controller="project" as |p|}}
               <li {{bind-attr class="p.active:disabled p.active:selected"}}>
                 <a {{action "switchProject" p.id}} class="clip">
                   <i {{bind-attr class=":fa-fw p.icon"}}></i>

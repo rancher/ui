@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import EditContainer from 'ui/mixins/edit-container';
 
-export default Ember.ObjectController.extend(EditContainer, {
+export default Ember.Controller.extend(EditContainer, {
   editing: true,
 
   didSave: function() {

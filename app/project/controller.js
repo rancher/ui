@@ -3,6 +3,8 @@ import Cattle from 'ui/utils/cattle';
 import C from 'ui/utils/constants';
 
 var ProjectController = Cattle.TransitioningResourceController.extend({
+  prefs: Ember.inject.service(),
+
   actions: {
     edit: function() {
       this.transitionToRoute('project.edit',this.get('id'));

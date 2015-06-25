@@ -27,9 +27,15 @@ export default OverlayRoute.extend({
 
   setupController: function(controller, model) {
     var instance = model.get('instance');
-    controller.set('originalModel', instance);
     model.set('instance', instance.clone());
-    controller.set('model', model);
+    controller.setProperties({
+      originalModel: instance,
+      model: model,
+      instance: model.instance,
+      ports: model.ports,
+      instanceLinks: model.instanceLinks,
+      allHosts: model.allHosts
+    });
     controller.initFields();
   },
 

@@ -6,7 +6,7 @@
     {{model.ipAddress}}
   {{else}}
     {{#if model.instance}}
-      {{#with model.instance as container controller="container"}}
+      {{#with model.instance controller="container" as |container|}}
         <i {{bind-attr class="container.stateIcon container.stateColor" tooltip=container.displayState}}></i>
         {{#link-to "container" model.instanceId}}
           {{container.displayName}}

@@ -9,7 +9,7 @@
 {{#each item in this}}
   {{project-section model=item collapseId=(dom-id item)}}
   {{#columns-section pods=item.unremovedServices id=(dom-id item) classNames="collapse in" emptyMessage="No services yet." as |item| }}
-    {{#with item as service controller="service"}}
+    {{#with item controller="service" as |service|}}
       {{service-pod model=service}}
     {{/with}}
   {{/columns-section}}

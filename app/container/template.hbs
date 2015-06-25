@@ -6,7 +6,7 @@
     </div>
     <span>
       {{#if primaryHost}}
-        {{#with primaryHost as host controller="host"}}
+        {{#with primaryHost controller="host" as |host|}}
           {{#link-to "hosts"}}Hosts:{{/link-to}}
           {{#link-to "host" host.id}}{{host.displayName}}:{{/link-to}}
           {{displayName}}
@@ -35,7 +35,7 @@
       <li>
         <label>Host IP</label>
         {{#if primaryHost}}
-          {{#with primaryHost as host controller="host"}}
+          {{#with primaryHost controller="host" as |host|}}
             {{host.displayIp}} {{zero-clipboard text=host.displayIp}}
           {{/with}}
         {{else}}

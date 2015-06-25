@@ -5,7 +5,7 @@ Serializable.reopen({
   reservedKeys: ['session'],
 });
 
-export function initialize(container, application) {
+export function initialize(registry, application) {
   application.inject('controller',  'session', 'service:session');
   application.inject('route',       'session', 'service:session');
   application.inject('model',       'session', 'service:session');
@@ -14,6 +14,5 @@ export function initialize(container, application) {
 
 export default {
   name: 'session',
-  before: 'store',
   initialize: initialize
 };
