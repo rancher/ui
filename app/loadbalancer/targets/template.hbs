@@ -4,7 +4,7 @@
       <h3>Targets ({{arrangedTargets.length}})</h3>
     </div>
     <div class="col-sm-6 text-right">
-      <button {{action "newTarget"}} class="btn btn-sm btn-primary" {{bind-attr disabled="addDisabled:disabled"}}>Add Targets</button>
+      <button {{action "newTarget"}} class="btn btn-sm btn-primary" disabled={{addDisabled}}>Add Targets</button>
     </div>
   </div>
 </section>
@@ -22,7 +22,7 @@
       {{#each target in arrangedTargets itemController="loadbalancertarget"}}
         <tr>
           <td>
-            <span {{bind-attr class=":badge :state target.stateBackground"}}>
+            <span class="badge state {{target.stateBackground}}">
               {{target.displayState}}
             </span>
           </td>

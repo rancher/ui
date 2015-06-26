@@ -10,7 +10,7 @@
 <section class="well">
   <label>Endpoint</label>
   <div>
-    <a {{bind-attr href=endpointWithAuth}} target="_blank">{{endpoint}}</a>
+    <a href="{{endpointWithAuth}}" target="_blank">{{endpoint}}</a>
   </div>
 </section>
 
@@ -27,10 +27,10 @@
       </tr>
     </thead>
     <tbody>
-      {{#each key in this}}
+      {{#each this as |key|}}
         <tr>
           <td>
-            <span {{bind-attr class=":badge :state key.stateBackground"}}>
+            <span class="badge state {{key.stateBackground}}">
               {{key.displayState}}
             </span>
           </td>

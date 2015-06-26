@@ -82,7 +82,7 @@
         <button type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-expanded="false">
           {{#if project}}
             {{#with project controller="project" as |p|}}
-              <i {{bind-attr class=":fa-fw p.icon"}}></i>&nbsp;{{p.displayName}}
+              <i class="fa-fw {{p.icon}}"></i>&nbsp;{{p.displayName}}
             {{/with}}
             <span class="caret"></span>
           {{else}}
@@ -99,9 +99,9 @@
               {{/if}}
             </li>
             {{#each p in projectChoices itemController="project"}}
-              <li {{bind-attr class="p.active:disabled p.active:selected"}}>
+              <li class="{{if p.active 'disabled selected'}}">
                 <a {{action "switchProject" p.id}} class="clip">
-                  <i {{bind-attr class=":fa-fw p.icon"}}></i>
+                  <i class="fa {{p.icon}}"></i>
                   &nbsp;
                   {{p.displayName}}
                 </a>
@@ -114,9 +114,9 @@
           {{#if projectIsMissing}}
             <li role="presentation" class="dropdown-header text-uppercase">Selected Environment:</li>
             {{#with project controller="project" as |p|}}
-              <li {{bind-attr class="p.active:disabled p.active:selected"}}>
+              <li class="{{if p.active 'disabled selected'}}">
                 <a {{action "switchProject" p.id}} class="clip">
-                  <i {{bind-attr class=":fa-fw p.icon"}}></i>
+                  <i class="fa {{p.icon}}"></i>
                   &nbsp;
                   {{p.displayName}}
                 </a>

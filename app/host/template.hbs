@@ -1,8 +1,8 @@
 <section class="header">
   <h3>
     {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
-    <div {{bind-attr class=":state stateColor"}}>
-      <i {{bind-attr class="stateIcon"}}></i> {{displayState}}
+    <div class="state {{stateColor}}">
+      <i class="{{stateIcon}}"></i> {{displayState}}
     </div>
     <span class="right-divider">{{#link-to "hosts"}}Hosts:{{/link-to}} {{displayName}}</span>
     {{#link-to "containers.new" (query-params hostId=id) classNames="btn btn-sm btn-primary right-divider-btn"}}Add Container{{/link-to}}
@@ -16,7 +16,7 @@
       {{#if showTransitioningMessage}}
         <li>
           <label>Message</label>
-          <span {{bind-attr class=":force-wrap stateColor"}}>
+          <span class="force-wrap {{stateColor}}">
             {{transitioningMessage}}
           </span>
         </li>

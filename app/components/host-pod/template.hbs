@@ -1,15 +1,15 @@
 <div class="pod-header">
   {{resource-actions-menu model=model choices=model.availableActions}}
 
-  <div {{bind-attr class=":pod-state stateBackground"}}><span>{{model.displayState}}</span></div>
-  <div class="pod-icon"><i {{bind-attr class="model.stateIcon :fa-lg model.stateColor"}}></i></div>
+  <div class="pod-state {{stateBackground}}"><span>{{model.displayState}}</span></div>
+  <div class="pod-icon"><i class="{{model.stateIcon}} fa-lg {{model.stateColor}}"></i></div>
   <div class="pod-name">
     {{#if isMachine}}
       {{model.displayName}}
     {{else}}
       {{#link-to "host" model.id}}{{model.displayName}}{{/link-to}}
       {{#if model.showTransitioningMessage}}
-        <div {{bind-attr class=":pod-message model.isError:text-danger:text-muted"}}>
+        <div class="pod-message {{if model.isError 'text-danger' 'text-muted'}}">
           {{model.transitioningMessage}}
         </div>
       {{/if}}

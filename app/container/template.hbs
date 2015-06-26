@@ -1,8 +1,8 @@
 <section class="header">
   <h3>
     {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
-    <div {{bind-attr class=":state stateColor"}}>
-      <i {{bind-attr class="stateIcon"}}></i> {{displayState}}
+    <div class="state {{stateColor}}">
+      <i class="{{stateIcon}}"}></i> {{displayState}}
     </div>
     <span>
       {{#if primaryHost}}
@@ -26,7 +26,7 @@
       {{#if showTransitioningMessage}}
         <li>
           <label>Message</label>
-          <span {{bind-attr class=":force-wrap stateColor"}}>
+          <span class="force-wrap {{stateColor}}">
             {{transitioningMessage}}
           </span>
         </li>
@@ -102,7 +102,7 @@
         {{#each port in ports itemController="port"}}
           <tr>
             <td>
-              <span {{bind-attr class=":badge :state port.stateBackground"}}>
+              <span class="badge state {{port.stateBackground}}">
                 {{port.displayState}}
               </span>
             </td>
@@ -153,7 +153,7 @@
         {{#each mount in mounts itemController="mount"}}
           <tr>
             <td>
-              <span {{bind-attr class=":badge :state mount.stateBackground"}}>
+              <span class="badge state {{mount.stateBackground}}">
                 {{mount.displayState}}
               </span>
             </td>
@@ -172,7 +172,7 @@
               </ul>
             </td>
             <td class="text-right">
-              <i {{bind-attr class="mount.isReadWrite:ss-check:ss-delete mount.isReadWrite::text-muted"}}></i>
+              <i class="{{if mount.isReadWrite 'ss-check' 'ss-delete text-muted'}}"></i>
             </td>
           </tr>
         {{else}}
