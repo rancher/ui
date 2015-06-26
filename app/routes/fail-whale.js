@@ -18,7 +18,7 @@ export default Ember.Route.extend({
   afterModel: function(model) {
     if ( !model )
     {
-      this.transitionTo('index');
+      this.transitionTo('authenticated');
     }
   }
 });

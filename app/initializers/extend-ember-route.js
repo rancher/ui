@@ -49,7 +49,7 @@ export function initialize(/* container, application */) {
       args.unshift(route);
 
       this.transitionTo.apply(this,args).catch(() => {
-        this.transitionTo('index');
+        this.transitionTo('authenticated');
       });
     },
 
@@ -79,7 +79,7 @@ export function initialize(/* container, application */) {
 
       args.unshift(info.name);
       this.transitionTo.apply(this,args).catch(() => {
-        this.transitionTo('index');
+        this.transitionTo('authenticated');
       });
     },
   });

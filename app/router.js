@@ -48,7 +48,7 @@ Router.map(function() {
     });
 
     // Infrastructure
-    this.resource('infrastructure-tab', {path: '/infrastructure'}, function() {
+    this.resource('infrastructure-tab', {path: '/infra'}, function() {
       this.resource('hosts', { path: '/hosts'}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'}, function() {
@@ -111,14 +111,14 @@ Router.map(function() {
       });
     });
 
-    // Services
-    this.resource('services-tab', {path: '/services'}, function() {
+    // Applications
+    this.resource('applications-tab', {path: '/app'}, function() {
       this.resource('splash', {path: '/welcome'});
-      this.resource('service.new', {path: '/projects/add-service'});
-      this.resource('service.new-balancer', {path: '/projects/add-balancer'});
-      this.resource('service.new-alias', {path: '/projects/add-alias'});
-      this.resource('service.new-external', {path: '/projects/add-external'});
-      this.resource('environments', {path: '/projects'}, function() {
+      this.resource('service.new', {path: '/stacks/add-service'});
+      this.resource('service.new-balancer', {path: '/stacks/add-balancer'});
+      this.resource('service.new-alias', {path: '/stacks/add-alias'});
+      this.resource('service.new-external', {path: '/stacks/add-external'});
+      this.resource('environments', {path: '/stacks'}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
 

@@ -1,13 +1,13 @@
 <section>
   <h3>
-    <span class="right-divider">Projects</span>
-    {{#link-to "environments.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add Project{{/link-to}}
+    <span class="right-divider">Stacks</span>
+    {{#link-to "environments.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add Stack{{/link-to}}
   </h3>
 </section>
 
 <section>
 {{#each this as |item|}}
-  {{project-section model=item collapseId=(dom-id item)}}
+  {{stack-section model=item collapseId=(dom-id item)}}
   {{#columns-section pods=item.unremovedServices id=(dom-id item) classNames="collapse in" emptyMessage="No services yet." as |item| }}
     {{#with item controller="service" as |service|}}
       {{service-pod model=service}}
