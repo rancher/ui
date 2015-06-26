@@ -18,7 +18,7 @@
       </tr>
     </thead>
     <tbody>
-      {{#each config in this}}
+      {{#each this as |config|}}
         <tr>
           <td>
             <span class="badge state {{config.stateBackground}}">
@@ -43,7 +43,7 @@
             {{/if}}
           </td>
           <td>
-            {{#each balancer in config.unremovedBalancers itemController="loadbalancer"}}
+            {{#each config.unremovedBalancers itemController="loadbalancer" as |balancer|}}
               <p>{{#link-to "loadbalancer" balancer.id}}{{balancer.displayName}}{{/link-to}}</p>
             {{else}}
               <span class="text-muted">None</span>

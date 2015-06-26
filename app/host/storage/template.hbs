@@ -9,7 +9,7 @@
       </tr>
     </thead>
     <tbody>
-      {{#each volume in nonRootVolumes itemController="volume"}}
+      {{#each nonRootVolumes itemController="volume" as |volume|}}
         <tr>
           <td>
             <span class="badge state {{volume.stateBackground}}">
@@ -26,7 +26,7 @@
 
           <td>
             {{#if volume.activeMounts.length}}
-              {{#each mount in volume.activeMounts itemController="mount"}}
+              {{#each volume.activeMounts itemController="mount" as |mount|}}
                 <div>
                   {{#link-to "container" mount.instanceId}}{{mount.instance.name}}{{/link-to}}:{{mount.path}}
                   {{#if (eq mount.permissions "ro")}}

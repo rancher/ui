@@ -9,7 +9,7 @@
     </div>
     {{#if volumesArray.length}}
       <table class="table fixed no-lines no-top-padding tight">
-        {{#each vol in volumesArray}}
+        {{#each volumesArray as |vol|}}
           <tr>
             <td>
               {{input type="text" class="form-control volume-path input-sm" value=vol.value placeholder="e.g. [/path/on/host]:/path/in/container[:ro]"}}
@@ -44,7 +44,7 @@
         </div>
       {{#if volumesFromArray.length}}
         <table class="table fixed no-lines no-top-padding tight">
-          {{#each vol in volumesFromArray}}
+          {{#each volumesFromArray as |vol|}}
             <tr>
               <td>
                 {{display-name-select

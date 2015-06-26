@@ -52,14 +52,14 @@
               <h5>Authorized Users and Organizations</h5>
 
               <ul class="list-unstyled gh-block-list">
-                {{#each user in allowedUsers}}
+                {{#each allowedUsers as |user|}}
                   <li>
                     {{#github-block login=user}}
                       <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeUser" user}}></button>
                     {{/github-block}}
                   </li>
                 {{/each}}
-                {{#each org in allowedOrganizations}}
+                {{#each allowedOrganizations as |org|}}
                   <li>
                     {{#github-block login=org}}
                       <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeOrg" org}}></button>

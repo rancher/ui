@@ -59,7 +59,7 @@
     </div>
     {{#if userLabelArray.length}}
       <div class="pod-info-line" style="white-space: normal; padding-top: 5px;">
-        {{#each label in userLabelArray}}
+        {{#each userLabelArray as |label|}}
           <span class="label label-default clip" style="display: inline-block; max-width: 100%;">{{label.key}}{{#if label.value}}={{label.value}}{{/if}}</span>
         {{/each}}
       </div>
@@ -68,11 +68,11 @@
 
   <div class="clearfix no-resource-action-hover">
     {{#if dot}}
-      {{#each item in model.arrangedInstances itemController="container"}}
+      {{#each model.arrangedInstances itemController="container" as |item|}}
         {{container-dot model=item}}
       {{/each}}
     {{else}}
-      {{#each item in model.arrangedInstances itemController="container"}}
+      {{#each model.arrangedInstances itemController="container" as |item|}}
         {{container-subpod model=item}}
       {{/each}}
       {{#if showAdd}}

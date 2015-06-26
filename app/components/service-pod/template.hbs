@@ -16,7 +16,7 @@
 {{#if (or model.consumedServicesWithNames.length model.externalIpAddresses.length)}}
   <div class="pod-info clearfix">
     <div class="pod-info-line">
-      {{#each map in model.consumedServicesWithNames}}
+      {{#each model.consumedServicesWithNames as |map|}}
         {{#with map.service controller="service" as |service|}}
           <div class="pod-info-item">
             {{#link-to "service" service.environmentId service.id}}
@@ -32,7 +32,7 @@
       {{/each}}
     </div>
     {{#if model.externalIpAddresses.length}}
-      {{#each ip in model.externalIpAddresses}}
+      {{#each model.externalIpAddresses as |ip|}}
         <div class="pod-info-line">
           <div class="pod-info-item"><i class="ss-link"></i> {{ip}}</div>
         </div>
@@ -43,7 +43,7 @@
 
 <div class="clearfix no-resource-action-hover">
   {{#if hasContainers}}
-    {{#each item in model.instances itemController="container"}}
+    {{#each model.instances itemController="container" as |item|}}
       {{container-subpod model=item stripProject=true}}
     {{else}}
       <div class="text-center text-muted" style="margin: 20px 0">

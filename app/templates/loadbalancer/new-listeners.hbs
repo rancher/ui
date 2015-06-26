@@ -12,7 +12,7 @@
     </thead>
   {{/if}}
   <tbody>
-    {{#each listener in listenersArray}}
+    {{#each listenersArray as |listener|}}
       <tr>
         {{#if listener.id}}
           <td>{{listener.sourcePort}}/{{listener.sourceProtocol}}</td>
@@ -33,7 +33,7 @@
                   <li role="presentation" class="dropdown-header">
                     Select a protocol:
                   </li>
-                  {{#each choice in sourceProtocolOptions}}
+                  {{#each sourceProtocolOptions as |choice|}}
                     <li {{action "chooseProtocol" listener "sourceProtocol" choice}}>
                       <a>{{choice}}</a>
                     </li>
@@ -55,7 +55,7 @@
                     <li role="presentation" class="dropdown-header">
                       Select a protocol:
                     </li>
-                    {{#each choice in targetProtocolOptions}}
+                    {{#each targetProtocolOptions as |choice|}}
                       <li {{action "chooseProtocol" listener "targetProtocol" choice}}>
                         <a>{{choice}}</a>
                       </li>

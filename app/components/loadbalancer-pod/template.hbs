@@ -14,7 +14,7 @@
 </div>
 
 <div class="pod-info clearfix">
-  {{#each host in model.hosts itemController="host"}}
+  {{#each model.hosts itemController="host" as |host|}}
     <div class="pod-info-line clip">
       <div class="pod-info-item"><i class="ss-link"></i> {{host.displayName}}: {{host.displayIp}}</div>
     </div>
@@ -22,7 +22,7 @@
 </div>
 
 <div class="clearfix no-resource-action-hover">
-  {{#each item in model.arrangedTargets itemController="loadbalancertarget"}}
+  {{#each model.arrangedTargets itemController="loadbalancertarget" as |item|}}
     {{loadbalancertarget-subpod model=item}}
   {{/each}}
   {{#if showAdd}}
