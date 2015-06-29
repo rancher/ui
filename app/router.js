@@ -112,13 +112,13 @@ Router.map(function() {
     });
 
     // Applications
-    this.resource('applications-tab', {path: '/app'}, function() {
+    this.resource('stacks-tab', {path: '/stacks'}, function() {
       this.resource('splash', {path: '/welcome'});
-      this.resource('service.new', {path: '/stacks/add-service'});
-      this.resource('service.new-balancer', {path: '/stacks/add-balancer'});
-      this.resource('service.new-alias', {path: '/stacks/add-alias'});
-      this.resource('service.new-external', {path: '/stacks/add-external'});
-      this.resource('environments', {path: '/stacks'}, function() {
+      this.resource('service.new', {path: '/add-service'});
+      this.resource('service.new-balancer', {path: '/add-balancer'});
+      this.resource('service.new-alias', {path: '/add-alias'});
+      this.resource('service.new-external', {path: '/add-external'});
+      this.resource('environments', {path: '/'}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
 
