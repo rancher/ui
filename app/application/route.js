@@ -113,7 +113,7 @@ export default Ember.Route.extend({
           }
           else
           {
-            this.replaceWith('index');
+            this.replaceWith('authenticated');
           }
         }).catch((err) => {
           this.controllerFor('application').setProperties({
