@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import C from 'ui/utils/constants';
 
-var ContainerController = Cattle.TransitioningResourceController.extend({
+var ContainerController = Cattle.LegacyTransitioningResourceController.extend({
   state: Ember.computed.alias('model.combinedState'),
 
   mountError: null,

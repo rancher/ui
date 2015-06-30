@@ -3,7 +3,7 @@ import Cattle from 'ui/utils/cattle';
 import Util from 'ui/utils/util';
 import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 
-var EnvironmentController = Cattle.TransitioningResourceController.extend({
+var EnvironmentController = Cattle.LegacyTransitioningResourceController.extend({
   needs: ['authenticated','application'],
 
   init: function() {

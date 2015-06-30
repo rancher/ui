@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import DownloadMachineConfig from 'ui/mixins/download-machine-config';
 
-var HostController = Cattle.TransitioningResourceController.extend(DownloadMachineConfig, {
+var HostController = Cattle.LegacyTransitioningResourceController.extend(DownloadMachineConfig, {
   actions: {
     activate: function() {
       return this.doAction('activate');

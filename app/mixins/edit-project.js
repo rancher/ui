@@ -3,7 +3,7 @@ import C from 'ui/utils/constants';
 import Cattle from 'ui/utils/cattle';
 import Util from 'ui/utils/util';
 
-export default Ember.Mixin.create(Cattle.NewOrEditMixin, {
+export default Ember.Mixin.create(Cattle.LegacyNewOrEditMixin, {
   actions: {
     checkMember: function(obj) {
       var member = Ember.Object.create({

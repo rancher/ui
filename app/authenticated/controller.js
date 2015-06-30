@@ -9,10 +9,6 @@ export default Ember.Controller.extend({
 
   error: null,
 
-  projects: null,
-  project: null,
-
-
   addAuthParams: function(url) {
     var token = this.get('cookies').get(C.COOKIE.TOKEN);
     if ( token )

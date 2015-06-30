@@ -1,22 +1,25 @@
-import Cattle from 'ui/utils/cattle';
+import Ember from 'ember';
+import CattleTransitioningController from 'ui/mixins/cattle-transitioning-controller';
 
-var ApikeyController = Cattle.TransitioningResourceController.extend({
+export default Ember.Controller.extend(CattleTransitioningController, {
+  showModal: false,
+
   actions: {
     deactivate: function() {
-      return this.doAction('deactivate');
+      return this.get('model').doAction('deactivate');
     },
 
     activate: function() {
-      return this.doAction('activate');
+      return this.get('model').doAction('activate');
     },
 
-    edit: function() {
-      this.transitionToRoute('apikey.edit',this.get('model'));
+    edit: function(parentController) {
+      parentController.transitionToRoute('apikey.edit', this.get('model.id'));
     },
   },
 
   availableActions: function() {
-    var a = this.get('actions');
+    var a = this.get('model.actions');
 
     return [
       { label: 'Activate',      icon: 'ss-play',          action: 'activate',     enabled: !!a.activate },
@@ -28,17 +31,5 @@ var ApikeyController = Cattle.TransitioningResourceController.extend({
       { divider: true },
       { label: 'Edit',          icon: '',                 action: 'edit',         enabled: !!a.update },
     ];
-  }.property('actions.{update,activate,deactivate,restore,remove,purge}'),
+  }.property('model.actions.{update,activate,deactivate,restore,remove,purge}'),
 });
-
-ApikeyController.reopenClass({
-  stateMap: {
-    'active':     {icon: 'ss-record',     color: 'text-success'},
-    'inactive':   {icon: 'fa fa-circle',  color: 'text-danger'},
-    'purged':     {icon: 'ss-tornado',    color: 'text-danger'},
-    'removed':    {icon: 'ss-trash',      color: 'text-danger'},
-    'requested':  {icon: 'ss-tag',        color: 'text-info'},
-  }
-});
-
-export default ApikeyController;

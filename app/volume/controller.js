@@ -1,7 +1,7 @@
 import Cattle from 'ui/utils/cattle';
 import Ember from 'ember';
 
-var VolumeController = Cattle.TransitioningResourceController.extend({
+var VolumeController = Cattle.LegacyTransitioningResourceController.extend({
   icon: 'ss-hdd',
 
   availableActions: function() {

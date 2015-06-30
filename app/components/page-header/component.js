@@ -3,9 +3,10 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
 export default Ember.Component.extend({
+  projects: Ember.inject.service(),
+  project: Ember.computed.alias('projects.current'),
+
   currentPath: null,
-  project: null,
-  projects: null,
   authController: null,
 
   tagName: 'header',
@@ -19,10 +20,8 @@ export default Ember.Component.extend({
   }.property(),
 
   projectChoices: function() {
-    return this.get('projects').slice().filter(function(item) {
-      return item.get('state') === 'active';
-    }).sortBy('name','id');
-  }.property('projects.@each.{id,displayName,state}'),
+    return this.get('projects.active').sortBy('name','id');
+  }.property('projects.active.@each.{id,displayName,state}'),
 
   projectIsMissing: function() {
     return this.get('projectChoices').filterProperty('id', this.get('project.id')).get('length') === 0;

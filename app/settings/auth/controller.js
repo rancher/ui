@@ -3,8 +3,8 @@ import C from 'ui/utils/constants';
 
 export default Ember.ObjectController.extend({
   github: Ember.inject.service(),
+  endpoint: Ember.inject.service(),
 
-  needs: ['application'],
   confirmDisable: false,
   errors: null,
   testing: false,
@@ -183,7 +183,7 @@ export default Ember.ObjectController.extend({
           else
           {
             // Default the api.host so the user won't have to set it in most cases
-            setting.set('value', this.get('controllers.application.endpointHost'));
+            setting.set('value', this.get('endpoint.host'));
             return setting.save().then(() => {
               this.send('waitAndRefresh');
             });

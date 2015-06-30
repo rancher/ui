@@ -1,6 +1,6 @@
 import Cattle from 'ui/utils/cattle';
 
-var LoadBalancerServiceController = Cattle.TransitioningResourceController.extend({
+var LoadBalancerServiceController = Cattle.LegacyTransitioningResourceController.extend({
   actions: {
     activate: function() {
       return this.doAction('activate');

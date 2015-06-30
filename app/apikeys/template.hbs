@@ -1,16 +1,14 @@
-{{#with controllers.authenticated.project controller="project" as |p|}}
-  <section class="header">
-    <h3>
-      <span class="right-divider">API &amp; Keys for &quot;{{p.displayName}}&quot; Environment</span>
-      {{#link-to "apikeys.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add API Key{{/link-to}}
-    </h3>
-  </section>
-{{/with}}
+<section class="header">
+  <h3>
+    <span class="right-divider">API &amp; Keys for &quot;{{project.displayName}}&quot; Environment</span>
+    {{#link-to "apikeys.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add API Key{{/link-to}}
+  </h3>
+</section>
 
 <section class="well">
   <label>Endpoint</label>
   <div>
-    <a href="{{endpointWithAuth}}" target="_blank">{{endpoint}}</a>
+    <a href="{{endpointWithAuth}}" target="_blank">{{displayEndpoint}}</a>
   </div>
 </section>
 
@@ -27,7 +25,7 @@
       </tr>
     </thead>
     <tbody>
-      {{#each this as |key|}}
+      {{#each arranged as |key|}}
         <tr>
           <td>
             <span class="badge state {{key.stateBackground}}">
@@ -47,7 +45,9 @@
             <div class="text-muted">{{date-calendar key.created}}</div>
           </td>
           <td align="right">
-            {{resource-actions-menu model=key choices=key.availableActions}}
+            {{#with key controller="apikey" as |ctrl|}}
+              {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
+            {{/with}}
           </td>
         </tr>
       {{else}}

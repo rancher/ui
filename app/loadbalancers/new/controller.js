@@ -3,7 +3,7 @@ import Cattle from 'ui/utils/cattle';
 import EditLoadBalancerConfig from 'ui/mixins/edit-loadbalancerconfig';
 import TargetChoices from 'ui/mixins/target-choices';
 
-export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBalancerConfig, TargetChoices, {
+export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLoadBalancerConfig, TargetChoices, {
   queryParams: ['tab'],
   tab: 'listeners',
   error: null,

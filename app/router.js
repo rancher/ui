@@ -10,6 +10,14 @@ Router.map(function() {
   this.route('index');
   this.route('failWhale', { path: '/fail' });
 
+  // Confirm
+  this.modal('delete-confirmation', {
+    withParams: 'confirmDeleteResources',
+    actions: {
+      confirm: 'confirmDelete'
+    }
+  });
+
   this.route('login');
   this.route('logout');
   this.route('authenticated', { path: '/'}, function() {

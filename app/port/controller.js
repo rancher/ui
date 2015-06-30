@@ -1,6 +1,6 @@
 import Cattle from 'ui/utils/cattle';
 
-var PortController = Cattle.TransitioningResourceController.extend({
+var PortController = Cattle.LegacyTransitioningResourceController.extend({
   _publicIp: null,
   _publicIpState: 0,
   displayPublicIp: function() {

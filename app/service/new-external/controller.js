@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import EditTargetIp from 'ui/mixins/edit-targetip';
 
-export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditTargetIp, {
+export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditTargetIp, {
   queryParams: ['environmentId','serviceId'],
   environmentId: null,
   serviceId: null,

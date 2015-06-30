@@ -77,17 +77,12 @@
   </div>
 
   <div class="right" style="padding-right: 0;">
+    {{projectChoices}}
     {{#if project}}
       <div class="btn-group project-btn">
         <button type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-expanded="false">
-          {{#if project}}
-            {{#with project controller="project" as |p|}}
-              <i class="fa-fw {{p.icon}}"></i>&nbsp;{{p.displayName}}
-            {{/with}}
-            <span class="caret"></span>
-          {{else}}
-            <i>No Environment</i>
-          {{/if}}
+          <i class="fa-fw {{project.icon}}"></i>&nbsp;{{project.displayName}}
+          <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
           {{#if projectChoices.length}}
@@ -98,7 +93,7 @@
                 All Environments
               {{/if}}
             </li>
-            {{#each projectChoices itemController="project" as |p|}}
+            {{#each projectChoices as |p|}}
               <li class="{{if p.active 'disabled selected'}}">
                 <a {{action "switchProject" p.id}} class="clip">
                   <i class="fa {{p.icon}}"></i>
@@ -113,15 +108,13 @@
           {{/if}}
           {{#if projectIsMissing}}
             <li role="presentation" class="dropdown-header text-uppercase">Selected Environment:</li>
-            {{#with project controller="project" as |p|}}
-              <li class="{{if p.active 'disabled selected'}}">
-                <a {{action "switchProject" p.id}} class="clip">
-                  <i class="fa {{p.icon}}"></i>
-                  &nbsp;
-                  {{p.displayName}}
-                </a>
-              </li>
-            {{/with}}
+            <li class="{{if project.active 'disabled selected'}}">
+              <a {{action "switchProject" project.id}} class="clip">
+                <i class="fa {{project.icon}}"></i>
+                &nbsp;
+                {{project.displayName}}
+              </a>
+            </li>
             <li role="presentation" class="divider"></li>
           {{/if}}
           <li>{{#link-to "projects"}}Manage Environments{{/link-to}}</li>

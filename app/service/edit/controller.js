@@ -4,7 +4,7 @@ import EditService from 'ui/mixins/edit-service';
 import EditTargetIp from 'ui/mixins/edit-targetip';
 import C from 'ui/utils/constants';
 
-export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditService, EditTargetIp, {
+export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditService, EditTargetIp, {
   editing: true,
 
   canScale: function() {

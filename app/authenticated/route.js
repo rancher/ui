@@ -2,11 +2,11 @@ import Ember from 'ember';
 import Socket from 'ui/utils/socket';
 import Util from 'ui/utils/util';
 import AuthenticatedRouteMixin from 'ui/mixins/authenticated-route';
-import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
   prefs: Ember.inject.service(),
+  projects: Ember.inject.service(),
 
   socket: null,
   pingTimer: null,
@@ -32,11 +32,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.set('app.isAuthenticationAdmin', isAdmin);
 
       // Return the list of projects as the model
-      return this.findUserProjects().then((all) => {
-        // Load all the active projects
-        var active = ActiveArrayProxy.create({sourceContent: all});
-        return active;
-      });
+      return this.get('projects').getAll();
     }).catch((err) => {
       if ( [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
       {
@@ -49,15 +45,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   afterModel: function(model) {
+    var projects = this.get('projects');
     return this.loadPreferences().then(() => {
-      return this.selectDefaultProject(model);
+      projects.set('all', model);
+      return projects.selectDefault().catch(() => {
+        this.transitionTo('projects');
+      });
     });
-  },
-
-  setupController: function(controller, model) {
-    controller.set('projects', model);
-    this.selectDefaultProject(model, controller);
-    this._super.apply(this,arguments);
   },
 
   loadPreferences: function() {
@@ -79,114 +73,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.set('app.hasUserPreferences', false);
       return Ember.RSVP.resolve();
     }
-  },
-
-  selectDefaultProject: function(active, controller) {
-    var self = this;
-    var session = this.get('session');
-
-    // Try the project ID in the session
-    return this.activeProjectFromId(session.get(C.SESSION.PROJECT)).then(select)
-    .catch(() => {
-      // Then the default project ID from the session
-      return this.activeProjectFromId(this.get('prefs').get(C.PREFS.PROJECT_DEFAULT)).then(select)
-      .catch(() => {
-        this.get('prefs').set(C.PREFS.PROJECT_DEFAULT, "");
-
-        // Then the first active project
-        var project = active.get('firstObject');
-        if ( project )
-        {
-          select(project, true);
-        }
-        else if ( this.get('app.isAuthenticationAdmin') )
-        {
-          return this.findUserProjects().then((all) => {
-            var firstActive = all.filterProperty('state','active')[0];
-            if ( firstActive )
-            {
-              select(firstActive, true);
-            }
-            else
-            {
-              fail();
-            }
-          }).catch(() => {
-            fail();
-          });
-        }
-        else
-        {
-          fail();
-        }
-      });
-    });
-
-    function select(project, overwriteDefault) {
-      if ( project )
-      {
-        session.set(C.SESSION.PROJECT, project.get('id'));
-
-        // If there is no default project, set it
-        var def = self.get('prefs').get(C.PREFS.PROJECT_DEFAULT);
-        if ( !def || overwriteDefault === true )
-        {
-          self.get('prefs').set(C.PREFS.PROJECT_DEFAULT, project.get('id'));
-        }
-
-        if ( controller )
-        {
-          controller.set('project', project);
-        }
-      }
-      else
-      {
-        session.set(C.SESSION.PROJECT, undefined);
-        if ( controller )
-        {
-          controller.set('project', null);
-        }
-      }
-    }
-
-    function fail() {
-      // Then cry
-      select(null);
-      self.transitionTo('projects');
-    }
-  },
-
-  activeProjectFromId: function(projectId) {
-    // Try the currently selected one in the session
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      if ( !projectId )
-      {
-        reject();
-      }
-
-      this.get('store').find('project', projectId).then((project) => {
-        if ( project.get('state') === 'active' )
-        {
-          resolve(project);
-        }
-        else
-        {
-          reject();
-        }
-      }).catch(() => {
-        reject();
-      });
-    });
-  },
-
-  findUserProjects: function() {
-    var opt = {forceReload: true};
-    if ( !this.get('app.authenticationEnabled') )
-    {
-      opt.filter = {all: 'true'};
-    }
-
-    return this.get('store').find('project', null, opt);
   },
 
   activate: function() {
@@ -267,20 +153,15 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       }
     },
 
-    refreshProjectDropdown: function() {
-      this.findUserProjects().then((res) => {
-        this.set('controller.projects.sourceContent', res);
-        this.selectDefaultProject(this.get('controller.projects'), this.get('controller'));
-      });
-    },
-
     switchProject: function(projectId) {
       this.intermediateTransitionTo('authenticated');
       this.get('session').set(C.SESSION.PROJECT, projectId);
       this.get('store').reset();
       if ( !projectId )
       {
-        this.selectDefaultProject(this.get('controller.projects'), this.get('controller'));
+        this.get('projects').selectDefault().catch(() => {
+          this.transitionTo('projects');
+        });
       }
       this.refresh();
     },

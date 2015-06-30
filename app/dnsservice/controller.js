@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
-var DnsServiceController = Cattle.TransitioningResourceController.extend({
+var DnsServiceController = Cattle.LegacyTransitioningResourceController.extend({
   needs: ['environment'],
   environment: Ember.computed.alias('controllers.environment'),
 

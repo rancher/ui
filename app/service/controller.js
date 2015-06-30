@@ -3,7 +3,7 @@ import Cattle from 'ui/utils/cattle';
 import C from 'ui/utils/constants';
 import ReadLabels from 'ui/mixins/read-labels';
 
-var ServiceController = Cattle.TransitioningResourceController.extend(ReadLabels, {
+var ServiceController = Cattle.LegacyTransitioningResourceController.extend(ReadLabels, {
   needs: ['environment'],
   environment: Ember.computed.alias('controllers.environment'),
   labelResource: Ember.computed.alias('model.launchConfig'),

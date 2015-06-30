@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
-export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, {
+export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, {
   queryParams: ['environmentId','serviceId'],
   environmentId: null,
   serviceId: null,

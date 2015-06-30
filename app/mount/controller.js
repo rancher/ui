@@ -1,7 +1,7 @@
 import Cattle from 'ui/utils/cattle';
 import Ember from 'ember';
 
-var MountController = Cattle.TransitioningResourceController.extend({
+var MountController = Cattle.LegacyTransitioningResourceController.extend({
   isReadWrite: Ember.computed.equal('permissions','rw'),
   isReadOnly:  Ember.computed.equal('permissions','ro'),
 

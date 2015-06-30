@@ -1,15 +1,27 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
+import Sortable from 'ui/mixins/sortable';
 
-export default Cattle.CollectionController.extend({
+export default Ember.Controller.extend(Sortable, {
+  sortBy: 'name',
+  sorts: {
+    state:        ['state','name','id'],
+    name:         ['name','id'],
+    description:  ['description','name','id'],
+    publicValue:  ['publicValue','id'],
+    created:      ['created','name','id'],
+  },
+
   cookies: Ember.inject.service(),
-  needs: ['application','authenticated'],
-  itemController: 'apikey',
-  endpoint: function() {
+  projects: Ember.inject.service(),
+  project: Ember.computed.alias('projects.current'),
+  endpointService: Ember.inject.service('endpoint'),
+  needs: ['authenticated'],
+
+  displayEndpoint: function() {
     // Strip trailing slash off of the absoluteEndpoint
-    var url = this.get('controllers.application.absoluteEndpoint').replace(/\/+$/,'');
+    var url = this.get('endpointService.absolute').replace(/\/+$/,'');
     // Add a single slash
     url += '/';
 
@@ -24,10 +36,10 @@ export default Cattle.CollectionController.extend({
     }
 
     return url;
-  }.property('controllers.application.absoluteEndpoint','app.apiEndpoint','session.'+C.SESSION.PROJECT),
+  }.property('endpointService.absolute','app.apiEndpoint','session.'+C.SESSION.PROJECT),
 
   endpointWithAuth: function() {
-    var url = this.get('endpoint');
+    var url = this.get('displayEndpoint');
 
     // For local development where API doesn't match origin, add basic auth token
     if ( url.indexOf(window.location.origin) !== 0 )
@@ -40,5 +52,5 @@ export default Cattle.CollectionController.extend({
     }
 
     return url;
-  }.property('endpoint', 'session.'+C.SESSION.TOKEN,'session.'+C.SESSION.PROJECT)
+  }.property('displayEndpoint', 'session.'+C.SESSION.TOKEN,'session.'+C.SESSION.PROJECT)
 });

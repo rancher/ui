@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
+import NewOrEdit from 'ui/mixins/new-or-edit';
 
-export default Ember.Controller.extend(Cattle.NewOrEditMixin, {
+export default Ember.Controller.extend(NewOrEdit, {
   queryParams: ['justCreated'],
   justCreated: false,
   cancelAsClose: Ember.computed.alias('justCreated'),

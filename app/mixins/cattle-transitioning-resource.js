@@ -1,0 +1,467 @@
+import Ember from 'ember';
+import Util from 'ui/utils/util';
+import Resource from 'ember-api-store/models/resource';
+import { normalizeType } from 'ember-api-store/utils/normalize';
+
+export default Ember.Mixin.create({
+  endpoint: Ember.inject.service(),
+
+  reservedKeys: ['delayTimer','pollTimer','waitInterval','waitTimeout'],
+
+  state: null,
+  transitioning: null,
+  transitioningMessage: null,
+  transitioningProgress: null,
+
+  displayName: function() {
+    return this.get('name') || '('+this.get('id')+')';
+  }.property('name','id'),
+
+  isTransitioning: Ember.computed.equal('transitioning','yes'),
+  isError: Ember.computed.equal('transitioning','error'),
+  isDeleted: Ember.computed.equal('state','removed'),
+  isPurged: Ember.computed.equal('state','purged'),
+
+  displayState: function() {
+    var state = this.get('state')||'';
+    return state.split(/-/).map((word) => {
+      return Util.ucFirst(word);
+    }).join('-');
+  }.property('state'),
+
+  showTransitioningMessage: function() {
+    var trans = this.get('transitioning');
+    return (trans === 'yes' || trans === 'error') && (this.get('transitioningMessage')||'').length > 0;
+  }.property('transitioning','transitioningMessage'),
+
+  stateIcon: function() {
+    var trans = this.get('transitioning');
+    if ( trans === 'yes' )
+    {
+      return 'fa fa-circle-o-notch fa-spin';
+    }
+    else if ( trans === 'error' )
+    {
+      return 'ss-alert text-danger';
+    }
+    else
+    {
+      var map = this.constructor.stateMap;
+      var key = (this.get('state')||'').toLowerCase();
+      if ( map && map[key] && map[key].icon !== undefined)
+      {
+        if ( typeof map[key].icon === 'function' )
+        {
+          return map[key].icon(this);
+        }
+        else
+        {
+          return map[key].icon;
+        }
+      }
+
+      return this.constructor.defaultStateIcon;
+    }
+  }.property('state','transitioning'),
+
+  stateColor: function() {
+      var map = this.constructor.stateMap;
+      var key = (this.get('state')||'').toLowerCase();
+      if ( map && map[key] && map[key].color !== undefined )
+      {
+        if ( typeof map[key].color === 'function' )
+        {
+          return map[key].color(this);
+        }
+        else
+        {
+          return map[key].color;
+        }
+      }
+
+    return this.constructor.defaultStateColor;
+  }.property('state','transitioning'),
+
+  stateBackground: function() {
+    return this.get('stateColor').replace("text-","bg-");
+  }.property('stateColor'),
+
+  availableActions: function() {
+    /*
+      Override me and return [
+        {
+          enabled: true/false,    // Whether it's enabled or greyed out
+          detail: true/false,     // If true, this action will only be shown on detailed screens
+          label: 'Delete',        // Label shown on hover or in menu
+          icon: 'fa-trash-o',     // Icon shown on screen
+          action: 'promptDelete', // Action to call on the controller when clicked
+          altAction: 'delete'     // Action to call on the controller when alt+clicked
+          divider: true,          // Just this will make a divider
+        },
+        ...
+      ]
+    */
+    return [];
+  }.property(),
+
+  trimValues: function() {
+    this.eachKeys((val,key) => {
+      Ember.set(this, key, recurse(val));
+    });
+
+    return this;
+
+    function recurse(val) {
+      if ( typeof val === 'string' )
+      {
+        return val.trim();
+      }
+      else if ( Ember.isArray(val) )
+      {
+        val.beginPropertyChanges();
+        val.forEach((v, idx) => {
+          var out = recurse(v);
+          if ( val.objectAt(idx) !== out )
+          {
+            val.replace(idx, 1, out);
+          }
+        });
+        val.endPropertyChanges();
+        return val;
+      }
+      else if ( Resource.detectInstance(val) )
+      {
+        return val.trimValues();
+      }
+      else if ( val && typeof val === 'object' )
+      {
+        Object.keys(val).forEach(function(key) {
+          // Skip keys with dots in them, like container labels
+          if ( key.indexOf('.') === -1 )
+          {
+            Ember.set(val, key, recurse(val[key]));
+          }
+        });
+        return val;
+      }
+      else
+      {
+        return val;
+      }
+    }
+  },
+
+  validationErrors: function() {
+    var errors = [];
+    var type = this.get('type');
+    if ( type )
+    {
+      type = normalizeType(this.get('type'));
+    }
+    else
+    {
+      console.warn('No type found to validate', this);
+      return [];
+    }
+
+    var schema = this.get('store').getById('schema', type);
+    if ( !schema )
+    {
+      console.warn('No schema found to validate', type, this);
+      return [];
+    }
+
+    // Trim all the values to start so that empty strings become nulls
+    this.trimValues();
+
+    var fields = schema.resourceFields;
+    var keys = Object.keys(fields);
+    var field, key, val;
+    var more;
+    for ( var i = 0 ; i < keys.length ; i++ )
+    {
+      key = keys[i];
+      field = fields[key];
+      val = this.get(key);
+
+      if ( val === undefined )
+      {
+        val = null;
+      }
+
+      if ( field.type.indexOf('[') >= 0 )
+      {
+        // array, map, reference
+        // @todo
+      }
+      else if ( ['string','password','float','int','date','blob','boolean','enum'].indexOf(field.type) === -1 )
+      {
+        // embedded schema type
+        if ( val && val.validationErrors )
+        {
+          more = val.validationErrors();
+          errors.pushObjects(more);
+        }
+      }
+
+      // Coerce strings to numbers
+      if ( field.type === 'float' && typeof val === 'string' )
+      {
+        val = parseFloat(val) || null; // NaN becomes null
+        this.set(key, val);
+      }
+
+      if ( field.type === 'int' && typeof val === 'string' && key !== 'id' ) // Sigh: ids are all marked int, rancherio/rancher#515
+      {
+        val = parseInt(val, 10) || null;
+        this.set(key, val);
+      }
+
+      // Empty strings on nullable fields -> null
+      if ( ['string','password','float','int','date','blob','enum'].indexOf(field.type) >= 0 )
+      {
+        if ( (typeof val === 'string' && !val) || val === null ) // empty/null strings or null numbers
+        {
+          if ( field.nullable )
+          {
+            val = null;
+            this.set(key, val);
+          }
+        }
+      }
+
+      var len = (val ? Ember.get(val,'length') : 0);
+      if ( field.required && (val === null || (typeof val === 'string' && len === 0) || (Ember.isArray(val) && len === 0) ) )
+      {
+        errors.push('"' + key + '" is required');
+        continue;
+      }
+
+      var min, max;
+      var desc = (field.type.indexOf('array[') === 0 ? 'item' : 'character');
+      if ( val !== null )
+      {
+        // String and array length:
+        min = field.minLength;
+        max = field.maxLength;
+        if ( min && max )
+        {
+          if ( (len < min) || (len > max) )
+          {
+            errors.push(key + ' should be ' + min + '-' + max + ' ' + desc + (min === 1 && max === 1 ? '' : 's') + ' long');
+          }
+        }
+        else if ( min && (len < min) )
+        {
+          errors.push(key + ' should be at least ' + min + ' ' + desc + (min === 1 ? '' : 's') + ' long');
+        }
+        else if ( max && (len > max) )
+        {
+          errors.push(key + ' should be at most ' + max + ' ' + desc + (min === 1 ? '' : 's') + ' long');
+        }
+
+        // Number min/max
+        min = field.min;
+        max = field.max;
+        if ( val !== null && min && max )
+        {
+          if ( (val < min) || (val > max) )
+          {
+            errors.push(key + ' should be between ' + min + ' and ' + max);
+          }
+        }
+        else if ( min && (val < min) )
+        {
+          errors.push(key + ' should be at least ' + min + ' ' + desc);
+        }
+        else if ( max && (val > max) )
+        {
+          errors.push(key + ' should be at most ' + max + ' ' + desc);
+        }
+
+        var test = [];
+        if ( field.validChars )
+        {
+          test.push('[^'+ field.validChars + ']');
+        }
+
+        if ( field.invalidChars )
+        {
+          test.push('['+ field.invalidChars + ']');
+        }
+
+        if ( test.length )
+        {
+          var regex = new RegExp('('+ test.join('|') + ')');
+          var match = val.match(regex);
+          if ( match )
+          {
+            errors.push(key + " contains invalid character: '" + match[1] + "'");
+          }
+        }
+      }
+    }
+
+    return errors;
+  },
+
+  cloneForNew: function() {
+    var copy = this.clone();
+    delete copy.id;
+    delete copy.actions;
+    delete copy.links;
+    delete copy.uuid;
+    return copy;
+  },
+
+  serializeForNew: function() {
+    var copy = this.serialize();
+    delete copy.id;
+    delete copy.actions;
+    delete copy.links;
+    delete copy.uuid;
+    return copy;
+  },
+
+  replaceWith: function() {
+    this._super.apply(this,arguments);
+    this.transitioningChanged();
+  },
+
+  wasAdded: function() {
+    this.transitioningChanged();
+  },
+
+  wasRemoved: function() {
+    this.transitioningChanged();
+  },
+
+  delayTimer: null,
+  clearDelay: function() {
+    clearTimeout(this.get('delayTimer'));
+    this.set('delayTimer', null);
+  },
+
+  pollTimer: null,
+  clearPoll: function() {
+    clearTimeout(this.get('pollTimer'));
+    this.set('pollTimer', null);
+  },
+
+  transitioningChanged: function() {
+    var delay = this.constructor.pollTransitioningDelay;
+    var interval = this.constructor.pollTransitioningInterval;
+
+    // This resource doesn't want polling
+    if ( !delay || !interval )
+    {
+      //console.log('return 1', this.toString());
+      return;
+    }
+
+    // This resource isn't transitioning or isn't in the store
+    if ( this.get('transitioning') !== 'yes' || !this.isInStore() )
+    {
+      //console.log('return 2', this.toString());
+      this.clearPoll();
+      this.clearDelay();
+      return;
+    }
+
+    // We're already polling or waiting, just let that one finish
+    if ( this.get('delayTimer') )
+    {
+      //console.log('return 3', this.toString());
+      return;
+    }
+
+    //console.log('Transitioning poll', this.toString());
+
+    this.set('delayTimer', setTimeout(function() {
+      //console.log('1 expired', this.toString());
+      this.transitioningPoll();
+    }.bind(this), Util.timerFuzz(delay)));
+  }.observes('transitioning'),
+
+  transitioningPoll: function() {
+    //console.log('Maybe polling', this.toString(), this.get('transitioning'), this.isInStore());
+    this.clearPoll();
+
+    if ( this.get('transitioning') !== 'yes' || !this.isInStore() )
+    {
+      return;
+    }
+
+    //console.log('Polling', this.toString());
+    this.reload().then((/*newData*/) => {
+      //console.log('Poll Finished', this.toString());
+      if ( this.get('transitioning') === 'yes' )
+      {
+        //console.log('Rescheduling', this.toString());
+        this.set('pollTimer', setTimeout(function() {
+          //console.log('2 expired', this.toString());
+          this.transitioningPoll();
+        }.bind(this), Util.timerFuzz(this.constructor.pollTransitioningInterval)));
+      }
+      else
+      {
+        // If not transitioning anymore, stop polling
+        this.clearPoll();
+        this.clearDelay();
+      }
+    }).catch(() => {
+      // If reloading fails, stop polling
+      this.clearPoll();
+      // but leave delay set so that it doesn't restart, (don't clearDelay())
+    });
+  },
+
+  // You really shouldn't have to use any of these.
+  // Needing these is a sign that the API is bad and should feel bad.
+  // Yet here they are, nonetheless.
+  waitInterval: 1000,
+  waitTimeout: 30000,
+  _waitForTestFn: function(testFn, msg) {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      var timeout = setTimeout(() =>  {
+        clearInterval(interval);
+        clearTimeout(timeout);
+        reject(this);
+      }, this.get('waitTimeout'));
+
+      var interval = setInterval(() => {
+        if ( testFn.apply(this) )
+        {
+          clearInterval(interval);
+          clearTimeout(timeout);
+          resolve(this);
+        }
+      }, this.get('waitInterval'));
+    }, msg||'Wait for it...');
+  },
+
+  waitForState: function(state) {
+    return this._waitForTestFn(function() {
+      return this.get('state') === state;
+    }, 'Wait for state='+state);
+  },
+
+  waitForNotTransitioning: function() {
+    return this._waitForTestFn(function() {
+      return this.get('transitioning') !== 'yes';
+    }, 'Wait for not transitioning');
+  },
+
+  waitForAction: function(name) {
+    return this._waitForTestFn(function() {
+      //console.log('waitForAction('+name+'):', this.hasAction(name));
+      return this.hasAction(name);
+    }, 'Wait for action='+name);
+  },
+
+  waitForAndDoAction: function(name, data) {
+    return this.waitForAction(name).then(() => {
+      return this.doAction(name, data);
+    }, 'Wait for and do action='+name);
+  },
+});

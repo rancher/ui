@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import EditLoadBalancerConfig from 'ui/mixins/edit-loadbalancerconfig';
 
-export default Ember.ObjectController.extend(Cattle.NewOrEditMixin, EditLoadBalancerConfig, {
+export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLoadBalancerConfig, {
   editing: true,
   primaryResource: Ember.computed.alias('model.config'),
   queryParams: ['tab'],

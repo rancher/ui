@@ -1,7 +1,7 @@
 import Cattle from 'ui/utils/cattle';
 import DownloadMachineConfig from 'ui/mixins/download-machine-config';
 
-var MachineController = Cattle.TransitioningResourceController.extend(DownloadMachineConfig,{
+var MachineController = Cattle.LegacyTransitioningResourceController.extend(DownloadMachineConfig,{
   actions: {
     clone: function() {
       this.transitionToRoute('hosts.new.'+this.get('driver'), {queryParams: {machineId: this.get('id')}});

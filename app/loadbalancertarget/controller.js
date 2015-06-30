@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
-var LoadBalancerTargetController = Cattle.TransitioningResourceController.extend({
+var LoadBalancerTargetController = Cattle.LegacyTransitioningResourceController.extend({
   isIp: Ember.computed.notEmpty('ipAddress'),
 
 

@@ -1,6 +1,6 @@
 import Cattle from 'ui/utils/cattle';
 
-var NetworkController = Cattle.TransitioningResourceController.extend();
+var NetworkController = Cattle.LegacyTransitioningResourceController.extend();
 
 NetworkController.reopenClass({
   stateMap: {
