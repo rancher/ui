@@ -16,6 +16,8 @@ export default Ember.Component.extend(NewOrEdit,{
   },
 
   actions: {
+    outsideClick: function() {},
+
     cancel: function() {
       this.sendAction('dismiss');
     }

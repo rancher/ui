@@ -6,6 +6,8 @@ export default Ember.Component.extend({
   alternateLabel: alternateLabel,
 
   actions: {
+    outsideClick: function() {},
+
     confirm: function() {
       this.get('resources').forEach((resource) => {
         resource.delete();

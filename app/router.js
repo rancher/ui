@@ -12,13 +12,16 @@ Router.map(function() {
 
   // Confirm
   this.modal('delete-confirmation', {
+    dismissWithOutsideClick: false,
     withParams: { 'confirmDeleteResources': 'resources' },
-    actions: {
-      confirm: 'confirmDelete'
-    }
+    actions: { confirm: 'confirmDelete' }
   });
 
-  this.modal('edit-apikey', { withParams: ['editApikey', 'originalModel'], otherParams: {'editApikeyIsNew': 'justCreated'} });
+  this.modal('edit-apikey', {
+    dismissWithOutsideClick: false,
+    withParams: ['editApikey', 'originalModel'],
+    otherParams: {'editApikeyIsNew': 'justCreated'} 
+  });
 
   this.route('login');
   this.route('logout');
