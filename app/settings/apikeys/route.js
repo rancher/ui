@@ -7,7 +7,7 @@ export default Ember.Route.extend({
 
   actions: {
     newApikey: function() {
-      this.transitionTo('apikeys.new');
+      this.transitionTo('settings.apikeys.new');
     },
   },
 });

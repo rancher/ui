@@ -10,5 +10,10 @@ export default Ember.Controller.extend({
   code: null,
   isTest: null,
 
+  // Keys that trigger modals go in here
   confirmDeleteResources: null,
+  originalModel: null,
+
+  editApikey: null,
+  editApikeyIsNew: null
 });

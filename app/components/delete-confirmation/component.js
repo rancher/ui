@@ -2,12 +2,12 @@ import Ember from 'ember';
 import { alternateLabel } from 'ui/utils/platform';
 
 export default Ember.Component.extend({
-  confirmDeleteResources: null,
+  resources: null,
   alternateLabel: alternateLabel,
 
   actions: {
     confirm: function() {
-      this.get('confirmDeleteResources').forEach((resource) => {
+      this.get('resources').forEach((resource) => {
         resource.delete();
       });
 

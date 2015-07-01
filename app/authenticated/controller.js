@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
   currentPath: Ember.computed.alias('controllers.application.currentPath'),
 
   error: null,
+  showModal: null,
 
   addAuthParams: function(url) {
     var token = this.get('cookies').get(C.COOKIE.TOKEN);

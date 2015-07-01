@@ -12,28 +12,26 @@ Router.map(function() {
 
   // Confirm
   this.modal('delete-confirmation', {
-    withParams: 'confirmDeleteResources',
+    withParams: { 'confirmDeleteResources': 'resources' },
     actions: {
       confirm: 'confirmDelete'
     }
   });
+
+  this.modal('edit-apikey', { withParams: ['editApikey', 'originalModel'], otherParams: {'editApikeyIsNew': 'justCreated'} });
 
   this.route('login');
   this.route('logout');
   this.route('authenticated', { path: '/'}, function() {
     this.resource('about');
 
+
     // Settings
     this.resource('settings', function() {
       this.route('auth');
       this.route('host');
 
-      this.resource('apikeys', {path: '/api'}, function() {
-        this.route('new', {path: '/api/add'});
-        this.resource('apikey', {path: '/:apikey_id'}, function() {
-          this.route('edit');
-        });
-      });
+      this.route('apikeys', {path: '/api'});
 
       this.resource('registries', {path: '/registries'}, function() {
         this.route('new', {path: '/add'});

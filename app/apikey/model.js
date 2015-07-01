@@ -4,20 +4,6 @@ var ApiKey = Resource.extend({
   type: 'apiKey',
   publicValue: null,
   secretValue: null,
-
-  actions: {
-    deactivate: function() {
-      return this.doAction('deactivate');
-    },
-
-    activate: function() {
-      return this.doAction('activate');
-    },
-
-    edit: function() {
-      this.transitionToRoute('apikey.edit',this.get('model'));
-    },
-  },
 });
 
 ApiKey.reopenClass({

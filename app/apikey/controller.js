@@ -2,8 +2,6 @@ import Ember from 'ember';
 import CattleTransitioningController from 'ui/mixins/cattle-transitioning-controller';
 
 export default Ember.Controller.extend(CattleTransitioningController, {
-  showModal: false,
-
   actions: {
     deactivate: function() {
       return this.get('model').doAction('deactivate');
@@ -13,8 +11,12 @@ export default Ember.Controller.extend(CattleTransitioningController, {
       return this.get('model').doAction('activate');
     },
 
-    edit: function(parentController) {
-      parentController.transitionToRoute('apikey.edit', this.get('model.id'));
+    edit: function() {
+      this.get('controllers.application').setProperties({
+        editApikey: true,
+        editApikeyIsNew: false,
+        originalModel: this.get('model'),
+      });
     },
   },
 

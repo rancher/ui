@@ -15,9 +15,25 @@ export default Ember.Controller.extend(Sortable, {
 
   cookies: Ember.inject.service(),
   projects: Ember.inject.service(),
+  growl: Ember.inject.service(),
   project: Ember.computed.alias('projects.current'),
   endpointService: Ember.inject.service('endpoint'),
-  needs: ['authenticated'],
+  needs: ['application'],
+
+  actions: {
+    newApikey: function() {
+      var cred = this.get('store').createRecord({type:'apikey'});
+      cred.save().then(() => {
+        this.get('controllers.application').setProperties({
+          editApikey: true,
+          editApikeyIsNew: true,
+          originalModel: cred,
+        });
+      }).catch((err) => {
+        this.get('growl').fromError('Error creating key',err);
+      });
+    },
+  },
 
   displayEndpoint: function() {
     // Strip trailing slash off of the absoluteEndpoint
