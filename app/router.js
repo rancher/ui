@@ -10,26 +10,6 @@ Router.map(function() {
   this.route('index');
   this.route('failWhale', { path: '/fail' });
 
-  // Modals
-  this.modal('delete-confirmation', {
-    dismissWithOutsideClick: false,
-    withParams: { 'confirmDeleteResources': 'resources' },
-    actions: { confirm: 'confirmDelete' }
-  });
-
-  this.modal('edit-apikey', {
-    dismissWithOutsideClick: false,
-    withParams: 'editApikey',
-    otherParams: {'originalModel': 'originalModel', 'editApikeyIsNew': 'justCreated'} 
-  });
-
-  this.modal('edit-project', {
-    dismissWithOutsideClick: false,
-    withParams: 'editProject',
-    otherParams: 'originalModel',
-  });
-  // End: Modals
-
   this.route('login');
   this.route('logout');
   this.route('authenticated', { path: '/'}, function() {
@@ -46,15 +26,9 @@ Router.map(function() {
       this.route('projects', { path: '/environments' });
       this.route('project-detail', { path: '/environments/:project_id' });
 
-      this.resource('registries', {path: '/registries'}, function() {
-        this.route('new', {path: '/add'});
-        this.route('index', {path: '/'});
-
-        this.resource('registry', {path: '/:registry_id'}, function() {
-          this.route('edit');
-        });
-      });
-
+      this.route('registries', { path: '/registries' });
+      this.route('registry-new', { path: '/registries/add' });
+      this.route('registry-detail', { path: '/registries/:registry_id' });
     });
 
     // Infrastructure
@@ -148,6 +122,32 @@ Router.map(function() {
 
     // End: Authenticated
   });
+
+  // Modals
+  this.modal('delete-confirmation', {
+    dismissWithOutsideClick: false,
+    withParams: { 'confirmDeleteResources': 'resources' },
+    actions: { confirm: 'confirmDelete' }
+  });
+
+  this.modal('edit-apikey', {
+    dismissWithOutsideClick: false,
+    withParams: 'editApikey',
+    otherParams: {'originalModel': 'originalModel', 'editApikeyIsNew': 'justCreated'} 
+  });
+
+  this.modal('edit-project', {
+    dismissWithOutsideClick: false,
+    withParams: 'editProject',
+    otherParams: 'originalModel',
+  });
+
+  this.modal('edit-registry', {
+    dismissWithOutsideClick: false,
+    withParams: 'editRegistry',
+    otherParams: 'originalModel',
+  });
+  // End: Modals
 });
 
 export default Router;

@@ -4,6 +4,6 @@ export default Cattle.TransitioningResource.extend({
   type: 'registryCredential',
   name: '',
   publicValue: '',
-  secretValue: '',
+  //secretValue: '', -- This can't be se because the secret isn't sent back on edit
   email: ''
 });

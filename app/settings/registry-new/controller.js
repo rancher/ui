@@ -83,6 +83,6 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, {
   },
 
   doneSaving: function() {
-    this.transitionToRoute('registries');
+    //this.transitionToRoute('registries');
   },
 });

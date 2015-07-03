@@ -78,7 +78,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   activate: function() {
     this._super();
     var store = this.get('store');
-    var boundTypeify = store._typeify.bind(store,0);
+    var boundTypeify = store._typeify.bind(store);
 
     var url = "ws://"+window.location.host + this.get('app.wsEndpoint');
     var session = this.get('session');
@@ -94,7 +94,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     });
 
     socket.on('message', (event) => {
-      var d = boundTypeify(JSON.parse(event.data));
+      var d = JSON.parse(event.data, boundTypeify);
       //this._trySend('subscribeMessage',d);
 
       var action;

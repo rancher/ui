@@ -1,0 +1,70 @@
+<section class="horizontal-form container-fluid">
+  <h2>{{#if editing}}Edit Registry{{else}}Add Registry{{/if}}</h2>
+  {{top-errors errors=errors}}
+
+  {{#unless editing}}
+    <div class="row">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label class="form-control-static">Provider</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        <ul class="nav nav-boxes checked-active" id="providers">
+          {{#each drivers as |driver|}}
+            {{#if driver.available}}
+              <li class="{{if driver.active 'active'}}">
+                <a {{action "selectDriver" driver.name}} alt={{driver.label}} class="driver registry-driver {{driver.css}}"></a>
+              </li>
+            {{/if}}
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+    <div style="width: 10px; height: 10px; margin: 0 auto; border: 10px solid white; border-bottom-color: #f4f5f8; border-top: 0;"></div>
+  {{/unless}}
+</section>
+
+<section class="horizontal-form container-fluid">
+  {{#if isCustom}}
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label form-control-static">
+        <label>Address{{#if isCustom}}*{{/if}}</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{#if editing}}
+          <div class="form-control-static">{{model.registry.serverAddress}}</div>
+        {{else}}
+          {{input type="text" value=model.registry.serverAddress classNames="form-control" placeholder="e.g. registry.example.com"}}
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label form-control-static">
+      <label>Email*</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{input type="text" class="form-control email" value=model.credential.email placeholder="e.g. you@example.com"}}
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label form-control-static">
+      <label>Username</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{input type="text" class="form-control" value=model.credential.publicValue placeholder="e.g. username"}}
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label form-control-static">
+      <label>Password</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{input type="password" class="form-control" value=model.credential.secretValue placeholder="e.g. password"}}
+    </div>
+  </div>
+</section>
+
+{{partial "save-cancel"}}

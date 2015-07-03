@@ -1,7 +1,7 @@
 <section>
   <h3>
     <span class="right-divider">Registries</span>
-    {{#link-to "registries.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add Registry{{/link-to}}
+    <button class="btn btn-sm btn-primary right-divider-btn" {{action "new"}}>Add Registry</button>
   </h3>
 </section>
 
@@ -9,16 +9,16 @@
   <table class="grid fixed" style="margin-bottom: 0">
     <thead>
       <tr>
-        <th width="90">State</th>
-        <th>Address</th>
-        <th>Email</th>
-        <th>Username</th>
-        <th>Created</th>
+        {{sortable-th sortable=this action="changeSort" name="state" width="110"}}
+        {{sortable-th sortable=this action="changeSort" name="address"}}
+        {{sortable-th sortable=this action="changeSort" name="email"}}
+        {{sortable-th sortable=this action="changeSort" name="username"}}
+        {{sortable-th sortable=this action="changeSort" name="created"}}
         <th width="50">&nbsp;</th>
       </tr>
     </thead>
     <tbody>
-      {{#each this as |registry|}}
+      {{#each arranged as |registry|}}
         <tr>
           <td>
             <span class="badge state {{registry.stateBackground}}">
@@ -38,7 +38,9 @@
             {{date-calendar registry.created}}
           </td>
           <td align="right">
-            {{resource-actions-menu model=registry choices=registry.availableActions}}
+            {{#with registry controller="registry" as |ctrl|}}
+              {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
+            {{/with}}
           </td>
         </tr>
       {{else}}

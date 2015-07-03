@@ -1,6 +1,7 @@
-import Cattle from 'ui/utils/cattle';
+import Ember from 'ember';
+import CattleTransitioningController from 'ui/mixins/cattle-transitioning-controller';
 
-var RegistryController = Cattle.LegacyTransitioningResourceController.extend({
+export default Ember.Controller.extend(CattleTransitioningController, {
   actions: {
     deactivate: function() {
       return this.doAction('deactivate');
@@ -11,28 +12,21 @@ var RegistryController = Cattle.LegacyTransitioningResourceController.extend({
     },
 
     edit: function() {
-      this.transitionToRoute('registry.edit',this.get('id'));
+      this.store.find('registry').then((registries) => {
+        this.get('controllers.application').setProperties({
+          editRegistry: true,
+          originalModel: Ember.Object.create({
+            registries: registries,
+            registry: this.get('model'),
+            credential: this.get('model.credential'),
+          })
+        });
+      });
     },
   },
 
-  displayAddress: function() {
-    var address = this.get('serverAddress').toLowerCase();
-    if ( address === 'index.docker.io' )
-    {
-      return 'DockerHub';
-    }
-    else if ( address === 'quay.io' )
-    {
-      return 'Quay';
-    }
-    else
-    {
-      return address;
-    }
-  }.property('serverAddress'),
-
   availableActions: function() {
-    var a = this.get('actions');
+    var a = this.get('model.actions');
 
     return [
       { label: 'Activate',      icon: 'ss-play',  action: 'activate',     enabled: !!a.activate },
@@ -45,26 +39,6 @@ var RegistryController = Cattle.LegacyTransitioningResourceController.extend({
       { divider: true },
       { label: 'Edit',          icon: 'ss-write', action: 'edit',         enabled: !!a.update },
     ];
-  }.property('actions.{update,activate,deactivate,restore,remove,purge}'),
+  }.property('model.actions.{update,activate,deactivate,restore,remove,purge}'),
 
-  credential: function() {
-    var credentials = this.get('credentials');
-    if ( credentials )
-    {
-      return credentials.objectAt(credentials.get('length')-1);
-    }
-
-  }.property('credentials.@each.{publicValue,email}'),
 });
-
-RegistryController.reopenClass({
-  stateMap: {
-    'active':     {icon: 'ss-record',     color: 'text-success'},
-    'inactive':   {icon: 'fa fa-circle',  color: 'text-danger'},
-    'purged':     {icon: 'ss-tornado',    color: 'text-danger'},
-    'removed':    {icon: 'ss-trash',      color: 'text-danger'},
-    'requested':  {icon: 'ss-tag',        color: 'text-info'},
-  }
-});
-
-export default RegistryController;

@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import ApiError from 'ember-api-store/models/error';
+import Resource from 'ember-api-store/models/resource';
 
 export default Ember.Mixin.create({
   originalModel: null,
@@ -7,6 +8,7 @@ export default Ember.Mixin.create({
   saving: false,
   editing: true,
   primaryResource: Ember.computed.alias('model'),
+  originalPrimaryResource: Ember.computed.alias('originalModel'),
 
   didInitAttrs: function() {
     this._super();
@@ -129,10 +131,13 @@ export default Ember.Mixin.create({
   doSave: function() {
     var model = this.get('primaryResource');
     return model.save().then((newData) => {
-      var original = this.get('originalModel');
+      var original = this.get('originalPrimaryResource');
       if ( original )
       {
-        original.merge(newData);
+        if ( Resource.detectInstance(original) )
+        {
+          original.merge(newData);
+        }
       }
     });
   },
@@ -143,7 +148,7 @@ export default Ember.Mixin.create({
 
   // doneSaving happens after didSave
   doneSaving: function() {
-    return this.get('originalModel') || this.get('model');
+    return this.get('originalPrimaryResource') || this.get('model');
   },
 
   // errorSaving can be used to do additional cleanup of dependent resources on failure

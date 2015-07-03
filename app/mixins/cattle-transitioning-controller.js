@@ -11,6 +11,8 @@ function proxyToModel(methodName) {
 
 export default Ember.Mixin.create({
   needs: ['application'],
+  endpoint: Ember.inject.service(),
+  cookies: Ember.inject.service(),
 
   actions: {
     promptDelete: function() {
@@ -30,7 +32,7 @@ export default Ember.Mixin.create({
     },
 
     goToApi: function() {
-      var url = this.get('links.self'); // http://a.b.c.d/v1/things/id, a.b.c.d is where the UI is running
+      var url = this.get('model.links.self'); // http://a.b.c.d/v1/things/id, a.b.c.d is where the UI is running
       var endpoint = this.get('endpoint.absolute'); // http://e.f.g.h/ , does not include version.  e.f.g.h is where the API actually is.
       url = url.replace(/https?:\/\/[^\/]+\/?/,endpoint);
 
