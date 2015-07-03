@@ -23,11 +23,12 @@ export default Ember.Controller.extend(Sortable, {
   actions: {
     newApikey: function() {
       var cred = this.get('store').createRecord({type:'apikey'});
-      cred.save().then(() => {
+      cred.save().then((newCred) => {
         this.get('controllers.application').setProperties({
           editApikey: true,
           editApikeyIsNew: true,
-          originalModel: cred,
+          // Send a clone so that the secret isn't lost when the credential change event -> active comes in
+          originalModel: newCred.clone(),
         });
       }).catch((err) => {
         this.get('growl').fromError('Error creating key',err);

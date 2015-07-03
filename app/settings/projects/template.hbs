@@ -1,7 +1,7 @@
 <section>
   <h3>
     <span class="right-divider">Environments</span>
-    {{#link-to "projects.new" class="btn btn-sm btn-primary right-divider-btn"}}Add Environment{{/link-to}}
+    <button class="btn btn-sm btn-primary right-divider-btn" {{action "new"}}>Add Environment</button>
   </h3>
 </section>
 <section>
@@ -10,7 +10,7 @@
     <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
   </div>
 
-  {{#unless controllers.authenticated.project}}
+  {{#unless projects.current}}
     <div class="alert alert-danger"><i class="ss-alert"></i> There are no active environments.  You will need to create or activate one before you can do anything else.</div>
   {{/unless}}
 </section>
@@ -19,15 +19,15 @@
   <table class="grid fixed" style="margin-bottom: 0">
     <thead>
       <tr>
-        <th width="120">State</th>
-        <th>Name</th>
-        <th>Description</th>
-          <th width="80">Default</th>
-        <th width="40">&nbsp;</th>
+        {{sortable-th sortable=this action="changeSort" name="state" width="120"}}
+        {{sortable-th sortable=this action="changeSort" name="name"}}
+        {{sortable-th sortable=this action="changeSort" name="description"}}
+        <th width="80">Default</th>
+        <th width="50">&nbsp;</th>
       </tr>
     </thead>
     <tbody>
-      {{#each this as |p|}}
+      {{#each arranged as |p|}}
         <tr>
           <td>
             <span class="badge state {{p.stateBackground}}">
@@ -35,16 +35,18 @@
             </span>
           </td>
           <td>
-            {{#link-to "project" p.id}}{{p.displayName}}{{/link-to}}
+            {{#link-to "settings.project-detail" p.id}}{{p.displayName}}{{/link-to}}
           </td>
           <td>
-            {{#if p.description}}{{p.description}}{{else}}<span class="text-italic">No description</span>{{/if}}
+            {{#if p.description}}{{p.description}}{{else}}<span class="text-muted">No description</span>{{/if}}
           </td>
             <td>
               {{#if p.isDefault}}<i class="ss-check"></i>{{else}}<span class="text-muted">&ndash;</span>{{/if}}
             </td>
           <td align="right">
-            {{resource-actions-menu model=p choices=p.availableActions}}
+            {{#with p controller="project" as |ctrl|}}
+              {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
+            {{/with}}
           </td>
         </tr>
       {{else}}

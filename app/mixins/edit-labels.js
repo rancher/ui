@@ -141,13 +141,23 @@ export default Ember.Mixin.create({
         // System labels have to have a value before they're added, users ones can be just key.
         if ( row.isUser || row.value )
         {
-          if ( out[row.key] )
+          var key = row.key;
+          var value = row.value;
+          // System labels are always lowercase.
+          if ( !row.isUser )
           {
-            out[row.key] = out[row.key]+',' + row.value;
+            key = key.toLowerCase();
+            value = value.toLowerCase();
+          }
+
+          // Affinity labels can be concatenated, others just overwrite the previous value.
+          if ( out[key] && row.type === 'affinity' )
+          {
+            out[key] = out[key]+',' + value;
           }
           else
           {
-            out[row.key] = row.value;
+            out[key] = value;
           }
         }
       }

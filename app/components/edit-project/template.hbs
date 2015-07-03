@@ -4,19 +4,19 @@
 
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label for="name">Name</label>
+      <label>Name</label>
     </div>
     <div class="col-sm-12 col-md-8">
-      {{input id="name" type="text" value=name classNames="form-control" placeholder="e.g. Lab"}}
+      {{input type="text" value=primaryResource.name classNames="form-control" placeholder="e.g. Lab"}}
     </div>
   </div>
 
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label for="description">Description</label>
+      <label>Description</label>
     </div>
     <div class="col-sm-12 col-md-8">
-      {{textarea id="description" value=description classNames="form-control no-resize" rows="5" placeholder="e.g. Environment for developer experimentation"}}
+      {{textarea value=primaryResource.description classNames="form-control no-resize" rows="5" placeholder="e.g. Environment for developer experimentation"}}
     </div>
   </div>
 
@@ -38,7 +38,7 @@
   {{#if app.authenticationEnabled}}
     <div class="row">
       <div class="col-sm-12 col-md-8 col-md-offset-2">
-        {{#if members.length}}
+        {{#if model.projectMembers.length}}
           <table class="table fixed no-lines no-top-padding tight small vertical-middle">
             <thead>
               <tr class="text-muted">
@@ -49,7 +49,7 @@
               </tr>
             </thead>
             <tbody>
-            {{#each members itemController="projectmember" as |member|}}
+            {{#each model.projectMembers as |member|}}
               <tr>
                 <td>
                   {{#if member.isRancher}}

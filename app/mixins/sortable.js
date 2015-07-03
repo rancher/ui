@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
+  sortableContent: Ember.computed.alias('model'),
   sorts: null, // { id: ['id'], date: ['created','id'] }
   sortBy: null,
   descending: false,
@@ -34,16 +35,16 @@ export default Ember.Mixin.create({
   }.property('sortBy','sorts.@each.{name}'),
 
   arranged: function(){
-    var model = this.get('model');
+    var content = this.get('sortableContent');
     var currentSort = this.get('currentSort');
     var out;
     if ( currentSort )
     {
-      out = model.sortBy.apply(model, currentSort);
+      out = content.sortBy.apply(content, currentSort);
     }
     else
     {
-      out = model.slice();
+      out = content.slice();
     }
 
     if ( this.get('descending') )
@@ -54,5 +55,5 @@ export default Ember.Mixin.create({
     {
       return out;
     }
-  }.property('model.[]','currentSort','descending'),
+  }.property('sortableContent.[]','currentSort','descending'),
 });

@@ -1,10 +1,12 @@
 <section class="header">
   <h3>
-    {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
-    <div class="state {{stateColor}}">
-      <i class="{{stateIcon}}"></i> {{displayState}}
+    {{#with model controller="project" as |ctrl|}}
+      {{resource-actions-menu model=ctrl choices=ctrl.availableActions classNames="pull-right" parentController=this}}
+    {{/with}}
+    <div class="state {{model.stateColor}}">
+      <i class="{{model.stateIcon}}"></i> {{model.displayState}}
     </div>
-    <span class="right-divider">{{#link-to "projects"}}Environments:{{/link-to}} {{displayName}}</span>
+    <span class="right-divider">{{#link-to "settings.projects"}}Environments:{{/link-to}} {{model.displayName}}</span>
   </h3>
   {{partial "description"}}
 </section>
@@ -14,13 +16,13 @@
   <table class="grid fixed" style="margin-bottom: 0;">
     <thead>
       <tr>
-        <th>Name</th>
-        <th>Type</th>
-        <th>Role</th>
+        {{sortable-th sortable=this action="changeSort" name="name"}}
+        {{sortable-th sortable=this action="changeSort" name="type"}}
+        {{sortable-th sortable=this action="changeSort" name="role"}}
       </tr>
     </thead>
     <tbody>
-      {{#each projectMembers itemController="projectmember" as |member|}}
+      {{#each arranged as |member|}}
         <tr>
           <td>
             {{#if member.isRancher}}

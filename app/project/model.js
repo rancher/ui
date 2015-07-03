@@ -46,25 +46,6 @@ var Project = Cattle.TransitioningResource.extend({
   canSetDefault: function() {
     return this.get('state') === 'active' && !this.get('isDefault');
   }.property('state','isDefault'),
-
-  availableActions: function() {
-    var a = this.get('actions');
-
-    var choices = [
-      { label: 'Activate',      icon: 'ss-play',  action: 'activate',     enabled: !!a.activate},
-      { label: 'Deactivate',    icon: 'ss-pause', action: 'deactivate',     enabled: !!a.deactivate},
-      { label: 'Delete',        icon: 'ss-trash', action: 'promptDelete', enabled: this.get('canRemove'), altAction: 'delete' },
-      { divider: true },
-      { label: 'Restore',       icon: '',         action: 'restore',      enabled: !!a.restore },
-      { label: 'Purge',         icon: '',         action: 'purge',        enabled: !!a.purge },
-      { label: 'Edit',          icon: '',         action: 'edit',         enabled: !!a.update },
-    ];
-
-    choices.pushObject({label: 'Switch to this Environment', icon: '', action: 'switchTo', enabled: this.get('state') === 'active' });
-    choices.pushObject({label: 'Set as default login Environment', icon: '', action: 'setAsDefault', enabled: this.get('canSetDefault')});
-
-    return choices;
-  }.property('actions.{activate,deactivate,update,restore,purge}','canRemove','canSetDefault'),
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often

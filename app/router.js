@@ -10,7 +10,7 @@ Router.map(function() {
   this.route('index');
   this.route('failWhale', { path: '/fail' });
 
-  // Confirm
+  // Modals
   this.modal('delete-confirmation', {
     dismissWithOutsideClick: false,
     withParams: { 'confirmDeleteResources': 'resources' },
@@ -19,9 +19,16 @@ Router.map(function() {
 
   this.modal('edit-apikey', {
     dismissWithOutsideClick: false,
-    withParams: ['editApikey', 'originalModel'],
-    otherParams: {'editApikeyIsNew': 'justCreated'} 
+    withParams: 'editApikey',
+    otherParams: {'originalModel': 'originalModel', 'editApikeyIsNew': 'justCreated'} 
   });
+
+  this.modal('edit-project', {
+    dismissWithOutsideClick: false,
+    withParams: 'editProject',
+    otherParams: 'originalModel',
+  });
+  // End: Modals
 
   this.route('login');
   this.route('logout');
@@ -36,6 +43,9 @@ Router.map(function() {
 
       this.route('apikeys', {path: '/api'});
 
+      this.route('projects', { path: '/environments' });
+      this.route('project-detail', { path: '/environments/:project_id' });
+
       this.resource('registries', {path: '/registries'}, function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
@@ -45,15 +55,6 @@ Router.map(function() {
         });
       });
 
-      this.resource('projects', { path: '/environments' }, function() {
-        this.route('new', {route: '/add'});
-        this.route('index', {path: '/'});
-
-        this.resource('project', { path: '/:project_id' }, function() {
-          this.route('index', {path: '/'});
-          this.route('edit');
-        });
-      });
     });
 
     // Infrastructure
