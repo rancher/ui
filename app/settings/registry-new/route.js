@@ -23,13 +23,6 @@ export default Ember.Route.extend({
 
   setupController: function(controller, model) {
     controller.set('model',model);
-    controller.initFields();
     controller.send('selectDriver','dockerhub');
   },
-
-  actions: {
-    cancel: function() {
-      //this.transitionTo('registries');
-    },
-  }
 });

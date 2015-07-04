@@ -1,21 +1,23 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
+import NewOrEdit from 'ui/mixins/new-or-edit';
 
-export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, {
-  error: null,
-  credentials: null,
+export default Ember.Controller.extend(NewOrEdit, {
   editing: false,
   primaryResource: Ember.computed.alias('model.registry'),
-  activeDriver: null,
 
+  activeDriver: null,
   isCustom: Ember.computed.equal('activeDriver','custom'),
 
   actions: {
     selectDriver: function(name) {
       var driver = this.get('drivers').filterProperty('name',name)[0];
       this.set('activeDriver', driver.name);
-      this.set('registry.serverAddress', driver.value);
-    }
+      this.set('model.registry.serverAddress', driver.value);
+    },
+
+    cancel: function() {
+      this.transitionTo('settings.registries');
+    },
   },
 
   drivers: function() {
@@ -53,7 +55,7 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, {
 
   doSave: function() {
     var registry = this.get('model.registry');
-    var existing = this.get('allRegistries').filterProperty('serverAddress', registry.get('serverAddress'))[0];
+    var existing = this.get('model.allRegistries').filterProperty('serverAddress', registry.get('serverAddress'))[0];
     if ( existing )
     {
       this.set('model.registry', existing);
@@ -83,6 +85,6 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, {
   },
 
   doneSaving: function() {
-    //this.transitionToRoute('registries');
+    this.transitionToRoute('settings.registries');
   },
 });

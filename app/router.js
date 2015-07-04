@@ -126,6 +126,7 @@ Router.map(function() {
   // Modals
   this.modal('delete-confirmation', {
     dismissWithOutsideClick: false,
+    dialogClass: 'small',
     withParams: { 'confirmDeleteResources': 'resources' },
     actions: { confirm: 'confirmDelete' }
   });
