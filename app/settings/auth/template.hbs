@@ -8,7 +8,7 @@
         {{#if wasRestricted}}
           Rancher is configured to restrict access to {{wasRestrictedMsg}}.
         {{else}}
-          Rancher is configured to allow access to any GitHub{{#if hostname}} Enterprise{{/if}} user.
+          Rancher is configured to allow access to any GitHub{{#if model.hostname}} Enterprise{{/if}} user.
         {{/if}}
       {{else}}
         Rancher can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.
@@ -20,10 +20,10 @@
     <div class="well">
       <h4>Authentication</h4>
       <hr/>
-      {{#if hostname}}
-        <div><b>Enterprise Host: </b> <span class="text-muted">{{hostname}}</span></div>
+      {{#if model.hostname}}
+        <div><b>Enterprise Host: </b> <span class="text-muted">{{model.hostname}}</span></div>
       {{/if}}
-      <div><b>Client ID: </b> <span class="text-muted">{{clientId}}</span></div>
+      <div><b>Client ID: </b> <span class="text-muted">{{model.clientId}}</span></div>
       <p class="help-block">To change the configured GitHub application, disable access control below and then set it up again.</p>
     </div>
 
@@ -38,10 +38,10 @@
         <div class="row">
           <div class="col-md-6">
             <div class="radio">
-              <label>{{radio-button selection=accessMode value="unrestricted"}} Allow any GitHub user</label>
+              <label>{{radio-button selection=model.accessMode value="unrestricted"}} Allow any GitHub user</label>
             </div>
             <div class="radio">
-              <label>{{radio-button selection=accessMode value="restricted"}} Restrict to specific GitHub users and organization members{{#if isRestricted}}:{{/if}}</label>
+              <label>{{radio-button selection=model.accessMode value="restricted"}} Restrict to specific GitHub users and organization members{{#if isRestricted}}:{{/if}}</label>
             </div>
           </div>
           <div class="col-md-6">
@@ -52,14 +52,14 @@
               <h5>Authorized Users and Organizations</h5>
 
               <ul class="list-unstyled gh-block-list">
-                {{#each allowedUsers as |user|}}
+                {{#each model.allowedUsers as |user|}}
                   <li>
                     {{#github-block login=user}}
                       <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeUser" user}}></button>
                     {{/github-block}}
                   </li>
                 {{/each}}
-                {{#each allowedOrganizations as |org|}}
+                {{#each model.allowedOrganizations as |org|}}
                   <li>
                     {{#github-block login=org}}
                       <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeOrg" org}}></button>
@@ -67,11 +67,9 @@
                   </li>
                 {{/each}}
               </ul>
-              {{#unless allowedUsers.length}}
-                {{#unless allowedOrganizations.length}}
-                  <span class="text-muted">None</span>
-                {{/unless}}
-              {{/unless}}
+              {{#if (and (eq model.allowedOrganizations.length 0) (eq model.allowedOrganizations.length 0))}}
+                <span class="text-muted">None</span>
+              {{/if}}
             {{/if}}
           </div>
         </div>
@@ -153,14 +151,14 @@
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label for="clientId">Client ID*</label>
-            {{input id="clientId" type="text" value=clientId classNames="form-control"}}
+            <label>Client ID*</label>
+            {{input type="text" value=model.clientId classNames="form-control"}}
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label for="clientSecret">Client Secret*</label>
-            {{input id="clientSecret" type="password" value=clientSecret classNames="form-control"}}
+            <label>Client Secret*</label>
+            {{input type="password" value=model.clientSecret classNames="form-control"}}
           </div>
         </div>
       </div>
@@ -173,8 +171,8 @@
         <div class="col-md-6">
           {{#if isEnterprise}}
             <div class="form-group">
-              <label for="hostname">Enterprise Host*</label>
-              {{input id="hostname" type="text" value=hostname classNames="form-control" placeholder="e.g. github.example.com"}}
+              <label>Enterprise Host*</label>
+              {{input type="text" value=model.hostname classNames="form-control" placeholder="e.g. github.example.com"}}
             </div>
           {{/if}}
         </div>
