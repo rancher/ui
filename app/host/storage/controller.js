@@ -1,6 +1,6 @@
 import Cattle from 'ui/utils/cattle';
 
-export default Cattle.CollectionController.extend({
+export default Cattle.LegacyCollectionController.extend({
   nonRootVolumes: function() {
     return this.get('arrangedContent').filter(function(volume) {
       return !volume.get('instanceId') && volume.get('state') !== 'purged';

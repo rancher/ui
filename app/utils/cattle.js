@@ -498,8 +498,8 @@ LegacyTransitioningResourceController.reopenClass({
 });
 
 export default {
-  ResourceController: ResourceController,
-  CollectionController: CollectionController,
+  LegacyResourceController: ResourceController,
+  LegacyCollectionController: CollectionController,
   LegacyNewOrEditMixin: LegacyNewOrEditMixin,
   TransitioningResource: TransitioningResource,
   LegacyTransitioningResourceController: LegacyTransitioningResourceController,

@@ -1,6 +1,6 @@
 import Cattle from 'ui/utils/cattle';
 
-export default Cattle.CollectionController.extend({
+export default Cattle.LegacyCollectionController.extend({
   itemController: 'environment',
   sortProperties: ['name','id'],
 });
