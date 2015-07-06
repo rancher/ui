@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Stats from 'ui/utils/stats';
 
 export default Ember.Component.extend({
+  model: null,
   stats: null,
 
   didInsertElement: function() {

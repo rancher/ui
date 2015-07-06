@@ -3,5 +3,6 @@ import GithubInfoMixin from 'ui/mixins/github-info';
 
 export default Ember.Component.extend(GithubInfoMixin,{
   classNames: ['gh-avatar'],
+  attributeBindings: ['aria-label:login'],
   link: true,
 });

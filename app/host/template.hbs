@@ -1,78 +1,80 @@
 <section class="header">
   <h3>
-    {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
-    <div class="state {{stateColor}}">
-      <i class="{{stateIcon}}"></i> {{displayState}}
+    {{#with model controller="host" as |ctrl|}}
+      {{resource-actions-menu model=ctrl choices=availableActions parentController=this classNames="pull-right"}}
+    {{/with}}
+    <div class="state {{model.stateColor}}">
+      <i class="{{model.stateIcon}}"></i> {{model.displayState}}
     </div>
-    <span class="right-divider">{{#link-to "hosts"}}Hosts:{{/link-to}} {{displayName}}</span>
-    {{#link-to "containers.new" (query-params hostId=id) classNames="btn btn-sm btn-primary right-divider-btn"}}Add Container{{/link-to}}
+    <span class="right-divider">{{#link-to "hosts"}}Hosts:{{/link-to}} {{model.displayName}}</span>
+    {{#link-to "containers.new" (query-params hostId=model.id) classNames="btn btn-sm btn-primary right-divider-btn"}}Add Container{{/link-to}}
   </h3>
-  {{partial "legacy-description"}}
+  {{partial "description"}}
 </section>
 
 <section>
-  {{#info-stats model=this}}
+  {{#info-stats model=model}}
     <ul class="list-lines">
-      {{#if showTransitioningMessage}}
+      {{#if model.showTransitioningMessage}}
         <li>
           <label>Message</label>
-          <span class="force-wrap {{stateColor}}">
-            {{transitioningMessage}}
+          <span class="force-wrap {{model.stateColor}}">
+            {{model.transitioningMessage}}
           </span>
         </li>
       {{/if}}
 
       <li>
         <label>IP Address</label>
-        {{displayIp}} {{zero-clipboard text=displayIp}}
+        {{model.displayIp}} {{zero-clipboard text=model.displayIp}}
       </li>
 
-      {{#if machine}}
+      {{#if model.machine}}
         <li>
           <label>Provider</label>
-          {{machine.driver}}
+          {{model.machine.driver}}
         </li>
       {{/if}}
 
-      {{#if cpuBlurb}}
+      {{#if model.cpuBlurb}}
         <li>
           <label>CPU</label>
-          {{cpuBlurb}}
+          {{model.cpuBlurb}}
         </li>
       {{/if}}
 
-      {{#if memoryBlurb}}
+      {{#if model.memoryBlurb}}
         <li>
           <label>Memory</label>
-          {{memoryBlurb}}
+          {{model.memoryBlurb}}
         </li>
       {{/if}}
 
-      {{#if diskBlurb}}
+      {{#if model.diskBlurb}}
         <li>
           <label>Storage</label>
-          {{diskBlurb}}
+          {{model.diskBlurb}}
         </li>
       {{/if}}
 
-      {{#if osBlurb}}
+      {{#if model.osBlurb}}
         <li>
           <label>OS</label>
-          {{osBlurb}}
+          {{model.osBlurb}}
         </li>
       {{/if}}
 
-      {{#if info.osInfo.kernelVersion}}
+      {{#if model.info.osInfo.kernelVersion}}
         <li>
           <label>Kernel</label>
-          {{info.osInfo.kernelVersion}}
+          {{model.info.osInfo.kernelVersion}}
         </li>
       {{/if}}
 
-      {{#if dockerBlurb}}
+      {{#if model.dockerBlurb}}
         <li>
           <label>Docker</label>
-          {{dockerBlurb}}
+          {{model.dockerBlurb}}
         </li>
       {{/if}}
 
@@ -82,7 +84,7 @@
 
 <section class="well" style="margin-bottom: 0;">
   <label class="section">Labels</label>
-  {{labels-section model=this}}
+  {{labels-section model=model}}
 </section>
 
 <section>

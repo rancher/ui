@@ -195,7 +195,7 @@ export default Ember.Component.extend({
   hostLabelKeyChoices: function() {
     var out = [];
     this.get('allHosts').forEach((host) => {
-      var keys = Ember.keys(host.get('labels')||{}).filter((key) => {
+      var keys = Object.keys(host.get('labels')||{}).filter((key) => {
         return key.indexOf(C.LABEL.SYSTEM_PREFIX) !== 0;
       });
       out.pushObjects(keys);
@@ -237,7 +237,7 @@ export default Ember.Component.extend({
   containerLabelKeyChoices: function() {
     var out = [];
     this.get('allContainers').forEach((container) => {
-      var keys = Ember.keys(container.get('labels')||{}).filter((key) => {
+      var keys = Object.keys(container.get('labels')||{}).filter((key) => {
         return key.indexOf(C.LABEL.SYSTEM_PREFIX) !== 0;
       });
       out.pushObjects(keys);

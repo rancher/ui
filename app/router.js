@@ -60,12 +60,6 @@ Router.map(function() {
         });
       });
 
-
-      this.resource('volumes', function() {
-        this.resource('volume', {path: '/:volume_id'}, function() {
-        });
-      });
-
       this.resource('loadbalancers', {path: '/balancers'}, function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});

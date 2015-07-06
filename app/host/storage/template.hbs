@@ -2,14 +2,14 @@
   <table class="grid fixed" style="margin-bottom: 0;">
     <thead>
       <tr>
-        <th width="90">State</th>
-        <th>Host Path</th>
+        {{sortable-th sortable=this action="changeSort" name="state" width="120"}}
+        {{sortable-th sortable=this action="changeSort" name="hostPath"}}
         <th>Mounts</th>
         <th class="actions" width="50">&nbsp;</th>
       </tr>
     </thead>
     <tbody>
-      {{#each nonRootVolumes itemController="volume" as |volume|}}
+      {{#each arranged as |volume|}}
         <tr>
           <td>
             <span class="badge state {{volume.stateBackground}}">
@@ -26,7 +26,7 @@
 
           <td>
             {{#if volume.activeMounts.length}}
-              {{#each volume.activeMounts itemController="mount" as |mount|}}
+              {{#each volume.activeMounts as |mount|}}
                 <div>
                   {{#link-to "container" mount.instanceId}}{{mount.instance.name}}{{/link-to}}:{{mount.path}}
                   {{#if (eq mount.permissions "ro")}}
@@ -40,13 +40,15 @@
           </td>
 
           <td class="actions">
-            {{#if volume.availableActions.length}}
-              {{resource-actions-menu model=volume choices=volume.availableActions}}
-            {{/if}}
+            {{#with volume controller="volume" as |ctrl|}}
+              {{#if ctrl.availableActions.length}}
+                {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
+              {{/if}}
+            {{/with}}
           </td>
         </tr>
       {{else}}
-        <tr><td colspan="4" class="text-center text-muted">This host does not have any containers yet.</td></tr>
+        <tr><td colspan="4" class="text-center text-muted">This host does not have any volumes.</td></tr>
       {{/each}}
     </tbody>
   </table>

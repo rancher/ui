@@ -7,7 +7,7 @@ export default Ember.Mixin.create({
   labelArray: function() {
     var out = [];
     var obj = this.get('labelResource.labels')||{};
-    var keys = Ember.keys(obj).sort();
+    var keys = Object.keys(obj).sort();
     keys.forEach(function(key) {
       var type = 'user';
       if ( key.indexOf(C.LABEL.SCHED_AFFINITY) === 0 )
