@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
 
-var Registry = Cattle.TransitioningResource.extend({
+var Registry = Resource.extend({
   type: 'registry',
   serverAddress: null,
 

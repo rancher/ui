@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
 
-var LoadBalancerTarget = Cattle.TransitioningResource.extend({
+var LoadBalancerTarget = Resource.extend({
   type: 'loadBalancerTarget',
 
   instance: function() {

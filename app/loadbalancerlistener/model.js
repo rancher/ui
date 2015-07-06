@@ -1,6 +1,6 @@
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
 
-var LoadBalancerListener = Cattle.TransitioningResource.extend({
+var LoadBalancerListener = Resource.extend({
   type: 'loadBalancerListener',
 });
 

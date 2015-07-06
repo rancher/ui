@@ -1,6 +1,6 @@
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
 
-var Host = Cattle.TransitioningResource.extend({
+var Host = Resource.extend({
   type: 'host',
 
   instancesUpdated: 0,

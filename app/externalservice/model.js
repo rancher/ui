@@ -8,7 +8,4 @@ var ExternalService = Service.extend({
   }.property(),
 });
 
-ExternalService.reopenClass({
-});
-
 export default ExternalService;

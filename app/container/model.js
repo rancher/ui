@@ -1,6 +1,6 @@
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
 
-var Container = Cattle.TransitioningResource.extend({
+var Container = Resource.extend({
   // Common to all instances
   requestedHostId: null,
   primaryIpAddress: null,

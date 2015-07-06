@@ -1,4 +1,3 @@
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
 
-export default Cattle.TransitioningResource.extend({
-});
+export default Resource.extend();

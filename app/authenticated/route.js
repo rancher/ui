@@ -153,6 +153,10 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       }
     },
 
+    showAbout: function() {
+      this.controllerFor('application').set('showAbout', true);
+    },
+
     switchProject: function(projectId) {
       this.intermediateTransitionTo('authenticated');
       this.get('session').set(C.SESSION.PROJECT, projectId);

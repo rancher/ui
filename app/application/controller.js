@@ -14,6 +14,9 @@ export default Ember.Controller.extend({
   confirmDeleteResources: null,
   originalModel: null,
 
+  showAbout: null,
   editApikey: null,
-  editApikeyIsNew: null
+  editApikeyIsNew: null,
+  editProject: null,
+  editRegistry: null
 });

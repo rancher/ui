@@ -1,6 +1,6 @@
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
 
-var Volume = Cattle.TransitioningResource.extend({
+var Volume = Resource.extend({
   type: 'volume'
 });
 

@@ -1,15 +1,32 @@
 import Ember from 'ember';
 
-export default Ember.ArrayController.extend({
+export default Ember.Component.extend({
+  loading: true,
+  settings: null,
+
+  actions: {
+    cancel: function() {
+      this.sendAction('dismiss');
+    }
+  },
+
+  willInsertElement: function() {
+    this._super();
+
+    this.get('store').find('setting',null,{filter: {all: 'false'}}).then((settings) => {
+      this.set('settings', settings);
+    });
+  },
+
   asMap: function() {
     var out = {};
-    this.forEach((setting) => {
+    (this.get('settings')||[]).forEach((setting) => {
       var name = setting.get('name').replace(/\./g,'_').toLowerCase();
       out[name] = setting.get('value');
     });
 
     return out;
-  }.property('this.@each.{name,value}'),
+  }.property('settings.@each.{name,value}'),
 
   uiVersion: function() {
     return 'v' + this.get('app.version');

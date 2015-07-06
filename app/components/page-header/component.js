@@ -36,6 +36,10 @@ export default Ember.Component.extend({
   }.property('currentPath'),
 
   actions: {
+    showAbout: function() {
+      this.sendAction('showAbout');
+    },
+
     switchProject: function(id) {
       this.sendAction('switchProject', id);
     },

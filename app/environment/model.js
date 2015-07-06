@@ -1,6 +1,6 @@
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
 
-var Environment = Cattle.TransitioningResource.extend({
+var Environment = Resource.extend({
   type: 'environment',
 
   healthState: function() {
@@ -53,9 +53,6 @@ var Environment = Cattle.TransitioningResource.extend({
       return 'degraded';
     }
   }.property('state', 'healthState'),
-});
-
-Environment.reopenClass({
 });
 
 export default Environment;

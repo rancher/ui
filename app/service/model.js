@@ -1,5 +1,5 @@
+import Resource from 'ember-api-store/models/resource';
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
 import C from 'ui/utils/constants';
 
 var _allMaps;
@@ -8,7 +8,7 @@ var _allLbServices;
 var _allExternalServices;
 var _allDnsServices;
 
-var Service = Cattle.TransitioningResource.extend({
+var Service = Resource.extend({
   type: 'service',
 
   _allMaps: null,
@@ -126,9 +126,6 @@ var Service = Cattle.TransitioningResource.extend({
       return 'degraded';
     }
   }.property('state', 'healthState'),
-});
-
-Service.reopenClass({
 });
 
 export default Service;

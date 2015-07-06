@@ -1,8 +1,8 @@
+import Resource from 'ember-api-store/models/resource';
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
 import C from 'ui/utils/constants';
 
-var Project = Cattle.TransitioningResource.extend({
+var Project = Resource.extend({
   session: Ember.inject.service(),
   prefs: Ember.inject.service(),
 

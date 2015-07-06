@@ -4,7 +4,4 @@ var LoadBalancerService = Service.extend({
   type: 'loadBalancerService',
 });
 
-LoadBalancerService.reopenClass({
-});
-
 export default LoadBalancerService;

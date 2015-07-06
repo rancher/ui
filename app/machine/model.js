@@ -1,4 +1,4 @@
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
 
 var pendingStates = [
   'requested',
@@ -10,7 +10,7 @@ var pendingStates = [
   'updating'
 ];
 
-var Machine = Cattle.TransitioningResource.extend({
+var Machine = Resource.extend({
   type: 'machine',
   reservedKeys: ['hostsUpdated','hosts','isPending'],
 

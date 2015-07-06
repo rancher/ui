@@ -13,8 +13,6 @@ Router.map(function() {
   this.route('login');
   this.route('logout');
   this.route('authenticated', { path: '/'}, function() {
-    this.resource('about');
-
 
     // Settings
     this.resource('settings', function() {
@@ -129,6 +127,12 @@ Router.map(function() {
     dialogClass: 'small',
     withParams: { 'confirmDeleteResources': 'resources' },
     actions: { confirm: 'confirmDelete' }
+  });
+
+  this.modal('modal-about', {
+    dismissWithOutsideClick: false,
+    withParams: 'showAbout',
+    dialogClass: 'about',
   });
 
   this.modal('edit-apikey', {

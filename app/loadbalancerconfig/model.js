@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
 
-var LoadBalancerConfig = Cattle.TransitioningResource.extend({
+var LoadBalancerConfig = Resource.extend({
   type: 'loadBalancerConfig',
   listeners: Ember.computed.alias('loadBalancerListeners'),
   config: function() {
