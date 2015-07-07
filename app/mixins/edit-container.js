@@ -1,11 +1,11 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
+import NewOrEdit from 'ui/mixins/new-or-edit';
 import ShellQuote from 'npm:shell-quote';
 import Util from 'ui/utils/util';
 import EditHealthCheck from 'ui/mixins/edit-healthcheck';
 import EditLabels from 'ui/mixins/edit-labels';
 
-export default Ember.Mixin.create(Cattle.LegacyNewOrEditMixin, EditHealthCheck, EditLabels, {
+export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditLabels, {
   needs: ['hosts'],
   queryParams: ['tab','hostId','advanced'],
   tab: 'command',
@@ -385,7 +385,7 @@ export default Ember.Mixin.create(Cattle.LegacyNewOrEditMixin, EditHealthCheck, 
 
   initLinks: function() {
     var out = [];
-    var links = this.get('instance.instanceLinks')||[];
+    var links = this.get('instanceLinks')||[];
 
     if ( Ember.isArray(links) )
     {
@@ -920,11 +920,5 @@ export default Ember.Mixin.create(Cattle.LegacyNewOrEditMixin, EditHealthCheck, 
     }
 
     return this._super();
-  },
-
-  doneSaving: function() {
-    var out = this._super();
-    this.send('goToPrevious');
-    return out;
   },
 });

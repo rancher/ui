@@ -104,15 +104,29 @@ export default Ember.Mixin.create({
     return [];
   }.property(),
 
-  trimValues: function() {
+  trimValues: function(depth, seenObjs) {
+    if ( !depth )
+    {
+      depth = 0;
+    }
+
+    if ( !seenObjs )
+    {
+      seenObjs = [];
+    }
     this.eachKeys((val,key) => {
-      Ember.set(this, key, recurse(val));
-    });
+      Ember.set(this, key, recurse(val,depth));
+    }, false);
 
     return this;
 
-    function recurse(val) {
-      if ( typeof val === 'string' )
+    function recurse(val, depth) {
+      if ( depth > 10 )
+      {
+        console.log(val);
+        return val;
+      }
+      else if ( typeof val === 'string' )
       {
         return val.trim();
       }
@@ -120,7 +134,7 @@ export default Ember.Mixin.create({
       {
         val.beginPropertyChanges();
         val.forEach((v, idx) => {
-          var out = recurse(v);
+          var out = recurse(v, depth+1);
           if ( val.objectAt(idx) !== out )
           {
             val.replace(idx, 1, out);
@@ -131,7 +145,13 @@ export default Ember.Mixin.create({
       }
       else if ( Resource.detectInstance(val) )
       {
-        return val.trimValues();
+        // Don't include a resource we've already seen in the chain
+        if ( seenObjs.indexOf(val) > 0 ) {
+          return null;
+        }
+
+        seenObjs.pushObject(val);
+        return val.trimValues(depth+1, seenObjs);
       }
       else if ( val && typeof val === 'object' )
       {
@@ -139,7 +159,7 @@ export default Ember.Mixin.create({
           // Skip keys with dots in them, like container labels
           if ( key.indexOf('.') === -1 )
           {
-            Ember.set(val, key, recurse(val[key]));
+            Ember.set(val, key, recurse(val[key], depth+1));
           }
         });
         return val;

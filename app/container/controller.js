@@ -23,17 +23,6 @@ var ContainerController = Ember.Controller.extend(CattleTransitioningController,
       return this.doAction('stop');
     },
 
-    redirectTo: function(name) {
-      // @TODO Fix this hackery for nested components...
-      // http://emberjs.jsbin.com/mecesakase
-      if ( Ember.Component.detectInstance(this.get('target')) )
-      {
-        this.set('target', window.l('router:main'));
-      }
-
-      this.transitionToRoute(name, this.get('id'));
-    },
-
     shell: function() {
       this.get('controllers.application').setProperties({
         showShell: true,
@@ -49,12 +38,9 @@ var ContainerController = Ember.Controller.extend(CattleTransitioningController,
     },
 
     edit: function() {
-      this.send('redirectTo','container.edit');
-    },
-
-    detail: function() {
-      Ember.run.next(this, function() {
-        this.send('redirectTo','container');
+      this.get('controllers.application').setProperties({
+        editContainer: true,
+        originalModel: this.get('model'),
       });
     },
 
@@ -66,7 +52,7 @@ var ContainerController = Ember.Controller.extend(CattleTransitioningController,
         this.set('target', window.l('router:main'));
       }
 
-      this.transitionToRoute('containers.new', {queryParams: {containerId: this.get('id')}});
+      this.get('controllers.application').transitionToRoute('containers.new', {queryParams: {containerId: this.get('model.id')}});
     },
 
     cloneToService: function() {
@@ -77,7 +63,7 @@ var ContainerController = Ember.Controller.extend(CattleTransitioningController,
         this.set('target', window.l('router:main'));
       }
 
-      this.transitionToRoute('service.new', {queryParams: {containerId: this.get('id')}});
+      this.get('controllers.application').transitionToRoute('service.new', {queryParams: {containerId: this.get('model.id')}});
     },
   },
 

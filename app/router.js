@@ -141,6 +141,13 @@ Router.map(function() {
     dialogClass: 'modal-logs',
   });
 
+  this.modal('edit-container', {
+    dismissWithOutsideClick: false,
+    withParams: 'editContainer',
+    otherParams: 'originalModel',
+  });
+
+
   this.modal('edit-apikey', {
     dismissWithOutsideClick: false,
     withParams: 'editApikey',
