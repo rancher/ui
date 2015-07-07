@@ -43,7 +43,6 @@ Router.map(function() {
         });
 
         this.resource('host', { path: '/:host_id' }, function() {
-          this.route('edit');
           this.route('containers');
           this.route('storage', {path: '/storage'});
         });
@@ -147,6 +146,11 @@ Router.map(function() {
     otherParams: 'originalModel',
   });
 
+  this.modal('edit-host', {
+    dismissWithOutsideClick: false,
+    withParams: 'editHost',
+    otherParams: 'originalModel',
+  });
 
   this.modal('edit-apikey', {
     dismissWithOutsideClick: false,

@@ -1,5 +1,7 @@
 <div class="pod-header">
-  {{resource-actions-menu model=model choices=model.availableActions}}
+  {{#with model controller="host" as |ctrl|}}
+    {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
+  {{/with}}
 
   <div class="pod-state {{stateBackground}}"><span>{{model.displayState}}</span></div>
   <div class="pod-icon"><i class="{{model.stateIcon}} fa-lg {{model.stateColor}}"></i></div>

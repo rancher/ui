@@ -3,6 +3,8 @@ import DownloadMachineConfig from 'ui/mixins/download-machine-config';
 import CattleTransitioningController from 'ui/mixins/cattle-transitioning-controller';
 
 export default Ember.Controller.extend(CattleTransitioningController, DownloadMachineConfig, {
+  needs: ['application'],
+
   actions: {
     activate: function() {
       return this.doAction('activate');
@@ -20,10 +22,6 @@ export default Ember.Controller.extend(CattleTransitioningController, DownloadMa
       this.transitionToRoute('containers.new', {queryParams: {hostId: this.get('id')}});
     },
 
-    detail: function() {
-      this.transitionToRoute('host', this.get('id'));
-    },
-
     clone: function() {
       var machine = this.get('machine');
       var driver = machine.get('driver');
@@ -31,7 +29,10 @@ export default Ember.Controller.extend(CattleTransitioningController, DownloadMa
     },
 
     edit: function() {
-      this.transitionToRoute('host.edit', this.get('id'));
+      this.get('controllers.application').setProperties({
+        editHost: true,
+        originalModel: this.get('model'),
+      });
     },
   },
 

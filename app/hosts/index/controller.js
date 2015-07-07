@@ -4,6 +4,12 @@ export default Ember.Controller.extend({
   dot: false,
   queryParams: ['dot'],
 
+  actions: {
+    newContainer: function(hostId) {
+      this.transitionToRoute('containers.new', {queryParams: {hostId: hostId}});
+    },
+  },
+
   pods: function() {
     var out = [];
     var hosts = this.get('model.hosts');

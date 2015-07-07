@@ -19,6 +19,8 @@ export default Ember.Controller.extend({
   editApikeyIsNew: null,
   editProject: null,
   editContainer: null,
+  editHost: null,
+  editService: null,
   editRegistry: null,
   showShell: null,
   showContainerLogs: null,
