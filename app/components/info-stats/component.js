@@ -5,19 +5,25 @@ export default Ember.Component.extend({
   model: null,
   stats: null,
 
-  didInsertElement: function() {
+  didRender: function() {
     this._super();
 
-    this.set('stats', Stats.create({
-      resource: this.get('model'),
-      cpuCanvas: '#cpuGraph',
-      memoryCanvas: '#memoryGraph'
-    }));
-
+    if ( !this.get('stats') )
+    {
+      this.set('stats', Stats.create({
+        resource: this.get('model'),
+        cpuCanvas: '#cpuGraph',
+        memoryCanvas: '#memoryGraph'
+      }));
+    }
   },
 
   willDestroyElement: function() {
     this._super();
-    this.get('stats').disconnect();
+    var stats = this.get('stats');
+    if ( stats )
+    {
+      stats.disconnect();
+    }
   },
 });

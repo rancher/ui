@@ -54,8 +54,6 @@ Router.map(function() {
         this.route('index', {path: '/'});
 
         this.resource('container', { path: '/:container_id' }, function() {
-          this.route('shell');
-          this.route('logs');
           this.route('edit');
         });
       });
@@ -127,6 +125,20 @@ Router.map(function() {
     dismissWithOutsideClick: false,
     withParams: 'showAbout',
     dialogClass: 'about',
+  });
+
+  this.modal('modal-shell', {
+    dismissWithOutsideClick: false,
+    withParams: 'showShell',
+    otherParams: 'originalModel',
+    dialogClass: 'modal-shell',
+  });
+
+  this.modal('modal-container-logs', {
+    dismissWithOutsideClick: false,
+    withParams: 'showContainerLogs',
+    otherParams: 'originalModel',
+    dialogClass: 'modal-logs',
   });
 
   this.modal('edit-apikey', {

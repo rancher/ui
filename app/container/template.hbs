@@ -9,15 +9,12 @@
       </div>
       <span>
         {{#if model.primaryHost}}
-          {{#with model.primaryHost controller="host" as |host|}}
-            {{#link-to "hosts"}}Hosts:{{/link-to}}
-            {{#link-to "host" host.id}}{{host.displayName}}:{{/link-to}}
-            {{model.displayName}}
-          {{/with}}
+          {{#link-to "hosts"}}Hosts:{{/link-to}}
+          {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}:{{/link-to}}
         {{else}}
           {{#link-to "containers"}}Containers:{{/link-to}}
-          {{model.displayName}}
         {{/if}}
+        {{model.displayName}}
       </span>
     </h3>
     {{partial "description"}}

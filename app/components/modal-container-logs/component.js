@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Overlay from 'ui/overlay/view';
 import ThrottledResize from 'ui/mixins/throttled-resize';
 import Util from 'ui/utils/util';
 
@@ -9,7 +8,10 @@ var typeClass = {
   2: 'log-stderr',
 };
 
-export default Overlay.extend(ThrottledResize,{
+export default Ember.Component.extend(ThrottledResize, {
+  originalModel: null,
+  instance: Ember.computed.alias('originalModel'),
+
   status: 'Connecting...',
   socket: null,
 
@@ -23,8 +25,11 @@ export default Overlay.extend(ThrottledResize,{
   stdOutVisible: true,
 
   actions: {
-    overlayClose: function() {
-      this.get('controller').send('cancel');
+    outsideClick: function() {},
+
+    cancel: function() {
+      this.disconnect();
+      this.sendAction('dismiss');
     },
 
     clear: function() {
@@ -53,9 +58,24 @@ export default Overlay.extend(ThrottledResize,{
   },
 
   didInsertElement: function() {
-    this._super();
+    Ember.run.next(this, 'exec');
+  },
 
-    var url = this.get('context.url') +'?token='+ encodeURIComponent(this.get('context.token'));
+  exec: function() {
+    var instance = this.get('instance');
+    var opt = {
+      follow: true,
+      lines: 500,
+    };
+
+    instance.doAction('logs',opt).then((logs) => {
+      logs.set('instance', instance);
+      this.connect(logs);
+    });
+  },
+
+  connect: function(logs) {
+    var url = logs.get('url') +'?token='+ encodeURIComponent(logs.get('token'));
     var socket = new WebSocket(url);
     this.set('socket', socket);
 
@@ -63,6 +83,7 @@ export default Overlay.extend(ThrottledResize,{
     var $body = $(body);
 
     this.set('status','Initializing...');
+
     socket.onopen = () => {
       this.set('status','Connected');
     };
@@ -109,12 +130,7 @@ export default Overlay.extend(ThrottledResize,{
     };
   },
 
-  onResize: function() {
-    this.$('.log-body').css('height', Math.max(200, ($(window).height() - 230)) + 'px');
-  },
-
-  willDestroyElement: function() {
-    this._super();
+  disconnect: function() {
     this.set('status','Closed');
 
     var socket = this.get('socket');
@@ -123,5 +139,14 @@ export default Overlay.extend(ThrottledResize,{
       socket.close();
       this.set('socket', null);
     }
+  },
+
+  onResize: function() {
+    this.$('.log-body').css('height', Math.max(200, ($(window).height() - 230)) + 'px');
+  },
+
+  willDestroyElement: function() {
+    this.disconnect();
+    this._super();
   }
 });

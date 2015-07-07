@@ -3,6 +3,7 @@ import CattleTransitioningController from 'ui/mixins/cattle-transitioning-contro
 import C from 'ui/utils/constants';
 
 var ContainerController = Ember.Controller.extend(CattleTransitioningController, {
+  needs: ['application'],
   state: Ember.computed.alias('model.combinedState'),
 
   mountError: null,
@@ -34,11 +35,17 @@ var ContainerController = Ember.Controller.extend(CattleTransitioningController,
     },
 
     shell: function() {
-      this.send('redirectTo','container.shell');
+      this.get('controllers.application').setProperties({
+        showShell: true,
+        originalModel: this.get('model'),
+      });
     },
 
     logs: function() {
-      this.send('redirectTo','container.logs');
+      this.get('controllers.application').setProperties({
+        showContainerLogs: true,
+        originalModel: this.get('model'),
+      });
     },
 
     edit: function() {
