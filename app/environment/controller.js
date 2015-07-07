@@ -1,14 +1,10 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
 import Util from 'ui/utils/util';
-import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
+import CattleTransitioningController from 'ui/mixins/cattle-transitioning-controller';
 
-var EnvironmentController = Cattle.LegacyTransitioningResourceController.extend({
-  needs: ['authenticated','application'],
-
-  init: function() {
-    this._super();
-  },
+export default Ember.Controller.extend(CattleTransitioningController, {
+  needs: ['application'],
+  endpoint: Ember.inject.service(),
 
   actions: {
     activateServices: function() {
@@ -22,7 +18,7 @@ var EnvironmentController = Cattle.LegacyTransitioningResourceController.extend(
     addService: function() {
       this.transitionToRoute('service.new', {
         queryParams: {
-          environmentId: this.get('id'),
+          environmentId: this.get('model.id'),
         },
       });
     },
@@ -30,27 +26,29 @@ var EnvironmentController = Cattle.LegacyTransitioningResourceController.extend(
     addBalancer: function() {
       this.transitionToRoute('service.new-balancer', {
         queryParams: {
-          environmentId: this.get('id'),
+          environmentId: this.get('model.id'),
         },
       });
     },
 
     edit: function() {
-      this.transitionToRoute('environment.edit', this.get('id'));
+      this.get('controllers.application').setProperties({
+        editEnvironment: true,
+        originalModel: this.get('model'),
+      });
     },
 
     exportConfig: function() {
-      var auth = this.get('controllers.authenticated');
-      var url = auth.addAuthParams(this.linkFor('composeConfig'));
+      var url = this.get('endpoint').addAuthParams(this.get('model').linkFor('composeConfig'));
       Util.download(url);
     },
 
     viewCode: function() {
-      this.transitionToRoute('environment.code', this.get('id'));
+      this.transitionToRoute('environment.code', this.get('model.id'));
     },
 
     viewGraph: function() {
-      this.transitionToRoute('environment.graph', this.get('id'));
+      this.transitionToRoute('environment.graph', this.get('model.id'));
     },
 
     delete: function() {
@@ -64,11 +62,11 @@ var EnvironmentController = Cattle.LegacyTransitioningResourceController.extend(
   },
 
   availableActions: function() {
-    var a = this.get('actions');
+    var a = this.get('model.actions');
 
     var out = [
-      { label: 'Start Services', icon: 'ss-play',            action: 'activateServices',    enabled: this.get('canActivate') },
-      { label: 'Stop Services', icon: 'ss-pause',            action: 'deactivateServices',  enabled: this.get('canDeactivate') },
+      { label: 'Start Services', icon: 'ss-play',            action: 'activateServices',    enabled: this.get('model.canActivate') },
+      { label: 'Stop Services', icon: 'ss-pause',            action: 'deactivateServices',  enabled: this.get('model.canDeactivate') },
       { label: 'View Graph',    icon: 'ss-share',            action: 'viewGraph',            enabled: true },
       { label: 'View Config',   icon: 'ss-files',            action: 'viewCode',            enabled: true },
       { label: 'Export Config', icon: 'ss-download',         action: 'exportConfig',        enabled: !!a.exportconfig },
@@ -80,54 +78,7 @@ var EnvironmentController = Cattle.LegacyTransitioningResourceController.extend(
     ];
 
     return out;
-  }.property('actions.{remove,purge,exportconfig}','canActivate','canDeactivate'),
-
-  canActivate: function() {
-    if ( !this.hasAction('activateservices') )
-    {
-      return false;
-    }
-
-    var count = this.get('services.length') || 0;
-    if ( count === 0 )
-    {
-      return false;
-    }
-
-    return this.get('services').filterProperty('actions.activate').get('length') > 0;
-  }.property('services.@each.state','actions.activateservices'),
-
-  canDeactivate: function() {
-    if ( !this.hasAction('deactivateservices') )
-    {
-      return false;
-    }
-
-    var count = this.get('services.length') || 0;
-    if ( count === 0 )
-    {
-      return false;
-    }
-
-    return this.get('services').filterProperty('actions.deactivate').get('length') > 0;
-  }.property('services.@each.state','actions.deactivateservices'),
+  }.property('model.actions.{remove,purge,exportconfig}','model.{canActivate,canDeactivate}'),
 
   state: Ember.computed.alias('model.combinedState'),
-
-  unremovedServices: function() {
-    return UnremovedArrayProxy.create({sourceContent: this.get('services')});
-  }.property('services')
 });
-
-EnvironmentController.reopenClass({
-  stateMap: {
-    'requested':        {icon: 'ss-tag',            color: 'text-danger'},
-    'activating':       {icon: 'ss-tag',            color: 'text-danger'},
-    'active':           {icon: 'ss-globe',          color: 'text-success'},
-    'removing':         {icon: 'ss-trash',          color: 'text-danger'},
-    'removed':          {icon: 'ss-trash',          color: 'text-danger'},
-    'degraded':         {icon: 'ss-notifications',  color: 'text-warning'},
-  }
-});
-
-export default EnvironmentController;

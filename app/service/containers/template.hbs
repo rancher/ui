@@ -2,16 +2,16 @@
   <table class="grid fixed" style="margin-bottom: 0;">
     <thead>
       <tr>
-        <th width="90">State</th>
-        <th>Name</th>
-        <th width="110">IP Address</th>
-        <th>Image</th>
-        <th>Command</th>
+        {{sortable-th sortable=this action="changeSort" name="state" width="120"}}
+        {{sortable-th sortable=this action="changeSort" name="name"}}
+        {{sortable-th sortable=this action="changeSort" name="ip" width="110" label="IP Address"}}
+        {{sortable-th sortable=this action="changeSort" name="image"}}
+        {{sortable-th sortable=this action="changeSort" name="command"}}
         <th class="actions" width="50">&nbsp;</th>
       </tr>
     </thead>
     <tbody>
-      {{#each instances itemController="container" as |container|}}
+      {{#each arranged as |container|}}
         <tr>
           <td>
             <span class="badge state {{container.stateBackground}}">
@@ -35,7 +35,9 @@
             {{/if}}
           </td>
           <td class="actions">
-            {{resource-actions-menu model=container choices=container.availableActions}}
+            {{#with container controller="container" as |ctrl|}}
+              {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
+            {{/with}}
           </td>
         </tr>
       {{else}}

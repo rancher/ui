@@ -39,10 +39,7 @@ var Host = Resource.extend({
   }.property('ipAddresses','ipAddresses.[]'),
 
   arrangedInstances: function() {
-    return Ember.ArrayController.create({
-      content: this.get('instances'),
-      sortProperties: ['name','id']
-    });
+    return this.get('instances').sortBy('name','id');
   }.property('instances.[]','instances.@each.{name,id}'),
 
   machine: function() {

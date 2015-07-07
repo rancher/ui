@@ -1,5 +1,7 @@
 <div class="pod-header">
-  {{resource-actions-menu model=model choices=model.availableActions}}
+  {{#with model controller="service" as |ctrl|}}
+    {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
+  {{/with}}
 
   <div class="pod-state {{stateBackground}}"><span>{{model.displayState}}</span></div>
   <div class="pod-icon"><i class="{{model.stateIcon}} fa-lg {{iconColor}}"></i></div>
@@ -43,7 +45,7 @@
 
 <div class="clearfix no-resource-action-hover">
   {{#if hasContainers}}
-    {{#each model.instances itemController="container" as |item|}}
+    {{#each model.instances as |item|}}
       {{container-subpod model=item stripProject=true}}
     {{else}}
       <div class="text-center text-muted" style="margin: 20px 0">

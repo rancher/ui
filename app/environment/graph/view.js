@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
 import ThrottledResize from 'ui/mixins/throttled-resize';
-import { activeIcon } from 'ui/service/controller';
+import { activeIcon } from 'ui/service/model';
 
 export default Ember.View.extend(ThrottledResize,{
   classNames: ['environment-graph'],
@@ -60,7 +60,7 @@ export default Ember.View.extend(ThrottledResize,{
 
   updateGraph: function() {
     var g = this.get('graph');
-    var services = this.get('context.services');
+    var services = this.get('context.model.services');
     var unremovedServices = services.filter(function(service) {
       return ['removed','purging','purged'].indexOf(service.get('state')) === -1;
     });
@@ -155,7 +155,7 @@ export default Ember.View.extend(ThrottledResize,{
 
   throttledUpdateGraph: function() {
     Ember.run.throttle(this,'updateGraph',250);
-  }.observes('context.services.@each.{id,name,state,consumedServicesUpdated}'),
+  }.observes('context.model.services.@each.{id,name,state,consumedServicesUpdated}'),
 
   willDestroyElement: function() {
     this._super();

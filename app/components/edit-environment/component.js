@@ -1,16 +1,10 @@
 import Ember from 'ember';
-import EditLabels from 'ui/mixins/edit-labels';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
-export default Ember.Component.extend(NewOrEdit, EditLabels, {
+export default Ember.Component.extend(NewOrEdit, {
   editing: true,
   originalModel: null,
   model: null,
-
-  willInsertElement: function() {
-    this.set('model', this.get('originalModel').clone());
-    this.initLabels();
-  },
 
   actions: {
     outsideClick: function() {},
@@ -20,7 +14,15 @@ export default Ember.Component.extend(NewOrEdit, EditLabels, {
     }
   },
 
+  willInsertElement: function() {
+    var orig = this.get('originalModel');
+    var clone = orig.clone();
+    delete clone.services;
+    this.set('model', clone);
+    this.didInitAttrs();
+  },
+
   doneSaving: function() {
     this.sendAction('dismiss');
-  },
+  }
 });

@@ -1,18 +1,16 @@
-{{#with environment controller="environment" as |env|}}
-  {{environment-header model=env}}
-{{/with}}
+{{environment-header model=model.environment}}
 
 <section>
   <div class="row">
     <div class="col-md-6">
-      docker-compose.yml {{zero-clipboard text=composeConfig.dockerComposeConfig}}
+      docker-compose.yml {{zero-clipboard text=model.composeConfig.dockerComposeConfig}}
       <pre class="line-numbers"><code class="language-yaml">
-{{composeConfig.dockerComposeConfig}}</code></pre>
+{{model.composeConfig.dockerComposeConfig}}</code></pre>
     </div>
     <div class="col-md-6">
-      rancher-compose.yml {{zero-clipboard text=composeConfig.rancherComposeConfig}}
+      rancher-compose.yml {{zero-clipboard text=model.composeConfig.rancherComposeConfig}}
       <pre class="line-numbers"><code class="language-yaml">
-{{composeConfig.rancherComposeConfig}}</code></pre>
+{{model.composeConfig.rancherComposeConfig}}</code></pre>
     </div>
   </div>
 </section>

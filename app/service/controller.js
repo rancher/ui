@@ -1,12 +1,9 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
-import C from 'ui/utils/constants';
-import ReadLabels from 'ui/mixins/read-labels';
+import CattleTransitioningController from 'ui/mixins/cattle-transitioning-controller';
 
-var ServiceController = Cattle.LegacyTransitioningResourceController.extend(ReadLabels, {
+var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
   needs: ['environment'],
-  environment: Ember.computed.alias('controllers.environment'),
-  labelResource: Ember.computed.alias('model.launchConfig'),
+  environment: Ember.computed.alias('controllers.environment.model'),
 
   actions: {
     activate: function() {
@@ -18,22 +15,22 @@ var ServiceController = Cattle.LegacyTransitioningResourceController.extend(Read
     },
 
     edit: function() {
-      this.transitionToRoute('service.edit', this.get('environmentId'), this.get('id'));
+      this.transitionToRoute('service.edit', this.get('environmentId'), this.get('model.id'));
     },
 
     scaleUp: function() {
-      this.incrementProperty('scale');
+      this.get('model').incrementProperty('scale');
       this.saveScale();
     },
 
     scaleDown: function() {
-      this.decrementProperty('scale');
+      this.get('model').decrementProperty('scale');
       this.saveScale();
     },
 
     clone: function() {
       var route;
-      switch ( this.get('type').toLowerCase() )
+      switch ( this.get('model.type').toLowerCase() )
       {
         case 'service':             route = 'service.new';          break;
         case 'dnsservice':          route = 'service.new-alias';    break;
@@ -43,8 +40,8 @@ var ServiceController = Cattle.LegacyTransitioningResourceController.extend(Read
       }
 
       this.transitionToRoute(route, {queryParams: {
-        serviceId: this.get('id'),
-        environmentId: this.get('environmentId'),
+        serviceId: this.get('model.id'),
+        environmentId: this.get('model.environmentId'),
       }});
     },
   },
@@ -63,28 +60,8 @@ var ServiceController = Cattle.LegacyTransitioningResourceController.extend(Read
     this.set('scaleTimer', timer);
   },
 
-  canScale: function() {
-    if ( ['service','loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0 )
-    {
-      return !this.getLabel(C.LABEL.SCHED_GLOBAL);
-    }
-    else
-    {
-      return false;
-    }
-  }.property('type'),
-
-  hasContainers: function() {
-    return ['service','loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0;
-  }.property('type'),
-
-  hasImage: function() {
-    return this.get('type') === 'service';
-  }.property('type'),
-  hasLabels: Ember.computed.alias('hasImage'),
-
   availableActions: function() {
-    var a = this.get('actions');
+    var a = this.get('model.actions');
 
     var choices = [
       { label: 'Start',         icon: 'ss-play',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
@@ -98,55 +75,9 @@ var ServiceController = Cattle.LegacyTransitioningResourceController.extend(Read
     ];
 
     return choices;
-  }.property('actions.{activate,deactivate,update,remove,purge}'),
-
-  displayType: function() {
-    var out;
-    switch ( this.get('type').toLowerCase() )
-    {
-      case 'loadbalancerservice': out = 'Load Balancer'; break;
-      case 'dnsservice':          out = 'DNS'; break;
-      case 'externalservice':     out = 'External'; break;
-      default:                    out = 'Container'; break;
-    }
-
-    return out;
-  }.property('type'),
+  }.property('model.actions.{activate,deactivate,update,remove,purge}'),
 
   state: Ember.computed.alias('model.combinedState'),
-
-  activeIcon: function() {
-    return activeIcon(this.get('model'));
-  }.property('type'),
-});
-
-export function activeIcon(service)
-{
-  var out = 'ss-layergroup';
-  switch ( service.get('type').toLowerCase() )
-  {
-    case 'loadbalancerservice': out = 'ss-fork';    break;
-    case 'dnsservice':          out = 'ss-compass'; break;
-    case 'externalservice':     out = 'ss-cloud';   break;
-  }
-
-  return out;
-}
-
-ServiceController.reopenClass({
-  stateMap: {
-    'requested':        {icon: 'ss-tag',            color: 'text-danger'},
-    'registering':      {icon: 'ss-tag',            color: 'text-danger'},
-    'activating':       {icon: 'ss-tag',            color: 'text-danger'},
-    'active':           {icon: activeIcon,          color: 'text-success'},
-    'updating-active':  {icon: 'ss-tag',            color: 'text-success'},
-    'updating-inactive':{icon: 'ss-tag',            color: 'text-danger'},
-    'deactivating':     {icon: 'ss-down',           color: 'text-danger'},
-    'inactive':         {icon: 'fa fa-circle',      color: 'text-danger'},
-    'removing':         {icon: 'ss-trash',          color: 'text-danger'},
-    'removed':          {icon: 'ss-trash',          color: 'text-danger'},
-    'degraded':         {icon: 'ss-notifications',  color: 'text-warning'},
-  }
 });
 
 export default ServiceController;

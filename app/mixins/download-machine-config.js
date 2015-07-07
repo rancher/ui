@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 
 export default Ember.Mixin.create({
-  needs: ['authenticated'],
+  endpoint: Ember.inject.service(),
 
   actions: {
     machineConfig: function() {
@@ -16,7 +16,7 @@ export default Ember.Mixin.create({
         url = this.get('machine').linkFor('config');
       }
 
-      url = this.get('controllers.authenticated').addAuthParams(url);
+      url = this.get('endpoint').addAuthParams(url);
       Util.download(url);
     }
   }

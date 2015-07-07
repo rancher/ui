@@ -1,92 +1,92 @@
-{{#with environment controller="environment" as |env|}}
-  <section class="header">
-    <h3>
-      {{resource-actions-menu model=this choices=availableActions classNames="pull-right"}}
-      <div class="state {{stateColor}}">
-        <i class="{{stateIcon}}"></i> {{displayState}}
-      </div>
-      <span class="right-divider">{{#link-to "environments"}}Stacks:{{/link-to}} {{#link-to "environment" env.id}}{{env.displayName}}:{{/link-to}} {{displayName}}</span>
-    </h3>
-    {{partial "legacy-description"}}
-  </section>
+<section class="header">
+  <h3>
+    {{#with model controller="service" as |ctrl|}}
+      {{resource-actions-menu model=ctrl choices=availableActions parentController=this classNames="pull-right"}}
+    {{/with}}
+    <div class="state {{model.stateColor}}">
+      <i class="{{model.stateIcon}}"></i> {{model.displayState}}
+    </div>
+    <span class="right-divider">{{#link-to "environments"}}Stacks:{{/link-to}} {{#link-to "environment" environment.id}}{{environment.displayName}}:{{/link-to}} {{model.displayName}}</span>
+  </h3>
+  {{partial "description"}}
+</section>
 
-  <section class="well">
-    <label class="section">Info</label>
-    <ul class="list-lines">
-      {{#if showTransitioningMessage}}
-        <li>
-          <label>Message</label>
-          <span class="force-wrap">
-            {{transitioningMessage}}
-          </span>
-        </li>
-      {{/if}}
-
+<section class="well">
+  <label class="section">Info</label>
+  <ul class="list-lines">
+    {{#if model.showTransitioningMessage}}
       <li>
-        <label>Type</label>
-        {{displayType}}
+        <label>Message</label>
+        <span class="force-wrap">
+          {{model.transitioningMessage}}
+        </span>
+      </li>
+    {{/if}}
+
+    <li>
+      <label>Type</label>
+      {{model.displayType}}
+    </li>
+
+    {{#if model.canScale}}
+      <li>
+        <label>Scale</label>
+        {{model.scale}}
+        &nbsp;
+        &nbsp;
+        <button class="btn btn-default btn-xs" {{action "scaleDown"}}><i class="ss-hyphen"></i></button>
+        <button class="btn btn-default btn-xs" {{action "scaleUp"}}><i class="ss-plus"></i></button>
+      </li>
+    {{/if}}
+
+    {{#if model.hasImage}}
+      <li>
+        <label>Image</label>
+        <span class="force-wrap">
+          {{display-image model.launchConfig.imageUuid}} {{zero-clipboard text=(display-image model.launchConfig.imageUuid)}}
+        </span>
       </li>
 
-      {{#if canScale}}
-        <li>
-          <label>Scale</label>
-          {{scale}}
-          &nbsp;
-          &nbsp;
-          <button class="btn btn-default btn-xs" {{action "scaleDown"}}><i class="ss-hyphen"></i></button>
-          <button class="btn btn-default btn-xs" {{action "scaleUp"}}><i class="ss-plus"></i></button>
-        </li>
-      {{/if}}
+      <li>
+        <label>Entrypoint</label>
+        <span class="force-wrap">
+          {{#if model.launchConfig.entryPoint}}
+            {{model.launchConfig.entryPoint}}
+          {{else}}
+            <span class="text-muted">None</span>
+          {{/if}}
+        </span>
+      </li>
 
-      {{#if hasImage}}
-        <li>
-          <label>Image</label>
-          <span class="force-wrap">
-            {{display-image launchConfig.imageUuid}} {{zero-clipboard text=launchConfig.imageUuid}}
-          </span>
-        </li>
+      <li>
+        <label>Command</label>
+        <span class="force-wrap">
+          {{#if model.launchConfig.command}}
+            {{model.launchConfig.command}}
+          {{else}}
+            <span class="text-muted">None</span>
+          {{/if}}
+        </span>
+      </li>
+    {{/if}}
 
-        <li>
-          <label>Entrypoint</label>
-          <span class="force-wrap">
-            {{#if launchConfig.entryPoint}}
-              {{launchConfig.entryPoint}}
-            {{else}}
-              <span class="text-muted">None</span>
-            {{/if}}
-          </span>
-        </li>
+  </ul>
+</section>
 
-        <li>
-          <label>Command</label>
-          <span class="force-wrap">
-            {{#if launchConfig.command}}
-              {{launchConfig.command}}
-            {{else}}
-              <span class="text-muted">None</span>
-            {{/if}}
-          </span>
-        </li>
-      {{/if}}
-
-    </ul>
+{{#if model.hasLabels}}
+  <section class="well" style="margin-bottom: 0;">
+    <label class="section">Labels</label>
+    {{labels-section model=model.launchConfig}}
   </section>
+{{/if}}
 
-  {{#if hasLabels}}
-    <section class="well" style="margin-bottom: 0;">
-      <label class="section">Labels</label>
-      {{labels-section model=launchConfig}}
-    </section>
-  {{/if}}
-
-  {{#if hasContainers}}
-    <section>
-      <ul class="nav nav-tabs nav-tabs-well">
-        {{#link-to "service.containers" tagName="li" href=false}}<a><i class="ss-box"></i> Containers</a>{{/link-to}}
-      </ul>
-      <div class="well nav-well">
-        {{outlet}}
-      </div>
-    </section>
-  {{/if}}
-{{/with}}
+{{#if model.hasContainers}}
+  <section>
+    <ul class="nav nav-tabs nav-tabs-well">
+      {{#link-to "service.containers" tagName="li" href=false}}<a><i class="ss-box"></i> Containers</a>{{/link-to}}
+    </ul>
+    <div class="well nav-well">
+      {{outlet}}
+    </div>
+  </section>
+{{/if}}

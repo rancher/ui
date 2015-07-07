@@ -99,7 +99,6 @@ Router.map(function() {
           this.route('index', {path: '/'});
           this.route('code', {path: '/code'});
           this.route('graph', {path: '/graph'});
-          this.route('edit');
 
           this.resource('service', {path: '/services/:service_id'}, function() {
             this.route('containers');
@@ -167,6 +166,18 @@ Router.map(function() {
   this.modal('edit-registry', {
     dismissWithOutsideClick: false,
     withParams: 'editRegistry',
+    otherParams: 'originalModel',
+  });
+
+  this.modal('edit-environment', {
+    dismissWithOutsideClick: false,
+    withParams: 'editEnvironment',
+    otherParams: 'originalModel',
+  });
+
+  this.modal('edit-service', {
+    dismissWithOutsideClick: false,
+    withParams: 'editService',
     otherParams: 'originalModel',
   });
   // End: Modals

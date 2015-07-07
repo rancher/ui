@@ -6,12 +6,10 @@
 </section>
 
 <section>
-{{#each this as |item|}}
-  {{stack-section model=item collapseId=(dom-id item)}}
-  {{#columns-section pods=item.unremovedServices id=(dom-id item) classNames="collapse in" emptyMessage="No services yet." as |item| }}
-    {{#with item controller="service" as |service|}}
-      {{service-pod model=service}}
-    {{/with}}
-  {{/columns-section}}
-{{/each}}
+  {{#each arranged as |stack|}}
+    {{stack-section model=stack collapseId=(dom-id stack)}}
+    {{#columns-section pods=stack.unremovedServices id=(dom-id stack) classNames="collapse in" emptyMessage="No services yet." as |service| }}
+        {{service-pod model=service}}
+    {{/columns-section}}
+  {{/each}}
 </section>

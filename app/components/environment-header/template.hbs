@@ -1,6 +1,8 @@
 <section class="header">
   <h3>
-    {{resource-actions-menu model=model choices=model.availableActions classNames="pull-right"}}
+    {{#with model controller="environment" as |ctrl|}}
+      {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this classNames="pull-right"}}
+    {{/with}}
     <div class="state {{model.stateColor}}">
       <i class="{{model.stateIcon}}"></i> {{model.displayState}}
     </div>
