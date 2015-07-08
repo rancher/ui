@@ -119,7 +119,7 @@ export default Ember.Mixin.create(EditLabels, {
     var type = service.get('type').toLowerCase();
     if ( type === 'service' )
     {
-      var ary = []
+      var ary = [];
       this.get('serviceLinksArray').forEach((row) => {
         if ( row.serviceId )
         {

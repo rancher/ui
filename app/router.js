@@ -56,32 +56,6 @@ Router.map(function() {
           this.route('edit');
         });
       });
-
-      this.resource('loadbalancers', {path: '/balancers'}, function() {
-        this.route('new', {path: '/add'});
-        this.route('index', {path: '/'});
-
-        this.resource('loadbalancer', {path: '/:loadbalancer_id'}, function() {
-          this.route('edit');
-          this.route('config', { path: '/config'});
-          this.route('hosts', { path: '/hosts'}, function() {
-            this.route('new', { path: '/add'});
-          });
-          this.route('targets', { path: '/targets'}, function() {
-            this.route('new', { path: '/add'});
-          });
-        });
-      });
-
-      this.resource('loadbalancerconfigs', {path: '/balancer-configs'}, function() {
-        this.route('new', {path: '/add'});
-        this.route('index', {path: '/'});
-
-        this.resource('loadbalancerconfig', {path: '/:loadbalancerconfig_id'}, function() {
-          this.route('index', {path: '/'});
-          this.route('edit');
-        });
-      });
     });
 
     // Applications
