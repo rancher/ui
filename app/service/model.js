@@ -16,7 +16,7 @@ var Service = Resource.extend(ReadLabels, {
   consumedServicesUpdated: 0,
   serviceLinks: null, // Used for clone
   reservedKeys: ['_allMaps','consumedServicesUpdated','serviceLinks'],
-  labelResource: Ember.computed.alias('model.launchConfig'),
+  labelResource: Ember.computed.alias('launchConfig'),
 
   init: function() {
     this._super();
@@ -163,7 +163,7 @@ var Service = Resource.extend(ReadLabels, {
   }.property('type'),
 
   activeIcon: function() {
-    return activeIcon(this.get('model'));
+    return activeIcon(this);
   }.property('type'),
 
 });

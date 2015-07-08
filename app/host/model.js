@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 
 var Host = Resource.extend({

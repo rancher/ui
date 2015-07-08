@@ -35,7 +35,7 @@ export default Ember.Mixin.create({
   }.property('sortBy','sorts.@each.{name}'),
 
   arranged: function(){
-    var content = this.get('sortableContent');
+    var content = this.get('sortableContent')||[];
     var currentSort = this.get('currentSort');
     var out;
     if ( currentSort )

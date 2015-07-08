@@ -31,7 +31,7 @@ export default Ember.Component.extend(EditContainer, {
       this.get('store').findAll('host'), // Need inactive ones in case a link points to an inactive host
     ]).then((results) => {
       var model = Ember.Object.create({
-        instance: instance,
+        instance: instance.clone(),
         ports: results[0],
         instanceLinks: results[1],
         allHosts: results[2],

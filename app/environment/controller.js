@@ -16,7 +16,7 @@ export default Ember.Controller.extend(CattleTransitioningController, {
     },
 
     addService: function() {
-      this.transitionToRoute('service.new', {
+      this.get('controllers.application').transitionToRoute('service.new', {
         queryParams: {
           environmentId: this.get('model.id'),
         },
@@ -24,7 +24,7 @@ export default Ember.Controller.extend(CattleTransitioningController, {
     },
 
     addBalancer: function() {
-      this.transitionToRoute('service.new-balancer', {
+      this.get('controllers.application').transitionToRoute('service.new-balancer', {
         queryParams: {
           environmentId: this.get('model.id'),
         },
@@ -44,11 +44,11 @@ export default Ember.Controller.extend(CattleTransitioningController, {
     },
 
     viewCode: function() {
-      this.transitionToRoute('environment.code', this.get('model.id'));
+      this.get('controllers.application').transitionToRoute('environment.code', this.get('model.id'));
     },
 
     viewGraph: function() {
-      this.transitionToRoute('environment.graph', this.get('model.id'));
+      this.get('controllers.application').transitionToRoute('environment.graph', this.get('model.id'));
     },
 
     delete: function() {

@@ -9,7 +9,7 @@ export default Ember.Component.extend(ReadLabels,{
 
   actions: {
     newContainer: function() {
-      this.sendAction('newContainer', this.get('model.id'))
+      this.sendAction('newContainer', this.get('model.id'));
     },
   },
 

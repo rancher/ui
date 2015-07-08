@@ -85,7 +85,7 @@ Router.map(function() {
     });
 
     // Applications
-    this.resource('stacks-tab', {path: '/stacks'}, function() {
+    this.resource('applications-tab', {path: '/apps'}, function() {
       this.resource('splash', {path: '/welcome'});
       this.resource('service.new', {path: '/add-service'});
       this.resource('service.new-balancer', {path: '/add-balancer'});

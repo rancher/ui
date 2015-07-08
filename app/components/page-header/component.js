@@ -28,11 +28,11 @@ export default Ember.Component.extend({
   }.property('project.id','projectChoices.@each.id'),
 
   isInfrastructure: function() {
-    return this.get('currentPath').indexOf('authenticated.infrastructure') === 0;
+    return this.get('currentPath').indexOf('authenticated.infrastructure-tab') === 0;
   }.property('currentPath'),
 
-  isStacks: function() {
-    return this.get('currentPath').indexOf('authenticated.stacks') === 0;
+  isApplications: function() {
+    return this.get('currentPath').indexOf('authenticated.applications-tab') === 0;
   }.property('currentPath'),
 
   actions: {

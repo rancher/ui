@@ -1,7 +1,9 @@
 <div class="pod-state {{model.stateBackground}}"><span>{{model.displayState}}</span></div>
 
 <div class="right">
-  {{resource-actions-menu model=model choices=model.availableActions}}
+  {{#with model controller="environment" as |ctrl|}}
+    {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
+  {{/with}}
   &nbsp;
   <a href="{{dom-id model pound=true}}" data-toggle="collapse" class="btn btn-link collapser" aria-expanded="true"></a>
 </div>

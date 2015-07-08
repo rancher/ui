@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
+import C from 'ui/utils/constants';
 
 export default Ember.Service.extend({
   cookies: Ember.inject.service(),

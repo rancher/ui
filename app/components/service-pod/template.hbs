@@ -19,18 +19,16 @@
   <div class="pod-info clearfix">
     <div class="pod-info-line">
       {{#each model.consumedServicesWithNames as |map|}}
-        {{#with map.service controller="service" as |service|}}
-          <div class="pod-info-item">
-            {{#link-to "service" service.environmentId service.id}}
-              <i class="{{service.activeIcon}}"></i>
-              {{#if (eq map.name service.displayName)}}
-                {{map.name}}
-              {{else}}
-                {{service.displayName}}{{#if map.name}} <span class="text-muted">(as {{map.name}})</span>{{/if}}
-              {{/if}}
-            {{/link-to}}
-          </div>
-        {{/with}}
+        <div class="pod-info-item">
+          {{#link-to "service" map.service.environmentId map.service.id}}
+            <i class="{{map.service.activeIcon}}"></i>
+            {{#if (eq map.name map.service.displayName)}}
+              {{map.name}}
+            {{else}}
+              {{map.service.displayName}}{{#if map.name}} <span class="text-muted">(as {{map.name}})</span>{{/if}}
+            {{/if}}
+          {{/link-to}}
+        </div>
       {{/each}}
     </div>
     {{#if model.externalIpAddresses.length}}

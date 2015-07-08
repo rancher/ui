@@ -2,7 +2,7 @@ import Ember from 'ember';
 import CattleTransitioningController from 'ui/mixins/cattle-transitioning-controller';
 
 var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
-  needs: ['environment'],
+  needs: ['environment','application'],
   environment: Ember.computed.alias('controllers.environment.model'),
 
   actions: {
@@ -15,7 +15,10 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
     },
 
     edit: function() {
-      this.transitionToRoute('service.edit', this.get('environmentId'), this.get('model.id'));
+      this.get('controllers.application').setProperties({
+        editService: true,
+        originalModel: this.get('model'),
+      });
     },
 
     scaleUp: function() {
