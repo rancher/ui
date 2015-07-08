@@ -5,6 +5,7 @@ module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'ui',
     environment: environment,
+    exportApplicationGlobal: true,
     baseURL: '/',
     locationType: 'auto',
     EmberENV: {
