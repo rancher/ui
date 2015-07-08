@@ -13,104 +13,108 @@
   </div>
 </div>
 
-<div class="{{unless isStickyAppCookie 'hide'}}">
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="app_cookie" class="form-control-static">Cookie Name</label>
+{{#liquid-if isStickyAppCookie}}
+  <div>
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="app_cookie" class="form-control-static">Cookie Name</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        {{input type="text" id="app_cookie" classNames="form-control" value=appCookie.cookie}}
+      </div>
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="app_mode" class="form-control-static">Mode</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        {{view "select"
+          class="form-control"
+          id="app_mode"
+          content=appCookieModeChoices
+          optionLabelPath="content.label"
+          optionValuePath="content.value"
+          value=appCookie.mode
+        }}
+      </div>
     </div>
-    <div class="col-sm-12 col-md-3">
-      {{input type="text" id="app_cookie" classNames="form-control" value=appCookie.cookie}}
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="app_length" class="form-control-static">Maximum Length</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        {{input type="number" id="app_length" min="1" classNames="form-control" value=appCookie.maxLength}}
+      </div>
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="app_timeout" class="form-control-static">Timeout</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        <div class="input-group">
+          {{input type="number" min=1 step=1000 id="app_timeout" classNames="form-control" value=appCookie.timeout}}
+          <span class="input-group-addon">ms</span>
+        </div>
+      </div>
     </div>
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="app_mode" class="form-control-static">Mode</label>
-    </div>
-    <div class="col-sm-12 col-md-3">
-      {{view "select"
-        class="form-control"
-        id="app_mode"
-        content=appCookieModeChoices
-        optionLabelPath="content.label"
-        optionValuePath="content.value"
-        value=appCookie.mode
-      }}
-    </div>
-  </div>
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="app_length" class="form-control-static">Maximum Length</label>
-    </div>
-    <div class="col-sm-12 col-md-3">
-      {{input type="number" id="app_length" min="1" classNames="form-control" value=appCookie.maxLength}}
-    </div>
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="app_timeout" class="form-control-static">Timeout</label>
-    </div>
-    <div class="col-sm-12 col-md-3">
-      <div class="input-group">
-        {{input type="number" min=1 step=1000 id="app_timeout" classNames="form-control" value=appCookie.timeout}}
-        <span class="input-group-addon">ms</span>
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label class="form-control-static">Options</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        <div class="checkbox">
+          <label>{{input type="checkbox" checked=appCookie.prefix}} Prefix</label>
+        </div>
+        <div class="checkbox">
+          <label>{{input type="checkbox" checked=appCookie.requestLearn}} Request Learn</label>
+        </div>
       </div>
     </div>
   </div>
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Options</label>
-    </div>
-    <div class="col-sm-12 col-md-8">
-      <div class="checkbox">
-        <label>{{input type="checkbox" checked=appCookie.prefix}} Prefix</label>
+{{else}}
+  {{#liquid-if isStickyLbCookie}}
+    <div>
+      <div class="row form-group">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label for="lb_cookie" class="form-control-static">Cookie Name</label>
+        </div>
+        <div class="col-sm-12 col-md-3">
+          {{input type="text" id="lb_cookie" classNames="form-control" value=lbCookie.cookie}}
+        </div>
+        <div class="col-sm-12 col-md-2 form-label">
+          <label for="lb_mode" class="form-control-static">Mode</label>
+        </div>
+        <div class="col-sm-12 col-md-3">
+          {{view "select"
+            class="form-control"
+            id="lb_mode"
+            content=lbCookieModeChoices
+            optionLabelPath="content.label"
+            optionValuePath="content.value"
+            value=lbCookie.mode
+          }}
+        </div>
       </div>
-      <div class="checkbox">
-        <label>{{input type="checkbox" checked=appCookie.requestLearn}} Request Learn</label>
+      <div class="row form-group">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label for="lb_domain" class="form-control-static">Domain</label>
+        </div>
+        <div class="col-sm-12 col-md-8">
+          {{input type="text" id="lb_domain" classNames="form-control" value=lbCookie.domain}}
+        </div>
       </div>
-    </div>
-  </div>
-</div>
-
-<div class="{{unless isStickyLbCookie 'hide'}}">
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="lb_cookie" class="form-control-static">Cookie Name</label>
-    </div>
-    <div class="col-sm-12 col-md-3">
-      {{input type="text" id="lb_cookie" classNames="form-control" value=lbCookie.cookie}}
-    </div>
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="lb_mode" class="form-control-static">Mode</label>
-    </div>
-    <div class="col-sm-12 col-md-3">
-      {{view "select"
-        class="form-control"
-        id="lb_mode"
-        content=lbCookieModeChoices
-        optionLabelPath="content.label"
-        optionValuePath="content.value"
-        value=lbCookie.mode
-      }}
-    </div>
-  </div>
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="lb_domain" class="form-control-static">Domain</label>
-    </div>
-    <div class="col-sm-12 col-md-8">
-      {{input type="text" id="lb_domain" classNames="form-control" value=lbCookie.domain}}
-    </div>
-  </div>
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Options</label>
-    </div>
-    <div class="col-sm-12 col-md-8">
-      <div class="checkbox">
-        <label>{{input type="checkbox" checked=lbCookie.indirect}} Indirect</label>
-      </div>
-      <div class="checkbox">
-        <label>{{input type="checkbox" checked=lbCookie.nocache}} Send no-cache header</label>
-      </div>
-      <div class="checkbox">
-        <label>{{input type="checkbox" checked=lbCookie.postonly}} Only set cookie on POST</label>
+      <div class="row form-group">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">Options</label>
+        </div>
+        <div class="col-sm-12 col-md-8">
+          <div class="checkbox">
+            <label>{{input type="checkbox" checked=lbCookie.indirect}} Indirect</label>
+          </div>
+          <div class="checkbox">
+            <label>{{input type="checkbox" checked=lbCookie.nocache}} Send no-cache header</label>
+          </div>
+          <div class="checkbox">
+            <label>{{input type="checkbox" checked=lbCookie.postonly}} Only set cookie on POST</label>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-</div>
+  {{/liquid-if}}
+{{/liquid-if}}

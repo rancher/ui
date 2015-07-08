@@ -35,11 +35,28 @@
 
     {{partial "form-divider"}}
 
-    {{#if hasServiceLinks}}
-      {{partial "container/edit-services"}}
-    {{/if}}
-    {{#if hasTargetIp}}
-      {{partial "container/edit-targetip"}}
+    {{#if isBalancer}}
+      <div class="row">
+        <div class="col-xs-6 col-md-2 form-label">
+          <label>Targets</label>
+        </div>
+        <div class="col-xs-6 col-md-8">
+          <button class="btn-circle-plus btn-circle-text" style="margin-right: 20px;" {{action "addTargetService" target="view"}}>Add Service</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-12 col-md-8 col-md-offset-2">
+          Here
+          {{partial "service/edit-targets"}}
+        </div>
+      </div>
+    {{else}}
+      {{#if hasServiceLinks}}
+        {{partial "container/edit-services"}}
+      {{/if}}
+      {{#if hasTargetIp}}
+        {{partial "container/edit-targetip"}}
+      {{/if}}
     {{/if}}
   </section>
 

@@ -1,0 +1,52 @@
+{{#liquid-if loading}}
+  <div class="text-center">
+    <p>
+      <i class="fa fa-circle-o-notch fa-spin"></i> Loading...
+    </p>
+  </div>
+{{else}}
+  <section class="horizontal-form container-fluid">
+    <h2>Edit Balancer Service</h2>
+    {{top-errors errors=errors}}
+
+    {{partial "container/edit-name"}}
+
+    {{partial "form-divider"}}
+
+    <div class="row">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label>Scale</label>
+      </div>
+      {{#if isGlobal}}
+        <div class="col-sm-10 col-md-8">
+          <span class="text-muted">Always run one instance of this container on every host</span>
+        </div>
+      {{else}}
+        <div class="col-sm-2 col-md-1">
+          {{service.scale}}
+        </div>
+        <div class="col-sm-10 col-md-7">
+          {{input-slider value=service.scale valueMin=1 valueMax=11 scaleMin=0 scaleMax=12}}
+        </div>
+      {{/if}}
+    </div>
+
+    {{partial "form-divider"}}
+
+    <div class="row">
+      <div class="col-xs-6 col-md-2 form-label">
+        <label>Targets</label>
+      </div>
+      <div class="col-xs-6 col-md-8">
+        <button class="btn-circle-plus btn-circle-text" style="margin-right: 20px;" {{action "addTargetService" target="view"}}>Add Service</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-8 col-md-offset-2">
+        {{partial "loadbalancer/edit-targets"}}
+      </div>
+    </div>
+  </section>
+
+  {{partial "save-cancel"}}
+{{/liquid-if}}

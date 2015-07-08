@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Resource from 'ember-api-store/models/resource';
 import ApiError from 'ember-api-store/models/error';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
@@ -79,10 +78,6 @@ var ResourceController = Ember.ObjectController.extend({
     return [];
   },
 
-});
-
-var CollectionController = Ember.ArrayController.extend({
-  sortProperties: ['name','id'],
 });
 
 var LegacyNewOrEditMixin = Ember.Mixin.create({
@@ -235,166 +230,6 @@ var LegacyNewOrEditMixin = Ember.Mixin.create({
   },
 });
 
-// Cattle resources that transition have these
-var TransitioningResource = Resource.extend({
-  reservedKeys: ['delayTimer','pollTimer','waitInterval','waitTimeout'],
-
-  state: null,
-  transitioning: null,
-  transitioningMessage: null,
-  transitioningProgress: null,
-  isTransitioning: Ember.computed.equal('transitioning','yes'),
-  isError: Ember.computed.equal('transitioning','error'),
-
-  replaceWith: function() {
-    //console.log('1 replaceWith', this.get('id'));
-    this._super.apply(this,arguments);
-    this.transitioningChanged();
-  },
-
-  wasAdded: function() {
-    this.transitioningChanged();
-  },
-
-  wasRemoved: function() {
-    this.transitioningChanged();
-  },
-
-  delayTimer: null,
-  clearDelay: function() {
-    clearTimeout(this.get('delayTimer'));
-    this.set('delayTimer', null);
-  },
-
-  pollTimer: null,
-  clearPoll: function() {
-    clearTimeout(this.get('pollTimer'));
-    this.set('pollTimer', null);
-  },
-
-  transitioningChanged: function() {
-    var delay = this.constructor.pollTransitioningDelay;
-    var interval = this.constructor.pollTransitioningInterval;
-
-    // This resource doesn't want polling
-    if ( !delay || !interval )
-    {
-      //console.log('return 1', this.toString());
-      return;
-    }
-
-    // This resource isn't transitioning or isn't in the store
-    if ( this.get('transitioning') !== 'yes' || !this.isInStore() )
-    {
-      //console.log('return 2', this.toString());
-      this.clearPoll();
-      this.clearDelay();
-      return;
-    }
-
-    // We're already polling or waiting, just let that one finish
-    if ( this.get('delayTimer') )
-    {
-      //console.log('return 3', this.toString());
-      return;
-    }
-
-    //console.log('Transitioning poll', this.toString());
-
-    this.set('delayTimer', setTimeout(function() {
-      //console.log('1 expired', this.toString());
-      this.transitioningPoll();
-    }.bind(this), Util.timerFuzz(delay)));
-  }.observes('transitioning'),
-
-  transitioningPoll: function() {
-    //console.log('Maybe polling', this.toString(), this.get('transitioning'), this.isInStore());
-    this.clearPoll();
-
-    if ( this.get('transitioning') !== 'yes' || !this.isInStore() )
-    {
-      return;
-    }
-
-    //console.log('Polling', this.toString());
-    this.reload().then((/*newData*/) => {
-      //console.log('Poll Finished', this.toString());
-      if ( this.get('transitioning') === 'yes' )
-      {
-        //console.log('Rescheduling', this.toString());
-        this.set('pollTimer', setTimeout(function() {
-          //console.log('2 expired', this.toString());
-          this.transitioningPoll();
-        }.bind(this), Util.timerFuzz(this.constructor.pollTransitioningInterval)));
-      }
-      else
-      {
-        // If not transitioning anymore, stop polling
-        this.clearPoll();
-        this.clearDelay();
-      }
-    }).catch(() => {
-      // If reloading fails, stop polling
-      this.clearPoll();
-      // but leave delay set so that it doesn't restart, (don't clearDelay())
-    });
-  },
-
-  // You really shouldn't have to use any of these.
-  // Needing these is a sign that the API is bad and should feel bad.
-  // Yet here they are, nonetheless.
-  waitInterval: 1000,
-  waitTimeout: 30000,
-  _waitForTestFn: function(testFn, msg) {
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      var timeout = setTimeout(() =>  {
-        clearInterval(interval);
-        clearTimeout(timeout);
-        reject(this);
-      }, this.get('waitTimeout'));
-
-      var interval = setInterval(() => {
-        if ( testFn.apply(this) )
-        {
-          clearInterval(interval);
-          clearTimeout(timeout);
-          resolve(this);
-        }
-      }, this.get('waitInterval'));
-    }, msg||'Wait for it...');
-  },
-
-  waitForState: function(state) {
-    return this._waitForTestFn(function() {
-      return this.get('state') === state;
-    }, 'Wait for state='+state);
-  },
-
-  waitForNotTransitioning: function() {
-    return this._waitForTestFn(function() {
-      return this.get('transitioning') !== 'yes';
-    }, 'Wait for not transitioning');
-  },
-
-  waitForAction: function(name) {
-    return this._waitForTestFn(function() {
-      //console.log('waitForAction('+name+'):', this.hasAction(name));
-      return this.hasAction(name);
-    }, 'Wait for action='+name);
-  },
-
-  waitForAndDoAction: function(name, data) {
-    return this.waitForAction(name).then(() => {
-      return this.doAction(name, data);
-    }, 'Wait for and do action='+name);
-  },
-});
-
-TransitioningResource.reopenClass({
-  pollTransitioningDelay: 30000,
-  pollTransitioningInterval: 30000,
-});
-
 var LegacyTransitioningResourceController = ResourceController.extend({
   actions: {
     // Common actions that almost all types have in common...
@@ -498,9 +333,6 @@ LegacyTransitioningResourceController.reopenClass({
 });
 
 export default {
-  LegacyResourceController: ResourceController,
-  LegacyCollectionController: CollectionController,
   LegacyNewOrEditMixin: LegacyNewOrEditMixin,
-  TransitioningResource: TransitioningResource,
   LegacyTransitioningResourceController: LegacyTransitioningResourceController,
 };

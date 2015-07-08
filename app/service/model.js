@@ -66,7 +66,8 @@ var Service = Resource.extend(ReadLabels, {
 
       return Ember.Object.create({
         name: map.get('name'),
-        service: service
+        service: service,
+        ports: map.get('ports'),
       });
     }).filter((obj) => {
       return obj.get('service.id');

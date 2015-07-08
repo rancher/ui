@@ -47,6 +47,7 @@ export default Ember.ObjectController.extend(NewHost, {
   regionChoices: [
     {label: 'Dallas (DFW)', value: 'DFW'},
     {label: 'Hong Kong (HKG)', value: 'HKG'},
+    {label: 'London (LON)', value: 'LON'},
     {label: 'Northern Virginia (IAD)', value: 'IAD'},
     {label: 'Sydney (SYD)', value: 'SYD'},
   ],

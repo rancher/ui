@@ -15,10 +15,21 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
     },
 
     edit: function() {
-      this.get('controllers.application').setProperties({
-        editService: true,
-        originalModel: this.get('model'),
-      });
+      var type = this.get('model.type').toLowerCase();
+      if ( type === 'loadbalancerservice' )
+      {
+        this.get('controllers.application').setProperties({
+          editLoadBalancerService: true,
+          originalModel: this.get('model'),
+        });
+      }
+      else
+      {
+        this.get('controllers.application').setProperties({
+          editService: true,
+          originalModel: this.get('model'),
+        });
+      }
     },
 
     scaleUp: function() {

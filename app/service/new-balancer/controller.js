@@ -6,14 +6,14 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
   queryParams: ['environmentId','serviceId','tab'],
   environmentId: null,
   serviceId: null,
-  tab: 'listeners',
+  tab: 'stickiness',
   error: null,
   editing: false,
   primaryResource: Ember.computed.alias('model.balancer'),
 
   actions: {
     addTargetService: function() {
-      this.get('targetsArray').pushObject({isService: true, value: null});
+      this.get('targetsArray').pushObject({isService: true, value: null, protocol: 'http'});
     },
     removeTarget: function(obj) {
       this.get('targetsArray').removeObject(obj);
@@ -43,7 +43,12 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
 
   targetsArray: null,
   initTargets: function() {
-    var existing = this.get('balancer.consumedServices');
+    var existing = null;
+    if ( this.get('balancer.id') )
+    {
+      existing = this.get('balancer.consumedServices');
+    }
+
     var out = [];
     if ( existing )
     {
@@ -59,11 +64,30 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
     this.set('targetsArray', out);
   },
 
-  targetServiceIds: function() {
-    return this.get('targetsArray').filterProperty('isService',true).filterProperty('value').map((choice) => {
-      return Ember.get(choice,'value');
-    }).uniq();
-  }.property('targetsArray.@each.{isService,value}'),
+  targetResources: function() {
+    var out = [];
+    this.get('targetsArray').filterProperty('isService',true).filterProperty('value').filterProperty('port').map((choice) => {
+      var serviceId = Ember.get(choice,'value');
+      var port = Ember.get(choice,'port');
+      var hostname = Ember.get(choice,'hostname');
+      var path = Ember.get(choice,'path');
+
+      var entry = out.filterProperty('serviceId', serviceId)[0];
+      if ( !entry )
+      {
+        entry = Ember.Object.create({
+          serviceId: serviceId,
+          ports: [],
+        });
+        out.pushObject(entry);
+      }
+
+      var str = port + ":" + (hostname ? hostname : '') + (path ? path : '');
+      entry.get('ports').pushObject(str);
+    });
+
+    return out;
+  }.property('targetsArray.@each.{isService,value,hostname,path,port}'),
 
   targetChoices: function() {
     var list = [];
@@ -91,9 +115,17 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
     this._super();
     var errors = this.get('errors')||[];
 
-    if ( !this.get('targetServiceIds.length') )
+    if ( !this.get('targetResources.length') )
     {
       errors.push('Choose one or more targets to send traffic to');
+    }
+
+    var bad = this.get('targetsArray').filter(function(obj) {
+      return !Ember.get(obj,'value') || !Ember.get(obj, 'port');
+    });
+    if ( bad.get('length') )
+    {
+      errors.push('Service and port are requried on each target');
     }
 
     if (!this.get('listenersArray.length') )
@@ -126,7 +158,7 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
 
       if ( src && proto )
       {
-        list.pushObject(src + ':' + (tgt ? tgt : src) + (proto === 'http' ? '': '/' + proto ) );
+        list.pushObject(src + (tgt ? ':' +tgt : '') + (proto === 'http' ? '': '/' + proto ) );
       }
     });
 
@@ -146,7 +178,7 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
     // Set balancer targets
     return balancer.waitForNotTransitioning().then(() => {
       return balancer.doAction('setservicelinks', {
-        serviceIds: this.get('targetServiceIds'),
+        serviceLinks: this.get('targetResources'),
       });
     });
   },
