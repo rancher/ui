@@ -1,0 +1,58 @@
+<section class="header">
+  <h3>
+    <span class="right-divider">API &amp; Keys for &quot;{{project.displayName}}&quot; Environment</span>
+    <button class="btn btn-sm btn-primary right-divider-btn" {{action "newApikey"}}>Add API Key</button>
+  </h3>
+</section>
+
+<section class="well">
+  <label>Endpoint</label>
+  <div>
+    <a href="{{endpointWithAuth}}" target="_blank">{{displayEndpoint}}</a>
+  </div>
+</section>
+
+<section class="well">
+  <table class="grid fixed" style="margin-bottom: 0">
+    <thead>
+      <tr>
+        {{sortable-th sortable=this action="changeSort" name="state" width="120"}}
+        {{sortable-th sortable=this action="changeSort" name="name"}}
+        {{sortable-th sortable=this action="changeSort" name="description"}}
+        {{sortable-th sortable=this action="changeSort" name="publicValue" label="Username"}}
+        {{sortable-th sortable=this action="changeSort" name="created"}}
+        <th width="50">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each arranged as |key|}}
+        <tr>
+          <td>
+            <span class="badge state {{key.stateBackground}}">
+              {{key.displayState}}
+            </span>
+          </td>
+          <td>
+            {{#if key.name}}{{key.displayName}}{{else}}<span class="text-muted">None</span>{{/if}}
+          </td>
+          <td>
+            {{#if key.description}}{{key.description}}{{else}}<span class="text-muted">None</span>{{/if}}
+          </td>
+          <td>
+            {{#if key.publicValue}}{{key.publicValue}}{{else}}<span class="text-muted">No public value</span>{{/if}}
+          </td>
+          <td>
+            <div class="text-muted">{{date-calendar key.created}}</div>
+          </td>
+          <td align="right">
+            {{#with key controller="apikey" as |ctrl|}}
+              {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
+            {{/with}}
+          </td>
+        </tr>
+      {{else}}
+        <tr><td colspan="4" class="text-center text-muted">You don't have any API keys yet.</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>

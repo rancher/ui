@@ -1,13 +1,13 @@
-import Ember from "ember";
+import Ember from 'ember';
+import SafeStyle from 'ui/mixins/safe-style';
 
 export function initialize(/* container, application */) {
-  // Allot tooltip and style to be bound on all views
-  Ember.View.reopen({
-    attributeBindings: ['tooltip','style'],
-  });
+  // Allow style to be bound on inputs
+  Ember.TextField.reopen(SafeStyle);
+  Ember.TextArea.reopen(SafeStyle);
 }
 
 export default {
-  name: 'extend-ember-view',
+  name: 'extend-ember-textarea',
   initialize: initialize
 };

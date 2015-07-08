@@ -1,12 +1,14 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  enter: function() {
-    $('BODY').addClass('farm');
-  },
+  actions: {
+    activate: function() {
+      $('BODY').addClass('farm');
+    },
 
-  exit: function() {
-    $('BODY').removeClass('farm');
+    deactivate: function() {
+      $('BODY').removeClass('farm');
+    },
   },
 
   model: function() {
@@ -16,7 +18,7 @@ export default Ember.Route.extend({
   afterModel: function(model) {
     if ( !model )
     {
-      this.transitionTo('index');
+      this.transitionTo('authenticated');
     }
   }
 });

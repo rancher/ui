@@ -1,6 +1,7 @@
-import Cattle from 'ui/utils/cattle';
+import Ember from 'ember';
+import Resource from 'ember-api-store/models/resource';
 
-var Container = Cattle.TransitioningResource.extend({
+var Container = Resource.extend({
   // Common to all instances
   requestedHostId: null,
   primaryIpAddress: null,
@@ -45,6 +46,21 @@ var Container = Cattle.TransitioningResource.extend({
       return resource;
     }
   }.property('state', 'healthState'),
+
+  isOn: function() {
+    return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;
+  }.property('state'),
+
+  displayIp: function() {
+    return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress') || new Ember.Handlebars.SafeString('<span class="text-muted">None</span>');
+  }.property('primaryIpAddress','primaryAssociatedIpAddress'),
+
+  canDelete: function() {
+    return ['removed','removing','purging','purged'].indexOf(this.get('state')) === -1;
+  }.property('state'),
+
+  isManaged: Ember.computed.notEmpty('systemContainer'),
+  primaryHost: Ember.computed.alias('hosts.firstObject'),
 });
 
 Container.reopenClass({
@@ -58,6 +74,15 @@ Container.reopenClass({
     }
 
     return data;
+  },
+
+  stateMap: {
+   'running':      {icon: 'ss-record',        color: 'text-success'},
+   'stopped':      {icon: 'fa fa-circle',     color: 'text-danger'},
+   'removed':      {icon: 'ss-trash',         color: 'text-danger'},
+   'purged':       {icon: 'ss-tornado',       color: 'text-danger'},
+   'unhealthy':    {icon: 'ss-notifications', color: 'text-danger'},
+   'initializing': {icon: 'ss-notifications', color: 'text-warning'},
   },
 });
 

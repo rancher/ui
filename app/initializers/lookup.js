@@ -1,14 +1,14 @@
-export function initialize(container/*, application*/) {
+export function initialize(/*container, application*/) {
   // Shortcuts for debugging.  These should never be used in code.
   window.l = function(name) {
-    return container.lookup(name);
+    return Ui.__container__.lookup(name);
   };
 
   window.lc = function(name) {
-    return container.lookup('controller:'+name);
+    return Ui.__container__.lookup('controller:'+name);
   };
 
-  window.s = container.lookup('store:main');
+  window.s = Ui.__container__.lookup('store:main');
 }
 
 export default {

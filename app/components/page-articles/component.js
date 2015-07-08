@@ -2,6 +2,7 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
+  prefs: Ember.inject.service(),
   classNames: ['articles'],
 
   actions: {

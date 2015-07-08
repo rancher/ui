@@ -1,8 +1,7 @@
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
-var UserPreference = Cattle.TransitioningResource.extend({
-});
+var UserPreference = Resource.extend();
 
 UserPreference.reopenClass({
   headers: {

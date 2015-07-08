@@ -113,7 +113,7 @@ export default Ember.Route.extend({
           }
           else
           {
-            this.replaceWith('index');
+            this.replaceWith('authenticated');
           }
         }).catch((err) => {
           this.controllerFor('application').setProperties({
@@ -150,7 +150,38 @@ export default Ember.Route.extend({
     if ( agent.indexOf('msie ') >= 0 || agent.indexOf('trident/') >= 0 || agent.indexOf('edge/') >= 0 )
     {
       this.replaceWith('ie');
+      return;
     }
+
+    // Find out if auth is enabled
+    return this.get('store').rawRequest({
+      url: 'token',
+      headers: {
+        [C.HEADER.PROJECT]: undefined
+      }
+    })
+    .then((obj) => {
+      // If we get a good response back, the API supports authentication
+      var body = JSON.parse(obj.xhr.responseText);
+      var token = body.data[0];
+
+      this.set('app.authenticationEnabled', token.security);
+      this.set('app.githubClientId', token.clientId);
+      this.set('app.githubHostname', token.hostname );
+
+      if ( !token.security )
+      {
+        this.get('github').clearSessionKeys();
+      }
+
+      return Ember.RSVP.resolve(undefined,'API supports authentication');
+    })
+    .catch((obj) => {
+      // Otherwise this API is too old to do auth.
+      this.set('app.authenticationEnabled', false);
+      this.set('app.initError', obj);
+      return Ember.RSVP.resolve(undefined,'Error determining API authentication');
+    });
   },
 
   setupController: function(controller/*, model*/) {

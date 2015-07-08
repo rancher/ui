@@ -1,6 +1,6 @@
 import Cattle from 'ui/utils/cattle';
 
-var RegistryController = Cattle.TransitioningResourceController.extend({
+var RegistryController = Cattle.LegacyTransitioningResourceController.extend({
   actions: {
     deactivate: function() {
       return this.doAction('deactivate');

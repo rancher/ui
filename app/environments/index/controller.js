@@ -1,6 +1,7 @@
-import Cattle from 'ui/utils/cattle';
+import Ember from 'ember';
 
-export default Cattle.CollectionController.extend({
-  itemController: 'environment',
-  sortProperties: ['name','id'],
+export default Ember.Controller.extend({
+  arranged: function() {
+    return this.get('model').sortBy('name','id');
+  }.property('model.@each.{name,id}'),
 });

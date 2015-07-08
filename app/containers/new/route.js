@@ -77,8 +77,13 @@ export default Ember.Route.extend({
   },
 
   setupController: function(controller, model) {
-    controller.set('originalModel', null);
-    controller.set('model', model);
+    controller.setProperties({
+      originalModel: null,
+      model: model,
+      instance: model.instance,
+      healthCheck: model.healthCheck,
+      allHosts: model.allHosts,
+    });
     controller.initFields();
   },
 

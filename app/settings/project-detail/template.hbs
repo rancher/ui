@@ -1,0 +1,50 @@
+<section class="header">
+  <h3>
+    {{#with model controller="project" as |ctrl|}}
+      {{resource-actions-menu model=ctrl choices=ctrl.availableActions classNames="pull-right" parentController=this}}
+    {{/with}}
+    <div class="state {{model.stateColor}}">
+      <i class="{{model.stateIcon}}"></i> {{model.displayState}}
+    </div>
+    <span class="right-divider">{{#link-to "settings.projects"}}Environments:{{/link-to}} {{model.displayName}}</span>
+  </h3>
+  {{partial "description"}}
+</section>
+
+<section class="well">
+  <label>Members</label>
+  <table class="grid fixed" style="margin-bottom: 0;">
+    <thead>
+      <tr>
+        {{sortable-th sortable=this action="changeSort" name="name"}}
+        {{sortable-th sortable=this action="changeSort" name="type"}}
+        {{sortable-th sortable=this action="changeSort" name="role"}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each arranged as |member|}}
+        <tr>
+          <td>
+            {{#if member.isRancher}}
+              {{#if member.isMyRancher}}
+                My Rancher Account
+              {{else}}
+                Rancher Account: {{member.name}} ({{member.externalId}})
+              {{/if}}
+            {{else}}
+              {{github-block type=member.githubType login=member.externalId fallback=member.name}}
+            {{/if}}
+          </td>
+          <td>{{member.displayType}}</td>
+          <td>
+            {{uc-first member.role}}
+          </td>
+        </tr>
+      {{else}}
+        <tr>
+          <td colspan="3" class="text-center text-muted">This project has no members.</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>

@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
-export default Ember.ObjectController.extend({
+export default Ember.Controller.extend({
   github: Ember.inject.service(),
+  endpoint: Ember.inject.service(),
 
-  needs: ['application'],
   confirmDisable: false,
   errors: null,
   testing: false,
@@ -18,18 +18,18 @@ export default Ember.ObjectController.extend({
   addOrgInput: '',
 
   createDisabled: function() {
-    if ( this.get('isEnterprise') && !this.get('hostname') )
+    if ( this.get('isEnterprise') && !this.get('model.hostname') )
     {
       return true;
     }
 
-    var id = (this.get('clientId')||'').trim();
-    var secret = (this.get('clientSecret')||'').trim();
+    var id = (this.get('model.clientId')||'').trim();
+    var secret = (this.get('model.clientSecret')||'').trim();
     return id.length < 20 ||secret.length < 40 || this.get('testing');
-  }.property('clientId','clientSecret','testing','hostname','isEnterprise'),
+  }.property('model.{clientId,clientSecret,hostname}','testing','isEnterprise'),
 
   saveDisabled: Ember.computed.or('saving','saved'),
-  isRestricted: Ember.computed.equal('accessMode','restricted'),
+  isRestricted: Ember.computed.equal('model.accessMode','restricted'),
 
   wasRestricted: Ember.computed.equal('originalModel.accessMode','restricted'),
   wasRestrictedMsg: function() {
@@ -60,11 +60,11 @@ export default Ember.ObjectController.extend({
 
     if ( restricted )
     {
-      if ( (this.get('allowedUsers.length') + this.get('allowedOrganizations.length')) > 1 )
+      if ( (this.get('model.allowedUsers.length') + this.get('model.allowedOrganizations.length')) > 1 )
       {
         show = true;
       }
-      else if ( this.get('allowedUsers.firstObject') !== this.get('session').get(C.SESSION.USER_ID) )
+      else if ( this.get('model.allowedUsers.firstObject') !== this.get('session').get(C.SESSION.USER_ID) )
       {
         show = true;
       }
@@ -77,7 +77,7 @@ export default Ember.ObjectController.extend({
 
     this.set('wasShowing', show);
     return show;
-  }.property('allowedUsers.[]','allowedOrganizations.[]','isRestricted','wasShowing'),
+  }.property('model.allowedUsers.[]','model.allowedOrganizations.[]','isRestricted','wasShowing'),
 
   destinationUrl: function() {
     return window.location.origin+'/';
@@ -96,7 +96,7 @@ export default Ember.ObjectController.extend({
   }.observes('isEnterprise'),
 
   hostnameDidChange: function() {
-    var cur = this.get('hostname')||'';
+    var cur = this.get('model.hostname')||'';
     var neu = cur.replace(/^https?:\/\//ig,'').replace(/\/.*$/,'');
     if ( cur !== neu )
     {
@@ -174,18 +174,20 @@ export default Ember.ObjectController.extend({
         'allowedUsers': [auth.user],
       });
 
+      var url = window.location.href;
+
       model.save().then(() => {
         return this.get('store').find('setting', C.SETTING.API_HOST).then((setting) => {
           if ( setting.get('value') )
           {
-            this.send('waitAndRefresh');
+            this.send('waitAndRefresh', url);
           }
           else
           {
             // Default the api.host so the user won't have to set it in most cases
-            setting.set('value', this.get('controllers.application.endpointHost'));
+            setting.set('value', this.get('endpoint.host'));
             return setting.save().then(() => {
-              this.send('waitAndRefresh');
+              this.send('waitAndRefresh', url);
             });
           }
         });
@@ -195,10 +197,10 @@ export default Ember.ObjectController.extend({
       });
     },
 
-    waitAndRefresh: function() {
+    waitAndRefresh: function(url) {
       $('#loading-underlay, #loading-overlay').removeClass('hide').show();
       setTimeout(function() {
-        window.location.href = window.location.href;
+        window.location.href = url || window.location.href;
       }, 1000);
     },
 
@@ -208,11 +210,11 @@ export default Ember.ObjectController.extend({
 
       if ( data.type === 'user' )
       {
-        this.get('allowedUsers').pushObject(data.id);
+        this.get('model.allowedUsers').pushObject(data.id);
       }
       else
       {
-        this.get('allowedOrganizations').pushObject(data.id);
+        this.get('model.allowedOrganizations').pushObject(data.id);
       }
     },
 
@@ -223,18 +225,18 @@ export default Ember.ObjectController.extend({
 
     removeUser: function(login) {
       this.set('saved', false);
-      this.get('allowedUsers').removeObject(login);
+      this.get('model.allowedUsers').removeObject(login);
     },
 
     removeOrg: function(login) {
       this.set('saved', false);
-      this.get('allowedOrganizations').removeObject(login);
+      this.get('model.allowedOrganizations').removeObject(login);
     },
 
     saveAuthorization: function() {
       this.send('clearError');
 
-      if ( this.get('isRestricted') && !this.get('allowedUsers.length') && !this.get('allowedOrganizations.length'))
+      if ( this.get('isRestricted') && !this.get('model.allowedUsers.length') && !this.get('model.allowedOrganizations.length'))
       {
         this.send('showError','Add at least one authorized user or organization');
         return;
@@ -246,8 +248,8 @@ export default Ember.ObjectController.extend({
       var model = this.get('model');
       model.save().then(() => {
         this.get('originalModel').replaceWith(model);
-        this.set('originalModel.allowedOrganizations', this.get('allowedOrganizations').slice());
-        this.set('originalModel.allowedUsers', this.get('allowedUsers').slice());
+        this.set('originalModel.allowedOrganizations', this.get('model.allowedOrganizations').slice());
+        this.set('originalModel.allowedUsers', this.get('model.allowedUsers').slice());
         this.set('saved', true);
       }).catch((err) => {
         this.send('gotError', err);

@@ -5,7 +5,7 @@ export default Ember.Route.extend({
     this._super.apply(this,arguments);
     if ( !this.get('app.authenticationEnabled') )
     {
-      this.transitionTo('index');
+      this.transitionTo('authenticated');
     }
   },
 });

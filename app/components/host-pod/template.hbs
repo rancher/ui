@@ -1,15 +1,17 @@
 <div class="pod-header">
-  {{resource-actions-menu model=model choices=model.availableActions}}
+  {{#with model controller="host" as |ctrl|}}
+    {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
+  {{/with}}
 
-  <div {{bind-attr class=":pod-state stateBackground"}}><span>{{model.displayState}}</span></div>
-  <div class="pod-icon"><i {{bind-attr class="model.stateIcon :fa-lg model.stateColor"}}></i></div>
+  <div class="pod-state {{stateBackground}}"><span>{{model.displayState}}</span></div>
+  <div class="pod-icon"><i class="{{model.stateIcon}} fa-lg {{model.stateColor}}"></i></div>
   <div class="pod-name">
     {{#if isMachine}}
       {{model.displayName}}
     {{else}}
       {{#link-to "host" model.id}}{{model.displayName}}{{/link-to}}
       {{#if model.showTransitioningMessage}}
-        <div {{bind-attr class=":pod-message model.isError:text-danger:text-muted"}}>
+        <div class="pod-message {{if model.isError 'text-danger' 'text-muted'}}">
           {{model.transitioningMessage}}
         </div>
       {{/if}}
@@ -59,7 +61,7 @@
     </div>
     {{#if userLabelArray.length}}
       <div class="pod-info-line" style="white-space: normal; padding-top: 5px;">
-        {{#each label in userLabelArray}}
+        {{#each userLabelArray as |label|}}
           <span class="label label-default clip" style="display: inline-block; max-width: 100%;">{{label.key}}{{#if label.value}}={{label.value}}{{/if}}</span>
         {{/each}}
       </div>
@@ -68,11 +70,11 @@
 
   <div class="clearfix no-resource-action-hover">
     {{#if dot}}
-      {{#each item in model.arrangedInstances itemController="container"}}
+      {{#each model.arrangedInstances as |item|}}
         {{container-dot model=item}}
       {{/each}}
     {{else}}
-      {{#each item in model.arrangedInstances itemController="container"}}
+      {{#each model.arrangedInstances as |item|}}
         {{container-subpod model=item}}
       {{/each}}
       {{#if showAdd}}

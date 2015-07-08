@@ -2,6 +2,8 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
+  endpoint: Ember.inject.service(),
+
   model: function() {
     return this.get('store').find('setting', C.SETTING.API_HOST);
   },
@@ -9,7 +11,7 @@ export default Ember.Route.extend({
   setupController: function(controller, model) {
     var thisPage = window.location.host;
     controller.set('thisPage', thisPage);
-    var endpoint = this.controllerFor('application').get('endpointHost');
+    var endpoint = this.get('endpoint.host');
     var isDifferent = endpoint !== thisPage;
     if ( endpoint !== thisPage )
     {

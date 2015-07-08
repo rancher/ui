@@ -1,5 +1,6 @@
+import Resource from 'ember-api-store/models/resource';
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
+import ReadLabels from 'ui/mixins/read-labels';
 import C from 'ui/utils/constants';
 
 var _allMaps;
@@ -8,13 +9,14 @@ var _allLbServices;
 var _allExternalServices;
 var _allDnsServices;
 
-var Service = Cattle.TransitioningResource.extend({
+var Service = Resource.extend(ReadLabels, {
   type: 'service',
 
   _allMaps: null,
   consumedServicesUpdated: 0,
   serviceLinks: null, // Used for clone
   reservedKeys: ['_allMaps','consumedServicesUpdated','serviceLinks'],
+  labelResource: Ember.computed.alias('launchConfig'),
 
   init: function() {
     this._super();
@@ -126,9 +128,73 @@ var Service = Cattle.TransitioningResource.extend({
       return 'degraded';
     }
   }.property('state', 'healthState'),
+
+  canScale: function() {
+    if ( ['service','loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0 )
+    {
+      return !this.getLabel(C.LABEL.SCHED_GLOBAL);
+    }
+    else
+    {
+      return false;
+    }
+  }.property('type'),
+
+  hasContainers: function() {
+    return ['service','loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0;
+  }.property('type'),
+
+  hasImage: function() {
+    return this.get('type') === 'service';
+  }.property('type'),
+  hasLabels: Ember.computed.alias('hasImage'),
+
+  displayType: function() {
+    var out;
+    switch ( this.get('type').toLowerCase() )
+    {
+      case 'loadbalancerservice': out = 'Load Balancer'; break;
+      case 'dnsservice':          out = 'DNS'; break;
+      case 'externalservice':     out = 'External'; break;
+      default:                    out = 'Container'; break;
+    }
+
+    return out;
+  }.property('type'),
+
+  activeIcon: function() {
+    return activeIcon(this);
+  }.property('type'),
+
 });
 
+export function activeIcon(service)
+{
+  var out = 'ss-layergroup';
+  switch ( service.get('type').toLowerCase() )
+  {
+    case 'loadbalancerservice': out = 'ss-fork';    break;
+    case 'dnsservice':          out = 'ss-compass'; break;
+    case 'externalservice':     out = 'ss-cloud';   break;
+  }
+
+  return out;
+}
+
 Service.reopenClass({
+  stateMap: {
+    'requested':        {icon: 'ss-tag',            color: 'text-danger'},
+    'registering':      {icon: 'ss-tag',            color: 'text-danger'},
+    'activating':       {icon: 'ss-tag',            color: 'text-danger'},
+    'active':           {icon: activeIcon,          color: 'text-success'},
+    'updating-active':  {icon: 'ss-tag',            color: 'text-success'},
+    'updating-inactive':{icon: 'ss-tag',            color: 'text-danger'},
+    'deactivating':     {icon: 'ss-down',           color: 'text-danger'},
+    'inactive':         {icon: 'fa fa-circle',      color: 'text-danger'},
+    'removing':         {icon: 'ss-trash',          color: 'text-danger'},
+    'removed':          {icon: 'ss-trash',          color: 'text-danger'},
+    'degraded':         {icon: 'ss-notifications',  color: 'text-warning'},
+  }
 });
 
 export default Service;

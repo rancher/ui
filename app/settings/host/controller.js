@@ -9,7 +9,7 @@ function isPublic(name) {
   return true;
 }
 
-export default Ember.ObjectController.extend({
+export default Ember.Controller.extend({
   queryParams: ['backToAdd'],
   backToAdd: false,
   thisPage: '', // Set by route
@@ -43,14 +43,14 @@ export default Ember.ObjectController.extend({
 
       if ( !value )
       {
-        this.set('errors', ['Please provide a DNS name or IP address']);
+        this.set('errors', ['Please provide a DNS name or IP address.']);
         return;
       }
 
       // If your really want to set it to nothing...
       if ( value === '__NONE__' )
       {
-        value = '';
+        value = ' ';
       }
 
       model.set('value', value);

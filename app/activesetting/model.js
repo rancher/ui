@@ -1,8 +1,7 @@
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
-var ActiveSetting = Cattle.TransitioningResource.extend({
-});
+var ActiveSetting = Resource.extend();
 
 ActiveSetting.reopenClass({
   headers: {

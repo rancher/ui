@@ -30,7 +30,7 @@
       <div class="input-group-btn">
         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu">
-          {{#each key in hostLabelKeyChoices}}
+          {{#each hostLabelKeyChoices as |key|}}
             <li><a {{action "setKey" key}}>{{key}}</a></li>
           {{/each}}
         </ul>
@@ -43,7 +43,7 @@
       <div class="input-group-btn">
         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu">
-          {{#each key in containerLabelKeyChoices}}
+          {{#each containerLabelKeyChoices as |key|}}
             <li><a {{action "setKey" key}}>{{key}}</a></li>
           {{/each}}
         </ul>
@@ -58,13 +58,13 @@
 </td>
 <td>
   {{#if (eq kind "host_label")}}
-    <div {{bind-attr class="hostLabelValueChoices:input-group"}}>
+    <div class="{{if hostLabelValueChoices 'input-group'}}">
       {{input type="text" class="form-control input-sm" value=userValue}}
       {{#if hostLabelValueChoices.length}}
         <div class="input-group-btn">
           <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
           <ul class="dropdown-menu dropdown-menu-right" role="menu">
-            {{#each value in hostLabelValueChoices}}
+            {{#each hostLabelValueChoices as |value|}}
               <li><a {{action "setValue" value}}>{{value}}</a></li>
             {{/each}}
           </ul>
@@ -73,13 +73,13 @@
     </div>
   {{/if}}
   {{#if (eq kind "container_label")}}
-    <div {{bind-attr class="containerLabelValueChoices:input-group"}}>
+    <div class="{{if containerLabelValueChoices 'input-group'}}">
       {{input type="text" class="form-control input-sm" value=userValue}}
       {{#if containerLabelValueChoices.length}}
         <div class="input-group-btn">
           <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
           <ul class="dropdown-menu dropdown-menu-right" role="menu">
-            {{#each value in containerLabelValueChoices}}
+            {{#each containerLabelValueChoices as |value|}}
               <li><a {{action "setValue" value}}>{{value}}</a></li>
             {{/each}}
           </ul>
@@ -88,13 +88,13 @@
     </div>
   {{/if}}
   {{#if (eq kind "service_name")}}
-    <div {{bind-attr class="serviceValueChoices:input-group"}}>
+    <div class="{{if serviceValueChoices 'input-group'}}">
       {{input type="text" class="form-control input-sm" value=userValue}}
        {{#if serviceValueChoices.length}}
         <div class="input-group-btn">
           <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
           <ul class="dropdown-menu dropdown-menu-right" role="menu">
-            {{#each value in serviceValueChoices}}
+            {{#each serviceValueChoices as |value|}}
               <li><a {{action "setValue" value}}>{{value}}</a></li>
             {{/each}}
           </ul>
@@ -103,13 +103,13 @@
     </div>
   {{/if}}
   {{#if (eq kind "container_name")}}
-    <div {{bind-attr class="containerValueChoices:input-group"}}>
+    <div class="{{if containerValueChoices 'input-group'}}">
       {{input type="text" class="form-control input-sm" value=userValue}}
        {{#if containerValueChoices.length}}
         <div class="input-group-btn">
           <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
           <ul class="dropdown-menu dropdown-menu-right" role="menu">
-            {{#each value in containerValueChoices}}
+            {{#each containerValueChoices as |value|}}
               <li><a {{action "setValue" value}}>{{value}}</a></li>
             {{/each}}
           </ul>

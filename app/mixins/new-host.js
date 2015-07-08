@@ -3,7 +3,7 @@ import Cattle from 'ui/utils/cattle';
 import Util from 'ui/utils/util';
 import EditLabels from 'ui/mixins/edit-labels';
 
-export default Ember.Mixin.create(Cattle.NewOrEditMixin, EditLabels, {
+export default Ember.Mixin.create(Cattle.LegacyNewOrEditMixin, EditLabels, {
   needs: ['hosts/new'],
   queryParams: ['machineId'],
   machineId: null,

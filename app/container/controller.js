@@ -1,8 +1,9 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
+import CattleTransitioningController from 'ui/mixins/cattle-transitioning-controller';
 import C from 'ui/utils/constants';
 
-var ContainerController = Cattle.TransitioningResourceController.extend({
+var ContainerController = Ember.Controller.extend(CattleTransitioningController, {
+  needs: ['application'],
   state: Ember.computed.alias('model.combinedState'),
 
   mountError: null,
@@ -22,43 +23,24 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
       return this.doAction('stop');
     },
 
-    promptDelete: function() {
-      // @TODO Fix this hackery for nested components...
-      // http://emberjs.jsbin.com/mecesakase
-      if ( Ember.Component.detectInstance(this.get('target')) )
-      {
-        this.set('target', window.l('router:main'));
-      }
-
-      this._super();
-    },
-
-    redirectTo: function(name) {
-      // @TODO Fix this hackery for nested components...
-      // http://emberjs.jsbin.com/mecesakase
-      if ( Ember.Component.detectInstance(this.get('target')) )
-      {
-        this.set('target', window.l('router:main'));
-      }
-
-      this.transitionToRoute(name, this.get('id'));
-    },
-
     shell: function() {
-      this.send('redirectTo','container.shell');
+      this.get('controllers.application').setProperties({
+        showShell: true,
+        originalModel: this.get('model'),
+      });
     },
 
     logs: function() {
-      this.send('redirectTo','container.logs');
+      this.get('controllers.application').setProperties({
+        showContainerLogs: true,
+        originalModel: this.get('model'),
+      });
     },
 
     edit: function() {
-      this.send('redirectTo','container.edit');
-    },
-
-    detail: function() {
-      Ember.run.next(this, function() {
-        this.send('redirectTo','container');
+      this.get('controllers.application').setProperties({
+        editContainer: true,
+        originalModel: this.get('model'),
       });
     },
 
@@ -70,7 +52,7 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
         this.set('target', window.l('router:main'));
       }
 
-      this.transitionToRoute('containers.new', {queryParams: {containerId: this.get('id')}});
+      this.get('controllers.application').transitionToRoute('containers.new', {queryParams: {containerId: this.get('model.id')}});
     },
 
     cloneToService: function() {
@@ -81,25 +63,25 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
         this.set('target', window.l('router:main'));
       }
 
-      this.transitionToRoute('service.new', {queryParams: {containerId: this.get('id')}});
+      this.get('controllers.application').transitionToRoute('service.new', {queryParams: {containerId: this.get('model.id')}});
     },
   },
 
   availableActions: function() {
-    var a = this.get('actions');
+    var a = this.get('model.actions');
     if ( !a )
     {
       return [];
     }
 
-    var isSystem = this.get('systemContainer') !== null;
-    var isService = Object.keys(this.get('labels')||{}).indexOf(C.LABEL.SERVICE_NAME) >= 0;
+    var isSystem = this.get('model.systemContainer') !== null;
+    var isService = Object.keys(this.get('model.labels')||{}).indexOf(C.LABEL.SERVICE_NAME) >= 0;
 
     var choices = [
       { label: 'Restart',       icon: 'ss-refresh',   action: 'restart',      enabled: !!a.restart },
       { label: 'Start',         icon: 'ss-play',      action: 'start',        enabled: !!a.start },
       { label: 'Stop',          icon: 'ss-pause',     action: 'stop',         enabled: !!a.stop },
-      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
+      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: this.get('model.canDelete'), altAction: 'delete' },
       { label: 'Restore',       icon: 'ss-medicalcross',     action: 'restore',      enabled: !!a.restore },
       { label: 'Purge',         icon: 'ss-tornado',          action: 'purge',        enabled: !!a.purge },
       { divider: true },
@@ -113,34 +95,10 @@ var ContainerController = Cattle.TransitioningResourceController.extend({
     ];
 
     return choices;
-  }.property('actions.{restart,start,stop,restore,purge,execute,logs,update}','canDelete','systemContainer','labels'),
-
-  isOn: function() {
-    return ['running','updating-running','migrating','restarting','unhealthy'].indexOf(this.get('state')) >= 0;
-  }.property('state'),
-
-  displayIp: function() {
-    return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress') || new Ember.Handlebars.SafeString('<span class="text-muted">None</span>');
-  }.property('primaryIpAddress','primaryAssociatedIpAddress'),
-
-  canDelete: function() {
-    return ['removed','removing','purging','purged'].indexOf(this.get('state')) === -1;
-  }.property('state'),
-
-  isManaged: Ember.computed.notEmpty('systemContainer'),
-
-  primaryHost: Ember.computed.alias('hosts.firstObject'),
+  }.property('model.actions.{restart,start,stop,restore,purge,execute,logs,update}','model.{canDelete,systemContainer,labels}'),
 });
 
 ContainerController.reopenClass({
-  stateMap: {
-   'running':      {icon: 'ss-record',        color: 'text-success'},
-   'stopped':      {icon: 'fa fa-circle',     color: 'text-danger'},
-   'removed':      {icon: 'ss-trash',         color: 'text-danger'},
-   'purged':       {icon: 'ss-tornado',       color: 'text-danger'},
-   'unhealthy':    {icon: 'ss-notifications', color: 'text-danger'},
-   'initializing': {icon: 'ss-notifications', color: 'text-warning'},
-  },
 });
 
 export default ContainerController;

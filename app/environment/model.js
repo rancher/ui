@@ -1,6 +1,7 @@
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
+import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 
-var Environment = Cattle.TransitioningResource.extend({
+var Environment = Resource.extend({
   type: 'environment',
 
   healthState: function() {
@@ -53,9 +54,52 @@ var Environment = Cattle.TransitioningResource.extend({
       return 'degraded';
     }
   }.property('state', 'healthState'),
+
+  canActivate: function() {
+    if ( !this.hasAction('activateservices') )
+    {
+      return false;
+    }
+
+    var count = this.get('services.length') || 0;
+    if ( count === 0 )
+    {
+      return false;
+    }
+
+    return this.get('services').filterProperty('actions.activate').get('length') > 0;
+  }.property('services.@each.state','actions.activateservices'),
+
+  canDeactivate: function() {
+    if ( !this.hasAction('deactivateservices') )
+    {
+      return false;
+    }
+
+    var count = this.get('services.length') || 0;
+    if ( count === 0 )
+    {
+      return false;
+    }
+
+    return this.get('services').filterProperty('actions.deactivate').get('length') > 0;
+  }.property('services.@each.state','actions.deactivateservices'),
+
+
+  unremovedServices: function() {
+    return UnremovedArrayProxy.create({sourceContent: this.get('services')});
+  }.property('services')
 });
 
 Environment.reopenClass({
+  stateMap: {
+    'requested':        {icon: 'ss-tag',            color: 'text-danger'},
+    'activating':       {icon: 'ss-tag',            color: 'text-danger'},
+    'active':           {icon: 'ss-globe',          color: 'text-success'},
+    'removing':         {icon: 'ss-trash',          color: 'text-danger'},
+    'removed':          {icon: 'ss-trash',          color: 'text-danger'},
+    'degraded':         {icon: 'ss-notifications',  color: 'text-warning'},
+  }
 });
 
 export default Environment;

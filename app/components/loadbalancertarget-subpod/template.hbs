@@ -6,8 +6,8 @@
     {{model.ipAddress}}
   {{else}}
     {{#if model.instance}}
-      {{#with model.instance as container controller="container"}}
-        <i {{bind-attr class="container.stateIcon container.stateColor" tooltip=container.displayState}}></i>
+      {{#with model.instance controller="container" as |container|}}
+        <i class="{{container.stateIcon}} {{container.stateColor}}" tooltip="{{container.displayState}}"></i>
         {{#link-to "container" model.instanceId}}
           {{container.displayName}}
         {{/link-to}}
@@ -19,7 +19,7 @@
   {{/if}}
 </div>
 {{#if model.showTransitioningMessage}}
-  <div {{bind-attr class=":subpod-detail :clip model.isError:text-danger"}}>
+  <div class="subpod-detail clip {{if model.isError 'text-danger'}}">
     {{model.transitioningMessage}}
   </div>
 {{else}}

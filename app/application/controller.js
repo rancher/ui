@@ -10,24 +10,18 @@ export default Ember.Controller.extend({
   code: null,
   isTest: null,
 
-  absoluteEndpoint: function() {
-    var url = this.get('app.endpoint');
+  // Keys that trigger modals go in here
+  confirmDeleteResources: null,
+  originalModel: null,
 
-    // If the URL is relative, add on the current base URL from the browser
-    if ( url.indexOf('http') !== 0 )
-    {
-      url = window.location.origin + '/' + url.replace(/^\/+/,'');
-    } 
-
-    // URL must end in a single slash
-    url = url.replace(/\/+$/,'') + '/';
-
-    return url;
-  }.property('app.endpoint'),
-
-  endpointHost: function() {
-    var a = document.createElement('a');
-    a.href = this.get('absoluteEndpoint');
-    return a.host;
-  }.property('absoluteEndpoint')
+  showAbout: null,
+  editApikey: null,
+  editApikeyIsNew: null,
+  editProject: null,
+  editContainer: null,
+  editHost: null,
+  editService: null,
+  editRegistry: null,
+  showShell: null,
+  showContainerLogs: null,
 });

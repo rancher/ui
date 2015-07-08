@@ -1,12 +1,11 @@
-<div {{bind-attr class=":aside-background asideColor hasAside::hide"}}></div>
+<div class="aside-background {{asideColor}} {{unless hasAside 'hide'}}"></div>
 {{page-header
   currentPath=currentPath
-  projects=projects
-  project=project
   authController=this
+  showAbout="showAbout"
   switchProject="switchProject"
   goToPrevious="goToPrevious"
 }}
-<main {{bind-attr class="hasAside:has-aside"}}>
+<main class="{{if hasAside 'has-aside'}}">
   {{outlet}}
 </main>

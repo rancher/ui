@@ -8,7 +8,4 @@ var DnsService = Service.extend({
   }.property(),
 });
 
-DnsService.reopenClass({
-});
-
 export default DnsService;

@@ -1,0 +1,98 @@
+<section class="horizontal-form container-fluid">
+  <h2>{{#if editing}}Edit{{else}}Add{{/if}} Environment</h2>
+  {{top-errors errors=errors}}
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>Name</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{input type="text" value=primaryResource.name classNames="form-control" placeholder="e.g. Lab"}}
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>Description</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{textarea value=primaryResource.description classNames="form-control no-resize" rows="5" placeholder="e.g. Environment for developer experimentation"}}
+    </div>
+  </div>
+
+  {{partial "form-divider"}}
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>Members</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{#if app.authenticationEnabled}}
+        {{input-github action="checkMember" onError="error"}}
+      {{else}}
+        <p class="help-block" style="margin-top: 0;">Access Control is not enabled.  Everybody is Admin and will be able to use this environment.</p>
+      {{/if}}
+    </div>
+  </div>
+
+  {{#if app.authenticationEnabled}}
+    <div class="row">
+      <div class="col-sm-12 col-md-8 col-md-offset-2">
+        {{#if model.projectMembers.length}}
+          <table class="table fixed no-lines no-top-padding tight small vertical-middle">
+            <thead>
+              <tr class="text-muted">
+                <th>Name</th>
+                <th width="100">Type</th>
+                <th width="100">Role</th>
+                <th width="40">&nbsp;</th>
+              </tr>
+            </thead>
+            <tbody>
+            {{#each model.projectMembers as |member|}}
+              <tr>
+                <td>
+                  {{#if member.isRancher}}
+                    {{#if member.isMyRancher}}
+                      My Rancher Account
+                    {{else}}
+                      Rancher Account: {{member.name}} ({{member.externalId}})
+                    {{/if}}
+                  {{else}}
+                    {{github-block type=member.githubType login=member.externalId fallback=member.name}}
+                  {{/if}}
+                </td>
+                <td>{{member.displayType}}</td>
+                <td>
+                  {{#if member.isRancher}}
+                    {{uc-first member.role}}
+                  {{else}}
+                    {{view "select"
+                      class="form-control input-sm"
+                      content=roleOptions
+                      value=member.role
+                      optionValuePath="content.value"
+                      optionLabelPath="content.label"
+                    }}
+                  {{/if}}
+                </td>
+                <td>
+                  {{#if app.authenticationEnabled}}
+                    <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeMember" member}}></button>
+                  {{else}}
+                    &nbsp;
+                  {{/if}}
+                </td>
+              </tr>
+            {{/each}}
+            </tbody>
+          </table>
+        {{else}}
+          <div class="text-muted">No members yet, add at least one owner.</div>
+        {{/if}}
+      </div>
+    </div>
+  {{/if}}
+</section>
+
+{{partial "save-cancel"}}

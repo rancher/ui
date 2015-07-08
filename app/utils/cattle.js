@@ -85,7 +85,7 @@ var CollectionController = Ember.ArrayController.extend({
   sortProperties: ['name','id'],
 });
 
-var NewOrEditMixin = Ember.Mixin.create({
+var LegacyNewOrEditMixin = Ember.Mixin.create({
   originalModel: null,
   errors: null,
   saving: false,
@@ -395,7 +395,7 @@ TransitioningResource.reopenClass({
   pollTransitioningInterval: 30000,
 });
 
-var TransitioningResourceController = ResourceController.extend({
+var LegacyTransitioningResourceController = ResourceController.extend({
   actions: {
     // Common actions that almost all types have in common...
     promptDelete: function() {
@@ -488,34 +488,19 @@ var TransitioningResourceController = ResourceController.extend({
   stateBackground: function() {
     return this.get('stateColor').replace("text-","bg-");
   }.property('stateColor'),
-
-  displayProgress: function() {
-    var progress = this.get('transitioningProgress');
-    if ( progress === null || isNaN(progress) )
-    {
-      progress = 0;
-    }
-
-    return Math.max(0,Math.min(progress, 100));
-  }.property('transitioningProgress'),
-
-  progressStyle: function() {
-    return 'width: '+ Math.max(2, this.get('displayProgress')) +'%';
-  }.property('displayProgress'),
-
 });
 
 // Override stateMap with a map of state -> icon classes
-TransitioningResourceController.reopenClass({
+LegacyTransitioningResourceController.reopenClass({
   stateMap: null,
   defaultStateIcon: 'fa fa-question-circle',
   defaultStateColor: ''
 });
 
 export default {
-  ResourceController: ResourceController,
-  CollectionController: CollectionController,
-  NewOrEditMixin: NewOrEditMixin,
+  LegacyResourceController: ResourceController,
+  LegacyCollectionController: CollectionController,
+  LegacyNewOrEditMixin: LegacyNewOrEditMixin,
   TransitioningResource: TransitioningResource,
-  TransitioningResourceController: TransitioningResourceController,
+  LegacyTransitioningResourceController: LegacyTransitioningResourceController,
 };

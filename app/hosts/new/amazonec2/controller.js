@@ -274,39 +274,47 @@ export default Ember.ObjectController.extend(NewHost, {
     },
   },
 
-  selectedZone: function(key, val/*, oldVal*/) {
-    var config = this.get('amazonec2Config');
-    if ( arguments.length > 1 )
-    {
-      if ( val && val.length )
+  selectedZone: Ember.computed('amazonec2Config.{region,zone}', {
+    get: function() {
+      var config = this.get('amazonec2Config');
+      if ( config.get('region') && config.get('zone') )
+      {
+        return config.get('region') + config.get('zone');
+      }
+      else
+      {
+        return null;
+      }
+    },
+
+    set: function(key, val) {
+      var config = this.get('amazonec2Config');
+      config.setProperties({
+        region: val.substr(0, val.length - 1),
+        zone:   val.substr(val.length - 1),
+      });
+
+      var selectedSubnet = this.get('selectedSubnet');
+      if ( this.get('subnetChoices').filterProperty('value', selectedSubnet).length === 0 )
       {
         config.setProperties({
           region: val.substr(0, val.length - 1),
           zone:   val.substr(val.length - 1),
+          vpcId:  null,
+          subnetId:  null,
         });
+      }
 
-        var selectedSubnet = this.get('selectedSubnet');
-        if ( this.get('subnetChoices').filterProperty('value', selectedSubnet).length === 0 )
-        {
-          config.setProperties({
-            region: val.substr(0, val.length - 1),
-            zone:   val.substr(val.length - 1),
-            vpcId:  null,
-            subnetId:  null,
-          });
-        }
+      if ( config.get('region') && config.get('zone') )
+      {
+        return config.get('region') + config.get('zone');
+      }
+      else
+      {
+        return null;
       }
     }
-
-    if ( config.get('region') && config.get('zone') )
-    {
-      return config.get('region') + config.get('zone');
-    }
-    else
-    {
-      return null;
-    }
-  }.property('amazonec2Config.{region,zone}'),
+  }),
 
   zoneChoices: function() {
     return (this.get('allSubnets')||[]).map((subnet) => {return subnet.get('zone');}).sort().uniq();
@@ -342,39 +350,46 @@ export default Ember.ObjectController.extend(NewHost, {
     return out.sortBy('sortKey');
   }.property('selectedZone','allSubnets.@each.{subnetId,vpcId,zone}'),
 
-  selectedSubnet: function(key, val/*, oldVal*/) {
-    var config = this.get('amazonec2Config');
-    if ( arguments.length > 1 )
-    {
-      if ( val && val.length )
+  selectedSubnet: Ember.computed('amazonec2Config.{subnetId,vpcId}', {
+    set: function(key, val) {
+      var config = this.get('amazonec2Config');
+      if ( arguments.length > 1 )
       {
-        if ( val.indexOf('vpc-') === 0 )
+        if ( val && val.length )
         {
-          config.setProperties({
-            vpcId: val,
-            subnetId: null,
-          });
+          if ( val.indexOf('vpc-') === 0 )
+          {
+            config.setProperties({
+              vpcId: val,
+              subnetId: null,
+            });
+          }
+          else
+          {
+            var subnet = this.subnetById(val);
+            config.setProperties({
+              vpcId: subnet.vpcId,
+              subnetId: subnet.subnetId,
+            });
+          }
         }
         else
         {
-          var subnet = this.subnetById(val);
           config.setProperties({
-            vpcId: subnet.vpcId,
-            subnetId: subnet.subnetId,
+            vpcId: null,
+            subnetId: null,
           });
         }
       }
-      else
-      {
-        config.setProperties({
-          vpcId: null,
-          subnetId: null,
-        });
-      }
-    }
 
-    return config.get('subnetId') || config.get('vpcId');
-  }.property('amazonec2Config.{subnetId,vpcId}'),
+      return config.get('subnetId') || config.get('vpcId');
+    },
+
+    get: function() {
+      var config = this.get('amazonec2Config');
+      return config.get('subnetId') || config.get('vpcId');
+    },
+  }),
 
   subnetById: function(id) {
     return (this.get('allSubnets')||[]).filterProperty('subnetId',id)[0];

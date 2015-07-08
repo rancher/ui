@@ -8,10 +8,10 @@
       </div>
       <div class="col-sm-12 col-md-8">
         <ul class="nav nav-boxes checked-active" id="providers">
-          {{#each driver in drivers}}
+          {{#each drivers as |driver|}}
             {{#if driver.available}}
               {{#link-to driver.route tagName="li" href=false}}
-                <a href="#" {{bind-attr alt=driver.label class=":driver :machine-driver driver.css"}}></a>
+                <a href="#" alt="{{driver.label}}" class="driver machine-driver {{driver.css}}"></a>
               {{/link-to}}
             {{/if}}
           {{/each}}

@@ -1,10 +1,5 @@
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
 
-var ServiceConsumeMap = Cattle.TransitioningResource.extend({
+export default Resource.extend({
   type: 'serviceConsumeMap',
 });
-
-ServiceConsumeMap.reopenClass({
-});
-
-export default ServiceConsumeMap;

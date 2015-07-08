@@ -1,7 +1,7 @@
-import Cattle from 'ui/utils/cattle';
 import C from 'ui/utils/constants';
+import Resource from 'ember-api-store/models/resource';
 
-var GithubConfig = Cattle.TransitioningResource.extend({
+var GithubConfig = Resource.extend({
   type: 'githubConfig',
 });
 

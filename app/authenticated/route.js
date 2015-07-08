@@ -2,10 +2,12 @@ import Ember from 'ember';
 import Socket from 'ui/utils/socket';
 import Util from 'ui/utils/util';
 import AuthenticatedRouteMixin from 'ui/mixins/authenticated-route';
-import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
+  prefs: Ember.inject.service(),
+  projects: Ember.inject.service(),
+
   socket: null,
   pingTimer: null,
 
@@ -30,11 +32,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.set('app.isAuthenticationAdmin', isAdmin);
 
       // Return the list of projects as the model
-      return this.findUserProjects().then((all) => {
-        // Load all the active projects
-        var active = ActiveArrayProxy.create({sourceContent: all});
-        return active;
-      });
+      return this.get('projects').getAll();
     }).catch((err) => {
       if ( [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
       {
@@ -47,15 +45,13 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   afterModel: function(model) {
+    var projects = this.get('projects');
     return this.loadPreferences().then(() => {
-      return this.selectDefaultProject(model);
+      projects.set('all', model);
+      return projects.selectDefault().catch(() => {
+        this.transitionTo('projects');
+      });
     });
-  },
-
-  setupController: function(controller, model) {
-    controller.set('projects', model);
-    this.selectDefaultProject(model, controller);
-    this._super.apply(this,arguments);
   },
 
   loadPreferences: function() {
@@ -79,113 +75,68 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     }
   },
 
-  selectDefaultProject: function(active, controller) {
-    var self = this;
+  activate: function() {
+    this._super();
+    var store = this.get('store');
+    var boundTypeify = store._typeify.bind(store);
+
+    var url = "ws://"+window.location.host + this.get('app.wsEndpoint');
     var session = this.get('session');
 
-    // Try the project ID in the session
-    return this.activeProjectFromId(session.get(C.SESSION.PROJECT)).then(select)
-    .catch(() => {
-      // Then the default project ID from the session
-      return this.activeProjectFromId(this.get('prefs').get(C.PREFS.PROJECT_DEFAULT)).then(select)
-      .catch(() => {
-        this.get('prefs').set(C.PREFS.PROJECT_DEFAULT, "");
-
-        // Then the first active project
-        var project = active.get('firstObject');
-        if ( project )
-        {
-          select(project, true);
-        }
-        else if ( this.get('app.isAuthenticationAdmin') )
-        {
-          return this.findUserProjects().then((all) => {
-            var firstActive = all.filterProperty('state','active')[0];
-            if ( firstActive )
-            {
-              select(firstActive, true);
-            }
-            else
-            {
-              fail();
-            }
-          }).catch(() => {
-            fail();
-          });
-        }
-        else
-        {
-          fail();
-        }
-      });
-    });
-
-    function select(project, overwriteDefault) {
-      if ( project )
-      {
-        session.set(C.SESSION.PROJECT, project.get('id'));
-
-        // If there is no default project, set it
-        var def = self.get('prefs').get(C.PREFS.PROJECT_DEFAULT);
-        if ( !def || overwriteDefault === true )
-        {
-          self.get('prefs').set(C.PREFS.PROJECT_DEFAULT, project.get('id'));
-        }
-
-        if ( controller )
-        {
-          controller.set('project', project);
-        }
-      }
-      else
-      {
-        session.set(C.SESSION.PROJECT, undefined);
-        if ( controller )
-        {
-          controller.set('project', null);
-        }
-      }
-    }
-
-    function fail() {
-      // Then cry
-      select(null);
-      self.transitionTo('projects');
-    }
-  },
-
-  activeProjectFromId: function(projectId) {
-    // Try the currently selected one in the session
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      if ( !projectId )
-      {
-        reject();
-      }
-
-      this.get('store').find('project', projectId).then((project) => {
-        if ( project.get('state') === 'active' )
-        {
-          resolve(project);
-        }
-        else
-        {
-          reject();
-        }
-      }).catch(() => {
-        reject();
-      });
-    });
-  },
-
-  findUserProjects: function() {
-    var opt = {forceReload: true};
-    if ( !this.get('app.authenticationEnabled') )
+    var projectId = session.get(C.SESSION.PROJECT);
+    if ( projectId )
     {
-      opt.filter = {all: 'true'};
+      url = Util.addQueryParam(url, 'projectId', projectId);
     }
 
-    return this.get('store').find('project', null, opt);
+    var socket = Socket.create({
+      url: url
+    });
+
+    socket.on('message', (event) => {
+      var d = JSON.parse(event.data, boundTypeify);
+      //this._trySend('subscribeMessage',d);
+
+      var action;
+      if ( d.name === 'resource.change' )
+      {
+        action = d.resourceType+'Changed';
+      }
+      else if ( d.name === 'ping' )
+      {
+        action = 'subscribePing';
+      }
+
+      if ( action )
+      {
+        this._trySend(action,d);
+      }
+    });
+
+    socket.on('connected', (tries, after) => {
+      this._trySend('subscribeConnected', tries, after);
+    });
+
+    socket.on('disconnected', () => {
+      this._trySend('subscribeDisconnected', this.get('tries'));
+    });
+
+    this.set('socket', socket);
+    socket.connect();
   },
+
+  deactivate: function() {
+    this._super();
+    var socket = this.get('socket');
+    if ( socket )
+    {
+      socket.disconnect();
+    }
+
+    // Forget all the things
+    this.get('store').reset();
+  },
+
 
   actions: {
     error: function(err,transition) {
@@ -202,11 +153,8 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       }
     },
 
-    refreshProjectDropdown: function() {
-      this.findUserProjects().then((res) => {
-        this.set('controller.projects.sourceContent', res);
-        this.selectDefaultProject(this.get('controller.projects'), this.get('controller'));
-      });
+    showAbout: function() {
+      this.controllerFor('application').set('showAbout', true);
     },
 
     switchProject: function(projectId) {
@@ -215,7 +163,9 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       this.get('store').reset();
       if ( !projectId )
       {
-        this.selectDefaultProject(this.get('controller.projects'), this.get('controller'));
+        this.get('projects').selectDefault().catch(() => {
+          this.transitionTo('projects');
+        });
       }
       this.refresh();
     },
@@ -353,77 +303,6 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     serviceChanged: function(change) {
       this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
     },
-  },
-
-  enter: function() {
-    var store = this.get('store');
-    var boundTypeify = store._typeify.bind(store);
-
-    var url = "ws://"+window.location.host + this.get('app.wsEndpoint');
-    var session = this.get('session');
-
-    var projectId = session.get(C.SESSION.PROJECT);
-    if ( projectId )
-    {
-      url = Util.addQueryParam(url, 'projectId', projectId);
-    }
-
-    var socket = Socket.create({
-      url: url
-    });
-
-    socket.on('message', (event) => {
-      var d = JSON.parse(event.data, boundTypeify);
-      //this._trySend('subscribeMessage',d);
-
-      var str = d.name;
-      if ( d.resourceType )
-      {
-        str += ' ' + d.resourceType;
-
-        if ( d.resourceId )
-        {
-          str += ' ' + d.resourceId;
-        }
-      }
-
-      var action;
-      if ( d.name === 'resource.change' )
-      {
-        action = d.resourceType+'Changed';
-      }
-      else if ( d.name === 'ping' )
-      {
-        action = 'subscribePing';
-      }
-
-      if ( action )
-      {
-        this._trySend(action,d);
-      }
-    });
-
-    socket.on('connected', (tries, after) => {
-      this._trySend('subscribeConnected', tries, after);
-    });
-
-    socket.on('disconnected', () => {
-      this._trySend('subscribeDisconnected', this.get('tries'));
-    });
-
-    this.set('socket', socket);
-    socket.connect();
-  },
-
-  exit: function() {
-    var socket = this.get('socket');
-    if ( socket )
-    {
-      socket.disconnect();
-    }
-
-    // Forget all the things
-    this.get('store').reset();
   },
 
   _trySend: function(/*arguments*/) {

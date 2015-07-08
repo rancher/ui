@@ -8,7 +8,7 @@ export default Ember.Mixin.create(EditLabels, {
 
   actions: {
     addServiceLink: function() {
-      this.get('serviceLinksArray').pushObject(Ember.Object.create({serviceId: null, linkName: null}));
+      this.get('serviceLinksArray').pushObject(Ember.Object.create({name: '', serviceId: null}));
     },
     removeServiceLink: function(obj) {
       this.get('serviceLinksArray').removeObject(obj);
@@ -25,8 +25,8 @@ export default Ember.Mixin.create(EditLabels, {
   // Services
   // ----------------------------------
   serviceChoices: function() {
-    var env = this.get('selectedEnvironment');
-    var group = 'Project: ' + (env.get('name') || '('+env.get('id')+')');
+    var env = this.get('model.selectedEnvironment');
+    var group = 'Stack: ' + (env.get('name') || '('+env.get('id')+')');
 
     var list = (env.get('services')||[]).map((service) => {
       var serviceLabel = (service.get('name') || '('+service.get('id')+')');
@@ -47,7 +47,6 @@ export default Ember.Mixin.create(EditLabels, {
   }.property('environment.services.@each.{id,name,state}'),
 
   serviceLinksArray: null,
-  serviceLinksAsMap: null,
   initServiceLinks: function() {
     var out = [];
     var links;
@@ -63,11 +62,11 @@ export default Ember.Mixin.create(EditLabels, {
     }
 
     links.forEach(function(obj) {
-      var linkName = obj.get('name');
+      var name = obj.get('name');
       var service = obj.get('service');
 
       out.push(Ember.Object.create({
-        linkName: (linkName === service.get('name') ? '' : linkName),
+        name: (name === service.get('name') ? '' : name),
         obj: service,
         serviceId: service.get('id'),
       }));
@@ -77,31 +76,7 @@ export default Ember.Mixin.create(EditLabels, {
   },
 
   serviceLinksDidChange: function() {
-    // Sync with the actual environment
-    var out = {};
-    this.get('serviceLinksArray').forEach((row) => {
-      if ( row.serviceId )
-      {
-        var name = row.linkName;
-        if ( !name )
-        {
-          // If no name is given, use the name of the service
-          var service = this.get('serviceChoices').filterProperty('id', row.serviceId)[0];
-          if ( service )
-          {
-            name = service.get('obj.name');
-          }
-        }
-
-        if ( name )
-        {
-          out[name] = row.serviceId;
-        }
-      }
-    });
-
-    this.set('serviceLinksAsMap', out);
-  }.observes('serviceLinksArray.@each.{linkName,serviceId}'),
+  }.observes('serviceLinksArray.@each.{name,serviceId}'),
 
   // ----------------------------------
   // Scheduling
@@ -144,7 +119,15 @@ export default Ember.Mixin.create(EditLabels, {
     var type = service.get('type').toLowerCase();
     if ( type === 'service' )
     {
-      return service.doAction('setservicelinks', {serviceLinks: this.get('serviceLinksAsMap')});
+      var ary = [];
+      this.get('serviceLinksArray').forEach((row) => {
+        if ( row.serviceId )
+        {
+          ary.push({name: row.name, serviceId: row.serviceId});
+        }
+      });
+
+      return service.doAction('setservicelinks', {serviceLinks: ary});
     }
     else if ( ['dnsservice','loadbalancerservice'].indexOf(type) >= 0 )
     {
@@ -152,5 +135,4 @@ export default Ember.Mixin.create(EditLabels, {
       return service.doAction('setservicelinks', {serviceIds: ids});
     }
   },
-
 });

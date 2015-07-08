@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 
-var ExternalServiceController = Cattle.TransitioningResourceController.extend({
+var ExternalServiceController = Cattle.LegacyTransitioningResourceController.extend({
   needs: ['environment'],
   environment: Ember.computed.alias('controllers.environment'),
 

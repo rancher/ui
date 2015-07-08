@@ -13,42 +13,24 @@ Router.map(function() {
   this.route('login');
   this.route('logout');
   this.route('authenticated', { path: '/'}, function() {
-    this.resource('about');
 
     // Settings
     this.resource('settings', function() {
       this.route('auth');
       this.route('host');
 
-      this.resource('apikeys', {path: '/api'}, function() {
-        this.route('new', {path: '/api/add'});
-        this.resource('apikey', {path: '/:apikey_id'}, function() {
-          this.route('edit');
-        });
-      });
+      this.route('apikeys', {path: '/api'});
 
-      this.resource('registries', {path: '/registries'}, function() {
-        this.route('new', {path: '/add'});
-        this.route('index', {path: '/'});
+      this.route('projects', { path: '/environments' });
+      this.route('project-detail', { path: '/environments/:project_id' });
 
-        this.resource('registry', {path: '/:registry_id'}, function() {
-          this.route('edit');
-        });
-      });
-
-      this.resource('projects', { path: '/environments' }, function() {
-        this.route('new', {route: '/add'});
-        this.route('index', {path: '/'});
-
-        this.resource('project', { path: '/:project_id' }, function() {
-          this.route('index', {path: '/'});
-          this.route('edit');
-        });
-      });
+      this.route('registries', { path: '/registries' });
+      this.route('registry-new', { path: '/registries/add' });
+      this.route('registry-detail', { path: '/registries/:registry_id' });
     });
 
     // Infrastructure
-    this.resource('infrastructure-tab', {path: '/infrastructure'}, function() {
+    this.resource('infrastructure-tab', {path: '/infra'}, function() {
       this.resource('hosts', { path: '/hosts'}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'}, function() {
@@ -61,7 +43,6 @@ Router.map(function() {
         });
 
         this.resource('host', { path: '/:host_id' }, function() {
-          this.route('edit');
           this.route('containers');
           this.route('storage', {path: '/storage'});
         });
@@ -72,53 +53,19 @@ Router.map(function() {
         this.route('index', {path: '/'});
 
         this.resource('container', { path: '/:container_id' }, function() {
-          this.route('shell');
-          this.route('logs');
-          this.route('edit');
-        });
-      });
-
-
-      this.resource('volumes', function() {
-        this.resource('volume', {path: '/:volume_id'}, function() {
-        });
-      });
-
-      this.resource('loadbalancers', {path: '/balancers'}, function() {
-        this.route('new', {path: '/add'});
-        this.route('index', {path: '/'});
-
-        this.resource('loadbalancer', {path: '/:loadbalancer_id'}, function() {
-          this.route('edit');
-          this.route('config', { path: '/config'});
-          this.route('hosts', { path: '/hosts'}, function() {
-            this.route('new', { path: '/add'});
-          });
-          this.route('targets', { path: '/targets'}, function() {
-            this.route('new', { path: '/add'});
-          });
-        });
-      });
-
-      this.resource('loadbalancerconfigs', {path: '/balancer-configs'}, function() {
-        this.route('new', {path: '/add'});
-        this.route('index', {path: '/'});
-
-        this.resource('loadbalancerconfig', {path: '/:loadbalancerconfig_id'}, function() {
-          this.route('index', {path: '/'});
           this.route('edit');
         });
       });
     });
 
-    // Services
-    this.resource('services-tab', {path: '/services'}, function() {
+    // Applications
+    this.resource('applications-tab', {path: '/apps'}, function() {
       this.resource('splash', {path: '/welcome'});
-      this.resource('service.new', {path: '/projects/add-service'});
-      this.resource('service.new-balancer', {path: '/projects/add-balancer'});
-      this.resource('service.new-alias', {path: '/projects/add-alias'});
-      this.resource('service.new-external', {path: '/projects/add-external'});
-      this.resource('environments', {path: '/projects'}, function() {
+      this.resource('service.new', {path: '/add-service'});
+      this.resource('service.new-balancer', {path: '/add-balancer'});
+      this.resource('service.new-alias', {path: '/add-alias'});
+      this.resource('service.new-external', {path: '/add-external'});
+      this.resource('environments', {path: '/'}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
 
@@ -126,7 +73,6 @@ Router.map(function() {
           this.route('index', {path: '/'});
           this.route('code', {path: '/code'});
           this.route('graph', {path: '/graph'});
-          this.route('edit');
 
           this.resource('service', {path: '/services/:service_id'}, function() {
             this.route('containers');
@@ -138,6 +84,77 @@ Router.map(function() {
 
     // End: Authenticated
   });
+
+  // Modals
+  this.modal('delete-confirmation', {
+    dismissWithOutsideClick: false,
+    dialogClass: 'small',
+    withParams: { 'confirmDeleteResources': 'resources' },
+    actions: { confirm: 'confirmDelete' }
+  });
+
+  this.modal('modal-about', {
+    dismissWithOutsideClick: false,
+    withParams: 'showAbout',
+    dialogClass: 'about',
+  });
+
+  this.modal('modal-shell', {
+    dismissWithOutsideClick: false,
+    withParams: 'showShell',
+    otherParams: 'originalModel',
+    dialogClass: 'modal-shell',
+  });
+
+  this.modal('modal-container-logs', {
+    dismissWithOutsideClick: false,
+    withParams: 'showContainerLogs',
+    otherParams: 'originalModel',
+    dialogClass: 'modal-logs',
+  });
+
+  this.modal('edit-container', {
+    dismissWithOutsideClick: false,
+    withParams: 'editContainer',
+    otherParams: 'originalModel',
+  });
+
+  this.modal('edit-host', {
+    dismissWithOutsideClick: false,
+    withParams: 'editHost',
+    otherParams: 'originalModel',
+  });
+
+  this.modal('edit-apikey', {
+    dismissWithOutsideClick: false,
+    withParams: 'editApikey',
+    otherParams: {'originalModel': 'originalModel', 'editApikeyIsNew': 'justCreated'} 
+  });
+
+  this.modal('edit-project', {
+    dismissWithOutsideClick: false,
+    withParams: 'editProject',
+    otherParams: 'originalModel',
+  });
+
+  this.modal('edit-registry', {
+    dismissWithOutsideClick: false,
+    withParams: 'editRegistry',
+    otherParams: 'originalModel',
+  });
+
+  this.modal('edit-environment', {
+    dismissWithOutsideClick: false,
+    withParams: 'editEnvironment',
+    otherParams: 'originalModel',
+  });
+
+  this.modal('edit-service', {
+    dismissWithOutsideClick: false,
+    withParams: 'editService',
+    otherParams: 'originalModel',
+  });
+  // End: Modals
 });
 
 export default Router;

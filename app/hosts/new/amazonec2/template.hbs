@@ -6,7 +6,7 @@
       <span>Account Access</span>
     </div>
 
-    <div {{bind-attr class=":row isStep1:form-group"}}>
+    <div class="row {{if isStep1 'form-group'}}">
       <div class="col-sm-12 col-md-2 form-label">
         <label for="accessKey" class="form-control-static">Access Key</label>
       </div>
@@ -18,7 +18,7 @@
         {{/if}}
       </div>
     </div>
-    <div {{bind-attr class=":row isStep1:form-group"}}>
+    <div class="row {{if isStep1 'form-group'}}">
       <div class="col-sm-12 col-md-2 form-label">
         <label for="secretKey" class="form-control-static">Secret Key</label>
       </div>
@@ -42,18 +42,18 @@
   {{/if}}
 </section>
 
-<section {{bind-attr class=":horizontal-form isStep2::hide"}} style="padding-top: 0">
+<section class="horizontal-form {{unless isStep2 'hide'}}" style="padding-top: 0">
   <div class="text-center">
     <i class="fa fa-circle-o-notch fa-spin"></i> Loading Availablility Zone and VPC info from EC2...
   </div>
 </section>
 
-<section {{bind-attr class=":horizontal-form isGteStep3::hide"}} style="padding-top: 0">
+<section class="horizontal-form {{unless isGteStep3 'hide'}}" style="padding-top: 0">
   <div class="container-fluid">
     <div class="over-hr" style="margin: 20px 0;">
       <span>Availability Zone &amp; VPC</span>
     </div>
-    <div {{bind-attr class=":row isStep3:form-group"}}>
+    <div class="row {{if isStep3 'form-group'}}">
       <div class="col-sm-12 col-md-2 form-label">
         <label for="selectedZone" class="form-control-static">Availability Zone</label>
       </div>
@@ -74,14 +74,14 @@
         {{/if}}
       </div>
     </div>
-    <div {{bind-attr class=":row isStep3:form-group"}}>
+    <div class="row {{if isStep3 'form-group'}}">
       <div class="col-sm-12 col-md-2 form-label">
         <label for="subnet" class="form-control-static">VPC/Subnet</label>
       </div>
       <div class="col-sm-12 col-md-8">
         {{#if isStep3}}
           {{#if subnetChoices.length}}
-            {{#each choice in subnetChoices}}
+            {{#each subnetChoices as |choice|}}
               {{#if choice.isVpc}}
                 <div class="radio"><label class="text-bold">
                   {{radio-button selection=selectedSubnet value=choice.value}} {{choice.label}}
@@ -113,19 +113,19 @@
   {{/if}}
 </section>
 
-<section {{bind-attr class=":horizontal-form isStep4::hide"}} style="padding-top: 0">
+<section class="horizontal-form {{unless isStep4 'hide'}}" style="padding-top: 0">
   <div class="text-center">
     <i class="fa fa-circle-o-notch fa-spin"></i> Loading security group info from EC2...
   </div>
 </section>
 
-<section {{bind-attr class=":horizontal-form isGteStep5::hide"}} style="padding-top: 0">
+<section class="horizontal-form {{unless isGteStep5 'hide'}}" style="padding-top: 0">
   <div class="container-fluid">
     <div class="over-hr" style="margin: 20px 0;">
       <span>Security Group</span>
     </div>
 
-    <div {{bind-attr class=":row isStep5:form-group"}}>
+    <div class="row {{if isStep5 'form-group'}}">
       <div class="col-sm-12 col-md-2 form-label">
         <label for="securityGroup" class="form-control-static">Security Group</label>
       </div>
@@ -178,13 +178,13 @@
   {{/if}}
 </section>
 
-<section {{bind-attr class=":horizontal-form isStep6::hide"}} style="padding-top: 0">
+<section class="horizontal-form {{unless isStep6 'hide'}}" style="padding-top: 0">
   <div class="text-center">
     <i class="fa fa-circle-o-notch fa-spin"></i> {{#if defaultSecurityGroup}}Updating{{else}}Creating{{/if}} Security Group...
   </div>
 </section>
 
-<section {{bind-attr class=":horizontal-form isGteStep7::hide"}} style="padding-top: 0;">
+<section class="horizontal-form {{unless isGteStep7 'hide'}}" style="padding-top: 0;">
   <div class="container-fluid">
     <div class="over-hr" style="margin: 20px 0;">
       <span>Instance</span>
@@ -239,6 +239,14 @@
       </div>
       <div class="col-sm-12 col-md-3">
         {{input type="text" id="iamInstanceProfile" classNames="form-control" placeholder="" value=amazonec2Config.iamInstanceProfile}}
+      </div>
+      <div class="col-sm-12 col-md-2 form-label">
+        <label class="form-control-static">Private IP</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        <div class="checkbox form-control-static">
+          <label>{{input type="checkbox" checked=amazonec2Config.privateAddressOnly}} Use only private IP address</label>
+        </div>
       </div>
     </div>
 

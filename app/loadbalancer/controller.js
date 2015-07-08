@@ -1,7 +1,7 @@
 import Cattle from 'ui/utils/cattle';
 import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 
-var LoadBalancerController = Cattle.TransitioningResourceController.extend({
+var LoadBalancerController = Cattle.LegacyTransitioningResourceController.extend({
   actions: {
     newTarget: function() {
       this.transitionToRoute('loadbalancer.targets.new', this.get('id'));

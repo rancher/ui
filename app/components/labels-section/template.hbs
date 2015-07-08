@@ -1,14 +1,16 @@
 <table class="grid fixed" style="margin-bottom: 0;">
   <thead>
-    <tr>
-      <th width="90">Kind</th>
-      <th>Key</th>
-      <th>Value</th>
-    </tr>
+    {{#if labelArray.length}}
+      <tr>
+        <th width="90">Kind</th>
+        <th>Key</th>
+        <th>Value</th>
+      </tr>
+    {{/if}}
   </thead>
   <tbody>
-    {{#each label in labelArray}}
-      <tr {{bind-attr class="label.isUser::text-muted"}}>
+    {{#each labelArray as |label|}}
+      <tr class="{{unless label.isUser 'text-muted'}}">
         <td>{{uc-first label.type}}</td>
         <td>{{label.key}}</td>
         <td>{{label.value}}</td>

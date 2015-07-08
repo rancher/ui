@@ -1,9 +1,9 @@
-import Cattle from 'ui/utils/cattle';
+import Resource from 'ember-api-store/models/resource';
 
-export default Cattle.TransitioningResource.extend({
+export default Resource.extend({
   type: 'registryCredential',
   name: '',
   publicValue: '',
-  secretValue: '',
+  //secretValue: '', -- This can't be se because the secret isn't sent back on edit
   email: ''
 });
