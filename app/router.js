@@ -154,6 +154,12 @@ Router.map(function() {
     withParams: 'editService',
     otherParams: 'originalModel',
   });
+
+  this.modal('edit-loadbalancerservice', {
+    dismissWithOutsideClick: false,
+    withParams: 'editLoadBalancerService',
+    otherParams: 'originalModel',
+  });
   // End: Modals
 });
 

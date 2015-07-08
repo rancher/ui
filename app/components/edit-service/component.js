@@ -58,6 +58,10 @@ export default Ember.Component.extend(NewOrEdit, EditService, EditTargetIp, {
     }
   }.property('service.type'),
 
+  isBalancer: function() {
+    return this.get('service.type').toLowerCase() === 'loadbalancerservice';
+  }.property('service.type'),
+
   hasServiceLinks: function() {
     return this.get('service.type').toLowerCase() !== 'externalservice';
   }.property('service.type'),

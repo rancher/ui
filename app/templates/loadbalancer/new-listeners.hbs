@@ -2,9 +2,9 @@
   {{#if listenersArray.length}}
     <thead>
       <tr>
-        <th>Source</th>
+        <th>Public Port</th>
         <th width="30"></th>
-        <th>Target</th>
+        <th width="60">Protocol</th>
         <th width="30"></th>
         <th width="100">Algorithm</th>
         <th width="40">&nbsp;</th>
@@ -15,9 +15,9 @@
     {{#each listenersArray as |listener|}}
       <tr>
         {{#if listener.id}}
-          <td>{{listener.sourcePort}}/{{listener.sourceProtocol}}</td>
-          <td class="text-center"><i class="ss-right"></i></td>
-          <td>{{listener.targetPort}}/{{listener.targetProtocol}}</td>
+          <td>{{listener.sourcePort}}</td>
+          <td>&nbsp;</td>
+          <td>{{listener.sourceProtocol}}</td>
           <td>&nbsp;</td>
           <td>{{listener.algorithm}}</td>
           <td class="text-right">
@@ -25,59 +25,27 @@
           </td>
         {{else}}
           <td>
-            <div class="input-group input-group-sm">
-              {{input type="text" classNames="form-control lb-listener-source-port" min="1" max="65535" step="1" value=listener.sourcePort placeholder="e.g. 80"}}
-              <div class="input-group-btn">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="border-left: 0;">/{{listener.sourceProtocol}} <span class="caret"></span></button>
-                <ul class="dropdown-menu" role="menu">
-                  <li role="presentation" class="dropdown-header">
-                    Select a protocol:
-                  </li>
-                  {{#each sourceProtocolOptions as |choice|}}
-                    <li {{action "chooseProtocol" listener "sourceProtocol" choice}}>
-                      <a>{{choice}}</a>
-                    </li>
-                  {{/each}}
-                </ul>
-              </div>
-            </div>
+            {{input type="text" classNames="form-control lb-listener-source-port input-sm" min="1" max="65535" step="1" value=listener.sourcePort placeholder="e.g. 80"}}
           </td>
-          <td class="text-center"><div class="form-control-static"><i class="ss-right"></i></div></td>
-          <td>
-            <div class="input-group input-group-sm">
-              {{input type="text" classNames="form-control lb-listener-target-port" min="1" max="65535" step="1" value=listener.targetPort placeholder="e.g. 8080"}}
-              {{#if model.isService}}
-                <span class="input-group-addon">/{{listener.sourceProtocol}}</span>
-              {{else}}
-                <div class="input-group-btn">
-                  <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="border-left: 0;">/{{listener.targetProtocol}} <span class="caret"></span></button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li role="presentation" class="dropdown-header">
-                      Select a protocol:
-                    </li>
-                    {{#each targetProtocolOptions as |choice|}}
-                      <li {{action "chooseProtocol" listener "targetProtocol" choice}}>
-                        <a>{{choice}}</a>
-                      </li>
-                    {{/each}}
-                  </ul>
-                </div>
-              {{/if}}
-            </div>
-          </td>
-
           <td>&nbsp;</td>
-
           <td>
-            {{#if model.isService}}
-              <div class="form-control-static">Round Robin</div>
-            {{else}}
-              {{view "select"
-                class="form-control input-sm"
-                value=listener.algorithm
-                content=algorithmOptions
-              }}
-            {{/if}}
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">{{listener.sourceProtocol}} <span class="caret"></span></button>
+              <ul class="dropdown-menu" role="menu">
+                <li role="presentation" class="dropdown-header">
+                  Select a protocol:
+                </li>
+                {{#each sourceProtocolOptions as |choice|}}
+                  <li {{action "chooseProtocol" listener "sourceProtocol" choice}}>
+                    <a>{{choice}}</a>
+                  </li>
+                {{/each}}
+              </ul>
+            </div>
+          </td>
+          <td>&nbsp;</td>
+          <td>
+            <div class="form-control-static input-sm">Round Robin</div>
           </td>
           <td class="text-right">
             <button {{action "removeListener" listener}} class="btn-circle-x" type="button" tabindex="-1"></button>
