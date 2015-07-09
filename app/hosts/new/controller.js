@@ -8,6 +8,7 @@ export default Ember.ObjectController.extend({
     var hasAmazon = this.get('store').hasRecordFor('schema','amazonec2config');
     var hasPacket = this.get('store').hasRecordFor('schema','packetconfig');
     var hasRackSpace = this.get('store').hasRecordFor('schema','rackspaceconfig');
+    var hasExoscale = this.get('store').hasRecordFor('schema', 'exoscaleconfig');
 
     return [
       {route: 'hosts.new.digitalocean', label: 'DigitalOcean',  css: 'digitalocean', available: true  },
@@ -15,6 +16,7 @@ export default Ember.ObjectController.extend({
       {route: 'hosts.new.packet',       label: 'Packet',        css: 'packet',       available: hasPacket },
       {route: 'hosts.new.rackspace',    label: 'RackSpace',     css: 'rackspace',    available: hasRackSpace },
       {route: 'hosts.new.openstack',    label: 'OpenStack',     css: 'openstack',    available: hasOpenStack },
+      {route: 'hosts.new.exoscale',     label: 'Exoscale',      css: 'exoscale',     available: hasExoscale },
       {route: 'hosts.new.custom',       label: 'Custom',        css: 'custom',       available: true  },
     ];
   }.property(),

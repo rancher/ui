@@ -39,6 +39,7 @@ Router.map(function() {
           this.route('packet');
           this.route('openstack');
           this.route('rackspace');
+          this.route('exoscale');
           this.route('custom');
         });
 
