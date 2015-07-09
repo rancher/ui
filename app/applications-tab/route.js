@@ -16,5 +16,16 @@ export default Ember.Route.extend({
         hosts: results[3],
       });
     });
+  },
+
+  afterModel: function(model /*, transition*/) {
+    if ( model.get('services.length') && model.get('hosts.length') )
+    {
+      this.transitionTo('environments');
+    }
+    else
+    {
+      this.transitionTo('splash');
+    }
   }
 });

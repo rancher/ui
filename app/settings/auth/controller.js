@@ -95,6 +95,11 @@ export default Ember.Controller.extend({
     }
   }.observes('isEnterprise'),
 
+  protocolChoices: [
+    {label: 'https:// -- Requires a cert from a public CA', value: 'https://'},
+    {label: 'http://', value: 'http://'},
+  ],
+
   hostnameDidChange: function() {
     var cur = this.get('model.hostname')||'';
     var neu = cur.replace(/^https?:\/\//ig,'').replace(/\/.*$/,'');

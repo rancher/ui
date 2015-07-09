@@ -49,7 +49,9 @@
       <div class="text-center text-muted" style="margin: 20px 0">
         No containers yet.
         {{#if isInactive}}
-          <a class="hand" {{action "activate" target=model}}>Start</a>
+          {{#with model controller="service" as |ctrl|}}
+            <a class="hand" {{action "activate" target=ctrl}}>Start</a>
+          {{/with}}
         {{else}}
         {{/if}}
       </div>
@@ -60,7 +62,10 @@
   {{else}}
     {{#if isInactive}}
       <div class="text-center text-muted" style="margin: 20px 0">
-        Inactive.  <a class="hand" {{action "activate" target=model}}>Start</a>
+        Inactive.
+        {{#with model controller="service" as |ctrl|}}
+          <a class="hand" {{action "activate" target=ctrl}}>Start</a>
+        {{/with}}
       </div>
     {{/if}}
   {{/if}}

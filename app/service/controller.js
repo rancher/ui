@@ -42,7 +42,7 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
       this.saveScale();
     },
 
-    clone: function() {
+    clone: function(paren) {
       var route;
       switch ( this.get('model.type').toLowerCase() )
       {
@@ -53,7 +53,7 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
         default: return void this.send('error','Unknown service type: ' + this.get('type'));
       }
 
-      this.transitionToRoute(route, {queryParams: {
+      this.get('controllers.application').transitionToRoute(route, {queryParams: {
         serviceId: this.get('model.id'),
         environmentId: this.get('model.environmentId'),
       }});
