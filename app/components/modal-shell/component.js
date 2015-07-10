@@ -18,6 +18,7 @@ export default Ember.Component.extend({
   },
 
   didInsertElement: function() {
+    this._super();
     Ember.run.next(this, 'exec');
   },
 
@@ -103,5 +104,6 @@ export default Ember.Component.extend({
 
   willDestroyElement: function() {
     this.disconnect();
+    this._super();
   }
 });
