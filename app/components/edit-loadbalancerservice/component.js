@@ -12,6 +12,10 @@ export default Ember.Component.extend(NewOrEdit, EditService, {
     addServiceLink:        addAction('addServiceLink',  '.service-link'),
     addTargetIp:           addAction('addTargetIp',     '.target-ip'),
 
+    addTargetService: function() {
+      this.get('targetsArray').pushObject({isService: true});
+    },
+
     removeTarget: function(tgt) {
       this.get('targetsArray').removeObject(tgt);
     },
