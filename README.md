@@ -20,7 +20,7 @@ If you're on a Mac and use Homebrew, you can follow these steps:
 
 Setup:
 ```bash
-  git clone 'https://github.com/rancherio/ui'
+  git clone 'https://github.com/rancher/ui'
   cd 'ui'
   git submodule init
   git submodule update
