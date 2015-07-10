@@ -4,8 +4,8 @@ export default Ember.Component.extend({
   // possible passed-in values with their defaults:
   content: null,
   prompt: null,
-  optionValuePath: 'id',
-  optionLabelPath: 'title',
+  optionValuePath: 'value',
+  optionLabelPath: 'label',
   action: Ember.K, // action to fire on change
 
   // shadow the passed-in `selection` to avoid
