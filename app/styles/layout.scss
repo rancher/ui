@@ -228,6 +228,60 @@ ASIDE {
   }
 }
 
+UL.list-circles {
+  @extend .list-unstyled;
+  margin-top: 10px;
+  font-weight: $bold-weight;
+
+  &>LI {
+    background-image: url('images/info-bubble.svg');
+    background-repeat: no-repeat;
+    min-height: 45px;
+    padding-top: 5px;
+    position: relative;
+    padding-left: 45px;
+    font-size: 14px;
+
+    &>I {
+      @extend .no-select;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 34px;
+      line-height: 38px;
+      font-size: 16px;
+      color: white;
+      text-align: center;
+      font-style: normal;
+
+      &.fa {
+        /* Font-Awesome knows how to center things properly.. */
+        line-height: 34px;
+      }
+    }
+
+    &:last-child {
+      min-height: 34px;
+      background-image: url('images/info-bubble-last.svg');
+    }
+  }
+
+  &.list-circles-clear > LI {
+    background-image: url('images/info-bubble-clear.svg');
+    font-weight: $normal-weight;
+    padding-bottom: 20px;
+
+    &:last-child {
+      background-image: url('images/info-bubble-clear-last.svg');
+    }
+
+    &>I {
+      line-height: 34px;
+      color: #667f85;
+    }
+  }
+}
+
 UL.list-lines {
   @extend .list-unstyled;
 

@@ -56,6 +56,14 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, {
     }).uniq();
   }.property('targetsArray.@each.{isService,value}'),
 
+  targetResources: function() {
+    return this.get('targetsArray').filterProperty('isService',true).filterProperty('value').map((choice) => {
+      return {
+        serviceId: Ember.get(choice,'value'),
+      };
+    });
+  }.property('targetsArray.@each.{isService,value}'),
+
   targetChoices: function() {
     var list = [];
     var env = this.get('environment');
@@ -96,7 +104,7 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, {
     // Set targets
     return dns.waitForNotTransitioning().then(() => {
       return dns.doAction('setservicelinks', {
-        serviceIds: this.get('targetServiceIds'),
+        serviceLinks: this.get('targetResources'),
       });
     });
   },

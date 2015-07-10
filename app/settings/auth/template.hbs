@@ -67,7 +67,7 @@
                   </li>
                 {{/each}}
               </ul>
-              {{#if (and (eq model.allowedOrganizations.length 0) (eq model.allowedOrganizations.length 0))}}
+              {{#if (and (eq model.allowedUsers.length 0) (eq model.allowedOrganizations.length 0))}}
                 <span class="text-muted">None</span>
               {{/if}}
             {{/if}}
@@ -163,18 +163,26 @@
         </div>
       </div>
       <div class="row">
+        <div class="checkbox">
+          <label>{{input type="checkbox" checked=isEnterprise}} Use a private GitHub Enterprise installation</label>
+        </div>
+      </div>
+      <div class="row {{unless isEnterprise 'hide'}}">
         <div class="col-md-6">
-          <div class="checkbox">
-            <label>{{input type="checkbox" checked=isEnterprise}} Use a private GitHub Enterprise installation</label>
+          <div class="form-group">
+            <label>Protocol*</label>
+            {{new-select
+              content=protocolChoices
+              selection=model.protocol
+              action=(action (mut model.protocol))
+            }}
           </div>
         </div>
         <div class="col-md-6">
-          {{#if isEnterprise}}
-            <div class="form-group">
-              <label>Enterprise Host*</label>
-              {{input type="text" value=model.hostname classNames="form-control" placeholder="e.g. github.example.com"}}
-            </div>
-          {{/if}}
+          <div class="form-group">
+            <label>Enterprise Host*</label>
+            {{input type="text" value=model.hostname classNames="form-control" placeholder="e.g. github.example.com"}}
+          </div>
         </div>
       </div>
     </div>

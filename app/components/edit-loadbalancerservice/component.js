@@ -143,11 +143,11 @@ export default Ember.Component.extend(NewOrEdit, EditService, {
   targetChoices: function() {
     var list = [];
     var env = this.get('environment');
-    var envName = env.get('name') || ('(Environment '+env.get('id')+')');
+    var envName = env.get('name') || ('(Stack '+env.get('id')+')');
 
     env.get('services').map((service) => {
       list.pushObject({
-        group: 'Environment: ' + envName,
+        group: 'Stack: ' + envName,
         id: service.get('id'),
         name: service.get('name') || ('(' + service.get('id') + ')')
       });

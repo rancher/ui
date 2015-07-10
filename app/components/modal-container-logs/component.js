@@ -58,6 +58,7 @@ export default Ember.Component.extend(ThrottledResize, {
   },
 
   didInsertElement: function() {
+    this._super();
     Ember.run.next(this, 'exec');
   },
 
@@ -142,7 +143,7 @@ export default Ember.Component.extend(ThrottledResize, {
   },
 
   onResize: function() {
-    this.$('.log-body').css('height', Math.max(200, ($(window).height() - 230)) + 'px');
+    this.$('.log-body').css('height', Math.max(200, ($(window).height() - 270)) + 'px');
   },
 
   willDestroyElement: function() {

@@ -11,13 +11,17 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditTa
   primaryResource: Ember.computed.alias('model.service'),
 
   validate: function() {
-    this._super();
-    var errors = this.get('errors')||[];
-
+    var errors = [];
     if ( !this.get('service.externalIpAddresses.length') )
     {
       errors.push('Choose one or more targets to send traffic to');
     }
+    else
+    {
+      this._super();
+      errors = this.get('errors')||[];
+    }
+
 
     if ( errors.length )
     {

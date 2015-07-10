@@ -92,11 +92,11 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
   targetChoices: function() {
     var list = [];
     var env = this.get('environment');
-    var envName = env.get('name') || ('(Environment '+env.get('id')+')');
+    var envName = env.get('name') || ('(Stack '+env.get('id')+')');
 
     env.get('services').map((service) => {
       list.pushObject({
-        group: 'Environment: ' + envName,
+        group: 'Stack: ' + envName,
         id: service.get('id'),
         name: service.get('name') || ('(' + service.get('id') + ')')
       });
@@ -112,8 +112,11 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
   }.property('allConfigs.@each.state'),
 
   validate: function() {
-    this._super();
-    var errors = this.get('errors')||[];
+    var errors = [];
+    if (!this.get('listenersArray.length') )
+    {
+      errors.push('One or more listening ports are required');
+    }
 
     if ( !this.get('targetResources.length') )
     {
@@ -125,13 +128,19 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
     });
     if ( bad.get('length') )
     {
-      errors.push('Service and port are requried on each target');
+      errors.push('Service and Port are requried on each Target');
     }
 
-    if (!this.get('listenersArray.length') )
+    if ( errors.length )
     {
-      errors.push('One or more listening ports are required');
+      this.set('errors',errors.uniq());
+      return false;
     }
+
+    // Generic validation
+    this._super();
+    errors = this.get('errors')||[];
+
 
     errors.pushObjects(this.get('config').validationErrors());
     this.get('listenersArray').forEach((listener) => {

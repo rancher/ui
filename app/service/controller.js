@@ -23,6 +23,13 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
           originalModel: this.get('model'),
         });
       }
+      else if ( type === 'dnsservice' )
+      {
+        this.get('controllers.application').setProperties({
+          editAliasService: true,
+          originalModel: this.get('model'),
+        });
+      }
       else
       {
         this.get('controllers.application').setProperties({
@@ -53,7 +60,7 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
         default: return void this.send('error','Unknown service type: ' + this.get('type'));
       }
 
-      this.transitionToRoute(route, {queryParams: {
+      this.get('controllers.application').transitionToRoute(route, {queryParams: {
         serviceId: this.get('model.id'),
         environmentId: this.get('model.environmentId'),
       }});
