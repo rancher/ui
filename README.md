@@ -58,9 +58,9 @@ The built-in cattle server expects to be run from `/static/` and hosted on a CDN
 * `ember test --server`
 
 ### Bugs & Issues
-Please submit bugs and issues to [rancherio/rancher](//github.com/rancherio/rancher/issues) with a title starting with `[UI] `.
+Please submit bugs and issues to [rancher/rancher](//github.com/rancher/rancher/issues) with a title starting with `[UI] `.
 
-Or just [click here](//github.com/rancherio/rancher/issues/new?title=%5BUI%5D%20) to create a new issue.
+Or just [click here](//github.com/rancher/rancher/issues/new?title=%5BUI%5D%20) to create a new issue.
 
 
 #### Useful links
