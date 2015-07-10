@@ -49,7 +49,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
     return this.loadPreferences().then(() => {
       projects.set('all', model);
       return projects.selectDefault().catch(() => {
-        this.transitionTo('projects');
+        this.replaceWith('settings.projects');
       });
     });
   },
@@ -164,7 +164,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       if ( !projectId )
       {
         this.get('projects').selectDefault().catch(() => {
-          this.transitionTo('projects');
+          this.replaceWith('settings.projects');
         });
       }
       this.refresh();
