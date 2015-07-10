@@ -57,7 +57,9 @@
       </div>
     {{/each}}
     {{#if showScaleUp}}
-      {{add-subpod action="scaleUp" label="Scale Up"}}
+      {{#with model controller="service" as |ctrl|}}
+        {{add-subpod action=(action "scaleUp" target=ctrl) label="Scale Up" }}
+      {{/with}}
     {{/if}}
   {{else}}
     {{#if isInactive}}

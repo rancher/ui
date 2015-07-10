@@ -19,11 +19,7 @@ export default Ember.Route.extend({
   },
 
   afterModel: function(model /*, transition*/) {
-    if ( model.get('services.length') && model.get('hosts.length') )
-    {
-      this.transitionTo('environments');
-    }
-    else
+    if ( !model.get('services.length') || !model.get('hosts.length') )
     {
       this.transitionTo('splash');
     }

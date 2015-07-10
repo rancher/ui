@@ -23,6 +23,13 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
           originalModel: this.get('model'),
         });
       }
+      else if ( type === 'dnsservice' )
+      {
+        this.get('controllers.application').setProperties({
+          editAliasService: true,
+          originalModel: this.get('model'),
+        });
+      }
       else
       {
         this.get('controllers.application').setProperties({
@@ -42,7 +49,7 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
       this.saveScale();
     },
 
-    clone: function(paren) {
+    clone: function() {
       var route;
       switch ( this.get('model.type').toLowerCase() )
       {

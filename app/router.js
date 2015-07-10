@@ -155,6 +155,12 @@ Router.map(function() {
     otherParams: 'originalModel',
   });
 
+  this.modal('edit-aliasservice', {
+    dismissWithOutsideClick: false,
+    withParams: 'editAliasService',
+    otherParams: 'originalModel',
+  });
+
   this.modal('edit-loadbalancerservice', {
     dismissWithOutsideClick: false,
     withParams: 'editLoadBalancerService',

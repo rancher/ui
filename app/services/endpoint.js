@@ -4,6 +4,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Service.extend({
   cookies: Ember.inject.service(),
+  session: Ember.inject.service(),
 
   absolute: function() {
     var url = this.get('app.endpoint');
