@@ -7,13 +7,13 @@ export default Ember.Mixin.create({
   actions: {
     machineConfig: function() {
       var url;
-      if ( this.get('type') === 'machine' )
+      if ( this.get('model.type') === 'machine' )
       {
         url = this.linkFor('config');
       }
       else
       {
-        url = this.get('machine').linkFor('config');
+        url = this.get('model.machine').linkFor('config');
       }
 
       url = this.get('endpoint').addAuthParams(url);

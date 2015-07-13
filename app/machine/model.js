@@ -50,6 +50,17 @@ Machine.reopenClass({
 
     return data;
   },
+
+  stateMap: {
+    'requested':      {icon: 'ss-tag',       color: 'text-success'},
+    'creating':       {icon: 'ss-tag',       color: 'text-success'},
+    'created':        {icon: 'ss-tag',       color: 'text-success'},
+    'bootstrapping':  {icon: 'ss-tag',       color: 'text-success'},
+    'active':         {icon: 'ss-tag',       color: 'text-success'},
+    'removing':       {icon: 'ss-trash',     color: 'text-danger'},
+    'removed':        {icon: 'ss-trash',     color: 'text-danger'},
+    'updating':       {icon: 'ss-tag',       color: 'text-success'},
+  }
 });
 
 export default Machine;

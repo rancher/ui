@@ -19,13 +19,12 @@ export default Ember.Controller.extend(CattleTransitioningController, DownloadMa
     },
 
     newContainer: function() {
-      this.transitionToRoute('containers.new', {queryParams: {hostId: this.get('id')}});
+      this.get('controllers.application').transitionToRoute('containers.new', {queryParams: {hostId: this.get('model.id')}});
     },
 
     clone: function() {
-      var machine = this.get('machine');
-      var driver = machine.get('driver');
-      this.transitionToRoute('hosts.new.'+driver, {queryParams: {machineId: machine.get('id')}});
+      var machine = this.get('model.machine');
+      this.get('controllers.application').transitionToRoute('hosts.new.'+machine.get('driver'), {queryParams: {machineId: machine.get('id')}});
     },
 
     edit: function() {
@@ -49,9 +48,9 @@ export default Ember.Controller.extend(CattleTransitioningController, DownloadMa
       { label: 'View in API',   icon: '', action: 'goToApi',      enabled: true},
     ];
 
-    if ( this.get('machine') )
+    if ( this.get('model.machine') )
     {
-      if ( this.get('machine.links.config') )
+      if ( this.get('model.machine.links.config') )
       {
         out.push({ label: 'Machine Config',   icon: 'ss-download', action: 'machineConfig',      enabled: true});
       }
