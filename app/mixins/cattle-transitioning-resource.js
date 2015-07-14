@@ -3,6 +3,32 @@ import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
 import { normalizeType } from 'ember-api-store/utils/normalize';
 
+const defaultStateMap = {
+  'activating':       {icon: 'ss-tag',            color: 'text-info'   },
+  'active':           {icon: 'ss-record',         color: 'text-success'},
+  'created':          {icon: 'ss-tag',            color: 'text-info'   },
+  'creating':         {icon: 'ss-tag',            color: 'text-info'   },
+  'deactivating':     {icon: 'fa fa-adjust',      color: 'text-info'   },
+  'degraded':         {icon: 'ss-notifications',  color: 'text-warning'},
+  'inactive':         {icon: 'fa fa-circle',      color: 'text-danger' },
+  'initializing':     {icon: 'ss-notifications',  color: 'text-warning'},
+  'purged':           {icon: 'ss-tornado',        color: 'text-danger' },
+  'purging':          {icon: 'ss-tornado',        color: 'text-info'   },
+  'removed':          {icon: 'ss-trash',          color: 'text-danger' },
+  'removing':         {icon: 'ss-trash',          color: 'text-info'   },
+  'requested':        {icon: 'ss-tag',            color: 'text-info'   },
+  'registering':      {icon: 'ss-tag',            color: 'text-info'   },
+  'restoring':        {icon: 'ss-medicalcross',   color: 'text-info'   },
+  'running':          {icon: 'ss-record',         color: 'text-success'},
+  'starting':         {icon: 'fa fa-adjust',      color: 'text-info'   },
+  'stopped':          {icon: 'fa fa-circle',      color: 'text-danger' },
+  'stopping':         {icon: 'fa fa-adjust',      color: 'text-info'   },
+  'unhealthy':        {icon: 'ss-notifications',  color: 'text-danger' },
+  'updating':         {icon: 'ss-tag',            color: 'text-info'   },
+  'updating-active':  {icon: 'ss-tag',            color: 'text-info'   },
+  'updating-inactive':{icon: 'ss-tag',            color: 'text-info'   },
+};
+
 export default Ember.Mixin.create({
   endpoint: Ember.inject.service(),
 
@@ -60,6 +86,11 @@ export default Ember.Mixin.create({
         }
       }
 
+      if ( defaultStateMap[key] && defaultStateMap[key].icon )
+      {
+        return defaultStateMap[key].icon;
+      }
+
       return this.constructor.defaultStateIcon;
     }
   }.property('state','transitioning'),
@@ -77,6 +108,11 @@ export default Ember.Mixin.create({
         {
           return map[key].color;
         }
+      }
+
+      if ( defaultStateMap[key] && defaultStateMap[key].color )
+      {
+        return defaultStateMap[key].color;
       }
 
     return this.constructor.defaultStateColor;

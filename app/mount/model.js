@@ -15,13 +15,4 @@ var Mount = Resource.extend({
   }.property('instanceId'),
 });
 
-Mount.reopenClass({
-  stateMap: {
-   'active':    {icon: 'ss-record',   color: 'text-success'},
-   'inactive':  {icon: 'fa fa-circle',color: 'text-danger'},
-   'removed':   {icon: 'ss-trash',    color: 'text-danger'},
-   'purged':    {icon: 'ss-tornado',  color: 'text-danger'}
-  },
-});
-
 export default Mount;

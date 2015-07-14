@@ -56,22 +56,6 @@ Project.reopenClass({
   headers: {
     [C.HEADER.PROJECT]: undefined, // Requests for projects use the user's scope, not the project
   },
-
-  stateMap: {
-    'activating':       {icon: 'ss-tag',          color: 'text-danger'},
-    'active':           {icon: 'ss-record',       color: 'text-success'},
-    'deactivating':     {icon: 'fa fa-adjust',    color: 'text-danger'},
-    'inactive':         {icon: 'fa fa-circle',    color: 'text-danger'},
-    'purged':           {icon: 'ss-tornado',      color: 'text-danger'},
-    'purging':          {icon: 'ss-tornado',      color: 'text-danger'},
-    'registering':      {icon: 'ss-tag',          color: 'text-danger'},
-    'removed':          {icon: 'ss-trash',        color: 'text-danger'},
-    'removing':         {icon: 'ss-trash',        color: 'text-danger'},
-    'requested':        {icon: 'ss-ticket',       color: 'text-danger'},
-    'restoring':        {icon: 'ss-medicalcross', color: 'text-danger'},
-    'updating-active':  {icon: 'ss-record',       color: 'text-success'},
-    'updating-inactive':{icon: 'ss-alert',        color: 'text-danger'},
-  }
 });
 
 export default Project;

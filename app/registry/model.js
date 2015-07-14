@@ -35,14 +35,6 @@ var Registry = Resource.extend({
 
 Registry.reopenClass({
   alwaysInclude: ['credentials'],
-
-  stateMap: {
-    'active':     {icon: 'ss-record',     color: 'text-success'},
-    'inactive':   {icon: 'fa fa-circle',  color: 'text-danger'},
-    'purged':     {icon: 'ss-tornado',    color: 'text-danger'},
-    'removed':    {icon: 'ss-trash',      color: 'text-danger'},
-    'requested':  {icon: 'ss-tag',        color: 'text-info'},
-  }
 });
 
 export default Registry;
