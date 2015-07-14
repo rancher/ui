@@ -103,6 +103,7 @@ export default Ember.Route.extend({
         isService: true,
         allHosts: allHosts,
         environment: environment,
+        existingBalancer: existing,
         balancer: balancer,
         config: lbConfig,
         launchConfig: launchConfig,
