@@ -43,22 +43,26 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
 
   targetsArray: null,
   initTargets: function() {
-    var existing = null;
-    if ( this.get('balancer.id') )
-    {
-      existing = this.get('balancer.consumedServices');
-    }
-
+    var existing = this.get('existingBalancer.consumedServicesWithNames');
     var out = [];
     if ( existing )
     {
-      existing.forEach((service) => {
-        out.push({ isService: true, value: Ember.get(service,'id') });
+      existing.forEach((map) => {
+        map.get('ports').forEach((str) => {
+          var parts = str.match(/^(\d+):?([^:\/]+)?(\/.*)?$/);
+          var port = parts[1] || null;
+          var hostname = parts[2] || null;
+          var path = parts[3] || null;
+
+          out.push(Ember.Object.create({ 
+            isService: true,
+            value: map.get('service.id'),
+            hostname: hostname,
+            port: port,
+            path: path
+          }));
+        });
       });
-    }
-    else
-    {
-      out.push({isService: true, value: null});
     }
 
     this.set('targetsArray', out);

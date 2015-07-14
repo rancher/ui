@@ -50,6 +50,11 @@ Machine.reopenClass({
 
     return data;
   },
+
+  stateMap: {
+    'bootstrapping':  {icon: 'ss-tag',       color: 'text-success'},
+    'active':         {icon: 'ss-tag',       color: 'text-success'},
+  }
 });
 
 export default Machine;

@@ -29,6 +29,7 @@ var Service = Resource.extend(ReadLabels, {
       _allMaps = this.get('store').allUnremoved('serviceconsumemap');
     }
 
+    // And we need this here so that consumedServices can watch for changes
     this.set('_allMaps', _allMaps);
 
     if ( !_allServices )
@@ -53,25 +54,7 @@ var Service = Resource.extend(ReadLabels, {
   },
 
   consumedServicesWithNames: function() {
-    var all = [_allServices, _allLbServices, _allExternalServices, _allDnsServices];
-
-    return this.get('_allMaps').filterProperty('serviceId', this.get('id')).map((map) => {
-      var i = 0;
-      var service = null;
-      while ( i < all.length && !service )
-      {
-        service = all[i].filterProperty('id', map.get('consumedServiceId'))[0];
-        i++;
-      }
-
-      return Ember.Object.create({
-        name: map.get('name'),
-        service: service,
-        ports: map.get('ports')||[],
-      });
-    }).filter((obj) => {
-      return obj.get('service.id');
-    });
+    return Service.consumedServicesFor(this.get('id'));
   }.property('id','_allMaps.@each.{name,serviceId,consumedServiceId}'),
 
   consumedServices: function() {
@@ -183,18 +166,30 @@ export function activeIcon(service)
 }
 
 Service.reopenClass({
+  consumedServicesFor: function(serviceId) {
+    var allTypes = [_allServices, _allLbServices, _allExternalServices, _allDnsServices];
+
+    return _allMaps.filterProperty('serviceId', serviceId).map((map) => {
+      var i = 0;
+      var service = null;
+      while ( i < allTypes.length && !service )
+      {
+        service = allTypes[i].filterProperty('id', map.get('consumedServiceId'))[0];
+        i++;
+      }
+
+      return Ember.Object.create({
+        name: map.get('name'),
+        service: service,
+        ports: map.get('ports')||[],
+      });
+    }).filter((obj) => {
+      return obj.get('service.id');
+    });
+  },
+
   stateMap: {
-    'requested':        {icon: 'ss-tag',            color: 'text-danger'},
-    'registering':      {icon: 'ss-tag',            color: 'text-danger'},
-    'activating':       {icon: 'ss-tag',            color: 'text-danger'},
     'active':           {icon: activeIcon,          color: 'text-success'},
-    'updating-active':  {icon: 'ss-tag',            color: 'text-success'},
-    'updating-inactive':{icon: 'ss-tag',            color: 'text-danger'},
-    'deactivating':     {icon: 'ss-down',           color: 'text-danger'},
-    'inactive':         {icon: 'fa fa-circle',      color: 'text-danger'},
-    'removing':         {icon: 'ss-trash',          color: 'text-danger'},
-    'removed':          {icon: 'ss-trash',          color: 'text-danger'},
-    'degraded':         {icon: 'ss-notifications',  color: 'text-warning'},
   }
 });
 

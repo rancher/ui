@@ -7,9 +7,7 @@
 
 {{#columns-section pods=pods emptyMessage="No hosts or containers yet." as |item| }}
   {{#if item.isPendingMachine}}
-    {{#with item.machine controller="machine" as |machine|}}
-      {{host-pod model=machine dot=dot newContainer="newContainer"}}
-    {{/with}}
+    {{host-pod model=item.machine dot=dot newContainer="newContainer"}}
   {{else}}
     {{host-pod model=item dot=dot newContainer="newContainer"}}
   {{/if}}

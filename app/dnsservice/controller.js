@@ -55,17 +55,8 @@ var DnsServiceController = Cattle.LegacyTransitioningResourceController.extend({
 
 DnsServiceController.reopenClass({
   stateMap: {
-    'requested':        {icon: 'ss-tag',            color: 'text-danger'},
     'registering':      {icon: 'ss-tag',            color: 'text-danger'},
-    'activating':       {icon: 'ss-tag',            color: 'text-danger'},
     'active':           {icon: 'ss-compass',        color: 'text-success'},
-    'updating-active':  {icon: 'ss-tag',            color: 'text-success'},
-    'updating-inactive':{icon: 'ss-tag',            color: 'text-danger'},
-    'deactivating':     {icon: 'ss-down',           color: 'text-danger'},
-    'inactive':         {icon: 'fa fa-circle',      color: 'text-danger'},
-    'removing':         {icon: 'ss-trash',          color: 'text-danger'},
-    'removed':          {icon: 'ss-trash',          color: 'text-danger'},
-    'degraded':         {icon: 'ss-notifications',  color: 'text-warning'},
   }
 });
 

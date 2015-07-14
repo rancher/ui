@@ -15,6 +15,11 @@ export default Ember.Mixin.create({
     },
 
     addSystemLabel: function(key, value, type) {
+      if ( !key )
+      {
+        key = C.LABEL.SCHED_HOST_LABEL;
+      }
+
       if ( !type )
       {
         type = ((key||'').indexOf(C.LABEL.SCHED_AFFINITY) === 0 ? 'affinity' : 'system');

@@ -93,12 +93,7 @@ var Environment = Resource.extend({
 
 Environment.reopenClass({
   stateMap: {
-    'requested':        {icon: 'ss-tag',            color: 'text-danger'},
-    'activating':       {icon: 'ss-tag',            color: 'text-danger'},
     'active':           {icon: 'ss-globe',          color: 'text-success'},
-    'removing':         {icon: 'ss-trash',          color: 'text-danger'},
-    'removed':          {icon: 'ss-trash',          color: 'text-danger'},
-    'degraded':         {icon: 'ss-notifications',  color: 'text-warning'},
   }
 });
 

@@ -126,20 +126,7 @@ Host.reopenClass({
   },
 
   stateMap: {
-    'requested':        {icon: 'ss-tag',            color: 'text-danger'},
-    'registering':      {icon: 'ss-tag',            color: 'text-danger'},
-    'activating':       {icon: 'ss-tag',            color: 'text-danger'},
     'active':           {icon: 'ss-database',       color: 'text-success'},
-    'reconnecting':     {icon: 'fa fa-circle-o-notch fa-spin', color: 'text-danger'},
-    'updating-active':  {icon: 'ss-database',       color: 'text-success'},
-    'updating-inactive':{icon: 'ss-alert',          color: 'text-danger'},
-    'deactivating':     {icon: 'ss-down',           color: 'text-danger'},
-    'inactive':         {icon: 'fa fa-circle',      color: 'text-danger'},
-    'removing':         {icon: 'ss-trash',          color: 'text-danger'},
-    'removed':          {icon: 'ss-trash',          color: 'text-danger'},
-    'purging':          {icon: 'ss-tornado',        color: 'text-danger'},
-    'purged':           {icon: 'ss-tornado',        color: 'text-danger'},
-    'restoring':        {icon: 'ss-medicalcross',   color: 'text-danger'},
   }
 });
 

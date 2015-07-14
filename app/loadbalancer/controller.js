@@ -36,15 +36,7 @@ var LoadBalancerController = Cattle.LegacyTransitioningResourceController.extend
 
 LoadBalancerController.reopenClass({
   stateMap: {
-    'requested':        {icon: 'ss-tag',            color: 'text-danger'},
-    'activating':       {icon: 'ss-tag',            color: 'text-danger'},
     'active':           {icon: 'ss-fork',           color: 'text-success'},
-    'updating-active':  {icon: 'ss-fork',           color: 'text-success'},
-    'removing':         {icon: 'ss-trash',          color: 'text-danger'},
-    'removed':          {icon: 'ss-trash',          color: 'text-danger'},
-    'purging':          {icon: 'ss-tornado',        color: 'text-danger'},
-    'purged':           {icon: 'ss-tornado',        color: 'text-danger'},
-    'restoring':        {icon: 'ss-medicalcross',   color: 'text-danger'},
   }
 });
 

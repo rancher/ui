@@ -74,6 +74,7 @@ module.exports = function(defaults) {
   app.import('bower_components/dagre/dist/dagre.core.js');
   app.import('bower_components/dagre-d3/dist/dagre-d3.core.js');
   app.import('bower_components/async/lib/async.js');
+  app.import('bower_components/position-calculator/dist/position-calculator.js');
   app.import('vendor/aws-sdk-ec2.js');
 
   return app.toTree();
