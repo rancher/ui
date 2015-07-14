@@ -34,7 +34,7 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditLabels, {
     },
 
     addLink: function() {
-      this.get('linksArray').pushObject({linkName: '', targetInstanceId: null});
+      this.get('linksArray').pushObject({name: '', targetInstanceId: null});
     },
     removeLink: function(obj) {
       this.get('linksArray').removeObject(obj);
@@ -369,20 +369,6 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditLabels, {
   }.property('containerChoices.@each.hostId','instance.requestedHostId','isManagedNetwork'),
 
   linksArray: null,
-  linksAsMap: null,
-  linksDidChange: function() {
-    // Sync with the actual environment
-    var out = {};
-    this.get('linksArray').forEach(function(row) {
-      if ( row.linkName && row.targetInstanceId )
-      {
-        out[ row.linkName ] = row.targetInstanceId;
-      }
-    });
-
-    this.set('linksAsMap', out);
-  }.observes('linksArray.@each.{linkName,targetInstanceId}'),
-
   initLinks: function() {
     var out = [];
     var links = this.get('instanceLinks')||[];
@@ -396,7 +382,7 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditLabels, {
           out.push({
             existing: (value.id ? true : false),
             obj: value,
-            linkName: value.linkName,
+            name: value.name,
             targetInstanceId: value.targetInstanceId,
           });
         }
@@ -406,7 +392,7 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditLabels, {
           var match = value.match(/^([^:]+):(.*)$/);
           if ( match )
           {
-            out.push({linkName: match[1], targetInstanceId: match[2], existing: false});
+            out.push({name: match[1], targetInstanceId: match[2], existing: false});
           }
         }
       });
@@ -906,7 +892,29 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditLabels, {
     {
       // 'ports' and 'instanceLinks' need to be strings for create
       this.set('instance.ports', this.get('portsAsStrArray'));
-      this.set('instance.instanceLinks', this.get('linksAsMap'));
+
+      var linksAsMap = {};
+      this.get('linksArray').forEach((row) => {
+        if ( row.targetInstanceId )
+        {
+          var name = row.name;
+          // Lookup the container name if an "as name" wasn't given
+          if ( !name )
+          {
+            var container = this.get('hostContainerChoices').filter('id', row.targetInstanceId)[0];
+            if ( container )
+            {
+              name = container.get('name');
+            }
+          }
+
+          if ( name )
+          {
+            linksAsMap[ name ] = row.targetInstanceId;
+          }
+        }
+      });
+      this.set('instance.instanceLinks', linksAsMap);
 
       var healthCheck = this.get('healthCheck');
       if ( healthCheck.get('port') )

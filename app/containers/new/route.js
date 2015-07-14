@@ -31,10 +31,13 @@ export default Ember.Route.extend({
           return port;
         });
 
-        data.instanceLinks = (data.instanceLinks||[]).map((link) => {
-          delete link.id;
-          return link;
-        });
+        if ( Ember.isArray(data.instanceLinks) )
+        {
+          data.instanceLinks = (data.instanceLinks||[]).map((link) => {
+            delete link.id;
+            return link;
+          });
+        }
 
         healthCheckData = data.healthCheck;
         delete  data.healthCheck;

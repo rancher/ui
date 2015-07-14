@@ -6,4 +6,9 @@ export default Ember.Controller.extend(EditContainer, {
   environmentId: null,
   containerId: null,
   editing: false,
+
+  doneSaving: function() {
+    this._super();
+    this.send('goToPrevious');
+  }
 });
