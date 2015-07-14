@@ -382,7 +382,7 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditLabels, {
           out.push({
             existing: (value.id ? true : false),
             obj: value,
-            name: value.name,
+            name: value.linkName || value.name,
             targetInstanceId: value.targetInstanceId,
           });
         }
@@ -888,6 +888,7 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditLabels, {
   // Save
   // ----------------------------------
   willSave: function() {
+    var errors = [];
     if ( !this.get('editing') )
     {
       // 'ports' and 'instanceLinks' need to be strings for create
@@ -901,10 +902,10 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditLabels, {
           // Lookup the container name if an "as name" wasn't given
           if ( !name )
           {
-            var container = this.get('hostContainerChoices').filter('id', row.targetInstanceId)[0];
+            var container = this.get('store').getById('container', row.targetInstanceId);
             if ( container )
             {
-              name = container.get('name');
+              name = container.name;
             }
           }
 
@@ -912,8 +913,19 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditLabels, {
           {
             linksAsMap[ name ] = row.targetInstanceId;
           }
+          else
+          {
+            errors.push('Link to container ' + row.targetInstanceId + '  must have an "as name".');
+          }
         }
       });
+
+      if ( errors.length )
+      {
+        this.set('errors', errors);
+        return false;
+      }
+
       this.set('instance.instanceLinks', linksAsMap);
 
       var healthCheck = this.get('healthCheck');
