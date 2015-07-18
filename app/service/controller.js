@@ -14,6 +14,10 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
       return this.doAction('deactivate');
     },
 
+    cancelUpgrade: function() {
+      return this.doAction('cancelupgrade');
+    },
+
     edit: function() {
       var type = this.get('model.type').toLowerCase();
       if ( type === 'loadbalancerservice' )
@@ -88,6 +92,7 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
       { label: 'Start',         icon: 'ss-play',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
       { label: 'Stop',          icon: 'ss-pause',     action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
       { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'Cancel Upgrade',icon: 'ss-down',      action: 'cancelUpgrade',enabled: !!a.cancelupgrade },
       { label: 'Purge',         icon: 'ss-tornado',   action: 'purge',        enabled: !!a.purge },
       { divider: true },
       { label: 'View in API',   icon: '',             action: 'goToApi',      enabled: true },
@@ -96,7 +101,7 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
     ];
 
     return choices;
-  }.property('model.actions.{activate,deactivate,update,remove,purge}'),
+  }.property('model.actions.{activate,deactivate,update,remove,purge,cancelupgrade}'),
 
   state: Ember.computed.alias('model.combinedState'),
 });
