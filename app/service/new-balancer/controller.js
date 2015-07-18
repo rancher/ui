@@ -27,11 +27,6 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
     this.initStickiness();
   },
 
-  useExisting: 'no',
-  isUseExisting: Ember.computed.equal('useExisting','yes'),
-  hasNoExisting: Ember.computed.equal('activeConfigs.length',0),
-  existingConfigId: null,
-
   initHosts: function() {
   },
   hostDisabled: Ember.computed.equal('hostChoices.length',0),
@@ -132,7 +127,7 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
     });
     if ( bad.get('length') )
     {
-      errors.push('Service and Port are requried on each Target');
+      errors.push('Service and Port are required on each Target');
     }
 
     if ( errors.length )

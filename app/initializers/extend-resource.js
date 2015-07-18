@@ -7,7 +7,7 @@ export function initialize(/* container, application */) {
     pollTransitioningDelay: 30000,
     pollTransitioningInterval: 30000,
     defaultStateIcon: 'fa fa-question',
-    defaultStateColor: 'text-default',
+    defaultStateColor: 'text-primary',
   });
 }
 

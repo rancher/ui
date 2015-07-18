@@ -190,6 +190,8 @@ Service.reopenClass({
 
   stateMap: {
     'active':           {icon: activeIcon,          color: 'text-success'},
+    'upgrading':        {icon: 'ss-up',             color: 'text-info'},
+    'canceling-upgrade':{icon: 'ss-down',           color: 'text-info'},
   }
 });
 

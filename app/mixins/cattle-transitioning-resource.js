@@ -10,6 +10,7 @@ const defaultStateMap = {
   'creating':         {icon: 'ss-tag',            color: 'text-info'   },
   'deactivating':     {icon: 'fa fa-adjust',      color: 'text-info'   },
   'degraded':         {icon: 'ss-notifications',  color: 'text-warning'},
+  'error':            {icon: 'ss-alert',          color: 'text-danger' },
   'inactive':         {icon: 'fa fa-circle',      color: 'text-danger' },
   'initializing':     {icon: 'ss-notifications',  color: 'text-warning'},
   'purged':           {icon: 'ss-tornado',        color: 'text-danger' },
