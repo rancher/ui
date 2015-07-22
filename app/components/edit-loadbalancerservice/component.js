@@ -1,10 +1,11 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import EditService from 'ui/mixins/edit-service';
+import EditBalancerTarget from 'ui/mixins/edit-balancer-target';
 import C from 'ui/utils/constants';
 import { addAction } from 'ui/utils/add-view-action';
 
-export default Ember.Component.extend(NewOrEdit, EditService, {
+export default Ember.Component.extend(NewOrEdit, EditService, EditBalancerTarget, {
   editing: true,
   loading: true,
 
@@ -49,7 +50,7 @@ export default Ember.Component.extend(NewOrEdit, EditService, {
         });
 
         this.initFields();
-        this.initTargets();
+        this.initTargets(model.service);
         this.set('loading', false);
       });
     });
@@ -66,17 +67,9 @@ export default Ember.Component.extend(NewOrEdit, EditService, {
     }
   }.property('service.type'),
 
-  isBalancer: function() {
-    return this.get('service.type').toLowerCase() === 'loadbalancerservice';
-  }.property('service.type'),
-
-  hasServiceLinks: function() {
-    return this.get('service.type').toLowerCase() !== 'externalservice';
-  }.property('service.type'),
-
-  hasTargetIp: function() {
-    return this.get('service.type').toLowerCase() === 'externalservice';
-  }.property('service.type'),
+  isBalancer: true,
+  hasServiceLinks: true,
+  hasTargetIp: false,
 
   didSave: function() {
     var balancer = this.get('service');
@@ -91,72 +84,4 @@ export default Ember.Component.extend(NewOrEdit, EditService, {
   doneSaving: function() {
     this.sendAction('dismiss');
   },
-
-  // @TODO copy pasta...
-  initTargets: function() {
-    var existing = this.get('service.consumedServicesWithNames');
-    var out = [];
-    if ( existing )
-    {
-      existing.forEach((map) => {
-        map.get('ports').forEach((str) => {
-          var parts = str.match(/^(\d+):?([^:\/]+)?(\/.*)?$/);
-          var port = parts[1] || null;
-          var hostname = parts[2] || null;
-          var path = parts[3] || null;
-
-          out.push(Ember.Object.create({ 
-            isService: true,
-            value: map.get('service.id'),
-            hostname: hostname,
-            port: port,
-            path: path
-          }));
-        });
-      });
-    }
-
-    this.set('targetsArray', out);
-  },
-
-  targetResources: function() {
-    var out = [];
-    this.get('targetsArray').filterProperty('isService',true).filterProperty('value').filterProperty('port').map((choice) => {
-      var serviceId = Ember.get(choice,'value');
-      var port = Ember.get(choice,'port');
-      var hostname = Ember.get(choice,'hostname');
-      var path = Ember.get(choice,'path');
-
-      var entry = out.filterProperty('serviceId', serviceId)[0];
-      if ( !entry )
-      {
-        entry = Ember.Object.create({
-          serviceId: serviceId,
-          ports: [],
-        });
-        out.pushObject(entry);
-      }
-
-      var str = port + ":" + (hostname ? hostname : '') + (path ? path : '');
-      entry.get('ports').pushObject(str);
-    });
-
-    return out;
-  }.property('targetsArray.@each.{isService,value,hostname,path,port}'),
-
-  targetChoices: function() {
-    var list = [];
-    var env = this.get('environment');
-    var envName = env.get('name') || ('(Stack '+env.get('id')+')');
-
-    env.get('services').map((service) => {
-      list.pushObject({
-        group: 'Stack: ' + envName,
-        id: service.get('id'),
-        name: service.get('name') || ('(' + service.get('id') + ')')
-      });
-    });
-
-    return list.sortBy('group','name','id');
-  }.property('environment.services.@each.{name,id},environment.{name,id}').volatile(),
 });

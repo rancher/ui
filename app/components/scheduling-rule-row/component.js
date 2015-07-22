@@ -201,7 +201,7 @@ export default Ember.Component.extend({
       out.pushObjects(keys);
     });
 
-    return out.sort().uniq();
+    return out.map((key) => { return (key||'').toLowerCase(); }).sort().uniq();
   }.property('allHosts.@each.labels'),
 
   hostLabelValueChoices: function() {
@@ -217,7 +217,7 @@ export default Ember.Component.extend({
       }
     });
 
-    return out.sort().uniq();
+    return out.map((key) => { return (key||'').toLowerCase(); }).sort().uniq();
   }.property('userKey','allHosts.@each.labels'),
 
   allContainers: function() {
@@ -243,7 +243,7 @@ export default Ember.Component.extend({
       out.pushObjects(keys);
     });
 
-    return out.sort().uniq();
+    return out.map((key) => { return (key||'').toLowerCase(); }).sort().uniq();
   }.property('allContainers.@each.labels'),
 
   containerLabelValueChoices: function() {
@@ -258,7 +258,7 @@ export default Ember.Component.extend({
       }
     });
 
-    return out.sort().uniq();
+    return out.map((key) => { return (key||'').toLowerCase(); }).sort().uniq();
   }.property('userKey','allContainers.@each.labels'),
 
   containerValueChoices: function() {
@@ -271,7 +271,7 @@ export default Ember.Component.extend({
       }
     });
 
-    return out.sort().uniq();
+    return out.map((key) => { return (key||'').toLowerCase(); }).sort().uniq();
   }.property('allContainers.@each.name'),
 
   serviceValueChoices: function() {
@@ -285,6 +285,6 @@ export default Ember.Component.extend({
       }
     });
 
-    return out.sort().uniq();
+    return out.map((key) => { return (key||'').toLowerCase(); }).sort().uniq();
   }.property('allContainers.@each.labels'),
 });

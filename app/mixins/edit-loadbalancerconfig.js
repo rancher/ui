@@ -7,10 +7,11 @@ export default Ember.Mixin.create(EditHealthCheck,{
       this.get('listenersArray').pushObject(this.get('store').createRecord({
         type: 'loadBalancerListener',
         name: 'uilistener',
+        isPublic: true,
         sourcePort: '',
-        sourceProtocol: 'tcp',
+        sourceProtocol: 'http',
         targetPort: '',
-        targetProtocol: 'tcp',
+        targetProtocol: 'http',
         algorithm: 'roundrobin',
       }));
     },
@@ -21,6 +22,10 @@ export default Ember.Mixin.create(EditHealthCheck,{
 
     chooseProtocol: function(listener, key, val) {
       listener.set(key,val);
+    },
+
+    setPublic: function(listener, isPublic) {
+      listener.set('isPublic', isPublic);
     },
   },
 
@@ -50,6 +55,7 @@ export default Ember.Mixin.create(EditHealthCheck,{
       out.push(store.createRecord({
         type: 'loadBalancerListener',
         name: 'uilistener',
+        isPublic: true,
         sourcePort: '',
         sourceProtocol: 'http',
         targetPort: '',

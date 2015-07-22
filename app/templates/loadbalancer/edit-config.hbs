@@ -1,12 +1,30 @@
 <section class="text-center" style="padding: 0;">
   <ul class="nav nav-pills" style="display: inline-block">
     <li role="presentation" class="tab" data-section="stickiness" {{action "selectTab" "stickiness" target=view}}><a>Stickiness</a></li>
+    <li role="presentation" class="tab" data-section="labels" {{action "selectTab" "labels" target=view}}><a>Labels</a></li>
+    <li role="presentation" class="tab" data-section="scheduling" {{action "selectTab" "scheduling" target=view}}><a>Scheduling</a></li>
   </ul>
 </section>
 
 <section class="horizontal-form tab-section" style="background-color: #f8f9fa; margin: -7px 10px 0 10px;">
   <div class="section container-fluid tab-section" data-section="stickiness">
     {{partial "loadbalancer/edit-stickiness"}}
+  </div>
+
+  <div class="section" data-section="labels">
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label class="form-control-static">Labels</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{partial "edit-labels"}}
+      </div>
+    </div>
+  </div>
+
+  <div class="section" data-section="scheduling">
+    <p>Automatically pick hosts for each balancer container matching scheduling rules:</p>
+    {{partial "container/scheduling-rules"}}
   </div>
 </section>
 

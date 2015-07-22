@@ -12,7 +12,7 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditTa
 
   validate: function() {
     var errors = [];
-    if ( !this.get('service.externalIpAddresses.length') )
+    if ( !this.get('service.externalIpAddresses.length') && !this.get('service.hostname') )
     {
       errors.push('Choose one or more targets to send traffic to');
     }

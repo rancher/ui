@@ -2,11 +2,16 @@
   {{#if listenersArray.length}}
     <thead>
       <tr>
-        <th>Public Port</th>
+        <th>Source Port*</th>
+        <th width="30"></th>
+        {{#if isAdvanced}}
+          <th>Default Target Port</th>
+          <th width="30"></th>
+        {{/if}}
+        <th width="100">Access</th>
         <th width="30"></th>
         <th width="60">Protocol</th>
         <th width="30"></th>
-        <th width="100">Algorithm</th>
         <th width="40">&nbsp;</th>
       </tr>
     </thead>
@@ -17,6 +22,14 @@
         {{#if listener.id}}
           <td>{{listener.sourcePort}}</td>
           <td>&nbsp;</td>
+          {{#if isAdvanced}}
+            <td>
+              {{listener.targetPort}}
+            </td>
+            <td>&nbsp;</td>
+          {{/if}}
+          <td>{{if listener.isPublic "Public" "Internal"}}</td>
+          <td>&nbsp;</td>
           <td>{{listener.sourceProtocol}}</td>
           <td>&nbsp;</td>
           <td>{{listener.algorithm}}</td>
@@ -26,6 +39,25 @@
         {{else}}
           <td>
             {{input type="text" classNames="form-control lb-listener-source-port input-sm" min="1" max="65535" step="1" value=listener.sourcePort placeholder="e.g. 80"}}
+          </td>
+          <td>&nbsp;</td>
+          {{#if isAdvanced}}
+            <td>
+              {{input type="text" classNames="form-control lb-listener-target-port input-sm" min="1" max="65535" step="1" value=listener.targetPort placeholder="e.g. 80"}}
+            </td>
+            <td>&nbsp;</td>
+          {{/if}}
+          <td>
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">{{if listener.isPublic "Public" "Internal"}} <span class="caret"></span></button>
+              <ul class="dropdown-menu" role="menu">
+                <li role="presentation" class="dropdown-header">
+                  Select access:
+                </li>
+                <li {{action "setPublic" listener true}}><a>Public</a></li>
+                <li {{action "setPublic" listener false}}><a>Internal</a></li>
+              </ul>
+            </div>
           </td>
           <td>&nbsp;</td>
           <td>
@@ -44,9 +76,6 @@
             </div>
           </td>
           <td>&nbsp;</td>
-          <td>
-            <div class="form-control-static input-sm">Round Robin</div>
-          </td>
           <td class="text-right">
             <button {{action "removeListener" listener}} class="btn-circle-x" type="button" tabindex="-1"></button>
           </td>
