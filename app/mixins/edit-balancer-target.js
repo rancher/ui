@@ -91,7 +91,7 @@ export function stringifyTarget(tgt) {
 export default Ember.Mixin.create({
   actions: {
     addTargetService: function() {
-      this.get('targetsArray').pushObject(Ember.Object.create({isService: true, isAdvanced: false, value: null}));
+      this.get('targetsArray').pushObject(Ember.Object.create({isService: true, value: null}));
     },
     removeTarget: function(obj) {
       this.get('targetsArray').removeObject(obj);
@@ -102,11 +102,9 @@ export default Ember.Mixin.create({
     },
   },
 
-  isAdvanced: false,
-
   targetsArray: null,
   initTargets: function(service) {
-    this.set('isAdvanced', false);
+    this.set('isAdvanced', this.get('editing'));
 
     var out = [];
     var existing = null;
@@ -118,29 +116,38 @@ export default Ember.Mixin.create({
     if ( existing )
     {
       existing.forEach((map) => {
-        map.get('ports').forEach((str) => {
-          var obj = parseTarget(str);
-          if ( obj )
-          {
-            if ( obj.get('hostname') || obj.get('srcPort') || obj.get('path') || obj.get('dstPort') )
+        if ( map.get('ports.length') )
+        {
+          map.get('ports').forEach((str) => {
+            var obj = parseTarget(str);
+            if ( obj )
             {
               this.set('isAdvanced', true);
+
+              obj.setProperties({
+                isService: true,
+                value: map.get('service.id'),
+              });
+
+              out.pushObject(obj);
             }
-
-            obj.setProperties({
-              isService: true,
-              isAdvanced: false,
-              value: map.get('service.id'),
-            });
-
-            out.pushObject(obj);
-          }
-        });
+          });
+        }
+        else
+        {
+          out.pushObject(Ember.Object.create({
+            isService: true,
+            value: map.get('service.id'),
+          }));
+        }
       });
     }
     else
     {
-      out.pushObject(Ember.Object.create({isService: true, isAdvanced: false, value: null}));
+      out.pushObject(Ember.Object.create({
+        isService: true,
+        value: null
+      }));
     }
 
     this.set('targetsArray', out);
