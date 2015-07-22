@@ -105,6 +105,7 @@ export default Ember.Route.extend({
         environment: environment,
         existingBalancer: existing,
         balancer: balancer,
+        service: balancer,
         config: lbConfig,
         launchConfig: launchConfig,
         appCookie: appCookie,

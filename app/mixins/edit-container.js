@@ -858,10 +858,9 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditScheduling, {
       this.set('isRequestedHost',false);
     }
 
-    // @TODO import existing for clone
+    this._super();
   },
 
-  isRequestedHost: null,
   isRequestedHostDidChange: function() {
     if ( this.get('isRequestedHost') )
     {
