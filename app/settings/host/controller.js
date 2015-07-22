@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 function isPublic(name) {
-  if ( (name||'').trim().match(/^(localhost|192\.168\.|172\.1[6789]\.|172\.2[0123456789]\.|172\.3[01]\.|10\.)/) )
+  if ( (name||'').trim().replace(/^https?:\/\//,'').match(/^(localhost|192\.168\.|172\.1[6789]\.|172\.2[0123456789]\.|172\.3[01]\.|10\.)/) )
   {
     return false;
   }
@@ -79,7 +79,16 @@ export default Ember.Controller.extend({
   },
 
   customValueDidChange: function() {
-    if ( this.get('customValue') )
+    var val = this.get('customValue')||''.trim();
+    var idx = val.indexOf('/', 8); // 8 is enough for "https://"
+    if ( idx !== -1 )
+    {
+      // Trim paths off of the URL
+      this.set('customValue', val.substr(0,idx));
+      return;  // We'll be back...
+    }
+
+    if ( val )
     {
       this.set('customRadio','yes');
     }

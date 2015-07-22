@@ -27,6 +27,12 @@ export default Ember.Service.extend({
     return a.host;
   }.property('absolute'),
 
+  origin: function() {
+    var a = document.createElement('a');
+    a.href = this.get('absolute');
+    return a.origin;
+  }.property('absolute'),
+
   addAuthParams: function(url) {
     var token = this.get('cookies').get(C.COOKIE.TOKEN);
     if ( token )
