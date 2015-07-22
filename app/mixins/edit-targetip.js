@@ -10,37 +10,64 @@ export default Ember.Mixin.create({
     },
   },
 
+  which: null,
+  userHostname: null,
+  targetIpArray: null,
+
   initFields: function() {
     this._super();
     this.initTargetIps();
   },
 
   initTargetIps: function() {
-    var existing = this.get('service.externalIpAddresses');
-    var out = [];
-    if ( existing )
+    var hostname = this.get('service.hostname');
+    if ( hostname )
     {
-      existing.forEach((ip) => {
-        out.push({ value: ip });
+      this.set('userHostname', hostname);
+      this.set('which','hostname');
+    }
+    else
+    {
+      var ips = this.get('service.externalIpAddresses');
+      var out = [];
+      if ( ips )
+      {
+        ips.forEach((ip) => {
+          out.push({ value: ip });
+        });
+      }
+      else
+      {
+        out.push({value: null});
+      }
+
+      this.set('targetIpArray', out);
+      this.set('which','ip');
+    }
+  },
+
+  valuesDidChange: function() {
+    if ( this.get('which') === 'hostname' )
+    {
+      this.setProperties({
+        'service.hostname': this.get('userHostname'),
+        'service.externalIpAddresses': null
       });
     }
     else
     {
-      out.push({value: null});
+      var targets = this.get('targetIpArray');
+      if ( targets )
+      {
+        var out =  targets.filterProperty('value').map((choice) => {
+          return Ember.get(choice,'value');
+        }).uniq();
+
+        this.setProperties({
+          'service.hostname': null,
+          'service.externalIpAddresses': out
+        });
+      }
     }
-
-    this.set('targetIpArray', out);
-  },
-
-  targetIpsDidChange: function() {
-    var targets = this.get('targetIpArray');
-    if ( targets )
-    {
-      var out =  targets.filterProperty('value').map((choice) => {
-        return Ember.get(choice,'value');
-      }).uniq();
-
-      this.set('service.externalIpAddresses', out);
-    }
-  }.observes('targetIpArray.@each.{value}'),
+  }.observes('targetIpArray.@each.{value}','userHostname','which'),
 });
