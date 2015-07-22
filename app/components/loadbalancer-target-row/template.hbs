@@ -1,0 +1,38 @@
+{{#if isAdvanced}}
+  <td>
+    {{input classNames="form-control input-sm" value=tgt.hostname placeholder="e.g. svc.com"}}
+  </td>
+  <td class="text-center">
+    <div class="form-control-static input-sm">:</div>
+  </td>
+  <td>
+    {{input classNames="form-control input-sm" value=tgt.srcPort placeholder="e.g. 80"}}
+  </td>
+  <td>&nbsp;</td>
+  <td>
+    {{input classNames="form-control input-sm" value=tgt.path placeholder="e.g. /svc"}}
+  </td>
+  <td class="text-center">
+    <div class="form-control-static input-sm"><i class="ss-right"></i></div>
+  </td>
+{{/if}}
+<td>
+  {{display-name-select
+    classNames="form-control input-sm lb-target"
+    prompt="Select a service..."
+    value=tgt.value
+    content=targetChoices
+    optionValuePath="content.id"
+    optionLabelPath="content.name"
+    optionGroupPath="group"
+  }}
+</td>
+{{#if isAdvanced}}
+  <td>&nbsp;</td>
+  <td>
+    {{input classNames="form-control input-sm" value=tgt.dstPort placeholder="e.g. 8080"}}
+  </td>
+{{/if}}
+<td class="text-right">
+  <button {{action "remove"}} class="btn-circle-x" type="button" tabindex="-1"></button>
+</td>

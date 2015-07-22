@@ -14,25 +14,31 @@ test('it works', function(assert) {
 
 var data = [
   // New Format
-  {str: "example.com:80/path:81",      parsed: {hostname: 'example.com', srcPort: 80,    path: '/path',  dstPort: 81}},
-  {str: "example.com:80:81",           parsed: {hostname: 'example.com', srcPort: 80,    path: null,     dstPort: 81}},
-  {str: "example.com/path:81",         parsed: {hostname: 'example.com', srcPort: null,  path: '/path',  dstPort: 81}},
-  {str: "example.com:81",              parsed: {hostname: 'example.com', srcPort: null,  path: null,     dstPort: 81}},
-  {str: "80/path:81",                  parsed: {hostname: null,          srcPort: 80,    path: '/path',  dstPort: 81}},
-  {str: "80:81",                       parsed: {hostname: null,          srcPort: 80,    path: null,     dstPort: 81}},
-  {str: "/path:81",                    parsed: {hostname: null,          srcPort: null,  path: '/path',  dstPort: 81}},
-//{"81", Invalid, but symmetry..       parsed: {hostname: null,          srcPort: null,  path: null,     dstPort: 81}},
+  {str: "example.com:80/path=81",     parsed: {hostname: 'example.com', srcPort: 80,    path: '/path',  dstPort: 81}},
+  {str: "example.com:80=81",          parsed: {hostname: 'example.com', srcPort: 80,    path: null,     dstPort: 81}},
+  {str: "example.com/path=81",        parsed: {hostname: 'example.com', srcPort: null,  path: '/path',  dstPort: 81}},
+  {str: "example.com=81",             parsed: {hostname: 'example.com', srcPort: null,  path: null,     dstPort: 81}},
+  {str: "80/path=81",                 parsed: {hostname: null,          srcPort: 80,    path: '/path',  dstPort: 81}},
+  {str: "80=81",                      parsed: {hostname: null,          srcPort: 80,    path: null,     dstPort: 81}},
+  {str: "/path=81",                   parsed: {hostname: null,          srcPort: null,  path: '/path',  dstPort: 81}},
+  {str: "81",                         parsed: {hostname: null,          srcPort: null,  path: null,     dstPort: 81}},
+  {str: "example.com:80/path",        parsed: {hostname: 'example.com', srcPort: 80,    path: '/path',  dstPort: null}},
+  {str: "example.com:80",             parsed: {hostname: 'example.com', srcPort: 80,    path: null,     dstPort: null}},
+  {str: "example.com/path",           parsed: {hostname: 'example.com', srcPort: null,  path: '/path',  dstPort: null}},
+  {str: "example.com",                parsed: {hostname: 'example.com', srcPort: null,  path: null,     dstPort: null}},
+  {str: "80/path",                    parsed: {hostname: null,          srcPort: 80,    path: '/path',  dstPort: null}},
+//  {str: "80", Invalid, == dstPort   parsed: {hostname: null,          srcPort: 80,    path: null,     dstPort: null}},
+  {str: "/path",                      parsed: {hostname: null,          srcPort: null,  path: '/path',  dstPort: null}},
+//  {"", Invalid, but symmetry...     parsed: {hostname: null,          srcPort: null,  path: null,     dstPort: null}},
 
   // Old format
-  {str: "81:example.com/path",         parsed: {hostname: 'example.com', srcPort: null,  path: '/path',  dstPort: 81}, expected: "example.com/path:81"},
-  {str: "81:example.com",              parsed: {hostname: 'example.com', srcPort: null,  path: null,     dstPort: 81}, expected: "example.com:81"},
-  {str: "81:/path",                    parsed: {hostname: null,          srcPort: null,  path: '/path',  dstPort: 81}, expected: "/path:81"},
+  {str: "81:example.com/path",         parsed: {hostname: 'example.com', srcPort: null,  path: '/path',  dstPort: 81}, expected: "example.com/path=81"},
+  {str: "81:example.com",              parsed: {hostname: 'example.com', srcPort: null,  path: null,     dstPort: 81}, expected: "example.com=81"},
+  {str: "81:/path",                    parsed: {hostname: null,          srcPort: null,  path: '/path',  dstPort: 81}, expected: "/path=81"},
 
   // Invalid
-  {str: "purplemonkeydishwasher",      parsed: null},
-  {str: "81",                          parsed: null},
-  {str: ":81",                         parsed: null},
-  {str: "example.com::81",             parsed: null},
+//  {str: ":81",                         parsed: null},
+//  {str: "example.com::81",             parsed: null},
 ];
 
 data.forEach(function(obj) {

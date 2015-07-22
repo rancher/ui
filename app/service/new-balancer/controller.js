@@ -2,8 +2,9 @@ import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import EditLoadBalancerConfig from 'ui/mixins/edit-loadbalancerconfig';
 import EditBalancerTarget from 'ui/mixins/edit-balancer-target';
+import EditScheduling from 'ui/mixins/edit-scheduling';
 
-export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLoadBalancerConfig, EditBalancerTarget, {
+export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLoadBalancerConfig, EditBalancerTarget, EditScheduling, {
   queryParams: ['environmentId','serviceId','tab'],
   environmentId: null,
   serviceId: null,
@@ -11,15 +12,8 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
   error: null,
   editing: false,
   primaryResource: Ember.computed.alias('model.balancer'),
-
-  actions: {
-    addTargetService: function() {
-      this.get('targetsArray').pushObject({isService: true, value: null, protocol: 'http'});
-    },
-    removeTarget: function(obj) {
-      this.get('targetsArray').removeObject(obj);
-    },
-  },
+  labelResource: Ember.computed.alias('model.launchConfig'),
+  isGlobal: false,
 
   initFields: function() {
     this._super();
@@ -56,19 +50,19 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
     }
 
     var bad = this.get('targetsArray').filter(function(obj) {
-      return !Ember.get(obj,'value') || !Ember.get(obj, 'dstPort');
+      return !Ember.get(obj,'value');
     });
     if ( bad.get('length') )
     {
-      errors.push('Target Service and Port are required on each Target');
+      errors.push('Target Service is required on each Target');
     }
 
     bad = this.get('targetsArray').filter(function(obj) {
-      return !Ember.get(obj,'hostname') && !Ember.get(obj, 'srcPort') && !Ember.get(obj,'path');
+      return Ember.get('srcPort') && !Ember.get(obj,'hostname') && !Ember.get(obj, 'dstPort') && !Ember.get(obj,'path');
     });
     if ( bad.get('length') )
     {
-      errors.push('At least one of Request Host, Port, or Path are required on each Target');
+      errors.push('A Target can\'t have just a Source Port.  Add Request Host, Request Path, or Target Port, or remove the Source Port.');
     }
 
     if ( errors.length )

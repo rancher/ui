@@ -4,8 +4,10 @@ import SelectTab from 'ui/mixins/select-tab';
 
 export default Ember.View.extend(SelectTab, {
   actions: {
-    addTargetService: addAction('addTargetService', '.lb-target'),
-    addListener: addAction('addListener', '.lb-listener-source-port'),
+    addTargetService:   addAction('addTargetService', '.lb-target'),
+    addListener:        addAction('addListener',      '.lb-listener-source-port'),
+    addSchedulingRule:  addAction('addSchedulingRule','.schedule-rule'),
+    addLabel:           addAction('addLabel',         '.label-key'),
   },
 
   didInsertElement: function() {

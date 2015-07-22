@@ -121,7 +121,7 @@ export default Ember.Route.extend({
   resetController: function (controller, isExisting/*, transition*/) {
     if (isExisting)
     {
-      controller.set('tab', 'listeners');
+      controller.set('tab', 'stickiness');
       controller.set('stickiness', 'none');
       controller.set('environmentId', null);
       controller.set('serviceId', null);

@@ -3,9 +3,9 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 import ShellQuote from 'npm:shell-quote';
 import Util from 'ui/utils/util';
 import EditHealthCheck from 'ui/mixins/edit-healthcheck';
-import EditLabels from 'ui/mixins/edit-labels';
+import EditScheduling from 'ui/mixins/edit-scheduling';
 
-export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditLabels, {
+export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditScheduling, {
   needs: ['hosts'],
   queryParams: ['tab','hostId','advanced'],
   tab: 'command',
@@ -131,14 +131,6 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditLabels, {
           ary.removeObject(item);
         }
       });
-    },
-
-    addSchedulingRule: function() {
-      this.send('addSystemLabel','','','affinity');
-    },
-
-    removeSchedulingRule: function(obj) {
-      this.send('removeLabel', obj);
     },
   },
 

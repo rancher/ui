@@ -63,6 +63,22 @@
       {{partial "loadbalancer/edit-targets"}}
     </div>
   </div>
+  {{#if isAdvanced}}
+    <div class="row">
+      <div class="col-sm-12 col-md-8 col-md-offset-2">
+        <p class="help-block">If Request Host and/or Path are specified, connections to HTTP listening ports will be routed to the appropriate target based on the request.  For example, you could use this to send traffic for domain1.com to one service and domain2.com to a different service.</p>
+        <p class="help-block">Matching requests will be sent to the Target Service on the Target Port.  If that is not set, then the Default Target port for the Source Port.  If that is also not set, then the Source Port.</p>
+      </div>
+    </div>
+  {{else}}
+    {{#if targetsArray.length}}
+      <div class="row">
+        <div class="col-sm-12 col-md-8 col-md-offset-2">
+          <button {{action "setAdvanced"}} class="btn btn-link btn-sm" type="button">Show advanced routing options</button><small>&ndash; Direct requests to different services based on port HTTP Host header, or request path</small>
+        </div>
+      </div>
+    {{/if}}
+  {{/if}}
 </section>
 
 {{partial "form-divider"}}

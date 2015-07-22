@@ -1,105 +1,48 @@
 import Ember from 'ember';
 
-// New Format: [hostname][:srcPort][/path]:dstPort
+// New Format: [hostname][:srcPort][/path][=dstPort]
 // Older format: dstPort:[hostname][/path]
 export function parseTarget(str) {
   var srcPort = null, dstPort = null, hostname = null, path = null;
-  var idx;
   str = str.trim();
 
-  var parts = str.split(':');
-  if ( parts.length === 2 )
+  var match;
+  if ( match = str.match(/^(\d+)$/) )
   {
-    if ( !parts[0].length || !parts[1].length)
-    {
-      // Invalid: ":something" or "something:"
-      return null;
-    }
-
-    if ( parts[0].match(/^[0-9]+$/) )
-    {
-      // old: dstPort:[hostname][/path] or new: /path:dstPort
-      if ( parts[1].match(/^[0-9]+$/) )
-      {
-        srcPort = parseInt(parts[0], 10);
-        dstPort = parseInt(parts[1], 10);
-      }
-      else
-      {
-        dstPort = parseInt(parts[0], 10);
-
-        idx = parts[1].indexOf('/');
-        if ( idx >= 0 )
-        {
-          hostname = parts[1].substr(0,idx) || null;
-          path = parts[1].substr(idx);
-        }
-        else
-        {
-          hostname = parts[1];
-          path = null;
-        }
-      }
-    }
-    else
-    {
-      // new: [hostname][/path]:dstPort or srcPort[/path]:dstPort
-      dstPort = parseInt(parts[1], 10);
-      idx = parts[0].indexOf('/');
-      if ( idx === -1 )
-      {
-        srcPort = null;
-        hostname = parts[0];
-        path = null;
-      }
-      else
-      {
-        var begin = parts[0].substr(0,idx);
-        var end = parts[0].substr(idx);
-
-        if ( begin.match(/^[0-9]+$/) )
-        {
-          // new: srcPort[/path]:dstPort
-          hostname = null;
-          srcPort = parseInt(begin, 10);
-          path = end;
-        }
-        else
-        {
-          // new: hostname/path:dstPort
-          hostname = begin || null;
-          srcPort = null;
-          path = end;
-        }
-      }
-    }
+    // New Format: just a dstPort
+    hostname = null;
+    srcPort = null;
+    path = null;
+    dstPort = parseInt(match[1], 10);
   }
-  else if ( parts.length === 3)
+  else if ( match = str.match(/(\d+):([^\/]+)?(\/.*)?$/) )
   {
-    if ( !parts[0].length || !parts[1].length || !parts[2].length)
+    // Old Format: dstPort[:hostname][/path]
+    hostname = match[2] || null;
+    srcPort = null;
+    path = match[3] || null;
+    dstPort = parseInt(match[1], 10);
+  }
+  else if ( match = str.match(/([^/=:]+)?(:(\d+))?(\/[^=]+)?(=(\d+))?$/) )
+  {
+    // New Format: [hostname][:srcPort][/path][=dstPort]
+    if ( match[1] && match[1].match(/^\d+$/) )
     {
-      // Invalid: ":something" or "something:" or "something::something"
-      return null;
-    }
-
-    // [hostname]:srcPort[/path]:dstPort
-    dstPort = parseInt(parts[2], 10);
-    hostname = parts[0];
-    idx = parts[1].indexOf('/');
-    if ( idx === -1 )
-    {
-      srcPort = parseInt(parts[1], 10);
-      path = null;
+      // It's a port
+      hostname = null;
+      srcPort = parseInt(match[1], 10) || null;
     }
     else
     {
-      srcPort = parseInt(parts[1].substr(0,idx), 10);
-      path = parts[1].substr(idx);
+      hostname = match[1] || null;
+      srcPort = parseInt(match[3], 10) || null;
     }
+
+    dstPort = parseInt(match[6], 10) || null;
+    path = match[4] || null;
   }
   else
   {
-    // Invalid
     return null;
   }
 
@@ -117,18 +60,24 @@ export function stringifyTarget(tgt) {
   var hostname = Ember.get(tgt,'hostname');
   var path = Ember.get(tgt,'path');
 
-  // New Format: [hostname][:srcPort][/path]:dstPort
-  if ( hostname || srcPort || path )
+  // New Format: [hostname][:srcPort][/path][=dstPort]
+  if ( hostname || path || dstPort )
   {
     var str = hostname || '';
     if ( srcPort )
     {
       str += (str ? ':' : '') + srcPort;
     }
-    if ( path ) {
-      str += path;
+
+    if ( path )
+    {
+      str += (path.substr(0,1) === '/' ? '' : '/') + path;
     }
-    str += ':' + dstPort;
+
+    if ( dstPort )
+    {
+      str += (str ? '=' : '') + dstPort;
+    }
 
     return str;
   }
@@ -140,8 +89,25 @@ export function stringifyTarget(tgt) {
 
 
 export default Ember.Mixin.create({
+  actions: {
+    addTargetService: function() {
+      this.get('targetsArray').pushObject(Ember.Object.create({isService: true, isAdvanced: false, value: null}));
+    },
+    removeTarget: function(obj) {
+      this.get('targetsArray').removeObject(obj);
+    },
+
+    setAdvanced: function() {
+      this.set('isAdvanced', true);
+    },
+  },
+
+  isAdvanced: false,
+
   targetsArray: null,
   initTargets: function(service) {
+    this.set('isAdvanced', false);
+
     var out = [];
     var existing = null;
     if ( service )
@@ -156,8 +122,14 @@ export default Ember.Mixin.create({
           var obj = parseTarget(str);
           if ( obj )
           {
+            if ( obj.get('hostname') || obj.get('srcPort') || obj.get('path') || obj.get('dstPort') )
+            {
+              this.set('isAdvanced', true);
+            }
+
             obj.setProperties({
               isService: true,
+              isAdvanced: false,
               value: map.get('service.id'),
             });
 
@@ -166,13 +138,17 @@ export default Ember.Mixin.create({
         });
       });
     }
+    else
+    {
+      out.pushObject(Ember.Object.create({isService: true, isAdvanced: false, value: null}));
+    }
 
     this.set('targetsArray', out);
   },
 
   targetResources: function() {
     var out = [];
-    this.get('targetsArray').filterProperty('isService',true).filterProperty('value').filterProperty('dstPort').map((choice) => {
+    this.get('targetsArray').filterProperty('isService',true).filterProperty('value').map((choice) => {
       var serviceId = Ember.get(choice,'value');
 
       var entry = out.filterProperty('serviceId', serviceId)[0];

@@ -9,9 +9,9 @@ export default Ember.Mixin.create(EditHealthCheck,{
         name: 'uilistener',
         isPublic: true,
         sourcePort: '',
-        sourceProtocol: 'tcp',
+        sourceProtocol: 'http',
         targetPort: '',
-        targetProtocol: 'tcp',
+        targetProtocol: 'http',
         algorithm: 'roundrobin',
       }));
     },
