@@ -4,6 +4,7 @@ import C from 'ui/utils/constants';
 export default Ember.Route.extend({
   cookies: Ember.inject.service(),
   github: Ember.inject.service(),
+  access: Ember.inject.service(),
 
   previousParams: null,
   previousRoute: null,
@@ -153,35 +154,7 @@ export default Ember.Route.extend({
       return;
     }
 
-    // Find out if auth is enabled
-    return this.get('store').rawRequest({
-      url: 'token',
-      headers: {
-        [C.HEADER.PROJECT]: undefined
-      }
-    })
-    .then((obj) => {
-      // If we get a good response back, the API supports authentication
-      var body = JSON.parse(obj.xhr.responseText);
-      var token = body.data[0];
-
-      this.set('app.authenticationEnabled', token.security);
-      this.set('app.githubClientId', token.clientId);
-      this.set('app.githubHostname', token.hostname );
-
-      if ( !token.security )
-      {
-        this.get('github').clearSessionKeys();
-      }
-
-      return Ember.RSVP.resolve(undefined,'API supports authentication');
-    })
-    .catch((obj) => {
-      // Otherwise this API is too old to do auth.
-      this.set('app.authenticationEnabled', false);
-      this.set('app.initError', obj);
-      return Ember.RSVP.resolve(undefined,'Error determining API authentication');
-    });
+    return this.get('access').detect();
   },
 
   setupController: function(controller/*, model*/) {

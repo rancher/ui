@@ -10,7 +10,11 @@ Router.map(function() {
   this.route('index');
   this.route('failWhale', { path: '/fail' });
 
-  this.route('login');
+  this.route('login', function() {
+    this.route('github');
+    this.route('ldap');
+  });
+
   this.route('logout');
   this.route('authenticated', { path: '/'}, function() {
 

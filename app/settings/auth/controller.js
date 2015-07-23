@@ -4,6 +4,7 @@ import C from 'ui/utils/constants';
 export default Ember.Controller.extend({
   github: Ember.inject.service(),
   endpoint: Ember.inject.service(),
+  access: Ember.inject.service(),
 
   confirmDisable: false,
   errors: null,
@@ -126,8 +127,8 @@ export default Ember.Controller.extend({
 
       // Send authenticate immediately so that the popup isn't blocked,
       // even though the config isn't necessarily saved yet...
-      this.set('app.githubHostname', model.get('hostname'));
-      this.set('app.githubClientId', model.get('clientId'));
+      this.set('github.hostname', model.get('hostname'));
+      this.set('github.clientId', model.get('clientId'));
       this.send('authenticate');
 
       model.save().catch(err => {
@@ -151,7 +152,7 @@ export default Ember.Controller.extend({
     },
 
     gotCode: function(code) {
-      this.get('github').login(code).then(res => {
+      this.get('access').login(code).then(res => {
         var auth = JSON.parse(res.xhr.responseText);
         this.send('authenticationSucceeded', auth);
       }).catch(res => {
@@ -166,7 +167,7 @@ export default Ember.Controller.extend({
       this.set('organizations', auth.orgs);
 
       // Set this to true so the token will be sent with the request
-      this.set('app.authenticationEnabled',true);
+      this.set('access.enabled', true);
 
       // Clear the GitHub cache in case the hostname has changed
       this.get('github').clearCache();
@@ -197,7 +198,7 @@ export default Ember.Controller.extend({
           }
         });
       }).catch((err) => {
-        this.set('app.authenticationEnabled',false);
+        this.set('access.enabled', false);
         this.send('gotError', err);
       });
     },
@@ -308,8 +309,8 @@ export default Ember.Controller.extend({
 
 
       model.save().then(() => {
-        this.get('github').clearSessionKeys();
-        this.set('app.authenticationEnabled',false);
+        this.get('acess').clearSessionKeys();
+        this.set('acccess.enabled',false);
         this.send('waitAndRefresh');
       }).catch((err) => {
         this.send('gotError', err);

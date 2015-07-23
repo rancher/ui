@@ -7,6 +7,10 @@ export default Ember.Service.extend({
   cookies: Ember.inject.service(),
   session: Ember.inject.service(),
 
+  // Set by app/services/access
+  hostname: null,
+  clientId: null,
+
   find: function(type, id) {
     if ( type === 'team' )
     {
@@ -102,8 +106,8 @@ export default Ember.Service.extend({
       redirect = Util.addQueryParam(redirect, 'isTest', 1);
     }
 
-    var url = Util.addQueryParams('https://' + (this.get('app.githubHostname') || C.GITHUB.DEFAULT_HOSTNAME) + C.GITHUB.AUTH_PATH, {
-      client_id: this.get('app.githubClientId'),
+    var url = Util.addQueryParams('https://' + (this.get('hostname') || C.GITHUB.DEFAULT_HOSTNAME) + C.GITHUB.AUTH_PATH, {
+      client_id: this.get('clientId'),
       state: this.generateState(),
       scope: C.GITHUB.SCOPE,
       redirect_uri: redirect
@@ -134,51 +138,5 @@ export default Ember.Service.extend({
         cb('Github access was not authorized');
       }
     };
-  },
-
-  login: function(code) {
-    var session = this.get('session');
-
-    var headers = {};
-    headers[C.HEADER.PROJECT] = undefined; // Explictly not send project
-
-    return this.get('store').rawRequest({
-      url: 'token',
-      method: 'POST',
-      headers: headers,
-      data: {
-        code: code
-      },
-    }).then((res) => {
-      var auth = JSON.parse(res.xhr.responseText);
-      var interesting = {};
-      C.TOKEN_TO_SESSION_KEYS.forEach((key) => {
-        if ( typeof auth[key] !== 'undefined' )
-        {
-          interesting[key] = auth[key];
-        }
-      });
-
-      this.get('cookies').set(C.COOKIE.TOKEN, auth['jwt'], {
-        path: '/',
-        secure: window.location.protocol === 'https:'
-      });
-
-      session.setProperties(interesting);
-      return res;
-    }).catch((res) => {
-      var err = JSON.parse(res.xhr.responseText);
-      return Ember.RSVP.reject(err);
-    });
-  },
-
-  clearSessionKeys: function() {
-    var values = {};
-    C.TOKEN_TO_SESSION_KEYS.forEach((key) => {
-      values[key] = undefined;
-    });
-
-    this.get('session').setProperties(values);
-    this.get('cookies').remove(C.COOKIE.TOKEN);
   },
 });
