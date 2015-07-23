@@ -1,8 +1,7 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
-import EditLabels from 'ui/mixins/edit-labels';
+import EditScheduling from 'ui/mixins/edit-scheduling';
 
-export default Ember.Mixin.create(EditLabels, {
+export default Ember.Mixin.create(EditScheduling, {
   primaryResource: Ember.computed.alias('model.service'),
   labelResource: Ember.computed.alias('model.service.launchConfig'),
 
@@ -77,39 +76,6 @@ export default Ember.Mixin.create(EditLabels, {
 
   serviceLinksDidChange: function() {
   }.observes('serviceLinksArray.@each.{name,serviceId}'),
-
-  // ----------------------------------
-  // Scheduling
-  // ----------------------------------
-  isGlobal: null,
-  initScheduling: function() {
-    var existing = this.getLabel(C.LABEL.SCHED_GLOBAL);
-    this.set('isGlobal', !!existing);
-    this._super();
-    if ( this.get('isRequestedHost') )
-    {
-      this.set('isGlobal', false);
-    }
-  },
-
-  globalDidChange: function() {
-    if ( this.get('isGlobal') )
-    {
-      this.setLabel(C.LABEL.SCHED_GLOBAL,'true');
-      this.set('isRequestedHost', false);
-    }
-    else
-    {
-      this.removeLabel(C.LABEL.SCHED_GLOBAL);
-    }
-  }.observes('isGlobal'),
-
-  isRequestedHostDidChangeGlobal: function() {
-    if ( this.get('isRequestedHost') )
-    {
-      this.set('isGlobal', false);
-    }
-  }.observes('isRequestedHost'),
 
   // ----------------------------------
   // Save

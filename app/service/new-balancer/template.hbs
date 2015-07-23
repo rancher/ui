@@ -20,17 +20,7 @@
     </div>
   </div>
 
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label>Scale</label>
-    </div>
-    <div class="col-sm-2 col-md-1">
-      {{balancer.scale}}
-    </div>
-    <div class="col-sm-10 col-md-7">
-      {{input-slider value=balancer.scale valueMin=1 valueMax=10 scaleMin=0}}
-    </div>
-  </div>
+  {{partial "service/edit-scale"}}
 
   {{partial "form-divider"}}
 
@@ -66,7 +56,7 @@
   {{#if isAdvanced}}
     <div class="row">
       <div class="col-sm-12 col-md-8 col-md-offset-2">
-        <p class="help-block">If Request Host and/or Path are specified, connections to HTTP listening ports will be routed to the appropriate target based on the request.  For example, you could use this to send traffic for domain1.com to one service and domain2.com to a different service.</p>
+        <p class="help-block">If Request Host and/or Path are specified, connections to HTTP listening ports will be routed to the appropriate target based on the request.  For example, you could use this to send traffic for domain1.com to a different service than domain2.com, or domain3.com/admin to a different service than domain3.com.</p>
         <p class="help-block">Matching requests will be sent to the Target Service on the Target Port.  If that is not set, then the Default Target port for the Source Port.  If that is also not set, then the Source Port.</p>
       </div>
     </div>
@@ -74,7 +64,7 @@
     {{#if targetsArray.length}}
       <div class="row">
         <div class="col-sm-12 col-md-8 col-md-offset-2">
-          <button {{action "setAdvanced"}} class="btn btn-link btn-sm" type="button">Show advanced routing options</button><small>&ndash; Direct requests to different services based on port HTTP Host header, or request path</small>
+          <button {{action "setAdvanced"}} class="btn btn-link btn-sm" type="button">Show advanced routing options</button><small>&ndash; Direct requests to different services based on port, Host header, or request path</small>
         </div>
       </div>
     {{/if}}

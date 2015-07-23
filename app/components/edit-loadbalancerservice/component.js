@@ -8,6 +8,7 @@ import { addAction } from 'ui/utils/add-view-action';
 export default Ember.Component.extend(NewOrEdit, EditService, EditBalancerTarget, {
   editing: true,
   loading: true,
+  isAdvanced: true,
 
   actions: {
     addServiceLink:        addAction('addServiceLink',  '.service-link'),

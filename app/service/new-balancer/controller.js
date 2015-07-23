@@ -17,6 +17,7 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
 
   initFields: function() {
     this._super();
+    this.initScheduling();
     this.initListeners();
     this.initTargets(this.get('existingBalancer'));
     this.initStickiness();
@@ -58,11 +59,11 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
     }
 
     bad = this.get('targetsArray').filter(function(obj) {
-      return Ember.get('srcPort') && !Ember.get(obj,'hostname') && !Ember.get(obj, 'dstPort') && !Ember.get(obj,'path');
+      return Ember.get(obj, 'srcPort') && !Ember.get(obj, 'hostname') && !Ember.get(obj, 'dstPort') && !Ember.get(obj,'path');
     });
     if ( bad.get('length') )
     {
-      errors.push('A Target can\'t have just a Source Port.  Add Request Host, Request Path, or Target Port, or remove the Source Port.');
+      errors.push('A Target can\'t have just a Source Port.  Remove it, or add a Request Host, Request Path, or Target Port.');
     }
 
     if ( errors.length )

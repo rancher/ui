@@ -9,9 +9,9 @@ export default Ember.Route.extend({
   },
 
   setupController: function(controller, model) {
-    var thisPage = window.location.host;
+    var thisPage = window.location.origin;
     controller.set('thisPage', thisPage);
-    var endpoint = this.get('endpoint.host');
+    var endpoint = this.get('endpoint.origin');
     var isDifferent = endpoint !== thisPage;
     if ( endpoint !== thisPage )
     {
