@@ -30,6 +30,9 @@ var data = [
 //  {str: "80", Invalid, == dstPort   parsed: {hostname: null,          srcPort: 80,    path: null,     dstPort: null}},
   {str: "/path",                      parsed: {hostname: null,          srcPort: null,  path: '/path',  dstPort: null}},
 //  {"", Invalid, but symmetry...     parsed: {hostname: null,          srcPort: null,  path: null,     dstPort: null}},
+//
+  // Special case, numeric hostname
+  {str: "1:2/3=4",                    parsed: {hostname: '1',           srcPort: 2,     path: '/3',     dstPort: 4}},
 
   // Old format
   {str: "81:example.com/path",         parsed: {hostname: 'example.com', srcPort: null,  path: '/path',  dstPort: 81}, expected: "example.com/path=81"},

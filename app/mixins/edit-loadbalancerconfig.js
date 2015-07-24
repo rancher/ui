@@ -37,13 +37,17 @@ export default Ember.Mixin.create(EditHealthCheck,{
     var existingRegular = this.get('listeners');
     if ( existingService )
     {
-      existingService.forEach((listener) => {
-        var neu = listener.cloneForNew();
-        neu.setProperties({
-          serviceId: null,
-          name: null,
-        });
-        out.push(neu);
+      existingService.forEach((l) => {
+        out.push(store.createRecord({
+          type: 'loadBalancerListener',
+          name: 'uilistener',
+          isPublic: !!l.get('sourcePort'),
+          sourcePort: l.get('sourcePort') ? l.get('sourcePort') : l.get('privatePort'),
+          sourceProtocol: l.get('sourceProtocol'),
+          targetPort: l.get('targetPort'),
+          targetProtocol: l.get('targetProtocol'),
+          algorithm: 'roundrobin',
+        }));
       });
     }
     else if ( existingRegular )
