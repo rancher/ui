@@ -28,20 +28,20 @@ export default Ember.Route.extend({
         launchConfig = balancer.get('launchConfig');
         launchConfig.set('type','container');
         launchConfig = store.createRecord(launchConfig);
+        balancer.set('launchConfig', launchConfig);
 
         lbConfig = balancer.get('loadBalancerConfig');
         lbConfig.set('type','loadBalancerConfig');
         lbConfig = store.createRecord(lbConfig);
         lbConfig.set('loadBalancerListeners', balancer.get('loadBalancerListeners'));
-
-        lbConfig = store.createRecord(lbConfig);
-        lbConfig.set('loadBalancerListeners', balancer.get('loadBalancerListeners'));
+        balancer.set('loadBalancerConfig', lbConfig);
 
         appCookie = lbConfig.get('appCookieStickinessPolicy');
         if ( appCookie )
         {
           appCookie.set('type','loadBalancerAppCookieStickinessPolicy');
           appCookie = store.createRecord(appCookie);
+          lbConfig.set('appCookieStickinessPolicy', appCookie);
         }
 
         lbCookie = lbConfig.get('lbCookieStickinessPolicy');
@@ -49,6 +49,7 @@ export default Ember.Route.extend({
         {
           lbCookie.set('type','loadBalancerCookieStickinessPolicy');
           lbCookie = store.createRecord(lbCookie);
+          lbConfig.set('lbCookieStickinessPolicy', lbCookie);
         }
       }
       else
