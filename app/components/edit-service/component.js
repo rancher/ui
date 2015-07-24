@@ -6,6 +6,8 @@ import C from 'ui/utils/constants';
 import { addAction } from 'ui/utils/add-view-action';
 
 export default Ember.Component.extend(NewOrEdit, EditService, EditTargetIp, {
+  allServices: Ember.inject.service(),
+
   editing: true,
   loading: true,
 
@@ -25,20 +27,17 @@ export default Ember.Component.extend(NewOrEdit, EditService, EditTargetIp, {
   },
 
   loadDependencies: function() {
-    var store = this.get('store');
     var service = this.get('originalModel');
 
     var dependencies = [
-      store.findAll('environment'), // Need inactive ones in case a service points to an inactive environment
-      store.findAllUnremoved('service'),
+      this.get('allServices').choices(),
     ];
 
     Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
       var clone = service.clone();
       var model = Ember.Object.create({
         service: clone,
-        allEnvironments: results[0],
-        allServices: results[1],
+        allServices: results[0],
       });
 
       this.setProperties({

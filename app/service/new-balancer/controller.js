@@ -56,7 +56,14 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
     });
     if ( bad.get('length') )
     {
-      errors.push('Target Service is required on each Target');
+      if ( this.get('model.isAdvanced') )
+      {
+        errors.push('Target Service is required on each Target');
+      }
+      else
+      {
+        this.get('targetsArray').removeObjects(bad);
+      }
     }
 
     bad = this.get('targetsArray').filter(function(obj) {
