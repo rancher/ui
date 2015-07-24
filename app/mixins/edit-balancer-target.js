@@ -177,21 +177,4 @@ export default Ember.Mixin.create({
 
     return out;
   }.property('targetsArray.@each.{isService,value,hostname,path,srcPort,dstPort}'),
-
-  targetChoices: function() {
-    var list = [];
-    var env = this.get('environment');
-    var envName = env.get('name') || ('(Stack '+env.get('id')+')');
-
-    env.get('services').map((service) => {
-      list.pushObject({
-        group: 'Stack: ' + envName,
-        id: service.get('id'),
-        name: service.get('name') || ('(' + service.get('id') + ')')
-      });
-    });
-
-    return list.sortBy('group','name','id');
-  }.property('environment.services.@each.{name,id},environment.{name,id}').volatile(),
-
 });

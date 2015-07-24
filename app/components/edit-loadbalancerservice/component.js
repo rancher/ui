@@ -34,26 +34,31 @@ export default Ember.Component.extend(NewOrEdit, EditService, EditBalancerTarget
   },
 
   loadDependencies: function() {
+    var store = this.get('store');
     var service = this.get('originalModel');
 
-    this.get('store').find('environment', service.get('environmentId')).then((env) => {
-      env.importLink('services').then(() => {
-        var model = Ember.Object.create({
-          service: service.clone(),
-          selectedEnvironment: env
-        });
+    var dependencies = [
+      store.findAll('environment'), // Need inactive ones in case a service points to an inactive environment
+      store.findAllUnremoved('service'),
+    ];
 
-        this.setProperties({
-          originalModel: service,
-          model: model,
-          service: model.service,
-          environment: model.selectedEnvironment,
-        });
-
-        this.initFields();
-        this.initTargets(model.service);
-        this.set('loading', false);
+    Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
+      var clone = service.clone();
+      var model = Ember.Object.create({
+        service: clone,
+        allEnvironments: results[0],
+        allServices: results[1],
       });
+
+      this.setProperties({
+        originalModel: service,
+        model: model,
+        service: clone,
+      });
+
+      this.initFields();
+      this.initTargets(clone);
+      this.set('loading', false);
     });
   },
 
