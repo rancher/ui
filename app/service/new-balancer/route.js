@@ -6,9 +6,8 @@ export default Ember.Route.extend({
 
     var dependencies = [
       store.findAll('host'),
-      store.find('environment', params.environmentId).then(function(env) {
-        return env.importLink('services');
-      })
+      store.findAll('environment'), // Need inactive ones in case a service points to an inactive environment
+      store.findAllUnremoved('service'),
     ];
 
     if ( params.serviceId )
@@ -18,8 +17,9 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.all(dependencies, 'Load dependencies').then(function(results) {
       var allHosts = results[0];
-      var environment = results[1];
-      var existing = results[2];
+      var allEnvironments = results[1];
+      var allServices = results[2];
+      var existing = results[3];
 
       var launchConfig, lbConfig, balancer, appCookie, lbCookie;
       if ( existing )
@@ -74,7 +74,7 @@ export default Ember.Route.extend({
           name: '',
           description: '',
           scale: 1,
-          environmentId: environment.get('id'),
+          environmentId: params.environmentId,
           launchConfig: launchConfig,
           loadBalancerConfig: lbConfig,
           consumedServices: null,
@@ -103,7 +103,8 @@ export default Ember.Route.extend({
       return {
         isService: true,
         allHosts: allHosts,
-        environment: environment,
+        allEnvironments: allEnvironments,
+        allServices: allServices,
         existingBalancer: existing,
         balancer: balancer,
         service: balancer,
