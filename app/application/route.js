@@ -60,8 +60,7 @@ export default Ember.Route.extend({
       // This needs to change first so that other tabs get notified and logout
       session.set(C.SESSION.ACCOUNT_ID,null);
 
-      session.clear();
-      this.get('cookies').remove(C.COOKIE.TOKEN);
+      this.get('access').clearSessionKeys(true);
 
       if ( transition )
       {
@@ -154,6 +153,7 @@ export default Ember.Route.extend({
       return;
     }
 
+    // Find out if auth is enabled
     return this.get('access').detect();
   },
 

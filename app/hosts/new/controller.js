@@ -21,10 +21,4 @@ export default Ember.ObjectController.extend({
       {route: 'hosts.new.custom',       label: 'Custom',        css: 'custom',       available: true  },
     ];
   }.property(),
-
-  isAdmin: function() {
-    var userType = this.get('session').get(C.SESSION.USER_TYPE);
-    var isAdmin = userType === undefined || userType === C.USER.TYPE_ADMIN;
-    return isAdmin;
-  }.property(),
 });

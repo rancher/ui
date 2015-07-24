@@ -2,9 +2,9 @@
   {{top-errors errors=errors}}
 
   <div class="well">
-    <h2>Access Control is {{#if app.authenticationEnabled}}<b>enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
+    <h2>Access Control is {{#if access.enabled}}<b>enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
     <div>
-      {{#if app.authenticationEnabled}}
+      {{#if access.enabled}}
         {{#if wasRestricted}}
           Rancher is configured to restrict access to {{wasRestrictedMsg}}.
         {{else}}
@@ -16,7 +16,7 @@
     </div>
   </div>
 
-  {{#if app.authenticationEnabled}}
+  {{#if access.enabled}}
     <div class="well">
       <h4>Authentication</h4>
       <hr/>
@@ -116,7 +116,7 @@
     </div>
   {{/if}}
 
-  {{#unless app.authenticationEnabled}}
+  {{#unless access.enabled}}
     <div class="well">
       <h4>1. Setup a GitHub Application</h4>
       <hr/>

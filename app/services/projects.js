@@ -3,6 +3,7 @@ import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
 
 export default Ember.Service.extend({
+  access: Ember.inject.service(),
   session: Ember.inject.service(),
   prefs: Ember.inject.service(),
 
@@ -19,7 +20,7 @@ export default Ember.Service.extend({
       forceReload: true
     };
 
-    if ( !this.get('app.authenticationEnabled') )
+    if ( !this.get('access.enabled') )
     {
       opt.filter = {all: 'true'};
     }
@@ -52,7 +53,7 @@ export default Ember.Service.extend({
         {
           select(project, true);
         }
-        else if ( this.get('app.isAuthenticationAdmin') )
+        else if ( this.get('access.admin') )
         {
           return this.findUserProjects().then((all) => {
             var firstActive = all.filterProperty('state','active')[0];

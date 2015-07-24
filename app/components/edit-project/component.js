@@ -2,6 +2,9 @@ import Ember from 'ember';
 import EditProject from 'ui/mixins/edit-project';
 
 export default Ember.Component.extend(EditProject, {
+  access: Ember.inject.service(),
+  accessEnabled: Ember.computed.alias('access.enabled'),
+
   model: null,
   editing: null,
 
@@ -29,7 +32,7 @@ export default Ember.Component.extend(EditProject, {
   },
 
   didSave: function() {
-    if ( this.get('editing') && this.get('app.authenticationEnabled') )
+    if ( this.get('editing') && this.get('access.enabled') )
     {
       return this.get('model').doAction('setmembers',{members: this.get('model.projectMembers')});
     }

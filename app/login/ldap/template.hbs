@@ -6,27 +6,34 @@
       <h1>Welcome to Rancher</h1>
       <br/>
 
-      {{#if infoMsg}}
-        <div class="alert {{infoColor}}" role="alert">{{infoMsg}}</div>
+      {{#if login.infoMsg}}
+        <div class="alert {{login.infoColor}}" role="alert">{{login.infoMsg}}</div>
       {{/if}}
 
-      <label>Username</label>
-      <div>
-        {{input type="text" value=username placeholder="Your Username"}}
-      </div>
-      <br/>
+      <form {{action "authenticate" on="submit"}} class="text-left">
+        <div class="form-group">
+          <label>Username</label>
+          <div>
+            {{input type="text" class="form-control" value=username placeholder="e.g. jsmith"}}
+          </div>
+        </div>
 
-      <label>Password</label>
-      <div>
-        {{input type="password" value=password placeholder="Your Username"}}
-      </div>
-      <br/>
+        <br/>
 
-      <p class="text-center">
-        <button disabled={{waiting}} class="btn btn-primary" {{action "authenticate"}}>
-          Log In
-        </button>
-      </p>
+        <div class="form-group">
+          <label>Password</label>
+          <div>
+            {{input type="password" class="form-control" value=password}}
+          </div>
+        </div>
+        <br/>
+
+        <p class="text-center">
+          <button disabled={{login.waiting}} class="btn btn-primary" {{action "authenticate"}}>
+            Log In
+          </button>
+        </p>
+      </form>
     </section>
   </div>
 </div>

@@ -5,6 +5,7 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 
 export default Ember.Mixin.create(NewOrEdit, {
   projects: Ember.inject.service(),
+  access: Ember.inject.service(),
 
   actions: {
     checkMember: function(obj) {
@@ -51,7 +52,7 @@ export default Ember.Mixin.create(NewOrEdit, {
     this._super();
     var errors = this.get('errors')||[];
 
-    if ( !this.get('hasOwner') && this.get('app.authenticationEnabled') )
+    if ( !this.get('hasOwner') && this.get('access.enabled') )
     {
       errors.push('You must add at least one owner');
     }

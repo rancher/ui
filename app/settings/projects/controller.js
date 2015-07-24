@@ -10,6 +10,7 @@ export default Ember.Controller.extend(Sortable, {
     description:  ['description','name','id'],
   },
 
+  access: Ember.inject.service(),
   projects: Ember.inject.service(),
   needs: ['application'],
 
@@ -22,7 +23,7 @@ export default Ember.Controller.extend(Sortable, {
         description: '',
       });
 
-      if ( this.get('app.authenticationEnabled') )
+      if ( this.get('access.enabled') )
       {
         var me = store.createRecord({
           type: 'projectMember',

@@ -2,6 +2,8 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
+  access: Ember.inject.service(),
+
   actions: {
     cancel: function() {
       this.goToPrevious();
@@ -15,7 +17,7 @@ export default Ember.Route.extend({
       description: '',
     });
 
-    if ( this.get('app.authenticationEnabled') )
+    if ( this.get('access.enabled') )
     {
       var me = Ember.Object.create({
         externalId: this.get('session').get(C.SESSION.USER_ID),

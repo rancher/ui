@@ -8,7 +8,7 @@ export default Ember.Service.extend({
 
   enabled: null,
   provider: null,
-  isAdmin: null,
+  admin: null,
 
   detect: function() {
     return this.get('store').rawRequest({
@@ -80,13 +80,25 @@ export default Ember.Service.extend({
     });
   },
 
-  clearSessionKeys: function() {
-    var values = {};
-    C.TOKEN_TO_SESSION_KEYS.forEach((key) => {
-      values[key] = undefined;
-    });
+  clearSessionKeys: function(all) {
+    if ( all === true )
+    {
+      this.get('session').clear();
+    }
+    else
+    {
+      var values = {};
+      C.TOKEN_TO_SESSION_KEYS.forEach((key) => {
+        values[key] = undefined;
+      });
 
-    this.get('session').setProperties(values);
+      this.get('session').setProperties(values);
+    }
+
     this.get('cookies').remove(C.COOKIE.TOKEN);
+  },
+
+  isLoggedIn: function() {
+    return !!this.get('cookies').get(C.COOKIE.TOKEN);
   },
 });
