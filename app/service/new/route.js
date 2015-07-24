@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  allServices: Ember.inject.service(),
+
   actions: {
     cancel: function() {
       this.goToPrevious();
@@ -12,8 +14,7 @@ export default Ember.Route.extend({
 
     var dependencies = [
       store.findAll('host'), // Need inactive ones in case a link points to an inactive host
-      store.findAll('environment'), // Need inactive ones in case a service points to an inactive environment
-      store.findAllUnremoved('service'),
+      this.get('allServices').choices(),
     ];
 
     if ( params.serviceId )
@@ -27,9 +28,8 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
       var allHosts = results[0];
-      var allEnvironments = results[1];
-      var allServices = results[2];
-      var serviceOrContainer = results[3];
+      var allServices = results[1];
+      var serviceOrContainer = results[2];
       var serviceLinks = [];
 
       var instanceData, serviceData, healthCheckData;
@@ -98,7 +98,6 @@ export default Ember.Route.extend({
         healthCheck: healthCheck,
         instance: instance, // but mixins/edit-container expects to find the instance here, so link both to the same object
         allHosts: allHosts,
-        allEnvironments: allEnvironments,
         allServices: allServices,
       });
     });

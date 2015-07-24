@@ -24,36 +24,12 @@ export default Ember.Mixin.create(EditScheduling, {
   // Services
   // ----------------------------------
   serviceChoices: function() {
-    var environments = this.get('model.allEnvironments')||[];
-    var list = (this.get('model.allServices')||[]).map((service) => {
-      var envId = service.get('environmentId');
-      var env = environments.filterProperty('id', envId)[0];
-      var group = 'Stack: ';
-      if ( env && env.get('name'))
-      {
-        group += env.get('name');
-      }
-      else
-      {
-        group += '(' + envId + ')';
-      }
+    return this.get('model.allServices').sortBy('group','name','id');
+  }.property('model.allServices.@each.{id,name,state,environmentId}'),
 
-      var serviceLabel = (service.get('name') || '('+service.get('id')+')');
-      if ( service.get('state') !== 'active' )
-      {
-        serviceLabel += ' (' + service.get('state') + ')';
-      }
-
-      return Ember.Object.create({
-        group: group,
-        id: service.get('id'),
-        name: serviceLabel,
-        obj: service,
-      });
-    });
-
-    return list.sortBy('group','name','id');
-  }.property('model.allServices.@each.{id,name,state,environmentId}','model.allEnvironments.@each.name'),
+  lbSafeServiceChoices: function() {
+    return this.get('model.allServices').filterProperty('lbSafe',true).sortBy('group','name','id');
+  }.property('model.allServices.@each.{id,name,state,environmentId}'),
 
   serviceLinksArray: null,
   initServiceLinks: function() {

@@ -1,11 +1,14 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import EditService from 'ui/mixins/edit-service';
+import EditBalancerConfig from 'ui/mixins/edit-loadbalancerconfig';
 import EditBalancerTarget from 'ui/mixins/edit-balancer-target';
 import C from 'ui/utils/constants';
 import { addAction } from 'ui/utils/add-view-action';
 
-export default Ember.Component.extend(NewOrEdit, EditService, EditBalancerTarget, {
+export default Ember.Component.extend(NewOrEdit, EditService, EditBalancerConfig, EditBalancerTarget, {
+  allServices: Ember.inject.service(),
+
   editing: true,
   loading: true,
   isAdvanced: true,
@@ -34,20 +37,17 @@ export default Ember.Component.extend(NewOrEdit, EditService, EditBalancerTarget
   },
 
   loadDependencies: function() {
-    var store = this.get('store');
     var service = this.get('originalModel');
 
     var dependencies = [
-      store.findAll('environment'), // Need inactive ones in case a service points to an inactive environment
-      store.findAllUnremoved('service'),
+      this.get('allServices').choices(),
     ];
 
-    Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
+    return Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
       var clone = service.clone();
       var model = Ember.Object.create({
         service: clone,
-        allEnvironments: results[0],
-        allServices: results[1],
+        allServices: results[0],
       });
 
       this.setProperties({
@@ -57,6 +57,7 @@ export default Ember.Component.extend(NewOrEdit, EditService, EditBalancerTarget
       });
 
       this.initFields();
+      this.initListeners(clone);
       this.initTargets(clone);
       this.set('loading', false);
     });

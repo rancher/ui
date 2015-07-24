@@ -1,13 +1,14 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  allServices: Ember.inject.service(),
+
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
     var dependencies = [
       store.findAll('host'),
-      store.findAll('environment'), // Need inactive ones in case a service points to an inactive environment
-      store.findAllUnremoved('service'),
+      this.get('allServices').choices(),
     ];
 
     if ( params.serviceId )
@@ -17,9 +18,8 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.all(dependencies, 'Load dependencies').then(function(results) {
       var allHosts = results[0];
-      var allEnvironments = results[1];
-      var allServices = results[2];
-      var existing = results[3];
+      var allServices = results[1];
+      var existing = results[2];
 
       var serviceLinks = [];
 
@@ -44,7 +44,6 @@ export default Ember.Route.extend({
       return {
         isService: true,
         allHosts: allHosts,
-        allEnvironments: allEnvironments,
         allServices: allServices,
         dns: dns,
       };
