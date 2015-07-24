@@ -15,7 +15,7 @@ export function parseTarget(str) {
     path = null;
     dstPort = parseInt(match[1], 10);
   }
-  else if ( match = str.match(/(\d+):([^\/]+)?(\/.*)?$/) )
+  else if ( str.indexOf('=') === -1 && (match = str.match(/(\d+):([^\/]+)?(\/.*)?$/)) )
   {
     // Old Format: dstPort[:hostname][/path]
     hostname = match[2] || null;
@@ -26,7 +26,7 @@ export function parseTarget(str) {
   else if ( match = str.match(/([^/=:]+)?(:(\d+))?(\/[^=]+)?(=(\d+))?$/) )
   {
     // New Format: [hostname][:srcPort][/path][=dstPort]
-    if ( match[1] && match[1].match(/^\d+$/) )
+    if ( match[1] && match[1].match(/^\d+$/) && !match[2] )
     {
       // It's a port
       hostname = null;
