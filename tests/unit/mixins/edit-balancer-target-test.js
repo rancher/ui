@@ -33,10 +33,14 @@ var data = [
 //
   // Special case, numeric hostname
   {str: "1:2/3=4",                    parsed: {hostname: '1',           srcPort: 2,     path: '/3',     dstPort: 4}},
+  {str: "host3:7777",                 parsed: {hostname: 'host3',       srcPort: 7777,  path: null,     dstPort: null}},
+  {str: "3host:7777",                 parsed: {hostname: '3host',       srcPort: 7777,  path: null,     dstPort: null}},
 
   // Old format
   {str: "81:example.com/path",         parsed: {hostname: 'example.com', srcPort: null,  path: '/path',  dstPort: 81}, expected: "example.com/path=81"},
   {str: "81:example.com",              parsed: {hostname: 'example.com', srcPort: null,  path: null,     dstPort: 81}, expected: "example.com=81"},
+  {str: "81:example.com:82",           parsed: {hostname: 'example.com', srcPort: 82,    path: null,     dstPort: 81}, expected: "example.com:82=81"},
+  {str: "81:example.com:82/path",      parsed: {hostname: 'example.com', srcPort: 82,    path: '/path',  dstPort: 81}, expected: "example.com:82/path=81"},
   {str: "81:/path",                    parsed: {hostname: null,          srcPort: null,  path: '/path',  dstPort: 81}, expected: "/path=81"},
 
   // Invalid

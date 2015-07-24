@@ -15,15 +15,24 @@ export function parseTarget(str) {
     path = null;
     dstPort = parseInt(match[1], 10);
   }
-  else if ( str.indexOf('=') === -1 && (match = str.match(/(\d+):([^\/]+)?(\/.*)?$/)) )
+  else if ( str.indexOf('=') === -1 && (match = str.match(/^(\d+):([^\/]+)?(\/.*)?$/)) )
   {
-    // Old Format: dstPort[:hostname][/path]
+    // Old Format: dstPort[:hostname][:srcPort][/path]
     hostname = match[2] || null;
-    srcPort = null;
+    if ( hostname )
+    {
+      var idx = hostname.indexOf(':');
+      if ( hostname && idx >= 0 )
+      {
+        srcPort = parseInt(hostname.substr(idx+1), 10);
+        hostname = hostname.substr(0,idx);
+      }
+    }
+
     path = match[3] || null;
     dstPort = parseInt(match[1], 10);
   }
-  else if ( match = str.match(/([^/=:]+)?(:(\d+))?(\/[^=]+)?(=(\d+))?$/) )
+  else if ( match = str.match(/^([^/=:]+)?(:(\d+))?(\/[^=]+)?(=(\d+))?$/) )
   {
     // New Format: [hostname][:srcPort][/path][=dstPort]
     if ( match[1] && match[1].match(/^\d+$/) && !match[2] )

@@ -12,7 +12,15 @@ export function addAction(action, selector) {
     }
 
     Ember.run.next(this, function() {
-      this.$(selector).last().focus();
+      var matches = this.$(selector);
+      if ( matches )
+      {
+        var last = matches.las();
+        if ( last )
+        {
+          last.focus();
+        }
+      }
     });
   };
 }
