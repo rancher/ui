@@ -24,10 +24,20 @@ export default Ember.Mixin.create(EditScheduling, {
   // Services
   // ----------------------------------
   serviceChoices: function() {
-    var env = this.get('model.selectedEnvironment');
-    var group = 'Stack: ' + (env.get('name') || '('+env.get('id')+')');
+    var environments = this.get('model.allEnvironments')||[];
+    var list = (this.get('model.allServices')||[]).map((service) => {
+      var envId = service.get('environmentId');
+      var env = environments.filterProperty('id', envId)[0];
+      var group = 'Stack: ';
+      if ( env && env.get('name'))
+      {
+        group += env.get('name');
+      }
+      else
+      {
+        group += '(' + envId + ')';
+      }
 
-    var list = (env.get('services')||[]).map((service) => {
       var serviceLabel = (service.get('name') || '('+service.get('id')+')');
       if ( service.get('state') !== 'active' )
       {
@@ -43,7 +53,7 @@ export default Ember.Mixin.create(EditScheduling, {
     });
 
     return list.sortBy('group','name','id');
-  }.property('environment.services.@each.{id,name,state}'),
+  }.property('model.allServices.@each.{id,name,state,environmentId}','model.allEnvironments.@each.name'),
 
   serviceLinksArray: null,
   initServiceLinks: function() {

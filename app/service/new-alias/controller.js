@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
+import EditService from 'ui/mixins/edit-service';
 
-export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, {
+export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditService, {
   queryParams: ['environmentId','serviceId'],
   environmentId: null,
   serviceId: null,
@@ -64,22 +65,6 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, {
     });
   }.property('targetsArray.@each.{isService,value}'),
 
-  targetChoices: function() {
-    var list = [];
-    var env = this.get('environment');
-    var envName = env.get('name') || ('(Environment '+env.get('id')+')');
-
-    env.get('services').map((service) => {
-      list.pushObject({
-        group: 'Project: ' + envName,
-        id: service.get('id'),
-        name: service.get('name') || ('(' + service.get('id') + ')')
-      });
-    });
-
-    return list.sortBy('group','name','id');
-  }.property('environment.services.@each.{name,id},environment.{name,id}').volatile(),
-
   validate: function() {
     this._super();
     var errors = this.get('errors')||[];
@@ -110,6 +95,6 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, {
   },
 
   doneSaving: function() {
-    this.transitionToRoute('environment', this.get('environment.id'));
+    this.transitionToRoute('environment', this.get('primaryResource.environmentId'));
   },
 });

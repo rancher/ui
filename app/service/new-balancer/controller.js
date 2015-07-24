@@ -138,6 +138,6 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
   },
 
   doneSaving: function() {
-    this.transitionToRoute('environment', this.get('environment.id'));
+    this.transitionToRoute('environment', this.get('primaryResource.environmentId'));
   },
 });

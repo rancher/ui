@@ -11,6 +11,6 @@ export default Ember.ObjectController.extend(EditContainer, EditService, {
   editing: false,
 
   doneSaving: function() {
-    return this.transitionToRoute('environment', this.get('selectedEnvironment.id'));
+    return this.transitionToRoute('environment', this.get('primaryResource.environmentId'));
   },
 });
