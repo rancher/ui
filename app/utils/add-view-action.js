@@ -15,7 +15,7 @@ export function addAction(action, selector) {
       var matches = this.$(selector);
       if ( matches )
       {
-        var last = matches.las();
+        var last = matches.last();
         if ( last )
         {
           last.focus();

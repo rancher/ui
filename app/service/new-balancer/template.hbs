@@ -38,6 +38,16 @@
     </div>
   </div>
 
+  {{#if (and hasAdvancedSourcePorts multipleListeners multipleTargets)}}
+    <div class="row">
+      <div class="col-sm-12 col-md-8 col-md-offset-2">
+        <div class="alert alert-info">
+          <b>Note:</b> Requests that do not match any of the &quot;advanced request options&quot; will be sent to the <b>all</b> ({{targetResources.length}}) of the configured target services (round-robin) on the default target port corresponding to the source port of the request.
+        </div>
+      </div>
+    </div>
+  {{/if}}
+
   {{partial "form-divider"}}
 
   <div class="row">
