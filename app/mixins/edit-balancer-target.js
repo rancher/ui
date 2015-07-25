@@ -162,6 +162,10 @@ export default Ember.Mixin.create({
     this.set('targetsArray', out);
   },
 
+  multipleTargets: function() {
+    return this.get('targetsArray').filterProperty('value').get('length') >= 2;
+  }.property('targetsArray.@each.value'),
+
   targetResources: function() {
     var out = [];
     this.get('targetsArray').filterProperty('isService',true).filterProperty('value').map((choice) => {
@@ -186,4 +190,10 @@ export default Ember.Mixin.create({
 
     return out;
   }.property('targetsArray.@each.{isService,value,hostname,path,srcPort,dstPort}'),
+
+  hasAdvancedSourcePorts: function() {
+    return this.get('targetsArray').filterProperty('isService',true).filter((target) => {
+      return parseInt(target.get('srcPort'),10) > 0;
+    }).get('length') > 0;
+  }.property('targetsArray.@each.{isService,srcPort}'),
 });

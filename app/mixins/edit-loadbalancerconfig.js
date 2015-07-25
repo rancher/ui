@@ -71,6 +71,10 @@ export default Ember.Mixin.create(EditHealthCheck,{
     this.set('listenersArray', out);
   },
 
+  multipleListeners: function() {
+    return this.get('listenersArray').filterProperty('sourcePort').get('length') >= 2;
+  }.property('listenersArray.@each.sourcePort'),
+
   sourceProtocolOptions: function() {
     return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.sourceProtocol.options');
   }.property(),
