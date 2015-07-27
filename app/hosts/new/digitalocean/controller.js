@@ -46,7 +46,7 @@ export default Ember.ObjectController.extend(NewHost, {
 //    'debian-7-0-x64',
 //    'fedora-21-x64',
     'ubuntu-14-04-x64',
-//    'ubuntu-14-10-x64',
+    'ubuntu-15-04-x64',
   ],
 
   validate: function() {
