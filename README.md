@@ -10,7 +10,7 @@ Perhaps you like managing cattle.
 Prerequisites:
 * [Bower](from http://bower.io/)
 * [Git](http://git-scm.com/)
-* [Node.js](http://nodejs.org/) (with NPM)
+* [Node.js](http://nodejs.org/) (with NPM) -- **Note:** the local development server currently requires Node 0.10, not 0.12.
 
 If you're on a Mac and use Homebrew, you can follow these steps:
 ```bash
