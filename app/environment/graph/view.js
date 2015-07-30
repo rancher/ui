@@ -69,7 +69,7 @@ export default Ember.View.extend(ThrottledResize,{
     unremovedServices.forEach((service) => {
       var externals = (service.get('consumedServicesWithNames')||[]).filter((linked) => {
         return linked.get('service.environmentId') !== this.get('context.model.id');
-      }).map((linked) => { return linked.get('service') });
+      }).map((linked) => { return linked.get('service'); });
       out.pushObjects(externals);
     });
 

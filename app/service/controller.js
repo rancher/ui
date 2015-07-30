@@ -22,9 +22,11 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
       var type = this.get('model.type').toLowerCase();
       if ( type === 'loadbalancerservice' )
       {
-        this.get('controllers.application').setProperties({
-          editLoadBalancerService: true,
-          originalModel: this.get('model'),
+        this.get('model').importLink('loadBalancerListeners').then(() => {
+          this.get('controllers.application').setProperties({
+            editLoadBalancerService: true,
+            originalModel: this.get('model'),
+          });
         });
       }
       else if ( type === 'dnsservice' )

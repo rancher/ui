@@ -33,7 +33,7 @@ export default Ember.Mixin.create(EditHealthCheck,{
   initListeners: function() {
     var store = this.get('store');
     var out = [];
-    var existingService = this.get('balancer.loadBalancerListeners');
+    var existingService = this.get('model.service.loadBalancerListeners');
     var existingRegular = this.get('listeners');
     if ( existingService )
     {
