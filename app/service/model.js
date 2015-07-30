@@ -15,7 +15,7 @@ var Service = Resource.extend(ReadLabels, {
   _allMaps: null,
   consumedServicesUpdated: 0,
   serviceLinks: null, // Used for clone
-  reservedKeys: ['_allMaps','consumedServicesUpdated','serviceLinks'],
+  reservedKeys: ['_allMaps','consumedServicesUpdated','serviceLinks','_environment','_environmentState'],
   labelResource: Ember.computed.alias('launchConfig'),
 
   init: function() {
@@ -52,6 +52,45 @@ var Service = Resource.extend(ReadLabels, {
       _allDnsServices = this.get('store').allUnremoved('dnsservice');
     }
   },
+
+
+  _environment: null,
+  _environmentState: 0,
+  displayEnvironment: function() {
+    var env = this.get('_environment');
+    if ( env )
+    {
+      return env.get('displayName');
+    }
+    else if ( this && this.get('_environmentState') === 2 )
+    {
+      return '???';
+    }
+    else if ( this && this.get('_environmentState') === 0 )
+    {
+      var existing = this.get('store').getById('environment', this.get('environmentId'));
+      if ( existing )
+      {
+        this.set('_environment', existing);
+        return existing.get('displayName');
+      }
+
+      this.set('_environmentState', 1);
+      this.get('store').find('environment', this.get('environmentId')).then((env) => {
+        this.set('_environment', env);
+      }).catch(() => {
+        this.set('_publicIpState', 2);
+      });
+
+      return '...';
+    }
+
+    return null;
+  }.property('_environment.displayName','_environmentState','environmentId'),
+
+  onDisplayEnvironmentChanged: function() {
+    this.incrementProperty('consumedServicesUpdated');
+  }.observes('displayEnvironment'),
 
   consumedServicesWithNames: function() {
     return Service.consumedServicesFor(this.get('id'));
