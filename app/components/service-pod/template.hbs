@@ -22,11 +22,14 @@
         <div class="pod-info-item">
           {{#link-to "service" map.service.environmentId map.service.id}}
             <i class="{{map.service.activeIcon}}"></i>
-            {{#if (eq map.name map.service.displayName)}}
-              {{map.name}}
-            {{else}}
-              {{map.service.displayName}}{{#if map.name}} <span class="text-muted">(as {{map.name}})</span>{{/if}}
-            {{/if}}
+            {{#unless (and map.service (eq map.service.environmentId model.environmentId))~}}
+              {{map.service.displayEnvironment}}/
+            {{~/unless~}}
+            {{~#if (eq map.name map.service.displayName)~}}
+              {{~map.name~}}
+            {{~else~}}
+              {{~map.service.displayName}}{{#if map.name}} <span class="text-muted">(as {{map.name}})</span>{{/if}}
+            {{~/if~}}
           {{/link-to}}
         </div>
       {{/each}}
