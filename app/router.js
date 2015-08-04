@@ -20,7 +20,11 @@ Router.map(function() {
 
     // Settings
     this.resource('settings', function() {
-      this.route('auth');
+      this.route('auth', function() {
+        this.route('github');
+        this.route('ldap');
+      });
+
       this.route('host');
 
       this.route('apikeys', {path: '/api'});

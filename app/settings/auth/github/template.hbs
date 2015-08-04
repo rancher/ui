@@ -1,0 +1,203 @@
+<section>
+  {{top-errors errors=errors}}
+
+  <div class="well">
+    <h2>GitHub is {{#if access.enabled}}<b>enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
+    <div>
+      {{#if access.enabled}}
+        {{#if wasRestricted}}
+          Rancher is configured to restrict access to {{wasRestrictedMsg}}.
+        {{else}}
+          Rancher is configured to allow access to any GitHub{{#if model.hostname}} Enterprise{{/if}} user.
+        {{/if}}
+      {{else}}
+        Rancher can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.
+      {{/if}}
+    </div>
+  </div>
+
+  {{#if access.enabled}}
+    <div class="well">
+      <h4>Authentication</h4>
+      <hr/>
+      {{#if model.hostname}}
+        <div><b>Enterprise Host: </b> <span class="text-muted">{{model.hostname}}</span></div>
+      {{/if}}
+      <div><b>Client ID: </b> <span class="text-muted">{{model.clientId}}</span></div>
+      <p class="help-block">To change the configured GitHub application, disable access control below and then set it up again.</p>
+    </div>
+
+    <div class="well">
+      <h4>Site Access</h4>
+      {{#if showingAccessControl}}
+        <p class="help-block">
+          Configure who should be allowed to log in and user Rancher.  <b>Note:</b> Members added to environments are automatically allowed.
+        </p>
+        <hr/>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="radio">
+              <label>{{radio-button selection=model.accessMode value="unrestricted"}} Allow any GitHub user</label>
+            </div>
+            <div class="radio">
+              <label>{{radio-button selection=model.accessMode value="restricted"}} Restrict to specific GitHub users and organization members{{#if isRestricted}}:{{/if}}</label>
+            </div>
+          </div>
+          <div class="col-md-6">
+            {{#if isRestricted}}
+              {{input-github allowTeams=false action="addAuthorized" onError="showError"}}
+
+              <hr/>
+              <h5>Authorized Users and Organizations</h5>
+
+              <ul class="list-unstyled gh-block-list">
+                {{#each model.allowedUsers as |user|}}
+                  <li>
+                    {{#github-block login=user}}
+                      <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeUser" user}}></button>
+                    {{/github-block}}
+                  </li>
+                {{/each}}
+                {{#each model.allowedOrganizations as |org|}}
+                  <li>
+                    {{#github-block login=org}}
+                      <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeOrg" org}}></button>
+                    {{/github-block}}
+                  </li>
+                {{/each}}
+              </ul>
+              {{#if (and (eq model.allowedUsers.length 0) (eq model.allowedOrganizations.length 0))}}
+                <span class="text-muted">None</span>
+              {{/if}}
+            {{/if}}
+          </div>
+        </div>
+
+        <hr/>
+
+        <button class="btn btn-primary" disabled={{saveDisabled}} {{action "saveAuthorization"}}>
+          {{#if saved}}
+            Saved
+          {{else}}
+            {{#if saving}}
+              <i class="fa fa-spinner fa-spin"></i> Saving...
+            {{else}}
+              Save authorization configuration
+            {{/if}}
+          {{/if}}
+        </button>
+      {{else}}
+        <p class="help-block">
+          By default, only users that are a member of a environment are allowed to log in and access Rancher.
+        </p>
+        <button class="btn btn-primary" {{action "showAccessControl"}}>Customize</button>
+      {{/if}}
+    </div>
+
+    <div class="well">
+      <h4>Danger Zone&trade;</h4>
+      <hr/>
+
+      <p>
+        <b class="text-danger">Caution:</b> Disabling access control will give complete control over Rancher to anyone that can reach this page or the API.
+      </p>
+
+      {{#if confirmDisable}}
+        <button class="btn btn-danger" {{action "disable"}}>
+          <i class="ss-thunderstorm"></i> Are you sure?  Click again to really disable access control
+        </button>
+      {{else}}
+        <button class="btn btn-danger" {{action "promptDisable"}}>
+          <i class="ss-lightning"></i> Disable access control
+        </button>
+      {{/if}}
+
+    </div>
+  {{/if}}
+
+  {{#unless access.enabled}}
+    <div class="well">
+      <h4>1. Setup a GitHub Application</h4>
+      <hr/>
+      <p>
+        <ul>
+          <li>
+            For standard GitHub, <a href="https://github.com/settings/developers" target="_blank">click here</a> to go applications settings in a new window.
+              <ul>
+                <li>For Github Enterprise, login to your account.  Click on Settings, then Applications.</li>
+              </ul>
+          </li>
+          <li>
+            Click &quot;Register new application&quot; and fill out the form:
+            <ul>
+              <li><b>Application name:</b> <span class="text-muted">Anything you like, e.g. My Rancher</span></li>
+              <li>
+                <b>Homepage URL:&nbsp;</b> <span>{{destinationUrl}}</span>
+              </li>
+              <li><b>Application description:</b> <span class="text-muted">Anything you like, optional</span></li>
+              <li><b>Authorization callback URL</b> <span>{{destinationUrl}}</span></li>
+            </ul>
+          </li>
+          <li>Click &quot;Register application&quot;</li>
+        </ul>
+      </p>
+    </div>
+
+    <div class="well">
+      <h4>2. Configure Rancher to use your application for authentication</h4>
+      <hr/>
+      <p>Copy and paste the Client ID and Secret from the upper-right corner of your newly-created application.</p>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Client ID*</label>
+            {{input type="text" value=model.clientId classNames="form-control"}}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Client Secret*</label>
+            {{input type="password" value=model.clientSecret classNames="form-control"}}
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="checkbox">
+            <label>{{input type="checkbox" checked=isEnterprise}} Use a private GitHub Enterprise installation</label>
+          </div>
+        </div>
+      </div>
+      <div class="row {{unless isEnterprise 'hide'}}">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Enterprise Host*</label>
+            {{input type="text" value=model.hostname classNames="form-control" placeholder="e.g. github.example.com"}}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="well">
+      <h4>3. Test and enable authentication</h4>
+      <hr/>
+      <div class="row">
+        <div class="col-md-6">
+          <p>Check that your application is configured correctly by testing authentication with it:</p>
+        </div>
+        <div class="col-md-6">
+          <button disabled={{createDisabled}} class="btn btn-primary" {{action "test"}}>
+            {{#if testing}}
+              <i class="fa fa-circle-o-notch fa-spin"></i> Waiting to hear back from GitHub
+            {{else}}
+              <i class="fa fa-github"></i> Authenticate with GitHub
+            {{/if}}
+          </button>
+        </div>
+      </div>
+    </div>
+  {{/unless}}
+</section>

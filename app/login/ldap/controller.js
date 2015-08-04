@@ -20,7 +20,16 @@ export default Ember.Controller.extend({
         this.get('access').login(this.get('username')+':'+this.get('password')).then(() => {
           this.transitionTo('authenticated');
         }).catch((err) => {
-          this.set('login.errorMsg', err);
+          this.set('login.waiting', false);
+
+          if ( err.status === 401 )
+          {
+            this.set('login.errorMsg', 'Username or Password incorrect.');
+          }
+          else
+          {
+            this.set('login.errorMsg', err.message);
+          }
         });
       }, 10);
     }
