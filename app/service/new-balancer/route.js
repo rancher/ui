@@ -60,6 +60,7 @@ export default Ember.Route.extend({
           environment: {},
           tty: true,
           stdinOpen: true,
+          restartPolicy: {name: 'always'},
         });
 
         lbConfig = store.createRecord({

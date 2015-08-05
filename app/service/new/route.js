@@ -57,6 +57,7 @@ export default Ember.Route.extend({
           type: 'container',
           tty: true,
           stdinOpen: true,
+          restartPolicy: {name: 'always'},
         };
       }
 

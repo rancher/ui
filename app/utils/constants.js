@@ -77,6 +77,8 @@ var C = {
     SCHED_CONTAINER: 'io.rancher.scheduler.affinity:container',
     SCHED_HOST_LABEL: 'io.rancher.scheduler.affinity:host_label',
     SCHED_CONTAINER_LABEL: 'io.rancher.scheduler.affinity:container_label',
+    HOSTNAME_OVERRIDE: 'io.rancher.container.hostname_override',
+    HOSTNAME_OVERRIDE_VALUE: 'container_name',
   },
 };
 
