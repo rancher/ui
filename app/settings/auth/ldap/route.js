@@ -7,7 +7,7 @@ export default Ember.Route.extend({
     var headers = {};
     headers[C.HEADER.PROJECT] = undefined;
 
-    return this.get('store').find('githubconfig', null, {headers: headers, forceReload: true}).then(function(collection) {
+    return this.get('store').find('ldapconfig', null, {headers: headers, forceReload: true}).then(function(collection) {
       return collection.get('firstObject');
     });
   },

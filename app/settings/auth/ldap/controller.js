@@ -16,16 +16,12 @@ export default Ember.Controller.extend({
   addUserInput: '',
   addOrgInput: '',
 
-  createDisabled: function() {
-    if ( this.get('isEnterprise') && !this.get('model.hostname') )
-    {
-      return true;
-    }
+  username: '',
+  password: '',
 
-    var id = (this.get('model.clientId')||'').trim();
-    var secret = (this.get('model.clientSecret')||'').trim();
-    return id.length < 20 ||secret.length < 40 || this.get('testing');
-  }.property('model.{clientId,clientSecret,hostname}','testing','isEnterprise'),
+  createDisabled: function() {
+    return !this.get('username.length') || !this.get('password.length');
+  }.property('username.length','password.length'),
 
   saveDisabled: Ember.computed.or('saving','saved'),
   isRestricted: Ember.computed.equal('model.accessMode','restricted'),
@@ -89,6 +85,7 @@ export default Ember.Controller.extend({
 
       var model = this.get('model');
       model.setProperties({
+        enabled: false,
       });
 
 
@@ -101,12 +98,11 @@ export default Ember.Controller.extend({
 
     authenticate: function() {
       this.send('clearError');
-      var code = this.get('model.serviceAccountUsername')+':'+this.get('model.serviceAccountPassword');
+      var code = this.get('username')+':'+this.get('password');
       this.get('access').login(code).then(res => {
         var auth = JSON.parse(res.xhr.responseText);
         this.send('authenticationSucceeded', auth);
-      }).catch(res => {
-        var err = JSON.parse(res.xhr.responseText);
+      }).catch(err => {
         this.send('gotError', err);
       });
     },
@@ -120,11 +116,12 @@ export default Ember.Controller.extend({
 
       var model = this.get('model');
       model.setProperties({
+        enabled: true,
       });
 
-      var url = window.location.href;
-
-      model.save().catch((err) => {
+      model.save().then(() => {
+        this.send('waitAndRefresh');
+      }).catch((err) => {
         this.set('access.enabled', false);
         this.send('gotError', err);
       });
@@ -137,7 +134,7 @@ export default Ember.Controller.extend({
       }, 1000);
     },
 
-    addAuthorized: function(data) {
+    addAuthorized: function(/*data*/) {
     },
 
     promptDisable: function() {

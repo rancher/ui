@@ -1,17 +1,11 @@
 <section>
-  {{top-errors errors=errors}}
-
   <div class="well">
-    <h2>Access Control is {{#if access.enabled}}<b>enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
+    <h2>LDAP is {{#if access.enabled}}<b>enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
     <div>
       {{#if access.enabled}}
-        {{#if wasRestricted}}
-          Rancher is configured to restrict access to {{wasRestrictedMsg}}.
-        {{else}}
-          Rancher is configured to allow access to any GitHub{{#if model.hostname}} Enterprise{{/if}} user.
-        {{/if}}
+        Rancher is configured to allow access to any LDAP user.
       {{else}}
-        Rancher can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.
+        Rancher can be configured to restrict access to a set of users and group members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.
       {{/if}}
     </div>
   </div>
@@ -20,11 +14,33 @@
     <div class="well">
       <h4>Authentication</h4>
       <hr/>
-      {{#if model.hostname}}
-        <div><b>Enterprise Host: </b> <span class="text-muted">{{model.hostname}}</span></div>
-      {{/if}}
-      <div><b>Client ID: </b> <span class="text-muted">{{model.clientId}}</span></div>
-      <p class="help-block">To change the configured GitHub application, disable access control below and then set it up again.</p>
+
+      <div class="row">
+        <div class="col-md-4">
+          <h4>General</h4>
+          <div><b>Server: </b> <span class="text-muted">{{model.server}}:{{model.port}}</span></div>
+          <div><b>TLS: </b> <span class="text-muted">{{if model.tls "Yes" "No"}}</span></div>
+          <div><b>Service Account: </b> <span class="text-muted">{{model.serviceAccountUsername}}</span></div>
+          <div><b>Default Domain: </b> <span class="text-muted">{{model.loginDomain}}</span></div>
+        </div>
+        <div class="col-md-4">
+          <h4>Users</h4>
+          <div><b>Object Class: </b> <span class="text-muted">{{model.userObjectClass}}</span></div>
+          <div><b>Login Field: </b> <span class="text-muted">{{model.userLoginField}}</span></div>
+          <div><b>Name Field: </b> <span class="text-muted">{{model.userNameField}}</span></div>
+          <div><b>Search Field: </b> <span class="text-muted">{{model.userSearchField}}</span></div>
+          <div><b>Enabled Field: </b> <span class="text-muted">{{model.userEnabledAttribute}}</span></div>
+          <div><b>Enabled BitMask: </b> <span class="text-muted">{{model.userEnabledMaskBit}}</span></div>
+        </div>
+        <div class="col-md-4">
+          <h4>Group</h4>
+          <div><b>Object Class: </b> <span class="text-muted">{{model.groupObjectClass}}</span></div>
+          <div><b>Name Field: </b> <span class="text-muted">{{model.groupNameField}}</span></div>
+          <div><b>Search Field: </b> <span class="text-muted">{{model.groupSearchField}}</span></div>
+        </div>
+      </div>
+
+      <p class="help-block">To change the server configuration, disable access control below and then set it up again.</p>
     </div>
 
     <div class="well">
@@ -38,39 +54,13 @@
         <div class="row">
           <div class="col-md-6">
             <div class="radio">
-              <label>{{radio-button selection=model.accessMode value="unrestricted"}} Allow any GitHub user</label>
+              <label>{{radio-button selection=model.accessMode value="unrestricted"}} Allow any user</label>
             </div>
             <div class="radio">
-              <label>{{radio-button selection=model.accessMode value="restricted"}} Restrict to specific GitHub users and organization members{{#if isRestricted}}:{{/if}}</label>
+              <label>{{radio-button selection=model.accessMode value="restricted" disabled=true}} Restrict to specific users and group members (coming soon)</label>
             </div>
           </div>
           <div class="col-md-6">
-            {{#if isRestricted}}
-              {{input-github allowTeams=false action="addAuthorized" onError="showError"}}
-
-              <hr/>
-              <h5>Authorized Users and Organizations</h5>
-
-              <ul class="list-unstyled gh-block-list">
-                {{#each model.allowedUsers as |user|}}
-                  <li>
-                    {{#github-block login=user}}
-                      <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeUser" user}}></button>
-                    {{/github-block}}
-                  </li>
-                {{/each}}
-                {{#each model.allowedOrganizations as |org|}}
-                  <li>
-                    {{#github-block login=org}}
-                      <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeOrg" org}}></button>
-                    {{/github-block}}
-                  </li>
-                {{/each}}
-              </ul>
-              {{#if (and (eq model.allowedUsers.length 0) (eq model.allowedOrganizations.length 0))}}
-                <span class="text-muted">None</span>
-              {{/if}}
-            {{/if}}
           </div>
         </div>
 
@@ -117,65 +107,108 @@
   {{/if}}
 
   {{#unless access.enabled}}
+
+
     <div class="well">
-      <h4>1. Setup a GitHub Application</h4>
+      <h4>1. Configure an LDAP server</h4>
       <hr/>
-      <p>
-        <ul>
-          <li>
-            For standard GitHub, <a href="https://github.com/settings/developers" target="_blank">click here</a> to go applications settings in a new window.
-              <ul>
-                <li>For Github Enterprise, login to your account.  Click on Settings, then Applications.</li>
-              </ul>
-          </li>
-          <li>
-            Click &quot;Register new application&quot; and fill out the form:
-            <ul>
-              <li><b>Application name:</b> <span class="text-muted">Anything you like, e.g. My Rancher</span></li>
-              <li>
-                <b>Homepage URL:&nbsp;</b> <span>{{destinationUrl}}</span>
-              </li>
-              <li><b>Application description:</b> <span class="text-muted">Anything you like, optional</span></li>
-              <li><b>Authorization callback URL</b> <span>{{destinationUrl}}</span></li>
-            </ul>
-          </li>
-          <li>Click &quot;Register application&quot;</li>
-        </ul>
-      </p>
+      <p class="help-block">Enter the address, port, and protocol to connect to your LDAP/ActiveDirectory server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS.</p>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Hostname or IP Address*</label>
+            {{input type="text" value=model.server classNames="form-control"}}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Port</label>
+            <div class="input-group">
+              {{input type="text" value=model.port type="number" min=1 max=65535 classNames="form-control"}}
+              <span class="input-group-addon">
+                <label>TLS {{input type="checkbox" checked=model.tls}}</label>
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="checkbox">
+          </div>
+        </div>
+      </div>
+
+      <p class="help-block">Rancher needs a service account that has (read-only) access to all of the domains that will be able to login, so that we can determine what groups a user is a member of when they make a request with an API key.</p>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Service Account Username*</label>
+            {{input type="text" value=model.serviceAccountUsername classNames="form-control"}}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Service Account Password*</label>
+            {{input type="password" value=model.serviceAccountPassword classNames="form-control"}}
+          </div>
+        </div>
+      </div>
+
+      <p class="help-block">This domain will be used if a user logs in as e.g. <code>jsmith</code> instead of <code>ASpecificDomain\jsmith</code>.</p>
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="form-group">
+            <label>Default Login Domain*</label>
+            {{input type="text" value=model.loginDomain classNames="form-control"}}
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="well">
-      <h4>2. Configure Rancher to use your application for authentication</h4>
+      <h4>2. Customize Schema</h4>
       <hr/>
-      <p>Copy and paste the Client ID and Secret from the upper-right corner of your newly-created application.</p>
+      <p class="help-block">If your schema does not match the standard ActiveDirectory format, you can customize it here.</p>
       <div class="row">
         <div class="col-md-6">
+          <h4>Users</h4>
           <div class="form-group">
-            <label>Client ID*</label>
-            {{input type="text" value=model.clientId classNames="form-control"}}
+            <label>Object Class</label>
+            {{input type="text" value=model.userObjectClass type="text" classNames="form-control"}}
+          </div>
+          <div class="form-group">
+            <label>Login Field</label>
+            {{input type="text" value=model.userLoginField type="text" classNames="form-control"}}
+          </div>
+          <div class="form-group">
+            <label>Name Field</label>
+            {{input type="text" value=model.userNameField type="text" classNames="form-control"}}
+          </div>
+          <div class="form-group">
+            <label>Search Field</label>
+            {{input type="text" value=model.userSearchField type="text" classNames="form-control"}}
+          </div>
+          <div class="form-group">
+            <label>Status Field</label>
+            {{input type="text" value=model.userEnabledAttribute type="text" classNames="form-control"}}
+          </div>
+          <div class="form-group">
+            <label>Disabled Status Bitmask</label>
+            {{input type="text" value=model.userDisabledBitMask type="number" min=1 classNames="form-control"}}
           </div>
         </div>
         <div class="col-md-6">
+          <h4>Groups</h4>
           <div class="form-group">
-            <label>Client Secret*</label>
-            {{input type="password" value=model.clientSecret classNames="form-control"}}
+            <label>Object Class</label>
+            {{input type="text" value=model.groupObjectClass type="text" classNames="form-control"}}
           </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-xs-12">
-          <div class="checkbox">
-            <label>{{input type="checkbox" checked=isEnterprise}} Use a private GitHub Enterprise installation</label>
-          </div>
-        </div>
-      </div>
-      <div class="row {{unless isEnterprise 'hide'}}">
-        <div class="col-md-6">
-        </div>
-        <div class="col-md-6">
           <div class="form-group">
-            <label>Enterprise Host*</label>
-            {{input type="text" value=model.hostname classNames="form-control" placeholder="e.g. github.example.com"}}
+            <label>Name Field</label>
+            {{input type="text" value=model.groupNameField type="text" classNames="form-control"}}
+          </div>
+          <div class="form-group">
+            <label>Search Field</label>
+            {{input type="text" value=model.groupSearchField type="text" classNames="form-control"}}
           </div>
         </div>
       </div>
@@ -184,18 +217,33 @@
     <div class="well">
       <h4>3. Test and enable authentication</h4>
       <hr/>
+      <p class="help-block">Check that everything is configured correctly by testing authentication with your LDAP account:</p>
+      {{top-errors errors=errors}}
+
       <div class="row">
-        <div class="col-md-6">
-          <p>Check that your application is configured correctly by testing authentication with it:</p>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Your Username*</label>
+            {{input type="text" value=username classNames="form-control"}}
+          </div>
         </div>
-        <div class="col-md-6">
-          <button disabled={{createDisabled}} class="btn btn-primary" {{action "test"}}>
-            {{#if testing}}
-              <i class="fa fa-circle-o-notch fa-spin"></i> Waiting to hear back from GitHub
-            {{else}}
-              <i class="fa fa-github"></i> Authenticate with GitHub
-            {{/if}}
-          </button>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Your Password*</label>
+            {{input type="password" value=password classNames="form-control"}}
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>&nbsp;</label>
+            <button disabled={{createDisabled}} class="btn btn-primary" style="display: block;" {{action "test"}}>
+              {{#if testing}}
+                <i class="fa fa-circle-o-notch fa-spin"></i> Testing...
+              {{else}}
+                Authenticate
+              {{/if}}
+            </button>
+          </div>
         </div>
       </div>
     </div>

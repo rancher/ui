@@ -25,9 +25,15 @@ export default Ember.Service.extend({
       this.setProperties({
         'enabled': token.security,
         'provider': token.authProvider,
-        'github.clientId': token.clientId,
-        'github.hostname': token.hostname,
       });
+
+      if ( token.authProvider.toLowerCase() === 'githubconfig' )
+      {
+        this.setProperties({
+          'github.clientId': token.clientId,
+          'github.hostname': token.hostname,
+        });
+      }
 
       if ( !token.security )
       {

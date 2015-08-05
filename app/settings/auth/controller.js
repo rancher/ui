@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.ObjectController.extend({
+  access: Ember.inject.service(),
+
   lastRoute: 'settings.auth.github',
   drivers: function() {
     return [

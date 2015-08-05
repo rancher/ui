@@ -15,6 +15,8 @@ var C = {
     ACCOUNT_ID: 'accountId',
     USER_TYPE: 'userType',
     PROJECT: 'projectId',
+    IDENTITY: 'userIdentity',
+    IDENTITY_TYPE: 'userType',
     GITHUB_CACHE: 'githubCache',
     GITHUB_ORGS: 'orgs',
     GITHUB_TEAMS: 'teams',
@@ -87,7 +89,9 @@ C.TOKEN_TO_SESSION_KEYS = [
   C.SESSION.USER_ID,
   C.SESSION.USER_TYPE,
   C.SESSION.GITHUB_TEAMS,
-  C.SESSION.GITHUB_ORGS
+  C.SESSION.GITHUB_ORGS,
+  C.SESSION.IDENTITY,
+  C.SESSION.IDENTITY_TYPE
 ];
 
 export default C;
