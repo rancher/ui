@@ -2,7 +2,7 @@
 {{#if avatar}}
   <div class="gh-avatar">
     {{#if avatarUrl}}
-      {{#if link}}
+      {{#if (and url link)}}
         <a href="{{url}}" target="_blank">
           <img src="{{avatarUrl}}" width="{{size}}" height="{{size}}">
         </a>
@@ -10,41 +10,27 @@
         <img src="{{avatarUrl}}" width="{{size}}" height="{{size}}">
       {{/if}}
     {{else}}
-      {{#if isTeam}}
-        <div class="gh-placeholder">
-          <i class="fa-2x ss-users"></i>
-        </div>
-      {{else}}
-        <div class="gh-placeholder"></div>
-      {{/if}}
+      <div class="gh-placeholder"></div>
     {{/if}}
   </div>
 {{/if}}
 <div class="gh-block-content">
-  <div class="clip gh-block-name">
-    {{#if url}}
-      {{#if link}}
-        <a href="{{url}}" target="_blank">{{name}}</a>
+  {{#if loading}}
+    Loading...
+  {{else}}
+    <div class="clip gh-block-name">
+      {{#if (and url link)}}
+        <a href="{{url}}" target="_blank">{{login}}</a>
       {{else}}
+        {{login}}
+      {{/if}}
+    </div>
+    <div class="gh-block-detail clip">
+      {{#if name}}
         {{name}}
-      {{/if}}
-    {{else}}
-      {{name}}
-    {{/if}}
-  </div>
-  <div class="gh-block-detail clip">
-    {{#if isTeam}}
-      {{#if org}}
-        Team in <a href="{{orgUrl}}" target="_blank">{{org}}</a> org
       {{else}}
-        You are not a member of this team.
+        &nbsp;
       {{/if}}
-    {{else}}
-      {{#if description}}
-        {{description}}
-      {{else}}
-        <i>No Name</i>
-      {{/if}}
-    {{/if}}
-  </div>
+    </div>
+  {{/if}}
 </div>

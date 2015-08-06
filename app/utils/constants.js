@@ -54,6 +54,8 @@ var C = {
       'team': 'github_team',
       'org': 'github_org',
     },
+    TYPE_LDAP_USER:  'ldap_user',
+    TYPE_LDAP_GROUP: 'ldap_group',
   },
 
   SETTING: {

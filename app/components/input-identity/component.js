@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  access: Ember.inject.service(),
+
   allowTeams: true,
   checking: false,
   addInput: '',
@@ -15,9 +17,9 @@ export default Ember.Component.extend({
       this.set('checking', true);
       var input = this.get('addInput').trim();
 
-      this.get('store').find('identity', input).then((info) => {
+      this.get('store').find('identity', null, {filter: {all: input}}).then((info) => {
         this.set('addInput','');
-        this.send('addObject', info);
+        this.send('addObject', info.objectAt(0));
       }).catch(() => {
         this.sendAction('onError','Identity not found: ' + input);
       }).finally(() => {
@@ -26,10 +28,7 @@ export default Ember.Component.extend({
     },
 
     addObject: function(info) {
-      this.sendAction('action', Ember.Object.create({
-        id: info.get('id'),
-        type: info.get('type'),
-      }));
+      this.sendAction('action', info);
     }
   },
 
@@ -42,6 +41,13 @@ export default Ember.Component.extend({
   }.property(),
 
   placeholder: function() {
-    return "Add a GitHub user or organization name";
-  }.property(),
+    if ( this.get('access.provider').toLowerCase() === 'githubconfig' )
+    {
+      return "Add a GitHub user or organization name";
+    }
+    else
+    {
+      return "Add a user or group by name";
+    }
+  }.property('access.provider'),
 });

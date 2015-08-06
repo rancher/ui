@@ -11,8 +11,8 @@ export default Ember.Mixin.create(NewOrEdit, {
     checkMember: function(obj) {
       var member = this.get('store').createRecord({
         type: 'projectMember',
-        externalId: obj.get('id'),
-        externalIdType: C.PROJECT.FROM_GITHUB[ obj.get('type') ],
+        externalId: obj.get('externalId'),
+        externalIdType: obj.get('externalIdType'),
         role: (this.get('model.projectMembers.length') === 0 ? C.PROJECT.ROLE_OWNER : C.PROJECT.ROLE_MEMBER)
       });
 
@@ -36,12 +36,18 @@ export default Ember.Mixin.create(NewOrEdit, {
   },
 
   roleOptions: function() {
+    return [
+      {label: 'Member', value: 'member'},
+      {label: 'Owner', value: 'owner'},
+    ];
+    /*
     return this.get('store').getById('schema','projectmember').get('resourceFields.role.options').map((role) => {
       return {
         label: Util.ucFirst(role),
         value: role
       };
     });
+    */
   }.property(),
 
   hasOwner: function() {

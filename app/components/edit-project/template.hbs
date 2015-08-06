@@ -28,7 +28,7 @@
     </div>
     <div class="col-sm-12 col-md-8">
       {{#if accessEnabled}}
-        {{input-github action="checkMember" onError="error"}}
+        {{input-identity action="checkMember" onError="error"}}
       {{else}}
         <p class="help-block" style="margin-top: 0;">Access Control is not enabled.  Everybody is Admin and will be able to use this environment.</p>
       {{/if}}
@@ -59,7 +59,7 @@
                       Rancher Account: {{member.name}} ({{member.externalId}})
                     {{/if}}
                   {{else}}
-                    {{github-block type=member.githubType login=member.externalId fallback=member.name}}
+                    {{identity-block externalId=member.externalId}}
                   {{/if}}
                 </td>
                 <td>{{member.displayType}}</td>
