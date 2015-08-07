@@ -310,7 +310,7 @@ export default Ember.Controller.extend({
 
       model.save().then(() => {
         this.get('access').clearSessionKeys();
-        this.set('acccess.enabled',false);
+        this.set('access.enabled',false);
         this.send('waitAndRefresh');
       }).catch((err) => {
         this.send('gotError', err);

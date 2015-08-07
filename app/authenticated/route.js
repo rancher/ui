@@ -29,7 +29,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
       // Save whether the user is admin
       var type = session.get(C.SESSION.USER_TYPE);
-      var isAdmin = (type === C.USER.TYPE_ADMIN) || (type === 'ldap_user') || !isAuthEnabled; // @TODO fix ldap
+      var isAdmin = (type === C.USER.TYPE_ADMIN) || !isAuthEnabled;
       this.set('access.admin', isAdmin);
 
       // Return the list of projects as the model

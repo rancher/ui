@@ -34,6 +34,15 @@ export default Ember.Component.extend(EditProject, {
   didSave: function() {
     if ( this.get('editing') && this.get('access.enabled') )
     {
+      var members = this.get('model.projectMembers').map((member) => {
+        return {
+          type: 'projectMember',
+          externalId: member.externalId,
+          externalIdType: member.externalIdType,
+          role: member.role
+        };
+      });
+
       return this.get('model').doAction('setmembers',{members: this.get('model.projectMembers')});
     }
   },

@@ -14,6 +14,7 @@
     <div class="well">
       <h4>Authentication</h4>
       <hr/>
+      <p class="help-block">To change the server configuration, disable access control below and then set it up again.</p>
 
       <div class="row">
         <div class="col-md-4">
@@ -21,6 +22,7 @@
           <div><b>Server: </b> <span class="text-muted">{{model.server}}:{{model.port}}</span></div>
           <div><b>TLS: </b> <span class="text-muted">{{if model.tls "Yes" "No"}}</span></div>
           <div><b>Service Account: </b> <span class="text-muted">{{model.serviceAccountUsername}}</span></div>
+          <div><b>Search Base: </b> <span class="text-muted">{{model.domain}}</span></div>
           <div><b>Default Domain: </b> <span class="text-muted">{{model.loginDomain}}</span></div>
         </div>
         <div class="col-md-4">
@@ -30,7 +32,7 @@
           <div><b>Name Field: </b> <span class="text-muted">{{model.userNameField}}</span></div>
           <div><b>Search Field: </b> <span class="text-muted">{{model.userSearchField}}</span></div>
           <div><b>Enabled Field: </b> <span class="text-muted">{{model.userEnabledAttribute}}</span></div>
-          <div><b>Enabled BitMask: </b> <span class="text-muted">{{model.userEnabledMaskBit}}</span></div>
+          <div><b>Disabled BitMask: </b> <span class="text-muted">{{model.userDisabledBitMask}}</span></div>
         </div>
         <div class="col-md-4">
           <h4>Group</h4>
@@ -39,8 +41,6 @@
           <div><b>Search Field: </b> <span class="text-muted">{{model.groupSearchField}}</span></div>
         </div>
       </div>
-
-      <p class="help-block">To change the server configuration, disable access control below and then set it up again.</p>
     </div>
 
     <div class="well">
@@ -153,12 +153,19 @@
         </div>
       </div>
 
-      <p class="help-block">This domain will be used if a user logs in as e.g. <code>jsmith</code> instead of <code>ASpecificDomain\jsmith</code>.</p>
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-md-6">
+          <div class="form-group">
+            <p class="help-block">Only users and groups below the base will be used.</p>
+            <label>Search Base*</label>
+            {{input type="text" value=model.domain classNames="form-control" placeholder="e.g. dc=mycompany,dc=com"}}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <p class="help-block">This domain will be used if a user logs in as e.g. <code>jsmith</code> instead of <code>ASpecificDomain\jsmith</code>.</p>
           <div class="form-group">
             <label>Default Login Domain*</label>
-            {{input type="text" value=model.loginDomain classNames="form-control"}}
+            {{input type="text" value=model.loginDomain classNames="form-control" placeholder="e.g. mycompany"}}
           </div>
         </div>
       </div>

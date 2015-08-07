@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
-var ProjectMember = Resource.extend({
+var Identity = Resource.extend({
   isRancher: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_RANCHER),
   isUser: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_USER),
   isTeam: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_TEAM),
@@ -39,4 +39,4 @@ var ProjectMember = Resource.extend({
   }.property('externalIdType'),
 });
 
-export default ProjectMember;
+export default Identity;

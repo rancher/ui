@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   access: Ember.inject.service(),
@@ -6,6 +7,13 @@ export default Ember.Component.extend({
   allowTeams: true,
   checking: false,
   addInput: '',
+  allIdentities: null,
+
+  init: function() {
+    this.set('allIdentities', this.get('store').all('identity'));
+    this.get('store').findAll('identity');
+    this._super();
+  },
 
   actions: {
     add: function() {
@@ -17,7 +25,7 @@ export default Ember.Component.extend({
       this.set('checking', true);
       var input = this.get('addInput').trim();
 
-      this.get('store').find('identity', null, {filter: {all: input}}).then((info) => {
+      this.get('store').find('identity', null, {filter: {name: input}}).then((info) => {
         this.set('addInput','');
         this.send('addObject', info.objectAt(0));
       }).catch(() => {
@@ -36,10 +44,6 @@ export default Ember.Component.extend({
     return this.get('checking') || this.get('addInput').trim().length === 0;
   }.property('addInput','checking'),
 
-  dropdownChoices: function() {
-    return [];
-  }.property(),
-
   placeholder: function() {
     if ( this.get('access.provider').toLowerCase() === 'githubconfig' )
     {
@@ -48,6 +52,23 @@ export default Ember.Component.extend({
     else
     {
       return "Add a user or group by name";
+    }
+  }.property('access.provider'),
+
+  dropdownChoices: function() {
+    return this.get('allIdentities').filter((identity) => {
+      return identity.get('externalIdType') != C.PROJECT.TYPE_LDAP_USER;
+    });
+  }.property('allIdentities.@each.externalIdType'),
+
+  dropdownLabel: function() {
+    if ( this.get('access.provider').toLowerCase() === 'githubconfig' )
+    {
+      return "Your Teams and Organizations";
+    }
+    else
+    {
+      return "Your Groups";
     }
   }.property('access.provider'),
 });

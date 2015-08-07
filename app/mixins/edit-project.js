@@ -8,14 +8,7 @@ export default Ember.Mixin.create(NewOrEdit, {
   access: Ember.inject.service(),
 
   actions: {
-    checkMember: function(obj) {
-      var member = this.get('store').createRecord({
-        type: 'projectMember',
-        externalId: obj.get('externalId'),
-        externalIdType: obj.get('externalIdType'),
-        role: (this.get('model.projectMembers.length') === 0 ? C.PROJECT.ROLE_OWNER : C.PROJECT.ROLE_MEMBER)
-      });
-
+    checkMember: function(member) {
       var existing = this.get('model.projectMembers')
                       .filterProperty('externalIdType', member.get('externalIdType'))
                       .filterProperty('externalId', member.get('externalId'));
@@ -25,6 +18,8 @@ export default Ember.Mixin.create(NewOrEdit, {
         this.send('error','Member is already in the list');
         return;
       }
+
+      member.set('role','member');
 
       this.send('error',null);
       this.get('model.projectMembers').pushObject(member);
@@ -36,18 +31,12 @@ export default Ember.Mixin.create(NewOrEdit, {
   },
 
   roleOptions: function() {
-    return [
-      {label: 'Member', value: 'member'},
-      {label: 'Owner', value: 'owner'},
-    ];
-    /*
     return this.get('store').getById('schema','projectmember').get('resourceFields.role.options').map((role) => {
       return {
         label: Util.ucFirst(role),
         value: role
       };
     });
-    */
   }.property(),
 
   hasOwner: function() {

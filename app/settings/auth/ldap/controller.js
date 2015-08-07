@@ -172,12 +172,13 @@ export default Ember.Controller.extend({
 
       var model = this.get('model');
       model.setProperties({
+        enabled: false,
       });
 
 
       model.save().then(() => {
         this.get('access').clearSessionKeys();
-        this.set('acccess.enabled',false);
+        this.set('access.enabled',false);
         this.send('waitAndRefresh');
       }).catch((err) => {
         this.send('gotError', err);
