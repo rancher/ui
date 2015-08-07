@@ -43,7 +43,7 @@ export default Ember.Component.extend(EditProject, {
         };
       });
 
-      return this.get('model').doAction('setmembers',{members: this.get('model.projectMembers')});
+      return this.get('model').doAction('setmembers',{members: members});
     }
   },
 

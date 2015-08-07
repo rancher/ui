@@ -57,7 +57,7 @@ export default Ember.Component.extend({
 
   dropdownChoices: function() {
     return this.get('allIdentities').filter((identity) => {
-      return identity.get('externalIdType') != C.PROJECT.TYPE_LDAP_USER;
+      return identity.get('externalIdType') !== C.PROJECT.TYPE_LDAP_USER;
     });
   }.property('allIdentities.@each.externalIdType'),
 
