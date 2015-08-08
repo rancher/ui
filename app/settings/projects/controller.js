@@ -25,12 +25,10 @@ export default Ember.Controller.extend(Sortable, {
 
       if ( this.get('access.enabled') )
       {
-        var me = store.createRecord({
-          type: 'projectMember',
-          externalId: this.get('session').get(C.SESSION.USER_ID),
-          externalIdType: C.PROJECT.TYPE_USER,
-          role: C.PROJECT.ROLE_OWNER
-        });
+        var identity = this.get('session.'+C.SESSION.IDENTITY);
+        identity.type = 'identity';
+        var me = store.createRecord(identity);
+        me.set('role', C.PROJECT.ROLE_OWNER);
         model.set('projectMembers', [me]);
       }
       else
