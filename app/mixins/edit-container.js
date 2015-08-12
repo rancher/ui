@@ -166,7 +166,7 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditScheduling, {
   // ----------------------------------
   // Image
   // ----------------------------------
-  userImageUuid: 'ubuntu:14.04.2',
+  userImageUuid: 'ubuntu:14.04.3',
   initUuid: function() {
     if ( this.get('instance.imageUuid') )
     {

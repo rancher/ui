@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import Sortable from 'ui/mixins/sortable';
+import ContainerSparkStats from 'ui/mixins/container-spark-stats';
 
-export default Ember.Controller.extend(Sortable, {
+export default Ember.Controller.extend(Sortable, ContainerSparkStats, {
   sortableContent: Ember.computed.alias('model.instances'),
   sortBy: 'name',
   sorts: {
@@ -12,3 +13,5 @@ export default Ember.Controller.extend(Sortable, {
     command:  ['command','name','id'],
   },
 });
+
+

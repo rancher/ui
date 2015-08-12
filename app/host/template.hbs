@@ -13,7 +13,7 @@
 </section>
 
 <section>
-  {{#info-stats model=model}}
+  {{#info-multi-stats model=model linkName="hostStats" single=true}}
     <ul class="list-lines">
       {{#if model.showTransitioningMessage}}
         <li>
@@ -78,13 +78,18 @@
         </li>
       {{/if}}
 
+      <li>
+        <label>Labels</label>
+        {{#if userLabelArray.length}}
+          {{#each userLabelArray as |label|}}
+            <span class="label label-default clip" style="display: inline-block; max-width: 100%;">{{label.key}}{{#if label.value}}={{label.value}}{{/if}}</span>
+          {{/each}}
+        {{else}}
+          <span class="text-muted">None</span>
+        {{/if}}
+      </li>
     </ul>
-  {{/info-stats}}
-</section>
-
-<section class="well" style="margin-bottom: 0;">
-  <label class="section">Labels</label>
-  {{labels-section model=model}}
+  {{/info-multi-stats}}
 </section>
 
 <section>

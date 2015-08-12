@@ -1,9 +1,11 @@
 import Ember from 'ember';
 import DownloadMachineConfig from 'ui/mixins/download-machine-config';
 import CattleTransitioningController from 'ui/mixins/cattle-transitioning-controller';
+import ReadLabels from 'ui/mixins/read-labels';
 
-export default Ember.Controller.extend(CattleTransitioningController, DownloadMachineConfig, {
+export default Ember.Controller.extend(CattleTransitioningController, DownloadMachineConfig, ReadLabels, {
   needs: ['application'],
+  labelResource: Ember.computed.alias('model'),
 
   actions: {
     activate: function() {

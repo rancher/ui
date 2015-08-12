@@ -5,12 +5,12 @@ export default Ember.Route.extend({
   statsSocket: null,
 
   model() {
-    return this.modelFor('host');
+    return this.modelFor('service');
   },
 
   activate() {
     var stats = MultiStatsSocket.create({
-      resource: this.modelFor('host'),
+      resource: this.modelFor('service'),
       linkName: 'containerStats',
     });
 

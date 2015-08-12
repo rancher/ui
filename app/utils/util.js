@@ -187,6 +187,59 @@ export function randomStr(length=16, charset='alphanum')
   }).join('');
 }
 
+export function formatPercent(value) {
+  if ( value < 1 )
+  {
+    return Math.round(value*100)/100 + '%';
+  }
+  else if ( value < 10 )
+  {
+    return Math.round(value*10)/10 + '%';
+  }
+  else
+  {
+    return Math.round(value) + '%';
+  }
+}
+
+export function formatMib(value) {
+  if ( value >= 10240 )
+  {
+    return Math.round(value/1024) + ' GiB';
+  }
+  else if ( value >= 1024 )
+  {
+    return Math.ceil(value/102.4)/10 + ' GiB';
+  }
+  else if ( value < 10 )
+  {
+    return Math.round(value*10)/10 + ' MiB';
+  }
+  else
+  {
+    return Math.round(value) + ' MiB';
+  }
+}
+
+export function formatKbps(value) {
+  if ( value >= 10000 )
+  {
+    return Math.round(value/1000) + ' Mbps';
+  }
+  else if ( value >= 1000 )
+  {
+    return Math.ceil(value/100)/10 + ' Mbps';
+  }
+  else if ( value < 10 )
+  {
+    return Math.round(value*10)/10 + ' Kbps';
+  }
+  else
+  {
+    return Math.round(value) + ' Kbps';
+  }
+}
+
 var Util = {
   arrayDiff: arrayDiff,
   arrayIntersect: arrayIntersect,
