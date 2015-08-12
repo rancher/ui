@@ -18,7 +18,7 @@ export default Ember.Controller.extend({
 
       Ember.run.later(() => {
         this.get('access').login(this.get('username')+':'+this.get('password')).then(() => {
-          this.transitionTo('authenticated');
+          this.replaceWith('authenticated');
         }).catch((err) => {
           this.set('login.waiting', false);
 
@@ -30,6 +30,9 @@ export default Ember.Controller.extend({
           {
             this.set('login.errorMsg', err.message);
           }
+        }).finally(() => {
+          this.set('login.waiting', false);
+          this.set('password', '');
         });
       }, 10);
     }
