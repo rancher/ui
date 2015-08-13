@@ -12,5 +12,5 @@ export default Ember.Component.extend({
   avatarUrl: Ember.computed.alias('identity.profilePicture'),
   url: Ember.computed.alias('identity.profileUrl'),
   login: Ember.computed.alias('identity.login'),
-  name: Ember.computed.alias('identity.name'),
+  displayDescription: Ember.computed.alias('identity.displayDescription'),
 });

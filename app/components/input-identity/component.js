@@ -9,6 +9,9 @@ export default Ember.Component.extend({
   addInput: '',
   allIdentities: null,
 
+  // @TODO bad...
+  dropdownLoaded: Ember.computed.alias('store._foundAll.identity'),
+
   init: function() {
     this.set('allIdentities', this.get('store').all('identity'));
     this.get('store').findAll('identity');
@@ -56,10 +59,27 @@ export default Ember.Component.extend({
   }.property('access.provider'),
 
   dropdownChoices: function() {
+    var allowTeams = this.get('allowTeams');
     return this.get('allIdentities').filter((identity) => {
-      return identity.get('externalIdType') !== C.PROJECT.TYPE_LDAP_USER;
-    });
-  }.property('allIdentities.@each.externalIdType'),
+      var type = identity.get('externalIdType');
+      var logicalType = identity.get('logicalType');
+      console.log('id', identity.get('id'), 'name', identity.get('name'), 'type', identity.get('externalIdType'),'logical', identity.get('logicalType'));
+
+      // Don't show people
+      if ( logicalType === C.PROJECT.PERSON )
+      {
+        return false;
+      }
+
+      // Don't show teams if disabled
+      if ( !allowTeams && type === C.PROJECT.TYPE_GITHUB_TEAM )
+      {
+        return false;
+      }
+
+      return true;
+    }).sortBy('logicalTypeSort','profileUrl','name');
+  }.property('allIdentities.@each.{logicalType,externalIdType}','allowTeams'),
 
   dropdownLabel: function() {
     if ( this.get('access.provider').toLowerCase() === 'githubconfig' )

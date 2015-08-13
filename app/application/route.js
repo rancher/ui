@@ -138,12 +138,12 @@ export default Ember.Route.extend({
       try {
         window.opener.window.onGithubTest(err,code);
         setTimeout(function() {
-          //window.close();
+          window.close();
         },250);
         return new Ember.RSVP.promise();
       }
       catch(e) {
-        //window.close();
+        window.close();
       }
     }
   },

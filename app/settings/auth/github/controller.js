@@ -174,8 +174,10 @@ export default Ember.Controller.extend({
         'enabled': true,
         'accessMode': 'restricted',
         'allowedOrganizations': [],
-        'allowedUsers': [auth.user],
+        'allowedUsers': [auth.userIdentity.login],
       });
+
+      var url = window.location.href;
 
       model.save().then(() => {
         // Set this to true so the token will be sent with the request
@@ -184,14 +186,14 @@ export default Ember.Controller.extend({
         return this.get('store').find('setting', C.SETTING.API_HOST).then((setting) => {
           if ( setting.get('value') )
           {
-            this.send('waitAndRefresh');
+            this.send('waitAndRefresh', url);
           }
           else
           {
             // Default the api.host so the user won't have to set it in most cases
             setting.set('value', this.get('endpoint.host'));
             return setting.save().then(() => {
-              this.send('waitAndRefresh');
+              this.send('waitAndRefresh', url);
             });
           }
         });
@@ -201,11 +203,10 @@ export default Ember.Controller.extend({
       });
     },
 
-    waitAndRefresh: function() {
+    waitAndRefresh: function(url) {
       $('#loading-underlay, #loading-overlay').removeClass('hide').show();
-      var url = window.location.href;
       setTimeout(function() {
-        window.location.href = url;
+        window.location.href = url || window.location.href;
       }, 1000);
     },
 

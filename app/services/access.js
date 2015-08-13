@@ -5,6 +5,7 @@ export default Ember.Service.extend({
   cookies: Ember.inject.service(),
   session: Ember.inject.service(),
   github:  Ember.inject.service(),
+  identity: Ember.computed.alias('session.'+C.SESSION.IDENTITY),
 
   enabled: null,
   provider: null,

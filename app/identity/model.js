@@ -13,30 +13,59 @@ var Identity = Resource.extend({
       this.get('externalId') === this.get('session').get(C.SESSION.ACCOUNT_ID);
   }.property('{externalId,externalIdType}'),
 
-  githubType: function() {
+  logicalType: function() {
     switch ( this.get('externalIdType') )
     {
-      case C.PROJECT.TYPE_USER:     return 'user';
-      case C.PROJECT.TYPE_TEAM:     return 'team';
-      case C.PROJECT.TYPE_ORG:      return 'org';
-      case C.PROJECT.TYPE_RANCHER:  return null;
+      case C.PROJECT.TYPE_RANCHER:
+      case C.PROJECT.TYPE_GITHUB_USER:
+      case C.PROJECT.TYPE_LDAP_USER:
+        return C.PROJECT.PERSON;
+
+      case C.PROJECT.TYPE_GITHUB_TEAM:
+        return C.PROJECT.TEAM;
+
+      case C.PROJECT.TYPE_GITHUB_ORG:
+      case C.PROJECT.TYPE_LDAP_GROUP:
+        return C.PROJECT.ORG;
     }
   }.property('externalIdType'),
+
+  logicalTypeSort: function() {
+    switch (this.get('logicalType') )
+    {
+      case C.PROJECT.ORG: return 1;
+      case C.PROJECT.TEAM: return 2;
+      case C.PROJECT.PERSON: return 3;
+      default: return 4;
+    }
+  }.property('logicalType'),
 
   displayType: function() {
     switch ( this.get('externalIdType') )
     {
-      case C.PROJECT.TYPE_USER:
+      case C.PROJECT.TYPE_GITHUB_USER:
       case C.PROJECT.TYPE_LDAP_USER:  return 'User';
 
+      case C.PROJECT.TYPE_GITHUB_TEAM:return 'Team';
+      case C.PROJECT.TYPE_GITHUB_ORG: return 'Organization';
       case C.PROJECT.TYPE_LDAP_GROUP: return 'Group';
-      case C.PROJECT.TYPE_TEAM:       return 'Team';
-      case C.PROJECT.TYPE_ORG:        return 'Organization';
       case C.PROJECT.TYPE_RANCHER:    return 'Rancher Account';
     }
 
-    return '?';
+    return this.get('externalIdType')+'?';
   }.property('externalIdType'),
+
+  displayDescription: function() {
+    var name = this.get('name');
+    if ( this.get('externalIdType') === C.PROJECT.TYPE_GITHUB_TEAM )
+    {
+      return name.replace(/:.*/,'') + ' team';
+    }
+    else
+    {
+      return name;
+    }
+  }.property('externalIdType','name'),
 });
 
 export default Identity;

@@ -142,6 +142,7 @@ Router.map(function() {
 
   this.modal('edit-project', {
     dismissWithOutsideClick: false,
+    dialogClass: 'full-height',
     withParams: 'editProject',
     otherParams: 'originalModel',
   });
