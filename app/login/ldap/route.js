@@ -1,2 +1,2 @@
 import LoginRoute from 'ui/login/route';
-export default LoginRoute;
+export default LoginRoute.extend();

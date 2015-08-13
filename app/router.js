@@ -11,8 +11,8 @@ Router.map(function() {
   this.route('failWhale', { path: '/fail' });
 
   this.route('login', function() {
-    this.route('github', {path: '/'});
-    this.route('ldap',   {path: '/'});
+    this.route('github');
+    this.route('ldap');
   });
 
   this.route('logout');

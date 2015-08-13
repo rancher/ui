@@ -92,18 +92,20 @@ export default Ember.Route.extend({
     {
       if ( github.stateMatches(params.state) )
       {
-        return reply(params.error_description, params.code);
+        reply(params.error_description, params.code);
       }
       else
       {
-        return reply(stateMsg);
+        reply(stateMsg);
       }
+      transition.abort();
+      return Ember.RSVP.reject('isTest');
     }
     else if ( params.code )
     {
       if ( github.stateMatches(params.state) )
       {
-        return github.login(params.code).then(() => {
+        return this.get('access').login(params.code).then(() => {
           var backTo = session.get(C.SESSION.BACK_TO);
           session.set(C.SESSION.BACK_TO, undefined);
 
@@ -116,11 +118,12 @@ export default Ember.Route.extend({
             this.replaceWith('authenticated');
           }
         }).catch((err) => {
+          transition.send('logout', null, null, err.message);
+        }).finally(() => {
           this.controllerFor('application').setProperties({
             state: null,
             code: null,
           });
-          transition.send('logout', null, null, err.message);
         });
       }
       else
@@ -135,12 +138,12 @@ export default Ember.Route.extend({
       try {
         window.opener.window.onGithubTest(err,code);
         setTimeout(function() {
-          window.close();
+          //window.close();
         },250);
         return new Ember.RSVP.promise();
       }
       catch(e) {
-        window.close();
+        //window.close();
       }
     }
   },

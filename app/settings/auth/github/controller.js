@@ -166,13 +166,10 @@ export default Ember.Controller.extend({
       this.send('clearError');
       this.set('organizations', auth.orgs);
 
-      // Set this to true so the token will be sent with the request
-      this.set('access.enabled', true);
-
       // Clear the GitHub cache in case the hostname has changed
       this.get('github').clearCache();
 
-      var model = this.get('model');
+      var model = this.get('model').clone();
       model.setProperties({
         'enabled': true,
         'accessMode': 'restricted',
@@ -180,20 +177,21 @@ export default Ember.Controller.extend({
         'allowedUsers': [auth.user],
       });
 
-      var url = window.location.href;
-
       model.save().then(() => {
+        // Set this to true so the token will be sent with the request
+        this.set('access.enabled', true);
+
         return this.get('store').find('setting', C.SETTING.API_HOST).then((setting) => {
           if ( setting.get('value') )
           {
-            this.send('waitAndRefresh', url);
+            this.send('waitAndRefresh');
           }
           else
           {
             // Default the api.host so the user won't have to set it in most cases
             setting.set('value', this.get('endpoint.host'));
             return setting.save().then(() => {
-              this.send('waitAndRefresh', url);
+              this.send('waitAndRefresh');
             });
           }
         });
@@ -203,10 +201,11 @@ export default Ember.Controller.extend({
       });
     },
 
-    waitAndRefresh: function(url) {
+    waitAndRefresh: function() {
       $('#loading-underlay, #loading-overlay').removeClass('hide').show();
+      var url = window.location.href;
       setTimeout(function() {
-        window.location.href = url || window.location.href;
+        window.location.href = url;
       }, 1000);
     },
 
@@ -297,7 +296,7 @@ export default Ember.Controller.extend({
     disable: function() {
       this.send('clearError');
 
-      var model = this.get('model');
+      var model = this.get('model').clone();
       model.setProperties({
         'allowedOrganizations': [],
         'allowedUsers': [],

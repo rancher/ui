@@ -2,7 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   needs: ['login'],
-  github: Ember.inject.service('controllers.login'),
+  github: Ember.inject.service(),
+  login: Ember.computed.alias('controllers.login'),
 
   infoColor: function() {
     if ( this.get('login.errorMsg') )
