@@ -34,8 +34,8 @@ export default Ember.Controller.extend({
 
   wasRestricted: Ember.computed.equal('originalModel.accessMode','restricted'),
   wasRestrictedMsg: function() {
-    var users = this.get('originalModel.allowedUsers.length');
-    var orgs = this.get('originalModel.allowedOrganizations.length');
+    var users = this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_USER).get('length');
+    var orgs = this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_ORG).get('length');
     var enterprise = !!this.get('originalModel.hostname');
 
     var github = 'GitHub' + ( enterprise ? ' Enterprise' : '');
@@ -52,7 +52,7 @@ export default Ember.Controller.extend({
     }
 
     return str;
-  }.property('originalModel.allowedUsers.[]','originalModel.allowedOrganizations.[]','wasRestricted'),
+  }.property('originalModel.allowedIdentities.[]','wasRestricted'),
 
   wasShowing: false,
   showingAccessControl: function() {
@@ -61,11 +61,11 @@ export default Ember.Controller.extend({
 
     if ( restricted )
     {
-      if ( (this.get('model.allowedUsers.length') + this.get('model.allowedOrganizations.length')) > 1 )
+      if ( this.get('model.allowedIdentities.length') > 1 )
       {
         show = true;
       }
-      else if ( this.get('model.allowedUsers.firstObject') !== this.get('session').get(C.SESSION.USER_ID) )
+      else if ( this.get('model.allowedIdentities.firstObject.id') !== this.get('access.identity.id') )
       {
         show = true;
       }
@@ -78,7 +78,7 @@ export default Ember.Controller.extend({
 
     this.set('wasShowing', show);
     return show;
-  }.property('model.allowedUsers.[]','model.allowedOrganizations.[]','isRestricted','wasShowing'),
+  }.property('model.allowedIdentities.@each.id','isRestricted','wasShowing'),
 
   destinationUrl: function() {
     return window.location.origin+'/';
@@ -121,8 +121,7 @@ export default Ember.Controller.extend({
         'clientSecret': model.get('clientSecret').trim(),
         'enabled': false, // It should already be, but just in case..
         'accessMode': 'unrestricted',
-        'allowedOrganizations': [],
-        'allowedUsers': []
+        'allowedIdentities': [],
       });
 
       // Send authenticate immediately so that the popup isn't blocked,
@@ -173,8 +172,7 @@ export default Ember.Controller.extend({
       model.setProperties({
         'enabled': true,
         'accessMode': 'restricted',
-        'allowedOrganizations': [],
-        'allowedUsers': [auth.userIdentity.login],
+        'allowedIdentities': [auth.userIdentity],
       });
 
       var url = window.location.href;
@@ -213,15 +211,7 @@ export default Ember.Controller.extend({
     addAuthorized: function(data) {
       this.send('clearError');
       this.set('saved', false);
-
-      if ( data.type === 'user' )
-      {
-        this.get('model.allowedUsers').pushObject(data.id);
-      }
-      else
-      {
-        this.get('model.allowedOrganizations').pushObject(data.id);
-      }
+      this.get('model.allowedIdentities').pushObject(data);
     },
 
     githubNotFound: function(login) {
@@ -229,20 +219,15 @@ export default Ember.Controller.extend({
       this.send('removeUser',login);
     },
 
-    removeUser: function(login) {
+    removeIdentity: function(ident) {
       this.set('saved', false);
-      this.get('model.allowedUsers').removeObject(login);
-    },
-
-    removeOrg: function(login) {
-      this.set('saved', false);
-      this.get('model.allowedOrganizations').removeObject(login);
+      this.get('model.allowedIdentities').removeObject(ident);
     },
 
     saveAuthorization: function() {
       this.send('clearError');
 
-      if ( this.get('isRestricted') && !this.get('model.allowedUsers.length') && !this.get('model.allowedOrganizations.length'))
+      if ( this.get('isRestricted') && !this.get('model.allowedIdentities.length') )
       {
         this.send('showError','Add at least one authorized user or organization');
         return;
@@ -254,8 +239,7 @@ export default Ember.Controller.extend({
       var model = this.get('model');
       model.save().then(() => {
         this.get('originalModel').replaceWith(model);
-        this.set('originalModel.allowedOrganizations', this.get('model.allowedOrganizations').slice());
-        this.set('originalModel.allowedUsers', this.get('model.allowedUsers').slice());
+        this.set('originalModel.allowedIdentities', this.get('model.allowedIdentities').slice());
         this.set('saved', true);
       }).catch((err) => {
         this.send('gotError', err);
@@ -299,8 +283,7 @@ export default Ember.Controller.extend({
 
       var model = this.get('model').clone();
       model.setProperties({
-        'allowedOrganizations': [],
-        'allowedUsers': [],
+        'allowedIdentities': [],
         'accessMode': 'unrestricted',
         'enabled': false,
         'hostname': null,

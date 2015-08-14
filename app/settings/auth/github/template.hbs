@@ -52,22 +52,15 @@
               <h5>Authorized Users and Organizations</h5>
 
               <ul class="list-unstyled gh-block-list">
-                {{#each model.allowedUsers as |user|}}
+                {{#each model.allowedIdentities as |item|}}
                   <li>
-                    {{#github-block login=user}}
-                      <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeUser" user}}></button>
-                    {{/github-block}}
-                  </li>
-                {{/each}}
-                {{#each model.allowedOrganizations as |org|}}
-                  <li>
-                    {{#github-block login=org}}
-                      <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeOrg" org}}></button>
-                    {{/github-block}}
+                    {{#identity-block identity=item}}
+                      <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeIdentity" item}}></button>
+                    {{/identity-block}}
                   </li>
                 {{/each}}
               </ul>
-              {{#if (and (eq model.allowedUsers.length 0) (eq model.allowedOrganizations.length 0))}}
+              {{#if (eq model.allowedIdentities.length 0)}}
                 <span class="text-muted">None</span>
               {{/if}}
             {{/if}}
