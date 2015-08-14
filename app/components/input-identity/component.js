@@ -63,7 +63,6 @@ export default Ember.Component.extend({
     return this.get('allIdentities').filter((identity) => {
       var type = identity.get('externalIdType');
       var logicalType = identity.get('logicalType');
-      console.log('id', identity.get('id'), 'name', identity.get('name'), 'type', identity.get('externalIdType'),'logical', identity.get('logicalType'));
 
       // Don't show people
       if ( logicalType === C.PROJECT.PERSON )

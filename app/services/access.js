@@ -62,7 +62,8 @@ export default Ember.Service.extend({
       method: 'POST',
       headers: headers,
       data: {
-        code: code
+        code: code,
+        authProvider: this.get('provider'),
       },
     }).then((res) => {
       var auth = JSON.parse(res.xhr.responseText);
