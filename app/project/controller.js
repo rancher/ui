@@ -8,9 +8,11 @@ export default Ember.Controller.extend(CattleTransitioningController, {
 
   actions: {
     edit: function() {
-      this.get('controllers.application').setProperties({
-        editProject: true,
-        originalModel: this.get('model'),
+      this.get('model').importLink('projectMembers').then(() => {
+        this.get('controllers.application').setProperties({
+          editProject: true,
+          originalModel: this.get('model'),
+        });
       });
     },
 

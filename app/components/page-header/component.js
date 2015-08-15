@@ -1,8 +1,8 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
 export default Ember.Component.extend({
+  access: Ember.inject.service(),
   projects: Ember.inject.service(),
   project: Ember.computed.alias('projects.current'),
 
@@ -13,10 +13,11 @@ export default Ember.Component.extend({
   classNames: ['clearfix','no-select'],
   classNameBindings: ['hasAside'],
 
+  accessEnabled: Ember.computed.alias('access.enabled'),
+  isAdmin: Ember.computed.alias('access.admin'),
+
   showHostSetup: function() {
-    var userType = this.get('session').get(C.SESSION.USER_TYPE);
-    var isAdmin = userType === undefined || userType === C.USER.TYPE_ADMIN;
-    return isAdmin && this.get('store').hasRecordFor('schema','setting');
+    return this.get('isAdmin') && this.get('store').hasRecordFor('schema','setting');
   }.property(),
 
   projectChoices: function() {

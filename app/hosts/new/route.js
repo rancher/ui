@@ -2,11 +2,11 @@ import C from 'ui/utils/constants';
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  access: Ember.inject.service(),
+
   model: function() {
     var store = this.get('store');
-    var userType = this.get('session').get(C.SESSION.USER_TYPE);
-    var isAdmin = userType === undefined || userType === C.USER.TYPE_ADMIN;
-    if ( isAdmin && store.hasRecordFor('schema','setting') )
+    if ( this.get('access.admin') && store.hasRecordFor('schema','setting') )
     {
       return store.find('setting', C.SETTING.API_HOST).then((setting) => {
         if ( setting.get('value') )

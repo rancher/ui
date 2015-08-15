@@ -10,6 +10,7 @@ export default Ember.Controller.extend(Sortable, {
     description:  ['description','name','id'],
   },
 
+  access: Ember.inject.service(),
   projects: Ember.inject.service(),
   needs: ['application'],
 
@@ -22,14 +23,12 @@ export default Ember.Controller.extend(Sortable, {
         description: '',
       });
 
-      if ( this.get('app.authenticationEnabled') )
+      if ( this.get('access.enabled') )
       {
-        var me = store.createRecord({
-          type: 'projectMember',
-          externalId: this.get('session').get(C.SESSION.USER_ID),
-          externalIdType: C.PROJECT.TYPE_USER,
-          role: C.PROJECT.ROLE_OWNER
-        });
+        var identity = this.get('session.'+C.SESSION.IDENTITY);
+        identity.type = 'identity';
+        var me = store.createRecord(identity);
+        me.set('role', C.PROJECT.ROLE_OWNER);
         model.set('projectMembers', [me]);
       }
       else

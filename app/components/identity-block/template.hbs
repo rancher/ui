@@ -1,0 +1,32 @@
+{{yield}}
+{{#if avatar}}
+  <div class="gh-avatar">
+    {{#if avatarUrl}}
+      {{#if (and url link)}}
+        <a href="{{url}}" target="_blank">
+          <img src="{{avatarUrl}}" width="{{size}}" height="{{size}}">
+        </a>
+      {{else}}
+        <img src="{{avatarUrl}}" width="{{size}}" height="{{size}}">
+      {{/if}}
+    {{else}}
+      <div class="gh-placeholder"></div>
+    {{/if}}
+  </div>
+{{/if}}
+<div class="gh-block-content">
+  <div class="clip gh-block-name">
+    {{#if (and url link)}}
+      <a href="{{url}}" target="_blank">{{login}}</a>
+    {{else}}
+      {{login}}
+    {{/if}}
+  </div>
+  <div class="gh-block-detail clip">
+    {{#if displayDescription}}
+      {{displayDescription}}
+    {{else}}
+      &nbsp;
+    {{/if}}
+  </div>
+</div>

@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
 
 export default Ember.ObjectController.extend({
   lastRoute: 'hosts.new.digitalocean',
@@ -20,11 +19,5 @@ export default Ember.ObjectController.extend({
       {route: 'hosts.new.rackspace',    label: 'RackSpace',     css: 'rackspace',    available: hasRackSpace },
       {route: 'hosts.new.custom',       label: 'Custom',        css: 'custom',       available: true  },
     ];
-  }.property(),
-
-  isAdmin: function() {
-    var userType = this.get('session').get(C.SESSION.USER_TYPE);
-    var isAdmin = userType === undefined || userType === C.USER.TYPE_ADMIN;
-    return isAdmin;
   }.property(),
 });

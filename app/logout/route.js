@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  beforeModel: function() {
-    var session = this.get('session');
-    session.clear();
-    this.send('logout');
+  access: Ember.inject.service(),
+
+  beforeModel: function(transition) {
+    transition.send('logout');
   }
 });

@@ -5,16 +5,10 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 
 export default Ember.Mixin.create(NewOrEdit, {
   projects: Ember.inject.service(),
+  access: Ember.inject.service(),
 
   actions: {
-    checkMember: function(obj) {
-      var member = this.get('store').createRecord({
-        type: 'projectMember',
-        externalId: obj.get('id'),
-        externalIdType: C.PROJECT.FROM_GITHUB[ obj.get('type') ],
-        role: (this.get('model.projectMembers.length') === 0 ? C.PROJECT.ROLE_OWNER : C.PROJECT.ROLE_MEMBER)
-      });
-
+    checkMember: function(member) {
       var existing = this.get('model.projectMembers')
                       .filterProperty('externalIdType', member.get('externalIdType'))
                       .filterProperty('externalId', member.get('externalId'));
@@ -24,6 +18,8 @@ export default Ember.Mixin.create(NewOrEdit, {
         this.send('error','Member is already in the list');
         return;
       }
+
+      member.set('role','member');
 
       this.send('error',null);
       this.get('model.projectMembers').pushObject(member);
@@ -51,7 +47,7 @@ export default Ember.Mixin.create(NewOrEdit, {
     this._super();
     var errors = this.get('errors')||[];
 
-    if ( !this.get('hasOwner') && this.get('app.authenticationEnabled') )
+    if ( !this.get('hasOwner') && this.get('access.enabled') )
     {
       errors.push('You must add at least one owner');
     }

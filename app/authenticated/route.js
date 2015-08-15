@@ -7,6 +7,7 @@ import C from 'ui/utils/constants';
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
   prefs: Ember.inject.service(),
   projects: Ember.inject.service(),
+  access: Ember.inject.service(),
 
   socket: null,
   pingTimer: null,
@@ -14,7 +15,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   model: function(params, transition) {
     var store = this.get('store');
     var session = this.get('session');
-    var isAuthEnabled = this.get('app.authenticationEnabled');
+    var isAuthEnabled = this.get('access.enabled');
 
     // Load schemas
     var headers = {};
@@ -29,7 +30,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       // Save whether the user is admin
       var type = session.get(C.SESSION.USER_TYPE);
       var isAdmin = (type === C.USER.TYPE_ADMIN) || !isAuthEnabled;
-      this.set('app.isAuthenticationAdmin', isAdmin);
+      this.set('access.admin', isAdmin);
 
       // Return the list of projects as the model
       return this.get('projects').getAll();
@@ -55,24 +56,14 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   },
 
   loadPreferences: function() {
-    var store = this.get('store');
-    if ( store.hasRecordFor('schema','userpreference') )
-    {
-      this.set('app.hasUserPreferences', true);
-      return this.get('store').find('userpreference', null, {forceReload: true}).then((prefs) => {
-        if ( this.get('prefs.'+C.PREFS.I_HATE_SPINNERS) )
-        {
-          $('BODY').addClass('no-spin');
-        }
+    return this.get('store').find('userpreference', null, {forceReload: true}).then((prefs) => {
+      if ( this.get('prefs.'+C.PREFS.I_HATE_SPINNERS) )
+      {
+        $('BODY').addClass('no-spin');
+      }
 
-        return prefs;
-      });
-    }
-    else
-    {
-      this.set('app.hasUserPreferences', false);
-      return Ember.RSVP.resolve();
-    }
+      return prefs;
+    });
   },
 
   activate: function() {

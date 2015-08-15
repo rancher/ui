@@ -10,13 +10,21 @@ Router.map(function() {
   this.route('index');
   this.route('failWhale', { path: '/fail' });
 
-  this.route('login');
+  this.route('login', function() {
+    this.route('github');
+    this.route('ldap');
+  });
+
   this.route('logout');
   this.route('authenticated', { path: '/'}, function() {
 
     // Settings
     this.resource('settings', function() {
-      this.route('auth');
+      this.route('auth', function() {
+        this.route('github');
+        this.route('ldap');
+      });
+
       this.route('host');
 
       this.route('apikeys', {path: '/api'});
@@ -134,6 +142,7 @@ Router.map(function() {
 
   this.modal('edit-project', {
     dismissWithOutsideClick: false,
+    dialogClass: 'full-height',
     withParams: 'editProject',
     otherParams: 'originalModel',
   });

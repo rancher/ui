@@ -4,6 +4,7 @@ import C from 'ui/utils/constants';
 export default Ember.Route.extend({
   cookies: Ember.inject.service(),
   github: Ember.inject.service(),
+  access: Ember.inject.service(),
 
   previousParams: null,
   previousRoute: null,
@@ -59,8 +60,7 @@ export default Ember.Route.extend({
       // This needs to change first so that other tabs get notified and logout
       session.set(C.SESSION.ACCOUNT_ID,null);
 
-      session.clear();
-      this.get('cookies').remove(C.COOKIE.TOKEN);
+      this.get('access').clearSessionKeys(true);
 
       if ( transition )
       {
@@ -92,18 +92,20 @@ export default Ember.Route.extend({
     {
       if ( github.stateMatches(params.state) )
       {
-        return reply(params.error_description, params.code);
+        reply(params.error_description, params.code);
       }
       else
       {
-        return reply(stateMsg);
+        reply(stateMsg);
       }
+      transition.abort();
+      return Ember.RSVP.reject('isTest');
     }
     else if ( params.code )
     {
       if ( github.stateMatches(params.state) )
       {
-        return github.login(params.code).then(() => {
+        return this.get('access').login(params.code).then(() => {
           var backTo = session.get(C.SESSION.BACK_TO);
           session.set(C.SESSION.BACK_TO, undefined);
 
@@ -116,11 +118,12 @@ export default Ember.Route.extend({
             this.replaceWith('authenticated');
           }
         }).catch((err) => {
+          transition.send('logout', null, null, err.message);
+        }).finally(() => {
           this.controllerFor('application').setProperties({
             state: null,
             code: null,
           });
-          transition.send('logout', null, null, err.message);
         });
       }
       else
@@ -154,34 +157,7 @@ export default Ember.Route.extend({
     }
 
     // Find out if auth is enabled
-    return this.get('store').rawRequest({
-      url: 'token',
-      headers: {
-        [C.HEADER.PROJECT]: undefined
-      }
-    })
-    .then((obj) => {
-      // If we get a good response back, the API supports authentication
-      var body = JSON.parse(obj.xhr.responseText);
-      var token = body.data[0];
-
-      this.set('app.authenticationEnabled', token.security);
-      this.set('app.githubClientId', token.clientId);
-      this.set('app.githubHostname', token.hostname );
-
-      if ( !token.security )
-      {
-        this.get('github').clearSessionKeys();
-      }
-
-      return Ember.RSVP.resolve(undefined,'API supports authentication');
-    })
-    .catch((obj) => {
-      // Otherwise this API is too old to do auth.
-      this.set('app.authenticationEnabled', false);
-      this.set('app.initError', obj);
-      return Ember.RSVP.resolve(undefined,'Error determining API authentication');
-    });
+    return this.get('access').detect();
   },
 
   setupController: function(controller/*, model*/) {

@@ -9,12 +9,6 @@ var Project = Resource.extend({
   type: 'project',
   name: null,
   description: null,
-  externalId: null,
-  externalIdType: null,
-
-  isUser:     Ember.computed.equal('externalIdType', C.PROJECT.TYPE_USER),
-  isTeam:     Ember.computed.equal('externalIdType', C.PROJECT.TYPE_TEAM),
-  isOrg:      Ember.computed.equal('externalIdType', C.PROJECT.TYPE_ORG),
 
   icon: function() {
     if ( this.get('isDefault') )

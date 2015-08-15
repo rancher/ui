@@ -27,15 +27,15 @@
       <label>Members</label>
     </div>
     <div class="col-sm-12 col-md-8">
-      {{#if app.authenticationEnabled}}
-        {{input-github action="checkMember" onError="error"}}
+      {{#if accessEnabled}}
+        {{input-identity action="checkMember" onError="error"}}
       {{else}}
         <p class="help-block" style="margin-top: 0;">Access Control is not enabled.  Everybody is Admin and will be able to use this environment.</p>
       {{/if}}
     </div>
   </div>
 
-  {{#if app.authenticationEnabled}}
+  {{#if accessEnabled}}
     <div class="row">
       <div class="col-sm-12 col-md-8 col-md-offset-2">
         {{#if model.projectMembers.length}}
@@ -59,7 +59,7 @@
                       Rancher Account: {{member.name}} ({{member.externalId}})
                     {{/if}}
                   {{else}}
-                    {{github-block type=member.githubType login=member.externalId fallback=member.name}}
+                    {{identity-block identity=member}}
                   {{/if}}
                 </td>
                 <td>{{member.displayType}}</td>
@@ -77,7 +77,7 @@
                   {{/if}}
                 </td>
                 <td>
-                  {{#if app.authenticationEnabled}}
+                  {{#if accessEnabled}}
                     <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeMember" member}}></button>
                   {{else}}
                     &nbsp;

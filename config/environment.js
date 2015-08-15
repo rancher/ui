@@ -28,7 +28,7 @@ module.exports = function(environment) {
       'font-src':   "'self' releases.rancher.com storage.googleapis.com fonts.googleapis.com fonts.gstatic.com",
       'script-src': "'self' releases.rancher.com storage.googleapis.com ",
       'object-src': "'self' releases.rancher.com storage.googleapis.com ",
-      'img-src':    "'self' releases.rancher.com storage.googleapis.com avatars.githubusercontent.com",
+      'img-src':    "'self' releases.rancher.com storage.googleapis.com avatars.githubusercontent.com robohash.org",
       'frame-src':  "'self'",
 
       // Allow connect to anywhere, for console and event stream socket

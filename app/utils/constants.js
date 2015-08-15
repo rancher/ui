@@ -15,6 +15,8 @@ var C = {
     ACCOUNT_ID: 'accountId',
     USER_TYPE: 'userType',
     PROJECT: 'projectId',
+    IDENTITY: 'userIdentity',
+    IDENTITY_TYPE: 'userType',
     GITHUB_CACHE: 'githubCache',
     GITHUB_ORGS: 'orgs',
     GITHUB_TEAMS: 'teams',
@@ -41,17 +43,19 @@ var C = {
   },
 
   PROJECT: {
-    TYPE_RANCHER: 'rancher_id',
-    TYPE_USER:    'github_user',
-    TYPE_TEAM:    'github_team',
-    TYPE_ORG:     'github_org',
+    TYPE_RANCHER:     'rancher_id',
+    TYPE_GITHUB_USER: 'github_user',
+    TYPE_GITHUB_TEAM: 'github_team',
+    TYPE_GITHUB_ORG:  'github_org',
+    TYPE_LDAP_USER:   'ldap_user',
+    TYPE_LDAP_GROUP:  'ldap_group',
+
+    PERSON: 'person',
+    TEAM: 'team',
+    ORG:  'org',
+
     ROLE_MEMBER:  'member',
     ROLE_OWNER:   'owner',
-    FROM_GITHUB: {
-      'user': 'github_user',
-      'team': 'github_team',
-      'org': 'github_org',
-    },
   },
 
   SETTING: {
@@ -87,7 +91,9 @@ C.TOKEN_TO_SESSION_KEYS = [
   C.SESSION.USER_ID,
   C.SESSION.USER_TYPE,
   C.SESSION.GITHUB_TEAMS,
-  C.SESSION.GITHUB_ORGS
+  C.SESSION.GITHUB_ORGS,
+  C.SESSION.IDENTITY,
+  C.SESSION.IDENTITY_TYPE
 ];
 
 export default C;

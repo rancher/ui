@@ -1,7 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  github: Ember.inject.service(),
   queryParams: ['timedOut','errorMsg'],
 
   timedOut: false,
@@ -32,17 +31,4 @@ export default Ember.Controller.extend({
       return '';
     }
   }.property('timedOut','waiting','errorMsg'),
-
-  actions: {
-    authenticate: function() {
-      this.set('timedOut', false);
-      this.set('waiting', true);
-      this.set('errorMsg', null);
-
-      Ember.run.later(() => {
-        this.get('github').authorizeRedirect();
-      }, 10);
-    }
-  }
 });
-

@@ -1,0 +1,43 @@
+<div style="max-width: 360px; margin: 100px auto 0 auto;">
+  <div class="farm-box login top-colors">
+    <section>
+      {{inline-svg "assets/images/logo" class="logo"}}
+
+      <h1>Welcome to Rancher</h1>
+      <br/>
+
+      {{#if login.infoMsg}}
+        <div class="alert {{login.infoColor}}" role="alert">{{login.infoMsg}}</div>
+      {{/if}}
+
+      <form {{action "authenticate" on="submit"}} class="text-left">
+        <div class="form-group">
+          <label>Username</label>
+          <div>
+            {{input type="text" class="form-control login-user" value=username placeholder="e.g. jsmith"}}
+          </div>
+        </div>
+
+        <br/>
+
+        <div class="form-group">
+          <label>Password</label>
+          <div>
+            {{input type="password" class="form-control login-pass" value=password}}
+          </div>
+        </div>
+        <br/>
+
+        <p class="text-center">
+          <button disabled={{login.waiting}} class="btn btn-primary" {{action "authenticate"}}>
+            {{#if login.waiting}}
+              <i class="fa fa-circle-o-notch fa-spin"></i> Logging In...
+            {{else}}
+              Log In
+            {{/if}}
+          </button>
+        </p>
+      </form>
+    </section>
+  </div>
+</div>
