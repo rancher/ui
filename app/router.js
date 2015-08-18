@@ -65,6 +65,12 @@ Router.map(function() {
           this.route('edit');
         });
       });
+
+      this.resource('certificates', function() {
+        this.route('new', {path: '/add'});
+        this.route('index', {path: '/'});
+        this.route('detail', {path: '/:certificate_id'});
+      });
     });
 
     // Applications
