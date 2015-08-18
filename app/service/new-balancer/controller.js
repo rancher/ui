@@ -41,9 +41,9 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
 
   validate: function() {
     var errors = [];
-    if (!this.get('listenersArray.length') )
+    if (!this.get('model.launchConfig.ports.length') && !this.get('model.launchConfig.expose.length') )
     {
-      errors.push('One or more listening ports are required');
+      errors.push('Choose one or more ports to listen on');
     }
 
     if ( !this.get('targetResources.length') )
