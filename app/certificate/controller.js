@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import CattleTransitioningController from 'ui/mixins/cattle-transitioning-controller';
-import C from 'ui/utils/constants';
 
 var CertificateController = Ember.Controller.extend(CattleTransitioningController, {
   needs: ['application'],
@@ -18,8 +17,6 @@ var CertificateController = Ember.Controller.extend(CattleTransitioningControlle
       { label: 'Purge',         icon: 'ss-tornado',          action: 'purge',        enabled: !!a.purge },
       { divider: true },
       { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true },
-//      { label: 'Clone to Service', icon: 'ss-copier',           action: 'cloneToService', enabled: !isSystem && !isService },
-      { label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: !!a.update },
     ];
 
     return choices;

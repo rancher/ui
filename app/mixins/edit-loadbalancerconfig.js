@@ -76,13 +76,11 @@ export default Ember.Mixin.create(EditHealthCheck,{
   }.property('listenersArray.@each.sourcePort'),
 
   sourceProtocolOptions: function() {
-    return ['tcp','http'];
-    //return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.sourceProtocol.options');
+    return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.sourceProtocol.options');
   }.property(),
 
   targetProtocolOptions: function() {
-    return ['tcp','http'];
-    //return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.targetProtocol.options');
+    return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.targetProtocol.options');
   }.property(),
 
   algorithmOptions: function() {
