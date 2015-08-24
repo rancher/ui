@@ -9,6 +9,7 @@ export default Ember.Route.extend({
     var dependencies = [
       store.findAll('host'),
       this.get('allServices').choices(),
+      store.findAllUnremoved('certificate'),
     ];
 
     if ( params.serviceId )
@@ -19,7 +20,8 @@ export default Ember.Route.extend({
     return Ember.RSVP.all(dependencies, 'Load dependencies').then(function(results) {
       var allHosts = results[0];
       var allServices = results[1];
-      var existing = results[2];
+      var allCertificates = results[2];
+      var existing = results[3];
 
       var launchConfig, lbConfig, balancer, appCookie, lbCookie;
       if ( existing )
@@ -105,6 +107,7 @@ export default Ember.Route.extend({
         isService: true,
         allHosts: allHosts,
         allServices: allServices,
+        allCertificates: allCertificates,
         existingBalancer: existing,
         balancer: balancer,
         service: balancer,

@@ -1,0 +1,30 @@
+<p class="help-block">SSL Termination applies to listeners with the <code>https</code> or <code>ssl</code> protocol selected.  The primary certificate will be used for clients that do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">SNI</a>.  Additional Certificates will be used by clients that do support SNI.</p>
+
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">Primary Certificate*</label>
+  </div>
+  <div class="col-sm-12 col-md-8">
+    {{input type="text" classNames="form-control" placeholder="e.g. www.example.com" value=uriHost}}
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">Primary Certificate*</label>
+  </div>
+  <div class="col-sm-12 col-md-8">
+    <ul>
+      {{#each certificates as |cert|}}
+        <li>{{cert.id}} - {{cert.displayName}}</li>
+      {{/each}}
+    </ul>
+    {{new-select
+      class="form-control"
+      content=certificates
+      optionLabelPath="displayName"
+      optionValuePath="id"
+      value=balancerService.defaultCertificateId
+    }}
+  </div>
+</div>

@@ -4,7 +4,7 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 export default Ember.Controller.extend(NewOrEdit,{
   isEncrypted: function() {
     var key = this.get('model.key')||'';
-    return key.match(/^Proc-Type: 4,ENCRYPTED$/m) || key.match(/^-----BEGIN ENCRYPTED PRIVATE KEY-----$/m)
+    return key.match(/^Proc-Type: 4,ENCRYPTED$/m) || key.match(/^-----BEGIN ENCRYPTED PRIVATE KEY-----$/m);
   }.property('model.key'),
 
   actions: {

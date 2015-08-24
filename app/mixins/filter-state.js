@@ -17,7 +17,7 @@ export default Ember.Mixin.create({
   filtered: function() {
     var filterStates = this.get('filterStates');
     return this.get('filterableContent').filter((row) => {
-      var state = (row.get('state')||'').toLowerCase()
+      var state = (row.get('state')||'').toLowerCase();
       return filterStates.indexOf(state) === -1;
     });
   }.property('filterableContent.@each.state','filterStates.[]'),

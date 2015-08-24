@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import EditHealthCheck from 'ui/mixins/edit-healthcheck';
 
-export default Ember.Mixin.create(EditHealthCheck,{
+export default Ember.Mixin.create({
   actions: {
     addListener: function() {
       this.get('listenersArray').pushObject(this.get('store').createRecord({
