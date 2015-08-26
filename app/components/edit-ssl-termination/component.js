@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   launchConfig: null,
+  listenersArray: null,
   balancerService: null,
   certificates: null,
 
@@ -28,19 +29,27 @@ export default Ember.Component.extend({
   alternateCertificates: function() {
     var def = this.get('balancerService.defaultCertificateId');
     return this.get('certificates').slice().filter((obj) => {
-      return Ember.get(obj, 'value') !== def;
+      return Ember.get(obj, 'id') !== def;
     });
-  }.property('certificates.[]','balancerService.defaultCertificateId'),
+  }.property('certificates.@each.id','balancerService.defaultCertificateId'),
 
   hasSslListeners: function() {
-    return (this.get('launchConfig.ports')||[]).filter((port) => {
-      return port.match(/\/(ssl|https)/);
-    }).get('length') > 0;
-  }.property('launchConfig.ports.[]'),
+    return this.get('listenersArray').filterBy('ssl',true).get('length') > 0;
+  }.property('listenersArray.@each.ssl'),
+
+  defaultDidChange: function() {
+    var def = this.get('balancerService.defaultCertificateId');
+    this.get('alternates').forEach((obj) => {
+      if ( Ember.get(obj, 'value') === def )
+      {
+        Ember.set(obj,'value',null);
+      }
+    });
+  }.observes('balancerService.defaultCertificateId'),
 
   alternatesDidChange: function() {
     this.set('balancerService.certificateIds', this.get('alternates').map((obj) => {
       return Ember.get(obj, 'value');
-    }).uniq());
+    }).filter((id) => { return !!id; }).uniq());
   }.observes('alternates.@each.value'),
 });

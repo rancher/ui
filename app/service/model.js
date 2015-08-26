@@ -15,7 +15,7 @@ var Service = Resource.extend(ReadLabels, {
   _allMaps: null,
   consumedServicesUpdated: 0,
   serviceLinks: null, // Used for clone
-  reservedKeys: ['_allMaps','consumedServicesUpdated','serviceLinks','_environment','_environmentState'],
+  reservedKeys: ['_allMaps','consumedServices','consumedServicesUpdated','serviceLinks','_environment','_environmentState'],
   labelResource: Ember.computed.alias('launchConfig'),
 
   init: function() {

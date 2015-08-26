@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Mixin.create({
   actions: {
@@ -9,9 +10,9 @@ export default Ember.Mixin.create({
         isPublic: true,
         sourcePort: '',
         sourceProtocol: 'http',
+        ssl: false,
         targetPort: '',
-        targetProtocol: 'http',
-        algorithm: 'roundrobin',
+        targetProtocol: null,
       }));
     },
 
@@ -33,25 +34,32 @@ export default Ember.Mixin.create({
     var store = this.get('store');
     var out = [];
     var existingService = this.get('model.service.loadBalancerListeners');
-    var existingRegular = this.get('listeners');
     if ( existingService )
     {
       existingService.forEach((l) => {
+        var protocol = l.get('sourceProtocol');
+        var ssl = false;
+        if ( protocol === 'https' )
+        {
+          ssl = true;
+          protocol = 'http';
+        }
+        else if ( protocol === 'ssl' )
+        {
+          ssl = true;
+          protocol = 'tcp';
+        }
+
         out.push(store.createRecord({
           type: 'loadBalancerListener',
           name: 'uilistener',
           isPublic: !!l.get('sourcePort'),
           sourcePort: l.get('sourcePort') ? l.get('sourcePort') : l.get('privatePort'),
-          sourceProtocol: l.get('sourceProtocol'),
+          sourceProtocol: protocol,
+          ssl: ssl,
           targetPort: l.get('targetPort'),
-          targetProtocol: l.get('targetProtocol'),
-          algorithm: 'roundrobin',
         }));
       });
-    }
-    else if ( existingRegular )
-    {
-      out.pushObjects(existingRegular);
     }
     else
     {
@@ -61,29 +69,36 @@ export default Ember.Mixin.create({
         isPublic: true,
         sourcePort: '',
         sourceProtocol: 'http',
+        ssl: false,
         targetPort: '',
-        targetProtocol: 'http',
-        algorithm: 'roundrobin',
       }));
     }
 
-    this.set('listenersArray', out);
+    this.set('listenersArray', out.sortBy('sourcePort'));
   },
 
   multipleListeners: function() {
     return this.get('listenersArray').filterBy('sourcePort').get('length') >= 2;
   }.property('listenersArray.@each.sourcePort'),
 
+  sslChanged: function() {
+    var sslPorts = this.get('listenersArray').
+                filterBy('sourcePort').
+                filterBy('ssl',true).map((listener) => { return listener.get('sourcePort');});
+
+    if ( sslPorts.get('length') )
+    {
+      this.setLabel(C.LABEL.BALANCER_SSL_PORTS, sslPorts.join(','));
+    }
+    else
+    {
+      this.removeLabel(C.LABEL.BALANCER_SSL_PORTS);
+    }
+
+  }.observes('listenersArray.@each.{ssl,sourcePort}'),
+
   sourceProtocolOptions: function() {
-    return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.sourceProtocol.options');
-  }.property(),
-
-  targetProtocolOptions: function() {
-    return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.targetProtocol.options');
-  }.property(),
-
-  algorithmOptions: function() {
-    return this.get('store').getById('schema','loadbalancerlistener').get('resourceFields.algorithm.options');
+    return ['http','tcp'];
   }.property(),
 
   stickiness: 'none',

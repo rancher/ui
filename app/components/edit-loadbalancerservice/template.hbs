@@ -57,6 +57,15 @@
         {{partial "loadbalancer/edit-targets"}}
       </div>
     </div>
+
+    {{partial "form-divider"}}
+
+    {{edit-ssl-termination
+      balancerService=service
+      listenersArray=listenersArray
+      launchConfig=service.launchConfig
+      certificates=allCertificates
+    }}
   </section>
 
   {{partial "save-cancel"}}
