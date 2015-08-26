@@ -31,13 +31,13 @@ export default Resource.extend({
   countableSans: function() {
     var sans = this.get('displaySans').slice();
     sans.pushObject(this.get('CN'));
-    var wildcardBases = sans.filter((name) => {
-      return name.indexOf('*.') === 0;
+    var commonBases = sans.filter((name) => {
+      return name.indexOf('*.') === 0 || name.indexOf('www.') === 0;
     }).map((name) => {
       return name.substr(2);
     });
 
-    return this.get('displaySans').removeObjects(wildcardBases);
+    return this.get('displaySans').slice().removeObjects(commonBases);
   }.property('displaySans.[]','CN'),
 
   displayDetailedName: function() {

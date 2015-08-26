@@ -11,9 +11,8 @@
       <tr>
         {{sortable-th sortable=this action="changeSort" name="state" width="120"}}
         {{sortable-th sortable=this action="changeSort" name="name"}}
-        <th>Domain Names</th>
+        <th>Domain Name</th>
         <th width="120">Expires</th>
-        <th width="100">Algorithm</th>
         <th class="actions" width="50">&nbsp;</th>
       </tr>
     </thead>
@@ -28,9 +27,17 @@
           <td class="force-wrap">
             {{#link-to "certificates.detail" cert.id}}{{cert.displayName}}{{/link-to}}
           </td>
-          <td>?</td>
-          <td>?</td>
-          <td>?</td>
+          <td>
+            {{cert.CN}}
+            {{#if cert.countableSans.length}}
+              + {{cert.countableSans.length}} other{{if (eq cert.countableSans.length 1) "" "s"}}
+            {{/if}}
+          </td>
+          <td>
+            <span class="{{if cert.expiresSoon "bold"}}">
+              {{date-from-now cert.expiresDate}}
+            </span>
+          </td>
           <td class="actions">
             {{#with cert controller="certificate" as |ctrl|}}
               {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
