@@ -7,6 +7,7 @@ export default Ember.Controller.extend(FilterState, Sortable, {
   sorts: {
     state:    ['combinedState','name','id'],
     name:     ['name','id'],
-    fingerprint: ['certFingerprint','name','id'],
+    cn:       ['CN','id'],
+    expires:  ['expiresDate','id'],
   },
 });
