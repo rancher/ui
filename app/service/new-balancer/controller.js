@@ -9,7 +9,7 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
   queryParams: ['environmentId','serviceId','tab'],
   environmentId: null,
   serviceId: null,
-  tab: 'stickiness',
+  tab: 'ssl',
   error: null,
   editing: false,
   primaryResource: Ember.computed.alias('model.balancer'),
@@ -74,6 +74,15 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
       errors.push('A Target can\'t have just a Source Port.  Remove it, or add a Request Host, Request Path, or Target Port.');
     }
 
+    if ( !this.get('model.balancer.defaultCertificateId') )
+    {
+      bad = this.get('listenersArray').filterBy('ssl',true);
+      if ( bad.get('length') )
+      {
+        errors.push('Certificate is required with SSL listening ports.');
+      }
+    }
+
     if ( errors.length )
     {
       this.set('errors',errors.uniq());
@@ -125,7 +134,7 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
 
     this.set('model.launchConfig.ports', ports.sort().uniq());
     this.set('model.launchConfig.expose', expose.sort().uniq());
-  }.observes('listenersArray.@each.{sourcePort,sourceProtocol,targetPort,targetProtocol,isPublic}'),
+  }.observes('listenersArray.@each.{sourcePort,sourceProtocol,targetPort,isPublic}'),
 
   nameChanged: function() {
     this.set('config.name', this.get('balancer.name') + ' config');
@@ -138,10 +147,8 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
   didSave: function() {
     var balancer = this.get('model.balancer');
     // Set balancer targets
-    return balancer.waitForNotTransitioning().then(() => {
-      return balancer.doAction('setservicelinks', {
-        serviceLinks: this.get('targetResources'),
-      });
+    return balancer.doAction('setservicelinks', {
+      serviceLinks: this.get('targetResources'),
     });
   },
 

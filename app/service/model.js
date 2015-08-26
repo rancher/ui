@@ -15,7 +15,7 @@ var Service = Resource.extend(ReadLabels, {
   _allMaps: null,
   consumedServicesUpdated: 0,
   serviceLinks: null, // Used for clone
-  reservedKeys: ['_allMaps','consumedServicesUpdated','serviceLinks','_environment','_environmentState'],
+  reservedKeys: ['_allMaps','consumedServices','consumedServicesUpdated','serviceLinks','_environment','_environmentState'],
   labelResource: Ember.computed.alias('launchConfig'),
 
   init: function() {
@@ -208,12 +208,12 @@ Service.reopenClass({
   consumedServicesFor: function(serviceId) {
     var allTypes = [_allServices, _allLbServices, _allExternalServices, _allDnsServices];
 
-    return _allMaps.filterProperty('serviceId', serviceId).map((map) => {
+    return _allMaps.filterBy('serviceId', serviceId).map((map) => {
       var i = 0;
       var service = null;
       while ( i < allTypes.length && !service )
       {
-        service = allTypes[i].filterProperty('id', map.get('consumedServiceId'))[0];
+        service = allTypes[i].filterBy('id', map.get('consumedServiceId'))[0];
         i++;
       }
 

@@ -1,0 +1,72 @@
+<section class="header">
+  <h3>
+    {{#with model controller="certificate" as |ctrl|}}
+      {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this classNames="pull-right"}}
+    {{/with}}
+    <div class="state {{model.stateColor}}">
+      <i class="{{model.stateIcon}}"></i> {{model.displayState}}
+    </div>
+    <span class="right-divider">{{#link-to "certificates"}}Certificates:{{/link-to}} {{model.displayName}}</span>
+  </h3>
+  {{partial "description"}}
+</section>
+
+<section>
+  <div class="row">
+    <div class="row-same-height row-full-height">
+      <div class="col-sm-12 col-md-6 col-md-height col-md-full-height col-top" style="margin-bottom: 20px;">
+        <div class="well no-padding-margin" style="height: 100%;">
+          <div style="padding: 20px;">
+            <label class="section">Info</label>
+            <div>
+              <ul class="list-lines">
+                <li>
+                  <label>Valid Beginning</label>
+                  {{date-calendar model.issuedAt}} ({{date-from-now model.issuedDate}})
+                </li>
+                <li>
+                  <label>Expires</label>
+                  <span class="{{if model.expiresSoon "bold"}}">
+                    {{date-calendar model.expiresAt}}
+                    ({{date-from-now model.expiresDate}})
+                  </span>
+                </li>
+                <li>
+                  <label>Algorithm</label>
+                  {{model.algorithm}}{{#if model.keySize}} - {{model.keySize}} bits{{/if}}
+                </li>
+                <li>
+                  <label>Issuer</label>
+                  {{model.displayIssuer}}
+                </li>
+                <li>
+                  <label>Serial Number</label>
+                  {{model.serialNumber}}
+                </li>
+                <li>
+                  <label>Version</label>
+                  {{model.version}}
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-12 col-md-6 col-md-height col-md-full-height col-top" style="margin-bottom: 20px;">
+        <div class="well no-padding-margin" style="height: 100%;">
+          <div style="padding: 20px;">
+            <label class="section">Domain Names</label>
+            <div>
+              <ul class="list-unstyled">
+                <li><a href="{{model.CN}}" target="_blank">{{model.CN}}</a> (CN)</li>
+                {{#each model.displaySans as |san|}}
+                  <li><a href="{{san}}" target="_blank">{{san}}</a></li>
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

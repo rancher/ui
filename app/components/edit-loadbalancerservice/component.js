@@ -41,6 +41,7 @@ export default Ember.Component.extend(NewOrEdit, EditService, EditBalancerConfig
 
     var dependencies = [
       this.get('allServices').choices(),
+      this.get('store').findAllUnremoved('certificate'),
     ];
 
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
@@ -54,6 +55,7 @@ export default Ember.Component.extend(NewOrEdit, EditService, EditBalancerConfig
         originalModel: service,
         model: model,
         service: clone,
+        allCertificates: results[1],
       });
 
       this.initFields();

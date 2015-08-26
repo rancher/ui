@@ -54,18 +54,6 @@ var Identity = Resource.extend({
 
     return this.get('externalIdType')+'?';
   }.property('externalIdType'),
-
-  displayDescription: function() {
-    var name = this.get('name');
-    if ( this.get('externalIdType') === C.PROJECT.TYPE_GITHUB_TEAM )
-    {
-      return name.replace(/:.*/,'') + ' team';
-    }
-    else
-    {
-      return name;
-    }
-  }.property('externalIdType','name'),
 });
 
 export default Identity;

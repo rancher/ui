@@ -30,11 +30,11 @@ export default Ember.Mixin.create({
   }.property('labelResource.labels.@each.{key,value}'),
 
   userLabelArray: function() {
-    return this.get('labelArray').filterProperty('isUser', true);
+    return this.get('labelArray').filterBy('isUser', true);
   }.property('labelArray.@each.{key,value,isUser}'),
 
   systemLabelArray: function() {
-    return this.get('labelArray').filterProperty('isUser', false);
+    return this.get('labelArray').filterBy('isUser', false);
   }.property('labelArray.@each.{key,value,isUser}'),
 
   getLabel: function(key) {

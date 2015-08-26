@@ -52,13 +52,13 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditSe
   },
 
   targetServiceIds: function() {
-    return this.get('targetsArray').filterProperty('isService',true).filterProperty('value').map((choice) => {
+    return this.get('targetsArray').filterBy('isService',true).filterBy('value').map((choice) => {
       return Ember.get(choice,'value');
     }).uniq();
   }.property('targetsArray.@each.{isService,value}'),
 
   targetResources: function() {
-    return this.get('targetsArray').filterProperty('isService',true).filterProperty('value').map((choice) => {
+    return this.get('targetsArray').filterBy('isService',true).filterBy('value').map((choice) => {
       return {
         serviceId: Ember.get(choice,'value'),
       };

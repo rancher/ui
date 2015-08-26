@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   identity: null,
@@ -12,5 +13,16 @@ export default Ember.Component.extend({
   avatarUrl: Ember.computed.alias('identity.profilePicture'),
   url: Ember.computed.alias('identity.profileUrl'),
   login: Ember.computed.alias('identity.login'),
-  displayDescription: Ember.computed.alias('identity.displayDescription'),
+
+  displayDescription: function() {
+    var name = this.get('identity.name');
+    if ( this.get('identity.externalIdType') === C.PROJECT.TYPE_GITHUB_TEAM )
+    {
+      return name.replace(/:.*/,'') + ' team';
+    }
+    else
+    {
+      return name;
+    }
+  }.property('identity.{externalIdType,name}'),
 });

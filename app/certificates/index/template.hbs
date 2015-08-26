@@ -1,0 +1,53 @@
+<section>
+  <h3>
+    <span class="right-divider">Certificates</span>
+    {{#link-to "certificates.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add Certificate{{/link-to}}
+  </h3>
+</section>
+
+<section class="well instances">
+  <table class="grid fixed" style="margin-bottom: 0;">
+    <thead>
+      <tr>
+        {{sortable-th sortable=this action="changeSort" name="state" width="120"}}
+        {{sortable-th sortable=this action="changeSort" name="name"}}
+        {{sortable-th sortable=this action="changeSort" name="cn" label="Domain Name"}}
+        {{sortable-th sortable=this action="changeSort" name="expires" width="120"}}
+        <th class="actions" width="50">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each arranged as |cert|}}
+        <tr>
+          <td>
+            <span class="badge state {{cert.stateBackground}}">
+              {{cert.displayState}}
+            </span>
+          </td>
+          <td class="force-wrap">
+            {{#link-to "certificates.detail" cert.id}}{{cert.displayName}}{{/link-to}}
+          </td>
+          <td>
+            {{cert.CN}}
+            {{#if cert.countableSans.length}}
+              + {{cert.countableSans.length}} other{{if (eq cert.countableSans.length 1) "" "s"}}
+            {{/if}}
+          </td>
+          <td>
+            <span class="{{if cert.expiresSoon "bold"}}">
+              {{date-from-now cert.expiresDate}}
+            </span>
+          </td>
+          <td class="actions">
+            {{#with cert controller="certificate" as |ctrl|}}
+              {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
+            {{/with}}
+          </td>
+        </tr>
+      {{else}}
+        <tr><td colspan="6" class="text-center text-muted">You do not have any certificates yet.</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>
+
