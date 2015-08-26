@@ -25,7 +25,8 @@ export default Resource.extend({
   }.property('expiresDate','issuedDate'),
 
   displaySans: function() {
-    return this.get('subjectAlternativeNames').slice().removeObject(this.get('CN'));
+    // subjectAlternativeNames can be null:
+    return (this.get('subjectAlternativeNames')||[]).slice().removeObject(this.get('CN'));
   }.property('CN','subjectAlternativeNames.[]'),
 
   countableSans: function() {
