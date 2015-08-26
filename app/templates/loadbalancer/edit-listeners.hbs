@@ -4,11 +4,11 @@
       <tr>
         <th>Source Port{{#unless editing}}*{{/unless}}</th>
         <th width="30"></th>
-        <th>{{#if isAdvanced}}Default {{/if}}Target Port</th>
-        <th width="30"></th>
-        <th width="100">Access</th>
-        <th width="30"></th>
         <th width="60">Protocol</th>
+        <th width="30"></th>
+        <th>Default Target Port</th>
+        <th width="30"></th>
+        <th width="60">Access</th>
         <th width="30"></th>
         <th width="40">&nbsp;</th>
       </tr>
@@ -20,19 +20,34 @@
         {{#if editing}}
           <td>{{listener.sourcePort}}</td>
           <td>&nbsp;</td>
+          <td>{{listener.sourceProtocol}}</td>
+          <td>&nbsp;</td>
           <td>
             {{listener.targetPort}}
           </td>
           <td>&nbsp;</td>
           <td>{{if listener.isPublic "Public" "Internal"}}</td>
           <td>&nbsp;</td>
-          <td>{{listener.sourceProtocol}}</td>
-          <td>&nbsp;</td>
-          <td>{{listener.algorithm}}</td>
           <td class="text-right">&nbsp;</td>
         {{else}}
           <td>
             {{input type="text" classNames="form-control lb-listener-source-port input-sm" min="1" max="65535" step="1" value=listener.sourcePort placeholder="On Host, e.g. 80"}}
+          </td>
+          <td>&nbsp;</td>
+          <td>
+            <div class="btn-group">
+              <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">{{listener.sourceProtocol}} <span class="caret"></span></button>
+              <ul class="dropdown-menu" role="menu">
+                <li role="presentation" class="dropdown-header">
+                  Select a protocol:
+                </li>
+                {{#each sourceProtocolOptions as |choice|}}
+                  <li {{action "chooseProtocol" listener "sourceProtocol" choice}}>
+                    <a>{{choice}}</a>
+                  </li>
+                {{/each}}
+              </ul>
+            </div>
           </td>
           <td>&nbsp;</td>
           <td>
@@ -48,22 +63,6 @@
                 </li>
                 <li {{action "setPublic" listener true}}><a>Public</a></li>
                 <li {{action "setPublic" listener false}}><a>Internal</a></li>
-              </ul>
-            </div>
-          </td>
-          <td>&nbsp;</td>
-          <td>
-            <div class="btn-group">
-              <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">{{listener.sourceProtocol}} <span class="caret"></span></button>
-              <ul class="dropdown-menu" role="menu">
-                <li role="presentation" class="dropdown-header">
-                  Select a protocol:
-                </li>
-                {{#each sourceProtocolOptions as |choice|}}
-                  <li {{action "chooseProtocol" listener "sourceProtocol" choice}}>
-                    <a>{{choice}}</a>
-                  </li>
-                {{/each}}
               </ul>
             </div>
           </td>

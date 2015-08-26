@@ -71,7 +71,7 @@ export default Ember.Mixin.create({
   },
 
   multipleListeners: function() {
-    return this.get('listenersArray').filterProperty('sourcePort').get('length') >= 2;
+    return this.get('listenersArray').filterBy('sourcePort').get('length') >= 2;
   }.property('listenersArray.@each.sourcePort'),
 
   sourceProtocolOptions: function() {

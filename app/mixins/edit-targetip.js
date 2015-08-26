@@ -59,7 +59,7 @@ export default Ember.Mixin.create({
       var targets = this.get('targetIpArray');
       if ( targets )
       {
-        var out =  targets.filterProperty('value').map((choice) => {
+        var out =  targets.filterBy('value').map((choice) => {
           return Ember.get(choice,'value');
         }).uniq();
 

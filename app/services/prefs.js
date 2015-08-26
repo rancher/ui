@@ -9,7 +9,7 @@ export default Ember.Service.extend({
   }.property(),
 
   findByName: function(key) {
-    return this.get('unremoved').filterProperty('name',key)[0];
+    return this.get('unremoved').filterBy('name',key)[0];
   },
 
   unknownProperty: function(key) {

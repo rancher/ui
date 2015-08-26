@@ -163,15 +163,15 @@ export default Ember.Mixin.create({
   },
 
   multipleTargets: function() {
-    return this.get('targetsArray').filterProperty('value').get('length') >= 2;
+    return this.get('targetsArray').filterBy('value').get('length') >= 2;
   }.property('targetsArray.@each.value'),
 
   targetResources: function() {
     var out = [];
-    this.get('targetsArray').filterProperty('isService',true).filterProperty('value').map((choice) => {
+    this.get('targetsArray').filterBy('isService',true).filterBy('value').map((choice) => {
       var serviceId = Ember.get(choice,'value');
 
-      var entry = out.filterProperty('serviceId', serviceId)[0];
+      var entry = out.filterBy('serviceId', serviceId)[0];
       if ( !entry )
       {
         entry = Ember.Object.create({
@@ -192,7 +192,7 @@ export default Ember.Mixin.create({
   }.property('targetsArray.@each.{isService,value,hostname,path,srcPort,dstPort}'),
 
   hasAdvancedSourcePorts: function() {
-    return this.get('targetsArray').filterProperty('isService',true).filter((target) => {
+    return this.get('targetsArray').filterBy('isService',true).filter((target) => {
       return parseInt(target.get('srcPort'),10) > 0;
     }).get('length') > 0;
   }.property('targetsArray.@each.{isService,srcPort}'),

@@ -25,7 +25,7 @@ export default Ember.Component.extend({
   }.property('projects.active.@each.{id,displayName,state}'),
 
   projectIsMissing: function() {
-    return this.get('projectChoices').filterProperty('id', this.get('project.id')).get('length') === 0;
+    return this.get('projectChoices').filterBy('id', this.get('project.id')).get('length') === 0;
   }.property('project.id','projectChoices.@each.id'),
 
   isInfrastructure: function() {

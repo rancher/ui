@@ -114,7 +114,7 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditScheduling, {
           val = '';
         }
 
-        var existing = ary.filterProperty('key',key)[0];
+        var existing = ary.filterBy('key',key)[0];
         if ( existing )
         {
           Ember.set(existing,'value',val);
@@ -337,7 +337,7 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditScheduling, {
 
     if ( requestedHostId )
     {
-      return all.filterProperty('hostId', requestedHostId);
+      return all.filterBy('hostId', requestedHostId);
     }
     else
     {
@@ -352,7 +352,7 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditScheduling, {
 
     if ( requestedHostId && !isManagedNetwork )
     {
-      return all.filterProperty('hostId', requestedHostId);
+      return all.filterBy('hostId', requestedHostId);
     }
     else
     {

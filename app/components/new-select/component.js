@@ -1,12 +1,14 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  tagName: 'select',
   // possible passed-in values with their defaults:
   content: null,
   prompt: null,
   optionValuePath: 'value',
   optionLabelPath: 'label',
   action: Ember.K, // action to fire on change
+  value: null,
 
   // shadow the passed-in `selection` to avoid
   // leaking changes to it via a 2-way binding
@@ -17,26 +19,35 @@ export default Ember.Component.extend({
     if (!this.get('content')) {
       this.set('content', []);
     }
+
+    this.on('change', this, this._change);
   },
 
-  actions: {
-    change() {
-      const selectEl = this.$('select')[0];
-      const selectedIndex = selectEl.selectedIndex;
-      const content = this.get('content');
+  willDestroyElement() {
+    this.off('change', this, this._change);
+  },
 
-      // decrement index by 1 if we have a prompt
-      const hasPrompt = !!this.get('prompt');
-      const contentIndex = hasPrompt ? selectedIndex - 1 : selectedIndex;
+  _change() {
+    const selectEl = this.$()[0];
+    const selectedIndex = selectEl.selectedIndex;
+    const content = this.get('content');
 
-      const selection = content[contentIndex];
+    // decrement index by 1 if we have a prompt
+    const hasPrompt = !!this.get('prompt');
+    const contentIndex = hasPrompt ? selectedIndex - 1 : selectedIndex;
 
-      // set the local, shadowed selection to avoid leaking
-      // changes to `selection` out via 2-way binding
-      this.set('_selection', selection);
+    const selection = content.objectAt(contentIndex);
 
-      const changeCallback = this.get('action');
+    // set the local, shadowed selection to avoid leaking
+    // changes to `selection` out via 2-way binding
+    this.set('_selection', selection);
+
+    const changeCallback = this.get('action');
+    if ( changeCallback )
+    {
       changeCallback(selection);
     }
+
+    this.set('value', selection.get(this.get('optionValuePath')));
   }
 });

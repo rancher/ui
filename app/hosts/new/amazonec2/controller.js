@@ -295,7 +295,7 @@ export default Ember.ObjectController.extend(NewHost, {
       });
 
       var selectedSubnet = this.get('selectedSubnet');
-      if ( this.get('subnetChoices').filterProperty('value', selectedSubnet).length === 0 )
+      if ( this.get('subnetChoices').filterBy('value', selectedSubnet).length === 0 )
       {
         config.setProperties({
           region: val.substr(0, val.length - 1),
@@ -324,7 +324,7 @@ export default Ember.ObjectController.extend(NewHost, {
     var out = [];
     var seenVpcs = [];
 
-    (this.get('allSubnets')||[]).filterProperty('zone', this.get('selectedZone')).forEach((subnet) => {
+    (this.get('allSubnets')||[]).filterBy('zone', this.get('selectedZone')).forEach((subnet) => {
       var vpcId = subnet.get('vpcId');
       var subnetId = subnet.get('subnetId');
 
@@ -392,7 +392,7 @@ export default Ember.ObjectController.extend(NewHost, {
   }),
 
   subnetById: function(id) {
-    return (this.get('allSubnets')||[]).filterProperty('subnetId',id)[0];
+    return (this.get('allSubnets')||[]).filterBy('subnetId',id)[0];
   },
 
   initFields: function() {

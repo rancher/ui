@@ -208,12 +208,12 @@ Service.reopenClass({
   consumedServicesFor: function(serviceId) {
     var allTypes = [_allServices, _allLbServices, _allExternalServices, _allDnsServices];
 
-    return _allMaps.filterProperty('serviceId', serviceId).map((map) => {
+    return _allMaps.filterBy('serviceId', serviceId).map((map) => {
       var i = 0;
       var service = null;
       while ( i < allTypes.length && !service )
       {
-        service = allTypes[i].filterProperty('id', map.get('consumedServiceId'))[0];
+        service = allTypes[i].filterBy('id', map.get('consumedServiceId'))[0];
         i++;
       }
 

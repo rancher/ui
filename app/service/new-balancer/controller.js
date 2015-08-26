@@ -138,10 +138,8 @@ export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLo
   didSave: function() {
     var balancer = this.get('model.balancer');
     // Set balancer targets
-    return balancer.waitForNotTransitioning().then(() => {
-      return balancer.doAction('setservicelinks', {
-        serviceLinks: this.get('targetResources'),
-      });
+    return balancer.doAction('setservicelinks', {
+      serviceLinks: this.get('targetResources'),
     });
   },
 

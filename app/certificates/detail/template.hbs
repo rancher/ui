@@ -21,24 +21,23 @@
             <div>
               <ul class="list-lines">
                 <li>
+                  <label>Valid Beginning</label>
+                  {{date-calendar model.issuedAt}} ({{date-from-now model.issuedDate}})
+                </li>
+                <li>
                   <label>Expires</label>
-                  {{model.expiresAt}}
-                </li>
-                <li>
-                  <label>Issued</label>
-                  {{model.issuedAt}}
-                </li>
-                <li>
-                  <label>Issuer</label>
-                  {{model.issuer}}
+                  <span class="{{if model.expiresSoon "bold"}}">
+                    {{date-calendar model.expiresAt}}
+                    ({{date-from-now model.expiresDate}})
+                  </span>
                 </li>
                 <li>
                   <label>Algorithm</label>
-                  {{model.algorithm}}
+                  {{model.algorithm}}{{#if model.keySize}} - {{model.keySize}} bits{{/if}}
                 </li>
                 <li>
-                  <label>Key Size</label>
-                  {{model.keySize}}
+                  <label>Issuer</label>
+                  {{model.displayIssuer}}
                 </li>
                 <li>
                   <label>Serial Number</label>
@@ -60,7 +59,7 @@
             <div>
               <ul class="list-unstyled">
                 <li><a href="{{model.CN}}" target="_blank">{{model.CN}}</a> (CN)</li>
-                {{#each model.subjectAlternativeNames as |san|}}
+                {{#each model.displaySans as |san|}}
                   <li><a href="{{san}}" target="_blank">{{san}}</a></li>
                 {{/each}}
               </ul>

@@ -67,7 +67,7 @@ var Environment = Resource.extend({
       return false;
     }
 
-    return this.get('services').filterProperty('actions.activate').get('length') > 0;
+    return this.get('services').filterBy('actions.activate').get('length') > 0;
   }.property('services.@each.state','actions.activateservices'),
 
   canDeactivate: function() {
@@ -82,7 +82,7 @@ var Environment = Resource.extend({
       return false;
     }
 
-    return this.get('services').filterProperty('actions.deactivate').get('length') > 0;
+    return this.get('services').filterBy('actions.deactivate').get('length') > 0;
   }.property('services.@each.state','actions.deactivateservices'),
 
 

@@ -75,7 +75,7 @@ export default Ember.Service.extend({
   },
 
   teamById: function(id) {
-    return (this.get('session.teams')||[]).filterProperty('id', id)[0];
+    return (this.get('session.teams')||[]).filterBy('id', id)[0];
   },
 
   request: function(url) {
