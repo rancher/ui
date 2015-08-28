@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import ApiError from 'ember-api-store/models/error';
+import Errors from 'ui/utils/errors';
 
 export default Ember.Service.extend({
   init: function() {
@@ -39,71 +39,7 @@ export default Ember.Service.extend({
   },
 
   fromError: function(title, err) {
-    // @TODO centralize all this with other places that do error handling...
-    var body;
-    if ( typeof err === 'string' )
-    {
-      body = err;
-    }
-    else if ( err instanceof ApiError )
-    {
-      if ( err.get('status') === 422 )
-      {
-        body = 'Validation failed:';
-        var something = false;
-        if ( err.get('fieldName') )
-        {
-          body += ' ' + err.get('fieldName');
-          something = true;
-        }
-
-        if ( err.get('detail') )
-        {
-          body += ' (' + err.get('detail') + ')';
-          something = true;
-        }
-
-        if ( !something )
-        {
-          body += ' (' + err.get('code') + ')';
-        }
-
-        switch ( err.get('code') )
-        {
-          case 'NotUnique':
-            body += ' is not unique'; break;
-        }
-      }
-      else
-      {
-        body =err.get('message');
-        if ( err.get('detail') )
-        {
-          body += ' (' + err.get('detail') + ')';
-        }
-      }
-    }
-    else if ( typeof err === 'object' )
-    {
-      if ( err.message )
-      {
-        body = err.message;
-        if ( err.detail )
-        {
-          body += ' (' + err.detail + ')';
-        }
-      }
-      else if ( err.detail )
-      {
-        body = err.detail;
-      }
-    }
-    else
-    {
-      // Good luck...
-      body = err;
-    }
-
+    var body = Errors.stringify(err);
     this.error(title,body);
   },
 });
