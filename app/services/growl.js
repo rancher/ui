@@ -5,7 +5,7 @@ export default Ember.Service.extend({
   init: function() {
     $.jGrowl.defaults.pool = 6;
     $.jGrowl.defaults.closeTemplate = '<i class="ss-delete"></i>';
-    $.jGrowl.defaults.closerTemplate = '<div><button type="button" class="btn btn-info btn-xs btn-block">Hide All Notifications</button></div>';
+    $.jGrowl.defaults.closerTemplate = '<div><button type="button" class="btn btn-info btn-xs btn-block">Dismiss All Notifications</button></div>';
   },
 
   raw: function(title, body, opt) {
@@ -76,13 +76,11 @@ export default Ember.Service.extend({
       }
       else
       {
-        var str = err.get('message');
+        body =err.get('message');
         if ( err.get('detail') )
         {
-          str += ' (' + err.get('detail') + ')';
+          body += ' (' + err.get('detail') + ')';
         }
-
-        this.set('errors', [str]);
       }
     }
     else if ( typeof err === 'object' )

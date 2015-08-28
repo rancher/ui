@@ -32,6 +32,7 @@ const defaultStateMap = {
 
 export default Ember.Mixin.create({
   endpoint: Ember.inject.service(),
+  growl: Ember.inject.service(),
 
   reservedKeys: ['delayTimer','pollTimer','waitInterval','waitTimeout'],
 
@@ -470,6 +471,21 @@ export default Ember.Mixin.create({
       // If reloading fails, stop polling
       this.clearPoll();
       // but leave delay set so that it doesn't restart, (don't clearDelay())
+    });
+  },
+
+  // Show growls for errors on actions
+  delete: function(/*arguments*/) {
+    var promise = this._super.apply(this, arguments);
+    return promise.catch((err) => {
+      this.get('growl').fromError('Delete Error',err);
+    });
+  },
+
+  doAction: function(name /*,data, opt*/) {
+    var promise = this._super.apply(this, arguments);
+    return promise.catch((err) => {
+      this.get('growl').fromError(Util.ucFirst(name) + ' Error', err);
     });
   },
 
