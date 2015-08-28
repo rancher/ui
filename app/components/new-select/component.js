@@ -48,6 +48,6 @@ export default Ember.Component.extend({
       changeCallback(selection);
     }
 
-    this.set('value', selection.get(this.get('optionValuePath')));
+    this.set('value', Ember.get(selection, this.get('optionValuePath')));
   }
 });

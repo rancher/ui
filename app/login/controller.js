@@ -2,20 +2,52 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   queryParams: ['timedOut','errorMsg'],
+  access: Ember.inject.service(),
+
+  provider: function() {
+    return this.get('access.provider').toLowerCase();
+  }.property('access.provider'),
+
+  isGithub: Ember.computed.equal('provider', 'githubconfig'),
+  isLdap: Ember.computed.equal('provider', 'ldapconfig'),
+  isLocal: Ember.computed.equal('provider', 'localauthconfig'),
 
   timedOut: false,
   waiting: false,
   errorMsg: null,
 
-  infoColor: function() {
-    if ( this.get('errorMsg') )
-    {
-      return 'alert-danger';
+  actions: {
+    started() {
+      this.setProperties({
+        'timedOut': false,
+        'waiting': true,
+        'errorMsg': null,
+      });
+    },
+
+    authenticate(code) {
+      this.send('started');
+
+      Ember.run.later(() => {
+        this.get('access').login(code).then(() => {
+          this.replaceWith('authenticated');
+        }).catch((err) => {
+          this.set('waiting', false);
+
+          if ( err.status === 401 )
+          {
+            this.set('errorMsg', 'Username or Password incorrect.');
+          }
+          else
+          {
+            this.set('errorMsg', err.message);
+          }
+        }).finally(() => {
+          this.set('waiting',false);
+        });
+      }, 10);
     }
-    {
-      return 'alert-warning';
-    }
-  }.property('errorMsg'),
+  },
 
   infoMsg: function() {
     if ( this.get('errorMsg') )
@@ -30,5 +62,5 @@ export default Ember.Controller.extend({
     {
       return '';
     }
-  }.property('timedOut','waiting','errorMsg'),
+  }.property('timedOut','errorMsg'),
 });

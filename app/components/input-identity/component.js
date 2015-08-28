@@ -8,6 +8,9 @@ export default Ember.Component.extend({
   checking: false,
   addInput: '',
   allIdentities: null,
+  showDropdown: function() {
+    return this.get('access.provider').toLowerCase() !== 'localauthconfig';
+  }.property('access.provider'),
 
   // @TODO bad...
   dropdownLoaded: Ember.computed.alias('store._foundAll.identity'),

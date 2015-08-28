@@ -1,0 +1,28 @@
+<form {{action "authenticate" on="submit"}} class="text-left">
+  <div class="form-group">
+    <label>{{userLabel}}</label>
+    <div>
+      {{input type="text" class="form-control login-user" value=username placeholder=userPlaceholder}}
+    </div>
+  </div>
+
+  <br/>
+
+  <div class="form-group">
+    <label>Password</label>
+    <div>
+      {{input type="password" class="form-control login-pass" value=password}}
+    </div>
+  </div>
+  <br/>
+
+  <p class="text-center">
+    <button disabled={{waiting}} class="btn btn-primary" {{action "authenticate"}}>
+      {{#if waiting}}
+        <i class="fa fa-circle-o-notch fa-spin"></i> {{loggingInLabel}}
+      {{else}}
+        {{loginLabel}}
+      {{/if}}
+    </button>
+  </p>
+</form>

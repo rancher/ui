@@ -7,23 +7,25 @@
       {{else}}
         <button class="btn btn-primary" {{action "add"}}><i class="ss-plus"></i></button>
       {{/if}}
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
-      <ul class="dropdown-menu dropdown-menu-right" role="menu" style="min-width: 250px; max-height: 300px; overflow-y: auto;">
-        <li role="presentation" class="dropdown-header">{{dropdownLabel}}</li>
-        {{#if dropdownLoaded}}
-          {{#each dropdownChoices as |item|}}
-            <li>
-              <a {{action "addObject" item}}>
-                {{identity-block identity=item}}
-              </a>
-            </li>
-          {{/each}}
-        {{else}}
-          <li role="presentation" class="dropdown-header">
-            <i class="fa fa-circle-o-notch fa-spin"></i> Loading...
-          <</li>
-        {{/if}}
-      </ul>
+      {{#if showDropdown}}
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><span class="caret"></span></button>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu" style="min-width: 250px; max-height: 300px; overflow-y: auto;">
+          <li role="presentation" class="dropdown-header">{{dropdownLabel}}</li>
+          {{#if dropdownLoaded}}
+            {{#each dropdownChoices as |item|}}
+              <li>
+                <a {{action "addObject" item}}>
+                  {{identity-block identity=item}}
+                </a>
+              </li>
+            {{/each}}
+          {{else}}
+            <li role="presentation" class="dropdown-header">
+              <i class="fa fa-circle-o-notch fa-spin"></i> Loading...
+            <</li>
+          {{/if}}
+        </ul>
+      {{/if}}
     </div>
   </div>
 </form>

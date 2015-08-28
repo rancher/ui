@@ -7,8 +7,14 @@ export default Ember.Service.extend({
   github:  Ember.inject.service(),
   identity: Ember.computed.alias('session.'+C.SESSION.IDENTITY),
 
+  // These are set by authenticated/route
+  // Is access control enabled
   enabled: null,
+
+  // What kind of access control
   provider: null,
+
+  // Are you an admin
   admin: null,
 
   detect: function() {

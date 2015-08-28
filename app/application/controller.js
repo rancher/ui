@@ -15,6 +15,7 @@ export default Ember.Controller.extend({
   originalModel: null,
 
   showAbout: null,
+  editAccount: null,
   editApikey: null,
   editApikeyIsNew: null,
   editProject: null,
