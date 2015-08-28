@@ -1,11 +1,5 @@
 {{#if hasSslListeners}}
   <div class="row form-group">
-    <div class="col-sm-12 col-md-offset-2 col-md-8">
-      <p class="help-block">SSL Termination applies only to listeners with the <code>https</code> or <code>ssl</code> protocol selected.  Additional Certificates will be used by clients that support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">SNI</a>.  Clients that do not support SNI will always use the main Certificate.</p>
-    </div>
-  </div>
-
-  <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
       <label class="form-control-static">Certificate*</label>
     </div>
@@ -61,6 +55,12 @@
           {{/each}}
          </tbody>
       </table>
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-offset-2 col-md-8">
+      <p class="help-block">Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found.</p>
     </div>
   </div>
 {{else}}

@@ -11,6 +11,10 @@ export default Ember.Controller.extend(NewOrEdit,{
     readFile(field, text) {
       this.set('model.'+field, text.trim());
     },
+
+    cancel() {
+      this.replaceWith('certificates');
+    },
   },
 
   validate() {
