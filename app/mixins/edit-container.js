@@ -657,7 +657,7 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditScheduling, {
   // ----------------------------------
   memoryMb: null,
   initMemory: function() {
-    var b = this.get('instance.memorySwap');
+    var b = this.get('instance.memory');
     if ( b )
     {
       this.set('memoryMb', parseInt(b,10)/(1024*1024));
@@ -669,16 +669,16 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditScheduling, {
 
   },
   memoryDidChange: function() {
-    // The actual parameter we're interested in is 'memorySwap', in bytes.
+    // The actual parameter we're interested in is 'memory', in bytes.
     var mem = parseInt(this.get('memoryMb'),10);
     if ( isNaN(mem) )
     {
       this.set('memoryMb','');
-      this.set('instance.memorySwap',null);
+      this.set('instance.memory',null);
     }
     else
     {
-      this.set('instance.memorySwap', mem * 1024 * 1024);
+      this.set('instance.memory', mem * 1024 * 1024);
     }
   }.observes('memoryMb'),
 
