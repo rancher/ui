@@ -158,7 +158,6 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditScheduling, {
       this.initCommand();
       this.initEntryPoint();
       this.initMemory();
-      this.initHealthCheck();
       this.initScheduling();
     }
   },

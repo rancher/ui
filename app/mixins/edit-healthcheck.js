@@ -21,42 +21,55 @@ export default Ember.Mixin.create({
   uriHost: null,
   showUriHost: Ember.computed.equal('uriVersion','HTTP/1.1'),
 
+  initFields: function() {
+    this._super();
+    this.initHealthCheck();
+  },
+
   initHealthCheck: function() {
-    var existing = this.get('healthCheck.requestLine');
-    if ( existing )
+    var check = this.get('healthCheck');
+    if ( check )
     {
-      var match;
-      var host = '';
-      var lines = existing.split(/[\r\n]+/);
-      if ( lines.length > 1 )
+      var existing = this.get('healthCheck.requestLine');
+      if ( existing )
       {
-        match = lines[1].match(/^Host:\\ (.*)$/);
-        if ( match )
+        var match;
+        var host = '';
+        var lines = existing.split(/[\r\n]+/);
+        if ( lines.length > 1 )
         {
-          host = match[1];
+          match = lines[1].match(/^Host:\\ (.*)$/);
+          if ( match )
+          {
+            host = match[1];
+          }
         }
+
+        match = lines[0].match(/^([^\s]+)\s+(.*)\s+(HTTP\/[0-9\.]+)/);
+        this.setProperties({
+          uriMethod: match[1],
+          uriPath: match[2],
+          uriVersion: match[3],
+          uriHost: host,
+          checkType: 'http',
+        });
+
+        this.uriDidChange();
       }
-
-      match = lines[0].match(/^([^\s]+)\s+(.*)\s+(HTTP\/[0-9\.]+)/);
-      this.setProperties({
-        uriMethod: match[1],
-        uriPath: match[2],
-        uriVersion: match[3],
-        uriHost: host,
-        checkType: 'http',
-      });
-
-      this.uriDidChange();
+      else
+      {
+        this.setProperties({
+          uriMethod: 'GET',
+          uriPath: '',
+          uriVersion: 'HTTP/1.0',
+          uriHost: '',
+          checkType: (this.get('healthCheck.port') ? 'tcp' : 'none')
+        });
+      }
     }
     else
     {
-      this.setProperties({
-        uriMethod: 'GET',
-        uriPath: '',
-        uriVersion: 'HTTP/1.0',
-        uriHost: '',
-        checkType: (this.get('healthCheck.port') ? 'tcp' : 'none')
-      });
+      this.set('checkType', 'none');
     }
   },
 
@@ -64,10 +77,12 @@ export default Ember.Mixin.create({
     switch ( this.get('checkType') )
     {
     case 'none':
-      this.setProperties({
-        'healthCheck.port': '',
-        uriPath: '',
-      });
+      if ( this.get('healthCheck') )
+      {
+        this.set('healthCheck.port', '');
+      }
+
+      this.set('uriPath','');
       break;
     case 'tcp':
       this.set('uriPath', '');
