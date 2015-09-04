@@ -33,7 +33,11 @@
             {{account.displayName}}
           </td>
           <td>
-            {{account.username}}
+            {{#if account.username}}
+              {{account.username}}
+            {{else}}
+              <span class="text-muted">None</span>
+            {{/if}}
           </td>
           <td class="actions">
             {{#with account controller="account" as |ctrl|}}
