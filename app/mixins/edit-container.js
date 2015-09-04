@@ -159,6 +159,7 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditScheduling, {
       this.initEntryPoint();
       this.initMemory();
       this.initScheduling();
+      this.initPidMode();
     }
   },
 
@@ -655,31 +656,73 @@ export default Ember.Mixin.create(NewOrEdit, EditHealthCheck, EditScheduling, {
   // Memory
   // ----------------------------------
   memoryMb: null,
+  swapMb: null,
   initMemory: function() {
-    var b = this.get('instance.memory');
-    if ( b )
+    var memBytes = this.get('instance.memory') || 0;
+    var memPlusSwapBytes = this.get('instance.memorySwap') || 0;
+    var swapBytes = Math.max(0, memPlusSwapBytes - memBytes);
+
+    if ( memBytes )
     {
-      this.set('memoryMb', parseInt(b,10)/(1024*1024));
+      this.set('memoryMb', parseInt(memBytes,10)/1048576);
     }
     else
     {
-      this.set('memoryMb',null);
+      this.set('memoryMb','');
+    }
+
+    if ( swapBytes )
+    {
+      this.set('swapMb', parseInt(swapBytes,10)/1048576);
+    }
+    else
+    {
+      this.set('swapMb','');
     }
 
   },
+
   memoryDidChange: function() {
     // The actual parameter we're interested in is 'memory', in bytes.
     var mem = parseInt(this.get('memoryMb'),10);
-    if ( isNaN(mem) )
+    if ( isNaN(mem) || mem <= 0)
     {
-      this.set('memoryMb','');
-      this.set('instance.memory',null);
+      this.setProperties({
+        'memoryMb': '',
+        'swapMb': '',
+        'instance.memory': null,
+        'instance.memorySwap': null,
+      });
     }
     else
     {
-      this.set('instance.memory', mem * 1024 * 1024);
+      this.set('instance.memory', mem * 1048576);
+
+      var swap = parseInt(this.get('swapMb'),10);
+      if ( isNaN(swap) || swap <= 0)
+      {
+        this.setProperties({
+          'swapMb': '',
+          'instance.memorySwap': null
+        });
+      }
+      else
+      {
+        this.set('instance.memorySwap', (mem+swap) * 1048576);
+      }
     }
-  }.observes('memoryMb'),
+  }.observes('memoryMb','swapMb'),
+
+  // ----------------------------------
+  // PID Mode
+  // ----------------------------------
+  pidHost: null,
+  initPidMode: function() {
+    this.set('pidHost', this.get('instance.pidMode') === 'host');
+  },
+  pidModeDidChange: function() {
+    this.set('instance.pidMode', this.get('pidHost') ? 'host' : null);
+  }.observes('pidHost'),
 
   // ----------------------------------
   // Hosts

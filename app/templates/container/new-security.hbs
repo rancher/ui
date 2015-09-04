@@ -3,17 +3,38 @@
     <label for="privileged" class="form-control-static">Privileged</label>
   </div>
   <div class="col-sm-12 col-md-3 form-label">
-    <div class="checkbox form-control-static">
+    <div class="checkbox form-control-static text-left">
       <label for="privileged">{{input type="checkbox" id="privileged" checked=instance.privileged}} Full access to the host</label>
     </div>
   </div>
 
+  <div class="col-sm-12 col-md-2 form-label">
+    <label for="pidHost" class="form-control-static">PID Mode</label>
+  </div>
+  <div class="col-sm-12 col-md-3 form-label">
+    <div class="checkbox form-control-static text-left">
+      <label for="pidHost">{{input type="checkbox" id="pidHost" checked=pidHost}} Host</label>
+    </div>
+  </div>
+</div>
+
+<div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
     <label for="memoryMb" class="form-control-static">Memory Limit</label>
   </div>
   <div class="col-sm-12 col-md-3">
     <div class="input-group">
       {{input id="memoryMb" type="number" min="1" step="1" value=memoryMb classNames="form-control" placeholder="Unlimited"}}
+      <div class="input-group-addon">MB</div>
+    </div>
+  </div>
+
+  <div class="col-sm-12 col-md-2 form-label">
+    <label for="swapMb" class="form-control-static">+ Swap Limit</label>
+  </div>
+  <div class="col-sm-12 col-md-3">
+    <div class="input-group">
+      {{input id="swapMb" type="number" min="1" step="1" value=swapMb classNames="form-control" placeholder=(if memoryMb 'Unlimited' 'Requires Memory Limit') disabled=(not memoryMb)}}
       <div class="input-group-addon">MB</div>
     </div>
   </div>
