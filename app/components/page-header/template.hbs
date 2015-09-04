@@ -41,11 +41,13 @@
           Settings
         </li>
 
-        <li role="presentation">
-          <a {{action "changePassword"}} role="menuitem" tabindex="-1">Change Password</a>
-        </li>
+        {{#if isLocalAuth}}
+          <li role="presentation">
+            <a {{action "changePassword"}} role="menuitem" tabindex="-1">Change Password</a>
+          </li>
 
-        <li role="presentation" class="divider"></li>
+          <li role="presentation" class="divider"></li>
+        {{/if}}
 
         <li role="presentation">
           {{#link-to "settings.apikeys" role="menuitem" tabindex="-1"}}API &amp; Keys{{/link-to}}

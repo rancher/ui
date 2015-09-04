@@ -6,7 +6,7 @@ export default Ember.Route.extend({
   model: function() {
     if ( this.get('access.enabled') )
     {
-      this.replaceWith('admin-tab.auth.' + this.get('access.provider').toLowerCase().replace(/config$/i,''));
+      this.replaceWith('admin-tab.auth.' + this.get('access.provider').replace(/config$/i,''));
     }
     else
     {

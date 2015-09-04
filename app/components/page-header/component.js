@@ -17,7 +17,7 @@ export default Ember.Component.extend({
   accessEnabled: Ember.computed.alias('access.enabled'),
   isAdmin: Ember.computed.alias('access.admin'),
   isLocalAuth: function() {
-    return this.get('access.provider').toLowerCase() === 'ldapauthconfig';
+    return this.get('access.provider') === 'localauthconfig';
   }.property('access.provider'),
 
   projectChoices: function() {

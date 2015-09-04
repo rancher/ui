@@ -25,7 +25,7 @@ export default Ember.Controller.extend(FilterState, Sortable, {
     });
   }.property('model.@each.kind'),
 
-  canAdd: function() {
-    return this.get('access.provider').toLowerCase() === 'localauthconfig';
+  isLocal: function() {
+    return this.get('access.provider') === 'localauthconfig';
   }.property('access.provider'),
 });

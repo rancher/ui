@@ -19,17 +19,23 @@ export default Ember.Component.extend(NewOrEdit,{
     {label: 'Admin', value: 'admin'},
   ],
 
+  isLocalAuth: function() {
+    return this.get('access.provider') === 'localauthconfig';
+  }.property('access.provider'),
+
   isAdmin: Ember.computed.alias('access.admin'),
   generated: false,
   needOld: Ember.computed.not('isAdmin'),
   showConfirm: Ember.computed.not('generated'),
 
   willInsertElement() {
-    var account = this.get('originalModel').clone();
-    var credential = this.get('originalModel.passwordCredential').clone();
+    var accountClone = this.get('originalModel').clone();
+    var credential = this.get('originalModel.passwordCredential');
+    var credentialClone = (credential ? credential.clone() : null);
+
     this.set('model', Ember.Object.create({
-      account: account,
-      credential: credential,
+      account: accountClone,
+      credential: credentialClone,
     }));
   },
 
@@ -46,7 +52,7 @@ export default Ember.Component.extend(NewOrEdit,{
         errors.push('Current password is required');
       }
 
-      if ( this.get('showConfirm') && old !== neu )
+      if ( this.get('showConfirm') && neu !== neu2 )
       {
         errors.push('New passwords do not match');
       }
