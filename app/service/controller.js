@@ -51,8 +51,11 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
     },
 
     scaleDown: function() {
-      this.get('model').decrementProperty('scale');
-      this.saveScale();
+      if ( this.get('model.scale') >= 1 )
+      {
+        this.get('model').decrementProperty('scale');
+        this.saveScale();
+      }
     },
 
     clone: function() {

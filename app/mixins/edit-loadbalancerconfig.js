@@ -77,9 +77,13 @@ export default Ember.Mixin.create({
     this.set('listenersArray', out.sortBy('sourcePort'));
   },
 
-  multipleListeners: function() {
+  hasMultipleListeners: function() {
     return this.get('listenersArray').filterBy('sourcePort').get('length') >= 2;
   }.property('listenersArray.@each.sourcePort'),
+
+  hasHttpListeners: function() {
+    return this.get('listenersArray').filterBy('sourceProtocol','http').get('length') > 0;
+  }.property('listenersArray.@each.sourceProtocol'),
 
   sslChanged: function() {
     var sslPorts = this.get('listenersArray').

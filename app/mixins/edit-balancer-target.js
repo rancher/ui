@@ -162,7 +162,7 @@ export default Ember.Mixin.create({
     this.set('targetsArray', out);
   },
 
-  multipleTargets: function() {
+  hasMultipleTargets: function() {
     return this.get('targetsArray').filterBy('value').get('length') >= 2;
   }.property('targetsArray.@each.value'),
 
