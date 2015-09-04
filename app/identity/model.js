@@ -3,7 +3,6 @@ import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
 var Identity = Resource.extend({
-  isRancher: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_RANCHER),
   isUser: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_USER),
   isTeam: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_TEAM),
   isOrg: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_ORG),
@@ -49,7 +48,7 @@ var Identity = Resource.extend({
       case C.PROJECT.TYPE_GITHUB_TEAM:return 'Team';
       case C.PROJECT.TYPE_GITHUB_ORG: return 'Organization';
       case C.PROJECT.TYPE_LDAP_GROUP: return 'Group';
-      case C.PROJECT.TYPE_RANCHER:    return 'Rancher Account';
+      case C.PROJECT.TYPE_RANCHER:    return 'Local User';
     }
 
     return this.get('externalIdType')+'?';

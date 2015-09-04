@@ -4,6 +4,9 @@
     {{#if project}}
       {{#link-to "applications-tab"}}Applications{{/link-to}}
       {{#link-to "infrastructure-tab"}}Infrastructure{{/link-to}}
+      {{#if isAdmin}}
+        {{#link-to "admin-tab"}}Admin{{/link-to}}
+      {{/if}}
     {{/if}}
   </nav>
 
@@ -39,6 +42,12 @@
         </li>
 
         <li role="presentation">
+          <a {{action "changePassword"}} role="menuitem" tabindex="-1">Change Password</a>
+        </li>
+
+        <li role="presentation" class="divider"></li>
+
+        <li role="presentation">
           {{#link-to "settings.apikeys" role="menuitem" tabindex="-1"}}API &amp; Keys{{/link-to}}
         </li>
 
@@ -49,29 +58,6 @@
         <li role="presentation">
           {{#link-to "settings.registries" role="menuitem" tabindex="-1"}}Registries{{/link-to}}
         </li>
-
-        {{#if isAdmin}}
-          <li class="divider"></li>
-        {{else}}
-          {{#if showHostSetup}}
-            <li class="divider"></li>
-          {{/if}}
-        {{/if}}
-
-        <li role="presentation" class="dropdown-header text-uppercase">
-          Administration
-        </li>
-        {{#if isAdmin}}
-          <li role="presentation">
-            {{#link-to "settings.auth" role="menuitem" tabindex="-1"}}Access Control{{/link-to}}
-          </li>
-        {{/if}}
-
-        {{#if showHostSetup}}
-          <li role="presentation">
-            {{#link-to "settings.host" role="menuitem" tabindex="-1"}}Host Registration{{/link-to}}
-          </li>
-        {{/if}}
       </ul>
     </div>
   </div>
@@ -125,12 +111,12 @@
 
 <div class="bottom-row">
   <nav>
-    {{#if isInfrastructure}}
+    {{#if isInfrastructureTab}}
       {{#link-to "hosts"}}<i class="ss-database"></i> Hosts{{/link-to}}
       {{#link-to "containers"}}<i class="ss-box"></i> Containers{{/link-to}}
       {{#link-to "certificates"}}<i class="ss-key"></i> Certificates{{/link-to}}
     {{/if}}
-    {{#if isApplications}}
+    {{#if isApplicationsTab}}
       {{#link-to "environments"}}<i class="ss-globe"></i> Stacks{{/link-to}}
 
       <div class="btn-group pull-right">
@@ -143,6 +129,11 @@
           <li><a {{action "composeDownload" "linux"}}><i class="fa fa-fw fa-linux"></i> Download for Linux</a></li>
         </ul>
       </div>
+    {{/if}}
+    {{#if isAdminTab}}
+      {{#link-to "admin-tab.accounts"}}<i class="ss-user"></i> Accounts{{/link-to}}
+      {{#link-to "admin-tab.auth"}}<i class="ss-lock"></i> Access Control{{/link-to}}
+      {{#link-to "admin-tab.host"}}<i class="ss-database"></i> Host Registration{{/link-to}}
     {{/if}}
   </nav>
 </div>

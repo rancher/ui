@@ -10,23 +10,12 @@ Router.map(function() {
   this.route('index');
   this.route('failWhale', { path: '/fail' });
 
-  this.route('login', function() {
-    this.route('github');
-    this.route('ldap');
-  });
-
+  this.route('login');
   this.route('logout');
   this.route('authenticated', { path: '/'}, function() {
 
     // Settings
     this.resource('settings', function() {
-      this.route('auth', function() {
-        this.route('github');
-        this.route('ldap');
-      });
-
-      this.route('host');
-
       this.route('apikeys', {path: '/api'});
 
       this.route('projects', { path: '/environments' });
@@ -35,6 +24,22 @@ Router.map(function() {
       this.route('registries', { path: '/registries' });
       this.route('registry-new', { path: '/registries/add' });
       this.route('registry-detail', { path: '/registries/:registry_id' });
+    });
+
+    // Admin
+    this.resource('admin-tab', {path: '/admin'}, function() {
+      this.route('auth', {path: '/access'}, function() {
+        this.route('github');
+        this.route('ldap');
+        this.route('localauth', {path: 'local'});
+      });
+
+      this.route('host');
+
+      this.route('accounts', {path: '/accounts'}, function() {
+        this.route('index', {path: '/'});
+        this.route('new', {path: '/add'});
+      });
     });
 
     // Infrastructure
@@ -180,6 +185,12 @@ Router.map(function() {
   this.modal('edit-loadbalancerservice', {
     dismissWithOutsideClick: false,
     withParams: 'editLoadBalancerService',
+    otherParams: 'originalModel',
+  });
+
+  this.modal('edit-account', {
+    dismissWithOutsideClick: false,
+    withParams: 'editAccount',
     otherParams: 'originalModel',
   });
   // End: Modals

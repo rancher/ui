@@ -52,29 +52,17 @@
             {{#each model.projectMembers as |member|}}
               <tr>
                 <td>
-                  {{#if member.isRancher}}
-                    {{#if member.isMyRancher}}
-                      My Rancher Account
-                    {{else}}
-                      Rancher Account: {{member.name}} ({{member.externalId}})
-                    {{/if}}
-                  {{else}}
-                    {{identity-block identity=member}}
-                  {{/if}}
+                  {{identity-block identity=member}}
                 </td>
                 <td>{{member.displayType}}</td>
                 <td>
-                  {{#if member.isRancher}}
-                    {{uc-first member.role}}
-                  {{else}}
-                    {{view "select"
-                      class="form-control input-sm"
-                      content=roleOptions
-                      value=member.role
-                      optionValuePath="content.value"
-                      optionLabelPath="content.label"
-                    }}
-                  {{/if}}
+                  {{view "select"
+                    class="form-control input-sm"
+                    content=roleOptions
+                    value=member.role
+                    optionValuePath="content.value"
+                    optionLabelPath="content.label"
+                  }}
                 </td>
                 <td>
                   {{#if accessEnabled}}

@@ -1,0 +1,50 @@
+<section>
+  <h3>
+    <span class="right-divider">Accounts</span>
+    {{#if canAdd}}
+      {{#link-to "admin-tab.accounts.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add Account{{/link-to}}
+    {{/if}}
+  </h3>
+</section>
+
+<section class="well instances">
+  <table class="grid fixed" style="margin-bottom: 0;">
+    <thead>
+      <tr>
+        {{sortable-th sortable=this action="changeSort" name="state" width="120"}}
+        {{sortable-th sortable=this action="changeSort" name="kind" width="120"}}
+        {{sortable-th sortable=this action="changeSort" name="name"}}
+        {{sortable-th sortable=this action="changeSort" name="username" label="Login Username"}}
+        <th class="actions" width="50">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each arranged as |account|}}
+        <tr>
+          <td>
+            <span class="badge state {{account.stateBackground}}">
+              {{account.displayState}}
+            </span>
+          </td>
+          <td>
+            {{uc-first account.kind}}
+          </td>
+          <td class="force-wrap">
+            {{account.displayName}}
+          </td>
+          <td>
+            {{account.username}}
+          </td>
+          <td class="actions">
+            {{#with account controller="account" as |ctrl|}}
+              {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
+            {{/with}}
+          </td>
+        </tr>
+      {{else}}
+        <tr><td colspan="4" class="text-center text-muted">There are no accounts yet.</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>
+
