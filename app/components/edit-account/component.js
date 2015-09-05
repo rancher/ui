@@ -68,14 +68,14 @@ export default Ember.Component.extend(NewOrEdit,{
   },
 
   doSave() {
+    // Users can't update the account
     if ( this.get('isAdmin') )
     {
       return this._super();
     }
     else
     {
-      // Users can't update the account
-      return this.didSave();
+      return Ember.RSVP.resolve();
     }
   },
 
@@ -88,7 +88,7 @@ export default Ember.Component.extend(NewOrEdit,{
       return this.get('model.credential').doAction('changesecret', {
         newSecret: neu,
         oldSecret: old,
-      });
+      }, {catchGrowl: false});
     }
   },
 
@@ -101,6 +101,8 @@ export default Ember.Component.extend(NewOrEdit,{
       this.set('access.admin', false);
       this.set('session.'+C.SESSION.USER_TYPE, this.get('model.account.kind'));
     }
+
+    return Ember.RSVP.resolve();
   },
 
   actions: {
