@@ -16,10 +16,14 @@
 {{/if}}
 <div class="gh-block-content">
   <div class="clip gh-block-name">
-    {{#if (and url link)}}
-      <a href="{{url}}" target="_blank">{{login}}</a>
+    {{#if loading}}
+      Loading...
     {{else}}
-      {{login}}
+      {{#if (and url link)}}
+        <a href="{{url}}" target="_blank">{{login}}</a>
+      {{else}}
+        {{login}}
+      {{/if}}
     {{/if}}
   </div>
   <div class="gh-block-detail clip">

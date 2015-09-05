@@ -9,7 +9,7 @@ export default Ember.Component.extend({
   addInput: '',
   allIdentities: null,
   showDropdown: function() {
-    return this.get('access.provider').toLowerCase() !== 'localauthconfig';
+    return this.get('access.provider') !== 'localauthconfig';
   }.property('access.provider'),
 
   // @TODO bad...
@@ -51,7 +51,7 @@ export default Ember.Component.extend({
   }.property('addInput','checking'),
 
   placeholder: function() {
-    if ( this.get('access.provider').toLowerCase() === 'githubconfig' )
+    if ( this.get('access.provider') === 'githubconfig' )
     {
       return "Add a GitHub user or organization name";
     }
@@ -84,7 +84,7 @@ export default Ember.Component.extend({
   }.property('allIdentities.@each.{logicalType,externalIdType}','allowTeams'),
 
   dropdownLabel: function() {
-    if ( this.get('access.provider').toLowerCase() === 'githubconfig' )
+    if ( this.get('access.provider') === 'githubconfig' )
     {
       return "Your Teams and Organizations";
     }

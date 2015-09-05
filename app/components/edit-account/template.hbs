@@ -43,47 +43,64 @@
     </div>
   {{/if}}
 
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-3 form-label">
-      <label class="form-control-static">Login Username</label>
-    </div>
-    <div class="col-sm-12 col-md-7">
-      <div class="form-control-static">
-        {{model.credential.publicValue}}
-      </div>
-    </div>
-  </div>
-
-  {{#if needOld}}
+  {{#if isLocalAuth}}
     <div class="row form-group">
       <div class="col-sm-12 col-md-3 form-label">
-        <label class="form-control-static">Current Password</label>
+        <label class="form-control-static">Login Username</label>
       </div>
       <div class="col-sm-12 col-md-7">
-        {{input type="password" value=oldPassword classNames="form-control"}}
+        <div class="form-control-static">
+          {{model.credential.publicValue}}
+        </div>
+      </div>
+    </div>
+
+    {{#if needOld}}
+      <div class="row form-group">
+        <div class="col-sm-12 col-md-3 form-label">
+          <label class="form-control-static">Current Password</label>
+        </div>
+        <div class="col-sm-12 col-md-7">
+          {{input type="password" value=oldPassword classNames="form-control"}}
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-3 form-label">
+        <label class="form-control-static">New Password</label>
+      </div>
+      <div class="col-sm-12 col-md-7">
+        {{input-password value=newPassword generated="generated"}}
+      </div>
+    </div>
+
+    {{#liquid-if showConfirm}}
+      <div class="row form-group">
+        <div class="col-sm-12 col-md-3 form-label">
+          <label class="form-control-static">Confirm Password</label>
+        </div>
+        <div class="col-sm-12 col-md-7">
+          {{input type="password" value=newPassword2 classNames="form-control"}}
+        </div>
+      </div>
+    {{/liquid-if}}
+  {{else}}
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-3 form-label">
+        <label class="form-control-static">Identity</label>
+      </div>
+      <div class="col-sm-12 col-md-7">
+        {{#if (and model.account.externalId model.account.externalIdType)}}
+          {{identity-block externalIdType=model.account.externalIdType externalId=model.account.externalId}}
+        {{else}}
+          <div class="form-control-static text-muted">
+            None
+          </div>
+        {{/if}}
       </div>
     </div>
   {{/if}}
-
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-3 form-label">
-      <label class="form-control-static">New Password</label>
-    </div>
-    <div class="col-sm-12 col-md-7">
-      {{input-password value=newPassword generated="generated"}}
-    </div>
-  </div>
-
-  {{#liquid-if showConfirm}}
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-3 form-label">
-        <label class="form-control-static">Confirm Password</label>
-      </div>
-      <div class="col-sm-12 col-md-7">
-        {{input type="password" value=newPassword2 classNames="form-control"}}
-      </div>
-    </div>
-  {{/liquid-if}}
 </section>
 
 {{partial "save-cancel"}}

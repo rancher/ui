@@ -4,13 +4,9 @@ export default Ember.Controller.extend({
   queryParams: ['timedOut','errorMsg'],
   access: Ember.inject.service(),
 
-  provider: function() {
-    return this.get('access.provider').toLowerCase();
-  }.property('access.provider'),
-
-  isGithub: Ember.computed.equal('provider', 'githubconfig'),
-  isLdap: Ember.computed.equal('provider', 'ldapconfig'),
-  isLocal: Ember.computed.equal('provider', 'localauthconfig'),
+  isGithub: Ember.computed.equal('access.provider', 'githubconfig'),
+  isLdap: Ember.computed.equal('access.provider', 'ldapconfig'),
+  isLocal: Ember.computed.equal('access.provider', 'localauthconfig'),
 
   timedOut: false,
   waiting: false,

@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Sortable from 'ui/mixins/sortable';
 import FilterState from 'ui/mixins/filter-state';
 
-const hideKinds = ['system','superadmin','token','project','service','agent'];
+const showKinds = ['user','admin'];
 
 export default Ember.Controller.extend(FilterState, Sortable, {
   access: Ember.inject.service(),
@@ -21,11 +21,11 @@ export default Ember.Controller.extend(FilterState, Sortable, {
   filteredByKind: function() {
     return this.get('filtered').filter((row) => {
       var kind = (row.get('kind')||'').toLowerCase();
-      return hideKinds.indexOf(kind) === -1;
+      return showKinds.indexOf(kind) !== -1;
     });
   }.property('model.@each.kind'),
 
-  canAdd: function() {
-    return this.get('access.provider').toLowerCase() === 'localauthconfig';
+  isLocal: function() {
+    return this.get('access.provider') === 'localauthconfig';
   }.property('access.provider'),
 });

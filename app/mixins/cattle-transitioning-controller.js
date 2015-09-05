@@ -38,7 +38,7 @@ export default Ember.Mixin.create({
 
       // Go to the project-specific version
       var projectId = this.get('session').get(C.SESSION.PROJECT);
-      if ( projectId )
+      if ( projectId && this.get('model.type') !== 'account' )
       {
         url = url.replace(/(.*?\/v1)(.*)/,"$1/projects/"+projectId+"$2");
       }

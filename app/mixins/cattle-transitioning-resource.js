@@ -482,11 +482,17 @@ export default Ember.Mixin.create({
     });
   },
 
-  doAction: function(name /*,data, opt*/) {
+  doAction: function(name, data, opt) {
     var promise = this._super.apply(this, arguments);
-    return promise.catch((err) => {
-      this.get('growl').fromError(Util.ucFirst(name) + ' Error', err);
-    });
+
+    if ( opt && opt.catchGrowl !== false )
+    {
+      return promise.catch((err) => {
+        this.get('growl').fromError(Util.ucFirst(name) + ' Error', err);
+      });
+    }
+
+    return promise;
   },
 
   // You really shouldn't have to use any of these.

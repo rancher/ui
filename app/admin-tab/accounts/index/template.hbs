@@ -1,7 +1,7 @@
 <section>
   <h3>
     <span class="right-divider">Accounts</span>
-    {{#if canAdd}}
+    {{#if isLocal}}
       {{#link-to "admin-tab.accounts.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add Account{{/link-to}}
     {{/if}}
   </h3>
@@ -12,9 +12,14 @@
     <thead>
       <tr>
         {{sortable-th sortable=this action="changeSort" name="state" width="120"}}
+        {{sortable-th sortable=this action="changeSort" name="id" label="ID" width="120"}}
         {{sortable-th sortable=this action="changeSort" name="kind" width="120"}}
-        {{sortable-th sortable=this action="changeSort" name="name"}}
-        {{sortable-th sortable=this action="changeSort" name="username" label="Login Username"}}
+        {{#if isLocal}}
+          {{sortable-th sortable=this action="changeSort" name="name"}}
+          {{sortable-th sortable=this action="changeSort" name="username" label="Login Username"}}
+        {{else}}
+          <th>Identity</th>
+        {{/if}}
         <th class="actions" width="50">&nbsp;</th>
       </tr>
     </thead>
@@ -27,14 +32,31 @@
             </span>
           </td>
           <td>
-            {{uc-first account.kind}}
-          </td>
-          <td class="force-wrap">
-            {{account.displayName}}
+            {{account.id}}
           </td>
           <td>
-            {{account.username}}
+            {{uc-first account.kind}}
           </td>
+          {{#if isLocal}}
+            <td class="force-wrap">
+              {{account.displayName}}
+            </td>
+            <td>
+              {{#if account.username}}
+                {{account.username}}
+              {{else}}
+                <span class="text-muted">None</span>
+              {{/if}}
+            </td>
+          {{else}}
+            <td>
+              {{#if (and account.externalId account.externalIdType)}}
+                {{identity-block externalIdType=account.externalIdType externalId=account.externalId}}
+              {{else}}
+                <span class="text-muted">None</span>
+              {{/if}}
+            </td>
+          {{/if}}
           <td class="actions">
             {{#with account controller="account" as |ctrl|}}
               {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
