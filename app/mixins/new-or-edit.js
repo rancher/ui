@@ -10,7 +10,13 @@ export default Ember.Mixin.create({
   primaryResource: Ember.computed.alias('model'),
   originalPrimaryResource: Ember.computed.alias('originalModel'),
 
-  didInitAttrs: function() {
+  initFields: function() {
+    this._super();
+    this.set('errors',null);
+    this.set('saving',false);
+  },
+
+  didReceiveAttrs: function() {
     this._super();
     this.set('errors',null);
     this.set('saving',false);
