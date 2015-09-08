@@ -10,7 +10,7 @@ Perhaps you like managing cattle.
 Prerequisites:
 * [Bower](from http://bower.io/)
 * [Git](http://git-scm.com/)
-* [Node.js](http://nodejs.org/) (with NPM) -- **Note:** the local development server currently requires Node 0.10, not 0.12.
+* [Node.js](http://nodejs.org/) 0.12.x (with NPM)
 
 If you're on a Mac and use Homebrew, you can follow these steps:
 ```bash
@@ -39,6 +39,8 @@ Run development server pointed at another instance of the Rancher API
 ```bash
   RANCHER_ENDPOINT="http://rancher:8080/" npm start
 ```
+
+RANCHER_ENDPOINT can also be `hostname[:8080]` or `ip[:8080]`.
 
 ### Compiling for distribution
 
