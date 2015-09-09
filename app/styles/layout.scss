@@ -443,6 +443,37 @@ TABLE.graphs {
   user-select: none;
 }
 
+// adds text indent with a 5px step through 15 layers
+@for $i from 1 through 15 {
+  .indent-#{$i} { text-indent: 5px * $i; }
+}
+
+// Vertical margins and padding witha 5px step
+// e.g. r-mt-20 - {margin-top: 20px}
+$spacing-property-map: (
+    mt: margin-top,
+    mr: margin-right,
+    ml: margin-left,
+    mb: margin-bottom,
+    pt: padding-top,
+    pb: padding-bottom,
+    pl: padding-left,
+    pr: padding-right
+);
+@for $size from 1 through 5 {
+  $val: $size * 5px;
+  @each $keyword, $property in $spacing-property-map {
+    .r-#{$keyword}#{$size*5} {
+      #{$property}: $val !important;
+    }
+  }
+}
+
+// SS-Gizmo doesn't know how to vertical align..
+.ss-icon, [class^="ss-"] {
+  vertical-align: -4%;
+}
+
 .btn-circle {
   display: inline-block;
   line-height: $line-height-base;
@@ -787,7 +818,7 @@ ASIDE {
 .well.description {
   margin-top: 10px;
   margin-bottom: 0;
-  
+
   P {
     margin: 0;
   }

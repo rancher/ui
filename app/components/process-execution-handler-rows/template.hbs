@@ -1,0 +1,24 @@
+{{#if shouldExpand}}
+  <tr>
+    <td class="clip">
+      <i class="fa fa-level-down indent-{{depth}}"></i>
+      {{#if checkExecutions }}
+        <span {{action 'expand'}}>
+            <i class="fa hand {{if expanded 'fa-minus-circle' 'fa-plus-circle'}}"></i>
+        </span>
+      {{/if}}
+      <span class={{if execution.humanEndTime 'label label-success' 'label label-warning'}} title={{execution.id}}>{{execution.id}}</span>
+    </td>
+    <td class="clip">{{execution.name}}</td>
+    <td>PHE</td>
+    <td>{{execution.resourceId}}</td>
+    <td>{{execution.humanEndTime}}</td>
+  </tr>
+{{#if checkExecutions }}
+  {{#each execution.children as |child|}}
+    {{#each child.executions as |execution|}}
+      {{process-execution-rows execution=execution shouldExpand=expanded nodeDepth=depth expandAll=shouldExpandChildren}}
+    {{/each}}
+  {{/each}}
+{{/if}}
+{{/if}}
