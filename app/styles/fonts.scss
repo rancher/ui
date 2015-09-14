@@ -1,0 +1,150 @@
+// Thanks: https://google-webfonts-helper.herokuapp.com/fonts/open-sans?subsets=latin
+// Open Sans by Steve Matteson, Apache License 2.0
+/* open-sans-300 - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Open Sans Light'), local('OpenSans-Light'),
+       url('fonts/open-sans-v13-latin-300.woff2') format('woff2'), /* Chrome 26+, Opera 23+ */
+       url('fonts/open-sans-v13-latin-300.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* open-sans-regular - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans'), local('OpenSans'),
+       url('fonts/open-sans-v13-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+ */
+       url('fonts/open-sans-v13-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+/* open-sans-600 - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Open Sans Semibold'), local('OpenSans-Semibold'),
+       url('fonts/open-sans-v13-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+ */
+       url('fonts/open-sans-v13-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+}
+
+// Animated Icons
+// --------------------------
+.icon-spin {
+  -webkit-animation: icon-spin 2s infinite linear;
+          animation: icon-spin 2s infinite linear;
+}
+
+.icon-pulse {
+  -webkit-animation: icon-spin 1s infinite steps(8);
+          animation: icon-spin 1s infinite steps(8);
+}
+
+@-webkit-keyframes icon-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+  }
+}
+
+@keyframes icon-spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(359deg);
+            transform: rotate(359deg);
+  }
+}
+
+@import "vendor/icons/style.css";
+
+// FontAwesomness
+$icon-li-width:         (30em / 14) !default;
+$icon-inverse:          #fff !default;
+
+.icon {
+  display: inline-block;
+  tranform: translate(0,0);
+}
+
+// Sizes
+.icon-fw {
+  width: (18em/14);
+  text-align: center;
+
+}
+
+.icon-lg {
+  font-size: (4em / 3);
+  line-height: (3em / 4);
+  vertical-align: -15%;
+}
+.icon-2x { font-size: 2em; }
+.icon-3x { font-size: 3em; }
+.icon-4x { font-size: 4em; }
+.icon-5x { font-size: 5em; }
+
+// Stacked
+.icon-stack {
+  position: relative;
+  display: inline-block;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  vertical-align: middle;
+}
+.icon-stack-1x, .icon-stack-2x {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  text-align: center;
+}
+.icon-stack-1x { line-height: inherit; }
+.icon-stack-2x { font-size: 2em; }
+.icon-inverse { color: $icon-inverse; }
+
+// List
+.icon-ul {
+  padding-left: 0;
+  margin-left: $icon-li-width;
+  list-style-type: none;
+  > li { position: relative; }
+}
+
+.icon-li {
+  position: absolute;
+  left: -$icon-li-width;
+  width: $icon-li-width;
+  top: (2em / 14);
+  text-align: center;
+  &.icon-lg {
+    left: -$icon-li-width + (4em / 14);
+  }
+}
+
+// Rotated
+@mixin icon-rotate($degrees, $rotation) {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=#{$rotation});
+  -webkit-transform: rotate($degrees);
+      -ms-transform: rotate($degrees);
+          transform: rotate($degrees);
+}
+
+@mixin icon-flip($horiz, $vert, $rotation) {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=#{$rotation});
+  -webkit-transform: scale($horiz, $vert);
+      -ms-transform: scale($horiz, $vert);
+          transform: scale($horiz, $vert);
+}
+
+.icon-rotate-90  { @include icon-rotate(90deg, 1);  }
+.icon-rotate-180 { @include icon-rotate(180deg, 2); }
+.icon-rotate-270 { @include icon-rotate(270deg, 3); }
+.icon-flip-horizontal { @include icon-flip(-1, 1, 0); }
+.icon-flip-vertical   { @include icon-flip(1, -1, 2); }

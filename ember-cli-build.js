@@ -76,6 +76,7 @@ module.exports = function(defaults) {
   app.import('bower_components/async/lib/async.js');
   app.import('bower_components/position-calculator/dist/position-calculator.js');
   app.import('vendor/aws-sdk-ec2.js');
+  app.import('vendor/icons/fonts/rancher-icons.woff', {destDir: 'assets/fonts'});
 
   return app.toTree();
 };
