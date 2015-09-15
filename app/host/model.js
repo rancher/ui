@@ -1,4 +1,6 @@
+import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
+import { formatMib } from 'ui/utils/util';
 
 var Host = Resource.extend({
   type: 'host',
@@ -53,12 +55,13 @@ var Host = Resource.extend({
   }.property('physicalHostId'),
 
   osBlurb: function() {
-    // @TODO this always sends back Ubuntu
-    if ( false && this.get('info.osInfo') )
+    if ( this.get('info.osInfo.operatingSystem') )
     {
-      return this.get('info.osInfo.distribution') + ' ' + this.get('info.osInfo.version');
+      return this.get('info.osInfo.operatingSystem').replace(/\s+\(.*?\)/,'');
     }
-  }.property('info.osInfo.{distribution,version}'),
+  }.property('info.osInfo.operatingSystem'),
+
+  osDetail: Ember.computed.alias('info.osInfo.operatingSystem'),
 
   dockerBlurb: function() {
     // @TODO this always sends back Ubuntu
@@ -84,28 +87,53 @@ var Host = Resource.extend({
     }
   }.property('info.cpuInfo.{count,mhz}'),
 
+  cpuTooltip: Ember.computed.alias('info.cpuInfo.modelName'),
+
   memoryBlurb: function() {
     if ( this.get('info.memoryInfo') )
     {
-      var gb = Math.round((this.get('info.memoryInfo.memTotal')/1024)*100)/100;
-
-      return gb + ' GiB';
+      return formatMib(this.get('info.memoryInfo.memTotal'));
     }
   }.property('info.memoryInfo.memTotal'),
 
   diskBlurb: function() {
-    if ( this.get('info.diskInfo.mountPoints') )
+    var totalMb = 0;
+
+    // New hotness
+    if ( this.get('info.diskInfo.fileSystems') )
     {
-      var totalMb = 0;
+      var fses = this.get('info.diskInfo.fileSystems')||[];
+      Object.keys(fses).forEach((fs) => {
+        totalMb += fses[fs].capacity;
+      });
+
+      return formatMib(totalMb);
+    }
+    else if ( this.get('info.diskInfo.mountPoints') )
+    {
+      // Old & busted
       var mounts = this.get('info.diskInfo.mountPoints')||[];
       Object.keys(mounts).forEach((mountPoint) => {
         totalMb += mounts[mountPoint].total;
       });
 
-      var gb = Math.round((totalMb/1024)*10)/10;
-      return gb + ' GiB';
+      return formatMib(totalMb);
     }
-  }.property('info.diskInfo.mountPoints.@each.total'),
+  }.property('info.diskInfo.mountPoints.@each.total','info.diskInfo.fileSystems.@each.capacity'),
+
+  diskDetail: function() {
+    // New hotness
+    if ( this.get('info.diskInfo.fileSystems') )
+    {
+      var out = [];
+      var fses = this.get('info.diskInfo.fileSystems')||[];
+      Object.keys(fses).forEach((fs) => {
+        out.pushObject(Ember.Object.create({label: fs, value: formatMib(fses[fs].capacity)}));
+      });
+
+      return out;
+    }
+  }.property('info.diskInfo.fileSystems.@each.capacity'),
 });
 
 Host.reopenClass({

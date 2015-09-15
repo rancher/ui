@@ -4,6 +4,8 @@ import { formatPercent, formatMib, formatKbps } from 'ui/utils/util';
 
 const MAX_POINTS = 60;
 const TICK_COUNT = 6;
+const COLORS = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"];
+const ALT_COLORS = ["#ff7f0e", "#1f77b4", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"];
 
 export default Ember.Component.extend({
   model: null,
@@ -119,10 +121,10 @@ export default Ember.Component.extend({
     {
       if ( this.get('single') )
       {
-        row = getOrCreateDataRow(graph, data, 'User');
-        row.push(point.cpu_user);
         row = getOrCreateDataRow(graph, data, 'System');
         row.push(point.cpu_system);
+        row = getOrCreateDataRow(graph, data, 'User');
+        row.push(point.cpu_user);
       }
       else
       {
@@ -166,10 +168,10 @@ export default Ember.Component.extend({
     {
       if ( this.get('single') )
       {
-        row = getOrCreateDataRow(graph, data, 'Receive');
-        row.push(point.net_rx_kb);
         row = getOrCreateDataRow(graph, data, 'Transmit');
         row.push(point.net_tx_kb);
+        row = getOrCreateDataRow(graph, data, 'Receive');
+        row.push(point.net_rx_kb);
       }
       else
       {
@@ -185,10 +187,10 @@ export default Ember.Component.extend({
     {
       if ( this.get('single') )
       {
-        row = getOrCreateDataRow(graph, data, 'Read');
-        row.push(point.disk_read_kb);
         row = getOrCreateDataRow(graph, data, 'Write');
         row.push(point.disk_write_kb);
+        row = getOrCreateDataRow(graph, data, 'Read');
+        row.push(point.disk_read_kb);
       }
       else
       {
@@ -222,11 +224,13 @@ export default Ember.Component.extend({
       size: {
         height: 110,
       },
+      color: { pattern: ALT_COLORS.slice() },
       data: {
         type: 'area-step',
         x: 'x',
         columns: this.get('cpuData'),
         groups: [[]], // Stacked graph, populated by getOrCreateDataRow...
+        order: null,
       },
       transition: { duration: 0 },
       legend: { show: false },
@@ -280,6 +284,7 @@ export default Ember.Component.extend({
       size: {
         height: 110,
       },
+      color: { pattern: COLORS.slice() },
       data: {
         type: 'area-step',
         x: 'x',
@@ -337,11 +342,13 @@ export default Ember.Component.extend({
       size: {
         height: 110,
       },
+      color: { pattern: ALT_COLORS.slice() },
       data: {
         type: 'area-step',
         x: 'x',
         columns: this.get('storageData'),
         groups: [[]], // Stacked graph, populated by getOrCreateDataRow...
+        order: null,
       },
       transition: { duration: 0 },
       legend: { show: false },
@@ -393,11 +400,13 @@ export default Ember.Component.extend({
       size: {
         height: 110,
       },
+      color: { pattern: ALT_COLORS.slice() },
       data: {
         type: 'area-step',
         x: 'x',
         columns: this.get('networkData'),
         groups: [[]], // Stacked graph, populated by getOrCreateDataRow...
+        order: null,
       },
       transition: { duration: 0 },
       legend: { show: false },

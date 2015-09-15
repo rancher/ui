@@ -1,17 +1,8 @@
 import Ember from 'ember';
 
 const MAX_POINTS = 60;
-const keys = ['cpu','memory','network','storage'];
 
 export default Ember.Mixin.create({
-  init() {
-    this._super();
-    keys.forEach((key) => {
-      this.set(key+'Data', Ember.Object.create());
-      this.set(key+'Max', 0);
-    });
-  },
-
   cpuData: null,
   memoryData: null,
   networkData: null,
@@ -85,13 +76,20 @@ export default Ember.Mixin.create({
 
   getOrCreateDataRow(key, id) {
     var data = this.get(key+'Data');
-    var row = data[id];
+    if ( !data )
+    {
+      data = Ember.Object.create();
+      this.set(key+'Max', 0);
+      this.set(key+'Data', data);
+    }
+
+    var row = data.get(id);
     if ( !row )
     {
       row = [];
       for ( var i = 0 ; i < MAX_POINTS ; i++ )
       {
-        row.push(0);
+        row.pushObject(0);
       }
       data.set(id,row);
     }

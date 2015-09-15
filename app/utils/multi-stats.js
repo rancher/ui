@@ -117,7 +117,9 @@ export default Ember.Object.extend(Ember.Evented, {
     if ( prev )
     {
       // Don't use `ts` here, need the unrounded time to get accurate CPU usage
-      var time_diff_ns = (tsFromString(data.timestamp) - tsFromString(prev.timestamp))*1e6;
+      var time_diff_ms = (tsFromString(data.timestamp) - tsFromString(prev.timestamp));
+      var time_diff_ns = time_diff_ms*1e6;
+      var time_diff_s = time_diff_ms/1000;
       var count = 1;
 
       // CPU
@@ -134,6 +136,37 @@ export default Ember.Object.extend(Ember.Evented, {
         out.cpu_system  = toPercent((data.cpu.usage.system  - prev.cpu.usage.system )/time_diff_ns);
         out.cpu_total   = toPercent((data.cpu.usage.total   - prev.cpu.usage.total  )/time_diff_ns);
         out.cpu_count   = count;
+      }
+
+      if ( data.diskio && data.diskio.io_service_bytes )
+      {
+        var read = 0;
+        var write = 0;
+        data.diskio.io_service_bytes.forEach((io) => {
+          if ( io && io.stats )
+          {
+            read += io.stats.Read || 0;
+            write += io.stats.Write || 0;
+          }
+        });
+
+        prev.diskio.io_service_bytes.forEach((io) => {
+          if ( io && io.stats )
+          {
+            read -= io.stats.Read || 0;
+            write -= io.stats.Write || 0;
+          }
+        });
+
+        out.disk_read_kb = read/(time_diff_s*1024);
+        out.disk_write_kb = write/(time_diff_s*1024);
+      }
+
+      // network
+      if ( data.network )
+      {
+        out.net_rx_kb = (data.network.rx_bytes - prev.network.rx_bytes)/(time_diff_s*1024);
+        out.net_tx_kb = (data.network.tx_bytes - prev.network.tx_bytes)/(time_diff_s*1024);
       }
     }
 
@@ -155,40 +188,6 @@ export default Ember.Object.extend(Ember.Evented, {
       }
     }
 
-    // Storage
-    if ( prev )
-    {
-      if ( data.diskio && data.diskio.io_serviced )
-      {
-        var read = 0;
-        var write = 0;
-        data.diskio.io_serviced.forEach((io) => {
-          if ( io && io.stats )
-          {
-            read += io.stats.Read || 0;
-            write += io.stats.Write || 0;
-          }
-        });
-
-        prev.diskio.io_serviced.forEach((io) => {
-          if ( io && io.stats )
-          {
-            read -= io.stats.Read || 0;
-            write -= io.stats.Write || 0;
-          }
-        });
-
-        out.disk_read_kb = read;
-        out.disk_write_kb = write;
-      }
-    }
-
-    // network
-    if ( data.network )
-    {
-      out.net_rx_kb = Math.round(data.network.rx_bytes/1000);
-      out.net_tx_kb = Math.round(data.network.tx_bytes/1000);
-    }
 
     this.get('prev')[key] = data;
     this.trigger('dataPoint', out);

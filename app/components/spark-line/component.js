@@ -95,7 +95,7 @@ export default Ember.Component.extend({
 
   update: function() {
     var svg = this.get('svg');
-    var data = this.get('data').slice();
+    var data = (this.get('data')||[]).slice();
     var x = this.get('x');
     var y = this.get('y');
     var line = this.get('line');

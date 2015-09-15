@@ -39,7 +39,7 @@
       {{#if model.cpuBlurb}}
         <li>
           <label>CPU</label>
-          {{model.cpuBlurb}}
+          {{model.cpuBlurb}}{{#if model.cpuTooltip}} <i class="icon icon-info" tooltip="{{model.cpuTooltip}}"></i>{{/if}}
         </li>
       {{/if}}
 
@@ -53,14 +53,20 @@
       {{#if model.diskBlurb}}
         <li>
           <label>Storage</label>
-          {{model.diskBlurb}}
+          {{#if model.diskDetail}}
+            {{#each model.diskDetail as |disk|}}
+              <span style="display: inline-block; padding-right: 10px;">{{disk.value}} <i class="icon icon-info" tooltip="{{disk.label}}"></i></span>
+            {{/each}}
+          {{else}}
+            {{model.diskBlurb}} (total)
+          {{/if}}
         </li>
       {{/if}}
 
-      {{#if model.osBlurb}}
+      {{#if model.osDetail}}
         <li>
           <label>OS</label>
-          {{model.osBlurb}}
+          {{model.osDetail}}
         </li>
       {{/if}}
 
