@@ -39,6 +39,7 @@ module.exports = function(environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
       version: pkg.version,
+      appName: 'Rancher',
       endpoint: 'http://localhost:8080',
       apiEndpoint: '/v1',
       wsEndpoint: '/v1/subscribe?eventNames=resource.change' +
@@ -60,7 +61,6 @@ module.exports = function(environment) {
     ENV.APP.LOG_TRANSITIONS = true;
     ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     ENV.APP.LOG_VIEW_LOOKUPS = true;
-//    ENV.contentSecurityPolicy['script-src'] = ENV.contentSecurityPolicy['script-src'] + " 'unsafe-eval'";
   }
 
   if (environment === 'test') {

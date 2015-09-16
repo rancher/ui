@@ -152,7 +152,7 @@ echo "Testing..."
 runCmd ./node_modules/.bin/ember test --port 7999
 echo "Done Testing."
 
-echo "Building Static..."
+echo "Building Static Tarball..."
 RANCHER_ENDPOINT="" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
 
 # Create a file containing the version
@@ -160,6 +160,9 @@ echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
 
 # Create a tarball of the version
 runCmd tar -czf ${BUILD_TGZ} -C ${BUILD_PAR} ${VERSION}
+
+echo "Building Hosted Version..."
+RANCHER_ENDPOINT="" BASE_ASSETS="//${CDN}/${VERSION}/" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
 
 if [[ $TAG -eq 1 ]]; then
   runCmd git tag v${VERSION}
