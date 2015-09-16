@@ -16,11 +16,10 @@ var LoadBalancerController = Cattle.LegacyTransitioningResourceController.extend
     var a = this.get('actions');
 
     var out = [
-//      { label: 'Add Container', icon: 'ss-plus',      action: 'newContainer', enabled: true,            color: 'text-primary' },
-      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
-      { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true,            detail: true },
+      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'View in API',   icon: 'icon icon-externallink', action: 'goToApi',      enabled: true,            detail: true },
       { divider: true },
-      { label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: true },
+      { label: 'Edit',          icon: 'icon icon-edit',         action: 'edit',         enabled: true },
     ];
 
     return out;
@@ -36,7 +35,7 @@ var LoadBalancerController = Cattle.LegacyTransitioningResourceController.extend
 
 LoadBalancerController.reopenClass({
   stateMap: {
-    'active':           {icon: 'ss-fork',           color: 'text-success'},
+    'active':           {icon: 'icon icon-fork',           color: 'text-success'},
   }
 });
 

@@ -132,6 +132,7 @@ fi
 
 BUILD_PAR="dist/static"
 BUILD_DIR="${BUILD_PAR}/${VERSION}"
+BUILD_TGZ="${BUILD_PAR}/${VERSION}.tar.gz"
 CDN="releases.rancher.com/ui"
 URL="/static"
 GS_URL="gs://${CDN}"
@@ -158,10 +159,8 @@ RANCHER_ENDPOINT="" BASE_URL="${URL}" BASE_ASSETS="//${CDN}/${VERSION}" runCmd .
 # Create a file containing the version
 echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
 
-# Replace the version token in the static file that cattle serves up
-runCmd sed -i.bak s/VERSION/${VERSION}/g "${BUILD_DIR}/static/index.html"
-
-runCmd tar -czf ${BUILD_PAR}/${VERSION}.tar.gz ${BUILD_DIR}
+# Create a tarball of the version
+runCmd tar -czf ${BUILD_TGZ} ${BUILD_DIR}
 
 if [[ $TAG -eq 1 ]]; then
   runCmd git tag v${VERSION}
@@ -176,6 +175,7 @@ if [[ $UPLOAD -eq 1 ]]; then
     runCmd gsutil -h "${CACHE}" rsync -c -r -d "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
     runCmd gsutil rm -a -f -R "${GS_URL}/_upload"
   else
+    runCmd gsutil -m cp ${BUILD_TGZ} ${GS_URL}
     runCmd gsutil -m cp -z "${GZIP}" -R ${BUILD_DIR} ${GS_URL}
   fi
 fi

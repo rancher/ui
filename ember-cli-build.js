@@ -38,7 +38,6 @@ module.exports = function(defaults) {
   // along with the exports of each module as its value.
   var appConfig = require('./config/environment')(app.env).APP;
   app.options.inlineContent = {
-    'app-name': { content: appConfig.appName },
     'version': { content: appConfig.version },
   }
 
@@ -76,7 +75,13 @@ module.exports = function(defaults) {
   app.import('bower_components/async/lib/async.js');
   app.import('bower_components/position-calculator/dist/position-calculator.js');
   app.import('vendor/aws-sdk-ec2.js');
+  app.import('vendor/icons/style.css');
+  app.import('vendor/icons/fonts/rancher-icons.eot', {destDir: 'assets/fonts'});
+  app.import('vendor/icons/fonts/rancher-icons.svg', {destDir: 'assets/fonts'});
+  app.import('vendor/icons/fonts/rancher-icons.ttf', {destDir: 'assets/fonts'});
   app.import('vendor/icons/fonts/rancher-icons.woff', {destDir: 'assets/fonts'});
+  app.import('bower_components/identicon.js/pnglib.js');
+  app.import('bower_components/identicon.js/identicon.js');
 
   return app.toTree();
 };

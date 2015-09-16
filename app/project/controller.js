@@ -54,13 +54,13 @@ export default Ember.Controller.extend(CattleTransitioningController, {
     var a = this.get('model.actions');
 
     var choices = [
-      { label: 'Activate',      icon: 'ss-play',  action: 'activate',     enabled: !!a.activate},
-      { label: 'Deactivate',    icon: 'ss-pause', action: 'deactivate',     enabled: !!a.deactivate},
-      { label: 'Delete',        icon: 'ss-trash', action: 'promptDelete', enabled: this.get('model.canRemove'), altAction: 'delete' },
+      { label: 'Activate',      icon: 'icon icon-play',  action: 'activate',     enabled: !!a.activate},
+      { label: 'Deactivate',    icon: 'icon icon-pause', action: 'deactivate',   enabled: !!a.deactivate},
+      { label: 'Delete',        icon: 'icon icon-trash', action: 'promptDelete', enabled: this.get('model.canRemove'), altAction: 'delete' },
       { divider: true },
-      { label: 'Restore',       icon: '',         action: 'restore',      enabled: !!a.restore },
-      { label: 'Purge',         icon: '',         action: 'purge',        enabled: !!a.purge },
-      { label: 'Edit',          icon: '',         action: 'edit',         enabled: !!a.update },
+      { label: 'Restore',       icon: '',                action: 'restore',      enabled: !!a.restore },
+      { label: 'Purge',         icon: '',                action: 'purge',        enabled: !!a.purge },
+      { label: 'Edit',          icon: 'icon icon-edit',  action: 'edit',         enabled: !!a.update },
     ];
 
     choices.pushObject({label: 'Switch to this Environment', icon: '', action: 'switchTo', enabled: this.get('model.state') === 'active' });

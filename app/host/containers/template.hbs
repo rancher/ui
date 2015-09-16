@@ -36,10 +36,12 @@
             {{/if}}
           </td>
           <td class="spark-td">
-            {{spark-line data=container.cpuSpark     width=60 height=15 max=cpuMax     classNames="spark-tl" prefix="CPU: " formatter="percent"}}
-            {{spark-line data=container.memorySpark  width=60 height=15 max=memoryMax  classNames="spark-tr" prefix="Memory: " formatter="mib"}}
-            {{spark-line data=container.networkSpark width=60 height=15 max=networkMax classNames="spark-bl" prefix="Network: " formatter="kbps"}}
-            {{spark-line data=container.storageSpark width=60 height=15 max=storageMax classNames="spark-br" prefix="Storage: " formatter="kbps"}}
+            {{#if container.cpuSpark}}
+              {{spark-line data=container.cpuSpark     width=60 height=15 max=cpuMax     classNames="spark-tl" prefix="CPU: " formatter="percent"}}
+              {{spark-line data=container.memorySpark  width=60 height=15 max=memoryMax  classNames="spark-tr" prefix="Memory: " formatter="mib"}}
+              {{spark-line data=container.networkSpark width=60 height=15 max=networkMax classNames="spark-bl" prefix="Network: " formatter="kbps"}}
+              {{spark-line data=container.storageSpark width=60 height=15 max=storageMax classNames="spark-br" prefix="Storage: " formatter="kbps"}}
+            {{/if}}
           </td>
           <td class="actions">
             {{#with container controller="container" as |ctrl|}}

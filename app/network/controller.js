@@ -4,7 +4,7 @@ var NetworkController = Cattle.LegacyTransitioningResourceController.extend();
 
 NetworkController.reopenClass({
   stateMap: {
-    'active':     {icon: 'ss-headphones', color: 'text-success'},
+    'active':     {icon: 'icon icon-network', color: 'text-success'},
   }
 });
 

@@ -65,16 +65,16 @@ export default Ember.Controller.extend(CattleTransitioningController, {
     var a = this.get('model.actions');
 
     var out = [
-      { label: 'Start Services', icon: 'ss-play',            action: 'activateServices',    enabled: this.get('model.canActivate') },
-      { label: 'Stop Services', icon: 'ss-pause',            action: 'deactivateServices',  enabled: this.get('model.canDeactivate') },
-      { label: 'View Graph',    icon: 'ss-share',            action: 'viewGraph',            enabled: true },
-      { label: 'View Config',   icon: 'ss-files',            action: 'viewCode',            enabled: true },
-      { label: 'Export Config', icon: 'ss-download',         action: 'exportConfig',        enabled: !!a.exportconfig },
+      { label: 'Start Services',  icon: 'icon icon-play',             action: 'activateServices',    enabled: this.get('model.canActivate') },
+      { label: 'Stop Services',   icon: 'icon icon-pause',            action: 'deactivateServices',  enabled: this.get('model.canDeactivate') },
+      { label: 'View Graph',      icon: 'icon icon-share',            action: 'viewGraph',            enabled: true },
+      { label: 'View Config',     icon: 'icon icon-files',            action: 'viewCode',            enabled: true },
+      { label: 'Export Config',   icon: 'icon icon-download',         action: 'exportConfig',        enabled: !!a.exportconfig },
       { divider: true },
-      { label: 'Delete',        icon: 'ss-trash',            action: 'promptDelete',        enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
-      { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',             enabled: true },
+      { label: 'Delete',          icon: 'icon icon-trash',            action: 'promptDelete',        enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'View in API',     icon: 'icon icon-externallink',     action: 'goToApi',             enabled: true },
       { divider: true },
-      { label: 'Edit',          icon: 'ss-write',            action: 'edit',                enabled: true },
+      { label: 'Edit',            icon: 'icon icon-edit',             action: 'edit',                enabled: true },
     ];
 
     return out;

@@ -162,11 +162,23 @@ export default Ember.Object.extend(Ember.Evented, {
         out.disk_write_kb = write/(time_diff_s*1024);
       }
 
-      // network
+      // Network
       if ( data.network )
       {
-        out.net_rx_kb = (data.network.rx_bytes - prev.network.rx_bytes)/(time_diff_s*1024);
-        out.net_tx_kb = (data.network.tx_bytes - prev.network.tx_bytes)/(time_diff_s*1024);
+        out.net_rx_kb = Math.max(0, (data.network.rx_bytes - prev.network.rx_bytes)/(time_diff_s*1024));
+        out.net_tx_kb = Math.max(0, (data.network.tx_bytes - prev.network.tx_bytes)/(time_diff_s*1024));
+
+        if ( data.network.interfaces && prev.network.interfaces )
+        {
+          data.network.interfaces.forEach((iface) => {
+            var prev_iface =  prev.network.interfaces.filter('name', iface.name)[0];
+            if ( prev_iface )
+            {
+              out.net_rx_kb += Math.max(0, (iface.rx_bytes - prev_iface.rx_bytes)/(time_diff_s*1024));
+              out.net_tx_kb += Math.max(0, (iface.tx_bytes - prev_iface.tx_bytes)/(time_diff_s*1024));
+            }
+          });
+        }
       }
     }
 

@@ -24,11 +24,11 @@ module.exports = function(environment) {
 
     contentSecurityPolicy: {
       // Allow the occasional <elem style="blah">...
-      'style-src':  "'self' releases.rancher.com storage.googleapis.com fonts.googleapis.com 'unsafe-inline'",
-      'font-src':   "'self' releases.rancher.com storage.googleapis.com fonts.googleapis.com fonts.gstatic.com",
-      'script-src': "'self' releases.rancher.com storage.googleapis.com ",
-      'object-src': "'self' releases.rancher.com storage.googleapis.com ",
-      'img-src':    "'self' releases.rancher.com storage.googleapis.com avatars.githubusercontent.com robohash.org",
+      'style-src':  "'self' releases.rancher.com 'unsafe-inline'",
+      'font-src':   "'self' releases.rancher.com",
+      'script-src': "'self' releases.rancher.com",
+      'object-src': "'self' releases.rancher.com",
+      'img-src':    "'self' releases.rancher.com avatars.githubusercontent.com gravatar.com data:",
       'frame-src':  "'self'",
 
       // Allow connect to anywhere, for console and event stream socket
@@ -39,7 +39,6 @@ module.exports = function(environment) {
       // Here you can pass flags/options to your application instance
       // when it is created
       version: pkg.version,
-      appName: 'Rancher',
       endpoint: 'http://localhost:8080',
       apiEndpoint: '/v1',
       wsEndpoint: '/v1/subscribe?eventNames=resource.change' +

@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { isAlternate } from 'ui/utils/platform';
 
 export default Ember.Component.extend({
-  icon: 'ss-help',
+  icon: 'icon-help',
   label: '',
   enabled: true,
   actionArg: null,
@@ -23,7 +23,7 @@ export default Ember.Component.extend({
   },
 
   render: function(buffer) {
-    buffer.push('<i class="fa-fw '+ this.get('icon') + '"></i> ' + this.get('label'));
+    buffer.push('<i class="icon icon-fw '+ this.get('icon') + '"></i> ' + this.get('label'));
   },
 
   iconChanged: function() {

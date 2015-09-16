@@ -193,12 +193,12 @@ var Service = Resource.extend(ReadLabels, {
 
 export function activeIcon(service)
 {
-  var out = 'ss-layergroup';
+  var out = 'icon icon-layergroup';
   switch ( service.get('type').toLowerCase() )
   {
-    case 'loadbalancerservice': out = 'ss-fork';    break;
-    case 'dnsservice':          out = 'ss-compass'; break;
-    case 'externalservice':     out = 'ss-cloud';   break;
+    case 'loadbalancerservice': out = 'icon icon-fork';    break;
+    case 'dnsservice':          out = 'icon icon-compass'; break;
+    case 'externalservice':     out = 'icon icon-cloud';   break;
   }
 
   return out;
@@ -229,8 +229,8 @@ Service.reopenClass({
 
   stateMap: {
     'active':           {icon: activeIcon,          color: 'text-success'},
-    'upgrading':        {icon: 'ss-up',             color: 'text-info'},
-    'canceling-upgrade':{icon: 'ss-down',           color: 'text-info'},
+    'upgrading':        {icon: 'icon-arrow-up',     color: 'text-info'},
+    'canceling-upgrade':{icon: 'icon-arrow-down',   color: 'text-info'},
   }
 });
 

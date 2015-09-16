@@ -154,8 +154,8 @@ Host.reopenClass({
   },
 
   stateMap: {
-    'active':           {icon: 'ss-database',       color: 'text-success'},
-    'reconnecting':     {icon: 'fa fa-question',    color: 'text-danger'},
+    'active':           {icon: 'icon icon-host',    color: 'text-success'},
+    'reconnecting':     {icon: 'icon icon-help',    color: 'text-danger'},
   }
 });
 
