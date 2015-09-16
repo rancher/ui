@@ -132,8 +132,8 @@ fi
 
 BUILD_PAR="dist/static"
 BUILD_DIR="${BUILD_PAR}/${VERSION}"
+BUILD_TGZ="${BUILD_PAR}/${VERSION}.tar.gz"
 CDN="releases.rancher.com/ui"
-URL="/static"
 GS_URL="gs://${CDN}"
 CACHE="Cache-Control:no-cache,must-revalidate"
 GZIP="html,js,css,xml,txt,map,svg,ttf,woff,woff2"
@@ -152,16 +152,17 @@ echo "Testing..."
 runCmd ./node_modules/.bin/ember test --port 7999
 echo "Done Testing."
 
-echo "Building Static..."
-RANCHER_ENDPOINT="" BASE_URL="${URL}" BASE_ASSETS="//${CDN}/${VERSION}" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
+echo "Building Static Tarball..."
+RANCHER_ENDPOINT="" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
 
 # Create a file containing the version
 echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
 
-# Replace the version token in the static file that cattle serves up
-runCmd sed -i.bak s/VERSION/${VERSION}/g "${BUILD_DIR}/static/index.html"
+# Create a tarball of the version
+runCmd tar -czf ${BUILD_TGZ} -C ${BUILD_PAR} ${VERSION}
 
-runCmd tar -czf ${BUILD_PAR}/${VERSION}.tar.gz ${BUILD_DIR}
+echo "Building Hosted Version..."
+RANCHER_ENDPOINT="" BASE_ASSETS="//${CDN}/${VERSION}/" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
 
 if [[ $TAG -eq 1 ]]; then
   runCmd git tag v${VERSION}
@@ -176,6 +177,7 @@ if [[ $UPLOAD -eq 1 ]]; then
     runCmd gsutil -h "${CACHE}" rsync -c -r -d "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
     runCmd gsutil rm -a -f -R "${GS_URL}/_upload"
   else
+    runCmd gsutil -m cp ${BUILD_TGZ} ${GS_URL}
     runCmd gsutil -m cp -z "${GZIP}" -R ${BUILD_DIR} ${GS_URL}
   fi
 fi

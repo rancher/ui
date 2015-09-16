@@ -45,7 +45,8 @@ export default Ember.Service.extend({
       // Then the default project ID from the session
       return this._activeProjectFromId(this.get('prefs').get(C.PREFS.PROJECT_DEFAULT)).then(select)
       .catch(() => {
-        this.get('prefs').set(C.PREFS.PROJECT_DEFAULT, "");
+        // Setting this now and then just below breaks API uniqueness checking
+        // this.get('prefs').set(C.PREFS.PROJECT_DEFAULT, "");
 
         // Then the first active project
         var project = this.get('active.firstObject');

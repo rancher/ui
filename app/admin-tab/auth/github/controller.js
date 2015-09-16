@@ -165,9 +165,6 @@ export default Ember.Controller.extend({
       this.send('clearError');
       this.set('organizations', auth.orgs);
 
-      // Clear the GitHub cache in case the hostname has changed
-      this.get('github').clearCache();
-
       var model = this.get('model').clone();
       model.setProperties({
         'enabled': true,

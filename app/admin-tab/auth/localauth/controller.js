@@ -49,7 +49,10 @@ export default Ember.Controller.extend({
       });
 
       model.save().then(() => {
-        this.send('authenticate');
+        // Wait a bit for the new config to take effect...
+        setTimeout(() => {
+          this.send('authenticate');
+        }, 1000);
       }).catch(err => {
         this.send('gotError', err);
       });

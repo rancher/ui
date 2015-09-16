@@ -24,23 +24,16 @@ module.exports = function(defaults) {
     },
   });
 
-  // Use `app.import` to add additional libraries to the generated
-  // output files.
-  //
-  // If you need to use different assets in different
-  // environments, specify an object as the first parameter. That
-  // object's keys should be the environment name and the values
-  // should be the asset to use in that environment.
-  //
-  // If the library that you are including contains AMD or ES6
-  // modules that you would like to import into your application
-  // please specify an object with the list of modules as keys
-  // along with the exports of each module as its value.
+  // Pull in a few useful environment settings for index.html to use
   var appConfig = require('./config/environment')(app.env).APP;
-  app.options.inlineContent = {
-    'app-name': { content: appConfig.appName },
-    'version': { content: appConfig.version },
-  }
+  app.options.inlineContent = {};
+  ['version','appName','baseAssets'].forEach(function(key) {
+    var val = appConfig[key];
+    if ( val )
+    {
+      app.options.inlineContent[key] = {content: val};
+    }
+  });
 
   // Use `app.import` to add additional libraries to the generated
   // output files.
@@ -76,6 +69,13 @@ module.exports = function(defaults) {
   app.import('bower_components/async/lib/async.js');
   app.import('bower_components/position-calculator/dist/position-calculator.js');
   app.import('vendor/aws-sdk-ec2.js');
+  app.import('vendor/icons/style.css');
+  app.import('vendor/icons/fonts/rancher-icons.eot', {destDir: 'assets/fonts'});
+  app.import('vendor/icons/fonts/rancher-icons.svg', {destDir: 'assets/fonts'});
+  app.import('vendor/icons/fonts/rancher-icons.ttf', {destDir: 'assets/fonts'});
+  app.import('vendor/icons/fonts/rancher-icons.woff', {destDir: 'assets/fonts'});
+  app.import('bower_components/identicon.js/pnglib.js');
+  app.import('bower_components/identicon.js/identicon.js');
 
   return app.toTree();
 };

@@ -12,11 +12,11 @@ var CertificateController = Ember.Controller.extend(CattleTransitioningControlle
     }
 
     var choices = [
-      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
-      { label: 'Restore',       icon: 'ss-medicalcross',     action: 'restore',      enabled: !!a.restore },
-      { label: 'Purge',         icon: 'ss-tornado',          action: 'purge',        enabled: !!a.purge },
+      { label: 'Delete',        icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
+      { label: 'Restore',       icon: 'icon icon-medicalcross',   action: 'restore',      enabled: !!a.restore },
+      { label: 'Purge',         icon: '',                         action: 'purge',        enabled: !!a.purge },
       { divider: true },
-      { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true },
+      { label: 'View in API',   icon: 'icon icon-externallink',   action: 'goToApi',      enabled: true },
     ];
 
     return choices;

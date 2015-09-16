@@ -52,8 +52,8 @@ Machine.reopenClass({
   },
 
   stateMap: {
-    'bootstrapping':  {icon: 'ss-tag',       color: 'text-info'},
-    'active':         {icon: 'ss-tag',       color: 'text-info'},
+    'bootstrapping':  {icon: 'icon icon-tag',       color: 'text-info'},
+    'active':         {icon: 'icon icon-tag',       color: 'text-info'},
   }
 });
 
