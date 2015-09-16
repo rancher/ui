@@ -13,7 +13,7 @@
 </section>
 
 <section>
-  {{#info-stats model=model}}
+  {{#info-multi-stats model=model linkName="hostStats" single=true}}
     <ul class="list-lines">
       {{#if model.showTransitioningMessage}}
         <li>
@@ -39,7 +39,7 @@
       {{#if model.cpuBlurb}}
         <li>
           <label>CPU</label>
-          {{model.cpuBlurb}}
+          {{model.cpuBlurb}}{{#if model.cpuTooltip}} <i class="icon icon-info" tooltip="{{model.cpuTooltip}}"></i>{{/if}}
         </li>
       {{/if}}
 
@@ -53,14 +53,20 @@
       {{#if model.diskBlurb}}
         <li>
           <label>Storage</label>
-          {{model.diskBlurb}}
+          {{#if model.diskDetail}}
+            {{#each model.diskDetail as |disk|}}
+              <span style="display: inline-block; padding-right: 10px;">{{disk.value}} <i class="icon icon-info" tooltip="{{disk.label}}"></i></span>
+            {{/each}}
+          {{else}}
+            {{model.diskBlurb}} (total)
+          {{/if}}
         </li>
       {{/if}}
 
-      {{#if model.osBlurb}}
+      {{#if model.osDetail}}
         <li>
           <label>OS</label>
-          {{model.osBlurb}}
+          {{model.osDetail}}
         </li>
       {{/if}}
 
@@ -78,19 +84,24 @@
         </li>
       {{/if}}
 
+      <li>
+        <label>Labels</label>
+        {{#if userLabelArray.length}}
+          {{#each userLabelArray as |label|}}
+            <span class="label label-default clip" style="display: inline-block; max-width: 100%;">{{label.key}}{{#if label.value}}={{label.value}}{{/if}}</span>
+          {{/each}}
+        {{else}}
+          <span class="text-muted">None</span>
+        {{/if}}
+      </li>
     </ul>
-  {{/info-stats}}
-</section>
-
-<section class="well" style="margin-bottom: 0;">
-  <label class="section">Labels</label>
-  {{labels-section model=model}}
+  {{/info-multi-stats}}
 </section>
 
 <section>
   <ul class="nav nav-tabs nav-tabs-well">
-    {{#link-to "host.containers" tagName="li" href=false}}<a><i class="ss-box"></i> Containers</a>{{/link-to}}
-    {{#link-to "host.storage" tagName="li" href=false}}<a><i class="ss-hdd"></i> Storage</a>{{/link-to}}
+    {{#link-to "host.containers" tagName="li" href=false}}<a><i class="icon icon-box"></i> Containers</a>{{/link-to}}
+    {{#link-to "host.storage" tagName="li" href=false}}<a><i class="icon icon-hdd"></i> Storage</a>{{/link-to}}
   </ul>
   <div class="well nav-well">
     {{outlet}}

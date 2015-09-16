@@ -6,7 +6,7 @@ export function initialize(/* container, application */) {
   Resource.reopenClass({
     pollTransitioningDelay: 30000,
     pollTransitioningInterval: 30000,
-    defaultStateIcon: 'fa fa-question',
+    defaultStateIcon: 'icon icon-help',
     defaultStateColor: 'text-primary',
   });
 }

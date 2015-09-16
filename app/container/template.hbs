@@ -21,7 +21,7 @@
   </section>
 
   <section>
-    {{#info-stats model=model}}
+    {{#info-multi-stats model=model linkName="containerStats" single=true}}
       <ul class="list-lines">
         {{#if model.showTransitioningMessage}}
           <li>
@@ -75,7 +75,7 @@
         </li>
 
       </ul>
-    {{/info-stats}}
+    {{/info-multi-stats}}
   </section>
 
   <section class="well" style="margin-bottom: 0;">
@@ -170,7 +170,7 @@
                 </ul>
               </td>
               <td class="text-right">
-                <i class="{{if mount.isReadWrite 'ss-check' 'ss-delete text-muted'}}"></i>
+                <i class="icon {{if mount.isReadWrite 'icon-check' 'icon-x text-muted'}}"></i>
               </td>
             </tr>
           {{else}}

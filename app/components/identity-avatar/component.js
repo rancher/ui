@@ -8,6 +8,6 @@ export default Ember.Component.extend({
   classNames: ['gh-avatar'],
   attributeBindings: ['aria-label:identity.name'],
 
-  avatarUrl: Ember.computed.alias('identity.profilePicture'),
+  avatarSrc: Ember.computed.alias('identity.avatarSrc'),
   url: Ember.computed.alias('identity.profileUrl'),
 });

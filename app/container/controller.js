@@ -71,20 +71,19 @@ var ContainerController = Ember.Controller.extend(CattleTransitioningController,
     var isService = Object.keys(this.get('model.labels')||{}).indexOf(C.LABEL.SERVICE_NAME) >= 0;
 
     var choices = [
-      { label: 'Restart',       icon: 'ss-refresh',   action: 'restart',      enabled: !!a.restart },
-      { label: 'Start',         icon: 'ss-play',      action: 'start',        enabled: !!a.start },
-      { label: 'Stop',          icon: 'ss-pause',     action: 'stop',         enabled: !!a.stop },
-      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: this.get('model.canDelete'), altAction: 'delete' },
-      { label: 'Restore',       icon: 'ss-medicalcross',     action: 'restore',      enabled: !!a.restore },
-      { label: 'Purge',         icon: 'ss-tornado',          action: 'purge',        enabled: !!a.purge },
+      { label: 'Restart',       icon: 'icon icon-refresh',      action: 'restart',      enabled: !!a.restart },
+      { label: 'Start',         icon: 'icon icon-play',         action: 'start',        enabled: !!a.start },
+      { label: 'Stop',          icon: 'icon icon-pause',        action: 'stop',         enabled: !!a.stop },
+      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('model.canDelete'), altAction: 'delete' },
+      { label: 'Restore',       icon: '',                       action: 'restore',      enabled: !!a.restore },
+      { label: 'Purge',         icon: '',                       action: 'purge',        enabled: !!a.purge },
       { divider: true },
-      { label: 'Execute Shell', icon: 'fa fa-terminal',      action: 'shell',        enabled: !!a.execute },
-      { label: 'View Logs',     icon: 'ss-file',             action: 'logs',         enabled: !!a.logs },
+      { label: 'Execute Shell', icon: '',                       action: 'shell',        enabled: !!a.execute },
+      { label: 'View Logs',     icon: '',                       action: 'logs',         enabled: !!a.logs },
+      { label: 'View in API',   icon: 'icon icon-externallink', action: 'goToApi',      enabled: true },
       { divider: true },
-      { label: 'View in API',   icon: 'fa fa-external-link', action: 'goToApi',      enabled: true },
-      { label: 'Clone',         icon: 'ss-copier',           action: 'clone',        enabled: !isSystem && !isService },
-//      { label: 'Clone to Service', icon: 'ss-copier',           action: 'cloneToService', enabled: !isSystem && !isService },
-      { label: 'Edit',          icon: 'ss-write',            action: 'edit',         enabled: !!a.update },
+      { label: 'Clone',         icon: 'icon icon-copy',         action: 'clone',        enabled: !isSystem && !isService },
+      { label: 'Edit',          icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
     ];
 
     return choices;

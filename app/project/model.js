@@ -13,15 +13,15 @@ var Project = Resource.extend({
   icon: function() {
     if ( this.get('isDefault') )
     {
-      return 'ss-home';
+      return 'icon icon-home';
     }
     else if ( this.get('active') )
     {
-      return 'ss-openfolder';
+      return 'icon icon-openfolder';
     }
     else
     {
-      return 'ss-folder';
+      return 'icon icon-folder';
     }
   }.property('active','isDefault'),
 

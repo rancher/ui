@@ -93,7 +93,7 @@ var Environment = Resource.extend({
 
 Environment.reopenClass({
   stateMap: {
-    'active':           {icon: 'ss-globe',          color: 'text-success'},
+    'active':           {icon: 'icon icon-globe',          color: 'text-success'},
   }
 });
 

@@ -89,11 +89,20 @@ export default Ember.Object.extend(Ember.Evented, {
 
     this.setProperties({
       connected: true,
-      tries: 0,
       disconnectedAt: null,
     });
 
     this.trigger('connected', this.get('tries'), after);
+
+    // Don't reset tries for a little bit, in case the socket immediately closes again.
+    // This prevents open/imediate close loops from hammering the server because the tries count is never incrementing.
+    Ember.run.later(this, '_resetTries', 1000);
+  },
+
+  _resetTries: function() {
+    if ( this.get('connected') ) {
+      this.set('tries', 0);
+    }
   },
 
   _message: function(event) {

@@ -15,8 +15,8 @@
         {{sortable-th sortable=this action="changeSort" name="id" label="ID" width="120"}}
         {{sortable-th sortable=this action="changeSort" name="kind" width="120"}}
         {{#if isLocal}}
-          {{sortable-th sortable=this action="changeSort" name="name"}}
           {{sortable-th sortable=this action="changeSort" name="username" label="Login Username"}}
+          {{sortable-th sortable=this action="changeSort" name="name"}}
         {{else}}
           <th>Identity</th>
         {{/if}}
@@ -38,15 +38,15 @@
             {{uc-first account.kind}}
           </td>
           {{#if isLocal}}
-            <td class="force-wrap">
-              {{account.displayName}}
-            </td>
             <td>
               {{#if account.username}}
                 {{account.username}}
               {{else}}
                 <span class="text-muted">None</span>
               {{/if}}
+            </td>
+            <td class="force-wrap">
+              {{account.displayName}}
             </td>
           {{else}}
             <td>
