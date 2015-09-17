@@ -92,6 +92,7 @@ export default Ember.Object.extend(Ember.Evented, {
     if ( socket )
     {
       socket.disconnect();
+      this.set('socket', null);
     }
   },
 
