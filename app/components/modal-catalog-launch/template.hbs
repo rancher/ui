@@ -1,0 +1,82 @@
+<section class="horizontal-form container-fluid">
+  {{top-errors errors=errors}}
+  <img src={{originalModel.iconLink}} alt={{originalModel.name}} class="img-responsive center-block" style="height:75px;">
+  <h2>Add {{originalModel.name}} Stack</h2>
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-3 form-label">
+      <label class="form-control-static">Version</label>
+    </div>
+    <div class="col-sm-12 col-md-7 r-mb15">
+      {{new-select
+        classNames='form-control'
+        content=versionsArray
+        prompt="Choose a Version"
+        optionLabelPath="version"
+        optionValuePath="link"
+        value=selectedTemplate}}
+    </div>
+    {{#if loading}}
+      <div class="col-md-12 text-center r-mt15">
+        <i class="fa fa-spinner fa-spin" style="font-size:36px;"></i>
+      </div>
+    {{/if}}
+    {{#if selectedTemplateModel }}
+      <div class="col-md-12 col-sm-12 over-hr r-mt20 r-mb10">
+        <span>New Stack</span>
+      </div>
+      <div class="col-sm-12 col-md-3 form-label">
+        <label class="form-control-static">Name*</label>
+      </div>
+      <div class="col-sm-12 col-md-7 r-mb15">
+        {{input type='text' class='form-control r-mb10' value=templateName}}
+      </div>
+      <div class="col-sm-12 col-md-3 form-label">
+        <label class="form-control-static">Description*</label>
+      </div>
+      <div class="col-sm-12 col-md-7 r-mb15">
+        {{input type='text' class='form-control r-mb10' value=templateDescription}}
+      </div>
+      <div class="col-md-12 col-sm-12 over-hr r-mt20 r-mb10">
+        <span>Configuration Options</span>
+      </div>
+      <form {{action 'submitTemplate' on='submit'}}>
+        <div class="row form-group">
+          {{#each selectedTemplateModel.questions as |question|}}
+            <div class="col-sm-12 col-md-3 form-label">
+              <label class="form-label form-control-static">{{question.description}}</label>
+            </div>
+            <div class="col-sm-12 col-md-7">
+              {{#if (or (eq question.type 'string') (eq question.type 'int'))}}
+                {{input type='text' class='form-control r-mb10' value=question.answer}}
+              {{else}}
+                {{#if (eq question.type 'boolean')}}
+                  <div class="r-mb10">
+                    <label style="display:block;">
+                      {{radio-button selection=question.answer value=true}} True
+                    </label>
+                    <label style="display:block;">
+                      {{radio-button selection=question.answer value=false}} False
+                    </label>
+                  </div>
+                {{else}}
+                  {{#if (eq question.type 'enum')}}
+                    <select name="" class="form-control r-mb10" onChange={{action (mut question.answer) value="target.value"}}>
+                      <option value="">Choose an option...</option>
+                      {{#each question.options key="@identity" as |option|}}
+                        <option value={{option}}>{{option}}</option>
+                      {{/each}}
+                    </select>
+                  {{/if}}
+                {{/if}}
+              {{/if}}
+            </div>
+          {{/each}}
+        </div>
+        <div class="text-center">
+          {{partial "save-cancel"}}
+        </div>
+      </form>
+    {{/if}}
+  </div>
+</section>
+{{yield}}

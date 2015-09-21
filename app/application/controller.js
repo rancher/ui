@@ -34,4 +34,5 @@ export default Ember.Controller.extend({
   editRegistry: null,
   showShell: null,
   showContainerLogs: null,
+  launchCatalog: null
 });

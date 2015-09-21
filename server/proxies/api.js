@@ -22,6 +22,22 @@ module.exports = function(app, options) {
     proxy.web(req, res);
   });
 
+  var catalogPath = '/v1-catalog';
+  app.use(catalogPath, function(req, res, next) {
+    var catalogProxy = HttpProxy.createProxyServer({
+      ws: true,
+      xfwd: false,
+      target: 'http://localhost:8088'
+    });
+    // include root path in proxied request
+    req.url = path.join(catalogPath, req.url);
+
+    req.headers['user-agent'] = 'Rancher UI';
+
+    console.log('API Proxy', req.method, 'to', req.url);
+    catalogProxy.web(req, res);
+  });
+
   proxy.on('error', function onProxyError(err, req, res) {
     console.log('Proxy Error: on', req.method,'to', req.url,':', err);
     var error = {
