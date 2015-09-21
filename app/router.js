@@ -40,6 +40,11 @@ Router.map(function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
       });
+
+      this.route('processes', {path: '/processes'}, function() {
+        this.route('index', {path: '/'});
+        this.route('process', {path: '/:process_id'});
+      });
     });
 
     // Infrastructure
@@ -148,7 +153,7 @@ Router.map(function() {
   this.modal('edit-apikey', {
     dismissWithOutsideClick: false,
     withParams: 'editApikey',
-    otherParams: {'originalModel': 'originalModel', 'editApikeyIsNew': 'justCreated'} 
+    otherParams: {'originalModel': 'originalModel', 'editApikeyIsNew': 'justCreated'}
   });
 
   this.modal('edit-project', {
@@ -188,12 +193,13 @@ Router.map(function() {
     otherParams: 'originalModel',
   });
 
+  // End: Modals
   this.modal('edit-account', {
     dismissWithOutsideClick: false,
     withParams: 'editAccount',
     otherParams: 'originalModel',
   });
-  // End: Modals
+
 });
 
 export default Router;

@@ -1,8 +1,21 @@
+/**
+ * Sortable - provides sorting functionality to a data set
+ * @mixin mixins/sortable
+ * @property {object}  sortableContent - content to sort. i.e. model data
+ * @property {object}  sorts - fields to sort via object of arrays. Arrays can contain weighted properties to sort on
+ *                             i.e  {id: ['id', 'name', 'time']}
+ * @property {string}  sortBy - default sort field
+ * @property {boolean} descending - default sort order
+ * @property {object}  actions - contains the action handeler for changing sorts
+ *
+ * @function currentSort - returns the current sort
+ * @function arranged - returns the sorted data, you should use this as your data to display
+ */
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
   sortableContent: Ember.computed.alias('model'),
-  sorts: null, // { id: ['id'], date: ['created','id'] }
+  sorts: null,
   sortBy: null,
   descending: false,
 
