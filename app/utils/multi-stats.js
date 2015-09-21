@@ -172,7 +172,7 @@ export default Ember.Object.extend(Ember.Evented, {
         if ( data.network.interfaces && prev.network.interfaces )
         {
           data.network.interfaces.forEach((iface) => {
-            var prev_iface =  prev.network.interfaces.filter('name', iface.name)[0];
+            var prev_iface =  prev.network.interfaces.filterBy('name', iface.name)[0];
             if ( prev_iface )
             {
               out.net_rx_kb += Math.max(0, (iface.rx_bytes - prev_iface.rx_bytes)/(time_diff_s*1024));
