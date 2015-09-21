@@ -9,7 +9,6 @@ module.exports = function(app, options) {
     ws: true,
     xfwd: false,
     target: config.endpoint,
-//    agent: new ForeverAgent({})
   });
 
   console.log('Proxying to', config.endpoint);
@@ -18,8 +17,6 @@ module.exports = function(app, options) {
   app.use(apiPath, function(req, res, next) {
     // include root path in proxied request
     req.url = path.join(apiPath, req.url);
-
-    req.headers['user-agent'] = 'Rancher UI';
 
     console.log('API Proxy', req.method, 'to', req.url);
     proxy.web(req, res);

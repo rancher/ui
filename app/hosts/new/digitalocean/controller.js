@@ -11,7 +11,8 @@ var regionChoices = Regions.regions.filter(function(region) {
   };
 }).sortBy('name');
 
-export default Ember.ObjectController.extend(NewHost, {
+export default Ember.Controller.extend(NewHost, {
+  digitaloceanConfig: Ember.computed.alias('model.digitaloceanConfig'),
 
   regionChoices: regionChoices,
 

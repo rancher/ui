@@ -8,10 +8,12 @@ export default Ember.View.extend({
 
   didInsertElement: function() {
     this._super();
-    var input = this.$('INPUT')[0];
-    if ( input )
-    {
-      input.focus();
-    }
+    Ember.run.next(() => {
+      var input = this.$('INPUT')[0];
+      if ( input )
+      {
+        input.focus();
+      }
+    });
   },
 });

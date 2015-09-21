@@ -2,12 +2,12 @@ import Ember from 'ember';
 import EditLabels from 'ui/mixins/edit-labels';
 import Util from 'ui/utils/util';
 
-export default Ember.ObjectController.extend(EditLabels, {
+export default Ember.Controller.extend(EditLabels, {
   primaryResource: Ember.computed.alias('model'),
   needs: ['application'],
 
   registrationCommand: function() {
-    var cmd = this.get('command');
+    var cmd = this.get('model.command');
     if ( !cmd )
     {
       return null;
@@ -26,6 +26,6 @@ export default Ember.ObjectController.extend(EditLabels, {
     }
 
     return cmd;
-  }.property('command','model.labels'),
+  }.property('model.command','model.labels'),
 
 });

@@ -37,7 +37,9 @@ var RANCHER_INGRESS_RULES = [
   }
 ];
 
-export default Ember.ObjectController.extend(NewHost, {
+export default Ember.Controller.extend(NewHost, {
+  exoscaleConfig: Ember.computed.alias('model.exoscaleConfig'),
+
   allDiskSizes: null,
   allInstanceProfiles: null,
 
