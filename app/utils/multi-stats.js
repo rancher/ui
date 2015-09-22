@@ -92,6 +92,7 @@ export default Ember.Object.extend(Ember.Evented, {
     if ( socket )
     {
       socket.disconnect();
+      this.set('socket', null);
     }
   },
 
@@ -130,15 +131,12 @@ export default Ember.Object.extend(Ember.Evented, {
         time_diff_ns *= count;
       }
 
-      if ( time_diff_ns > 1000 )
-      {
-        out.cpu_user    = toPercent((data.cpu.usage.user    - prev.cpu.usage.user   )/time_diff_ns);
-        out.cpu_system  = toPercent((data.cpu.usage.system  - prev.cpu.usage.system )/time_diff_ns);
-        out.cpu_total   = toPercent((data.cpu.usage.total   - prev.cpu.usage.total  )/time_diff_ns);
-        out.cpu_count   = count;
-      }
+      out.cpu_user    = toPercent((data.cpu.usage.user    - prev.cpu.usage.user   )/time_diff_ns);
+      out.cpu_system  = toPercent((data.cpu.usage.system  - prev.cpu.usage.system )/time_diff_ns);
+      out.cpu_total   = toPercent((data.cpu.usage.total   - prev.cpu.usage.total  )/time_diff_ns);
+      out.cpu_count   = count;
 
-      if ( data.diskio && data.diskio.io_service_bytes )
+      if ( data.diskio && data.diskio.io_service_bytes && prev.diskio && prev.diskio.io_service_bytes)
       {
         var read = 0;
         var write = 0;
@@ -171,7 +169,7 @@ export default Ember.Object.extend(Ember.Evented, {
         if ( data.network.interfaces && prev.network.interfaces )
         {
           data.network.interfaces.forEach((iface) => {
-            var prev_iface =  prev.network.interfaces.filter('name', iface.name)[0];
+            var prev_iface =  prev.network.interfaces.filterBy('name', iface.name)[0];
             if ( prev_iface )
             {
               out.net_rx_kb += Math.max(0, (iface.rx_bytes - prev_iface.rx_bytes)/(time_diff_s*1024));
@@ -200,6 +198,13 @@ export default Ember.Object.extend(Ember.Evented, {
       }
     }
 
+    // Convert any NaNs to 0 in case time_diff is 0
+    Object.keys(out).forEach((key) => {
+      if ( typeof out[key] === 'number' && isNaN(out[key]) )
+      {
+        out[key] = 0;
+      }
+    });
 
     this.get('prev')[key] = data;
     this.trigger('dataPoint', out);

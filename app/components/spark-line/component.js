@@ -114,9 +114,16 @@ export default Ember.Component.extend({
       y.rangeRound([height,0]);
 
       //console.log('update', data[data.length-2], data[data.length-1], x.domain(), x.range(), y.domain(), y.range());
+      var dotY = Math.max(0, Math.min(y(data[data.length-1]) - DOT_SIZE/2, height-DOT_SIZE));
+      if ( isNaN(dotY) )
+      {
+        // There's no points
+        dotY = 0;
+      }
+
       svg.selectAll('rect')
         .attr('x', width-DOT_SIZE)
-        .attr('y', Math.max(0, Math.min(y(data[data.length-1]) - DOT_SIZE/2, height-DOT_SIZE)));
+        .attr('y', dotY);
 
       svg.selectAll('path')
         .data([data])
