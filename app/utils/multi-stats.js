@@ -136,18 +136,11 @@ export default Ember.Object.extend(Ember.Evented, {
       out.cpu_total   = toPercent((data.cpu.usage.total   - prev.cpu.usage.total  )/time_diff_ns);
       out.cpu_count   = count;
 
+      var read = 0;
+      var write = 0;
       if ( data.diskio && data.diskio.io_service_bytes && prev.diskio && prev.diskio.io_service_bytes)
       {
-        var read = 0;
-        var write = 0;
-        data.diskio.io_service_bytes.forEach((io) => {
-          if ( io && io.stats )
-          {
-            read += io.stats.Read || 0;
-            write += io.stats.Write || 0;
-          }
-        });
-
+        // Minus the last point
         prev.diskio.io_service_bytes.forEach((io) => {
           if ( io && io.stats )
           {
@@ -156,9 +149,18 @@ export default Ember.Object.extend(Ember.Evented, {
           }
         });
 
-        out.disk_read_kb = read/(time_diff_s*1024);
-        out.disk_write_kb = write/(time_diff_s*1024);
+        // Plus the current point
+        data.diskio.io_service_bytes.forEach((io) => {
+          if ( io && io.stats )
+          {
+            read += io.stats.Read || 0;
+            write += io.stats.Write || 0;
+          }
+        });
+
       }
+      out.disk_read_kb = Math.max(0, read/(time_diff_s*1024));
+      out.disk_write_kb = Math.max(0, write/(time_diff_s*1024));
 
       // Network
       if ( data.network )
