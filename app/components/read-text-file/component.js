@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  tagName: ['span'],
   accept: "text/*",
   btnClass: "btn-sm btn-primary",
   btnLabel: "Read from File",
