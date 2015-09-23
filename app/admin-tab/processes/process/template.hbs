@@ -1,0 +1,13 @@
+<section class="well">
+  {{#each model.processExecutions as |process|}}
+    <h4 class="r-pt20 r-pb20">Process Executions for {{process.processInstanceId}} - Executuion Id:{{process.id}} {{#link-to 'admin-tab.processes'}}<i class="fa fa-level-up"></i>{{/link-to}}</h4>
+    <button class="btn btn-primary btn-sm r-mb10" {{action 'expandChildren'}}>
+      {{#if childrenExpanded}}
+        <i class="fa fa-minus"></i> Collapse All
+      {{else}}
+        <i class="fa fa-plus"></i> Expand All
+      {{/if}}
+    </button>
+    {{process-executions execution=process.log.executions expandChildren=childrenExpanded}}
+  {{/each}}
+</section>

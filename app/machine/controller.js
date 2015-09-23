@@ -13,16 +13,16 @@ export default Ember.Controller.extend(CattleTransitioningController, DownloadMa
     var a = this.get('model.actions')||{};
 
     var out = [
-      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'Delete', icon: 'icon icon-trash', action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
       { divider: true },
     ];
 
     if ( this.hasLink('config') )
     {
-      out.push({ label: 'Machine Config',   icon: 'ss-download', action: 'machineConfig',      enabled: true});
+      out.push({ label: 'Machine Config', icon: 'icon icon-download', action: 'machineConfig', enabled: true});
     }
 
-    out.push({ label: 'View in API',   icon: '',           action: 'goToApi',      enabled: true});
+    out.push({ label: 'View in API', icon: 'icon icon-externallink', action: 'goToApi', enabled: true});
 
     return out;
   }.property('model.actions.remove', 'model.links.config'),

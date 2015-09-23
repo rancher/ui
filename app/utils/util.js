@@ -128,6 +128,117 @@ export function timerFuzz(ms, maxFuzz=0.1)
   return Math.max(1, ms * factor);
 }
 
+export function random32(count)
+{
+  count = Math.max(0, count||1);
+  var out = [];
+  var i;
+  if ( window.crypto && window.crypto.getRandomValues )
+  {
+    var tmp = new Uint32Array(count);
+    window.crypto.getRandomValues(tmp);
+    for ( i = 0 ; i < tmp.length ; i++ )
+    {
+      out[i] = tmp[i];
+    }
+  }
+  else
+  {
+    for ( i = 0 ; i < count ; i++ )
+    {
+      out[i] = Math.random() * 4294967296; // Math.pow(2,32);
+    }
+  }
+
+  if ( count === 1 )
+  {
+    return out[0];
+  }
+  else
+  {
+    return out;
+  }
+}
+
+const alpha = 'abcdefghijklmnopqrstuvwxyz';
+const num = '0123456789';
+const sym = '!@#$%^&*()_+-=[]{};:,./<>?|';
+const randomCharsets = {
+  numeric: num,
+  loweralpha: alpha,
+  upperalpha: alpha.toUpperCase(),
+  hex: num + 'ABCDEF',
+  alpha: alpha + alpha.toUpperCase(),
+  alphanum: alpha + alpha.toUpperCase() + num,
+  password: alpha + alpha.toUpperCase() + num + sym,
+};
+
+export function randomStr(length=16, charset='alphanum')
+{
+  var chars = randomCharsets[charset];
+  if ( !chars )
+  {
+    return null;
+  }
+
+  var charCount = chars.length;
+  return random32(length).map((val) => {
+    return chars[ val % charCount ];
+  }).join('');
+}
+
+export function formatPercent(value) {
+  if ( value < 1 )
+  {
+    return Math.round(value*100)/100 + '%';
+  }
+  else if ( value < 10 )
+  {
+    return Math.round(value*10)/10 + '%';
+  }
+  else
+  {
+    return Math.round(value) + '%';
+  }
+}
+
+export function formatMib(value) {
+  if ( value >= 10240 )
+  {
+    return Math.round(value/1024) + ' GiB';
+  }
+  else if ( value >= 1024 )
+  {
+    return Math.ceil(value/102.4)/10 + ' GiB';
+  }
+  else if ( value < 10 )
+  {
+    return Math.round(value*10)/10 + ' MiB';
+  }
+  else
+  {
+    return Math.round(value) + ' MiB';
+  }
+}
+
+export function formatKbps(value) {
+  if ( value >= 10000 )
+  {
+    return Math.round(value/1000) + ' Mbps';
+  }
+  else if ( value >= 1000 )
+  {
+    return Math.ceil(value/100)/10 + ' Mbps';
+  }
+  else if ( value < 10 )
+  {
+    return Math.round(value*10)/10 + ' Kbps';
+  }
+  else
+  {
+    return Math.round(value) + ' Kbps';
+  }
+}
 
 var Util = {
   arrayDiff: arrayDiff,
@@ -141,7 +252,9 @@ var Util = {
   addAuthorization: addAuthorization,
   ucFirst: ucFirst,
   strPad: strPad,
-  timerFuzz: timerFuzz
+  timerFuzz: timerFuzz,
+  random32: random32,
+  randomStr: randomStr,
 };
 
 window.Util = Util;

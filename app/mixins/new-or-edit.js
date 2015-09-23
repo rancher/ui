@@ -1,6 +1,6 @@
 import Ember from 'ember';
-import ApiError from 'ember-api-store/models/error';
 import Resource from 'ember-api-store/models/resource';
+import Errors from 'ui/utils/errors';
 
 export default Ember.Mixin.create({
   originalModel: null,
@@ -10,7 +10,13 @@ export default Ember.Mixin.create({
   primaryResource: Ember.computed.alias('model'),
   originalPrimaryResource: Ember.computed.alias('originalModel'),
 
-  didInitAttrs: function() {
+  initFields: function() {
+    this._super();
+    this.set('errors',null);
+    this.set('saving',false);
+  },
+
+  didReceiveAttrs: function() {
     this._super();
     this.set('errors',null);
     this.set('saving',false);
@@ -31,60 +37,15 @@ export default Ember.Mixin.create({
 
   actions: {
     error: function(err) {
-      if ( err instanceof ApiError )
+      if (err)
       {
-        if ( err.get('status') === 422 )
-        {
-          this.send('apiValidationError',err);
-        }
-        else
-        {
-          var str = err.get('message');
-          if ( err.get('detail') )
-          {
-            str += ' (' + err.get('detail') + ')';
-          }
-
-          this.set('errors', [str]);
-        }
-      }
-      else if (err)
-      {
-        this.set('errors', [err]);
+        var body = Errors.stringify(err);
+        this.set('errors', [body]);
       }
       else
       {
         this.set('errors', null);
       }
-    },
-
-    apiValidationError: function(err) {
-      var str = 'Validation failed in API:';
-      var something = false;
-      if ( err.get('fieldName') )
-      {
-        str += ' ' + err.get('fieldName');
-        something = true;
-      }
-
-      if ( err.get('detail') )
-      {
-        str += ' (' + err.get('detail') + ')';
-        something = true;
-      }
-
-      if ( !something )
-      {
-        str += ' (' + err.get('code') + ')';
-      }
-
-      switch ( err.get('code') )
-      {
-        case 'NotUnique':
-          str += ' is not unique'; break;
-      }
-
-      this.set('errors', [str]);
     },
 
     save: function() {

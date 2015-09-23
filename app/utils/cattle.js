@@ -22,7 +22,7 @@ var ResourceController = Ember.ObjectController.extend({
 
       // Go to the project-specific version
       var projectId = this.get('session').get(C.SESSION.PROJECT);
-      if ( projectId )
+      if ( projectId && this.get('type').toLowerCase() !== 'account' )
       {
         url = url.replace(/(.*?\/v1)(.*)/,"$1/projects/"+projectId+"$2");
       }
@@ -66,7 +66,7 @@ var ResourceController = Ember.ObjectController.extend({
           enabled: true/false,    // Whether it's enabled or greyed out
           detail: true/false,     // If true, this action will only be shown on detailed screens
           label: 'Delete',        // Label shown on hover or in menu
-          icon: 'fa-trash-o',     // Icon shown on screen
+          icon: 'icon icon-trash',// Icon shown on screen
           action: 'promptDelete', // Action to call on the controller when clicked
           altAction: 'delete'     // Action to call on the controller when alt+clicked
           divider: true,          // Just this will make a divider
@@ -276,11 +276,11 @@ var LegacyTransitioningResourceController = ResourceController.extend({
     var trans = this.get('transitioning');
     if ( trans === 'yes' )
     {
-      return 'fa fa-circle-o-notch fa-spin';
+      return 'icon icon-spinner icon-spin';
     }
     else if ( trans === 'error' )
     {
-      return 'ss-alert text-danger';
+      return 'icon icon-alert text-danger';
     }
     else
     {
@@ -328,7 +328,7 @@ var LegacyTransitioningResourceController = ResourceController.extend({
 // Override stateMap with a map of state -> icon classes
 LegacyTransitioningResourceController.reopenClass({
   stateMap: null,
-  defaultStateIcon: 'fa fa-question-circle',
+  defaultStateIcon: 'icon icon-help',
   defaultStateColor: ''
 });
 

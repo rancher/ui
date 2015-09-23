@@ -4,6 +4,9 @@
     {{#if project}}
       {{#link-to "applications-tab"}}Applications{{/link-to}}
       {{#link-to "infrastructure-tab"}}Infrastructure{{/link-to}}
+      {{#if isAdmin}}
+        {{#link-to "admin-tab"}}Admin{{/link-to}}
+      {{/if}}
     {{/if}}
   </nav>
 
@@ -16,7 +19,7 @@
         {{else}}
           <div class="gh-avatar">
             <div class="gh-placeholder">
-              <i class="ss-businessuser"></i>
+              <i class="icon icon-user"></i>
             </div>
           </div>
           <span class="caret user-dropdown-arrow"></span>
@@ -26,16 +29,31 @@
         {{#if accessEnabled}}
           <li role="presentation" class="user-auth">
             {{identity-block avatar=false identity=access.identity}}
-            {{#link-to "logout" tabindex="-1" class="user-logout"}}<i class="ss-logout"></i><br/>Log Out{{/link-to}}
+            {{#link-to "logout" tabindex="-1" class="user-logout"}}<i class="icon icon-logout"></i><br/>Log Out{{/link-to}}
           </li>
         {{else}}
           <li role="presentation" class="user-noauth">
-            <i class="ss-alert"></i> Access is not configured
+            <i class="icon icon-alert"></i> Access is not configured
           </li>
         {{/if}}
 
         <li role="presentation" class="dropdown-header text-uppercase">
-          Settings
+          Your Account
+        </li>
+
+        <li role="presentation">
+          {{#link-to "settings.projects" role="menuitem" tabindex="-1"}}Manage Environments{{/link-to}}
+        </li>
+
+        {{#if isLocalAuth}}
+          <li role="presentation">
+            <a {{action "changePassword"}} role="menuitem" tabindex="-1">Change Password</a>
+          </li>
+        {{/if}}
+
+        <li role="presentation" class="divider"></li>
+        <li role="presentation" class="dropdown-header text-uppercase">
+          This Environment
         </li>
 
         <li role="presentation">
@@ -43,35 +61,8 @@
         </li>
 
         <li role="presentation">
-          {{#link-to "settings.projects" role="menuitem" tabindex="-1"}}Environments{{/link-to}}
-        </li>
-
-        <li role="presentation">
           {{#link-to "settings.registries" role="menuitem" tabindex="-1"}}Registries{{/link-to}}
         </li>
-
-        {{#if isAdmin}}
-          <li class="divider"></li>
-        {{else}}
-          {{#if showHostSetup}}
-            <li class="divider"></li>
-          {{/if}}
-        {{/if}}
-
-        <li role="presentation" class="dropdown-header text-uppercase">
-          Administration
-        </li>
-        {{#if isAdmin}}
-          <li role="presentation">
-            {{#link-to "settings.auth" role="menuitem" tabindex="-1"}}Access Control{{/link-to}}
-          </li>
-        {{/if}}
-
-        {{#if showHostSetup}}
-          <li role="presentation">
-            {{#link-to "settings.host" role="menuitem" tabindex="-1"}}Host Registration{{/link-to}}
-          </li>
-        {{/if}}
       </ul>
     </div>
   </div>
@@ -80,7 +71,7 @@
     {{#if project}}
       <div class="btn-group project-btn">
         <button type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-expanded="false">
-          <i class="fa-fw {{project.icon}}"></i>&nbsp;{{project.displayName}}
+          <i class="icon icon-fw {{project.icon}}"></i>&nbsp;{{project.displayName}}
           <span class="caret"></span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
@@ -125,23 +116,30 @@
 
 <div class="bottom-row">
   <nav>
-    {{#if isInfrastructure}}
-      {{#link-to "hosts"}}<i class="ss-database"></i> Hosts{{/link-to}}
-      {{#link-to "containers"}}<i class="ss-box"></i> Containers{{/link-to}}
+    {{#if isInfrastructureTab}}
+      {{#link-to "hosts"}}<i class="icon icon-host"></i> Hosts{{/link-to}}
+      {{#link-to "containers"}}<i class="icon icon-box"></i> Containers{{/link-to}}
+      {{#link-to "certificates"}}<i class="fa fa-certificate"></i> Certificates{{/link-to}}
     {{/if}}
-    {{#if isApplications}}
-      {{#link-to "environments"}}<i class="ss-globe"></i> Stacks{{/link-to}}
+    {{#if isApplicationsTab}}
+      {{#link-to "environments"}}<i class="icon icon-globe"></i> Stacks{{/link-to}}
 
       <div class="btn-group pull-right">
         <a class="dropdown-toggle hand" data-toggle="dropdown" aria-expanded="false">
-          <i class="ss-download"></i> Rancher Compose CLI <span class="caret"></span>
+          <i class="icon icon-download"></i> Rancher Compose CLI <span class="caret"></span>
         </a>
         <ul class="dropdown-menu" role="menu">
-          <li><a {{action "composeDownload" "darwin"}}><i class="fa fa-fw fa-apple"></i> Download for Mac OS</a></li>
-          <li><a {{action "composeDownload" "windows"}}><i class="fa fa-fw fa-windows"></i> Download for Windows</a></li>
-          <li><a {{action "composeDownload" "linux"}}><i class="fa fa-fw fa-linux"></i> Download for Linux</a></li>
+          <li><a {{action "composeDownload" "darwin"}}><i class="icon icon-fw icon-apple"></i> Download for Mac OS</a></li>
+          <li><a {{action "composeDownload" "windows"}}><i class="icon icon-fw icon-windows"></i> Download for Windows</a></li>
+          <li><a {{action "composeDownload" "linux"}}><i class="icon icon-fw icon-linux"></i> Download for Linux</a></li>
         </ul>
       </div>
+    {{/if}}
+    {{#if isAdminTab}}
+      {{#link-to "admin-tab.accounts"}}<i class="ss-user"></i> Accounts{{/link-to}}
+      {{#link-to "admin-tab.auth"}}<i class="ss-lock"></i> Access Control{{/link-to}}
+      {{#link-to "admin-tab.host"}}<i class="ss-database"></i> Host Registration{{/link-to}}
+      {{#link-to "admin-tab.processes" classNames="hide"}}<i class="fa fa-tasks"></i> Processes{{/link-to}}
     {{/if}}
   </nav>
 </div>

@@ -7,6 +7,7 @@
         {{sortable-th sortable=this action="changeSort" name="ip" width="110" label="IP Address"}}
         {{sortable-th sortable=this action="changeSort" name="image"}}
         {{sortable-th sortable=this action="changeSort" name="command"}}
+        <th class="stats" width="128">Stats</th>
         <th class="actions" width="50">&nbsp;</th>
       </tr>
     </thead>
@@ -32,6 +33,14 @@
               {{container.command}}
             {{else}}
               <span class="text-muted">None</span>
+            {{/if}}
+          </td>
+          <td class="spark-td">
+            {{#if container.cpuSpark}}
+              {{spark-line data=container.cpuSpark     width=60 height=15 max=cpuMax     classNames="spark-tl" prefix="CPU: " formatter="percent"}}
+              {{spark-line data=container.memorySpark  width=60 height=15 max=memoryMax  classNames="spark-tr" prefix="Memory: " formatter="mib"}}
+              {{spark-line data=container.networkSpark width=60 height=15 max=networkMax classNames="spark-bl" prefix="Network: " formatter="kbps"}}
+              {{spark-line data=container.storageSpark width=60 height=15 max=storageMax classNames="spark-br" prefix="Storage: " formatter="kbps"}}
             {{/if}}
           </td>
           <td class="actions">

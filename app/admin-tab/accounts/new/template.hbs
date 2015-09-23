@@ -1,0 +1,56 @@
+<section class="horizontal-form container-fluid">
+  <h2>Add Account</h2>
+  {{top-errors errors=errors}}
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-3 form-label">
+      <label class="form-control-static">Login Username*</label>
+    </div>
+    <div class="col-sm-12 col-md-7">
+      {{input type="text" value=model.credential.publicValue classNames="form-control" placeholder="e.g. jsmith"}}
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-3 form-label">
+      <label class="form-control-static">Password*</label>
+    </div>
+    <div class="col-sm-12 col-md-7">
+      {{input-password value=model.credential.secretValue}}
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-3 form-label">
+      <label class="form-control-static">Name</label>
+    </div>
+    <div class="col-sm-12 col-md-7">
+      {{input type="text" value=model.account.name classNames="form-control" placeholder="e.g. John Smith"}}
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-3 form-label">
+      <label class="form-control-static">Account Type</label>
+    </div>
+    <div class="col-sm-12 col-md-7">
+      {{new-select
+        classNames="form-control"
+        content=accountTypeChoices
+        value=model.account.kind
+      }}
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-3 form-label">
+      <label for="description">Description</label>
+    </div>
+    <div class="col-sm-12 col-md-7">
+      {{textarea value=model.account.description classNames="form-control no-resize" rows="2" placeholder="e.g. This account is for John Smith"}}
+    </div>
+  </div>
+
+</section>
+
+{{partial "save-cancel"}}

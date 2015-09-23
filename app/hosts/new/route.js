@@ -15,7 +15,7 @@ export default Ember.Route.extend({
         }
         else
         {
-          this.transitionTo('settings.host', {queryParams: {backToAdd: true}});
+          this.transitionTo('admin-tab.host', {queryParams: {backToAdd: true}});
         }
       });
     }

@@ -83,6 +83,7 @@ var C = {
     SCHED_CONTAINER_LABEL: 'io.rancher.scheduler.affinity:container_label',
     HOSTNAME_OVERRIDE: 'io.rancher.container.hostname_override',
     HOSTNAME_OVERRIDE_VALUE: 'container_name',
+    BALANCER_SSL_PORTS: 'io.rancher.loadbalancer.ssl.ports',
   },
 };
 

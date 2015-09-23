@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import BootstrapFixes from 'ui/utils/bootstrap-fixes';
 
 export default Ember.Component.extend({
   model: null,
@@ -12,6 +13,12 @@ export default Ember.Component.extend({
   didInsertElement: function() {
     this.$().on('show.bs.dropdown', () => {
       this.set('open', true);
+    });
+
+    this.$().on('shown.bs.dropdown', (event, data) => {
+      Ember.run.next(() => {
+        BootstrapFixes.resizeDropdown(event, data);
+      });
     });
 
     this.$().on('hidden.bs.dropdown', () => {

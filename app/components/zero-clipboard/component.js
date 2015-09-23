@@ -7,7 +7,7 @@ export default Ember.Component.extend({
   text: '',
   tooltip: COPY,
   block: false,
-  icon: 'fa fa-copy',
+  icon: 'icon icon-copy',
   label: '',
 
   tagName: 'button',

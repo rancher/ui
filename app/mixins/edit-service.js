@@ -28,7 +28,7 @@ export default Ember.Mixin.create(EditScheduling, {
   }.property('model.allServices.@each.{id,name,state,environmentId}'),
 
   lbSafeServiceChoices: function() {
-    return this.get('model.allServices').filterProperty('lbSafe',true).sortBy('group','name','id');
+    return this.get('model.allServices').filterBy('lbSafe',true).sortBy('group','name','id');
   }.property('model.allServices.@each.{id,name,state,environmentId}'),
 
   serviceLinksArray: null,

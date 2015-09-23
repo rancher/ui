@@ -37,14 +37,14 @@ var DnsServiceController = Cattle.LegacyTransitioningResourceController.extend({
     var a = this.get('actions');
 
     var choices = [
-      { label: 'Start',         icon: 'ss-play',      action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
-      { label: 'Stop',          icon: 'ss-pause',     action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
-      { label: 'Delete',        icon: 'ss-trash',     action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
-      { label: 'Purge',         icon: 'ss-tornado',   action: 'purge',        enabled: !!a.purge },
+      { label: 'Start',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
+      { label: 'Stop',          icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
+      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'Purge',         icon: '',                       action: 'purge',        enabled: !!a.purge },
       { divider: true },
-      { label: 'View in API',   icon: '',             action: 'goToApi',      enabled: true },
-      { label: 'Clone',         icon: 'ss-copier',    action: 'clone',        enabled: true },
-      { label: 'Edit',          icon: 'ss-write',     action: 'edit',         enabled: !!a.update },
+      { label: 'View in API',   icon: 'icon icon-externallink', action: 'goToApi',      enabled: true },
+      { label: 'Clone',         icon: 'icon icon-copy',         action: 'clone',        enabled: true },
+      { label: 'Edit',          icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
     ];
 
     return choices;
@@ -55,8 +55,8 @@ var DnsServiceController = Cattle.LegacyTransitioningResourceController.extend({
 
 DnsServiceController.reopenClass({
   stateMap: {
-    'registering':      {icon: 'ss-tag',            color: 'text-danger'},
-    'active':           {icon: 'ss-compass',        color: 'text-success'},
+    'registering':      {icon: 'icon icon-tag',            color: 'text-danger'},
+    'active':           {icon: 'icon icon-compass',        color: 'text-success'},
   }
 });
 

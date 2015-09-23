@@ -5,10 +5,22 @@ export default Ember.Service.extend({
   cookies: Ember.inject.service(),
   session: Ember.inject.service(),
   github:  Ember.inject.service(),
-  identity: Ember.computed.alias('session.'+C.SESSION.IDENTITY),
 
+  // The identity from the session isn't an actual identity model...
+  identity: function() {
+    var obj = this.get('session.'+C.SESSION.IDENTITY) || {};
+    obj.type = 'identity';
+    return this.get('store').createRecord(obj);
+  }.property('session.'+C.SESSION.IDENTITY),
+
+  // These are set by authenticated/route
+  // Is access control enabled
   enabled: null,
+
+  // What kind of access control
   provider: null,
+
+  // Are you an admin
   admin: null,
 
   detect: function() {
@@ -25,7 +37,7 @@ export default Ember.Service.extend({
 
       this.setProperties({
         'enabled': token.security,
-        'provider': token.authProvider||'',
+        'provider': (token.authProvider||'').toLowerCase(),
       });
 
       if ( (token.authProvider||'').toLowerCase() === 'githubconfig' )

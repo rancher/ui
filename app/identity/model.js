@@ -3,10 +3,28 @@ import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
 var Identity = Resource.extend({
-  isRancher: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_RANCHER),
   isUser: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_USER),
   isTeam: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_TEAM),
   isOrg: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_ORG),
+
+  avatarSrc: function() {
+    if ( this.get('isGithub') && this.get('profilePicture') )
+    {
+      return this.get('profilePicture');
+    }
+    else
+    {
+      return 'data:image/png;base64,' + new Identicon(this.get('externalId'), 80, 0.01).toString();
+    }
+  }.property('isGithub','externalId','profilePicture'),
+
+  isGithub: function() {
+    return [
+      C.PROJECT.TYPE_GITHUB_ORG,
+      C.PROJECT.TYPE_GITHUB_TEAM,
+      C.PROJECT.TYPE_GITHUB_USER
+    ].indexOf(this.get('externalIdType')) >= 0;
+  }.property('externalIdType'),
 
   isMyRancher: function() {
     return this.get('externalIdType') === C.PROJECT.TYPE_RANCHER &&
@@ -49,23 +67,11 @@ var Identity = Resource.extend({
       case C.PROJECT.TYPE_GITHUB_TEAM:return 'Team';
       case C.PROJECT.TYPE_GITHUB_ORG: return 'Organization';
       case C.PROJECT.TYPE_LDAP_GROUP: return 'Group';
-      case C.PROJECT.TYPE_RANCHER:    return 'Rancher Account';
+      case C.PROJECT.TYPE_RANCHER:    return 'Local User';
     }
 
     return this.get('externalIdType')+'?';
   }.property('externalIdType'),
-
-  displayDescription: function() {
-    var name = this.get('name');
-    if ( this.get('externalIdType') === C.PROJECT.TYPE_GITHUB_TEAM )
-    {
-      return name.replace(/:.*/,'') + ' team';
-    }
-    else
-    {
-      return name;
-    }
-  }.property('externalIdType','name'),
 });
 
 export default Identity;

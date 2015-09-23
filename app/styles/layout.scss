@@ -20,7 +20,7 @@ BODY {
   min-height: 100%;
   font-weight: $normal-weight;
 
-  &.no-spin .fa-spin {
+  &.no-spin .icon-spin {
     -webkit-animation: none;
     animation: none;
   };
@@ -443,6 +443,32 @@ TABLE.graphs {
   user-select: none;
 }
 
+// adds text indent with a 5px step through 15 layers
+@for $i from 1 through 15 {
+  .indent-#{$i} { text-indent: 5px * $i; }
+}
+
+// Vertical margins and padding witha 5px step
+// e.g. r-mt-20 - {margin-top: 20px}
+$spacing-property-map: (
+    mt: margin-top,
+    mr: margin-right,
+    ml: margin-left,
+    mb: margin-bottom,
+    pt: padding-top,
+    pb: padding-bottom,
+    pl: padding-left,
+    pr: padding-right
+);
+@for $size from 1 through 5 {
+  $val: $size * 5px;
+  @each $keyword, $property in $spacing-property-map {
+    .r-#{$keyword}#{$size*5} {
+      #{$property}: $val !important;
+    }
+  }
+}
+
 // SS-Gizmo doesn't know how to vertical align..
 .ss-icon, [class^="ss-"] {
   vertical-align: -4%;
@@ -559,6 +585,10 @@ ASIDE {
     background-color: $body-bg;
   }
   /* End: Copied from .table because @extend doesn't work */
+
+  & > TBODY > TR:hover {
+    background-color: rgba(255, 255, 0, 0.12);
+  }
 
   & > THEAD > TR > TH,
   & > THEAD > TR > TD,
@@ -775,20 +805,20 @@ ASIDE {
 **********/
 .collapser {
   &:after {
-    font-family: "SSGizmo";
-    content: '\F500';
+    font-family: "rancher-icons";
+    content: '\E613';
   }
 
   &.collapsed:after {
-    font-family: "SSGizmo";
-    content: '\F501';
+    font-family: "rancher-icons";
+    content: '\E61F';
   }
 }
 
 .well.description {
   margin-top: 10px;
   margin-bottom: 0;
-  
+
   P {
     margin: 0;
   }

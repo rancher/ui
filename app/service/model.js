@@ -15,7 +15,7 @@ var Service = Resource.extend(ReadLabels, {
   _allMaps: null,
   consumedServicesUpdated: 0,
   serviceLinks: null, // Used for clone
-  reservedKeys: ['_allMaps','consumedServicesUpdated','serviceLinks','_environment','_environmentState'],
+  reservedKeys: ['_allMaps','consumedServices','consumedServicesUpdated','serviceLinks','_environment','_environmentState'],
   labelResource: Ember.computed.alias('launchConfig'),
 
   init: function() {
@@ -193,12 +193,12 @@ var Service = Resource.extend(ReadLabels, {
 
 export function activeIcon(service)
 {
-  var out = 'ss-layergroup';
+  var out = 'icon icon-layergroup';
   switch ( service.get('type').toLowerCase() )
   {
-    case 'loadbalancerservice': out = 'ss-fork';    break;
-    case 'dnsservice':          out = 'ss-compass'; break;
-    case 'externalservice':     out = 'ss-cloud';   break;
+    case 'loadbalancerservice': out = 'icon icon-fork';    break;
+    case 'dnsservice':          out = 'icon icon-compass'; break;
+    case 'externalservice':     out = 'icon icon-cloud';   break;
   }
 
   return out;
@@ -208,12 +208,12 @@ Service.reopenClass({
   consumedServicesFor: function(serviceId) {
     var allTypes = [_allServices, _allLbServices, _allExternalServices, _allDnsServices];
 
-    return _allMaps.filterProperty('serviceId', serviceId).map((map) => {
+    return _allMaps.filterBy('serviceId', serviceId).map((map) => {
       var i = 0;
       var service = null;
       while ( i < allTypes.length && !service )
       {
-        service = allTypes[i].filterProperty('id', map.get('consumedServiceId'))[0];
+        service = allTypes[i].filterBy('id', map.get('consumedServiceId'))[0];
         i++;
       }
 
@@ -229,8 +229,8 @@ Service.reopenClass({
 
   stateMap: {
     'active':           {icon: activeIcon,          color: 'text-success'},
-    'upgrading':        {icon: 'ss-up',             color: 'text-info'},
-    'canceling-upgrade':{icon: 'ss-down',           color: 'text-info'},
+    'upgrading':        {icon: 'icon-arrow-up',     color: 'text-info'},
+    'canceling-upgrade':{icon: 'icon-arrow-down',   color: 'text-info'},
   }
 });
 

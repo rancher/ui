@@ -5,6 +5,7 @@ export function initialize(/* container, application */) {
   // Allow style to be bound on inputs
   Ember.TextField.reopen(SafeStyle);
   Ember.TextArea.reopen(SafeStyle);
+  Ember.Checkbox.reopen(SafeStyle);
 }
 
 export default {

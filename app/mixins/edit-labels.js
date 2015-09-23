@@ -69,7 +69,7 @@ export default Ember.Mixin.create({
           val = '';
         }
 
-        var existing = ary.filterProperty('key',key)[0];
+        var existing = ary.filterBy('key',key)[0];
         if ( existing )
         {
           Ember.set(existing,'value',val);
@@ -92,15 +92,15 @@ export default Ember.Mixin.create({
   labelArray: null,
 
   userLabelArray: function() {
-    return (this.get('labelArray')||[]).filterProperty('isUser',true);
+    return (this.get('labelArray')||[]).filterBy('isUser',true);
   }.property('labelArray.@each.isUser'),
 
   systemLabelArray: function() {
-    return (this.get('labelArray')||[]).filterProperty('isUser',false);
+    return (this.get('labelArray')||[]).filterBy('isUser',false);
   }.property('labelArray.@each.isUser'),
 
   affinityLabelArray: function() {
-    return (this.get('labelArray')||[]).filterProperty('type','affinity');
+    return (this.get('labelArray')||[]).filterBy('type','affinity');
   }.property('labelArray.@each.type'),
 
   initFields: function() {

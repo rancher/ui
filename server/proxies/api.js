@@ -7,8 +7,9 @@ module.exports = function(app, options) {
   var config = require('../../config/environment')().APP;
   var proxy = HttpProxy.createProxyServer({
     ws: true,
-    xfwd: true,
-    agent: new ForeverAgent({})
+    xfwd: false,
+    target: config.endpoint,
+//    agent: new ForeverAgent({})
   });
 
   console.log('Proxying to', config.endpoint);
@@ -21,7 +22,7 @@ module.exports = function(app, options) {
     req.headers['user-agent'] = 'Rancher UI';
 
     console.log('API Proxy', req.method, 'to', req.url);
-    proxy.web(req, res, {target: config.endpoint});
+    proxy.web(req, res);
   });
 
   var githubPath = '/github';
@@ -30,7 +31,7 @@ module.exports = function(app, options) {
     req.url = path.join(githubPath, req.url);
 
     console.log('Github Proxy', req.method, 'to', req.url);
-    proxy.web(req, res, {target: config.endpoint});
+    proxy.web(req, res);
   });
 
   var genericProxyPath = '/proxy';
@@ -57,7 +58,7 @@ module.exports = function(app, options) {
     // @TODO remove this... --^
 
     console.log('Generic Proxy', req.method, 'to', req.url);
-    proxy.web(req, res, {target: config.endpoint});
+    proxy.web(req, res);
   });
 
   proxy.on('error', function onProxyError(err, req, res) {
@@ -82,6 +83,7 @@ module.exports = function(app, options) {
   });
 
   httpServer.on('upgrade', function proxyWsRequest(req, socket, head) {
-    proxy.ws(req, socket, head, {target: config.endpoint});
+    console.log('WS Proxy', req.method, 'to', req.url);
+    proxy.ws(req, socket, head);
   });
 };

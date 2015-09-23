@@ -4,34 +4,35 @@ import Resource from 'ember-api-store/models/resource';
 import { normalizeType } from 'ember-api-store/utils/normalize';
 
 const defaultStateMap = {
-  'activating':       {icon: 'ss-tag',            color: 'text-info'   },
-  'active':           {icon: 'ss-record',         color: 'text-success'},
-  'created':          {icon: 'ss-tag',            color: 'text-info'   },
-  'creating':         {icon: 'ss-tag',            color: 'text-info'   },
-  'deactivating':     {icon: 'fa fa-adjust',      color: 'text-info'   },
-  'degraded':         {icon: 'ss-notifications',  color: 'text-warning'},
-  'error':            {icon: 'ss-alert',          color: 'text-danger' },
-  'inactive':         {icon: 'fa fa-circle',      color: 'text-danger' },
-  'initializing':     {icon: 'ss-notifications',  color: 'text-warning'},
-  'purged':           {icon: 'ss-tornado',        color: 'text-danger' },
-  'purging':          {icon: 'ss-tornado',        color: 'text-info'   },
-  'removed':          {icon: 'ss-trash',          color: 'text-danger' },
-  'removing':         {icon: 'ss-trash',          color: 'text-info'   },
-  'requested':        {icon: 'ss-tag',            color: 'text-info'   },
-  'registering':      {icon: 'ss-tag',            color: 'text-info'   },
-  'restoring':        {icon: 'ss-medicalcross',   color: 'text-info'   },
-  'running':          {icon: 'ss-record',         color: 'text-success'},
-  'starting':         {icon: 'fa fa-adjust',      color: 'text-info'   },
-  'stopped':          {icon: 'fa fa-circle',      color: 'text-danger' },
-  'stopping':         {icon: 'fa fa-adjust',      color: 'text-info'   },
-  'unhealthy':        {icon: 'ss-notifications',  color: 'text-danger' },
-  'updating':         {icon: 'ss-tag',            color: 'text-info'   },
-  'updating-active':  {icon: 'ss-tag',            color: 'text-info'   },
-  'updating-inactive':{icon: 'ss-tag',            color: 'text-info'   },
+  'activating':       {icon: 'icon icon-tag',            color: 'text-info'   },
+  'active':           {icon: 'icon icon-circle',         color: 'text-success'},
+  'created':          {icon: 'icon icon-tag',            color: 'text-info'   },
+  'creating':         {icon: 'icon icon-tag',            color: 'text-info'   },
+  'deactivating':     {icon: 'icon icon-adjust',         color: 'text-info'   },
+  'degraded':         {icon: 'icon icon-notification',   color: 'text-warning'},
+  'error':            {icon: 'icon icon-alert',          color: 'text-danger' },
+  'inactive':         {icon: 'icon icon-circle-o',       color: 'text-danger' },
+  'initializing':     {icon: 'icon icon-notification',   color: 'text-warning'},
+  'purged':           {icon: 'icon icon-tornado',        color: 'text-danger' },
+  'purging':          {icon: 'icon icon-tornado',        color: 'text-info'   },
+  'removed':          {icon: 'icon icon-trash',          color: 'text-danger' },
+  'removing':         {icon: 'icon icon-trash',          color: 'text-info'   },
+  'requested':        {icon: 'icon icon-tag',            color: 'text-info'   },
+  'registering':      {icon: 'icon icon-tag',            color: 'text-info'   },
+  'restoring':        {icon: 'icon icon-medicalcross',   color: 'text-info'   },
+  'running':          {icon: 'icon icon-circle',         color: 'text-success'},
+  'starting':         {icon: 'icon icon-adjust',         color: 'text-info'   },
+  'stopped':          {icon: 'icon icon-circle',         color: 'text-danger' },
+  'stopping':         {icon: 'icon icon-adjust',         color: 'text-info'   },
+  'unhealthy':        {icon: 'icon icon-notification',   color: 'text-danger' },
+  'updating':         {icon: 'icon icon-tag',            color: 'text-info'   },
+  'updating-active':  {icon: 'icon icon-tag',            color: 'text-info'   },
+  'updating-inactive':{icon: 'icon icon-tag',            color: 'text-info'   },
 };
 
 export default Ember.Mixin.create({
   endpoint: Ember.inject.service(),
+  growl: Ember.inject.service(),
 
   reservedKeys: ['delayTimer','pollTimer','waitInterval','waitTimeout'],
 
@@ -65,11 +66,11 @@ export default Ember.Mixin.create({
     var trans = this.get('transitioning');
     if ( trans === 'yes' )
     {
-      return 'fa fa-circle-o-notch fa-spin';
+      return 'icon icon-spinner icon-spin';
     }
     else if ( trans === 'error' )
     {
-      return 'ss-alert text-danger';
+      return 'icon icon-alert text-danger';
     }
     else
     {
@@ -130,7 +131,7 @@ export default Ember.Mixin.create({
           enabled: true/false,    // Whether it's enabled or greyed out
           detail: true/false,     // If true, this action will only be shown on detailed screens
           label: 'Delete',        // Label shown on hover or in menu
-          icon: 'fa-trash-o',     // Icon shown on screen
+          icon: 'icon icon-trash',// Icon shown on screen
           action: 'promptDelete', // Action to call on the controller when clicked
           altAction: 'delete'     // Action to call on the controller when alt+clicked
           divider: true,          // Just this will make a divider
@@ -471,6 +472,27 @@ export default Ember.Mixin.create({
       this.clearPoll();
       // but leave delay set so that it doesn't restart, (don't clearDelay())
     });
+  },
+
+  // Show growls for errors on actions
+  delete: function(/*arguments*/) {
+    var promise = this._super.apply(this, arguments);
+    return promise.catch((err) => {
+      this.get('growl').fromError('Delete Error',err);
+    });
+  },
+
+  doAction: function(name, data, opt) {
+    var promise = this._super.apply(this, arguments);
+
+    if ( opt && opt.catchGrowl !== false )
+    {
+      return promise.catch((err) => {
+        this.get('growl').fromError(Util.ucFirst(name) + ' Error', err);
+      });
+    }
+
+    return promise;
   },
 
   // You really shouldn't have to use any of these.

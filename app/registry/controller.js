@@ -29,15 +29,15 @@ export default Ember.Controller.extend(CattleTransitioningController, {
     var a = this.get('model.actions');
 
     return [
-      { label: 'Activate',      icon: 'ss-play',  action: 'activate',     enabled: !!a.activate },
-      { label: 'Deactivate',    icon: 'ss-pause', action: 'deactivate',   enabled: !!a.deactivate },
-      { label: 'Delete',        icon: 'ss-trash', action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
+      { label: 'Activate',      icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate },
+      { label: 'Deactivate',    icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate },
+      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
       { divider: true },
-      { label: 'Purge',         icon: 'ss-tornado',           action: 'purge',   enabled: !!a.purge },
-      { label: 'Restore',       icon: 'ss-medicalcross',      action: 'restore', enabled: !!a.restore },
-      { label: 'View in API',   icon: 'fa fa-external-link',  action: 'goToApi', enabled: true },
+      { label: 'Purge',         icon: '',                       action: 'purge',   enabled: !!a.purge },
+      { label: 'Restore',       icon: 'icon icon-medicalcross', action: 'restore', enabled: !!a.restore },
+      { label: 'View in API',   icon: 'icon icon-externallink', action: 'goToApi', enabled: true },
       { divider: true },
-      { label: 'Edit',          icon: 'ss-write', action: 'edit',         enabled: !!a.update },
+      { label: 'Edit',          icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
     ];
   }.property('model.actions.{update,activate,deactivate,restore,remove,purge}'),
 

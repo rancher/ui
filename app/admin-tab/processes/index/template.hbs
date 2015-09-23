@@ -1,0 +1,53 @@
+<section class="well instances">
+  <div class="row r-mb20">
+    <ul class="nav nav-pills pull-right r-ml10">
+      <li role="presentation" class={{if showRunning '' 'active'}}>
+        <a {{action 'showRunningProcesses'}}>All</a>
+      </li>
+      <li role="presentation" class={{if showRunning 'active' ''}}>
+        <a {{action 'showRunningProcesses'}}>Running</a>
+      </li>
+    </ul>
+    <div class="pull-right form-inline">
+      <div class="form-group">
+        <select name="options" class="form-control" id="query-select" {{action 'updateQuery' on='change'}}>
+          <option value="" selected> -- select an option -- </option>
+          <option value="resourceId">Resource Id</option>
+          <option value="processName">Process Name</option>
+          <option value="resourceType">Resource Type</option>
+        </select>
+        <div class="btn-group clearable">
+          {{input value=searchValue class="form-control" disabled=disabledInputs enter='submit'}}
+          {{#liquid-if searchValue containerless=true}}
+            <i class="fa fa-times-circle-o" {{action 'reset'}}></i>
+          {{/liquid-if}}
+        </div>
+        <button class="btn btn-primary r-ml10 r-mr10 pull-right" {{action 'submit'}} disabled={{disabledInputs}}>Search</button>
+      </div>
+    </div>
+  </div>
+  <table class="grid fixed table table-hover">
+    <thead>
+      {{sortable-th sortable=this action="changeSort" name="id" width="120"}}
+      {{sortable-th sortable=this action="changeSort" name="processName" width="120"}}
+      {{sortable-th sortable=this action="changeSort" name="resourceType" width="120"}}
+      {{sortable-th sortable=this action="changeSort" name="resourceId" width="120"}}
+      {{sortable-th sortable=this action="changeSort" name="endTime" width="120"}}
+      {{sortable-th sortable=this action="changeSort" name="runTime" width="100"}}
+    </thead>
+    <tbody>
+      {{#each arranged as |instance|}}
+        {{#link-to 'admin-tab.processes.process' instance.id tagName="tr" classNames='hand'}}
+            <td>
+              <span class={{if instance.endTime 'label label-success' 'label label-warning'}}>{{instance.id}}</span>
+            </td>
+            <td class="clip"><span title={{instance.processName}}>{{instance.processName}}</span></td>
+            <td class="clip"><span title={{instance.resourceType}}>{{instance.resourceType}}</span></td>
+            <td>{{instance.resourceId}}</td>
+            <td>{{instance.endTime}}</td>
+            <td>{{instance.runTime}}s</td>
+        {{/link-to}}
+      {{/each}}
+    </tbody>
+  </table>
+</section>

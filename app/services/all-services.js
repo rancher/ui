@@ -25,7 +25,7 @@ export default Ember.Service.extend({
       });
 
       function envName(service) {
-        var env = environments.filterProperty('id', service.get('environmentId'))[0];
+        var env = environments.filterBy('id', service.get('environmentId'))[0];
         if ( env )
         {
           return env.get('displayName');

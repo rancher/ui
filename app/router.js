@@ -10,23 +10,12 @@ Router.map(function() {
   this.route('index');
   this.route('failWhale', { path: '/fail' });
 
-  this.route('login', function() {
-    this.route('github');
-    this.route('ldap');
-  });
-
+  this.route('login');
   this.route('logout');
   this.route('authenticated', { path: '/'}, function() {
 
     // Settings
     this.resource('settings', function() {
-      this.route('auth', function() {
-        this.route('github');
-        this.route('ldap');
-      });
-
-      this.route('host');
-
       this.route('apikeys', {path: '/api'});
 
       this.route('projects', { path: '/environments' });
@@ -35,6 +24,27 @@ Router.map(function() {
       this.route('registries', { path: '/registries' });
       this.route('registry-new', { path: '/registries/add' });
       this.route('registry-detail', { path: '/registries/:registry_id' });
+    });
+
+    // Admin
+    this.resource('admin-tab', {path: '/admin'}, function() {
+      this.route('auth', {path: '/access'}, function() {
+        this.route('github');
+        this.route('ldap');
+        this.route('localauth', {path: 'local'});
+      });
+
+      this.route('host');
+
+      this.route('accounts', {path: '/accounts'}, function() {
+        this.route('index', {path: '/'});
+        this.route('new', {path: '/add'});
+      });
+
+      this.route('processes', {path: '/processes'}, function() {
+        this.route('index', {path: '/'});
+        this.route('process', {path: '/:process_id'});
+      });
     });
 
     // Infrastructure
@@ -65,6 +75,12 @@ Router.map(function() {
         this.resource('container', { path: '/:container_id' }, function() {
           this.route('edit');
         });
+      });
+
+      this.resource('certificates', function() {
+        this.route('new', {path: '/add'});
+        this.route('index', {path: '/'});
+        this.route('detail', {path: '/:certificate_id'});
       });
     });
 
@@ -138,7 +154,7 @@ Router.map(function() {
   this.modal('edit-apikey', {
     dismissWithOutsideClick: false,
     withParams: 'editApikey',
-    otherParams: {'originalModel': 'originalModel', 'editApikeyIsNew': 'justCreated'} 
+    otherParams: {'originalModel': 'originalModel', 'editApikeyIsNew': 'justCreated'}
   });
 
   this.modal('edit-project', {
@@ -177,7 +193,14 @@ Router.map(function() {
     withParams: 'editLoadBalancerService',
     otherParams: 'originalModel',
   });
+
   // End: Modals
+  this.modal('edit-account', {
+    dismissWithOutsideClick: false,
+    withParams: 'editAccount',
+    otherParams: 'originalModel',
+  });
+
 });
 
 export default Router;

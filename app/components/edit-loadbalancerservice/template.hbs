@@ -1,7 +1,7 @@
 {{#liquid-if loading}}
   <div class="text-center">
     <p>
-      <i class="fa fa-circle-o-notch fa-spin"></i> Loading...
+      <i class="icon icon-spinner icon-spin"></i> Loading...
     </p>
   </div>
 {{else}}
@@ -57,6 +57,15 @@
         {{partial "loadbalancer/edit-targets"}}
       </div>
     </div>
+
+    {{partial "form-divider"}}
+
+    {{edit-ssl-termination
+      balancerService=service
+      listenersArray=listenersArray
+      launchConfig=service.launchConfig
+      certificates=allCertificates
+    }}
   </section>
 
   {{partial "save-cancel"}}

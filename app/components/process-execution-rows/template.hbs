@@ -1,0 +1,39 @@
+{{#if topLevel}}
+  <tr>
+    <td class="clip">
+      {{#if checkProcessHandlerExecutions }}
+        <span {{action 'expand'}}>
+          <i class="fa hand {{if expanded 'fa-minus-square' 'fa-plus-square'}}"></i>
+        </span>
+      {{/if}}
+      <span class={{if humanEndTime 'label label-success' 'label label-warning'}} title={{execution.id}}>{{execution.id}}</span>
+    </td>
+    <td class="clip"><span title={{execution.processName}}>{{execution.processName}}</span></td>
+    <td class="clip"><span title={{execution.resourceType}}>{{execution.resourceType}}</span></td>
+    <td>{{execution.resourceId}}</td>
+    <td>{{humanEndTime}}</td>
+  </tr>
+{{else}}
+  {{#if shouldExpand}}
+    <tr>
+      <td class="clip">
+        <i class="fa fa-level-down indent-{{depth}}"></i>
+        {{#if checkProcessHandlerExecutions }}
+            <span {{action 'expand'}}>
+              <i class="fa hand {{if expanded 'fa-minus-circle' 'fa-plus-circle'}}"></i>
+            </span>
+        {{/if}}
+        <span class={{if humanEndTime 'label label-success' 'label label-warning'}}>{{execution.id}}</span>
+      </td>
+      <td class="clip"><span title={{execution.processName}}>{{execution.processName}}</span></td>
+      <td class="clip"><span title={{execution.resourceType}}>{{execution.resourceType}}</span></td>
+      <td>{{execution.resourceId}}</td>
+      <td>{{humanEndTime}}</td>
+    </tr>
+  {{/if}}
+{{/if}}
+{{#if checkProcessHandlerExecutions }}
+  {{#each execution.processHandlerExecutions as |processExe|}}
+    {{process-execution-handler-rows execution=processExe shouldExpand=expanded shouldExpandChildren=expandAll nodeDepth=depth}}
+  {{/each}}
+{{/if}}

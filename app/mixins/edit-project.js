@@ -10,8 +10,8 @@ export default Ember.Mixin.create(NewOrEdit, {
   actions: {
     checkMember: function(member) {
       var existing = this.get('model.projectMembers')
-                      .filterProperty('externalIdType', member.get('externalIdType'))
-                      .filterProperty('externalId', member.get('externalId'));
+                      .filterBy('externalIdType', member.get('externalIdType'))
+                      .filterBy('externalId', member.get('externalId'));
 
       if ( existing.get('length') )
       {
@@ -40,7 +40,7 @@ export default Ember.Mixin.create(NewOrEdit, {
   }.property(),
 
   hasOwner: function() {
-    return this.get('model.projectMembers').filterProperty('role', C.PROJECT.ROLE_OWNER).get('length') > 0;
+    return this.get('model.projectMembers').filterBy('role', C.PROJECT.ROLE_OWNER).get('length') > 0;
   }.property('model.projectMembers.@each.role'),
 
   validate: function() {

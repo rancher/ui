@@ -10,7 +10,7 @@ export default Ember.Controller.extend(NewOrEdit, {
 
   actions: {
     selectDriver: function(name) {
-      var driver = this.get('drivers').filterProperty('name',name)[0];
+      var driver = this.get('drivers').filterBy('name',name)[0];
       this.set('activeDriver', driver.name);
       this.set('model.registry.serverAddress', driver.value);
     },
@@ -55,7 +55,7 @@ export default Ember.Controller.extend(NewOrEdit, {
 
   doSave: function() {
     var registry = this.get('model.registry');
-    var existing = this.get('model.allRegistries').filterProperty('serverAddress', registry.get('serverAddress'))[0];
+    var existing = this.get('model.allRegistries').filterBy('serverAddress', registry.get('serverAddress'))[0];
     if ( existing )
     {
       this.set('model.registry', existing);
