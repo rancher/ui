@@ -48,6 +48,7 @@ Router.map(function() {
           this.route('openstack');
           this.route('rackspace');
           this.route('exoscale');
+		  this.route('ubiquity');
           this.route('custom');
         });
 
