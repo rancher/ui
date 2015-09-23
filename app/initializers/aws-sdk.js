@@ -8,9 +8,9 @@ export function initialize(/*container, application */) {
     httpRequest.headers['X-API-AUTH-HEADER'] = httpRequest.headers['Authorization'];
     httpRequest.headers['Content-Type'] = 'rancher:' + httpRequest.headers['Content-Type'];
 
-    if ( httpRequest.path.indexOf('/proxy/') !== 0 )
+    if ( httpRequest.path.indexOf('/v1/proxy/') !== 0 )
     {
-      httpRequest.path = '/proxy/' + httpRequest.endpoint.hostname + httpRequest.path;
+      httpRequest.path = '/v1/proxy/' + httpRequest.endpoint.hostname + httpRequest.path;
     }
 
     httpRequest.endpoint.protocol = window.location.protocol;

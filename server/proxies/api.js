@@ -25,42 +25,6 @@ module.exports = function(app, options) {
     proxy.web(req, res);
   });
 
-  var githubPath = '/github';
-  app.use(githubPath, function(req, res, next) {
-    // include root path in proxied request
-    req.url = path.join(githubPath, req.url);
-
-    console.log('Github Proxy', req.method, 'to', req.url);
-    proxy.web(req, res);
-  });
-
-  var genericProxyPath = '/proxy';
-  app.use(genericProxyPath, function(req, res, next) {
-    // include root path in proxied request
-    req.url = path.join(genericProxyPath, req.url);
-
-    // @TODO remove this... --v
-    var tmp = req.headers['x-api-headers-restrict'];
-    delete req.headers['x-api-headers-restrict'];
-    req.headers['X-API-Headers-Restrict'] = tmp;
-
-    tmp = req.headers['authorization'];
-    delete req.headers['authorization'];
-    req.headers['Authorization'] = tmp;
-
-    tmp = req.headers['x-api-auth-header'];
-    delete req.headers['x-api-auth-header'];
-    req.headers['X-API-AUTH-HEADER'] = tmp;
-
-    tmp = req.headers['content-type'];
-    delete req.headers['content-type'];
-    req.headers['Content-Type'] = tmp;
-    // @TODO remove this... --^
-
-    console.log('Generic Proxy', req.method, 'to', req.url);
-    proxy.web(req, res);
-  });
-
   proxy.on('error', function onProxyError(err, req, res) {
     console.log('Proxy Error: on', req.method,'to', req.url,':', err);
     var error = {
