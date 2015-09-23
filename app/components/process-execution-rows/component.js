@@ -23,10 +23,6 @@ export default Ember.Component.extend({
       return false;
     }
   }.property(),
-  humanEndTime: Ember.computed('endTime', function() {
-    var offset = new Date().getTimezoneOffset();
-    return moment(this.get('endTime')).zone(offset).format('YYYY-MM-DDTHH:MM:SSZ');
-  }),
   childrenExpanded: function() {
     if (this.get('expandAll')) {
       this.set('expanded', true);
