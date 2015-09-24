@@ -8,9 +8,9 @@ export default DriverRoute.extend({
 
     var config = store.createRecord({
       type: '',
-      apiToken: '',
-      apiUsername: '',
-      clientId: '',
+      apiToken: '37c658903d884555b3d610a5a57b867f',
+      apiUsername: 'ubic-29497',
+      clientId: '29497',
       flavorId: '',
       imageId: '',
       zoneId: ''	  
