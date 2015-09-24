@@ -6,12 +6,21 @@
           <i class="fa hand {{if expanded 'fa-minus-square' 'fa-plus-square'}}"></i>
         </span>
       {{/if}}
-      <span class={{if humanEndTime 'label label-success' 'label label-warning'}} title={{execution.id}}>{{execution.id}}</span>
+      <span title={{execution.processName}}>{{execution.processName}}</span>
     </td>
-    <td class="clip"><span title={{execution.processName}}>{{execution.processName}}</span></td>
-    <td class="clip"><span title={{execution.resourceType}}>{{execution.resourceType}}</span></td>
-    <td>{{execution.resourceId}}</td>
-    <td>{{humanEndTime}}</td>
+    <td class="clip"><span title={{execution.resourceType}}>{{execution.resourceType}}:{{execution.resourceId}}</span></td>
+    <td>{{execution.exitReason}}</td>
+    {{#if execution.startTime}}
+      <td>{{date-from-now execution.startTime}}</td>
+    {{else}}
+      <td></td>
+    {{/if}}
+    {{#if execution.stopTime}}
+      <td>{{date-from-now execution.stopTime}}</td>
+    {{else}}
+      <td></td>
+    {{/if}}
+    <td>{{run-time execution.startTime execution.stopTime}}</td>
   </tr>
 {{else}}
   {{#if shouldExpand}}
@@ -23,12 +32,21 @@
               <i class="fa hand {{if expanded 'fa-minus-circle' 'fa-plus-circle'}}"></i>
             </span>
         {{/if}}
-        <span class={{if humanEndTime 'label label-success' 'label label-warning'}}>{{execution.id}}</span>
+        <span title={{execution.processName}}>{{execution.processName}}</span>
       </td>
-      <td class="clip"><span title={{execution.processName}}>{{execution.processName}}</span></td>
-      <td class="clip"><span title={{execution.resourceType}}>{{execution.resourceType}}</span></td>
-      <td>{{execution.resourceId}}</td>
-      <td>{{humanEndTime}}</td>
+      <td class="clip"><span title={{execution.resourceType}}>{{execution.resourceType}}:{{execution.resourceId}}</span></td>
+      <td>{{execution.exitReason}}</td>
+      {{#if execution.startTime}}
+        <td>{{date-from-now execution.startTime}}</td>
+      {{else}}
+        <td></td>
+      {{/if}}
+      {{#if execution.stopTime}}
+        <td>{{date-from-now execution.stopTime}}</td>
+      {{else}}
+        <td></td>
+      {{/if}}
+      <td>{{run-time execution.startTime execution.stopTime}}</td>
     </tr>
   {{/if}}
 {{/if}}

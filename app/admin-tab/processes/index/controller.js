@@ -40,8 +40,8 @@ export default Ember.Controller.extend(Sortable, {
   sorts: {
     id: ['id'],
     processName: ['processName', 'id'],
-    resourceType: ['resourceType', 'id'],
-    resourceId: ['resourceId', 'id'],
+    resource: ['resourceType', 'resourceId', 'id'],
+    startTime: ['startTime', 'id'],
     endTime: ['endTime', 'id'],
     runTime: ['runTime', 'id']
   },

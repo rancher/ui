@@ -26,7 +26,7 @@ export default Ember.Route.extend({
   },
   setupController: function(controller, model) {
     this._super(controller, model); // restore the defaults as well
-    const intervalCount = 10000;
+    const intervalCount = 2000;
     if (!this.get('intervalId')) {
       this.set('intervalId',
         setInterval(() => {
@@ -42,7 +42,10 @@ export default Ember.Route.extend({
   },
   parseParams: function(params) {
     var returnValue = {
-      filter: {},
+      filter: {
+      },
+      limit: 100,
+      depaginate: false,
       forceReload: true
     };
     if (params) {
