@@ -8,34 +8,41 @@ export default Ember.Controller.extend(Sortable, {
   resourceId: Ember.computed.alias('controllers.admin-tab/processes.resourceId'),
   resourceType: Ember.computed.alias('controllers.admin-tab/processes.resourceType'),
   processName: Ember.computed.alias('controllers.admin-tab/processes.processName'),
+  // these are here so we can execute the search with the search button
+  // so we dont have to do this.refresh in the route. I used this.refresh
+  // in the route for something else and it caused other issues so i decided
+  // against using it.
+  ownResourceId: null,
+  ownResourceType: null,
+  ownProcessName: null,
   actions: {
     showRunningProcesses: function() {
       this.toggleProperty('showRunning');
     },
-    updateQuery: function() {
-      var selectVal = Ember.$('#query-select').val();
-      var setVal = null;
-      if (!_.isEmpty(selectVal)) { // need to check empty here so we can set the param back to null if its an empty string
-        setVal = selectVal;
-      } else {
-        this.set('searchValue', null);
-      }
-      this.set('selectedSearchParam', setVal);
+    updateType: function() {
+      var selectVal = Ember.$('#resource-type').val();
+      this.set('ownResourceType', selectVal);
     },
     submit: function() {
-      this.set(this.get('selectedSearchParam'), this.get('searchValue'));
+      this.setProperties({
+        resourceId: this.get('ownResourceId'),
+        resourceType: this.get('ownResourceType'),
+        processName: this.get('ownProcessName')
+      });
     },
     reset: function() {
       this.setProperties({
-        selectedSearchParam: null,
-        searchValue: null
+        resourceId: null,
+        ownResourceId: null,
+        resourceType: null,
+        ownResourceType: null,
+        processName: null,
+        ownProcessName: null
       });
-      Ember.$('#query-select').val('');
+      Ember.$('#resource-type').val('');
     }
   },
-  selectedSearchParam: null,
-  searchValue: null,
-  sortableContent: Ember.computed.alias('model'),
+  sortableContent: Ember.computed.alias('model.processInstance'),
   sortBy: 'id',
   sorts: {
     id: ['id'],
@@ -46,31 +53,38 @@ export default Ember.Controller.extend(Sortable, {
     runTime: ['runTime', 'id']
   },
   parseParams: Ember.on('init', function() {
+    // This parses the parent query strings since the input values are not bound
+    // directly to the querystrings. See this.refresh comment at top of file for 
+    // more information.
     _.forEach(this.get('parentQueryParams'), (param) => {
+      var paramVal = this.get(param);
       if (param !== 'showRunning') {
-        if (this.get(param)) {
-          this.set('searchValue', this.get(param));
-          this.set('selectedSearchParam', param);
+        if (paramVal) {
+          switch (param) {
+            case 'resourceId':
+              this.set('ownResourceId', paramVal);
+              break;
+            case 'resourceType':
+              this.set('ownResourceType', paramVal);
+              Ember.run.later(() => {
+                Ember.$('#resource-type').val(_.find(this.get('model.resourceTypes'), (item) =>{
+                  return item === this.get(param);
+                }));
+              });
+              break;
+            case 'processName':
+              this.set('ownProcessName', paramVal);
+              break;
+            default:
+              break;
+          }
 
-          Ember.run.later(() => {
-            Ember.$('#query-select').val(param);
-          });
         }
       }
     });
   }),
-  resetQuery: function() {
-    _.forEach(this.get('parentQueryParams'), (item) => {
-      if (item !== 'showRunning') {
-        if (!_.isNull(this.get(item)) && item !== this.get('selectedSearchParam')) {
-          this.set(item, null);
-          this.set('searchValue', null);
-        }
-      }
-    });
-  }.observes('selectedSearchParam'),
-  disabledInputs: Ember.computed('selectedSearchParam', function() {
-    if (this.get('selectedSearchParam')) {
+  disabledInputs: Ember.computed('ownResourceId', 'ownResourceType', 'ownProcessName', function() {
+    if (this.get('ownResourceId') || this.get('ownResourceType') || this.get('ownProcessName')) {
       return false;
     } else {
       return true;

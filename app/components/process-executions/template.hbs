@@ -1,13 +1,22 @@
-<thead>
-  <th width="150">Process Name</th>
-  <th width="100">Resource Type:Id</th>
-  <th width="100">Exit Reason</th>
-  <th width="100">Start Time</th>
-  <th width="100">End Time</th>
-  <th width="100">Run Time</th>
-</thead>
-<tbody>
-  {{#each execution as |execution|}}
-    {{process-execution-rows execution=execution topLevel=true expandAll=expandChildren}}
-  {{/each}}
-</tbody>
+<button class="btn btn-primary btn-sm pull-right" style="position:relative;top:-30px;right:25px;" {{action 'expandChildren'}}>
+  {{#if childrenExpanded}}
+    <i class="fa fa-minus"></i> Collapse All
+  {{else}}
+    <i class="fa fa-plus"></i> Expand All
+  {{/if}}
+</button>
+<table class="grid fixed table table-hover">
+  <thead>
+    <th>Process Name</th>
+    <th>Resource Type:Id</th>
+    <th width="200">Exit Reason</th>
+    <th width="150">Start Time</th>
+    <th width="150">End Time</th>
+    <th width="150">Run Time</th>
+  </thead>
+  <tbody>
+    {{#each execution as |execution|}}
+      {{process-execution-rows execution=execution topLevel=true expandAll=childrenExpanded}}
+    {{/each}}
+  </tbody>
+</table>

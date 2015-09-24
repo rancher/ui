@@ -1,16 +1,9 @@
 <section>
-  <h4 class="r-pt20 r-pb20">Process Executions for {{model.processInstance.id}}  {{#link-to 'admin-tab.processes' class='btn btn-default btn-xs'}} Back <i class="fa fa-level-up"></i>{{/link-to}}</h4>
+  <h3 class="r-pt20 r-pb20">{{#link-to 'admin-tab.processes'}}Execution: {{/link-to}} {{model.processInstance.id}}</h3>
 </section>
 {{#each model.processExecutions as |process|}}
   <section class="well">
-    <button class="btn btn-primary btn-sm pull-right r-mb15" {{action 'expandChildren'}}>
-      {{#if childrenExpanded}}
-        <i class="fa fa-minus"></i> Collapse All
-      {{else}}
-        <i class="fa fa-plus"></i> Expand All
-      {{/if}}
-    </button>
-    <h4>Execution Id: {{process.id}}</h4>
-    {{process-executions execution=process.log.executions expandChildren=childrenExpanded}}
+    <h4>Child Execution: {{process.id}}</h4>
+    {{process-executions execution=process.log.executions}}
   </section>
 {{/each}}
