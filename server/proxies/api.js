@@ -9,7 +9,6 @@ module.exports = function(app, options) {
     ws: true,
     xfwd: false,
     target: config.endpoint,
-//    agent: new ForeverAgent({})
   });
 
   console.log('Proxying to', config.endpoint);
@@ -19,45 +18,7 @@ module.exports = function(app, options) {
     // include root path in proxied request
     req.url = path.join(apiPath, req.url);
 
-    req.headers['user-agent'] = 'Rancher UI';
-
     console.log('API Proxy', req.method, 'to', req.url);
-    proxy.web(req, res);
-  });
-
-  var githubPath = '/github';
-  app.use(githubPath, function(req, res, next) {
-    // include root path in proxied request
-    req.url = path.join(githubPath, req.url);
-
-    console.log('Github Proxy', req.method, 'to', req.url);
-    proxy.web(req, res);
-  });
-
-  var genericProxyPath = '/proxy';
-  app.use(genericProxyPath, function(req, res, next) {
-    // include root path in proxied request
-    req.url = path.join(genericProxyPath, req.url);
-
-    // @TODO remove this... --v
-    var tmp = req.headers['x-api-headers-restrict'];
-    delete req.headers['x-api-headers-restrict'];
-    req.headers['X-API-Headers-Restrict'] = tmp;
-
-    tmp = req.headers['authorization'];
-    delete req.headers['authorization'];
-    req.headers['Authorization'] = tmp;
-
-    tmp = req.headers['x-api-auth-header'];
-    delete req.headers['x-api-auth-header'];
-    req.headers['X-API-AUTH-HEADER'] = tmp;
-
-    tmp = req.headers['content-type'];
-    delete req.headers['content-type'];
-    req.headers['Content-Type'] = tmp;
-    // @TODO remove this... --^
-
-    console.log('Generic Proxy', req.method, 'to', req.url);
     proxy.web(req, res);
   });
 

@@ -42,7 +42,9 @@ flavorChoices.sort(function(a,b) {
   }
 });
 
-export default Ember.ObjectController.extend(NewHost, {
+export default Ember.Controller.extend(NewHost, {
+  rackspaceConfig: Ember.computed.alias('model.rackspaceConfig'),
+
   flavorChoices: flavorChoices,
   regionChoices: [
     {label: 'Dallas (DFW)', value: 'DFW'},

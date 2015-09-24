@@ -1,9 +1,15 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
+import NewOrEdit from 'ui/mixins/new-or-edit';
 
-export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, {
+export default Ember.Controller.extend(NewOrEdit, {
   error: null,
   editing: false,
+
+  actions: {
+    readFile(field, text) {
+      this.get('primaryResource').set(field,text);
+    },
+  },
 
   doneSaving: function() {
     return this.transitionToRoute('environment', this.get('primaryResource.id'));
