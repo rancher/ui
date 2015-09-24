@@ -7,12 +7,13 @@
             <i class="fa hand {{if expanded 'fa-minus-circle' 'fa-plus-circle'}}"></i>
         </span>
       {{/if}}
-      <span class={{if execution.humanEndTime 'label label-success' 'label label-warning'}} title={{execution.id}}>{{execution.id}}</span>
+      {{execution.name}}
     </td>
-    <td class="clip">{{execution.name}}</td>
-    <td>PHE</td>
     <td>{{execution.resourceId}}</td>
-    <td>{{execution.humanEndTime}}</td>
+    <td>{{execution.exitReason}}</td>
+    <td>{{date-from-now execution.startTime}}</td>
+    <td>{{date-from-now execution.stopTime}}</td>
+    <td>{{run-time execution.startTime execution.stopTime}}</td>
   </tr>
 {{#if checkExecutions }}
   {{#each execution.children as |child|}}

@@ -4,12 +4,24 @@ import NewHost from 'ui/mixins/new-host';
 var RANCHER_TAG = 'rancher-ui';
 var RANCHER_GROUP = 'rancher-machine';
 var RANCHER_INGRESS_RULES = [
+  // Docker machine creates these ports if we don't,
+  // but explodes with race coditions if try to deploy 2 hosts simultaneously and they both want to create it.
+  // So we'll just have the UI create them up front.
+  // SSH, for docker-machine to isntall Docker
   {
     FromPort: 22,
     ToPort: 22,
     CidrIp: '0.0.0.0/0',
     IpProtocol: 'tcp'
   },
+  {
+    FromPort: 2376,
+    ToPort: 2376,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'tcp'
+  },
+
+  // Rancher IPSec needs these
   {
     FromPort: 500,
     ToPort: 500,
@@ -35,7 +47,9 @@ var INSTANCE_TYPES = [
   'd2.xlarge','d2.2xlarge','d2.4xlarge','d2.8xlarge',
 ];
 
-export default Ember.ObjectController.extend(NewHost, {
+export default Ember.Controller.extend(NewHost, {
+  amazonec2Config: Ember.computed.alias('model.amazonec2Config'),
+
   clients: null,
   allSubnets: null,
   allSecurityGroups: null,
@@ -156,7 +170,8 @@ export default Ember.ObjectController.extend(NewHost, {
       this.set('step', 4);
 
       var ec2 = this.get('clients').get(this.get('amazonec2Config.region'));
-      ec2.describeSecurityGroups({}, (err, data) => {
+      var filter = {Name: 'vpc-id', Values: [ this.get('amazonec2Config.vpcId')]};
+      ec2.describeSecurityGroups({Filters: [filter]}, (err, data) => {
         if ( err )
         {
           this.set('errors',[err]);

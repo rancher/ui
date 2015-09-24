@@ -19,7 +19,6 @@ export default Ember.Component.extend(NewOrEdit, {
     var clone = orig.clone();
     delete clone.services;
     this.set('model', clone);
-    this.didInitAttrs();
   },
 
   doneSaving: function() {

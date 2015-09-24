@@ -54,11 +54,11 @@ Router.map(function() {
         this.route('new', {path: '/add'}, function() {
           this.route('amazonec2');
           this.route('digitalocean');
-          this.route('packet');
-          this.route('openstack');
-          this.route('rackspace');
           this.route('exoscale');
-		  this.route('ubiquity');
+          this.route('openstack');
+          this.route('packet');
+          this.route('rackspace');
+          this.route('other');
           this.route('custom');
         });
 

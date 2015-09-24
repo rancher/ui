@@ -23,6 +23,10 @@ export default Ember.Component.extend({
     this.on('change', this, this._change);
   },
 
+  didInsertElement() {
+    this._change();
+  },
+
   willDestroyElement() {
     this.off('change', this, this._change);
   },

@@ -9,7 +9,9 @@ var osChoices = OSes.filter(function(os) {
   return (os.distro||'').toLowerCase() === 'ubuntu';
 });
 
-export default Ember.ObjectController.extend(NewHost, {
+export default Ember.Controller.extend(NewHost, {
+  packetConfig: Ember.computed.alias('model.packetConfig'),
+
   facilityChoices: Facilities,
   planChoices: Plans,
   osChoices: osChoices,

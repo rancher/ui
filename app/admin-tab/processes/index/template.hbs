@@ -30,8 +30,9 @@
     <thead>
       {{sortable-th sortable=this action="changeSort" name="id" width="120"}}
       {{sortable-th sortable=this action="changeSort" name="processName" width="120"}}
-      {{sortable-th sortable=this action="changeSort" name="resourceType" width="120"}}
-      {{sortable-th sortable=this action="changeSort" name="resourceId" width="120"}}
+      {{sortable-th sortable=this action="changeSort" name="resource" label="Resource Type:Id" width="120"}}
+      {{sortable-th sortable=this action="changeSort" name="exitReason" width="100"}}
+      {{sortable-th sortable=this action="changeSort" name="startTime" width="120"}}
       {{sortable-th sortable=this action="changeSort" name="endTime" width="120"}}
       {{sortable-th sortable=this action="changeSort" name="runTime" width="100"}}
     </thead>
@@ -42,10 +43,19 @@
               <span class={{if instance.endTime 'label label-success' 'label label-warning'}}>{{instance.id}}</span>
             </td>
             <td class="clip"><span title={{instance.processName}}>{{instance.processName}}</span></td>
-            <td class="clip"><span title={{instance.resourceType}}>{{instance.resourceType}}</span></td>
-            <td>{{instance.resourceId}}</td>
-            <td>{{instance.endTime}}</td>
-            <td>{{instance.runTime}}s</td>
+            <td class="clip"><span title={{instance.resourceType}}>{{instance.resourceType}}:{{instance.resourceId}}</span></td>
+            <td>{{instance.exitReason}}</td>
+            {{#if instance.startTime}}
+              <td>{{date-from-now instance.startTime}}</td>
+            {{else}}
+              <td></td>
+            {{/if}}
+            {{#if instance.endTime}}
+              <td>{{date-from-now instance.endTime}}</td>
+            {{else}}
+              <td></td>
+            {{/if}}
+            <td>{{run-time instance.startTimeTS instance.endTimeTS}}</td>
         {{/link-to}}
       {{/each}}
     </tbody>
