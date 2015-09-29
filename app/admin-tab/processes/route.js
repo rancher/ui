@@ -22,7 +22,13 @@ export default Ember.Route.extend({
     });
   },
   model: function(params) {
-    return this.store.find('processinstance', null, this.parseParams(params));
+    return this.store.find('processinstance', null, this.parseParams(params)).then((response) => {
+      var resourceTypes = this.get('store').all('schema').filterBy('links.collection').map((x) => { return x.get('_id'); });
+      return Ember.Object.create({
+        processInstance: response,
+        resourceTypes: resourceTypes
+      });
+    });
   },
   setupController: function(controller, model) {
     this._super(controller, model); // restore the defaults as well
@@ -32,7 +38,7 @@ export default Ember.Route.extend({
         setInterval(() => {
           var params = this.paramsFor('admin-tab.processes');
           this.store.find('processinstance', null, this.parseParams(params)).then((response) => {
-            this.controller.get('model').replaceWith(response);
+            this.controller.get('model.processInstance').replaceWith(response);
           }, ( /*error*/ ) => {});
         }, intervalCount));
     }

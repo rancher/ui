@@ -1,3 +1,9 @@
+<section>
+  <h3>
+    <span class="right-divider">Running Processes</span>
+  </h3>
+  <h5>Debug running processes on your containers</h5>
+</section>
 <section class="well instances">
   <div class="row r-mb20">
     <ul class="nav nav-pills pull-right r-ml10">
@@ -10,31 +16,28 @@
     </ul>
     <div class="pull-right form-inline">
       <div class="form-group">
-        <select name="options" class="form-control" id="query-select" {{action 'updateQuery' on='change'}}>
-          <option value="" selected> -- select an option -- </option>
-          <option value="resourceId">Resource Id</option>
-          <option value="processName">Process Name</option>
-          <option value="resourceType">Resource Type</option>
+        <select id="resource-type" class="form-control" {{action 'updateType' on='change'}}>
+          <option value="" selected> -- select an resource type -- </option>
+          {{#each model.resourceTypes as |resource|}}
+          <option value="{{resource}}">{{resource}}</option>
+          {{/each}}
         </select>
-        <div class="btn-group clearable">
-          {{input value=searchValue class="form-control" disabled=disabledInputs enter='submit'}}
-          {{#liquid-if searchValue containerless=true}}
-            <i class="fa fa-times-circle-o" {{action 'reset'}}></i>
-          {{/liquid-if}}
-        </div>
+        {{input value=ownResourceId class="form-control" enter='submit' placeholder='Resource Id'}}
+        {{input value=ownProcessName class="form-control" enter='submit' placeholder='Process Name'}}
+        <button class="btn btn-danger r-ml10 r-mr10 pull-right" {{action 'reset'}} disabled={{disabledInputs}}>Clear</button>
         <button class="btn btn-primary r-ml10 r-mr10 pull-right" {{action 'submit'}} disabled={{disabledInputs}}>Search</button>
       </div>
     </div>
   </div>
   <table class="grid fixed table table-hover">
     <thead>
-      {{sortable-th sortable=this action="changeSort" name="id" width="120"}}
-      {{sortable-th sortable=this action="changeSort" name="processName" width="120"}}
-      {{sortable-th sortable=this action="changeSort" name="resource" label="Resource Type:Id" width="120"}}
-      {{sortable-th sortable=this action="changeSort" name="exitReason" width="100"}}
-      {{sortable-th sortable=this action="changeSort" name="startTime" width="120"}}
-      {{sortable-th sortable=this action="changeSort" name="endTime" width="120"}}
-      {{sortable-th sortable=this action="changeSort" name="runTime" width="100"}}
+      {{sortable-th sortable=this action="changeSort" name="id" width="75"}}
+      {{sortable-th sortable=this action="changeSort" name="processName"}}
+      {{sortable-th sortable=this action="changeSort" name="resource" label="Resource Type:Id"}}
+      {{sortable-th sortable=this action="changeSort" name="exitReason" width="200"}}
+      {{sortable-th sortable=this action="changeSort" name="startTime" width="150"}}
+      {{sortable-th sortable=this action="changeSort" name="endTime" width="150"}}
+      {{sortable-th sortable=this action="changeSort" name="runTime" width="150"}}
     </thead>
     <tbody>
       {{#each arranged as |instance|}}
