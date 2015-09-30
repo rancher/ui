@@ -28,9 +28,13 @@
             {{#link-to "certificates.detail" cert.id}}{{cert.displayName}}{{/link-to}}
           </td>
           <td>
-            {{cert.CN}}
-            {{#if cert.countableSans.length}}
-              + {{cert.countableSans.length}} other{{if (eq cert.countableSans.length 1) "" "s"}}
+            {{#if cert.CN}}
+              {{cert.CN}}
+              {{#if cert.countableSans.length}}
+                + {{cert.countableSans.length}} other{{if (eq cert.countableSans.length 1) "" "s"}}
+              {{/if}}
+            {{else}}
+              <span class="text-muted">None</span>
             {{/if}}
           </td>
           <td>

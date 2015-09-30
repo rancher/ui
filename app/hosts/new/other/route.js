@@ -41,7 +41,7 @@ export default DriverRoute.extend({
     });
   },
 
-  setupController: function(controller, model) {
+  setupController: function(controller/*, model*/) {
     this._super.apply(this,arguments);
     controller.set('driver', this.get('otherChoices.firstObject.value'));
   },
