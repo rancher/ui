@@ -31,7 +31,11 @@ export default Resource.extend({
 
   countableSans: function() {
     var sans = this.get('displaySans').slice();
-    sans.pushObject(this.get('CN'));
+    if ( this.get('CN') )
+    {
+      sans.pushObject(this.get('CN'));
+    }
+
     var commonBases = sans.filter((name) => {
       return name.indexOf('*.') === 0 || name.indexOf('www.') === 0;
     }).map((name) => {
