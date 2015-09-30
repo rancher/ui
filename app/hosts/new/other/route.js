@@ -1,8 +1,31 @@
 import Ember from 'ember';
 import DriverRoute from 'ui/hosts/new/driver-route';
 
+const exclude = ['amazonec2Config','digitaloceanConfig','exoscaleConfig','packetConfig','rackspaceConfig'];
+
 export default DriverRoute.extend({
   driverName: 'other',
+
+  otherChoices: function() {
+    var schema = this.get('store').getById('schema','machine');
+    var fields = schema.get('resourceFields');
+    var keys = Object.keys(fields);
+    var out = [];
+    keys.forEach((key) => {
+      var field = fields[key];
+      var match;
+      if ( exclude.indexOf(key) === -1 )
+      {
+        if ( match = field.type.match(/^(.*)Config$/) )
+        {
+          out.push({label: match[1], value: key});
+        }
+      }
+    });
+
+    return out;
+  }.property(),
+
 
   newModel: function() {
     var store = this.get('store');
@@ -12,9 +35,15 @@ export default DriverRoute.extend({
           machine: store.createRecord({type: 'machine'}),
           schemas: schemas,
           typeDocumentations: typeDocs,
+          otherChoices: this.get('otherChoices')
         });
       });
     });
+  },
+
+  setupController: function(controller, model) {
+    this._super.apply(this,arguments);
+    controller.set('driver', this.get('otherChoices.firstObject.value'));
   },
 
   resetController: function (controller, isExisting/*, transition*/) {

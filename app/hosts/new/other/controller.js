@@ -1,32 +1,10 @@
 import Ember from 'ember';
 import NewHost from 'ui/mixins/new-host';
 
-const exclude = ['amazonec2Config','digitaloceanConfig','exoscaleConfig','packetConfig','rackspaceConfig'];
-
 export default Ember.Controller.extend(NewHost, {
   driver: null,
   primaryResource: Ember.computed.alias('model.machine'),
   driverOpts: null,
-
-  driverChoices: function() {
-    var schema = this.get('store').getById('schema','machine');
-    var fields = schema.get('resourceFields');
-    var keys = Object.keys(fields);
-    var out = [];
-    keys.forEach((key) => {
-      var field = fields[key];
-      var match;
-      if ( exclude.indexOf(key) === -1 )
-      {
-        if ( match = field.type.match(/^(.*)Config$/) )
-        {
-          out.push({label: match[1], value: key});
-        }
-      }
-    });
-
-    return out;
-  }.property(),
 
   fieldNames: function() {
     var driver = this.get('driver');
@@ -53,7 +31,7 @@ export default Ember.Controller.extend(NewHost, {
 
       this.set('driverOpts', machine.get(driver));
     }
-  }.observes('driver').on('init'),
+  }.observes('driver'),
 
   willSave() {
     // Null out all the drivers that aren't the active one, because the API only accepts one.
