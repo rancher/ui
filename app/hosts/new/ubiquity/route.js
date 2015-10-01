@@ -13,7 +13,7 @@ export default DriverRoute.extend({
       clientId: '29497',
       flavorId: '',
       imageId: '',
-      zoneId: ''	  
+      zoneId: ''
     });
 
     return store.createRecord({
@@ -21,5 +21,4 @@ export default DriverRoute.extend({
       ubiquityConfig: config,
     });
   }
-
 });
