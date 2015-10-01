@@ -37,7 +37,7 @@ export default Ember.Controller.extend(NewHost, {
     // Null out all the drivers that aren't the active one, because the API only accepts one.
     var activeDriver = this.get('driver');
     var machine = this.get('model.machine');
-    this.get('driverChoices').forEach((choice) => {
+    this.get('model.otherChoices').forEach((choice) => {
       var cur = choice.value;
       if ( choice.value !== activeDriver )
       {
