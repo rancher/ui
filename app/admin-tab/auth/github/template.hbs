@@ -52,7 +52,7 @@
               <h5>Authorized Users and Organizations</h5>
 
               <ul class="list-unstyled gh-block-list">
-                {{#each model.allowedIdentities as |item|}}
+                {{#each allowedActualIdentities as |item|}}
                   <li>
                     {{#identity-block identity=item}}
                       <button class="btn-circle-x btn-sm pull-right gh-action" {{action "removeIdentity" item}}></button>
@@ -60,7 +60,7 @@
                   </li>
                 {{/each}}
               </ul>
-              {{#if (eq model.allowedIdentities.length 0)}}
+              {{#if (eq allowedActualIdentities.length 0)}}
                 <span class="text-muted">None</span>
               {{/if}}
             {{/if}}

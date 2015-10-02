@@ -54,6 +54,13 @@ export default Ember.Controller.extend({
     return str;
   }.property('originalModel.allowedIdentities.[]','wasRestricted'),
 
+  allowedActualIdentities: function() {
+    return this.get('model.allowedIdentities').map((obj) => {
+      obj.type = 'identity';
+      return this.get('store').createRecord(obj);
+    });
+  }.property('model.allowedIdentities.[]'),
+
   wasShowing: false,
   showingAccessControl: function() {
     var show = this.get('wasShowing');
@@ -61,11 +68,11 @@ export default Ember.Controller.extend({
 
     if ( restricted )
     {
-      if ( this.get('model.allowedIdentities.length') > 1 )
+      if ( this.get('allowedActualIdentities.length') > 1 )
       {
         show = true;
       }
-      else if ( this.get('model.allowedIdentities.firstObject.id') !== this.get('access.identity.id') )
+      else if ( this.get('allowedActualIdentities.firstObject.id') !== this.get('access.identity.id') )
       {
         show = true;
       }
@@ -78,7 +85,7 @@ export default Ember.Controller.extend({
 
     this.set('wasShowing', show);
     return show;
-  }.property('model.allowedIdentities.@each.id','isRestricted','wasShowing'),
+  }.property('allowedActualIdentities.@each.id','isRestricted','wasShowing'),
 
   destinationUrl: function() {
     return window.location.origin+'/';
