@@ -1,14 +1,22 @@
 <section>
   <h3>
     <span class="right-divider">Hosts</span>
+
+    <div class="btn-group right-divider" style="margin: 0 10px 0 -5px;">
+      {{#link-to "hosts" (query-params mode="dot") classNames="btn btn-sm btn-default"}}<i class="fa fa-ellipsis-h"></i>{{/link-to}}
+      {{#link-to "hosts" (query-params mode="list") classNames="btn btn-sm btn-default"}}<i class="fa fa-th-large"></i>{{/link-to}}
+      {{#link-to "hosts" (query-params mode="grouped") classNames="btn btn-sm btn-default"}}<i class="fa fa-object-group"></i>{{/link-to}}
+    </div>
+
     {{#link-to "hosts.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add Host{{/link-to}}
+
   </h3>
 </section>
 
 {{#columns-section pods=pods emptyMessage="No hosts or containers yet." as |item| }}
   {{#if item.isPendingMachine}}
-    {{host-pod model=item.machine dot=dot newContainer="newContainer"}}
+    {{host-pod model=item.machine mode=mode newContainer="newContainer"}}
   {{else}}
-    {{host-pod model=item dot=dot newContainer="newContainer"}}
+    {{host-pod model=item mode=mode newContainer="newContainer"}}
   {{/if}}
 {{/columns-section}}

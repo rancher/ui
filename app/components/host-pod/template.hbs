@@ -69,16 +69,30 @@
   </div>
 
   <div class="clearfix no-resource-action-hover">
-    {{#if dot}}
-      {{#each model.arrangedInstances as |item|}}
+    {{#if (eq mode "dot")}}
+      {{#each arrangedInstances as |item|}}
         {{container-dot model=item}}
       {{/each}}
     {{else}}
-      {{#each model.arrangedInstances as |item|}}
-        {{container-subpod model=item}}
-      {{/each}}
-      {{#if showAdd}}
-        {{add-subpod action="newContainer" label="Add Container"}}
+      {{#if (eq mode "grouped")}}
+        {{#each groupedInstances as |group|}}
+          <h6 class="subpod-header">{{#if group.name}}Stack: {{group.name}}{{else}}Standalone Containers{{/if}}</h6>
+          <div class="clearfix">
+            {{#each group.instances as |item|}}
+              {{container-subpod model=item.main stripProject=true children=item.children groupHasChildren=group.hasChildren}}
+            {{/each}}
+            {{#unless group.name}}
+              {{add-subpod action="newContainer" label="Add Container" groupHasChildren=group.hasChildren}}
+            {{/unless}}
+          </div>
+        {{/each}}
+      {{else}}
+        {{#each arrangedInstances as |item|}}
+          {{container-subpod model=item}}
+        {{/each}}
+        {{#if showAdd}}
+          {{add-subpod action="newContainer" label="Add Container" groupHasChildren=group.hasChildren}}
+        {{/if}}
       {{/if}}
     {{/if}}
   </div>
