@@ -82,7 +82,9 @@
               {{container-subpod model=item.main stripProject=true children=item.children groupHasChildren=group.hasChildren}}
             {{/each}}
             {{#unless group.name}}
-              {{add-subpod action="newContainer" label="Add Container" groupHasChildren=group.hasChildren}}
+              {{#if showAdd}}
+                {{add-subpod action="newContainer" label="Add Container" groupHasChildren=group.hasChildren}}
+              {{/if}}
             {{/unless}}
           </div>
         {{/each}}

@@ -51,23 +51,38 @@
 
 <div class="clearfix no-resource-action-hover">
   {{#if hasContainers}}
-    {{#each model.instances as |item|}}
-      {{container-subpod model=item stripProject=true}}
+    {{#if (eq mode "dot")}}
+      {{#each arrangedInstances as |item|}}
+        {{container-dot model=item}}
+      {{else}}
+        {{partial "service/no-containers"}}
+      {{/each}}
     {{else}}
-      <div class="text-center text-muted" style="margin: 20px 0">
-        No containers yet.
-        {{#if isInactive}}
-          {{#with model controller="service" as |ctrl|}}
-            <a class="hand" {{action "activate" target=ctrl}}>Start</a>
-          {{/with}}
+      {{#if (eq mode "grouped")}}
+        {{#each groupedInstances as |group|}}
+          {{#each group.instances as |item|}}
+            {{container-subpod model=item.main stripProject=true children=item.children groupHasChildren=hasChildren}}
+          {{/each}}
         {{else}}
+          {{partial "service/no-containers"}}
+        {{/each}}
+        {{#if showScaleUp}}
+          {{#with model controller="service" as |ctrl|}}
+            {{add-subpod action=(action "scaleUp" target=ctrl) label="Scale Up" groupHasChildren=hasChildren}}
+          {{/with}}
         {{/if}}
-      </div>
-    {{/each}}
-    {{#if showScaleUp}}
-      {{#with model controller="service" as |ctrl|}}
-        {{add-subpod action=(action "scaleUp" target=ctrl) label="Scale Up" }}
-      {{/with}}
+      {{else}}
+        {{#each arrangedInstances as |item|}}
+          {{container-subpod model=item stripProject=true}}
+        {{else}}
+          {{partial "service/no-containers"}}
+        {{/each}}
+        {{#if showScaleUp}}
+          {{#with model controller="service" as |ctrl|}}
+            {{add-subpod action=(action "scaleUp" target=ctrl) label="Scale Up"}}
+          {{/with}}
+        {{/if}}
+      {{/if}}
     {{/if}}
   {{else}}
     {{#if isInactive}}
