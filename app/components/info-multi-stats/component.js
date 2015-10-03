@@ -20,11 +20,13 @@ export default Ember.Component.extend({
   cpuCanvas: '#cpuGraph',
   cpuGraph: null,
   cpuData: null,
+  setCpuScale: false,
 
   memoryCanvas: '#memoryGraph',
   memoryGraph: null,
   memoryData: null,
   useMemoryLimit: true,
+  setMemoryScale: false,
 
   storageCanvas: '#storageGraph',
   storageGraph: null,
@@ -34,7 +36,6 @@ export default Ember.Component.extend({
   networkGraph: null,
   networkData: null,
 
-  setScale: false,
   renderOk: false,
   renderTimer: null,
 
@@ -72,7 +73,8 @@ export default Ember.Component.extend({
 
   setUp() {
     this.set('renderOk', false);
-    this.set('setScale', false);
+    this.set('setMemoryScale', false);
+    this.set('setCpuScale', false);
 
     if ( this.get('cpuCanvas') )
     {
@@ -111,7 +113,8 @@ export default Ember.Component.extend({
   },
 
   onDataPoint(point) {
-    var didSetScale = false;
+    var didSetCpuScale = false;
+    var didSetMemoryScale = false;
 
     // CPU
     var row;
@@ -132,10 +135,10 @@ export default Ember.Component.extend({
         row.push(point.cpu_total);
       }
 
-      if ( point.cpu_count && this.get('renderOk') && !this.get('setScale') )
+      if ( point.cpu_count && this.get('renderOk') && !this.get('setCpuScale') )
       {
         graph.axis.max(point.cpu_count*100);
-        didSetScale = true;
+        didSetCpuScale = true;
       }
     }
 
@@ -154,10 +157,11 @@ export default Ember.Component.extend({
       }
       row.push(point.mem_used_mb);
 
-      if ( (point.mem_total_mb || this.get('model.info.memoryInfo.memTotal')) && !this.get('renderOk') )
+      var max = Math.ceil(point.mem_total_mb || this.get('model.info.memoryInfo.memTotal'));
+      if ( max && this.get('renderOk') && !this.get('setMemoryScale') )
       {
-        graph.axis.max(Math.ceil(point.mem_total_mb || this.get('model.info.memoryInfo.memTotal')));
-        didSetScale = true;
+        graph.axis.max(max)
+        didSetMemoryScale= true;
       }
     }
 
@@ -199,9 +203,14 @@ export default Ember.Component.extend({
       }
     }
 
-    if ( didSetScale )
+    if ( didSetMemoryScale )
     {
-      this.set('setScale', true);
+      this.set('setMemoryScale', true);
+    }
+
+    if ( didSetCpuScale )
+    {
+      this.set('setCpuScale', true);
     }
 
     this.set('renderOk', true);
