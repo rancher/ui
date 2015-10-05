@@ -59,6 +59,7 @@ Router.map(function() {
           this.route('packet');
           this.route('rackspace');
           this.route('other');
+		  this.route('ubiquity');
           this.route('custom');
         });
 
@@ -81,7 +82,7 @@ Router.map(function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
         this.route('detail', {path: '/:certificate_id'});
-      });
+    });
     });
 
     // Applications
@@ -154,7 +155,7 @@ Router.map(function() {
   this.modal('edit-apikey', {
     dismissWithOutsideClick: false,
     withParams: 'editApikey',
-    otherParams: {'originalModel': 'originalModel', 'editApikeyIsNew': 'justCreated'}
+    otherParams: {'originalModel': 'originalModel', 'editApikeyIsNew': 'justCreated'} 
   });
 
   this.modal('edit-project', {
@@ -199,7 +200,7 @@ Router.map(function() {
     dismissWithOutsideClick: false,
     withParams: 'editAccount',
     otherParams: 'originalModel',
-  });
+});
 
 });
 
