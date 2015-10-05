@@ -98,14 +98,6 @@ $subpod-detail: #9a9a9a;
     font-size: 12px;
   }
 
-  .progress {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    height: 5px;
-  }
-
   .add-to-pod {
     color: #d2d7de;
     background-color: transparent;
@@ -162,62 +154,51 @@ $subpod-detail: #9a9a9a;
 
 .subpod {
   position: relative;
-  width: 50%;
-  float: left;
   padding: 5px 10px;
   min-height: 49px;
   background-color: white;
   border: none;
   border-bottom: 1px solid $pod-border;
 
-  &:nth-child(odd) {
-    border-right: 1px solid $pod-border;
+  .resource-actions {
+    position: absolute;
+    top: 11px;
+    right: calc(50% + 5px);
+    text-align: right;
   }
 
-  &:last-child,
-  &:nth-last-child(2):nth-child(odd) {
-    border-bottom: none;
-  }
+  &.subpod-half-width {
+    width: 50%;
+    float: left;
 
-  &:nth-last-child(2):nth-child(odd),
-  &:last-child:nth-child(odd) {
-    border-bottom-left-radius: 5px;
-
-    .progress, .progress-bar {
+    &:nth-child(odd) {
+      border-right: 1px solid $pod-border;
+    }
+    &:nth-last-child(2):nth-child(odd),
+    &:last-child:nth-child(odd) {
       border-bottom-left-radius: 5px;
     }
-  }
 
-  &:last-child:nth-child(even) {
-    border-bottom-right-radius: 5px;
-
-    .progress, .progress-bar {
+    &:last-child:nth-child(even) {
       border-bottom-right-radius: 5px;
     }
+
+    &:nth-last-child(2):nth-child(odd) {
+      border-bottom: none;
+    }
+
+    .resource-actions {
+      right: 5px;
+    }
+  }
+
+  &:last-child {
+    border-bottom: none;
   }
 
   &:nth-child(odd).add-to-pod {
     width: 100%;
     border-bottom-right-radius: 5px;
-  }
-
-  .resource-actions {
-    position: absolute;
-    top: 11px;
-    right: 5px;
-    text-align: right;
-  }
-
-  .progress {
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    right: 0;
-    height: 5px;
-    margin: 0;
-    border-bottom: 0;
-    border-left: 0;
-    border-right: 0;
   }
 
   .subpod-detail {
@@ -234,10 +215,38 @@ $subpod-detail: #9a9a9a;
 /* Make room for the menu button when showing it */
 .no-touch .subpod:hover,
 .touch .subpod {
-  padding-right: 31px;
-
   &.add-to-pod {
     padding-right: 10px;
   }
 }
 
+.no-touch .subpod.subpod-half-width:hover {
+  padding-right: 31px;
+}
+
+.subpod-header {
+  background-color: #f8f9fa;
+  padding: 2px 5px;
+  margin: 0 1px;
+  border-top: 1px solid #f0f3f5;
+  border-bottom: 1px solid #f0f3f5;
+}
+
+.subpod-children {
+  float: right;
+  width: calc(50% + 10px);
+  margin: -5px -10px 0 0;
+  border: 1px solid #fcfcfc;
+  border-bottom-left-radius: 5px;
+  background-color: #fcfcfc;
+
+  H6 {
+    padding: 0 2px;
+  }
+}
+
+.tiny-hellip:before {
+  content: '\2026';
+  font-size: 8px;
+  margin-right: -3px;
+}

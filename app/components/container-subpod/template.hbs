@@ -2,9 +2,20 @@
   {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
 {{/with}}
 
+{{#if groupHasChildren}}
+<div class="subpod-children clearfix">
+  <h6>Sidekicks</h6>
+  {{#each children as |child|}}
+    {{container-dot model=child}}
+  {{else}}
+    &nbsp;
+  {{/each}}
+</div>
+{{/if}}
+
 <div class="subpod-name">
     <i class="{{model.stateIcon}} {{model.stateColor}}" tooltip="{{model.displayState}}"></i>
-  {{#link-to "container" model.id}}
+  {{#link-to "container" model.id classNameBindings="showEllipsis:tiny-hellip"}}
     {{displayName}}
   {{/link-to}}
 </div>

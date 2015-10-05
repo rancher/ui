@@ -4,6 +4,8 @@ import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(ReadLabels, {
   model: null,
+  mode: null,
+
   labelResource: Ember.computed.alias('model.launchConfig'),
   classNames: ['pod','service','resource-action-hover'],
   classNameBindings: ['stateBorder'],
@@ -23,6 +25,54 @@ export default Ember.Component.extend(ReadLabels, {
   hasContainers: function() {
     return ['service','loadbalancerservice'].indexOf(this.get('model.type').toLowerCase()) !== -1;
   }.property('model.type'),
+
+  arrangedInstances: function() {
+    return (this.get('model.instances')||[]).sortBy('name','id');
+  }.property('model.instances.@each.{name,id}'),
+
+  groupedInstances: function() {
+    var instances = [];
+
+    // Everything must be sorted first to guarantee that parents appear before sidekicks
+    this.get('arrangedInstances').forEach((instance) => {
+      var labels = instance.get('labels')||{};
+      var isSidekick = !!labels[C.LABEL.LAUNCH_CONFIG] && labels[C.LABEL.LAUNCH_CONFIG] !== C.LABEL.LAUNCH_CONFIG_PRIMARY;
+      var parentUnit = labels[C.LABEL.DEPLOYMENT_UNIT];
+      var groupName = parentUnit;
+      var entry, group;
+
+      if ( isSidekick && parentUnit )
+      {
+        group = instances.filterBy('name', groupName)[0];
+        if ( group )
+        {
+          entry = group.instances.filterBy('unit', parentUnit)[0];
+          if ( entry )
+          {
+            entry.children.push(instance);
+            group.hasChildren = true;
+          }
+        }
+      }
+      else
+      {
+        group = instances.filterBy('name', groupName)[0];
+        if ( !group )
+        {
+          group = { name: groupName, instances: [], hasChildren: false };
+          instances.push(group);
+        }
+
+        group.instances.push({unit: parentUnit, main: instance, children: []});
+      }
+    });
+
+    return instances;
+  }.property('model.instances.@each.{name,id}'),
+
+  hasChildren: function() {
+    return this.get('groupedInstances').filterBy('hasChildren',true).get('length') > 0;
+  }.property('groupedInstances.@each.hasChildren'),
 
   showScaleUp: function() {
     if ( this.get('isActive') && this.get('hasContainers') )

@@ -1,6 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.ObjectController.extend({
+  mode: 'grouped',
+  queryParams: ['mode'],
+
   needs: ['environment'],
   actions: {
     addService: function() {

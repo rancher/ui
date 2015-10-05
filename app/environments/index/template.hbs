@@ -1,6 +1,13 @@
 <section>
   <h3>
     <span class="right-divider">Stacks</span>
+
+    <div class="btn-group right-divider" style="margin: 0 10px 0 -5px;">
+      {{#link-to "environments" (query-params mode="dot") classNames="btn btn-sm btn-default"}}<i class="fa fa-ellipsis-h"></i>{{/link-to}}
+      {{#link-to "environments" (query-params mode="list") classNames="btn btn-sm btn-default"}}<i class="icon icon-thumbnails"></i>{{/link-to}}
+      {{#link-to "environments" (query-params mode="grouped") classNames="btn btn-sm btn-default"}}<i class="fa fa-object-group"></i>{{/link-to}}
+    </div>
+
     {{#link-to "environments.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add Stack{{/link-to}}
   </h3>
 </section>
@@ -9,7 +16,7 @@
   {{#each arranged as |stack|}}
     {{stack-section model=stack collapseId=(dom-id stack)}}
     {{#columns-section pods=stack.unremovedServices id=(dom-id stack) classNames="collapse in" emptyMessage="No services yet." as |service| }}
-      {{service-pod model=service}}
+      {{service-pod mode=mode model=service}}
     {{/columns-section}}
   {{/each}}
 </section>

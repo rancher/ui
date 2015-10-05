@@ -84,6 +84,10 @@ var C = {
     HOSTNAME_OVERRIDE: 'io.rancher.container.hostname_override',
     HOSTNAME_OVERRIDE_VALUE: 'container_name',
     BALANCER_SSL_PORTS: 'io.rancher.loadbalancer.ssl.ports',
+    SIDEKICK: 'io.rancher.sidekicks',
+    DEPLOYMENT_UNIT: 'io.rancher.service.deployment.unit',
+    LAUNCH_CONFIG: 'io.rancher.service.launch.config',
+    LAUNCH_CONFIG_PRIMARY: 'io.rancher.service.primary.launch.config',
   },
 };
 

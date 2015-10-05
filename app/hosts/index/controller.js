@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  dot: false,
-  queryParams: ['dot'],
+  mode: 'grouped',
+  queryParams: ['mode'],
 
   actions: {
     newContainer: function(hostId) {
