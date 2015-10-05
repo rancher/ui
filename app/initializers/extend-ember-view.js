@@ -6,9 +6,13 @@ export function initialize(/* container, application */) {
   Ember.TextField.reopen(SafeStyle);
   Ember.TextArea.reopen(SafeStyle);
   Ember.Checkbox.reopen(SafeStyle);
+
+  Ember.LinkView.reopen({
+    attributeBindings: ['tooltip'],
+  });
 }
 
 export default {
-  name: 'extend-ember-textarea',
+  name: 'extend-ember-view',
   initialize: initialize
 };
