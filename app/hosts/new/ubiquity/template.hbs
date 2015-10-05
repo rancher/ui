@@ -1,0 +1,133 @@
+{{top-errors errors=errors}}
+
+<section class="horizontal-form">
+  <div class="container-fluid">
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Account Access</span>
+    </div>
+
+    <div class="row {{if isStep1 'form-group'}}">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="clientId" class="form-control-static">Client ID</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{#if isStep1}}
+          {{input type="text" id="clientId" classNames="form-control" placeholder="Your Ubiquity Hosting API Client ID" value=ubiquityConfig.clientId}}
+        {{else}}
+          <div class="form-control-static">{{ubiquityConfig.clientId}}</div>
+        {{/if}}
+      </div>
+    </div>
+	  <div class="row {{if isStep1 'form-group'}}">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="apiUsername" class="form-control-static">Remote ID</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{#if isStep1}}
+          {{input type="text" id="apiUsername" classNames="form-control" placeholder="Your Ubiquity Hosting Remote ID" value=ubiquityConfig.apiUsername}}
+        {{else}}
+          <div class="form-control-static">{{ubiquityConfig.apiUsername}}</div>
+        {{/if}}
+      </div>
+    </div>
+    <div class="row {{if isStep1 'form-group'}}">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="apiToken" class="form-control-static">Access Key</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{#if isStep1}}
+          {{input type="password" id="apiToken" classNames="form-control" placeholder="Your Ubiquity Hosting Access Key" value=ubiquityConfig.apiToken}}
+        {{else}}
+          <div class="form-control-static text-muted text-italic">Provided</div>
+        {{/if}}
+        {{#if isStep1}}
+          <p class="help-block">You can find your Ubiquity Hosting API credentials <a href="https://motion.ubiquityhosting.com/api">here</a>. Don't have an account? Learn more about <a href="http://www.ubiquityhosting.com/">Ubiquity Hosting</a> today!</p>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+  {{#if isStep1}}
+    <div class="footer-actions">
+      <button {{action "ubiLogin"}} class="btn btn-primary">Next: Authenticate &amp; Create a New Cloud Instance</button>
+      <button {{action "cancel"}} class="btn btn-link">Cancel</button>
+    </div>
+  {{/if}}
+</section>
+
+<section class="horizontal-form {{unless isStep2 'hide'}}" style="padding-top: 0">
+  <div class="text-center">
+    <i class="fa fa-circle-o-notch fa-spin"></i> Loading cloud instance creation details...
+  </div>
+</section>
+
+<section class="horizontal-form {{unless isGteStep3 'hide'}}" style="padding-top: 0;">
+  <div class="container-fluid">
+       <div class="over-hr" style="margin: 20px 0;">
+      <span>Instance</span>
+    </div>
+
+    {{partial "host/add-common"}}
+
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Region</span>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="zoneId" class="form-control-static">Region</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{view "select"
+          class="form-control"
+          id="zoneId"
+          content=allZones
+          optionValuePath="content.id"
+          optionLabelPath="content.name"
+          value=ubiquityConfig.zoneId
+        }}
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="imageId" class="form-control-static">Image</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        {{view "select"
+          class="form-control"
+          id="imageId"
+          content=allImages
+		  optionValuePath="content.id"
+          optionLabelPath="content.name"
+          value=ubiquityConfig.imageId
+        }}
+      </div>
+      <div class="col-sm-12 col-md-2 form-label">
+        <label for="flavorId" class="form-control-static">Flavor</label>
+      </div>
+      <div class="col-sm-12 col-md-3">
+        {{view "select"
+          class="form-control"
+          id="flavorId"
+          content=allFlavors
+          optionValuePath="content.id"
+          optionLabelPath="content.name"
+          value=ubiquityConfig.flavorId
+        }}
+      </div>
+    </div>
+
+    <div class="over-hr" style="margin: 20px 0;">
+      <span>Rancher</span>
+    </div>
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label class="form-control-static">Labels</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        {{partial "edit-labels"}}
+      </div>
+    </div>
+  </div>
+  {{partial "save-cancel"}}
+</section>

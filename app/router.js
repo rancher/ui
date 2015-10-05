@@ -58,6 +58,7 @@ Router.map(function() {
           this.route('openstack');
           this.route('packet');
           this.route('rackspace');
+          this.route('ubiquity');
           this.route('other');
           this.route('custom');
         });
