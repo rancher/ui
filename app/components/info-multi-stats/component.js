@@ -160,8 +160,8 @@ export default Ember.Component.extend({
       var max = Math.ceil(point.mem_total_mb || this.get('model.info.memoryInfo.memTotal'));
       if ( max && this.get('renderOk') && !this.get('setMemoryScale') )
       {
-        graph.axis.max(max)
-        didSetMemoryScale= true;
+        graph.axis.max(max);
+        didSetMemoryScale = true;
       }
     }
 
