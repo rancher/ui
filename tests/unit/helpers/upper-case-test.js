@@ -11,6 +11,6 @@ moduleFor('helper:upper-case');
 
 // Replace this with your real tests.
 test('it works with strings', function(assert) {
-  var result = upperCase("hello");
+  var result = upperCase(["hello"]);
   assert.ok(result === "HELLO");
 });

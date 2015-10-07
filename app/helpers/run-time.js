@@ -1,10 +1,10 @@
 import Ember from 'ember';
 
-export function runTime(startTime, endTime) {
-  var s = moment(startTime);
-  var e = moment(endTime);
+export function runTime(params) {
+  var s = moment(params[0]);
+  var e = moment(params[1]);
   var time =  e.diff(s);
   return `${time}ms`;
 }
 
-export default Ember.Handlebars.makeBoundHelper(runTime);
+export default Ember.Helper.helper(runTime);

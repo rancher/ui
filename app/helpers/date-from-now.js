@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
-export function dateFromNow(input) {
-  return moment(input).fromNow();
+export function dateFromNow(params) {
+  return moment(params[0]).fromNow();
 }
 
-export default Ember.Handlebars.makeBoundHelper(dateFromNow);
+export default Ember.Helper.helper(dateFromNow);

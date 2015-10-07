@@ -15,7 +15,7 @@ export default Ember.Component.extend({
   fieldDef: function() {
     var fieldName = this.get('field');
     var type = this.get('resourceType').toLowerCase();
-    var schema = this.get('schemas').filterProperty('id', type)[0];
+    var schema = this.get('schemas').filterBy('id', type)[0];
     if ( !schema )
     {
       return;
@@ -30,7 +30,7 @@ export default Ember.Component.extend({
     var out = JSON.parse(JSON.stringify(orig));
     out.name = fieldName;
 
-    var docs = this.get('typeDocs').filterProperty('id', type)[0];
+    var docs = this.get('typeDocs').filterBy('id', type)[0];
     if ( docs )
     {
       orig = docs.resourceFields[fieldName];

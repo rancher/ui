@@ -12,7 +12,7 @@ export default Ember.Controller.extend(Sortable, {
 
   access: Ember.inject.service(),
   projects: Ember.inject.service(),
-  needs: ['application'],
+  application: Ember.inject.controller(),
 
   actions: {
     new: function() {
@@ -36,7 +36,7 @@ export default Ember.Controller.extend(Sortable, {
         model.set('projectMembers',[]);
       }
 
-      this.get('controllers.application').setProperties({
+      this.get('application').setProperties({
         editProject: true,
         originalModel: model
       });

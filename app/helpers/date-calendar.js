@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
-export function dateCalendar(input) {
-  return moment(input).calendar();
+export function dateCalendar(params) {
+  return moment(params[0]).calendar();
 }
 
-export default Ember.Handlebars.makeBoundHelper(dateCalendar);
+export default Ember.Helper.helper(dateCalendar);

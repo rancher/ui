@@ -18,12 +18,12 @@ function modelProxy(methodName) {
 
 var ResourceController = Ember.ObjectController.extend({
   cookies: Ember.inject.service(),
+  application: Ember.inject.controller(),
 
-  needs: ['application','authenticated'],
   actions: {
     goToApi: function() {
       var url = this.get('links.self'); // http://a.b.c.d/v1/things/id, a.b.c.d is where the UI is running
-      var endpoint = this.get('controllers.application.absoluteEndpoint'); // http://e.f.g.h/ , does not include version.  e.f.g.h is where the API actually is.
+      var endpoint = this.get('application.absoluteEndpoint'); // http://e.f.g.h/ , does not include version.  e.f.g.h is where the API actually is.
       url = url.replace(/https?:\/\/[^\/]+\/?/,endpoint);
 
       // Go to the project-specific version

@@ -51,11 +51,11 @@ var Account = Resource.extend(PolledResource, {
   }.property('passwordCredential.{state,publicValue}'),
 
   passwordCredential: function() {
-    return (this.get('credentials')||[]).filterProperty('kind','password')[0];
+    return (this.get('credentials')||[]).filterBy('kind','password')[0];
   }.property('credentials.@each.kind'),
 
   apiKeys: function() {
-    return (this.get('credentials')||[]).filterProperty('kind','apiKey');
+    return (this.get('credentials')||[]).filterBy('kind','apiKey');
   }.property('credentials.@each.kind')
 });
 

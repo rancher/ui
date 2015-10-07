@@ -11,6 +11,6 @@ moduleFor('helper:lower-case');
 
 // Replace this with your real tests.
 test('it works with strings', function(assert) {
-  var result = lowerCase("HELLO");
+  var result = lowerCase(["HELLO"]);
   assert.ok(result === "hello");
 });

@@ -1,5 +1,8 @@
 import Ember from 'ember';
 
-export default Ember.Handlebars.makeBoundHelper(function(obj, options) {
-  return (options.hash.pound ? '#' : '') + 'dom-' + obj.get('type') + '-' + obj.get('id');
-});
+export function domId(params, options) {
+  var obj = params[0];
+  return (options && options.hash && options.hash.pound ? '#' : '') + 'dom-' + obj.get('type') + '-' + obj.get('id');
+}
+
+export default Ember.Helper.helper(domId);

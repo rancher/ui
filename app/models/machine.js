@@ -14,6 +14,30 @@ var pendingStates = [
 var Machine = Resource.extend(PolledResource, {
   type: 'machine',
   reservedKeys: ['hostsUpdated','hosts','isPending'],
+  actions: {
+
+    clone: function() {
+      this.get('router').transitionTo('hosts.new.'+this.get('driver'), {queryParams: {machineId: this.get('id')}});
+    },
+  },
+
+  availableActions: function() {
+    var a = this.get('actionLinks')||{};
+
+    var out = [
+      { label: 'Delete', icon: 'icon icon-trash', action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { divider: true },
+    ];
+
+    if ( this.hasLink('config') )
+    {
+      out.push({ label: 'Machine Config', icon: 'icon icon-download', action: 'machineConfig', enabled: true});
+    }
+
+    out.push({ label: 'View in API', icon: 'icon icon-externallink', action: 'goToApi', enabled: true});
+
+    return out;
+  }.property('actionLinks.remove', 'links.config'),
 
   hostsUpdated: 0,
   onHostChanged: function() {
