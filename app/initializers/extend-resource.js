@@ -4,8 +4,6 @@ import CattleTransitioningResource from 'ui/mixins/cattle-transitioning-resource
 export function initialize(/* container, application */) {
   Resource.reopen(CattleTransitioningResource);
   Resource.reopenClass({
-    pollTransitioningDelay: 30000,
-    pollTransitioningInterval: 30000,
     defaultStateIcon: 'icon icon-help',
     defaultStateColor: 'text-primary',
   });

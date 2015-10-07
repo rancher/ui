@@ -62,7 +62,7 @@ export default Ember.Controller.extend(CattleTransitioningController, {
   },
 
   availableActions: function() {
-    var a = this.get('model.actions');
+    var a = this.get('model.actionLinks');
 
     var out = [
       { label: 'Start Services',  icon: 'icon icon-play',             action: 'activateServices',    enabled: this.get('model.canActivate') },
@@ -78,7 +78,7 @@ export default Ember.Controller.extend(CattleTransitioningController, {
     ];
 
     return out;
-  }.property('model.actions.{remove,purge,exportconfig}','model.{canActivate,canDeactivate}'),
+  }.property('model.actionLinks.{remove,purge,exportconfig}','model.{canActivate,canDeactivate}'),
 
   state: Ember.computed.alias('model.combinedState'),
 });

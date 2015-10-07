@@ -51,7 +51,7 @@ export default Ember.Controller.extend(CattleTransitioningController, {
   },
 
   availableActions: function() {
-    var a = this.get('model.actions');
+    var a = this.get('model.actionLinks');
 
     var choices = [
       { label: 'Activate',      icon: 'icon icon-play',  action: 'activate',     enabled: !!a.activate},
@@ -67,5 +67,5 @@ export default Ember.Controller.extend(CattleTransitioningController, {
     choices.pushObject({label: 'Set as default login Environment', icon: '', action: 'setAsDefault', enabled: this.get('model.canSetDefault')});
 
     return choices;
-  }.property('model.actions.{activate,deactivate,update,restore,purge}','model.{state,canRemove,canSetDefault}'),
+  }.property('model.actionLinks.{activate,deactivate,update,restore,purge}','model.{state,canRemove,canSetDefault}'),
 });

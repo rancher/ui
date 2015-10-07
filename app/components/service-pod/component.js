@@ -7,7 +7,7 @@ export default Ember.Component.extend(ReadLabels, {
   mode: null,
 
   labelResource: Ember.computed.alias('model.launchConfig'),
-  classNames: ['pod','service','resource-action-hover'],
+  classNames: ['pod','service'],
   classNameBindings: ['stateBorder'],
 
   actions: {

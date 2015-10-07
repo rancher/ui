@@ -20,7 +20,7 @@ export default Ember.Controller.extend(CattleTransitioningController, {
   },
 
   availableActions: function() {
-    var a = this.get('model.actions');
+    var a = this.get('model.actionLinks');
 
     return [
       { label: 'Activate',      icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate },
@@ -33,5 +33,5 @@ export default Ember.Controller.extend(CattleTransitioningController, {
       { label: 'Edit',          icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
       { label: 'View in API',   icon: 'icon icon-externallink', action: 'goToApi',      enabled: true },
     ];
-  }.property('model.actions.{update,activate,deactivate,restore,remove,purge}'),
+  }.property('model.actionLinks.{update,activate,deactivate,restore,remove,purge}'),
 });

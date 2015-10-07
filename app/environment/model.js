@@ -67,8 +67,8 @@ var Environment = Resource.extend({
       return false;
     }
 
-    return this.get('services').filterBy('actions.activate').get('length') > 0;
-  }.property('services.@each.state','actions.activateservices'),
+    return this.get('services').filterBy('actionLinks.activate').get('length') > 0;
+  }.property('services.@each.state','actionLinks.activateservices'),
 
   canDeactivate: function() {
     if ( !this.hasAction('deactivateservices') )
@@ -82,8 +82,8 @@ var Environment = Resource.extend({
       return false;
     }
 
-    return this.get('services').filterBy('actions.deactivate').get('length') > 0;
-  }.property('services.@each.state','actions.deactivateservices'),
+    return this.get('services').filterBy('actionLinks.deactivate').get('length') > 0;
+  }.property('services.@each.state','actionLinks.deactivateservices'),
 
 
   unremovedServices: function() {

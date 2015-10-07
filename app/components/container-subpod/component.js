@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import FasterLinksAndMenus from 'ui/mixins/faster-links-and-menus';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(FasterLinksAndMenus, {
   model: null,
   children: null,
   groupHasChildren: false,
@@ -35,14 +36,6 @@ export default Ember.Component.extend({
       return name;
     }
   }.property('stripProject','prefixLength','model.displayName'),
-
-  click: function() {
-    // For touch devices, show actions on a click anywhere in the component
-    if ( $('BODY').hasClass('touch') )
-    {
-      this.send('showActions');
-    }
-  },
 
   stateBackground: function() {
     return this.get('model.stateColor').replace("text-","bg-");

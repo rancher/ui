@@ -27,7 +27,7 @@ export default Ember.Component.extend({
   },
 
   activeActions: function() {
-    var list =  (this.get('choices')||[]).filter(function(act) {
+    var list =  (this.get('choices')||this.get('model.availableActions')||[]).filter(function(act) {
       return Ember.get(act,'enabled') || Ember.get(act,'divider');
     });
 

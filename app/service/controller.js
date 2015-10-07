@@ -91,7 +91,7 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
   },
 
   availableActions: function() {
-    var a = this.get('model.actions');
+    var a = this.get('model.actionLinks');
 
     var choices = [
       { label: 'Start',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
@@ -106,7 +106,7 @@ var ServiceController = Ember.Controller.extend(CattleTransitioningController, {
     ];
 
     return choices;
-  }.property('model.actions.{activate,deactivate,update,remove,purge,cancelupgrade}'),
+  }.property('model.actionLinks.{activate,deactivate,update,remove,purge,cancelupgrade}'),
 
   state: Ember.computed.alias('model.combinedState'),
 });

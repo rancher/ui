@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
+import C from 'ui/utils/constants';
 
 var Container = Resource.extend({
   // Common to all instances
@@ -20,6 +21,79 @@ var Container = Resource.extend({
   dataVolumesFrom: null,
   devices: null,
   restartPolicy: null,
+
+  _actions: {
+    restart: function() {
+      return this.doAction('restart');
+    },
+
+    start: function() {
+      return this.doAction('start');
+    },
+
+    stop: function() {
+      return this.doAction('stop');
+    },
+
+    shell: function() {
+      this.get('application').setProperties({
+        showShell: true,
+        originalModel: this.get('model'),
+      });
+    },
+
+    logs: function() {
+      this.get('application').setProperties({
+        showContainerLogs: true,
+        originalModel: this.get('model'),
+      });
+    },
+
+    edit: function() {
+      this.get('application').setProperties({
+        editContainer: true,
+        originalModel: this.get('model'),
+      });
+    },
+
+    clone: function() {
+      this.get('router').transitionTo('containers.new', {queryParams: {containerId: this.get('model.id')}});
+    },
+
+    cloneToService: function() {
+      this.get('router').transitionTo('service.new', {queryParams: {containerId: this.get('model.id')}});
+    },
+  },
+
+  availableActions: function() {
+    var a = this.get('actionLinks');
+    if ( !a )
+    {
+      return [];
+    }
+
+    var isSystem = this.get('systemContainer') !== null;
+    var isService = Object.keys(this.get('labels')||{}).indexOf(C.LABEL.SERVICE_NAME) >= 0;
+
+    var choices = [
+      { label: 'Restart',       icon: 'icon icon-refresh',      action: 'restart',      enabled: !!a.restart },
+      { label: 'Start',         icon: 'icon icon-play',         action: 'start',        enabled: !!a.start },
+      { label: 'Stop',          icon: 'icon icon-pause',        action: 'stop',         enabled: !!a.stop },
+      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('model.canDelete'), altAction: 'delete' },
+      { label: 'Restore',       icon: '',                       action: 'restore',      enabled: !!a.restore },
+      { label: 'Purge',         icon: '',                       action: 'purge',        enabled: !!a.purge },
+      { divider: true },
+      { label: 'Execute Shell', icon: '',                       action: 'shell',        enabled: !!a.execute },
+      { label: 'View Logs',     icon: '',                       action: 'logs',         enabled: !!a.logs },
+      { label: 'View in API',   icon: 'icon icon-externallink', action: 'goToApi',      enabled: true },
+      { divider: true },
+      { label: 'Clone',         icon: 'icon icon-copy',         action: 'clone',        enabled: !isSystem && !isService },
+      { label: 'Edit',          icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
+    ];
+
+    return choices;
+  }.property('actionLinks.{restart,start,stop,restore,purge,execute,logs,update}','canDelete','systemContainer','labels'),
+
 
   // Hacks
   hasManagedNetwork: function() {

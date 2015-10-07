@@ -38,7 +38,7 @@ export default Ember.Controller.extend(CattleTransitioningController, DownloadMa
   },
 
   availableActions: function() {
-    var a = this.get('model.actions');
+    var a = this.get('model.actionLinks');
 
     var out = [
       { label: 'Activate',      icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
@@ -62,6 +62,6 @@ export default Ember.Controller.extend(CattleTransitioningController, DownloadMa
     out.push({ label: 'Edit', icon: 'icon icon-edit', action: 'edit', enabled: !!a.update });
 
     return out;
-  }.property('model.actions.{activate,deactivate,remove,purge,update}','model.machine','model.machine.links.config'),
+  }.property('model.actionLinks.{activate,deactivate,remove,purge,update}','model.machine','model.machine.links.config'),
 
 });

@@ -19,34 +19,7 @@
     </thead>
     <tbody>
       {{#each arranged as |container|}}
-        <tr>
-          <td>
-            <span class="badge state {{container.stateBackground}}">
-              {{container.displayState}}
-            </span>
-          </td>
-          <td class="force-wrap">
-            {{#link-to "container" container.id}}{{container.displayName}}{{/link-to}}
-          </td>
-          <td>
-            {{container.displayIp}}
-          </td>
-          <td class="clip">
-            {{display-image container.imageUuid}}
-          </td>
-          <td class="clip">
-            {{#if container.command}}
-              {{container.command}}
-            {{else}}
-              <span class="text-muted">None</span>
-            {{/if}}
-          </td>
-          <td class="actions">
-            {{#with container controller="container" as |ctrl|}}
-              {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
-            {{/with}}
-          </td>
-        </tr>
+        {{container-row model=container}}
       {{else}}
         <tr><td colspan="6" class="text-center text-muted">You do not have any containers yet.</td></tr>
       {{/each}}

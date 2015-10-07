@@ -1,6 +1,7 @@
 export function initialize(container, application) {
-  // Injects all Ember components with a router object:
+  // Injects all Ember components & models (for actions) with a router object:
   application.inject('component', 'router', 'router:main');
+  application.inject('model',     'router', 'router:main');
 }
 
 export default {

@@ -19,30 +19,7 @@
     </thead>
     <tbody>
       {{#each arranged as |registry|}}
-        <tr>
-          <td>
-            <span class="badge state {{registry.stateBackground}}">
-              {{registry.displayState}}
-            </span>
-          </td>
-          <td>
-            {{registry.displayAddress}}
-          </td>
-          <td>
-            {{#if registry.credential.email}}{{registry.credential.email}}{{else}}<i class="text-muted">None</i>{{/if}}
-          </td>
-          <td>
-            {{#if registry.credential.publicValue}}{{registry.credential.publicValue}}{{else}}<i class="text-muted">None</i>{{/if}}
-          </td>
-          <td>
-            {{date-calendar registry.created}}
-          </td>
-          <td align="right">
-            {{#with registry controller="registry" as |ctrl|}}
-              {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
-            {{/with}}
-          </td>
-        </tr>
+        {{registry-row model=registry}}
       {{else}}
         <tr><td colspan="6" class="text-center text-muted">You don't have any registries yet.</td></tr>
       {{/each}}

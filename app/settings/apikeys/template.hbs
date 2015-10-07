@@ -26,30 +26,7 @@
     </thead>
     <tbody>
       {{#each arranged as |key|}}
-        <tr>
-          <td>
-            <span class="badge state {{key.stateBackground}}">
-              {{key.displayState}}
-            </span>
-          </td>
-          <td>
-            {{#if key.name}}{{key.displayName}}{{else}}<span class="text-muted">None</span>{{/if}}
-          </td>
-          <td>
-            {{#if key.description}}{{key.description}}{{else}}<span class="text-muted">None</span>{{/if}}
-          </td>
-          <td>
-            {{#if key.publicValue}}{{key.publicValue}}{{else}}<span class="text-muted">No public value</span>{{/if}}
-          </td>
-          <td>
-            <div class="text-muted">{{date-calendar key.created}}</div>
-          </td>
-          <td align="right">
-            {{#with key controller="apikey" as |ctrl|}}
-              {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
-            {{/with}}
-          </td>
-        </tr>
+        {{apikey-row model=key}}
       {{else}}
         <tr><td colspan="6" class="text-center text-muted">You don't have any API keys yet.</td></tr>
       {{/each}}

@@ -1,4 +1,5 @@
 import Resource from 'ember-api-store/models/resource';
+import PolledResource from 'ui/mixins/cattle-polled-resource';
 
 var pendingStates = [
   'requested',
@@ -10,7 +11,7 @@ var pendingStates = [
   'updating'
 ];
 
-var Machine = Resource.extend({
+var Machine = Resource.extend(PolledResource, {
   type: 'machine',
   reservedKeys: ['hostsUpdated','hosts','isPending'],
 

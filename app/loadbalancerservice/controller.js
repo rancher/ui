@@ -22,7 +22,7 @@ var LoadBalancerServiceController = Cattle.LegacyTransitioningResourceController
 
   availableActions: function() {
 
-    var a = this.get('actions');
+    var a = this.get('actionLinks');
 
     var choices = [
       { label: 'Start',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
@@ -36,7 +36,7 @@ var LoadBalancerServiceController = Cattle.LegacyTransitioningResourceController
     ];
 
     return choices;
-  }.property('actions.{activate,deactivate,update,remove,purge}'),
+  }.property('actionLinks.{activate,deactivate,update,remove,purge}'),
 
   getEnvironment: function() {
     return this.get('store').find('environment', this.get('environmentId'));

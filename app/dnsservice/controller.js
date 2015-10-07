@@ -34,7 +34,7 @@ var DnsServiceController = Cattle.LegacyTransitioningResourceController.extend({
   },
 
   availableActions: function() {
-    var a = this.get('actions');
+    var a = this.get('actionLinks');
 
     var choices = [
       { label: 'Start',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
@@ -48,7 +48,7 @@ var DnsServiceController = Cattle.LegacyTransitioningResourceController.extend({
     ];
 
     return choices;
-  }.property('actions.{activate,deactivate,update,remove,purge}'),
+  }.property('actionLinks.{activate,deactivate,update,remove,purge}'),
 
   state: Ember.computed.alias('model.combinedState'),
 });

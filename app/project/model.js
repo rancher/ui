@@ -1,8 +1,9 @@
 import Resource from 'ember-api-store/models/resource';
+import PolledResource from 'ui/mixins/cattle-polled-resource';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
-var Project = Resource.extend({
+var Project = Resource.extend(PolledResource, {
   session: Ember.inject.service(),
   prefs: Ember.inject.service(),
 
@@ -34,8 +35,8 @@ var Project = Resource.extend({
   }.property('session' + C.SESSION.PROJECT, 'id'),
 
   canRemove: function() {
-    return !!this.get('actions.remove') && ['removing','removed','purging','purged'].indexOf(this.get('state')) === -1;
-  }.property('state','actions.remove'),
+    return !!this.get('actionLinks.remove') && ['removing','removed','purging','purged'].indexOf(this.get('state')) === -1;
+  }.property('state','actionLinks.remove'),
 
   canSetDefault: function() {
     return this.get('state') === 'active' && !this.get('isDefault');

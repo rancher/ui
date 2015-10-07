@@ -5,7 +5,7 @@ var CertificateController = Ember.Controller.extend(CattleTransitioningControlle
   needs: ['application'],
 
   availableActions: function() {
-    var a = this.get('model.actions');
+    var a = this.get('model.actionLinks');
     if ( !a )
     {
       return [];
@@ -20,7 +20,7 @@ var CertificateController = Ember.Controller.extend(CattleTransitioningControlle
     ];
 
     return choices;
-  }.property('model.actions.{remove,restore,purge,update}'),
+  }.property('model.actionLinks.{remove,restore,purge,update}'),
 });
 
 CertificateController.reopenClass({

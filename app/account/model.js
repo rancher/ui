@@ -1,7 +1,8 @@
 import Resource from 'ember-api-store/models/resource';
+import PolledResource from 'ui/mixins/cattle-polled-resource';
 import C from 'ui/utils/constants';
 
-var Account = Resource.extend({
+var Account = Resource.extend(PolledResource, {
   type: 'account',
 
   username: function() {
