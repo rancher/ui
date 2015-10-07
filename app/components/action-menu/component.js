@@ -9,6 +9,7 @@ export default Ember.Component.extend({
 
   click(event) {
     event.preventDefault();
+    event.stopPropagation();
     this.get('resourceActions').show(this.get('model'), event.target, this.$());
   },
 

@@ -1,4 +1,4 @@
-import Service from 'ui/service/model';
+import Service from 'ui/models/service';
 
 var DnsService = Service.extend({
   type: 'dnsService',

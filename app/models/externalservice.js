@@ -1,4 +1,4 @@
-import Service from 'ui/service/model';
+import Service from 'ui/models/service';
 
 var ExternalService = Service.extend({
   type: 'externalService',
