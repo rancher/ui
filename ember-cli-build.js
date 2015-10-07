@@ -16,13 +16,15 @@ module.exports = function(defaults) {
     }
   });
 
+  console.log("Fingerprinting:", appConfig.fingerprint);
+
   var app = new EmberApp(defaults, {
     storeConfigInMeta: false,
     inlineContent: inline,
 
     fingerprint: {
       exclude: ['fontawesome'],
-      extensions: ['js','css','png','jpg','gif','svg','map','woff','woff2','ttf'],
+      extensions: (appConfig.fingerprint === 'no' ? [] : ['js','css','png','jpg','gif','svg','map','woff','woff2','ttf']),
     },
 
     sourcemaps: {

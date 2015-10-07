@@ -79,6 +79,10 @@ module.exports = function(environment) {
     ENV.baseURL = process.env.BASE_URL;
   }
 
+  if (process.env.FINGERPRINT) {
+    ENV.APP.fingerprint = process.env.FINGERPRINT;
+  }
+
   if (process.env.BASE_ASSETS) {
     ENV.APP.baseAssets = process.env.BASE_ASSETS;
   }

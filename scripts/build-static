@@ -56,6 +56,7 @@ LATEST=0
 UPLOAD=0
 TAG=0
 ENVIRONMENT="production"
+FINGERPRINT="yes"
 : ${FORCE_VERSION:=""}
 
 while getopts ":dlutfv:" opt;do
@@ -130,6 +131,10 @@ else
   fi
 fi
 
+if [[ "${VERSION}" == "latest" ]]; then
+  FINGERPRINT="no"
+fi
+
 BUILD_PAR="dist/static"
 BUILD_DIR="${BUILD_PAR}/${VERSION}"
 BUILD_TGZ="${BUILD_PAR}/${VERSION}.tar.gz"
@@ -164,7 +169,7 @@ runCmd tar -czf ${BUILD_TGZ} -C ${BUILD_PAR} ${VERSION}
 fi;
 
 echo "Building Hosted Version..."
-RANCHER_ENDPOINT="" BASE_ASSETS="//${CDN}/${VERSION}/" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
+FINGERPRINT="${FINGERPRINT}" RANCHER_ENDPOINT="" BASE_ASSETS="//${CDN}/${VERSION}/" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
 
 # Create a file containing the version
 echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
