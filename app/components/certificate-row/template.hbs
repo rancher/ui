@@ -1,0 +1,26 @@
+<td>
+  <span class="badge state {{model.stateBackground}}">
+    {{model.displayState}}
+  </span>
+</td>
+<td class="force-wrap">
+  <a href="/infra/certificates/{{model.id}}" data-transition-link="true">{{model.displayName}}</a>
+</td>
+<td>
+  {{#if model.CN}}
+    {{model.CN}}
+    {{#if model.countableSans.length}}
+      + {{model.countableSans.length}} other{{if (eq model.countableSans.length 1) "" "s"}}
+    {{/if}}
+  {{else}}
+    <span class="text-muted">None</span>
+  {{/if}}
+</td>
+<td>
+  <span class="{{if model.expiresSoon "text-bold text-danger"}}">
+    {{date-from-now model.expiresDate}}
+  </span>
+</td>
+<td class="actions">
+  <button type="button" class="btn-circle-menu"></button>
+</td>

@@ -4,7 +4,6 @@ import BootstrapFixes from 'ui/utils/bootstrap-fixes';
 export default Ember.Component.extend({
   model: null,
   choices: null,
-  parentController: null,
 
   classNames: ['resource-actions'],
   classNameBindings: ['activeActions.length::hide'],
@@ -57,7 +56,7 @@ export default Ember.Component.extend({
 
   actions: {
     clicked: function(actionName) {
-      this.get('model').send(actionName, this.get('parentController'));
+      this.get('model').send(actionName);
     }
   },
 });

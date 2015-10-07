@@ -3,6 +3,18 @@ import Resource from 'ember-api-store/models/resource';
 
 var Volume = Resource.extend({
   type: 'volume',
+
+  availableActions: function() {
+    var a = this.get('actionLinks');
+
+    return [
+      { label: 'Delete',  icon: 'icon icon-trash', action: 'promptDelete', enabled: this.get('model.canDelete'), altAction: 'delete' },
+      { divider: true },
+      { label: 'Restore', icon: '',                action: 'restore',      enabled: !!a.restore },
+      { label: 'Purge',   icon: '',                action: 'purge',        enabled: !!a.purge },
+    ];
+  }.property('actionLinks.{restore,purge}','model.canDelete'),
+
   displayUri: function() {
     return (this.get('uri')||'').replace(/^file:\/\//,'');
   }.property('uri'),

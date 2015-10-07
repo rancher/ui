@@ -25,46 +25,9 @@
     </thead>
     <tbody>
       {{#each arranged as |account|}}
-        <tr>
-          <td>
-            <span class="badge state {{account.stateBackground}}">
-              {{account.displayState}}
-            </span>
-          </td>
-          <td>
-            {{account.id}}
-          </td>
-          <td>
-            {{uc-first account.kind}}
-          </td>
-          {{#if isLocal}}
-            <td>
-              {{#if account.username}}
-                {{account.username}}
-              {{else}}
-                <span class="text-muted">None</span>
-              {{/if}}
-            </td>
-            <td class="force-wrap">
-              {{account.displayName}}
-            </td>
-          {{else}}
-            <td>
-              {{#if (and account.externalId account.externalIdType)}}
-                {{identity-block externalIdType=account.externalIdType externalId=account.externalId}}
-              {{else}}
-                <span class="text-muted">None</span>
-              {{/if}}
-            </td>
-          {{/if}}
-          <td class="actions">
-            {{#with account controller="account" as |ctrl|}}
-              {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
-            {{/with}}
-          </td>
-        </tr>
+        {{account-row model=account isLocal=isLocal}}
       {{else}}
-        <tr><td colspan="4" class="text-center text-muted">There are no accounts yet.</td></tr>
+        <tr><td colspan="{{if isLocal '6' '5'}}" class="text-center text-muted">There are no accounts yet.</td></tr>
       {{/each}}
     </tbody>
   </table>

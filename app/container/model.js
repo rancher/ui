@@ -38,30 +38,30 @@ var Container = Resource.extend({
     shell: function() {
       this.get('application').setProperties({
         showShell: true,
-        originalModel: this.get('model'),
+        originalModel: this,
       });
     },
 
     logs: function() {
       this.get('application').setProperties({
         showContainerLogs: true,
-        originalModel: this.get('model'),
+        originalModel: this,
       });
     },
 
     edit: function() {
       this.get('application').setProperties({
         editContainer: true,
-        originalModel: this.get('model'),
+        originalModel: this,
       });
     },
 
     clone: function() {
-      this.get('router').transitionTo('containers.new', {queryParams: {containerId: this.get('model.id')}});
+      this.get('router').transitionTo('containers.new', {queryParams: {containerId: this.get('id')}});
     },
 
     cloneToService: function() {
-      this.get('router').transitionTo('service.new', {queryParams: {containerId: this.get('model.id')}});
+      this.get('router').transitionTo('service.new', {queryParams: {containerId: this.get('id')}});
     },
   },
 
@@ -79,7 +79,7 @@ var Container = Resource.extend({
       { label: 'Restart',       icon: 'icon icon-refresh',      action: 'restart',      enabled: !!a.restart },
       { label: 'Start',         icon: 'icon icon-play',         action: 'start',        enabled: !!a.start },
       { label: 'Stop',          icon: 'icon icon-pause',        action: 'stop',         enabled: !!a.stop },
-      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('model.canDelete'), altAction: 'delete' },
+      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
       { label: 'Restore',       icon: '',                       action: 'restore',      enabled: !!a.restore },
       { label: 'Purge',         icon: '',                       action: 'purge',        enabled: !!a.purge },
       { divider: true },

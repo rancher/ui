@@ -12,6 +12,110 @@ var _allDnsServices;
 var Service = Resource.extend(ReadLabels, {
   type: 'service',
 
+  actions: {
+    activate: function() {
+      return this.doAction('activate');
+    },
+
+    deactivate: function() {
+      return this.doAction('deactivate');
+    },
+
+    cancelUpgrade: function() {
+      return this.doAction('cancelupgrade');
+    },
+
+    edit: function() {
+      var type = this.get('type').toLowerCase();
+      if ( type === 'loadbalancerservice' )
+      {
+        this.importLink('loadBalancerListeners').then(() => {
+          this.get('application').setProperties({
+            editLoadBalancerService: true,
+            originalModel: this,
+          });
+        });
+      }
+      else if ( type === 'dnsservice' )
+      {
+        this.get('application').setProperties({
+          editAliasService: true,
+          originalModel: this,
+        });
+      }
+      else
+      {
+        this.get('application').setProperties({
+          editService: true,
+          originalModel: this,
+        });
+      }
+    },
+
+    scaleUp: function() {
+      this.incrementProperty('scale');
+      this.saveScale();
+    },
+
+    scaleDown: function() {
+      if ( this.get('scale') >= 1 )
+      {
+        this.decrementProperty('scale');
+        this.saveScale();
+      }
+    },
+
+    clone: function() {
+      var route;
+      switch ( this.get('type').toLowerCase() )
+      {
+        case 'service':             route = 'service.new';          break;
+        case 'dnsservice':          route = 'service.new-alias';    break;
+        case 'loadbalancerservice': route = 'service.new-balancer'; break;
+        case 'externalservice':     route = 'service.new-external'; break;
+        default: return void this.send('error','Unknown service type: ' + this.get('type'));
+      }
+
+      this.get('application').transitionToRoute(route, {queryParams: {
+        serviceId: this.get('id'),
+        environmentId: this.get('environmentId'),
+      }});
+    },
+  },
+
+  scaleTimer: null,
+  saveScale: function() {
+    if ( this.get('scaleTimer') )
+    {
+      Ember.run.cancel(this.get('scaleTimer'));
+    }
+
+    var timer = Ember.run.later(this, function() {
+      this.save();
+    }, 500);
+
+    this.set('scaleTimer', timer);
+  },
+
+  availableActions: function() {
+    var a = this.get('actionLinks');
+
+    var choices = [
+      { label: 'Start',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
+      { label: 'Stop',          icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
+      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'Cancel Upgrade',icon: '',                       action: 'cancelUpgrade',enabled: !!a.cancelupgrade },
+      { label: 'Purge',         icon: '',                       action: 'purge',        enabled: !!a.purge },
+      { divider: true },
+      { label: 'View in API',   icon: 'icon icon-externallink', action: 'goToApi',      enabled: true },
+      { label: 'Clone',         icon: 'icon icon-copy',         action: 'clone',        enabled: true },
+      { label: 'Edit',          icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
+    ];
+
+    return choices;
+  }.property('actionLinks.{activate,deactivate,update,remove,purge,cancelupgrade}'),
+
+
   _allMaps: null,
   consumedServicesUpdated: 0,
   serviceLinks: null, // Used for clone

@@ -1,6 +1,23 @@
 import Resource from 'ember-api-store/models/resource';
 
 export default Resource.extend({
+  availableActions: function() {
+    var a = this.get('actionLinks');
+    if ( !a )
+    {
+      return [];
+    }
+
+    var choices = [
+      { label: 'Delete',        icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
+      { label: 'Restore',       icon: 'icon icon-medicalcross',   action: 'restore',      enabled: !!a.restore },
+      { label: 'Purge',         icon: '',                         action: 'purge',        enabled: !!a.purge },
+      { divider: true },
+      { label: 'View in API',   icon: 'icon icon-externallink',   action: 'goToApi',      enabled: true },
+    ];
+
+    return choices;
+  }.property('actionLinks.{remove,restore,purge,update}'),
   issuedDate: function() {
     return new Date(this.get('issuedAt'));
   }.property('issuedAt'),

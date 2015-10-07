@@ -1,0 +1,34 @@
+<td>
+  <span class="badge state {{model.stateBackground}}">
+    {{model.displayState}}
+  </span>
+</td>
+<td>
+  {{model.id}}
+</td>
+<td>
+  {{uc-first model.kind}}
+</td>
+{{#if isLocal}}
+  <td>
+    {{#if model.username}}
+      {{model.username}}
+    {{else}}
+      <span class="text-muted">None</span>
+    {{/if}}
+  </td>
+  <td class="force-wrap">
+    {{model.displayName}}
+  </td>
+{{else}}
+  <td>
+    {{#if (and model.externalId model.externalIdType)}}
+      {{identity-block externalIdType=model.externalIdType externalId=model.externalId}}
+    {{else}}
+      <span class="text-muted">None</span>
+    {{/if}}
+  </td>
+{{/if}}
+<td class="actions">
+  <button type="button" class="btn-circle-menu"></button>
+</td>

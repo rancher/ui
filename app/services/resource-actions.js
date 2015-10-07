@@ -9,7 +9,7 @@ export default Ember.Service.extend({
     var $menu = $('#resource-actions');
     var $toggle = $(toggle||trigger);
 
-    if ( model === this.get('model') )
+    if ( model === this.get('model') && this.get('open') )
     {
       event.preventDefault();
       return;
@@ -17,7 +17,7 @@ export default Ember.Service.extend({
 
     this.set('model', model);
 
-    $('BODY').one('click', (event) => {
+    $('BODY').one('click', () => {
       $toggle.removeClass('open');
       $menu.addClass('hide');
       this.set('open', false);
@@ -37,7 +37,7 @@ export default Ember.Service.extend({
 
   activeActions: function() {
     var list = (this.get('model.availableActions')||[]).filter(function(act) {
-      return Ember.get(act,'enabled') || Ember.get(act,'divider');
+      return Ember.get(act,'enabled') !== false || Ember.get(act,'divider');
     });
 
     // Remove dividers at the beginning

@@ -1,9 +1,81 @@
 import Ember from 'ember';
+import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
 import { formatMib } from 'ui/utils/util';
 
 var Host = Resource.extend({
   type: 'host',
+
+  actions: {
+    activate: function() {
+      return this.doAction('activate');
+    },
+
+    deactivate: function() {
+      return this.doAction('deactivate');
+    },
+
+    purge: function() {
+      return this.doAction('purge');
+    },
+
+    newContainer: function() {
+      this.get('application').transitionToRoute('containers.new', {queryParams: {hostId: this.get('model.id')}});
+    },
+
+    clone: function() {
+      var machine = this.get('machine');
+      this.get('application').transitionToRoute('hosts.new.'+machine.get('driver'), {queryParams: {machineId: machine.get('id')}});
+    },
+
+    edit: function() {
+      this.get('application').setProperties({
+        editHost: true,
+        originalModel: this,
+      });
+    },
+
+    machineConfig: function() {
+      var machine = this.get('machine');
+      if ( machine )
+      {
+        var url = machine.linkFor('config');
+        if ( url )
+        {
+          url = this.get('endpoint').addAuthParams(url);
+          Util.download(url);
+        }
+      }
+    }
+  },
+
+  availableActions: function() {
+    var a = this.get('actionLinks');
+
+    var out = [
+      { label: 'Activate',      icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
+      { label: 'Deactivate',    icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
+      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'Purge',         icon: '',                       action: 'purge',        enabled: !!a.purge,       color: 'text-danger'},
+      { divider: true },
+      { label: 'View in API',   icon: 'icon icon-externallink', action: 'goToApi',      enabled: true},
+    ];
+
+    if ( this.get('machine') )
+    {
+      if ( this.get('machine.links.config') )
+      {
+        out.push({ label: 'Machine Config', icon: 'icon icon-download', action: 'machineConfig', enabled: true});
+      }
+
+      out.push({ label: 'Clone', icon: 'icon icon-copy', action: 'clone', enabled: true });
+    }
+
+    out.push({ label: 'Edit', icon: 'icon icon-edit', action: 'edit', enabled: !!a.update });
+
+    return out;
+  }.property('actionLinks.{activate,deactivate,remove,purge,update}','machine','machine.links.config'),
+
 
   instancesUpdated: 0,
   onInstanceChanged: function() {

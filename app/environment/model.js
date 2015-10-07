@@ -3,6 +3,81 @@ import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 
 var Environment = Resource.extend({
   type: 'environment',
+  endpoint: Ember.inject.service(),
+
+  actions: {
+    activateServices: function() {
+      return this.doAction('activateservices');
+    },
+
+    deactivateServices: function() {
+      return this.doAction('deactivateservices');
+    },
+
+    addService: function() {
+      this.get('controllers.application').transitionToRoute('service.new', {
+        queryParams: {
+          environmentId: this.get('id'),
+        },
+      });
+    },
+
+    addBalancer: function() {
+      this.get('controllers.application').transitionToRoute('service.new-balancer', {
+        queryParams: {
+          environmentId: this.get('id'),
+        },
+      });
+    },
+
+    edit: function() {
+      this.get('controllers.application').setProperties({
+        editEnvironment: true,
+        originalModel: this,
+      });
+    },
+
+    exportConfig: function() {
+      var url = this.get('endpoint').addAuthParams(this.linkFor('composeConfig'));
+      Util.download(url);
+    },
+
+    viewCode: function() {
+      this.get('application').transitionToRoute('environment.code', this.get('id'));
+    },
+
+    viewGraph: function() {
+      this.get('application').transitionToRoute('environment.graph', this.get('id'));
+    },
+
+    delete: function() {
+      return this._super().then(() => {
+        if ( this.get('application.currentRouteName') === 'environment.index' )
+        {
+          this.get('router').transitionTo('environments');
+        }
+      });
+    },
+  },
+
+  availableActions: function() {
+    var a = this.get('actionLinks');
+
+    var out = [
+      { label: 'Start Services',  icon: 'icon icon-play',             action: 'activateServices',    enabled: this.get('canActivate') },
+      { label: 'Stop Services',   icon: 'icon icon-pause',            action: 'deactivateServices',  enabled: this.get('canDeactivate') },
+      { label: 'View Graph',      icon: 'icon icon-share',            action: 'viewGraph',            enabled: true },
+      { label: 'View Config',     icon: 'icon icon-files',            action: 'viewCode',            enabled: true },
+      { label: 'Export Config',   icon: 'icon icon-download',         action: 'exportConfig',        enabled: !!a.exportconfig },
+      { divider: true },
+      { label: 'Delete',          icon: 'icon icon-trash',            action: 'promptDelete',        enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'View in API',     icon: 'icon icon-externallink',     action: 'goToApi',             enabled: true },
+      { divider: true },
+      { label: 'Edit',            icon: 'icon icon-edit',             action: 'edit',                enabled: true },
+    ];
+
+    return out;
+  }.property('actionLinks.{remove,purge,exportconfig}','canActivate','canDeactivate'),
 
   healthState: function() {
     // Get the state of each instance

@@ -29,7 +29,7 @@ module.exports = function(environment) {
       'script-src': "'self' releases.rancher.com",
       'object-src': "'self' releases.rancher.com",
       'img-src':    "'self' releases.rancher.com avatars.githubusercontent.com gravatar.com data:",
-      'frame-src':  "'self'",
+      'frame-src':  "'self' releases.rancher.com",
 
       // Allow connect to anywhere, for console and event stream socket
       'connect-src': '*'

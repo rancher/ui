@@ -18,38 +18,9 @@
     </thead>
     <tbody>
       {{#each arranged as |cert|}}
-        <tr>
-          <td>
-            <span class="badge state {{cert.stateBackground}}">
-              {{cert.displayState}}
-            </span>
-          </td>
-          <td class="force-wrap">
-            {{#link-to "certificates.detail" cert.id}}{{cert.displayName}}{{/link-to}}
-          </td>
-          <td>
-            {{#if cert.CN}}
-              {{cert.CN}}
-              {{#if cert.countableSans.length}}
-                + {{cert.countableSans.length}} other{{if (eq cert.countableSans.length 1) "" "s"}}
-              {{/if}}
-            {{else}}
-              <span class="text-muted">None</span>
-            {{/if}}
-          </td>
-          <td>
-            <span class="{{if cert.expiresSoon "text-bold text-danger"}}">
-              {{date-from-now cert.expiresDate}}
-            </span>
-          </td>
-          <td class="actions">
-            {{#with cert controller="certificate" as |ctrl|}}
-              {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
-            {{/with}}
-          </td>
-        </tr>
+        {{certificate-row model=cert}}
       {{else}}
-        <tr><td colspan="6" class="text-center text-muted">You do not have any certificates yet.</td></tr>
+        <tr><td colspan="5" class="text-center text-muted">You do not have any certificates yet.</td></tr>
       {{/each}}
     </tbody>
   </table>

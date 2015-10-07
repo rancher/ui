@@ -75,8 +75,7 @@ export default Ember.Component.extend({
 
     changePassword() {
       this.get('store').find('account', this.get('session.'+C.SESSION.ACCOUNT_ID)).then((account) => {
-        //@TODO bad...
-        window.lc('application').setProperties({
+        this.get('application').setProperties({
           editAccount: true,
           originalModel: account
         });

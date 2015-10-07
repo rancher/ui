@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import ReadLabels from 'ui/mixins/read-labels';
+import FasterLinksAndMenus from 'ui/mixins/faster-links-and-menus';
 import C from 'ui/utils/constants';
 
-export default Ember.Component.extend(ReadLabels, {
+export default Ember.Component.extend(ReadLabels, FasterLinksAndMenus, {
   model: null,
   mode: null,
 

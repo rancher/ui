@@ -28,29 +28,9 @@
     </thead>
     <tbody>
       {{#each arranged as |p|}}
-        <tr>
-          <td>
-            <span class="badge state {{p.stateBackground}}">
-              {{p.displayState}}
-            </span>
-          </td>
-          <td>
-            {{#link-to "settings.project-detail" p.id}}{{p.displayName}}{{/link-to}}
-          </td>
-          <td>
-            {{#if p.description}}{{p.description}}{{else}}<span class="text-muted">No description</span>{{/if}}
-          </td>
-            <td>
-              {{#if p.isDefault}}<i class="icon icon-check"></i>{{else}}<span class="text-muted">&ndash;</span>{{/if}}
-            </td>
-          <td align="right">
-            {{#with p controller="project" as |ctrl|}}
-              {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
-            {{/with}}
-          </td>
-        </tr>
+        {{project-row model=p}}
       {{else}}
-        <tr><td colspan="4" class="text-center text-muted">You don't have any environments yet.</td></tr>
+        <tr><td colspan="5" class="text-center text-muted">You don't have any environments yet.</td></tr>
       {{/each}}
     </tbody>
   </table>

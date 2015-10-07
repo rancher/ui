@@ -14,7 +14,7 @@ export default Ember.Component.extend({
 
   actions: {
     clicked: function(actionName) {
-      this.get('model').send(actionName, this.get('parentController'));
+      this.get('model').send(actionName);
     }
   },
 });
