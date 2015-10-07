@@ -15,14 +15,15 @@
   Hover actions on devices with mice, always shown on devices with touch.
 
   Put .resource-action-hover on a parent node that you want to trigger display of the actions on.
-
-  If there are nested nodes with actions, put .no-resource-action-hover on a node that wraps the inner nodes
-  to prevent hover on the parent from triggering hover on the children.
 */
 .no-touch {
   .resource-action-hover {
     .resource-actions {
       display: none;
+
+      &.open {
+        display: block;
+      }
     }
 
     &.hover {
@@ -32,20 +33,6 @@
 
       .resource-actions {
         display: block;
-      }
-
-      .no-resource-action-hover {
-        .resource-actions {
-          display: none;
-        }
-      }
-    }
-
-    .no-resource-action-hover {
-      .resource-action-hover.hover {
-        .resource-actions {
-          display: block;
-        }
       }
     }
   }
@@ -59,11 +46,13 @@
     padding: 0 3px;
   }
 
-  .dropdown-menu {
+  .dropdown-menu,
+  &.dropdown-menu {
     min-width: 123px;
   }
 
-  .dropdown-menu > LI > A {
+  .dropdown-menu > LI > A,
+  &.dropdown-menu > LI > A {
     position: relative;
     padding: 3px 35px 5px 10px;
     font-size: 13px;
@@ -79,4 +68,8 @@
       color: #fff;
     }
   }
+}
+
+.global-actions {
+  position: absolute;
 }

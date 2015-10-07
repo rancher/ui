@@ -7,7 +7,7 @@ export function initialize(/* container, application */) {
   Ember.TextArea.reopen(SafeStyle);
   Ember.Checkbox.reopen(SafeStyle);
 
-  Ember.LinkView.reopen({
+  Ember.LinkComponent.reopen({
     attributeBindings: ['tooltip'],
   });
 }

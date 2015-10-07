@@ -29,7 +29,7 @@ var RegistryController = Cattle.LegacyTransitioningResourceController.extend({
   }.property('email','publicValue','id'),
 
   availableActions: function() {
-    var a = this.get('actions');
+    var a = this.get('actionLinks');
 
     return [
       { label: 'Activate',      icon: 'icon icon-play',   action: 'activate',     enabled: !!a.activate },
@@ -39,7 +39,7 @@ var RegistryController = Cattle.LegacyTransitioningResourceController.extend({
       { label: 'Restore',       icon: '',                 action: 'restore',      enabled: !!a.restore },
       { label: 'Purge',         icon: '',                 action: 'purge',        enabled: !!a.purge },
     ];
-  }.property('actions.{update,activate,deactivate,restore,remove,purge}'),
+  }.property('actionLinks.{update,activate,deactivate,restore,remove,purge}'),
 });
 
 export default RegistryController;

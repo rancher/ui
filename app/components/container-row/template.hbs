@@ -1,0 +1,34 @@
+<td>
+  <span class="badge state {{model.stateBackground}}">
+    {{model.displayState}}
+  </span>
+</td>
+<td class="force-wrap">
+  <a href="/infra/containers/{{model.id}}" data-transition-link="true">{{model.displayName}}</a>
+</td>
+<td>
+  {{model.displayIp}}
+</td>
+<td class="clip">
+  {{display-image model.imageUuid}}
+</td>
+<td class="clip">
+  {{#if model.command}}
+    {{model.command}}
+  {{else}}
+    <span class="text-muted">None</span>
+  {{/if}}
+</td>
+{{#if showStats}}
+  <td class="spark-td">
+    {{#if model.cpuSpark}}
+      {{spark-line data=model.cpuSpark     width=60 height=15 max=cpuMax     classNames="spark-tl" prefix="CPU: " formatter="percent"}}
+      {{spark-line data=model.memorySpark  width=60 height=15 max=memoryMax  classNames="spark-tr" prefix="Memory: " formatter="mib"}}
+      {{spark-line data=model.networkSpark width=60 height=15 max=networkMax classNames="spark-bl" prefix="Network: " formatter="kbps"}}
+      {{spark-line data=model.storageSpark width=60 height=15 max=storageMax classNames="spark-br" prefix="Storage: " formatter="kbps"}}
+    {{/if}}
+  </td>
+{{/if}}
+<td class="actions">
+  <button type="button" class="btn-circle-menu"></button>
+</td>

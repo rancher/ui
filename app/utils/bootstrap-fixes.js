@@ -1,20 +1,26 @@
 export function resizeDropdown(event, data) {
-  // https://github.com/twbs/bootstrap/issues/10756#issuecomment-41041800
+  // Preserve compatibility with existing signature
   var $item = $('.dropdown-menu', event.target);
   var target = data.relatedTarget;
+  var right = $item.hasClass('dropdown-menu-right');
+  return positionDropdown($item, target, right);
+}
 
-  var direction = ($item.hasClass('dropdown-menu-right') ? 'right' : 'left');
+export function positionDropdown(menu, trigger, right) {
+  // https://github.com/twbs/bootstrap/issues/10756#issuecomment-41041800
+  var direction = (right === true ? 'right' : 'left');
+  var $menu = $(menu);
 
   // reset position
-  $item.css({
+  menu.css({
     top: 0,
     left: 0
   });
 
   // calculate new position
   var calculator = new $.PositionCalculator({
-    item: $item,
-    target: target,
+    item: $menu,
+    target: trigger,
     itemAt: 'top ' + direction,
     itemOffset: {
       y: 3,
@@ -27,7 +33,7 @@ export function resizeDropdown(event, data) {
   var posResult = calculator.calculate();
 
   // set new position
-  $item.css({
+  $menu.css({
     top: posResult.moveBy.y + 'px',
     left: posResult.moveBy.x + 'px'
   });
@@ -35,5 +41,6 @@ export function resizeDropdown(event, data) {
 }
 
 export default {
-  resizeDropdown: resizeDropdown
+  resizeDropdown: resizeDropdown,
+  positionDropdown: positionDropdown
 };

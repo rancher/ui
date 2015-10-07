@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
 import { normalizeType } from 'ember-api-store/utils/normalize';
+import C from 'ui/utils/constants';
 
 const defaultStateMap = {
   'activating':       {icon: 'icon icon-tag',            color: 'text-info'   },
@@ -32,14 +33,76 @@ const defaultStateMap = {
 
 export default Ember.Mixin.create({
   endpoint: Ember.inject.service(),
+  cookies: Ember.inject.service(),
   growl: Ember.inject.service(),
 
-  reservedKeys: ['delayTimer','pollTimer','waitInterval','waitTimeout'],
+  reservedKeys: ['waitInterval','waitTimeout'],
 
   state: null,
   transitioning: null,
   transitioningMessage: null,
   transitioningProgress: null,
+
+  availableActions: function() {
+    /*
+      Override me and return [
+        {
+          enabled: true/false,    // Whether it's enabled or greyed out
+          detail: true/false,     // If true, this action will only be shown on detailed screens
+          label: 'Delete',        // Label shown on hover or in menu
+          icon: 'icon icon-trash',// Icon shown on screen
+          action: 'promptDelete', // Action to call on the controller when clicked
+          altAction: 'delete'     // Action to call on the controller when alt+clicked
+          divider: true,          // Just this will make a divider
+        },
+        ...
+      ]
+    */
+    return [];
+  }.property(),
+
+  actions: {
+    promptDelete: function() {
+      this.get('application').set('confirmDeleteResources', [ this.get('model') ] );
+    },
+
+    delete: function() {
+      return this.delete();
+    },
+
+    restore: function() {
+      return this.doAction('restore');
+    },
+
+    purge: function() {
+      return this.doAction('purge');
+    },
+
+    goToApi: function() {
+      var url = this.get('links.self'); // http://a.b.c.d/v1/things/id, a.b.c.d is where the UI is running
+      var endpoint = this.get('endpoint.absolute'); // http://e.f.g.h/ , does not include version.  e.f.g.h is where the API actually is.
+      url = url.replace(/https?:\/\/[^\/]+\/?/,endpoint);
+
+      // Go to the project-specific version
+      var projectId = this.get('session').get(C.SESSION.PROJECT);
+      if ( projectId && this.get('type') !== 'account' )
+      {
+        url = url.replace(/(.*?\/v1)(.*)/,"$1/projects/"+projectId+"$2");
+      }
+
+      // For local development where API doesn't match origin, add basic auth token
+      if ( url.indexOf(window.location.origin) !== 0 )
+      {
+        var token = this.get('cookies').get(C.COOKIE.TOKEN);
+        if ( token )
+        {
+          url = Util.addAuthorization(url, C.USER.BASIC_BEARER, token);
+        }
+      }
+
+      window.open(url, '_blank');
+    },
+  },
 
   displayName: function() {
     return this.get('name') || '('+this.get('id')+')';
@@ -123,24 +186,6 @@ export default Ember.Mixin.create({
   stateBackground: function() {
     return this.get('stateColor').replace("text-","bg-");
   }.property('stateColor'),
-
-  availableActions: function() {
-    /*
-      Override me and return [
-        {
-          enabled: true/false,    // Whether it's enabled or greyed out
-          detail: true/false,     // If true, this action will only be shown on detailed screens
-          label: 'Delete',        // Label shown on hover or in menu
-          icon: 'icon icon-trash',// Icon shown on screen
-          action: 'promptDelete', // Action to call on the controller when clicked
-          altAction: 'delete'     // Action to call on the controller when alt+clicked
-          divider: true,          // Just this will make a divider
-        },
-        ...
-      ]
-    */
-    return [];
-  }.property(),
 
   trimValues: function(depth, seenObjs) {
     if ( !depth )
@@ -379,99 +424,6 @@ export default Ember.Mixin.create({
     delete copy.links;
     delete copy.uuid;
     return copy;
-  },
-
-  replaceWith: function() {
-    this._super.apply(this,arguments);
-    this.transitioningChanged();
-  },
-
-  wasAdded: function() {
-    this.transitioningChanged();
-  },
-
-  wasRemoved: function() {
-    this.transitioningChanged();
-  },
-
-  delayTimer: null,
-  clearDelay: function() {
-    clearTimeout(this.get('delayTimer'));
-    this.set('delayTimer', null);
-  },
-
-  pollTimer: null,
-  clearPoll: function() {
-    clearTimeout(this.get('pollTimer'));
-    this.set('pollTimer', null);
-  },
-
-  transitioningChanged: function() {
-    var delay = this.constructor.pollTransitioningDelay;
-    var interval = this.constructor.pollTransitioningInterval;
-
-    // This resource doesn't want polling
-    if ( !delay || !interval )
-    {
-      //console.log('return 1', this.toString());
-      return;
-    }
-
-    // This resource isn't transitioning or isn't in the store
-    if ( this.get('transitioning') !== 'yes' || !this.isInStore() )
-    {
-      //console.log('return 2', this.toString());
-      this.clearPoll();
-      this.clearDelay();
-      return;
-    }
-
-    // We're already polling or waiting, just let that one finish
-    if ( this.get('delayTimer') )
-    {
-      //console.log('return 3', this.toString());
-      return;
-    }
-
-    //console.log('Transitioning poll', this.toString());
-
-    this.set('delayTimer', setTimeout(function() {
-      //console.log('1 expired', this.toString());
-      this.transitioningPoll();
-    }.bind(this), Util.timerFuzz(delay)));
-  }.observes('transitioning'),
-
-  transitioningPoll: function() {
-    //console.log('Maybe polling', this.toString(), this.get('transitioning'), this.isInStore());
-    this.clearPoll();
-
-    if ( this.get('transitioning') !== 'yes' || !this.isInStore() )
-    {
-      return;
-    }
-
-    //console.log('Polling', this.toString());
-    this.reload().then((/*newData*/) => {
-      //console.log('Poll Finished', this.toString());
-      if ( this.get('transitioning') === 'yes' )
-      {
-        //console.log('Rescheduling', this.toString());
-        this.set('pollTimer', setTimeout(function() {
-          //console.log('2 expired', this.toString());
-          this.transitioningPoll();
-        }.bind(this), Util.timerFuzz(this.constructor.pollTransitioningInterval)));
-      }
-      else
-      {
-        // If not transitioning anymore, stop polling
-        this.clearPoll();
-        this.clearDelay();
-      }
-    }).catch(() => {
-      // If reloading fails, stop polling
-      this.clearPoll();
-      // but leave delay set so that it doesn't restart, (don't clearDelay())
-    });
   },
 
   // Show growls for errors on actions

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
 import ThrottledResize from 'ui/mixins/throttled-resize';
-import { activeIcon } from 'ui/service/model';
+import { activeIcon } from 'ui/models/service';
 
 export default Ember.View.extend(ThrottledResize,{
   classNames: ['environment-graph'],

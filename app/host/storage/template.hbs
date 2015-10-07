@@ -10,43 +10,7 @@
     </thead>
     <tbody>
       {{#each arranged as |volume|}}
-        <tr>
-          <td>
-            <span class="badge state {{volume.stateBackground}}">
-              {{volume.displayState}}
-            </span>
-          </td>
-
-          <td>
-            <div class="clip with-zeroclip">
-              {{volume.displayUri}}
-            </div>
-            {{zero-clipboard text=volume.displayUri class="with-clip"}}
-          </td>
-
-          <td>
-            {{#if volume.activeMounts.length}}
-              {{#each volume.activeMounts as |mount|}}
-                <div>
-                  {{#link-to "container" mount.instanceId}}{{mount.instance.name}}{{/link-to}}:{{mount.path}}
-                  {{#if (eq mount.permissions "ro")}}
-                    <span class="text-muted">(read-only)</span>
-                  {{/if}}
-                </div>
-              {{/each}}
-            {{else}}
-              <span class="text-muted">None</span>
-            {{/if}}
-          </td>
-
-          <td class="actions">
-            {{#with volume controller="volume" as |ctrl|}}
-              {{#if ctrl.availableActions.length}}
-                {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
-              {{/if}}
-            {{/with}}
-          </td>
-        </tr>
+        {{volume-row model=volume}}
       {{else}}
         <tr><td colspan="4" class="text-center text-muted">This host does not have any volumes.</td></tr>
       {{/each}}

@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   model: null,
-  parentController: null,
 
   classNames: ['dot','hand'],
   classNameBindings: ['stateColor'],

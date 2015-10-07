@@ -10,7 +10,7 @@ export default Ember.Controller.extend(CattleTransitioningController, DownloadMa
   },
 
   availableActions: function() {
-    var a = this.get('model.actions')||{};
+    var a = this.get('model.actionLinks')||{};
 
     var out = [
       { label: 'Delete', icon: 'icon icon-trash', action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
@@ -25,5 +25,5 @@ export default Ember.Controller.extend(CattleTransitioningController, DownloadMa
     out.push({ label: 'View in API', icon: 'icon icon-externallink', action: 'goToApi', enabled: true});
 
     return out;
-  }.property('model.actions.remove', 'model.links.config'),
+  }.property('model.actionLinks.remove', 'model.links.config'),
 });

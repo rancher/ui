@@ -1,0 +1,31 @@
+<td>
+  <span class="badge state {{model.stateBackground}}">
+    {{model.displayState}}
+  </span>
+</td>
+
+<td>
+  <div class="clip with-zeroclip">
+    {{model.displayUri}}
+  </div>
+  {{zero-clipboard text=model.displayUri class="with-clip"}}
+</td>
+
+<td>
+  {{#if model.activeMounts.length}}
+    {{#each model.activeMounts as |mount|}}
+      <div>
+        {{#link-to "container" mount.instanceId}}{{mount.instance.name}}{{/link-to}}:{{mount.path}}
+        {{#if (eq mount.permissions "ro")}}
+          <span class="text-muted">(read-only)</span>
+        {{/if}}
+      </div>
+    {{/each}}
+  {{else}}
+    <span class="text-muted">None</span>
+  {{/if}}
+</td>
+
+<td class="actions">
+  <button type="button" class="btn-circle-menu"></button>
+</td>

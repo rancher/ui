@@ -13,44 +13,9 @@
     </thead>
     <tbody>
       {{#each arranged as |container|}}
-        <tr>
-          <td>
-            <span class="badge state {{container.stateBackground}}">
-              {{container.displayState}}
-            </span>
-          </td>
-          <td class="force-wrap">
-            {{#link-to "container" container.id}}{{container.displayName}}{{/link-to}}
-          </td>
-          <td>
-            {{container.displayIp}}
-          </td>
-          <td class="clip">
-            {{display-image container.imageUuid}}
-          </td>
-          <td class="clip">
-            {{#if container.command}}
-              {{container.command}}
-            {{else}}
-              <span class="text-muted">None</span>
-            {{/if}}
-          </td>
-          <td class="spark-td">
-            {{#if container.cpuSpark}}
-              {{spark-line data=container.cpuSpark     width=60 height=15 max=cpuMax     classNames="spark-tl" prefix="CPU: " formatter="percent"}}
-              {{spark-line data=container.memorySpark  width=60 height=15 max=memoryMax  classNames="spark-tr" prefix="Memory: " formatter="mib"}}
-              {{spark-line data=container.networkSpark width=60 height=15 max=networkMax classNames="spark-bl" prefix="Network: " formatter="kbps"}}
-              {{spark-line data=container.storageSpark width=60 height=15 max=storageMax classNames="spark-br" prefix="Storage: " formatter="kbps"}}
-            {{/if}}
-          </td>
-          <td class="actions">
-            {{#with container controller="container" as |ctrl|}}
-              {{resource-actions-menu model=ctrl choices=ctrl.availableActions parentController=this}}
-            {{/with}}
-          </td>
-        </tr>
+        {{container-row model=container showStats=true cpuMax=cpuMax memoryMax=memoryMax storageMax=storageMax networkMax=networkMax}}
       {{else}}
-        <tr><td colspan="6" class="text-center text-muted">This host does not have any containers yet.</td></tr>
+        <tr><td colspan="7" class="text-center text-muted">This host does not have any containers yet.</td></tr>
       {{/each}}
     </tbody>
   </table>

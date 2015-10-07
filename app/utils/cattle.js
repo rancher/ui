@@ -1,3 +1,9 @@
+/**
+ *  !!!!!!!!!!!!!!!
+ *  This file is deprecated, and nothing new should use it.
+ *  !!!!!!!!!!!!!!!
+ *
+ */
 import Ember from 'ember';
 import ApiError from 'ember-api-store/models/error';
 import C from 'ui/utils/constants';

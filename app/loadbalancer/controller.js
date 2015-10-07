@@ -13,7 +13,7 @@ var LoadBalancerController = Cattle.LegacyTransitioningResourceController.extend
   },
 
   availableActions: function() {
-    var a = this.get('actions');
+    var a = this.get('actionLinks');
 
     var out = [
       { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
@@ -23,7 +23,7 @@ var LoadBalancerController = Cattle.LegacyTransitioningResourceController.extend
     ];
 
     return out;
-  }.property('actions.{activate,deactivate,remove,purge}'),
+  }.property('actionLinks.{activate,deactivate,remove,purge}'),
 
   arrangedTargets: function() {
     return UnremovedArrayProxy.create({
