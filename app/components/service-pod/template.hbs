@@ -49,8 +49,8 @@
   </div>
 {{/if}}
 
-<div class="clearfix">
-  {{#if hasContainers}}
+{{#if hasContainers}}
+  <div class="clearfix {{if (eq mode "dot") 'r-p5'}}">
     {{#if (eq mode "dot")}}
       {{#each arrangedInstances as |item|}}
         {{container-dot model=item}}
@@ -80,12 +80,12 @@
         {{/if}}
       {{/if}}
     {{/if}}
-  {{else}}
-    {{#if isInactive}}
-      <div class="text-center text-muted" style="margin: 20px 0">
-        Inactive.
-        <a class="hand" {{action "activate" target=model}}>Start</a>
-      </div>
-    {{/if}}
+  </div>
+{{else}}
+  {{#if isInactive}}
+    <div class="text-center text-muted" style="margin: 20px 0">
+      Inactive.
+      <a class="hand" {{action "activate" target=model}}>Start</a>
+    </div>
   {{/if}}
-</div>
+{{/if}}

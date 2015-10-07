@@ -14,7 +14,7 @@ var Identity = Resource.extend({
     }
     else
     {
-      return 'data:image/png;base64,' + new Identicon(this.get('externalId'), 80, 0.01).toString();
+      return 'data:image/png;base64,' + new Identicon(md5(this.get('externalId')), 80, 0.01).toString();
     }
   }.property('isGithub','externalId','profilePicture'),
 

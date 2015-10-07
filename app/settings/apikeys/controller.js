@@ -13,18 +13,18 @@ export default Ember.Controller.extend(Sortable, {
     created:      ['created','name','id'],
   },
 
+  application: Ember.inject.controller(),
   cookies: Ember.inject.service(),
   projects: Ember.inject.service(),
   growl: Ember.inject.service(),
   project: Ember.computed.alias('projects.current'),
   endpointService: Ember.inject.service('endpoint'),
-  needs: ['application'],
 
   actions: {
     newApikey: function() {
       var cred = this.get('store').createRecord({type:'apikey'});
       cred.save().then((newCred) => {
-        this.get('controllers.application').setProperties({
+        this.get('application').setProperties({
           editApikey: true,
           editApikeyIsNew: true,
           // Send a clone so that the secret isn't lost when the credential change event -> active comes in

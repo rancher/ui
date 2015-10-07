@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
-export function nlToBr(input) {
-  var val = Ember.Handlebars.Utils.escapeExpression(input||'');
-  return new Ember.Handlebars.SafeString(val.replace(/\n/g,'<br/>\n'));
+export function nlToBr(params) {
+  var val = Ember.Handlebars.Utils.escapeExpression(params[0]||'');
+  return new Ember.String.htmlSafe(val.replace(/\n/g,'<br/>\n'));
 }
 
-export default Ember.Handlebars.makeBoundHelper(nlToBr);
+export default Ember.Helper.helper(nlToBr);

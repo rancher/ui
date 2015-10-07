@@ -17,7 +17,7 @@ var Environment = Resource.extend({
     },
 
     addService: function() {
-      this.get('controllers.application').transitionToRoute('service.new', {
+      this.get('router').transitionTo('service.new', {
         queryParams: {
           environmentId: this.get('id'),
         },
@@ -25,7 +25,7 @@ var Environment = Resource.extend({
     },
 
     addBalancer: function() {
-      this.get('controllers.application').transitionToRoute('service.new-balancer', {
+      this.get('router').transitionTo('service.new-balancer', {
         queryParams: {
           environmentId: this.get('id'),
         },
@@ -33,7 +33,7 @@ var Environment = Resource.extend({
     },
 
     edit: function() {
-      this.get('controllers.application').setProperties({
+      this.get('application').setProperties({
         editEnvironment: true,
         originalModel: this,
       });

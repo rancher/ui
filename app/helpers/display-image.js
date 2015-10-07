@@ -2,7 +2,8 @@ import Ember from 'ember';
 
 var esc = Ember.Handlebars.Utils.escapeExpression;
 
-export function displayImage(input) {
+export function displayImage(params) {
+  var input = params[0];
   var match = (input||'').match(/(docker:)?(.*\/)?(.*?)(:.*)?$/);
   if ( !match )
   {
@@ -16,4 +17,4 @@ export function displayImage(input) {
   return new Ember.Handlebars.SafeString(out);
 }
 
-export default Ember.Handlebars.makeBoundHelper(displayImage);
+export default Ember.Helper.helper(displayImage);

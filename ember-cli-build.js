@@ -16,8 +16,6 @@ module.exports = function(defaults) {
     }
   });
 
-  console.log("Fingerprinting:", appConfig.fingerprint);
-
   var app = new EmberApp(defaults, {
     storeConfigInMeta: false,
     inlineContent: inline,
@@ -74,6 +72,7 @@ module.exports = function(defaults) {
   app.import('vendor/icons/fonts/rancher-icons.woff', {destDir: 'assets/fonts'});
   app.import('bower_components/identicon.js/pnglib.js');
   app.import('bower_components/identicon.js/identicon.js');
+  app.import('bower_components/md5-jkmyers/md5.js');
 
   return app.toTree();
 };

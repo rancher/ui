@@ -11,6 +11,6 @@ moduleFor('helper:date-calendar');
 
 // Replace this with your real tests.
 test('it works', function(assert) {
-  var result = dateCalendar(42);
+  var result = dateCalendar([42]);
   assert.ok(result);
 });

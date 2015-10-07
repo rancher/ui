@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  needs: ['environments'],
-  mode: Ember.computed.alias('controllers.environments.mode'),
+  environments: Ember.inject.controller(),
+  mode: Ember.computed.alias('environments.mode'),
 
   arranged: function() {
     return this.get('model').sortBy('name','id');

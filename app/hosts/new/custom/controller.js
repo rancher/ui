@@ -4,7 +4,6 @@ import Util from 'ui/utils/util';
 
 export default Ember.Controller.extend(EditLabels, {
   primaryResource: Ember.computed.alias('model'),
-  needs: ['application'],
 
   registrationCommand: function() {
     var cmd = this.get('model.command');

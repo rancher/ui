@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  needs: ['application'],
-  currentPath: Ember.computed.alias('controllers.application.currentPath'),
+  application: Ember.inject.controller(),
+  currentPath: Ember.computed.alias('application.currentPath'),
   error: null,
 });

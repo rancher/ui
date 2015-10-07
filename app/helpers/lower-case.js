@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
-export function lowerCase(value) {
-  return (value||'').toLowerCase();
+export function lowerCase(params) {
+  return (params[0]||'').toLowerCase();
 }
 
-export default Ember.Handlebars.makeBoundHelper(lowerCase);
+export default Ember.Helper.helper(lowerCase);

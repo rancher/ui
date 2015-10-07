@@ -63,7 +63,7 @@ export default Ember.Mixin.create({
 
   actions: {
     promptDelete: function() {
-      this.get('application').set('confirmDeleteResources', [ this.get('model') ] );
+      this.get('application').set('confirmDeleteResources', [ this ] );
     },
 
     delete: function() {

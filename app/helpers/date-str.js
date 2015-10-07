@@ -1,13 +1,13 @@
 import Ember from 'ember';
 
-export function dateStr(input, options) {
+export function dateStr(params, options) {
   var format = 'MMM DD, YYYY hh:mm:ss A';
-  if ( options && options.hash && options.hash.format )
+  if ( options && options.format )
   {
-    format = options.hash.format;
+    format = options.format;
   }
 
-  return moment(input).format(format);
+  return moment(params[0]).format(format);
 }
 
-export default Ember.Handlebars.makeBoundHelper(dateStr);
+export default Ember.Helper.helper(dateStr);
