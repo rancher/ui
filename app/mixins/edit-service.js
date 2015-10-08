@@ -12,6 +12,10 @@ export default Ember.Mixin.create(EditScheduling, {
     removeServiceLink: function(obj) {
       this.get('serviceLinksArray').removeObject(obj);
     },
+
+    setScale: function(scale) {
+      this.set('model.service.scale', scale);
+    },
   },
 
   initFields: function() {

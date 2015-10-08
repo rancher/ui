@@ -9,6 +9,7 @@ export default Ember.ObjectController.extend(EditContainer, EditService, {
   containerId: null,
 
   editing: false,
+  isService: true,
 
   doneSaving: function() {
     return this.transitionToRoute('environment', this.get('primaryResource.environmentId'));

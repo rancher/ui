@@ -111,10 +111,6 @@ var Host = Resource.extend({
     return null;
   }.property('ipAddresses','ipAddresses.[]'),
 
-  arrangedInstances: function() {
-    return (this.get('instances')||[]).sortBy('name','id');
-  }.property('instances.[]','instances.@each.{name,id}'),
-
   machine: function() {
     var phid = this.get('physicalHostId');
     if ( !phid )

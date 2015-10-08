@@ -17,19 +17,19 @@
 
   <section class="horizontal-form" style="background-color: #f8f9fa; margin: -7px 10px 0 10px;">
     <div class="section container-fluid" data-section="command">
-      {{partial "container/new-command"}}
+      {{edit-command instance=model.instance errors=commandErrors}}
     </div>
 
     <div class="section container-fluid" data-section="volumes">
-      {{partial "container/new-volumes"}}
+      {{edit-volumes instance=model.instance errors=volumeErrors allHosts=model.allHosts}}
     </div>
 
     <div class="section container-fluid" data-section="network">
-      {{partial "container/new-network"}}
+      {{edit-networking instance=model.instance errors=networkingErrors allHosts=model.allHosts}}
     </div>
 
     <div class="section container-fluid" data-section="healthcheck">
-      {{partial "container/edit-healthcheck"}}
+      {{edit-healthcheck healthCheck=model.instance.healthCheck errors=healthCheckErrors}}
     </div>
 
     <div class="section" data-section="security">
@@ -42,13 +42,24 @@
           <label class="form-control-static">Labels</label>
         </div>
         <div class="col-sm-12 col-md-8">
-          {{partial "edit-labels"}}
+          {{edit-user-labels resource=model.instance}}
         </div>
       </div>
     </div>
 
     <div class="section" data-section="scheduling">
-      {{partial "container/new-scheduling"}}
+      {{edit-scheduling
+        isService=isService
+        isGlobal=isGlobal
+        initialHostId=model.instance.requestedHostId
+        initialLabels=labelResource.labels
+        errors=schedulingErrors
+        allHosts=model.allHosts
+
+        setLabels=(action 'setLabels' 'scheduling')
+        setGlobal=(action 'setGlobal')
+        setRequestedHost=(action 'setRequestedHostId')
+      }}
     </div>
 
   </section>

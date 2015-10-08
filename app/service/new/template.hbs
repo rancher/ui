@@ -6,7 +6,14 @@
 
   {{partial "form-divider"}}
 
-  {{partial "service/edit-scale"}}
+  {{edit-scale
+    initialLabels=labelResource.labels
+    initialScale=model.service.scale
+    errors=scaleErrors
+    setLabels=(action 'setLabels' 'scale')
+    setGlobal=(action 'setGlobal')
+    setScale=(action  'setScale')
+  }}
 
   {{partial "form-divider"}}
 

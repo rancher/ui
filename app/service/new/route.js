@@ -70,33 +70,23 @@ export default Ember.Route.extend({
         };
       }
 
-      if ( !healthCheckData )
-      {
-        healthCheckData = {
-          interval: 2000,
-          responseTimeout: 2000,
-          healthyThreshold: 2,
-          unhealthyThreshold: 3,
-          requestLine: null,
-        };
-      }
-
-      // The type isn't set on an existing one
-      healthCheckData.type = 'instanceHealthCheck';
-
       var instance = this.get('store').createRecord(instanceData);
 
       var service = store.createRecord(serviceData);
       service.set('serviceLinks', serviceLinks);
 
-      var healthCheck = store.createRecord(healthCheckData);
-      instance.set('healthCheck', healthCheck);
+      if ( healthCheckData )
+      {
+        // The type isn't set on an existing one
+        healthCheckData.type = 'instanceHealthCheck';
+        instance.set('healthCheck', store.createRecord(healthCheckData));
+      }
+
       service.set('launchConfig', instance); // Creating a service needs the isntance definition here
 
       return Ember.Object.create({
         isService: true,
         service: service,
-        healthCheck: healthCheck,
         instance: instance, // but mixins/edit-container expects to find the instance here, so link both to the same object
         allHosts: allHosts,
         allServices: allServices,

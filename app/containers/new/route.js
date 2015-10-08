@@ -52,28 +52,16 @@ export default Ember.Route.extend({
         };
       }
 
-      if ( !healthCheckData )
-      {
-        healthCheckData = {
-          type: 'instanceHealthCheck',
-          interval: 2000,
-          responseTimeout: 2000,
-          healthyThreshold: 2,
-          unhealthyThreshold: 3,
-          requestLine: null,
-        };
-      }
-
-      // The type isn't set on an existing one
-      healthCheckData.type = 'instanceHealthCheck';
-
-      var healthCheck = store.createRecord(healthCheckData);
       var instance = store.createRecord(data);
-      instance.set('healthCheck', healthCheck);
+      if ( healthCheckData )
+      {
+        // The type isn't set on an existing one
+        healthCheckData.type = 'instanceHealthCheck';
+        instance.set('healthCheck', store.createRecord(healthCheckData));
+      }
 
       return Ember.Object.create({
         instance: instance,
-        healthCheck: healthCheck,
         allHosts: allHosts,
       });
     });
@@ -84,7 +72,6 @@ export default Ember.Route.extend({
       originalModel: null,
       model: model,
       instance: model.instance,
-      healthCheck: model.healthCheck,
       allHosts: model.allHosts,
     });
     controller.initFields();

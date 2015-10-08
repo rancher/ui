@@ -15,57 +15,6 @@
   </div>
 </div>
 
-{{#if (eq checkType "http")}}
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-3 form-label">
-      <label class="form-control-static">HTTP Request*</label>
-    </div>
-    <div class="col-sm-12 col-md-7">
-      <div class="input-group">
-        <div class="input-group-btn">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="border-right: 0;">{{uriMethod}} <span class="caret"></span></button>
-          <ul class="dropdown-menu" role="menu">
-            <li role="presentation" class="dropdown-header">
-              Select A HTTP Method:
-            </li>
-            {{#each uriMethodChoices as |choice|}}
-              <li {{action "chooseUriMethod" choice}}>
-                <a>{{choice}}</a>
-              </li>
-            {{/each}}
-          </ul>
-        </div>
-
-        {{input type="text" classNames="form-control" placeholder="Request Path e.g. /healthcheck" value=uriPath}}
-
-        <div class="input-group-btn">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{uriVersion}} <span class="caret"></span></button>
-          <ul class="dropdown-menu" role="menu">
-            <li role="presentation" class="dropdown-header">
-              Select A HTTP Version:
-            </li>
-            {{#each uriVersionChoices as |choice|}}
-              <li {{action "chooseUriVersion" choice}}>
-                <a>{{choice}}</a>
-              </li>
-            {{/each}}
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-  {{#if showUriHost}}
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">Host Header</label>
-      </div>
-      <div class="col-sm-12 col-md-8">
-        {{input type="text" classNames="form-control" placeholder="e.g. www.example.com" value=uriHost}}
-      </div>
-    </div>
-  {{/if}}
-{{/if}}
-
 {{#if (not (eq checkType "none"))}}
   <div class="row form-group">
     <div class="col-sm-12 col-md-3 form-label">
@@ -75,6 +24,58 @@
       {{input type="number" min="1" max="65535" classNames="form-control" placeholder="e.g. 80" value=healthCheck.port}}
     </div>
   </div>
+
+  {{#if (eq checkType "http")}}
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-3 form-label">
+        <label class="form-control-static">HTTP Request*</label>
+      </div>
+      <div class="col-sm-12 col-md-7">
+        <div class="input-group">
+          <div class="input-group-btn">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false" style="border-right: 0;">{{uriMethod}} <span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu">
+              <li role="presentation" class="dropdown-header">
+                Select A HTTP Method:
+              </li>
+              {{#each uriMethodChoices as |choice|}}
+                <li {{action "chooseUriMethod" choice}}>
+                  <a>{{choice}}</a>
+                </li>
+              {{/each}}
+            </ul>
+          </div>
+
+          {{input type="text" classNames="form-control" placeholder="Request Path e.g. /healthcheck" value=uriPath}}
+
+          <div class="input-group-btn">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{uriVersion}} <span class="caret"></span></button>
+            <ul class="dropdown-menu" role="menu">
+              <li role="presentation" class="dropdown-header">
+                Select A HTTP Version:
+              </li>
+              {{#each uriVersionChoices as |choice|}}
+                <li {{action "chooseUriVersion" choice}}>
+                  <a>{{choice}}</a>
+                </li>
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{#if showUriHost}}
+      <div class="row form-group">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">Host Header</label>
+        </div>
+        <div class="col-sm-12 col-md-8">
+          {{input type="text" classNames="form-control" placeholder="e.g. www.example.com" value=uriHost}}
+        </div>
+      </div>
+    {{/if}}
+  {{/if}}
+
   <div class="row form-group">
     <div class="col-sm-12 col-md-3 form-label">
       <label class="form-control-static">Check Interval</label>
