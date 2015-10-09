@@ -93,7 +93,7 @@ export default Ember.Mixin.create(NewOrEdit, {
     },
 
     setRequestedHostId(hostId) {
-      console.log('requestedHostId=',hostId);
+      console.log('set requestedHostId=',hostId);
       this.set('model.instance.requestedHostId', hostId);
     },
   },
@@ -119,17 +119,23 @@ export default Ember.Mixin.create(NewOrEdit, {
   // ----------------------------------
   // Labels
   // ----------------------------------
+  userLabels: null,
+  scaleLabels: null,
   schedulingLabels: null,
   initLabels: function() {
     this.labelsChanged();
   },
 
-  labelsChanged: debouncedObserver('schedulingLabels.@each.{key,value}',function() {
+  labelsChanged: debouncedObserver(
+    'userLabels.@each.{key,value}',
+    'scaleLabels.@each.{key,value}',
+    'schedulingLabels.@each.{key,value}',
+    function() {
     var out = {};
 
-    (this.get('schedulingLabels')||[]).forEach((row) => {
-      out[row.key] = row.value;
-    });
+    (this.get('userLabels')||[]).forEach((row) => { out[row.key] = row.value; });
+    (this.get('scaleLabels')||[]).forEach((row) => { out[row.key] = row.value; });
+    (this.get('schedulingLabels')||[]).forEach((row) => { out[row.key] = row.value; });
 
     if ( this.get('labelResource') )
     {

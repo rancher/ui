@@ -62,6 +62,10 @@ export default Ember.Component.extend(ManageLabels, {
     }
   },
 
+  updateLabels(labels) {
+    this.sendAction('setLabels', labels);
+  },
+
   globalDidChange: function() {
     if ( this.get('isGlobal') )
     {

@@ -229,7 +229,11 @@ export default Ember.Mixin.create({
       out.push({key: key, value: map[key]});
     });
 
-    this.sendAction('setLabels', out);
+    this.updateLabels(out);
   }),
+
+  updateLabels(/*labels*/) {
+    throw new Error('Override me to do something');
+  }
 
 });

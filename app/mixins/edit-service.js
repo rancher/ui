@@ -21,7 +21,6 @@ export default Ember.Mixin.create(EditScheduling, {
   initFields: function() {
     this._super();
     this.initServiceLinks();
-    this.initScheduling();
   },
 
   // ----------------------------------
