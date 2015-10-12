@@ -2,7 +2,10 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 
 export default Ember.Component.extend({
+  //Inputs
   instance: null,
+
+  tagName: '',
 
   didInitAttrs() {
     this.initNetwork();

@@ -1,9 +1,12 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  // Inputs
   instance: null,
   allHosts: null,
   errors: null,
+
+  tagName: '',
 
   didInitAttrs() {
     this.initVolumes();

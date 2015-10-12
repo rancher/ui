@@ -2,6 +2,7 @@ import Ember from 'ember';
 import ManageLabels from 'ui/mixins/manage-labels';
 
 export default Ember.Component.extend(ManageLabels, {
+  // Inputs
   // Global scale scheduling
   isGlobal: false,
 
@@ -27,6 +28,8 @@ export default Ember.Component.extend(ManageLabels, {
 
   // Internal properties
   isRequestedHost: false,
+
+  tagName: '',
 
   actions: {
     addSchedulingRule() {

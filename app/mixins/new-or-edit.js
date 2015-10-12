@@ -48,7 +48,7 @@ export default Ember.Mixin.create({
       }
     },
 
-    save: function() {
+    save: function(cb) {
       var self = this;
 
       if ( !this.willSave() )
@@ -65,6 +65,11 @@ export default Ember.Mixin.create({
         self.errorSaving(err);
       }).finally(function() {
         self.set('saving',false);
+
+        if ( cb )
+        {
+          cb();
+        }
       });
     }
   },

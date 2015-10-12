@@ -17,23 +17,23 @@
 
   <section class="horizontal-form" style="background-color: #f8f9fa; margin: -7px 10px 0 10px;">
     <div class="section container-fluid" data-section="command">
-      {{edit-command instance=model.instance errors=commandErrors}}
+      {{form-command instance=model.instance errors=commandErrors}}
     </div>
 
     <div class="section container-fluid" data-section="volumes">
-      {{edit-volumes instance=model.instance errors=volumeErrors allHosts=model.allHosts}}
+      {{form-volumes instance=model.instance errors=volumeErrors allHosts=model.allHosts}}
     </div>
 
     <div class="section container-fluid" data-section="network">
-      {{edit-networking instance=model.instance errors=networkingErrors allHosts=model.allHosts}}
+      {{form-networking instance=model.instance errors=networkingErrors allHosts=model.allHosts}}
     </div>
 
     <div class="section container-fluid" data-section="healthcheck">
-      {{edit-healthcheck healthCheck=model.instance.healthCheck errors=healthCheckErrors}}
+      {{form-healthcheck healthCheck=model.instance.healthCheck errors=healthCheckErrors}}
     </div>
 
     <div class="section" data-section="security">
-      {{partial "container/new-security"}}
+      {{form-security instance=model.instance errors=securityErrors}}
     </div>
 
     <div class="section" data-section="labels">
@@ -42,7 +42,7 @@
           <label class="form-control-static">Labels</label>
         </div>
         <div class="col-sm-12 col-md-8">
-          {{edit-user-labels
+          {{form-user-labels
             initialLabels=labelResource.labels
             setLabels=(action 'setLabels' 'user')
           }}
@@ -51,7 +51,7 @@
     </div>
 
     <div class="section" data-section="scheduling">
-      {{edit-scheduling
+      {{form-scheduling
         isService=isService
         isGlobal=isGlobal
         initialHostId=model.instance.requestedHostId

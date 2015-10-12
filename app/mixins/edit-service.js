@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import EditScheduling from 'ui/mixins/edit-scheduling';
 
-export default Ember.Mixin.create(EditScheduling, {
+export default Ember.Mixin.create({
   primaryResource: Ember.computed.alias('model.service'),
   labelResource: Ember.computed.alias('model.service.launchConfig'),
 

@@ -1,0 +1,63 @@
+<div class="row">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label>Port Map</label>
+  </div>
+  <div class="col-sm-12 col-md-8">
+    {{#unless editing}}
+      <div>
+        <button class="btn-circle-plus" {{action "addPort" target="view"}}></button>
+      </div>
+    {{/unless}}
+    {{#if portsArray.length}}
+      <table class="table fixed no-lines no-top-padding tight small">
+        <tr class="text-muted">
+          <th>Public (on Host)</th>
+          <th width="30">&nbsp;</th>
+          <th>Private (in Container)</th>
+          <th width="30">&nbsp;</th>
+          <th width="60">Protocol</th>
+          <th width="30">&nbsp;</th>
+        </tr>
+        {{#each portsArray as |port|}}
+          <tr>
+            <td>
+              {{input class="form-control input-sm port-public" type="number" min="1" max="65535" value=port.public placeholder="e.g. 80"}}
+            </td>
+            <td class="text-center">
+              <p class="form-control-static"><i class="icon icon-arrow-right"></i></p>
+            </td>
+            <td>
+              {{#if port.existing}}
+                <div class="form-control-static text-muted">{{port.private}}</div>
+              {{else}}
+                {{input class="form-control input-sm" type="number" min="1" max="65535" value=port.private placeholder="e.g. 8080"}}
+              {{/if}}
+            </td>
+            <td class="text-center">/</td>
+            <td>
+              {{#if port.existing}}
+                <div class="form-control-static text-muted">{{upper-case port.protocol}}</div>
+              {{else}}
+                {{new-select
+                  class="form-control input-sm"
+                  content=protocolOptions
+                  value=port.protocol}}
+              {{/if}}
+            </td>
+            <td class="text-right">
+              {{#if port.existing}}
+                &nbsp;
+              {{else}}
+                <button {{action "removePort" port}} class="btn-circle-x" type="button" tabindex="-1"></button>
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    {{else}}
+      {{#if editing}}
+        <span class="text-center text-muted">This container has no port maps.</span>
+      {{/if}}
+    {{/if}}
+  </div>
+</div>

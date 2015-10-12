@@ -18,8 +18,11 @@ const HTTP_1_0 = 'HTTP/1.0';
 const HTTP_1_1 = 'HTTP/1.1';
 
 export default Ember.Component.extend({
+  // Inputs
   healthCheck: null,
   errors: null,
+
+  tagName: '',
 
   uriMethodChoices: METHOD_CHOICES,
   uriVersionChoices: [HTTP_1_0,HTTP_1_1],
