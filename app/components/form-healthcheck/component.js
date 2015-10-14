@@ -10,7 +10,7 @@ const DEFAULTS = {
   responseTimeout: 2000,
   healthyThreshold: 2,
   unhealthyThreshold: 3,
-  requestLine: null,
+  requestLine: '',
 };
 
 const METHOD_CHOICES = ['OPTIONS','GET','HEAD','POST','PUT','DELETE','TRACE','CONNECT'];

@@ -41,6 +41,20 @@ export default Ember.Component.extend({
             protocol: value.protocol,
           });
         }
+        else if ( typeof value === 'string' )
+        {
+          // Strings, from clone
+          var match = value.match(/^(\d+):(\d+)\/(.*)$/);
+          if ( match )
+          {
+            out.push({
+              existing: false,
+              public: match[1],
+              private: match[2],
+              protocol: match[3],
+            });
+          }
+        }
         else
         {
           console.error('Unknown port value', value);

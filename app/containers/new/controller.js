@@ -1,14 +1,18 @@
 import Ember from 'ember';
-import EditContainer from 'ui/mixins/edit-container';
 
-export default Ember.Controller.extend(EditContainer, {
+export default Ember.Controller.extend({
   queryParams: ['environmentId','containerId'],
   environmentId: null,
   containerId: null,
   editing: false,
 
-  doneSaving: function() {
-    this._super();
-    this.send('goToPrevious');
+  actions: {
+    done() {
+      this.send('goToPrevious');
+    },
+
+    cancel() {
+      this.send('goToPrevious');
+    },
   }
 });

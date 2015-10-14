@@ -1,12 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  actions: {
-    cancel: function() {
-      this.goToPrevious();
-    },
-  },
-
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
@@ -67,21 +61,9 @@ export default Ember.Route.extend({
     });
   },
 
-  setupController: function(controller, model) {
-    controller.setProperties({
-      originalModel: null,
-      model: model,
-      instance: model.instance,
-      allHosts: model.allHosts,
-    });
-    controller.initFields();
-  },
-
   resetController: function (controller, isExiting/*, transition*/) {
     if (isExiting)
     {
-      controller.set('tab', 'command');
-      controller.set('advanced', false);
       controller.set('hostId', null);
       controller.set('environmentId', null);
       controller.set('containerId', null);

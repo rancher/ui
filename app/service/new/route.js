@@ -3,12 +3,6 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   allServices: Ember.inject.service(),
 
-  actions: {
-    cancel: function() {
-      this.goToPrevious();
-    },
-  },
-
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
@@ -54,7 +48,7 @@ export default Ember.Route.extend({
       else
       {
         instanceData = {
-          type: 'container',
+          type: 'launchConfig',
           tty: true,
           stdinOpen: true,
           restartPolicy: {name: 'always'},
@@ -85,26 +79,16 @@ export default Ember.Route.extend({
       service.set('launchConfig', instance); // Creating a service needs the isntance definition here
 
       return Ember.Object.create({
-        isService: true,
         service: service,
-        instance: instance, // but mixins/edit-container expects to find the instance here, so link both to the same object
         allHosts: allHosts,
         allServices: allServices,
       });
     });
   },
 
-  setupController: function(controller, model) {
-    controller.set('originalModel', null);
-    controller.set('model', model);
-    controller.initFields();
-  },
-
   resetController: function (controller, isExiting/*, transition*/) {
     if (isExiting)
     {
-      controller.set('tab', 'command');
-      controller.set('advanced', false);
       controller.set('environmentId', null);
       controller.set('serviceId', null);
       controller.set('containerId', null);

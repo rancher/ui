@@ -1,20 +1,10 @@
-<section class="horizontal-form container-fluid">
-  <h2>Add Container</h2>
-  {{top-errors errors=errors}}
-
-  {{form-name-description model=model.service namePlaceholder="e.g. myapp" descriptionPlaceholder="My application"}}
-
-  {{form-divider}}
-
-  {{form-image value=model.instance.imageUuid}}
-
-  {{form-divider}}
-
-  {{partial "container/edit-ports"}}
-</section>
-
-{{form-divider}}
-
-{{partial "container/new-advanced"}}
-
-{{partial "save-cancel"}}
+{{new-container
+  isStandalone=true
+  isService=false
+  isSidekick=false
+  launchConfig=model.instance
+  primaryResource=model.instance
+  allHosts=model.allHosts
+  done=(action 'done')
+  cancel=(action 'cancel')
+}}

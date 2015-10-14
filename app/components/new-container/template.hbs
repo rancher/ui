@@ -1,0 +1,115 @@
+<section class="horizontal-form container-fluid">
+  {{#if isStandalone}}
+    <h2>Add {{if isService 'Service' 'Container'}}</h2>
+    {{top-errors errors=errors}}
+  {{/if}}
+
+  {{form-name-description model=primaryResource namePlaceholder="e.g. myapp" descriptionPlaceholder="My application"}}
+
+  {{#if (and isService (not isSidekick))}}
+    {{form-divider}}
+
+    {{form-scale
+      initialLabels=launchConfig.labels
+      initialScale=service.scale
+      isGlobal=isGlobal
+      errors=scaleErrors
+      setLabels=(action 'setLabels' 'scale')
+      setGlobal=(action 'setGlobal')
+      setScale=(action  'setScale')
+    }}
+  {{/if}}
+
+  {{form-divider}}
+
+  {{form-image initialValue=launchConfig.imageUuid errors=imageErrors changed=(action 'setImage')}}
+
+  {{form-divider}}
+
+  {{form-ports initialPorts=launchConfig.ports errors=portErrors portsAsStrArray=launchConfig.ports}}
+
+  {{#if isService}}
+    {{form-divider}}
+
+    {{form-service-links
+      service=service
+      allServices=allServices
+      changed=(action 'setServiceLinks')
+    }}
+  {{/if}}
+</section>
+
+{{form-divider}}
+
+<div class="toggle-advanced">
+  <a {{action "toggleAdvanced"}}>Advanced Options {{#if advanced}}<i class="icon icon-chevron-up"></i>{{else}}<i class="icon icon-chevron-down"></i>{{/if}}</a>
+</div>
+
+<div class="{{unless advanced 'hide'}}">
+  <section class="text-center" style="padding: 0;">
+    <ul class="nav nav-pills" style="display: inline-block">
+      <li role="presentation" class="tab" data-section="command" {{action "selectTab" "command" target=view}}><a>Command</a></li>
+      <li role="presentation" class="tab" data-section="volumes" {{action "selectTab" "volumes" target=view}}><a>Volumes</a></li>
+      <li role="presentation" class="tab" data-section="network" {{action "selectTab" "network" target=view}}><a>Networking</a></li>
+      <li role="presentation" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck" target=view}}><a>Health Check</a></li>
+      <li role="presentation" class="tab" data-section="security" {{action "selectTab" "security" target=view}}><a>Security/Host</a></li>
+      <li role="presentation" class="tab" data-section="labels" {{action "selectTab" "labels" target=view}}><a>Labels</a></li>
+      <li role="presentation" class="tab" data-section="scheduling" {{action "selectTab" "scheduling" target=view}}><a>Scheduling</a></li>
+    </ul>
+  </section>
+
+  <section class="horizontal-form" style="background-color: #f8f9fa; margin: -7px 10px 0 10px;">
+    <div class="section container-fluid" data-section="command">
+      {{form-command instance=launchConfig errors=commandErrors}}
+    </div>
+
+    <div class="section container-fluid" data-section="volumes">
+      {{form-volumes instance=launchConfig errors=volumeErrors allHosts=allHosts}}
+    </div>
+
+    <div class="section container-fluid" data-section="network">
+      {{form-networking instance=launchConfig errors=networkingErrors allHosts=allHosts isService=isService}}
+    </div>
+
+    <div class="section container-fluid" data-section="healthcheck">
+      {{form-healthcheck healthCheck=launchConfig.healthCheck errors=healthCheckErrors}}
+    </div>
+
+    <div class="section" data-section="security">
+      {{form-security instance=launchConfig errors=securityErrors}}
+    </div>
+
+    <div class="section" data-section="labels">
+      <div class="row form-group">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">Labels</label>
+        </div>
+        <div class="col-sm-12 col-md-8">
+          {{form-user-labels
+            initialLabels=launchConfig.labels
+            setLabels=(action 'setLabels' 'user')
+          }}
+        </div>
+      </div>
+    </div>
+
+    <div class="section" data-section="scheduling">
+      {{form-scheduling
+        isService=isService
+        isGlobal=isGlobal
+        initialHostId=launchConfig.requestedHostId
+        initialLabels=launchConfig.labels
+        errors=schedulingErrors
+        allHosts=allHosts
+        setLabels=(action 'setLabels' 'scheduling')
+        setGlobal=(action 'setGlobal')
+        setRequestedHost=(action 'setRequestedHostId')
+      }}
+    </div>
+
+  </section>
+</div>
+
+{{#if isStandalone}}
+  {{save-cancel save="save" cancel="cancel"}}
+{{/if}}

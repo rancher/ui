@@ -6,7 +6,7 @@
   <div class="col-sm-12 col-md-8">
     <div>
       {{#if serviceChoices.length}}
-        <button class="btn-circle-plus" {{action "addServiceLink" target="view"}}></button>
+        <button class="btn-circle-plus" {{action "addServiceLink"}}></button>
       {{else}}
         <span class="text-muted">There are no other services to link to.</span>
       {{/if}}
@@ -15,7 +15,7 @@
       <table class="table fixed no-lines no-top-padding tight small">
         <tr class="text-muted">
           <th>Destination Service</th>
-          {{#if (eq primaryResource.type "service")}}
+          {{#if withAlias}}
             <th width="30">&nbsp;</th>
             <th>As Name</th>
           {{/if}}
@@ -34,7 +34,7 @@
                 optionGroupPath="group"
               }}
             </td>
-            {{#if (eq primaryResource.type "service")}}
+            {{#if withAlias}}
               <td class="text-center">
                 <p class="form-control-static"><i class="icon icon-arrow-right"></i></p>
               </td>

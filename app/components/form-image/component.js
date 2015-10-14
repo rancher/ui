@@ -5,7 +5,7 @@ var last = 'ubuntu:14.04.3';
 
 export default Ember.Component.extend({
   // Inputs
-  value: null,
+  initialValue: null,
   errors: null,
 
   userInput: null,
@@ -46,7 +46,7 @@ export default Ember.Component.extend({
       out = null;
     }
 
-    this.set('value', out);
+    this.sendAction('changed', out);
     this.validate();
   }.observes('userInput'),
 

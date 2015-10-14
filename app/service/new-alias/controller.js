@@ -1,8 +1,7 @@
 import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
-import EditService from 'ui/mixins/edit-service';
 
-export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditService, {
+export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, {
   queryParams: ['environmentId','serviceId'],
   environmentId: null,
   serviceId: null,

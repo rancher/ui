@@ -2,9 +2,8 @@ import Ember from 'ember';
 import Cattle from 'ui/utils/cattle';
 import EditLoadBalancerConfig from 'ui/mixins/edit-loadbalancerconfig';
 import EditBalancerTarget from 'ui/mixins/edit-balancer-target';
-import EditService from 'ui/mixins/edit-service';
 
-export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLoadBalancerConfig, EditBalancerTarget, EditService, {
+export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditLoadBalancerConfig, EditBalancerTarget, {
   queryParams: ['environmentId','serviceId','tab'],
   environmentId: null,
   serviceId: null,

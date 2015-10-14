@@ -159,7 +159,7 @@ export default Ember.Component.extend({
   linksArray: null,
   initLinks: function() {
     var out = [];
-    var links = this.get('instanceLinks')||[];
+    var links = this.get('instance.instanceLinks')||[];
 
     if ( Ember.isArray(links) )
     {
