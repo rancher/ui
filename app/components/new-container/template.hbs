@@ -40,7 +40,7 @@
   {{/if}}
 </section>
 
-{{#if (eq launchConfigIndex -1)}}
+<div data-launchindex="-1">
   <section class="horizontal-form container-fluid">
     {{form-name-description model=primaryResource namePlaceholder="e.g. myapp" descriptionPlaceholder="My application"}}
 
@@ -133,16 +133,22 @@
 
     </section>
   </div>
-{{else}}
-  {{new-container
-    isService=true
-    isSidekick=true
-    launchConfig=activeLaunchConfig
-    service=activeLaunchConfig
-    primaryResource=activeLaunchConfig
-    allHosts=allHosts
-    allServices=allServices
-  }}
+</div>
+
+{{#if (and isService (not isSidekick))}}
+  {{#each service.secondaryLaunchConfigs as |slc index|}}
+    <div data-launchindex="{{index}}" class="hide">
+      {{new-container
+        isService=true
+        isSidekick=true
+        launchConfig=slc
+        service=slc
+        primaryResource=slc
+        allHosts=allHosts
+        allServices=allServices
+      }}
+    </div>
+  {{/each}}
 {{/if}}
 
 {{#unless isSidekick}}

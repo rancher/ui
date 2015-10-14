@@ -33,6 +33,10 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   actions: {
     selectLaunchConfig(index) {
       this.set('launchConfigIndex', index);
+      Ember.run.next(() => {
+        this.$().children('[data-launchindex]').addClass('hide');
+        this.$().children('[data-launchindex="'+index+'"]').removeClass('hide');
+      });
     },
 
     addSidekick() {
