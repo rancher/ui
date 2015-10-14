@@ -21,10 +21,12 @@ export default Ember.Route.extend({
     }
 
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
+      var store = this.get('store');
       var allHosts = results[0];
       var allServices = results[1];
       var serviceOrContainer = results[2];
       var serviceLinks = [];
+      var secondaryLaunchConfigs = [];
 
       var instanceData, serviceData, healthCheckData;
       if ( serviceOrContainer )
@@ -36,6 +38,12 @@ export default Ember.Route.extend({
           instanceData = serviceData.launchConfig;
           delete serviceData.launchConfig;
           delete serviceData.instances;
+
+          (serviceOrContainer.secondaryLaunchConfigs||[]).forEach((slc) => {
+            var data = slc.serializeForNew();
+            secondaryLaunchConfigs.push(store.createRecord(data));
+          });
+
           delete serviceData.secondaryLaunchConfigs;
         }
         else
@@ -64,8 +72,7 @@ export default Ember.Route.extend({
         };
       }
 
-      var instance = this.get('store').createRecord(instanceData);
-
+      var instance = store.createRecord(instanceData);
       var service = store.createRecord(serviceData);
       service.set('serviceLinks', serviceLinks);
 
@@ -76,7 +83,8 @@ export default Ember.Route.extend({
         instance.set('healthCheck', store.createRecord(healthCheckData));
       }
 
-      service.set('launchConfig', instance); // Creating a service needs the isntance definition here
+      service.set('launchConfig', instance);
+      service.set('secondaryLaunchConfigs', secondaryLaunchConfigs);
 
       return Ember.Object.create({
         service: service,

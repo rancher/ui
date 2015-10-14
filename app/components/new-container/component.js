@@ -17,6 +17,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   isGlobal: null,
   isRequestedHost: null,
   portsAsStrArray: null,
+  launchConfigIndex: -1,
 
   // Errors from components
   commandErrors: null,
@@ -30,6 +31,18 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   portErrors: null,
 
   actions: {
+    selectLaunchConfig(index) {
+      this.set('launchConfigIndex', index);
+    },
+
+    addSidekick() {
+      var ary = this.get('service.secondaryLaunchConfigs');
+      ary.pushObject(this.get('store').createRecord({
+        type: 'secondaryLaunchConfig',
+      }));
+      this.send('selectLaunchConfig', ary.get('length')-1);
+    },
+
     setScale(scale) {
       this.set('service.scale', scale);
     },
@@ -75,6 +88,22 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     this.send('selectTab','command');
     this.$('INPUT')[0].focus();
   },
+
+  hasSidekicks: function() {
+    return this.get('service.secondaryLaunchConfigs.length') > 0;
+  }.property('service.secondaryLaunchConfigs.length'),
+
+  activeLaunchConfig: function() {
+    var idx = this.get('launchConfigIndex');
+    if( idx === -1 )
+    {
+      return this.get('launchConfig');
+    }
+    else
+    {
+      return this.get('service.secondaryLaunchConfigs').objectAt(idx);
+    }
+  }.property('launchConfigIndex'),
 
   // ----------------------------------
   // Labels

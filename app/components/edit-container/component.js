@@ -1,7 +1,6 @@
 import Ember from 'ember';
-import EditContainer from 'ui/mixins/edit-container';
 
-export default Ember.Component.extend(EditContainer, {
+export default Ember.Component.extend({
   editing: true,
   loading: true,
 
