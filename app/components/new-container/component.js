@@ -47,6 +47,18 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       this.send('selectLaunchConfig', ary.get('length')-1);
     },
 
+    removeSidekick() {
+      var idx = this.get('launchConfigIndex');
+      var ary = this.get('service.secondaryLaunchConfigs');
+      ary.removeAt(idx);
+      if ( idx >= ary.get('length') )
+      {
+        Ember.run.next(() => {
+          this.send('selectLaunchConfig', ary.get('length')-1);
+        });
+      }
+    },
+
     setScale(scale) {
       this.set('service.scale', scale);
     },

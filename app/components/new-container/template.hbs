@@ -1,30 +1,20 @@
 <section class="horizontal-form container-fluid">
   {{#unless isSidekick}}
-    <h2>Add {{if isService 'Service' 'Container'}}</h2>
+    <h2>Add
+      {{#if isService}}
+        Service
+        {{#if hasSidekicks}}
+          +
+          {{service.secondaryLaunchConfigs.length}} Sidekick{{if (not-eq service.secondaryLaunchConfigs.length 1) 's'}}
+        {{/if}}
+      {{else}}
+        Container
+      {{/if}}
+    </h2>
     {{top-errors errors=errors}}
   {{/unless}}
 
   {{#if (and isService (not isSidekick))}}
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label r-mt5">
-        <label>Sidekicks</label>
-      </div>
-
-      <div class="col-sm-12 col-md-8">
-        <nav>
-          <ul class="pagination pagination-sm r-m0">
-            {{#if hasSidekicks}}
-              <li class="{{if (eq launchConfigIndex -1) 'active'}}"><a href="#" {{action "selectLaunchConfig" -1}}>{{default-str service.name default="(Primary Service)"}}</a></li>
-            {{/if}}
-            {{#each service.secondaryLaunchConfigs as |slc index|}}
-              <li class="{{if (eq launchConfigIndex index) 'active'}}"><a href="#" {{action "selectLaunchConfig" index}}>{{default-str slc.name (concat-str '(Sidekick #' (one-louder index) ')')}}</a></li>
-            {{/each}}
-            <li><a {{action "addSidekick"}} tooltip="Add Sidekick"><i class="icon icon-plus"/></a></li>
-          </ul>
-        </nav>
-      </div>
-    </div>
-
     {{form-scale
       initialLabels=launchConfig.labels
       initialScale=service.scale
@@ -34,6 +24,28 @@
       setGlobal=(action 'setGlobal')
       setScale=(action  'setScale')
     }}
+
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label r-mt5">
+        <label>Sidekicks</label>
+      </div>
+
+      <div class="col-sm-12 col-md-8">
+        {{#if hasSidekicks}}
+          <nav>
+            <ul class="pagination pagination-sm r-m0">
+              <li class="{{if (eq launchConfigIndex -1) 'active'}}"><a href="#" {{action "selectLaunchConfig" -1}}>{{default-str service.name default="(Primary Service)"}}</a></li>
+              {{#each service.secondaryLaunchConfigs as |slc index|}}
+                <li class="{{if (eq launchConfigIndex index) 'active'}}"><a href="#" {{action "selectLaunchConfig" index}}>{{default-str slc.name (concat-str '(Sidekick #' (one-louder index) ')')}}</a></li>
+              {{/each}}
+              <li><a {{action "addSidekick"}} tooltip="Add Sidekick"><i class="icon icon-plus"/></a></li>
+            </ul>
+          </nav>
+        {{else}}
+          <button class="btn-circle-plus btn-circle-text" style="margin-right: 20px;" {{action "addSidekick"}}>Add Sidekick</button>
+        {{/if}}
+      </div>
+    </div>
 
     {{form-divider}}
 
@@ -152,5 +164,9 @@
 {{/if}}
 
 {{#unless isSidekick}}
-  {{save-cancel save="save" cancel="cancel"}}
+  {{#save-cancel save="save" cancel="cancel"}}
+    {{#if (not-eq launchConfigIndex -1)}}
+      <button class="btn btn-default" {{action "removeSidekick"}}>Remove this Sidekick</button>
+    {{/if}}
+  {{/save-cancel}}
 {{/unless}}
