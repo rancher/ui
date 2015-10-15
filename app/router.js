@@ -107,6 +107,7 @@ Router.map(function() {
           });
         });
       });
+      this.route('catalog', {path: '/catalog/:type'});
     });
 
     // End: Authenticated
@@ -195,13 +196,18 @@ Router.map(function() {
     otherParams: 'originalModel',
   });
 
-  // End: Modals
   this.modal('edit-account', {
     dismissWithOutsideClick: false,
     withParams: 'editAccount',
     otherParams: 'originalModel',
   });
 
+  this.modal('modal-catalog-launch', {
+    dismissWithOutsideClick: true,
+    withParams: 'launchCatalog',
+    otherParams: 'originalModel'
+  });
+  // End: Modals
 });
 
 export default Router;
