@@ -37,15 +37,30 @@
         {{input type='text' class='form-control r-mb10' value=templateDescription}}
       </div>
       <div class="col-md-12 col-sm-12 over-hr r-mt20 r-mb10">
+        <span>Preview</span>
+      </div>
+      <div class="row">
+        <div class="col-md-7 col-md-offset-3">
+          docker-compose.yml {{zero-clipboard text=selectedTemplateModel.dockerCompose}}
+          <pre class="line-numbers language-yaml constrained"><code class="language-yaml">
+    {{selectedTemplateModel.dockerCompose}}</code></pre>
+        </div>
+        <div class="col-md-7 col-md-offset-3">
+          rancher-compose.yml {{zero-clipboard text=selectedStempateModel.rancherCompose}}
+          <pre class="line-numbers language-yaml constrained"><code class="language-yaml">
+    {{selectedStempateModel.rancherCompose}}</code></pre>
+        </div>
+      </div>
+      <div class="col-md-12 col-sm-12 over-hr r-mt20 r-mb10">
         <span>Configuration Options</span>
       </div>
       <form {{action 'submitTemplate' on='submit'}}>
         <div class="row form-group">
           {{#each selectedTemplateModel.questions as |question|}}
             <div class="col-sm-12 col-md-3 form-label">
-              <label class="form-label form-control-static">{{question.description}}</label>
+              <label class="form-label form-control-static">{{question.label}}</label>
             </div>
-            <div class="col-sm-12 col-md-7">
+            <div class="col-sm-12 col-md-7 r-mb10">
               {{#if (or (eq question.type 'string') (eq question.type 'int'))}}
                 {{input type='text' class='form-control r-mb10' value=question.answer}}
               {{else}}
@@ -69,8 +84,10 @@
                   {{/if}}
                 {{/if}}
               {{/if}}
+              <p class="help-block">{{question.description}}</p>
             </div>
           {{/each}}
+
         </div>
         <div class="text-center">
           {{partial "save-cancel"}}
