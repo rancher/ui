@@ -16,6 +16,22 @@ var Environment = Resource.extend({
       return this.doAction('deactivateservices');
     },
 
+    cancelUpgrade: function() {
+      return this.doAction('cancelUpgrade');
+    },
+
+    cancelRollback: function() {
+      return this.doAction('cancelRollback');
+    },
+
+    finishUpgrade: function() {
+      return this.doAction('finishUpgrade');
+    },
+
+    rollback: function() {
+      return this.doAction('rollback');
+    },
+
     addService: function() {
       this.get('router').transitionTo('service.new', {
         queryParams: {
@@ -72,6 +88,11 @@ var Environment = Resource.extend({
       { label: 'View Config',     icon: 'icon icon-files',            action: 'viewCode',            enabled: true },
       { label: 'Export Config',   icon: 'icon icon-download',         action: 'exportConfig',        enabled: !!a.exportconfig },
       { divider: true },
+      { label: 'Finish Upgrade',  icon: 'fa fa-thumbs-o-up',          action: 'finishUpgrade',       enabled: !!a.finishUpgrade },
+      { label: 'Cancel Upgrade',  icon: 'fa fa-life-ring',            action: 'cancelUpgrade',       enabled: !!a.cancelUpgrade },
+      { label: 'Rollback',        icon: 'fa fa-history',              action: 'rollback',            enabled: !!a.rollback },
+      { label: 'Cancel Rollback', icon: 'fa fa-life-ring',            action: 'cancelRollback',      enabled: !!a.cancelRollback },
+      { divider: true },
       { label: 'Delete',          icon: 'icon icon-trash',            action: 'promptDelete',        enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
       { label: 'View in API',     icon: 'icon icon-externallink',     action: 'goToApi',             enabled: true },
       { divider: true },
@@ -79,7 +100,7 @@ var Environment = Resource.extend({
     ];
 
     return out;
-  }.property('actionLinks.{remove,purge,exportconfig}','canActivate','canDeactivate'),
+  }.property('actionLinks.{remove,purge,exportconfig,finishUpgrade,cancelUpgrade,rollback,cancelRollback}','canActivate','canDeactivate'),
 
   healthState: function() {
     // Get the state of each instance
