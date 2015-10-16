@@ -1,4 +1,4 @@
-<section class="horizontal-form container-fluid">
+<section class="horizontal-form container-fluid launch-catalog">
   {{top-errors errors=errors}}
   <img src={{originalModel.iconLink}} alt={{originalModel.name}} class="img-responsive center-block" style="height:75px;">
   <h2>Add {{originalModel.name}} Stack</h2>
@@ -37,21 +37,6 @@
         {{input type='text' class='form-control r-mb10' value=templateDescription}}
       </div>
       <div class="col-md-12 col-sm-12 over-hr r-mt20 r-mb10">
-        <span>Preview</span>
-      </div>
-      <div class="row">
-        <div class="col-md-7 col-md-offset-3">
-          docker-compose.yml {{zero-clipboard text=selectedTemplateModel.dockerCompose}}
-          <pre class="line-numbers language-yaml constrained"><code class="language-yaml">
-    {{selectedTemplateModel.dockerCompose}}</code></pre>
-        </div>
-        <div class="col-md-7 col-md-offset-3">
-          rancher-compose.yml {{zero-clipboard text=selectedStempateModel.rancherCompose}}
-          <pre class="line-numbers language-yaml constrained"><code class="language-yaml">
-    {{selectedTemplateModel.rancherCompose}}</code></pre>
-        </div>
-      </div>
-      <div class="col-md-12 col-sm-12 over-hr r-mt20 r-mb10">
         <span>Configuration Options</span>
       </div>
       <form {{action 'submitTemplate' on='submit'}}>
@@ -88,6 +73,22 @@
             </div>
           {{/each}}
 
+        </div>
+        <div class="col-md-12 col-sm-12 over-hr r-mt20 r-mb20">
+          <span {{action 'togglePreview'}} class='hand'>Preview</span>
+          {{#if previewOpen}}<i class="icon icon-chevron-up"></i>{{else}}<i class="icon icon-chevron-down"></i>{{/if}}
+        </div>
+        <div class="row {{if previewOpen '' 'hide'}}">
+          <div class="col-md-6">
+            docker-compose.yml {{zero-clipboard text=selectedTemplateModel.dockerCompose}}
+            <pre class="line-numbers language-yaml constrained"><code class="language-yaml">
+      {{~selectedTemplateModel.dockerCompose}}</code></pre>
+          </div>
+          <div class="col-md-6">
+            rancher-compose.yml {{zero-clipboard text=selectedStempateModel.rancherCompose}}
+            <pre class="line-numbers language-yaml constrained"><code class="language-yaml">
+      {{~selectedTemplateModel.rancherCompose}}</code></pre>
+          </div>
         </div>
         <div class="text-center">
           {{partial "save-cancel"}}
