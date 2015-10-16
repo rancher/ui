@@ -32,7 +32,7 @@ export default Ember.Route.extend({
 
     function categories(data) {
       var out = data.map((item) => item.category);
-      out.uniq().sort((a,b) => a.localeCompare(b, 'en', {sensitivity: 'base'}));
+      out = out.uniq().sort((a,b) => a.localeCompare(b, 'en', {sensitivity: 'base'}));
       out.unshift('all');
       return out;
     }
