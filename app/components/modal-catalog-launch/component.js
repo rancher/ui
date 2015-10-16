@@ -3,9 +3,20 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 
 export default Ember.Component.extend(NewOrEdit, {
   primaryResource: Ember.computed.alias('environmentResource'),
+  highlightAll: function() {
+    this.$('CODE').each(function(idx, elem) {
+      Prism.highlightElement(elem);
+    });
+  },
   actions: {
     cancel: function() {
       this.sendAction('dismiss');
+    },
+    togglePreview: function() {
+      if (this.get('previewOpen')) {
+        this.highlightAll();
+      }
+      this.toggleProperty('previewOpen');
     }
   },
   environmentResource: null,
@@ -16,6 +27,7 @@ export default Ember.Component.extend(NewOrEdit, {
   loading: false,
   templateName: null,
   templateDescription: null,
+  previewOpen: false,
   versions: Ember.on('init', function() {
     var verArr = [];
     _.forEach(this.get('originalModel.versionLinks'), (value, key) => {
@@ -31,6 +43,9 @@ export default Ember.Component.extend(NewOrEdit, {
     Ember.$.ajax(this.get('selectedTemplate'), 'GET').then((response) => {
       this.set('selectedTemplateModel', response);
       this.set('loading', false);
+      Ember.run.later(() => {
+        this.highlightAll();
+      });
     }, ( /*error*/ ) => {});
   }.observes('selectedTemplate'),
   willSave: function() {
