@@ -2,25 +2,27 @@
   {{top-errors errors=errors}}
   <img src={{originalModel.iconLink}} alt={{originalModel.name}} class="img-responsive center-block" style="height:75px;">
   <h2>Add {{originalModel.name}} Stack</h2>
-  <div class="row form-group">
+  <div class="row">
     <div class="col-sm-12 col-md-3 form-label">
       <label class="form-control-static">Version</label>
     </div>
     <div class="col-sm-12 col-md-7 r-mb15">
       {{new-select
-        classNames='form-control'
+        classNames="form-control"
         content=versionsArray
         prompt="Choose a Version"
         optionLabelPath="version"
         optionValuePath="link"
         value=selectedTemplate}}
     </div>
-    {{#if loading}}
-      <div class="col-md-12 text-center r-mt15">
-        <i class="fa fa-spinner fa-spin" style="font-size:36px;"></i>
-      </div>
-    {{/if}}
-    {{#if selectedTemplateModel }}
+  </div>
+  {{#if loading}}
+    <div class="col-md-12 text-center r-m15">
+      <i class="fa fa-spinner fa-spin" style="font-size:36px;"></i>
+    </div>
+  {{/if}}
+  {{#if selectedTemplateModel }}
+    <div class="row">
       <div class="col-md-12 col-sm-12 over-hr r-mt20 r-mb10">
         <span>New Stack</span>
       </div>
@@ -28,77 +30,84 @@
         <label class="form-control-static">Name*</label>
       </div>
       <div class="col-sm-12 col-md-7 r-mb15">
-        {{input type='text' class='form-control r-mb10' value=templateName}}
+        {{input type="text" class="form-control r-mb10" value=templateName}}
       </div>
       <div class="col-sm-12 col-md-3 form-label">
-        <label class="form-control-static">Description*</label>
+        <label class="form-control-static">Description</label>
       </div>
       <div class="col-sm-12 col-md-7 r-mb15">
-        {{input type='text' class='form-control r-mb10' value=templateDescription}}
+        {{textarea rows="3" class="form-control r-mb10" value=templateDescription}}
       </div>
       <div class="col-md-12 col-sm-12 over-hr r-mt20 r-mb10">
         <span>Configuration Options</span>
       </div>
-      <form {{action 'submitTemplate' on='submit'}}>
+    </div>
+    <form {{action "submitTemplate" on="submit"}}>
+      {{#each selectedTemplateModel.questions as |question|}}
         <div class="row form-group">
-          {{#each selectedTemplateModel.questions as |question|}}
-            <div class="col-sm-12 col-md-3 form-label">
-              <label class="form-label form-control-static">{{question.label}}</label>
-            </div>
-            <div class="col-sm-12 col-md-7 r-mb10">
-              {{#if (or (eq question.type 'string') (eq question.type 'int'))}}
-                {{input type='text' class='form-control r-mb10' value=question.answer}}
+          <div class="col-sm-12 col-md-3 form-label">
+            <label class="form-label form-control-static">{{question.label}}{{if question.required "*"}}</label>
+          </div>
+          <div class="col-sm-12 col-md-7 r-mb10">
+            {{#if (or (eq question.type "string") (eq question.type "int"))}}
+              {{input type="text" class="form-control r-mb10" value=question.answer}}
+            {{else}}
+              {{#if (eq question.type "boolean")}}
+                <div class="r-mb10">
+                  <label style="display:block;">
+                    {{radio-button selection=question.answer value=true}} True
+                  </label>
+                  <label style="display:block;">
+                    {{radio-button selection=question.answer value=false}} False
+                  </label>
+                </div>
               {{else}}
-                {{#if (eq question.type 'boolean')}}
-                  <div class="r-mb10">
-                    <label style="display:block;">
-                      {{radio-button selection=question.answer value=true}} True
-                    </label>
-                    <label style="display:block;">
-                      {{radio-button selection=question.answer value=false}} False
-                    </label>
-                  </div>
+                {{#if (eq question.type "enum")}}
+                  <select name="" class="form-control r-mb10" onChange={{action (mut question.answer) value="target.value"}}>
+                    <option value="">Choose an option...</option>
+                    {{#each question.options key="@identity" as |option|}}
+                      <option value={{option}}>{{option}}</option>
+                    {{/each}}
+                  </select>
                 {{else}}
-                  {{#if (eq question.type 'enum')}}
-                    <select name="" class="form-control r-mb10" onChange={{action (mut question.answer) value="target.value"}}>
-                      <option value="">Choose an option...</option>
-                      {{#each question.options key="@identity" as |option|}}
-                        <option value={{option}}>{{option}}</option>
-                      {{/each}}
-                    </select>
+                  {{#if (eq question.type "multiline")}}
+                    {{textarea value=question.answer rows="5" class="form-control"}}
                   {{else}}
-                    {{#if (eq question.type 'multiline')}}
-                      {{textarea value=question.answer rows='5' class='form-control'}}
-                    {{/if}}
+                    Unknown question type: {{question.type}}
                   {{/if}}
                 {{/if}}
               {{/if}}
-              <p class="help-block">{{question.description}}</p>
-            </div>
-          {{/each}}
+            {{/if}}
+            <p class="help-block">{{question.description}}</p>
+          </div>
+        </div>
+      {{/each}}
 
+      <div class="over-hr r-mt20 r-mb20">
+        <span {{action "togglePreview"}} class="hand">Preview</span>
+        {{#if previewOpen}}<i class="icon icon-chevron-up"></i>{{else}}<i class="icon icon-chevron-down"></i>{{/if}}
+      </div>
+      <div class="row {{unless previewOpen "hide"}}">
+        <div class="col-md-6">
+          docker-compose.yml {{zero-clipboard text=selectedTemplateModel.dockerCompose}}
+          <pre class="line-numbers language-yaml constrained"><code class="language-yaml">
+            {{~selectedTemplateModel.dockerCompose~}}
+          </code></pre>
         </div>
-        <div class="col-md-12 col-sm-12 over-hr r-mt20 r-mb20">
-          <span {{action 'togglePreview'}} class='hand'>Preview</span>
-          {{#if previewOpen}}<i class="icon icon-chevron-up"></i>{{else}}<i class="icon icon-chevron-down"></i>{{/if}}
+        <div class="col-md-6">
+          rancher-compose.yml {{zero-clipboard text=selectedTemplateModel.rancherCompose}}
+          <pre class="line-numbers language-yaml constrained"><code class="language-yaml">
+            {{~selectedTemplateModel.rancherCompose~}}
+          </code></pre>
         </div>
-        <div class="row {{if previewOpen '' 'hide'}}">
-          <div class="col-md-6">
-            docker-compose.yml {{zero-clipboard text=selectedTemplateModel.dockerCompose}}
-            <pre class="line-numbers language-yaml constrained"><code class="language-yaml">
-      {{~selectedTemplateModel.dockerCompose}}</code></pre>
-          </div>
-          <div class="col-md-6">
-            rancher-compose.yml {{zero-clipboard text=selectedStempateModel.rancherCompose}}
-            <pre class="line-numbers language-yaml constrained"><code class="language-yaml">
-      {{~selectedTemplateModel.rancherCompose}}</code></pre>
-          </div>
-        </div>
-        <div class="text-center">
-          {{partial "save-cancel"}}
-        </div>
-      </form>
-    {{/if}}
-  </div>
+      </div>
+
+      {{partial "save-cancel"}}
+    </form>
+  {{else}}
+    <div class="footer-actions">
+      <button {{action "cancel"}} class="btn btn-default">Cancel</button>
+    </div>
+  {{/if}}
 </section>
 {{yield}}
