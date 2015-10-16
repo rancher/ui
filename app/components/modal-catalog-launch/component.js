@@ -41,6 +41,11 @@ export default Ember.Component.extend(NewOrEdit, {
   templateChanged: function() {
     this.set('loading', true);
     Ember.$.ajax(this.get('selectedTemplate'), 'GET').then((response) => {
+      if (response.questions) {
+        response.questions.forEach((item) => {
+          item.answer = item.default;
+        });
+      }
       this.set('selectedTemplateModel', response);
       this.set('loading', false);
       Ember.run.later(() => {
@@ -80,12 +85,19 @@ export default Ember.Component.extend(NewOrEdit, {
   },
   validate: function() {
     var errors = [];
-
-    if (!this.get('selectedTemplateModel').name) {
+    if (!this.get('templateName')) {
       errors.push('Name is required');
     }
-    if (!this.get('selectedTemplateModel').description) {
+    if (!this.get('templateDescription')) {
       errors.push('Description is required');
+    }
+
+    if (this.get('selectedTemplateModel.questions')) {
+      this.get('selectedTemplateModel.questions').forEach((item) => {
+        if (item.required && !item.answer){
+          errors.push(`${item.label} is required`);
+        }
+      });
     }
 
     if (errors.length) {
