@@ -100,7 +100,7 @@ var Environment = Resource.extend({
     ];
 
     return out;
-  }.property('actionLinks.{remove,purge,exportconfig,finishupgradecancelupgrade,rollback,cancelrollback}','canActivate','canDeactivate'),
+  }.property('actionLinks.{remove,purge,exportconfig,finishupgrade,cancelupgrade,rollback,cancelrollback}','canActivate','canDeactivate'),
 
   healthState: function() {
     // Get the state of each instance

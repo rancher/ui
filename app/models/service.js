@@ -130,7 +130,7 @@ var Service = Resource.extend(ReadLabels, {
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,update,remove,purge,finisupgrade,cancelupgrade,rollback,cancelrollback}'),
+  }.property('actionLinks.{activate,deactivate,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}'),
 
 
   _allMaps: null,
