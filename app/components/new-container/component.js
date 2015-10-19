@@ -43,6 +43,9 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       var ary = this.get('service.secondaryLaunchConfigs');
       ary.pushObject(this.get('store').createRecord({
         type: 'secondaryLaunchConfig',
+        tty: true,
+        stdinOpen: true,
+        restartPolicy: {name: 'always'},
       }));
       this.send('selectLaunchConfig', ary.get('length')-1);
     },
@@ -139,7 +142,11 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       (this.get('scaleLabels')||[]).forEach((row) => { out[row.key] = row.value; });
       (this.get('schedulingLabels')||[]).forEach((row) => { out[row.key] = row.value; });
 
-      this.set('launchConfig.labels', out);
+      var config = this.get('launchConfig');
+      if ( config )
+      {
+        this.set('launchConfig.labels', out);
+      }
     }
   ),
 
