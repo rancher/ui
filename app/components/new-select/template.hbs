@@ -4,8 +4,18 @@
   </option>
 {{/if}}
 
-{{#each content as |item|}}
+{{#each ungroupedContent as |item|}}
   <option value="{{get item optionValuePath}}" selected={{eq value (get item optionValuePath)}}>
     {{get item optionLabelPath}}
   </option>
+{{/each}}
+
+{{#each groupedContent as |group|}}
+  <optgroup label="{{group.group}}">
+    {{#each group.options as |item|}}
+      <option value="{{get item optionValuePath}}" selected={{eq value (get item optionValuePath)}}>
+        {{get item optionLabelPath}}
+      </option>
+    {{/each}}
+  </optgroup>
 {{/each}}

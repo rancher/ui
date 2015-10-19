@@ -7,8 +7,12 @@ export default Ember.Component.extend({
   prompt: null,
   optionValuePath: 'value',
   optionLabelPath: 'label',
+  optionGroupPath: 'group',
   action: Ember.K, // action to fire on change
   value: null,
+
+  ungroupedContent: null,
+  groupedContent: null,
 
   // shadow the passed-in `selection` to avoid
   // leaking changes to it via a 2-way binding
@@ -19,6 +23,41 @@ export default Ember.Component.extend({
     if (!this.get('content')) {
       this.set('content', []);
     }
+
+    this.set('ungroupedContent', Ember.computed('content.@each.'+this.get('optionGroupPath'), () => {
+      var groupPath = this.get('optionGroupPath');
+      var out = [];
+      this.get('content').forEach((opt) => {
+        var key = Ember.get(opt, groupPath);
+        if ( !key )
+        {
+          out.push(opt);
+        }
+      });
+
+      return out;
+    }));
+
+    this.set('groupedContent', Ember.computed('content.@each.'+this.get('optionGroupPath'), () => {
+      var groupPath = this.get('optionGroupPath');
+      var out = [];
+      this.get('content').forEach((opt) => {
+        var key = Ember.get(opt, groupPath);
+        if ( key )
+        {
+          var group = out.filterBy('group', key)[0];
+          if ( !group )
+          {
+            group = {group: key, options: []};
+            out.push(group);
+          }
+
+          group.options.push(opt);
+        }
+      });
+
+      return out.sortBy(groupPath);
+    }));
 
     this.on('change', this, this._change);
   },

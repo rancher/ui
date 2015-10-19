@@ -24,13 +24,13 @@
         {{#each linksArray as |link|}}
           <tr>
             <td>
-              {{display-name-select
+              {{new-select
                 classNames="form-control link-container input-sm"
                 prompt="Select a container..."
                 value=link.targetInstanceId
                 content=containersOnRequestedHostIfUnmanaged
-                optionValuePath="content.id"
-                optionLabelPath="content.name"
+                optionValuePath="id"
+                optionLabelPath="name"
                 optionGroupPath="group"
               }}
             </td>
@@ -38,7 +38,7 @@
               <p class="form-control-static"><i class="icon icon-arrow-right"></i></p>
             </td>
             <td>
-              {{#if link.existing}}
+              {{#if editing}}
                 <p class="form-control-static input-sm text-muted">{{link.name}}</p>
               {{else}}
                 {{input class="form-control input-sm" type="text" value=link.name placeholder="e.g. database"}}
