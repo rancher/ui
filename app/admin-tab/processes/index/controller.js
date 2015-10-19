@@ -43,7 +43,8 @@ export default Ember.Controller.extend(Sortable, {
     }
   },
   sortableContent: Ember.computed.alias('model.processInstance'),
-  sortBy: 'id',
+  sortBy: 'startTime',
+  descending: true,
   sorts: {
     id: ['id'],
     processName: ['processName', 'id'],

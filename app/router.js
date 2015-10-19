@@ -205,7 +205,7 @@ Router.map(function() {
   this.modal('modal-catalog-launch', {
     dismissWithOutsideClick: true,
     withParams: 'launchCatalog',
-    otherParams: 'originalModel'
+    otherParams: {originalModel: 'originalModel', environmentResource: 'environmentResource'}
   });
   // End: Modals
 });

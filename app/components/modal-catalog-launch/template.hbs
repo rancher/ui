@@ -1,7 +1,9 @@
 <section class="horizontal-form container-fluid launch-catalog">
   {{top-errors errors=errors}}
-  <img src={{originalModel.iconLink}} alt={{originalModel.name}} class="img-responsive center-block" style="height:75px;">
-  <h2>Add {{originalModel.name}} Stack</h2>
+  {{#if templateResource.iconLink}}
+    <img src={{templateResource.iconLink}} alt={{templateResource.name}} class="img-responsive center-block" style="height:75px;">
+  {{/if}}
+  <h2>{{if editing "Upgrade" "Add"}} {{templateResource.name}} Stack</h2>
   <div class="row">
     <div class="col-sm-12 col-md-3 form-label">
       <label class="form-control-static">Version</label>
@@ -13,15 +15,15 @@
         prompt="Choose a Version"
         optionLabelPath="version"
         optionValuePath="link"
-        value=selectedTemplate}}
+        value=selectedTemplateUrl}}
     </div>
   </div>
   {{#if loading}}
-    <div class="col-md-12 text-center r-m15">
+    <div class="col-md-12 text-center r-mt15 r-mb15">
       <i class="fa fa-spinner fa-spin" style="font-size:36px;"></i>
     </div>
   {{/if}}
-  {{#if selectedTemplateModel }}
+  {{#if (and (not editing) selectedTemplateModel) }}
     <div class="row">
       <div class="col-md-12 col-sm-12 over-hr r-mt20 r-mb10">
         <span>New Stack</span>
@@ -30,17 +32,19 @@
         <label class="form-control-static">Name*</label>
       </div>
       <div class="col-sm-12 col-md-7 r-mb15">
-        {{input type="text" class="form-control r-mb10" value=templateName}}
+        {{input type="text" class="form-control r-mb10" value=environmentResource.name}}
       </div>
       <div class="col-sm-12 col-md-3 form-label">
         <label class="form-control-static">Description</label>
       </div>
       <div class="col-sm-12 col-md-7 r-mb15">
-        {{textarea rows="3" class="form-control r-mb10" value=templateDescription}}
+        {{textarea rows="3" class="form-control r-mb10" value=environmentResource.description}}
       </div>
-      <div class="col-md-12 col-sm-12 over-hr r-mt20 r-mb10">
-        <span>Configuration Options</span>
-      </div>
+    </div>
+  {{/if}}
+  {{#if selectedTemplateModel}}
+    <div class="col-md-12 col-sm-12 over-hr r-mt20 r-mb10">
+      <span>Configuration Options</span>
     </div>
     <form {{action "submitTemplate" on="submit"}}>
       {{#each selectedTemplateModel.questions as |question|}}
@@ -81,6 +85,8 @@
             <p class="help-block">{{question.description}}</p>
           </div>
         </div>
+      {{else}}
+        <span class="text-muted">There are no configuration options for this application.</span>
       {{/each}}
 
       <div class="over-hr r-mt20 r-mb20">

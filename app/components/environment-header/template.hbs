@@ -4,6 +4,7 @@
     <div class="state {{model.stateColor}}">
       <i class="{{model.stateIcon}}"></i> {{model.displayState}}
     </div>
+
     <span class="right-divider">{{#link-to "environments"}}Stacks:{{/link-to}} {{model.displayName}}</span>
     <div class="btn-group right-divider" style="margin: 0 10px 0 -5px;">
       {{#link-to "environment.index" (query-params mode="dot") classNames="btn btn-sm btn-default"}}<i class="fa fa-ellipsis-h" data-placement="bottom" tooltip="Tiny Dots"></i>{{/link-to}}
@@ -24,5 +25,11 @@
         <li>{{#link-to "service.new-external" (query-params environmentId=model.id)}}Add External Service{{/link-to}}</li>
       </ul>
     </div>
+    {{upgrade-btn environmentResource=model}}
   </h3>
+  {{#if (and model.isError model.showTransitioningMessage)}}
+    <div class="pull-right clip text-danger">
+      {{model.transitioningMessage}}
+    </div>
+  {{/if}}
 </section>

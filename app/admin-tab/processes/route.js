@@ -51,6 +51,8 @@ export default Ember.Route.extend({
       filter: {
       },
       limit: 100,
+      sortBy: 'id',
+      sortOrder: 'desc',
       depaginate: false,
       forceReload: true
     };
