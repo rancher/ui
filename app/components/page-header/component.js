@@ -6,6 +6,7 @@ export default Ember.Component.extend({
   access: Ember.inject.service(),
   projects: Ember.inject.service(),
   project: Ember.computed.alias('projects.current'),
+  cookies: Ember.inject.service(),
 
   currentPath: null,
   authController: null,
@@ -42,6 +43,10 @@ export default Ember.Component.extend({
 
   showHostSetup: function() {
     return this.get('isAdmin') && this.get('store').hasRecordFor('schema','setting');
+  }.property(),
+
+  showCatalog: function() {
+    return this.get('cookies').get('showcatalog') === 'true';
   }.property(),
 
   actions: {

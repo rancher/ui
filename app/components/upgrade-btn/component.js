@@ -41,16 +41,7 @@ export default Ember.Component.extend({
   upgradeInfo: null,
 
   didInitAttrs() {
-    var uuid = this.get('environmentResource.externalId');
-    if ( uuid )
-    {
-      this.set('upgradeStatus', LOADING);
-      queue.push({uuid: uuid, obj: this});
-    }
-    else
-    {
-      this.set('upgradeStatus', NONE);
-    }
+    this.updateStatus();
   },
 
   click: function() {
@@ -94,4 +85,21 @@ export default Ember.Component.extend({
         return 'Error checking upgrades';
     }
   }.property('upgradeStatus'),
+
+  updateStatus() {
+    var uuid = this.get('environmentResource.externalId');
+    if ( uuid )
+    {
+      this.set('upgradeStatus', LOADING);
+      queue.push({uuid: uuid, obj: this});
+    }
+    else
+    {
+      this.set('upgradeStatus', NONE);
+    }
+  },
+
+  externalIdChanged: function() {
+    this.updateStatus();
+  }.property('environmentResource.externalId'),
 });
