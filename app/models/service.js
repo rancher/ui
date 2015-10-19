@@ -25,6 +25,19 @@ var Service = Resource.extend(ReadLabels, {
       return this.doAction('cancelupgrade');
     },
 
+    cancelRollback: function() {
+      return this.doAction('cancelrollback');
+    },
+
+    finishUpgrade: function() {
+      return this.doAction('finishupgrade');
+    },
+
+    rollback: function() {
+      return this.doAction('rollback');
+    },
+
+
     edit: function() {
       var type = this.get('type').toLowerCase();
       if ( type === 'loadbalancerservice' )
@@ -104,8 +117,12 @@ var Service = Resource.extend(ReadLabels, {
       { label: 'Start',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
       { label: 'Stop',          icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
       { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
-      { label: 'Cancel Upgrade',icon: '',                       action: 'cancelUpgrade',enabled: !!a.cancelupgrade },
       { label: 'Purge',         icon: '',                       action: 'purge',        enabled: !!a.purge },
+      { divider: true },
+      { label: 'Finish Upgrade',  icon: 'fa fa-thumbs-o-up',          action: 'finishUpgrade',       enabled: !!a.finishupgrade },
+      { label: 'Cancel Upgrade',  icon: 'fa fa-life-ring',            action: 'cancelUpgrade',       enabled: !!a.cancelupgrade },
+      { label: 'Rollback',        icon: 'fa fa-history',              action: 'rollback',            enabled: !!a.rollback },
+      { label: 'Cancel Rollback', icon: 'fa fa-life-ring',            action: 'cancelRollback',      enabled: !!a.cancelrollback },
       { divider: true },
       { label: 'View in API',   icon: 'icon icon-externallink', action: 'goToApi',      enabled: true },
       { label: 'Clone',         icon: 'icon icon-copy',         action: 'clone',        enabled: true },
@@ -113,7 +130,7 @@ var Service = Resource.extend(ReadLabels, {
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,update,remove,purge,cancelupgrade}'),
+  }.property('actionLinks.{activate,deactivate,update,remove,purge,finisupgrade,cancelupgrade,rollback,cancelrollback}'),
 
 
   _allMaps: null,
