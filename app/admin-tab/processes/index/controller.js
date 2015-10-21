@@ -84,8 +84,22 @@ export default Ember.Controller.extend(Sortable, {
       }
     });
   }),
-  disabledInputs: Ember.computed('ownResourceId', 'ownResourceType', 'ownProcessName', function() {
-    if (this.get('ownResourceId') || this.get('ownResourceType') || this.get('ownProcessName')) {
+  disableClear: Ember.computed('resourceId', 'resourceType', 'processName', function() {
+    if (this.get('resourceId') || this.get('resourceType') || this.get('processName')) {
+      return false;
+    } else {
+      return true;
+    }
+  }),
+  disableId: Ember.computed('ownResourceType', function() {
+    if (this.get('ownResourceType')) {
+      return false;
+    } else {
+      return true;
+    }
+  }),
+  disableSearch: Ember.computed('ownResourceId', 'ownResourceType', 'ownProcessName', function() {
+    if ((this.get('ownResourceType') && this.get('ownResourceId')) || (this.get('ownResourceType')) || (this.get('ownProcessName'))) {
       return false;
     } else {
       return true;
