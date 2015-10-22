@@ -2,14 +2,14 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   launchConfig: null,
-  listenersArray: null,
-  balancerService: null,
-  certificates: null,
+  hasSslListeners: null,
+  balancer: null,
+  allCertificates: null,
 
   alternates: null,
 
   didInitAttrs() {
-    var alternates = (this.get('balancerService.certificateIds')||[]).map((id) => {
+    var alternates = (this.get('balancer.certificateIds')||[]).map((id) => {
       return {value: id};
     });
 
@@ -23,33 +23,33 @@ export default Ember.Component.extend({
 
     removeAlternate(alt) {
       this.get('alternates').removeObject(alt);
-    }
+    },
   },
 
   alternateCertificates: function() {
-    var def = this.get('balancerService.defaultCertificateId');
-    return this.get('certificates').slice().filter((obj) => {
+    var def = this.get('balancer.defaultCertificateId');
+    return this.get('allCertificates').slice().filter((obj) => {
       return Ember.get(obj, 'id') !== def;
     });
-  }.property('certificates.@each.id','balancerService.defaultCertificateId'),
-
-  hasSslListeners: function() {
-    return this.get('listenersArray').filterBy('ssl',true).get('length') > 0;
-  }.property('listenersArray.@each.ssl'),
+  }.property('allCertificates.@each.id','balancer.defaultCertificateId'),
 
   defaultDidChange: function() {
-    var def = this.get('balancerService.defaultCertificateId');
+    var def = this.get('balancer.defaultCertificateId');
     this.get('alternates').forEach((obj) => {
       if ( Ember.get(obj, 'value') === def )
       {
         Ember.set(obj,'value',null);
       }
     });
-  }.observes('balancerService.defaultCertificateId'),
+  }.observes('balancer.defaultCertificateId'),
 
   alternatesDidChange: function() {
-    this.set('balancerService.certificateIds', this.get('alternates').map((obj) => {
+    this.set('balancer.certificateIds', this.get('alternates').map((obj) => {
       return Ember.get(obj, 'value');
     }).filter((id) => { return !!id; }).uniq());
   }.observes('alternates.@each.value'),
+
+  updateLabels(labels) {
+    this.sendAction('setLabels', labels);
+  },
 });

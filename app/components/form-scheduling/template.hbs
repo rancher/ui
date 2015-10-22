@@ -1,37 +1,49 @@
 <div class="form-group">
-  <div class="radio">
-    <label class="form-control-static">{{radio-button selection=isRequestedHost value=true}}
-      {{#if isService}}
-        Run <b>all</b> containers on a specific host{{if isRequestedHost ':'}}
-      {{else}}
-        Run on a specific host{{if isRequestedHost ':'}}
-      {{/if}}</label>
-      {{#if isRequestedHost}}
-        {{new-select
-          class="form-control"
-          content=hostChoices
-          value=requestedHostId
-          optionValuePath="id"
-          optionLabelPath="name"
-          disabled=(not isRequestedHost)
-          style="display: inline-block; width: auto;"
-        }}
-      {{/if}}
-  </div>
-
-  <div class="radio">
-    <label>{{radio-button selection=isRequestedHost value=false}}
-      {{#if isService}}
-        {{#if isGlobal}}
-          Automatically run on every host matching scheduling rules:
+  {{#if canRequestHost}}
+    <div class="radio">
+      <label class="form-control-static">{{radio-button selection=isRequestedHost value=true}}
+        {{#if isService}}
+          Run <b>all</b> containers on a specific host{{if isRequestedHost ':'}}
         {{else}}
-          Automatically pick hosts for each container matching scheduling rules:
+          Run on a specific host{{if isRequestedHost ':'}}
+        {{/if}}</label>
+        {{#if isRequestedHost}}
+          {{new-select
+            class="form-control"
+            content=hostChoices
+            value=requestedHostId
+            optionValuePath="id"
+            optionLabelPath="name"
+            disabled=(not isRequestedHost)
+            style="display: inline-block; width: auto;"
+          }}
         {{/if}}
+    </div>
+
+    <div class="radio">
+      <label>{{radio-button selection=isRequestedHost value=false}}
+        {{#if isService}}
+          {{#if isGlobal}}
+            Automatically run on every host matching scheduling rules:
+          {{else}}
+            Automatically pick hosts for each container matching scheduling rules:
+          {{/if}}
+        {{else}}
+          Automatically pick a host matching scheduling rules:
+        {{/if}}
+      </label>
+    </div>
+  {{else}}
+    {{#if isService}}
+      {{#if isGlobal}}
+        Automatically run on every host matching scheduling rules:
       {{else}}
-        Automatically pick a host matching scheduling rules:
+        Automatically pick hosts for each container matching scheduling rules:
       {{/if}}
-    </label>
-  </div>
+    {{else}}
+      Automatically pick a host matching scheduling rules:
+    {{/if}}
+  {{/if}}
 
   {{#unless isRequestedHost}}
     <div class="form-control-static">

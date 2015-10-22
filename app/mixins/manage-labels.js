@@ -163,8 +163,14 @@ export default Ember.Mixin.create({
     }
   },
 
-  initLabels: function(obj) {
+  initLabels: function(obj, onlyOfType, onlyKeys) {
     var out = [];
+
+    if ( onlyKeys && !Ember.isArray(onlyKeys) )
+    {
+      onlyKeys = [onlyKeys];
+    }
+
 
     Object.keys(obj||{}).forEach(function(key) {
       var type = 'user';
@@ -175,6 +181,18 @@ export default Ember.Mixin.create({
       else if ( key.indexOf(C.LABEL.SYSTEM_PREFIX) === 0 )
       {
         type = 'system';
+      }
+
+      if ( onlyOfType && type !== onlyOfType )
+      {
+        // Skip labels of the wrong type
+        return;
+      }
+
+      if ( onlyKeys && onlyKeys.indexOf(key) === -1 )
+      {
+        // Skip labels of keys we don't care about
+        return;
       }
 
       // Split values on comma
@@ -189,6 +207,7 @@ export default Ember.Mixin.create({
     });
 
     this.set('labelArray', out);
+    this.labelsChanged();
   },
 
   labelsChanged: debouncedObserver('labelArray.@each.{type,key,value}', function() {

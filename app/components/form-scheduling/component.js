@@ -12,6 +12,9 @@ export default Ember.Component.extend(ManageLabels, {
   // Request a specific host
   requestedHostId: null,
 
+  // Is requesting a specific host allowed
+  canRequestHost: true,
+
   // All the hosts, for generating dropdowns
   allHosts: null,
 
@@ -42,7 +45,7 @@ export default Ember.Component.extend(ManageLabels, {
   },
 
   didInitAttrs() {
-    this.initLabels(this.get('initialLabels'));
+    this.initLabels(this.get('initialLabels'), 'affinity');
 
     if ( this.get('isGlobal') )
     {

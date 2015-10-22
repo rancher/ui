@@ -8,7 +8,8 @@ export default Ember.Component.extend(ManageLabels, {
   tagName: '',
 
   didInitAttrs() {
-    this.initLabels(this.get('initialLabels'));
+    this.initLabels(this.get('initialLabels'), 'user');
+    this.labelsChanged();
   },
 
   updateLabels(labels) {

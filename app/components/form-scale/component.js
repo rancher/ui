@@ -9,7 +9,6 @@ function roundScale(num) {
 }
 
 export default Ember.Component.extend(ManageLabels, {
-  // Inputs
   initialLabels: null,
   initialScale: null,
   isGlobal: null,
@@ -23,7 +22,7 @@ export default Ember.Component.extend(ManageLabels, {
     this.set('scale', this.get('initialScale')||1);
     this.set('max', Math.max(11, roundScale(this.get('scale'))));
 
-    this.initLabels(this.get('initialLabels'));
+    this.initLabels(this.get('initialLabels'), null, C.LABEL.SCHED_GLOBAL);
     var on = !!this.getLabel(C.LABEL.SCHED_GLOBAL);
     this.sendAction('setGlobal', on);
   },
