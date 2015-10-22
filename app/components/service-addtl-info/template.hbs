@@ -1,0 +1,51 @@
+<div class="container-fluid">
+  <div class="row"> <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+      <li role="presentation" class="active" class="tab-main active">
+         <span class='close' {{action 'dismiss'}}><i class="fa fa-times-circle"></i></span>
+         <h2><a href="#home" aria-controls="home" role="tab" data-toggle="tab">{{service.name}}</a></h2>
+      </li>
+      {{#if service.secondaryLaunchConfigs}}
+        {{#each service.secondaryLaunchConfigs as |sidekick|}}
+          <li role="presentation" class="tab-main sidekick">
+            <h2><a href="#sidekick-{{sidekick.name}}" aria-controls="profile" role="tab" data-toggle="tab">{{sidekick.name}}</a></h2>
+          </li>
+        {{/each}}
+      {{/if}}
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div role="tabpanel" class="tab-pane active" id="home">
+        <div class="description">
+          <label class="text-muted text-bold text-uppercase">Description:</label>
+          {{service.description}}
+        </div>
+        <hr>
+        {{#if (eq service.type 'service')}}
+          {{partial 'service-addtl-info'}}
+        {{else}}
+          {{#if (eq service.type 'dnsService')}}
+            {{partial 'alias-service-addtl-info'}}
+          {{else}}
+            {{#if (eq service.type 'externalService')}}
+              {{partial 'ext-service-addtl-info'}}
+            {{else}}
+              {{partial 'lb-service-addtl-info'}}
+            {{/if}}
+          {{/if}}
+        {{/if}}
+      </div>
+      {{#if service.secondaryLaunchConfigs}}
+        {{#each service.secondaryLaunchConfigs as |sidekick|}}
+          <div role="tabpanel" class="tab-pane" id="sidekick-{{sidekick.name}}">
+            {{partial 'sidekick-addtl-info'}}
+          </div>
+        {{/each}}
+      {{/if}}
+    </div>
+  </div>
+  <hr>
+  {{yield}}
+</div>
+
