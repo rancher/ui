@@ -3,12 +3,6 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   allServices: Ember.inject.service(),
 
-  actions: {
-    cancel: function() {
-      this.goToPrevious();
-    },
-  },
-
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
@@ -27,10 +21,12 @@ export default Ember.Route.extend({
     }
 
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
+      var store = this.get('store');
       var allHosts = results[0];
       var allServices = results[1];
       var serviceOrContainer = results[2];
       var serviceLinks = [];
+      var secondaryLaunchConfigs = [];
 
       var instanceData, serviceData, healthCheckData;
       if ( serviceOrContainer )
@@ -42,6 +38,12 @@ export default Ember.Route.extend({
           instanceData = serviceData.launchConfig;
           delete serviceData.launchConfig;
           delete serviceData.instances;
+
+          (serviceOrContainer.secondaryLaunchConfigs||[]).forEach((slc) => {
+            var data = slc.serializeForNew();
+            secondaryLaunchConfigs.push(store.createRecord(data));
+          });
+
           delete serviceData.secondaryLaunchConfigs;
         }
         else
@@ -54,7 +56,7 @@ export default Ember.Route.extend({
       else
       {
         instanceData = {
-          type: 'container',
+          type: 'launchConfig',
           tty: true,
           stdinOpen: true,
           restartPolicy: {name: 'always'},
@@ -70,51 +72,31 @@ export default Ember.Route.extend({
         };
       }
 
-      if ( !healthCheckData )
-      {
-        healthCheckData = {
-          interval: 2000,
-          responseTimeout: 2000,
-          healthyThreshold: 2,
-          unhealthyThreshold: 3,
-          requestLine: null,
-        };
-      }
-
-      // The type isn't set on an existing one
-      healthCheckData.type = 'instanceHealthCheck';
-
-      var instance = this.get('store').createRecord(instanceData);
-
+      var instance = store.createRecord(instanceData);
       var service = store.createRecord(serviceData);
       service.set('serviceLinks', serviceLinks);
 
-      var healthCheck = store.createRecord(healthCheckData);
-      instance.set('healthCheck', healthCheck);
-      service.set('launchConfig', instance); // Creating a service needs the isntance definition here
+      if ( healthCheckData )
+      {
+        // The type isn't set on an existing one
+        healthCheckData.type = 'instanceHealthCheck';
+        instance.set('healthCheck', store.createRecord(healthCheckData));
+      }
+
+      service.set('launchConfig', instance);
+      service.set('secondaryLaunchConfigs', secondaryLaunchConfigs);
 
       return Ember.Object.create({
-        isService: true,
         service: service,
-        healthCheck: healthCheck,
-        instance: instance, // but mixins/edit-container expects to find the instance here, so link both to the same object
         allHosts: allHosts,
         allServices: allServices,
       });
     });
   },
 
-  setupController: function(controller, model) {
-    controller.set('originalModel', null);
-    controller.set('model', model);
-    controller.initFields();
-  },
-
   resetController: function (controller, isExiting/*, transition*/) {
     if (isExiting)
     {
-      controller.set('tab', 'command');
-      controller.set('advanced', false);
       controller.set('environmentId', null);
       controller.set('serviceId', null);
       controller.set('containerId', null);

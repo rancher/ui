@@ -1,28 +1,11 @@
-<section class="horizontal-form container-fluid">
-  <h2>Add Service</h2>
-  {{top-errors errors=errors}}
-
-  {{partial "container/edit-name"}}
-
-  {{partial "form-divider"}}
-
-  {{partial "service/edit-scale"}}
-
-  {{partial "form-divider"}}
-
-  {{partial "container/new-image"}}
-
-  {{partial "form-divider"}}
-
-  {{partial "container/edit-ports"}}
-
-  {{partial "form-divider"}}
-
-  {{partial "container/edit-services"}}
-</section>
-
-{{partial "form-divider"}}
-
-{{partial "container/new-advanced"}}
-
-{{partial "save-cancel"}}
+{{new-container
+  isService=true
+  isSidekick=false
+  launchConfig=model.service.launchConfig
+  service=model.service
+  primaryResource=model.service
+  allHosts=model.allHosts
+  allServices=model.allServices
+  done=(action 'done')
+  cancel=(action 'cancel')
+}}

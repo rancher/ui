@@ -1,0 +1,45 @@
+<div class="row">
+  <div class="col-xs-6 col-md-2 form-label">
+    <label>Target</label>
+  </div>
+  <div class="col-sm-5 col-md-4 radio">
+    <label>{{radio-button selection=which value="ip"}} Point to IP Address(es)</label>
+  </div>
+  <div class="col-sm-5 col-md-4 radio">
+    <label>{{radio-button selection=which value="hostname"}} Point to a Hostname</label>
+  </div>
+</div>
+
+{{#if (eq which "ip")}}
+  <div class="row">
+    <div class="col-xs-6 col-md-8 col-md-offset-2">
+      <button class="btn-circle-plus btn-circle-text" style="margin-right: 20px;" {{action "addTargetIp"}}>Add External IP</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-md-offset-2">
+      {{#if targetIpArray.length}}
+        <table class="table fixed no-lines no-top-padding tight">
+          {{#each targetIpArray as |tgt|}}
+            <tr>
+              <td>
+                {{input type="text" class="form-control input-sm target-ip" value=tgt.value placeholder="e.g. 192.168.2.24"}}
+              </td>
+              <td width="30" class="text-right">
+                <button {{action "removeTargetIp" tgt}} class="btn-circle-x" type="button" tabindex="-1"></button>
+              </td>
+            </tr>
+          {{/each}}
+        </table>
+      {{/if}}
+    </div>
+  </div>
+{{/if}}
+
+{{#if (eq which "hostname")}}
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-md-offset-2">
+      {{input type="text" class="form-control input-sm target-hostname" value=userHostname placeholder="e.g. mysql.example.com"}}
+    </div>
+  </div>
+{{/if}}

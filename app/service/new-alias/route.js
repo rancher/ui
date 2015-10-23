@@ -7,7 +7,6 @@ export default Ember.Route.extend({
     var store = this.get('store');
 
     var dependencies = [
-      store.findAll('host'),
       this.get('allServices').choices(),
     ];
 
@@ -17,17 +16,13 @@ export default Ember.Route.extend({
     }
 
     return Ember.RSVP.all(dependencies, 'Load dependencies').then(function(results) {
-      var allHosts = results[0];
-      var allServices = results[1];
-      var existing = results[2];
-
-      var serviceLinks = [];
+      var allServices = results[0];
+      var existing = results[1];
 
       var dns;
       if ( existing )
       {
         dns = existing.cloneForNew();
-        serviceLinks = existing.get('consumedServicesWithNames');
       }
       else
       {
@@ -39,20 +34,12 @@ export default Ember.Route.extend({
         });
       }
 
-      dns.set('serviceLinks', serviceLinks);
-
       return {
-        isService: true,
-        allHosts: allHosts,
         allServices: allServices,
-        dns: dns,
+        service: dns,
+        existing: existing,
       };
     });
-  },
-
-  setupController: function(controller, model) {
-    controller.set('model',model);
-    controller.initFields();
   },
 
   resetController: function (controller, isExisting/*, transition*/) {
@@ -62,10 +49,4 @@ export default Ember.Route.extend({
       controller.set('serviceId', null);
     }
   },
-
-  actions: {
-    cancel: function() {
-      this.goToPrevious();
-    },
-  }
 });

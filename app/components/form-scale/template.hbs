@@ -1,0 +1,40 @@
+{{#if editing}}
+  <div class="row">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>Scale</label>
+    </div>
+    {{#if isGlobal}}
+      <div class="col-sm-12 col-md-8">
+        <span class="text-muted"> Always run one instance of this container on every host</span>
+      </div>
+    {{else}}
+      <div class="col-sm-2 col-md-1">
+        {{scale}}
+      </div>
+      <div class="col-sm-10 col-md-7">
+        {{input-slider value=scale valueMax=max scaleMax=oneLouder}}
+      </div>
+    {{/if}}
+  </div>
+{{else}}
+  <div class="row">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>Scale</label>
+    </div>
+    <div class="col-sm-3 col-md-2">
+      <div class="radio small">
+        <label>{{radio-button selection=isGlobal value=false}} Run {{scale}} container{{#if (not (eq scale 1))}}s{{/if}}</label>
+      </div>
+    </div>
+    <div class="col-sm-9 col-md-6">
+      {{input-slider value=scale valueMax=max scaleMax=oneLouder disabled=isGlobal}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-8 col-md-push-2">
+      <div class="radio small">
+        <label>{{radio-button selection=isGlobal value=true}} Always run one instance of this container on every host</label>
+      </div>
+    </div>
+  </div>
+{{/if}}

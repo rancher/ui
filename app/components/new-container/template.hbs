@@ -1,0 +1,172 @@
+{{#unless isSidekick}}
+  <section class="horizontal-form container-fluid">
+    <h2>Add
+      {{#if isService}}
+        Service
+        {{#if hasSidekicks}}
+          +
+          {{service.secondaryLaunchConfigs.length}} Sidekick Service{{if (not-eq service.secondaryLaunchConfigs.length 1) 's'}}
+        {{/if}}
+      {{else}}
+        Container
+      {{/if}}
+    </h2>
+    {{top-errors errors=errors}}
+
+    {{#if (and isService (not isSidekick))}}
+      {{form-scale
+        initialLabels=launchConfig.labels
+        initialScale=service.scale
+        isGlobal=isGlobal
+        errors=scaleErrors
+        setLabels=(action 'setLabels' 'scale')
+        setGlobal=(action 'setGlobal')
+        setScale=(action  'setScale')
+      }}
+
+      {{form-divider}}
+
+      {{#if hasSidekicks}}
+        <div class="row">
+          <div class="col-sm-12 col-md-2 form-label r-mt5">
+            <label>Service</label>
+          </div>
+
+          <div class="col-sm-12 col-md-8">
+            <nav>
+              <ul class="pagination pagination-sm r-m0">
+                <li class="{{if (eq launchConfigIndex -1) 'active'}}"><a href="#" {{action "selectLaunchConfig" -1}}>{{default-str service.name default="(Primary Service)"}}</a></li>
+                {{#each service.secondaryLaunchConfigs as |slc index|}}
+                  <li class="{{if (eq launchConfigIndex index) 'active'}}"><a href="#" {{action "selectLaunchConfig" index}}>{{default-str slc.name (concat-str '(Sidekick #' (one-louder index) ')')}}</a></li>
+                {{/each}}
+                <li><a {{action "addSidekick"}} tooltip="Add Sidekick"><i class="icon icon-plus"/></a></li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      {{/if}}
+    {{/if}}
+  </section>
+{{/unless}}
+
+<div data-launchindex="-1">
+  <section class="horizontal-form container-fluid">
+    {{form-name-description model=primaryResource namePlaceholder="e.g. myapp" descriptionPlaceholder="My application"}}
+
+    {{form-divider}}
+
+    {{form-image initialValue=launchConfig.imageUuid errors=imageErrors changed=(action 'setImage')}}
+
+    {{form-divider}}
+
+    {{form-ports initialPorts=launchConfig.ports errors=portErrors portsAsStrArray=launchConfig.ports}}
+
+    {{#if isService}}
+      {{form-divider}}
+
+      {{form-service-links
+        service=service
+        allServices=allServices
+        changed=(action 'setServiceLinks')
+      }}
+    {{/if}}
+
+    {{form-divider}}
+  </section>
+
+  <div class="toggle-advanced">
+    <a {{action "toggleAdvanced"}}>Advanced Options {{#if advanced}}<i class="icon icon-chevron-up"></i>{{else}}<i class="icon icon-chevron-down"></i>{{/if}}</a>
+  </div>
+
+  <div class="{{unless advanced 'hide'}}">
+    <section class="text-center" style="padding: 0;">
+      <ul class="nav nav-pills" style="display: inline-block">
+        <li role="presentation" class="tab" data-section="command" {{action "selectTab" "command"}}><a>Command</a></li>
+        <li role="presentation" class="tab" data-section="volumes" {{action "selectTab" "volumes"}}><a>Volumes</a></li>
+        <li role="presentation" class="tab" data-section="network" {{action "selectTab" "network"}}><a>Networking</a></li>
+        <li role="presentation" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}><a>Health Check</a></li>
+        <li role="presentation" class="tab" data-section="security" {{action "selectTab" "security"}}><a>Security/Host</a></li>
+        <li role="presentation" class="tab" data-section="labels" {{action "selectTab" "labels"}}><a>Labels</a></li>
+        <li role="presentation" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}><a>Scheduling</a></li>
+      </ul>
+    </section>
+
+    <section class="horizontal-form" style="background-color: #f8f9fa; margin: -7px 10px 0 10px;">
+      <div class="section container-fluid" data-section="command">
+        {{form-command instance=launchConfig errors=commandErrors}}
+      </div>
+
+      <div class="section container-fluid" data-section="volumes">
+        {{form-volumes instance=launchConfig errors=volumeErrors allHosts=allHosts}}
+      </div>
+
+      <div class="section container-fluid" data-section="network">
+        {{form-networking instance=launchConfig errors=networkingErrors allHosts=allHosts isService=isService}}
+      </div>
+
+      <div class="section container-fluid" data-section="healthcheck">
+        {{form-healthcheck healthCheck=launchConfig.healthCheck errors=healthCheckErrors}}
+      </div>
+
+      <div class="section" data-section="security">
+        {{form-security instance=launchConfig errors=securityErrors}}
+      </div>
+
+      <div class="section" data-section="labels">
+        <div class="row form-group">
+          <div class="col-sm-12 col-md-2 form-label">
+            <label class="form-control-static">Labels</label>
+          </div>
+          <div class="col-sm-12 col-md-8">
+            {{form-user-labels
+              initialLabels=launchConfig.labels
+              setLabels=(action 'setLabels' 'user')
+            }}
+          </div>
+        </div>
+      </div>
+
+      <div class="section" data-section="scheduling">
+        {{form-scheduling
+          isService=isService
+          isGlobal=isGlobal
+          initialHostId=launchConfig.requestedHostId
+          initialLabels=launchConfig.labels
+          errors=schedulingErrors
+          allHosts=allHosts
+          setLabels=(action 'setLabels' 'scheduling')
+          setGlobal=(action 'setGlobal')
+          setRequestedHost=(action 'setRequestedHostId')
+        }}
+      </div>
+
+    </section>
+  </div>
+</div>
+
+{{#if (and isService (not isSidekick))}}
+  {{#each service.secondaryLaunchConfigs as |slc index|}}
+    <div data-launchindex="{{index}}" class="hide">
+      {{new-container
+        isService=true
+        isSidekick=true
+        launchConfig=slc
+        service=slc
+        primaryResource=slc
+        allHosts=allHosts
+        allServices=allServices
+      }}
+    </div>
+  {{/each}}
+{{/if}}
+
+{{#unless isSidekick}}
+  {{#save-cancel save="save" cancel="cancel"}}
+    {{#if isService}}
+      <button class="btn btn-default" {{action "addSidekick"}}>Add a Sidekick</button>
+    {{/if}}
+    {{#if (not-eq launchConfigIndex -1)}}
+      <button class="btn btn-default" {{action "removeSidekick"}}>Remove this Sidekick</button>
+    {{/if}}
+  {{/save-cancel}}
+{{/unless}}

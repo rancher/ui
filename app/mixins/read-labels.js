@@ -1,3 +1,10 @@
+/*
+ *
+ *
+ * Deprecated, use manage-labels
+ *
+ *
+ */
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 

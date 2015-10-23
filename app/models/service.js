@@ -56,6 +56,13 @@ var Service = Resource.extend(ReadLabels, {
           originalModel: this,
         });
       }
+      else if ( type === 'externalservice' )
+      {
+        this.get('application').setProperties({
+          editExternalService: true,
+          originalModel: this,
+        });
+      }
       else
       {
         this.get('application').setProperties({

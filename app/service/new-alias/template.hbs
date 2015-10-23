@@ -1,40 +1,7 @@
-<section class="horizontal-form container-fluid">
-  <h2>Add Service Alias</h2>
-  {{top-errors errors=errors}}
-
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="name">Name</label>
-    </div>
-    <div class="col-sm-12 col-md-8">
-      {{input id="name" type="text" value=dns.name classNames="form-control" placeholder="e.g. web"}}
-    </div>
-  </div>
-
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="description">Description</label>
-    </div>
-    <div class="col-sm-12 col-md-8">
-      {{textarea id="description" value=dns.description classNames="form-control no-resize" rows="5" placeholder="e.g. Alternate name for web-v1 service"}}
-    </div>
-  </div>
-
-  {{partial "form-divider"}}
-
-  <div class="row">
-    <div class="col-xs-6 col-md-2 form-label">
-      <label>Targets</label>
-    </div>
-    <div class="col-xs-6 col-md-8">
-      <button class="btn-circle-plus btn-circle-text" style="margin-right: 20px;" {{action "addTargetService" target="view"}}>Add Service</button>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12 col-md-8 col-md-offset-2">
-      {{partial "service/edit-targets"}}
-    </div>
-  </div>
-</section>
-
-{{partial "save-cancel"}}
+{{new-aliasservice
+  service=model.service
+  existing=model.existing
+  allServices=model.allServices
+  done=(action 'done')
+  cancel=(action 'cancel')
+}}

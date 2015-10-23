@@ -9,15 +9,16 @@
     <h2>Edit Container</h2>
     {{top-errors errors=errors}}
 
-    {{partial "container/edit-name"}}
+    {{form-name-description model=model.instance namePlaceholder="e.g. myapp" descriptionPlaceholder="My application"}}
 
-    {{partial "form-divider"}}
+    {{form-divider}}
 
-    {{partial "container/edit-ports"}}
+    {{form-ports initialPorts=model.ports editing=true changed=(action "setPorts")}}
 
-    {{partial "form-divider"}}
+    {{form-divider}}
 
-    {{partial "container/edit-links"}}
+    {{form-container-links initialLinks=model.instanceLinks instance=model.instance allHosts=model.allHosts editing=true changed=(action "setLinks")}}
+
   </section>
 
   {{partial "save-cancel"}}

@@ -1,0 +1,129 @@
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">Command</label>
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    {{input class="form-control" type="text" value=strCommand placeholder="e.g. /usr/sbin/httpd -f httpd.conf"}}
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">Entry Point</label>
+  </div>
+  <div class="col-sm-12 col-md-4">
+    {{input class="form-control" type="text" value=strEntryPoint placeholder="e.g. /bin/sh -c"}}
+  </div>
+  <div class="col-sm-12 col-md-1 form-label" style="text-align: left">
+    <label class="form-control-static">user</label>
+  </div>
+  <div class="col-sm-12 col-md-3">
+    {{input type="text" value=instance.user classNames="form-control" placeholder="e.g. apache"}}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label>Console</label>
+  </div>
+
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="radio small">
+      <label>{{radio-button selection=terminal value="both"}} Interactive &amp; TTY <span class="text-muted">(-i -t)</span></label>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="radio small">
+      <label>{{radio-button selection=terminal value="interactive"}} Interactive <span class="text-muted">(-i)</span></label>
+    </div>
+  </div>
+</div>
+<div class="row form-group">
+  <div class="hidden-xs hidden-sm col-md-2 form-label">&nbsp;</div>
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="radio small">
+      <label>{{radio-button selection=terminal value="terminal"}} TTY <span class="text-muted">(-t)</span></label>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="radio small">
+      <label>{{radio-button selection=terminal value="none"}} None</label>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label>Auto Restart</label>
+  </div>
+
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="radio small">
+      <label>{{radio-button selection=restart value="no"}} Never</label>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="radio small">
+      <label>{{radio-button selection=restart value="on-failure"}} On failure <span class="text-muted">(non-0 exit code)</span>, forever</label>
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="hidden-xs hidden-sm col-md-2 form-label">&nbsp;</div>
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="radio small">
+      <label>{{radio-button selection=restart value="always"}} Always</label>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="radio small">
+      <label>{{radio-button selection=restart value="on-failure-cond"}} On failure, up to {{input type="number" min=1 style="width: 40px; height: 20px; padding: 0 2px;" value=restartLimit}} times</label>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">Environment Vars</label>
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    <div class="form-control-static">
+      <button class="btn-circle-plus" {{action "addEnvironment" target="view"}}></button>
+    </div>
+
+    {{#if environmentArray.length}}
+      <table class="table fixed no-lines no-top-padding tight small">
+        <tr class="text-muted">
+          <th>Name</th>
+          <th width="30">&nbsp;</th>
+          <th>Value</th>
+          <th width="30">&nbsp;</th>
+        </tr>
+        {{#each environmentArray as |env|}}
+          <tr>
+            <td>
+              {{input-paste pasted="pastedEnviromentVars" class="form-control input-sm environment-name" type="text" value=env.key placeholder="e.g. FOO"}}
+            </td>
+
+            <td class="text-center">
+              <p class="form-control-static input-sm">=</p>
+            </td>
+
+            <td>
+              {{input class="form-control input-sm" type="text" value=env.value placeholder="e.g. bar"}}
+            </td>
+
+            <td class="text-right">
+              <button {{action "removeEnvironment" env}} class="btn-circle-x" type="button" tabindex="-1"></button>
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+      <div class="text-muted" style="font-size: 12px; margin-bottom: 12px;">
+        ProTip: Paste one or more lines of name=value pairs into any name field for easy bulk entry.
+      </div>
+    {{/if}}
+  </div>
+</div>
+

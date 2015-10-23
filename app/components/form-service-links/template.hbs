@@ -1,0 +1,57 @@
+<div class="row">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label>Service Links</label>
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    <div>
+      {{#if serviceChoices.length}}
+        <button class="btn-circle-plus" {{action "addServiceLink"}}></button>
+      {{else}}
+        <span class="text-muted">There are no other services to link to.</span>
+      {{/if}}
+    </div>
+    {{#if serviceLinksArray.length}}
+      <table class="table fixed no-lines no-top-padding tight small">
+        <tr class="text-muted">
+          <th>Destination Service</th>
+          {{#if withAlias}}
+            <th width="30">&nbsp;</th>
+            <th>As Name</th>
+          {{/if}}
+          <th width="30">&nbsp;</th>
+        </tr>
+        {{#each serviceLinksArray as |link|}}
+          <tr>
+            <td>
+              {{display-name-select
+                classNames="form-control service-link input-sm"
+                prompt="Select a service..."
+                value=link.serviceId
+                content=serviceChoices
+                optionValuePath="content.id"
+                optionLabelPath="content.name"
+                optionGroupPath="group"
+              }}
+            </td>
+            {{#if withAlias}}
+              <td class="text-center">
+                <p class="form-control-static"><i class="icon icon-arrow-right"></i></p>
+              </td>
+              <td>
+                {{input class="form-control input-sm" type="text" value=link.name placeholder="e.g. database"}}
+              </td>
+            {{/if}}
+            <td class="text-right">
+              <button {{action "removeServiceLink" link}} class="btn-circle-x" type="button" tabindex="-1"></button>
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    {{else}}
+      {{#if editing}}
+        <span class="text-center text-muted">This service has no service links.</span>
+      {{/if}}
+    {{/if}}
+  </div>
+</div>

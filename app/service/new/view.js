@@ -1,10 +1,12 @@
-import NewContainerView from 'ui/containers/new/view';
-import { addAction } from 'ui/utils/add-view-action';
+import Ember from 'ember';
 
-export default NewContainerView.extend({
-  actions: {
-    addVolumeFromService:  addAction('addVolumeFromService',  '.volumefromservice-container'),
-    addServiceLink:        addAction('addServiceLink',  '.service-link'),
-    addSchedulingRule:     addAction('addSchedulingRule',  '.schedule-rule'),
+export default Ember.View.extend({
+  didInsertElement: function() {
+    $('BODY').addClass('white');
+    this._super();
+  },
+
+  willDestroyElement: function() {
+    $('BODY').removeClass('white');
   },
 });

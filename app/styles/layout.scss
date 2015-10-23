@@ -444,7 +444,7 @@ TABLE.graphs {
 }
 
 // adds text indent with a 5px step through 15 layers
-@for $i from 1 through 15 {
+@for $i from 0 through 15 {
   .indent-#{$i} { text-indent: 10px * $i; }
 }
 
@@ -462,18 +462,13 @@ $spacing-property-map: (
     pl: padding-left,
     pr: padding-right
 );
-@for $size from 1 through 5 {
+@for $size from 0 through 5 {
   $val: $size * 5px;
   @each $keyword, $property in $spacing-property-map {
     .r-#{$keyword}#{$size*5} {
       #{$property}: $val !important;
     }
   }
-}
-
-// SS-Gizmo doesn't know how to vertical align..
-.ss-icon, [class^="ss-"] {
-  vertical-align: -4%;
 }
 
 .btn-circle {

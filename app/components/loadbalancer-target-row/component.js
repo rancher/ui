@@ -4,6 +4,7 @@ export default Ember.Component.extend({
   tgt: null,
   targetChoices: null,
   isAdvanced: null,
+  isBalancer: null,
 
   tagName: 'TR',
 

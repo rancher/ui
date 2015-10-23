@@ -108,12 +108,10 @@ export default Ember.Route.extend({
       balancer.set('loadBalancerConfig', lbConfig);
 
       return {
-        isService: true,
         allHosts: allHosts,
         allServices: allServices,
         allCertificates: allCertificates,
         existingBalancer: existing,
-        balancer: balancer,
         service: balancer,
         config: lbConfig,
         launchConfig: launchConfig,
@@ -121,11 +119,6 @@ export default Ember.Route.extend({
         lbCookie: lbCookie,
       };
     });
-  },
-
-  setupController: function(controller, model) {
-    controller.set('model',model);
-    controller.initFields();
   },
 
   resetController: function (controller, isExisting/*, transition*/) {

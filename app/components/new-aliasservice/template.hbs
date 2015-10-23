@@ -1,0 +1,21 @@
+<section class="horizontal-form container-fluid">
+  <h2>Add Service Alias</h2>
+  {{top-errors errors=errors}}
+
+  {{form-name-description
+    model=service
+    namePlaceholder="e.g. MyApp"
+    descriptionPlaceholder="e.g. Current version of MyApp"
+  }}
+
+  {{form-divider}}
+
+  {{form-targets
+    isBalancer=false
+    existing=existing
+    allServices=allServices
+    changed=(action "setTargets")
+  }}
+</section>
+
+{{partial "save-cancel"}}

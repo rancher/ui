@@ -1,0 +1,61 @@
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label>Links</label>
+  </div>
+
+  <div class="col-sm-12 col-md-8">
+    {{#unless editing}}
+      <div>
+        {{#if containersOnRequestedHostIfUnmanaged.length}}
+          <button class="btn-circle-plus" {{action "addLink"}}></button>
+        {{else}}
+          <span class="text-muted">There are no other containers to link to.</span>
+        {{/if}}
+      </div>
+    {{/unless}}
+    {{#if linksArray.length}}
+      <table class="table fixed no-lines no-top-padding tight small">
+        <tr class="text-muted">
+          <th>Destination Container</th>
+          <th width="30">&nbsp;</th>
+          <th>As Name</th>
+          <th width="30">&nbsp;</th>
+        </tr>
+        {{#each linksArray as |link|}}
+          <tr>
+            <td>
+              {{new-select
+                classNames="form-control link-container input-sm"
+                prompt="Select a container..."
+                value=link.targetInstanceId
+                content=containersOnRequestedHostIfUnmanaged
+                optionValuePath="id"
+                optionLabelPath="name"
+                optionGroupPath="group"
+              }}
+            </td>
+            <td class="text-center">
+              <p class="form-control-static"><i class="icon icon-arrow-right"></i></p>
+            </td>
+            <td>
+              {{#if editing}}
+                <p class="form-control-static input-sm text-muted">{{link.name}}</p>
+              {{else}}
+                {{input class="form-control input-sm" type="text" value=link.name placeholder="e.g. database"}}
+              {{/if}}
+            </td>
+            <td class="text-right">
+              {{#unless link.existing}}
+                <button {{action "removeLink" link}} class="btn-circle-x" type="button" tabindex="-1"></button>
+              {{/unless}}
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    {{else}}
+      {{#if editing}}
+        <span class="text-center text-muted">This container has no links.</span>
+      {{/if}}
+    {{/if}}
+  </div>
+</div>

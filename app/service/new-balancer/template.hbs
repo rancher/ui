@@ -1,88 +1,9 @@
-<section class="horizontal-form container-fluid">
-  <h2>Add Load Balancer</h2>
-  {{top-errors errors=errors}}
-
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="name">Name</label>
-    </div>
-    <div class="col-sm-12 col-md-8">
-      {{input id="name" type="text" value=balancer.name classNames="form-control" placeholder="e.g. Website"}}
-    </div>
-  </div>
-
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="description">Description</label>
-    </div>
-    <div class="col-sm-12 col-md-8">
-      {{textarea id="description" value=balancer.description classNames="form-control no-resize" rows="5" placeholder="e.g. Balancer for mycompany.com"}}
-    </div>
-  </div>
-
-  {{partial "service/edit-scale"}}
-
-  {{partial "form-divider"}}
-
-  <div class="row">
-    <div class="col-xs-6 col-md-2 form-label">
-      <label>Listening Ports</label>
-    </div>
-    <div class="col-xs-6 col-md-8">
-      <button class="btn-circle-plus btn-circle-text" style="margin-right: 20px;" {{action "addListener" target="view"}}>Add Port</button>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12 col-md-8 col-md-offset-2">
-      {{partial "loadbalancer/edit-listeners"}}
-    </div>
-  </div>
-
-  {{#if (and hasAdvancedSourcePorts hasMultipleListeners hasMultipleTargets)}}
-    <div class="row">
-      <div class="col-sm-12 col-md-8 col-md-offset-2">
-        <div class="alert alert-info">
-          <b>Note:</b> Requests that do not match any of the &quot;advanced request options&quot; will be sent to the <b>all</b> ({{targetResources.length}}) of the configured target services (round-robin) on the default target port corresponding to the source port of the request.
-        </div>
-      </div>
-    </div>
-  {{/if}}
-
-  {{partial "form-divider"}}
-
-  <div class="row">
-    <div class="col-xs-6 col-md-2 form-label">
-      <label>Targets</label>
-    </div>
-    <div class="col-xs-6 col-md-8">
-      <button class="btn-circle-plus btn-circle-text" style="margin-right: 20px;" {{action "addTargetService" target="view"}}>Add Service</button>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-12 col-md-8 col-md-offset-2">
-      {{partial "loadbalancer/edit-targets"}}
-    </div>
-  </div>
-  {{#if isAdvanced}}
-    <div class="row">
-      <div class="col-sm-12 col-md-8 col-md-offset-2">
-        <p class="help-block">If Request Host and/or Path are specified, connections to HTTP listening ports will be routed to the appropriate target based on the request.  For example, you could use this to send traffic for domain1.com to a different service than domain2.com, or domain3.com/admin to a different service than domain3.com.</p>
-        <p class="help-block">Matching requests will be sent to the Target Service on the Target Port.  If that is not set, then the Default Target port for the Source Port.  If that is also not set, then the Source Port.</p>
-      </div>
-    </div>
-  {{else}}
-    {{#if targetsArray.length}}
-      <div class="row">
-        <div class="col-sm-12 col-md-8 col-md-offset-2">
-          <button {{action "setAdvanced"}} class="btn btn-link btn-sm" type="button">Show advanced routing options</button><small>&ndash; Direct requests to different services based on port, Host header, or request path</small>
-        </div>
-      </div>
-    {{/if}}
-  {{/if}}
-</section>
-
-{{partial "form-divider"}}
-
-{{partial "loadbalancer/edit-config"}}
-
-{{partial "save-cancel"}}
+{{new-balancer
+  service=model.service
+  existing=model.existingBalancer
+  allHosts=model.allHosts
+  allServices=model.allServices
+  allCertificates=model.allCertificates
+  done=(action 'done')
+  cancel=(action 'cancel')
+}}

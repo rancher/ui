@@ -1,3 +1,4 @@
+// Note: nothing Ember specific should go in here...
 
 export function arrayDiff(a, b) {
   return a.filter(function(i) {

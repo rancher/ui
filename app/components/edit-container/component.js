@@ -1,20 +1,35 @@
 import Ember from 'ember';
-import EditContainer from 'ui/mixins/edit-container';
+import NewOrEdit from 'ui/mixins/new-or-edit';
 
-export default Ember.Component.extend(EditContainer, {
+export default Ember.Component.extend(NewOrEdit, {
   editing: true,
+  isService: false,
+  isSidekick: false,
   loading: true,
 
-  instance: null,
-  ports: null,
-  instanceLinks: null,
-  allHosts: null,
+
+  originalModel: null,
+  model: null,
+
+  primaryResource: Ember.computed.alias('model.instance'),
+  launchConfig: Ember.computed.alias('model.instance'),
+  portsArray: null,
+
+  linksArray: null,
 
   actions: {
-    outsideClick: function() {},
+    outsideClick() {},
 
-    cancel: function() {
+    cancel() {
       this.sendAction('dismiss');
+    },
+
+    setPorts(ports) {
+      this.set('portsArray', ports);
+    },
+
+    setLinks(links) {
+      this.set('linksArray', links);
     }
   },
 
@@ -40,13 +55,8 @@ export default Ember.Component.extend(EditContainer, {
       this.setProperties({
         originalModel: instance,
         model: model,
-        ports: model.ports,
-        instanceLinks: model.instanceLinks,
-        allHosts: model.allHosts,
+        loading: false,
       });
-
-      this.initFields();
-      this.set('loading', false);
     });
   },
 

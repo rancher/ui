@@ -57,7 +57,11 @@ export default Ember.Component.extend({
   willDestroyElement: function() {
     this._super();
     this.tearDown();
-    this.get('statsSocket').close();
+    var stats = this.get('statsSocket');
+    if ( stats )
+    {
+      stats.close();
+    }
   },
 
   onActiveChanged: function() {
