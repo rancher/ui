@@ -4,7 +4,7 @@
   </div>
 
   <div class="pod-state {{stateBackground}}"><span>{{model.displayState}}</span></div>
-  <div class="pod-icon"><i class="icon icon-lg {{model.stateIcon}} {{iconColor}}"></i></div>
+  <div class="pod-icon"><i class="{{model.stateIcon}} icon-lg fa-lg {{iconColor}}"></i></div>
   <div class="pod-name">
     {{#link-to "service" model.environmentId model.id}}{{model.displayName}}{{/link-to}}
     {{#if model.showTransitioningMessage}}
@@ -66,7 +66,7 @@
         {{else}}
           {{partial "service/no-containers"}}
         {{/each}}
-        {{#if model.showScaleUp}}
+        {{#if showScaleUp}}
           {{add-subpod action=(action "scaleUp" target=model) label="Scale Up" groupHasChildren=hasChildren}}
         {{/if}}
       {{else}}
@@ -75,7 +75,7 @@
         {{else}}
           {{partial "service/no-containers"}}
         {{/each}}
-        {{#if model.showScaleUp}}
+        {{#if showScaleUp}}
           {{add-subpod action=(action "scaleUp" target=model) label="Scale Up"}}
         {{/if}}
       {{/if}}

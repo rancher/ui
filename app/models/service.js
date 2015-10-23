@@ -13,32 +13,31 @@ var Service = Resource.extend(ReadLabels, {
   type: 'service',
 
   actions: {
-    activate: function() {
+    activate() {
       return this.doAction('activate');
     },
 
-    deactivate: function() {
+    deactivate() {
       return this.doAction('deactivate');
     },
 
-    cancelUpgrade: function() {
+    cancelUpgrade() {
       return this.doAction('cancelupgrade');
     },
 
-    cancelRollback: function() {
+    cancelRollback() {
       return this.doAction('cancelrollback');
     },
 
-    finishUpgrade: function() {
+    finishUpgrade() {
       return this.doAction('finishupgrade');
     },
 
-    rollback: function() {
+    rollback() {
       return this.doAction('rollback');
     },
 
-
-    edit: function() {
+    edit() {
       var type = this.get('type').toLowerCase();
       if ( type === 'loadbalancerservice' )
       {
@@ -72,12 +71,12 @@ var Service = Resource.extend(ReadLabels, {
       }
     },
 
-    scaleUp: function() {
+    scaleUp() {
       this.incrementProperty('scale');
       this.saveScale();
     },
 
-    scaleDown: function() {
+    scaleDown() {
       if ( this.get('scale') >= 1 )
       {
         this.decrementProperty('scale');
@@ -85,7 +84,15 @@ var Service = Resource.extend(ReadLabels, {
       }
     },
 
-    clone: function() {
+    upgrade() {
+      this.get('application').transitionToRoute('service.new', {queryParams: {
+        serviceId: this.get('id'),
+        upgrade: true,
+        environmentId: this.get('environmentId'),
+      }});
+    },
+
+    clone() {
       var route;
       switch ( this.get('type').toLowerCase() )
       {
@@ -104,7 +111,7 @@ var Service = Resource.extend(ReadLabels, {
   },
 
   scaleTimer: null,
-  saveScale: function() {
+  saveScale() {
     if ( this.get('scaleTimer') )
     {
       Ember.run.cancel(this.get('scaleTimer'));
@@ -121,19 +128,20 @@ var Service = Resource.extend(ReadLabels, {
     var a = this.get('actionLinks');
 
     var choices = [
-      { label: 'Start',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
-      { label: 'Stop',          icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
-      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
-      { label: 'Purge',         icon: '',                       action: 'purge',        enabled: !!a.purge },
+      { label: 'Start',           icon: 'icon icon-play',         action: 'activate',       enabled: !!a.activate,    color: 'text-success'},
+      { label: 'Stop',            icon: 'icon icon-pause',        action: 'deactivate',     enabled: !!a.deactivate,  color: 'text-danger'},
+      { label: 'Delete',          icon: 'icon icon-trash',        action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
+      { label: 'Purge',           icon: '',                       action: 'purge',          enabled: !!a.purge },
       { divider: true },
-      { label: 'Finish Upgrade',  icon: 'fa fa-thumbs-o-up',          action: 'finishUpgrade',       enabled: !!a.finishupgrade },
-      { label: 'Cancel Upgrade',  icon: 'fa fa-life-ring',            action: 'cancelUpgrade',       enabled: !!a.cancelupgrade },
-      { label: 'Rollback',        icon: 'fa fa-history',              action: 'rollback',            enabled: !!a.rollback },
-      { label: 'Cancel Rollback', icon: 'fa fa-life-ring',            action: 'cancelRollback',      enabled: !!a.cancelrollback },
+      { label: 'Upgrade',         icon: 'fa fa-arrow-circle-o-up',action: 'upgrade',        enabled: !!a.upgrade },
+      { label: 'Finish Upgrade',  icon: 'fa fa-thumbs-o-up',      action: 'finishUpgrade',  enabled: !!a.finishupgrade },
+      { label: 'Cancel Upgrade',  icon: 'fa fa-life-ring',        action: 'cancelUpgrade',  enabled: !!a.cancelupgrade },
+      { label: 'Rollback',        icon: 'fa fa-history',          action: 'rollback',       enabled: !!a.rollback },
+      { label: 'Cancel Rollback', icon: 'fa fa-life-ring',        action: 'cancelRollback', enabled: !!a.cancelrollback },
       { divider: true },
-      { label: 'View in API',   icon: 'icon icon-externallink', action: 'goToApi',      enabled: true },
-      { label: 'Clone',         icon: 'icon icon-copy',         action: 'clone',        enabled: true },
-      { label: 'Edit',          icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
+      { label: 'View in API',     icon: 'icon icon-externallink', action: 'goToApi',        enabled: true },
+      { label: 'Clone',           icon: 'icon icon-copy',         action: 'clone',          enabled: true },
+      { label: 'Edit',            icon: 'icon icon-edit',         action: 'edit',           enabled: !!a.update },
     ];
 
     return choices;
@@ -356,9 +364,15 @@ Service.reopenClass({
   },
 
   stateMap: {
-    'active':           {icon: activeIcon,          color: 'text-success'},
-    'upgrading':        {icon: 'icon-arrow-up',     color: 'text-info'},
-    'canceling-upgrade':{icon: 'icon-arrow-down',   color: 'text-info'},
+    'active':             {icon: activeIcon,                  color: 'text-success'},
+    'canceled-rollback':  {icon: 'fa fa-life-ring',           color: 'text-info'},
+    'canceled-upgrade':   {icon: 'fa fa-life-ring',           color: 'text-info'},
+    'canceling-rollback': {icon: 'fa fa-life-ring',           color: 'text-info'},
+    'canceling-upgrade':  {icon: 'fa fa-life-ring',           color: 'text-info'},
+    'finishing-upgrade':  {icon: 'fa fa-arrow-circle-o-up',   color: 'text-info'},
+    'rolling-back':       {icon: 'fa fa-history',             color: 'text-info'},
+    'upgraded':           {icon: 'fa fa-arrow-circle-o-up',   color: 'text-info'},
+    'upgrading':          {icon: 'fa fa-arrow-circle-o-up',   color: 'text-info'},
   }
 });
 

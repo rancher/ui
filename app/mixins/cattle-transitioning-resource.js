@@ -113,12 +113,16 @@ export default Ember.Mixin.create({
   isDeleted: Ember.computed.equal('state','removed'),
   isPurged: Ember.computed.equal('state','purged'),
 
+  relevantState: function() {
+    return this.get('combinedState') || this.get('state');
+  }.property('combinedState','state'),
+
   displayState: function() {
-    var state = this.get('state')||'';
+    var state = this.get('relevantState')||'';
     return state.split(/-/).map((word) => {
       return Util.ucFirst(word);
     }).join('-');
-  }.property('state'),
+  }.property('relevantState'),
 
   showTransitioningMessage: function() {
     var trans = this.get('transitioning');
@@ -127,42 +131,63 @@ export default Ember.Mixin.create({
 
   stateIcon: function() {
     var trans = this.get('transitioning');
+    var icon = '';
     if ( trans === 'yes' )
     {
-      return 'icon icon-spinner icon-spin';
+      icon = 'icon icon-spinner icon-spin';
     }
     else if ( trans === 'error' )
     {
-      return 'icon icon-alert text-danger';
+      icon = 'icon icon-alert text-danger';
     }
     else
     {
       var map = this.constructor.stateMap;
-      var key = (this.get('state')||'').toLowerCase();
+      var key = (this.get('relevantState')||'').toLowerCase();
       if ( map && map[key] && map[key].icon !== undefined)
       {
         if ( typeof map[key].icon === 'function' )
         {
-          return map[key].icon(this);
+          icon = map[key].icon(this);
         }
         else
         {
-          return map[key].icon;
+          icon = map[key].icon;
         }
       }
 
-      if ( defaultStateMap[key] && defaultStateMap[key].icon )
+      if ( !icon && defaultStateMap[key] && defaultStateMap[key].icon )
       {
-        return defaultStateMap[key].icon;
+        icon = defaultStateMap[key].icon;
       }
 
-      return this.constructor.defaultStateIcon;
+      if ( !icon )
+      {
+        icon = this.constructor.defaultStateIcon;
+      }
+
+      if ( icon.indexOf('fa-') >= 0 )
+      {
+        if ( icon.indexOf('fa ') === -1 )
+        {
+          icon = 'fa ' + icon;
+        }
+      }
+      else
+      {
+        if ( icon.indexOf('icon ') === -1 )
+        {
+          icon = 'icon ' + icon;
+        }
+      }
     }
-  }.property('state','transitioning'),
+
+    return icon;
+  }.property('relevantState','transitioning'),
 
   stateColor: function() {
       var map = this.constructor.stateMap;
-      var key = (this.get('state')||'').toLowerCase();
+      var key = (this.get('relevantState')||'').toLowerCase();
       if ( map && map[key] && map[key].color !== undefined )
       {
         if ( typeof map[key].color === 'function' )
@@ -181,7 +206,7 @@ export default Ember.Mixin.create({
       }
 
     return this.constructor.defaultStateColor;
-  }.property('state','transitioning'),
+  }.property('relevantState','transitioning'),
 
   stateBackground: function() {
     return this.get('stateColor').replace("text-","bg-");

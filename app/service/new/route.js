@@ -28,6 +28,15 @@ export default Ember.Route.extend({
       var serviceLinks = [];
       var secondaryLaunchConfigs = [];
 
+      if ( params.upgrade )
+      {
+        return Ember.Object.create({
+          service: serviceOrContainer.clone(),
+          allHosts: allHosts,
+          allServices: allServices,
+        });
+      }
+
       var instanceData, serviceData, healthCheckData;
       if ( serviceOrContainer )
       {
@@ -100,6 +109,7 @@ export default Ember.Route.extend({
       controller.set('environmentId', null);
       controller.set('serviceId', null);
       controller.set('containerId', null);
+      controller.set('upgrade', null);
     }
   }
 });

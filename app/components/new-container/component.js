@@ -7,6 +7,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   isStandalone: true,
   isService: false,
   isSidekick: false,
+  isUpgrade: false,
   primaryResource: null,
   launchConfig: null,
   service: null,
@@ -18,6 +19,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   isRequestedHost: null,
   portsAsStrArray: null,
   launchConfigIndex: -1,
+  upgradeOptions: null,
 
   // Errors from components
   commandErrors: null,
@@ -90,6 +92,10 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       this.set('serviceLinksArray', links);
     },
 
+    setUpgrade(upgrade) {
+      this.set('upgradeOptions', upgrade);
+    },
+
     done() {
       this.sendAction('done');
     },
@@ -123,6 +129,48 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       return this.get('service.secondaryLaunchConfigs').objectAt(idx);
     }
   }.property('launchConfigIndex'),
+
+  activeLabel: function() {
+    var idx = this.get('launchConfigIndex');
+    var str = '';
+
+    if ( this.get('hasSidekicks') )
+    {
+      if ( idx === -1 )
+      {
+        str = 'Primary Service: ';
+      }
+      else
+      {
+        str += 'Sidekick Service: ';
+      }
+    }
+
+    if ( idx === -1 )
+    {
+      if ( this.get('service.name') )
+      {
+        str += this.get('service.name');
+      }
+      else
+      {
+        str += '(No name)';
+      }
+    }
+    else
+    {
+      if ( this.get('activeLaunchConfig.name') )
+      {
+        str += this.get('activeLaunchConfig.name');
+      }
+      else
+      {
+        str += '(Sidekick #' + (idx+1) + ')';
+      }
+    }
+
+    return str;
+  }.property('service.name','activeLaunchConfig.name','launchConfigIndex','hasSidekicks'),
 
   // ----------------------------------
   // Labels
@@ -178,8 +226,27 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     return this._super.apply(this,arguments);
   },
 
+  doSave() {
+    if ( this.get('isService') && this.get('isUpgrade') )
+    {
+      return this.get('service').doAction('upgrade', {
+        inServiceStrategy: {
+          batchSize: this.get('upgradeOptions.batchSize'),
+          intervalMillis: this.get('upgradeOptions.intervalMillis'),
+          launchConfig: this.get('service.launchConfig'),
+          secondaryLaunchConfigs: this.get('service.secondaryLaunchConfigs'),
+          startFirst: this.get('upgradeOptions.startFirst'),
+        },
+      });
+    }
+    else
+    {
+      return this._super.apply(this,arguments);
+    }
+  },
+
   didSave() {
-    if ( this.get('isService') )
+    if ( this.get('isService') && !this.get('isUpgrade') )
     {
       // Returns a promise
       return this.setServiceLinks();

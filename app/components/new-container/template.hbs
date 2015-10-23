@@ -1,6 +1,6 @@
 {{#unless isSidekick}}
   <section class="horizontal-form container-fluid">
-    <h2>Add
+    <h2>{{if isUpgrade 'Upgrade' 'Add'}}
       {{#if isService}}
         Service
         {{#if hasSidekicks}}
@@ -13,7 +13,7 @@
     </h2>
     {{top-errors errors=errors}}
 
-    {{#if (and isService (not isSidekick))}}
+    {{#if isService}}
       {{form-scale
         initialLabels=launchConfig.labels
         initialScale=service.scale
@@ -24,25 +24,29 @@
         setScale=(action  'setScale')
       }}
 
-      {{form-divider}}
+      {{#if isUpgrade}}
+        {{form-upgrade
+          changed=(action 'setUpgrade')
+        }}
+      {{/if}}
 
-      {{#if hasSidekicks}}
-        <div class="row">
-          <div class="col-sm-12 col-md-2 form-label r-mt5">
-            <label>Service</label>
-          </div>
-
-          <div class="col-sm-12 col-md-8">
+      {{#if (and isUpgrade (not hasSidekicks))}}
+        {{form-divider}}
+      {{else}}
+        <div class="over-hr r-mt5">
+          <span style="text-transform: none;">
             <nav>
               <ul class="pagination pagination-sm r-m0">
                 <li class="{{if (eq launchConfigIndex -1) 'active'}}"><a href="#" {{action "selectLaunchConfig" -1}}>{{default-str service.name default="(Primary Service)"}}</a></li>
                 {{#each service.secondaryLaunchConfigs as |slc index|}}
                   <li class="{{if (eq launchConfigIndex index) 'active'}}"><a href="#" {{action "selectLaunchConfig" index}}>{{default-str slc.name (concat-str '(Sidekick #' (one-louder index) ')')}}</a></li>
                 {{/each}}
-                <li><a {{action "addSidekick"}} tooltip="Add Sidekick"><i class="icon icon-plus"/></a></li>
+                {{#unless isUpgrade}}
+                  <li class="hand"><a {{action "addSidekick"}}><i class="icon icon-plus"/> Add Sidekick</a></li>
+                {{/unless}}
               </ul>
             </nav>
-          </div>
+          </span>
         </div>
       {{/if}}
     {{/if}}
@@ -51,7 +55,12 @@
 
 <div data-launchindex="-1">
   <section class="horizontal-form container-fluid">
-    {{form-name-description model=primaryResource namePlaceholder="e.g. myapp" descriptionPlaceholder="My application"}}
+    {{form-name-description
+      model=primaryResource
+      namePlaceholder="e.g. myapp"
+      nameDisabled=isUpgrade
+      descriptionPlaceholder="My application"
+    }}
 
     {{form-divider}}
 
@@ -61,7 +70,7 @@
 
     {{form-ports initialPorts=launchConfig.ports errors=portErrors portsAsStrArray=launchConfig.ports}}
 
-    {{#if isService}}
+    {{#if (and isService (not isSidekick))}}
       {{form-divider}}
 
       {{form-service-links
@@ -150,6 +159,7 @@
       {{new-container
         isService=true
         isSidekick=true
+        isUpgrade=isUpgrade
         launchConfig=slc
         service=slc
         primaryResource=slc
@@ -160,12 +170,10 @@
   {{/each}}
 {{/if}}
 
+
 {{#unless isSidekick}}
-  {{#save-cancel save="save" cancel="cancel"}}
-    {{#if isService}}
-      <button class="btn btn-default" {{action "addSidekick"}}>Add a Sidekick</button>
-    {{/if}}
-    {{#if (not-eq launchConfigIndex -1)}}
+  {{#save-cancel createLabel=(if isUpgrade 'Upgrade' 'Create') save="save" cancel="cancel"}}
+    {{#if (and (not isUpgrade) (not-eq launchConfigIndex -1))}}
       <button class="btn btn-default" {{action "removeSidekick"}}>Remove this Sidekick</button>
     {{/if}}
   {{/save-cancel}}
