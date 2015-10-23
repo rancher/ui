@@ -12,6 +12,7 @@ export default Ember.Component.extend(ManageLabels, {
   initialLabels: null,
   initialScale: null,
   isGlobal: null,
+  editing: false,
 
   tagName: '',
 

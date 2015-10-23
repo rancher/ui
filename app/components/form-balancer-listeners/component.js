@@ -4,6 +4,7 @@ import ManageLabels from 'ui/mixins/manage-labels';
 
 export default Ember.Component.extend(ManageLabels, {
   initialListeners: null,
+  editing: false,
 
   classNames: ['form-group'],
 
@@ -85,7 +86,7 @@ export default Ember.Component.extend(ManageLabels, {
     this.set('listenersArray', out.sortBy('sourcePort'));
     this.initLabels();
     this.listenersChanged();
-    this.sslChanged()
+    this.sslChanged();
   },
 
   listenersChanged: function() {

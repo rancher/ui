@@ -8,6 +8,7 @@ export default Ember.Component.extend({
   optionValuePath: 'value',
   optionLabelPath: 'label',
   optionGroupPath: 'group',
+  optionDisabledPath: 'disabled',
   action: Ember.K, // action to fire on change
   value: null,
 

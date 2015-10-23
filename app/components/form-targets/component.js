@@ -3,6 +3,7 @@ import {parseTarget, stringifyTarget} from 'ui/utils/target-parser';
 
 export default Ember.Component.extend({
   existing: null,
+  isBalancer: null,
   allServices: null,
   editing: false,
 
@@ -107,7 +108,17 @@ export default Ember.Component.extend({
     }).get('length') > 0;
   }.property('targetsArray.@each.{isService,srcPort}'),
 
-  lbSafeServiceChoices: function() {
-    return this.get('allServices').filterBy('lbSafe',true).sortBy('group','name','id');
-  }.property('allServices.@each.{id,name,state,environmentId}'),
+  serviceChoices: function() {
+    var isBalancer = this.get('isBalancer');
+
+    return this.get('allServices').slice().sortBy('group','name','id').map((service) => {
+      if ( isBalancer && !service.lbSafe )
+      {
+        service.disabled = true;
+        service.name += " (Can't balance to hostnames)";
+      }
+
+      return service;
+    });
+  }.property('isBalancer','allServices.@each.{id,name,state,environmentId}'),
 });

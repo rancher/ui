@@ -190,6 +190,12 @@ Router.map(function() {
     otherParams: 'originalModel',
   });
 
+  this.modal('edit-externalservice', {
+    dismissWithOutsideClick: false,
+    withParams: 'editExternalService',
+    otherParams: 'originalModel',
+  });
+
   this.modal('edit-loadbalancerservice', {
     dismissWithOutsideClick: false,
     withParams: 'editLoadBalancerService',

@@ -105,7 +105,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   didInsertElement() {
     this.send('selectTab','command');
-    this.$('INPUT')[0].focus();
+    this.$("INPUT[type='text']")[0].focus();
   },
 
   hasSidekicks: function() {
@@ -175,7 +175,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       }
     }
 
-    return this._super();
+    return this._super.apply(this,arguments);
   },
 
   didSave() {
@@ -200,6 +200,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   doneSaving() {
-    this.send('done');
+    this.sendAction('done');
   },
 });

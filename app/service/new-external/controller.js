@@ -1,38 +1,17 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
-import EditTargetIp from 'ui/mixins/edit-targetip';
 
-export default Ember.ObjectController.extend(Cattle.LegacyNewOrEditMixin, EditTargetIp, {
+export default Ember.Controller.extend({
   queryParams: ['environmentId','serviceId'],
   environmentId: null,
   serviceId: null,
-  error: null,
-  editing: false,
-  primaryResource: Ember.computed.alias('model.service'),
 
-  validate: function() {
-    var errors = [];
-    if ( !this.get('service.externalIpAddresses.length') && !this.get('service.hostname') )
-    {
-      errors.push('Choose one or more targets to send traffic to');
-    }
-    else
-    {
-      this._super();
-      errors = this.get('errors')||[];
-    }
+  actions: {
+    done() {
+      return this.transitionToRoute('environment', this.get('model.service.environmentId'));
+    },
 
-
-    if ( errors.length )
-    {
-      this.set('errors',errors.uniq());
-      return false;
-    }
-
-    return true;
-  },
-
-  doneSaving: function() {
-    this.transitionToRoute('environment', this.get('primaryResource.environmentId'));
+    cancel() {
+      this.send('goToPrevious');
+    },
   },
 });

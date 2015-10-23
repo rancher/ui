@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-export default Ember.Mixin.create({
+export default Ember.Component.extend({
   actions: {
     addTargetIp: function() {
       this.get('targetIpArray').pushObject({value: null});
@@ -14,12 +14,7 @@ export default Ember.Mixin.create({
   userHostname: null,
   targetIpArray: null,
 
-  initFields: function() {
-    this._super();
-    this.initTargetIps();
-  },
-
-  initTargetIps: function() {
+  didInitAttrs() {
     var hostname = this.get('service.hostname');
     if ( hostname )
     {

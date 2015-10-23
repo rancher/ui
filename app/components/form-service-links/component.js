@@ -35,6 +35,7 @@ export default Ember.Component.extend({
     });
 
     this.set('serviceLinksArray', out);
+    this.serviceLinksArrayDidChange();
   },
 
   serviceLinksArrayDidChange: function() {

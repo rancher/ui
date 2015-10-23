@@ -1,21 +1,21 @@
+import NewAlias from 'ui/components/new-aliasservice/component';
 import Ember from 'ember';
-import NewOrEdit from 'ui/mixins/new-or-edit';
-import EditService from 'ui/mixins/edit-service';
-import { addAction } from 'ui/utils/add-view-action';
 
-export default Ember.Component.extend(NewOrEdit, EditService, {
+export default NewAlias.extend({
+  allServicesService: Ember.inject.service('all-services'),
+  allServices: null,
+  existing: Ember.computed.alias('originalModel'),
   editing: true,
   loading: true,
-  allServices: Ember.inject.service(),
 
   actions: {
-    addServiceLink:        addAction('addServiceLink',  '.service-link'),
-
-    outsideClick: function() {},
-
-    cancel: function() {
+    done() {
       this.sendAction('dismiss');
-    }
+    },
+
+    cancel() {
+      this.sendAction('dismiss');
+    },
   },
 
   didInsertElement: function() {
@@ -26,30 +26,16 @@ export default Ember.Component.extend(NewOrEdit, EditService, {
     var service = this.get('originalModel');
 
     var dependencies = [
-      this.get('allServices').choices(),
+      this.get('allServicesService').choices(),
     ];
 
     Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
       var clone = service.clone();
-      var model = Ember.Object.create({
+      this.setProperties({
         service: clone,
         allServices: results[0],
+        loading: false,
       });
-
-      this.setProperties({
-        originalModel: service,
-        model: model,
-        service: clone,
-      });
-
-      this.initFields();
-      this.set('loading', false);
     });
   },
-
-  canScale: false,
-
-  doneSaving: function() {
-    this.sendAction('dismiss');
-  }
 });

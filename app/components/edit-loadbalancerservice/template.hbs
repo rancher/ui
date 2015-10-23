@@ -9,62 +9,49 @@
     <h2>Edit Load Balancer</h2>
     {{top-errors errors=errors}}
 
-    {{partial "container/edit-name"}}
+    {{form-scale
+      initialLabels=launchConfig.labels
+      initialScale=service.scale
+      isGlobal=isGlobal
+      errors=scaleErrors
+      setLabels=(action 'setLabels' 'scale')
+      setGlobal=(action 'setGlobal')
+      setScale=(action  'setScale')
+    }}
 
     {{form-divider}}
 
-    <div class="row">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label>Scale</label>
-      </div>
-      {{#if isGlobal}}
-        <div class="col-sm-10 col-md-8">
-          <span class="text-muted">Always run one instance of this container on every host</span>
-        </div>
-      {{else}}
-        <div class="col-sm-2 col-md-1">
-          {{service.scale}}
-        </div>
-        <div class="col-sm-10 col-md-7">
-          {{input-slider value=service.scale valueMax=11 scaleMax=12}}
-        </div>
-      {{/if}}
-    </div>
+    {{form-name-description
+      model=service
+      namePlaceholder="e.g. Website"
+      descriptionPlaceholder="e.g. Balancer for mycompany.com"
+    }}
 
     {{form-divider}}
 
-    <div class="row">
-      <div class="col-xs-6 col-md-2 form-label">
-        <label>Listening Ports</label>
-      </div>
-      <div class="col-sm-12 col-md-8">
-        {{partial "loadbalancer/edit-listeners"}}
-      </div>
-    </div>
+    {{form-balancer-listeners
+      initialListeners=service.loadBalancerListeners
+      changed=(action "setListeners")
+      setLabels=(action 'setLabels' 'ssl')
+      editing=true
+    }}
 
     {{form-divider}}
 
-    <div class="row">
-      <div class="col-xs-6 col-md-2 form-label">
-        <label>Targets</label>
-      </div>
-      <div class="col-xs-6 col-md-8">
-        <button class="btn-circle-plus btn-circle-text" style="margin-right: 20px;" {{action "addTargetService"}}>Add Service</button>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-sm-12 col-md-8 col-md-offset-2">
-        {{partial "loadbalancer/edit-targets"}}
-      </div>
-    </div>
+    {{form-targets
+      isBalancer=true
+      existing=existing
+      allServices=allServices
+      changed=(action "setTargets")
+    }}
 
     {{form-divider}}
 
     {{form-ssl-termination
-      balancerService=service
-      listenersArray=listenersArray
-      launchConfig=service.launchConfig
-      certificates=allCertificates
+      balancer=service
+      hasSslListeners=hasSslListeners
+      launchConfig=launchConfig
+      allCertificates=allCertificates
     }}
   </section>
 

@@ -13,6 +13,7 @@ export default Ember.Component.extend({
     save() {
       // The save action must take a callback and call it when done (whether it succeded or not)
       // to update the state of the button.
+      this.set('saving', true);
       this.sendAction('save', () =>  {
         this.set('saving', false);
       });

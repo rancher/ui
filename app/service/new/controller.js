@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
 
   actions: {
     done() {
-      return this.transitionToRoute('environment', this.get('model.primaryResource.environmentId'));
+      return this.transitionToRoute('environment', this.get('model.service.environmentId'));
     },
 
     cancel() {

@@ -9,55 +9,29 @@
     <h2>{{#if editing}}Edit{{else}}Add{{/if}} Service</h2>
     {{top-errors errors=errors}}
 
-    {{partial "container/edit-name"}}
-
-    {{#if canScale}}
-      {{form-divider}}
-
-      <div class="row">
-        <div class="col-sm-12 col-md-2 form-label">
-          <label>Scale</label>
-        </div>
-        {{#if isGlobal}}
-          <div class="col-sm-10 col-md-8">
-            <span class="text-muted">Always run one instance of this container on every host</span>
-          </div>
-        {{else}}
-          <div class="col-sm-2 col-md-1">
-            {{service.scale}}
-          </div>
-          <div class="col-sm-10 col-md-7">
-            {{input-slider value=service.scale valueMax=11 scaleMax=12}}
-          </div>
-        {{/if}}
-      </div>
-    {{/if}}
+    {{form-scale
+      editing=true
+      initialLabels=launchConfig.labels
+      initialScale=service.scale
+      isGlobal=isGlobal
+      setScale=(action  'setScale')
+    }}
 
     {{form-divider}}
 
-    {{#if isBalancer}}
-      <div class="row">
-        <div class="col-xs-6 col-md-2 form-label">
-          <label>Targets</label>
-        </div>
-        <div class="col-xs-6 col-md-8">
-          <button class="btn-circle-plus btn-circle-text" style="margin-right: 20px;" {{action "addTargetService" target="view"}}>Add Service</button>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-sm-12 col-md-8 col-md-offset-2">
-          Here
-          {{partial "service/edit-targets"}}
-        </div>
-      </div>
-    {{else}}
-      {{#if hasServiceLinks}}
-        {{partial "container/edit-services"}}
-      {{/if}}
-      {{#if hasTargetIp}}
-        {{partial "container/edit-targetip"}}
-      {{/if}}
-    {{/if}}
+    {{form-name-description
+      model=service
+      namePlaceholder="e.g. myapp"
+      descriptionPlaceholder="e.g. My application"
+    }}
+
+    {{form-divider}}
+
+    {{form-service-links
+      service=service
+      allServices=allServices
+      changed=(action 'setServiceLinks')
+    }}
   </section>
 
   {{partial "save-cancel"}}

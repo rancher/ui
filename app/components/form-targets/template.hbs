@@ -20,7 +20,11 @@
               <th>Request Path</th>
               <th width="30">&nbsp;</th>
             {{/if}}
-            <th>Target Service*</th>
+            {{#if isBalancer}}
+              <th>Target Service*</th>
+            {{else}}
+              <th>&nbsp;</th>
+            {{/if}}
             {{#if isAdvanced}}
               <th width="10">&nbsp;</th>
               <th width="90">Target Port</th>
@@ -30,7 +34,7 @@
         </thead>
         <tbody>
           {{#each targetsArray as |tgt|}}
-            {{loadbalancer-target-row tgt=tgt targetChoices=lbSafeServiceChoices remove="removeTarget" isAdvanced=isAdvanced}}
+            {{loadbalancer-target-row tgt=tgt targetChoices=serviceChoices remove="removeTarget" isAdvanced=isAdvanced}}
           {{/each}}
         </tbody>
       </table>
