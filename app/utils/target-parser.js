@@ -1,3 +1,5 @@
+import Ember from 'ember';
+
 // New Format: [hostname][:srcPort][/path][=dstPort]
 // Older format: dstPort:[hostname][/path]
 export function parseTarget(str) {
@@ -97,4 +99,4 @@ export function stringifyTarget(tgt) {
 export default {
   parseTarget: parseTarget,
   stringifyTarget: stringifyTarget,
-}
+};
