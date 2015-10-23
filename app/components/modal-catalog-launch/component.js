@@ -8,7 +8,7 @@ export default Ember.Component.extend(NewOrEdit, {
   templateResource: Ember.computed.alias('originalModel'),
   primaryResource: Ember.computed.alias('environmentResource'),
   editing: Ember.computed.notEmpty('primaryResource.id'),
-
+  allServicesService: Ember.inject.service('all-services'),
   actions: {
     cancel: function() {
       this.sendAction('dismiss');
@@ -34,6 +34,7 @@ export default Ember.Component.extend(NewOrEdit, {
   questionsArray: null,
   selectedTemplate: null,
   selectedTemplateModel: null,
+  services: null,
   loading: false,
   previewOpen: false,
 
@@ -58,6 +59,7 @@ export default Ember.Component.extend(NewOrEdit, {
     {
       this.set('selectedTemplateUrl', links[def]);
     }
+    this.set('services', []);
   }),
 
   templateChanged: function() {
@@ -77,7 +79,37 @@ export default Ember.Component.extend(NewOrEdit, {
             }
             else
             {
-              item.answer = item.default;
+              if (item.type === 'service') {
+                this.set('loadingServices', true);
+                // We need to check a stack/service exists that corresponds to the items default value
+                // if so we can set the default of the drop down
+                // if not we set the drop down to null and the user has to select one
+                var dependencies = [
+                  this.get('allServicesService').choices(),
+                ];
+
+                Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
+                  var defaultStack = false;
+
+                  results[0].forEach((stack) => {
+                    stack.stack = `${this.get('store').getById('environment', stack.obj.environmentId).name}/${stack.name}`;
+                    if (item.default === stack.stack) {
+                      defaultStack = true;
+                    }
+                  });
+
+                  if (defaultStack) {
+                    item.answer = item.default;
+                  } else {
+                    item.answer = null;
+                  }
+
+                  this.set('services', results[0]);
+                  this.set('loadingServices', false);
+                });
+              } else {
+                item.answer = item.default;
+              }
             }
           });
         }
