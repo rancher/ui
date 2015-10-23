@@ -13,9 +13,9 @@ export default Ember.Component.extend({
 
   didInitAttrs() {
     var initial;
-    if ( this.get('value') )
+    if ( this.get('initialValue') )
     {
-      initial = (this.get('value')||'').replace(/^docker:/,'');
+      initial = (this.get('initialValue')||'').replace(/^docker:/,'');
     }
 
     if ( !initial )
