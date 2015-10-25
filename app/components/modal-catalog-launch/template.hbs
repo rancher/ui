@@ -77,7 +77,22 @@
                   {{#if (eq question.type "multiline")}}
                     {{textarea value=question.answer rows="5" class="form-control"}}
                   {{else}}
-                    Unknown question type: {{question.type}}
+                    {{#if (eq question.type 'service')}}
+                      {{#if loadingServices}}
+                          <i class="fa fa-spinner fa-spin" style="font-size:36px;"></i>
+                      {{else}}
+                        {{display-name-select
+                          classNames="form-control"
+                          content=services
+                          prompt="Choose a Service"
+                          optionLabelPath="content.stack"
+                          optionValuePath="content.stack"
+                          optionGroupPath="group"
+                          value=question.answer}}
+                      {{/if}}
+                    {{else}}
+                      Unknown question type: {{question.type}}
+                    {{/if}}
                   {{/if}}
                 {{/if}}
               {{/if}}
