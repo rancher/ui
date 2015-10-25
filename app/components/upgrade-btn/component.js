@@ -13,7 +13,7 @@ function getUpgradeInfo(task, cb) {
   var uuid = task.uuid;
   var obj = task.obj;
 
-  ajaxPromise({url: '/v1-catalog/upgradeinfo/'+ uuid, dataType: 'json'},true).then((upgradeInfo) => {
+  ajaxPromise({url: this.get('app.catalogEndpoint')+'/upgradeinfo/'+ uuid, dataType: 'json'},true).then((upgradeInfo) => {
     obj.set('upgradeInfo', upgradeInfo);
     if ( upgradeInfo && upgradeInfo.newVersionLinks && Object.keys(upgradeInfo.newVersionLinks).length )
     {

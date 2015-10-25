@@ -215,7 +215,7 @@ export default Ember.Controller.extend(NewHost, {
   },
 
   apiRequest: function(command, params) {
-    var url = '/v1/proxy/' + this.ubiquityhostingApi + "?method=cloud." + command;
+    var url = this.get('app.proxyEndpoint') + '/' + this.ubiquityhostingApi + "?method=cloud." + command;
 
     var auth = this.get('ubiquityConfig.clientId') + ':' + this.get('ubiquityConfig.apiUsername') + ':' + this.get('ubiquityConfig.apiToken');
 

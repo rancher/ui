@@ -44,6 +44,7 @@ module.exports = function(environment) {
       apiEndpoint: '/v1',
       catalogServer: '',
       catalogEndpoint: '/v1-catalog',
+      proxyEndpoint: '/v1/proxy',
       wsEndpoint: '/v1/subscribe?eventNames=resource.change' +
                     '&include=hosts' +
                     '&include=instances' +

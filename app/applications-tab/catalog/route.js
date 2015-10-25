@@ -9,7 +9,7 @@ export default Ember.Route.extend({
       return filter(cache, params.type);
     }
 
-    return Ember.$.ajax('/v1-catalog/templates', 'GET').then((response) => {
+    return Ember.$.ajax(this.get('app.catalogEndpoint')+'/templates', 'GET').then((response) => {
       this.set('cache', response.data);
       return filter(response.data, params.type);
     });
