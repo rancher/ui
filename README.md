@@ -37,10 +37,15 @@ Connect to UI at http://localhost:8000/ .  The server automatically picks up fil
 
 Run development server pointed at another instance of the Rancher API
 ```bash
-  RANCHER_ENDPOINT="http://rancher:8080/" npm start
+  RANCHER="http://rancher:8080/" npm start
 ```
 
-RANCHER_ENDPOINT can also be `hostname[:8080]` or `ip[:8080]`.
+and/or pointed at another instance of the Catalog API
+```bash
+  CATALOG="http://catalog:8088/" npm start
+```
+
+RANCHER and CATALOG can also be `hostname[:port]` or `ip[:port]`.
 
 ### Compiling for distribution
 

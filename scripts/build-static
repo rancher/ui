@@ -159,7 +159,7 @@ echo "Done Testing."
 
 if [[ $LATEST -ne 1 ]]; then
   echo "Building Static Tarball..."
-  RANCHER_ENDPOINT="" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
+  RANCHER="" CATALOG="" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
 
 # Create a file containing the version
 echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
@@ -169,7 +169,7 @@ runCmd tar -czf ${BUILD_TGZ} -C ${BUILD_PAR} ${VERSION}
 fi;
 
 echo "Building Hosted Version..."
-FINGERPRINT="${FINGERPRINT}" RANCHER_ENDPOINT="" BASE_ASSETS="//${CDN}/${VERSION}/" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
+FINGERPRINT="${FINGERPRINT}" RANCHER="" CATALOG="" BASE_ASSETS="//${CDN}/${VERSION}/" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
 
 # Create a file containing the version
 echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt

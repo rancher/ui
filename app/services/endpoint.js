@@ -7,7 +7,7 @@ export default Ember.Service.extend({
   session: Ember.inject.service(),
 
   absolute: function() {
-    var url = this.get('app.endpoint');
+    var url = this.get('app.apiServer');
 
     // If the URL is relative, add on the current base URL from the browser
     if ( url.indexOf('http') !== 0 )
@@ -19,7 +19,7 @@ export default Ember.Service.extend({
     url = url.replace(/\/+$/,'') + '/';
 
     return url;
-  }.property('app.endpoint'),
+  }.property('app.apiServer'),
 
   host: function() {
     var a = document.createElement('a');
