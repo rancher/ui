@@ -1,5 +1,6 @@
 import Ember from 'ember';
 
+// debouncedObserver('observeKey1','...','observerKeyN', function() {} [, delay] [,leadingEdge])
 export function debouncedObserver(...args) {
   var argsLength = args.length;
   var funcIndex, keys, opt;
@@ -21,7 +22,11 @@ export function debouncedObserver(...args) {
   keys = args.slice(0, funcIndex);
 
   return Ember.observer.apply(Ember, keys.concat(function() {
-    Ember.run.debounce(this, opt[0], opt[1] || 250, opt[2] || false);
+    Ember.run.debounce(this, function() {
+      if ( this.state !== 'destroying' ) {
+        opt[0].apply(this);
+      }
+    }, opt[1] || 250, opt[2] || false);
   }));
 }
 

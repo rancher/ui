@@ -8,7 +8,7 @@ module.exports = function(app, options) {
   var proxy = HttpProxy.createProxyServer({
     ws: true,
     xfwd: false,
-    target: config.endpoint,
+    target: config.apiServer,
   });
 
   proxy.on('error', onProxyError);
@@ -18,9 +18,9 @@ module.exports = function(app, options) {
     proxy.ws(req, socket, head);
   });
 
-  console.log('Proxying to', config.endpoint);
+  console.log('Proxying Rancher to', config.apiServer);
 
-  var apiPath = '/v1';
+  var apiPath =  config.apiEndpoint;
   app.use(apiPath, function(req, res, next) {
     // include root path in proxied request
     req.url = path.join(apiPath, req.url);
@@ -29,19 +29,20 @@ module.exports = function(app, options) {
     proxy.web(req, res);
   });
 
-  var catalogPath = '/v1-catalog';
+  var catalogPath = config.catalogEndpoint;
+  // Default catalog to the regular API
+  var server = config.catalogServer || config.apiServer;
+  console.log('Proxying Catalog to', server);
   app.use(catalogPath, function(req, res, next) {
     var catalogProxy = HttpProxy.createProxyServer({
-      ws: true,
       xfwd: false,
-      target: 'http://localhost:8088'
+      target: server
     });
+
     catalogProxy.on('error', onProxyError);
 
     // include root path in proxied request
     req.url = path.join(catalogPath, req.url);
-
-    req.headers['user-agent'] = 'Rancher UI';
 
     console.log('Catalog Proxy', req.method, 'to', req.url);
     catalogProxy.web(req, res);

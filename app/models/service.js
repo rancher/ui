@@ -127,13 +127,15 @@ var Service = Resource.extend(ReadLabels, {
   availableActions: function() {
     var a = this.get('actionLinks');
 
+    var canUpgrade = !!a.upgrade && this.get('type') === 'service';
+
     var choices = [
       { label: 'Start',           icon: 'icon icon-play',         action: 'activate',       enabled: !!a.activate,    color: 'text-success'},
       { label: 'Stop',            icon: 'icon icon-pause',        action: 'deactivate',     enabled: !!a.deactivate,  color: 'text-danger'},
       { label: 'Delete',          icon: 'icon icon-trash',        action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
       { label: 'Purge',           icon: '',                       action: 'purge',          enabled: !!a.purge },
       { divider: true },
-      { label: 'Upgrade',         icon: 'fa fa-arrow-circle-o-up',action: 'upgrade',        enabled: !!a.upgrade },
+      { label: 'Upgrade',         icon: 'fa fa-arrow-circle-o-up',action: 'upgrade',        enabled: canUpgrade },
       { label: 'Finish Upgrade',  icon: 'fa fa-thumbs-o-up',      action: 'finishUpgrade',  enabled: !!a.finishupgrade },
       { label: 'Cancel Upgrade',  icon: 'fa fa-life-ring',        action: 'cancelUpgrade',  enabled: !!a.cancelupgrade },
       { label: 'Rollback',        icon: 'fa fa-history',          action: 'rollback',       enabled: !!a.rollback },
@@ -145,7 +147,7 @@ var Service = Resource.extend(ReadLabels, {
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}'),
+  }.property('actionLinks.{activate,deactivate,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type'),
 
 
   _allMaps: null,
@@ -361,6 +363,19 @@ Service.reopenClass({
     }).filter((obj) => {
       return obj.get('service.id');
     });
+  },
+
+  mangleIn: function(data, store) {
+    if ( data.secondaryLaunchConfigs )
+    {
+      // Secondary lanch configs are service-like
+      data.secondaryLaunchConfigs = data.secondaryLaunchConfigs.map((slc) => {
+        slc.type = 'service';
+        return store.createRecord(slc);
+      });
+    }
+
+    return data;
   },
 
   stateMap: {

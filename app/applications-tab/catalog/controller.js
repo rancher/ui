@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
       this.get('application').setProperties({
         launchCatalog: true,
         originalModel: model,
+        environmentResource: null,
       });
     }
   },

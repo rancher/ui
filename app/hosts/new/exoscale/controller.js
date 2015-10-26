@@ -227,7 +227,7 @@ export default Ember.Controller.extend(NewHost, {
   },
 
   apiRequest: function(command, params) {
-    var url = '/v1/proxy/' + this.exoscaleApi;
+    var url = this.get('app.proxyEndpoint') + '/' + this.exoscaleApi;
     params = params || {};
     params.command = command;
     params.apiKey = this.get('exoscaleConfig.apiKey');

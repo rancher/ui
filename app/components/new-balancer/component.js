@@ -7,6 +7,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   isStandalone: true,
   service: null,
   existing: null,
+  balancerConfig: null,
   allHosts: null,
   allServices: null,
   allCertificates: null,
@@ -90,6 +91,32 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     return this.get('listenersArray').filterBy('ssl',true).get('length') > 0;
 
   }.property('listenersArray.@each.ssl'),
+
+  listenersChanged: function() {
+    var ports = [];
+    var expose = [];
+    this.get('listenersArray').forEach(function(listener) {
+      var src = listener.get('sourcePort');
+      var proto = listener.get('sourceProtocol');
+      var tgt = listener.get('targetPort');
+
+      if ( src && proto )
+      {
+        var str = src + (tgt ? ':' +tgt : '') + (proto === 'http' ? '': '/' + proto );
+        if ( listener.get('isPublic') )
+        {
+          ports.pushObject(str);
+        }
+        else
+        {
+          expose.pushObject(str);
+        }
+      }
+    });
+
+    this.set('launchConfig.ports', ports.sort().uniq());
+    this.set('launchConfig.expose', expose.sort().uniq());
+  }.observes('listenersArray.@each.{sourcePort,sourceProtocol,targetPort,isPublic}'),
 
   hasAdvancedSourcePorts: function() {
     return this.get('targetsArray').filterBy('isService',true).filter((target) => {
@@ -205,13 +232,11 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     this._super();
     errors = this.get('errors')||[];
 
-
-    errors.pushObjects(this.get('config').validationErrors());
     this.get('listenersArray').forEach((listener) => {
       errors.pushObjects(listener.validationErrors());
     });
 
-    errors.pushObjects(this.get('balancer').validationErrors());
+    errors.pushObjects(this.get('service').validationErrors());
 
     if ( errors.length )
     {

@@ -1,0 +1,18 @@
+{{#if (and hasSidekicks enabledChoices.length)}}
+  <div class="over-hr r-mt5">
+    <span style="text-transform: none;">
+      <nav>
+        <ul class="pagination pagination-sm r-m0">
+          {{#each enabledChoices as |choice|}}
+            <li class="{{if (eq index choice.index) 'active'}}"><a href="#" {{action "switch" choice.index}}>{{choice.name}}</a></li>
+          {{/each}}
+          {{#if showAdd}}
+            <li class="hand"><a {{action "add"}}><i class="icon icon-plus"/> Add Sidekick</a></li>
+          {{/if}}
+        </ul>
+      </nav>
+    </span>
+  </div>
+{{else}}
+  {{form-divider}}
+{{/if}}

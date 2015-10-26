@@ -113,56 +113,6 @@ export default Ember.Component.extend(ManageLabels, {
     return ['http','tcp'];
   }.property(),
 
-  stickiness: 'none',
-  isStickyNone: Ember.computed.equal('stickiness','none'),
-  isStickyLbCookie: Ember.computed.equal('stickiness','lbCookie'),
-  isStickyAppCookie: Ember.computed.equal('stickiness','appCookie'),
-
-  lbCookieModeChoices: [
-    {value: 'rewrite', label: 'Rewrite'},
-    {value: 'insert', label: 'Insert'},
-    {value: 'prefix', label: 'Prefix'},
-  ],
-
-  appCookieModeChoices: [
-    {value: 'path_parameters', label: 'Path Parameter'},
-    {value: 'query_string', label: 'Query String'},
-  ],
-
-  initStickiness: function() {
-    if ( this.get('config.appCookieStickinessPolicy') )
-    {
-      this.set('stickiness', 'appCookie');
-    }
-    else if ( this.get('config.lbCookieStickinessPolicy') )
-    {
-      this.set('stickiness', 'lbCookie');
-    }
-    else
-    {
-      this.set('stickiness','none');
-    }
-  },
-
-  stickinessDidChange: function() {
-    var stickiness = this.get('stickiness');
-    if ( stickiness === 'none' )
-    {
-      this.set('config.lbCookieStickinessPolicy', null);
-      this.set('config.appCookieStickinessPolicy', null);
-    }
-    else if ( stickiness === 'lbCookie' )
-    {
-      this.set('config.lbCookieStickinessPolicy', this.get('lbCookie'));
-      this.set('config.appCookieStickinessPolicy', null);
-    }
-    else if ( stickiness === 'appCookie' )
-    {
-      this.set('config.lbCookieStickinessPolicy', null);
-      this.set('config.appCookieStickinessPolicy', this.get('appCookie'));
-    }
-  }.observes('stickiness'),
-
   updateLabels(labels) {
     this.sendAction('setLabels', labels);
   },

@@ -49,8 +49,6 @@ export default Ember.Mixin.create({
     },
 
     save: function(cb) {
-      var self = this;
-
       if ( !this.willSave() )
       {
         // Validation or something else said not to save
@@ -60,15 +58,19 @@ export default Ember.Mixin.create({
       this.doSave()
       .then(this.didSave.bind(this))
       .then(this.doneSaving.bind(this))
-      .catch(function(err) {
-        self.send('error', err);
-        self.errorSaving(err);
-      }).finally(function() {
-        self.set('saving',false);
+      .catch((err) => {
+        this.send('error', err);
+        this.errorSaving(err);
+      }).finally(() => {
+        try {
+          this.set('saving',false);
 
-        if ( cb )
-        {
-          cb();
+          if ( cb )
+          {
+            cb();
+          }
+        }
+        catch(e) {
         }
       });
     }

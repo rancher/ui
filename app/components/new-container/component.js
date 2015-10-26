@@ -35,10 +35,11 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   actions: {
     selectLaunchConfig(index) {
       this.set('launchConfigIndex', index);
-      Ember.run.next(() => {
+      if ( this.$() )
+      {
         this.$().children('[data-launchindex]').addClass('hide');
         this.$().children('[data-launchindex="'+index+'"]').removeClass('hide');
-      });
+      }
     },
 
     addSidekick() {
@@ -129,6 +130,25 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       return this.get('service.secondaryLaunchConfigs').objectAt(idx);
     }
   }.property('launchConfigIndex'),
+
+  launchConfigChoices: function() {
+    var isUpgrade = this.get('isUpgrade');
+
+    // Enabled is only for upgrade, and isn't maintained if the names change, but they can't on upgrade.
+    var out = [
+      {index: -1, name: this.get('service.name') || '(Primary Service)', enabled: true}
+    ];
+
+    (this.get('service.secondaryLaunchConfigs')||[]).forEach((item, index) => {
+      out.push({index: index, name: item.get('name') || `(Sidekick #${index+1})`, enabled: !isUpgrade });
+    });
+
+    return out;
+  }.property('service.name','service.secondaryLaunchConfigs.@each.name'),
+
+  noLaunchConfigsEnabled: function() {
+    return this.get('launchConfigChoices').filterBy('enabled',true).get('length') === 0;
+  }.property('launchConfigChoices.@each.enabled'),
 
   activeLabel: function() {
     var idx = this.get('launchConfigIndex');
@@ -229,13 +249,29 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   doSave() {
     if ( this.get('isService') && this.get('isUpgrade') )
     {
+      var choices = this.get('launchConfigChoices');
+      var primary = null;
+      var slc = [];
+      var secondaries = this.get('service.secondaryLaunchConfigs');
+
+      choices.filterBy('enabled',true).forEach((choice) => {
+        if ( choice.index === -1 )
+        {
+          primary = this.get('service.launchConfig');
+        }
+        else
+        {
+          slc.push(secondaries.objectAt(choice.index));
+        }
+      });
+
       return this.get('service').doAction('upgrade', {
         inServiceStrategy: {
           batchSize: this.get('upgradeOptions.batchSize'),
           intervalMillis: this.get('upgradeOptions.intervalMillis'),
-          launchConfig: this.get('service.launchConfig'),
-          secondaryLaunchConfigs: this.get('service.secondaryLaunchConfigs'),
           startFirst: this.get('upgradeOptions.startFirst'),
+          launchConfig: primary,
+          secondaryLaunchConfigs: slc
         },
       });
     }

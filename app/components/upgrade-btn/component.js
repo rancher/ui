@@ -10,10 +10,9 @@ const NONE = 'none',
 var queue = async.queue(getUpgradeInfo, 2);
 
 function getUpgradeInfo(task, cb) {
-  var uuid = task.uuid;
   var obj = task.obj;
 
-  ajaxPromise({url: '/v1-catalog/upgradeinfo/'+ uuid, dataType: 'json'},true).then((upgradeInfo) => {
+  ajaxPromise({url: task.url, dataType: 'json'},true).then((upgradeInfo) => {
     obj.set('upgradeInfo', upgradeInfo);
     if ( upgradeInfo && upgradeInfo.newVersionLinks && Object.keys(upgradeInfo.newVersionLinks).length )
     {
@@ -91,7 +90,10 @@ export default Ember.Component.extend({
     if ( uuid )
     {
       this.set('upgradeStatus', LOADING);
-      queue.push({uuid: uuid, obj: this});
+      queue.push({
+        url: this.get('app.catalogEndpoint')+'/upgradeinfo/'+ uuid,
+        uuid: uuid, obj: this
+      });
     }
     else
     {

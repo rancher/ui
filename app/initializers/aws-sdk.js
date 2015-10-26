@@ -1,4 +1,4 @@
-export function initialize(/*container, application */) {
+export function initialize(container, application) {
   // Monkey patch AWS SDK to go through our proxy
   var orig = AWS.XHRClient.prototype.handleRequest;
   AWS.XHRClient.prototype.handleRequest = function handleRequest(httpRequest, httpOptions, callback, errCallback) {
@@ -8,9 +8,11 @@ export function initialize(/*container, application */) {
     httpRequest.headers['X-API-AUTH-HEADER'] = httpRequest.headers['Authorization'];
     httpRequest.headers['Content-Type'] = 'rancher:' + httpRequest.headers['Content-Type'];
 
-    if ( httpRequest.path.indexOf('/v1/proxy/') !== 0 )
+    var endpoint = application.proxyEndpoint+'/';
+
+    if ( httpRequest.path.indexOf(endpoint) !== 0 )
     {
-      httpRequest.path = '/v1/proxy/' + httpRequest.endpoint.hostname + httpRequest.path;
+      httpRequest.path = endpoint + httpRequest.endpoint.hostname + httpRequest.path;
     }
 
     httpRequest.endpoint.protocol = window.location.protocol;

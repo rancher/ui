@@ -2,11 +2,7 @@
   <section class="horizontal-form container-fluid">
     <h2>{{if isUpgrade 'Upgrade' 'Add'}}
       {{#if isService}}
-        Service
-        {{#if hasSidekicks}}
-          +
-          {{service.secondaryLaunchConfigs.length}} Sidekick Service{{if (not-eq service.secondaryLaunchConfigs.length 1) 's'}}
-        {{/if}}
+        Service{{if hasSidekicks 's'}}
       {{else}}
         Container
       {{/if}}
@@ -14,46 +10,41 @@
     {{top-errors errors=errors}}
 
     {{#if isService}}
-      {{form-scale
-        initialLabels=launchConfig.labels
-        initialScale=service.scale
-        isGlobal=isGlobal
-        errors=scaleErrors
-        setLabels=(action 'setLabels' 'scale')
-        setGlobal=(action 'setGlobal')
-        setScale=(action  'setScale')
-      }}
-
       {{#if isUpgrade}}
         {{form-upgrade
-          changed=(action 'setUpgrade')
+          switch=(action 'selectLaunchConfig')
+          optionsChanged=(action 'setUpgrade')
+          choices=launchConfigChoices
+          index=launchConfigIndex
+        }}
+      {{else}}
+        {{form-scale
+          initialLabels=launchConfig.labels
+          initialScale=service.scale
+          isGlobal=isGlobal
+          errors=scaleErrors
+          setLabels=(action 'setLabels' 'scale')
+          setGlobal=(action 'setGlobal')
+          setScale=(action  'setScale')
         }}
       {{/if}}
 
-      {{#if (and isUpgrade (not hasSidekicks))}}
-        {{form-divider}}
-      {{else}}
-        <div class="over-hr r-mt5">
-          <span style="text-transform: none;">
-            <nav>
-              <ul class="pagination pagination-sm r-m0">
-                <li class="{{if (eq launchConfigIndex -1) 'active'}}"><a href="#" {{action "selectLaunchConfig" -1}}>{{default-str service.name default="(Primary Service)"}}</a></li>
-                {{#each service.secondaryLaunchConfigs as |slc index|}}
-                  <li class="{{if (eq launchConfigIndex index) 'active'}}"><a href="#" {{action "selectLaunchConfig" index}}>{{default-str slc.name (concat-str '(Sidekick #' (one-louder index) ')')}}</a></li>
-                {{/each}}
-                {{#unless isUpgrade}}
-                  <li class="hand"><a {{action "addSidekick"}}><i class="icon icon-plus"/> Add Sidekick</a></li>
-                {{/unless}}
-              </ul>
-            </nav>
-          </span>
-        </div>
-      {{/if}}
+      {{form-launch-config-switch
+        index=launchConfigIndex
+        choices=launchConfigChoices
+        add=(action 'addSidekick')
+        switch=(action 'selectLaunchConfig')
+        showAdd=(not isUpgrade)
+      }}
     {{/if}}
   </section>
 {{/unless}}
 
-<div data-launchindex="-1">
+{{#if noLaunchConfigsEnabled}}
+  <div class="text-muted text-center">Select one or more services to upgrade.</div>
+{{/if}}
+
+<div data-launchindex="{{if isSidekick '' '-1'}}">
   <section class="horizontal-form container-fluid">
     {{form-name-description
       model=primaryResource
@@ -172,7 +163,7 @@
 
 
 {{#unless isSidekick}}
-  {{#save-cancel createLabel=(if isUpgrade 'Upgrade' 'Create') save="save" cancel="cancel"}}
+  {{#save-cancel saveDisabled=noLaunchConfigsEnabled createLabel=(if isUpgrade 'Upgrade' 'Create') save="save" cancel="cancel"}}
     {{#if (and (not isUpgrade) (not-eq launchConfigIndex -1))}}
       <button class="btn btn-default" {{action "removeSidekick"}}>Remove this Sidekick</button>
     {{/if}}

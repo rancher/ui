@@ -40,8 +40,11 @@ module.exports = function(environment) {
       // when it is created
       version: pkg.version,
       appName: 'Rancher',
-      endpoint: 'http://localhost:8080',
+      apiServer: 'http://localhost:8080',
       apiEndpoint: '/v1',
+      catalogServer: '',
+      catalogEndpoint: '/v1-catalog',
+      proxyEndpoint: '/v1/proxy',
       wsEndpoint: '/v1/subscribe?eventNames=resource.change' +
                     '&include=hosts' +
                     '&include=instances' +
@@ -79,6 +82,9 @@ module.exports = function(environment) {
     ENV.baseURL = process.env.BASE_URL;
   }
 
+  ENV.APP.baseURL = ENV.baseURL;
+
+
   if (process.env.FINGERPRINT) {
     ENV.APP.fingerprint = process.env.FINGERPRINT;
   }
@@ -87,32 +93,55 @@ module.exports = function(environment) {
     ENV.APP.baseAssets = process.env.BASE_ASSETS;
   }
 
-  // Override the endpoint with environment var
-  var endpoint = process.env.RANCHER_ENDPOINT;
-  if ( endpoint )
+  // Override the Rancher server/endpoint with environment var
+  var server = process.env.RANCHER || process.env.RANCHER_ENDPOINT;
+  if ( server )
   {
     // variable can be an ip "1.2.3.4" -> http://1.2.3.4:8080
     // or a URL+port
-    if ( endpoint.indexOf('http') !== 0 )
+    if ( server.indexOf('http') !== 0 )
     {
-      if ( endpoint.indexOf(':') === -1 )
+      if ( server.indexOf(':') === -1 )
       {
-        endpoint = 'http://' + endpoint + ':8080';
+        server = 'http://' + server + ':8080';
       }
       else
       {
-        endpoint = 'http://' + endpoint;
+        server = 'http://' + server;
       }
     }
 
-    ENV.APP.endpoint = endpoint;
+    ENV.APP.apiServer = server;
   }
   else if (environment === 'production')
   {
-    ENV.APP.endpoint = '';
+    ENV.APP.apiServer = '';
   }
 
-  ENV.APP.baseURL = ENV.baseURL;
+  // Override the Catalog server/endpoint with environment var
+  server = process.env.CATALOG;
+  if ( server )
+  {
+    // variable can be an ip "1.2.3.4" -> http://1.2.3.4:8088
+    // or a URL+port
+    if ( server.indexOf('http') !== 0 )
+    {
+      if ( server.indexOf(':') === -1 )
+      {
+        server = 'http://' + server + ':8088';
+      }
+      else
+      {
+        server = 'http://' + server;
+      }
+    }
+
+    ENV.APP.catalogServer = server;
+  }
+  else if (environment === 'production')
+  {
+    ENV.APP.catalogServer = '';
+  }
 
   return ENV;
 };
