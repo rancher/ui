@@ -4,7 +4,7 @@ import ReadLabels from 'ui/mixins/read-labels';
 import C from 'ui/utils/constants';
 
 var _allMaps;
-var _allServices;
+var _allRegularServices;
 var _allLbServices;
 var _allExternalServices;
 var _allDnsServices;
@@ -151,7 +151,13 @@ var Service = Resource.extend(ReadLabels, {
 
 
   _allMaps: null,
+  _allRegularServices: null,
+  _allLbServices: null,
+  _allExternalServices: null,
+  _allDnsServices: null,
+
   consumedServicesUpdated: 0,
+  consumedByServicesUpdated: 0,
   serviceLinks: null, // Used for clone
   reservedKeys: ['_allMaps','consumedServices','consumedServicesUpdated','serviceLinks','_environment','_environmentState'],
   labelResource: Ember.computed.alias('launchConfig'),
@@ -167,12 +173,9 @@ var Service = Resource.extend(ReadLabels, {
       _allMaps = this.get('store').allUnremoved('serviceconsumemap');
     }
 
-    // And we need this here so that consumedServices can watch for changes
-    this.set('_allMaps', _allMaps);
-
-    if ( !_allServices )
+    if ( !_allRegularServices )
     {
-      _allServices = this.get('store').allUnremoved('service');
+      _allRegularServices = this.get('store').allUnremoved('service');
     }
 
     if ( !_allLbServices )
@@ -189,8 +192,24 @@ var Service = Resource.extend(ReadLabels, {
     {
       _allDnsServices = this.get('store').allUnremoved('dnsservice');
     }
+
+    // And we need this here so that consumedServices can watch for changes
+    this.setProperties({
+      '_allMaps': _allMaps,
+      '_allRegularServices': _allRegularServices,
+      '_allLbServices': _allLbServices,
+      '_allExternalServices': _allExternalServices,
+      '_allDnsServices': _allDnsServices
+    });
   },
 
+  _allServices: function() {
+    return this.get('_allRegularServices.content').concat(
+      this.get('_allLbServices.content'),
+      this.get('_allExternalServices.content'),
+      this.get('_allDnsServices.content')
+    );
+  }.property('_allRegularServices.[]','_allLbServices.[]','_allExternalServices.[]','_allDnsServices.[]'),
 
   _environment: null,
   _environmentState: 0,
@@ -232,7 +251,7 @@ var Service = Resource.extend(ReadLabels, {
 
   consumedServicesWithNames: function() {
     return Service.consumedServicesFor(this.get('id'));
-  }.property('id','_allMaps.@each.{name,serviceId,consumedServiceId}','state'),
+  }.property('id','_allMaps.@each.{name,serviceId,consumedServiceId}','_allServices.[]'),
 
   consumedServices: function() {
     return this.get('consumedServicesWithNames').map((obj) => {
@@ -347,8 +366,12 @@ export function activeIcon(service)
 }
 
 Service.reopenClass({
+  byId: function(serviceId) {
+    return _allMaps.filterBy('serviceId', serviceId)[0];
+  },
+
   consumedServicesFor: function(serviceId) {
-    var allTypes = [_allServices, _allLbServices, _allExternalServices, _allDnsServices];
+    var allTypes = [_allRegularServices, _allLbServices, _allExternalServices, _allDnsServices];
 
     return _allMaps.filterBy('serviceId', serviceId).map((map) => {
       var i = 0;

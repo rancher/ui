@@ -92,6 +92,16 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
       if ( d.name === 'resource.change' )
       {
         action = d.resourceType+'Changed';
+        /*
+        if ( d.resourceType == 'serviceConsumeMap' )
+        {
+          console.log('Map', d.data.resource.serviceId, '->', d.data.resource.consumedServiceId);
+        }
+        else
+        {
+          console.log('Res', (d.data ? d.data.resource.type : ''), (d.data ?  d.data.resource.id : ''), (d.data ? d.data.resource.state : ''));
+        }
+        */
       }
       else if ( d.name === 'ping' )
       {
