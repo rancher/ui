@@ -232,7 +232,7 @@ var Service = Resource.extend(ReadLabels, {
 
   consumedServicesWithNames: function() {
     return Service.consumedServicesFor(this.get('id'));
-  }.property('id','_allMaps.@each.{name,serviceId,consumedServiceId}'),
+  }.property('id','_allMaps.@each.{name,serviceId,consumedServiceId}','state'),
 
   consumedServices: function() {
     return this.get('consumedServicesWithNames').map((obj) => {
@@ -290,10 +290,14 @@ var Service = Resource.extend(ReadLabels, {
     }
   }.property('state', 'healthState'),
 
+  isGlobalScale: function() {
+    return !!this.getLabel(C.LABEL.SCHED_GLOBAL);
+  }.property(),
+
   canScale: function() {
     if ( ['service','loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0 )
     {
-      return !this.getLabel(C.LABEL.SCHED_GLOBAL);
+      return !this.get('isGlobalScale');
     }
     else
     {
