@@ -26,16 +26,18 @@
       {{model.displayType}}
     </li>
 
-    {{#if model.canScale}}
-      <li>
-        <label>Scale</label>
+    <li>
+      <label>Scale</label>
+      {{#if model.canScale}}
         {{model.scale}}
         &nbsp;
         &nbsp;
         <button class="btn btn-default btn-xs" {{action "scaleDown" target=model}} disabled={{eq model.scale 1}}><i class="icon icon-minus"></i></button>
         <button class="btn btn-default btn-xs" {{action "scaleUp" target=model}}><i class="icon icon-plus"></i></button>
-      </li>
-    {{/if}}
+      {{else}}
+        {{if model.isGlobalScale 'Global'}}
+      {{/if}}
+    </li>
 
     {{#if model.hasImage}}
       <li>
