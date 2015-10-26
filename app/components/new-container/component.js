@@ -35,10 +35,11 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   actions: {
     selectLaunchConfig(index) {
       this.set('launchConfigIndex', index);
-      Ember.run.next(() => {
+      if ( this.$() )
+      {
         this.$().children('[data-launchindex]').addClass('hide');
         this.$().children('[data-launchindex="'+index+'"]').removeClass('hide');
-      });
+      }
     },
 
     addSidekick() {
@@ -131,14 +132,15 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   }.property('launchConfigIndex'),
 
   launchConfigChoices: function() {
+    var isUpgrade = this.get('isUpgrade');
+
     // Enabled is only for upgrade, and isn't maintained if the names change, but they can't on upgrade.
-    //
     var out = [
       {index: -1, name: this.get('service.name') || '(Primary Service)', enabled: true}
     ];
 
     (this.get('service.secondaryLaunchConfigs')||[]).forEach((item, index) => {
-      out.push({index: index, name: item.get('name') || `(Sidekick #${index+1})`, enabled: false });
+      out.push({index: index, name: item.get('name') || `(Sidekick #${index+1})`, enabled: !isUpgrade });
     });
 
     return out;

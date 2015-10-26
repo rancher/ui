@@ -9,18 +9,18 @@ export default Ember.Component.extend({
   startFirst: false,
 
   didInitAttrs() {
-    this.optionsChanged();
+    this.optionsDidChange();
   },
 
-  optionsChanged: function() {
+  optionsDidChange: function() {
     this.sendAction('optionsChanged', {
-      batchSize: this.get('batchSize'),
-      intervalMillis: this.get('interval')*1000,
+      batchSize: parseInt(this.get('batchSize'),10),
+      intervalMillis: parseInt(this.get('interval'),10)*1000,
       startFirst: this.get('startFirst'),
     });
   }.observes('batchSize','interval','startFirst'),
 
-  choicesChanged: function() {
+  choicesDidChange: function() {
     var index = this.get('index');
     var obj = this.get('choices').filterBy('index',index)[0];
     if ( !obj || !obj.enabled ) {

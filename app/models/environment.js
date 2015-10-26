@@ -191,7 +191,15 @@ var Environment = Resource.extend({
 
 Environment.reopenClass({
   stateMap: {
-    'active':           {icon: 'icon icon-globe',          color: 'text-success'},
+    'active':             {icon: 'icon icon-globe',           color: 'text-success'},
+    'canceled-rollback':  {icon: 'fa fa-life-ring',           color: 'text-info'},
+    'canceled-upgrade':   {icon: 'fa fa-life-ring',           color: 'text-info'},
+    'canceling-rollback': {icon: 'fa fa-life-ring',           color: 'text-info'},
+    'canceling-upgrade':  {icon: 'fa fa-life-ring',           color: 'text-info'},
+    'finishing-upgrade':  {icon: 'fa fa-arrow-circle-o-up',   color: 'text-info'},
+    'rolling-back':       {icon: 'fa fa-history',             color: 'text-info'},
+    'upgraded':           {icon: 'fa fa-arrow-circle-o-up',   color: 'text-info'},
+    'upgrading':          {icon: 'fa fa-arrow-circle-o-up',   color: 'text-info'},
   }
 });
 
