@@ -213,6 +213,12 @@ Router.map(function() {
     withParams: 'launchCatalog',
     otherParams: {originalModel: 'originalModel', environmentResource: 'environmentResource'}
   });
+
+  this.modal('modal-process-error', {
+    dismissWithOutsideClick: true,
+    withParams: 'openProcessesError',
+    otherParams: 'exception'
+  });
   // End: Modals
 });
 

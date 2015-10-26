@@ -1,9 +1,14 @@
 {{#if topLevel}}
-  <tr>
+  <tr class="{{if execution.exception 'danger' ''}}">
     <td class="clip">
       {{#if checkProcessHandlerExecutions }}
         <span {{action 'expand'}}>
           <i class="fa hand {{if expanded 'fa-minus-square' 'fa-plus-square'}}"></i>
+        </span>
+      {{/if}}
+      {{#if execution.exception}}
+        <span {{action 'showError' execution.exception}}>
+          <i class="fa fa-exclamation-triangle hand"></i>
         </span>
       {{/if}}
       <span title={{execution.processName}}>{{execution.processName}}</span>
@@ -24,9 +29,14 @@
   </tr>
 {{else}}
   {{#if shouldExpand}}
-    <tr>
+    <tr class="{{if execution.exception 'danger' ''}}">
       <td class="clip">
         <i class="fa fa-level-down indent-{{depth}}"></i>
+        {{#if execution.exception}}
+          <span {{action 'showError' execution.exception}}>
+            <i class="fa fa-exclamation-triangle hand"></i>
+          </span>
+        {{/if}}
         {{#if checkProcessHandlerExecutions }}
             <span {{action 'expand'}}>
               <i class="fa hand {{if expanded 'fa-minus-circle' 'fa-plus-circle'}}"></i>
