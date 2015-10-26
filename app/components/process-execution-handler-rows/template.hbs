@@ -1,7 +1,12 @@
 {{#if shouldExpand}}
-  <tr>
+  <tr class="{{if execution.exception 'danger' ''}}">
     <td class="clip">
       <i class="fa fa-level-down indent-{{depth}}"></i>
+      {{#if execution.exception}}
+        <span {{action 'showError' execution.exception}}>
+          <i class="fa fa-exclamation-triangle hand"></i>
+        </span>
+      {{/if}}
       {{#if checkExecutions }}
         <span {{action 'expand'}}>
             <i class="fa hand {{if expanded 'fa-minus-circle' 'fa-plus-circle'}}"></i>

@@ -36,5 +36,6 @@ export default Ember.Controller.extend({
   showShell: null,
   showContainerLogs: null,
   launchCatalog: null,
-  environmentResource: null
+  environmentResource: null,
+  openProcessesError: null
 });

@@ -4,12 +4,19 @@ export default Ember.Component.extend({
   actions: {
     expand: function() {
       this.toggleProperty('expanded');
+    },
+    showError: function(model) {
+      this.get('application').setProperties({
+        openProcessesError: true,
+        exception: model
+      });
     }
   },
   tagName: '',
   expanded: false,
   depth: 0,
   setup: Ember.on('init', function() {
+
     if (this.get('nodeDepth')) {
       this.set('depth', this.get('nodeDepth') + 1);
     } else {

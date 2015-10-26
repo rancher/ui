@@ -4,6 +4,12 @@ export default Ember.Component.extend({
   actions: {
     expand: function() {
       this.toggleProperty('expanded');
+    },
+    showError: function(model) {
+      this.get('application').setProperties({
+        openProcessesError: true,
+        exception: model
+      });
     }
   },
   tagName: '',
