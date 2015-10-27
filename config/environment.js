@@ -94,7 +94,7 @@ module.exports = function(environment) {
   }
 
   // Override the Rancher server/endpoint with environment var
-  var server = process.env.RANCHER || process.env.RANCHER_ENDPOINT;
+  var server = process.env.RANCHER;
   if ( server )
   {
     // variable can be an ip "1.2.3.4" -> http://1.2.3.4:8080
