@@ -203,14 +203,6 @@ var Service = Resource.extend(ReadLabels, {
     });
   },
 
-  _allServices: function() {
-    return this.get('_allRegularServices.content').concat(
-      this.get('_allLbServices.content'),
-      this.get('_allExternalServices.content'),
-      this.get('_allDnsServices.content')
-    );
-  }.property('_allRegularServices.[]','_allLbServices.[]','_allExternalServices.[]','_allDnsServices.[]'),
-
   _environment: null,
   _environmentState: 0,
   displayEnvironment: function() {
@@ -250,8 +242,10 @@ var Service = Resource.extend(ReadLabels, {
   }.observes('displayEnvironment'),
 
   consumedServicesWithNames: function() {
-    return Service.consumedServicesFor(this.get('id'));
-  }.property('id','_allMaps.@each.{name,serviceId,consumedServiceId}','_allServices.[]'),
+    var out = Service.consumedServicesFor(this.get('id'));
+    console.log('Consumed for', this.get('id'), out.get('length'));
+    return out;
+  }.property('id','_allMaps.@each.{name,serviceId,consumedServiceId}','state'),
 
   consumedServices: function() {
     return this.get('consumedServicesWithNames').map((obj) => {
@@ -365,26 +359,25 @@ export function activeIcon(service)
   return out;
 }
 
+export function byId(serviceId) {
+  var allTypes = [_allRegularServices, _allLbServices, _allExternalServices, _allDnsServices];
+  var i = 0;
+  var service = null;
+  while ( i < allTypes.length && !service )
+  {
+    service = allTypes[i].filterBy('id', serviceId)[0];
+    i++;
+  }
+
+  return service;
+}
+
 Service.reopenClass({
-  byId: function(serviceId) {
-    return _allMaps.filterBy('serviceId', serviceId)[0];
-  },
-
   consumedServicesFor: function(serviceId) {
-    var allTypes = [_allRegularServices, _allLbServices, _allExternalServices, _allDnsServices];
-
     return _allMaps.filterBy('serviceId', serviceId).map((map) => {
-      var i = 0;
-      var service = null;
-      while ( i < allTypes.length && !service )
-      {
-        service = allTypes[i].filterBy('id', map.get('consumedServiceId'))[0];
-        i++;
-      }
-
       return Ember.Object.create({
         name: map.get('name'),
-        service: service,
+        service: byId(map.get('consumedServiceId')),
         ports: map.get('ports')||[],
       });
     }).filter((obj) => {
