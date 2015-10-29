@@ -4,7 +4,7 @@
   </div>
 
   <div class="pod-state {{stateBackground}}"><span>{{model.displayState}}</span></div>
-  <div class="pod-icon"><i class="{{model.stateIcon}} icon-lg fa-lg {{iconColor}}"></i></div>
+  <div class="pod-icon"><i class="{{model.stateIcon}} icon-lg fa-lg {{iconColor}}"></i> {{iconLabel}}</div>
   <div class="pod-name">
     {{#link-to "service" model.environmentId model.id}}{{model.displayName}}{{/link-to}}
     {{#if model.showTransitioningMessage}}
@@ -49,7 +49,7 @@
   </div>
 {{/if}}
 
-{{#if hasContainers}}
+{{#if model.hasContainers}}
   <div class="clearfix {{if (eq mode "dot") 'r-p5'}}">
     {{#if (eq mode "dot")}}
       {{#each arrangedInstances as |item|}}

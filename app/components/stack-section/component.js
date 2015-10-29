@@ -1,12 +1,19 @@
-
 import Ember from 'ember';
+import C from 'ui/utils/constants';
+import { parseExternalId } from 'ui/utils/parse-externalid';
 
 export default Ember.Component.extend({
   model: null,
   collapseId: null,
 
   classNames: ['pod','project'],
-  classNameBindings: ['stateBorder'],
+  classNameBindings: ['stateBorder','isKubernetes:kubernetes'],
+
+  isKubernetes: function() {
+    var parts = parseExternalId(this.get('model.externalId'));
+    return parts && parts.kind === C.EXTERNALID.KIND_KUBERNETES;
+  }.property('model.externalId'),
+
 
   stateBorder: function() {
     return this.get('model.stateColor').replace("text-","border-top-");
