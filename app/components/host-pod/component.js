@@ -23,44 +23,57 @@ export default Ember.Component.extend(ReadLabels, FasterLinksAndMenus, {
 
   groupedInstances: function() {
     var groups = [];
-    // Everything must be sorted first to guarantee that parents appear before sidekicks
-    (this.get('model.instances')||[]).sortBy('name','id').forEach((instance) => {
-      var labels = instance.get('labels')||{};
-      var isSidekick = !!labels[C.LABEL.LAUNCH_CONFIG] && labels[C.LABEL.LAUNCH_CONFIG] !== C.LABEL.LAUNCH_CONFIG_PRIMARY;
-      var parentUnit = labels[C.LABEL.DEPLOYMENT_UNIT];
-      var groupName = (instance.get('labels')||{})[C.LABEL.PROJECT_NAME] || '';
-      var entry, group;
 
-      if ( isSidekick && parentUnit )
+    function getOrCreateGroup(groupName)
+    {
+      var group = groups.filterBy('name', groupName)[0];
+      if ( !group )
       {
-        group = groups.filterBy('name', groupName)[0];
-        if ( group )
-        {
-          entry = group.instances.filterBy('unit', parentUnit)[0];
-          if ( entry )
-          {
-            entry.children.push(instance);
-            group.hasChildren = true;
-          }
-        }
+        group = { name: groupName, instances: [], hasChildren: false };
+        groups.push(group);
+      }
+
+      return group;
+    }
+
+    function getOrCreateUnit(groupName, deploymentUnit)
+    {
+      var group = getOrCreateGroup(groupName);
+      var entry = group.instances.filterBy('unit', deploymentUnit)[0];
+      if ( !entry )
+      {
+        entry = {unit: deploymentUnit, main: null, children: []};
+        group.instances.push(entry);
+      }
+
+      return [group, entry];
+    }
+
+
+    (this.get('model.instances')||[]).forEach((instance) => {
+      var labels = instance.get('labels')||{};
+      var deploymentUnit = labels[C.LABEL.DEPLOYMENT_UNIT];
+      var isSidekick = deploymentUnit && labels[C.LABEL.LAUNCH_CONFIG] !== C.LABEL.LAUNCH_CONFIG_PRIMARY;
+      var groupName = (instance.get('labels')||{})[C.LABEL.PROJECT_NAME] || '';
+
+      console.log(deploymentUnit, groupName, isSidekick, instance.get('id'), instance.get('name'));
+
+      let [group, unit] = getOrCreateUnit(groupName, deploymentUnit);
+      if ( isSidekick )
+      {
+        unit.children.push(instance);
+        group.hasChildren = true;
       }
       else
       {
-        group = groups.filterBy('name', groupName)[0];
-        if ( !group )
-        {
-          group = { name: groupName, instances: [], hasChildren: false };
-          groups.push(group);
-        }
-
-        group.instances.push({unit: parentUnit, main: instance, children: []});
+        unit.main = instance;
       }
     });
 
     groups = groups.sortBy('name');
     if ( groups[0] && groups[0].name === '' )
     {
-      // Move no name to the end of the list instead of the beginning
+      // Move no name/standalone containers to the end of the list instead of the beginning
       groups.push(groups.shift());
     }
 
