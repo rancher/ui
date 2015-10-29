@@ -9,7 +9,7 @@ var _allLbServices;
 var _allExternalServices;
 var _allDnsServices;
 var _allKubernetesServices;
-var _allKubernetesReplicationControllers
+var _allKubernetesReplicationControllers;
 
 var Service = Resource.extend(ReadLabels, {
   type: 'service',
