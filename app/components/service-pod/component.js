@@ -23,52 +23,67 @@ export default Ember.Component.extend(ReadLabels, FasterLinksAndMenus, {
 
   isInactive: Ember.computed.equal('model.state','inactive'),
 
-  hasContainers: function() {
-    return ['service','loadbalancerservice'].indexOf(this.get('model.type').toLowerCase()) !== -1;
-  }.property('model.type'),
-
   arrangedInstances: function() {
     return (this.get('model.instances')||[]).sortBy('name','id');
   }.property('model.instances.@each.{name,id}'),
 
   groupedInstances: function() {
-    var instances = [];
+    var groups = [];
 
-    // Everything must be sorted first to guarantee that parents appear before sidekicks
-    this.get('arrangedInstances').forEach((instance) => {
-      var labels = instance.get('labels')||{};
-      var isSidekick = !!labels[C.LABEL.LAUNCH_CONFIG] && labels[C.LABEL.LAUNCH_CONFIG] !== C.LABEL.LAUNCH_CONFIG_PRIMARY;
-      var parentUnit = labels[C.LABEL.DEPLOYMENT_UNIT];
-      var groupName = parentUnit;
-      var entry, group;
-
-      if ( isSidekick && parentUnit )
+    function getOrCreateGroup(groupName)
+    {
+      var group = groups.filterBy('name', groupName)[0];
+      if ( !group )
       {
-        group = instances.filterBy('name', groupName)[0];
-        if ( group )
-        {
-          entry = group.instances.filterBy('unit', parentUnit)[0];
-          if ( entry )
-          {
-            entry.children.push(instance);
-            group.hasChildren = true;
-          }
-        }
+        group = { name: groupName, instances: [], hasChildren: false };
+        groups.push(group);
+      }
+
+      return group;
+    }
+
+    function getOrCreateUnit(groupName, deploymentUnit)
+    {
+      var group = getOrCreateGroup(groupName);
+      var entry = group.instances.filterBy('unit', deploymentUnit)[0];
+      if ( !entry )
+      {
+        entry = {unit: deploymentUnit, main: null, children: []};
+        group.instances.push(entry);
+      }
+
+      return [group, entry];
+    }
+
+
+    (this.get('model.instances')||[]).forEach((instance) => {
+      var labels = instance.get('labels')||{};
+      var deploymentUnit = labels[C.LABEL.DEPLOYMENT_UNIT];
+      var isSidekick = deploymentUnit && labels[C.LABEL.LAUNCH_CONFIG] !== C.LABEL.LAUNCH_CONFIG_PRIMARY;
+      var groupName = deploymentUnit;
+
+      //console.log(deploymentUnit, groupName, isSidekick, instance.get('id'), instance.get('name'));
+
+      let [group, unit] = getOrCreateUnit(groupName, deploymentUnit);
+      if ( isSidekick )
+      {
+        unit.children.push(instance);
+        group.hasChildren = true;
       }
       else
       {
-        group = instances.filterBy('name', groupName)[0];
-        if ( !group )
-        {
-          group = { name: groupName, instances: [], hasChildren: false };
-          instances.push(group);
-        }
-
-        group.instances.push({unit: parentUnit, main: instance, children: []});
+        unit.main = instance;
       }
     });
 
-    return instances;
+    groups = groups.sortBy('name');
+    if ( groups[0] && groups[0].name === '' )
+    {
+      // Move no name/standalone containers to the end of the list instead of the beginning
+      groups.push(groups.shift());
+    }
+
+    return groups;
   }.property('model.instances.@each.{name,id}'),
 
   hasChildren: function() {
@@ -76,7 +91,7 @@ export default Ember.Component.extend(ReadLabels, FasterLinksAndMenus, {
   }.property('groupedInstances.@each.hasChildren'),
 
   showScaleUp: function() {
-    if ( this.get('isActive') && this.get('hasContainers') )
+    if ( this.get('isActive') && this.get('model.hasContainers') && this.get('model.canScale') )
     {
       return this.getLabel(C.LABEL.SCHED_GLOBAL) === null;
     }
@@ -101,4 +116,13 @@ export default Ember.Component.extend(ReadLabels, FasterLinksAndMenus, {
       return color;
     }
   }.property('model.stateColor'),
+
+  iconLabel: function() {
+    switch ( this.get('model.type').toLowerCase() ) {
+      case 'kubernetesreplicationcontroller': return 'Controller';
+      case 'kubernetesservice': return 'Service';
+      default: return '';
+    }
+  }.property('model.type'),
+
 });

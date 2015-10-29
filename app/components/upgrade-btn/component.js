@@ -1,5 +1,7 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
+import { parseExternalId } from 'ui/utils/parse-externalid';
 
 const NONE = 'none',
       LOADING = 'loading',
@@ -86,13 +88,14 @@ export default Ember.Component.extend({
   }.property('upgradeStatus'),
 
   updateStatus() {
-    var uuid = this.get('environmentResource.externalId');
-    if ( uuid )
+    var info = parseExternalId(this.get('environmentResource.externalId'));
+
+    if ( info && info.kind === C.EXTERNALID.KIND_CATALOG )
     {
       this.set('upgradeStatus', LOADING);
       queue.push({
-        url: this.get('app.catalogEndpoint')+'/upgradeinfo/'+ uuid,
-        uuid: uuid, obj: this
+        url: this.get('app.catalogEndpoint')+'/upgradeinfo/'+ info.id,
+        obj: this
       });
     }
     else

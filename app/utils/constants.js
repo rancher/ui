@@ -89,6 +89,14 @@ var C = {
     LAUNCH_CONFIG: 'io.rancher.service.launch.config',
     LAUNCH_CONFIG_PRIMARY: 'io.rancher.service.primary.launch.config',
   },
+
+  EXTERNALID: {
+    KIND_SEPARATOR: '://',
+    GROUP_SEPARATOR: '/',
+    KIND_CATALOG: 'catalog',
+    KIND_KUBERNETES: 'kubernetes',
+    CATALOG_DEFAULT_GROUP: 'library',
+  },
 };
 
 C.TOKEN_TO_SESSION_KEYS = [

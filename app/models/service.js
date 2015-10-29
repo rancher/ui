@@ -8,6 +8,8 @@ var _allRegularServices;
 var _allLbServices;
 var _allExternalServices;
 var _allDnsServices;
+var _allKubernetesServices;
+var _allKubernetesReplicationControllers
 
 var Service = Resource.extend(ReadLabels, {
   type: 'service',
@@ -128,12 +130,13 @@ var Service = Resource.extend(ReadLabels, {
     var a = this.get('actionLinks');
 
     var canUpgrade = !!a.upgrade && this.get('type') === 'service';
+    var isK8s = this.get('isK8s');
 
     var choices = [
-      { label: 'Start',           icon: 'icon icon-play',         action: 'activate',       enabled: !!a.activate,    color: 'text-success'},
-      { label: 'Stop',            icon: 'icon icon-pause',        action: 'deactivate',     enabled: !!a.deactivate,  color: 'text-danger'},
-      { label: 'Delete',          icon: 'icon icon-trash',        action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
-      { label: 'Purge',           icon: '',                       action: 'purge',          enabled: !!a.purge },
+      { label: 'Start',           icon: 'icon icon-play',         action: 'activate',       enabled: !!a.activate && !isK8s,    color: 'text-success'},
+      { label: 'Stop',            icon: 'icon icon-pause',        action: 'deactivate',     enabled: !!a.deactivate && !isK8s,  color: 'text-danger'},
+      { label: 'Delete',          icon: 'icon icon-trash',        action: 'promptDelete',   enabled: !!a.remove && !isK8s, altAction: 'delete', color: 'text-warning' },
+      { label: 'Purge',           icon: '',                       action: 'purge',          enabled: !!a.purge && !isK8s },
       { divider: true },
       { label: 'Upgrade',         icon: 'fa fa-arrow-circle-o-up',action: 'upgrade',        enabled: canUpgrade },
       { label: 'Finish Upgrade',  icon: 'fa fa-thumbs-o-up',      action: 'finishUpgrade',  enabled: !!a.finishupgrade },
@@ -142,12 +145,12 @@ var Service = Resource.extend(ReadLabels, {
       { label: 'Cancel Rollback', icon: 'fa fa-life-ring',        action: 'cancelRollback', enabled: !!a.cancelrollback },
       { divider: true },
       { label: 'View in API',     icon: 'icon icon-externallink', action: 'goToApi',        enabled: true },
-      { label: 'Clone',           icon: 'icon icon-copy',         action: 'clone',          enabled: true },
-      { label: 'Edit',            icon: 'icon icon-edit',         action: 'edit',           enabled: !!a.update },
+      { label: 'Clone',           icon: 'icon icon-copy',         action: 'clone',          enabled: !isK8s },
+      { label: 'Edit',            icon: 'icon icon-edit',         action: 'edit',           enabled: !!a.update && !isK8s },
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type'),
+  }.property('actionLinks.{activate,deactivate,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type','isK8s'),
 
 
   _allMaps: null,
@@ -155,11 +158,27 @@ var Service = Resource.extend(ReadLabels, {
   _allLbServices: null,
   _allExternalServices: null,
   _allDnsServices: null,
+  _allKubernetesServices: null,
+  _allKubernetesReplicationControllers: null,
 
   consumedServicesUpdated: 0,
   consumedByServicesUpdated: 0,
   serviceLinks: null, // Used for clone
-  reservedKeys: ['_allMaps','_allRegularServices','_allLbServices','_allExternalServices','_allDnsServices','consumedServices','consumedServicesUpdated','serviceLinks','_environment','_environmentState'],
+  reservedKeys: [
+    '_allMaps',
+    '_allRegularServices',
+    '_allLbServices',
+    '_allExternalServices',
+    '_allDnsServices',
+    '_allKubernetesServices',
+    '_allKubernetesReplicationControllers',
+    'consumedServices',
+    'consumedServicesUpdated',
+    'serviceLinks',
+    '_environment',
+    '_environmentState'
+  ],
+
   labelResource: Ember.computed.alias('launchConfig'),
 
   init: function() {
@@ -193,13 +212,25 @@ var Service = Resource.extend(ReadLabels, {
       _allDnsServices = this.get('store').allUnremoved('dnsservice');
     }
 
+    if ( !_allKubernetesServices )
+    {
+      _allKubernetesServices = this.get('store').allUnremoved('kubernetesservice');
+    }
+
+    if ( !_allKubernetesReplicationControllers )
+    {
+      _allKubernetesReplicationControllers = this.get('store').allUnremoved('kubernetesreplicationcontroller');
+    }
+
     // And we need this here so that consumedServices can watch for changes
     this.setProperties({
       '_allMaps': _allMaps,
       '_allRegularServices': _allRegularServices,
       '_allLbServices': _allLbServices,
       '_allExternalServices': _allExternalServices,
-      '_allDnsServices': _allDnsServices
+      '_allDnsServices': _allDnsServices,
+      '_allKubernetesServices': _allKubernetesServices,
+      '_allKubernetesReplicationControllers': _allKubernetesReplicationControllers,
     });
   },
 
@@ -318,13 +349,22 @@ var Service = Resource.extend(ReadLabels, {
   }.property('type'),
 
   hasContainers: function() {
-    return ['service','loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0;
+    return [
+      'service',
+      'loadbalancerservice',
+      'kubernetesservice',
+      'kubernetesreplicationcontroller'
+    ].indexOf(this.get('type').toLowerCase()) >= 0;
   }.property('type'),
 
   hasImage: function() {
     return this.get('type') === 'service';
   }.property('type'),
   hasLabels: Ember.computed.alias('hasImage'),
+
+  isK8s: function() {
+    return ['kubernetesservice','kubernetesreplicationcontroller'].indexOf(this.get('type').toLowerCase()) >= 0;
+  }.property('type'),
 
   displayType: function() {
     var out;
@@ -333,6 +373,8 @@ var Service = Resource.extend(ReadLabels, {
       case 'loadbalancerservice': out = 'Load Balancer'; break;
       case 'dnsservice':          out = 'DNS'; break;
       case 'externalservice':     out = 'External'; break;
+      case 'kubernetesservice':   out = 'K8s Service'; break;
+      case 'kubernetesreplicationcontroller': out = 'K8s Replication Controller'; break;
       default:                    out = 'Container'; break;
     }
 
@@ -353,13 +395,24 @@ export function activeIcon(service)
     case 'loadbalancerservice': out = 'icon icon-fork';    break;
     case 'dnsservice':          out = 'icon icon-compass'; break;
     case 'externalservice':     out = 'icon icon-cloud';   break;
+    case 'kubernetesservice':
+    case 'kubernetesreplicationcontroller':
+      out = 'icon icon-kubernetes'; break;
   }
 
   return out;
 }
 
 export function byId(serviceId) {
-  var allTypes = [_allRegularServices, _allLbServices, _allExternalServices, _allDnsServices];
+  var allTypes = [
+    _allRegularServices,
+    _allLbServices,
+    _allExternalServices,
+    _allDnsServices,
+    _allKubernetesServices,
+    _allKubernetesReplicationControllers
+  ];
+
   var i = 0;
   var service = null;
   while ( i < allTypes.length && !service )

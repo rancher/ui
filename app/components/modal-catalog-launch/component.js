@@ -165,15 +165,15 @@ export default Ember.Component.extend(NewOrEdit, {
       return false;
     }
 
-    var environments = {};
-    this.get('selectedTemplateModel.questions').forEach((item) => {
-      environments[item.variable] = item.answer;
+    var answers = {};
+    (this.get('selectedTemplateModel.questions')||[]).forEach((item) => {
+      answers[item.variable] = item.answer;
     });
 
     this.get('environmentResource').setProperties({
       dockerCompose: this.get('selectedTemplateModel.dockerCompose'),
       rancherCompose: this.get('selectedTemplateModel.rancherCompose'),
-      environment: environments,
+      environment: answers,
       externalId: this.get('selectedTemplateModel.uuid')
     });
 

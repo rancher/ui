@@ -56,7 +56,7 @@ export default Ember.Component.extend(ReadLabels, FasterLinksAndMenus, {
       var isSidekick = deploymentUnit && labels[C.LABEL.LAUNCH_CONFIG] !== C.LABEL.LAUNCH_CONFIG_PRIMARY;
       var groupName = (instance.get('labels')||{})[C.LABEL.PROJECT_NAME] || '';
 
-      console.log(deploymentUnit, groupName, isSidekick, instance.get('id'), instance.get('name'));
+      //console.log(deploymentUnit, groupName, isSidekick, instance.get('id'), instance.get('name'));
 
       let [group, unit] = getOrCreateUnit(groupName, deploymentUnit);
       if ( isSidekick )
