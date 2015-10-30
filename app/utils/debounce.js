@@ -23,7 +23,7 @@ export function debouncedObserver(...args) {
 
   return Ember.observer.apply(Ember, keys.concat(function() {
     Ember.run.debounce(this, function() {
-      if ( this.state !== 'destroying' ) {
+      if ( this._state !== 'destroying' ) {
         opt[0].apply(this);
       }
     }, opt[1] || 250, opt[2] || false);
