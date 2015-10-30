@@ -38,7 +38,12 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       if ( this.$() )
       {
         this.$().children('[data-launchindex]').addClass('hide');
-        this.$().children('[data-launchindex="'+index+'"]').removeClass('hide');
+        var body = this.$().children('[data-launchindex="'+index+'"]')[0];
+        if ( body )
+        {
+          $(body).removeClass('hide');
+          $("INPUT[type='text']", body)[0].focus();
+        }
       }
     },
 
