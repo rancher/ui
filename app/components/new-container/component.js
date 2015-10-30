@@ -50,7 +50,11 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
         stdinOpen: true,
         restartPolicy: {name: 'always'},
       }));
-      this.send('selectLaunchConfig', ary.get('length')-1);
+
+      // Wait for it to be added to the DOM...
+      Ember.run.next(() => {
+        this.send('selectLaunchConfig', ary.get('length')-1);
+      });
     },
 
     removeSidekick() {
@@ -261,7 +265,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
         }
         else
         {
-          slc.push(secondaries.objectAt(choice.index));
+          slc.push(secondaries.objectAt(choice.index).serialize());
         }
       });
 
