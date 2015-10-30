@@ -17,17 +17,18 @@
           choices=launchConfigChoices
           index=launchConfigIndex
         }}
-      {{else}}
-        {{form-scale
-          initialLabels=launchConfig.labels
-          initialScale=service.scale
-          isGlobal=isGlobal
-          errors=scaleErrors
-          setLabels=(action 'setLabels' 'scale')
-          setGlobal=(action 'setGlobal')
-          setScale=(action  'setScale')
-        }}
       {{/if}}
+
+      {{form-scale
+        initialLabels=launchConfig.labels
+        initialScale=service.scale
+        isGlobal=isGlobal
+        errors=scaleErrors
+        setLabels=(action 'setLabels' 'scale')
+        setGlobal=(action 'setGlobal')
+        setScale=(action  'setScale')
+        classNames=(if isUpgrade 'hide')
+      }}
 
       {{form-launch-config-switch
         index=launchConfigIndex

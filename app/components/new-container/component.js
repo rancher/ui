@@ -265,7 +265,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
         }
         else
         {
-          slc.push(secondaries.objectAt(choice.index));
+          slc.push(secondaries.objectAt(choice.index).serialize());
         }
       });
 

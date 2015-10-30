@@ -24,6 +24,10 @@ export default Ember.Component.extend(ReadLabels, FasterLinksAndMenus, {
   groupedInstances: function() {
     var groups = [];
 
+    // Sidekicks which have no main container.  This isn't uspposed to happen but
+    // can due to bugs, user deleting things on host, or during upgrade briefly.
+    var haveNoMain = [];
+
     function getOrCreateGroup(groupName)
     {
       var group = groups.filterBy('name', groupName)[0];
@@ -36,23 +40,34 @@ export default Ember.Component.extend(ReadLabels, FasterLinksAndMenus, {
       return group;
     }
 
-    function getOrCreateUnit(groupName, deploymentUnit)
+    function getOrCreateUnit(groupName, deploymentUnit, addToHaveNoMain)
     {
       var group = getOrCreateGroup(groupName);
-      var entry = group.instances.filterBy('unit', deploymentUnit)[0];
-      if ( !entry )
+      var unit;
+      if ( deploymentUnit )
       {
-        entry = {unit: deploymentUnit, main: null, children: []};
-        group.instances.push(entry);
+        unit = group.instances.filterBy('unit', deploymentUnit)[0];
       }
 
-      return [group, entry];
+      if ( !unit )
+      {
+        unit = {unit: deploymentUnit, main: null, children: [], group: group};
+
+        if ( addToHaveNoMain !== false )
+        {
+          haveNoMain.addObject(unit);
+        }
+
+        group.instances.push(unit);
+      }
+
+      return [group, unit];
     }
 
 
     (this.get('model.instances')||[]).forEach((instance) => {
       var labels = instance.get('labels')||{};
-      var deploymentUnit = labels[C.LABEL.DEPLOYMENT_UNIT];
+      var deploymentUnit = labels[C.LABEL.DEPLOYMENT_UNIT] || null;
       var isSidekick = deploymentUnit && labels[C.LABEL.LAUNCH_CONFIG] !== C.LABEL.LAUNCH_CONFIG_PRIMARY;
       var groupName = (instance.get('labels')||{})[C.LABEL.PROJECT_NAME] || '';
 
@@ -67,13 +82,28 @@ export default Ember.Component.extend(ReadLabels, FasterLinksAndMenus, {
       else
       {
         unit.main = instance;
+        haveNoMain.removeObject(unit);
       }
     });
 
+    // Convert orphaned sidekicks into standalone containers with no children, for lack of a better place
+    haveNoMain.forEach((unit) => {
+      var group = unit.group;
+
+      unit.children.forEach((child) => {
+        let [ , newUnit] = getOrCreateUnit('', null, false);
+        newUnit.main = child;
+      });
+
+      group.instances.removeObject(unit);
+    });
+
+    // Sorting is nice
     groups = groups.sortBy('name');
+
+    // Move no name/standalone containers to the end of the list instead of the beginning
     if ( groups[0] && groups[0].name === '' )
     {
-      // Move no name/standalone containers to the end of the list instead of the beginning
       groups.push(groups.shift());
     }
 
