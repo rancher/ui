@@ -1,9 +1,18 @@
 import Ember from 'ember';
-import EditLabels from 'ui/mixins/edit-labels';
+import ManageLabels from 'ui/mixins/manage-labels';
 import Util from 'ui/utils/util';
 
-export default Ember.Controller.extend(EditLabels, {
-  primaryResource: Ember.computed.alias('model'),
+export default Ember.Controller.extend(ManageLabels, {
+  actions: {
+    setLabels(labels) {
+      var out = {};
+      labels.forEach((row) => {
+        out[row.key] = row.value;
+      });
+
+      this.set('model.labels', out);
+    }
+  },
 
   registrationCommand: function() {
     var cmd = this.get('model.command');
