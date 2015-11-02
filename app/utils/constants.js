@@ -3,6 +3,7 @@ var C = {
     ACCESS_WARNING: 'accessWarning',
     PROJECT_DEFAULT: 'defaultProjectId',
     I_HATE_SPINNERS: 'iHateSpinners',
+    EXPANDED_STACKS: 'expandedStacks',
   },
 
   COOKIE: {
@@ -93,7 +94,10 @@ var C = {
   EXTERNALID: {
     KIND_SEPARATOR: '://',
     GROUP_SEPARATOR: '/',
+    KIND_ALL: 'all',
+    KIND_USER: 'user',
     KIND_CATALOG: 'catalog',
+    KIND_SYSTEM: 'system',
     KIND_KUBERNETES: 'kubernetes',
     CATALOG_DEFAULT_GROUP: 'library',
   },

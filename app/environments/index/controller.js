@@ -1,10 +1,21 @@
 import Ember from 'ember';
+import Sortable from 'ui/mixins/sortable';
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(Sortable, {
   environments: Ember.inject.controller(),
-  mode: Ember.computed.alias('environments.mode'),
+  sortableContent: Ember.computed.alias('model.current'),
 
-  arranged: function() {
-    return this.get('model').sortBy('name','id');
-  }.property('model.@each.{name,id}'),
+  which: 'all',
+  queryParams: ['which'],
+
+  showTabs: function() {
+    return this.get('which') !== 'all' || this.get('hasKubernetes') || this.get('hasSystem');
+  }.property('which','model.{hasKubernetes,hasSystem}'),
+
+  sortBy: 'state',
+  sorts: {
+    state: ['stateSort','name','id'],
+    name: ['name','id']
+  },
+
 });

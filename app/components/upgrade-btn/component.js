@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
-import { parseExternalId } from 'ui/utils/parse-externalid';
 
 const NONE = 'none',
       LOADING = 'loading',
@@ -88,9 +87,8 @@ export default Ember.Component.extend({
   }.property('upgradeStatus'),
 
   updateStatus() {
-    var info = parseExternalId(this.get('environmentResource.externalId'));
-
-    if ( info && info.kind === C.EXTERNALID.KIND_CATALOG )
+    var info = this.get('environmentResource.externalIdInfo');
+    if ( info.kind === C.EXTERNALID.KIND_CATALOG )
     {
       this.set('upgradeStatus', LOADING);
       queue.push({

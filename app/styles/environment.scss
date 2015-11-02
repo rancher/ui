@@ -1,27 +1,116 @@
-.project {
-  background-image: url('images/hexagon-globe.svg');
-  background-repeat: no-repeat;
-  background-position: 20px center;
-  background-size: 50px;
-  height: 95px;
+$stackHeight: 66px;
+$stateRadius: 13px;
+$stateBorder: 2px;
 
-  &.kubernetes {
-    background-image: url('images/hexagon-kubernetes.svg');
+.stack-section {
+  position: relative;
+  min-height: $stackHeight;
+  border: 1px solid #f0f0f0;
+  background-color: #fcfcfc;
+  margin: 0 20px 10px 20px;
+
+  &:last-child {
+    margin-bottom: 0;
   }
 
-  H4, H6 {
-    padding-left: 90px;
+  .stack-state {
+    position: absolute;
+    width: $stateRadius*2;
+    height: $stateRadius*2;
+    border-radius: 50%;
+    left: -1 * $stateRadius;
+    top: ($stackHeight - $stateBorder)/2 - $stateRadius;
+    text-align: center;
+    line-height: $stateRadius*2;
+    color: white;
+  }
+
+  .count {
+    min-width: 120px;
+    text-align: center;
+
+    P {
+      margin: 12px 0 0 0;
+      font-weight: bold;
+      text-align: center;
+      font-size: 14px;
+    }
+
+    LABEL {
+      color: #a7a7a7;
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+  }
+
+  .left {
+    float: left;
+    margin-right: 10px;
+    height: $stackHeight;
+    line-height: $stackHeight;
+
+    H4 {
+      line-height: $stackHeight;
+    }
   }
 
   .right {
     float: right;
-    padding-right: 20px;
-    padding-top: 32px;
+    margin-right: 10px;
+    height: $stackHeight;
+  }
+
+  .left-divider {
+    padding-left: 10px;
+    border-left: 2px dotted #f6f6f6;
+  }
+
+  .collapser {
+    height: $stackHeight;
+    line-height: 50px;
+    A {
+      padding: 20px 10px 20px 25px;
+    }
+  }
+
+  .stack-actions {
+    line-height: $stackHeight;
   }
 
   .resource-actions BUTTON,
   .collapser {
     padding: 5px;
+  }
+
+  .badge {
+    I {
+      font-size: 11px;
+      padding-right: 5px;
+    }
+  }
+
+  .grid {
+    TD, TH {
+      padding: 3px;
+      border-bottom: 1px solid #dee0df;
+    }
+
+    TR:nth-child(odd) TD {
+      background-color: #f9f9f9;
+    }
+
+    TR:nth-child(even) TD {
+      background-color: #fff;
+    }
+
+    TD {
+      border-right: 1px dotted #dee0df;
+      padding-left: 10px;
+
+      &:last-of-type {
+        border-right: none;
+      }
+    }
   }
 }
 

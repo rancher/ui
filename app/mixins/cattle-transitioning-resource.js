@@ -31,6 +31,14 @@ const defaultStateMap = {
   'updating-inactive':{icon: 'icon icon-tag',            color: 'text-info'   },
 };
 
+const stateColorSortMap = {
+  'danger':   1,
+  'warning':  2,
+  'info':     3,
+  'success':  4
+};
+const stateColorUnknown = 5;
+
 export default Ember.Mixin.create({
   endpoint: Ember.inject.service(),
   cookies: Ember.inject.service(),
@@ -207,6 +215,11 @@ export default Ember.Mixin.create({
 
     return this.constructor.defaultStateColor;
   }.property('relevantState','transitioning'),
+
+  stateSort: function() {
+    var color = this.get('stateColor').replace('text-','');
+    return stateColorSortMap[color] || stateColorUnknown;
+  }.property('stateColor'),
 
   stateBackground: function() {
     return this.get('stateColor').replace("text-","bg-");
