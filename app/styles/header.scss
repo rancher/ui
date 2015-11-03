@@ -5,49 +5,53 @@ HEADER {
   position: relative;
   z-index: 5;
   height: $header-height;
-  background-color: #393d48;
+  background-color: $black;
 
   NAV {
     &>A, &>.btn-group>A {
       float: left;
-      height: ($header-height/2);
-      line-height: ($header-height/2);
+      height: ($header-height * .45);
+      line-height: ($header-height * .45);
       padding: 0 20px;
       vertical-align: top;
       font-weight: normal;
       text-transform:uppercase;
       border-bottom: 2px solid transparent;
-      color: #858999;
+      color: $lightGrayTwoDark;
       font-size:13px;
 
       &:hover,
       &:focus,
       &:visited,
       &:active {
-        color: #858999;
-      }
-
-
-      &.active {
-        color: white;
-        background-color: #292c36;
+        color: $lightGrayTwoDark;
       }
     }
   }
 
   .top-row {
-    height: ($header-height/2);
+    height: ($header-height * .45);
 
     NAV {
       font-size: 14px;
+      &>A {
+        &:hover {
+          background: $blackDark;
+        }
+        &.active {
+          color: white;
+          border-bottom: solid $primary;
+        }
+      }
     }
 
     .logo {
       cursor: pointer;
       float: left;
-      height: ($header-height/2);
+      height: ($header-height * .45);
       width: 68px;
       background-image: url('images/logos/main.svg');
+      background-color: $blackDark;
       background-position: center center;
       background-repeat: no-repeat;
     }
@@ -82,7 +86,7 @@ HEADER {
       margin-top: -13px;
       z-index: 1000; /* These have to be > 990 for bootstrap on touch devices */
       padding-top: 0;
-      border-radius: 5px;
+      border-radius: 2px;
     }
 
     .user-menu {
@@ -90,25 +94,32 @@ HEADER {
       z-index: 1000; /* These have to be > 990 for bootstrap on touch devices */
       padding-top: 0;
       width: 250px;
-      border-radius: 5px;
+      border-radius: 2px;
+
+      li {
+        a{
+          padding: 15px;
+        }
+      }
     }
 
     .user-dropdown-arrow {
-      color: #858999;
+      color: $midGrayTwo;
       position: relative;
       left: -2px;
     }
 
     .user-noauth,
     .user-auth {
-      border-top-left-radius: 5px;
-      border-top0right-radius: 5px;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
       color: white;
       margin-bottom: 5px;
     }
 
     .user-noauth {
-      background-color: #de6e79;
+      background-color: $yellowTwo;
+      color: $yellowDark;
       text-align: center;
     }
 
@@ -133,7 +144,7 @@ HEADER {
 
       .user-logout {
         background-color: #899ba7;
-        border-top-right-radius: 5px;
+        border-top-right-radius: 2px;
         position: absolute;
         top: 0;
         right: 0;
@@ -155,17 +166,36 @@ HEADER {
   }
 
   .bottom-row {
-    height: ($header-height/2);
-    background-color: #292c36;
-
+    height: ($header-height * .55);
+    background-color: white;
+    border-bottom: solid 2px $lightGrayTwo;
     NAV {
       font-size: 14px;
+      margin-left: 68px;
+      overflow: hidden;
+      clear: both;
+      height: 100%;
+      &>A {
+        color: $midGrayDark;
+        line-height: 25px;
+        text-align: center;
+        &:hover {
+          color: $blueTwo
+        }
+        &.active {
+          color: $primary;
+        }
+        &>* {
+          display: block;
+        }
+      }
     }
+
   }
 
   H3 {
     margin: 0;
-    line-height: ($header-height/2);
+    line-height: ($header-height * .55);
     color: #fff;
     padding-left: 20px;
     white-space: nowrap;
@@ -184,10 +214,10 @@ HEADER {
 
   .right {
     float: right;
-    height: ($header-height/2);
-    line-height: ($header-height/2);
+    height: ($header-height * .55);
+    line-height: ($header-height * .55);
     vertical-align: top;
-    padding: 0px 10px 0 0;
+    padding: 0 15px 0 15px;
   }
 }
 
