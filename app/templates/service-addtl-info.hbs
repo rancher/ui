@@ -29,11 +29,13 @@
   </div>
 </div>
 <div class="col-sm-3 col-md-3">
-  <label class="text-muted text-bold text-uppercase">Containers ({{serviceContainers.primary.length}})</label>
+  <label class="text-muted text-bold text-uppercase">Containers ({{if serviceContainers.primary.length serviceContainers.primary.length '-'}})</label>
   <div class="content">
     <div class="container-dots clearfix">
       {{#each serviceContainers.primary as |instance|}}
         {{container-dot model=instance}}
+      {{else}}
+        <span class="text-muted">No Containers</span>
       {{/each}}
     </div>
     <div>
