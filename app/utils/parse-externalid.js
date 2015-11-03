@@ -38,7 +38,12 @@ export function parseExternalId(externalId) {
 
       out.id = rest;
     }
-
-    return out;
   }
+  else
+  {
+    out.id = externalId;
+    out.group = C.EXTERNALID.CATALOG_DEFAULT_GROUP;
+  }
+
+  return out;
 }
