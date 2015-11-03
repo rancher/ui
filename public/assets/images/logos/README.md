@@ -1,4 +1,4 @@
-This folder contians all the images that have the logo in them.  You can replace them by running rancher/server with:
+This folder contians all the images that have the logo in them.  You can replace them by running rancher/server (>= v0.44) with:
 
 ```-v /path/to/your/logos:/usr/share/cattle/war/assets/images/logos```
 
