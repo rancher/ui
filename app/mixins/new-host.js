@@ -1,9 +1,9 @@
 import Ember from 'ember';
-import Cattle from 'ui/utils/cattle';
 import Util from 'ui/utils/util';
-import EditLabels from 'ui/mixins/edit-labels';
+import NewOrEdit from 'ui/mixins/new-or-edit';
+import ManageLabels from 'ui/mixins/manage-labels';
 
-export default Ember.Mixin.create(Cattle.LegacyNewOrEditMixin, EditLabels, {
+export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   needs: ['hosts/new'],
   queryParams: ['machineId'],
   machineId: null,
@@ -12,6 +12,17 @@ export default Ember.Mixin.create(Cattle.LegacyNewOrEditMixin, EditLabels, {
   count: null,
   prefix: null,
   multiTemplate: null,
+
+  actions: {
+    setLabels(labels) {
+      var out = {};
+      labels.forEach((row) => {
+        out[row.key] = row.value;
+      });
+
+      this.set('primaryResource.labels', out);
+    }
+  },
 
   nameParts: function() {
     var input = this.get('prefix')||'';

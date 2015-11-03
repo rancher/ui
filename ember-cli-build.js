@@ -21,7 +21,7 @@ module.exports = function(defaults) {
     inlineContent: inline,
 
     fingerprint: {
-      exclude: ['fontawesome'],
+      exclude: ['fontawesome','assets/images/logos'],
       extensions: (appConfig.fingerprint === 'no' ? [] : ['js','css','png','jpg','gif','svg','map','woff','woff2','ttf']),
     },
 
@@ -65,14 +65,22 @@ module.exports = function(defaults) {
   app.import('bower_components/async/lib/async.js');
   app.import('bower_components/position-calculator/dist/position-calculator.js');
   app.import('vendor/aws-sdk-ec2.js');
-  app.import('vendor/icons/style.css');
-  app.import('vendor/icons/fonts/rancher-icons.eot', {destDir: 'assets/fonts'});
-  app.import('vendor/icons/fonts/rancher-icons.svg', {destDir: 'assets/fonts'});
-  app.import('vendor/icons/fonts/rancher-icons.ttf', {destDir: 'assets/fonts'});
-  app.import('vendor/icons/fonts/rancher-icons.woff', {destDir: 'assets/fonts'});
   app.import('bower_components/identicon.js/pnglib.js');
   app.import('bower_components/identicon.js/identicon.js');
   app.import('bower_components/md5-jkmyers/md5.js');
+
+  app.import('vendor/icons/style.css');
+  app.import('vendor/icons/fonts/rancher-icons.eot',  {destDir: 'assets/fonts'});
+  app.import('vendor/icons/fonts/rancher-icons.svg',  {destDir: 'assets/fonts'});
+  app.import('vendor/icons/fonts/rancher-icons.ttf',  {destDir: 'assets/fonts'});
+  app.import('vendor/icons/fonts/rancher-icons.woff', {destDir: 'assets/fonts'});
+
+  app.import('vendor/open-sans/open-sans-v13-latin-300.woff',       {destDir: 'assets/fonts'});
+  app.import('vendor/open-sans/open-sans-v13-latin-300.woff2',      {destDir: 'assets/fonts'});
+  app.import('vendor/open-sans/open-sans-v13-latin-600.woff',       {destDir: 'assets/fonts'});
+  app.import('vendor/open-sans/open-sans-v13-latin-600.woff2',      {destDir: 'assets/fonts'});
+  app.import('vendor/open-sans/open-sans-v13-latin-regular.woff',   {destDir: 'assets/fonts'});
+  app.import('vendor/open-sans/open-sans-v13-latin-regular.woff2',  {destDir: 'assets/fonts'});
 
   return app.toTree();
 };

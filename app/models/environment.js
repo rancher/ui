@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
 import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
+import { parseExternalId } from 'ui/utils/parse-externalid';
 
 var Environment = Resource.extend({
   type: 'environment',
@@ -186,7 +187,11 @@ var Environment = Resource.extend({
 
   unremovedServices: function() {
     return UnremovedArrayProxy.create({sourceContent: this.get('services')});
-  }.property('services')
+  }.property('services'),
+
+  externalIdInfo: function() {
+    return parseExternalId(this.get('externalId'));
+  }.property('externalId'),
 });
 
 Environment.reopenClass({

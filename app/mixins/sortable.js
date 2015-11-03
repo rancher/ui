@@ -32,7 +32,15 @@ export default Ember.Mixin.create({
           sortBy: name
         });
       }
-    }
+    },
+
+    // Like changeSort, but without the auto-flipping
+    setSort: function(name) {
+      this.setProperties({
+        descending: false,
+        sortBy: name
+      });
+    },
   },
 
   currentSort: function() {

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import {parseTarget, stringifyTarget} from 'ui/utils/target-parser';
+import {parseTarget, stringifyTarget} from 'ui/utils/parse-target';
 
 export default Ember.Component.extend({
   existing: null,

@@ -2,6 +2,7 @@ import Resource from 'ember-api-store/models/resource';
 import Ember from 'ember';
 import ReadLabels from 'ui/mixins/read-labels';
 import C from 'ui/utils/constants';
+import { displayImage } from 'ui/helpers/display-image';
 
 var _allMaps;
 var _allRegularServices;
@@ -370,21 +371,28 @@ var Service = Resource.extend(ReadLabels, {
     var out;
     switch ( this.get('type').toLowerCase() )
     {
-      case 'loadbalancerservice': out = 'Load Balancer'; break;
-      case 'dnsservice':          out = 'DNS'; break;
+      case 'loadbalancerservice': out = 'Balancer'; break;
+      case 'dnsservice':          out = 'Alias'; break;
       case 'externalservice':     out = 'External'; break;
       case 'kubernetesservice':   out = 'K8s Service'; break;
-      case 'kubernetesreplicationcontroller': out = 'K8s Replication Controller'; break;
-      default:                    out = 'Container'; break;
+      case 'kubernetesreplicationcontroller': out = 'K8s Replication'; break;
+      default:                    out = 'Service'; break;
     }
 
     return out;
   }.property('type'),
 
+  hasSidekicks: function() {
+    return this.get('secondaryLaunchConfigs.length') > 0;
+  }.property('secondaryLaunchConfigs.length'),
+
+  displayDetail: function() {
+    return ('<b>Image: </b> ' + displayImage(this.get('launchConfig.imageUuid'))).htmlSafe();
+  }.property('launchConfig.imageUuid'),
+
   activeIcon: function() {
     return activeIcon(this);
   }.property('type'),
-
 });
 
 export function activeIcon(service)
