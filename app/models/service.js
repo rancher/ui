@@ -387,7 +387,7 @@ var Service = Resource.extend(ReadLabels, {
   }.property('secondaryLaunchConfigs.length'),
 
   displayDetail: function() {
-    return ('<b>Image: </b> ' + displayImage(this.get('launchConfig.imageUuid'))).htmlSafe();
+    return ('<b>Image: </b> ' + displayImage([this.get('launchConfig.imageUuid')])).htmlSafe();
   }.property('launchConfig.imageUuid'),
 
   activeIcon: function() {
