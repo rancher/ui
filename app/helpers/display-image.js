@@ -2,11 +2,11 @@ import Ember from 'ember';
 
 var esc = Ember.Handlebars.Utils.escapeExpression;
 
-export function displayImage(input) {
-  var match = (input||'').match(/(docker:)?(.*\/)?(.*?)(:.*)?$/);
+export function displayImage(params) {
+  var match = (params[0]||'').match(/(docker:)?(.*\/)?(.*?)(:.*)?$/);
   if ( !match )
   {
-    return input;
+    return params[0];
   }
 
   var out = (match[2] ? '<span class="text-muted">' + esc(match[2]) + '</span>' : '') +
