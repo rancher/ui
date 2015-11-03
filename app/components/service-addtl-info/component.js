@@ -2,7 +2,7 @@ import Ember from 'ember';
 import ReadLabels from 'ui/mixins/read-labels';
 import C from 'ui/utils/constants';
 import {
-  parseTarget, stringifyTarget
+  parseTarget
 }
 from 'ui/utils/target-parser';
 
@@ -86,7 +86,7 @@ export default Ember.Component.extend(ReadLabels, {
           } else {
             if (!this.get('secondaryCerts')) {
               this.set('secondaryCerts', []);
-            } 
+            }
             if (this.get('service.certificateIds')) {
               if (this.get('service.certificateIds').indexOf(cert.id) !== -1) {
                 this.get('secondaryCerts').pushObject(cert);

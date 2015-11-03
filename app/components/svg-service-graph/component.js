@@ -32,7 +32,7 @@ export default Ember.Component.extend({
   }),
 
   paths: Ember.computed('services.[]', function() {
-    return this.get('services').map((service, index) => {
+    return this.get('services').map(() => {
       return {
         m: [100, 150],
         l: [[150,150], [150, 200], [300,300]]
