@@ -4,24 +4,38 @@ $lines-to-show: 4;
 
 .catalog {
   &.left-nav {
-    background: white;
+    background: #ecf0f1;
     height: calc(100vh - 105px);
   }
 }
 
 .container-catalog {
   background: white;
+  border:solid transparent;
   height: 270px;
   width: 250px;
   margin-right: 35px;
   margin-bottom: 35px;
   float: left;
-
+  box-shadow: 0 0 5px rgba(0,0,0,.15);
+  transition: ease all .25s;
+  h5 {
+    border-bottom: solid thin #ccd1d3;
+    text-align: left;
+    padding: 15px;
+    margin: 0 15px;
+  }
+  img {
+    border: solid #CCD1D5;
+    border-radius: 50%;
+    width: 75px;
+    padding: 10px;
+  }
   .description {
     display: block; /* Fallback for non-webkit */
     display: -webkit-box;
     max-width: 200px;
-    height: $font-size*$line-height*$lines-to-show; /* Fallback for non-webkit */
+    /*height: $font-size*$line-height*$lines-to-show;*/ /* Fallback for non-webkit */
     margin: auto;
     font-size: $font-size;
     line-height: $line-height;
@@ -29,12 +43,16 @@ $lines-to-show: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    box-sizing:border-box;
   }
 
   .btn {
     padding-left: 40px;
     padding-right: 40px;
     margin-bottom: -35px;
+  }
+  &:hover {
+    border:solid $blueTwo;
   }
 }
 .launch-catalog {
