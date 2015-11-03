@@ -1,0 +1,74 @@
+<div class="col-sm-3 col-md-3">
+  <label class="text-muted text-bold text-uppercase">State</label>
+  <div class="content">
+    <div class="state">
+      <h3 class="{{service.stateColor}} text-capitalize">{{service.state}}</h3>
+      {{#link-to 'service' service.id class='btn btn-success btn-xs r-mr15'}} View Details {{/link-to}}
+      {{svg-action-menu model=service size='xs'}}
+    </div>
+    <label class="text-muted text-bold text-uppercase r-mt15">Image</label>
+    <div class="force-wrap">
+      {{service.launchConfig.imageUuid}}
+    </div>
+    <label class="text-muted text-bold text-uppercase r-mt15">Entrypoint</label>
+    <div class="force-wrap">
+      {{#if service.launchConfig.entryPoint}}
+        {{service.launchConfig.entryPoint}}
+      {{else}}
+        <span class="text-muted">None</span>
+      {{/if}}
+    </div>
+    <label class="text-muted text-bold text-uppercase r-mt15">Command</label>
+    <div class="force-wrap">
+      {{#if service.launchConfig.command}}
+        {{service.launchConfig.command}}
+      {{else}}
+        <span class="text-muted">None</span>
+      {{/if}}
+    </div>
+  </div>
+</div>
+<div class="col-sm-3 col-md-3">
+  <label class="text-muted text-bold text-uppercase">Containers ({{serviceContainers.primary.length}})</label>
+  <div class="content">
+    <div class="container-dots clearfix">
+      {{#each serviceContainers.primary as |instance|}}
+        {{container-dot model=instance}}
+      {{/each}}
+    </div>
+    <div>
+      <label class="text-muted text-bold text-uppercase">Scale</label>
+      {{#if service.canScale}}
+        <span class="r-ml20 r-mr20">{{service.scale}}</span>
+        <button class="btn btn-default btn-sm" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
+        <button class="btn btn-default btn-sm" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
+      {{else}}
+        {{if service.isGlobalScale 'Global'}}
+      {{/if}}
+    </div>
+  </div>
+</div>
+<div class="col-sm-3 col-md-3">
+  <label class="text-muted text-bold text-uppercase">Labels</label>
+  <div class="content">
+    <ul class="list-unstyled">
+      {{#each labelArray as |label|}}
+        <li>{{label.key}}: {{label.value}}</li>
+      {{else}}
+        <li class="text-muted">No Labels</li>
+      {{/each}}
+    </ul>
+  </div>
+</div>
+<div class="col-sm-3 col-md-3">
+  <label class="text-muted text-bold text-uppercase">Links</label>
+  <div class="content">
+    <ul class="list-unstyled">
+      {{#each service.consumedServicesWithNames as |link|}}
+        <li>{{#link-to 'service' link.service.id}} {{link.service.name}} {{/link-to}}</li>
+      {{else}}
+        <li class="text-muted">No Links</li>
+      {{/each}}
+    </ul>
+  </div>
+</div>

@@ -274,8 +274,7 @@ var Service = Resource.extend(ReadLabels, {
   }.observes('displayEnvironment'),
 
   consumedServicesWithNames: function() {
-    var out = Service.consumedServicesFor(this.get('id'));
-    return out;
+    return Service.consumedServicesFor(this.get('id'));
   }.property('id','_allMaps.@each.{name,serviceId,consumedServiceId}','state'),
 
   consumedServices: function() {
