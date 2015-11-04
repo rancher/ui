@@ -34,7 +34,7 @@ var LoadBalancerService = Service.extend({
 
     var services = '';
     (this.get('consumedServicesWithNames')||[]).forEach((map) => {
-      services += '<span class="badge badge-primary">' + map.get('service.displayName') + '</span>';
+      services += '<span class="badge badge-default">' + map.get('service.displayName') + '</span>';
     });
 
 

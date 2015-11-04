@@ -2,16 +2,23 @@ import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
 export default Ember.Component.extend(NewOrEdit, {
-  originalModel: null,
+  templateResource: null,
   environmentResource: null,
+  versionsArray: null,
+  versionsLinks: null,
+  serviceChoices: null,
 
-  templateResource: Ember.computed.alias('originalModel'),
   primaryResource: Ember.computed.alias('environmentResource'),
   editing: Ember.computed.notEmpty('primaryResource.id'),
-  allServicesService: Ember.inject.service('all-services'),
+
+  previewOpen: false,
+  questionsArray: null,
+  selectedTemplateUrl: null,
+  selectedTemplateModel: null,
+
   actions: {
     cancel: function() {
-      this.sendAction('dismiss');
+      this.sendAction('cancel');
     },
 
     togglePreview: function() {
@@ -24,43 +31,29 @@ export default Ember.Component.extend(NewOrEdit, {
     }
   },
 
+  didInitAttrs() {
+    this._super.apply(this,arguments);
+
+    // Select the default version
+    var def = this.get('templateResource.version');
+    var links = this.get('versionLinks');
+    if ( links[def] )
+    {
+      this.set('selectedTemplateUrl', links[def]);
+    }
+    else
+    {
+      this.set('selectedTemplateUrl', null);
+    }
+
+    this.templateChanged();
+  },
+
   highlightAll: function() {
     this.$('CODE').each(function(idx, elem) {
       Prism.highlightElement(elem);
     });
   },
-
-  versionsArray: null,
-  questionsArray: null,
-  selectedTemplate: null,
-  selectedTemplateModel: null,
-  services: null,
-  loading: false,
-  previewOpen: false,
-
-  setup: Ember.on('init', function() {
-    if ( !this.get('environmentResource') )
-    {
-      this.set('environmentResource', this.get('store').createRecord({
-        type: 'environment',
-        environment: {},
-      }));
-    }
-
-    var links = this.get('templateResource.versionLinks');
-    var verArr = Object.keys(links).map((key) => {
-      return {version: key, link: links[key]};
-    });
-    this.set('versionsArray', verArr);
-
-    // Select the default version
-    var def = this.get('templateResource.version');
-    if ( links[def] )
-    {
-      this.set('selectedTemplateUrl', links[def]);
-    }
-    this.set('services', []);
-  }),
 
   templateChanged: function() {
     var link = this.get('selectedTemplateUrl');
@@ -80,33 +73,19 @@ export default Ember.Component.extend(NewOrEdit, {
             else
             {
               if (item.type === 'service') {
-                this.set('loadingServices', true);
-                // We need to check a stack/service exists that corresponds to the items default value
-                // if so we can set the default of the drop down
-                // if not we set the drop down to null and the user has to select one
-                var dependencies = [
-                  this.get('allServicesService').choices(),
-                ];
-
-                Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
-                  var defaultStack = false;
-
-                  results[0].forEach((stack) => {
-                    stack.stack = `${this.get('store').getById('environment', stack.obj.environmentId).name}/${stack.name}`;
-                    if (item.default === stack.stack) {
-                      defaultStack = true;
-                    }
-                  });
-
-                  if (defaultStack) {
-                    item.answer = item.default;
-                  } else {
-                    item.answer = null;
+                var defaultStack = false;
+                this.get('model.serviceChoices').forEach((service) => {
+                  service.stack = `${service.envName}/${service.name}`;
+                  if (item.default === service.stack) {
+                    defaultStack = true;
                   }
-
-                  this.set('services', results[0]);
-                  this.set('loadingServices', false);
                 });
+
+                if (defaultStack) {
+                  item.answer = item.default;
+                } else {
+                  item.answer = null;
+                }
               } else {
                 item.answer = item.default;
               }

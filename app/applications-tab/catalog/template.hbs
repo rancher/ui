@@ -1,33 +1,35 @@
-<div class="catalog left-nav col-md-2 col-sm-2">
-  <h3 class="r-mt10 r-mb15">Catalog</h3>
-  <ol class="nav nav-list">
-    {{#each categories as |category|}}
-    <li class="">
-      {{#link-to 'applications-tab.catalog' category}}
-        <span class="text-capitalize">{{category}}</span>
-      {{/link-to}}
-    </li>
-    {{/each}}
-  </ol>
-</div>
-<section>
-  <div class="col-md-10 col-sm-10">
-    <div class="form clearfix r-mb10">
-      <div class="btn-group searchable col-sm-12 col-md-12">
-        <i class="fa fa-search"></i>
-        {{input placeholder='search' class='form-control r-pl25' value=search}}
+<section class="header">
+  <h3>
+    <span class="right-divider">Catalog</span>
+
+    <div class="btn-group right-divider">
+      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category: <span class="text-capitalize">{{category}}</span> <span class="caret"></span></button>
+      <ul class="dropdown-menu">
+        {{#each categories as |category|}}
+        <li>
+          {{#link-to "applications-tab.catalog" (query-params category=category)}}
+            <span class="text-capitalize">{{category}}</span>
+          {{/link-to}}
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+
+      <div class="btn-group searchable">
+        <i class="icon icon-search"></i>
+        {{input placeholder="Search..." class="form-control" value=search}}
       </div>
-    </div>
-    <div class="col-md-12 r-pl15 r-pr15">
-      {{#each arrangedContent as |catalogItem|}}
-        <div class="container-catalog text-center">
-          <h5>{{catalogItem.name}}</h5>
-          <img src={{catalogItem.iconLink}} alt={{catalogItem.name}} class="center-block r-mt20" style="height:75px;">
-          <div class="r-mt10 description">{{catalogItem.description}}</div>
-          <button class="btn btn-sm btn-primary" {{action 'launch' catalogItem}}> View Details</button>
-        </div>
-      {{/each}}
-    </div>
-  </div>
+
+  </h3>
 </section>
-{{outlet}}
+
+<section class="r-plr15">
+  {{#each arrangedContent as |catalogItem|}}
+    <div class="container-catalog text-center">
+      <h5>{{catalogItem.name}}</h5>
+      <img src={{catalogItem.iconLink}} alt={{catalogItem.name}} class="center-block r-mt20" style="height:75px;">
+      <div class="r-mt10 description">{{catalogItem.description}}</div>
+      {{#link-to "applications-tab.catalog.launch" catalogItem.path class="btn btn-sm btn-primary"}}View Details{{/link-to}}
+    </div>
+  {{/each}}
+</section>
