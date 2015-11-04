@@ -42,7 +42,6 @@ export function parseExternalId(externalId) {
 
       out.id = rest;
     }
-
   }
   else
   {
