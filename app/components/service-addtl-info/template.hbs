@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row"> <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="active" class="tab-main active">
+      <li role="presentation" class="tab-main active" id="service-tab">
          <span class='close' {{action 'dismiss'}}><i class="fa fa-times-circle"></i></span>
          <h2><a href="#home" aria-controls="home" role="tab" data-toggle="tab">{{service.name}}</a></h2>
       </li>
@@ -31,7 +31,7 @@
             {{#if (eq service.type 'externalService')}}
               {{partial 'ext-service-addtl-info'}}
             {{else}}
-              {{partial 'lb-service-addtl-info'}}
+              {{lb-addtl-info service=service serviceContainers=serviceContainers}}
             {{/if}}
           {{/if}}
         {{/if}}
@@ -39,7 +39,7 @@
       {{#if service.secondaryLaunchConfigs}}
         {{#each service.secondaryLaunchConfigs as |sidekick|}}
           <div role="tabpanel" class="tab-pane" id="sidekick-{{sidekick.name}}">
-            {{partial 'sidekick-addtl-info'}}
+            {{sidekick-addtl-info sidekick=sidekick containers=(get sidekick.serviceContainers sidekick.name)}}
           </div>
         {{/each}}
       {{/if}}
