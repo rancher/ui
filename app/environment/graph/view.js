@@ -119,8 +119,7 @@ export default Ember.View.extend(ThrottledResize,{
     else
     {
       this.styleSvg();
-      this.set('context.showServiceInfo', false);
-      this.set('context.selectedService', null);
+      this.set('context.showServiceInfo', null);
     }
   },
 
