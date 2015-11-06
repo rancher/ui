@@ -14,8 +14,8 @@ const defaultStateMap = {
   'error':            {icon: 'icon icon-alert',          color: 'text-danger' },
   'inactive':         {icon: 'icon icon-circle',         color: 'text-danger' },
   'initializing':     {icon: 'icon icon-notification',   color: 'text-warning'},
-  'purged':           {icon: 'icon icon-tornado',        color: 'text-danger' },
-  'purging':          {icon: 'icon icon-tornado',        color: 'text-info'   },
+  'purged':           {icon: 'icon icon-purged',         color: 'text-danger' },
+  'purging':          {icon: 'icon icon-purged',         color: 'text-info'   },
   'removed':          {icon: 'icon icon-trash',          color: 'text-danger' },
   'removing':         {icon: 'icon icon-trash',          color: 'text-info'   },
   'requested':        {icon: 'icon icon-tag',            color: 'text-info'   },
@@ -174,19 +174,9 @@ export default Ember.Mixin.create({
         icon = this.constructor.defaultStateIcon;
       }
 
-      if ( icon.indexOf('fa-') >= 0 )
+      if ( icon.indexOf('icon ') === -1 )
       {
-        if ( icon.indexOf('fa ') === -1 )
-        {
-          icon = 'fa ' + icon;
-        }
-      }
-      else
-      {
-        if ( icon.indexOf('icon ') === -1 )
-        {
-          icon = 'icon ' + icon;
-        }
+        icon = 'icon ' + icon;
       }
     }
 

@@ -21,7 +21,7 @@ export default Ember.View.extend(ThrottledResize,{
 
 
   click: function(evt) {
-    if ($(evt.target).hasClass('fa-times-circle')) {
+    if ($(evt.target).hasClass('icon-x')) {
       this.styleSvg();
     }
   },
