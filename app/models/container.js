@@ -85,7 +85,7 @@ var Container = Resource.extend({
       { divider: true },
       { label: 'Execute Shell', icon: '',                       action: 'shell',        enabled: !!a.execute },
       { label: 'View Logs',     icon: '',                       action: 'logs',         enabled: !!a.logs },
-      { label: 'View in API',   icon: 'icon icon-externallink', action: 'goToApi',      enabled: true },
+      { label: 'View in API',   icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
       { divider: true },
       { label: 'Clone',         icon: 'icon icon-copy',         action: 'clone',        enabled: !isSystem && !isService },
       { label: 'Edit',          icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },

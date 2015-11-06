@@ -34,7 +34,7 @@ var Machine = Resource.extend(PolledResource, {
       out.push({ label: 'Machine Config', icon: 'icon icon-download', action: 'machineConfig', enabled: true});
     }
 
-    out.push({ label: 'View in API', icon: 'icon icon-externallink', action: 'goToApi', enabled: true});
+    out.push({ label: 'View in API', icon: 'icon icon-external-link',action: 'goToApi', enabled: true});
 
     return out;
   }.property('actionLinks.remove', 'links.config'),

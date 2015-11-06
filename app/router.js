@@ -108,7 +108,9 @@ Router.map(function() {
           });
         });
       });
-      this.route('catalog', {path: '/catalog/:type'});
+
+      this.route('catalog.launch', {path: '/catalog/:template'});
+      this.route('catalog', {path: '/catalog'});
     });
 
     // End: Authenticated

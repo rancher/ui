@@ -17,6 +17,7 @@ export default Ember.Service.extend({
               kind: service.get('type'),
               lbSafe: (service.get('type').toLowerCase() !== 'externalservice' || service.get('hostname') === null),
               obj: service,
+              envName: envName(service),
             });
           });
         });
@@ -24,8 +25,12 @@ export default Ember.Service.extend({
         return out;
       });
 
+      function envObj(service) {
+        return environments.filterBy('id', service.get('environmentId'))[0];
+      }
+
       function envName(service) {
-        var env = environments.filterBy('id', service.get('environmentId'))[0];
+        var env = envObj(service);
         if ( env )
         {
           return env.get('displayName');

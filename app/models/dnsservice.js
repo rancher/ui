@@ -13,7 +13,7 @@ var DnsService = Service.extend({
   displayDetail: function() {
     var out = '';
     this.get('consumedServicesWithNames').forEach((map) => {
-      var part = '<span class="badge badge-primary">';
+      var part = '<span class="badge badge-default">';
       if ( map.get('name') )
       {
         part += esc(map.get('name')) + ": ";

@@ -7,13 +7,13 @@
   </div>
 
   <div class="right left-divider count">
-    <p>{{model.unremovedServices.length}}</p>
-    <label>Service{{unless (eq model.unremovedServices.length 1) 's'}}</label>
+    <p class="count">{{instanceCount}}</p>
+    <label>Container{{unless (eq instanceCount 1) 's'}}</label>
   </div>
 
   <div class="right left-divider count">
-    <p class="count">{{instanceCount}}</p>
-    <label>Container{{unless (eq instanceCount 1) 's'}}</label>
+    <p>{{model.unremovedServices.length}}</p>
+    <label>Service{{unless (eq model.unremovedServices.length 1) 's'}}</label>
   </div>
 
   <div class="left collapser">
@@ -40,15 +40,15 @@
         <tr>
           <td><i class="{{service.stateIcon}} {{service.stateColor}}"></i> {{#link-to "service" model.id service.id}}{{service.displayName}}{{/link-to}}</td>
           <td>{{service.displayDetail}}</td>
-          <td class="text-right">
+          <td>
+            {{#if service.displayType}}
+              <span class="badge badge-primary">{{service.displayType}}</span>
+            {{/if}}
             {{#if service.hasSidekicks}}
               <span class="badge badge-default">{{service.secondaryLaunchConfigs.length}} Sidekick{{unless (eq service.secondaryLaunchConfigs.length 1) 's'}}</span>
             {{/if}}
             {{#if service.hasContainers}}
               <span class="badge badge-warning"><i class="icon icon-box"></i> {{default-str service.instances.length default="0"}}</span>
-            {{/if}}
-            {{#if service.displayType}}
-              <span class="badge badge-primary">{{service.displayType}}</span>
             {{/if}}
           </td>
           <td class="actions">{{action-menu model=service}}</td>

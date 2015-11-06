@@ -134,20 +134,20 @@ var Service = Resource.extend(ReadLabels, {
     var isK8s = this.get('isK8s');
 
     var choices = [
-      { label: 'Start',           icon: 'icon icon-play',         action: 'activate',       enabled: !!a.activate && !isK8s,    color: 'text-success'},
-      { label: 'Stop',            icon: 'icon icon-pause',        action: 'deactivate',     enabled: !!a.deactivate && !isK8s,  color: 'text-danger'},
-      { label: 'Delete',          icon: 'icon icon-trash',        action: 'promptDelete',   enabled: !!a.remove && !isK8s, altAction: 'delete', color: 'text-warning' },
-      { label: 'Purge',           icon: '',                       action: 'purge',          enabled: !!a.purge && !isK8s },
+      { label: 'Start',           icon: 'icon icon-play',             action: 'activate',       enabled: !!a.activate && !isK8s,    color: 'text-success'},
+      { label: 'Stop',            icon: 'icon icon-pause',            action: 'deactivate',     enabled: !!a.deactivate && !isK8s,  color: 'text-danger'},
+      { label: 'Delete',          icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove && !isK8s, altAction: 'delete', color: 'text-warning' },
+      { label: 'Purge',           icon: '',                           action: 'purge',          enabled: !!a.purge && !isK8s },
       { divider: true },
-      { label: 'Upgrade',         icon: 'fa fa-arrow-circle-o-up',action: 'upgrade',        enabled: canUpgrade },
-      { label: 'Finish Upgrade',  icon: 'fa fa-thumbs-o-up',      action: 'finishUpgrade',  enabled: !!a.finishupgrade },
-      { label: 'Cancel Upgrade',  icon: 'fa fa-life-ring',        action: 'cancelUpgrade',  enabled: !!a.cancelupgrade },
-      { label: 'Rollback',        icon: 'fa fa-history',          action: 'rollback',       enabled: !!a.rollback },
-      { label: 'Cancel Rollback', icon: 'fa fa-life-ring',        action: 'cancelRollback', enabled: !!a.cancelrollback },
+      { label: 'Upgrade',         icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: canUpgrade },
+      { label: 'Finish Upgrade',  icon: 'icon icon-face-open-smile',  action: 'finishUpgrade',  enabled: !!a.finishupgrade },
+      { label: 'Cancel Upgrade',  icon: 'icon icon-life-ring',        action: 'cancelUpgrade',  enabled: !!a.cancelupgrade },
+      { label: 'Rollback',        icon: 'icon icon-face-gasp',        action: 'rollback',       enabled: !!a.rollback },
+      { label: 'Cancel Rollback', icon: 'icon icon-life-ring',        action: 'cancelRollback', enabled: !!a.cancelrollback },
       { divider: true },
-      { label: 'View in API',     icon: 'icon icon-externallink', action: 'goToApi',        enabled: true },
-      { label: 'Clone',           icon: 'icon icon-copy',         action: 'clone',          enabled: !isK8s },
-      { label: 'Edit',            icon: 'icon icon-edit',         action: 'edit',           enabled: !!a.update && !isK8s },
+      { label: 'View in API',     icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
+      { label: 'Clone',           icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s },
+      { label: 'Edit',            icon: 'icon icon-edit',             action: 'edit',           enabled: !!a.update && !isK8s },
     ];
 
     return choices;
@@ -396,7 +396,7 @@ var Service = Resource.extend(ReadLabels, {
 
 export function activeIcon(service)
 {
-  var out = 'icon icon-layergroup';
+  var out = 'icon icon-layers';
   switch ( service.get('type').toLowerCase() )
   {
     case 'loadbalancerservice': out = 'icon icon-fork';    break;
@@ -459,14 +459,14 @@ Service.reopenClass({
 
   stateMap: {
     'active':             {icon: activeIcon,                  color: 'text-success'},
-    'canceled-rollback':  {icon: 'fa fa-life-ring',           color: 'text-info'},
-    'canceled-upgrade':   {icon: 'fa fa-life-ring',           color: 'text-info'},
-    'canceling-rollback': {icon: 'fa fa-life-ring',           color: 'text-info'},
-    'canceling-upgrade':  {icon: 'fa fa-life-ring',           color: 'text-info'},
-    'finishing-upgrade':  {icon: 'fa fa-arrow-circle-o-up',   color: 'text-info'},
-    'rolling-back':       {icon: 'fa fa-history',             color: 'text-info'},
-    'upgraded':           {icon: 'fa fa-arrow-circle-o-up',   color: 'text-info'},
-    'upgrading':          {icon: 'fa fa-arrow-circle-o-up',   color: 'text-info'},
+    'canceled-rollback':  {icon: 'icon icon-life-ring',       color: 'text-info'},
+    'canceled-upgrade':   {icon: 'icon icon-life-ring',       color: 'text-info'},
+    'canceling-rollback': {icon: 'icon icon-life-ring',       color: 'text-info'},
+    'canceling-upgrade':  {icon: 'icon icon-life-ring',       color: 'text-info'},
+    'finishing-upgrade':  {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
+    'rolling-back':       {icon: 'icon icon-history',         color: 'text-info'},
+    'upgraded':           {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
+    'upgrading':          {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
   }
 });
 

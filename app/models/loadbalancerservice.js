@@ -23,18 +23,24 @@ var LoadBalancerService = Service.extend({
 
   displayDetail: function() {
     var internal = '';
+    var first = true;
     (this.get('launchConfig.expose')||[]).forEach((port) => {
-      internal += '<span class="badge badge-default">' + esc(portToStr(port)) + '</span>';
+      internal += '<span class="badge badge-default'+ (first ? '' : ' r-ml5') +'">' + esc(portToStr(port)) + '</span>';
+      first = false;
     });
 
     var pub = '';
+    first = true;
     (this.get('launchConfig.ports')||[]).forEach((port) => {
-      pub += '<span class="badge badge-default">' + esc(portToStr(port)) + '</span>';
+      pub += '<span class="badge badge-default'+ (first ? '' : ' r-ml5') +'">' + esc(portToStr(port)) + '</span>';
+      first = false;
     });
 
     var services = '';
+    first = true;
     (this.get('consumedServicesWithNames')||[]).forEach((map) => {
-      services += '<span class="badge badge-primary">' + map.get('service.displayName') + '</span>';
+      services += '<span class="badge badge-default'+ (first ? '' : ' r-ml5') +'">' + map.get('service.displayName') + '</span>';
+      first = false;
     });
 
 
