@@ -1,6 +1,11 @@
 $normal-weight: 400;
 $bold-weight: 600;
 
+* {
+  transition: ease all .25s;
+  box-sizing: border-box;
+}
+
 a {
   color: $blue;
   &:focus {
@@ -35,6 +40,26 @@ H1, H2, H3, H4, H5, H6 {
     left: -4px;
   }
 }
+/*tables*/
+.table {
+  width: 100%;
+  max-width: 100%;
+  margin-bottom: $line-height-computed;
+  // Cells
+  > thead,
+  > tbody,
+  > tfoot {
+    > tr {
+      > th,
+      > td {
+        border-right: 1px dotted #e3e5e6;
+      }
+    }
+  }
+}
+
+
+/*buttons*/
 
 .btn-disabled,
 .btn.disabled,
@@ -49,7 +74,12 @@ fieldset[disabled] .btn {
   padding-left: 10px;
   padding-right: 10px;
 }
-
+.btn-primary {
+  border: 0;
+  &:hover {
+    background: $blueDark;
+  }
+}
 .btn-lg.btn-primary, .btn-group-lg > .btn.btn-primary {
   padding: ($padding-large-vertical - 1) $padding-large-horizontal;
   border-top-width: 2px;
@@ -69,6 +99,17 @@ fieldset[disabled] .btn {
 }
 
 .btn-group {
+  .btn-default {
+    background-color: $lightGrayTwo;
+    color: $midGray;
+    border: solid 1px $lightGray;
+    box-shadow: none;
+
+    &.active {
+      background: white
+    }
+  }
+
   &.clearable {
     .fa-times-circle-o {
       position: absolute;
@@ -79,6 +120,7 @@ fieldset[disabled] .btn {
       cursor: pointer;
     }
   }
+  
   &.searchable {
     .fa-search {
       position: absolute;
@@ -190,14 +232,6 @@ fieldset[disabled] .btn {
 .border-top-danger  { border-top-color: $brand-danger !important; }
 .border-top-warning { border-top-color: $brand-warning !important; }
 .border-top-info    { border-top-color: $brand-info !important; }
-
-.badge         { background-color: #cce3ee;         color: #004968; }
-.badge-primary { background-color: #cce3ee;         color: #004968; }
-.badge-default { background-color: #ebeff0;         color: #969a9b; }
-.badge-success { background-color: $brand-success;  color: #ffffff;}
-.badge-danger  { background-color: $brand-danger;   color: #ffffff;}
-.badge-warning { background-color: #fff9ed;         color: #ffc44d; }
-.badge-info    { background-color: $brand-info;     color: #ffffff; }
 
 .progress {
   margin-bottom: 0;
