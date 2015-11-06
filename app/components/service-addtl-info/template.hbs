@@ -1,5 +1,4 @@
-<div class="container-fluid">
-  <div class="row"> <!-- Nav tabs -->
+<div class="row-same-height row-full-height">
     <ul class="nav nav-tabs" role="tablist">
       <li role="presentation" class="tab-main active" id="service-tab">
          <span class='close' {{action 'dismiss'}}><i class="icon icon-x"></i></span>
@@ -22,6 +21,7 @@
           {{service.description}}
         </div>
         <hr>
+        <div class="inner">
         {{#if (eq service.type 'service')}}
           {{partial 'service-addtl-info'}}
         {{else}}
@@ -35,6 +35,7 @@
             {{/if}}
           {{/if}}
         {{/if}}
+        </div>
       </div>
       {{#if service.secondaryLaunchConfigs}}
         {{#each service.secondaryLaunchConfigs as |sidekick|}}
@@ -44,8 +45,6 @@
         {{/each}}
       {{/if}}
     </div>
-  </div>
-  <hr>
   {{yield}}
 </div>
 
