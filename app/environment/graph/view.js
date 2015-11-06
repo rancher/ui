@@ -111,7 +111,7 @@ export default Ember.View.extend(ThrottledResize,{
   showService: function(id) {
     if ( id )
     {
-      var svgHeight = $('#environment-svg').height() - 440; // svg minus the height of info
+      var svgHeight = $('#environment-svg').height() - 310; // svg minus the height of info service-addtl-info.scss
       this.styleSvg(`${svgHeight}px`);
       this.set('context.showServiceInfo', true);
       this.set('context.selectedService', this.get('context.model.services').findBy('id', id));

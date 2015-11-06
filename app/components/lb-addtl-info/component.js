@@ -12,6 +12,8 @@ export default Ember.Component.extend({
   defaultCert: null,
   secondaryCerts: null,
 
+  tagName: '',
+
   willInsertElement: function() {
     this.setup();
   },

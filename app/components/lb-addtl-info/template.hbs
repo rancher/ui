@@ -1,4 +1,4 @@
-<div class="col-sm-3 col-md-3">
+<div class="col-md-3 col-md-height col-md-full-height">
   <label class="text-muted text-bold text-uppercase">State</label>
   <div class="content">
     <div class="state">
@@ -6,53 +6,61 @@
       {{#link-to 'service' service.id class='btn btn-success btn-xs r-mr15'}} View Details {{/link-to}}
       {{svg-action-menu model=service size='xs'}}
     </div>
-    <label class="text-muted text-bold text-uppercase r-mt15">DNS Name</label>
-    <div class="force-wrap">
-      wiating for api
+    <div>
+      <label class="text-muted text-bold text-uppercase r-mt15">DNS Name</label>
+      <span class="force-wrap">
+        wiating for api
+      </span>
     </div>
-    <label class="text-muted text-bold text-uppercase r-mt15">Default SSL Cert.</label>
-    <div class="force-wrap">
-      {{#if defaultCert}}
-        {{defaultCert.name}}
-      {{else}}
-        <span class="text-muted">No Certificates</span>
-      {{/if}}
-    </div>
-    <label class="text-muted text-bold text-uppercase r-mt15">Alternate SSL Cert.</label>
-    <div class="force-wrap">
-      <ul class="list-unstyled">
-        {{#each secondaryCerts as |cert|}}
-          <li>{{cert.name}}</li>
+    <div>
+      <label class="text-muted text-bold text-uppercase r-mt15">Default SSL Cert.</label>
+      <span class="force-wrap">
+        {{#if defaultCert}}
+          {{defaultCert.name}}
         {{else}}
-          <li class="text-muted">No Certificates</li>
-        {{/each}}
-      </ul>
+          <span class="text-muted">No Certificates</span>
+        {{/if}}
+      </span>
+    </div>
+    <div>
+      <label class="text-muted text-bold text-uppercase r-mt15">Alternate SSL Cert.</label>
+      <span class="force-wrap">
+        <ul class="list-unstyled">
+          {{#each secondaryCerts as |cert|}}
+            <li>{{cert.name}}</li>
+          {{else}}
+            <li class="text-muted">No Certificates</li>
+          {{/each}}
+        </ul>
+      </span>
     </div>
   </div>
 </div>
-<div class="col-sm-3 col-md-3">
+<div class="col-md-3 col-md-height col-md-full-height">
   <label class="text-muted text-bold text-uppercase">Containers ({{if serviceContainers.primary.length serviceContainers.primary.length '-'}})</label>
   <div class="content">
     <div class="container-dots clearfix">
-      {{#each serviceContainers.primary as |instance|}}
-        {{container-dot model=instance}}
-      {{else}}
-        <span class="text-muted">No Containers</span>
-      {{/each}}
-    </div>
-    <div>
-      <label class="text-muted text-bold text-uppercase">Scale</label>
-      {{#if service.canScale}}
-        <span class="r-ml20 r-mr20">{{service.scale}}</span>
-        <button class="btn btn-default btn-sm" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
-        <button class="btn btn-default btn-sm" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
-      {{else}}
-        {{if service.isGlobalScale 'Global'}}
-      {{/if}}
+      <div style="display:inline-block;">
+        {{#each serviceContainers.primary as |instance|}}
+          {{container-dot model=instance}}
+        {{else}}
+          <span class="text-muted">No Containers</span>
+        {{/each}}
+      </div>
+      <div class="r-mt10">
+        <label class="text-muted text-bold text-uppercase">Scale</label>
+        {{#if service.canScale}}
+          <span class="r-ml20 r-mr20">{{service.scale}}</span>
+          <button class="btn btn-default btn-sm" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
+          <button class="btn btn-default btn-sm" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
+        {{else}}
+          {{if service.isGlobalScale 'Global'}}
+        {{/if}}
+      </div>
     </div>
   </div>
 </div>
-<div class="col-sm-3 col-md-3">
+<div class="col-md-3 col-md-height col-md-full-height">
   <label class="text-muted text-bold text-uppercase">Listeners</label>
   <div class="content r-pr20" style="overflow:auto;">
     <table class="table-responsive grid no-lines tight">
@@ -79,7 +87,7 @@
     </table>
   </div>
 </div>
-<div class="col-sm-3 col-md-3">
+<div class="col-md-3 col-md-height col-md-full-height">
   <label class="text-muted text-bold text-uppercase">Targets</label>
   <div class="content r-pr20" style="overflow:auto;">
     <table class="table-responsive grid no-lines tight">
