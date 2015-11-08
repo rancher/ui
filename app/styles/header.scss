@@ -1,17 +1,16 @@
 /**********
 * Header (top bar)
 **********/
+$topHeight: ($header-height * 0.45);
+$bottomHeight: ($header-height * 0.55);
+
 HEADER {
   position: relative;
   z-index: 5;
-  height: $header-height;
-  background-color: $black;
 
   NAV {
-    &>A, &>.btn-group>A {
-      float: left;
-      height: ($header-height * .45);
-      line-height: ($header-height * .45);
+    &>A {
+      display: inline-block;
       padding: 0 20px;
       vertical-align: top;
       font-weight: normal;
@@ -30,10 +29,18 @@ HEADER {
   }
 
   .top-row {
-    height: ($header-height * .45);
+    background-color: $black;
+    min-height: $topHeight;
 
     NAV {
+      float: left;
       font-size: 14px;
+
+      &>A {
+        height: $topHeight;
+        line-height: $topHeight;
+      }
+
       &>A {
         &:hover {
           background: $blackDark;
@@ -48,7 +55,7 @@ HEADER {
     .logo {
       cursor: pointer;
       float: left;
-      height: ($header-height * .45);
+      height: $topHeight;
       width: 68px;
       background-image: url('images/logos/main.svg');
       background-color: $blackDark;
@@ -56,13 +63,22 @@ HEADER {
       background-repeat: no-repeat;
     }
 
+    .user-btn {
+      float: right;
+      vertical-align: top;
+      padding: 3px 15px;
+    }
+
     .project-btn {
+      float: right;
+
       margin-right: 10px;
       border-radius: 3px;
       max-width: 200px;
 
       .dropdown-toggle {
-        height: 50px;
+        height: $topHeight;
+        line-height: $topHeight;
         padding: 0;
         margin-right: 10px;
         max-width: 100%;
@@ -90,17 +106,10 @@ HEADER {
     }
 
     .user-menu {
-      margin-top: -13px;
       z-index: 1000; /* These have to be > 990 for bootstrap on touch devices */
       padding-top: 0;
       width: 250px;
       border-radius: 2px;
-
-      li {
-        a{
-          padding: 15px;
-        }
-      }
     }
 
     .user-dropdown-arrow {
@@ -166,16 +175,18 @@ HEADER {
   }
 
   .bottom-row {
-    height: ($header-height * .55);
+    min-height: $bottomHeight;
     background-color: white;
     border-bottom: solid 2px $lightGrayTwo;
+
     NAV {
       font-size: 14px;
       margin-left: 68px;
-      overflow: hidden;
-      clear: both;
-      height: 100%;
+
       &>A {
+        height: $bottomHeight;
+        line-height: $bottomHeight;
+        padding-top: 12px;
         color: $midGrayDark;
         line-height: 25px;
         text-align: center;
@@ -184,9 +195,31 @@ HEADER {
         }
         &.active {
           color: $primary;
+          background-color: rgba($lightTeal, 0.1);
         }
-        &>* {
+
+        I {
           display: block;
+        }
+      }
+
+      .compose-download {
+        display: inline-block;
+        float: right;
+        margin-right: 20px;
+        height: $bottomHeight;
+        line-height: $bottomHeight;
+        color: $midGrayDark;
+
+        A {
+          color: $midGrayDark;
+
+          &:hover {
+            color: $blueTwo
+          }
+          &.active {
+            color: $primary;
+          }
         }
       }
     }
@@ -195,7 +228,7 @@ HEADER {
 
   H3 {
     margin: 0;
-    line-height: ($header-height * .55);
+    line-height: $bottomHeight;
     color: #fff;
     padding-left: 20px;
     white-space: nowrap;
@@ -210,14 +243,6 @@ HEADER {
       text-decoration: none;
       color: $header-link-text;
     }
-  }
-
-  .right {
-    float: right;
-    height: ($header-height * .55);
-    line-height: ($header-height * .55);
-    vertical-align: top;
-    padding: 0 15px 0 15px;
   }
 }
 

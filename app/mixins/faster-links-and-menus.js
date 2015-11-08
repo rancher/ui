@@ -8,7 +8,7 @@ export default Ember.Mixin.create({
   resourceActions: Ember.inject.service('resource-actions'),
 
   click(event) {
-    if ( event.target.tagName === 'BUTTON' && $(event.target).hasClass('btn-circle-menu') ) // Only menu buttons
+    if ( $(event.target).closest('BUTTON').hasClass('more-actions') ) // Only menu buttons
     {
       this.get('resourceActions').show(this.get('model'), event.target);
     }
