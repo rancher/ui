@@ -1,21 +1,6 @@
 <div class="clearfix">
   <div class="stack-state {{model.stateBackground}}"><i class="{{model.stateIcon}}"></i></div>
 
-  <div class="right left-divider stack-actions">
-    {{upgrade-btn environmentResource=model}}
-    {{action-menu model=model}}
-  </div>
-
-  <div class="right left-divider count">
-    <p class="count">{{instanceCount}}</p>
-    <label>Container{{unless (eq instanceCount 1) 's'}}</label>
-  </div>
-
-  <div class="right left-divider count">
-    <p>{{model.unremovedServices.length}}</p>
-    <label>Service{{unless (eq model.unremovedServices.length 1) 's'}}</label>
-  </div>
-
   <div class="left collapser">
     <a {{action "toggleCollapse"}} class="btn btn-link"><i class="icon {{if collapsed 'icon-plus' 'icon-minus'}}" alt="Toggle stack details" title=""></i></a>
   </div>
@@ -25,17 +10,45 @@
       <span class="divider clip">{{#link-to "environment" model.id}}{{model.name}}{{/link-to}}</span>
     </h4>
   </div>
+
+  <div class="right right-divider stack-actions">
+    {{action-menu model=model}}
+  </div>
+
+  <div class="right right-divider count">
+    <p class="count">{{instanceCount}}</p>
+    <label>Container{{unless (eq instanceCount 1) 's'}}</label>
+  </div>
+
+  <div class="right right-divider count">
+    <p>{{model.unremovedServices.length}}</p>
+    <label>Service{{unless (eq model.unremovedServices.length 1) 's'}}</label>
+  </div>
+
+  <div class="right right-divider stack-template">
+    {{upgrade-btn environmentResource=model}}
+  </div>
+
+  <div class="right right-divider stack-template">
+    <div class="btn-group">
+      {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-default btn-sm"}}Add Service{{/link-to}}
+      <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        <li>{{#link-to "service.new-balancer" (query-params environmentId=model.id)}}Add Load Balancer{{/link-to}}</li>
+        <li>{{#link-to "service.new-alias" (query-params environmentId=model.id)}}Add Service Alias{{/link-to}}</li>
+        <li>{{#link-to "service.new-external" (query-params environmentId=model.id)}}Add External Service{{/link-to}}</li>
+      </ul>
+    </div>
+  </div>
+
 </div>
 
 {{#liquid-if (not collapsed)}}
   <div class="r-pl10 r-pr10 r-pb10">
     <table class="grid fixed" style="margin-bottom: 0">
-      <tr>
-        <th>&nbsp;</th>
-        <th>&nbsp;</th>
-        <th width="230">&nbsp;</th>
-        <th width="50">&nbsp;</th>
-      </tr>
       {{#each model.services as |service|}}
         <tr>
           <td><i class="{{service.stateIcon}} {{service.stateColor}}"></i> {{#link-to "service" model.id service.id}}{{service.displayName}}{{/link-to}}</td>

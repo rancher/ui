@@ -21,12 +21,13 @@ export default Ember.Component.extend({
 
   click: function(e) {
     var target = e.target;
-    if (!Ember.$(target).hasClass('icon-pause') && !Ember.$(target).hasClass('icon-play') && !Ember.$(target).hasClass('graph-actions')) {
+    if ( Ember.$(target).closest('action-menu').length === 0 )
+    {
       this.sendAction('action', this.get('node.service'));
     }
+
     e.preventDefault();
     e.stopPropagation();
-
   },
 
   transform: Ember.computed('node.{x,y}', function() {
