@@ -8,10 +8,13 @@ export default Ember.Component.extend(NewOrEdit, {
   versionsLinks: null,
   serviceChoices: null,
 
+  classNames: ['launch-catalog'],
+
   primaryResource: Ember.computed.alias('environmentResource'),
   editing: Ember.computed.notEmpty('primaryResource.id'),
 
   previewOpen: false,
+  previewTab: 'docker-compose',
   questionsArray: null,
   selectedTemplateUrl: null,
   selectedTemplateModel: null,
@@ -28,7 +31,11 @@ export default Ember.Component.extend(NewOrEdit, {
       }
 
       this.toggleProperty('previewOpen');
-    }
+    },
+
+    selectPreviewTab: function(tab) {
+      this.set('previewTab', tab);
+    },
   },
 
   didInitAttrs() {
@@ -74,7 +81,7 @@ export default Ember.Component.extend(NewOrEdit, {
             {
               if (item.type === 'service') {
                 var defaultStack = false;
-                this.get('model.serviceChoices').forEach((service) => {
+                this.get('serviceChoices').forEach((service) => {
                   service.stack = `${service.envName}/${service.name}`;
                   if (item.default === service.stack) {
                     defaultStack = true;
@@ -106,6 +113,17 @@ export default Ember.Component.extend(NewOrEdit, {
       this.set('selectedTemplateModel', null);
     }
   }.observes('selectedTemplateUrl'),
+
+  answers: function() {
+    var out = {};
+    (this.get('selectedTemplateModel.questions')||[]).forEach((item) => {
+      out[item.variable] = item.answer;
+    });
+
+    return out;
+  }.property('selectedTemplateModel.questions.@each.{variable,answer}'),
+
+  answersArray: Ember.computed.alias('selectedTemplateModel.questions'),
 
   validate() {
     var errors = [];
@@ -144,15 +162,10 @@ export default Ember.Component.extend(NewOrEdit, {
       return false;
     }
 
-    var answers = {};
-    (this.get('selectedTemplateModel.questions')||[]).forEach((item) => {
-      answers[item.variable] = item.answer;
-    });
-
     this.get('environmentResource').setProperties({
       dockerCompose: this.get('selectedTemplateModel.dockerCompose'),
       rancherCompose: this.get('selectedTemplateModel.rancherCompose'),
-      environment: answers,
+      environment: this.get('answers'),
       externalId: this.get('selectedTemplateModel.uuid')
     });
 
@@ -176,7 +189,6 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   doneSaving() {
-    this.sendAction('dismiss');
     return this.get('router').transitionTo('environment', this.get('primaryResource.id'));
   }
 

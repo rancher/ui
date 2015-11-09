@@ -46,7 +46,7 @@ export default Ember.Route.extend({
       });
 
       return Ember.Object.create({
-        serviceChoices: results.services,
+        serviceChoices: results.serviceChoices,
         environment: results.env,
         tpl: results.tpl,
         upgrade: results.upgrade,

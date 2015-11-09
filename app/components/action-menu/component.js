@@ -10,19 +10,8 @@ export default Ember.Component.extend({
   tagName: 'div',
   classNames: ['btn-group','resource-actions','action-menu'],
 
-  didInsertElement() {
-    this.$().tooltip({
-      selector: '*[tooltip]',
-      animation: false,
-      container: 'body',
-      title: function() {
-        return $(this).attr('tooltip');
-      }
-    });
-  },
-
   click(e) {
-    if ( Ember.$(e.target).closest('.resource-actions').length )
+    if ( Ember.$(e.target).closest('.more-actions').length )
     {
       e.preventDefault();
       e.stopPropagation();

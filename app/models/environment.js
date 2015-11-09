@@ -83,16 +83,16 @@ var Environment = Resource.extend({
     var a = this.get('actionLinks');
 
     var out = [
-      { label: 'Start Services',  icon: 'icon icon-play',             action: 'activateServices',    enabled: this.get('canActivate') },
-      { label: 'Stop Services',   icon: 'icon icon-pause',            action: 'deactivateServices',  enabled: this.get('canDeactivate') },
-      { label: 'View Graph',      icon: 'icon icon-share',            action: 'viewGraph',            enabled: true },
-      { label: 'View Config',     icon: 'icon icon-files',            action: 'viewCode',            enabled: true },
-      { label: 'Export Config',   icon: 'icon icon-download',         action: 'exportConfig',        enabled: !!a.exportconfig },
-      { divider: true },
       { label: 'Finish Upgrade',  icon: 'icon icon-face-open-smile',  action: 'finishUpgrade',       enabled: !!a.finishupgrade },
       { label: 'Cancel Upgrade',  icon: 'icon icon-life-ring',        action: 'cancelUpgrade',       enabled: !!a.cancelupgrade },
       { label: 'Rollback',        icon: 'icon icon-face-gasp',        action: 'rollback',            enabled: !!a.rollback },
       { label: 'Cancel Rollback', icon: 'icon icon-life-ring',        action: 'cancelRollback',      enabled: !!a.cancelrollback },
+      { label: 'Start Services',  icon: 'icon icon-play',             action: 'activateServices',    enabled: this.get('canActivate') },
+      { label: 'Stop Services',   icon: 'icon icon-square',           action: 'deactivateServices',  enabled: this.get('canDeactivate') },
+      { divider: true },
+      { label: 'View Graph',      icon: 'icon icon-share',            action: 'viewGraph',            enabled: true },
+      { label: 'View Config',     icon: 'icon icon-files',            action: 'viewCode',            enabled: true },
+      { label: 'Export Config',   icon: 'icon icon-download',         action: 'exportConfig',        enabled: !!a.exportconfig },
       { divider: true },
       { label: 'Delete',          icon: 'icon icon-trash',            action: 'promptDelete',        enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
       { label: 'View in API',     icon: 'icon icon-external-link',    action: 'goToApi',             enabled: true },

@@ -58,6 +58,7 @@ module.exports = function(defaults) {
   app.import('bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css');
   app.import('bower_components/prism/prism.js');
   app.import('bower_components/prism/components/prism-yaml.js');
+  app.import('bower_components/prism/components/prism-bash.js');
   app.import('bower_components/lodash/lodash.js');
   app.import('bower_components/graphlib/dist/graphlib.core.js');
   app.import('bower_components/dagre/dist/dagre.core.js');

@@ -51,8 +51,8 @@ export default Ember.Route.extend({
       console.log('Application Error', (err ? err.stack : undefined));
     },
 
-    goToPrevious: function() {
-      this.goToPrevious();
+    goToPrevious: function(def) {
+      this.goToPrevious(def);
     },
 
     logout: function(transition, timedOut, errorMsg) {

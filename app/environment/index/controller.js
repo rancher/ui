@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  environments: Ember.inject.controller(),
-  mode: Ember.computed.alias('environments.mode'),
+  mode: 'grouped',
+  queryParams: ['mode'],
 
   actions: {
     addService: function() {

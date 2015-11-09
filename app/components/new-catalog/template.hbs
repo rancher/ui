@@ -24,7 +24,7 @@
   <h4>Template Version</h4>
   <hr/>
   <div class="row">
-    <div class="col-sm-12 col-md-10 col-md-offset-1">
+    <div class="col-sm-12">
       {{new-select
         classNames="form-control"
         content=versionsArray
@@ -43,11 +43,11 @@
     <h4>New Stack</h4>
     <hr/>
     <div class="row form-group">
-      <div class="col-sm-12 col-md-5 col-md-offset-1 form-label">
+      <div class="col-sm-12 col-md-6 form-label">
         <label class="form-control-static">Name*</label>
         {{input type="text" class="form-control" value=environmentResource.name}}
       </div>
-      <div class="col-sm-12 col-md-5 form-label">
+      <div class="col-sm-12 col-md-6 form-label">
         <label class="form-control-static">Description</label>
         {{textarea rows="3" class="form-control" value=environmentResource.description}}
       </div>
@@ -67,7 +67,7 @@
       <h4>Configuration Options</h4>
       <hr/>
 
-      <div class="row"><div class="col-sm-12 col-md-10 col-md-offset-1"><div class="row">
+      <div class="row"><div class="col-sm-12"><div class="row">
         {{#each selectedTemplateModel.questions as |question|}}
           <div class="col-sm-12 {{if (eq selectedTemplateModel.questions.length 1) 'col-md-12' 'col-md-6'}} form-label">
             <label class="form-label form-control-static">{{question.label}}{{if question.required "*"}}</label>
@@ -97,18 +97,15 @@
                     {{textarea value=question.answer rows="5" class="form-control"}}
                   {{else}}
                     {{#if (eq question.type 'service')}}
-                      {{#if loadingServices}}
-                          <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
-                      {{else}}
-                        {{display-name-select
-                          classNames="form-control"
-                          content=services
-                          prompt="Choose a Service"
-                          optionLabelPath="content.stack"
-                          optionValuePath="content.stack"
-                          optionGroupPath="group"
-                          value=question.answer}}
-                      {{/if}}
+                      {{new-select
+                        classNames="form-control"
+                        content=serviceChoices
+                        prompt="Choose a Service"
+                        optionLabelPath="name"
+                        optionValuePath="stack"
+                        optionGroupPath="group"
+                        value=question.answer
+                      }}
                     {{else}}
                       Unknown question type: {{question.type}}
                     {{/if}}
@@ -131,33 +128,39 @@
   {{#if errors.length}}
     <section>
       <div class="row">
-        <div class="col-sm-12 col-md-10 col-md-offset-1">
+        <div class="col-sm-12">
           {{top-errors errors=errors}}
         </div>
       </div>
     </section>
   {{/if}}
 
-  {{partial "save-cancel"}}
-
   <section>
-    <h4>Preview</h4>
+    <h4 class="hand" {{action "togglePreview"}}><i class="icon {{if previewOpen 'icon-minus' 'icon-plus'}}"></i> Preview</h4>
     <hr/>
-    <div class="row">
-      <div class="col-sm-12 col-md-5 col-md-offset-1">
-        docker-compose.yml {{zero-clipboard text=selectedTemplateModel.dockerCompose}}
-        <pre class="line-numbers language-yaml constrained"><code class="language-yaml">
+    {{#if previewOpen}}
+      <ul class="nav nav-tabs nav-tabs-well">
+        <li class="{{if (eq previewTab 'docker-compose') 'active'}}" {{action "selectPreviewTab" "docker-compose"}}><a>docker-compose.yml</a></li>
+        <li class="{{if (eq previewTab 'rancher-compose') 'active'}}" {{action "selectPreviewTab" "rancher-compose"}}><a>rancher-compose.yml</a></li>
+        <li class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a>answers.txt</a></li>
+      </ul>
+      <div class="well nav-well preview-content">
+        <pre class="line-numbers language-yaml constrained {{unless (eq previewTab 'docker-compose') 'hide'}}"><code class="language-yaml">
           {{~selectedTemplateModel.dockerCompose~}}
         </code></pre>
-      </div>
-      <div class="col-sm-12 col-md-5">
-        rancher-compose.yml {{zero-clipboard text=selectedTemplateModel.rancherCompose}}
-        <pre class="line-numbers language-yaml constrained"><code class="language-yaml">
+        <pre class="line-numbers language-yaml constrained {{unless (eq previewTab 'rancher-compose') 'hide'}}"><code class="language-yaml">
           {{~selectedTemplateModel.rancherCompose~}}
         </code></pre>
+        <pre class="line-numbers language-bash constrained {{unless (eq previewTab 'answers') 'hide'}}"><code class="language-bash">
+          {{~#each answersArray as |obj|~}}
+            {{obj.variable}}="{{obj.answer}}"
+          {{~/each~}}
+        </code></pre>
       </div>
-    </div>
+    {{/if}}
   </section>
+
+  {{partial "save-cancel"}}
 {{else}}
   <div class="footer-actions">
     <button {{action "cancel"}} class="btn btn-default">Cancel</button>
