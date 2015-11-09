@@ -135,7 +135,7 @@ var Service = Resource.extend(ReadLabels, {
 
     var choices = [
       { label: 'Start',           icon: 'icon icon-play',             action: 'activate',       enabled: !!a.activate && !isK8s,    color: 'text-success'},
-      { label: 'Stop',            icon: 'icon icon-pause',            action: 'deactivate',     enabled: !!a.deactivate && !isK8s,  color: 'text-danger'},
+      { label: 'Stop',            icon: 'icon icon-square',           action: 'deactivate',     enabled: !!a.deactivate && !isK8s,  color: 'text-danger'},
       { label: 'Delete',          icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove && !isK8s, altAction: 'delete', color: 'text-warning' },
       { label: 'Purge',           icon: '',                           action: 'purge',          enabled: !!a.purge && !isK8s },
       { divider: true },
