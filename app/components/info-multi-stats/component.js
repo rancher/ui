@@ -177,9 +177,9 @@ export default Ember.Component.extend({
       if ( this.get('single') )
       {
         row = getOrCreateDataRow(graph, data, 'Transmit');
-        row.push(point.net_tx_kb);
+        row.push(point.net_tx_kb*8);
         row = getOrCreateDataRow(graph, data, 'Receive');
-        row.push(point.net_rx_kb);
+        row.push(point.net_rx_kb*8);
       }
       else
       {
@@ -196,9 +196,9 @@ export default Ember.Component.extend({
       if ( this.get('single') )
       {
         row = getOrCreateDataRow(graph, data, 'Write');
-        row.push(point.disk_write_kb);
+        row.push(point.disk_write_kb*8);
         row = getOrCreateDataRow(graph, data, 'Read');
-        row.push(point.disk_read_kb);
+        row.push(point.disk_read_kb*8);
       }
       else
       {
