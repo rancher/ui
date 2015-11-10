@@ -12,6 +12,73 @@
 
 <section>
   {{#info-multi-stats model=model linkName="hostStats" single=true}}
+    <div class="row multi-stats">
+      <div class="col-sm-3 col-md-3 col-lg-3">
+        <label>IP Address</label>
+        {{model.displayIp}} {{zero-clipboard text=model.displayIp}}
+      </div>
+      <div class="col-sm-3 col-md-3 col-lg-3">
+        {{#if model.memoryBlurb}}
+          <label>Memory</label>
+          {{model.memoryBlurb}}
+        {{else}}
+          <span class="text-muted">No Memory Footprint</span>
+        {{/if}}
+      </div>
+      <div class="col-sm-3 col-md-3 col-lg-3">
+        {{#if model.osDetail}}
+          <label>OS</label>
+          {{model.osDetail}}
+        {{else}}
+          <span class="text-muted">No OS Details</span>
+        {{/if}}
+      </div>
+      <div class="col-sm-3 col-md-3 col-lg-3">
+        {{#if model.dockerBlurb}}
+          <label>Docker</label>
+          {{model.dockerBlurb}}
+        {{else}}
+          <span class="text-muted">No Docker Details</span>
+        {{/if}}
+      </div>
+    </div>
+    <div class="row multi-stats">
+      <div class="col-sm-3 col-md-3 col-lg-3">
+        {{#if model.cpuBlurb}}
+          <label>CPU</label>
+          {{model.cpuBlurb}}{{#if model.cpuTooltip}} <i class="icon icon-info" tooltip="{{model.cpuTooltip}}"></i>{{/if}}
+        {{/if}}
+      </div>
+      <div class="col-sm-3 col-md-3 col-lg-3">
+        {{#if model.diskBlurb}}
+          <label>Storage</label>
+          {{#if model.diskDetail}}
+            {{#each model.diskDetail as |disk|}}
+              <span style="display: inline-block; padding-right: 10px;">{{disk.value}} <i class="icon icon-info" tooltip="{{disk.label}}"></i></span>
+            {{/each}}
+          {{else}}
+            {{model.diskBlurb}} (total)
+          {{/if}}
+        {{else}}
+          <span class="text-muted">No Storage Details</span>
+        {{/if}}
+      </div>
+      <div class="col-sm-3 col-md-3 col-lg-3">
+        {{#if model.info.osInfo.kernelVersion}}
+          <label>Kernel</label>
+          {{model.info.osInfo.kernelVersion}}
+        {{/if}}
+      </div>
+      <div class="col-sm-3 col-md-3 col-lg-3">
+        <label>Provider</label>
+        {{#if model.machine}}
+          {{model.machine.driver}}
+        {{else}}
+          <span class="text-muted">No Provider</span>
+        {{/if}}
+      </div>
+    </div>
+    {{!--
     <ul class="list-lines">
       {{#if model.showTransitioningMessage}}
         <li>
@@ -21,87 +88,17 @@
           </span>
         </li>
       {{/if}}
-
-      <li>
-        <label>IP Address</label>
-        {{model.displayIp}} {{zero-clipboard text=model.displayIp}}
-      </li>
-
-      {{#if model.machine}}
-        <li>
-          <label>Provider</label>
-          {{model.machine.driver}}
-        </li>
-      {{/if}}
-
-      {{#if model.cpuBlurb}}
-        <li>
-          <label>CPU</label>
-          {{model.cpuBlurb}}{{#if model.cpuTooltip}} <i class="icon icon-info" tooltip="{{model.cpuTooltip}}"></i>{{/if}}
-        </li>
-      {{/if}}
-
-      {{#if model.memoryBlurb}}
-        <li>
-          <label>Memory</label>
-          {{model.memoryBlurb}}
-        </li>
-      {{/if}}
-
-      {{#if model.diskBlurb}}
-        <li>
-          <label>Storage</label>
-          {{#if model.diskDetail}}
-            {{#each model.diskDetail as |disk|}}
-              <span style="display: inline-block; padding-right: 10px;">{{disk.value}} <i class="icon icon-info" tooltip="{{disk.label}}"></i></span>
-            {{/each}}
-          {{else}}
-            {{model.diskBlurb}} (total)
-          {{/if}}
-        </li>
-      {{/if}}
-
-      {{#if model.osDetail}}
-        <li>
-          <label>OS</label>
-          {{model.osDetail}}
-        </li>
-      {{/if}}
-
-      {{#if model.info.osInfo.kernelVersion}}
-        <li>
-          <label>Kernel</label>
-          {{model.info.osInfo.kernelVersion}}
-        </li>
-      {{/if}}
-
-      {{#if model.dockerBlurb}}
-        <li>
-          <label>Docker</label>
-          {{model.dockerBlurb}}
-        </li>
-      {{/if}}
-
-      <li>
-        <label>Labels</label>
-        {{#if userLabelArray.length}}
-          {{#each userLabelArray as |label|}}
-            <span class="label label-default clip" style="display: inline-block; max-width: 100%;">{{label.key}}{{#if label.value}}={{label.value}}{{/if}}</span>
-          {{/each}}
-        {{else}}
-          <span class="text-muted">None</span>
-        {{/if}}
-      </li>
     </ul>
+    --}}
   {{/info-multi-stats}}
 </section>
 
 <section>
-  <ul class="nav nav-tabs nav-tabs-well">
+  <ul class="nav nav-tabs nav-tabs-well shadowed">
     {{#link-to "host.containers" tagName="li" href=false}}<a><i class="icon icon-box"></i> Containers</a>{{/link-to}}
     {{#link-to "host.storage" tagName="li" href=false}}<a><i class="icon icon-hdd"></i> Storage</a>{{/link-to}}
   </ul>
-  <div class="well nav-well">
+  <div class="table-flat">
     {{outlet}}
   </div>
 </section>
