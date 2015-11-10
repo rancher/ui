@@ -22,6 +22,7 @@ Setup:
 ```bash
   git clone 'https://github.com/rancher/ui'
   cd 'ui'
+  ./scripts/update-dependencies
   git submodule init
   git submodule update
   npm install
