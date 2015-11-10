@@ -44,13 +44,16 @@ export default Ember.Component.extend({
     this._super();
 
     Ember.run.next(() => {
-      var stats = MultiStatsSocket.create({
-        resource: this.get('model'),
-        linkName: this.get('linkName'),
-      });
+      try {
+        var stats = MultiStatsSocket.create({
+          resource: this.get('model'),
+          linkName: this.get('linkName'),
+        });
 
-      this.set('statsSocket',stats);
-      stats.on('dataPoint', (data) => { this.onDataPoint(data); });
+        this.set('statsSocket',stats);
+        stats.on('dataPoint', (data) => { this.onDataPoint(data); });
+      } catch(e) {
+      }
     });
   },
 

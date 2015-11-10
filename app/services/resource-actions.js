@@ -27,7 +27,7 @@ export default Ember.Service.extend({
       $menu.removeClass('hide');
       $toggle.addClass('open');
       this.set('open',true);
-      BootstrapFixes.positionDropdown($menu, trigger);
+      BootstrapFixes.positionDropdown($menu, trigger, true);
     });
   },
 
