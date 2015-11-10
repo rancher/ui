@@ -1,26 +1,35 @@
 import Ember from 'ember';
-import EditLabels from 'ui/mixins/edit-labels';
+import ManageLabels from 'ui/mixins/manage-labels';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
-export default Ember.Component.extend(NewOrEdit, EditLabels, {
+export default Ember.Component.extend(NewOrEdit, ManageLabels, {
   editing: true,
   originalModel: null,
   model: null,
 
-  willInsertElement: function() {
+  willInsertElement() {
     this.set('model', this.get('originalModel').clone());
-    this.initLabels();
   },
 
   actions: {
-    outsideClick: function() {},
+    outsideClick() {
+    },
 
-    cancel: function() {
+    cancel() {
       this.sendAction('dismiss');
-    }
+    },
+
+    setLabels(labels) {
+      var out = {};
+      labels.forEach((row) => {
+        out[row.key] = row.value;
+      });
+
+      this.set('model.labels', out);
+    },
   },
 
-  doneSaving: function() {
+  doneSaving() {
     this.sendAction('dismiss');
   },
 });

@@ -58,6 +58,7 @@ module.exports = function(defaults) {
   app.import('bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css');
   app.import('bower_components/prism/prism.js');
   app.import('bower_components/prism/components/prism-yaml.js');
+  app.import('bower_components/prism/components/prism-bash.js');
   app.import('bower_components/lodash/lodash.js');
   app.import('bower_components/graphlib/dist/graphlib.core.js');
   app.import('bower_components/dagre/dist/dagre.core.js');
@@ -75,12 +76,12 @@ module.exports = function(defaults) {
   app.import('vendor/icons/fonts/rancher-icons.ttf',  {destDir: 'assets/fonts'});
   app.import('vendor/icons/fonts/rancher-icons.woff', {destDir: 'assets/fonts'});
 
-  app.import('vendor/open-sans/open-sans-v13-latin-300.woff',       {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-300.woff2',      {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-600.woff',       {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-600.woff2',      {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-regular.woff',   {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-regular.woff2',  {destDir: 'assets/fonts'});
+  app.import('vendor/lato/Lato-Light.woff',       {destDir: 'assets/fonts'});
+  app.import('vendor/lato/Lato-Light.woff2',      {destDir: 'assets/fonts'});
+  app.import('vendor/lato/Lato-Black.woff',       {destDir: 'assets/fonts'});
+  app.import('vendor/lato/Lato-Black.woff2',      {destDir: 'assets/fonts'});
+  app.import('vendor/lato/Lato-Medium',   {destDir: 'assets/fonts'});
+  app.import('vendor/lato/Lato-Medium',  {destDir: 'assets/fonts'});
 
   return app.toTree();
 };

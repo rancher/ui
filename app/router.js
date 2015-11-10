@@ -100,6 +100,7 @@ Router.map(function() {
           this.route('index', {path: '/'});
           this.route('code', {path: '/code'});
           this.route('graph', {path: '/graph'});
+          this.route('chart', {path: '/chart'});
 
           this.resource('service', {path: '/services/:service_id'}, function() {
             this.route('containers');
@@ -107,7 +108,9 @@ Router.map(function() {
           });
         });
       });
-      this.route('catalog', {path: '/catalog/:type'});
+
+      this.route('catalog.launch', {path: '/catalog/:template'});
+      this.route('catalog', {path: '/catalog'});
     });
 
     // End: Authenticated

@@ -9,7 +9,7 @@ export default Ember.Component.extend({
 
   avatar: true,
   link: true,
-  size: 36,
+  size: 35,
 
   loading: false,
   didInitAttrs: function() {

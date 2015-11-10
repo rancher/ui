@@ -1,21 +1,27 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  model: null,
+  size: 'xs',
+  showPrimary: true,
+
   resourceActions: Ember.inject.service('resource-actions'),
 
-  model: null,
+  tagName: 'div',
+  classNames: ['btn-group','resource-actions','action-menu'],
 
-  classNames: ['resource-actions'],
-
-  click(event) {
-    event.preventDefault();
-    event.stopPropagation();
-    this.get('resourceActions').show(this.get('model'), event.target, this.$());
+  click(e) {
+    if ( Ember.$(e.target).closest('.more-actions').length )
+    {
+      e.preventDefault();
+      e.stopPropagation();
+      this.get('resourceActions').show(this.get('model'), e.target, this.$());
+    }
   },
 
   actions: {
-    clicked: function(actionName) {
-      this.get('model').send(actionName);
+    sendAction: function(action) {
+      this.get('model').send(action);
     }
   },
 });

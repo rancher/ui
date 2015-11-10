@@ -1,68 +1,98 @@
 /**********
 * Header (top bar)
 **********/
+$topHeight: ($header-height * 0.45);
+$bottomHeight: ($header-height * 0.55);
+
 HEADER {
   position: relative;
   z-index: 5;
-  height: $header-height;
-  background-color: #393d48;
 
   NAV {
-    &>A, &>.btn-group>A {
-      float: left;
-      height: ($header-height/2);
-      line-height: ($header-height/2);
+    &>A {
+      display: inline-block;
       padding: 0 20px;
       vertical-align: top;
       font-weight: normal;
       text-transform:uppercase;
       border-bottom: 2px solid transparent;
-      color: #858999;
+      color: $lightGray;
       font-size:13px;
 
       &:hover,
       &:focus,
       &:visited,
       &:active {
-        color: #858999;
-      }
-
-
-      &.active {
-        color: white;
-        background-color: #292c36;
+        color: $lightTeal;
       }
     }
   }
 
   .top-row {
-    height: ($header-height/2);
+    background-color: $black;
+    min-height: $topHeight;
 
     NAV {
+      float: left;
       font-size: 14px;
+
+      &>A {
+        height: $topHeight;
+        line-height: $topHeight;
+        position: relative;
+      }
+
+      &>A {
+        &:hover {
+          background: $blackDark;
+        }
+        &.active {
+          color: white;
+          &:after{
+                content: "";
+                border-width: 5px;
+                border-color: transparent;
+                border-bottom-color: white;
+                border-style: solid;
+                position: absolute;
+                bottom: -2px;
+                left: 45%;
+          }
+        }
+      }
     }
 
     .logo {
       cursor: pointer;
       float: left;
-      height: ($header-height/2);
+      height: $topHeight;
       width: 68px;
       background-image: url('images/logos/main.svg');
+      background-color: $blackDark;
       background-position: center center;
       background-repeat: no-repeat;
     }
 
+    .user-btn {
+      float: right;
+      vertical-align: top;
+      padding: 3px 15px;
+    }
+
     .project-btn {
+      float: right;
+
       margin-right: 10px;
       border-radius: 3px;
       max-width: 200px;
 
       .dropdown-toggle {
-        height: 50px;
+        height: $topHeight;
+        line-height: $topHeight;
         padding: 0;
         margin-right: 10px;
         max-width: 100%;
-        color: #858999;
+        color: $midGray;
       }
 
       .dropdown-menu {
@@ -82,33 +112,33 @@ HEADER {
       margin-top: -13px;
       z-index: 1000; /* These have to be > 990 for bootstrap on touch devices */
       padding-top: 0;
-      border-radius: 5px;
+      border-radius: 2px;
     }
 
     .user-menu {
-      margin-top: -13px;
       z-index: 1000; /* These have to be > 990 for bootstrap on touch devices */
       padding-top: 0;
       width: 250px;
-      border-radius: 5px;
+      border-radius: 2px;
     }
 
     .user-dropdown-arrow {
-      color: #858999;
+      color: $midGrayTwo;
       position: relative;
       left: -2px;
     }
 
     .user-noauth,
     .user-auth {
-      border-top-left-radius: 5px;
-      border-top0right-radius: 5px;
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
       color: white;
       margin-bottom: 5px;
     }
 
     .user-noauth {
-      background-color: #de6e79;
+      background-color: $yellowTwo;
+      color: $yellowDark;
       text-align: center;
     }
 
@@ -133,7 +163,7 @@ HEADER {
 
       .user-logout {
         background-color: #899ba7;
-        border-top-right-radius: 5px;
+        border-top-right-radius: 2px;
         position: absolute;
         top: 0;
         right: 0;
@@ -155,17 +185,70 @@ HEADER {
   }
 
   .bottom-row {
-    height: ($header-height/2);
-    background-color: #292c36;
+    min-height: $bottomHeight;
+    background-color: white;
+    border-bottom: solid 2px $lightGray;
 
     NAV {
       font-size: 14px;
+      margin-left: 68px;
+
+      &>A {
+        height: $bottomHeight;
+        line-height: $bottomHeight;
+        padding-top: 12px;
+        color: $midGrayDark;
+        line-height: 25px;
+        text-align: center;
+        position: relative;
+        &:hover {
+          color: $blueTwo
+        }
+        &.active {
+          color: $primary;
+          &:after{
+            content: "";
+            border-width: 5px;
+            border-color: transparent;
+            border-bottom-color: $lightGray;
+            border-style: solid;
+            position: absolute;
+            bottom: -2px;
+            left: 45%;
+          }
+        }
+
+        I {
+          display: block;
+        }
+      }
+
+      .compose-download {
+        display: inline-block;
+        float: right;
+        margin-right: 20px;
+        height: $bottomHeight;
+        line-height: $bottomHeight;
+        color: $midGrayDark;
+
+        A {
+          color: $midGrayDark;
+
+          &:hover {
+            color: $blueTwo
+          }
+          &.active {
+            color: $primary;
+          }
+        }
+      }
     }
+
   }
 
   H3 {
     margin: 0;
-    line-height: ($header-height/2);
+    line-height: $bottomHeight;
     color: #fff;
     padding-left: 20px;
     white-space: nowrap;
@@ -180,14 +263,6 @@ HEADER {
       text-decoration: none;
       color: $header-link-text;
     }
-  }
-
-  .right {
-    float: right;
-    height: ($header-height/2);
-    line-height: ($header-height/2);
-    vertical-align: top;
-    padding: 0px 10px 0 0;
   }
 }
 

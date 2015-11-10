@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
-import { parseExternalId } from 'ui/utils/parse-externalid';
 
 const NONE = 'none',
       LOADING = 'loading',
@@ -15,6 +14,7 @@ function getUpgradeInfo(task, cb) {
   var obj = task.obj;
 
   ajaxPromise({url: task.url, dataType: 'json'},true).then((upgradeInfo) => {
+    upgradeInfo.id = task.id;
     obj.set('upgradeInfo', upgradeInfo);
     if ( upgradeInfo && upgradeInfo.newVersionLinks && Object.keys(upgradeInfo.newVersionLinks).length )
     {
@@ -47,15 +47,22 @@ export default Ember.Component.extend({
 
   click: function() {
     var upgradeInfo = this.get('upgradeInfo');
-    upgradeInfo.versionLinks = upgradeInfo.newVersionLinks;
 
     if ( this.get('upgradeStatus') === AVAILABLE )
     {
-      this.get('application').setProperties({
-        launchCatalog: true,
-        originalModel: upgradeInfo,
-        environmentResource: this.get('environmentResource'),
-      });
+      // Hackery, but no good way to get the template from upgradeInfo
+      var tpl = '_upgrade';
+      var key = Object.keys(upgradeInfo.newVersionLinks)[0];
+      var match = upgradeInfo.newVersionLinks[key].match(/.*\/templates\/(.*)\/([^\/]+)$/);
+      if ( match )
+      {
+        tpl = match[1];
+      }
+
+      this.get('application').transitionToRoute('applications-tab.catalog.launch', tpl, {queryParams: {
+        environmentId: this.get('environmentResource.id'),
+        upgrade: this.get('upgradeInfo.id'),
+      }});
     }
   },
 
@@ -88,12 +95,12 @@ export default Ember.Component.extend({
   }.property('upgradeStatus'),
 
   updateStatus() {
-    var info = parseExternalId(this.get('environmentResource.externalId'));
-
-    if ( info && info.kind === C.EXTERNALID.KIND_CATALOG )
+    var info = this.get('environmentResource.externalIdInfo');
+    if ( info.kind === C.EXTERNALID.KIND_CATALOG )
     {
       this.set('upgradeStatus', LOADING);
       queue.push({
+        id: info.id,
         url: this.get('app.catalogEndpoint')+'/upgradeinfo/'+ info.id,
         obj: this
       });

@@ -1,14 +1,7 @@
 
-export default function() {
-  /*
-  this.transition(
-    this.fromRoute('containers.index'),
-    this.toRoute('container'),
-    this.use('toLeft'),
-    this.reverse('toRight')
-  );
-  */
+//const duration = 500;
 
+export default function() {
   this.transition(
     this.inHelper('liquid-modal'),
     this.toValue(true),
@@ -28,4 +21,11 @@ export default function() {
       use: 'toUp'
     })
   );
+
+/*
+  this.transition(
+    this.matchSelector('.main-container'),
+    this.use('toLeft')
+  );
+*/
 }

@@ -1,8 +1,8 @@
-$body-bg: #f4f5f8;
+$body-bg: #f2f5f5;
 $header-height: 100px;
 $header-link-text: #afb9c8;
 $main-padding: 20px;
-$nav-bg: #393d47;
+$nav-bg: #34495e;
 $nav-text: #788188;
 $nav-bg-hover: #283036;
 $nav-text-hover: white;
@@ -35,11 +35,7 @@ B {
 }
 
 .farm {
-  background-color: #000;
-  background-image: url('images/background.jpg');
-  background-position: top center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-color: $body-bg;
 }
 
 /**********
@@ -65,8 +61,8 @@ B {
     }
 
     &.warning {
-      background-color: #e0717b;
-      color: #fbd1cc;
+      background-color: #f15354;
+      color: #f8a9a9;
 
       A,
       A:hover,
@@ -130,24 +126,6 @@ SECTION {
   padding: 20px 0 0 0;
 }
 
-.top-colors {
-  position: relative;
-
-  &:before {
-    content: ' ';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background-image: url('images/top-colors.gif');
-    background-size: 100% 23px;
-    background-repeat: no-repeat;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    image-rendering: pixelated;
-  }
-}
 
 /**********
 * Aside (side bar on the left next to left)
@@ -253,11 +231,6 @@ UL.list-circles {
       color: white;
       text-align: center;
       font-style: normal;
-
-      &.fa {
-        /* Font-Awesome knows how to center things properly.. */
-        line-height: 34px;
-      }
     }
 
     &:last-child {
@@ -289,6 +262,7 @@ UL.list-lines {
     margin-top: 5px;
     border-bottom: 1px solid #e8ecf2;
     font-size: $font-size-small;
+    padding: 5px 0 5px 15px;
 
     LABEL {
       font-weight: $normal-weight;
@@ -372,9 +346,9 @@ UL.list-lines {
 }
 
 .well {
-  border-radius: 5px;
+  border-radius: 1px;
   border:none;
-  border-bottom: 2px solid #e9edf1;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 
   &.no-padding-margin {
     padding: 0;
@@ -416,16 +390,27 @@ TABLE.graphs {
 }
 
 .farm-box {
-  SECTION {
-    min-width: 50%;
-    margin: 20px auto 0 auto;
-    background-color: white;
-    border-radius: 5px;
-    padding: 20px;
+  h1 {
+        background-image: url(images/logos/cowhide.jpg);
+        background-size: cover;
+        padding: 40px 20px;
+        color: white;
+        position: relative;
+
+        .logo {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: -25px;
+        }
   }
 
-  SECTION:first-of-type {
-    margin-top: 50px;
+  SECTION {
+    min-width: 50%;
+    background-color: white;
+    border-radius: $border-radius-large;
+    padding: 20px;
+    box-shadow: $boxShadow;
   }
 }
 
@@ -462,7 +447,7 @@ $spacing-property-map: (
     pl: padding-left,
     pr: padding-right
 );
-@for $size from 0 through 5 {
+@for $size from 0 through 8 {
   $val: $size * 5px;
   @each $keyword, $property in $spacing-property-map {
     .r-#{$keyword}#{$size*5} {
@@ -497,7 +482,8 @@ $spacing-property-map: (
 
 .btn-circle-plus {
   @extend .btn-circle;
-  background-image: url('images/circle-plus.svg');
+    font-size: 1.5em;
+    line-height: 0;
 }
 
 .btn-circle-x {
@@ -505,16 +491,7 @@ $spacing-property-map: (
   background-image: url('images/circle-x.svg');
 }
 
-.btn-circle-menu {
-  @extend .btn-circle;
-  background-image: url('images/circle-menu.svg');
-}
-
 ASIDE {
-  .btn-circle-menu {
-    background-image: url('images/circle-menu-white.svg');
-  }
-
   .btn-circle-plus {
     background-image: url('images/circle-plus-white.svg');
   }
@@ -584,7 +561,7 @@ ASIDE {
   /* End: Copied from .table because @extend doesn't work */
 
   & > TBODY > TR:hover {
-    background-color: rgba(255, 255, 0, 0.12);
+    background-color: #fdfcee;
   }
 
   & > THEAD > TR > TH,
@@ -695,6 +672,15 @@ ASIDE {
     left: 100%;
     margin-left: 15px;
   }
+
+  &.expandable > span:after {
+    margin-left: 30px;
+  }
+
+  .icon-chevron-up,
+  .icon-chevron-down {
+    font-size: 10px;
+  }
 }
 
 @media (max-width: $screen-md) {
@@ -728,7 +714,8 @@ ASIDE {
 **********/
 .nav-boxes {
   & > LI.active > A {
-    border-color: #44b4a2;
+    border-color: $lightGrayDark;
+    border-width: 2px;
   }
 
   .driver {
@@ -751,16 +738,16 @@ ASIDE {
   }
 
   &.checked-active .active:after {
-    content: "\f058";
+    content: $icon-check;
     top: 0;
     right: 0;
-    font-family: FontAwesome;
+    font-family: 'rancher-icons';
     font-size: 25px;
     position: absolute;
     background-color: white;
     height: 29px;
     border-radius: 50%;
-	color:#44b4a2;
+    color:$tealTwo;
   }
 }
 
@@ -777,15 +764,17 @@ ASIDE {
 
     A {
       border: 0 !important;
-      background-color: #e5eaee;
-      color: #bfc9d1;
-      text-transform: uppercase;
+      background-color: $lightGray;
+      color: $darkestGrayTwo;
     }
 
     &.active A,
     &.active A:hover {
       background-color: white;
-      color: #de733d;
+      color: $orange;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 -5px 10px rgba(0, 0, 0, 0.15);
     }
   }
 }
@@ -798,17 +787,15 @@ ASIDE {
 }
 
 /**********
-* Collapse/expand toggle
+* Tabs
 **********/
-.collapser {
-  &:after {
-    font-family: "rancher-icons";
-    content: '\E613';
-  }
+.tab {
+  background: $lightGrayTwo;
+  margin: 0 10px;
+  box-shadow: 0 0 5px rgba(0,0,0,.15);
 
-  &.collapsed:after {
-    font-family: "rancher-icons";
-    content: '\E61F';
+  &.active {
+    background: white;
   }
 }
 
@@ -835,4 +822,15 @@ SECTION.header H3 {
   background-size: 300px 317px;
   background-repeat: no-repeat;
   margin: 0 auto;
+}
+
+.top-errors {
+  position: relative;
+
+  I {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 23px;
+  }
 }

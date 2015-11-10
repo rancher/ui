@@ -19,6 +19,13 @@ export default Ember.View.extend(ThrottledResize,{
     Ember.run.later(this,'initGraph',100);
   },
 
+
+  click: function(evt) {
+    if ($(evt.target).hasClass('icon-x')) {
+      this.styleSvg();
+    }
+  },
+
   onResize: function() {
     $('#environment-svg').css('top', $('MAIN').position().top + 55 + 'px');
     if ( this.get('graph') )
@@ -56,6 +63,64 @@ export default Ember.View.extend(ThrottledResize,{
     });
 
     this.updateGraph();
+    $(outer[0]).on('click', (event) => {
+      var fo = $(event.target).closest('foreignObject');
+
+      if ( fo )
+      {
+        if ( this.get('currentFO') ) {
+          this.get('currentFO').find('>div').removeClass('highlighted');
+
+          this.set('prevFO', this.get('currentFO'));
+
+          this.set('currentFO', fo);
+
+          fo.find('>div').addClass('highlighted');
+
+        } else {
+          this.set('currentFO', fo);
+
+          fo.find('>div').addClass('highlighted');
+
+        }
+
+        var serviceId = $('span[data-service]', fo).data('service');
+
+        if ( serviceId )
+        {
+          this.showService(serviceId);
+
+          return;
+        }
+      }
+
+      this.showService(null);
+
+      this.setProperties({
+        currentFO: null,
+        prevFO: null,
+      });
+
+    });
+  },
+
+  styleSvg: function(height='100%') {
+    $('#environment-svg svg').css('height', height);
+  },
+
+  showService: function(id) {
+    if ( id )
+    {
+      var svgHeight = $('#environment-svg').height() - 310; // svg minus the height of info service-addtl-info.scss
+      this.styleSvg(`${svgHeight}px`);
+      this.set('context.showServiceInfo', true);
+      this.set('context.selectedService', this.get('context.model.services').findBy('id', id));
+    }
+    else
+    {
+      this.styleSvg();
+      this.set('context.showServiceInfo', null);
+    }
   },
 
   crosslinkServices: function() {
@@ -101,10 +166,10 @@ export default Ember.View.extend(ThrottledResize,{
         envName = service.get('displayEnvironment') + '/';
       }
 
-      var html =  '<i class="icon '+ activeIcon(service) +'"></i>' +
-                  '<h4 class="clip">'+ envName + Util.escapeHtml(service.get('displayName')) + '</h4>' +
-                  '<h6 class="count"><b>' + instances + '</b> container' + (instances === 1 ? '' : 's') + '</h6>' +
-                  '<h6><span class="state '+ color +'">' + Util.escapeHtml(Util.ucFirst(service.get('state'))) + '</span></h6>';
+      var html = `<span data-service="${service.get('id')}"></span><i class="icon  ${activeIcon(service)}"></i>
+                  <h4 class="clip">${envName}${Util.escapeHtml(service.get('displayName'))}</h4>
+                  <h6 class="count"><b>${instances}</b> container${(instances === 1 ? '' : 's')}</h6>
+                  <h6><span class="state ${color}">${Util.escapeHtml(Util.ucFirst(service.get('state')))}</span></h6>`;
 
       g.setNode(serviceId, {
         labelType: "html",

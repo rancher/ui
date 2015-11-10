@@ -1,22 +1,32 @@
 <section>
   <h3>
     <span class="right-divider">Stacks</span>
-
-    <div class="btn-group right-divider" style="margin: 0 10px 0 -5px;">
-      {{#link-to "environments" (query-params mode="dot") classNames="btn btn-sm btn-default"}}<i class="fa fa-ellipsis-h" data-placement="bottom" tooltip="Tiny Dots"></i>{{/link-to}}
-      {{#link-to "environments" (query-params mode="list") classNames="btn btn-sm btn-default"}}<i class="icon icon-thumbnails" data-placement="bottom" tooltip="Containers"></i>{{/link-to}}
-      {{#link-to "environments" (query-params mode="grouped") classNames="btn btn-sm btn-default"}}<i class="fa fa-object-group" data-placement="bottom" tooltip="Grouped Sidekicks"></i>{{/link-to}}
-    </div>
-
     {{#link-to "environments.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add Stack{{/link-to}}
+
+    <div class="pull-right">
+      <label class="text-muted" style="font-size: 12px;">Sort By</label>
+      <div class="btn-group btn-sm" role="group" aria-label="Sort By">
+        <button {{action 'setSort' 'state'}} type="button" class="btn btn-sm btn-default {{if (eq sortBy "state") 'active'}}">State</button>
+        <button {{action 'setSort' 'name'}}  type="button" class="btn btn-sm btn-default {{if (eq sortBy "name") 'active'}}">Name</button>
+      </div>
+    </div>
   </h3>
 </section>
 
 <section>
-  {{#each arranged as |stack|}}
-    {{stack-section model=stack collapseId=(dom-id stack)}}
-    {{#columns-section pods=stack.unremovedServices id=(dom-id stack) classNames="collapse in" emptyMessage="No services yet." as |service| }}
-      {{service-pod mode=mode model=service}}
-    {{/columns-section}}
-  {{/each}}
+  {{#if showTabs}}
+    <ul class="nav nav-tabs nav-tabs-well">
+      {{#link-to (query-params which="all") tagName="li" href=false}}<a>All</a>{{/link-to}}
+      {{#link-to (query-params which="user") tagName="li" href=false}}<a>User</a>{{/link-to}}
+      {{#link-to (query-params which="system") tagName="li" href=false}}<a>System</a>{{/link-to}}
+      {{#link-to (query-params which="kubernetes") tagName="li" href=false}}<a>Kubernetes</a>{{/link-to}}
+    </ul>
+  {{/if}}
+  <div class="well {{if showTabs 'nav-well'}} r-pl0 r-pr0">
+    {{#each arranged as |stack|}}
+      {{stack-section model=stack}}
+    {{else}}
+      <div class="r-m20 text-center text-muted">No Stacks</div>
+    {{/each}}
+  </div>
 </section>

@@ -1,0 +1,20 @@
+{{!-- these are the references for the markers that will be used as end markers for the paths --}}
+<defs>
+    <marker id="markerCircle" markerWidth="5" markerHeight="5" refX="2" refY="2">
+        <circle cx="2" cy="2" r="2" style="stroke: none; fill:#9CB6B5;"/>
+    </marker>
+    <marker id="markerSquare" markerWidth="7" markerHeight="7" refX="1" refY="4"
+        orient="auto" markerUnits="strokeWidth">
+        <rect x="1" y="1" width="1" height="6" style="stroke: none; fill:#9CB6B5;"/>
+    </marker>
+    <marker id="markerArrow" markerWidth="6" markerHeight="6" refX="2" refY="4"
+           orient="auto">
+        <path d="M2,2 L2,6 L6,4.25 L2,2" style="fill: #9CB6B5;" />
+    </marker>
+</defs>
+{{#each nodes as |node|}}
+  {{svg-service-container node=node action='openInfo'}}
+{{/each}}
+{{#each paths as |path|}}
+  {{svg-edge path=path}}
+{{/each}}

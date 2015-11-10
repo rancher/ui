@@ -1,31 +1,72 @@
-<div class="pod-state {{model.stateBackground}}"><span>{{model.displayState}}</span></div>
+<div class="clearfix">
+  <div class="stack-state {{model.stateBackground}}"><i class="{{model.stateIcon}}"></i></div>
 
-<div class="right">
-  {{action-menu model=model}}
-  &nbsp;
-  <a href="#{{dom-id model}}" data-toggle="collapse" class="btn btn-link collapser" aria-expanded="true"></a>
-</div>
-
-<h4>
-  <span class="right-divider clip">{{#link-to "environment" model.id}}{{model.name}}{{/link-to}}</span>
-
-  <div class="btn-group">
-    {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-default btn-sm"}}Add Service{{/link-to}}
-    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-      <span class="caret"></span>
-      <span class="sr-only">Toggle Dropdown</span>
-    </button>
-    <ul class="dropdown-menu" role="menu">
-      <li>{{#link-to "service.new-balancer" (query-params environmentId=model.id)}}Add Load Balancer{{/link-to}}</li>
-      <li>{{#link-to "service.new-alias" (query-params environmentId=model.id)}}Add Service Alias{{/link-to}}</li>
-      <li>{{#link-to "service.new-external" (query-params environmentId=model.id)}}Add External Service{{/link-to}}</li>
-    </ul>
+  <div class="left collapser">
+    <a {{action "toggleCollapse"}} class="btn btn-link"><i class="icon {{if collapsed 'icon-plus' 'icon-minus'}}" alt="Toggle stack details" title=""></i></a>
   </div>
 
-  {{upgrade-btn environmentResource=model}}
-</h4>
-<h6 style="margin-top: 3px;">
-  <span class="right-divider" tooltip="Service Count"><i class="icon icon-layers"></i>&nbsp;{{model.unremovedServices.length}}</span>
-  <span class="right-divider-btn"><i class="icon icon-box" tooltip="Container Count"></i>&nbsp;{{instanceCount}}</span>
-</h6>
+  <div class="left">
+    <h4>
+      <span class="divider clip">{{#link-to "environment" model.id}}{{model.name}}{{/link-to}}</span>
+    </h4>
+  </div>
 
+  <div class="right right-divider stack-actions">
+    {{action-menu model=model}}
+  </div>
+
+  <div class="right right-divider count">
+    <p class="count">{{instanceCount}}</p>
+    <label>Container{{unless (eq instanceCount 1) 's'}}</label>
+  </div>
+
+  <div class="right right-divider count">
+    <p>{{model.unremovedServices.length}}</p>
+    <label>Service{{unless (eq model.unremovedServices.length 1) 's'}}</label>
+  </div>
+
+  <div class="right right-divider stack-template">
+    <div class="btn-group">
+      {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-default btn-sm"}}Add Service{{/link-to}}
+      <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <span class="caret"></span>
+        <span class="sr-only">Toggle Dropdown</span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right" role="menu">
+        <li>{{#link-to "service.new-balancer" (query-params environmentId=model.id)}}Add Load Balancer{{/link-to}}</li>
+        <li>{{#link-to "service.new-alias" (query-params environmentId=model.id)}}Add Service Alias{{/link-to}}</li>
+        <li>{{#link-to "service.new-external" (query-params environmentId=model.id)}}Add External Service{{/link-to}}</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="right right-divider stack-template">
+    {{upgrade-btn environmentResource=model}}
+  </div>
+
+</div>
+
+{{#liquid-if (not collapsed)}}
+  <div class="r-pl10 r-pr10 r-pb10">
+    <table class="grid fixed" style="margin-bottom: 0">
+      {{#each model.services as |service|}}
+        <tr>
+          <td><i class="{{service.stateIcon}} {{service.stateColor}}"></i> {{#link-to "service" model.id service.id}}{{service.displayName}}{{/link-to}}</td>
+          <td>{{service.displayDetail}}</td>
+          <td>
+            {{#if service.displayType}}
+              <span class="badge badge-primary">{{service.displayType}}</span>
+            {{/if}}
+            {{#if service.hasSidekicks}}
+              <span class="badge badge-default">{{service.secondaryLaunchConfigs.length}} Sidekick{{unless (eq service.secondaryLaunchConfigs.length 1) 's'}}</span>
+            {{/if}}
+            {{#if service.hasContainers}}
+              <span class="badge badge-warning"><i class="icon icon-box"></i> {{default-str service.instances.length default="0"}}</span>
+            {{/if}}
+          </td>
+          <td class="actions">{{action-menu model=service}}</td>
+        </tr>
+      {{/each}}
+    </table>
+  </div>
+{{/liquid-if}}

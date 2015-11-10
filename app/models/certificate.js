@@ -13,7 +13,7 @@ export default Resource.extend({
       { label: 'Restore',       icon: 'icon icon-medicalcross',   action: 'restore',      enabled: !!a.restore },
       { label: 'Purge',         icon: '',                         action: 'purge',        enabled: !!a.purge },
       { divider: true },
-      { label: 'View in API',   icon: 'icon icon-externallink',   action: 'goToApi',      enabled: true },
+      { label: 'View in API',   icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
     ];
 
     return choices;
