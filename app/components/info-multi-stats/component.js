@@ -21,6 +21,7 @@ export default Ember.Component.extend({
   cpuGraph: null,
   cpuData: null,
   setCpuScale: false,
+  cpuD3Data: null,
 
   memoryCanvas: '#memoryGraph',
   memoryGraph: null,
@@ -139,6 +140,7 @@ export default Ember.Component.extend({
         row.push(point.cpu_total);
       }
 
+      this.set('cpuD3Data', data);
       if ( point.cpu_count && this.get('renderOk') && !this.get('setCpuScale') )
       {
         graph.axis.max(point.cpu_count*100);
@@ -231,6 +233,7 @@ export default Ember.Component.extend({
       x.push(i);
     }
     this.set('cpuData', [x]);
+    this.set('cpuD3Data', [x]);
 
     var cpuGraph = c3.generate({
       bindto: this.get('cpuCanvas'),
@@ -402,11 +405,14 @@ export default Ember.Component.extend({
 
     //console.log('Init Network');
     var x = ['x'];
+    var z = [];
     for ( var i = 0 ; i < MAX_POINTS ; i++ )
     {
       x.push(i);
+      z.push(i);
     }
     this.set('networkData', [x]);
+    this.set('networkD3Data', z);
 
     var networkGraph = c3.generate({
       bindto: this.get('networkCanvas'),

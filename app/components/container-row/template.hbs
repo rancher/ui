@@ -1,5 +1,6 @@
 <td>
-  <span class="badge state {{model.stateBackground}}">
+  {{container-dot model=model}}
+  <span class="{{model.stateColor}}">
     {{model.displayState}}
   </span>
 </td>
@@ -11,21 +12,19 @@
 </td>
 <td class="clip">
   {{display-image model.imageUuid}}
-</td>
-<td class="clip">
-  {{#if model.command}}
-    {{model.command}}
+  {{#if model.command~}}
+    ({{model.command}})
   {{else}}
-    <span class="text-muted">None</span>
+    <span class="text-muted">(none)</span>
   {{/if}}
 </td>
 {{#if showStats}}
   <td class="spark-td">
     {{#if model.cpuSpark}}
-      {{spark-line data=model.cpuSpark     width=60 height=15 max=cpuMax     classNames="spark-tl" prefix="CPU: " formatter="percent"}}
-      {{spark-line data=model.memorySpark  width=60 height=15 max=memoryMax  classNames="spark-tr" prefix="Memory: " formatter="mib"}}
-      {{spark-line data=model.networkSpark width=60 height=15 max=networkMax classNames="spark-bl" prefix="Network: " formatter="kbps"}}
-      {{spark-line data=model.storageSpark width=60 height=15 max=storageMax classNames="spark-br" prefix="Storage: " formatter="kbps"}}
+      {{spark-line data=model.cpuSpark     width=60 height=15 max=cpuMax     prefix="CPU: " formatter="percent"}}
+      {{spark-line data=model.memorySpark  width=60 height=15 max=memoryMax  prefix="Memory: " formatter="mib"}}
+      {{spark-line data=model.networkSpark width=60 height=15 max=networkMax prefix="Network: " formatter="kbps"}}
+      {{spark-line data=model.storageSpark width=60 height=15 max=storageMax prefix="Storage: " formatter="kbps"}}
     {{/if}}
   </td>
 {{/if}}
