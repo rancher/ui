@@ -75,6 +75,9 @@ Router.map(function() {
 
         this.resource('container', { path: '/:container_id' }, function() {
           this.route('edit');
+          this.route('ports', {});
+          this.route('volumes', {});
+          this.route('labels', {});
         });
       });
 
