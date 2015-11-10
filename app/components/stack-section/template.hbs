@@ -48,25 +48,29 @@
 
 {{#liquid-if (not collapsed)}}
   <div class="r-pl10 r-pr10 r-pb10">
-    <table class="grid fixed" style="margin-bottom: 0">
-      {{#each model.services as |service|}}
-        <tr>
-          <td><i class="{{service.stateIcon}} {{service.stateColor}}"></i> {{#link-to "service" model.id service.id}}{{service.displayName}}{{/link-to}}</td>
-          <td>{{service.displayDetail}}</td>
-          <td>
-            {{#if service.displayType}}
-              <span class="badge badge-primary">{{service.displayType}}</span>
-            {{/if}}
-            {{#if service.hasSidekicks}}
-              <span class="badge badge-default">{{service.secondaryLaunchConfigs.length}} Sidekick{{unless (eq service.secondaryLaunchConfigs.length 1) 's'}}</span>
-            {{/if}}
-            {{#if service.hasContainers}}
-              <span class="badge badge-warning">{{default-str service.instances.length default="0"}} <i class="icon icon-box"></i></span>
-            {{/if}}
-          </td>
-          <td class="actions">{{action-menu model=service}}</td>
-        </tr>
-      {{/each}}
-    </table>
+    {{#if model.services.length}}
+      <table class="grid fixed" style="margin-bottom: 0">
+        {{#each model.services as |service|}}
+          <tr>
+            <td><i class="{{service.stateIcon}} {{service.stateColor}}"></i> {{#link-to "service" model.id service.id}}{{service.displayName}}{{/link-to}}</td>
+            <td>{{service.displayDetail}}</td>
+            <td>
+              {{#if service.displayType}}
+                <span class="badge badge-primary">{{service.displayType}}</span>
+              {{/if}}
+              {{#if service.hasSidekicks}}
+                <span class="badge badge-default">{{service.secondaryLaunchConfigs.length}} Sidekick{{unless (eq service.secondaryLaunchConfigs.length 1) 's'}}</span>
+              {{/if}}
+              {{#if service.hasContainers}}
+                <span class="badge badge-warning">{{default-str service.instances.length default="0"}} <i class="icon icon-box"></i></span>
+              {{/if}}
+            </td>
+            <td class="actions">{{action-menu model=service}}</td>
+          </tr>
+        {{/each}}
+      </table>
+    {{else}}
+      <div class="text-muted text-center r-p10">No Services</div>
+    {{/if}}
   </div>
 {{/liquid-if}}

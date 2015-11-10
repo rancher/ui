@@ -1,14 +1,14 @@
 {{environment-header model=model.stack all=model.all}}
 
-<section>
-  <div class="stack-section single-stack">
+<section class="stack-section single-stack">
+  <div class="header clearfix">
     <div class="left">
       <h4>
-        <span class="divider clip">{{model.stack.displayName}}</span>
+        <span class="divider clip r-pl20">{{model.stack.displayName}}</span>
       </h4>
     </div>
 
-    <div class="right right-divider count">
+    <div class="right count">
       <p class="count">{{instanceCount}}</p>
       <label>Container{{unless (eq instanceCount 1) 's'}}</label>
     </div>
@@ -32,32 +32,32 @@
         </ul>
       </div>
     </div>
-
-    <div class="right right-divider stack-template">
-      {{upgrade-btn environmentResource=model.stack}}
-    </div>
   </div>
 
-  <div class="r-pl10 r-pr10 r-pb10">
-    <table class="grid fixed" style="margin-bottom: 0">
-      {{#each model.stack.services as |service|}}
-        <tr>
-          <td><i class="{{service.stateIcon}} {{service.stateColor}}"></i> {{#link-to "service" model.stack.id service.id}}{{service.displayName}}{{/link-to}}</td>
-          <td>{{service.displayDetail}}</td>
-          <td>
-            {{#if service.displayType}}
-              <span class="badge badge-primary">{{service.displayType}}</span>
-            {{/if}}
-            {{#if service.hasSidekicks}}
-              <span class="badge badge-default">{{service.secondaryLaunchConfigs.length}} Sidekick{{unless (eq service.secondaryLaunchConfigs.length 1) 's'}}</span>
-            {{/if}}
-            {{#if service.hasContainers}}
-              <span class="badge badge-warning">{{default-str service.instances.length default="0"}} <i class="icon icon-box"></i></span>
-            {{/if}}
-          </td>
-          <td class="actions">{{action-menu model=service}}</td>
-        </tr>
-      {{/each}}
-    </table>
+  <div class="well">
+    {{#if model.stack.services.length}}
+      <table class="grid fixed" style="margin-bottom: 0">
+        {{#each model.stack.services as |service|}}
+          <tr>
+            <td><i class="{{service.stateIcon}} {{service.stateColor}}"></i> {{#link-to "service" model.stack.id service.id}}{{service.displayName}}{{/link-to}}</td>
+            <td>{{service.displayDetail}}</td>
+            <td>
+              {{#if service.displayType}}
+                <span class="badge badge-primary">{{service.displayType}}</span>
+              {{/if}}
+              {{#if service.hasSidekicks}}
+                <span class="badge badge-default">{{service.secondaryLaunchConfigs.length}} Sidekick{{unless (eq service.secondaryLaunchConfigs.length 1) 's'}}</span>
+              {{/if}}
+              {{#if service.hasContainers}}
+                <span class="badge badge-warning">{{default-str service.instances.length default="0"}} <i class="icon icon-box"></i></span>
+              {{/if}}
+            </td>
+            <td class="actions">{{action-menu model=service}}</td>
+          </tr>
+        {{/each}}
+      </table>
+    {{else}}
+      <div class="text-muted text-center r-p10">No Services</div>
+    {{/if}}
   </div>
 </section>
