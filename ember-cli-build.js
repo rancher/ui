@@ -76,12 +76,12 @@ module.exports = function(defaults) {
   app.import('vendor/icons/fonts/rancher-icons.ttf',  {destDir: 'assets/fonts'});
   app.import('vendor/icons/fonts/rancher-icons.woff', {destDir: 'assets/fonts'});
 
-  app.import('vendor/open-sans/open-sans-v13-latin-300.woff',       {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-300.woff2',      {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-600.woff',       {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-600.woff2',      {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-regular.woff',   {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-regular.woff2',  {destDir: 'assets/fonts'});
+  app.import('vendor/lato/Lato-Light.woff',       {destDir: 'assets/fonts'});
+  app.import('vendor/lato/Lato-Light.woff2',      {destDir: 'assets/fonts'});
+  app.import('vendor/lato/Lato-Black.woff',       {destDir: 'assets/fonts'});
+  app.import('vendor/lato/Lato-Black.woff2',      {destDir: 'assets/fonts'});
+  app.import('vendor/lato/Lato-Medium',   {destDir: 'assets/fonts'});
+  app.import('vendor/lato/Lato-Medium',  {destDir: 'assets/fonts'});
 
   return app.toTree();
 };

@@ -39,6 +39,7 @@ HEADER {
       &>A {
         height: $topHeight;
         line-height: $topHeight;
+        position: relative;
       }
 
       &>A {
@@ -47,7 +48,16 @@ HEADER {
         }
         &.active {
           color: white;
-          border-bottom: solid $primary;
+          &:after{
+                content: "";
+                border-width: 5px;
+                border-color: transparent;
+                border-bottom-color: white;
+                border-style: solid;
+                position: absolute;
+                bottom: -2px;
+                left: 45%;
+          }
         }
       }
     }
@@ -177,7 +187,7 @@ HEADER {
   .bottom-row {
     min-height: $bottomHeight;
     background-color: white;
-    border-bottom: solid 2px $lightGrayTwo;
+    border-bottom: solid 2px $lightGray;
 
     NAV {
       font-size: 14px;
@@ -190,12 +200,22 @@ HEADER {
         color: $midGrayDark;
         line-height: 25px;
         text-align: center;
+        position: relative;
         &:hover {
           color: $blueTwo
         }
         &.active {
           color: $primary;
-          background-color: rgba($lightTeal, 0.1);
+          &:after{
+            content: "";
+            border-width: 5px;
+            border-color: transparent;
+            border-bottom-color: $lightGray;
+            border-style: solid;
+            position: absolute;
+            bottom: -2px;
+            left: 45%;
+          }
         }
 
         I {
