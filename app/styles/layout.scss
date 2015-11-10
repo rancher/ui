@@ -82,8 +82,12 @@ B {
 MAIN {
   position: relative;
 
-  &.has-aside {
-    margin-left: $aside-width;
+  & > .ember-view > SECTION:first-of-type {
+    padding-top: 5px;
+  }
+
+  & > .ember-view > .ember-view > SECTION:first-of-type {
+    padding-top: 5px;
   }
 }
 
@@ -93,14 +97,6 @@ BODY.white MAIN {
   margin-bottom: $main-padding;
   margin-left: $main-padding;
   border-radius: 5px;
-
-  &.has-aside {
-    margin-left: ($aside-width + $main-padding);
-
-    ASIDE {
-      left: -1 * ($aside-width + $main-padding);
-    }
-  }
 }
 
 BODY.white MAIN {
@@ -124,86 +120,6 @@ SECTION {
 
 .overlay SECTION {
   padding: 20px 0 0 0;
-}
-
-
-/**********
-* Aside (side bar on the left next to left)
-**********/
-.aside-background {
-  position: absolute;
-  top: $header-height;
-  left: 0;
-  bottom: 0;
-  width: $aside-width;
-  background-color: transparent;
-  z-index: 1;
-}
-
-ASIDE {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -1*$aside-width;
-  width: $aside-width;
-  z-index: 1;
-  padding: 17px 20px 0 20px;
-  color: white;
-
-  HR {
-    border-top: 1px solid rgba(255,255,255,0.4);
-  }
-
-  .links {
-    & > A,
-    & > .link-with-actions > A{
-      display: block;
-      padding: 5px 0 4px 8px;
-      cursor: pointer;
-      font-weight: $bold-weight;
-      color: rgba(255,255,255,0.5);
-      text-decoration: none;
-      font-size: 14px;
-      clear: both;
-
-      &.active {
-        color: white;
-        background-color: rgba(255,255,255,0.1);
-        border-radius: 4px;
-      }
-
-      .resource-actions {
-        float: right;
-        position: relative;
-        top: -3px;
-        right: 3px;
-      }
-
-      I {
-        margin-right: 5px;
-      }
-
-      .badge {
-        float: right;
-        background-color: transparent;
-      }
-
-    }
-
-    .link-with-actions {
-      position: relative;
-
-      .resource-actions {
-        position: absolute;
-        top: 3px;
-        right: 3px;
-      }
-    }
-  }
-
-  LABEL {
-    color: rgba(255,255,255,0.5);
-  }
 }
 
 UL.list-circles {
@@ -832,5 +748,19 @@ SECTION.header H3 {
     top: 10px;
     left: 10px;
     font-size: 23px;
+  }
+}
+
+.header {
+  .ember-power-select-wrapper {
+    display: inline-block;
+    width: 200px;
+    font-size: 14px;
+  }
+
+  .ember-power-select:not([dir=rtl]) .ember-power-select-trigger {
+    padding: $padding-small-vertical $padding-small-horizontal;
+    line-height: $line-height-small;
+    border-radius: $border-radius-base;
   }
 }

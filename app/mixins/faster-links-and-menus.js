@@ -8,9 +8,10 @@ export default Ember.Mixin.create({
   resourceActions: Ember.inject.service('resource-actions'),
 
   click(event) {
-    if ( $(event.target).closest('BUTTON').hasClass('more-actions') ) // Only menu buttons
+    var btn = $(event.target).closest('BUTTON');
+    if ( btn && btn.hasClass('more-actions') ) // Only menu buttons
     {
-      this.get('resourceActions').show(this.get('model'), event.target);
+      this.get('resourceActions').show(this.get('model'), btn);
     }
     else if ( event.target.tagName === 'A' && $(event.target).data('transitionLink')) // Only links with data-transition-link
     {

@@ -79,7 +79,7 @@ var Container = Resource.extend({
       { label: 'Restart',       icon: 'icon icon-refresh',      action: 'restart',      enabled: !!a.restart },
       { label: 'Start',         icon: 'icon icon-play',         action: 'start',        enabled: !!a.start },
       { label: 'Stop',          icon: 'icon icon-square',       action: 'stop',         enabled: !!a.stop },
-      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
+      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
       { label: 'Restore',       icon: '',                       action: 'restore',      enabled: !!a.restore },
       { label: 'Purge',         icon: '',                       action: 'purge',        enabled: !!a.purge },
       { divider: true },
@@ -92,7 +92,7 @@ var Container = Resource.extend({
     ];
 
     return choices;
-  }.property('actionLinks.{restart,start,stop,restore,purge,execute,logs,update}','canDelete','systemContainer','labels'),
+  }.property('actionLinks.{restart,start,stop,restore,purge,execute,logs,update,remove}','systemContainer','labels'),
 
 
   // Hacks
@@ -128,10 +128,6 @@ var Container = Resource.extend({
   displayIp: function() {
     return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress') || new Ember.Handlebars.SafeString('<span class="text-muted">None</span>');
   }.property('primaryIpAddress','primaryAssociatedIpAddress'),
-
-  canDelete: function() {
-    return ['removed','removing','purging','purged'].indexOf(this.get('state')) === -1;
-  }.property('state'),
 
   isManaged: Ember.computed.notEmpty('systemContainer'),
   primaryHost: Ember.computed.alias('hosts.firstObject'),

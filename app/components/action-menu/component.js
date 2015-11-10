@@ -11,11 +11,12 @@ export default Ember.Component.extend({
   classNames: ['btn-group','resource-actions','action-menu'],
 
   click(e) {
-    if ( Ember.$(e.target).closest('.more-actions').length )
+    var more = Ember.$(e.target).closest('.more-actions');
+    if ( more && more.length )
     {
       e.preventDefault();
       e.stopPropagation();
-      this.get('resourceActions').show(this.get('model'), e.target, this.$());
+      this.get('resourceActions').show(this.get('model'), more, this.$());
     }
   },
 

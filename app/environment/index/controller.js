@@ -1,15 +1,12 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  mode: 'grouped',
-  queryParams: ['mode'],
+  instanceCount: function() {
+    var count = 0;
+    (this.get('model.stack.services')||[]).forEach((service) => {
+      count += service.get('instances.length')||0;
+    });
 
-  actions: {
-    addService: function() {
-      this.get('controllers.environment').send('addService');
-    },
-    addBalancer: function() {
-      this.get('controllers.environment').send('addBalancer');
-    },
-  },
+    return count;
+  }.property('model.stack.services.@each.healthState'),
 });
