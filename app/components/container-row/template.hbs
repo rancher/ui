@@ -1,8 +1,5 @@
 <td>
-  {{container-dot model=model}}
-  <span class="{{model.stateColor}}">
-    {{model.displayState}}
-  </span>
+  {{badge-state model=model}}
 </td>
 <td class="force-wrap">
   <a href="/infra/containers/{{model.id}}" data-transition-link="true">{{model.displayName}}</a>
@@ -12,10 +9,8 @@
 </td>
 <td class="clip">
   {{display-image model.imageUuid}}
-  {{#if model.command~}}
+  {{#if (and (not showStats) model.command)~}}
     ({{model.command}})
-  {{else}}
-    <span class="text-muted">(none)</span>
   {{/if}}
 </td>
 {{#if showStats}}
@@ -25,6 +20,14 @@
       {{spark-line data=model.memorySpark  width=60 height=15 max=memoryMax  prefix="Memory: " formatter="mib"}}
       {{spark-line data=model.networkSpark width=60 height=15 max=networkMax prefix="Network: " formatter="kbps"}}
       {{spark-line data=model.storageSpark width=60 height=15 max=storageMax prefix="Storage: " formatter="kbps"}}
+    {{/if}}
+  </td>
+{{else}}
+  <td class="clip">
+    {{#if model.command}}
+      {{model.command}}
+    {{else}}
+      <span class="text-muted">None</span>
     {{/if}}
   </td>
 {{/if}}

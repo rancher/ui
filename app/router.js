@@ -75,6 +75,9 @@ Router.map(function() {
 
         this.resource('container', { path: '/:container_id' }, function() {
           this.route('edit');
+          this.route('ports', {});
+          this.route('volumes', {});
+          this.route('labels', {});
         });
       });
 
@@ -109,8 +112,10 @@ Router.map(function() {
         });
       });
 
-      this.route('catalog.launch', {path: '/catalog/:template'});
-      this.route('catalog', {path: '/catalog'});
+      this.route('catalog', {path: '/catalog'}, function() {
+        this.route('index', {path: '/'});
+        this.route('launch', {path: '/:template'});
+      });
     });
 
     // End: Authenticated
