@@ -1,9 +1,13 @@
+<ol class="breadcrumb">
+  {{#link-to "applications-tab.catalog" tagName="li" href=false}}<a>Catalog</a>{{/link-to}}
+  <li class="active">{{templateResource.name}}</li>
+</ol>
+
 <section class="header">
   <h3>
-    <span>
-      {{#link-to "applications-tab.catalog"}}Catalog:{{/link-to}}
-      {{templateResource.name}}
-    </span>
+    {{#power-select options=allTemplates selected=templateResource onchange=(action "changeTemplate") searchField="name" as |obj|}}
+      <div class="power-select-img"><img src="{{obj.iconLink}}"> {{obj.name}}</div>
+    {{/power-select}}
   </h3>
 </section>
 

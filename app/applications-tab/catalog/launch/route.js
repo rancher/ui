@@ -52,6 +52,7 @@ export default Ember.Route.extend({
         upgrade: results.upgrade,
         versionLinks: links,
         versionsArray: verArr,
+        allTemplates: this.modelFor('applications-tab.catalog').get('catalog'),
       });
     });
   },

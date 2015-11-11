@@ -82,10 +82,8 @@ B {
 MAIN {
   position: relative;
 
-  & > .ember-view > SECTION:first-of-type {
-    padding-top: 5px;
-  }
-
+  & > SECTION:first-of-type,
+  & > .ember-view > SECTION:first-of-type,
   & > .ember-view > .ember-view > SECTION:first-of-type {
     padding-top: 5px;
   }
@@ -477,7 +475,7 @@ ASIDE {
   /* End: Copied from .table because @extend doesn't work */
 
   & > TBODY > TR:hover {
-    background-color: #fdfcee;
+    background-color: #fdfcee !important;
   }
 
   & > THEAD > TR > TH,
@@ -751,16 +749,18 @@ SECTION.header H3 {
   }
 }
 
-.header {
-  .ember-power-select-wrapper {
-    display: inline-block;
-    width: 200px;
-    font-size: 14px;
-  }
+.ember-power-select-wrapper {
+  display: inline-block;
+  width: 200px;
+  font-size: 14px;
+}
 
-  .ember-power-select:not([dir=rtl]) .ember-power-select-trigger {
-    padding: $padding-small-vertical $padding-small-horizontal;
-    line-height: $line-height-small;
-    border-radius: $border-radius-base;
-  }
+.ember-power-select:not([dir=rtl]) .ember-power-select-trigger {
+  padding: $padding-small-vertical $padding-small-horizontal;
+  line-height: $line-height-small;
+  border-radius: $border-radius-base;
+}
+
+.ember-power-select-options:not(.nested) {
+  overflow-y: auto;
 }

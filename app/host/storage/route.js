@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
-    var host = this.modelFor('host');
+    var host = this.modelFor('host').get('host');
     var out = [];
     return host.followLink('storagePools').then((pools) => {
       var promises = pools.map((pool) => {
