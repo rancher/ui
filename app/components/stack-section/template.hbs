@@ -1,31 +1,31 @@
 <div class="clearfix">
   <div class="stack-state {{model.stateBackground}}"><i class="{{model.stateIcon}}"></i></div>
 
-  <div class="left collapser">
+  <div class="header-left collapser">
     <a {{action "toggleCollapse"}} class="btn btn-link"><i class="icon {{if collapsed 'icon-plus' 'icon-minus'}}" alt="Toggle stack details" title=""></i></a>
   </div>
 
-  <div class="left">
+  <div class="header-left">
     <h4>
       <span class="divider clip">{{#link-to "environment" model.id}}{{model.name}}{{/link-to}}</span>
     </h4>
   </div>
 
-  <div class="right right-divider stack-actions">
+  <div class="header-right right-divider stack-actions">
     {{action-menu model=model}}
   </div>
 
-  <div class="right right-divider count">
+  <div class="header-right right-divider count">
     <p class="count">{{instanceCount}}</p>
     <label>Container{{unless (eq instanceCount 1) 's'}}</label>
   </div>
 
-  <div class="right right-divider count">
+  <div class="header-right right-divider count">
     <p>{{model.unremovedServices.length}}</p>
     <label>Service{{unless (eq model.unremovedServices.length 1) 's'}}</label>
   </div>
 
-  <div class="right right-divider stack-template">
+  <div class="header-right right-divider stack-template">
     <div class="btn-group">
       {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-default btn-sm"}}Add Service{{/link-to}}
       <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -40,7 +40,7 @@
     </div>
   </div>
 
-  <div class="right right-divider stack-template">
+  <div class="header-right right-divider stack-template">
     {{upgrade-btn environmentResource=model}}
   </div>
 
@@ -50,24 +50,26 @@
   <div class="r-pl10 r-pr10 r-pb10">
     {{#if model.services.length}}
       <table class="grid fixed" style="margin-bottom: 0">
-        {{#each model.services as |service|}}
-          <tr>
-            <td><i class="{{service.stateIcon}} {{service.stateColor}}"></i> {{#link-to "service" model.id service.id}}{{service.displayName}}{{/link-to}}</td>
-            <td>{{service.displayDetail}}</td>
-            <td>
-              {{#if service.displayType}}
-                <span class="badge badge-primary">{{service.displayType}}</span>
-              {{/if}}
-              {{#if service.hasSidekicks}}
-                <span class="badge badge-default">{{service.secondaryLaunchConfigs.length}} Sidekick{{unless (eq service.secondaryLaunchConfigs.length 1) 's'}}</span>
-              {{/if}}
-              {{#if service.hasContainers}}
-                <span class="badge badge-warning">{{default-str service.instances.length default="0"}} <i class="icon icon-box"></i></span>
-              {{/if}}
-            </td>
-            <td class="actions">{{action-menu model=service}}</td>
-          </tr>
-        {{/each}}
+        <tbody>
+          {{#each model.services as |service|}}
+            <tr>
+              <td><i class="{{service.stateIcon}} {{service.stateColor}}"></i> {{#link-to "service" model.id service.id}}{{service.displayName}}{{/link-to}}</td>
+              <td>{{service.displayDetail}}</td>
+              <td>
+                {{#if service.displayType}}
+                  <span class="badge badge-primary">{{service.displayType}}</span>
+                {{/if}}
+                {{#if service.hasSidekicks}}
+                  <span class="badge badge-default">{{service.secondaryLaunchConfigs.length}} Sidekick{{unless (eq service.secondaryLaunchConfigs.length 1) 's'}}</span>
+                {{/if}}
+                {{#if service.hasContainers}}
+                  <span class="badge badge-warning">{{default-str service.instances.length default="0"}} <i class="icon icon-box"></i></span>
+                {{/if}}
+              </td>
+              <td class="actions">{{action-menu model=service}}</td>
+            </tr>
+          {{/each}}
+        </tbody>
       </table>
     {{else}}
       <div class="text-muted text-center r-p10">No Services</div>

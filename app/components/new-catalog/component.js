@@ -2,6 +2,7 @@ import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
 export default Ember.Component.extend(NewOrEdit, {
+  allTemplates: null,
   templateResource: null,
   environmentResource: null,
   versionsArray: null,
@@ -35,6 +36,10 @@ export default Ember.Component.extend(NewOrEdit, {
 
     selectPreviewTab: function(tab) {
       this.set('previewTab', tab);
+    },
+
+    changeTemplate: function(tpl) {
+      this.get('application').transitionToRoute('applications-tab.catalog.launch', tpl.path);
     },
   },
 

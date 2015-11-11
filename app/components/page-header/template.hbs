@@ -32,15 +32,11 @@
         </li>
       {{/if}}
 
-      <li role="presentation" class="dropdown-header text-uppercase">
-        Your Account
-      </li>
-
-      <li role="presentation">
-        {{#link-to "settings.projects" role="menuitem" tabindex="-1"}}Manage Environments{{/link-to}}
-      </li>
-
       {{#if isLocalAuth}}
+        <li role="presentation" class="dropdown-header text-uppercase">
+          Your Account
+        </li>
+
         <li role="presentation">
           <a {{action "changePassword"}} role="menuitem" tabindex="-1">Change Password</a>
         </li>
@@ -119,12 +115,12 @@
 
       <div class="compose-download">
         <a class="dropdown-toggle hand" data-toggle="dropdown" aria-expanded="false">
-          <i class="icon icon-download"></i> Rancher Compose CLI <span class="caret"></span>
+          <i class="icon icon-download"></i> Download CLI <span class="caret"></span>
         </a>
-        <ul class="dropdown-menu" role="menu">
-          <li><a {{action "composeDownload" "darwin"}}><i class="icon icon-fw icon-apple"></i>Download for Mac OS</a></li>
-          <li><a {{action "composeDownload" "windows"}}><i class="icon icon-fw icon-windows"></i>Download for Windows</a></li>
-          <li><a {{action "composeDownload" "linux"}}><i class="icon icon-fw icon-linux"></i>Download for Linux</a></li>
+        <ul class="dropdown-menu text-right" role="menu" style="min-width: 0">
+          <li><a {{action "composeDownload" "darwin"}}>Mac OS X <i class="icon icon-fw icon-apple"></i></a></li>
+          <li><a {{action "composeDownload" "windows"}}>Windows <i class="icon icon-fw icon-windows"></i></a></li>
+          <li><a {{action "composeDownload" "linux"}}>Linux <i class="icon icon-fw icon-linux"></i></a></li>
         </ul>
       </div>
     {{/if}}
