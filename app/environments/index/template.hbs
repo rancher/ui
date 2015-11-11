@@ -24,9 +24,14 @@
   {{/if}}
   <div class="well {{if showTabs 'nav-well'}} r-pl0 r-pr0">
     {{#each arranged as |stack|}}
-      {{stack-section model=stack}}
+      {{stack-section model=stack showAddtlInfo='showAddtlInfo'}}
     {{else}}
       <div class="r-m20 text-center text-muted">No Stacks</div>
     {{/each}}
   </div>
 </section>
+{{#liquid-if showAddtlInfo containerless=true}}
+  {{#service-addtl-info service=selectedService dismiss='dismiss'}}
+  {{/service-addtl-info}}
+{{/liquid-if}}
+

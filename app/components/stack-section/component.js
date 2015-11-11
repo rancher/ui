@@ -25,6 +25,9 @@ export default Ember.Component.extend({
 
       this.get('prefs').set(C.PREFS.EXPANDED_STACKS, list);
     },
+    addtlInfo: function(service) {
+      this.sendAction('showAddtlInfo', service);
+    }
   },
 
   didInitAttrs() {

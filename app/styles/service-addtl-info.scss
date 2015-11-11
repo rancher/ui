@@ -1,6 +1,7 @@
 .service-addtl-info {
   position: fixed;
   bottom: 0;
+  left: 0;
   height: 310px;
   min-height: 310px;
   background-color: white;
@@ -26,6 +27,8 @@
     box-shadow: inset 0px -2px 3px -1px $gray-light;
     &.active {
       box-shadow: none;
+      height: 40px;
+      top: 10px;
     }
   }
   .description {
@@ -34,24 +37,36 @@
   }
   .tab-main {
     background: white;
-    height: 45px;
+    height: 35px;
+    top: 10px;
     left: 25px;
     padding: 5px 15px;
     margin-right: 35px;
     box-shadow: inset 0px -2px 3px -1px $gray-light;
     .close {
       position: absolute;
-      top: -13px;
-      right: -10px;
+      top: -5px;
+      right: -6px;
+      font-size: 14px;
       color: gray;
       &:hover {
         cursor: pointer;
       }
     }
     &.active {
-      height: 55px;
-      top: -5px;
+      height: 40px;
+      top: 5px;
       box-shadow: none;
+    }
+    &.sidekick {
+      height: 35px;
+      top: 10px;
+      padding-top: 2px;
+      &.active {
+        box-shadow: none;
+        height: 40px;
+        top: 5px;
+      }
     }
   }
   .inner {
@@ -66,9 +81,18 @@
   // override the native bootstrap tabs styling
   .nav-tabs {
     > li {
-      .active {
+      margin-top: 0;
+      a {
+        color: $light-grey;
+        line-height: .9;
+        margin-right: 0;
         border: none;
-        background: transparent;
+      }
+      &.active {
+        a {
+          border: none;
+          background: transparent;
+        }
       }
       > a {
         &:hover,
