@@ -33,17 +33,18 @@
       {{/if}}
 
       {{#if isLocalAuth}}
-        <li role="presentation" class="dropdown-header text-uppercase">
+        <li role="presentation" class="dropdown-header">
           Your Account
         </li>
 
         <li role="presentation">
           <a {{action "changePassword"}} role="menuitem" tabindex="-1">Change Password</a>
         </li>
+
+        <li role="presentation" class="divider"></li>
       {{/if}}
 
-      <li role="presentation" class="divider"></li>
-      <li role="presentation" class="dropdown-header text-uppercase">
+      <li role="presentation" class="dropdown-header">
         This Environment
       </li>
 
@@ -65,7 +66,7 @@
       </button>
       <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
         {{#if projectChoices.length}}
-          <li role="presentation" class="dropdown-header text-uppercase">
+          <li role="presentation" class="dropdown-header">
             {{#if accessEnabled}}
               Your Environments
             {{else}}
@@ -86,7 +87,7 @@
           <li role="presentation" class="divider"></li>
         {{/if}}
         {{#if projectIsMissing}}
-          <li role="presentation" class="dropdown-header text-uppercase">Selected Environment:</li>
+          <li role="presentation" class="dropdown-header">Selected Environment:</li>
           <li class="{{if project.active 'disabled selected'}}">
             <a {{action "switchProject" project.id}} class="clip">
               <i class="icon {{project.icon}}"></i>
