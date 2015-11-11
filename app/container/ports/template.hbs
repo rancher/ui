@@ -1,0 +1,48 @@
+<table class="grid fixed table-bordered">
+  <thead>
+    <tr>
+      <th width="90">State</th>
+      <th width="150">IP Address</th>
+      <th>Public (on Host)</th>
+      <th>Private (in Container)</th>
+      <th width="90">Protocol</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each model as |port|}}
+      <tr>
+        <td>
+          <span class="badge state {{port.stateBackground}}">
+            {{port.displayState}}
+          </span>
+        </td>
+        <td>
+          {{port.displayPublicIp}}
+        </td>
+        <td>
+          {{#if port.publicPort}}
+            {{port.publicPort}}
+          {{else}}
+            <span class="text-muted">None</span>
+          {{/if}}
+        </td>
+        <td>
+          {{#if port.privatePort}}
+            {{port.privatePort}}
+          {{else}}
+            <span class="text-muted">None</span>
+          {{/if}}
+        </td>
+        <td>
+          {{upper-case port.protocol}}
+        </td>
+      </tr>
+    {{else}}
+      <tr>
+        <td colspan="5">
+          <div class="text-muted text-center">This container has no ports.</div>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>
