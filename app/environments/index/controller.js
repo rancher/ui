@@ -7,6 +7,18 @@ export default Ember.Controller.extend(Sortable, {
 
   which: 'all',
   queryParams: ['which'],
+  showAddtlInfo: false,
+  selectedService: null,
+
+  actions: {
+    showAddtlInfo: function(service) {
+      this.set('selectedService', service);
+      this.set('showAddtlInfo', true);
+    },
+    dismiss: function() {
+      this.set('showAddtlInfo', false);
+    }
+  },
 
   showTabs: function() {
     return this.get('which') !== 'all' || this.get('hasKubernetes') || this.get('hasSystem');
