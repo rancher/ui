@@ -11,7 +11,7 @@
     </h4>
   </div>
 
-  <div class="header-right right-divider stack-actions">
+  <div class="header-right right-divider stack-actions wide">
     {{action-menu model=model}}
   </div>
 
@@ -66,7 +66,11 @@
                   <span class="badge badge-warning">{{default-str service.instances.length default="0"}} <i class="icon icon-box"></i></span>
                 {{/if}}
               </td>
-              <td class="actions">{{action-menu model=service}}</td>
+              <td class="actions wide">
+                {{#action-menu model=model}}
+                  <a class="btn btn-default btn-xs" {{action 'addtlInfo' service target=controller}}><i class="icon icon-fw icon-info"></i></a>
+                {{/action-menu}}
+              </td>
             </tr>
           {{/each}}
         </tbody>
@@ -76,3 +80,4 @@
     {{/if}}
   </div>
 {{/liquid-if}}
+
