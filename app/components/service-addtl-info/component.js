@@ -19,6 +19,13 @@ export default Ember.Component.extend(ReadLabels, {
     },
   },
 
+  didInsertElement: function() {
+    $('#application').addClass('summary-shown');
+  },
+
+  willDestroyElement: function() {
+    $('#application').removeClass('summary-shown');
+  },
 
   stateBackground: function() {
     return this.get('service.stateColor').replace("text-", "bg-");
