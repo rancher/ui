@@ -55,12 +55,21 @@ export default Ember.Route.extend({
 
   afterModel: function(model) {
     var projects = this.get('projects');
-    return this.loadPreferences().then(() => {
+    var more = {
+      prefs: this.loadPreferences(),
+      settings: this.loadPublicSettings(),
+    };
+
+    return Ember.RSVP.hash(more).then(() => {
       projects.set('all', model);
       return projects.selectDefault().catch(() => {
         this.replaceWith('settings.projects');
       });
     });
+  },
+
+  loadPublicSettings: function() {
+    return this.get('store').find('setting', null, {filter: {all: 'false'}});
   },
 
   loadPreferences: function() {

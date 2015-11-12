@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
 
 const NONE = 'none',
       LOADING = 'loading',
@@ -13,7 +12,7 @@ var queue = async.queue(getUpgradeInfo, 2);
 function getUpgradeInfo(task, cb) {
   var obj = task.obj;
 
-  ajaxPromise({url: task.url, dataType: 'json'},true).then((upgradeInfo) => {
+  obj.get('store').request({url: task.url}).then((upgradeInfo) => {
     upgradeInfo.id = task.id;
     obj.set('upgradeInfo', upgradeInfo);
     if ( upgradeInfo && upgradeInfo.newVersionLinks && Object.keys(upgradeInfo.newVersionLinks).length )

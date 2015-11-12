@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
 
 export default Ember.Route.extend({
   allServices: Ember.inject.service(),
@@ -9,12 +8,12 @@ export default Ember.Route.extend({
 
     var dependencies = {
       serviceChoices: this.get('allServices').choices(),
-      tpl: ajaxPromise({url: this.get('app.catalogEndpoint')+'/templates/'+params.template, dataType: 'json'},true),
+      tpl: store.request({url: this.get('app.catalogEndpoint')+'/templates/'+params.template}),
     };
 
     if ( params.upgrade )
     {
-      dependencies.upgrade = ajaxPromise({url: this.get('app.catalogEndpoint')+'/upgradeinfo/'+params.upgrade, dataType: 'json'},true);
+      dependencies.upgrade = store.request({url: this.get('app.catalogEndpoint')+'/upgradeinfo/'+params.upgrade});
     }
 
     if ( params.environmentId )

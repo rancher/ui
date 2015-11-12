@@ -22,6 +22,7 @@ const defaultStateMap = {
   'registering':      {icon: 'icon icon-tag',           color: 'text-info'   },
   'restoring':        {icon: 'icon icon-medicalcross',  color: 'text-info'   },
   'running':          {icon: 'icon icon-circle-o',      color: 'text-success'},
+  'started-once':     {icon: 'icon icon-dot-circlefill',color: 'text-success'},
   'starting':         {icon: 'icon icon-adjust',        color: 'text-info'   },
   'stopped':          {icon: 'icon icon-circle',        color: 'text-danger' },
   'stopping':         {icon: 'icon icon-adjust',        color: 'text-info'   },
