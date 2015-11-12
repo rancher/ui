@@ -34,7 +34,6 @@ Router.map(function() {
         this.route('localauth', {path: 'local'});
       });
 
-      this.route('host');
 
       this.route('accounts', {path: '/accounts'}, function() {
         this.route('index', {path: '/'});
@@ -66,6 +65,7 @@ Router.map(function() {
         this.resource('host', { path: '/:host_id' }, function() {
           this.route('containers');
           this.route('storage', {path: '/storage'});
+          this.route('labels', {});
         });
       });
 
