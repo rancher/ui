@@ -40,7 +40,7 @@
         <tbody>
           {{#each model.stack.services as |service|}}
             <tr>
-              <td><i class="{{service.stateIcon}} {{service.stateColor}}"></i> {{#link-to "service" model.stack.id service.id}}{{service.displayName}}{{/link-to}}</td>
+              <td><i class="{{service.stateIcon}} {{service.stateColor}}"></i> <a class="hand" {{action 'showAddtlInfo' service}}>{{service.displayName}}</a></td>
               <td>{{service.displayDetail}}</td>
               <td>
                 {{#if service.displayType}}
@@ -53,7 +53,11 @@
                   <span class="badge badge-warning">{{default-str service.instances.length default="0"}} <i class="icon icon-box"></i></span>
                 {{/if}}
               </td>
-              <td class="actions">{{action-menu model=service}}</td>
+              <td class="actions wide">
+                {{#action-menu model=service}}
+                   {{#link-to "service" model.stack.id service.id class="btn btn-default btn-xs"}}<i class="icon icon-fw icon-info"></i>{{/link-to}}
+                {{/action-menu}}
+              </td>
             </tr>
           {{/each}}
         </tbody>
@@ -63,3 +67,9 @@
     {{/if}}
   </div>
 </section>
+{{#liquid-if showAddtlInfo containerless=true}}
+  {{#service-addtl-info service=selectedService dismiss='dismiss'}}
+  {{/service-addtl-info}}
+{{/liquid-if}}
+
+

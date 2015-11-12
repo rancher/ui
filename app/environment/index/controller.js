@@ -1,6 +1,19 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  showAddtlInfo: false,
+  selectedService: null,
+
+  actions: {
+    showAddtlInfo: function(service) {
+      this.set('selectedService', service);
+      this.set('showAddtlInfo', true);
+    },
+    dismiss: function() {
+      this.set('showAddtlInfo', false);
+    }
+  },
+
   instanceCount: function() {
     var count = 0;
     (this.get('model.stack.services')||[]).forEach((service) => {

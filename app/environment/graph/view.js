@@ -190,6 +190,8 @@ export default Ember.View.extend(ThrottledResize,{
 
         var edgeOpts = {
           arrowhead: 'vee',
+          customMarkerURL: window.location.pathname,
+          customMarkerFill: color,
           lineInterpolate: 'bundle',
           class: color,
         };
