@@ -187,11 +187,12 @@ export default Ember.View.extend(ThrottledResize,{
         var target = map.get('service');
         var targetId = target.get('id');
         var color = (target.get('state') === 'active' ? 'green' : (target.get('state') === 'inactive' ? 'red' : 'yellow'));
+        var markerColor = (target.get('state') === 'active' ? 'green-fill' : (target.get('state') === 'inactive' ? 'red-fill' : 'yellow-fill'));
 
         var edgeOpts = {
           arrowhead: 'vee',
           customMarkerURL: window.location.pathname,
-          customMarkerFill: color,
+          customMarkerClass: markerColor,
           lineInterpolate: 'bundle',
           class: color,
         };
