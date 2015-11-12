@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  settings: Ember.inject.service(),
+
   cache: null,
 
   queryParams: {
@@ -16,9 +18,16 @@ export default Ember.Route.extend({
       return filter(cache, params.category);
     }
 
-    return Ember.$.ajax(this.get('app.catalogEndpoint')+'/templates', 'GET').then((response) => {
-      this.set('cache', response.data);
-      return filter(response.data, params.category);
+    var url = this.get('app.catalogEndpoint')+'/templates';
+    var version = this.get('settings.rancherVersion');
+    if ( version )
+    {
+      url += '?minimumRancherVersion_lte=' + encodeURIComponent(version);
+    }
+
+    return this.get('store').request({url: url}).then((response) => {
+      this.set('cache', response);
+      return filter(response, params.category);
     });
 
     function filter(data, category) {

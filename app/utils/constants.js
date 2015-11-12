@@ -89,6 +89,7 @@ var C = {
     DEPLOYMENT_UNIT: 'io.rancher.service.deployment.unit',
     LAUNCH_CONFIG: 'io.rancher.service.launch.config',
     LAUNCH_CONFIG_PRIMARY: 'io.rancher.service.primary.launch.config',
+    START_ONCE: 'io.rancher.container.start_once',
   },
 
   EXTERNALID: {

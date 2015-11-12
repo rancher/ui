@@ -74,7 +74,7 @@ export default Ember.Component.extend(NewOrEdit, {
       this.set('loading', true);
 
       var current = this.get('environmentResource.environment');
-      Ember.$.ajax(link, 'GET').then((response) => {
+      this.get('store').request({url: link}).then((response) => {
         if ( response.questions )
         {
           response.questions.forEach((item) => {
