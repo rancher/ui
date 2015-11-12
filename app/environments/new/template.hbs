@@ -25,18 +25,23 @@
   </div>
   <div class="row form-group">
     <div class="col-md-4 col-md-offset-2">
-      <label style="vertical-align: bottom;">
-        docker-compose
-        {{read-text-file accept=".yml" action=(action "readFile" "dockerCompose")}}
-      </label>
+      <div class="clearfix r-mb5">
+        <label>docker-compose.yml</label>
+        {{read-text-file accept=".yml" action=(action "readFile" "dockerCompose") class="pull-right"}}
+      </div>
       {{textarea value=primaryResource.dockerCompose classNames="form-control no-resize" rows="5" placeholder="Contents of docker-compose.yml"}}
     </div>
     <div class="col-md-4">
-      <label style="vertical-align: bottom;">
-        rancher-compose
-        {{read-text-file accept=".yml" action=(action "readFile" "rancherCompose")}}
-      </label>
+      <div class="clearfix r-mb5">
+        <label>rancher-compose.yml</label>
+        {{read-text-file accept=".yml" action=(action "readFile" "rancherCompose") class="pull-right"}}
+      </div>
       {{textarea value=primaryResource.rancherCompose classNames="form-control no-resize" rows="5" placeholder="Contents of rancher-compose.yml"}}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4 col-md-offset-2">
+      <label>{{input type="checkbox" checked=primaryResource.startOnCreate}} Start services after creating</label>
     </div>
   </div>
 </section>

@@ -26,6 +26,7 @@ export default Ember.Route.extend({
       {
         results.env = store.createRecord({
           type: 'environment',
+          startOnCreate: true,
           environment: {}, // Question answers
         });
       }

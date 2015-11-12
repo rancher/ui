@@ -34,6 +34,7 @@ Router.map(function() {
         this.route('localauth', {path: 'local'});
       });
 
+      this.route('host');
 
       this.route('accounts', {path: '/accounts'}, function() {
         this.route('index', {path: '/'});
