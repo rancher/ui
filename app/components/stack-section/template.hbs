@@ -53,7 +53,7 @@
         <tbody>
           {{#each model.services as |service|}}
             <tr>
-              <td><i class="{{service.stateIcon}} {{service.stateColor}}"></i> {{#link-to "service" model.id service.id}}{{service.displayName}}{{/link-to}}</td>
+              <td><i class="{{service.stateIcon}} {{service.stateColor}}"></i> <a class="hand" {{action 'addtlInfo' service target=controller}}>{{service.displayName}}</a></td>
               <td>{{service.displayDetail}}</td>
               <td>
                 {{#if service.displayType}}
@@ -67,8 +67,8 @@
                 {{/if}}
               </td>
               <td class="actions wide">
-                {{#action-menu model=model}}
-                  <a class="btn btn-default btn-xs" {{action 'addtlInfo' service target=controller}}><i class="icon icon-fw icon-info"></i></a>
+                {{#action-menu model=service}}
+                   {{#link-to "service" model.id service.id class="btn btn-default btn-xs"}}<i class="icon icon-fw icon-info"></i>{{/link-to}}
                 {{/action-menu}}
               </td>
             </tr>

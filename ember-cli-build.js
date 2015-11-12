@@ -62,7 +62,7 @@ module.exports = function(defaults) {
   app.import('bower_components/lodash/lodash.js');
   app.import('bower_components/graphlib/dist/graphlib.core.js');
   app.import('bower_components/dagre/dist/dagre.core.js');
-  app.import('bower_components/dagre-d3/dist/dagre-d3.core.js');
+  //app.import('bower_components/dagre-d3/dist/dagre-d3.core.js');
   app.import('bower_components/async/lib/async.js');
   app.import('bower_components/position-calculator/dist/position-calculator.js');
   app.import('vendor/aws-sdk-ec2.js');
@@ -78,7 +78,7 @@ module.exports = function(defaults) {
 
   app.import('vendor/lato/Lato-Light.ttf',       {destDir: 'assets/fonts'});
   app.import('vendor/lato/Lato-Light.eot',       {destDir: 'assets/fonts'});
-  app.import('vendor/lato/Lato-Light.woff',       {destDir: 'assets/fonts'});  
+  app.import('vendor/lato/Lato-Light.woff',       {destDir: 'assets/fonts'});
   app.import('vendor/lato/Lato-Light.woff2',      {destDir: 'assets/fonts'});
   app.import('vendor/lato/Lato-Black.ttf',       {destDir: 'assets/fonts'});
   app.import('vendor/lato/Lato-Black.eot',       {destDir: 'assets/fonts'});
@@ -88,6 +88,8 @@ module.exports = function(defaults) {
   app.import('vendor/lato/Lato-Medium.eot',   {destDir: 'assets/fonts'});
   app.import('vendor/lato/Lato-Medium.woff',   {destDir: 'assets/fonts'});
   app.import('vendor/lato/Lato-Medium.woff2',  {destDir: 'assets/fonts'});
+
+  app.import('vendor/dagre-d3/dagre-d3.core.js');
 
   return app.toTree();
 };
