@@ -1,14 +1,14 @@
-<div class="col-sm-4 col-md-4">
-  <label class="text-muted text-bold text-uppercase">State</label>
+<div class="content-box col-sm-4 col-md-4">
+  <label class="text-muted">State</label>
   <div class="content">
     <div class="state">
-      <h3 class="{{sidekick.stateColor}} text-capitalize">{{sidekick.healthState}}</h3>
+      {{badge-state model=sidekick}}
     </div>
-    <label class="text-muted text-bold text-uppercase r-mt15">Image</label>
+    <label class="text-muted r-mt15">Image</label>
     <div class="force-wrap">
       {{sidekick.imageUuid}}
     </div>
-    <label class="text-muted text-bold text-uppercase r-mt15">Entrypoint</label>
+    <label class="text-muted r-mt15">Entrypoint</label>
     <div class="force-wrap">
       {{#if sidekick.launchConfig.entryPoint}}
         {{sidekick.launchConfig.entryPoint}}
@@ -16,7 +16,7 @@
         <span class="text-muted">None</span>
       {{/if}}
     </div>
-    <label class="text-muted text-bold text-uppercase r-mt15">Command</label>
+    <label class="text-muted r-mt15">Command</label>
     <div class="force-wrap">
       {{#if sidekick.launchConfig.command}}
         {{sidekick.launchConfig.command}}
@@ -26,18 +26,20 @@
     </div>
   </div>
 </div>
-<div class="col-sm-4 col-md-4">
-  <label class="text-muted text-bold text-uppercase">Containers ({{sidekick.serviceContainers.length}})</label>
+<div class="content-box col-sm-4 col-md-4">
+  <label class="text-muted">Containers ({{sidekick.serviceContainers.length}})</label>
   <div class="content">
     <div class="container-dots clearfix">
       {{#each sidekick.serviceContainers as |instance|}}
         {{container-dot model=instance}}
+      {{else}}
+        <span class="text-muted">No Containers</span>
       {{/each}}
     </div>
   </div>
 </div>
-<div class="col-sm-4 col-md-4">
-  <label class="text-muted text-bold text-uppercase">Labels</label>
+<div class="content-box col-sm-4 col-md-4">
+  <label class="text-muted">Labels</label>
   <div class="content">
     <ul class="list-unstyled">
       {{#each labelArray as |label|}}

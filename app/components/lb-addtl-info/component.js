@@ -50,6 +50,7 @@ export default Ember.Component.extend({
     });
 
     var targets = [];
+    debugger;
     this.get('service.consumedServicesWithNames').forEach((map) => {
       if (map.get('ports.length')) {
         map.get('ports').forEach((str) => {
@@ -67,7 +68,9 @@ export default Ember.Component.extend({
       } else {
         targets.pushObject(Ember.Object.create({
           isService: true,
-          value: map.get('service.id'),
+          value: map.get('service.name'),
+          id: map.get('service.id'),
+          eid: map.get('service.environmentId')
         }));
       }
     });

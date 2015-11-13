@@ -10,6 +10,12 @@ export default Ember.Route.extend({
     },
   },
 
+  actions: {
+    willTransition: function() {
+      this.controller.set('showAddtlInfo', null);
+    },
+  },
+
   model: function(params) {
     var all = this.modelFor('environments');
     var out;

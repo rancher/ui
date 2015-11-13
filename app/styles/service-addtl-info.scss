@@ -1,76 +1,76 @@
 .summary-shown {
-  height: calc(100vh - 370px) !important; // For some reason 100% doesnt work here ??? 370 = summary info box plus offset for header and stuff
-  overflow-y: scroll !important;
+  margin-bottom: 300px;
+}
+.btn-group{
+  &.no-wrap {
+    white-space: no-wrap;
+    .btn {
+      float: none;
+      display:inline-block;
+      margin-left: -4px;
+      &:first-child {
+        margin-left: 0;
+      }
+    }
+  }
 }
 .service-addtl-info {
   position: fixed;
   bottom: 0;
   left: 0;
-  height: 310px;
-  min-height: 310px;
+  height: 260px;
+  min-height: 260px;
   background-color: white;
   width: 100%;
-  box-shadow: 0px -1px 4px $gray-light;
+  box-shadow: 0px -1px 14px $gray;
   z-index: 4;
+  font-size: 13px;
   hr {
     border-color: $gray-light;
+    margin: 5px 0;
   }
   .tab-content {
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
   }
   .tab-content,
   .tab-pane {
     height: 100%;
   }
+  .nav-tabs > li.active > a:focus {
+    background: white;
+  }
   ul.nav-tabs {
     position: absolute;
-    top: -45px;
+    top: -38px;
+    left: 15px;
     border-bottom: none;
-  }
-  .sidekick {
-    box-shadow: inset 0px -2px 3px -1px $gray-light;
-    &.active {
-      box-shadow: none;
-      height: 40px;
-      top: 10px;
+    li {
+      &.active {
+        background: white;
+      }
+    }
+    .close {
+      position: absolute;
+      top: -10px;
+      background: $red;
+      color: white;
+      height: 20px;
+      width: 20px;
+      border-radius: 50%;
+      text-align: center;
+      padding-top: 0.2em;
+      z-index: 10;
+      opacity: 1;
+      left: -10px;
+      font-size: 12px;
     }
   }
   .description {
     @extend .clip;
-    padding: 15px 25px 0 25px;
-  }
-  .tab-main {
-    background: white;
-    height: 35px;
-    top: 10px;
-    left: 25px;
-    padding: 5px 15px;
-    margin-right: 35px;
-    box-shadow: inset 0px -2px 3px -1px $gray-light;
-    .close {
-      position: absolute;
-      top: -5px;
-      right: -6px;
-      font-size: 14px;
-      color: gray;
-      &:hover {
-        cursor: pointer;
-      }
-    }
-    &.active {
-      height: 40px;
-      top: 5px;
-      box-shadow: none;
-    }
-    &.sidekick {
-      height: 35px;
-      top: 10px;
+    padding: 5px 25px 0 25px;
+    div:first-of-type {
       padding-top: 2px;
-      &.active {
-        box-shadow: none;
-        height: 40px;
-        top: 5px;
-      }
     }
   }
   .inner {
@@ -78,41 +78,16 @@
     table-layout: fixed;
     height: 240px;
     width: 100%;
+    padding-top: 10px;
   }
   .container-dots {
     height: 165px;
   }
-  // override the native bootstrap tabs styling
-  .nav-tabs {
-    > li {
-      margin-top: 0;
-      > a {
-        color: $light-grey;
-        line-height: .9;
-        margin-right: 0;
-        border: none;
-      }
-      &.active {
-        a {
-          border: none;
-          background: transparent;
-        }
-      }
-      > a {
-        &:hover,
-        &:focus {
-          border: none;
-          background: transparent;
-        }
-      }
-    }
-
-  }
   div[class*='col-'] {
     height: 100%;
   }
-  div[class*='col-'] {
-    padding: 10px 25px 25px 25px;
+  .content-box {
+    padding: 5px 5px 15px 15px;
     &:last-child {
       .content {
         border-right: none;
