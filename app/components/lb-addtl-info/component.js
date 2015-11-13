@@ -50,7 +50,6 @@ export default Ember.Component.extend({
     });
 
     var targets = [];
-    debugger;
     this.get('service.consumedServicesWithNames').forEach((map) => {
       if (map.get('ports.length')) {
         map.get('ports').forEach((str) => {
