@@ -1,5 +1,73 @@
-{{environment-header model=model}}
+{{environment-header model=model.stack all=model.all hideAddtlInfo="dismiss"}}
 
-{{#columns-section pods=model.unremovedServices emptyMessage="No services yet." as |service| }}
-  {{service-pod mode=mode model=service scaleUp="scaleUp"}}
-{{/columns-section}}
+<section class="stack-section single-stack">
+  <div class="header clearfix r-pl20 r-pr10 {{model.stack.stateBackground}}">
+    <div class="header-left">
+      <h4>
+        <span class="divider clip">{{model.stack.displayName}}</span>
+      </h4>
+    </div>
+
+    <div class="header-right count">
+      <p class="count">{{instanceCount}}</p>
+      <label>Container{{unless (eq instanceCount 1) 's'}}</label>
+    </div>
+
+    <div class="header-right right-divider count">
+      <p>{{model.stack.unremovedServices.length}}</p>
+      <label>Service{{unless (eq model.stack.unremovedServices.length 1) 's'}}</label>
+    </div>
+
+    <div class="header-right right-divider stack-template">
+      <div class="btn-group">
+        {{#link-to "service.new" (query-params environmentId=model.stack.id) classNames="btn btn-default btn-sm"}}Add Service{{/link-to}}
+        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+          <span class="caret"></span>
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+          <li>{{#link-to "service.new-balancer" (query-params environmentId=model.stack.id)}}Add Load Balancer{{/link-to}}</li>
+          <li>{{#link-to "service.new-alias" (query-params environmentId=model.stack.id)}}Add Service Alias{{/link-to}}</li>
+          <li>{{#link-to "service.new-external" (query-params environmentId=model.stack.id)}}Add External Service{{/link-to}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="well">
+    {{#if model.stack.services.length}}
+      <table class="grid fixed" style="margin-bottom: 0">
+        <tbody>
+          {{#each model.stack.services as |service|}}
+            <tr>
+              <td><i class="{{service.stateIcon}} {{service.stateColor}}"></i> <a class="hand" {{action 'showAddtlInfo' service}}>{{service.displayName}}</a></td>
+              <td>{{service.displayDetail}}</td>
+              <td>
+                {{#if service.displayType}}
+                  <span class="badge badge-primary">{{service.displayType}}</span>
+                {{/if}}
+                {{#if service.hasSidekicks}}
+                  <span class="badge badge-default">{{service.secondaryLaunchConfigs.length}} Sidekick{{unless (eq service.secondaryLaunchConfigs.length 1) 's'}}</span>
+                {{/if}}
+                {{#if service.hasContainers}}
+                  <span class="badge badge-warning">{{default-str service.instances.length default="0"}} Container{{if (eq service.instances.length 1) '' 's'}}</span>
+                {{/if}}
+              </td>
+              <td class="actions wide">
+                {{action-menu model=service}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    {{else}}
+      <div class="text-muted text-center r-p10">No Services</div>
+    {{/if}}
+  </div>
+</section>
+{{#liquid-if showAddtlInfo containerless=true}}
+  {{#service-addtl-info service=selectedService dismiss='dismiss'}}
+  {{/service-addtl-info}}
+{{/liquid-if}}
+
+

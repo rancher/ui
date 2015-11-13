@@ -1,31 +1,23 @@
+<ol class="breadcrumb">
+  {{#link-to "environments" tagName="li" href=false}}<a>Stacks</a>{{/link-to}}
+  <li class="active">{{model.displayName}}</li>
+</ol>
+
 <section class="header">
   <h3>
-    {{action-menu model=model classNames="pull-right"}}
-    <div class="state {{model.stateColor}}">
-      <i class="{{model.stateIcon}}"></i> {{model.displayState}}
-    </div>
-
-    <span class="right-divider">{{#link-to "environments"}}Stacks:{{/link-to}} {{model.displayName}}</span>
-    <div class="btn-group right-divider" style="margin: 0 10px 0 -5px;">
-      {{#link-to "environment.index" (query-params mode="dot") classNames="btn btn-sm btn-default"}}<i class="fa fa-ellipsis-h" data-placement="bottom" tooltip="Tiny Dots"></i>{{/link-to}}
-      {{#link-to "environment.index" (query-params mode="list") classNames="btn btn-sm btn-default"}}<i class="icon icon-thumbnails" data-placement="bottom" tooltip="Containers"></i>{{/link-to}}
-      {{#link-to "environment.index" (query-params mode="grouped") classNames="btn btn-sm btn-default"}}<i class="fa fa-object-group" data-placement="bottom" tooltip="Grouped Sidekicks"></i>{{/link-to}}
+    <div class="btn-group pull-right">
+      {{#link-to "environment.index" classNames="btn btn-sm btn-default"}}<i class="icon icon-tasks" data-placement="bottom" tooltip="List"></i>{{/link-to}}
       {{#link-to "environment.graph" classNames="btn btn-sm btn-default"}}<i class="icon icon-share" data-placement="bottom" tooltip="Link Graph"></i>{{/link-to}}
       {{#link-to "environment.code" classNames="btn btn-sm btn-default"}}<i class="icon icon-file" data-placement="bottom" tooltip="Compose YAML"></i>{{/link-to}}
     </div>
-    <div class="btn-group">
-      {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-primary btn-sm"}}Add Service{{/link-to}}
-      <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-        <span class="caret"></span>
-        <span class="sr-only">Toggle Dropdown</span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        <li>{{#link-to "service.new-balancer" (query-params environmentId=model.id)}}Add Load Balancer{{/link-to}}</li>
-        <li>{{#link-to "service.new-alias" (query-params environmentId=model.id)}}Add Service Alias{{/link-to}}</li>
-        <li>{{#link-to "service.new-external" (query-params environmentId=model.id)}}Add External Service{{/link-to}}</li>
-      </ul>
-    </div>
-    {{upgrade-btn environmentResource=model}}
+
+    {{#power-select options=all selected=model onchange=(action "changeStack") searchField="displayName" as |obj|}}
+      <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}"></i> {{obj.displayName}}</div>
+    {{/power-select}}
+
+    {{action-menu model=model classNames="left-divider r-ml5" size="sm"}}
+
+    {{upgrade-btn environmentResource=model classNames="left-divider"}}
   </h3>
   {{#if (and model.isError model.showTransitioningMessage)}}
     <div class="pull-right clip text-danger">

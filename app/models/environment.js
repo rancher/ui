@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
 import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
+import { parseExternalId } from 'ui/utils/parse-externalid';
 
 var Environment = Resource.extend({
   type: 'environment',
@@ -25,11 +26,15 @@ var Environment = Resource.extend({
     },
 
     finishUpgrade: function() {
-      return this.doAction('finishupgrade');
+      this.get('finishableServices').forEach((service) => {
+        service.doAction('finishupgrade');
+      });
     },
 
     rollback: function() {
-      return this.doAction('rollback');
+      this.get('rollbackableServices').forEach((service) => {
+        service.doAction('rollback');
+      });
     },
 
     addService: function() {
@@ -82,25 +87,33 @@ var Environment = Resource.extend({
     var a = this.get('actionLinks');
 
     var out = [
+      { label: 'Finish Upgrade',  icon: 'icon icon-face-open-smile',  action: 'finishUpgrade',       enabled: this.get('finishableServices.length') > 0 },
+      { label: 'Rollback',        icon: 'icon icon-face-gasp',        action: 'rollback',            enabled: this.get('rollbackableServices.length') > 0 },
+      { label: 'Cancel Upgrade',  icon: 'icon icon-life-ring',        action: 'cancelUpgrade',       enabled: !!a.cancelupgrade },
+      { label: 'Cancel Rollback', icon: 'icon icon-life-ring',        action: 'cancelRollback',      enabled: !!a.cancelrollback },
       { label: 'Start Services',  icon: 'icon icon-play',             action: 'activateServices',    enabled: this.get('canActivate') },
-      { label: 'Stop Services',   icon: 'icon icon-pause',            action: 'deactivateServices',  enabled: this.get('canDeactivate') },
+      { label: 'Stop Services',   icon: 'icon icon-stop',             action: 'deactivateServices',  enabled: this.get('canDeactivate') },
+      { divider: true },
       { label: 'View Graph',      icon: 'icon icon-share',            action: 'viewGraph',            enabled: true },
       { label: 'View Config',     icon: 'icon icon-files',            action: 'viewCode',            enabled: true },
       { label: 'Export Config',   icon: 'icon icon-download',         action: 'exportConfig',        enabled: !!a.exportconfig },
       { divider: true },
-      { label: 'Finish Upgrade',  icon: 'fa fa-thumbs-o-up',          action: 'finishUpgrade',       enabled: !!a.finishupgrade },
-      { label: 'Cancel Upgrade',  icon: 'fa fa-life-ring',            action: 'cancelUpgrade',       enabled: !!a.cancelupgrade },
-      { label: 'Rollback',        icon: 'fa fa-history',              action: 'rollback',            enabled: !!a.rollback },
-      { label: 'Cancel Rollback', icon: 'fa fa-life-ring',            action: 'cancelRollback',      enabled: !!a.cancelrollback },
-      { divider: true },
       { label: 'Delete',          icon: 'icon icon-trash',            action: 'promptDelete',        enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
-      { label: 'View in API',     icon: 'icon icon-externallink',     action: 'goToApi',             enabled: true },
+      { label: 'View in API',     icon: 'icon icon-external-link',    action: 'goToApi',             enabled: true },
       { divider: true },
       { label: 'Edit',            icon: 'icon icon-edit',             action: 'edit',                enabled: true },
     ];
 
     return out;
-  }.property('actionLinks.{remove,purge,exportconfig,finishupgrade,cancelupgrade,rollback,cancelrollback}','canActivate','canDeactivate'),
+  }.property('actionLinks.{remove,purge,exportconfig,finishupgrade,cancelupgrade,rollback,cancelrollback}','canActivate','canDeactivate','finishableServices.length','rollbackableServices.length'),
+
+  finishableServices: function() {
+    return this.get('services').filterBy('actionLinks.finishupgrade');
+  }.property('services.@each.state'),
+
+  rollbackableServices: function() {
+    return this.get('services').filterBy('actionLinks.rollback');
+  }.property('services.@each.state'),
 
   healthState: function() {
     // Get the state of each instance
@@ -186,20 +199,24 @@ var Environment = Resource.extend({
 
   unremovedServices: function() {
     return UnremovedArrayProxy.create({sourceContent: this.get('services')});
-  }.property('services')
+  }.property('services'),
+
+  externalIdInfo: function() {
+    return parseExternalId(this.get('externalId'));
+  }.property('externalId'),
 });
 
 Environment.reopenClass({
   stateMap: {
     'active':             {icon: 'icon icon-globe',           color: 'text-success'},
-    'canceled-rollback':  {icon: 'fa fa-life-ring',           color: 'text-info'},
-    'canceled-upgrade':   {icon: 'fa fa-life-ring',           color: 'text-info'},
-    'canceling-rollback': {icon: 'fa fa-life-ring',           color: 'text-info'},
-    'canceling-upgrade':  {icon: 'fa fa-life-ring',           color: 'text-info'},
-    'finishing-upgrade':  {icon: 'fa fa-arrow-circle-o-up',   color: 'text-info'},
-    'rolling-back':       {icon: 'fa fa-history',             color: 'text-info'},
-    'upgraded':           {icon: 'fa fa-arrow-circle-o-up',   color: 'text-info'},
-    'upgrading':          {icon: 'fa fa-arrow-circle-o-up',   color: 'text-info'},
+    'canceled-rollback':  {icon: 'icon icon-life-ring',       color: 'text-info'},
+    'canceled-upgrade':   {icon: 'icon icon-life-ring',       color: 'text-info'},
+    'canceling-rollback': {icon: 'icon icon-life-ring',       color: 'text-info'},
+    'canceling-upgrade':  {icon: 'icon icon-life-ring',       color: 'text-info'},
+    'finishing-upgrade':  {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
+    'rolling-back':       {icon: 'icon icon-history',         color: 'text-info'},
+    'upgraded':           {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
+    'upgrading':          {icon: 'icon icon-arrow-circle-up', color: 'text-info'},
   }
 });
 

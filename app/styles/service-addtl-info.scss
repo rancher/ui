@@ -1,0 +1,143 @@
+.summary-shown {
+  height: calc(100vh - 370px) !important; // For some reason 100% doesnt work here ??? 370 = summary info box plus offset for header and stuff
+  overflow-y: scroll !important;
+}
+.service-addtl-info {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  height: 310px;
+  min-height: 310px;
+  background-color: white;
+  width: 100%;
+  box-shadow: 0px -1px 4px $gray-light;
+  z-index: 4;
+  hr {
+    border-color: $gray-light;
+  }
+  .tab-content {
+    overflow: auto;
+  }
+  .tab-content,
+  .tab-pane {
+    height: 100%;
+  }
+  ul.nav-tabs {
+    position: absolute;
+    top: -45px;
+    border-bottom: none;
+  }
+  .sidekick {
+    box-shadow: inset 0px -2px 3px -1px $gray-light;
+    &.active {
+      box-shadow: none;
+      height: 40px;
+      top: 10px;
+    }
+  }
+  .description {
+    @extend .clip;
+    padding: 15px 25px 0 25px;
+  }
+  .tab-main {
+    background: white;
+    height: 35px;
+    top: 10px;
+    left: 25px;
+    padding: 5px 15px;
+    margin-right: 35px;
+    box-shadow: inset 0px -2px 3px -1px $gray-light;
+    .close {
+      position: absolute;
+      top: -5px;
+      right: -6px;
+      font-size: 14px;
+      color: gray;
+      &:hover {
+        cursor: pointer;
+      }
+    }
+    &.active {
+      height: 40px;
+      top: 5px;
+      box-shadow: none;
+    }
+    &.sidekick {
+      height: 35px;
+      top: 10px;
+      padding-top: 2px;
+      &.active {
+        box-shadow: none;
+        height: 40px;
+        top: 5px;
+      }
+    }
+  }
+  .inner {
+    display: table;
+    table-layout: fixed;
+    height: 240px;
+    width: 100%;
+  }
+  .container-dots {
+    height: 165px;
+  }
+  // override the native bootstrap tabs styling
+  .nav-tabs {
+    > li {
+      margin-top: 0;
+      > a {
+        color: $light-grey;
+        line-height: .9;
+        margin-right: 0;
+        border: none;
+      }
+      &.active {
+        a {
+          border: none;
+          background: transparent;
+        }
+      }
+      > a {
+        &:hover,
+        &:focus {
+          border: none;
+          background: transparent;
+        }
+      }
+    }
+
+  }
+  div[class*='col-'] {
+    height: 100%;
+  }
+  div[class*='col-'] {
+    padding: 10px 25px 25px 25px;
+    &:last-child {
+      .content {
+        border-right: none;
+      }
+
+    }
+  }
+  .content {
+    height: 100%;
+    padding: 10px 0;
+    border-right: 1px solid $gray-light;
+    max-height: 310px;
+    overflow-y: auto;
+  }
+  .state {
+    h3 {
+      display: inline-block;
+      width: 40%;
+      vertical-align: middle;
+    }
+    .btn {
+      font-size: 11px;
+    }
+  }
+  .action-menu {
+    margin-right: 15px;
+  }
+}

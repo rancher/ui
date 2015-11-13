@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   // Inputs
   instance: null,
   errors: null,
+  isService: null,
 
   tagName: '',
 

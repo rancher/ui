@@ -5,31 +5,40 @@ import { normalizeType } from 'ember-api-store/utils/normalize';
 import C from 'ui/utils/constants';
 
 const defaultStateMap = {
-  'activating':       {icon: 'icon icon-tag',            color: 'text-info'   },
-  'active':           {icon: 'icon icon-circle-o',       color: 'text-success'},
-  'created':          {icon: 'icon icon-tag',            color: 'text-info'   },
-  'creating':         {icon: 'icon icon-tag',            color: 'text-info'   },
-  'deactivating':     {icon: 'icon icon-adjust',         color: 'text-info'   },
-  'degraded':         {icon: 'icon icon-notification',   color: 'text-warning'},
-  'error':            {icon: 'icon icon-alert',          color: 'text-danger' },
-  'inactive':         {icon: 'icon icon-circle',         color: 'text-danger' },
-  'initializing':     {icon: 'icon icon-notification',   color: 'text-warning'},
-  'purged':           {icon: 'icon icon-tornado',        color: 'text-danger' },
-  'purging':          {icon: 'icon icon-tornado',        color: 'text-info'   },
-  'removed':          {icon: 'icon icon-trash',          color: 'text-danger' },
-  'removing':         {icon: 'icon icon-trash',          color: 'text-info'   },
-  'requested':        {icon: 'icon icon-tag',            color: 'text-info'   },
-  'registering':      {icon: 'icon icon-tag',            color: 'text-info'   },
-  'restoring':        {icon: 'icon icon-medicalcross',   color: 'text-info'   },
-  'running':          {icon: 'icon icon-circle-o',       color: 'text-success'},
-  'starting':         {icon: 'icon icon-adjust',         color: 'text-info'   },
-  'stopped':          {icon: 'icon icon-circle',         color: 'text-danger' },
-  'stopping':         {icon: 'icon icon-adjust',         color: 'text-info'   },
-  'unhealthy':        {icon: 'icon icon-notification',   color: 'text-danger' },
-  'updating':         {icon: 'icon icon-tag',            color: 'text-info'   },
-  'updating-active':  {icon: 'icon icon-tag',            color: 'text-info'   },
-  'updating-inactive':{icon: 'icon icon-tag',            color: 'text-info'   },
+  'activating':       {icon: 'icon icon-tag',           color: 'text-info'   },
+  'active':           {icon: 'icon icon-circle-o',      color: 'text-success'},
+  'created':          {icon: 'icon icon-tag',           color: 'text-info'   },
+  'creating':         {icon: 'icon icon-tag',           color: 'text-info'   },
+  'deactivating':     {icon: 'icon icon-adjust',        color: 'text-info'   },
+  'degraded':         {icon: 'icon icon-alert',         color: 'text-warning'},
+  'error':            {icon: 'icon icon-alert',         color: 'text-danger' },
+  'inactive':         {icon: 'icon icon-circle',        color: 'text-danger' },
+  'initializing':     {icon: 'icon icon-alert',         color: 'text-warning'},
+  'purged':           {icon: 'icon icon-purged',        color: 'text-danger' },
+  'purging':          {icon: 'icon icon-purged',        color: 'text-info'   },
+  'removed':          {icon: 'icon icon-trash',         color: 'text-danger' },
+  'removing':         {icon: 'icon icon-trash',         color: 'text-info'   },
+  'requested':        {icon: 'icon icon-tag',           color: 'text-info'   },
+  'registering':      {icon: 'icon icon-tag',           color: 'text-info'   },
+  'restoring':        {icon: 'icon icon-medicalcross',  color: 'text-info'   },
+  'running':          {icon: 'icon icon-circle-o',      color: 'text-success'},
+  'started-once':     {icon: 'icon icon-dot-circlefill',color: 'text-success'},
+  'starting':         {icon: 'icon icon-adjust',        color: 'text-info'   },
+  'stopped':          {icon: 'icon icon-circle',        color: 'text-danger' },
+  'stopping':         {icon: 'icon icon-adjust',        color: 'text-info'   },
+  'unhealthy':        {icon: 'icon icon-alert',         color: 'text-danger' },
+  'updating':         {icon: 'icon icon-tag',           color: 'text-info'   },
+  'updating-active':  {icon: 'icon icon-tag',           color: 'text-info'   },
+  'updating-inactive':{icon: 'icon icon-tag',           color: 'text-info'   },
 };
+
+const stateColorSortMap = {
+  'danger':   1,
+  'warning':  2,
+  'info':     3,
+  'success':  4
+};
+const stateColorUnknown = 5;
 
 export default Ember.Mixin.create({
   endpoint: Ember.inject.service(),
@@ -60,6 +69,29 @@ export default Ember.Mixin.create({
     */
     return [];
   }.property(),
+
+  primaryActions: function() {
+    // The default implementation returns the first enabled item that has an icon
+    // and is before the first divider.  If you want a different behavior or 
+    // multiple primaryActions, you can override this in a specific model.
+    var all = this.get('availableActions');
+    var obj;
+    for ( var i = 0 ; i < all.get('length') ; i++ )
+    {
+      obj = all.objectAt(i);
+      if ( Ember.get(obj,'divider') )
+      {
+        // Nothing was found, stop at the first divider;
+        return [];
+      }
+      else if ( Ember.get(obj,'enabled') && Ember.get(obj,'icon') && Ember.get(obj,'action') !== 'promptDelete')
+      {
+        return [obj];
+      }
+    }
+
+    return [];
+  }.property('availableActions.@each.enabled'),
 
   actions: {
     promptDelete: function() {
@@ -166,19 +198,9 @@ export default Ember.Mixin.create({
         icon = this.constructor.defaultStateIcon;
       }
 
-      if ( icon.indexOf('fa-') >= 0 )
+      if ( icon.indexOf('icon ') === -1 )
       {
-        if ( icon.indexOf('fa ') === -1 )
-        {
-          icon = 'fa ' + icon;
-        }
-      }
-      else
-      {
-        if ( icon.indexOf('icon ') === -1 )
-        {
-          icon = 'icon ' + icon;
-        }
+        icon = 'icon ' + icon;
       }
     }
 
@@ -207,6 +229,11 @@ export default Ember.Mixin.create({
 
     return this.constructor.defaultStateColor;
   }.property('relevantState','transitioning'),
+
+  stateSort: function() {
+    var color = this.get('stateColor').replace('text-','');
+    return stateColorSortMap[color] || stateColorUnknown;
+  }.property('stateColor'),
 
   stateBackground: function() {
     return this.get('stateColor').replace("text-","bg-");

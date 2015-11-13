@@ -1,4 +1,4 @@
-<div class="top-row">
+<div class="top-row clearfix">
   <div class="logo" {{action "showAbout"}} aria-label="About Rancher"></div>
   <nav>
     {{#if project}}
@@ -10,137 +10,126 @@
     {{/if}}
   </nav>
 
-  <div class="right">
-    <div class="dropdown">
-      <span class="user-toggle" id="user-dropdown" data-toggle="dropdown" aria-expanded="true" aria-label="User Menu: {{session.user}}">
-        {{#if accessEnabled}}
-          {{identity-avatar link=false identity=access.identity}}
-          <span class="caret user-dropdown-arrow"></span>
-        {{else}}
-          <div class="gh-avatar">
-            <div class="gh-placeholder">
-              <i class="icon icon-user"></i>
-            </div>
+  <div class="dropdown user-btn">
+    <span class="user-toggle" id="user-dropdown" data-toggle="dropdown" aria-expanded="true" aria-label="User Menu: {{session.user}}">
+      {{#if accessEnabled}}
+        {{identity-avatar link=false identity=access.identity}}
+        <span class="caret user-dropdown-arrow"></span>
+      {{else}}
+        <div class="gh-avatar">
+          <div class="gh-placeholder">
+            <i class="icon icon-user"></i>
           </div>
-          <span class="caret user-dropdown-arrow"></span>
-        {{/if}}
-      </span>
-      <ul class="dropdown-menu dropdown-menu-right user-menu" role="menu" aria-labelledby="user-dropdown">
-        {{#if accessEnabled}}
-          <li role="presentation" class="user-auth">
-            {{identity-block avatar=false identity=access.identity}}
-            {{#link-to "logout" tabindex="-1" class="user-logout"}}<i class="icon icon-logout"></i><br/>Log Out{{/link-to}}
-          </li>
-        {{else}}
-          <li role="presentation" class="user-noauth">
-            <i class="icon icon-alert"></i> Access is not configured
-          </li>
-        {{/if}}
+        </div>
+        <span class="caret user-dropdown-arrow"></span>
+      {{/if}}
+    </span>
+    <ul class="dropdown-menu dropdown-menu-right user-menu" role="menu" aria-labelledby="user-dropdown">
+      {{#if accessEnabled}}
+        <li role="presentation" class="user-auth">
+          {{identity-block avatar=false identity=access.identity}}
+          {{#link-to "logout" tabindex="-1" class="user-logout"}}<i class="icon icon-logout"></i><br/>Log Out{{/link-to}}
+        </li>
+      {{/if}}
 
-        <li role="presentation" class="dropdown-header text-uppercase">
+      {{#if isLocalAuth}}
+        <li role="presentation" class="dropdown-header">
           Your Account
         </li>
 
         <li role="presentation">
-          {{#link-to "settings.projects" role="menuitem" tabindex="-1"}}Manage Environments{{/link-to}}
+          <a {{action "changePassword"}} role="menuitem" tabindex="-1">Change Password</a>
         </li>
-
-        {{#if isLocalAuth}}
-          <li role="presentation">
-            <a {{action "changePassword"}} role="menuitem" tabindex="-1">Change Password</a>
-          </li>
-        {{/if}}
 
         <li role="presentation" class="divider"></li>
-        <li role="presentation" class="dropdown-header text-uppercase">
-          This Environment
-        </li>
+      {{/if}}
 
-        <li role="presentation">
-          {{#link-to "settings.apikeys" role="menuitem" tabindex="-1"}}API &amp; Keys{{/link-to}}
-        </li>
+      <li role="presentation" class="dropdown-header">
+        This Environment
+      </li>
 
-        <li role="presentation">
-          {{#link-to "settings.registries" role="menuitem" tabindex="-1"}}Registries{{/link-to}}
-        </li>
-      </ul>
-    </div>
+      <li role="presentation">
+        {{#link-to "settings.apikeys" role="menuitem" tabindex="-1"}}API &amp; Keys{{/link-to}}
+      </li>
+
+      <li role="presentation">
+        {{#link-to "settings.registries" role="menuitem" tabindex="-1"}}Registries{{/link-to}}
+      </li>
+    </ul>
   </div>
 
-  <div class="right" style="padding-right: 0;">
-    {{#if project}}
-      <div class="btn-group project-btn">
-        <button type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-expanded="false">
-          <i class="icon icon-fw {{project.icon}}"></i>&nbsp;{{project.displayName}}
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
-          {{#if projectChoices.length}}
-            <li role="presentation" class="dropdown-header text-uppercase">
-              {{#if accessEnabled}}
-                Your Environments
-              {{else}}
-                All Environments
-              {{/if}}
-            </li>
-            {{#each projectChoices as |p|}}
-              <li class="{{if p.active 'disabled selected'}}">
-                <a {{action "switchProject" p.id}} class="clip">
-                  <i class="fa {{p.icon}}"></i>
-                  &nbsp;
-                  {{p.displayName}}
-                </a>
-              </li>
-            {{/each}}
-          {{/if}}
-          {{#if projectChoices.length}}
-            <li role="presentation" class="divider"></li>
-          {{/if}}
-          {{#if projectIsMissing}}
-            <li role="presentation" class="dropdown-header text-uppercase">Selected Environment:</li>
-            <li class="{{if project.active 'disabled selected'}}">
-              <a {{action "switchProject" project.id}} class="clip">
-                <i class="fa {{project.icon}}"></i>
+  {{#if project}}
+    <div class="btn-group project-btn">
+      <button type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-expanded="false">
+        <i class="{{project.icon}} icon-fw"></i>&nbsp;{{project.displayName}}
+        <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
+        {{#if projectChoices.length}}
+          <li role="presentation" class="dropdown-header">
+            {{#if accessEnabled}}
+              Your Environments
+            {{else}}
+              All Environments
+            {{/if}}
+          </li>
+          {{#each projectChoices as |p|}}
+            <li class="{{if p.active 'disabled selected'}}">
+              <a {{action "switchProject" p.id}} class="clip">
+                <i class="icon {{p.icon}}"></i>
                 &nbsp;
-                {{project.displayName}}
+                {{p.displayName}}
               </a>
             </li>
-            <li role="presentation" class="divider"></li>
-          {{/if}}
-          <li>{{#link-to "settings.projects"}}Manage Environments{{/link-to}}</li>
-        </ul>
-      </div>
-    {{/if}}
-  </div>
+          {{/each}}
+        {{/if}}
+        {{#if projectChoices.length}}
+          <li role="presentation" class="divider"></li>
+        {{/if}}
+        {{#if projectIsMissing}}
+          <li role="presentation" class="dropdown-header">Selected Environment:</li>
+          <li class="{{if project.active 'disabled selected'}}">
+            <a {{action "switchProject" project.id}} class="clip">
+              <i class="icon {{project.icon}}"></i>
+              &nbsp;
+              {{project.displayName}}
+            </a>
+          </li>
+          <li role="presentation" class="divider"></li>
+        {{/if}}
+        <li>{{#link-to "settings.projects"}}Manage Environments{{/link-to}}</li>
+      </ul>
+    </div>
+  {{/if}}
 </div>
 
-<div class="bottom-row">
+<div class="bottom-row clearfix">
   <nav>
     {{#if isInfrastructureTab}}
-      {{#link-to "hosts"}}<i class="icon icon-host"></i> Hosts{{/link-to}}
-      {{#link-to "containers"}}<i class="icon icon-box"></i> Containers{{/link-to}}
-      {{#link-to "certificates"}}<i class="fa fa-certificate"></i> Certificates{{/link-to}}
+      {{#link-to "hosts"}}<i class="icon icon-host"></i>Hosts{{/link-to}}
+      {{#link-to "containers"}}<i class="icon icon-box"></i>Containers{{/link-to}}
+      {{#link-to "certificates"}}<i class="icon icon-certificate"></i>Certificates{{/link-to}}
     {{/if}}
     {{#if isApplicationsTab}}
       {{#link-to "environments"}}<i class="icon icon-globe"></i> Stacks{{/link-to}}
-      {{#link-to "applications-tab.catalog" "all"}}<i class="fa fa-database"></i> Catalog{{/link-to}}
+      {{#link-to "applications-tab.catalog"}}<i class="icon icon-database"></i> Catalog{{/link-to}}
 
-      <div class="btn-group pull-right">
+      <div class="compose-download">
         <a class="dropdown-toggle hand" data-toggle="dropdown" aria-expanded="false">
-          <i class="icon icon-download"></i> Rancher Compose CLI <span class="caret"></span>
+          <i class="icon icon-download"></i> Download CLI <span class="caret"></span>
         </a>
-        <ul class="dropdown-menu" role="menu">
-          <li><a {{action "composeDownload" "darwin"}}><i class="icon icon-fw icon-apple"></i> Download for Mac OS</a></li>
-          <li><a {{action "composeDownload" "windows"}}><i class="icon icon-fw icon-windows"></i> Download for Windows</a></li>
-          <li><a {{action "composeDownload" "linux"}}><i class="icon icon-fw icon-linux"></i> Download for Linux</a></li>
+        <ul class="dropdown-menu text-right" role="menu" style="min-width: 0">
+          <li><a {{action "composeDownload" "darwin"}}>Mac OS X <i class="icon icon-fw icon-apple"></i></a></li>
+          <li><a {{action "composeDownload" "windows"}}>Windows <i class="icon icon-fw icon-windows"></i></a></li>
+          <li><a {{action "composeDownload" "linux"}}>Linux <i class="icon icon-fw icon-linux"></i></a></li>
         </ul>
       </div>
     {{/if}}
     {{#if isAdminTab}}
-      {{#link-to "admin-tab.accounts"}}<i class="ss-user"></i> Accounts{{/link-to}}
-      {{#link-to "admin-tab.auth"}}<i class="ss-lock"></i> Access Control{{/link-to}}
-      {{#link-to "admin-tab.host"}}<i class="ss-database"></i> Host Registration{{/link-to}}
-      {{#link-to "admin-tab.processes"}}<i class="fa fa-tasks"></i> Processes{{/link-to}}
+      {{#link-to "admin-tab.accounts"}}<i class="icon icon-users"></i>Accounts{{/link-to}}
+      {{#link-to "admin-tab.auth"}}<i class="icon icon-key"></i>Access Control{{/link-to}}
+      {{#link-to "admin-tab.host"}}<i class="icon icon-network"></i>Host Registration{{/link-to}}
+      {{#link-to "admin-tab.processes"}}<i class="icon icon-processes"></i>Processes{{/link-to}}
     {{/if}}
   </nav>
 </div>

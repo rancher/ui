@@ -87,7 +87,7 @@
 
   <div class="col-sm-12 col-md-8">
     <div class="form-control-static">
-      <button class="btn-circle-plus" {{action "addDevice"}}></button>
+      <button class="btn-circle" {{action "addDevice"}}><i class="icon icon-plus-circle"/></button>
     </div>
     {{#if devicesArray.length}}
       <table class="table fixed no-lines no-top-padding tight small">
@@ -96,7 +96,7 @@
           <th width="30">&nbsp;</th>
           <th>Path in Container</th>
           <th width="30">&nbsp;</th>
-          <th>Permissions</th>
+          <th width="100">Permissions</th>
           <th width="30">&nbsp;</th>
         </tr>
         {{#each devicesArray as |device|}}
@@ -115,7 +115,7 @@
               {{device-permissions buttonClass="btn-sm" selectionAsString=device.permissions}}
             </td>
             <td class="text-right">
-              <button {{action "removeDevice"}} class="btn-circle-x" type="button" tabindex="-1"></button>
+              <button class="btn-circle" {{action "removeDevice" device}} tabindex="-1"><i class="icon icon-x-circle"/></button>
             </td>
           </tr>
         {{/each}}

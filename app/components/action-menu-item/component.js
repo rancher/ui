@@ -25,14 +25,11 @@ export default Ember.Component.extend({
   render: function(buffer) {
     var icon = this.get('icon');
     var prefix;
-    if ( icon.indexOf('fa-') === -1 )
+    if ( icon.indexOf('icon-') === -1 )
     {
       prefix = 'icon icon-fw';
     }
-    else
-    {
-      prefix = 'fa fa-fw';
-    }
+
     buffer.push(`<i class="${prefix} ${icon}"></i> ${this.get('label')}`);
   },
 

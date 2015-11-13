@@ -1,0 +1,48 @@
+<table class="grid fixed table-bordered">
+  <thead>
+    <tr>
+      <th width="90">State</th>
+      <th>Mount Point</th>
+      <th>Shared With</th>
+      <th width="80">Writable</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each model.mounts as |mount|}}
+      <tr>
+        <td>
+          <span class="badge state {{mount.stateBackground}}">
+            {{mount.displayState}}
+          </span>
+        </td>
+        <td>
+          {{mount.path}}
+        </td>
+        <td>
+          <ul class="list-unstyled">
+          {{#each mount.volume.sharedWith as |container|}}
+            <li>
+              {{#link-to "container" container.id}}{{container.displayName}}{{/link-to}}
+            </li>
+          {{else}}
+            <li class="text-muted">No other containers</li>
+          {{/each}}
+          </ul>
+        </td>
+        <td>
+          <i class="icon {{if mount.isReadWrite 'icon-check' 'icon-x text-muted'}}"></i>
+        </td>
+      </tr>
+    {{else}}
+      <tr>
+        <td colspan="4">
+          {{#if model.mountError}}
+            <div class="text-danger text-center">Error: {{model.mountError.message}}</div>
+          {{else}}
+            <div class="text-muted text-center">This container has no volumes.</div>
+          {{/if}}
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

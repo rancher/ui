@@ -1,6 +1,6 @@
 {{#unless model.hosts.length}}
   <section class="welcome">
-    <i class="icon icon-share"></i>
+    <i class="icon icon-host"></i>
     <h2>Adding your first Host</h2>
     <p>
       Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker 1.6+ and be able to reach the Rancher server via HTTP.
@@ -21,7 +21,7 @@
       A service is also capable of leveraging other Rancher built-in services such as load balancers, health monitoring, upgrade support, and high-availability.
       <a href="http://docs.rancher.com/rancher/rancher-ui/applications/stacks/adding-services/" target="_blank">Learn More</a>
     </p>
-    {{#link-to "service.new" (query-params environmentId=model.environmentId) class="btn btn-default"}}Add Service{{/link-to}}
-    {{#link-to "applications-tab.catalog" "all" class="btn btn-default"}}Add From Catalog{{/link-to}}
+    <a class="btn btn-default" {{action "newService"}}>Add Service</a>
+    {{#link-to "applications-tab.catalog" class="btn btn-default"}}Add From Catalog{{/link-to}}
   </section>
 {{/unless}}

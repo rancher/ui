@@ -82,7 +82,7 @@ var Project = Resource.extend(PolledResource, {
     }
     else if ( this.get('active') )
     {
-      return 'icon icon-openfolder';
+      return 'icon icon-folder-open';
     }
     else
     {

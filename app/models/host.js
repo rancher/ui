@@ -58,7 +58,7 @@ var Host = Resource.extend({
       { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
       { label: 'Purge',         icon: '',                       action: 'purge',        enabled: !!a.purge,       color: 'text-danger'},
       { divider: true },
-      { label: 'View in API',   icon: 'icon icon-externallink', action: 'goToApi',      enabled: true},
+      { label: 'View in API',   icon: 'icon icon-external-link',action: 'goToApi',      enabled: true},
     ];
 
     if ( this.get('machine') )

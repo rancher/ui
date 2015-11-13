@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  beforeModel: function() {
-    this.replaceWith('service.containers');
+  redirect: function() {
+    this.transitionTo('service.containers');
   }
 });

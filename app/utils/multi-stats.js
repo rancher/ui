@@ -124,19 +124,17 @@ export default Ember.Object.extend(Ember.Evented, {
       var time_diff_ms = (tsFromString(data.timestamp) - tsFromString(prev.timestamp));
       var time_diff_ns = time_diff_ms*1e6;
       var time_diff_s = time_diff_ms/1000;
-      var count = 1;
 
       // CPU
-      // These counters are per-core, so multiply by number of cores
+      var count = 1;
       if ( data.cpu.usage.per_cpu_usage )
       {
         count = data.cpu.usage.per_cpu_usage.length;
-        time_diff_ns *= count;
       }
 
-      out.cpu_user    = toPercent((data.cpu.usage.user    - prev.cpu.usage.user   )/time_diff_ns);
-      out.cpu_system  = toPercent((data.cpu.usage.system  - prev.cpu.usage.system )/time_diff_ns);
-      out.cpu_total   = toPercent((data.cpu.usage.total   - prev.cpu.usage.total  )/time_diff_ns);
+      out.cpu_user    = toPercent((data.cpu.usage.user    - prev.cpu.usage.user   )/time_diff_ns, count*100);
+      out.cpu_system  = toPercent((data.cpu.usage.system  - prev.cpu.usage.system )/time_diff_ns, count*100);
+      out.cpu_total   = toPercent((data.cpu.usage.total   - prev.cpu.usage.total  )/time_diff_ns, count*100);
       out.cpu_count   = count;
 
       var read = 0;
@@ -168,19 +166,21 @@ export default Ember.Object.extend(Ember.Evented, {
       // Network
       if ( data.network )
       {
-        out.net_rx_kb = Math.max(0, (data.network.rx_bytes - prev.network.rx_bytes)/(time_diff_s*1024));
-        out.net_tx_kb = Math.max(0, (data.network.tx_bytes - prev.network.tx_bytes)/(time_diff_s*1024));
-
         if ( data.network.interfaces && prev.network.interfaces )
         {
           data.network.interfaces.forEach((iface) => {
             var prev_iface =  prev.network.interfaces.filterBy('name', iface.name)[0];
             if ( prev_iface )
             {
-              out.net_rx_kb += Math.max(0, (iface.rx_bytes - prev_iface.rx_bytes)/(time_diff_s*1024));
-              out.net_tx_kb += Math.max(0, (iface.tx_bytes - prev_iface.tx_bytes)/(time_diff_s*1024));
+              out.net_rx_kb = (out.net_rx_kb||0) + Math.max(0, (iface.rx_bytes - prev_iface.rx_bytes)/(time_diff_s*1024));
+              out.net_tx_kb = (out.net_tx_kb||0) + Math.max(0, (iface.tx_bytes - prev_iface.tx_bytes)/(time_diff_s*1024));
             }
           });
+        }
+        else if ( data.network && prev.network )
+        {
+          out.net_rx_kb = Math.max(0, (data.network.rx_bytes - prev.network.rx_bytes)/(time_diff_s*1024));
+          out.net_tx_kb = Math.max(0, (data.network.tx_bytes - prev.network.tx_bytes)/(time_diff_s*1024));
         }
       }
     }
@@ -233,8 +233,15 @@ function roundTsFromString(str) {
   }
 }
 
-function toPercent(decimal) {
-  var percent = Math.round(decimal*10000)/100;
-  return Math.max(0, Math.min(percent, 100));
+function toPercent(decimal,max=100) {
+  var percent = Math.max(0, Math.round(decimal*10000)/100);
+  if ( max )
+  {
+    return Math.min(percent,max);
+  }
+  else
+  {
+    return percent;
+  }
 }
 

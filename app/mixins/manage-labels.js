@@ -7,7 +7,6 @@ const SYSTEM = 'system';
 const AFFINITY = 'affinity';
 
 export default Ember.Mixin.create({
-  initialLabels: null,
   labelArray: null,
   labelObj: null,
 

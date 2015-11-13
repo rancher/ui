@@ -11,7 +11,7 @@ export default Ember.Controller.extend(Sortable, {
   sortableContent: Ember.computed.alias('nonRootVolumes'),
   sortBy: 'name',
   sorts: {
-    state:    ['state','displayUri','id'],
+    state:    ['stateSort','displayUri','id'],
     hostPath: ['displayUri','id'],
   },
 });
