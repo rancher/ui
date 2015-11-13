@@ -67,7 +67,9 @@ export default Ember.Component.extend({
       } else {
         targets.pushObject(Ember.Object.create({
           isService: true,
-          value: map.get('service.id'),
+          value: map.get('service.name'),
+          id: map.get('service.id'),
+          eid: map.get('service.environmentId')
         }));
       }
     });

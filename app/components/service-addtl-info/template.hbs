@@ -1,12 +1,12 @@
 <div class="row-same-height row-full-height">
-    <ul class="nav nav-tabs" role="tablist">
-      <li role="presentation" class="tab-main active" id="service-tab">
+    <ul class="nav nav-tabs nav-tabs-well shadowed" role="tablist">
+      <li role="presentation" class="active" id="service-tab">
          <span class='close' {{action 'dismiss'}}><i class="icon icon-x"></i></span>
          <a href="#home" aria-controls="home" role="tab" data-toggle="tab">{{service.name}}</a>
       </li>
       {{#if service.secondaryLaunchConfigs}}
         {{#each service.secondaryLaunchConfigs as |sidekick|}}
-          <li role="presentation" class="tab-main sidekick">
+          <li role="presentation">
             <a href="#sidekick-{{sidekick.name}}" aria-controls="profile" role="tab" data-toggle="tab">{{sidekick.name}}</a>
           </li>
         {{/each}}
@@ -16,11 +16,6 @@
     <!-- Tab panes -->
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="home">
-        <div class="description">
-          <label class="text-muted text-bold text-uppercase">Description:</label>
-          {{service.description}}
-        </div>
-        <hr>
         <div class="inner">
         {{#if (eq service.type 'service')}}
           {{partial 'service-addtl-info'}}

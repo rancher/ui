@@ -20,11 +20,11 @@ export default Ember.Component.extend(ReadLabels, {
   },
 
   didInsertElement: function() {
-    $('#application').addClass('summary-shown');
+    $('main').addClass('summary-shown');
   },
 
   willDestroyElement: function() {
-    $('#application').removeClass('summary-shown');
+    $('main').removeClass('summary-shown');
   },
 
   stateBackground: function() {
