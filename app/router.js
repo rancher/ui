@@ -66,7 +66,7 @@ Router.map(function() {
         this.resource('host', { path: '/:host_id' }, function() {
           this.route('containers');
           this.route('storage', {path: '/storage'});
-          this.route('labels', {});
+          this.route('labels');
         });
       });
 
@@ -76,9 +76,9 @@ Router.map(function() {
 
         this.resource('container', { path: '/:container_id' }, function() {
           this.route('edit');
-          this.route('ports', {});
-          this.route('volumes', {});
-          this.route('labels', {});
+          this.route('ports');
+          this.route('volumes');
+          this.route('labels');
         });
       });
 
@@ -108,6 +108,7 @@ Router.map(function() {
 
           this.resource('service', {path: '/services/:service_id'}, function() {
             this.route('containers');
+            this.route('labels');
             this.route('edit');
           });
         });

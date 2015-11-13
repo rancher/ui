@@ -1,89 +1,114 @@
+<ol class="breadcrumb">
+  {{#link-to "environments" tagName="li" href=false}}<a>Stacks</a>{{/link-to}}
+  {{#link-to "environment" service.environmentId tagName="li" href=false}}<a>{{service.displayEnvironment}}</a>{{/link-to}}
+  <li class="active">{{service.displayName}}</li>
+</ol>
+
 <section class="header">
   <h3>
-    {{action-menu model=model classNames="pull-right"}}
-    <div class="state {{model.stateColor}}">
-      <i class="{{model.stateIcon}}"></i> {{model.displayState}}
-    </div>
-    <span class="right-divider">{{#link-to "environments"}}Stacks:{{/link-to}} {{#link-to "environment" model.environmentId}}{{model.displayEnvironment}}:{{/link-to}} {{model.displayName}}</span>
+    {{#power-select options=model.stack.services selected=service onchange=(action "changeService") searchField="displayName" as |obj|}}
+      <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}"></i> {{obj.displayName}}</div>
+    {{/power-select}}
+
+    {{action-menu model=service classNames="left-divider r-ml5" size="sm"}}
   </h3>
-  {{partial "description"}}
 </section>
 
-<section class="well">
-  <label class="section">Info</label>
-  <ul class="list-lines">
-    {{#if model.showTransitioningMessage}}
-      <li>
-        <label>Message</label>
-        <span class="force-wrap">
-          {{model.transitioningMessage}}
-        </span>
-      </li>
-    {{/if}}
-
-    <li>
-      <label>Type</label>
-      {{model.displayType}}
-    </li>
-
-    <li>
-      <label>Scale</label>
-      {{#if model.canScale}}
-        {{model.scale}}
-        &nbsp;
-        &nbsp;
-        <button class="btn btn-default btn-xs" {{action "scaleDown" target=model}} disabled={{eq model.scale 1}}><i class="icon icon-minus"></i></button>
-        <button class="btn btn-default btn-xs" {{action "scaleUp" target=model}}><i class="icon icon-plus"></i></button>
-      {{else}}
-        {{if model.isGlobalScale 'Global'}}
-      {{/if}}
-    </li>
-
-    {{#if model.hasImage}}
-      <li>
-        <label>Image</label>
-        <span class="force-wrap">
-          {{display-image model.launchConfig.imageUuid}} {{zero-clipboard text=(display-image model.launchConfig.imageUuid)}}
-        </span>
-      </li>
-
-      <li>
-        <label>Entrypoint</label>
-        <span class="force-wrap">
-          {{#if model.launchConfig.entryPoint}}
-            {{model.launchConfig.entryPoint}}
-          {{else}}
-            <span class="text-muted">None</span>
+{{!todo copy pasta}}
+<section>
+  <div class="container-fluid container-multi-stat">
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12 {{service.stateBackground}}">
+        <label class="section r-mt5" style="color:white;">
+          State: {{service.displayState~}}
+          {{#if service.showTransitioningMessage}}
+            <span class="force-wrap">
+              ({{service.transitioningMessage}})
+            </span>
           {{/if}}
-        </span>
-      </li>
-
-      <li>
-        <label>Command</label>
-        <span class="force-wrap">
-          {{#if model.launchConfig.command}}
-            {{model.launchConfig.command}}
-          {{else}}
-            <span class="text-muted">None</span>
-          {{/if}}
-        </span>
-      </li>
-    {{/if}}
-
-  </ul>
+        </label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-12 col-md-12 col-lg-12">
+        <div class="row multi-stats">
+          <div class="col-sm-6 col-md-4">
+            <label>Type:</label>
+            {{service.displayType}}
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <label>FQDN:</label>
+            {{#if service.fqdn}}
+              <span>{{service.fqdn}} {{zero-clipboard text=service.fqdn}}</span>
+            {{else}}
+              <span class="text-muted">None</span>
+            {{/if}}
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <label>Scale:</label>
+            {{#if service.canScale}}
+              {{service.scale}}
+              &nbsp;
+              &nbsp;
+              <button class="btn btn-default btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
+              <button class="btn btn-default btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
+            {{else}}
+              {{if service.isGlobalScale 'Global' 'N/A'}}
+            {{/if}}
+          </div>
+        </div>
+        {{#if service.hasImage}}
+          <div class="row multi-stats">
+            <div class="col-sm-6 col-md-4">
+              <label>Image:</label>
+              <span class="force-wrap">
+                {{display-image service.launchConfig.imageUuid}} {{zero-clipboard text=(display-image service.launchConfig.imageUuid)}}
+              </span>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <label>Entrypoint:</label>
+              <span class="force-wrap">
+                {{#if service.launchConfig.entryPoint}}
+                  {{service.launchConfig.entryPoint}}
+                {{else}}
+                  <span class="text-muted">None</span>
+                {{/if}}
+              </span>
+            </div>
+            <div class="col-sm-6 col-md-4">
+              <label>Command:</label>
+              <span class="force-wrap">
+                {{#if service.launchConfig.command}}
+                  {{service.launchConfig.command}}
+                {{else}}
+                  <span class="text-muted">None</span>
+                {{/if}}
+              </span>
+            </div>
+          </div>
+        {{/if}}
+        {{#if service.description}}
+          <div class="row multi-stats">
+            <div class="col-xs-12 description">
+              <label>Description: </label>
+              <span>{{service.description}}</span>
+            </div>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+  </div>
 </section>
 
-{{#if model.hasLabels}}
-  <section class="well" style="margin-bottom: 0;">
-    <label class="section">Labels</label>
-    {{labels-section model=model.launchConfig}}
-  </section>
-{{/if}}
-
-{{#if model.hasContainers}}
+{{#if (or service.hasLabels service.hasContainers)}}
   <section>
     <ul class="nav nav-tabs nav-tabs-well">
-      {{#link-to "service.containers" tagName="li" href=false}}<a><i class="ss-box"></i> Containers</a>{{/link-to}}
+      {{#if service.hasContainers}}
+        {{#link-to "service.containers" tagName="li" href=false}}<a>Containers</a>{{/link-to}}
+      {{/if}}
+      {{#if service.hasLabels}}
+        {{#link-to "service.labels" tagName="li" href=false}}<a>Labels</a>{{/link-to}}
+      {{/if}}
     </ul>
     <div class="well nav-well">
       {{outlet}}

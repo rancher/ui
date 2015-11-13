@@ -23,24 +23,18 @@ var LoadBalancerService = Service.extend({
 
   displayDetail: function() {
     var internal = '';
-    var first = true;
-    (this.get('launchConfig.expose')||[]).forEach((port) => {
-      internal += '<span class="badge badge-default'+ (first ? '' : ' r-ml5') +'">' + esc(portToStr(port)) + '</span>';
-      first = false;
+    (this.get('launchConfig.expose')||[]).forEach((port, idx) => {
+      internal += '<span>' + (idx === 0 ? '' : ', ') + esc(portToStr(port)) + '</span>';
     });
 
     var pub = '';
-    first = true;
-    (this.get('launchConfig.ports')||[]).forEach((port) => {
-      pub += '<span class="badge badge-default'+ (first ? '' : ' r-ml5') +'">' + esc(portToStr(port)) + '</span>';
-      first = false;
+    (this.get('launchConfig.ports')||[]).forEach((port, idx) => {
+      pub += '<span>' + (idx === 0 ? '' : ', ') + esc(portToStr(port)) + '</span>';
     });
 
     var services = '';
-    first = true;
-    (this.get('consumedServicesWithNames')||[]).forEach((map) => {
-      services += '<span class="badge badge-default'+ (first ? '' : ' r-ml5') +'">' + map.get('service.displayName') + '</span>';
-      first = false;
+    (this.get('consumedServicesWithNames')||[]).forEach((map, idx) => {
+      services += '<span>'+ (idx === 0 ? '' : ', ') + map.get('service.displayName') + '</span>';
     });
 
 

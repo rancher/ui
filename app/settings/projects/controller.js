@@ -5,7 +5,7 @@ import C from 'ui/utils/constants';
 export default Ember.Controller.extend(Sortable, {
   sortBy: 'name',
   sorts: {
-    state:        ['state','name','id'],
+    state:        ['stateSort','name','id'],
     name:         ['name','id'],
     description:  ['description','name','id'],
   },

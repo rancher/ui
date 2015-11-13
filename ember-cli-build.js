@@ -76,18 +76,13 @@ module.exports = function(defaults) {
   app.import('vendor/icons/fonts/rancher-icons.ttf',  {destDir: 'assets/fonts'});
   app.import('vendor/icons/fonts/rancher-icons.woff', {destDir: 'assets/fonts'});
 
-  app.import('vendor/lato/Lato-Light.ttf',       {destDir: 'assets/fonts'});
-  app.import('vendor/lato/Lato-Light.eot',       {destDir: 'assets/fonts'});
-  app.import('vendor/lato/Lato-Light.woff',       {destDir: 'assets/fonts'});
-  app.import('vendor/lato/Lato-Light.woff2',      {destDir: 'assets/fonts'});
-  app.import('vendor/lato/Lato-Black.ttf',       {destDir: 'assets/fonts'});
-  app.import('vendor/lato/Lato-Black.eot',       {destDir: 'assets/fonts'});
-  app.import('vendor/lato/Lato-Black.woff',       {destDir: 'assets/fonts'});
-  app.import('vendor/lato/Lato-Black.woff2',      {destDir: 'assets/fonts'});
-  app.import('vendor/lato/Lato-Medium.ttf',   {destDir: 'assets/fonts'});
-  app.import('vendor/lato/Lato-Medium.eot',   {destDir: 'assets/fonts'});
-  app.import('vendor/lato/Lato-Medium.woff',   {destDir: 'assets/fonts'});
-  app.import('vendor/lato/Lato-Medium.woff2',  {destDir: 'assets/fonts'});
+
+  app.import('vendor/lato/lato-v11-latin-300.woff',       {destDir: 'assets/fonts'});
+  app.import('vendor/lato/lato-v11-latin-300.woff2',      {destDir: 'assets/fonts'});
+  app.import('vendor/lato/lato-v11-latin-700.woff',       {destDir: 'assets/fonts'});
+  app.import('vendor/lato/lato-v11-latin-700.woff2',      {destDir: 'assets/fonts'});
+  app.import('vendor/lato/lato-v11-latin-regular.woff',   {destDir: 'assets/fonts'});
+  app.import('vendor/lato/lato-v11-latin-regular.woff2',  {destDir: 'assets/fonts'});
 
   app.import('vendor/dagre-d3/dagre-d3.core.js');
 
