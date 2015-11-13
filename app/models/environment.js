@@ -26,11 +26,15 @@ var Environment = Resource.extend({
     },
 
     finishUpgrade: function() {
-      return this.doAction('finishupgrade');
+      this.get('finishableServices').forEach((service) => {
+        service.doAction('finishupgrade');
+      });
     },
 
     rollback: function() {
-      return this.doAction('rollback');
+      this.get('rollbackableServices').forEach((service) => {
+        service.doAction('rollback');
+      });
     },
 
     addService: function() {
@@ -83,9 +87,9 @@ var Environment = Resource.extend({
     var a = this.get('actionLinks');
 
     var out = [
-      { label: 'Finish Upgrade',  icon: 'icon icon-face-open-smile',  action: 'finishUpgrade',       enabled: !!a.finishupgrade },
+      { label: 'Finish Upgrade',  icon: 'icon icon-face-open-smile',  action: 'finishUpgrade',       enabled: this.get('finishableServices.length') > 0 },
+      { label: 'Rollback',        icon: 'icon icon-face-gasp',        action: 'rollback',            enabled: this.get('rollbackableServices.length') > 0 },
       { label: 'Cancel Upgrade',  icon: 'icon icon-life-ring',        action: 'cancelUpgrade',       enabled: !!a.cancelupgrade },
-      { label: 'Rollback',        icon: 'icon icon-face-gasp',        action: 'rollback',            enabled: !!a.rollback },
       { label: 'Cancel Rollback', icon: 'icon icon-life-ring',        action: 'cancelRollback',      enabled: !!a.cancelrollback },
       { label: 'Start Services',  icon: 'icon icon-play',             action: 'activateServices',    enabled: this.get('canActivate') },
       { label: 'Stop Services',   icon: 'icon icon-stop',             action: 'deactivateServices',  enabled: this.get('canDeactivate') },
@@ -101,7 +105,15 @@ var Environment = Resource.extend({
     ];
 
     return out;
-  }.property('actionLinks.{remove,purge,exportconfig,finishupgrade,cancelupgrade,rollback,cancelrollback}','canActivate','canDeactivate'),
+  }.property('actionLinks.{remove,purge,exportconfig,finishupgrade,cancelupgrade,rollback,cancelrollback}','canActivate','canDeactivate','finishableServices.length','rollbackableServices.length'),
+
+  finishableServices: function() {
+    return this.get('services').filterBy('actionLinks.finishupgrade');
+  }.property('services.@each.state'),
+
+  rollbackableServices: function() {
+    return this.get('services').filterBy('actionLinks.rollback');
+  }.property('services.@each.state'),
 
   healthState: function() {
     // Get the state of each instance

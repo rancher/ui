@@ -9,6 +9,7 @@ export default Ember.Controller.extend({
       this.set('selectedService', service);
       this.set('showAddtlInfo', true);
     },
+
     dismiss: function() {
       this.set('showAddtlInfo', false);
     }
