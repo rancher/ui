@@ -10,15 +10,4 @@ export default Ember.View.extend(SelectTab, {
     addListener: addAction('addListener', '.lb-listener-source-port'),
   },
 
-  didInsertElement: function() {
-    $('BODY').addClass('white');
-    this._super();
-    this.send('selectTab',this.get('context.tab'));
-
-    this.$('INPUT')[0].focus();
-  },
-
-  willDestroyElement: function() {
-    $('BODY').removeClass('white');
-  },
 });

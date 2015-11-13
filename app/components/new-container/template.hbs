@@ -78,10 +78,9 @@
   <div class="toggle-advanced">
     <a {{action "toggleAdvanced"}}>Advanced Options {{#if advanced}}<i class="icon icon-chevron-up"></i>{{else}}<i class="icon icon-chevron-down"></i>{{/if}}</a>
   </div>
-
   <div class="{{unless advanced 'hide'}}">
-    <section class="text-center" style="padding: 0;">
-      <ul class="nav nav-pills" style="display: inline-block">
+    <section>
+      <ul class="nav nav-tabs nav-tabs-well shadowed" style="display: inline-block">
         <li role="presentation" class="tab" data-section="command" {{action "selectTab" "command"}}><a>Command</a></li>
         <li role="presentation" class="tab" data-section="volumes" {{action "selectTab" "volumes"}}><a>Volumes</a></li>
         <li role="presentation" class="tab" data-section="network" {{action "selectTab" "network"}}><a>Networking</a></li>
@@ -90,9 +89,8 @@
         <li role="presentation" class="tab" data-section="labels" {{action "selectTab" "labels"}}><a>Labels</a></li>
         <li role="presentation" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}><a>Scheduling</a></li>
       </ul>
-    </section>
 
-    <section class="horizontal-form" style="background-color: #f8f9fa; margin: -7px 10px 0 10px;">
+    <div class="horizontal-form well">
       <div class="section container-fluid" data-section="command">
         {{form-command instance=launchConfig errors=commandErrors isService=isService}}
       </div>
@@ -141,6 +139,7 @@
         }}
       </div>
 
+    </div>
     </section>
   </div>
 </div>
