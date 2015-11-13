@@ -6,7 +6,7 @@ import Sortable from 'ui/mixins/sortable';
 export default Ember.Controller.extend(Sortable, {
   sortBy: 'name',
   sorts: {
-    state:        ['state','name','id'],
+    state:        ['stateSort','name','id'],
     name:         ['name','id'],
     description:  ['description','name','id'],
     publicValue:  ['publicValue','id'],

@@ -7,6 +7,15 @@
 <td>
   {{model.displayIp}}
 </td>
+{{#if showHost}}
+  <td>
+    {{#if model.primaryHost}}
+      {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}
+    {{else}}
+      <span class="text-muted">Unknown</span>
+    {{/if}}
+  </td>
+{{/if}}
 <td class="clip">
   {{display-image model.imageUuid}}
   {{#if (and (not showStats) model.command)~}}

@@ -10,7 +10,7 @@ export default Ember.Controller.extend(FilterState, Sortable, {
   sortableContent: Ember.computed.alias('filteredByKind'),
   sortBy: 'name',
   sorts: {
-    state:    ['combinedState','name','id'],
+    state:    ['stateSort','name','id'],
     name:     ['name','id'],
     kind:     ['kind','name','id'],
     ip:       ['displayIp','name','id'],

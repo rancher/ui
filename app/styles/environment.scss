@@ -2,6 +2,7 @@ $stackHeight: 66px;
 $stateRadius: 13px;
 $stateBorder: 2px;
 $singleStackHeight: 45px;
+$countWidth: 99px;
 
 .stack-section {
   position: relative;
@@ -68,12 +69,12 @@ $singleStackHeight: 45px;
   }
 
   .count {
-    min-width: 99.5px;
+    width: $countWidth;
     text-align: center;
 
     P {
       margin: 12px 0 0 0;
-      font-weight: 900;
+      font-weight: $bold-weight;
       text-align: center;
       font-size: 14px;
       position: relative;
@@ -123,9 +124,6 @@ $singleStackHeight: 45px;
     text-align: right;
     padding-right: 10px;
     border-right: 0;
-    &.wide {
-      width: 100px;
-    }
   }
 
   .stack-template {
@@ -139,28 +137,24 @@ $singleStackHeight: 45px;
     padding: 3px 5px;
   }
 
-  .badge {
-    I {
-      font-size: 11px;
-      padding-right: 5px;
-    }
-  }
-
   .grid {
     TD, TH {
       padding: 3px;
       border-bottom: 1px solid $lightGray;
     }
 
-    TD:nth-child(3) {
-      width: 230px;
+    TD:nth-child(1) {
+      width: 120px;
     }
 
-    TD:nth-child(4) {
+    TD:nth-child(4),
+    TD:nth-child(5) {
+      width: ($countWidth + 10);
+      text-align: center;
+    }
+
+    TD:nth-child(6) {
       width: 80px;
-      &.wide {
-        width: 111px; // should make this better
-      }
     }
 
     TR:nth-child(even) {

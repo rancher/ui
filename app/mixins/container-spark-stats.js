@@ -3,6 +3,8 @@ import Ember from 'ember';
 const MAX_POINTS = 60;
 
 export default Ember.Mixin.create({
+  sparkInstances: Ember.computed.alias('model.instances'),
+
   cpuData: null,
   memoryData: null,
   networkData: null,
@@ -68,11 +70,11 @@ export default Ember.Mixin.create({
 
   instancesById: function() {
     var out = Ember.Object.create();
-    this.get('model.instances').forEach((instance) => {
+    this.get('sparkInstances').forEach((instance) => {
       out.set(instance.get('id'),instance);
     });
     return out;
-  }.property('model.instances.@each.id'),
+  }.property('sparkInstances.@each.id'),
 
   getOrCreateDataRow(key, id) {
     var data = this.get(key+'Data');

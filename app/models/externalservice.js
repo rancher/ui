@@ -22,7 +22,7 @@ var ExternalService = Service.extend({
       var num = ips.get('length');
       for ( var i = 0 ; i < 3 && i < num ; i++ )
       {
-        out += '<span class="badge badge-default'+ (i === 0 ? '' : ' r-ml5') +'">' + esc(ips.objectAt(i)) + '</span>';
+        out += '<span>'+ (i === 0 ? '' : ', ') + esc(ips.objectAt(i)) + '</span>';
       }
 
       if ( num > 3 )

@@ -88,7 +88,7 @@ var Environment = Resource.extend({
       { label: 'Rollback',        icon: 'icon icon-face-gasp',        action: 'rollback',            enabled: !!a.rollback },
       { label: 'Cancel Rollback', icon: 'icon icon-life-ring',        action: 'cancelRollback',      enabled: !!a.cancelrollback },
       { label: 'Start Services',  icon: 'icon icon-play',             action: 'activateServices',    enabled: this.get('canActivate') },
-      { label: 'Stop Services',   icon: 'icon icon-square',           action: 'deactivateServices',  enabled: this.get('canDeactivate') },
+      { label: 'Stop Services',   icon: 'icon icon-stop',             action: 'deactivateServices',  enabled: this.get('canDeactivate') },
       { divider: true },
       { label: 'View Graph',      icon: 'icon icon-share',            action: 'viewGraph',            enabled: true },
       { label: 'View Config',     icon: 'icon icon-files',            action: 'viewCode',            enabled: true },
