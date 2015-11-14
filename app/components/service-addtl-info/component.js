@@ -11,7 +11,7 @@ export default Ember.Component.extend(ReadLabels, {
 
   tagName: 'div',
 
-  classNames: ['service-addtl-info'],
+  classNames: ['service-addtl-info', 'collapse'],
 
   actions: {
     dismiss: function() {
@@ -19,21 +19,21 @@ export default Ember.Component.extend(ReadLabels, {
     },
   },
 
-  didInsertElement: function() {
-    $('main').addClass('summary-shown');
-  },
-
-  willDestroyElement: function() {
-    $('main').removeClass('summary-shown');
-  },
-
   stateBackground: function() {
     return this.get('service.stateColor').replace("text-", "bg-");
   }.property('service.stateColor'),
 
-  componentInit: Ember.on('init', function() {
-    this.setup();
-  }),
+  componentInit: function() {
+    if (this.get('show')) {
+    $('main').addClass('summary-shown');
+      this.$().show().animate({height: '260px'}, 400);
+    } else {
+      this.$().animate({height: '0'}, 300, () => {
+        this.$().hide();
+        $('main').removeClass('summary-shown');
+      });
+    }
+  }.observes('show'),
 
   serviceObserver: function() {
     this.setup();
