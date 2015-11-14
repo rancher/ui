@@ -16,7 +16,7 @@ var DnsService = Service.extend({
       var part = '<span>' +  esc(map.get('service.displayName')) + '</span>';
       out += part;
     });
-    return ('<b>To: </b>' + out).htmlSafe();
+    return ('<span class="text-muted">To: </span>' + out).htmlSafe();
   }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated'),
 });
 

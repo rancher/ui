@@ -31,7 +31,7 @@ var ExternalService = Service.extend({
       }
     }
 
-    return ('<b>To: </b>' + out).htmlSafe();
+    return ('<span class="text-muted">To: </span>' + out).htmlSafe();
   }.property('hostname','externalIpAddresses.[]'),
 });
 
