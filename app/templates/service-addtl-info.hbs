@@ -1,11 +1,11 @@
 <div class="content-box col-md-3 col-md-height col-md-full-height">
-  <label class="text-muted">Info</label>
+  <label class="text-muted">Info (<small>{{#link-to 'service' service.environmentId service.id class=''}} View Details {{/link-to}}</small>)</label>
   <div class="content">
     <div class="state">
       {{badge-state model=service}}  {{action-menu model=service size='xs' class="no-wrap pull-right"}}
     </div>
     <div>
-      {{#link-to 'service' service.environmentId service.id class='r-mt10 btn btn-primary btn-xs'}} View Details {{/link-to}}
+
     </div>
     <div>
       <label class="text-muted r-mt10">Image: </label>
@@ -72,7 +72,7 @@
   <div class="content">
     <ul class="list-unstyled">
       {{#each labelArray as |label|}}
-        <li>{{label.key}}: {{label.value}}</li>
+        <li class="list-labels"><span class="text-muted">{{label.key}}</span>: {{label.value}}</li>
       {{else}}
         <li class="text-muted">No Labels</li>
       {{/each}}
@@ -84,7 +84,7 @@
   <div class="content">
     <ul class="list-unstyled">
       {{#each service.consumedServicesWithNames as |link|}}
-        <li>{{#link-to 'service' link.service.id}} {{link.service.name}} {{/link-to}}</li>
+        <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.name}} {{/link-to}}</li>
       {{else}}
         <li class="text-muted">No Links</li>
       {{/each}}

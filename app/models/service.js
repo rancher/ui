@@ -370,8 +370,8 @@ var Service = Resource.extend(ReadLabels, {
     var out;
     switch ( this.get('type').toLowerCase() )
     {
-      case 'loadbalancerservice': out = 'Balancer'; break;
-      case 'dnsservice':          out = 'Alias'; break;
+      case 'loadbalancerservice': out = 'Load Balancer'; break;
+      case 'dnsservice':          out = 'Service Alias'; break;
       case 'externalservice':     out = 'External'; break;
       case 'kubernetesservice':   out = 'K8s Service'; break;
       case 'kubernetesreplicationcontroller': out = 'K8s Replication'; break;
@@ -386,7 +386,7 @@ var Service = Resource.extend(ReadLabels, {
   }.property('secondaryLaunchConfigs.length'),
 
   displayDetail: function() {
-    return ('<b>Image: </b> ' + displayImage([this.get('launchConfig.imageUuid')])).htmlSafe();
+    return ('<span class="text-muted">Image: </span> ' + displayImage([this.get('launchConfig.imageUuid')])).htmlSafe();
   }.property('launchConfig.imageUuid'),
 
   activeIcon: function() {

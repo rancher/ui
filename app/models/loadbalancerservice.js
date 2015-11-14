@@ -38,9 +38,9 @@ var LoadBalancerService = Service.extend({
     });
 
 
-    var out = (internal ? '<b>Internal: </b>' + internal : '') +
-              (pub      ? ' <b>Public: </b>'   + pub : '') +
-              ' <b>To: </b>' + services;
+    var out = (internal ? '<span class="text-muted">Internal: </span>' + internal : '') +
+              (pub      ? ' <span class="text-muted">Public: </span>'   + pub : '') +
+              ' <span class="text-muted">To: </span>' + services;
 
     return out.htmlSafe();
   }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated','launchConfig.ports.[]','launchConfig.expose.[]'),

@@ -9,9 +9,9 @@ export function displayImage(params) {
     return params[0];
   }
 
-  var out = (match[2] ? '<span class="text-muted">' + esc(match[2]) + '</span>' : '') +
+  var out = (match[2] ? '<span>' + esc(match[2]) + '</span>' : '') +
             esc(match[3]) +
-            (match[4] ? '<span class="text-muted">' + esc(match[4]) + '</span>' : '');
+            (match[4] ? '<span>' + esc(match[4]) + '</span>' : '');
 
   return new Ember.Handlebars.SafeString(out);
 }
