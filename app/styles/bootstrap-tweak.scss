@@ -8,7 +8,7 @@ a {
   }
 }
 
-H1, H2, H3, H4, H5, H6 {
+H1, H2, H3, H4, H5, H6, SECTION.header {
   margin: 0;
   cursor: normal;
 
@@ -20,7 +20,6 @@ H1, H2, H3, H4, H5, H6 {
     display: inline-block;
     padding-left: 10px;
     margin-left: 10px;
-    max-width: 50%;
     vertical-align: middle;
 
     &.btn, &.btn-group {
@@ -36,7 +35,6 @@ H1, H2, H3, H4, H5, H6 {
     display: inline-block;
     padding-right: 10px;
     margin-right: 10px;
-    max-width: 50%;
     vertical-align: middle;
 
     &:not(:last-child) {
@@ -86,28 +84,11 @@ fieldset[disabled] .btn {
   padding-left: 10px;
   padding-right: 10px;
 }
+
 .btn-primary {
-  border: 0;
   &:hover {
     background: $blueDark;
   }
-}
-.btn-lg.btn-primary, .btn-group-lg > .btn.btn-primary {
-  padding: ($padding-large-vertical - 1) $padding-large-horizontal;
-  border-top-width: 2px;
-  border-bottom-width: 2px;
-}
-
-.btn-sm.btn-primary, .btn-group-sm > .btn.btn-primary {
-  padding: ($padding-small-vertical - 1) $padding-small-horizontal;
-  border-top-width: 2px;
-  border-bottom-width: 2px;
-}
-
-.btn-xs.btn-primary, .btn-group-xs > .btn.btn-primary {
-  padding: ($padding-xs-vertical - 1) $padding-xs-horizontal;
-  border-top-width: 2px;
-  border-bottom-width: 2px;
 }
 
 .btn-default {
@@ -254,6 +235,7 @@ fieldset[disabled] .btn {
 
 .badge {
   border-radius: 90px;
+
   &.bg-default { background-color: $lightGrayTwo; color: $midGray; }
   &.bg-primary { background-color: $brand-primary; color: white;}
   &.bg-success { background-color: $brand-success; color: white;}
@@ -261,12 +243,17 @@ fieldset[disabled] .btn {
   &.bg-warning { background-color: $brand-warning; color: $yellowDark;}
   &.bg-info    { background-color: $brand-info; }
 
-  &.bg-default, &.badge-default { background-color: $lightGrayTwoDark; color: $darkestGrayTwo;}
-  &.bg-primary , &.badge-primary { background-color: #cce3ee; color: $brand-primary; }
-  &.bg-success, &.badge-success { background-color: $brand-success; }
-  &.bg-danger, &.badge-danger  { background-color: $brand-danger; }
-  &.bg-warning, &.badge-warning { background-color: $brand-warning; }
-  &.bg-info, &.badge-info    { background-color: $brand-info; }
+  &.bg-default,   &.badge-default { background-color: $lightGrayTwoDark; color: $darkestGrayTwo;}
+  &.bg-primary ,  &.badge-primary { background-color: #cce3ee; color: $brand-primary; }
+  &.bg-success,   &.badge-success { background-color: $brand-success; }
+  &.bg-danger,    &.badge-danger  { background-color: $brand-danger; }
+  &.bg-warning,   &.badge-warning { background-color: $brand-warning; }
+  &.bg-info,      &.badge-info    { background-color: $brand-info; }
+
+  &.state {
+    text-transform: capitalize;
+    color: white;
+  }
 }
 
 
@@ -444,14 +431,6 @@ HR {
   color: inherit;
 }
 
-.badge.state {
-  border-radius: 90px;
-  font-size: 11px;
-  font-weight: $normal-weight;
-  text-transform: uppercase;
-  color: white;
-}
-
 .radio, .checkbox {
   margin-top: 0;
 }
@@ -575,20 +554,36 @@ FORM LABEL,
   margin-bottom: 0;
 }
 
+
 .breadcrumb {
-  padding: 8px 20px 0;
-  margin-bottom: 0;
-  font-size: 14px;
+  display: inline-block;
+  padding: 0;
+  margin: 0;
+  line-height: 28px;
+
+  A {
+    cursor: pointer;
+  }
 
   & > li + li:before {
     font-family: 'rancher-icons';
+    font-size: 11px;
     content: $icon-chevron-right;
     color: $midGrayDark;
-    font-size: 10px;
     padding: 0 3px 0 0;
+    vertical-align: middle;
   }
 
-  li {
+  .ember-power-select-wrapper {
+    font-size: 16px;
+    vertical-align: middle;
+  }
+
+  .ember-power-select:not([dir=rtl]) .ember-power-select-trigger {
+    padding: 1px 5px;
+  }
+
+  LI {
     cursor: pointer;
 
     &.active {

@@ -1,14 +1,13 @@
-<ol class="breadcrumb">
-  {{#link-to "applications-tab.catalog" tagName="li" href=false}}<a>Catalog</a>{{/link-to}}
-  <li class="active">{{templateResource.name}}</li>
-</ol>
-
 <section class="header">
-  <h3>
-    {{#power-select options=allTemplates selected=templateResource onchange=(action "changeTemplate") searchField="name" as |obj|}}
-      <div class="power-select-img"><img src="{{obj.iconLink}}"> {{obj.name}}</div>
-    {{/power-select}}
-  </h3>
+  <ol class="breadcrumb">
+    {{#link-to "applications-tab" tagName="li" href=false}}<a>Applications</a>{{/link-to}}
+    {{#link-to "applications-tab.catalog" tagName="li" href=false}}<a>Catalog</a>{{/link-to}}
+    <li class="active">
+      {{#power-select options=allTemplates selected=templateResource onchange=(action "changeTemplate") searchField="name" as |obj|}}
+        <div class="power-select-img"><img src="{{obj.iconLink}}"> {{obj.name}}</div>
+      {{/power-select}}
+    </li>
+  </ol>
 </section>
 
 <section>

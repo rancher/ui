@@ -1,25 +1,26 @@
 <section class="header">
-  <h3>
-    <span class="right-divider">Catalog</span>
-  <div class="btn-group right-divider">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category: <span class="text-capitalize">{{category}}</span> <span class="caret"></span></button>
-      <ul class="dropdown-menu">
-        {{#each categories as |category|}}
-        <li>
-          {{#link-to "applications-tab.catalog" (query-params category=category)}}
-            <span class="text-capitalize">{{category}}</span>
-          {{/link-to}}
-        </li>
-        {{/each}}
-      </ul>
-    </div>
+  <ol class="breadcrumb">
+    {{#link-to "applications-tab" tagName="li" href=false}}<a>Applications</a>{{/link-to}}
+    <li class="active">Catalog</li>
+  </ol>
 
-      <div class="btn-group searchable">
-        <i class="icon icon-search"></i>
-        {{input placeholder="Search..." class="form-control" value=search}}
-      </div>
- </h3>
+  <div class="btn-group pull-right left-divider">
+    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category: <span class="text-capitalize">{{category}}</span> <span class="caret"></span></button>
+    <ul class="dropdown-menu dropdown-menu-right">
+      {{#each categories as |category|}}
+      <li>
+        {{#link-to "applications-tab.catalog" (query-params category=category)}}
+          <span class="text-capitalize">{{category}}</span>
+        {{/link-to}}
+      </li>
+      {{/each}}
+    </ul>
+  </div>
 
+  <div class="btn-group searchable pull-right">
+    <i class="icon icon-search"></i>
+    {{input placeholder="Search..." class="form-control input-sm" value=search}}
+  </div>
 </section>
 
 <section class="r-plr15">

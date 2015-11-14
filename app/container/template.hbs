@@ -1,19 +1,16 @@
-<ol class="breadcrumb">
-  {{#if model.primaryHost}}
-    {{#link-to "hosts" tagName="li" href=false}}<a>Hosts</a>{{/link-to}}
-    {{#link-to "host" model.primaryHost.id tagName="li" href=false}}<a>{{model.primaryHost.displayName}}</a>{{/link-to}}
-  {{else}}
-    {{#link-to "containers" tagName="li" href=false}}<a>Containers</a>{{/link-to}}
-  {{/if}}
-  <li class="active">{{model.displayName}}</li>
-</ol>
-
 <section class="header">
-  <h3>
-    {{model.displayName}}
+  <ol class="breadcrumb right-divider">
+    {{#link-to "infrastructure-tab" tagName="li" href=false}}<a>Infrastructure</a>{{/link-to}}
+    {{#if model.primaryHost}}
+      {{#link-to "hosts" tagName="li" href=false}}<a>Hosts</a>{{/link-to}}
+      {{#link-to "host" model.primaryHost.id tagName="li" href=false}}<a>{{model.primaryHost.displayName}}</a>{{/link-to}}
+    {{else}}
+      {{#link-to "containers" tagName="li" href=false}}<a>Containers</a>{{/link-to}}
+    {{/if}}
+    <li class="active">{{model.displayName}}</li>
+  </ol>
 
-    {{action-menu model=model classNames="left-divider r-ml5" size="sm"}}
-  </h3>
+  {{action-menu model=model size="sm"}}
 </section>
 
 <section>
