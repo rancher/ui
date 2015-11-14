@@ -1,8 +1,12 @@
-<div class="clearfix">
-  <div class="stack-state {{model.stateBackground}}"><i class="{{model.stateIcon}}"></i></div>
+<div class="clearfix {{if single model.stateBackground}} {{if single 'single'}}">
+  {{#unless single}}
+    <div class="stack-state {{model.stateBackground}}"><i class="{{model.stateIcon}}"></i></div>
+  {{/unless}}
 
   <div class="header-left collapser">
-    <a {{action "toggleCollapse"}} class="btn btn-link"><i class="icon {{if collapsed 'icon-plus' 'icon-minus'}}" alt="Toggle stack details" title=""></i></a>
+    {{#unless single}}
+      <a {{action "toggleCollapse"}} class="btn btn-link"><i class="icon {{if collapsed 'icon-plus' 'icon-minus'}}" alt="Toggle stack details" title=""></i></a>
+    {{/unless}}
   </div>
 
   <div class="header-left">
@@ -12,7 +16,9 @@
   </div>
 
   <div class="header-right right-divider stack-actions wide">
-    {{action-menu model=model}}
+    {{#unless single}}
+      {{action-menu model=model}}
+    {{/unless}}
   </div>
 
   <div class="header-right right-divider count">
@@ -26,7 +32,10 @@
   </div>
 
   <div class="header-right right-divider stack-template">
-    {{upgrade-btn environmentResource=model}}
+    {{#unless single}}
+      {{upgrade-btn environmentResource=model}}
+    {{/unless}}
+
     <div class="btn-group r-ml5">
       {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-default btn-sm"}}Add Service{{/link-to}}
       <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
@@ -43,7 +52,7 @@
 </div>
 
 {{#liquid-if (not collapsed)}}
-  <div class="r-pl10 r-pr10 r-pb10">
+  <div class="stack-body">
     {{#if model.services.length}}
       <table class="grid fixed" style="margin-bottom: 0">
         <tbody>
@@ -52,13 +61,13 @@
               <td class="state">
                 {{badge-state model=service}}
               </td>
-              <td>
+              <td class="force-wrap">
                 <a class="hand" {{action 'addtlInfo' service target=controller}}>{{service.displayName}}</a>
                 {{#if service.hasSidekicks}}
                   + {{service.secondaryLaunchConfigs.length}} Sidekick{{unless (eq service.secondaryLaunchConfigs.length 1) 's'}}
                 {{/if}}
               </td>
-              <td>{{service.displayDetail}}</td>
+              <td class="force-wrap">{{service.displayDetail}}</td>
               <td>
                 {{#if service.displayType}}
                   {{service.displayType}}

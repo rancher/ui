@@ -72,7 +72,7 @@ export default Ember.Component.extend({
       case LOADING:
       case CURRENT:
       case ERROR:
-        return 'btn-link btn-disabled';
+        return 'btn-link';
       case AVAILABLE:
         return 'btn-warning';
     }
@@ -112,5 +112,5 @@ export default Ember.Component.extend({
 
   externalIdChanged: function() {
     this.updateStatus();
-  }.property('environmentResource.externalId'),
+  }.observes('environmentResource.externalId'),
 });

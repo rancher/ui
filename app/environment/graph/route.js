@@ -2,14 +2,14 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
-    return this.modelFor('environment').get('stack');
+    return this.modelFor('environment');
   },
 
   resetController: function (controller, isExiting/*, transition*/) {
     if (isExiting)
     {
       controller.setProperties({
-        showServiceInfo: null,
+        showServiceInfo: false,
         selectedService: null,
       });
     }

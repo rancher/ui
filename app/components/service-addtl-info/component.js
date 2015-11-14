@@ -4,8 +4,9 @@ import C from 'ui/utils/constants';
 
 
 export default Ember.Component.extend(ReadLabels, {
-
   service: null,
+  show: false,
+
   labelResource: Ember.computed.alias('service.launchConfig'),
   serviceContainers: null,
 
@@ -29,7 +30,10 @@ export default Ember.Component.extend(ReadLabels, {
       this.$().show().animate({height: '260px'}, 250, 'easeOutBack');
     } else {
       this.$().animate({height: '0'}, 250, () => {
-        this.$().hide();
+        if ( this._state !== 'destroying' )
+        {
+          this.$().hide();
+        }
         $('main').removeClass('summary-shown');
       });
     }
