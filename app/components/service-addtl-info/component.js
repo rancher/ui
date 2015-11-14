@@ -26,9 +26,9 @@ export default Ember.Component.extend(ReadLabels, {
   componentInit: function() {
     if (this.get('show')) {
     $('main').addClass('summary-shown');
-      this.$().show().animate({height: '260px'}, 400);
+      this.$().show().animate({height: '260px'}, 250, 'easeOutBack');
     } else {
-      this.$().animate({height: '0'}, 300, () => {
+      this.$().animate({height: '0'}, 250, () => {
         this.$().hide();
         $('main').removeClass('summary-shown');
       });
