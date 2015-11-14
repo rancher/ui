@@ -1,6 +1,11 @@
-<section>
-  <h3 class="r-pt20 r-pb20">{{#link-to 'admin-tab.processes'}}Execution: {{/link-to}} {{model.processInstance.id}}</h3>
+<section class="header">
+  <ol class="breadcrumb">
+    {{#link-to "admin-tab" tagName="li" href=false}}<a>Admin</a>{{/link-to}}
+    {{#link-to "admin-tab.processes" tagName="li" href=false}}<a>Proccesses</a>{{/link-to}}
+    <li class="active">{{model.processInstance.id}}</li>
+  </ol>
 </section>
+
 {{#each model.processExecutions as |process|}}
   <section class="well">
     <h4>Child Execution: {{process.id}}</h4>

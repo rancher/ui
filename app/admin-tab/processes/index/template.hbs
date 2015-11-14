@@ -1,16 +1,19 @@
-<section>
-  <h3>
-    <span class="right-divider">Running Processes</span>
-  </h3>
+<section class="header">
+  <ol class="breadcrumb">
+    {{#link-to "admin-tab" tagName="li" href=false}}<a>Admin</a>{{/link-to}}
+    <li class="active">Processes</li>
+  </ol>
+
   <h5>Debug running processes on your containers</h5>
 </section>
+
 <section>
   <ul class="nav nav-tabs nav-tabs-well shadowed">
-    <li role="presentation" class={{if showRunning '' 'active'}}>
-      <a {{action 'showRunningProcesses'}}>All</a>
-    </li>
     <li role="presentation" class={{if showRunning 'active' ''}}>
       <a {{action 'showRunningProcesses'}}>Running</a>
+    </li>
+    <li role="presentation" class={{if showRunning '' 'active'}}>
+      <a {{action 'showRunningProcesses'}}>All</a>
     </li>
   </ul>
   <div  class="well">
@@ -18,7 +21,7 @@
       <div class="form-inline r-ml15 inline-block">
         <div class="form-group">
           <select id="resource-type" class="form-control" {{action 'updateType' on='change'}} style="width: 25%;">
-            <option value="" selected> -- select an resource type -- </option>
+            <option value="" selected>Select a Resource type:</option>
             {{#each model.resourceTypes as |resource|}}
             <option value="{{resource}}">{{resource}}</option>
             {{/each}}
@@ -33,12 +36,12 @@
     <table class="grid fixed table table-hover">
       <thead>
         {{sortable-th sortable=this action="changeSort" name="id" width="75"}}
-        {{sortable-th sortable=this action="changeSort" name="processName"}}
+        {{sortable-th sortable=this action="changeSort" name="processName" label="Name"}}
         {{sortable-th sortable=this action="changeSort" name="resource" label="Resource Type:Id"}}
-        {{sortable-th sortable=this action="changeSort" name="exitReason" width="200"}}
-        {{sortable-th sortable=this action="changeSort" name="startTime" width="150"}}
-        {{sortable-th sortable=this action="changeSort" name="endTime" width="150"}}
-        {{sortable-th sortable=this action="changeSort" name="runTime" width="150"}}
+        {{sortable-th sortable=this action="changeSort" name="exitReason" width="150"}}
+        {{sortable-th sortable=this action="changeSort" name="startTime" label="Started" width="100"}}
+        {{sortable-th sortable=this action="changeSort" name="endTime" label="Ended" width="100"}}
+        {{sortable-th sortable=this action="changeSort" name="runTime" label="Duration" width="100"}}
       </thead>
       <tbody>
         {{#each arranged as |instance|}}
@@ -61,6 +64,8 @@
               {{/if}}
               <td>{{run-time instance.startTimeTS instance.endTimeTS}}</td>
           {{/link-to}}
+        {{else}}
+          <tr><td colspan="7" class="text-center text-muted">There are no recent proceses.</td></tr>
         {{/each}}
       </tbody>
     </table>

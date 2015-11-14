@@ -49,4 +49,11 @@ export default Ember.Route.extend({
       hasSystem: system.get('length') > 0,
     };
   },
+
+  resetController: function (controller, isExisting/*, transition*/) {
+    if (isExisting)
+    {
+      controller.set('showAddtlInfo', false);
+    }
+  },
 });

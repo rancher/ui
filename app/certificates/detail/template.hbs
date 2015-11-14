@@ -1,16 +1,15 @@
-<ol class="breadcrumb">
-  {{#link-to "certificates" tagName="li" href=false}}<a>Certificates</a>{{/link-to}}
-  <li class="active">{{model.certificate.displayName}}</li>
-</ol>
-
 <section class="header">
-  <h3>
-    {{#power-select options=model.allCertificates selected=model.certificate onchange=(action "changeCertificate") searchField="displayName" as |obj|}}
-      <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}"></i> {{obj.displayName}}</div>
-    {{/power-select}}
+  <ol class="breadcrumb right-divider">
+    {{#link-to "infrastructure-tab" tagName="li" href="false"}}<a>Infrastructure</a>{{/link-to}}
+    {{#link-to "certificates" tagName="li" href=false}}<a>Certificates</a>{{/link-to}}
+    <li class="active">
+      {{#power-select options=model.allCertificates selected=model.certificate onchange=(action "changeCertificate") searchField="displayName" as |obj|}}
+        <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}"></i> {{obj.displayName}}</div>
+      {{/power-select}}
+    </li>
+  </ol>
 
-    {{action-menu model=model.certificate classNames="left-divider r-ml5" size="sm"}}
-  </h3>
+  {{action-menu model=model.certificate size="sm"}}
 </section>
 
 <section>
