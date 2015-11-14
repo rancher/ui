@@ -7,11 +7,11 @@ export default Ember.Controller.extend({
 
   actions: {
     openInfo: function(service) {
-      this.toggleProperty('showAddtlInfo');
       this.set('selectedService', service);
+      this.set('showAddtlInfo',true);
     },
     dismiss: function() {
-      this.toggleProperty('showAddtlInfo');
+      this.set('showAddtlInfo',false);
     }
   },
 });

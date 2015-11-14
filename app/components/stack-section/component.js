@@ -6,8 +6,9 @@ export default Ember.Component.extend({
   prefs: Ember.inject.service(),
 
   model: null,
-  collapsed: true,
+  single: false,
 
+  collapsed: true,
   classNames: ['stack-section'],
 
   actions: {

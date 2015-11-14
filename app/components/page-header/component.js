@@ -12,7 +12,6 @@ export default Ember.Component.extend({
 
   tagName: 'header',
   classNames: ['clearfix','no-select'],
-  classNameBindings: ['hasAside'],
 
   accessEnabled: Ember.computed.alias('access.enabled'),
   isAdmin: Ember.computed.alias('access.admin'),

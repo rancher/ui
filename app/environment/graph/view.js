@@ -114,7 +114,7 @@ export default Ember.View.extend(ThrottledResize,{
       var svgHeight = $('#environment-svg').height() - 310; // svg minus the height of info service-addtl-info.scss
       this.styleSvg(`${svgHeight}px`);
       this.set('context.showServiceInfo', true);
-      this.set('context.selectedService', this.get('context.model.services').findBy('id', id));
+      this.set('context.selectedService', this.get('context.stack.services').findBy('id', id));
     }
     else
     {
@@ -127,23 +127,23 @@ export default Ember.View.extend(ThrottledResize,{
     // Add services that are cross-linked from another environment
     var out = [];
 
-    var unremovedServices = this.get('context.model.services').filter(function(service) {
+    var unremovedServices = this.get('context.stack.services').filter(function(service) {
       return ['removed','purging','purged'].indexOf(service.get('state')) === -1;
     });
 
     unremovedServices.forEach((service) => {
       var externals = (service.get('consumedServicesWithNames')||[]).filter((linked) => {
-        return linked.get('service.environmentId') !== this.get('context.model.id');
+        return linked.get('service.environmentId') !== this.get('context.stack.id');
       }).map((linked) => { return linked.get('service'); });
       out.pushObjects(externals);
     });
 
     return out;
-  }.property('context.model.services.@each.consumedServicesUpdated'),
+  }.property('context.stack.services.@each.consumedServicesUpdated'),
 
   updateGraph: function() {
     var g = this.get('graph');
-    var services = this.get('context.model.services');
+    var services = this.get('context.stack.services');
     var unremovedServices = services.filter(function(service) {
       return ['removed','purging','purged'].indexOf(service.get('state')) === -1;
     });
@@ -158,7 +158,7 @@ export default Ember.View.extend(ThrottledResize,{
       var serviceId = service.get('id');
       var color = (service.get('state') === 'active' ? 'green' : (service.get('state') === 'inactive' ? 'red' : 'yellow'));
       var instances = service.get('instances.length')||'No';
-      var isCrossLink = service.get('environmentId') !== this.get('context.model.id');
+      var isCrossLink = service.get('environmentId') !== this.get('context.stack.id');
 
       var envName = '';
       if ( isCrossLink )
@@ -251,7 +251,7 @@ export default Ember.View.extend(ThrottledResize,{
 
   throttledUpdateGraph: function() {
     Ember.run.throttle(this,'updateGraph',250);
-  }.observes('context.model.services.@each.{id,name,state,consumedServicesUpdated}','crosslinkServices.@each.{id,name,state,displayEnvironment}'),
+  }.observes('context.stack.services.@each.{id,name,state,consumedServicesUpdated}','crosslinkServices.@each.{id,name,state,displayEnvironment}'),
 
   willDestroyElement: function() {
     this._super();

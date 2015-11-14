@@ -3,9 +3,13 @@
     {{#link-to "applications-tab" tagName="li" href=false}}<a>Applications</a>{{/link-to}}
     {{#link-to "applications-tab.catalog" tagName="li" href=false}}<a>Catalog</a>{{/link-to}}
     <li class="active">
-      {{#power-select options=allTemplates selected=templateResource onchange=(action "changeTemplate") searchField="name" as |obj|}}
-        <div class="power-select-img"><img src="{{obj.iconLink}}"> {{obj.name}}</div>
-      {{/power-select}}
+      {{#if editing}}
+        {{templateResource.name}}
+      {{else}}
+        {{#power-select options=allTemplates selected=templateResource onchange=(action "changeTemplate") searchField="name" as |obj|}}
+          <div class="power-select-img"><img src="{{obj.iconLink}}"> {{obj.name}}</div>
+        {{/power-select}}
+      {{/if}}
     </li>
   </ol>
 </section>
