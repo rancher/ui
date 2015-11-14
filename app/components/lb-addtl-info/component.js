@@ -15,7 +15,9 @@ export default Ember.Component.extend({
   tagName: '',
 
   willInsertElement: function() {
-    this.setup();
+    if (this.get('service')) {
+      this.setup();
+    }
   },
 
   serviceObserver: function() {
