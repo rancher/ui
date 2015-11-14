@@ -87,8 +87,8 @@ var Environment = Resource.extend({
     var a = this.get('actionLinks');
 
     var out = [
-      { label: 'Finish Upgrade',  icon: 'icon icon-face-open-smile',  action: 'finishUpgrade',       enabled: this.get('finishableServices.length') > 0 },
-      { label: 'Rollback',        icon: 'icon icon-face-gasp',        action: 'rollback',            enabled: this.get('rollbackableServices.length') > 0 },
+      { label: 'Finish Upgrade',  icon: 'icon icon-success',          action: 'finishUpgrade',       enabled: this.get('finishableServices.length') > 0 },
+      { label: 'Rollback',        icon: 'icon icon-history',          action: 'rollback',            enabled: this.get('rollbackableServices.length') > 0 },
       { label: 'Cancel Upgrade',  icon: 'icon icon-life-ring',        action: 'cancelUpgrade',       enabled: !!a.cancelupgrade },
       { label: 'Cancel Rollback', icon: 'icon icon-life-ring',        action: 'cancelRollback',      enabled: !!a.cancelrollback },
       { label: 'Start Services',  icon: 'icon icon-play',             action: 'activateServices',    enabled: this.get('canActivate') },

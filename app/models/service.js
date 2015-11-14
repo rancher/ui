@@ -134,8 +134,8 @@ var Service = Resource.extend(ReadLabels, {
     var isK8s = this.get('isK8s');
 
     var choices = [
-      { label: 'Finish Upgrade',  icon: 'icon icon-face-open-smile',  action: 'finishUpgrade',  enabled: !!a.finishupgrade },
-      { label: 'Rollback',        icon: 'icon icon-face-gasp',        action: 'rollback',       enabled: !!a.rollback },
+      { label: 'Finish Upgrade',  icon: 'icon icon-success',          action: 'finishUpgrade',  enabled: !!a.finishupgrade },
+      { label: 'Rollback',        icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback },
       { label: 'Start',           icon: 'icon icon-play',             action: 'activate',       enabled: !!a.activate && !isK8s,    color: 'text-success'},
       { label: 'Stop',            icon: 'icon icon-stop',             action: 'deactivate',     enabled: !!a.deactivate && !isK8s,  color: 'text-danger'},
       { label: 'Delete',          icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove && !isK8s, altAction: 'delete', color: 'text-warning' },
