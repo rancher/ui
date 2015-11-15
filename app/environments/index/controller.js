@@ -21,7 +21,7 @@ export default Ember.Controller.extend(Sortable, {
   },
 
   showTabs: function() {
-    return this.get('which') !== 'all' || this.get('hasKubernetes') || this.get('hasSystem');
+    return this.get('which') !== 'all' || this.get('model.hasKubernetes') || this.get('model.hasSystem');
   }.property('which','model.{hasKubernetes,hasSystem}'),
 
   sortBy: 'state',
