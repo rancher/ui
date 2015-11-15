@@ -54,4 +54,17 @@ export default Ember.Component.extend({
 
     return count;
   }.property('model.services.@each.healthState'),
+
+  outputs: function() {
+    var out = [];
+    var map = this.get('model.outputs')||{};
+    Object.keys(map).forEach((key) => {
+      out.push(Ember.Object.create({
+        key: key,
+        value: map[key],
+      }));
+    });
+
+    return out;
+  }.property('model.outputs'),
 });
