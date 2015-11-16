@@ -6,9 +6,12 @@ const USER = 'user';
 const SYSTEM = 'system';
 const AFFINITY = 'affinity';
 
+const IGNORE = [
+  C.LABEL.HASH,
+];
+
 export default Ember.Mixin.create({
   labelArray: null,
-  labelObj: null,
 
   actions: {
     addUserLabel() {
@@ -182,6 +185,12 @@ export default Ember.Mixin.create({
         type = 'system';
       }
 
+      if ( IGNORE.indexOf(key) >= 0 )
+      {
+        // Skip ignored labels
+        return;
+      }
+
       if ( onlyOfType && type !== onlyOfType )
       {
         // Skip labels of the wrong type
@@ -251,7 +260,7 @@ export default Ember.Mixin.create({
   }),
 
   updateLabels(/*labels*/) {
-    throw new Error('Override me to do something');
+    // Override me to do something
   }
 
 });

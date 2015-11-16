@@ -1,13 +1,12 @@
 import Ember from 'ember';
-import ReadLabels from 'ui/mixins/read-labels';
+import ManageLabels from 'ui/mixins/manage-labels';
 import C from 'ui/utils/constants';
 
 
-export default Ember.Component.extend(ReadLabels, {
+export default Ember.Component.extend(ManageLabels, {
   service: null,
   show: false,
 
-  labelResource: Ember.computed.alias('service.launchConfig'),
   serviceContainers: null,
 
   tagName: 'div',
@@ -44,6 +43,8 @@ export default Ember.Component.extend(ReadLabels, {
   }.observes('service'),
 
   setup: function() {
+    this.initLabels(this.get('service.launchConfig.labels'));
+
     /*If we dont reset the component but swap out the service we need to reset this*/
     if (this.get('serviceContainers')) {
       this.set('serviceContainers', null);

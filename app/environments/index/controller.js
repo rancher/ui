@@ -3,9 +3,10 @@ import Sortable from 'ui/mixins/sortable';
 
 export default Ember.Controller.extend(Sortable, {
   environments: Ember.inject.controller(),
+  projects: Ember.inject.service(),
   sortableContent: Ember.computed.alias('model.current'),
 
-  which: 'all',
+  which: 'user',
   queryParams: ['which'],
   showAddtlInfo: false,
   selectedService: null,
@@ -20,9 +21,9 @@ export default Ember.Controller.extend(Sortable, {
     }
   },
 
-  showTabs: function() {
-    return this.get('which') !== 'all' || this.get('model.hasKubernetes') || this.get('model.hasSystem');
-  }.property('which','model.{hasKubernetes,hasSystem}'),
+  supportsKubernetes: function() {
+    return this.get('projects.current.kubernetes') === true;
+  }.property('projects.current.kubernetes'),
 
   sortBy: 'state',
   sorts: {
