@@ -6,7 +6,7 @@ from 'ui/utils/parse-target';
 
 export default Ember.Component.extend({
   service: null,
-  serviceContainers: null,
+  containers: null,
   listenersArray: null,
   targetsArray: null,
   defaultCert: null,
