@@ -22,33 +22,50 @@ export default Ember.Component.extend(ManageLabels, {
     },
   },
 
+  didReceiveAttrs() {
+    this.serviceChanged();
+  },
+
   stateBackground: function() {
     return this.get('service.stateColor').replace("text-", "bg-");
   }.property('service.stateColor'),
 
-  componentInit: function() {
-    if (this.get('show')) {
-    $('main').addClass('summary-shown');
+  showChanged: function() {
+    if (this.get('show'))
+    {
+      $('main').addClass('summary-shown');
       this.$().show().animate({height: '260px'}, 250, 'easeOutBack');
-    } else {
+    }
+    else
+    {
       this.$().animate({height: '0'}, 250, () => {
         if ( this._state !== 'destroying' )
         {
           this.$().hide();
         }
+
         $('main').removeClass('summary-shown');
+      });
+
+      this.setProperties({
+        primaryContainers: null,
+        sidekicks: null,
+        service: null,
       });
     }
   }.observes('show'),
 
-  serviceChanged: function() {
-    this.initLabels(this.get('service.launchConfig.labels'));
-    this.set('activeTab','');
-  }.observes('service'),
-
   primaryContainers: null,
   sidekicks: null,
-  serviceContainers: function() {
+  serviceChanged: function() {
+    if ( !this.get('service') )
+    {
+      return;
+    }
+
+    this.initLabels(this.get('service.launchConfig.labels'));
+    this.set('activeTab','');
+
     var primary = [];
     var sidekicks = [];
     var sidekickByName = {};

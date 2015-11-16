@@ -18,6 +18,7 @@ export default Ember.Controller.extend(Sortable, {
     },
     dismiss: function() {
       this.set('showAddtlInfo', false);
+      this.set('selectedService', null);
     }
   },
 
