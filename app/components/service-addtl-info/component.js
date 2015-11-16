@@ -6,15 +6,18 @@ import C from 'ui/utils/constants';
 export default Ember.Component.extend(ManageLabels, {
   service: null,
   show: false,
-
-  serviceContainers: null,
+  activeTab: '',
 
   tagName: 'div',
 
   classNames: ['service-addtl-info', 'collapse'],
 
   actions: {
-    dismiss: function() {
+    selectTab(tab) {
+      this.set('activeTab', tab);
+    },
+
+    dismiss() {
       this.sendAction('dismiss');
     },
   },
@@ -38,47 +41,52 @@ export default Ember.Component.extend(ManageLabels, {
     }
   }.observes('show'),
 
-  serviceObserver: function() {
-    this.setup();
+  serviceChanged: function() {
+    this.initLabels(this.get('service.launchConfig.labels'));
+    this.set('activeTab','');
   }.observes('service'),
 
-  setup: function() {
-    this.initLabels(this.get('service.launchConfig.labels'));
+  primaryContainers: null,
+  sidekicks: null,
+  serviceContainers: function() {
+    var primary = [];
+    var sidekicks = [];
+    var sidekickByName = {};
 
-    /*If we dont reset the component but swap out the service we need to reset this*/
-    if (this.get('serviceContainers')) {
-      this.set('serviceContainers', null);
-    }
+    var slcs = (this.get('service.secondaryLaunchConfigs')||[]);
+    slcs.forEach((config) => {
+      var obj = {
+        name: config.name,
+        config: config,
+        instances: [],
+      };
 
-    /*if we're in a sidekick reset to the main tab when the service is changed*/
-    if (!Ember.$('#service-tab').hasClass('active')) {
-      Ember.$('#service-tab a').tab('show');
-    }
+      sidekicks.push(obj);
+      sidekickByName[config.name] = obj;
+    });
 
-    /* Need to filter the service containers when sidekicks are present cause they all just live in one object*/
-    if (this.get('service.instances')) {
-      this.set('serviceContainers', Ember.Object.create({}));
-      this.get('service.instances').forEach((instance) => {
-        /* if primary do things here */
-        if (instance.get('labels')[C.LABEL.LAUNCH_CONFIG] === C.LABEL.LAUNCH_CONFIG_PRIMARY) {
-          if (this.get('serviceContainers').hasOwnProperty('primary')) {
-            this.get('serviceContainers.primary').pushObject(instance);
-          } else {
-            this.get('serviceContainers').set('primary', [instance]);
-          }
-        } else {
-          /* not primary loop through secondary launch configs */
-          this.get('service.secondaryLaunchConfigs').forEach((config) => {
-            if (config.name === instance.get('labels')[C.LABEL.LAUNCH_CONFIG]) {
-              if (config.hasOwnProperty('serviceContainers')) {
-                config.get('serviceContainers').pushObject(instance);
-              } else {
-                config.set('serviceContainers', [instance]);
-              }
-            }
-          });
+    (this.get('service.instances')||[]).forEach((instance) => {
+      var lc = instance.get('labels')[C.LABEL.LAUNCH_CONFIG];
+
+      // Primary service
+      if ( lc === C.LABEL.LAUNCH_CONFIG_PRIMARY)
+      {
+        primary.push(instance);
+      }
+      else
+      {
+        // Sidekick services
+        var sidekick = sidekickByName[lc];
+        if ( sidekick )
+        {
+          sidekick.instances.push(instance);
         }
-      });
-    }
-  },
+      }
+    });
+
+    this.setProperties({
+      primaryContainers: primary,
+      sidekicks: sidekicks,
+    });
+  }.observes('service.instances.[]'),
 });

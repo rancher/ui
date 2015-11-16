@@ -17,7 +17,7 @@
       <label class="text-muted r-mt10">Entrypoint: </label>
       <span class="force-wrap">
         {{#if service.launchConfig.entryPoint}}
-          {{service.launchConfig.entryPoint}}
+          {{concat-str service.launchConfig.entryPoint}}
         {{else}}
           <span class="text-muted">None</span>
         {{/if}}
@@ -27,7 +27,7 @@
       <label class="text-muted r-mt10">Command: </label>
       <span class="force-wrap">
         {{#if service.launchConfig.command}}
-          {{service.launchConfig.command}}
+          {{concat-str service.launchConfig.command}}
         {{else}}
           <span class="text-muted">None</span>
         {{/if}}
@@ -42,11 +42,11 @@
   </div>
 </div>
 <div class="content-box col-md-3 col-md-height col-md-full-height">
-  <label class="text-muted">Containers ({{if serviceContainers.primary.length serviceContainers.primary.length '-'}})</label>
+  <label class="text-muted">Containers ({{primaryContainers.length}})</label>
   <div class="content">
     <div class="container-dots clearfix">
       <div style="display:inline-block;">
-        {{#each serviceContainers.primary as |instance|}}
+        {{#each primaryContainers as |instance|}}
           {{container-dot model=instance}}
         {{else}}
           <span class="text-muted">No Containers</span>
