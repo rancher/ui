@@ -18,12 +18,13 @@ export default Ember.Route.extend({
       originalModel: model,
       confirmDisable: false,
       saving: false,
-      saved: true,
       testing: false,
       wasShowing: false,
       organizations: this.get('session.orgs')||[],
       error: null,
       isEnterprise: (model.get('hostname') ? true : false),
     });
+
+    controller.set('saved',true);
   }
 });

@@ -110,13 +110,25 @@ export default Ember.Mixin.create({
   }.property('labelArray.@each.type'),
 
   getLabel: function(key) {
-    key = (key||'').toLowerCase();
+    var lcKey = (key||'').toLowerCase();
     var ary = this.get('labelArray');
     var item;
+
+    // Try specific case first
     for ( var i = 0 ; i < ary.get('length') ; i++ )
     {
       item = ary.objectAt(i);
-      if ( item.get('key').toLowerCase() === key )
+      if ( item.get('key') === key )
+      {
+        return item;
+      }
+    }
+
+    // Then case-insensitive
+    for ( i = 0 ; i < ary.get('length') ; i++ )
+    {
+      item = ary.objectAt(i);
+      if ( item.get('key').toLowerCase() === lcKey )
       {
         return item;
       }
@@ -126,15 +138,19 @@ export default Ember.Mixin.create({
   },
 
   setLabel: function(key, value) {
-    key = (key||'').toLowerCase();
+    var lcKey = (key||'').toLowerCase();
     var type = 'user';
-    if ( key.indexOf(C.LABEL.SCHED_AFFINITY) === 0 )
+
+    // Rancher keys are always lowercase
+    if ( lcKey.indexOf(C.LABEL.SCHED_AFFINITY) === 0 )
     {
       type = 'affinity';
+      key = lcKey;
     }
-    else if ( key.indexOf(C.LABEL.SYSTEM_PREFIX) === 0 )
+    else if ( lcKey.indexOf(C.LABEL.SYSTEM_PREFIX) === 0 )
     {
       type = 'system';
+      key = lcKey;
     }
 
     var existing = this.getLabel(key);

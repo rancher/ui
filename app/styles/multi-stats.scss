@@ -1,22 +1,43 @@
 .container-multi-stat {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
   margin-bottom: 20px;
+  border: 1px solid $gray-light;
 }
+
 .multi-stats {
-  border-left: 1px solid $gray-light;
-  border-right: 1px solid $gray-light;
-  border-bottom: 1px solid $gray-light;
   background-color: white;
-  >div[class*='-3'],
-  >div[class*='-4'] {
-    padding: 12px;
-    min-height: 50px;
-    &:not(:first-of-type) {
-      border-left: 1px solid $gray-light;
+
+  & > DIV {
+    padding: 12px 0 5px 10px;
+    min-height: 45px;
+
+    border-right: 1px solid $gray-light;
+    border-top: 1px solid $gray-light;
+
+    &:last-of-type {
+      border-right: none;
+    }
+
+    LABEL {
+      margin: 0;
     }
   }
+
   .description {
-    padding: 12px;
+    height: auto;
+    padding: 12px 0 5px 10px;
+  }
+}
+
+@media (min-width: $screen-sm-min) and (max-width: $screen-sm-max) {
+  .multi-stats > DIV:nth-child(2n) {
+    border-right: none;
+  }
+}
+
+@media (max-width: $screen-xs-max) {
+  .multi-stats > DIV {
+    border-right: none;
   }
 }
 

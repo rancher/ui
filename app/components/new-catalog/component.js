@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
+import ShellQuote from 'npm:shell-quote';
 
 export default Ember.Component.extend(NewOrEdit, {
   allTemplates: null,
@@ -129,6 +130,19 @@ export default Ember.Component.extend(NewOrEdit, {
   }.property('selectedTemplateModel.questions.@each.{variable,answer}'),
 
   answersArray: Ember.computed.alias('selectedTemplateModel.questions'),
+
+  answersString: function() {
+    return this.get('answersArray').map((obj) => {
+      if ( obj.answer === null || obj.answer === undefined )
+      {
+        return obj.variable + '=';
+      }
+      else
+      {
+        return obj.variable + '=' + ShellQuote.quote([obj.answer]);
+      }
+    }).join("\n");
+  }.property('answersArray.@each.{variable,answer}'),
 
   validate() {
     var errors = [];

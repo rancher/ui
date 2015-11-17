@@ -47,7 +47,7 @@ export default Ember.Component.extend({
   click: function() {
     var upgradeInfo = this.get('upgradeInfo');
 
-    if ( this.get('upgradeStatus') === AVAILABLE )
+    if ( this.get('upgradeStatus') === AVAILABLE && !this.get('isUpgradeState') )
     {
       // Hackery, but no good way to get the template from upgradeInfo
       var tpl = '_upgrade';
@@ -66,6 +66,11 @@ export default Ember.Component.extend({
   },
 
   btnClass: function() {
+    if ( this.get('isUpgradeState') )
+    {
+      return 'btn-link';
+    }
+
     switch ( this.get('upgradeStatus') ) {
       case NONE:
         return 'hide';
@@ -76,9 +81,14 @@ export default Ember.Component.extend({
       case AVAILABLE:
         return 'btn-warning';
     }
-  }.property('upgradeStatus'),
+  }.property('upgradeStatus','isUpgradeState'),
 
   btnLabel: function() {
+    if ( this.get('isUpgradeState') )
+    {
+      return 'Upgrade in progress';
+    }
+
     switch ( this.get('upgradeStatus') ) {
       case NONE:
         return '';
@@ -91,7 +101,7 @@ export default Ember.Component.extend({
       default:
         return 'Error checking upgrades';
     }
-  }.property('upgradeStatus'),
+  }.property('upgradeStatus','isUpgradeState'),
 
   updateStatus() {
     var info = this.get('environmentResource.externalIdInfo');
@@ -109,6 +119,19 @@ export default Ember.Component.extend({
       this.set('upgradeStatus', NONE);
     }
   },
+
+  isUpgradeState: function() {
+    return [
+      'uprading',
+      'canceled-upgrade',
+      'canceling-rollback',
+      'canceling-upgrade',
+      'finishing-upgrade',
+      'rolling-back',
+      'upgrading',
+      'upgraded'
+    ].indexOf(this.get('environmentResource.state')) >= 0;
+  }.property('environmentResource.state'),
 
   externalIdChanged: function() {
     this.updateStatus();

@@ -291,7 +291,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   didSave() {
-    if ( this.get('isService') && !this.get('isUpgrade') )
+    if ( this.get('isService') )
     {
       // Returns a promise
       return this.setServiceLinks();
