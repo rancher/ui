@@ -11,7 +11,11 @@
 
   <div class="header-left">
     <h4>
-      <span class="divider clip">{{#link-to "environment" model.id}}{{model.name}}{{/link-to}}</span>
+      {{#if single}}
+        <span class="divider clip">{{model.name}}</span>
+      {{else}}
+        <span class="divider clip">{{#link-to "environment" model.id}}{{model.name}}{{/link-to}}</span>
+      {{/if}}
       {{#if outputs.length}}
         <div class="btn-group r-ml10">
           <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

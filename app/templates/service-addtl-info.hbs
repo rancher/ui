@@ -81,6 +81,16 @@
 </div>
 <div class="content-box col-md-3 col-md-height col-md-full-height">
   <label class="text-muted">Links</label>
+
+  {{#if (or service.domainName service.fqdn)}}
+    <label class="text-muted">FQDN:</label>
+    {{#if service.domainName}}
+      <span>{{service.domainName}} {{zero-clipboard text=service.domainName}}</span>
+    {{else}}
+      <span>{{service.fqdn}} {{zero-clipboard text=service.fqdn}}</span>
+    {{/if}}
+  {{/if}}
+
   <div class="content">
     <ul class="list-unstyled">
       {{#each service.consumedServicesWithNames as |link|}}

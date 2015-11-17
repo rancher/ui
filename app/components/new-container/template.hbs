@@ -47,14 +47,15 @@
 
 <div data-launchindex="{{if isSidekick '' '-1'}}">
   <section class="horizontal-form container-fluid">
-    {{form-name-description
-      model=primaryResource
-      namePlaceholder="e.g. myapp"
-      nameDisabled=isUpgrade
-      descriptionPlaceholder="My application"
-    }}
+    {{#unless isUpgrade}}
+      {{form-name-description
+        model=primaryResource
+        namePlaceholder="e.g. myapp"
+        descriptionPlaceholder="My application"
+      }}
 
-    {{form-divider}}
+      {{form-divider}}
+    {{/unless}}
 
     {{form-image initialValue=launchConfig.imageUuid errors=imageErrors changed=(action 'setImage')}}
 

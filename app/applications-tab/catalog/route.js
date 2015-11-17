@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { addQueryParams } from 'ui/utils/util';
 
 export default Ember.Route.extend({
   settings: Ember.inject.service(),
@@ -18,12 +19,17 @@ export default Ember.Route.extend({
       return filter(cache, params.category);
     }
 
-    var url = this.get('app.catalogEndpoint')+'/templates';
     var version = this.get('settings.rancherVersion');
+    var qp = {
+      'category_ne': 'system',
+    };
+
     if ( version )
     {
-      url += '?minimumRancherVersion_lte=' + encodeURIComponent(version);
+      qp['minimumRancherVersion_lte'] = version;
     }
+
+    var url = addQueryParams(this.get('app.catalogEndpoint')+'/templates', qp);
 
     return this.get('store').request({url: url}).then((response) => {
       this.set('cache', response);

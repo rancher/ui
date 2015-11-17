@@ -32,8 +32,16 @@ export default Ember.Component.extend({
       var input = this.get('addInput').trim();
 
       this.get('store').find('identity', null, {filter: {name: input}}).then((info) => {
-        this.set('addInput','');
-        this.send('addObject', info.objectAt(0));
+        var obj = info.objectAt(0);
+        if (obj)
+        {
+          this.set('addInput','');
+          this.send('addObject', obj);
+        }
+        else
+        {
+          this.sendAction('onError','Identity not found: ' + input);
+        }
       }).catch(() => {
         this.sendAction('onError','Identity not found: ' + input);
       }).finally(() => {
