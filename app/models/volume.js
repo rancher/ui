@@ -8,10 +8,11 @@ var Volume = Resource.extend({
     var a = this.get('actionLinks');
 
     return [
-      { label: 'Delete',  icon: 'icon icon-trash', action: 'promptDelete', enabled: this.get('model.canDelete'), altAction: 'delete' },
+      { label: 'Delete',      icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
       { divider: true },
-      { label: 'Restore', icon: '',                action: 'restore',      enabled: !!a.restore },
-      { label: 'Purge',   icon: '',                action: 'purge',        enabled: !!a.purge },
+      { label: 'View in API', icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
+      { label: 'Restore',     icon: '',                       action: 'restore',      enabled: !!a.restore },
+      { label: 'Purge',       icon: '',                       action: 'purge',        enabled: !!a.purge },
     ];
   }.property('actionLinks.{restore,purge}','model.canDelete'),
 
@@ -41,6 +42,9 @@ var Volume = Resource.extend({
 
 Volume.reopenClass({
   alwaysInclude: ['mounts'],
+  stateMap: {
+    'active':           {icon: 'icon icon-hdd',    color: 'text-success'},
+  },
 });
 
 export default Volume;
