@@ -4,8 +4,26 @@ import { formatPercent, formatMib, formatKbps } from 'ui/utils/util';
 
 const MAX_POINTS = 60;
 const TICK_COUNT = 6;
-const COLORS = ["#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"];
-const ALT_COLORS = ["#ff7f0e", "#1f77b4", "#2ca02c", "#d62728", "#9467bd", "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"];
+const GRADIENT_COLORS = [
+  {
+    type: 'cpu',
+    colors: ['#2ecc71', '#DBE8B1']
+  },
+  {
+    type: 'memory',
+    colors: ['#00558b', '#AED6F1']
+  },
+  {
+    type: 'network',
+    colors: ['#eadf5a', '#F9E79F']
+
+  },
+  {
+    type: 'storage',
+    colors: ['#3a6f81', '#ABCED3']
+
+  },
+];
 
 export default Ember.Component.extend({
   model: null,
@@ -32,10 +50,12 @@ export default Ember.Component.extend({
   storageCanvas: '#storageGraph',
   storageGraph: null,
   storageData: null,
+  storageMax: null,
 
   networkCanvas: '#networkGraph',
   networkGraph: null,
   networkData: null,
+  networkMax: null,
 
   renderOk: false,
   renderTimer: null,
@@ -104,9 +124,43 @@ export default Ember.Component.extend({
       this.initNetworkGraph();
     }
 
+    this.setupMarkers();
+
     clearInterval(this.get('renderTimer'));
     // Give it a second for some data to come in...
     this.set('renderTimer', setInterval(this.renderGraphs.bind(this), 1000));
+  },
+
+  setupMarkers: function() {
+
+    var svg = d3.select('body')
+    .append('svg:svg')
+    .append('svg:defs');
+
+    GRADIENT_COLORS.forEach((v) => {
+
+      var type = v.type;
+
+      v.colors.forEach((val, idx) => {
+
+        var gradient = svg.append("svg:linearGradient")
+            .attr('id', `${type}-${idx}-gradient`)
+            .attr('x1', '0%')
+            .attr('y1', '0%')
+            .attr('x2', '100%')
+            .attr('y2', '100%')
+            .attr('spreadMethod', 'pad');
+          gradient.append('svg:stop')
+            .attr('offset', '0%')
+            .attr('stop-color', val)
+            .attr('stop-opacity', '1');
+          gradient.append('svg:stop')
+            .attr('offset', '100%')
+            .attr('stop-color', val)
+            .attr('stop-opacity', '.4');
+
+        });
+      });
   },
 
   tearDown() {
@@ -170,6 +224,12 @@ export default Ember.Component.extend({
       if ( max && this.get('renderOk') && !this.get('setMemoryScale') )
       {
         graph.axis.max(max);
+        graph.ygrids([
+          {value: 0, class: 'grid-line-memory'},
+          {value: max*0.4, class: 'grid-line-memory'},
+          {value: max*0.8, class: 'grid-line-memory'}
+        ]);
+
         didSetMemoryScale = true;
       }
     }
@@ -191,6 +251,25 @@ export default Ember.Component.extend({
         row = getOrCreateDataRow(graph, data, point.key);
         row.push(point.net_rx_kb + point.net_tx_kb);
       }
+
+      if (!this.get('networkMax')) {
+        this.set('networkMax', 0);
+      }
+
+      data.forEach((v) => {
+        if (v[0] !== 'x') {
+          if (this.get('networkMax') < Math.max.apply(Math, v.slice(1))) {
+            this.set('networkMax', Math.max.apply(Math, v.slice(1)));
+          }
+        }
+      });
+
+      graph.axis.max(this.get('networkMax'));
+      graph.ygrids([
+          {value: 0, class: 'grid-line-network'},
+          {value: this.get('networkMax')*0.4, class: 'grid-line-network'},
+          {value: this.get('networkMax')*0.8, class: 'grid-line-network'}
+      ]);
     }
 
     // Storage
@@ -210,6 +289,25 @@ export default Ember.Component.extend({
         row = getOrCreateDataRow(graph, data, point.key);
         row.push(point.disk_read_kb + point.disk_write_kb);
       }
+
+      if (!this.get('storageMax')) {
+        this.set('storageMax', 0);
+      }
+
+      data.forEach((v) => {
+        if (v[0] !== 'x') {
+          if (this.get('storageMax') < Math.max.apply(Math, v.slice(1))) {
+            this.set('storageMax', Math.max.apply(Math, v.slice(1)));
+          }
+        }
+      });
+
+      graph.axis.max(this.get('storageMax'));
+      graph.ygrids([
+          {value: 0, class: 'grid-line-storage'},
+          {value: this.get('storageMax')*0.4, class: 'grid-line-storage'},
+          {value: this.get('storageMax')*0.8, class: 'grid-line-storage'}
+      ]);
     }
 
     if ( didSetMemoryScale )
@@ -239,17 +337,25 @@ export default Ember.Component.extend({
     this.set('cpuD3Data', [x]);
 
     var cpuGraph = c3.generate({
+      padding: {
+        top: 5,
+        left: 45 
+      },
       bindto: this.get('cpuCanvas'),
       size: {
         height: 110,
       },
-      color: { pattern: ALT_COLORS.slice() },
+      color: {pattern: ['#2ecc71', '#DBE8B1']},
       data: {
         type: 'area-step',
         x: 'x',
         columns: this.get('cpuData'),
         groups: [[]], // Stacked graph, populated by getOrCreateDataRow...
         order: null,
+        colors: {
+          System: `url(${window.location.pathname}#cpu-0-gradient)`,
+          User: `url(${window.location.pathname}#cpu-1-gradient)`,
+        },
       },
       transition: { duration: 0 },
       legend: { show: false },
@@ -268,7 +374,6 @@ export default Ember.Component.extend({
         y: {
           min: 0,
           max: 100,
-          inner: true,
           padding: {
             top: 0,
             left: 0,
@@ -280,7 +385,16 @@ export default Ember.Component.extend({
             format: formatPercent,
           },
         },
-      }
+      },
+      grid: {
+        y: {
+          lines: [
+            {value: 0, class: 'grid-line-cpu'},
+            {value: 40, class: 'grid-line-cpu'},
+            {value: 80, class: 'grid-line-cpu'}
+          ]
+        },
+      },
     });
 
     this.set('cpuGraph', cpuGraph);
@@ -299,16 +413,22 @@ export default Ember.Component.extend({
     this.set('memoryData', [x]);
 
     var memoryGraph = c3.generate({
+      padding: {
+        top: 5,
+        left: 65 
+      },
       bindto: this.get('memoryCanvas'),
       size: {
         height: 110,
       },
-      color: { pattern: COLORS.slice() },
       data: {
         type: 'area-step',
         x: 'x',
         columns: this.get('memoryData'),
         groups: [[]], // Stacked graph, populated by getOrCreateDataRow...
+        colors: {
+          Used: `url(${window.location.pathname}#memory-0-gradient)`
+        },
       },
       transition: { duration: 0 },
       legend: { show: false },
@@ -326,7 +446,6 @@ export default Ember.Component.extend({
         },
         y: {
           min: 0,
-          inner: true,
           padding: {
             top: 0,
             left: 0,
@@ -357,17 +476,24 @@ export default Ember.Component.extend({
     this.set('storageData', [x]);
 
     var storageGraph = c3.generate({
+      padding: {
+        top: 5,
+        left: 65 
+      },
       bindto: this.get('storageCanvas'),
       size: {
         height: 110,
       },
-      color: { pattern: ALT_COLORS.slice() },
       data: {
         type: 'area-step',
         x: 'x',
         columns: this.get('storageData'),
         groups: [[]], // Stacked graph, populated by getOrCreateDataRow...
         order: null,
+        colors: {
+          Write: `url(${window.location.pathname}#storage-0-gradient)`,
+          Read: `url(${window.location.pathname}#storage-1-gradient)`
+        },
       },
       transition: { duration: 0 },
       legend: { show: false },
@@ -384,7 +510,6 @@ export default Ember.Component.extend({
           show: false,
         },
         y: {
-          inner: true,
           padding: {
             top: 0,
             left: 0,
@@ -418,17 +543,24 @@ export default Ember.Component.extend({
     this.set('networkD3Data', z);
 
     var networkGraph = c3.generate({
+      padding: {
+        top: 5,
+        left: 65 
+      },
       bindto: this.get('networkCanvas'),
       size: {
         height: 110,
       },
-      color: { pattern: ALT_COLORS.slice() },
       data: {
         type: 'area-step',
         x: 'x',
         columns: this.get('networkData'),
         groups: [[]], // Stacked graph, populated by getOrCreateDataRow...
         order: null,
+        colors: {
+          Transmit: `url(${window.location.pathname}#network-0-gradient)`,
+          Receive: `url(${window.location.pathname}#network-1-gradient)`
+        },
       },
       transition: { duration: 0 },
       legend: { show: false },
@@ -445,7 +577,6 @@ export default Ember.Component.extend({
           show: false,
         },
         y: {
-          inner: true,
           padding: {
             top: 0,
             left: 0,
