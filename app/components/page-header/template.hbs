@@ -14,21 +14,21 @@
     <span class="user-toggle" id="user-dropdown" data-toggle="dropdown" aria-expanded="true" aria-label="User Menu: {{session.user}}">
       {{#if accessEnabled}}
         {{identity-avatar link=false identity=access.identity}}
-        <span class="caret user-dropdown-arrow"></span>
+        <i class="icon icon-chevron-down"></i>
       {{else}}
         <div class="gh-avatar">
           <div class="gh-placeholder">
             <i class="icon icon-user"></i>
           </div>
         </div>
-        <span class="caret user-dropdown-arrow"></span>
+        <i class="icon icon-chevron-down"></i>
       {{/if}}
     </span>
     <ul class="dropdown-menu dropdown-menu-right user-menu" role="menu" aria-labelledby="user-dropdown">
       {{#if accessEnabled}}
         <li role="presentation" class="user-auth">
           {{identity-block avatar=false identity=access.identity}}
-          {{#link-to "logout" tabindex="-1" class="user-logout"}}<i class="icon icon-logout"></i><br/>Log Out{{/link-to}}
+          {{#link-to "logout" tabindex="-1" class="user-logout"}}<i class="icon icon-logout"></i> Log Out{{/link-to}}
         </li>
       {{/if}}
 
@@ -59,10 +59,10 @@
   </div>
 
   {{#if project}}
-    <div class="btn-group project-btn">
+    <div class="dropdown btn-group project-btn">
       <button type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-expanded="false">
         <i class="{{project.icon}} icon-fw"></i>&nbsp;{{project.displayName}}
-        <span class="caret"></span>
+        <i class="icon icon-chevron-down"></i>
       </button>
       <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
         {{#if projectChoices.length}}
@@ -116,7 +116,7 @@
 
       <div class="compose-download">
         <a class="dropdown-toggle hand" data-toggle="dropdown" aria-expanded="false">
-          <i class="icon icon-download"></i> Download CLI <span class="caret"></span>
+          <i class="icon icon-download"></i> Download CLI <i class="icon icon-chevron-down"></i>
         </a>
         <ul class="dropdown-menu text-right" role="menu" style="min-width: 0">
           <li><a {{action "composeDownload" "darwin"}}>Mac OS X <i class="icon icon-fw icon-apple"></i></a></li>

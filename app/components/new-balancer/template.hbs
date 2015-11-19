@@ -50,17 +50,16 @@
 </section>
 
 {{form-divider}}
-
-<section class="text-center" style="padding: 0;">
-  <ul class="nav nav-pills" style="display: inline-block">
+<section>
+  <ul class="nav nav-tabs nav-tabs-well shadowed" style="display: inline-block">
     <li role="presentation" class="tab" data-section="ssl" {{action "selectTab" "ssl" target=view}}><a>SSL Termination</a></li>
     <li role="presentation" class="tab" data-section="stickiness" {{action "selectTab" "stickiness" target=view}}><a>Stickiness</a></li>
     <li role="presentation" class="tab" data-section="labels" {{action "selectTab" "labels" target=view}}><a>Labels</a></li>
     <li role="presentation" class="tab" data-section="scheduling" {{action "selectTab" "scheduling" target=view}}><a>Scheduling</a></li>
   </ul>
-</section>
 
-<section class="horizontal-form tab-section" style="background-color: #f8f9fa; margin: -7px 10px 0 10px;">
+
+<div class="horizontal-form well">
   <div class="section container-fluid tab-section" data-section="ssl">
     {{form-ssl-termination
       balancer=service
@@ -104,6 +103,7 @@
       setGlobal=(action 'setGlobal')
     }}
   </div>
+</div>
 </section>
 
 {{partial "save-cancel"}}
