@@ -2,11 +2,11 @@
     <ul class="nav nav-tabs nav-tabs-well shadowed">
       <li class="{{if (eq activeTab '') 'active'}}">
          <span class='close' {{action 'dismiss'}}><i class="icon icon-x"></i></span>
-         <a href="#" {{action 'selectTab' ''}}>{{service.name}}</a>
+         <a href="#" class="clip" {{action 'selectTab' ''}}>{{service.name}}</a>
       </li>
       {{#each sidekicks as |sidekick|}}
         <li class="{{if (eq activeTab sidekick.name) 'active'}}">
-          <a href="#" {{action 'selectTab' sidekick.name}}>{{sidekick.name}}</a>
+          <a href="#" class="clip" {{action 'selectTab' sidekick.name}}>{{sidekick.name}}</a>
         </li>
       {{/each}}
     </ul>
@@ -32,7 +32,9 @@
       </div>
       {{#each sidekicks as |sidekick|}}
         <div class="{{unless (eq activeTab sidekick.name) 'hide'}}">
-          {{sidekick-addtl-info sidekick=sidekick.config containers=sidekick.instances}}
+          <div class="inner">
+            {{sidekick-addtl-info sidekick=sidekick.config containers=sidekick.instances}}
+          </div>
         </div>
       {{/each}}
     </div>
