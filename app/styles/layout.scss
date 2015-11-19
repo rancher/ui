@@ -472,7 +472,7 @@ $spacing-property-map: (
   & > TFOOT > TR > TH,
   & > TFOOT > TR > TD {
     font-size: 13px;
-    vertical-align: top;
+    vertical-align: middle;
   }
 
   .actions {
@@ -482,6 +482,9 @@ $spacing-property-map: (
   .state {
     max-width: 100%;
     @extend .clip;
+    i {
+      vertical-align: middle;
+    }
   }
 }
 
@@ -525,10 +528,6 @@ $spacing-property-map: (
 * Form
 **********/
 .horizontal-form {
-  H2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
 
   .form-label {
     text-align: right;
@@ -665,8 +664,14 @@ $spacing-property-map: (
 
     A {
       border: 0 !important;
-      background-color: $lightGrayTwoDark;
-      color: $darkestGrayTwo;
+      background-color: $lightGray;
+      color: $midGrayDark;
+      transition: ease all .2s;
+
+        &:hover {
+          background-color: $midGray;
+          color: $midGrayDark;
+        }
     }
 
     &.active A,
@@ -675,7 +680,7 @@ $spacing-property-map: (
       color: $orange;
       position: relative;
       z-index: 1;
-      box-shadow: 0 -6px 7px rgba(0, 0, 0, 0.15)
+      box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.1)
     }
   }
 }

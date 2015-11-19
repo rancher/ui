@@ -71,9 +71,38 @@ H1, H2, H3, H4, H5, H6, SECTION.header {
   }
 }
 
+/*buttons*/
+button {
+  transition: ease all 100ms;
+  &:focus {
+    outline: 0;
+  }
+  &:active {
+    color: $blueTwo;
+  }
+}
+.btn {
+  transition: ease all 100ms;
+  &:focus {
+    outline: 0;
+  }
+}
+.btn-xs, .btn-group-xs > .btn {
+  padding: 2px 5px;
+  line-height: initial;
+}
+.btn-xs i {
+  margin: 0;
+  // font-size: 10px;
+}
 .btn-disabled,
 .btn.disabled {
   background: $lightGrayDark;
+  &:hover,
+  &:focus {
+    color: inherit;
+  }
+
 }
 .btn-disabled,
 .btn.disabled,
@@ -397,7 +426,7 @@ HR {
 
 .dropdown-menu {
   @include box-shadow(0 2px 2px rgba(0,0,0,0.1));
-
+  border: none;
   max-height: 300px;
   overflow-y: auto;
   &.dropdown-menu-right {
@@ -587,6 +616,19 @@ FORM LABEL,
     padding: 1px 5px;
   }
 
+  .ember-power-select-trigger {
+    background-image: none;
+    position: relative;
+
+      &:after {
+        content: "\e907";
+        font-family: 'rancher-icons';
+        position: absolute;
+        right: 5px;
+        top: 0;
+      }
+  }
+
   LI {
     cursor: pointer;
 
@@ -598,6 +640,7 @@ FORM LABEL,
 }
 
 .tooltip {
+  z-index: 25;
   &.left {
     white-space: nowrap;
   }
