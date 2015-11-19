@@ -68,7 +68,7 @@ export default Ember.Component.extend({
   btnClass: function() {
     if ( this.get('isUpgradeState') )
     {
-      return 'btn-link';
+      return 'btn-disabled';
     }
 
     switch ( this.get('upgradeStatus') ) {
@@ -77,7 +77,7 @@ export default Ember.Component.extend({
       case LOADING:
       case CURRENT:
       case ERROR:
-        return 'btn-link';
+        return 'btn-disabled';
       case AVAILABLE:
         return 'btn-warning';
     }

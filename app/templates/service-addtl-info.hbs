@@ -45,14 +45,7 @@
   <label class="text-muted">Containers ({{primaryContainers.length}})</label>
   <div class="content">
     <div class="container-dots clearfix">
-      <div style="display:inline-block;">
-        {{#each primaryContainers as |instance|}}
-          {{container-dot model=instance}}
-        {{else}}
-          <span class="text-muted">No Containers</span>
-        {{/each}}
-      </div>
-      <div class="r-mt10">
+      <div>
         <label class="text-muted">Scale</label>
         {{#if service.canScale}}
           <span class="r-ml20 r-mr20">{{service.scale}}</span>
@@ -64,6 +57,14 @@
           {{if service.isGlobalScale 'Global'}}
         {{/if}}
       </div>
+      <div style="display:inline-block;">
+        {{#each primaryContainers as |instance|}}
+          {{container-dot model=instance}}
+        {{else}}
+          <span class="text-muted">No Containers</span>
+        {{/each}}
+      </div>
+
     </div>
   </div>
 </div>
