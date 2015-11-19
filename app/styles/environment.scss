@@ -1,8 +1,9 @@
 $stackHeight: 66px;
 $stateRadius: 13px;
 $stateBorder: 2px;
-$singleStackHeight: 45px;
+$singleStackHeight: 30px;
 $countWidth: 99px;
+$singleCountWidth : 120px;
 
 .stack-section {
   position: relative;
@@ -10,18 +11,6 @@ $countWidth: 99px;
   border: 1px solid $lightGrayTwo;
   background-color: $lightestGray;
   margin: 0 20px 10px 20px;
-
-  .single {
-    color: white;
-
-    .count LABEL,
-    .count P,
-    &>A:not(.btn),
-    &>BUTTON:not(.btn),
-    A.btn-link {
-      color: white;
-    }
-  }
 
   &:last-child {
     margin-bottom: 0;
@@ -103,8 +92,7 @@ $countWidth: 99px;
   }
 
   .stack-template {
-    line-height: $stackHeight;
-    min-width: 150px;
+    line-height: 60px;
     text-align: center;
   }
 
@@ -150,6 +138,49 @@ $countWidth: 99px;
       }
     }
   }
+
+    .single {
+    color: white;
+
+    .count {
+      width: $singleCountWidth;
+    }
+    .count LABEL,
+    .count P,
+    &>A:not(.btn),
+    &>BUTTON:not(.btn),
+    A.btn-link {
+      color: white;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: $singleStackHeight;
+      margin: 0;
+      top: 0;
+    }
+
+    .stack-state {
+      top: ($singleStackHeight - $stateBorder)/2 - $stateRadius;
+    }
+    
+    .header-left {
+    height: $singleStackHeight;
+    line-height: $singleStackHeight;
+
+      H4 {
+        line-height: $singleStackHeight;
+      }
+    }
+
+    .header-right, .collapser {
+      height: $singleStackHeight;
+    }
+  }
+
+
+    .stack-body.single-body .grid TD:nth-child(4),
+    .stack-body.single-body .grid TD:nth-child(5) {
+       width: ($singleCountWidth + 10);
+    }
 }
 
 .environment-graph {
