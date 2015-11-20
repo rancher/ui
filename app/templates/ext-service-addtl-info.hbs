@@ -1,6 +1,7 @@
 <div class="content-box col-sm-12 col-md-12">
-  <label class="text-muted">External IPs</label>
+  <label class="text-muted">External IPs (<small>{{#link-to 'service' service.environmentId service.id class=''}} View Details {{/link-to}}</small>)</label>
   <div class="content">
+    <label class="text-muted">IPs</label>
     {{#if service.externalIpAddresses.length}}
       <ul class="list-unstyled" style="mergin:0 auto;">
         {{#each service.externalIpAddresses as |ip|}}
@@ -9,6 +10,10 @@
           </li>
         {{/each}}
       </ul>
+    {{/if}}
+    {{#if service.description}}
+      <label class="text-muted r-mt10">Description:</label>
+      {{service.description}}
     {{/if}}
   </div>
 </div>
