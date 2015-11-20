@@ -139,6 +139,10 @@ var Container = Resource.extend({
 
   isManaged: Ember.computed.notEmpty('systemContainer'),
   primaryHost: Ember.computed.alias('hosts.firstObject'),
+
+  displayImage: function() {
+    return (this.get('imageUuid')||'').replace(/^docker:/,'');
+  }.property('imageUuid'),
 });
 
 Container.reopenClass({

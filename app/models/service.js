@@ -2,7 +2,6 @@ import Resource from 'ember-api-store/models/resource';
 import Ember from 'ember';
 import ReadLabels from 'ui/mixins/read-labels';
 import C from 'ui/utils/constants';
-import { displayImage } from 'ui/helpers/display-image';
 
 var _allMaps;
 var _allRegularServices;
@@ -386,7 +385,7 @@ var Service = Resource.extend(ReadLabels, {
   }.property('secondaryLaunchConfigs.length'),
 
   displayDetail: function() {
-    return ('<span class="text-muted">Image: </span> ' + displayImage([this.get('launchConfig.imageUuid')])).htmlSafe();
+    return ('<span class="text-muted">Image: </span> ' + (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'')).htmlSafe();
   }.property('launchConfig.imageUuid'),
 
   activeIcon: function() {
