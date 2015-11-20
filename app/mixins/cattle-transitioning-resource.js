@@ -72,7 +72,7 @@ export default Ember.Mixin.create({
 
   primaryActions: function() {
     // The default implementation returns the first enabled item that has an icon
-    // and is before the first divider.  If you want a different behavior or 
+    // and is before the first divider.  If you want a different behavior or
     // multiple primaryActions, you can override this in a specific model.
     var all = this.get('availableActions');
     var obj;
@@ -170,7 +170,7 @@ export default Ember.Mixin.create({
     }
     else if ( trans === 'error' )
     {
-      icon = 'icon icon-alert text-danger';
+      icon = 'icon icon-alert';
     }
     else
     {
