@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
+import FilterState from 'ui/mixins/filter-state';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(FilterState, {
   prefs: Ember.inject.service(),
 
   model: null,
@@ -10,6 +11,8 @@ export default Ember.Component.extend({
 
   collapsed: true,
   classNames: ['stack-section'],
+
+  filterableContent: Ember.computed.alias('model.services'),
 
   actions: {
     toggleCollapse() {
@@ -48,12 +51,12 @@ export default Ember.Component.extend({
 
   instanceCount: function() {
     var count = 0;
-    (this.get('model.services')||[]).forEach((service) => {
+    (this.get('filtered')||[]).forEach((service) => {
       count += service.get('instances.length')||0;
     });
 
     return count;
-  }.property('model.services.@each.healthState'),
+  }.property('filtered.@each.healthState'),
 
   outputs: function() {
     var out = [];

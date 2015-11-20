@@ -3,9 +3,9 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   // Inputs
   model: null,
-  namePlaceholder: '',
+  namePlaceholder: 'Name',
   nameDisabled: false,
-  descriptionPlaceholder: '',
+  descriptionPlaceholder: 'Description',
 
   tagName: '',
 });

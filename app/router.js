@@ -87,6 +87,13 @@ Router.map(function() {
         this.route('index', {path: '/'});
         this.route('detail', {path: '/:certificate_id'});
       });
+
+      this.resource('storagepools', function() {
+        this.route('index', {path: '/'});
+        this.route('detail', {path: '/:storagepool_id'});
+      });
+      this.resource('storagepools.new-volume', {path: '/add-volume'});
+
     });
 
     // Applications
