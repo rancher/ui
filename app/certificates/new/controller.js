@@ -13,7 +13,7 @@ export default Ember.Controller.extend(NewOrEdit,{
     },
 
     cancel() {
-      this.replaceWith('certificates');
+      this.transitionToRoute('certificates');
     },
   },
 
@@ -31,6 +31,6 @@ export default Ember.Controller.extend(NewOrEdit,{
   },
 
   doneSaving() {
-    this.replaceWith('certificates');
+    this.transitionToRoute('certificates');
   }
 });

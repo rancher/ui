@@ -1,189 +1,88 @@
-<div class="instance-detail">
-  <section class="header">
-    <h3>
-      {{action-menu model=model classNames="pull-right"}}
-      <div class="state {{model.stateColor}}">
-        <i class="{{model.stateIcon}}"></i> {{model.displayState}}
-      </div>
-      <span>
+<section class="header">
+  <ol class="breadcrumb right-divider">
+    {{#link-to "infrastructure-tab" tagName="li" href=false}}<a>Infrastructure</a>{{/link-to}}
+    {{#if model.primaryHost}}
+      {{#link-to "hosts" tagName="li" href=false}}<a>Hosts</a>{{/link-to}}
+      {{#link-to "host" model.primaryHost.id tagName="li" href=false}}<a>{{model.primaryHost.displayName}}</a>{{/link-to}}
+    {{else}}
+      {{#link-to "containers" tagName="li" href=false}}<a>Containers</a>{{/link-to}}
+    {{/if}}
+    <li class="active">{{model.displayName}}</li>
+  </ol>
+
+  {{action-menu model=model size="sm"}}
+</section>
+
+<section>
+  {{#info-multi-stats model=model linkName="containerStats" single=true}}
+    <div class="row multi-stats">
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Host:</label>
         {{#if model.primaryHost}}
-          {{#link-to "hosts"}}Hosts:{{/link-to}}
-          {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}:{{/link-to}}
+          {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}
         {{else}}
-          {{#link-to "containers"}}Containers:{{/link-to}}
+          <span class="text-muted">Unknown</span>
         {{/if}}
-        {{model.displayName}}
-      </span>
-    </h3>
-    {{partial "description"}}
-  </section>
-
-  <section>
-    {{#info-multi-stats model=model linkName="containerStats" single=true}}
-      <ul class="list-lines">
-        {{#if model.showTransitioningMessage}}
-          <li>
-            <label>Message</label>
-            <span class="force-wrap {{model.stateColor}}">
-              {{model.transitioningMessage}}
-            </span>
-          </li>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Host IP:</label>
+        {{#if model.primaryHost}}
+          {{model.primaryHost.displayIp}} {{zero-clipboard text=model.primaryHost.displayIp}}
+        {{else}}
+          <span class="text-muted">Unknown</span>
         {{/if}}
-
-        <li>
-          <label>Host IP</label>
-          {{#if model.primaryHost}}
-            {{model.primaryHost.displayIp}} {{zero-clipboard text=model.primaryHost.displayIp}}
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Container IP:</label>
+        {{model.displayIp}} {{zero-clipboard text=model.displayIp}}
+      </div>
+    </div>
+    <div class="row multi-stats">
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Image:</label>
+        <span class="force-wrap">
+          {{display-image model.imageUuid}} {{zero-clipboard text=model.imageUuid}}
+        </span>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Command:</label>
+        <span class="force-wrap">
+          {{#if model.command}}
+            {{concat-str model.command}}
           {{else}}
-            <span class="text-muted">(No host)</span>
+            <span class="text-muted">None</span>
           {{/if}}
-        </li>
-
-        <li>
-          <label>Container IP</label>
-          {{model.displayIp}} {{zero-clipboard text=model.displayIp}}
-        </li>
-
-        <li>
-          <label>Image</label>
-          <span class="force-wrap">
-            {{display-image model.imageUuid}} {{zero-clipboard text=model.imageUuid}}
-          </span>
-        </li>
-
-        <li>
-          <label>Entrypoint</label>
-          <span class="force-wrap">
-            {{#if model.entryPoint}}
-              {{model.entryPoint}}
-            {{else}}
-              <span class="text-muted">None</span>
-            {{/if}}
-          </span>
-        </li>
-        <li>
-          <label>Command</label>
-          <span class="force-wrap">
-            {{#if model.command}}
-              {{model.command}}
-            {{else}}
-              <span class="text-muted">None</span>
-            {{/if}}
-          </span>
-        </li>
-
-      </ul>
-    {{/info-multi-stats}}
-  </section>
-
-  <section class="well" style="margin-bottom: 0;">
-    <label class="section">Labels</label>
-    {{labels-section model=model}}
-  </section>
-
-  <section>
-    <div class="well">
-      <label>Ports</label>
-      <table class="grid fixed">
-        <thead>
-          <tr>
-            <th width="90">State</th>
-            <th width="150">IP Address</th>
-            <th>Public (on Host)</th>
-            <th>Private (in Container)</th>
-            <th width="90" class="text-right">Protocol</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each ports as |port|}}
-            <tr>
-              <td>
-                <span class="badge state {{port.stateBackground}}">
-                  {{port.displayState}}
-                </span>
-              </td>
-              <td>
-                {{port.displayPublicIp}}
-              </td>
-              <td>
-                {{#if port.publicPort}}
-                  {{port.publicPort}}
-                {{else}}
-                  <span class="text-muted">None</span>
-                {{/if}}
-              </td>
-              <td>
-                {{#if port.privatePort}}
-                  {{port.privatePort}}
-                {{else}}
-                  <span class="text-muted">None</span>
-                {{/if}}
-              </td>
-              <td class="text-right">
-                {{upper-case port.protocol}}
-              </td>
-            </tr>
+        </span>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Entrypoint:</label>
+        <span class="force-wrap">
+          {{#if model.entryPoint}}
+            {{concat-str model.entryPoint}}
           {{else}}
-            <tr>
-              <td colspan="5">
-                <div class="text-muted text-center">This container has no ports.</div>
-              </td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
+            <span class="text-muted">None</span>
+          {{/if}}
+        </span>
+      </div>
     </div>
+    {{#if model.description}}
+      <div class="row multi-stats">
+        <div class="col-sm-12 col-md-12 description">
+          <label>Description: </label>
+          <span>{{model.description}}</span>
+        </div>
+      </div>
+    {{/if}}
+  {{/info-multi-stats}}
+</section>
 
-    <div class="well">
-      <label>Volumes</label>
-      <table class="grid fixed">
-        <thead>
-          <tr>
-            <th width="90">State</th>
-            <th>Mount Point</th>
-            <th>Shared With</th>
-            <th class="text-right" width="80">Writable</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each model.mounts as |mount|}}
-            <tr>
-              <td>
-                <span class="badge state {{mount.stateBackground}}">
-                  {{mount.displayState}}
-                </span>
-              </td>
-              <td>
-                {{mount.path}}
-              </td>
-              <td>
-                <ul class="list-unstyled">
-                {{#each mount.volume.sharedWith as |container|}}
-                  <li>
-                    {{#link-to "container" container.id}}{{container.displayName}}{{/link-to}}
-                  </li>
-                {{else}}
-                  <li class="text-muted">No other containers</li>
-                {{/each}}
-                </ul>
-              </td>
-              <td class="text-right">
-                <i class="icon {{if mount.isReadWrite 'icon-check' 'icon-x text-muted'}}"></i>
-              </td>
-            </tr>
-          {{else}}
-            <tr>
-              <td colspan="4">
-                {{#if model.mountError}}
-                  <div class="text-danger text-center">Error: {{model.mountError.message}}</div>
-                {{else}}
-                  <div class="text-muted text-center">This container has no volumes.</div>
-                {{/if}}
-              </td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-    </div>
-  </section>
-</div>
+<section>
+  <ul class="nav nav-tabs nav-tabs-well shadowed">
+    {{#link-to "container.labels" tagName="li" href=false}}<a><i class="icon icon-tag"></i> Labels</a>{{/link-to}}
+    {{#link-to "container.volumes" tagName="li" href=false}}<a><i class="icon icon-hdd"></i> Volumes</a>{{/link-to}}
+    {{#link-to "container.ports" tagName="li" href=false}}<a><i class="icon icon-network"></i> Ports</a>{{/link-to}}
+  </ul>
+  <div class="table-flat well">
+    {{outlet}}
+  </div>
+</section>

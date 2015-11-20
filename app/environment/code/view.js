@@ -14,5 +14,5 @@ export default Ember.View.extend({
 
   yamlChanged: function() {
     this.highlightAll();
-  }.observes('composeConfig.{dockerComposeConfig,rancherComposeConfig}'),
+  }.observes('context.model.composeConfig.{dockerComposeConfig,rancherComposeConfig}'),
 });

@@ -1,15 +1,19 @@
 <section class="header">
-  <h3>
-    {{action-menu model=model classNames="pull-right"}}
-    <div class="state {{model.stateColor}}">
-      <i class="{{model.stateIcon}}"></i> {{model.displayState}}
-    </div>
-    <span class="right-divider">{{#link-to "settings.projects"}}Environments:{{/link-to}} {{model.displayName}}</span>
-  </h3>
-  {{partial "description"}}
+  <ol class="breadcrumb right-divider">
+    {{#link-to "settings.projects" tagName="li" href=false}}<a>Environments</a>{{/link-to}}
+    <li class="active">
+      {{#power-select options=model.all selected=project onchange=(action "changeProject") searchField="displayName" as |obj|}}
+        <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
+      {{/power-select}}
+    </li>
+  </ol>
+
+  {{action-menu model=project size="sm"}}
 </section>
 
 <section class="well">
+  {{partial "description"}}
+
   <label>Members</label>
   <table class="grid fixed" style="margin-bottom: 0;">
     <thead>

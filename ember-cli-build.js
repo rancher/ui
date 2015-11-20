@@ -58,10 +58,11 @@ module.exports = function(defaults) {
   app.import('bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css');
   app.import('bower_components/prism/prism.js');
   app.import('bower_components/prism/components/prism-yaml.js');
+  app.import('bower_components/prism/components/prism-bash.js');
   app.import('bower_components/lodash/lodash.js');
   app.import('bower_components/graphlib/dist/graphlib.core.js');
   app.import('bower_components/dagre/dist/dagre.core.js');
-  app.import('bower_components/dagre-d3/dist/dagre-d3.core.js');
+  //app.import('bower_components/dagre-d3/dist/dagre-d3.core.js');
   app.import('bower_components/async/lib/async.js');
   app.import('bower_components/position-calculator/dist/position-calculator.js');
   app.import('vendor/aws-sdk-ec2.js');
@@ -75,12 +76,15 @@ module.exports = function(defaults) {
   app.import('vendor/icons/fonts/rancher-icons.ttf',  {destDir: 'assets/fonts'});
   app.import('vendor/icons/fonts/rancher-icons.woff', {destDir: 'assets/fonts'});
 
-  app.import('vendor/open-sans/open-sans-v13-latin-300.woff',       {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-300.woff2',      {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-600.woff',       {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-600.woff2',      {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-regular.woff',   {destDir: 'assets/fonts'});
-  app.import('vendor/open-sans/open-sans-v13-latin-regular.woff2',  {destDir: 'assets/fonts'});
+
+  app.import('vendor/lato/lato-v11-latin-300.woff',       {destDir: 'assets/fonts'});
+  app.import('vendor/lato/lato-v11-latin-300.woff2',      {destDir: 'assets/fonts'});
+  app.import('vendor/lato/lato-v11-latin-700.woff',       {destDir: 'assets/fonts'});
+  app.import('vendor/lato/lato-v11-latin-700.woff2',      {destDir: 'assets/fonts'});
+  app.import('vendor/lato/lato-v11-latin-regular.woff',   {destDir: 'assets/fonts'});
+  app.import('vendor/lato/lato-v11-latin-regular.woff2',  {destDir: 'assets/fonts'});
+
+  app.import('vendor/dagre-d3/dagre-d3.core.js');
 
   return app.toTree();
 };

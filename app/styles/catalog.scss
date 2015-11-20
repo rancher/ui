@@ -2,26 +2,51 @@ $font-size: 12px;
 $line-height: 1.4;
 $lines-to-show: 4;
 
-.catalog {
-  &.left-nav {
-    background: white;
-    height: calc(100vh - 105px);
-  }
-}
-
 .container-catalog {
+  position: relative;
   background: white;
+  border:solid transparent;
   height: 270px;
   width: 250px;
   margin-right: 35px;
   margin-bottom: 35px;
   float: left;
+  box-shadow: 0 0 5px rgba(0,0,0,.15);
+  transition: ease all .25s;
+
+  &:hover {
+    border: solid $blueTwo;
+  }
+
+  h5 {
+    border-bottom: solid thin $lightGray;
+    text-align: left;
+    padding: 15px;
+    margin: 0 15px;
+  }
+
+  .catalog-icon {
+    border: solid 3px #efefef;
+    border-radius: 10px;
+    margin: 20px auto 0 auto;
+    height: 80px;
+    width: 80px;
+    line-height: 60px;
+    padding: 5px;
+
+    img {
+      width: auto;
+      height: auto;
+      max-width: 60px;
+      max-height: 60px;
+    }
+  }
 
   .description {
     display: block; /* Fallback for non-webkit */
     display: -webkit-box;
     max-width: 200px;
-    height: $font-size*$line-height*$lines-to-show; /* Fallback for non-webkit */
+    /*height: $font-size*$line-height*$lines-to-show;*/ /* Fallback for non-webkit */
     margin: auto;
     font-size: $font-size;
     line-height: $line-height;
@@ -29,29 +54,53 @@ $lines-to-show: 4;
     -webkit-box-orient: vertical;
     overflow: hidden;
     text-overflow: ellipsis;
+    box-sizing:border-box;
   }
 
   .btn {
-    padding-left: 40px;
-    padding-right: 40px;
-    margin-bottom: -35px;
+    position: absolute;
+    bottom: 0px;
+    left: 0;
+    right: 0;
+    margin: 0 40px 20px 40px;
   }
 }
+
 .launch-catalog {
-  .over-hr {
-    .icon-chevron-up,
-    .icon-chevron-down {
-      font-size: 10px;
-    }
-    > span:after {
-      margin-left: 30px;
-    }
+
+  HR {
+    border-top: 2px solid #c2c8c8;
+  }
+
+  H4 {
+    font-weight: $bold-weight;
+  }
+
+  .preview-content {
+    padding: 5px;
   }
 }
+
 .line-numbers {
   &.constrained {
     height:200px;
     max-height: 200px;
     overflow: auto;
+  }
+}
+
+.power-select-img {
+  position: relative;
+
+  IMG {
+    max-width: 25px;
+    max-height: 25px;
+  }
+
+  DIV {
+    position: absolute;
+    left: 30px;
+    right: 0;
+    top: 0;
   }
 }

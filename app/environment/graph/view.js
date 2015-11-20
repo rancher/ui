@@ -19,6 +19,13 @@ export default Ember.View.extend(ThrottledResize,{
     Ember.run.later(this,'initGraph',100);
   },
 
+
+  click: function(evt) {
+    if ($(evt.target).hasClass('icon-x')) {
+      this.styleSvg();
+    }
+  },
+
   onResize: function() {
     $('#environment-svg').css('top', $('MAIN').position().top + 55 + 'px');
     if ( this.get('graph') )
@@ -56,29 +63,87 @@ export default Ember.View.extend(ThrottledResize,{
     });
 
     this.updateGraph();
+    $(outer[0]).on('click', (event) => {
+      var fo = $(event.target).closest('foreignObject');
+
+      if ( fo )
+      {
+        if ( this.get('currentFO') ) {
+          this.get('currentFO').find('>div').removeClass('highlighted');
+
+          this.set('prevFO', this.get('currentFO'));
+
+          this.set('currentFO', fo);
+
+          fo.find('>div').addClass('highlighted');
+
+        } else {
+          this.set('currentFO', fo);
+
+          fo.find('>div').addClass('highlighted');
+
+        }
+
+        var serviceId = $('span[data-service]', fo).data('service');
+
+        if ( serviceId )
+        {
+          this.showService(serviceId);
+
+          return;
+        }
+      }
+
+      this.showService(null);
+
+      this.setProperties({
+        currentFO: null,
+        prevFO: null,
+      });
+
+    });
+  },
+
+  styleSvg: function(height='100%') {
+    $('#environment-svg svg').css('height', height);
+  },
+
+  showService: function(id) {
+    if ( id )
+    {
+      var svgHeight = $('#environment-svg').height() - 310; // svg minus the height of info service-addtl-info.scss
+      this.styleSvg(`${svgHeight}px`);
+      this.set('context.showServiceInfo', true);
+      this.set('context.selectedService', this.get('context.stack.services').findBy('id', id));
+    }
+    else
+    {
+      this.styleSvg();
+      this.set('context.showServiceInfo', null);
+    }
   },
 
   crosslinkServices: function() {
     // Add services that are cross-linked from another environment
     var out = [];
 
-    var unremovedServices = this.get('context.model.services').filter(function(service) {
+    var unremovedServices = this.get('context.stack.services').filter(function(service) {
       return ['removed','purging','purged'].indexOf(service.get('state')) === -1;
     });
 
     unremovedServices.forEach((service) => {
       var externals = (service.get('consumedServicesWithNames')||[]).filter((linked) => {
-        return linked.get('service.environmentId') !== this.get('context.model.id');
+        return linked.get('service.environmentId') !== this.get('context.stack.id');
       }).map((linked) => { return linked.get('service'); });
       out.pushObjects(externals);
     });
 
     return out;
-  }.property('context.model.services.@each.consumedServicesUpdated'),
+  }.property('context.stack.services.@each.consumedServicesUpdated'),
 
   updateGraph: function() {
     var g = this.get('graph');
-    var services = this.get('context.model.services');
+    var services = this.get('context.stack.services');
     var unremovedServices = services.filter(function(service) {
       return ['removed','purging','purged'].indexOf(service.get('state')) === -1;
     });
@@ -93,7 +158,7 @@ export default Ember.View.extend(ThrottledResize,{
       var serviceId = service.get('id');
       var color = (service.get('state') === 'active' ? 'green' : (service.get('state') === 'inactive' ? 'red' : 'yellow'));
       var instances = service.get('instances.length')||'No';
-      var isCrossLink = service.get('environmentId') !== this.get('context.model.id');
+      var isCrossLink = service.get('environmentId') !== this.get('context.stack.id');
 
       var envName = '';
       if ( isCrossLink )
@@ -101,10 +166,10 @@ export default Ember.View.extend(ThrottledResize,{
         envName = service.get('displayEnvironment') + '/';
       }
 
-      var html =  '<i class="icon '+ activeIcon(service) +'"></i>' +
-                  '<h4 class="clip">'+ envName + Util.escapeHtml(service.get('displayName')) + '</h4>' +
-                  '<h6 class="count"><b>' + instances + '</b> container' + (instances === 1 ? '' : 's') + '</h6>' +
-                  '<h6><span class="state '+ color +'">' + Util.escapeHtml(Util.ucFirst(service.get('state'))) + '</span></h6>';
+      var html = `<span data-service="${service.get('id')}"></span><i class="icon  ${activeIcon(service)}"></i>
+                  <h4 class="clip">${envName}${Util.escapeHtml(service.get('displayName'))}</h4>
+                  <h6 class="count"><b>${instances}</b> container${(instances === 1 ? '' : 's')}</h6>
+                  <h6><span class="state ${color}">${Util.escapeHtml(Util.ucFirst(service.get('state')))}</span></h6>`;
 
       g.setNode(serviceId, {
         labelType: "html",
@@ -122,9 +187,12 @@ export default Ember.View.extend(ThrottledResize,{
         var target = map.get('service');
         var targetId = target.get('id');
         var color = (target.get('state') === 'active' ? 'green' : (target.get('state') === 'inactive' ? 'red' : 'yellow'));
+        var markerColor = (target.get('state') === 'active' ? 'green-fill' : (target.get('state') === 'inactive' ? 'red-fill' : 'yellow-fill'));
 
         var edgeOpts = {
           arrowhead: 'vee',
+          customMarkerURL: window.location.pathname,
+          customMarkerClass: markerColor,
           lineInterpolate: 'bundle',
           class: color,
         };
@@ -183,7 +251,7 @@ export default Ember.View.extend(ThrottledResize,{
 
   throttledUpdateGraph: function() {
     Ember.run.throttle(this,'updateGraph',250);
-  }.observes('context.model.services.@each.{id,name,state,consumedServicesUpdated}','crosslinkServices.@each.{id,name,state,displayEnvironment}'),
+  }.observes('context.stack.services.@each.{id,name,state,consumedServicesUpdated}','crosslinkServices.@each.{id,name,state,displayEnvironment}'),
 
   willDestroyElement: function() {
     this._super();

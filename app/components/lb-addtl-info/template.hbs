@@ -1,0 +1,120 @@
+<div class="content-box col-md-3 col-md-height col-md-full-height">
+  <label class="text-muted">Info (<small>{{#link-to 'service' service.environmentId service.id class=''}} View Details {{/link-to}}</small>)</label>
+  <div class="content">
+    <div class="state">
+      {{badge-state model=service}}  {{action-menu model=service size='xs' class="no-wrap pull-right"}}
+    </div>
+    <div>
+      <label class="text-muted r-mt15">Default SSL Cert.</label>
+      <span class="force-wrap">
+        {{#if defaultCert}}
+          {{defaultCert.name}}
+        {{else}}
+          <span class="text-muted">No Certificates</span>
+        {{/if}}
+      </span>
+    </div>
+    <div>
+      <label class="text-muted r-mt15">Alternate SSL Cert.</label>
+      <span class="force-wrap">
+        <ul class="list-unstyled">
+          {{#each secondaryCerts as |cert|}}
+            <li>{{cert.name}}</li>
+          {{else}}
+            <li class="text-muted">No Certificates</li>
+          {{/each}}
+        </ul>
+      </span>
+    </div>
+  </div>
+</div>
+<div class="content-box col-md-3 col-md-height col-md-full-height">
+  <label class="text-muted">Containers ({{containers.length}})</label>
+  <div class="content">
+    <div class="container-dots clearfix">
+      <div style="display:inline-block;">
+        {{#each containers as |instance|}}
+          {{container-dot model=instance}}
+        {{else}}
+          <span class="text-muted">No Containers</span>
+        {{/each}}
+      </div>
+      <div class="r-mt10">
+        <label class="text-muted">Scale</label>
+        {{#if service.canScale}}
+          <span class="r-ml20 r-mr20">{{service.scale}}</span>
+          <div class="btn-group btn-group-xs">
+            <button class="btn btn-default btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
+            <button class="btn btn-default btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
+          </div>
+        {{else}}
+          {{if service.isGlobalScale 'Global'}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="content-box col-md-3 col-md-height col-md-full-height">
+  <label class="text-muted">Listeners</label>
+  <div class="content r-pr20" style="overflow:auto;">
+    <table class="table-responsive grid no-lines tight">
+      <thead>
+        <tr>
+          <th>Source Port</th>
+          <th width="60">Protocol</th>
+          <th width="50" class="text-center">SSL</th>
+          <th>Default Target Port</th>
+          <th width="50">Access</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each listenersArray as |listener| }}
+          <tr>
+            <td>{{listener.sourcePort}}</td>
+            <td>{{listener.sourceProtocol}}</td>
+            <td>
+              {{#if listener.ssl}}
+                <i class="icon icon-check"></i>
+              {{/if}}
+            </td>
+            <td>{{listener.targetPort}}</td>
+            <td>
+              {{#if listener.isPublic}}
+                Public
+              {{else}}
+                Internal
+              {{/if}}
+            </td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>
+<div class="content-box col-md-3 col-md-height col-md-full-height">
+  <label class="text-muted">Targets</label>
+  <div class="content r-pr20" style="overflow:auto;">
+    <table class="table-responsive grid no-lines tight">
+      <thead>
+        <tr>
+          <th>Request Host</th>
+          <th width="60">Source Port</th>
+          <th width="50" class="text-center">Request Path</th>
+          <th width="50">Target Service*</th>
+          <th width="50">Target Port*</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each targetsArray as |target| }}
+          <tr>
+            <td>{{target.hostname}}</td>
+            <td>{{target.srcPort}}</td>
+            <td>{{target.path}}</td>
+            <td>{{#link-to 'service' target.eid target.id}}{{target.value}}{{/link-to}}</td>
+            <td>{{target.dstPort}}</td>
+          </tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -13,4 +13,26 @@ export default Ember.Controller.extend({
       }
     }
   }.observes('model.hosts.length','model.services.length'),
+
+  actions: {
+    newService() {
+      var environmentId = this.get('model.environmentId');
+
+      if ( environmentId )
+      {
+        this.transitionToRoute('service.new', {queryParams: {environmentId: environmentId}});
+      }
+      else
+      {
+        var env = this.get('store').createRecord({
+          type: 'environment',
+          name: 'Default',
+        });
+
+        return env.save().then(() => {
+          this.transitionToRoute('service.new', {queryParams: {environmentId: env.get('id') }});
+        });
+      }
+    },
+  },
 });

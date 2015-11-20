@@ -1,0 +1,105 @@
+<div class="content-box col-md-3 col-md-height col-md-full-height">
+  <label class="text-muted">Info (<small>{{#link-to 'service' service.environmentId service.id class=''}} View Details {{/link-to}}</small>)</label>
+  <div class="content">
+    <div class="state">
+      {{badge-state model=service}}  {{action-menu model=service size='xs' class="no-wrap pull-right"}}
+    </div>
+    <div>
+
+    </div>
+    <div>
+      <label class="text-muted r-mt10">Image: </label>
+      <span class="force-wrap">
+        {{service.launchConfig.imageUuid}}
+      </span>
+    </div>
+    <div>
+      <label class="text-muted r-mt10">Entrypoint: </label>
+      <span class="force-wrap">
+        {{#if service.launchConfig.entryPoint}}
+          {{concat-str service.launchConfig.entryPoint}}
+        {{else}}
+          <span class="text-muted">None</span>
+        {{/if}}
+      </span>
+    </div>
+    <div>
+      <label class="text-muted r-mt10">Command: </label>
+      <span class="force-wrap">
+        {{#if service.launchConfig.command}}
+          {{concat-str service.launchConfig.command}}
+        {{else}}
+          <span class="text-muted">None</span>
+        {{/if}}
+      </span>
+    </div>
+    <div>
+      {{#if service.description}}
+        <label class="text-muted r-mt10">Description:</label>
+        {{service.description}}
+      {{/if}}
+    </div>
+  </div>
+</div>
+<div class="content-box col-md-3 col-md-height col-md-full-height">
+  <label class="text-muted">Containers ({{primaryContainers.length}})</label>
+  <div class="content">
+    <div class="container-dots clearfix">
+      <div>
+        <label class="text-muted">Scale</label>
+        {{#if service.canScale}}
+          <span class="r-ml20 r-mr20">{{service.scale}}</span>
+          <div class="btn-group btn-group-xs">
+            <button class="btn btn-default btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
+            <button class="btn btn-default btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
+          </div>
+        {{else}}
+          {{if service.isGlobalScale 'Global'}}
+        {{/if}}
+      </div>
+      <div style="display:inline-block;">
+        {{#each primaryContainers as |instance|}}
+          {{container-dot model=instance}}
+        {{else}}
+          <span class="text-muted">No Containers</span>
+        {{/each}}
+      </div>
+
+    </div>
+  </div>
+</div>
+<div class="content-box col-md-3 col-md-height col-md-full-height">
+  <label class="text-muted">Labels</label>
+  <div class="content">
+    <ul class="list-unstyled">
+      {{#each labelArray as |label|}}
+        <li class="list-labels"><span class="text-muted">{{label.key}}</span>: {{label.value}}</li>
+      {{else}}
+        <li class="text-muted">No Labels</li>
+      {{/each}}
+    </ul>
+  </div>
+</div>
+<div class="content-box col-md-3 col-md-height col-md-full-height">
+  <label class="text-muted">Links</label>
+
+  {{#if (or service.domainName service.fqdn)}}
+    <label class="text-muted">FQDN:</label>
+    {{#if service.domainName}}
+      <span>{{service.domainName}} {{zero-clipboard text=service.domainName}}</span>
+    {{else}}
+      <span>{{service.fqdn}} {{zero-clipboard text=service.fqdn}}</span>
+    {{/if}}
+  {{/if}}
+
+  <div class="content">
+    <ul class="list-unstyled">
+      {{#each service.consumedServicesWithNames as |link|}}
+        <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.name}} {{/link-to}}</li>
+      {{else}}
+        <li class="text-muted">No Links</li>
+      {{/each}}
+    </ul>
+  </div>
+</div>
+

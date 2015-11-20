@@ -54,12 +54,7 @@ export default Ember.Controller.extend({
     return str;
   }.property('originalModel.allowedIdentities.[]','wasRestricted'),
 
-  allowedActualIdentities: function() {
-    return this.get('model.allowedIdentities').map((obj) => {
-      obj.type = 'identity';
-      return this.get('store').createRecord(obj);
-    });
-  }.property('model.allowedIdentities.[]'),
+  allowedActualIdentities: Ember.computed.alias('model.allowedIdentities'),
 
   wasShowing: false,
   showingAccessControl: function() {
@@ -93,7 +88,7 @@ export default Ember.Controller.extend({
 
   accessModeChanged: function() {
     this.set('saved',false);
-  }.observes('accessMode'),
+  }.observes('model.accessMode'),
 
   isEnterprise: false,
   enterpriseDidChange: function() {

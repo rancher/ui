@@ -3,6 +3,7 @@ var C = {
     ACCESS_WARNING: 'accessWarning',
     PROJECT_DEFAULT: 'defaultProjectId',
     I_HATE_SPINNERS: 'iHateSpinners',
+    EXPANDED_STACKS: 'expandedStacks',
   },
 
   COOKIE: {
@@ -88,12 +89,17 @@ var C = {
     DEPLOYMENT_UNIT: 'io.rancher.service.deployment.unit',
     LAUNCH_CONFIG: 'io.rancher.service.launch.config',
     LAUNCH_CONFIG_PRIMARY: 'io.rancher.service.primary.launch.config',
+    START_ONCE: 'io.rancher.container.start_once',
+    HASH: 'io.rancher.service.hash',
   },
 
   EXTERNALID: {
     KIND_SEPARATOR: '://',
     GROUP_SEPARATOR: '/',
+    KIND_ALL: 'all',
+    KIND_USER: 'user',
     KIND_CATALOG: 'catalog',
+    KIND_SYSTEM: 'system',
     KIND_KUBERNETES: 'kubernetes',
     CATALOG_DEFAULT_GROUP: 'library',
   },

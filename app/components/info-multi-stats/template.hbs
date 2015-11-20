@@ -1,20 +1,33 @@
+<div class="container-fluid container-multi-stat">
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12 {{model.stateBackground}}">
+      <label class="section r-mt5" style="color:white;">
+        State: {{model.displayState~}}
+        {{#if model.showTransitioningMessage}}
+          <span class="force-wrap">
+            ({{model.transitioningMessage}})
+          </span>
+        {{/if}}
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12 col-md-12 col-lg-12">
+      {{yield}}
+    </div>
+  </div>
+</div>
 <div class="row">
   <div class="row-same-height row-full-height">
     <div class="col-sm-12 col-md-4 col-md-height col-md-full-height col-top" style="margin-bottom: 20px;">
-      <div class="well no-padding-margin" style="height: 100%;">
-        <div style="padding: 20px;">
-          <label class="section">Info</label>
-          <div>
-            {{yield}}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-sm-12 col-md-4 col-md-height col-md-full-height col-top" style="margin-bottom: 20px;">
       <div class="well no-padding-margin">
         <div style="padding: 20px;">
-          <label class="section">CPU</label>
+          <label class="section text-muted">CPU</label>
+          <div class="container-legend pull-right">
+            <span class="r-ml20 legend-circle-system"></span> System
+            <span class="r-ml10 legend-circle-user"></span> User
+          </div>
+          <hr>
           <div class="info-graph {{unless active 'hide'}}">
             <div id="cpuGraph"></div>
           </div>
@@ -29,7 +42,12 @@
 
       <div class="well no-padding-margin" style="margin-top: 20px;">
         <div style="padding: 20px;">
-          <label class="section">Network</label>
+          <label class="section text-muted">Network</label>
+          <div class="container-legend pull-right">
+            <span class="r-ml20 legend-circle-transmit"></span> Transmit
+            <span class="r-ml10 legend-circle-receive"></span> Receive
+          </div>
+          <hr>
           <div class="info-graph {{unless active 'hide'}}">
             <div id="networkGraph"></div>
           </div>
@@ -46,7 +64,11 @@
     <div class="col-sm-12 col-md-4 col-md-height col-md-full-height col-top" style="margin-bottom: 20px;">
       <div class="well no-padding-margin">
         <div style="padding: 20px;">
-          <label class="section">Memory</label>
+          <label class="section text-muted">Memory</label>
+          <div class="container-legend pull-right">
+            <span class="r-ml20 legend-circle-used"></span> Used
+          </div>
+          <hr>
           <div class="{{unless active 'hide'}}">
             <div id="memoryGraph"></div>
           </div>
@@ -61,7 +83,12 @@
 
       <div class="well no-padding-margin" style="margin-top: 20px;">
         <div style="padding: 20px;">
-          <label class="section">Storage</label>
+          <label class="section text-muted">Storage</label>
+          <div class="container-legend pull-right">
+            <span class="r-ml20 legend-circle-write"></span> Write
+            <span class="r-ml10 legend-circle-read"></span> Read
+          </div>
+          <hr>
           <div class="info-graph {{unless active 'hide'}}">
             <div id="storageGraph"></div>
           </div>

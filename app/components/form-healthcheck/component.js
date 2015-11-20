@@ -135,7 +135,7 @@ export default Ember.Component.extend({
       }
       else if ( checkType === TCP )
       {
-        this.set('uriPath', null);
+        this.set('healthCheck.requestLine', '');
       }
     }
   }.observes('checkType','uriMethod','uriPath','uriVersion','uriHost'),

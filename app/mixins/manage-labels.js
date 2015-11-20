@@ -6,10 +6,12 @@ const USER = 'user';
 const SYSTEM = 'system';
 const AFFINITY = 'affinity';
 
+const IGNORE = [
+  C.LABEL.HASH,
+];
+
 export default Ember.Mixin.create({
-  initialLabels: null,
   labelArray: null,
-  labelObj: null,
 
   actions: {
     addUserLabel() {
@@ -108,13 +110,25 @@ export default Ember.Mixin.create({
   }.property('labelArray.@each.type'),
 
   getLabel: function(key) {
-    key = (key||'').toLowerCase();
+    var lcKey = (key||'').toLowerCase();
     var ary = this.get('labelArray');
     var item;
+
+    // Try specific case first
     for ( var i = 0 ; i < ary.get('length') ; i++ )
     {
       item = ary.objectAt(i);
-      if ( item.get('key').toLowerCase() === key )
+      if ( item.get('key') === key )
+      {
+        return item;
+      }
+    }
+
+    // Then case-insensitive
+    for ( i = 0 ; i < ary.get('length') ; i++ )
+    {
+      item = ary.objectAt(i);
+      if ( item.get('key').toLowerCase() === lcKey )
       {
         return item;
       }
@@ -124,15 +138,19 @@ export default Ember.Mixin.create({
   },
 
   setLabel: function(key, value) {
-    key = (key||'').toLowerCase();
+    var lcKey = (key||'').toLowerCase();
     var type = 'user';
-    if ( key.indexOf(C.LABEL.SCHED_AFFINITY) === 0 )
+
+    // Rancher keys are always lowercase
+    if ( lcKey.indexOf(C.LABEL.SCHED_AFFINITY) === 0 )
     {
       type = 'affinity';
+      key = lcKey;
     }
-    else if ( key.indexOf(C.LABEL.SYSTEM_PREFIX) === 0 )
+    else if ( lcKey.indexOf(C.LABEL.SYSTEM_PREFIX) === 0 )
     {
       type = 'system';
+      key = lcKey;
     }
 
     var existing = this.getLabel(key);
@@ -181,6 +199,12 @@ export default Ember.Mixin.create({
       else if ( key.indexOf(C.LABEL.SYSTEM_PREFIX) === 0 )
       {
         type = 'system';
+      }
+
+      if ( IGNORE.indexOf(key) >= 0 )
+      {
+        // Skip ignored labels
+        return;
       }
 
       if ( onlyOfType && type !== onlyOfType )
@@ -252,7 +276,7 @@ export default Ember.Mixin.create({
   }),
 
   updateLabels(/*labels*/) {
-    throw new Error('Override me to do something');
+    // Override me to do something
   }
 
 });

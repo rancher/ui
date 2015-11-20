@@ -1,5 +1,5 @@
-{{environment-header model=model}}
+{{environment-header model=model.stack all=model.all hideAddtlInfo="dismiss"}}
 
-{{#columns-section pods=model.unremovedServices emptyMessage="No services yet." as |service| }}
-  {{service-pod mode=mode model=service scaleUp="scaleUp"}}
-{{/columns-section}}
+{{stack-section model=model.stack single=true collapsed=false showAddtlInfo=(action "showAddtlInfo") classNames="r-mt20"}}
+
+{{service-addtl-info service=selectedService show=showAddtlInfo dismiss='dismiss'}}

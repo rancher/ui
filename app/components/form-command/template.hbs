@@ -52,35 +52,37 @@
   </div>
 </div>
 
-<div class="row">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label>Auto Restart</label>
-  </div>
+{{#unless isService}}
+  <div class="row">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>Auto Restart</label>
+    </div>
 
-  <div class="col-xs-12 col-sm-6 col-md-4">
-    <div class="radio small">
-      <label>{{radio-button selection=restart value="no"}} Never</label>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="radio small">
+        <label>{{radio-button selection=restart value="no"}} Never</label>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="radio small">
+        <label>{{radio-button selection=restart value="on-failure"}} On failure <span class="text-muted">(non-0 exit code)</span>, forever</label>
+      </div>
     </div>
   </div>
-  <div class="col-xs-12 col-sm-6 col-md-4">
-    <div class="radio small">
-      <label>{{radio-button selection=restart value="on-failure"}} On failure <span class="text-muted">(non-0 exit code)</span>, forever</label>
+  <div class="row">
+    <div class="hidden-xs hidden-sm col-md-2 form-label">&nbsp;</div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="radio small">
+        <label>{{radio-button selection=restart value="always"}} Always</label>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="radio small">
+        <label>{{radio-button selection=restart value="on-failure-cond"}} On failure, up to {{input type="number" min=1 style="width: 40px; height: 20px; padding: 0 2px;" value=restartLimit}} times</label>
+      </div>
     </div>
   </div>
-</div>
-<div class="row">
-  <div class="hidden-xs hidden-sm col-md-2 form-label">&nbsp;</div>
-  <div class="col-xs-12 col-sm-6 col-md-4">
-    <div class="radio small">
-      <label>{{radio-button selection=restart value="always"}} Always</label>
-    </div>
-  </div>
-  <div class="col-xs-12 col-sm-6 col-md-4">
-    <div class="radio small">
-      <label>{{radio-button selection=restart value="on-failure-cond"}} On failure, up to {{input type="number" min=1 style="width: 40px; height: 20px; padding: 0 2px;" value=restartLimit}} times</label>
-    </div>
-  </div>
-</div>
+{{/unless}}
 
 <div class="row">
   <div class="col-sm-12 col-md-2 form-label">
@@ -89,7 +91,7 @@
 
   <div class="col-sm-12 col-md-8">
     <div class="form-control-static">
-      <button class="btn-circle-plus" {{action "addEnvironment" target="view"}}></button>
+      <button class="btn-circle" {{action "addEnvironment"}}><i class="icon icon-plus-circle"/></button>
     </div>
 
     {{#if environmentArray.length}}
@@ -115,7 +117,7 @@
             </td>
 
             <td class="text-right">
-              <button {{action "removeEnvironment" env}} class="btn-circle-x" type="button" tabindex="-1"></button>
+              <button class="btn-circle" {{action "removeEnvironment" env}} tabindex="-1"><i class="icon icon-x-circle"/></button>
             </td>
           </tr>
         {{/each}}

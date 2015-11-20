@@ -1,7 +1,5 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
-import { parseExternalId } from 'ui/utils/parse-externalid';
 
 const NONE = 'none',
       LOADING = 'loading',
@@ -14,7 +12,8 @@ var queue = async.queue(getUpgradeInfo, 2);
 function getUpgradeInfo(task, cb) {
   var obj = task.obj;
 
-  ajaxPromise({url: task.url, dataType: 'json'},true).then((upgradeInfo) => {
+  obj.get('store').request({url: task.url}).then((upgradeInfo) => {
+    upgradeInfo.id = task.id;
     obj.set('upgradeInfo', upgradeInfo);
     if ( upgradeInfo && upgradeInfo.newVersionLinks && Object.keys(upgradeInfo.newVersionLinks).length )
     {
@@ -47,32 +46,49 @@ export default Ember.Component.extend({
 
   click: function() {
     var upgradeInfo = this.get('upgradeInfo');
-    upgradeInfo.versionLinks = upgradeInfo.newVersionLinks;
 
-    if ( this.get('upgradeStatus') === AVAILABLE )
+    if ( this.get('upgradeStatus') === AVAILABLE && !this.get('isUpgradeState') )
     {
-      this.get('application').setProperties({
-        launchCatalog: true,
-        originalModel: upgradeInfo,
-        environmentResource: this.get('environmentResource'),
-      });
+      // Hackery, but no good way to get the template from upgradeInfo
+      var tpl = '_upgrade';
+      var key = Object.keys(upgradeInfo.newVersionLinks)[0];
+      var match = upgradeInfo.newVersionLinks[key].match(/.*\/templates\/(.*)\/([^\/]+)$/);
+      if ( match )
+      {
+        tpl = match[1];
+      }
+
+      this.get('application').transitionToRoute('applications-tab.catalog.launch', tpl, {queryParams: {
+        environmentId: this.get('environmentResource.id'),
+        upgrade: this.get('upgradeInfo.id'),
+      }});
     }
   },
 
   btnClass: function() {
+    if ( this.get('isUpgradeState') )
+    {
+      return 'btn-disabled';
+    }
+
     switch ( this.get('upgradeStatus') ) {
       case NONE:
         return 'hide';
       case LOADING:
       case CURRENT:
       case ERROR:
-        return 'btn-link btn-disabled';
+        return 'btn-disabled';
       case AVAILABLE:
         return 'btn-warning';
     }
-  }.property('upgradeStatus'),
+  }.property('upgradeStatus','isUpgradeState'),
 
   btnLabel: function() {
+    if ( this.get('isUpgradeState') )
+    {
+      return 'Upgrade in progress';
+    }
+
     switch ( this.get('upgradeStatus') ) {
       case NONE:
         return '';
@@ -85,15 +101,15 @@ export default Ember.Component.extend({
       default:
         return 'Error checking upgrades';
     }
-  }.property('upgradeStatus'),
+  }.property('upgradeStatus','isUpgradeState'),
 
   updateStatus() {
-    var info = parseExternalId(this.get('environmentResource.externalId'));
-
-    if ( info && info.kind === C.EXTERNALID.KIND_CATALOG )
+    var info = this.get('environmentResource.externalIdInfo');
+    if ( info.kind === C.EXTERNALID.KIND_CATALOG )
     {
       this.set('upgradeStatus', LOADING);
       queue.push({
+        id: info.id,
         url: this.get('app.catalogEndpoint')+'/upgradeinfo/'+ info.id,
         obj: this
       });
@@ -104,7 +120,20 @@ export default Ember.Component.extend({
     }
   },
 
+  isUpgradeState: function() {
+    return [
+      'uprading',
+      'canceled-upgrade',
+      'canceling-rollback',
+      'canceling-upgrade',
+      'finishing-upgrade',
+      'rolling-back',
+      'upgrading',
+      'upgraded'
+    ].indexOf(this.get('environmentResource.state')) >= 0;
+  }.property('environmentResource.state'),
+
   externalIdChanged: function() {
     this.updateStatus();
-  }.property('environmentResource.externalId'),
+  }.observes('environmentResource.externalId'),
 });

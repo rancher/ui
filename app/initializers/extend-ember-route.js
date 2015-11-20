@@ -37,12 +37,19 @@ export function initialize(/* container, application */) {
       }
     },
 
-    goToPrevious: function() {
+    goToPrevious: function(def) {
       var appRoute = this.container.lookup('route:application');
       var route = appRoute.get('previousRoute');
       if ( !route || route === 'loading' )
       {
-        return this.goToParent();
+        if ( def )
+        {
+          this.transitionTo(def);
+        }
+        else
+        {
+          return this.goToParent();
+        }
       }
 
       var args = (appRoute.get('previousParams')||[]).slice();

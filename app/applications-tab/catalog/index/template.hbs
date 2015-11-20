@@ -1,0 +1,37 @@
+<section class="header">
+  <ol class="breadcrumb">
+    {{#link-to "applications-tab" tagName="li" href=false}}<a>Applications</a>{{/link-to}}
+    <li class="active">Catalog</li>
+  </ol>
+
+  <div class="btn-group pull-right left-divider">
+    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category: <span class="text-capitalize">{{category}}</span> <i class="icon icon-chevron-down"></i></button>
+    <ul class="dropdown-menu dropdown-menu-right">
+      {{#each categories as |category|}}
+      <li>
+        {{#link-to "applications-tab.catalog" (query-params category=category)}}
+          <span class="text-capitalize">{{category}}</span>
+        {{/link-to}}
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+
+  <div class="btn-group searchable pull-right">
+    <i class="icon icon-search"></i>
+    {{input placeholder="Search..." class="form-control input-sm" value=search}}
+  </div>
+</section>
+
+<section class="r-plr15">
+  {{#each arrangedContent as |catalogItem|}}
+    <div class="container-catalog text-center">
+      <h5>{{catalogItem.name}}</h5>
+      <div class="catalog-icon">
+        <img src="{{catalogItem.iconLink}}"/>
+      </div>
+      <div class="r-mt10 description">{{catalogItem.description}}</div>
+      {{#link-to "applications-tab.catalog.launch" catalogItem.path class="btn btn-sm btn-primary"}}View Details{{/link-to}}
+    </div>
+  {{/each}}
+</section>

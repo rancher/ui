@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   model: function(params) {
     var store = this.get('store');
+    var all = this.modelFor('environments');
     return store.find('environment', params.environment_id).then((env) => {
       return store.find('service', null, {
         filter: {
@@ -12,7 +13,10 @@ export default Ember.Route.extend({
       }).then((services) => {
         env.set('services', services||[]);
         env.set('services.sortProperties', ['name','id']);
-        return env;
+        return Ember.Object.create({
+          stack: env,
+          all: all,
+        });
       });
     });
   },

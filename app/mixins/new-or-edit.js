@@ -52,6 +52,10 @@ export default Ember.Mixin.create({
       if ( !this.willSave() )
       {
         // Validation or something else said not to save
+        if ( cb )
+        {
+          cb();
+        }
         return;
       }
 

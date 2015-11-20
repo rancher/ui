@@ -1,10 +1,35 @@
 import Ember from 'ember';
+import Sortable from 'ui/mixins/sortable';
 
-export default Ember.Controller.extend({
+export default Ember.Controller.extend(Sortable, {
   environments: Ember.inject.controller(),
-  mode: Ember.computed.alias('environments.mode'),
+  projects: Ember.inject.service(),
+  sortableContent: Ember.computed.alias('model.current'),
 
-  arranged: function() {
-    return this.get('model').sortBy('name','id');
-  }.property('model.@each.{name,id}'),
+  which: 'user',
+  queryParams: ['which'],
+  showAddtlInfo: false,
+  selectedService: null,
+
+  actions: {
+    showAddtlInfo: function(service) {
+      this.set('selectedService', service);
+      this.set('showAddtlInfo', true);
+    },
+    dismiss: function() {
+      this.set('showAddtlInfo', false);
+      this.set('selectedService', null);
+    }
+  },
+
+  supportsKubernetes: function() {
+    return this.get('projects.current.kubernetes') === true;
+  }.property('projects.current.kubernetes'),
+
+  sortBy: 'state',
+  sorts: {
+    state: ['stateSort','name','id'],
+    name: ['name','id']
+  },
+
 });

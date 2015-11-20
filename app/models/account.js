@@ -34,7 +34,7 @@ var Account = Resource.extend(PolledResource, {
       { label: 'Restore',       icon: '',                       action: 'restore',      enabled: !!a.restore },
       { divider: true },
       { label: 'Edit',          icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
-      { label: 'View in API',   icon: 'icon icon-externallink', action: 'goToApi',      enabled: true },
+      { label: 'View in API',   icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
   }.property('actionLinks.{update,activate,deactivate,restore,remove,purge}'),
 

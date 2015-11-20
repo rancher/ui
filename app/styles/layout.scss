@@ -1,12 +1,11 @@
-$body-bg: #f4f5f8;
+$body-bg: #f2f5f5;
 $header-height: 100px;
 $header-link-text: #afb9c8;
 $main-padding: 20px;
-$nav-bg: #393d47;
+$nav-bg: #34495e;
 $nav-text: #788188;
 $nav-bg-hover: #283036;
 $nav-text-hover: white;
-$aside-width: 200px;
 
 /**********
 * Body
@@ -35,11 +34,7 @@ B {
 }
 
 .farm {
-  background-color: #000;
-  background-image: url('images/background.jpg');
-  background-position: top center;
-  background-size: cover;
-  background-repeat: no-repeat;
+  background-color: $body-bg;
 }
 
 /**********
@@ -65,8 +60,8 @@ B {
     }
 
     &.warning {
-      background-color: #e0717b;
-      color: #fbd1cc;
+      background-color: #f15354;
+      color: #f8a9a9;
 
       A,
       A:hover,
@@ -86,8 +81,10 @@ B {
 MAIN {
   position: relative;
 
-  &.has-aside {
-    margin-left: $aside-width;
+  & > SECTION:first-of-type,
+  & > .ember-view > SECTION:first-of-type,
+  & > .ember-view > .ember-view > SECTION:first-of-type {
+    padding-top: 10px;
   }
 }
 
@@ -97,14 +94,6 @@ BODY.white MAIN {
   margin-bottom: $main-padding;
   margin-left: $main-padding;
   border-radius: 5px;
-
-  &.has-aside {
-    margin-left: ($aside-width + $main-padding);
-
-    ASIDE {
-      left: -1 * ($aside-width + $main-padding);
-    }
-  }
 }
 
 BODY.white MAIN {
@@ -128,104 +117,6 @@ SECTION {
 
 .overlay SECTION {
   padding: 20px 0 0 0;
-}
-
-.top-colors {
-  position: relative;
-
-  &:before {
-    content: ' ';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background-image: url('images/top-colors.gif');
-    background-size: 100% 23px;
-    background-repeat: no-repeat;
-    border-top-left-radius: 5px;
-    border-top-right-radius: 5px;
-    image-rendering: pixelated;
-  }
-}
-
-/**********
-* Aside (side bar on the left next to left)
-**********/
-.aside-background {
-  position: absolute;
-  top: $header-height;
-  left: 0;
-  bottom: 0;
-  width: $aside-width;
-  background-color: transparent;
-  z-index: 1;
-}
-
-ASIDE {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -1*$aside-width;
-  width: $aside-width;
-  z-index: 1;
-  padding: 17px 20px 0 20px;
-  color: white;
-
-  HR {
-    border-top: 1px solid rgba(255,255,255,0.4);
-  }
-
-  .links {
-    & > A,
-    & > .link-with-actions > A{
-      display: block;
-      padding: 5px 0 4px 8px;
-      cursor: pointer;
-      font-weight: $bold-weight;
-      color: rgba(255,255,255,0.5);
-      text-decoration: none;
-      font-size: 14px;
-      clear: both;
-
-      &.active {
-        color: white;
-        background-color: rgba(255,255,255,0.1);
-        border-radius: 4px;
-      }
-
-      .resource-actions {
-        float: right;
-        position: relative;
-        top: -3px;
-        right: 3px;
-      }
-
-      I {
-        margin-right: 5px;
-      }
-
-      .badge {
-        float: right;
-        background-color: transparent;
-      }
-
-    }
-
-    .link-with-actions {
-      position: relative;
-
-      .resource-actions {
-        position: absolute;
-        top: 3px;
-        right: 3px;
-      }
-    }
-  }
-
-  LABEL {
-    color: rgba(255,255,255,0.5);
-  }
 }
 
 UL.list-circles {
@@ -253,11 +144,6 @@ UL.list-circles {
       color: white;
       text-align: center;
       font-style: normal;
-
-      &.fa {
-        /* Font-Awesome knows how to center things properly.. */
-        line-height: 34px;
-      }
     }
 
     &:last-child {
@@ -289,6 +175,7 @@ UL.list-lines {
     margin-top: 5px;
     border-bottom: 1px solid #e8ecf2;
     font-size: $font-size-small;
+    padding: 5px 0 5px 15px;
 
     LABEL {
       font-weight: $normal-weight;
@@ -372,9 +259,9 @@ UL.list-lines {
 }
 
 .well {
-  border-radius: 5px;
+  border-radius: 1px;
   border:none;
-  border-bottom: 2px solid #e9edf1;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
 
   &.no-padding-margin {
     padding: 0;
@@ -416,22 +303,37 @@ TABLE.graphs {
 }
 
 .farm-box {
-  SECTION {
-    min-width: 50%;
-    margin: 20px auto 0 auto;
-    background-color: white;
-    border-radius: 5px;
-    padding: 20px;
+  h1 {
+        background-image: url(images/logos/cowhide.jpg);
+        background-size: cover;
+        padding: 40px 20px;
+        color: white;
+        position: relative;
+
+        .logo {
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: -25px;
+        }
   }
 
-  SECTION:first-of-type {
-    margin-top: 50px;
+  SECTION {
+    min-width: 50%;
+    background-color: white;
+    border-radius: $border-radius-large;
+    padding: 20px;
+    box-shadow: $boxShadow;
   }
 }
 
 .hand {
   cursor: pointer;
   cursor: hand;
+}
+
+.inline-block {
+  display: inline-block;
 }
 
 .no-select {
@@ -462,7 +364,7 @@ $spacing-property-map: (
     pl: padding-left,
     pr: padding-right
 );
-@for $size from 0 through 5 {
+@for $size from 0 through 8 {
   $val: $size * 5px;
   @each $keyword, $property in $spacing-property-map {
     .r-#{$keyword}#{$size*5} {
@@ -484,44 +386,20 @@ $spacing-property-map: (
   border: 0;
   text-decoration: none;
 
+  I {
+    vertical-align: middle;
+    font-size: 1.5em;
+  }
+
   &[disabled] {
     opacity: 0.5;
   }
 }
 
 .btn-circle-text {
+  @extend .btn-circle;
+  font-size: inherit;
   width: auto;
-  padding-left: 25px;
-  color: #37B7E1;
-}
-
-.btn-circle-plus {
-  @extend .btn-circle;
-  background-image: url('images/circle-plus.svg');
-}
-
-.btn-circle-x {
-  @extend .btn-circle;
-  background-image: url('images/circle-x.svg');
-}
-
-.btn-circle-menu {
-  @extend .btn-circle;
-  background-image: url('images/circle-menu.svg');
-}
-
-ASIDE {
-  .btn-circle-menu {
-    background-image: url('images/circle-menu-white.svg');
-  }
-
-  .btn-circle-plus {
-    background-image: url('images/circle-plus-white.svg');
-  }
-
-  .btn-circle-text {
-    color: white;
-  }
 }
 
 /**********
@@ -584,7 +462,7 @@ ASIDE {
   /* End: Copied from .table because @extend doesn't work */
 
   & > TBODY > TR:hover {
-    background-color: rgba(255, 255, 0, 0.12);
+    background-color: #fdfcee !important;
   }
 
   & > THEAD > TR > TH,
@@ -593,9 +471,8 @@ ASIDE {
   & > TBODY > TR > TD,
   & > TFOOT > TR > TH,
   & > TFOOT > TR > TD {
-    padding: 8px 2px;
     font-size: 13px;
-    vertical-align: top;
+    vertical-align: middle;
   }
 
   .actions {
@@ -605,6 +482,9 @@ ASIDE {
   .state {
     max-width: 100%;
     @extend .clip;
+    i {
+      vertical-align: middle;
+    }
   }
 }
 
@@ -648,10 +528,6 @@ ASIDE {
 * Form
 **********/
 .horizontal-form {
-  H2 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
 
   .form-label {
     text-align: right;
@@ -695,6 +571,15 @@ ASIDE {
     left: 100%;
     margin-left: 15px;
   }
+
+  &.expandable > span:after {
+    margin-left: 30px;
+  }
+
+  .icon-chevron-up,
+  .icon-chevron-down {
+    font-size: 10px;
+  }
 }
 
 @media (max-width: $screen-md) {
@@ -708,8 +593,9 @@ ASIDE {
 .toggle-advanced {
   text-align: center;
   text-transform: uppercase;
-  font-weight: $bold-weight;
+  font-weight: bold;
   color: #868f99;
+  margin-bottom: 10px;
 
   A,
   A:focus,
@@ -728,7 +614,8 @@ ASIDE {
 **********/
 .nav-boxes {
   & > LI.active > A {
-    border-color: #44b4a2;
+    border-color: $lightGrayDark;
+    border-width: 2px;
   }
 
   .driver {
@@ -751,16 +638,16 @@ ASIDE {
   }
 
   &.checked-active .active:after {
-    content: "\f058";
+    content: $icon-check;
     top: 0;
     right: 0;
-    font-family: FontAwesome;
+    font-family: 'rancher-icons';
     font-size: 25px;
     position: absolute;
     background-color: white;
     height: 29px;
     border-radius: 50%;
-	color:#44b4a2;
+    color:$tealTwo;
   }
 }
 
@@ -777,15 +664,23 @@ ASIDE {
 
     A {
       border: 0 !important;
-      background-color: #e5eaee;
-      color: #bfc9d1;
-      text-transform: uppercase;
+      background-color: $lightGray;
+      color: $midGrayDark;
+      transition: ease all .2s;
+
+        &:hover {
+          background-color: $midGray;
+          color: $midGrayDark;
+        }
     }
 
     &.active A,
     &.active A:hover {
       background-color: white;
-      color: #de733d;
+      color: $orange;
+      position: relative;
+      z-index: 1;
+      box-shadow: 0 -3px 8px rgba(0, 0, 0, 0.1)
     }
   }
 }
@@ -798,17 +693,14 @@ ASIDE {
 }
 
 /**********
-* Collapse/expand toggle
+* Tabs
 **********/
-.collapser {
-  &:after {
-    font-family: "rancher-icons";
-    content: '\E613';
-  }
+.nav-tabs.shadowed li.tab {
+  background: $lightGrayTwo;
+  margin-bottom: -4px;
 
-  &.collapsed:after {
-    font-family: "rancher-icons";
-    content: '\E61F';
+  &.active {
+    background: white;
   }
 }
 
@@ -821,10 +713,11 @@ ASIDE {
   }
 }
 
-SECTION.header H3 {
-  .state {
-    float: right;
-    margin-right: 10px;
+SECTION.header {
+  font-size: 18px;
+
+  & > .btn-primary {
+    margin-left: 0;
   }
 }
 
@@ -835,4 +728,37 @@ SECTION.header H3 {
   background-size: 300px 317px;
   background-repeat: no-repeat;
   margin: 0 auto;
+}
+
+.top-errors {
+  position: relative;
+
+  I {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 23px;
+  }
+}
+
+.ember-power-select-wrapper {
+  display: inline-block;
+  width: 200px;
+  font-size: 14px;
+}
+
+.ember-power-select:not([dir=rtl]) .ember-power-select-trigger {
+  padding: $padding-small-vertical $padding-small-horizontal;
+  line-height: $line-height-small;
+  border-radius: $border-radius-base;
+  cursor: pointer;
+}
+
+.ember-power-select-options:not(.nested) {
+  overflow-y: auto;
+}
+
+.ember-power-select-option.highlighted {
+  background-color: $primary;
+
 }

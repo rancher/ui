@@ -5,7 +5,7 @@
   <div class="col-sm-12 col-md-8">
     {{#unless editing}}
       <div>
-        <button class="btn-circle-plus" {{action "addPort" target="view"}}></button>
+        <button class="btn-circle" {{action "addPort"}}><i class="icon icon-plus-circle"/></button>
       </div>
     {{/unless}}
     {{#if portsArray.length}}
@@ -24,7 +24,7 @@
               {{input class="form-control input-sm port-public" type="number" min="1" max="65535" value=port.public placeholder="e.g. 80"}}
             </td>
             <td class="text-center">
-              <p class="form-control-static"><i class="icon icon-arrow-right"></i></p>
+              <p class="form-control-static"><i class="icon icon-chevron-right"></i></p>
             </td>
             <td>
               {{#if port.existing}}
@@ -48,7 +48,7 @@
               {{#if port.existing}}
                 &nbsp;
               {{else}}
-                <button {{action "removePort" port}} class="btn-circle-x" type="button" tabindex="-1"></button>
+                <button class="btn-circle" {{action "removePort" port}} tabindex="-1"><i class="icon icon-x-circle"/></button>
               {{/if}}
             </td>
           </tr>

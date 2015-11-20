@@ -5,28 +5,21 @@ export default Ember.Route.extend({
     var main = this.modelFor('applications-tab');
     if ( main.get('hosts.length') && main.get('services.length') )
     {
-      this.replaceWith('environments');
+      this.transitionTo('environments');
     }
   },
 
   model: function() {
     var main = this.modelFor('applications-tab');
-    if ( main.get('environments.length') === 0 )
+    if ( main.get('environments.length') > 0 )
     {
-      var env = this.get('store').createRecord({
-        type: 'environment',
-        name: 'Default',
-      });
-
-      return env.save().then(() => {
-        main.set('environmentId', env.get('id'));
-        return main;
-      });
+      main.set('environmentId', main.get('environments.firstObject.id'));
     }
     else
     {
-      main.set('environmentId', main.get('environments.firstObject.id'));
-      return main;
+      main.set('environmentId', null);
     }
+
+    return main;
   }
 });

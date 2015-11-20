@@ -1,7 +1,5 @@
 <td>
-  <span class="badge state {{model.stateBackground}}">
-    {{model.displayState}}
-  </span>
+  {{badge-state model=model}}
 </td>
 <td class="force-wrap">
   <a href="/infra/containers/{{model.id}}" data-transition-link="true">{{model.displayName}}</a>
@@ -9,26 +7,39 @@
 <td>
   {{model.displayIp}}
 </td>
+{{#if showHost}}
+  <td>
+    {{#if model.primaryHost}}
+      {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}
+    {{else}}
+      <span class="text-muted">Unknown</span>
+    {{/if}}
+  </td>
+{{/if}}
 <td class="clip">
   {{display-image model.imageUuid}}
-</td>
-<td class="clip">
-  {{#if model.command}}
-    {{model.command}}
-  {{else}}
-    <span class="text-muted">None</span>
+  {{#if (and (not showStats) model.command)~}}
+    ({{model.command}})
   {{/if}}
 </td>
 {{#if showStats}}
   <td class="spark-td">
     {{#if model.cpuSpark}}
-      {{spark-line data=model.cpuSpark     width=60 height=15 max=cpuMax     classNames="spark-tl" prefix="CPU: " formatter="percent"}}
-      {{spark-line data=model.memorySpark  width=60 height=15 max=memoryMax  classNames="spark-tr" prefix="Memory: " formatter="mib"}}
-      {{spark-line data=model.networkSpark width=60 height=15 max=networkMax classNames="spark-bl" prefix="Network: " formatter="kbps"}}
-      {{spark-line data=model.storageSpark width=60 height=15 max=storageMax classNames="spark-br" prefix="Storage: " formatter="kbps"}}
+      {{spark-line data=model.cpuSpark     width=60 height=25 max=cpuMax     prefix="CPU: " formatter="percent" type="cpu"}}
+      {{spark-line data=model.memorySpark  width=60 height=25 max=memoryMax  prefix="Memory: " formatter="mib" type="memory"}}
+      {{spark-line data=model.networkSpark width=60 height=25 max=networkMax prefix="Network: " formatter="kbps" type="network"}}
+      {{spark-line data=model.storageSpark width=60 height=25 max=storageMax prefix="Storage: " formatter="kbps" type="storage"}}
+    {{/if}}
+  </td>
+{{else}}
+  <td class="clip">
+    {{#if model.command}}
+      {{model.command}}
+    {{else}}
+      <span class="text-muted">None</span>
     {{/if}}
   </td>
 {{/if}}
 <td class="actions">
-  <button type="button" class="btn-circle-menu"></button>
+  {{partial "fast-action-menu"}}
 </td>

@@ -1,15 +1,27 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  environments: Ember.inject.controller(),
-  mode: Ember.computed.alias('environments.mode'),
+  showAddtlInfo: false,
+  selectedService: null,
 
   actions: {
-    addService: function() {
-      this.get('controllers.environment').send('addService');
+    showAddtlInfo: function(service) {
+      this.set('selectedService', service);
+      this.set('showAddtlInfo', true);
     },
-    addBalancer: function() {
-      this.get('controllers.environment').send('addBalancer');
-    },
+
+    dismiss: function() {
+      this.set('showAddtlInfo', false);
+      this.set('selectedService', null);
+    }
   },
+
+  instanceCount: function() {
+    var count = 0;
+    (this.get('model.stack.services')||[]).forEach((service) => {
+      count += service.get('instances.length')||0;
+    });
+
+    return count;
+  }.property('model.stack.services.@each.healthState'),
 });
