@@ -18,14 +18,16 @@
 </section>
 
 <section>
-  <ul class="nav nav-tabs nav-tabs-well">
-    {{#link-to (query-params which="all") tagName="li" href=false}}<a>All</a>{{/link-to}}
-    {{#link-to (query-params which="user") tagName="li" href=false}}<a>User</a>{{/link-to}}
-    {{#link-to (query-params which="system") tagName="li" href=false}}<a>System</a>{{/link-to}}
-    {{#if supportsKubernetes}}
-      {{#link-to (query-params which="kubernetes") tagName="li" href=false}}<a>Kubernetes</a>{{/link-to}}
-    {{/if}}
-  </ul>
+  {{#if showTabs}}
+    <ul class="nav nav-tabs nav-tabs-well">
+      {{#link-to (query-params which="all") tagName="li" href=false}}<a>All</a>{{/link-to}}
+      {{#link-to (query-params which="user") tagName="li" href=false}}<a>User</a>{{/link-to}}
+      {{#link-to (query-params which="system") tagName="li" href=false}}<a>System</a>{{/link-to}}
+      {{#if supportsKubernetes}}
+        {{#link-to (query-params which="kubernetes") tagName="li" href=false}}<a>Kubernetes</a>{{/link-to}}
+      {{/if}}
+    </ul>
+  {{/if}}
   <div class="well {{if showTabs 'nav-well'}} r-pl0 r-pr0">
     {{#each arranged as |stack|}}
       {{stack-section model=stack showAddtlInfo='showAddtlInfo'}}
