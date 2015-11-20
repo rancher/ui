@@ -67,7 +67,7 @@
             <div class="col-sm-6 col-md-4">
               <label>Image:</label>
               <span class="force-wrap">
-                {{display-image service.launchConfig.imageUuid}} {{zero-clipboard text=(display-image service.launchConfig.imageUuid)}}
+                {{service.launchConfig.displayImage}} {{zero-clipboard text=service.launchConfig.displayImage}}
               </span>
             </div>
             <div class="col-sm-6 col-md-4">
@@ -84,7 +84,7 @@
               <label>Command:</label>
               <span class="force-wrap">
                 {{#if service.launchConfig.command}}
-                  {{service.launchConfig.command}}
+                  {{concat-str service.launchConfig.command}}
                 {{else}}
                   <span class="text-muted">None</span>
                 {{/if}}

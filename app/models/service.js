@@ -444,6 +444,12 @@ Service.reopenClass({
   },
 
   mangleIn: function(data, store) {
+    if ( data.launchConfig && !data.launchConfig.type )
+    {
+      data.launchConfig.type = 'launchConfig';
+      data.launchConfig = store.createRecord(data.launchConfig);
+    }
+
     if ( data.secondaryLaunchConfigs )
     {
       // Secondary lanch configs are service-like
