@@ -122,8 +122,8 @@ export default Ember.Component.extend({
       case 'memory':
         out = '#00558b'; //$blueDark
         break;
-      case '':
-        out = '#eadf5a'; //$yellowTwo
+      case 'network':
+        out = '#d35401'; //$orangeDark
         break;
       case 'storage':
         out = '#3a6f81'; //$teal
