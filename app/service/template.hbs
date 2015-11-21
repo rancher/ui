@@ -1,9 +1,9 @@
 <section class="header">
   <ol class="breadcrumb right-divider">
-    {{#link-to "applications-tab" tagName="li" href=false}}<a>Applications</a>{{/link-to}}
     {{#link-to "environments" tagName="li" href=false}}<a>Stacks</a>{{/link-to}}
     {{#link-to "environment" service.environmentId tagName="li" href=false}}<a>{{service.displayEnvironment}}</a>{{/link-to}}
     <li class="active">
+      Service:
       {{#power-select options=model.stack.services selected=service onchange=(action "changeService") searchField="displayName" as |obj|}}
         <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
       {{/power-select}}

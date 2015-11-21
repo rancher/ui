@@ -1,13 +1,16 @@
 <section class="header">
   <ol class="breadcrumb right-divider">
-    {{#link-to "infrastructure-tab" tagName="li" href=false}}<a>Infrastructure</a>{{/link-to}}
     {{#if model.primaryHost}}
       {{#link-to "hosts" tagName="li" href=false}}<a>Hosts</a>{{/link-to}}
       {{#link-to "host" model.primaryHost.id tagName="li" href=false}}<a>{{model.primaryHost.displayName}}</a>{{/link-to}}
     {{else}}
       {{#link-to "containers" tagName="li" href=false}}<a>Containers</a>{{/link-to}}
     {{/if}}
-    <li class="active">{{model.displayName}}</li>
+    <li class="active">
+      {{#power-select options=model.primaryHost.instances selected=model onchange=(action "changeContainer") searchField="displayName" as |obj|}}
+        <div class="clip r-mr15"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
+      {{/power-select}}
+    </li>
   </ol>
 
   {{action-menu model=model size="sm"}}
