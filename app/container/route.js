@@ -11,6 +11,18 @@ export default Ember.Route.extend({
         return container;
       });
     }).then(function(container) {
+      var host = container.get('primaryHost');
+      if ( host.get('instances') )
+      {
+        return container;
+      }
+      else
+      {
+        return host.importLink('instances').then(() => {
+          return container;
+        });
+      }
+    }).then(function(container) {
       var opt = {
         include: ['volume'],
         filter: {instanceId: container.get('id')}

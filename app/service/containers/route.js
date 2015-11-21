@@ -5,7 +5,20 @@ export default Ember.Route.extend({
   statsSocket: null,
 
   model() {
-    return this.modelFor('service').get('service');
+    var promises = [];
+
+    // Load the hosts for the instances if they're not already there
+    var service = this.modelFor('service').get('service');
+    service.get('instances').forEach((instance) => {
+      if ( !instance.get('primaryHost') )
+      {
+        promises.push(instance.importLink('hosts'));
+      }
+    });
+
+    return Ember.RSVP.all(promises).then(() => {
+      return service;
+    });
   },
 
   activate() {

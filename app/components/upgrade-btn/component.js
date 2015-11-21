@@ -13,15 +13,18 @@ function getUpgradeInfo(task, cb) {
   var obj = task.obj;
 
   obj.get('store').request({url: task.url}).then((upgradeInfo) => {
-    upgradeInfo.id = task.id;
-    obj.set('upgradeInfo', upgradeInfo);
-    if ( upgradeInfo && upgradeInfo.newVersionLinks && Object.keys(upgradeInfo.newVersionLinks).length )
+    if ( obj._state !== 'destroying' )
     {
-      obj.set('upgradeStatus', AVAILABLE);
-    }
-    else
-    {
-      obj.set('upgradeStatus', CURRENT);
+      upgradeInfo.id = task.id;
+      obj.set('upgradeInfo', upgradeInfo);
+      if ( upgradeInfo && upgradeInfo.newVersionLinks && Object.keys(upgradeInfo.newVersionLinks).length )
+      {
+        obj.set('upgradeStatus', AVAILABLE);
+      }
+      else
+      {
+        obj.set('upgradeStatus', CURRENT);
+      }
     }
   }).catch((/*err*/) => {
     obj.set('upgradeStatus', ERROR);
