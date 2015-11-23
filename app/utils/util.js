@@ -241,9 +241,20 @@ export function formatKbps(value) {
   }
 }
 
+export function constructUrl(ssl,host,port) {
+  var out = 'http' + (ssl ? 's' : '') + '://' + host;
+  if ( (ssl && port !== 443) || (!ssl && port !== 80) )
+  {
+    out += ':' + port;
+  }
+
+  return out;
+}
+
 var Util = {
   arrayDiff: arrayDiff,
   arrayIntersect: arrayIntersect,
+  constructUrl: constructUrl,
   download: download,
   popupWindowOptions: popupWindowOptions,
   escapeHtml: escapeHtml,

@@ -1,10 +1,12 @@
 import Service from 'ui/models/service';
 import Ember from 'ember';
+import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 const esc = Ember.Handlebars.Utils.escapeExpression;
 
-function portToStr(port) {
-  var parts = port.match(/^(\d+)(:(\d+))?(\/(.*))?$/);
+function portToStr(spec) {
+  var parts = spec.match(/^(\d+)(:(\d+))?(\/(.*))?$/);
   var str;
   if ( parts )
   {
@@ -12,38 +14,73 @@ function portToStr(port) {
   }
   else
   {
-    str = port;
+    str = spec;
   }
 
   return str;
 }
 
+function specToPort(spec) {
+  var parts = spec.match(/^(\d+)(:(\d+))?(\/(.*))?$/);
+  var str;
+  if ( parts )
+  {
+    str = parts[1];
+  }
+  else
+  {
+    str = spec;
+  }
+
+  return parseInt(str,10);
+}
+
 var LoadBalancerService = Service.extend({
   type: 'loadBalancerService',
 
-  displayDetail: function() {
+  displayPorts: function() {
+    var sslPorts = (this.get('launchConfig.labels')[C.LABEL.BALANCER_SSL_PORTS]||'').split(',');
+
     var internal = '';
-    (this.get('launchConfig.expose')||[]).forEach((port, idx) => {
-      internal += '<span>' + (idx === 0 ? '' : ', ') + esc(portToStr(port)) + '</span>';
+    (this.get('launchConfig.expose')||[]).forEach((portSpec, idx) => {
+      internal += '<span>' + (idx === 0 ? '' : ', ') + esc(portToStr(portSpec)) + '</span>';
     });
 
     var pub = '';
-    (this.get('launchConfig.ports')||[]).forEach((port, idx) => {
-      pub += '<span>' + (idx === 0 ? '' : ', ') + esc(portToStr(port)) + '</span>';
+    (this.get('launchConfig.ports')||[]).forEach((portSpec, idx) => {
+      var portNum = specToPort(portSpec);
+      var endpoints = this.get('endpointsMap')[portNum];
+      if ( endpoints && endpoints.length )
+      {
+        var url = Util.constructUrl(sslPorts[portNum], endpoints[0], portNum);
+        pub += '<span>' + (idx === 0 ? '' : ', ') +
+        '<a href="'+ url +'" target="_blank">' +
+        esc(portToStr(portSpec)) +
+        '</a>' +
+        '</span>';
+      }
+      else
+      {
+        pub += '<span>' + (idx === 0 ? '' : ', ') + esc(portToStr(portSpec)) + '</span>';
+      }
     });
 
+    var out = (pub      ? ' <span class="text-muted">Ports: </span>'   + pub : '') +
+              (internal ? '<span class="text-muted">Internal: </span>' + internal : '');
+
+    return out.htmlSafe();
+  }.property('launchConfig.ports.[]','launchConfig.expose.[]','endpointsMap'),
+
+  displayDetail: function() {
     var services = '';
     (this.get('consumedServicesWithNames')||[]).forEach((map, idx) => {
       services += '<span>'+ (idx === 0 ? '' : ', ') + map.get('service.displayName') + '</span>';
     });
 
-
-    var out = (internal ? '<span class="text-muted">Internal: </span>' + internal : '') +
-              (pub      ? ' <span class="text-muted">Public: </span>'   + pub : '') +
-              ' <span class="text-muted">To: </span>' + services;
+    var out = '<span class="text-muted">To: </span>' + services;
 
     return out.htmlSafe();
-  }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated','launchConfig.ports.[]','launchConfig.expose.[]'),
+  }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated'),
 });
 
 export default LoadBalancerService;
