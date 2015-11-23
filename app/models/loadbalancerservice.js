@@ -39,7 +39,7 @@ var LoadBalancerService = Service.extend({
   type: 'loadBalancerService',
 
   displayPorts: function() {
-    var sslPorts = (this.get('launchConfig.labels')[C.LABEL.BALANCER_SSL_PORTS]||'').split(',');
+    var sslPorts = (((this.get('launchConfig.labels')||{})[C.LABEL.BALANCER_SSL_PORTS]||'')).split(',');
 
     var internal = '';
     (this.get('launchConfig.expose')||[]).forEach((portSpec, idx) => {
