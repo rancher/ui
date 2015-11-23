@@ -69,5 +69,5 @@ export default Ember.Component.extend(FilterState, {
     });
 
     return out;
-  }.property('model.outputs'),
+  }.property('model.outputs','model.id'),
 });

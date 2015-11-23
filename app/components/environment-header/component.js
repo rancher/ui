@@ -7,5 +7,18 @@ export default Ember.Component.extend({
       app.transitionToRoute(app.get('currentRouteName'), stack.get('id'));
       this.sendAction('hideAddtlInfo');
     }
-  }
+  },
+
+  outputs: function() {
+    var out = [];
+    var map = this.get('model.outputs')||{};
+    Object.keys(map).forEach((key) => {
+      out.push(Ember.Object.create({
+        key: key,
+        value: map[key],
+      }));
+    });
+
+    return out;
+  }.property('model.outputs','model.id'),
 });

@@ -44,11 +44,9 @@ var Service = Resource.extend(ReadLabels, {
       var type = this.get('type').toLowerCase();
       if ( type === 'loadbalancerservice' )
       {
-        this.importLink('loadBalancerListeners').then(() => {
-          this.get('application').setProperties({
-            editLoadBalancerService: true,
-            originalModel: this,
-          });
+        this.get('application').setProperties({
+          editLoadBalancerService: true,
+          originalModel: this,
         });
       }
       else if ( type === 'dnsservice' )
@@ -393,7 +391,7 @@ var Service = Resource.extend(ReadLabels, {
   }.property('secondaryLaunchConfigs.length'),
 
   displayDetail: function() {
-      return ('<span class="text-muted">Image: </span> ' + (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'')).htmlSafe();
+      return ('<label class="text-muted">Image: </label> ' + (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'')).htmlSafe();
   }.property('launchConfig.imageUuid'),
 
 
@@ -404,6 +402,12 @@ var Service = Resource.extend(ReadLabels, {
   endpointsMap: function() {
     var out = {};
     (this.get('publicEndpoints')||[]).forEach((endpoint) => {
+      if ( !endpoint.port )
+      {
+        // Skip nulls
+        return;
+      }
+
       if ( out[endpoint.port] )
       {
         out[endpoint.port].push(endpoint.ipAddress);
@@ -429,21 +433,25 @@ var Service = Resource.extend(ReadLabels, {
 
   displayPorts: function() {
     var pub = '';
-    var len = this.get('endpointsByPort.length');
 
-    this.get('endpointsByPort').forEach((obj, idx) => {
-      var url = Util.constructUrl(false, obj.ipAddresses[0], obj.port);
-      pub += '<span>' +
-        '<a href="'+ url +'" target="_blank">' +
-          obj.port +
-        '</a>' +
-        (idx+1 === len ? '' : ', ') +
-      '</span>';
+    this.get('endpointsByPort').forEach((obj) => {
+      obj.ipAddresses.forEach((ip) => {
+        var url = Util.constructUrl(false, ip, obj.port);
+        pub += '<span>' +
+          '<a href="'+ url +'" target="_blank">' +
+            ip + ':' + obj.port +
+          '</a>,' +
+        '</span> ';
+      });
     });
+
+    // Remove last comma
+    pub = pub.replace(/,([^,]*)$/,'$1');
+
 
     if ( pub )
     {
-      return ('<span class="text-muted">Ports: </span>' + pub).htmlSafe();
+      return ('<label class="text-muted">Ports: </label>' + pub).htmlSafe();
     }
     else
     {

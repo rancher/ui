@@ -50,14 +50,16 @@ var LoadBalancerService = Service.extend({
     (this.get('launchConfig.ports')||[]).forEach((portSpec, idx) => {
       var portNum = specToPort(portSpec);
       var endpoints = this.get('endpointsMap')[portNum];
-      if ( endpoints && endpoints.length )
+      if ( endpoints )
       {
-        var url = Util.constructUrl(sslPorts[portNum], endpoints[0], portNum);
-        pub += '<span>' + (idx === 0 ? '' : ', ') +
-        '<a href="'+ url +'" target="_blank">' +
-        esc(portToStr(portSpec)) +
-        '</a>' +
-        '</span>';
+        endpoints.forEach((ip) => {
+          var url = Util.constructUrl(sslPorts[portNum], ip, portNum);
+          pub += '<span>' + (idx === 0 ? '' : ', ') +
+          '<a href="'+ url +'" target="_blank">' +
+          ip + ':' + esc(portToStr(portSpec)) +
+          '</a>' +
+          '</span>';
+        });
       }
       else
       {

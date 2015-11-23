@@ -15,18 +15,33 @@
     {{#link-to "environment.code" classNames="btn btn-sm btn-default"}}<i class="icon icon-file" data-placement="bottom" tooltip="Compose YAML"></i>{{/link-to}}
   </div>
 
-<div class="btn-group r-ml5 left-divider">
-      {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-primary btn-sm"}}Add Service{{/link-to}}
-      <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-        <i class="icon icon-chevron-down"></i>
-        <span class="sr-only">Toggle Dropdown</span>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right" role="menu">
-        <li>{{#link-to "service.new-balancer" (query-params environmentId=model.id)}}Add Load Balancer{{/link-to}}</li>
-        <li>{{#link-to "service.new-alias" (query-params environmentId=model.id)}}Add Service Alias{{/link-to}}</li>
-        <li>{{#link-to "service.new-external" (query-params environmentId=model.id)}}Add External Service{{/link-to}}</li>
-      </ul>
-    </div> 
+  <div class="left-divider">
+    {{#if outputs.length}}
+      <div class="btn-group">
+        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Outputs <i class="icon icon-chevron-down"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+          {{#each outputs as |obj|}}
+            <li><a href="{{obj.value}}" target="_blank">{{obj.key}}</a></li>
+          {{/each}}
+        </ul>
+      </div>
+    {{/if}}
+  </div>
+
+  <div class="btn-group r-ml5 left-divider">
+    {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-primary btn-sm"}}Add Service{{/link-to}}
+    <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+      <i class="icon icon-chevron-down"></i>
+      <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right" role="menu">
+      <li>{{#link-to "service.new-balancer" (query-params environmentId=model.id)}}Add Load Balancer{{/link-to}}</li>
+      <li>{{#link-to "service.new-alias" (query-params environmentId=model.id)}}Add Service Alias{{/link-to}}</li>
+      <li>{{#link-to "service.new-external" (query-params environmentId=model.id)}}Add External Service{{/link-to}}</li>
+    </ul>
+  </div>
 
   {{action-menu model=model classNames="left-divider r-ml5" size="sm"}}
 
