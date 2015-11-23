@@ -25,32 +25,6 @@ export default Ember.Component.extend({
   }.observes('service'),
 
   setup: function() {
-    this.get('service').importLink('loadBalancerListeners').then(() => {
-      var out = [];
-      this.get('service.loadBalancerListeners').forEach((l) => {
-        var protocol = l.get('sourceProtocol');
-        var ssl = false;
-        if (protocol === 'https') {
-          ssl = true;
-          protocol = 'http';
-        } else if (protocol === 'ssl') {
-          ssl = true;
-          protocol = 'tcp';
-        }
-
-        out.push({
-          type: 'loadBalancerListener',
-          name: 'uilistener',
-          isPublic: !!l.get('sourcePort'),
-          sourcePort: l.get('sourcePort') ? l.get('sourcePort') : l.get('privatePort'),
-          sourceProtocol: protocol,
-          ssl: ssl,
-          targetPort: l.get('targetPort'),
-        });
-      });
-      this.set('listenersArray', out.sortBy('sourcePort'));
-    });
-
     var targets = [];
     this.get('service.consumedServicesWithNames').forEach((map) => {
       if (map.get('ports.length')) {
@@ -60,7 +34,8 @@ export default Ember.Component.extend({
 
             obj.setProperties({
               isService: true,
-              value: map.get('service.id'),
+              environmentId: map.get('service.environmentId'),
+              value: map.get('service.displayName'),
             });
 
             targets.pushObject(obj);
@@ -69,9 +44,9 @@ export default Ember.Component.extend({
       } else {
         targets.pushObject(Ember.Object.create({
           isService: true,
-          value: map.get('service.name'),
+          value: map.get('service.displayName'),
           id: map.get('service.id'),
-          eid: map.get('service.environmentId')
+          environmentId: map.get('service.environmentId')
         }));
       }
     });

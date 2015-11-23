@@ -79,8 +79,13 @@
             <div class="col-sm-12 {{if (eq selectedTemplateModel.questions.length 1) 'col-md-12' 'col-md-6'}} form-label">
               <label class="form-label form-control-static">{{question.label}}{{if question.required "*"}}</label>
 
-              {{#if (or (eq question.type "string") (eq question.type "int"))}}
-                {{input type="text" class="form-control r-mb10" value=question.answer}}
+              {{! TODO replace this with 'component question.type }}
+              {{#if (or (eq question.type "string") (eq question.type "int") (eq question.type "password"))}}
+                {{#if (eq question.type "int")}}
+                  {{input type="number" class="form-control r-mb10" value=question.answer}}
+                {{else}}
+                  {{input type=(if (eq question.type "password") "password" "text") class="form-control r-mb10" value=question.answer}}
+                {{/if}}
               {{else}}
                 {{#if (eq question.type "boolean")}}
                   <div class="r-mb10">

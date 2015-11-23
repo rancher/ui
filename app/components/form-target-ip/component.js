@@ -20,6 +20,7 @@ export default Ember.Component.extend({
     {
       this.set('userHostname', hostname);
       this.set('which','hostname');
+      this.set('targetIpArray',[]);
     }
     else
     {
