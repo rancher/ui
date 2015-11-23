@@ -15,7 +15,7 @@ const GRADIENT_COLORS = [
   },
   {
     type: 'network',
-    colors: ['#eadf5a', '#F9E79F']
+    colors: ['#e49701', '#f1c40f']
 
   },
   {
@@ -50,12 +50,10 @@ export default Ember.Component.extend({
   storageCanvas: '#storageGraph',
   storageGraph: null,
   storageData: null,
-  storageMax: null,
 
   networkCanvas: '#networkGraph',
   networkGraph: null,
   networkData: null,
-  networkMax: null,
 
   renderOk: false,
   renderTimer: null,
@@ -224,11 +222,6 @@ export default Ember.Component.extend({
       if ( max && this.get('renderOk') && !this.get('setMemoryScale') )
       {
         graph.axis.max(max);
-        graph.ygrids([
-          {value: 0, class: 'grid-line-memory'},
-          {value: max*0.4, class: 'grid-line-memory'},
-          {value: max*0.8, class: 'grid-line-memory'}
-        ]);
 
         didSetMemoryScale = true;
       }
@@ -252,24 +245,6 @@ export default Ember.Component.extend({
         row.push(point.net_rx_kb + point.net_tx_kb);
       }
 
-      if (!this.get('networkMax')) {
-        this.set('networkMax', 0);
-      }
-
-      data.forEach((v) => {
-        if (v[0] !== 'x') {
-          if (this.get('networkMax') < Math.max.apply(Math, v.slice(1))) {
-            this.set('networkMax', Math.max.apply(Math, v.slice(1)));
-          }
-        }
-      });
-
-      graph.axis.max(this.get('networkMax'));
-      graph.ygrids([
-          {value: 0, class: 'grid-line-network'},
-          {value: this.get('networkMax')*0.4, class: 'grid-line-network'},
-          {value: this.get('networkMax')*0.8, class: 'grid-line-network'}
-      ]);
     }
 
     // Storage
@@ -290,24 +265,6 @@ export default Ember.Component.extend({
         row.push(point.disk_read_kb + point.disk_write_kb);
       }
 
-      if (!this.get('storageMax')) {
-        this.set('storageMax', 0);
-      }
-
-      data.forEach((v) => {
-        if (v[0] !== 'x') {
-          if (this.get('storageMax') < Math.max.apply(Math, v.slice(1))) {
-            this.set('storageMax', Math.max.apply(Math, v.slice(1)));
-          }
-        }
-      });
-
-      graph.axis.max(this.get('storageMax'));
-      graph.ygrids([
-          {value: 0, class: 'grid-line-storage'},
-          {value: this.get('storageMax')*0.4, class: 'grid-line-storage'},
-          {value: this.get('storageMax')*0.8, class: 'grid-line-storage'}
-      ]);
     }
 
     if ( didSetMemoryScale )
@@ -339,13 +296,12 @@ export default Ember.Component.extend({
     var cpuGraph = c3.generate({
       padding: {
         top: 5,
-        left: 45 
+        left: 45
       },
       bindto: this.get('cpuCanvas'),
       size: {
         height: 110,
       },
-      color: {pattern: ['#2ecc71', '#DBE8B1']},
       data: {
         type: 'area-step',
         x: 'x',
@@ -386,15 +342,6 @@ export default Ember.Component.extend({
           },
         },
       },
-      grid: {
-        y: {
-          lines: [
-            {value: 0, class: 'grid-line-cpu'},
-            {value: 40, class: 'grid-line-cpu'},
-            {value: 80, class: 'grid-line-cpu'}
-          ]
-        },
-      },
     });
 
     this.set('cpuGraph', cpuGraph);
@@ -415,7 +362,7 @@ export default Ember.Component.extend({
     var memoryGraph = c3.generate({
       padding: {
         top: 5,
-        left: 65 
+        left: 65
       },
       bindto: this.get('memoryCanvas'),
       size: {
@@ -478,7 +425,7 @@ export default Ember.Component.extend({
     var storageGraph = c3.generate({
       padding: {
         top: 5,
-        left: 65 
+        left: 65
       },
       bindto: this.get('storageCanvas'),
       size: {
@@ -545,7 +492,7 @@ export default Ember.Component.extend({
     var networkGraph = c3.generate({
       padding: {
         top: 5,
-        left: 65 
+        left: 65
       },
       bindto: this.get('networkCanvas'),
       size: {

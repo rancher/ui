@@ -1,6 +1,6 @@
 /**********
-* Header (top bar)
-**********/
+ * Header (top bar)
+ **********/
 $topHeight: ($header-height * 0.45);
 $bottomHeight: ($header-height * 0.55);
 
@@ -31,9 +31,9 @@ HEADER {
 
     .dropdown {
 
-       &.open {
-       & .icon-chevron-down {
-            transform:rotate(-180deg);
+      &.open {
+        & .icon-chevron-down {
+          transform:rotate(-180deg);
         }
       }
 
@@ -51,13 +51,17 @@ HEADER {
         color: $midGray;
       }
 
-          .user-toggle {
-      cursor: pointer;
-      position: relative;
-      color: $midGray;
-    }
+      .user-toggle {
+        cursor: pointer;
+        position: relative;
+        color: $midGray;
+        display: inline-block;
+        height: 40px;
+        z-index: 1001; /* These have to be > 990 for bootstrap on touch devices */
+      }
 
-    .dropdown-menu {
+
+      .dropdown-menu {
         max-height: 300px;
         width: 300px;
         overflow-y: auto;
@@ -66,14 +70,14 @@ HEADER {
         color: white;
         margin: 0;
         border-radius: 0 0 2px 2px;
-       
-        > li > A {
-            color: white;
 
-            &:hover {
-              color: $blue;
-              background: rgba(43,43,43,.9);
-            }
+        > li > A {
+          color: white;
+
+          &:hover {
+            color: $blue;
+            background: rgba(43,43,43,.9);
+          }
         }
 
         & > li.selected > a,
@@ -81,19 +85,19 @@ HEADER {
         & > li.selected > a:focus {
           color: $greenTwoDark
         }
-      
-      .dropdown-header {
-        color: $lightGray;
-        padding: 5px 20px;
-      }
 
-      .divider {
-        background: black;
-      }
+        .dropdown-header {
+          color: $lightGray;
+          padding: 5px 20px;
+        }
 
-    }/*end dropdown-menu*/
-  }/*end dropdown*/
-    
+        .divider {
+          background: black;
+        }
+
+      }/*end dropdown-menu*/
+    }/*end dropdown*/
+
 
     NAV {
       float: left;
@@ -138,7 +142,7 @@ HEADER {
     .user-btn {
       float: right;
       vertical-align: top;
-      padding: 5px 15px;
+      padding: 5px 15px 0 15px;
     }
 
     .project-btn {
@@ -153,14 +157,13 @@ HEADER {
       }
 
 
+      .project-menu {
+        margin-top: -13px;
 
-    .project-menu {
-      margin-top: -13px;
-      
-      padding-top: 0;
-      border-radius: 2px;
-    }
-}/*end project button*/
+        padding-top: 0;
+        border-radius: 2px;
+      }
+    }/*end project button*/
     .user-menu {
       padding-top: 0;
       width: 250px;
@@ -203,20 +206,20 @@ HEADER {
       }
 
       .user-logout {
-          background-color: rgba(0, 0, 0, 0.7);
-          border-top-right-radius: 2px;
-          position: absolute;
-          top: 0;
-          right: 0;
-          padding: 18px 10px;
-          color: #dfe9ee;
-          font-size: 12px;
-          text-align: center;
-          vertical-align: middle;
-          display: inline-block;
-         &:hover {
+        background-color: rgba(0, 0, 0, 0.7);
+        border-top-right-radius: 2px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 18px 10px;
+        color: #dfe9ee;
+        font-size: 12px;
+        text-align: center;
+        vertical-align: middle;
+        display: inline-block;
+        &:hover {
           background: $blackDark;
-         }
+        }
         I {
           font-size: 20px;
           vertical-align: middle;
@@ -224,9 +227,9 @@ HEADER {
       } /*end user logout*/
     } /*end user auth*/
 
-}/*end top row*/
+  }/*end top row*/
 
-/*start bottom row*/
+  /*start bottom row*/
   .bottom-row {
     min-height: $bottomHeight;
     background-color: white;
@@ -289,7 +292,7 @@ HEADER {
           }
         }
 
-        
+
       }
     } /*end nav*/
   }/*end bottom row*/
