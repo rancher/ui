@@ -101,17 +101,42 @@
   </div>
 </section>
 
-{{#if (or service.hasLabels service.hasContainers)}}
+{{#if (eq service.kind 'externalService')}}
+  {{!-- since external services are the only ones that have externalIp/hostname it didnt make sense to give extIps its own route like other services  --}}
+  <section>
+    <div class="well">
+      {{#if service.externalIpAddresses}}
+        <label class="text-muted r-ml15">Exteral IPs</label>
+        <ul class="list-unstyled list-inline with-room">
+          {{#each service.externalIpAddresses as |ip|}}
+            <li>
+              <i class="icon icon-external-link"></i> {{ip}}
+            </li>
+          {{/each}}
+        </ul>
+      {{else}}
+        <label class="text-muted">External Host Name: </label> {{service.hostname}}
+      {{/if}}
+    </div>
+  </section>
+{{/if}}
+
+{{#if (or (or service.hasLabels service.hasContainers) service.consumedServicesWithNames.length) }}
   <section>
     <ul class="nav nav-tabs nav-tabs-well">
-      {{#if service.hasPorts}}
-        {{#link-to "service.ports" tagName="li" href=false}}<a>Ports</a>{{/link-to}}
-      {{/if}}
-      {{#if service.hasContainers}}
-        {{#link-to "service.containers" tagName="li" href=false}}<a>Containers</a>{{/link-to}}
-      {{/if}}
-      {{#if service.hasLabels}}
-        {{#link-to "service.labels" tagName="li" href=false}}<a>Labels</a>{{/link-to}}
+      {{#if (not-eq service.kind 'dnsService')}}
+        {{#if service.hasPorts}}
+          {{#link-to "service.ports" tagName="li" href=false}}<a>Ports</a>{{/link-to}}
+        {{/if}}
+        {{#if service.hasContainers}}
+          {{#link-to "service.containers" tagName="li" href=false}}<a>Containers</a>{{/link-to}}
+        {{/if}}
+        {{#if service.hasLabels}}
+          {{#link-to "service.labels" tagName="li" href=false}}<a>Labels</a>{{/link-to}}
+        {{/if}}
+        {{#link-to 'service.links' tagName='li' href=false}}<a>Links</a>{{/link-to}}
+      {{else}}
+        {{#link-to 'service.links' tagName='li' href=false classNames='hide'}}<a>Links</a>{{/link-to}}
       {{/if}}
     </ul>
     <div class="well nav-well">
