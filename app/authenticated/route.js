@@ -41,7 +41,12 @@ export default Ember.Route.extend({
       this.set('access.admin', isAdmin);
 
       // Return the list of projects as the model
-      return this.get('projects').getAll();
+      return Ember.RSVP.hash({
+        projects: this.get('projects').getAll(),
+        stacks: this.loadStacks(),
+      }).then((out) => {
+        return out;
+      });
     }).catch((err) => {
       if ( [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
       {
@@ -66,6 +71,10 @@ export default Ember.Route.extend({
         this.replaceWith('settings.projects');
       });
     });
+  },
+
+  loadStacks: function() {
+    return this.get('store').find('environment');
   },
 
   loadPublicSettings: function() {
