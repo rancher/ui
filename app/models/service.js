@@ -2,6 +2,7 @@ import Resource from 'ember-api-store/models/resource';
 import Ember from 'ember';
 import ReadLabels from 'ui/mixins/read-labels';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 var _allMaps;
 var _allRegularServices;
@@ -356,6 +357,13 @@ var Service = Resource.extend(ReadLabels, {
     ].indexOf(this.get('type').toLowerCase()) >= 0;
   }.property('type'),
 
+  hasPorts: function() {
+    return [
+      'service',
+      'loadbalancerservice',
+    ].indexOf(this.get('type').toLowerCase()) >= 0;
+  }.property('type'),
+
   hasImage: function() {
     return this.get('type') === 'service';
   }.property('type'),
@@ -385,12 +393,65 @@ var Service = Resource.extend(ReadLabels, {
   }.property('secondaryLaunchConfigs.length'),
 
   displayDetail: function() {
-    return ('<span class="text-muted">Image: </span> ' + (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'')).htmlSafe();
+      return ('<span class="text-muted">Image: </span> ' + (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'')).htmlSafe();
   }.property('launchConfig.imageUuid'),
+
 
   activeIcon: function() {
     return activeIcon(this);
   }.property('type'),
+
+  endpointsMap: function() {
+    var out = {};
+    (this.get('publicEndpoints')||[]).forEach((endpoint) => {
+      if ( out[endpoint.port] )
+      {
+        out[endpoint.port].push(endpoint.ipAddress);
+      }
+      else
+      {
+        out[endpoint.port] = [endpoint.ipAddress];
+      }
+    });
+
+    return out;
+  }.property('publicEndpoints.@each.{ipAddress,port}'),
+
+  endpointsByPort: function() {
+    var out = [];
+    var map = this.get('endpointsMap');
+    Object.keys(map).forEach((key) => {
+      out.push({port: key, ipAddresses: map[key]});
+    });
+
+    return out;
+  }.property('endpointsMap'),
+
+  displayPorts: function() {
+    var pub = '';
+    var len = this.get('endpointsByPort.length');
+
+    this.get('endpointsByPort').forEach((obj, idx) => {
+      var url = Util.constructUrl(false, obj.ipAddresses[0], obj.port);
+      pub += '<span>' +
+        '<a href="'+ url +'" target="_blank">' +
+          obj.port +
+        '</a>' +
+        (idx+1 === len ? '' : ', ') +
+      '</span>';
+    });
+
+    if ( pub )
+    {
+      return ('<span class="text-muted">Ports: </span>' + pub).htmlSafe();
+    }
+    else
+    {
+      return '';
+    }
+  }.property('endpointsByPort.@each.{port,ipAddresses}'),
+
+
 });
 
 export function activeIcon(service)

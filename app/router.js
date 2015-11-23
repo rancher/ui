@@ -116,6 +116,7 @@ Router.map(function() {
           this.resource('service', {path: '/services/:service_id'}, function() {
             this.route('containers');
             this.route('labels');
+            this.route('ports');
             this.route('edit');
           });
         });

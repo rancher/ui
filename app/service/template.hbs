@@ -54,7 +54,7 @@
               &nbsp;
               &nbsp;
               <div class="btn-group btn-group-xs">
-                <button class="btn bt/n-default btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
+                <button class="btn btn-default btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
                 <button class="btn btn-default btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
               </div>
             {{else}}
@@ -108,6 +108,9 @@
 {{#if (or service.hasLabels service.hasContainers)}}
   <section>
     <ul class="nav nav-tabs nav-tabs-well">
+      {{#if service.hasPorts}}
+        {{#link-to "service.ports" tagName="li" href=false}}<a>Ports</a>{{/link-to}}
+      {{/if}}
       {{#if service.hasContainers}}
         {{#link-to "service.containers" tagName="li" href=false}}<a>Containers</a>{{/link-to}}
       {{/if}}
