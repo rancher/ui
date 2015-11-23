@@ -14,6 +14,10 @@ export default NewBalancer.extend({
       this.sendAction('dismiss');
     },
 
+    outsideClick() {
+      this.sendAction('dismiss');
+    },
+
     cancel() {
       this.sendAction('dismiss');
     },

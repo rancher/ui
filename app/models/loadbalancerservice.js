@@ -47,19 +47,18 @@ var LoadBalancerService = Service.extend({
     });
 
     var pub = '';
+    var fqdn = this.get('fqdn');
     (this.get('launchConfig.ports')||[]).forEach((portSpec, idx) => {
       var portNum = specToPort(portSpec);
       var endpoints = this.get('endpointsMap')[portNum];
       if ( endpoints )
       {
-        endpoints.forEach((ip) => {
-          var url = Util.constructUrl(sslPorts[portNum], ip, portNum);
-          pub += '<span>' + (idx === 0 ? '' : ', ') +
-          '<a href="'+ url +'" target="_blank">' +
-          ip + ':' + esc(portToStr(portSpec)) +
-          '</a>' +
-          '</span>';
-        });
+        var url = Util.constructUrl(sslPorts[portNum], fqdn||endpoints[0], portNum);
+        pub += '<span>' + (idx === 0 ? '' : ', ') +
+        '<a href="'+ url +'" target="_blank">' +
+        esc(portToStr(portSpec)) +
+        '</a>' +
+        '</span>';
       }
       else
       {
@@ -67,8 +66,8 @@ var LoadBalancerService = Service.extend({
       }
     });
 
-    var out = (pub      ? ' <span class="text-muted">Ports: </span>'   + pub : '') +
-              (internal ? '<span class="text-muted">Internal: </span>' + internal : '');
+    var out = (pub      ? ' <label>Ports: </label>'   + pub : '') +
+              (internal ? '<label>Internal: </label>' + internal : '');
 
     return out.htmlSafe();
   }.property('launchConfig.ports.[]','launchConfig.expose.[]','endpointsMap'),
@@ -79,7 +78,7 @@ var LoadBalancerService = Service.extend({
       services += '<span>'+ (idx === 0 ? '' : ', ') + map.get('service.displayName') + '</span>';
     });
 
-    var out = '<span class="text-muted">To: </span>' + services;
+    var out = '<label>To: </label>' + services;
 
     return out.htmlSafe();
   }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated'),

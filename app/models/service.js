@@ -391,7 +391,7 @@ var Service = Resource.extend(ReadLabels, {
   }.property('secondaryLaunchConfigs.length'),
 
   displayDetail: function() {
-      return ('<label class="text-muted">Image: </label> ' + (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'')).htmlSafe();
+      return ('<label>Image: </label><span>' + (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'') + '</span>').htmlSafe();
   }.property('launchConfig.imageUuid'),
 
 
@@ -425,7 +425,10 @@ var Service = Resource.extend(ReadLabels, {
     var out = [];
     var map = this.get('endpointsMap');
     Object.keys(map).forEach((key) => {
-      out.push({port: key, ipAddresses: map[key]});
+      out.push({
+        port: key,
+        ipAddresses: map[key]
+      });
     });
 
     return out;
@@ -435,14 +438,12 @@ var Service = Resource.extend(ReadLabels, {
     var pub = '';
 
     this.get('endpointsByPort').forEach((obj) => {
-      obj.ipAddresses.forEach((ip) => {
-        var url = Util.constructUrl(false, ip, obj.port);
-        pub += '<span>' +
-          '<a href="'+ url +'" target="_blank">' +
-            ip + ':' + obj.port +
-          '</a>,' +
-        '</span> ';
-      });
+      var url = Util.constructUrl(false, obj.ipAddresses[0], obj.port);
+      pub += '<span>' +
+        '<a href="'+ url +'" target="_blank">' +
+          obj.port +
+        '</a>,' +
+      '</span> ';
     });
 
     // Remove last comma
@@ -451,7 +452,7 @@ var Service = Resource.extend(ReadLabels, {
 
     if ( pub )
     {
-      return ('<label class="text-muted">Ports: </label>' + pub).htmlSafe();
+      return ('<label>Ports: </label>' + pub).htmlSafe();
     }
     else
     {
