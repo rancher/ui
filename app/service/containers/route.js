@@ -9,12 +9,14 @@ export default Ember.Route.extend({
 
     // Load the hosts for the instances if they're not already there
     var service = this.modelFor('service').get('service');
-    service.get('instances').forEach((instance) => {
-      if ( !instance.get('primaryHost') )
-      {
-        promises.push(instance.importLink('hosts'));
-      }
-    });
+    var instances = service.get('instances');
+    if (instances) {
+      instances.forEach((instance) => {
+        if (!instance.get('primaryHost')) {
+          promises.push(instance.importLink('hosts'));
+        }
+      });
+    }
 
     return Ember.RSVP.all(promises).then(() => {
       return service;
@@ -27,11 +29,10 @@ export default Ember.Route.extend({
       linkName: 'containerStats',
     });
 
-    this.set('statsSocket',stats);
+    this.set('statsSocket', stats);
     stats.on('dataPoint', (data) => {
       var controller = this.get('controller');
-      if ( controller )
-      {
+      if (controller) {
         controller.onDataPoint(data);
       }
     });

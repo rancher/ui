@@ -4,6 +4,7 @@ var C = {
     PROJECT_DEFAULT: 'defaultProjectId',
     I_HATE_SPINNERS: 'iHateSpinners',
     EXPANDED_STACKS: 'expandedStacks',
+    SORT_STACKS_BY: 'sortStacksBy',
   },
 
   COOKIE: {
