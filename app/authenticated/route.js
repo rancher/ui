@@ -41,7 +41,10 @@ export default Ember.Route.extend({
       this.set('access.admin', isAdmin);
 
       // Return the list of projects as the model
-      return this.get('projects').getAll();
+      return Ember.RSVP.hash({
+        projects: this.get('projects').getAll(),
+        stacks: this.loadStacks(),
+      });
     }).catch((err) => {
       if ( [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
       {
@@ -61,7 +64,7 @@ export default Ember.Route.extend({
     };
 
     return Ember.RSVP.hash(more).then(() => {
-      projects.set('all', model);
+      projects.set('all', model.projects);
       return projects.selectDefault().catch(() => {
         this.replaceWith('settings.projects');
       });
