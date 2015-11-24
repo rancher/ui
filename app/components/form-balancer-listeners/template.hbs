@@ -29,30 +29,30 @@
         {{#each listenersArray as |listener|}}
           <tr>
             {{#if editing}}
-              <td>{{listener.sourcePort}}</td>
+              <td>{{listener.host}}</td>
               <td>&nbsp;</td>
-              <td>{{listener.sourceProtocol}}</td>
+              <td>{{listener.protocol}}</td>
               <td class="text-center">{{#if listener.ssl}}<i class="icon icon-check"></i>{{/if}}</td>
               <td>
-                {{listener.targetPort}}
+                {{listener.container}}
               </td>
               <td>&nbsp;</td>
               <td>{{if listener.isPublic "Public" "Internal"}}</td>
               <td class="text-right">&nbsp;</td>
             {{else}}
               <td>
-                {{input type="text" classNames="form-control lb-listener-source-port input-sm" min="1" max="65535" step="1" value=listener.sourcePort placeholder="On Host, e.g. 80"}}
+                {{input type="text" classNames="form-control lb-listener-source-port input-sm" min="1" max="65535" step="1" value=listener.host placeholder="On Host, e.g. 80"}}
               </td>
               <td>&nbsp;</td>
               <td>
                 <div class="btn-group">
-                  <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">{{listener.sourceProtocol}} <i class="icon icon-chevron-down"></i></button>
+                  <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">{{listener.protocol}} <i class="icon icon-chevron-down"></i></button>
                   <ul class="dropdown-menu" role="menu">
                     <li role="presentation" class="dropdown-header">
                       Select a protocol:
                     </li>
                     {{#each sourceProtocolOptions as |choice|}}
-                      <li {{action "chooseProtocol" listener "sourceProtocol" choice}}>
+                      <li {{action "changeListener" listener "protocol" choice}}>
                         <a>{{choice}}</a>
                       </li>
                     {{/each}}
@@ -63,7 +63,7 @@
                 {{input safeStyle="margin-top: 10px;" type="checkbox" checked=listener.ssl}}
               </td>
               <td>
-                {{input type="text" classNames="form-control lb-listener-target-port input-sm" min="1" max="65535" step="1" value=listener.targetPort placeholder="In Container, e.g. 8080"}}
+                {{input type="text" classNames="form-control lb-listener-target-port input-sm" min="1" max="65535" step="1" value=listener.container placeholder="In Container, e.g. 8080"}}
               </td>
               <td>&nbsp;</td>
               <td>
@@ -73,8 +73,8 @@
                     <li role="presentation" class="dropdown-header">
                       Select access:
                     </li>
-                    <li {{action "setPublic" listener true}}><a>Public</a></li>
-                    <li {{action "setPublic" listener false}}><a>Internal</a></li>
+                    <li {{action "changeListener" listener "isPublic" true}}><a>Public</a></li>
+                    <li {{action "changeListener" listener "isPublic" false}}><a>Internal</a></li>
                   </ul>
                 </div>
               </td>

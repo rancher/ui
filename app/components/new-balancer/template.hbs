@@ -23,7 +23,9 @@
   {{form-divider}}
 
   {{form-balancer-listeners
-    initialListeners=service.loadBalancerListeners
+    initialPorts=launchConfig.ports
+    initialExpose=launchConfig.expose
+    initialLabels=launchConfig.labels
     changed=(action "setListeners")
     setLabels=(action 'setLabels' 'ssl')
   }}

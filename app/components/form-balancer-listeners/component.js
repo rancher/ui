@@ -1,24 +1,24 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import ManageLabels from 'ui/mixins/manage-labels';
+import { parsePort } from 'ui/utils/parse-port';
 
 export default Ember.Component.extend(ManageLabels, {
-  initialListeners: null,
+  initialPorts: null,
+  initialExpose: null,
+  initialLabels: null,
   editing: false,
 
   classNames: ['form-group'],
 
   actions: {
     addListener: function() {
-      this.get('listenersArray').pushObject(this.get('store').createRecord({
-        type: 'loadBalancerListener',
-        name: 'uilistener',
-        isPublic: true,
-        sourcePort: '',
-        sourceProtocol: 'http',
+      this.get('listenersArray').pushObject(Ember.Object.create({
+        host: '',
+        container: '',
+        protocol: 'http',
         ssl: false,
-        targetPort: '',
-        targetProtocol: null,
+        isPublic: true,
       }));
     },
 
@@ -26,64 +26,38 @@ export default Ember.Component.extend(ManageLabels, {
       this.get('listenersArray').removeObject(obj);
     },
 
-    chooseProtocol: function(listener, key, val) {
+    changeListener: function(listener, key, val) {
       listener.set(key,val);
-    },
-
-    setPublic: function(listener, isPublic) {
-      listener.set('isPublic', isPublic);
     },
   },
 
   listenersArray: null,
 
   didInitAttrs: function() {
-    var store = this.get('store');
+    var sslPorts = (this.get('initialLabels')||{})[C.LABEL.BALANCER_SSL_PORTS].split(/,/);
+
+    // Filter empty ports
+    sslPorts = sslPorts.map((str) => {
+      return parseInt(str,10);
+    }).filter((port) => {
+      return port > 0;
+    });
 
     var out = [];
-    var existingService = this.get('initialListeners');
-    if ( existingService )
-    {
-      existingService.forEach((l) => {
-        var protocol = l.get('sourceProtocol');
-        var ssl = false;
-        if ( protocol === 'https' )
-        {
-          ssl = true;
-          protocol = 'http';
-        }
-        else if ( protocol === 'ssl' )
-        {
-          ssl = true;
-          protocol = 'tcp';
-        }
 
-        out.push(store.createRecord({
-          type: 'loadBalancerListener',
-          name: 'uilistener',
-          isPublic: !!l.get('sourcePort'),
-          sourcePort: l.get('sourcePort') ? l.get('sourcePort') : l.get('privatePort'),
-          sourceProtocol: protocol,
-          ssl: ssl,
-          targetPort: l.get('targetPort'),
-        }));
+    function add(isPublic, str) {
+      var obj = parsePort(str, 'http');
+      obj.setProperties({
+        isPublic: isPublic,
+        ssl: sslPorts.indexOf(obj.get('host')) >= 0,
       });
-    }
-    else
-    {
-      out.push(store.createRecord({
-        type: 'loadBalancerListener',
-        name: 'uilistener',
-        isPublic: true,
-        sourcePort: '',
-        sourceProtocol: 'http',
-        ssl: false,
-        targetPort: '',
-      }));
+      out.push(obj);
     }
 
+    (this.get('initialPorts')||[]).forEach(add.bind(null,true));
+    (this.get('initialExpose')||[]).forEach(add.bind(null,false));
 
-    this.set('listenersArray', out.sortBy('sourcePort'));
+    this.set('listenersArray', out.sortBy('host','protocol'));
     this.initLabels();
     this.listenersChanged();
     this.sslChanged();
@@ -95,8 +69,8 @@ export default Ember.Component.extend(ManageLabels, {
 
   sslChanged: function() {
     var sslPorts = this.get('listenersArray').
-                filterBy('sourcePort').
-                filterBy('ssl',true).map((listener) => { return listener.get('sourcePort');});
+                filterBy('host').
+                filterBy('ssl',true).map((listener) => { return listener.get('host');});
 
     if ( sslPorts.get('length') )
     {
@@ -107,7 +81,7 @@ export default Ember.Component.extend(ManageLabels, {
       this.removeLabel(C.LABEL.BALANCER_SSL_PORTS);
     }
 
-  }.observes('listenersArray.@each.{ssl,sourcePort}'),
+  }.observes('listenersArray.@each.{ssl,host}'),
 
   sourceProtocolOptions: function() {
     return ['http','tcp'];

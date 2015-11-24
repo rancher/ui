@@ -29,6 +29,7 @@ export default Ember.Route.extend({
         balancer = existing.cloneForNew();
         launchConfig = balancer.get('launchConfig');
         launchConfig.set('type','container');
+        launchConfig.set('healthCheck',null);
         launchConfig = store.createRecord(launchConfig);
         balancer.set('launchConfig', launchConfig);
 
@@ -84,6 +85,7 @@ export default Ember.Route.extend({
       {
         lbConfig = store.createRecord({
           type: 'loadBalancerConfig',
+          name: 'ui-lb-config',
         });
       }
 

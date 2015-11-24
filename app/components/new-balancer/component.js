@@ -80,12 +80,12 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   hasMultipleListeners: function() {
-    return this.get('listenersArray').filterBy('sourcePort').get('length') >= 2;
-  }.property('listenersArray.@each.sourcePort'),
+    return this.get('listenersArray').filterBy('host').get('length') >= 2;
+  }.property('listenersArray.@each.host'),
 
   hasHttpListeners: function() {
-    return this.get('listenersArray').filterBy('sourceProtocol','http').get('length') > 0;
-  }.property('listenersArray.@each.sourceProtocol'),
+    return this.get('listenersArray').filterBy('protocol','http').get('length') > 0;
+  }.property('listenersArray.@each.protocol'),
 
   hasSslListeners: function() {
     return this.get('listenersArray').filterBy('ssl',true).get('length') > 0;
@@ -96,9 +96,9 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     var ports = [];
     var expose = [];
     this.get('listenersArray').forEach(function(listener) {
-      var src = listener.get('sourcePort');
-      var proto = listener.get('sourceProtocol');
-      var tgt = listener.get('targetPort');
+      var src = listener.get('host');
+      var proto = listener.get('protocol');
+      var tgt = listener.get('container');
 
       if ( src && proto )
       {
@@ -116,7 +116,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
     this.set('launchConfig.ports', ports.sort().uniq());
     this.set('launchConfig.expose', expose.sort().uniq());
-  }.observes('listenersArray.@each.{sourcePort,sourceProtocol,targetPort,isPublic}'),
+  }.observes('listenersArray.@each.{host,protocol,container,isPublic}'),
 
   hasAdvancedSourcePorts: function() {
     return this.get('targetsArray').filterBy('isService',true).filter((target) => {
@@ -231,10 +231,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     // Generic validation
     this._super();
     errors = this.get('errors')||[];
-
-    this.get('listenersArray').forEach((listener) => {
-      errors.pushObjects(listener.validationErrors());
-    });
 
     errors.pushObjects(this.get('service').validationErrors());
 
