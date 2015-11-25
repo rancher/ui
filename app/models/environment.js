@@ -3,6 +3,7 @@ import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
 import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 import { parseExternalId } from 'ui/utils/parse-externalid';
+import C from 'ui/utils/constants';
 
 var Environment = Resource.extend({
   type: 'environment',
@@ -81,6 +82,13 @@ var Environment = Resource.extend({
 
   availableActions: function() {
     var a = this.get('actionLinks');
+    var isK8s = this.get('externalIdInfo.kind') === C.EXTERNALID.KIND_KUBERNETES;
+
+    if ( this.get('externalIdInfo.kind') === C.EXTERNALID.KIND_KUBERNETES )
+    {
+      return [];
+    }
+
 
     var out = [
       { label: 'Finish Upgrade',  icon: 'icon icon-success',          action: 'finishUpgrade',       enabled: !!a.finishupgrade },
@@ -101,7 +109,7 @@ var Environment = Resource.extend({
     ];
 
     return out;
-  }.property('actionLinks.{remove,purge,exportconfig,finishupgrade,cancelupgrade,rollback,cancelrollback}','canActivate','canDeactivate'),
+  }.property('actionLinks.{remove,purge,exportconfig,finishupgrade,cancelupgrade,rollback,cancelrollback}','canActivate','canDeactivate','externalIdInfo.kind'),
 
   healthState: function() {
     // Get the state of each instance

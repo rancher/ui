@@ -28,12 +28,8 @@ export default Ember.Controller.extend(Sortable, {
     }
   },
 
-  supportsKubernetes: function() {
-    return this.get('projects.current.kubernetes') === true;
-  }.property('projects.current.kubernetes'),
-
   showTabs: function() {
-    return this.get('which') !== 'user' || this.get('model.hasKubernetes') || this.get('model.hasSystem');
+    return this.get('which') !== 'kubernetes' && (this.get('which') !== 'user' || this.get('model.hasKubernetes') || this.get('model.hasSystem'));
   }.property('which','model.{hasKubernetes,hasSystem}'),
 
   setup: function() {

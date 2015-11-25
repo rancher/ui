@@ -112,8 +112,11 @@
       {{#link-to "certificates"}}<i class="icon icon-certificate"></i>Certificates{{/link-to}}
     {{/if}}
     {{#if isApplicationsTab}}
-      {{#link-to "environments"}}<i class="icon icon-globe"></i> Stacks{{/link-to}}
+      {{#link-to "environments" (query-params which="user")}}<i class="icon icon-globe"></i> Stacks{{/link-to}}
       {{#link-to "applications-tab.catalog"}}<i class="icon icon-database"></i> Catalog{{/link-to}}
+      {{#if hasKubernetes}}
+        {{#link-to "environments" (query-params which="kubernetes")}}<i class="icon icon-kubernetes"></i>Kubernetes{{/link-to}}
+      {{/if}}
 
       <div class="compose-download">
         <a class="dropdown-toggle hand" data-toggle="dropdown" aria-expanded="false">
