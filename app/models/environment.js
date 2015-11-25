@@ -82,7 +82,6 @@ var Environment = Resource.extend({
 
   availableActions: function() {
     var a = this.get('actionLinks');
-    var isK8s = this.get('externalIdInfo.kind') === C.EXTERNALID.KIND_KUBERNETES;
 
     if ( this.get('externalIdInfo.kind') === C.EXTERNALID.KIND_KUBERNETES )
     {
