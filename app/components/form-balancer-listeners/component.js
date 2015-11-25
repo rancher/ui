@@ -34,7 +34,7 @@ export default Ember.Component.extend(ManageLabels, {
   listenersArray: null,
 
   didInitAttrs: function() {
-    var sslPorts = (this.get('initialLabels')||{})[C.LABEL.BALANCER_SSL_PORTS].split(/,/);
+    var sslPorts = ((this.get('initialLabels')||{})[C.LABEL.BALANCER_SSL_PORTS]||'').split(/,/);
 
     // Filter empty ports
     sslPorts = sslPorts.map((str) => {
@@ -61,6 +61,11 @@ export default Ember.Component.extend(ManageLabels, {
     this.initLabels();
     this.listenersChanged();
     this.sslChanged();
+
+    if ( out.get('length') === 0 )
+    {
+      this.send('addListener');
+    }
   },
 
   listenersChanged: function() {
