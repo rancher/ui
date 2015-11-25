@@ -66,7 +66,7 @@ export default Ember.Controller.extend(Sortable, {
     }
 
     return out;
-  }.property('model.[]'),
+  }.property('model.[]','which'),
 
 
   sortBy: 'state',
