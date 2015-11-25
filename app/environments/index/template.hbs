@@ -1,10 +1,10 @@
 <section class="header">
-  <ol class="breadcrumb right-divider">
-    <li class="active">Stacks</li>
+  <ol class="breadcrumb {{unless (eq which 'kubernetes') 'right-divider'}}">
+    <li class="active">{{if (eq which "kubernetes") "Kubernetes" "Stacks"}}</li>
   </ol>
 
-  {{#unless single}} 
-    {{#link-to "environments.new" classNames="btn btn-sm btn-primary"}}Add Stack{{/link-to}} 
+  {{#unless (or (eq which "kubernetes") single)}}
+    {{#link-to "environments.new" classNames="btn btn-sm btn-primary"}}Add Stack{{/link-to}}
   {{/unless}}
 
   <div class="pull-right">
@@ -17,17 +17,7 @@
 </section>
 
 <section>
-  {{#if showTabs}}
-    <ul class="nav nav-tabs nav-tabs-well">
-      {{#link-to (query-params which="all") tagName="li" href=false}}<a>All</a>{{/link-to}}
-      {{#link-to (query-params which="user") tagName="li" href=false}}<a>User</a>{{/link-to}}
-      {{#link-to (query-params which="system") tagName="li" href=false}}<a>System</a>{{/link-to}}
-      {{#if supportsKubernetes}}
-        {{#link-to (query-params which="kubernetes") tagName="li" href=false}}<a>Kubernetes</a>{{/link-to}}
-      {{/if}}
-    </ul>
-  {{/if}}
-  <div class="well {{if showTabs 'nav-well'}} r-pl0 r-pr0">
+  <div class="well r-pl0 r-pr0">
     {{#each arranged as |stack|}}
       {{stack-section model=stack showAddtlInfo='showAddtlInfo'}}
     {{else}}

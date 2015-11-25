@@ -2,10 +2,12 @@ import Ember from 'ember';
 import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
 
+const notUser = [C.EXTERNALID.KIND_KUBERNETES, C.EXTERNALID.KIND_SYSTEM];
+
 export default Ember.Controller.extend(Sortable, {
   environments: Ember.inject.controller(),
   projects: Ember.inject.service(),
-  sortableContent: Ember.computed.alias('model.current'),
+  sortableContent: Ember.computed.alias('filteredStacks'),
   prefs: Ember.inject.service(),
 
   which: 'user',
@@ -28,20 +30,44 @@ export default Ember.Controller.extend(Sortable, {
     }
   },
 
-  supportsKubernetes: function() {
-    return this.get('projects.current.kubernetes') === true;
-  }.property('projects.current.kubernetes'),
-
-  showTabs: function() {
-    return this.get('which') !== 'user' || this.get('model.hasKubernetes') || this.get('model.hasSystem');
-  }.property('which','model.{hasKubernetes,hasSystem}'),
-
   setup: function() {
     var sort = this.get(`prefs.${C.PREFS.SORT_STACKS_BY}`);
     if (sort && sort !== this.get('sortBy')) {
       this.set('sortBy', sort);
     }
   }.on('init'),
+
+  filteredStacks: function() {
+    var which = this.get('which');
+    var all = this.get('model');
+    var out;
+
+    var kubernetes = all.filterBy('externalIdInfo.kind', C.EXTERNALID.KIND_KUBERNETES);
+    var system     = all.filterBy('externalIdInfo.kind', C.EXTERNALID.KIND_SYSTEM);
+    var user       = all.filter((obj) => {
+        return notUser.indexOf(obj.get('externalIdInfo.kind')) === -1;
+      });
+
+    if ( which === C.EXTERNALID.KIND_ALL )
+    {
+      out = all;
+    }
+    else if ( which === C.EXTERNALID.KIND_KUBERNETES )
+    {
+      out = kubernetes;
+    }
+    else if ( which === C.EXTERNALID.KIND_SYSTEM )
+    {
+      out = system;
+    }
+    else
+    {
+      out = user;
+    }
+
+    return out;
+  }.property('model.[]'),
+
 
   sortBy: 'state',
   sorts: {
