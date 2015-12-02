@@ -6,6 +6,7 @@ export default Ember.Component.extend({
   identity: null,
   externalIdType: null,
   externalId: null,
+  identityNotParsed: null,
 
   avatar: true,
   link: true,
@@ -15,16 +16,21 @@ export default Ember.Component.extend({
   didInitAttrs: function() {
     var type = this.get('externalIdType');
     var id = this.get('externalId');
+    var identityOut = this.get('identityNotParsed') || `1i${type}:${id}`;
 
     if ( !this.get('identity') )
     {
       this.set('loading', true);
-      this.get('store').find('identity','1i!'+type+':'+id).then((identity) => {
-        this.set('identity', identity);
+      this.get('store').find('identity',identityOut).then((identity) => {
+        if (this._state !== 'destroying') {
+          this.set('identity', identity);
+        }
       }).catch((/*err*/) => {
         // Do something..
       }).finally(() => {
-        this.set('loading', false);
+        if (this._state !== 'destroying') {
+          this.set('loading', false);
+        }
       });
     }
   },

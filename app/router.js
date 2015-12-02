@@ -46,6 +46,8 @@ Router.map(function() {
         this.route('index', {path: '/'});
         this.route('process', {path: '/:process_id'});
       });
+
+      this.route('audit-logs');
     });
 
     // Infrastructure
@@ -256,7 +258,14 @@ Router.map(function() {
     withParams: 'openProcessesError',
     otherParams: 'exception'
   });
+
+  this.modal('modal-auditlog-info', {
+    dismissWithOutsideClick: true,
+    withParams: 'showAuditLogResponses',
+    otherParams: {requestObject: 'requestObject', responseObject: 'responseObject'},
+  });
   // End: Modals
+
 });
 
 export default Router;
