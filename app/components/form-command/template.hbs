@@ -15,7 +15,7 @@
     {{input class="form-control" type="text" value=strEntryPoint placeholder="e.g. /bin/sh -c"}}
   </div>
   <div class="col-sm-12 col-md-1 form-label" style="text-align: left">
-    <label class="form-control-static">user</label>
+    <label class="form-control-static">User</label>
   </div>
   <div class="col-sm-12 col-md-3">
     {{input type="text" value=instance.user classNames="form-control" placeholder="e.g. apache"}}
@@ -52,7 +52,24 @@
   </div>
 </div>
 
-{{#unless isService}}
+{{#if isService}}
+  <div class="row">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>Auto Restart</label>
+    </div>
+
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="radio small">
+        <label>{{radio-button selection=startOnce value=false}} Always</label>
+      </div>
+    </div>
+    <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="radio small">
+        <label>{{radio-button selection=startOnce value=true}} Never (Start Once)</label>
+      </div>
+    </div>
+  </div>
+{{else}}
   <div class="row">
     <div class="col-sm-12 col-md-2 form-label">
       <label>Auto Restart</label>
@@ -82,7 +99,7 @@
       </div>
     </div>
   </div>
-{{/unless}}
+{{/if}}
 
 <div class="row">
   <div class="col-sm-12 col-md-2 form-label">

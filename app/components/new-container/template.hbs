@@ -58,11 +58,21 @@
       {{form-divider}}
     {{/unless}}
 
-    {{form-image initialValue=launchConfig.imageUuid errors=imageErrors changed=(action 'setImage')}}
+    {{form-image
+      initialValue=launchConfig.imageUuid
+      errors=imageErrors
+      changed=(action 'setImage')
+      initialLabels=launchConfig.labels
+      setLabels=(action 'setLabels' 'image')
+    }}
 
     {{form-divider}}
 
-    {{form-ports initialPorts=launchConfig.ports errors=portErrors portsAsStrArray=launchConfig.ports}}
+    {{form-ports
+      initialPorts=launchConfig.ports
+      errors=portErrors
+      portsAsStrArray=launchConfig.ports
+    }}
 
     {{#if (and isService (not isSidekick))}}
       {{form-divider}}
@@ -94,7 +104,12 @@
 
     <div class="horizontal-form well">
       <div class="section container-fluid" data-section="command">
-        {{form-command instance=launchConfig errors=commandErrors isService=isService}}
+        {{form-command
+          instance=launchConfig
+          errors=commandErrors
+          isService=isService
+          setLabels=(action 'setLabels' 'command')
+        }}
       </div>
 
       <div class="section container-fluid" data-section="volumes">
@@ -102,7 +117,14 @@
       </div>
 
       <div class="section container-fluid" data-section="network">
-        {{form-networking instance=launchConfig errors=networkingErrors allHosts=allHosts isService=isService}}
+        {{form-networking
+          instance=launchConfig
+          errors=networkingErrors
+          allHosts=allHosts
+          isService=isService
+          initialLabels=launchConfig.labels
+          setLabels=(action 'setLabels' 'networking')
+        }}
       </div>
 
       <div class="section container-fluid" data-section="healthcheck">

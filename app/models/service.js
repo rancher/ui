@@ -1,6 +1,5 @@
 import Resource from 'ember-api-store/models/resource';
 import Ember from 'ember';
-import ReadLabels from 'ui/mixins/read-labels';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
@@ -12,7 +11,7 @@ var _allDnsServices;
 var _allKubernetesServices;
 var _allKubernetesReplicationControllers;
 
-var Service = Resource.extend(ReadLabels, {
+var Service = Resource.extend({
   type: 'service',
 
   actions: {
@@ -178,8 +177,6 @@ var Service = Resource.extend(ReadLabels, {
     '_environmentState'
   ],
 
-  labelResource: Ember.computed.alias('launchConfig'),
-
   init: function() {
     this._super();
 
@@ -286,7 +283,7 @@ var Service = Resource.extend(ReadLabels, {
   }.observes('consumedServicesWithNames.@each.{name,service}'),
 
   healthState: function() {
-    var isGlobal = Object.keys(this.get('labels')||{}).indexOf(C.LABEL.SCHED_GLOBAL) >= 0;
+    var isGlobal = this.get('isGlobalScale');
     var instances = this.get('instances')||[];
 
     // Get the state of each instance
@@ -332,8 +329,8 @@ var Service = Resource.extend(ReadLabels, {
   }.property('state', 'healthState'),
 
   isGlobalScale: function() {
-    return !!this.getLabel(C.LABEL.SCHED_GLOBAL);
-  }.property(),
+    return (this.get('launchConfig.labels')||{})[C.LABEL.SCHED_GLOBAL] + '' === 'true';
+  }.property('launchConfig.labels'),
 
   canScale: function() {
     if ( ['service','loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0 )
@@ -365,6 +362,7 @@ var Service = Resource.extend(ReadLabels, {
   hasImage: function() {
     return this.get('type') === 'service';
   }.property('type'),
+
   hasLabels: Ember.computed.alias('hasImage'),
 
   isK8s: function() {

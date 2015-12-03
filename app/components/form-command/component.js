@@ -1,7 +1,9 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
+import ManageLabels from 'ui/mixins/manage-labels';
 import ShellQuote from 'npm:shell-quote';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(ManageLabels, {
   // Inputs
   instance: null,
   errors: null,
@@ -10,11 +12,17 @@ export default Ember.Component.extend({
   tagName: '',
 
   didInitAttrs() {
+    this.initLabels(this.get('initialLabels'), null, C.LABEL.START_ONCE);
     this.initCommand();
     this.initEntryPoint();
     this.initTerminal();
+    this.initStartOnce();
     this.initRestart();
     this.initEnvironment();
+  },
+
+  updateLabels(labels) {
+    this.sendAction('setLabels', labels);
   },
 
   actions: {
@@ -192,6 +200,27 @@ export default Ember.Component.extend({
     this.set('instance.tty', tty);
     this.set('instance.stdinOpen', stdinOpen);
   }.observes('terminal'),
+
+  // ----------------------------------
+  // Start Once
+  // ----------------------------------
+  startOnce: null,
+  initStartOnce: function() {
+    var startOnce = !!this.getLabel(C.LABEL.START_ONCE);
+    this.set('startOnce', startOnce);
+  },
+
+  startOnceDidChange: function() {
+    if ( this.get('startOnce') )
+    {
+      this.setLabel(C.LABEL.START_ONCE, 'true');
+    }
+    else
+    {
+      this.removeLabel(C.LABEL.START_ONCE);
+    }
+  }.observes('startOnce'),
+
 
   // ----------------------------------
   // Restart

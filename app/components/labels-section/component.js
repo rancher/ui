@@ -1,7 +1,20 @@
 import Ember from 'ember';
-import ReadLabels from 'ui/mixins/read-labels';
+import ManageLabels from 'ui/mixins/manage-labels';
+import Sortable from 'ui/mixins/sortable';
 
-export default Ember.Component.extend(ReadLabels,{
+export default Ember.Component.extend(ManageLabels, Sortable, {
   model: null,
-  labelResource: Ember.computed.alias('model'),
+
+  sortableContent: Ember.computed.alias('labelArray'),
+  sortBy: 'kind',
+  descending: true,
+  sorts: {
+    kind: ['type','key'],
+    key: ['key'],
+    value: ['value','key'],
+  },
+
+  didInitAttrs() {
+    this.initLabels(this.get('model.labels'));
+  },
 });
