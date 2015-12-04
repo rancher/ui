@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import ShellQuote from 'npm:shell-quote';
+import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(NewOrEdit, {
   allTemplates: null,
@@ -20,6 +21,8 @@ export default Ember.Component.extend(NewOrEdit, {
   questionsArray: null,
   selectedTemplateUrl: null,
   selectedTemplateModel: null,
+  showReadme: true,
+  readmeContent: null,
 
   actions: {
     cancel: function() {
@@ -27,8 +30,7 @@ export default Ember.Component.extend(NewOrEdit, {
     },
 
     togglePreview: function() {
-      if ( this.get('previewOpen') )
-      {
+      if (this.get('previewOpen')) {
         this.highlightAll();
       }
 
@@ -42,20 +44,21 @@ export default Ember.Component.extend(NewOrEdit, {
     changeTemplate: function(tpl) {
       this.get('application').transitionToRoute('applications-tab.catalog.launch', tpl.path);
     },
+
+    toggleReadMe: function() {
+      this.toggleProperty('showReadme');
+    }
   },
 
   didInitAttrs() {
-    this._super.apply(this,arguments);
+    this._super.apply(this, arguments);
 
     // Select the default version
-    var def = this.get('templateResource.version');
+    var def = this.get('templateResource.defaultVersion');
     var links = this.get('versionLinks');
-    if ( links[def] )
-    {
+    if (links[def]) {
       this.set('selectedTemplateUrl', links[def]);
-    }
-    else
-    {
+    } else {
       this.set('selectedTemplateUrl', null);
     }
 
@@ -68,23 +71,26 @@ export default Ember.Component.extend(NewOrEdit, {
     });
   },
 
+  getReadme: function() {
+    this.get('selectedTemplateModel').followLink('readme').then((response) => {
+      this.set('readmeContent', response);
+    });
+  },
+
   templateChanged: function() {
     var link = this.get('selectedTemplateUrl');
-    if ( link )
-    {
+    if (link) {
       this.set('loading', true);
 
       var current = this.get('environmentResource.environment');
-      this.get('store').request({url: link}).then((response) => {
-        if ( response.questions )
-        {
+      this.get('store').request({
+        url: link
+      }).then((response) => {
+        if (response.questions) {
           response.questions.forEach((item) => {
-            if ( typeof current[item.variable] !== 'undefined' )
-            {
+            if (typeof current[item.variable] !== 'undefined') {
               item.answer = current[item.variable];
-            }
-            else
-            {
+            } else {
               if (item.type === 'service') {
                 var defaultStack = false;
                 this.get('serviceChoices').forEach((service) => {
@@ -107,22 +113,23 @@ export default Ember.Component.extend(NewOrEdit, {
         }
 
         this.set('selectedTemplateModel', response);
+        if (response.links.readme) {
+          this.getReadme();
+        }
         this.set('loading', false);
 
         Ember.run.next(() => {
           this.highlightAll();
         });
       }, ( /*error*/ ) => {});
-    }
-    else
-    {
+    } else {
       this.set('selectedTemplateModel', null);
     }
   }.observes('selectedTemplateUrl'),
 
   answers: function() {
     var out = {};
-    (this.get('selectedTemplateModel.questions')||[]).forEach((item) => {
+    (this.get('selectedTemplateModel.questions') || []).forEach((item) => {
       out[item.variable] = item.answer;
     });
 
@@ -133,12 +140,9 @@ export default Ember.Component.extend(NewOrEdit, {
 
   answersString: function() {
     return this.get('answersArray').map((obj) => {
-      if ( obj.answer === null || obj.answer === undefined )
-      {
+      if (obj.answer === null || obj.answer === undefined) {
         return obj.variable + '=';
-      }
-      else
-      {
+      } else {
         return obj.variable + '=' + ShellQuote.quote([obj.answer]);
       }
     }).join("\n");
@@ -147,23 +151,19 @@ export default Ember.Component.extend(NewOrEdit, {
   validate() {
     var errors = [];
 
-    if ( !this.get('editing') && !this.get('environmentResource.name') )
-    {
+    if (!this.get('editing') && !this.get('environmentResource.name')) {
       errors.push('Name is required');
     }
 
-    if ( this.get('selectedTemplateModel.questions') )
-    {
+    if (this.get('selectedTemplateModel.questions')) {
       this.get('selectedTemplateModel.questions').forEach((item) => {
-        if ( item.required && item.type !== 'boolean' && !item.answer )
-        {
+        if (item.required && item.type !== 'boolean' && !item.answer) {
           errors.push(`${item.label} is required`);
         }
       });
     }
 
-    if ( errors.length )
-    {
+    if (errors.length) {
       this.set('errors', errors.uniq());
       this.$().parent().scrollTop(0);
       return false;
@@ -175,8 +175,7 @@ export default Ember.Component.extend(NewOrEdit, {
   willSave() {
     this.set('errors', null);
     var ok = this.validate();
-    if ( !ok )
-    {
+    if (!ok) {
       // Validation failed
       return false;
     }
@@ -185,24 +184,21 @@ export default Ember.Component.extend(NewOrEdit, {
       dockerCompose: this.get('selectedTemplateModel.dockerCompose'),
       rancherCompose: this.get('selectedTemplateModel.rancherCompose'),
       environment: this.get('answers'),
-      externalId: this.get('selectedTemplateModel.uuid')
+      externalId: C.EXTERNALID.KIND_CATALOG + C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.uuid')
     });
 
     return true;
   },
 
   doSave() {
-    if ( this.get('editing') )
-    {
+    if (this.get('editing')) {
       return this.get('environmentResource').doAction('upgrade', {
         dockerCompose: this.get('environmentResource.dockerCompose'),
         rancherCompose: this.get('environmentResource.rancherCompose'),
         environment: this.get('environmentResource.environment'),
-        externalId: this.get('selectedTemplateModel.uuid')
+        externalId: C.EXTERNALID.KIND_CATALOG + C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.uuid')
       });
-    }
-    else
-    {
+    } else {
       return this._super.apply(this, arguments);
     }
   },

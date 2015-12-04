@@ -6,7 +6,7 @@
         {{templateResource.name}}
       {{else}}
         {{#power-select options=allTemplates selected=templateResource onchange=(action "changeTemplate") searchField="name" as |obj|}}
-          <div class="power-select-img"><img src="{{obj.iconLink}}"><div class="clip">{{obj.name}}</div></div>
+          <div class="power-select-img"><img src="{{obj.links.icon}}"><div class="clip">{{obj.name}}</div></div>
         {{/power-select}}
       {{/if}}
     </li>
@@ -15,15 +15,48 @@
 
 <div class="container">
   <section>
-    <div class="well">
-      <h2 class="r-mb20">
-        {{#if templateResource.iconLink}}
-          <img src={{templateResource.iconLink}} alt={{templateResource.name}} class="r-mr20" style="height:75px;">
+    <div class="well row">
+      <div class="col-sm-2 col-md-2">
+        {{#if templateResource.links.icon}}
+          <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="r-mr20" style="height:75px;max-width: 100%;">
         {{/if}}
-        {{if editing "Upgrade" "Add"}} {{templateResource.name}} Stack {{#if editing}}&quot;{{environmentResource.name}}&quot;{{/if}}
-      </h2>
-
-      <p>{{templateResource.description}}</p>
+        <div>
+          <small><strong>Category:</strong> {{templateResource.category}}</small>
+        </div>
+        <div>
+          <small><strong>Release By:</strong> {{templateResource.maintainer}}</small>
+        </div>
+        <div>
+          <small><strong>Requires:</strong> {{templateResource.minimumRancherVersion}}</small>
+        </div>
+        <div>
+          <small><strong>License:</strong> {{templateResource.license}}</small>
+        </div>
+      </div>
+      <div class="col-sm-10 col-md-10" style="min-height:160px;">
+        <h2 class="r-mb10">
+          {{if editing "Upgrade" "Add"}} {{templateResource.name}} Stack {{#if editing}}&quot;{{environmentResource.name}}&quot;{{/if}}
+        </h2>
+        <p>{{templateResource.description}}</p>
+      </div>
+      {{#if readmeContent}}
+        <div class="col-sm-10 col-md-10 col-sm-offset-2 col-md-offset-2">
+          <div class="over-hr r-mt5 r-mb15">
+            <span style="text-transform: none;">
+              <nav>
+                <ul class="pagination pagination-sm r-m0">
+                    <li class="">
+                      <a href="#" {{action 'toggleReadMe'}}>{{if showReadme 'Hide' 'Show'}} Read Me</a>
+                    </li>
+                </ul>
+              </nav>
+            </span>
+          </div>
+          {{#liquid-if showReadme}}
+            {{markdown-to-html markdown=readmeContent}}
+          {{/liquid-if}}
+        </div>
+      {{/if}}
     </div>
   </section>
 

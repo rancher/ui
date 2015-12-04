@@ -103,7 +103,7 @@ var C = {
 
   EXTERNALID: {
     KIND_SEPARATOR: '://',
-    GROUP_SEPARATOR: '/',
+    GROUP_SEPARATOR: ':',
     KIND_ALL: 'all',
     KIND_USER: 'user',
     KIND_CATALOG: 'catalog',
