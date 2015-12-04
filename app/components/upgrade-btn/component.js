@@ -17,7 +17,7 @@ function getUpgradeInfo(task, cb) {
     {
       upgradeInfo.id = task.id;
       obj.set('upgradeInfo', upgradeInfo);
-      if ( upgradeInfo && upgradeInfo.newVersionLinks && Object.keys(upgradeInfo.newVersionLinks).length )
+      if ( upgradeInfo && upgradeInfo.upgradeVersionLinks && Object.keys(upgradeInfo.upgradeVersionLinks).length )
       {
         obj.set('upgradeStatus', AVAILABLE);
       }
@@ -53,13 +53,7 @@ export default Ember.Component.extend({
     if ( this.get('upgradeStatus') === AVAILABLE && !this.get('isUpgradeState') )
     {
       // Hackery, but no good way to get the template from upgradeInfo
-      var tpl = '_upgrade';
-      var key = Object.keys(upgradeInfo.newVersionLinks)[0];
-      var match = upgradeInfo.newVersionLinks[key].match(/.*\/templates\/(.*)\/([^\/]+)$/);
-      if ( match )
-      {
-        tpl = match[1];
-      }
+      var tpl = upgradeInfo.id;
 
       this.get('application').transitionToRoute('applications-tab.catalog.launch', tpl, {queryParams: {
         environmentId: this.get('environmentResource.id'),
@@ -113,7 +107,7 @@ export default Ember.Component.extend({
       this.set('upgradeStatus', LOADING);
       queue.push({
         id: info.id,
-        url: this.get('app.catalogEndpoint')+'/upgradeinfo/'+ info.id,
+        url: this.get('app.catalogEndpoint')+'/templateversions/'+ info.id,
         obj: this
       });
     }

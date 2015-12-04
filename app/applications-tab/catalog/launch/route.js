@@ -13,7 +13,7 @@ export default Ember.Route.extend({
 
     if ( params.upgrade )
     {
-      dependencies.upgrade = store.request({url: this.get('app.catalogEndpoint')+'/upgradeinfo/'+params.upgrade});
+      dependencies.upgrade = store.request({url: this.get('app.catalogEndpoint')+'/templateversions/'+params.upgrade});
     }
 
     if ( params.environmentId )
@@ -35,7 +35,7 @@ export default Ember.Route.extend({
       var links;
       if ( results.upgrade )
       {
-        links = results.upgrade.newVersionLinks;
+        links = results.upgrade.upgradeVersionLinks;
       }
       else
       {

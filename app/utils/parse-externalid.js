@@ -1,6 +1,6 @@
 import C from 'ui/utils/constants';
 
-// Parses externalIds on services into 
+// Parses externalIds on services into
 // {
 //  kind: what kind of id this is supposed to be
 //  group: for catalog, what group it's in
@@ -12,42 +12,37 @@ export function parseExternalId(externalId) {
     id: null,
   };
 
-  if ( !externalId )
-  {
+  if (!externalId) {
     return out;
   }
 
   var idx = externalId.indexOf(C.EXTERNALID.KIND_SEPARATOR);
-  if ( idx >= 0 )
-  {
-    // New style kind://[group/]id
-    out.kind = externalId.substr(0,idx);
+  if (idx >= 0) {
+    // New style kind://[group:]ido
+    out.kind = externalId.substr(0, idx);
 
     var rest = externalId.substr(idx + C.EXTERNALID.KIND_SEPARATOR.length);
     idx = rest.indexOf(C.EXTERNALID.GROUP_SEPARATOR);
-    if ( idx >= 0 )
-    {
+    out.id = rest;
+    if (idx >= 0) {
       // With group kind://group/id
-      out.group = rest.substr(0,idx);
-      out.id = rest.substr(idx + C.EXTERNALID.GROUP_SEPARATOR.length );
-    }
-    else
-    {
+      out.group = rest.substr(0, idx);
+    } else {
       // Without group kind://id
-      if ( out.kind === C.EXTERNALID.KIND_CATALOG )
-      {
+      if (out.kind === C.EXTERNALID.KIND_CATALOG) {
         // For catalog kinds, we have a default group
         out.group = C.EXTERNALID.CATALOG_DEFAULT_GROUP;
       }
 
-      out.id = rest;
     }
-  }
-  else
-  {
+  } else {
+
+    var dashedIdx = externalId.lastIndexOf('-');
+
     // Old style just an ID
     out.kind = C.EXTERNALID.KIND_CATALOG;
-    out.id = externalId;
+    // defaultgroup:extid:version
+    out.id = `${C.EXTERNALID.CATALOG_DEFAULT_GROUP}:${externalId.substr(0, dashedIdx)}:${externalId.substr(dashedIdx + 1)}`;
     out.group = C.EXTERNALID.CATALOG_DEFAULT_GROUP;
   }
 
