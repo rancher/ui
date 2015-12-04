@@ -1,18 +1,21 @@
 import Ember from 'ember';
-import ReadLabels from 'ui/mixins/read-labels';
+import ManageLabels from 'ui/mixins/manage-labels';
 import FasterLinksAndMenus from 'ui/mixins/faster-links-and-menus';
 import GroupedInstances from 'ui/mixins/grouped-instances';
 
-export default Ember.Component.extend(ReadLabels, FasterLinksAndMenus, GroupedInstances, {
+export default Ember.Component.extend(ManageLabels, FasterLinksAndMenus, GroupedInstances, {
   model: null,
   mode: null,
 
-  labelResource: Ember.computed.alias('model'),
   classNames: ['pod','host'],
   classNameBindings: ['stateBorder','isMachine:machine-host'],
 
+  didInitAttrs() {
+    this.initLabels(this.get('model.labels'));
+  },
+
   actions: {
-    newContainer: function() {
+    newContainer() {
       this.sendAction('newContainer', this.get('model.id'));
     },
   },

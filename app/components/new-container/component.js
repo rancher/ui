@@ -206,18 +206,31 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   // ----------------------------------
   userLabels: null,
   scaleLabels: null,
+  imageLabels: null,
+  commandLabels: null,
   schedulingLabels: null,
+  networkingLabels: null,
 
   labelsChanged: debouncedObserver(
     'userLabels.@each.{key,value}',
     'scaleLabels.@each.{key,value}',
+    'imageLabels.@each.{key,value}',
+    'commandLabels.@each.{key,value}',
     'schedulingLabels.@each.{key,value}',
+    'networkingLabels.@each.{key,value}',
     function() {
       var out = {};
 
-      (this.get('userLabels')||[]).forEach((row) => { out[row.key] = row.value; });
-      (this.get('scaleLabels')||[]).forEach((row) => { out[row.key] = row.value; });
-      (this.get('schedulingLabels')||[]).forEach((row) => { out[row.key] = row.value; });
+      function flatten(row) {
+        out[row.key] = row.value;
+      }
+
+      (this.get('userLabels')||[]).forEach(flatten);
+      (this.get('scaleLabels')||[]).forEach(flatten);
+      (this.get('imageLabels')||[]).forEach(flatten);
+      (this.get('commandLabels')||[]).forEach(flatten);
+      (this.get('schedulingLabels')||[]).forEach(flatten);
+      (this.get('networkingLabels')||[]).forEach(flatten);
 
       var config = this.get('launchConfig');
       if ( config )

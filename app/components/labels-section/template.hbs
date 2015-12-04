@@ -2,15 +2,15 @@
   <thead>
     {{#if labelArray.length}}
       <tr>
-        <th width="90">Kind</th>
-        <th>Key</th>
-        <th>Value</th>
+        {{sortable-th sortable=this action="changeSort" name="kind" width="90"}}
+        {{sortable-th sortable=this action="changeSort" name="key"}}
+        {{sortable-th sortable=this action="changeSort" name="value"}}
       </tr>
     {{/if}}
   </thead>
   <tbody>
-    {{#each labelArray as |label|}}
-      <tr class="{{unless label.isUser 'text-muted'}}">
+    {{#each arranged as |label|}}
+      <tr>
         <td>{{uc-first label.type}}</td>
         <td>{{label.key}}</td>
         <td>{{label.value}}</td>

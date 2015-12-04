@@ -76,10 +76,11 @@ var C = {
 
   LABEL: {
     SYSTEM_PREFIX: 'io.rancher.',
+    AFFINITY_PREFIX: 'io.rancher.scheduler.affinity:',
+
     SERVICE_NAME: 'io.rancher.stack_service.name',
     PROJECT_NAME: 'io.rancher.stack.name',
     SCHED_GLOBAL: 'io.rancher.scheduler.global',
-    SCHED_AFFINITY: 'io.rancher.scheduler.affinity:',
     SCHED_CONTAINER: 'io.rancher.scheduler.affinity:container',
     SCHED_HOST_LABEL: 'io.rancher.scheduler.affinity:host_label',
     SCHED_CONTAINER_LABEL: 'io.rancher.scheduler.affinity:container_label',
@@ -92,6 +93,12 @@ var C = {
     LAUNCH_CONFIG_PRIMARY: 'io.rancher.service.primary.launch.config',
     START_ONCE: 'io.rancher.container.start_once',
     HASH: 'io.rancher.service.hash',
+    DNS: 'io.rancher.container.dns',
+    DOCKER_VERSION: 'io.rancher.host.docker_version',
+    KERNEL_VERSION: 'io.rancher.host.linux_kernel_version',
+    REQUESTED_IP: 'io.rancher.container.requested_ip',
+    PULL_IMAGE: 'io.rancher.container.pull_image',
+    PULL_IMAGE_VALUE: 'always',
   },
 
   EXTERNALID: {
@@ -114,6 +121,19 @@ C.TOKEN_TO_SESSION_KEYS = [
   C.SESSION.GITHUB_ORGS,
   C.SESSION.IDENTITY,
   C.SESSION.IDENTITY_TYPE
+];
+
+C.LABELS_TO_IGNORE = [
+  C.LABEL.HASH,
+];
+
+C.SYSTEM_LABELS_WITH_CONTROL = [
+  C.LABEL.SCHED_GLOBAL,
+  C.LABEL.HOSTNAME_OVERRIDE,
+  C.LABEL.DNS,
+  C.LABEL.START_ONCE,
+  C.LABEL.REQUESTED_IP,
+  C.LABEL.PULL_IMAGE,
 ];
 
 export default C;

@@ -6,10 +6,6 @@ const USER = 'user';
 const SYSTEM = 'system';
 const AFFINITY = 'affinity';
 
-const IGNORE = [
-  C.LABEL.HASH,
-];
-
 export default Ember.Mixin.create({
   labelArray: null,
 
@@ -97,7 +93,36 @@ export default Ember.Mixin.create({
     },
   },
 
+  // User labels are actual user ones, plus system ones that have no controls in the UI so they are manually entered.
   userLabelArray: function() {
+    return (this.get('labelArray')||[]).filter((item) => {
+      var type = item.get('type');
+
+      // Include actual user labels
+      if ( type === USER )
+      {
+        return true;
+      }
+
+      // Don't include any affinity labels
+      if ( type === AFFINITY )
+      {
+        return false;
+      }
+
+      var key = item.get('key');
+
+      // Don't include any system labels that are blacklisted (because they have their own controls, like global)
+      if ( C.SYSTEM_LABELS_WITH_CONTROL.indexOf(key) >= 0 )
+      {
+        return false;
+      }
+
+      return true;
+    });
+  }.property('labelArray.@each.type'),
+
+  strictUserLabelArray: function() {
     return (this.get('labelArray')||[]).filterBy('type',USER);
   }.property('labelArray.@each.type'),
 
@@ -142,7 +167,7 @@ export default Ember.Mixin.create({
     var type = 'user';
 
     // Rancher keys are always lowercase
-    if ( lcKey.indexOf(C.LABEL.SCHED_AFFINITY) === 0 )
+    if ( lcKey.indexOf(C.LABEL.AFFINITY_PREFIX) === 0 )
     {
       type = 'affinity';
       key = lcKey;
@@ -192,7 +217,7 @@ export default Ember.Mixin.create({
 
     Object.keys(obj||{}).forEach(function(key) {
       var type = 'user';
-      if ( key.indexOf(C.LABEL.SCHED_AFFINITY) === 0 )
+      if ( key.indexOf(C.LABEL.AFFINITY_PREFIX) === 0 )
       {
         type = 'affinity';
       }
@@ -201,7 +226,7 @@ export default Ember.Mixin.create({
         type = 'system';
       }
 
-      if ( IGNORE.indexOf(key) >= 0 )
+      if ( C.LABELS_TO_IGNORE.indexOf(key) >= 0 )
       {
         // Skip ignored labels
         return;
@@ -255,8 +280,8 @@ export default Ember.Mixin.create({
         value = value.toLowerCase();
       }
 
-      // Affinity labels can be concatenated, others just overwrite the previous value.
-      if ( map[key] && type === AFFINITY )
+      // Affinity & System labels can be concatenated, Users just overwrite the previous value.
+      if ( map[key] && type !== USER )
       {
         map[key] = map[key]+',' + value;
       }
