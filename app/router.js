@@ -82,6 +82,15 @@ Router.map(function() {
         });
       });
 
+      this.resource('virtualmachines', {path: '/vms'}, function() {
+        this.route('new', {path: '/add'});
+        this.route('index', {path: '/'});
+
+        this.resource('virtualmachine', { path: '/:virtualmachine_id' }, function() {
+          this.route('labels');
+        });
+      });
+
       this.resource('certificates', function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
@@ -100,6 +109,7 @@ Router.map(function() {
     this.resource('applications-tab', {path: '/apps'}, function() {
       this.resource('splash', {path: '/welcome'});
       this.resource('service.new', {path: '/add-service'});
+      this.resource('service.new-virtualmachine', {path: '/add-vm-service'});
       this.resource('service.new-balancer', {path: '/add-balancer'});
       this.resource('service.new-alias', {path: '/add-alias'});
       this.resource('service.new-external', {path: '/add-external'});
@@ -149,6 +159,13 @@ Router.map(function() {
   this.modal('modal-shell', {
     dismissWithOutsideClick: false,
     withParams: 'showShell',
+    otherParams: 'originalModel',
+    dialogClass: 'modal-shell',
+  });
+
+  this.modal('modal-console', {
+    dismissWithOutsideClick: false,
+    withParams: 'showConsole',
     otherParams: 'originalModel',
     dialogClass: 'modal-shell',
   });

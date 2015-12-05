@@ -1,0 +1,73 @@
+<section class="header">
+  <ol class="breadcrumb right-divider">
+    {{#if model.vm.primaryHost}}
+      {{#link-to "hosts" tagName="li" href=false}}<a>Hosts</a>{{/link-to}}
+      {{#link-to "host" model.vm.primaryHost.id tagName="li" href=false}}<a>{{model.vm.primaryHost.displayName}}</a>{{/link-to}}
+    {{else}}
+      {{#link-to "virtualmachines" tagName="li" href=false}}<a>Virtual Machines</a>{{/link-to}}
+    {{/if}}
+    <li class="active">
+      {{#power-select options=model.vm.primaryHost.instances selected=model.vm onchange=(action "changeVirtualMachine") searchField="displayName" as |obj|}}
+        <div class="clip r-mr15"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
+      {{/power-select}}
+    </li>
+  </ol>
+
+  {{action-menu model=model.vm size="sm"}}
+</section>
+
+<section>
+  {{#info-multi-stats model=model.vm linkName="containerStats" single=true showGraphs=false}}
+    <div class="row multi-stats">
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Host:</label>
+        {{#if model.vm.primaryHost}}
+          {{#link-to "host" model.vm.primaryHost.id}}{{model.vm.primaryHost.displayName}}{{/link-to}}
+        {{else}}
+          <span class="text-muted">Unknown</span>
+        {{/if}}
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Host IP:</label>
+        {{#if model.vm.primaryHost}}
+          {{model.vm.primaryHost.displayIp}} {{zero-clipboard text=model.vm.primaryHost.displayIp}}
+        {{else}}
+          <span class="text-muted">Unknown</span>
+        {{/if}}
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>VM IP:</label>
+        {{model.vm.displayIp}} {{zero-clipboard text=model.vm.displayIp}}
+      </div>
+    </div>
+    <div class="row multi-stats">
+      <div class="col-sm-4 col-md-4 col-lg-4">
+        <label>Image:</label>
+        <span class="force-wrap">
+          {{model.vm.displayImage}} {{zero-clipboard text=model.vm.displayImage}}
+        </span>
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+      </div>
+      <div class="col-sm-4 col-md-4 col-lg-4">
+      </div>
+    </div>
+    {{#if model.vm.description}}
+      <div class="row multi-stats">
+        <div class="col-sm-12 col-md-12 description">
+          <label>Description: </label>
+          <span>{{model.vm.description}}</span>
+        </div>
+      </div>
+    {{/if}}
+  {{/info-multi-stats}}
+</section>
+
+<section>
+  <ul class="nav nav-tabs nav-tabs-well shadowed">
+    {{#link-to "virtualmachine.labels" tagName="li" href=false}}<a><i class="icon icon-tag"></i> Labels</a>{{/link-to}}
+  </ul>
+  <div class="table-flat well">
+    {{outlet}}
+  </div>
+</section>

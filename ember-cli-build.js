@@ -69,6 +69,9 @@ module.exports = function(defaults) {
   app.import('bower_components/identicon.js/pnglib.js');
   app.import('bower_components/identicon.js/identicon.js');
   app.import('bower_components/md5-jkmyers/md5.js');
+  app.import('vendor/dagre-d3/dagre-d3.core.js');
+  app.import('vendor/novnc.js');
+
 
   app.import('vendor/icons/style.css');
   app.import('vendor/icons/fonts/rancher-icons.eot',  {destDir: 'assets/fonts'});
@@ -83,8 +86,6 @@ module.exports = function(defaults) {
   app.import('vendor/lato/lato-v11-latin-700.woff2',      {destDir: 'assets/fonts'});
   app.import('vendor/lato/lato-v11-latin-regular.woff',   {destDir: 'assets/fonts'});
   app.import('vendor/lato/lato-v11-latin-regular.woff2',  {destDir: 'assets/fonts'});
-
-  app.import('vendor/dagre-d3/dagre-d3.core.js');
 
   return app.toTree();
 };

@@ -99,6 +99,7 @@ var C = {
     REQUESTED_IP: 'io.rancher.container.requested_ip',
     PULL_IMAGE: 'io.rancher.container.pull_image',
     PULL_IMAGE_VALUE: 'always',
+    KVM: 'io.rancher.host.kvm',
   },
 
   EXTERNALID: {

@@ -2,7 +2,7 @@
   {{badge-state model=model}}
 </td>
 <td class="force-wrap">
-  <a href="/infra/containers/{{model.id}}" data-transition-link="true">{{model.displayName}}</a>
+  <a href="{{detailBaseUrl}}{{model.id}}" data-transition-link="true">{{model.displayName}}</a>
 </td>
 <td>
   {{model.displayIp}}
@@ -32,13 +32,15 @@
     {{/if}}
   </td>
 {{else}}
-  <td class="clip">
-    {{#if model.command}}
-      {{model.command}}
-    {{else}}
-      <span class="text-muted">None</span>
-    {{/if}}
-  </td>
+  {{#unless model.isVm}}
+    <td class="clip">
+      {{#if model.command}}
+        {{model.command}}
+      {{else}}
+        <span class="text-muted">None</span>
+      {{/if}}
+    </td>
+  {{/unless}}
 {{/if}}
 <td class="actions">
   {{partial "fast-action-menu"}}

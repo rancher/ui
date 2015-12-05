@@ -26,7 +26,7 @@ export default Ember.Route.extend({
       {
         results.env = store.createRecord({
           type: 'environment',
-          name: results.tpl.path,
+          name: results.tpl.id.replace(/^[^:\/]+[:\/]/,''),
           startOnCreate: true,
           environment: {}, // Question answers
         });

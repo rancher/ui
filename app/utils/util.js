@@ -188,8 +188,8 @@ export function randomStr(length=16, charset='alphanum')
   }).join('');
 }
 
-export function formatPercent(value) {
-  if ( value < 1 )
+export function formatPercent(value, adaptive=true) {
+  if ( value < 1 || adaptive === false )
   {
     return Math.round(value*100)/100 + '%';
   }
@@ -203,16 +203,16 @@ export function formatPercent(value) {
   }
 }
 
-export function formatMib(value) {
-  if ( value >= 10240 )
+export function formatMib(value, adaptive=true) {
+  if ( value >= 10240 && adaptive === true)
   {
     return Math.round(value/1024) + ' GiB';
   }
   else if ( value >= 1024 )
   {
-    return Math.ceil(value/102.4)/10 + ' GiB';
+    return Math.ceil(value/10.24)/100 + ' GiB';
   }
-  else if ( value < 10 )
+  else if ( value < 10 || adaptive === false )
   {
     return Math.round(value*10)/10 + ' MiB';
   }
@@ -222,8 +222,8 @@ export function formatMib(value) {
   }
 }
 
-export function formatKbps(value) {
-  if ( value >= 10000 )
+export function formatKbps(value, adaptive=true) {
+  if ( value >= 10000 && adaptive === true )
   {
     return Math.round(value/1000) + ' Mbps';
   }
@@ -231,7 +231,7 @@ export function formatKbps(value) {
   {
     return Math.ceil(value/100)/10 + ' Mbps';
   }
-  else if ( value < 10 )
+  else if ( value < 10 || adaptive === false )
   {
     return Math.round(value*10)/10 + ' Kbps';
   }
@@ -267,6 +267,9 @@ var Util = {
   timerFuzz: timerFuzz,
   random32: random32,
   randomStr: randomStr,
+  formatPercent: formatPercent,
+  formatMib: formatMib,
+  formatKbps: formatKbps,
 };
 
 window.Util = Util;

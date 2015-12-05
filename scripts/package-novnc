@@ -1,0 +1,48 @@
+#!/bin/bash
+set -e
+set -u
+
+: ${CI_BRANCH=""}
+: ${UPLOAD_LATEST=""}
+
+OUT=vendor/novnc.js
+
+# cd to app root
+CWD=$(dirname $0)
+if [[ `basename $(pwd)` = 'scripts' ]]; then
+  cd ../
+else
+  cd `dirname $CWD`
+fi
+
+function addFile() {
+  echo "" >> $OUT
+  echo "// $1" >> $OUT
+  cat $1 >> $OUT
+  echo "//End of $1" >> $OUT
+}
+
+echo "/**" > $OUT
+addFile 'bower_components/no-vnc/LICENSE.txt'
+echo "**/" >> $OUT
+echo "var NoVNC = (function(window) {" >> $OUT
+echo "" >> $OUT
+echo "var Websock_native;" >> $OUT
+echo "var Base64 = { encode: function(d) { return btoa(d); }, decode: function(e) { return atob(e); } };" >> $OUT
+echo "" >> $OUT
+
+addFile 'bower_components/no-vnc/include/util.js'
+addFile 'bower_components/no-vnc/include/webutil.js'
+addFile 'bower_components/no-vnc/include/websock.js'
+addFile 'bower_components/no-vnc/include/des.js'
+addFile 'bower_components/no-vnc/include/keysymdef.js'
+addFile 'bower_components/no-vnc/include/keyboard.js'
+addFile 'bower_components/no-vnc/include/input.js'
+addFile 'bower_components/no-vnc/include/display.js'
+addFile 'bower_components/no-vnc/include/jsunzip.js'
+addFile 'bower_components/no-vnc/include/rfb.js'
+addFile 'bower_components/no-vnc/include/keysym.js'
+
+echo "" >> $OUT
+echo "return { RFB: RFB, WebUtil: WebUtil };" >> $OUT
+echo "})(window);" >> $OUT

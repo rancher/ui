@@ -1,0 +1,39 @@
+<div class="form-control-static">
+  <button class="btn-circle-text" {{action "addDisk"}}><i class="icon icon-plus-circle"/> <span>Add Disk</span></button>
+</div>
+
+{{#if disksArray.length}}
+  <table class="table fixed no-lines no-top-padding tight small">
+    <tr class="text-muted">
+      <th>Name*</th>
+      <th width="30">&nbsp;</th>
+      <th>Size*</th>
+      <th width="30">&nbsp;</th>
+      <th>Driver*</th>
+      <th width="30"></th>
+    </tr>
+    {{#each disksArray as |disk|}}
+      <tr>
+        <td>
+          {{input class="form-control input-sm" type="text" value=disk.name placeholder="e.g. data"}}
+        </td>
+
+        <td>&nbsp;</td>
+
+        <td>
+          {{input class="form-control input-sm" type="text" value=disk.size placeholder="e.g. 20G"}}
+        </td>
+
+        <td>&nbsp;</td>
+
+        <td>
+          {{input class="form-control input-sm" type="text" value=disk.driver placeholder="e.g. convoy-glusterfs"}}
+        </td>
+
+        <td class="text-right">
+          <button class="btn-circle" {{action "removeDisk" disk}} tabindex="-1"><i class="icon icon-x-circle"/></button>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+{{/if}}

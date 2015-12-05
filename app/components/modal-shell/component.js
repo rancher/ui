@@ -61,7 +61,7 @@ export default Ember.Component.extend({
         socket.send(btoa(data));
       });
 
-      term.open(this.$('.console-body')[0]);
+      term.open(this.$('.shell-body')[0]);
 
       socket.onmessage = (message) => {
         this.set('status','Connected');

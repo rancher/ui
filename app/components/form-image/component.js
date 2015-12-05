@@ -3,17 +3,24 @@ import C from 'ui/utils/constants';
 import ManageLabels from 'ui/mixins/manage-labels';
 
 // Remember the last value and use that for new one
-var last = 'ubuntu:14.04.3';
+var lastContainer = 'ubuntu:14.04.3';
+var lastVm = 'rancher/vm-ubuntu';
 
 export default Ember.Component.extend(ManageLabels, {
   // Inputs
   initialValue: null,
   errors: null,
+  isVm: null,
 
   userInput: null,
   tagName: '',
-
   pullImage: null,
+
+  actions: {
+    setInput(str) {
+      this.set('userInput', str);
+    },
+  },
 
   didInitAttrs() {
     this.initLabels(this.get('initialLabels'), null, C.LABEL.PULL_IMAGE);
@@ -29,7 +36,7 @@ export default Ember.Component.extend(ManageLabels, {
 
     if ( !initial )
     {
-      initial = last;
+      initial = ( this.get('isVm') ? lastVm : lastContainer);
     }
 
     this.set('userInput', initial);
@@ -62,7 +69,14 @@ export default Ember.Component.extend(ManageLabels, {
     }
     else if ( input && input.length )
     {
-      last = input;
+      if ( this.get('isVm') )
+      {
+        lastVm = input;
+      }
+      else
+      {
+        lastContainer = input;
+      }
       out += input;
     }
     else
