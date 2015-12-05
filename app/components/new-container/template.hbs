@@ -1,15 +1,16 @@
 {{#unless isSidekick}}
-
-  <section class="horizontal-form container-fluid">
+  <section>
     <h2>{{if isUpgrade 'Upgrade' 'Add'}}
       {{#if isService}}
         Service{{if hasSidekicks 's'}}
       {{else}}
-        Container
+        {{if isVm 'Virtual Machine' 'Container'}}
       {{/if}}
     </h2>
     {{top-errors errors=errors}}
+  </section>
 
+  <section class="horizontal-form container-fluid">
     {{#if isService}}
       {{#if isUpgrade}}
         {{form-upgrade
@@ -28,6 +29,7 @@
         setLabels=(action 'setLabels' 'scale')
         setGlobal=(action 'setGlobal')
         setScale=(action  'setScale')
+        isVm=isVm
         classNames=(if isUpgrade 'hide')
       }}
 
@@ -59,6 +61,7 @@
     {{/unless}}
 
     {{form-image
+      isVm=isVm
       initialValue=launchConfig.imageUuid
       errors=imageErrors
       changed=(action 'setImage')
@@ -67,6 +70,11 @@
     }}
 
     {{form-divider}}
+
+    {{#if isVm}}
+      {{form-virtualmachine launchConfig=launchConfig}}
+      {{form-divider}}
+    {{/if}}
 
     {{form-ports
       initialPorts=launchConfig.ports
@@ -93,66 +101,70 @@
   <div class="{{unless advanced 'hide'}}">
     <section>
       <ul class="nav nav-tabs nav-tabs-well shadowed" style="display: inline-block">
-        <li role="presentation" class="tab" data-section="command" {{action "selectTab" "command"}}><a>Command</a></li>
-        <li role="presentation" class="tab" data-section="volumes" {{action "selectTab" "volumes"}}><a>Volumes</a></li>
-        <li role="presentation" class="tab" data-section="network" {{action "selectTab" "network"}}><a>Networking</a></li>
+        {{#if isVm}}
+          <li role="presentation" class="tab" data-section="disks" {{action "selectTab" "disks"}}><a>Disks</a></li>
+        {{else}}
+          <li role="presentation" class="tab" data-section="command" {{action "selectTab" "command"}}><a>Command</a></li>
+          <li role="presentation" class="tab" data-section="volumes" {{action "selectTab" "volumes"}}><a>Volumes</a></li>
+          <li role="presentation" class="tab" data-section="network" {{action "selectTab" "network"}}><a>Networking</a></li>
+          <li role="presentation" class="tab" data-section="security" {{action "selectTab" "security"}}><a>Security/Host</a></li>
+        {{/if}}
         <li role="presentation" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}><a>Health Check</a></li>
-        <li role="presentation" class="tab" data-section="security" {{action "selectTab" "security"}}><a>Security/Host</a></li>
         <li role="presentation" class="tab" data-section="labels" {{action "selectTab" "labels"}}><a>Labels</a></li>
         <li role="presentation" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}><a>Scheduling</a></li>
       </ul>
 
     <div class="horizontal-form well">
-      <div class="section container-fluid" data-section="command">
-        {{form-command
-          instance=launchConfig
-          errors=commandErrors
-          isService=isService
-          setLabels=(action 'setLabels' 'command')
-        }}
-      </div>
+      {{#if isVm}}
+        <div class="section container-fluid" data-section="disks">
+          {{form-disks instance=launchConfig}}
+        </div>
+      {{else}}
+        <div class="section container-fluid" data-section="command">
+          {{form-command
+            instance=launchConfig
+            errors=commandErrors
+            isService=isService
+            setLabels=(action 'setLabels' 'command')
+          }}
+        </div>
 
-      <div class="section container-fluid" data-section="volumes">
-        {{form-volumes instance=launchConfig errors=volumeErrors allHosts=allHosts}}
-      </div>
+        <div class="section container-fluid" data-section="volumes">
+          {{form-volumes instance=launchConfig errors=volumeErrors allHosts=allHosts}}
+        </div>
 
-      <div class="section container-fluid" data-section="network">
-        {{form-networking
-          instance=launchConfig
-          errors=networkingErrors
-          allHosts=allHosts
-          isService=isService
-          initialLabels=launchConfig.labels
-          setLabels=(action 'setLabels' 'networking')
-        }}
-      </div>
+        <div class="section container-fluid" data-section="network">
+          {{form-networking
+            instance=launchConfig
+            errors=networkingErrors
+            allHosts=allHosts
+            isService=isService
+            initialLabels=launchConfig.labels
+            setLabels=(action 'setLabels' 'networking')
+          }}
+        </div>
+
+        <div class="section" data-section="security">
+          {{form-security instance=launchConfig errors=securityErrors}}
+        </div>
+      {{/if}}
 
       <div class="section container-fluid" data-section="healthcheck">
         {{form-healthcheck healthCheck=launchConfig.healthCheck errors=healthCheckErrors}}
       </div>
 
-      <div class="section" data-section="security">
-        {{form-security instance=launchConfig errors=securityErrors}}
-      </div>
-
       <div class="section" data-section="labels">
-        <div class="row form-group">
-          <div class="col-sm-12 col-md-2 form-label">
-            <label class="form-control-static">Labels</label>
-          </div>
-          <div class="col-sm-12 col-md-8">
-            {{form-user-labels
-              initialLabels=launchConfig.labels
-              setLabels=(action 'setLabels' 'user')
-            }}
-          </div>
-        </div>
+        {{form-user-labels
+          initialLabels=launchConfig.labels
+          setLabels=(action 'setLabels' 'user')
+        }}
       </div>
 
       <div class="section" data-section="scheduling">
         {{form-scheduling
           isService=isService
           isGlobal=isGlobal
+          isVm=isVm
           initialHostId=launchConfig.requestedHostId
           initialLabels=launchConfig.labels
           errors=schedulingErrors
@@ -175,6 +187,7 @@
         isService=true
         isSidekick=true
         isUpgrade=isUpgrade
+        isVm=(eq slc.kind 'virtualMachine')
         launchConfig=slc
         service=slc
         primaryResource=slc

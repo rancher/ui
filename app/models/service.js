@@ -85,7 +85,13 @@ var Service = Resource.extend({
     },
 
     upgrade() {
-      this.get('application').transitionToRoute('service.new', {queryParams: {
+      var route = 'service.new';
+      if ( (this.get('launchConfig.kind')||'').toLowerCase() === 'virtualmachine')
+      {
+        route = 'service.new-virtualmachine';
+      }
+
+      this.get('application').transitionToRoute(route, {queryParams: {
         serviceId: this.get('id'),
         upgrade: true,
         environmentId: this.get('environmentId'),
@@ -96,7 +102,16 @@ var Service = Resource.extend({
       var route;
       switch ( this.get('type').toLowerCase() )
       {
-        case 'service':             route = 'service.new';          break;
+        case 'service':
+          if ( (this.get('launchConfig.kind')||'').toLowerCase() === 'virtualmachine')
+          {
+            route = 'service.new-virtualmachine';
+          }
+          else
+          {
+            route = 'service.new';
+          }
+          break;
         case 'dnsservice':          route = 'service.new-alias';    break;
         case 'loadbalancerservice': route = 'service.new-balancer'; break;
         case 'externalservice':     route = 'service.new-external'; break;

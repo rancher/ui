@@ -34,6 +34,7 @@ export default Ember.Controller.extend({
   editLoadBalancerService: null,
   editRegistry: null,
   showShell: null,
+  showConsole: null,
   showContainerLogs: null,
   openProcessesError: null
 });

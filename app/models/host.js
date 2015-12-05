@@ -2,6 +2,8 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
 import { formatMib } from 'ui/utils/util';
+import C from 'ui/utils/constants';
+
 
 var Host = Resource.extend({
   type: 'host',
@@ -123,11 +125,21 @@ var Host = Resource.extend({
   }.property('physicalHostId'),
 
   osBlurb: function() {
+    var out;
+
     if ( this.get('info.osInfo.operatingSystem') )
     {
-      return this.get('info.osInfo.operatingSystem').replace(/\s+\(.*?\)/,'');
+      out = this.get('info.osInfo.operatingSystem').replace(/\s+\(.*?\)/,'');
     }
-  }.property('info.osInfo.operatingSystem'),
+
+    var hasKvm = (this.get('labels')||{})[C.LABEL.KVM] === 'true';
+    if ( hasKvm && out )
+    {
+      out += ' (with KVM)';
+    }
+
+    return out;
+  }.property('info.osInfo.operatingSystem','labels'),
 
   osDetail: Ember.computed.alias('info.osInfo.operatingSystem'),
 

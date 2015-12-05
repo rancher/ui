@@ -10,8 +10,8 @@ export default Ember.Component.extend({
       this.sendAction('switch', index);
     },
 
-    add() {
-      this.sendAction('add');
+    add(vm) {
+      this.sendAction('add', vm);
     },
   },
 

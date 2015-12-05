@@ -29,6 +29,7 @@ export default Ember.Component.extend({
   model: null,
   linkName: 'containerStats',
   single: true,
+  showGraphs: true,
 
   statsSocket: null,
   available: Ember.computed.alias('statsSocket.available'),

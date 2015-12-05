@@ -47,10 +47,11 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       }
     },
 
-    addSidekick() {
+    addSidekick(vm) {
       var ary = this.get('service.secondaryLaunchConfigs');
       ary.pushObject(this.get('store').createRecord({
         type: 'secondaryLaunchConfig',
+        kind: (vm === true ? 'virtualMachine' : 'container'),
         tty: true,
         stdinOpen: true,
         restartPolicy: {name: 'always'},
@@ -120,7 +121,15 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   didInsertElement() {
-    this.send('selectTab','command');
+    if ( this.get('isVm') )
+    {
+      this.send('selectTab','disks');
+    }
+    else
+    {
+      this.send('selectTab','command');
+    }
+
     this.$("INPUT[type='text']")[0].focus();
   },
 

@@ -74,6 +74,7 @@ var Container = Resource.extend({
 
     var isSystem = this.get('systemContainer') !== null;
     var isService = Object.keys(this.get('labels')||{}).indexOf(C.LABEL.SERVICE_NAME) >= 0;
+    var isVm = this.get('isVm');
 
     var choices = [
       { label: 'Restart',       icon: 'icon icon-refresh',      action: 'restart',      enabled: !!a.restart },
@@ -83,7 +84,8 @@ var Container = Resource.extend({
       { label: 'Restore',       icon: '',                       action: 'restore',      enabled: !!a.restore },
       { label: 'Purge',         icon: '',                       action: 'purge',        enabled: !!a.purge },
       { divider: true },
-      { label: 'Execute Shell', icon: '',                       action: 'shell',        enabled: !!a.execute },
+      { label: 'Execute Shell', icon: '',                       action: 'shell',        enabled: !!a.execute && !isVm },
+      { label: 'Open Console',  icon: '',                       action: 'console',      enabled: !!a.console &&  isVm },
       { label: 'View Logs',     icon: '',                       action: 'logs',         enabled: !!a.logs },
       { label: 'View in API',   icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
       { divider: true },
@@ -92,7 +94,7 @@ var Container = Resource.extend({
     ];
 
     return choices;
-  }.property('actionLinks.{restart,start,stop,restore,purge,execute,logs,update,remove}','systemContainer','canDelete','labels'),
+  }.property('actionLinks.{restart,start,stop,restore,purge,execute,logs,update,remove}','systemContainer','canDelete','labels','isVm'),
 
 
   // Hacks
@@ -124,6 +126,10 @@ var Container = Resource.extend({
       return resource;
     }
   }.property('state', 'healthState'),
+
+  isVm: function() {
+    return this.get('type').toLowerCase() === 'virtualmachine';
+  }.property('type'),
 
   isOn: function() {
     return ['running','updating-running','migrating','restarting'].indexOf(this.get('state')) >= 0;

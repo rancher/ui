@@ -248,6 +248,10 @@ export default Ember.Route.extend({
       this._includeChanged('host', 'instances', 'hosts', change.data.resource);
     },
 
+    virtualMachineChanged: function(change) {
+      this._includeChanged('host', 'instances', 'hosts', change.data.resource);
+    },
+
     instanceChanged: function(change) {
       this._includeChanged('host', 'instances', 'hosts', change.data.resource);
     },

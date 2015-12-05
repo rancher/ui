@@ -10,4 +10,15 @@ export default Ember.Component.extend(FasterLinksAndMenus,{
   networkMax: null,
 
   tagName: 'TR',
+
+  detailBaseUrl: function() {
+    if ( this.get('model.isVm') )
+    {
+      return '/infra/vms/';
+    }
+    else
+    {
+      return '/infra/containers/';
+    }
+  }.property('model.isVm'),
 });
