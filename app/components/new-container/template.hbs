@@ -109,6 +109,8 @@
           <li role="presentation" class="tab" data-section="network" {{action "selectTab" "network"}}><a>Networking</a></li>
           <li role="presentation" class="tab" data-section="security" {{action "selectTab" "security"}}><a>Security/Host</a></li>
         {{/if}}
+
+        <li role="presentation" class="tab" data-section="userdata" {{action "selectTab" "userdata"}}><a>User Data</a></li>
         <li role="presentation" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}><a>Health Check</a></li>
         <li role="presentation" class="tab" data-section="labels" {{action "selectTab" "labels"}}><a>Labels</a></li>
         <li role="presentation" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}><a>Scheduling</a></li>
@@ -148,6 +150,10 @@
           {{form-security instance=launchConfig errors=securityErrors}}
         </div>
       {{/if}}
+
+      <div class="section container-fluid" data-section="userdata">
+        {{form-userdata instance=launchConfig}}
+      </div>
 
       <div class="section container-fluid" data-section="healthcheck">
         {{form-healthcheck healthCheck=launchConfig.healthCheck errors=healthCheckErrors}}
