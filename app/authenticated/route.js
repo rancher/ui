@@ -43,18 +43,20 @@ export default Ember.Route.extend({
       var projectsService = this.get('projects');
 
       // Return the list of projects as the model
-      return projectsService.getAll().then((all) => {
-        projectsService.set('all', all);
+      return this.loadPreferences().then(() => {
+        return projectsService.getAll().then((all) => {
+          projectsService.set('all', all);
 
-        return projectsService.selectDefault().then(() => {
-          return this.loadStacks().then((stacks) => {
-            return Ember.Object.create({
-              projects: all,
-              stacks: stacks,
+          return projectsService.selectDefault().then(() => {
+            return this.loadStacks().then((stacks) => {
+              return Ember.Object.create({
+                projects: all,
+                stacks: stacks,
+              });
             });
+          }).catch(() => {
+            this.replaceWith('settings.projects');
           });
-        }).catch(() => {
-          this.replaceWith('settings.projects');
         });
       });
     }).catch((err) => {
@@ -70,7 +72,6 @@ export default Ember.Route.extend({
 
   afterModel: function() {
     return Ember.RSVP.hash({
-      prefs: this.loadPreferences(),
       settings: this.loadPublicSettings(),
     });
   },
