@@ -40,10 +40,22 @@ export default Ember.Route.extend({
       var isAdmin = (type === C.USER.TYPE_ADMIN) || !isAuthEnabled;
       this.set('access.admin', isAdmin);
 
+      var projectsService = this.get('projects');
+
       // Return the list of projects as the model
-      return Ember.RSVP.hash({
-        projects: this.get('projects').getAll(),
-        stacks: this.loadStacks(),
+      return projectsService.getAll().then((all) => {
+        projectsService.set('all', all);
+
+        return projectsService.selectDefault().then(() => {
+          return this.loadStacks().then((stacks) => {
+            return Ember.Object.create({
+              projects: all,
+              stacks: stacks,
+            });
+          });
+        }).catch(() => {
+          this.replaceWith('settings.projects');
+        });
       });
     }).catch((err) => {
       if ( [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
@@ -56,18 +68,10 @@ export default Ember.Route.extend({
     });
   },
 
-  afterModel: function(model) {
-    var projects = this.get('projects');
-    var more = {
+  afterModel: function() {
+    return Ember.RSVP.hash({
       prefs: this.loadPreferences(),
       settings: this.loadPublicSettings(),
-    };
-
-    return Ember.RSVP.hash(more).then(() => {
-      projects.set('all', model.projects);
-      return projects.selectDefault().catch(() => {
-        this.replaceWith('settings.projects');
-      });
     });
   },
 
