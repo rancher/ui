@@ -1,11 +1,12 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import { denormalizeName } from 'ui/services/settings';
 
 export default Ember.Route.extend({
   endpoint: Ember.inject.service(),
 
   model: function() {
-    return this.get('store').find('setting', C.SETTING.API_HOST);
+    return this.get('store').find('setting', denormalizeName(C.SETTING.API_HOST));
   },
 
   setupController: function(controller, model) {

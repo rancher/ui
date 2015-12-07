@@ -1,5 +1,6 @@
-import C from 'ui/utils/constants';
 import Ember from 'ember';
+import C from 'ui/utils/constants';
+import { denormalizeName } from 'ui/services/settings';
 
 export default Ember.Route.extend({
   access: Ember.inject.service(),
@@ -8,7 +9,7 @@ export default Ember.Route.extend({
     var store = this.get('store');
     if ( this.get('access.admin') && store.hasRecordFor('schema','setting') )
     {
-      return store.find('setting', C.SETTING.API_HOST).then((setting) => {
+      return store.find('setting', denormalizeName(C.SETTING.API_HOST)).then((setting) => {
         if ( setting.get('value') )
         {
           return Ember.RSVP.resolve();
