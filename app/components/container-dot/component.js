@@ -35,7 +35,7 @@ export default Ember.Component.extend({
   },
 
   contextMenu(event) {
-    e.preventDefault();
+    event.preventDefault();
     this.get('resourceActions').show(this.get('model'), this.$());
   },
 });
