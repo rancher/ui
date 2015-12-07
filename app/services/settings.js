@@ -1,11 +1,11 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
-function normalizeName(str) {
+export function normalizeName(str) {
   return str.replace(/\./g, C.SETTING.DOT_CHAR).toLowerCase();
 }
 
-function denormalizeName(str) {
+export function denormalizeName(str) {
   return str.replace(C.SETTING.DOT_CHAR,'.').toLowerCase();
 }
 
