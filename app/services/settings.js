@@ -1,4 +1,13 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
+
+function normalizeName(str) {
+  return str.replace(/\./g, C.SETTING.DOT_CHAR).toLowerCase();
+}
+
+function denormalizeName(str) {
+  return str.replace(C.SETTING.DOT_CHAR,'.').toLowerCase();
+}
 
 export default Ember.Service.extend({
   all: null,
@@ -9,14 +18,61 @@ export default Ember.Service.extend({
   },
 
   unknownProperty(key) {
-    return this.get('asMap')[key];
+    var obj = this.findByName(key);
+    if ( obj )
+    {
+      var val = obj.get('value');
+      if ( val === 'false' )
+      {
+        return false;
+      }
+      else if ( val === 'true' )
+      {
+        return true;
+      }
+      else
+      {
+        return val;
+      }
+    }
+
+    return null;
+  },
+
+  setUnknownProperty(key, value) {
+    var obj = this.findByName(key);
+
+    if ( value === undefined )
+    {
+      // Delete by set to undefined is not needed for settings
+      throw new Error('Deleting settings is not supported');
+    }
+
+    if ( !obj )
+    {
+      obj = this.get('store').createRecord({
+        type: 'setting',
+        name: denormalizeName(key),
+      });
+    }
+
+    obj.set('value', value+''); // Values are all strings in settings.
+    obj.save().then(() => {
+      this.notifyPropertyChange(normalizeName(key));
+    });
+
+    return value;
+  },
+
+  findByName(name) {
+    return this.get('asMap')[normalizeName(name)];
   },
 
   asMap: function() {
     var out = {};
     (this.get('all')||[]).forEach((setting) => {
-      var name = setting.get('name').replace(/\./g,'_').toLowerCase();
-      out[name] = setting.get('value');
+      var name = normalizeName(setting.get('name'));
+      out[name] = setting;
     });
 
     return out;
@@ -26,9 +82,11 @@ export default Ember.Service.extend({
     return 'v' + this.get('app.version');
   }.property('app.version'),
 
-  rancherVersion: Ember.computed.alias('asMap.rancher_server_image'),
-  composeVersion: Ember.computed.alias('asMap.rancher_compose_version'),
-  cattleVersion: Ember.computed.alias('asMap.cattle_version'),
-  dockerMachineVersion: Ember.computed.alias('asMap.docker_machine_version'),
-  goMachineVersion: Ember.computed.alias('asMap.go_machine_service_version'),
+  rancherVersion: Ember.computed.alias('asMap.'+C.SETTING.VERSION_RANCHER+'.value'),
+  composeVersion: Ember.computed.alias('asMap.'+C.SETTING.VERSION_COMPOSE+'.value'),
+  cattleVersion: Ember.computed.alias('asMap.'+C.SETTING.VERSION_CATTLE+'.value'),
+  dockerMachineVersion: Ember.computed.alias('asMap.'+C.SETTING.VERSION_MACHINE+'.value'),
+  goMachineVersion: Ember.computed.alias('asMap.'+C.SETTING.VERSION_GMS+'.value'),
+
+  hasVm: Ember.computed.equal('asMap.'+C.SETTING.VM_ENABLED+'.value', 'true'),
 });

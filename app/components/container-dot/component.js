@@ -13,19 +13,29 @@ export default Ember.Component.extend({
 
   tooltip: Ember.computed.alias('model.displayName'),
 
-  click: function(e) {
-    if ( isAlternate(e) )
+  click(event) {
+    if ( isAlternate(event) )
     {
-      this.contextMenu(e);
+      this.contextMenu(event);
     }
     else
     {
-      this.get('router').transitionTo('container', this.get('model.id'));
+      this.details(event);
     }
   },
 
-  contextMenu: function(e) {
-    e.preventDefault();
+  details(/*event*/) {
+    var route = 'container';
+    if ( this.get('model.isVm') )
+    {
+      route = 'virtualmachine';
+    }
+
+    this.get('router').transitionTo(route, this.get('model.id'));
+  },
+
+  contextMenu(event) {
+    event.preventDefault();
     this.get('resourceActions').show(this.get('model'), this.$());
   },
 });

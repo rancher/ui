@@ -3,6 +3,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   application: Ember.inject.controller(),
+  settings: Ember.inject.service(),
   currentPath: Ember.computed.alias('application.currentPath'),
   error: null,
 
@@ -18,4 +19,6 @@ export default Ember.Controller.extend({
 
     return found;
   }.property('model.stacks.@each.externalId'),
+
+  hasVm: Ember.computed.alias('settings.hasVm'),
 });

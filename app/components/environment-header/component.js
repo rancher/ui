@@ -1,6 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  settings: Ember.inject.service(),
+  hasVm: Ember.computed.alias('settings.hasVm'),
+
   actions: {
     changeStack(stack) {
       var app = this.get('application');
