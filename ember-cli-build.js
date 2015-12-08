@@ -71,6 +71,7 @@ module.exports = function(defaults) {
   app.import('bower_components/md5-jkmyers/md5.js');
   app.import('vendor/dagre-d3/dagre-d3.core.js');
   app.import('vendor/novnc.js');
+  app.import('bower_components/commonmark/dist/commonmark.js');
 
 
   app.import('vendor/icons/style.css');
