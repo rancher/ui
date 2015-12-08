@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
+// @@TODO@@ - Dec 8, 2015 - need to add callback to this service.
+
 export default Ember.Component.extend({
   // Inputs
   initialMap: null,
@@ -10,6 +12,7 @@ export default Ember.Component.extend({
   valuePlaceholder: 'Value',
 
   ary: null,
+  asMap: null,
 
   actions: {
     add() {
@@ -92,14 +95,15 @@ export default Ember.Component.extend({
     this.set('ary', ary);
   },
 
-  asMap: function() {
+  asMapObserver: function() {
+
     var out = {};
     this.get('ary').forEach((row) => {
-      out[row.get('key')] = row.get('value');
+      out[row.get('key').trim()] = row.get('value').trim();
     });
 
-    return out;
-  }.property('ary.@each.{key,value}'),
+    this.set('asMap', out);
+  }.observes('ary.@each.{key,value}'),
 
   changed: function() {
     this.sendAction('changed', this.get('asMap'));

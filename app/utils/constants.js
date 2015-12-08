@@ -71,6 +71,7 @@ var C = {
     VERSION_MACHINE: 'docker$machine$version',
     VERSION_GMS:     'go$machine$service$version',
     API_HOST:        'api$host',
+    CATALOG_URL:     'catalog$url',
     VM_ENABLED:      'vm$enabled',
   },
 
