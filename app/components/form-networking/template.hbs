@@ -42,15 +42,17 @@
     </div>
   </div>
 {{else}}
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">DNS</label>
-    </div>
+  {{#if isHostNetwork}}
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label class="form-control-static">DNS</label>
+      </div>
 
-    <div class="col-sm-12 col-md-8">
-      <label class="form-control-static">{{input type="checkbox" checked=dnsDiscovery}} Enable Rancher DNS service discovery</label>
+      <div class="col-sm-12 col-md-8">
+        <label class="form-control-static">{{input type="checkbox" checked=dnsDiscovery}} Enable Rancher DNS service discovery</label>
+      </div>
     </div>
-  </div>
+  {{/if}}
 {{/if}}
 
 {{#unless isService}}

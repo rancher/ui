@@ -206,7 +206,7 @@ export default Ember.Component.extend(ManageLabels, {
   // ----------------------------------
   startOnce: null,
   initStartOnce: function() {
-    var startOnce = !!this.getLabel(C.LABEL.START_ONCE);
+    var startOnce = this.getLabel(C.LABEL.START_ONCE) === 'true';
     this.set('startOnce', startOnce);
   },
 

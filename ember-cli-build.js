@@ -26,7 +26,7 @@ module.exports = function(defaults) {
     },
 
     sourcemaps: {
-      enabled: false,
+      enabled: true,
       extensions: ['js']
     },
   });
