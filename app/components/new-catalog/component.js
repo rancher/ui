@@ -42,7 +42,7 @@ export default Ember.Component.extend(NewOrEdit, {
     },
 
     changeTemplate: function(tpl) {
-      this.get('application').transitionToRoute('applications-tab.catalog.launch', tpl.path);
+      this.get('application').transitionToRoute('applications-tab.catalog.launch', tpl.id);
     },
 
     toggleReadMe: function() {
@@ -50,7 +50,7 @@ export default Ember.Component.extend(NewOrEdit, {
     }
   },
 
-  didInitAttrs() {
+  didReceiveAttrs() {
     this._super.apply(this, arguments);
 
     // Select the default version
