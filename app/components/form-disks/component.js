@@ -12,7 +12,7 @@ export default Ember.Component.extend({
 
   actions: {
     addDisk() {
-      this.get('instance.disks').pushObject({name: '', size: '', driver: 'convoy-glusterfs'});
+      this.get('instance.disks').pushObject({name: '', size: '', driver: 'convoy-gluster'});
     },
 
     removeDisk(obj) {

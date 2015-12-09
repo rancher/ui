@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   model: function(params/*, transition*/) {
@@ -43,6 +44,7 @@ export default Ember.Route.extend({
           requestedHostId: params.hostId,
           tty: true,
           stdinOpen: true,
+          labels: { [C.LABEL.PULL_IMAGE]: C.LABEL.PULL_IMAGE_VALUE },
         };
       }
 

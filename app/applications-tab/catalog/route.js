@@ -12,7 +12,12 @@ export default Ember.Route.extend({
     }
   },
 
-  model: function(params) {
+  deactivate() {
+    // Clear the cache when leaving the route so that it will be reloaded when you come back.
+    this.set('cache', null);
+  },
+
+  model(params) {
     var cache = this.get('cache');
     if ( cache )
     {
