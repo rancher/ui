@@ -254,15 +254,11 @@ export default Ember.Mixin.create({
         return;
       }
 
-      // Split values on comma
-      var values = (obj[key]||'').split(/,/);
-      values.forEach(function(value) {
-        out.push(Ember.Object.create({
-          key: key,
-          value: value,
-          type: type,
-        }));
-      });
+      out.push(Ember.Object.create({
+        key: key,
+        value: obj[key]||'',
+        type: type,
+      }));
     });
 
     this.set('labelArray', out);

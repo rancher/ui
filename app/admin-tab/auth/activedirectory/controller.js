@@ -1,5 +1,7 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
+
+var PLAIN_PORT = 389;
+var TLS_PORT = 636;
 
 export default Ember.Controller.extend({
   access: Ember.inject.service(),
@@ -12,6 +14,8 @@ export default Ember.Controller.extend({
   error: null,
   originalModel: null,
 
+  providerName: 'Active Directory',
+
   addUserInput: '',
   addOrgInput: '',
 
@@ -23,59 +27,20 @@ export default Ember.Controller.extend({
   }.property('username.length','password.length'),
 
   saveDisabled: Ember.computed.or('saving','saved'),
-  isRestricted: Ember.computed.equal('model.accessMode','restricted'),
 
-  wasRestricted: Ember.computed.equal('originalModel.accessMode','restricted'),
-  wasRestrictedMsg: function() {
-    var users = this.get('originalModel.allowedUsers.length');
-    var orgs = this.get('originalModel.allowedOrganizations.length');
-    var enterprise = !!this.get('originalModel.hostname');
+  tlsChanged: function() {
+    var on = this.get('model.tls');
+    var port = parseInt(this.get('model.port'),10);
 
-    var github = 'GitHub' + ( enterprise ? ' Enterprise' : '');
-
-    var str = 'project members';
-    if ( users )
+    if ( on && port === PLAIN_PORT )
     {
-      str += (orgs ? ', ' : ' and ') +  users + ' ' + github + ' user' + (users === 1 ? '' : 's');
+      this.set('model.port', TLS_PORT);
     }
-
-    if ( orgs )
+    else if ( !on && port === TLS_PORT )
     {
-      str += ' and ' + orgs + (users ? '' : ' ' + github) + ' organization' + ( orgs === 1 ? '' : 's');
+      this.set('model.port', PLAIN_PORT);
     }
-
-    return str;
-  }.property('originalModel.allowedUsers.[]','originalModel.allowedOrganizations.[]','wasRestricted'),
-
-  wasShowing: false,
-  showingAccessControl: function() {
-    var show = this.get('wasShowing');
-    var restricted = this.get('isRestricted');
-
-    if ( restricted )
-    {
-      if ( (this.get('model.allowedUsers.length') + this.get('model.allowedOrganizations.length')) > 1 )
-      {
-        show = true;
-      }
-      else if ( this.get('model.allowedUsers.firstObject') !== this.get('session').get(C.SESSION.USER_ID) )
-      {
-        show = true;
-      }
-    }
-    else
-    {
-      show = true;
-    }
-
-
-    this.set('wasShowing', show);
-    return show;
-  }.property('model.allowedUsers.[]','model.allowedOrganizations.[]','isRestricted','wasShowing'),
-
-  accessModeChanged: function() {
-    this.set('saved',false);
-  }.observes('accessMode'),
+  }.observes('model.tls'),
 
   actions: {
     test: function() {

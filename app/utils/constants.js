@@ -45,12 +45,14 @@ var C = {
   },
 
   PROJECT: {
-    TYPE_RANCHER:     'rancher_id',
-    TYPE_GITHUB_USER: 'github_user',
-    TYPE_GITHUB_TEAM: 'github_team',
-    TYPE_GITHUB_ORG:  'github_org',
-    TYPE_LDAP_USER:   'ldap_user',
-    TYPE_LDAP_GROUP:  'ldap_group',
+    TYPE_RANCHER:         'rancher_id',
+    TYPE_GITHUB_USER:     'github_user',
+    TYPE_GITHUB_TEAM:     'github_team',
+    TYPE_GITHUB_ORG:      'github_org',
+    TYPE_LDAP_USER:       'ldap_user',
+    TYPE_LDAP_GROUP:      'ldap_group',
+    TYPE_OPENLDAP_USER:   'openldap_user',
+    TYPE_OPENLDAP_GROUP:  'openldap_group',
 
     PERSON: 'person',
     TEAM: 'team',

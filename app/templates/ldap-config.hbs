@@ -1,9 +1,9 @@
 <section>
   <div class="well">
-    <h2>LDAP is {{#if access.enabled}}<b>enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
+    <h2>{{providerName}} is {{#if access.enabled}}<b>enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
     <div>
       {{#if access.enabled}}
-        Rancher is configured to allow access to any LDAP user.
+        Rancher is configured to allow access to any {{providerName}} user.
       {{else}}
         Rancher can be configured to restrict access to a set of users and group members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.
       {{/if}}
@@ -44,48 +44,6 @@
     </div>
 
     <div class="well">
-      <h4>Site Access</h4>
-      {{#if showingAccessControl}}
-        <p class="help-block">
-          Configure who should be allowed to log in and user Rancher.  <b>Note:</b> Members added to environments are automatically allowed.
-        </p>
-        <hr/>
-
-        <div class="row">
-          <div class="col-md-6">
-            <div class="radio">
-              <label>{{radio-button selection=model.accessMode value="unrestricted"}} Allow any user</label>
-            </div>
-            <div class="radio">
-              <label>{{radio-button selection=model.accessMode value="restricted" disabled=true}} Restrict to specific users and group members (coming soon)</label>
-            </div>
-          </div>
-          <div class="col-md-6">
-          </div>
-        </div>
-
-        <hr/>
-
-        <button class="btn btn-primary" disabled={{saveDisabled}} {{action "saveAuthorization"}}>
-          {{#if saved}}
-            Saved
-          {{else}}
-            {{#if saving}}
-              <i class="icon icon-spinner icon-spin"></i> Saving...
-            {{else}}
-              Save authorization configuration
-            {{/if}}
-          {{/if}}
-        </button>
-      {{else}}
-        <p class="help-block">
-          By default, only users that are a member of a environment are allowed to log in and access Rancher.
-        </p>
-        <button class="btn btn-primary" {{action "showAccessControl"}}>Customize</button>
-      {{/if}}
-    </div>
-
-    <div class="well">
       <h4>Danger Zone&trade;</h4>
       <hr/>
 
@@ -107,12 +65,10 @@
   {{/if}}
 
   {{#unless access.enabled}}
-
-
     <div class="well">
-      <h4>1. Configure an LDAP server</h4>
+      <h4>1. Configure an {{providerName}} server</h4>
       <hr/>
-      <p class="help-block">Enter the address, port, and protocol to connect to your LDAP/ActiveDirectory server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS.</p>
+      <p class="help-block">Enter the address, port, and protocol to connect to your {{providerName}} server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS.</p>
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
@@ -224,7 +180,7 @@
     <div class="well">
       <h4>3. Test and enable authentication</h4>
       <hr/>
-      <p class="help-block">Check that everything is configured correctly by testing authentication with your LDAP account:</p>
+      <p class="help-block">Check that everything is configured correctly by testing authentication with your {{providerName}} account:</p>
       {{top-errors errors=errors}}
 
       <div class="row">

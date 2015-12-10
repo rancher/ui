@@ -29,8 +29,9 @@ Router.map(function() {
     // Admin
     this.resource('admin-tab', {path: '/admin'}, function() {
       this.route('auth', {path: '/access'}, function() {
+        this.route('activedirectory');
         this.route('github');
-        this.route('ldap');
+        this.route('openldap');
         this.route('localauth', {path: 'local'});
       });
 
