@@ -96,16 +96,12 @@ export default Ember.Component.extend({
   },
 
   asMapObserver: function() {
-
     var out = {};
     this.get('ary').forEach((row) => {
       out[row.get('key').trim()] = row.get('value').trim();
     });
 
     this.set('asMap', out);
+    this.sendAction('changed', out);
   }.observes('ary.@each.{key,value}'),
-
-  changed: function() {
-    this.sendAction('changed', this.get('asMap'));
-  }.observes('asMap'),
 });
