@@ -14,7 +14,7 @@ export default Ember.Component.extend(FilterState, {
   collapsed: true,
   classNames: ['stack-section'],
 
-  filterableContent: Ember.computed.alias('model.services'),
+  filterableContent: Ember.computed.alias('model.unremovedServices'),
 
   actions: {
     toggleCollapse() {
