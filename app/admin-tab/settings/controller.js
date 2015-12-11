@@ -55,6 +55,7 @@ export default Ember.Controller.extend({
       this.get('settings').setProperties(propsOut).one('settingsPromisesResolved', () => {
 
         this.set('saving', false);
+        this.set('errors', null);
 
         if (this.get('backToAdd')) {
 
