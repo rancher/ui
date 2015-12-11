@@ -1,0 +1,23 @@
+<h4>Host</h4>
+<hr>
+<h5>We need to know a little about how your environment is set up before you can register hosts. What base URL should hosts use to connect to the Rancher API?</h5>
+
+<div style="margin-top: 15px;">
+  <label>{{radio-button selection=customRadio value="no"}}&nbsp;This site's address:&nbsp;&nbsp;</label>
+  <code class="form-control-static">{{thisPage}}</code>
+</div>
+
+<div style="margin-top: 10px;">
+  <label>{{radio-button selection=customRadio value="yes"}}&nbsp;Something else:&nbsp;&nbsp;</label>
+  {{input type="text" class="form-control" value=customValue placeholder="e.g. rancher.mydomain.com" safeStyle="width: calc(100% - 150px); display: inline-block;  min-width: 300px;"}}
+  <h6 style="margin-top: 10px;">Don't include <code>/v1</code> or any other path, but if you are doing <a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/basic-ssl-config/" target="_blank">SSL termination</a> in front of Rancher, be sure to use <code>https://</code>.</h6>
+</div>
+
+{{#unless looksPublic}}
+  <div class="alert alert-info" style="margin-top: 30px;">
+    <i class="icon icon-info" style="font-size: 35px; float: left;"></i>
+    <p style="margin-left: 50px;">
+      Are you sure all the hosts you will create will be able to reach <code>{{activeValue}}</code> ?<br/>It looks like a private IP or local network.
+    </p>
+  </div>
+{{/unless}}
