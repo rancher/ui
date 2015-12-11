@@ -52,12 +52,8 @@ export default Ember.Component.extend({
     }
     else if ( isDifferent )
     {
-      // for some reason the activeValueObserver doesnt recognize setting this value unless
-      // we run with ember.run.next
-      Ember.run.next(() => {
         this.set('customValue', endpoint);
         this.set('customRadio', 'yes');
-      });
     }
     else
     {
@@ -86,7 +82,7 @@ export default Ember.Component.extend({
 
   activeValueObserver: function() {
     this.send('sendActiveValue', this.parseActiveValue(this.get('customValue')));
-  }.observes('customRadio','customValue','thisPage'),
+  }.observes('customRadio','customValue','thisPage').on('init'),
 
 
   activeValue: function() {

@@ -39,7 +39,7 @@ export default Ember.Component.extend({
   },
 
   keymapObserver: function() {
-      this.sendAction('keymapChanged', this.get('keymap.asMap'));
-  }.observes('keymap.asMap'),
+    this.sendAction('keymapChanged', this.get('keymap'));
+  }.observes('keymap'),
 
 });
