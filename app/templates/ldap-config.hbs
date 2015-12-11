@@ -117,13 +117,15 @@
             {{input type="text" value=model.domain classNames="form-control" placeholder="e.g. dc=mycompany,dc=com"}}
           </div>
         </div>
-        <div class="col-md-6">
-          <p class="help-block">This domain will be used if a user logs in without specifing one.</p>
-          <div class="form-group">
-            <label>Default Login Domain*</label>
-            {{input type="text" value=model.loginDomain classNames="form-control" placeholder="e.g. mycompany"}}
+        {{#unless isOpenLdap}}
+          <div class="col-md-6">
+            <p class="help-block">This domain will be used if a user logs in without specifing one.</p>
+            <div class="form-group">
+              <label>Default Login Domain*</label>
+              {{input type="text" value=model.loginDomain classNames="form-control" placeholder="e.g. mycompany"}}
+            </div>
           </div>
-        </div>
+        {{/unless}}
       </div>
     </div>
 
