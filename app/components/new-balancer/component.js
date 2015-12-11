@@ -8,7 +8,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   service: null,
   existing: null,
   balancerConfig: null,
-  haproxyConfig: null,
   allHosts: null,
   allServices: null,
   allCertificates: null,

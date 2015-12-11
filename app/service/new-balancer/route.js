@@ -14,7 +14,7 @@ export default Ember.Route.extend({
 
     if ( params.serviceId )
     {
-      dependencies.pushObject(store.find('service', params.serviceId));
+      dependencies.pushObject(store.find('service', params.serviceId, {include: ['loadbalancerlisteners']}));
     }
 
     return Ember.RSVP.all(dependencies, 'Load dependencies').then(function(results) {
@@ -23,12 +23,10 @@ export default Ember.Route.extend({
       var allCertificates = results[2];
       var existing = results[3];
 
-      var launchConfig, lbConfig, balancer, appCookie, lbCookie, haproxyConfig;
+      var launchConfig, lbConfig, balancer, appCookie, lbCookie;
       if ( existing )
       {
         balancer = existing.cloneForNew();
-        delete balancer.instances;
-
         launchConfig = balancer.get('launchConfig');
         launchConfig.set('type','container');
         launchConfig.set('healthCheck',null);
@@ -41,6 +39,7 @@ export default Ember.Route.extend({
           lbConfig.set('type','loadBalancerConfig');
           delete lbConfig.id;
           lbConfig = store.createRecord(lbConfig);
+          lbConfig.set('loadBalancerListeners', balancer.get('loadBalancerListeners'));
           balancer.set('loadBalancerConfig', lbConfig);
 
           appCookie = lbConfig.get('appCookieStickinessPolicy');
@@ -57,14 +56,6 @@ export default Ember.Route.extend({
             lbCookie.set('type','loadBalancerCookieStickinessPolicy');
             lbCookie = store.createRecord(lbCookie);
             lbConfig.set('lbCookieStickinessPolicy', lbCookie);
-          }
-
-          haproxyConfig = lbConfig.get('haproxyConfig');
-          if ( haproxyConfig )
-          {
-            haproxyConfig.set('type','haproxyConfig');
-            haproxyConfig = store.createRecord(haproxyConfig);
-            lbConfig.set('haproxyConfig', haproxyConfig);
           }
         }
       }
@@ -98,16 +89,6 @@ export default Ember.Route.extend({
         });
       }
 
-      if ( !haproxyConfig )
-      {
-        haproxyConfig = store.createRecord({
-          type: 'haproxyConfig',
-          'global': '',
-          'defaults': ''
-        });
-      }
-
-      lbConfig.set('haproxyConfig', haproxyConfig);
       balancer.set('loadBalancerConfig', lbConfig);
 
       return {
@@ -118,7 +99,6 @@ export default Ember.Route.extend({
         service: balancer,
         config: lbConfig,
         launchConfig: launchConfig,
-        haproxyConfig: haproxyConfig
       };
     });
   },

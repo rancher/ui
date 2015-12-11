@@ -12,6 +12,7 @@ export default Ember.Route.extend({
         include: ['instances']
       }).then((services) => {
         env.set('services', services||[]);
+        env.set('services.sortProperties', ['name','id']);
         return Ember.Object.create({
           stack: env,
           all: all,

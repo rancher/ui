@@ -193,10 +193,7 @@ var Environment = Resource.extend({
 
 
   unremovedServices: function() {
-    return UnremovedArrayProxy.create({
-      sourceContent: this.get('services'),
-      sortProperties: ['displayName','id']
-    });
+    return UnremovedArrayProxy.create({sourceContent: this.get('services')});
   }.property('services'),
 
   externalIdInfo: function() {

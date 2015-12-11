@@ -49,6 +49,9 @@ module.exports = function(environment) {
                     '&include=hosts' +
                     '&include=instances' +
                     '&include=instance' +
+                    '&include=loadBalancerConfig' +
+                    '&include=loadBalancerTargets' +
+                    '&include=loadBalancerListeners' +
                     '&include=instanceLinks' +
                     '&include=ipAddresses',
       baseAssets: '',
