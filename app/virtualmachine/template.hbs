@@ -1,17 +1,17 @@
 <section class="header">
-  <ol class="breadcrumb right-divider">
+  <h1 class="right-divider">
     {{#if model.vm.primaryHost}}
       {{#link-to "hosts" tagName="li" href=false}}<a>Hosts</a>{{/link-to}}
       {{#link-to "host" model.vm.primaryHost.id tagName="li" href=false}}<a>{{model.vm.primaryHost.displayName}}</a>{{/link-to}}
     {{else}}
       {{#link-to "virtualmachines" tagName="li" href=false}}<a>Virtual Machines</a>{{/link-to}}
     {{/if}}
-    <li class="active">
+   
       {{#power-select options=model.vm.primaryHost.instances selected=model.vm onchange=(action "changeVirtualMachine") searchField="displayName" as |obj|}}
         <div class="clip r-mr15"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
       {{/power-select}}
-    </li>
-  </ol>
+    
+  </h1>
 
   {{action-menu model=model.vm size="sm"}}
 </section>
