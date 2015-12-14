@@ -270,10 +270,6 @@ export default Ember.Route.extend({
       this._includeChanged('loadBalancer', 'loadBalancerTargets', 'loadBalancerId', change.data.resource);
     },
 
-    loadBalancerConfigChanged: function(change) {
-      this._includeChanged('loadBalancer', 'loadBalancerListeners', 'loadBalancerListeners', change.data.resource);
-    },
-
     loadBalancerChanged: function(change) {
       var balancer = change.data.resource;
       var config = balancer.get('loadBalancerConfig');

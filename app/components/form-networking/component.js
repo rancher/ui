@@ -15,7 +15,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   tagName: '',
 
   didInitAttrs() {
-    this.initLabels(this.get('initialLabels'), null, [C.LABEL.DNS, C.LABEL.HOSTNAME_OVERRIDE]);
+    this.initLabels(this.get('initialLabels'), null, [C.LABEL.DNS, C.LABEL.HOSTNAME_OVERRIDE, C.LABEL.REQUESTED_IP]);
     this.initNetwork();
     this.initRequestedIp();
     this.initHostname();
@@ -73,6 +73,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   }.observes('instance.networkMode'),
 
   isManagedNetwork: Ember.computed.equal('instance.networkMode','managed'),
+  isHostNetwork: Ember.computed.equal('instance.networkMode','host'),
 
   // ----------------------------------
   // Requested IP
@@ -107,7 +108,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   // ----------------------------------
   hostname: null,
   initHostname: function() {
-    var override = !!this.getLabel(C.LABEL.HOSTNAME_OVERRIDE);
+    var override = this.getLabel(C.LABEL.HOSTNAME_OVERRIDE) === 'override';
     if ( override )
     {
       this.set('hostname', 'override');
@@ -137,12 +138,12 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   // ----------------------------------
   dnsDiscovery: null,
   initDnsDiscovery: function() {
-    var on = !!this.getLabel(C.LABEL.DNS);
+    var on = this.getLabel(C.LABEL.DNS) === 'true';
     this.set('dnsDiscovery', on);
   },
 
   dnsDiscoveryDidChange: function() {
-    var on = this.get('dnsDiscovery') && this.get('isManagedNetwork');
+    var on = this.get('dnsDiscovery') && this.get('isHostNetwork');
     if ( on )
     {
       this.setLabel(C.LABEL.DNS, 'true');
@@ -152,7 +153,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
       this.removeLabel(C.LABEL.DNS);
       this.set('dnsDiscovery', false);
     }
-  }.observes('dnsDiscovery','isManagedNetwork'),
+  }.observes('dnsDiscovery','isHostNetwork'),
 
   // ----------------------------------
   // DNS Resolver

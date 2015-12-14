@@ -1,6 +1,13 @@
 import Ember from 'ember';
 import { addQueryParams } from 'ui/utils/util';
 
+function uniqKeys(data, name) {
+  var out = data.map((item) => item[name]);
+  out = out.uniq().sort((a,b) => a.localeCompare(b, 'en', {sensitivity: 'base'}));
+  out.unshift('all');
+  return out;
+}
+
 export default Ember.Route.extend({
   settings: Ember.inject.service(),
 
@@ -9,20 +16,47 @@ export default Ember.Route.extend({
   queryParams: {
     category: {
       refreshModel: true
+    },
+    catalogid: {
+      refreshModel: true
     }
   },
 
-  model: function(params) {
+  catalogIds: null,
+
+  deactivate() {
+    // Clear the cache when leaving the route so that it will be reloaded when you come back.
+    this.set('cache', null);
+  },
+
+  beforeModel: function() {
+    return this.get('store').request({url: `${this.get('app.catalogEndpoint')}/catalogs`}).then((response) => {
+      var catalogs = uniqKeys(response, 'id');
+      this.set('catalogIds', catalogs);
+    });
+  },
+
+  model(params) {
     var cache = this.get('cache');
-    if ( cache )
+
+    // If the catalogIds dont match we need to go get the other catalog from the store since we do not cache all catalogs
+    if ( cache && cache.catalogId === params.catalogid)
     {
-      return filter(cache, params.category);
+      return filter(cache, params.category, this.get('catalogIds'));
+    }
+
+    if (params.catalogid) {
+      this.controllerFor('applications-tab.catalog.index').set('selectedCatalog', params.catalogid);
     }
 
     var version = this.get('settings.rancherVersion');
     var qp = {
       'category_ne': 'system',
     };
+
+    if (params.catalogid !== 'all') {
+      qp['catalogId'] = params.catalogid;
+    }
 
     if ( version )
     {
@@ -32,14 +66,17 @@ export default Ember.Route.extend({
     var url = addQueryParams(this.get('app.catalogEndpoint')+'/templates', qp);
 
     return this.get('store').request({url: url}).then((response) => {
+      response.catalogId = params.catalogid;
       this.set('cache', response);
-      return filter(response, params.category);
+      return filter(response, params.category, this.get('catalogIds'));
     });
 
-    function filter(data, category) {
+
+    function filter(data, category, catalogIds) {
       data = data.sortBy('name');
       var out = Ember.Object.create({
-        categories: categories(data),
+        categories: uniqKeys(data, 'category'),
+        catalogIds: catalogIds,
 
       });
 
@@ -49,13 +86,6 @@ export default Ember.Route.extend({
         out.set('catalog', data.filterBy('category', category));
       }
 
-      return out;
-    }
-
-    function categories(data) {
-      var out = data.map((item) => item.category);
-      out = out.uniq().sort((a,b) => a.localeCompare(b, 'en', {sensitivity: 'base'}));
-      out.unshift('all');
       return out;
     }
   },

@@ -9,8 +9,10 @@ export function denormalizeName(str) {
   return str.replace(C.SETTING.DOT_CHAR,'.').toLowerCase();
 }
 
-export default Ember.Service.extend({
+export default Ember.Service.extend(Ember.Evented, {
   all: null,
+
+  promiseCount: 0,
 
   init() {
     this._super();
@@ -56,13 +58,26 @@ export default Ember.Service.extend({
       });
     }
 
+    this.incrementProperty('promiseCount');
+
     obj.set('value', value+''); // Values are all strings in settings.
     obj.save().then(() => {
       this.notifyPropertyChange(normalizeName(key));
+    }).catch((err) => {
+      this.trigger('gotError', err);
+    }).finally(() => {
+      this.decrementProperty('promiseCount');
     });
 
     return value;
   },
+
+  promiseCountObserver: function() {
+
+    if (this.get('promiseCount') <= 0) {
+      this.trigger('settingsPromisesResolved');
+    }
+  }.observes('promiseCount'),
 
   findByName(name) {
     return this.get('asMap')[normalizeName(name)];

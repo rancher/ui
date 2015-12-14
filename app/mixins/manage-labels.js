@@ -134,7 +134,7 @@ export default Ember.Mixin.create({
     return (this.get('labelArray')||[]).filterBy('type',AFFINITY);
   }.property('labelArray.@each.type'),
 
-  getLabel: function(key) {
+  getLabelObj: function(key) {
     var lcKey = (key||'').toLowerCase();
     var ary = this.get('labelArray');
     var item;
@@ -162,6 +162,16 @@ export default Ember.Mixin.create({
     return null;
   },
 
+  getLabel: function(key) {
+    var obj = this.getLabelObj(key);
+    if ( obj )
+    {
+      return obj.get('value');
+    }
+
+    return null;
+  },
+
   setLabel: function(key, value) {
     var lcKey = (key||'').toLowerCase();
     var type = 'user';
@@ -178,7 +188,7 @@ export default Ember.Mixin.create({
       key = lcKey;
     }
 
-    var existing = this.getLabel(key);
+    var existing = this.getLabelObj(key);
     if ( existing )
     {
       Ember.setProperties(existing,{
@@ -199,7 +209,7 @@ export default Ember.Mixin.create({
   },
 
   removeLabel: function(key) {
-    var existing = this.getLabel(key);
+    var existing = this.getLabelObj(key);
     if ( existing )
     {
       this.get('labelArray').removeObject(existing);
@@ -244,15 +254,11 @@ export default Ember.Mixin.create({
         return;
       }
 
-      // Split values on comma
-      var values = (obj[key]||'').split(/,/);
-      values.forEach(function(value) {
-        out.push(Ember.Object.create({
-          key: key,
-          value: value,
-          type: type,
-        }));
-      });
+      out.push(Ember.Object.create({
+        key: key,
+        value: obj[key]||'',
+        type: type,
+      }));
     });
 
     this.set('labelArray', out);

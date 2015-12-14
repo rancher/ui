@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   allServices: Ember.inject.service(),
@@ -68,6 +69,7 @@ export default Ember.Route.extend({
           type: 'launchConfig',
           tty: true,
           stdinOpen: true,
+          labels: { [C.LABEL.PULL_IMAGE]: C.LABEL.PULL_IMAGE_VALUE },
           restartPolicy: {name: 'always'},
         };
       }

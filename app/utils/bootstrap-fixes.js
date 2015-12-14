@@ -1,7 +1,7 @@
-export function resizeDropdown(event, data) {
+export function resizeDropdown(event) {
   // Preserve compatibility with existing signature
   var $item = $('.dropdown-menu', event.target);
-  var target = data.relatedTarget;
+  var target = event.relatedTarget;
   var right = $item.hasClass('dropdown-menu-right');
   return positionDropdown($item, target, right);
 }

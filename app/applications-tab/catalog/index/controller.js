@@ -4,6 +4,7 @@ export default Ember.Controller.extend({
   application: Ember.inject.controller(),
   catalogController: Ember.inject.controller('applications-tab.catalog'),
   category: Ember.computed.alias('catalogController.category'),
+  selectedCatalog: Ember.computed.alias('catalogController.catalogid'),
 
   search: '',
   actions: {
@@ -17,6 +18,8 @@ export default Ember.Controller.extend({
   },
 
   categories: Ember.computed.alias('model.categories'),
+
+  catalogIds: Ember.computed.alias('model.catalogIds'),
 
   arrangedContent: function() {
     var search = this.get('search').toUpperCase();

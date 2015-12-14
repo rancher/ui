@@ -4,6 +4,19 @@
   </ol>
 
   <div class="btn-group pull-right left-divider">
+    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catalog: <span class="text-capitalize">{{selectedCatalog}}</span> <i class="icon icon-chevron-down"></i></button>
+    <ul class="dropdown-menu dropdown-menu-right">
+      {{#each catalogIds as |catalog|}}
+      <li>
+        {{#link-to "applications-tab.catalog" (query-params catalogid=catalog)}}
+          <span class="text-capitalize">{{catalog}}</span>
+        {{/link-to}}
+      </li>
+      {{/each}}
+    </ul>
+  </div>
+
+  <div class="btn-group pull-right left-divider">
     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category: <span class="text-capitalize">{{category}}</span> <i class="icon icon-chevron-down"></i></button>
     <ul class="dropdown-menu dropdown-menu-right">
       {{#each categories as |category|}}
