@@ -1,18 +1,16 @@
 <section class="header">
-  <h1 class="right-divider">
-    
-      {{#link-to "containers" href=false}}<a>Container:</a>{{/link-to}}
-    
-    
-      {{#power-select options=model.primaryHost.instances selected=model onchange=(action "changeContainer") searchField="displayName" as |obj|}}
-        <div class="clip r-mr15"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
-      {{/power-select}}
+  {{#link-to "containers" tagName="h1" href=false}}<a>Container:</a>{{/link-to}}
+  {{#power-select options=model.primaryHost.instances selected=model onchange=(action "changeContainer") searchField="displayName" as |obj|}}
+    <div class="clip r-mr15">
+      <i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}
+    </div>
+  {{/power-select}}
 
-      <strong>on {{#link-to "host" model.primaryHost.id href=false}}<a>{{model.primaryHost.displayName}}</a>{{/link-to}}</strong>
+  <strong>on {{#link-to "host" model.primaryHost.id href=false}}<a>{{model.primaryHost.displayName}}</a>{{/link-to}}</strong>
     
-  </h1>
-
   {{action-menu model=model size="sm"}}
+
+  {{header-state model=model}}
 </section>
 
 <section>

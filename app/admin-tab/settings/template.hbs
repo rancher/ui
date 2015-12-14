@@ -2,9 +2,11 @@
   <h1 class="right-divider">Settings</h1>
 </section>
 
-<section>
-  {{top-errors errors=errors}}
-</section>
+{{#if errors.length}}
+  <section>
+   {{top-errors errors=errors}}
+  </section>
+{{/if}}
 
 <section class="well">
   {{host-settings host=model.host sendActiveValue=(action (mut model.host))}}
