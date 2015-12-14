@@ -1,13 +1,8 @@
 <section class="header">
- 
-    {{#link-to "environments" tagName="strong" href=false}}<a>Stacks: </a>{{/link-to}}
-
-      {{#power-select options=all selected=model onchange=(action "changeStack") searchField="displayName" as |obj|}}
-        <div class="clip r-pr15"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
-      {{/power-select}}
-  
-
-
+  {{#link-to "environments" tagName="h1" href=false}}<a>Stack:</a>{{/link-to}}
+  {{#power-select options=all selected=model onchange=(action "changeStack") searchField="displayName" as |obj|}}
+    <div class="clip r-pr15"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
+  {{/power-select}}
 
   <div class="btn-group pull-right">
     {{#link-to "environment.index" classNames="btn btn-sm btn-default"}}<i class="icon icon-tasks" data-placement="bottom" tooltip="List"></i>{{/link-to}}
