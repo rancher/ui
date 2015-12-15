@@ -1,16 +1,15 @@
 <section class="header">
-
-    {{#link-to "hosts" tagName="h1" href=false}}<a>Host:</a>{{/link-to}}
-    
-      {{#power-select options=model.all selected=host onchange=(action "changeHost") searchField="displayName" as |obj|}}
-        <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
-      {{/power-select}}
-    
+  {{#link-to "hosts" tagName="h1" href=false}}<a>Host:</a>{{/link-to}}
   
-
+  {{#power-select options=model.all selected=host onchange=(action "changeHost") searchField="displayName" as |obj|}}
+    <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
+  {{/power-select}}
+  
   {{#action-menu model=host size="sm" classNames="left-divider"}}
     {{#link-to "containers.new" (query-params hostId=host.id) classNames="btn btn-sm btn-primary"}}Add Container{{/link-to}}
   {{/action-menu}}
+
+  {{header-state model=host}}
 </section>
 
 <section>
