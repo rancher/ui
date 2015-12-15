@@ -314,7 +314,7 @@ export default Ember.Mixin.create({
         this.set(key, val);
       }
 
-      if ( field.type === 'int' && typeof val === 'string' && key !== 'id' ) // Sigh: ids are all marked int, rancherio/rancher#515
+      if ( field.type === 'int' && typeof val === 'string' && key !== 'id' ) // Sigh: ids are all marked int, rancher/rancher#515
       {
         val = parseInt(val, 10) || null;
         this.set(key, val);
