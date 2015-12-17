@@ -126,7 +126,7 @@ var Environment = Resource.extend({
 
       unremoved++;
 
-      if ( ['running','active','updating-active'].indexOf(resource) >= 0 && health === 'healthy' )
+      if ( C.ACTIVEISH_STATES.indexOf(resource) >= 0 && health === 'healthy' )
       {
         healthy++;
       }

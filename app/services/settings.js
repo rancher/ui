@@ -16,7 +16,7 @@ export default Ember.Service.extend(Ember.Evented, {
 
   init() {
     this._super();
-    this.set('all', this.get('store').allUnremoved('activesetting'));
+    this.set('all', this.get('store').all('activesetting'));
   },
 
   unknownProperty(key) {

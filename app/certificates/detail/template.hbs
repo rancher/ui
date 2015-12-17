@@ -1,19 +1,23 @@
 <section class="header">
-  <h1 class="right-divider">
-    {{#link-to "certificates" tagName="h1" href=false}}<a>Certificates</a>{{/link-to}}
-    
-      {{#power-select options=model.allCertificates selected=model.certificate onchange=(action "changeCertificate") searchField="displayName" as |obj|}}
-        <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
-      {{/power-select}}
-    
-  </h1>
+  <h1>{{#link-to "certificates"}}Certificate:{{/link-to}}</h1>
+
+  {{#power-select options=model.allCertificates selected=model.certificate onchange=(action "changeCertificate") searchField="displayName" as |obj|}}
+    <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
+  {{/power-select}}
 
   {{action-menu model=model.certificate size="sm"}}
 </section>
 
-<section>
-  {{partial "description"}}
+{{#if model.certificate.description}}
+  <section>
+    <div class="well description">
+      <label>Description</label>
+      <p>{{model.certificate.description}}</p>
+    </div>
+  </section>
+{{/if}}
 
+<section>
   <div class="row">
     <div class="row-same-height row-full-height">
       <div class="col-sm-12 col-md-6 col-md-height col-md-full-height col-top" style="margin-bottom: 20px;">

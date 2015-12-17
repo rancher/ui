@@ -1,40 +1,17 @@
 var C = {
-  PREFS: {
-    ACCESS_WARNING: 'accessWarning',
-    PROJECT_DEFAULT: 'defaultProjectId',
-    I_HATE_SPINNERS: 'iHateSpinners',
-    EXPANDED_STACKS: 'expandedStacks',
-    SORT_STACKS_BY: 'sortStacksBy',
-  },
-
   COOKIE: {
     TOKEN: 'token',
   },
 
-  SESSION: {
-    BACK_TO: 'backTo',
-    USER_ID: 'user',
-    ACCOUNT_ID: 'accountId',
-    USER_TYPE: 'userType',
-    PROJECT: 'projectId',
-    IDENTITY: 'userIdentity',
-    IDENTITY_TYPE: 'userType',
-    GITHUB_CACHE: 'githubCache',
-    GITHUB_ORGS: 'orgs',
-    GITHUB_TEAMS: 'teams',
-  },
-
-  HEADER: {
-    PROJECT: 'x-api-project-id',
-    NO_CHALLENGE: 'x-api-no-challenge',
-    NO_CHALLENGE_VALUE: 'true',
-    ACCOUNT_ID: 'x-api-account-id',
-  },
-
-  USER: {
-    TYPE_NORMAL: 'user',
-    TYPE_ADMIN: 'admin',
-    BASIC_BEARER: 'x-api-bearer',
+  EXTERNALID: {
+    KIND_SEPARATOR: '://',
+    GROUP_SEPARATOR: ':',
+    KIND_ALL: 'all',
+    KIND_USER: 'user',
+    KIND_CATALOG: 'catalog',
+    KIND_SYSTEM: 'system',
+    KIND_KUBERNETES: 'kubernetes',
+    CATALOG_DEFAULT_GROUP: 'library',
   },
 
   GITHUB: {
@@ -44,35 +21,11 @@ var C = {
     SCOPE: 'read:org',
   },
 
-  PROJECT: {
-    TYPE_RANCHER:         'rancher_id',
-    TYPE_GITHUB_USER:     'github_user',
-    TYPE_GITHUB_TEAM:     'github_team',
-    TYPE_GITHUB_ORG:      'github_org',
-    TYPE_LDAP_USER:       'ldap_user',
-    TYPE_LDAP_GROUP:      'ldap_group',
-    TYPE_OPENLDAP_USER:   'openldap_user',
-    TYPE_OPENLDAP_GROUP:  'openldap_group',
-
-    PERSON: 'person',
-    TEAM: 'team',
-    ORG:  'org',
-
-    ROLE_MEMBER:  'member',
-    ROLE_OWNER:   'owner',
-  },
-
-  SETTING: {
-    // Dots in key names do not mix well with Ember, so use $ in their place.
-    DOT_CHAR: '$',
-    VERSION_RANCHER: 'rancher$server$image',
-    VERSION_COMPOSE: 'rancher$compose$version',
-    VERSION_CATTLE:  'cattle$version',
-    VERSION_MACHINE: 'docker$machine$version',
-    VERSION_GMS:     'go$machine$service$version',
-    API_HOST:        'api$host',
-    CATALOG_URL:     'catalog$url',
-    VM_ENABLED:      'vm$enabled',
+  HEADER: {
+    PROJECT: 'x-api-project-id',
+    NO_CHALLENGE: 'x-api-no-challenge',
+    NO_CHALLENGE_VALUE: 'true',
+    ACCOUNT_ID: 'x-api-account-id',
   },
 
   KEY: {
@@ -113,15 +66,62 @@ var C = {
     KVM: 'io.rancher.host.kvm',
   },
 
-  EXTERNALID: {
-    KIND_SEPARATOR: '://',
-    GROUP_SEPARATOR: ':',
-    KIND_ALL: 'all',
-    KIND_USER: 'user',
-    KIND_CATALOG: 'catalog',
-    KIND_SYSTEM: 'system',
-    KIND_KUBERNETES: 'kubernetes',
-    CATALOG_DEFAULT_GROUP: 'library',
+  PREFS: {
+    ACCESS_WARNING: 'accessWarning',
+    PROJECT_DEFAULT: 'defaultProjectId',
+    I_HATE_SPINNERS: 'iHateSpinners',
+    EXPANDED_STACKS: 'expandedStacks',
+    SORT_STACKS_BY: 'sortStacksBy',
+  },
+
+  PROJECT: {
+    TYPE_RANCHER:         'rancher_id',
+    TYPE_GITHUB_USER:     'github_user',
+    TYPE_GITHUB_TEAM:     'github_team',
+    TYPE_GITHUB_ORG:      'github_org',
+    TYPE_LDAP_USER:       'ldap_user',
+    TYPE_LDAP_GROUP:      'ldap_group',
+    TYPE_OPENLDAP_USER:   'openldap_user',
+    TYPE_OPENLDAP_GROUP:  'openldap_group',
+
+    PERSON: 'person',
+    TEAM: 'team',
+    ORG:  'org',
+
+    ROLE_MEMBER:  'member',
+    ROLE_OWNER:   'owner',
+  },
+
+  SESSION: {
+    BACK_TO: 'backTo',
+    USER_ID: 'user',
+    ACCOUNT_ID: 'accountId',
+    USER_TYPE: 'userType',
+    PROJECT: 'projectId',
+    IDENTITY: 'userIdentity',
+    IDENTITY_TYPE: 'userType',
+    GITHUB_CACHE: 'githubCache',
+    GITHUB_ORGS: 'orgs',
+    GITHUB_TEAMS: 'teams',
+  },
+
+  SETTING: {
+    // Dots in key names do not mix well with Ember, so use $ in their place.
+    DOT_CHAR: '$',
+    VERSION_RANCHER: 'rancher$server$image',
+    VERSION_COMPOSE: 'rancher$compose$version',
+    VERSION_CATTLE:  'cattle$version',
+    VERSION_MACHINE: 'docker$machine$version',
+    VERSION_GMS:     'go$machine$service$version',
+    API_HOST:        'api$host',
+    CATALOG_URL:     'catalog$url',
+    VM_ENABLED:      'vm$enabled',
+  },
+
+  USER: {
+    TYPE_NORMAL: 'user',
+    TYPE_ADMIN: 'admin',
+    BASIC_BEARER: 'x-api-bearer',
   },
 };
 
@@ -146,6 +146,16 @@ C.SYSTEM_LABELS_WITH_CONTROL = [
   C.LABEL.START_ONCE,
   C.LABEL.REQUESTED_IP,
   C.LABEL.PULL_IMAGE,
+];
+
+C.ACTIVEISH_STATES = [
+  'running',
+  'active',
+  'updating-active',
+  'updating-running',
+  'healthy',
+  'degraded',
+  'unhealthy'
 ];
 
 export default C;

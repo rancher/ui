@@ -106,7 +106,7 @@ var Container = Resource.extend({
     var resource = this.get('state');
     var health = this.get('healthState');
 
-    if ( ['running','active','updating-active'].indexOf(resource) >= 0 )
+    if ( C.ACTIVEISH_STATES.indexOf(resource) >= 0 )
     {
       if ( health === null || health === 'healthy' )
       {

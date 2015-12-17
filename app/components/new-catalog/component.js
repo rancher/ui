@@ -21,7 +21,6 @@ export default Ember.Component.extend(NewOrEdit, {
   questionsArray: null,
   selectedTemplateUrl: null,
   selectedTemplateModel: null,
-  showReadme: true,
   readmeContent: null,
 
   actions: {
@@ -44,10 +43,6 @@ export default Ember.Component.extend(NewOrEdit, {
     changeTemplate: function(tpl) {
       this.get('application').transitionToRoute('applications-tab.catalog.launch', tpl.id);
     },
-
-    toggleReadMe: function() {
-      this.toggleProperty('showReadme');
-    }
   },
 
   didReceiveAttrs() {

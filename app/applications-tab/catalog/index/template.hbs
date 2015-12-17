@@ -3,18 +3,20 @@
     Catalog
   </h1>
 
-  <div class="btn-group pull-right left-divider">
-    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catalog: <span class="text-capitalize">{{selectedCatalog}}</span> <i class="icon icon-chevron-down"></i></button>
-    <ul class="dropdown-menu dropdown-menu-right">
-      {{#each catalogIds as |catalog|}}
-      <li>
-        {{#link-to "applications-tab.catalog" (query-params catalogid=catalog)}}
-          <span class="text-capitalize">{{catalog}}</span>
-        {{/link-to}}
-      </li>
-      {{/each}}
-    </ul>
-  </div>
+  {{#if showCatalogDropdown}}
+    <div class="btn-group pull-right left-divider">
+      <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catalog: <span class="text-capitalize">{{selectedCatalog}}</span> <i class="icon icon-chevron-down"></i></button>
+      <ul class="dropdown-menu dropdown-menu-right">
+        {{#each catalogIds as |catalog|}}
+        <li>
+          {{#link-to "applications-tab.catalog" (query-params catalogId=catalog)}}
+            <span class="text-capitalize">{{catalog}}</span>
+          {{/link-to}}
+        </li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
 
   <div class="btn-group pull-right left-divider">
     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category: <span class="text-capitalize">{{category}}</span> <i class="icon icon-chevron-down"></i></button>
@@ -38,7 +40,12 @@
 <section class="r-plr15">
   {{#each arrangedContent as |catalogItem|}}
     <div class="container-catalog text-center">
-      <h5>{{catalogItem.name}}</h5>
+      <h5>
+        {{catalogItem.name}}
+        {{#if showCatalogDropdown}}
+          <span class="small">in <span class="text-capitalize">{{catalogItem.catalogId}}</span></span>
+        {{/if}}
+      </h5>
       <div class="catalog-icon">
         <img src="{{catalogItem.links.icon}}"/>
       </div>

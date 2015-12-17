@@ -1,21 +1,27 @@
 import Ember from 'ember';
 
-export default Ember.ArrayProxy.extend(Ember.SortableMixin, {
+var undesireable = ['removed','purging','purged'];
+
+export default Ember.ArrayProxy.extend({
   sourceContent: null,
+  sortProperties: null,
 
   init: function() {
     if ( !this.get('sortProperties') )
     {
-      this.set('sortProperties', ['name','id']);
+      this.set('sortProperties', ['displayName','name','id']);
     }
+    this.sourceContentChanged();
     this._super();
-    this.set('content', []);
   },
 
   sourceContentChanged: function() {
     var x = (this.get('sourceContent')||[]).filter(function(item) {
-      return ['removed','purging','purged'].indexOf((Ember.get(item,'state')||'').toLowerCase()) === -1;
+      return undesireable.indexOf((Ember.get(item,'state')||'').toLowerCase()) === -1;
     });
     this.set('content', x);
-  }.observes('sourceContent.@each.state').on('init'),
+  }.observes('sourceContent.@each.state'),
+
+  // The array proxy reads this property
+  arrangedContent: Ember.computed.sort('content','sortProperties'),
 });

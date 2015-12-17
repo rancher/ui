@@ -1,5 +1,6 @@
 import Ember from "ember";
 import Socket from "ui/utils/socket";
+import C from 'ui/utils/constants';
 
 /*
   Usage:
@@ -27,7 +28,7 @@ export default Ember.Object.extend(Ember.Evented, {
   },
 
   available: function() {
-    return ['running','updating-running','active','updating-active','unhealthy'].indexOf(this.get('resource.state')) >= 0;
+    return C.ACTIVEISH_STATES.indexOf(this.get('resource.state')) >= 0;
   }.property('resource.state'),
 
   active: Ember.computed.and('available', 'connected'),

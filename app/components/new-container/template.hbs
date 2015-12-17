@@ -103,6 +103,7 @@
       <ul class="nav nav-tabs nav-tabs-well shadowed" style="display: inline-block">
         {{#if isVm}}
           <li role="presentation" class="tab" data-section="disks" {{action "selectTab" "disks"}}><a>Disks</a></li>
+          <li role="presentation" class="tab" data-section="userdata" {{action "selectTab" "userdata"}}><a>User Data</a></li>
         {{else}}
           <li role="presentation" class="tab" data-section="command" {{action "selectTab" "command"}}><a>Command</a></li>
           <li role="presentation" class="tab" data-section="volumes" {{action "selectTab" "volumes"}}><a>Volumes</a></li>
@@ -110,7 +111,6 @@
           <li role="presentation" class="tab" data-section="security" {{action "selectTab" "security"}}><a>Security/Host</a></li>
         {{/if}}
 
-        <li role="presentation" class="tab" data-section="userdata" {{action "selectTab" "userdata"}}><a>User Data</a></li>
         <li role="presentation" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}><a>Health Check</a></li>
         <li role="presentation" class="tab" data-section="labels" {{action "selectTab" "labels"}}><a>Labels</a></li>
         <li role="presentation" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}><a>Scheduling</a></li>
@@ -120,6 +120,10 @@
       {{#if isVm}}
         <div class="section container-fluid" data-section="disks">
           {{form-disks instance=launchConfig}}
+        </div>
+
+        <div class="section container-fluid" data-section="userdata">
+          {{form-userdata instance=launchConfig}}
         </div>
       {{else}}
         <div class="section container-fluid" data-section="command">
@@ -151,10 +155,6 @@
           {{form-security instance=launchConfig errors=securityErrors}}
         </div>
       {{/if}}
-
-      <div class="section container-fluid" data-section="userdata">
-        {{form-userdata instance=launchConfig}}
-      </div>
 
       <div class="section container-fluid" data-section="healthcheck">
         {{form-healthcheck healthCheck=launchConfig.healthCheck errors=healthCheckErrors}}
