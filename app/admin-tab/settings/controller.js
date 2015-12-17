@@ -35,21 +35,27 @@ export default Ember.Controller.extend({
         return;
       }
 
-      Object.keys(model).forEach((item) => {
-        switch (item) {
-          case 'host':
-            propsOut[C.SETTING.API_HOST] = model[item];
-            break;
-          case 'catalog':
-            propsOut[C.SETTING.CATALOG_URL] = model[item];
-            break;
-          case 'vm':
-            propsOut[C.SETTING.VM_ENABLED] = model[item];
-            break;
-          default:
-            break;
-        }
-      });
+      if (this.get('backToAdd')) {
+
+        propsOut[C.SETTING.API_HOST] = model.host;
+      } else {
+
+        Object.keys(model).forEach((item) => {
+          switch (item) {
+            case 'host':
+              propsOut[C.SETTING.API_HOST] = model[item];
+              break;
+            case 'catalog':
+              propsOut[C.SETTING.CATALOG_URL] = model[item];
+              break;
+            case 'vm':
+              propsOut[C.SETTING.VM_ENABLED] = model[item];
+              break;
+            default:
+              break;
+          }
+        });
+      }
 
       this.set('saving', true);
       this.get('settings').setProperties(propsOut).one('settingsPromisesResolved', () => {
