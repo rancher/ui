@@ -142,6 +142,9 @@ Router.map(function() {
       });
     });
 
+    this.route('help');
+
+
     // End: Authenticated
   });
 
@@ -258,6 +261,7 @@ Router.map(function() {
     withParams: 'openProcessesError',
     otherParams: 'exception'
   });
+
 
   this.modal('modal-auditlog-info', {
     dismissWithOutsideClick: true,
