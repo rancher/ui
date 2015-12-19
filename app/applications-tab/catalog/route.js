@@ -17,7 +17,7 @@ export default Ember.Route.extend({
     category: {
       refreshModel: true
     },
-    catalogid: {
+    catalogId: {
       refreshModel: true
     }
   },
@@ -40,13 +40,13 @@ export default Ember.Route.extend({
     var cache = this.get('cache');
 
     // If the catalogIds dont match we need to go get the other catalog from the store since we do not cache all catalogs
-    if ( cache && cache.catalogId === params.catalogid)
+    if ( cache && cache.catalogId === params.catalogId)
     {
       return filter(cache, params.category, this.get('catalogIds'));
     }
 
-    if (params.catalogid) {
-      this.controllerFor('applications-tab.catalog.index').set('selectedCatalog', params.catalogid);
+    if (params.catalogId) {
+      this.controllerFor('applications-tab.catalog.index').set('selectedCatalog', params.catalogId);
     }
 
     var version = this.get('settings.rancherVersion');
@@ -54,8 +54,8 @@ export default Ember.Route.extend({
       'category_ne': 'system',
     };
 
-    if (params.catalogid !== 'all') {
-      qp['catalogId'] = params.catalogid;
+    if (params.catalogId !== 'all') {
+      qp['catalogId'] = params.catalogId;
     }
 
     if ( version )
@@ -66,7 +66,7 @@ export default Ember.Route.extend({
     var url = addQueryParams(this.get('app.catalogEndpoint')+'/templates', qp);
 
     return this.get('store').request({url: url}).then((response) => {
-      response.catalogId = params.catalogid;
+      response.catalogId = params.catalogId;
       this.set('cache', response);
       return filter(response, params.category, this.get('catalogIds'));
     });
@@ -77,7 +77,6 @@ export default Ember.Route.extend({
       var out = Ember.Object.create({
         categories: uniqKeys(data, 'category'),
         catalogIds: catalogIds,
-
       });
 
       if ( category === 'all' ) {
@@ -89,4 +88,12 @@ export default Ember.Route.extend({
       return out;
     }
   },
+
+  resetController: function (controller, isExiting/*, transition*/) {
+    if (isExiting)
+    {
+      controller.set('category', 'all');
+      controller.set('catalogId', 'all');
+    }
+  }
 });

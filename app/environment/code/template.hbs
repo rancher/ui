@@ -1,16 +1,8 @@
 {{environment-header model=model.stack all=model.all}}
 
 <section>
-  <div class="row">
-    <div class="col-md-6">
-      docker-compose.yml {{zero-clipboard text=model.composeConfig.dockerComposeConfig}}
-      <pre class="line-numbers"><code class="language-yaml">
-{{model.composeConfig.dockerComposeConfig}}</code></pre>
-    </div>
-    <div class="col-md-6">
-      rancher-compose.yml {{zero-clipboard text=model.composeConfig.rancherComposeConfig}}
-      <pre class="line-numbers"><code class="language-yaml">
-{{model.composeConfig.rancherComposeConfig}}</code></pre>
-    </div>
-  </div>
+  {{compose-yaml
+    dockerCompose=model.dockerCompose
+    rancherCompose=model.rancherCompose
+  }}
 </section>

@@ -3,6 +3,10 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   // Inputs
   instance: null,
+  primaryService: null,
+  launchConfigChoices: null,
+  launchConfigIndex: null,
+  isService: null,
   allHosts: null,
   errors: null,
 
@@ -11,7 +15,60 @@ export default Ember.Component.extend({
   didInitAttrs() {
     this.initVolumes();
     this.initVolumesFrom();
+    this.initVolumesFromLaunchConfig();
   },
+
+  initVolumesFromLaunchConfig() {
+    var dv = this.get('instance.dataVolumesFromLaunchConfigs');
+    this.set('initEnabled', dv); 
+    this.volumesFromLaunchConfigChanged();
+  },
+
+  prevChoices: null,
+  initEnabled: null,
+  volumesFromLaunchConfigChoices: function() {
+    var launchConfigIndex = this.get('launchConfigIndex');
+    var prevChoices = this.get('prevChoices')||[];
+    var initEnabled = this.get('initEnabled')||[];
+
+    var prev = prevChoices.filterBy('index',-1)[0];
+    var enabled = (prev ? prev.enabled : (initEnabled.indexOf(this.get('primaryService.name')) >= 0));
+
+    var out = [];
+
+    if ( launchConfigIndex !== -1 )
+    {
+      out.push({
+        index: -1,
+        displayName: this.get('primaryService.name') || '(Primary Service)',
+        name: this.get('primaryService.name'),
+        enabled: enabled,
+      });
+    }
+
+    (this.get('primaryService.secondaryLaunchConfigs')||[]).forEach((item, index) => {
+      if ( launchConfigIndex !== index )
+      {
+        prev = prevChoices.filterBy('uiId', item.get('uiId'))[0];
+        out.push({
+          index: index,
+          displayName: item.get('name') || `(Sidekick #${index+1})`,
+          name: item.get('name'),
+          enabled: (prev ? prev.enabled : (initEnabled.indexOf(item.get('name')) >= 0)),
+          uiId: item.get('uiId'),
+        });
+      }
+    });
+
+    this.set('prevChoices', out);
+    this.set('initEnabled', null);
+    return out;
+  }.property('primaryService.name','primaryService.secondaryLaunchConfigs.@each.name','launchConfigIndex'),
+
+  volumesFromLaunchConfigChanged: function() {
+    var out = this.get('volumesFromLaunchConfigChoices').filterBy('enabled', true).filterBy('name').map((choice) => { return choice.name; });
+    this.set('instance.dataVolumesFromLaunchConfigs', out);
+  }.observes('volumesFromLaunchConfigChoices.@each.enabled'),
 
   actions: {
     addVolume: function() {

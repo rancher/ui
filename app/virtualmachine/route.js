@@ -6,7 +6,7 @@ export default Ember.Route.extend({
 
     return store.find('virtualmachine', params.virtualmachine_id).then(function(vm) {
       var host = vm.get('primaryHost');
-      if ( host.get('instances') )
+      if ( !host || host.get('instances') )
       {
         return vm;
       }

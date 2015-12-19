@@ -1,11 +1,12 @@
-import NewAlias from 'ui/components/new-aliasservice/component';
+import NewOrEdit from 'ui/mixins/new-or-edit';
 import Ember from 'ember';
 
-export default NewAlias.extend({
+export default Ember.Component.extend(NewOrEdit, {
   existing: Ember.computed.alias('originalModel'),
   editing: true,
 
   service: null,
+  primaryResource: Ember.computed.alias('service'),
 
   actions: {
     done() {
@@ -20,5 +21,13 @@ export default NewAlias.extend({
   didInitAttrs() {
     var original = this.get('originalModel');
     this.set('service', original.clone());
+  },
+
+  doneSaving: function() {
+    this.send('done');
+  },
+
+  didInsertElement() {
+    this.$('INPUT')[0].focus();
   },
 });

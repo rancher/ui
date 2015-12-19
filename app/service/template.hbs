@@ -1,12 +1,10 @@
 <section class="header">
-  <h1>
-    Service:
-  </h1>
-  
+  <h1>Service:</h1>
   {{#power-select options=model.stack.services selected=service onchange=(action "changeService") searchField="displayName" as |obj|}}
     <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
   {{/power-select}}
-   
+  <strong>in {{#link-to "environment" model.stack.id}}{{model.stack.displayName}}{{/link-to}}</strong>
+
   {{action-menu model=service classNames="r-ml5" size="sm"}}
   {{header-state model=service}}
 </section>

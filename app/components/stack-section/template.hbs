@@ -1,64 +1,47 @@
-<div class="clearfix {{if single 'single'}}">
-  {{#unless single}}
+{{#unless single}}
+  <div class="clearfix">
     <div class="stack-state {{model.stateBackground}}"><i class="{{model.stateIcon}}"></i></div>
-  {{/unless}}
 
-  <div class="header-left collapser">
-    {{#unless single}}
+    <div class="header-left collapser">
       <a {{action "toggleCollapse"}} class="btn btn-link"><i class="icon {{if collapsed 'icon-plus' 'icon-minus'}}" alt="Toggle stack details" title=""></i></a>
-    {{/unless}}
-  </div>
+    </div>
 
-  <div class="header-left">
-    {{#if single}}
-      <label class="section" style="color:white;">
-        State: {{model.displayState~}}
-        {{#if model.showTransitioningMessage}}
-          <span class="force-wrap">
-            ({{model.transitioningMessage}})
-          </span>
-        {{/if}}
-      </label>
-    {{else}}
+    <div class="header-left">
       <h4>
         <span class="divider clip">{{#link-to "environment" model.id}}{{model.name}}{{/link-to}}</span>
       </h4>
-    {{/if}}
-  </div>
-
-  {{#if (and (not single) outputs.length)}}
-    <div class="header-left">
-      <div class="btn-group r-ml10">
-        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Outputs <i class="icon icon-chevron-down"></i>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right">
-          {{#each outputs as |obj|}}
-            <li><a href="{{obj.value}}" target="_blank">{{obj.key}}</a></li>
-          {{/each}}
-        </ul>
-      </div>
     </div>
-  {{/if}}
 
-  <div class="header-right right-divider stack-actions wide">
-    {{#unless single}}
+    {{#if outputs.length}}
+      <div class="header-left">
+        <div class="btn-group r-ml10">
+          <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Outputs <i class="icon icon-chevron-down"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            {{#each outputs as |obj|}}
+              <li><a href="{{obj.value}}" target="_blank">{{obj.key}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+    {{/if}}
+
+    <div class="header-right right-divider stack-actions wide">
       {{action-menu model=model}}
-    {{/unless}}
-  </div>
+    </div>
 
-  <div class="header-right right-divider count">
-    <p>{{instanceCount}}</p>
-    <label>Container{{unless (eq instanceCount 1) 's'}}</label>
-  </div>
+    <div class="header-right right-divider count">
+      <p>{{instanceCount}}</p>
+      <label>Container{{unless (eq instanceCount 1) 's'}}</label>
+    </div>
 
-  <div class="header-right right-divider count">
-    <p>{{model.unremovedServices.length}}</p>
-    <label>Service{{unless (eq model.unremovedServices.length 1) 's'}}</label>
-  </div>
+    <div class="header-right right-divider count">
+      <p>{{model.unremovedServices.length}}</p>
+      <label>Service{{unless (eq model.unremovedServices.length 1) 's'}}</label>
+    </div>
 
-  <div class="header-right right-divider stack-template">
-    {{#unless single}}
+    <div class="header-right right-divider stack-template">
       {{upgrade-btn environmentResource=model}}
       <div class="btn-group">
         {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-default btn-sm"}}Add Service{{/link-to}}
@@ -75,10 +58,9 @@
           {{/if}}
         </ul>
       </div>
-    {{/unless}}
-
+    </div>
   </div>
-</div>
+{{/unless}}
 
 {{#liquid-if (not collapsed)}}
   <div class="stack-body {{if single 'single-body'}}">

@@ -24,24 +24,40 @@
   </div>
 </div>
 
-{{#unless model.service}}
+{{#if isService}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">Volumes From</label>
+    </div>
+
+    <div class="col-sm-12 col-md-8 form-control-static">
+      {{#if volumesFromLaunchConfigChoices.length}}
+        {{#each volumesFromLaunchConfigChoices as |choice|}}
+          <label class="r-mr10" style="color: inherit; text-transform: none;">{{input type="checkbox" checked=choice.enabled}} {{choice.displayName}}</label>
+        {{/each}}
+      {{else}}
+        <span class="text-muted">There are no other launch configs in this service to share volumes with.</span>
+      {{/if}}
+    </div>
+  </div>
+{{else}}
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
       <label class="form-control-static">Volumes From</label>
     </div>
 
     <div class="col-sm-12 col-md-8">
-        <div class="form-control-static">
-          {{#if instance.requestedHostId}}
-            {{#if hostContainerChoices.length}}
-              <button class="btn-circle" {{action "addVolumeFrom"}}><i class="icon icon-plus-circle"/></button>
-            {{else}}
-              <span class="text-muted">This host has no containers to use the volumes from.</span>
-            {{/if}}
+      <div class="form-control-static">
+        {{#if instance.requestedHostId}}
+          {{#if hostContainerChoices.length}}
+            <button class="btn-circle" {{action "addVolumeFrom"}}><i class="icon icon-plus-circle"/></button>
           {{else}}
-              <span class="text-muted">Only available when adding a container to a particular host.</span>
+            <span class="text-muted">This host has no containers to use the volumes from.</span>
           {{/if}}
-        </div>
+        {{else}}
+            <span class="text-muted">Only available when adding a container to a particular host.</span>
+        {{/if}}
+      </div>
       {{#if volumesFromArray.length}}
         <table class="table fixed no-lines no-top-padding tight">
           {{#each volumesFromArray as |vol|}}
@@ -66,7 +82,7 @@
       {{/if}}
     </div>
   </div>
-{{/unless}}
+{{/if}}
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">

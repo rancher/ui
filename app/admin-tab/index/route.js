@@ -2,6 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   beforeModel: function() {
-    this.transitionTo('admin-tab.accounts');
+    this.transitionTo('admin-tab.audit-logs');
   }
 });

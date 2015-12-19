@@ -1,14 +1,11 @@
 <section class="header">
-  {{#link-to "environments" tagName="h1" href=false}}<a>Stack:</a>{{/link-to}}
+  <h1>{{#link-to "environments"}}Stack:{{/link-to}}</h1>
+
   {{#power-select options=all selected=model onchange=(action "changeStack") searchField="displayName" as |obj|}}
     <div class="clip r-pr15"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
   {{/power-select}}
 
-  <div class="btn-group pull-right">
-    {{#link-to "environment.index" classNames="btn btn-sm btn-default"}}<i class="icon icon-tasks" data-placement="bottom" tooltip="List"></i>{{/link-to}}
-    {{#link-to "environment.graph" classNames="btn btn-sm btn-default"}}<i class="icon icon-share" data-placement="bottom" tooltip="Link Graph"></i>{{/link-to}}
-    {{#link-to "environment.code" classNames="btn btn-sm btn-default"}}<i class="icon icon-file" data-placement="bottom" tooltip="Compose YAML"></i>{{/link-to}}
-  </div>
+  {{header-state model=model}}
 
   <div class="left-divider">
     {{#if outputs.length}}
@@ -43,13 +40,11 @@
 
   {{action-menu model=model classNames="left-divider r-ml5" size="sm"}}
 
+  <div class="btn-group left-divider">
+    {{#link-to "environment.index" classNames="btn btn-sm btn-default"}}<i class="icon icon-tasks" data-placement="bottom" tooltip="List"></i>{{/link-to}}
+    {{#link-to "environment.graph" classNames="btn btn-sm btn-default"}}<i class="icon icon-share" data-placement="bottom" tooltip="Link Graph"></i>{{/link-to}}
+    {{#link-to "environment.code" classNames="btn btn-sm btn-default"}}<i class="icon icon-file" data-placement="bottom" tooltip="Compose YAML"></i>{{/link-to}}
+  </div>
+
   {{upgrade-btn environmentResource=model classNames="left-divider"}}
-
-  {{#if (and model.isError model.showTransitioningMessage)}}
-    <div class="pull-right clip text-danger">
-      {{model.transitioningMessage}}
-    </div>
-  {{/if}}
-
-  {{header-state model=model}}
 </section>

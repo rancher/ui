@@ -19,14 +19,15 @@ function serialize(obj) {
   }
 }
 
-var auditLog = Resource.extend({});
+var AuditLog = Resource.extend({});
 
-auditLog.reopenClass({
+AuditLog.reopenClass({
   headers: {
     [C.HEADER.PROJECT]: undefined, // Requests for projects use the user's scope, not the project
   },
 
   mangleIn: function(data) {
+    // request and responseObject should be plain JSON objects, not typeified.
     if ( data.requestObject )
     {
       data.requestObject = serialize(data.requestObject);
@@ -42,4 +43,4 @@ auditLog.reopenClass({
 
 });
 
-export default auditLog;
+export default AuditLog;

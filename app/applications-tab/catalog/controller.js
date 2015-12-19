@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  queryParams: ['category', 'catalogid'],
+  queryParams: ['category', 'catalogId'],
   category: 'all',
-  catalogid: 'library'
+  catalogId: 'all'
 });
