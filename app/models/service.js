@@ -306,7 +306,6 @@ var Service = Resource.extend({
     instances.forEach((instance) => {
       var resource = instance.get('state');
       var health = instance.get('healthState');
-      var startOnce = instance.get('labels')[C.LABEL.START_ONCE] === true;
 
       if ( C.ACTIVEISH_STATES.indexOf(resource) >= 0 && (health === 'healthy' || health === null) )
       {

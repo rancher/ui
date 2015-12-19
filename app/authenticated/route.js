@@ -54,7 +54,13 @@ export default Ember.Route.extend({
                 stacks: stacks,
               });
             });
-          }).catch(() => {
+          }).catch((err) => {
+            if ( [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
+            {
+              this.send('logout',transition,true);
+              return;
+            }
+
             this.replaceWith('settings.projects');
           });
         });

@@ -66,7 +66,7 @@ export default Ember.Component.extend({
   }.property('primaryService.name','primaryService.secondaryLaunchConfigs.@each.name','launchConfigIndex'),
 
   volumesFromLaunchConfigChanged: function() {
-    var out = this.get('volumesFromLaunchConfigChoices').filterBy('enabled', true).filterBy('name').map((choice) => { return choice.name });
+    var out = this.get('volumesFromLaunchConfigChoices').filterBy('enabled', true).filterBy('name').map((choice) => { return choice.name; });
     this.set('instance.dataVolumesFromLaunchConfigs', out);
   }.observes('volumesFromLaunchConfigChoices.@each.enabled'),
 
