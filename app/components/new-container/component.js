@@ -3,6 +3,7 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 import SelectTab from 'ui/mixins/select-tab';
 import { debouncedObserver } from 'ui/utils/debounce';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
   isStandalone: true,
@@ -10,6 +11,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   isSidekick: false,
   isUpgrade: false,
   primaryResource: null,
+  primaryService: null,
   launchConfig: null,
   service: null,
   allHosts: null,
@@ -57,6 +59,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
         stdinOpen: true,
         restartPolicy: {name: 'always'},
         labels: { [C.LABEL.PULL_IMAGE]: C.LABEL.PULL_IMAGE_VALUE },
+        uiId: Util.randomStr(),
       }));
 
       // Wait for it to be added to the DOM...

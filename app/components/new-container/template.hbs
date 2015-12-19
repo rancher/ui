@@ -137,7 +137,14 @@
         </div>
 
         <div class="section container-fluid" data-section="volumes">
-          {{form-volumes instance=launchConfig errors=volumeErrors allHosts=allHosts}}
+          {{form-volumes
+            instance=launchConfig
+            isService=isService
+            service=service
+            primaryService=primaryService
+            launchConfigIndex=launchConfigIndex
+            errors=volumeErrors
+            allHosts=allHosts}}
         </div>
 
         <div class="section container-fluid" data-section="network">
@@ -191,6 +198,7 @@
   {{#each service.secondaryLaunchConfigs as |slc index|}}
     <div data-launchindex="{{index}}" class="hide">
       {{new-container
+        advanced=advanced
         isService=true
         isSidekick=true
         isUpgrade=isUpgrade
@@ -198,6 +206,8 @@
         launchConfig=slc
         service=slc
         primaryResource=slc
+        primaryService=primaryService
+        launchConfigIndex=index
         allHosts=allHosts
         allServices=allServices
       }}
