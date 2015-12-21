@@ -5,70 +5,51 @@
 </section>
 <section>
   <div class="well">
-    <div class="over-hr r-mt5 {{if showFilter '' 'r-mb15'}}">
-      <span style="text-transform: none;">
-        <nav>
-          <ul class="pagination pagination-sm r-m0">
-            <li>
-              <a class="hand" {{action "toggleFilter"}}>Show Filters</a>
+    <div class="form-inline r-mb25 inline-block">
+      <div class="form-group">
+        <div class="input-group">
+          <span class="input-group-btn">
+            {{input class="form-control input-sm" value=filters.eventType placeholder="Event Type"}}
+            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if filters.resourceType filters.resourceType 'Resource Type:'}} <i class="icon icon-chevron-down"></i></button>
+            <ul class="dropdown-menu" role="menu">
+              <li role="presentation" class="dropdown-header">
+                Select A Resource Type:
+              </li>
+              {{#each model.resourceTypes as |resource|}}
+                <li {{action "updateResourceType" resource}}>
+                  <a>{{resource}}</a>
+                </li>
+              {{/each}}
+            </ul>
+          </span>
+        </div>
+        {{input class="form-control input-sm" value=filters.clientIp placeholder="Client IP"}}
+        {{input class="form-control input-sm" value=filters.resourceId  placeholder="Resource ID"}}
+        <span class="dropdown">
+          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if authTypeReadable authTypeReadable 'Auth Type:'}} <i class="icon icon-chevron-down"></i></button>
+          <ul class="dropdown-menu" role="menu">
+            <li role="presentation" class="dropdown-header">
+              Select A Auth Type:
             </li>
-            <li>
-            </li>
+            {{#each authTypes as |type|}}
+              <li {{action "updateAuthType" type}}>
+                <a>{{type.value}}</a>
+              </li>
+            {{/each}}
           </ul>
-        </nav>
-      </span>
+        </span>
+        <a class="btn btn-sm btn-primary" {{action "clearAll"}} style="margin-right: 8px;"><i class="icon icon-close icon-sm"></i> Clear All</a>
+      </div>
     </div>
-    {{#liquid-if showFilter class="auditlog-filters"}}
-      <a class="btn btn-sm btn-primary pull-right hand {{if showFilter 'enabled' 'disabled'}}" {{action "clearAll"}} style="margin-right: 8px;"><i class="icon icon-close icon-sm"></i> Clear All</a>
-      <table class="grid fixed table table-hover r-mb10">
-        <thead>
-          <th width="125"></th>
-          <th></th>
-          <th></th>
-          <th width="100"></th>
-          <th width="100"></th>
-          <th width="150"></th>
-          <th width=""></th>
-        </thead>
-        <tbody>
-            <tr>
-              <td></td>
-              <td>{{input class="form-control input-sm" value=filters.eventType placeholder="event type"}}</td>
-              <td>
-                <div class="input-group">
-                  <span class="input-group-btn">
-                  <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if filters.resourceType filters.resourceType 'Resource Type:'}} <i class="icon icon-chevron-down"></i></button>
-                  <ul class="dropdown-menu" role="menu">
-                    <li role="presentation" class="dropdown-header">
-                      Select A Resource Type:
-                    </li>
-                    {{#each model.resourceTypes as |resource|}}
-                      <li {{action "updateResourceType" resource}}>
-                        <a>{{resource}}</a>
-                      </li>
-                    {{/each}}
-                  </ul>
-                  </span>
-                  {{input class="form-control input-sm" value=filters.resourceId  placeholder="resource id"}}
-                </div>
-              </td>
-              <td>{{input class="form-control input-sm" value=filters.authType placeholder="auth type"}}</td>
-              <td>{{input class="form-control input-sm" value=filters.authenticatedAsAccountId placeholder="account"}}</td>
-              <td>{{input class="form-control input-sm" value=filters.authenticatedAsIdentityId placeholder="identity"}}</td>
-              <td>{{input class="form-control input-sm" value=filters.clientIp placeholder="clientIp"}}</td>
-            </tr>
-        </tbody>
-      </table>
-    {{/liquid-if}}
     <table class="grid fixed table table-hover r-mb15">
       <thead>
         {{sortable-th sortable=this action="changeSort" name="created" label="Time" width="125" class="r-pl10"}}
         {{sortable-th sortable=this action="changeSort" name="eventType" width="" class="r-pl10"}}
         {{sortable-th sortable=this action="changeSort" name="resourceType" label="Resource Type:Resource Id" width="" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="authType" width="100" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="authenticatedAsAccountId" label="Account" width="100" class="r-pl10"}}
+        {{sortable-th sortable=this action="changeSort" name="clientIp" label="Request IP" width="150" class="r-pl10"}}
+        {{sortable-th sortable=this action="changeSort" name="authType" width="125" class="r-pl10"}}
+        {{sortable-th sortable=this action="changeSort" name="authenticatedAsAccountId" label="Environment" width="125" class="r-pl10"}}
         {{sortable-th sortable=this action="changeSort" name="authenticatedAsIdentityId" label="Identity" width="150" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="clientIp" width="" class="r-pl10"}}
       </thead>
       <tbody>
         {{#each model.auditLog as |log|}}
@@ -78,10 +59,10 @@
               {{log.eventType}} <i class="icon icon-info addtl-info-trigger" {{action 'showResponseObjects' log.requestObject log.responseObject }}></i>
             </td>
             <td class="clip" title="{{log.resourceType}}"><a href="{{log.links.self}}" target="_blank">{{log.resourceType}}{{if log.resourceId ':'}}{{log.resourceId}}</a></td>
+            <td class="clip">{{log.clientIp}}</td>
             <td class="clip" title="{{log.authType}}">{{auth-type log.authType}}</td>
             <td class="clip" title="{{if log.account.name log.account.name log.account.id}}">{{if log.account.name log.account.name log.account.id}}</td>
             <td>{{identity-block identityNotParsed=log.authenticatedAsIdentityId}}</td>
-            <td class="clip">{{log.clientIp}}</td>
           </tr>
         {{/each}}
       </tbody>

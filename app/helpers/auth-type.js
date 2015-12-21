@@ -1,17 +1,8 @@
 import Ember from 'ember';
-
-const AUTHTYPES = {
-  AdminAuth: 'None',
-  BasicAuth: 'API Key',
-  HeaderAuth: 'HeaderAuth',
-  RegistrationToken: 'Host Registration',
-  TokenAccount: 'TokenAccount',
-  TokenAuth: 'UI Session'
-};
-
+import C from 'ui/utils/constants';
 
 export function authType(type /*, hash*/) {
-  return AUTHTYPES[type];
+  return C.AUTH_TYPES[type];
 }
 
 export default Ember.Helper.helper(authType);

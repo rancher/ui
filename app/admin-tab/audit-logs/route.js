@@ -19,7 +19,14 @@ export default Ember.Route.extend({
 
   actions: {
     filterLogs: function() {
+      Ember.run.cancel(this.get('runLaterId'));
+      this.set('runLaterId', null);
+
       this.refresh();
+    },
+    logsSorted: function() {
+      Ember.run.cancel(this.get('runLaterId'));
+      this.set('runLaterId', null);
     },
     next: function() {
 

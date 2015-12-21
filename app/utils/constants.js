@@ -123,6 +123,15 @@ var C = {
     TYPE_ADMIN: 'admin',
     BASIC_BEARER: 'x-api-bearer',
   },
+
+  AUTH_TYPES: {
+    AdminAuth: 'None',
+    BasicAuth: 'API Key',
+    HeaderAuth: 'HeaderAuth',
+    RegistrationToken: 'Host Registration',
+    TokenAccount: 'TokenAccount',
+    TokenAuth: 'UI Session'
+  },
 };
 
 C.TOKEN_TO_SESSION_KEYS = [
