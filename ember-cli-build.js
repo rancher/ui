@@ -76,7 +76,6 @@ module.exports = function(defaults) {
 
 
   app.import('vendor/icons/style.css');
-  app.import('vendor/icons/fonts/rancher-icons.eot',  {destDir: 'assets/fonts'});
   app.import('vendor/icons/fonts/rancher-icons.svg',  {destDir: 'assets/fonts'});
   app.import('vendor/icons/fonts/rancher-icons.ttf',  {destDir: 'assets/fonts'});
   app.import('vendor/icons/fonts/rancher-icons.woff', {destDir: 'assets/fonts'});

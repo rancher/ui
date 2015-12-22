@@ -97,16 +97,17 @@ export default Ember.Controller.extend(Sortable, {
   },
 
   setup: function() {
-    // @@TODO@@ - This is only here becuase i have to use the auth type map in an handlebars each
-    // once we upgrade to 2.10.0 we can use the @key handlebar helper
-    var authOut = [];
+    var out = [];
 
-    for (var i in C.AUTH_TYPES) {
-      authOut.push({name: i, value: C.AUTH_TYPES[i]});
-    }
+    Object.keys(C.AUTH_TYPES).forEach((key) => {
+      var val = C.AUTH_TYPES[key];
+      if ( val !== C.AUTH_TYPES.HeaderAuth && val !== C.AUTH_TYPES.TokenAccount )
+      {
+        out.push({name: key, value: val});
+      }
+    });
 
-    this.set('authTypes', authOut);
-
+    this.set('authTypes', out);
   }.on('init'),
 
   setSortOrderObserver: function() {
