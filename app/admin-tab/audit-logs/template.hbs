@@ -1,7 +1,5 @@
 <section class="header">
-  <ol class="breadcrumb">
-    <li class="active">Audit Log</li>
-  </ol>
+  <h1>Audit Log</h1>
 </section>
 <section>
   <div class="well">
@@ -14,7 +12,7 @@
             <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if filters.resourceType filters.resourceType 'Resource Type:'}} <i class="icon icon-chevron-down"></i></button>
             <ul class="dropdown-menu" role="menu">
               <li role="presentation" class="dropdown-header">
-                Select A Resource Type:
+                Select a Resource Type:
               </li>
               {{#each model.resourceTypes as |resource|}}
                 <li {{action "updateResourceType" resource}}>
@@ -29,7 +27,7 @@
           <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if authTypeReadable authTypeReadable 'Auth Type:'}} <i class="icon icon-chevron-down"></i></button>
           <ul class="dropdown-menu" role="menu">
             <li role="presentation" class="dropdown-header">
-              Select A Auth Type:
+              Select an Auth Type:
             </li>
             {{#each authTypes as |type|}}
               <li {{action "updateAuthType" type}}>
@@ -44,13 +42,13 @@
     </div>
     <table class="grid fixed table table-hover r-mb15">
       <thead>
-        {{sortable-th sortable=this action="changeSort" name="created" label="Time" width="125" class="r-pl10"}}
+        {{sortable-th sortable=this action="changeSort" name="created" label="Time" width="115" class="r-pl10"}}
         {{sortable-th sortable=this action="changeSort" name="eventType" width="" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="resourceType" label="Resource Type:Resource Id" width="" class="r-pl10"}}
+        {{sortable-th sortable=this action="changeSort" name="resourceType" label="Resource Type:Id" class="r-pl10"}}
         {{sortable-th sortable=this action="changeSort" name="clientIp" label="Request IP" width="150" class="r-pl10"}}
         {{sortable-th sortable=this action="changeSort" name="authType" width="125" class="r-pl10"}}
         {{sortable-th sortable=this action="changeSort" name="authenticatedAsAccountId" label="Environment" width="125" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="authenticatedAsIdentityId" label="Identity" width="150" class="r-pl10"}}
+        {{sortable-th sortable=this action="changeSort" name="authenticatedAsIdentityId" label="Identity" width="200" class="r-pl10"}}
       </thead>
       <tbody>
         {{#each model.auditLog as |log|}}
@@ -62,7 +60,13 @@
             <td class="clip" title="{{log.resourceType}}"><a href="{{log.links.resource}}" target="_blank">{{log.resourceType}}{{if log.resourceId ':'}}{{log.resourceId}}</a></td>
             <td class="clip">{{log.clientIp}}</td>
             <td class="clip" title="{{log.authType}}">{{auth-type log.authType}}</td>
-            <td class="clip" title="{{if log.account.name log.account.name log.account.id}}">{{if log.account.name log.account.name log.account.id}}</td>
+            <td class="clip">
+              {{#if (eq log.account.type "project")}}
+                {{log.account.name}}
+              {{else}}
+                <span class="text-muted">-</span>
+              {{/if}}
+            </td>
             <td>{{identity-block identityNotParsed=log.authenticatedAsIdentityId}}</td>
           </tr>
         {{/each}}
