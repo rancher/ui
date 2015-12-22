@@ -32,6 +32,7 @@ build-static Usage:
   -l - Build as "latest" instead of the version in package.json
   -t - Tag and push tag
   -u - Upload to GCE
+  -c=CDN - Force a CDN path for static asset delivery. Default <releases.rancher.com/ui>
   -v=VERSION - Force version to be VERSION instead of what is in package.json
 EOF
   exit 1;
@@ -41,6 +42,7 @@ EOF
 
 # Parse options
 BRANCH=$CI_BRANCH
+CDN="releases.rancher.com/ui"
 
 if [[ -z "$BRANCH" ]]; then
   BRANCH=$(git symbolic-ref HEAD | sed -e "s/^refs\/heads\///")
@@ -59,7 +61,7 @@ ENVIRONMENT="production"
 FINGERPRINT="yes"
 : ${FORCE_VERSION:=""}
 
-while getopts ":dlutfv:" opt;do
+while getopts ":dlutfv:c:" opt;do
     case $opt in
     d)
         ENVIRONMENT="development"
@@ -78,6 +80,9 @@ while getopts ":dlutfv:" opt;do
         ;;
     v)
         FORCE_VERSION=$OPTARG
+        ;;
+    c)
+        CDN=$OPTARG
         ;;
     \?)
         echo "Invalid arguemnt: ${OPTARG}"
@@ -138,7 +143,6 @@ fi
 BUILD_PAR="dist/static"
 BUILD_DIR="${BUILD_PAR}/${VERSION}"
 BUILD_TGZ="${BUILD_PAR}/${VERSION}.tar.gz"
-CDN="releases.rancher.com/ui"
 GS_URL="gs://${CDN}"
 CACHE="Cache-Control:no-cache,must-revalidate"
 GZIP="html,js,css,xml,txt,map,svg,ttf,woff,woff2"
