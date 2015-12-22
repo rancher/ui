@@ -9,9 +9,21 @@ export default Ember.Route.extend({
     sortOrder: {
       refreshModel: true
     },
-    limit: {
+    eventType: {
       refreshModel: true
     },
+    resourceType: {
+      refreshModel: true
+    },
+    resourceId: {
+      refreshModel: true
+    },
+    clientIp: {
+      refreshModel: true
+    },
+    authType: {
+      refreshModel: true
+    }
   },
 
   runLaterId: null,
@@ -21,8 +33,6 @@ export default Ember.Route.extend({
     filterLogs: function() {
       Ember.run.cancel(this.get('runLaterId'));
       this.set('runLaterId', null);
-
-      this.refresh();
     },
     logsSorted: function() {
       Ember.run.cancel(this.get('runLaterId'));
@@ -54,18 +64,15 @@ export default Ember.Route.extend({
 
     this.set('userHasPaged', false);
     this.set('runLaterId', null);
-    this.set('runLaterId', null);
   },
 
   model: function(params) {
-    var filters;
 
-    if (this.controller) {
-
-      filters = this.controller.get('filters');
+    if (this.get('runLaterId')) {
+      Ember.run.cancel(this.get('runLaterId'));
+      this.set('runLaterId', null);
     }
-
-    return this.store.find('auditLog', null, this.parseFilters(params, filters)).then((response) => {
+    return this.store.find('auditLog', null, this.parseFilters(params)).then((response) => {
 
       var resourceTypes = this.get('store').all('schema').filterBy('links.collection').map((x) => { return x.get('_id'); });
 
@@ -84,15 +91,15 @@ export default Ember.Route.extend({
   },
 
   scheduleLogUpdate: function() {
-    const intervalCount = 2000;
+    const intervalCount = 30000;
 
     this.set('runLaterId',
       Ember.run.later(() => {
         var params = this.paramsFor('admin-tab.audit-logs');
-        var filters = this.controller.get('filters');
+        //var filters = this.controller.get('filters');
 
 
-        this.store.find('auditLog', null, this.parseFilters(params, filters)).then((response) => {
+        this.store.find('auditLog', null, this.parseFilters(params)).then((response) => {
 
           // We can get into a state where the user paged but we have an unresolved promise from the previous
           // run. If thats the case we dont want to replace the page with this unresolved promise.
@@ -106,34 +113,28 @@ export default Ember.Route.extend({
       }, intervalCount));
   },
 
-  parseFilters: function(params, filters) {
-    var paramsOut = params;
-    paramsOut.include = 'account';
-
-    if (filters) {
-      Object.keys(filters).forEach((key) => {
-        /* do we have a non-null filter?*/
-        if (filters[key]) {
-
-          /*does the filter exist in the current params - if so add new filters to it*/
-          if (params.filter) {
-            paramsOut.filter[key] = filters[key];
+  parseFilters: function(params) {
+    var returnValue = {
+      filter: {
+      },
+      limit: 100,
+      depaginate: false,
+      forceReload: true
+    };
+    if (params) {
+      _.forEach(params, (item, key) => {
+        if (key !== 'sortBy' && key !== 'sortOrder' && key !== 'forceReload') {
+          if (item) {
+            returnValue.filter[key] = item;
           } else {
-            /*it doesnt so create it*/
-            paramsOut.filter = {};
-            paramsOut.filter[key] = filters[key];
+            delete returnValue.filter[key];
           }
-        }
-        else {
-          /*did we remove the filter by hand?*/
-          if (!filters[key] && (paramsOut.filter && paramsOut.filter[key])) {
-            /*delete it*/
-            delete paramsOut.filter[key];
-          }
+        } else {
+          returnValue[key] = item;
         }
       });
     }
-    return paramsOut;
+    return returnValue;
   },
 
 });

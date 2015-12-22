@@ -10,6 +10,7 @@
         {{input class="form-control input-sm r-mr5" value=filters.eventType placeholder="Event Type"}}
         <div class="input-group r-mr5">
           <span class="input-group-btn">
+            {{input class="form-control input-sm pull-right" value=filters.resourceId  placeholder="Resource ID" disabled=resourceIdReady}}
             <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if filters.resourceType filters.resourceType 'Resource Type:'}} <i class="icon icon-chevron-down"></i></button>
             <ul class="dropdown-menu" role="menu">
               <li role="presentation" class="dropdown-header">
@@ -21,7 +22,6 @@
                 </li>
               {{/each}}
             </ul>
-            {{input class="form-control input-sm" value=filters.resourceId  placeholder="Resource ID"}}
           </span>
         </div>
         {{input class="form-control input-sm r-mr5" value=filters.clientIp placeholder="Request IP"}}
@@ -38,7 +38,8 @@
             {{/each}}
           </ul>
         </span>
-        <a class="btn btn-sm btn-primary r-ml5" {{action "clearAll"}} style="margin-right: 8px;"><i class="icon icon-close icon-sm"></i> Clear All</a>
+        <a class="btn btn-sm btn-danger r-ml5" {{action "clearAll"}}> Clear All</a>
+        <a class="btn btn-sm btn-primary r-ml5" {{action "search"}}> Search</a>
       </div>
     </div>
     <table class="grid fixed table table-hover r-mb15">
