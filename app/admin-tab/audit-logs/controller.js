@@ -1,11 +1,10 @@
 import Ember from 'ember';
 import Sortable from 'ui/mixins/sortable';
-import { debouncedObserver } from 'ui/utils/debounce';
 import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend(Sortable, {
   application: Ember.inject.controller(),
-  queryParams: ['sortBy', 'sortOrder', 'limit', 'forceReload', 'depaginate'],
+  queryParams: ['sortBy', 'sortOrder', 'eventType', 'resourceType', 'resourceId', 'clientIp', 'authType'],
 
   sortableContent: Ember.computed.alias('model.auditLog'),
   resourceTypeAndId: null,
@@ -20,6 +19,16 @@ export default Ember.Controller.extend(Sortable, {
     },
     changeSort: function(name) {
       this._super(name);
+    },
+    search: function() {
+      this.setProperties({
+        eventType: this.get('filters.eventType'),
+        resourceType: this.get('filters.resourceType'),
+        resourceId: this.get('filters.resourceId'),
+        clientIp: this.get('filters.clientIp'),
+        authType: this.get('filters.authType'),
+      });
+      this.send('filterLogs');
     },
     showResponseObjects: function(request, response) {
       this.get('application').setProperties({
@@ -45,6 +54,13 @@ export default Ember.Controller.extend(Sortable, {
         runtime: null,
       });
       this.setProperties({
+        eventType: null,
+        resourceType: null,
+        resourceId: null,
+        clientIp: null,
+        authType: null,
+      });
+      this.setProperties({
         sortBy: 'created',
         sortOrder: 'desc',
       });
@@ -57,8 +73,11 @@ export default Ember.Controller.extend(Sortable, {
   sortOrder: 'desc',
   descending: true,
   limit: 100,
-  forceReload: true,
-  depaginate: false,
+  eventType: null,
+  resourceType: null,
+  resourceId: null,
+  clientIp: null,
+  authType: null,
   authTypes: null,
   authTypeReadable: null,
   filters: {
@@ -69,6 +88,7 @@ export default Ember.Controller.extend(Sortable, {
     created: null,
     description: null,
     eventType: null,
+    clientIp: null,
     id: null,
     kind: null,
     resourceId: null,
@@ -89,10 +109,6 @@ export default Ember.Controller.extend(Sortable, {
 
   }.on('init'),
 
-  filtersHaveChanged: debouncedObserver('filters.accountId','filters.authType','filters.authenticatedAsAccountId','filters.authenticatedAsIdentityId','filters.created','filters.description','filters.eventType','filters.id','filters.kind','filters.resourceId','filters.resourceType','filters.runtime', function() {
-    this.send('filterLogs');
-  }, 500),
-
   setSortOrderObserver: function() {
     var out = 'asc';
 
@@ -104,6 +120,14 @@ export default Ember.Controller.extend(Sortable, {
     this.send('logsSorted');
 
   }.observes('descending'),
+
+  resourceIdReady: function() {
+    if (this.get('filters.resourceType')) {
+      return false;
+    } else {
+      return true;
+    }
+  }.property('filters.resourceType'),
 
   showPagination: function() {
     var pagination = this.get('model.auditLog.pagination');
