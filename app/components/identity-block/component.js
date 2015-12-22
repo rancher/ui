@@ -43,14 +43,20 @@ export default Ember.Component.extend({
   login: Ember.computed.alias('identity.login'),
 
   displayDescription: function() {
+    var out;
     var name = this.get('identity.name');
     if ( this.get('identity.externalIdType') === C.PROJECT.TYPE_GITHUB_TEAM )
     {
-      return name.replace(/:.*/,'') + ' team';
+      out = name.replace(/:.*/,'') + ' team';
     }
     else
     {
-      return name;
+      if (name) {
+        out = name;
+      } else {
+        out = this.get('identity.externalId');
+      }
     }
-  }.property('identity.{externalIdType,name}'),
+    return out;
+  }.property('identity.{externalIdType,name,externalId}'),
 });
