@@ -97,13 +97,20 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     var ports = [];
     var expose = [];
     this.get('listenersArray').forEach(function(listener) {
-      var src = listener.get('host');
+      var host = parseInt(listener.get('host'),10);
+      var container = parseInt(listener.get('container'),10);
       var proto = listener.get('protocol');
-      var tgt = listener.get('container');
 
-      if ( src && proto )
+      // You almost definitely probably want 443->80.
+      if ( host === 443 && !container && listener.get('ssl'))
       {
-        var str = src + (tgt ? ':' +tgt : '') + (proto === 'http' ? '': '/' + proto );
+        container = 80;
+        listener.set('container', 80);
+      }
+
+      if ( host && proto )
+      {
+        var str = host +':'+ (container ? + container : host) + (proto === 'http' ? '': '/' + proto );
         if ( listener.get('isPublic') )
         {
           ports.pushObject(str);
@@ -117,7 +124,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
     this.set('launchConfig.ports', ports.sort().uniq());
     this.set('launchConfig.expose', expose.sort().uniq());
-  }.observes('listenersArray.@each.{host,protocol,container,isPublic}'),
+  }.observes('listenersArray.@each.{host,protocol,container,isPublic,ssl}'),
 
   hasAdvancedSourcePorts: function() {
     return this.get('targetsArray').filterBy('isService',true).filter((target) => {
