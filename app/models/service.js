@@ -478,7 +478,7 @@ var Service = Resource.extend({
 
 export function activeIcon(service)
 {
-  var out = 'icon icon-layers';
+  var out = 'icon icon-services';
   switch ( service.get('type').toLowerCase() )
   {
     case 'loadbalancerservice': out = 'icon icon-fork';    break;

@@ -206,7 +206,7 @@ var Environment = Resource.extend({
 
 Environment.reopenClass({
   stateMap: {
-    'active':             {icon: 'icon icon-globe',           color: 'text-success'},
+    'active':             {icon: 'icon icon-layers',           color: 'text-success'},
     'canceled-rollback':  {icon: 'icon icon-life-ring',       color: 'text-info'},
     'canceled-upgrade':   {icon: 'icon icon-life-ring',       color: 'text-info'},
     'canceling-rollback': {icon: 'icon icon-life-ring',       color: 'text-info'},
