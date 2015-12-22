@@ -27,7 +27,8 @@ BODY {
 }
 
 .authenticated, #application {
-  height: 100%;
+  min-height: calc(100vh - 36px);
+  padding-bottom: 75px;
   position: relative;
   overflow: hidden;
 }
@@ -41,15 +42,22 @@ B {
 }
 
 footer {
-  margin: 20px;
-  padding: 10px;
+  margin: 0 20px 20px 20px;
+  padding: 20px 20px 0 0;
+  position: absolute;
   bottom: 0;
+  left: 0;
+  right: 0;
   clear: both;
   border-top: solid 2px $lightGray;
 
   & a {
     padding-right: 10px;
   }
+}
+
+.inline-block {
+  display: inline-block;
 }
 /**********
 * Articles (above the page info/warnings)
@@ -281,7 +289,7 @@ UL.list-lines {
 .well {
   border-radius: 1px;
   border:none;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.15);
 
   &.no-padding-margin {
     padding: 0;
@@ -746,8 +754,19 @@ $spacing-property-map: (
   }
 }
 
+.header {
+    overflow: hidden;
+    line-height: 36px;
+
+    & > * {
+    display: inline-block;
+    vertical-align: middle;
+  }
+}
+
 SECTION.header {
   font-size: 18px;
+
   & h1 {
     font-size: 21px;
     font-weight: bold;
@@ -814,4 +833,119 @@ SECTION.header {
   .form-control {
     height: 30px;
   }
+}
+
+/**********
+* Help
+**********/
+.banner {
+  padding: 10px;
+  position: relative;
+  color: white;
+
+  & > span:first-child {
+    background: $lightTealDark;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    color: white;
+    line-height: 20px;
+    padding: 10px;
+    font-weight: bold;
+
+    &:after {
+      content: "";
+      display: block;
+      border-color: transparent;
+      border-width: 7px;
+      border-style: solid;
+      border-left-color: $lightTealDark;
+      position: absolute;
+      right: -14px;
+      top: 33%;
+    }
+  }
+
+  & > span:nth-child(2) {
+    margin-left: 150px;
+  }
+
+  & a {
+    color: $tealTwoDark;
+  }
+}
+
+/*flex test*/
+// .paddingBlock {
+//   padding: 20px 0;
+// }
+
+// .eqWrap {
+//   display: flex;
+// }
+
+// .equalHW {
+//   flex: 1;
+// }
+
+// .equalHMWrap {
+//   display: flex;
+//   align-items: center;
+//   justify-content: space-between;
+// }
+
+// .equalHM {
+//   width: 32%;
+
+//   & .btn {
+//     align-self: flex-end
+//   }
+// }
+
+// .equalHMRWrap {
+//   justify-content: space-between;
+//   flex-wrap: wrap;
+// }
+
+// .equalHMR {
+//   width: 32%;
+//   margin-bottom: 2%;
+// }
+
+// .equalHMVWrap {
+//   flex-wrap: wrap;
+// }
+
+// .equalHMV {
+//   width: 32%;
+//   margin: 1%; 
+// }
+
+// .equalHMV:nth-of-type(3n) {
+//   margin-right: 0;  
+// }
+
+// .equalHMV:nth-of-type(3n+1) {
+//   margin-left: 0; 
+// }
+
+/*Flex items*/
+.flex-wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+.flex-item {
+  display: flex; 
+  padding: 0.5em;
+  width: 33.33%;
+}
+
+.flex-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+.flex-content p {
+  flex: 1 0 auto;
 }
