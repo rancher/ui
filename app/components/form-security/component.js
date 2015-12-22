@@ -146,7 +146,7 @@ export default Ember.Component.extend({
       buttonWidth: '100%',
 
       templates: {
-        li: '<li><a><label></label></a></li>',
+        li: '<li><a href="#"><label></label></a></li>',
       },
 
       buttonText: function(options, select) {

@@ -235,12 +235,12 @@ export default Ember.Component.extend(ManageLabels, {
     {
       this.setProperties({
         'restart': 'on-failure-cond',
-        'restartLimit': parseInt(count, 10),
+        'restartLimit': parseInt(count, 10)+'',
       });
     }
     else
     {
-      this.set('restartLimit',5);
+      this.set('restartLimit','5');
       this.set('restart', name || 'no');
     }
   },

@@ -119,7 +119,7 @@
                     <select name="" class="form-control r-mb10" onChange={{action (mut question.answer) value="target.value"}}>
                       <option value="">Choose an option...</option>
                       {{#each question.options key="@identity" as |option|}}
-                        <option value={{option}}>{{option}}</option>
+                        <option value={{option}} selected={{eq option question.answer}}>{{option}}</option>
                       {{/each}}
                     </select>
                   {{else}}
@@ -173,9 +173,9 @@
       <hr/>
       {{#if previewOpen}}
         <ul class="nav nav-tabs nav-tabs-well">
-          <li class="{{if (eq previewTab 'docker-compose') 'active'}}" {{action "selectPreviewTab" "docker-compose"}}><a>docker-compose.yml {{zero-clipboard text=selectedTemplateModel.dockerCompose}}</a></li>
-          <li class="{{if (eq previewTab 'rancher-compose') 'active'}}" {{action "selectPreviewTab" "rancher-compose"}}><a>rancher-compose.yml {{zero-clipboard text=selectedTemplateModel.rancherCompose}}</a></li>
-          <li class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a>answers.txt {{zero-clipboard text=answersString}}</a></li>
+          <li class="{{if (eq previewTab 'docker-compose') 'active'}}" {{action "selectPreviewTab" "docker-compose"}}><a href="#">docker-compose.yml {{zero-clipboard text=selectedTemplateModel.dockerCompose}}</a></li>
+          <li class="{{if (eq previewTab 'rancher-compose') 'active'}}" {{action "selectPreviewTab" "rancher-compose"}}><a href="#">rancher-compose.yml {{zero-clipboard text=selectedTemplateModel.rancherCompose}}</a></li>
+          <li class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a href="#">answers.txt {{zero-clipboard text=answersString}}</a></li>
         </ul>
         <div class="well nav-well preview-content">
           <pre class="line-numbers language-yaml constrained {{unless (eq previewTab 'docker-compose') 'hide'}}"><code class="language-yaml">

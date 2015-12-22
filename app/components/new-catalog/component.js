@@ -101,7 +101,11 @@ export default Ember.Component.extend(NewOrEdit, {
                   item.answer = null;
                 }
               } else {
-                item.answer = item.default;
+                if ( item.type === 'boolean' ) {
+                  item.answer = (item.default === 'true' || item.default === true);
+                } else {
+                  item.answer = item.default;
+                }
               }
             }
           });

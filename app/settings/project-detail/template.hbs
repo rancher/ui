@@ -1,12 +1,8 @@
 <section class="header">
-  <h1 class="breadcrumb right-divider">
-    {{#link-to "settings.projects" tagName="li" href=false}}<a>Environments</a>{{/link-to}}
-    
-      {{#power-select options=model.all selected=project onchange=(action "changeProject") searchField="displayName" as |obj|}}
-        <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
-      {{/power-select}}
-    
-  </h1>
+  <h1>{{#link-to "settings.projects"}}Environment:{{/link-to}}</h1>
+  {{#power-select options=model.all selected=project onchange=(action "changeProject") searchField="displayName" as |obj|}}
+    <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
+  {{/power-select}}
 
   {{action-menu model=project size="sm"}}
 </section>

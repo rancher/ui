@@ -23,7 +23,7 @@
           <div class="col-sm-6 col-md-4">
             <label>FQDN:</label>
             {{#if service.fqdn}}
-              <span>{{service.fqdn}} {{zero-clipboard text=service.fqdn}}</span>
+              <span><a href="http://{{service.fqdn}}">{{service.fqdn}}</a> {{zero-clipboard text=service.fqdn}}</span>
             {{else}}
               <span class="text-muted">None</span>
             {{/if}}
@@ -111,17 +111,17 @@
     <ul class="nav nav-tabs nav-tabs-well">
       {{#if (not-eq service.kind 'dnsService')}}
         {{#if service.hasPorts}}
-          {{#link-to "service.ports" tagName="li" href=false}}<a>Ports</a>{{/link-to}}
+          {{#link-to "service.ports" tagName="li" href=false}}<a href="#">Ports</a>{{/link-to}}
         {{/if}}
         {{#if service.hasContainers}}
-          {{#link-to "service.containers" tagName="li" href=false}}<a>Containers</a>{{/link-to}}
+          {{#link-to "service.containers" tagName="li" href=false}}<a href="#">Containers</a>{{/link-to}}
         {{/if}}
         {{#if service.hasLabels}}
-          {{#link-to "service.labels" tagName="li" href=false}}<a>Labels</a>{{/link-to}}
+          {{#link-to "service.labels" tagName="li" href=false}}<a href="#">Labels</a>{{/link-to}}
         {{/if}}
-        {{#link-to 'service.links' tagName='li' href=false}}<a>Links</a>{{/link-to}}
+        {{#link-to 'service.links' tagName='li' href=false}}<a href="#">Links</a>{{/link-to}}
       {{else}}
-        {{#link-to 'service.links' tagName='li' href=false classNames='hide'}}<a>Links</a>{{/link-to}}
+        {{#link-to 'service.links' tagName='li' href=false classNames='hide'}}<a href="#">Links</a>{{/link-to}}
       {{/if}}
     </ul>
     <div class="well nav-well">

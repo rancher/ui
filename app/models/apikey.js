@@ -24,6 +24,10 @@ var ApiKey = Resource.extend(PolledResource,{
     },
   },
 
+  displayName: function() {
+    return this.get('name') || this.get('publicValue') || '('+this.get('id')+')';
+  }.property('name','publicValue','id'),
+
   availableActions: function() {
     var a = this.get('actionLinks');
 

@@ -28,7 +28,7 @@ export default Ember.Component.extend({
       attachStdin: true,
       attachStdout: true,
       tty: true,
-      command: ["/bin/sh","-c",'TERM=xterm-256color; export TERM; [ -x /bin/bash ] && exec /bin/bash || exec /bin/sh'],
+      command: ["/bin/sh","-c",'TERM=xterm-256color; export TERM; [ -x /bin/bash ] && ([ -x /usr/bin/script ] && /usr/bin/script -q -c "/bin/bash" /dev/null || exec /bin/bash) || exec /bin/sh'],
     };
 
     instance.doAction('execute',opt).then((exec) => {
