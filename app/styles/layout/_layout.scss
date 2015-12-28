@@ -764,13 +764,13 @@ SECTION.header {
 * Help
 **********/
 .banner {
+  @extend .bg-info;
   padding: 10px;
   position: relative;
   color: white;
 
-  & > span:first-child {
+  & .banner-head {
     background: $lightTealDark;
-    position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
@@ -792,8 +792,13 @@ SECTION.header {
     }
   }
 
-  & > span:nth-child(2) {
+  & .banner-content {
     margin-left: 150px;
+    padding-right: 15px;
+
+    span:first-of-type {
+      margin-right: 15px;
+    }
   }
 
   & a {
@@ -804,17 +809,24 @@ SECTION.header {
 .flex-wrap {
   display: flex;
   flex-wrap: wrap;
+  margin: -10px -0.5em 0 -0.5em;
 }
 .flex-item {
+  flex-grow: 1;
   display: flex;
-  padding: 0.5em;
+  padding: 0 0.5em 0 0.5em;
+  margin-top: 10px;
   width: 33.33%;
+  min-width: 250px;
 }
 
 .flex-content {
   display: flex;
   flex-direction: column;
   width: 100%;
+  &.well {
+    margin-bottom: 0;
+  }
 }
 .flex-content p {
   flex: 1 0 auto;
