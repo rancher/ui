@@ -1,11 +1,11 @@
-<section class="header">
-  <h1>{{#link-to "containers"}}Container:{{/link-to}}</h1>
+<section class="header r-pt20 clearfix">
+  <h1>{{#link-to "containers" class='r-mr5'}}Container:{{/link-to}}</h1>
   {{#power-select options=model.primaryHost.instances selected=model onchange=(action "changeContainer") searchField="displayName" as |obj|}}
     <div class="clip r-mr15">
       <i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}
     </div>
   {{/power-select}}
-  <strong>on {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}</strong>
+  <strong class="r-mr5 r-ml5">on {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}</strong>
 
   {{action-menu model=model size="sm"}}
   {{header-state model=model}}
@@ -13,8 +13,8 @@
 
 <section>
   {{#info-multi-stats model=model linkName="containerStats" single=true}}
-    <div class="row multi-stats">
-      <div class="col-sm-4 col-md-4 col-lg-4">
+    <div class="container-flex bordered">
+      <div class="col-flex">
         <label>Host:</label>
         {{#if model.primaryHost}}
           {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}
@@ -22,7 +22,7 @@
           <span class="text-muted">Unknown</span>
         {{/if}}
       </div>
-      <div class="col-sm-4 col-md-4 col-lg-4">
+      <div class="col-flex">
         <label>Host IP:</label>
         {{#if model.primaryHost}}
           {{model.primaryHost.displayIp}} {{zero-clipboard text=model.primaryHost.displayIp}}
@@ -30,19 +30,19 @@
           <span class="text-muted">Unknown</span>
         {{/if}}
       </div>
-      <div class="col-sm-4 col-md-4 col-lg-4">
+      <div class="col-flex">
         <label>Container IP:</label>
         {{model.displayIp}} {{zero-clipboard text=model.displayIp}}
       </div>
     </div>
-    <div class="row multi-stats">
-      <div class="col-sm-4 col-md-4 col-lg-4">
+    <div class="container-flex bordered">
+      <div class="col-flex">
         <label>Image:</label>
         <span class="force-wrap">
           {{model.displayImage}} {{zero-clipboard text=model.displayImage}}
         </span>
       </div>
-      <div class="col-sm-4 col-md-4 col-lg-4">
+      <div class="col-flex">
         <label>Command:</label>
         <span class="force-wrap">
           {{#if model.command}}
@@ -52,7 +52,7 @@
           {{/if}}
         </span>
       </div>
-      <div class="col-sm-4 col-md-4 col-lg-4">
+      <div class="col-flex">
         <label>Entrypoint:</label>
         <span class="force-wrap">
           {{#if model.entryPoint}}
@@ -64,8 +64,8 @@
       </div>
     </div>
     {{#if model.description}}
-      <div class="row multi-stats">
-        <div class="col-sm-12 col-md-12 description">
+      <div class="container-flex">
+        <div class="col-flex description">
           <label>Description: </label>
           <span>{{model.description}}</span>
         </div>

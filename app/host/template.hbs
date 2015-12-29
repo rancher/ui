@@ -1,5 +1,5 @@
-<section class="header">
-  <h1>{{#link-to "hosts"}}Host:{{/link-to}}</h1>
+<section class="header r-pt20 clearfix">
+  <h1>{{#link-to "hosts" class="r-mr5"}}Host:{{/link-to}}</h1>
 
   {{#power-select options=model.all selected=host onchange=(action "changeHost") searchField="displayName" as |obj|}}
     <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
@@ -14,18 +14,18 @@
 
 <section>
   {{#info-multi-stats model=host linkName="hostStats" single=true}}
-    <div class="row multi-stats">
-      <div class="col-sm-6 col-md-3">
+    <div class="container-flex bordered">
+      <div class="col-flex">
         <label>IP:</label>
         {{host.displayIp}} {{zero-clipboard text=host.displayIp}}
       </div>
-      <div class="col-sm-6 col-md-3">
+      <div class="col-flex">
         {{#if host.cpuBlurb}}
           <label>CPU:</label>
           {{host.cpuBlurb}}{{#if host.cpuTooltip}} <i class="icon icon-info" tooltip="{{host.cpuTooltip}}"></i>{{/if}}
         {{/if}}
       </div>
-      <div class="col-sm-6 col-md-3">
+      <div class="col-flex">
         {{#if host.memoryBlurb}}
           <label>Memory:</label>
           {{host.memoryBlurb}}
@@ -33,7 +33,7 @@
           <span class="text-muted">Unknown</span>
         {{/if}}
       </div>
-      <div class="col-sm-6 col-md-3">
+      <div class="col-flex">
         {{#if host.diskBlurb}}
           <label>Storage:</label>
           {{#if host.diskDetail}}
@@ -48,8 +48,8 @@
         {{/if}}
       </div>
     </div>
-    <div class="row multi-stats">
-      <div class="col-sm-6 col-md-3">
+    <div class="container-flex bordered">
+      <div class="col-flex">
         <label>Provider:</label>
         {{#if host.machine}}
           {{host.machine.driver}}
@@ -57,13 +57,13 @@
           <span class="text-muted">Custom</span>
         {{/if}}
       </div>
-      <div class="col-sm-6 col-md-3">
+      <div class="col-flex">
         {{#if host.info.osInfo.kernelVersion}}
           <label>Kernel:</label>
           {{host.info.osInfo.kernelVersion}}
         {{/if}}
       </div>
-      <div class="col-sm-6 col-md-3">
+      <div class="col-flex">
         {{#if host.dockerBlurb}}
           <label>Docker:</label>
           {{host.dockerBlurb}}
@@ -71,7 +71,7 @@
           <span class="text-muted">Unknown</span>
         {{/if}}
       </div>
-      <div class="col-sm-6 col-md-3">
+      <div class="col-flex">
         {{#if host.osDetail}}
           <label>OS:</label>
           {{host.osDetail}}
