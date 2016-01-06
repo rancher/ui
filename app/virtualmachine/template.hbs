@@ -1,12 +1,12 @@
-<section class="header">
-  <h1>{{#link-to "virtualmachines"}}Virtual Machine:{{/link-to}}</h1>
+<section class="header r-pt20 clearfix">
+  <h1>{{#link-to "virtualmachines" class="r-mr5"}}Virtual Machine:{{/link-to}}</h1>
 
   {{#power-select options=model.vm.primaryHost.instances selected=model.vm onchange=(action "changeVirtualMachine") searchField="displayName" as |obj|}}
     <div class="clip r-mr15"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
   {{/power-select}}
 
   {{#if model.vm.primaryHost}}
-    <strong>on {{#link-to "host" model.vm.primaryHost.id}}{{model.vm.primaryHost.displayName}}{{/link-to}}</strong>
+    <strong class="r-mr5 r-ml5">on {{#link-to "host" model.vm.primaryHost.id}}{{model.vm.primaryHost.displayName}}{{/link-to}}</strong>
   {{/if}}
 
   {{action-menu model=model.vm size="sm"}}
@@ -15,8 +15,8 @@
 
 <section>
   {{#info-multi-stats model=model.vm linkName="containerStats" single=true showGraphs=false}}
-    <div class="row multi-stats">
-      <div class="col-sm-4 col-md-4 col-lg-4">
+    <div class="container-flex bordered">
+      <div class="col-flex">
         <label>Host:</label>
         {{#if model.vm.primaryHost}}
           {{#link-to "host" model.vm.primaryHost.id}}{{model.vm.primaryHost.displayName}}{{/link-to}}
@@ -24,7 +24,7 @@
           <span class="text-muted">Unknown</span>
         {{/if}}
       </div>
-      <div class="col-sm-4 col-md-4 col-lg-4">
+      <div class="col-flex">
         <label>Host IP:</label>
         {{#if model.vm.primaryHost}}
           {{model.vm.primaryHost.displayIp}} {{zero-clipboard text=model.vm.primaryHost.displayIp}}
@@ -32,26 +32,26 @@
           <span class="text-muted">Unknown</span>
         {{/if}}
       </div>
-      <div class="col-sm-4 col-md-4 col-lg-4">
+      <div class="col-flex">
         <label>VM IP:</label>
         {{model.vm.displayIp}} {{zero-clipboard text=model.vm.displayIp}}
       </div>
     </div>
-    <div class="row multi-stats">
-      <div class="col-sm-4 col-md-4 col-lg-4">
+    <div class="container-flex bordered">
+      <div class="col-flex">
         <label>Image:</label>
         <span class="force-wrap">
           {{model.vm.displayImage}} {{zero-clipboard text=model.vm.displayImage}}
         </span>
       </div>
-      <div class="col-sm-4 col-md-4 col-lg-4">
+      <div class="col-flex">
       </div>
-      <div class="col-sm-4 col-md-4 col-lg-4">
+      <div class="col-flex">
       </div>
     </div>
     {{#if model.vm.description}}
-      <div class="row multi-stats">
-        <div class="col-sm-12 col-md-12 description">
+      <div class="container-flex bordered">
+        <div class="col-flex">
           <label>Description: </label>
           <span>{{model.vm.description}}</span>
         </div>
