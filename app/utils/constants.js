@@ -116,6 +116,7 @@ var C = {
     API_HOST:        'api$host',
     CATALOG_URL:     'catalog$url',
     VM_ENABLED:      'vm$enabled',
+    HELP_ENABLED:    'help$enabled'
   },
 
   USER: {
@@ -132,6 +133,13 @@ var C = {
     TokenAccount: 'TokenAccount',
     TokenAuth: 'UI Session'
   },
+
+  EXT_REFERENCES : {
+    FORUM: 'http://forums.rancher.com',
+    COMPANY: 'http://rancher.com',
+    GITHUB: 'https://github.com/rancher/rancher',
+    DOCS: 'http://docs.rancher.com/rancher',
+  }
 };
 
 C.TOKEN_TO_SESSION_KEYS = [

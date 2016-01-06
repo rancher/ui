@@ -39,6 +39,16 @@ export default Ember.Component.extend({
     return this.get('currentPath').indexOf('authenticated.admin-tab') === 0;
   }.property('currentPath'),
 
+  showBottomRow: function() {
+    var out = true;
+
+    if (this.get('currentPath').indexOf('authenticated.help') === 0) {
+      out = false;
+    }
+
+    return out;
+  }.property('currentPath'),
+
   showHostSetup: function() {
     return this.get('isAdmin') && this.get('store').hasRecordFor('schema','setting');
   }.property(),

@@ -2,11 +2,19 @@
   <h1>Helpful links &amp; Information</h1>
 </section>
 
-<div class="banner bg-info eqWrap r-ml20 r-mr20 r-mt10">
-	<span>Announcements</span>
-	<span class="r-pr15"><strong>Latest:</strong><a href="#">Rancher Release - v0.50.1</a></span>
-	<span class="r-pr15"><strong>Released:</strong>20h</span>
-</div>
+{{#if (and helpEnabled (not modelError))}}
+  <div class="banner r-ml20 r-mr20 r-mt10">
+    <span class="banner-head">Announcements</span>
+  {{#if modelResolved}}
+  <span class="banner-content">
+      <span ><strong>Latest: </strong><a href="{{latestAnnouncement.link}}" target="_blank">{{latestAnnouncement.title}}</a></span>
+      <span><strong>Released: </strong>{{date-from-now latestAnnouncement.created}}</span>
+  </span>
+    {{else}}
+      <div class="loading text-center"></div>
+  {{/if}}
+  </div>
+{{/if}}
 
 <section>
   <div class="flex-wrap">
@@ -17,7 +25,7 @@
       <p>Rancher supports grouping resources into multiple environments. Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
 
       <p>For example, you might create separate "dev", "test", and "production" environments to keep things isolated from each other, and give "dev" access to your entire organization but restrict the "production" environment to a smaller team.</p>
-      <a class="btn btn-primary right-divider-btn" {{action "new"}}>Add Environment</a>
+      {{#link-to 'settings.projects' class="btn btn-primary right-divider-btn"}} Manage Environments {{/link-to}}
       </div>
     </div>
 
@@ -39,124 +47,130 @@
 
       <p>A service is also capable of leveraging other Rancher built-in services such as load balancers, health monitoring, upgrade support, and high-availability. Learn More</p>
 
-      <a class="btn btn-primary r-mb10" {{action "newService"}}>Add Service</a>
-    {{#link-to "applications-tab.catalog" class="btn btn-primary"}}Add From Catalog{{/link-to}}
+      {{#if hasServices}}
+        {{#link-to 'applications-tab' class="btn btn-primary r-mb10"}} Manage Services {{/link-to}}
+        {{#link-to "applications-tab.catalog" class="btn btn-primary"}}Add From Catalog{{/link-to}}
+      {{else}}
+        <p>Note: You currently have no hosts. Please add a host before adding Services.</p>
+        {{#link-to 'applications-tab' class="btn btn-primary r-mb10" disabled=true}} Manage Services {{/link-to}}
+        {{#link-to "applications-tab.catalog" class="btn btn-primary" disabled=true}}Add From Catalog{{/link-to}}
+      {{/if}}
     </div>
 
     </div>
   </div>
 </section>
 
-<div class="over-hr">
-  <span><a href="http://rancher.com/learn/">Getting Started</a> with Rancher</span>
-</div>
-
-{{!--
-<section class="row">
-  <div class="col-md-8">
-    <div class="well">
-      <h4>Monthly Meetup</h4>
-      <hr/>
-      <h5>Running Rancher with Amazon Web Services</h5>
-
-      <p><strong>Date:</strong> Thursday, December 17, 2015</p>
-      <p><strong>Time:</strong> 1:00 PM (Eastern US Time)</p>
-
-      <p>In this meetup we'll be demonstrating how to utilize AWS services such as Route53 with Rancher and Docker.</p>
-      <a class="btn btn-primary" href="http://cta-redirect.hubspot.com/cta/redirect/468859/fec158c0-1df5-4fbd-9ff6-ffcd3c0acd02" target="blank">Register Now</a>
-    </div>
-  </div>
-</section> --}}
-
-<section class="well">
-  <div class="header">
-    <h4>Issues &amp; Documentation</h4>
-    <div class="pull-right">
-      Uh oh, Find an issue? <a class="btn btn-primary">File a Bug</a>
-    </div>
-  </div>
-
-  <hr/>
-
-  <div class="row">
-    <p class="text-center col-sm-12 col-md-8 col-md-offset-2">Rancher is an open source software platform that implements a purpose-built infrastructure for running containers in production. Docker containers, as an increasingly popular application workload, create new requirements in infrastructure services
-      such as networking, storage, load balancer, security, service discovery, and resource management.</p>
-  </div>
-
-  <div class="row">
-    <div class="col-sm-12 col-md-4 text-center">
-      <img src="assets/images/help-bug.svg" width="50%" />
-      <p>Find a bug?
-        <br/>File and issue <a href="https://github.com/rancher/rancher/issues">on GitHub.</a></p>
+{{#if helpEnabled}}
+  <section class="well">
+    <div class="header">
+      <h4>Issues &amp; Documentation</h4>
+      <div class="pull-right r-mb20">
+        Uh oh, Find an issue? <a href="{{githubLink}}/issues" class="btn btn-primary r-ml10" target="_blank">File a Bug</a>
+      </div>
     </div>
 
-    <div class="col-sm-12 col-md-4 text-center">
-      <img src="assets/images/help-docs.svg" width="50%" />
-      <p>For more information
-        <br/>about using Rancher <a href="http://docs.rancher.com/rancher/">Visit our docs.</a></p>
+    <hr/>
+
+    <div class="row">
+      <p class="text-center col-sm-12 col-md-8 col-md-offset-2">Rancher is an open source software platform that implements a purpose-built infrastructure for running containers in production. Docker containers, as an increasingly popular application workload, create new requirements in infrastructure services
+        such as networking, storage, load balancer, security, service discovery, and resource management.</p>
     </div>
 
-    <div class="col-sm-12 col-md-4 text-center">
-      <img src="assets/images/help-troubleshoot.svg" width="50%" />
-      <p>Need help troubleshooting?
-        <br/><a href="http://docs.rancher.com/rancher/faqs/">Check out our FAQs</a></p>
-    </div>
-  </div>
+    <div class="row">
+      <div class="col-sm- col-md-4 text-center">
+        <img src="assets/images/help-bug.svg" width="50%" />
+        <p>Find a bug?
+          <br/>File and issue <a href="{{githubLink}}/issues" target="_blank">on GitHub.</a></p>
+      </div>
 
-</section>
+      <div class="col-sm-12 col-md-4 text-center">
+        <img src="assets/images/help-docs.svg" width="50%" />
+        <p>For more information
+          <br/>about using Rancher <a href="{{docsLink}}" target="_blank">Visit our docs.</a>
+          <br/>or check out our <a href="{{companyLink}}/learn/" target="_blank">getting started</a> documentation.</p>
+      </div>
 
-<section class="well">
-  <div class="header">
-    <h4>From the Forums</h4>
-    <div class="pull-right">
-      Join the conversation <a class="btn btn-primary">On the forums</a>
+      <div class="col-sm- col-md-4 text-center">
+        <img src="assets/images/help-troubleshoot.svg" width="50%" />
+        <p>Need help troubleshooting?
+          <br/><a href="{{companyLink}}/faqs/" target="_blank">Check out our FAQs</a></p>
+      </div>
     </div>
-  </div>
-  <hr/>
-  <div class="row">
-    <div class="col-sm-12 col-md-4 right-divider">
-      <h5>Announcements</h5>
-      <p><strong>Latest:</strong><a href="#">Rancher Release - v0.50.1</a></p>
-      <p><strong>Released:</strong>20h</p>
-    </div>
-    <div class="col-sm-12 col-md-4">
-      <h5>General</h5>
-      <ul class="list-unstyled">
-        <li><a href="#">Link to Forum Item</a></li>
-        <li><a href="#">Link to Forum Item</a></li>
-        <li><a href="#">Link to Forum Item</a></li>
-      </ul>
-      <a class="btn btn-sm btn-default r-mt10 r-mb20" href="http://cta-redirect.hubspot.com/cta/redirect/468859/fec158c0-1df5-4fbd-9ff6-ffcd3c0acd02" target="blank">View More General Topics</a>
 
-      <h5>RancherOS</h5>
-      <ul class="list-unstyled">
-        <li><a href="#">Link to Forum Item</a></li>
-        <li><a href="#">Link to Forum Item</a></li>
-        <li><a href="#">Link to Forum Item</a></li>
-      </ul>
-      <a class="btn btn-sm btn-default r-mt10 r-mb20" href="http://cta-redirect.hubspot.com/cta/redirect/468859/fec158c0-1df5-4fbd-9ff6-ffcd3c0acd02" target="blank">View More RancherOS Topics</a>
-    </div>
-    <div class="col-sm-12 col-md-4">
-      <h5>Rancher</h5>
-      <ul class="list-unstyled">
-        <li><a href="#">Link to Forum Item</a></li>
-        <li><a href="#">Link to Forum Item</a></li>
-        <li><a href="#">Link to Forum Item</a></li>
-      </ul>
-      <a class="btn btn-sm btn-default r-mt10 r-mb20" href="http://cta-redirect.hubspot.com/cta/redirect/468859/fec158c0-1df5-4fbd-9ff6-ffcd3c0acd02" target="blank">View More Rancher Topics</a>
+  </section>
 
-      <h5>Convoy</h5>
-      <ul class="list-unstyled">
-        <li><a href="#">Link to Forum Item</a></li>
-        <li><a href="#">Link to Forum Item</a></li>
-        <li><a href="#">Link to Forum Item</a></li>
-      </ul>
-      <a class="btn btn-sm btn-default r-mt10 r-mb20" href="http://cta-redirect.hubspot.com/cta/redirect/468859/fec158c0-1df5-4fbd-9ff6-ffcd3c0acd02" target="blank">View More Convoy Topics</a>
+  <section class="well">
+    <div class="header">
+      <h4>From the Forums</h4>
+      <div class="pull-right r-mb20">
+        Join the conversation <a href="{{forumsLink}}" class="btn btn-primary r-ml10" target="_blank">On the forums</a>
+      </div>
     </div>
-  </div>
-</section>
+    <hr/>
+  {{#if modelResolved}}
+    {{#unless modelError}}
+      <div class="row">
+        <div class="col-sm-12 col-md-4 right-divider">
+          <h5>Announcements</h5>
+          <p><strong>Latest: </strong><a href="{{latestAnnouncement.link}}" target="_blank">{{latestAnnouncement.title}}</a></p>
+          <p><strong>Released: </strong>{{date-from-now latestAnnouncement.created}}</p>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <h5>General</h5>
+          <ul class="list-unstyled">
+            {{#each model.general.topics as |topic|}}
+              <li class="clip">
+                <a href="{{forumsLink}}/t/{{topic.slug}}" target="_blank">{{topic.title}}</a>
+              </li>
+            {{/each}}
+          </ul>
+          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/general" target="blank">View More General Topics</a>
 
-<section class="well">
-  <h4>Commercial Support</h4>
-  <hr/>
-</section>
+          <h5>RancherOS</h5>
+          <ul class="list-unstyled">
+            {{#each model.rancherOS.topics as |topic|}}
+              <li class="clip">
+                <a href="{{forumsLink}}/t/{{topic.slug}}" target="_blank">{{topic.title}}</a>
+              </li>
+            {{/each}}
+          </ul>
+          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/rancher-os" target="blank">View More RancherOS Topics</a>
+        </div>
+        <div class="col-sm-12 col-md-4">
+          <h5>Rancher</h5>
+          <ul class="list-unstyled">
+            {{#each model.rancher.topics as |topic|}}
+              <li class="clip">
+                <a href="{{forumsLink}}/t/{{topic.slug}}" target="_blank">{{topic.title}}</a>
+              </li>
+            {{/each}}
+          </ul>
+          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/rancher" target="blank">View More Rancher Topics</a>
+
+          <h5>Convoy</h5>
+          <ul class="list-unstyled">
+            {{#each model.convoy.topics as |topic|}}
+              <li class="clip">
+                <a href="{{forumsLink}}/t/{{topic.slug}}" target="_blank">{{topic.title}}</a>
+              </li>
+            {{/each}}
+          </ul>
+          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/convoy" target="blank">View More Convoy Topics</a>
+        </div>
+      </div>
+    {{else}}
+      <div class="text-center">Looks like you're offline. Please go online to see content from the forums.</div>
+    {{/unless}}
+  {{else}}
+    <div class="loading text-center"></div>
+  {{/if}}
+  </section>
+
+  <section class="well">
+    <h4>Commercial Support</h4>
+    <hr/>
+    <p>At Rancher Labs we provide commercial, enterprise-grade support for Rancher, including an available 24x7 support team, and priority bug fixes.  In addition we provide implementation, integration and consulting services for organizations looking to implement and scale Rancher.  For more information on any of these services, please email our sales team. <a href="mailto:sales@rancher.com">sales@rancher.com</a></p>
+  </section>
+{{/if}}
+
