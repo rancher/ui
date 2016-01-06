@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 export default Ember.Component.extend({
   access: Ember.inject.service(),
@@ -55,6 +56,21 @@ export default Ember.Component.extend({
       this.sendAction('goToPrevious');
     },
 
+    composeDownload(os) {
+      this.get('store').find('setting',null,{filter: {all: 'false'}}).then((settings) => {
+        var map = {};
+        settings.forEach((setting) => {
+          var name = setting.get('name').replace(/\./g,'_').toLowerCase();
+          map[name] = setting.get('value');
+        });
+
+        var url = map['rancher_compose_'+os+'_url'];
+        if ( url )
+        {
+          Util.download(url);
+        }
+      });
+    },
 
     changePassword() {
       this.get('store').find('account', this.get('session.'+C.SESSION.ACCOUNT_ID)).then((account) => {
