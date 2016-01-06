@@ -5,8 +5,11 @@
     <div class="clip r-pr15"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
   {{/power-select}}
 
-  {{#if outputs.length}}
-    <div class="r-ml10">
+
+  <div class="pull-right">
+    
+    {{#if outputs.length}}
+
       <div class="btn-group">
         <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Outputs <i class="icon icon-chevron-down"></i>
@@ -17,8 +20,9 @@
           {{/each}}
         </ul>
       </div>
-    </div>
-  {{/if}}
+    
+    {{/if}}
+
 
   <div class="btn-group r-ml10">
     {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-primary btn-sm"}}Add Service{{/link-to}}
@@ -36,7 +40,8 @@
     </ul>
   </div>
 
-  {{action-menu model=model classNames="r-ml10" size="sm"}}
+  {{action-menu model=model classNames="r-ml10 pull-right" size="sm"}}
+  {{header-state model=model classNames="pull-right"}}
 
   <div class="btn-group r-ml10">
     {{#link-to "environment.index" classNames="btn btn-sm btn-default"}}<i class="icon icon-tasks" data-placement="bottom" tooltip="List"></i>{{/link-to}}
@@ -46,5 +51,6 @@
 
   {{upgrade-btn environmentResource=model classNames="r-ml10"}}
 
-  {{header-state model=model}}
+  </div>
+
 </section>

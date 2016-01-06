@@ -6,6 +6,7 @@ export default Ember.Component.extend({
   access: Ember.inject.service(),
   projects: Ember.inject.service(),
   project: Ember.computed.alias('projects.current'),
+  prefs: Ember.inject.service(),
 
   currentPath: null,
   authController: null,
@@ -49,11 +50,21 @@ export default Ember.Component.extend({
     return out;
   }.property('currentPath'),
 
+  showAccessWarning: function() {
+    return this.get('app.showArticles') !== false &&
+           !this.get('access.enabled') &&
+           this.get('prefs.'+C.PREFS.ACCESS_WARNING) !== false;
+  }.property('app.showArticles','access.enabled',`prefs.${C.PREFS.ACCESS_WARNING}`),
+
   showHostSetup: function() {
     return this.get('isAdmin') && this.get('store').hasRecordFor('schema','setting');
   }.property(),
 
   actions: {
+    hideAccessWarning: function() {
+      this.set(`prefs.${C.PREFS.ACCESS_WARNING}`, false);
+    },
+
     showAbout() {
       this.sendAction('showAbout');
     },

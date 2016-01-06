@@ -11,6 +11,13 @@
     {{/if}}
   </nav>
 
+  {{#if showAccessWarning}}
+    <article class="warning">
+      <div class="close" {{action "hideAccessWarning"}}><i class="icon icon-x"></i></div>
+      {{#link-to "admin-tab.auth"}}Access Control{{/link-to}} is not configured
+    </article>
+  {{/if}}
+
   <div class="dropdown user-btn">
     <span class="user-toggle" id="user-dropdown" data-toggle="dropdown" aria-expanded="true" aria-label="User Menu: {{session.user}}">
       {{#if accessEnabled}}
