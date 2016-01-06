@@ -25,9 +25,10 @@ export default Ember.Controller.extend({
       return true;
     }
 
-    var id = (this.get('model.clientId')||'').trim();
-    var secret = (this.get('model.clientSecret')||'').trim();
-    return id.length < 20 ||secret.length < 40 || this.get('testing');
+    if ( this.get('testing') )
+    {
+      return true;
+    }
   }.property('model.{clientId,clientSecret,hostname}','testing','isEnterprise'),
 
   saveDisabled: Ember.computed.or('saving','saved'),

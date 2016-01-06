@@ -39,7 +39,7 @@ export default Ember.Component.extend({
       allSelectedText: 'All',
 
       templates: {
-        li: '<li><a><label></label></a></li>',
+        li: '<li><a href="#"><label></label></a></li>',
       },
     };
 
