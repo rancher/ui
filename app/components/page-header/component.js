@@ -17,8 +17,8 @@ export default Ember.Component.extend({
   accessEnabled: Ember.computed.alias('access.enabled'),
   isAdmin: Ember.computed.alias('access.admin'),
   isLocalAuth: function() {
-    return this.get('access.provider') === 'localauthconfig';
-  }.property('access.provider'),
+    return this.get('access.enabled') && this.get('access.provider') === 'localauthconfig';
+  }.property('access.{enabled,provider}'),
 
   projectChoices: function() {
     return this.get('projects.active').sortBy('name','id');

@@ -4,7 +4,12 @@
     <label class="text-muted">Links</label>
     <ul class="list-unstyled">
       {{#each service.consumedServicesWithNames as |link|}}
-        <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.name}} {{/link-to}}</li>
+        <li>
+          {{#link-to 'service' link.service.environmentId link.service.id~}}
+            {{#if (not (eq link.service.environmentId service.environmentId))}}{{link.service.displayEnvironment}}/{{/if}}
+            {{~link.service.displayName~}}
+          {{~/link-to}}
+        </li>
       {{else}}
         <li class="text-muted">No Links</li>
       {{/each}}

@@ -39,8 +39,11 @@
   <div class="pod-info clearfix">
     <div class="pod-info-line">
       <div class="pod-info-item"><i class="icon icon-link"></i> {{model.displayIp}}</div>
+      {{#if model.dockerBlurb}}
+        <div class="pod-info-item"><i class="icon icon-gear"></i> {{model.dockerBlurb}}</div>
+      {{/if}}
       {{#if model.osBlurb}}
-        <div class="pod-info-item"><i class="icon icon-linux"></i> {{model.osBlurb}}</div>
+        <div class="pod-info-item"><i class="icon icon-linux"></i> {{model.osBlurb}}{{#if model.kernelBlurb}} ({{model.kernelBlurb}}){{/if}}</div>
       {{/if}}
       {{#if model.machine}}
         <div class="pod-info-item"><i class="icon icon-cloud"></i> {{model.machine.driver}}</div>

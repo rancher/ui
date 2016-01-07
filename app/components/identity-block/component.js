@@ -16,7 +16,7 @@ export default Ember.Component.extend({
   didInitAttrs: function() {
     var type = this.get('externalIdType');
     var id = this.get('externalId');
-    var identityOut = this.get('identityNotParsed') || `1i${type}:${id}`;
+    var identityOut = this.get('identityNotParsed') || `1i!${type}:${id}`;
 
     if ( !this.get('identity') )
     {

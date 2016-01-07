@@ -38,8 +38,23 @@ function specToPort(spec) {
 var LoadBalancerService = Service.extend({
   type: 'loadBalancerService',
 
+  sslPorts: function() {
+    return (((this.get('launchConfig.labels')||{})[C.LABEL.BALANCER_SSL_PORTS]||'')).split(',').map((str) => {
+      return parseInt(str,10);
+    });
+  }.property(`launchConfig.labels`),
+
+  endpointsByPort: function() {
+    var sslPorts = this.get('sslPorts');
+
+    return this._super().map((obj) => {
+      obj.ssl = sslPorts.indexOf(obj.port) >= 0;
+      return obj;
+    });
+  }.property('endpointsMap'),
+
   displayPorts: function() {
-    var sslPorts = (((this.get('launchConfig.labels')||{})[C.LABEL.BALANCER_SSL_PORTS]||'')).split(',');
+    var sslPorts = this.get('sslPorts');
 
     var internal = '';
     (this.get('launchConfig.expose')||[]).forEach((portSpec, idx) => {
@@ -53,7 +68,7 @@ var LoadBalancerService = Service.extend({
       var endpoints = this.get('endpointsMap')[portNum];
       if ( endpoints )
       {
-        var url = Util.constructUrl(sslPorts[portNum], fqdn||endpoints[0], portNum);
+        var url = Util.constructUrl((sslPorts.indexOf(portNum) >= 0), fqdn||endpoints[0], portNum);
         pub += '<span>' + (idx === 0 ? '' : ', ') +
         '<a href="'+ url +'" target="_blank">' +
         esc(portToStr(portSpec)) +
@@ -75,7 +90,9 @@ var LoadBalancerService = Service.extend({
   displayDetail: function() {
     var services = '';
     (this.get('consumedServicesWithNames')||[]).forEach((map, idx) => {
-      services += '<span>'+ (idx === 0 ? '' : ', ') + map.get('service.displayName') + '</span>';
+      services += '<span>'+ (idx === 0 ? '' : ', ') +
+      (map.get('service.environmentId') === this.get('environmentId') ? '' : esc(map.get('service.displayEnvironment')) + '/') +
+      esc(map.get('service.displayName')) + '</span>';
     });
 
     var out = '<label>To: </label>' + services;

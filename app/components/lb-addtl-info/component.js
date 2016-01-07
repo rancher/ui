@@ -36,6 +36,8 @@ export default Ember.Component.extend({
               isService: true,
               environmentId: map.get('service.environmentId'),
               value: map.get('service.displayName'),
+              id: map.get('service.id'),
+              service: map.get('service'),
             });
 
             targets.pushObject(obj);
@@ -46,7 +48,8 @@ export default Ember.Component.extend({
           isService: true,
           value: map.get('service.displayName'),
           id: map.get('service.id'),
-          environmentId: map.get('service.environmentId')
+          environmentId: map.get('service.environmentId'),
+          service: map.get('service'),
         }));
       }
     });

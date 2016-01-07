@@ -57,7 +57,13 @@
             <td class="force-wrap" title="{{log.eventType}}">
               {{log.eventType}} <i class="icon icon-info addtl-info-trigger" {{action 'showResponseObjects' log.requestObject log.responseObject }}></i>
             </td>
-            <td class="clip" title="{{log.resourceType}}"><a href="{{log.links.resource}}" target="_blank">{{log.resourceType}}{{if log.resourceId ':'}}{{log.resourceId}}</a></td>
+            <td class="clip" title="{{log.resourceType}}">
+              {{#if log.links.resource}}
+                <a href="{{log.links.resource}}" target="_blank">{{log.resourceType}}{{#if log.resourceId}}: {{log.resourceId}}{{/if}}</a>
+              {{else}}
+                {{log.resourceType}}{{#if log.resourceId}}: {{log.resourceId}}{{/if}}
+              {{/if}}
+            </td>
             <td class="clip">{{log.clientIp}}</td>
             <td class="clip" title="{{log.authType}}">{{auth-type log.authType}}</td>
             <td class="clip">
