@@ -2,8 +2,9 @@ import Ember from 'ember';
 import BootstrapFixes from 'ui/utils/bootstrap-fixes';
 
 export default Ember.Service.extend({
-  model: null,
-  open: false,
+  model          : null,
+  open           : false,
+  tooltipActions : null,
 
   show: function(model,trigger,toggle) {
     var $menu = $('#resource-actions');
@@ -24,9 +25,17 @@ export default Ember.Service.extend({
     });
 
     Ember.run.next(() => {
+
+      if (this.get('tooltipActions')) {
+        $menu.addClass('tooltip-actions');
+      }
+
       $menu.removeClass('hide');
+
       $toggle.addClass('open');
+
       this.set('open',true);
+
       BootstrapFixes.positionDropdown($menu, trigger, true);
     });
   },

@@ -1,7 +1,9 @@
 <section class="header r-pt20 clearfix">
   <h1>Service:</h1>
   {{#power-select options=model.stack.services selected=service onchange=(action "changeService") searchField="displayName" as |obj|}}
-    <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
+    <div class="clip">
+      {{select-dot model=obj}}
+    </div>
   {{/power-select}}
   <strong class="r-mr5 r-ml5">in {{#link-to "environment" model.stack.id}}{{model.stack.displayName}}{{/link-to}}</strong>
 

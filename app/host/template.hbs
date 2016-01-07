@@ -2,7 +2,9 @@
   <h1>{{#link-to "hosts"}}Host:{{/link-to}}</h1>
 
   {{#power-select options=model.all selected=host onchange=(action "changeHost") searchField="displayName" as |obj|}}
-    <div class="clip"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
+    <div class="clip">
+      {{select-dot model=obj}}
+    </div>
   {{/power-select}}
 
   <div class="pull-right">
@@ -24,74 +26,83 @@
       <div class="col-flex">
         {{#if host.cpuBlurb}}
           <label>CPU:</label>
-          {{host.cpuBlurb}}{{#if host.cpuTooltip}} <i class="icon icon-info" tooltip="{{host.cpuTooltip}}"></i>{{/if}}
-        {{/if}}
-      </div>
-      <div class="col-flex">
-        {{#if host.memoryBlurb}}
-          <label>Memory:</label>
-          {{host.memoryBlurb}}
-        {{else}}
-          <span class="text-muted">Unknown</span>
-        {{/if}}
-      </div>
-      <div class="col-flex">
-        {{#if host.diskBlurb}}
-          <label>Storage:</label>
-          {{#if host.diskDetail}}
-            {{#each host.diskDetail as |disk|}}
-              <span style="display: inline-block; padding-right: 10px;">{{disk.value}} <i class="icon icon-info" tooltip="{{disk.label}}"></i></span>
-            {{/each}}
-          {{else}}
-            {{host.diskBlurb}} (total)
+          {{host.cpuBlurb}}
+          {{#if host.cpuTooltip}}
+              {{#tooltip-element type='tooltip-basic' model=host tooltipTemplate='tooltip-cpu'}}
+                <i class="icon icon-info"></i>
+              {{/tooltip-element}}
+            {{/if}}
           {{/if}}
-        {{else}}
-          <span class="text-muted">Unknown</span>
-        {{/if}}
-      </div>
-    </div>
-    <div class="container-flex bordered">
-      <div class="col-flex">
-        <label>Provider:</label>
-        {{#if host.machine}}
-          {{host.machine.driver}}
-        {{else}}
-          <span class="text-muted">Custom</span>
-        {{/if}}
-      </div>
-      <div class="col-flex">
-        {{#if host.info.osInfo.kernelVersion}}
-          <label>Kernel:</label>
-          {{host.info.osInfo.kernelVersion}}
-        {{/if}}
-      </div>
-      <div class="col-flex">
-        {{#if host.dockerBlurb}}
-          <label>Docker:</label>
-          {{host.dockerBlurb}}
-        {{else}}
-          <span class="text-muted">Unknown</span>
-        {{/if}}
-      </div>
-      <div class="col-flex">
-        {{#if host.osDetail}}
-          <label>OS:</label>
-          {{host.osDetail}}
-        {{else}}
-          <span class="text-muted">Unknown</span>
-        {{/if}}
-      </div>
-    </div>
-    {{#if host.description}}
-      <div class="row multi-stats">
-        <div class="col-xs-12 description">
-          <label>Description: </label>
-          <span>{{host.description}}</span>
+        </div>
+        <div class="col-flex">
+          {{#if host.memoryBlurb}}
+            <label>Memory:</label>
+            {{host.memoryBlurb}}
+          {{else}}
+            <span class="text-muted">Unknown</span>
+          {{/if}}
+        </div>
+        <div class="col-flex">
+          {{#if host.diskBlurb}}
+            <label>Storage:</label>
+            {{#if host.diskDetail}}
+              {{#each host.diskDetail as |disk|}}
+                <span style="display: inline-block; padding-right: 10px;">{{disk.value}}
+                {{#tooltip-element type='tooltip-basic' model=disk}}
+                  <i class="icon icon-info"></i>
+                {{/tooltip-element}}
+               </span>
+              {{/each}}
+            {{else}}
+              {{host.diskBlurb}} (total)
+            {{/if}}
+          {{else}}
+            <span class="text-muted">Unknown</span>
+          {{/if}}
         </div>
       </div>
-    {{/if}}
-  {{/info-multi-stats}}
-</section>
+      <div class="container-flex bordered">
+        <div class="col-flex">
+          <label>Provider:</label>
+          {{#if host.machine}}
+            {{host.machine.driver}}
+          {{else}}
+            <span class="text-muted">Custom</span>
+          {{/if}}
+        </div>
+        <div class="col-flex">
+          {{#if host.info.osInfo.kernelVersion}}
+            <label>Kernel:</label>
+            {{host.info.osInfo.kernelVersion}}
+          {{/if}}
+        </div>
+        <div class="col-flex">
+          {{#if host.dockerBlurb}}
+            <label>Docker:</label>
+            {{host.dockerBlurb}}
+          {{else}}
+            <span class="text-muted">Unknown</span>
+          {{/if}}
+        </div>
+        <div class="col-flex">
+          {{#if host.osDetail}}
+            <label>OS:</label>
+            {{host.osDetail}}
+          {{else}}
+            <span class="text-muted">Unknown</span>
+          {{/if}}
+        </div>
+      </div>
+      {{#if host.description}}
+        <div class="row multi-stats">
+          <div class="col-xs-12 description">
+            <label>Description: </label>
+            <span>{{host.description}}</span>
+          </div>
+        </div>
+      {{/if}}
+    {{/info-multi-stats}}
+  </section>
 
 <section>
   <ul class="nav nav-tabs nav-tabs-well shadowed">

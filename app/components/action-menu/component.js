@@ -4,6 +4,7 @@ export default Ember.Component.extend({
   model: null,
   size: 'xs',
   showPrimary: true,
+  inTooltip: false,
 
   resourceActions: Ember.inject.service('resource-actions'),
 
@@ -16,6 +17,11 @@ export default Ember.Component.extend({
     {
       e.preventDefault();
       e.stopPropagation();
+
+      if (this.get('inTooltip')) {
+        this.get('resourceActions').set('tooltipActions', true);
+      }
+
       this.get('resourceActions').show(this.get('model'), more, this.$());
     }
   },

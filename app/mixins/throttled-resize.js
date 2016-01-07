@@ -5,14 +5,13 @@ export default Ember.Mixin.create({
   throttleTimer: null,
   resizeInterval: 200,
 
-  didInsertElement: function() {
-    this._super();
+  setup: function() {
 
     this.set('boundResize', this.triggerResize.bind(this));
     $(window).on('resize', this.get('boundResize'));
     $(window).on('focus', this.get('boundResize'));
     Ember.run.next(this,'onResize');
-  },
+  }.on('init'),
 
   triggerResize: function() {
     var timer = Ember.run.throttle(this, 'onResize', this.get('resizeInterval'), false);
