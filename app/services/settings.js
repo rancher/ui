@@ -104,4 +104,5 @@ export default Ember.Service.extend(Ember.Evented, {
   goMachineVersion: Ember.computed.alias('asMap.'+C.SETTING.VERSION_GMS+'.value'),
 
   hasVm: Ember.computed.equal('asMap.'+C.SETTING.VM_ENABLED+'.value', 'true'),
+  helpEnabled: Ember.computed.equal('asMap.'+C.SETTING.HELP_ENABLED+'.value', 'true')
 });
