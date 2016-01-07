@@ -129,7 +129,7 @@ var Host = Resource.extend({
 
     if ( this.get('info.osInfo.operatingSystem') )
     {
-      out = this.get('info.osInfo.operatingSystem').replace(/\s+\(.*?\)/,'');
+      out = (this.get('info.osInfo.operatingSystem')||'').replace(/\s+\(.*?\)/,'');
     }
 
     var hasKvm = (this.get('labels')||{})[C.LABEL.KVM] === 'true';
@@ -144,12 +144,20 @@ var Host = Resource.extend({
   osDetail: Ember.computed.alias('info.osInfo.operatingSystem'),
 
   dockerBlurb: function() {
-    // @TODO this always sends back Ubuntu
     if ( this.get('info.osInfo') )
     {
-      return this.get('info.osInfo.dockerVersion').replace(/^Docker version\s*/i,'');
+      return (this.get('info.osInfo.dockerVersion')||'').replace(/^Docker version\s*/i,'').replace(/, build.*/,'');
     }
-  }.property('info.osInfo.{dockerVersion}'),
+  }.property('info.osInfo.dockerVersion'),
+
+  dockerDetail: Ember.computed.alias('info.osInfo.operatingSystem'),
+
+  kernelBlurb: function() {
+    if ( this.get('info.osInfo') )
+    {
+      return (this.get('info.osInfo.kernelVersion')||'');
+    }
+  }.property('info.osInfo.kernelVersion'),
 
   cpuBlurb: function() {
     if ( this.get('info.cpuInfo.count') )

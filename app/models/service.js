@@ -439,7 +439,7 @@ var Service = Resource.extend({
     var map = this.get('endpointsMap');
     Object.keys(map).forEach((key) => {
       out.push({
-        port: key,
+        port: parseInt(key,10),
         ipAddresses: map[key]
       });
     });

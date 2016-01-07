@@ -11,12 +11,16 @@ var DnsService = Service.extend({
   }.property(),
 
   displayDetail: function() {
-    var out = '';
-    this.get('consumedServicesWithNames').forEach((map) => {
-      var part = '<span>' +  esc(map.get('service.displayName')) + '</span>';
-      out += part;
+    var services = '';
+    (this.get('consumedServicesWithNames')||[]).forEach((map, idx) => {
+      services += '<span>'+ (idx === 0 ? '' : ', ') +
+      (map.get('service.environmentId') === this.get('environmentId') ? '' : esc(map.get('service.displayEnvironment')) + '/') +
+      esc(map.get('service.displayName')) + '</span>';
     });
-    return ('<span class="text-muted">To: </span>' + out).htmlSafe();
+
+    var out = '<label>To: </label>' + services;
+
+    return out.htmlSafe();
   }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated'),
 });
 

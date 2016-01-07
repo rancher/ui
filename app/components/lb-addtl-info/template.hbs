@@ -65,7 +65,7 @@
     <ul class="list-unstyled">
       {{#each service.endpointsByPort as |endpoint|}}
         {{#each endpoint.ipAddresses as |ip|}}
-          <li><a href="http://{{ip}}:{{endpoint.port}}">{{ip}}:{{endpoint.port}}</a></li>
+          <li><a href="{{if endpoint.ssl 'https' 'http'}}://{{ip}}:{{endpoint.port}}">{{ip}}:{{endpoint.port}}</a></li>
         {{/each}}
       {{else}}
         <li class="text-muted">No public host ports</li>
@@ -83,7 +83,10 @@
             {{target.hostname}}{{if target.srcPort ":"}}{{target.srcPort}}{{target.path}}
             <span class="text-muted"> to </span>
           {{~/if~}}
-          {{~#link-to 'service' target.environmentId target.id~}}{{target.value}}{{~/link-to~}}
+          {{~#link-to 'service' target.environmentId target.id~}}
+            {{~#if (not (eq target.environmentId service.environmentId))~}}{{target.service.displayEnvironment}}/{{~/if~}}
+            {{target.value}}
+          {{~/link-to~}}
           {{~#if target.dstPort~}}:{{target.dstPort}}{{~/if~}}
         </li>
       {{~/each}}
