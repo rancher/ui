@@ -2,7 +2,7 @@ $normal-weight: normal;
 $bold-weight: 700;
 
 a {
-  color: $blue;
+  color: $link-color;
 }
 
 H1, H2, H3, H4, H5, H6, SECTION.header {
@@ -51,10 +51,14 @@ H1, H2, H3, H4, H5, H6, SECTION.header {
   }
 }
 /*tables*/
+table {
+  background-color: transparent;
+}
 .table {
   width: 100%;
   max-width: 100%;
   margin-bottom: $line-height-computed;
+  
 
   thead {
     th {
@@ -68,7 +72,7 @@ H1, H2, H3, H4, H5, H6, SECTION.header {
     > tr {
       > th,
       > td {
-        border-right: 1px dotted #e3e5e6;
+        border-right: 1px dotted $table-border-color ;
       }
     }
   }
@@ -94,7 +98,8 @@ button {
 }
 .btn-disabled,
 .btn.disabled {
-  background: $lightGrayDark;
+  background: $btn-disabled-bg;
+  color: $btn-disabled-color;
   &:hover,
   &:focus {
     color: inherit;
@@ -117,18 +122,21 @@ fieldset[disabled] .btn {
 
 .btn-primary {
   &:hover {
-    background: $blueDark;
+    background: $btn-primary-hover;
   }
 }
 
 .btn-default {
   box-shadow: none;
-  background: white;
-  color: $blue;
+  background: $btn-default-bg;
+  color: $btn-default-color;
 
   &:hover {
     color: white;
-    background: $midGray;
+    background: $btn-default-hover;
+  }
+  &.active {
+    background: $accent-two;
   }
 }
 
@@ -174,7 +182,6 @@ fieldset[disabled] .btn {
 }
 
 .form-control {
-  border-color: $lightGray;
   -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0);
   padding: 5px 10px;
@@ -249,7 +256,7 @@ fieldset[disabled] .btn {
     float: left;
 
     & > a {
-      opacity: 0.5;
+      opacity: 0.65;
       border: 1px solid #c0c8ca;
       border-radius: 3px;
       color: #8a919c;
@@ -258,6 +265,7 @@ fieldset[disabled] .btn {
       margin: 20px 10px;
       text-align: center;
       padding: 0;
+      background: $lightGray;
     }
 
     &.active > a {
@@ -344,7 +352,7 @@ fieldset[disabled] .btn {
 }
 
 .well {
-  background-color: white;
+  background-color: $well-bg;
   box-shadow: none;
   padding: 20px;
   border-radius: $border-radius-base;
@@ -428,6 +436,12 @@ fieldset[disabled] .btn {
   }
 }
 
+.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+  background-color: $btn-disabled-bg;
+  color: $btn-disabled-color;
+  opacity: .35;
+}
+
 table a:not(.btn), .table a:not(.btn), .grid a:not(.btn) {
   text-decoration: none;
 }
@@ -440,6 +454,7 @@ table a:not(.btn), .table a:not(.btn), .grid a:not(.btn) {
 HR {
   margin: 10px 0;
   clear: both;
+  border-top-color: $page-header-border-color;
 }
 
 .block {
@@ -448,12 +463,16 @@ HR {
 
 .input-group-addon {
   padding: 10px;
+  background-color: $input-bg;
+  color: $input-color;
 }
 
 .dropdown-menu {
   @include box-shadow(0 2px 2px rgba(0,0,0,0.1));
   max-height: 300px;
   overflow-y: auto;
+  background-color: $dropdown-bg;
+  // color: $input-color;
   &.dropdown-menu-right {
     left: auto;
     right: auto;
@@ -465,23 +484,24 @@ HR {
 
   .dropdown-header {
     padding-left: 10px;
-    color: $midGrayDark;
+    // color: $midGrayDark;
   }
 
   & > li > a {
     cursor: pointer;
     cursor: hand;
+    color: $dropdown-link-color;
   }
 
   & > li.selected > a,
   & > li.selected > a:hover,
   & > li.selected > a:focus {
-    color: $brand-success;
+    // color: $brand-success;
   }
 
   & .active .text-muted,
   & A:hover .text-muted {
-    color: inherit;
+    // color: inherit;
   }
 }
 
@@ -526,6 +546,12 @@ FORM LABEL,
 .horizontal-form .radio + .radio,
 .horizontal-form .checkbox + .checkbox {
   margin-top: inherit;
+}
+
+INPUT {
+  background   : $input-bg;
+  color        : $input-color;
+  border-color : $input-border;
 }
 
 INPUT[type="radio"],
@@ -674,7 +700,7 @@ INPUT[type="checkbox"] {
 }
 
 .help-block {
-  color: #444;
+  color: $brand-info;
   font-size: 12px;
 }
 
@@ -707,6 +733,7 @@ INPUT[type="checkbox"] {
     border-color: $lightGray;
     background-image: none;
     position: relative;
+    background: $input-bg;
 
     &:after {
       content: $icon-chevron-down;
@@ -756,8 +783,19 @@ INPUT[type="checkbox"] {
 }
 
 .pagination {
+  > li {
+    > a {
+      background-color: $btn-default-bg; 
+      color: $btn-default-color;
+      border-color: $btn-default-border;
+
+    }
+  }
   .active A {
     font-weight: bold;
+    background-color: $btn-primary-bg; 
+    color: $btn-primary-color;
+    border-color: $btn-primary-border;
   }
   .disabled {
     cursor: default;
