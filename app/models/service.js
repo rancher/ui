@@ -3,6 +3,7 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
+// !! If you add a new one of these, you need to add it to reset() below too
 var _allMaps;
 var _allRegularServices;
 var _allLbServices;
@@ -10,6 +11,7 @@ var _allExternalServices;
 var _allDnsServices;
 var _allKubernetesServices;
 var _allKubernetesReplicationControllers;
+// !! If you add a new one of these, you need to add it to reset() below too
 
 var Service = Resource.extend({
   type: 'service',
@@ -166,6 +168,7 @@ var Service = Resource.extend({
   }.property('actionLinks.{activate,deactivate,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type','isK8s'),
 
 
+  // !! If you add a new one of these, you need to add it to reset() below too
   _allMaps: null,
   _allRegularServices: null,
   _allLbServices: null,
@@ -173,6 +176,7 @@ var Service = Resource.extend({
   _allDnsServices: null,
   _allKubernetesServices: null,
   _allKubernetesReplicationControllers: null,
+  // !! If you add a new one of these, you need to add it to reset() below too
 
   consumedServicesUpdated: 0,
   consumedByServicesUpdated: 0,
@@ -198,6 +202,7 @@ var Service = Resource.extend({
     // Hack: keep only one copy of all the services and serviceconsumemaps
     // But you have to load service and serviceconsumemap beforehand somewhere...
     // Bonus hack: all('services') doesn't include the other kinds of services, so load all those too.
+    // !! If you add a new one of these, you need to add it to reset() below too
     if ( !_allMaps )
     {
       _allMaps = this.get('store').allUnremoved('serviceconsumemap');
@@ -232,6 +237,7 @@ var Service = Resource.extend({
     {
       _allKubernetesReplicationControllers = this.get('store').allUnremoved('kubernetesreplicationcontroller');
     }
+    // !! If you add a new one of these, you need to add it to reset() below too
 
     // And we need this here so that consumedServices can watch for changes
     this.setProperties({
@@ -514,6 +520,16 @@ export function byId(serviceId) {
 }
 
 Service.reopenClass({
+  reset: function() {
+    _allMaps = null;
+    _allRegularServices = null;
+    _allLbServices = null;
+    _allExternalServices = null;
+    _allDnsServices = null;
+    _allKubernetesServices = null;
+    _allKubernetesReplicationControllers = null;
+  },
+
   consumedServicesFor: function(serviceId) {
     return _allMaps.filterBy('serviceId', serviceId).map((map) => {
       return Ember.Object.create({

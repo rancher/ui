@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Socket from 'ui/utils/socket';
 import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
+import Service from 'ui/models/service';
 
 export default Ember.Route.extend({
   prefs: Ember.inject.service(),
@@ -170,9 +171,15 @@ export default Ember.Route.extend({
     }
 
     // Forget all the things
-    this.get('store').reset();
+    this.reset();
   },
 
+  reset: function() {
+    // Forget all the things
+    this.get('store').reset();
+    // Service has extra special hackery to cache relationships
+    Service.reset();
+  },
 
   actions: {
     error: function(err,transition) {
@@ -196,7 +203,7 @@ export default Ember.Route.extend({
     switchProject: function(projectId) {
       this.intermediateTransitionTo('authenticated');
       this.get('session').set(C.SESSION.PROJECT, projectId);
-      this.get('store').reset();
+      this.reset();
       if ( !projectId )
       {
         this.get('projects').selectDefault().catch(() => {
