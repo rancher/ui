@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import { denormalizeName } from 'ui/services/settings';
 
 export default Ember.Route.extend({
   actions: {
@@ -52,19 +51,6 @@ export default Ember.Route.extend({
   },
   beforeModel: function() {
     var store = this.get('store');
-
-    this.get('store').find('setting', denormalizeName(C.SETTING.HELP_ENABLED)).then((setting) => {
-
-      if ((setting.value && setting.value !== 'false') || setting.value === null) {
-
-        this.controllerFor('authenticated.help').set('helpEnabled', true);
-
-      } else {
-
-        this.controllerFor('authenticated.help').set('helpEnabled', false);
-
-      }
-    });
 
     return Ember.RSVP.all([
 

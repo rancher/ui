@@ -21,4 +21,5 @@ export default Ember.Controller.extend({
   }.property('model.stacks.@each.externalId'),
 
   hasVm: Ember.computed.alias('settings.hasVm'),
+  helpEnabled: Ember.computed.alias('settings.helpEnabled'),
 });
