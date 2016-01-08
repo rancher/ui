@@ -21,12 +21,14 @@ export function debouncedObserver(...args) {
   opt = args.slice(funcIndex);
   keys = args.slice(0, funcIndex);
 
+  var fn = function() {
+    if ( this._state !== 'destroying' ) {
+    opt[0].apply(this);
+    }
+  };
+
   return Ember.observer.apply(Ember, keys.concat(function() {
-    Ember.run.debounce(this, function() {
-      if ( this._state !== 'destroying' ) {
-        opt[0].apply(this);
-      }
-    }, opt[1] || 250, opt[2] || false);
+    Ember.run.debounce(this, fn, opt[1] || 250, opt[2] || false);
   }));
 }
 

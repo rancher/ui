@@ -3,13 +3,13 @@
     <label class="form-control-static">Check Type</label>
   </div>
   <div class="col-sm-12 col-md-9">
-    <div class="radio small pull-left" style="margin-right: 20px;">
+    <div class="radio input pull-left r-mr20">
       <label class="form-control-static">{{radio-button selection=checkType value="none"}} None</label>
     </div>
-    <div class="radio small pull-left" style="margin-right: 20px;">
+    <div class="radio input pull-left r-mr20">
       <label class="form-control-static">{{radio-button selection=checkType value="tcp"}} TCP Connection Opens</label>
     </div>
-    <div class="radio small pull-left">
+    <div class="radio input pull-left">
       <label class="form-control-static">{{radio-button selection=checkType value="http"}} HTTP Responds 2xx/3xx</label>
     </div>
   </div>
@@ -102,13 +102,38 @@
       <label class="form-control-static">Healthy Threshold</label>
     </div>
     <div class="col-sm-12 col-md-2">
-      {{input type="number" min=1 step=1 classNames="form-control" value=healthCheck.healthyThreshold}}
+      <div class="input-group">
+        {{input type="number" min=1 step=1 classNames="form-control" value=healthCheck.healthyThreshold}}
+        <span class="input-group-addon">successes</span>
+      </div>
     </div>
     <div class="col-sm-12 col-md-2 form-label">
       <label class="form-control-static">Unhealthy Threshold</label>
     </div>
     <div class="col-sm-12 col-md-2">
-      {{input type="number" min=1 step=1 classNames="form-control" value=healthCheck.unhealthyThreshold}}
+      <div class="input-group">
+        {{input type="number" min=1 step=1 classNames="form-control" value=healthCheck.unhealthyThreshold}}
+        <span class="input-group-addon">failures</span>
+      </div>
     </div>
   </div>
+
+  {{#if isService}}
+    <div class="row form-group">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label>When Unhealthy</label>
+      </div>
+      <div class="col-sm-12 col-md-8">
+        <div class="radio input">
+          <label>{{radio-button selection=strategy value="none"}} Take no action</label>
+        </div>
+        <div class="radio input">
+          <label>{{radio-button selection=strategy value="recreate"}} Re-create</label>
+        </div>
+        <div class="radio input">
+          <label>{{radio-button selection=strategy value="recreateOnQuorum"}}<span class="with-input">Re-create, only when at least {{input type="number" min=1 safeStyle="width: 40px;" value=quorum}} container{{if (eq quorum 1) '' 's'}} are healthy</span></label>
+        </div>
+      </div>
+    </div>
+  {{/if}}
 {{/if}}
