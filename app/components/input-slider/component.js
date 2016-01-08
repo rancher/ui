@@ -128,11 +128,13 @@ export default Ember.Component.extend({
     }
 
     var value = this.pointToValue(clientX(event));
+    console.log('set 1', value);
     this.set('value', value);
     this.$('.slider-handle').focus();
   },
 
   mouseDown: function(event) {
+    console.log('drag start');
     if ( this.get('disabled') )
     {
       return false;
@@ -155,6 +157,7 @@ export default Ember.Component.extend({
   },
 
   drag: function(event) {
+    console.log('drag');
     event.preventDefault();
     if ( this.get('disabled') )
     {
@@ -162,14 +165,14 @@ export default Ember.Component.extend({
     }
 
     var value = this.pointToValue(clientX(event));
-
+    console.log('drag', clientX(event), '=', value);
     this.set('value', value);
-
   },
 
   mouseUp: function(/*event*/) {
     $('BODY').off('mousemove', this.get('dragFn'));
     $('BODY').off('mouseup', this.get('upFn'));
+    console.log('drag end');
     this.set('active',false);
   },
 
@@ -206,6 +209,7 @@ export default Ember.Component.extend({
     var value = Math.max(this.get('valueMin'), Math.min(orig, this.get('valueMax')));
     if ( orig !== value )
     {
+      console.log('valuechanged', value);
       this.set('value', value);
       return;
     }

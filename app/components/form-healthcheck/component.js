@@ -11,6 +11,7 @@ const DEFAULTS = {
   healthyThreshold: 2,
   unhealthyThreshold: 3,
   requestLine: '',
+  strategy: 'recreate',
 };
 
 const METHOD_CHOICES = ['OPTIONS','GET','HEAD','POST','PUT','DELETE','TRACE','CONNECT'];
@@ -33,6 +34,9 @@ export default Ember.Component.extend({
   checkType: null,
   uriHost: null,
   showUriHost: Ember.computed.equal('uriVersion', HTTP_1_1),
+
+  strategy: null,
+  quorum: null,
 
   actions: {
     chooseUriMethod(method) {
@@ -82,6 +86,11 @@ export default Ember.Component.extend({
           uriHost: '',
         });
       }
+
+      this.setProperties({
+        strategy: this.get('healthCheck.strategy') || 'recreate',
+        quorum: this.get('healthCheck.recreateOnQuorumStrategyConfig.quorum') || 1,
+      });
     }
     else
     {
@@ -91,6 +100,8 @@ export default Ember.Component.extend({
         uriPath: '',
         uriVersion: HTTP_1_0,
         uriHost: '',
+        strategy: 'recreate',
+        quorum: 1,
       });
     }
 
@@ -139,6 +150,26 @@ export default Ember.Component.extend({
       }
     }
   }.observes('checkType','uriMethod','uriPath','uriVersion','uriHost'),
+
+  strategyDidChange: function() {
+    var strategy = this.get('strategy');
+    this.set('healthCheck.strategy', strategy);
+
+    if ( strategy === 'recreateOnQuorum' )
+    {
+      this.set('healthCheck.recreateOnQuorumStrategyConfig', {
+        quorum: this.get('quorum'),
+      });
+    }
+    else
+    {
+      this.set('healthCheck.recreateOnQuorumStrategyConfig', null);
+    }
+  }.observes('strategy','quorum'),
+
+  quorumDidChange: function() {
+    this.set('strategy', 'recreateOnQuorum');
+  }.observes('quorum'),
 
   validate: function() {
     var errors = [];

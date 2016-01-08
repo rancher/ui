@@ -49,13 +49,14 @@ export default Ember.Component.extend(ManageLabels, {
   }.observes('isGlobal'),
 
   scaleChanged: debouncedObserver('scale', function() {
+    console.log('scaleChanged', this.get('scale'), this.get('max'));
     if ( this.get('scale') >= this.get('max') )
     {
       this.set('max', roundScale(this.get('scale')));
     }
 
     this.sendAction('setScale', this.get('scale'));
-  }, 1000),
+  }, 500),
 
   oneLouder: function() {
     return this.get('max')+1;
