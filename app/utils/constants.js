@@ -135,7 +135,7 @@ var C = {
   },
 
   EXT_REFERENCES : {
-    FORUM: 'http://forums.rancher.com',
+    FORUM: 'https://forums.rancher.com',
     COMPANY: 'http://rancher.com',
     GITHUB: 'https://github.com/rancher/rancher',
     DOCS: 'http://docs.rancher.com/rancher',
