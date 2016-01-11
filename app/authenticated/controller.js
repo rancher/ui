@@ -9,7 +9,7 @@ export default Ember.Controller.extend({
 
   hasKubernetes: function() {
     var found = false;
-    this.get('model.stacks').forEach((stack) => {
+    (this.get('model.stacks')||[]).forEach((stack) => {
       var info = stack.get('externalIdInfo');
       if ( info.kind === C.EXTERNALID.KIND_CATALOG && info.id.match(/:kubernetes:/) )
       {

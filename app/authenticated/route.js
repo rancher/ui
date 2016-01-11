@@ -63,6 +63,10 @@ export default Ember.Route.extend({
             }
 
             this.replaceWith('settings.projects');
+            return Ember.Object.create({
+              projects: all,
+              stacks: [],
+            });
           });
         });
       });
@@ -77,7 +81,7 @@ export default Ember.Route.extend({
     });
   },
 
-  afterModel: function() {
+  afterModel: function(a,b) {
     return Ember.RSVP.hash({
       settings: this.loadPublicSettings(),
     });

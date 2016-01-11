@@ -97,12 +97,14 @@ export default Ember.Service.extend(Ember.Evented, {
     return 'v' + this.get('app.version');
   }.property('app.version'),
 
-  rancherVersion: Ember.computed.alias('asMap.'+C.SETTING.VERSION_RANCHER+'.value'),
-  composeVersion: Ember.computed.alias('asMap.'+C.SETTING.VERSION_COMPOSE+'.value'),
-  cattleVersion: Ember.computed.alias('asMap.'+C.SETTING.VERSION_CATTLE+'.value'),
-  dockerMachineVersion: Ember.computed.alias('asMap.'+C.SETTING.VERSION_MACHINE+'.value'),
-  goMachineVersion: Ember.computed.alias('asMap.'+C.SETTING.VERSION_GMS+'.value'),
+  rancherVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_RANCHER}.value`),
+  composeVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_COMPOSE}.value`),
+  cattleVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_CATTLE}.value`),
+  dockerMachineVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_MACHINE}.value`),
+  goMachineVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_GMS}.value`),
 
-  hasVm: Ember.computed.equal('asMap.'+C.SETTING.VM_ENABLED+'.value', 'true'),
-  helpEnabled: Ember.computed.equal('asMap.'+C.SETTING.HELP_ENABLED+'.value', 'true')
+  hasVm: Ember.computed.equal(`asMap.${C.SETTING.VM_ENABLED}.value`, 'true'),
+  helpEnabled: function() {
+    return this.get(`asMap.${C.SETTING.HELP_ENABLED}.value`) !== 'false';
+  }.property(`asMap.${C.SETTING.HELP_ENABLED}.value`),
 });

@@ -1,9 +1,11 @@
 import Ember from 'ember';
 import MultiStatsSocket from 'ui/utils/multi-stats';
-import { formatPercent, formatMib, formatKbps } from 'ui/utils/util';
+import { formatPercent, formatMib, formatKbps, pluralize } from 'ui/utils/util';
 
 const MAX_POINTS = 60;
 const TICK_COUNT = 6;
+const DATA_INTERVAL = 5;
+
 const GRADIENT_COLORS = [
   {
     type: 'cpu',
@@ -127,7 +129,7 @@ export default Ember.Component.extend({
 
     clearInterval(this.get('renderTimer'));
     // Give it a second for some data to come in...
-    this.set('renderTimer', setInterval(this.renderGraphs.bind(this), 1000));
+    this.set('renderTimer', setInterval(this.renderGraphs.bind(this), DATA_INTERVAL*1000));
   },
 
   setupMarkers: function() {
@@ -590,8 +592,27 @@ function getOrCreateDataRow(graph, data, key) {
 }
 
 function formatSecondsAgo(d) {
-  var ago = Math.max(0,MAX_POINTS - d);
-  return ago + ' second' + (ago === 1 ? '' : 's') + ' ago';
+  var ago = Math.max(0,MAX_POINTS - d - 1) * DATA_INTERVAL;
+  if ( ago === 0 )
+  {
+    return 'Now';
+  }
+
+  if ( ago >= 60 )
+  {
+    var min = Math.floor(ago/60);
+    var sec = ago - 60*min;
+    if ( sec > 0 )
+    {
+      return `${min} min, ${sec} sec ago`;
+    }
+    else
+    {
+      return pluralize(min,'minute') +  ' ago';
+    }
+  }
+
+  return pluralize(ago,'second') + ' ago';
 }
 
 function formatKey(single, store, key /*, ratio, _id, index*/) {
