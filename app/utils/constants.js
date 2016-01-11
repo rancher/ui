@@ -171,8 +171,16 @@ C.ACTIVEISH_STATES = [
   'updating-active',
   'updating-running',
   'healthy',
+  'initializing',
+  'reinitializing',
   'degraded',
-  'unhealthy'
+  'unhealthy',
+  'started-once',
+];
+
+C.INITIALIZING_STATES = [
+  'initializing',
+  'reinitializing'
 ];
 
 export default C;

@@ -232,8 +232,8 @@ export default Ember.Mixin.create({
 
   stateSort: function() {
     var color = this.get('stateColor').replace('text-','');
-    return stateColorSortMap[color] || stateColorUnknown;
-  }.property('stateColor'),
+    return (stateColorSortMap[color] || stateColorUnknown) + ' ' + this.get('relevantState');
+  }.property('stateColor','relevantState'),
 
   stateBackground: function() {
     return this.get('stateColor').replace("text-","bg-");

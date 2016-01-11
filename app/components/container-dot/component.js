@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { isAlternate } from 'ui/utils/platform';
+import { isAlternate, isMore } from 'ui/utils/platform';
 
 export default Ember.Component.extend({
   resourceActions: Ember.inject.service('resource-actions'),
@@ -35,6 +35,11 @@ export default Ember.Component.extend({
   },
 
   contextMenu(event) {
+    if ( isMore(event) )
+    {
+      return;
+    }
+
     event.preventDefault();
     this.get('resourceActions').show(this.get('model'), this.$());
   },

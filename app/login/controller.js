@@ -27,7 +27,7 @@ export default Ember.Controller.extend({
 
       Ember.run.later(() => {
         this.get('access').login(code).then(() => {
-          this.replaceWith('authenticated');
+          this.send('finishLogin');
         }).catch((err) => {
           this.set('waiting', false);
 

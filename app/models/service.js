@@ -307,27 +307,56 @@ var Service = Resource.extend({
     var isGlobal = this.get('isGlobalScale');
     var instances = this.get('instances')||[];
 
+    // There should be one container for the main service + each sidekick, times scale.
+    var expectScale = ((this.get('secondaryLaunchConfigs')||[]).length+1) * this.get('scale');
+
     // Get the state of each instance
-    var healthy = 0;
+    var healthyCount = 0;
+    var initCount = 0;
+    var startOnceCount = 0;
     instances.forEach((instance) => {
-      var resource = instance.get('state');
+      var resource = instance.get('relevantState');
       var health = instance.get('healthState');
 
-      if ( C.ACTIVEISH_STATES.indexOf(resource) >= 0 && (health === 'healthy' || health === null) )
+      if ( C.ACTIVEISH_STATES.indexOf(resource) >= 0 )
       {
-        healthy++;
+        if ( (health === 'healthy' || health === null) )
+        {
+          healthyCount++;
+        }
+        else if ( C.INITIALIZING_STATES.indexOf(health) >= 0 )
+        {
+          initCount++;
+        }
+      }
+
+      if ( resource === 'started-once' )
+      {
+        startOnceCount++;
       }
     });
 
-    if ( (isGlobal && healthy >= instances.get('length')) || (!isGlobal && healthy >= this.get('scale')) )
+    if ( startOnceCount && startOnceCount === expectScale )
+    {
+      return 'started-once';
+    }
+    else if ( (isGlobal && healthyCount >= instances.get('length')) || (!isGlobal && healthyCount >= expectScale) )
     {
       return 'healthy';
+    }
+    else if ( initCount > 0 )
+    {
+      return 'initializing';
+    }
+    else if ( healthyCount > 0 )
+    {
+      return 'degraded';
     }
     else
     {
       return 'unhealthy';
     }
-  }.property('instances.@each.{state,healthState}'),
+  }.property('instances.@each.{relevantState,healthState}'),
 
   combinedState: function() {
     var service = this.get('state');
@@ -345,7 +374,7 @@ var Service = Resource.extend({
     }
     else
     {
-      return 'degraded';
+      return health;
     }
   }.property('state', 'healthState'),
 

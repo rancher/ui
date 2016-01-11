@@ -81,7 +81,7 @@ export default Ember.Route.extend({
         composeFiles: null,
       });
     }
-  }
+  },
 
   actions: {
     cancel: function() {
