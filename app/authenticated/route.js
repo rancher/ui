@@ -81,7 +81,7 @@ export default Ember.Route.extend({
     });
   },
 
-  afterModel: function(a,b) {
+  afterModel: function() {
     return Ember.RSVP.hash({
       settings: this.loadPublicSettings(),
     });

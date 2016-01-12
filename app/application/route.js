@@ -101,7 +101,6 @@ export default Ember.Route.extend({
 
   model(params, transition) {
     var github = this.get('github');
-    var session = this.get('session');
     var stateMsg = 'Authorization state did not match, please try again.';
 
     if ( params.isTest )

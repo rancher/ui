@@ -1,9 +1,9 @@
 <section class="header">
-  <h1>{{#link-to "applications-tab.catalog"}}Catalog:{{/link-to}}</h1>
 
   {{#if editing}}
-    {{templateResource.name}}
+    <h1>Upgrade: <span style="font-weight: normal">{{environmentResource.name}}</span></h1>
   {{else}}
+    <h1>{{#link-to "applications-tab.catalog"}}Catalog:{{/link-to}}</h1>
     {{#power-select options=allTemplates selected=templateResource onchange=(action "changeTemplate") searchField="name" as |obj|}}
       <div class="power-select-img"><img src="{{obj.links.icon}}"><div class="clip">{{obj.name}}</div></div>
     {{/power-select}}
@@ -22,14 +22,18 @@
           <small><strong>Catalog:</strong> <span class="text-capitalize">{{templateResource.catalogId}}</span></small>
         </div>
         <div>
-          <small><strong>Category:</strong> {{templateResource.category}}</small>
+          <small><strong>Category:</strong> <span class="text-capitalize">{{templateResource.category}}</span></small>
         </div>
-        <div>
-          <small><strong>Maintainer:</strong> {{templateResource.maintainer}}</small>
-        </div>
-        <div>
-          <small><strong>License:</strong> {{#if templateResource.license}}{{templateResource.license}}{{else}}<span class="text-muted">?</span>{{/if}}</small>
-        </div>
+        {{#if templateResource.maintainer}}
+          <div>
+            <small><strong>Maintainer:</strong> {{templateResource.maintainer}}</small>
+          </div>
+        {{/if}}
+        {{#if templateResource.license}}
+          <div>
+            <small><strong>License:</strong> {{templateResource.license}}</small>
+          </div>
+        {{/if}}
       </div>
       {{#if readmeContent}}
         <div class="col-sm-12 col-md-9" style="overflow-y: auto; max-height: 500px;">
@@ -37,7 +41,7 @@
         </div>
       {{else}}
         <h2 class="r-mb10">
-          {{if editing "Upgrade" "Add"}} {{templateResource.name}} Stack {{#if editing}}&quot;{{environmentResource.name}}&quot;{{/if}}
+          {{if editing "Upgrade" "Add"}} {{templateResource.name}} Stack
         </h2>
         <p>{{templateResource.description}}</p>
       {{/if}}

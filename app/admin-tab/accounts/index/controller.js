@@ -23,7 +23,7 @@ export default Ember.Controller.extend(FilterState, Sortable, {
       var kind = (row.get('kind')||'').toLowerCase();
       return showKinds.indexOf(kind) !== -1;
     });
-  }.property('model.@each.kind'),
+  }.property('filtered.@each.kind'),
 
   isLocal: function() {
     return this.get('access.provider') === 'localauthconfig';
