@@ -11,8 +11,7 @@ export default Ember.Controller.extend(NewHost, {
   ubiquityhostingApi: 'api.ubiquityhosting.com/v25/api.php',
 
   step: 1,
-  
-  initial_load: true, 
+  initial_load: true,
 
   isStep1: Ember.computed.equal('step',1),
   isStep2: Ember.computed.equal('step',2),
@@ -51,19 +50,19 @@ export default Ember.Controller.extend(NewHost, {
           name: zone.name,
           isDefault: zone.name === this.get('defaultZoneName')
         };
-		
+
         zones.push(obj);
 
         if (obj.isDefault && !defaultZone) {
           defaultZone = obj;
         }
       });
-	  
+
       if (this.get('initial_load') === true) {
         this.getImages(zones[0].id);
         this.set('initial_load', false);
       }
-      
+
       this.set('allZones', zones);
       this.set('defaultZone', defaultZone);
 
@@ -255,10 +254,6 @@ export default Ember.Controller.extend(NewHost, {
     return retval;
   },
 
-  initFields: function() {
-    this._super();
-  },
-
   validate: function() {
     this._super();
 
@@ -282,12 +277,4 @@ export default Ember.Controller.extend(NewHost, {
 
     return true;
   },
-
-  doneSaving: function() {
-    var out = this._super();
-
-    this.transitionToRoute('hosts');
-
-    return out;
-  }
 });

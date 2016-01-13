@@ -113,5 +113,11 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
 
       return Ember.RSVP.all(promises);
     }
-  }
+  },
+
+  doneSaving: function() {
+    var out = this._super();
+    this.transitionToRoute('hosts');
+    return out;
+  },
 });

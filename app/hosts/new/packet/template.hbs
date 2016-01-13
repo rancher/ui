@@ -10,20 +10,20 @@
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="apiKey" class="form-control-static">API Key*</label>
+        <label class="form-control-static">API Key*</label>
       </div>
       <div class="col-sm-12 col-md-8">
-        {{input id="apiKey" type="password" value=packetConfig.apiKey classNames="form-control" placeholder="Your Packet API key"}}
+        {{input type="password" value=packetConfig.apiKey classNames="form-control" placeholder="Your Packet API key"}}
         <p class="help-block">From the Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> screen</p>
       </div>
     </div>
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="projectId" class="form-control-static">Project*</label>
+        <label class="form-control-static">Project*</label>
       </div>
       <div class="col-sm-12 col-md-8">
-        {{input id="projectId" type="text" value=packetConfig.projectId classNames="form-control" placeholder="Your Packet project ID"}}
+        {{input type="text" value=packetConfig.projectId classNames="form-control" placeholder="Your Packet project ID"}}
       </div>
     </div>
 
@@ -33,30 +33,24 @@
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="os" class="form-control-static">Image</label>
+        <label class="form-control-static">Image</label>
       </div>
       <div class="col-sm-12 col-md-3">
-        {{view "select"
-          class="form-control"
-          id="os"
-          content=osChoices
-          optionValuePath="content.slug"
-          optionLabelPath="content.name"
-          value=packetConfig.os
-        }}
+        <select class="form-control" onchange={{action (mut packetConfig.os) value="target.value"}}>
+          {{#each osChoices as |choice|}}
+            <option value={{choice.slug}} selected={{eq packetConfig.os choice.slug}}>{{choice.label}}</option>
+          {{/each}}
+        </select>
       </div>
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="plan" class="form-control-static">Size</label>
+        <label class="form-control-static">Size</label>
       </div>
       <div class="col-sm-12 col-md-3">
-        {{view "select"
-          class="form-control"
-          id="plan"
-          content=planChoices
-          optionValuePath="content.slug"
-          optionLabelPath="content.name"
-          value=packetConfig.plan
-        }}
+        <select class="form-control" onchange={{action (mut packetConfig.plan) value="target.value"}}>
+          {{#each planChoices as |choice|}}
+            <option value={{choice.slug}} selected={{eq packetConfig.plan choice.slug}}>{{choice.label}}</option>
+          {{/each}}
+        </select>
       </div>
     </div>
 
@@ -66,33 +60,18 @@
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="region" class="form-control-static">Region</label>
+        <label class="form-control-static">Region</label>
       </div>
       <div class="col-sm-12 col-md-8">
-        {{view "select"
-          class="form-control"
-          id="region"
-          content=facilityChoices
-          optionValuePath="content.code"
-          optionLabelPath="content.name"
-          value=packetConfig.facility
-        }}
+        <select class="form-control" onchange={{action (mut packetConfig.facility) value="target.value"}}>
+          {{#each facilityChoices as |choice|}}
+            <option value={{choice.code}} selected={{eq packetConfig.facility choice.code}}>{{choice.label}}</option>
+          {{/each}}
+        </select>
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
-      <span>Rancher</span>
-    </div>
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">Labels</label>
-      </div>
-      <div class="col-sm-12 col-md-8">
-        {{form-user-labels setLabels=(action 'setLabels')}}
-      </div>
-    </div>
-
-    {{form-engine-opts machine=model}}
+    {{partial "host/add-options"}}
   </div>
 
   {{partial "save-cancel"}}

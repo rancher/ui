@@ -10,19 +10,19 @@
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="username" class="form-control-static">Username*</label>
+        <label class="form-control-static">Username*</label>
       </div>
       <div class="col-sm-12 col-md-8">
-        {{input id="username" type="text" value=rackspaceConfig.username classNames="form-control" placeholder="Your RackSpace username"}}
+        {{input type="text" value=rackspaceConfig.username classNames="form-control" placeholder="Your RackSpace username"}}
       </div>
     </div>
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="apiKey" class="form-control-static">API Key*</label>
+        <label class="form-control-static">API Key*</label>
       </div>
       <div class="col-sm-12 col-md-8">
-        {{input id="apiKey" type="password" value=rackspaceConfig.apiKey classNames="form-control" placeholder="Your RackSpace API key"}}
+        {{input type="password" value=rackspaceConfig.apiKey classNames="form-control" placeholder="Your RackSpace API key"}}
         <p class="help-block">From the Account Settings screen of the RackSpace control panel</p>
       </div>
     </div>
@@ -33,17 +33,14 @@
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="region" class="form-control-static">Region</label>
+        <label class="form-control-static">Region</label>
       </div>
       <div class="col-sm-12 col-md-8">
-        {{view "select"
-          class="form-control"
-          id="region"
-          content=regionChoices
-          optionValuePath="content.value"
-          optionLabelPath="content.label"
-          value=rackspaceConfig.region
-        }}
+        <select class="form-control" onchange={{action (mut rackspaceConfig.region) value="target.value"}}>
+          {{#each regionChoices as |choice|}}
+            <option value={{choice.value}} selected={{eq rackspaceConfig.region choice.value}}>{{choice.label}}</option>
+          {{/each}}
+        </select>
       </div>
     </div>
 
@@ -53,32 +50,18 @@
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="flavor" class="form-control-static">Flavor</label>
+        <label class="form-control-static">Flavor</label>
       </div>
       <div class="col-sm-12 col-md-8">
-        {{view "select"
-          classNames="form-control"
-          value=rackspaceConfig.flavorId
-          content=flavorChoices
-          optionValuePath="content.value"
-          optionLabelPath="content.label"
-        }}
+        <select class="form-control" onchange={{action (mut rackspaceConfig.flavorId) value="target.value"}}>
+          {{#each flavorChoices as |choice|}}
+            <option value={{choice.value}} selected={{eq rackspaceConfig.flavorId choice.value}}>{{choice.label}}</option>
+          {{/each}}
+        </select>
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
-      <span>Rancher</span>
-    </div>
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">Labels</label>
-      </div>
-      <div class="col-sm-12 col-md-8">
-        {{form-user-labels setLabels=(action 'setLabels')}}
-      </div>
-    </div>
-
-    {{form-engine-opts machine=model}}
+    {{partial "host/add-options"}}
   </div>
 
   {{partial "save-cancel"}}

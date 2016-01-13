@@ -15,10 +15,4 @@ export default Ember.Controller.extend(NewHost, {
   facilityChoices: Facilities,
   planChoices: Plans,
   osChoices: osChoices,
-
-  doneSaving: function() {
-    var out = this._super();
-    this.transitionToRoute('hosts');
-    return out;
-  },
 });

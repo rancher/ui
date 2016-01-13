@@ -22,9 +22,9 @@ export default Ember.Controller.extend(NewOrEdit, {
 
   drivers: function() {
     var drivers = [
-      {name: 'dockerhub', label: 'DockerHub',  css: 'dockerhub', value: 'index.docker.io', available: true  },
-      {name: 'quay',      label: 'Quay.io',    css: 'quay',      value: 'quay.io',         available: true  },
-      {name: 'custom',    label: 'Custom',     css: 'custom',    value: '',                available: true  },
+      {name: 'dockerhub', label: 'DockerHub',  css: 'dockerhub', value: 'index.docker.io' },
+      {name: 'quay',      label: 'Quay.io',    css: 'quay',      value: 'quay.io',        },
+      {name: 'custom',    label: 'Custom',     css: 'custom',    value: '',               },
     ];
 
     var active = this.get('activeDriver');
