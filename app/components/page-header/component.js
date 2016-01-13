@@ -10,6 +10,8 @@ export default Ember.Component.extend({
 
   currentPath: null,
   authController: null,
+  hasKubernetes: null,
+  hasSystem: null,
 
   tagName: 'header',
   classNames: ['clearfix','no-select'],

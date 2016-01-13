@@ -7,18 +7,31 @@ export default Ember.Controller.extend({
   currentPath: Ember.computed.alias('application.currentPath'),
   error: null,
 
-  hasKubernetes: function() {
-    var found = false;
+  hasKubernetes: false,
+  hasSystem: false,
+
+  externalIdChanged: function() {
+    var hasKubernetes = false;
+    var hasSystem = false;
+
     (this.get('model.stacks')||[]).forEach((stack) => {
       var info = stack.get('externalIdInfo');
-      if ( info.kind === C.EXTERNALID.KIND_CATALOG && info.id.match(/:kubernetes:/) )
+      if ( info.kind === C.EXTERNALID.KIND_SYSTEM )
       {
-        found = true;
+        hasSystem = true;
+      }
+      else if ( info.kind === C.EXTERNALID.KIND_CATALOG && info.id.match(/:kubernetes:/) )
+      {
+        hasKubernetes = true;
       }
     });
 
-    return found;
-  }.property('model.stacks.@each.externalId'),
+    console.log('k8s:', hasKubernetes, 'sys:', hasSystem);
+    this.setProperties({
+      hasKubernetes: hasKubernetes,
+      hasSystem: hasSystem
+    });
+  }.observes('model.stacks.@each.externalId'),
 
   hasVm: Ember.computed.alias('settings.hasVm'),
   helpEnabled: Ember.computed.alias('settings.helpEnabled'),

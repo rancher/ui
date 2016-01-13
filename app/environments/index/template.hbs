@@ -1,9 +1,9 @@
 <section class="header">
-  <h1 class="{{unless (eq which 'kubernetes') 'r-mr10'}}">
-    {{if (eq which "kubernetes") "Kubernetes" "Stacks"}}
+  <h1 class="{{if (eq which 'user') 'r-mr10'}}">
+    {{#unless (eq which 'user')}}{{uc-first which}} {{/unless}}Stacks
   </h1>
 
-  {{#unless (or (eq which "kubernetes") single)}}
+  {{#unless (or (not (eq which 'user')) single)}}
     {{#link-to "environments.new" classNames="btn btn-sm btn-primary"}}Add Stack{{/link-to}}
   {{/unless}}
 

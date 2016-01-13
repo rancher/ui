@@ -122,15 +122,18 @@
       {{#link-to "storagepools"}}<i class="icon icon-hdd"></i>Storage Pools{{/link-to}}
       {{#link-to "certificates"}}<i class="icon icon-certificate"></i>Certificates{{/link-to}}
     {{/if}}
+
     {{#if isApplicationsTab}}
       {{#link-to "environments" (query-params which="user")}}<i class="icon icon-layers"></i> Stacks{{/link-to}}
-      {{#link-to "applications-tab.catalog"}}<i class="icon icon-database"></i> Catalog{{/link-to}}
       {{#if hasKubernetes}}
         {{#link-to "environments" (query-params which="kubernetes")}}<i class="icon icon-kubernetes"></i>Kubernetes{{/link-to}}
       {{/if}}
-
-
+      {{#if hasSystem}}
+        {{#link-to "environments" (query-params which="system")}}<i class="icon icon-network"></i>System{{/link-to}}
+      {{/if}}
+      {{#link-to "applications-tab.catalog"}}<i class="icon icon-database"></i> Catalog{{/link-to}}
     {{/if}}
+
     {{#if isAdminTab}}
       {{#link-to "admin-tab.audit-logs"}}<i class="icon icon-folder-open"></i>Audit Log{{/link-to}}
       {{#link-to "admin-tab.processes"}}<i class="icon icon-processes"></i>Processes{{/link-to}}

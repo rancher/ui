@@ -14,7 +14,7 @@ export default Ember.Component.extend(NewOrEdit, {
   classNames: ['launch-catalog'],
 
   primaryResource: Ember.computed.alias('environmentResource'),
-  editing: Ember.computed.notEmpty('primaryResource.id'),
+  editing: false,
 
   previewOpen: false,
   previewTab: 'docker-compose',
@@ -47,6 +47,8 @@ export default Ember.Component.extend(NewOrEdit, {
 
   didReceiveAttrs() {
     this._super.apply(this, arguments);
+
+    this.set('editing', !!this.get('primaryResource.id'));
 
     // Select the default version
     var def = this.get('templateResource.defaultVersion');
