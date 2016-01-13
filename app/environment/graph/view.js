@@ -156,8 +156,8 @@ export default Ember.View.extend(ThrottledResize,{
 
     expectedServices.forEach((service) => {
       var serviceId = service.get('id');
-      var color = (service.get('state') === 'active' ? 'green' : (service.get('state') === 'inactive' ? 'red' : 'yellow'));
       var instances = service.get('instances.length')||'No';
+      var color = service.get('stateColor').replace('text-','');
       var isCrossLink = service.get('environmentId') !== this.get('context.stack.id');
 
       var envName = '';
@@ -169,7 +169,7 @@ export default Ember.View.extend(ThrottledResize,{
       var html = `<span data-service="${service.get('id')}"></span><i class="icon  ${activeIcon(service)}"></i>
                   <h4 class="clip">${envName}${Util.escapeHtml(service.get('displayName'))}</h4>
                   <h6 class="count"><b>${instances}</b> container${(instances === 1 ? '' : 's')}</h6>
-                  <h6><span class="state ${color}">${Util.escapeHtml(Util.ucFirst(service.get('state')))}</span></h6>`;
+                  <h6><span class="state ${color}">${Util.escapeHtml(service.get('displayState'))}</span></h6>`;
 
       g.setNode(serviceId, {
         labelType: "html",
@@ -186,8 +186,8 @@ export default Ember.View.extend(ThrottledResize,{
       (service.get('consumedServicesWithNames')||[]).map(function(map) {
         var target = map.get('service');
         var targetId = target.get('id');
-        var color = (target.get('state') === 'active' ? 'green' : (target.get('state') === 'inactive' ? 'red' : 'yellow'));
-        var markerColor = (target.get('state') === 'active' ? 'green-fill' : (target.get('state') === 'inactive' ? 'red-fill' : 'yellow-fill'));
+        var color = target.get('stateColor').replace('text-','');
+        var markerColor = color+'-fill';
 
         var edgeOpts = {
           arrowhead: 'vee',
@@ -251,7 +251,7 @@ export default Ember.View.extend(ThrottledResize,{
 
   throttledUpdateGraph: function() {
     Ember.run.throttle(this,'updateGraph',250);
-  }.observes('context.stack.services.@each.{id,name,state,consumedServicesUpdated}','crosslinkServices.@each.{id,name,state,displayEnvironment}'),
+  }.observes('context.stack.services.@each.{id,name,displayState,consumedServicesUpdated}','crosslinkServices.@each.{id,name,displayState,displayEnvironment}'),
 
   willDestroyElement: function() {
     this._super();

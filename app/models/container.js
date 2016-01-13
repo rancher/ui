@@ -117,7 +117,7 @@ var Container = Resource.extend({
         return health;
       }
     }
-    else if ((resource === 'stopped') && ((this.get('labels')||{})[C.LABEL.START_ONCE]) )
+    else if ((resource === 'stopped') && ((this.get('labels')||{})[C.LABEL.START_ONCE]) && (this.get('startCount') > 0))
     {
       return 'started-once';
     }

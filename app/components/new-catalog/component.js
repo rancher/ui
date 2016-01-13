@@ -114,6 +114,8 @@ export default Ember.Component.extend(NewOrEdit, {
         this.set('selectedTemplateModel', response);
         if (response.links.readme) {
           this.getReadme();
+        } else {
+          this.set('readmeContent', null);
         }
         this.set('loading', false);
 

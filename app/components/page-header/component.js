@@ -60,6 +60,13 @@ export default Ember.Component.extend({
     return this.get('isAdmin') && this.get('store').hasRecordFor('schema','setting');
   }.property(),
 
+  didInsertElement() {
+    // Hide the Firefox focus ring
+    this.$().on('click', 'A', function(){
+      $(this).blur();
+    });
+  },
+
   actions: {
     hideAccessWarning: function() {
       this.set(`prefs.${C.PREFS.ACCESS_WARNING}`, false);

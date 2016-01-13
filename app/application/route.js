@@ -10,7 +10,7 @@ export default Ember.Route.extend({
   previousRoute: null,
 
   actions: {
-    loading: function(transition/*, originRoute*/) {
+    loading(transition/*, originRoute*/) {
       //console.log('Loading action...');
       $('#loading-underlay').show().fadeIn({duration: 100, queue: false, easing: 'linear', complete: function() {
         $('#loading-overlay').show().fadeIn({duration: 200, queue: false, easing: 'linear'});
@@ -26,7 +26,7 @@ export default Ember.Route.extend({
       return true;
     },
 
-    openOverlay: function(template, view, model, controller) {
+    openOverlay(template, view, model, controller) {
       view = view || 'overlay';
       return this.render(template, {
         into: 'application',
@@ -37,25 +37,41 @@ export default Ember.Route.extend({
       });
     },
 
-    closeOverlay: function() {
+    closeOverlay() {
       return this.disconnectOutlet({
         parentView: 'application',
         outlet: 'overlay'
       });
     },
 
-    error: function(err) {
+    error(err) {
       this.controllerFor('application').set('error',err);
       this.set('app.showArticles',false);
       this.transitionTo('failWhale');
       console.log('Application Error', (err ? err.stack : undefined));
     },
 
-    goToPrevious: function(def) {
+    goToPrevious(def) {
       this.goToPrevious(def);
     },
 
-    logout: function(transition, timedOut, errorMsg) {
+    finishLogin() {
+      var session = this.get('session');
+
+      var backTo = session.get(C.SESSION.BACK_TO);
+      session.set(C.SESSION.BACK_TO, undefined);
+
+      if ( backTo )
+      {
+        window.location.href = backTo;
+      }
+      else
+      {
+        this.replaceWith('authenticated');
+      }
+    },
+
+    logout(transition, timedOut, errorMsg) {
       var session = this.get('session');
       // This needs to change first so that other tabs get notified and logout
       session.set(C.SESSION.ACCOUNT_ID,null);
@@ -83,9 +99,8 @@ export default Ember.Route.extend({
     }
   },
 
-  model: function(params, transition) {
+  model(params, transition) {
     var github = this.get('github');
-    var session = this.get('session');
     var stateMsg = 'Authorization state did not match, please try again.';
 
     if ( params.isTest )
@@ -106,17 +121,7 @@ export default Ember.Route.extend({
       if ( github.stateMatches(params.state) )
       {
         return this.get('access').login(params.code).then(() => {
-          var backTo = session.get(C.SESSION.BACK_TO);
-          session.set(C.SESSION.BACK_TO, undefined);
-
-          if ( backTo )
-          {
-            window.location.href = backTo;
-          }
-          else
-          {
-            this.replaceWith('authenticated');
-          }
+          this.send('finishLogin');
         }).catch((err) => {
           transition.send('logout', null, null, err.message);
         }).finally(() => {
@@ -148,7 +153,7 @@ export default Ember.Route.extend({
     }
   },
 
-  beforeModel: function() {
+  beforeModel() {
     var agent = window.navigator.userAgent.toLowerCase();
     if ( agent.indexOf('msie ') >= 0 || agent.indexOf('trident/') >= 0 || agent.indexOf('edge/') >= 0 )
     {
@@ -160,7 +165,7 @@ export default Ember.Route.extend({
     return this.get('access').detect();
   },
 
-  setupController: function(controller/*, model*/) {
+  setupController(controller/*, model*/) {
     controller.set('code',null);
     controller.set('state',null);
     controller.set('error_description',null);

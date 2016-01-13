@@ -63,6 +63,10 @@ export default Ember.Route.extend({
             }
 
             this.replaceWith('settings.projects');
+            return Ember.Object.create({
+              projects: all,
+              stacks: [],
+            });
           });
         });
       });

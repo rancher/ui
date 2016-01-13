@@ -251,6 +251,29 @@ export function constructUrl(ssl,host,port) {
   return out;
 }
 
+export function pluralize(count,singular,plural) {
+  if ( !plural )
+  {
+    if ( singular.substr(-1,1) === 's' )
+    {
+      plural = singular + 'es';
+    }
+    else
+    {
+      plural = singular + 's';
+    }
+  }
+
+  if ( count === 1 )
+  {
+    return `${count} ${singular}`;
+  }
+  else
+  {
+    return `${count} ${plural}`;
+  }
+}
+
 var Util = {
   arrayDiff: arrayDiff,
   arrayIntersect: arrayIntersect,
@@ -270,6 +293,7 @@ var Util = {
   formatPercent: formatPercent,
   formatMib: formatMib,
   formatKbps: formatKbps,
+  pluralize: pluralize,
 };
 
 window.Util = Util;
