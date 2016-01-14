@@ -88,7 +88,7 @@ export default Ember.Route.extend({
   },
 
   loadStacks: function() {
-    return this.get('store').find('environment');
+    return this.get('store').findAllUnremoved('environment');
   },
 
   loadPublicSettings: function() {

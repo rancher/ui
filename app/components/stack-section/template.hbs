@@ -6,10 +6,13 @@
       <a {{action "toggleCollapse"}} class="btn btn-link"><i class="icon {{if collapsed 'icon-plus' 'icon-minus'}}" alt="Toggle stack details" title=""></i></a>
     </div>
 
-    <div class="header-left">
-      <h4>
-        <span class="divider clip">{{#link-to "environment" model.id}}{{model.name}}{{/link-to}}</span>
+    <div class="header-left name {{if model.description 'with-description'}}">
+      <h4 class="divider clip">
+        {{#link-to "environment" model.id}}{{model.name}}{{/link-to}}
       </h4>
+      {{#if model.description}}
+        <div class="text-muted clip">{{model.description}}</div>
+      {{/if}}
     </div>
 
     {{#if outputs.length}}
