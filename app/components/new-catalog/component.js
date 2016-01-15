@@ -29,10 +29,6 @@ export default Ember.Component.extend(NewOrEdit, {
     },
 
     togglePreview: function() {
-      if (this.get('previewOpen')) {
-        this.highlightAll();
-      }
-
       this.toggleProperty('previewOpen');
     },
 
@@ -60,12 +56,6 @@ export default Ember.Component.extend(NewOrEdit, {
     }
 
     this.templateChanged();
-  },
-
-  highlightAll: function() {
-    this.$('CODE').each(function(idx, elem) {
-      Prism.highlightElement(elem);
-    });
   },
 
   getReadme: function() {
@@ -120,15 +110,11 @@ export default Ember.Component.extend(NewOrEdit, {
           this.set('readmeContent', null);
         }
         this.set('loading', false);
-
-        Ember.run.next(() => {
-          this.highlightAll();
-        });
       }, ( /*error*/ ) => {});
     } else {
       this.set('selectedTemplateModel', null);
     }
-  }.observes('selectedTemplateUrl'),
+  },
 
   answers: function() {
     var out = {};
@@ -142,7 +128,7 @@ export default Ember.Component.extend(NewOrEdit, {
   answersArray: Ember.computed.alias('selectedTemplateModel.questions'),
 
   answersString: function() {
-    return this.get('answersArray').map((obj) => {
+    return (this.get('answersArray')||[]).map((obj) => {
       if (obj.answer === null || obj.answer === undefined) {
         return obj.variable + '=';
       } else {

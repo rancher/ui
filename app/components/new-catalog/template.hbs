@@ -182,15 +182,9 @@
           <li class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a href="#">answers.txt {{zero-clipboard text=answersString}}</a></li>
         </ul>
         <div class="well nav-well preview-content">
-          <pre class="line-numbers language-yaml constrained {{unless (eq previewTab 'docker-compose') 'hide'}}"><code class="language-yaml">
-            {{~selectedTemplateModel.dockerCompose~}}
-          </code></pre>
-          <pre class="line-numbers language-yaml constrained {{unless (eq previewTab 'rancher-compose') 'hide'}}"><code class="language-yaml">
-            {{~selectedTemplateModel.rancherCompose~}}
-          </code></pre>
-          <pre class="line-numbers language-bash constrained {{unless (eq previewTab 'answers') 'hide'}}"><code class="language-bash">
-            {{~answersString~}}
-          </code></pre>
+          {{code-block code=selectedTemplateModel.dockerCompose language="yaml" hide=(not-eq previewTab 'docker-compose')}}
+          {{code-block code=selectedTemplateModel.rancherCompose language="yaml" hide=(not-eq previewTab 'rancher-compose')}}
+          {{code-block code=answersString language="bash" hide=(not-eq  previewTab 'answers')}}
         </div>
       {{/if}}
     </section>
