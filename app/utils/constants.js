@@ -11,7 +11,14 @@ var C = {
     KIND_CATALOG: 'catalog',
     KIND_SYSTEM: 'system',
     KIND_KUBERNETES: 'kubernetes',
+    UPGRADEABLE: [
+      'catalog',
+      'system'
+    ],
     CATALOG_DEFAULT_GROUP: 'library',
+    SYSTEM_CATEGORIES: [
+      'Rancher services'
+    ],
   },
 
   GITHUB: {

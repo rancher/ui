@@ -169,11 +169,16 @@ export default Ember.Component.extend(NewOrEdit, {
       return false;
     }
 
+    var systemCategories = C.EXTERNALID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
+    var category = (this.get('templateResource.category')||'').trim().toLowerCase();
+    var externalId = ( systemCategories.indexOf(category) >= 0 ? C.EXTERNALID.KIND_SYSTEM : C.EXTERNALID.KIND_CATALOG );
+    externalId += C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.uuid');
+
     this.get('environmentResource').setProperties({
       dockerCompose: this.get('selectedTemplateModel.dockerCompose'),
       rancherCompose: this.get('selectedTemplateModel.rancherCompose'),
       environment: this.get('answers'),
-      externalId: C.EXTERNALID.KIND_CATALOG + C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.uuid')
+      externalId: externalId
     });
 
     return true;
