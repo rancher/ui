@@ -7,22 +7,14 @@ export default Ember.Component.extend({
   responseJSON: null,
 
   didInitAttrs: function() {
+    // Pretty-ify the JSON
     this.set('requestJSON', JSON.stringify(JSON.parse(this.get('requestObject')),null,2));
     this.set('responseJSON', JSON.stringify(JSON.parse(this.get('responseObject')),null,2));
-    Ember.run.next(() =>{
-      this.highlightAll();
-    });
   },
 
   actions: {
     dismiss: function() {
       this.sendAction('dismiss');
     }
-  },
-
-  highlightAll: function() {
-    this.$('CODE').each(function(idx, elem) {
-      Prism.highlightElement(elem);
-    });
   },
 });
