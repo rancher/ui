@@ -16,7 +16,7 @@ export default Ember.Controller.extend({
 
     (this.get('model.stacks')||[]).forEach((stack) => {
       var info = stack.get('externalIdInfo');
-      if ( info.kind === C.EXTERNALID.KIND_SYSTEM )
+      if ( C.EXTERNALID.SYSTEM_KINDS.indexOf(info.kind) >= 0 )
       {
         hasSystem = true;
       }
@@ -26,7 +26,6 @@ export default Ember.Controller.extend({
       }
     });
 
-    console.log('k8s:', hasKubernetes, 'sys:', hasSystem);
     this.setProperties({
       hasKubernetes: hasKubernetes,
       hasSystem: hasSystem

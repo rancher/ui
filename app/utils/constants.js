@@ -1,3 +1,9 @@
+const KIND_USER = 'user';
+const KIND_CATALOG = 'catalog';
+const KIND_SYSTEM = 'system';
+const KIND_SYSTEM_CATALOG = 'system-catalog';
+const KIND_KUBERNETES = 'kubernetes';
+
 var C = {
   COOKIE: {
     TOKEN: 'token',
@@ -7,18 +13,28 @@ var C = {
     KIND_SEPARATOR: '://',
     GROUP_SEPARATOR: ':',
     KIND_ALL: 'all',
-    KIND_USER: 'user',
-    KIND_CATALOG: 'catalog',
-    KIND_SYSTEM: 'system',
-    KIND_KUBERNETES: 'kubernetes',
+    KIND_USER: KIND_USER,
+    KIND_CATALOG: KIND_CATALOG,
+    KIND_SYSTEM: KIND_SYSTEM,
+    KIND_SYSTEM_CATALOG: KIND_SYSTEM_CATALOG,
+    KIND_KUBERNETES: KIND_KUBERNETES,
     UPGRADEABLE: [
-      'catalog',
-      'system'
+      KIND_CATALOG,
+      KIND_SYSTEM_CATALOG
     ],
-    CATALOG_DEFAULT_GROUP: 'library',
+    SYSTEM_KINDS: [
+      KIND_SYSTEM,
+      KIND_SYSTEM_CATALOG,
+    ],
+    NOT_USER_KINDS: [
+      KIND_SYSTEM,
+      KIND_SYSTEM_CATALOG,
+      KIND_KUBERNETES,
+    ],
     SYSTEM_CATEGORIES: [
       'Rancher services'
     ],
+    CATALOG_DEFAULT_GROUP: 'library',
   },
 
   GITHUB: {
@@ -188,6 +204,11 @@ C.ACTIVEISH_STATES = [
 C.INITIALIZING_STATES = [
   'initializing',
   'reinitializing'
+];
+
+C.VM_CAPABLE_STORAGE_DRIVERS = [
+  'convoy-gluster',
+  'convoy-longhorn',
 ];
 
 export default C;

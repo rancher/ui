@@ -11,6 +11,7 @@ export default Ember.Route.extend({
     if (isExisting)
     {
       controller.set('showAddtlInfo', false);
+      controller.set('which', 'user');
     }
   },
 });

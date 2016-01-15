@@ -29,7 +29,8 @@ export default Ember.Component.extend({
   classNameBindings: ['disabled','active'],
 
   disabled: false,
-  value: null,  // Bind something to this to get the value
+  initialValue: null,
+  value: null,  // Bind something to this to get the value, or use the action to get it
   valueMin: 0,  // The smallest and biggest value is allowed to be
   valueMax: 100,
   scaleMin: null, // The smallest and biggest values shown on the display.  If these are not equal to valueMin/max then there will be
@@ -39,6 +40,15 @@ export default Ember.Component.extend({
   active: false,
   dragFn: null,
   upFn: null,
+
+  didInitAttrs() {
+    console.log('didInit');
+    var initial = this.get('initialValue');
+    if ( initial !== null )
+    {
+      this.set('value', initial);
+    }
+  },
 
   didInsertElement: function() {
     this._super();
@@ -128,13 +138,11 @@ export default Ember.Component.extend({
     }
 
     var value = this.pointToValue(clientX(event));
-    console.log('set 1', value);
     this.set('value', value);
     this.$('.slider-handle').focus();
   },
 
   mouseDown: function(event) {
-    console.log('drag start');
     if ( this.get('disabled') )
     {
       return false;
@@ -157,7 +165,6 @@ export default Ember.Component.extend({
   },
 
   drag: function(event) {
-    console.log('drag');
     event.preventDefault();
     if ( this.get('disabled') )
     {
@@ -165,14 +172,12 @@ export default Ember.Component.extend({
     }
 
     var value = this.pointToValue(clientX(event));
-    console.log('drag', clientX(event), '=', value);
     this.set('value', value);
   },
 
   mouseUp: function(/*event*/) {
     $('BODY').off('mousemove', this.get('dragFn'));
     $('BODY').off('mouseup', this.get('upFn'));
-    console.log('drag end');
     this.set('active',false);
   },
 
@@ -207,9 +212,15 @@ export default Ember.Component.extend({
   valueChanged: function() {
     var orig = this.get('value');
     var value = Math.max(this.get('valueMin'), Math.min(orig, this.get('valueMax')));
-    if ( orig !== value )
+    if ( isNaN(value) )
     {
-      console.log('valuechanged', value);
+      value = this.get('valueMin');
+    }
+
+    this.sendAction('changed',value);
+
+    if ( value && orig !== value )
+    {
       this.set('value', value);
       return;
     }

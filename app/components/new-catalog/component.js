@@ -42,7 +42,7 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   didReceiveAttrs() {
-    this._super.apply(this, arguments);
+    this._super();
 
     this.set('editing', !!this.get('primaryResource.id'));
 
@@ -54,8 +54,6 @@ export default Ember.Component.extend(NewOrEdit, {
     } else {
       this.set('selectedTemplateUrl', null);
     }
-
-    this.templateChanged();
   },
 
   getReadme: function() {
@@ -114,7 +112,7 @@ export default Ember.Component.extend(NewOrEdit, {
     } else {
       this.set('selectedTemplateModel', null);
     }
-  },
+  }.observes('selectedTemplateUrl').on('init'),
 
   answers: function() {
     var out = {};
@@ -161,6 +159,14 @@ export default Ember.Component.extend(NewOrEdit, {
     return true;
   },
 
+  newExternalId: function() {
+    var systemCategories = C.EXTERNALID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
+    var category = (this.get('templateResource.category')||'').trim().toLowerCase();
+    var externalId = ( systemCategories.indexOf(category) >= 0 ? C.EXTERNALID.KIND_SYSTEM_CATALOG : C.EXTERNALID.KIND_CATALOG );
+    externalId += C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.uuid');
+    return externalId;
+  }.property('templateResource.category','selectedTemplateModel.uuid'),
+
   willSave() {
     this.set('errors', null);
     var ok = this.validate();
@@ -169,16 +175,11 @@ export default Ember.Component.extend(NewOrEdit, {
       return false;
     }
 
-    var systemCategories = C.EXTERNALID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
-    var category = (this.get('templateResource.category')||'').trim().toLowerCase();
-    var externalId = ( systemCategories.indexOf(category) >= 0 ? C.EXTERNALID.KIND_SYSTEM : C.EXTERNALID.KIND_CATALOG );
-    externalId += C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.uuid');
-
     this.get('environmentResource').setProperties({
       dockerCompose: this.get('selectedTemplateModel.dockerCompose'),
       rancherCompose: this.get('selectedTemplateModel.rancherCompose'),
       environment: this.get('answers'),
-      externalId: externalId
+      externalId: this.get('newExternalId'),
     });
 
     return true;
@@ -190,7 +191,7 @@ export default Ember.Component.extend(NewOrEdit, {
         dockerCompose: this.get('environmentResource.dockerCompose'),
         rancherCompose: this.get('environmentResource.rancherCompose'),
         environment: this.get('environmentResource.environment'),
-        externalId: C.EXTERNALID.KIND_CATALOG + C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.uuid')
+        externalId: this.get('newExternalId'),
       });
     } else {
       return this._super.apply(this, arguments);

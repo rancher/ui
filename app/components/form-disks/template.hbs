@@ -1,33 +1,45 @@
 <div class="form-control-static">
   <button class="btn-circle-text" {{action "addDisk"}}><i class="icon icon-plus-circle"/> <span>Add Disk</span></button>
+  <button class="btn-circle-text r-ml20" {{action "addRootDisk"}} disabled={{hasRoot}}><i class="icon icon-plus-circle"/> <span>Add Root Disk</span></button>
 </div>
 
 {{#if disksArray.length}}
-  <table class="table fixed no-lines no-top-padding tight small">
+  <table class="table fixed no-lines no-top-padding tight">
     <tr class="text-muted">
       <th>Name*</th>
       <th width="30">&nbsp;</th>
-      <th>Size*</th>
+      <th>Size</th>
       <th width="30">&nbsp;</th>
-      <th>Driver*</th>
-      <th width="30"></th>
+      <th width="130">Driver</th>
+      <th width="50"></th>
     </tr>
     {{#each disksArray as |disk|}}
       <tr>
         <td>
-          {{input class="form-control input-sm" type="text" value=disk.name placeholder="e.g. data"}}
+          {{#if disk.root}}
+            Root Disk
+          {{else}}
+            {{input class="form-control input-sm" type="text" value=disk.name placeholder="e.g. data"}}
+          {{/if}}
         </td>
 
         <td>&nbsp;</td>
 
         <td>
-          {{input class="form-control input-sm" type="text" value=disk.size placeholder="e.g. 20G"}}
+          <div class="row">
+            <div class="col-xs-8 col-sm-9">{{input-slider initialValue=disk.size changed=(action "setDiskSize" disk) valueMin=10 valueMax=500 scaleMin=0 step=10}}</div>
+            <div class="col-xs-4 col-sm-3">{{str-replace disk.size match="g" with=" GB"}}</div>
+          </div>
         </td>
 
         <td>&nbsp;</td>
 
         <td>
-          {{input class="form-control input-sm" type="text" value=disk.driver placeholder="e.g. convoy-gluster"}}
+          {{new-select
+            classNames="form-control"
+            content=driverChoices
+            value=disk.driver
+          }}
         </td>
 
         <td class="text-right">

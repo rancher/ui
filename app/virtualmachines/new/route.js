@@ -4,22 +4,21 @@ export default Ember.Route.extend({
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
-    var dependencies = [
-      store.findAll('host'), // Need inactive ones in case a link points to an inactive host
-    ];
+    var dependencies = {
+      allHosts: store.findAll('host'), // Need inactive ones in case a link points to an inactive host
+      allStoragePools: store.findAllUnremoved('storagepool')
+    };
 
     if ( params.virtualMachineId )
     {
-      dependencies.pushObject(store.find('virtualmachine', params.virtualMachineId, {include: ['ports','instanceLinks']}));
+      dependencies['existing'] = store.find('virtualmachine', params.virtualMachineId, {include: ['ports','instanceLinks']});
     }
 
-    return Ember.RSVP.all(dependencies, 'Load VM dependencies').then(function(results) {
-      var allHosts = results[0];
-
+    return Ember.RSVP.hash(dependencies, 'Load VM dependencies').then(function(results) {
       var data, healthCheckData;
-      if ( params.virtualMachineId )
+      if ( dependencies.existing )
       {
-        data = results[1].serializeForNew();
+        data = dependencies.existing.serializeForNew();
         data.ports = (data.ports||[]).map((port) => {
           delete port.id;
           return port;
@@ -56,7 +55,8 @@ export default Ember.Route.extend({
 
       return Ember.Object.create({
         instance: instance,
-        allHosts: allHosts,
+        allHosts: results.allHosts,
+        allStoragePools: results.allStoragePools,
       });
     });
   },
