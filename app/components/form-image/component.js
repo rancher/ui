@@ -15,6 +15,7 @@ export default Ember.Component.extend(ManageLabels, {
   userInput: null,
   tagName: '',
   pullImage: null,
+  value: null,
 
   actions: {
     setInput(str) {
@@ -84,6 +85,7 @@ export default Ember.Component.extend(ManageLabels, {
       out = null;
     }
 
+    this.set('value', out);
     this.sendAction('changed', out);
     this.validate();
   }.observes('userInput'),
