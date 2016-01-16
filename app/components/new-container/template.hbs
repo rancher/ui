@@ -7,7 +7,6 @@
         {{if isVm 'Virtual Machine' 'Container'}}
       {{/if}}
     </h1>
-    {{top-errors errors=errors}}
   </section>
 
   <section class="horizontal-form container-fluid">
@@ -119,7 +118,7 @@
     <div class="horizontal-form well">
       {{#if isVm}}
         <div class="section container-fluid" data-section="disks">
-          {{form-disks instance=launchConfig}}
+          {{form-disks instance=launchConfig availableDrivers=storageDriverChoices errors=diskErrors}}
         </div>
 
         <div class="section container-fluid" data-section="userdata">
@@ -217,6 +216,7 @@
 
 
 {{#unless isSidekick}}
+  {{top-errors errors=errors}}
   {{#save-cancel saveDisabled=noLaunchConfigsEnabled createLabel=(if isUpgrade 'Upgrade' 'Create') save="save" cancel="cancel"}}
     {{#if (and (not isUpgrade) (not-eq launchConfigIndex -1))}}
       <button class="btn btn-default" {{action "removeSidekick"}}>Remove this Sidekick</button>

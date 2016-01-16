@@ -6,9 +6,14 @@ var Mount = Resource.extend({
   isReadOnly:  Ember.computed.equal('permissions','ro'),
 
   instance: function() {
+    // @TODO Better way to tell if the intance is going to be a container or a VM ahead of time
     var proxy = Ember.ObjectProxy.create({content: {}});
     this.get('store').find('container', this.get('instanceId')).then((container) => {
       proxy.set('content', container);
+    }).catch(() => {
+      this.get('store').find('virtualmachine', this.get('instanceId')).then((vm) => {
+        proxy.set('content', vm);
+      });
     });
 
     return proxy;

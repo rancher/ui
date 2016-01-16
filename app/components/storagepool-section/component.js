@@ -6,6 +6,11 @@ export default Ember.Component.extend(Sortable, FilterState, {
   model: null,
   single: false,
 
+  init: function() {
+    this._super();
+    this.set('filterStates', ['purged']);
+  },
+
   filterableContent: Ember.computed.alias('model.volumes'),
   sortableContent: Ember.computed.alias('filtered'),
 

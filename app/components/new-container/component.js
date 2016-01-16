@@ -16,6 +16,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   service: null,
   allHosts: null,
   allServices: null,
+  allStoragePools: null,
 
   serviceLinksArray: null,
   isGlobal: null,
@@ -34,6 +35,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   scaleErrors: null,
   imageErrors: null,
   portErrors: null,
+  diskErrors: null,
 
   actions: {
     selectLaunchConfig(index) {
@@ -255,6 +257,17 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   ),
 
   // ----------------------------------
+  // Disks
+  // ----------------------------------
+  storageDriverChoices: function() {
+    return (this.get('allStoragePools')||[])
+            .map((pool) => { return pool.get('driverName'); })
+            .filter((name) => { return C.VM_CAPABLE_STORAGE_DRIVERS.indexOf(name) >= 0; })
+            .uniq()
+            .sort();
+  }.property('allStoragePools.@each.driverName'),
+
+  // ----------------------------------
   // Save
   // ----------------------------------
   willSave() {
@@ -271,6 +284,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       errors.pushObjects(this.get('scaleErrors')||[]);
       errors.pushObjects(this.get('imageErrors')||[]);
       errors.pushObjects(this.get('portErrors')||[]);
+      errors.pushObjects(this.get('diskErrors')||[]);
 
       if ( errors.length )
       {

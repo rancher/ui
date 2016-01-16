@@ -23,20 +23,8 @@ var Volume = Resource.extend({
   isRoot: Ember.computed.notEmpty('instanceId'),
 
   canDelete: function() {
-    // This doesn't work in the API yet.
-    if ( true )
-    {
-      return false;
-    }
-
-    // Can't delete things that are already removed, or root volumes (with an instanceId)
-    if ( this.get('isDeleted') || this.get('isPurged') || this.get('isRoot') )
-    {
-      return false;
-    }
-
-    return this.get('activeMounts.length') === 0;
-  }.property('isDeleted','isPurged','isRoot','activeMounts.length'),
+    return this.get('state') === 'inactive' && !this.get('isRoot');
+  }.property('state','isRoot'),
 
   activeMounts: function() {
     var mounts = this.get('mounts')||[];

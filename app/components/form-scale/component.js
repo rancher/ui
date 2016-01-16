@@ -3,7 +3,7 @@ import C from 'ui/utils/constants';
 import ManageLabels from 'ui/mixins/manage-labels';
 import { debouncedObserver } from 'ui/utils/debounce';
 
-// Subtract 1 (because 11...), round to the nearest 10, then double it
+// Subtract 1 (because 11...), round up to the nearest 10, then double it
 function roundScale(num) {
   return Math.ceil((num-1)/10)*10*2;
 }

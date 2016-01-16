@@ -4,22 +4,21 @@ export default Ember.Route.extend({
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
-    var dependencies = [
-      store.findAll('host'), // Need inactive ones in case a link points to an inactive host
-    ];
+    var dependencies = {
+      allHosts: store.findAll('host'), // Need inactive ones in case a link points to an inactive host
+    };
 
     if ( params.containerId )
     {
-      dependencies.pushObject(store.find('container', params.containerId, {include: ['ports','instanceLinks']}));
+      dependencies.existing = store.find('container', params.containerId, {include: ['ports','instanceLinks']});
     }
 
-    return Ember.RSVP.all(dependencies, 'Load container dependencies').then(function(results) {
-      var allHosts = results[0];
+    return Ember.RSVP.hash(dependencies, 'Load container dependencies').then(function(results) {
 
       var data, healthCheckData;
-      if ( params.containerId )
+      if ( results.existing )
       {
-        data = results[1].serializeForNew();
+        data = results.existing.serializeForNew();
         data.ports = (data.ports||[]).map((port) => {
           delete port.id;
           return port;
@@ -56,7 +55,7 @@ export default Ember.Route.extend({
 
       return Ember.Object.create({
         instance: instance,
-        allHosts: allHosts,
+        allHosts: results.allHosts,
       });
     });
   },
