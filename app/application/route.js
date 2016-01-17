@@ -56,19 +56,7 @@ export default Ember.Route.extend({
     },
 
     finishLogin() {
-      var session = this.get('session');
-
-      var backTo = session.get(C.SESSION.BACK_TO);
-      session.set(C.SESSION.BACK_TO, undefined);
-
-      if ( backTo )
-      {
-        window.location.href = backTo;
-      }
-      else
-      {
-        this.replaceWith('authenticated');
-      }
+      this.finishLogin();
     },
 
     logout(transition, timedOut, errorMsg) {
@@ -99,6 +87,22 @@ export default Ember.Route.extend({
     }
   },
 
+  finishLogin() {
+    var session = this.get('session');
+
+    var backTo = session.get(C.SESSION.BACK_TO);
+    session.set(C.SESSION.BACK_TO, undefined);
+
+    if ( backTo )
+    {
+      window.location.href = backTo;
+    }
+    else
+    {
+      this.replaceWith('authenticated');
+    }
+  },
+
   model(params, transition) {
     var github = this.get('github');
     var stateMsg = 'Authorization state did not match, please try again.';
@@ -121,7 +125,8 @@ export default Ember.Route.extend({
       if ( github.stateMatches(params.state) )
       {
         return this.get('access').login(params.code).then(() => {
-          this.send('finishLogin');
+          // Can't call this.send() here because the initial transition isn't done yet
+          this.finishLogin();
         }).catch((err) => {
           transition.send('logout', null, null, err.message);
         }).finally(() => {
