@@ -89,7 +89,7 @@ export default Ember.Component.extend({
 
       this.setProperties({
         strategy: this.get('healthCheck.strategy') || 'recreate',
-        quorum: this.get('healthCheck.recreateOnQuorumStrategyConfig.quorum') || 1,
+        quorum: this.get('healthCheck.recreateOnQuorumStrategyConfig.quorum') || '1',
       });
     }
     else
@@ -101,7 +101,7 @@ export default Ember.Component.extend({
         uriVersion: HTTP_1_0,
         uriHost: '',
         strategy: 'recreate',
-        quorum: 1,
+        quorum: '1',
       });
     }
 
@@ -153,17 +153,23 @@ export default Ember.Component.extend({
 
   strategyDidChange: function() {
     var strategy = this.get('strategy');
-    this.set('healthCheck.strategy', strategy);
+    var hc = this.get('healthCheck');
 
     if ( strategy === 'recreateOnQuorum' )
     {
-      this.set('healthCheck.recreateOnQuorumStrategyConfig', {
-        quorum: this.get('quorum'),
+      hc.setProperties({
+        'strategy': strategy,
+        'recreateOnQuorumStrategyConfig': {
+          quorum: parseInt(this.get('quorum'),10),
+        },
       });
     }
     else
     {
-      this.set('healthCheck.recreateOnQuorumStrategyConfig', null);
+      hc.setProperties({
+        'strategy': strategy,
+        'recreateOnQuorumStrategyConfig': null,
+      });
     }
   }.observes('strategy','quorum'),
 
