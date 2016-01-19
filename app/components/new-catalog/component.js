@@ -73,30 +73,23 @@ export default Ember.Component.extend(NewOrEdit, {
       }).then((response) => {
         if (response.questions) {
           response.questions.forEach((item) => {
-            if (typeof current[item.variable] !== 'undefined') {
-              item.answer = current[item.variable];
-            } else {
-              if (item.type === 'service') {
-                var defaultStack = false;
-                this.get('serviceChoices').forEach((service) => {
-                  service.stack = `${service.envName}/${service.name}`;
-                  if (item.default === service.stack) {
-                    defaultStack = true;
-                  }
-                });
+            // This will be the component that is rendered to edit this answer
+            item.inputComponent = 'schema/input-'+item.type;
 
-                if (defaultStack) {
-                  item.answer = item.default;
-                } else {
-                  item.answer = null;
-                }
-              } else {
-                if ( item.type === 'boolean' ) {
-                  item.answer = (item.default === 'true' || item.default === true);
-                } else {
-                  item.answer = item.default;
-                }
-              }
+            // Only types marked supported will show the component, Ember will explode if the component doesn't exist
+            item.supported = C.SUPPORTED_SCHEMA_INPUTS.indexOf(item.type) >= 0;
+
+            if (typeof current[item.variable] !== 'undefined') {
+              // If there's an existing value, use it (for upgrade)
+              item.answer = current[item.variable];
+            } else if (item.type === 'service' || item.type === 'certificate') {
+                // Loaded async and then the component picks the default
+            } else if ( item.type === 'boolean' ) {
+              // Coerce booleans
+              item.answer = (item.default === 'true' || item.default === true);
+            } else {
+              // Everythign else
+              item.answer = item.default;
             }
           });
         }
