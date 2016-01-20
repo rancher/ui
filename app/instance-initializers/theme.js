@@ -2,17 +2,18 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export function initialize(instance) {
-  var container = instance.container;
-  var session   = container.lookup('service:session');
-  var theme     = session.get(C.PREFS.THEME);
-  var userTheme = container.lookup('service:user-theme');
+  var container   = instance.container;
+  var session     = container.lookup('service:session');
+  var application = container.lookup('application:main');
+  var userTheme   = container.lookup('service:user-theme');
+  var theme       = session.get(C.PREFS.THEME);
 
   if (theme) {
 
     if (theme === 'ui-auto') {
       userTheme.setAutoUpdate();
     } else {
-      Ember.$('link[rel="stylesheet"]').after(`<link rel="stylesheet" href="assets/${theme}.css">`);
+      Ember.$('link[rel="stylesheet"]').after(`<link rel="stylesheet" href="${application.baseAssets}/assets/${theme}.css?${application.version}">`);
     }
 
   } else {
@@ -21,7 +22,7 @@ export function initialize(instance) {
 
     session.set(C.PREFS.THEME, theme);
 
-    Ember.$('link[rel="stylesheet"]').after(`<link rel="stylesheet" href="assets/${theme}.css">`);
+    Ember.$('link[rel="stylesheet"]').after(`<link rel="stylesheet" href="${application.baseAssets}/assets/${theme}.css?${application.version}">`);
 
   }
 
