@@ -13,7 +13,7 @@ export function initialize(instance) {
     if (theme === 'ui-auto') {
       userTheme.setAutoUpdate();
     } else {
-      Ember.$('link[rel="stylesheet"]').after(`<link rel="stylesheet" href="${application.baseAssets}/assets/${theme}.css?${application.version}">`);
+      Ember.$('link[rel="stylesheet"]').after(`<link id="theme" rel="stylesheet" href="${application.baseAssets}assets/${theme}.css?${application.version}">`);
     }
 
   } else {
@@ -22,7 +22,7 @@ export function initialize(instance) {
 
     session.set(C.PREFS.THEME, theme);
 
-    Ember.$('link[rel="stylesheet"]').after(`<link rel="stylesheet" href="${application.baseAssets}/assets/${theme}.css?${application.version}">`);
+    Ember.$('link[rel="stylesheet"]').after(`<link id="theme" rel="stylesheet" href="${application.baseAssets}assets/${theme}.css?${application.version}">`);
 
   }
 
