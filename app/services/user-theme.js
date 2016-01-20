@@ -74,13 +74,7 @@ export default Ember.Service.extend({
     var application = this.get('app');
     var element = Ember.$('#theme');
 
-    if (element.length) {
-
-      element.attr('href', `${application.baseAssets}assets/${theme}.css?${application.version}`);
-    } else {
-
-      Ember.$('link[rel="stylesheet"]').after(`<link rel="stylesheet" href="${application.baseAssets}assets/${theme}.css?${application.version}">`);
-    }
+    element.attr('href', `${application.baseAssets}assets/${theme}.css?${application.version}`);
 
     this.get('session').set(C.PREFS.THEME, theme);
 
