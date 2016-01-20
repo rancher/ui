@@ -16,14 +16,11 @@ Router.map(function() {
 
     // Settings
     this.resource('settings', function() {
-      this.route('apikeys', {path: '/api'});
 
       this.route('projects', { path: '/environments' });
       this.route('project-detail', { path: '/environments/:project_id' });
 
-      this.route('registries', { path: '/registries' });
-      this.route('registry-new', { path: '/registries/add' });
-      this.route('registry-detail', { path: '/registries/:registry_id' });
+
     });
 
     // Admin
@@ -106,6 +103,10 @@ Router.map(function() {
       });
       this.resource('storagepools.new-volume', {path: '/add-volume'});
 
+      this.route('registries', { path: '/registries' });
+      this.route('registry-new', { path: '/registries/add' });
+      this.route('registry-detail', { path: '/registries/:registry_id' });
+
     });
 
     // Applications
@@ -144,9 +145,11 @@ Router.map(function() {
 
     this.route('help');
 
-
+    this.route('apikeys', {path: '/api'});
     // End: Authenticated
   });
+
+
 
   // Modals
   this.modal('delete-confirmation', {
