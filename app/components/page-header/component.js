@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import Util from 'ui/utils/util';
 
 export default Ember.Component.extend({
   access: Ember.inject.service(),
@@ -42,16 +41,6 @@ export default Ember.Component.extend({
     return this.get('currentPath').indexOf('authenticated.admin-tab') === 0;
   }.property('currentPath'),
 
-  showBottomRow: function() {
-    var out = true;
-
-    if (this.get('currentPath').indexOf('authenticated.help') === 0) {
-      out = false;
-    }
-
-    return out;
-  }.property('currentPath'),
-
   showAccessWarning: function() {
     return this.get('app.showArticles') !== false &&
            !this.get('access.enabled') &&
@@ -84,22 +73,6 @@ export default Ember.Component.extend({
 
     goToPrevious() {
       this.sendAction('goToPrevious');
-    },
-
-    composeDownload(os) {
-      this.get('store').find('setting',null,{filter: {all: 'false'}}).then((settings) => {
-        var map = {};
-        settings.forEach((setting) => {
-          var name = setting.get('name').replace(/\./g,'_').toLowerCase();
-          map[name] = setting.get('value');
-        });
-
-        var url = map['rancher_compose_'+os+'_url'];
-        if ( url )
-        {
-          Util.download(url);
-        }
-      });
     },
 
     changePassword() {

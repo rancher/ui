@@ -136,6 +136,11 @@ var C = {
     VERSION_CATTLE:  'cattle$version',
     VERSION_MACHINE: 'docker$machine$version',
     VERSION_GMS:     'go$machine$service$version',
+    COMPOSE_URL: {
+      DARWIN:        'rancher$compose$darwin$url',
+      WINDOWS:       'rancher$compose$windows$url',
+      LINUX:         'rancher$compose$linux$url',
+    },
     API_HOST:        'api$host',
     CATALOG_URL:     'catalog$url',
     VM_ENABLED:      'vm$enabled',
