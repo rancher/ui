@@ -31,7 +31,7 @@ module.exports = function(defaults) {
 
 
     fingerprint: {
-      exclude: ['fontawesome','assets/images/logos'],
+      exclude: ['fontawesome','assets/images/logos', 'ui-light', 'ui-dark', 'ui'],
       extensions: (appConfig.fingerprint === 'no' ? [] : ['js','css','png','jpg','gif','svg','map','woff','woff2','ttf']),
     },
 

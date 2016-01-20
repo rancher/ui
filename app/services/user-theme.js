@@ -71,14 +71,15 @@ export default Ember.Service.extend({
   },
 
   writeStyleNode: function(theme) {
+    var application = this.get('app')
     var element = Ember.$('link[href*=ui]');
 
     if (element.length) {
 
-      element.attr('href', `/assets/${theme}.css`);
+      element.attr('href', `${application.baseAssets}/assets/${theme}.css?${application.version}`);
     } else {
 
-      Ember.$('link[rel="stylesheet"]').after(`<link rel="stylesheet" href="assets/${theme}.css">`);
+      Ember.$('link[rel="stylesheet"]').after(`<link rel="stylesheet" href="${application.baseAssets}/assets/${theme}.css?${application.version}">`);
     }
 
     this.get('session').set(C.PREFS.THEME, theme);
