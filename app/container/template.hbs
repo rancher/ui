@@ -6,7 +6,10 @@
     </div>
   {{/power-select}}
 
-  <strong>on {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}</strong>
+  {{#if model.primaryHost}}
+    <strong>on {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}</strong>
+  {{/if}}
+
   <div class="pull-right">
     {{action-menu model=model  classNames="r-ml5 pull-right" size="sm"}}
     {{header-state model=model classNames="pull-right"}}
@@ -22,7 +25,7 @@
         {{#if model.primaryHost}}
           {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}
         {{else}}
-          <span class="text-muted">Unknown</span>
+          <span class="text-muted">None</span>
         {{/if}}
       </div>
       <div class="col-flex">
@@ -30,7 +33,7 @@
         {{#if model.primaryHost}}
           {{model.primaryHost.displayIp}} {{zero-clipboard text=model.primaryHost.displayIp}}
         {{else}}
-          <span class="text-muted">Unknown</span>
+          <span class="text-muted">N/A</span>
         {{/if}}
       </div>
       <div class="col-flex">
