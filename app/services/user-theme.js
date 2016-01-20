@@ -2,16 +2,12 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 const AUTO_UPDATE_TIMER = 1800000; // 30min
+const START_DAY = 7;
+const END_DAY = 17;
 
 export default Ember.Service.extend({
   prefs   : Ember.inject.service(),
   session : Ember.inject.service(),
-
-  themeObserver: function() {
-    if (this.get(`prefs.${C.PREFS.THEME}`) === 'ui-auto') {
-      this.setAutoUpdate();
-    }
-  }.observes(`prefs.${C.PREFS.THEME}`),
 
   setupTheme: function() {
     var userTheme    = this.get(`prefs.${C.PREFS.THEME}`);
@@ -39,7 +35,11 @@ export default Ember.Service.extend({
   setTheme: function(newTheme) {
     this.set(`prefs.${C.PREFS.THEME}`, newTheme);
 
-    this.writeStyleNode(newTheme);
+    if (newTheme === 'ui-auto') {
+      this.setAutoUpdate();
+    } else {
+      this.writeStyleNode(newTheme);
+    }
 
   },
 
@@ -53,7 +53,7 @@ export default Ember.Service.extend({
     var newTheme     = 'ui-light';
     var nextHalfHour = AUTO_UPDATE_TIMER - Math.round(new Date().getTime())%AUTO_UPDATE_TIMER;
 
-    if ((hour >= 7 && hour <= 17)) {
+    if ((hour >= START_DAY && hour <= END_DAY)) {
 
       this.writeStyleNode(newTheme);
     } else {
@@ -71,15 +71,15 @@ export default Ember.Service.extend({
   },
 
   writeStyleNode: function(theme) {
-    var application = this.get('app')
-    var element = Ember.$('link[href*=ui]');
+    var application = this.get('app');
+    var element = Ember.$('#theme');
 
     if (element.length) {
 
-      element.attr('href', `${application.baseAssets}/assets/${theme}.css?${application.version}`);
+      element.attr('href', `${application.baseAssets}assets/${theme}.css?${application.version}`);
     } else {
 
-      Ember.$('link[rel="stylesheet"]').after(`<link rel="stylesheet" href="${application.baseAssets}/assets/${theme}.css?${application.version}">`);
+      Ember.$('link[rel="stylesheet"]').after(`<link rel="stylesheet" href="${application.baseAssets}assets/${theme}.css?${application.version}">`);
     }
 
     this.get('session').set(C.PREFS.THEME, theme);
