@@ -5,12 +5,13 @@ import C from 'ui/utils/constants';
 import Service from 'ui/models/service';
 
 export default Ember.Route.extend({
-  prefs: Ember.inject.service(),
-  projects: Ember.inject.service(),
-  access: Ember.inject.service(),
+  prefs     : Ember.inject.service(),
+  projects  : Ember.inject.service(),
+  access    : Ember.inject.service(),
+  userTheme : Ember.inject.service('user-theme'),
 
-  socket: null,
-  pingTimer: null,
+  socket    : null,
+  pingTimer : null,
 
   beforeModel: function(transition) {
     this._super.apply(this,arguments);
@@ -45,6 +46,9 @@ export default Ember.Route.extend({
 
       // Return the list of projects as the model
       return this.loadPreferences().then(() => {
+
+        this.get('userTheme').setupTheme();
+
         return projectsService.getAll().then((all) => {
           projectsService.set('all', all);
 
@@ -101,6 +105,7 @@ export default Ember.Route.extend({
       {
         $('BODY').addClass('no-spin');
       }
+
 
       return prefs;
     });

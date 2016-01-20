@@ -8,7 +8,7 @@ export function initialize(/* container, application */) {
   Ember.Checkbox.reopen(SafeStyle);
 
   Ember.LinkComponent.reopen({
-    attributeBindings: ['tooltip', 'data-placement'],
+    attributeBindings: ['tooltip'],
   });
 }
 

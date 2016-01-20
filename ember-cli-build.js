@@ -11,14 +11,24 @@ module.exports = function(defaults) {
   ['version','appName','baseAssets'].forEach(function(key) {
     var val = appConfig[key];
     if ( val )
-    {
-      inline[key] = {content: val};
-    }
+      {
+        inline[key] = {content: val};
+      }
   });
 
   var app = new EmberApp(defaults, {
     storeConfigInMeta: false,
     inlineContent: inline,
+
+    outputPaths: {
+      app: {
+        css: {
+          'app-light': '/assets/ui-light.css',
+          'app-dark': '/assets/ui-dark.css'
+        }
+      }
+    },
+
 
     fingerprint: {
       exclude: ['fontawesome','assets/images/logos'],
