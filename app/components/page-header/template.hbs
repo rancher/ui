@@ -5,18 +5,17 @@
       {{#link-to "applications-tab"}}Applications{{/link-to}}
       {{#link-to "infrastructure-tab"}}Infrastructure{{/link-to}}
       {{#if isAdmin}}
-        {{#link-to "admin-tab"}}Admin{{/link-to}}
+        {{#link-to "admin-tab"}}Admin
+          {{#if showAccessWarning}}
+            {{#link-to "admin-tab.auth" class="warning" data-toggle="tooltip" data-placement="bottom" title="Access not Configured" data-original-title="Access not Configured" tooltip="hey"}}!{{/link-to}}
+          {{/if}}
+        {{/link-to}}
       {{/if}}
       {{#link-to "authenticated.help"}}Help{{/link-to}}
     {{/if}}
   </nav>
 
-  {{#if showAccessWarning}}
-    <article class="warning">
-      <div class="close" {{action "hideAccessWarning"}}><i class="icon icon-x"></i></div>
-      {{#link-to "admin-tab.auth"}}Access Control{{/link-to}} is not configured
-    </article>
-  {{/if}}
+
 
   <div class="dropdown user-btn">
     <span class="user-toggle" id="user-dropdown" data-toggle="dropdown" aria-expanded="true" aria-label="User Menu: {{session.user}}">
@@ -51,6 +50,13 @@
 
         <li role="presentation" class="divider"></li>
       {{/if}}
+
+      <li class="dropdown-header">Theme</li>
+      <li role="presentation" class="theme-toggle text-center">
+        {{theme-toggle}}
+      </li>
+
+      <li role="presentation" class="divider"></li>
 
       <li role="presentation" class="dropdown-header">
         This Environment
