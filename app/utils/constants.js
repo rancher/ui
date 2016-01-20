@@ -211,4 +211,18 @@ C.VM_CAPABLE_STORAGE_DRIVERS = [
   'convoy-longhorn',
 ];
 
+// This is populated by each app/components/schema/*
+C.SUPPORTED_SCHEMA_INPUTS= [
+  'boolean',
+  'certificate',
+  'date',
+  'enum',
+  'float',
+  'int',
+  'multiline',
+  'password',
+  'service',
+  'string',
+];
+
 export default C;

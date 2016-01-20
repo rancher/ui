@@ -23,10 +23,6 @@ Setup:
   git clone 'https://github.com/rancher/ui'
   cd 'ui'
   ./scripts/update-dependencies
-  git submodule init
-  git submodule update
-  npm install
-  bower install
 ```
 
 Run development server:

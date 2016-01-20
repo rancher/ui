@@ -1,0 +1,42 @@
+import Ember from 'ember';
+
+export default Ember.Component.extend({
+  allServices: Ember.inject.service(),
+
+  field: null,
+  value: null,
+
+  choices: null,
+  default: Ember.computed.alias('field.default'),
+  loading: true,
+  didInitAttrs: function() {
+    this.get('allServices').choices().then((choices) => {
+      var exact, justService;
+      var def = this.get('default');
+
+      choices.forEach((service) => {
+        service.value = `${service.envName}/${service.name}`;
+
+        if ( def === service.value )
+        {
+          exact = service.value;
+        }
+        else if ( def === service.name )
+        {
+          justService = service.value;
+        }
+      });
+
+      // Choose the default if there isn't a value and there was a matching entry
+      if ( this.get('value') === undefined )
+      {
+        this.set('value', exact || justService || null);
+      }
+
+      this.setProperties({
+        loading: false,
+        choices: choices
+      });
+    });
+  },
+});

@@ -7,7 +7,6 @@ export default Ember.Route.extend({
     var store = this.get('store');
 
     var dependencies = {
-      serviceChoices: this.get('allServices').choices(),
       tpl: store.request({url: this.get('app.catalogEndpoint')+'/templates/'+params.template}),
     };
 
@@ -47,7 +46,6 @@ export default Ember.Route.extend({
       });
 
       return Ember.Object.create({
-        serviceChoices: results.serviceChoices,
         environment: results.env,
         tpl: results.tpl,
         upgrade: results.upgrade,

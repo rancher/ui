@@ -97,55 +97,14 @@
 
         <div class="row"><div class="col-sm-12"><div class="row">
           {{#each selectedTemplateModel.questions as |question|}}
-            <div class="col-sm-12 {{if (eq selectedTemplateModel.questions.length 1) 'col-md-12' 'col-md-6'}} form-label">
+            <div class="col-sm-12 {{if (eq selectedTemplateModel.questions.length 1) 'col-md-12' 'col-md-6'}} form-label r-mb10">
               <label class="form-label form-control-static">{{question.label}}{{if question.required "*"}}</label>
 
-              {{! TODO replace this with 'component question.type }}
-              {{#if (or (eq question.type "string") (eq question.type "int") (eq question.type "password"))}}
-                {{#if (eq question.type "int")}}
-                  {{input type="number" class="form-control r-mb10" value=question.answer}}
-                {{else}}
-                  {{input type=(if (eq question.type "password") "password" "text") class="form-control r-mb10" value=question.answer}}
-                {{/if}}
+              {{#if question.supported}}
+                {{component question.inputComponent field=question value=question.answer}}
               {{else}}
-                {{#if (eq question.type "boolean")}}
-                  <div class="r-mb10">
-                    <label style="display:block;">
-                      {{radio-button selection=question.answer value=true}} True
-
-                    </label>
-                    <label style="display:block;">
-                      {{radio-button selection=question.answer value=false}} False
-                    </label>
-                  </div>
-                {{else}}
-                  {{#if (eq question.type "enum")}}
-                    <select name="" class="form-control r-mb10" onChange={{action (mut question.answer) value="target.value"}}>
-                      <option value="">Choose an option...</option>
-                      {{#each question.options key="@identity" as |option|}}
-                        <option value={{option}} selected={{eq option question.answer}}>{{option}}</option>
-                      {{/each}}
-                    </select>
-                  {{else}}
-                    {{#if (eq question.type "multiline")}}
-                      {{textarea value=question.answer rows="5" class="form-control"}}
-                    {{else}}
-                      {{#if (eq question.type 'service')}}
-                        {{new-select
-                          classNames="form-control"
-                          content=serviceChoices
-                          prompt="Choose a Service"
-                          optionLabelPath="name"
-                          optionValuePath="stack"
-                          optionGroupPath="group"
-                          value=question.answer
-                        }}
-                      {{else}}
-                        Unknown question type: {{question.type}}
-                      {{/if}}
-                    {{/if}}
-                  {{/if}}
-                {{/if}}
+                {{input type="text" value=question.answer class="form-control"}}
+                <p>Unrecognized question type: {{question.type}}</p>
               {{/if}}
 
               <p class="help-block">{{question.description}}</p>
