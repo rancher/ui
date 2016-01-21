@@ -1,10 +1,8 @@
-import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export function initialize(instance) {
   var container   = instance.container;
   var session     = container.lookup('service:session');
-  var application = container.lookup('application:main');
   var userTheme   = container.lookup('service:user-theme');
   var theme       = session.get(C.PREFS.THEME);
 
@@ -13,16 +11,16 @@ export function initialize(instance) {
     if (theme === 'ui-auto') {
       userTheme.setAutoUpdate();
     } else {
-      Ember.$('#theme').attr('href',`${application.baseAssets}assets/${theme}.css?${application.version}`);
+      userTheme.writeStyleNode(theme);
     }
 
   } else {
 
-    theme = 'ui-light';
+    theme = C.THEME.DEFAULT;
+
+    userTheme.writeStyleNode(theme);
 
     session.set(C.PREFS.THEME, theme);
-
-    Ember.$('#theme').attr('href',`${application.baseAssets}assets/${theme}.css?${application.version}`);
 
   }
 
