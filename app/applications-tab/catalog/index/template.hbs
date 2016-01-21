@@ -40,15 +40,16 @@
 <section class="r-plr15">
   {{#each arrangedContent as |catalogItem|}}
     <div class="container-catalog text-center">
+      <div class="catalog-icon">
+        <img src="{{catalogItem.links.icon}}"/>
+      </div>
       <h5>
         {{catalogItem.name}}
         {{#if showCatalogDropdown}}
           <span class="small">in <span class="text-capitalize">{{catalogItem.catalogId}}</span></span>
         {{/if}}
       </h5>
-      <div class="catalog-icon">
-        <img src="{{catalogItem.links.icon}}"/>
-      </div>
+
       <div class="r-mt10 description">{{catalogItem.description}}</div>
       {{#link-to "applications-tab.catalog.launch" catalogItem.id class="btn btn-sm btn-primary"}}View Details{{/link-to}}
     </div>
