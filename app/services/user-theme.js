@@ -1,10 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
-const AUTO_UPDATE_TIMER = 1800000; // 30min
-const START_DAY = 7;
-const END_DAY = 17;
-
 export default Ember.Service.extend({
   prefs   : Ember.inject.service(),
   session : Ember.inject.service(),
@@ -20,7 +16,7 @@ export default Ember.Service.extend({
       if (userTheme !== defaultTheme) {
 
         if (defaultTheme !== 'ui-auto') {
-          this.set(`prefs.${C.PREFS.THEME}`, userTheme);
+          this.setTheme(userTheme);
         } else {
           this.setAutoUpdate();
         }
@@ -39,6 +35,7 @@ export default Ember.Service.extend({
       this.setAutoUpdate();
     } else {
       this.writeStyleNode(newTheme);
+      this.get('session').set(C.PREFS.THEME, newTheme);
     }
 
   },
@@ -51,17 +48,14 @@ export default Ember.Service.extend({
 
     var hour         = new Date().getHours();
     var newTheme     = 'ui-light';
-    var nextHalfHour = AUTO_UPDATE_TIMER - Math.round(new Date().getTime())%AUTO_UPDATE_TIMER;
+    var nextHalfHour = C.THEME.AUTO_UPDATE_TIMER - Math.round(new Date().getTime())%C.THEME.AUTO_UPDATE_TIMER;
 
-    if ((hour >= START_DAY && hour <= END_DAY)) {
-
-      this.writeStyleNode(newTheme);
-    } else {
-
+    if ( hour < C.THEME.START_HOUR || hour >= C.THEME.END_HOUR ) {
       newTheme = 'ui-dark';
-
-      this.writeStyleNode(newTheme);
     }
+
+    this.writeStyleNode(newTheme);
+    this.get('session').set(C.PREFS.THEME, newTheme);
 
     this.set('updateTimer', Ember.run.later(() => {
 
@@ -72,11 +66,8 @@ export default Ember.Service.extend({
 
   writeStyleNode: function(theme) {
     var application = this.get('app');
-    var element = Ember.$('#theme');
 
-    element.attr('href', `${application.baseAssets}assets/${theme}.css?${application.version}`);
-
-    this.get('session').set(C.PREFS.THEME, theme);
+    Ember.$('#theme').attr('href', `${application.baseAssets}assets/${theme}.css?${application.version}`);
 
   },
 

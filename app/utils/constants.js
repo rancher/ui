@@ -90,12 +90,19 @@ var C = {
   },
 
   PREFS: {
-    ACCESS_WARNING: 'accessWarning',
-    PROJECT_DEFAULT: 'defaultProjectId',
-    I_HATE_SPINNERS: 'iHateSpinners',
-    EXPANDED_STACKS: 'expandedStacks',
-    SORT_STACKS_BY: 'sortStacksBy',
-    THEME: 'theme'
+    ACCESS_WARNING  : 'accessWarning',
+    PROJECT_DEFAULT : 'defaultProjectId',
+    I_HATE_SPINNERS : 'iHateSpinners',
+    EXPANDED_STACKS : 'expandedStacks',
+    SORT_STACKS_BY  : 'sortStacksBy',
+    THEME           : 'theme'
+  },
+
+  THEME: {
+    AUTO_UPDATE_TIMER : 1800000,
+    START_HOUR        : 7,
+    END_HOUR          : 18,
+    DEFAULT           : 'ui-light',
   },
 
   PROJECT: {
