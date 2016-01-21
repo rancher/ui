@@ -19,44 +19,43 @@
 <section>
   <div class="flex-wrap">
     <div class="flex-item">
-    	<div class="flex-content well">
-      <h4>What is an environment?</h4>
-      <hr/>
-      <p>Rancher supports grouping resources into multiple environments. Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
+      <div class="flex-content well">
+        <h4>What is an environment?</h4>
+        <hr/>
+        <p>Rancher supports grouping resources into multiple environments. Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
 
-      <p>For example, you might create separate "dev", "test", and "production" environments to keep things isolated from each other, and give "dev" access to your entire organization but restrict the "production" environment to a smaller team.</p>
-      {{#link-to 'settings.projects' class="btn btn-primary right-divider-btn"}} Manage Environments {{/link-to}}
+        <p>For example, you might create separate "dev", "test", and "production" environments to keep things isolated from each other, and give "dev" access to your entire organization but restrict the "production" environment to a smaller team.</p>
+        {{#link-to 'settings.projects' class="btn btn-primary right-divider-btn"}} Manage Environments {{/link-to}}
       </div>
     </div>
 
     <div class="flex-item">
-    	<div class="flex-content well">
-      <h4>What is a host?</h4>
-      <hr/>
-      <p>Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker 1.6+ and be able to reach the Rancher server via HTTP. Rancher supports adding Linux hosts in the form of a virtual or physical
-        machine from any public cloud providers, privately hosted clouds, or even bare metal servers. Learn More</p>
-      {{#link-to "hosts.new" class="btn btn-primary"}}Add Host{{/link-to}}
+      <div class="flex-content well">
+        <h4>What is a host?</h4>
+        <hr/>
+        <p>Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker 1.6+ and be able to reach the Rancher server via HTTP. Rancher supports adding Linux hosts in the form of a virtual or physical
+          machine from any public cloud providers, privately hosted clouds, or even bare metal servers. <a href="{{docsLink}}/rancher-ui/infrastructure/hosts/" target="_blank">Learn More</a></p>
+        {{#link-to "hosts.new" class="btn btn-primary"}}Add Host{{/link-to}}
       </div>
     </div>
     <div class="flex-item">
-    	<div class="flex-content well">
-      <h4>What are stacks and services?</h4>
-      <hr/>
-      <p>A service is simply a group of containers created from the same Docker image but extends Docker's "link" concept to leverage Rancher's lightweight distributed DNS service for service discovery. Services can be added individually or by deploying
-        an item from the Catalog.</p>
+      <div class="flex-content well">
+        <h4>What are stacks and services?</h4>
+        <hr/>
+        <p>A service is simply a group of containers created from the same Docker image but extends Docker's "link" concept to leverage Rancher's lightweight distributed DNS service for service discovery. Services can be added individually or by deploying
+          an item from the Catalog.</p>
 
-      <p>A service is also capable of leveraging other Rancher built-in services such as load balancers, health monitoring, upgrade support, and high-availability. Learn More</p>
+        <p>A service is also capable of leveraging other Rancher built-in services such as load balancers, health monitoring, upgrade support, and high-availability. <a href="{{docsLink}}/rancher-ui/applications/stacks/adding-services/" target="_blank">Learn More</a></p>
 
-      {{#if hasServices}}
-        {{#link-to 'applications-tab' class="btn btn-primary r-mb10"}} Manage Services {{/link-to}}
-        {{#link-to "applications-tab.catalog" class="btn btn-primary"}}Add From Catalog{{/link-to}}
-      {{else}}
-        <p>Note: You currently have no hosts. Please add a host before adding Services.</p>
-        {{#link-to 'applications-tab' class="btn btn-primary r-mb10" disabled=true}} Manage Services {{/link-to}}
-        {{#link-to "applications-tab.catalog" class="btn btn-primary" disabled=true}}Add From Catalog{{/link-to}}
-      {{/if}}
-    </div>
-
+        {{#if hasHosts}}
+          {{#link-to 'applications-tab' class="btn btn-primary r-mb10"}} Manage Services{{/link-to}}
+          {{#link-to "applications-tab.catalog" class="btn btn-primary"}}Add From Catalog{{/link-to}}
+        {{else}}
+          <div class="alert alert-danger">You currently have no hosts. Please add a host before adding Services.</div>
+          {{#link-to 'applications-tab' class="btn btn-primary r-mb10" disabled=true}} Manage Services{{/link-to}}
+          {{#link-to "applications-tab.catalog" class="btn btn-primary" disabled=true}}Add From Catalog{{/link-to}}
+        {{/if}}
+      </div>
     </div>
   </div>
 </section>
