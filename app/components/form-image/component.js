@@ -55,7 +55,7 @@ export default Ember.Component.extend(ManageLabels, {
     }
     else
     {
-      this.removeLabel(C.LABEL.PULL_IMAGE);
+      this.removeLabel(C.LABEL.PULL_IMAGE, true);
     }
   }.observes('pullImage'),
 

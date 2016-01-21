@@ -56,7 +56,7 @@ export default Ember.Service.extend({
         }
         else if ( this.get('access.admin') )
         {
-          return this.findUserProjects().then((all) => {
+          return this.getAll().then((all) => {
             var firstActive = all.filterBy('state','active')[0];
             if ( firstActive )
             {

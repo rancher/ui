@@ -238,7 +238,14 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       var out = {};
 
       function flatten(row) {
-        out[row.key] = row.value;
+        if ( row.value === undefined )
+        {
+          delete out[row.key];
+        }
+        else
+        {
+          out[row.key] = row.value;
+        }
       }
 
       (this.get('userLabels')||[]).forEach(flatten);

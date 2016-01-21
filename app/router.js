@@ -103,10 +103,10 @@ Router.map(function() {
       });
       this.resource('storagepools.new-volume', {path: '/add-volume'});
 
-      this.route('registries', { path: '/registries' });
-      this.route('registry-new', { path: '/registries/add' });
-      this.route('registry-detail', { path: '/registries/:registry_id' });
-
+      this.resource('registries', { path: '/registries' }, function() {
+        this.route('new', { path: '/add' });
+        this.route('index', {path: '/'});
+      });
     });
 
     // Applications

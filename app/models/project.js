@@ -6,6 +6,7 @@ import C from 'ui/utils/constants';
 var Project = Resource.extend(PolledResource, {
   session: Ember.inject.service(),
   prefs: Ember.inject.service(),
+  projects: Ember.inject.service(),
 
   type: 'project',
   name: null,
@@ -33,7 +34,9 @@ var Project = Resource.extend(PolledResource, {
 
     activate: function() {
       return this.doAction('activate').then(() => {
-        this.get('projects').refreshAll();
+        return this.waitForState('active').then(() => {
+          this.get('projects').refreshAll();
+        });
       });
     },
 

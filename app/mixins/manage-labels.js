@@ -208,11 +208,18 @@ export default Ember.Mixin.create({
     return existing;
   },
 
-  removeLabel: function(key) {
-    var existing = this.getLabelObj(key);
-    if ( existing )
+  removeLabel: function(key, soft=false) {
+    if ( soft )
     {
-      this.get('labelArray').removeObject(existing);
+      this.setLabel(key, undefined);
+    }
+    else
+    {
+      var existing = this.getLabelObj(key);
+      if ( existing )
+      {
+        this.get('labelArray').removeObject(existing);
+      }
     }
   },
 
@@ -271,7 +278,21 @@ export default Ember.Mixin.create({
     this.get('labelArray').forEach(function(row) {
       var key   = row.get('key')   || '';
       var type  = row.get('type')  || '';
-      var value = row.get('value') ||  '';
+
+      // System and Affinity labels are always lowercase.
+      if ( type !== USER )
+      {
+        key = key.toLowerCase();
+      }
+
+      // Pass undefined through, for soft-delete
+      if ( row.get('value') === undefined )
+      {
+        map[key] = undefined;
+        return;
+      }
+
+      var value = row.get('value') || '';
 
       // Skip empty keys, and system/affinity labels with no value
       if ( !key || (type !== USER && value === ''))
@@ -279,10 +300,9 @@ export default Ember.Mixin.create({
         return;
       }
 
-      // System and Affinity labels are always lowercase.
+      // System and Affinity values are always lowercase.
       if ( type !== USER )
       {
-        key = key.toLowerCase();
         value = value.toLowerCase();
       }
 
