@@ -16,7 +16,7 @@ export default Ember.Controller.extend(NewOrEdit, {
     },
 
     cancel: function() {
-      this.transitionTo('settings.registries');
+      this.transitionTo('registries');
     },
   },
 
@@ -85,6 +85,6 @@ export default Ember.Controller.extend(NewOrEdit, {
   },
 
   doneSaving: function() {
-    this.transitionToRoute('settings.registries');
+    this.transitionToRoute('registries');
   },
 });
