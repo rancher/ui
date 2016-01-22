@@ -60,7 +60,7 @@ export default Ember.Route.extend({
               });
             });
           }).catch((err) => {
-            if ( [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
+            if ( err && err.status && [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
             {
               this.send('logout',transition,true);
               return;

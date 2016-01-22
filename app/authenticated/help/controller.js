@@ -6,7 +6,7 @@ export default Ember.Controller.extend({
 
   modelError: false,
   modelResolved: false,
-  hasServices: true,
+  hasHosts: true,
   forumsLink: C.EXT_REFERENCES.FORUM,
   companyLink: C.EXT_REFERENCES.COMPANY,
   githubLink: C.EXT_REFERENCES.GITHUB,

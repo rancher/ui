@@ -49,21 +49,10 @@ export default Ember.Route.extend({
       return true; //bubble the transition event
     },
   },
+
   beforeModel: function() {
-    var store = this.get('store');
-
-    return Ember.RSVP.all([
-
-      store.findAllUnremoved('service'),
-      store.findAllUnremoved('host'),
-
-    ]).then((results) => {
-
-      if (results[0].content.length === 0 || results[1].content.length === 0) {
-
-        this.controllerFor('authenticated.help').set('hasServices', false);
-
-      }
+    this.get('store').findAllUnremoved('host').then((hosts) => {
+      this.controllerFor('authenticated.help').set('hasHosts', hosts.get('length') > 0);
     });
   },
 });
