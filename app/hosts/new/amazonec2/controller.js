@@ -431,14 +431,4 @@ export default Ember.Controller.extend(NewHost, {
       });
     }
   },
-
-  validate: function() {
-    return this._super();
-  },
-
-  doneSaving: function() {
-    var out = this._super();
-    this.transitionToRoute('hosts');
-    return out;
-  },
 });

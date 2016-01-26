@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import config from './config/environment';
+import {getDrivers} from 'ui/hosts/new/controller';
 
 var Router = Ember.Router.extend({
   location: config.locationType
@@ -8,23 +9,20 @@ var Router = Ember.Router.extend({
 Router.map(function() {
   this.route('ie');
   this.route('index');
-  this.route('failWhale', { path: '/fail' });
+  this.route('failWhale', {path: '/fail'});
 
   this.route('login');
   this.route('logout');
-  this.route('authenticated', { path: '/'}, function() {
+  this.route('authenticated', {path: '/'}, function() {
 
     // Settings
-    this.resource('settings', function() {
-
-      this.route('projects', { path: '/environments' });
-      this.route('project-detail', { path: '/environments/:project_id' });
-
-
+    this.route('settings', {resetNamespace: true}, function() {
+      this.route('projects', {path: '/environments'});
+      this.route('project-detail', {path: '/environments/:project_id'});
     });
 
     // Admin
-    this.resource('admin-tab', {path: '/admin'}, function() {
+    this.route('admin-tab', {path: '/admin', resetNamespace: true}, function() {
       this.route('auth', {path: '/access'}, function() {
         this.route('activedirectory');
         this.route('github');
@@ -48,33 +46,27 @@ Router.map(function() {
     });
 
     // Infrastructure
-    this.resource('infrastructure-tab', {path: '/infra'}, function() {
-      this.resource('hosts', { path: '/hosts'}, function() {
+    this.route('infrastructure-tab', {path: '/infra', resetNamespace: true}, function() {
+      this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'}, function() {
-          this.route('amazonec2');
-          this.route('digitalocean');
-          this.route('exoscale');
-          this.route('openstack');
-          this.route('packet');
-          this.route('rackspace');
-          this.route('ubiquity');
-          this.route('other');
-          this.route('custom');
+          getDrivers().forEach((driver) => {
+            this.route(driver.name);
+          });
         });
 
-        this.resource('host', { path: '/:host_id' }, function() {
+        this.route('host', {path: '/:host_id', resetNamespace: true}, function() {
           this.route('containers');
           this.route('storage', {path: '/storage'});
           this.route('labels');
         });
       });
 
-      this.resource('containers', function() {
+      this.route('containers', {resetNamespace: true}, function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
 
-        this.resource('container', { path: '/:container_id' }, function() {
+        this.route('container', {path: '/:container_id', resetNamespace: true}, function() {
           this.route('edit');
           this.route('ports');
           this.route('volumes');
@@ -82,52 +74,52 @@ Router.map(function() {
         });
       });
 
-      this.resource('virtualmachines', {path: '/vms'}, function() {
+      this.route('virtualmachines', {path: '/vms', resetNamespace: true}, function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
 
-        this.resource('virtualmachine', { path: '/:virtualmachine_id' }, function() {
+        this.route('virtualmachine', {path: '/:virtualmachine_id', resetNamespace: true}, function() {
           this.route('labels');
         });
       });
 
-      this.resource('certificates', function() {
+      this.route('certificates', {resetNamespace: true}, function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
         this.route('detail', {path: '/:certificate_id'});
       });
 
-      this.resource('storagepools', function() {
+      this.route('storagepools', {resetNamespace: true}, function() {
         this.route('index', {path: '/'});
         this.route('detail', {path: '/:storagepool_id'});
       });
-      this.resource('storagepools.new-volume', {path: '/add-volume'});
+      this.route('storagepools.new-volume', {path: '/add-volume', resetNamespace: true});
 
-      this.resource('registries', { path: '/registries' }, function() {
+      this.route('registries', {path: '/registries', resetNamespace: true}, function() {
         this.route('new', { path: '/add' });
         this.route('index', {path: '/'});
       });
     });
 
     // Applications
-    this.resource('applications-tab', {path: '/apps'}, function() {
-      this.resource('splash', {path: '/welcome'});
-      this.resource('service.new', {path: '/add-service'});
-      this.resource('service.new-virtualmachine', {path: '/add-vm-service'});
-      this.resource('service.new-balancer', {path: '/add-balancer'});
-      this.resource('service.new-alias', {path: '/add-alias'});
-      this.resource('service.new-external', {path: '/add-external'});
-      this.resource('environments', {path: '/'}, function() {
+    this.route('applications-tab', {path: '/apps', resetNamespace: true}, function() {
+      this.route('splash', {path: '/welcome', resetNamespace: true});
+      this.route('service.new', {path: '/add-service', resetNamespace: true});
+      this.route('service.new-virtualmachine', {path: '/add-vm-service', resetNamespace: true});
+      this.route('service.new-balancer', {path: '/add-balancer', resetNamespace: true});
+      this.route('service.new-alias', {path: '/add-alias', resetNamespace: true});
+      this.route('service.new-external', {path: '/add-external', resetNamespace: true});
+      this.route('environments', {path: '/', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
 
-        this.resource('environment', {path: '/:environment_id'}, function() {
+        this.route('environment', {path: '/:environment_id', resetNamespace: true}, function() {
           this.route('index', {path: '/'});
           this.route('code', {path: '/code'});
           this.route('graph', {path: '/graph'});
           this.route('chart', {path: '/chart'});
 
-          this.resource('service', {path: '/services/:service_id'}, function() {
+          this.route('service', {path: '/services/:service_id', resetNamespace: true}, function() {
             this.route('containers');
             this.route('labels');
             this.route('ports');
@@ -155,8 +147,8 @@ Router.map(function() {
   this.modal('delete-confirmation', {
     dismissWithOutsideClick: false,
     dialogClass: 'small',
-    withParams: { 'confirmDeleteResources': 'resources' },
-    actions: { confirm: 'confirmDelete' }
+    withParams: {'confirmDeleteResources': 'resources'},
+    actions: {confirm: 'confirmDelete'}
   });
 
   this.modal('modal-about', {

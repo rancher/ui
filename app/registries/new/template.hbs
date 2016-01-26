@@ -2,17 +2,11 @@
   <h1>Add Registry</h1>
   {{top-errors errors=errors}}
 
-  <section class="row well">
-    <div class="col-sm-12">
-      <ul class="nav nav-boxes checked-active" id="providers">
-        {{#each drivers as |driver|}}
-          {{#if driver.available}}
-            <li class="{{if driver.active 'active'}}">
-              <a {{action "selectDriver" driver.name}} alt={{driver.label}} class="driver registry-driver {{driver.css}}"></a>
-            </li>
-          {{/if}}
-        {{/each}}
-      </ul>
+  <section class="well">
+    <div class="nav nav-boxes checked-active">
+      {{#each drivers as |driver|}}
+        <a {{action "selectDriver" driver.name}} alt={{driver.label}} class="nav-box-item driver registry-driver {{if driver.active 'active'}} {{driver.css}}"></a>
+      {{/each}}
     </div>
   </section>
 </section>

@@ -5,23 +5,15 @@
   </h1>
 </section>
 
-<section class="horizontal-form well">
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-xs-12">
-        <ul class="nav nav-boxes checked-active" id="providers">
-          {{#each drivers as |driver|}}
-            {{#if driver.available}}
-              {{#link-to driver.route tagName="li" href=false}}
-                <a href="#" alt="{{driver.label}}" class="driver machine-driver {{driver.css}}"></a>
-              {{/link-to}}
-            {{/if}}
-          {{/each}}
-        </ul>
-      </div>
+{{#if (gt drivers.length 1)}}
+  <section class="well">
+    <div class="nav nav-boxes checked-active">
+      {{#each drivers as |driver|}}
+        {{#link-to (concat "hosts.new." driver.name) alt=driver.label class=(concat "nav-box-item driver machine-driver " driver.css) href=false}}{{/link-to}}
+      {{/each}}
     </div>
-  </div>
-</section>
+  </section>
+{{/if}}
 
 <section>
   {{outlet}}

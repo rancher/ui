@@ -54,13 +54,4 @@ export default Ember.Controller.extend(NewHost, {
     {label: 'Northern Virginia (IAD)', value: 'IAD'},
     {label: 'Sydney (SYD)', value: 'SYD'},
   ],
-  validate: function() {
-    return this._super();
-  },
-
-  doneSaving: function() {
-    var out = this._super();
-    this.transitionToRoute('hosts');
-    return out;
-  },
 });

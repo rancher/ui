@@ -8,11 +8,11 @@
 
     <div class="row {{if isStep1 'form-group'}}">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="accessKey" class="form-control-static">Access Key</label>
+        <label class="form-control-static">Access Key</label>
       </div>
       <div class="col-sm-12 col-md-8">
         {{#if isStep1}}
-          {{input type="text" id="accessKey" classNames="form-control" placeholder="Your AWS access key" value=amazonec2Config.accessKey}}
+          {{input type="text" classNames="form-control" placeholder="Your AWS access key" value=amazonec2Config.accessKey}}
         {{else}}
           <div class="form-control-static">{{amazonec2Config.accessKey}}</div>
         {{/if}}
@@ -20,11 +20,11 @@
     </div>
     <div class="row {{if isStep1 'form-group'}}">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="secretKey" class="form-control-static">Secret Key</label>
+        <label class="form-control-static">Secret Key</label>
       </div>
       <div class="col-sm-12 col-md-8">
         {{#if isStep1}}
-          {{input type="password" id="secretKey" classNames="form-control" placeholder="Your AWS secret key" value=amazonec2Config.secretKey}}
+          {{input type="password" classNames="form-control" placeholder="Your AWS secret key" value=amazonec2Config.secretKey}}
         {{else}}
           <div class="form-control-static text-muted text-italic">Provided</div>
         {{/if}}
@@ -55,18 +55,15 @@
     </div>
     <div class="row {{if isStep3 'form-group'}}">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="selectedZone" class="form-control-static">Availability Zone</label>
+        <label class="form-control-static">Availability Zone</label>
       </div>
       <div class="col-sm-12 col-md-8">
         {{#if isStep3}}
-          {{view "select"
-            class="form-control"
-            id="selectedZone"
-            content=zoneChoices
-            value=selectedZone
-            optionLabelPath="content"
-            optionValuePath="content"
-          }}
+          <select class="form-control" onchange={{action (mut selectedZone) value="target.value"}}>
+            {{#each zoneChoices as |choice|}}
+              <option value={{choice}} selected={{eq selectedZone choice}}>{{choice}}</option>
+            {{/each}}
+          </select>
         {{else}}
           <div class="form-control-static">
             {{amazonec2Config.region}}{{amazonec2Config.zone}}
@@ -76,7 +73,7 @@
     </div>
     <div class="row {{if isStep3 'form-group'}}">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="subnet" class="form-control-static">VPC/Subnet</label>
+        <label class="form-control-static">VPC/Subnet</label>
       </div>
       <div class="col-sm-12 col-md-8">
         {{#if isStep3}}
@@ -127,7 +124,7 @@
 
     <div class="row {{if isStep5 'form-group'}}">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="securityGroup" class="form-control-static">Security Group</label>
+        <label class="form-control-static">Security Group</label>
       </div>
       <div class="col-sm-12 col-md-8">
         {{#if isStep5}}
@@ -146,21 +143,17 @@
 
           <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="custom"}} Custom: Choose an existing group{{#if isCustomSecurityGroup}}:{{/if}}</label></div>
           {{#if isCustomSecurityGroup}}
-            {{view "select"
-              class="form-control"
-              id="subnet"
-              content=allSecurityGroups
-              value=selectedSecurityGroup
-              optionLabelPath="content.name"
-              optionValuePath="content.name"
-            }}
+            <select class="form-control" onchange={{action (mut selectedSecurityGroup) value="target.value"}}>
+              {{#each allSecurityGroups as |choice|}}
+                <option value={{choice.name}} selected={{eq selectedSecurityGroup choice.name}}>{{choice.name}}</option>
+              {{/each}}
+            </select>
 
             <p style="margin: 10px 0 0 0;">For Rancher to work correctly your security group will need to allow traffic:</p>
             <ul>
               <li>From the rancher server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span></li>
               <li>From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
             </ul>
-            <p style="margin: 0;">Machine will automatically create this group if needed, but will <b>not</b> add these rules.</p>
           {{/if}}
         {{else}}
           <div class="form-control-static">
@@ -194,22 +187,21 @@
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="instanceType" class="form-control-static">Instance Type</label>
+        <label class="form-control-static">Instance Type</label>
       </div>
       <div class="col-sm-12 col-md-3">
-        {{view "select"
-          class="form-control"
-          id="instanceType"
-          content=instanceTypes
-          value=amazonec2Config.instanceType
-        }}
+        <select class="form-control" onchange={{action (mut amazonec2Config.instanceType) value="target.value"}}>
+          {{#each instanceTypes as |choice|}}
+            <option value={{choice}} selected={{eq amazonec2Config.instanceType choice}}>{{choice}}</option>
+          {{/each}}
+        </select>
       </div>
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="rootSize" class="form-control-static">Root Size</label>
+        <label class="form-control-static">Root Size</label>
       </div>
       <div class="col-sm-12 col-md-3">
         <div class="input-group">
-          {{input type="text" id="rootSize" classNames="form-control" placeholder="" value=amazonec2Config.rootSize}}
+          {{input type="text" classNames="form-control" placeholder="" value=amazonec2Config.rootSize}}
           <span class="input-group-addon">GB</span>
         </div>
       </div>
@@ -221,24 +213,24 @@
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="ami" class="form-control-static">AMI</label>
+        <label class="form-control-static">AMI</label>
       </div>
       <div class="col-sm-12 col-md-3">
-        {{input type="text" id="ami" classNames="form-control" placeholder="An Ubuntu AMI" value=amazonec2Config.ami}}
+        {{input type="text" classNames="form-control" placeholder="An Ubuntu AMI" value=amazonec2Config.ami}}
       </div>
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="sshUser" class="form-control-static">SSH User</label>
+        <label class="form-control-static">SSH User</label>
       </div>
       <div class="col-sm-12 col-md-3">
-        {{input type="text" id="sshUser" classNames="form-control" placeholder="e.g. ubuntu" value=amazonec2Config.sshUser}}
+        {{input type="text" classNames="form-control" placeholder="e.g. ubuntu" value=amazonec2Config.sshUser}}
       </div>
     </div>
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="iamInstanceProfile" class="form-control-static">IAM Profile</label>
+        <label class="form-control-static">IAM Profile</label>
       </div>
       <div class="col-sm-12 col-md-3">
-        {{input type="text" id="iamInstanceProfile" classNames="form-control" placeholder="" value=amazonec2Config.iamInstanceProfile}}
+        {{input type="text" classNames="form-control" placeholder="" value=amazonec2Config.iamInstanceProfile}}
       </div>
       <div class="col-sm-12 col-md-2 form-label">
         <label class="form-control-static">Private IP</label>
@@ -250,19 +242,7 @@
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
-      <span>Rancher</span>
-    </div>
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">Labels</label>
-      </div>
-      <div class="col-sm-12 col-md-8">
-        {{form-user-labels setLabels=(action 'setLabels')}}
-      </div>
-    </div>
-
-    {{form-engine-opts machine=model}}
+    {{partial "host/add-options"}}
   </div>
 
   {{partial "save-cancel"}}

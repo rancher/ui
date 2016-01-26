@@ -56,13 +56,11 @@
                 </td>
                 <td>{{member.displayType}}</td>
                 <td>
-                  {{view "select"
-                    class="form-control input-sm"
-                    content=roleOptions
-                    value=member.role
-                    optionValuePath="content.value"
-                    optionLabelPath="content.label"
-                  }}
+                  <select class="form-control input-sm" onchange={{action (mut member.role) value="target.value"}}>
+                    {{#each roleOptions as |choice|}}
+                      <option value={{choice.value}} selected={{eq member.role choice.value}}>{{choice.label}}</option>
+                    {{/each}}
+                  </select>
                 </td>
                 <td>
                   {{#if accessEnabled}}

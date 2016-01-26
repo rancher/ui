@@ -47,10 +47,4 @@ export default Ember.Controller.extend(NewHost, {
 
     return this._super();
   },
-
-  doneSaving() {
-    var out = this._super();
-    this.transitionToRoute('hosts');
-    return out;
-  },
 });

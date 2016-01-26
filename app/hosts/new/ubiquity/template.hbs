@@ -8,11 +8,11 @@
 
     <div class="row {{if isStep1 'form-group'}}">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="clientId" class="form-control-static">Reseller ID</label>
+        <label class="form-control-static">Reseller ID</label>
       </div>
       <div class="col-sm-12 col-md-8">
         {{#if isStep1}}
-          {{input type="text" id="clientId" classNames="form-control" placeholder="Your Ubiquity Hosting API Reseller ID" value=ubiquityConfig.clientId}}
+          {{input type="text" classNames="form-control" placeholder="Your Ubiquity Hosting API Reseller ID" value=ubiquityConfig.clientId}}
         {{else}}
           <div class="form-control-static">{{ubiquityConfig.clientId}}</div>
         {{/if}}
@@ -20,11 +20,11 @@
     </div>
     <div class="row {{if isStep1 'form-group'}}">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="apiUsername" class="form-control-static">Remote ID</label>
+        <label class="form-control-static">Remote ID</label>
       </div>
       <div class="col-sm-12 col-md-8">
         {{#if isStep1}}
-          {{input type="text" id="apiUsername" classNames="form-control" placeholder="Your Ubiquity Hosting Remote ID" value=ubiquityConfig.apiUsername}}
+          {{input type="text" classNames="form-control" placeholder="Your Ubiquity Hosting Remote ID" value=ubiquityConfig.apiUsername}}
         {{else}}
           <div class="form-control-static">{{ubiquityConfig.apiUsername}}</div>
         {{/if}}
@@ -32,11 +32,11 @@
     </div>
     <div class="row {{if isStep1 'form-group'}}">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="apiToken" class="form-control-static">Access Key</label>
+        <label class="form-control-static">Access Key</label>
       </div>
       <div class="col-sm-12 col-md-8">
         {{#if isStep1}}
-          {{input type="password" id="apiToken" classNames="form-control" placeholder="Your Ubiquity Hosting Access Key" value=ubiquityConfig.apiToken}}
+          {{input type="password" classNames="form-control" placeholder="Your Ubiquity Hosting Access Key" value=ubiquityConfig.apiToken}}
         {{else}}
           <div class="form-control-static text-muted text-italic">Provided</div>
         {{/if}}
@@ -74,62 +74,41 @@
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="zoneId" class="form-control-static">Region</label>
+        <label class="form-control-static">Region</label>
       </div>
       <div class="col-sm-12 col-md-8">
-        {{view "select"
-          class="form-control"
-          id="zoneId"
-          content=allZones
-          optionValuePath="content.id"
-          optionLabelPath="content.name"
-          value=ubiquityConfig.zoneId
-        }}
+        <select class="form-control" onchange={{action (mut ubiquityConfig.zoneId) value="target.value"}}>
+          {{#each allZones as |choice|}}
+            <option value={{choice.id}} selected={{eq ubiquityConfig.zoneId choice.id}}>{{choice.name}}</option>
+          {{/each}}
+        </select>
       </div>
     </div>
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="imageId" class="form-control-static">Image</label>
+        <label class="form-control-static">Image</label>
       </div>
       <div class="col-sm-12 col-md-3">
-        {{view "select"
-          class="form-control"
-          id="imageId"
-          content=allImages
-          optionValuePath="content.id"
-          optionLabelPath="content.name"
-          value=ubiquityConfig.imageId
-        }}
+        <select class="form-control" onchange={{action (mut ubiquityConfig.imageId) value="target.value"}}>
+          {{#each allImages as |choice|}}
+            <option value={{choice.id}} selected={{eq ubiquityConfig.imageId choice.id}}>{{choice.name}}</option>
+          {{/each}}
+        </select>
       </div>
       <div class="col-sm-12 col-md-2 form-label">
-        <label for="flavorId" class="form-control-static">Flavor</label>
+        <label class="form-control-static">Flavor</label>
       </div>
       <div class="col-sm-12 col-md-3">
-        {{view "select"
-          class="form-control"
-          id="flavorId"
-          content=allFlavors
-          optionValuePath="content.id"
-          optionLabelPath="content.name"
-          value=ubiquityConfig.flavorId
-        }}
+        <select class="form-control" onchange={{action (mut ubiquityConfig.flavorId) value="target.value"}}>
+          {{#each allFlavors as |choice|}}
+            <option value={{choice.id}} selected={{eq ubiquityConfig.flavorId choice.id}}>{{choice.name}}</option>
+          {{/each}}
+        </select>
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
-      <span>Rancher</span>
-    </div>
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">Labels</label>
-      </div>
-      <div class="col-sm-12 col-md-8">
-        {{form-user-labels setLabels=(action 'setLabels')}}
-      </div>
-    </div>
-
-    {{form-engine-opts machine=model}}
+    {{partial "host/add-options"}}
   </div>
   {{partial "save-cancel"}}
 </section>

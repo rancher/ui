@@ -4,11 +4,9 @@
   </div>
 
   <div class="col-sm-12 {{if isContainerNetwork 'col-md-3' 'col-md-8'}}">
-    {{view "select"
-      class="form-control"
+    {{new-select
+      classNames="form-control"
       content=networkChoices
-      optionLabelPath="content.label"
-      optionValuePath="content.value"
       value=instance.networkMode
     }}
   </div>
@@ -18,11 +16,11 @@
       <label class="form-control-static">Container</label>
     </div>
     <div class="col-sm-12 col-md-3">
-      {{view "select"
-        class="form-control"
+      {{new-select
+        classNames="form-control"
         content=containersOnRequestedHost
-        optionLabelPath="content.name"
-        optionValuePath="content.id"
+        optionLabelPath="name"
+        optionValuePath="id"
         optionGroupPath="group"
         value=instance.networkContainerId
       }}

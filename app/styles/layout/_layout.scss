@@ -611,9 +611,33 @@ TABLE.graphs {
 * Nav boxes (chooes a host/registry driver)
 **********/
 .nav-boxes {
-  & > LI.active > A {
-    border-color : $lightGrayDark;
-    border-width : 2px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  & > .nav-box-item {
+    width               : 100px;
+    min-height          : 100px;
+    flex                : 0 1 auto;
+    position            : relative;
+
+    opacity             : 0.5;
+    background-color    : $lightestGray;
+    border              : 2px solid $lightGrayDark;
+    border-radius       : 3px;
+    color               : #8a919c;
+    width               : 100px;
+    min-height          : 100px;
+    margin              : 20px 10px;
+    text-align          : center;
+    padding             : 0;
+
+    &.active {
+      opacity           : 1;
+      background-color  : white;
+      border-color      : $lightGrayDark;
+      border-width      : 2px;
+    }
   }
 
   .driver {
@@ -625,29 +649,29 @@ TABLE.graphs {
     -moz-filter         : grayscale(100%);
     -ms-filter          : grayscale(100%);
     -o-filter           : grayscale(100%);
-  }
 
-  .active .driver {
-    filter         : none;
-    -webkit-filter : none;
-    -moz-filter    : none;
-    -ms-filter     : none;
-    -o-filter      : none;
+    &.active {
+      filter         : none;
+      -webkit-filter : none;
+      -moz-filter    : none;
+      -ms-filter     : none;
+      -o-filter      : none;
+    }
   }
 
   &.checked-active .active:after {
     content          : $icon-check;
-    top              : 0;
-    right            : 0;
+    top              : -15px;
+    right            : -15px;
     font-family      : 'rancher-icons';
-    font-size        : 25px;
+    font-size        : 18px;
     position         : absolute;
-    background-color : $body-bg;
-    height: 30px;
-    width: 30px;
-    text-align: center;
+    background-color : $tealTwo;
+    height           : 29px;
+    width            : 29px;
+    line-height      : 30px;
     border-radius    : 50%;
-    color            : $tealTwo;
+    color            : white;
   }
 }
 
