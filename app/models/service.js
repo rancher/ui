@@ -314,6 +314,7 @@ var Service = Resource.extend({
     var healthyCount = 0;
     var initCount = 0;
     var startOnceCount = 0;
+    var instanceCount = instances.get('length');
     instances.forEach((instance) => {
       var resource = instance.get('relevantState');
       var health = instance.get('healthState');
@@ -340,7 +341,8 @@ var Service = Resource.extend({
     {
       return 'started-once';
     }
-    else if ( (isGlobal && healthyCount >= instances.get('length')) || (!isGlobal && healthyCount >= expectScale) )
+    else if (
+      (isGlobal && healthyCount >= instanceCount && instanceCount > 0) || (!isGlobal && healthyCount >= expectScale) )
     {
       return 'healthy';
     }
