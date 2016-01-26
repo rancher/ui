@@ -8,7 +8,7 @@ export default Ember.Component.extend(ManageLabels, FasterLinksAndMenus, Grouped
   mode: null,
 
   classNames: ['pod','host'],
-  classNameBindings: ['stateBorder','isMachine:machine-host'],
+  classNameBindings: ['isMachine:machine-host'],
 
   didInitAttrs() {
     this.initLabels(this.get('model.labels'));
@@ -35,7 +35,4 @@ export default Ember.Component.extend(ManageLabels, FasterLinksAndMenus, Grouped
     return this.get('model.stateColor').replace("text-","bg-");
   }.property('model.stateColor'),
 
-  stateBorder: function() {
-    return this.get('model.stateColor').replace("text-","border-top-");
-  }.property('model.stateColor'),
 });

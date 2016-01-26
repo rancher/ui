@@ -2,6 +2,17 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Mixin.create({
+
+  actions: {
+    toggleGroup: function(group) {
+      if (group.collapsed) {
+        Ember.set(group, 'collapsed', false);
+      } else {
+        Ember.set(group, 'collapsed', true);
+      }
+    },
+  },
+
   groupedInstances: function() {
     var groups = [];
 
@@ -87,6 +98,11 @@ export default Ember.Mixin.create({
     {
       groups.push(groups.shift());
     }
+
+    groups.forEach((group) => {
+      group.collapsed = true;
+    });
+
 
     return groups;
   }.property('model.instances.@each.{name,id}'),

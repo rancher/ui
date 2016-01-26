@@ -5,8 +5,7 @@ export default Ember.Component.extend({
   currentController: null,
   label: 'Add',
 
-  classNames: ['subpod','add-to-pod'],
-  classNameBindings: ['groupHasChildren:subpod-full-width:subpod-half-width'],
+  classNames: ['btn', 'btn-primary', 'add-to-pod'],
 
   click: function() {
     this.sendAction();

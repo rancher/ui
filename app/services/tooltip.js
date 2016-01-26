@@ -8,6 +8,7 @@ export default Ember.Service.extend({
   mouseLeaveTimer: null,
   requireClick: false,
   tooltipOpts: null,
+  openedViaContextClick: false,
 
   startTimer() {
     this.set('mouseLeaveTimer', Ember.run.later(() => {

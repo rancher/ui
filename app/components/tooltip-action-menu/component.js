@@ -2,12 +2,19 @@ import Ember from 'ember';
 import Tooltip from 'ui/mixins/tooltip';
 
 export default Ember.Component.extend(Tooltip, {
-  resourceActions: Ember.inject.service('resource-actions'),
+  resourceActions : Ember.inject.service('resource-actions'),
 
-  needs       : ['application'],
-  model       : Ember.computed.alias('tooltipService.tooltipOpts.model'),
-  actionsOpen : Ember.computed.alias('resourceActions.open'),
-  inTooltip   : false,
+  needs           : ['application'],
+  model           : Ember.computed.alias('tooltipService.tooltipOpts.model'),
+  actionsOpen     : Ember.computed.alias('resourceActions.open'),
+  inTooltip       : false,
+
+  setup: function() {
+    // Just so openChanged is ready to go, otherwise you have to chain on('init') on openChanged
+    // which because of the context menu click on container dot can cause some issues with checking
+    // flags and such. This was the least compliated way to ensure that openChanged would recognize changes
+    this.set('actionsOpen', false);
+  }.on('init'),
 
   mouseEnter: function() {
     this._super();

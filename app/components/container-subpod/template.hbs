@@ -1,27 +1,28 @@
-{{action-menu model=model showPrimary=false}}
-{{#if groupHasChildren}}
+<div class="container-subpod">
+  <div class="subpod-name">
+    {{container-dot model=model type='tooltip-basic' template='tooltip-select-dot'}}
+    {{#link-to (if model.isVm "virtualmachine" "container") model.id classNameBindings="showEllipsis:tiny-hellip"}}
+      {{displayName}}
+    {{/link-to}}
+  </div>
+  {{#if model.showTransitioningMessage}}
+    <div class="subpod-detail clip {{if model.isError 'text-danger'}}">
+      {{model.transitioningMessage}}
+    </div>
+  {{else}}
+    <div class="subpod-detail">
+      {{model.displayIp}}
+    </div>
+  {{/if}}
+  {{action-menu model=model showPrimary=false}}
+</div>
+{{#if children}}
 <div class="subpod-children clearfix">
-  <h6>Sidekicks</h6>
+  <h6 class="pull-left">Sidekicks</h6>
   {{#each children as |child|}}
     {{container-dot model=child type='tooltip-action-menu' template='tooltip-select-dot'}}
   {{else}}
     &nbsp;
   {{/each}}
 </div>
-{{/if}}
-
-<div class="subpod-name">
-  {{container-dot model=model type='tooltip-basic' template='tooltip-select-dot'}}
-  {{#link-to (if model.isVm "virtualmachine" "container") model.id classNameBindings="showEllipsis:tiny-hellip"}}
-    {{displayName}}
-  {{/link-to}}
-</div>
-{{#if model.showTransitioningMessage}}
-  <div class="subpod-detail clip {{if model.isError 'text-danger'}}">
-    {{model.transitioningMessage}}
-  </div>
-{{else}}
-  <div class="subpod-detail">
-    {{model.displayIp}}
-  </div>
 {{/if}}

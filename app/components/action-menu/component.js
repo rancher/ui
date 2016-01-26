@@ -1,10 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  model: null,
-  size: 'xs',
-  showPrimary: true,
-  inTooltip: false,
+  model       : null,
+  size        : 'xs',
+  showPrimary : true,
+  inTooltip   : false,
 
   resourceActions: Ember.inject.service('resource-actions'),
 
@@ -20,6 +20,8 @@ export default Ember.Component.extend({
 
       if (this.get('inTooltip')) {
         this.get('resourceActions').set('tooltipActions', true);
+      } else {
+        this.get('resourceActions').set('tooltipActions', false);
       }
 
       this.get('resourceActions').show(this.get('model'), more, this.$());

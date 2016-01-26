@@ -8,8 +8,8 @@ export default Ember.Component.extend(FasterLinksAndMenus, {
   groupHasChildren: false,
   stripProject: false,
 
-  classNames: ['subpod','instance','resource-action-hover'],
-  classNameBindings: ['model.isManaged:managed','groupHasChildren:subpod-full-width:subpod-half-width'],
+  classNames: ['subpod','instance'],
+  classNameBindings: ['model.isManaged:managed'],
 
   prefixLength: function() {
     var name = this.get('model.displayName');
