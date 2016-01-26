@@ -26,11 +26,6 @@ var C = {
       KIND_SYSTEM,
       KIND_SYSTEM_CATALOG,
     ],
-    NOT_USER_KINDS: [
-      KIND_SYSTEM,
-      KIND_SYSTEM_CATALOG,
-      KIND_KUBERNETES,
-    ],
     SYSTEM_CATEGORIES: [
       'Rancher services'
     ],
