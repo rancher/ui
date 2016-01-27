@@ -1,23 +1,24 @@
 /**********
  * Header (top bar)
  **********/
-$topHeight: ($header-height * 0.45);
-$bottomHeight: ($header-height * 0.55);
+$topHeight    : ($header-height * 0.45);
+$bottomHeight : ($header-height * 0.55);
 
 HEADER {
-  position: relative;
-  z-index: 5;
+  position : relative;
+  z-index  : 5;
 
   NAV {
-    &>A {
-      display: inline-block;
-      padding: 0 20px;
-      vertical-align: top;
-      font-weight: bold;
-      text-transform:uppercase;
-      border-bottom: 2px solid transparent;
-      color: rgba(255,255,255,.65);
-      font-size:13px;
+    &>A,
+    &>.link-admin > a{
+      display        : inline-block;
+      padding        : 0 20px;
+      vertical-align : top;
+      font-weight    : normal;
+      text-transform : uppercase;
+      border-bottom  : 2px solid transparent;
+      color          : $lightGray;
+      font-size      : 13px;
 
       &:hover {
         color: $lightTeal;
@@ -30,20 +31,20 @@ HEADER {
     min-height: $topHeight;
 
     .warning {
-      background-color: $redDark;
-      background-color: #c0392b;
-      height: 15px;
-      width: 15px;
-      border-radius: 50%;
-      position: absolute;
-      right: 4px;
-      top: 10px;
-      padding: 0;
-      line-height: 15px;
-      text-align: center;
-      font-weight: bold;
-      color: white;
-      box-shadow: 0 0 0 4px $top-row;
+      background-color : $redDark;
+      background-color : #c0392b;
+      height           : 15px;
+      width            : 15px;
+      border-radius    : 50%;
+      position         : absolute;
+      right            : 10px;
+      top              : 10px;
+      padding          : 0;
+      line-height      : 15px;
+      text-align       : center;
+      font-weight      : bold;
+      color            : white;
+      box-shadow       : 0 0 0 4px $top-row;
     }
 
     .dropdown {
@@ -125,29 +126,35 @@ HEADER {
 
 
     NAV {
-      float: left;
-      font-size: 14px;
+      float     : left;
+      font-size : 14px;
 
-      &>A {
-        height: $topHeight;
-        line-height: $topHeight;
-        position: relative;
+      .link-admin {
+        position : relative;
+      }
+
+      &>A,
+      &>.link-admin > a {
+        height      : $topHeight;
+        line-height : $topHeight;
+        position    : relative;
 
         &:hover {
           background: rgba(0,0,0,.15);
         }
-        &.active {
-          color: white;
-          font-weight: bold;
+        &.active,
+         {
+          color       : white;
+          font-weight : bold;
           &:after{
-            content: "";
-            border-width: 5px;
-            border-color: transparent;
-            border-bottom-color: $bottom-row;
-            border-style: solid;
-            position: absolute;
-            bottom: -2px;
-            left: 45%;
+            content             : "";
+            border-width        : 5px;
+            border-color        : transparent;
+            border-bottom-color : $bottom-row;
+            border-style        : solid;
+            position            : absolute;
+            bottom              : -2px;
+            left                : 45%;
           }
         }
       }
@@ -302,7 +309,7 @@ HEADER {
         height: $bottomHeight;
         line-height: $bottomHeight;
       }
-      
+
     } /*end nav*/
   }/*end bottom row*/
 

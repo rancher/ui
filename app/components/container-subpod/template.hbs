@@ -1,10 +1,9 @@
 {{action-menu model=model showPrimary=false}}
-
 {{#if groupHasChildren}}
 <div class="subpod-children clearfix">
   <h6>Sidekicks</h6>
   {{#each children as |child|}}
-    {{container-dot model=child}}
+    {{container-dot model=child type='tooltip-basic' template='tooltip-select-dot'}}
   {{else}}
     &nbsp;
   {{/each}}
@@ -12,7 +11,7 @@
 {{/if}}
 
 <div class="subpod-name">
-    <i class="{{model.stateIcon}} {{model.stateColor}}" tooltip="{{model.displayState}}"></i>
+  {{container-dot model=model type='tooltip-basic' template='tooltip-select-dot'}}
   {{#link-to (if model.isVm "virtualmachine" "container") model.id classNameBindings="showEllipsis:tiny-hellip"}}
     {{displayName}}
   {{/link-to}}

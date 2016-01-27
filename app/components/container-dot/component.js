@@ -1,27 +1,14 @@
 import Ember from 'ember';
-import { isAlternate, isMore } from 'ui/utils/platform';
 
 export default Ember.Component.extend({
-  resourceActions: Ember.inject.service('resource-actions'),
 
-  model: null,
-  tagName: 'I',
-
-  classNames: ['dot','hand'],
-  classNameBindings: ['model.stateColor','model.stateIcon'],
-  attributeBindings: ['tooltip'],
-
-  tooltip: Ember.computed.alias('model.displayName'),
+  model    : null,
+  tagName  : 'span',
+  type     : 'tooltip-action-menu',
+  template : null,
 
   click(event) {
-    if ( isAlternate(event) )
-    {
-      this.contextMenu(event);
-    }
-    else
-    {
       this.details(event);
-    }
   },
 
   details(/*event*/) {
@@ -32,15 +19,5 @@ export default Ember.Component.extend({
     }
 
     this.get('router').transitionTo(route, this.get('model.id'));
-  },
-
-  contextMenu(event) {
-    if ( isMore(event) )
-    {
-      return;
-    }
-
-    event.preventDefault();
-    this.get('resourceActions').show(this.get('model'), this.$());
   },
 });

@@ -29,4 +29,25 @@ export default Ember.Controller.extend({
 
     return out.sortBy('name','id');
   }.property('model.hosts.@each.{name,id,physicalHostId}','model.machines.@each.{name,id,isPending}'),
+
+  listLinkOptions: {
+    route: 'hosts',
+    options: {
+      mode: 'dot',
+    },
+  },
+
+  containerLinkOptions: {
+    route: 'hosts',
+    options: {
+      mode: 'list',
+    },
+  },
+
+  groupLinkOptions: {
+    route: 'hosts',
+    options: {
+      mode: 'grouped',
+    },
+  }
 });

@@ -5,11 +5,15 @@
       {{#link-to "applications-tab"}}Applications{{/link-to}}
       {{#link-to "infrastructure-tab"}}Infrastructure{{/link-to}}
       {{#if isAdmin}}
-        {{#link-to "admin-tab"}}Admin
+        <span class="link-admin">
+          {{#link-to "admin-tab"}}Admin
+          {{/link-to}}
           {{#if showAccessWarning}}
-            {{#link-to "admin-tab.auth" class="warning" data-toggle="tooltip" data-placement="bottom" title="Access not Configured" data-original-title="Access not Configured" tooltip="hey"}}!{{/link-to}}
+            {{#tooltip-element class="tooltip-warning" type='tooltip-warning'}}
+              {{#link-to "admin-tab.auth" data-toggle="tooltip" data-placement="bottom"}}!{{/link-to}}
+            {{/tooltip-element}}
           {{/if}}
-        {{/link-to}}
+        </span>
       {{/if}}
       {{#link-to "authenticated.apikeys"}}API{{/link-to}}
       {{#link-to "authenticated.help"}}Help{{/link-to}}

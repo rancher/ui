@@ -2,7 +2,9 @@
   <h1>{{#link-to "virtualmachines"}}Virtual Machine:{{/link-to}}</h1>
 
   {{#power-select options=model.vm.primaryHost.instances selected=model.vm onchange=(action "changeVirtualMachine") searchField="displayName" as |obj|}}
-    <div class="clip r-mr15"><i class="{{obj.stateIcon}} {{obj.stateColor}}" tooltip="{{obj.displayState}}" data-placement="left"></i> {{obj.displayName}}</div>
+    <div class="clip r-mr15">
+      {{select-dot model=obj}}
+    </div>
   {{/power-select}}
 
   {{#if model.vm.primaryHost}}

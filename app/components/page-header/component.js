@@ -59,10 +59,6 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    hideAccessWarning: function() {
-      this.set(`prefs.${C.PREFS.ACCESS_WARNING}`, false);
-    },
-
     showAbout() {
       this.sendAction('showAbout');
     },
