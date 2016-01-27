@@ -22,6 +22,14 @@ export default Ember.Route.extend({
     }
   },
 
+  actions: {
+    refresh: function() {
+      // Clear the cache so it has to ask the server again
+      this.set('cache', null);
+      this.refresh();
+    },
+  },
+
   catalogIds: null,
 
   deactivate() {
