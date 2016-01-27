@@ -1,24 +1,36 @@
 import Ember from 'ember';
 
+const DELAY = 100;
+
 export default Ember.Component.extend({
   tooltipService : Ember.inject.service('tooltip'),
   classNames     : ['inline-block'],
   model          : null,
   size           : 'default',
 
+  showTimer: null,
 
-  mouseEnter: function(evt) {
+  mouseEnter(evt) {
+    if ( !this.get('tooltipService.requireClick') )
+    {
+      var tgt = Ember.$(evt.currentTarget);
 
-    if (this.get('tooltipService.mouseLeaveTimer')) {
-      Ember.run.cancel(this.get('tooltipService.mouseLeaveTimer'));
+      // Wait for a little bit of time so that the mouse can pass through
+      // another tooltip-element on the way to the dropdown trigger of a
+      // tooltip-action-menu without changing the tooltip.
+      this.set('showTimer', Ember.run.later(() => {
+        this.show(tgt);
+      }, DELAY));
     }
+  },
 
-    var node           = Ember.$(evt.currentTarget);
-    var position       = node.offset();
+  show(node) {
+    this.set('showTimer', null);
+    this.get('tooltipService').cancelTimer();
 
     var out = {
       type          : this.get('type'),
-      eventPosition : position,
+      eventPosition : node.offset(),
       originalNode  : node,
       model         : this.get('model'),
       template      : this.get('tooltipTemplate'),
@@ -28,9 +40,13 @@ export default Ember.Component.extend({
   },
 
   mouseLeave: function() {
-    this.get('tooltipService').set('mouseLeaveTimer', Ember.run.later(() => {
-      this.get('tooltipService').set('tooltipOpts', null);
-    }, 100));
+    if ( this.get('showTimer') )
+    {
+      Ember.run.cancel(this.get('showTimer'));
+    }
+    else
+    {
+      this.get('tooltipService').leave();
+    }
   },
-
 });

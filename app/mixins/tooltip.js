@@ -8,9 +8,7 @@ export default Ember.Mixin.create(ThrottledResize, {
   tooltipService: Ember.inject.service('tooltip'),
 
   mouseEnter: function() {
-    if (this.get('tooltipService.mouseLeaveTimer')) {
-      Ember.run.cancel(this.get('tooltipService.mouseLeaveTimer'));
-    }
+    this.get('tooltipService').cancelTimer();
   },
   mouseLeave: function() {
     this.destroyTooltip();
@@ -30,14 +28,10 @@ export default Ember.Mixin.create(ThrottledResize, {
     var position      = this.positionTooltip(node, eventPosition);
 
     node.offset(position).addClass(position.placement).css('visibility', 'visible');
-
   },
 
   destroyTooltip: function() {
-    this.set('tooltipService.mouseLeaveTimer', Ember.run.later(() => {
-      this.get('tooltipService').set('tooltipOpts', null);
-    }, 100));
-
+    this.get('tooltipService').startTimer();
   },
 
   positionTooltip: function(node, position) {
@@ -50,25 +44,21 @@ export default Ember.Mixin.create(ThrottledResize, {
 
     if (nodeWidth >= position.left) {
       position.placement = 'left';
-
       position.top       = position.top + (originalNodeHeight/2) - (nodeHeight/2);
       position.left      = position.left + originalNodeWidth + 7;
 
     } else if (nodeWidth >= (windowWidth - position.left)) {
       position.placement = 'right';
-
       position.left      = position.left - nodeWidth - 7;
       position.top       = position.top + (originalNodeHeight/2) - (nodeHeight/2);
 
     } else if (nodeHeight >= position.top) {
       position.placement = 'bottom';
-
       position.top       = position.top +  originalNodeHeight + 7;
       position.left      = position.left + (originalNodeWidth/2) - (nodeWidth/2);
 
     } else {
       position.placement = 'top';
-
       position.top       = position.top -  (nodeHeight + 7);
       position.left      = position.left + (originalNodeWidth/2) - (nodeWidth/2);
 
