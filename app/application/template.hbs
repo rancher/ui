@@ -2,10 +2,31 @@
 <div id="underlay" class="underlay hide"></div>
 <div id="loading-underlay" class="underlay"></div>
 <div id="loading-overlay" class="loading-overlay">
-  <div class="loading-box">
-    <h3>Loading&hellip;</h3>
+
+  {{#if true}}
+    <div class="loader">
+      <div class="orbit">
+        <div class="sun"></div>
+        <div class="moon"></div>
+      </div>
+
+      <div class="loadfield">
+        <i class="cow icon icon-rancher-cow"></i>
+      </div>
+    </div>
+    
+  {{else}}
+
+   <div class="loader">
+    <div class="loader-inner ball-clip-rotate-pulse">
+      <div></div>
+      <div></div>
+    </div>
   </div>
+
+  {{/if}}
 </div>
+
 {{outlet "overlay"}}
 {{outlet "error"}}
 <div id="application">
@@ -26,8 +47,10 @@
         }}
       </li>
     {{/if}}
+
   {{else}}
     <li><a disabled="true">No actions available</a></li>
   {{/each}}
+
 </ul>
 {{component tooltip class="container-tooltip" id="tooltip-base"}}
