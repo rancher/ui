@@ -202,6 +202,23 @@ var Environment = Resource.extend({
   externalIdInfo: function() {
     return parseExternalId(this.get('externalId'));
   }.property('externalId'),
+
+  grouping: function() {
+    var kind = this.get('externalIdInfo.kind');
+
+    if ( kind === C.EXTERNALID.KIND_KUBERNETES )
+    {
+      return C.EXTERNALID.KIND_KUBERNETES;
+    }
+    else if ( C.EXTERNALID.SYSTEM_KINDS.indexOf(kind) >= 0 )
+    {
+      return C.EXTERNALID.KIND_SYSTEM;
+    }
+    else
+    {
+      return C.EXTERNALID.KIND_USER;
+    }
+  }.property('externalIdInfo.kind'),
 });
 
 Environment.reopenClass({

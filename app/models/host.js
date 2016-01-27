@@ -113,6 +113,10 @@ var Host = Resource.extend({
     return null;
   }.property('ipAddresses','ipAddresses.[]'),
 
+  displayName: function() {
+    return this.get('name') || this.get('hostname') || '('+this.get('id')+')';
+  }.property('name','hostname','id'),
+
   machine: function() {
     var phid = this.get('physicalHostId');
     if ( !phid )

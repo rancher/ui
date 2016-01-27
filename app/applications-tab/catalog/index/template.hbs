@@ -3,6 +3,20 @@
     Catalog
   </h1>
 
+  <div class="pull-right">
+    <button type="button" class="btn btn-default btn-sm" disabled={{eq updating 'yes'}} {{action "update"}}>
+      {{#if (eq updating "yes")}}
+        <i class="icon icon-spinner icon-spin"></i>
+      {{else}}
+        {{#if (eq updating "error")}}
+          <i class="icon icon-spinner icon-alert"></i>
+        {{else}}
+          <i class="icon icon-refresh"></i>
+        {{/if}}
+      {{/if}}
+    </button>
+  </div>
+
   {{#if showCatalogDropdown}}
     <div class="btn-group pull-right r-ml10">
       <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catalog: <span class="text-capitalize">{{selectedCatalog}}</span> <i class="icon icon-chevron-down"></i></button>

@@ -8,8 +8,7 @@ export default Ember.Controller.extend(Sortable, {
   sortableContent: Ember.computed.alias('filteredStacks'),
   prefs: Ember.inject.service(),
 
-  which: 'user',
-  queryParams: ['which'],
+  which: Ember.computed.alias('environments.which'),
   showAddtlInfo: false,
   selectedService: null,
 
@@ -43,21 +42,9 @@ export default Ember.Controller.extend(Sortable, {
     {
       return all;
     }
-    else if ( which === C.EXTERNALID.KIND_KUBERNETES )
-    {
-      return all.filterBy('externalIdInfo.kind', C.EXTERNALID.KIND_KUBERNETES);
-    }
-    else if ( which === C.EXTERNALID.KIND_SYSTEM )
-    {
-      return all.filter((obj) => {
-        return C.EXTERNALID.SYSTEM_KINDS.indexOf(obj.get('externalIdInfo.kind')) >= 0;
-      });
-    }
     else
     {
-      return all.filter((obj) => {
-        return C.EXTERNALID.NOT_USER_KINDS.indexOf(obj.get('externalIdInfo.kind')) === -1;
-      });
+      return all.filterBy('grouping', which);
     }
   }.property('model.[]','which'),
 

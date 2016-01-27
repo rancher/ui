@@ -12,12 +12,29 @@ export default Ember.Controller.extend({
   showCatalogDropdown: Ember.computed.gt('catalogIds.length',2),
 
   search: '',
+
+  updating: 'no',
+
   actions: {
-    launch: function(model) {
+    launch(model) {
       this.get('application').setProperties({
         launchCatalog: true,
         originalModel: model,
         environmentResource: null,
+      });
+    },
+
+    update() {
+      this.set('updating', 'yes');
+      this.get('store').request({
+        url: `${this.get('app.catalogEndpoint')}/templates?refresh&action=refresh`,
+        method: 'POST',
+        timeout: null, // I'm willing to wait...
+      }).then(() => {
+        this.set('updating', 'no');
+        this.send('refresh');
+      }).catch(() => {
+        this.set('updating', 'error');
       });
     }
   },
@@ -36,5 +53,5 @@ export default Ember.Controller.extend({
       }
     });
     return result;
-  }.property('model.catalog', 'search')
+  }.property('model.catalog', 'search'),
 });
