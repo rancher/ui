@@ -159,6 +159,7 @@ Router.map(function() {
 
   this.modal('modal-shell', {
     dismissWithOutsideClick: false,
+    dismissWithEscape: false,
     withParams: 'showShell',
     otherParams: 'originalModel',
     dialogClass: 'modal-shell',
@@ -166,6 +167,7 @@ Router.map(function() {
 
   this.modal('modal-console', {
     dismissWithOutsideClick: false,
+    dismissWithEscape: false,
     withParams: 'showConsole',
     otherParams: 'originalModel',
     dialogClass: 'modal-shell',
