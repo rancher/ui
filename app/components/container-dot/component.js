@@ -1,14 +1,15 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-
+  tooltipService: Ember.inject.service('tooltip'),
   model    : null,
   tagName  : 'span',
   type     : 'tooltip-action-menu',
   template : null,
 
   click(event) {
-      this.details(event);
+    this.details(event);
+    this.get('tooltipService').hide();
   },
 
   details(/*event*/) {

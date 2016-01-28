@@ -4,6 +4,7 @@ const DELAY = 100;
 
 export default Ember.Component.extend({
   tooltipService : Ember.inject.service('tooltip'),
+  scrolling      : Ember.inject.service('scrolling'),
   classNames     : ['inline-block'],
   model          : null,
   size           : 'default',
@@ -25,8 +26,10 @@ export default Ember.Component.extend({
   },
 
   show(node) {
+    var svc = this.get('tooltipService');
+
     this.set('showTimer', null);
-    this.get('tooltipService').cancelTimer();
+    svc.cancelTimer();
 
     var out = {
       type          : this.get('type'),
@@ -36,7 +39,12 @@ export default Ember.Component.extend({
       template      : this.get('tooltipTemplate'),
     };
 
-    this.get('tooltipService').set('tooltipOpts', out);
+    if ( !svc.get('tooltipOpts') )
+    {
+      this.get('scrolling').disable();
+    }
+
+    svc.set('tooltipOpts', out);
   },
 
   mouseLeave: function() {

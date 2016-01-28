@@ -54,6 +54,11 @@ var C = {
     ESCAPE: 27,
     CR: 13,
     LF: 10,
+    SPACE: 32,
+    PAGE_UP: 33,
+    PAGE_DOWN: 34,
+    HOME: 35,
+    END: 36,
   },
 
   LABEL: {
