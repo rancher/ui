@@ -6,25 +6,24 @@ export default Ember.Route.extend({
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
-    var dependencies = [
-      store.findAll('host'), // Need inactive ones in case a link points to an inactive host
-      this.get('allServices').choices(),
-    ];
+    var dependencies = {
+      allHosts: store.findAll('host'), // Need inactive ones in case a link points to an inactive host
+      allServices: this.get('allServices').choices(),
+      allStoragePools: store.findAllUnremoved('storagepool'),
+    };
 
     if ( params.serviceId )
     {
-      dependencies.pushObject(store.find('service', params.serviceId));
+      dependencies.service = store.find('service', params.serviceId);
     }
     else if ( params.virtualMachineId )
     {
-      dependencies.pushObject(store.find('virtualmachine', params.virtualMachineId, {include: ['ports']}));
+      dependencies.vm = store.find('virtualmachine', params.virtualMachineId, {include: ['ports']});
     }
 
-    return Ember.RSVP.all(dependencies, 'Load VM dependencies').then((results) => {
+    return Ember.RSVP.hash(dependencies, 'Load VM dependencies').then((results) => {
       var store = this.get('store');
-      var allHosts = results[0];
-      var allServices = results[1];
-      var serviceOrVm = results[2];
+      var serviceOrVm = results.service || results.vm;
       var serviceLinks = [];
       var secondaryLaunchConfigs = [];
 
@@ -32,8 +31,9 @@ export default Ember.Route.extend({
       {
         return Ember.Object.create({
           service: serviceOrVm.clone(),
-          allHosts: allHosts,
-          allServices: allServices,
+          allHosts: results.allHosts,
+          allServices: results.allServices,
+          allStoragePools: results.allStoragePools,
         });
       }
 
@@ -99,8 +99,9 @@ export default Ember.Route.extend({
 
       return Ember.Object.create({
         service: service,
-        allHosts: allHosts,
-        allServices: allServices,
+        allHosts: results.allHosts,
+        allServices: results.allServices,
+        allStoragePools: results.allStoragePools,
       });
     });
   },
