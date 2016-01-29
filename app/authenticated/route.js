@@ -106,7 +106,6 @@ export default Ember.Route.extend({
         $('BODY').addClass('no-spin');
       }
 
-
       return prefs;
     });
   },

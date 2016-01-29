@@ -123,8 +123,17 @@ export default Ember.Object.extend(Ember.Evented, {
     {
       // Don't use `ts` here, need the unrounded time to get accurate CPU usage
       var time_diff_ms = (tsFromString(data.timestamp) - tsFromString(prev.timestamp));
+
+      // Duplicate data point, ignore
+      if ( time_diff_ms === 0 )
+      {
+        return;
+      }
+
       var time_diff_ns = time_diff_ms*1e6;
       var time_diff_s = time_diff_ms/1000;
+
+      out.time_diff_ms = time_diff_ms;
 
       // CPU
       var count = 1;
