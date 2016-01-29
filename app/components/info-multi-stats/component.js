@@ -4,7 +4,6 @@ import { formatPercent, formatMib, formatKbps, pluralize } from 'ui/utils/util';
 
 const MAX_POINTS = 60;
 const TICK_COUNT = 6;
-const DATA_INTERVAL = 5;
 
 const GRADIENT_COLORS = [
   {
@@ -32,6 +31,8 @@ export default Ember.Component.extend({
   linkName: 'containerStats',
   single: true,
   showGraphs: true,
+
+  renderSeconds: null,
 
   statsSocket: null,
   available: Ember.computed.alias('statsSocket.available'),
@@ -61,10 +62,34 @@ export default Ember.Component.extend({
   renderOk: false,
   renderTimer: null,
 
+  didReceiveAttrs() {
+    if ( this.get('statsSocket') )
+    {
+      this.disconnect();
+      this.tearDown();
+    }
 
-  didInsertElement: function() {
+    this.connect();
+  },
+
+  willDestroyElement: function() {
     this._super();
+    this.disconnect();
+    this.tearDown();
+  },
 
+  onActiveChanged: function() {
+    if ( this.get('active') )
+    {
+      this.setUp();
+    }
+    else
+    {
+      this.tearDown();
+    }
+  }.observes('active'),
+
+  connect() {
     Ember.run.next(() => {
       try {
         var stats = MultiStatsSocket.create({
@@ -79,26 +104,13 @@ export default Ember.Component.extend({
     });
   },
 
-  willDestroyElement: function() {
-    this._super();
-    this.tearDown();
+  disconnect() {
     var stats = this.get('statsSocket');
     if ( stats )
     {
       stats.close();
     }
   },
-
-  onActiveChanged: function() {
-    if ( this.get('active') )
-    {
-      this.setUp();
-    }
-    else
-    {
-      this.tearDown();
-    }
-  }.observes('active'),
 
   setUp() {
     this.set('renderOk', false);
@@ -126,11 +138,23 @@ export default Ember.Component.extend({
     }
 
     this.setupMarkers();
-
-    clearInterval(this.get('renderTimer'));
-    // Give it a second for some data to come in...
-    this.set('renderTimer', setInterval(this.renderGraphs.bind(this), DATA_INTERVAL*1000));
+    this.startTimer();
   },
+
+  startTimer() {
+    clearInterval(this.get('renderTimer'));
+    var interval = this.get('renderSeconds');
+    if ( isNaN(interval) || interval < 1 )
+    {
+      interval = 1;
+    }
+
+    this.set('renderTimer', setInterval(this.renderGraphs.bind(this), interval*1000));
+  },
+
+  renderSecondsChanged: function() {
+    this.startTimer();
+  }.observes('renderSeconds'),
 
   setupMarkers: function() {
 
@@ -170,14 +194,39 @@ export default Ember.Component.extend({
       if ( obj )
       {
         obj.destroy();
-        this.set(key,null);
       }
+    });
+
+    this.setProperties({
+      cpuGraph: null,
+      memoryGraph: null,
+      storageGraph: null,
+      networkGraph: null,
+      cpuData: null,
+      memoryData: null,
+      storageData: null,
+      networkData: null,
+      setMemoryScale: false,
+      setCpuScale: false,
+      renderSeconds: null,
     });
   },
 
   onDataPoint(point) {
     var didSetCpuScale = false;
     var didSetMemoryScale = false;
+
+    if ( point.time_diff_ms )
+    {
+      var seconds = Math.max(1, Math.round(point.time_diff_ms/1000));
+      if ( this.get('renderSeconds') )
+      {
+        seconds = Math.min(seconds, this.get('renderSeconds'));
+      }
+
+      //console.log('point', point.time_diff_ms, seconds, this.get('renderSeconds'));
+      this.set('renderSeconds', seconds);
+    }
 
     // CPU
     var row;
@@ -321,7 +370,7 @@ export default Ember.Component.extend({
       tooltip: {
         show: true,
         format: {
-          title: formatSecondsAgo,
+          title: formatSecondsAgo.bind(this),
           name: formatKey.bind(this,single,store),
           value: formatPercent,
         }
@@ -385,7 +434,7 @@ export default Ember.Component.extend({
       tooltip: {
         show: true,
         format: {
-          title: formatSecondsAgo,
+          title: formatSecondsAgo.bind(this),
           name: formatKey.bind(this,single,store),
           value: formatMib,
         }
@@ -450,7 +499,7 @@ export default Ember.Component.extend({
       tooltip: {
         show: true,
         format: {
-          title: formatSecondsAgo,
+          title: formatSecondsAgo.bind(this),
           name: formatKey.bind(this,single,store),
           value: formatKbps,
         },
@@ -517,7 +566,7 @@ export default Ember.Component.extend({
       tooltip: {
         show: true,
         format: {
-          title: formatSecondsAgo,
+          title: formatSecondsAgo.bind(this),
           name: formatKey.bind(this,single,store),
           value: formatKbps,
         },
@@ -592,7 +641,7 @@ function getOrCreateDataRow(graph, data, key) {
 }
 
 function formatSecondsAgo(d) {
-  var ago = Math.max(0,MAX_POINTS - d - 1) * DATA_INTERVAL;
+  var ago = Math.max(0,MAX_POINTS - d - 1) * this.get('renderSeconds');
   if ( ago === 0 )
   {
     return 'Now';

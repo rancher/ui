@@ -6,7 +6,7 @@ export default Ember.Service.extend({
     return UnremovedArrayProxy.create({
       sourceContent: this.get('store').all('userpreference')
     });
-  }.property(),
+  }.property('store.generation'),
 
   findByName: function(key) {
     return this.get('unremoved').filterBy('name',key)[0];
