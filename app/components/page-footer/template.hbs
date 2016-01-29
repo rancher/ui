@@ -1,11 +1,9 @@
-{{#if settings.rancherVersion}}
-	<a href="#" {{action "showAbout"}} aria-label="About Rancher">{{settings.rancherVersion}}</a>
-{{/if}}
+<a href="#" class="btn btn-sm btn-link" {{action "showAbout"}} aria-label="About Rancher">{{if settings.rancherVersion settings.rancherVersion '(Not a Release)'}}</a>
 
 {{#if helpEnabled}}
   <a class="btn btn-sm btn-link" target="blank" href="http://docs.rancher.com/rancher/">Documentation</a>
   <a class="btn btn-sm btn-link" target="blank" href="http://docs.rancher.com/rancher/faqs/">FAQs</a>
-  <a class="btn btn-sm btn-link" target="blank" href="https://github.com/rancher/rancher/issues">File an Issue</a>
+  <a class="btn btn-sm btn-link" target="blank" href="https://github.com/rancher/rancher/issues/new?body={{issueBody}}">File an Issue</a>
   <a class="btn btn-sm btn-link" target="blank" href="http://forums.rancher.com/">Forums</a>
 {{/if}}
 <div class="pull-right">

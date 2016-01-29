@@ -78,6 +78,7 @@
     {{form-ports
       initialPorts=launchConfig.ports
       errors=portErrors
+      changedStr=(action (mut launchConfig.ports))
       portsAsStrArray=launchConfig.ports
     }}
 
@@ -151,6 +152,7 @@
             instance=launchConfig
             errors=networkingErrors
             allHosts=allHosts
+            service=service
             isService=isService
             initialLabels=launchConfig.labels
             setLabels=(action 'setLabels' 'networking')
@@ -209,6 +211,7 @@
         launchConfigIndex=index
         allHosts=allHosts
         allServices=allServices
+        allStoragePools=allStoragePools
       }}
     </div>
   {{/each}}

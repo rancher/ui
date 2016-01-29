@@ -32,8 +32,13 @@ export default Ember.Route.extend({
           });
         }
 
+        if ( !data.environment )
+        {
+          data.environment = {};
+        }
+
         healthCheckData = data.healthCheck;
-        delete  data.healthCheck;
+        delete data.healthCheck;
       }
       else
       {

@@ -39,6 +39,17 @@
       <p class="help-block">Request a specific IP in the 10.42.0.0/16 block.  If the IP is already in use a random one will be assigned.</p>
     </div>
   </div>
+  {{#if isService}}
+    <div class="row">
+      <div class="col-sm-12 col-md-2 form-label">
+        <label class="form-control-static">Retain IP</label>
+      </div>
+
+      <div class="col-sm-12 col-md-8">
+        <label class="form-control-static">{{input type="checkbox" checked=service.retainIp}} Reuse IP addresses when upgrading or replacing unhealthy instances.</label>
+      </div>
+    </div>
+  {{/if}}
 {{else}}
   {{#if isHostNetwork}}
     <div class="row form-group">
