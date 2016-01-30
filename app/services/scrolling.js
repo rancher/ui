@@ -44,14 +44,20 @@ export default Ember.Service.extend({
   },
 
   _disable() {
-    window.onwheel = cancel;
-    window.ontouchmove = cancel;
-    document.onkeydown = cancelKey;
+    if ( false ) // Disable this for now...
+    {
+      window.onwheel = cancel;
+      window.ontouchmove = cancel;
+      document.onkeydown = cancelKey;
+    }
   },
 
   _enable() {
-    window.onwheel = null;
-    window.ontouchmove = null;
-    document.onkeydown = null;
+    if ( false ) // Disable this for now...
+    {
+      window.onwheel = null;
+      window.ontouchmove = null;
+      document.onkeydown = null;
+    }
   }
 });
