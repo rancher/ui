@@ -10,8 +10,9 @@ export function denormalizeName(str) {
 }
 
 export default Ember.Service.extend(Ember.Evented, {
-  all: null,
+  access: Ember.inject.service(),
 
+  all: null,
   promiseCount: 0,
 
   init() {
@@ -96,6 +97,26 @@ export default Ember.Service.extend(Ember.Evented, {
   uiVersion: function() {
     return 'v' + this.get('app.version');
   }.property('app.version'),
+
+  issueBody: function() {
+    var str = '*Describe your issue here*\n\n\n---\n| Useful | Info |\n| :-- | :-- |\n' +
+      `|Versions|Rancher \`${this.get('rancherVersion')||'-'}\` ` +
+        `Cattle: \`${this.get('cattleVersion')||'-'}\` ` +
+        `UI: \`${this.get('uiVersion')||'--'}\` |\n`;
+
+      if ( this.get('access.enabled') )
+      {
+        str += `|Access|\`${this.get('access.provider').replace(/config/,'')}\` ${this.get('access.admin') ? '\`admin\`' : ''}|\n`;
+      }
+      else
+      {
+        str += '|Access|`Disabled`}|\n';
+      }
+
+      str += `|Route|\`${this.get('application.currentRouteName')}\`|\n`;
+
+    return encodeURIComponent(str);
+  }.property(),
 
   rancherVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_RANCHER}.value`),
   composeVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_COMPOSE}.value`),
