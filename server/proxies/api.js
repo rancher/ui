@@ -24,6 +24,7 @@ module.exports = function(app, options) {
   app.use(apiPath, function(req, res, next) {
     // include root path in proxied request
     req.url = path.join(apiPath, req.url);
+    req.headers['X-Forwarded-Proto'] = req.protocol;
 
     console.log('API Proxy', req.method, 'to', req.url);
     proxy.web(req, res);
