@@ -15,6 +15,9 @@ module.exports = function(app, options) {
 
   httpServer.on('upgrade', function proxyWsRequest(req, socket, head) {
     console.log('WS Proxy', req.method, 'to', req.url);
+    if ( socket.ssl ) {
+      req.headers['X-Forwarded-Proto'] = 'https';
+    }
     proxy.ws(req, socket, head);
   });
 
