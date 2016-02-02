@@ -15,14 +15,8 @@ export default Ember.Controller.extend({
 
   actions: {
 
-    setActiveCatalog: function(value) {
-      var out = [];
-      Object.keys(value).forEach((item) => {
-        if (item) {
-          out.push(`${item}=${value[item]}`);
-        }
-      });
-      this.get('model').set('catalog', out.join(','));
+    setCatalog: function(value) {
+      this.get('model').set('catalog', value);
     },
 
     save: function() {
