@@ -23,7 +23,7 @@ export default Ember.Route.extend({
       var allCertificates = results[2];
       var existing = results[3];
 
-      var launchConfig, lbConfig, balancer, appCookie, lbCookie, haproxyConfig;
+      var launchConfig, lbConfig, balancer, lbCookie, haproxyConfig;
       if ( existing )
       {
         balancer = existing.cloneForNew();
@@ -42,14 +42,6 @@ export default Ember.Route.extend({
           delete lbConfig.id;
           lbConfig = store.createRecord(lbConfig);
           balancer.set('loadBalancerConfig', lbConfig);
-
-          appCookie = lbConfig.get('appCookieStickinessPolicy');
-          if ( appCookie )
-          {
-            appCookie.set('type','loadBalancerAppCookieStickinessPolicy');
-            appCookie = store.createRecord(appCookie);
-            lbConfig.set('appCookieStickinessPolicy', appCookie);
-          }
 
           lbCookie = lbConfig.get('lbCookieStickinessPolicy');
           if ( lbCookie )
