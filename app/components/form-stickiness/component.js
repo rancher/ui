@@ -5,11 +5,9 @@ export default Ember.Component.extend({
   hasHttpListeners: null,
 
   lbCookie: null,
-  appCookie: null,
   stickiness: 'none',
   isStickyNone: Ember.computed.equal('stickiness','none'),
   isStickyLbCookie: Ember.computed.equal('stickiness','lbCookie'),
-  isStickyAppCookie: Ember.computed.equal('stickiness','appCookie'),
 
   lbCookieModeChoices: [
     {value: 'rewrite', label: 'Rewrite'},
@@ -17,35 +15,13 @@ export default Ember.Component.extend({
     {value: 'prefix', label: 'Prefix'},
   ],
 
-  appCookieModeChoices: [
-    {value: 'path_parameters', label: 'Path Parameter'},
-    {value: 'query_string', label: 'Query String'},
-  ],
-
   didInitAttrs: function() {
-    var appCookie = this.get('config.appCookieStickinessPolicy');
     var lbCookie  = this.get('config.lbCookieStickinessPolicy');
     var stickiness = 'none';
 
-    if ( appCookie )
-    {
-      stickiness = 'appCookie';
-    }
-    else if ( lbCookie )
+    if ( lbCookie )
     {
       stickiness = 'lbCookie';
-    }
-
-    if ( !appCookie )
-    {
-      appCookie = this.get('store').createRecord({
-        type: 'loadBalancerAppCookieStickinessPolicy',
-        mode: 'path_parameters',
-        requestLearn: true,
-        prefix: false,
-        timeout: 3600000,
-        maxLength: 1024,
-      });
     }
 
     if ( !lbCookie )
@@ -56,7 +32,6 @@ export default Ember.Component.extend({
     }
 
     this.setProperties({
-      appCookie: appCookie,
       lbCookie: lbCookie,
       stickiness: stickiness,
     });
@@ -67,17 +42,10 @@ export default Ember.Component.extend({
     if ( stickiness === 'none' )
     {
       this.set('config.lbCookieStickinessPolicy', null);
-      this.set('config.appCookieStickinessPolicy', null);
     }
     else if ( stickiness === 'lbCookie' )
     {
       this.set('config.lbCookieStickinessPolicy', this.get('lbCookie'));
-      this.set('config.appCookieStickinessPolicy', null);
-    }
-    else if ( stickiness === 'appCookie' )
-    {
-      this.set('config.lbCookieStickinessPolicy', null);
-      this.set('config.appCookieStickinessPolicy', this.get('appCookie'));
     }
   }.observes('stickiness'),
 });

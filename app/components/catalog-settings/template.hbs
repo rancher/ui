@@ -1,12 +1,51 @@
 <h4>Catalog</h4>
+<h5>Catalogs contain rancher-compose templates that allow users to easily deploy applications by answering a few questions</h5>
+
 <hr>
-<h5>The catalog can retrieve templates from multiple sources.  Each one needs a unique name and any URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> for more info).</h5>
-<div class="">
-  {{form-key-value
-    nameLabel="Catalog URL"
-    initialMap=keymap
-    keyLabel="Catalog Name"
-    valueLabel="Catalog URL"
-    changed=(action (mut keymap))
-  }}
+
+<div class="row">
+  <div class="col-md-6">
+    <h5>{{if helpEnabled 'Rancher' 'Official'}} Library</h5>
+    <p class="help-block">
+      {{#if helpEnabled}}
+        Official templates maintained and supported by Rancher Labs.
+      {{else}}
+        Officially maintained and supported templates.
+      {{/if}}
+    </p>
+    <div class="form-control-static">
+      <label class="r-mr20 hand">
+        {{radio-button selection=enableLibrary value=true}} Enabled
+      </label>
+      <label class="hand">
+        {{radio-button selection=enableLibrary value=false}} Disabled
+      </label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <h5>Community Contributed</h5>
+    <p class="help-block">
+      Templates created by community members.{{#if helpEnabled}}  Not maintained or supported by Rancher Labs.{{/if}}
+    </p>
+    <div class="form-control-static">
+      <label class="r-mr20 hand">
+        {{radio-button selection=enableCommunity value=true}} Enabled
+      </label>
+      <label class="hand">
+        {{radio-button selection=enableCommunity value=false}} Disabled
+      </label>
+    </div>
+  </div>
 </div>
+
+<hr>
+
+<h5>Custom</h5>
+<p class="help-block">You can load your own custom catalog repositories here.  Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> for more info).</p>
+{{form-key-value
+  nameLabel="Custom URL"
+  initialMap=keymap
+  keyLabel="Name"
+  valueLabel="URL"
+  changed=(action (mut keymap))
+}}

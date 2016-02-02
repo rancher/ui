@@ -32,6 +32,13 @@ var C = {
     CATALOG_DEFAULT_GROUP: 'library',
   },
 
+  CATALOG: {
+    LIBRARY_KEY: 'library',
+    LIBRARY_VALUE: 'https://github.com/rancher/rancher-catalog.git',
+    COMMUNITY_KEY: 'community',
+    COMMUNITY_VALUE: 'https://github.com/rancher/community-catalog.git',
+  },
+
   GITHUB: {
     DEFAULT_HOSTNAME: 'github.com',
     AUTH_PATH: '/login/oauth/authorize',

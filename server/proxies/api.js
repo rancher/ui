@@ -38,6 +38,7 @@ module.exports = function(app, options) {
   var server = config.catalogServer || config.apiServer;
   console.log('Proxying Catalog to', server);
   app.use(catalogPath, function(req, res, next) {
+    req.headers['X-Forwarded-Proto'] = req.protocol;
     var catalogProxy = HttpProxy.createProxyServer({
       xfwd: false,
       target: server
