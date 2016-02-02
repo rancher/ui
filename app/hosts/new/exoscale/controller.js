@@ -132,7 +132,7 @@ export default Ember.Controller.extend(NewHost, {
       this.set('step', 4);
       this.apiRequest('createSecurityGroup', {
         name: this.get('defaultSecurityGroupName'),
-        description: 'Rancher default security group'
+        description: this.get('settings.appName') + ' default security group'
       }).then((res) => {
         return async.eachSeries(RANCHER_INGRESS_RULES, (item, cb) => {
           item.securitygroupid = res.createsecuritygroupresponse.securitygroup.id;

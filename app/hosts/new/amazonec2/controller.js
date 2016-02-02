@@ -243,7 +243,7 @@ export default Ember.Controller.extend(NewHost, {
         {
           ec2.createSecurityGroup({
             GroupName: this.get('defaultSecurityGroupName'),
-            Description: 'Rancher default security group',
+            Description: `${this.get('settings.appName')} default security group`,
             VpcId: this.get('amazonec2Config.vpcId'),
           }, function(err, data) {
             if ( err )

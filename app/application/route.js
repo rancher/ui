@@ -12,15 +12,20 @@ export default Ember.Route.extend({
   actions: {
     loading(transition/*, originRoute*/) {
       //console.log('Loading action...');
-      $('#loading-underlay').show().fadeIn({duration: 100, queue: false, easing: 'linear', complete: function() {
-        $('#loading-overlay').show().fadeIn({duration: 200, queue: false, easing: 'linear'});
-      }});
+      var show = Ember.run.next(() => {
+        $('#loading-underlay').show().fadeIn({duration: 100, queue: false, easing: 'linear', complete: function() {
+          $('#loading-overlay').show().fadeIn({duration: 200, queue: false, easing: 'linear'});
+        }});
+      });
 
       transition.finally(function() {
-        //console.log('Loading action done...');
-        $('#loading-underlay').fadeOut({duration: 100, queue: false, easing: 'linear', complete: function() {
-          $('#loading-overlay').fadeOut({duration: 200, queue: false, easing: 'linear'});
-        }});
+        Ember.run.cancel(show);
+        Ember.run.next(() => {
+          //console.log('Loading action done...');
+          $('#loading-underlay').fadeOut({duration: 100, queue: false, easing: 'linear', complete: function() {
+            $('#loading-overlay').fadeOut({duration: 200, queue: false, easing: 'linear'});
+          }});
+        });
       });
 
       return true;

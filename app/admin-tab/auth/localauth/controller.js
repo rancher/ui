@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   access: Ember.inject.service(),
+  settings: Ember.inject.service(),
 
   confirmDisable: false,
   errors: null,

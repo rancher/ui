@@ -11,6 +11,7 @@ export function denormalizeName(str) {
 
 export default Ember.Service.extend(Ember.Evented, {
   access: Ember.inject.service(),
+  cookies: Ember.inject.service(),
 
   all: null,
   promiseCount: 0,
@@ -125,7 +126,23 @@ export default Ember.Service.extend(Ember.Evented, {
   goMachineVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_GMS}.value`),
 
   hasVm: Ember.computed.equal(`asMap.${C.SETTING.VM_ENABLED}.value`, 'true'),
-  helpEnabled: function() {
-    return this.get(`asMap.${C.SETTING.HELP_ENABLED}.value`) !== 'false';
-  }.property(`asMap.${C.SETTING.HELP_ENABLED}.value`),
+
+  _plValue: function() {
+    return this.get(`cookies.${C.COOKIE.PL}`) || '';
+  }.property(`cookies.${C.COOKIE.PL}`),
+
+  isPrivateLabel: function() {
+    return this.get('_plValue') !== C.COOKIE.PL_RANCHER_VALUE;
+  }.property('_plValue'),
+
+  appName: function() {
+    if ( this.get('isPrivateLabel') )
+    {
+      return this.get('_plValue');
+    }
+    else
+    {
+      return this.get('app.appName'); // Rancher
+    }
+  }.property('isPrivateLabel','_plValue'),
 });

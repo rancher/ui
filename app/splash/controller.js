@@ -1,7 +1,10 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   application: Ember.inject.controller(),
+  settings: Ember.inject.service(),
+  docsBase: C.EXT_REFERENCES.DOCS,
 
   thingsChanged: function() {
     console.log(this.get('application.currentRouteName'),this.get('model.hosts.length'),this.get('model.services.length'));

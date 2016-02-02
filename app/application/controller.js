@@ -1,6 +1,8 @@
 import Ember from "ember";
 
 export default Ember.Controller.extend({
+  settings: Ember.inject.service(),
+
   // GitHub auth params
   queryParams     : ['error_description','state','code','isTest'],
 

@@ -1,6 +1,8 @@
-<div class="logo-text">
-  <div class="parachute"></div>
-</div>
+{{#unless settings.isPrivateLabel}}
+  <div class="logo-text">
+    <div class="parachute"></div>
+  </div>
+{{/unless}}
 
 <table align="center" class="fixed">
   <tr>
@@ -10,7 +12,7 @@
 
   {{#if settings.rancherVersion}}
     <tr>
-      <td><a href="https://github.com/rancher/rancher" target="_blank">Rancher</a></td>
+      <td><a href="https://github.com/rancher/rancher" target="_blank">{{settings.appName}}</a></td>
       <td>{{settings.rancherVersion}}</td>
     </tr>
   {{/if}}
@@ -28,7 +30,7 @@
   {{/if}}
   {{#if settings.composeVersion}}
     <tr>
-      <td><a href="https://github.com/rancher/rancher-compose" target="_blank">Rancher Compose</a></td>
+      <td><a href="https://github.com/rancher/rancher-compose" target="_blank">{{settings.appName}} Compose</a></td>
       <td>{{settings.composeVersion}}</td>
     </tr>
   {{/if}}

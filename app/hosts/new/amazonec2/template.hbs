@@ -137,8 +137,8 @@
             {{/if}}
           </label></div>
 
-          {{#unless isCustomSecurityGroup}}
-            <p class="help-block"><a href="http://docs.rancher.com/rancher/rancher-ui/infrastructure/hosts/amazon/#EC2Ports" target="_blank">Learn more</a> about the ports that will be opened.</p>
+          {{#unless (or settings.isPrivateLabel isCustomSecurityGroup)}}
+            <p class="help-block"><a href="{{docsBase}}/rancher-ui/infrastructure/hosts/amazon/#EC2Ports" target="_blank">Learn more</a> about the ports that will be opened.</p>
           {{/unless}}
 
           <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="custom"}} Custom: Choose an existing group{{#if isCustomSecurityGroup}}:{{/if}}</label></div>
@@ -149,9 +149,9 @@
               {{/each}}
             </select>
 
-            <p style="margin: 10px 0 0 0;">For Rancher to work correctly your security group will need to allow traffic:</p>
+            <p style="margin: 10px 0 0 0;">For {{settings.appName}} to work correctly your security group will need to allow traffic:</p>
             <ul>
-              <li>From the rancher server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span></li>
+              <li>From the {{settings.appName}} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span></li>
               <li>From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
             </ul>
           {{/if}}

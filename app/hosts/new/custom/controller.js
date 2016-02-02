@@ -3,6 +3,8 @@ import ManageLabels from 'ui/mixins/manage-labels';
 import Util from 'ui/utils/util';
 
 export default Ember.Controller.extend(ManageLabels, {
+  settings: Ember.inject.service(),
+
   actions: {
     setLabels(labels) {
       var out = {};
