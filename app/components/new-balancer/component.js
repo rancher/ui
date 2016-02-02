@@ -4,6 +4,8 @@ import SelectTab from 'ui/mixins/select-tab';
 import { debouncedObserver } from 'ui/utils/debounce';
 
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
+  settings: Ember.inject.service(),
+
   isStandalone: true,
   service: null,
   existing: null,

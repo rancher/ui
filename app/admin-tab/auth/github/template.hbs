@@ -5,12 +5,12 @@
   <div>
     {{#if access.enabled}}
       {{#if wasRestricted}}
-        Rancher is configured to restrict access to {{wasRestrictedMsg}}.
+        {{settings.appName}} is configured to restrict access to {{wasRestrictedMsg}}.
       {{else}}
-        Rancher is configured to allow access to any GitHub{{#if model.hostname}} Enterprise{{/if}} user.
+        {{settings.appName}} is configured to allow access to any GitHub{{#if model.hostname}} Enterprise{{/if}} user.
       {{/if}}
     {{else}}
-      Rancher can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.
+      {{settings.appName}} can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.
     {{/if}}
   </div>
 </section>
@@ -29,7 +29,7 @@
     <h4>Site Access</h4>
     {{#if showingAccessControl}}
       <p class="help-block">
-        Configure who should be allowed to log in and user Rancher.  <b>Note:</b> Members added to environments are automatically allowed.
+        Configure who should be allowed to log in and use {{settings.appName}}.  <b>Note:</b> Members added to environments are automatically allowed.
       </p>
       <hr/>
 
@@ -80,7 +80,7 @@
       </button>
     {{else}}
       <p class="help-block">
-        By default, only users that are a member of a environment are allowed to log in and access Rancher.
+        By default, only users that are a member of a environment are allowed to log in and access {{settings.appName}}.
       </p>
       <button class="btn btn-primary" {{action "showAccessControl"}}>Customize</button>
     {{/if}}
@@ -91,7 +91,7 @@
     <hr/>
 
     <p>
-      <b class="text-danger">Caution:</b> Disabling access control will give complete control over Rancher to anyone that can reach this page or the API.
+      <b class="text-danger">Caution:</b> Disabling access control will give complete control over {{settings.appName}} to anyone that can reach this page or the API.
     </p>
 
     {{#if confirmDisable}}
@@ -122,7 +122,7 @@
         <li>
           Click &quot;Register new application&quot; and fill out the form:
           <ul>
-            <li><b>Application name:</b> <span class="text-muted">Anything you like, e.g. My Rancher</span></li>
+            <li><b>Application name:</b> <span class="text-muted">Anything you like, e.g. My {{settings.appName}}</span></li>
             <li>
               <b>Homepage URL:&nbsp;</b> <span>{{destinationUrl}} {{zero-clipboard text=destinationUrl}}</span>
             </li>
@@ -136,7 +136,7 @@
   </section>
 
   <section class="well">
-    <h4>2. Configure Rancher to use your application for authentication</h4>
+    <h4>2. Configure {{settings.appName}} to use your application for authentication</h4>
     <hr/>
     <p>Copy and paste the Client ID and Secret from the upper-right corner of your newly-created application.</p>
     <div class="row">

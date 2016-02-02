@@ -11,7 +11,6 @@ export default Ember.Controller.extend({
   companyLink: C.EXT_REFERENCES.COMPANY,
   githubLink: C.EXT_REFERENCES.GITHUB,
   docsLink: C.EXT_REFERENCES.DOCS,
-  helpEnabled: Ember.computed.alias('settings.helpEnabled'),
 
   latestAnnouncement: Ember.computed('model.annoucements', function() {
     if (this.get('model.annoucements.topics')) {

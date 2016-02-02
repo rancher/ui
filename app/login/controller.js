@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   queryParams: ['timedOut','errorMsg'],
   access: Ember.inject.service(),
+  settings: Ember.inject.service(),
 
   isGithub: Ember.computed.equal('access.provider', 'githubconfig'),
   isActiveDirectory: Ember.computed.equal('access.provider', 'ldapconfig'),

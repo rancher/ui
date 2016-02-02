@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 function isPublic(name) {
   if ( (name||'').trim().replace(/^https?:\/\//,'').match(/^(localhost|192\.168\.|172\.1[6789]\.|172\.2[0123456789]\.|172\.3[01]\.|10\.)/) )
@@ -11,6 +12,8 @@ function isPublic(name) {
 
 export default Ember.Component.extend({
   endpoint: Ember.inject.service(),
+  settings: Ember.inject.service(),
+  docsBase: C.EXT_REFERENCES.DOCS,
 
   customRadio: null,
   customValue: '',

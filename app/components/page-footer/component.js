@@ -7,6 +7,9 @@ export default Ember.Component.extend({
   className: 'clearfix',
 
   settings: Ember.inject.service(),
+  docsBase: C.EXT_REFERENCES.DOCS,
+  githubBase: C.EXT_REFERENCES.GITHUB,
+  forumBase: C.EXT_REFERENCES.FORUM,
 
   actions: {
     showAbout() {

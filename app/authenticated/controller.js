@@ -33,5 +33,4 @@ export default Ember.Controller.extend({
   }.observes('model.stacks.@each.externalId'),
 
   hasVm: Ember.computed.alias('settings.hasVm'),
-  helpEnabled: Ember.computed.alias('settings.helpEnabled'),
 });

@@ -2,7 +2,7 @@
   <h1>Helpful links &amp; Information</h1>
 </section>
 
-{{#if (and helpEnabled (not modelError))}}
+{{#if (and (not settings.isPrivateLabel) (not modelError))}}
   <div class="banner r-ml20 r-mr20 r-mt10">
     <span class="banner-head">Announcements</span>
   {{#if modelResolved}}
@@ -22,7 +22,7 @@
       <div class="flex-content well">
         <h4>What is an environment?</h4>
         <hr/>
-        <p>Rancher supports grouping resources into multiple environments. Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
+        <p>{{settings.appName}} supports grouping resources into multiple environments. Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
 
         <p>For example, you might create separate "dev", "test", and "production" environments to keep things isolated from each other, and give "dev" access to your entire organization but restrict the "production" environment to a smaller team.</p>
         {{#link-to 'settings.projects' class="btn btn-primary right-divider-btn"}} Manage Environments {{/link-to}}
@@ -33,19 +33,20 @@
       <div class="flex-content well">
         <h4>What is a host?</h4>
         <hr/>
-        <p>Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker 1.6+ and be able to reach the Rancher server via HTTP. Rancher supports adding Linux hosts in the form of a virtual or physical
+        <p>Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker 1.6+ and be able to reach the {{settings.appName}} server via HTTP. {{settings.appName}} supports adding Linux hosts in the form of a virtual or physical
           machine from any public cloud providers, privately hosted clouds, or even bare metal servers. <a href="{{docsLink}}/rancher-ui/infrastructure/hosts/" target="_blank">Learn More</a></p>
         {{#link-to "hosts.new" class="btn btn-primary"}}Add Host{{/link-to}}
       </div>
     </div>
+
     <div class="flex-item">
       <div class="flex-content well">
         <h4>What are stacks and services?</h4>
         <hr/>
-        <p>A service is simply a group of containers created from the same Docker image but extends Docker's "link" concept to leverage Rancher's lightweight distributed DNS service for service discovery. Services can be added individually or by deploying
+        <p>A service is simply a group of containers created from the same Docker image but extends Docker's "link" concept to leverage {{settings.appName}}'s lightweight distributed DNS service for service discovery. Services can be added individually or by deploying
           an item from the Catalog.</p>
 
-        <p>A service is also capable of leveraging other Rancher built-in services such as load balancers, health monitoring, upgrade support, and high-availability. <a href="{{docsLink}}/rancher-ui/applications/stacks/adding-services/" target="_blank">Learn More</a></p>
+        <p>A service is also capable of leveraging other {{settings.appName}} built-in services such as load balancers, health monitoring, upgrade support, and high-availability. <a href="{{docsLink}}/rancher-ui/applications/stacks/adding-services/" target="_blank">Learn More</a></p>
 
         {{#if hasHosts}}
           {{#link-to 'applications-tab' class="btn btn-primary r-mb10"}} Manage Services{{/link-to}}
@@ -60,7 +61,7 @@
   </div>
 </section>
 
-{{#if helpEnabled}}
+{{#unless settings.isPrivateLabel}}
   <section class="well">
     <div class="header">
       <h4>Issues &amp; Documentation</h4>
@@ -72,28 +73,34 @@
     <hr/>
 
     <div class="row">
-      <p class="text-center col-sm-12 col-md-8 col-md-offset-2">Rancher is an open source software platform that implements a purpose-built infrastructure for running containers in production. Docker containers, as an increasingly popular application workload, create new requirements in infrastructure services
-        such as networking, storage, load balancer, security, service discovery, and resource management.</p>
+      <p class="text-center col-sm-12 col-md-8 col-md-offset-2">{{settings.appName}} is an open source software platform that implements a purpose-built infrastructure for running containers in production. Docker containers, as an increasingly popular application workload, create new requirements in infrastructure services such as networking, storage, load balancer, security, service discovery, and resource management.</p>
     </div>
 
     <div class="row">
       <div class="col-sm- col-md-4 text-center">
         <a href="{{githubLink}}/issues/new?body={{settings.issueBody}}" target="_blank"><img src="{{app.baseAssets}}assets/images/help-bug.svg" width="50%" /></a>
-        <p>Find a bug?
-          <br/><a href="{{githubLink}}/issues/new?body={{settings.issueBody}}" target="_blank">File an issue on GitHub.</a></p>
+        <p>
+          Find a bug?
+          <br/>
+          <a href="{{githubLink}}/issues/new?body={{settings.issueBody}}" target="_blank">File an issue on GitHub.</a>
+        </p>
       </div>
 
       <div class="col-sm-12 col-md-4 text-center">
         <a href="{{companyLink}}/learn/" target="_blank"><img src="{{app.baseAssets}}assets/images/help-docs.svg" width="50%" /></a>
-        <p>For more information
-          <br/><a href="{{docsLink}}" target="_blank">about using Rancher Visit our docs.</a>
-          <br/>or <a href="{{companyLink}}/learn/" target="_blank">check out our getting started documentation.</a></p>
+        <p>
+          For more information
+          <br/><a href="{{docsLink}}" target="_blank">about using {{settings.appName}} Visit our docs.</a>
+          <br/>or <a href="{{companyLink}}/learn/" target="_blank">check out our getting started documentation.</a>
+        </p>
       </div>
 
       <div class="col-sm- col-md-4 text-center">
         <a href="{{docsLink}}/faqs/" target="_blank"><img src="{{app.baseAssets}}assets/images/help-troubleshoot.svg" width="50%" /></a>
-        <p>Need help troubleshooting?
-          <br/><a href="{{docsLink}}/faqs/" target="_blank">Check out our FAQs</a></p>
+        <p>
+          Need help troubleshooting?
+          <br/><a href="{{docsLink}}/faqs/" target="_blank">Check out our FAQs</a>
+        </p>
       </div>
     </div>
 
@@ -169,7 +176,7 @@
   <section class="well">
     <h4>Commercial Support</h4>
     <hr/>
-    <p>At Rancher Labs we provide commercial, enterprise-grade support for Rancher, including an available 24x7 support team, and priority bug fixes.  In addition we provide implementation, integration and consulting services for organizations looking to implement and scale Rancher.  For more information on any of these services, please email our sales team. <a href="mailto:sales@rancher.com">sales@rancher.com</a></p>
+    <p>At Rancher Labs we provide commercial, enterprise-grade support for {{settings.appName}}, including an available 24x7 support team, and priority bug fixes.  In addition we provide implementation, integration and consulting services for organizations looking to implement and scale {{settings.appName}}.  For more information on any of these services, please email our sales team. <a href="mailto:sales@rancher.com">sales@rancher.com</a></p>
   </section>
-{{/if}}
+{{/unless}}
 

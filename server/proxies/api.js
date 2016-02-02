@@ -5,6 +5,7 @@ module.exports = function(app, options) {
   var httpServer = options.httpServer;
 
   var config = require('../../config/environment')().APP;
+
   var proxy = HttpProxy.createProxyServer({
     ws: true,
     xfwd: false,
@@ -52,7 +53,6 @@ module.exports = function(app, options) {
     console.log('Catalog Proxy', req.method, 'to', req.url);
     catalogProxy.web(req, res);
   });
-
 };
 
 function onProxyError(err, req, res) {

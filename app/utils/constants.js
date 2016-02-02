@@ -7,6 +7,9 @@ const KIND_KUBERNETES = 'kubernetes';
 var C = {
   COOKIE: {
     TOKEN: 'token',
+    PL: 'PL',
+    PL_RANCHER_VALUE: 'rancher',
+    CSRF: 'CSRF',
   },
 
   EXTERNALID: {

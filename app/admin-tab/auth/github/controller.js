@@ -6,6 +6,7 @@ export default Ember.Controller.extend({
   github: Ember.inject.service(),
   endpoint: Ember.inject.service(),
   access: Ember.inject.service(),
+  settings: Ember.inject.service(),
 
   confirmDisable: false,
   errors: null,

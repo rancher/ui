@@ -140,5 +140,15 @@ module.exports = function(environment) {
     ENV.APP.catalogServer = '';
   }
 
+  var pl = process.env.PL;
+  if ( pl )
+  {
+    ENV.APP.pl = pl;
+  }
+  else
+  {
+    ENV.APP.pl = 'rancher';
+  }
+
   return ENV;
 };

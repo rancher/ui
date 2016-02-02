@@ -2,6 +2,7 @@ import NewBalancer from 'ui/components/new-balancer/component';
 import Ember from 'ember';
 
 export default NewBalancer.extend({
+  settings: Ember.inject.service(),
   allServicesService: Ember.inject.service('all-services'),
   allServices: null,
   allCertificates: null,

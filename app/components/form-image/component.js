@@ -7,6 +7,8 @@ var lastContainer = 'ubuntu:14.04.3';
 var lastVm = 'rancher/vm-ubuntu';
 
 export default Ember.Component.extend(ManageLabels, {
+  settings: Ember.inject.service(),
+
   // Inputs
   initialValue: null,
   errors: null,

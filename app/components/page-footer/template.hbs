@@ -1,11 +1,11 @@
 <a href="#" class="btn btn-sm btn-link" {{action "showAbout"}} aria-label="About Rancher">{{if settings.rancherVersion settings.rancherVersion '(Not a Release)'}}</a>
 
-{{#if helpEnabled}}
-  <a class="btn btn-sm btn-link" target="blank" href="http://docs.rancher.com/rancher/">Documentation</a>
-  <a class="btn btn-sm btn-link" target="blank" href="http://docs.rancher.com/rancher/faqs/">FAQs</a>
-  <a class="btn btn-sm btn-link" target="blank" href="https://github.com/rancher/rancher/issues/new?body={{settings.issueBody}}">File an Issue</a>
-  <a class="btn btn-sm btn-link" target="blank" href="http://forums.rancher.com/">Forums</a>
-{{/if}}
+{{#unless settings.isPrivateLabel}}
+  <a class="btn btn-sm btn-link" target="blank" href="{{docsBase}}">Documentation</a>
+  <a class="btn btn-sm btn-link" target="blank" href="{{docsBase}}/faqs/">FAQs</a>
+  <a class="btn btn-sm btn-link" target="blank" href="{{githubBase}}/issues/new?body={{settings.issueBody}}">File an Issue</a>
+  <a class="btn btn-sm btn-link" target="blank" href="{{forumBase}}">Forums</a>
+{{/unless}}
 <div class="pull-right">
   <div class="compose-download inline-block">
     <a class="dropdown-toggle hand btn btn-sm btn-link" data-toggle="dropdown" aria-expanded="false">
