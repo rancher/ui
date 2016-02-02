@@ -9,20 +9,20 @@ export default Ember.Component.extend({
   model          : null,
   size           : 'default',
 
-  showTimer: null,
+  showTimer      : null,
 
   mouseEnter(evt) {
     if ( !this.get('tooltipService.requireClick') )
-    {
-      var tgt = Ember.$(evt.currentTarget);
+      {
+        var tgt = Ember.$(evt.currentTarget);
 
-      // Wait for a little bit of time so that the mouse can pass through
-      // another tooltip-element on the way to the dropdown trigger of a
-      // tooltip-action-menu without changing the tooltip.
-      this.set('showTimer', Ember.run.later(() => {
-        this.show(tgt);
-      }, DELAY));
-    }
+        // Wait for a little bit of time so that the mouse can pass through
+        // another tooltip-element on the way to the dropdown trigger of a
+        // tooltip-action-menu without changing the tooltip.
+        this.set('showTimer', Ember.run.later(() => {
+          this.show(tgt);
+        }, DELAY));
+      }
   },
 
   show(node) {
@@ -39,8 +39,7 @@ export default Ember.Component.extend({
       template      : this.get('tooltipTemplate'),
     };
 
-    if ( !svc.get('tooltipOpts') )
-    {
+    if ( !svc.get('tooltipOpts') ) {
       this.get('scrolling').disable();
     }
 
@@ -48,13 +47,13 @@ export default Ember.Component.extend({
   },
 
   mouseLeave: function() {
-    if ( this.get('showTimer') )
-    {
-      Ember.run.cancel(this.get('showTimer'));
-    }
-    else
-    {
-      this.get('tooltipService').leave();
+    if (!this.get('tooltipService.openedViaContextClick')) {
+      if ( this.get('showTimer') ) {
+        Ember.run.cancel(this.get('showTimer'));
+      }
+      else {
+        this.get('tooltipService').leave();
+      }
     }
   },
 });

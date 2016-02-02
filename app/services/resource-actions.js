@@ -21,15 +21,21 @@ export default Ember.Service.extend({
     this.set('model', model);
 
     $('BODY').one('click', () => {
+      Ember.run(() => {
       $toggle.removeClass('open');
       $menu.addClass('hide');
       this.set('open', false);
+      });
     });
 
     Ember.run.next(() => {
 
       if (this.get('tooltipActions')) {
         $menu.addClass('tooltip-actions');
+      } else {
+        if ($menu.hasClass('tooltip-actions')) {
+          $menu.removeClass('tooltip-actions');
+        }
       }
 
       $menu.removeClass('hide');

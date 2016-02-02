@@ -29,14 +29,12 @@ export default Ember.Service.extend({
 
   disable() {
     this.set('depth', this.get('depth') + 1);
-    console.log('disable', this.get('depth'));
     this._disable();
   },
 
   enable() {
     var depth = Math.max(0, this.get('depth')-1);
     this.set('depth', depth);
-    console.log('enable', this.get('depth'));
     if ( depth === 0 )
     {
       this._enable();

@@ -1,8 +1,8 @@
-<div class="pod-header">
-  <div class="resource-actions">{{partial "fast-action-menu"}}</div>
+<div class="pod-header clearfix">
 
-  <div class="pod-state {{stateBackground}}"><span>{{model.displayState}}</span></div>
-  <div class="pod-icon"><i class="icon icon-lg {{model.stateIcon}} {{model.stateColor}}"></i></div>
+  <div class="pull-left pod-state {{stateBackground}}"><span>{{model.displayState}}</span></div>
+  {{action-menu model=model class="pull-right"}}
+</div>
   <div class="pod-name">
     {{#if isMachine}}
       {{model.displayName}}
@@ -15,7 +15,6 @@
       {{/if}}
     {{/if}}
   </div>
-</div>
 
 {{#if isMachine}}
   <div class="machine-info">
@@ -36,20 +35,19 @@
     {{/if}}
   </div>
 {{else}}
-  <div class="pod-info clearfix">
-    <div class="pod-info-line">
+  <div class="pod-info">
+    <div class="pod-info-container">
       <div class="pod-info-item"><i class="icon icon-link"></i> {{model.displayIp}}</div>
       {{#if model.dockerBlurb}}
         <div class="pod-info-item"><i class="icon icon-docker"></i> {{model.dockerBlurb}}</div>
       {{/if}}
+    </div>
+    <div class="pod-info-container">
       {{#if model.osBlurb}}
-        <div class="pod-info-item"><i class="icon icon-linux"></i> {{model.osBlurb}}{{#if model.kernelBlurb}} ({{model.kernelBlurb}}){{/if}}</div>
-      {{/if}}
-      {{#if model.machine}}
-        <div class="pod-info-item"><i class="icon icon-cloud"></i> {{model.machine.driver}}</div>
+        <div class="pod-info-item clip"><i class="icon icon-linux"></i> {{model.osBlurb}}{{#if model.kernelBlurb}} ({{model.kernelBlurb}}) {{/if}}</div>
       {{/if}}
     </div>
-    <div class="pod-info-line">
+    <div class="pod-info-container">
       {{#if model.cpuBlurb}}
         <div class="pod-info-item"><i class="icon icon-cpu" style="position: relative; top: -1px;"></i> {{model.cpuBlurb}}</div>
       {{/if}}
@@ -60,8 +58,15 @@
         <div class="pod-info-item"><i class="icon icon-hdd"></i> {{model.diskBlurb}}</div>
       {{/if}}
     </div>
+    <div class="pod-info-container">
+      {{#if model.machine}}
+        <div class="pod-info-item"><i class="icon icon-cloud"></i> {{model.machine.driver}}</div>
+      {{/if}}
+    </div>
+  </div>
+  <div class="pod-info r-mb10">
     {{#if strictUserLabelArray.length}}
-      <div class="pod-info-line" style="white-space: normal; padding-top: 5px;">
+      <div class="" style="white-space: normal; padding-top: 5px;">
         {{#each strictUserLabelArray as |label|}}
           <span class="label label-default clip" style="display: inline-block; max-width: 100%;">{{label.key}}{{#if label.value}}={{label.value}}{{/if}}</span>
         {{/each}}
@@ -75,32 +80,28 @@
         {{container-dot model=item}}
       {{/each}}
     {{else}}
-      {{#if (eq mode "grouped")}}
-        {{#each groupedInstances as |group|}}
-          <h6 class="subpod-header clip">{{#if group.name}}Stack: {{group.name}}{{else}}Standalone Containers{{/if}}</h6>
-          <div class="clearfix">
+      {{#each groupedInstances as |group|}}
+        <div class="container-subpod-info">
+          <div class="subpod-header clearfix {{if group.collapsed 'open' 'closed'}}">
+            <h6 class="clip pull-left">{{#if group.name}}Stack: {{group.name}}{{else}}Standalone Containers{{/if}}</h6>
+            <span class="pull-right hand" {{action 'toggleGroup' group}}><i class="icon icon-fw icon-chevron-down"></i></span>
+          </div>
+          {{#liquid-if group.collapsed class='clearfix'}}
             {{#each group.instances as |item|}}
-              {{container-subpod model=item.main stripProject=true children=item.children groupHasChildren=group.hasChildren}}
+              {{container-subpod model=item.main stripProject=true children=item.children}}
             {{/each}}
             {{#unless group.name}}
               {{#if showAdd}}
                 {{add-subpod action="newContainer" label="Add Container" groupHasChildren=group.hasChildren}}
               {{/if}}
             {{/unless}}
-          </div>
-        {{else}}
-          {{#if showAdd}}
-            {{add-subpod action="newContainer" label="Add Container" groupHasChildren=group.hasChildren}}
-          {{/if}}
-        {{/each}}
+          {{/liquid-if}}
+        </div>
       {{else}}
-        {{#each arrangedInstances as |item|}}
-          {{container-subpod model=item}}
-        {{/each}}
         {{#if showAdd}}
           {{add-subpod action="newContainer" label="Add Container" groupHasChildren=group.hasChildren}}
         {{/if}}
-      {{/if}}
+      {{/each}}
     {{/if}}
   </div>
 {{/if}}

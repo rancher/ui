@@ -37,13 +37,6 @@ export default Ember.Controller.extend({
     },
   },
 
-  containerLinkOptions: {
-    route: 'hosts',
-    options: {
-      mode: 'list',
-    },
-  },
-
   groupLinkOptions: {
     route: 'hosts',
     options: {

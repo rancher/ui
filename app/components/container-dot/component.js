@@ -1,11 +1,13 @@
 import Ember from 'ember';
+import { isMore } from 'ui/utils/platform';
 
 export default Ember.Component.extend({
-  tooltipService: Ember.inject.service('tooltip'),
-  model    : null,
-  tagName  : 'span',
-  type     : 'tooltip-action-menu',
-  template : null,
+  resourceActions : Ember.inject.service('resource-actions'),
+  tooltipService  : Ember.inject.service('tooltip'),
+  model           : null,
+  tagName         : 'span',
+  type            : 'tooltip-action-menu',
+  template        : null,
 
   click(event) {
     this.details(event);
@@ -13,12 +15,40 @@ export default Ember.Component.extend({
   },
 
   details(/*event*/) {
+
     var route = 'container';
     if ( this.get('model.isVm') )
-    {
-      route = 'virtualmachine';
+      {
+        route = 'virtualmachine';
+      }
+
+      this.get('router').transitionTo(route, this.get('model.id'));
+  },
+
+  contextMenu(event) {
+    if ( isMore(event) ) {
+      return;
     }
 
-    this.get('router').transitionTo(route, this.get('model.id'));
+    event.preventDefault();
+
+    if (this.get('type') === 'tooltip-action-menu') {
+
+      this.get('resourceActions').set('open', true);
+      this.get('tooltipService').set('openedViaContextClick', true);
+      Ember.$('.container-tooltip .more-actions').trigger('click');
+    } else {
+
+      this.get('resourceActions').show(this.get('model'), this.$());
+    }
   },
+
+  resourceActionsObserver: Ember.observer('resourceActions.open', function() {
+
+    if (this.get('tooltipService.openedViaContextClick')) {
+
+      this.get('tooltipService').set('openedViaContextClick', false);
+    }
+
+  }).on('init'),
 });
