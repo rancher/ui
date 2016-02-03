@@ -4,7 +4,7 @@
   text-align: center;
   width: 300px;
   height: 300px;
-  margin: 0 auto;
+  margin: calc(50vh - 200px) auto;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -15,7 +15,7 @@
   height: 280px;
   border: dotted rgba(255,255,255,.25) 3px;
   border-radius: 50%;
-  animation: orbit 4s linear infinite; 
+  animation: orbit 20s linear infinite; 
 }
 
 .sun {
@@ -38,19 +38,37 @@
   border-radius: 50%;
 }
 
+
+.grass {
+  content: "";
+  background: linear-gradient(-45deg, #a5c63b 5px, transparent 0), linear-gradient(45deg, #a5c63b 5px, transparent 0);
+  background-position: left-bottom;
+  background-repeat: repeat-x;
+  background-size: 10px 10px;
+  display: block;
+  position: absolute;
+  bottom: 50%;
+  left: 0px;
+  width: 100%;
+  height: 10px;
+}
+
 .loadfield {
   position: absolute;
   width: 200px;
   height: 200px;
-  margin: 40px;
-  background: -webkit-linear-gradient(top, #d3edf8 0%, #d3edf8 50%, #a5c63b 50%, #a5c63b 100%);
+  margin: 45px;
+/*   background: linear-gradient(top, #d3edf8 0%, #d3edf8 25%, #a5c63b 25%, #a5c63b 50%, #444 50%, #444 75%, #333 75%, #333 100%); */
   background: linear-gradient(top, #d3edf8 0%, #d3edf8 50%, #a5c63b 50%, #a5c63b 100%);
+  /* W3C */
+/*   background-size: 200% 200%; */
+/*   animation: ColorBG 5s ease-in-out infinite; */
   border-radius: 50%;
+  animation: fade 30s ease-in-out infinite;
 }
 
-.loadfield:before {
+/* .loadfield:before {
   content: "";
-  background: -webkit-linear-gradient(top, #333 0%, #333 50%, #444 50%, #444 100%);
   background: linear-gradient(top, #333 0%, #333 50%, #444 50%, #444 100%);
   position: absolute;
   width: 200px;
@@ -59,17 +77,16 @@
   right: 0;
   top: 0;
   bottom: 0;
-  animation: fade 5s ease-in-out infinite;
+  animation: fade 30s ease-in-out infinite;
   border-radius: 50%;
-}
+} */
 .cow {
-  font-size: 85px;
+  width: 90px;
   text-align: center;
-  color: $primary;
-  margin: 60px auto;
-  // height: 40px;
-  position: relative;
-  // left: 30%;
+  margin: 75px auto;
+  height: 40px;
+  position: absolute;
+  left: 30%;
   z-index: 5;
 }
 
@@ -85,10 +102,31 @@
 }
 
 .head {
-  // animation: head ease-in-out 3s;
-  // animation-iteration-count: infinite;
-  // transform-origin: 50% 50%;
-  // animation-fill-mode: forwards;
+  animation: head ease-in-out 4s;
+  animation-iteration-count: infinite;
+  transform-origin: 50% 50%;
+  animation-fill-mode: forwards;
+  /*when the spec is finished*/
+  -webkit-animation: head ease-in-out 4s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-transform-origin: 50% 50%;
+  -webkit-animation-fill-mode: forwards;
+  /*Chrome 16+, Safari 4+*/
+  -moz-animation: head ease-in-out 4s;
+  -moz-animation-iteration-count: infinite;
+  -moz-transform-origin: 50% 50%;
+  -moz-animation-fill-mode: forwards;
+  /*FF 5+*/
+  -o-animation: head ease-in-out 4s;
+  -o-animation-iteration-count: infinite;
+  -o-transform-origin: 50% 50%;
+  -o-animation-fill-mode: forwards;
+  /*Not implemented yet*/
+  -ms-animation: head ease-in-out 4s;
+  -ms-animation-iteration-count: infinite;
+  -ms-transform-origin: 50% 50%;
+  -ms-animation-fill-mode: forwards;
+  /*IE 10+*/
 }
 
 @keyframes head {
@@ -105,16 +143,13 @@
 
 @keyframes fade {
   0% {
-    opacity: 0;
-    filter: alpha(opacity=0);
+    filter: brightness(1) grayscale(0%);
   }
   50% {
-    opacity: 1;
-    filter: alpha(opacity=1);
+    filter: brightness(0.3) grayscale(1);
   }
   100% {
-   opacity: 0;
-   filter: alpha(opacity=0);
+   filter: brightness(1) grayscale(0%);
   }
 }
 
