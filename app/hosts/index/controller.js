@@ -23,11 +23,16 @@ export default Ember.Controller.extend({
     machines.forEach((machine) => {
       if ( machine.get('isPending') && knownMachines.indexOf(machine.get('id')) === -1 )
       {
-        out.pushObject(Ember.Object.create({isPendingMachine: true, machine: machine, name: machine.get('name')}));
+        out.pushObject(Ember.Object.create({
+          isPendingMachine: true,
+          machine: machine,
+          name: machine.get('name'),
+          displayName: machine.get('name')
+        }));
       }
     });
 
-    return out.sortBy('name','id');
+    return out.sortBy('displayName','id');
   }.property('model.hosts.@each.{name,id,physicalHostId}','model.machines.@each.{name,id,isPending}'),
 
   listLinkOptions: {

@@ -105,7 +105,7 @@ export default Ember.Component.extend(ManageLabels, {
 
   hostChoices: function() {
     var list = this.get('allHosts').map((host) => {
-      var hostLabel = (host.get('name') || '('+host.get('id')+')');
+      var hostLabel = host.get('displayName');
       if ( host.get('state') !== 'active' )
       {
         hostLabel += ' (' + host.get('state') + ')';
