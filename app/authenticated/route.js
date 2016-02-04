@@ -23,65 +23,33 @@ export default Ember.Route.extend({
   },
 
   model: function(params, transition) {
-    var store = this.get('store');
-    var session = this.get('session');
-    var isAuthEnabled = this.get('access.enabled');
+    // Save whether the user is admin
+    var type = this.get(`session.${C.SESSION.USER_TYPE}`);
+    var isAdmin = (type === C.USER.TYPE_ADMIN) || !this.get('access.enabled');
+    this.set('access.admin', isAdmin);
 
-    // Load schemas
-    var headers = {};
-    headers[C.HEADER.PROJECT] = undefined;
-    return store.find('schema', null, {url: 'schemas', headers: headers}).then((schemas) => {
-      if ( schemas && schemas.xhr )
-      {
-        // Save the account ID into session
-        session.set(C.SESSION.ACCOUNT_ID, schemas.xhr.getResponseHeader(C.HEADER.ACCOUNT_ID));
-      }
 
-      // Save whether the user is admin
-      var type = session.get(C.SESSION.USER_TYPE);
-      var isAdmin = (type === C.USER.TYPE_ADMIN) || !isAuthEnabled;
-      this.set('access.admin', isAdmin);
-
-      var projectsService = this.get('projects');
-
-      // Return the list of projects as the model
-      return this.loadPreferences().then(() => {
-
-        this.get('userTheme').setupTheme();
-
-        return projectsService.getAll().then((all) => {
-          projectsService.set('all', all);
-
-          return projectsService.selectDefault().then(() => {
-            return this.loadStacks().then((stacks) => {
-              return Ember.Object.create({
-                projects: all,
-                stacks: stacks,
-              });
-            });
-          }).catch((err) => {
-            if ( err && err.status && [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
-            {
-              this.send('logout',transition,true);
-              return;
-            }
-
-            this.replaceWith('settings.projects');
+    return this.loadPreferences().then(() => {
+      return this.loadAndSelectProject().then((projects) => {
+        return this.loadSchemas().then(() => {
+          return this.loadStacks().then((stacks) => {
             return Ember.Object.create({
-              projects: all,
-              stacks: [],
+              projects: projects.all,
+              stacks: stacks,
             });
           });
+        }).catch((err) => {
+          return this.loadingError(err, transition, Ember.Object.create({
+            projects: projects.all,
+            stacks: [],
+          }));
         });
       });
     }).catch((err) => {
-      if ( [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
-      {
-        this.send('logout',transition,true);
-        return;
-      }
-
-      this.send('error',err);
+      return this.loadingError(err, transition, Ember.Object.create({
+        projects: [],
+        stacks: [],
+      }));
     });
   },
 
@@ -91,23 +59,64 @@ export default Ember.Route.extend({
     });
   },
 
+  loadingError: function(err, transition, ret) {
+    var isAuthEnabled = this.get('access.enabled');
+
+    if ( err && err.status && [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
+    {
+      this.send('logout',transition,true);
+      return;
+    }
+
+    this.replaceWith('settings.projects');
+    return ret;
+  },
+
+  loadPreferences: function() {
+    return this.get('store').find('userpreference', null, {url: 'userpreferences', forceReload: true}).then((res) => {
+      // Some people hate spinners
+      if ( this.get(`prefs.${C.PREFS.I_HATE_SPINNERS}`) )
+      {
+        $('BODY').addClass('no-spin');
+      }
+
+      // Save the account ID from the response headers into session
+      if ( res && res.xhr )
+      {
+        this.set(`session.${C.SESSION.ACCOUNT_ID}`, res.xhr.getResponseHeader(C.HEADER.ACCOUNT_ID));
+      }
+
+      this.get('userTheme').setupTheme();
+
+      return res;
+    });
+  },
+
+  loadAndSelectProject: function() {
+    var svc = this.get('projects');
+    return svc.getAll().then((all) => {
+      svc.set('all', all);
+      return svc.selectDefault().then((sel) => {
+        return Ember.Object.create({
+          all: all,
+          selected: sel,
+        });
+      });
+    });
+  },
+
+  loadSchemas: function() {
+    var store = this.get('store');
+    store.resetType('schema');
+    return store.find('schema', null, {url: 'schemas', forceReload: true});
+  },
+
   loadStacks: function() {
     return this.get('store').findAllUnremoved('environment');
   },
 
   loadPublicSettings: function() {
-    return this.get('store').find('setting', null, {filter: {all: 'false'}});
-  },
-
-  loadPreferences: function() {
-    return this.get('store').find('userpreference', null, {forceReload: true}).then((prefs) => {
-      if ( this.get('prefs.'+C.PREFS.I_HATE_SPINNERS) )
-      {
-        $('BODY').addClass('no-spin');
-      }
-
-      return prefs;
-    });
+    return this.get('store').find('setting', null, {forceReload: true, filter: {all: 'false'}});
   },
 
   activate: function() {

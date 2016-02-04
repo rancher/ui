@@ -1,0 +1,75 @@
+<section class="header">
+  <h1>Add Service</h1>
+</section>
+
+<section class="horizontal-form container-fluid">
+  {{form-name-description
+    model=primaryResource
+    namePlaceholder="e.g. myservice"
+    descriptionPlaceholder="My Service"
+  }}
+
+  {{form-divider}}
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>Type</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{new-select
+        class="form-control"
+        content=serviceTypChoices
+        value=primaryResource.serviceType
+      }}
+    </div>
+  </div>
+
+  {{k8s/form-serviceports
+    initialPorts=primaryResource.ports
+    errors=portErrors
+    changed=(action (mut primaryResource.ports))
+  }}
+
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>Selectors</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{form-key-value
+        initialMap=primaryResource.selectorContainer
+        allowEmptyValue=false
+        changedStr=(action (mut primaryResource.selectorContainer))
+        nameLabel="Selector"
+      }}
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>External IPs</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{form-value-array
+        initialValues=primaryResource.externalIpAddresses
+        changed=(action (mut primaryResource.externalIpAddresses))
+        nameLabel="External IP"
+        valueLabel="IP Address"
+        valuePlaceholder="e.g. 2.24.19.82"
+      }}
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>Session Affinity</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      <label>{{radio-button selection=primaryResource.sessionAffinity value="None"}} None</label>
+      <label class="r-ml20">{{radio-button selection=primaryResource.sessionAffinity value="ClientIp"}} By client IP</label>
+    </div>
+  </div>
+</section>
+
+{{top-errors errors=errors}}
+{{save-cancel createLabel="Create" save="save" cancel="cancel"}}

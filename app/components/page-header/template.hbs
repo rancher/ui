@@ -2,6 +2,7 @@
   <div class="logo"></div>
   <nav>
     {{#if project}}
+      {{#link-to "k8s-tab"}}Kubernetes{{/link-to}}
       {{#link-to "applications-tab"}}Applications{{/link-to}}
       {{#link-to "infrastructure-tab"}}Infrastructure{{/link-to}}
       {{#if isAdmin}}
@@ -79,13 +80,15 @@
 
     {{#if isApplicationsTab}}
       {{#link-to "environments" (query-params which="user")}}<i class="icon icon-layers"></i> Stacks{{/link-to}}
-      {{#if hasKubernetes}}
-        {{#link-to "environments" (query-params which="kubernetes")}}<i class="icon icon-kubernetes"></i>Kubernetes{{/link-to}}
-      {{/if}}
       {{#if hasSystem}}
         {{#link-to "environments" (query-params which="system")}}<i class="icon icon-network"></i>System{{/link-to}}
       {{/if}}
       {{#link-to "applications-tab.catalog"}}<i class="icon icon-catalog"></i> Catalog{{/link-to}}
+    {{/if}}
+
+    {{#if isKubernetesTab}}
+      {{#link-to "k8s-tab.services"}}<i class="icon icon-compass"></i>Services{{/link-to}}
+      {{#link-to "k8s-tab.rcs"}}<i class="icon icon-tachometer"></i>Replication Controllers{{/link-to}}
     {{/if}}
 
     {{#if isAdminTab}}

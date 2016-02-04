@@ -109,6 +109,7 @@ Router.map(function() {
       this.route('service.new-balancer', {path: '/add-balancer', resetNamespace: true});
       this.route('service.new-alias', {path: '/add-alias', resetNamespace: true});
       this.route('service.new-external', {path: '/add-external', resetNamespace: true});
+
       this.route('environments', {path: '/', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
@@ -134,6 +135,26 @@ Router.map(function() {
         this.route('launch', {path: '/:template'});
       });
     });
+
+    // Kubernetes
+    this.route('k8s-tab', {path: '/k8s', resetNamespace: true}, function() {
+      this.route('services', {path: '/services'}, function() {
+        this.route('index', {path: '/'});
+        this.route('new', {path: '/add'});
+
+        this.route('service', {path: '/:service_id'}, function() {
+        });
+      });
+
+      this.route('rcs', {path: '/rcs'}, function() {
+        this.route('index', {path: '/'});
+        this.route('new', {path: '/add'});
+
+        this.route('rc', {path: '/:rc_id'}, function() {
+        });
+      });
+    });
+
 
     this.route('help');
 

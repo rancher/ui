@@ -9,6 +9,7 @@ export default Ember.Controller.extend({
 
   hasKubernetes: false,
   hasSystem: false,
+  hasVm: Ember.computed.alias('settings.hasVm'),
 
   externalIdChanged: function() {
     var hasKubernetes = false;
@@ -27,10 +28,8 @@ export default Ember.Controller.extend({
     });
 
     this.setProperties({
-      hasKubernetes: hasKubernetes,
+      hasKubernetes: hasKubernetes || true,
       hasSystem: hasSystem
     });
   }.observes('model.stacks.@each.externalId'),
-
-  hasVm: Ember.computed.alias('settings.hasVm'),
 });

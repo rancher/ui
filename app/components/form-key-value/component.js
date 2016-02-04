@@ -1,15 +1,64 @@
 import Ember from 'ember';
 
-// @@TODO@@ - Dec 8, 2015 - need to add callback to this service.
+function applyLinesIntoArray(lines, ary) {
+  lines.forEach((line) => {
+    line = line.trim();
+    if ( !line )
+    {
+      return;
+    }
+
+    var idx = line.indexOf('=');
+    var key = '';
+    var val = '';
+    if ( idx > 0 )
+    {
+      key = line.substr(0,idx).trim();
+      val = line.substr(idx+1).trim();
+    }
+    else
+    {
+      key = line.trim();
+      val = '';
+    }
+
+    var existing = ary.filterBy('key',key)[0];
+    if ( existing )
+    {
+      Ember.set(existing,'value',val);
+    }
+    else
+    {
+      ary.pushObject(Ember.Object.create({key: key, value: val}));
+    }
+  });
+}
+
+function removeEmptyEntries(ary, allowEmptyValue=false) {
+  // Clean up empty user entries
+  var toRemove = [];
+  ary.forEach((item) => {
+    if ( !(item.get('key') || item.get('value') || allowEmptyValue) )
+    {
+      toRemove.push(item);
+    }
+  });
+
+  ary.removeObjects(toRemove);
+}
+
 
 export default Ember.Component.extend({
   // Inputs
+  initialStr: null,
   initialMap: null,
   nameLabel: 'Pair',
   keyLabel: 'Key',
   valueLabel: 'Value',
   keyPlaceholder: 'Key',
   valuePlaceholder: 'Value',
+  allowEmptyValue: false,
+  addInitialEmptyRow: false,
 
   ary: null,
   asMap: null,
@@ -40,68 +89,51 @@ export default Ember.Component.extend({
       }
 
       var lines = str.split(/\r?\n/);
-      lines.forEach((line) => {
-        line = line.trim();
-        if ( !line )
-        {
-          return;
-        }
-
-        var idx = line.indexOf('=');
-        var key = '';
-        var val = '';
-        if ( idx > 0 )
-        {
-          key = line.substr(0,idx).trim();
-          val = line.substr(idx+1).trim();
-        }
-        else
-        {
-          key = line.trim();
-          val = '';
-        }
-
-        var existing = ary.filterBy('key',key)[0];
-        if ( existing )
-        {
-          Ember.set(existing,'value',val);
-        }
-        else
-        {
-          ary.pushObject(Ember.Object.create({key: key, value: val}));
-        }
-      });
-
-      // Clean up empty user entries
-      var toRemove = [];
-      ary.forEach((item) => {
-        if ( !item.get('key') && !item.get('value') )
-        {
-          toRemove.push(item);
-        }
-      });
-
-      ary.removeObjects(toRemove);
+      applyLinesIntoArray(lines, ary);
+      removeEmptyEntries(ary, this.get('allowEmptyValue'));
     },
   },
 
   didInitAttrs() {
     var ary = [];
-    var map = this.get('initialMap')||{};
-    Object.keys(map).forEach((key) => {
-      ary.push(Ember.Object.create({key: key, value: map[key]}));
-    });
+    var map = this.get('initialMap');
+    if ( map )
+    {
+      Object.keys(map).forEach((key) => {
+        ary.push(Ember.Object.create({key: key, value: map[key]}));
+      });
+    }
+    else if ( this.get('initialStr') )
+    {
+      var lines = this.get('initialStr').split(',');
+      applyLinesIntoArray(lines, ary);
+      removeEmptyEntries(ary, this.get('allowEmptyValue'));
+    }
 
     this.set('ary', ary);
+    if ( !ary.length && this.get('addInitialEmptyRow') )
+    {
+      this.send('add');
+    }
   },
 
   asMapObserver: function() {
     var out = {};
+    var outStr = '';
+
     this.get('ary').forEach((row) => {
-      out[row.get('key').trim()] = row.get('value').trim();
+      var k = row.get('key').trim();
+      var v = row.get('value').trim();
+
+      if ( k && (v || this.get('allowEmptyValue')) )
+      {
+        out[row.get('key').trim()] = row.get('value').trim();
+        outStr += (outStr ? ',' : '') + k + '=' + v;
+      }
     });
 
     this.set('asMap', out);
     this.sendAction('changed', out);
+    this.sendAction('changedStr', outStr);
   }.observes('ary.@each.{key,value}'),
 });

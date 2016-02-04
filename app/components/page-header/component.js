@@ -33,6 +33,10 @@ export default Ember.Component.extend({
     return this.get('currentPath').indexOf('authenticated.infrastructure-tab') === 0;
   }.property('currentPath'),
 
+  isKubernetesTab: function() {
+    return this.get('currentPath').indexOf('authenticated.k8s-tab') === 0;
+  }.property('currentPath'),
+
   isApplicationsTab: function() {
     return this.get('currentPath').indexOf('authenticated.applications-tab') === 0;
   }.property('currentPath'),
