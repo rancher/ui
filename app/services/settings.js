@@ -132,7 +132,7 @@ export default Ember.Service.extend(Ember.Evented, {
   }.property(`cookies.${C.COOKIE.PL}`),
 
   isPrivateLabel: function() {
-    return this.get('_plValue') !== C.COOKIE.PL_RANCHER_VALUE;
+    return this.get('_plValue').toUpperCase() !== C.COOKIE.PL_RANCHER_VALUE.toUpperCase();
   }.property('_plValue'),
 
   appName: function() {

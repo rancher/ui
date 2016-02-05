@@ -4,7 +4,12 @@ import C from 'ui/utils/constants';
 function parseStr(str) {
   var out = {};
 
-  (str||'').split(',').forEach((item) => {
+  str = (str||'').trim();
+  if ( !str ) {
+    return out;
+  }
+
+  str.split(',').forEach((item) => {
     var key, val;
     var idx = item.indexOf('=');
     if ( idx > 0 )
@@ -18,7 +23,12 @@ function parseStr(str) {
       val = item;
     }
 
-    out[key.trim()] = val.trim();
+    key = key.trim();
+    val = val.trim();
+    if ( key && val )
+    {
+      out[key] = val;
+    }
   });
 
   return out;
