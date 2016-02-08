@@ -4,7 +4,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Service.extend({
   cookies: Ember.inject.service(),
-  session: Ember.inject.service(),
+  'tab-session': Ember.inject.service('tab-session'),
 
   absolute: function() {
     var url = this.get('app.apiServer');
@@ -40,7 +40,7 @@ export default Ember.Service.extend({
       url = Util.addQueryParam(url, 'token', token);
     }
 
-    var projectId = this.get('session').get(C.SESSION.PROJECT);
+    var projectId = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
     if ( projectId )
     {
       url = Util.addQueryParam(url, 'projectId', projectId);

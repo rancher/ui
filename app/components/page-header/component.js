@@ -15,6 +15,8 @@ export default Ember.Component.extend({
   tagName: 'header',
   classNames: ['clearfix','no-select'],
 
+  projectId: Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
+
   accessEnabled: Ember.computed.alias('access.enabled'),
   isAdmin: Ember.computed.alias('access.admin'),
   isLocalAuth: function() {
@@ -30,15 +32,15 @@ export default Ember.Component.extend({
   }.property('project.id','projectChoices.@each.id'),
 
   isInfrastructureTab: function() {
-    return this.get('currentPath').indexOf('authenticated.infrastructure-tab') === 0;
+    return this.get('currentPath').indexOf('authenticated.project.infrastructure-tab') === 0;
   }.property('currentPath'),
 
   isKubernetesTab: function() {
-    return this.get('currentPath').indexOf('authenticated.k8s-tab') === 0;
+    return this.get('currentPath').indexOf('authenticated.project.k8s-tab') === 0;
   }.property('currentPath'),
 
   isApplicationsTab: function() {
-    return this.get('currentPath').indexOf('authenticated.applications-tab') === 0;
+    return this.get('currentPath').indexOf('authenticated.project.applications-tab') === 0;
   }.property('currentPath'),
 
   isAdminTab: function() {

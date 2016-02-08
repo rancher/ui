@@ -10,6 +10,10 @@ export function initialize(registry, application) {
   application.inject('route',       'session', 'service:session');
   application.inject('model',       'session', 'service:session');
   application.inject('component',   'session', 'service:session');
+  application.inject('controller',  'tab-session', 'service:tab-session');
+  application.inject('route',       'tab-session', 'service:tab-session');
+  application.inject('model',       'tab-session', 'service:tab-session');
+  application.inject('component',   'tab-session', 'service:tab-session');
 }
 
 export default {

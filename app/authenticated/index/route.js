@@ -3,14 +3,15 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   projects: Ember.inject.service(),
 
-  redirect: function(params, transition) {
-    if ( this.get('projects.current.kubernetes') )
-    {
-      this.replaceWith('k8s-tab');
-    }
-    else
-    {
-      this.replaceWith('applications-tab');
-    }
+  redirect() {
+    this.get('projects').selectDefault().then((project) => {
+      if ( project ) {
+        this.replaceWith('authenticated.project', project.get('id'));
+      } else {
+        this.replaceWith('settings.projects');
+      }
+    }).catch(() => {
+      this.replaceWith('settings.projects');
+    });
   },
 });

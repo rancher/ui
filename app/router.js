@@ -45,121 +45,125 @@ Router.map(function() {
       this.route('audit-logs');
     });
 
-    // Infrastructure
-    this.route('infrastructure-tab', {path: '/infra', resetNamespace: true}, function() {
-      this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
-        this.route('index', {path: '/'});
-        this.route('new', {path: '/add'}, function() {
-          getDrivers().forEach((driver) => {
-            this.route(driver.name);
-          });
-        });
+    this.route('project', {path: '/env/:project_id'}, function() {
+      this.route('index', {path: '/'});
 
-        this.route('host', {path: '/:host_id', resetNamespace: true}, function() {
-          this.route('containers');
-          this.route('storage', {path: '/storage'});
-          this.route('labels');
-        });
-      });
-
-      this.route('containers', {resetNamespace: true}, function() {
-        this.route('new', {path: '/add'});
-        this.route('index', {path: '/'});
-
-        this.route('container', {path: '/:container_id', resetNamespace: true}, function() {
-          this.route('edit');
-          this.route('ports');
-          this.route('volumes');
-          this.route('labels');
-        });
-      });
-
-      this.route('virtualmachines', {path: '/vms', resetNamespace: true}, function() {
-        this.route('new', {path: '/add'});
-        this.route('index', {path: '/'});
-
-        this.route('virtualmachine', {path: '/:virtualmachine_id', resetNamespace: true}, function() {
-          this.route('labels');
-        });
-      });
-
-      this.route('certificates', {resetNamespace: true}, function() {
-        this.route('new', {path: '/add'});
-        this.route('index', {path: '/'});
-        this.route('detail', {path: '/:certificate_id'});
-      });
-
-      this.route('storagepools', {resetNamespace: true}, function() {
-        this.route('index', {path: '/'});
-        this.route('detail', {path: '/:storagepool_id'});
-      });
-      this.route('storagepools.new-volume', {path: '/add-volume', resetNamespace: true});
-
-      this.route('registries', {path: '/registries', resetNamespace: true}, function() {
-        this.route('new', { path: '/add' });
-        this.route('index', {path: '/'});
-      });
-    });
-
-    // Applications
-    this.route('applications-tab', {path: '/apps', resetNamespace: true}, function() {
-      this.route('splash', {path: '/welcome', resetNamespace: true});
-      this.route('service.new', {path: '/add-service', resetNamespace: true});
-      this.route('service.new-virtualmachine', {path: '/add-vm-service', resetNamespace: true});
-      this.route('service.new-balancer', {path: '/add-balancer', resetNamespace: true});
-      this.route('service.new-alias', {path: '/add-alias', resetNamespace: true});
-      this.route('service.new-external', {path: '/add-external', resetNamespace: true});
-
-      this.route('environments', {path: '/', resetNamespace: true}, function() {
-        this.route('index', {path: '/'});
-        this.route('new', {path: '/add'});
-
-        this.route('environment', {path: '/:environment_id', resetNamespace: true}, function() {
+      // Infrastructure
+      this.route('infrastructure-tab', {path: '/infra', resetNamespace: true}, function() {
+        this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
           this.route('index', {path: '/'});
-          this.route('code', {path: '/code'});
-          this.route('graph', {path: '/graph'});
-          this.route('chart', {path: '/chart'});
+          this.route('new', {path: '/add'}, function() {
+            getDrivers().forEach((driver) => {
+              this.route(driver.name);
+            });
+          });
 
-          this.route('service', {path: '/services/:service_id', resetNamespace: true}, function() {
+          this.route('host', {path: '/:host_id', resetNamespace: true}, function() {
             this.route('containers');
+            this.route('storage', {path: '/storage'});
             this.route('labels');
-            this.route('ports');
+          });
+        });
+
+        this.route('containers', {resetNamespace: true}, function() {
+          this.route('new', {path: '/add'});
+          this.route('index', {path: '/'});
+
+          this.route('container', {path: '/:container_id', resetNamespace: true}, function() {
             this.route('edit');
-            this.route('links');
+            this.route('ports');
+            this.route('volumes');
+            this.route('labels');
+          });
+        });
+
+        this.route('virtualmachines', {path: '/vms', resetNamespace: true}, function() {
+          this.route('new', {path: '/add'});
+          this.route('index', {path: '/'});
+
+          this.route('virtualmachine', {path: '/:virtualmachine_id', resetNamespace: true}, function() {
+            this.route('labels');
+          });
+        });
+
+        this.route('certificates', {resetNamespace: true}, function() {
+          this.route('new', {path: '/add'});
+          this.route('index', {path: '/'});
+          this.route('detail', {path: '/:certificate_id'});
+        });
+
+        this.route('storagepools', {resetNamespace: true}, function() {
+          this.route('index', {path: '/'});
+          this.route('detail', {path: '/:storagepool_id'});
+        });
+        this.route('storagepools.new-volume', {path: '/add-volume', resetNamespace: true});
+
+        this.route('registries', {path: '/registries', resetNamespace: true}, function() {
+          this.route('new', { path: '/add' });
+          this.route('index', {path: '/'});
+        });
+      });
+
+      // Applications
+      this.route('applications-tab', {path: '/apps', resetNamespace: true}, function() {
+        this.route('splash', {path: '/welcome', resetNamespace: true});
+        this.route('service.new', {path: '/add-service', resetNamespace: true});
+        this.route('service.new-virtualmachine', {path: '/add-vm-service', resetNamespace: true});
+        this.route('service.new-balancer', {path: '/add-balancer', resetNamespace: true});
+        this.route('service.new-alias', {path: '/add-alias', resetNamespace: true});
+        this.route('service.new-external', {path: '/add-external', resetNamespace: true});
+
+        this.route('environments', {path: '/', resetNamespace: true}, function() {
+          this.route('index', {path: '/'});
+          this.route('new', {path: '/add'});
+
+          this.route('environment', {path: '/:environment_id', resetNamespace: true}, function() {
+            this.route('index', {path: '/'});
+            this.route('code', {path: '/code'});
+            this.route('graph', {path: '/graph'});
+            this.route('chart', {path: '/chart'});
+
+            this.route('service', {path: '/services/:service_id', resetNamespace: true}, function() {
+              this.route('containers');
+              this.route('labels');
+              this.route('ports');
+              this.route('edit');
+              this.route('links');
+            });
+          });
+        });
+
+        this.route('catalog', {path: '/catalog'}, function() {
+          this.route('index', {path: '/'});
+          this.route('launch', {path: '/:template'});
+        });
+      });
+
+      // Kubernetes
+      this.route('k8s-tab', {path: '/k8s', resetNamespace: true}, function() {
+        this.route('services', {path: '/services'}, function() {
+          this.route('index', {path: '/'});
+          this.route('new', {path: '/add'});
+
+          this.route('service', {path: '/:service_id'}, function() {
+          });
+        });
+
+        this.route('rcs', {path: '/rcs'}, function() {
+          this.route('index', {path: '/'});
+          this.route('new', {path: '/add'});
+
+          this.route('rc', {path: '/:rc_id'}, function() {
           });
         });
       });
 
-      this.route('catalog', {path: '/catalog'}, function() {
-        this.route('index', {path: '/'});
-        this.route('launch', {path: '/:template'});
-      });
+
+      this.route('help');
+
+      this.route('apikeys', {path: '/api'});
+      // End: Authenticated
     });
-
-    // Kubernetes
-    this.route('k8s-tab', {path: '/k8s', resetNamespace: true}, function() {
-      this.route('services', {path: '/services'}, function() {
-        this.route('index', {path: '/'});
-        this.route('new', {path: '/add'});
-
-        this.route('service', {path: '/:service_id'}, function() {
-        });
-      });
-
-      this.route('rcs', {path: '/rcs'}, function() {
-        this.route('index', {path: '/'});
-        this.route('new', {path: '/add'});
-
-        this.route('rc', {path: '/:rc_id'}, function() {
-        });
-      });
-    });
-
-
-    this.route('help');
-
-    this.route('apikeys', {path: '/api'});
-    // End: Authenticated
   });
 
 

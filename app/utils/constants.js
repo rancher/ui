@@ -133,6 +133,7 @@ var C = {
     ROLE_OWNER:   'owner',
   },
 
+  // Ephemeral but same but across all browser tabs
   SESSION: {
     BACK_TO: 'backTo',
     USER_ID: 'user',
@@ -144,6 +145,11 @@ var C = {
     GITHUB_CACHE: 'githubCache',
     GITHUB_ORGS: 'orgs',
     GITHUB_TEAMS: 'teams',
+  },
+
+  // Ephemeral and unique for each browser tab
+  TABSESSION: {
+    PROJECT: 'projectId',
   },
 
   SETTING: {

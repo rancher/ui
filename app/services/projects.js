@@ -4,7 +4,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Service.extend({
   access: Ember.inject.service(),
-  session: Ember.inject.service(),
+  'tab-session': Ember.inject.service('tab-session'),
   prefs: Ember.inject.service(),
 
   current: null,
@@ -38,12 +38,12 @@ export default Ember.Service.extend({
 
   selectDefault: function() {
     var self = this;
-    var session = this.get('session');
+    var tabSession = this.get('tab-session');
 
     // Try the project ID in the session
-    return this._activeProjectFromId(session.get(C.SESSION.PROJECT)).then(select)
+    return this._activeProjectFromId(tabSession.get(C.TABSESSION.PROJECT)).then(select)
     .catch(() => {
-      // Then the default project ID from the session
+      // Then the default project ID from the prefs
       return this._activeProjectFromId(this.get('prefs').get(C.PREFS.PROJECT_DEFAULT)).then(select)
       .catch(() => {
         // Setting this now and then just below breaks API uniqueness checking
@@ -53,7 +53,7 @@ export default Ember.Service.extend({
         var project = this.get('active.firstObject');
         if ( project )
         {
-          select(project, true);
+          return select(project, true);
         }
         else if ( this.get('access.admin') )
         {
@@ -61,7 +61,7 @@ export default Ember.Service.extend({
             var firstActive = all.filterBy('state','active')[0];
             if ( firstActive )
             {
-              select(firstActive, true);
+              return select(firstActive, true);
             }
             else
             {
@@ -81,7 +81,7 @@ export default Ember.Service.extend({
     function select(project, overwriteDefault) {
       if ( project )
       {
-        session.set(C.SESSION.PROJECT, project.get('id'));
+        tabSession.set(C.TABSESSION.PROJECT, project.get('id'));
 
         // If there is no default project, set it
         var def = self.get('prefs').get(C.PREFS.PROJECT_DEFAULT);
@@ -91,11 +91,13 @@ export default Ember.Service.extend({
         }
 
         self.set('current', project);
+        return project;
       }
       else
       {
-        session.set(C.SESSION.PROJECT, undefined);
+        tabSession.set(C.TABSESSION.PROJECT, undefined);
         self.set('current', null);
+        return null;
       }
     }
 
@@ -107,7 +109,6 @@ export default Ember.Service.extend({
   },
 
   _activeProjectFromId: function(projectId) {
-    // Try the currently selected one in the session
     return new Ember.RSVP.Promise((resolve, reject) => {
       if ( !projectId )
       {

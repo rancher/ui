@@ -22,8 +22,8 @@ export default Ember.Route.extend({
         Ember.run.cancel(show);
         Ember.run.next(() => {
           //console.log('Loading action done...');
-          $('#loading-underlay').fadeOut({duration: 100, queue: false, easing: 'linear', complete: function() {
-            $('#loading-overlay').fadeOut({duration: 200, queue: false, easing: 'linear'});
+          $('#loading-overlay').fadeOut({duration: 200, queue: false, easing: 'linear', complete: function() {
+            $('#loading-underlay').fadeOut({duration: 100, queue: false, easing: 'linear'});
           }});
         });
       });
@@ -66,8 +66,8 @@ export default Ember.Route.extend({
 
     logout(transition, timedOut, errorMsg) {
       var session = this.get('session');
-      // This needs to change first so that other tabs get notified and logout
       session.set(C.SESSION.ACCOUNT_ID,null);
+      this.get('tab-session').clear();
 
       this.get('access').clearSessionKeys(true);
 

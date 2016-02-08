@@ -117,7 +117,7 @@ export default Ember.Mixin.create({
       url = url.replace(/https?:\/\/[^\/]+\/?/,endpoint);
 
       // Go to the project-specific version
-      var projectId = this.get('session').get(C.SESSION.PROJECT);
+      var projectId = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
       if ( projectId && this.get('type') !== 'account' )
       {
         url = url.replace(/(.*?\/v1)(.*)/,"$1/projects/"+projectId+"$2");

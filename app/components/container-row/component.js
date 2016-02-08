@@ -2,6 +2,8 @@ import Ember from 'ember';
 import FasterLinksAndMenus from 'ui/mixins/faster-links-and-menus';
 
 export default Ember.Component.extend(FasterLinksAndMenus,{
+  projects: Ember.inject.service(),
+
   model: null,
   showStats: false,
   cpuMax: null,
@@ -14,11 +16,11 @@ export default Ember.Component.extend(FasterLinksAndMenus,{
   detailBaseUrl: function() {
     if ( this.get('model.isVm') )
     {
-      return '/infra/vms/';
+      return `/env/${this.get('projects.current.id')}/infra/vms/`;
     }
     else
     {
-      return '/infra/containers/';
+      return `/env/${this.get('projects.current.id')}/infra/containers/`;
     }
   }.property('model.isVm'),
 });
