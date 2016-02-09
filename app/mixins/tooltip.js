@@ -2,8 +2,10 @@ import Ember from 'ember';
 import ThrottledResize from 'ui/mixins/throttled-resize';
 
 export default Ember.Mixin.create(ThrottledResize, {
-  tooltipContent  : null,
-  originalNode    : null,
+  tooltipContent : null,
+  originalNode   : null,
+  router         : Ember.inject.service("-routing"),
+  currentRoute   : null,
 
   tooltipService: Ember.inject.service('tooltip'),
 
@@ -13,6 +15,18 @@ export default Ember.Mixin.create(ThrottledResize, {
   mouseLeave: function() {
     this.destroyTooltip();
   },
+
+  routeObserver: Ember.observer('router.currentRouteName', function() {
+    // On init
+    if (!this.get('currentRoute')) {
+      this.set('currentRoute', this.get('router.currentRouteName'));
+    }
+
+    // if we change routes tear down the tooltip
+    if (this.get('currentRoute') !== this.get('router.currentRouteName')) {
+      this.destroyTooltip();
+    }
+  }).on('init'),
 
   tooltipConstructor: function() {
     Ember.run.scheduleOnce('afterRender', this, function() {

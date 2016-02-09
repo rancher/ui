@@ -8,13 +8,13 @@ export default Ember.Component.extend({
 
   resourceActions: Ember.inject.service('resource-actions'),
 
-  tagName: 'div',
-  classNames: ['btn-group','resource-actions','action-menu'],
+  tagName        : 'div',
+  classNames     : ['btn-group','resource-actions','action-menu'],
+  tooltipService : Ember.inject.service('tooltip'),
 
   click(e) {
     var more = Ember.$(e.target).closest('.more-actions');
-    if ( more && more.length )
-    {
+    if ( more && more.length ) {
       e.preventDefault();
       e.stopPropagation();
 
@@ -30,6 +30,7 @@ export default Ember.Component.extend({
 
   actions: {
     sendAction: function(action) {
+      this.get('tooltipService').leave();
       this.get('model').send(action);
     }
   },
