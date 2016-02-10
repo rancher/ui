@@ -97,47 +97,65 @@
     {{/if}}
   </nav>
 
-  {{#if project}}
-    <div class="dropdown btn-group project-btn pull-right">
-      <button type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-expanded="false">
-        <i class="{{project.icon}} icon-fw"></i>&nbsp;{{project.displayName}}
-        <i class="icon icon-chevron-down"></i>
+  <div class=" pull-right">
+    <div class="btn-group r-mr15">
+      {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-success btn-sm"}}<i class="icon icon-plus"></i> Add Service{{/link-to}}
+      <button type="button" class="btn btn-success btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <i class="icon icon-fw icon-chevron-down"></i>
+        <span class="sr-only">Toggle Dropdown</span>
       </button>
-      <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
-        {{#if projectChoices.length}}
-          <li role="presentation" class="dropdown-header">
-            {{#if accessEnabled}}
-              Your Environments
-            {{else}}
-              All Environments
-            {{/if}}
-          </li>
-          {{#each projectChoices as |p|}}
-            <li class="{{if p.active 'disabled selected'}}">
-              <a {{action "switchProject" p.id}} class="clip">
-                <i class="icon {{p.icon}}"></i>
-                &nbsp;
-                {{p.displayName}}
-              </a>
-            </li>
-          {{/each}}
+      <ul class="dropdown-menu" role="menu">
+        <li>{{#link-to "service.new-balancer" (query-params environmentId=model.id)}}Add Load Balancer{{/link-to}}</li>
+        <li>{{#link-to "service.new-alias" (query-params environmentId=model.id)}}Add Service Alias{{/link-to}}</li>
+        <li>{{#link-to "service.new-external" (query-params environmentId=model.id)}}Add External Service{{/link-to}}</li>
+        {{#if hasVm}}
+          <li>{{#link-to "service.new-virtualmachine" (query-params environmentId=model.id)}}Add Virtual Machine{{/link-to}}</li>
         {{/if}}
-        {{#if projectChoices.length}}
-          <li role="presentation" class="divider"></li>
-        {{/if}}
-        {{#if projectIsMissing}}
-          <li role="presentation" class="dropdown-header">Selected Environment:</li>
-          <li class="{{if project.active 'disabled selected'}}">
-            <a {{action "switchProject" project.id}} class="clip">
-              <i class="icon {{project.icon}}"></i>
-              &nbsp;
-              {{project.displayName}}
-            </a>
-          </li>
-          <li role="presentation" class="divider"></li>
-        {{/if}}
-        <li>{{#link-to "settings.projects"}}Manage Environments{{/link-to}}</li>
       </ul>
     </div>
-  {{/if}}
+
+    {{#if project}}
+      <div class="dropdown btn-group project-btn">
+        <button type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-expanded="false">
+          <i class="{{project.icon}} icon-fw"></i>&nbsp;{{project.displayName}}
+          <i class="icon icon-chevron-down"></i>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
+          {{#if projectChoices.length}}
+            <li role="presentation" class="dropdown-header">
+              {{#if accessEnabled}}
+                Your Environments
+              {{else}}
+                All Environments
+              {{/if}}
+            </li>
+            {{#each projectChoices as |p|}}
+              <li class="{{if p.active 'disabled selected'}}">
+                <a {{action "switchProject" p.id}} class="clip">
+                  <i class="icon {{p.icon}}"></i>
+                  &nbsp;
+                  {{p.displayName}}
+                </a>
+              </li>
+            {{/each}}
+          {{/if}}
+          {{#if projectChoices.length}}
+            <li role="presentation" class="divider"></li>
+          {{/if}}
+          {{#if projectIsMissing}}
+            <li role="presentation" class="dropdown-header">Selected Environment:</li>
+            <li class="{{if project.active 'disabled selected'}}">
+              <a {{action "switchProject" project.id}} class="clip">
+                <i class="icon {{project.icon}}"></i>
+                &nbsp;
+                {{project.displayName}}
+              </a>
+            </li>
+            <li role="presentation" class="divider"></li>
+          {{/if}}
+          <li>{{#link-to "settings.projects"}}Manage Environments{{/link-to}}</li>
+        </ul>
+      </div>
+    {{/if}}
+    </div>
 </div>
