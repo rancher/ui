@@ -1,12 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  tagName: ['span'],
-  accept: "text/*",
-  btnClass: "btn-sm btn-primary",
-  btnLabel: "Read from File",
+  tagName      : ['span'],
+  accept       : "text/*",
+  btnClass     : "btn-sm btn-primary",
+  btnLabel     : "Read from File",
+  encode       : false,
 
-  _boundChange: null,
+  _boundChange : null,
 
   actions: {
     click() {
@@ -25,11 +26,16 @@ export default Ember.Component.extend({
 
   change(event) {
     var input = event.target;
-    if ( input.files && input.files[0] )
-    {
+    if ( input.files && input.files[0] ) {
       var reader = new FileReader();
       reader.onload = (event2) => {
-        this.sendAction('action', event2.target.result);
+        var out = event2.target.result;
+
+        if (this.get('encode')) {
+          out = btoa(out);
+        }
+
+        this.sendAction('action', out);
       };
       reader.readAsText(input.files[0]);
     }

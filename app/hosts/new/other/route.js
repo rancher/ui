@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import DriverRoute from 'ui/hosts/new/driver-route';
 
-const exclude = ['amazonec2Config','digitaloceanConfig','exoscaleConfig','packetConfig','rackspaceConfig','ubiquityConfig'];
+const exclude = ['amazonec2Config','azureConfig', 'digitaloceanConfig','exoscaleConfig','packetConfig','rackspaceConfig','ubiquityConfig'];
 
 export default DriverRoute.extend({
   driverName: 'other',
