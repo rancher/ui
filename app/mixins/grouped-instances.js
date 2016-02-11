@@ -83,11 +83,10 @@ export default Ember.Mixin.create({
     // Sorting is nice
     groups = groups.sortBy('name');
 
-    // Move no name/standalone containers to the end of the list instead of the beginning
-    if ( groups[0] && groups[0].name === '' )
-    {
-      groups.push(groups.shift());
-    }
+    let standalone = getOrCreateGroup('');
+
+    groups.removeObject(standalone);
+    groups.push(standalone);
 
     groups.forEach((group) => {
       group.collapsed = true;
