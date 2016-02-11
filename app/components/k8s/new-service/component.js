@@ -2,8 +2,16 @@ import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import SelectTab from 'ui/mixins/select-tab';
 
+const serviceTypes = [
+  {label: 'Cluster IP', value: 'ClusterIP'},
+  {label: 'Node Port', value: 'NodePort'},
+  {label: 'Load Balancer', value: 'LoadBalancer'},
+];
+
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
   primaryResource: null,
+  spec: Ember.computed.alias('primaryResource.template.spec'),
+
   editing: false,
 
   actions: {
@@ -16,13 +24,8 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     },
   },
 
-  serviceTypChoices: function() {
-    return this.get('store').getById('schema','kubernetesservice').get('resourceFields.serviceType.options').map((val) => {
-      return {
-        label: val,
-        value: val,
-      };
-    });
+  serviceTypeChoices: function() {
+    return serviceTypes;
   }.property(),
 
   didInsertElement() {
@@ -36,6 +39,16 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     }
 
     this.$("INPUT[type='text']")[0].focus();
+  },
+
+  willSave() {
+    var out = this._super.apply(this,arguments);
+
+    this.set('primaryResource.template.metadata', {
+      name: this.get('model.name'),
+    });
+
+    return out;
   },
 
   doneSaving() {

@@ -4,7 +4,7 @@ export default Ember.Route.extend({
   projects: Ember.inject.service(),
 
   redirect() {
-    if ( this.get('projects.current.kubernetes') )
+    if ( window.lc('authenticated').get('hasKubernetes') )
     {
       this.replaceWith('k8s-tab');
     }

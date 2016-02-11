@@ -1,0 +1,29 @@
+<section class="horizontal-form container-fluid">
+  {{form-name-description
+    model=model
+    showDescription=false
+  }}
+
+  {{k8s/form-image
+    initialImage=model.image
+    initialPull=model.imagePullPolicy
+    changedImage=(action (mut model.image))
+    changedPull=(action (mut model.imagePullPolicy))
+  }}
+
+  {{#advanced-section advanced=advanced}}
+    <section>
+      <ul class="nav nav-tabs nav-tabs-well shadowed" style="display: inline-block">
+        <li role="presentation" class="tab" data-section="command" {{action "selectTab" "command"}}><a href="#">Command</a></li>
+      </ul>
+
+      <div class="horizontal-form well">
+        <div class="section container-fluid" data-section="command">
+          {{k8s/form-command
+            model=model
+          }}
+        </div>
+      </div>
+    </section>
+  {{/advanced-section}}
+</section>

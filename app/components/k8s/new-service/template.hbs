@@ -18,16 +18,16 @@
     <div class="col-sm-12 col-md-8">
       {{new-select
         class="form-control"
-        content=serviceTypChoices
-        value=primaryResource.serviceType
+        content=serviceTypeChoices
+        value=spec.type
       }}
     </div>
   </div>
 
   {{k8s/form-serviceports
-    initialPorts=primaryResource.ports
+    initialPorts=spec.ports
     errors=portErrors
-    changed=(action (mut primaryResource.ports))
+    changed=(action (mut spec.ports))
   }}
 
 
@@ -37,9 +37,9 @@
     </div>
     <div class="col-sm-12 col-md-8">
       {{form-key-value
-        initialMap=primaryResource.selectorContainer
+        initialMap=spec.selector
         allowEmptyValue=false
-        changedStr=(action (mut primaryResource.selectorContainer))
+        changedStr=(action (mut spec.selector))
         nameLabel="Selector"
       }}
     </div>
@@ -51,8 +51,8 @@
     </div>
     <div class="col-sm-12 col-md-8">
       {{form-value-array
-        initialValues=primaryResource.externalIpAddresses
-        changed=(action (mut primaryResource.externalIpAddresses))
+        initialValues=spec.externalIPs
+        changed=(action (mut spec.externalIPs))
         nameLabel="External IP"
         valueLabel="IP Address"
         valuePlaceholder="e.g. 2.24.19.82"
@@ -65,8 +65,8 @@
       <label>Session Affinity</label>
     </div>
     <div class="col-sm-12 col-md-8">
-      <label>{{radio-button selection=primaryResource.sessionAffinity value="None"}} None</label>
-      <label class="r-ml20">{{radio-button selection=primaryResource.sessionAffinity value="ClientIp"}} By client IP</label>
+      <label>{{radio-button selection=spec.sessionAffinity value="None"}} None</label>
+      <label class="r-ml20">{{radio-button selection=spec.sessionAffinity value="ClientIp"}} By client IP</label>
     </div>
   </div>
 </section>

@@ -42,7 +42,6 @@ export default Ember.Component.extend({
   upFn: null,
 
   didInitAttrs() {
-    console.log('didInit');
     var initial = this.get('initialValue');
     if ( initial !== null )
     {

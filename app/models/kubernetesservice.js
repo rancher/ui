@@ -5,10 +5,11 @@ const esc = Ember.Handlebars.Utils.escapeExpression;
 
 var KubernetesService = Service.extend({
   type: 'kubernetesService',
+  spec: Ember.computed.alias('template.spec'),
 
   displayPorts: function() {
     var pub = '';
-    (this.get('ports')||[]).forEach((port, idx) => {
+    (this.get('spec.ports')||[]).forEach((port, idx) => {
       pub += '<span>' + (idx === 0 ? '' : ', ') +
         esc(port.port) +
         '</span>';
@@ -17,23 +18,30 @@ var KubernetesService = Service.extend({
     var out =  '<label>Ports: </label>' + (pub||'<span class="text-muted">None</span>');
 
     return out.htmlSafe();
-  }.property('ports.[]'),
+  }.property('spec.ports.[]'),
 
-  displaySelectors: function() {
-    var pub = '';
-    (this.get('selectorContainer')||'').
-      split(/\s*,\s*/).
-      filter((str) => { return str.length > 0; }).
-      forEach((selector, idx) => {
-        pub += '<span>' + (idx === 0 ? '' : ', ') +
-          esc(selector) +
-          '</span>';
+  selectorsAsArray: function() {
+    var out = [];
+    var sel = this.get('spec.selector');
+    if ( typeof sel === 'string' )
+    {
+      sel.split(/\s*,\s*/).filter((str) => { return str.length > 0; }).forEach((pair) => {
+        var idx = pair.indexOf('=');
+        if ( idx >= 0 )
+        {
+          out.push({label: pair.substr(0,idx), value: pair.substr(idx+1) });
+        }
       });
+    }
+    else if ( typeof sel === 'object' )
+    {
+      Object.keys(sel).forEach((key) => {
+        out.push({label: key, value: sel[key]});
+      });
+    }
 
-    var out =  '<label>Selectors: </label>' + (pub||'<span class="text-muted">None</span>');
-
-    return out.htmlSafe();
-  }.property('ports.[]'),
+    return out;
+  }.property('spec.selector'),
 });
 
 export default KubernetesService;

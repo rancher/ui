@@ -94,6 +94,7 @@ module.exports = function(defaults) {
   app.import('vendor/icons/fonts/rancher-icons.woff', {destDir: 'assets/fonts'});
 
 
+  // Google Font Downloader thing: https://google-webfonts-helper.herokuapp.com/
   app.import('vendor/lato/lato-v11-latin-300.woff',       {destDir: 'assets/fonts'});
   app.import('vendor/lato/lato-v11-latin-300.woff2',      {destDir: 'assets/fonts'});
   app.import('vendor/lato/lato-v11-latin-700.woff',       {destDir: 'assets/fonts'});

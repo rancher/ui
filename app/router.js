@@ -141,19 +141,23 @@ Router.map(function() {
 
       // Kubernetes
       this.route('k8s-tab', {path: '/k8s', resetNamespace: true}, function() {
-        this.route('services', {path: '/services'}, function() {
-          this.route('index', {path: '/'});
-          this.route('new', {path: '/add'});
+        this.route('index', {path: '/'});
+        this.route('new-ns', {path: '/add-ns'});
 
-          this.route('service', {path: '/:service_id'}, function() {
+        this.route('namespace', {path: '/ns/:namespace_id'}, function() {
+          this.route('index', {path: '/'});
+
+          this.route('services', {path: '/services'}, function() {
+            this.route('index', {path: '/'});
+            this.route('new', {path: '/add'});
           });
-        });
 
-        this.route('rcs', {path: '/rcs'}, function() {
-          this.route('index', {path: '/'});
-          this.route('new', {path: '/add'});
+          this.route('rcs', {path: '/rcs'}, function() {
+            this.route('index', {path: '/'});
+            this.route('new', {path: '/add'});
 
-          this.route('rc', {path: '/:rc_id'}, function() {
+            this.route('rc', {path: '/:rc_id'}, function() {
+            });
           });
         });
       });

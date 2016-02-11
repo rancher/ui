@@ -5,6 +5,7 @@ import Service from 'ui/models/service';
 export default Ember.Route.extend({
   prefs     : Ember.inject.service(),
   projects  : Ember.inject.service(),
+  k8s       : Ember.inject.service(),
   access    : Ember.inject.service(),
   userTheme : Ember.inject.service('user-theme'),
 
@@ -117,6 +118,10 @@ export default Ember.Route.extend({
       this.intermediateTransitionTo('authenticated');
       this.set(`tab-session.${C.TABSESSION.PROJECT}`, projectId);
       this.refresh();
+    },
+
+    switchNamespace(namespaceId) {
+      this.transitionTo('k8s-tab.namespace', namespaceId);
     },
   },
 });

@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Socket from 'ui/utils/socket';
 import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
+import { hasThings } from 'ui/authenticated/project/controller';
 
 export default Ember.Route.extend({
   prefs     : Ember.inject.service(),
@@ -36,6 +37,8 @@ export default Ember.Route.extend({
 
       return this.loadSchemas().then(() => {
         return this.loadStacks().then((stacks) => {
+          hasThings(stacks, project, window.lc('authenticated'));
+
           return Ember.Object.create({
             project: project,
             stacks: stacks,

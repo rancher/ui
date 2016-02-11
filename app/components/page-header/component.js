@@ -6,6 +6,7 @@ export default Ember.Component.extend({
   projects: Ember.inject.service(),
   project: Ember.computed.alias('projects.current'),
   prefs: Ember.inject.service(),
+  k8s: Ember.inject.service(),
 
   currentPath: null,
   authController: null,
@@ -71,6 +72,10 @@ export default Ember.Component.extend({
 
     switchProject(id) {
       this.sendAction('switchProject', id);
+    },
+
+    switchNamespace(id) {
+      this.sendAction('switchNamespace', id);
     },
 
     goToPrevious() {

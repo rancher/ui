@@ -1,0 +1,54 @@
+<section class="header">
+  <h1>Add Replication Controller</h1>
+</section>
+
+<section class="horizontal-form container-fluid">
+  {{form-name-description
+    model=primaryResource
+    nameLabel="Controller Name"
+  }}
+
+  {{form-scale
+    classNames="form-group"
+    label="Replicas"
+    initialScale=rcSpec.replicas
+    showGlobal=false
+    setScale=(action (mut rcSpec.replicas))
+  }}
+
+  {{#advanced-section}}
+    {{k8s/form-pod-options
+      model=podSpec
+    }}
+  {{/advanced-section}}
+</section>
+
+<section class="header">
+  <h1>Container Templates</h1>
+</section>
+{{form-launch-config-switch
+  index=containerIndex
+  choices=containerChoices
+  hasVm=false
+  showAdd=true
+  initialIndex=0
+  addLabel="Container"
+  add=(action 'addContainer')
+  switch=(action 'selectContainer')
+}}
+
+{{#each podSpec.containers as |containerSpec index|}}
+  <div data-containerindex="{{index}}" class="{{unless (eq index containerIndex) 'hide'}}">
+    {{k8s/form-container
+      model=containerSpec
+      showDescription=false
+    }}
+  </div>
+{{/each}}
+
+{{top-errors errors=errors}}
+{{#save-cancel saveDisabled=(eq containerChoices.length 0) save="save" cancel="cancel"}}
+  {{#if (gt containerChoices.length 0)}}
+    <button class="btn btn-default" {{action "removeContainer"}}>Remove this Container</button>
+  {{/if}}
+{{/save-cancel}}

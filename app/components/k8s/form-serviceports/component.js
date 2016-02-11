@@ -21,7 +21,6 @@ export default Ember.Component.extend({
 
   didInitAttrs() {
     var out = [];
-    var forceNew = this.get('forceNew');
 
     var ports = this.get('initialPorts')||[];
     out = JSON.parse(JSON.stringify(ports));

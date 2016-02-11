@@ -2,8 +2,12 @@
   <div class="logo"></div>
   <nav>
     {{#if project}}
-      {{#link-to "k8s-tab" projectId }}Kubernetes{{/link-to}}
-      {{#link-to "applications-tab" projectId }}Applications{{/link-to}}
+      {{#if (or isKubernetesTab hasKubernetes)}}
+        {{#link-to "k8s-tab" projectId }}Kubernetes{{/link-to}}
+      {{/if}}
+      {{#if (or isApplicationsTab (not (or isKubernetesTab hasKubernetes)))}}
+        {{#link-to "applications-tab" projectId }}Applications{{/link-to}}
+      {{/if}}
       {{#link-to "infrastructure-tab" projectId }}Infrastructure{{/link-to}}
       {{#if isAdmin}}
         <span class="link-admin">
@@ -87,22 +91,23 @@
     {{/if}}
 
     {{#if isKubernetesTab}}
-      {{#link-to "k8s-tab.services"}}<i class="icon icon-compass"></i>Services{{/link-to}}
-      {{#link-to "k8s-tab.rcs"}}<i class="icon icon-tachometer"></i>Replication Controllers{{/link-to}}
+      {{#link-to "k8s-tab.namespace.services"}}<i class="icon icon-compass"></i>Services{{/link-to}}
+      {{#link-to "k8s-tab.namespace.rcs"}}<i class="icon icon-tachometer"></i>Replication Controllers{{/link-to}}
     {{/if}}
 
     {{#if isAdminTab}}
       {{#link-to "admin-tab.audit-logs"}}<i class="icon icon-folder-open"></i>Audit Log{{/link-to}}
       {{#link-to "admin-tab.processes"}}<i class="icon icon-processes"></i>Processes{{/link-to}}
-      {{#link-to "admin-tab.accounts"}}<i class="icon icon-users"></i>Accounts{{/link-to}}
+     {{#link-to "admin-tab.accounts"}}<i class="icon icon-users"></i>Accounts{{/link-to}}
       {{#link-to "admin-tab.auth"}}<i class="icon icon-key"></i>Access Control{{/link-to}}
       {{#link-to "admin-tab.settings"}}<i class="icon icon-network"></i>Settings{{/link-to}}
     {{/if}}
   </nav>
 
   {{#if project}}
-    <div class="dropdown btn-group project-btn pull-right">
+    <div class="dropdown btn-group project-btn {{if isKubernetesTab 'alt'}} pull-right">
       <button type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-expanded="false">
+        <label>Environment</label>
         <i class="{{project.icon}} icon-fw"></i>&nbsp;{{project.displayName}}
         <i class="icon icon-chevron-down"></i>
       </button>
@@ -143,4 +148,29 @@
       </ul>
     </div>
   {{/if}}
+
+  {{#if isKubernetesTab}}
+    <div class="dropdown btn-group project-btn pull-right">
+      <button type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-expanded="false">
+        <label>Namespace</label>
+        <i class="icon icon-thumbnails icon-fw"></i>&nbsp;{{k8s.namespace.displayName}}
+        <i class="icon icon-chevron-down"></i>
+      </button>
+      <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
+        {{#if k8s.namespaces.length}}
+          <li role="presentation" class="dropdown-header">Namespaces</li>
+          {{#each k8s.namespaces as |ns|}}
+            <li class="{{if (eq ns k8s.namespace) 'disabled selected'}}">
+              <a {{action "switchNamespace" ns.id}} class="clip">
+                <i class="icon {{ns.icon}}"></i>
+                &nbsp;
+                {{ns.displayName}}
+              </a>
+            </li>
+          {{/each}}
+        {{/if}}
+      </ul>
+    </div>
+  {{/if}}
+
 </div>
