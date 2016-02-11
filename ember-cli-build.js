@@ -101,5 +101,10 @@ module.exports = function(defaults) {
   app.import('vendor/lato/lato-v11-latin-regular.woff',   {destDir: 'assets/fonts'});
   app.import('vendor/lato/lato-v11-latin-regular.woff2',  {destDir: 'assets/fonts'});
 
+  app.import('vendor/roboto/roboto-v15-latin-700.woff',       {destDir: 'assets/fonts'});
+  app.import('vendor/roboto/roboto-v15-latin-700.woff2',      {destDir: 'assets/fonts'});
+  app.import('vendor/roboto/roboto-v15-latin-regular.woff',   {destDir: 'assets/fonts'});
+  app.import('vendor/roboto/roboto-v15-latin-regular.woff2',  {destDir: 'assets/fonts'});
+
   return app.toTree();
 };

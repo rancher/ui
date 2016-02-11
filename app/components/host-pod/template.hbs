@@ -1,7 +1,7 @@
 <div class="pod-header clearfix">
 
   <div class="pull-left pod-state {{stateBackground}}"><span>{{model.displayState}}</span></div>
-  {{action-menu model=model class="pull-right"}}
+  <div class="pull-right">{{action-menu model=model}}</div>
 </div>
   <div class="pod-name">
     {{#if isMachine}}
@@ -84,7 +84,6 @@
         <div class="container-subpod-info">
           <div class="subpod-header clearfix {{if group.collapsed 'open' 'closed'}}">
             <h6 class="clip pull-left">{{#if group.name}}Stack: {{group.name}}{{else}}Standalone Containers{{/if}}</h6>
-            <span class="pull-right hand" {{action 'toggleGroup' group}}><i class="icon icon-fw icon-chevron-down"></i></span>
           </div>
           {{#liquid-if group.collapsed class='clearfix'}}
             {{#each group.instances as |item|}}
