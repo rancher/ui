@@ -1,0 +1,20 @@
+<td>
+  {{badge-state model=model}}
+</td>
+<td class="force-wrap">
+  {{model.displayName}}
+</td>
+<td>
+  {{model.template.spec.replicas}}
+</td>
+<td class="force-wrap">
+  {{#each model.template.spec.template.spec.containers as |c|}}
+    <span>{{c.image}}</span>
+  {{/each}}
+</td>
+<td class="force-wrap">
+  &nbsp;
+</td>
+<td class="actions">
+  {{action-menu model=model}}
+</td>

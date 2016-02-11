@@ -18,17 +18,7 @@ export default Ember.Service.extend(BrowserStore, {
       {
         this.notifyPropertyChange(key);
 
-        if ( key === C.SESSION.PROJECT && this.get(C.SESSION.ACCOUNT_ID) )
-        {
-          // If the active project changes, change this tab too.
-          // Hack: using the lc global...
-          try {
-            window.lc('authenticated').send('switchProject', JSON.parse(neu));
-          }
-          catch (e) {
-          }
-        }
-        else if ( key === C.SESSION.ACCOUNT_ID && old && old !== 'null' && !neu )
+        if ( key === C.SESSION.ACCOUNT_ID && old && old !== 'null' && !neu )
         {
           // If the active user changes, flee
           try {

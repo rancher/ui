@@ -46,14 +46,14 @@ export default Ember.Controller.extend(Sortable, {
     url += this.get('app.apiEndpoint').replace(/^\/+/,'');
 
     // Go to the project-specific version
-    var projectId = this.get('session').get(C.SESSION.PROJECT);
+    var projectId = this.get('tab-session').get(C.TABSESSION.PROJECT);
     if ( projectId )
     {
       url += '/projects/' + projectId;
     }
 
     return url;
-  }.property('endpointService.absolute','app.apiEndpoint','session.'+C.SESSION.PROJECT),
+  }.property('endpointService.absolute','app.apiEndpoint',`tab-session.${C.TABSESSION.PROJECT}`),
 
   endpointWithAuth: function() {
     var url = this.get('displayEndpoint');
@@ -69,5 +69,5 @@ export default Ember.Controller.extend(Sortable, {
     }
 
     return url;
-  }.property('displayEndpoint', 'session.'+C.SESSION.TOKEN,'session.'+C.SESSION.PROJECT)
+  }.property('displayEndpoint', `session.${C.SESSION.TOKEN}`,`tab-session.${C.TABSESSION.PROJECT}`)
 });

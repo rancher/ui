@@ -47,6 +47,7 @@ module.exports = function(environment) {
       proxyEndpoint: '/v1/proxy',
       wsEndpoint: '/v1/subscribe?eventNames=resource.change' +
                     '&include=hosts' +
+                    '&include=services' +
                     '&include=instances' +
                     '&include=instance' +
                     '&include=instanceLinks' +

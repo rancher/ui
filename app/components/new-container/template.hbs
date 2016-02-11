@@ -95,10 +95,7 @@
     {{form-divider}}
   </section>
 
-  <div class="toggle-advanced">
-    <a href="#" {{action "toggleAdvanced"}}>Advanced Options {{#if advanced}}<i class="icon icon-chevron-up"></i>{{else}}<i class="icon icon-chevron-down"></i>{{/if}}</a>
-  </div>
-  <div class="{{unless advanced 'hide'}}">
+  {{#advanced-section advanced=advanced}}
     <section>
       <ul class="nav nav-tabs nav-tabs-well shadowed" style="display: inline-block">
         {{#if isVm}}
@@ -192,7 +189,7 @@
 
     </div>
     </section>
-  </div>
+  {{/advanced-section}}
 </div>
 
 {{#if (and isService (not isSidekick))}}

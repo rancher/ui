@@ -4,7 +4,6 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 var Project = Resource.extend(PolledResource, {
-  session: Ember.inject.service(),
   prefs: Ember.inject.service(),
   projects: Ember.inject.service(),
 
@@ -25,7 +24,7 @@ var Project = Resource.extend(PolledResource, {
     delete: function() {
       return this.delete().then(() => {
         // If you're in the project that was deleted, go back to the default project
-        if ( this.get('id') === this.get('session.'+ C.SESSION.PROJECT) )
+        if ( this.get('active') )
         {
           window.location.href = window.location.href;
         }
@@ -42,7 +41,7 @@ var Project = Resource.extend(PolledResource, {
 
     deactivate: function() {
       return this.doAction('deactivate').then(() => {
-        if ( this.get('id') === this.get('session.'+ C.SESSION.PROJECT) )
+        if ( this.get('active') )
         {
           window.location.href = window.location.href;
         }
@@ -98,8 +97,8 @@ var Project = Resource.extend(PolledResource, {
   }.property('prefs.' + C.PREFS.PROJECT_DEFAULT, 'id'),
 
   active: function() {
-    return this.get('session.' + C.SESSION.PROJECT) === this.get('id');
-  }.property('session' + C.SESSION.PROJECT, 'id'),
+     return ( this.get('id') === this.get(`tab-session.${C.TABSESSION.PROJECT}`) );
+  }.property(`tab-session.${C.TABSESSION.PROJECT}`, 'id'),
 
   canRemove: function() {
     return !!this.get('actionLinks.remove') && ['removing','removed','purging','purged'].indexOf(this.get('state')) === -1;

@@ -9,7 +9,7 @@ export function initialize(instance) {
   var container = instance.container;
   var application = container.lookup('application:main');
   var store = container.lookup('store:main');
-  var session = container.lookup('service:session');
+  var tabSession = container.lookup('service:tab-session');
   store.set('removeAfterDelete', false);
 
   store.reopen({
@@ -22,7 +22,7 @@ export function initialize(instance) {
       out[C.HEADER.NO_CHALLENGE] = C.HEADER.NO_CHALLENGE_VALUE;
 
       // Send the current project id as a header if in a project
-      var projectId = session.get(C.SESSION.PROJECT);
+      var projectId = tabSession.get(C.TABSESSION.PROJECT);
       if ( projectId )
       {
         out[C.HEADER.PROJECT] = projectId;

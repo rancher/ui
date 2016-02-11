@@ -1,17 +1,21 @@
-<div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Name</label>
+{{#if showName}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{nameLabel}}</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{input type="text" value=model.name classNames="form-control" placeholder=namePlaceholder disabled=nameDisabled}}
+    </div>
   </div>
-  <div class="col-sm-12 col-md-8">
-    {{input type="text" value=model.name classNames="form-control" placeholder=namePlaceholder disabled=nameDisabled}}
-  </div>
-</div>
+{{/if}}
 
-<div class="row">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label>Description</label>
+{{#if showDescription}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>{{descriptionLabel}}</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{textarea value=model.description classNames="form-control no-resize" rows="2" placeholder=descriptionPlaceholder disabled=descriptionDisabled}}
+    </div>
   </div>
-  <div class="col-sm-12 col-md-8">
-    {{textarea value=model.description classNames="form-control no-resize" rows="2" placeholder=descriptionPlaceholder}}
-  </div>
-</div>
+{{/if}}

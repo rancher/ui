@@ -7,6 +7,8 @@ export default Ember.Component.extend({
   index: null,
   choices: null,
   showAdd: true,
+  addLabel: 'Sidekick Container',
+  initialIndex: -1,
 
   actions: {
     switch(index) {
@@ -19,7 +21,7 @@ export default Ember.Component.extend({
   },
 
   didInitAttrs() {
-    this.send('switch',-1);
+    this.send('switch', this.get('initialIndex'));
   },
 
   hasSidekicks: function() {
