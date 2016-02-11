@@ -52,6 +52,15 @@ var Project = Resource.extend(PolledResource, {
       // @TODO bad
       window.lc('authenticated').send('switchProject', this.get('id'));
     },
+
+    promptStop: function() {
+      this.get('application').setProperties({
+        showConfirmDeactivate : true,
+        originalModel         : this,
+        action                : 'deactivate'
+      });
+    },
+
   },
 
   availableActions: function() {
@@ -63,7 +72,7 @@ var Project = Resource.extend(PolledResource, {
       { divider: true },
       { label: 'Edit',                      icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
       { label: 'Activate',                  icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
-      { label: 'Deactivate',                icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate},
+      { label: 'Deactivate',                icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate,        altAction: 'deactivate'},
       { divider: true },
       { label: 'Delete',                    icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canRemove'), altAction: 'delete' },
       { label: 'Restore',                   icon: '',                       action: 'restore',      enabled: !!a.restore },

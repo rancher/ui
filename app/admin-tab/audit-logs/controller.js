@@ -3,11 +3,11 @@ import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend(Sortable, {
-  application: Ember.inject.controller(),
-  queryParams: ['sortBy', 'sortOrder', 'eventType', 'resourceType', 'resourceId', 'clientIp', 'authType'],
+  application       : Ember.inject.controller(),
+  queryParams       : ['sortBy', 'sortOrder', 'eventType', 'resourceType', 'resourceId', 'clientIp', 'authType'],
 
-  sortableContent: Ember.computed.alias('model.auditLog'),
-  resourceTypeAndId: null,
+  sortableContent   : Ember.computed.alias('model.auditLog'),
+  resourceTypeAndId : null,
 
   actions: {
     updateResourceType: function(type) {
@@ -25,82 +25,82 @@ export default Ember.Controller.extend(Sortable, {
 
     search: function() {
       this.setProperties({
-        eventType: this.get('filters.eventType'),
-        resourceType: this.get('filters.resourceType'),
-        resourceId: this.get('filters.resourceId'),
-        clientIp: this.get('filters.clientIp'),
-        authType: this.get('filters.authType'),
+        eventType    : this.get('filters.eventType'),
+        resourceType : this.get('filters.resourceType'),
+        resourceId   : this.get('filters.resourceId'),
+        clientIp     : this.get('filters.clientIp'),
+        authType     : this.get('filters.authType'),
       });
       this.send('filterLogs');
     },
 
     showResponseObjects: function(request, response) {
       this.get('application').setProperties({
-        showAuditLogResponses: true,
-        requestObject: request,
-        responseObject: response,
+        showAuditLogResponses : true,
+        requestObject         : request,
+        responseObject        : response,
       });
     },
 
     clearAll: function() {
       this.set('filters', {
-        accountId: null,
-        authType: null,
-        authenticatedAsAccountId: null,
-        authenticatedAsIdentityId: null,
-        created: null,
-        clientIp: null,
-        description: null,
-        eventType: null,
-        id: null,
-        kind: null,
-        resourceId: null,
-        resourceType: null,
-        runtime: null,
+        accountId                 : null,
+        authType                  : null,
+        authenticatedAsAccountId  : null,
+        authenticatedAsIdentityId : null,
+        created                   : null,
+        clientIp                  : null,
+        description               : null,
+        eventType                 : null,
+        id                        : null,
+        kind                      : null,
+        resourceId                : null,
+        resourceType              : null,
+        runtime                   : null,
       });
 
       this.setProperties({
         eventType: null,
-        resourceType: null,
-        resourceId: null,
-        clientIp: null,
-        authType: null,
+        resourceType : null,
+        resourceId   : null,
+        clientIp     : null,
+        authType     : null,
       });
 
       this.setProperties({
-        sortBy: 'id',
-        sortOrder: 'desc',
+        sortBy    : 'id',
+        sortOrder : 'desc',
       });
       this.set('authTypeReadable', null);
       this.send('filterLogs');
     },
   },
 
-  sortBy: 'id',
-  sortOrder: 'desc',
-  descending: true,
-  limit: 100,
-  eventType: null,
-  resourceType: null,
-  resourceId: null,
-  clientIp: null,
-  authType: null,
-  authTypes: null,
-  authTypeReadable: null,
+  sortBy           : 'id',
+  sortOrder        : 'desc',
+  descending       : true,
+  limit            : 100,
+  eventType        : null,
+  resourceType     : null,
+  resourceId       : null,
+  clientIp         : null,
+  authType         : null,
+  authTypes        : null,
+  authTypeReadable : null,
   filters: {
-    accountId: null,
-    authType: null,
-    authenticatedAsAccountId: null,
-    authenticatedAsIdentityId: null,
-    created: null,
-    description: null,
-    eventType: null,
-    clientIp: null,
-    id: null,
-    kind: null,
-    resourceId: null,
-    resourceType: null,
-    runtime: null,
+    accountId                 : null,
+    authType                  : null,
+    authenticatedAsAccountId  : null,
+    authenticatedAsIdentityId : null,
+    created                   : null,
+    description               : null,
+    eventType                 : null,
+    clientIp                  : null,
+    id                        : null,
+    kind                      : null,
+    resourceId                : null,
+    resourceType              : null,
+    runtime                   : null,
   },
 
   setup: function() {

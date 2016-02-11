@@ -1,26 +1,21 @@
 import Ember from 'ember';
 import ThrottledResize from 'ui/mixins/throttled-resize';
 
-var MIN_WIDTH = 260; // Minimum width of a column, including margin-right
-var COLUMN_MARGIN = 10; // this must match the rule in styles/pod.scss .pod-column
-var SELECTOR = '.pod-column'; // Each column must have this class
+const MIN_WIDTH     = 260; // Minimum width of a column, including margin-right
+const COLUMN_MARGIN = 10; // this must match the rule in styles/pod.scss .pod-column
 
-var columnWidth = MIN_WIDTH; // this will get changed by onResize;
+let columnWidth     = MIN_WIDTH; // this will get changed by onResize;
 
-// Automatically apply the width to any columns that get added without a resize
-jQuery(SELECTOR).initialize(function() {
-  $(this).css('width', columnWidth+'px');
-});
 
 export default Ember.Component.extend(ThrottledResize, {
-  pods: null, // Override me with an array of content pods
-  emptyMessage: null,
+  pods         : null, // Override me with an array of content pods
+  emptyMessage : null,
 
-  classNames: ['pods','clearfix'],
-  tagName: 'section',
+  classNames   : ['pods','clearfix'],
+  tagName      : 'section',
 
-  columnCount: 3, // Will be reset on didInsertElement and resize
-  podCount: Ember.computed.alias('pods.length'),
+  columnCount  : 3, // Will be reset on didInsertElement and resize
+  podCount     : Ember.computed.alias('pods.length'),
 
   onResize: function() {
     try {
@@ -35,16 +30,11 @@ export default Ember.Component.extend(ThrottledResize, {
       var columnCount = Math.max(1, Math.floor(logicalWidth/(MIN_WIDTH+COLUMN_MARGIN)));
       columnWidth = Math.max(50, Math.floor(logicalWidth/columnCount) - COLUMN_MARGIN - columnCount);
 
-      //console.log('section:',sectionWidth,'margin:',COLUMN_MARGIN,'logical:',logicalWidth,'count:',columnCount,'width:',columnWidth);
-
       if ( this.get('columnCount') !== columnCount )
       {
-        this.set('columnCount', columnCount);
+        this.set('columnCount', Math.min(columnCount, this.get('podCount')));
       }
 
-      Ember.run(this, () => {
-        this.$(SELECTOR).css('width', columnWidth+'px');
-      });
     } catch (e) {
       // Just in case..
     }

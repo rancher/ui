@@ -40,6 +40,15 @@ var Service = Resource.extend({
       return this.doAction('rollback');
     },
 
+    promptStop: function() {
+      this.get('application').setProperties({
+        showConfirmDeactivate : true,
+        originalModel         : this,
+        action                : 'deactivate'
+      });
+
+    },
+
     edit() {
       var type = this.get('type').toLowerCase();
       if ( type === 'loadbalancerservice' )
@@ -150,7 +159,7 @@ var Service = Resource.extend({
       { label: 'Finish Upgrade',  icon: 'icon icon-success',          action: 'finishUpgrade',  enabled: !!a.finishupgrade },
       { label: 'Rollback',        icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback },
       { label: 'Start',           icon: 'icon icon-play',             action: 'activate',       enabled: !!a.activate,    color: 'text-success'},
-      { label: 'Stop',            icon: 'icon icon-stop',             action: 'deactivate',     enabled: !!a.deactivate,  color: 'text-danger'},
+      { label: 'Stop',            icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate', color: 'text-danger'},
       { label: 'Delete',          icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
       { label: 'Purge',           icon: '',                           action: 'purge',          enabled: !!a.purge},
       { divider: true },

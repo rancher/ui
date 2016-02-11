@@ -11,13 +11,14 @@ export default Ember.Component.extend({
     return this.get(`prefs.${C.PREFS.THEME}`);
   }),
 
-  click(e) {
-    var userTheme = this.get('userTheme');
-    var currentTheme  = userTheme.getTheme();
-    var selectedTheme = $(e.target).data('value');
+  actions: {
+    changeTheme: function(theme) {
+      var userTheme = this.get('userTheme');
+      var currentTheme  = userTheme.getTheme();
 
-    if (selectedTheme !== currentTheme) {
-      userTheme.setTheme(selectedTheme);
+      if (theme !== currentTheme) {
+        userTheme.setTheme(theme);
+      }
     }
   },
 

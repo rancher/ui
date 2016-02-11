@@ -44,4 +44,5 @@ export default Ember.Controller.extend({
   showContainerLogs       : null,
   openProcessesError      : null,
   showAuditLogResponses   : null,
+  showConfirmDeactivate   : null,
 });

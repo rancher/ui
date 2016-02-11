@@ -3,14 +3,13 @@
   <nav>
     {{#if project}}
       {{#if (or isKubernetesTab hasKubernetes)}}
-        {{#link-to "k8s-tab" projectId }}Kubernetes{{/link-to}}
+        {{#link-to "k8s-tab" projectId id="k8s-tab"}}Kubernetes{{/link-to}}
       {{/if}}
-      {{#link-to "applications-tab" projectId }}Applications{{/link-to}}
-      {{#link-to "infrastructure-tab" projectId }}Infrastructure{{/link-to}}
+      {{#link-to "applications-tab" projectId id="applications-tab"}}Applications{{/link-to}}
+      {{#link-to "infrastructure-tab" projectId id="infrastructure-tab"}}Infrastructure{{/link-to}}
       {{#if isAdmin}}
         <span class="link-admin">
-          {{#link-to "admin-tab"}}Admin
-          {{/link-to}}
+          {{#link-to "admin-tab" id="admin-tab"}}Admin{{/link-to}}
           {{#if showAccessWarning}}
             {{#tooltip-element class="tooltip-warning" type='tooltip-warning'}}
               {{#link-to "admin-tab.auth" data-toggle="tooltip" data-placement="bottom"}}!{{/link-to}}
@@ -69,38 +68,10 @@
 
 <div class="bottom-row clearfix ">
   <nav class="pull-left">
-    {{#if isInfrastructureTab}}
-      {{#link-to "hosts"}}<i class="icon icon-host"></i>Hosts{{/link-to}}
-      {{#link-to "containers"}}<i class="icon icon-box"></i>Containers{{/link-to}}
-      {{#if hasVm}}
-        {{#link-to "virtualmachines"}}<i class="icon icon-vm"></i>Virtual Machines{{/link-to}}
-      {{/if}}
-      {{#link-to "storagepools"}}<i class="icon icon-hdd"></i>Storage Pools{{/link-to}}
-      {{#link-to "certificates"}}<i class="icon icon-certificate"></i>Certificates{{/link-to}}
-      {{#link-to "registries" role="menuitem" tabindex="-1"}}<i class="icon icon-database"></i>Registries{{/link-to}}
-    {{/if}}
-
-    {{#if isApplicationsTab}}
-      {{#link-to "environments" (query-params which="user")}}<i class="icon icon-layers"></i> Stacks{{/link-to}}
-      {{#if hasSystem}}
-        {{#link-to "environments" (query-params which="system")}}<i class="icon icon-network"></i>System{{/link-to}}
-      {{/if}}
-      {{#link-to "applications-tab.catalog"}}<i class="icon icon-catalog"></i> Catalog{{/link-to}}
-    {{/if}}
-
-    {{#if isKubernetesTab}}
-      {{#link-to "k8s-tab.namespace.services" namespace.id}}<i class="icon icon-compass"></i>Services{{/link-to}}
-      {{#link-to "k8s-tab.namespace.rcs" namespace.id}}<i class="icon icon-tachometer"></i>RCs{{/link-to}}
-      {{#link-to "k8s-tab.namespace.pods" namespace.id}}<i class="icon icon-containers"></i>Pods{{/link-to}}
-    {{/if}}
-
-    {{#if isAdminTab}}
-      {{#link-to "admin-tab.audit-logs"}}<i class="icon icon-folder-open"></i>Audit Log{{/link-to}}
-      {{#link-to "admin-tab.processes"}}<i class="icon icon-processes"></i>Processes{{/link-to}}
-     {{#link-to "admin-tab.accounts"}}<i class="icon icon-users"></i>Accounts{{/link-to}}
-      {{#link-to "admin-tab.auth"}}<i class="icon icon-key"></i>Access Control{{/link-to}}
-      {{#link-to "admin-tab.settings"}}<i class="icon icon-network"></i>Settings{{/link-to}}
-    {{/if}}
+    {{!-- if you're goigng to create a new sub-nav menu create a partial under the 'templates/tabs' folder --}}
+    {{!-- with the same name as the route, e.g. infrastructure-tab has a tabs/infrastructure-tab.hbs --}}
+    {{!-- this is so we have have hover over toplevel nav and see secondary nav choices --}}
+    {{partial subnavPartial}}
   </nav>
 
   {{#if project}}
