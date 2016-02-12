@@ -14,11 +14,13 @@ export default Ember.Service.extend(BrowserStore, {
       var old = event.originalEvent.oldValue;
       var neu = event.originalEvent.newValue;
 
+      console.log('Change', key, '=', old, '->', neu);
+
       if ( old !== neu )
       {
         this.notifyPropertyChange(key);
 
-        if ( key === C.SESSION.ACCOUNT_ID && old && old !== 'null' && !neu )
+        if ( key === C.SESSION.ACCOUNT_ID && old && neu && old !== neu )
         {
           // If the active user changes, flee
           try {

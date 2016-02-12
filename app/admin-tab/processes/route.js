@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   queryParams: {
@@ -21,6 +22,19 @@ export default Ember.Route.extend({
       queryParams: this.paramsFor('admin-tab.processes')
     });
   },
+
+  beforeModel: function() {
+    var store = this.get('store');
+    var headers = {
+      [C.HEADER.PROJECT]: undefined,
+    };
+
+    return Ember.RSVP.all([
+      store.find('schema','processinstance', {headers: headers}),
+      store.find('schema','processexecution', {headers: headers}),
+    ]);
+  },
+
   model: function(params) {
     return this.store.find('processinstance', null, this.parseParams(params)).then((response) => {
       var resourceTypes = this.get('store').all('schema').filterBy('links.collection').map((x) => { return x.get('_id'); });

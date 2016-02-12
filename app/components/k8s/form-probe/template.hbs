@@ -1,0 +1,99 @@
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">{{label}}</label>
+  </div>
+  <div class="col-sm-12 col-md-10">
+    <div class="radio input pull-left r-mr20">
+      <label class="form-control-static">{{radio-button selection=checkType value="none"}} None</label>
+    </div>
+    <div class="radio input pull-left r-mr20">
+      <label class="form-control-static">{{radio-button selection=checkType value="exec"}} Command Exits 0</label>
+    </div>
+    <div class="radio input pull-left r-mr20">
+      <label class="form-control-static">{{radio-button selection=checkType value="tcp"}} TCP Connection Opens</label>
+    </div>
+    <div class="radio input pull-left">
+      <label class="form-control-static">{{radio-button selection=checkType value="http"}} HTTP GET Responds 2xx/3xx</label>
+    </div>
+  </div>
+</div>
+
+{{#liquid-if (not-eq checkType "none")}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">Initial Delay</label>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="input-group">
+        {{input class="form-control" type="text" value=initialDelay}}
+        <span class="input-group-addon">sec</span>
+      </div>
+    </div>
+
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">Timeout</label>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      <div class="input-group">
+        {{input class="form-control" type="text" value=timeout}}
+        <span class="input-group-addon">sec</span>
+      </div>
+    </div>
+  </div>
+{{/liquid-if}}
+
+{{#liquid-if (eq checkType "exec")}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">Command</label>
+    </div>
+    <div class="col-sm-12 col-md-10">
+      {{input-command changed=(action (mut exec.command)) class="form-control" type="text" placeholder="e.g. /bin/healthcheck"}}
+    </div>
+  </div>
+{{/liquid-if}}
+
+{{#liquid-if (eq checkType "tcp")}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">Port</label>
+    </div>
+    <div class="col-sm-12 col-md-2">
+      {{input class="form-control" type="text" value=tcp.port placeholder="e.g. 22"}}
+    </div>
+  </div>
+{{/liquid-if}}
+
+{{#liquid-if (eq checkType "http")}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">Scheme</label>
+    </div>
+    <div class="col-sm-12 col-md-2">
+      {{input class="form-control" type="text" value=http.scheme placeholder="e.g. http"}}
+    </div>
+
+    <div class="col-sm-12 col-md-1 form-label">
+      <label class="form-control-static">Host</label>
+    </div>
+    <div class="col-sm-12 col-md-4">
+      {{input class="form-control" type="text" value=http.host placeholder="Default: Pod IP"}}
+    </div>
+
+    <div class="col-sm-12 col-md-1 form-label">
+      <label class="form-control-static">Port</label>
+    </div>
+    <div class="col-sm-12 col-md-2">
+      {{input class="form-control" type="text" value=http.port placeholder="e.g. 80"}}
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">Request Path</label>
+    </div>
+    <div class="col-sm-12 col-md-10">
+      {{input class="form-control" type="text" value=http.path placeholder="e.g. /healthcheck"}}
+    </div>
+  </div>
+{{/liquid-if}}
+
