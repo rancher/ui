@@ -150,6 +150,7 @@ var C = {
   // Ephemeral and unique for each browser tab
   TABSESSION: {
     PROJECT: 'projectId',
+    NAMESPACE: 'namespaceId',
   },
 
   SETTING: {
