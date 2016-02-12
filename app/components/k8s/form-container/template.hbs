@@ -11,16 +11,45 @@
     changedPull=(action (mut model.imagePullPolicy))
   }}
 
+  {{k8s/form-containerports
+    initialPorts=model.ports
+    changed=(action (mut model.ports))
+  }}
+
   {{#advanced-section advanced=advanced}}
     <section>
       <ul class="nav nav-tabs nav-tabs-well shadowed" style="display: inline-block">
         <li role="presentation" class="tab" data-section="command" {{action "selectTab" "command"}}><a href="#">Command</a></li>
+        <li role="presentation" class="tab" data-section="security" {{action "selectTab" "security"}}><a href="#">Security</a></li>
+        <li role="presentation" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}><a href="#">Health Check</a></li>
       </ul>
 
       <div class="horizontal-form well">
         <div class="section container-fluid" data-section="command">
           {{k8s/form-command
             model=model
+          }}
+        </div>
+
+        <div class="section container-fluid" data-section="security">
+          {{k8s/form-security
+            model=model
+          }}
+        </div>
+
+        <div class="section container-fluid" data-section="healthcheck">
+          {{k8s/form-probe
+            model=model
+            key="readinessProbe"
+            label="Readiness Probe"
+          }}
+
+          <hr/>
+
+          {{k8s/form-probe
+            model=model
+            key="livenessProbe"
+            label="Liveness Probe"
           }}
         </div>
       </div>

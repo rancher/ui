@@ -121,7 +121,13 @@ export default Ember.Route.extend({
     },
 
     switchNamespace(namespaceId) {
-      this.transitionTo('k8s-tab.namespace', namespaceId);
+      var route = window.lc('application').get('currentRouteName');
+      if ( ['k8s-tab.namespace.rcs.index','k8s-tab.namespace.services.index'].indexOf(route) === -1 )
+      {
+        route = 'k8s-tab.namespace';
+      }
+
+      this.transitionTo(route, namespaceId);
     },
   },
 });

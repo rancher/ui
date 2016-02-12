@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import ShellQuote from 'npm:shell-quote';
 
 export default Ember.Component.extend({
   // Inputs
@@ -8,8 +7,6 @@ export default Ember.Component.extend({
   tagName: '',
 
   didInitAttrs() {
-    this.initCommand();
-    this.initEntryPoint();
     this.initEnvironment();
   },
 
@@ -23,74 +20,6 @@ export default Ember.Component.extend({
       this.set('model.env', ary);
     },
   },
-
-  // ----------------------------------
-  // Docker/Rancher Command (K8S args)
-  // ----------------------------------
-  strCommand: '',
-  initCommand: function() {
-    var ary = this.get('model.args');
-    if ( ary )
-    {
-      this.set('strCommand', ShellQuote.quote(ary));
-    }
-    else
-    {
-      this.set('strCommand','');
-    }
-  },
-
-  strCommandDidChange: function() {
-    var str = this.get('strCommand').trim()||'';
-    var out = ShellQuote.parse(str).map(function(piece) {
-      if ( typeof piece === 'object' && piece && piece.op )
-      {
-        return piece.op;
-      }
-      else
-      {
-        return piece;
-      }
-    });
-
-    if ( out.length )
-    {
-      this.set('model.args', out);
-    }
-    else
-    {
-      this.set('model.args', null);
-    }
-  }.observes('strCommand'),
-
-  // ----------------------------------
-  // Docker/Rancher Entry Point (K8S command)
-  // ----------------------------------
-  strEntryPoint: '',
-  initEntryPoint: function() {
-    var ary = this.get('model.command');
-    if ( ary )
-    {
-      this.set('strEntryPoint', ShellQuote.quote(ary));
-    }
-    else
-    {
-      this.set('strEntryPoint','');
-    }
-  },
-
-  strEntryPointDidChange: function() {
-    var out = ShellQuote.parse(this.get('strEntryPoint').trim()||'');
-    if ( out.length )
-    {
-      this.set('model.command', out);
-    }
-    else
-    {
-      this.set('model.command', null);
-    }
-  }.observes('strEntryPoint'),
-
 
   // ----------------------------------
   // Environment Vars

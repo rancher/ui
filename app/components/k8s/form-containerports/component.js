@@ -39,9 +39,9 @@ export default Ember.Component.extend({
       this.get('portsArray').pushObject({
         name: '',
         protocol: 'TCP',
-        port: '',
-        targetPort: '',
-        nodePort: ''
+        hostPort: '',
+        containerPort: '',
+        hostIP: '',
       });
     },
 
@@ -53,7 +53,7 @@ export default Ember.Component.extend({
   portsArrayDidChange: function() {
     var out = this.get('portsArray').map((row) => {
       var obj = {
-        port: parseInt(row.port,10) || 0,
+        hostPort: parseInt(row.hostPort,10) || 0,
         protocol: row.protocol,
       };
 
@@ -61,15 +61,19 @@ export default Ember.Component.extend({
         obj.name = row.name;
       }
 
-      if ( row.targetPort ) {
-        obj.targetPort = parseInt(row.targetPort,10);
+      if ( row.containerPort ) {
+        obj.containerPort = parseInt(row.containerPort,10);
+      }
+
+      if ( row.hostIP ) {
+        obj.hostIP = row.hostIP;
       }
 
       return obj;
     }).filter((obj) => {
-      return obj.port > 0;
+      return obj.containerPort > 0;
     });
 
     this.sendAction('changed', out);
-  }.observes('portsArray.@each.{name,protocol,port,targetPort,nodePort}'),
+  }.observes('portsArray.@each.{name,protocol,hostPort,containerPort,hostIP}'),
 });

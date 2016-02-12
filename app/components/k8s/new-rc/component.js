@@ -1,10 +1,13 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
+import { emptyContainer } from 'ui/k8s-tab/namespace/rcs/new/route';
 
 export default Ember.Component.extend(NewOrEdit, {
   primaryResource: null,
-  rcSpec: Ember.computed.alias('primaryResource.template.spec'),
-  podSpec: Ember.computed.alias('rcSpec.template.spec'),
+  rcTemplate: Ember.computed.alias('primaryResource.template'),
+  rcSpec: Ember.computed.alias('rcTemplate.spec'),
+  podTemplate: Ember.computed.alias('rcSpec.template'),
+  podSpec: Ember.computed.alias('podTemplate.spec'),
 
   containerIndex: 0,
 
@@ -30,9 +33,7 @@ export default Ember.Component.extend(NewOrEdit, {
 
     addContainer() {
       var ary = this.get('podSpec.containers');
-      ary.pushObject({
-        // Empty container
-      });
+      ary.pushObject(emptyContainer());
 
       // Wait for it to be added to the DOM...
       Ember.run.next(() => {

@@ -1,0 +1,61 @@
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">Privileged</label>
+  </div>
+  <div class="col-sm-12 col-md-5 form-label">
+    <div class="checkbox form-control-static text-left">
+      <label>{{input type="checkbox" checked=securityContext.privileged}} Full access to the host</label>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">Capabilities</label>
+  </div>
+
+  <div class="col-sm-12 col-md-5">
+    {{view "select" class="form-control select-cap-add" content=capabilityChoices selection=cap.add multiple="true" optionValuePath="content" optionLabelPath="content"}}
+  </div>
+
+  <div class="col-sm-12 col-md-5">
+    {{view "select" class="form-control select-cap-drop" content=capabilityChoices selection=cap.drop multiple="true" optionValuePath="content" optionLabelPath="content"}}
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-12 col-md-10 col-md-offset-2">
+    <span class="help-block">
+      Capabilities allow you to provide fine-grained control over superuser privileges available to the container.
+      <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank">More information</a>
+    </span>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">SELinux User</label>
+  </div>
+  <div class="col-sm-12 col-md-4">
+    {{input class="form-control" type="text" value=selinux.user}}
+  </div>
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">SELinux Role</label>
+  </div>
+  <div class="col-sm-12 col-md-4">
+    {{input class="form-control" type="text" value=selinux.role}}
+  </div>
+</div>
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">SELinux Type</label>
+  </div>
+  <div class="col-sm-12 col-md-4">
+    {{input class="form-control" type="text" value=selinux.type}}
+  </div>
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">SELinux Level</label>
+  </div>
+  <div class="col-sm-12 col-md-4">
+    {{input class="form-control" type="text" value=selinux.level}}
+  </div>
+</div>

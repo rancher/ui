@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import ManageLabels from 'ui/mixins/manage-labels';
-import ShellQuote from 'npm:shell-quote';
 
 export default Ember.Component.extend(ManageLabels, {
   // Inputs
@@ -13,8 +12,6 @@ export default Ember.Component.extend(ManageLabels, {
 
   didInitAttrs() {
     this.initLabels(this.get('initialLabels'), null, C.LABEL.START_ONCE);
-    this.initCommand();
-    this.initEntryPoint();
     this.initTerminal();
     this.initStartOnce();
     this.initRestart();
@@ -84,80 +81,6 @@ export default Ember.Component.extend(ManageLabels, {
       });
     },
   },
-
-  // ----------------------------------
-  // Command
-  // ----------------------------------
-  strCommand: '',
-  initCommand: function() {
-    var ary = this.get('instance.command');
-    if ( ary )
-    {
-      this.set('strCommand', ShellQuote.quote(ary));
-    }
-    else
-    {
-      this.set('strCommand','');
-    }
-  },
-
-  strCommandDidChange: function() {
-    var str = this.get('strCommand').trim()||'';
-    // @TODO remove after v0.18
-    if ( this.get('store').getById('schema','container').get('resourceFields.command.type') === 'string' )
-    {
-      this.set('instance.command', str);
-    }
-    else
-    {
-      var out = ShellQuote.parse(str).map(function(piece) {
-        if ( typeof piece === 'object' && piece && piece.op )
-        {
-          return piece.op;
-        }
-        else
-        {
-          return piece;
-        }
-      });
-      if ( out.length )
-      {
-        this.set('instance.command', out);
-      }
-      else
-      {
-        this.set('instance.command', null);
-      }
-    }
-  }.observes('strCommand'),
-
-  // ----------------------------------
-  // Entry Point
-  // ----------------------------------
-  strEntryPoint: '',
-  initEntryPoint: function() {
-    var ary = this.get('instance.entryPoint');
-    if ( ary )
-    {
-      this.set('strEntryPoint', ShellQuote.quote(ary));
-    }
-    else
-    {
-      this.set('strEntryPoint','');
-    }
-  },
-
-  strEntryPointDidChange: function() {
-    var out = ShellQuote.parse(this.get('strEntryPoint').trim()||'');
-    if ( out.length )
-    {
-      this.set('instance.entryPoint', out);
-    }
-    else
-    {
-      this.set('instance.entryPoint', null);
-    }
-  }.observes('strEntryPoint'),
 
   // ----------------------------------
   // Terminal
