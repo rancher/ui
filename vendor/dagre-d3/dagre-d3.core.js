@@ -771,6 +771,7 @@ function addTextLabel(root, node) {
         .attr("xml:space", "preserve")
         .attr("dy", "1em")
         .attr("x", "1")
+        .attr("fill", "gray")
         .text(lines[i]);
   }
 
