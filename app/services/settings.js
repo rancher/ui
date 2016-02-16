@@ -114,7 +114,7 @@ export default Ember.Service.extend(Ember.Evented, {
         str += '|Access|`Disabled`}|\n';
       }
 
-      str += `|Route|\`${this.get('application.currentRouteName')}\`|\n`;
+      str += `|Route|\`${window.lc('application').get('currentRouteName')}\`|\n`;
 
     return encodeURIComponent(str);
   }.property(),

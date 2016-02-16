@@ -2,7 +2,7 @@ $stackHeight: 66px;
 $stateRadius: 13px;
 $stateBorder: 2px;
 $singleStackHeight: 30px;
-$countWidth: 99px;
+$countWidth: 102px;
 $singleCountWidth : 120px;
 
 .stack-section {
@@ -17,15 +17,10 @@ $singleCountWidth : 120px;
   }
 
   .stack-state {
-    position: absolute;
-    width: $stateRadius*2;
-    height: $stateRadius*2;
-    border-radius: 50%;
-    left: -1 * $stateRadius;
-    top: ($stackHeight - $stateBorder)/2 - $stateRadius;
     text-align: center;
-    line-height: $stateRadius*2;
-    color: white;
+    height: $stackHeight;
+    line-height: $stackHeight;
+    padding: 0 10px;
   }
 
   .count {
@@ -67,7 +62,7 @@ $singleCountWidth : 120px;
 
   .header-right {
     float: right;
-    margin-right: 10px;
+    margin-right: 7px;
     height: $stackHeight;
   }
 
@@ -81,21 +76,21 @@ $singleCountWidth : 120px;
     height: $stackHeight;
     line-height: 50px;
     A {
-      padding: 22px 10px 25px 25px;
+      padding: 22px 10px 25px 10px;
       font-size: 12px;
     }
   }
 
   .stack-actions {
-    line-height: $stackHeight;
-    width: 69px;
+    line-height: 66px;
+    width: 65px;
     text-align: right;
-    padding-right: 10px;
     border-right: 0;
+    padding: 0;
   }
 
   .stack-body {
-    padding: 0 10px 10px 10px;
+    // padding: 0 10px 10px 10px;
     background: transparent;
   }
 
@@ -105,10 +100,15 @@ $singleCountWidth : 120px;
   }
 
   .collapser {
-    padding: 3px 5px;
+    padding: 3px 0;
   }
 
   .grid {
+    .state > span > span {
+    padding: 14px 5.5px;
+    margin-right: 5px;
+    }
+
     TD, TH {
       padding: 3px;
       border-bottom: 1px solid $table-border-color ;
@@ -116,11 +116,13 @@ $singleCountWidth : 120px;
 
     TD:nth-child(1) {
       width: 125px;
+      padding: 0;
+      position: relative;
     }
 
     TD:nth-child(4),
     TD:nth-child(5) {
-      width: ($countWidth + 10);
+      width: ($countWidth + 7);
       text-align: center;
     }
 
@@ -142,6 +144,9 @@ $singleCountWidth : 120px;
 
       &:last-of-type {
         border-right: none;
+      }
+      &.state {
+        padding: 0!important;
       }
     }
 
@@ -258,11 +263,12 @@ $singleCountWidth : 120px;
         width: 110px;
         height: 70px;
         padding: 2px 5px 0 5px;
+        color: $text-color;
 
-        $dark: $lightGrayTwo;
-        $light: #ffffff;
+        $dark: $accent-two;
+        $light: $well-bg;
 
-        background: #dddddd; /* Old browsers */
+        background: $light; /* Old browsers */
         background: -moz-linear-gradient(top, $dark 0%, $dark 50%, $light 51%, $light 100%); /* FF3.6+ */
         background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$dark), color-stop(50%,$dark), color-stop(51%,$light), color-stop(100%,$light)); /* Chrome,Safari4+ */
         background: -webkit-linear-gradient(top, $dark 0%,$dark 50%,$light 51%,$light 100%); /* Chrome10+,Safari5.1+ */
@@ -274,7 +280,7 @@ $singleCountWidth : 120px;
     }
 
     .label {
-      color: black;
+      color: $text-color;
       display: initial;
       padding: initial;
       font-size: initial;
@@ -285,6 +291,10 @@ $singleCountWidth : 120px;
       white-space: initial;
       vertical-align: initial;
       border-radius: initial;
+
+      tspan {
+        fill: $well-bg;
+      }
 
       I.icon {
         display: block;
@@ -330,13 +340,13 @@ $singleCountWidth : 120px;
     rect {
       fill: #fff;
       stroke-width: 2pt;
-      color: black;
+      color: $text-color;
     }
   }
 
   .edgePath {
     path.path {
-      stroke: $darkestGrayTwo;
+      stroke: $accent-three;
       fill: none;
       stroke-width: 1pt;
     }
