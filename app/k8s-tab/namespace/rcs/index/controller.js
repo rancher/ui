@@ -5,7 +5,6 @@ export default Ember.Controller.extend(Sortable, {
   filtered: function() {
     var ns = this.get('model.ns');
     return (this.get('model.services')||[]).filter((row) => {
-      console.log(row.get('environmentId'), ns.get('id'), row.get('kind'), row.get('state'));
       return (row.get('environmentId') === ns.get('id')) && row.get('kind').toLowerCase() === 'kubernetesreplicationcontroller' &&
              (['removing','removed','purging','purged'].indexOf(row.get('state')) === -1);
     });

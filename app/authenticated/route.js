@@ -28,6 +28,18 @@ export default Ember.Route.extend({
       projects: this.loadProjects(),
       preferences: this.loadPreferences(),
       settings: this.loadPublicSettings(),
+    }).then((hash) => {
+      if ( transition.params && transition.params['authenticated.project'] && transition.params['authenticated.project'].project_id )
+      {
+        return hash;
+      }
+      else
+      {
+        // If not going to a project-specific page, make sure a project is selected
+        return this.get('projects').selectDefault().then(() => {
+          return hash;
+        });
+      }
     }).catch((err) => {
       return this.loadingError(err, transition, Ember.Object.create({
         projects: [],
