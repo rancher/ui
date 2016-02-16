@@ -13,13 +13,16 @@ export default Ember.Controller.extend(Sortable, {
     updateResourceType: function(type) {
       this.set('filters.resourceType', type);
     },
+
     updateAuthType: function(type) {
       this.set('filters.authType', type.name);
       this.set('authTypeReadable', type.value);
     },
+
     changeSort: function(name) {
       this._super(name);
     },
+
     search: function() {
       this.setProperties({
         eventType: this.get('filters.eventType'),
@@ -30,6 +33,7 @@ export default Ember.Controller.extend(Sortable, {
       });
       this.send('filterLogs');
     },
+
     showResponseObjects: function(request, response) {
       this.get('application').setProperties({
         showAuditLogResponses: true,
@@ -37,6 +41,7 @@ export default Ember.Controller.extend(Sortable, {
         responseObject: response,
       });
     },
+
     clearAll: function() {
       this.set('filters', {
         accountId: null,
@@ -53,6 +58,7 @@ export default Ember.Controller.extend(Sortable, {
         resourceType: null,
         runtime: null,
       });
+
       this.setProperties({
         eventType: null,
         resourceType: null,
@@ -60,8 +66,9 @@ export default Ember.Controller.extend(Sortable, {
         clientIp: null,
         authType: null,
       });
+
       this.setProperties({
-        sortBy: 'created',
+        sortBy: 'id',
         sortOrder: 'desc',
       });
       this.set('authTypeReadable', null);
@@ -69,7 +76,7 @@ export default Ember.Controller.extend(Sortable, {
     },
   },
 
-  sortBy: 'created',
+  sortBy: 'id',
   sortOrder: 'desc',
   descending: true,
   limit: 100,

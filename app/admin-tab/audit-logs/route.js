@@ -124,14 +124,14 @@ export default Ember.Route.extend({
     };
     if (params) {
       _.forEach(params, (item, key) => {
-        if (key !== 'sortBy' && key !== 'sortOrder' && key !== 'forceReload') {
+        if ( ['sortBy','sortOrder','forceReload'].indexOf(key) >= 0 )  {
+          returnValue[key] = item;
+        } else {
           if (item) {
             returnValue.filter[key] = item;
           } else {
             delete returnValue.filter[key];
           }
-        } else {
-          returnValue[key] = item;
         }
       });
     }

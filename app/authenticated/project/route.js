@@ -16,7 +16,7 @@ export default Ember.Route.extend({
   model(params, transition) {
     if ( !params.project_id )
     {
-      // On first login, pick the default project
+      // If there isn't a project, pick one
       return this.get('projects').selectDefault().then((project) => {
         if ( project )
         {
