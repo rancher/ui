@@ -44,6 +44,8 @@ module.exports = function(environment) {
       apiEndpoint: '/v1',
       catalogServer: '',
       catalogEndpoint: '/v1-catalog',
+      kubernetesServer: '',
+      kubernetesEndpoint: '/v1-kubernetes',
       proxyEndpoint: '/v1/proxy',
       wsEndpoint: '/v1/subscribe?eventNames=resource.change' +
                     '&include=hosts' +
@@ -139,6 +141,31 @@ module.exports = function(environment) {
   else if (environment === 'production')
   {
     ENV.APP.catalogServer = '';
+  }
+
+  // Override the K8s server/endpoint with environment var
+  server = process.env.KUBERNETES;
+  if ( server )
+  {
+    // variable can be an ip "1.2.3.4" -> http://1.2.3.4:8088
+    // or a URL+port
+    if ( server.indexOf('http') !== 0 )
+    {
+      if ( server.indexOf(':') === -1 )
+      {
+        server = 'http://' + server + ':8090';
+      }
+      else
+      {
+        server = 'http://' + server;
+      }
+    }
+
+    ENV.APP.kubernetesServer = server;
+  }
+  else if (environment === 'production')
+  {
+    ENV.APP.kubernetesServer = '';
   }
 
   var pl = process.env.PL;

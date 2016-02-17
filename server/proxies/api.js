@@ -14,6 +14,7 @@ module.exports = function(app, options) {
 
   proxy.on('error', onProxyError);
 
+  // WebSocket for Rancher
   httpServer.on('upgrade', function proxyWsRequest(req, socket, head) {
     console.log('WS Proxy', req.method, 'to', req.url);
     if ( socket.ssl ) {
@@ -22,8 +23,8 @@ module.exports = function(app, options) {
     proxy.ws(req, socket, head);
   });
 
+  // Rancher API
   console.log('Proxying Rancher to', config.apiServer);
-
   var apiPath =  config.apiEndpoint;
   app.use(apiPath, function(req, res, next) {
     // include root path in proxied request
@@ -34,6 +35,7 @@ module.exports = function(app, options) {
     proxy.web(req, res);
   });
 
+  // Catalog API
   var catalogPath = config.catalogEndpoint;
   // Default catalog to the regular API
   var server = config.catalogServer || config.apiServer;
@@ -52,6 +54,27 @@ module.exports = function(app, options) {
 
     console.log('Catalog Proxy', req.method, 'to', req.url);
     catalogProxy.web(req, res);
+  });
+
+  // Kubernetes API
+  var kubernetesPath = config.kubernetesEndpoint;
+  // Default catalog to the regular API
+  var server = config.kubernetesServer || config.apiServer;
+  console.log('Proxying Kubernetes to', server);
+  app.use(kubernetesPath, function(req, res, next) {
+    req.headers['X-Forwarded-Proto'] = req.protocol;
+    var kubernetesProxy = HttpProxy.createProxyServer({
+      xfwd: false,
+      target: server
+    });
+
+    kubernetesProxy.on('error', onProxyError);
+
+    // Don't include root path in proxied request
+    // req.url = path.join(kubernetesPath, req.url);
+
+    console.log('Catalog Kubernetes', req.method, 'to', req.url);
+    kubernetesProxy.web(req, res);
   });
 };
 

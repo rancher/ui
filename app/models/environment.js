@@ -235,9 +235,4 @@ Environment.reopenClass({
   }
 });
 
-
-Environment.reopenClass({
-  alwaysInclude: ['services'],
-});
-
 export default Environment;

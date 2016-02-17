@@ -3,11 +3,11 @@ import Sortable from 'ui/mixins/sortable';
 
 export default Ember.Controller.extend(Sortable, {
   filtered: function() {
-    return (this.get('model.services')||[]).filter((row) => {
-      return row.get('kind').toLowerCase() === 'kubernetesservice' &&
-             (['removing','removed','purging','purged'].indexOf(row.get('state')) === -1);
+    var nsId = this.get('model.namespace.id');
+    return (this.get('model.allServices')||[]).filter((row) => {
+      return row.get('metadata.namespace') === nsId;
     });
-  }.property('model.services.@each.{kind,state}'),
+  }.property('model.namespace.id','model.allServices.@each.id'), // ID contains namespace and @each.metadata.namespace isn't supported by ember
 
   sortableContent: Ember.computed.alias('filtered'),
   sortBy: 'name',
