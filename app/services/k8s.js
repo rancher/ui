@@ -2,41 +2,22 @@ import Ember from 'ember';
 import { normalizeType } from 'ember-api-store/utils/normalize';
 import { applyHeaders } from 'ember-api-store/utils/apply-headers';
 import ApiError from 'ember-api-store/models/error';
+import C from 'ui/utils/constants';
 
-const BASE = 'api/v1';
-const TYPE_PREFIX = 'k8s-';
-const ID_SEPARATOR = '::';
-
-function addId(obj) {
-  if ( obj && obj.metadata )
-  {
-    if ( obj.metadata.namespace && obj.metadata.name )
-    {
-      obj.id = `${obj.metadata.namespace}${ID_SEPARATOR}${obj.metadata.name}`;
-    }
-    else if ( obj.metadata.name )
-    {
-      obj.id = obj.metadata.name;
-    }
-  }
-
-  return obj;
-}
-
-function splitId(objOrStr) {
+function splitId(objOrStr, defaultNs) {
   var id = (typeof objOrStr === 'object' ? objOrStr.get('id') : objOrStr||'');
-  var idx = id.indexOf(ID_SEPARATOR);
+  var idx = id.indexOf(C.K8S.ID_SEPARATOR);
   if ( idx >= 0 )
   {
     return {
       namespace: id.substr(0,idx),
-      name:      id.substr(idx+ID_SEPARATOR.length+1),
+      name:      id.substr(idx+C.K8S.ID_SEPARATOR.length),
     };
   }
   else
   {
     return {
-      namespace: null,
+      namespace: defaultNs || null,
       name: id
     };
   }
@@ -44,11 +25,16 @@ function splitId(objOrStr) {
 
 function joinId(objOrStr, defaultNs) {
   var parts = splitId(objOrStr);
-  return parts.namespace||defaultNs + ID_SEPARATOR + parts.id;
+  return parts.namespace||defaultNs + C.K8S.ID_SEPARATOR + parts.name;
 }
 
 export default Ember.Service.extend({
   namespaces: null,
+  services: null,
+  rcs: null,
+  pods: null,
+
+  // The current namespace
   namespace: null,
 
   promiseQueue: null,
@@ -73,7 +59,7 @@ export default Ember.Service.extend({
     {
       opt = moreOpt || {};
       opt.method = methodOrOpt;
-      opt.url = this.get('app.kubernetesEndpoint') + path;
+      opt.url = path;
       opt.data = data;
     }
 
@@ -159,7 +145,7 @@ export default Ember.Service.extend({
     if ( obj.kind && obj.kind.slice(-4) === 'List' && obj.items )
     {
       var itemKind = obj.kind.slice(0, -4);
-      type = normalizeType(`${TYPE_PREFIX}${itemKind}`);
+      type = normalizeType(`${C.K8S.TYPE_PREFIX}${itemKind}`);
       obj.items = obj.items.map((item) => {
         item.kind = itemKind;
         item.apiVersion = obj.apiVersion;
@@ -171,14 +157,28 @@ export default Ember.Service.extend({
     else
     {
       // Record
-      type = normalizeType(`${TYPE_PREFIX}${obj.kind}`);
+      type = normalizeType(`${C.K8S.TYPE_PREFIX}${obj.kind}`);
       output = typeifyResource(obj, type);
     }
 
     return output;
 
     function typeifyResource(obj, type) {
-      addId(obj);
+      if ( obj && obj.metadata )
+      {
+        if ( obj.metadata.namespace && obj.metadata.name )
+        {
+          obj.id = `${obj.metadata.namespace}${C.K8S.ID_SEPARATOR}${obj.metadata.name}`;
+        }
+        else if ( obj.metadata.name )
+        {
+          obj.id = obj.metadata.name;
+        }
+      }
+
+      if ( obj.type )
+      {
+      }
 
       var output = store.createRecord(obj, type);
       if (output.metadata.uid)
@@ -204,8 +204,13 @@ export default Ember.Service.extend({
 
 
   isCacheable(opt) {
-    // Everything is cacheable?
-    var str = `${BASE}/namespaces/`;
+    if ( opt.filter )
+    {
+      return false;
+    }
+
+    // Un-namespaced things are cacheable
+    var str = `${C.K8S.BASE}/namespaces/`;
     var pos = opt.url.indexOf(str);
     if ( pos >= 0 )
     {
@@ -218,7 +223,7 @@ export default Ember.Service.extend({
     }
   },
 
-  find(type, id, opt) {
+  _find(type, id, opt) {
     var self = this;
     var store = this.get('store');
     type = normalizeType(type);
@@ -263,7 +268,7 @@ export default Ember.Service.extend({
     {
       if ( opt.url.substr(0,1) !== '/' )
       {
-        opt.url = `${self.get('app.kubernetesEndpoint')}/${BASE}/` + opt.url;
+        opt.url = `${self.get('app.kubernetesEndpoint')}/${C.K8S.BASE}/` + opt.url;
       }
 
       return findWithUrl(opt.url);
@@ -276,6 +281,22 @@ export default Ember.Service.extend({
     function findWithUrl(url) {
       var queue = self.get('promiseQueue');
       var cls = self.get('container').lookup('model:'+type);
+
+      if ( opt.filter )
+      {
+        var keys = Object.keys(opt.filter);
+        keys.forEach(function(key) {
+          var vals = opt.filter[key];
+          if ( !Ember.isArray(vals) )
+          {
+            vals = [vals];
+          }
+
+          vals.forEach(function(val) {
+            url += (url.indexOf('?') >= 0 ? '&' : '?') + encodeURIComponent(key) + '=' + encodeURIComponent(val);
+          });
+        });
+      }
 
       // Headers
       var newHeaders = {};
@@ -300,7 +321,6 @@ export default Ember.Service.extend({
         // request is not in the promiseQueue
         later = self.request({
           url: url,
-          depaginate: opt.depaginate,
           headers: newHeaders,
         }).then((result) => {
           if ( isForAll )
@@ -346,9 +366,27 @@ export default Ember.Service.extend({
   },
 
   _getCollection(type, resourceName) {
-    return this.find(`${TYPE_PREFIX}${type}`, null, {
+    return this._find(`${C.K8S.TYPE_PREFIX}${type}`, null, {
       url: resourceName
     });
+  },
+
+  _allCollection(type, resourceName) {
+    var store = this.get('store');
+    type = normalizeType(`${C.K8S.TYPE_PREFIX}${type}`);
+
+    if ( store.haveAll(type) )
+    {
+      return Ember.RSVP.resolve(store.all(type),'All '+ type + ' already cached');
+    }
+    else
+    {
+      return this._find(type, null, {
+        url: resourceName
+      }).then(function() {
+        return store.all(type);
+      });
+    }
   },
 
   _getNamespacedResource(type, resourceName, id) {
@@ -356,27 +394,34 @@ export default Ember.Service.extend({
     var withNs = joinId(id, nsId);
     var withoutNs = splitId(withNs).name;
 
-    return this.find(`${TYPE_PREFIX}${type}`, withNs , {
+    return this._find(`${C.K8S.TYPE_PREFIX}${type}`, withNs , {
       url: `namespaces/${nsId}/${resourceName}/${withoutNs}`
     });
   },
 
+  allNamespaces() { return this._allCollection('namespace','namespaces'); },
   getNamespaces() { return this._getCollection('namespace','namespaces'); },
   getNamespace(name) {
-    return this.find(`${TYPE_PREFIX}namespace`, name , {
+    return this._find(`${C.K8S.TYPE_PREFIX}namespace`, name , {
       url: `namespaces/${name}`
     });
   },
 
+  allServices() { return this._allCollection('service','services'); },
   getServices() { return this._getCollection('service','services'); },
   getService(name) { return this._getNamespacedResource('service','services',name); },
 
+  allRCs() { return this._allCollection('replicationcontroller','replicationcontrollers'); },
   getRCs() { return this._getCollection('replicationcontroller','replicationcontrollers'); },
   getRC(name) { return this._getNamespacedResource('replicationcontroller','replicationcontrollers',name); },
 
+  allPods() { return this._allCollection('pod','pods'); },
+  getPods() { return this._getCollection('pod','pod'); },
+  getPod(name) { return this._getNamespacedResource('pod','pod',name); },
+
   /*
   _getNamespacedType(type, resourceName) {
-    return this.find(`${TYPE_PREFIX}${type}`, null, {
+    return this.find(`${C.K8S.TYPE_PREFIX}${type}`, null, {
       url: `namespaces/${this.get('namespace.id')}/${resourceName}`
     });
   },
@@ -387,4 +432,47 @@ export default Ember.Service.extend({
   getNSRCs()    { return this._getNamespacedType('replicationcontroller','replicationcontrollers'); },
   getNSRC(name) { return this._getNamespacedResource('replicationcontroller','replicationcontrollers', name); },
   */
+
+  parseKubectlError(err) {
+    var response = (JSON.parse(err.xhr.responseText));
+    return ApiError.create({
+      status: err.status,
+      code: response.exitCode,
+      message: response.stdErr.split(/\n/),
+    });
+  },
+
+  create(body) {
+    return this.request({
+      url: `${this.get('app.kubectlEndpoint')}/create`,
+      method: 'POST',
+      contentType: 'application/yaml',
+      data: body
+    }).catch((err) => {
+      return Ember.RSVP.reject(this.parseKubectlError(err));
+    });
+  },
+
+  getYaml(type, id, defaultNs) {
+    var parts = splitId(id, defaultNs);
+    return this.request({
+      url: `${this.get('app.kubectlEndpoint')}/${encodeURIComponent(type)}/${encodeURIComponent(parts.name)}?namespace=${encodeURIComponent(parts.namespace)}`,
+    }).then((body) => {
+      body = JSON.parse(body);
+      return body.stdOut.trim();
+    }).catch((err) => {
+      return Ember.RSVP.reject(this.parseKubectlError(err));
+    });
+  },
+
+  edit(body) {
+    return this.request({
+      url: `${this.get('app.kubectlEndpoint')}/apply`,
+      method: 'POST',
+      contentType: 'application/yaml',
+      data: body
+    }).catch((err) => {
+      return Ember.RSVP.reject(this.parseKubectlError(err));
+    });
+  },
 });

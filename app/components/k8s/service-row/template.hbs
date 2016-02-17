@@ -1,27 +1,37 @@
-<td>
-  {{badge-state model=model}}
-</td>
-<td class="force-wrap">
-  {{model.displayName}} ({{model.id}})
-</td>
-<td>
-  {{default-str model.spec.type default="Cluster IP"}}
-</td>
-<td class="force-wrap">
-  {{#each model.spec.ports as |port|}}
-    <span tooltip="{{port.name}}">{{port.port}}:{{port.targetPort}}/{{lower-case port.protocol}}
-    </span>
-  {{else}}
-    <span class="text-muted">None</span>
-  {{/each}}
-</td>
-<td class="force-wrap">
-  {{#each model.selectorsAsArray as |sel|}}
-    <span class="badge badge-default">{{sel.label}}={{sel.value}}</span>
-  {{else}}
-    <span class="text-muted">None</span>
-  {{/each}}
-</td>
-<td class="actions">
-  {{action-menu model=model}}
-</td>
+<tr>
+  <td class="force-wrap">
+    <a href="#" {{action "toggleExpand"}}><i class="icon {{if expanded 'icon-minus-square' 'icon-plus-square'}}"/></a>
+    {{#link-to "k8s-tab.namespace.services.service" model.displayName}}{{model.displayName}}{{/link-to}}
+  </td>
+  <td>
+    {{default-str model.spec.type default="Cluster IP"}}
+  </td>
+  <td>
+    {{model.selectedPods.length}}
+  </td>
+  <td class="force-wrap">
+    {{#each model.spec.ports as |port|}}
+      <span tooltip="{{port.name}}">{{port.port}}:{{port.targetPort}}/{{lower-case port.protocol}}
+      </span>
+    {{else}}
+      <span class="text-muted">None</span>
+    {{/each}}
+  </td>
+  <td class="force-wrap">
+    {{#each model.selectorsAsArray as |sel|}}
+      <span class="badge badge-default">{{sel.label}}={{sel.value}}</span>
+    {{else}}
+      <span class="text-muted">None</span>
+    {{/each}}
+  </td>
+  <td class="actions">
+    {{action-menu model=model}}
+  </td>
+</tr>
+{{#if expanded}}
+  <tr>
+    <td colspan="6" class="subtable">
+      {{k8s/pod-section model=model.selectedPods}}
+    </td>
+  </tr>
+{{/if}}

@@ -69,12 +69,6 @@ export default Ember.Route.extend({
 
   loadPreferences() {
     return this.get('store').find('userpreference', null, {url: 'userpreferences', forceReload: true}).then((res) => {
-      // Some people hate spinners
-      if ( this.get(`prefs.${C.PREFS.I_HATE_SPINNERS}`) )
-      {
-        $('BODY').addClass('no-spin');
-      }
-
       // Save the account ID from the response headers into session
       if ( res && res.xhr )
       {

@@ -1,6 +1,25 @@
 /* jshint node: true */
 var pkg = require('../package.json');
 
+
+// host can be an ip "1.2.3.4" -> http://1.2.3.4:8080
+// or a URL+port
+function normalizeHost(host,defaultPort) {
+  if ( host.indexOf('http') !== 0 )
+  {
+    if ( host.indexOf(':') === -1 )
+    {
+      host = 'http://' + host + (defaultPort ? ':'+defaultPort : '');
+    }
+    else
+    {
+      host = 'http://' + host;
+    }
+  }
+
+  return host;
+}
+
 module.exports = function(environment) {
   var ENV = {
     modulePrefix: 'ui',
@@ -46,8 +65,12 @@ module.exports = function(environment) {
       catalogEndpoint: '/v1-catalog',
       kubernetesServer: '',
       kubernetesEndpoint: '/v1-kubernetes',
+      kubectlServer: '',
+      kubectlEndpoint: '/v1-kubectl',
       proxyEndpoint: '/v1/proxy',
-      wsEndpoint: '/v1/subscribe?eventNames=resource.change' +
+      wsEndpoint: '/v1/subscribe' +
+                    '?eventNames=resource.change' +
+                    '&eventNames=service.kubernetes.change' +
                     '&include=hosts' +
                     '&include=services' +
                     '&include=instances' +
@@ -97,21 +120,7 @@ module.exports = function(environment) {
   var server = process.env.RANCHER;
   if ( server )
   {
-    // variable can be an ip "1.2.3.4" -> http://1.2.3.4:8080
-    // or a URL+port
-    if ( server.indexOf('http') !== 0 )
-    {
-      if ( server.indexOf(':') === -1 )
-      {
-        server = 'http://' + server + ':8080';
-      }
-      else
-      {
-        server = 'http://' + server;
-      }
-    }
-
-    ENV.APP.apiServer = server;
+    ENV.APP.apiServer = normalizeHost(server,8080);
   }
   else if (environment === 'production')
   {
@@ -122,21 +131,7 @@ module.exports = function(environment) {
   server = process.env.CATALOG;
   if ( server )
   {
-    // variable can be an ip "1.2.3.4" -> http://1.2.3.4:8088
-    // or a URL+port
-    if ( server.indexOf('http') !== 0 )
-    {
-      if ( server.indexOf(':') === -1 )
-      {
-        server = 'http://' + server + ':8088';
-      }
-      else
-      {
-        server = 'http://' + server;
-      }
-    }
-
-    ENV.APP.catalogServer = server;
+    ENV.APP.catalogServer = normalizeHost(server,8088);
   }
   else if (environment === 'production')
   {
@@ -147,25 +142,22 @@ module.exports = function(environment) {
   server = process.env.KUBERNETES;
   if ( server )
   {
-    // variable can be an ip "1.2.3.4" -> http://1.2.3.4:8088
-    // or a URL+port
-    if ( server.indexOf('http') !== 0 )
-    {
-      if ( server.indexOf(':') === -1 )
-      {
-        server = 'http://' + server + ':8090';
-      }
-      else
-      {
-        server = 'http://' + server;
-      }
-    }
-
-    ENV.APP.kubernetesServer = server;
+    ENV.APP.kubernetesServer = normalizeHost(server,8090);
   }
   else if (environment === 'production')
   {
     ENV.APP.kubernetesServer = '';
+  }
+
+  // Override the Kubectl server/endpoint with environment var
+  server = process.env.KUBECTL;
+  if ( server )
+  {
+    ENV.APP.kubectlServer = normalizeHost(server,8091);
+  }
+  else if (environment === 'production')
+  {
+    ENV.APP.kubectlServer = '';
   }
 
   var pl = process.env.PL;

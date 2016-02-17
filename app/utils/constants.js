@@ -102,7 +102,6 @@ var C = {
   PREFS: {
     ACCESS_WARNING  : 'accessWarning',
     PROJECT_DEFAULT : 'defaultProjectId',
-    I_HATE_SPINNERS : 'iHateSpinners',
     EXPANDED_STACKS : 'expandedStacks',
     SORT_STACKS_BY  : 'sortStacksBy',
     THEME           : 'theme'
@@ -187,11 +186,17 @@ var C = {
     TokenAuth: 'UI Session'
   },
 
-  EXT_REFERENCES : {
+  EXT_REFERENCES: {
     FORUM: 'https://forums.rancher.com',
     COMPANY: 'http://rancher.com',
     GITHUB: 'https://github.com/rancher/rancher',
     DOCS: 'http://docs.rancher.com/rancher',
+  },
+
+  K8S: {
+    BASE: 'api/v1',
+    TYPE_PREFIX: 'k8s-',
+    ID_SEPARATOR: '::'
   }
 };
 

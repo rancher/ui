@@ -1,24 +1,24 @@
 <section class="header">
   <h1>Services</h1>
 
-  {{#link-to "k8s-tab.namespace.services.new" classNames="btn btn-sm btn-primary"}}Add Service{{/link-to}}
+  {{#link-to "k8s-tab.namespace.apply" (query-params kind="Service") classNames="btn btn-sm btn-primary"}}Add Service{{/link-to}}
 </section>
 
 <section class="well instances">
   <table class="grid fixed" style="margin-bottom: 0;">
     <thead>
       <tr>
-        {{sortable-th sortable=this action="changeSort" name="state" width="125"}}
         {{sortable-th sortable=this action="changeSort" name="name"}}
-        {{sortable-th sortable=this action="changeSort" name="serviceType" label="Type"}}
+        {{sortable-th sortable=this action="changeSort" name="serviceType" width="150" label="Type"}}
+        <th width="80">Pods</th>
         <th>Ports</th>
         <th>Selectors</th>
-        <th class="actions" width="100">&nbsp;</th>
+        <th class="actions" width="85">&nbsp;</th>
       </tr>
     </thead>
     <tbody>
-      {{#each arranged as |services|}}
-        {{k8s/service-row model=services}}
+      {{#each arranged as |service|}}
+        {{k8s/service-row model=service}}
       {{else}}
         <tr><td colspan="5" class="text-center text-muted">You do not have any Services yet.</td></tr>
       {{/each}}

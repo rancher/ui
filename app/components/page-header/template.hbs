@@ -5,9 +5,7 @@
       {{#if (or isKubernetesTab hasKubernetes)}}
         {{#link-to "k8s-tab" projectId }}Kubernetes{{/link-to}}
       {{/if}}
-      {{#if (or isApplicationsTab (not (or isKubernetesTab hasKubernetes)))}}
-        {{#link-to "applications-tab" projectId }}Applications{{/link-to}}
-      {{/if}}
+      {{#link-to "applications-tab" projectId }}Applications{{/link-to}}
       {{#link-to "infrastructure-tab" projectId }}Infrastructure{{/link-to}}
       {{#if isAdmin}}
         <span class="link-admin">
@@ -92,7 +90,8 @@
 
     {{#if isKubernetesTab}}
       {{#link-to "k8s-tab.namespace.services"}}<i class="icon icon-compass"></i>Services{{/link-to}}
-      {{#link-to "k8s-tab.namespace.rcs"}}<i class="icon icon-tachometer"></i>Replication Controllers{{/link-to}}
+      {{#link-to "k8s-tab.namespace.rcs"}}<i class="icon icon-tachometer"></i>RCs{{/link-to}}
+      {{#link-to "k8s-tab.namespace.pods"}}<i class="icon icon-containers"></i>Pods{{/link-to}}
     {{/if}}
 
     {{#if isAdminTab}}

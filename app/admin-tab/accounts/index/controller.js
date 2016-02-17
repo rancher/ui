@@ -12,6 +12,7 @@ export default Ember.Controller.extend(FilterState, Sortable, {
   sorts: {
     state:    ['stateSort','name','id'],
     name:     ['name','id'],
+    username: ['username','id'],
     kind:     ['kind','name','id'],
     ip:       ['displayIp','name','id'],
     image:    ['imageUuid','id'],

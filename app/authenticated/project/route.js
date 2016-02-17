@@ -278,11 +278,6 @@ export default Ember.Route.extend({
     kubernetesServiceChanged: function(change) {
       this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
     },
-
-    kubernetesReplicationControllerChanged: function(change) {
-      this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
-    },
-
   },
 
   _trySend: function(/*arguments*/) {

@@ -10,7 +10,6 @@ var _allLbServices;
 var _allExternalServices;
 var _allDnsServices;
 var _allKubernetesServices;
-var _allKubernetesReplicationControllers;
 // !! If you add a new one of these, you need to add it to reset() below too
 
 var Service = Resource.extend({
@@ -175,7 +174,6 @@ var Service = Resource.extend({
   _allExternalServices: null,
   _allDnsServices: null,
   _allKubernetesServices: null,
-  _allKubernetesReplicationControllers: null,
   // !! If you add a new one of these, you need to add it to reset() below too
 
   consumedServicesUpdated: 0,
@@ -188,7 +186,6 @@ var Service = Resource.extend({
     '_allExternalServices',
     '_allDnsServices',
     '_allKubernetesServices',
-    '_allKubernetesReplicationControllers',
     'consumedServices',
     'consumedServicesUpdated',
     'serviceLinks',
@@ -233,10 +230,6 @@ var Service = Resource.extend({
       _allKubernetesServices = this.get('store').allUnremoved('kubernetesservice');
     }
 
-    if ( !_allKubernetesReplicationControllers )
-    {
-      _allKubernetesReplicationControllers = this.get('store').allUnremoved('kubernetesreplicationcontroller');
-    }
     // !! If you add a new one of these, you need to add it to reset() below too
 
     // And we need this here so that consumedServices can watch for changes
@@ -247,7 +240,6 @@ var Service = Resource.extend({
       '_allExternalServices': _allExternalServices,
       '_allDnsServices': _allDnsServices,
       '_allKubernetesServices': _allKubernetesServices,
-      '_allKubernetesReplicationControllers': _allKubernetesReplicationControllers,
     });
   },
 
@@ -400,7 +392,6 @@ var Service = Resource.extend({
       'service',
       'loadbalancerservice',
       'kubernetesservice',
-      'kubernetesreplicationcontroller'
     ].indexOf(this.get('type').toLowerCase()) >= 0;
   }.property('type'),
 
@@ -418,7 +409,7 @@ var Service = Resource.extend({
   hasLabels: Ember.computed.alias('hasImage'),
 
   isK8s: function() {
-    return ['kubernetesservice','kubernetesreplicationcontroller'].indexOf(this.get('type').toLowerCase()) >= 0;
+    return ['kubernetesservice'].indexOf(this.get('type').toLowerCase()) >= 0;
   }.property('type'),
 
   displayType: function() {
@@ -429,7 +420,6 @@ var Service = Resource.extend({
       case 'dnsservice':          out = 'Service Alias'; break;
       case 'externalservice':     out = 'External'; break;
       case 'kubernetesservice':   out = 'K8s Service'; break;
-      case 'kubernetesreplicationcontroller': out = 'K8s Replication'; break;
       default:                    out = 'Service'; break;
     }
 
@@ -521,9 +511,7 @@ export function activeIcon(service)
     case 'loadbalancerservice': out = 'icon icon-fork';    break;
     case 'dnsservice':          out = 'icon icon-compass'; break;
     case 'externalservice':     out = 'icon icon-cloud';   break;
-    case 'kubernetesservice':
-    case 'kubernetesreplicationcontroller':
-      out = 'icon icon-kubernetes'; break;
+    case 'kubernetesservice':   out = 'icon icon-kubernetes'; break;
   }
 
   return out;
@@ -536,7 +524,6 @@ export function byId(serviceId) {
     _allExternalServices,
     _allDnsServices,
     _allKubernetesServices,
-    _allKubernetesReplicationControllers
   ];
 
   var i = 0;
@@ -558,7 +545,6 @@ Service.reopenClass({
     _allExternalServices = null;
     _allDnsServices = null;
     _allKubernetesServices = null;
-    _allKubernetesReplicationControllers = null;
   },
 
   consumedServicesFor: function(serviceId) {
