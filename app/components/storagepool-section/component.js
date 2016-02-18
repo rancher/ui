@@ -25,5 +25,5 @@ export default Ember.Component.extend(Sortable, FilterState, {
     return this.get('model.hosts').sortBy('displayName');
   }.property('model.hosts.@each.displayName'),
 
-  classNames: ['stack-section', 'storage'],
+  classNames: ['stack-section','storage'],
 });
