@@ -33,7 +33,7 @@ module.exports = function(defaults) {
     fingerprint: {
       exclude: [
         'assets/images/logos', // These can be bind-mounted in
-        'ui-light', 'ui-dark', 'ui' // Themes get version added to query string so JS doesn't have to know the fingerprint
+        'ui-light.css', 'ui-dark.css', 'ui.css' // Themes get version added to query string so JS doesn't have to know the fingerprint
       ],
       extensions: (appConfig.fingerprint === 'no' ? [] : ['js','css','png','jpg','gif','svg','map','woff','woff2','ttf']),
     },
