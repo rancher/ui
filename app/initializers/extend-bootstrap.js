@@ -1,6 +1,6 @@
 import BootstrapFixes from 'ui/utils/bootstrap-fixes';
 
-export function initialize( /*container, application*/ ) {
+export function initialize( /*application*/ ) {
   $(document).on('shown.bs.dropdown.position-calculator', function(event, data) {
     BootstrapFixes.resizeDropdown(event, data);
   });

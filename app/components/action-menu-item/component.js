@@ -2,14 +2,15 @@ import Ember from 'ember';
 import { isAlternate } from 'ui/utils/platform';
 
 export default Ember.Component.extend({
-  icon: 'icon-help',
-  label: '',
-  enabled: true,
-  actionArg: null,
-  altActionArg: null,
+  icon              : 'icon-help',
+  label             : '',
+  prefix            : null,
+  enabled           : true,
+  actionArg         : null,
+  altActionArg      : null,
 
-  tagName: 'a',
-  classNameBindings: ['enabled::hide'],
+  tagName           : 'a',
+  classNameBindings : ['enabled::hide'],
 
   click : function(event) {
     if ( isAlternate(event) && this.get('altActionArg'))
@@ -22,16 +23,15 @@ export default Ember.Component.extend({
     }
   },
 
-  render: function(buffer) {
+  willRender: function() {
     var icon = this.get('icon');
-    var prefix;
+
     if ( icon.indexOf('icon-') === -1 )
     {
-      prefix = 'icon icon-fw';
+      this.set('prefix', 'icon icon-fw');
     }
-
-    buffer.push(`<i class="${prefix} ${icon}"></i> ${this.get('label')}`);
   },
+
 
   iconChanged: function() {
     this.rerender();

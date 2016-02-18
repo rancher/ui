@@ -1,4 +1,4 @@
-export function initialize(registry, application) {
+export function initialize(application) {
   application.inject('controller',  'session', 'service:growl');
   application.inject('route',       'session', 'service:growl');
   application.inject('model',       'session', 'service:growl');

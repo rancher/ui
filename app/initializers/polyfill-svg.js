@@ -1,4 +1,4 @@
-export function initialize( /*container, application*/ ) {
+export function initialize( /*application*/ ) {
   // http://jointjs.com/blog/get-transform-to-element-polyfill.html
   if ( !SVGElement.prototype.getTransformToElement )
   {

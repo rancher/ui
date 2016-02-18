@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-export default Ember.ObjectController.extend({
+export default Ember.Controller.extend({
   access: Ember.inject.service(),
 
   lastRoute: 'admin-tab.auth.github',

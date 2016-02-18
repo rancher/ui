@@ -24,7 +24,10 @@
           <i>4</i>
           Copy, paste, and run the command below to register the host with {{settings.appName}}:
           {{#if registrationCommand}}
-            <div class="copy-pre"><pre>{{registrationCommand}}</pre>{{zero-clipboard text=registrationCommand block=true label=false}}</div>
+            <div class="copy-pre">
+              <pre id="registration-command">{{registrationCommand}}</pre>
+              {{copy-to-clipboard clipboardText=registrationCommand}}
+            </div>
           {{else}}
             <div><i class="icon icon-spinner icon-spin"></i> Generating registration URL...</div>
           {{/if}}

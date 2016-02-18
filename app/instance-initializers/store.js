@@ -6,10 +6,9 @@ import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
 
 export function initialize(instance) {
-  var container = instance.container;
-  var application = container.lookup('application:main');
-  var store = container.lookup('store:main');
-  var tabSession = container.lookup('service:tab-session');
+  var application = instance.lookup('application:main');
+  var store = instance.lookup('store:main');
+  var tabSession = instance.lookup('service:tab-session');
   store.set('removeAfterDelete', false);
 
   store.reopen({

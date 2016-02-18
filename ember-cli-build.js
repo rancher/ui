@@ -1,3 +1,4 @@
+/*jshint node:true*/
 /* global require, module */
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
 var util = require('util');
@@ -63,8 +64,6 @@ module.exports = function(defaults) {
   app.import('bower_components/d3/d3.js');
   app.import('bower_components/c3/c3.js');
   app.import('bower_components/c3/c3.css');
-  app.import('bower_components/zeroclipboard/dist/ZeroClipboard.js');
-  app.import('bower_components/zeroclipboard/dist/ZeroClipboard.swf', {destDir: 'assets'});
   app.import('vendor/term.js/src/term.js');
   app.import('vendor/jquery.initialize/jquery.initialize.js');
   app.import('bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js');

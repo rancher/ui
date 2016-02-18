@@ -1,4 +1,4 @@
-export function initialize(container, application) {
+export function initialize(application) {
   // Inject the contents of ENV.APP in config/environment.js  into all the things as an 'app' property
   application.inject('controller','app', 'application:main');
   application.inject('route',     'app', 'application:main');

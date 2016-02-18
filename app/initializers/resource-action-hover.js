@@ -1,4 +1,4 @@
-export function initialize(/* container, application */) {
+export function initialize(/* application */) {
   var body = jQuery('BODY');
 
   body.on('mouseenter','.resource-action-hover', function() {

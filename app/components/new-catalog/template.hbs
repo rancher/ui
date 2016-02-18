@@ -132,9 +132,9 @@
       
       {{#if previewOpen}}
         <ul class="nav nav-tabs nav-tabs-well">
-          <li class="{{if (eq previewTab 'docker-compose') 'active'}}" {{action "selectPreviewTab" "docker-compose"}}><a href="#">docker-compose.yml {{zero-clipboard text=selectedTemplateModel.dockerCompose}}</a></li>
-          <li class="{{if (eq previewTab 'rancher-compose') 'active'}}" {{action "selectPreviewTab" "rancher-compose"}}><a href="#">rancher-compose.yml {{zero-clipboard text=selectedTemplateModel.rancherCompose}}</a></li>
-          <li class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a href="#">answers.txt {{zero-clipboard text=answersString}}</a></li>
+          <li class="{{if (eq previewTab 'docker-compose') 'active'}}" {{action "selectPreviewTab" "docker-compose"}}><a href="#">docker-compose.yml {{copy-to-clipboard clipboardText=selectedTemplateModel.dockerCompose size="small"}}</a></li>
+          <li class="{{if (eq previewTab 'rancher-compose') 'active'}}" {{action "selectPreviewTab" "rancher-compose"}}><a href="#">rancher-compose.yml  {{copy-to-clipboard clipboardText=selectedTemplateModel.rancherCompose size="small"}}</a></li>
+          <li class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a href="#">answers.txt {{copy-to-clipboard clipboardText=answersString size="small"}}</a></li>
         </ul>
         <div class="well nav-well preview-content">
           {{code-block code=selectedTemplateModel.dockerCompose language="yaml" hide=(not-eq previewTab 'docker-compose')}}

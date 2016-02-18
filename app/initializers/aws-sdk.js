@@ -1,4 +1,4 @@
-export function initialize(container, application) {
+export function initialize(application) {
   // Monkey patch AWS SDK to go through our proxy
   var orig = AWS.XHRClient.prototype.handleRequest;
   AWS.XHRClient.prototype.handleRequest = function handleRequest(httpRequest, httpOptions, callback, errCallback) {

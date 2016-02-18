@@ -4,6 +4,8 @@ import { applyHeaders } from 'ember-api-store/utils/apply-headers';
 import ApiError from 'ember-api-store/models/error';
 import C from 'ui/utils/constants';
 
+const { getOwner } = Ember;
+
 function splitId(objOrStr, defaultNs) {
   var id = (typeof objOrStr === 'object' ? objOrStr.get('id') : objOrStr||'');
   var idx = id.indexOf(C.K8S.ID_SEPARATOR);
@@ -329,7 +331,7 @@ export default Ember.Service.extend({
 
     function findWithUrl(url) {
       var queue = self.get('promiseQueue');
-      var cls = self.get('container').lookup('model:'+type);
+      var cls = getOwner(self).lookup('model:'+type);
 
       if ( opt.filter )
       {
