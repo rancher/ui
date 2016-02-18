@@ -1,12 +1,10 @@
 <div class="clearfix {{if single model.stateBackground}} {{if single 'single'}}">
-  {{#unless single}}
-    <div class="stack-state {{model.stateBackground}}"><i class="{{model.stateIcon}}"></i></div>
-  {{/unless}}
-
-  <div class="header-left collapser">
-  </div>
+  <div class="header-left collapser"></div>
 
   <div class="header-left">
+    {{#unless single}}
+      <div class="pull-left {{model.stateBackground}}">{{badge-state model=model}}</div>
+    {{/unless}}
     <h4>
       {{#if single}}
         <span class="divider clip">{{model.name}}</span>
@@ -34,6 +32,8 @@
     {{/unless}}
   </div>
 </div>
+
+<hr/>
 
 <div class="stack-body r-p10 row row-full-height">
   <div class="subsection gutter col-xs-6 col-md-3 col-full-height">
