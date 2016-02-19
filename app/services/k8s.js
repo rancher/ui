@@ -181,7 +181,7 @@ export default Ember.Service.extend({
       }
 
       var output = store.createRecord(obj, type);
-      if (output.metadata.uid)
+      if (output && output.metadata && output.metadata.uid)
       {
         var cacheEntry = self.getByUid(type, output.metadata.uid);
         if ( cacheEntry )
@@ -458,7 +458,6 @@ export default Ember.Service.extend({
     return this.request({
       url: `${this.get('app.kubectlEndpoint')}/${encodeURIComponent(type)}/${encodeURIComponent(parts.name)}?namespace=${encodeURIComponent(parts.namespace)}`,
     }).then((body) => {
-      body = JSON.parse(body);
       return body.stdOut.trim();
     }).catch((err) => {
       return Ember.RSVP.reject(this.parseKubectlError(err));

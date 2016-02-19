@@ -40,4 +40,8 @@ export default Ember.Component.extend(FasterLinksAndMenus, {
   stateBackground: function() {
     return this.get('model.stateColor').replace("text-","bg-");
   }.property('model.stateColor'),
+
+  isKubernetes: function() {
+    return !!this.get('model.labels')[C.LABEL.K8S_POD_NAME];
+  }.property('model.labels'),
 });
