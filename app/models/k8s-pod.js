@@ -20,7 +20,7 @@ var Pod = K8sResource.extend({
     }
     else
     {
-      return ready + '/' + total + ' Ready';
+      return ready + ' of ' + total + ' Ready';
     }
   }.property('status.containerStatuses.@each.ready'),
 });

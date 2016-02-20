@@ -12,7 +12,7 @@ var RC = K8sResource.extend(PodSelector, {
     }
     else
     {
-      return want + '/' + have;
+      return have + ' of ' + want;
     }
   }.property('spec.replicas','status.replicas'),
 });

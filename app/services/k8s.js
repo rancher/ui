@@ -362,7 +362,7 @@ export default Ember.Service.extend({
   getByUid(type, uid) {
     type = normalizeType(type);
     var group = this.get('store')._group(type);
-    return group.filterBy('uid',uid)[0];
+    return group.filterBy('metadata.uid',uid)[0];
   },
 
   _getCollection(type, resourceName) {

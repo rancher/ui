@@ -10,5 +10,5 @@ export default Ember.Mixin.create({
 
   filtered: function() {
     return (this.get('filterableContent')||[]).filterBy('metadata.namespace', this.get('k8s.namespace.id'));
-  }.property('filterableContent.@each.id','k8s.namespace.id'),
+  }.property('filterableContent.@each.metadata','k8s.namespace.id'),
 });

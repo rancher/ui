@@ -1,6 +1,15 @@
 import Ember from 'ember';
 
 const TEMPLATES = {
+  namespace: `
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ""
+spec:
+  finalizers:
+`,
+
   service: `apiVersion: v1
 kind: Service
 metadata:
@@ -49,6 +58,10 @@ export default Ember.Route.extend({
     var fn, label;
     switch ( kind )
     {
+      case 'namespace':
+        fn = k8s.getNamespace;
+        label = 'Namespace';
+        break;
       case 'service':
         fn = k8s.getService;
         label = 'Service';

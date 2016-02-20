@@ -5,6 +5,7 @@ import C from 'ui/utils/constants';
 import { hasThings } from 'ui/authenticated/project/controller';
 
 export default Ember.Route.extend({
+  k8s       : Ember.inject.service(),
   prefs     : Ember.inject.service(),
   projects  : Ember.inject.service(),
   access    : Ember.inject.service(),
@@ -93,29 +94,22 @@ export default Ember.Route.extend({
       var d = JSON.parse(event.data, boundTypeify);
       //this._trySend('subscribeMessage',d);
 
-      var action;
       if ( d.name === 'resource.change' )
       {
-        action = d.resourceType+'Changed';
-        /*
-        if ( d.resourceType == 'serviceConsumeMap' )
+        this._trySend(d.resourceType+'Changed', d);
+      }
+      else if ( d.name === 'service.kubernetes.change' )
+      {
+        var changeType = (Ember.get(d, 'data.type')||'').toLowerCase();
+        var obj = Ember.get(d, 'data.object');
+        if ( changeType && obj )
         {
-          console.log('Map', d.data.resource.serviceId, '->', d.data.resource.consumedServiceId);
+          this._trySend('k8sResourceChanged', changeType, obj);
         }
-        else
-        {
-          console.log('Res', (d.data ? d.data.resource.type : ''), (d.data ?  d.data.resource.id : ''), (d.data ? d.data.resource.state : ''));
-        }
-        */
       }
       else if ( d.name === 'ping' )
       {
-        action = 'subscribePing';
-      }
-
-      if ( action )
-      {
-        this._trySend(action,d);
+        this._trySend('subscribePing', d);
       }
     });
 
@@ -278,6 +272,16 @@ export default Ember.Route.extend({
     kubernetesServiceChanged: function(change) {
       this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
     },
+
+    k8sResourceChanged: function(changeType, obj) {
+      var resource = this.get('k8s')._typeify(obj);
+      //console.log('k8s change', changeType, obj.metadata.uid, resource);
+
+      if ( changeType === 'deleted' )
+      {
+        this.get('store')._remove(resource.get('type'), resource);
+      }
+    }
   },
 
   _trySend: function(/*arguments*/) {
