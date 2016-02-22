@@ -9,8 +9,8 @@
     </h1>
   </section>
 
-  <section class="horizontal-form container-fluid">
-    {{#if isService}}
+{{#if isService}}
+  <section class="horizontal-form container-fluid well">
       {{#if isUpgrade}}
         {{form-upgrade
           switch=(action 'selectLaunchConfig')
@@ -39,8 +39,9 @@
         switch=(action 'selectLaunchConfig')
         showAdd=(not isUpgrade)
       }}
-    {{/if}}
   </section>
+{{/if}}
+
 {{/unless}}
 
 {{#if noLaunchConfigsEnabled}}
@@ -48,28 +49,33 @@
 {{/if}}
 
 <div data-launchindex="{{if isSidekick '' '-1'}}">
-  <section class="horizontal-form container-fluid">
-    {{#unless isUpgrade}}
-      {{form-name-description
-        model=primaryResource
-        namePlaceholder="e.g. myapp"
-        descriptionPlaceholder="My application"
-      }}
+  <section class="horizontal-form container-fluid well">
+    <div class="row">
+      <div class="col-sm-12 col-md-6">
+        {{#unless isUpgrade}}
+          {{form-name-description
+            model=primaryResource
+            namePlaceholder="e.g. myapp"
+            descriptionPlaceholder="My application"
+          }}
+        {{/unless}}
+      </div>
 
-    {{/unless}}
+      <div class="col-sm-12 col-md-6">
+        {{form-image
+          isVm=isVm
+          initialValue=launchConfig.imageUuid
+          errors=imageErrors
+          changed=(action 'setImage')
+          initialLabels=launchConfig.labels
+          setLabels=(action 'setLabels' 'image')
+        }}
 
-    {{form-image
-      isVm=isVm
-      initialValue=launchConfig.imageUuid
-      errors=imageErrors
-      changed=(action 'setImage')
-      initialLabels=launchConfig.labels
-      setLabels=(action 'setLabels' 'image')
-    }}
-
-    {{#if isVm}}
-      {{form-virtualmachine launchConfig=launchConfig}}
-    {{/if}}
+        {{#if isVm}}
+          {{form-virtualmachine launchConfig=launchConfig}}
+        {{/if}}
+      </div>
+    </div>
 
     {{form-ports
       initialPorts=launchConfig.ports
