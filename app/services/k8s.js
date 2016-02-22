@@ -29,7 +29,10 @@ function joinId(objOrStr, defaultNs) {
 }
 
 export default Ember.Service.extend({
+  'tab-session': Ember.inject.service('tab-session'),
+
   namespaces: null,
+  namespace: null,
   services: null,
   rcs: null,
   pods: null,
@@ -404,6 +407,43 @@ export default Ember.Service.extend({
   getNamespace(name) {
     return this._find(`${C.K8S.TYPE_PREFIX}namespace`, name , {
       url: `namespaces/${name}`
+    });
+  },
+
+  selectNamespace(desiredName) {
+    var self = this;
+    return this.allNamespaces().then((all) => {
+      var obj = objForName(desiredName);
+      if ( obj )
+      {
+        return select(obj);
+      }
+
+      obj = objForName(self.get(`tab-session.${C.TABSESSION.NAMESPACE}`));
+      if ( obj )
+      {
+        return select(obj);
+      }
+
+      obj = all.objectAt(0);
+      return select(obj);
+
+      function objForName(name) {
+        if ( name )
+        {
+          return all.filterBy('id', name).objectAt(0);
+        }
+        else
+        {
+          return null;
+        }
+      }
+
+      function select(obj) {
+        self.set(`tab-session.${C.TABSESSION.NAMESPACE}`, obj.get('id'));
+        self.set('namespace', obj);
+        return obj;
+      };
     });
   },
 
