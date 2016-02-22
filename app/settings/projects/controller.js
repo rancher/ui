@@ -8,6 +8,7 @@ export default Ember.Controller.extend(Sortable, {
     state:        ['stateSort','name','id'],
     name:         ['name','id'],
     description:  ['description','name','id'],
+    orchestration:['displayOrchestration','name','id'],
   },
 
   access: Ember.inject.service(),

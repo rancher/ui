@@ -6,6 +6,7 @@ import C from 'ui/utils/constants';
 var Project = Resource.extend(PolledResource, {
   prefs: Ember.inject.service(),
   projects: Ember.inject.service(),
+  settings: Ember.inject.service(),
 
   type: 'project',
   name: null,
@@ -107,6 +108,21 @@ var Project = Resource.extend(PolledResource, {
   canSetDefault: function() {
     return this.get('state') === 'active' && !this.get('isDefault');
   }.property('state','isDefault'),
+
+  displayOrchestration: function() {
+    if ( this.get('kubernetes') )
+    {
+      return 'Kubernetes';
+    }
+    else if ( this.get('swarm') )
+    {
+      return 'Swarm';
+    }
+    else
+    {
+      return 'Corral';
+    }
+  }.property('kubernetes','swarm'),
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often
