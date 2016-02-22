@@ -5,7 +5,7 @@ import { normalizeType } from 'ember-api-store/utils/normalize';
 var K8sResource = Resource.extend({
   actions: {
     edit() {
-      this.get('router').transitionTo('k8s-tab.namespace.apply', this.metadata.namespace, {
+      this.get('router').transitionTo('k8s-tab.apply', {
         queryParams: {
           name: this.metadata.name,
           kind: this.get('kind'),

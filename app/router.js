@@ -143,14 +143,14 @@ Router.map(function() {
       this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
 
+        this.route('apply', {path: '/apply'});
+
         this.route('namespaces', {path: '/namespaces'}, function() {
           this.route('index', {path: '/'});
         });
 
         this.route('namespace', {path: '/:namespace_id'}, function() {
           this.route('index', {path: '/'});
-
-          this.route('apply', {path: '/apply'});
 
           this.route('services', {path: '/services'}, function() {
             this.route('service', {path: '/:name'});

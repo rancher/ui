@@ -1,8 +1,7 @@
 import Ember from 'ember';
 
 const TEMPLATES = {
-  namespace: `
-apiVersion: v1
+  namespace: `apiVersion: v1
 kind: Namespace
 metadata:
   name: ""
@@ -52,7 +51,7 @@ export default Ember.Route.extend({
 
   model(params) {
     var k8s = this.get('k8s');
-    var ns = this.modelFor('k8s-tab.namespace');
+    var ns = k8s.get('namespace.metadata.name')||'';
     var kind = (params.kind||'').toLowerCase();
 
     var fn, label;
@@ -80,7 +79,7 @@ export default Ember.Route.extend({
 
     if ( params.name )
     {
-      return this.get('k8s').getYaml(kind, params.name, ns.get('id')).then((yaml) => {
+      return this.get('k8s').getYaml(kind, params.name, ns).then((yaml) => {
         return Ember.Object.create({
           body: yaml,
           editing: true,
@@ -91,7 +90,7 @@ export default Ember.Route.extend({
     else
     {
       return Ember.Object.create({
-        body: TEMPLATES[kind].replace('%NAMESPACE%', ns.get('id')),
+        body: TEMPLATES[kind].replace('%NAMESPACE%', ns),
         editing: false,
         label: label,
       });
