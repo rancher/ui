@@ -54,6 +54,31 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     removeMember(item) {
       this.get('project.projectMembers').removeObject(item);
     },
+
+    selectOrchestration(name) {
+      var k8s = (name === 'kubernetes');
+      var swarm = (name === 'swarm');
+      this.get('project').setProperties({
+        kubernetes: k8s,
+        swarm: swarm,
+      });
+      this.set('activeOrchestration', name);
+    },
+  },
+
+  activeOrchestration: null,
+  didReceiveAttrs() {
+    var orch = 'rancher';
+    if ( this.get('project.kubernetes') )
+    {
+      orch = 'kubernetes';
+    }
+    else if ( this.get('project.swarm') )
+    {
+      orch = 'swarm';
+    }
+
+    this.set('activeOrchestration', orch);
   },
 
   didInsertElement() {
@@ -80,6 +105,21 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   hasOwner: function() {
     return this.get('project.projectMembers').filterBy('role', C.PROJECT.ROLE_OWNER).get('length') > 0;
   }.property('project.projectMembers.@each.role'),
+
+  orchestrationChoices: function() {
+    var drivers = [
+      {name: 'rancher',     label: 'Corral',      css: 'rancher'},
+      {name: 'kubernetes',  label: 'Kubernetes',  css: 'kubernetes'},
+      {name: 'swarm',       label: 'Swarm',       css: 'swarm'},
+    ];
+
+    var active = this.get('activeOrchestration');
+    drivers.forEach(function(driver) {
+      driver.active = ( active === driver.name );
+    });
+
+    return drivers;
+  }.property('activeOrchestration'),
 
   validate() {
     this._super();
