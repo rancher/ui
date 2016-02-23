@@ -17,8 +17,11 @@ Router.map(function() {
 
     // Settings
     this.route('settings', {resetNamespace: true}, function() {
-      this.route('projects', {path: '/environments'});
-      this.route('project-detail', {path: '/environments/:project_id'});
+      this.route('projects', {path: '/env'}, function() {
+        this.route('index', {path: '/'})
+        this.route('new', {path: '/add'});
+        this.route('detail', {path: '/:project_id'});
+      });
     });
 
     // Admin
@@ -70,7 +73,6 @@ Router.map(function() {
           this.route('index', {path: '/'});
 
           this.route('container', {path: '/:container_id', resetNamespace: true}, function() {
-            this.route('edit');
             this.route('ports');
             this.route('volumes');
             this.route('labels');
@@ -127,7 +129,6 @@ Router.map(function() {
               this.route('containers');
               this.route('labels');
               this.route('ports');
-              this.route('edit');
               this.route('links');
             });
           });
@@ -229,13 +230,6 @@ Router.map(function() {
     dismissWithOutsideClick: false,
     withParams: 'editApikey',
     otherParams: {'originalModel': 'originalModel', 'editApikeyIsNew': 'justCreated'}
-  });
-
-  this.modal('edit-project', {
-    dismissWithOutsideClick: false,
-    dialogClass: 'full-height',
-    withParams: 'editProject',
-    otherParams: 'originalModel',
   });
 
   this.modal('edit-registry', {

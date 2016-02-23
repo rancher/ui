@@ -6,6 +6,7 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.all([
       store.find('schema','project', {authAsUser: true}),
+      store.find('schema','projectmember', {authAsUser: true}),
     ]);
   },
 

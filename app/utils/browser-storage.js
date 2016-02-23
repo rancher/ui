@@ -46,7 +46,13 @@ export default Ember.Mixin.create({
     this.beginPropertyChanges();
     for ( var i = 0 ; i < backing.length ; i++ )
     {
-      this.set(backing.key(i));
+      var key = backing.key(i);
+      if ( key.indexOf('.') >= 0 )
+      {
+        continue;
+      }
+
+      this.set(key);
     }
 
     backing.clear();
