@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import Sortable from 'ui/mixins/sortable';
-import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend(Sortable, {
   sortBy: 'name',

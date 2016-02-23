@@ -4,11 +4,11 @@ import {
 } from 'ember-qunit';
 
 import Ember from 'ember';
-import { initialize } from 'ui/initializers/config';
+import { initialize } from 'ui/initializers/app';
 
 var container, application;
 
-moduleFor('initializer:config', {
+moduleFor('initializer:app', {
   setup: function() {
     Ember.run(function() {
       container = new Ember.Container();

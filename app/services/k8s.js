@@ -32,7 +32,6 @@ export default Ember.Service.extend({
   'tab-session': Ember.inject.service('tab-session'),
 
   namespaces: null,
-  namespace: null,
   services: null,
   rcs: null,
   pods: null,
@@ -443,7 +442,7 @@ export default Ember.Service.extend({
         self.set(`tab-session.${C.TABSESSION.NAMESPACE}`, obj.get('id'));
         self.set('namespace', obj);
         return obj;
-      };
+      }
     });
   },
 

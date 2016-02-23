@@ -18,7 +18,7 @@ Router.map(function() {
     // Settings
     this.route('settings', {resetNamespace: true}, function() {
       this.route('projects', {path: '/env'}, function() {
-        this.route('index', {path: '/'})
+        this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
         this.route('detail', {path: '/:project_id'});
       });

@@ -141,7 +141,7 @@ export default Ember.Route.extend({
       }
 
       // This will return a different one if the one you ask for doesn't exist
-      this.get('k8s').selectNamespace(namespaceId).then((ns) => {;
+      this.get('k8s').selectNamespace(namespaceId).then((ns) => {
         this.transitionTo(route, ns.get('id'));
       });
     },
