@@ -42,19 +42,36 @@ export function initialize(instance) {
       return proxy;
     },
 
+    reallyFind: store.find,
+    find: function(type, id, opt) {
+      opt = opt || {};
+      if ( opt.authAsUser )
+      {
+        var headers = opt.headers;
+        if ( !headers )
+        {
+          headers = {};
+          opt.headers = headers;
+        }
+
+        headers[C.HEADER.PROJECT] = undefined;
+      }
+
+      return this.reallyFind(type, id, opt);
+    },
+
     // find(type) && return allActive(type)
     findAllActive: function(type) {
       type = normalizeType(type);
-      var self = this;
 
-      if ( self.haveAll(type) )
+      if ( this.haveAll(type) )
       {
-        return Ember.RSVP.resolve(self.allActive(type),'All active '+ type + ' already cached');
+        return Ember.RSVP.resolve(this.allActive(type),'All active '+ type + ' already cached');
       }
       else
       {
-        return this.find(type).then(function() {
-          return self.allActive(type);
+        return this.find(type).then(() => {
+          return this.allActive(type);
         });
       }
     },
@@ -70,16 +87,15 @@ export function initialize(instance) {
 
     findAllUnremoved: function(type) {
       type = normalizeType(type);
-      var self = this;
 
-      if ( self.haveAll(type) )
+      if ( this.haveAll(type) )
       {
-        return Ember.RSVP.resolve(self.allUnremoved(type),'All unremoved '+ type + ' already cached');
+        return Ember.RSVP.resolve(this.allUnremoved(type),'All unremoved '+ type + ' already cached');
       }
       else
       {
-        return this.find(type).then(function() {
-          return self.allUnremoved(type);
+        return this.find(type).then(() => {
+          return this.allUnremoved(type);
         });
       }
     },

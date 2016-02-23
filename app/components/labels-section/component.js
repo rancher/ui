@@ -5,8 +5,10 @@ import Sortable from 'ui/mixins/sortable';
 export default Ember.Component.extend(ManageLabels, Sortable, {
   model: null,
 
+  labelSource: Ember.computed.alias('model.labels'),
   sortableContent: Ember.computed.alias('labelArray'),
   sortBy: 'kind',
+  showKind: true,
   descending: true,
   sorts: {
     kind: ['type','key'],
@@ -15,6 +17,6 @@ export default Ember.Component.extend(ManageLabels, Sortable, {
   },
 
   didInitAttrs() {
-    this.initLabels(this.get('model.labels'));
+    this.initLabels(this.get('labelSource'));
   },
 });

@@ -1,19 +1,16 @@
 import Ember from 'ember';
 import Sortable from 'ui/mixins/sortable';
+import FilterNamespace from 'ui/mixins/filter-k8s-namespace';
 
-export default Ember.Controller.extend(Sortable, {
-  filtered: function() {
-    var ns = this.get('model.ns');
-    return (this.get('model.services')||[]).filter((row) => {
-      return (row.get('environmentId') === ns.get('id')) && row.get('kind').toLowerCase() === 'kubernetesreplicationcontroller' &&
-             (['removing','removed','purging','purged'].indexOf(row.get('state')) === -1);
-    });
-  }.property('model.services.@each.{kind,state}'),
-
+export default Ember.Controller.extend(Sortable, FilterNamespace, {
+  filterableContent: Ember.computed.alias('model.allRCs'),
   sortableContent: Ember.computed.alias('filtered'),
+
   sortBy: 'name',
   sorts: {
     state:        ['stateSort','name','id'],
     name:         ['name','id'],
+    serviceType:  ['serviceType','name','id'],
+    selector:     ['selector','name','id'],
   },
 });

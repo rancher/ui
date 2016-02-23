@@ -1,7 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  k8s: Ember.inject.service(),
+
   model() {
-    return this.modelFor('k8s-tab.namespace');
+    return this.get('k8s').allServices();
   },
 });

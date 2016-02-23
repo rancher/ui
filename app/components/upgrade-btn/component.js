@@ -5,6 +5,7 @@ const NONE = 'none',
       LOADING = 'loading',
       CURRENT = 'current',
       AVAILABLE = 'available',
+      NOTFOUND = 'notfound',
       ERROR = 'error';
 
 var queue = async.queue(getUpgradeInfo, 2);
@@ -26,8 +27,15 @@ function getUpgradeInfo(task, cb) {
         obj.set('upgradeStatus', CURRENT);
       }
     }
-  }).catch((/*err*/) => {
-    obj.set('upgradeStatus', ERROR);
+  }).catch((err) => {
+    if ( err.status === 404 )
+    {
+      obj.set('upgradeStatus', NOTFOUND);
+    }
+    else
+    {
+      obj.set('upgradeStatus', ERROR);
+    }
   }).finally(() => {
     cb();
   });
@@ -73,6 +81,7 @@ export default Ember.Component.extend({
         return 'hide';
       case LOADING:
       case CURRENT:
+      case NOTFOUND:
       case ERROR:
         return 'btn-disabled';
       case AVAILABLE:
@@ -90,13 +99,15 @@ export default Ember.Component.extend({
       case NONE:
         return '';
       case LOADING:
-        return 'Checking Upgrades...';
+        return 'Checking upgrades...';
       case CURRENT:
         return 'Up to date';
       case AVAILABLE:
-        return 'Upgrade Available';
+        return 'Upgrade available';
+      case NOTFOUND:
+        return 'Template version not found';
       default:
-        return 'Error checking upgrades';
+        return 'Error checking for upgrade';
     }
   }.property('upgradeStatus','isUpgradeState'),
 

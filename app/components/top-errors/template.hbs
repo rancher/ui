@@ -2,7 +2,13 @@
 <div class="r-ml30">
   <ul class="list-unstyled">
     {{#each errors as |error|}}
-      <li>{{error}}</li>
+      {{#if (is-array error)}}
+        {{#each error as |line|}}
+          <li>{{line}}</li>
+        {{/each}}
+      {{else}}
+        <li>{{error}}</li>
+      {{/if}}
     {{/each}}
   </ul>
 </div>

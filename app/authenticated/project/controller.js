@@ -14,10 +14,6 @@ export function hasThings(stacks, project, tgt)
     {
       keys.hasSystem = true;
     }
-    else if ( info.kind === C.EXTERNALID.KIND_CATALOG && info.id.match(/:kubernetes:/) )
-    {
-      keys.hasKubernetes = true;
-    }
   });
 
   tgt.setProperties(keys);

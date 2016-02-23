@@ -1,0 +1,28 @@
+<section class="header">
+  <h1>Pods</h1>
+
+  {{#link-to "k8s-tab.apply" (query-params kind="Pod") classNames="btn btn-sm btn-primary"}}Add Pod{{/link-to}}
+</section>
+
+<section class="well instances">
+  <table class="grid fixed" style="margin-bottom: 0;">
+    <thead>
+      <tr>
+        {{sortable-th sortable=this action="changeSort" name="name"}}
+        <th width="80">Status</th>
+        <th>Containers</th>
+        <th>Host IP</th>
+        <th>Pod IP</th>
+        <th class="actions" width="85">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each arranged as |pod|}}
+        {{k8s/pod-row model=pod}}
+      {{else}}
+        <tr><td colspan="5" class="text-center text-muted">You do not have any Pods yet.</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>
+

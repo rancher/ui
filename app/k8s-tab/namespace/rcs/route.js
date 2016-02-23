@@ -1,13 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  k8s: Ember.inject.service(),
+
   model() {
-    var ns = this.modelFor('k8s-tab.namespace');
-    return this.get('store').findAll('kubernetesreplicationcontroller').then((services) => {
-      return Ember.Object.create({
-        ns: ns,
-        services: services,
-      });
-    });
+    return this.get('k8s').allRCs();
   },
 });

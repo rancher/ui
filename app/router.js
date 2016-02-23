@@ -17,8 +17,11 @@ Router.map(function() {
 
     // Settings
     this.route('settings', {resetNamespace: true}, function() {
-      this.route('projects', {path: '/environments'});
-      this.route('project-detail', {path: '/environments/:project_id'});
+      this.route('projects', {path: '/env'}, function() {
+        this.route('index', {path: '/'});
+        this.route('new', {path: '/add'});
+        this.route('detail', {path: '/:project_id'});
+      });
     });
 
     // Admin
@@ -70,7 +73,6 @@ Router.map(function() {
           this.route('index', {path: '/'});
 
           this.route('container', {path: '/:container_id', resetNamespace: true}, function() {
-            this.route('edit');
             this.route('ports');
             this.route('volumes');
             this.route('labels');
@@ -127,7 +129,6 @@ Router.map(function() {
               this.route('containers');
               this.route('labels');
               this.route('ports');
-              this.route('edit');
               this.route('links');
             });
           });
@@ -140,24 +141,28 @@ Router.map(function() {
       });
 
       // Kubernetes
-      this.route('k8s-tab', {path: '/k8s', resetNamespace: true}, function() {
+      this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('new-ns', {path: '/add-ns'});
 
-        this.route('namespace', {path: '/ns/:namespace_id'}, function() {
+        this.route('apply', {path: '/apply'});
+
+        this.route('namespaces', {path: '/namespaces'}, function() {
+          this.route('index', {path: '/'});
+        });
+
+        this.route('namespace', {path: '/:namespace_id'}, function() {
           this.route('index', {path: '/'});
 
           this.route('services', {path: '/services'}, function() {
-            this.route('index', {path: '/'});
-            this.route('new', {path: '/add'});
+            this.route('service', {path: '/:name'});
           });
 
           this.route('rcs', {path: '/rcs'}, function() {
-            this.route('index', {path: '/'});
-            this.route('new', {path: '/add'});
+            this.route('rc', {path: '/:name'});
+          });
 
-            this.route('rc', {path: '/:rc_id'}, function() {
-            });
+          this.route('pods', {path: '/pods'}, function() {
+            this.route('pod', {path: '/:name'});
           });
         });
       });
@@ -225,13 +230,6 @@ Router.map(function() {
     dismissWithOutsideClick: false,
     withParams: 'editApikey',
     otherParams: {'originalModel': 'originalModel', 'editApikeyIsNew': 'justCreated'}
-  });
-
-  this.modal('edit-project', {
-    dismissWithOutsideClick: false,
-    dialogClass: 'full-height',
-    withParams: 'editProject',
-    otherParams: 'originalModel',
   });
 
   this.modal('edit-registry', {

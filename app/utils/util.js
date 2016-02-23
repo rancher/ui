@@ -99,6 +99,11 @@ export function ucFirst(str) {
   return str.substr(0,1).toUpperCase() + str.substr(1);
 }
 
+export function lcFirst(str) {
+  str = str||'';
+  return str.substr(0,1).toLowerCase() + str.substr(1);
+}
+
 export function strPad(str, toLength, padChars, right)
 {
   str = str+'';
@@ -286,6 +291,7 @@ var Util = {
   absoluteUrl: absoluteUrl,
   addAuthorization: addAuthorization,
   ucFirst: ucFirst,
+  lcFirst: lcFirst,
   strPad: strPad,
   timerFuzz: timerFuzz,
   random32: random32,

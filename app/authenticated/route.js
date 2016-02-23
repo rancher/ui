@@ -69,12 +69,6 @@ export default Ember.Route.extend({
 
   loadPreferences() {
     return this.get('store').find('userpreference', null, {url: 'userpreferences', forceReload: true}).then((res) => {
-      // Some people hate spinners
-      if ( this.get(`prefs.${C.PREFS.I_HATE_SPINNERS}`) )
-      {
-        $('BODY').addClass('no-spin');
-      }
-
       // Save the account ID from the response headers into session
       if ( res && res.xhr )
       {
@@ -134,12 +128,22 @@ export default Ember.Route.extend({
 
     switchNamespace(namespaceId) {
       var route = window.lc('application').get('currentRouteName');
-      if ( ['k8s-tab.namespace.rcs.index','k8s-tab.namespace.services.index'].indexOf(route) === -1 )
+      var okRoutes = [
+        'k8s-tab.namespaces',
+        'k8s-tab.namespace.rcs.index',
+        'k8s-tab.namespace.services.index',
+        'k8s-tab.namespace.pods.index',
+      ];
+
+      if ( okRoutes.indexOf(route) === -1 )
       {
         route = 'k8s-tab.namespace';
       }
 
-      this.transitionTo(route, namespaceId);
+      // This will return a different one if the one you ask for doesn't exist
+      this.get('k8s').selectNamespace(namespaceId).then((ns) => {
+        this.transitionTo(route, ns.get('id'));
+      });
     },
   },
 });

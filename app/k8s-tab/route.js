@@ -4,15 +4,16 @@ export default Ember.Route.extend({
   k8s: Ember.inject.service(),
 
   model() {
-    var store = this.get('store');
-    // Kubernetes schemas are dynamic and not loaded by the initial /v1/schemas
-    return Ember.RSVP.all([
-      store.find('schema','kubernetesservice'),
-      store.find('schema','kubernetesreplicationcontroller'),
-    ]).then(() => {
-      return store.findAllUnremoved('environment').then((namespaces) => {
-        this.set('k8s.namespaces', namespaces);
-        return namespaces;
+    var k8s = this.get('k8s');
+
+    return Ember.RSVP.hash({
+      namespaces: k8s.allNamespaces(),
+      services: k8s.allServices(),
+      rcs: k8s.allRCs(),
+      pods: k8s.allPods(),
+    }).then((hash) => {
+      return k8s.selectNamespace().then(() => {
+        k8s.setProperties(hash);
       });
     });
   },

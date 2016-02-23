@@ -6,7 +6,7 @@ export default Ember.Route.extend({
   'tab-session': Ember.inject.service('tab-session'),
 
   model(params) {
-    return this.get('store').find('environment', params.namespace_id).then((ns) => {
+    return this.get('k8s').getNamespace(params.namespace_id).then((ns) => {
       this.set(`tab-session.${C.TABSESSION.NAMESPACE}`, ns.get('id'));
       this.set('k8s.namespace', ns);
       return ns;

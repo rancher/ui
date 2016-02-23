@@ -136,6 +136,8 @@ var Host = Resource.extend({
       out = (this.get('info.osInfo.operatingSystem')||'').replace(/\s+\(.*?\)/,'');
     }
 
+    out = out.replace("Red Hat Enterprise Linux Server","RHEL");
+
     var hasKvm = (this.get('labels')||{})[C.LABEL.KVM] === 'true';
     if ( hasKvm && out )
     {

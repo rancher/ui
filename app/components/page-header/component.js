@@ -7,6 +7,7 @@ export default Ember.Component.extend({
   project: Ember.computed.alias('projects.current'),
   prefs: Ember.inject.service(),
   k8s: Ember.inject.service(),
+  namespace: Ember.computed.alias('k8s.namespace'),
 
   currentPath: null,
   authController: null,

@@ -1,0 +1,37 @@
+<section class="header">
+  <h1>Environments</h1>
+
+  {{#link-to "settings.projects.new" class="btn btn-sm btn-primary"}}Add Environment{{/link-to}}
+</section>
+<section>
+  <div class="well">
+    <p>{{settings.appName}} supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
+    <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
+  </div>
+
+  {{#unless projects.current}}
+    <div class="alert alert-danger"><i class="icon icon-alert"></i> There are no active environments.  You will need to create or activate one before you can do anything else.</div>
+  {{/unless}}
+</section>
+
+<section class="well">
+  <table class="grid fixed" style="margin-bottom: 0">
+    <thead>
+      <tr>
+        {{sortable-th sortable=this action="changeSort" name="state" width="125"}}
+        {{sortable-th sortable=this action="changeSort" name="name"}}
+        {{sortable-th sortable=this action="changeSort" name="description"}}
+        {{sortable-th sortable=this action="changeSort" name="orchestration"}}
+        <th width="80">Default</th>
+        <th width="50">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each arranged as |p|}}
+        {{project-row model=p}}
+      {{else}}
+        <tr><td colspan="5" class="text-center text-muted">You don't have any environments yet.</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>

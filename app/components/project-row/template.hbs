@@ -2,10 +2,13 @@
   {{badge-state model=model}}
 </td>
 <td>
-  {{#link-to "settings.project-detail" model.id}}{{model.displayName}}{{/link-to}}
+  {{#link-to "settings.projects.detail" model.id (query-params editing=false)}}{{model.displayName}}{{/link-to}}
 </td>
 <td>
   {{#if model.description}}{{model.description}}{{else}}<span class="text-muted">No description</span>{{/if}}
+</td>
+<td>
+  {{model.displayOrchestration}}
 </td>
 <td>
   {{#if model.isDefault}}<i class="icon icon-check"></i>{{else}}<span class="text-muted">&ndash;</span>{{/if}}

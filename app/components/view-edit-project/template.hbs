@@ -1,0 +1,126 @@
+<section class="header">
+  {{#if showEdit}}
+    <h1>
+      {{#if editing}}
+        Edit Environment: {{originalProject.displayName}}
+      {{else}}
+        Add Environment
+      {{/if}}
+    </h1>
+  {{else}}
+    <h1>{{#link-to "settings.projects"}}Environment:{{/link-to}}</h1>
+    {{#power-select options=model.all selected=project onchange=(action "changeProject") searchField="displayName" as |obj|}}
+      <div class="clip">
+        {{select-dot model=obj}}
+      </div>
+    {{/power-select}}
+
+    {{action-menu model=project size="sm" classNames="r-ml10 pull-right"}}
+    {{header-state model=project classNames="pull-right"}}
+  {{/if}}
+</section>
+
+{{#if showEdit}}
+  <section class="well">
+    <div class="nav nav-boxes checked-active">
+      {{#each orchestrationChoices as |driver|}}
+        <a {{action "selectOrchestration" driver.name}} alt={{driver.label}} class="nav-box-item driver orchestration-driver {{if driver.active 'active'}} {{driver.css}}"></a>
+      {{/each}}
+    </div>
+  </section>
+
+  <section>
+    {{form-name-description
+      model=project
+      namePlaceholder="e.g. lab"
+      descriptionPlaceholder="e.g. Environment for developer experimentation"
+    }}
+  </section>
+{{else}}
+ {{#if project.description}}
+    <section class="well r-mb0">
+      <label>Description</label>
+      <p>{{project.description}}</p>
+    </section>
+  {{/if}}
+{{/if}}
+
+<section>
+  <div class="row form-group">
+    {{#if showEdit}}
+      <div class="col-sm-12 col-md-2 form-label">
+        <label class="form-control-static">Access Control</label>
+      </div>
+    {{/if}}
+
+    <div class="{{if showEdit 'col-sm-12 col-md-8' 'col-xs-12'}}">
+      <div class="well">
+        {{#if showEdit}}
+          <div class="row form-group">
+            <div class="col-sm-12">
+              {{#if accessEnabled}}
+                {{input-identity action="checkMember" onError="error"}}
+              {{else}}
+                <p class="help-block text-center r-mt0">
+                  Access Control is not enabled.
+                  Anybody with access to the API/UI acts as an admin and will be able to use any environment.
+                </p>
+              {{/if}}
+            </div>
+          </div>
+        {{/if}}
+
+        <table class="grid fixed" style="margin-bottom: 0;">
+          <thead>
+            <tr>
+              {{sortable-th sortable=this action="changeSort" name="name"}}
+              {{sortable-th sortable=this action="changeSort" name="type"}}
+              {{sortable-th sortable=this action="changeSort" name="role"}}
+              {{#if showEdit}}<th width="40">&nbsp;</th>{{/if}}
+            </tr>
+          </thead>
+          <tbody>
+            {{#each arranged as |member|}}
+              <tr>
+                <td>
+                  {{identity-block identity=member}}
+                </td>
+                <td>{{member.displayType}}</td>
+                <td>
+                  {{#if showEdit}}
+                    <select class="form-control input-sm" onchange={{action (mut member.role) value="target.value"}}>
+                      {{#each roleOptions as |choice|}}
+                        <option value={{choice.value}} selected={{eq member.role choice.value}}>{{choice.label}}</option>
+                      {{/each}}
+                    </select>
+                  {{else}}
+                    {{uc-first member.role}}
+                  {{/if}}
+                </td>
+                {{#if showEdit}}
+                  <td>
+                    {{#if accessEnabled}}
+                      <button class="btn-circle btn-sm pull-right gh-action" {{action "removeMember" member}}><i class="icon icon-x-circle"/></button>
+                    {{else}}
+                      &nbsp;
+                    {{/if}}
+                  </td>
+                {{/if}}
+              </tr>
+            {{else}}
+              <tr>
+                <td colspan="3" class="text-center text-muted">
+                  {{if showEdit 'No members yet, add at least one owner.' 'This project has no members.'}}
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+  {{#if showEdit}}
+    {{partial "save-cancel"}}
+  {{/if}}

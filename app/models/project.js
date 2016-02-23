@@ -6,6 +6,7 @@ import C from 'ui/utils/constants';
 var Project = Resource.extend(PolledResource, {
   prefs: Ember.inject.service(),
   projects: Ember.inject.service(),
+  settings: Ember.inject.service(),
 
   type: 'project',
   name: null,
@@ -13,12 +14,7 @@ var Project = Resource.extend(PolledResource, {
 
   actions: {
     edit: function() {
-      this.importLink('projectMembers').then(() => {
-        this.get('application').setProperties({
-          editProject: true,
-          originalModel: this,
-        });
-      });
+      this.get('router').transitionTo('settings.projects.detail', this.get('id'), {queryParams: {editing: true}});
     },
 
     delete: function() {
@@ -62,20 +58,21 @@ var Project = Resource.extend(PolledResource, {
     var a = this.get('actionLinks');
 
     var choices = [
-      { label: 'Activate',      icon: 'icon icon-play',  action: 'activate',     enabled: !!a.activate},
-      { label: 'Deactivate',    icon: 'icon icon-pause', action: 'deactivate',   enabled: !!a.deactivate},
-      { label: 'Delete',        icon: 'icon icon-trash', action: 'promptDelete', enabled: this.get('canRemove'), altAction: 'delete' },
+      {label: 'Switch to this Environment', icon: 'icon icon-folder-open',  action: 'switchTo',     enabled: this.get('canSwitchTo')},
+      {label: 'Set as login default',       icon: 'icon icon-home',         action: 'setAsDefault', enabled: this.get('canSetDefault')},
       { divider: true },
-      { label: 'Restore',       icon: '',                action: 'restore',      enabled: !!a.restore },
-      { label: 'Purge',         icon: '',                action: 'purge',        enabled: !!a.purge },
-      { label: 'Edit',          icon: 'icon icon-edit',  action: 'edit',         enabled: !!a.update },
+      { label: 'Edit',                      icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
+      { label: 'Activate',                  icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
+      { label: 'Deactivate',                icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate},
+      { divider: true },
+      { label: 'Delete',                    icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canRemove'), altAction: 'delete' },
+      { label: 'Restore',                   icon: '',                       action: 'restore',      enabled: !!a.restore },
+      { label: 'Purge',                     icon: '',                       action: 'purge',        enabled: !!a.purge },
     ];
 
-    choices.pushObject({label: 'Switch to this Environment', icon: '', action: 'switchTo', enabled: this.get('state') === 'active' });
-    choices.pushObject({label: 'Set as default login Environment', icon: '', action: 'setAsDefault', enabled: this.get('canSetDefault')});
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,update,restore,purge}','state','canRemove','canSetDefault'),
+  }.property('actionLinks.{activate,deactivate,update,restore,purge}','state','canRemove','canSetDefault','canSwitchTo'),
 
   icon: function() {
     if ( this.get('isDefault') )
@@ -104,9 +101,28 @@ var Project = Resource.extend(PolledResource, {
     return !!this.get('actionLinks.remove') && ['removing','removed','purging','purged'].indexOf(this.get('state')) === -1;
   }.property('state','actionLinks.remove'),
 
+  canSwitchTo: function() {
+    return this.get('id') !== this.get('projects.current.id');
+  }.property('id','projects.current.id'),
+
   canSetDefault: function() {
     return this.get('state') === 'active' && !this.get('isDefault');
   }.property('state','isDefault'),
+
+  displayOrchestration: function() {
+    if ( this.get('kubernetes') )
+    {
+      return 'Kubernetes';
+    }
+    else if ( this.get('swarm') )
+    {
+      return 'Swarm';
+    }
+    else
+    {
+      return 'Corral';
+    }
+  }.property('kubernetes','swarm'),
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often
