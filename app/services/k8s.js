@@ -28,6 +28,52 @@ function joinId(objOrStr, defaultNs) {
   return parts.namespace||defaultNs + C.K8S.ID_SEPARATOR + parts.name;
 }
 
+export function containerStateInator(state) {
+  var label = '???';
+  var message = '';
+  var date = null;
+  var datePrefix = ''
+
+  if ( state.running )
+  {
+    label = 'Running';
+    if ( state.running.startedAt )
+    {
+      date = new Date(state.running.startedAt);
+      datePrefix = 'Since ';
+    }
+  }
+  else if ( state.waiting )
+  {
+    label = 'Waiting';
+    if ( state.waiting.message )
+    {
+      message = state.waiting.message;
+    }
+  }
+  else if ( state.terminated )
+  {
+    label = 'Terminated (' + state.terminated.exitCode + ')';
+
+    if ( state.terminated.message )
+    {
+      message = state.terminated.message;
+    }
+
+    if ( state.terminated.finishedAt )
+    {
+      date = new Date(state.terminated.finishedAt);
+    }
+  }
+
+  return {
+    state: label,
+    message: message,
+    date: date,
+    datePrefix: datePrefix,
+  };
+}
+
 export default Ember.Service.extend({
   'tab-session': Ember.inject.service('tab-session'),
 
@@ -35,6 +81,7 @@ export default Ember.Service.extend({
   services: null,
   rcs: null,
   pods: null,
+  containers: null,
 
   // The current namespace
   namespace: null,
@@ -366,6 +413,17 @@ export default Ember.Service.extend({
     var group = this.get('store')._group(type);
     return group.filterBy('metadata.uid',uid)[0];
   },
+
+  containersByDockerId: function() {
+    var out = {};
+    this.get('containers').forEach((container) => {
+      out[container.get('externalId')] = container;
+    });
+
+    return out;
+  }.property('containers.@each.externalId'),
+
+
 
   _getCollection(type, resourceName) {
     return this._find(`${C.K8S.TYPE_PREFIX}${type}`, null, {

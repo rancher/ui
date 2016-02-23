@@ -1,18 +1,28 @@
-<td class="force-wrap">
-  {{#link-to "k8s-tab.namespace.pods.pod" model.displayName}}{{model.displayName}}{{/link-to}}
-</td>
-<td>
-  {{model.status.phase}}
-</td>
-<td>
-  {{model.displayContainerStatus}}
-</td>
-<td>
-  {{model.status.hostIP}}
-</td>
-<td>
-  {{model.status.podIP}}
-</td>
-<td class="actions">
-  {{action-menu model=model}}
-</td>
+<tr>
+  <td class="force-wrap">
+    <a href="#" {{action "toggleExpand"}}><i class="icon {{if expanded 'icon-minus-square' 'icon-plus-square'}}"/></a>
+    {{#link-to "k8s-tab.namespace.pods.pod" model.displayName}}{{model.displayName}}{{/link-to}}
+  </td>
+  <td>
+    {{model.status.phase}}
+  </td>
+  <td>
+    {{model.displayContainerStatus}}
+  </td>
+  <td>
+    {{model.status.hostIP}}
+  </td>
+  <td>
+    {{model.status.podIP}}
+  </td>
+  <td class="actions">
+    {{action-menu model=model}}
+  </td>
+</tr>
+{{#if expanded}}
+  <tr>
+    <td colspan="6" class="subtable">
+      {{k8s/container-section model=model.displayContainers}}
+    </td>
+  </tr>
+{{/if}}

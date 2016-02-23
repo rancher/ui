@@ -6,5 +6,21 @@
 </section>
 
 <section>
-  Pod details...
+  <div class="container-multi-stat">
+    <div class="container-flex bordered">
+      <div class="col-flex"><label>Type:</label> {{model.spec.type}}</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <ul class="nav nav-tabs nav-tabs-well shadowed">
+    <li role="presentation" class="tab" data-section="containers" {{action "selectTab" "containers" target="view"}}><a href="#">Containers</a></li>
+  </ul>
+
+  <div class="horizontal-form well">
+    <div class="section container-fluid" data-section="containers">
+      {{k8s/container-section model=model.displayContainers}}
+    </div>
+  </div>
 </section>

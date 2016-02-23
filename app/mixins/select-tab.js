@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
+  tab: null,
+
   actions: {
     selectTab: function(name) {
       this.set('context.tab',name);

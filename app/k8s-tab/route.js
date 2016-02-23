@@ -11,6 +11,7 @@ export default Ember.Route.extend({
       services: k8s.allServices(),
       rcs: k8s.allRCs(),
       pods: k8s.allPods(),
+      containers: this.get('store').findAll('container'),
     }).then((hash) => {
       return k8s.selectNamespace().then(() => {
         k8s.setProperties(hash);

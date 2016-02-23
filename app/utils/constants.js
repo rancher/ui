@@ -98,6 +98,7 @@ var C = {
     PULL_IMAGE_VALUE: 'always',
     KVM: 'io.rancher.host.kvm',
     K8S_POD_NAME: 'io.kubernetes.pod.name',
+    K8S_KUBECTL: 'io.rancher.kubectld',
   },
 
   PREFS: {
