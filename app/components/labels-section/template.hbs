@@ -2,7 +2,7 @@
   <thead>
     {{#if labelArray.length}}
       <tr>
-        {{sortable-th sortable=this action="changeSort" name="kind" width="90"}}
+        {{#if showKind}}{{sortable-th sortable=this action="changeSort" name="kind" width="90"}}{{/if}}
         {{sortable-th sortable=this action="changeSort" name="key"}}
         {{sortable-th sortable=this action="changeSort" name="value"}}
       </tr>
@@ -11,7 +11,7 @@
   <tbody>
     {{#each arranged as |label|}}
       <tr>
-        <td>{{uc-first label.type}}</td>
+        {{#if showKind}}<td>{{uc-first label.type}}</td>{{/if}}
         <td class="force-wrap">{{label.key}}</td>
         <td class="force-wrap">{{label.value}}</td>
       </tr>

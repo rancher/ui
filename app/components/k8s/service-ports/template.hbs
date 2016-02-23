@@ -1,0 +1,24 @@
+<table class="grid fixed r-mb0">
+  <thead>
+    {{#if model.length}}
+      <tr>
+        {{sortable-th sortable=this action="changeSort" name="name"}}
+        {{sortable-th sortable=this action="changeSort" name="port" label="Host Port"}}
+        {{sortable-th sortable=this action="changeSort" name="targetPort" label="Container Port"}}
+        {{sortable-th sortable=this action="changeSort" name="protocol"}}
+      </tr>
+    {{/if}}
+  </thead>
+  <tbody>
+    {{#each arranged as |obj|}}
+      <tr>
+        <td class="force-wrap">{{obj.name}}</td>
+        <td class="force-wrap">{{obj.port}}</td>
+        <td class="force-wrap">{{obj.targetPort}}</td>
+        <td class="force-wrap">{{obj.protocol}}</td>
+      </tr>
+    {{else}}
+      <tr><td colspan="4" class="text-center text-muted">No Ports.</td></tr>
+    {{/each}}
+  </tbody>
+</table>
