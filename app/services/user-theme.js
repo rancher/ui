@@ -78,9 +78,18 @@ export default Ember.Service.extend({
 
   writeStyleNode: function(theme) {
     var application = this.get('app');
+    var $body = $('BODY');
+
+    $body.attr('class').split(/\s+/).forEach((cls) => {
+      if ( cls.indexOf('theme-') === 0 )
+      {
+        $body.removeClass(cls);
+      }
+    });
+
+    $body.addClass('theme-' + theme);
 
     Ember.$('#theme').attr('href', `${application.baseAssets}assets/${theme}.css?${application.version}`);
-
   },
 
 });

@@ -1,21 +1,12 @@
-
-$k8sBlue: #326de6;
-$k8sDarkTeal: #07919d;
-$k8sTeal: #09c1d1;
-$k8sLightTeal: #deeced;
-$k8sOrange: #f9a38f;
-$k8sGray: #7d7d7d;
-
 .k8s {
-  background: #f2f7fa;
+  background: $k8sBodyBg;
   font-family: 'Roboto';
-  color: $k8sGray;
+  
   a {
     color: $k8sTeal;
   }
 
   h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-    color: $k8sBlue;
     font-weight: bold;
     font-family: 'Roboto';
   }
@@ -27,13 +18,13 @@ $k8sGray: #7d7d7d;
   
   HEADER  {
     .top-row NAV > A, HEADER .top-row NAV > .link-admin > a {
-      color: white;
+      color: $k8sAccent;
     }
     .top-row, .gh-avatar {
-      background: $k8sBlue; 
+      background: $k8sHeader; 
     }
     .top-row .logo {
-      background-color: darken($k8sBlue,10%);
+      background-color: darken($k8sHeader,10%);
     }
     .top-row NAV > A.active:after, .top-row NAV > .link-admin > a.active:after {
       display: none;
@@ -47,6 +38,10 @@ $k8sGray: #7d7d7d;
         &:after {
           display: none;
         }
+    }
+
+    .bottom-row {
+      background-color: $k8sAccent;
     }
 
     .bottom-row .project-btn {
@@ -71,14 +66,17 @@ $k8sGray: #7d7d7d;
   }
 
   footer {
-    background-color: white;
+    background-color: $k8sAccent;
     border-top: 5px solid $k8sOrange;
   }
 
+  .well {
+    background-color: $k8sAccent;
+  }
   /*buttons*/
   .btn {
     border-radius: 3px;
-    color: white;
+    color: $k8sAccent;
   }
   .btn-link {
     color: $k8sDarkTeal;
@@ -90,11 +88,11 @@ $k8sGray: #7d7d7d;
 
     &.active, .btn-default:active, .btn-default.active, .open > .btn-default.dropdown-toggle {
       background: $k8sTeal;
-      color: white;
+      color: $k8sAccent;
     }
 
       &:hover {
-        background: white;
+        background: $k8sAccent;
         color: $k8sTeal;
       }
   }
@@ -163,5 +161,29 @@ $k8sGray: #7d7d7d;
 
   .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {
     background-color: $k8sBlue;
+  }
+}
+
+.theme-ui-dark {
+  .btn {
+    background-color: transparent;
+  }
+  .btn-default {
+    color: $k8sTeal;
+    border-color: $k8sTeal;
+  }
+  HEADER .bottom-row NAV > A {
+    color: $k8sTeal;
+  }
+  HEADER .bottom-row NAV > A.active {
+    color: white;
+  }
+  HEADER .bottom-row .project-btn {
+    background-color: $navy;
+    color: white!important;
+    &:nth-child(2) {
+      background-color: darken($navy, 2%);
+      color: white!important;
+    }
   }
 }
