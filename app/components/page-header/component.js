@@ -65,15 +65,24 @@ export default Ember.Component.extend({
 
   tabObserver: Ember.observer('currentPath', 'forcedMenu', function() {
 
-    let hoverableTabs = ['admin-tab', 'applications-tab', 'infrastructure-tab', 'k8s-tab'];
-    let currentPath   = this.get('currentPath').split('.')[2];
+    let hoverableTabs   = ['admin-tab', 'applications-tab', 'infrastructure-tab', 'k8s-tab'];
+    let currentPathArr  = this.get('currentPath').split('.');
+    let navPartial      = '';
+    let isInCurrentPath = false;
+
+    hoverableTabs.forEach((tab) => {
+      if (currentPathArr.contains(tab)) {
+        isInCurrentPath = true;
+        navPartial = tab;
+      }
+    });
 
     if (this.get('forcedMenu')) {
-      currentPath = this.get('forcedMenu');
+      navPartial = this.get('forcedMenu');
     }
 
-    if (hoverableTabs.contains(currentPath)) {
-      this.set('subnavPartial', `tabs/${currentPath}`);
+    if (isInCurrentPath) {
+      this.set('subnavPartial', `tabs/${navPartial}`);
     } else {
       this.set('subnavPartial', null);
     }
