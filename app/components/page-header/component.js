@@ -87,7 +87,7 @@ export default Ember.Component.extend({
     });
 
 
-    Ember.$('#applications-tab, #infrastructure-tab, #admin-tab').mouseenter((e) => {
+    Ember.$('#applications-tab, #infrastructure-tab, #admin-tab, #k8s-tab').mouseenter((e) => {
       if (this.get('menuHoverTimer')) {
         Ember.run.cancel(this.get('menuHoverTimer'));
       }
@@ -124,54 +124,12 @@ export default Ember.Component.extend({
     });
 
     var toggleMenu = (element, mouseOut=false) => {
-
-      switch (element) {
-        case 'k8s-tab':
-          if (mouseOut) {
-            this.set('menuHoverTimer', Ember.run.later(() => {
-              this.set('forcedMenu', null);
-            }, DELAY));
-          } else {
-            this.set('forcedMenu', element);
-          }
-
-          break;
-
-        case 'applications-tab':
-          if (mouseOut) {
-            this.set('menuHoverTimer', Ember.run.later(() => {
-              this.set('forcedMenu', null);
-            }, DELAY));
-          } else {
-            this.set('forcedMenu', element);
-          }
-
-          break;
-
-        case 'infrastructure-tab':
-          if (mouseOut) {
-            this.set('menuHoverTimer', Ember.run.later(() => {
-              this.set('forcedMenu', null);
-            }, DELAY));
-          } else {
-            this.set('forcedMenu', element);
-          }
-
-          break;
-
-        case 'admin-tab':
-          if (mouseOut) {
-            this.set('menuHoverTimer', Ember.run.later(() => {
-              this.set('forcedMenu', null);
-            }, DELAY));
-          } else {
-            this.set('forcedMenu', element);
-          }
-
-          break;
-
-        default:
-          break;
+      if (mouseOut) {
+        this.set('menuHoverTimer', Ember.run.later(() => {
+          this.set('forcedMenu', null);
+        }, DELAY));
+      } else {
+        this.set('forcedMenu', element);
       }
     };
   },
