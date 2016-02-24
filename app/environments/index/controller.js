@@ -28,6 +28,9 @@ export default Ember.Controller.extend(Sortable, {
   },
 
   setup: function() {
+    // Need this to setup the observer for filteredStacks
+    this.get('which');
+
     var sort = this.get(`prefs.${C.PREFS.SORT_STACKS_BY}`);
     if (sort && sort !== this.get('sortBy')) {
       this.set('sortBy', sort);
@@ -42,11 +45,17 @@ export default Ember.Controller.extend(Sortable, {
     {
       return all;
     }
+    else if ( which === C.EXTERNALID.KIND_NOT_KUBERNETES )
+    {
+      return all.filter((obj) => {
+        return obj.get('grouping') !== C.EXTERNALID.KIND_KUBERNETES;
+      });
+    }
     else
     {
       return all.filterBy('grouping', which);
     }
-  }.property('model.[]','which'),
+  }.property('model.[]','model.@each.grouping','which'),
 
 
   sortBy: 'state',

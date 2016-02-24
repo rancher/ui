@@ -53,8 +53,8 @@ export default Ember.Component.extend({
       this.set('status','Initializing...');
 
       var term = new Terminal({
-        cols: 80,
-        rows: 24,
+        cols: 120,
+        rows: 30,
         useStyle: true,
         screenKeys: true,
         cursorBlink: false

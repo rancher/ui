@@ -3,6 +3,7 @@ const KIND_CATALOG = 'catalog';
 const KIND_SYSTEM = 'system';
 const KIND_SYSTEM_CATALOG = 'system-catalog';
 const KIND_KUBERNETES = 'kubernetes';
+const KIND_NOT_KUBERNETES = 'not-kubernetes';
 
 var C = {
   COOKIE: {

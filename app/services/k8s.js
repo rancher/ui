@@ -459,7 +459,32 @@ export default Ember.Service.extend({
     });
   },
 
-  allNamespaces() { return this._allCollection('namespace','namespaces'); },
+  allNamespaces() {
+    var store = this.get('store');
+    var type = `${C.K8S.TYPE_PREFIX}namespace`;
+    var name = 'kube-system';
+
+    return this._allCollection('namespace','namespaces').then((namespaces) => {
+      // kube-system is special and doesn't feel like it needs to come back in a list...
+      if ( !store.getById(type,name) )
+      {
+        store._add(type, store.createRecord({
+          apiVersion: 'v1',
+          type: type,
+          id: name,
+          metadata: {
+            name: name,
+          },
+          kind: 'Namespace',
+          spec: {},
+        }));
+
+      }
+
+      return namespaces;
+    });
+  },
+
   getNamespaces() { return this._getCollection('namespace','namespaces'); },
   getNamespace(name) {
     return this._find(`${C.K8S.TYPE_PREFIX}namespace`, name , {
