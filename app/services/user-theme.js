@@ -37,11 +37,11 @@ export default Ember.Service.extend({
       Ember.run.cancel(this.get('updateTimer'));
     }
 
-    this.set('currentTheme', newTheme);
 
     if (newTheme === 'ui-auto') {
       this.setAutoUpdate();
     } else {
+      this.set('currentTheme', newTheme);
       this.writeStyleNode(newTheme);
       this.get('session').set(C.PREFS.THEME, newTheme);
     }

@@ -1,5 +1,6 @@
 import Ember from 'ember';
 
+const INTERVALCOUNT = 30000;
 
 export default Ember.Route.extend({
   queryParams: {
@@ -26,8 +27,8 @@ export default Ember.Route.extend({
     }
   },
 
-  runLaterId: null,
-  userHasPaged: null,
+  runLaterId   : null,
+  userHasPaged : null,
 
   actions: {
     filterLogs: function() {
@@ -91,13 +92,10 @@ export default Ember.Route.extend({
   },
 
   scheduleLogUpdate: function() {
-    const intervalCount = 30000;
 
     this.set('runLaterId',
       Ember.run.later(() => {
         var params = this.paramsFor('admin-tab.audit-logs');
-        //var filters = this.controller.get('filters');
-
 
         this.store.find('auditLog', null, this.parseFilters(params)).then((response) => {
 
@@ -110,17 +108,16 @@ export default Ember.Route.extend({
           }
         }, (/* error */) => {});
 
-      }, intervalCount));
+      }, INTERVALCOUNT));
   },
 
   parseFilters: function(params) {
     var returnValue = {
-      filter: {
-      },
-      limit: 100,
-      depaginate: false,
-      forceReload: true,
-      include: 'account'
+      filter      : {},
+      limit       : 100,
+      depaginate  : false,
+      forceReload : true,
+      include     : 'account'
     };
     if (params) {
       _.forEach(params, (item, key) => {

@@ -22,9 +22,10 @@ export default Ember.Service.extend({
 
     $('BODY').one('click', () => {
       Ember.run(() => {
-      $toggle.removeClass('open');
-      $menu.addClass('hide');
-      this.set('open', false);
+        $toggle.removeClass('open');
+        $menu.addClass('hide');
+        this.set('open', false);
+        this.set('model', null);
       });
     });
 

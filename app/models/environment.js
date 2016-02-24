@@ -34,6 +34,16 @@ var Environment = Resource.extend({
       return this.doAction('rollback');
     },
 
+    promptStop: function() {
+      this.get('application').setProperties({
+        showConfirmDeactivate : true,
+        originalModel         : this,
+        action                : 'deactivateServices'
+      });
+
+    },
+
+
     addService: function() {
       this.get('router').transitionTo('service.new', {
         queryParams: {
@@ -90,21 +100,21 @@ var Environment = Resource.extend({
 
 
     var out = [
-      { label: 'Finish Upgrade',  icon: 'icon icon-success',          action: 'finishUpgrade',       enabled: !!a.finishupgrade },
-      { label: 'Rollback',        icon: 'icon icon-history',          action: 'rollback',            enabled: !!a.rollback },
-      { label: 'Cancel Upgrade',  icon: 'icon icon-life-ring',        action: 'cancelUpgrade',       enabled: !!a.cancelupgrade },
-      { label: 'Cancel Rollback', icon: 'icon icon-life-ring',        action: 'cancelRollback',      enabled: !!a.cancelrollback },
-      { label: 'Start Services',  icon: 'icon icon-play',             action: 'activateServices',    enabled: this.get('canActivate') },
-      { label: 'Stop Services',   icon: 'icon icon-stop',             action: 'deactivateServices',  enabled: this.get('canDeactivate') },
-      { divider: true },
-      { label: 'View Graph',      icon: 'icon icon-share',            action: 'viewGraph',            enabled: true },
-      { label: 'View Config',     icon: 'icon icon-files',            action: 'viewCode',            enabled: true },
-      { label: 'Export Config',   icon: 'icon icon-download',         action: 'exportConfig',        enabled: !!a.exportconfig },
-      { divider: true },
-      { label: 'Delete',          icon: 'icon icon-trash',            action: 'promptDelete',        enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
-      { label: 'View in API',     icon: 'icon icon-external-link',    action: 'goToApi',             enabled: true },
-      { divider: true },
-      { label: 'Edit',            icon: 'icon icon-edit',             action: 'edit',                enabled: true },
+      { label   : 'Finish Upgrade',  icon : 'icon icon-success',          action : 'finishUpgrade',       enabled  : !!a.finishupgrade },
+      { label   : 'Rollback',        icon : 'icon icon-history',          action : 'rollback',            enabled  : !!a.rollback },
+      { label   : 'Cancel Upgrade',  icon : 'icon icon-life-ring',        action : 'cancelUpgrade',       enabled  : !!a.cancelupgrade },
+      { label   : 'Cancel Rollback', icon : 'icon icon-life-ring',        action : 'cancelRollback',      enabled  : !!a.cancelrollback },
+      { label   : 'Start Services',  icon : 'icon icon-play',             action : 'activateServices',    enabled  : this.get('canActivate') },
+      { label   : 'Stop Services',   icon : 'icon icon-stop',             action : 'promptStop',          enabled  : this.get('canDeactivate'), altAction : 'deactivateServices' },
+      { divider : true },
+      { label   : 'View Graph',      icon : 'icon icon-share',            action : 'viewGraph',           enabled : true },
+      { label   : 'View Config',     icon : 'icon icon-files',            action : 'viewCode',            enabled  : true },
+      { label   : 'Export Config',   icon : 'icon icon-download',         action : 'exportConfig',        enabled  : !!a.exportconfig },
+      { divider : true },
+      { label   : 'Delete',          icon : 'icon icon-trash',            action : 'promptDelete',        enabled  : !!a.remove,                altAction : 'delete', color : 'text-warning' },
+      { label   : 'View in API',     icon : 'icon icon-external-link',    action : 'goToApi',             enabled  : true },
+      { divider : true },
+      { label   : 'Edit',            icon : 'icon icon-edit',             action : 'edit',                enabled  : true },
     ];
 
     return out;

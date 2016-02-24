@@ -52,7 +52,7 @@ export default Ember.Route.extend({
 
   beforeModel: function() {
     this.get('store').findAllUnremoved('host').then((hosts) => {
-      this.controller.set('hasHosts', hosts.get('length') > 0);
+      this.controllerFor('authenticated.project.help').set('hasHosts', hosts.get('length') > 0);
     });
   },
 });

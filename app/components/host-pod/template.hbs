@@ -17,7 +17,7 @@
   </div>
 
 {{#if isMachine}}
-  <div class="machine-info clip">
+  <div class="machine-info">
     {{#if isActive}}
       Almost there&hellip;<br/>
       <i class="icon icon-spinner icon-spin"></i> Waiting for agent connection
@@ -82,10 +82,10 @@
     {{else}}
       {{#each groupedInstances as |group|}}
         <div class="container-subpod-info">
-          <div class="subpod-header clearfix {{if group.collapsed 'open' 'closed'}}">
-            <h6 class="clip pull-left">{{#if group.name}}Stack: {{group.name}}{{else}}Standalone Containers{{/if}}</h6>
+          <div class="subpod-header">
+            <h6 class="clip">{{#if group.name}}Stack: {{group.name}}{{else}}Standalone Containers{{/if}}</h6>
           </div>
-          {{#liquid-if group.collapsed class='clearfix'}}
+          <div class="subpod-inner clearfix">
             {{#each group.instances as |item|}}
               {{container-subpod model=item.main stripProject=true children=item.children}}
             {{/each}}
@@ -94,7 +94,7 @@
                 {{add-subpod action="newContainer" label="Add Container" groupHasChildren=group.hasChildren}}
               {{/if}}
             {{/unless}}
-          {{/liquid-if}}
+          </div>
         </div>
       {{else}}
         {{#if showAdd}}
