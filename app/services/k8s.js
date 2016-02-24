@@ -495,20 +495,35 @@ export default Ember.Service.extend({
   selectNamespace(desiredName) {
     var self = this;
     return this.allNamespaces().then((all) => {
+      // Asked fror a specific one
       var obj = objForName(desiredName);
       if ( obj )
       {
         return select(obj);
       }
 
+      // One in the session
       obj = objForName(self.get(`tab-session.${C.TABSESSION.NAMESPACE}`));
       if ( obj )
       {
         return select(obj);
       }
 
+      // One called default
+      obj = all.filterBy('id','default')[0];
+      if ( obj )
+      {
+        return select(obj);
+      }
+
+      // The first one
       obj = all.objectAt(0);
-      return select(obj);
+      if ( obj )
+      {
+        return select(obj);
+      }
+
+      return select(null);
 
       function objForName(name) {
         if ( name )
@@ -522,7 +537,7 @@ export default Ember.Service.extend({
       }
 
       function select(obj) {
-        self.set(`tab-session.${C.TABSESSION.NAMESPACE}`, obj.get('id'));
+        self.set(`tab-session.${C.TABSESSION.NAMESPACE}`, (obj ? obj.get('id') : null));
         self.set('namespace', obj);
         return obj;
       }

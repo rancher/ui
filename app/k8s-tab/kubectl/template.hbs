@@ -1,11 +1,29 @@
 <section class="header">
   <h1 style="display: block">kubectl</h1>
-  <p class="help-block">Use this shell to directly execute <code>kubectl</code> commands.</p>
 </section>
-<div class="r-m20">
-  {{modal-shell
-    originalModel=model.instance
-    showHeader=false
-    showClose=false
+
+<section class="well">
+  {{#if (eq step 1)}}
+    <p>To use kubectl on your workstation, click the button to generate an API key and config file:</p>
+    <button {{action "generate"}} class="btn btn-primary">Generate</button>
+  {{/if}}
+  {{#if (eq step 2)}}
+    <i class="icon icon-spinner icon-spin">Generating...</i>
+  {{/if}}
+  {{#if (eq step 3)}}
+    <p>Put this into <code>~/.kube/config</code></p>
+    <code><pre>{{kubeconfig}}</pre></code>
+    {{zero-clipboard text=kubeconfig}}
+  {{/if}}
+</section>
+
+<section>
+  <p class="help-block">Or use this handy shell to directly execute <code>kubectl</code> commands:</p>
+  {{container-shell
+    classNames="inline-block"
+    command=model.command
+    instance=model.instance
+    cols=120
+    rows=30
   }}
-</div>
+</section>

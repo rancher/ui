@@ -3,7 +3,7 @@
     {{#unless (or (eq which 'not-kubernetes') (eq which 'user'))}}{{uc-first which}} {{/unless}}Stacks
   </h1>
 
-  {{#unless (or (not (eq which 'user')) single)}}
+  {{#unless (or (not (or (eq which 'not-kubernetes') (eq which 'user'))) single)}}
     {{#link-to "environments.new" classNames="btn btn-sm btn-primary"}}Add Stack{{/link-to}}
   {{/unless}}
 

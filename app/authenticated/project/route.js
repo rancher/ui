@@ -35,7 +35,7 @@ export default Ember.Route.extend({
 
     return this.loadProject(params.project_id).then((project) => {
       this.set(`tab-session.${C.TABSESSION.PROJECT}`, project.get('id'));
-      this.set(`projects.current`, project);
+      this.get('projects').setCurrent(project);
 
       return this.loadSchemas().then(() => {
         return this.loadStacks().then((stacks) => {

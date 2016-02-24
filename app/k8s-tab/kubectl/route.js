@@ -26,6 +26,7 @@ export default Ember.Route.extend({
       if ( inst )
       {
         return Ember.Object.create({
+          command: ['/usr/bin/script','-q','-c','echo "# Run kubectl commands inside here\n# e.g. kubectl get rc\n"; TERM=xterm-256color /bin/bash'],
           instance: inst,
         });
       }
