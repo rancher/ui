@@ -31,30 +31,33 @@
     </div>
   </div> --}}
 
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label>Private Key*</label>
-      {{read-text-file accept="text/*, .pem, .pkey, .key" action=(action "readFile" "key")}}
-    </div>
-    <div class="col-sm-12 col-md-8">
-      {{textarea value=model.key classNames="form-control no-resize" rows="5" placeholder="Paste in the private key, starting with -----BEGIN RSA PRIVATE KEY-----"}}
-    </div>
+<div class="row form-group">
 
-    <div class="col-sm-12 col-md-2 form-label">
-      <label>Certificate*</label>
-      {{read-text-file accept="text/*, .pem, .crt" action=(action "readFile" "cert")}}
-    </div>
-    <div class="col-sm-12 col-md-8">
-      {{textarea value=model.cert classNames="form-control no-resize" rows="5" placeholder="Paste in the primary certificate, starting with -----BEGIN CERTIFICATE-----"}}
-    </div>
+      <div class="col-sm-12 col-md-4">
+        <div class="clearfix r-mb10 r-mt15">
+          <label class="r-pt5">Private Key*</label>
+          <span class="pull-right">{{read-text-file accept="text/*, .pem, .pkey, .key" action=(action "readFile" "key")}}</span>
+        </div>
+        {{textarea value=model.key classNames="form-control no-resize" rows="5" placeholder="Paste in the private key, starting with -----BEGIN RSA PRIVATE KEY-----"}}
+      </div>
 
-    <div class="col-sm-12 col-md-2 form-label">
-      <label>Chain Certs</label>
-      {{read-text-file accept="text/*, .pem, .crt" action=(action "readFile" "certChain")}}
-    </div>
-    <div class="col-sm-12 col-md-8">
-      {{textarea value=model.certChain classNames="form-control no-resize" rows="5" placeholder="Optional; Paste in the additional chained certificates, starting with -----BEGIN CERTIFICATE-----"}}
-    </div>
+
+      <div class="col-sm-12 col-md-4">
+        <div class="clearfix r-mb10 r-mt15">
+          <label class="r-pt5">Certificate*</label>
+          <span class="pull-right">{{read-text-file accept="text/*, .pem, .crt" action=(action "readFile" "cert")}}</span>
+        </div>
+        {{textarea value=model.cert classNames="form-control no-resize" rows="5" placeholder="Paste in the primary certificate, starting with -----BEGIN CERTIFICATE-----"}}
+      </div>
+
+      <div class="col-sm-12 col-md-4">
+        <div class="clearfix r-mb10 r-mt15">
+          <label class="r-pt5">Chain Certs</label>
+          <span class="pull-right">{{read-text-file accept="text/*, .pem, .crt" action=(action "readFile" "certChain")}}</span>
+        </div>
+        {{textarea value=model.certChain classNames="form-control no-resize" rows="5" placeholder="Optional; Paste in the additional chained certificates, starting with -----BEGIN CERTIFICATE-----"}}
+      </div>
+
   </div>
 </section>
 
