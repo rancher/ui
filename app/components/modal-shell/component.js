@@ -1,8 +1,13 @@
 import Ember from 'ember';
 
+const DEFAULT_COMMAND = ["/bin/sh","-c",'TERM=xterm-256color; export TERM; [ -x /bin/bash ] && ([ -x /usr/bin/script ] && /usr/bin/script -q -c "/bin/bash" /dev/null || exec /bin/bash) || exec /bin/sh'];
+
 export default Ember.Component.extend({
   originalModel: null,
   instance: Ember.computed.alias('originalModel'),
+  command: null, // defaults to DEFAULT_COMMAND
+  showHeader: true,
+  showClose: true,
 
   status: 'Connecting...',
   socket: null,
@@ -28,7 +33,7 @@ export default Ember.Component.extend({
       attachStdin: true,
       attachStdout: true,
       tty: true,
-      command: ["/bin/sh","-c",'TERM=xterm-256color; export TERM; [ -x /bin/bash ] && ([ -x /usr/bin/script ] && /usr/bin/script -q -c "/bin/bash" /dev/null || exec /bin/bash) || exec /bin/sh'],
+      command: this.get('command') || DEFAULT_COMMAND,
     };
 
     instance.doAction('execute',opt).then((exec) => {

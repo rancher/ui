@@ -1,7 +1,13 @@
+{{#if showHeader}}
 <h2><i class="icon icon-terminal"></i> Shell: {{instance.displayName}}</h2>
+{{else}}
+  {{yield}}
+{{/if}}
 <div class="shell-body clearfix">
 </div>
 <div class="footer-actions">
   <div class="console-status text-muted">{{status}}</div>
-  <button {{action "cancel"}} class="btn btn-primary">Close</button>
+  {{#if showClose}}
+    <button {{action "cancel"}} class="btn btn-primary">Close</button>
+  {{/if}}
 </div>

@@ -26,6 +26,11 @@ export default Ember.Component.extend({
   },
 
   show(node) {
+    if ( this._state === 'destroying' )
+    {
+      return;
+    }
+
     var svc = this.get('tooltipService');
 
     this.set('showTimer', null);

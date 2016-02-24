@@ -145,6 +145,7 @@ Router.map(function() {
         this.route('index', {path: '/'});
 
         this.route('apply', {path: '/apply'});
+        this.route('kubectl', {path: '/kubectl'});
 
         this.route('namespaces', {path: '/namespaces'}, function() {
           this.route('index', {path: '/'});
