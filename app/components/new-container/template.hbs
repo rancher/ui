@@ -50,31 +50,28 @@
 
 <div data-launchindex="{{if isSidekick '' '-1'}}">
   <section class="horizontal-form container-fluid well">
-    <div class="row">
-      <div class="col-sm-12 col-md-6">
-        {{#unless isUpgrade}}
-          {{form-name-description
-            model=primaryResource
-            namePlaceholder="e.g. myapp"
-            descriptionPlaceholder="My application"
-          }}
-        {{/unless}}
-      </div>
-
-      <div class="col-sm-12 col-md-6">
-        {{form-image
-          isVm=isVm
-          initialValue=launchConfig.imageUuid
-          errors=imageErrors
-          changed=(action 'setImage')
-          initialLabels=launchConfig.labels
-          setLabels=(action 'setLabels' 'image')
+    <div>
+      {{#unless isUpgrade}}
+        {{form-name-description
+          model=primaryResource
+          namePlaceholder="e.g. myapp"
+          descriptionPlaceholder="My application"
         }}
+      {{/unless}}
+    </div>
+    <div class="row r-ml15 r-mr15">
+      {{form-image
+        isVm=isVm
+        initialValue=launchConfig.imageUuid
+        errors=imageErrors
+        changed=(action 'setImage')
+        initialLabels=launchConfig.labels
+        setLabels=(action 'setLabels' 'image')
+      }}
 
-        {{#if isVm}}
-          {{form-virtualmachine launchConfig=launchConfig}}
-        {{/if}}
-      </div>
+      {{#if isVm}}
+        {{form-virtualmachine launchConfig=launchConfig}}
+      {{/if}}
     </div>
 
     {{form-ports

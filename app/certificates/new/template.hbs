@@ -4,10 +4,16 @@
   </h1>
 </section>
 
-<section class="horizontal-form container-fluid">
+<section class="horizontal-form container-fluid well">
   {{top-errors errors=errors}}
 
-  <div class="row form-group">
+  {{form-name-description
+    model=primaryResource
+    namePlaceholder="e.g. mydomain.com"
+    descriptionPlaceholder="e.g. EV cert for mydomain.com"
+  }}
+
+{{!--   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
       <label>Name*</label>
     </div>
@@ -23,7 +29,7 @@
     <div class="col-sm-12 col-md-8">
       {{textarea value=model.description classNames="form-control no-resize" rows="3" placeholder="e.g. EV cert for mydomain.com"}}
     </div>
-  </div>
+  </div> --}}
 
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
@@ -33,9 +39,7 @@
     <div class="col-sm-12 col-md-8">
       {{textarea value=model.key classNames="form-control no-resize" rows="5" placeholder="Paste in the private key, starting with -----BEGIN RSA PRIVATE KEY-----"}}
     </div>
-  </div>
 
-  <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
       <label>Certificate*</label>
       {{read-text-file accept="text/*, .pem, .crt" action=(action "readFile" "cert")}}
@@ -43,9 +47,7 @@
     <div class="col-sm-12 col-md-8">
       {{textarea value=model.cert classNames="form-control no-resize" rows="5" placeholder="Paste in the primary certificate, starting with -----BEGIN CERTIFICATE-----"}}
     </div>
-  </div>
 
-  <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
       <label>Chain Certs</label>
       {{read-text-file accept="text/*, .pem, .crt" action=(action "readFile" "certChain")}}
