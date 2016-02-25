@@ -7,7 +7,6 @@ export default Ember.Component.extend({
     outsideClick: function() {},
 
     cancel: function() {
-      this.disconnect();
       this.sendAction('dismiss');
     }
   },

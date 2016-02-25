@@ -35,6 +35,26 @@ module.exports = function(app, options) {
     proxy.web(req, res);
   });
 
+  // Magic container proxy API
+  app.use('/r', function(req, res, next) {
+    // include root path in proxied request
+    req.url = path.join('/r', req.url);
+    req.headers['X-Forwarded-Proto'] = req.protocol;
+
+    console.log('Magic Proxy API Proxy', req.method, 'to', req.url);
+    proxy.web(req, res);
+  });
+
+  // Kubernetes needs this API
+  app.use('/version', function(req, res, next) {
+    // include root path in proxied request
+    req.url = '/version';
+    req.headers['X-Forwarded-Proto'] = req.protocol;
+
+    console.log('Kubernetes Version Proxy', req.method, 'to', req.url);
+    proxy.web(req, res);
+  });
+
   // Catalog API
   var catalogPath = config.catalogEndpoint;
   // Default catalog to the regular API

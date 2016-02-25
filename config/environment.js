@@ -64,9 +64,9 @@ module.exports = function(environment) {
       catalogServer: '',
       catalogEndpoint: '/v1-catalog',
       kubernetesServer: '',
-      kubernetesEndpoint: '/v1-kubernetes',
+      kubernetesEndpoint: '/r/kubernetes',
       kubectlServer: '',
-      kubectlEndpoint: '/v1-kubectl',
+      kubectlEndpoint: '/r/kubectld:8091/v1-kubectl',
       proxyEndpoint: '/v1/proxy',
       wsEndpoint: '/v1/subscribe' +
                     '?eventNames=resource.change' +
