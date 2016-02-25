@@ -32,7 +32,7 @@ export function containerStateInator(state) {
   var label = '???';
   var message = '';
   var date = null;
-  var datePrefix = ''
+  var datePrefix = '';
 
   if ( state.running )
   {

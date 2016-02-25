@@ -97,7 +97,6 @@ export default Ember.Service.extend({
       {
         tabSession.set(C.TABSESSION.PROJECT, undefined);
         return self.setCurrent(null);
-        return null;
       }
     }
 
