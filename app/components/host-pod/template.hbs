@@ -83,7 +83,7 @@
       {{#each groupedInstances as |group|}}
         <div class="container-subpod-info">
           <div class="subpod-header">
-            <h6 class="clip">{{#if group.name}}Stack: {{group.name}}{{else}}Standalone Containers{{/if}}</h6>
+            <h6 class="clip">{{#if group.name}}{{if group.kubernetes 'Namespace:' 'Stack:'}} {{group.name}}{{else}}Standalone Containers{{/if}}</h6>
           </div>
           <div class="subpod-inner clearfix">
             {{#each group.instances as |item|}}

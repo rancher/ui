@@ -13,10 +13,10 @@ export default Ember.Component.extend(FasterLinksAndMenus, {
 
   prefixLength: function() {
     var name = this.get('model.displayName');
-    var projectName = (this.get('model.labels')||{})[C.LABEL.PROJECT_NAME];
-    if ( projectName && name.indexOf(projectName) === 0 )
+    var stackName = (this.get('model.labels')||{})[C.LABEL.STACK_NAME];
+    if ( stackName && name.indexOf(stackName) === 0 )
     {
-      return projectName.length + 1;
+      return stackName.length + 1;
     }
 
     return 0;
