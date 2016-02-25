@@ -45,4 +45,5 @@ export default Ember.Controller.extend({
   openProcessesError      : null,
   showAuditLogResponses   : null,
   showConfirmDeactivate   : null,
+  showNewDriver           : null,
 });

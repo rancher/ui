@@ -9,38 +9,21 @@
 {{/if}}
 
 
+<section class="well">
+  {{host-settings host=model.host backToAdd=backToAdd sendActiveValue=(action (mut model.host))}}
+</section>
+
+{{#unless backToAdd}}
   <section class="well">
-    {{host-settings host=model.host sendActiveValue=(action (mut model.host))}}
+    {{catalog-settings catalog=model.catalog}}
   </section>
 
-  {{#unless backToAdd}}
-    <section class="well">
-      {{catalog-settings catalog=model.catalog keymapChanged="setCatalog"}}
-    </section>
-
+  <section class="well">
+    {{virtual-machine-settings virtualMachine=model.vm}}
+  </section>
 
   <section class="well">
-    <h4>Virtual Machines</h4>
-    <hr>
-    <h5>Enable Virtual Machine support in the UI.  Requires hosts that have <a href="https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine" target="_blank">KVM</a> loaded.</h5>
-    <div class="r-pt10">
-      <div class="radio">
-        <label>
-          {{radio-button selection=model.vm value=true}}
-          Enabled
-        </label>
-      </div>
-      <div class="radio">
-        <label>
-          {{radio-button selection=model.vm value=false}}
-          Disabled
-        </label>
-      </div>
-    </div>
+    {{dynamic-driver-settings drivers=model.machineDrivers}}
   </section>
 {{/unless}}
 
-
-<div class="footer-actions">
-  {{partial "save-cancel"}}
-</div>

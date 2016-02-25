@@ -6,6 +6,7 @@ export default Ember.Component.extend({
   editLabel: 'Save',
   cancelLabel: 'Cancel',
   saveDisabled: false,
+  cancelDisabled: false,
 
   classNames: ['footer-actions'],
   saving: false,
