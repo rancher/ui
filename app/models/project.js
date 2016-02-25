@@ -118,7 +118,7 @@ var Project = Resource.extend(PolledResource, {
     return this.get('state') === 'active' && !this.get('isDefault');
   }.property('state','isDefault'),
 
-  displayOrchestration: function() {
+  displayClustering: function() {
     if ( this.get('kubernetes') )
     {
       return 'Kubernetes';
@@ -129,7 +129,7 @@ var Project = Resource.extend(PolledResource, {
     }
     else
     {
-      return 'Corral';
+      return 'Cattle';
     }
   }.property('kubernetes','swarm'),
 });

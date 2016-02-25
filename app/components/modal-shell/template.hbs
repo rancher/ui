@@ -1,7 +1,10 @@
-<h2><i class="icon icon-terminal"></i> Shell: {{instance.displayName}}</h2>
-<div class="shell-body clearfix">
-</div>
-<div class="footer-actions">
-  <div class="console-status text-muted">{{status}}</div>
+<h2><i class="icon icon-terminal"></i> Shell: {{originalModel.displayName}}</h2>
+{{#container-shell
+  instance=originalModel
+  cols=80
+  rows=24
+  dismiss=(action "cancel")
+  disconncted=(action "cancel")
+}}
   <button {{action "cancel"}} class="btn btn-primary">Close</button>
-</div>
+{{/container-shell}}

@@ -3,6 +3,7 @@ const KIND_CATALOG = 'catalog';
 const KIND_SYSTEM = 'system';
 const KIND_SYSTEM_CATALOG = 'system-catalog';
 const KIND_KUBERNETES = 'kubernetes';
+const KIND_NOT_KUBERNETES = 'not-kubernetes';
 
 var C = {
   COOKIE: {
@@ -21,6 +22,7 @@ var C = {
     KIND_SYSTEM: KIND_SYSTEM,
     KIND_SYSTEM_CATALOG: KIND_SYSTEM_CATALOG,
     KIND_KUBERNETES: KIND_KUBERNETES,
+    KIND_NOT_KUBERNETES: KIND_NOT_KUBERNETES,
     UPGRADEABLE: [
       KIND_CATALOG,
       KIND_SYSTEM_CATALOG
@@ -76,7 +78,7 @@ var C = {
     AFFINITY_PREFIX: 'io.rancher.scheduler.affinity:',
 
     SERVICE_NAME: 'io.rancher.stack_service.name',
-    PROJECT_NAME: 'io.rancher.stack.name',
+    STACK_NAME: 'io.rancher.stack.name',
     SCHED_GLOBAL: 'io.rancher.scheduler.global',
     SCHED_CONTAINER: 'io.rancher.scheduler.affinity:container',
     SCHED_HOST_LABEL: 'io.rancher.scheduler.affinity:host_label',
@@ -97,7 +99,10 @@ var C = {
     PULL_IMAGE: 'io.rancher.container.pull_image',
     PULL_IMAGE_VALUE: 'always',
     KVM: 'io.rancher.host.kvm',
+    K8S_POD_NAMESPACE: 'io.kubernetes.pod.namespace',
     K8S_POD_NAME: 'io.kubernetes.pod.name',
+    K8S_KUBECTL: 'io.rancher.k8s.kubectld',
+    K8S_API: 'io.rancher.k8s.api-server',
   },
 
   PREFS: {

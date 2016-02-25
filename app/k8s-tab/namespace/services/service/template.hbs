@@ -6,15 +6,48 @@
 </section>
 
 <section>
-  <h4>Labels</h4>
-  <div class="well r-mt10">
-    {{labels-section model=model labelSource=model.metadata.labels showKind=false sortBy="key"}}
+  <div class="container-multi-stat">
+    <div class="container-flex bordered">
+      <div class="col-flex"><label>Type:</label> {{model.spec.type}}</div>
+      <div class="col-flex"><label>Cluster IP:</label> {{model.spec.clusterIP}}</div>
+      <div class="col-flex"><label>Balancer IP:</label> {{default-str model.spec.loadBalancerIP default="None"}}</div>
+      <div class="col-flex"><label>Session Affinity:</label> {{model.spec.sessionAffinity}}</div>
+      <div class="col-flex">
+        <label>External IPs:</label>
+        {{#each model.spec.externalIPs as |ip index|}}
+          {{if (eq index 0) '' ','}}{{ip}}
+        {{else}}
+          None
+        {{/each}}
+      </div>
+      <div class="col-flex">
+        <label>Selectors:</label>
+        {{#each model.selectorsAsArray as |sel|}}
+          <span class="badge badge-default">{{sel.label}}={{sel.value}}</span>
+        {{else}}
+          None
+        {{/each}}
+      </div>
+    </div>
   </div>
 </section>
 
 <section>
-  <h4>Ports</h4>
-  <div class="well r-mt10">
-    {{k8s/service-ports model=model.spec.ports}}
+  <ul class="nav nav-tabs nav-tabs-well">
+    <li role="presentation" class="tab" data-section="pods" {{action "selectTab" "pods" target="view"}}><a href="#">Pods</a></li>
+    <li role="presentation" class="tab" data-section="labels" {{action "selectTab" "labels" target="view"}}><a href="#">Labels</a></li>
+    <li role="presentation" class="tab" data-section="ports" {{action "selectTab" "ports" target="view"}}><a href="#">Ports</a></li>
+  </ul>
+
+  <div class="horizontal-form well nav-well">
+    <div class="section container-fluid" data-section="pods">
+      {{k8s/pod-section model=model.selectedPods}}
+    </div>
+    <div class="section container-fluid" data-section="labels">
+      {{labels-section model=model labelSource=model.metadata.labels showKind=false sortBy="key"}}
+    </div>
+    <div class="section container-fluid" data-section="ports">
+      {{k8s/service-ports model=model.spec.ports}}
+    </div>
   </div>
 </section>

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   model: function() {
@@ -32,10 +33,8 @@ export default Ember.Route.extend({
     });
   },
 
-  resetController: function (controller, isExisting/*, transition*/) {
-    if (isExisting)
-    {
-      controller.set('which', 'user');
-    }
+  resetController: function (controller/*, isExisting, transition*/) {
+    var hasK8s = window.lc('authenticated').get('hasKubernetes');
+    controller.set('which', (hasK8s ? C.EXTERNALID.KIND_NOT_KUBERNETES : C.EXTERNALID.KIND_USER));
   },
 });

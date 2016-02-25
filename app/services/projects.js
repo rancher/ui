@@ -6,6 +6,7 @@ export default Ember.Service.extend({
   access: Ember.inject.service(),
   'tab-session': Ember.inject.service('tab-session'),
   prefs: Ember.inject.service(),
+  k8s: Ember.inject.service(),
 
   current: null,
   all: null,
@@ -90,14 +91,12 @@ export default Ember.Service.extend({
           self.get('prefs').set(C.PREFS.PROJECT_DEFAULT, project.get('id'));
         }
 
-        self.set('current', project);
-        return project;
+        return self.setCurrent(project);
       }
       else
       {
         tabSession.set(C.TABSESSION.PROJECT, undefined);
-        self.set('current', null);
-        return null;
+        return self.setCurrent(null);
       }
     }
 
@@ -105,6 +104,23 @@ export default Ember.Service.extend({
       // Then cry
       select(null);
       return Ember.RSVP.reject();
+    }
+  },
+
+  setCurrent: function(project) {
+    this.set('current', project);
+
+    if ( project && project.get('kubernetes') )
+    {
+      return this.get('k8s').allNamespaces().then(() => {
+        return this.get('k8s').selectNamespace().then(() => {
+          return project;
+        });
+      });
+    }
+    else
+    {
+      return project;
     }
   },
 

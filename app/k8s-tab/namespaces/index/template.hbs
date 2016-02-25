@@ -14,7 +14,9 @@
     </thead>
     <tbody>
       {{#each arranged as |ns|}}
-        {{k8s/ns-row model=ns}}
+        {{#unless ns.isSystem}}
+          {{k8s/ns-row model=ns}}
+        {{/unless}}
       {{else}}
         <tr><td colspan="5" class="text-center text-muted">You do not have any Namespaces yet.</td></tr>
       {{/each}}

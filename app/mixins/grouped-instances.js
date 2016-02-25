@@ -10,12 +10,12 @@ export default Ember.Mixin.create({
     // can due to bugs, user deleting things on host, or during upgrade briefly.
     var haveNoMain = [];
 
-    function getOrCreateGroup(groupName)
+    function getOrCreateGroup(groupName, isK8s)
     {
       var group = groups.filterBy('name', groupName)[0];
       if ( !group )
       {
-        group = { name: groupName, instances: [], hasChildren: false };
+        group = { name: groupName, instances: [], hasChildren: false, kubernetes: isK8s };
         groups.push(group);
       }
 
@@ -51,7 +51,11 @@ export default Ember.Mixin.create({
       var labels = instance.get('labels')||{};
       var deploymentUnit = labels[C.LABEL.DEPLOYMENT_UNIT] || null;
       var isSidekick = deploymentUnit && labels[C.LABEL.LAUNCH_CONFIG] !== C.LABEL.LAUNCH_CONFIG_PRIMARY;
-      var groupName = (instance.get('labels')||{})[C.LABEL.PROJECT_NAME] || '';
+      var k8sName = (instance.get('labels')||{})[C.LABEL.K8S_POD_NAMESPACE] || '';
+      var stackName = (instance.get('labels')||{})[C.LABEL.STACK_NAME] || '';
+
+      var groupName = k8sName || stackName;
+      getOrCreateGroup(groupName, !!k8sName);
 
       //console.log(deploymentUnit, groupName, isSidekick, instance.get('id'), instance.get('name'));
 

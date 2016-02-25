@@ -16,21 +16,32 @@ metadata:
   namespace: "%NAMESPACE%"
   labels:
 spec:
-  type:
   ports:
+  - name: ""
+    port:
+    protocol: TCP
+    targetPort:
   selector:
 `,
 
   replicationcontroller: `apiVersion: v1
 kind: ReplicationController
 metadata:
-  name:
-  namespace: "%NAMESPACE%"
   labels:
+  name: ""
+  namespace: "%NAMESPACE%"
 spec:
-  type:
-  ports:
+  replicas: 2
   selector:
+  template:
+    metadata:
+      labels:
+    spec:
+      restartPolicy: Always
+      containers:
+      - image: ""
+        imagePullPolicy: Always
+        name: ""
 `,
 
   pod: `apiVersion: v1

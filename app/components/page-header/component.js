@@ -97,6 +97,10 @@ export default Ember.Component.extend({
 
 
     Ember.$('#applications-tab, #infrastructure-tab, #admin-tab, #k8s-tab').mouseenter((e) => {
+      if ( this._state === 'destroying' ) {
+        return;
+      }
+
       if (this.get('menuHoverTimer')) {
         Ember.run.cancel(this.get('menuHoverTimer'));
       }
@@ -110,6 +114,9 @@ export default Ember.Component.extend({
       }, DELAY));
 
     }).mouseleave((e) => {
+      if ( this._state === 'destroying' ) {
+        return;
+      }
 
       this.set('menuHoverTimer', Ember.run.later(() => {
         toggleMenu(e.currentTarget.id, true);
@@ -117,6 +124,9 @@ export default Ember.Component.extend({
     });
 
     Ember.$('.bottom-row').mouseenter(() => {
+      if ( this._state === 'destroying' ) {
+        return;
+      }
 
       if (this.get('menuHoverTimer')) {
         Ember.run.cancel(this.get('menuHoverTimer'));
@@ -126,6 +136,9 @@ export default Ember.Component.extend({
         Ember.run.cancel(this.get('siblingMenuTimer'));
       }
     }).mouseleave(() => {
+      if ( this._state === 'destroying' ) {
+        return;
+      }
 
       this.set('menuHoverTimer', Ember.run.later(() => {
         this.set('forcedMenu', null);

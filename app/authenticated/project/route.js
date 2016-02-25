@@ -13,6 +13,7 @@ export default Ember.Route.extend({
 
   socket    : null,
   pingTimer : null,
+  k8sUidBlacklist: null,
 
   model(params, transition) {
     if ( !params.project_id )
@@ -34,7 +35,7 @@ export default Ember.Route.extend({
 
     return this.loadProject(params.project_id).then((project) => {
       this.set(`tab-session.${C.TABSESSION.PROJECT}`, project.get('id'));
-      this.set(`projects.current`, project);
+      this.get('projects').setCurrent(project);
 
       return this.loadSchemas().then(() => {
         return this.loadStacks().then((stacks) => {
@@ -82,6 +83,11 @@ export default Ember.Route.extend({
     this._super();
     var store = this.get('store');
     var boundTypeify = store._typeify.bind(store);
+
+    if ( !this.get('k8sUidBlacklist') )
+    {
+      this.set('k8sUidBlacklist', []);
+    }
 
     var url = "ws://"+window.location.host + this.get('app.wsEndpoint');
 
@@ -274,11 +280,18 @@ export default Ember.Route.extend({
     },
 
     k8sResourceChanged: function(changeType, obj) {
+      console.log('k8s change', changeType, (obj && obj.metadata && obj.metadata.uid ? obj.metadata.uid : 'none'));
+      if ( obj && obj.metadata && obj.metadata.uid && this.get('k8sUidBlacklist').indexOf(obj.metadata.uid) >= 0 )
+      {
+        console.log('^-- Ignoring', changeType, 'for removed resource');
+        return;
+      }
+
       var resource = this.get('k8s')._typeify(obj);
-      //console.log('k8s change', changeType, obj.metadata.uid, resource);
 
       if ( changeType === 'deleted' )
       {
+        this.get('k8sUidBlacklist').pushObject(obj.metadata.uid);
         this.get('store')._remove(resource.get('type'), resource);
       }
     }

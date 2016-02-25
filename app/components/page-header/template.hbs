@@ -5,7 +5,7 @@
       {{#if (or isKubernetesTab hasKubernetes)}}
         {{#link-to "k8s-tab" projectId id="k8s-tab"}}Kubernetes{{/link-to}}
       {{/if}}
-      {{#link-to "applications-tab" projectId id="applications-tab"}}Applications{{/link-to}}
+      {{#link-to "applications-tab" projectId id="applications-tab"}}{{if hasKubernetes 'System' 'Applications'}}{{/link-to}}
       {{#link-to "infrastructure-tab" projectId id="infrastructure-tab"}}Infrastructure{{/link-to}}
       {{#if isAdmin}}
         <span class="link-admin">
@@ -130,13 +130,27 @@
         {{#if k8s.namespaces.length}}
           <li role="presentation" class="dropdown-header">Namespaces</li>
           {{#each k8s.namespaces as |ns|}}
-            <li class="{{if (eq ns k8s.namespace) 'disabled selected'}}">
-              <a {{action "switchNamespace" ns.id}} class="clip">
-                <i class="icon {{ns.icon}}"></i>
-                &nbsp;
-                {{ns.displayName}}
-              </a>
-            </li>
+            {{#unless ns.isSystem}}
+              <li class="{{if (eq ns k8s.namespace) 'disabled selected'}}">
+                <a {{action "switchNamespace" ns.id}} class="clip">
+                  <i class="{{ns.icon}}"></i>
+                  &nbsp;
+                  {{ns.displayName}}
+                </a>
+              </li>
+            {{/unless}}
+          {{/each}}
+          <li role="presentation" class="divider"></li>
+          {{#each k8s.namespaces as |ns|}}
+            {{#if ns.isSystem}}
+              <li class="{{if (eq ns k8s.namespace) 'disabled selected'}}">
+                <a {{action "switchNamespace" ns.id}} class="clip">
+                  <i class="{{ns.icon}}"></i>
+                  &nbsp;
+                  {{ns.displayName}}
+                </a>
+              </li>
+            {{/if}}
           {{/each}}
           <li role="presentation" class="divider"></li>
         {{/if}}

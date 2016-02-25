@@ -1,0 +1,34 @@
+<tr>
+  <td class="force-wrap">
+    {{#if model.container}}
+      {{#link-to "container" model.container.id}}{{model.name}}{{/link-to}}
+    {{else}}
+      {{model.name}}
+    {{/if}}
+  </td>
+  <td class="force-wrap">
+    {{model.image}}
+  </td>
+  <td class="force-wrap">
+    {{model.displayState.state}}
+  </td>
+  <td class="force-wrap">
+    {{#if model.displayState.message}}
+      {{model.displayState.message}}
+    {{/if}}
+    {{#if model.displayState.date}}
+      <span>{{model.displayState.datePrefix}}{{date-from-now model.displayState.date}}</span>
+    {{/if}}
+  </td>
+  <td class="force-wrap">
+    <i class="icon {{if model.ready 'text-success icon-check' 'text-danger icon-x'}}"/>
+  </td>
+  <td class="force-wrap">
+    {{model.restartCount}}
+  </td>
+  <td class="actions">
+    {{#if model.container}}
+      {{action-menu model=model.container}}
+    {{/if}}
+  </td>
+</tr>

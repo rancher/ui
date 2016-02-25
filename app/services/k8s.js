@@ -28,6 +28,52 @@ function joinId(objOrStr, defaultNs) {
   return parts.namespace||defaultNs + C.K8S.ID_SEPARATOR + parts.name;
 }
 
+export function containerStateInator(state) {
+  var label = '???';
+  var message = '';
+  var date = null;
+  var datePrefix = '';
+
+  if ( state.running )
+  {
+    label = 'Running';
+    if ( state.running.startedAt )
+    {
+      date = new Date(state.running.startedAt);
+      datePrefix = 'Since ';
+    }
+  }
+  else if ( state.waiting )
+  {
+    label = 'Waiting';
+    if ( state.waiting.message )
+    {
+      message = state.waiting.message;
+    }
+  }
+  else if ( state.terminated )
+  {
+    label = 'Terminated (' + state.terminated.exitCode + ')';
+
+    if ( state.terminated.message )
+    {
+      message = state.terminated.message;
+    }
+
+    if ( state.terminated.finishedAt )
+    {
+      date = new Date(state.terminated.finishedAt);
+    }
+  }
+
+  return {
+    state: label,
+    message: message,
+    date: date,
+    datePrefix: datePrefix,
+  };
+}
+
 export default Ember.Service.extend({
   'tab-session': Ember.inject.service('tab-session'),
 
@@ -35,6 +81,7 @@ export default Ember.Service.extend({
   services: null,
   rcs: null,
   pods: null,
+  containers: null,
 
   // The current namespace
   namespace: null,
@@ -367,6 +414,17 @@ export default Ember.Service.extend({
     return group.filterBy('metadata.uid',uid)[0];
   },
 
+  containersByDockerId: function() {
+    var out = {};
+    this.get('containers').forEach((container) => {
+      out[container.get('externalId')] = container;
+    });
+
+    return out;
+  }.property('containers.@each.externalId'),
+
+
+
   _getCollection(type, resourceName) {
     return this._find(`${C.K8S.TYPE_PREFIX}${type}`, null, {
       url: resourceName
@@ -401,7 +459,32 @@ export default Ember.Service.extend({
     });
   },
 
-  allNamespaces() { return this._allCollection('namespace','namespaces'); },
+  allNamespaces() {
+    var store = this.get('store');
+    var type = `${C.K8S.TYPE_PREFIX}namespace`;
+    var name = 'kube-system';
+
+    return this._allCollection('namespace','namespaces').then((namespaces) => {
+      // kube-system is special and doesn't feel like it needs to come back in a list...
+      if ( !store.getById(type,name) )
+      {
+        store._add(type, store.createRecord({
+          apiVersion: 'v1',
+          type: type,
+          id: name,
+          metadata: {
+            name: name,
+          },
+          kind: 'Namespace',
+          spec: {},
+        }));
+
+      }
+
+      return namespaces;
+    });
+  },
+
   getNamespaces() { return this._getCollection('namespace','namespaces'); },
   getNamespace(name) {
     return this._find(`${C.K8S.TYPE_PREFIX}namespace`, name , {
@@ -412,20 +495,35 @@ export default Ember.Service.extend({
   selectNamespace(desiredName) {
     var self = this;
     return this.allNamespaces().then((all) => {
+      // Asked fror a specific one
       var obj = objForName(desiredName);
       if ( obj )
       {
         return select(obj);
       }
 
+      // One in the session
       obj = objForName(self.get(`tab-session.${C.TABSESSION.NAMESPACE}`));
       if ( obj )
       {
         return select(obj);
       }
 
+      // One called default
+      obj = all.filterBy('id','default')[0];
+      if ( obj )
+      {
+        return select(obj);
+      }
+
+      // The first one
       obj = all.objectAt(0);
-      return select(obj);
+      if ( obj )
+      {
+        return select(obj);
+      }
+
+      return select(null);
 
       function objForName(name) {
         if ( name )
@@ -439,7 +537,7 @@ export default Ember.Service.extend({
       }
 
       function select(obj) {
-        self.set(`tab-session.${C.TABSESSION.NAMESPACE}`, obj.get('id'));
+        self.set(`tab-session.${C.TABSESSION.NAMESPACE}`, (obj ? obj.get('id') : null));
         self.set('namespace', obj);
         return obj;
       }
