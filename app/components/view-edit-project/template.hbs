@@ -71,52 +71,54 @@
           </div>
         {{/if}}
 
-        <table class="grid fixed" style="margin-bottom: 0;">
-          <thead>
-            <tr>
-              {{sortable-th sortable=this action="changeSort" name="name"}}
-              {{sortable-th sortable=this action="changeSort" name="type"}}
-              {{sortable-th sortable=this action="changeSort" name="role"}}
-              {{#if showEdit}}<th width="40">&nbsp;</th>{{/if}}
-            </tr>
-          </thead>
-          <tbody>
-            {{#each arranged as |member|}}
+        {{#if accessEnabled}}
+          <table class="grid fixed" style="margin-bottom: 0;">
+            <thead>
               <tr>
-                <td>
-                  {{identity-block identity=member}}
-                </td>
-                <td>{{member.displayType}}</td>
-                <td>
-                  {{#if showEdit}}
-                    <select class="form-control input-sm" onchange={{action (mut member.role) value="target.value"}}>
-                      {{#each roleOptions as |choice|}}
-                        <option value={{choice.value}} selected={{eq member.role choice.value}}>{{choice.label}}</option>
-                      {{/each}}
-                    </select>
-                  {{else}}
-                    {{uc-first member.role}}
-                  {{/if}}
-                </td>
-                {{#if showEdit}}
+                {{sortable-th sortable=this action="changeSort" name="name"}}
+                {{sortable-th sortable=this action="changeSort" name="type"}}
+                {{sortable-th sortable=this action="changeSort" name="role"}}
+                {{#if showEdit}}<th width="40">&nbsp;</th>{{/if}}
+              </tr>
+            </thead>
+            <tbody>
+              {{#each arranged as |member|}}
+                <tr>
                   <td>
-                    {{#if accessEnabled}}
-                      <button class="btn-circle btn-sm pull-right gh-action" {{action "removeMember" member}}><i class="icon icon-x-circle"/></button>
+                    {{identity-block identity=member}}
+                  </td>
+                  <td>{{member.displayType}}</td>
+                  <td>
+                    {{#if showEdit}}
+                      <select class="form-control input-sm" onchange={{action (mut member.role) value="target.value"}}>
+                        {{#each roleOptions as |choice|}}
+                          <option value={{choice.value}} selected={{eq member.role choice.value}}>{{choice.label}}</option>
+                        {{/each}}
+                      </select>
                     {{else}}
-                      &nbsp;
+                      {{uc-first member.role}}
                     {{/if}}
                   </td>
-                {{/if}}
-              </tr>
-            {{else}}
-              <tr>
-                <td colspan="3" class="text-center text-muted">
-                  {{if showEdit 'No members yet, add at least one owner.' 'This project has no members.'}}
-                </td>
-              </tr>
-            {{/each}}
-          </tbody>
-        </table>
+                  {{#if showEdit}}
+                    <td>
+                      {{#if accessEnabled}}
+                        <button class="btn-circle btn-sm pull-right gh-action" {{action "removeMember" member}}><i class="icon icon-x-circle"/></button>
+                      {{else}}
+                        &nbsp;
+                      {{/if}}
+                    </td>
+                  {{/if}}
+                </tr>
+              {{else}}
+                <tr>
+                  <td colspan="3" class="text-center text-muted">
+                    {{if showEdit 'No members yet, add at least one owner.' 'This project has no members.'}}
+                  </td>
+                </tr>
+              {{/each}}
+            </tbody>
+          </table>
+        {{/if}}
       </div>
     </div>
   </div>
