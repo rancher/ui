@@ -79,10 +79,12 @@ export default Ember.Component.extend({
 
     if (this.get('forcedMenu')) {
       navPartial = this.get('forcedMenu');
+      Ember.$('.bottom-row').toggleClass('subactive');
     }
 
     if (isInCurrentPath) {
       this.set('subnavPartial', `tabs/${navPartial}`);
+      Ember.$('.bottom-row').toggleClass('subhover');
     } else {
       this.set('subnavPartial', null);
     }
