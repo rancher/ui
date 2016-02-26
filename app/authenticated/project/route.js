@@ -81,6 +81,8 @@ export default Ember.Route.extend({
 
   activate() {
     this._super();
+
+    console.log('Activate socket for', this.get(`tab-session.${C.TABSESSION.PROJECT}`));
     var store = this.get('store');
     var boundTypeify = store._typeify.bind(store);
 
@@ -95,6 +97,7 @@ export default Ember.Route.extend({
     var socket = Socket.create({
       url: url
     });
+    this.set('socket', socket);
 
     socket.on('message', (event) => {
       var d = JSON.parse(event.data, boundTypeify);
@@ -127,17 +130,28 @@ export default Ember.Route.extend({
       this._trySend('subscribeDisconnected', this.get('tries'));
     });
 
-    this.set('socket', socket);
     socket.connect();
   },
 
   deactivate() {
     this._super();
+    this.closeSocket();
+  },
+
+  resetController() {
+    this._super();
+    this.closeSocket();
+  },
+
+  closeSocket() {
     var socket = this.get('socket');
     if ( socket )
     {
       socket.disconnect();
+      this.set('socket', null);
     }
+
+    Ember.run.cancel(this.get('pingTimer'));
   },
 
   actions: {
@@ -165,6 +179,7 @@ export default Ember.Route.extend({
     // WebSocket disconnected
     subscribeDisconnected: function() {
       console.log('Subscribe disconnected');
+      this.closeSocket();
     },
 
     subscribePing: function() {
@@ -176,7 +191,10 @@ export default Ember.Route.extend({
 
       this.set('pingTimer', Ember.run.later(this, function() {
         console.log('Subscribe missed 2 pings...');
-        this.get('socket').connect();
+        if ( this.get('socket') )
+        {
+          this.get('socket').connect();
+        }
       }, 11000));
     },
 
@@ -280,10 +298,10 @@ export default Ember.Route.extend({
     },
 
     k8sResourceChanged: function(changeType, obj) {
-      console.log('k8s change', changeType, (obj && obj.metadata && obj.metadata.uid ? obj.metadata.uid : 'none'));
+      //console.log('k8s change', changeType, (obj && obj.metadata && obj.metadata.uid ? obj.metadata.uid : 'none'));
       if ( obj && obj.metadata && obj.metadata.uid && this.get('k8sUidBlacklist').indexOf(obj.metadata.uid) >= 0 )
       {
-        console.log('^-- Ignoring', changeType, 'for removed resource');
+        //console.log('^-- Ignoring', changeType, 'for removed resource');
         return;
       }
 

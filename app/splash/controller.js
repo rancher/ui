@@ -7,7 +7,7 @@ export default Ember.Controller.extend({
   docsBase: C.EXT_REFERENCES.DOCS,
 
   thingsChanged: function() {
-    console.log(this.get('application.currentRouteName'),this.get('model.hosts.length'),this.get('model.services.length'));
+    //console.log(this.get('application.currentRouteName'),this.get('model.hosts.length'),this.get('model.services.length'));
     if ( this.get('application.currentRouteName') === 'splash')
     {
       if ( this.get('model.hosts.length') && this.get('model.services.length') )
