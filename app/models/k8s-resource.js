@@ -12,6 +12,25 @@ var K8sResource = Resource.extend({
         }
       });
     },
+
+    goToApi: function() {
+      var endpoint = this.get('endpoint.absolute'); // http://e.f.g.h/ , does not include version.  e.f.g.h is where the API actually is.
+      var projectId = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
+      var relative = this.linkFor('self');
+      var url = `${endpoint}r/projects/${projectId}/kubernetes${relative}`;
+
+      // For local development where API doesn't match origin, add basic auth token
+      if ( url.indexOf(window.location.origin) !== 0 )
+      {
+        var token = this.get('cookies').get(C.COOKIE.TOKEN);
+        if ( token )
+        {
+          url = Util.addAuthorization(url, C.USER.BASIC_BEARER, token);
+        }
+      }
+
+      window.open(url, '_blank');
+    },
   },
 
   linkFor: function(name) {
@@ -70,9 +89,10 @@ var K8sResource = Resource.extend({
 
   availableActions: function() {
     var choices = [
-      { label: 'Edit',            icon: 'icon icon-edit',             action: 'edit',           enabled: true },
+      { label: 'Edit',        icon: 'icon icon-edit',           action: 'edit',         enabled: true },
+      { label: 'View in API', icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
       { divider: true },
-      { label: 'Delete',          icon: 'icon icon-trash',            action: 'promptDelete',   enabled: true, altAction: 'delete', color: 'text-warning' },
+      { label: 'Delete',      icon: 'icon icon-trash',          action: 'promptDelete', enabled: true, altAction: 'delete', color: 'text-warning' },
     ];
 
     return choices;

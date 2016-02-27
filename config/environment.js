@@ -63,9 +63,7 @@ module.exports = function(environment) {
       apiEndpoint: '/v1',
       catalogServer: '',
       catalogEndpoint: '/v1-catalog',
-      kubernetesServer: '',
       kubernetesEndpoint: '/r/kubernetes',
-      kubectlServer: '',
       kubectlEndpoint: '/r/kubectld:8091/v1-kubectl',
       proxyEndpoint: '/v1/proxy',
       wsEndpoint: '/v1/subscribe' +
@@ -136,28 +134,6 @@ module.exports = function(environment) {
   else if (environment === 'production')
   {
     ENV.APP.catalogServer = '';
-  }
-
-  // Override the K8s server/endpoint with environment var
-  server = process.env.KUBERNETES;
-  if ( server )
-  {
-    ENV.APP.kubernetesServer = normalizeHost(server,8090);
-  }
-  else if (environment === 'production')
-  {
-    ENV.APP.kubernetesServer = '';
-  }
-
-  // Override the Kubectl server/endpoint with environment var
-  server = process.env.KUBECTL;
-  if ( server )
-  {
-    ENV.APP.kubectlServer = normalizeHost(server,8091);
-  }
-  else if (environment === 'production')
-  {
-    ENV.APP.kubectlServer = '';
   }
 
   var pl = process.env.PL;
