@@ -53,27 +53,27 @@
       <tbody>
         {{#each model.auditLog as |log|}}
           <tr>
-            <td>{{date-from-now log.created}}</td>
-            <td class="force-wrap" title="{{log.eventType}}">
+            <td data-title="Time:">{{date-from-now log.created}}</td>
+            <td data-title="Event Type:" class="force-wrap" title="{{log.eventType}}">
               {{log.eventType}} <i class="icon icon-info addtl-info-trigger" {{action 'showResponseObjects' log.requestObject log.responseObject }}></i>
             </td>
-            <td class="clip" title="{{log.resourceType}}">
+            <td data-title="Resource Type(ID):" class="clip" title="{{log.resourceType}}">
               {{#if log.links.resource}}
                 <a href="{{log.links.resource}}" target="_blank">{{log.resourceType}}{{#if log.resourceId}}: {{log.resourceId}}{{/if}}</a>
               {{else}}
                 {{log.resourceType}}{{#if log.resourceId}}: {{log.resourceId}}{{/if}}
               {{/if}}
             </td>
-            <td class="clip">{{log.clientIp}}</td>
-            <td class="clip" title="{{log.authType}}">{{auth-type log.authType}}</td>
-            <td class="clip">
+            <td data-title="Request IP:" class="clip">{{log.clientIp}}</td>
+            <td data-title="Auth Type:" class="clip" title="{{log.authType}}">{{auth-type log.authType}}</td>
+            <td data-title="Environment:" class="clip">
               {{#if (eq log.account.type "project")}}
                 {{log.account.name}}
               {{else}}
                 <span class="text-muted">-</span>
               {{/if}}
             </td>
-            <td>{{identity-block identityNotParsed=log.authenticatedAsIdentityId}}</td>
+            <td data-title="Identity:">{{identity-block identityNotParsed=log.authenticatedAsIdentityId}}</td>
           </tr>
         {{/each}}
       </tbody>

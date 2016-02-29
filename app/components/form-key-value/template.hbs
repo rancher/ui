@@ -2,7 +2,7 @@
 
 {{#if ary.length}}
   <table class="table fixed no-lines no-top-padding tight small">
-    <tr class="text-muted">
+    <tr class="text-muted hidden-sm">
       <th>{{keyLabel}}</th>
       <th width="30">&nbsp;</th>
       <th>{{valueLabel}}</th>
@@ -10,7 +10,7 @@
     </tr>
     {{#each ary as |row|}}
       <tr>
-        <td>
+        <td data-title="Key">
           {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=row.key placeholder=keyPlaceholder}}
         </td>
 
@@ -18,7 +18,7 @@
           <p class="form-control-static input-sm">=</p>
         </td>
 
-        <td>
+        <td data-title="Value">
           {{input class="form-control input-sm value" type="text" value=row.value placeholder=valuePlaceholder}}
         </td>
 

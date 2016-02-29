@@ -11,29 +11,29 @@
   <tbody>
     {{#each model as |port|}}
       <tr>
-        <td>
+        <td data-title="State">
           <span class="state {{port.stateBackground}}">
             {{port.displayState}}
           </span>
         </td>
-        <td>
+        <td data-title="IP Address">
           {{port.displayPublicIp}}
         </td>
-        <td>
+        <td data-title="Public (on Host)">
           {{#if port.publicPort}}
             {{port.publicPort}}
           {{else}}
             <span class="text-muted">None</span>
           {{/if}}
         </td>
-        <td>
+        <td data-title="Private (in Container)">
           {{#if port.privatePort}}
             {{port.privatePort}}
           {{else}}
             <span class="text-muted">None</span>
           {{/if}}
         </td>
-        <td>
+        <td data-title="Protocol">
           {{upper-case port.protocol}}
         </td>
       </tr>

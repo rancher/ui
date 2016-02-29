@@ -1,14 +1,14 @@
-<td>
+<td data-title="State:" class="state">
   {{badge-state model=model}}
 </td>
-<td class="force-wrap">
+<td data-title="Name:" class="force-wrap">
   <a href="{{detailBaseUrl}}{{model.id}}" data-transition-link="true">{{model.displayName}}</a>
 </td>
-<td>
+<td data-title="IP Address:">
   {{model.displayIp}}
 </td>
 {{#if showHost}}
-  <td>
+  <td data-title="Primary Host:">
     {{#if model.primaryHost}}
       {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}
     {{else}}
@@ -16,14 +16,14 @@
     {{/if}}
   </td>
 {{/if}}
-<td class="clip">
+<td data-title="Image:" class="clip">
   {{model.displayImage}}
   {{#if (and (not showStats) model.command)~}}
     ({{model.command}})
   {{/if}}
 </td>
 {{#if showStats}}
-  <td class="spark-td">
+  <td data-title="Stats:" class="spark-td">
     {{#if model.cpuSpark}}
       {{spark-line data=model.cpuSpark     width=60 height=25 max=cpuMax     prefix="CPU: " formatter="percent" type="cpu"}}
       {{spark-line data=model.memorySpark  width=60 height=25 max=memoryMax  prefix="Memory: " formatter="mib" type="memory"}}
@@ -33,7 +33,7 @@
   </td>
 {{else}}
   {{#unless model.isVm}}
-    <td class="clip">
+    <td data-title="Command:" class="clip">
       {{#if model.command}}
         {{model.command}}
       {{else}}
@@ -42,6 +42,6 @@
     </td>
   {{/unless}}
 {{/if}}
-<td class="actions">
+<td data-title="Actions:" class="actions">
   {{partial "fast-action-menu"}}
 </td>

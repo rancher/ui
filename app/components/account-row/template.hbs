@@ -1,25 +1,25 @@
-<td>
+<td data-title="State:" >
   {{badge-state model=model}}
 </td>
-<td>
+<td data-title="ID:" >
   {{model.id}}
 </td>
-<td>
+<td data-title="Type:" >
   {{uc-first model.kind}}
 </td>
 {{#if isLocal}}
-  <td>
+  <td data-title="Username:" >
     {{#if model.username}}
       {{model.username}}
     {{else}}
       <span class="text-muted">None</span>
     {{/if}}
   </td>
-  <td class="force-wrap">
+  <td data-title="Name:" class="force-wrap">
     {{model.displayName}}
   </td>
 {{else}}
-  <td>
+  <td data-title="ID:" >
     {{#if (and model.externalId model.externalIdType)}}
       {{identity-block externalIdType=model.externalIdType externalId=model.externalId}}
     {{else}}
@@ -27,6 +27,6 @@
     {{/if}}
   </td>
 {{/if}}
-<td class="actions">
+<td data-title="Actions:" class="actions">
   {{partial "fast-action-menu"}}
 </td>

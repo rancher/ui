@@ -72,28 +72,28 @@
         <tbody>
           {{#each filtered as |service|}}
             <tr>
-              <td class="state">
+              <td data-title="State:" class="state">
                 {{badge-state model=service}}
               </td>
-              <td class="force-wrap">
+              <td data-title="Service Name:"class="force-wrap">
                 {{#link-to "service" service.environmentId service.id}}{{service.displayName}}{{/link-to}}
                 {{#if service.hasSidekicks}}
                   + {{service.secondaryLaunchConfigs.length}} Sidekick{{unless (eq service.secondaryLaunchConfigs.length 1) 's'}}
                 {{/if}}
                 <i class="icon icon-info addtl-info-trigger" {{action 'addtlInfo' service target=controller}}/>
               </td>
-              <td class="force-wrap service-detail">{{service.displayDetail}}{{service.displayPorts}}</td>
-              <td>
+              <td data-title="Details:" class="force-wrap service-detail">{{service.displayDetail}}{{service.displayPorts}}</td>
+              <td data-title="Kind:">
                 {{#if service.displayType}}
                   {{service.displayType}}
                 {{/if}}
               </td>
-              <td>
+              <td data-title="Containers:">
                 {{#if service.hasContainers}}
                   {{default-str service.instances.length default="0"}} Container{{unless (eq service.instances.length 1) 's'}}
                 {{/if}}
               </td>
-              <td class="actions wide">
+              <td data-title="Actions:" class="actions wide">
                 {{action-menu model=service altActionArg="deactivate"}}
               </td>
             </tr>
