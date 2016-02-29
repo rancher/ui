@@ -5,6 +5,7 @@ export default Ember.Route.extend({
   cookies: Ember.inject.service(),
   github: Ember.inject.service(),
   access: Ember.inject.service(),
+  settings: Ember.inject.service(),
 
   previousParams: null,
   previousRoute: null,
@@ -163,7 +164,13 @@ export default Ember.Route.extend({
     }
   },
 
+  updateWindowTitle: function() {
+    document.title = this.get('settings.appName');
+  }.observes('settings.appName'),
+
   beforeModel() {
+    this.updateWindowTitle();
+
     var agent = window.navigator.userAgent.toLowerCase();
     if ( agent.indexOf('msie ') >= 0 || agent.indexOf('trident/') >= 0 || agent.indexOf('edge/') >= 0 )
     {
