@@ -16,7 +16,7 @@ var K8sResource = Resource.extend({
     goToApi: function() {
       var endpoint = this.get('endpoint.absolute'); // http://e.f.g.h/ , does not include version.  e.f.g.h is where the API actually is.
       var projectId = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
-      var relative = this.linkFor('self');
+      var relative = this.linkFor('self').replace(/^\/r\/kubernetes/,'');
       var url = `${endpoint}r/projects/${projectId}/kubernetes${relative}`;
 
       // For local development where API doesn't match origin, add basic auth token

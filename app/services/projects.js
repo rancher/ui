@@ -37,45 +37,47 @@ export default Ember.Service.extend({
     });
   },
 
-  selectDefault: function() {
+  selectDefault: function(desired) {
     var self = this;
     var tabSession = this.get('tab-session');
 
-    // Try the project ID in the session
-    return this._activeProjectFromId(tabSession.get(C.TABSESSION.PROJECT)).then(select)
+    // The one specifically asked for
+    return this._activeProjectFromId(desired).then(select)
     .catch(() => {
-      // Then the default project ID from the prefs
-      return this._activeProjectFromId(this.get('prefs').get(C.PREFS.PROJECT_DEFAULT)).then(select)
+      // Try the project ID in the session
+      return this._activeProjectFromId(tabSession.get(C.TABSESSION.PROJECT)).then(select)
       .catch(() => {
-        // Setting this now and then just below breaks API uniqueness checking
-        // this.get('prefs').set(C.PREFS.PROJECT_DEFAULT, "");
-
-        // Then the first active project
-        var project = this.get('active.firstObject');
-        if ( project )
-        {
-          return select(project, true);
-        }
-        else if ( this.get('access.admin') )
-        {
-          return this.getAll().then((all) => {
-            var firstActive = all.filterBy('state','active')[0];
-            if ( firstActive )
-            {
-              return select(firstActive, true);
-            }
-            else
-            {
+        // Then the default project ID from the prefs
+        return this._activeProjectFromId(this.get('prefs').get(C.PREFS.PROJECT_DEFAULT)).then(select)
+        .catch(() => {
+          // Then the first active project you're a member of
+          var project = this.get('active.firstObject');
+          if ( project )
+          {
+            return select(project, true);
+          }
+          else if ( this.get('access.admin') )
+          {
+            // Then if you're an admin the first active of any kind
+            return this.getAll().then((all) => {
+              var firstActive = all.filterBy('state','active')[0];
+              if ( firstActive )
+              {
+                return select(firstActive, true);
+              }
+              else
+              {
+                return fail();
+              }
+            }).catch(() => {
               return fail();
-            }
-          }).catch(() => {
+            });
+          }
+          else
+          {
             return fail();
-          });
-        }
-        else
-        {
-          return fail();
-        }
+          }
+        });
       });
     });
 
@@ -109,19 +111,7 @@ export default Ember.Service.extend({
 
   setCurrent: function(project) {
     this.set('current', project);
-
-    if ( project && project.get('kubernetes') )
-    {
-      return this.get('k8s').allNamespaces().then(() => {
-        return this.get('k8s').selectNamespace().then(() => {
-          return project;
-        });
-      });
-    }
-    else
-    {
-      return project;
-    }
+    return Ember.RSVP.resolve(project);
   },
 
   _activeProjectFromId: function(projectId) {
@@ -129,9 +119,10 @@ export default Ember.Service.extend({
       if ( !projectId )
       {
         reject();
+        return;
       }
 
-      this.get('store').find('project', projectId).then((project) => {
+      this.get('store').find('project', projectId, {url: 'projects/'+encodeURIComponent(projectId)}).then((project) => {
         if ( project.get('state') === 'active' )
         {
           resolve(project);

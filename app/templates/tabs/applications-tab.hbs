@@ -1,9 +1,9 @@
 {{#if hasKubernetes}}
-  {{#link-to "environments" (query-params which="not-kubernetes")}}<i class="icon icon-layers"></i>Stacks{{/link-to}}
+  {{#link-to "environments" project.id (query-params which="not-kubernetes")}}<i class="icon icon-layers"></i>Stacks{{/link-to}}
 {{else}}
-  {{#link-to "environments" (query-params which="user")}}<i class="icon icon-layers"></i> Stacks{{/link-to}}
+  {{#link-to "environments" project.id (query-params which="user")}}<i class="icon icon-layers"></i> Stacks{{/link-to}}
   {{#if hasSystem}}
-    {{#link-to "environments" (query-params which="system")}}<i class="icon icon-network"></i>System{{/link-to}}
+    {{#link-to "environments" project.id (query-params which="system")}}<i class="icon icon-network"></i>System{{/link-to}}
   {{/if}}
 {{/if}}
-{{#link-to "applications-tab.catalog"}}<i class="icon icon-catalog"></i> Catalog{{/link-to}}
+{{#link-to "applications-tab.catalog" project.id}}<i class="icon icon-catalog"></i> Catalog{{/link-to}}

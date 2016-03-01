@@ -259,7 +259,7 @@ export default Ember.Service.extend({
     }
 
     // Un-namespaced things are cacheable
-    var str = `${C.K8S.BASE}/namespaces/`;
+    var str = `${C.K8S.BASE_VERSION}/namespaces/`;
     var pos = opt.url.indexOf(str);
     if ( pos >= 0 )
     {
@@ -317,7 +317,7 @@ export default Ember.Service.extend({
     {
       if ( opt.url.substr(0,1) !== '/' )
       {
-        opt.url = `${self.get('app.kubernetesEndpoint')}/${C.K8S.BASE}/` + opt.url;
+        opt.url = `${self.get('app.kubernetesEndpoint')}/${C.K8S.BASE_VERSION}/` + opt.url;
       }
 
       return findWithUrl(opt.url);
@@ -424,6 +424,15 @@ export default Ember.Service.extend({
   }.property('containers.@each.externalId'),
 
 
+  isReady() {
+    return this.request({
+      url: `${this.get('app.kubernetesEndpoint')}/${C.K8S.BASE}`
+    }).then(() => {
+      return true;
+    }).catch(() => {
+      return Ember.RSVP.resolve(false);
+    });
+  },
 
   _getCollection(type, resourceName) {
     return this._find(`${C.K8S.TYPE_PREFIX}${type}`, null, {
@@ -495,7 +504,7 @@ export default Ember.Service.extend({
   selectNamespace(desiredName) {
     var self = this;
     return this.allNamespaces().then((all) => {
-      // Asked fror a specific one
+      // Asked for a specific one
       var obj = objForName(desiredName);
       if ( obj )
       {

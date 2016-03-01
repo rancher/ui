@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Service from 'ui/models/service';
+import Subscribe from 'ui/mixins/subscribe';
 
-export default Ember.Route.extend({
+export default Ember.Route.extend(Subscribe, {
   prefs     : Ember.inject.service(),
   projects  : Ember.inject.service(),
   k8s       : Ember.inject.service(),
@@ -29,26 +30,35 @@ export default Ember.Route.extend({
       preferences: this.loadPreferences(),
       settings: this.loadPublicSettings(),
     }).then((hash) => {
+      var projectId = null;
       if ( transition.params && transition.params['authenticated.project'] && transition.params['authenticated.project'].project_id )
       {
-        return hash;
+        projectId = transition.params['authenticated.project'].project_id;
       }
-      else
-      {
-        // If not going to a project-specific page, make sure a project is selected
-        return this.get('projects').selectDefault().then(() => {
-          return hash;
+
+      // Make sure a valid project is selected
+      return this.get('projects').selectDefault(projectId).then((project) => {
+        hash.project = project;
+        return this.loadKubernetes(project, hash).then((out) => {
+          return Ember.Object.create(out);
         });
-      }
+      });
     }).catch((err) => {
       return this.loadingError(err, transition, Ember.Object.create({
         projects: [],
+        project: null,
       }));
     });
   },
 
+  activate() {
+    this._super();
+    this.connectSubscribe();
+  },
+
   deactivate() {
     this._super();
+    this.disconnectSubscribe();
 
     // Forget all the things
     this.reset();
@@ -78,6 +88,36 @@ export default Ember.Route.extend({
       this.get('userTheme').setupTheme();
 
       return res;
+    });
+  },
+
+  loadKubernetes(project, hash) {
+    hash = hash || {};
+
+    if ( !project.get('kubernetes') )
+    {
+      hash.kubernetesReady = false;
+      return Ember.RSVP.resolve(hash);
+    }
+
+    var svc = this.get('k8s');
+    return svc.isReady().then((ready) => {
+      if ( ready )
+      {
+        return this.get('k8s').allNamespaces().then((all) => {
+          return this.get('k8s').selectNamespace().then((ns) => {
+            hash.kubernetesReady = true;
+            hash.namespaces = all;
+            hash.namespace = ns;
+            return hash;
+          });
+        });
+      }
+      else
+      {
+        hash.kubernetesReady = false;
+        return Ember.RSVP.resolve(hash);
+      }
     });
   },
 
@@ -124,6 +164,13 @@ export default Ember.Route.extend({
       this.intermediateTransitionTo('authenticated');
       this.set(`tab-session.${C.TABSESSION.PROJECT}`, projectId);
       this.refresh();
+    },
+
+    refreshKubernetes() {
+      var model = this.get('controller.model');
+      this.loadKubernetes(model.get('project')).then((hash) => {
+        model.setProperties(hash);
+      });
     },
 
     switchNamespace(namespaceId) {

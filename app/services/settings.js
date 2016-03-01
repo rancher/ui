@@ -66,7 +66,7 @@ export default Ember.Service.extend(Ember.Evented, {
     obj.save().then(() => {
       this.notifyPropertyChange(normalizeName(key));
     }).catch((err) => {
-      this.trigger('gotError', err);
+      console.log('Error saving setting:', err);
     }).finally(() => {
       this.decrementProperty('promiseCount');
     });

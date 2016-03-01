@@ -136,11 +136,13 @@ export default Ember.Component.extend({
         var requestLine='';
         if ( path )
         {
-          requestLine = method + ' ' + path + ' ' + version;
+          requestLine = method + ' ' + path + ' "' + version;
           if ( host )
           {
-            requestLine += '\r\nHost:\\ ' + host;
+            requestLine += '\r\nHost: ' + host;
           }
+
+          requestLine += '"';
         }
         this.set('healthCheck.requestLine', requestLine);
       }

@@ -3,6 +3,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   settings: Ember.inject.service(),
+  projects: Ember.inject.service(),
 
   queryParams: ['backToAdd'],
   backToAdd: false,
@@ -30,7 +31,6 @@ export default Ember.Controller.extend({
       }
 
       if (this.get('backToAdd')) {
-
         propsOut[C.SETTING.API_HOST] = model.host;
       } else {
 
@@ -59,7 +59,7 @@ export default Ember.Controller.extend({
 
         if (this.get('backToAdd')) {
 
-          this.transitionToRoute('hosts.new');
+          this.transitionToRoute('hosts.new', this.get('projects.current.id'));
         } else {
 
           this.send('goToPrevious');

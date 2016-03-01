@@ -143,6 +143,7 @@ Router.map(function() {
       // Kubernetes
       this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
+        this.route('waiting', {path: '/waiting'});
 
         this.route('apply', {path: '/apply'});
         this.route('kubectl', {path: '/kubectl'});

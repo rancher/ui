@@ -168,7 +168,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   doneSaving: function() {
     var out = this._super();
     this.get('projects').refreshAll();
-    this.get('router').transitionTo('settings.projects.detail', this.get('project.id'), {queryParams: {editing: false}});
+    this.sendAction('done');
     return out;
   },
 });

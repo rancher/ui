@@ -56,17 +56,10 @@
 
     <div class="{{if showEdit 'col-sm-12 col-md-8' 'col-xs-12'}}">
       <div class="well">
-        {{#if showEdit}}
+        {{#if (and accessEnabled showEdit)}}
           <div class="row form-group">
             <div class="col-sm-12">
-              {{#if accessEnabled}}
-                {{input-identity action="checkMember" onError="error"}}
-              {{else}}
-                <p class="help-block text-center r-mt0">
-                  Access Control is not enabled.
-                  Anybody with access to the API/UI acts as an admin and will be able to use any environment.
-                </p>
-              {{/if}}
+              {{input-identity action="checkMember" onError="error"}}
             </div>
           </div>
         {{/if}}
@@ -118,6 +111,11 @@
               {{/each}}
             </tbody>
           </table>
+        {{else}}
+          <p class="help-block text-center">
+            Access Control is not enabled.<br/>
+            Anybody with access to the API/UI acts as an admin and will be able to use any environment.
+          </p>
         {{/if}}
       </div>
     </div>
