@@ -10,7 +10,7 @@
   {{/if}}
 </section>
 
-<div class="container">
+<div>
   <section>
     <div class="well row">
       <div class="col-sm-12 col-md-3">
@@ -48,7 +48,7 @@
     </div>
   </section>
 
-  <section>
+  <section class="well">
     <h4>Template Version</h4>
     <hr/>
     <div class="row">
@@ -67,23 +67,19 @@
   </section>
 
   {{#if (and (not editing) selectedTemplateModel)}}
-    <section>
+    <section class="well">
       <h4>New Stack</h4>
       <hr/>
-      <div class="row form-group">
-        <div class="col-sm-12 col-md-6 form-label">
-          <label class="form-control-static">Name*</label>
-          {{input type="text" class="form-control" value=environmentResource.name}}
-        </div>
-        <div class="col-sm-12 col-md-6 form-label">
-          <label class="form-control-static">Description</label>
-          {{textarea rows="3" class="form-control" value=environmentResource.description}}
-        </div>
-      </div>
+
+      {{form-name-description
+        model=environmentResource
+        namePlaceholder="environmentResource.name"
+      }}
+
     </section>
   {{/if}}
 
-  <section>
+  <section class="well">
     {{#if loading}}
       <div class="col-md-12 text-center r-mt15 r-mb15">
         <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
@@ -132,8 +128,8 @@
     {{/if}}
 
     <section>
-      <h4 class="hand" {{action "togglePreview"}}><i class="icon {{if previewOpen 'icon-minus' 'icon-plus'}}"></i> Preview</h4>
-      <hr/>
+      <div class="over-hr"><span {{action "togglePreview"}}>Preview <i class="icon {{if previewOpen 'icon-chevron-up' 'icon-chevron-down'}}"></i></span></div>
+      
       {{#if previewOpen}}
         <ul class="nav nav-tabs nav-tabs-well">
           <li class="{{if (eq previewTab 'docker-compose') 'active'}}" {{action "selectPreviewTab" "docker-compose"}}><a href="#">docker-compose.yml {{zero-clipboard text=selectedTemplateModel.dockerCompose}}</a></li>

@@ -69,6 +69,7 @@ export default Ember.Component.extend({
     let currentPathArr  = this.get('currentPath').split('.');
     let navPartial      = '';
     let isInCurrentPath = false;
+    let bottomRow       = Ember.$('.bottom-row');
 
     hoverableTabs.forEach((tab) => {
       if (currentPathArr.contains(tab)) {
@@ -79,6 +80,11 @@ export default Ember.Component.extend({
 
     if (this.get('forcedMenu')) {
       navPartial = this.get('forcedMenu');
+      bottomRow.addClass('subactive');
+    } else {
+      if (bottomRow.hasClass('subactive')) {
+        bottomRow.removeClass('subactive');
+      }
     }
 
     if (isInCurrentPath) {

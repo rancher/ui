@@ -9,8 +9,8 @@
     </h1>
   </section>
 
-  <section class="horizontal-form container-fluid">
-    {{#if isService}}
+{{#if isService}}
+  <section class="horizontal-form container-fluid well">
       {{#if isUpgrade}}
         {{form-upgrade
           switch=(action 'selectLaunchConfig')
@@ -39,8 +39,9 @@
         switch=(action 'selectLaunchConfig')
         showAdd=(not isUpgrade)
       }}
-    {{/if}}
   </section>
+{{/if}}
+
 {{/unless}}
 
 {{#if noLaunchConfigsEnabled}}
@@ -48,32 +49,30 @@
 {{/if}}
 
 <div data-launchindex="{{if isSidekick '' '-1'}}">
-  <section class="horizontal-form container-fluid">
-    {{#unless isUpgrade}}
-      {{form-name-description
-        model=primaryResource
-        namePlaceholder="e.g. myapp"
-        descriptionPlaceholder="My application"
+  <section class="horizontal-form container-fluid well">
+    <div>
+      {{#unless isUpgrade}}
+        {{form-name-description
+          model=primaryResource
+          namePlaceholder="e.g. myapp"
+          descriptionPlaceholder="My application"
+        }}
+      {{/unless}}
+    </div>
+    <div class="row r-ml15 r-mr15">
+      {{form-image
+        isVm=isVm
+        initialValue=launchConfig.imageUuid
+        errors=imageErrors
+        changed=(action 'setImage')
+        initialLabels=launchConfig.labels
+        setLabels=(action 'setLabels' 'image')
       }}
 
-      {{form-divider}}
-    {{/unless}}
-
-    {{form-image
-      isVm=isVm
-      initialValue=launchConfig.imageUuid
-      errors=imageErrors
-      changed=(action 'setImage')
-      initialLabels=launchConfig.labels
-      setLabels=(action 'setLabels' 'image')
-    }}
-
-    {{form-divider}}
-
-    {{#if isVm}}
-      {{form-virtualmachine launchConfig=launchConfig}}
-      {{form-divider}}
-    {{/if}}
+      {{#if isVm}}
+        {{form-virtualmachine launchConfig=launchConfig}}
+      {{/if}}
+    </div>
 
     {{form-ports
       initialPorts=launchConfig.ports
@@ -83,7 +82,6 @@
     }}
 
     {{#if (and isService (not isSidekick))}}
-      {{form-divider}}
 
       {{form-service-links
         service=service
@@ -91,8 +89,6 @@
         changed=(action 'setServiceLinks')
       }}
     {{/if}}
-
-    {{form-divider}}
   </section>
 
   {{#advanced-section advanced=advanced}}
