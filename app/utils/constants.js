@@ -200,7 +200,8 @@ var C = {
   },
 
   K8S: {
-    BASE: 'api/v1',
+    BASE: 'api',
+    BASE_VERSION: 'api/v1',
     TYPE_PREFIX: 'k8s-',
     ID_SEPARATOR: '::'
   }

@@ -11,4 +11,13 @@ export default Ember.Controller.extend({
   hasKubernetes: false,
   hasSystem: false,
   hasVm: Ember.computed.alias('settings.hasVm'),
+
+  init() {
+    this._super();
+    this.k8sChanged();
+  },
+
+  k8sChanged: function() {
+    this.set('hasKubernetes', !!this.get('projects.current.kubernetes'));
+  }.observes('projects.current.kubernetes'),
 });

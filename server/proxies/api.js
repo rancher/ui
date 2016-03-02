@@ -75,49 +75,7 @@ module.exports = function(app, options) {
     console.log('Catalog Proxy', req.method, 'to', req.url);
     catalogProxy.web(req, res);
   });
-
-  // Kubernetes API
-  var kubernetesPath = config.kubernetesEndpoint;
-  // Default catalog to the regular API
-  var kubernetesServer = config.kubernetesServer || config.apiServer;
-  console.log('Proxying Kubernetes to', kubernetesServer);
-  app.use(kubernetesPath, function(req, res, next) {
-    req.headers['X-Forwarded-Proto'] = req.protocol;
-    var kubernetesProxy = HttpProxy.createProxyServer({
-      xfwd: false,
-      target: kubernetesServer
-    });
-
-    kubernetesProxy.on('error', onProxyError);
-
-    // Don't include root path in proxied request
-    // req.url = path.join(kubernetesPath, req.url);
-
-    console.log('Kubernetes Proxy', req.method, 'to', req.url);
-    kubernetesProxy.web(req, res);
-  });
-
-  // Kubectl API
-  var kubectlPath = config.kubectlEndpoint;
-  // Default catalog to the regular API
-  var kubectlServer = config.kubectlServer || config.kubernetesServer || config.apiServer;
-  console.log('Proxying Kubectl to', kubectlServer);
-  app.use(kubectlPath, function(req, res, next) {
-    req.headers['X-Forwarded-Proto'] = req.protocol;
-    var kubectlProxy = HttpProxy.createProxyServer({
-      xfwd: false,
-      target: kubectlServer
-    });
-
-    kubectlProxy.on('error', onProxyError);
-
-    // include root path in proxied request
-     req.url = path.join(kubectlPath, req.url);
-
-    console.log('Kubectl Proxy', req.method, 'to', req.url);
-    kubectlProxy.web(req, res);
-  });
-};
+}
 
 function onProxyError(err, req, res) {
   console.log('Proxy Error: on', req.method,'to', req.url,':', err);

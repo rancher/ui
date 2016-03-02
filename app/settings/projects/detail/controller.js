@@ -7,8 +7,14 @@ export default Ember.Controller.extend({
   queryParams: ['editing'],
 
   actions: {
+    done() {
+      this.transitionTo('settings.projects').then(() => {
+        this.send('refreshKubernetes');
+      });
+    },
+
     cancel() {
-      this.transitionTo('settings.projects.detail', this.get('model.project.id'), {queryParams: {editing: false}});
+      this.transitionTo('settings.projects');
     },
   },
 });
