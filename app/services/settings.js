@@ -99,7 +99,7 @@ export default Ember.Service.extend(Ember.Evented, {
     return 'v' + this.get('app.version');
   }.property('app.version'),
 
-  issueBody: function() {
+  issueUrl: function() {
     var str = '*Describe your issue here*\n\n\n---\n| Useful | Info |\n| :-- | :-- |\n' +
       `|Versions|Rancher \`${this.get('rancherVersion')||'-'}\` ` +
         `Cattle: \`${this.get('cattleVersion')||'-'}\` ` +
@@ -111,13 +111,14 @@ export default Ember.Service.extend(Ember.Evented, {
       }
       else
       {
-        str += '|Access|`Disabled`}|\n';
+        str += '|Access|`Disabled`|\n';
       }
 
-      str += `|Route|\`${window.lc('application').get('currentRouteName')}\`|\n`;
+      str += `|Route|\`${this.get('app.currentRouteName')}\`|\n`;
 
-    return encodeURIComponent(str);
-  }.property(),
+    var url = C.EXT_REFERENCES.GITHUB + '/issues/new?body=' + encodeURIComponent(str);
+    return url;
+  }.property('app.currentRouteName','access.{provider,admin}','cattleVersion','rancherVersion','uiVersion'),
 
   rancherVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_RANCHER}.value`),
   composeVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_COMPOSE}.value`),

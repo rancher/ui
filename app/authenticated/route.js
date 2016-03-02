@@ -174,7 +174,7 @@ export default Ember.Route.extend(Subscribe, {
     },
 
     switchNamespace(namespaceId) {
-      var route = window.lc('application').get('currentRouteName');
+      var route = this.get('app.currentRouteName');
       var okRoutes = [
         'k8s-tab.namespaces',
         'k8s-tab.namespace.rcs.index',
