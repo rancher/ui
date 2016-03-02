@@ -1,4 +1,4 @@
-export function initialize(/*container, application*/) {
+export function initialize(/*application*/) {
   // Shortcuts for debugging.  These should never be used in code.
   window.l = function(name) {
     return Ui.__container__.lookup(name);

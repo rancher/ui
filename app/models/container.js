@@ -22,7 +22,7 @@ var Container = Resource.extend({
   devices: null,
   restartPolicy: null,
 
-  _actions: {
+  actions: {
     restart: function() {
       return this.doAction('restart');
     },

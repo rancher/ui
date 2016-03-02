@@ -1,6 +1,8 @@
 import Ember from "ember";
 
-export function initialize(/* container, application */) {
+const { getOwner } = Ember;
+
+export function initialize(/*application */) {
   Ember.Route.reopen({
 
     // Remember the current route (into the application route's previousRoute/Params properties)
@@ -10,7 +12,7 @@ export function initialize(/* container, application */) {
     },
 
     rememberPrevious: function() {
-      var appRoute = this.container.lookup('route:application');
+      var appRoute = getOwner(this).lookup('route:application');
       var infos = this.router.router.currentHandlerInfos;
       if ( infos && infos.length )
       {
@@ -38,7 +40,7 @@ export function initialize(/* container, application */) {
     },
 
     goToPrevious: function(def) {
-      var appRoute = this.container.lookup('route:application');
+      var appRoute = getOwner(this).lookup('route:application');
       var route = appRoute.get('previousRoute');
       if ( !route || route === 'loading' )
       {

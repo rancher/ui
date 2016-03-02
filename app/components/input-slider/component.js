@@ -51,7 +51,7 @@ export default Ember.Component.extend({
 
   didInsertElement: function() {
     this._super();
-    this.valueChanged();
+    Ember.run.scheduleOnce('afterRender', this, 'valueChanged');
   },
 
   willDestroyElement: function() {

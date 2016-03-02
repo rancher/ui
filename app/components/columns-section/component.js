@@ -6,7 +6,6 @@ const COLUMN_MARGIN = 10; // this must match the rule in styles/pod.scss .pod-co
 
 let columnWidth     = MIN_WIDTH; // this will get changed by onResize;
 
-
 export default Ember.Component.extend(ThrottledResize, {
   pods         : null, // Override me with an array of content pods
   emptyMessage : null,
@@ -19,16 +18,16 @@ export default Ember.Component.extend(ThrottledResize, {
 
   onResize: function() {
     try {
-      var elem = this.$();
-      var sectionWidth = $('#application').width(); // On first call the pods aren't rendered yet, so approximate with the screen width
+      let elem         = this.$();
+      let sectionWidth = $('#application').width(); // On first call the pods aren't rendered yet, so approximate with the screen width
       if ( elem && elem.is(':visible') )
       {
         sectionWidth = elem.width();
       }
 
-      var logicalWidth = (sectionWidth + 10); // Add one extra COLUMN_MARGIN because the last column doesn't actually have one
-      var columnCount = Math.max(1, Math.floor(logicalWidth/(MIN_WIDTH+COLUMN_MARGIN)));
-      columnWidth = Math.max(50, Math.floor(logicalWidth/columnCount) - COLUMN_MARGIN - columnCount);
+      let logicalWidth = (sectionWidth + 10); // Add one extra COLUMN_MARGIN because the last column doesn't actually have one
+      let columnCount  = Math.max(1, Math.floor(logicalWidth/(MIN_WIDTH+COLUMN_MARGIN)));
+      columnWidth      = Math.max(50, Math.floor(logicalWidth/columnCount) - COLUMN_MARGIN - columnCount);
 
       if ( this.get('columnCount') !== columnCount )
       {
@@ -50,13 +49,14 @@ export default Ember.Component.extend(ThrottledResize, {
   }.observes('podCount'),
 
   columns: function() {
-    var i;
-    var idx = 0;
-    var pods = this.get('pods')||[];
-    var columnCount = this.get('columnCount');
+    let i;
+    let idx                           = 0;
+    let pods                          = this.get('pods')||[];
+    let columnCount                   = this.get('columnCount');
 
     // Pre-initialize all the columns
-    var columns = [];
+    var columns                       = [];
+
     for ( i = 0 ; i < columnCount ; i++ )
     {
       columns[i] = [];
@@ -71,7 +71,7 @@ export default Ember.Component.extend(ThrottledResize, {
     return columns;
 
     function nextIndex() {
-      var out = idx;
+      let out = idx;
 
       idx++;
       if ( idx >= columnCount )
@@ -85,6 +85,7 @@ export default Ember.Component.extend(ThrottledResize, {
 
   didInsertElement: function() {
     this._super();
-    this.onResize();
+    // Removes deprecation warning about modifing after insert
+    Ember.run.scheduleOnce('afterRender', this, 'onResize');
   },
 });
