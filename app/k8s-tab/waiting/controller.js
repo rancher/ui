@@ -73,7 +73,7 @@ export default Ember.Controller.extend({
         reschedule();
       }
     }).catch(() => {
-      reschedulerescheduleReady();
+      reschedule();
     });
 
     var self = this;

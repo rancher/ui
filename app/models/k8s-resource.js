@@ -1,6 +1,7 @@
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import { normalizeType } from 'ember-api-store/utils/normalize';
+import Util from 'ui/utils/util';
 
 var K8sResource = Resource.extend({
   actions: {
