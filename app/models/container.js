@@ -149,6 +149,10 @@ var Container = Resource.extend({
   displayImage: function() {
     return (this.get('imageUuid')||'').replace(/^docker:/,'');
   }.property('imageUuid'),
+
+  displayExternalId: function() {
+    return (Ember.Handlebars.Utils.escapeExpression(this.get('externalId').substr(0,12))+"&hellip;").htmlSafe();
+  }.property('externalId'),
 });
 
 Container.reopenClass({

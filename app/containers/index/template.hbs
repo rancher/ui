@@ -11,6 +11,7 @@
         {{sortable-th sortable=this action="changeSort" name="state" width="125"}}
         {{sortable-th sortable=this action="changeSort" name="name"}}
         {{sortable-th sortable=this action="changeSort" name="ip" width="110" label="IP Address"}}
+        {{sortable-th sortable=this action="changeSort" name="host" label="Host"}}
         {{sortable-th sortable=this action="changeSort" name="image"}}
         {{sortable-th sortable=this action="changeSort" name="command"}}
         <th class="actions" width="50">&nbsp;</th>
@@ -18,7 +19,7 @@
     </thead>
     <tbody>
       {{#each arranged as |container|}}
-        {{container-row model=container}}
+        {{container-row model=container showCommand="column" showHost=true}}
       {{else}}
         <tr><td colspan="6" class="text-center text-muted">You do not have any containers yet.</td></tr>
       {{/each}}

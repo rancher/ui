@@ -5,6 +5,7 @@ export default Ember.Component.extend(FasterLinksAndMenus,{
   projects: Ember.inject.service(),
 
   model: null,
+  showCommand: 'column', // 'no', 'column', or 'inline'
   showStats: false,
   cpuMax: null,
   memoryMax: null,

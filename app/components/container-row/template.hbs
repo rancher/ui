@@ -18,7 +18,7 @@
 {{/if}}
 <td data-title="Image:" class="clip">
   {{model.displayImage}}
-  {{#if (and (not showStats) model.command)~}}
+  {{#if (eq showCommand "inline")~}}
     ({{model.command}})
   {{/if}}
 </td>
@@ -32,7 +32,7 @@
     {{/if}}
   </td>
 {{else}}
-  {{#unless model.isVm}}
+  {{#if (eq showCommand "column")}}
     <td data-title="Command:" class="clip">
       {{#if model.command}}
         {{model.command}}
@@ -40,7 +40,7 @@
         <span class="text-muted">None</span>
       {{/if}}
     </td>
-  {{/unless}}
+  {{/if}}
 {{/if}}
 <td data-title="Actions:" class="actions">
   {{partial "fast-action-menu"}}

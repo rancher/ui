@@ -24,21 +24,18 @@
         <label>Host:</label>
         {{#if model.primaryHost}}
           {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}
+          {{copy-to-clipboard clipboardText=model.primaryHost.displayIp tooltipText="Copy IP To Clipboard" size="small"}}
         {{else}}
           <span class="text-muted">None</span>
         {{/if}}
       </div>
       <div class="col-flex">
-        <label>Host IP:</label>
-        {{#if model.primaryHost}}
-          {{model.primaryHost.displayIp}} {{copy-to-clipboard clipboardText=model.primaryHost.displayIp size='small'}}
-        {{else}}
-          <span class="text-muted">N/A</span>
-        {{/if}}
-      </div>
-      <div class="col-flex">
         <label>Container IP:</label>
         {{model.displayIp}} {{copy-to-clipboard clipboardText=model.displayIp size='small'}}
+      </div>
+      <div class="col-flex">
+        <label>Docker ID:</label>
+        {{model.displayExternalId}} {{copy-to-clipboard clipboardText=model.externalId size='small'}}
       </div>
     </div>
     <div class="container-flex bordered">
