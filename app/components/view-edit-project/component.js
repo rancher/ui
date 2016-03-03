@@ -107,13 +107,17 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   }.property('project.projectMembers.@each.role'),
 
   orchestrationChoices: function() {
+    var active = this.get('activeOrchestration');
     var drivers = [
       {name: 'rancher',     label: 'Corral',      css: 'rancher'},
       {name: 'kubernetes',  label: 'Kubernetes',  css: 'kubernetes'},
-      {name: 'swarm',       label: 'Swarm',       css: 'swarm'},
     ];
 
-    var active = this.get('activeOrchestration');
+    if ( active === 'swarm' )
+    {
+      drivers.push({name: 'swarm',       label: 'Swarm',       css: 'swarm'});
+    }
+
     drivers.forEach(function(driver) {
       driver.active = ( active === driver.name );
     });

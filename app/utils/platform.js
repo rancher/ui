@@ -31,3 +31,8 @@ export function isMore(event) {
 export function isRange(event) {
   return !!event[rangeKey];
 }
+
+export var userAgent = navigator.userAgent;
+export var isGecko = userAgent.indexOf('Gecko/') >= 0;
+export var isWebKit = userAgent.indexOf('AppleWebKit/') >= 0;
+export var isBlink = userAgent.indexOf('Chrome/') >= 0;
