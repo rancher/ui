@@ -1,30 +1,33 @@
 import Ember from 'ember';
+import { isSafari } from 'ui/utils/platform';
 
 const DELAY = 2000;
 
 export default Ember.Component.extend({
   tagName       : '',
-  tooltipText   : null,
+  buttonText    : null,
+  tooltipText   : 'Copy To Clipboard',
   status        : null,
   size          : null,
   target        : null,
   clipboardText : null,
 
+  isSupported: function() {
+    return !isSafari;
+  }.property(),
+
   actions: {
     alertSuccess: function() {
       this.set('status', 'success');
+      let orig = this.get('tooltipText');
       this.set('tooltipText', 'Copied!');
 
       Ember.run.later(() =>{
         this.set('status', null);
-        this.set('tooltipText', 'Copy To Clipboard');
+        this.set('tooltipText', orig);
       }, DELAY);
     },
   },
-
-  setup: function() {
-    this.set('tooltipText', 'Copy To Clipboard');
-  }.on('init'),
 
   buttonClasses: Ember.computed('status', function() {
     let status = this.get('status');
