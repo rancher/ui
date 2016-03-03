@@ -3,6 +3,12 @@ import Ember from "ember";
 export default Ember.Controller.extend({
   settings: Ember.inject.service(),
 
+  // currentRouteName is set by Ember.Router
+  // but getting the application controller to get it is inconvenient sometimes
+  currentRouteNameChanged: function() {
+    this.set('app.currentRouteName', this.get('currentRouteName'));
+  }.observes('currentRouteName'),
+
   // GitHub auth params
   queryParams     : ['error_description','state','code','isTest'],
 
