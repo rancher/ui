@@ -1,23 +1,28 @@
 /*jshint node:true*/
 /* global require, module */
 var EmberApp = require('ember-cli/lib/broccoli/ember-app');
-var util = require('util');
-var env = EmberApp.env();
-console.log("Environment:",env);
+var util     = require('util');
+var env      = EmberApp.env();
 
 module.exports = function(defaults) {
   // Pull in a few useful environment settings for index.html to use
   var appConfig = require('./config/environment')(env).APP;
-  var inline = {};
-  ['version','appName','baseAssets'].forEach(function(key) {
+  var inline    = {};
+
+  ['version', 'appName', 'baseAssets'].forEach(function(key) {
     var val = appConfig[key];
-    if ( val )
-      {
-        inline[key] = {content: val};
-      }
+
+    if (val) {
+      inline[key] = {
+        content: val
+      };
+    }
   });
 
   var app = new EmberApp(defaults, {
+    babel: {
+      includePolyfill: true,
+    },
     storeConfigInMeta: false,
     inlineContent: inline,
 
@@ -36,7 +41,7 @@ module.exports = function(defaults) {
         'assets/images/logos', // These can be bind-mounted in
         'ui-light.css', 'ui-dark.css', 'ui.css' // Themes get version added to query string so JS doesn't have to know the fingerprint
       ],
-      extensions: (appConfig.fingerprint === 'no' ? [] : ['js','css','png','jpg','gif','svg','map','woff','woff2','ttf']),
+      extensions: (appConfig.fingerprint === 'no' ? [] : ['js', 'css', 'png', 'jpg', 'gif', 'svg', 'map', 'woff', 'woff2', 'ttf']),
     },
 
     sourcemaps: {
@@ -88,23 +93,49 @@ module.exports = function(defaults) {
 
 
   app.import('vendor/icons/style.css');
-  app.import('vendor/icons/fonts/rancher-icons.svg',  {destDir: 'assets/fonts'});
-  app.import('vendor/icons/fonts/rancher-icons.ttf',  {destDir: 'assets/fonts'});
-  app.import('vendor/icons/fonts/rancher-icons.woff', {destDir: 'assets/fonts'});
+  app.import('vendor/icons/fonts/rancher-icons.svg', {
+    destDir: 'assets/fonts'
+  });
+  app.import('vendor/icons/fonts/rancher-icons.ttf', {
+    destDir: 'assets/fonts'
+  });
+  app.import('vendor/icons/fonts/rancher-icons.woff', {
+    destDir: 'assets/fonts'
+  });
 
 
   // Google Font Downloader thing: https://google-webfonts-helper.herokuapp.com/
-  app.import('vendor/lato/lato-v11-latin-300.woff',       {destDir: 'assets/fonts'});
-  app.import('vendor/lato/lato-v11-latin-300.woff2',      {destDir: 'assets/fonts'});
-  app.import('vendor/lato/lato-v11-latin-700.woff',       {destDir: 'assets/fonts'});
-  app.import('vendor/lato/lato-v11-latin-700.woff2',      {destDir: 'assets/fonts'});
-  app.import('vendor/lato/lato-v11-latin-regular.woff',   {destDir: 'assets/fonts'});
-  app.import('vendor/lato/lato-v11-latin-regular.woff2',  {destDir: 'assets/fonts'});
+  app.import('vendor/lato/lato-v11-latin-300.woff', {
+    destDir: 'assets/fonts'
+  });
+  app.import('vendor/lato/lato-v11-latin-300.woff2', {
+    destDir: 'assets/fonts'
+  });
+  app.import('vendor/lato/lato-v11-latin-700.woff', {
+    destDir: 'assets/fonts'
+  });
+  app.import('vendor/lato/lato-v11-latin-700.woff2', {
+    destDir: 'assets/fonts'
+  });
+  app.import('vendor/lato/lato-v11-latin-regular.woff', {
+    destDir: 'assets/fonts'
+  });
+  app.import('vendor/lato/lato-v11-latin-regular.woff2', {
+    destDir: 'assets/fonts'
+  });
 
-  app.import('vendor/roboto/roboto-v15-latin-700.woff',       {destDir: 'assets/fonts'});
-  app.import('vendor/roboto/roboto-v15-latin-700.woff2',      {destDir: 'assets/fonts'});
-  app.import('vendor/roboto/roboto-v15-latin-regular.woff',   {destDir: 'assets/fonts'});
-  app.import('vendor/roboto/roboto-v15-latin-regular.woff2',  {destDir: 'assets/fonts'});
+  app.import('vendor/roboto/roboto-v15-latin-700.woff', {
+    destDir: 'assets/fonts'
+  });
+  app.import('vendor/roboto/roboto-v15-latin-700.woff2', {
+    destDir: 'assets/fonts'
+  });
+  app.import('vendor/roboto/roboto-v15-latin-regular.woff', {
+    destDir: 'assets/fonts'
+  });
+  app.import('vendor/roboto/roboto-v15-latin-regular.woff2', {
+    destDir: 'assets/fonts'
+  });
 
   return app.toTree();
 };

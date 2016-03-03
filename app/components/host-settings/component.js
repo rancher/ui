@@ -2,8 +2,7 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 function isPublic(name) {
-  if ( (name||'').trim().replace(/^https?:\/\//,'').match(/^(localhost|192\.168\.|172\.1[6789]\.|172\.2[0123456789]\.|172\.3[01]\.|10\.)/) )
-  {
+  if ((name || '').trim().replace(/^https?:\/\//, '').match(/^(localhost|192\.168\.|172\.1[6789]\.|172\.2[0123456789]\.|172\.3[01]\.|10\.)/)) {
     return false;
   }
 
@@ -11,55 +10,76 @@ function isPublic(name) {
 }
 
 export default Ember.Component.extend({
-  endpoint: Ember.inject.service(),
-  settings: Ember.inject.service(),
-  docsBase: C.EXT_REFERENCES.DOCS,
+  endpoint      : Ember.inject.service(),
+  settings      : Ember.inject.service(),
+  docsBase      : C.EXT_REFERENCES.DOCS,
 
-  customRadio: null,
-  customValue: '',
+  customRadio   : null,
+  customValue   : '',
+  editing       : true,
+  saving        : false,
+  disableCancel : true,
+  backToAdd     : false,
 
-  thisPage: null,
+  thisPage      : null,
 
   actions: {
     sendActiveValue: function(value) {
       this.sendAction('sendActiveValue', value);
-    }
+    },
+    save: function() {
+      let hostValue = this.get('host');
+      let propsOut = {};
+
+      if (!hostValue) {
+        this.set('errors', ['Please provide a DNS name or IP address.']);
+        return;
+      }
+
+      propsOut[C.SETTING.API_HOST] = hostValue;
+
+      this.set('saving', true);
+
+      this.get('settings').setProperties(propsOut).one('settingsPromisesResolved', () => {
+
+        this.set('saving', false);
+        this.set('errors', null);
+
+        if (this.get('backToAdd')) {
+
+          // TODO - Check this works in a component. I dont think it does. wjw
+          this.transitionToRoute('hosts.new');
+        }
+      });
+    },
+    cancel: function() {},
   },
 
   didInitAttrs: function() {
-    var thisPage = window.location.origin;
-    var endpoint = this.get('endpoint.origin');
-    var isDifferent = endpoint !== thisPage;
+    let thisPage    = window.location.origin;
+    let endpoint    = this.get('endpoint.origin');
+    let isDifferent = endpoint !== thisPage;
 
     this.set('thisPage', thisPage);
 
-    if ( endpoint !== thisPage )
-    {
+    if (endpoint !== thisPage) {
       this.set('customValue', endpoint);
     }
 
-    var value = this.get('host');
+    let value = this.get('host');
 
-    if ( value )
-    {
-      if ( value === thisPage )
-      {
+    if (value) {
+      if (value === thisPage) {
         this.set('customValue', '');
         this.set('customRadio', 'no');
-      }
-      else
-      {
+      } else {
         this.set('customValue', value);
         this.set('customRadio', 'yes');
       }
-    }
-    else if ( isDifferent )
-    {
-        this.set('customValue', endpoint);
-        this.set('customRadio', 'yes');
-    }
-    else
-    {
+    } else if (isDifferent) {
+      this.set('customValue', endpoint);
+      this.set('customRadio', 'yes');
+    } else {
       this.set('customValue', '');
       this.set('customRadio', 'no');
     }
@@ -71,13 +91,10 @@ export default Ember.Component.extend({
   }.property('activeValue'),
 
   parseActiveValue: function(value) {
-    var out;
-    if ( this.get('customRadio') === 'yes' )
-    {
+    let out;
+    if (this.get('customRadio') === 'yes') {
       out = value.trim();
-    }
-    else
-    {
+    } else {
       out = this.get('thisPage');
     }
     return out;
@@ -85,26 +102,24 @@ export default Ember.Component.extend({
 
   activeValueObserver: function() {
     this.send('sendActiveValue', this.parseActiveValue(this.get('customValue')));
-  }.observes('customRadio','customValue','thisPage').on('init'),
+  }.observes('customRadio', 'customValue', 'thisPage').on('init'),
 
 
   activeValue: function() {
     return this.parseActiveValue(this.get('customValue'));
-  }.property('customRadio','customValue','thisPage'),
+  }.property('customRadio', 'customValue', 'thisPage'),
 
   customValueDidChange: function() {
-    var val = this.get('customValue')||''.trim();
-    var idx = val.indexOf('/', 8); // 8 is enough for "https://"
-    if ( idx !== -1 )
-    {
+    let val = this.get('customValue') || ''.trim();
+    let idx = val.indexOf('/', 8); // 8 is enough for "https://"
+    if (idx !== -1) {
       // Trim paths off of the URL
-      this.set('customValue', val.substr(0,idx));
-      return;  // We'll be back...
+      this.set('customValue', val.substr(0, idx));
+      return; // We'll be back...
     }
 
-    if ( val )
-    {
-      this.set('customRadio','yes');
+    if (val) {
+      this.set('cusomRadio', 'yes');
     }
   }.observes('customValue'),
 

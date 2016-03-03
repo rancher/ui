@@ -301,6 +301,12 @@ Router.map(function() {
     withParams              : 'showConfirmDeactivate',
     otherParams             : {originalModel           : 'originalModel', action : 'action'},
   });
+
+  this.modal('modal-new-driver', {
+    dismissWithOutsideClick : true,
+    withParams              : 'showNewDriver',
+    otherParams             : {originalModel: 'originalModel'},
+  });
   // End: Modals
 
 });
