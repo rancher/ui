@@ -40,17 +40,24 @@ export default Ember.Component.extend({
 
       this.set('saving', true);
 
-      this.get('settings').setProperties(propsOut).one('settingsPromisesResolved', () => {
+      // Ember 2.x brings a new setProperties that returns the hash
+      // and not the self object so you cant chain calls on setProperties anymore
+      this.get('settings').setProperties(propsOut);
+      this.get('settings').one('settingsPromisesResolved', () => {
 
         this.set('saving', false);
         this.set('errors', null);
 
         if (this.get('backToAdd')) {
 
-          // TODO - Check this works in a component. I dont think it does. wjw
-          this.transitionToRoute('hosts.new');
+          this.transitionToRoute('hosts.new', this.get('projects.current.id'));
+        } else {
+
+          this.send('goToPrevious');
         }
+
       });
+
     },
     cancel: function() {},
   },
