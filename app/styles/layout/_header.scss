@@ -9,19 +9,23 @@ HEADER {
   z-index  : 5;
 
   NAV {
-    &>A,
-    &>.link-admin > a{
+    &> li {
+      list-style: none;
       display        : inline-block;
-      padding        : 0 20px;
-      vertical-align : top;
-      font-weight    : normal;
-      text-transform : uppercase;
-      border-bottom  : 2px solid transparent;
-      color          : $lightGray;
-      font-size      : 13px;
 
-      &:hover {
-        color: $lightTeal;
+      &> A,
+      &>.link-admin > a{
+        padding        : 0 20px;
+        font-weight    : normal;
+        text-transform : uppercase;
+        border-bottom  : 2px solid transparent;
+        color          : $lightGray;
+        font-size      : 13px;
+        display        : block;
+
+        &:hover {
+          color: $lightTeal;
+        }
       }
     }
   }
@@ -132,7 +136,7 @@ HEADER {
       .link-admin {
         position : relative;
       }
-
+      &>li{
       &>A,
       &>.link-admin > a {
         height      : $topHeight;
@@ -168,6 +172,7 @@ HEADER {
             left                : 45%;
           }
         }
+      }
       }
     }
 
@@ -248,6 +253,47 @@ HEADER {
       } /*end user logout*/
     } /*end user auth*/
 
+    /*project btn*/
+    .project-btn {
+      max-width: 200px;
+      height: $topHeight;
+      color: white;
+
+      .btn {
+        text-transform: inherit;
+
+        &.dropdown-toggle {
+          line-height: inherit!important;
+          height: auto!important;
+        }
+
+        & * {
+        display: inline-block;
+        vertical-align: middle;
+        }
+
+        .clip {
+          max-width: 155px;
+        }
+        .icon-folder-open, .icon-home {
+          color: $top-row;
+          line-height: 10px;
+          text-align: center;
+        }
+        .icon-chevron-down {
+          font-size: .75em;
+        }
+        LABEL {
+        font-weight: normal;
+        color: $text-muted;
+        font-size: 11px;
+        text-align: right;
+        display: block;
+        margin: 0;
+        }
+      }
+    }
+
   }/*end top row*/
 
   /*start bottom row*/
@@ -267,11 +313,13 @@ HEADER {
       &>A {
         height: $bottomHeight;
         line-height: $bottomHeight;
-        padding-top: 12px;
         color: $bottom-row-link;
         line-height: 19px;
         text-align: center;
         position: relative;
+        display: inline-block;
+        padding        : 12px 20px 0 20px;
+        text-transform : uppercase;
 
         &:hover {
           color: $blueTwo

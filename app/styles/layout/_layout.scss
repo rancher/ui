@@ -591,22 +591,6 @@ max-width        : 100%;
   }
 }
 
-@media (max-width: $screen-sm-max) {
-  .horizontal-form {
-    .form-label {
-      text-align : left;
-    }
-  }
-}
-
-@media (max-width: $screen-xs-max) {
-  .pods {
-    .pod-column {
-      width: 100%;
-    }
-  }
-}
-
 .toggle-advanced {
   text-align: center;
   text-transform: uppercase;
@@ -868,5 +852,59 @@ SECTION.header {
 
   & a {
     color : $tealTwoDark;
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+  .horizontal-form {
+    .form-label {
+      text-align : left;
+    }
+  }
+
+  HEADER {
+    div.tooltip-warning {
+      right: 0;
+      left: 62px;
+    }
+    .top-row NAV {
+      float: none;
+
+      &> li {
+        display        : block;
+
+        &> A,
+        &>.link-admin > a {
+          display        : block;
+          color: white;
+          border-top: solid thin rgba($accent-two,.5);
+
+          &.active:after {
+            display: none;
+          }
+
+          + ul>a {
+            display: block;
+            color: white;
+            padding: 5px;
+
+            > I {
+              font-size: 20px;
+              padding-right: 10px;
+              vertical-align: middle;
+              color: $brand-info;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: $screen-xs-max) {
+  .pods {
+    .pod-column {
+      width: 100%;
+    }
   }
 }
