@@ -40,23 +40,23 @@
       <tbody>
         {{#each arranged as |instance|}}
           {{#link-to 'admin-tab.processes.process' instance.id tagName="tr" classNames='hand'}}
-              <td>
+              <td data-title="ID:">
                 <span class={{if instance.endTime 'label label-success' 'label label-warning'}}>{{instance.id}}</span>
               </td>
-              <td class="clip"><span title={{instance.processName}}>{{instance.processName}}</span></td>
-              <td class="clip"><span title={{instance.resourceType}}>{{instance.resourceType}}:{{instance.resourceId}}</span></td>
-              <td>{{instance.exitReason}}</td>
+              <td data-title="Name:" class="clip"><span title={{instance.processName}}>{{instance.processName}}</span></td>
+              <td data-title="Resource Type(ID):" class="clip"><span title={{instance.resourceType}}>{{instance.resourceType}}:{{instance.resourceId}}</span></td>
+              <td data-title="Exit Reason:">{{instance.exitReason}}</td>
               {{#if instance.startTime}}
-                <td>{{date-from-now instance.startTime}}</td>
+                <td data-title="Started:">{{date-from-now instance.startTime}}</td>
               {{else}}
                 <td></td>
               {{/if}}
               {{#if instance.endTime}}
-                <td>{{date-from-now instance.endTime}}</td>
+                <td data-title="Ended:">{{date-from-now instance.endTime}}</td>
               {{else}}
                 <td></td>
               {{/if}}
-              <td>{{run-time instance.startTimeTS instance.endTimeTS}}</td>
+              <td data-title="Duration:">{{run-time instance.startTimeTS instance.endTimeTS}}</td>
           {{/link-to}}
         {{else}}
           <tr><td colspan="7" class="text-center text-muted">There are no recent processes.</td></tr>

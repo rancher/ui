@@ -40,11 +40,11 @@
               <td>{{if listener.isPublic "Public" "Internal"}}</td>
               <td class="text-right">&nbsp;</td>
             {{else}}
-              <td>
+              <td data-title="Source Port*:">
                 {{input type="text" classNames="form-control lb-listener-source-port input-sm" min="1" max="65535" step="1" value=listener.host placeholder="On Host, e.g. 80"}}
               </td>
               <td>&nbsp;</td>
-              <td>
+              <td data-title="Protocol:">
                 <div class="btn-group">
                   <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">{{listener.protocol}} <i class="icon icon-chevron-down"></i></button>
                   <ul class="dropdown-menu" role="menu">
@@ -59,14 +59,14 @@
                   </ul>
                 </div>
               </td>
-              <td class="text-center">
+              <td data-title="SSL:" class="text-center">
                 {{input safeStyle="margin-top: 10px;" type="checkbox" checked=listener.ssl}}
               </td>
-              <td>
+              <td data-title="Default Target Port:">
                 {{input type="text" classNames="form-control lb-listener-target-port input-sm" min="1" max="65535" step="1" value=listener.container placeholder="In Container, e.g. 8080"}}
               </td>
               <td>&nbsp;</td>
-              <td>
+              <td data-title="Access">
                 <div class="btn-group">
                   <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">{{if listener.isPublic "Public" "Internal"}} <i class="icon icon-chevron-down"></i></button>
                   <ul class="dropdown-menu" role="menu">
