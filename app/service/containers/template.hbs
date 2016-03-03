@@ -5,14 +5,14 @@
       {{sortable-th sortable=this action="changeSort" name="name"}}
       {{sortable-th sortable=this action="changeSort" name="ip" width="110" label="IP Address"}}
       {{sortable-th sortable=this action="changeSort" name="host"}}
-      {{sortable-th sortable=this action="changeSort" name="image" label="Image (Command)"}}
+      {{sortable-th sortable=this action="changeSort" name="image" label="Image"}}
       <th class="stats">Stats</th>
       <th class="actions" width="70">&nbsp;</th>
     </tr>
   </thead>
   <tbody>
     {{#each arranged as |container|}}
-      {{container-row model=container showStats=true showHost=true cpuMax=cpuMax memoryMax=memoryMax storageMax=storageMax networkMax=networkMax}}
+      {{container-row model=container showStats=true showHost=true showCommand="no" cpuMax=cpuMax memoryMax=memoryMax storageMax=storageMax networkMax=networkMax}}
     {{else}}
       <tr><td colspan="7" class="text-center text-muted">This service does not have any containers yet.</td></tr>
     {{/each}}

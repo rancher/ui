@@ -227,10 +227,6 @@ export default Ember.Service.extend({
         }
       }
 
-      if ( obj.type )
-      {
-      }
-
       var output = store.createRecord(obj, type);
       if (output && output.metadata && output.metadata.uid)
       {
