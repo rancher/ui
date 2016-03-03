@@ -3,8 +3,14 @@ import ThrottledResize from 'ui/mixins/throttled-resize';
 
 const MIN_WIDTH     = 260; // Minimum width of a column, including margin-right
 const COLUMN_MARGIN = 10; // this must match the rule in styles/pod.scss .pod-column
+const SELECTOR      = '.pod-column'; // Each column must have this class
 
 let columnWidth     = MIN_WIDTH; // this will get changed by onResize;
+
+// Automatically apply the width to any columns that get added without a resize
+jQuery(SELECTOR).initialize(function() {
+  $(this).css('width', columnWidth+'px');
+});
 
 export default Ember.Component.extend(ThrottledResize, {
   pods         : null, // Override me with an array of content pods
@@ -34,6 +40,9 @@ export default Ember.Component.extend(ThrottledResize, {
         this.set('columnCount', Math.min(columnCount, this.get('podCount')));
       }
 
+      Ember.run(this, () => {
+        this.$(SELECTOR).css('width', columnWidth+'px');
+      });
     } catch (e) {
       // Just in case..
     }
