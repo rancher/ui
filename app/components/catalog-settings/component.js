@@ -51,7 +51,8 @@ export default Ember.Component.extend({
 
       this.set('saving', true);
 
-      this.get('settings').setProperties(propsOut).one('settingsPromisesResolved', () => {
+      this.get('settings').setProperties(propsOut);
+      this.get('settings').one('settingsPromisesResolved', () => {
         this.set('saving', false);
         this.set('errors', null);
       });
