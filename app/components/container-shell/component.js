@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { alternateLabel } from 'ui/utils/platform';
 
 const DEFAULT_COMMAND = ["/bin/sh","-c",'TERM=xterm-256color; export TERM; [ -x /bin/bash ] && ([ -x /usr/bin/script ] && /usr/bin/script -q -c "/bin/bash" /dev/null || exec /bin/bash) || exec /bin/sh'];
 
@@ -7,6 +8,8 @@ export default Ember.Component.extend({
   command: null,
   cols: 80,
   rows: 24,
+  alternateLabel: alternateLabel,
+  showProtip: true,
 
   status: 'Connecting...',
   socket: null,

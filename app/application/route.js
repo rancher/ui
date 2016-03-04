@@ -113,6 +113,10 @@ export default Ember.Route.extend({
     var github = this.get('github');
     var stateMsg = 'Authorization state did not match, please try again.';
 
+    if (params.isPopup) {
+      this.controllerFor('application').set('isPopup', true);
+    }
+
     if ( params.isTest )
     {
       if ( github.stateMatches(params.state) )

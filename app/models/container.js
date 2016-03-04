@@ -4,23 +4,24 @@ import C from 'ui/utils/constants';
 
 var Container = Resource.extend({
   // Common to all instances
-  requestedHostId: null,
-  primaryIpAddress: null,
-  primaryAssociatedIpAddress: null,
+  requestedHostId            : null,
+  primaryIpAddress           : null,
+  primaryAssociatedIpAddress : null,
+  projects                   : Ember.inject.service(),
 
   // Container-specific
-  type: 'container',
-  imageUuid: null,
-  registryCredentialId: null,
-  command: null,
-  commandArgs: null,
-  environment: null,
-  ports: null,
-  instanceLinks: null,
-  dataVolumes: null,
-  dataVolumesFrom: null,
-  devices: null,
-  restartPolicy: null,
+  type                 : 'container',
+  imageUuid            : null,
+  registryCredentialId : null,
+  command              : null,
+  commandArgs          : null,
+  environment          : null,
+  ports                : null,
+  instanceLinks        : null,
+  dataVolumes          : null,
+  dataVolumesFrom      : null,
+  devices              : null,
+  restartPolicy        : null,
 
   actions: {
     restart: function() {
@@ -39,6 +40,22 @@ var Container = Resource.extend({
       this.get('application').setProperties({
         showShell: true,
         originalModel: this,
+      });
+    },
+
+    popoutShell: function() {
+      let proj = this.get('projects.current.id');
+      let id = this.get('id');
+      Ember.run.later(() => {
+        window.open(`//${window.location.host}/env/${proj}/infra/console?instanceId=${id}&isPopup=true`, '_blank', "toolbars=0,width=717,height=497,left=200,top=200");
+      });
+    },
+
+    popoutLogs: function() {
+      let proj = this.get('projects.current.id');
+      let id = this.get('id');
+      Ember.run.later(() => {
+        window.open(`//${window.location.host}/env/${proj}/infra/container-log?instanceId=${id}&isPopup=true`, '_blank', "toolbars=0,width=700,height=715,left=200,top=200");
       });
     },
 
@@ -86,9 +103,9 @@ var Container = Resource.extend({
       { label: 'Restore',       icon: '',                       action: 'restore',      enabled: !!a.restore },
       { label: 'Purge',         icon: '',                       action: 'purge',        enabled: !!a.purge },
       { divider: true },
-      { label: 'Execute Shell', icon: '',                       action: 'shell',        enabled: !!a.execute && !isVm },
-      { label: 'Open Console',  icon: '',                       action: 'console',      enabled: !!a.console &&  isVm },
-      { label: 'View Logs',     icon: '',                       action: 'logs',         enabled: !!a.logs },
+      { label: 'Execute Shell', icon: '',                       action: 'shell',        enabled: !!a.execute && !isVm, altAction:'popoutShell'},
+      { label: 'Open Console',  icon: '',                       action: 'console',      enabled: !!a.console &&  isVm, altAction:'popoutShellVm' },
+      { label: 'View Logs',     icon: '',                       action: 'logs',         enabled: !!a.logs, altAction: 'popoutLogs' },
       { label: 'View in API',   icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
       { divider: true },
       { label: 'Clone',         icon: 'icon icon-copy',         action: 'clone',        enabled: !isSystem && !isService && !isK8s},
