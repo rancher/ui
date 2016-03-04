@@ -100,15 +100,10 @@ export default Ember.Component.extend({
     this.$().on('click', 'A', function(event){
       $(this).blur();
 
-      let $tgt = $(event.target);
-
       // Close the small-screen nav after clicking on a bottom-row item
-      if ( $tgt.parents('#navbar').length )
+      if ( $(event.target).parents('#navbar').length )
       {
-        event.preventDefault();
-        $('#navbar').one('hidden.bs.collapse', () => {
-          $tgt.trigger('click');
-        }).collapse('hide');
+        $('#navbar').collapse('hide');
       }
     });
 
