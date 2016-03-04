@@ -136,7 +136,10 @@
   }
   .dropdown-header {
     color: $k8sTeal;
-  }s
+  }
+  .dropdown-menu > li > a {
+    color: $navy;
+  }
   /*page tweaks*/
   .bg-info, .banner {
     background-color: $k8sTeal;
@@ -164,7 +167,7 @@
   }
 
 
-  .theme-ui-dark {
+  &.theme-ui-dark {
     .btn {
       background-color: transparent;
     }
@@ -172,19 +175,35 @@
       color: $k8sTeal;
       border-color: $k8sTeal;
     }
-    HEADER .bottom-row NAV > A {
-      color: $k8sTeal;
-    }
-    HEADER .bottom-row NAV > A.active {
-      color: white;
-    }
-    HEADER .bottom-row .project-btn {
-      background-color: $navy;
-      color: white!important;
-      &:nth-child(2) {
-        background-color: darken($navy, 2%);
-        color: white!important;
+
+    HEADER{
+      .top-row NAV > li > A, HEADER .top-row NAV > li > .link-admin > a {
+        color: rgba(white,.65);
       }
+      .bottom-row NAV > A {
+        color: $k8sTeal;
+      }
+      .bottom-row NAV > A.active {
+        color: white;
+      }
+      .bottom-row .project-btn {
+        background-color: $navy;
+        color: white!important;
+        &:nth-child(2) {
+          background-color: darken($navy, 2%);
+          color: white!important;
+        }
+      }
+      .bottom-row .project-btn.alt.pull-right:before {
+        border-left-color:$navy;
+      }
+      .bottom-row .project-btn.pull-right:before {
+        border-left-color: $k8sAccent;
+      }
+    }
+    .dropdown-menu > .disabled > a, .dropdown-menu > .disabled > a:hover, .dropdown-menu > .disabled > a:focus {
+      background: rgba($k8sGray,.35);
+      color: $k8sGray;
     }
   }
 }
