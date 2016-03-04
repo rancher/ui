@@ -97,8 +97,19 @@ export default Ember.Component.extend({
 
   didInsertElement() {
     // Hide the Firefox focus ring
-    this.$().on('click', 'A', function(){
+    this.$().on('click', 'A', function(event){
       $(this).blur();
+
+      let $tgt = $(event.target);
+
+      // Close the small-screen nav after clicking on a bottom-row item
+      if ( $tgt.parents('#navbar').length )
+      {
+        event.preventDefault();
+        $('#navbar').one('hidden.bs.collapse', () => {
+          $tgt.trigger('click');
+        }).collapse('hide');
+      }
     });
 
 
