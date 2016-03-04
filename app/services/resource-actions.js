@@ -21,6 +21,7 @@ export default Ember.Service.extend({
     this.set('model', model);
 
     $('BODY').one('click', () => {
+      
       Ember.run(() => {
         $toggle.removeClass('open');
         $menu.addClass('hide');

@@ -8,6 +8,7 @@ export default Ember.Component.extend({
   classNames     : ['inline-block'],
   model          : null,
   size           : 'default',
+  ariaRole       : ['tooltip'],
 
   showTimer      : null,
 
