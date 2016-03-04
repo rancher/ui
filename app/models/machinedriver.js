@@ -10,6 +10,11 @@ var machineDriver = Resource.extend(PolledResource, {
     let uriOut = uri.split('/');
     let out    = null;
 
+    if ( uriOut.length < 2 )
+    {
+      return uri;
+    }
+
     if (uri.indexOf('github')) {
       out = `.../${uriOut[uriOut.length-2]}/${uriOut[uriOut.length-1]}`;
     } else {
