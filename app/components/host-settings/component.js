@@ -48,14 +48,8 @@ export default Ember.Component.extend({
         this.set('saving', false);
         this.set('errors', null);
 
-        if (this.get('backToAdd')) {
 
-          this.transitionToRoute('hosts.new', this.get('projects.current.id'));
-        } else {
-
-          this.send('goToPrevious');
-        }
-
+        this.sendAction('newHostSet');
       });
 
     },
