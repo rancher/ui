@@ -30,10 +30,6 @@ export default Ember.Component.extend({
     let out  = {};
 
     switch (type) {
-      case 'service':
-        out.message = 'deactivate';
-        out.button  = 'Deactivate';
-        break;
       case 'project':
         out.message = 'deactivate your environment';
         out.button  = 'Deactivate';
@@ -43,6 +39,8 @@ export default Ember.Component.extend({
         out.button  = 'Stop Services';
         break;
       default:
+        out.message = 'deactivate';
+        out.button  = 'Deactivate';
         break;
     }
 

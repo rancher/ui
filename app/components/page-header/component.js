@@ -16,6 +16,7 @@ export default Ember.Component.extend({
   subnavPartial    : null,
   menuHoverTimer   : null,
   siblingMenuTimer : null,
+  noSubNavHovered  : null,
 
   projectId        : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
 
@@ -63,9 +64,9 @@ export default Ember.Component.extend({
     return this.get('isAdmin') && this.get('store').hasRecordFor('schema','setting');
   }.property(),
 
-  tabObserver: Ember.observer('currentPath', 'forcedMenu', function() {
+  tabObserver: Ember.observer('currentPath', 'forcedMenu', 'noSubNavHovered', function() {
 
-    let hoverableTabs   = ['admin-tab', 'applications-tab', 'infrastructure-tab', 'k8s-tab'];
+    let hoverableTabs   = ['admin-tab', 'applications-tab', 'infrastructure-tab', 'k8s-tab', 'api-tab', 'help-tab'];
     let currentPathArr  = this.get('currentPath').split('.');
     let navPartial      = '';
     let isInCurrentPath = false;
@@ -87,8 +88,12 @@ export default Ember.Component.extend({
       }
     }
 
-    if (isInCurrentPath) {
-      this.set('subnavPartial', `tabs/${navPartial}`);
+    if (isInCurrentPath || this.get('forcedMenu')) {
+      if (navPartial !== 'help-tab' && navPartial !== 'api-tab') {
+        this.set('subnavPartial', `tabs/${navPartial}`);
+      } else {
+        this.set('subnavPartial', null);
+      }
     } else {
       this.set('subnavPartial', null);
     }
@@ -113,7 +118,8 @@ export default Ember.Component.extend({
     });
 
 
-    Ember.$('#applications-tab, #infrastructure-tab, #admin-tab, #k8s-tab').mouseenter((e) => {
+    Ember.$('#applications-tab, #infrastructure-tab, #admin-tab, #k8s-tab, #api-tab, #help-tab').mouseenter((e) => {
+      let elementId = e.currentTarget.id;
       if ( this._state === 'destroying' ) {
         return;
       }
@@ -126,8 +132,12 @@ export default Ember.Component.extend({
         Ember.run.cancel(this.get('siblingMenuTimer'));
       }
 
+      if (elementId === 'api-tab' || elementId === 'help-tab') {
+        this.set('noSubNavHovered', true);
+      }
+
       this.set('siblingMenuTimer', Ember.run.later(() => {
-        toggleMenu(e.currentTarget.id);
+        toggleMenu(elementId);
       }, DELAY));
 
     }).mouseleave((e) => {
@@ -152,6 +162,11 @@ export default Ember.Component.extend({
       if (this.get('siblingMenuTimer')) {
         Ember.run.cancel(this.get('siblingMenuTimer'));
       }
+
+      if (this.get('noSubNavHovered')) {
+        this.set('noSubNavHovered', false);
+      }
+
     }).mouseleave(() => {
       if ( this._state === 'destroying' ) {
         return;
