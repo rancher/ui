@@ -1,34 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-
-function parseStr(str) {
-  let out = {};
-
-  str = (str || '').trim();
-  if (!str) {
-    return out;
-  }
-
-  str.split(',').forEach((item) => {
-    let key, val;
-    let idx = item.indexOf('=');
-    if (idx > 0) {
-      key = item.substr(0, idx);
-      val = item.substr(idx + 1);
-    } else {
-      key = C.EXTERNALID.CATALOG_DEFAULT_GROUP;
-      val = item;
-    }
-
-    key = key.trim();
-    val = val.trim();
-    if (key && val) {
-      out[key] = val;
-    }
-  });
-
-  return out;
-}
+import { parseCatalogSetting } from 'ui/utils/parse-catalog-setting';
 
 export default Ember.Component.extend({
   settings        : Ember.inject.service(),
@@ -37,47 +9,38 @@ export default Ember.Component.extend({
   keymap          : null,
   enableLibrary   : null,
   enableCommunity : null,
-  editing         : true,
-  saving          : false,
-  disableCancel   : true,
   catalog         : null,
 
   actions: {
-    save: function() {
-      let catalogValue = this.get('catalog');
-      let propsOut     = {};
-
-      propsOut[C.SETTING.CATALOG_URL] = catalogValue;
-
-      this.set('saving', true);
-
-      this.get('settings').setProperties(propsOut);
+    save: function(btnCb) {
+      this.get('settings').set(C.SETTING.CATALOG_URL, this.get('catalog'));
       this.get('settings').one('settingsPromisesResolved', () => {
-        this.set('saving', false);
-        this.set('errors', null);
+        btnCb(true);
+        this.sendAction('saved');
       });
     },
-    cancel: function() {},
   },
 
   didInitAttrs: function() {
-    let map = parseStr(this.get('catalog'));
+    let map = parseCatalogSetting(this.get('catalog'));
+    let library = false;
+    let community = false;
 
     if (map[C.CATALOG.LIBRARY_KEY] === C.CATALOG.LIBRARY_VALUE) {
-      this.set('enableLibrary', true);
+      library = true;
       delete map[C.CATALOG.LIBRARY_KEY];
-    } else {
-      this.set('enableLibrary', false);
     }
 
     if (map[C.CATALOG.COMMUNITY_KEY] === C.CATALOG.COMMUNITY_VALUE) {
-      this.set('enableCommunity', true);
+      community = true;
       delete map[C.CATALOG.COMMUNITY_KEY];
-    } else {
-      this.set('enableCommunity', false);
     }
 
-    this.set('keymap', map);
+    this.setProperties({
+      keymap: map,
+      enableLibrary: library,
+      enableCommunity: community
+    });
   },
 
   keymapObserver: function() {

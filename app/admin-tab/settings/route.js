@@ -21,7 +21,6 @@ export default Ember.Route.extend({
     let store    = this.get('store');
 
     return store.findAll('machinedriver').then((drivers) => {
-
       return Ember.Object.create({
         host           : settings.get(C.SETTING.API_HOST),
         catalog        : settings.get(C.SETTING.CATALOG_URL),
