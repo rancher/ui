@@ -4,12 +4,15 @@ import ShellQuote from 'npm:shell-quote';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(NewOrEdit, {
+  k8s: Ember.inject.service(),
+
   allTemplates: null,
   templateResource: null,
   environmentResource: null,
   versionsArray: null,
   versionsLinks: null,
   serviceChoices: null,
+  templateBase: null,
 
   classNames: ['launch-catalog'],
 
@@ -17,7 +20,7 @@ export default Ember.Component.extend(NewOrEdit, {
   editing: false,
 
   previewOpen: false,
-  previewTab: 'docker-compose',
+  previewTab: null,
   questionsArray: null,
   selectedTemplateUrl: null,
   selectedTemplateModel: null,
@@ -88,13 +91,14 @@ export default Ember.Component.extend(NewOrEdit, {
               // Coerce booleans
               item.answer = (item.default === 'true' || item.default === true);
             } else {
-              // Everythign else
+              // Everything else
               item.answer = item.default;
             }
           });
         }
 
         this.set('selectedTemplateModel', response);
+        this.set('previewTab', Object.keys(response.get('files')||[])[0]);
         if (response.links.readme) {
           this.getReadme();
         } else {
@@ -156,7 +160,7 @@ export default Ember.Component.extend(NewOrEdit, {
     var systemCategories = C.EXTERNALID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
     var category = (this.get('templateResource.category')||'').trim().toLowerCase();
     var externalId = ( systemCategories.indexOf(category) >= 0 ? C.EXTERNALID.KIND_SYSTEM_CATALOG : C.EXTERNALID.KIND_CATALOG );
-    externalId += C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.uuid');
+    externalId += C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
     return externalId;
   }.property('templateResource.category','selectedTemplateModel.uuid'),
 
@@ -168,9 +172,11 @@ export default Ember.Component.extend(NewOrEdit, {
       return false;
     }
 
+    var files = this.get('selectedTemplateModel.files');
+
     this.get('environmentResource').setProperties({
-      dockerCompose: this.get('selectedTemplateModel.dockerCompose'),
-      rancherCompose: this.get('selectedTemplateModel.rancherCompose'),
+      dockerCompose: files['docker-compose.yml'],
+      rancherCompose: files['rancher-compose.yml'],
       environment: this.get('answers'),
       externalId: this.get('newExternalId'),
     });
@@ -179,7 +185,12 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   doSave() {
-    if (this.get('editing')) {
+    if ( this.get('templateBase') === 'kubernetes' ) {
+      return this.get('k8s').catalog(
+        this.get('selectedTemplateModel.files'),
+        this.get('environmentResource.environment')
+      );
+    } else if (this.get('editing')) {
       return this.get('environmentResource').doAction('upgrade', {
         dockerCompose: this.get('environmentResource.dockerCompose'),
         rancherCompose: this.get('environmentResource.rancherCompose'),

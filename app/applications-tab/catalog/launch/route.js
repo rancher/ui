@@ -23,9 +23,21 @@ export default Ember.Route.extend({
     return Ember.RSVP.hash(dependencies, 'Load dependencies').then((results) => {
       if ( !results.env )
       {
+        var name = results.tpl.id;
+        var base = results.tpl.templateBase;
+        name = name.replace(/^[^:\/]+[:\/]/,'');  // Strip the "catalog-name:"
+        if ( base )
+        {
+          var idx = name.indexOf(base);
+          if ( idx === 0 )
+          {
+            name = name.substr(base.length+1); // Strip the "template-base*"
+          }
+        }
+
         results.env = store.createRecord({
           type: 'environment',
-          name: results.tpl.id.replace(/^[^:\/]+[:\/]/,''),
+          name: name,
           startOnCreate: true,
           environment: {}, // Question answers
         });
@@ -52,6 +64,7 @@ export default Ember.Route.extend({
         versionLinks: links,
         versionsArray: verArr,
         allTemplates: this.modelFor('applications-tab.catalog').get('catalog'),
+        templateBase: this.modelFor('applications-tab.catalog').get('templateBase'),
       });
     });
   },

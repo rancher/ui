@@ -132,13 +132,15 @@
       
       {{#if previewOpen}}
         <ul class="nav nav-tabs nav-tabs-well">
-          <li class="{{if (eq previewTab 'docker-compose') 'active'}}" {{action "selectPreviewTab" "docker-compose"}}><a href="#">docker-compose.yml {{copy-to-clipboard clipboardText=selectedTemplateModel.dockerCompose size="small"}}</a></li>
-          <li class="{{if (eq previewTab 'rancher-compose') 'active'}}" {{action "selectPreviewTab" "rancher-compose"}}><a href="#">rancher-compose.yml  {{copy-to-clipboard clipboardText=selectedTemplateModel.rancherCompose size="small"}}</a></li>
+          {{#each selectedTemplateModel.filesAsArray as |file|}}
+            <li class="{{if (eq previewTab file.name) 'active'}}" {{action "selectPreviewTab" file.name}}><a href="#">{{file.name}} {{copy-to-clipboard clipboardText=file.body size="small"}}</a></li>
+          {{/each}}
           <li class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a href="#">answers.txt {{copy-to-clipboard clipboardText=answersString size="small"}}</a></li>
         </ul>
         <div class="well nav-well preview-content">
-          {{code-block code=selectedTemplateModel.dockerCompose language="yaml" hide=(not-eq previewTab 'docker-compose')}}
-          {{code-block code=selectedTemplateModel.rancherCompose language="yaml" hide=(not-eq previewTab 'rancher-compose')}}
+          {{#each selectedTemplateModel.filesAsArray as |file|}}
+            {{code-block code=file.body language="yaml" hide=(not-eq previewTab file.name)}}
+          {{/each}}
           {{code-block code=answersString language="bash" hide=(not-eq  previewTab 'answers')}}
         </div>
       {{/if}}

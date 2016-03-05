@@ -10,6 +10,17 @@ function uniqKeys(data, name) {
 
 export default Ember.Route.extend({
   settings: Ember.inject.service(),
+  projects: Ember.inject.service(),
+
+  templateBase: function() {
+    if ( this.get('projects.current.kubernetes') ) {
+      return 'kubernetes';
+    } else if ( this.get('projects.current.swarm') ) {
+      return 'swarm';
+    } else {
+      return 'cattle';
+    }
+  }.property('projects.current.{swarm,kubernetes}'),
 
   cache: null,
 
@@ -46,6 +57,7 @@ export default Ember.Route.extend({
 
   model(params) {
     var cache = this.get('cache');
+    var templateBase = this.get('templateBase');
 
     // If the catalogIds dont match we need to go get the other catalog from the store since we do not cache all catalogs
     if ( cache && cache.catalogId === params.catalogId)
@@ -81,19 +93,20 @@ export default Ember.Route.extend({
 
 
     function filter(data, category, catalogIds) {
-      data = data.sortBy('name');
-      var out = Ember.Object.create({
-        categories: uniqKeys(data, 'category'),
-        catalogIds: catalogIds,
-      });
+      data = data.filterBy('templateBase', (templateBase === 'cattle' ? '' : templateBase));
 
-      if ( category === 'all' ) {
-        out.set('catalog', data);
-      } else {
-        out.set('catalog', data.filterBy('category', category));
+      if ( category !== 'all' ) {
+        data = data.filterBy('category', category);
       }
 
-      return out;
+      data = data.sortBy('name');
+
+      return Ember.Object.create({
+        categories: uniqKeys(data, 'category'),
+        catalogIds: catalogIds,
+        catalog: data,
+        templateBase: templateBase,
+      });
     }
   },
 

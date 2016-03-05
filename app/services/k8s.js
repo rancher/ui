@@ -618,4 +618,18 @@ export default Ember.Service.extend({
       return Ember.RSVP.reject(this.parseKubectlError(err));
     });
   },
+
+  catalog(files,answers) {
+    return this.request({
+      url: `${this.get('app.kubectlEndpoint')}/catalog`,
+      method: 'POST',
+      contentType: 'application/json',
+      data: {
+        files: files,
+        environment: answers
+      }
+    }).catch((err) => {
+      return Ember.RSVP.reject(this.parseKubectlError(err));
+    });
+  },
 });
