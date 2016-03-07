@@ -33,9 +33,8 @@ export default Ember.Controller.extend(Sortable, {
     showRunningProcesses: function() {
       this.toggleProperty('showRunning');
     },
-    updateType: function() {
-      let selectVal = Ember.$('#resource-type').val();
-      this.set('ownResourceType', selectVal);
+    updateType: function(type) {
+      this.set('ownResourceType', type);
     },
     submit: function() {
       this.setProperties({

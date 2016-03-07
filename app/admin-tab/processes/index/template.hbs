@@ -14,14 +14,17 @@
     <div class="row r-mb20">
       <div class="form-inline r-ml15 inline-block">
         <div class="form-group">
-          <select id="resource-type" class="form-control" {{action 'updateType' on='change'}} style="width: 25%;">
-            <option value="" selected>Select a Resource type:</option>
+          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Select a Resource type: <i class="icon icon-chevron-down"></i></button>
+          <ul class="dropdown-menu" role="menu">
             {{#each model.resourceTypes as |resource|}}
-            <option value="{{resource}}">{{resource}}</option>
+            <li {{action 'updateType' resource}}>
+              <a href="#">{{resource}}</a>
+            </li>
             {{/each}}
-          </select>
-          {{input value=ownResourceId class="form-control" enter='submit' placeholder='Resource Id' disabled=disableId}}
-          {{input value=ownProcessName class="form-control" enter='submit' placeholder='Process Name'}}
+          </ul>
+
+          {{input value=ownResourceId class="form-control input-sm r-mr5" enter='submit' placeholder='Resource Id' disabled=disableId}}
+          {{input value=ownProcessName class="form-control input-sm r-mr5" enter='submit' placeholder='Process Name'}}
           <button class="btn btn-primary btn-danger btn-sm inline-block" {{action 'reset'}} disabled={{disableClear}}>Clear</button>
           <button class="btn btn-primary btn-sm inline-block" {{action 'submit'}} disabled={{disableSearch}}>Search</button>
         </div>
