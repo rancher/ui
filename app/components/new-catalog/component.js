@@ -40,7 +40,7 @@ export default Ember.Component.extend(NewOrEdit, {
     },
 
     changeTemplate: function(tpl) {
-      this.get('application').transitionToRoute('applications-tab.catalog.launch', tpl.id);
+      this.get('application').transitionToRoute('catalog-tab.launch', tpl.id);
     },
   },
 

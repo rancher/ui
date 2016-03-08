@@ -111,8 +111,8 @@ var Project = Resource.extend(PolledResource, {
   }.property('state','actionLinks.remove'),
 
   canSwitchTo: function() {
-    return this.get('id') !== this.get('projects.current.id');
-  }.property('id','projects.current.id'),
+    return this.get('state') === 'active' && this.get('id') !== this.get('projects.current.id');
+  }.property('id','projects.current.id','state'),
 
   canSetDefault: function() {
     return this.get('state') === 'active' && !this.get('isDefault');
