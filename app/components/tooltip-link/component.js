@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  tagName    : 'a',
+  tagName    : 'button',
   classNames : ['btn', 'btn-sm', 'btn-default'],
   icon       : null,
   text       : null,

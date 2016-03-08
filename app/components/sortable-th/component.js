@@ -7,6 +7,7 @@ export default Ember.Component.extend({
   sortable: null,
   width: null,
   label: null,
+  ariaRole: ['columnheader'],
 
   displayLabel: function() {
     var label = this.get('label');

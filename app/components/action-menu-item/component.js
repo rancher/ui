@@ -13,6 +13,7 @@ export default Ember.Component.extend({
   classNameBindings : ['enabled::hide'],
 
   click : function(event) {
+
     if ( isAlternate(event) && this.get('altActionArg'))
     {
       this.sendAction('action', this.get('altActionArg'));

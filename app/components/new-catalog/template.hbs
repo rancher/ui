@@ -133,13 +133,13 @@
       <div class="over-hr"><span {{action "togglePreview"}}>Preview <i class="icon {{if previewOpen 'icon-chevron-up' 'icon-chevron-down'}}"></i></span></div>
       
       {{#if previewOpen}}
-        <ul class="nav nav-tabs nav-tabs-well">
+        <ul class="nav nav-tabs nav-tabs-well" role="tablist">
           {{#each selectedTemplateModel.filesAsArray as |file|}}
-            <li class="{{if (eq previewTab file.name) 'active'}}" {{action "selectPreviewTab" file.name}}><a href="#">{{file.name}} {{copy-to-clipboard clipboardText=file.body size="small"}}</a></li>
+            <li role="tab" class="{{if (eq previewTab file.name) 'active'}}" {{action "selectPreviewTab" file.name}}><a href="#">{{file.name}} {{copy-to-clipboard clipboardText=file.body size="small"}}</a></li>
           {{/each}}
-          <li class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a href="#">answers.txt {{copy-to-clipboard clipboardText=answersString size="small"}}</a></li>
+          <li role="tab" class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a href="#">answers.txt {{copy-to-clipboard clipboardText=answersString size="small"}}</a></li>
         </ul>
-        <div class="well nav-well preview-content">
+        <div class="well nav-well preview-content" role="tabpanel">
           {{#each selectedTemplateModel.filesAsArray as |file|}}
             {{code-block code=file.body language="yaml" hide=(not-eq previewTab file.name)}}
           {{/each}}

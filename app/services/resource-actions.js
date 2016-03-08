@@ -21,6 +21,7 @@ export default Ember.Service.extend({
     this.set('model', model);
 
     $('BODY').one('click', () => {
+      
       Ember.run(() => {
         $toggle.removeClass('open');
         $menu.addClass('hide');
@@ -45,6 +46,8 @@ export default Ember.Service.extend({
       this.set('open',true);
 
       BootstrapFixes.positionDropdown($menu, trigger, true);
+      //wes suggestion for resource tabbing but doesn't work
+      $("#resource-actions > li:first > a").focus();
     });
   },
 

@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  tagName: 'a',
   model: null,
   currentController: null,
   label: 'Add',
