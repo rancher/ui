@@ -93,23 +93,23 @@
 
   {{#advanced-section advanced=advanced}}
     <section>
-      <ul class="nav nav-tabs nav-tabs-well shadowed" style="display: inline-block">
+      <ul class="nav nav-tabs nav-tabs-well shadowed" style="display: inline-block" role="tablist">
         {{#if isVm}}
-          <li role="presentation" class="tab" data-section="disks" {{action "selectTab" "disks"}}><a href="#">Disks</a></li>
-          <li role="presentation" class="tab" data-section="userdata" {{action "selectTab" "userdata"}}><a href="#">User Data</a></li>
+          <li role="tab" aria-controls="panel" class="tab" data-section="disks" {{action "selectTab" "disks"}}><a href="#">Disks</a></li>
+          <li role="tab" aria-controls="panel" class="tab" data-section="userdata" {{action "selectTab" "userdata"}}><a href="#">User Data</a></li>
         {{else}}
-          <li role="presentation" class="tab" data-section="command" {{action "selectTab" "command"}}><a href="#">Command</a></li>
-          <li role="presentation" class="tab" data-section="volumes" {{action "selectTab" "volumes"}}><a href="#">Volumes</a></li>
-          <li role="presentation" class="tab" data-section="network" {{action "selectTab" "network"}}><a href="#">Networking</a></li>
-          <li role="presentation" class="tab" data-section="security" {{action "selectTab" "security"}}><a href="#">Security/Host</a></li>
+          <li role="tab" aria-controls="panel" class="tab" data-section="command" {{action "selectTab" "command"}}><a href="#">Command</a></li>
+          <li role="tab" aria-controls="panel" class="tab" data-section="volumes" {{action "selectTab" "volumes"}}><a href="#">Volumes</a></li>
+          <li role="tab" aria-controls="panel" class="tab" data-section="network" {{action "selectTab" "network"}}><a href="#">Networking</a></li>
+          <li role="tab" aria-controls="panel" class="tab" data-section="security" {{action "selectTab" "security"}}><a href="#">Security/Host</a></li>
         {{/if}}
 
-        <li role="presentation" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}><a href="#">Health Check</a></li>
-        <li role="presentation" class="tab" data-section="labels" {{action "selectTab" "labels"}}><a href="#">Labels</a></li>
-        <li role="presentation" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}><a href="#">Scheduling</a></li>
+        <li role="tab" aria-controls="panel" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}><a href="#">Health Check</a></li>
+        <li role="tab" aria-controls="panel" class="tab" data-section="labels" {{action "selectTab" "labels"}}><a href="#">Labels</a></li>
+        <li role="tab" aria-controls="panel" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}><a href="#">Scheduling</a></li>
       </ul>
 
-    <div class="horizontal-form well">
+    <div class="horizontal-form well" role="tabpanel">
       {{#if isVm}}
         <div class="section container-fluid" data-section="disks">
           {{form-disks instance=launchConfig availableDrivers=storageDriverChoices errors=diskErrors}}
