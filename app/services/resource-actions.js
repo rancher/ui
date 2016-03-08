@@ -46,6 +46,8 @@ export default Ember.Service.extend({
       this.set('open',true);
 
       BootstrapFixes.positionDropdown($menu, trigger, true);
+      //wes suggestion for resource tabbing but doesn't work
+      $("#resource-actions > li:first > a").focus();
     });
   },
 

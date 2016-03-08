@@ -28,8 +28,7 @@
 {{outlet "error"}}
 <div id="application">
   {{outlet}}
-</div>
-<ul id="resource-actions" class="hide resource-actions global-actions dropdown-menu dropdown-menu-right" role="menu">
+  <ul role="menu" id="resource-actions" class="resource-actions global-actions dropdown-menu dropdown-menu-right">
   {{#each resourceActions.activeActions as |item|}}
     {{#if item.divider}}
       <li class="divider"></li>
@@ -46,7 +45,9 @@
     {{/if}}
 
   {{else}}
-    <li><a disabled="true">No actions available</a></li>
+    <li><a href="#" disabled="true">No actions available</a></li>
   {{/each}}
-</ul>
+  </ul>
+</div>
+
 {{component tooltip class="container-tooltip" id="tooltip-base" role="tooltip" aria-hidden="false"}}
