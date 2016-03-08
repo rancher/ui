@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import NewHost from 'ui/mixins/new-host';
+import DriverController from 'ui/hosts/new/driver-controller';
 import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
 
 var RANCHER_TEMPLATE = 'Linux Ubuntu 14.04 LTS 64-bit';
@@ -37,7 +37,7 @@ var RANCHER_INGRESS_RULES = [
   }
 ];
 
-export default Ember.Controller.extend(NewHost, {
+export default DriverController.extend({
   exoscaleConfig: Ember.computed.alias('model.exoscaleConfig'),
 
   allDiskSizes: null,

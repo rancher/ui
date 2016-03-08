@@ -167,6 +167,11 @@ Router.map(function() {
             this.route('pod', {path: '/:name'});
           });
         });
+
+        this.route('catalog', {path: '/catalog'}, function() {
+          this.route('index', {path: '/'});
+          this.route('launch', {path: '/:template'});
+        });
       });
 
 

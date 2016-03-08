@@ -72,9 +72,11 @@ var Container = Resource.extend({
       return [];
     }
 
+    var labelKeys = Object.keys(this.get('labels')||{});
     var isSystem = this.get('systemContainer') !== null;
-    var isService = Object.keys(this.get('labels')||{}).indexOf(C.LABEL.SERVICE_NAME) >= 0;
+    var isService = labelKeys.indexOf(C.LABEL.SERVICE_NAME) >= 0;
     var isVm = this.get('isVm');
+    var isK8s = labelKeys.indexOf(C.LABEL.K8S_POD_NAME) >= 0;
 
     var choices = [
       { label: 'Restart',       icon: 'icon icon-refresh',      action: 'restart',      enabled: !!a.restart },
@@ -89,8 +91,8 @@ var Container = Resource.extend({
       { label: 'View Logs',     icon: '',                       action: 'logs',         enabled: !!a.logs },
       { label: 'View in API',   icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
       { divider: true },
-      { label: 'Clone',         icon: 'icon icon-copy',         action: 'clone',        enabled: !isSystem && !isService },
-      { label: 'Edit',          icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
+      { label: 'Clone',         icon: 'icon icon-copy',         action: 'clone',        enabled: !isSystem && !isService && !isK8s},
+      { label: 'Edit',          icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update && !isK8s },
     ];
 
     return choices;
@@ -151,7 +153,11 @@ var Container = Resource.extend({
   }.property('imageUuid'),
 
   displayExternalId: function() {
-    return (Ember.Handlebars.Utils.escapeExpression(this.get('externalId').substr(0,12))+"&hellip;").htmlSafe();
+    var id = this.get('externalId');
+    if ( id )
+    {
+      return (Ember.Handlebars.Utils.escapeExpression(id.substr(0,12))+"&hellip;").htmlSafe();
+    }
   }.property('externalId'),
 });
 

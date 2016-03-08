@@ -147,7 +147,11 @@
       {{/if}}
 
       <li>
-        {{#link-to "applications-tab" projectId id="applications-tab"}}Applications{{/link-to}}
+        {{#if hasKubernetes}}
+          {{#link-to "applications-tab" projectId (query-params which="not-kubernetes") id="applications-tab"}}System{{/link-to}}
+        {{else}}
+          {{#link-to "applications-tab" projectId id="applications-tab"}}Applications{{/link-to}}
+        {{/if}}
         <ul class="hidden-md hidden-lg">
           {{partial 'tabs/applications-tab'}}
         </ul>

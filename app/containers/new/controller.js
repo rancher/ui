@@ -9,7 +9,7 @@ export default Ember.Controller.extend({
 
   actions: {
     done() {
-      this.send('goToPrevious');
+      this.transitionToRoute('container', this.get('model.instance.id'));
     },
 
     cancel() {

@@ -61,7 +61,7 @@ export default Ember.Controller.extend({
     this.get('k8s').isReady().then((ready) => {
       if ( ready )
       {
-        this.get('k8s').getNamespace('default').then(() => {
+        this.get('k8s').getNamespace('default',true).then(() => {
           this.set('currentStep', 6);
         }).catch(() => {
           this.set('currentStep', 5);
@@ -90,7 +90,7 @@ export default Ember.Controller.extend({
     if ( this.get('currentStep') === 6 )
     {
       this.send('refreshKubernetes');
-      this.transitionTo('k8s-tab.index');
+      this.transitionToRoute('k8s-tab.index');
     }
   }.observes('currentStep'),
 

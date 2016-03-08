@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import NewHost from 'ui/mixins/new-host';
+import DriverController from 'ui/hosts/new/driver-controller';
 
-export default Ember.Controller.extend(NewHost, {
+export default DriverController.extend({
   driver: null,
   primaryResource: Ember.computed.alias('model.machine'),
   driverOpts: null,

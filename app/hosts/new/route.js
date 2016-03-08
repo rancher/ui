@@ -5,7 +5,10 @@ import { denormalizeName } from 'ui/services/settings';
 export default Ember.Route.extend({
   access: Ember.inject.service(),
 
-  model: function() {
+  backTo: null,
+  model: function(params) {
+    this.set('backTo', params.backTo);
+
     var store = this.get('store');
     if ( this.get('access.admin') && store.hasRecordFor('schema','setting') )
     {
@@ -23,10 +26,19 @@ export default Ember.Route.extend({
   },
 
   actions: {
-    cancel: function() {
-      // @TODO don't remember switches between tabs as previous routes
-      //this.send('goToPrevious');
-      this.transitionTo('hosts');
+    cancel() {
+      this.send('goBack');
+    },
+
+    goBack() {
+      if ( this.get('backTo') === 'k8s' )
+      {
+        this.transitionTo('k8s-tab.waiting');
+      }
+      else
+      {
+        this.transitionTo('hosts');
+      }
     }
   },
 });

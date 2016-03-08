@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import NewHost from 'ui/mixins/new-host';
+import DriverController from 'ui/hosts/new/driver-controller';
 
 import Plans from './packet_plans';
 import Facilities from './packet_facilities';
@@ -9,7 +9,7 @@ var osChoices = OSes.filter(function(os) {
   return (os.distro||'').toLowerCase() === 'ubuntu';
 });
 
-export default Ember.Controller.extend(NewHost, {
+export default DriverController.extend({
   packetConfig: Ember.computed.alias('model.packetConfig'),
 
   facilityChoices: Facilities,
