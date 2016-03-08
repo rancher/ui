@@ -16,9 +16,9 @@ export default Ember.TextField.extend({
 
   handlePaste: function(event) {
     var e = event.originalEvent;
-    if ( e && e.clipboardData && e.clipboardData.getData )
+    if ( e && e.clipboardData && e.clipboardData.getData && e.clipboardData.types)
     {
-      if ( /text\/plain/.test(e.clipboardData.types) )
+      if ( e.clipboardData.types.contains('text/plain') )
       {
         var text = e.clipboardData.getData('text/plain');
         if ( text )

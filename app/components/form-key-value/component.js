@@ -69,7 +69,7 @@ export default Ember.Component.extend({
       Ember.run.next(() => {
         if ( this._state !== 'destroying' )
         {
-        this.$('INPUT.key').last()[0].focus();
+          this.$('INPUT.key').last()[0].focus();
         }
       });
     },
