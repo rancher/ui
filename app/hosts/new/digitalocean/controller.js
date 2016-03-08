@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import Regions from './digitalocean_regions';
-import NewHost from 'ui/mixins/new-host';
+import DriverController from 'ui/hosts/new/driver-controller';
 
 var regionChoices = Regions.regions.filter(function(region) {
   return region.available && (region.features.indexOf('metadata') >= 0);
@@ -11,7 +11,7 @@ var regionChoices = Regions.regions.filter(function(region) {
   };
 }).sortBy('name');
 
-export default Ember.Controller.extend(NewHost, {
+export default DriverController.extend({
   digitaloceanConfig: Ember.computed.alias('model.digitaloceanConfig'),
 
   regionChoices: regionChoices,

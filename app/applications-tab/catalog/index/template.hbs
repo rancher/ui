@@ -23,7 +23,7 @@
       <ul class="dropdown-menu dropdown-menu-right">
         {{#each catalogIds as |catalog|}}
         <li>
-          {{#link-to "applications-tab.catalog" (query-params catalogId=catalog)}}
+          {{#link-to parentRoute (query-params catalogId=catalog)}}
             <span class="text-capitalize">{{catalog}}</span>
           {{/link-to}}
         </li>
@@ -37,7 +37,7 @@
     <ul class="dropdown-menu dropdown-menu-right">
       {{#each categories as |category|}}
       <li>
-        {{#link-to "applications-tab.catalog" (query-params category=category)}}
+        {{#link-to parentRoute (query-params category=category)}}
           <span class="text-capitalize">{{category}}</span>
         {{/link-to}}
       </li>
@@ -65,7 +65,9 @@
       </h5>
 
       <div class="r-mt10 description">{{catalogItem.description}}</div>
-      {{#link-to "applications-tab.catalog.launch" catalogItem.id class="btn btn-sm btn-primary"}}View Details{{/link-to}}
+      {{#link-to launchRoute catalogItem.id class="btn btn-sm btn-primary"}}View Details{{/link-to}}
     </div>
+  {{else}}
+    <div class="text-muted r-mt20">There are no compatible templates{{#if showCatalogDropdown}} in this Catalog{{/if}}.</div>
   {{/each}}
 </section>

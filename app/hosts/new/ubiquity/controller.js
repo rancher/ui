@@ -1,8 +1,8 @@
 import Ember from 'ember';
-import NewHost from 'ui/mixins/new-host';
+import DriverController from 'ui/hosts/new/driver-controller';
 import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
 
-export default Ember.Controller.extend(NewHost, {
+export default DriverController.extend({
   ubiquityConfig: Ember.computed.alias('model.ubiquityConfig'),
 
   allDiskSizes: null,

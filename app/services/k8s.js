@@ -493,9 +493,10 @@ export default Ember.Service.extend({
   },
 
   getNamespaces() { return this._getCollection('namespace','namespaces'); },
-  getNamespace(name) {
+  getNamespace(name, forceReload) {
     return this._find(`${C.K8S.TYPE_PREFIX}namespace`, name , {
-      url: `namespaces/${name}`
+      url: `namespaces/${name}`,
+      forceReload: forceReload,
     });
   },
 

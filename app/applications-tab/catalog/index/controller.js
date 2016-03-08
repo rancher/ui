@@ -2,11 +2,15 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   application: Ember.inject.controller(),
+
   catalogController: Ember.inject.controller('applications-tab.catalog'),
   category: Ember.computed.alias('catalogController.category'),
   selectedCatalog: Ember.computed.alias('catalogController.catalogId'),
   categories: Ember.computed.alias('model.categories'),
   catalogIds: Ember.computed.alias('model.catalogIds'),
+
+  parentRoute: 'applications-tab.catalog',
+  launchRoute: 'applications-tab.catalog.launch',
 
   // > 2 because 'all' is one of them.
   showCatalogDropdown: Ember.computed.gt('catalogIds.length',2),

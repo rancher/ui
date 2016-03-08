@@ -33,6 +33,9 @@ export function setDefaultDriver(name) {
 // End: Addon integration hooks
 
 export default Ember.Controller.extend({
+  queryParams: ['backTo'],
+  backTo: null,
+
   lastRoute: null,
 
   setDefaultDriver: function() {

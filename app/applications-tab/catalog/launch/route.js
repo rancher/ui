@@ -3,6 +3,8 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   allServices: Ember.inject.service(),
 
+  parentRoute: 'applications-tab.catalog',
+
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
@@ -63,8 +65,8 @@ export default Ember.Route.extend({
         upgrade: results.upgrade,
         versionLinks: links,
         versionsArray: verArr,
-        allTemplates: this.modelFor('applications-tab.catalog').get('catalog'),
-        templateBase: this.modelFor('applications-tab.catalog').get('templateBase'),
+        allTemplates: this.modelFor(this.get('parentRoute')).get('catalog'),
+        templateBase: this.modelFor(this.get('parentRoute')).get('templateBase'),
       });
     });
   },

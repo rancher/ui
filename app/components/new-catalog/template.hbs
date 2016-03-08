@@ -3,7 +3,7 @@
   {{#if editing}}
     <h1>Upgrade: <span style="font-weight: normal">{{environmentResource.name}}</span></h1>
   {{else}}
-    <h1>{{#link-to "applications-tab.catalog"}}Catalog:{{/link-to}}</h1>
+    <h1>{{#link-to parentRoute}}Catalog:{{/link-to}}</h1>
     {{#power-select options=allTemplates selected=templateResource onchange=(action "changeTemplate") searchField="name" as |obj|}}
       <div class="clip">{{obj.name}}</div>
     {{/power-select}}
@@ -107,11 +107,13 @@
             </div>
           {{/each}}
         </div></div></div>
-        <div class="row">
-          <div class="col-md-12">
-            <label>{{input type="checkbox" checked=environmentResource.startOnCreate}} Start services after creating</label>
+        {{#if (eq templateBase "cattle")}}
+          <div class="row">
+            <div class="col-md-12">
+              <label>{{input type="checkbox" checked=environmentResource.startOnCreate}} Start services after creating</label>
+            </div>
           </div>
-        </div>
+        {{/if}}
       </form>
     {{/if}}
   </section>

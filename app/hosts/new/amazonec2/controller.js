@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import NewHost from 'ui/mixins/new-host';
+import DriverController from 'ui/hosts/new/driver-controller';
 
 var RANCHER_TAG = 'rancher-ui';
 var RANCHER_GROUP = 'rancher-machine';
@@ -48,7 +48,7 @@ var INSTANCE_TYPES = [
   'd2.xlarge','d2.2xlarge','d2.4xlarge','d2.8xlarge',
 ];
 
-export default Ember.Controller.extend(NewHost, {
+export default DriverController.extend({
   amazonec2Config: Ember.computed.alias('model.amazonec2Config'),
 
   clients: null,

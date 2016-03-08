@@ -1,12 +1,12 @@
 import Ember from 'ember';
-import NewHost from 'ui/mixins/new-host';
+import DriverController from 'ui/hosts/new/driver-controller';
 import Regions from './azure-locations';
 import vmSizes from './azure-sizes';
 
 var regionChoices = Regions.sortBy('region');
 var sizeChoices   = vmSizes.sort();
 
-export default Ember.Controller.extend(NewHost, {
+export default DriverController.extend({
   azureConfig      : Ember.computed.alias('model.azureConfig'),
   regionChoices    : regionChoices,
   sizeChoices      : sizeChoices,

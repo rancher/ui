@@ -12,6 +12,12 @@ export default Ember.Component.extend(NewOrEdit, {
     },
   },
 
+  didRender() {
+    setTimeout(() => {
+      this.$('INPUT')[0].focus();
+    }, 500);
+  },
+
   validate() {
     this._super();
     var errors = this.get('errors', errors) || [];

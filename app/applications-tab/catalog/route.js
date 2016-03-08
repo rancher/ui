@@ -12,16 +12,7 @@ export default Ember.Route.extend({
   settings: Ember.inject.service(),
   projects: Ember.inject.service(),
 
-  templateBase: function() {
-    if ( this.get('projects.current.kubernetes') ) {
-      return 'kubernetes';
-    } else if ( this.get('projects.current.swarm') ) {
-      return 'swarm';
-    } else {
-      return 'cattle';
-    }
-  }.property('projects.current.{swarm,kubernetes}'),
-
+  templateBase: 'cattle',
   cache: null,
 
   queryParams: {
