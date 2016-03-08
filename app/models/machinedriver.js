@@ -5,6 +5,13 @@ import PolledResource from 'ui/mixins/cattle-polled-resource';
 
 var machineDriver = Resource.extend(PolledResource, {
   type: 'machineDriver',
+
+  actions: {
+    retry() {
+      return this.doAction('retry');
+    }
+  },
+
   displayURI: Ember.computed('uri', function() {
     let uri    = this.get('uri');
     let uriOut = uri.split('/');
