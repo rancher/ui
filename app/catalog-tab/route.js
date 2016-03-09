@@ -12,7 +12,6 @@ export default Ember.Route.extend({
   settings: Ember.inject.service(),
   projects: Ember.inject.service(),
 
-  templateBase: 'cattle',
   cache: null,
 
   queryParams: {
@@ -33,6 +32,21 @@ export default Ember.Route.extend({
   },
 
   catalogIds: null,
+
+  templateBase: function() {
+    if ( this.get('projects.current.kubernetes') )
+    {
+      return 'kubernetes';
+    }
+    else if ( this.get('projects.current.swarm') )
+    {
+      return 'swarm';
+    }
+    else
+    {
+      return 'cattle';
+    }
+  }.property('projects.current.{kubernetes,swarm}'),
 
   deactivate() {
     // Clear the cache when leaving the route so that it will be reloaded when you come back.
