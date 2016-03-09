@@ -1,8 +1,10 @@
 <div class="container-subpod">
   <div class="subpod-name">
-    {{container-dot model=model type='tooltip-basic' template='tooltip-select-dot'}}
+    <i class="{{model.stateIcon}} {{model.stateColor}} dot "></i>
     {{#link-to (if model.isVm "virtualmachine" "container") model.id classNameBindings="showEllipsis:tiny-hellip"}}
-      {{displayName}}
+      {{#tooltip-element type="tooltip-basic" model=model tooltipTemplate='tooltip-container-subpod' }}
+        {{displayName}}
+      {{/tooltip-element}}
     {{/link-to}}
   </div>
   {{#if model.showTransitioningMessage}}
@@ -20,7 +22,7 @@
 <div class="subpod-children clearfix">
   <h6 class="pull-left">{{if isKubernetes 'Containers' 'Sidekicks'}}</h6>
   {{#each children as |child|}}
-    {{container-dot model=child type='tooltip-action-menu' template='tooltip-select-dot'}}
+    <i class="{{child.stateIcon}} {{child.stateColor}} dot "></i>
   {{else}}
     &nbsp;
   {{/each}}

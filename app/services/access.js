@@ -6,6 +6,23 @@ export default Ember.Service.extend({
   session: Ember.inject.service(),
   github:  Ember.inject.service(),
 
+  testAuth: function() {
+
+    // make a call to v1 because it is authenticated
+    return this.get('store').rawRequest({
+      url: '',
+      headers: {
+        [C.HEADER.PROJECT]: undefined
+      }
+    }).then((/* res */) => {
+      // Auth token still good
+      return Ember.RSVP.resolve('Auth Succeeded');
+    }, (/* err */) => {
+      // Auth token expired
+      return Ember.RSVP.reject('Auth Failed');
+    });
+  },
+
   // The identity from the session isn't an actual identity model...
   identity: function() {
     var obj = this.get('session.'+C.SESSION.IDENTITY) || {};

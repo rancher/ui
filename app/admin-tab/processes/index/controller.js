@@ -56,6 +56,34 @@ export default Ember.Controller.extend(Sortable, {
         ownProcessName       : null
       });
       Ember.$('#resource-type').val('');
+    },
+
+    showResource(resource) {
+      this.get('store').find(resource.resourceType, resource.resourceId).then((response) => {
+
+        let type          = response.type;
+        let accountId     = response.accountId;
+        let id            = response.id;
+        let environmentId = response.environmentId;
+
+        switch (type) {
+          case 'container':
+          case 'instance':
+            window.open(`/env/${accountId}/infra/containers/${id}`);
+            break;
+          case 'environment':
+            window.open(`/env/${accountId}/apps/${id}`);
+            break;
+          case 'host':
+            window.open(`/env/${accountId}/infra/hosts/${id}/containers`);
+            break;
+          case 'service':
+            window.open(`/env/${accountId}/apps/${environmentId}/services/${id}`);
+            break;
+          default:
+            break;
+        }
+      });
     }
   },
 
@@ -98,14 +126,6 @@ export default Ember.Controller.extend(Sortable, {
     });
   }),
 
-  disableClear: Ember.computed('resourceId', 'resourceTypeReadable', 'processName', function() {
-    if (this.get('resourceId') || this.get('resourceTypeReadable') || this.get('processName')) {
-      return false;
-    } else {
-      return true;
-    }
-  }),
-
   disableId: Ember.computed('ownResourceType', function() {
     if (this.get('ownResourceType')) {
       return false;
@@ -113,12 +133,4 @@ export default Ember.Controller.extend(Sortable, {
       return true;
     }
   }),
-
-  disableSearch: Ember.computed('ownResourceId', 'ownResourceType', 'ownProcessName', function() {
-    if ((this.get('ownResourceType') && this.get('ownResourceId')) || (this.get('ownResourceType')) || (this.get('ownProcessName'))) {
-      return false;
-    } else {
-      return true;
-    }
-  })
 });

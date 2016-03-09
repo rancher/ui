@@ -25,8 +25,8 @@
 
           {{input value=ownResourceId class="form-control input-sm r-mr5" enter='submit' placeholder='Resource Id' disabled=disableId}}
           {{input value=ownProcessName class="form-control input-sm r-mr5" enter='submit' placeholder='Process Name'}}
-          <button class="btn btn-primary btn-danger btn-sm inline-block" {{action 'reset'}} disabled={{disableClear}}>Clear</button>
-          <button class="btn btn-primary btn-sm inline-block" {{action 'submit'}} disabled={{disableSearch}}>Search</button>
+          <button class="btn btn-primary btn-danger btn-sm inline-block" {{action 'reset'}}>Clear</button>
+          <button class="btn btn-primary btn-sm inline-block" {{action 'submit'}}>Search</button>
         </div>
       </div>
     </div>
@@ -42,25 +42,29 @@
       </thead>
       <tbody>
         {{#each arranged as |instance|}}
-          {{#link-to 'admin-tab.processes.process' instance.id tagName="tr" classNames='hand'}}
-              <td data-title="ID:">
-                <span class={{if instance.endTime 'label label-success' 'label label-warning'}}>{{instance.id}}</span>
-              </td>
-              <td data-title="Name:" class="clip"><span title={{instance.processName}}>{{instance.processName}}</span></td>
-              <td data-title="Resource Type(ID):" class="clip"><span title={{instance.resourceType}}>{{instance.resourceType}}:{{instance.resourceId}}</span></td>
-              <td data-title="Exit Reason:">{{instance.exitReason}}</td>
-              {{#if instance.startTime}}
-                <td data-title="Started:">{{date-from-now instance.startTime}}</td>
-              {{else}}
-                <td></td>
-              {{/if}}
-              {{#if instance.endTime}}
-                <td data-title="Ended:">{{date-from-now instance.endTime}}</td>
-              {{else}}
-                <td></td>
-              {{/if}}
-              <td data-title="Duration:">{{run-time instance.startTimeTS instance.endTimeTS}}</td>
-          {{/link-to}}
+          <tr>
+            <td data-title="ID:">
+              <span class={{if instance.endTime 'label label-success' 'label label-warning'}}>{{instance.id}}</span>
+            </td>
+            <td data-title="Name:" class="clip">{{#link-to 'admin-tab.processes.process' instance.id classNames='hand'}}<span title={{instance.processName}}>{{instance.processName}}</span>{{/link-to}}</td>
+            <td data-title="Resource Type(ID):" class="clip">
+              <span {{action 'showResource' instance}}>
+                {{log-external-link instance}}
+              </span>
+            </td>
+            <td data-title="Exit Reason:">{{instance.exitReason}}</td>
+            {{#if instance.startTime}}
+              <td data-title="Started:">{{date-from-now instance.startTime}}</td>
+            {{else}}
+              <td></td>
+            {{/if}}
+            {{#if instance.endTime}}
+              <td data-title="Ended:">{{date-from-now instance.endTime}}</td>
+            {{else}}
+              <td></td>
+            {{/if}}
+            <td data-title="Duration:">{{run-time instance.startTimeTS instance.endTimeTS}}</td>
+          </tr>
         {{else}}
           <tr><td colspan="7" class="text-center text-muted">There are no recent processes.</td></tr>
         {{/each}}

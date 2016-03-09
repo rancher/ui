@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import Tooltip from 'ui/mixins/tooltip';
+import StrippedName from 'ui/mixins/stripped-name';
 
-export default Ember.Component.extend(Tooltip, {
+export default Ember.Component.extend(Tooltip, StrippedName, {
   resourceActions : Ember.inject.service('resource-actions'),
 
   needs           : ['application'],
