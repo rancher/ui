@@ -75,7 +75,7 @@ module.exports = function(environment) {
                     '&include=instance' +
                     '&include=instanceLinks' +
                     '&include=ipAddresses',
-      baseAssets: '',
+      baseAssets: '/',
     },
   };
 

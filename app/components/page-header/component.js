@@ -2,6 +2,9 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 const DELAY = 250;
+const TABS_WITH_SUB = ['applications-tab','infrastructure-tab', 'k8s-tab'];
+const TABS_WITHOUT = ['admin-tab', 'catalog-tab', 'api-tab', 'help-tab'];
+const ALL_TABS = TABS_WITH_SUB.concat(TABS_WITHOUT);
 
 export default Ember.Component.extend({
   access           : Ember.inject.service(),
@@ -50,6 +53,10 @@ export default Ember.Component.extend({
     return this.get('currentPath').indexOf('authenticated.project.applications-tab') === 0;
   }.property('currentPath'),
 
+  isCatalogTab: function() {
+    return this.get('currentPath').indexOf('authenticated.project.catalog-tab') === 0;
+  }.property('currentPath'),
+
   isAdminTab: function() {
     return this.get('currentPath').indexOf('authenticated.admin-tab') === 0;
   }.property('currentPath'),
@@ -66,13 +73,12 @@ export default Ember.Component.extend({
 
   tabObserver: Ember.observer('currentPath', 'forcedMenu', 'noSubNavHovered', function() {
 
-    let hoverableTabs   = ['admin-tab', 'applications-tab', 'infrastructure-tab', 'k8s-tab', 'api-tab', 'help-tab'];
     let currentPathArr  = this.get('currentPath').split('.');
     let navPartial      = '';
     let isInCurrentPath = false;
     let bottomRow       = Ember.$('.bottom-row');
 
-    hoverableTabs.forEach((tab) => {
+    ALL_TABS.forEach((tab) => {
       if (currentPathArr.contains(tab)) {
         isInCurrentPath = true;
         navPartial = tab;
@@ -89,7 +95,7 @@ export default Ember.Component.extend({
     }
 
     if (isInCurrentPath || this.get('forcedMenu')) {
-      if (navPartial !== 'help-tab' && navPartial !== 'api-tab') {
+      if ( TABS_WITH_SUB.indexOf(navPartial) >= 0 ) {
         this.set('subnavPartial', `tabs/${navPartial}`);
       } else {
         this.set('subnavPartial', null);
@@ -113,7 +119,8 @@ export default Ember.Component.extend({
     });
 
 
-    Ember.$('#applications-tab, #infrastructure-tab, #admin-tab, #k8s-tab, #api-tab, #help-tab').mouseenter((e) => {
+    var ids = ALL_TABS.map((k) => { return '#'+k;}).join(', ');
+    Ember.$(ids).mouseenter((e) => {
       let elementId = e.currentTarget.id;
       if ( this._state === 'destroying' ) {
         return;
@@ -127,7 +134,7 @@ export default Ember.Component.extend({
         Ember.run.cancel(this.get('siblingMenuTimer'));
       }
 
-      if (elementId === 'api-tab' || elementId === 'help-tab') {
+      if ( TABS_WITHOUT.indexOf(elementId) >= 0 ) {
         this.set('noSubNavHovered', true);
       }
 

@@ -5,11 +5,11 @@ export default Ember.Controller.extend({
   environmentId: null,
   upgrade: null,
 
-  parentRoute: 'applications-tab.catalog',
+  parentRoute: 'catalog-tab',
 
   actions: {
     cancel() {
-      this.send('goToPrevious', this.get('parentRoute'));
+      this.transitionToRoute(this.get('parentRoute'));
     }
   },
 });

@@ -133,11 +133,12 @@ Router.map(function() {
             });
           });
         });
+      });
 
-        this.route('catalog', {path: '/catalog'}, function() {
-          this.route('index', {path: '/'});
-          this.route('launch', {path: '/:template'});
-        });
+      // Catalog
+      this.route('catalog-tab', {path: '/catalog', resetNamespace: true}, function() {
+        this.route('index', {path: '/'});
+        this.route('launch', {path: '/:template'});
       });
 
       // Kubernetes

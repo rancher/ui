@@ -107,42 +107,14 @@
   </div>
 
   <div class="col-sm-12 col-md-8">
-    <div class="form-control-static">
-      <button class="btn-circle" {{action "addEnvironment"}}><i class="icon icon-plus-circle"/></button>
-    </div>
-
-    {{#if environmentArray.length}}
-      <table class="table fixed no-lines no-top-padding tight small">
-        <tr class="text-muted">
-          <th>Name</th>
-          <th width="30">&nbsp;</th>
-          <th>Value</th>
-          <th width="30">&nbsp;</th>
-        </tr>
-        {{#each environmentArray as |env|}}
-          <tr>
-            <td>
-              {{input-paste pasted="pastedEnviromentVars" class="form-control input-sm environment-name" type="text" value=env.key placeholder="e.g. FOO"}}
-            </td>
-
-            <td class="text-center">
-              <p class="form-control-static input-sm">=</p>
-            </td>
-
-            <td>
-              {{input class="form-control input-sm" type="text" value=env.value placeholder="e.g. bar"}}
-            </td>
-
-            <td class="text-right">
-              <button class="btn btn-primary btn-sm" {{action "removeEnvironment" env}}><i class="icon icon-minus"/></button>
-            </td>
-          </tr>
-        {{/each}}
-      </table>
-      <div class="text-muted" style="font-size: 12px; margin-bottom: 12px;">
-        ProTip: Paste one or more lines of name=value pairs into any name field for easy bulk entry.
-      </div>
-    {{/if}}
+    {{form-key-value
+      initialMap=instance.environment
+      changed=(action (mut instance.environment))
+      nameLabel="Environment Variable"
+      keyLabel="Variable"
+      keyPlaceholder="e.g. FOO"
+      valuePlaceholder="e.g. bar"
+    }}
   </div>
 </div>
 

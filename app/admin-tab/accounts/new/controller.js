@@ -18,12 +18,12 @@ export default Ember.Controller.extend(NewOrEdit, {
   validate: function() {
     var errors = [];
 
-    if (!this.get('model.credential.publicValue') )
+    if ( (this.get('model.credential.publicValue')||'').trim().length === 0 )
     {
       errors.push('Login Username is requried');
     }
 
-    if (!this.get('model.credential.secretValue') )
+    if ( (this.get('model.credential.secretValue')||'').trim().length === 0 )
     {
       errors.push('Password is requried');
     }
@@ -32,6 +32,10 @@ export default Ember.Controller.extend(NewOrEdit, {
     {
       this.set('errors',errors.uniq());
       return false;
+    }
+    else
+    {
+      this.set('errors', null);
     }
 
     return true;

@@ -63,7 +63,7 @@ export default Ember.Component.extend({
       // Hackery, but no good way to get the template from upgradeInfo
       var tpl = upgradeInfo.id;
 
-      this.get('application').transitionToRoute('applications-tab.catalog.launch', tpl, {queryParams: {
+      this.get('application').transitionToRoute('catalog-tab.launch', tpl, {queryParams: {
         environmentId: this.get('environmentResource.id'),
         upgrade: this.get('upgradeInfo.id'),
       }});

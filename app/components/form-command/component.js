@@ -15,71 +15,10 @@ export default Ember.Component.extend(ManageLabels, {
     this.initTerminal();
     this.initStartOnce();
     this.initRestart();
-    this.initEnvironment();
   },
 
   updateLabels(labels) {
     this.sendAction('setLabels', labels);
-  },
-
-  actions: {
-    addEnvironment: function() {
-      this.get('environmentArray').pushObject({key: '', value: ''});
-    },
-    removeEnvironment: function(obj) {
-      this.get('environmentArray').removeObject(obj);
-    },
-
-    pastedEnviromentVars: function(str, target) {
-      var ary = this.get('environmentArray');
-      str = str.trim();
-      if ( str.indexOf('=') === -1 )
-      {
-        // Just pasting a key
-        $(target).val(str);
-        return;
-      }
-
-      var lines = str.split(/\r?\n/);
-      lines.forEach((line) => {
-        line = line.trim();
-        if ( !line )
-        {
-          return;
-        }
-
-        var idx = line.indexOf('=');
-        var key = '';
-        var val = '';
-        if ( idx > 0 )
-        {
-          key = line.substr(0,idx).trim();
-          val = line.substr(idx+1).trim();
-        }
-        else
-        {
-          key = line.trim();
-          val = '';
-        }
-
-        var existing = ary.filterBy('key',key)[0];
-        if ( existing )
-        {
-          Ember.set(existing,'value',val);
-        }
-        else
-        {
-          ary.pushObject({key: key, value: val});
-        }
-      });
-
-      ary.forEach((item) => {
-        if ( !item.key && !item.value )
-        {
-          ary.removeObject(item);
-        }
-      });
-    },
   },
 
   // ----------------------------------
@@ -189,31 +128,4 @@ export default Ember.Component.extend(ManageLabels, {
   restartLimitDidChange: function() {
     this.set('restart', 'on-failure-cond');
   }.observes('restartLimit'),
-
-  // ----------------------------------
-  // Environment Vars
-  // ----------------------------------
-  environmentArray: null,
-  initEnvironment: function() {
-    var obj = this.get('instance.environment')||{};
-    var keys = Object.keys(obj);
-    var out = [];
-    keys.forEach(function(key) {
-      out.push({ key: key, value: obj[key] });
-    });
-
-    this.set('environmentArray', out);
-  },
-
-  environmentChanged: function() {
-    // Sync with the actual environment object
-    var out = {};
-    this.get('environmentArray').forEach(function(row) {
-      if ( row.key )
-      {
-        out[row.key] = row.value;
-      }
-    });
-    this.set('instance.environment', out);
-  }.observes('environmentArray.@each.{key,value}'),
 });

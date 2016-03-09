@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Route.extend({
   allServices: Ember.inject.service(),
 
-  parentRoute: 'applications-tab.catalog',
+  parentRoute: 'catalog-tab',
 
   model: function(params/*, transition*/) {
     var store = this.get('store');

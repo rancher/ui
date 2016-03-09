@@ -12,7 +12,7 @@ export default Ember.Route.extend({
       });
     }).then(function(container) {
       var host = container.get('primaryHost');
-      if ( !host || host.get('instances') )
+      if ( !host || !host.get || !host.get('instances') )
       {
         return container;
       }

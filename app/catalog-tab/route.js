@@ -57,7 +57,7 @@ export default Ember.Route.extend({
     }
 
     if (params.catalogId) {
-      this.controllerFor('applications-tab.catalog.index').set('selectedCatalog', params.catalogId);
+      this.controllerFor('catalog-tab.index').set('selectedCatalog', params.catalogId);
     }
 
     var version = this.get('settings.rancherVersion');
