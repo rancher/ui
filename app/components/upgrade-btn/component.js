@@ -113,7 +113,7 @@ export default Ember.Component.extend({
 
   updateStatus() {
     var info = this.get('environmentResource.externalIdInfo');
-    if ( C.EXTERNALID.UPGRADEABLE.indexOf(info.kind) >= 0 )
+    if ( info && C.EXTERNALID.UPGRADEABLE.indexOf(info.kind) >= 0 )
     {
       this.set('upgradeStatus', LOADING);
       queue.push({

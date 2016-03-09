@@ -101,26 +101,33 @@ export default Ember.Mixin.create({
   },
 
   doSave: function() {
-    var model = this.get('primaryResource');
-    return model.save().then((newData) => {
-      var original = this.get('originalPrimaryResource');
-      if ( original )
-      {
-        if ( Resource.detectInstance(original) )
-        {
-          original.merge(newData);
-        }
-      }
+    return this.get('primaryResource').save().then((newData) => {
+      return this.mergeResult(newData);
     });
   },
 
+  mergeResult: function(newData) {
+    var original = this.get('originalPrimaryResource');
+    if ( original )
+    {
+      if ( Resource.detectInstance(original) )
+      {
+        original.merge(newData);
+        return original;
+      }
+    }
+
+    return newData;
+  },
+
   // didSave can be used to do additional saving of dependent resources
-  didSave: function() {
+  didSave: function(neu) {
+    return neu;
   },
 
   // doneSaving happens after didSave
-  doneSaving: function() {
-    return this.get('originalPrimaryResource') || this.get('model');
+  doneSaving: function(neu) {
+    return neu || this.get('originalPrimaryResource') || this.get('primaryResource');
   },
 
   // errorSaving can be used to do additional cleanup of dependent resources on failure

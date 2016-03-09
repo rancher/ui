@@ -4,6 +4,9 @@ import Util from 'ui/utils/util';
 import Sortable from 'ui/mixins/sortable';
 
 export default Ember.Controller.extend(Sortable, {
+  access: Ember.inject.service(),
+  'tab-session': Ember.inject.service(),
+
   sortBy: 'name',
   sorts: {
     state:        ['stateSort','name','id'],
@@ -20,18 +23,31 @@ export default Ember.Controller.extend(Sortable, {
   project: Ember.computed.alias('projects.current'),
   endpointService: Ember.inject.service('endpoint'),
 
+  accountArranged: function() {
+    var me = this.get(`session.${C.SESSION.ACCOUNT_ID}`);
+    return this.get('arranged').filter((row) => {
+      return row.get('accountId') === me;
+    });
+  }.property('arranged.@each.accountId'),
+
+  environmentArranged: function() {
+    var me = this.get(`session.${C.SESSION.ACCOUNT_ID}`);
+    return this.get('arranged').filter((row) => {
+      return row.get('accountId') !== me;
+    });
+  }.property('arranged.@each.accountId'),
+
   actions: {
-    newApikey: function() {
+    newApikey: function(kind) {
       var cred = this.get('store').createRecord({type:'apikey'});
-      cred.save().then((newCred) => {
-        this.get('application').setProperties({
-          editApikey: true,
-          editApikeyIsNew: true,
-          // Send a clone so that the secret isn't lost when the credential change event -> active comes in
-          originalModel: newCred.clone(),
-        });
-      }).catch((err) => {
-        this.get('growl').fromError('Error creating key',err);
+      if ( kind === 'account' )
+      {
+        cred.set('accountId', this.get(`session.${C.SESSION.ACCOUNT_ID}`));
+      }
+
+      this.get('application').setProperties({
+        editApikey: true,
+        originalModel: cred,
       });
     },
   },
@@ -45,6 +61,12 @@ export default Ember.Controller.extend(Sortable, {
     // And strip leading slashes off the API endpoint
     url += this.get('app.apiEndpoint').replace(/^\/+/,'');
 
+    return url;
+  }.property('endpointService.absolute','app.apiEndpoint',`tab-session.${C.TABSESSION.PROJECT}`),
+
+  displayEndpointEnvironment: function() {
+    var url = this.get('displayEndpoint');
+
     // Go to the project-specific version
     var projectId = this.get('tab-session').get(C.TABSESSION.PROJECT);
     if ( projectId )
@@ -53,7 +75,7 @@ export default Ember.Controller.extend(Sortable, {
     }
 
     return url;
-  }.property('endpointService.absolute','app.apiEndpoint',`tab-session.${C.TABSESSION.PROJECT}`),
+  }.property('displayEndpoint'),
 
   endpointWithAuth: function() {
     var url = this.get('displayEndpoint');
@@ -69,5 +91,21 @@ export default Ember.Controller.extend(Sortable, {
     }
 
     return url;
-  }.property('displayEndpoint', `session.${C.SESSION.TOKEN}`,`tab-session.${C.TABSESSION.PROJECT}`)
+  }.property('displayEndpoint', `session.${C.SESSION.TOKEN}`,`tab-session.${C.TABSESSION.PROJECT}`),
+
+  endpointWithAuthEnvironment: function() {
+    var url = this.get('displayEndpointEnvironment');
+
+    // For local development where API doesn't match origin, add basic auth token
+    if ( url.indexOf(window.location.origin) !== 0 )
+    {
+      var token = this.get('cookies').get(C.COOKIE.TOKEN);
+      if ( token )
+      {
+        url = Util.addAuthorization(url, C.USER.BASIC_BEARER, token);
+      }
+    }
+
+    return url;
+  }.property('displayEndpointEnvironment', `session.${C.SESSION.TOKEN}`,`tab-session.${C.TABSESSION.PROJECT}`)
 });

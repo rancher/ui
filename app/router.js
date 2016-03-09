@@ -247,7 +247,7 @@ Router.map(function() {
   this.modal('edit-apikey', {
     dismissWithOutsideClick : false,
     withParams              : 'editApikey',
-    otherParams             : {'originalModel' : 'originalModel', 'editApikeyIsNew' : 'justCreated'}
+    otherParams             : 'originalModel',
   });
 
   this.modal('edit-registry', {

@@ -1,52 +1,51 @@
 <section class="horizontal-form container-fluid">
-  <h2>{{#if justCreated}}API Key Created{{else}}Edit API Key{{/if}}</h2>
-
-  <div class="form-group">
-    <label>Username (Access Key)</label>
-    <h4>{{originalModel.publicValue}}</h4>
-  </div>
-
-  <div class="form-group">
-    <label>Password (Secret Key)</label>
-    {{#if originalModel.secretValue}}
-      <h4>{{originalModel.secretValue}}</h4>
-    {{else}}
-      <p class="form-control-static text-muted text-italic">Not available; If you forgot the password you'll need to create a new API key.</p>
-    {{/if}}
-  </div>
-
   {{#if justCreated}}
+    <h2>API Key Created</h2>
+    <div class="form-group">
+      <label>Access Key (Username)</label>
+      <h4>{{clone.publicValue}} {{copy-to-clipboard clipboardText=clone.publicValue size='small'}}</h4>
+    </div>
+
+    <div class="form-group">
+      <label>Secret Key (Password)</label>
+      <h4>{{clone.secretValue}} {{copy-to-clipboard clipboardText=clone.secretValue size='small'}}</h4>
+    </div>
+
     <div class="alert alert-warning">
       <i style="float: left;" class="icon icon-alert icon-3x"></i>
-      <p style="margin-left: 50px">Save the username and password above!  This is the only time you'll be able to see the password.</p>
-      <p style="margin-left: 50px">If you lose it, you'll have to create a new API key.</p>
+      <p style="margin-left: 50px">Save the keys above!  This is the only time you'll be able to see the secret.</p>
+      <p style="margin-left: 50px">If you lose it, you'll need to create a new API key.</p>
     </div>
-    <p>If you like, you can give this key an optional name &amp; description to help keep yourself organized:</p>
-  {{/if}}
 
-  <div class="form-group">
-    <label>Name</label>
-    {{input type="text" value=primaryResource.name classNames="form-control" placeholder="e.g. App Servers"}}
-  </div>
-
-  <div class="form-group">
-    <label>Description</label>
-    {{textarea value=primaryResource.description classNames="form-control no-resize" rows="5" placeholder="e.g. This key is used by the app servers to deploy containers"}}
-  </div>
-
-  {{#if justCreated}}
     <div class="footer-actions">
-      {{#if saving}}
-        <button class="btn btn-primary btn-disabled"><i class="icon icon-spinner icon-spin"></i> Saving...</button>
-      {{else}}
-        {{#if canSave}}
-          <button {{action "save"}} class="btn btn-primary">Save</button>
-        {{else}}
-          <button {{action "cancel"}} class="btn btn-primary">Close</button>
-        {{/if}}
-      {{/if}}
+      <button {{action "cancel"}} class="btn btn-primary">Close</button>
     </div>
   {{else}}
-    {{partial "save-cancel"}}
+    <h2>{{#if editing}}Edit API Key{{else}}Add API Key{{/if}}</h2>
+
+    {{#if editing}}
+      <div class="row">
+        <div class="col-xs-12">
+          <label>Access Key (Username)</label>
+          <div class="form-control-static">{{originalModel.publicValue}}</div>
+        </div>
+      </div>
+    {{/if}}
+
+    {{form-name-description
+      model=model
+      namePlaceholder="e.g. App servers"
+      descriptionPlaceholder="e.g. This key is used by the app servers to deploy containers"
+    }}
+
+    {{#unless editing}}
+      <div class="row">
+        <div class="col-xs-12">
+          <p class="help-block">Name and/or description are optional to help you remember what it's used for.  You can just create a key by clicking Create</p>
+        </div>
+      </div>
+    {{/unless}}
+
+    {{save-cancel editing=editing save="save" cancel="cancel"}}
   {{/if}}
 </section>
