@@ -30,7 +30,7 @@ Run development server:
   npm start
 ```
 
-Connect to UI at http://localhost:8000/ .  The server automatically picks up file changes, restarts itself, and reloads the web browser.  This is intended only for development, see below for distributing customizations.
+Connect to UI at https://localhost:8000/ .  The server automatically picks up file changes, restarts itself, and reloads the web browser.  This is intended only for development, see below for distributing customizations.
 
 Run development server pointed at another instance of the Rancher API
 ```bash
