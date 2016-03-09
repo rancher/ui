@@ -12,9 +12,10 @@ export default Ember.Controller.extend(Sortable, {
   // so we dont have to do this.refresh in the route. I used this.refresh
   // in the route for something else and it caused other issues so i decided
   // against using it.
-  ownResourceId   : null,
-  ownResourceType : null,
-  ownProcessName  : null,
+  ownResourceId        : null,
+  ownResourceType      : null,
+  ownProcessName       : null,
+  resourceTypeReadable : null,
 
   sortableContent : Ember.computed.alias('model.processInstance'),
   sortBy          : 'startTime',
@@ -33,9 +34,9 @@ export default Ember.Controller.extend(Sortable, {
     showRunningProcesses: function() {
       this.toggleProperty('showRunning');
     },
-    updateType: function() {
-      let selectVal = Ember.$('#resource-type').val();
-      this.set('ownResourceType', selectVal);
+    updateType: function(type) {
+      this.set('resourceTypeReadable', type);
+      this.set('ownResourceType', type);
     },
     submit: function() {
       this.setProperties({
@@ -46,12 +47,13 @@ export default Ember.Controller.extend(Sortable, {
     },
     reset: function() {
       this.setProperties({
-        resourceId      : null,
-        ownResourceId   : null,
-        resourceType    : null,
-        ownResourceType : null,
-        processName     : null,
-        ownProcessName  : null
+        resourceId           : null,
+        ownResourceId        : null,
+        resourceType         : null,
+        resourceTypeReadable : null,
+        ownResourceType      : null,
+        processName          : null,
+        ownProcessName       : null
       });
       Ember.$('#resource-type').val('');
     }
@@ -96,8 +98,8 @@ export default Ember.Controller.extend(Sortable, {
     });
   }),
 
-  disableClear: Ember.computed('resourceId', 'resourceType', 'processName', function() {
-    if (this.get('resourceId') || this.get('resourceType') || this.get('processName')) {
+  disableClear: Ember.computed('resourceId', 'resourceTypeReadable', 'processName', function() {
+    if (this.get('resourceId') || this.get('resourceTypeReadable') || this.get('processName')) {
       return false;
     } else {
       return true;
