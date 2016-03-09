@@ -29,7 +29,7 @@ var Volume = Resource.extend({
   activeMounts: function() {
     var mounts = this.get('mounts')||[];
     return mounts.filter(function(mount) {
-      return ['removed','purged'].indexOf(mount.get('state')) === -1;
+      return ['removed','purged', 'inactive'].indexOf(mount.get('state')) === -1;
     });
   }.property('mounts.[]','mounts.@each.state')
 });
