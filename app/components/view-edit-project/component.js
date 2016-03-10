@@ -111,12 +111,8 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     var drivers = [
       {name: 'rancher',     label: 'Corral',      css: 'rancher'},
       {name: 'kubernetes',  label: 'Kubernetes',  css: 'kubernetes'},
+      {name: 'swarm',       label: 'Swarm',       css: 'swarm driver-coming-soon', disabled: true},
     ];
-
-    if ( active === 'swarm' )
-    {
-      drivers.push({name: 'swarm',       label: 'Swarm',       css: 'swarm'});
-    }
 
     drivers.forEach(function(driver) {
       driver.active = ( active === driver.name );
