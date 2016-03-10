@@ -23,7 +23,7 @@ var Volume = Resource.extend({
   isRoot: Ember.computed.notEmpty('instanceId'),
 
   canDelete: function() {
-    return this.get('state') === 'inactive' && !this.get('isRoot');
+    return ['inactive', 'requested'].indexOf(this.get('state')) >= 0 && !this.get('isRoot');
   }.property('state','isRoot'),
 
   activeMounts: function() {
