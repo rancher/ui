@@ -232,6 +232,12 @@ var Environment = Resource.extend({
 });
 
 Environment.reopenClass({
+  mangleIn: function(data) {
+    data['healthStateApi'] = data['healthState'];
+    delete data['healthState'];
+    return data;
+  },
+
   stateMap: {
     'active':             {icon: 'icon icon-layers',          color: 'text-success'},
     'canceled-rollback':  {icon: 'icon icon-life-ring',       color: 'text-info'},

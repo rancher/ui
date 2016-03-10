@@ -569,6 +569,9 @@ Service.reopenClass({
   },
 
   mangleIn: function(data, store) {
+    data['healthStateApi'] = data['healthState'];
+    delete data['healthState'];
+
     if ( data.launchConfig && !data.launchConfig.type )
     {
       data.launchConfig.type = 'launchConfig';
