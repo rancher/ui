@@ -25,7 +25,11 @@
     <label>Cluster Management</label>
     <div class="nav nav-boxes checked-active">
       {{#each orchestrationChoices as |driver|}}
-        <a {{action "selectOrchestration" driver.name}} alt={{driver.label}} class="nav-box-item driver orchestration-driver {{if driver.active 'active'}} {{driver.css}}"></a>
+        {{#if driver.disabled}}
+          <a alt={{driver.label}} class="nav-box-item driver orchestration-driver {{driver.css}}"></a>
+        {{else}}
+          <a {{action "selectOrchestration" driver.name}} alt={{driver.label}} class="nav-box-item driver orchestration-driver {{if driver.active 'active'}} {{driver.css}}" disabled={{driver.disabled}}></a>
+        {{/if}}
       {{/each}}
     </div>
   </section>

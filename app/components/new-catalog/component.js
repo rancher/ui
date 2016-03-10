@@ -5,6 +5,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(NewOrEdit, {
   k8s: Ember.inject.service(),
+  projects: Ember.inject.service(),
 
   allTemplates: null,
   templateResource: null,
@@ -203,7 +204,17 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   doneSaving() {
-    return this.get('router').transitionTo('environment', this.get('primaryResource.id'));
+    var base = this.get('templateBase');
+    var projectId = this.get('projects.current.id');
+    if ( base === 'kubernetes' )
+    {
+      var nsId = this.get('k8s.namespace.id');
+      return this.get('router').transitionTo('k8s-tab.namespace.services', projectId, nsId);
+    }
+    else
+    {
+      return this.get('router').transitionTo('environment', projectId, this.get('primaryResource.id'));
+    }
   }
 
 });
