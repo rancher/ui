@@ -129,14 +129,10 @@ var Host = Resource.extend({
   }.property('physicalHostId'),
 
   osBlurb: function() {
-    var out;
+    var out = this.get('info.osInfo.operatingSystem')||'';
 
-    if ( this.get('info.osInfo.operatingSystem') )
-    {
-      out = (this.get('info.osInfo.operatingSystem')||'').replace(/\s+\(.*?\)/,'');
-    }
-
-    out = out.replace("Red Hat Enterprise Linux Server","RHEL");
+    out = out.replace(/\s+\(.*?\)/,''); // Remove details in quotes
+    out = out.replace('Red Hat Enterprise Linux Server','RHEL'); // That's kinda long
 
     var hasKvm = (this.get('labels')||{})[C.LABEL.KVM] === 'true';
     if ( hasKvm && out )
