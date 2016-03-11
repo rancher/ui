@@ -450,18 +450,25 @@ export default Ember.Mixin.create({
 
         if ( test.length )
         {
-          var regex = new RegExp('('+ test.join('|') + ')');
+          var regex = new RegExp('('+ test.join('|') + ')','g');
           var match = val.match(regex);
           if ( match )
           {
-            var chr = match[1];
-            if ( chr === ' ' )
+            match = match.uniq().map((chr) => {
+              if ( chr === ' ' ) {
+                return '[space]';
+              } else {
+                return chr;
+              }
+            });
+
+            if ( match.length == 1 )
             {
-              errors.push(displayKey + " cannot contain spaces");
+              errors.push(displayKey + ' contains an invalid character: ' + match[0]);
             }
             else
             {
-              errors.push(displayKey + " contains invalid character: '" + chr + "'");
+              errors.push(displayKey + ' contains ' + match.length + ' invalid characters: ' + match.join(' '));
             }
           }
         }
