@@ -31,6 +31,7 @@ export default Ember.Route.extend({
     },
   },
 
+  catalogs: null,
   catalogIds: null,
 
   templateBase: function() {
@@ -55,8 +56,9 @@ export default Ember.Route.extend({
 
   beforeModel: function() {
     return this.get('store').request({url: `${this.get('app.catalogEndpoint')}/catalogs`}).then((response) => {
-      var catalogs = uniqKeys(response, 'id');
-      this.set('catalogIds', catalogs);
+      this.set('catalogs', response);
+      var ids = uniqKeys(response, 'id');
+      this.set('catalogIds', ids);
     });
   },
 

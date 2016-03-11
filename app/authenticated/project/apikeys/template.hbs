@@ -5,13 +5,10 @@
 </section>
 
 <section class="well">
-  <p>Account API Keys are tied to your specific account (<code>{{access.identity.displayName}}</code>) and can create, delete, and manipulate all Environments which you have access to.</p>
-  <label>
-    Endpoint:
-    <code>
-      <a href="{{endpointWithAuth}}" target="_blank">{{displayEndpoint}}</a>
-    </code>
-  </label>
+  <p>Account API Keys are tied to your specific account {{#if access.identity.name}}(<code>{{access.identity.displayName}}</code>){{/if}} and can create, delete, and manipulate all Environments which you have access to.</p>
+  <label>Endpoint:</label>
+  <code><a href="{{endpointWithAuth}}" target="_blank">{{displayEndpoint}}</a></code>
+  {{copy-to-clipboard clipboardText=endpointWithAuth size="sm"}}
   <table class="grid fixed r-mb0 r-mt10">
     <thead>
       <tr>
@@ -41,12 +38,9 @@
 
 <section class="well">
   <p>Environment API keys are tied to this specific Environment (<code>{{project.displayName}}</code>) and can only manipulate resources within there.  Other accounts with access to this Environment can also manage these keys.</p>
-  <label>
-    Endpoint:
-    <code>
-      <a href="{{endpointWithAuthEnvironment}}" target="_blank">{{displayEndpointEnvironment}}</a>
-    </code>
-  </label>
+  <label>Endpoint:</label>
+  <code><a href="{{endpointWithAuthEnvironment}}" target="_blank">{{displayEndpointEnvironment}}</a></code>
+  {{copy-to-clipboard clipboardText=endpointWithAuthEnvironment size="sm"}}
 
   <table class="grid fixed r-mb0 r-mt10">
     <thead>

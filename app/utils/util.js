@@ -279,6 +279,10 @@ export function pluralize(count,singular,plural) {
   }
 }
 
+export function camelToTitle(str) {
+  return (str||'').dasherize().split('-').map((str) => { return ucFirst(str); }).join(' ');
+}
+
 var Util = {
   arrayDiff: arrayDiff,
   arrayIntersect: arrayIntersect,
@@ -300,6 +304,7 @@ var Util = {
   formatMib: formatMib,
   formatKbps: formatKbps,
   pluralize: pluralize,
+  camelToTitle: camelToTitle
 };
 
 window.Util = Util;
