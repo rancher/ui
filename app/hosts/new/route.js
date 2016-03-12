@@ -37,7 +37,7 @@ export default Ember.Route.extend({
       }
       else
       {
-        this.transitionTo('hosts');
+        this.send('goToPrevious');
       }
     }
   },
