@@ -135,60 +135,62 @@
     </p>
   </section>
 
-  <section class="well">
-    <h4>2. Configure {{settings.appName}} to use your application for authentication</h4>
-    <hr/>
-    <p>Copy and paste the Client ID and Secret from the upper-right corner of your newly-created application.</p>
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Client ID*</label>
-          {{input type="text" value=model.clientId classNames="form-control"}}
+  <form autcomplete="on">
+    <section class="well">
+      <h4>2. Configure {{settings.appName}} to use your application for authentication</h4>
+      <hr/>
+      <p>Copy and paste the Client ID and Secret from the upper-right corner of your newly-created application.</p>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Client ID*</label>
+            {{input type="text" name="username" value=model.clientId classNames="form-control"}}
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Client Secret*</label>
+            {{input type="password" name="password" value=model.clientSecret classNames="form-control"}}
+          </div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Client Secret*</label>
-          {{input type="password" value=model.clientSecret classNames="form-control"}}
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="checkbox">
+            <label>{{input type="checkbox" checked=isEnterprise}} Use a private GitHub Enterprise installation</label>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="checkbox">
-          <label>{{input type="checkbox" checked=isEnterprise}} Use a private GitHub Enterprise installation</label>
+      <div class="row {{unless isEnterprise 'hide'}}">
+        <div class="col-md-6">
+        </div>
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Enterprise Host*</label>
+            {{input type="text" value=model.hostname classNames="form-control" placeholder="e.g. github.example.com"}}
+          </div>
         </div>
       </div>
-    </div>
-    <div class="row {{unless isEnterprise 'hide'}}">
-      <div class="col-md-6">
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label>Enterprise Host*</label>
-          {{input type="text" value=model.hostname classNames="form-control" placeholder="e.g. github.example.com"}}
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="well">
-    <h4>3. Test and enable authentication</h4>
-    <hr/>
-    <div class="row">
-      <div class="col-md-6">
-        <p>Check that your application is configured correctly by testing authentication with it:</p>
+    <section class="well">
+      <h4>3. Test and enable authentication</h4>
+      <hr/>
+      <div class="row">
+        <div class="col-md-6">
+          <p>Check that your application is configured correctly by testing authentication with it:</p>
+        </div>
+        <div class="col-md-6">
+          <button disabled={{createDisabled}} class="btn btn-primary" {{action "test"}}>
+            {{#if testing}}
+              <i class="icon icon-spinner icon-spin"></i> Waiting to hear back from GitHub
+            {{else}}
+              <i class="icon icon-github"></i> Authenticate with GitHub
+            {{/if}}
+          </button>
+        </div>
       </div>
-      <div class="col-md-6">
-        <button disabled={{createDisabled}} class="btn btn-primary" {{action "test"}}>
-          {{#if testing}}
-            <i class="icon icon-spinner icon-spin"></i> Waiting to hear back from GitHub
-          {{else}}
-            <i class="icon icon-github"></i> Authenticate with GitHub
-          {{/if}}
-        </button>
-      </div>
-    </div>
-  </section>
+    </section>
+  </form>
 {{/unless}}
 
