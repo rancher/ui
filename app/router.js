@@ -15,6 +15,7 @@ Router.map(function() {
   this.route('logout');
   this.route('authenticated', {path: '/'}, function() {
 
+
     // Settings
     this.route('settings', {resetNamespace: true}, function() {
       this.route('projects', {path: '/env'}, function() {
@@ -53,6 +54,15 @@ Router.map(function() {
 
       // Infrastructure
       this.route('infrastructure-tab', {path: '/infra', resetNamespace: true}, function() {
+        // console popup route
+        this.route('console', {path: '/console', resetNamespace: true});
+        // container logs route
+        this.route('container-log', {path: '/container-log', resetNamespace: true});
+
+        this.route('console-vm', {path: '/console-vm', resetNamespace: true});
+
+        this.route('vm-log', {path: '/vm-log', resetNamespace: true});
+
         this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
           this.route('index', {path: '/'});
           this.route('new', {path: '/add'}, function() {
@@ -308,12 +318,12 @@ Router.map(function() {
     otherParams             : {originalModel           : 'originalModel', action : 'action'},
   });
 
+  // End: Modals
   this.modal('modal-new-driver', {
     dismissWithOutsideClick : true,
     withParams              : 'showNewDriver',
     otherParams             : {originalModel: 'originalModel'},
   });
-  // End: Modals
 
 });
 

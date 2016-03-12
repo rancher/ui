@@ -10,7 +10,7 @@ export default Ember.Controller.extend({
   }.observes('currentRouteName'),
 
   // GitHub auth params
-  queryParams     : ['error_description','state','code','isTest'],
+  queryParams     : ['error_description','state','code','isTest', 'isPopup'],
 
   resourceActions : Ember.inject.service('resource-actions'),
   tooltipService  : Ember.inject.service('tooltip'),
@@ -28,6 +28,7 @@ export default Ember.Controller.extend({
   state             : null,
   code              : null,
   isTest            : null,
+  isPopup           : null,
 
   // Keys that trigger modals go in here
   confirmDeleteResources  : null,

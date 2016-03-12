@@ -1,17 +1,21 @@
-{{page-header
-  currentPath=currentPath
-  authController=this
-  hasKubernetes=hasKubernetes
-  hasSystem=hasSystem
-  hasVm=hasVm
-  showAbout="showAbout"
-  switchProject="switchProject"
-  switchNamespace="switchNamespace"
-  goToPrevious="goToPrevious"
-}}
+{{#unless isPopup}}
+  {{page-header
+    currentPath=currentPath
+    authController=this
+    hasKubernetes=hasKubernetes
+    hasSystem=hasSystem
+    hasVm=hasVm
+    showAbout="showAbout"
+    switchProject="switchProject"
+    switchNamespace="switchNamespace"
+    goToPrevious="goToPrevious"
+  }}
+{{/unless}}
 <main class="clearfix">
   {{outlet}}
 </main>
-{{page-footer
-  showAbout="showAbout"
-}}
+{{#unless isPopup}}
+  {{page-footer
+    showAbout="showAbout"
+  }}
+{{/unless}}
