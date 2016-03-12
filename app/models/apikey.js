@@ -36,7 +36,7 @@ var ApiKey = Resource.extend(PolledResource,{
         headers: {
           [C.HEADER.PROJECT]: undefined
         }
-      }
+      };
     }
   }.property('isForAccount'),
 

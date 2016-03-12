@@ -462,7 +462,7 @@ export default Ember.Mixin.create({
               }
             });
 
-            if ( match.length == 1 )
+            if ( match.length === 1 )
             {
               errors.push(displayKey + ' contains an invalid character: ' + match[0]);
             }
