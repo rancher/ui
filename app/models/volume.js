@@ -23,13 +23,13 @@ var Volume = Resource.extend({
   isRoot: Ember.computed.notEmpty('instanceId'),
 
   canDelete: function() {
-    return this.get('state') === 'inactive' && !this.get('isRoot');
+    return ['inactive', 'requested'].indexOf(this.get('state')) >= 0 && !this.get('isRoot');
   }.property('state','isRoot'),
 
   activeMounts: function() {
     var mounts = this.get('mounts')||[];
     return mounts.filter(function(mount) {
-      return ['removed','purged'].indexOf(mount.get('state')) === -1;
+      return ['removed','purged', 'inactive'].indexOf(mount.get('state')) === -1;
     });
   }.property('mounts.[]','mounts.@each.state')
 });
