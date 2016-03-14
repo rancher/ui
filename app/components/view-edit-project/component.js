@@ -7,6 +7,7 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 export default Ember.Component.extend(NewOrEdit, Sortable, {
   projects: Ember.inject.service(),
   access: Ember.inject.service(),
+  cookies: Ember.inject.service(),
   accessEnabled: Ember.computed.alias('access.enabled'),
 
   model: null,
@@ -108,10 +109,19 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
 
   orchestrationChoices: function() {
     var active = this.get('activeOrchestration');
+
+    var swarmClass = 'swarm';
+    var swarmDisabled = false;
+    if ( !this.get('cookies.icanhazswarm') )
+    {
+      swarmClass += ' driver-coming-soon';
+      swarmDisabled = true;
+    }
+
     var drivers = [
       {name: 'rancher',     label: 'Corral',      css: 'rancher'},
       {name: 'kubernetes',  label: 'Kubernetes',  css: 'kubernetes'},
-      {name: 'swarm',       label: 'Swarm',       css: 'swarm driver-coming-soon', disabled: true},
+      {name: 'swarm',       label: 'Swarm',       css: swarmClass, disabled: swarmDisabled},
     ];
 
     drivers.forEach(function(driver) {
