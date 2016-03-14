@@ -340,6 +340,7 @@ export default Ember.Mixin.create({
       key = keys[i];
       field = fields[key];
       val = this.get(key);
+      var displayKey = Util.camelToTitle(key);
 
       if ( val === undefined )
       {
@@ -390,7 +391,7 @@ export default Ember.Mixin.create({
       var len = (val ? Ember.get(val,'length') : 0);
       if ( field.required && (val === null || (typeof val === 'string' && len === 0) || (Ember.isArray(val) && len === 0) ) )
       {
-        errors.push('"' + key + '" is required');
+        errors.push('"' + displayKey + '" is required');
         continue;
       }
 
@@ -405,16 +406,16 @@ export default Ember.Mixin.create({
         {
           if ( (len < min) || (len > max) )
           {
-            errors.push(key + ' should be ' + min + '-' + max + ' ' + desc + (min === 1 && max === 1 ? '' : 's') + ' long');
+            errors.push(displayKey + ' should be ' + min + '-' + max + ' ' + desc + (min === 1 && max === 1 ? '' : 's') + ' long');
           }
         }
         else if ( min && (len < min) )
         {
-          errors.push(key + ' should be at least ' + min + ' ' + desc + (min === 1 ? '' : 's') + ' long');
+          errors.push(displayKey + ' should be at least ' + min + ' ' + desc + (min === 1 ? '' : 's') + ' long');
         }
         else if ( max && (len > max) )
         {
-          errors.push(key + ' should be at most ' + max + ' ' + desc + (min === 1 ? '' : 's') + ' long');
+          errors.push(displayKey + ' should be at most ' + max + ' ' + desc + (min === 1 ? '' : 's') + ' long');
         }
 
         // Number min/max
@@ -424,16 +425,16 @@ export default Ember.Mixin.create({
         {
           if ( (val < min) || (val > max) )
           {
-            errors.push(key + ' should be between ' + min + ' and ' + max);
+            errors.push(displayKey + ' should be between ' + min + ' and ' + max);
           }
         }
         else if ( min && (val < min) )
         {
-          errors.push(key + ' should be at least ' + min + ' ' + desc);
+          errors.push(displayKey + ' should be at least ' + min + ' ' + desc);
         }
         else if ( max && (val > max) )
         {
-          errors.push(key + ' should be at most ' + max + ' ' + desc);
+          errors.push(displayKey + ' should be at most ' + max + ' ' + desc);
         }
 
         var test = [];
@@ -449,11 +450,26 @@ export default Ember.Mixin.create({
 
         if ( test.length )
         {
-          var regex = new RegExp('('+ test.join('|') + ')');
+          var regex = new RegExp('('+ test.join('|') + ')','g');
           var match = val.match(regex);
           if ( match )
           {
-            errors.push(key + " contains invalid character: '" + match[1] + "'");
+            match = match.uniq().map((chr) => {
+              if ( chr === ' ' ) {
+                return '[space]';
+              } else {
+                return chr;
+              }
+            });
+
+            if ( match.length === 1 )
+            {
+              errors.push(displayKey + ' contains an invalid character: ' + match[0]);
+            }
+            else
+            {
+              errors.push(displayKey + ' contains ' + match.length + ' invalid characters: ' + match.join(' '));
+            }
           }
         }
       }

@@ -1,33 +1,63 @@
 <section class="header">
-  <h1>API Keys</h1>
+  <h1>Account API Keys</h1>
 
-  <button class="btn btn-sm btn-primary" {{action "newApikey"}}>Add API Key</button>
+  <button class="btn btn-sm btn-primary" {{action "newApikey" "account"}}>Add Account API Key</button>
 </section>
 
 <section class="well">
-  <label>Endpoint for &quot;{{project.displayName}}&quot; Environment:</label>
-  <div>
-    <a href="{{endpointWithAuth}}" target="_blank">{{displayEndpoint}}</a>
-  </div>
-</section>
-
-<section class="well">
-  <table class="grid fixed" style="margin-bottom: 0">
+  <p>Account API Keys are tied to your specific account {{#if access.identity.name}}(<code>{{access.identity.displayName}}</code>){{/if}} and can create, delete, and manipulate all Environments which you have access to.</p>
+  <label>Endpoint:</label>
+  <code><a href="{{endpointWithAuth}}" target="_blank">{{displayEndpoint}}</a></code>
+  {{copy-to-clipboard clipboardText=endpointWithAuth size="sm"}}
+  <table class="grid fixed r-mb0 r-mt10">
     <thead>
       <tr>
         {{sortable-th sortable=this action="changeSort" name="state" width="125"}}
         {{sortable-th sortable=this action="changeSort" name="name"}}
         {{sortable-th sortable=this action="changeSort" name="description"}}
-        {{sortable-th sortable=this action="changeSort" name="publicValue" label="Username"}}
+        {{sortable-th sortable=this action="changeSort" name="publicValue" label="Access Key"}}
         {{sortable-th sortable=this action="changeSort" name="created"}}
         <th width="50">&nbsp;</th>
       </tr>
     </thead>
     <tbody>
-      {{#each arranged as |key|}}
+      {{#each accountArranged as |key|}}
         {{apikey-row model=key}}
       {{else}}
-        <tr><td colspan="6" class="text-center text-muted">You don't have any API keys yet.</td></tr>
+        <tr><td colspan="6" class="text-center text-muted">You don't have any Account API keys yet.</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>
+
+<section class="header">
+  <h1>Environment API Keys</h1>
+
+  <button class="btn btn-sm btn-primary" {{action "newApikey" "environment"}}>Add Environment API Key</button>
+</section>
+
+<section class="well">
+  <p>Environment API keys are tied to this specific Environment (<code>{{project.displayName}}</code>) and can only manipulate resources within there.  Other accounts with access to this Environment can also manage these keys.</p>
+  <label>Endpoint:</label>
+  <code><a href="{{endpointWithAuthEnvironment}}" target="_blank">{{displayEndpointEnvironment}}</a></code>
+  {{copy-to-clipboard clipboardText=endpointWithAuthEnvironment size="sm"}}
+
+  <table class="grid fixed r-mb0 r-mt10">
+    <thead>
+      <tr>
+        {{sortable-th sortable=this action="changeSort" name="state" width="125"}}
+        {{sortable-th sortable=this action="changeSort" name="name"}}
+        {{sortable-th sortable=this action="changeSort" name="description"}}
+        {{sortable-th sortable=this action="changeSort" name="publicValue" label="Access Key"}}
+        {{sortable-th sortable=this action="changeSort" name="created"}}
+        <th width="50">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each environmentArranged as |key|}}
+        {{apikey-row model=key}}
+      {{else}}
+        <tr><td colspan="6" class="text-center text-muted">There are no keys for this Environment yet.</td></tr>
       {{/each}}
     </tbody>
   </table>

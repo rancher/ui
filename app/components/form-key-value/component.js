@@ -38,7 +38,11 @@ function removeEmptyEntries(ary, allowEmptyValue=false) {
   // Clean up empty user entries
   var toRemove = [];
   ary.forEach((item) => {
-    if ( !(item.get('key') || item.get('value') || allowEmptyValue) )
+    if ( item.get('key') && (item.get('value') || allowEmptyValue) )
+    {
+      // ok
+    }
+    else
     {
       toRemove.push(item);
     }

@@ -1,7 +1,9 @@
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
+import C from 'ui/utils/constants';
 
 var ApiKey = Resource.extend(PolledResource,{
+
   type: 'apiKey',
   publicValue: null,
   secretValue: null,
@@ -18,11 +20,25 @@ var ApiKey = Resource.extend(PolledResource,{
     edit: function() {
       this.get('application').setProperties({
         editApikey: true,
-        editApikeyIsNew: false,
         originalModel: this
       });
     },
   },
+
+  isForAccount: function() {
+    return this.get('accountId') === this.get(`session.${C.SESSION.ACCOUNT_ID}`);
+  }.property('accountId', `session.${C.SESSION.ACCOUNT_ID}`),
+
+  reloadOpts: function() {
+    if ( this.get('isForAccount') )
+    {
+      return {
+        headers: {
+          [C.HEADER.PROJECT]: undefined
+        }
+      };
+    }
+  }.property('isForAccount'),
 
   displayName: function() {
     return this.get('name') || this.get('publicValue') || '('+this.get('id')+')';

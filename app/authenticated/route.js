@@ -69,7 +69,7 @@ export default Ember.Route.extend(Subscribe, {
 
     if ( err && err.status && [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
     {
-      this.send('logout',transition,true);
+      this.send('logout',transition, (transition.targetName !== 'authenticated.index'));
       return;
     }
 

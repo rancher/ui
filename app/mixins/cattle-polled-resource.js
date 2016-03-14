@@ -64,6 +64,10 @@ export default Ember.Mixin.create({
     }.bind(this), Util.timerFuzz(delay)));
   }.observes('transitioning'),
 
+  reloadOpts: function() {
+    return null;
+  }.property(),
+
   transitioningPoll: function() {
     //console.log('Maybe polling', this.toString(), this.get('transitioning'), this.isInStore());
     this.clearPoll();
@@ -74,7 +78,7 @@ export default Ember.Mixin.create({
     }
 
     //console.log('Polling', this.toString());
-    this.reload().then(() => {
+    this.reload(this.get('reloadOpts')).then(() => {
       //console.log('Poll Finished', this.toString());
       if ( this.get('transitioning') === 'yes' )
       {
