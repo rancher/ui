@@ -1,12 +1,13 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import { denormalizeName } from 'ui/services/settings';
+const { getOwner } = Ember;
 
 export default Ember.Route.extend({
   access: Ember.inject.service(),
 
   backTo: null,
-  model: function(params) {
+  model(params) {
     this.set('backTo', params.backTo);
 
     var store = this.get('store');
@@ -25,6 +26,15 @@ export default Ember.Route.extend({
     }
   },
 
+  activate() {
+    var appRoute = getOwner(this).lookup('route:application');
+    this.set('previousOpts', {name: appRoute.get('previousRoute'), params: appRoute.get('previousParams')});
+  },
+
+  deactivate() {
+    this.set('lastRoute', this.get('something'));
+  },
+
   actions: {
     cancel() {
       this.send('goBack');
@@ -37,7 +47,11 @@ export default Ember.Route.extend({
       }
       else
       {
-        this.send('goToPrevious');
+        var appRoute = getOwner(this).lookup('route:application');
+        var opts = this.get('previousOpts');
+        appRoute.set('previousRoute', opts.name);
+        appRoute.set('previousParams', opts.params);
+        this.send('goToPrevious','hosts');
       }
     }
   },
