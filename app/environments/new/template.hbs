@@ -4,7 +4,7 @@
 
 <section class="horizontal-form container-fluid well">
   {{top-errors errors=errors}}
-        
+
   {{form-name-description
     model=primaryResource
     namePlaceholder="e.g. myapp"
@@ -12,19 +12,19 @@
   }}
 
   <div class="over-hr"><span>Optional: Import Compose</span></div>
-  <div class="row form-group">  
+  <div class="row form-group">
       <div class="form-group">
         <div class="col-sm-12 col-md-6">
           <div class="clearfix r-mb10 r-mt15">
             <label class="r-pt5">Optional: docker-compose.yml</label>
-            {{read-text-file accept=".yml" action=(action "readFile" "dockerCompose") class="pull-right"}}
+            {{read-text-file accept=".yml, .yaml" action=(action "readFile" "dockerCompose") class="pull-right"}}
           </div>
           {{textarea value=primaryResource.dockerCompose classNames="form-control no-resize" rows="4" placeholder="Contents of docker-compose.yml"}}
         </div>
         <div class="col-sm-12 col-md-6">
           <div class="clearfix r-mb10 r-mt15">
             <label class="r-pt5">Optional: rancher-compose.yml</label>
-            {{read-text-file accept=".yml" action=(action "readFile" "rancherCompose") class="pull-right"}}
+            {{read-text-file accept=".yml, .yaml" action=(action "readFile" "rancherCompose") class="pull-right"}}
           </div>
           {{textarea value=primaryResource.rancherCompose classNames="form-control no-resize" rows="4" placeholder="Contents of rancher-compose.yml"}}
         </div>

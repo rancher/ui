@@ -34,7 +34,7 @@ export default Ember.Route.extend({
   },
 
   resetController: function (controller/*, isExisting, transition*/) {
-    var hasK8s = window.lc('authenticated').get('hasKubernetes');
+    var hasK8s = this.controllerFor('authenticated').get('hasKubernetes');
     controller.set('which', (hasK8s ? C.EXTERNALID.KIND_NOT_KUBERNETES : C.EXTERNALID.KIND_USER));
   },
 });

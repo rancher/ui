@@ -144,6 +144,15 @@ Router.map(function() {
             });
           });
         });
+
+        this.route('compose-projects', function() {
+          this.route('new', {path: '/add'});
+          this.route('compose-project', {path: '/:compose_project_id'}, function() {
+            this.route('compose-service', {path: '/:compose_service_id'});
+          });
+        });
+
+        this.route('compose-console');
       });
 
       // Catalog

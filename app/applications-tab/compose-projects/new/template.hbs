@@ -1,0 +1,32 @@
+<section class="header">
+  <h1>Add Project</h1>
+</section>
+
+<section class="horizontal-form container-fluid well">
+  {{form-name-description
+    model=primaryResource
+    namePlaceholder="e.g. myapp"
+    descriptionPlaceholder="e.g. MyApp Project"
+  }}
+</section>
+
+<section class="horizontal-form container-fluid well">
+  <div class="clearfix r-mb10">
+    <label class="r-pt5">docker-compose.yml</label>
+    {{read-text-file accept=".yml, .yaml" action=(action (mut primaryResource.template)) class="pull-right"}}
+  </div>
+  {{textarea value=primaryResource.template classNames="form-control" rows="5" placeholder="Contents of docker-compose.yml"}}
+
+  {{form-key-value
+    initialMap=primaryResource.environment
+    changed=(action (mut primaryResource.environment))
+    nameLabel="Variable Substitution"
+    keyLabel="Variable"
+    keyPlaceholder="e.g. FOO"
+    valuePlaceholder="e.g. bar"
+    allowEmptyValue=true
+  }}
+</section>
+
+{{top-errors errors=errors}}
+{{save-cancel save="save" cancel="cancel"}}

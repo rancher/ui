@@ -1,0 +1,30 @@
+<section class="header">
+  <h1 style="display: block">docker-compose</h1>
+</section>
+
+<section class="well">
+  {{#if (eq step 1)}}
+    <p>To use docker-compose on your workstation, click the button to generate an API key and config file:</p>
+    <button {{action "generate"}} class="btn btn-primary">Generate Config</button>
+  {{/if}}
+  {{#if (eq step 2)}}
+    <i class="icon icon-spinner icon-spin"></i> Generating...
+  {{/if}}
+  {{#if (eq step 3)}}
+    <p>Put this into <code>~/.kube/config</code></p>
+    <pre><code>{{kubeconfig}}</code></pre>
+    {{copy-to-clipboard tooltipText="" buttonText="Copy to Clipboard" clipboardText=kubeconfig class="with-clip"}}
+  {{/if}}
+</section>
+
+<section class="well">
+  <p>Or use this handy shell to directly execute <code>docker-compose</code> commands:</p>
+
+  {{container-shell
+    classNames="inline-block"
+    command=model.command
+    instance=model.instance
+    cols=120
+    rows=30
+  }}
+</section>

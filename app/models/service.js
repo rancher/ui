@@ -10,6 +10,7 @@ var _allLbServices;
 var _allExternalServices;
 var _allDnsServices;
 var _allKubernetesServices;
+var _allComposeServices;
 // !! If you add a new one of these, you need to add it to reset() below too
 
 var Service = Resource.extend({
@@ -183,6 +184,7 @@ var Service = Resource.extend({
   _allExternalServices: null,
   _allDnsServices: null,
   _allKubernetesServices: null,
+  _allComposeServices: null,
   // !! If you add a new one of these, you need to add it to reset() below too
 
   consumedServicesUpdated: 0,
@@ -195,6 +197,7 @@ var Service = Resource.extend({
     '_allExternalServices',
     '_allDnsServices',
     '_allKubernetesServices',
+    '_allComposeServices',
     'consumedServices',
     'consumedServicesUpdated',
     'serviceLinks',
@@ -239,6 +242,11 @@ var Service = Resource.extend({
       _allKubernetesServices = this.get('store').allUnremoved('kubernetesservice');
     }
 
+    if ( !_allComposeServices )
+    {
+      _allComposeServices = this.get('store').allUnremoved('composeservice');
+    }
+
     // !! If you add a new one of these, you need to add it to reset() below too
 
     // And we need this here so that consumedServices can watch for changes
@@ -249,6 +257,7 @@ var Service = Resource.extend({
       '_allExternalServices': _allExternalServices,
       '_allDnsServices': _allDnsServices,
       '_allKubernetesServices': _allKubernetesServices,
+      '_allComposeServices': _allComposeServices,
     });
   },
 
@@ -401,6 +410,7 @@ var Service = Resource.extend({
       'service',
       'loadbalancerservice',
       'kubernetesservice',
+      'composeservice',
     ].indexOf(this.get('type').toLowerCase()) >= 0;
   }.property('type'),
 
@@ -421,6 +431,10 @@ var Service = Resource.extend({
     return ['kubernetesservice'].indexOf(this.get('type').toLowerCase()) >= 0;
   }.property('type'),
 
+  isSwarm: function() {
+    return ['composeservice'].indexOf(this.get('type').toLowerCase()) >= 0;
+  }.property('type'),
+
   displayType: function() {
     var out;
     switch ( this.get('type').toLowerCase() )
@@ -429,6 +443,7 @@ var Service = Resource.extend({
       case 'dnsservice':          out = 'Service Alias'; break;
       case 'externalservice':     out = 'External'; break;
       case 'kubernetesservice':   out = 'K8s Service'; break;
+      case 'composeservice':      out = 'Compose Service'; break;
       default:                    out = 'Service'; break;
     }
 
@@ -521,6 +536,7 @@ export function activeIcon(service)
     case 'dnsservice':          out = 'icon icon-compass'; break;
     case 'externalservice':     out = 'icon icon-cloud';   break;
     case 'kubernetesservice':   out = 'icon icon-kubernetes'; break;
+    case 'composeservice':      out = 'icon icon-docker'; break;
   }
 
   return out;
@@ -533,6 +549,7 @@ export function byId(serviceId) {
     _allExternalServices,
     _allDnsServices,
     _allKubernetesServices,
+    _allComposeServices,
   ];
 
   var i = 0;
@@ -554,6 +571,7 @@ Service.reopenClass({
     _allExternalServices = null;
     _allDnsServices = null;
     _allKubernetesServices = null;
+    _allComposeServices = null;
   },
 
   consumedServicesFor: function(serviceId) {
