@@ -11,8 +11,6 @@ export default Ember.Component.extend({
 
   tagName           : 'a',
   classNameBindings : ['enabled::hide'],
-  attributeBindings: ['href'],
-  href: "#",
 
   click : function(event) {
 
