@@ -3,7 +3,8 @@ import ManageLabels from 'ui/mixins/manage-labels';
 import Util from 'ui/utils/util';
 
 export default Ember.Controller.extend(ManageLabels, {
-  settings    : Ember.inject.service(),
+  settings      : Ember.inject.service(),
+  cattleAgentIp : null,
 
   actions: {
     setLabels(labels) {
@@ -17,23 +18,34 @@ export default Ember.Controller.extend(ManageLabels, {
   },
 
   registrationCommand: function() {
-    let cmd = this.get('model.command');
+    let cmd      = this.get('model.command');
+    let cattleIp = this.get('cattleAgentIp');
+    let lookFor  = 'docker run';
+    let idx      = cmd.indexOf(lookFor);
 
     if ( !cmd ) {
       return null;
     }
 
     let env = Util.addQueryParams('', this.get('model.labels')||{});
+
     if ( env ) {
+      lookFor  = 'docker run';
+      idx      = cmd.indexOf(lookFor);
       env = env.substr(1); // Strip off the leading '?'
-      let lookFor = 'docker run';
-      let idx     = cmd.indexOf(lookFor);
       if ( idx >= 0 ) {
-        cmd = cmd.substr(0, idx + lookFor.length) + " -e CATTLE_HOST_LABELS='" + env + "'" + cmd.substr(idx + lookFor.length);
+        cmd = `${cmd.substr(0, idx + lookFor.length)} -e CATTLE_HOST_LABELS='${env}' ${cmd.substr(idx + lookFor.length)}`;
       }
     }
 
+    if (cattleIp) {
+      if ( idx >= 0 ) {
+        cmd = `${cmd.substr(0, idx + lookFor.length)} -e CATTLE_AGENT_IP='${cattleIp}' ${cmd.substr(idx + lookFor.length)}`;
+      }
+
+    }
+
     return cmd;
-  }.property('model.command','model.labels'),
+  }.property('model.command','model.labels', 'cattleAgentIp'),
 
 });

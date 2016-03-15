@@ -114,11 +114,11 @@ var Environment = Resource.extend({
       { label   : 'Delete',          icon : 'icon icon-trash',            action : 'promptDelete',        enabled  : !!a.remove,                altAction : 'delete', color : 'text-warning' },
       { label   : 'View in API',     icon : 'icon icon-external-link',    action : 'goToApi',             enabled  : true },
       { divider : true },
-      { label   : 'Edit',            icon : 'icon icon-edit',             action : 'edit',                enabled  : true },
+      { label   : 'Edit',            icon : 'icon icon-edit',             action : 'edit',                enabled  : !!a.update },
     ];
 
     return out;
-  }.property('actionLinks.{remove,purge,exportconfig,finishupgrade,cancelupgrade,rollback,cancelrollback}','canActivate','canDeactivate','externalIdInfo.kind'),
+  }.property('actionLinks.{remove,purge,exportconfig,finishupgrade,cancelupgrade,rollback,cancelrollback,update}','canActivate','canDeactivate','externalIdInfo.kind'),
 
   healthState: function() {
     // Get the state of each instance

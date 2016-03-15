@@ -5,7 +5,7 @@ export default Ember.TextField.extend({
   type: 'text',
 
   didInitAttrs() {
-    var initial = this.get('initialValue')||'';
+    let initial = this.get('initialValue')||'';
     if ( Ember.isArray(initial) )
     {
       this.set('value', ShellQuote.quote(initial));
@@ -17,10 +17,10 @@ export default Ember.TextField.extend({
   },
 
   valueChanged: function() {
-    var out = ShellQuote.parse(this.get('value')||'').map(function(piece) {
-      if ( typeof piece === 'object' && piece && piece.op )
+    let out = ShellQuote.parse(this.get('value')||'').map(function(piece) {
+      if ( typeof piece === 'object' && piece && piece.pattern )
       {
-        return piece.op;
+        return piece.pattern;
       }
       else
       {

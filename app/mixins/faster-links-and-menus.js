@@ -7,7 +7,14 @@ const { getOwner } = Ember;
  * So instead a static <a> and <button> are put in the template and this handles the clicks.
  */
 export default Ember.Mixin.create({
-  resourceActions: Ember.inject.service('resource-actions'),
+  needs           : ['application'],
+  resourceActions : Ember.inject.service('resource-actions'),
+  currentPath     : Ember.computed.alias('application.currentPath'),
+
+  pathObserver: Ember.observer('currentPath', function() {
+    // Make sure that when we change paths, close the action menu
+    Ember.$('body').trigger('click');
+  }),
 
   click(event) {
     var btn = $(event.target).closest('BUTTON');
