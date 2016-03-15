@@ -54,12 +54,16 @@ export default Ember.Service.extend({
     };
 
     var popup = window.open(this.getAuthorizeUrl(true), 'rancherAuth', Util.popupWindowOptions());
-    popup.onBeforeUnload = function() {
-      if( !responded )
+    var timer = setInterval(function() {
+      if ( !popup || popup.closed )
       {
-        responded = true;
-        cb('Github access was not authorized');
+        clearInterval(timer);
+        if( !responded )
+        {
+          responded = true;
+          cb({type: 'error', message: 'Github access was not authorized'});
+        }
       }
-    };
+    }, 500);
   },
 });
