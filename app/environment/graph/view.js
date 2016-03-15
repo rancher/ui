@@ -28,6 +28,7 @@ export default Ember.View.extend(ThrottledResize,{
 
   onResize: function() {
     $('#environment-svg').css('top', $('MAIN').position().top + 55 + 'px');
+    $('#environment-svg').css('bottom', $('FOOTER').outerHeight() + 'px');
     if ( this.get('graph') )
     {
       this.renderGraph();
@@ -35,7 +36,7 @@ export default Ember.View.extend(ThrottledResize,{
   },
 
   initGraph: function() {
-    var outer = d3.select("#environment-svg svg");
+    var outer = d3.select("#environment-svg SVG");
     var inner = outer.select("g");
     var zoom = d3.behavior.zoom().on("zoom", function() {
        inner.attr("transform", "translate(" + d3.event.translate + ")" +
