@@ -1,33 +1,13 @@
 import Ember from 'ember';
-
-const CONFIG_TPL = `apiVersion: v1
-kind: Config
-clusters:
-- cluster:
-    api-version: v1
-    server: "%baseUrl%/r/projects/%projectId%/kubernetes/api"
-  name: "%projectName%"
-contexts:
-- context:
-    cluster: "%projectName%"
-    user: "%projectName%"
-  name: "%projectName%"
-current-context: "%projectName%"
-users:
-- name: "%projectName%"
-  user:
-    username: "%publicValue%"
-    password: "%secretValue%"`;
-
-
+import Util from 'ui/utils/util';
 
 export default Ember.Controller.extend({
   access: Ember.inject.service(),
+  endpoint: Ember.inject.service(),
   growl: Ember.inject.service(),
   projects: Ember.inject.service(),
 
   step: 1,
-  kubeconfig: '',
 
   actions: {
     generate() {
@@ -35,25 +15,21 @@ export default Ember.Controller.extend({
 
       var name = this.get('access.identity.name');
       if ( name ) {
-        name = 'kubectl: ' + name;
+        name = 'Docker CLI: ' + name;
       } else {
-        name = 'kubectl';
+        name = 'Docker CLI';
       }
 
       this.get('store').createRecord({
         type: 'apiKey',
         name: name,
-        description: 'Provides workstation access to kubectl'
+        description: 'Provides workstation access to Docker CLI'
       }).save().then((key) => {
-        var config = CONFIG_TPL
-          .replace(/%baseUrl%/g,     window.location.origin)
-          .replace(/%projectName%/g, this.get('projects.current.displayName'))
-          .replace(/%projectId%/g,   this.get('projects.current.id'))
-          .replace(/%publicValue%/g, key.get('publicValue'))
-          .replace(/%secretValue%/g, key.get('secretValue'));
-
-        this.set('kubeconfig', config);
         this.set('step',3);
+        key.waitForState('active').then(() => {
+          Util.download(key.linkFor('certificate'));
+          this.set('step',4);
+        });
       }).catch((err) => {
         this.set('step',1);
         this.get('growl').fromError('Error creating API Key',err);

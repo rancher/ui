@@ -103,6 +103,7 @@ var C = {
     K8S_POD_NAME: 'io.kubernetes.pod.name',
     K8S_KUBECTL: 'io.rancher.k8s.kubectld',
     K8S_API: 'io.rancher.k8s.api-server',
+    SWARM_CLI: 'io.rancher.swarm.cli',
   },
 
   PREFS: {
@@ -174,7 +175,8 @@ var C = {
     API_HOST:        'api$host',
     CATALOG_URL:     'catalog$url',
     VM_ENABLED:      'vm$enabled',
-    HELP_ENABLED:    'help$enabled'
+    HELP_ENABLED:    'help$enabled',
+    SWARM_PORT:      'swarm$tls$port',
   },
 
   USER: {

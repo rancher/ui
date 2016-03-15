@@ -20,6 +20,7 @@ export default Ember.Route.extend({
   model: function(params/*, transition*/) {
     var stack = this.get('store').createRecord({
       type: 'composeProject',
+      templates: {}
     });
 
     var dockerUrl = null;
@@ -43,7 +44,7 @@ export default Ember.Route.extend({
       }).then((hash) => {
         if ( hash.docker.state === 'fulfilled' )
         {
-          stack.set('template', hash.docker.value);
+          stack.set('templates.docker-compose', hash.docker.value);
         }
 
         return stack;

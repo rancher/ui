@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import FilteredSortedArrayProxy from 'ui/utils/filtered-sorted-array-proxy';
 
 export default FilteredSortedArrayProxy.extend({

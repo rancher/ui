@@ -14,7 +14,7 @@ export default Ember.Route.extend({
         }
 
         var labels = container.get('labels')||{};
-        if ( labels['docker-compose label']+'' === 'true' )
+        if ( labels[C.LABEL.SWARM_CLI]+'' === 'true' )
         {
           inst = container;
           break;
@@ -24,13 +24,13 @@ export default Ember.Route.extend({
       if ( inst )
       {
         return Ember.Object.create({
-          command: ['/bin/bash','-l','-c','echo "# Run docker-compose commands inside here\n# e.g. docker-compose up\n"; TERM=xterm-256color /bin/bash'],
+          command: ['/bin/bash','-l','-c','echo "# Run docker or docker-compose commands inside here\n# e.g. docker-compose up\n"; TERM=xterm-256color /bin/bash'],
           instance: inst,
         });
       }
       else
       {
-        return Ember.RSVP.reject('Unable to find an active docker-compose container');
+        return Ember.RSVP.reject('Unable to find an active Docker CLI container');
       }
     });
   },
