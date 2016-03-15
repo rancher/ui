@@ -253,12 +253,12 @@ export default Ember.Mixin.create({
       if ( onlyOfType )
       {
         // Strict User, only those with type actually == user
-        if ( (onlyOfType == 'strictUser' && type !== 'user' ) ) {
+        if ( (onlyOfType === 'strictUser' && type !== 'user' ) ) {
           return;
         }
 
         // Soft user, user + system things that don't have UI controls
-        if ( onlyOfType == 'user' &&  !isSoftUser(type, key) ) {
+        if ( onlyOfType === 'user' &&  !isSoftUser(type, key) ) {
           return;
         }
 
