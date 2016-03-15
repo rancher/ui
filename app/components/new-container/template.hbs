@@ -91,108 +91,105 @@
     {{/if}}
   </section>
 
-  {{#advanced-section advanced=advanced}}
-    <section>
-      <ul class="nav nav-tabs nav-tabs-well shadowed" style="display: inline-block" role="tablist">
-        {{#if isVm}}
-          <li role="tab" aria-controls="panel" class="tab" data-section="disks" {{action "selectTab" "disks"}}><a href="#">Disks</a></li>
-          <li role="tab" aria-controls="panel" class="tab" data-section="userdata" {{action "selectTab" "userdata"}}><a href="#">User Data</a></li>
-        {{else}}
-          <li role="tab" aria-controls="panel" class="tab" data-section="command" {{action "selectTab" "command"}}><a href="#">Command</a></li>
-          <li role="tab" aria-controls="panel" class="tab" data-section="volumes" {{action "selectTab" "volumes"}}><a href="#">Volumes</a></li>
-          <li role="tab" aria-controls="panel" class="tab" data-section="network" {{action "selectTab" "network"}}><a href="#">Networking</a></li>
-          <li role="tab" aria-controls="panel" class="tab" data-section="security" {{action "selectTab" "security"}}><a href="#">Security/Host</a></li>
-        {{/if}}
-
-        <li role="tab" aria-controls="panel" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}><a href="#">Health Check</a></li>
-        <li role="tab" aria-controls="panel" class="tab" data-section="labels" {{action "selectTab" "labels"}}><a href="#">Labels</a></li>
-        <li role="tab" aria-controls="panel" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}><a href="#">Scheduling</a></li>
-      </ul>
-
-    <div class="horizontal-form well" role="tabpanel">
+  <section>
+    <ul class="nav nav-tabs nav-tabs-well shadowed" style="display: inline-block" role="tablist">
       {{#if isVm}}
-        <div class="section container-fluid" data-section="disks">
-          {{form-disks instance=launchConfig availableDrivers=storageDriverChoices errors=diskErrors}}
-        </div>
-
-        <div class="section container-fluid" data-section="userdata">
-          {{form-userdata instance=launchConfig}}
-        </div>
+        <li role="tab" aria-controls="panel" class="tab" data-section="disks" {{action "selectTab" "disks"}}><a href="#">Disks</a></li>
+        <li role="tab" aria-controls="panel" class="tab" data-section="userdata" {{action "selectTab" "userdata"}}><a href="#">User Data</a></li>
       {{else}}
-        <div class="section container-fluid" data-section="command">
-          {{form-command
-            instance=launchConfig
-            initialLabels=launchConfig.labels
-            errors=commandErrors
-            isService=isService
-            setLabels=(action 'setLabels' 'command')
-          }}
-        </div>
-
-        <div class="section container-fluid" data-section="volumes">
-          {{form-volumes
-            instance=launchConfig
-            isService=isService
-            service=service
-            primaryService=primaryService
-            launchConfigIndex=launchConfigIndex
-            errors=volumeErrors
-            allHosts=allHosts}}
-        </div>
-
-        <div class="section container-fluid" data-section="network">
-          {{form-networking
-            instance=launchConfig
-            errors=networkingErrors
-            allHosts=allHosts
-            service=service
-            isService=isService
-            initialLabels=launchConfig.labels
-            setLabels=(action 'setLabels' 'networking')
-          }}
-        </div>
-
-        <div class="section" data-section="security">
-          {{form-security instance=launchConfig errors=securityErrors}}
-        </div>
+        <li role="tab" aria-controls="panel" class="tab" data-section="command" {{action "selectTab" "command"}}><a href="#">Command</a></li>
+        <li role="tab" aria-controls="panel" class="tab" data-section="volumes" {{action "selectTab" "volumes"}}><a href="#">Volumes</a></li>
+        <li role="tab" aria-controls="panel" class="tab" data-section="network" {{action "selectTab" "network"}}><a href="#">Networking</a></li>
+        <li role="tab" aria-controls="panel" class="tab" data-section="security" {{action "selectTab" "security"}}><a href="#">Security/Host</a></li>
       {{/if}}
 
-      <div class="section container-fluid" data-section="healthcheck">
-        {{form-healthcheck isService=isService healthCheck=launchConfig.healthCheck errors=healthCheckErrors}}
+      <li role="tab" aria-controls="panel" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}><a href="#">Health Check</a></li>
+      <li role="tab" aria-controls="panel" class="tab" data-section="labels" {{action "selectTab" "labels"}}><a href="#">Labels</a></li>
+      <li role="tab" aria-controls="panel" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}><a href="#">Scheduling</a></li>
+    </ul>
+
+  <div class="horizontal-form well" role="tabpanel">
+    {{#if isVm}}
+      <div class="section container-fluid" data-section="disks">
+        {{form-disks instance=launchConfig availableDrivers=storageDriverChoices errors=diskErrors}}
       </div>
 
-      <div class="section" data-section="labels">
-        {{form-user-labels
+      <div class="section container-fluid" data-section="userdata">
+        {{form-userdata instance=launchConfig}}
+      </div>
+    {{else}}
+      <div class="section container-fluid" data-section="command">
+        {{form-command
+          instance=launchConfig
           initialLabels=launchConfig.labels
-          setLabels=(action 'setLabels' 'user')
-        }}
-      </div>
-
-      <div class="section" data-section="scheduling">
-        {{form-scheduling
+          errors=commandErrors
           isService=isService
-          isGlobal=isGlobal
-          isVm=isVm
-          initialHostId=launchConfig.requestedHostId
-          initialLabels=launchConfig.labels
-          errors=schedulingErrors
-          allHosts=allHosts
-          setLabels=(action 'setLabels' 'scheduling')
-          setGlobal=(action 'setGlobal')
-          setRequestedHost=(action 'setRequestedHostId')
+          setLabels=(action 'setLabels' 'command')
         }}
       </div>
 
+      <div class="section container-fluid" data-section="volumes">
+        {{form-volumes
+          instance=launchConfig
+          isService=isService
+          service=service
+          primaryService=primaryService
+          launchConfigIndex=launchConfigIndex
+          errors=volumeErrors
+          allHosts=allHosts}}
+      </div>
+
+      <div class="section container-fluid" data-section="network">
+        {{form-networking
+          instance=launchConfig
+          errors=networkingErrors
+          allHosts=allHosts
+          service=service
+          isService=isService
+          initialLabels=launchConfig.labels
+          setLabels=(action 'setLabels' 'networking')
+        }}
+      </div>
+
+      <div class="section" data-section="security">
+        {{form-security instance=launchConfig errors=securityErrors}}
+      </div>
+    {{/if}}
+
+    <div class="section container-fluid" data-section="healthcheck">
+      {{form-healthcheck isService=isService healthCheck=launchConfig.healthCheck errors=healthCheckErrors}}
     </div>
-    </section>
-  {{/advanced-section}}
+
+    <div class="section" data-section="labels">
+      {{form-user-labels
+        initialLabels=launchConfig.labels
+        setLabels=(action 'setLabels' 'user')
+      }}
+    </div>
+
+    <div class="section" data-section="scheduling">
+      {{form-scheduling
+        isService=isService
+        isGlobal=isGlobal
+        isVm=isVm
+        initialHostId=launchConfig.requestedHostId
+        initialLabels=launchConfig.labels
+        errors=schedulingErrors
+        allHosts=allHosts
+        setLabels=(action 'setLabels' 'scheduling')
+        setGlobal=(action 'setGlobal')
+        setRequestedHost=(action 'setRequestedHostId')
+      }}
+    </div>
+
+  </div>
+  </section>
 </div>
 
 {{#if (and isService (not isSidekick))}}
   {{#each service.secondaryLaunchConfigs as |slc index|}}
     <div data-launchindex="{{index}}" class="hide">
       {{new-container
-        advanced=advanced
         isService=true
         isSidekick=true
         isUpgrade=isUpgrade

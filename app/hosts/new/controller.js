@@ -38,6 +38,12 @@ export default Ember.Controller.extend({
 
   lastRoute: null,
 
+  actions: {
+    switchDriver(name) {
+      this.replaceRoute('hosts.new.'+name);
+    }
+  },
+
   setDefaultDriver: function() {
     this.set('lastRoute','hosts.new.' + defaultDriver);
   }.on('init'),
@@ -47,11 +53,13 @@ export default Ember.Controller.extend({
     var has = store.hasRecordFor.bind(store,'schema');
 
     return driverChoices.filter((driver) => {
+      Ember.set(driver,'active', 'hosts.new.'+driver.name === this.get('lastRoute'));
+
       if ( driver.schema ) {
         return has(driver.schema.toLowerCase());
       } else {
         return true;
       }
     }).sortBy('sort','label');
-  }.property(),
+  }.property('lastRoute'),
 });

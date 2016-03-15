@@ -6,6 +6,29 @@ const USER = 'user';
 const SYSTEM = 'system';
 const AFFINITY = 'affinity';
 
+function isSoftUser(type,key) {
+  // Include actual user labels
+  if ( type === USER )
+  {
+    return true;
+  }
+
+  // Don't include any affinity labels
+  if ( type === AFFINITY )
+  {
+    return false;
+  }
+
+  // Don't include any system labels that are blacklisted (because they have their own controls, like global)
+  if ( C.SYSTEM_LABELS_WITH_CONTROL.indexOf(key) >= 0 )
+  {
+    return false;
+  }
+
+  // Include anythign else
+  return true;
+}
+
 export default Ember.Mixin.create({
   labelArray: null,
 
@@ -96,29 +119,7 @@ export default Ember.Mixin.create({
   // User labels are actual user ones, plus system ones that have no controls in the UI so they are manually entered.
   userLabelArray: function() {
     return (this.get('labelArray')||[]).filter((item) => {
-      var type = item.get('type');
-
-      // Include actual user labels
-      if ( type === USER )
-      {
-        return true;
-      }
-
-      // Don't include any affinity labels
-      if ( type === AFFINITY )
-      {
-        return false;
-      }
-
-      var key = item.get('key');
-
-      // Don't include any system labels that are blacklisted (because they have their own controls, like global)
-      if ( C.SYSTEM_LABELS_WITH_CONTROL.indexOf(key) >= 0 )
-      {
-        return false;
-      }
-
-      return true;
+      return isSoftUser(item.get('type'), item.get('key'));
     });
   }.property('labelArray.@each.type'),
 
@@ -249,10 +250,22 @@ export default Ember.Mixin.create({
         return;
       }
 
-      if ( onlyOfType && type !== onlyOfType )
+      if ( onlyOfType )
       {
-        // Skip labels of the wrong type
+        // Strict User, only those with type actually == user
+        if ( (onlyOfType === 'strictUser' && type !== 'user' ) ) {
+          return;
+        }
+
+        // Soft user, user + system things that don't have UI controls
+        if ( onlyOfType === 'user' &&  !isSoftUser(type, key) ) {
+          return;
+        }
+
+        // Generally the wrong type, for system or affinity
+        if ( onlyOfType !== type ) {
         return;
+        }
       }
 
       if ( onlyKeys && onlyKeys.indexOf(key) === -1 )

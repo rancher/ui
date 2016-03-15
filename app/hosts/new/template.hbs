@@ -9,7 +9,7 @@
   <section class="well">
     <div class="nav nav-boxes checked-active">
       {{#each drivers as |driver|}}
-        {{#link-to (concat "hosts.new." driver.name) alt=driver.label class=(concat "nav-box-item driver machine-driver " driver.css) href=false}}{{/link-to}}
+        <a {{action "switchDriver" driver.name}} alt={{driver.label}} class="nav-box-item driver machine-driver {{driver.css}} {{if driver.active 'active'}}" href="#"></a>
       {{/each}}
     </div>
   </section>

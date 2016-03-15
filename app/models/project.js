@@ -118,7 +118,7 @@ var Project = Resource.extend(PolledResource, {
     return this.get('state') === 'active' && !this.get('isDefault');
   }.property('state','isDefault'),
 
-  displayClustering: function() {
+  displayOrchestration: function() {
     if ( this.get('kubernetes') )
     {
       return 'Kubernetes';

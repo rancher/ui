@@ -57,24 +57,42 @@ export default Ember.Component.extend({
       {
         var match;
         var host = '';
-        var lines = requestLine.split(/[\r\n]+/);
-        if ( lines.length > 1 )
-        {
-          match = lines[1].match(/^Host:\\ (.*)$/);
-          if ( match )
-          {
-            host = match[1];
-          }
-        }
 
-        match = lines[0].match(/^([^\s]+)\s+(.*)\s+(HTTP\/[0-9\.]+)/);
-        this.setProperties({
-          checkType: HTTP,
-          uriMethod: match[1],
-          uriPath: match[2],
-          uriVersion: match[3],
-          uriHost: host,
-        });
+        if ( requestLine.indexOf('"') > 0 )
+        {
+          //haproxy 1.6+ with quoted request
+          match = requestLine.match(/([^\s]+)\s+"?([^"]*)"?\s+"(HTTP\/[0-9\.]+)([^"]+)"/m);
+          var match2 = match[4].trim().match(/^Host:\s+(.*)$/);
+          this.setProperties({
+            checkType: HTTP,
+            uriMethod: match[1],
+            uriPath: match[2],
+            uriVersion: match[3],
+            uriHost: match2[1],
+          });
+        }
+        else
+        {
+          //haproxy <= 1.5
+          var lines = requestLine.split(/[\r\n]+/);
+          if ( lines.length > 1 )
+          {
+            match = lines[1].match(/^Host:\\ (.*)$/);
+            if ( match )
+            {
+              host = match[1];
+            }
+          }
+
+          match = lines[0].match(/^([^\s]+)\s+(.*)\s+(HTTP\/[0-9\.]+)/);
+          this.setProperties({
+            checkType: HTTP,
+            uriMethod: match[1],
+            uriPath: match[2],
+            uriVersion: match[3],
+            uriHost: host,
+          });
+        }
       }
       else
       {
@@ -136,8 +154,8 @@ export default Ember.Component.extend({
         var requestLine='';
         if ( path )
         {
-          requestLine = method + ' ' + path + ' "' + version;
-          if ( host )
+          requestLine = method + ' "' + path + '" "' + version;
+          if ( host && this.get('showUriHost') )
           {
             requestLine += '\r\nHost: ' + host;
           }

@@ -29,6 +29,11 @@ export default Ember.Mixin.create({
     this.set('pollTimer', null);
   },
 
+  needsPolling: function() {
+    return ( this.get('transitioning') === 'yes' ) ||
+           ( this.get('state') === 'requested' );
+  }.property('transitioning','state'),
+
   transitioningChanged: function() {
     var delay = this.constructor.pollTransitioningDelay;
     var interval = this.constructor.pollTransitioningInterval;
@@ -36,14 +41,12 @@ export default Ember.Mixin.create({
     // This resource doesn't want polling
     if ( !delay || !interval )
     {
-      //console.log('return 1', this.toString());
       return;
     }
 
     // This resource isn't transitioning or isn't in the store
-    if ( this.get('transitioning') !== 'yes' || !this.isInStore() )
+    if ( !this.get('needsPolling') || !this.isInStore() )
     {
-      //console.log('return 2', this.toString());
       this.clearPoll();
       this.clearDelay();
       return;
@@ -52,14 +55,10 @@ export default Ember.Mixin.create({
     // We're already polling or waiting, just let that one finish
     if ( this.get('delayTimer') )
     {
-      //console.log('return 3', this.toString());
       return;
     }
 
-    //console.log('Transitioning poll', this.toString());
-
     this.set('delayTimer', setTimeout(function() {
-      //console.log('1 expired', this.toString());
       this.transitioningPoll();
     }.bind(this), Util.timerFuzz(delay)));
   }.observes('transitioning'),
@@ -69,10 +68,9 @@ export default Ember.Mixin.create({
   }.property(),
 
   transitioningPoll: function() {
-    //console.log('Maybe polling', this.toString(), this.get('transitioning'), this.isInStore());
     this.clearPoll();
 
-    if ( this.get('transitioning') !== 'yes' || !this.isInStore() )
+    if ( !this.get('needsPolling') || !this.isInStore() )
     {
       return;
     }
@@ -80,7 +78,7 @@ export default Ember.Mixin.create({
     //console.log('Polling', this.toString());
     this.reload(this.get('reloadOpts')).then(() => {
       //console.log('Poll Finished', this.toString());
-      if ( this.get('transitioning') === 'yes' )
+      if ( this.get('needsPolling') )
       {
         //console.log('Rescheduling', this.toString());
         this.set('pollTimer', setTimeout(function() {
