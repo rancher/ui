@@ -34,6 +34,9 @@
             <small><strong>License:</strong> {{templateResource.license}}</small>
           </div>
         {{/if}}
+        {{#if templateResource.links.project}}
+            <small><strong>Project URL:</strong> {{templateResource.links.project}}</small>
+        {{/if}}
       </div>
       {{#if readmeContent}}
         <div class="col-sm-12 col-md-9" style="overflow-y: auto; max-height: 500px;">
@@ -131,7 +134,7 @@
 
     <section>
       <div class="over-hr"><span {{action "togglePreview"}}>Preview <i class="icon {{if previewOpen 'icon-chevron-up' 'icon-chevron-down'}}"></i></span></div>
-      
+
       {{#if previewOpen}}
         <ul class="nav nav-tabs nav-tabs-well" role="tablist">
           {{#each selectedTemplateModel.filesAsArray as |file|}}

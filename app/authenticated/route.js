@@ -3,6 +3,8 @@ import C from 'ui/utils/constants';
 import Service from 'ui/models/service';
 import Subscribe from 'ui/mixins/subscribe';
 
+const CHECK_AUTH_TIMER = 600000;
+
 export default Ember.Route.extend(Subscribe, {
   prefs     : Ember.inject.service(),
   projects  : Ember.inject.service(),
@@ -12,11 +14,25 @@ export default Ember.Route.extend(Subscribe, {
 
   beforeModel(transition) {
     this._super.apply(this,arguments);
-    if ( this.get('access.enabled') && !this.get('access.isLoggedIn') )
-    {
+
+    if ( this.get('access.enabled') && !this.get('access.isLoggedIn') ) {
       transition.send('logout', transition, false);
       return Ember.RSVP.reject('Not logged in');
+    } else {
+      if (this.get('access.enabled')) {
+        this.testAuthToken();
+      }
     }
+  },
+
+  testAuthToken: function() {
+    Ember.run.later(() => {
+      this.get('access').testAuth().then((/* res */) => {
+        this.testAuthToken();
+      }, (/* err */) => {
+        this.send('logout',null,true);
+      });
+    }, CHECK_AUTH_TIMER);
   },
 
   model(params, transition) {
@@ -141,6 +157,7 @@ export default Ember.Route.extend(Subscribe, {
   },
 
   actions: {
+
     error(err,transition) {
       // Unauthorized error, send back to login screen
       if ( err.status === 401 )

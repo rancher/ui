@@ -10,6 +10,7 @@ Router.map(function() {
   this.route('ie');
   this.route('index');
   this.route('failWhale', {path: '/fail'});
+  this.route('not-found', {path: '*path'});
 
   this.route('login');
   this.route('logout');

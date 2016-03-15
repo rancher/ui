@@ -3,22 +3,35 @@ import C from 'ui/utils/constants';
 import { denormalizeName } from 'ui/services/settings';
 
 export default Ember.Controller.extend({
-  github: Ember.inject.service(),
-  endpoint: Ember.inject.service(),
-  access: Ember.inject.service(),
-  settings: Ember.inject.service(),
+  github         : Ember.inject.service(),
+  endpoint       : Ember.inject.service(),
+  access         : Ember.inject.service(),
+  settings       : Ember.inject.service(),
 
-  confirmDisable: false,
-  errors: null,
-  testing: false,
-  saving: false,
-  saved: true,
-  error: null,
-  originalModel: null,
+  confirmDisable : false,
+  errors         : null,
+  testing        : false,
+  saving         : false,
+  saved          : true,
+  error          : null,
+  originalModel  : null,
 
-  organizations: null,
-  addUserInput: '',
-  addOrgInput: '',
+  organizations  : null,
+  addUserInput   : '',
+  addOrgInput    : '',
+  useNonSecure   : false,
+  scheme         : Ember.computed.alias('model.scheme'),
+  saveDisabled   : Ember.computed.or('saving','saved'),
+  isRestricted   : Ember.computed.equal('model.accessMode','restricted'),
+  wasRestricted  : Ember.computed.equal('originalModel.accessMode','restricted'),
+
+  useSSL: Ember.observer('useNonSecure', function(){
+    if (this.get('useNonSecure')) {
+      this.set('scheme', 'http://');
+    } else {
+      this.set('scheme', 'https://');
+    }
+  }),
 
   createDisabled: function() {
     if ( this.get('isEnterprise') && !this.get('model.hostname') )
@@ -32,18 +45,15 @@ export default Ember.Controller.extend({
     }
   }.property('model.{clientId,clientSecret,hostname}','testing','isEnterprise'),
 
-  saveDisabled: Ember.computed.or('saving','saved'),
-  isRestricted: Ember.computed.equal('model.accessMode','restricted'),
 
-  wasRestricted: Ember.computed.equal('originalModel.accessMode','restricted'),
   wasRestrictedMsg: function() {
-    var users = this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_USER).get('length');
-    var orgs = this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_ORG).get('length');
-    var enterprise = !!this.get('originalModel.hostname');
+    let users = this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_USER).get('length');
+    let orgs = this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_ORG).get('length');
+    let enterprise = !!this.get('originalModel.hostname');
 
-    var github = 'GitHub' + ( enterprise ? ' Enterprise' : '');
+    let github = 'GitHub' + ( enterprise ? ' Enterprise' : '');
 
-    var str = 'project members';
+    let str = 'project members';
     if ( users )
     {
       str += (orgs ? ', ' : ' and ') +  users + ' ' + github + ' user' + (users === 1 ? '' : 's');
@@ -61,8 +71,8 @@ export default Ember.Controller.extend({
 
   wasShowing: false,
   showingAccessControl: function() {
-    var show = this.get('wasShowing');
-    var restricted = this.get('isRestricted');
+    let show = this.get('wasShowing');
+    let restricted = this.get('isRestricted');
 
     if ( restricted )
     {
@@ -95,9 +105,13 @@ export default Ember.Controller.extend({
 
   isEnterprise: false,
   enterpriseDidChange: function() {
-    if ( !this.get('isEnterprise') )
-    {
+    if ( !this.get('isEnterprise') ) {
       this.set('hostname', null);
+    } else {
+      if (this.get('model.scheme') === 'http://') {
+        this.set('useNonSecure', true);
+      }
+
     }
   }.observes('isEnterprise'),
 
@@ -107,8 +121,8 @@ export default Ember.Controller.extend({
   ],
 
   hostnameDidChange: function() {
-    var cur = this.get('model.hostname')||'';
-    var neu = cur.replace(/^https?:\/\//ig,'').replace(/\/.*$/,'');
+    let cur = this.get('model.hostname')||'';
+    let neu = cur.replace(/^https?:\/\//ig,'').replace(/\/.*$/,'');
     if ( cur !== neu )
     {
       this.set('hostname', neu);
@@ -120,7 +134,7 @@ export default Ember.Controller.extend({
       this.send('clearError');
       this.set('testing', true);
 
-      var model = this.get('model');
+      let model = this.get('model');
       model.setProperties({
         'clientId': model.get('clientId').trim(),
         'clientSecret': model.get('clientSecret').trim(),
@@ -157,11 +171,11 @@ export default Ember.Controller.extend({
 
     gotCode: function(code) {
       this.get('access').login(code).then(res => {
-        var auth = JSON.parse(res.xhr.responseText);
+        let auth = JSON.parse(res.xhr.responseText);
         this.send('authenticationSucceeded', auth);
       }).catch(res => {
         // Github auth succeeded but didn't get back a token
-        var err = JSON.parse(res.xhr.responseText);
+        let err = JSON.parse(res.xhr.responseText);
         this.send('gotError', err);
       });
     },
@@ -170,14 +184,14 @@ export default Ember.Controller.extend({
       this.send('clearError');
       this.set('organizations', auth.orgs);
 
-      var model = this.get('model').clone();
+      let model = this.get('model').clone();
       model.setProperties({
         'enabled': true,
         'accessMode': 'restricted',
         'allowedIdentities': [auth.userIdentity],
       });
 
-      var url = window.location.href;
+      let url = window.location.href;
 
       model.save().then(() => {
         // Set this to true so the token will be sent with the request
@@ -238,7 +252,7 @@ export default Ember.Controller.extend({
       this.set('saving', true);
       this.set('saved', false);
 
-      var model = this.get('model');
+      let model = this.get('model');
       model.save().then(() => {
         this.get('originalModel').replaceWith(model);
         this.set('originalModel.allowedIdentities', this.get('model.allowedIdentities').slice());
@@ -283,7 +297,7 @@ export default Ember.Controller.extend({
     disable: function() {
       this.send('clearError');
 
-      var model = this.get('model').clone();
+      let model = this.get('model').clone();
       model.setProperties({
         'allowedIdentities': [],
         'accessMode': 'unrestricted',
