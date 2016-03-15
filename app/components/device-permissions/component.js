@@ -19,6 +19,7 @@ export default Ember.Component.extend({
       });
       this.set('selection', selection);
     }
+    this.selectionDidChange();
   },
 
   selectionAsString: '',

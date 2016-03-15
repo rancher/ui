@@ -86,10 +86,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       this.set('service.scale', scale);
     },
 
-    toggleAdvanced() {
-      this.set('advanced', !this.get('advanced'));
-    },
-
     setImage(uuid) {
       this.set('launchConfig.imageUuid', uuid);
     },
