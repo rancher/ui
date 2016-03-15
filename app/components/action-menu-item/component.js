@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 import { isAlternate } from 'ui/utils/platform';
 
 export default Ember.Component.extend({
@@ -11,6 +12,8 @@ export default Ember.Component.extend({
 
   tagName           : 'a',
   classNameBindings : ['enabled::hide'],
+  attributeBindings : ['tabindex'],
+  tabindex          : 0,
 
   click : function(event) {
 
@@ -21,6 +24,12 @@ export default Ember.Component.extend({
     else
     {
       this.sendAction('action', this.get('actionArg'));
+    }
+  },
+
+  keyPress: function(event) {
+    if ( [C.KEY.CR,C.KEY.LF].indexOf(event.which) >= 0 ) {
+      this.click(event);
     }
   },
 
