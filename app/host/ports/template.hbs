@@ -1,0 +1,40 @@
+<table class="grid fixed" style="margin-bottom: 0;">
+  <thead>
+    <tr>
+      {{sortable-th sortable=this action="changeSort" name="ip" label="IP Address"}}
+      {{sortable-th sortable=this action="changeSort" name="port"}}
+      {{sortable-th sortable=this action="changeSort" name="service"}}
+      {{sortable-th sortable=this action="changeSort" name="container"}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#each arranged as |port|}}
+      <tr>
+        <td>{{port.ipAddress}}</td>
+        <td>{{port.port}}</td>
+        <td>
+          {{#if port.service}}
+            <i class="{{port.service.stateIcon}} {{port.service.stateColor}}" />
+            {{#link-to "service" port.service.environmentId port.service.id}}{{port.service.displayName}}{{/link-to}}
+          {{else}}
+            <span class="text-muted">-</span>
+          {{/if}}
+        </td>
+        <td>
+          {{#if port.instance}}
+            <i class="{{port.instance.stateIcon}} {{port.instance.stateColor}}" />
+            {{#if (eq port.instance.kind "virtualMachine")}}
+              {{#link-to "virtualmachine" port.instance.id}}{{port.instance.displayName}}{{/link-to}}
+            {{else}}
+              {{#link-to "container" port.instance.id}}{{port.instance.displayName}}{{/link-to}}
+            {{/if}}
+          {{else}}
+            <span class="text-muted">-</span>
+          {{/if}}
+        </td>
+      </tr>
+    {{else}}
+      <tr><td colspan="4" class="text-center text-muted">This host does not have any ports.</td></tr>
+    {{/each}}
+  </tbody>
+</table>

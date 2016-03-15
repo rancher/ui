@@ -74,6 +74,7 @@ Router.map(function() {
 
           this.route('host', {path: '/:host_id', resetNamespace: true}, function() {
             this.route('containers');
+            this.route('ports');
             this.route('storage', {path: '/storage'});
             this.route('labels');
           });
