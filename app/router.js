@@ -16,7 +16,6 @@ Router.map(function() {
   this.route('logout');
   this.route('authenticated', {path: '/'}, function() {
 
-
     // Settings
     this.route('settings', {resetNamespace: true}, function() {
       this.route('projects', {path: '/env'}, function() {
@@ -179,11 +178,6 @@ Router.map(function() {
           this.route('pods', {path: '/pods'}, function() {
             this.route('pod', {path: '/:name'});
           });
-        });
-
-        this.route('catalog', {path: '/catalog'}, function() {
-          this.route('index', {path: '/'});
-          this.route('launch', {path: '/:template'});
         });
       });
 
