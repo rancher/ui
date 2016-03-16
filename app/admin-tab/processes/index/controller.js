@@ -57,34 +57,6 @@ export default Ember.Controller.extend(Sortable, {
       });
       Ember.$('#resource-type').val('');
     },
-
-    showResource(resource) {
-      this.get('store').find(resource.resourceType, resource.resourceId).then((response) => {
-
-        let type          = response.type;
-        let accountId     = response.accountId;
-        let id            = response.id;
-        let environmentId = response.environmentId;
-
-        switch (type) {
-          case 'container':
-          case 'instance':
-            window.open(`/env/${accountId}/infra/containers/${id}`);
-            break;
-          case 'environment':
-            window.open(`/env/${accountId}/apps/${id}`);
-            break;
-          case 'host':
-            window.open(`/env/${accountId}/infra/hosts/${id}/containers`);
-            break;
-          case 'service':
-            window.open(`/env/${accountId}/apps/${environmentId}/services/${id}`);
-            break;
-          default:
-            break;
-        }
-      });
-    }
   },
 
   parseParams: Ember.on('init', function() {
