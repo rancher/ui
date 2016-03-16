@@ -203,7 +203,6 @@ var Service = Resource.extend({
     'serviceLinks',
     '_environment',
     '_environmentState',
-    'instances'
   ],
 
   init: function() {
