@@ -1,35 +1,28 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  choices: [
-    {value: 'r', label: 'read'},
-    {value: 'w', label: 'write'},
-    {value: 'm', label: 'mknod'}
-  ],
+  rSelected: false,
+  wSelected: false,
+  mSelected: false,
 
   selection: null,
 
   init: function() {
     this._super();
-    if ( !this.get('selection') )
-    {
-      var parts = this.get('selectionAsString').split('');
-      var selection = this.get('choices').filter(function(choice) {
-        return parts.indexOf(choice.value) >= 0;
-      });
-      this.set('selection', selection);
-    }
-    this.selectionDidChange();
+    var sel = this.get('initialSelection');
+    this.setProperties({
+      rSelected: sel.indexOf('r') >= 0,
+      wSelected: sel.indexOf('w') >= 0,
+      mSelected: sel.indexOf('m') >= 0,
+    });
   },
 
-  selectionAsString: '',
-  selectionDidChange: function() {
-    var str = '';
-    this.get('selection').forEach(function(choice) {
-      str += choice.value;
-    });
-    this.set('selectionAsString', str);
-  }.observes('selection.[]'),
+  actions: {
+    selectChanged(x, ele) {
+      var str = $(ele.target).val().join('');
+      this.sendAction('changed', str);
+    },
+  },
 
   didInsertElement: function() {
     var moreClass = this.get('buttonClass')||'';

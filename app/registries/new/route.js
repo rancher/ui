@@ -25,4 +25,11 @@ export default Ember.Route.extend({
     controller.set('model',model);
     controller.send('selectDriver','dockerhub');
   },
+
+  resetController: function (controller, isExiting/*, transition*/) {
+    if (isExiting)
+    {
+      controller.set('errors', null);
+    }
+  },
 });
