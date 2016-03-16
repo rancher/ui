@@ -151,11 +151,17 @@
       {{/if}}
 
       <li>
-        {{#if hasKubernetes}}
-          {{#link-to "applications-tab" projectId (query-params which="not-kubernetes") id="applications-tab"}}System{{/link-to}}
-        {{else}}
-          {{#link-to "applications-tab" projectId id="applications-tab"}}Applications{{/link-to}}
-        {{/if}}
+        {{#link-to "applications-tab" projectId id="applications-tab"}}
+          {{#if hasKubernetes}}
+            System
+          {{else}}
+            {{#if hasSwarm}}
+              Swarm
+            {{else}}
+              Applications
+            {{/if}}
+          {{/if}}
+        {{/link-to}}
         <ul class="hidden-md hidden-lg">
           {{partial 'tabs/applications-tab'}}
         </ul>
@@ -163,9 +169,6 @@
 
       <li>
         {{#link-to "catalog-tab" projectId id="catalog-tab"}}Catalog{{/link-to}}
-        <ul class="hidden-md hidden-lg">
-          {{partial 'tabs/catalog-tab'}}
-        </ul>
       </li>
 
       <li>
@@ -240,14 +243,14 @@
       </li>
 
     </ul>
-  </div> 
+  </div>
 <!--end user btn-->
 
 </div>
 
 <div class="bottom-row clearfix hidden-sm hidden-xs">
   <nav class="pull-left">
-    {{!-- if you're goigng to create a new sub-nav menu create a partial under the 'templates/tabs' folder --}}
+    {{!-- if you're going to create a new sub-nav menu create a partial under the 'templates/tabs' folder --}}
     {{!-- with the same name as the route, e.g. infrastructure-tab has a tabs/infrastructure-tab.hbs --}}
     {{!-- this is so we have have hover over toplevel nav and see secondary nav choices --}}
     {{partial subnavPartial}}

@@ -202,7 +202,8 @@ var Service = Resource.extend({
     'consumedServicesUpdated',
     'serviceLinks',
     '_environment',
-    '_environmentState'
+    '_environmentState',
+    'instances'
   ],
 
   init: function() {

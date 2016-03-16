@@ -29,6 +29,8 @@ var ComposeProject = Environment.extend({
 
     return proxy;
   }.property('services'),
+
+  grouping: 'swarm',
 });
 
 export default ComposeProject;

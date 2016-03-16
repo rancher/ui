@@ -119,6 +119,7 @@ Router.map(function() {
 
       // Applications
       this.route('applications-tab', {path: '/apps', resetNamespace: true}, function() {
+        this.route('index', {path: '/'});
         this.route('splash', {path: '/welcome', resetNamespace: true});
         this.route('service.new', {path: '/add-service', resetNamespace: true});
         this.route('service.new-virtualmachine', {path: '/add-vm-service', resetNamespace: true});
@@ -126,7 +127,7 @@ Router.map(function() {
         this.route('service.new-alias', {path: '/add-alias', resetNamespace: true});
         this.route('service.new-external', {path: '/add-external', resetNamespace: true});
 
-        this.route('environments', {path: '/', resetNamespace: true}, function() {
+        this.route('environments', {path: '/stacks', resetNamespace: true}, function() {
           this.route('index', {path: '/'});
           this.route('new', {path: '/add'});
 
@@ -146,10 +147,15 @@ Router.map(function() {
         });
 
         this.route('compose-projects', function() {
+          this.route('index', {path: '/'});
           this.route('new', {path: '/add'});
           this.route('compose-project', {path: '/:compose_project_id'}, function() {
-            this.route('compose-service', {path: '/:compose_service_id'});
           });
+        });
+
+        this.route('compose-services', function() {
+          this.route('index', {path: '/'});
+          this.route('compose-service', {path: '/:compose_service_id'});
         });
 
         this.route('compose-console');

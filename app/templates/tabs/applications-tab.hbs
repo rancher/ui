@@ -1,14 +1,15 @@
 {{#if hasKubernetes}}
   {{#link-to "environments" project.id (query-params which="not-kubernetes")}}<i class="icon icon-layers"></i>Stacks{{/link-to}}
 {{else}}
-  {{#unless hasSwarm}}
-    {{#link-to "environments" project.id (query-params which="user")}}<i class="icon icon-layers"></i> Stacks{{/link-to}}
-  {{/unless}}
   {{#if hasSwarm}}
     {{#link-to "applications-tab.compose-projects" project.id}}<i class="icon icon-layeredgroup"></i>Projects{{/link-to}}
+    {{#link-to "applications-tab.compose-services" project.id}}<i class="icon icon-layers"></i>Services{{/link-to}}
     {{#link-to "applications-tab.compose-console"  project.id}}<i class="icon icon-terminal"></i>CLI{{/link-to}}
-  {{/if}}
-  {{#if hasSystem}}
-    {{#link-to "environments" project.id (query-params which="system")}}<i class="icon icon-network"></i>System{{/link-to}}
+    {{#link-to "environments" project.id (query-params which="not-swarm")}}<i class="icon icon-network"></i>System{{/link-to}}
+  {{else}}
+    {{#link-to "environments" project.id (query-params which="user")}}<i class="icon icon-layers"></i> Stacks{{/link-to}}
+    {{#if hasSystem}}
+      {{#link-to "environments" project.id (query-params which="system")}}<i class="icon icon-network"></i>System{{/link-to}}
+    {{/if}}
   {{/if}}
 {{/if}}

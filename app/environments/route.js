@@ -34,7 +34,12 @@ export default Ember.Route.extend({
   },
 
   resetController: function (controller/*, isExisting, transition*/) {
-    var hasK8s = this.controllerFor('authenticated').get('hasKubernetes');
-    controller.set('which', (hasK8s ? C.EXTERNALID.KIND_NOT_KUBERNETES : C.EXTERNALID.KIND_USER));
+    if ( this.controllerFor('authenticated').get('hasKubernetes') ) {
+      controller.set('which', C.EXTERNALID.KIND_NOT_KUBERNETES);
+    } else if ( this.controllerFor('authenticated').get('hasSwarm') ) {
+      controller.set('which', C.EXTERNALID.KIND_NOT_SWARM);
+    } else {
+      controller.set('which', C.EXTERNALID.KIND_USER);
+    }
   },
 });

@@ -1,11 +1,11 @@
 <section class="header">
   <h1>
-    {{#unless (or (eq which 'not-kubernetes') (eq which 'user'))}}{{uc-first which}} {{/unless}}Stacks
+    {{#if showWhich}}{{uc-first which}} {{/if}}Stacks
   </h1>
 
-  {{#unless (or (not (or (eq which 'not-kubernetes') (eq which 'user'))) single)}}
+  {{#if showAdd}}
     {{#link-to "environments.new" classNames="btn btn-sm btn-primary"}}Add Stack{{/link-to}}
-  {{/unless}}
+  {{/if}}
 
   <div class="pull-right">
     <label class="text-muted r-pr5" style="font-size: 13px;">Sort By: </label>

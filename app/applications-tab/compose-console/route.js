@@ -24,7 +24,7 @@ export default Ember.Route.extend({
       if ( inst )
       {
         return Ember.Object.create({
-          command: ['/bin/bash','-l','-c','echo "# Run docker or docker-compose commands inside here\n# e.g. docker-compose up\n"; TERM=xterm-256color /bin/bash'],
+          command: ['/bin/bash','-l','-c','echo "# Run docker or docker-compose commands inside here\n# e.g. docker ps\n"; TERM=xterm-256color /bin/bash'],
           instance: inst,
         });
       }

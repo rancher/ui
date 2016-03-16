@@ -2,8 +2,8 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 const DELAY = 250;
-const TABS_WITH_SUB = ['applications-tab','infrastructure-tab', 'k8s-tab', 'admin-tab','catalog-tab'];
-const TABS_WITHOUT = [ 'api-tab', 'help-tab'];
+const TABS_WITH_SUB = ['applications-tab','infrastructure-tab', 'k8s-tab', 'admin-tab'];
+const TABS_WITHOUT = ['catalog-tab', 'api-tab', 'help-tab'];
 const ALL_TABS = TABS_WITH_SUB.concat(TABS_WITHOUT);
 
 export default Ember.Component.extend({

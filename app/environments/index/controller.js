@@ -9,6 +9,7 @@ export default Ember.Controller.extend(Sortable, {
   prefs: Ember.inject.service(),
 
   which: Ember.computed.alias('environments.which'),
+  single: null,
   showAddtlInfo: false,
   selectedService: null,
 
@@ -51,17 +52,35 @@ export default Ember.Controller.extend(Sortable, {
         return obj.get('grouping') !== C.EXTERNALID.KIND_KUBERNETES;
       });
     }
+    else if ( which === C.EXTERNALID.KIND_NOT_SWARM )
+    {
+      return all.filter((obj) => {
+        return obj.get('grouping') !== C.EXTERNALID.KIND_SWARM;
+      });
+    }
     else
     {
       return all.filterBy('grouping', which);
     }
   }.property('model.[]','model.@each.grouping','which'),
 
-
   sortBy: 'state',
   sorts: {
     state: ['stateSort','name','id'],
     name: ['name','id']
   },
+
+  showAdd: function() {
+    if ( this.get('single') )
+    {
+      return false;
+    }
+
+    return !this.get('showWitch');
+  }.property('single','showWitch'),
+
+  showWhich: function() {
+    return [C.EXTERNALID.KIND_NOT_KUBERNETES,C.EXTERNALID.KIND_NOT_SWARM,C.EXTERNALID.KIND_USER].indexOf(this.get('which')) === -1;
+  }.property('single','which'),
 
 });
