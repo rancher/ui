@@ -8,6 +8,7 @@ const DEFAULTS = {
   type: 'instanceHealthCheck',
   interval: 2000,
   responseTimeout: 2000,
+  initializingTimeout: 60000,
   healthyThreshold: 2,
   unhealthyThreshold: 3,
   requestLine: '',
