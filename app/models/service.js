@@ -313,63 +313,6 @@ var Service = Resource.extend({
     this.incrementProperty('consumedServicesUpdated');
   }.observes('consumedServicesWithNames.@each.{name,service}'),
 
-  healthState: function() {
-    var isGlobal = this.get('isGlobalScale');
-    var instances = this.get('instances')||[];
-
-    // There should be one container for the main service + each sidekick, times scale.
-    var expectScale = ((this.get('secondaryLaunchConfigs')||[]).length+1) * this.get('scale');
-
-    // Get the state of each instance
-    var healthyCount = 0;
-    var initCount = 0;
-    var startOnceCount = 0;
-    var instanceCount = instances.get('length');
-    instances.forEach((instance) => {
-      var resource = instance.get('relevantState');
-      var health = instance.get('healthState');
-
-      if ( C.ACTIVEISH_STATES.indexOf(resource) >= 0 )
-      {
-        if ( (health === 'healthy' || health === null) )
-        {
-          healthyCount++;
-        }
-        else if ( C.INITIALIZING_STATES.indexOf(health) >= 0 )
-        {
-          initCount++;
-        }
-      }
-
-      if ( resource === 'started-once' )
-      {
-        startOnceCount++;
-      }
-    });
-
-    if ( startOnceCount && startOnceCount === expectScale )
-    {
-      return 'started-once';
-    }
-    else if (
-      (isGlobal && healthyCount >= instanceCount && instanceCount > 0) || (!isGlobal && healthyCount >= expectScale) )
-    {
-      return 'healthy';
-    }
-    else if ( initCount > 0 )
-    {
-      return 'initializing';
-    }
-    else if ( healthyCount > 0 )
-    {
-      return 'degraded';
-    }
-    else
-    {
-      return 'unhealthy';
-    }
-  }.property('instances.@each.{relevantState,healthState}'),
-
   combinedState: function() {
     var service = this.get('state');
     var health = this.get('healthState');
@@ -587,9 +530,6 @@ Service.reopenClass({
   },
 
   mangleIn: function(data, store) {
-    data['healthStateApi'] = data['healthState'];
-    delete data['healthState'];
-
     if ( data.launchConfig && !data.launchConfig.type )
     {
       data.launchConfig.type = 'launchConfig';

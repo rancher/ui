@@ -120,38 +120,6 @@ var Environment = Resource.extend({
     return out;
   }.property('actionLinks.{remove,purge,exportconfig,finishupgrade,cancelupgrade,rollback,cancelrollback}','canActivate','canDeactivate','externalIdInfo.kind'),
 
-  healthState: function() {
-    // Get the state of each instance
-    var services = this.get('services')||[];
-    var healthy = 0;
-    var unremoved = 0;
-    services.forEach((service) => {
-      var resource = service.get('state');
-      var health = service.get('healthState');
-
-      if ( ['removing','removed','purging','purged'].indexOf(resource) >= 0 )
-      {
-        return;
-      }
-
-      unremoved++;
-
-      if ( C.ACTIVEISH_STATES.indexOf(resource) >= 0 && (health === 'healthy' || health === 'started-once') )
-      {
-        healthy++;
-      }
-    });
-
-    if ( healthy >= unremoved )
-    {
-      return 'healthy';
-    }
-    else
-    {
-      return 'unhealthy';
-    }
-  }.property('services.@each.{state,healthState}'),
-
   combinedState: function() {
     var env = this.get('state');
     var health = this.get('healthState');
@@ -232,12 +200,6 @@ var Environment = Resource.extend({
 });
 
 Environment.reopenClass({
-  mangleIn: function(data) {
-    data['healthStateApi'] = data['healthState'];
-    delete data['healthState'];
-    return data;
-  },
-
   stateMap: {
     'active':             {icon: 'icon icon-layers',          color: 'text-success'},
     'canceled-rollback':  {icon: 'icon icon-life-ring',       color: 'text-info'},
