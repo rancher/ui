@@ -13,7 +13,7 @@ export default Ember.Component.extend({
   clipboardText : null,
 
   isSupported: function() {
-    return !isSafari && this.get('clipboardText.length');
+    return this.get('clipboardText.length') && (!isSafari || document.queryCommandSupported('copy'));
   }.property('clipboardText'),
 
   actions: {

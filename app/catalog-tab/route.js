@@ -32,7 +32,7 @@ export default Ember.Route.extend({
   },
 
   catalogs: null,
-  catalogIds: null,
+  uniqueCatalogIds: null,
 
   templateBase: function() {
     if ( this.get('projects.current.kubernetes') )
@@ -58,7 +58,7 @@ export default Ember.Route.extend({
     return this.get('store').request({url: `${this.get('app.catalogEndpoint')}/catalogs`}).then((response) => {
       this.set('catalogs', response);
       var ids = uniqKeys(response, 'id');
-      this.set('catalogIds', ids);
+      this.set('uniqueCatalogIds', ids);
     });
   },
 
@@ -69,7 +69,7 @@ export default Ember.Route.extend({
     // If the catalogIds dont match we need to go get the other catalog from the store since we do not cache all catalogs
     if ( cache && cache.catalogId === params.catalogId)
     {
-      return filter(cache, params.category, this.get('catalogIds'));
+      return filter(cache, params.category, this.get('uniqueCatalogIds'));
     }
 
     if (params.catalogId) {
@@ -95,7 +95,7 @@ export default Ember.Route.extend({
     return this.get('store').request({url: url}).then((response) => {
       response.catalogId = params.catalogId;
       this.set('cache', response);
-      return filter(response, params.category, this.get('catalogIds'));
+      return filter(response, params.category, this.get('uniqueCatalogIds'));
     });
 
 
@@ -110,7 +110,7 @@ export default Ember.Route.extend({
 
       return Ember.Object.create({
         categories: uniqKeys(data, 'category'),
-        catalogIds: catalogIds,
+        uniqueCatalogIds: catalogIds,
         catalog: data,
         templateBase: templateBase,
       });

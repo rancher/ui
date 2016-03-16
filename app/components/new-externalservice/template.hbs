@@ -1,17 +1,27 @@
-<section class="horizontal-form container-fluid">
-  <h2>Add External Service</h2>
-  {{top-errors errors=errors}}
+<section class="header">
+  <h1>Add External Service</h1>
+</section>
 
+<section class="horizontal-form container-fluid well">
   {{form-name-description
     model=service
     namePlaceholder="e.g. external-db"
     descriptionPlaceholder="e.g. External physical database server"
   }}
+</section>
 
-
+<section class="horizontal-form container-fluid well">
   {{form-target-ip
     service=service
   }}
 </section>
 
+<section class="horizontal-form container-fluid well">
+  {{form-healthcheck
+    isService=true
+    healthCheck=service.healthCheck
+  }}
+</section>
+
+{{top-errors errors=errors}}
 {{partial "save-cancel"}}

@@ -7,13 +7,13 @@ export default Ember.Controller.extend({
   category: Ember.computed.alias('catalogController.category'),
   selectedCatalog: Ember.computed.alias('catalogController.catalogId'),
   categories: Ember.computed.alias('model.categories'),
-  catalogIds: Ember.computed.alias('model.catalogIds'),
+  uniqueCatalogIds: Ember.computed.alias('model.uniqueCatalogIds'),
 
   parentRoute: 'catalog-tab',
   launchRoute: 'catalog-tab.launch',
 
   // > 2 because 'all' is one of them.
-  showCatalogDropdown: Ember.computed.gt('catalogIds.length',2),
+  showCatalogDropdown: Ember.computed.gt('uniqueCatalogIds.length',2),
 
   search: '',
 

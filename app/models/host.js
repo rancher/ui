@@ -224,6 +224,26 @@ var Host = Resource.extend({
       return out;
     }
   }.property('info.diskInfo.fileSystems.@each.capacity'),
+
+  // If you use this you must ensure that services and containers are already in the store
+  //  or they will not be pulled in correctly.
+  displayEndpoints: function() {
+    var store = this.get('store');
+    return (this.get('publicEndpoints')||[]).map((endpoint) => {
+      if ( !endpoint.service ) {
+        endpoint.service = store.getById('service', endpoint.serviceId);
+      }
+
+      if ( !endpoint.instance ) {
+        endpoint.instance = store.getById('container', endpoint.instanceId);
+        if ( !endpoint.instanceId ) {
+          endpoint.instance = store.getById('virtualmachine', endpoint.instanceId);
+        }
+      }
+
+      return endpoint;
+    });
+  }.property('publicEndpoints.@each.{ipAddress,port,serviceId,instanceId}'),
 });
 
 Host.reopenClass({
