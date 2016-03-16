@@ -44,6 +44,10 @@ export default Ember.Controller.extend(Sortable, {
       {
         cred.set('accountId', this.get(`session.${C.SESSION.ACCOUNT_ID}`));
       }
+      else
+      {
+        cred.set('accountId', this.get(`projects.current.id`));
+      }
 
       this.get('application').setProperties({
         editApikey: true,
