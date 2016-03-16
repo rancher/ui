@@ -5,7 +5,8 @@ import FilterState from 'ui/mixins/filter-state';
 export default Ember.Component.extend(FilterState, Sortable, {
   drivers         : null,
   settings        : Ember.inject.service(),
-  sortableContent : Ember.computed.alias('drivers'),
+  filterableContent : Ember.computed.alias('drivers'),
+  sortableContent : Ember.computed.alias('filtered'),
   sortBy          : 'name',
 
   classNames      : ['machine-drivers'],

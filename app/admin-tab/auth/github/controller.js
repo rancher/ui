@@ -136,8 +136,8 @@ export default Ember.Controller.extend({
 
       let model = this.get('model');
       model.setProperties({
-        'clientId': model.get('clientId').trim(),
-        'clientSecret': model.get('clientSecret').trim(),
+        'clientId': (model.get('clientId')||'').trim(),
+        'clientSecret': (model.get('clientSecret')||'').trim(),
         'enabled': false, // It should already be, but just in case..
         'accessMode': 'unrestricted',
         'allowedIdentities': [],
