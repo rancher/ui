@@ -3,7 +3,9 @@ const KIND_CATALOG = 'catalog';
 const KIND_SYSTEM = 'system';
 const KIND_SYSTEM_CATALOG = 'system-catalog';
 const KIND_KUBERNETES = 'kubernetes';
-const KIND_NOT_KUBERNETES = 'not-kubernetes';
+const KIND_SWARM = 'swarm';
+const KIND_NOT_KUBERNETES = `not-${KIND_KUBERNETES}`;
+const KIND_NOT_SWARM = `not-${KIND_SWARM}`;
 
 var C = {
   COOKIE: {
@@ -22,7 +24,9 @@ var C = {
     KIND_SYSTEM: KIND_SYSTEM,
     KIND_SYSTEM_CATALOG: KIND_SYSTEM_CATALOG,
     KIND_KUBERNETES: KIND_KUBERNETES,
+    KIND_SWARM: KIND_SWARM,
     KIND_NOT_KUBERNETES: KIND_NOT_KUBERNETES,
+    KIND_NOT_SWARM: KIND_NOT_SWARM,
     UPGRADEABLE: [
       KIND_CATALOG,
       KIND_SYSTEM_CATALOG
@@ -103,6 +107,7 @@ var C = {
     K8S_POD_NAME: 'io.kubernetes.pod.name',
     K8S_KUBECTL: 'io.rancher.k8s.kubectld',
     K8S_API: 'io.rancher.k8s.api-server',
+    SWARM_CLI: 'io.rancher.swarm.cli',
   },
 
   PREFS: {
@@ -174,7 +179,8 @@ var C = {
     API_HOST:        'api$host',
     CATALOG_URL:     'catalog$url',
     VM_ENABLED:      'vm$enabled',
-    HELP_ENABLED:    'help$enabled'
+    HELP_ENABLED:    'help$enabled',
+    SWARM_PORT:      'swarm$tls$port',
   },
 
   USER: {

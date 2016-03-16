@@ -9,6 +9,7 @@ export default Ember.Controller.extend({
 
   // These are set by project/route and project/controller
   hasKubernetes : false,
+  hasSwarm      : false,
   hasSystem     : false,
   hasVm         : Ember.computed.alias('settings.hasVm'),
 
@@ -20,6 +21,10 @@ export default Ember.Controller.extend({
   k8sChanged: function() {
     this.set('hasKubernetes', !!this.get('projects.current.kubernetes'));
   }.observes('projects.current.kubernetes'),
+
+  swarmChanged: function() {
+    this.set('hasSwarm', !!this.get('projects.current.swarm'));
+  }.observes('projects.current.swarm'),
 
   isPopup: Ember.computed.alias('application.isPopup'),
 });

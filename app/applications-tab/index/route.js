@@ -2,10 +2,13 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   redirect: function() {
-    var hasK8s = window.lc('authenticated').get('hasKubernetes');
-    if ( hasK8s )
+    if ( this.controllerFor('authenticated').get('hasKubernetes') )
     {
-      this.transitionTo('environments', {queryParams: {which: 'kubernetes'}});
+      this.transitionTo('k8s-tab');
+    }
+    else if ( this.controllerFor('authenticated').get('hasSwarm') )
+    {
+      this.transitionTo('applications-tab.compose-projects');
     }
     else
     {

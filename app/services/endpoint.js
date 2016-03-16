@@ -5,6 +5,7 @@ import C from 'ui/utils/constants';
 export default Ember.Service.extend({
   cookies: Ember.inject.service(),
   'tab-session': Ember.inject.service('tab-session'),
+  settings: Ember.inject.service(),
 
   absolute: function() {
     var url = this.get('app.apiServer');
@@ -47,5 +48,10 @@ export default Ember.Service.extend({
     }
 
     return url;
-  }
+  },
+
+  swarm: function() {
+    var port = this.get(`settings.${C.SETTING.SWARM_PORT}`) || 2376;
+    return `tcp://${window.location.hostname}:${port}`;
+  }.property(`settings.${C.SETTING.SWARM_PORT}`)
 });

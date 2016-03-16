@@ -191,6 +191,18 @@ export default Ember.Component.extend(NewOrEdit, {
         this.get('selectedTemplateModel.files'),
         this.get('environmentResource.environment')
       );
+    } else if ( this.get('templateBase') === 'swarm' ) {
+      var env = this.get('environmentResource');
+      return this.get('store').createRecord({
+        type: 'composeProject',
+        name: env.get('name'),
+        description: env.get('description'),
+        templates: this.get('selectedTemplateModel.files'),
+        externalId: this.get('newExternalId'),
+        environment: env.get('environment')
+      }).save().then((newData) => {
+        return this.mergeResult(newData);
+      });
     } else if (this.get('editing')) {
       return this.get('environmentResource').doAction('upgrade', {
         dockerCompose: this.get('environmentResource.dockerCompose'),

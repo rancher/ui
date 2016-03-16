@@ -70,7 +70,7 @@ export default Ember.Mixin.create({
 
   instancesById: function() {
     var out = Ember.Object.create();
-    this.get('sparkInstances').forEach((instance) => {
+    (this.get('sparkInstances')||[]).forEach((instance) => {
       out.set(instance.get('id'),instance);
     });
     return out;
