@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
+import { byId as serviceById } from 'ui/models/service';
 import { formatMib } from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
@@ -231,7 +232,7 @@ var Host = Resource.extend({
     var store = this.get('store');
     return (this.get('publicEndpoints')||[]).map((endpoint) => {
       if ( !endpoint.service ) {
-        endpoint.service = store.getById('service', endpoint.serviceId);
+        endpoint.service = serviceById(endpoint.serviceId);
       }
 
       if ( !endpoint.instance ) {
