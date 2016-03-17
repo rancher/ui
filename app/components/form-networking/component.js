@@ -110,15 +110,21 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   // ----------------------------------
   hostname: null,
   initHostname: function() {
-    var override = this.getLabel(C.LABEL.HOSTNAME_OVERRIDE) === 'override';
+    var override = this.getLabel(C.LABEL.HOSTNAME_OVERRIDE) === C.LABEL.HOSTNAME_OVERRIDE_VALUE;
+    var hostname = this.get('instance.hostname') || '';
+
     if ( override )
     {
       this.set('hostname', 'override');
       this.set('instance.hostname', '');
     }
-    else
+    else if ( hostname )
     {
       this.set('hostname', 'custom');
+    }
+    else
+    {
+      this.set('hostname', 'default');
     }
   },
 
@@ -127,13 +133,18 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
     if ( val === 'override' )
     {
       this.setLabel(C.LABEL.HOSTNAME_OVERRIDE, C.LABEL.HOSTNAME_OVERRIDE_VALUE);
-      this.set('instance.hostname', '');
+      this.set('instance.hostname', null);
+    }
+    else if ( val === 'default' )
+    {
+      this.removeLabel(C.LABEL.HOSTNAME_OVERRIDE);
+      this.set('instance.hostname', null);
     }
     else
     {
       this.removeLabel(C.LABEL.HOSTNAME_OVERRIDE);
     }
-  }.observes('hostname'),
+  }.observes('hostname','instance.hostname'),
 
   // ----------------------------------
   // DNS Discovery
