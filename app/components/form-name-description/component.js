@@ -10,5 +10,9 @@ export default Ember.Component.extend({
   descriptionPlaceholder: 'Description',
   descriptionDisabled: false,
 
-  tagName: '',
+  didInsertElement() {
+    Ember.run.next(() => {
+      this.$('INPUT')[0].focus();
+    });
+  },
 });

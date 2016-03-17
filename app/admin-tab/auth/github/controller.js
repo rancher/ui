@@ -175,7 +175,12 @@ export default Ember.Controller.extend({
         this.send('authenticationSucceeded', auth);
       }).catch(res => {
         // Github auth succeeded but didn't get back a token
-        let err = JSON.parse(res.xhr.responseText);
+        let err;
+        try {
+          err = JSON.parse(res.xhr.responseText);
+        } catch(e) {
+          err = {type: 'error', message: 'Error authenticating, check Client ID and Secret'};
+        }
         this.send('gotError', err);
       });
     },
