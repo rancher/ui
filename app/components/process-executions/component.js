@@ -2,10 +2,13 @@ import Ember from 'ember';
 import Sortable from 'ui/mixins/sortable';
 
 export default Ember.Component.extend(Sortable, {
+  expandAll: false,
+
   actions: {
     expandChildren: function() {
-      this.toggleProperty('childrenExpanded');
+      Ember.run.next(() => {
+      this.toggleProperty('expandAll');
+      });
     }
-  },
-  childrenExpanded: false
+  }
 });

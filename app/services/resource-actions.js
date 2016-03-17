@@ -7,10 +7,12 @@ export default Ember.Service.extend({
   model          : null,
   open           : false,
   tooltipActions : null,
+  actionToggle   : null,
+  actionMenu     : null,
 
   show: function(model,trigger,toggle) {
-    var $menu = $('#resource-actions');
-    var $toggle = $(toggle||trigger);
+    var $menu = this.set('actionMenu', $('#resource-actions'));
+    var $toggle = this.set('actionToggle', $(toggle||trigger));
 
     if ( model === this.get('model') && this.get('open') )
     {
@@ -21,13 +23,13 @@ export default Ember.Service.extend({
     this.set('model', model);
 
     $('BODY').one('click', () => {
-      
-      Ember.run(() => {
-        $toggle.removeClass('open');
-        $menu.addClass('hide');
-        this.set('open', false);
-        this.set('model', null);
-      });
+      // check to see if we've opened the menu
+      // we can get into a state (via accessability navigation) where the
+      // menu has been closed but the body click was never fired
+      // this will just prevent an null error
+      if (this.get('actionMenu') && this.get('actionToggle')) {
+        this.hide();
+      }
     });
 
     Ember.run.next(() => {
@@ -46,8 +48,20 @@ export default Ember.Service.extend({
       this.set('open',true);
 
       BootstrapFixes.positionDropdown($menu, trigger, true);
-      //wes suggestion for resource tabbing but doesn't work
+
+      // Focus here for accessability
       $("#resource-actions > li:first > a").focus();
+    });
+  },
+
+  hide() {
+    this.get('actionToggle').removeClass('open');
+    this.get('actionMenu').addClass('hide');
+    this.setProperties({
+      actionToggle : null,
+      actionMenu   : null,
+      open         : false,
+      model        : null,
     });
   },
 
