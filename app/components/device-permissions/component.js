@@ -19,7 +19,7 @@ export default Ember.Component.extend({
 
   actions: {
     selectChanged(x, ele) {
-      var str = $(ele.target).val().join('');
+      var str = ($(ele.target).val()||[]).join('');
       this.sendAction('changed', str);
     },
   },
@@ -33,7 +33,7 @@ export default Ember.Component.extend({
       allSelectedText: 'All',
 
       templates: {
-        li: '<li><a href="#"><label></label></a></li>',
+        li: '<li><a tabindex="0"><label></label></a></li>',
       },
     };
 
