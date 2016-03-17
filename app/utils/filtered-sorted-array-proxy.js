@@ -14,8 +14,6 @@ export default Ember.ArrayProxy.extend({
   _boundFn: null,
 
   init() {
-    this._super();
-
     if ( !this.get('sortProperties') )
     {
       this.set('sortProperties', ['displayName','name','id']);
@@ -31,7 +29,8 @@ export default Ember.ArrayProxy.extend({
     });
 
     this.set('_boundFn', this.get('filterFn').bind(this));
-    this.sourceContentChanged();
+    this.updateContent();
+    this._super();
   },
 
   sourceContentChanged() {

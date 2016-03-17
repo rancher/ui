@@ -7,7 +7,7 @@ export default Ember.Controller.extend({
 
   actions: {
     changeService(service) {
-      this.transitionTo(this.get('application.currentRouteName'), service.get('id'));
+      this.transitionToRoute(this.get('application.currentRouteName'), service.get('id'));
     }
   }
 });

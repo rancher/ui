@@ -10,6 +10,10 @@ export default Container.extend({
       });
     },
 
+    clone: function() {
+      this.get('router').transitionTo('virtualmachines.new', {queryParams: {virtualMachineId: this.get('id')}});
+    },
+
     popoutShellVm: function() {
       let proj = this.get('projects.current.id');
       let id = this.get('id');

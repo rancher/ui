@@ -17,6 +17,10 @@ export default NewContainer.extend({
       this.sendAction('dismiss');
     },
 
+    outsideClick() {
+      this.sendAction('dismiss');
+    },
+
     cancel() {
       this.sendAction('dismiss');
     },

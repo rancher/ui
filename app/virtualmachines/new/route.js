@@ -16,9 +16,9 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.hash(dependencies, 'Load VM dependencies').then(function(results) {
       var data, healthCheckData;
-      if ( dependencies.existing )
+      if ( results.existing )
       {
-        data = dependencies.existing.serializeForNew();
+        data = results.existing.serializeForNew();
         data.ports = (data.ports||[]).map((port) => {
           delete port.id;
           return port;
