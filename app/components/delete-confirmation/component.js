@@ -21,6 +21,19 @@ export default Ember.Component.extend({
     },
   },
 
+  isEnvironment: Ember.computed('resources', function() {
+    let resources = this.get('resources');
+    let out = false;
+
+    resources.forEach((resource) => {
+      if (resource.type === 'project') {
+        out = true;
+      }
+    });
+
+    return out;
+  }),
+
   didRender: function() {
     setTimeout(() => {
       this.$('BUTTON')[0].focus();
