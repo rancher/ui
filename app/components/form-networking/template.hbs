@@ -76,11 +76,14 @@
   <div class="col-sm-12 col-md-8">
     {{#if isService}}
       <div class="radio small r-mt10">
+        <label>{{radio-button selection=hostname value="default"}} Use the Docker container ID</label>
+      </div>
+      <div class="radio small r-mt10">
         <label>{{radio-button selection=hostname value="override"}} Use the container name</label>
       </div>
       <div class="radio small">
         <label>{{radio-button selection=hostname value="custom"}} Set a specific hostname:</label>
-        {{input type="text" value=instance.hostname classNames="form-control r-ml10" safeStyle="display:inline; width: 200px;" placeholder="e.g. web"disabled=(not (eq hostname "custom"))}}
+        {{input type="text" value=instance.hostname classNames="form-control r-ml10 input-sm" safeStyle="display:inline; width: 200px;" placeholder="e.g. web" disabled=(not-eq hostname "custom")}}
       </div>
     {{else}}
       {{input type="text" value=instance.hostname classNames="form-control" placeholder="e.g. web01"}}

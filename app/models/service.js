@@ -368,7 +368,11 @@ var Service = Resource.extend({
     return this.get('type') === 'service';
   }.property('type'),
 
-  hasLabels: Ember.computed.alias('hasImage'),
+  hasLabels: function() {
+    return [
+      'loadbalancerservice','service'
+    ].indexOf(this.get('type').toLowerCase()) >= 0;
+  }.property('type'),
 
   isK8s: function() {
     return ['kubernetesservice'].indexOf(this.get('type').toLowerCase()) >= 0;

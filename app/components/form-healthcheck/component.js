@@ -63,7 +63,7 @@ export default Ember.Component.extend({
         {
           //haproxy 1.6+ with quoted request
           match = requestLine.match(/([^\s]+)\s+"?([^"]*)"?\s+"(HTTP\/[0-9\.]+)([^"]+)"/m);
-          var match2 = match[4].trim().match(/^Host:\s+(.*)$/);
+          var match2 = match[4].replace(/\\[rn]/g,'').trim().match(/^Host:\s+(.*)$/);
           this.setProperties({
             checkType: HTTP,
             uriMethod: match[1],
@@ -158,7 +158,7 @@ export default Ember.Component.extend({
           requestLine = method + ' "' + path + '" "' + version;
           if ( host && this.get('showUriHost') )
           {
-            requestLine += '\r\nHost: ' + host;
+            requestLine += '\\r\\nHost: ' + host;
           }
 
           requestLine += '"';

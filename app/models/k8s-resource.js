@@ -84,7 +84,7 @@ var K8sResource = Resource.extend({
       store._remove(type, this);
       return newData;
     }).catch((err) => {
-      this.get('growl').fromError('Delete Error',err);
+      this.get('growl').fromError('Error deleting',err);
     });
   },
 
