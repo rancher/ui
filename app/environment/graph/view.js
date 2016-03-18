@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 import ThrottledResize from 'ui/mixins/throttled-resize';
 import { activeIcon } from 'ui/models/service';
+import C from 'ui/utils/constants';
 
 export default Ember.View.extend(ThrottledResize,{
   classNames: ['environment-graph'],
@@ -129,7 +130,7 @@ export default Ember.View.extend(ThrottledResize,{
     var out = [];
 
     var unremovedServices = this.get('context.stack.services').filter(function(service) {
-      return ['removed','purging','purged'].indexOf(service.get('state')) === -1;
+      return C.REMOVEDISH_STATES.indexOf(service.get('state')) === -1;
     });
 
     unremovedServices.forEach((service) => {

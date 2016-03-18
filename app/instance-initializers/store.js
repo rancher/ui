@@ -13,6 +13,7 @@ export function initialize(instance) {
 
   store.reopen({
     baseUrl: application.apiEndpoint,
+    skipTypeifyKeys: ['labels'],
 
     headers: function() {
       var out = {};

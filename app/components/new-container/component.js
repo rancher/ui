@@ -273,6 +273,28 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   // ----------------------------------
   // Save
   // ----------------------------------
+  validate() {
+    this._super();
+    var errors = this.get('errors')||[];
+
+    if ( this.get('isService') )
+    {
+      (this.get('service.secondaryLaunchConfigs')||[]).forEach((slc) => {
+        slc.validationErrors().forEach((err) => {
+          errors.push(slc.get('displayName') + ': ' + err);
+        });
+      });
+    }
+
+    if ( errors.get('length') )
+    {
+      this.set('errors', errors);
+      return false;
+    }
+
+    this.set('errors', null);
+    return true;
+  },
   willSave() {
     var errors = [];
     if ( !this.get('editing') )

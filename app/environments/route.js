@@ -5,31 +5,21 @@ export default Ember.Route.extend({
   model: function() {
     var store = this.get('store');
 
-    var promises = [
-      store.findAllUnremoved('environment'),
-    ];
-
-    return Ember.RSVP.all(promises).then((results) => {
-      var environments = results[0];
-
-      var promises = [];
-      environments.forEach((env) => {
-        var promise = store.find('service', null, {
-          filter: {
-            environmentId: env.get('id'),
-          },
-          include: ['instances']
-        }).then((services) => {
-          env.set('services', services||[]);
-          return env;
+    return Ember.RSVP.hash({
+      environments: store.findAllUnremoved('environment'),
+      services: store.find('service', null, {include: ['instances']})
+    }).then((hash) => {
+      hash.environments.forEach((env) => {
+        let list = hash.services
+          .filterBy('environmentId',env.get('id'))
+          .filter((svc) => {
+            return C.REMOVEDISH_STATES.indexOf(svc.get('state').toLowerCase()) === -1;
         });
 
-        promises.push(promise);
+        env.set('services',list);
       });
 
-      return Ember.RSVP.all(promises).then(() => {
-        return environments;
-      });
+      return hash.environments;
     });
   },
 

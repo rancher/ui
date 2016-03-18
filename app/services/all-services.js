@@ -2,31 +2,24 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
   choices() {
-    return this.get('store').findAll('environment').then((environments) => {
-      var promises = environments.map((env) => { return env.followLink('services'); });
-
-      return Ember.RSVP.all(promises, 'Get all services').then((list) => {
-        var out = [];
-
-        list.forEach((services) => {
-          services.forEach((service) => {
-            out.pushObject({
-              group: 'Stack: ' + envName(service),
-              id: service.get('id'),
-              name: service.get('displayName'),
-              kind: service.get('type'),
-              lbSafe: (service.get('type').toLowerCase() !== 'externalservice' || service.get('hostname') === null),
-              obj: service,
-              envName: envName(service),
-            });
-          });
-        });
-
-        return out;
+    return Ember.RSVP.hash({
+      environments: this.get('store').findAllUnremoved('environment'),
+      services: this.get('store').findAllUnremoved('service'),
+    }).then((hash) => {
+      return hash.services.map((service) => {
+        return {
+          group: 'Stack: ' + envName(service),
+          id: service.get('id'),
+          name: service.get('displayName'),
+          kind: service.get('type'),
+          lbSafe: (service.get('type').toLowerCase() !== 'externalservice' || service.get('hostname') === null),
+          obj: service,
+          envName: envName(service),
+        };
       });
 
       function envObj(service) {
-        return environments.filterBy('id', service.get('environmentId'))[0];
+        return hash.environments.filterBy('id', service.get('environmentId'))[0];
       }
 
       function envName(service) {

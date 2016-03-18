@@ -21,7 +21,7 @@ export default Ember.Mixin.create({
                !instance.get('systemContainer');
       });
 
-      var hostLabel = 'Host: ' + (host.get('name') || '('+host.get('id')+')');
+      var hostLabel = 'Host: ' + host.get('displayName');
       if ( host.get('state') !== 'active' )
       {
         hostLabel += ' (' + host.get('state') + ')';
