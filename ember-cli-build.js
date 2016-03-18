@@ -35,6 +35,9 @@ module.exports = function(defaults) {
       }
     },
 
+    SRI: {
+      enabled: false,
+    },
 
     fingerprint: {
       exclude: [
