@@ -254,13 +254,6 @@ Host.reopenClass({
   mangleIn: function(data) {
     data['hostState'] = data['state'];
     delete data['state'];
-
-    if ( data.labels )
-    {
-      // Labels shouldn't be a model even if it has a key called 'type'
-      data.labels = JSON.parse(JSON.stringify(data.labels));
-    }
-
     return data;
   },
 

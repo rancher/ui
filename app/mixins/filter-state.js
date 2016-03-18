@@ -1,6 +1,5 @@
 import Ember from 'ember';
-
-var undesireable = ['removed','purging','purged'];
+import C from 'ui/utils/constants';
 
 export default Ember.Mixin.create({
   filterStates: null,
@@ -10,7 +9,7 @@ export default Ember.Mixin.create({
     this._super();
     if ( !this.get('filterStates') )
     {
-      this.set('filterStates', undesireable.slice());
+      this.set('filterStates', C.REMOVEDISH_STATES.slice());
     }
   },
 

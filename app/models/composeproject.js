@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Environment from 'ui/models/environment';
 import FilteredSortedArrayProxy from 'ui/utils/filtered-sorted-array-proxy';
+import C from 'ui/utils/constants';
 
 var ComposeProject = Environment.extend({
   type: 'composeProject',
@@ -23,7 +24,7 @@ var ComposeProject = Environment.extend({
       dependentKeys: ['sourceContent.@each.state','sourceContent.@each.environmentId'],
       filterFn: function(item) {
         return Ember.get(item,'environmentId') === this.get('id') &&
-               ['removing','removed','purging','purged'].indexOf((Ember.get(item,'state')||'').toLowerCase()) === -1;
+               C.REMOVEDISH_STATES.indexOf((Ember.get(item,'state')||'').toLowerCase()) === -1;
       }.bind(this),
     });
 

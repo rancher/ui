@@ -249,6 +249,12 @@ C.ACTIVEISH_STATES = [
   'started-once',
 ];
 
+C.REMOVEDISH_STATES = [
+  'removed',
+  'purging',
+  'purged'
+];
+
 C.INITIALIZING_STATES = [
   'initializing',
   'reinitializing'

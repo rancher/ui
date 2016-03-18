@@ -180,16 +180,6 @@ var Container = Resource.extend({
 
 Container.reopenClass({
   alwaysInclude: ['hosts'],
-
-  mangleIn: function(data) {
-    if ( data.labels )
-    {
-      // Labels shouldn't be a model even if it has a key called 'type'
-      data.labels = JSON.parse(JSON.stringify(data.labels));
-    }
-
-    return data;
-  },
 });
 
 export default Container;

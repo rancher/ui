@@ -4,7 +4,7 @@ export default Ember.Component.extend({
   value: null,
 
   json: function() {
-    var value = this.get('value')||'';
+    var value = (this.get('value')||'')+'';
     if ( ['[','{'].indexOf(value.substr(0,1)) >= 0 )
     {
       try {
