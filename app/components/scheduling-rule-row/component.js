@@ -212,8 +212,7 @@ export default Ember.Component.extend({
       var label = (host.get('labels')||{})[key];
       if ( label )
       {
-        var parts = label.split(/\s*,\s*/);
-        out.pushObjects(parts);
+        out.pushObject(label);
       }
     });
 
@@ -253,8 +252,7 @@ export default Ember.Component.extend({
       var label = (container.get('labels')||{})[key];
       if ( label )
       {
-        var parts = label.split(/\s*,\s*/);
-        out.pushObjects(parts);
+        out.pushObject(label);
       }
     });
 
@@ -280,8 +278,7 @@ export default Ember.Component.extend({
       var label = (container.get('labels')||{})[C.LABEL.SERVICE_NAME];
       if ( label )
       {
-        var parts = label.split(/\s*,\s*/);
-        out.pushObjects(parts);
+        out.pushObject(label);
       }
     });
 

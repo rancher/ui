@@ -40,7 +40,7 @@ var Account = Resource.extend(PolledResource, {
 
   username: function() {
     var cred = this.get('passwordCredential');
-    if ( cred && cred.get('state') === 'active' )
+    if ( cred )
     {
       return cred.get('publicValue');
     }
@@ -51,7 +51,7 @@ var Account = Resource.extend(PolledResource, {
   }.property('passwordCredential.{state,publicValue}'),
 
   passwordCredential: function() {
-    return (this.get('credentials')||[]).filterBy('kind','password')[0];
+    return (this.get('credentials')||[]).filterBy('state','active').filterBy('kind','password')[0];
   }.property('credentials.@each.kind'),
 
   apiKeys: function() {
