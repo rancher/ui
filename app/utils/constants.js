@@ -70,6 +70,7 @@ var C = {
     ESCAPE: 27,
     CR: 13,
     LF: 10,
+    TAB: 9,
     SPACE: 32,
     PAGE_UP: 33,
     PAGE_DOWN: 34,
