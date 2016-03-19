@@ -213,6 +213,11 @@ export default Ember.Component.extend({
   },
 
   onDataPoint(point) {
+    if ( this._state === 'destroying' )
+    {
+      return;
+    }
+
     var didSetCpuScale = false;
     var didSetMemoryScale = false;
 

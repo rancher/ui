@@ -41,6 +41,8 @@
     <div class="clearfix r-p10 hosts">
       {{#each hostsByName as |host|}}
         <div class="r-m10"><i class="icon {{host.stateIcon}} {{host.stateBackground}}"></i> {{#link-to "host" host.id}}{{host.displayName}}{{/link-to}}</div>
+      {{else}}
+        <div class="text-center text-muted">No hosts</div>
       {{/each}}
     </div>
   </div>
@@ -63,7 +65,7 @@
                 {{badge-state model=vol}}
               </td>
               <td class="force-wrap">
-                {{#tooltip-element type="tooltip-basic" model=vol tooltipTemplate="tooltip-storage"}}
+                {{#tooltip-element type="tooltip-basic" inlineBlock=false model=vol tooltipTemplate="tooltip-storage"}}
                   <a class="hand">{{vol.displayName}}</a> <i classs="icon icon-info"></i>
                 {{/tooltip-element}}
               </td>
