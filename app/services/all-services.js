@@ -2,9 +2,10 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
   choices() {
+    var store = this.get('store');
     return Ember.RSVP.hash({
-      environments: this.get('store').findAllUnremoved('environment'),
-      services: this.get('store').findAllUnremoved('service'),
+      environments: store.findAllUnremoved('environment'),
+      services: store.find('service', null, {forceReload: true}) // Need force-reload to get response with mixed types
     }).then((hash) => {
       return hash.services.map((service) => {
         return {

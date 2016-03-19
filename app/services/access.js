@@ -112,7 +112,12 @@ export default Ember.Service.extend({
       session.setProperties(interesting);
       return res;
     }).catch((res) => {
-      var err = JSON.parse(res.xhr.responseText);
+      let err;
+      try {
+        err = JSON.parse(res.xhr.responseText);
+      } catch(e) {
+        err = {type: 'error', message: 'Error logging in'};
+      }
       return Ember.RSVP.reject(err);
     });
   },

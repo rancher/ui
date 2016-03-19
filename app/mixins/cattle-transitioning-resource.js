@@ -29,6 +29,8 @@ const defaultStateMap = {
   'unhealthy':                {icon: 'icon icon-alert',         color: 'text-danger' },
   'updating':                 {icon: 'icon icon-tag',           color: 'text-info'   },
   'updating-active':          {icon: 'icon icon-tag',           color: 'text-info'   },
+  'updating-healthy':         {icon: 'icon icon-tag',           color: 'text-info'   },
+  'updating-unhealthy':       {icon: 'icon icon-tag',           color: 'text-info'   },
   'updating-reinitializing':  {icon: 'icon icon-alert',         color: 'text-info'   },
   'updating-inactive':        {icon: 'icon icon-tag',           color: 'text-info'   },
 };
@@ -507,7 +509,7 @@ export default Ember.Mixin.create({
   doAction: function(name, data, opt) {
     var promise = this._super.apply(this, arguments);
 
-    if ( opt && opt.catchGrowl !== false )
+    if ( !opt || opt.catchGrowl !== false )
     {
       return promise.catch((err) => {
         this.get('growl').fromError(Util.ucFirst(name) + ' Error', err);

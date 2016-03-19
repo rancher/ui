@@ -10,7 +10,8 @@ export default Ember.Controller.extend(Sortable, ContainerSparkStats, {
   sorts: {
     state:    ['stateSort','name','id'],
     name:     ['name','id'],
-    ip:       ['displayIp','name','id'],
+    ip:       ['sortIp','name','id'],
+    host:     ['primaryHost.displayName','name','id'],
     image:    ['imageUuid','command','name','id'],
   },
 });

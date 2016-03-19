@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 var Container = Resource.extend({
   // Common to all instances
@@ -156,6 +157,18 @@ var Container = Resource.extend({
 
   displayIp: function() {
     return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress') || new Ember.Handlebars.SafeString('<span class="text-muted">None</span>');
+  }.property('primaryIpAddress','primaryAssociatedIpAddress'),
+
+  sortIp: function() {
+    var ip = this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress');
+    if ( !ip ) {
+      return '';
+    }
+    var match = ip.match(/^(\d+)\.(\d+)\.(\d+)\.(\d+)$/);
+    if ( match )
+    {
+      return match.slice(1).map((octet) => { return Util.strPad(octet,3,'0',false); }).join(".");
+    }
   }.property('primaryIpAddress','primaryAssociatedIpAddress'),
 
   canDelete: function() {
