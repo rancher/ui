@@ -1,4 +1,4 @@
-{{#if shouldExpand}}
+{{#if (or expandSelf expanded)}}
   <tr class="{{if execution.exception 'danger' ''}}">
     <td class="clip">
       <i class="icon icon-level-down indent-{{depth}}"></i>
@@ -23,7 +23,7 @@
 {{#if checkExecutions }}
   {{#each execution.children as |child|}}
     {{#each child.executions as |execution|}}
-      {{process-execution-rows execution=execution shouldExpand=expanded nodeDepth=depth expandAll=shouldExpandChildren}}
+      {{process-execution-rows execution=execution expandSelf=expanded nodeDepth=depth expandAll=expandAll}}
     {{/each}}
   {{/each}}
 {{/if}}

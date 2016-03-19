@@ -4,6 +4,7 @@ import { alternateLabel } from 'ui/utils/platform';
 export default Ember.Component.extend({
   resources: null,
   alternateLabel: alternateLabel,
+  settings: Ember.inject.service(),
 
   actions: {
     outsideClick: function() {},

@@ -3,17 +3,19 @@ import C from 'ui/utils/constants';
 import { isAlternate } from 'ui/utils/platform';
 
 export default Ember.Component.extend({
-  icon              : 'icon-help',
-  label             : '',
-  prefix            : null,
-  enabled           : true,
-  actionArg         : null,
-  altActionArg      : null,
+  resourceActions : Ember.inject.service('resource-actions'),
+  icon            : 'icon-help',
+  label           : '',
+  prefix          : null,
+  enabled         : true,
+  actionArg       : null,
+  altActionArg    : null,
 
-  tagName           : 'a',
+  tagName         : 'a',
   classNameBindings : ['enabled::hide'],
   attributeBindings : ['tabindex'],
   tabindex          : 0,
+
 
   click : function(event) {
 
@@ -30,6 +32,7 @@ export default Ember.Component.extend({
   keyPress: function(event) {
     if ( [C.KEY.CR,C.KEY.LF].indexOf(event.which) >= 0 ) {
       this.click(event);
+      this.get('resourceActions').hide();
     }
   },
 

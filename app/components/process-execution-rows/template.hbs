@@ -28,7 +28,7 @@
     <td>{{run-time execution.startTime execution.stopTime}}</td>
   </tr>
 {{else}}
-  {{#if shouldExpand}}
+  {{#if (or expandSelf expanded)}}
     <tr class="{{if execution.exception 'danger' ''}}">
       <td class="clip">
         <i class="icon icon-level-down indent-{{depth}}"></i>
@@ -62,6 +62,6 @@
 {{/if}}
 {{#if checkProcessHandlerExecutions }}
   {{#each execution.processHandlerExecutions as |processExe|}}
-    {{process-execution-handler-rows execution=processExe shouldExpand=expanded shouldExpandChildren=expandAll nodeDepth=depth}}
+    {{process-execution-handler-rows execution=processExe nodeDepth=depth expandSelf=expanded expandAll=expandAll }}
   {{/each}}
 {{/if}}

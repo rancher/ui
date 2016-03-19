@@ -125,9 +125,9 @@ export default Ember.Controller.extend({
     let neu = cur.replace(/^https?:\/\//ig,'').replace(/\/.*$/,'');
     if ( cur !== neu )
     {
-      this.set('hostname', neu);
+      this.set('model.hostname', neu);
     }
-  }.observes('hostname'),
+  }.observes('model.hostname'),
 
   actions: {
     test: function() {
