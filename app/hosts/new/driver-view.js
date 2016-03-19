@@ -3,7 +3,7 @@ import { addAction } from 'ui/utils/add-view-action';
 
 export default Ember.View.extend({
   actions: {
-    addLabel: addAction('addLabel', '.label-key'),
+    addLabel: addAction('addLabel', '.key'),
   },
 
   didInsertElement: function() {

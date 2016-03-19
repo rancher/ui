@@ -5,7 +5,17 @@ export default Ember.Component.extend(ManageLabels, {
   // Inputs
   initialLabels: null,
 
-  tagName: '',
+  actions: {
+    addUserLabel() {
+      this._super();
+      Ember.run.next(() => {
+        if ( this._state !== 'destroying' )
+        {
+          this.$('INPUT.key').last()[0].focus();
+        }
+      });
+    }
+  },
 
   didInitAttrs() {
     this.initLabels(this.get('initialLabels'),'user');
