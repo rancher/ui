@@ -186,6 +186,12 @@ export default DriverController.extend({
         data.SecurityGroups.forEach((group) => {
           var tags = {};
 
+          // Skip launch-wizard groups
+          if ( (group.GroupName||'').match(/^launch-wizard-.*$/) )
+          {
+            return;
+          }
+
           (group.Tags||[]).forEach((tag) => {
             tags[tag.Key] = tag.Value;
           });
