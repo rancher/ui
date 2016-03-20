@@ -1,9 +1,8 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import FasterLinksAndMenus from 'ui/mixins/faster-links-and-menus';
 import StrippedName from 'ui/mixins/stripped-name';
 
-export default Ember.Component.extend(FasterLinksAndMenus, StrippedName, {
+export default Ember.Component.extend(StrippedName, {
   model: null,
   children: null,
   groupHasChildren: false,

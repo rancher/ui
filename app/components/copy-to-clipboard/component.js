@@ -4,13 +4,23 @@ import { isSafari } from 'ui/utils/platform';
 const DELAY = 2000;
 
 export default Ember.Component.extend({
-  tagName       : '',
-  buttonText    : null,
-  tooltipText   : 'Copy To Clipboard',
-  status        : null,
-  size          : null,
-  target        : null,
-  clipboardText : null,
+  tagName          : 'div',
+  classNames       : ['copy-button-container', 'inline-block'],
+  buttonText       : null,
+  tooltipText      : null,
+  status           : null,
+  size             : null,
+  target           : null,
+  clipboardText    : null,
+  textChangedEvent : null,
+
+  bootstrap: function() {
+    this.set('tooltipText', 'Copy To Clipboard');
+  }.on('init'),
+
+  click: function(evt) {
+    this.set('textChangedEvent', Ember.$(evt.currentTarget));
+  },
 
   isSupported: function() {
     return this.get('clipboardText.length') && (!isSafari || document.queryCommandSupported('copy'));

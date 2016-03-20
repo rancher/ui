@@ -5,15 +5,10 @@ export default Ember.Controller.extend({
 
   catalogController: Ember.inject.controller('catalog-tab'),
   category: Ember.computed.alias('catalogController.category'),
-  selectedCatalog: Ember.computed.alias('catalogController.catalogId'),
   categories: Ember.computed.alias('model.categories'),
-  uniqueCatalogIds: Ember.computed.alias('model.uniqueCatalogIds'),
 
   parentRoute: 'catalog-tab',
   launchRoute: 'catalog-tab.launch',
-
-  // > 2 because 'all' is one of them.
-  showCatalogDropdown: Ember.computed.gt('uniqueCatalogIds.length',2),
 
   search: '',
 
@@ -42,6 +37,11 @@ export default Ember.Controller.extend({
       });
     }
   },
+
+  selectedCatalog: Ember.computed('catalogController', function() {
+
+    return this.get('catalogController.catalogId');
+  }),
 
   arrangedContent: function() {
     var search = this.get('search').toUpperCase();
