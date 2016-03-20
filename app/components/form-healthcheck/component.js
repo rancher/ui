@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { parseRequestLine } from 'ui/utils/parse-healthcheck';
 
 const NONE = 'none';
 const TCP = 'tcp';
@@ -53,47 +54,16 @@ export default Ember.Component.extend({
     var check = this.get('healthCheck');
     if ( check )
     {
-      var requestLine = this.get('healthCheck.requestLine');
-      if ( requestLine )
+      var parsed = parseRequestLine(this.get('healthCheck.requestLine'));
+      if ( parsed )
       {
-        var match;
-        var host = '';
-
-        if ( requestLine.indexOf('"') > 0 )
-        {
-          //haproxy 1.6+ with quoted request
-          match = requestLine.match(/([^\s]+)\s+"?([^"]*)"?\s+"(HTTP\/[0-9\.]+)([^"]?)"/m);
-          var match2 = match[4].replace(/\\[rn]/g,'').trim().match(/^Host:\s+(.*)$/);
-          this.setProperties({
-            checkType: HTTP,
-            uriMethod: match[1],
-            uriPath: match[2],
-            uriVersion: match[3],
-            uriHost: (match2 ? match2[1] : ''),
-          });
-        }
-        else
-        {
-          //haproxy <= 1.5
-          var lines = requestLine.split(/[\r\n]+/);
-          if ( lines.length > 1 )
-          {
-            match = lines[1].match(/^Host:\\ (.*)$/);
-            if ( match )
-            {
-              host = match[1];
-            }
-          }
-
-          match = lines[0].match(/^([^\s]+)\s+(.*)\s+(HTTP\/[0-9\.]+)/);
-          this.setProperties({
-            checkType: HTTP,
-            uriMethod: match[1],
-            uriPath: match[2],
-            uriVersion: match[3],
-            uriHost: host,
-          });
-        }
+        this.setProperties({
+          checkType: HTTP,
+          uriMethod: parsed.method,
+          uriPath: parsed.path,
+          uriVersion: parsed.version,
+          uriHost: parsed.headers['Host'] || '',
+        });
       }
       else
       {

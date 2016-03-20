@@ -11,6 +11,7 @@ export default Ember.Service.extend({
   actionMenu     : null,
 
   show: function(model,trigger,toggle) {
+    var $parent = this.set('actionParent', $('#resource-actions-parent'));
     var $menu = this.set('actionMenu', $('#resource-actions'));
     var $toggle = this.set('actionToggle', $(toggle||trigger));
 
@@ -44,18 +45,17 @@ export default Ember.Service.extend({
 
       $menu.removeClass('hide');
       $toggle.addClass('open');
+      $parent.addClass('open');
 
       this.set('open',true);
 
       BootstrapFixes.positionDropdown($menu, trigger, true);
-
-      // Focus here for accessability
-      $("#resource-actions > li:first > a").focus();
     });
   },
 
   hide() {
     this.get('actionToggle').removeClass('open');
+    this.get('actionParent').removeClass('hide');
     this.get('actionMenu').addClass('hide');
     this.setProperties({
       actionToggle : null,

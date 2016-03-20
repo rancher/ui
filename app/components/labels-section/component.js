@@ -16,7 +16,7 @@ export default Ember.Component.extend(ManageLabels, Sortable, {
     value: ['value','key'],
   },
 
-  didInitAttrs() {
+  didReceiveAttrs() {
     this.initLabels(this.get('labelSource'));
   },
 });
