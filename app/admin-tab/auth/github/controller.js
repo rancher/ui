@@ -19,19 +19,10 @@ export default Ember.Controller.extend({
   organizations  : null,
   addUserInput   : '',
   addOrgInput    : '',
-  useNonSecure   : false,
   scheme         : Ember.computed.alias('model.scheme'),
   saveDisabled   : Ember.computed.or('saving','saved'),
   isRestricted   : Ember.computed.equal('model.accessMode','restricted'),
   wasRestricted  : Ember.computed.equal('originalModel.accessMode','restricted'),
-
-  useSSL: Ember.observer('useNonSecure', function(){
-    if (this.get('useNonSecure')) {
-      this.set('scheme', 'http://');
-    } else {
-      this.set('scheme', 'https://');
-    }
-  }),
 
   createDisabled: function() {
     if ( this.get('isEnterprise') && !this.get('model.hostname') )
@@ -90,7 +81,6 @@ export default Ember.Controller.extend({
       show = true;
     }
 
-
     this.set('wasShowing', show);
     return show;
   }.property('allowedActualIdentities.@each.id','isRestricted','wasShowing'),
@@ -104,30 +94,39 @@ export default Ember.Controller.extend({
   }.observes('model.accessMode'),
 
   isEnterprise: false,
-  enterpriseDidChange: function() {
-    if ( !this.get('isEnterprise') ) {
-      this.set('hostname', null);
-    } else {
-      if (this.get('model.scheme') === 'http://') {
-        this.set('useNonSecure', true);
+  secure : true,
+  updateEnterprise: function() {
+    if ( this.get('isEnterprise') )
+    {
+      var match;
+      var hostname = this.get('model.hostname')||'';
+      if ( match = hostname.match(/^http(s)?:\/\//) )
+      {
+        this.set('secure', (match[1] === 's'));
+        hostname = hostname.substr(match[0].length).replace(/\/.*$/,'');
+        this.set('model.hostname', hostname);
       }
 
     }
-  }.observes('isEnterprise'),
+    else
+    {
+      this.set('model.hostname', null);
+      this.set('secure', true);
+    }
+
+    this.set('scheme', this.get('secure') ? 'https://' : 'http://');
+    var tmp = this.get('model').serialize();
+  },
+
+  enterpriseDidChange: function() {
+    Ember.run.once(this,'updateEnterprise');
+  }.observes('isEnterprise','model.hostname','secure'),
+
 
   protocolChoices: [
     {label: 'https:// -- Requires a cert from a public CA', value: 'https://'},
     {label: 'http://', value: 'http://'},
   ],
-
-  hostnameDidChange: function() {
-    let cur = this.get('model.hostname')||'';
-    let neu = cur.replace(/^https?:\/\//ig,'').replace(/\/.*$/,'');
-    if ( cur !== neu )
-    {
-      this.set('model.hostname', neu);
-    }
-  }.observes('model.hostname'),
 
   actions: {
     test: function() {

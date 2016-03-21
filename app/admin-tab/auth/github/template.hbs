@@ -153,27 +153,21 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12">
+        <div class="col-xs-12 col-md-6">
           <div class="checkbox">
             <label>{{input type="checkbox" checked=isEnterprise}} Use a private GitHub Enterprise installation</label>
           </div>
+          {{#liquid-if isEnterprise}}
+            <div class="checkbox">
+              <label>{{input type="checkbox" checked=secure}} Use a secure connection (<code>https://</code>).</label>
+            </div>
+          {{/liquid-if}}
         </div>
-      </div>
-      <div class="row {{unless isEnterprise 'hide'}}">
-        <div class="col-md-6">
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
+        <div class="col-xs-12 col-md-6">
+          {{#liquid-if isEnterprise}}
             <label>Enterprise Host*</label>
             {{input type="text" value=model.hostname classNames="form-control" placeholder="e.g. github.example.com"}}
-          </div>
-        </div>
-        <div class="col-md-6">
-        </div>
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>{{input type="checkbox" checked=useNonSecure}} Use a non-secure ('http') connection.</label>
-          </div>
+          {{/liquid-if}}
         </div>
       </div>
     </section>
