@@ -182,6 +182,7 @@ var C = {
     VM_ENABLED:      'vm$enabled',
     HELP_ENABLED:    'help$enabled',
     SWARM_PORT:      'swarm$tls$port',
+    ENGINE_URL:      'engine$install$url'
   },
 
   USER: {
