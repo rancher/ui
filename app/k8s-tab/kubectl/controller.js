@@ -4,7 +4,7 @@ const CONFIG_TPL = `apiVersion: v1
 kind: Config
 clusters:
 - cluster:
-    api-version: v1
+    api-version: v1%maybeInsecure%
     server: "%baseUrl%/r/projects/%projectId%/kubernetes/api"
   name: "%projectName%"
 contexts:
@@ -45,8 +45,17 @@ export default Ember.Controller.extend({
         name: name,
         description: 'Provides workstation access to kubectl'
       }).save().then((key) => {
+        var base = window.location.origin;
+        var insecure = false;
+        if ( base.indexOf('http://') === 0 )
+        {
+          base = base.replace(/^http:\/\//,'https://');
+          insecure = true;
+        }
+
         var config = CONFIG_TPL
-          .replace(/%baseUrl%/g,     window.location.origin)
+          .replace(/%baseUrl%/g,     base)
+          .replace(/%maybeInsecure%/g,(insecure ? '\n    insecure-skip-tls-verify: true' : ''))
           .replace(/%projectName%/g, this.get('projects.current.displayName'))
           .replace(/%projectId%/g,   this.get('projects.current.id'))
           .replace(/%publicValue%/g, key.get('publicValue'))
