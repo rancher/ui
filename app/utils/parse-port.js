@@ -1,52 +1,89 @@
 import Ember from 'ember';
 
+// hostIp:hostPort:containerPort
+// hostIp::containerPort
+// hostPort:containerPort
+// containerPort
 export function parsePort(str, defaultProtocol='http') {
+  console.log("ParsePort:", str, defaultProtocol);
   str = str.trim();
 
-  var host, container, protocol;
+  var match, parts, hostIp = '', hostPort, containerPort, protocol;
 
-  var match = str.match(/^(\d+)(:(\d+))?(\/([a-z]+))?/i);
-  if ( !match )
+  // Protocol
+  if ( match = str.match(/\/([a-z]+)$/i) )
   {
-    return null;
-  }
-
-  host = parseInt(match[1],10);
-  if ( match[3] )
-  {
-    container = parseInt(match[3], 10);
-  }
-  else
-  {
-    container = host;
-  }
-
-  if ( match[5] )
-  {
-    protocol = (match[5]+'').toLowerCase();
+    protocol = match[1].toLowerCase();
+    str = str.substr(0, str.length - match[0].length);
   }
   else
   {
     protocol = defaultProtocol;
   }
 
+  // IPv6
+  if ( (str.indexOf('[') >= 0) && (match = str.match(/^(\[[^]+\]):/)) )
+  {
+    parts = str.substr(match[0].length).split(':');
+    parts.unshift(match[1]);
+  }
+  else
+  {
+    parts = str.split(':');
+  }
+
+  if ( parts.length >= 3 )
+  {
+    hostIp = parts[0];
+    hostPort = parts[1];
+    containerPort = parts[2];
+  }
+  else if ( parts.length === 2 )
+  {
+    hostIp = null;
+    hostPort = parts[0];
+    containerPort = parts[1];
+  }
+  else
+  {
+    hostIp = null;
+    hostPort = "";
+    containerPort = parts[0];
+  }
+
   return Ember.Object.create({
-    host: host,
-    container: container,
+    host: (hostIp ? hostIp + ':' : '') + hostPort,
+    hostIp: hostIp,
+    hostPort: parseInt(hostPort,10)||null,
+    container: parseInt(containerPort,10)||null,
     protocol: protocol,
   });
 }
 
 export function stringifyPort(port, defaultProtocol='http') {
-  var host = Ember.get(port,'host');
+  var hostStr = Ember.get(port,'host')||'';
+  var match, hostIp, hostPort;
+  if ( match = hostStr.match(/^((.*):)?([^:]+)$/) )
+  {
+    hostIp = match[2];
+    hostPort = match[3];
+  }
+  else
+  {
+    hostIp = null;
+    hostPort = hostStr;
+  }
+
   var container = Ember.get(port,'container');
   var protocol = Ember.get(port,'protocol');
 
-  var out = host;
-  if ( container && host !== container )
+  var out = '';
+  if ( hostPort )
   {
-    out += ':' + container;
+    out = (hostIp ? hostIp+':' : '') + hostPort + ':';
   }
+
+  out += container;
 
   if ( protocol && (!defaultProtocol || protocol !== defaultProtocol) )
   {

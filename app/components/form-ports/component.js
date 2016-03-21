@@ -36,7 +36,7 @@ export default Ember.Component.extend({
           out.push({
             existing: existing,
             obj: value,
-            public: value.publicPort,
+            public: (value.bindAddress ? value.bindAddress+':' : '') + value.publicPort,
             private: value.privatePort,
             protocol: value.protocol,
           });
