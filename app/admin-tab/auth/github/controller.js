@@ -115,7 +115,6 @@ export default Ember.Controller.extend({
     }
 
     this.set('scheme', this.get('secure') ? 'https://' : 'http://');
-    var tmp = this.get('model').serialize();
   },
 
   enterpriseDidChange: function() {

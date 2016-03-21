@@ -176,7 +176,12 @@ var Container = Resource.extend({
   }.property('state'),
 
   isManaged: Ember.computed.notEmpty('systemContainer'),
-  primaryHost: Ember.computed.alias('hosts.firstObject'),
+  primaryHost: function() {
+    if ( this.get('hostId') )
+    {
+      return this.get('store').getById('host', this.get('hostId'));
+    }
+  }.property('hostId'),
   primaryService: Ember.computed.alias('services.firstObject'),
 
   displayImage: function() {
@@ -193,7 +198,7 @@ var Container = Resource.extend({
 });
 
 Container.reopenClass({
-  alwaysInclude: ['hosts','services'],
+  alwaysInclude: ['services'],
 });
 
 export default Container;

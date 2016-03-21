@@ -13,6 +13,7 @@ export function initialize(instance) {
 
   store.reopen({
     baseUrl: application.apiEndpoint,
+    defaultPageSize: -1,
     skipTypeifyKeys: ['labels'],
 
     headers: function() {

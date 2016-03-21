@@ -5,10 +5,13 @@ export default Ember.Route.extend({
     var store = this.get('store');
     var ports;
 
-    return store.find('container', params.container_id).then(function(container) {
-      return container.followLink('ports').then(function(p) {
+    return Ember.RSVP.hash({
+      hosts: store.findAll('host'),
+      container: store.find('container', params.container_id),
+    }).then((hash) => {
+      return hash.container.followLink('ports').then(function(p) {
         ports = p;
-        return container;
+        return hash.container;
       });
     }).then(function(container) {
       var host = container.get('primaryHost');
