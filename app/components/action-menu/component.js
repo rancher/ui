@@ -36,14 +36,6 @@ export default Ember.Component.extend({
     }
   },
 
-  keyDown: function(event) {
-    if ( [C.KEY.TAB, C.KEY.DOWN].indexOf(event.which) >= 0 ) {
-      $("#resource-actions > li:first > a").focus();
-      event.preventDefault();
-      event.stopPropagation();
-    }
-  },
-
   actions: {
     sendAction: function(action) {
       this.get('tooltipService').leave();
