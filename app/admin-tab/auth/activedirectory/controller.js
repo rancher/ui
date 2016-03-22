@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Errors from 'ui/utils/errors';
 
 var PLAIN_PORT = 389;
 var TLS_PORT = 636;
@@ -45,19 +46,26 @@ export default Ember.Controller.extend({
   actions: {
     test: function() {
       this.send('clearError');
-      this.set('testing', true);
 
       var model = this.get('model');
       model.setProperties({
         enabled: false,
       });
 
-
-      model.save().then(() => {
-        this.send('authenticate');
-      }).catch(err => {
-        this.send('gotError', err);
-      });
+      var errors = model.validationErrors();
+      if ( errors.get('length') )
+      {
+        this.set('errors', errors);
+      }
+      else
+      {
+        this.set('testing', true);
+        model.save().then(() => {
+          this.send('authenticate');
+        }).catch(err => {
+          this.send('gotError', err);
+        });
+      }
     },
 
     authenticate: function() {
@@ -109,22 +117,9 @@ export default Ember.Controller.extend({
     },
 
     gotError: function(err) {
-      if ( err.message )
-      {
-        this.send('showError', err.message + (err.detail? '('+err.detail+')' : ''));
-      }
-      else
-      {
-        this.send('showError', 'Error ('+err.status + ' - ' + err.code+')');
-      }
-
+      this.set('errors', [Errors.stringify(err)]);
       this.set('testing', false);
       this.set('saving', false);
-    },
-
-    showError: function(msg) {
-      this.set('errors', [msg]);
-      window.scrollY = 0;
     },
 
     clearError: function() {

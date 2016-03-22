@@ -41,8 +41,24 @@ export default {
 
         switch ( err.get('code') )
         {
+          case 'MissingRequired':
+            str += ' is required'; break;
           case 'NotUnique':
             str += ' is not unique'; break;
+          case 'NotNullable':
+            str += ' must be set'; break;
+          case 'InvalidOption':
+            str += ' is not a valid option'; break;
+          case 'InvalidCharacters':
+            str += ' contains invalid characters'; break;
+          case 'MinLengthExceeded':
+            str += ' is not long enough'; break;
+          case 'MaxLengthExceeded':
+            str += ' is too long'; break;
+          case 'MinLimitExceeded':
+            str += ' is too small'; break;
+          case 'MaxLimitExceded':
+            str += ' is too big'; break;
         }
       }
       else
