@@ -158,12 +158,16 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   newExternalId: function() {
-    var systemCategories = C.EXTERNALID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
-    var category = (this.get('templateResource.category')||'').trim().toLowerCase();
-    var externalId = ( systemCategories.indexOf(category) >= 0 ? C.EXTERNALID.KIND_SYSTEM_CATALOG : C.EXTERNALID.KIND_CATALOG );
+    var externalId = ( this.get('isSystem') ? C.EXTERNALID.KIND_SYSTEM_CATALOG : C.EXTERNALID.KIND_CATALOG );
     externalId += C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
     return externalId;
-  }.property('templateResource.category','selectedTemplateModel.uuid'),
+  }.property('isSystem','selectedTemplateModel.id'),
+
+  isSystem: function() {
+    var systemCategories = C.EXTERNALID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
+    var category = (this.get('templateResource.category')||'').trim().toLowerCase();
+    return systemCategories.indexOf(category) >= 0;
+  }.property('templateResource.category'),
 
   willSave() {
     this.set('errors', null);
@@ -223,9 +227,20 @@ export default Ember.Component.extend(NewOrEdit, {
       var nsId = this.get('k8s.namespace.id');
       return this.get('router').transitionTo('k8s-tab.namespace.services', projectId, nsId);
     }
+    else if ( base === 'swarm' )
+    {
+      return this.get('router').transitionTo('applications-tab.compose-services', projectId);
+    }
     else
     {
-      return this.get('router').transitionTo('environment', projectId, this.get('primaryResource.id'));
+      if ( this.get('isSystem') )
+      {
+        return this.get('router').transitionTo('environment', projectId, this.get('primaryResource.id'), {queryParams: {which: 'system'}});
+      }
+      else
+      {
+        return this.get('router').transitionTo('environment', projectId, this.get('primaryResource.id'));
+      }
     }
   }
 
