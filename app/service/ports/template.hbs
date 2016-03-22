@@ -1,28 +1,32 @@
-<table class="grid fixed">
-  <thead>
-    <tr>
-      <th width="150">Port</th>
-      <th>Host IP</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each model.endpointsByPort as |obj|}}
+{{#if model.isActive}}
+  <table class="grid fixed">
+    <thead>
       <tr>
-        <td>
-          {{obj.port}}
-        </td>
-        <td>
-          {{#each obj.ipAddresses as |ip|}}
-            <span class="r-pr10"><a href="http://{{ip}}:{{obj.port}}" target="_blank">{{ip}}</a></span>
-          {{/each}}
-        </td>
+        <th width="150">Port</th>
+        <th>Host IP</th>
       </tr>
-    {{else}}
-      <tr>
-        <td colspan="2">
-          <div class="text-muted text-center">This Service has no ports.</div>
-        </td>
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
+    </thead>
+    <tbody>
+      {{#each model.endpointsByPort as |obj|}}
+        <tr>
+          <td>
+            {{obj.port}}
+          </td>
+          <td>
+            {{#each obj.ipAddresses as |ip|}}
+              <span class="r-pr10"><a href="http://{{ip}}:{{obj.port}}" target="_blank">{{ip}}</a></span>
+            {{/each}}
+          </td>
+        </tr>
+      {{else}}
+        <tr>
+          <td colspan="2">
+            <div class="text-muted text-center">This Service has no ports.</div>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <div class="text-center text-muted">Ports are only availale while the service is Active.</div>
+{{/if}}

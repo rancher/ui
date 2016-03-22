@@ -22,6 +22,7 @@ export default Ember.Component.extend({
 
   didInsertElement() {
     this.initMultiselect();
+    this.privilegedDidChange();
   },
 
   // ----------------------------------

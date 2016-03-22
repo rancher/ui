@@ -148,6 +148,7 @@ export default Ember.Mixin.create({
   isError: Ember.computed.equal('transitioning','error'),
   isDeleted: Ember.computed.equal('state','removed'),
   isPurged: Ember.computed.equal('state','purged'),
+  isActive: Ember.computed.equal('state','active'),
 
   relevantState: function() {
     return this.get('combinedState') || this.get('state');

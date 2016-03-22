@@ -31,6 +31,7 @@ export default Ember.Route.extend({
           name: '',
           description: '',
           environmentId: params.environmentId,
+          startOnCreate: true,
         });
       }
 

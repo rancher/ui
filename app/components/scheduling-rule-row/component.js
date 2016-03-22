@@ -11,6 +11,29 @@ function splitEquals(str) {
   return [ str.substr(0,idx) , str.substr(idx+1) ];
 }
 
+function normalizedLabels(objects) {
+  var out = {};
+  objects.forEach((obj) => {
+    var labels = obj.get('labels')||{};
+
+    Object.keys(labels).filter((key) => {
+      return key.indexOf(C.LABEL.SYSTEM_PREFIX) !== 0;
+    }).forEach((key) => {
+      let normalizedKey = key.trim().toLowerCase();
+      if ( out[normalizedKey] )
+      {
+        out[normalizedKey].push(labels[key].toLowerCase());
+      }
+      else
+      {
+        out[normalizedKey] = [labels[key].toLowerCase()];
+      }
+    });
+  });
+
+  return out;
+}
+
 export default Ember.Component.extend({
   rule: null,
   instance: null,
@@ -192,32 +215,18 @@ export default Ember.Component.extend({
     return out;
   }.property('isGlobal'),
 
-  hostLabelKeyChoices: function() {
-    var out = [];
-    this.get('allHosts').forEach((host) => {
-      var keys = Object.keys(host.get('labels')||{}).filter((key) => {
-        return key.indexOf(C.LABEL.SYSTEM_PREFIX) !== 0;
-      });
-      out.pushObjects(keys);
-    });
-
-    return out.map((key) => { return (key||'').toLowerCase(); }).sort().uniq();
+  normalizedHostLabels: function() {
+    return normalizedLabels(this.get('allHosts'));
   }.property('allHosts.@each.labels'),
 
+  hostLabelKeyChoices: function() {
+    return Object.keys(this.get('normalizedHostLabels')).sort().uniq();
+  }.property('normalizedHostLabels'),
+
   hostLabelValueChoices: function() {
-    var key = this.get('userKey');
-
-    var out = [];
-    this.get('allHosts').forEach((host) => {
-      var label = (host.get('labels')||{})[key];
-      if ( label )
-      {
-        out.pushObject(label);
-      }
-    });
-
-    return out.map((key) => { return (key||'').toLowerCase(); }).sort().uniq();
-  }.property('userKey','allHosts.@each.labels'),
+    var key = this.get('userKey').toLowerCase();
+    return ((this.get('normalizedHostLabels')[key])||[]).sort().uniq();
+  }.property('userKey','normalizedHostLabels'),
 
   allContainers: function() {
     var out = [];
@@ -233,31 +242,18 @@ export default Ember.Component.extend({
     return out.sortBy('name','id').uniq();
   }.property('allHosts.@each.instancesUpdated'),
 
-  containerLabelKeyChoices: function() {
-    var out = [];
-    this.get('allContainers').forEach((container) => {
-      var keys = Object.keys(container.get('labels')||{}).filter((key) => {
-        return key.indexOf(C.LABEL.SYSTEM_PREFIX) !== 0;
-      });
-      out.pushObjects(keys);
-    });
+  normalizedContainerLabels: function() {
+    return normalizedLabels(this.get('allContainers'));
+  }.property('allHosts.@each.labels'),
 
-    return out.map((key) => { return (key||'').toLowerCase(); }).sort().uniq();
-  }.property('allContainers.@each.labels'),
+  containerLabelKeyChoices: function() {
+    return Object.keys(this.get('normalizedContainerLabels')).sort().uniq();
+  }.property('normalizedContainerLabels'),
 
   containerLabelValueChoices: function() {
-    var key = this.get('userKey');
-    var out = [];
-    this.get('allContainers').forEach((container) => {
-      var label = (container.get('labels')||{})[key];
-      if ( label )
-      {
-        out.pushObject(label);
-      }
-    });
-
-    return out.map((key) => { return (key||'').toLowerCase(); }).sort().uniq();
-  }.property('userKey','allContainers.@each.labels'),
+    var key = this.get('userKey').toLowerCase();
+    return ((this.get('normalizedContainerLabels')[key])||[]).sort().uniq();
+  }.property('userKey','normalizedContainerLabels'),
 
   containerValueChoices: function() {
     var out = [];

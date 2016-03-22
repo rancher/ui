@@ -96,23 +96,40 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   }.property('listenersArray.@each.ssl'),
 
   listenersChanged: function() {
+    Ember.run.once(this, 'updateListeners');
+  }.observes('listenersArray.@each.{host,protocol,container,isPublic,ssl}'),
+
+  updateListeners: function() {
     var ports = [];
     var expose = [];
     this.get('listenersArray').forEach(function(listener) {
-      var host = parseInt(listener.get('host'),10);
+      var hostStr = listener.get('host');
+      var hostIp, hostPort;
+      var idx = hostStr.indexOf(':');
+      if ( idx >= 0 )
+      {
+        hostIp = hostStr.substr(0,idx);
+        hostPort = parseInt(hostStr.substr(idx+1),10);
+      }
+      else
+      {
+        hostIp = null;
+        hostPort = parseInt(hostStr,10);
+      }
+
       var container = parseInt(listener.get('container'),10);
       var proto = listener.get('protocol');
 
       // You almost definitely probably want 443->80.
-      if ( host === 443 && !container && listener.get('ssl'))
+      if ( hostPort === 443 && !container && listener.get('ssl'))
       {
         container = 80;
         listener.set('container', 80);
       }
 
-      if ( host && proto )
+      if ( hostPort && proto )
       {
-        var str = host +':'+ (container ? + container : host) + (proto === 'http' ? '': '/' + proto );
+        var str = (hostIp ? hostIp + ':' : '') + hostPort +':'+ (container ? + container : hostPort) + (proto === 'http' ? '': '/' + proto );
         if ( listener.get('isPublic') )
         {
           ports.pushObject(str);
@@ -126,7 +143,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
     this.set('launchConfig.ports', ports.sort().uniq());
     this.set('launchConfig.expose', expose.sort().uniq());
-  }.observes('listenersArray.@each.{host,protocol,container,isPublic,ssl}'),
+  },
 
   hasAdvancedSourcePorts: function() {
     return this.get('targetsArray').filterBy('isService',true).filter((target) => {

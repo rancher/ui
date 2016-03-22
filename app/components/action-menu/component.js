@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import { isAlternate } from 'ui/utils/platform';
-import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   model           : null,
@@ -33,14 +32,6 @@ export default Ember.Component.extend({
 
         this.get('resourceActions').show(this.get('model'), more, this.$());
       }
-    }
-  },
-
-  keyDown: function(event) {
-    if ( [C.KEY.TAB, C.KEY.DOWN].indexOf(event.which) >= 0 ) {
-      $("#resource-actions > li:first > a").focus();
-      event.preventDefault();
-      event.stopPropagation();
     }
   },
 

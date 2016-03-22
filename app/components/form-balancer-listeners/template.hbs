@@ -14,7 +14,7 @@
       {{#if listenersArray.length}}
         <thead>
           <tr>
-            <th>Source Port{{#unless editing}}*{{/unless}}</th>
+            <th>Source IP/Port{{#unless editing}}*{{/unless}}</th>
             <th width="20"></th>
             <th width="60">Protocol</th>
             <th width="50" class="text-center">SSL</th>
@@ -40,8 +40,8 @@
               <td>{{if listener.isPublic "Public" "Internal"}}</td>
               <td class="text-right">&nbsp;</td>
             {{else}}
-              <td data-title="Source Port*:">
-                {{input type="text" classNames="form-control lb-listener-source-port input-sm" min="1" max="65535" step="1" value=listener.host placeholder="On Host, e.g. 80"}}
+              <td data-title="Source IP/Port*:">
+                {{input type="text" classNames="form-control lb-listener-source-port input-sm" value=listener.host placeholder="On Host, e.g. 80 or 1.2.3.4:80"}}
               </td>
               <td>&nbsp;</td>
               <td data-title="Protocol:">
