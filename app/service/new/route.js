@@ -80,6 +80,7 @@ export default Ember.Route.extend({
           type: 'service',
           environmentId: params.environmentId,
           scale: 1,
+          startOnCreate: true,
         };
       }
 

@@ -79,6 +79,7 @@ export default Ember.Route.extend({
           environmentId: params.environmentId,
           launchConfig: launchConfig,
           consumedServices: null,
+          startOnCreate: true,
         });
       }
 
