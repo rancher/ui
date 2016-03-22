@@ -23,8 +23,19 @@ export default Ember.Route.extend({
     });
   },
 
-  activate() {
-    var stats = MultiStatsSocket.create({
+  setupController() {
+    this._super.apply(this,arguments);
+    this.connectStats();
+  },
+
+  connectStats() {
+    var stats = this.get('statsSocket');
+    if ( stats )
+    {
+      stats.close();
+    }
+
+    stats = MultiStatsSocket.create({
       resource: this.modelFor('service').get('service'),
       linkName: 'containerStats',
     });
