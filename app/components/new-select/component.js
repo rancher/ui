@@ -70,13 +70,10 @@ export default Ember.Component.extend({
   _change() {
     const selectEl = this.$()[0];
     const selectedIndex = selectEl.selectedIndex;
+    const selectedValue = selectEl.options[selectedIndex].value;
     const content = this.get('content');
 
-    // decrement index by 1 if we have a prompt
-    const hasPrompt = !!this.get('prompt');
-    const contentIndex = hasPrompt ? selectedIndex - 1 : selectedIndex;
-
-    const selection = content.objectAt(contentIndex);
+    const selection = content.filterBy(this.get('optionValuePath'), selectedValue)[0];
 
     // set the local, shadowed selection to avoid leaking
     // changes to `selection` out via 2-way binding
