@@ -21,12 +21,12 @@ export default Ember.Controller.extend(ManageLabels, {
     let cmd      = this.get('model.command');
     let cattleIp = this.get('cattleAgentIp');
     let lookFor  = 'docker run';
-    let idx      = cmd.indexOf(lookFor);
 
     if ( !cmd ) {
       return null;
     }
 
+    let idx = cmd.indexOf(lookFor);
     let env = Util.addQueryParams('', this.get('model.labels')||{});
 
     if ( env ) {
