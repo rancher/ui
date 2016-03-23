@@ -100,9 +100,9 @@ export default Ember.Controller.extend({
     {
       var match;
       var hostname = this.get('model.hostname')||'';
-      if ( match = hostname.match(/^http(s)?:\/\//) )
+      if ( match = hostname.match(/^http(s)?:\/\//i) )
       {
-        this.set('secure', (match[1] === 's'));
+        this.set('secure', ((match[1]||'').toLowerCase() === 's'));
         hostname = hostname.substr(match[0].length).replace(/\/.*$/,'');
         this.set('model.hostname', hostname);
       }
@@ -144,6 +144,7 @@ export default Ember.Controller.extend({
       // Send authenticate immediately so that the popup isn't blocked,
       // even though the config isn't necessarily saved yet...
       this.set('github.hostname', model.get('hostname'));
+      this.set('github.scheme', model.get('scheme'));
       this.set('github.clientId', model.get('clientId'));
       this.send('authenticate');
 

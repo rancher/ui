@@ -43,12 +43,12 @@
     <table class="grid fixed table table-hover r-mb15">
       <thead>
         {{sortable-th sortable=this action="changeSort" name="id" label="Time" width="115" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="eventType" width="" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="resourceType" label="Resource Type:Id" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="clientIp" label="Request IP" width="150" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="authType" width="125" class="r-pl10"}}
+        {{sortable-th sortable=this action="changeSort" name="eventType" class="r-pl10"}}
+        {{sortable-th sortable=this action="changeSort" name="description" class="r-pl10"}}
         {{sortable-th sortable=this action="changeSort" name="authenticatedAsAccountId" label="Environment" width="125" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="authenticatedAsIdentityId" label="Identity" width="200" class="r-pl10"}}
+        {{sortable-th sortable=this action="changeSort" name="resourceType" label="Resource Type:Id" class="r-pl10"}}
+        {{sortable-th sortable=this action="changeSort" name="authenticatedAsIdentityId" label="Identity" width="175" class="r-pl10"}}
+        <th width="150" class="r-pl10">Auth &amp; IP</th>
       </thead>
       <tbody>
         {{#each model.auditLog as |log|}}
@@ -57,15 +57,7 @@
             <td data-title="Event Type:" class="force-wrap" title="{{log.eventType}}">
               {{log.eventType}} <i class="icon icon-info addtl-info-trigger" {{action 'showResponseObjects' log.requestObject log.responseObject }}></i>
             </td>
-            <td data-title="Resource Type(ID):" class="clip" title="{{log.resourceType}}">
-              {{#if log.links.resource}}
-                <a href="{{log.links.resource}}" target="_blank">{{log.resourceType}}{{#if log.resourceId}}: {{log.resourceId}}{{/if}}</a>
-              {{else}}
-                {{log.resourceType}}{{#if log.resourceId}}: {{log.resourceId}}{{/if}}
-              {{/if}}
-            </td>
-            <td data-title="Request IP:" class="clip">{{log.clientIp}}</td>
-            <td data-title="Auth Type:" class="clip" title="{{log.authType}}">{{auth-type log.authType}}</td>
+            <td data-title="Description:">{{#if log.description}}{{log.description}}{{else}}<span class="text-muted">None</span>{{/if}}</td>
             <td data-title="Environment:" class="clip">
               {{#if (eq log.account.type "project")}}
                 {{log.account.name}}
@@ -73,7 +65,15 @@
                 <span class="text-muted">-</span>
               {{/if}}
             </td>
+            <td data-title="Resource Type(ID):" class="clip" title="{{log.resourceType}}">
+              {{#if log.links.resource}}
+                <a href="{{log.links.resource}}" target="_blank">{{log.resourceType}}{{#if log.resourceId}}: {{log.resourceId}}{{/if}}</a>
+              {{else}}
+                {{log.resourceType}}{{#if log.resourceId}}: {{log.resourceId}}{{/if}}
+              {{/if}}
+            </td>
             <td data-title="Identity:">{{identity-block identityNotParsed=log.authenticatedAsIdentityId}}</td>
+            <td data-title="Auth &amp; IP:" class="clip">{{auth-type log.authType}}<div>{{log.clientIp}}</div></td>
           </tr>
         {{/each}}
       </tbody>
