@@ -4,264 +4,141 @@ import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
 
 export default DriverController.extend({
   ubiquityConfig: Ember.computed.alias('model.ubiquityConfig'),
+  ubiquityHostingApi: 'api.ubiquityhosting.com/v25/api.php',
 
-  allDiskSizes: null,
-  allInstanceProfiles: null,
-
-  ubiquityhostingApi: 'api.ubiquityhosting.com/v25/api.php',
+  allZones: null,
+  allImages: null,
+  allFlavors: null,
 
   step: 1,
-  initial_load: true,
-
   isStep1: Ember.computed.equal('step',1),
   isStep2: Ember.computed.equal('step',2),
   isGteStep3: Ember.computed.gte('step',3),
 
-  zoneIdSelected: function() {
-    var zone_id = this.get('ubiquityConfig.zoneId');
-
-    if (zone_id){
-      this.getImages(zone_id);
-    }
-  }.observes('ubiquityConfig.zoneId'),
-
-  getZones: function(){
-    // Get Zones
-    this.apiRequest('list_zones').then((res) => {
-      // Check for any out-of-band errors and handle as needed
-      if ((res || '') === '') {
-        var errors = this.get('errors')||[];
-
-        errors.push('Authentication failure: please check the provided access credentials');
-
-        this.set('errors', errors);
-        this.set('step', 1);
-
-        return false;
-      }
-
-      var zones = [];
-      var defaultZone = null;
-
-      /* Retrieve the list of zones. */
-      (res.Zones || []).forEach((zone) => {
-        var obj = {
-          id: zone.id,
-          name: zone.name,
-          isDefault: zone.name === this.get('defaultZoneName')
-        };
-
-        zones.push(obj);
-
-        if (obj.isDefault && !defaultZone) {
-          defaultZone = obj;
-        }
-      });
-
-      if (this.get('initial_load') === true) {
-        this.getImages(zones[0].id);
-        this.set('initial_load', false);
-      }
-
-      this.set('allZones', zones);
-      this.set('defaultZone', defaultZone);
-
-    }, (err) => {
-      var errors = this.get('errors')||[];
-
-      errors.pushObject(
-        this.apiErrorMessage(
-          err,
-          'listzonesresponse',
-          'While requesting zones',
-          'Authentication failure: please check the provided access credentials'
-        )
-      );
-
-      this.set('errors', errors);
-      this.set('step', 1);
-    });
-  },
-
-  getImages: function(zone_id){
-    // Get Images
-    this.apiRequest('list_images', {zone_id: zone_id, docker_machine: 'true'}).then((res) => {
-      // Check for any out-of-band errors and handle as needed
-      if ((res || '') === '') {
-        var errors = this.get('errors')||[];
-
-        errors.push('Authentication failure: please check the provided access credentials');
-
-        this.set('errors', errors);
-        this.set('step', 1);
-
-        return false;
-      }
-
-      var images = [];
-      var defaultImage = null;
-
-      /* Retrieve the list of zones. */
-      (res.Images || []).forEach((image) => {
-        var obj = {
-          id: image.id,
-          name: image.name,
-          description: image.cat_desc,
-          isDefault: image.name === this.get('defaultImageName')
-        };
-
-        images.push(obj);
-
-        if (obj.isDefault && !defaultImage) {
-          defaultImage = obj;
-        }
-      });
-
-      this.set('allImages', images);
-      this.set('defaultImage', defaultImage);
-
-    }, (err) => {
-      var errors = this.get('errors')||[];
-
-      errors.pushObject(
-        this.apiErrorMessage(
-          err,
-          'listimagesresponse',
-          'While requesting images',
-          'Authentication failure: please check the provided access credentials'
-        )
-      );
-
-      this.set('errors', errors);
-      this.set('step', 1);
-    });
-  },
-
-  getFlavors: function(){
-    // Get Flavors
-    this.apiRequest('list_flavors').then((res) => {
-      // Check for any out-of-band errors and handle as needed
-      if ((res || '') === '') {
-        var errors = this.get('errors')||[];
-
-        errors.push('Authentication failure: please check the provided access credentials');
-
-        this.set('errors', errors);
-        this.set('step', 1);
-
-        return false;
-      }
-
-      var flavors = [];
-      var defaultFlavor = null;
-
-      /* Retrieve the list of zones. */
-      (res.Flavors || []).forEach((flavor) => {
-        var obj = {
-          id: flavor.id,
-          name: flavor.name,
-          // description: flavor.cat_desc,
-          isDefault: flavor.name === this.get('defaultFlavorName')
-        };
-
-        flavors.push(obj);
-
-        if (obj.isDefault && !defaultFlavor) {
-          defaultFlavor = obj;
-        }
-      });
-
-      this.set('allFlavors', flavors);
-      this.set('defaultFlavor', defaultFlavor);
-
-      /* Move to next step */
-      this.set('step', 3);
-    }, (err) => {
-      var errors = this.get('errors')||[];
-
-      errors.pushObject(
-        this.apiErrorMessage(
-          err,
-          'listflavorsresponse',
-          'While requesting flavors',
-          'Authentication failure: please check the provided access credentials'
-        )
-      );
-
-      this.set('errors', errors);
-      this.set('step', 1);
-    });
-  },
-
   actions: {
     /* Login step */
     ubiLogin: function() {
-      this.getZones();
-      this.getFlavors();
-
       this.set('errors', null);
       this.set('step', 2);
-
       this.set('ubiquityConfig.clientId', (this.get('ubiquityConfig.clientId')||'').trim());
       this.set('ubiquityConfig.apiUsername', (this.get('ubiquityConfig.apiUsername')||'').trim());
       this.set('ubiquityConfig.apiToken', (this.get('ubiquityConfig.apiToken')||'').trim());
+
+      Ember.RSVP.hash({
+        zones: this.getZones(),
+        flavors: this.getFlavors(),
+      }).then((hash) => {
+        this.set('allZones', hash.zones);
+        this.set('allFlavors', hash.flavors);
+
+        if ( !this.get('ubiquityConfig.zoneId') )
+        {
+          this.set('ubiquityConfig.zoneId', this.get('allZones.firstObject.id'));
+        }
+
+        if ( !this.get('ubiquityConfig.flavorId') )
+        {
+          this.set('ubiquityConfig.flavorId', this.get('allFlavors.firstObject.id'));
+        }
+
+        return this.zoneChange(this.get('ubiquityConfig.zoneId')).then(() => {
+          this.set('step', 3);
+        });
+      }).catch((err) => {
+        this.set('errors', [err]);
+        this.set('step', 1);
+      });
+    },
+
+    setZone(zoneId) {
+      this.zoneChange(zoneId);
     },
   },
 
-  apiErrorMessage: function(err, kind, prefix, def) {
-    var answer = (err.xhr || {}).responseJSON || {};
-    var text = (answer[kind] || {}).errortext;
+  zoneChange: function(zoneId) {
+    this.set('ubiquityConfig.zoneId', zoneId);
+    return this.getImages(zoneId).then((images) => {
+      this.set('allImages', images);
+      var existing = this.get('ubiquityConfig.imageId');
+      if ( !existing || images.filterBy('id', existing).length === 0 ) {
+        this.set('ubiquityConfig.imageId', images[0].id);
+      }
+    });
+  },
 
-    if (text) {
-      return prefix + ": " + text;
-    }
-    else {
-      return def;
-    }
+  getZones: function() {
+    return this.apiRequest('list_zones').then((res) => {
+      return (res.Zones || []).map((zone) => {
+        return {
+          id: zone.id,
+          name: zone.name,
+        };
+      });
+    });
+  },
+
+  getImages: function(zone_id) {
+    return this.apiRequest('list_images', {zone_id: zone_id, docker_machine: 'true'}).then((res) => {
+      return (res.Images || []).map((image) => {
+        return {
+          id: image.id,
+          name: image.name,
+          description: image.cat_desc,
+        };
+      });
+    });
+  },
+
+  getFlavors: function() {
+    return this.apiRequest('list_flavors').then((res) => {
+      return (res.Flavors || []).map((flavor) => {
+        return {
+          id: flavor.id,
+          name: flavor.name,
+        };
+      });
+    });
   },
 
   apiRequest: function(command, params) {
-    var url = this.get('app.proxyEndpoint') + '/' + this.ubiquityhostingApi + "?method=cloud." + command;
+    var url = this.get('app.proxyEndpoint') + '/' + this.ubiquityHostingApi + "?method=cloud." + encodeURIComponent(command);
 
     var auth = this.get('ubiquityConfig.clientId') + ':' + this.get('ubiquityConfig.apiUsername') + ':' + this.get('ubiquityConfig.apiToken');
-
-    var auth_encoded = window.btoa(auth);
-
     params = params || {};
 
-    var retval = ajaxPromise({
+    return ajaxPromise({
       url: url,
       method: 'POST',
       dataType: 'json',
 
       headers: {
         'Accept': 'application/json',
-        'X-API-Headers-Restrict': 'Content-Length',
-        'X-API-AUTH-HEADER': 'Basic ' + auth_encoded,
+        'X-Api-Headers-Restrict': 'Content-Length',
+        'X-Api-Auth-Header': 'Basic ' + window.btoa(auth),
       },
 
       beforeSend: (xhr, settings) => {
-        // Prepend 'rancher:' to Content-Type
         xhr.setRequestHeader('Content-Type', 'rancher:' + settings.contentType);
-
         return true;
       },
 
       data: params,
       params: params
-    }, true);
-
-    return retval;
+    }, true).then((res) => {
+      if ((res || '') === '') {
+        return Ember.RSVP.reject('Authentication Failed: Please check the access credentials and that the server is in the list of authorized IP addresses in the Ubiquity console');
+      } else {
+        return res;
+      }
+    });
   },
 
   validate: function() {
     this._super();
-
     var errors = this.get('errors')||[];
+    var name = this.get('model.name')||'';
 
-    var name = this.get('name')||'';
-
-    if (name.length > 200) {
+    if (name.length < 1 || name.length > 200) {
       errors.push('"name" should be 1-200 characters long');
     }
 
@@ -271,7 +148,6 @@ export default DriverController.extend({
 
     if (errors.get('length')) {
       this.set('errors',errors);
-
       return false;
     }
 

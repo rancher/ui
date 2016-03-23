@@ -7,7 +7,7 @@ export default DriverRoute.extend({
     var store = this.get('store');
 
     var config = store.createRecord({
-      type: '',
+      type: 'ubiquityConfig',
       apiToken: '',
       apiUsername: '',
       clientId: '',
@@ -20,5 +20,13 @@ export default DriverRoute.extend({
       type: 'machine',
       ubiquityConfig: config,
     });
+  },
+
+  resetController: function (controller, isExisting/*, transition*/) {
+    if (isExisting)
+    {
+      controller.set('errors', null);
+      controller.set('step', 1);
+    }
   }
 });
