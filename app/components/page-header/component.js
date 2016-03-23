@@ -79,15 +79,15 @@ export default Ember.Component.extend({
   bootstrapCatalogs: function() {
     let defaultCatalogs = [];
     let customCatalogs  = [];
-    let catalogUrls     = this.get('settings').get(C.SETTING.CATALOG_URL).split(',');
+    let catalogUrls     = (this.get('settings').get(C.SETTING.CATALOG_URL)||'').split(',');
 
     catalogUrls.forEach((catalog) => {
       let tmp = {};
       catalog = catalog.split('=')[0];
 
-      if (catalog === 'library' || catalog === 'community') {
+      if (catalog === C.CATALOG.LIBRARY_KEY || catalog === C.CATALOG.COMMUNITY_KEY) {
 
-        if (catalog === 'library') {
+        if (catalog === C.CATALOG.LIBRARY_KEY) {
 
           if (this.get('settings.isPrivateLabel')) {
             tmp.icon = 'icon-catalog';
