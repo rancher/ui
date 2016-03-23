@@ -1,10 +1,13 @@
 import Ember from "ember";
+import { isSafari } from 'ui/utils/platform';
 
 var INSECURE = 'ws://';
 var SECURE   = 'wss://';
 var sockId = 1;
 
 export default Ember.Object.extend(Ember.Evented, {
+  growl: Ember.inject.service(),
+
   url: null,
   socket: null,
   autoReconnect: true,
@@ -25,6 +28,7 @@ export default Ember.Object.extend(Ember.Evented, {
     if ( window.location.protocol === 'https:' && url.indexOf(INSECURE) === 0 )
     {
       url = SECURE + url.substr(INSECURE.length);
+      this.set('url', url);
     }
 
     var id = sockId++;
@@ -130,6 +134,10 @@ export default Ember.Object.extend(Ember.Evented, {
     {
       var delay = Math.max(1000, Math.min(1000 * this.get('tries'), 30000));
       Ember.run.later(this, this.connect, delay);
+    }
+    else if ( isSafari && !wasConnected && this.get('url').indexOf('wss://') === 0 )
+    {
+      window.l('service:growl').error('Error connecting to WebSocket','Safari does not support WebSockets connecting to a self-signed or unrecognized certificate.  Use http:// instead of https:// or reconfigure the server with a valid certificate from a recognized certificate authority.  Streaming stats, logs, shell/console, and auto-updating of the state of resources in the UI will not work until this is resolved.');
     }
 
     if ( typeof this.get('disconnectCb') === 'function' )
