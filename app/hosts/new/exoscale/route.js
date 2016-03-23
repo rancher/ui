@@ -19,6 +19,13 @@ export default DriverRoute.extend({
       type: 'machine',
       exoscaleConfig: config
     });
-  }
+  },
 
+  resetController: function (controller, isExisting/*, transition*/) {
+    if (isExisting)
+    {
+      controller.set('errors', null);
+      controller.set('step', 1);
+    }
+  }
 });

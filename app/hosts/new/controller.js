@@ -53,7 +53,7 @@ export default Ember.Controller.extend({
     var has = store.hasRecordFor.bind(store,'schema');
 
     var actuallyHasNames = Object.keys(store.getById('schema','machine').get('resourceFields')).filter((name) => {
-      return name.indexOf('Config') >= 1
+      return name.indexOf('Config') >= 1;
     }).map((name) => {
       return name.toLowerCase();
     });
