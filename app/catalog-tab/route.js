@@ -101,6 +101,7 @@ export default Ember.Route.extend({
 
     function filter(data, category, catalogIds) {
       data = data.filterBy('templateBase', (templateBase === 'cattle' ? '' : templateBase));
+      let categories = uniqKeys(data, 'category');
 
       if ( category !== 'all' ) {
         data = data.filterBy('category', category);
@@ -109,7 +110,7 @@ export default Ember.Route.extend({
       data = data.sortBy('name');
 
       return Ember.Object.create({
-        categories: uniqKeys(data, 'category'),
+        categories: categories,
         uniqueCatalogIds: catalogIds,
         catalog: data,
         templateBase: templateBase,

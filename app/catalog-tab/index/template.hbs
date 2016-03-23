@@ -1,6 +1,6 @@
 <section class="header">
   <h1>
-    Catalog
+    Catalog: <span class="text-capitalize">{{selectedCatalog}}</span>
   </h1>
 
   <div class="pull-right">
@@ -16,21 +16,6 @@
       {{/if}}
     </button>
   </div>
-
-  {{#if showCatalogDropdown}}
-    <div class="btn-group pull-right r-ml10">
-      <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Catalog: <span class="text-capitalize">{{selectedCatalog}}</span> <i class="icon icon-chevron-down"></i></button>
-      <ul class="dropdown-menu dropdown-menu-right">
-        {{#each uniqueCatalogIds as |catalog|}}
-        <li>
-          {{#link-to parentRoute (query-params catalogId=catalog)}}
-            <span class="text-capitalize">{{catalog}}</span>
-          {{/link-to}}
-        </li>
-        {{/each}}
-      </ul>
-    </div>
-  {{/if}}
 
   <div class="btn-group pull-right r-ml10">
     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category: <span class="text-capitalize">{{category}}</span> <i class="icon icon-chevron-down"></i></button>

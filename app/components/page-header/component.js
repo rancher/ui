@@ -2,8 +2,8 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 const DELAY = 250;
-const TABS_WITH_SUB = ['applications-tab','infrastructure-tab', 'k8s-tab', 'admin-tab'];
-const TABS_WITHOUT = ['catalog-tab', 'api-tab', 'help-tab'];
+const TABS_WITH_SUB = ['catalog-tab', 'applications-tab','infrastructure-tab', 'k8s-tab', 'admin-tab'];
+const TABS_WITHOUT = ['api-tab', 'help-tab'];
 const ALL_TABS = TABS_WITH_SUB.concat(TABS_WITHOUT);
 
 export default Ember.Component.extend({
@@ -13,6 +13,7 @@ export default Ember.Component.extend({
   prefs            : Ember.inject.service(),
   k8s              : Ember.inject.service(),
   namespace        : Ember.computed.alias('k8s.namespace'),
+  settings         : Ember.inject.service(),
 
   currentPath      : null,
   forcedMenu       : null,
@@ -20,6 +21,9 @@ export default Ember.Component.extend({
   menuHoverTimer   : null,
   siblingMenuTimer : null,
   noSubNavHovered  : null,
+  rootCatalog      : null,
+  defaultCatalogs  : null,
+  customCatalogs   : null,
 
   projectId        : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
 
@@ -71,12 +75,55 @@ export default Ember.Component.extend({
     return this.get('isAdmin') && this.get('store').hasRecordFor('schema','setting');
   }.property(),
 
+
+  bootstrapCatalogs: function() {
+    let defaultCatalogs = [];
+    let customCatalogs  = [];
+    let catalogUrls     = (this.get('settings').get(C.SETTING.CATALOG_URL)||'').split(',');
+
+    catalogUrls.forEach((catalog) => {
+      let tmp = {};
+      catalog = catalog.split('=')[0];
+
+      if (catalog === C.CATALOG.LIBRARY_KEY || catalog === C.CATALOG.COMMUNITY_KEY) {
+
+        if (catalog === C.CATALOG.LIBRARY_KEY) {
+
+          if (this.get('settings.isPrivateLabel')) {
+            tmp.icon = 'icon-catalog';
+          } else {
+            tmp.icon = 'icon-rancher-cow';
+          }
+
+          tmp.id = catalog;
+        } else {
+
+          tmp.icon = 'icon-globe';
+          tmp.id   = catalog;
+        }
+
+        defaultCatalogs.push(tmp);
+      } else {
+
+        tmp.icon = 'icon-globe';
+        tmp.id = catalog;
+        customCatalogs.push(tmp);
+      }
+    });
+
+    this.set('defaultCatalogs', defaultCatalogs);
+    this.set('customCatalogs', customCatalogs);
+  },
+
   tabObserver: Ember.observer('currentPath', 'forcedMenu', 'noSubNavHovered', function() {
 
     let currentPathArr  = this.get('currentPath').split('.');
     let navPartial      = '';
     let isInCurrentPath = false;
     let bottomRow       = Ember.$('.bottom-row');
+
+    this.bootstrapCatalogs();
+
 
     ALL_TABS.forEach((tab) => {
       if (currentPathArr.contains(tab)) {

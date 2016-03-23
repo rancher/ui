@@ -1,0 +1,19 @@
+{{#link-to 'catalog-tab' (query-params catalogId='all')}}<i class="icon icon-catalog"></i>All{{/link-to}}
+{{#each-in defaultCatalogs as |key catalog|}}
+  {{#link-to 'catalog-tab' (query-params catalogId=catalog.id)}}<i class="icon {{catalog.icon}}"></i>{{catalog.id}}{{/link-to}}
+{{/each-in}}
+{{#if customCatalogs.length}}
+  <span class="dropdown">
+    <a href="#" class=" dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-users"></i>Custom <i class="icon icon-chevron-down" style="display:inline-block;font-size:12px;"></i></a>
+    <ul class="dropdown-menu" role="menu">
+      <li role="presentation" class="dropdown-header">
+        Select Custom Catalog
+      </li>
+      {{#each-in customCatalogs as |key catalog|}}
+        <li>
+          {{#link-to 'catalog-tab' (query-params catalogId=catalog.id)}}{{catalog.id}}{{/link-to}}
+        </li>
+      {{/each-in}}
+    </ul>
+  </span>
+{{/if}}

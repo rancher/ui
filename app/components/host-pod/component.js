@@ -1,9 +1,8 @@
 import Ember from 'ember';
 import ManageLabels from 'ui/mixins/manage-labels';
-import FasterLinksAndMenus from 'ui/mixins/faster-links-and-menus';
 import GroupedInstances from 'ui/mixins/grouped-instances';
 
-export default Ember.Component.extend(ManageLabels, FasterLinksAndMenus, GroupedInstances, {
+export default Ember.Component.extend(ManageLabels, GroupedInstances, {
   model: null,
   mode: null,
 

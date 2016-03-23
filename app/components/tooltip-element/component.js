@@ -10,13 +10,18 @@ export default Ember.Component.extend({
   model          : null,
   size           : 'default',
   ariaRole       : ['tooltip'],
+  textChangedEvent: null,
 
   showTimer      : null,
+
+  textChanged: Ember.observer('textChangedEvent', function() {
+    this.show(this.get('textChangedEvent'));
+  }),
 
   mouseEnter(evt) {
     if ( !this.get('tooltipService.requireClick') )
       {
-        var tgt = Ember.$(evt.currentTarget);
+        let tgt = Ember.$(evt.currentTarget);
 
         // Wait for a little bit of time so that the mouse can pass through
         // another tooltip-element on the way to the dropdown trigger of a
@@ -33,13 +38,14 @@ export default Ember.Component.extend({
       return;
     }
 
-    var svc = this.get('tooltipService');
+    let svc = this.get('tooltipService');
 
     this.set('showTimer', null);
     svc.cancelTimer();
 
-    var out = {
+    let out = {
       type          : this.get('type'),
+      baseClass     : this.get('baseClass'),
       eventPosition : node.offset(),
       originalNode  : node,
       model         : this.get('model'),
@@ -63,4 +69,11 @@ export default Ember.Component.extend({
       }
     }
   },
+
+  modelObserver: Ember.observer('model', 'textChangedEvent', function() {
+    let opts = this.get('tooltipService.tooltipOpts');
+    if (opts) {
+      this.set('tooltipService.tooltipOpts.model', this.get('model'));
+    }
+  })
 });

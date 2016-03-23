@@ -37,11 +37,15 @@ export default Ember.Mixin.create(ThrottledResize, {
   }.observes('tooltipService.tooltipOpts').on('init'),
 
   constructTooltip: function() {
-    var node          = Ember.$(this.element);
-    var eventPosition = this.get('tooltipService.tooltipOpts.eventPosition');
-    var position      = this.positionTooltip(node, eventPosition);
+    let tts           = this.get('tooltipService');
+    let node          = Ember.$(this.element);
+    let eventPosition = tts.get('tooltipOpts.eventPosition');
+    let position      = this.positionTooltip(node, eventPosition);
 
-    node.offset(position).addClass(position.placement).css('visibility', 'visible');
+    node.offset(position).addClass(`${position.placement} ${tts.tooltipOpts.baseClass}`).css({
+      visibility: 'visible',
+      width: position.width + 1
+    });
   },
 
   destroyTooltip: function() {
@@ -50,11 +54,11 @@ export default Ember.Mixin.create(ThrottledResize, {
 
   positionTooltip: function(node, position) {
 
-    var windowWidth        = window.innerWidth;
-    var originalNodeWidth  = this.get('tooltipService.tooltipOpts.originalNode').outerWidth();
-    var originalNodeHeight = this.get('tooltipService.tooltipOpts.originalNode').outerHeight();
-    var nodeHeight         = node.outerHeight();
-    var nodeWidth          = node.outerWidth();
+    let windowWidth        = window.innerWidth;
+    let originalNodeWidth  = this.get('tooltipService.tooltipOpts.originalNode').outerWidth();
+    let originalNodeHeight = this.get('tooltipService.tooltipOpts.originalNode').outerHeight();
+    let nodeHeight         = node.outerHeight();
+    let nodeWidth          = node.outerWidth();
 
     if (nodeWidth >= position.left) {
       position.placement = 'left';
@@ -77,6 +81,8 @@ export default Ember.Mixin.create(ThrottledResize, {
       position.left      = position.left + (originalNodeWidth/2) - (nodeWidth/2);
 
     }
+
+    position.width = nodeWidth;
 
     return position;
   },

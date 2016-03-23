@@ -11,9 +11,12 @@ export default Ember.Service.extend({
   actionMenu     : null,
 
   show: function(model,trigger,toggle) {
-    var $parent = this.set('actionParent', $('#resource-actions-parent'));
-    var $menu = this.set('actionMenu', $('#resource-actions'));
-    var $toggle = this.set('actionToggle', $(toggle||trigger));
+    if (this.get('open')) {
+      this.hide();
+    }
+    let $parent = this.set('actionParent', $('#resource-actions-parent'));
+    let $menu = this.set('actionMenu', $('#resource-actions'));
+    let $toggle = this.set('actionToggle', $(toggle||trigger));
 
     if ( model === this.get('model') && this.get('open') )
     {
@@ -81,7 +84,7 @@ export default Ember.Service.extend({
   },
 
   activeActions: function() {
-    var list = (this.get('model.availableActions')||[]).filter(function(act) {
+    let list = (this.get('model.availableActions')||[]).filter(function(act) {
       return Ember.get(act,'enabled') !== false || Ember.get(act,'divider');
     });
 
@@ -98,14 +101,14 @@ export default Ember.Service.extend({
     }
 
     // Remove consecutive dividers
-    var last = null;
+    let last = null;
     list = list.filter(function(act) {
-      var cur = (act.divider === true);
-      var ok = !cur || (cur && !last);
+      let cur = (act.divider === true);
+      let ok = !cur || (cur && !last);
       last = cur;
       return ok;
     });
 
     return list;
-  }.property('model.availableActions.[]','model.availableActions.@each.enabled'),
+  }.property('model.availableActions.[]','model.availableActions.@each.enabled', 'model'),
 });
