@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
-var defaultDriver = 'custom';
-var driverChoices = [
+let defaultDriver = 'custom';
+let driverChoices = [
   {name: 'custom',       label: 'Custom',        css: 'custom',       sort: 1,                              },
   {name: 'amazonec2',    label: 'Amazon EC2',    css: 'amazon',       sort: 2, schema: 'amazonec2config'    },
   {name: 'azure',        label: 'Azure',         css: 'azure',        sort: 2, schema: 'azureConfig'        },
@@ -23,7 +23,7 @@ export function addDriver(driver) {
 }
 
 export function removeDriver(nameOrObj) {
-  var name = ( typeof nameOrObj === 'object' ? nameOrObj.name : nameOrObj);
+  let name = ( typeof nameOrObj === 'object' ? nameOrObj.name : nameOrObj);
   driverChoices.removeObjects(driverChoices.filterBy('name', name));
 }
 
@@ -37,6 +37,7 @@ export default Ember.Controller.extend({
   backTo: null,
 
   lastRoute: null,
+  apiHostSet: true,
 
   actions: {
     switchDriver(name) {
@@ -49,8 +50,8 @@ export default Ember.Controller.extend({
   }.on('init'),
 
   drivers: function() {
-    var store = this.get('store');
-    var has = store.hasRecordFor.bind(store,'schema');
+    let store = this.get('store');
+    let has = store.hasRecordFor.bind(store,'schema');
 
     var actuallyHasNames = Object.keys(store.getById('schema','machine').get('resourceFields')).filter((name) => {
       return name.indexOf('Config') >= 1;
