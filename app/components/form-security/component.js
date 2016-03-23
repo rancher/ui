@@ -8,9 +8,14 @@ export default Ember.Component.extend({
     addDevice: function() {
       this.get('devicesArray').pushObject({host: '', container: '', permissions: 'rwm'});
     },
+
     removeDevice: function(obj) {
       this.get('devicesArray').removeObject(obj);
     },
+
+    setLogDriver: function(driver) {
+      this.set('instance.logConfig.driver', driver);
+    }
   },
 
   didInitAttrs() {
@@ -18,6 +23,7 @@ export default Ember.Component.extend({
     this.initDevices();
     this.initMemory();
     this.initPidMode();
+    this.initLogging();
   },
 
   didInsertElement() {
@@ -226,5 +232,30 @@ export default Ember.Component.extend({
         drop.multiselect('enable');
       }
     }
-  }.observes('instance.privileged')
+  }.observes('instance.privileged'),
+
+  initLogging: function() {
+    if (!this.get('instance.logConfig') ) {
+      this.set('instance.logConfig', {});
+    }
+
+    if (!this.get('instance.logConfig.driver') ) {
+      this.set('instance.logConfig.driver', '');
+    }
+
+    if (!this.get('instance.logConfig.config') ) {
+      this.set('instance.logConfig.config', {});
+    }
+  },
+
+  logDriverChoices: [
+    'none',
+    'json-file',
+    'awslogs',
+    'fluentd',
+    'gelf',
+    'journald',
+    'splunk',
+    'syslog',
+  ],
 });

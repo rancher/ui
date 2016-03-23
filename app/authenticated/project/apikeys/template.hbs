@@ -1,36 +1,4 @@
 <section class="header">
-  <h1>Account API Keys</h1>
-
-  <button class="btn btn-sm btn-primary" {{action "newApikey" "account"}}>Add Account API Key</button>
-</section>
-
-<section class="well">
-  <p>Account API Keys are tied to your specific account {{#if access.identity.name}}(<code>{{access.identity.displayName}}</code>){{/if}} and can create, delete, and manipulate all Environments which you have access to.</p>
-  <label>Endpoint:</label>
-  <code><a href="{{endpointWithAuth}}" target="_blank">{{displayEndpoint}}</a></code>
-  {{copy-to-clipboard clipboardText=endpointWithAuth size="sm"}}
-  <table class="grid fixed r-mb0 r-mt10">
-    <thead>
-      <tr>
-        {{sortable-th sortable=this action="changeSort" name="state" width="125"}}
-        {{sortable-th sortable=this action="changeSort" name="name"}}
-        {{sortable-th sortable=this action="changeSort" name="description"}}
-        {{sortable-th sortable=this action="changeSort" name="publicValue" label="Access Key"}}
-        {{sortable-th sortable=this action="changeSort" name="created"}}
-        <th width="75">&nbsp;</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each accountArranged as |key|}}
-        {{apikey-row model=key}}
-      {{else}}
-        <tr><td colspan="6" class="text-center text-muted">You don't have any Account API keys yet.</td></tr>
-      {{/each}}
-    </tbody>
-  </table>
-</section>
-
-<section class="header">
   <h1>Environment API Keys</h1>
 
   <button class="btn btn-sm btn-primary" {{action "newApikey" "environment"}}>Add Environment API Key</button>
@@ -62,3 +30,37 @@
     </tbody>
   </table>
 </section>
+
+{{#advanced-section}}
+  <section class="header">
+    <h1>Account API Keys</h1>
+
+    <button class="btn btn-sm btn-primary" {{action "newApikey" "account"}}>Add Account API Key</button>
+  </section>
+
+  <section class="well">
+    <p>Account API Keys are tied to your specific account {{#if access.identity.name}}(<code>{{access.identity.displayName}}</code>){{/if}} and can create, delete, and manipulate all Environments which you have access to.</p>
+    <label>Endpoint:</label>
+    <code><a href="{{endpointWithAuth}}" target="_blank">{{displayEndpoint}}</a></code>
+    {{copy-to-clipboard clipboardText=endpointWithAuth size="sm"}}
+    <table class="grid fixed r-mb0 r-mt10">
+      <thead>
+        <tr>
+          {{sortable-th sortable=this action="changeSort" name="state" width="125"}}
+          {{sortable-th sortable=this action="changeSort" name="name"}}
+          {{sortable-th sortable=this action="changeSort" name="description"}}
+          {{sortable-th sortable=this action="changeSort" name="publicValue" label="Access Key"}}
+          {{sortable-th sortable=this action="changeSort" name="created"}}
+          <th width="75">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each accountArranged as |key|}}
+          {{apikey-row model=key}}
+        {{else}}
+          <tr><td colspan="6" class="text-center text-muted">You don't have any Account API keys yet.</td></tr>
+        {{/each}}
+      </tbody>
+    </table>
+  </section>
+{{/advanced-section}}
