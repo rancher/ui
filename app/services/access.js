@@ -62,6 +62,7 @@ export default Ember.Service.extend({
         this.setProperties({
           'github.clientId': token.clientId,
           'github.hostname': token.hostname,
+          'github.scheme': token.scheme || 'https://',
         });
       }
 
