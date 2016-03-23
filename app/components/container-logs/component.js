@@ -19,7 +19,7 @@ export default Ember.Component.extend(ThrottledResize, {
   status: 'Connecting...',
   socket: null,
 
-  logHeight: 270,
+  logHeight: 300,
 
   onlyCombinedLog: Ember.computed.alias('context.instance.tty'),
   which: 'combined',
@@ -49,7 +49,7 @@ export default Ember.Component.extend(ThrottledResize, {
 
     scrollToBottom: function() {
       var body = this.$('.log-body');
-      body.stop().animate({ scrollTop: body[0].scrollHeight+'px'});
+      body.stop().animate({ scrollTop: (body[0].scrollHeight+1000)+'px'});
     },
 
     changeShow: function(which) {
@@ -127,7 +127,9 @@ export default Ember.Component.extend(ThrottledResize, {
 
       if ( isFollow )
       {
-        this.send('scrollToBottom');
+        Ember.run.next(() => {
+          this.send('scrollToBottom');
+        });
       }
     };
 

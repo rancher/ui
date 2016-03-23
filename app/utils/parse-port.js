@@ -5,7 +5,6 @@ import Ember from 'ember';
 // hostPort:containerPort
 // containerPort
 export function parsePort(str, defaultProtocol='http') {
-  console.log("ParsePort:", str, defaultProtocol);
   str = str.trim();
 
   var match, parts, hostIp = '', hostPort, containerPort, protocol;

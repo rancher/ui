@@ -1,6 +1,6 @@
 {{#link-to 'catalog-tab' (query-params catalogId='all')}}<i class="icon icon-catalog"></i>All{{/link-to}}
 {{#each-in defaultCatalogs as |key catalog|}}
-  {{#link-to 'catalog-tab' (query-params catalogId=catalog.id)}}<i class="icon {{catalog.icon}}"></i>{{catalog.id}}{{/link-to}}
+  {{#link-to 'catalog-tab' project.id (query-params catalogId=catalog.id)}}<i class="icon {{catalog.icon}}"></i>{{catalog.id}}{{/link-to}}
 {{/each-in}}
 {{#if customCatalogs.length}}
   <span class="dropdown">
@@ -11,7 +11,7 @@
       </li>
       {{#each-in customCatalogs as |key catalog|}}
         <li>
-          {{#link-to 'catalog-tab' (query-params catalogId=catalog.id)}}{{catalog.id}}{{/link-to}}
+          {{#link-to 'catalog-tab' project.id (query-params catalogId=catalog.id)}}{{catalog.id}}{{/link-to}}
         </li>
       {{/each-in}}
     </ul>

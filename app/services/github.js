@@ -8,6 +8,7 @@ export default Ember.Service.extend({
 
   // Set by app/services/access
   hostname: null,
+  scheme: null,
   clientId: null,
 
   generateState: function() {
@@ -29,7 +30,7 @@ export default Ember.Service.extend({
       redirect = Util.addQueryParam(redirect, 'isTest', 1);
     }
 
-    var url = Util.addQueryParams('https://' + (this.get('hostname') || C.GITHUB.DEFAULT_HOSTNAME) + C.GITHUB.AUTH_PATH, {
+    var url = Util.addQueryParams((this.get('scheme') ||'https://') + (this.get('hostname') || C.GITHUB.DEFAULT_HOSTNAME) + C.GITHUB.AUTH_PATH, {
       client_id: this.get('clientId'),
       state: this.generateState(),
       scope: C.GITHUB.SCOPE,

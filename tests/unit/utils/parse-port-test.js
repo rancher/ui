@@ -27,11 +27,9 @@ data.forEach(function(obj) {
   {
     test('it can parse: ' + obj.str, function(assert) {
       var expected = obj.parsed;
-      assert.strictEqual(Ember.get(actual,'host'),      Ember.get(expected, 'host'),      'Host parses correctly');
-      assert.strictEqual(Ember.get(actual,'hostIp'),    Ember.get(expected, 'hostIp'),    'HostIp parses correctly');
-      assert.strictEqual(Ember.get(actual,'hostPort'),  Ember.get(expected, 'hostPort'),  'HostPort parses correctly');
-      assert.strictEqual(Ember.get(actual,'container'), Ember.get(expected, 'container'), 'Container parses correctly');
-      assert.strictEqual(Ember.get(actual,'protocol'),  Ember.get(expected, 'protocol'),  'Protocol parses correctly');
+      Object.keys(expected).forEach((key) => {
+        assert.strictEqual(Ember.get(actual,key), Ember.get(expected, key), key + ' parses correctly');
+      });
     });
 
     test('it can stringify: ' + obj.str, function(assert) {
