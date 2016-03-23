@@ -96,6 +96,7 @@ export default DriverController.extend({
         this.set('step', 3);
         this.set('allSecurityGroups', groups);
         this.set('defaultSecurityGroup', defaultGroup);
+        this.set('selectedSecurityGroup', this.get('exoscaleConfig.securityGroup') || this.get('allSecurityGroups.firstObject.id'));
       }, (err) => {
         var errors = this.get('errors')||[];
         errors.pushObject(this.apiErrorMessage(err,

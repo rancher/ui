@@ -81,21 +81,23 @@
       {{/each}}
     {{else}}
       {{#each groupedInstances as |group|}}
-        <div class="container-subpod-info">
-          <div class="subpod-header">
-            <h6 class="clip">{{#if group.name}}{{if group.kubernetes 'Namespace:' 'Stack:'}} {{group.name}}{{else}}Standalone Containers{{/if}}</h6>
+        {{#if (or showAdd group.instances.length)}}
+          <div class="container-subpod-info">
+            <div class="subpod-header">
+              <h6 class="clip">{{#if group.name}}{{if group.kubernetes 'Namespace:' 'Stack:'}} {{group.name}}{{else}}Standalone Containers{{/if}}</h6>
+            </div>
+            <div class="subpod-inner clearfix">
+              {{#each group.instances as |item|}}
+                {{container-subpod model=item.main stripProject=true children=item.children}}
+              {{/each}}
+              {{#unless group.name}}
+                {{#if showAdd}}
+                  {{add-subpod action="newContainer" label="Add Container" groupHasChildren=group.hasChildren}}
+                {{/if}}
+              {{/unless}}
+            </div>
           </div>
-          <div class="subpod-inner clearfix">
-            {{#each group.instances as |item|}}
-              {{container-subpod model=item.main stripProject=true children=item.children}}
-            {{/each}}
-            {{#unless group.name}}
-              {{#if showAdd}}
-                {{add-subpod action="newContainer" label="Add Container" groupHasChildren=group.hasChildren}}
-              {{/if}}
-            {{/unless}}
-          </div>
-        </div>
+        {{/if}}
       {{else}}
         {{#if showAdd}}
           {{add-subpod action="newContainer" label="Add Container" groupHasChildren=group.hasChildren}}

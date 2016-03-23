@@ -52,11 +52,18 @@ export default Ember.Controller.extend({
     var store = this.get('store');
     var has = store.hasRecordFor.bind(store,'schema');
 
+    var actuallyHasNames = Object.keys(store.getById('schema','machine').get('resourceFields')).filter((name) => {
+      return name.indexOf('Config') >= 1;
+    }).map((name) => {
+      return name.toLowerCase();
+    });
+
     return driverChoices.filter((driver) => {
       Ember.set(driver,'active', 'hosts.new.'+driver.name === this.get('lastRoute'));
 
       if ( driver.schema ) {
-        return has(driver.schema.toLowerCase());
+        var name = driver.schema.toLowerCase();
+        return has(name) && actuallyHasNames.indexOf(name) >= 0;
       } else {
         return true;
       }
