@@ -51,7 +51,10 @@ export default Ember.Service.extend({
       $parent.addClass('open');
 
       this.set('open',true);
-      $('#resource-actions-first')[0].focus();
+      // Delay ensure it works in firefox
+      Ember.run.next(() => {
+        $('#resource-actions-first')[0].focus();
+      });
       BootstrapFixes.positionDropdown($menu, trigger, true);
     });
   },

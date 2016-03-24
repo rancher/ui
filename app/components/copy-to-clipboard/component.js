@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import { isSafari } from 'ui/utils/platform';
 
-const DELAY = 2000;
+const DELAY = 1000;
 
 export default Ember.Component.extend({
   tagName          : 'div',
