@@ -5,16 +5,24 @@
   </h1>
 </section>
 
-{{#if (gt drivers.length 1)}}
-  <section class="well">
-    <div class="nav nav-boxes checked-active">
-      {{#each drivers as |driver|}}
-        <a {{action "switchDriver" driver.name}} alt={{driver.label}} class="nav-box-item driver machine-driver {{driver.css}} {{if driver.active 'active'}}" href="#"></a>
-      {{/each}}
+{{#if apiHostSet}}
+  {{#if (gt drivers.length 1)}}
+    <section class="well">
+      <div class="nav nav-boxes checked-active">
+        {{#each drivers as |driver|}}
+          <a {{action "switchDriver" driver.name}} alt={{driver.label}} class="nav-box-item driver machine-driver {{driver.css}} {{if driver.active 'active'}}" href="#"></a>
+        {{/each}}
+      </div>
+    </section>
+  {{/if}}
+
+  <section>
+    {{outlet}}
+  </section>
+{{else}}
+  <section>
+    <div class="well">
+      {{host-settings saved="savedHost"}}
     </div>
   </section>
 {{/if}}
-
-<section>
-  {{outlet}}
-</section>

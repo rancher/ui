@@ -5,29 +5,32 @@ const { getOwner } = Ember;
 
 export default Ember.Route.extend({
   access: Ember.inject.service(),
+  settings: Ember.inject.service(),
 
   backTo: null,
   model(params) {
     this.set('backTo', params.backTo);
 
-    var store = this.get('store');
-    if ( this.get('access.admin') && store.hasRecordFor('schema','setting') )
-    {
+    let store = this.get('store');
+    if ( this.get('access.admin') && store.hasRecordFor('schema','setting') ) {
       return store.find('setting', denormalizeName(C.SETTING.API_HOST)).then((setting) => {
-        if ( setting.get('value') )
-        {
-          return Ember.RSVP.resolve();
+        let controller = this.controllerFor('hosts.new');
+        if ( setting.get('value') ) {
+          controller.set('apiHostSet', true);
+        } else {
+          let settings = this.get('settings');
+          controller.setProperties({
+            apiHostSet: false,
+            hostModel: settings.get(C.SETTING.API_HOST)
+          });
         }
-        else
-        {
-          this.transitionTo('admin-tab.settings', {queryParams: {backToAdd: true}});
-        }
+        return Ember.RSVP.resolve();
       });
     }
   },
 
   activate() {
-    var appRoute = getOwner(this).lookup('route:application');
+    let appRoute = getOwner(this).lookup('route:application');
     this.set('previousOpts', {name: appRoute.get('previousRoute'), params: appRoute.get('previousParams')});
   },
 
@@ -40,15 +43,17 @@ export default Ember.Route.extend({
       this.send('goBack');
     },
 
+    savedHost() {
+      this.controllerFor('hosts.new').set('apiHostSet', true);
+      this.refresh();
+    },
+
     goBack() {
-      if ( this.get('backTo') === 'k8s' )
-      {
+      if ( this.get('backTo') === 'k8s' ) {
         this.transitionTo('k8s-tab.waiting');
-      }
-      else
-      {
-        var appRoute = getOwner(this).lookup('route:application');
-        var opts = this.get('previousOpts');
+      } else {
+        let appRoute = getOwner(this).lookup('route:application');
+        let opts = this.get('previousOpts');
         appRoute.set('previousRoute', opts.name);
         appRoute.set('previousParams', opts.params);
         this.send('goToPrevious','hosts');

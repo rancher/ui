@@ -32,7 +32,6 @@ export default Ember.Route.extend({
 
   resetController(controller, isExiting /*, transition*/ ) {
     if (isExiting) {
-      controller.set('backToAdd', false);
       controller.set('error', null);
     }
   }
