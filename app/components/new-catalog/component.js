@@ -229,7 +229,7 @@ export default Ember.Component.extend(NewOrEdit, {
     }
     else if ( base === 'swarm' )
     {
-      return this.get('router').transitionTo('applications-tab.compose-services', projectId);
+      return this.get('router').transitionTo('applications-tab.compose-projects', projectId);
     }
     else
     {
