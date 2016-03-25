@@ -34,10 +34,19 @@ export default Ember.Component.extend({
         if ( typeof value === 'object' )
         {
           var existing = !forceNew && !!value.id;
+          var pub = '';
+          if ( value.publicPort )
+          {
+            if ( value.bindAddress ) {
+              pub += value.bindAddress + ':';
+            }
+
+            pub += value.publicPort;
+          }
           out.push({
             existing: existing,
             obj: value,
-            public: (value.bindAddress ? value.bindAddress+':' : '') + value.publicPort,
+            public: pub,
             private: value.privatePort,
             protocol: value.protocol,
           });

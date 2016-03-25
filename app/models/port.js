@@ -4,6 +4,16 @@ var Port = Resource.extend({
   _publicIp: null,
   _publicIpState: 0,
   displayPublicIp: function() {
+    var bind = this.get('bindAddress');
+    if ( bind )
+    {
+      return bind;
+    }
+    else if ( !this.get('publicPort') )
+    {
+      return null;
+    }
+
     var ip = this.get('_publicIp');
     if ( ip )
     {
@@ -26,7 +36,7 @@ var Port = Resource.extend({
     }
 
     return null;
-  }.property('_publicIpState','_publicIp','publicIpAddressId'),
+  }.property('_publicIpState','_publicIp','publicIpAddressId','bindAddress','publicPort'),
 });
 
 export default Port;
