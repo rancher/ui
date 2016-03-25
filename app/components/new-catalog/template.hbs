@@ -24,6 +24,13 @@
         <div>
           <small><strong>Category:</strong> <span class="text-capitalize">{{templateResource.category}}</span></small>
         </div>
+        {{#if (eq templateResource.catalogId 'library')}}
+          <small><strong>Support: </strong>Officially Certified</small>
+        {{else}}
+          {{#if (eq templateResource.catalogId 'community')}}
+            <small><strong>Support: </strong>Maintained by community members</small>
+          {{/if}}
+        {{/if}}
         {{#if templateResource.maintainer}}
           <div>
             <small><strong>Maintainer:</strong> {{templateResource.maintainer}}</small>

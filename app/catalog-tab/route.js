@@ -1,8 +1,9 @@
 import Ember from 'ember';
 import { addQueryParams } from 'ui/utils/util';
+import C from 'ui/utils/constants';
 
 function uniqKeys(data, name) {
-  var out = data.map((item) => item[name]);
+  let out = data.map((item) => item[name]);
   out = out.uniq().sort((a,b) => a.localeCompare(b, 'en', {sensitivity: 'base'}));
   out.unshift('all');
   return out;
@@ -57,32 +58,38 @@ export default Ember.Route.extend({
   beforeModel: function() {
     return this.get('store').request({url: `${this.get('app.catalogEndpoint')}/catalogs`}).then((response) => {
       this.set('catalogs', response);
-      var ids = uniqKeys(response, 'id');
+      let ids = uniqKeys(response, 'id');
       this.set('uniqueCatalogIds', ids);
     });
   },
 
   model(params) {
-    var cache = this.get('cache');
-    var templateBase = this.get('templateBase');
+    let cache        = this.get('cache');
+    let templateBase = this.get('templateBase');
+    let version      = this.get('settings.rancherVersion');
+    let catalogId    = params.catalogId;
+    let url          = null;
+    let combined     = false;
+    let store        = this.get('store');
+    let qp           = {
+      'category_ne': 'system',
+    };
 
     // If the catalogIds dont match we need to go get the other catalog from the store since we do not cache all catalogs
-    if ( cache && cache.catalogId === params.catalogId)
+    if ( cache && cache.catalogId === catalogId)
     {
       return filter(cache, params.category, this.get('uniqueCatalogIds'));
     }
 
-    if (params.catalogId) {
-      this.controllerFor('catalog-tab.index').set('selectedCatalog', params.catalogId);
-    }
+    if (catalogId) {
+      this.controllerFor('catalog-tab.index').set('selectedCatalog', catalogId);
 
-    var version = this.get('settings.rancherVersion');
-    var qp = {
-      'category_ne': 'system',
-    };
-
-    if (params.catalogId !== 'all') {
-      qp['catalogId'] = params.catalogId;
+      if (catalogId === 'community') {
+        combined = true;
+        //qp['catalogId'] = [C.CATALOG.LIBRARY_KEY,C.CATALOG.COMMUNITY_KEY];
+      } else if (catalogId !== 'all') {
+        qp['catalogId'] = catalogId;
+      }
     }
 
     if ( version )
@@ -90,13 +97,33 @@ export default Ember.Route.extend({
       qp['minimumRancherVersion_lte'] = version;
     }
 
-    var url = addQueryParams(this.get('app.catalogEndpoint')+'/templates', qp);
+    if (combined) {
+      url = {};
+      [C.CATALOG.LIBRARY_KEY,C.CATALOG.COMMUNITY_KEY].forEach((key) => {
+        let tmpQp = qp;
+        tmpQp['catalogId'] = key;
+        url[key] = addQueryParams(`${this.get('app.catalogEndpoint')}/templates`, tmpQp);
+      });
+      return Ember.RSVP.hash({
+        library   : store.request({url : url[C.CATALOG.LIBRARY_KEY]}),
+        community : store.request({url : url[C.CATALOG.COMMUNITY_KEY]})
+      }).then((hash) => {
+        let tmpArr = [];
+        tmpArr = hash[C.CATALOG.LIBRARY_KEY].content.concat(hash[C.CATALOG.COMMUNITY_KEY].content);
+        tmpArr.catalogId = catalogId;
+        this.set('cache', tmpArr);
+        return filter(tmpArr, params.category, this.get('uniqueCatalogIds'));
+      });
+    } else {
+      url = addQueryParams(`${this.get('app.catalogEndpoint')}/templates`, qp);
 
-    return this.get('store').request({url: url}).then((response) => {
-      response.catalogId = params.catalogId;
-      this.set('cache', response);
-      return filter(response, params.category, this.get('uniqueCatalogIds'));
-    });
+      return store.request({url: url}).then((response) => {
+        response.catalogId = catalogId;
+        this.set('cache', response);
+        return filter(response, params.category, this.get('uniqueCatalogIds'));
+      });
+    }
+
 
 
     function filter(data, category, catalogIds) {
@@ -108,6 +135,12 @@ export default Ember.Route.extend({
       }
 
       data = data.sortBy('name');
+
+      data.forEach((item) => {
+        if (item.catalogId === C.CATALOG.LIBRARY_KEY) {
+          Ember.set(item, 'official', true);
+        }
+      });
 
       return Ember.Object.create({
         categories: categories,
