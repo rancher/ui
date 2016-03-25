@@ -5,6 +5,7 @@ export default Ember.Controller.extend(NewOrEdit, {
   queryParams: ['githubRepo','githubBranch','composeFile'],
   githubRepo: null,
   githubBranch: null,
+  composeFile: null,
 
   composeFiles: null,
   error: null,

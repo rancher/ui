@@ -75,7 +75,7 @@ export default Ember.Route.extend({
 
   actions: {
     cancel: function() {
-      this.transitionTo('environments');
+      this.transitionTo('applications-tab.compose-projects');
     },
   }
 });
