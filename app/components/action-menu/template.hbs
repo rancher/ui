@@ -1,7 +1,7 @@
 {{yield}}
 {{#if showPrimary}}
-  {{#each model.primaryActions as |act|}}
-    <button class="btn btn-default btn-{{size}}" aria-label="{{act.label}}" {{action 'sendAction' act.action}}>
+  {{#each model.primaryActions as |act index|}}
+    <button class="btn btn-default btn-{{size}}" data-primary="{{index}}" aria-label="{{act.label}}">
       {{#tooltip-element type="tooltip-basic" model=act }}
         <i class="icon-fw {{act.icon}}" alt="{{act.label}}"></i>
       {{/tooltip-element}}
