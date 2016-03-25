@@ -18,17 +18,17 @@ You can replace them by running the `rancher/server` container (>= v0.44) with:
 
 This replaces the entire folder, so you must supply all the files or they will be missing.
 
-| File                    | Usage                                                     |
-|:------------------------|:----------------------------------------------------------|
-| dark.svg                | On the Login screen when access control is enabled        |
-| fail-*.svg              | On the branded error screen (for ui.pl="rancher" only)    |
-| favicon.ico             | Browser tab favicon                                       |
-| graphic.svg             | The parachuting cow part of the image on the About screen |
-| login-bg.jpg            | Background for the login screen box                       |
-| main.svg                | Top-left corner of the main header                        |
-| main-loading.svg        | On the branded loading screen (for ui.pl="rancher" only)  |
-| main_k8s.svg            | Top-left corner of the main header, for k8s tab           |
-| provider-custom.svg     | Custom "Add Host" provider                                |
-| provider-local.svg      | Local "Access Control" provider                           |
-| provider-clustering.svg | "Cattle" environment clustering provider                  |
-| text.svg                | The text part of the image on the About screen            |
+| File                        | Usage                                                     |
+|:--------------------------- |:----------------------------------------------------------|
+| dark.svg                    | On the Login screen when access control is enabled        |
+| fail-*.svg                  | On the branded error screen (for ui.pl="rancher" only)    |
+| favicon.ico                 | Browser tab favicon                                       |
+| graphic.svg                 | The parachuting cow part of the image on the About screen |
+| login-bg.jpg                | Background for the login screen box                       |
+| main.svg                    | Top-left corner of the main header                        |
+| main-loading.svg            | On the branded loading screen (for ui.pl="rancher" only)  |
+| main_k8s.svg                | Top-left corner of the main header, for k8s tab           |
+| provider-custom.svg         | Custom "Add Host" provider                                |
+| provider-local.svg          | Local "Access Control" provider                           |
+| provider-orchestration.svg  | "Cattle" environment orchestration provider               |
+| text.svg                    | The text part of the image on the About screen            |

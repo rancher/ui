@@ -14,8 +14,4 @@ export default Resource.extend({
 
     return Ember.String.htmlSafe(projectUrl);
   }),
-
-  clustering: function() {
-    return this.get('templateBase') || 'cattle';
-  }.property('templateBase'),
 });

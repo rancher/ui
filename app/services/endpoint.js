@@ -51,7 +51,15 @@ export default Ember.Service.extend({
   },
 
   swarm: function() {
-    var port = this.get(`settings.${C.SETTING.SWARM_PORT}`) || 2376;
+    var port = this.get(`settings.${C.SETTING.SWARM_PORT}`);
+    if ( !port ) {
+      port = parseInt(window.location.port,10);
+    }
+
+    if ( !port ) {
+      port = ( window.location.protocol === 'https:' ? 443 : 80 );
+    }
+
     return `tcp://${window.location.hostname}:${port}`;
   }.property(`settings.${C.SETTING.SWARM_PORT}`)
 });

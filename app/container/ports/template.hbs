@@ -15,7 +15,11 @@
           {{badge-state model=port}}
         </td>
         <td data-title="IP Address">
-          {{port.displayPublicIp}}
+          {{#if port.displayPublicIp}}
+            {{port.displayPublicIp}}
+          {{else}}
+            <span class="text-muted">None</span>
+          {{/if}}
         </td>
         <td data-title="Public (on Host)">
           {{#if port.publicPort}}
