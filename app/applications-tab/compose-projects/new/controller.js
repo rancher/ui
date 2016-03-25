@@ -11,6 +11,6 @@ export default Ember.Controller.extend(NewOrEdit, {
   editing: false,
 
   doneSaving: function() {
-    return this.transitionToRoute('applications-tab.compose-projects', this.get('primaryResource.id'));
+    return this.transitionToRoute('applications-tab.compose-projects.compose-project', this.get('primaryResource.id'));
   },
 });
