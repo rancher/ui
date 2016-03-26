@@ -37,7 +37,7 @@ export default Ember.Component.extend(ThrottledResize, {
 
       if ( this.get('columnCount') !== columnCount )
       {
-        this.set('columnCount', Math.min(columnCount, this.get('podCount')));
+        this.set('columnCount', columnCount);
       }
 
       Ember.run(this, () => {
