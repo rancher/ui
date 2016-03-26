@@ -155,6 +155,7 @@ var Service = Resource.extend({
 
     var canUpgrade = !!a.upgrade && this.get('type') === 'service';
     var isK8s = this.get('isK8s');
+    var isSwarm = this.get('isSwarm');
 
     var choices = [
       { label: 'Finish Upgrade',  icon: 'icon icon-success',          action: 'finishUpgrade',  enabled: !!a.finishupgrade },
@@ -169,12 +170,12 @@ var Service = Resource.extend({
       { label: 'Cancel Rollback', icon: 'icon icon-life-ring',        action: 'cancelRollback', enabled: !!a.cancelrollback },
       { divider: true },
       { label: 'View in API',     icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
-      { label: 'Clone',           icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s },
-      { label: 'Edit',            icon: 'icon icon-edit',             action: 'edit',           enabled: !!a.update && !isK8s },
+      { label: 'Clone',           icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isSwarm },
+      { label: 'Edit',            icon: 'icon icon-edit',             action: 'edit',           enabled: !!a.update && !isK8s && !isSwarm },
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type','isK8s'),
+  }.property('actionLinks.{activate,deactivate,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type','isK8s','isSwarm'),
 
 
   // !! If you add a new one of these, you need to add it to reset() below too

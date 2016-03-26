@@ -159,6 +159,7 @@ Router.map(function() {
         });
 
         this.route('compose-console');
+        this.route('compose-waiting');
       });
 
       // Catalog

@@ -51,6 +51,8 @@ export default Ember.Route.extend({
     goBack() {
       if ( this.get('backTo') === 'k8s' ) {
         this.transitionTo('k8s-tab.waiting');
+      } else if ( this.get('backTo') === 'swarm' ) {
+        this.transitionTo('applications-tab.compose-waiting');
       } else {
         let appRoute = getOwner(this).lookup('route:application');
         let opts = this.get('previousOpts');
