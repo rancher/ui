@@ -22,7 +22,6 @@ export default Ember.Component.extend({
   siblingMenuTimer : null,
   noSubNavHovered  : null,
   rootCatalog      : null,
-  defaultCatalogs  : null,
   customCatalogs   : null,
 
   projectId        : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
@@ -77,7 +76,6 @@ export default Ember.Component.extend({
 
 
   bootstrapCatalogs: function() {
-    let defaultCatalogs = [];
     let customCatalogs  = [];
     let catalogUrls     = (this.get('settings').get(C.SETTING.CATALOG_URL)||'').split(',');
 
@@ -85,33 +83,13 @@ export default Ember.Component.extend({
       let tmp = {};
       catalog = catalog.split('=')[0];
 
-      if (catalog === C.CATALOG.LIBRARY_KEY || catalog === C.CATALOG.COMMUNITY_KEY) {
-
-        if (catalog === C.CATALOG.LIBRARY_KEY) {
-
-          if (this.get('settings.isPrivateLabel')) {
-            tmp.icon = 'icon-catalog';
-          } else {
-            tmp.icon = 'icon-rancher-cow';
-          }
-
-          tmp.id = catalog;
-        } else {
-
-          tmp.icon = 'icon-globe';
-          tmp.id   = catalog;
-        }
-
-        defaultCatalogs.push(tmp);
-      } else {
-
+      if (catalog !== C.CATALOG.LIBRARY_KEY && catalog !== C.CATALOG.COMMUNITY_KEY) {
         tmp.icon = 'icon-globe';
         tmp.id = catalog;
         customCatalogs.push(tmp);
       }
     });
 
-    this.set('defaultCatalogs', defaultCatalogs);
     this.set('customCatalogs', customCatalogs);
   },
 
