@@ -84,9 +84,8 @@ export default Ember.Route.extend({
     if (catalogId) {
       this.controllerFor('catalog-tab.index').set('selectedCatalog', catalogId);
 
-      if (catalogId === 'community') {
+      if (catalogId === 'library') {
         combined = true;
-        //qp['catalogId'] = [C.CATALOG.LIBRARY_KEY,C.CATALOG.COMMUNITY_KEY];
       } else if (catalogId !== 'all') {
         qp['catalogId'] = catalogId;
       }
@@ -104,12 +103,14 @@ export default Ember.Route.extend({
         tmpQp['catalogId'] = key;
         url[key] = addQueryParams(`${this.get('app.catalogEndpoint')}/templates`, tmpQp);
       });
-      return Ember.RSVP.hash({
-        library   : store.request({url : url[C.CATALOG.LIBRARY_KEY]}),
-        community : store.request({url : url[C.CATALOG.COMMUNITY_KEY]})
-      }).then((hash) => {
+      return Ember.RSVP.all([
+        store.request({url : url[C.CATALOG.LIBRARY_KEY]}),
+        store.request({url : url[C.CATALOG.COMMUNITY_KEY]})
+      ]).then((arrays) => {
         let tmpArr = [];
-        tmpArr = hash[C.CATALOG.LIBRARY_KEY].content.concat(hash[C.CATALOG.COMMUNITY_KEY].content);
+        arrays.forEach((ary) => {
+          tmpArr = tmpArr.concat(ary.content);
+        });
         tmpArr.catalogId = catalogId;
         this.set('cache', tmpArr);
         return filter(tmpArr, params.category, this.get('uniqueCatalogIds'));
@@ -123,8 +124,6 @@ export default Ember.Route.extend({
         return filter(response, params.category, this.get('uniqueCatalogIds'));
       });
     }
-
-
 
     function filter(data, category, catalogIds) {
       data = data.filterBy('templateBase', (templateBase === 'cattle' ? '' : templateBase));
