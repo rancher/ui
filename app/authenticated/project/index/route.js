@@ -10,7 +10,7 @@ export default Ember.Route.extend({
     }
     else if ( this.controllerFor('authenticated').get('hasSwarm') )
     {
-      this.replaceWith('applications-tab.compose-projects');
+      this.replaceWith('applications-tab.compose-waiting');
     }
     else
     {

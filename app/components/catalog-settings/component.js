@@ -4,7 +4,6 @@ import { parseCatalogSetting } from 'ui/utils/parse-catalog-setting';
 
 export default Ember.Component.extend({
   settings        : Ember.inject.service(),
-  helpEnabled     : Ember.computed.alias('settings.helpEnabled'),
 
   keymap          : null,
   enableLibrary   : null,

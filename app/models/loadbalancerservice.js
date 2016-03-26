@@ -2,37 +2,18 @@ import Service from 'ui/models/service';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
+import { parsePort } from 'ui/utils/parse-port';
 
 const esc = Ember.Handlebars.Utils.escapeExpression;
 
 function portToStr(spec) {
-  var parts = spec.match(/^(\d+)(:(\d+))?(\/(.*))?$/);
-  var str;
-  if ( parts )
-  {
-    str = parts[1] + (parts[4] ||'');
-  }
-  else
-  {
-    str = spec;
-  }
-
-  return str;
+  var parts = parsePort(spec);
+  return parts.host + (parts.protocol === 'http' ? '' : '/' + parts.protocol);
 }
 
 function specToPort(spec) {
-  var parts = spec.match(/^(\d+)(:(\d+))?(\/(.*))?$/);
-  var str;
-  if ( parts )
-  {
-    str = parts[1];
-  }
-  else
-  {
-    str = spec;
-  }
-
-  return parseInt(str,10);
+  var parts = parsePort(spec);
+  return parts.hostPort;
 }
 
 var LoadBalancerService = Service.extend({

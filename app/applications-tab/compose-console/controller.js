@@ -27,7 +27,7 @@ export default Ember.Controller.extend({
       }).save().then((key) => {
         this.set('step',3);
         key.waitForState('active').then(() => {
-          Util.download(key.linkFor('certificate'));
+          Util.download(Util.addQueryParam(key.linkFor('certificate'),'projectId', this.get('projects.current.id')));
           this.set('step',4);
         });
       }).catch((err) => {

@@ -5,12 +5,13 @@ export default Ember.Controller.extend(NewOrEdit, {
   queryParams: ['githubRepo','githubBranch','composeFile'],
   githubRepo: null,
   githubBranch: null,
+  composeFile: null,
 
   composeFiles: null,
   error: null,
   editing: false,
 
   doneSaving: function() {
-    return this.transitionToRoute('applications-tab.compose-projects.compose-project', this.get('primaryResource.id'));
+    return this.transitionToRoute('applications-tab.compose-projects');
   },
 });

@@ -12,33 +12,41 @@ export default Ember.Component.extend({
   tagName         : 'div',
   classNames      : ['btn-group','resource-actions','action-menu'],
   tooltipService  : Ember.inject.service('tooltip'),
-  altActionArg    : null,
 
   click(e) {
-    if ( isAlternate(e) && this.get('altActionArg')) {
-      this.get('tooltipService').leave();
-      this.get('model').send(this.get('altActionArg'));
+    var tgt = Ember.$(e.target);
+    var more = tgt.closest('.more-actions');
+    if ( more && more.length ) {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (this.get('inTooltip')) {
+        this.get('resourceActions').set('tooltipActions', true);
+      } else {
+        this.get('resourceActions').set('tooltipActions', false);
+      }
+
+      this.get('resourceActions').show(this.get('model'), more, this.$());
     } else {
-      var more = Ember.$(e.target).closest('.more-actions');
-      if ( more && more.length ) {
-        e.preventDefault();
-        e.stopPropagation();
+      let idx = parseInt(tgt.closest('BUTTON').data('primary'),10);
+      if ( !isNaN(idx) ) {
+        var action = (this.get('model.primaryActions')||[]).objectAt(idx);
+        if ( action ) {
+          e.preventDefault();
+          e.stopPropagation();
 
-        if (this.get('inTooltip')) {
-          this.get('resourceActions').set('tooltipActions', true);
-        } else {
-          this.get('resourceActions').set('tooltipActions', false);
+          if ( isAlternate(e) && Ember.get(action,'altAction') ) {
+            this.sendToModel(Ember.get(action,'altAction'));
+          } else {
+            this.sendToModel(Ember.get(action,'action'));
+          }
         }
-
-        this.get('resourceActions').show(this.get('model'), more, this.$());
       }
     }
   },
 
-  actions: {
-    sendAction: function(action) {
-      this.get('tooltipService').leave();
-      this.get('model').send(action);
-    }
+  sendToModel(action) {
+    this.get('tooltipService').leave();
+    this.get('model').send(action);
   },
 });
