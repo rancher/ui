@@ -135,7 +135,7 @@ var Environment = Resource.extend({
     }
     else
     {
-      return 'degraded';
+      return health;
     }
   }.property('state', 'healthState'),
 

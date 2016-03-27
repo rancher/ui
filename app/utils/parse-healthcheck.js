@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 
 export function parseRequestLine(str) {
-  str = str.trim();
+  str = (str||'').trim();
   var out = null;
   var match;
 
