@@ -26,11 +26,12 @@ export default Ember.Component.extend(NewOrEdit,{
 
   doSave: function() {
     var model = this.get('primaryResource');
-    var opt =  {
-      headers: {
-        [C.HEADER.PROJECT]: undefined
-      }
-    };
+    var opt =  {headers: {}};
+
+    if ( model.get('accountId') === this.get(`session.${C.SESSION.ACCOUNT_ID}`) )
+    {
+      opt.headers[C.HEADER.PROJECT] = undefined;
+    }
 
     return model.save(opt).then((newData) => {
       return this.mergeResult(newData);
