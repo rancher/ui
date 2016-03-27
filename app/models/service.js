@@ -545,7 +545,7 @@ Service.reopenClass({
     {
       // Secondary lanch configs are service-like
       data.secondaryLaunchConfigs = data.secondaryLaunchConfigs.map((slc) => {
-        slc.type = 'service';
+        slc.type = 'secondaryLaunchConfig';
         return store.createRecord(slc);
       });
     }

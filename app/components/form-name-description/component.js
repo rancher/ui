@@ -12,7 +12,9 @@ export default Ember.Component.extend({
 
   didInsertElement() {
     Ember.run.next(() => {
-      this.$('INPUT')[0].focus();
+      if ( this._state !== 'destroying' ) {
+        this.$('INPUT')[0].focus();
+      }
     });
   },
 });
