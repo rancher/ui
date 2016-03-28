@@ -54,7 +54,7 @@ export default Ember.Component.extend({
             url = `/env/${accountId}/infra/hosts/${id}/containers`;
             break;
           case 'service':
-            url = `/env/${accountId}/apps/${environmentId}/services/${id}`;
+            url = `/env/${accountId}/apps/stacks/${environmentId}/services/${id}`;
             break;
         }
 
