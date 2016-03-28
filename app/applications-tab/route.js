@@ -21,15 +21,26 @@ export default Ember.Route.extend({
   },
 
   afterModel: function(model /*, transition*/) {
-    if ( !model.get('services.length') || !model.get('hosts.length') )
+    var ready = !!model.get('services.length') && !!model.get('hosts.length');
+    var hasKubernetes = this.controllerFor('authenticated').get('hasKubernetes');
+    var hasSwarm = this.controllerFor('authenticated').get('hasSwarm');
+
+    if ( ready )
     {
-      if ( this.controllerFor('authenticated').get('hasSwarm') )
+      if ( this.controllerFor('authenticated').get('hasKubernetes') )
+      {
+        this.transitionTo('environments', this.get('projects.current.id'), {queryParams: {which: 'not-kubernetes'}});
+      }
+    }
+    else
+    {
+      if ( hasSwarm )
       {
         this.transitionTo('applications-tab.compose-waiting');
       }
-      else if ( this.controllerFor('authenticated').get('hasKubernetes') )
+      else if ( hasKubernetes )
       {
-        this.transitionTo('environments', this.get('projects.current.id'), {queryParams: {which: 'not-kubernetes'}});
+        this.transitionTo('k8s-tab.waiting', this.get('projects.current.id'));
       }
       else
       {
