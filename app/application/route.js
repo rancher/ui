@@ -176,7 +176,7 @@ export default Ember.Route.extend({
     this.updateWindowTitle();
 
     var agent = window.navigator.userAgent.toLowerCase();
-    if ( agent.indexOf('msie ') >= 0 || agent.indexOf('trident/') >= 0 || agent.indexOf('edge/') >= 0 )
+    if ( agent.indexOf('msie ') >= 0 || agent.indexOf('trident/') >= 0 )
     {
       this.replaceWith('ie');
       return;
