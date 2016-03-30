@@ -47,6 +47,7 @@ Router.map(function() {
       });
 
       this.route('audit-logs');
+      this.route('ha');
     });
 
     this.route('project', {path: '/env/:project_id'}, function() {
