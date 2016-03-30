@@ -36,7 +36,7 @@ export default Ember.Controller.extend({
       Ember.run.later(() => {
         if ( this._state !== 'destroying' )
         {
-          this.set('confirmPanic', false)
+          this.set('confirmPanic', false);
         }
       }, 5000);
     },
