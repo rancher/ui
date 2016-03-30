@@ -1,9 +1,44 @@
 <section class="well">
-  <h2>High Availability is {{#if model.haConfig.enabled}}<b>enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
+  <h2>High Availability is {{#if model.haConfig.enabled}}<b class="text-success">enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
 </section>
 
 {{#if model.haConfig.enabled}}
-  Info about your HA setup
+  {{#if justGenerated}}
+    <section class="well">
+      <h4>3. Add hosts</h4>
+      <hr/>
+      <p>
+        Copy this script that was each host: {{copy-to-clipboard clipboardText=configScript size="small"}}
+        <pre><code>{{configScript}}</code></pre>
+      </p>
+
+      <p>
+        Then run it on each host to register them:
+        <pre><code>bash ./awesome-script.sh rancher/server:{{if rancherVersion rancherVersion 'latest'}}</code></pre>
+      </p>
+    </section>
+  {{/if}}
+
+  <section class="well">
+    <h4>Info about your HA setup and it's awesomeness.</h4>
+  </section>
+
+  <section class="well">
+    <h4>Danger Zone&trade;</h4>
+    <hr/>
+
+    <p>
+      {{#if confirmPanic}}
+        <button class="btn btn-danger" {{action "panic"}}>
+          <i class="icon icon-alert"></i> Are you sure?  Click again to really disable access HA
+        </button>
+      {{else}}
+        <button class="btn btn-danger" {{action "promptPanic"}}>
+          <i class="icon icon-umbrella"></i> Disable HA
+        </button>
+      {{/if}}
+    </p>
+  </section>
 {{else}}
 
   {{#if isLocalDb}}
@@ -48,7 +83,7 @@
   <section class="well">
     <h4>2. Generate HA config script</h4>
     <hr/>
-    <form>
+    <form action="{{model.haConfig.actionLinks.createscript}}" method="POST" target="_blank">
       <div class="row form-group">
         <div class="col-sm-6 col-md-2 form-control-static">
           <label>Cluster Size</label>
@@ -172,17 +207,17 @@
               <tr>
                 <td>ZooKeeper Client</td>
                 <td class="text-muted">Required</td>
-                <td>{{input class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperClient}}</td>
+                <td>{{input class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperClientPort}}</td>
               </tr>
               <tr>
                 <td>ZooKeeper Quorum</td>
                 <td class="text-muted">Required</td>
-                <td>{{input class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperQuorum}}</td>
+                <td>{{input class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperQuorumPort}}</td>
               </tr>
               <tr>
                 <td>ZooKeeper Leader</td>
                 <td class="text-muted">Required</td>
-                <td>{{input class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperLeader}}</td>
+                <td>{{input class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperLeaderPort}}</td>
               </tr>
             </tbody>
           </table>
@@ -190,7 +225,18 @@
       </div>
 
       <p class="r-mb0 r-mt20">
-        <button class="btn btn-primary" {{action "generateConfig"}}>Generate Config Script</button>
+        {{top-errors errors=errors}}
+
+        {{#if (and false isLocalDb)}}
+          <button class="btn btn-primary btn-disabled" type="button" disabled>Generate Config Script &amp; Enable HA</button>
+          <p class="help-block">You must migrate to an external database before you can enable HA</p>
+        {{else}}
+          {{#if generating}}
+            <button class="btn btn-primary btn-disabled" type="button" disabled><i class="icon icon-spinner icon-spin"/> Generating...</button>
+          {{else}}
+            <button class="btn btn-primary" type="button" {{action "generateConfig"}}>Generate Config Script &amp; Enable HA</button>
+          {{/if}}
+        {{/if}}
       </p>
     </form>
   </section>

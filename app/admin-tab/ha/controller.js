@@ -1,15 +1,21 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
+import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   settings: Ember.inject.service(),
   growl: Ember.inject.service(),
 
   userUrl: '',
-  selfSign: false,
+  selfSign: true,
+  generating: false,
+  justGenerated: false,
+  configScript: null,
+  errors: null,
+  confirmPanic: false,
 
   isLocalDb: function() {
-    return (this.get('model.dbHost')||'').toLowerCase() === 'localhost';
+    return (this.get('model.haConfig.dbHost')||'').toLowerCase() === 'localhost';
   }.property('model.haConfig.dbHost'),
 
   actions: {
@@ -21,21 +27,52 @@ export default Ember.Controller.extend({
       this.set('model.createScript.'+field, text.trim());
     },
 
-    generateConfig() {
-      var ha = this.get('model.haConfig');
-      var cs = this.get('model.createScript');
-      cs.doAction('createscript', cs).then(() => {
-        ha.save().then(() => {
-        });
+    promptPanic() {
+      this.set('confirmPanic', true);
+      Ember.run.later(() => {
+        if ( this._state !== 'destroying' )
+        {
+          this.set('confirmPanic', false)
+        }
+      }, 5000);
+    },
+
+    panic() {
+      var orig = this.get('model.haConfig');
+      var clone = orig.clone();
+      clone.set('enabled', false);
+      clone.save({headers: {[C.HEADER.PROJECT]: undefined}}).then(() => {
+        orig.set('enabled', false);
       }).catch((err) => {
         this.get('growl').fromError(err);
       });
     },
-  },
 
-  setup: (function() {
-    this.set('userUrl', this.get('model.hostRegistrationUrl'));
-  }).on('init'),
+    generateConfig() {
+      var ha = this.get('model.haConfig');
+      var cs = this.get('model.createScript');
+
+      if ( !this.validate() ) {
+        return;
+      }
+
+      this.set('generating',true);
+
+      ha.doAction('createscript', cs, {headers: {[C.HEADER.PROJECT]: undefined}}).then((script) => {
+        var clone = ha.clone();
+        clone.set('enabled',true);
+        clone.save({headers: {[C.HEADER.PROJECT]: undefined}}).then(() => {
+          ha.set('enabled', true);
+          this.set('justGenerated',true);
+          this.set('configScript', script);
+        });
+      }).catch((err) => {
+        this.get('growl').fromError(err);
+      }).finally(() => {
+        this.set('generating', false);
+      });
+    },
+  },
 
   userUrlChanged: function() {
     let val = this.get('userUrl')||'';
@@ -61,6 +98,23 @@ export default Ember.Controller.extend({
     }
 
     this.set('userUrl', val);
-
+    this.set('model.createScript.hostRegistrationUrl', val);
   }.observes('userUrl'),
+
+  selfSignChanged: function() {
+    if ( this.get('selfSign') )
+    {
+      this.get('model.createScript').setProperties({
+        key: null,
+        cert: null,
+        certChain: null,
+      });
+    }
+  }.observes('selfSign'),
+
+  validate() {
+    var errors = this.get('model.createScript').validationErrors();
+    this.set('errors',errors);
+    return errors.length === 0;
+  },
 });
