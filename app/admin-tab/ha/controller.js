@@ -14,6 +14,10 @@ export default Ember.Controller.extend({
   errors: null,
   confirmPanic: false,
 
+  configExecute: function() {
+    return 'bash ./awesome-script.sh rancher/server:' + (this.get('settings.rancherVersion') || 'latest');
+  }.property('settings.rancherVersion'),
+
   isLocalDb: function() {
     return (this.get('model.haConfig.dbHost')||'').toLowerCase() === 'localhost';
   }.property('model.haConfig.dbHost'),
@@ -64,7 +68,7 @@ export default Ember.Controller.extend({
         clone.save({headers: {[C.HEADER.PROJECT]: undefined}}).then(() => {
           ha.set('enabled', true);
           this.set('justGenerated',true);
-          this.set('configScript', script);
+          this.set('configScript', script.trim());
         });
       }).catch((err) => {
         this.get('growl').fromError(err);
