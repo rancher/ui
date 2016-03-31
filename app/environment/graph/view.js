@@ -37,7 +37,7 @@ export default Ember.View.extend(ThrottledResize,{
   },
 
   initGraph: function() {
-    var outer = d3.select("#environment-svg SVG");
+    var outer = d3.select("#environment-svg svg");  // SVG must be lowercase!   This is case sensitive in not-Chrome
     var inner = outer.select("g");
     var zoom = d3.behavior.zoom().on("zoom", function() {
        inner.attr("transform", "translate(" + d3.event.translate + ")" +
@@ -66,6 +66,11 @@ export default Ember.View.extend(ThrottledResize,{
 
     this.updateGraph();
     $(outer[0]).on('click', (event) => {
+      if ( this._state === 'destroying' )
+      {
+        return;
+      }
+
       var fo = $(event.target).closest('foreignObject');
 
       if ( fo )
