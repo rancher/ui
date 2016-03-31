@@ -14,7 +14,7 @@ export default DriverController.extend({
 
   actions: {
     readFile(field, text) {
-      this.set('subscriptionCert', text.trim());
+      this.set(field, text.trim());
     },
   },
 
