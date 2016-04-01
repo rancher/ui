@@ -193,8 +193,8 @@ export function randomStr(length=16, charset='alphanum')
   }).join('');
 }
 
-export function formatPercent(value, adaptive=true) {
-  if ( value < 1 || adaptive === false )
+export function formatPercent(value) {
+  if ( value < 1 )
   {
     return Math.round(value*100)/100 + '%';
   }
@@ -208,42 +208,49 @@ export function formatPercent(value, adaptive=true) {
   }
 }
 
-export function formatMib(value, adaptive=true) {
-  if ( value >= 10240 && adaptive === true)
-  {
-    return Math.round(value/1024) + ' GiB';
-  }
-  else if ( value >= 1024 )
-  {
-    return Math.ceil(value/10.24)/100 + ' GiB';
-  }
-  else if ( value < 10 || adaptive === false )
-  {
-    return Math.round(value*10)/10 + ' MiB';
-  }
-  else
-  {
-    return Math.round(value) + ' MiB';
-  }
+export function formatMib(value) {
+  return formatSi(value*1024*1024, 1024, "iB", "B");
 }
 
-export function formatKbps(value, adaptive=true) {
-  if ( value >= 10000 && adaptive === true )
+export function formatKbps(value) {
+  return formatSi(value*1000,  1000, "bps", "Bps");
+}
+
+export function formatSi(inValue, increment=1000, suffix="", firstSuffix=null)
+{
+  var units = ['B','K','M','G','T','P'];
+  var val = inValue;
+  var exp = 0;
+  while ( val >= increment && exp+1 < units.length )
   {
-    return Math.round(value/1000) + ' Mbps';
+    val = val/increment;
+    exp++;
   }
-  else if ( value >= 1000 )
+
+  var out = '';
+  if ( val < 10 && exp > 0)
   {
-    return Math.ceil(value/100)/10 + ' Mbps';
+    out = Math.round(val*100)/100;
   }
-  else if ( value < 10 || adaptive === false )
+  else if ( val < 100 && exp > 0)
   {
-    return Math.round(value*10)/10 + ' Kbps';
+    out = Math.round(val*10)/10;
   }
   else
   {
-    return Math.round(value) + ' Kbps';
+    out = Math.round(val);
   }
+
+  if ( exp === 0 && firstSuffix )
+  {
+    out += " " + firstSuffix;
+  }
+  else
+  {
+    out += " " + units[exp] + suffix;
+  }
+
+  return out;
 }
 
 export function constructUrl(ssl,host,port) {
@@ -303,6 +310,7 @@ var Util = {
   formatPercent: formatPercent,
   formatMib: formatMib,
   formatKbps: formatKbps,
+  formatSi: formatSi,
   pluralize: pluralize,
   camelToTitle: camelToTitle
 };

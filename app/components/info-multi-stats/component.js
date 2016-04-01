@@ -353,7 +353,7 @@ export default Ember.Component.extend({
     var cpuGraph = c3.generate({
       padding: {
         top: 5,
-        left: 45
+        left: 75
       },
       bindto: this.get('cpuCanvas'),
       size: {
@@ -419,7 +419,7 @@ export default Ember.Component.extend({
     var memoryGraph = c3.generate({
       padding: {
         top: 5,
-        left: 65
+        left: 75
       },
       bindto: this.get('memoryCanvas'),
       size: {
@@ -482,7 +482,7 @@ export default Ember.Component.extend({
     var storageGraph = c3.generate({
       padding: {
         top: 5,
-        left: 65
+        left: 75
       },
       bindto: this.get('storageCanvas'),
       size: {
@@ -549,7 +549,7 @@ export default Ember.Component.extend({
     var networkGraph = c3.generate({
       padding: {
         top: 5,
-        left: 65
+        left: 75
       },
       bindto: this.get('networkCanvas'),
       size: {
