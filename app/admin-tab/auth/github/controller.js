@@ -209,10 +209,14 @@ export default Ember.Controller.extend({
           else
           {
             // Default the api.host so the user won't have to set it in most cases
-            setting.set('value', this.get('endpoint.host'));
-            return setting.save().then(() => {
+            if ( window.location.hostname === 'localhost' ) {
               this.send('waitAndRefresh', url);
-            });
+            } else {
+              setting.set('value', window.location.origin);
+              return setting.save().then(() => {
+                this.send('waitAndRefresh', url);
+              });
+            }
           }
         });
       }).catch((err) => {
