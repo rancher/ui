@@ -179,7 +179,7 @@ export default DriverController.extend({
       this.set('allDiskSizes',
                res.listtemplatesresponse.template
                  .map((item) => Math.round(item.size / 1024 / 1024 / 1024))
-                 .sort((a, b) => (a - b)));
+                 .sort((a, b) => (a - b)).uniq());
       /* Also get the instance types */
       return this.apiRequest('listServiceOfferings', {
         issystem: 'false'
