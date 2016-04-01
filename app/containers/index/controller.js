@@ -9,5 +9,6 @@ export default Ember.Controller.extend(Sortable, {
     ip:       ['displayIp','name','id'],
     image:    ['imageUuid','id'],
     command:  ['command','name','id'],
+    host:     ['primaryHost.displayName','name','id'],
   },
 });
