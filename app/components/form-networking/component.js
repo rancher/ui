@@ -113,18 +113,25 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
     var override = this.getLabel(C.LABEL.HOSTNAME_OVERRIDE) === C.LABEL.HOSTNAME_OVERRIDE_VALUE;
     var hostname = this.get('instance.hostname') || '';
 
-    if ( override )
+    if ( this.get('isService') )
     {
-      this.set('hostname', 'override');
-      this.set('instance.hostname', '');
-    }
-    else if ( hostname )
-    {
-      this.set('hostname', 'custom');
+      if ( override )
+      {
+        this.set('hostname', 'override');
+        this.set('instance.hostname', '');
+      }
+      else if ( hostname )
+      {
+        this.set('hostname', 'custom');
+      }
+      else
+      {
+        this.set('hostname', 'default');
+      }
     }
     else
     {
-      this.set('hostname', 'default');
+      this.set('hostname', 'custom');
     }
   },
 
