@@ -110,8 +110,11 @@ export default Ember.Component.extend({
       }
     });
 
+    $('.top-row .tophover').removeClass('tophover');
+
     if (this.get('forcedMenu')) {
       navPartial = this.get('forcedMenu');
+      $('#'+navPartial).addClass('tophover');
       bottomRow.addClass('subactive');
     } else {
       if (bottomRow.hasClass('subactive')) {
