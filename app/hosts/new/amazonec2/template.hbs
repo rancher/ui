@@ -1,45 +1,47 @@
 {{top-errors errors=errors}}
 
 <section class="horizontal-form">
-  <div class="container-fluid">
-    <div class="over-hr" style="margin: 20px 0;">
-      <span>Account Access</span>
-    </div>
+  <form>
+    <div class="container-fluid">
+      <div class="over-hr" style="margin: 20px 0;">
+        <span>Account Access</span>
+      </div>
 
-    <div class="row {{if isStep1 'form-group'}}">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">Access Key</label>
+      <div class="row {{if isStep1 'form-group'}}">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">Access Key</label>
+        </div>
+        <div class="col-sm-12 col-md-8">
+          {{#if isStep1}}
+            {{input type="text" name="username" classNames="form-control" placeholder="Your AWS access key" value=amazonec2Config.accessKey}}
+          {{else}}
+            <div class="form-control-static">{{amazonec2Config.accessKey}}</div>
+          {{/if}}
+        </div>
       </div>
-      <div class="col-sm-12 col-md-8">
-        {{#if isStep1}}
-          {{input type="text" classNames="form-control" placeholder="Your AWS access key" value=amazonec2Config.accessKey}}
-        {{else}}
-          <div class="form-control-static">{{amazonec2Config.accessKey}}</div>
-        {{/if}}
+      <div class="row {{if isStep1 'form-group'}}">
+        <div class="col-sm-12 col-md-2 form-label">
+          <label class="form-control-static">Secret Key</label>
+        </div>
+        <div class="col-sm-12 col-md-8">
+          {{#if isStep1}}
+            {{input type="password" name="password" classNames="form-control" placeholder="Your AWS secret key" value=amazonec2Config.secretKey}}
+          {{else}}
+            <div class="form-control-static text-muted text-italic">Provided</div>
+          {{/if}}
+          {{#if isStep1}}
+            <p class="help-block">Paste in your AWS key pair here.  We'll use this key to create your new Instances.</p>
+          {{/if}}
+        </div>
       </div>
     </div>
-    <div class="row {{if isStep1 'form-group'}}">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">Secret Key</label>
+    {{#if isStep1}}
+      <div class="footer-actions">
+        <button {{action "awsLogin"}} name="submit" class="btn btn-primary">Next: Authenticate &amp; select a network</button>
+        <button {{action "cancel"}} class="btn btn-link">Cancel</button>
       </div>
-      <div class="col-sm-12 col-md-8">
-        {{#if isStep1}}
-          {{input type="password" classNames="form-control" placeholder="Your AWS secret key" value=amazonec2Config.secretKey}}
-        {{else}}
-          <div class="form-control-static text-muted text-italic">Provided</div>
-        {{/if}}
-        {{#if isStep1}}
-          <p class="help-block">Paste in your AWS key pair here.  We'll use this key to create your new Instances.</p>
-        {{/if}}
-      </div>
-    </div>
-  </div>
-  {{#if isStep1}}
-    <div class="footer-actions">
-      <button {{action "awsLogin"}} class="btn btn-primary">Next: Authenticate &amp; select a network</button>
-      <button {{action "cancel"}} class="btn btn-link">Cancel</button>
-    </div>
-  {{/if}}
+    {{/if}}
+  </form>
 </section>
 
 <section class="horizontal-form {{unless isStep2 'hide'}}" style="padding-top: 0">
