@@ -9,16 +9,21 @@
     </h1>
   {{else}}
     <h1>{{#link-to "settings.projects"}}Environment:{{/link-to}}</h1>
-    {{#power-select options=model.all selected=project onchange=(action "changeProject") searchField="displayName" as |obj|}}
-      <div class="clip">
-        {{select-dot model=obj}}
-      </div>
-    {{/power-select}}
+      {{#power-select options=model.all selected=project onchange=(action "changeProject") searchField="displayName" as |obj|}}
+        <div class="clip">
+          {{select-dot model=obj}}
+        </div>
+      {{/power-select}}
 
-    {{action-menu model=project size="sm" classNames="r-ml10 pull-right"}}
-    {{header-state model=project classNames="pull-right"}}
+    <div class="pull-right">
+      {{header-state model=project}}
+      {{action-menu model=project size="sm" classNames="r-ml10"}}
+    </div>
+    
   {{/if}}
 </section>
+
+<div class="clearfix"></div>
 
 {{#if showEdit}}
   <section class="well">
@@ -26,9 +31,9 @@
     <div class="nav nav-boxes checked-active">
       {{#each orchestrationChoices as |driver|}}
         {{#if driver.disabled}}
-          <a alt={{driver.label}} class="nav-box-item driver orchestration-driver {{driver.css}}"></a>
+          <a href="#" alt={{driver.label}} class="nav-box-item driver orchestration-driver {{driver.css}}"></a>
         {{else}}
-          <a {{action "selectOrchestration" driver.name}} alt={{driver.label}} class="nav-box-item driver orchestration-driver {{if driver.active 'active'}} {{driver.css}}" disabled={{driver.disabled}}></a>
+          <a href="#" {{action "selectOrchestration" driver.name}} alt={{driver.label}} class="nav-box-item driver orchestration-driver {{if driver.active 'active'}} {{driver.css}}" disabled={{driver.disabled}}></a>
         {{/if}}
       {{/each}}
     </div>
