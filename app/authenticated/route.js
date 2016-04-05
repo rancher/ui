@@ -56,7 +56,9 @@ export default Ember.Route.extend(Subscribe, {
       return this.get('projects').selectDefault(projectId).then((project) => {
         hash.project = project;
         return this.loadKubernetes(project, hash).then((out) => {
-          return Ember.Object.create(out);
+          return this.loadSwarm(project, out).then((out2) => {
+            return Ember.Object.create(out2);
+          });
         });
       });
     }).catch((err) => {
@@ -104,6 +106,33 @@ export default Ember.Route.extend(Subscribe, {
       this.get('userTheme').setupTheme();
 
       return res;
+    });
+  },
+
+  loadSwarm(project, hash) {
+    hash = hash || {};
+
+    if ( !project.get('swarm') )
+    {
+      hash.swarmReady = false;
+      return Ember.RSVP.resolve(hash);
+    }
+
+    var id = C.EXTERNALID.KIND_SYSTEM + C.EXTERNALID.KIND_SEPARATOR + C.EXTERNALID.KIND_SWARM;
+    return this.get('store').find('environment', null, {filter: {externalId: id}, include: ['services'], forceReload: true}).then((envs) => {
+      var ready = false;
+      envs.forEach((env) => {
+        var services = env.get('services');
+        var num = services.get('length');
+        var active = services.filterBy('state','active').get('length');
+        if ( env.get('state') === 'active' && num && num === active )
+        {
+          ready = true;
+        }
+      });
+
+      hash.swarmReady = ready;
+      return Ember.RSVP.resolve(hash);
     });
   },
 

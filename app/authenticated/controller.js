@@ -10,8 +10,10 @@ export default Ember.Controller.extend({
   // These are set by project/route and project/controller
   hasKubernetes : false,
   hasSwarm      : false,
+  hasSwarm      : false,
   hasSystem     : false,
   hasVm         : Ember.computed.alias('settings.hasVm'),
+  swarmReady    : Ember.computed.alias('model.swarmReady'),
 
   init() {
     this._super();
