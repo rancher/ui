@@ -111,7 +111,7 @@ export default Ember.Controller.extend({
     }
 
     this.set('userUrl', val);
-    this.set('model.createScript.hostRegistrationUrl', val);
+    this.set('model.createScript.hostRegistrationUrl', 'https://'+val);
   }.observes('userUrl'),
 
   selfSignChanged: function() {
