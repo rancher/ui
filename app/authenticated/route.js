@@ -205,9 +205,11 @@ export default Ember.Route.extend(Subscribe, {
       this.controllerFor('application').set('showAbout', true);
     },
 
-    switchProject(projectId) {
+    switchProject(projectId, transition=true) {
       this.reset();
-      this.intermediateTransitionTo('authenticated');
+      if ( transition ) {
+        this.intermediateTransitionTo('authenticated');
+      }
       this.set(`tab-session.${C.TABSESSION.PROJECT}`, projectId);
       this.refresh();
     },

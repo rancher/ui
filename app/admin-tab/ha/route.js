@@ -18,5 +18,10 @@ export default Ember.Route.extend({
         createScript: store.createRecord({type: 'haConfigInput'})
       });
     });
+  },
+
+  setupController(controller/*, model*/) {
+    this._super(...arguments);
+    controller.findProject();
   }
 });

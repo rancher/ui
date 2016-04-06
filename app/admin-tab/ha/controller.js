@@ -5,6 +5,10 @@ import C from 'ui/utils/constants';
 export default Ember.Controller.extend({
   settings: Ember.inject.service(),
   growl: Ember.inject.service(),
+  cookies: Ember.inject.service(),
+  projects: Ember.inject.service(),
+
+  csrf: Ember.computed.alias('cookies.CSRF'),
 
   userUrl: '',
   selfSign: true,
@@ -13,9 +17,10 @@ export default Ember.Controller.extend({
   configScript: null,
   errors: null,
   confirmPanic: false,
+  haProject: null,
 
   configExecute: function() {
-    return 'bash ./awesome-script.sh rancher/server:' + (this.get('settings.rancherVersion') || 'latest');
+    return 'bash ./rancher-ha.sh rancher/server:' + (this.get('settings.rancherVersion') || 'latest');
   }.property('settings.rancherVersion'),
 
   isLocalDb: function() {
@@ -53,15 +58,18 @@ export default Ember.Controller.extend({
     },
 
     generateConfig() {
-      var ha = this.get('model.haConfig');
-      var cs = this.get('model.createScript');
-
       if ( !this.validate() ) {
         return;
       }
 
       this.set('generating',true);
+      this.set('haProject', null);
 
+      var form = $('#haConfigForm')[0];
+      form.submit();
+
+      var ha = this.get('model.haConfig');
+      var cs = this.get('model.createScript');
       ha.doAction('createscript', cs, {headers: {[C.HEADER.PROJECT]: undefined}}).then((script) => {
         var clone = ha.clone();
         clone.set('enabled',true);
@@ -69,6 +77,7 @@ export default Ember.Controller.extend({
           ha.set('enabled', true);
           this.set('justGenerated',true);
           this.set('configScript', script.trim());
+          this.findProject();
         });
       }).catch((err) => {
         this.get('growl').fromError(err);
@@ -121,4 +130,59 @@ export default Ember.Controller.extend({
     this.set('errors',errors);
     return errors.length === 0;
   },
+
+  findProject: function() {
+    this.get('store').find('project', null, {authAsUser: true, filter: {all: true}, forceReload: true}).then((projects) => {
+      var matches = projects.filter((project) => {
+        return project.get('uuid').match(/^system-management-(\d+)$/);
+      });
+
+      if ( matches.length )
+      {
+        this.set('haProject', matches.objectAt(0));
+        if ( this.get('projects.current.id') !== this.get('haProject.id') )
+        {
+          this.send('switchProject', this.get('haProject.id'), false);
+        }
+      }
+      else
+      {
+        Ember.run.later(this,'findProject', 5000);
+      }
+    });
+  },
+
+  hosts: null,
+  getHosts: function() {
+    return this.get('store').findAll('host').then((hosts) => {
+      this.set('hosts', hosts);
+    });
+  }.observes('haProject'),
+
+  hostBlurb: function() {
+    var total = this.get('hosts.length');
+    if ( total )
+    {
+      var active = this.get('hosts').filterBy('state','active').get('length');
+      if ( active < total )
+      {
+        return active + '/' + total;
+      }
+      else
+      {
+        return total;
+      }
+    }
+    else
+    {
+      return '0';
+    }
+  }.property('hosts.@each.state'),
+
+  cert: null,
+  getCertificate: function() {
+    return this.get('store').find('certificate', null, {filter: {name: 'system-ssl'}}).then((certs) => {
+      this.set('cert', certs.objectAt(0));
+    });
+  }.observes('haProject'),
 });

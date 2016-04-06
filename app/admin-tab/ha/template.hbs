@@ -8,20 +8,34 @@
       <h4>3. Add hosts</h4>
       <hr/>
       <p>
-        Copy this script to each host: {{copy-to-clipboard clipboardText=configScript size="small"}}
-        {{code-block code=configScript language="bash" constrained=false}}
-      </p>
-
-      <p>
-        Then run it on each host to register them:
+        Run the script that just downloaded on each host to register them (or {{copy-to-clipboard tooltipText="" buttonText="copy it to clipboard" clipboardText=configScript size="small"}}):
         {{code-block code=configExecute language="bash" constrained=false}}
       </p>
     </section>
   {{/if}}
 
-  <section class="well">
-    <h4>Info about your HA setup and it's awesomeness.</h4>
-  </section>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="well">
+        {{#if haProject}}
+          <h4>Active Hosts:</h4>
+          <h1>{{hostBlurb}}</h1>
+        {{else}}
+          <i class="icon icon-spinner icon-spin"></i> Waiting for a host...
+        {{/if}}
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="well">
+        <h4>Management Server Certificate: {{#if cert.cert}}{{copy-to-clipboard size="small" clipboardText=cert.cert}}{{/if}}</h4>
+        {{#if cert.cert}}
+          <pre><code>{{cert.cert}}</code></pre>
+        {{else}}
+          <i class="icon icon-spinner icon-spin"></i> Loading...
+        {{/if}}
+      </div>
+    </div>
+  </div>
 
   <section class="well">
     <h4>Danger Zone&trade;</h4>
@@ -83,7 +97,10 @@
   <section class="well">
     <h4>2. Generate HA config script</h4>
     <hr/>
-    <form action="{{model.haConfig.actionLinks.createscript}}" method="POST" target="_blank">
+    <iframe name="haConfigFrame" id="haConfigFrame" style="display: none;"></iframe>
+    <form action="{{model.haConfig.actionLinks.createscript}}" method="POST" id="haConfigForm" target="haConfigFrame">
+      <input type="hidden" name="hostRegistrationUrl" value="{{model.createScript.hostRegistrationUrl}}"/>
+      <input type="hidden" name="CSRF" value="{{csrf}}"/>
       <div class="row form-group">
         <div class="col-sm-6 col-md-2 form-control-static">
           <label>Cluster Size</label>
@@ -181,17 +198,19 @@
               <tr>
                 <td width="200">HTTPS</td>
                 <td width="100" class="text-muted">Required</td>
-                <td width="100">{{input class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.httpsPort}}</td>
+                <td width="100">{{input name="httpsPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.httpsPort}}</td>
               </tr>
               <tr>
                 <td>HTTP</td>
-                <td><label>{{input type="checkbox" checked=model.createScript.httpEnabled}} Enable</label></td>
-                <td>{{input class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.httpPort disabled=(not model.createScript.httpEnabled)}}</td>
+                <!-- <td><label>{{input name="httpEnabled" type="checkbox" checked=model.createScript.httpEnabled}} Enable</label></td> -->
+                <td width="100" class="text-muted">Required</td>
+                <td>{{input name="httpPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.httpPort disabled=(not model.createScript.httpEnabled)}}</td>
               </tr>
               <tr>
                 <td>Swarm</td>
-                <td><label>{{input type="checkbox" checked=model.createScript.swarmEnabled}} Enable</label></td>
-                <td>{{input class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.swarmPort disabled=(not model.createScript.swarmEnabled)}}</td>
+                <!-- <td><label>{{input name="swarmEnabled" type="checkbox" checked=model.createScript.swarmEnabled}} Enable</label></td> -->
+                <td width="100" class="text-muted">Required</td>
+                <td>{{input name="swarmPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.swarmPort disabled=(not model.createScript.swarmEnabled)}}</td>
               </tr>
             </tbody>
           </table>
@@ -202,22 +221,22 @@
               <tr class="r-mb5">
                 <td width="200">Redis</td>
                 <td width="100" class="text-muted">Required</td>
-                <td width="100">{{input class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.redisPort}}</td>
+                <td width="100">{{input name="redisPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.redisPort}}</td>
               </tr>
               <tr>
                 <td>ZooKeeper Client</td>
                 <td class="text-muted">Required</td>
-                <td>{{input class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperClientPort}}</td>
+                <td>{{input name="zookeeperClientPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperClientPort}}</td>
               </tr>
               <tr>
                 <td>ZooKeeper Quorum</td>
                 <td class="text-muted">Required</td>
-                <td>{{input class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperQuorumPort}}</td>
+                <td>{{input name="zookeeperQuorumPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperQuorumPort}}</td>
               </tr>
               <tr>
                 <td>ZooKeeper Leader</td>
                 <td class="text-muted">Required</td>
-                <td>{{input class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperLeaderPort}}</td>
+                <td>{{input name="zookeeperLeaderPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperLeaderPort}}</td>
               </tr>
             </tbody>
           </table>
