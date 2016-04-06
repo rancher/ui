@@ -2,10 +2,15 @@ import Ember from 'ember';
 import { isSafari } from 'ui/utils/platform';
 
 const DELAY = 1000;
+const DEFAULT_TEXT = 'Copy To Clipboard';
 
 export default Ember.Component.extend({
   tagName          : 'div',
   classNames       : ['copy-button-container', 'inline-block'],
+
+  model            : null,
+
+  /*Component Params*/
   buttonText       : null,
   tooltipText      : null,
   status           : null,
@@ -14,9 +19,9 @@ export default Ember.Component.extend({
   clipboardText    : null,
   textChangedEvent : null,
 
-  bootstrap: function() {
-    this.set('tooltipText', 'Copy To Clipboard');
-  }.on('init'),
+  mouseEnter() {
+    this.set('model', new Object({tooltipText: DEFAULT_TEXT}));
+  },
 
   click: function(evt) {
     this.set('textChangedEvent', Ember.$(evt.currentTarget));
@@ -29,12 +34,12 @@ export default Ember.Component.extend({
   actions: {
     alertSuccess: function() {
       this.set('status', 'success');
-      let orig = this.get('tooltipText');
-      this.set('tooltipText', 'Copied!');
+      let orig = this.get('model.tooltipText');
+      this.set('model', new Object({tooltipText: 'Copied!'}));
 
       Ember.run.later(() =>{
         this.set('status', null);
-        this.set('tooltipText', orig);
+        this.set('model', new Object({tooltipText: orig}));
       }, DELAY);
     },
   },
