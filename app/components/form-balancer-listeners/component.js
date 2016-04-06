@@ -49,7 +49,7 @@ export default Ember.Component.extend(ManageLabels, {
       var obj = parsePort(str, 'http');
       obj.setProperties({
         isPublic: isPublic,
-        ssl: sslPorts.indexOf(obj.get('host')) >= 0,
+        ssl: sslPorts.indexOf(obj.get('hostPort')) >= 0,
       });
       out.push(obj);
     }
