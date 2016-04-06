@@ -6,4 +6,11 @@ export default Ember.Route.extend({
       type: 'certificate'
     });
   },
+
+  resetController: function (controller, isExiting/*, transition*/) {
+    if (isExiting)
+    {
+      controller.set('errors', null);
+    }
+  }
 });

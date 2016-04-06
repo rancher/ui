@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   model: null,
   nameLabel: 'Name',
   namePlaceholder: 'Name',
+  nameRequired: false,
   nameDisabled: false,
   descriptionLabel: 'Description',
   descriptionPlaceholder: 'Description',
