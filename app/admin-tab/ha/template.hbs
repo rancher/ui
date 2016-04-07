@@ -3,21 +3,23 @@
 </section>
 
 {{#if model.haConfig.enabled}}
-  <section class="well">
-    <h4>5. Add hosts</h4>
-    <hr/>
-    <p>
-      Copy the downloaded script and run it on to each HA host to register them:
-      {{code-block code=configExecute language="bash" constrained=false}}
-    </p>
-  </section>
+  {{#if (lt activeHosts expectedHosts)}}
+    <section class="well">
+      <h4>5. Add hosts</h4>
+      <hr/>
+      <p>
+        Copy the downloaded script and run it on to each HA host to register them:
+        {{code-block code=configExecute language="bash" constrained=false}}
+      </p>
+    </section>
+  {{/if}}
 
   <div class="row">
     <div class="col-md-3">
       <div class="well">
-        <h4>Hosts:</h4>
-        {{#if haProject}}
-          <h1>{{hostBlurb}}</h1>
+        <h4 class="r-mb10">Hosts:</h4>
+        {{#if hosts}}
+          <h1 class="text-center">{{hostBlurb}}</h1>
         {{else}}
           <i class="icon icon-spinner icon-spin"></i> Waiting for a host...
         {{/if}}
@@ -25,7 +27,7 @@
     </div>
     <div class="col-md-9">
       <div class="well">
-        <h4>Management Server Certificate: {{#if cert.cert}}{{copy-to-clipboard size="small" clipboardText=cert.cert}}{{/if}}</h4>
+        <h4 class="r-mb10">Management Server Certificate: {{#if cert.cert}}{{copy-to-clipboard size="small" clipboardText=cert.cert}}{{/if}}</h4>
         {{#if cert.cert}}
           <pre><code>{{cert.cert}}</code></pre>
         {{else}}
@@ -122,7 +124,7 @@
     {{/if}}
 
     <iframe name="haConfigFrame" id="haConfigFrame" style="display: none;"></iframe>
-    <form action="{{model.haConfig.actionLinks.createscript}}" method="POST" id="haConfigForm" target="haConfigFrame" class="{{if justGenerated 'hide'}}">
+    <form action="{{model.haConfig.actionLinks.createscript}}" method="POST" id="haConfigForm" target="haConfigFrame" class="{{if (or isLocalDb justGenerated) 'hide'}}">
       <input type="hidden" name="hostRegistrationUrl" value="{{model.createScript.hostRegistrationUrl}}"/>
       <input type="hidden" name="CSRF" value="{{csrf}}"/>
       <div class="row form-group">
@@ -132,19 +134,19 @@
         <div class="col-sm-6 col-md-10">
           <div class="radio">
             <label>
-              {{radio-button selection=model.createScript.clusterSize value=1}}
+              {{radio-button name="clusterSize" selection=model.createScript.clusterSize value=1}}
               <span class="text-bold" style="display: inline-block: width: 120px;">1 Host:</span> Not really very HA at all
             </label>
           </div>
           <div class="radio">
             <label>
-              {{radio-button selection=model.createScript.clusterSize value=3}}
+              {{radio-button name="clusterSize" selection=model.createScript.clusterSize value=3}}
               <span class="text-bold" style="display: inline-block: width: 120px;">3 Hosts:</span> Any <b>one</b> host can fail
             </label>
           </div>
           <div class="radio">
             <label>
-              {{radio-button selection=model.createScript.clusterSize value=5}}
+              {{radio-button name="clusterSize" selection=model.createScript.clusterSize value=5}}
               <span class="text-bold" style="display: inline-block: width: 120px;">5 Hosts:</span> Any <b>two</b> hosts can fail
             </label>
           </div>
@@ -212,60 +214,62 @@
         </div>
       {{/liquid-if}}
 
-      <div class="row">
-        <div class="col-sm-6 col-md-2 form-control-static">
-          <label>Listening Ports</label>
+      {{#advanced-section}}
+        <div class="row">
+          <div class="col-sm-6 col-md-2 form-control-static">
+            <label>Listening Ports</label>
+          </div>
+          <div class="col-sm-6 col-md-5 r-pt5">
+            <table class="fixed">
+              <tbody>
+                <tr>
+                  <td width="200">HTTPS</td>
+                  <td width="100" class="text-muted">Required</td>
+                  <td width="100">{{input name="httpsPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.httpsPort}}</td>
+                </tr>
+                <tr>
+                  <td>HTTP</td>
+                  <!-- <td><label>{{input name="httpEnabled" type="checkbox" checked=model.createScript.httpEnabled}} Enable</label></td> -->
+                  <td width="100" class="text-muted">Required</td>
+                  <td>{{input name="httpPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.httpPort disabled=(not model.createScript.httpEnabled)}}</td>
+                </tr>
+                <tr>
+                  <td>Swarm</td>
+                  <!-- <td><label>{{input name="swarmEnabled" type="checkbox" checked=model.createScript.swarmEnabled}} Enable</label></td> -->
+                  <td width="100" class="text-muted">Required</td>
+                  <td>{{input name="swarmPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.swarmPort disabled=(not model.createScript.swarmEnabled)}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-sm-6 col-md-5 r-pt5">
+            <table class="fixed">
+              <tbody>
+                <tr class="r-mb5">
+                  <td width="200">Redis</td>
+                  <td width="100" class="text-muted">Required</td>
+                  <td width="100">{{input name="redisPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.redisPort}}</td>
+                </tr>
+                <tr>
+                  <td>ZooKeeper Client</td>
+                  <td class="text-muted">Required</td>
+                  <td>{{input name="zookeeperClientPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperClientPort}}</td>
+                </tr>
+                <tr>
+                  <td>ZooKeeper Quorum</td>
+                  <td class="text-muted">Required</td>
+                  <td>{{input name="zookeeperQuorumPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperQuorumPort}}</td>
+                </tr>
+                <tr>
+                  <td>ZooKeeper Leader</td>
+                  <td class="text-muted">Required</td>
+                  <td>{{input name="zookeeperLeaderPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperLeaderPort}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="col-sm-6 col-md-5 r-pt5">
-          <table class="fixed">
-            <tbody>
-              <tr>
-                <td width="200">HTTPS</td>
-                <td width="100" class="text-muted">Required</td>
-                <td width="100">{{input name="httpsPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.httpsPort}}</td>
-              </tr>
-              <tr>
-                <td>HTTP</td>
-                <!-- <td><label>{{input name="httpEnabled" type="checkbox" checked=model.createScript.httpEnabled}} Enable</label></td> -->
-                <td width="100" class="text-muted">Required</td>
-                <td>{{input name="httpPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.httpPort disabled=(not model.createScript.httpEnabled)}}</td>
-              </tr>
-              <tr>
-                <td>Swarm</td>
-                <!-- <td><label>{{input name="swarmEnabled" type="checkbox" checked=model.createScript.swarmEnabled}} Enable</label></td> -->
-                <td width="100" class="text-muted">Required</td>
-                <td>{{input name="swarmPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.swarmPort disabled=(not model.createScript.swarmEnabled)}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="col-sm-6 col-md-5 r-pt5">
-          <table class="fixed">
-            <tbody>
-              <tr class="r-mb5">
-                <td width="200">Redis</td>
-                <td width="100" class="text-muted">Required</td>
-                <td width="100">{{input name="redisPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.redisPort}}</td>
-              </tr>
-              <tr>
-                <td>ZooKeeper Client</td>
-                <td class="text-muted">Required</td>
-                <td>{{input name="zookeeperClientPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperClientPort}}</td>
-              </tr>
-              <tr>
-                <td>ZooKeeper Quorum</td>
-                <td class="text-muted">Required</td>
-                <td>{{input name="zookeeperQuorumPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperQuorumPort}}</td>
-              </tr>
-              <tr>
-                <td>ZooKeeper Leader</td>
-                <td class="text-muted">Required</td>
-                <td>{{input name="zookeeperLeaderPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperLeaderPort}}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
+      {{/advanced-section}}
 
       <p class="r-mb0 r-mt20">
         {{top-errors errors=errors}}
@@ -291,7 +295,7 @@
       {{#if justGenerated}}
         <p>
           Click the button below to download a shell script.
-          <div class="alert alert-warning">
+          <div class="alert alert-info">
             The script generates new encryption keys that will be used for the HA hosts to communicate with each other, so keep it safe.
             New keys are generated every time you download the config script, and all hosts must have the same keys for HA to work.
           </div>

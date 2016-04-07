@@ -19,7 +19,7 @@ export default Ember.Controller.extend({
   haProject: null,
 
   configExecute: function() {
-    return 'bash ./rancher-ha.sh rancher/server:' + (this.get('settings.rancherVersion') || 'latest');
+    return 'sudo bash ./rancher-ha.sh rancher/server:' + (this.get('settings.rancherVersion') || 'latest');
   }.property('settings.rancherVersion'),
 
   runCode: function() {
@@ -144,13 +144,17 @@ rancher/server:${version}`;
   findProject: function() {
     this.get('store').find('project', null, {authAsUser: true, filter: {all: true}, forceReload: true}).then((projects) => {
       var matches = projects.filter((project) => {
-        return project.get('uuid').match(/^system-management-(\d+)$/);
+        return project.get('uuid').match(/^system-ha-(\d+)$/) || project.get('uuid').match(/^system-management-(\d+)$/);
       });
 
       if ( matches.length )
       {
         this.set('haProject', matches.objectAt(0));
-        if ( this.get('projects.current.id') !== this.get('haProject.id') )
+        if ( this.get('projects.current.id') === this.get('haProject.id') )
+        {
+          this.getHosts();
+        }
+        else
         {
           this.send('switchProject', this.get('haProject.id'), false);
         }
@@ -164,17 +168,26 @@ rancher/server:${version}`;
 
   hosts: null,
   getHosts: function() {
-    return this.get('store').findAll('host').then((hosts) => {
+    return this.get('store').findAll('host', null, {forceReload: true}).then((hosts) => {
       this.set('hosts', hosts);
     });
   }.observes('haProject'),
 
+  expectedHosts: Ember.computed.alias('model.haConfig.clusterSize'),
+  activeHosts: function() {
+    return (this.get('hosts')||[]).filterBy('state','active').get('length');
+  }.property('hosts.@each.state'),
+
   hostBlurb: function() {
-    var total = this.get('model.haConfig.clusterSize');
-    var active = (this.get('hosts')||[]).filterBy('state','active').get('length');
+    clearInterval(this.get('hostTimer'));
+    var total = this.get('expectedHosts');
+    var active = this.get('activeHosts');
 
     if ( active < total )
     {
+      this.set('hostTimer', setInterval(() => {
+        this.getHosts();
+      }, 5000));
       return active + '/' + total;
     }
     else
@@ -187,6 +200,7 @@ rancher/server:${version}`;
   getCertificate: function() {
     return this.get('store').find('certificate', null, {filter: {name: 'system-ssl'}}).then((certs) => {
       this.set('cert', certs.objectAt(0));
+      this.getHosts();
     });
   }.observes('haProject'),
 });
