@@ -10,19 +10,23 @@
     </tr>
     {{#each ary as |row|}}
       <tr>
-        <td data-title="Key">
+        <td class="valign-top" data-title="Key">
           {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=row.key placeholder=keyPlaceholder}}
         </td>
 
-        <td class="text-center">
+        <td class="valign-top text-center">
           <p class="form-control-static input-sm">=</p>
         </td>
 
-        <td data-title="Value">
-          {{input class="form-control input-sm value" type="text" value=row.value placeholder=valuePlaceholder}}
+        <td class="valign-top" data-title="Value">
+          {{#if allowMultilineValue}}
+            {{textarea-autogrow class="form-control input-sm value" value=row.value placeholder=valuePlaceholder}}
+          {{else}}
+            {{input class="form-control input-sm value" type="text" value=row.value placeholder=valuePlaceholder}}
+          {{/if}}
         </td>
 
-        <td class="text-right">
+        <td class="valign-top text-right">
           <button class="btn btn-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/></button>
         </td>
       </tr>

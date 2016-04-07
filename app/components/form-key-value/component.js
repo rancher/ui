@@ -63,6 +63,7 @@ export default Ember.Component.extend({
   valuePlaceholder: 'Value',
   allowEmptyValue: false,
   addInitialEmptyRow: false,
+  allowMultilineValue: true,
 
   ary: null,
   asMap: null,
