@@ -2,17 +2,17 @@ import Service from 'ui/models/service';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
-import { parsePort } from 'ui/utils/parse-port';
+import { parsePortSpec } from 'ui/utils/parse-port';
 
 const esc = Ember.Handlebars.Utils.escapeExpression;
 
 function portToStr(spec) {
-  var parts = parsePort(spec);
+  var parts = parsePortSpec(spec);
   return parts.host + (parts.protocol === 'http' ? '' : '/' + parts.protocol);
 }
 
 function specToPort(spec) {
-  var parts = parsePort(spec);
+  var parts = parsePortSpec(spec);
   return parts.hostPort;
 }
 

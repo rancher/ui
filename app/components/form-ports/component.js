@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { parsePort } from 'ui/utils/parse-port';
+import { parsePortSpec } from 'ui/utils/parse-port';
 
 const protocolOptions = [
   {label: 'TCP', value: 'tcp'},
@@ -54,7 +54,7 @@ export default Ember.Component.extend({
         else if ( typeof value === 'string' )
         {
           // Strings, from clone
-          var parsed = parsePort(value);
+          var parsed = parsePortSpec(value);
           out.push({
             existing: false,
             public: parsed.host,

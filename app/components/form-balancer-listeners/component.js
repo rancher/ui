@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import ManageLabels from 'ui/mixins/manage-labels';
-import { parsePort } from 'ui/utils/parse-port';
+import { parsePortSpec, parseIpPort } from 'ui/utils/parse-port';
 
 export default Ember.Component.extend(ManageLabels, {
   initialPorts: null,
@@ -46,7 +46,7 @@ export default Ember.Component.extend(ManageLabels, {
     var out = [];
 
     function add(isPublic, str) {
-      var obj = parsePort(str, 'http');
+      var obj = parsePortSpec(str, 'http');
       obj.setProperties({
         isPublic: isPublic,
         ssl: sslPorts.indexOf(obj.get('hostPort')) >= 0,
@@ -73,9 +73,12 @@ export default Ember.Component.extend(ManageLabels, {
   }.observes('listenersArray.[]'),
 
   sslChanged: function() {
-    var sslPorts = this.get('listenersArray').
-                filterBy('host').
-                filterBy('ssl',true).map((listener) => { return listener.get('host');});
+    var sslPorts = this.get('listenersArray')
+      .filterBy('ssl',true)
+      .map((listener) => { return parseIpPort(listener.get('host'),'http'); })
+      .filterBy('port')
+      .map((obj) => { return obj.port; })
+      .sort().uniq();
 
     if ( sslPorts.get('length') )
     {
