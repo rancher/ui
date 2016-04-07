@@ -126,6 +126,7 @@
     <iframe name="haConfigFrame" id="haConfigFrame" style="display: none;"></iframe>
     <form action="{{model.haConfig.actionLinks.createscript}}" method="POST" id="haConfigForm" target="haConfigFrame" class="{{if (or isLocalDb justGenerated) 'hide'}}">
       <input type="hidden" name="hostRegistrationUrl" value="{{model.createScript.hostRegistrationUrl}}"/>
+      <input type="hidden" name="clusterSize" value="{{model.createScript.clusterSize}}"/>
       <input type="hidden" name="CSRF" value="{{csrf}}"/>
       <div class="row form-group">
         <div class="col-sm-6 col-md-2 form-control-static">
@@ -134,19 +135,19 @@
         <div class="col-sm-6 col-md-10">
           <div class="radio">
             <label>
-              {{radio-button name="clusterSize" selection=model.createScript.clusterSize value=1}}
+              {{radio-button selection=model.createScript.clusterSize value=1}}
               <span class="text-bold" style="display: inline-block: width: 120px;">1 Host:</span> Not really very HA at all
             </label>
           </div>
           <div class="radio">
             <label>
-              {{radio-button name="clusterSize" selection=model.createScript.clusterSize value=3}}
+              {{radio-button selection=model.createScript.clusterSize value=3}}
               <span class="text-bold" style="display: inline-block: width: 120px;">3 Hosts:</span> Any <b>one</b> host can fail
             </label>
           </div>
           <div class="radio">
             <label>
-              {{radio-button name="clusterSize" selection=model.createScript.clusterSize value=5}}
+              {{radio-button selection=model.createScript.clusterSize value=5}}
               <span class="text-bold" style="display: inline-block: width: 120px;">5 Hosts:</span> Any <b>two</b> hosts can fail
             </label>
           </div>
