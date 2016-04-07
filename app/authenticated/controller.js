@@ -12,6 +12,7 @@ export default Ember.Controller.extend({
   hasSwarm      : false,
   hasSystem     : false,
   hasVm         : Ember.computed.alias('settings.hasVm'),
+  swarmReady    : Ember.computed.alias('model.swarmReady'),
 
   init() {
     this._super();

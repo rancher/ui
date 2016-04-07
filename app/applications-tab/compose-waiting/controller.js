@@ -3,6 +3,7 @@ import { debouncedObserver } from 'ui/utils/debounce';
 
 export default Ember.Controller.extend({
   settings: Ember.inject.service(),
+  authenticated: Ember.inject.controller(),
 
   timer: null,
   currentStep: 0,
@@ -55,6 +56,7 @@ export default Ember.Controller.extend({
     }
 
     this.set('currentStep', 4);
+    this.set('authenticated.swarmReady', true);
   }),
 
   onInit: function() {
