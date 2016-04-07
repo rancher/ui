@@ -14,13 +14,24 @@ export default Ember.Controller.extend({
   selfSign: true,
   generating: false,
   justGenerated: false,
-  configScript: null,
   errors: null,
   confirmPanic: false,
   haProject: null,
 
   configExecute: function() {
     return 'bash ./rancher-ha.sh rancher/server:' + (this.get('settings.rancherVersion') || 'latest');
+  }.property('settings.rancherVersion'),
+
+  runCode: function() {
+    let version = this.get('settings.rancherVersion') || 'latest';
+
+    return `sudo docker run -d --restart=always -p 8080:8080 \\
+-e CATTLE_DB_CATTLE_MYSQL_HOST=<hostname or IP of MySQL instance> \\
+-e CATTLE_DB_CATTLE_MYSQL_PORT=<port> \\
+-e CATTLE_DB_CATTLE_MYSQL_NAME=<Name of database> \\
+-e CATTLE_DB_CATTLE_USERNAME=<Username> \\
+-e CATTLE_DB_CATTLE_PASSWORD=<Password> \\
+rancher/server:${version}`;
   }.property('settings.rancherVersion'),
 
   isLocalDb: function() {
@@ -65,24 +76,23 @@ export default Ember.Controller.extend({
       this.set('generating',true);
       this.set('haProject', null);
 
+      Ember.run.later(() => {
+        this.set('generating',false);
+        this.set('justGenerated',true);
+      }, 500);
+    },
+
+    downloadConfig() {
       var form = $('#haConfigForm')[0];
       form.submit();
+      this.set('downloaded',true);
 
       var ha = this.get('model.haConfig');
-      var cs = this.get('model.createScript');
-      ha.doAction('createscript', cs, {headers: {[C.HEADER.PROJECT]: undefined}}).then((script) => {
-        var clone = ha.clone();
-        clone.set('enabled',true);
-        clone.save({headers: {[C.HEADER.PROJECT]: undefined}}).then(() => {
-          ha.set('enabled', true);
-          this.set('justGenerated',true);
-          this.set('configScript', script.trim());
-          this.findProject();
-        });
-      }).catch((err) => {
-        this.get('growl').fromError(err);
-      }).finally(() => {
-        this.set('generating', false);
+      var clone = ha.clone();
+      clone.set('enabled',true);
+      clone.save({headers: {[C.HEADER.PROJECT]: undefined}}).then((neu) => {
+        ha.merge(neu);
+        this.findProject();
       });
     },
   },
@@ -160,24 +170,18 @@ export default Ember.Controller.extend({
   }.observes('haProject'),
 
   hostBlurb: function() {
-    var total = this.get('hosts.length');
-    if ( total )
+    var total = this.get('model.haConfig.clusterSize');
+    var active = (this.get('hosts')||[]).filterBy('state','active').get('length');
+
+    if ( active < total )
     {
-      var active = this.get('hosts').filterBy('state','active').get('length');
-      if ( active < total )
-      {
-        return active + '/' + total;
-      }
-      else
-      {
-        return total;
-      }
+      return active + '/' + total;
     }
     else
     {
-      return '0';
+      return total;
     }
-  }.property('hosts.@each.state'),
+  }.property('hosts.@each.state','model.haConfig.clusterSize'),
 
   cert: null,
   getCertificate: function() {

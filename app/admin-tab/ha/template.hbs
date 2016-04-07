@@ -3,22 +3,20 @@
 </section>
 
 {{#if model.haConfig.enabled}}
-  {{#if justGenerated}}
-    <section class="well">
-      <h4>3. Add hosts</h4>
-      <hr/>
-      <p>
-        Run the script that just downloaded on each host to register them (or {{copy-to-clipboard tooltipText="" buttonText="copy it to clipboard" clipboardText=configScript size="small"}}):
-        {{code-block code=configExecute language="bash" constrained=false}}
-      </p>
-    </section>
-  {{/if}}
+  <section class="well">
+    <h4>5. Add hosts</h4>
+    <hr/>
+    <p>
+      Copy the downloaded script and run it on to each HA host to register them:
+      {{code-block code=configExecute language="bash" constrained=false}}
+    </p>
+  </section>
 
   <div class="row">
     <div class="col-md-3">
       <div class="well">
+        <h4>Hosts:</h4>
         {{#if haProject}}
-          <h4>Active Hosts:</h4>
           <h1>{{hostBlurb}}</h1>
         {{else}}
           <i class="icon icon-spinner icon-spin"></i> Waiting for a host...
@@ -31,7 +29,7 @@
         {{#if cert.cert}}
           <pre><code>{{cert.cert}}</code></pre>
         {{else}}
-          <i class="icon icon-spinner icon-spin"></i> Loading...
+          <i class="icon icon-spinner icon-spin"></i> Waiting for a host...
         {{/if}}
       </div>
     </div>
@@ -55,8 +53,8 @@
   </section>
 {{else}}
 
-  {{#if isLocalDb}}
-    <section class="well">
+  <section class="well">
+    {{#if isLocalDb}}
       <h4>1. Setup an external database</h4>
       <hr/>
       <p>
@@ -73,32 +71,58 @@
           </li>
           <li>Click the export button below to export the entire contents of the current database.</li>
           <li>Import the data into the new external database.</li>
-          <li>Re-launch your current server container pointed at the external database, then come back here.
-            {{#unless settings.isPrivateLabel}}
-              <a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank">See docs</a> for more info.
-            {{/unless}}
-          </li>
         </ul>
       </p>
       <p class="r-mb0 r-mt20">
         <button class="btn btn-primary" {{action "exportDatabase"}}>Export Database</button>
         <p class="help-block r-mb0">Uncompressed Size: {{format-mib model.haConfig.dbSize}}</p>
       </p>
-    </section>
-  {{else}}
-    <section class="well">
+    {{else}}
       <h4 class="text-success">1. Setup an external database <i class="icon icon-check"/></h4>
-      <p class="text-muted">
-        Complete, <code>{{model.haConfig.dbHost}}</code> will be used as the external database for HA.
+      <p class="text-muted r-mb0">
+        Complete, running off of an external database.
       </p>
-    </section>
-  {{/if}}
+    {{/if}}
+  </section>
 
   <section class="well">
-    <h4>2. Generate HA config script</h4>
-    <hr/>
+    {{#if isLocalDb}}
+      <h4>2. Use the new external database</h4>
+      <hr/>
+      <ul>
+        <li>Re-launch the server container pointed at the external database:
+          {{code-block code=runCode language="bash" constrained=false}}
+        </li>
+        {{#unless settings.isPrivateLabel}}
+          <li>
+            <a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank">See docs</a> for more detail.
+          </li>
+        {{/unless}}
+      </ul>
+    {{else}}
+      <h4 class="text-success">2. Use the new external database <i class="icon icon-check"/></h4>
+      <p class="text-muted r-mb0">
+        Complete, <code>{{model.haConfig.dbHost}}</code> will be used as the external database for HA.
+      </p>
+    {{/if}}
+  </section>
+
+  <section class="well">
+    {{#if justGenerated}}
+      <h4 class="text-success">3. Generate HA config script <i class="icon icon-check"/></h4>
+      <p class="text-muted r-mb0">
+        Complete.
+      </p>
+    {{else}}
+      <h4>3. Generate HA config script</h4>
+      <hr/>
+      {{#if isLocalDb}}
+        <p class="text-muted">Come back here once you are running off the external database...</p>
+      {{/if}}
+    {{/if}}
+
     <iframe name="haConfigFrame" id="haConfigFrame" style="display: none;"></iframe>
-    <form action="{{model.haConfig.actionLinks.createscript}}" method="POST" id="haConfigForm" target="haConfigFrame">
+    <form action="{{model.haConfig.actionLinks.createscript}}" method="POST" id="haConfigForm" target="haConfigFrame" class="{{if justGenerated 'hide'}}">
       <input type="hidden" name="hostRegistrationUrl" value="{{model.createScript.hostRegistrationUrl}}"/>
       <input type="hidden" name="CSRF" value="{{csrf}}"/>
       <div class="row form-group">
@@ -167,7 +191,7 @@
               <label class="r-pt5">Private Key</label>
               <span class="pull-right">{{read-text-file accept="text/*, .pem, .pkey, .key" action=(action "readFile" "key")}}</span>
             </div>
-            {{textarea value=model.createScript.key classNames="form-control no-resize" rows="5" placeholder="Paste in the private key, starting with -----BEGIN RSA PRIVATE KEY-----"}}
+            {{textarea name="key" value=model.createScript.key classNames="form-control no-resize" rows="5" placeholder="Paste in the private key, starting with -----BEGIN RSA PRIVATE KEY-----"}}
           </div>
 
           <div class="col-sm-12 col-md-4">
@@ -175,7 +199,7 @@
               <label class="r-pt5">Certificate</label>
               <span class="pull-right">{{read-text-file accept="text/*, .pem, .crt" action=(action "readFile" "cert")}}</span>
             </div>
-            {{textarea value=model.createScript.cert classNames="form-control no-resize" rows="5" placeholder="Paste in the primary certificate, starting with -----BEGIN CERTIFICATE-----"}}
+            {{textarea name="cert" value=model.createScript.cert classNames="form-control no-resize" rows="5" placeholder="Paste in the primary certificate, starting with -----BEGIN CERTIFICATE-----"}}
           </div>
 
           <div class="col-sm-12 col-md-4">
@@ -183,7 +207,7 @@
               <label class="r-pt5">Chain Certs</label>
               <span class="pull-right">{{read-text-file accept="text/*, .pem, .crt" action=(action "readFile" "certChain")}}</span>
             </div>
-            {{textarea value=model.createScript.certChain classNames="form-control no-resize" rows="5" placeholder="Optional; Paste in the additional chained certificates, starting with -----BEGIN CERTIFICATE-----"}}
+            {{textarea name="certChain" value=model.createScript.certChain classNames="form-control no-resize" rows="5" placeholder="Optional; Paste in the additional chained certificates, starting with -----BEGIN CERTIFICATE-----"}}
           </div>
         </div>
       {{/liquid-if}}
@@ -246,17 +270,39 @@
       <p class="r-mb0 r-mt20">
         {{top-errors errors=errors}}
 
-        {{#if (and false isLocalDb)}}
-          <button class="btn btn-primary btn-disabled" type="button" disabled>Generate Config Script &amp; Enable HA</button>
-          <p class="help-block">You must migrate to an external database before you can enable HA</p>
+        {{#if generating}}
+          <button class="btn btn-primary btn-disabled" type="button" disabled><i class="icon icon-spinner icon-spin"/> Generating...</button>
         {{else}}
-          {{#if generating}}
-            <button class="btn btn-primary btn-disabled" type="button" disabled><i class="icon icon-spinner icon-spin"/> Generating...</button>
-          {{else}}
-            <button class="btn btn-primary" type="button" {{action "generateConfig"}}>Generate Config Script &amp; Enable HA</button>
-          {{/if}}
+          <button class="btn btn-primary" type="button" {{action "generateConfig"}}>Generate Config Script</button>
         {{/if}}
       </p>
     </form>
+  </section>
+
+  <section class="well">
+    {{#if downloaded}}
+      <h4 class="text-success">4. Download script <i class="icon icon-check"/></h4>
+      <p class="text-muted r-mb0">
+        Complete, check your Downloads folder.
+      </p>
+    {{else}}
+      <h4>4. Download script</h4>
+      <hr/>
+      {{#if justGenerated}}
+        <p>
+          Click the button below to download a shell script.
+          <div class="alert alert-warning">
+            The script generates new encryption keys that will be used for the HA hosts to communicate with each other, so keep it safe.
+            New keys are generated every time you download the config script, and all hosts must have the same keys for HA to work.
+          </div>
+        </p>
+
+        <button class="btn btn-primary" type="button" {{action "downloadConfig"}}>Download Config Script</button>
+      {{else}}
+        <p class="text-muted r-mb0">
+          Generate the script in step 3.
+        </p>
+      {{/if}}
+    {{/if}}
   </section>
 {{/if}}
