@@ -24,6 +24,8 @@ export default Ember.Component.extend({
   // Inputs
   healthCheck: null,
   errors: null,
+  isService: null,
+  showStrategy: true,
 
   tagName: '',
 

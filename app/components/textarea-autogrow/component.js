@@ -19,7 +19,7 @@ export default Ember.TextArea.extend({
   },
 
   keyUp() {
-    this.autoSize();
+    Ember.run.debounce(this,'autoSize',100);
   },
 
   isSmall: function() {

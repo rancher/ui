@@ -66,7 +66,6 @@ export default Ember.Component.extend({
   allowMultilineValue: true,
 
   ary: null,
-  asMap: null,
 
   actions: {
     add() {
@@ -122,9 +121,17 @@ export default Ember.Component.extend({
     }
   },
 
-  asMapObserver: function() {
+  aryObserver: function() {
+    Ember.run.debounce(this,'fireChanged',100);
+  }.observes('ary.@each.{key,value}'),
+
+  fireChanged() {
+    if ( this._state === 'destroying' )
+    {
+      return;
+    }
+
     var out = {};
-    var outStr = '';
 
     this.get('ary').forEach((row) => {
       var k = row.get('key').trim();
@@ -133,12 +140,9 @@ export default Ember.Component.extend({
       if ( k && (v || this.get('allowEmptyValue')) )
       {
         out[row.get('key').trim()] = row.get('value').trim();
-        outStr += (outStr ? ',' : '') + k + '=' + v;
       }
     });
 
-    this.set('asMap', out);
     this.sendAction('changed', out);
-    this.sendAction('changedStr', outStr);
-  }.observes('ary.@each.{key,value}'),
+  },
 });
