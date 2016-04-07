@@ -33,7 +33,7 @@ export default Ember.Component.extend(ManageLabels, {
   showChanged: function() {
     if (this.get('show'))
     {
-      $('main').addClass('summary-shown');
+      $('.stacks-wrap').addClass('summary-shown');
       this.$().show().animate({height: '260px'}, 250, 'easeOutBack');
     }
     else
@@ -44,7 +44,7 @@ export default Ember.Component.extend(ManageLabels, {
           this.$().hide();
         }
 
-        $('main').removeClass('summary-shown');
+        $('.stacks-wrap').removeClass('summary-shown');
       });
 
       this.setProperties({

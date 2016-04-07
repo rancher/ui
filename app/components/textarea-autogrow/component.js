@@ -6,7 +6,7 @@ export default Ember.TextArea.extend({
   text: null,
   classNames: [],
   paddingAndBorder: null,
-  minHeight: 0,
+  minHeight: 43,
   maxHeight: 200,
 
   didInsertElement() {
