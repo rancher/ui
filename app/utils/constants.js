@@ -166,23 +166,23 @@ var C = {
 
   SETTING: {
     // Dots in key names do not mix well with Ember, so use $ in their place.
-    DOT_CHAR: '$',
-    VERSION_RANCHER: 'rancher$server$image',
-    VERSION_COMPOSE: 'rancher$compose$version',
-    VERSION_CATTLE:  'cattle$version',
-    VERSION_MACHINE: 'docker$machine$version',
-    VERSION_GMS:     'go$machine$service$version',
+    DOT_CHAR:         '$',
+    VERSION_RANCHER:  'rancher$server$image',
+    VERSION_COMPOSE:  'rancher$compose$version',
+    VERSION_CATTLE:   'cattle$version',
+    VERSION_MACHINE:  'docker$machine$version',
+    VERSION_GMS:      'go$machine$service$version',
     COMPOSE_URL: {
-      DARWIN:        'rancher$compose$darwin$url',
-      WINDOWS:       'rancher$compose$windows$url',
-      LINUX:         'rancher$compose$linux$url',
+      DARWIN:         'rancher$compose$darwin$url',
+      WINDOWS:        'rancher$compose$windows$url',
+      LINUX:          'rancher$compose$linux$url',
     },
-    API_HOST:        'api$host',
-    CATALOG_URL:     'catalog$url',
-    VM_ENABLED:      'vm$enabled',
-    HELP_ENABLED:    'help$enabled',
-    SWARM_PORT:      'swarm$tls$port',
-    ENGINE_URL:      'engine$install$url'
+    API_HOST:         'api$host',
+    CATALOG_URL:      'catalog$url',
+    VM_ENABLED:       'vm$enabled',
+    HELP_ENABLED:     'help$enabled',
+    SWARM_PORT:       'swarm$tls$port',
+    ENGINE_URL:       'engine$install$url',
   },
 
   USER: {

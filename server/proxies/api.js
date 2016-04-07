@@ -10,6 +10,7 @@ module.exports = function(app, options) {
     ws: true,
     xfwd: false,
     target: config.apiServer,
+    secure: false,
   });
 
   proxy.on('error', onProxyError);

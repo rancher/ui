@@ -4,10 +4,11 @@ export default Ember.Component.extend({
   language: 'javascript',
   code: '',
   hide: false,
+  constrained: true,
 
   tagName: 'PRE',
-  classNames: ['line-numbers','constrained'],
-  classNameBindings: ['languageClass','hide:hide'],
+  classNames: ['line-numbers'],
+  classNameBindings: ['languageClass','hide:hide','constrained:constrained'],
 
   languageClass: function() {
     var lang = this.get('language');

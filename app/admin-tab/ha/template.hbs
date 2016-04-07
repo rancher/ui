@@ -1,0 +1,312 @@
+<section class="well">
+  <h2>High Availability is {{#if model.haConfig.enabled}}<b class="text-success">enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
+</section>
+
+{{#if model.haConfig.enabled}}
+  {{#if (lt activeHosts expectedHosts)}}
+    <section class="well">
+      <h4>5. Add hosts</h4>
+      <hr/>
+      <p>
+        Copy the downloaded script and run it on to each HA host to register them:
+        {{code-block code=configExecute language="bash" constrained=false}}
+      </p>
+    </section>
+  {{/if}}
+
+  <div class="row">
+    <div class="col-md-3">
+      <div class="well">
+        <h4 class="r-mb10">Hosts:</h4>
+        {{#if hosts}}
+          <h1 class="text-center">{{hostBlurb}}</h1>
+        {{else}}
+          <i class="icon icon-spinner icon-spin"></i> Waiting for a host...
+        {{/if}}
+      </div>
+    </div>
+    <div class="col-md-9">
+      <div class="well">
+        <h4 class="r-mb10">Management Server Certificate: {{#if cert.cert}}{{copy-to-clipboard size="small" clipboardText=cert.cert}}{{/if}}</h4>
+        {{#if cert.cert}}
+          <pre><code>{{cert.cert}}</code></pre>
+        {{else}}
+          <i class="icon icon-spinner icon-spin"></i> Waiting for a host...
+        {{/if}}
+      </div>
+    </div>
+  </div>
+
+  <section class="well">
+    <h4>Danger Zone&trade;</h4>
+    <hr/>
+
+    <p>
+      {{#if confirmPanic}}
+        <button class="btn btn-danger" {{action "panic"}}>
+          <i class="icon icon-alert"></i> Are you sure?  Click again to really disable access HA
+        </button>
+      {{else}}
+        <button class="btn btn-danger" {{action "promptPanic"}}>
+          <i class="icon icon-umbrella"></i> Disable HA
+        </button>
+      {{/if}}
+    </p>
+  </section>
+{{else}}
+
+  <section class="well">
+    {{#if isLocalDb}}
+      <h4>1. Setup an external database</h4>
+      <hr/>
+      <p>
+        This {{settings.appName}} installation is currently configured to use the built-in database server, but HA requires a standalone installation of MySQL.
+      </p>
+      <p>
+        <ul>
+          <li>
+            Setup an external database instance.
+            <ul>
+              <li>This can be a hosted solution like Amazon RDS or Google Cloud SQL,</li>
+              <li>Or a self-hosted instance or multi-master cluster.</li>
+            </ul>
+          </li>
+          <li>Click the export button below to export the entire contents of the current database.</li>
+          <li>Import the data into the new external database.</li>
+        </ul>
+      </p>
+      <p class="r-mb0 r-mt20">
+        <button class="btn btn-primary" {{action "exportDatabase"}}>Export Database</button>
+        <p class="help-block r-mb0">Uncompressed Size: {{format-mib model.haConfig.dbSize}}</p>
+      </p>
+    {{else}}
+      <h4 class="text-success">1. Setup an external database <i class="icon icon-check"/></h4>
+      <p class="text-muted r-mb0">
+        Complete, running off of an external database.
+      </p>
+    {{/if}}
+  </section>
+
+  <section class="well">
+    {{#if isLocalDb}}
+      <h4>2. Use the new external database</h4>
+      <hr/>
+      <ul>
+        <li>Re-launch the server container pointed at the external database:
+          {{code-block code=runCode language="bash" constrained=false}}
+        </li>
+        {{#unless settings.isPrivateLabel}}
+          <li>
+            <a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank">See docs</a> for more detail.
+          </li>
+        {{/unless}}
+      </ul>
+    {{else}}
+      <h4 class="text-success">2. Use the new external database <i class="icon icon-check"/></h4>
+      <p class="text-muted r-mb0">
+        Complete, <code>{{model.haConfig.dbHost}}</code> will be used as the external database for HA.
+      </p>
+    {{/if}}
+  </section>
+
+  <section class="well">
+    {{#if justGenerated}}
+      <h4 class="text-success">3. Generate HA config script <i class="icon icon-check"/></h4>
+      <p class="text-muted r-mb0">
+        Complete.
+      </p>
+    {{else}}
+      <h4>3. Generate HA config script</h4>
+      <hr/>
+      {{#if isLocalDb}}
+        <p class="text-muted">Come back here once you are running off the external database...</p>
+      {{/if}}
+    {{/if}}
+
+    <iframe name="haConfigFrame" id="haConfigFrame" style="display: none;"></iframe>
+    <form action="{{model.haConfig.actionLinks.createscript}}" method="POST" id="haConfigForm" target="haConfigFrame" class="{{if (or isLocalDb justGenerated) 'hide'}}">
+      <input type="hidden" name="hostRegistrationUrl" value="{{model.createScript.hostRegistrationUrl}}"/>
+      <input type="hidden" name="CSRF" value="{{csrf}}"/>
+      <div class="row form-group">
+        <div class="col-sm-6 col-md-2 form-control-static">
+          <label>Cluster Size</label>
+        </div>
+        <div class="col-sm-6 col-md-10">
+          <div class="radio">
+            <label>
+              {{radio-button name="clusterSize" selection=model.createScript.clusterSize value=1}}
+              <span class="text-bold" style="display: inline-block: width: 120px;">1 Host:</span> Not really very HA at all
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button name="clusterSize" selection=model.createScript.clusterSize value=3}}
+              <span class="text-bold" style="display: inline-block: width: 120px;">3 Hosts:</span> Any <b>one</b> host can fail
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button name="clusterSize" selection=model.createScript.clusterSize value=5}}
+              <span class="text-bold" style="display: inline-block: width: 120px;">5 Hosts:</span> Any <b>two</b> hosts can fail
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-6 col-md-2 form-control-static">
+          <label>Host Registration URL</label>
+        </div>
+        <div class="col-sm-6 col-md-10">
+          <div class="input-group">
+            <span class="input-group-addon">
+              https://
+            </span>
+            {{input type="text" value=userUrl type="text" classNames="form-control"}}
+          </div>
+          <p class="help-block">This should be a FQDN that resolves to the addresses of or is a load balancer for {{#if (eq model.createScript.clusterSize 1)}}the HA host{{else}}all {{model.createScript.clusterSize}} HA hosts{{/if}}.  Do not include <code>/v1</code> or any other path.</p>
+        </div>
+      </div>
+
+      <div class="row form-group">
+        <div class="col-sm-6 col-md-2 form-control-static">
+          <label>Certificate</label>
+        </div>
+        <div class="col-sm-6 col-md-10">
+          <div class="radio">
+            <label>
+              {{radio-button selection=selfSign value=true}} Generate a self-signed certificate
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              {{radio-button selection=selfSign value=false}} Upload a valid certificate{{#if model.createScript.hostRegistrationUrl}} for <code>{{model.createScript.hostRegistrationUrl}}</code>{{/if}}
+            </label>
+          </div>
+        </div>
+      </div>
+
+      {{#liquid-if (not selfSign)}}
+        <div class="row form-group">
+          <div class="col-sm-12 col-md-4">
+            <div class="clearfix r-mb10 r-mt15">
+              <label class="r-pt5">Private Key</label>
+              <span class="pull-right">{{read-text-file accept="text/*, .pem, .pkey, .key" action=(action "readFile" "key")}}</span>
+            </div>
+            {{textarea name="key" value=model.createScript.key classNames="form-control no-resize" rows="5" placeholder="Paste in the private key, starting with -----BEGIN RSA PRIVATE KEY-----"}}
+          </div>
+
+          <div class="col-sm-12 col-md-4">
+            <div class="clearfix r-mb10 r-mt15">
+              <label class="r-pt5">Certificate</label>
+              <span class="pull-right">{{read-text-file accept="text/*, .pem, .crt" action=(action "readFile" "cert")}}</span>
+            </div>
+            {{textarea name="cert" value=model.createScript.cert classNames="form-control no-resize" rows="5" placeholder="Paste in the primary certificate, starting with -----BEGIN CERTIFICATE-----"}}
+          </div>
+
+          <div class="col-sm-12 col-md-4">
+            <div class="clearfix r-mb10 r-mt15">
+              <label class="r-pt5">Chain Certs</label>
+              <span class="pull-right">{{read-text-file accept="text/*, .pem, .crt" action=(action "readFile" "certChain")}}</span>
+            </div>
+            {{textarea name="certChain" value=model.createScript.certChain classNames="form-control no-resize" rows="5" placeholder="Optional; Paste in the additional chained certificates, starting with -----BEGIN CERTIFICATE-----"}}
+          </div>
+        </div>
+      {{/liquid-if}}
+
+      {{#advanced-section}}
+        <div class="row">
+          <div class="col-sm-6 col-md-2 form-control-static">
+            <label>Listening Ports</label>
+          </div>
+          <div class="col-sm-6 col-md-5 r-pt5">
+            <table class="fixed">
+              <tbody>
+                <tr>
+                  <td width="200">HTTPS</td>
+                  <td width="100" class="text-muted">Required</td>
+                  <td width="100">{{input name="httpsPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.httpsPort}}</td>
+                </tr>
+                <tr>
+                  <td>HTTP</td>
+                  <!-- <td><label>{{input name="httpEnabled" type="checkbox" checked=model.createScript.httpEnabled}} Enable</label></td> -->
+                  <td width="100" class="text-muted">Required</td>
+                  <td>{{input name="httpPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.httpPort disabled=(not model.createScript.httpEnabled)}}</td>
+                </tr>
+                <tr>
+                  <td>Swarm</td>
+                  <!-- <td><label>{{input name="swarmEnabled" type="checkbox" checked=model.createScript.swarmEnabled}} Enable</label></td> -->
+                  <td width="100" class="text-muted">Required</td>
+                  <td>{{input name="swarmPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.swarmPort disabled=(not model.createScript.swarmEnabled)}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-sm-6 col-md-5 r-pt5">
+            <table class="fixed">
+              <tbody>
+                <tr class="r-mb5">
+                  <td width="200">Redis</td>
+                  <td width="100" class="text-muted">Required</td>
+                  <td width="100">{{input name="redisPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.redisPort}}</td>
+                </tr>
+                <tr>
+                  <td>ZooKeeper Client</td>
+                  <td class="text-muted">Required</td>
+                  <td>{{input name="zookeeperClientPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperClientPort}}</td>
+                </tr>
+                <tr>
+                  <td>ZooKeeper Quorum</td>
+                  <td class="text-muted">Required</td>
+                  <td>{{input name="zookeeperQuorumPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperQuorumPort}}</td>
+                </tr>
+                <tr>
+                  <td>ZooKeeper Leader</td>
+                  <td class="text-muted">Required</td>
+                  <td>{{input name="zookeeperLeaderPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperLeaderPort}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      {{/advanced-section}}
+
+      <p class="r-mb0 r-mt20">
+        {{top-errors errors=errors}}
+
+        {{#if generating}}
+          <button class="btn btn-primary btn-disabled" type="button" disabled><i class="icon icon-spinner icon-spin"/> Generating...</button>
+        {{else}}
+          <button class="btn btn-primary" type="button" {{action "generateConfig"}}>Generate Config Script</button>
+        {{/if}}
+      </p>
+    </form>
+  </section>
+
+  <section class="well">
+    {{#if downloaded}}
+      <h4 class="text-success">4. Download script <i class="icon icon-check"/></h4>
+      <p class="text-muted r-mb0">
+        Complete, check your Downloads folder.
+      </p>
+    {{else}}
+      <h4>4. Download script</h4>
+      <hr/>
+      {{#if justGenerated}}
+        <p>
+          Click the button below to download a shell script.
+          <div class="alert alert-info">
+            The script generates new encryption keys that will be used for the HA hosts to communicate with each other, so keep it safe.
+            New keys are generated every time you download the config script, and all hosts must have the same keys for HA to work.
+          </div>
+        </p>
+
+        <button class="btn btn-primary" type="button" {{action "downloadConfig"}}>Download Config Script</button>
+      {{else}}
+        <p class="text-muted r-mb0">
+          Generate the script in step 3.
+        </p>
+      {{/if}}
+    {{/if}}
+  </section>
+{{/if}}

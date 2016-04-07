@@ -6,7 +6,7 @@ export function normalizeName(str) {
 }
 
 export function denormalizeName(str) {
-  return str.replace(C.SETTING.DOT_CHAR,'.').toLowerCase();
+  return str.replace(new RegExp('['+C.SETTING.DOT_CHAR+']','g'),'.').toLowerCase();
 }
 
 export default Ember.Service.extend(Ember.Evented, {
@@ -83,6 +83,12 @@ export default Ember.Service.extend(Ember.Evented, {
 
   findByName(name) {
     return this.get('asMap')[normalizeName(name)];
+  },
+
+  findAsUser(key) {
+    return this.get('store').find('setting', denormalizeName(key), {authAsUser: true, forceReload: true}).then(() => {
+      return Ember.RSVP.resolve(this.unknownProperty(key));
+    });
   },
 
   asMap: function() {
