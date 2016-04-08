@@ -41,11 +41,13 @@ export default Ember.Mixin.create(ThrottledResize, {
     let node          = Ember.$(this.element);
     let eventPosition = tts.get('tooltipOpts.eventPosition');
     let position      = this.positionTooltip(node, eventPosition);
+    let css           = {visibility: 'visible'};
 
-    node.offset(position).addClass(`${position.placement} ${tts.tooltipOpts.baseClass}`).css({
-      visibility: 'visible',
-      width: position.width + 1
-    });
+    if ( tts.get('tooltipOpts.isCopyTo') ) {
+      css.width = position.width + 1;
+    }
+
+    node.offset(position).addClass(`${position.placement} ${tts.tooltipOpts.baseClass}`).css(css);
   },
 
   destroyTooltip: function() {
