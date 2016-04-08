@@ -4,7 +4,7 @@ import Ember from 'ember';
 // hostIp::containerPort
 // hostPort:containerPort
 // containerPort
-export function parsePort(str, defaultProtocol='http') {
+export function parsePortSpec(str, defaultProtocol='http') {
   str = str.trim();
 
   var match, parts, hostIp = '', hostPort, containerPort, protocol;
@@ -59,7 +59,7 @@ export function parsePort(str, defaultProtocol='http') {
   });
 }
 
-export function stringifyPort(port, defaultProtocol='http') {
+export function stringifyPortSpec(port, defaultProtocol='http') {
   var hostStr = Ember.get(port,'host')||'';
   var match, hostIp, hostPort;
   if ( match = hostStr.match(/^((.*):)?([^:]+)$/) )
@@ -92,7 +92,81 @@ export function stringifyPort(port, defaultProtocol='http') {
   return out;
 }
 
+// port
+// 1.2.3.4
+// 1.2.3.4:port
+// long:ip:v6::str
+// [long:ip:v6::str]
+// [long:ip:v6::str]:port
+export function parseIpPort(str) {
+  str = str.trim();
+  let colons = str.replace(/[^:]/g,'').length;
+  let index;
+
+  // IPv6, IPv6+port
+  index = str.indexOf(']');
+  if ( colons > 1 )
+  {
+    let index = str.indexOf(']');
+    if ( index > 0 )
+    {
+      let ip = str.substr(0,index+1);
+      let port = null;
+      if ( str.substr(index+1,1) === ':' ) {
+        port = portToInt(str.substr(index+2));
+      }
+
+      return ret(ip,port);
+    }
+    else
+    {
+      return ret('['+str+']',null);
+    }
+  }
+
+  // IPv4+port
+  index = str.indexOf(':');
+  if ( index >= 0 )
+  {
+    return ret(str.substr(0,index), str.substr(index+1));
+  }
+
+  // IPv4
+  if ( str.match(/[^\d]/) )
+  {
+    return ret(str,null);
+  }
+
+  // Port
+  let port = portToInt(str);
+  if ( port )
+  {
+    return ret(null,port);
+  }
+
+  return null;
+
+  function ret(ip,port) {
+    return  {
+      ip: ip || null,
+      port: portToInt(port)
+    };
+  }
+}
+
+export function portToInt(str) {
+  str = (str+'').trim();
+  if ( str.match(/^\d+$/) )
+  {
+    return parseInt(str,10) || null;
+  }
+
+  return null;
+}
+
 export default {
-  parsePort: parsePort,
-  stringifyPort: stringifyPort,
+  parsePortSpec: parsePortSpec,
+  stringifyPortSpec: stringifyPortSpec,
+  parseIpPort: parseIpPort,
+  portToInt: portToInt
 };

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { parsePort } from 'ui/utils/parse-port';
+import { parsePortSpec } from 'ui/utils/parse-port';
 
 const protocolOptions = [
   {label: 'TCP', value: 'tcp'},
@@ -34,18 +34,15 @@ export default Ember.Component.extend({
         if ( typeof value === 'object' )
         {
           var existing = !forceNew && !!value.id;
-          var pub = '';
-          if ( value.publicPort )
+          var pub = value.publicPort+'';
+          if ( !existing && value.bindAddress )
           {
-            if ( value.bindAddress ) {
-              pub += value.bindAddress + ':';
-            }
-
-            pub += value.publicPort;
+            pub = value.bindAddress + ':' + pub;
           }
           out.push({
             existing: existing,
             obj: value,
+            bindAddress: value.bindAddress||null,
             public: pub,
             private: value.privatePort,
             protocol: value.protocol,
@@ -54,7 +51,7 @@ export default Ember.Component.extend({
         else if ( typeof value === 'string' )
         {
           // Strings, from clone
-          var parsed = parsePort(value);
+          var parsed = parsePortSpec(value);
           out.push({
             existing: false,
             public: parsed.host,
