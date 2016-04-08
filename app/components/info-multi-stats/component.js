@@ -159,11 +159,14 @@ export default Ember.Component.extend({
     this.startTimer();
   }.observes('renderSeconds'),
 
-  setupMarkers: function() {
 
-    var svg = d3.select('.well svg')
-    .append('svg:svg')
-    .append('svg:defs');
+setupMarkers: function() {
+
+    var svg = d3.select('body').append('svg:svg');
+    svg.attr('height','0');
+    svg.attr('width','0');
+    svg.style('position','absolute');
+    var defs = svg.append('svg:defs');
 
     GRADIENT_COLORS.forEach((v) => {
 
@@ -171,7 +174,7 @@ export default Ember.Component.extend({
 
       v.colors.forEach((val, idx) => {
 
-        var gradient = svg.append("svg:linearGradient")
+        var gradient = defs.append("svg:linearGradient")
             .attr('id', `${type}-${idx}-gradient`)
             .attr('x1', '0%')
             .attr('y1', '0%')
