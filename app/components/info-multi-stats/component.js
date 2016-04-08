@@ -32,6 +32,9 @@ export default Ember.Component.extend({
   single: true,
   showGraphs: true,
 
+  tagName: 'div',
+  classNames: ['stooge'],
+
   renderSeconds: null,
 
   statsSocket: null,
@@ -158,7 +161,7 @@ export default Ember.Component.extend({
 
   setupMarkers: function() {
 
-    var svg = d3.select('body')
+    var svg = d3.select('.well svg')
     .append('svg:svg')
     .append('svg:defs');
 
