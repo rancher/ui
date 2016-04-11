@@ -9,7 +9,7 @@ export default Ember.Component.extend({
   target: '_blank',
 
   tagName: 'A',
-  attributeBindings: ['title','href'],
+  attributeBindings: ['title','href', 'target'],
   classNames: ['small'],
   classNameBindings: ['settings.isPrivateLabel:hide'],
 
