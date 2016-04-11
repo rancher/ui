@@ -225,20 +225,23 @@
               <tbody>
                 <tr>
                   <td width="200">HTTPS</td>
-                  <td width="100" class="text-muted">Required</td>
                   <td width="100">{{input name="httpsPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.httpsPort}}</td>
                 </tr>
                 <tr>
                   <td>HTTP</td>
-                  <!-- <td><label>{{input name="httpEnabled" type="checkbox" checked=model.createScript.httpEnabled}} Enable</label></td> -->
-                  <td width="100" class="text-muted">Required</td>
                   <td>{{input name="httpPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.httpPort disabled=(not model.createScript.httpEnabled)}}</td>
                 </tr>
                 <tr>
                   <td>Swarm</td>
-                  <!-- <td><label>{{input name="swarmEnabled" type="checkbox" checked=model.createScript.swarmEnabled}} Enable</label></td> -->
-                  <td width="100" class="text-muted">Required</td>
                   <td>{{input name="swarmPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.swarmPort disabled=(not model.createScript.swarmEnabled)}}</td>
+                </tr>
+                <tr>
+                  <td><a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">PROXY</a> to HTTPS</td>
+                  <td>{{input name="ppHttpsPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.ppHttpsPort}}</td>
+                </tr>
+                <tr>
+                  <td><a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">PROXY</a> to HTTP</td>
+                  <td>{{input name="ppHttpPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.ppHttpPort}}</td>
                 </tr>
               </tbody>
             </table>
@@ -248,22 +251,18 @@
               <tbody>
                 <tr class="r-mb5">
                   <td width="200">Redis</td>
-                  <td width="100" class="text-muted">Required</td>
                   <td width="100">{{input name="redisPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.redisPort}}</td>
                 </tr>
                 <tr>
                   <td>ZooKeeper Client</td>
-                  <td class="text-muted">Required</td>
                   <td>{{input name="zookeeperClientPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperClientPort}}</td>
                 </tr>
                 <tr>
                   <td>ZooKeeper Quorum</td>
-                  <td class="text-muted">Required</td>
                   <td>{{input name="zookeeperQuorumPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperQuorumPort}}</td>
                 </tr>
                 <tr>
                   <td>ZooKeeper Leader</td>
-                  <td class="text-muted">Required</td>
                   <td>{{input name="zookeeperLeaderPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperLeaderPort}}</td>
                 </tr>
               </tbody>
