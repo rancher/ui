@@ -23,6 +23,10 @@ export default Ember.Component.extend({
       {
         let tgt = Ember.$(evt.currentTarget);
 
+        if (this.get('tooltipService.tooltipOpts')) {
+          this.set('tooltipService.tooltipOpts', null);
+        }
+
         // Wait for a little bit of time so that the mouse can pass through
         // another tooltip-element on the way to the dropdown trigger of a
         // tooltip-action-menu without changing the tooltip.
@@ -51,6 +55,10 @@ export default Ember.Component.extend({
       model         : this.get('model'),
       template      : this.get('tooltipTemplate'),
     };
+
+    if ( this.get('isCopyTo') ) {
+      out.isCopyTo = true;
+    }
 
     if ( !svc.get('tooltipOpts') ) {
       this.get('scrolling').disable();
