@@ -47,9 +47,10 @@ export default Ember.Route.extend({
   },
 
   loadSchemas() {
+    var project = this.modelFor('authenticated').project;
     var store = this.get('store');
     store.resetType('schema');
-    return store.find('schema', null, {url: 'schemas', forceReload: true});
+    return store.find('schema', null, {url: 'projects/'+project.get('id')+'/schemas', forceReload: true});
   },
 
   loadStacks() {

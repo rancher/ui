@@ -96,7 +96,7 @@ export default Ember.Route.extend(Subscribe, {
   },
 
   loadPreferences() {
-    return this.get('store').find('userpreference', null, {url: 'userpreferences', forceReload: true}).then((res) => {
+    return this.get('store').find('userpreference', null, {url: 'userpreferences', authAsUser: true, forceReload: true}).then((res) => {
       // Save the account ID from the response headers into session
       if ( res && res.xhr )
       {
@@ -175,7 +175,7 @@ export default Ember.Route.extend(Subscribe, {
   },
 
   loadPublicSettings() {
-    return this.get('store').find('setting', null, {url: 'setting', forceReload: true, filter: {all: 'false'}});
+    return this.get('store').find('setting', null, {url: 'setting', authAsUser: true, forceReload: true, filter: {all: 'false'}});
   },
 
   reset() {

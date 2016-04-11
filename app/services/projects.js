@@ -19,7 +19,8 @@ export default Ember.Service.extend({
   getAll: function() {
     var opt = {
       url: 'projects',  // This is called in authenticated/route before schemas are loaded
-      forceReload: true
+      forceReload: true,
+      authAsUser: true,
     };
 
     if ( !this.get('access.enabled') )

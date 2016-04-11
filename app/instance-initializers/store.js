@@ -4,6 +4,7 @@ import UnpurgedArrayProxy from 'ui/utils/unpurged-array-proxy';
 import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 export function initialize(instance) {
   var application = instance.lookup('application:main');
@@ -22,15 +23,8 @@ export function initialize(instance) {
       // Please don't send us www-authenticate headers
       out[C.HEADER.NO_CHALLENGE] = C.HEADER.NO_CHALLENGE_VALUE;
 
-      // Send the current project id as a header if in a project
-      var projectId = tabSession.get(C.TABSESSION.PROJECT);
-      if ( projectId )
-      {
-        out[C.HEADER.PROJECT] = projectId;
-      }
-
       return out;
-    }.property().volatile(),
+    }.property(),
 
     // Override store.all() so that it only returns un-purged resources.
     reallyAll: store.all,
@@ -43,22 +37,29 @@ export function initialize(instance) {
       return proxy;
     },
 
-    reallyFind: store.find,
-    find: function(type, id, opt) {
-      opt = opt || {};
-      if ( opt.authAsUser )
-      {
-        var headers = opt.headers;
-        if ( !headers )
-        {
-          headers = {};
-          opt.headers = headers;
-        }
+    mungeRequest: function(opt) {
+      var projectId = tabSession.get(C.TABSESSION.PROJECT);
+      var base = this.get('baseUrl')+'/';
+      var projectRoot = base + 'projects';
 
-        headers[C.HEADER.PROJECT] = undefined;
+      if ( !opt.url.match(/^https?:/) )
+      {
+        // As user, strip projects/:id/ from the request if present
+        if ( opt.authAsUser )
+        {
+          let re = new RegExp("^" + Util.escapeRegex(projectRoot) + '\/[^\/]+/');
+          opt.url = opt.url.replace(re,'');
+        }
+        else if ( projectId && opt.url.indexOf(base) === 0 && opt.url.indexOf(projectRoot) !== 0 )
+        {
+          // As project, add projects/:id/ to the request if not there
+          opt.url = projectRoot + '/' + projectId + '/' + opt.url.substr(base.length);
+        }
       }
 
-      return this.reallyFind(type, id, opt);
+      opt.url = this.normalizeUrl(opt.url, true);
+
+      return opt;
     },
 
     // find(type) && return allActive(type)

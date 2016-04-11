@@ -6,7 +6,7 @@ export default Ember.Route.extend({
     var store = this.get('store');
     var me = this.get(`session.${C.SESSION.ACCOUNT_ID}`);
     return Ember.RSVP.hash({
-      account: store.find('apikey', null, {filter: {accountId: me}, authAsUser: true, forceReload: true}),
+      account: store.find('apikey', null, {filter: {accountId: me}, url: 'apikeys', authAsUser: true, forceReload: true}),
       environment: store.find('apikey', null, {forceReload: true}),
     }).then(() => {
       return store.allUnremoved('apikey');
