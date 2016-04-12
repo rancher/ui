@@ -1,11 +1,5 @@
-<section class="header">
-  <h1>
-     Add Certificate
-  </h1>
-</section>
-
-<section class="horizontal-form container-fluid well">
-  {{top-errors errors=errors}}
+<section class="horizontal-form container-fluid">
+  <h2>Edit Certificate</h2>
 
   {{form-name-description
     model=primaryResource
@@ -14,8 +8,12 @@
     descriptionPlaceholder="e.g. EV cert for mydomain.com"
   }}
 
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-4">
+  <div class="row">
+    <div class="alert alert-info">Note: The Private Key is intentionally blank because the field is write-only.  You will need to provide the Private Key again to update the certificate, even if it hasn't changed.</div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-4 form-group">
       <div class="clearfix r-mb10 r-mt15">
         <label class="r-pt5">Private Key*</label>
         <span class="pull-right">{{read-text-file accept="text/*, .pem, .pkey, .key" action=(action "readFile" "key")}}</span>
@@ -23,7 +21,7 @@
       {{textarea value=model.key classNames="form-control no-resize" rows="5" placeholder="Paste in the private key, starting with -----BEGIN RSA PRIVATE KEY-----"}}
     </div>
 
-    <div class="col-sm-12 col-md-4">
+    <div class="col-md-4 form-group">
       <div class="clearfix r-mb10 r-mt15">
         <label class="r-pt5">Certificate*</label>
         <span class="pull-right">{{read-text-file accept="text/*, .pem, .crt" action=(action "readFile" "cert")}}</span>
@@ -31,7 +29,7 @@
       {{textarea value=model.cert classNames="form-control no-resize" rows="5" placeholder="Paste in the primary certificate, starting with -----BEGIN CERTIFICATE-----"}}
     </div>
 
-    <div class="col-sm-12 col-md-4">
+    <div class="col-md-4 form-group">
       <div class="clearfix r-mb10 r-mt15">
         <label class="r-pt5">Chain Certs</label>
         <span class="pull-right">{{read-text-file accept="text/*, .pem, .crt" action=(action "readFile" "certChain")}}</span>
@@ -41,4 +39,5 @@
   </div>
 </section>
 
-{{partial "save-cancel"}}
+{{top-errors errors=errors}}
+{{save-cancel editing=true save="save" cancel="cancel"}}
