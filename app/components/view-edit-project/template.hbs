@@ -10,9 +10,7 @@
   {{else}}
     <h1>{{#link-to "settings.projects"}}Environment:{{/link-to}}</h1>
       {{#power-select options=model.all selected=project onchange=(action "changeProject") searchField="displayName" as |obj|}}
-        <div class="clip">
           {{select-dot model=obj}}
-        </div>
       {{/power-select}}
 
     <div class="pull-right">
@@ -31,9 +29,9 @@
     <div class="nav nav-boxes checked-active">
       {{#each orchestrationChoices as |driver|}}
         {{#if driver.disabled}}
-          <a href="#" alt={{driver.label}} class="nav-box-item driver orchestration-driver {{driver.css}}"></a>
+          <a href="#" alt={{driver.label}} class="nav-box-item driver orchestration-driver {{driver.css}}" aria-haspopup="true" aria-expanded="true" aria-label="driver" role="button" tabindex="1"></a>
         {{else}}
-          <a href="#" {{action "selectOrchestration" driver.name}} alt={{driver.label}} class="nav-box-item driver orchestration-driver {{if driver.active 'active'}} {{driver.css}}" disabled={{driver.disabled}}></a>
+          <a href="#" {{action "selectOrchestration" driver.name}} alt={{driver.label}} class="nav-box-item driver orchestration-driver {{if driver.active 'active'}} {{driver.css}}" aria-haspopup="true" aria-expanded="true" aria-label="driver" role="button" tabindex="1"></a>
         {{/if}}
       {{/each}}
     </div>
