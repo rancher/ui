@@ -87,13 +87,15 @@ rancher/server:${version}`;
       form.submit();
       this.set('downloaded',true);
 
-      var ha = this.get('model.haConfig');
-      var clone = ha.clone();
-      clone.set('enabled',true);
-      clone.save({headers: {[C.HEADER.PROJECT]: undefined}}).then((neu) => {
-        ha.merge(neu);
-        this.findProject();
-      });
+      Ember.run.later(() => {
+        var ha = this.get('model.haConfig');
+        var clone = ha.clone();
+        clone.set('enabled',true);
+        clone.save({headers: {[C.HEADER.PROJECT]: undefined}}).then((neu) => {
+          ha.merge(neu);
+          this.findProject();
+        });
+      }, 500);
     },
   },
 
