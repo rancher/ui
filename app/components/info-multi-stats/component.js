@@ -32,6 +32,9 @@ export default Ember.Component.extend({
   single: true,
   showGraphs: true,
 
+  tagName: 'div',
+  classNames: ['stooge'],
+
   renderSeconds: null,
 
   statsSocket: null,
