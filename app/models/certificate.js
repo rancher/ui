@@ -1,6 +1,14 @@
 import Resource from 'ember-api-store/models/resource';
 
 export default Resource.extend({
+  actions: {
+    edit: function() {
+      this.get('application').setProperties({
+        editCertificate: true,
+        originalModel: this,
+      });
+    },
+  },
   availableActions: function() {
     var a = this.get('actionLinks');
     if ( !a )
@@ -14,6 +22,8 @@ export default Resource.extend({
       { label: 'Purge',         icon: '',                         action: 'purge',        enabled: !!a.purge },
       { divider: true },
       { label: 'View in API',   icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
+      { divider: true },
+      { label: 'Edit',          icon: 'icon icon-edit',           action: 'edit',         enabled: !!a.update },
     ];
 
     return choices;

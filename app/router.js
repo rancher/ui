@@ -305,6 +305,12 @@ Router.map(function() {
     otherParams             : 'originalModel',
   });
 
+  this.modal('edit-certificate', {
+    dismissWithOutsideClick : false,
+    withParams              : 'editCertificate',
+    otherParams             : 'originalModel',
+  });
+
   this.modal('modal-catalog-launch', {
     dismissWithOutsideClick : true,
     withParams              : 'launchCatalog',
