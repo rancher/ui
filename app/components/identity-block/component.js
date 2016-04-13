@@ -21,7 +21,7 @@ export default Ember.Component.extend({
     if ( !this.get('identity') )
     {
       this.set('loading', true);
-      this.get('store').find('identity',identityOut).then((identity) => {
+      this.get('userStore').find('identity',identityOut).then((identity) => {
         if (this._state !== 'destroying') {
           this.set('identity', identity);
         }

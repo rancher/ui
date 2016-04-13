@@ -9,11 +9,8 @@ export default Ember.Service.extend({
   testAuth: function() {
 
     // make a call to v1 because it is authenticated
-    return this.get('store').rawRequest({
+    return this.get('userStore').rawRequest({
       url: '',
-      headers: {
-        [C.HEADER.PROJECT]: undefined
-      }
     }).then((/* res */) => {
       // Auth token still good
       return Ember.RSVP.resolve('Auth Succeeded');
@@ -27,7 +24,7 @@ export default Ember.Service.extend({
   identity: function() {
     var obj = this.get('session.'+C.SESSION.IDENTITY) || {};
     obj.type = 'identity';
-    return this.get('store').createRecord(obj);
+    return this.get('userStore').createRecord(obj);
   }.property('session.'+C.SESSION.IDENTITY),
 
   // These are set by authenticated/route
@@ -41,11 +38,8 @@ export default Ember.Service.extend({
   admin: null,
 
   detect: function() {
-    return this.get('store').rawRequest({
+    return this.get('userStore').rawRequest({
       url: 'token',
-      headers: {
-        [C.HEADER.PROJECT]: undefined
-      }
     })
     .then((obj) => {
       // If we get a good response back, the API supports authentication
@@ -84,13 +78,9 @@ export default Ember.Service.extend({
   login: function(code) {
     var session = this.get('session');
 
-    var headers = {};
-    headers[C.HEADER.PROJECT] = undefined; // Explictly not send project
-
-    return this.get('store').rawRequest({
+    return this.get('userStore').rawRequest({
       url: 'token',
       method: 'POST',
-      headers: headers,
       data: {
         code: code,
         authProvider: this.get('provider'),

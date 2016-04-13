@@ -15,7 +15,7 @@ var Registry = Resource.extend({
     },
 
     edit: function() {
-      this.store.find('registry').then((registries) => {
+      this.get('store').find('registry').then((registries) => {
         this.get('application').setProperties({
           editRegistry: true,
           originalModel: Ember.Object.create({

@@ -24,20 +24,6 @@ export default Ember.Component.extend(NewOrEdit,{
     return !!this.get('clone.id');
   }.property('clone.id'),
 
-  doSave: function() {
-    var model = this.get('primaryResource');
-    var opt =  {headers: {}};
-
-    if ( model.get('accountId') === this.get(`session.${C.SESSION.ACCOUNT_ID}`) )
-    {
-      opt.headers[C.HEADER.PROJECT] = undefined;
-    }
-
-    return model.save(opt).then((newData) => {
-      return this.mergeResult(newData);
-    });
-  },
-
   doneSaving: function(neu) {
     if ( this.get('editing') )
     {

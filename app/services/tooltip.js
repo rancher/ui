@@ -3,8 +3,6 @@ import Ember from 'ember';
 const DELAY = 250;
 
 export default Ember.Service.extend({
-  scrolling: Ember.inject.service('scrolling'),
-
   mouseLeaveTimer: null,
   requireClick: false,
   tooltipOpts: null,
@@ -22,7 +20,6 @@ export default Ember.Service.extend({
 
   hide() {
     this.set('tooltipOpts', null);
-    this.get('scrolling').enable();
   },
 
   leave() {

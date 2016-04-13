@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
-import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   settings: Ember.inject.service(),
@@ -61,7 +60,7 @@ rancher/server:${version}`;
       var orig = this.get('model.haConfig');
       var clone = orig.clone();
       clone.set('enabled', false);
-      clone.save({headers: {[C.HEADER.PROJECT]: undefined}}).then(() => {
+      clone.save().then(() => {
         orig.set('enabled', false);
       }).catch((err) => {
         this.get('growl').fromError(err);
@@ -91,7 +90,7 @@ rancher/server:${version}`;
         var ha = this.get('model.haConfig');
         var clone = ha.clone();
         clone.set('enabled',true);
-        clone.save({headers: {[C.HEADER.PROJECT]: undefined}}).then((neu) => {
+        clone.save(}).then((neu) => {
           ha.merge(neu);
           this.findProject();
         });
@@ -144,7 +143,7 @@ rancher/server:${version}`;
   },
 
   findProject: function() {
-    this.get('store').find('project', null, {authAsUser: true, filter: {all: true}, forceReload: true}).then((projects) => {
+    this.get('userStore').find('project', null, {filter: {all: true}, forceReload: true}).then((projects) => {
       var matches = projects.filter((project) => {
         return project.get('uuid').match(/^system-ha-(\d+)$/) || project.get('uuid').match(/^system-management-(\d+)$/);
       });

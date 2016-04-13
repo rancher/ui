@@ -8,10 +8,4 @@ var ProcessInstance = Resource.extend({
   })
 });
 
-ProcessInstance.reopenClass({
-  headers: {
-    [C.HEADER.PROJECT]: undefined, // Requests for projects use the user's scope, not the project
-  }
-});
-
 export default ProcessInstance;

@@ -5,10 +5,4 @@ var OpenLdapConfig = Resource.extend({
   type: 'openLdapConfig',
 });
 
-OpenLdapConfig.reopenClass({
-  headers: {
-    [C.HEADER.PROJECT]: undefined, // Requests for projects use the user's scope, not the project
-  }
-});
-
 export default OpenLdapConfig;

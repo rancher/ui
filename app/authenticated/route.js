@@ -42,6 +42,7 @@ export default Ember.Route.extend(Subscribe, {
     this.set('access.admin', isAdmin);
 
     return Ember.RSVP.hash({
+      schemas: this.loadUserSchemas(),
       projects: this.loadProjects(),
       preferences: this.loadPreferences(),
       settings: this.loadPublicSettings(),
@@ -96,7 +97,7 @@ export default Ember.Route.extend(Subscribe, {
   },
 
   loadPreferences() {
-    return this.get('store').find('userpreference', null, {url: 'userpreferences', authAsUser: true, forceReload: true}).then((res) => {
+    return this.get('userStore').find('userpreference', null, {url: 'userpreferences', forceReload: true}).then((res) => {
       // Save the account ID from the response headers into session
       if ( res && res.xhr )
       {
@@ -166,6 +167,14 @@ export default Ember.Route.extend(Subscribe, {
     });
   },
 
+  loadUserSchemas() {
+    // @TODO Inline me into releases
+    var userStore = this.get('userStore');
+    return userStore.rawRequest({url:'schema', dataType: 'json'}).then((res) => {
+      userStore._bulkAdd('schema', res.xhr.responseJSON.data);
+    });
+  },
+
   loadProjects() {
     var svc = this.get('projects');
     return svc.getAll().then((all) => {
@@ -175,11 +184,12 @@ export default Ember.Route.extend(Subscribe, {
   },
 
   loadPublicSettings() {
-    return this.get('store').find('setting', null, {url: 'setting', authAsUser: true, forceReload: true, filter: {all: 'false'}});
+    return this.get('userStore').find('setting', null, {url: 'setting', forceReload: true, filter: {all: 'false'}});
   },
 
   reset() {
     // Forget all the things
+    this.get('userStore').reset();
     this.get('store').reset();
     // Service has extra special hackery to cache relationships
     Service.reset();

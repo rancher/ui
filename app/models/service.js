@@ -2,6 +2,7 @@ import Resource from 'ember-api-store/models/resource';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
+const { getOwner } = Ember;
 
 // !! If you add a new one of these, you need to add it to reset() below too
 var _allMaps;
@@ -209,43 +210,46 @@ var Service = Resource.extend({
   init: function() {
     this._super();
 
+    // this.get('store') isn't set yet at init
+    var store = getOwner(this).lookup('store:main');
+
     // Hack: keep only one copy of all the services and serviceconsumemaps
     // But you have to load service and serviceconsumemap beforehand somewhere...
     // Bonus hack: all('services') doesn't include the other kinds of services, so load all those too.
     // !! If you add a new one of these, you need to add it to reset() below too
     if ( !_allMaps )
     {
-      _allMaps = this.get('store').allUnremoved('serviceconsumemap');
+      _allMaps = store.allUnremoved('serviceconsumemap');
     }
 
     if ( !_allRegularServices )
     {
-      _allRegularServices = this.get('store').allUnremoved('service');
+      _allRegularServices = store.allUnremoved('service');
     }
 
     if ( !_allLbServices )
     {
-      _allLbServices = this.get('store').allUnremoved('loadbalancerservice');
+      _allLbServices = store.allUnremoved('loadbalancerservice');
     }
 
     if ( !_allExternalServices )
     {
-      _allExternalServices = this.get('store').allUnremoved('externalservice');
+      _allExternalServices = store.allUnremoved('externalservice');
     }
 
     if ( !_allDnsServices )
     {
-      _allDnsServices = this.get('store').allUnremoved('dnsservice');
+      _allDnsServices = store.allUnremoved('dnsservice');
     }
 
     if ( !_allKubernetesServices )
     {
-      _allKubernetesServices = this.get('store').allUnremoved('kubernetesservice');
+      _allKubernetesServices = store.allUnremoved('kubernetesservice');
     }
 
     if ( !_allComposeServices )
     {
-      _allComposeServices = this.get('store').allUnremoved('composeservice');
+      _allComposeServices = store.allUnremoved('composeservice');
     }
 
     // !! If you add a new one of these, you need to add it to reset() below too

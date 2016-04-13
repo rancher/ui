@@ -4,9 +4,9 @@ import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 export default Ember.Service.extend({
   unremoved: function() {
     return UnremovedArrayProxy.create({
-      sourceContent: this.get('store').all('userpreference')
+      sourceContent: this.get('userStore').all('userpreference')
     });
-  }.property('store.generation'),
+  }.property('userStore.generation'),
 
   findByName: function(key) {
     return this.get('unremoved').filterBy('name',key)[0];
@@ -50,7 +50,7 @@ export default Ember.Service.extend({
 
     if ( !obj )
     {
-      obj = this.get('store').createRecord({
+      obj = this.get('userStore').createRecord({
         type: 'userPreference',
         name: key,
       });

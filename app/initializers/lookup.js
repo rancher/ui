@@ -9,6 +9,7 @@ export function initialize(/*application*/) {
   };
 
   window.s = Ui.__container__.lookup('store:main');
+  window.us = Ui.__container__.lookup('store:user');
 }
 
 export default {

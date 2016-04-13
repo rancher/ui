@@ -58,10 +58,6 @@ machineDriver.reopenClass({
   // Drivers don't get pushed by /subscribe WS, so refresh more often
   pollTransitioningDelay: 1000,
   pollTransitioningInterval: 5000,
-
-  headers: {
-    [C.HEADER.PROJECT]: undefined, // Requests for projects use the user's scope, not the project
-  },
 });
 
 export default machineDriver;

@@ -4,7 +4,6 @@ const DELAY = 100;
 
 export default Ember.Component.extend({
   tooltipService : Ember.inject.service('tooltip'),
-  scrolling      : Ember.inject.service('scrolling'),
   inlineBlock    : true,
   classNameBindings : ['inlineBlock:inline-block'],
   model          : null,
@@ -58,10 +57,6 @@ export default Ember.Component.extend({
 
     if ( this.get('isCopyTo') ) {
       out.isCopyTo = true;
-    }
-
-    if ( !svc.get('tooltipOpts') ) {
-      this.get('scrolling').disable();
     }
 
     svc.set('tooltipOpts', out);

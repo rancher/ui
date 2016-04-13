@@ -19,9 +19,12 @@ export default Ember.Route.extend({
       return;
     }
 
-    return this.loadSchemas().then(() => {
-      return this.loadStacks().then((stacks) => {
-        hasThings(stacks, project, window.lc('authenticated'));
+    return Ember.RSVP.hash({
+      schemas: this.loadSchemas(),
+      stacks: this.loadStacks()
+    }).then(() => {
+      return this.get('store').findAllUnremoved('environment').then((stacks) => {
+        hasThings(stacks, project, this.controllerFor('authenticated'));
 
         return Ember.Object.create({
           project: project,
@@ -47,14 +50,15 @@ export default Ember.Route.extend({
   },
 
   loadSchemas() {
-    var project = this.modelFor('authenticated').project;
     var store = this.get('store');
     store.resetType('schema');
-    return store.find('schema', null, {url: 'projects/'+project.get('id')+'/schemas', forceReload: true});
+    return store.rawRequest({url:'schema', dataType: 'json'}).then((res) => {
+      store._bulkAdd('schema', res.xhr.responseJSON.data);
+    });
   },
 
   loadStacks() {
-    return this.get('store').findAllUnremoved('environment');
+    return this.get('store').find('environment',null, {url: 'environment'});
   },
 
 });
