@@ -47,6 +47,15 @@ module.exports = function(app, options) {
   });
 
   // Kubernetes needs this API
+  app.use('/swaggerapi', function(req, res, next) {
+    // include root path in proxied request
+    req.url = path.join('/swaggerapi', req.url);
+    req.headers['X-Forwarded-Proto'] = req.protocol;
+
+    console.log('Kubernetes Swagger Proxy', req.method, 'to', req.url);
+    proxy.web(req, res);
+  });
+
   app.use('/version', function(req, res, next) {
     // include root path in proxied request
     req.url = '/version';
