@@ -5,7 +5,7 @@ kind: Config
 clusters:
 - cluster:
     api-version: v1%maybeInsecure%
-    server: "%baseUrl%/r/projects/%projectId%/kubernetes/api"
+    server: "%baseUrl%/r/projects/%projectId%/kubernetes"
   name: "%projectName%"
 contexts:
 - context:
