@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import StoreTweaks from 'ui/mixins/store-tweaks';
 
 export function initialize(instance) {

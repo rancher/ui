@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import DriverChoices from 'ui/utils/driver-choices';
-import { denormalizeName } from 'ui/services/settings';
 const { getOwner } = Ember;
 
 export default Ember.Route.extend({
@@ -17,32 +16,24 @@ export default Ember.Route.extend({
   backTo: null,
 
   beforeModel(/*transition*/) {
-    let store = this.get('store');
+    return this.get('userStore').findAll('machinedriver',  {authAsUser: true}).then((drivers) => {
+      let systemDrivers = DriverChoices.drivers;
 
-    return store.find('schema', 'machinedriver', {authAsUser: true}).then((/*response*/) => {
+      drivers.forEach((driver) => {
+        if (driver.uiUrl) {
+          if (!systemDrivers.findBy('name', driver.name)) {
 
-      return store.findAll('machinedriver',  {authAsUser: true}).then((drivers) => {
+            // script should append its own css
+            Ember.$(`<script src="${driver.uiUrl}"></script>`).appendTo('BODY');
 
-        let systemDrivers = DriverChoices.drivers;
-
-        drivers.forEach((driver) => {
-
-          if (driver.uiUrl) {
-
-            if (!systemDrivers.findBy('name', driver.name)) {
-
-              // script shoudl append its own css
-              Ember.$(`<script src='${driver.uiUrl}'></script>`).appendTo('BODY');
-
-              DriverChoices.drivers.push({
-                name  : driver.name, //driver.name
-                label : driver.name.capitalize(),
-                css   : driver.name,
-                sort  : 3
-              });
-            }
+            DriverChoices.drivers.push({
+              name  : driver.name, //driver.name
+              label : driver.name.capitalize(),
+              css   : driver.name,
+              sort  : 3
+            });
           }
-        });
+        }
       });
     });
 
@@ -55,14 +46,13 @@ export default Ember.Route.extend({
       this.controllerFor('hosts/new').set('lastRoute',`${params.driver}`);
     }
 
-    let store = this.get('store');
-    if ( this.get('access.admin') && store.hasRecordFor('schema','setting') ) {
-      return store.find('setting', denormalizeName(C.SETTING.API_HOST)).then((setting) => {
+    if ( this.get('access.admin') ) {
+      let settings = this.get('settings');
+      return settings.load(C.SETTING.API_HOST).then(() => {
         let controller = this.controllerFor('hosts.new');
-        if ( setting.get('value') ) {
+        if ( settings.get(C.SETTING.API_HOST) ) {
           controller.set('apiHostSet', true);
         } else {
-          let settings = this.get('settings');
           controller.setProperties({
             apiHostSet: false,
             hostModel: settings.get(C.SETTING.API_HOST)

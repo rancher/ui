@@ -47,10 +47,10 @@ export default Ember.Controller.extend({
   },
 
   drivers: function() {
-    let store = this.get('store');
-    let has = store.hasRecordFor.bind(store,'schema');
+    let userStore = this.get('userStore');
+    let has = userStore.hasRecordFor.bind(userStore,'schema');
 
-    let actuallyHasNames = Object.keys(store.getById('schema','machine').get('resourceFields')).filter((name) => {
+    let actuallyHasNames = Object.keys(userStore.getById('schema','machine').get('resourceFields')).filter((name) => {
       return name.indexOf('Config') >= 1;
     }).map((name) => {
       return name.toLowerCase();

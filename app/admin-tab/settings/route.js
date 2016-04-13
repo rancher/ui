@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import {denormalizeName} from 'ui/services/settings';
 
 export default Ember.Route.extend({
   settings: Ember.inject.service(),

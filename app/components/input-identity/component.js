@@ -13,11 +13,11 @@ export default Ember.Component.extend({
   }.property('access.provider'),
 
   // @TODO bad...
-  dropdownLoaded: Ember.computed.alias('store._foundAll.identity'),
+  dropdownLoaded: Ember.computed.alias('userStore._foundAll.identity'),
 
   init: function() {
-    this.set('allIdentities', this.get('store').all('identity'));
-    this.get('store').findAll('identity');
+    this.set('allIdentities', this.get('userStore').all('identity'));
+    this.get('userStore').findAll('identity');
     this._super();
   },
 
@@ -31,7 +31,7 @@ export default Ember.Component.extend({
       this.set('checking', true);
       var input = this.get('addInput').trim();
 
-      this.get('store').find('identity', null, {filter: {name: input}}).then((info) => {
+      this.get('userStore').find('identity', null, {filter: {name: input}}).then((info) => {
         var obj = info.objectAt(0);
         if (obj)
         {

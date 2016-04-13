@@ -90,9 +90,14 @@ export default Ember.Service.extend(Ember.Evented, {
       names = [names];
     }
 
+    var userStore = this.get('userStore');
+
     var promise = new Ember.RSVP.Promise((resolve, reject) => {
-      async.eachLimit(names, 3, function(name) {
-      return this.get('userStore').find('setting', denormalizeName(name));
+      async.eachLimit(names, 3, function(name, cb) {
+        userStore
+          .find('setting', denormalizeName(name))
+          .then(function() { cb(); })
+          .catch(function(err) { cb(err); });
       }, function(err) {
         if ( err ) {
           reject(err);

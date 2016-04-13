@@ -90,7 +90,7 @@ rancher/server:${version}`;
         var ha = this.get('model.haConfig');
         var clone = ha.clone();
         clone.set('enabled',true);
-        clone.save(}).then((neu) => {
+        clone.save().then((neu) => {
           ha.merge(neu);
           this.findProject();
         });

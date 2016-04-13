@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
-import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(NewOrEdit,{
   originalModel: null,
