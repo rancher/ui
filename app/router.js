@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import config from './config/environment';
-import {getDrivers} from 'ui/hosts/new/controller';
 import {applyRoutes} from 'ui/utils/additional-routes';
 
 const Router = Ember.Router.extend({
@@ -68,9 +67,7 @@ Router.map(function() {
         this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
           this.route('index', {path: '/'});
           this.route('new', {path: '/add'}, function() {
-            getDrivers().forEach((driver) => {
-              this.route(driver.name);
-            });
+            this.route('index', {path: '/'});
           });
 
           this.route('host', {path: '/:host_id', resetNamespace: true}, function() {

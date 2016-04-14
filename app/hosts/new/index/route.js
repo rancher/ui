@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   beforeModel: function() {
-    this.transitionTo(this.controllerFor('hosts/new').get('lastRoute'));
+    let lastRoute = this.controllerFor('hosts/new').get('lastRoute');
+    this.transitionTo('hosts.new', {queryParams: {driver: lastRoute}});
   }
 });
