@@ -1,30 +1,20 @@
 import Ember from 'ember';
+import DriverChoices from 'ui/utils/driver-choices';
 
 let defaultDriver = 'custom';
-let driverChoices = [
-  {name: 'custom',       label: 'Custom',        css: 'custom',       sort: 1,                              },
-  {name: 'amazonec2',    label: 'Amazon EC2',    css: 'amazon',       sort: 2, schema: 'amazonec2config'    },
-  {name: 'azure',        label: 'Azure',         css: 'azure',        sort: 2, schema: 'azureConfig'        },
-  {name: 'digitalocean', label: 'DigitalOcean',  css: 'digitalocean', sort: 2, schema: 'digitaloceanconfig' },
-  {name: 'exoscale',     label: 'Exoscale',      css: 'exoscale',     sort: 2, schema: 'exoscaleconfig'     },
-  {name: 'packet',       label: 'Packet',        css: 'packet',       sort: 2, schema: 'packetconfig'       },
-  {name: 'rackspace',    label: 'RackSpace',     css: 'rackspace',    sort: 2, schema: 'rackspaceconfig'    },
-  {name: 'ubiquity',     label: 'Ubiquity',      css: 'ubiquity',     sort: 2, schema: 'ubiquityconfig'     },
-  {name: 'other',        label: 'Other',         css: 'other',        sort: 3,                              },
-];
 
 // Addon integration hooks
 export function getDrivers() {
-  return driverChoices.slice();
+  return DriverChoices.drivers.slice();
 }
 
 export function addDriver(driver) {
-  driverChoices.push(driver);
+  DriverChoices.drivers.push(driver);
 }
 
 export function removeDriver(nameOrObj) {
   let name = ( typeof nameOrObj === 'object' ? nameOrObj.name : nameOrObj);
-  driverChoices.removeObjects(driverChoices.filterBy('name', name));
+  DriverChoices.drivers.removeObjects(DriverChoices.drivers.filterBy('name', name));
 }
 
 export function setDefaultDriver(name) {
@@ -59,7 +49,7 @@ export default Ember.Controller.extend({
       return name.toLowerCase();
     });
 
-    return driverChoices.filter((driver) => {
+    return DriverChoices.drivers.filter((driver) => {
       Ember.set(driver,'active', 'hosts.new.'+driver.name === this.get('lastRoute'));
 
       if ( driver.schema ) {
