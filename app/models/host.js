@@ -28,7 +28,7 @@ var Host = Resource.extend({
 
     clone: function() {
       var machine = this.get('machine');
-      this.get('application').transitionToRoute('hosts.new.'+machine.get('driver'), {queryParams: {machineId: machine.get('id')}});
+      this.get('application').transitionToRoute('hosts.new', {queryParams: {machineId: machine.get('id'), driver: machine.get('driver')}});
     },
 
     edit: function() {
