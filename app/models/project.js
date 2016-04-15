@@ -138,10 +138,6 @@ var Project = Resource.extend(PolledResource, {
 Project.reopenClass({
   pollTransitioningDelay: 1000,
   pollTransitioningInterval: 5000,
-
-  headers: {
-    [C.HEADER.PROJECT]: undefined, // Requests for projects use the user's scope, not the project
-  },
 });
 
 export default Project;

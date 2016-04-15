@@ -13,7 +13,7 @@ var queue = async.queue(getUpgradeInfo, 2);
 function getUpgradeInfo(task, cb) {
   var obj = task.obj;
 
-  obj.get('store').request({url: task.url}).then((upgradeInfo) => {
+  obj.get('userStore').request({url: task.url}).then((upgradeInfo) => {
     if ( obj._state !== 'destroying' )
     {
       upgradeInfo.id = task.id;

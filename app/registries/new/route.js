@@ -2,17 +2,18 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function(/*params, transition*/) {
-    var registry = this.get('store').createRecord({
+    var store = this.get('store');
+    var registry = store.createRecord({
       type:'registry',
       serverAddress: '',
     });
 
-    var credential = this.get('store').createRecord({
+    var credential = store.createRecord({
       type:'registryCredential',
       registryId: 'tbd',
     });
 
-    return this.store.find('registry').then((registries) => {
+    return store.find('registry').then((registries) => {
       return Ember.Object.create({
         allRegistries: registries,
         registry: registry,

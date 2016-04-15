@@ -73,9 +73,9 @@ export default Ember.Route.extend({
       Ember.run.cancel(this.get('runLaterId'));
       this.set('runLaterId', null);
     }
-    return this.store.find('auditLog', null, this.parseFilters(params)).then((response) => {
+    return this.get('userStore').find('auditLog', null, this.parseFilters(params)).then((response) => {
 
-      var resourceTypes = this.get('store').all('schema').filterBy('links.collection').map((x) => { return x.get('_id'); });
+      var resourceTypes = this.get('userStore').all('schema').filterBy('links.collection').map((x) => { return x.get('_id'); });
 
       return Ember.Object.create({
         auditLog: response,
@@ -97,7 +97,7 @@ export default Ember.Route.extend({
       Ember.run.later(() => {
         var params = this.paramsFor('admin-tab.audit-logs');
 
-        this.store.find('auditLog', null, this.parseFilters(params)).then((response) => {
+        this.get('userStore').find('auditLog', null, this.parseFilters(params)).then((response) => {
 
           // We can get into a state where the user paged but we have an unresolved promise from the previous
           // run. If thats the case we dont want to replace the page with this unresolved promise.

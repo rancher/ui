@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
-import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(NewOrEdit,{
   originalModel: null,
@@ -23,20 +22,6 @@ export default Ember.Component.extend(NewOrEdit,{
   editing: function() {
     return !!this.get('clone.id');
   }.property('clone.id'),
-
-  doSave: function() {
-    var model = this.get('primaryResource');
-    var opt =  {headers: {}};
-
-    if ( model.get('accountId') === this.get(`session.${C.SESSION.ACCOUNT_ID}`) )
-    {
-      opt.headers[C.HEADER.PROJECT] = undefined;
-    }
-
-    return model.save(opt).then((newData) => {
-      return this.mergeResult(newData);
-    });
-  },
 
   doneSaving: function(neu) {
     if ( this.get('editing') )

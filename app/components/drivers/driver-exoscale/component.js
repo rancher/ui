@@ -66,9 +66,7 @@ export default Ember.Component.extend(Driver, {
   isGteStep6               : Ember.computed.gte('step',6),
 
   bootstrap: function() {
-    let store = this.get('store');
-
-    let config = store.createRecord({
+    let config = this.get('store').createRecord({
       type: 'exoscaleConfig',
       apiKey: '',
       apiSecretKey: '',
@@ -77,7 +75,7 @@ export default Ember.Component.extend(Driver, {
       securityGroup: 'rancher-machine'
     });
 
-    this.set('model', store.createRecord({
+    this.set('model', this.get('store').createRecord({
       type: 'machine',
       exoscaleConfig: config
     }));

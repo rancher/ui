@@ -18,9 +18,7 @@ export default Ember.Component.extend(Driver, {
   digitaloceanConfig : Ember.computed.alias('model.digitaloceanConfig'),
 
   bootstrap: function() {
-    let store = this.get('store');
-
-    let config = store.createRecord({
+    let config = this.get('store').createRecord({
       type        : 'digitaloceanConfig',
       accessToken : '',
       size        : '1gb',
@@ -28,7 +26,7 @@ export default Ember.Component.extend(Driver, {
       image       : 'ubuntu-14-04-x64'
     });
 
-    this.set('model', store.createRecord({
+    this.set('model', this.get('store').createRecord({
       type: 'machine',
       digitaloceanConfig: config,
     }));

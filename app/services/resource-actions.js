@@ -2,8 +2,6 @@ import Ember from 'ember';
 import BootstrapFixes from 'ui/utils/bootstrap-fixes';
 
 export default Ember.Service.extend({
-  scrolling      : Ember.inject.service(),
-
   model          : null,
   open           : false,
   tooltipActions : null,
@@ -70,17 +68,6 @@ export default Ember.Service.extend({
       model        : null,
     });
   },
-
-  openChanged: function() {
-    if ( this.get('open') )
-    {
-      this.get('scrolling').disable();
-    }
-    else
-    {
-      this.get('scrolling').enable();
-    }
-  }.observes('open'),
 
   triggerAction: function(actionName) {
     this.get('model').send(actionName);

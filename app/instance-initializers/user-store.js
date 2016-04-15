@@ -2,7 +2,7 @@ import StoreTweaks from 'ui/mixins/store-tweaks';
 
 export function initialize(instance) {
   var application = instance.lookup('application:main');
-  var store = instance.lookup('store:main');
+  var store = instance.lookup('store:user');
 
   store.reopen(StoreTweaks);
   store.reopen({
@@ -13,7 +13,7 @@ export function initialize(instance) {
 }
 
 export default {
-  name: 'store',
+  name: 'user-store',
   after: 'ember-api-store',
   initialize: initialize
 };

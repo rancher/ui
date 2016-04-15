@@ -14,9 +14,7 @@ export default Ember.Component.extend(Driver, {
   model            : null,
 
   bootstrap: function() {
-    let store = this.get('store');
-
-    let config = store.createRecord({
+    let config = this.get('store').createRecord({
       type                  : 'azureConfig',
       dockerPort            : '',
       dockerSwarmMasterPort : '',
@@ -31,7 +29,7 @@ export default Ember.Component.extend(Driver, {
       username              : '',
     });
 
-    this.set('model', store.createRecord({
+    this.set('model', this.get('store').createRecord({
       type: 'machine',
       azureConfig: config,
     }));

@@ -1,4 +1,3 @@
-import C from 'ui/utils/constants';
 import Resource from 'ember-api-store/models/resource';
 
 var GithubConfig = Resource.extend({
@@ -7,10 +6,6 @@ var GithubConfig = Resource.extend({
 
 // Projects don't get pushed by /subscribe WS, so refresh more often
 GithubConfig.reopenClass({
-  headers: {
-    [C.HEADER.PROJECT]: undefined, // Requests for projects use the user's scope, not the project
-  },
-
   mangleIn: function(data, store) {
     if ( data.allowedIdentities )
     {

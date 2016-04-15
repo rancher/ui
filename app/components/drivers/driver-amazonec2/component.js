@@ -81,9 +81,8 @@ export default Ember.Component.extend(ManageLabels, Driver, {
   isGteStep7               : Ember.computed.gte('step',7),
 
   bootstrap: function() {
-    let store  = this.get('store');
     let pref   = this.get('prefs.amazonec2')||{};
-    let config = store.createRecord({
+    let config = this.get('store').createRecord({
       type          : 'amazonec2Config',
       region        : 'us-west-2',
       instanceType  : 't2.micro',

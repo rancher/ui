@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 
@@ -58,10 +57,6 @@ machineDriver.reopenClass({
   // Drivers don't get pushed by /subscribe WS, so refresh more often
   pollTransitioningDelay: 1000,
   pollTransitioningInterval: 5000,
-
-  headers: {
-    [C.HEADER.PROJECT]: undefined, // Requests for projects use the user's scope, not the project
-  },
 });
 
 export default machineDriver;

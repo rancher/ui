@@ -3,13 +3,23 @@ import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   model: function() {
-    var store = this.get('store');
     var me = this.get(`session.${C.SESSION.ACCOUNT_ID}`);
     return Ember.RSVP.hash({
-      account: store.find('apikey', null, {filter: {accountId: me}, authAsUser: true, forceReload: true}),
-      environment: store.find('apikey', null, {forceReload: true}),
+      account: this.get('userStore').find('apikey', null, {filter: {accountId: me}, url: 'apikeys', forceReload: true}),
+      environment: this.get('store').find('apikey', null, {forceReload: true}),
     }).then(() => {
-      return store.allUnremoved('apikey');
+      var Proxy = Ember.ArrayProxy.extend({
+        account: null,
+        environment: null,
+        content: function() {
+          return this.get('account').toArray().concat(this.get('environment').toArray());
+        }.property('account.[]','environment.[]'),
+      });
+
+      return Proxy.create({
+        account: this.get('userStore').allUnremoved('apikey'),
+        environment: this.get('store').allUnremoved('apikey'),
+      });
     });
   },
 });

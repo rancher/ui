@@ -39,14 +39,20 @@ export default Ember.Controller.extend(Sortable, {
 
   actions: {
     newApikey: function(kind) {
-      var cred = this.get('store').createRecord({type:'apikey'});
+      var cred;
       if ( kind === 'account' )
-      {
-        cred.set('accountId', this.get(`session.${C.SESSION.ACCOUNT_ID}`));
+      { 
+        cred = this.get('userStore').createRecord({
+          type: 'apikey',
+          accountId: this.get(`session.${C.SESSION.ACCOUNT_ID}`),
+        });
       }
       else
       {
-        cred.set('accountId', this.get(`projects.current.id`));
+        cred = this.get('store').createRecord({
+          type: 'apikey',
+          accountId: this.get('projects.current.id'),
+        });
       }
 
       this.get('application').setProperties({

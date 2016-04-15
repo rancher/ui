@@ -58,6 +58,10 @@ export function escapeHtml(html) {
   });
 }
 
+function escapeRegex(string){
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+}
+
 export function addQueryParam(url, key, val) {
   return url + (url.indexOf('?') >= 0 ? '&' : '?') + encodeURIComponent(key) + '=' + encodeURIComponent(val);
 }
@@ -297,6 +301,7 @@ var Util = {
   download: download,
   popupWindowOptions: popupWindowOptions,
   escapeHtml: escapeHtml,
+  escapeRegex: escapeRegex,
   addQueryParam: addQueryParam,
   addQueryParams: addQueryParams,
   absoluteUrl: absoluteUrl,

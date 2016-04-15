@@ -27,19 +27,13 @@ export default Ember.Route.extend({
     });
   },
 
-  beforeModel: function() {
-    var store = this.get('store');
-
-    return Ember.RSVP.all([
-      store.find('schema','processinstance', {authAsUser: true}),
-      store.find('schema','processexecution', {authAsUser: true}),
-    ]);
-  },
-
   model: function(params) {
-    return this.store.find('processinstance', null, this.parseParams(params)).then((response) => {
+    return this.get('userStore').find('processinstance', null, this.parseParams(params)).then((response) => {
 
-      var resourceTypes = this.get('store').all('schema').filterBy('links.collection').map((x) => { return x.get('_id'); });
+      var resourceTypes = this.get('userStore')
+        .all('schema')
+        .filterBy('links.collection')
+        .map((x) => { return x.get('_id'); });
 
       return Ember.Object.create({
         processInstance: response,
@@ -56,19 +50,13 @@ export default Ember.Route.extend({
   },
 
   scheduleTimer: function() {
-
     this.set('intervalId', Ember.run.later(() => {
-
       var params = this.paramsFor('admin-tab.processes');
 
-      this.store.find('processinstance', null, this.parseParams(params)).then((response) => {
-
+      this.get('userStore').find('processinstance', null, this.parseParams(params)).then((response) => {
         this.controller.get('model.processInstance').replaceWith(response);
-
         this.scheduleTimer();
-
       }, ( /*error*/ ) => {});
-
     }, INTERVALCOUNT));
   },
 

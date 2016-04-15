@@ -38,7 +38,7 @@ var K8sResource = Resource.extend({
     var url = this.get(`metadata.${name}Link`);
     if ( url )
     {
-      url = this.get('app.kubernetesEndpoint') + url;
+      url = this.get('store.baseUrl') + this.get('app.kubernetesEndpoint') + url;
     }
     return url;
   },

@@ -29,17 +29,6 @@ var ApiKey = Resource.extend(PolledResource,{
     return this.get('accountId') === this.get(`session.${C.SESSION.ACCOUNT_ID}`);
   }.property('accountId', `session.${C.SESSION.ACCOUNT_ID}`),
 
-  reloadOpts: function() {
-    if ( this.get('isForAccount') )
-    {
-      return {
-        headers: {
-          [C.HEADER.PROJECT]: undefined
-        }
-      };
-    }
-  }.property('isForAccount'),
-
   displayName: function() {
     return this.get('name') || this.get('publicValue') || '('+this.get('id')+')';
   }.property('name','publicValue','id'),

@@ -93,7 +93,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   },
 
   roleOptions: function() {
-    return (this.get('store').getById('schema','projectmember').get('resourceFields.role.options')||[]).map((role) => {
+    return (this.get('userStore').getById('schema','projectmember').get('resourceFields.role.options')||[]).map((role) => {
       return {
         label: Util.ucFirst(role),
         value: role

@@ -19,7 +19,7 @@ export default Ember.Service.extend({
   getAll: function() {
     var opt = {
       url: 'projects',  // This is called in authenticated/route before schemas are loaded
-      forceReload: true
+      forceReload: true,
     };
 
     if ( !this.get('access.enabled') )
@@ -27,7 +27,7 @@ export default Ember.Service.extend({
       opt.filter = {all: 'true'};
     }
 
-    return this.get('store').find('project', null, opt);
+    return this.get('userStore').find('project', null, opt);
   },
 
   refreshAll: function() {
@@ -111,6 +111,11 @@ export default Ember.Service.extend({
 
   setCurrent: function(project) {
     this.set('current', project);
+    if ( project ) {
+      this.set('store.baseUrl', `${this.get('app.apiEndpoint')}/projects/${project.get('id')}`);
+    } else {
+      this.set('store.baseUrl', this.get('app.apiEndpoint'));
+    }
     return Ember.RSVP.resolve(project);
   },
 
@@ -122,7 +127,7 @@ export default Ember.Service.extend({
         return;
       }
 
-      this.get('store').find('project', projectId, {url: 'projects/'+encodeURIComponent(projectId)}).then((project) => {
+      this.get('userStore').find('project', projectId, {url: 'projects/'+encodeURIComponent(projectId)}).then((project) => {
         if ( project.get('state') === 'active' )
         {
           resolve(project);

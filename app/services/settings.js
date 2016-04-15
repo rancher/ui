@@ -18,7 +18,7 @@ export default Ember.Service.extend(Ember.Evented, {
 
   init() {
     this._super();
-    this.set('all', this.get('store').all('activesetting'));
+    this.set('all', this.get('userStore').all('activesetting'));
   },
 
   unknownProperty(key) {
@@ -54,7 +54,7 @@ export default Ember.Service.extend(Ember.Evented, {
 
     if ( !obj )
     {
-      obj = this.get('store').createRecord({
+      obj = this.get('userStore').createRecord({
         type: 'setting',
         name: denormalizeName(key),
       });
@@ -85,10 +85,29 @@ export default Ember.Service.extend(Ember.Evented, {
     return this.get('asMap')[normalizeName(name)];
   },
 
-  findAsUser(key) {
-    return this.get('store').find('setting', denormalizeName(key), {authAsUser: true, forceReload: true}).then(() => {
-      return Ember.RSVP.resolve(this.unknownProperty(key));
+  load(names) {
+    if ( !Ember.isArray(names) ) {
+      names = [names];
+    }
+
+    var userStore = this.get('userStore');
+
+    var promise = new Ember.RSVP.Promise((resolve, reject) => {
+      async.eachLimit(names, 3, function(name, cb) {
+        userStore
+          .find('setting', denormalizeName(name))
+          .then(function() { cb(); })
+          .catch(function(err) { cb(err); });
+      }, function(err) {
+        if ( err ) {
+          reject(err);
+        } else {
+          resolve();
+        }
+      });
     });
+
+    return promise;
   },
 
   asMap: function() {

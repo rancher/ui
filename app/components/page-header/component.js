@@ -208,6 +208,10 @@ export default Ember.Component.extend({
     });
 
     var toggleMenu = (element, mouseOut=false) => {
+      if ( this._state === 'destroying' ) {
+        return;
+      }
+
       if (mouseOut) {
         this.set('menuHoverTimer', Ember.run.later(() => {
           this.set('forcedMenu', null);

@@ -114,6 +114,9 @@ export default Ember.Service.extend({
       opt.data = data;
     }
 
+    opt.headers = opt.headers || {};
+    opt.headers[C.HEADER.PROJECT] = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
+
     var promise = new Ember.RSVP.Promise(function(resolve,reject) {
       store.rawRequest(opt).then(success, fail);
 

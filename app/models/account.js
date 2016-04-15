@@ -1,6 +1,5 @@
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
-import C from 'ui/utils/constants';
 
 var Account = Resource.extend(PolledResource, {
   type: 'account',
@@ -63,10 +62,6 @@ Account.reopenClass({
   alwaysInclude: ['credentials'],
   pollTransitioningDelay: 1000,
   pollTransitioningInterval: 5000,
-
-  headers: {
-    [C.HEADER.PROJECT]: undefined, // Requests for projects use the user's scope, not the project
-  },
 });
 
 export default Account;

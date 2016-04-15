@@ -8,8 +8,9 @@ export default Ember.Route.extend({
   },
 
   model: function(params /* , transition*/) {
-    return this.get('store').findAllUnremoved('project').then((all) => {
-      return this.get('store').find('project', params.project_id).then((project) => {
+    var userStore = this.get('userStore');
+    return userStore.findAllUnremoved('project').then((all) => {
+      return userStore.find('project', params.project_id).then((project) => {
         return project.importLink('projectMembers').then(() => {
           if ( params.editing )
           {
