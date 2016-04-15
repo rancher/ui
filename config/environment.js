@@ -1,5 +1,6 @@
 /* jshint node: true */
 var pkg = require('../package.json');
+var fs  = require('fs');
 
 
 // host can be an ip "1.2.3.4" -> http://1.2.3.4:8080
@@ -18,6 +19,20 @@ function normalizeHost(host,defaultPort) {
   }
 
   return host;
+}
+
+function readLocales() {
+  /* Parse the translations from the translations folder*/
+  /* ember intl getLocalesByTranslations does not work if intl is not managing them (bundled) */
+  /* This needs a little work to read the yaml files for the langugae name prop*/
+  var translations = fs.readdirSync('./translations');
+  var translationsOut = {};
+  translations.forEach(function(item) {
+    var name  = item.split('.')[0];
+    var value = item.split('.')[0]; // eventually this will be langugae name (ie english)
+    translationsOut[name] = value;
+  });
+  return translationsOut;
 }
 
 module.exports = function(environment) {
@@ -76,6 +91,7 @@ module.exports = function(environment) {
                     '&include=instanceLinks' +
                     '&include=ipAddresses',
       baseAssets: '/',
+      translations: readLocales()
     },
   };
 
@@ -104,7 +120,6 @@ module.exports = function(environment) {
   }
 
   ENV.APP.baseURL = ENV.baseURL;
-
 
   if (process.env.FINGERPRINT) {
     ENV.APP.fingerprint = process.env.FINGERPRINT;

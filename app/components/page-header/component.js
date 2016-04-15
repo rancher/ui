@@ -14,6 +14,7 @@ export default Ember.Component.extend({
   k8s              : Ember.inject.service(),
   namespace        : Ember.computed.alias('k8s.namespace'),
   settings         : Ember.inject.service(),
+  intl    : Ember.inject.service(),
 
   currentPath      : null,
   forcedMenu       : null,
