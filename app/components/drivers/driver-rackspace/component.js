@@ -65,5 +65,5 @@ export default Ember.Component.extend(Driver, {
       type: 'machine',
       rackspaceConfig: config,
     }));
-  }.on('init'),
+  },
 });

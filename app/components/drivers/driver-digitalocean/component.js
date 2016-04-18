@@ -30,7 +30,7 @@ export default Ember.Component.extend(Driver, {
       type: 'machine',
       digitaloceanConfig: config,
     }));
-  }.on('init'),
+  },
 
 
   sizeChoices: function() {

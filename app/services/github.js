@@ -3,13 +3,13 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
 export default Ember.Service.extend({
-  cookies: Ember.inject.service(),
-  session: Ember.inject.service(),
+  cookies  : Ember.inject.service(),
+  session  : Ember.inject.service(),
 
   // Set by app/services/access
-  hostname: null,
-  scheme: null,
-  clientId: null,
+  hostname : null,
+  scheme   : null,
+  clientId : null,
 
   generateState: function() {
     var state = Math.random()+'';
@@ -47,8 +47,7 @@ export default Ember.Service.extend({
   authorizeTest: function(cb) {
     var responded = false;
     window.onGithubTest = function(err,code) {
-      if ( !responded )
-      {
+      if ( !responded ) {
         responded = true;
         cb(err,code);
       }
@@ -56,11 +55,9 @@ export default Ember.Service.extend({
 
     var popup = window.open(this.getAuthorizeUrl(true), 'rancherAuth', Util.popupWindowOptions());
     var timer = setInterval(function() {
-      if ( !popup || popup.closed )
-      {
+      if ( !popup || popup.closed ) {
         clearInterval(timer);
-        if( !responded )
-        {
+        if( !responded ) {
           responded = true;
           cb({type: 'error', message: 'Github access was not authorized'});
         }

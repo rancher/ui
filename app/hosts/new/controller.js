@@ -23,12 +23,14 @@ export function setDefaultDriver(name) {
 // End: Addon integration hooks
 
 export default Ember.Controller.extend({
-  queryParams     : ['backTo', 'driver'],
-  backTo          : null,
-  driver          : null,
+  queryParams : ['backTo', 'driver', 'machineId'],
+  backTo      : null,
+  driver      : null,
 
-  lastRoute       : null,
-  apiHostSet      : true,
+  lastRoute   : null,
+  apiHostSet  : true,
+  clonedModel : null,
+  machineId   : null,
 
   setDefaultDriver: function() {
     this.set('lastRoute', `${defaultDriver}`);
@@ -36,6 +38,12 @@ export default Ember.Controller.extend({
 
   actions: {
     switchDriver(name) {
+      if (this.get('machineId')) {
+        this.setProperties({
+          machineId: null,
+          clonedModel: null
+        });
+      }
       this.set('driver', name);
     },
   },

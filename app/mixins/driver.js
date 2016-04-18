@@ -10,13 +10,14 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   docsBase:  C.EXT_REFERENCES.DOCS,
   createDelayMs: 0,
 
-  queryParams: ['machineId'],
-  machineId: null,
-  error: null,
+  queryParams   : ['machineId'],
+  machineId     : null,
+  error         : null,
 
-  count: null,
-  prefix: null,
-  multiTemplate: null,
+  count         : null,
+  prefix        : null,
+  multiTemplate : null,
+  clonedModel   : null,
 
   actions: {
     addLabel: addAction('addLabel', '.key'),
@@ -27,7 +28,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
       this.attrs.goBack();
     },
     setLabels(labels) {
-      var out = {};
+      let out = {};
       labels.forEach((row) => {
         out[row.key] = row.value;
       });
@@ -36,10 +37,18 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     }
   },
 
+  afterInit: function() {
+    if (this.get('clonedModel')) {
+      this.set('model', this.get('clonedModel'));
+    } else if (typeof this.get('bootstrap') === 'function') {
+      this.bootstrap();
+    }
+  }.on('init'),
+
   nameParts: function() {
-    var input = this.get('prefix')||'';
-    var count = this.get('count');
-    var match = input.match(/^(.*?)([0-9]+)$/);
+    let input = this.get('prefix')||'';
+    let count = this.get('count');
+    let match = input.match(/^(.*?)([0-9]+)$/);
 
     if ( count <= 1 )
     {
@@ -48,7 +57,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
       };
     }
 
-    var prefix, minLength, start;
+    let prefix, minLength, start;
     if ( match && match.length )
     {
       prefix = match[1];
@@ -63,7 +72,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     }
 
     // app98 and count = 3 will go to 101, so the minLength should be 3
-    var end = start + count - 1;
+    let end = start + count - 1;
     minLength = Math.max(minLength, (end+'').length);
 
     return {
@@ -75,27 +84,27 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   }.property('prefix','count'),
 
   nameCountLabel: function() {
-    var parts = this.get('nameParts');
+    let parts = this.get('nameParts');
     if ( typeof parts.name !== 'undefined' || !parts.prefix )
     {
       // qty=1 or no input yet, nothing to see here...
       return '';
     }
 
-    var first = parts.prefix + Util.strPad(parts.start, parts.minLength, '0');
-    var last = parts.prefix + Util.strPad(parts.end, parts.minLength, '0');
+    let first = parts.prefix + Util.strPad(parts.start, parts.minLength, '0');
+    let last = parts.prefix + Util.strPad(parts.end, parts.minLength, '0');
     return new Ember.Handlebars.SafeString('Hosts will be named <b>' + first + '</b> &mdash; <b>' + last + '</b>');
   }.property('nameParts'),
 
   nameDidChange: function() {
-    var parts = this.get('nameParts');
+    let parts = this.get('nameParts');
     if ( typeof parts.name !== 'undefined' || !parts.prefix )
     {
       this.set('primaryResource.name', parts.name || '');
     }
     else
     {
-      var first = parts.prefix + Util.strPad(parts.start, parts.minLength, '0');
+      let first = parts.prefix + Util.strPad(parts.start, parts.minLength, '0');
       this.set('primaryResource.name', first);
     }
   }.observes('nameParts'),
@@ -145,7 +154,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   },
 
   doneSaving: function() {
-    var out = this._super();
+    let out = this._super();
     this.send('goBack');
     return out;
   },
@@ -153,7 +162,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     this._super();
     Ember.run.next(() => {
       try {
-        var input = this.$('INPUT')[0];
+        let input = this.$('INPUT')[0];
         if ( input )
         {
           input.focus();

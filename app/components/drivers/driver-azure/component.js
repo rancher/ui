@@ -36,6 +36,14 @@ export default Ember.Component.extend(Driver, {
 
     this.set('editing', false);
     this.initFields();
+  },
+
+  afterInit: function() {
+    this._super(...arguments);
+
+    if (this.get('clonedModel')) {
+      this.set('subscriptionCert', atob(this.get('model.azureConfig.subscriptionCert')));
+    }
   }.on('init'),
 
   actions: {

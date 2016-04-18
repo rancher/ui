@@ -80,7 +80,7 @@ export default Ember.Component.extend(Driver, {
       exoscaleConfig: config
     }));
     this.initFields();
-  }.on('init'),
+  },
 
   willDestroyElement() {
     this.set('errors', null);

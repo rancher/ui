@@ -25,21 +25,25 @@ export default Ember.Component.extend(ManageLabels, {
   },
 
   bootstrap: function() {
-    this.get('store').find('registrationToken',null,{filter: {state: 'active'}, forceReload: true}).then((tokens) => {
-      if ( tokens.get('length') === 0 )
-      {
-        // There should always be one already, but if there isn't go create one...
-        var model = this.get('store').createRecord({
-          type: 'registrationToken'
-        });
-        this.set('model', model);
-        model.save();
-      }
-      else
-      {
-        this.set('model', tokens.get('firstObject'));
-      }
-    });
+    if (this.get('clonedModel')) {
+      this.set('model', this.get('clonedModel'));
+    } else {
+      this.get('store').find('registrationToken',null,{filter: {state: 'active'}, forceReload: true}).then((tokens) => {
+        if ( tokens.get('length') === 0 )
+        {
+          // There should always be one already, but if there isn't go create one...
+          var model = this.get('store').createRecord({
+            type: 'registrationToken'
+          });
+          this.set('model', model);
+          model.save();
+        }
+        else
+        {
+          this.set('model', tokens.get('firstObject'));
+        }
+      });
+    }
   }.on('init'),
 
   registrationCommand: function() {
