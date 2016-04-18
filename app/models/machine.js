@@ -17,7 +17,7 @@ var Machine = Resource.extend(PolledResource, {
   actions: {
 
     clone: function() {
-      this.get('router').transitionTo('hosts.new.'+this.get('driver'), {queryParams: {machineId: this.get('id')}});
+      this.get('router').transitionTo('hosts.new', {queryParams: {machineId: this.get('id'), driver: this.get('driver')}});
     },
   },
 
