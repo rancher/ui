@@ -38,6 +38,10 @@ export default Ember.Service.extend({
   admin: null,
 
   detect: function() {
+    if ( this.get('enabled') !== null ) {
+      return Ember.RSVP.resolve();
+    }
+
     return this.get('userStore').rawRequest({
       url: 'token',
     })

@@ -66,7 +66,7 @@ module.exports = function(environment) {
       kubernetesEndpoint: '/r/kubernetes',
       kubectlEndpoint: '/r/kubectld:8091/v1-kubectl',
       proxyEndpoint: '/v1/proxy',
-      wsEndpoint: '/v1/subscribe' +
+      wsEndpoint: '/v1/projects/%PROJECTID%/subscribe' +
                     '?eventNames=resource.change' +
                     '&eventNames=service.kubernetes.change' +
                     '&include=hosts' +

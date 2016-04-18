@@ -15,12 +15,12 @@ export default Ember.Route.extend(Subscribe, {
   beforeModel(transition) {
     this._super.apply(this,arguments);
 
-    if ( this.get('access.enabled') && !this.get('access.isLoggedIn') ) {
-      transition.send('logout', transition, false);
-      return Ember.RSVP.reject('Not logged in');
-    } else {
-      if (this.get('access.enabled')) {
+    if ( this.get('access.enabled') ) {
+      if ( this.get('access.isLoggedIn') ) {
         this.testAuthToken();
+      } else {
+        transition.send('logout', transition, false);
+        return Ember.RSVP.reject('Not logged in');
       }
     }
   },

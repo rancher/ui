@@ -5,8 +5,8 @@ export default Ember.Controller.extend({
 
   lastRoute: 'admin-tab.auth.github',
   drivers: function() {
-    var store = this.get('store');
-    var has = store.hasRecordFor.bind(store,'schema');
+    var userStore = this.get('userStore');
+    var has = userStore.hasRecordFor.bind(userStore,'schema');
 
     return [
       {route: 'admin-tab.auth.activedirectory', label: 'Active Directory',  css: 'activedirectory', available: has('ldapconfig')  },

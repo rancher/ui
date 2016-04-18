@@ -5,9 +5,9 @@ export default Ember.Route.extend({
   access: Ember.inject.service(),
 
   model: function(/*params, transition*/) {
-    var store = this.get('store');
-    return store.findAllUnremoved('project').then((all) => {
-      var project = store.createRecord({
+    var userStore = this.get('userStore');
+    return userStore.findAllUnremoved('project').then((all) => {
+      var project = userStore.createRecord({
         type: 'project',
         name: '',
         description: '',
@@ -17,7 +17,7 @@ export default Ember.Route.extend({
       {
         var identity = this.get('session.'+C.SESSION.IDENTITY);
         identity.type = 'identity';
-        var me = store.createRecord(identity);
+        var me = userStore.createRecord(identity);
         me.set('role', C.PROJECT.ROLE_OWNER);
         project.set('projectMembers', [me]);
       }
