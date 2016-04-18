@@ -196,6 +196,10 @@ Router.map(function() {
         });
       });
 
+      // Mesos
+      this.route('mesos-tab', {path: '/mesos', resetNamespace: true}, function() {
+        this.route('waiting', {path: '/waiting'});
+      });
 
       this.route('help');
 

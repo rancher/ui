@@ -65,6 +65,7 @@ module.exports = function(environment) {
       catalogEndpoint: '/v1-catalog',
       kubernetesEndpoint: '/r/kubernetes',
       kubectlEndpoint: '/r/kubectld:8091/v1-kubectl',
+      mesosEndpoint: '/r/projects/%PROJECTID%/mesos-master:5050',
       proxyEndpoint: '/v1/proxy',
       wsEndpoint: '/v1/projects/%PROJECTID%/subscribe' +
                     '?eventNames=resource.change' +

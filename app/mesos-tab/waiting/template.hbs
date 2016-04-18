@@ -1,0 +1,34 @@
+{{#if (gt currentStep 0)}}
+  <div class="well r-mt40 text" style="width: 50%; margin-left: 25%">
+    <h2 class="loading">Setting Up</h2>
+
+    <ul class="list-unstyled r-mt20">
+      {{#each steps as |step index|}}
+        <li class="{{if (lt currentStep index) 'text-muted'}}">
+          {{#if (eq currentStep index)}}
+            <i class="icon icon-spinner icon-spin" />
+          {{else}}
+            {{#if (gt currentStep index)}}
+              <i class="icon icon-check text-success" />
+            {{else}}
+              <i class="icon icon-circle-o" />
+            {{/if}}
+          {{/if}}
+
+          <span>{{step}}</span>
+        </li>
+      {{/each}}
+    </ul>
+  </div>
+{{else}}
+  <section class="welcome well">
+    <i class="icon icon-host"></i>
+    <h2>Adding your first Host</h2>
+    <p>
+      Before launching Mesos, you must first add at least one Linux host that supports Docker 1.9.1+ and be able to reach the {{settings.appName}} server via HTTP.
+      {{settings.appName}} supports adding Linux hosts in the form of a virtual or physical machine from any public cloud providers, privately hosted clouds, or even bare metal servers.
+      {{#if settings.isRancher}}<a href="{{docsBase}}/rancher-ui/infrastructure/hosts/" target="_blank">Learn More</a>{{/if}}
+    </p>
+    {{#link-to "hosts.new" (query-params backTo="mesos") class="btn btn-primary"}}Add Host{{/link-to}}
+  </section>
+{{/if}}

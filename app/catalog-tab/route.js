@@ -44,11 +44,15 @@ export default Ember.Route.extend({
     {
       return 'swarm';
     }
+    else if ( this.get('projects.current.mesos') )
+    {
+      return 'mesos';
+    }
     else
     {
       return 'cattle';
     }
-  }.property('projects.current.{kubernetes,swarm}'),
+  }.property('projects.current.{kubernetes,swarm,mesos}'),
 
   deactivate() {
     // Clear the cache when leaving the route so that it will be reloaded when you come back.

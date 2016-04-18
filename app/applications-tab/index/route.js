@@ -10,6 +10,10 @@ export default Ember.Route.extend({
     {
       this.transitionTo('applications-tab.compose-projects');
     }
+    else if ( this.controllerFor('authenticated').get('hasMesos') )
+    {
+      this.transitionTo('mesos-tab.waiting');
+    }
     else
     {
       this.transitionTo('environments');

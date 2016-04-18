@@ -52,6 +52,10 @@ export default Ember.Component.extend({
     return this.get('currentPath').indexOf('authenticated.project.k8s-tab') === 0;
   }.property('currentPath'),
 
+  isMesosTab: function() {
+    return this.get('currentPath').indexOf('authenticated.project.mesos-tab') === 0;
+  }.property('currentPath'),
+
   isApplicationsTab: function() {
     return this.get('currentPath').indexOf('authenticated.project.applications-tab') === 0;
   }.property('currentPath'),

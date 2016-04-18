@@ -152,14 +152,12 @@
 
       <li>
         {{#link-to "applications-tab" projectId id="applications-tab"}}
-          {{#if hasKubernetes}}
+          {{#if (or hasKubernetes hasMesos)}}
             System
+          {{else if hasSwarm}}
+            Swarm
           {{else}}
-            {{#if hasSwarm}}
-              Swarm
-            {{else}}
-              Applications
-            {{/if}}
+            Applications
           {{/if}}
         {{/link-to}}
         <ul class="hidden-md hidden-lg">

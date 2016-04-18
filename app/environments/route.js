@@ -28,6 +28,8 @@ export default Ember.Route.extend({
       controller.set('which', C.EXTERNALID.KIND_NOT_KUBERNETES);
     } else if ( this.controllerFor('authenticated').get('hasSwarm') ) {
       controller.set('which', C.EXTERNALID.KIND_NOT_SWARM);
+    } else if ( this.controllerFor('authenticated').get('hasMesos') ) {
+      controller.set('which', C.EXTERNALID.KIND_NOT_MESOS);
     } else {
       controller.set('which', C.EXTERNALID.KIND_USER);
     }

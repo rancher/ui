@@ -167,6 +167,22 @@ export default Ember.Route.extend(Subscribe, {
     });
   },
 
+  loadMesos(project, hash) {
+    hash = hash || {};
+
+    if ( !project.get('mesos') )
+    {
+      hash.mesosReady = false;
+      return Ember.RSVP.resolve(hash);
+    }
+
+    var svc = this.get('mesos');
+    return svc.isReady().then((ready) => {
+      hash.mesosReady = ready;
+      return hash;
+    });
+  },
+
   loadUserSchemas() {
     // @TODO Inline me into releases
     var userStore = this.get('userStore');
@@ -227,6 +243,13 @@ export default Ember.Route.extend(Subscribe, {
     refreshKubernetes() {
       var model = this.get('controller.model');
       this.loadKubernetes(model.get('project')).then((hash) => {
+        model.setProperties(hash);
+      });
+    },
+
+    refreshMesos() {
+      var model = this.get('controller.model');
+      this.loadMesos(model.get('project')).then((hash) => {
         model.setProperties(hash);
       });
     },

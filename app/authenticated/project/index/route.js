@@ -12,6 +12,10 @@ export default Ember.Route.extend({
     {
       this.replaceWith('applications-tab.compose-waiting');
     }
+    else if ( this.controllerFor('authenticated').get('hasMesos') )
+    {
+      this.replaceWith('mesos-tab.waiting');
+    }
     else
     {
       this.replaceWith('applications-tab');
