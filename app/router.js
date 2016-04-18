@@ -362,8 +362,8 @@ Router.map(function() {
   });
 
   // Load any custom routes from additional-routes
-  var cb = applyRoutes("application")
-  if( cb ) cb.apply( this );
+  var cb = applyRoutes("application");
+  if( cb ) { cb.apply( this ); }
 });
 
 export default Router;

@@ -18,7 +18,7 @@ const list = {};
  */
 
 export function addRoutes( r, entrypoint='application' ) {
-  if( ! r ) return;
+  if( ! r ) { return; }
   list[ entrypoint ] = list[ entrypoint ] || [];
   list[ entrypoint ].push( r );
 }
