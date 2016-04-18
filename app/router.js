@@ -1,6 +1,25 @@
 import Ember from 'ember';
 import config from './config/environment';
-import {applyRoutes} from 'ui/utils/additional-routes';
+import {addRoutes, applyRoutes} from 'ui/utils/additional-routes';
+
+
+// hacking Ember's RouterDSL 
+
+Ember.RouterDSL.prototype._route = Ember.RouterDSL.prototype.route;
+Ember.RouterDSL.prototype.route = function( name, options, callback ) {
+  if (arguments.length === 1) {
+    options = {};
+  }
+  else if (arguments.length === 2 && typeof options === 'function') {
+    callback = options;
+    options = {};
+  }
+
+  var key = `${this.parent}.${name}`;
+
+  addRoutes( callback, key );
+  this._route(name, options, applyRoutes( key ) );
+};
 
 const Router = Ember.Router.extend({
   location: config.locationType
@@ -343,7 +362,8 @@ Router.map(function() {
   });
 
   // Load any custom routes from additional-routes
-  applyRoutes(this);
+  var cb = applyRoutes("application")
+  if( cb ) cb.apply( this );
 });
 
 export default Router;
