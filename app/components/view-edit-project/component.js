@@ -113,6 +113,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
       {name: 'rancher',     label: 'Corral',      css: 'rancher'},
       {name: 'kubernetes',  label: 'Kubernetes',  css: 'kubernetes'},
       {name: 'swarm',       label: 'Swarm',       css: 'swarm'},
+      {name: 'mesos',       label: 'Mesos',       css: 'mesos'},
     ];
 
     drivers.forEach(function(driver) {
