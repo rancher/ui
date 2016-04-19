@@ -11,7 +11,10 @@ export default Ember.Component.extend(FilterState, Sortable, {
 
   classNames      : ['machine-drivers'],
   sorts: {
-    name: ['name', 'id'],
+    name:  ['name', 'id'],
+    url:   ['uri', 'name', 'id'],
+    uiUrl: ['uiUrl', 'name', 'id'],
+    md5:   ['md5checksum', 'name', 'id'],
   },
 
   model: null,

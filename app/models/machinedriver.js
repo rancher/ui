@@ -2,6 +2,23 @@ import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 
+function displayUrl(url) {
+  let parts = url.split('/');
+  let out    = null;
+
+  if ( parts.length < 2 )
+  {
+    return url;
+  }
+
+  if (url.indexOf('github.com') >= 0) {
+    out = `.../${parts[parts.length-2]}/${parts[parts.length-1]}`;
+  } else {
+    out = url;
+  }
+  return out;
+}
+
 var machineDriver = Resource.extend(PolledResource, {
   type: 'machineDriver',
 
@@ -11,33 +28,13 @@ var machineDriver = Resource.extend(PolledResource, {
     }
   },
 
-  displayURI: Ember.computed('uri', function() {
-    let uri    = this.get('uri');
-    let uriOut = uri.split('/');
-    let out    = null;
+  displayUrl: function() {
+    return displayUrl(this.get('uri'));
+  }.property('uri'),
 
-    if ( uriOut.length < 2 )
-    {
-      return uri;
-    }
-
-    if (uri.indexOf('github')) {
-      out = `.../${uriOut[uriOut.length-2]}/${uriOut[uriOut.length-1]}`;
-    } else {
-      out = uri;
-    }
-    return out;
-  }),
-
-  displayChecksum: Ember.computed('md5checksum', function() {
-    let checksum = this.get('md5checksum');
-
-    if (!checksum) {
-      checksum = 'Not Provided';
-    }
-
-    return checksum;
-  }),
+  displayUiUrl: function() {
+    return displayUrl(this.get('uiUrl'));
+  }.property('uiUrl'),
 
   availableActions: function() {
     var a = this.get('actionLinks');
