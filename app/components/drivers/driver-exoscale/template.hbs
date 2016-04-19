@@ -71,9 +71,9 @@
             {{/if}}
           </label></div>
 
-          {{#unless (or settings.isPrivateLabel isCustomSecurityGroup)}}
+          {{#if (and settings.isRancher (not isCustomSecurityGroup))}}
             <p class="help-block r-ml20"><a href="{{docsBase}}/infrastructure/hosts/exoscale/#Ports" target="_blank">Learn more</a> about the ports that will be opened.</p>
-          {{/unless}}
+          {{/if}}
 
           <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="custom"}} Custom: Choose an existing group{{#if isCustomSecurityGroup}}:{{/if}}</label></div>
           {{#if isCustomSecurityGroup}}

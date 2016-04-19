@@ -11,7 +11,7 @@ export default Ember.Component.extend({
   tagName: 'A',
   attributeBindings: ['title','href', 'target'],
   classNames: ['small'],
-  classNameBindings: ['settings.isPrivateLabel:hide'],
+  classNameBindings: ['settings.isRancher::hide'],
 
   href: function() {
     return C.EXT_REFERENCES.DOCS + this.get('link');

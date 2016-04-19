@@ -5,12 +5,12 @@
 
 <div class="row">
   <div class="col-md-6 r-pl0">
-    <h5>{{unless settings.isPrivateLabel 'Rancher'}} Certified</h5>
+    <h5>{{if settings.isRancher 'Rancher'}} Certified</h5>
     <p class="help-block">
-      {{#if settings.isPrivateLabel}}
-        Officially maintained and supported templates.
-      {{else}}
+      {{#if settings.isRancher}}
         Certified templates maintained and supported by Rancher Labs.
+      {{else}}
+        Officially maintained and supported templates.
       {{/if}}
     </p>
     <div class="r-mt10">
@@ -25,7 +25,7 @@
   <div class="col-md-6 r-pr0">
     <h5>Community Contributed</h5>
     <p class="help-block">
-      Templates created and maintained by community members.{{#unless isPrivateLabel}}  Not certified by Rancher Labs.{{/unless}}
+      Templates created and maintained by community members.{{#if settings.isRancher}}  Not certified by Rancher Labs.{{/if}}
     </p>
     <div class="r-mt10">
       <label class="r-mr20 hand">

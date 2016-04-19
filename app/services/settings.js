@@ -157,18 +157,18 @@ export default Ember.Service.extend(Ember.Evented, {
     return this.get(`cookies.${C.COOKIE.PL}`) || '';
   }.property(`cookies.${C.COOKIE.PL}`),
 
-  isPrivateLabel: function() {
-    return this.get('_plValue').toUpperCase() !== C.COOKIE.PL_RANCHER_VALUE.toUpperCase();
+  isRancher: function() {
+    return this.get('_plValue').toUpperCase() === C.COOKIE.PL_RANCHER_VALUE.toUpperCase();
   }.property('_plValue'),
 
   appName: function() {
-    if ( this.get('isPrivateLabel') )
-    {
-      return this.get('_plValue');
-    }
-    else
+    if ( this.get('isRancher') )
     {
       return this.get('app.appName'); // Rancher
     }
-  }.property('isPrivateLabel','_plValue'),
+    else
+    {
+      return this.get('_plValue');
+    }
+  }.property('isRancher','_plValue'),
 });

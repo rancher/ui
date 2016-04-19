@@ -30,9 +30,9 @@ export default Ember.Route.extend({
           }
         }
 
-        function errored() {
+        function errored(name) {
           clearTimeout(timer);
-          reject({type: 'error', message: 'Error loading custom driver UI: ' + driver.name});
+          reject({type: 'error', message: 'Error loading custom driver UI: ' + name});
         }
 
         drivers.forEach((driver) => {
@@ -42,8 +42,8 @@ export default Ember.Route.extend({
 
               expected++;
               let script = document.createElement('script');
-              script.onload = loaded;
-              script.onerror = errored;
+              script.onload = function() { loaded(name); };
+              script.onerror = function() {errored(name); };
               script.src = driver.uiUrl;
               script.id = id;
               document.getElementsByTagName('BODY')[0].appendChild(script);
@@ -53,8 +53,8 @@ export default Ember.Route.extend({
               link.rel = 'stylesheet';
               link.id = id;
               link.href = driver.uiUrl.replace(/\.js$/,'.css');
-              link.onload = loaded;
-              link.onerror = errored;
+              link.onload = function() { loaded(name); };
+              link.onerror = function() { errored(name); };
               document.getElementsByTagName('HEAD')[0].appendChild(link);
 
               DriverChoices.drivers.push({
