@@ -74,10 +74,14 @@ export function addQueryParams(url, params) {
   return url;
 }
 
-export function absoluteUrl(url) {
+export function parseUrl(url) {
   var a = document.createElement('a');
   a.href = url;
-  return a.cloneNode(false).href;
+  return a.cloneNode(false);
+}
+
+export function absoluteUrl(url) {
+  return parseUrl(url).href;
 }
 
 export function addAuthorization(url, user, pass) {
@@ -304,6 +308,7 @@ var Util = {
   escapeRegex: escapeRegex,
   addQueryParam: addQueryParam,
   addQueryParams: addQueryParams,
+  parseUrl: parseUrl,
   absoluteUrl: absoluteUrl,
   addAuthorization: addAuthorization,
   ucFirst: ucFirst,

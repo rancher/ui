@@ -1,7 +1,21 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import DriverChoices from 'ui/utils/driver-choices';
+import Util from 'ui/utils/util';
 const { getOwner } = Ember;
+
+function proxifyUrl(url, proxyBase) {
+  let parsed = Util.parseUrl(url);
+
+  if ( parsed.hostname.indexOf('.') === -1  || // No dot, local name like localhost
+       parsed.hostname.toLowerCase().match(/\.local$/) || // your-macbook.local
+       parsed.origin.toLowerCase() === window.location.origin // You are here
+    ) {
+      return url;
+  } else {
+    return  proxyBase + '/' + url;
+  }
+}
 
 export default Ember.Route.extend({
   access: Ember.inject.service(),
@@ -42,9 +56,9 @@ export default Ember.Route.extend({
 
               expected++;
               let script = document.createElement('script');
-              script.onload = function() { loaded(name); };
-              script.onerror = function() {errored(name); };
-              script.src = driver.uiUrl;
+              script.onload = function() { loaded(driver.name); };
+              script.onerror = function() {errored(driver.name); };
+              script.src = proxifyUrl(driver.uiUrl, this.get('app.proxyEndpoint'));
               script.id = id;
               document.getElementsByTagName('BODY')[0].appendChild(script);
 
@@ -52,9 +66,9 @@ export default Ember.Route.extend({
               let link = document.createElement('link');
               link.rel = 'stylesheet';
               link.id = id;
-              link.href = driver.uiUrl.replace(/\.js$/,'.css');
-              link.onload = function() { loaded(name); };
-              link.onerror = function() { errored(name); };
+              link.href = proxifyUrl(driver.uiUrl.replace(/\.js$/,'.css'), this.get('app.proxyEndpoint'));
+              link.onload = function() { loaded(driver.name); };
+              link.onerror = function() { errored(driver.name); };
               document.getElementsByTagName('HEAD')[0].appendChild(link);
 
               DriverChoices.drivers.push({
