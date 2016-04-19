@@ -43,11 +43,11 @@ module.exports = function(environment) {
 
     contentSecurityPolicy: {
       // Allow the occasional <elem style="blah">...
-      'style-src':  "'self' releases.rancher.com 'unsafe-inline'",
+      'style-src':  "'self' releases.rancher.com localhost:3000 'unsafe-inline'",
       'font-src':   "'self' releases.rancher.com",
-      'script-src': "'self' releases.rancher.com",
+      'script-src': "'self' releases.rancher.com localhost:3000",
       'object-src': "'self' releases.rancher.com",
-      'img-src':    "'self' releases.rancher.com avatars.githubusercontent.com gravatar.com data:",
+      'img-src':    "'self' releases.rancher.com avatars.githubusercontent.com gravatar.com localhost:3000 data:",
       'frame-src':  "'self' releases.rancher.com",
 
       // Allow connect to anywhere, for console and event stream socket

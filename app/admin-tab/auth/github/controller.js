@@ -201,7 +201,7 @@ export default Ember.Controller.extend({
         // Set this to true so the token will be sent with the request
         this.set('access.enabled', true);
 
-        return this.get('store').find('setting', denormalizeName(C.SETTING.API_HOST)).then((setting) => {
+        return this.get('userStore').find('setting', denormalizeName(C.SETTING.API_HOST)).then((setting) => {
           if ( setting.get('value') )
           {
             this.send('waitAndRefresh', url);

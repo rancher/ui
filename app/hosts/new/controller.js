@@ -34,12 +34,6 @@ export default Ember.Controller.extend({
     this.set('lastRoute', `${defaultDriver}`);
   }.on('init'),
 
-  driverSelection: Ember.computed('driver', {
-    get() {
-      return `drivers/driver-${this.get('driver')}`;
-    }
-  }),
-
   actions: {
     switchDriver(name) {
       this.set('driver', name);
@@ -47,17 +41,17 @@ export default Ember.Controller.extend({
   },
 
   drivers: function() {
-    let userStore = this.get('userStore');
-    let has = userStore.hasRecordFor.bind(userStore,'schema');
+    let store = this.get('store');
+    let has = store.hasRecordFor.bind(store,'schema');
 
-    let actuallyHasNames = Object.keys(userStore.getById('schema','machine').get('resourceFields')).filter((name) => {
+    let actuallyHasNames = Object.keys(store.getById('schema','machine').get('resourceFields')).filter((name) => {
       return name.indexOf('Config') >= 1;
     }).map((name) => {
       return name.toLowerCase();
     });
 
     return DriverChoices.drivers.filter((driver) => {
-      Ember.set(driver,'active',  `${driver.name}` === this.get('lastRoute'));
+      Ember.set(driver,'active', `${driver.name}` === this.get('lastRoute'));
 
       if ( driver.schema ) {
         let name = driver.schema.toLowerCase();

@@ -1,21 +1,39 @@
 import Ember from 'ember';
 import ManageLabels from 'ui/mixins/manage-labels';
-import Driver from 'ui/mixins/driver';
 import Util from 'ui/utils/util';
 
-export default Ember.Component.extend(ManageLabels, Driver, {
+export default Ember.Component.extend(ManageLabels, {
   settings      : Ember.inject.service(),
   cattleAgentIp : null,
   model: null,
+
+  actions: {
+    cancel() {
+      this.attrs.cancel();
+    },
+
+    setLabels(labels) {
+      if ( this.get('model') ) {
+        var out = {};
+        labels.forEach((row) => {
+          out[row.key] = row.value;
+        });
+
+        this.set('model.labels', out);
+      }
+    }
+  },
 
   bootstrap: function() {
     this.get('store').find('registrationToken',null,{filter: {state: 'active'}, forceReload: true}).then((tokens) => {
       if ( tokens.get('length') === 0 )
       {
         // There should always be one already, but if there isn't go create one...
-        this.set('model', this.get('store').createRecord({
+        var model = this.get('store').createRecord({
           type: 'registrationToken'
-        }).save());
+        });
+        this.set('model', model);
+        model.save();
       }
       else
       {

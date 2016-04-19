@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import ManageLabels from 'ui/mixins/manage-labels';
 import Driver from 'ui/mixins/driver';
 
 let RANCHER_TAG           = 'rancher-ui';
@@ -50,7 +49,7 @@ let INSTANCE_TYPES = [
 ];
 
 
-export default Ember.Component.extend(ManageLabels, Driver, {
+export default Ember.Component.extend(Driver, {
   prefs                    : Ember.inject.service(),
   driverName               : 'amazonec2',
   model                    : null,
