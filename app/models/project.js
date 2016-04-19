@@ -127,11 +127,15 @@ var Project = Resource.extend(PolledResource, {
     {
       return 'Swarm';
     }
+    else if ( this.get('mesos') )
+    {
+      return 'Mesos';
+    }
     else
     {
       return 'Cattle';
     }
-  }.property('kubernetes','swarm'),
+  }.property('kubernetes','swarm', 'mesos'),
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often

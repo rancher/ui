@@ -58,9 +58,11 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     selectOrchestration(name) {
       var k8s = (name === 'kubernetes');
       var swarm = (name === 'swarm');
+      var mesos = (name === 'mesos');
       this.get('project').setProperties({
         kubernetes: k8s,
         swarm: swarm,
+        mesos: mesos,
       });
       this.set('activeOrchestration', name);
     },
@@ -76,6 +78,10 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     else if ( this.get('project.swarm') )
     {
       orch = 'swarm';
+    }
+    else if ( this.get('project.mesos') )
+    {
+      orch = 'mesos';
     }
 
     this.set('activeOrchestration', orch);

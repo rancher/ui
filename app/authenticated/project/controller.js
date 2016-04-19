@@ -7,6 +7,7 @@ export function hasThings(stacks, project, tgt)
     hasSystem: false,
     hasKubernetes: !!project.get('kubernetes'),
     hasSwarm: !!project.get('swarm'),
+    hasMesos: !!project.get('mesos'),
   };
 
   (stacks||[]).forEach((stack) => {
@@ -25,5 +26,5 @@ export default Ember.Controller.extend({
 
   hasThingsChanged: function() {
     hasThings(this.get('model.stacks'), this.get('model.project'), this.get('authenticated'));
-  }.observes('model.stacks.@each.externalId','model.project.{kubernetes,swarm}'),
+  }.observes('model.stacks.@each.externalId','model.project.{kubernetes,swarm,mesos}'),
 });
