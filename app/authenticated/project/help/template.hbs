@@ -2,7 +2,7 @@
   <h1>Helpful links &amp; Information</h1>
 </section>
 
-{{#if (and (not settings.isPrivateLabel) (not modelError))}}
+{{#if (and settings.isRancher (not modelError))}}
   <div class="banner r-ml20 r-mr20 r-mt10">
     <span class="banner-head">Announcements</span>
   {{#if modelResolved}}
@@ -61,7 +61,7 @@
   </div>
 </section>
 
-{{#unless settings.isPrivateLabel}}
+{{#if settings.isRancher}}
   <section class="well">
     <div class="header">
       <h4>Issues &amp; Documentation</h4>
@@ -178,5 +178,5 @@
     <hr/>
     <p>At Rancher Labs we provide commercial, enterprise-grade support for {{settings.appName}}, including an available 24x7 support team, and priority bug fixes.  In addition we provide implementation, integration and consulting services for organizations looking to implement and scale {{settings.appName}}.  For more information on any of these services, please email our sales team. <a href="mailto:sales@rancher.com">sales@rancher.com</a></p>
   </section>
-{{/unless}}
+{{/if}}
 

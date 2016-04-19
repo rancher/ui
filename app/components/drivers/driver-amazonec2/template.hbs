@@ -139,9 +139,9 @@
             {{/if}}
           </label></div>
 
-          {{#unless (or settings.isPrivateLabel isCustomSecurityGroup)}}
+          {{#if (and settings.isRancher (not isCustomSecurityGroup))}}
             <p class="help-block r-ml20"><a href="{{docsBase}}/rancher-ui/infrastructure/hosts/amazon/#EC2Ports" target="_blank">Learn more</a> about the ports that will be opened.</p>
-          {{/unless}}
+          {{/if}}
 
           <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="custom"}} Custom: Choose an existing group{{#if isCustomSecurityGroup}}:{{/if}}</label></div>
           {{#if isCustomSecurityGroup}}
@@ -219,11 +219,11 @@
       </div>
       <div class="col-sm-12 col-md-3">
         {{input type="text" classNames="form-control" placeholder="An Ubuntu AMI" value=amazonec2Config.ami}}
-        {{#unless settings.isPrivateLabel}}
+        {{#if settings.isRancher}}
           <p class="help-block">
             <a href="https://github.com/rancher/os/blob/master/README.md/#user-content-amazon" target="_blank">RancherOS AMI List</a>
           </p>
-        {{/unless}}
+        {{/if}}
       </div>
       <div class="col-sm-12 col-md-2 form-label">
         <label class="form-control-static">SSH User</label>

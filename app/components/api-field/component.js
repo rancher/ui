@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Resource from 'ember-api-store/models/resource';
 
 export default Ember.Component.extend({
   resource:     null, // The object that is being edited
@@ -27,7 +28,14 @@ export default Ember.Component.extend({
       return;
     }
 
-    var out = JSON.parse(JSON.stringify(orig));
+    var out;
+    if ( Resource.detectInstance(orig) ) {
+      // the "type" field makes the store turn these into resources...
+      out = orig.serialize();
+    } else {
+      out = JSON.parse(JSON.stringify(orig));
+    }
+
     out.name = fieldName;
 
     var docs = this.get('typeDocs').filterBy('id', type)[0];

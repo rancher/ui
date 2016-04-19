@@ -9,7 +9,6 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   settings: Ember.inject.service(),
   docsBase:  C.EXT_REFERENCES.DOCS,
 
-  needs: ['hosts/new'],
   queryParams: ['machineId'],
   machineId: null,
   error: null,

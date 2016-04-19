@@ -1,7 +1,21 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import DriverChoices from 'ui/utils/driver-choices';
+import Util from 'ui/utils/util';
 const { getOwner } = Ember;
+
+function proxifyUrl(url, proxyBase) {
+  let parsed = Util.parseUrl(url);
+
+  if ( parsed.hostname.indexOf('.') === -1  || // No dot, local name like localhost
+       parsed.hostname.toLowerCase().match(/\.local$/) || // your-macbook.local
+       parsed.origin.toLowerCase() === window.location.origin // You are here
+    ) {
+      return url;
+  } else {
+    return  proxyBase + '/' + url;
+  }
+}
 
 export default Ember.Route.extend({
   access: Ember.inject.service(),
@@ -17,26 +31,66 @@ export default Ember.Route.extend({
 
   beforeModel(/*transition*/) {
     return this.get('userStore').findAll('machinedriver',  {authAsUser: true}).then((drivers) => {
-      let systemDrivers = DriverChoices.drivers;
+      return new Ember.RSVP.Promise((resolve, reject) => {
+        let systemDrivers = DriverChoices.drivers;
+        let completed = 0, expected = 0;
+        let timer = null;
 
-      drivers.forEach((driver) => {
-        if (driver.uiUrl) {
-          if (!systemDrivers.findBy('name', driver.name)) {
-
-            // script should append its own css
-            Ember.$(`<script src="${driver.uiUrl}"></script>`).appendTo('BODY');
-
-            DriverChoices.drivers.push({
-              name  : driver.name, //driver.name
-              label : driver.name.capitalize(),
-              css   : driver.name,
-              sort  : 3
-            });
+        function loaded() {
+          completed++;
+          if ( completed === expected ) {
+            resolve();
+            clearTimeout(timer);
           }
+        }
+
+        function errored(name) {
+          clearTimeout(timer);
+          reject({type: 'error', message: 'Error loading custom driver UI: ' + name});
+        }
+
+        drivers.forEach((driver) => {
+          var id = 'driver-ui-js-' + driver.name;
+          if (driver.uiUrl && $(`#${id}`).length === 0 ) {
+            if (!systemDrivers.findBy('name', driver.name)) {
+
+              expected++;
+              let script = document.createElement('script');
+              script.onload = function() { loaded(driver.name); };
+              script.onerror = function() {errored(driver.name); };
+              script.src = proxifyUrl(driver.uiUrl, this.get('app.proxyEndpoint'));
+              script.id = id;
+              document.getElementsByTagName('BODY')[0].appendChild(script);
+
+              expected++;
+              let link = document.createElement('link');
+              link.rel = 'stylesheet';
+              link.id = id;
+              link.href = proxifyUrl(driver.uiUrl.replace(/\.js$/,'.css'), this.get('app.proxyEndpoint'));
+              link.onload = function() { loaded(driver.name); };
+              link.onerror = function() { errored(driver.name); };
+              document.getElementsByTagName('HEAD')[0].appendChild(link);
+
+              DriverChoices.drivers.push({
+                name  : driver.name, //driver.name
+                label : driver.name.capitalize(),
+                css   : driver.name,
+                sort  : 3,
+                src   : driver.uiUrl
+              });
+            }
+          }
+        });
+
+        if ( expected === 0 ) {
+          resolve();
+        } else {
+          timer = setTimeout(function() {
+            reject({type: 'error', message: 'Timeout loading custom machine drivers'});
+          }, 10000);
         }
       });
     });
-
   },
 
   model(params) {

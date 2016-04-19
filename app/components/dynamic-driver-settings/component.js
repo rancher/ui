@@ -11,14 +11,17 @@ export default Ember.Component.extend(FilterState, Sortable, {
 
   classNames      : ['machine-drivers'],
   sorts: {
-    name: ['name', 'id'],
+    name:  ['name', 'id'],
+    url:   ['uri', 'name', 'id'],
+    uiUrl: ['uiUrl', 'name', 'id'],
+    md5:   ['md5checksum', 'name', 'id'],
   },
 
   model: null,
 
   actions: {
     addNewDriver: function() {
-      this.set('model', this.get('store').createRecord({
+      this.set('model', this.get('userStore').createRecord({
         type        : 'machineDriver',
         name        : null,
         description : null,

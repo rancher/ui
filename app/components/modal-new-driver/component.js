@@ -2,6 +2,8 @@ import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
 export default Ember.Component.extend(NewOrEdit, {
+  settings: Ember.inject.service(),
+
   originalModel   : null,
   primaryResource : Ember.computed.alias('originalModel'),
   errors          : null,
