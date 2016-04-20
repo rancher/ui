@@ -1,18 +1,18 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  queryParams: ['timedOut','errorMsg'],
-  access: Ember.inject.service(),
-  settings: Ember.inject.service(),
+  queryParams       : ['timedOut','errorMsg'],
+  access            : Ember.inject.service(),
+  settings          : Ember.inject.service(),
 
-  isGithub: Ember.computed.equal('access.provider', 'githubconfig'),
-  isActiveDirectory: Ember.computed.equal('access.provider', 'ldapconfig'),
-  isOpenLdap: Ember.computed.equal('access.provider', 'openldapconfig'),
-  isLocal: Ember.computed.equal('access.provider', 'localauthconfig'),
+  isGithub          : Ember.computed.equal('access.provider', 'githubconfig'),
+  isActiveDirectory : Ember.computed.equal('access.provider', 'ldapconfig'),
+  isOpenLdap        : Ember.computed.equal('access.provider', 'openldapconfig'),
+  isLocal           : Ember.computed.equal('access.provider', 'localauthconfig'),
 
-  timedOut: false,
-  waiting: false,
-  errorMsg: null,
+  timedOut          : false,
+  waiting           : false,
+  errorMsg          : null,
 
   actions: {
     started() {
@@ -32,12 +32,9 @@ export default Ember.Controller.extend({
         }).catch((err) => {
           this.set('waiting', false);
 
-          if ( err.status === 401 )
-          {
+          if ( err.status === 401 ) {
             this.set('errorMsg', 'Username or Password incorrect.');
-          }
-          else
-          {
+          } else {
             this.set('errorMsg', err.message);
           }
         }).finally(() => {
@@ -48,16 +45,11 @@ export default Ember.Controller.extend({
   },
 
   infoMsg: function() {
-    if ( this.get('errorMsg') )
-    {
+    if ( this.get('errorMsg') ) {
       return this.get('errorMsg');
-    }
-    else if ( this.get('timedOut') )
-    {
+    } else if ( this.get('timedOut') ) {
       return 'Your session has timed out.  Log in again to continue.';
-    }
-    else
-    {
+    } else {
       return '';
     }
   }.property('timedOut','errorMsg'),

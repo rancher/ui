@@ -33,7 +33,7 @@ export default Ember.Component.extend(Driver, {
       type: 'machine',
       ubiquityConfig: config,
     }));
-  }.on('init'),
+  },
 
   willDestroyElement() {
     this.set('errors', null);

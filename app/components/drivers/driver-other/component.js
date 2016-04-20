@@ -26,7 +26,7 @@ export default Ember.Component.extend(Driver, {
         this.set('driver', this.get('otherChoices.firstObject.value'));
       });
     });
-  }.on('init'),
+  },
 
   willDestroyElement() {
     this.setProperties({

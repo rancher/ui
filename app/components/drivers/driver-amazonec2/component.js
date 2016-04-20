@@ -8,32 +8,32 @@ let RANCHER_INGRESS_RULES = [
   // but explodes with race coditions if try to deploy 2 hosts simultaneously and they both want to create it.
   // So we'll just have the UI create them up front.
   // SSH, for docker-machine to isntall Docker
-  {
-    FromPort: 22,
-    ToPort: 22,
-    CidrIp: '0.0.0.0/0',
-    IpProtocol: 'tcp'
-  },
-  {
-    FromPort: 2376,
-    ToPort: 2376,
-    CidrIp: '0.0.0.0/0',
-    IpProtocol: 'tcp'
-  },
+{
+  FromPort: 22,
+  ToPort: 22,
+  CidrIp: '0.0.0.0/0',
+  IpProtocol: 'tcp'
+},
+{
+  FromPort: 2376,
+  ToPort: 2376,
+  CidrIp: '0.0.0.0/0',
+  IpProtocol: 'tcp'
+},
 
   // Rancher IPSec needs these
-  {
-    FromPort: 500,
-    ToPort: 500,
-    CidrIp: '0.0.0.0/0',
-    IpProtocol: 'udp'
-  },
-  {
-    FromPort: 4500,
-    ToPort: 4500,
-    CidrIp: '0.0.0.0/0',
-    IpProtocol: 'udp'
-  }
+{
+  FromPort: 500,
+  ToPort: 500,
+  CidrIp: '0.0.0.0/0',
+  IpProtocol: 'udp'
+},
+{
+  FromPort: 4500,
+  ToPort: 4500,
+  CidrIp: '0.0.0.0/0',
+  IpProtocol: 'udp'
+}
 ];
 
 let INSTANCE_TYPES = [
@@ -79,23 +79,28 @@ export default Ember.Component.extend(Driver, {
   isGteStep6               : Ember.computed.gte('step',6),
   isGteStep7               : Ember.computed.gte('step',7),
 
-  bootstrap: function() {
+  afterInit: function() {
     let pref   = this.get('prefs.amazonec2')||{};
-    let config = this.get('store').createRecord({
-      type          : 'amazonec2Config',
-      region        : 'us-west-2',
-      instanceType  : 't2.micro',
-      securityGroup : 'rancher-machine',
-      zone          : 'a',
-      rootSize      : 16,
-      accessKey     : pref.accessKey||'',
-      secretKey     : pref.secretKey||'',
-    });
 
-    this.set('model', this.get('store').createRecord({
-      type            : 'machine',
-      amazonec2Config : config,
-    }));
+    if (this.get('clonedModel')) {
+      this.set('model', this.get('clonedModel'));
+    } else {
+      let config = this.get('store').createRecord({
+        type          : 'amazonec2Config',
+        region        : 'us-west-2',
+        instanceType  : 't2.micro',
+        securityGroup : 'rancher-machine',
+        zone          : 'a',
+        rootSize      : 16,
+        accessKey     : pref.accessKey||'',
+        secretKey     : pref.secretKey||'',
+      });
+
+      this.set('model', this.get('store').createRecord({
+        type            : 'machine',
+        amazonec2Config : config,
+      }));
+    }
 
     this.set('editing', false);
     this.initFields();
@@ -376,10 +381,10 @@ export default Ember.Component.extend(Driver, {
       }
 
       out.pushObject({
-          sortKey : `${vpcId} ${subnetId}`,
-          label   : subnetId,
-          value   : subnetId,
-          isVpc   : false,
+        sortKey : `${vpcId} ${subnetId}`,
+        label   : subnetId,
+        value   : subnetId,
+        isVpc   : false,
       });
     });
 

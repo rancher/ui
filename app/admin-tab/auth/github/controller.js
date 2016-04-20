@@ -3,26 +3,32 @@ import C from 'ui/utils/constants';
 import { denormalizeName } from 'ui/services/settings';
 
 export default Ember.Controller.extend({
-  github         : Ember.inject.service(),
-  endpoint       : Ember.inject.service(),
-  access         : Ember.inject.service(),
-  settings       : Ember.inject.service(),
+  github                  : Ember.inject.service(),
+  endpoint                : Ember.inject.service(),
+  access                  : Ember.inject.service(),
+  settings                : Ember.inject.service(),
 
-  confirmDisable : false,
-  errors         : null,
-  testing        : false,
-  saving         : false,
-  saved          : true,
-  error          : null,
-  originalModel  : null,
+  confirmDisable          : false,
+  errors                  : null,
+  testing                 : false,
+  saving                  : false,
+  saved                   : true,
+  error                   : null,
+  originalModel           : null,
 
-  organizations  : null,
-  addUserInput   : '',
-  addOrgInput    : '',
-  scheme         : Ember.computed.alias('model.scheme'),
-  saveDisabled   : Ember.computed.or('saving','saved'),
-  isRestricted   : Ember.computed.equal('model.accessMode','restricted'),
-  wasRestricted  : Ember.computed.equal('originalModel.accessMode','restricted'),
+  organizations           : null,
+  addUserInput            : '',
+  addOrgInput             : '',
+  scheme                  : Ember.computed.alias('model.scheme'),
+  saveDisabled            : Ember.computed.or('saving','saved'),
+  isRestricted            : Ember.computed.equal('model.accessMode','restricted'),
+  wasRestricted           : Ember.computed.equal('originalModel.accessMode','restricted'),
+
+  allowedActualIdentities : Ember.computed.alias('model.allowedIdentities'),
+
+  wasShowing              : false,
+  isEnterprise: false,
+  secure : true,
 
   createDisabled: function() {
     if ( this.get('isEnterprise') && !this.get('model.hostname') )
@@ -38,50 +44,41 @@ export default Ember.Controller.extend({
 
 
   wasRestrictedMsg: function() {
-    let users = this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_USER).get('length');
-    let orgs = this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_ORG).get('length');
+    let users      = this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_USER).get('length');
+    let orgs       = this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_ORG).get('length');
     let enterprise = !!this.get('originalModel.hostname');
 
-    let github = 'GitHub' + ( enterprise ? ' Enterprise' : '');
+    let github     = 'GitHub' + ( enterprise ? ' Enterprise' : '');
 
-    let str = 'project members';
-    if ( users )
-    {
+    let str        = 'project members';
+
+    if ( users ) {
       str += (orgs ? ', ' : ' and ') +  users + ' ' + github + ' user' + (users === 1 ? '' : 's');
     }
 
-    if ( orgs )
-    {
+    if ( orgs ) {
       str += ' and ' + orgs + (users ? '' : ' ' + github) + ' organization' + ( orgs === 1 ? '' : 's');
     }
 
     return str;
   }.property('originalModel.allowedIdentities.[]','wasRestricted'),
 
-  allowedActualIdentities: Ember.computed.alias('model.allowedIdentities'),
-
-  wasShowing: false,
   showingAccessControl: function() {
-    let show = this.get('wasShowing');
+    let show       = this.get('wasShowing');
     let restricted = this.get('isRestricted');
 
-    if ( restricted )
-    {
-      if ( this.get('allowedActualIdentities.length') > 1 )
-      {
+    if ( restricted ) {
+      if ( this.get('allowedActualIdentities.length') > 1 ) {
+        show = true;
+      } else if ( this.get('allowedActualIdentities.firstObject.id') !== this.get('access.identity.id') ) {
         show = true;
       }
-      else if ( this.get('allowedActualIdentities.firstObject.id') !== this.get('access.identity.id') )
-      {
-        show = true;
-      }
-    }
-    else
-    {
+    } else {
       show = true;
     }
 
     this.set('wasShowing', show);
+
     return show;
   }.property('allowedActualIdentities.@each.id','isRestricted','wasShowing'),
 
@@ -93,15 +90,12 @@ export default Ember.Controller.extend({
     this.set('saved',false);
   }.observes('model.accessMode'),
 
-  isEnterprise: false,
-  secure : true,
   updateEnterprise: function() {
-    if ( this.get('isEnterprise') )
-    {
+    if ( this.get('isEnterprise') ) {
       var match;
       var hostname = this.get('model.hostname')||'';
-      if ( match = hostname.match(/^http(s)?:\/\//i) )
-      {
+
+      if ( match = hostname.match(/^http(s)?:\/\//i) ) {
         this.set('secure', ((match[1]||'').toLowerCase() === 's'));
         hostname = hostname.substr(match[0].length).replace(/\/.*$/,'');
         this.set('model.hostname', hostname);
@@ -134,18 +128,20 @@ export default Ember.Controller.extend({
 
       let model = this.get('model');
       model.setProperties({
-        'clientId': (model.get('clientId')||'').trim(),
-        'clientSecret': (model.get('clientSecret')||'').trim(),
-        'enabled': false, // It should already be, but just in case..
-        'accessMode': 'unrestricted',
-        'allowedIdentities': [],
+        'clientId'          : (model.get('clientId')||'').trim(),
+        'clientSecret'      : (model.get('clientSecret')||'').trim(),
+        'enabled'           : false, // It should already be, but just in case..
+        'accessMode'        : 'unrestricted',
+        'allowedIdentities' : [],
       });
 
       // Send authenticate immediately so that the popup isn't blocked,
       // even though the config isn't necessarily saved yet...
-      this.set('github.hostname', model.get('hostname'));
-      this.set('github.scheme', model.get('scheme'));
-      this.set('github.clientId', model.get('clientId'));
+      this.get('github').setProperties({
+        hostname : model.get('hostname'),
+        scheme   : model.get('scheme'),
+        clientId : model.get('clientId')
+      });
       this.send('authenticate');
 
       model.save().catch(err => {

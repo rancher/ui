@@ -8,28 +8,32 @@ function proxifyUrl(url, proxyBase) {
   let parsed = Util.parseUrl(url);
 
   if ( parsed.hostname.indexOf('.') === -1  || // No dot, local name like localhost
-       parsed.hostname.toLowerCase().match(/\.local$/) || // your-macbook.local
-       parsed.origin.toLowerCase() === window.location.origin // You are here
-    ) {
-      return url;
+      parsed.hostname.toLowerCase().match(/\.local$/) || // your-macbook.local
+      parsed.origin.toLowerCase() === window.location.origin // You are here
+     ) {
+    return url;
   } else {
     return  proxyBase + '/' + url;
   }
 }
 
 export default Ember.Route.extend({
-  access: Ember.inject.service(),
-  settings: Ember.inject.service(),
+  access         : Ember.inject.service(),
+  settings       : Ember.inject.service(),
+  backTo         : null,
+
 
   queryParams: {
     driver: {
       refreshModel: true
+    },
+    machineId: {
+      refreshModel: false,
     }
   },
 
-  backTo: null,
-
   beforeModel(/*transition*/) {
+    this._super(...arguments);
     return this.get('userStore').findAll('machinedriver',  {authAsUser: true}).then((drivers) => {
       return new Ember.RSVP.Promise((resolve, reject) => {
         let systemDrivers = DriverChoices.drivers;
@@ -55,20 +59,23 @@ export default Ember.Route.extend({
             if (!systemDrivers.findBy('name', driver.name)) {
 
               expected++;
-              let script = document.createElement('script');
-              script.onload = function() { loaded(driver.name); };
+              let script     = document.createElement('script');
+              script.onload  = function() { loaded(driver.name); };
               script.onerror = function() {errored(driver.name); };
-              script.src = proxifyUrl(driver.uiUrl, this.get('app.proxyEndpoint'));
-              script.id = id;
+              script.src     = proxifyUrl(driver.uiUrl, this.get('app.proxyEndpoint'));
+              script.id      = id;
+
               document.getElementsByTagName('BODY')[0].appendChild(script);
 
               expected++;
-              let link = document.createElement('link');
-              link.rel = 'stylesheet';
-              link.id = id;
-              link.href = proxifyUrl(driver.uiUrl.replace(/\.js$/,'.css'), this.get('app.proxyEndpoint'));
-              link.onload = function() { loaded(driver.name); };
+
+              let link     = document.createElement('link');
+              link.rel     = 'stylesheet';
+              link.id      = id;
+              link.href    = proxifyUrl(driver.uiUrl.replace(/\.js$/,'.css'), this.get('app.proxyEndpoint'));
+              link.onload  = function() { loaded(driver.name); };
               link.onerror = function() { errored(driver.name); };
+
               document.getElementsByTagName('HEAD')[0].appendChild(link);
 
               DriverChoices.drivers.push({
@@ -102,6 +109,7 @@ export default Ember.Route.extend({
 
     if ( this.get('access.admin') ) {
       let settings = this.get('settings');
+      let out = null;
       return settings.load(C.SETTING.API_HOST).then(() => {
         let controller = this.controllerFor('hosts.new');
         if ( settings.get(C.SETTING.API_HOST) ) {
@@ -112,9 +120,36 @@ export default Ember.Route.extend({
             hostModel: settings.get(C.SETTING.API_HOST)
           });
         }
-        return Ember.RSVP.resolve();
+
+        if (params.machineId) {
+          out = this.getMachine(params.machineId);
+        } else {
+          out = Ember.RSVP.resolve();
+        }
+
+        return out;
       });
+    } else {
+      if (params.machineId) {
+        return this.getMachine(params.machineId);
+      }
     }
+  },
+
+  getMachine(machineId) {
+    return this.get('store').find('machine', machineId).then((machine) => {
+
+      let machineOut = machine.cloneForNew();
+      let config = this.get('store').createRecord(machine[`${machine.driver}Config`]);
+
+      machine.set(`${machine.driver}Config`, config);
+
+      this.controllerFor('hosts.new').set('clonedModel', machineOut);
+
+      return Ember.RSVP.resolve();
+    }).catch(() => {
+      return Ember.RSVP.reject({type: 'error', message: 'Failed to retrieve cloned model'}) ;
+    });
   },
 
   activate() {
@@ -143,9 +178,11 @@ export default Ember.Route.extend({
         this.transitionTo('applications-tab.compose-waiting');
       } else {
         let appRoute = getOwner(this).lookup('route:application');
-        let opts = this.get('previousOpts');
+        let opts     = this.get('previousOpts');
+
         appRoute.set('previousRoute', opts.name);
         appRoute.set('previousParams', opts.params);
+
         this.send('goToPrevious','hosts');
       }
     }

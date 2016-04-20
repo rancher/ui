@@ -2,18 +2,18 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
-  cookies: Ember.inject.service(),
-  github: Ember.inject.service(),
-  access: Ember.inject.service(),
-  settings: Ember.inject.service(),
+  cookies        : Ember.inject.service(),
+  github         : Ember.inject.service(),
+  access         : Ember.inject.service(),
+  settings       : Ember.inject.service(),
 
-  previousParams: null,
-  previousRoute: null,
+  previousParams : null,
+  previousRoute  : null,
 
   actions: {
     loading(transition/*, originRoute*/) {
       //console.log('Loading action...');
-      var show = Ember.run.next(() => {
+      let show = Ember.run.next(() => {
         $('#loading-underlay').show().fadeIn({duration: 100, queue: false, easing: 'linear', complete: function() {
           $('#loading-overlay').show().fadeIn({duration: 200, queue: false, easing: 'linear'});
         }});
@@ -35,18 +35,18 @@ export default Ember.Route.extend({
     openOverlay(template, view, model, controller) {
       view = view || 'overlay';
       return this.render(template, {
-        into: 'application',
-        outlet: 'overlay',
-        view: view,
-        model: model,
-        controller: controller,
+        into       : 'application',
+        outlet     : 'overlay',
+        view       : view,
+        model      : model,
+        controller : controller,
       });
     },
 
     closeOverlay() {
       return this.disconnectOutlet({
-        parentView: 'application',
-        outlet: 'overlay'
+        parentView : 'application',
+        outlet     : 'overlay'
       });
     },
 
@@ -66,26 +66,25 @@ export default Ember.Route.extend({
     },
 
     logout(transition, timedOut, errorMsg) {
-      var session = this.get('session');
+      let session = this.get('session');
+
       session.set(C.SESSION.ACCOUNT_ID,null);
+
       this.get('tab-session').clear();
 
       this.get('access').clearSessionKeys(true);
 
-      if ( transition )
-      {
+      if ( transition ) {
         session.set(C.SESSION.BACK_TO, window.location.href);
       }
 
-      var params = {queryParams: {}};
+      let params = {queryParams: {}};
 
-      if ( timedOut )
-      {
+      if ( timedOut ) {
         params.queryParams.timedOut = true;
       }
 
-      if ( errorMsg )
-      {
+      if ( errorMsg ) {
         params.queryParams.errorMsg = errorMsg;
       }
 
@@ -94,47 +93,45 @@ export default Ember.Route.extend({
   },
 
   finishLogin() {
-    var session = this.get('session');
+    let session = this.get('session');
 
-    var backTo = session.get(C.SESSION.BACK_TO);
+    let backTo = session.get(C.SESSION.BACK_TO);
     session.set(C.SESSION.BACK_TO, undefined);
 
-    if ( backTo )
-    {
+    if ( backTo ) {
       window.location.href = backTo;
-    }
-    else
-    {
+    } else {
       this.replaceWith('authenticated');
     }
   },
 
   model(params, transition) {
-    var github = this.get('github');
-    var stateMsg = 'Authorization state did not match, please try again.';
+    let github   = this.get('github');
+    let stateMsg = 'Authorization state did not match, please try again.';
 
     if (params.isPopup) {
       this.controllerFor('application').set('isPopup', true);
     }
 
-    if ( params.isTest )
-    {
-      if ( github.stateMatches(params.state) )
-      {
+    if ( params.isTest ) {
+      if ( github.stateMatches(params.state) ) {
         reply(params.error_description, params.code);
-      }
-      else
-      {
+      } else {
         reply(stateMsg);
       }
+
       transition.abort();
+
       return Ember.RSVP.reject('isTest');
-    }
-    else if ( params.code )
-    {
-      if ( github.stateMatches(params.state) )
-      {
+
+    } else if ( params.code ) {
+
+      if ( github.stateMatches(params.state) ) {
         return this.get('access').login(params.code).then(() => {
+          // Abort the orignial transition that was coming in here since
+          // we'll redirect the user manually in finishLogin
+          // if we dont then model hook runs twice to finish the transition itself
+          transition.abort();
           // Can't call this.send() here because the initial transition isn't done yet
           this.finishLogin();
         }).catch((err) => {
@@ -145,11 +142,13 @@ export default Ember.Route.extend({
             code: null,
           });
         });
-      }
-      else
-      {
-        var obj = {message: stateMsg, code: 'StateMismatch'};
+
+      } else {
+
+        let obj = {message: stateMsg, code: 'StateMismatch'};
+
         this.controllerFor('application').set('error', obj);
+
         return Ember.RSVP.reject(obj);
       }
     }
@@ -161,8 +160,7 @@ export default Ember.Route.extend({
           window.close();
         },250);
         return new Ember.RSVP.promise();
-      }
-      catch(e) {
+      } catch(e) {
         window.close();
       }
     }
@@ -175,9 +173,9 @@ export default Ember.Route.extend({
   beforeModel() {
     this.updateWindowTitle();
 
-    var agent = window.navigator.userAgent.toLowerCase();
-    if ( agent.indexOf('msie ') >= 0 || agent.indexOf('trident/') >= 0 )
-    {
+    let agent = window.navigator.userAgent.toLowerCase();
+
+    if ( agent.indexOf('msie ') >= 0 || agent.indexOf('trident/') >= 0 ) {
       this.replaceWith('ie');
       return;
     }

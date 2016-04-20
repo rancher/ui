@@ -31,5 +31,5 @@ export default Ember.Component.extend(Driver, {
       type: 'machine',
       packetConfig: config,
     }));
-  }.on('init')
+  }
 });
