@@ -116,10 +116,10 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     var active = this.get('activeOrchestration');
 
     var drivers = [
-      {name: 'rancher',     label: 'Corral',      css: 'rancher'},
-      {name: 'kubernetes',  label: 'Kubernetes',  css: 'kubernetes'},
-      {name: 'swarm',       label: 'Swarm',       css: 'swarm'},
-      {name: 'mesos',       label: 'Mesos',       css: 'mesos'},
+      {name: 'rancher',     label: 'Corral',      css: 'rancher',     tabindex: '1'},
+      {name: 'kubernetes',  label: 'Kubernetes',  css: 'kubernetes',  tabindex: '1'},
+      {name: 'swarm',       label: 'Swarm',       css: 'swarm',       tabindex: '1'}, 
+      {name: 'mesos',       label: 'Mesos',       css: 'mesos',       tabindex: '1'},
     ];
 
     drivers.forEach(function(driver) {
