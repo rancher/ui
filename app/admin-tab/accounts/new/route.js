@@ -2,8 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
-    var account = this.get('store').createRecord({type: 'account', kind: 'user'});
-    var credential = this.get('store').createRecord({type: 'password'});
+    var account = this.get('userStore').createRecord({type: 'account', kind: 'user'});
+    var credential = this.get('userStore').createRecord({type: 'password'});
 
     return Ember.Object.create({
       account: account,
