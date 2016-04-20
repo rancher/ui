@@ -8,6 +8,7 @@ import { addAction } from 'ui/utils/add-view-action';
 export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   settings: Ember.inject.service(),
   docsBase:  C.EXT_REFERENCES.DOCS,
+  createDelayMs: 0,
 
   queryParams: ['machineId'],
   machineId: null,
@@ -112,17 +113,34 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   didSave: function() {
     if ( this.get('count') > 1 )
     {
-      var parts = this.get('nameParts');
-      var promises = [];
-      var machine;
-      for ( var i = parts.start + 1 ; i <= parts.end ; i++ )
-      {
-        machine = this.get('multiTemplate').clone();
-        machine.set('name', parts.prefix + Util.strPad(i, parts.minLength, '0'));
-        promises.push(machine.save());
-      }
+      let parts = this.get('nameParts');
+      let tpl = this.get('multiTemplate');
+      let delay = this.get('createDelayMs');
+      var promise = new Ember.RSVP.Promise(function(resolve,reject) {
+        let machines = [];
+        for ( let i = parts.start + 1 ; i <= parts.end ; i++ )
+        {
+          let machine = tpl.clone();
+          machine.set('name', parts.prefix + Util.strPad(i, parts.minLength, '0'));
+          machines.push(machine);
+        }
 
-      return Ember.RSVP.all(promises);
+        async.eachSeries(machines, function(machine, cb) {
+          machine.save().then(() => {
+            setTimeout(cb, delay);
+          }).catch((err) => {
+            cb(err);
+          });
+        }, function(err) {
+          if ( err ) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
+      });
+
+      return promise;
     }
   },
 

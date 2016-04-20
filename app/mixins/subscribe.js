@@ -13,6 +13,7 @@ export default Ember.Mixin.create({
   k8sUidBlacklist : null,
 
   connectSubscribe() {
+    this.disconnectSubscribe();
     var projectId = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
 
     console.log('Connect socket for', projectId);
