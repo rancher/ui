@@ -77,6 +77,99 @@ H1, H2, H3, H4, H5, H6, SECTION.header {
   padding: 0;
 }
 
+/**********
+* alerts and banners
+**********/
+.alert {
+  position : relative;
+  color    : white;
+
+  .alert-link {
+    text-decoration: none;
+  }
+
+  &.alert-header {
+    padding-left: 0;
+
+    &.alert-success {
+      .banner-head {
+        background  : $greenDark;
+
+        &:after {
+          border-left-color: $greenDark;
+        }
+      }
+    }
+
+    &.alert-info {
+      .banner-head {
+        background  : $lightTealDark;
+
+        &:after {
+          border-left-color: $lightTealDark;
+        }
+      }
+    }
+
+    &.alert-warning {
+      .banner-head {
+        background  : $yellowDark;
+
+        &:after {
+          border-left-color: $yellowDark;
+        }
+      }
+    }
+
+    &.alert-danger {
+      .banner-head {
+        background  : $redDark;
+
+        &:after {
+          border-left-color: $redDark;
+        }
+      }
+    }
+  }
+
+   .banner-head {
+    // background  : $lightTealDark;
+    left        : 0;
+    top         : 0;
+    bottom      : 0;
+    color       : white;
+    line-height : 20px;
+    padding     : 16px;
+    font-weight : bold;
+    position: relative;
+
+    &:after {
+      content           : "";
+      display           : block;
+      border-color      : transparent;
+      border-width      : 7px;
+      border-style      : solid;
+      border-left-color : $lightTealDark;
+      position          : absolute;
+      right             : -14px;
+      top               : 33%;
+    }
+  }
+
+  & .banner-content {
+    margin-left   : 15px;
+    padding-right : 15px;
+
+    span:first-of-type {
+      margin-right : 15px;
+    }
+  }
+
+  & a {
+    color : $tealTwoDark;
+  }
+}
+
 /*tables*/
 table {
   background-color: transparent;
@@ -323,6 +416,7 @@ fieldset[disabled] .btn {
   display: inline-block;
   min-width: 10px;
   font-size: 13px;
+  padding: 5px;
   font-weight: 400;
   color: $well-bg;
   line-height: 1;
@@ -869,4 +963,3 @@ INPUT[type="checkbox"] {
     }
 
 }
-
