@@ -14,5 +14,6 @@ export function initialize(/*application*/) {
 
 export default {
   name: 'lookup',
-  initialize: initialize
+  initialize: initialize,
+  after: 'user-store',
 };

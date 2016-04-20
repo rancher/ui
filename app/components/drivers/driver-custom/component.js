@@ -65,9 +65,8 @@ export default Ember.Component.extend(ManageLabels, {
 
     if (cattleIp) {
       if ( idx >= 0 ) {
-        cmd = `${cmd.substr(0, idx + lookFor.length)} -e CATTLE_AGENT_IP='${cattleIp}' ${cmd.substr(idx + lookFor.length)}`;
+        cmd = `${cmd.substr(0, idx + lookFor.length)} -e CATTLE_AGENT_IP="${cattleIp}" ${cmd.substr(idx + lookFor.length)}`;
       }
-
     }
 
     return cmd;
