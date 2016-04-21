@@ -56,13 +56,10 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     },
 
     selectOrchestration(name) {
-      var k8s = (name === 'kubernetes');
-      var swarm = (name === 'swarm');
-      var mesos = (name === 'mesos');
       this.get('project').setProperties({
-        kubernetes: k8s,
-        swarm: swarm,
-        mesos: mesos,
+        kubernetes: (name === 'kubernetes'),
+        swarm: (name === 'swarm'),
+        mesos: (name === 'mesos'),
       });
       this.set('activeOrchestration', name);
     },
@@ -114,13 +111,23 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
 
   orchestrationChoices: function() {
     var active = this.get('activeOrchestration');
+    var fields = this.get('userStore').getById('schema','project').get('resourceFields');
 
     var drivers = [
-      {name: 'rancher',     label: 'Corral',      css: 'rancher',     tabindex: '1'},
-      {name: 'kubernetes',  label: 'Kubernetes',  css: 'kubernetes',  tabindex: '1'},
-      {name: 'swarm',       label: 'Swarm',       css: 'swarm',       tabindex: '1'}, 
-      {name: 'mesos',       label: 'Mesos',       css: 'mesos',       tabindex: '1'},
+      {name: 'rancher',     label: 'Corral',      css: 'rancher'}
     ];
+
+    if ( fields.kubernetes ) {
+      drivers.push({name: 'kubernetes',  label: 'Kubernetes',  css: 'kubernetes'});
+    }
+
+    if ( fields.mesos ) {
+      drivers.push({name: 'mesos',       label: 'Mesos',       css: 'mesos'});
+    }
+
+    if ( fields.swarm ) {
+      drivers.push({name: 'swarm',       label: 'Swarm',       css: 'swarm'});
+    }
 
     drivers.forEach(function(driver) {
       driver.active = ( active === driver.name );
