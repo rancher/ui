@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import config from './config/environment';
-import {applyRoutes} from 'ui/utils/additional-routes';
+import {applyRoutes, clearRoutes} from 'ui/utils/additional-routes';
 
 const Router = Ember.Router.extend({
   location: config.locationType
@@ -343,7 +343,12 @@ Router.map(function() {
   });
 
   // Load any custom routes from additional-routes
-  applyRoutes(this);
+  var cb = applyRoutes("application");
+  if( cb ) {
+    cb.apply(this);
+  }
+  clearRoutes();
 });
+
 
 export default Router;
