@@ -116,7 +116,12 @@ var C = {
     PROJECT_DEFAULT : 'defaultProjectId',
     EXPANDED_STACKS : 'expandedStacks',
     SORT_STACKS_BY  : 'sortStacksBy',
-    THEME           : 'theme'
+    THEME           : 'theme',
+    LANGUAGE        : 'language'
+  },
+
+  LANGUAGE: {
+    DEFAULT: 'en-us'
   },
 
   THEME: {
