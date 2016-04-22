@@ -1,27 +1,6 @@
 import Ember from 'ember';
 import DriverChoices from 'ui/utils/driver-choices';
 
-let defaultDriver = 'custom';
-
-// Addon integration hooks
-export function getDrivers() {
-  return DriverChoices.drivers.slice();
-}
-
-export function addDriver(driver) {
-  DriverChoices.drivers.push(driver);
-}
-
-export function removeDriver(nameOrObj) {
-  let name = ( typeof nameOrObj === 'object' ? nameOrObj.name : nameOrObj);
-  DriverChoices.drivers.removeObjects(DriverChoices.drivers.filterBy('name', name));
-}
-
-export function setDefaultDriver(name) {
-  defaultDriver = name;
-}
-// End: Addon integration hooks
-
 export default Ember.Controller.extend({
   queryParams : ['backTo', 'driver', 'machineId'],
   backTo      : null,
@@ -31,10 +10,6 @@ export default Ember.Controller.extend({
   apiHostSet  : true,
   clonedModel : null,
   machineId   : null,
-
-  setDefaultDriver: function() {
-    this.set('lastRoute', `${defaultDriver}`);
-  }.on('init'),
 
   actions: {
     switchDriver(name) {
@@ -48,22 +23,27 @@ export default Ember.Controller.extend({
     },
   },
 
+  onInit: function() {
+    this.set('lastRoute', DriverChoices.getDefault());
+  }.on('init'),
+
+
   drivers: function() {
     let store = this.get('store');
     let has = store.hasRecordFor.bind(store,'schema');
 
-    let actuallyHasNames = Object.keys(store.getById('schema','machine').get('resourceFields')).filter((name) => {
-      return name.indexOf('Config') >= 1;
+    let actuallyHaveNames = Object.keys(store.getById('schema','machine').get('resourceFields')).filter((name) => {
+      return !!name.match(/.+Config$/);
     }).map((name) => {
       return name.toLowerCase();
     });
 
-    return DriverChoices.drivers.filter((driver) => {
+    return DriverChoices.get().filter((driver) => {
       Ember.set(driver,'active', `${driver.name}` === this.get('lastRoute'));
 
       if ( driver.schema ) {
         let name = driver.schema.toLowerCase();
-        return has(name) && actuallyHasNames.indexOf(name) >= 0;
+        return has(name) && actuallyHaveNames.indexOf(name) >= 0;
       } else {
         return true;
       }

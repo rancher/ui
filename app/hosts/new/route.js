@@ -36,7 +36,7 @@ export default Ember.Route.extend({
     this._super(...arguments);
     return this.get('userStore').findAll('machinedriver',  {authAsUser: true}).then((drivers) => {
       return new Ember.RSVP.Promise((resolve, reject) => {
-        let systemDrivers = DriverChoices.drivers;
+        let choices = DriverChoices.get();
         let completed = 0, expected = 0;
         let timer = null;
 
@@ -56,7 +56,7 @@ export default Ember.Route.extend({
         drivers.forEach((driver) => {
           var id = 'driver-ui-js-' + driver.name;
           if (driver.uiUrl && $(`#${id}`).length === 0 ) {
-            if (!systemDrivers.findBy('name', driver.name)) {
+            if (!choices.findBy('name', driver.name)) {
 
               expected++;
               let script     = document.createElement('script');
@@ -64,26 +64,24 @@ export default Ember.Route.extend({
               script.onerror = function() {errored(driver.name); };
               script.src     = proxifyUrl(driver.uiUrl, this.get('app.proxyEndpoint'));
               script.id      = id;
-
               document.getElementsByTagName('BODY')[0].appendChild(script);
 
               expected++;
-
               let link     = document.createElement('link');
               link.rel     = 'stylesheet';
               link.id      = id;
               link.href    = proxifyUrl(driver.uiUrl.replace(/\.js$/,'.css'), this.get('app.proxyEndpoint'));
               link.onload  = function() { loaded(driver.name); };
               link.onerror = function() { errored(driver.name); };
-
               document.getElementsByTagName('HEAD')[0].appendChild(link);
 
-              DriverChoices.drivers.push({
-                name  : driver.name, //driver.name
-                label : driver.name.capitalize(),
-                css   : driver.name,
-                sort  : 3,
-                src   : driver.uiUrl
+              DriverChoices.add({
+                name   : driver.name, //driver.name
+                label  : driver.name.capitalize(),
+                css    : driver.name,
+                sort   : 2,
+                schema : `${driver.name}Config`,
+                src    : driver.uiUrl,
               });
             }
           }
