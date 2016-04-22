@@ -37,7 +37,7 @@ class AdditionalHeaderLink {
   getLinkIdWithoutSub() {
     return this._links.map(function(e) {
       return e.id;
-    });;
+    });
   }
 
 }
