@@ -200,6 +200,21 @@
         {{#link-to "authenticated.project.apikeys" projectId id="api-tab"}}API{{/link-to}}
       </li>
 
+      {{#each additionnalLinks as |link|}}
+        <li>
+          {{#link-to link.urlid id=link.id}}{{link.label}}{{/link-to}}
+
+          {{#if link.hasSubLinks}}
+          <ul class="hidden-md hidden-lg">
+
+            {{#each link.links as |sublink|}}
+              {{#link-to sublink.urlid}}{{sublink.label}}{{/link-to}}
+            {{/each}}
+          </ul>
+          {{/if}}
+        </li>
+      {{/each}}
+
       <li>
         {{#link-to "authenticated.project.help" projectId id="help-tab"}}Help{{/link-to}}
       </li>
