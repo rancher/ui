@@ -2,7 +2,6 @@ import Ember from 'ember';
 import { isGecko } from 'ui/utils/platform';
 
 export default Ember.TextArea.extend({
-  text: null,
   minHeight: 0,
   maxHeight: 200,
 
@@ -18,15 +17,16 @@ export default Ember.TextArea.extend({
     });
   },
 
-  keyUp() {
+  changed: function() {
     Ember.run.debounce(this,'autoSize',100);
-  },
+  }.observes('value'),
 
   isSmall: function() {
     return this.$().hasClass('input-sm');
   }.property(),
 
   autoSize() {
+    console.log('autosize');
     let el = this.element;
     let $el = $(el);
 

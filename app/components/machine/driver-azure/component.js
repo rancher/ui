@@ -46,12 +46,6 @@ export default Ember.Component.extend(Driver, {
     }
   }.on('init'),
 
-  actions: {
-    readFile(field, text) {
-      this.set(field, text.trim());
-    },
-  },
-
   validate: function() {
     let errors = [];
 

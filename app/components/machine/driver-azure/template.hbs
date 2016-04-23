@@ -1,58 +1,59 @@
-{{top-errors errors=errors}}
-
 <section class="horizontal-form">
   <div class="container-fluid">
     {{partial "host/add-common"}}
 
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Account Access</span>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Username</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         {{input type="text" value=azureConfig.username classNames="form-control" placeholder="Your Azure account username"}}
       </div>
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Password</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         {{input type="password" value=azureConfig.password classNames="form-control" placeholder="Your Azure account password"}}
       </div>
     </div>
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Subscription Id*</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         {{input type="text" value=azureConfig.subscriptionId classNames="form-control" placeholder="Your Azure subscription id"}}
       </div>
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Subscription Cert*</label>
-        {{read-text-file accept="text/*, .cer" action=(action "readFile" "subscriptionCert")}}
       </div>
-      <div class="col-sm-12 col-md-3">
-        {{textarea value=subscriptionCert classNames="form-control" placeholder="Your Azure subscription certificate"}}
+      <div class="col-md-4">
+        {{read-text-file
+          value=subscriptionCert
+          placeholder="Your Azure subscription certificate"
+          accept="text/*, .cer"
+        }}
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Instance</span>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Image</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         {{input type="text" value=azureConfig.image classNames="form-control" placeholder="Ubuntu 15.10 x64"}}
       </div>
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Size</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         {{new-select
           classNames="form-control"
           content=sizeChoices
@@ -63,45 +64,48 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">SSH Port</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         {{input type="text" value=azureConfig.sshPort classNames="form-control" placeholder="22"}}
       </div>
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Docker Port</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         {{input type="text" value=azureConfig.dockerPort classNames="form-control" placeholder="2376"}}
       </div>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Docker Swarm Master Port</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         {{input type="text" value=azureConfig.dockerSwarmMasterPort classNames="form-control" placeholder="3376"}}
       </div>
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Publish Settings File</label>
-        {{read-text-file accept="text/*, .publishsettings" action=(action "readFile" "azureConfig.publishSettingsFile")}}
       </div>
-      <div class="col-sm-12 col-md-3">
-        {{textarea value=azureConfig.publishSettingsFile classNames="form-control" placeholder="Your Publish Settings file"}}
+      <div class="col-md-4">
+        {{read-text-file
+          value=azureConfig.publishSettingsFile
+          placeholder="Your Publish Settings file"
+          accept="text/*, .publishsettings"
+        }}
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Region</span>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Region</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-10">
         {{new-select
           classNames="form-control"
           content=regionChoices
@@ -113,8 +117,8 @@
     </div>
 
     {{partial "host/add-options"}}
-
   </div>
 
+  {{top-errors errors=errors}}
   {{partial "save-cancel"}}
 </section>
