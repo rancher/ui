@@ -17,16 +17,22 @@
         <div class="col-sm-12 col-md-6">
           <div class="clearfix r-mb10 r-mt15">
             <label class="r-pt5">Optional: docker-compose.yml</label>
-            {{read-text-file accept=".yml, .yaml" action=(action "readFile" "dockerCompose") class="pull-right"}}
           </div>
-          {{textarea value=primaryResource.dockerCompose classNames="form-control no-resize" rows="4" placeholder="Contents of docker-compose.yml"}}
+          {{input-text-file
+            accept=".yml, .yaml"
+            value=primaryResource.dockerCompose
+            placeholder="Contents of docker-compose.yml"
+          }}
         </div>
         <div class="col-sm-12 col-md-6">
           <div class="clearfix r-mb10 r-mt15">
             <label class="r-pt5">Optional: rancher-compose.yml</label>
-            {{read-text-file accept=".yml, .yaml" action=(action "readFile" "rancherCompose") class="pull-right"}}
           </div>
-          {{textarea value=primaryResource.rancherCompose classNames="form-control no-resize" rows="4" placeholder="Contents of rancher-compose.yml"}}
+          {{input-text-file
+            accept=".yml, .yaml"
+            value=primaryResource.rancherCompose
+            placeholder="Contents of rancher-compose.yml"
+          }}
         </div>
     </div>
     <div class="row">

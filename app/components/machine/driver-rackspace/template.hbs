@@ -4,38 +4,38 @@
   <div class="container-fluid">
     {{partial "host/add-common"}}
 
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Account Access</span>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Username*</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-10">
         {{input type="text" value=rackspaceConfig.username classNames="form-control" placeholder="Your RackSpace username"}}
       </div>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">API Key*</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-10">
         {{input type="password" value=rackspaceConfig.apiKey classNames="form-control" placeholder="Your RackSpace API key"}}
         <p class="help-block">From the Account Settings screen of the RackSpace control panel</p>
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Region</span>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Region</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-10">
         <select class="form-control" onchange={{action (mut rackspaceConfig.region) value="target.value"}}>
           {{#each regionChoices as |choice|}}
             <option value={{choice.value}} selected={{eq rackspaceConfig.region choice.value}}>{{choice.label}}</option>
@@ -44,15 +44,15 @@
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Instance</span>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Flavor</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-10">
         <select class="form-control" onchange={{action (mut rackspaceConfig.flavorId) value="target.value"}}>
           {{#each flavorChoices as |choice|}}
             <option value={{choice.value}} selected={{eq rackspaceConfig.flavorId choice.value}}>{{choice.label}}</option>

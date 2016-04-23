@@ -1,27 +1,34 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  tagName      : ['span'],
+  value        : null,
+  placeholder  : "",
+  tooltip      : "Read from a file",
   accept       : "text/*",
-  btnClass     : "btn-sm btn-primary",
+  btnClass     : "btn btn-primary",
   btnLabel     : "Read from File",
   encode       : false,
+  minHeight    : 0,
+  maxHeight    : 200,
+
+  tagName      : ['div'],
+  classNames   : ['input-group'],
 
   _boundChange : null,
 
   actions: {
     click() {
-      this.$('INPUT')[0].click();
+      this.$('INPUT[type=file]')[0].click();
     }
   },
 
   didInsertElement() {
     this.set('_boundChange', (event) => { this.change(event); });
-    this.$('INPUT').on('change', this.get('_boundChange'));
+    this.$('INPUT[type=file]').on('change', this.get('_boundChange'));
   },
 
   willDestroyElement() {
-    this.$('INPUT').off('change', this.get('_boundChange'));
+    this.$('INPUT[type=file]').off('change', this.get('_boundChange'));
   },
 
   change(event) {
@@ -35,7 +42,7 @@ export default Ember.Component.extend({
           out = btoa(out);
         }
 
-        this.sendAction('action', out);
+        this.set('value', out);
       };
       reader.readAsText(input.files[0]);
     }

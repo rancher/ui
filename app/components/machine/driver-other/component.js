@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import Driver from 'ui/mixins/driver';
-
-const exclude = ['amazonec2Config','azureConfig', 'digitaloceanConfig','exoscaleConfig','packetConfig','rackspaceConfig','ubiquityConfig'];
+import DriverChoices from 'ui/utils/driver-choices';
 
 export default Ember.Component.extend(Driver, {
   driverName      : 'other',
@@ -62,12 +61,13 @@ export default Ember.Component.extend(Driver, {
     let fields = schema.get('resourceFields');
     let keys   = Object.keys(fields);
     let out    = [];
+    let exclude = DriverChoices.get().map((driver) => { return (driver.schema||'').toLowerCase(); });
 
     keys.forEach((key) => {
       let field = fields[key];
       let match;
 
-      if ( exclude.indexOf(key) === -1 ) {
+      if ( exclude.indexOf(key.toLowerCase()) === -1 ) {
         if ( match = field.type.match(/^(.*)Config$/) ) {
           out.push({label: match[1], value: key});
         }

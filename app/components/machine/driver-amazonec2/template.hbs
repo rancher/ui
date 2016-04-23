@@ -1,17 +1,15 @@
-{{top-errors errors=errors}}
-
 <section class="horizontal-form">
   <form>
     <div class="container-fluid">
-      <div class="over-hr" style="margin: 20px 0;">
+      <div class="over-hr r-mt20 r-mb20">
         <span>Account Access</span>
       </div>
 
       <div class="row {{if isStep1 'form-group'}}">
-        <div class="col-sm-12 col-md-2 form-label">
+        <div class="col-md-2 form-label">
           <label class="form-control-static">Access Key</label>
         </div>
-        <div class="col-sm-12 col-md-8">
+        <div class="col-md-8">
           {{#if isStep1}}
             {{input type="text" name="username" classNames="form-control" placeholder="Your AWS access key" value=amazonec2Config.accessKey}}
           {{else}}
@@ -20,10 +18,10 @@
         </div>
       </div>
       <div class="row {{if isStep1 'form-group'}}">
-        <div class="col-sm-12 col-md-2 form-label">
+        <div class="col-md-2 form-label">
           <label class="form-control-static">Secret Key</label>
         </div>
-        <div class="col-sm-12 col-md-8">
+        <div class="col-md-8">
           {{#if isStep1}}
             {{input type="password" name="password" classNames="form-control" placeholder="Your AWS secret key" value=amazonec2Config.secretKey}}
           {{else}}
@@ -36,6 +34,8 @@
       </div>
     </div>
     {{#if isStep1}}
+      {{top-errors errors=errors}}
+
       <div class="footer-actions">
         <button {{action "awsLogin"}} name="submit" class="btn btn-primary">Next: Authenticate &amp; select a network</button>
         <button {{action "cancel"}} class="btn btn-link">Cancel</button>
@@ -52,14 +52,14 @@
 
 <section class="horizontal-form {{unless isGteStep3 'hide'}}" style="padding-top: 0">
   <div class="container-fluid">
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Availability Zone &amp; VPC</span>
     </div>
     <div class="row {{if isStep3 'form-group'}}">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Availability Zone</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-8">
         {{#if isStep3}}
           <select class="form-control" onchange={{action (mut selectedZone) value="target.value"}}>
             {{#each zoneChoices as |choice|}}
@@ -74,10 +74,10 @@
       </div>
     </div>
     <div class="row {{if isStep3 'form-group'}}">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">VPC/Subnet</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-8">
         {{#if isStep3}}
           {{#if subnetChoices.length}}
             {{#each subnetChoices as |choice|}}
@@ -105,6 +105,8 @@
     </div>
   </div>
   {{#if isStep3}}
+    {{top-errors errors=errors}}
+
     <div class="footer-actions">
       <button {{action "selectSubnet"}} class="btn btn-primary">Next: Select a Security Group</button>
       <button {{action "cancel"}} class="btn btn-link">Cancel</button>
@@ -120,15 +122,15 @@
 
 <section class="horizontal-form {{unless isGteStep5 'hide'}}" style="padding-top: 0">
   <div class="container-fluid">
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Security Group</span>
     </div>
 
     <div class="row {{if isStep5 'form-group'}}">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Security Group</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-8">
         {{#if isStep5}}
           <div class="radio r-pt10"><label>
             {{radio-button selection=whichSecurityGroup value="default"}} Standard:
@@ -166,6 +168,8 @@
     </div>
   </div>
   {{#if isStep5}}
+    {{top-errors errors=errors}}
+
     <div class="footer-actions">
       <button {{action "selectSecurityGroup"}} class="btn btn-primary">Next: Set Instance options</button>
       <button {{action "cancel"}} class="btn btn-link">Cancel</button>
@@ -181,27 +185,31 @@
 
 <section class="horizontal-form {{unless isGteStep7 'hide'}}" style="padding-top: 0;">
   <div class="container-fluid">
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Instance</span>
     </div>
 
     {{partial "host/add-common"}}
 
+    <div class="over-hr r-mt20 r-mb20">
+      <span>Instance Options</span>
+    </div>
+
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Instance Type</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         <select class="form-control" onchange={{action (mut amazonec2Config.instanceType) value="target.value"}}>
           {{#each instanceTypes as |choice|}}
             <option value={{choice}} selected={{eq amazonec2Config.instanceType choice}}>{{choice}}</option>
           {{/each}}
         </select>
       </div>
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Root Size</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         <div class="input-group">
           {{input type="text" classNames="form-control" placeholder="" value=amazonec2Config.rootSize}}
           <span class="input-group-addon">GB</span>
@@ -209,15 +217,11 @@
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
-      <span>Advanced Options</span>
-    </div>
-
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">AMI</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         {{input type="text" classNames="form-control" placeholder="An Ubuntu AMI" value=amazonec2Config.ami}}
         {{#if settings.isRancher}}
           <p class="help-block">
@@ -225,24 +229,24 @@
           </p>
         {{/if}}
       </div>
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">SSH User</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         {{input type="text" classNames="form-control" placeholder="e.g. ubuntu" value=amazonec2Config.sshUser}}
       </div>
     </div>
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">IAM Profile</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         {{input type="text" classNames="form-control" placeholder="" value=amazonec2Config.iamInstanceProfile}}
       </div>
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Private IP</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         <div class="checkbox form-control-static">
           <label>{{input type="checkbox" checked=amazonec2Config.privateAddressOnly}} Use only private IP address</label>
         </div>
@@ -254,5 +258,6 @@
     {{/if}}
   </div>
 
+  {{top-errors errors=errors}}
   {{partial "save-cancel"}}
 </section>

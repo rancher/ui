@@ -187,31 +187,7 @@
       </div>
 
       {{#liquid-if (not selfSign)}}
-        <div class="row form-group">
-          <div class="col-sm-12 col-md-4">
-            <div class="clearfix r-mb10 r-mt15">
-              <label class="r-pt5">Private Key</label>
-              <span class="pull-right">{{read-text-file accept="text/*, .pem, .pkey, .key" action=(action "readFile" "key")}}</span>
-            </div>
-            {{textarea name="key" value=model.createScript.key classNames="form-control no-resize" rows="5" placeholder="Paste in the private key, starting with -----BEGIN RSA PRIVATE KEY-----"}}
-          </div>
-
-          <div class="col-sm-12 col-md-4">
-            <div class="clearfix r-mb10 r-mt15">
-              <label class="r-pt5">Certificate</label>
-              <span class="pull-right">{{read-text-file accept="text/*, .pem, .crt" action=(action "readFile" "cert")}}</span>
-            </div>
-            {{textarea name="cert" value=model.createScript.cert classNames="form-control no-resize" rows="5" placeholder="Paste in the primary certificate, starting with -----BEGIN CERTIFICATE-----"}}
-          </div>
-
-          <div class="col-sm-12 col-md-4">
-            <div class="clearfix r-mb10 r-mt15">
-              <label class="r-pt5">Chain Certs</label>
-              <span class="pull-right">{{read-text-file accept="text/*, .pem, .crt" action=(action "readFile" "certChain")}}</span>
-            </div>
-            {{textarea name="certChain" value=model.createScript.certChain classNames="form-control no-resize" rows="5" placeholder="Optional; Paste in the additional chained certificates, starting with -----BEGIN CERTIFICATE-----"}}
-          </div>
-        </div>
+        {{input-certificate model=model.createScript}}
       {{/liquid-if}}
 
       {{#advanced-section}}

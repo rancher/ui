@@ -2,7 +2,6 @@ import Ember from 'ember';
 import { isGecko } from 'ui/utils/platform';
 
 export default Ember.TextArea.extend({
-  text: null,
   minHeight: 0,
   maxHeight: 200,
 
@@ -10,7 +9,10 @@ export default Ember.TextArea.extend({
   classNames: ['no-resize'],
 
   didInsertElement() {
-    this.set('minHeight', ( this.get('isSmall') ? 31 : 43));
+    if ( this.get('minHeight') === 0 ) {
+      this.set('minHeight', ( this.get('isSmall') ? 31 : 43));
+    }
+
     this.autoSize();
 
     this.$().on('paste', () => {
@@ -18,9 +20,9 @@ export default Ember.TextArea.extend({
     });
   },
 
-  keyUp() {
+  changed: function() {
     Ember.run.debounce(this,'autoSize',100);
-  },
+  }.observes('value'),
 
   isSmall: function() {
     return this.$().hasClass('input-sm');

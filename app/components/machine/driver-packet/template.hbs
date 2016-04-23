@@ -1,52 +1,50 @@
-{{top-errors errors=errors}}
-
 <form>
 <section class="horizontal-form">
   <div class="container-fluid">
     {{partial "host/add-common"}}
 
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Account Access</span>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Project*</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-10">
         {{input type="text" name="username" value=packetConfig.projectId classNames="form-control" placeholder="Your Packet project ID"}}
       </div>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">API Key*</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-10">
         {{input type="password" name="password" value=packetConfig.apiKey classNames="form-control" placeholder="Your Packet API key"}}
         <p class="help-block">From the Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> screen</p>
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Instance</span>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Image</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         <select class="form-control" onchange={{action (mut packetConfig.os) value="target.value"}}>
           {{#each osChoices as |choice|}}
             <option value={{choice.slug}} selected={{eq packetConfig.os choice.slug}}>{{choice.name}}</option>
           {{/each}}
         </select>
       </div>
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Size</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         <select class="form-control" onchange={{action (mut packetConfig.plan) value="target.value"}}>
           {{#each planChoices as |choice|}}
             <option value={{choice.slug}} selected={{eq packetConfig.plan choice.slug}}>{{choice.name}}</option>
@@ -55,15 +53,15 @@
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Region</span>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Region</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-10">
         <select class="form-control" onchange={{action (mut packetConfig.facility) value="target.value"}}>
           {{#each facilityChoices as |choice|}}
             <option value={{choice.code}} selected={{eq packetConfig.facility choice.code}}>{{choice.name}}</option>
@@ -75,6 +73,7 @@
     {{partial "host/add-options"}}
   </div>
 
+  {{top-errors errors=errors}}
   {{partial "save-cancel"}}
 </section>
 </form>

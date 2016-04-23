@@ -1,42 +1,40 @@
-{{top-errors errors=errors}}
-
 <section class="horizontal-form">
   <div class="container-fluid">
     {{partial "host/add-common"}}
 
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Account Access</span>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Access Token*</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-10">
         {{input type="password" value=digitaloceanConfig.accessToken classNames="form-control" placeholder="Your DigitalOcean API access token"}}
         <p class="help-block">A Personal Access Token from the DigitalOcean <a href="https://cloud.digitalocean.com/settings/applications" target="_blank">Apps & API</a> screen</p>
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Instance</span>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Image</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         <select class="form-control" onchange={{action (mut digitaloceanConfig.image) value="target.value"}}>
           {{#each imageChoices as |choice|}}
             <option value={{choice}} selected={{eq digitaloceanConfig.image choice}}>{{choice}}</option>
           {{/each}}
         </select>
       </div>
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Size</label>
       </div>
-      <div class="col-sm-12 col-md-3">
+      <div class="col-md-4">
         <select class="form-control" onchange={{action (mut digitaloceanConfig.size) value="target.value"}}>
           {{#if digitaloceanConfig}}
           {{#each sizeChoices as |choice|}}
@@ -47,15 +45,15 @@
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Region</span>
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Region</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-10">
         <select class="form-control" onchange={{action (mut digitaloceanConfig.region) value="target.value"}}>
           {{#each regionChoices as |choice|}}
             <option value={{choice.id}} selected={{eq digitaloceanConfig.region choice.id}}>{{choice.name}}</option>
@@ -64,7 +62,7 @@
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
+    <div class="over-hr r-mt20 r-mb20">
       <span>Options</span>
     </div>
 
@@ -91,5 +89,6 @@
     {{partial "host/add-options"}}
   </div>
 
+  {{top-errors errors=errors}}
   {{partial "save-cancel"}}
 </section>
