@@ -1,14 +1,17 @@
-{{top-errors errors=errors}}
 
 <section class="horizontal-form">
   <div class="container-fluid">
     {{partial "host/add-common"}}
 
+    <div class="over-hr r-mt20 r-mb20">
+      <span>Driver</span>
+    </div>
+
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col-md-2 form-label">
         <label class="form-control-static">Driver*</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col-md-8">
         {{#if model}}
         {{new-select
           classNames="form-control"
@@ -19,8 +22,8 @@
       </div>
     </div>
 
-    <div class="over-hr" style="margin: 20px 0;">
-      <span>Driver Options</span>
+    <div class="over-hr r-mt20 r-mb20">
+      <span>{{str-replace driver match="Config" with=""}} Options</span>
     </div>
 
     {{#each fieldNames as |fieldName|}}
@@ -39,5 +42,6 @@
     {{/if}}
   </div>
 
+  {{top-errors errors=errors}}
   {{partial "save-cancel"}}
 </section>

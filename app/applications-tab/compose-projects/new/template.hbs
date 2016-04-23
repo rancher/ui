@@ -13,9 +13,14 @@
 <section class="horizontal-form container-fluid well">
   <div class="clearfix r-mb10">
     <label class="r-pt5">docker-compose.yml</label>
-    {{read-text-file accept=".yml, .yaml" action=(action (mut primaryResource.templates.docker-compose)) class="pull-right"}}
   </div>
-  {{textarea value=primaryResource.templates.docker-compose classNames="form-control" rows="5" placeholder="Contents of docker-compose.yml"}}
+  {{input-text-file
+    accept=".yml, .yaml"
+    value=primaryResource.templates.docker-compose
+    placeholder="Paste in the contents of docker-compose.yml"
+    minHeight=60
+    maxHeight=400
+  }}
 
   {{form-key-value
     initialMap=primaryResource.environment

@@ -1,13 +1,15 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  model        : null,
+  value        : null,
   placeholder  : "",
   tooltip      : "Read from a file",
   accept       : "text/*",
   btnClass     : "btn btn-primary",
   btnLabel     : "Read from File",
   encode       : false,
+  minHeight    : 0,
+  maxHeight    : 200,
 
   tagName      : ['div'],
   classNames   : ['input-group'],
@@ -40,7 +42,7 @@ export default Ember.Component.extend({
           out = btoa(out);
         }
 
-        this.set('model', out);
+        this.set('value', out);
       };
       reader.readAsText(input.files[0]);
     }

@@ -9,7 +9,10 @@ export default Ember.TextArea.extend({
   classNames: ['no-resize'],
 
   didInsertElement() {
-    this.set('minHeight', ( this.get('isSmall') ? 31 : 43));
+    if ( this.get('minHeight') === 0 ) {
+      this.set('minHeight', ( this.get('isSmall') ? 31 : 43));
+    }
+
     this.autoSize();
 
     this.$().on('paste', () => {
@@ -26,7 +29,6 @@ export default Ember.TextArea.extend({
   }.property(),
 
   autoSize() {
-    console.log('autosize');
     let el = this.element;
     let $el = $(el);
 
