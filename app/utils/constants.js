@@ -116,7 +116,12 @@ var C = {
     PROJECT_DEFAULT : 'defaultProjectId',
     EXPANDED_STACKS : 'expandedStacks',
     SORT_STACKS_BY  : 'sortStacksBy',
-    THEME           : 'theme'
+    THEME           : 'theme',
+    LANGUAGE        : 'language'
+  },
+
+  LANGUAGE: {
+    DEFAULT: 'en-us'
   },
 
   THEME: {
@@ -146,16 +151,18 @@ var C = {
 
   // Ephemeral but same but across all browser tabs
   SESSION: {
-    BACK_TO: 'backTo',
-    USER_ID: 'user',
-    ACCOUNT_ID: 'accountId',
-    USER_TYPE: 'userType',
-    PROJECT: 'projectId',
-    IDENTITY: 'userIdentity',
-    IDENTITY_TYPE: 'userType',
-    GITHUB_CACHE: 'githubCache',
-    GITHUB_ORGS: 'orgs',
-    GITHUB_TEAMS: 'teams',
+    BACK_TO        : 'backTo',
+    USER_ID        : 'user',
+    ACCOUNT_ID     : 'accountId',
+    USER_TYPE      : 'userType',
+    PROJECT        : 'projectId',
+    IDENTITY       : 'userIdentity',
+    IDENTITY_TYPE  : 'userType',
+    GITHUB_CACHE   : 'githubCache',
+    GITHUB_ORGS    : 'orgs',
+    GITHUB_TEAMS   : 'teams',
+    LANGUAGE       : 'langugae',
+    LOGIN_LANGUAGE : 'loginLanguage',
   },
 
   // Ephemeral and unique for each browser tab
