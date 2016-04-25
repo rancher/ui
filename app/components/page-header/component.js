@@ -1,10 +1,14 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import additionnalLinks from 'ui/utils/additional-header-link';
 
 const DELAY = 250;
 const TABS_WITH_SUB = ['catalog-tab', 'applications-tab','infrastructure-tab', 'k8s-tab', 'admin-tab'];
 const TABS_WITHOUT = ['api-tab', 'help-tab'];
+TABS_WITH_SUB.push.apply( this, additionnalLinks.getLinkIdWithSub() );
+TABS_WITHOUT.push.apply( this, additionnalLinks.getLinkIdWithoutSub() );
 const ALL_TABS = TABS_WITH_SUB.concat(TABS_WITHOUT);
+
 
 export default Ember.Component.extend({
   access           : Ember.inject.service(),
@@ -14,6 +18,8 @@ export default Ember.Component.extend({
   k8s              : Ember.inject.service(),
   namespace        : Ember.computed.alias('k8s.namespace'),
   settings         : Ember.inject.service(),
+
+  additionnalLinks : additionnalLinks.links,
 
   currentPath      : null,
   forcedMenu       : null,
