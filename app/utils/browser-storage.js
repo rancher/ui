@@ -58,5 +58,7 @@ export default Ember.Mixin.create({
     backing.clear();
     this.endPropertyChanges();
   },
+
+  removeItem() {}
 });
 
