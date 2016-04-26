@@ -261,11 +261,10 @@ function getCatalogSubtree() {
   }
 
   if ( showLibrary ) {
+    if ( showAll ) {
+      out.push({divider: true});
+    }
     out.push({label: 'Library', icon: 'icon icon-catalog', route: 'catalog-tab', context: [getProjectId], queryParams: {catalogId: 'library'}});
-  }
-
-  if ( (showAll || showLibrary) && repos.length ) {
-    out.push({divider: true});
   }
 
   repos.forEach((repo) => {
