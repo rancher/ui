@@ -1,0 +1,38 @@
+<button class="user-toggle btn-link" role="button" id="user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="User Menu: {{session.user}}">
+  {{#if accessEnabled}}
+    {{identity-avatar link=false identity=access.identity}}
+    <i class="icon icon-chevron-down"></i>
+  {{else}}
+    <div class="gh-avatar">
+      <div class="gh-placeholder">
+        <i class="icon icon-user"></i>
+      </div>
+    </div>
+    <i class="icon icon-chevron-down"></i>
+  {{/if}}
+</button>
+<ul class="dropdown-menu dropdown-menu-right user-menu" role="menu" aria-labelledby="user-dropdown">
+  {{#if accessEnabled}}
+    <li role="presentation" class="user-auth">
+      {{identity-block avatar=false identity=access.identity}}
+      {{#link-to "logout" class="user-logout"}}<i class="icon icon-logout"></i> Log Out{{/link-to}}
+    </li>
+  {{/if}}
+
+  {{#if isLocalAuth}}
+    <li role="presentation" class="dropdown-header">
+      Your Account
+    </li>
+
+    <li role="presentation">
+      <a {{action "changePassword"}} role="menuitem">Change Password</a>
+    </li>
+
+  {{/if}}
+
+  <li class="dropdown-header">Theme</li>
+  <li role="presentation" class="theme-toggle text-center btn-group">
+    {{theme-toggle}}
+  </li>
+
+</ul>

@@ -1,232 +1,310 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import { parseCatalogSetting } from 'ui/utils/parse-catalog-setting';
 
-const DELAY = 250;
-const TABS_WITH_SUB = ['catalog-tab', 'applications-tab','infrastructure-tab', 'k8s-tab', 'admin-tab'];
-const TABS_WITHOUT = ['api-tab', 'help-tab'];
-const ALL_TABS = TABS_WITH_SUB.concat(TABS_WITHOUT);
+/* Tree item options
+  {
+    label: 'Displayed label', (or functiont that returns string)
+    icon: 'icon icon-somethign',
+    condition: function() { return true if this item should be displayed },
+    url: 'http://any/url', (url or route required)
+    target: '_blank', (for url only)
+    route: 'target.route.path',
+    context: ['values', 'asContextToRoute', orFunctionThatReturnsValue, anotherFunction]
+    queryParams: {a: 'hello', b: 'world'],
+
+    submenu: [
+      // Another tree item (only one level of submenu supported, no arbitrary depth nesting)
+    ]
+  },
+*/
+
+export const getProjectId = function() { return this.get('projectId'); };
+export const getNamespaceId = function() { return this.get('projectId'); };
+
+const navTree = [
+  {
+    label: 'Kubernetes',
+    route: 'k8s-tab',
+    context: ['projectId'],
+    condition: function() { return this.hasK8s() || this.pathIs('authenticated.project.k8s-tab'); },
+    submenu: [
+      {
+        label: 'Services',
+        icon: 'icon icon-compass',
+        route: 'k8s-tab.namespace.services',
+        context: [getProjectId, getNamespaceId],
+        condition: function() { return this.hasNamespace(); },
+      },
+      {
+        label: 'Replication Controllers',
+        icon: 'icon icon-tachometer',
+        route: 'k8s-tab.namespace.rcs',
+        context: [getProjectId, getNamespaceId],
+        condition: function() { return this.hasNamespace(); },
+      },
+      {
+        label: 'Pods',
+        icon: 'icon icon-containers',
+        route: 'k8s-tab.namespace.pods',
+        context: [getProjectId, getNamespaceId],
+        condition: function() { return this.hasNamespace(); },
+      },
+      {
+        label: 'Kubectl',
+        icon: 'icon icon-terminal',
+        route: 'k8s-tab.kubectl',
+        context: [getProjectId],
+        condition: function() { return this.hasNamespace(); },
+      },
+    ],
+  },
+
+  {
+    label: 'Swarm',
+    condition: function() { return this.get('hasSwarm') && this.hasProject(); },
+    route: 'applications-tab',
+    context: [getProjectId],
+    submenu: [
+      {
+        label: 'Projects',
+        icon: 'icon icon-layeredgroup',
+        route: 'applications-tab.compose-projects',
+        context: [getProjectId],
+        condition: function() { return this.get('swarmReady'); },
+      },
+      {
+        label: 'Services',
+        icon: 'icon icon-layers',
+        route: 'applications-tab.compose-services',
+        context: [getProjectId],
+        condition: function() { return this.get('swarmReady'); },
+      },
+      {
+        label: 'CLI',
+        icon: 'icon icon-terminal',
+        route: 'applications-tab.compose-console',
+        context: [getProjectId],
+        condition: function() { return this.get('swarmReady'); },
+      },
+    ]
+  },
+
+  {
+    label: 'Applications',
+    route: 'applications-tab',
+    context: ['projectId'],
+    condition: function() { return !this.get('hasKubernetes') && !this.get('hasSwarm') && this.hasProject(); },
+    submenu: [
+      {
+        label: 'Stacks',
+        icon: 'icon icon-layers',
+        route: 'environments',
+        context: [getProjectId],
+        queryParams: {which: 'user'},
+      },
+      {
+        label: 'System',
+        icon: 'icon icon-network',
+        route: 'environments',
+        context: [getProjectId],
+        queryParams: {which: 'system'},
+      },
+    ]
+  },
+
+  {
+    label: 'System',
+    route: 'environments',
+    context: [getProjectId],
+    queryParams: {which: 'not-kubernetes'},
+    condition: function() { return this.get('hasKubernetes') && this.hasProject(); },
+  },
+
+  {
+    label: 'System',
+    route: 'environments',
+    context: [getProjectId],
+    queryParams: {which: 'not-swarm'},
+    condition: function() { return this.get('hasSwarm') && this.hasProject(); },
+  },
+
+  {
+    label: 'Catalog',
+    route: 'catalog-tab',
+    context: [getProjectId],
+    condition: function() {
+      return this.hasProject() &&
+      this.get(`settings.${C.SETTING.CATALOG_URL}`) &&
+      (!this.get('hasSwarm') || this.get('swarmReady')) &&
+      (!this.get('hasKubernetes') || this.hasNamespace());
+    },
+    submenu: getCatalogSubtree,
+  },
+
+  {
+    label: 'Infrastructure',
+    route: 'infrastructure-tab',
+    context: [getProjectId],
+    condition: function() {
+      return this.hasProject() &&
+      this.get(`settings.${C.SETTING.CATALOG_URL}`) &&
+      (!this.get('hasSwarm') || this.get('swarmReady')) &&
+      (!this.get('hasKubernetes') || this.hasNamespace());
+    },
+    submenu: [
+      {
+        label: 'Hosts',
+        icon: 'icon icon-host',
+        route: 'hosts',
+        context: [getProjectId],
+      },
+      {
+        label: 'Containers',
+        icon: 'icon icon-box',
+        route: 'containers',
+        context: [getProjectId],
+      },
+      {
+        label: 'Virtual Machines',
+        icon: 'icon icon-vm',
+        route: 'virtualmachines',
+        context: [getProjectId],
+        condition: function() { return this.get('hasVm'); },
+      },
+      {
+        label: 'Storage Pools',
+        icon: 'icon icon-hdd',
+        route: 'storagepools',
+        context: [getProjectId],
+      },
+      {
+        label: 'Certificates',
+        icon: 'icon icon-certificate',
+        route: 'certificates',
+        context: [getProjectId],
+      },
+      {
+        label: 'Registries',
+        icon: 'icon icon-database',
+        route: 'registries',
+        context: [getProjectId],
+      },
+    ],
+  },
+
+  {
+    label: 'Admin',
+    route: 'admin-tab',
+    condition: function() { return this.get('isAdmin'); },
+    submenu: [
+      {
+        label: 'Audit Log',
+        icon: 'icon icon-folder-open',
+        route: 'admin-tab.audit-logs',
+      },
+      {
+        label: 'Processes',
+        icon: 'icon icon-processes',
+        route: 'admin-tab.processes',
+      },
+      {
+        label: 'Accounts',
+        icon: 'icon icon-users',
+        route: 'admin-tab.accounts',
+      },
+      { divider: true },
+      {
+        label: 'Access Control',
+        icon: 'icon icon-key',
+        route: 'admin-tab.auth',
+      },
+      {
+        label: 'Settings',
+        icon: 'icon icon-network',
+        route: 'admin-tab.settings',
+      },
+      {
+        label: 'High-Availability',
+        icon: 'icon icon-umbrella',
+        route: 'admin-tab.ha',
+      },
+    ],
+  },
+
+  {
+    label: 'API',
+    icon: 'icon icon-terminal',
+    route: 'authenticated.project.apikeys',
+    context: [getProjectId],
+    condition: function() { return this.hasProject(); },
+  }
+];
+
+
+function getCatalogSubtree() {
+  let repos = Object.keys(parseCatalogSetting(this.get(`settings.${C.SETTING.CATALOG_URL}`))).sort();
+  let showAll = false;
+  let showLibrary = false;
+
+  if ( repos.indexOf(C.CATALOG.LIBRARY_KEY) >= 0 || repos.indexOf(C.CATALOG.COMMUNITY_KEY) >= 0 ) {
+    showLibrary = true;
+    repos.removeObject(C.CATALOG.LIBRARY_KEY);
+    repos.removeObject(C.CATALOG.COMMUNITY_KEY);
+  }
+
+  showAll = repos.length > 1 || (repos.length === 1 && showLibrary);
+
+  let out = [];
+  if ( showAll ) {
+    out.push({label: 'All', icon: 'icon icon-globe', route: 'catalog-tab', context: [getProjectId], queryParams: {catalogId: 'all'}});
+  }
+
+  if ( showLibrary ) {
+    out.push({label: 'Library', icon: 'icon icon-catalog', route: 'catalog-tab', context: [getProjectId], queryParams: {catalogId: 'library'}});
+  }
+
+  if ( (showAll || showLibrary) && repos.length ) {
+    out.push({divider: true});
+  }
+
+  repos.forEach((repo) => {
+    out.push({label: repo, icon: 'icon icon-users', route: 'catalog-tab', context: [getProjectId], queryParams: {catalogId: repo}});
+  });
+
+
+  if ( out.length === 1 ) {
+    return [];
+  } else {
+    return out;
+  }
+}
 
 export default Ember.Component.extend({
-  access           : Ember.inject.service(),
+  // Inputs
+  currentPath: null,
+  hasKubernetes: null,
+  hasSwarm: null,
+  swarmReady: null,
+  hasSystem: null,
+  hasVm: null,
+
+  // Injections
   projects         : Ember.inject.service(),
   project          : Ember.computed.alias('projects.current'),
-  prefs            : Ember.inject.service(),
   k8s              : Ember.inject.service(),
   namespace        : Ember.computed.alias('k8s.namespace'),
-  settings         : Ember.inject.service(),
-
-  currentPath      : null,
-  forcedMenu       : null,
-  subnavPartial    : null,
-  menuHoverTimer   : null,
-  siblingMenuTimer : null,
-  noSubNavHovered  : null,
-  rootCatalog      : null,
-  customCatalogs   : null,
-
   projectId        : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
-
-  accessEnabled    : Ember.computed.alias('access.enabled'),
+  namespaceId      : Ember.computed.alias('k8s.namespace.id'),
+  settings         : Ember.inject.service(),
+  access           : Ember.inject.service(),
   isAdmin          : Ember.computed.alias('access.admin'),
 
+  // Component options
   tagName          : 'header',
   classNames       : ['clearfix','no-select'],
 
-  isLocalAuth: function() {
-    return this.get('access.enabled') && this.get('access.provider') === 'localauthconfig';
-  }.property('access.{enabled,provider}'),
-
-  projectChoices: function() {
-    return this.get('projects.active').sortBy('name','id');
-  }.property('projects.active.@each.{id,displayName,state}'),
-
-  projectIsMissing: function() {
-    return this.get('projectChoices').filterBy('id', this.get('project.id')).get('length') === 0;
-  }.property('project.id','projectChoices.@each.id'),
-
-  isInfrastructureTab: function() {
-    return this.get('currentPath').indexOf('authenticated.project.infrastructure-tab') === 0;
-  }.property('currentPath'),
-
-  isKubernetesTab: function() {
-    return this.get('currentPath').indexOf('authenticated.project.k8s-tab') === 0;
-  }.property('currentPath'),
-
-  isApplicationsTab: function() {
-    return this.get('currentPath').indexOf('authenticated.project.applications-tab') === 0;
-  }.property('currentPath'),
-
-  isCatalogTab: function() {
-    return this.get('currentPath').indexOf('authenticated.project.catalog-tab') === 0;
-  }.property('currentPath'),
-
-  isAdminTab: function() {
-    return this.get('currentPath').indexOf('authenticated.admin-tab') === 0;
-  }.property('currentPath'),
-
-  showAccessWarning: function() {
-    return this.get('app.showArticles') !== false &&
-           !this.get('access.enabled') &&
-           this.get('prefs.'+C.PREFS.ACCESS_WARNING) !== false;
-  }.property('app.showArticles','access.enabled',`prefs.${C.PREFS.ACCESS_WARNING}`),
-
-  showHostSetup: function() {
-    return this.get('isAdmin') && this.get('store').hasRecordFor('schema','setting');
-  }.property(),
-
-
-  bootstrapCatalogs: function() {
-    let customCatalogs  = [];
-    let catalogUrls     = (this.get('settings').get(C.SETTING.CATALOG_URL)||'').split(',');
-
-    catalogUrls.forEach((catalog) => {
-      let tmp = {};
-      catalog = catalog.split('=')[0];
-
-      if (catalog !== C.CATALOG.LIBRARY_KEY && catalog !== C.CATALOG.COMMUNITY_KEY) {
-        tmp.icon = 'icon-globe';
-        tmp.id = catalog;
-        customCatalogs.push(tmp);
-      }
-    });
-
-    this.set('customCatalogs', customCatalogs);
-  },
-
-  tabObserver: Ember.observer('currentPath', 'forcedMenu', 'noSubNavHovered', function() {
-
-    let currentPathArr  = this.get('currentPath').split('.');
-    let navPartial      = '';
-    let isInCurrentPath = false;
-    let bottomRow       = Ember.$('.bottom-row');
-
-    this.bootstrapCatalogs();
-
-
-    ALL_TABS.forEach((tab) => {
-      if (currentPathArr.contains(tab)) {
-        isInCurrentPath = true;
-        navPartial = tab;
-      }
-    });
-
-    $('.top-row .tophover').removeClass('tophover');
-
-    if (this.get('forcedMenu')) {
-      navPartial = this.get('forcedMenu');
-      $('#'+navPartial).addClass('tophover');
-      bottomRow.addClass('subactive');
-    } else {
-      if (bottomRow.hasClass('subactive')) {
-        bottomRow.removeClass('subactive');
-      }
-    }
-
-    if (isInCurrentPath || this.get('forcedMenu')) {
-      if ( TABS_WITH_SUB.indexOf(navPartial) >= 0 ) {
-        this.set('subnavPartial', `tabs/${navPartial}`);
-      } else {
-        this.set('subnavPartial', null);
-      }
-    } else {
-      this.set('subnavPartial', null);
-    }
-  }).on('init'),
-
-
-  didInsertElement() {
-    // Hide the Firefox focus ring
-    this.$().on('click', 'A', function(event){
-      $(this).blur();
-
-      // Close the small-screen nav after clicking on a bottom-row item
-      if ( $(event.target).parents('#navbar').length )
-      {
-        $('#navbar').collapse('hide');
-      }
-    });
-
-
-    var ids = ALL_TABS.map((k) => { return '#'+k;}).join(', ');
-    Ember.$(ids).mouseenter((e) => {
-      let elementId = e.currentTarget.id;
-      if ( this._state === 'destroying' ) {
-        return;
-      }
-
-      if (this.get('menuHoverTimer')) {
-        Ember.run.cancel(this.get('menuHoverTimer'));
-      }
-
-      if (this.get('siblingMenuTimer')) {
-        Ember.run.cancel(this.get('siblingMenuTimer'));
-      }
-
-      if ( TABS_WITHOUT.indexOf(elementId) >= 0 ) {
-        this.set('noSubNavHovered', true);
-      }
-
-      this.set('siblingMenuTimer', Ember.run.later(() => {
-        toggleMenu(elementId);
-      }, DELAY));
-
-    }).mouseleave((e) => {
-      if ( this._state === 'destroying' ) {
-        return;
-      }
-
-      this.set('menuHoverTimer', Ember.run.later(() => {
-        toggleMenu(e.currentTarget.id, true);
-      }, DELAY));
-    });
-
-    Ember.$('.bottom-row').mouseenter(() => {
-      if ( this._state === 'destroying' ) {
-        return;
-      }
-
-      if (this.get('menuHoverTimer')) {
-        Ember.run.cancel(this.get('menuHoverTimer'));
-      }
-
-      if (this.get('siblingMenuTimer')) {
-        Ember.run.cancel(this.get('siblingMenuTimer'));
-      }
-
-      if (this.get('noSubNavHovered')) {
-        this.set('noSubNavHovered', false);
-      }
-
-    }).mouseleave(() => {
-      if ( this._state === 'destroying' ) {
-        return;
-      }
-
-      this.set('menuHoverTimer', Ember.run.later(() => {
-        this.set('forcedMenu', null);
-      }, DELAY));
-    });
-
-    var toggleMenu = (element, mouseOut=false) => {
-      if ( this._state === 'destroying' ) {
-        return;
-      }
-
-      if (mouseOut) {
-        this.set('menuHoverTimer', Ember.run.later(() => {
-          this.set('forcedMenu', null);
-        }, DELAY));
-      } else {
-        this.set('forcedMenu', element);
-      }
-    };
-  },
-
   actions: {
-    showAbout() {
-      this.sendAction('showAbout');
-    },
-
     switchProject(id) {
       this.sendAction('switchProject', id);
     },
@@ -234,18 +312,75 @@ export default Ember.Component.extend({
     switchNamespace(id) {
       this.sendAction('switchNamespace', id);
     },
-
-    goToPrevious() {
-      this.sendAction('goToPrevious');
-    },
-
-    changePassword() {
-      this.get('store').find('account', this.get('session.'+C.SESSION.ACCOUNT_ID)).then((account) => {
-        this.get('application').setProperties({
-          editAccount: true,
-          originalModel: account
-        });
-      });
-    },
   },
+
+  // This computed property generates the active list of choices to display
+  navTree: function() {
+    return navTree.map((item) => {
+      return Ember.copy(item,true);
+    }).filter((item) => {
+      if ( typeof item.condition === 'function' )
+      {
+        if ( !item.condition.call(this) )
+        {
+          return false;
+        }
+      }
+
+      if ( typeof item.label === 'function' )
+      {
+        item.label = item.label.call(this);
+      }
+
+      if ( typeof item.route === 'function' )
+      {
+        item.route = item.route.call(this);
+      }
+
+      item.context = (item.context||[]).map((ctx) => {
+        if ( typeof ctx === 'function' )
+        {
+          return ctx.call(this);
+        }
+        else
+        {
+          return ctx;
+        }
+      });
+
+      if ( typeof item.submenu === 'function' )
+      {
+        item.submenu = item.submenu.call(this);
+      }
+
+      item.submenu = (item.submenu||[]).filter((subitem) => {
+        if ( typeof subitem.condition === 'function' )
+        {
+          return subitem.condition.call(this);
+        }
+
+        return true;
+      });
+
+      return true;
+    });
+  }.property('currentPath','hasKubernetes','hasSwarm','swarmReady','hasSystem','hasVm','projectId','namespaceId',`settings.${C.SETTING.CATALOG_URL}`,'isAdmin'),
+
+  // Utilities you can use in the condition() function to decide if an item is shown or hidden,
+  // beyond things listed in "Inputs"
+  pathIs(prefix) {
+    return this.get('currentPath').indexOf(prefix) === 0;
+  },
+
+  hasProject() {
+    return !!this.get('project');
+  },
+
+  hasK8s() {
+    return this.get('hasKubernetes') || this.pathIs('authenticated.project.k8s-tab');
+  },
+
+  hasNamespace() {
+    return this.get('hasK8s') && this.get('namespaceId');
+  }
 });
