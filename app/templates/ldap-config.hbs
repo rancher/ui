@@ -1,62 +1,64 @@
 <section class="well">
-  <h2>{{providerName}} is {{#if access.enabled}}<b>enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
+  <h2>{{t 'openLdap.configuredIndication.header.providerName' providerName=providerName}} {{#if access.enabled}}<b>{{t 'openLdap.configuredIndication.header.enabled'}}</b>{{else}}<b class="text-warning">{{t 'openLdap.configuredIndication.header.notEnabled'}}</b>{{/if}}</h2>
   <div>
     {{#if access.enabled}}
-      {{settings.appName}} is configured to allow access to any {{providerName}} user.
+      {{t 'openLdap.configuredIndication.header.subtext.enabled'
+        appName=settings.appName
+        providerName=providerName}}
     {{else}}
-      {{settings.appName}} can be configured to restrict access to a set of users and group members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.
+      {{t 'openLdap.configuredIndication.header.subtext.notEnabled' appName=settings.appName}}
     {{/if}}
   </div>
 </section>
 
-  {{#if access.enabled}}
+{{#if access.enabled}}
   <section class="well">
-    <h4>Authentication</h4>
+    <h4>{{t 'openLdap.accessEnabled.header'}}</h4>
     <hr/>
-    <p class="help-block">To change the server configuration, disable access control below and then set it up again.</p>
+    <p class="help-block">{{t 'openLdap.accessEnabled.subtext'}}</p>
 
     <div class="row">
       <div class="col-md-4">
-        <h4>General</h4>
-        <div><b>Server: </b> <span class="text-muted">{{model.server}}:{{model.port}}</span></div>
-        <div><b>TLS: </b> <span class="text-muted">{{if model.tls "Yes" "No"}}</span></div>
-        <div><b>Service Account: </b> <span class="text-muted">{{model.serviceAccountUsername}}</span></div>
-        <div><b>Search Base: </b> <span class="text-muted">{{model.domain}}</span></div>
-        <div><b>Default Domain: </b> <span class="text-muted">{{model.loginDomain}}</span></div>
+        <h4>{{t 'openLdap.accessEnabled.general.header'}}</h4>
+        <div><b>{{t 'openLdap.accessEnabled.general.server'}} </b> <span class="text-muted">{{model.server}}:{{model.port}}</span></div>
+        <div><b>{{t 'openLdap.accessEnabled.general.tls'}} </b> <span class="text-muted">{{if model.tls "Yes" "No"}}</span></div>
+        <div><b>{{t 'openLdap.accessEnabled.general.serviceAccount'}} </b> <span class="text-muted">{{model.serviceAccountUsername}}</span></div>
+        <div><b>{{t 'openLdap.accessEnabled.general.searchBase'}} </b> <span class="text-muted">{{model.domain}}</span></div>
+        <div><b>{{t 'openLdap.accessEnabled.general.defaultDomain'}} </b> <span class="text-muted">{{model.loginDomain}}</span></div>
       </div>
       <div class="col-md-4">
-        <h4>Users</h4>
-        <div><b>Object Class: </b> <span class="text-muted">{{model.userObjectClass}}</span></div>
-        <div><b>Login Field: </b> <span class="text-muted">{{model.userLoginField}}</span></div>
-        <div><b>Name Field: </b> <span class="text-muted">{{model.userNameField}}</span></div>
-        <div><b>Search Field: </b> <span class="text-muted">{{model.userSearchField}}</span></div>
-        <div><b>Enabled Field: </b> <span class="text-muted">{{model.userEnabledAttribute}}</span></div>
-        <div><b>Disabled BitMask: </b> <span class="text-muted">{{model.userDisabledBitMask}}</span></div>
+        <h4>{{t 'openLdap.accessEnabled.users.header'}}</h4>
+        <div><b>{{t 'openLdap.accessEnabled.user.objectClass'}} </b> <span class="text-muted">{{model.userObjectClass}}</span></div>
+        <div><b>{{t 'openLdap.accessEnabled.users.login'}} </b> <span class="text-muted">{{model.userLoginField}}</span></div>
+        <div><b>{{t 'openLdap.accessEnabled.users.name'}} </b> <span class="text-muted">{{model.userNameField}}</span></div>
+        <div><b>{{t 'openLdap.accessEnabled.users.search'}} </b> <span class="text-muted">{{model.userSearchField}}</span></div>
+        <div><b>{{t 'openLdap.accessEnabled.users.enabled'}} </b> <span class="text-muted">{{model.userEnabledAttribute}}</span></div>
+        <div><b>{{t 'openLdap.accessEnabled.users.disabledBitMask'}} </b> <span class="text-muted">{{model.userDisabledBitMask}}</span></div>
       </div>
       <div class="col-md-4">
-        <h4>Group</h4>
-        <div><b>Object Class: </b> <span class="text-muted">{{model.groupObjectClass}}</span></div>
-        <div><b>Name Field: </b> <span class="text-muted">{{model.groupNameField}}</span></div>
-        <div><b>Search Field: </b> <span class="text-muted">{{model.groupSearchField}}</span></div>
+        <h4>{{t 'openLdap.accessEnabled.group.header'}}</h4>
+        <div><b>{{t 'openLdap.accessEnabled.group.objectClass'}} </b> <span class="text-muted">{{model.groupObjectClass}}</span></div>
+        <div><b>{{t 'openLdap.accessEnabled.group.name'}} </b> <span class="text-muted">{{model.groupNameField}}</span></div>
+        <div><b>{{t 'openLdap.accessEnabled.group.search'}} </b> <span class="text-muted">{{model.groupSearchField}}</span></div>
       </div>
     </div>
   </section>
 
   <section class="well">
-    <h4>Danger Zone&trade;</h4>
+    <h4>{{format-html-message 'openLdap.accessEnabled.disable.header'}}</h4>
     <hr/>
 
     <p>
-      <b class="text-danger">Caution:</b> Disabling access control will give complete control over {{settings.appName}} to anyone that can reach this page or the API.
+      {{format-html-message 'openLdap.accessEnabled.disable.warning'}}
     </p>
 
     {{#if confirmDisable}}
       <button class="btn btn-danger" {{action "disable"}}>
-        <i class="icon icon-alert"></i> Are you sure?  Click again to really disable access control
+        <i class="icon icon-alert"></i> {{t 'openLdap.accessEnabled.disable.confirmDisable.post'}}
       </button>
     {{else}}
       <button class="btn btn-danger" {{action "promptDisable"}}>
-        <i class="icon icon-umbrella"></i> Disable access control
+        <i class="icon icon-umbrella"></i> {{t 'openLdap.accessEnabled.disable.confirmDisable.pre'}}
       </button>
     {{/if}}
 
@@ -65,23 +67,24 @@
 
 {{#unless access.enabled}}
   <section class="well">
-    <h4>1. Configure an {{providerName}} server</h4>
+    <h4></h4>
+    <h4>{{t 'openLdap.accessConfig.header' providerName=providerName}}</h4>
     <hr/>
-    <p class="help-block">Enter the address, port, and protocol to connect to your {{providerName}} server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS.</p>
+    <p class="help-block">{{format-html-message 'openLdap.accessConfig.subtext1' providerName=providerName}}</p>
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label>Hostname or IP Address*</label>
+          <label>{{t 'openLdap.accessConfig.hostName.labelText'}}</label>
           {{input type="text" value=model.server classNames="form-control"}}
         </div>
       </div>
       <div class="col-md-6">
         <div class="form-group">
-          <label>Port</label>
+          <label>{{t 'openLdap.accessConfig.port.labelText'}}</label>
           <div class="input-group">
             {{input type="text" value=model.port type="number" min=1 max=65535 classNames="form-control"}}
             <span class="input-group-addon">
-              <label>TLS {{input type="checkbox" checked=model.tls}}</label>
+              <label>{{t 'openLdap.accessConfig.port.checkbox'}} {{input type="checkbox" checked=model.tls}}</label>
             </span>
           </div>
         </div>
@@ -92,17 +95,17 @@
       </div>
     </div>
 
-    <p class="help-block">{{settings.appName}} needs a service account that has (read-only) access to all of the domains that will be able to login, so that we can determine what groups a user is a member of when they make a request with an API key.</p>
+    <p class="help-block">{{t 'openLdap.accessConfig.subtext2' appName=settings.appName}}</p>
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <label>Service Account Username*</label>
+          <label>{{t 'openLdap.accessConfig.serviceUsername.labelText'}}</label>
           {{input type="text" value=model.serviceAccountUsername classNames="form-control"}}
         </div>
       </div>
       <div class="col-md-6">
         <div class="form-group">
-          <label>Service Account Password*</label>
+          <label>{{t 'openLdap.accessConfig.servicePassword.labelText'}}</label>
           {{input type="password" value=model.serviceAccountPassword classNames="form-control"}}
         </div>
       </div>
@@ -111,17 +114,17 @@
     <div class="row">
       <div class="col-md-6">
         <div class="form-group">
-          <p class="help-block">Only users and groups below the base will be used.</p>
-          <label>Search Base*</label>
-          {{input type="text" value=model.domain classNames="form-control" placeholder="e.g. dc=mycompany,dc=com"}}
+          <p class="help-block">{{t 'openLdap.accessConfig.searchBase.helpText'}}</p>
+          <label>{{t 'openLdap.accessConfig.searchBase.labelText'}}</label>
+          {{input type="text" value=model.domain classNames="form-control" placeholder=(t 'openLdap.accessConfig.searchBase.placeholder')}}
         </div>
       </div>
       {{#unless isOpenLdap}}
         <div class="col-md-6">
-          <p class="help-block">This domain will be used if a user logs in without specifing one.</p>
+          <p class="help-block">{{t 'openLdap.accessConfig.defaultDomain.helpText'}}</p>
           <div class="form-group">
-            <label>Default Login Domain*</label>
-            {{input type="text" value=model.loginDomain classNames="form-control" placeholder="e.g. mycompany"}}
+            <label>{{t 'openLdap.accessConfig.defaultDomain.labelText'}}</label>
+            {{input type="text" value=model.loginDomain classNames="form-control" placeholder=(t 'openLdap.accessConfig.defaultDomain.placeholder')}}
           </div>
         </div>
       {{/unless}}
@@ -129,49 +132,49 @@
   </section>
 
   <section class="well">
-    <h4>2. Customize Schema</h4>
+    <h4>{{t 'openLdap.customizeSchema.header'}}</h4>
     <hr/>
-    <p class="help-block">If your schema does not match the standard ActiveDirectory format, you can customize it here.</p>
+    <p class="help-block">{{t 'openLdap.customizeSchema.helpText'}}</p>
     <div class="row">
       <div class="col-md-6">
-        <h4>Users</h4>
+        <h4>{{t 'openLdap.customizeSchema.users.header'}}</h4>
         <div class="form-group">
-          <label>Object Class</label>
+          <label>{{t 'openLdap.customizeSchema.users.objectClass.labelText'}}</label>
           {{input type="text" value=model.userObjectClass type="text" classNames="form-control"}}
         </div>
         <div class="form-group">
-          <label>Login Field</label>
+          <label>{{t 'openLdap.customizeSchema.users.login.labelText'}}</label>
           {{input type="text" value=model.userLoginField type="text" classNames="form-control"}}
         </div>
         <div class="form-group">
-          <label>Name Field</label>
+          <label>{{t 'openLdap.customizeSchema.users.name.labelText'}}</label>
           {{input type="text" value=model.userNameField type="text" classNames="form-control"}}
         </div>
         <div class="form-group">
-          <label>Search Field</label>
+          <label>{{t 'openLdap.customizeSchema.users.search.labelText'}}</label>
           {{input type="text" value=model.userSearchField type="text" classNames="form-control"}}
         </div>
         <div class="form-group">
-          <label>Status Field</label>
+          <label>{{t 'openLdap.customizeSchema.users.status.labelText'}}</label>
           {{input type="text" value=model.userEnabledAttribute type="text" classNames="form-control"}}
         </div>
         <div class="form-group">
-          <label>Disabled Status Bitmask</label>
+          <label>{{t 'openLdap.customizeSchema.users.disabledBitMask.labelText'}}</label>
           {{input type="text" value=model.userDisabledBitMask type="number" min=1 classNames="form-control"}}
         </div>
       </div>
       <div class="col-md-6">
-        <h4>Groups</h4>
+        <h4>{{t 'openLdap.customizeSchema.groups.header'}}</h4>
         <div class="form-group">
-          <label>Object Class</label>
+          <label>{{t 'openLdap.customizeSchema.groups.objectClass.labelText'}}</label>
           {{input type="text" value=model.groupObjectClass type="text" classNames="form-control"}}
         </div>
         <div class="form-group">
-          <label>Name Field</label>
+          <label>{{t 'openLdap.customizeSchema.groups.name.labelText'}}</label>
           {{input type="text" value=model.groupNameField type="text" classNames="form-control"}}
         </div>
         <div class="form-group">
-          <label>Search Field</label>
+          <label>{{t 'openLdap.customizeSchema.groups.search.labelText'}}</label>
           {{input type="text" value=model.groupSearchField type="text" classNames="form-control"}}
         </div>
       </div>
@@ -179,21 +182,21 @@
   </section>
 
   <section class="well">
-    <h4>3. Test and enable authentication</h4>
+    <h4>{{t 'openLdap.testAuth.header'}}</h4>
     <hr/>
-    <p class="help-block">Check that everything is configured correctly by testing authentication with your {{providerName}} account:</p>
+    <p class="help-block">{{t 'openLdap.testAuth.helpText' providerName=providerName}}</p>
     {{top-errors errors=errors}}
 
     <div class="row">
       <div class="col-md-4">
         <div class="form-group">
-          <label>Your Username*</label>
+          <label>{{t 'openLdap.testAuth.username.labelText'}}</label>
           {{input type="text" value=username classNames="form-control"}}
         </div>
       </div>
       <div class="col-md-4">
         <div class="form-group">
-          <label>Your Password*</label>
+          <label>{{t 'openLdap.testAuth.password.labelText'}}</label>
           {{input type="password" value=password classNames="form-control"}}
         </div>
       </div>
@@ -202,9 +205,9 @@
           <label>&nbsp;</label>
           <button disabled={{createDisabled}} class="btn btn-primary" style="display: block;" {{action "test"}}>
             {{#if testing}}
-              <i class="icon icon-spinner icon-spin"></i> Testing...
+              <i class="icon icon-spinner icon-spin"></i> {{t 'openLdap.testAuth.authenticate.post'}}
             {{else}}
-              Authenticate
+              {{t 'openLdap.testAuth.authenticate.pre'}}
             {{/if}}
           </button>
         </div>

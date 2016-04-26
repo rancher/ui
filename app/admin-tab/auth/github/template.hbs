@@ -1,43 +1,43 @@
 <section class="well">
-  <h2>GitHub is {{#if access.enabled}}<b>enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
+  <h2>{{t 'authPage.github.header.text'}} {{#if access.enabled}}<b>{{t 'authPage.github.header.accessEnabled'}}</b>{{else}}<b class="text-warning">{{t 'authPage.github.header.accessNotEnabled'}}</b>{{/if}}</h2>
   <div>
     {{#if access.enabled}}
       {{#if wasRestricted}}
-        {{settings.appName}} is configured to restrict access to {{wasRestrictedMsg}}.
+        {{t 'authPage.github.header.accessEnabledSubtext.wasRestricted' appName=settings.appName wasRestricted=wasRestricted}}
       {{else}}
-        {{settings.appName}} is configured to allow access to any GitHub{{#if model.hostname}} Enterprise{{/if}} user.
+        {{t 'authPage.github.header.accessEnabledSubtext.wasNotRestricted.text1' appName=settings.appName}}{{#if model.hostname}} {{t 'authPage.github.header.accessEnabledSubtext.wasNotRestricted.text2'}}{{/if}} {{t 'authPage.github.header.accessEnabledSubtext.wasNotRestricted.text3'}}
       {{/if}}
     {{else}}
-      {{settings.appName}} can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.
+      {{t 'authPage.github.header.noAccessConfigured.subtext' appName=settings.appName}}
     {{/if}}
   </div>
 </section>
 {{#if access.enabled}}
   <section class="well">
-    <h4>Authentication</h4>
+    <h4>{{t 'authPage.github.authenticated.header.text'}}</h4>
     <hr/>
     {{#if model.hostname}}
-      <div><b>Enterprise Host: </b> <span class="text-muted">{{model.hostname}}</span></div>
+      <div><b>{{t 'authPage.github.authenticated.header.enterpriseHostName'}} </b> <span class="text-muted">{{model.hostname}}</span></div>
     {{/if}}
-    <div><b>Client ID: </b> <span class="text-muted">{{model.clientId}}</span></div>
-    <p class="help-block">To change the configured GitHub application, disable access control below and then set it up again.</p>
+    <div><b>{{t 'authPage.github.authenticated.header.clientId.text'}} </b> <span class="text-muted">{{model.clientId}}</span></div>
+    <p class="help-block">{{t 'authPage.github.authenticated.header.clientId.helpText'}}</p>
   </section>
 
   <section class="well">
-    <h4>Site Access</h4>
+    <h4>{{t 'authPage.github.authenticated.siteAccess.accessControl.header'}}</h4>
     {{#if showingAccessControl}}
       <p class="help-block">
-        Configure who should be allowed to log in and use {{settings.appName}}.  <b>Note:</b> Members added to environments are automatically allowed.
+        {{format-html-message 'authPage.github.authenticated.siteAccess.accessControl.helpText' appName=settings.appName}}
       </p>
       <hr/>
 
       <div class="row">
         <div class="col-md-6">
           <div class="radio">
-            <label>{{radio-button selection=model.accessMode value="unrestricted"}} Allow any GitHub user</label>
+            <label>{{radio-button selection=model.accessMode value="unrestricted"}} {{t 'authPage.github.authenticated.siteAccess.accessControl.radio1'}}</label>
           </div>
           <div class="radio">
-            <label>{{radio-button selection=model.accessMode value="restricted"}} Restrict to specific GitHub users and organization members{{#if isRestricted}}:{{/if}}</label>
+            <label>{{radio-button selection=model.accessMode value="restricted"}} {{t 'authPage.github.authenticated.siteAccess.accessControl.radio2'}}{{#if isRestricted}}:{{/if}}</label>
           </div>
         </div>
         <div class="col-md-6">
@@ -45,7 +45,7 @@
             {{input-identity allowTeams=false action="addAuthorized" onError="showError"}}
 
             <hr/>
-            <h5>Authorized Users and Organizations</h5>
+            <h5>{{t 'authPage.github.authenticated.siteAccess.accessControl.isRestricted.header'}}</h5>
 
             <ul class="list-unstyled gh-block-list">
               {{#each allowedActualIdentities as |item|}}
@@ -57,7 +57,7 @@
               {{/each}}
             </ul>
             {{#if (eq allowedActualIdentities.length 0)}}
-              <span class="text-muted">None</span>
+              <span class="text-muted">{{t 'authPage.github.authenticated.siteAccess.accessControl.isRestricted.noIdentity'}}</span>
             {{/if}}
           {{/if}}
         </div>
@@ -67,38 +67,38 @@
 
       <button class="btn btn-primary" disabled={{saveDisabled}} {{action "saveAuthorization"}}>
         {{#if saved}}
-          Saved
+          {{t 'authPage.github.authenticated.siteAccess.accessControl.isRestricted.saveAuthButton.saved'}}
         {{else}}
           {{#if saving}}
-            <i class="icon icon-spinner icon-spin"></i> Saving...
+            <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.github.authenticated.siteAccess.accessControl.isRestricted.saveAuthButton.saving'}}
           {{else}}
-            Save authorization configuration
+            {{t 'authPage.github.authenticated.siteAccess.accessControl.isRestricted.saveAuthButton.pre'}}
           {{/if}}
         {{/if}}
       </button>
     {{else}}
       <p class="help-block">
-        By default, only users that are a member of a environment are allowed to log in and access {{settings.appName}}.
+        {{t 'authPage.github.authenticated.siteAccess.accessControl.isRestricted.helpText' appName=settings.appName}}
       </p>
-      <button class="btn btn-primary" {{action "showAccessControl"}}>Customize</button>
+      <button class="btn btn-primary" {{action "showAccessControl"}}>{{t 'authPage.github.authenticated.siteAccess.accessControl.isRestricted.customizeButton'}}</button>
     {{/if}}
   </section>
 
   <section class="well">
-    <h4>Danger Zone&trade;</h4>
+    <h4>{{format-html-message 'authPage.github.authenticated.disableAccess.header'}}</h4>
     <hr/>
 
     <p>
-      <b class="text-danger">Caution:</b> Disabling access control will give complete control over {{settings.appName}} to anyone that can reach this page or the API.
+      {{format-html-message 'authPage.github.authenticated.disableAccess.warning' appName=settings.appName}}
     </p>
 
     {{#if confirmDisable}}
       <button class="btn btn-danger" {{action "disable"}}>
-        <i class="icon icon-alert"></i> Are you sure?  Click again to really disable access control
+        <i class="icon icon-alert"></i> {{t 'authPage.github.authenticated.disableAccess.confirmDisable'}}
       </button>
     {{else}}
       <button class="btn btn-danger" {{action "promptDisable"}}>
-        <i class="icon icon-umbrella"></i> Disable access control
+        <i class="icon icon-umbrella"></i> {{t 'authPage.github.authenticated.disableAccess.disable'}}
       </button>
     {{/if}}
 
@@ -107,47 +107,47 @@
 
 {{#unless access.enabled}}
   <section class="well">
-    <h4>1. Setup a GitHub Application</h4>
+    <h4>{{t 'authPage.github.notAuthenticated.header'}}</h4>
     <hr/>
     <p>
       <ul>
         <li>
-          For standard GitHub, <a href="https://github.com/settings/developers" target="_blank">click here</a> to go applications settings in a new window.
+          {{format-html-message 'authPage.github.notAuthenticated.ul.li1.text'}}
             <ul>
-              <li>For Github Enterprise, login to your account.  Click on Settings, then Applications.</li>
+              <li>{{t 'authPage.github.notAuthenticated.ul.li1.ul.li1'}}</li>
             </ul>
         </li>
         <li>
-          Click &quot;Register new application&quot; and fill out the form:
+          {{t 'authPage.github.notAuthenticated.ul.li2.text'}}
           <ul>
-            <li><b>Application name:</b> <span class="text-muted">Anything you like, e.g. My {{settings.appName}}</span></li>
+            <li>{{format-html-message 'authPage.github.notAuthenticated.ul.li2.ul.li1' appName=settings.appName}}</li>
             <li>
-              <b>Homepage URL:&nbsp;</b> <span>{{destinationUrl}} {{copy-to-clipboard size='small' clipboardText=destinationUrl}}</span>
+              {{format-html-message 'authPage.github.notAuthenticated.ul.li2.ul.li2'}} <span>{{destinationUrl}}{{copy-to-clipboard size='small' clipboardText=destinationUrl}}</span>
             </li>
-            <li><b>Application description:</b> <span class="text-muted">Anything you like, optional</span></li>
-            <li><b>Authorization callback URL</b> <span id="auth-callback-url">{{destinationUrl}} {{copy-to-clipboard size='small' clipboardText=destinationUrl}}</span></li>
+            <li>{{format-html-message 'authPage.github.notAuthenticated.ul.li2.ul.li3'}}</li>
+            <li><b>{{t 'authPage.github.notAuthenticated.ul.li2.ul.li4'}}</b> <span id="auth-callback-url">{{destinationUrl}} {{copy-to-clipboard size='small' clipboardText=destinationUrl}}</span></li>
           </ul>
         </li>
-        <li>Click &quot;Register application&quot;</li>
+        <li>{{t 'authPage.github.notAuthenticated.ul.li2.ul.li5'}}</li>
       </ul>
     </p>
   </section>
 
   <form autcomplete="on">
     <section class="well">
-      <h4>2. Configure {{settings.appName}} to use your application for authentication</h4>
+      <h4>{{t 'authPage.github.notAuthenticated.form.header' appName=settings.appName}}</h4>
       <hr/>
-      <p>Copy and paste the Client ID and Secret from the upper-right corner of your newly-created application.</p>
+      <p>{{t 'authPage.github.notAuthenticated.form.subtext'}}</p>
       <div class="row">
         <div class="col-md-6">
           <div class="form-group">
-            <label>Client ID*</label>
+            <label>{{t 'authpage.github.notAuthenticated.form.clientId.labelText'}}</label>
             {{input type="text" name="username" value=model.clientId classNames="form-control"}}
           </div>
         </div>
         <div class="col-md-6">
           <div class="form-group">
-            <label>Client Secret*</label>
+            <label>{{t 'authpage.github.notAuthenticated.form.clientSecret.labelText'}}</label>
             {{input type="password" name="password" value=model.clientSecret classNames="form-control"}}
           </div>
         </div>
@@ -155,39 +155,39 @@
       <div class="row">
         <div class="col-xs-12 col-md-6">
           <div class="checkbox">
-            <label>{{input type="checkbox" checked=isEnterprise}} Use a private GitHub Enterprise installation</label>
+            <label>{{input type="checkbox" checked=isEnterprise}} {{t 'authPage.github.notAuthenticated.form.ghEnterprise.labelText'}}</label>
           </div>
           {{#liquid-if isEnterprise}}
             <div class="checkbox">
-              <label>{{input type="checkbox" checked=secure}} Use a secure connection (<code>https://</code>).</label>
+              <label>{{input type="checkbox" checked=secure}} {{t 'authPage.github.notAuthenticated.form.isGHEnterprise.labelText'}} (<code>https://</code>).</label>
             </div>
           {{/liquid-if}}
         </div>
         <div class="col-xs-12 col-md-6">
           {{#liquid-if isEnterprise}}
-            <label>Enterprise Host*</label>
-            {{input type="text" value=model.hostname classNames="form-control" placeholder="e.g. github.example.com"}}
+          <label>{{t 'authPage.github.notAuthenticated.form.enterpriseHost.labelText'}}</label>
+            {{input type="text" value=model.hostname classNames="form-control" placeholder=(t 'authPage.github.notAuthenticated.form.enterpriseHost.placeholder')}}
           {{/liquid-if}}
         </div>
       </div>
     </section>
 
     <section class="well">
-      <h4>3. Test and enable authentication</h4>
+      <h4>{{t 'authPage.github.testAuth.header'}}</h4>
       <hr/>
 
       {{top-errors errors=errors}}
 
       <div class="row">
         <div class="col-md-6">
-          <p>Check that your application is configured correctly by testing authentication with it:</p>
+          <p>{{t 'authPage.github.testAuth.subtext'}}</p>
         </div>
         <div class="col-md-6">
           <button disabled={{createDisabled}} class="btn btn-primary" {{action "test"}}>
             {{#if testing}}
-              <i class="icon icon-spinner icon-spin"></i> Waiting to hear back from GitHub
+              <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.github.testAuth.buttonText.post'}}
             {{else}}
-              <i class="icon icon-github"></i> Authenticate with GitHub
+              <i class="icon icon-github"></i> {{t 'authPage.github.testAuth.buttonText.pre'}}
             {{/if}}
           </button>
         </div>
