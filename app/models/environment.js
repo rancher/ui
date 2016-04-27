@@ -7,7 +7,6 @@ import C from 'ui/utils/constants';
 
 var Environment = Resource.extend({
   type: 'environment',
-  endpoint: Ember.inject.service(),
 
   actions: {
     activateServices: function() {
@@ -68,7 +67,7 @@ var Environment = Resource.extend({
     },
 
     exportConfig: function() {
-      var url = this.get('endpoint').addAuthParams(this.linkFor('composeConfig'));
+      var url = this.get('endpointSvc').addAuthParams(this.linkFor('composeConfig'));
       Util.download(url);
     },
 
