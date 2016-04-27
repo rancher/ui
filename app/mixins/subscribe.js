@@ -26,7 +26,7 @@ export default Ember.Mixin.create({
       this.set('k8sUidBlacklist', []);
     }
 
-    var url = ("ws://"+window.location.host + this.get('app.wsEndpoint')).replace('%PROJECTID%', projectId);
+    var url = ("ws://"+window.location.host + this.get('app.wsEndpoint')).replace(this.get('app.projectToken'), projectId);
     var socket = Socket.create({url: url});
     socket._projectId = projectId;
     this.set('subscribeSocket', socket);

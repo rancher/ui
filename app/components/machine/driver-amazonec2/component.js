@@ -79,31 +79,45 @@ export default Ember.Component.extend(Driver, {
   isGteStep6               : Ember.computed.gte('step',6),
   isGteStep7               : Ember.computed.gte('step',7),
 
-  afterInit: function() {
+  bootstrap: function() {
     let pref   = this.get('prefs.amazonec2')||{};
+    let config = this.get('store').createRecord({
+      type          : 'amazonec2Config',
+      region        : 'us-west-2',
+      instanceType  : 't2.micro',
+      securityGroup : 'rancher-machine',
+      zone          : 'a',
+      rootSize      : 16,
+      accessKey     : pref.accessKey||'',
+      secretKey     : pref.secretKey||'',
+    });
 
-    if (this.get('clonedModel')) {
-      this.set('model', this.get('clonedModel'));
-    } else {
-      let config = this.get('store').createRecord({
-        type          : 'amazonec2Config',
-        region        : 'us-west-2',
-        instanceType  : 't2.micro',
-        securityGroup : 'rancher-machine',
-        zone          : 'a',
-        rootSize      : 16,
-        accessKey     : pref.accessKey||'',
-        secretKey     : pref.secretKey||'',
-      });
+    this.set('model', this.get('store').createRecord({
+      type            : 'machine',
+      amazonec2Config : config,
+    }));
+  },
 
-      this.set('model', this.get('store').createRecord({
-        type            : 'machine',
-        amazonec2Config : config,
-      }));
-    }
+  afterInit: function() {
+    this._super();
 
     this.set('editing', false);
-    this.initFields();
+    this.set('clients', Ember.Object.create());
+    this.set('allSubnets', []);
+
+    let cur = this.get('amazonec2Config.securityGroup');
+
+    if ( cur === RANCHER_GROUP ) {
+      this.setProperties({
+        whichSecurityGroup    : 'default',
+        selectedSecurityGroup : null,
+      });
+    } else {
+      this.setProperties({
+        whichSecurityGroup    : 'custom',
+        selectedSecurityGroup : cur,
+      });
+    }
   }.on('init'),
 
   willDestroyElement: function() {
@@ -427,25 +441,5 @@ export default Ember.Component.extend(Driver, {
 
   subnetById: function(id) {
     return (this.get('allSubnets')||[]).filterBy('subnetId',id)[0];
-  },
-
-  initFields: function() {
-    this._super();
-    this.set('clients', Ember.Object.create());
-    this.set('allSubnets', []);
-
-    let cur = this.get('amazonec2Config.securityGroup');
-
-    if ( cur === RANCHER_GROUP ) {
-      this.setProperties({
-        whichSecurityGroup    : 'default',
-        selectedSecurityGroup : null,
-      });
-    } else {
-      this.setProperties({
-        whichSecurityGroup    : 'custom',
-        selectedSecurityGroup : cur,
-      });
-    }
   },
 });

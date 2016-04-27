@@ -82,6 +82,23 @@ export default Ember.Component.extend(Driver, {
     this.initFields();
   },
 
+  afterInit: function() {
+    this._super();
+
+    let cur = this.get('exoscaleConfig.securityGroup');
+    if (cur === RANCHER_GROUP) {
+      this.setProperties({
+        whichSecurityGroup: 'default',
+        selectedSecurityGroup: null
+      });
+    } else {
+      this.setProperties({
+        whichSecurityGroup: 'custom',
+        selectedSecurityGroup: cur
+      });
+    }
+  }.on('init'),
+
   willDestroyElement() {
     this.set('errors', null);
     this.set('step', 1);
@@ -281,22 +298,6 @@ export default Ember.Component.extend(Driver, {
                           return true;
                         },
                         data: params}, true);
-  },
-
-  initFields: function() {
-    this._super();
-    let cur = this.get('exoscaleConfig.securityGroup');
-    if (cur === RANCHER_GROUP) {
-      this.setProperties({
-        whichSecurityGroup: 'default',
-        selectedSecurityGroup: null
-      });
-    } else {
-      this.setProperties({
-        whichSecurityGroup: 'custom',
-        selectedSecurityGroup: cur
-      });
-    }
   },
 
 });

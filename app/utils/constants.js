@@ -56,7 +56,7 @@ var C = {
   },
 
   HEADER: {
-    PROJECT: 'x-api-project-id',
+    //PROJECT: 'x-api-project-id',
     NO_CHALLENGE: 'x-api-no-challenge',
     NO_CHALLENGE_VALUE: 'true',
     ACCOUNT_ID: 'x-api-account-id',

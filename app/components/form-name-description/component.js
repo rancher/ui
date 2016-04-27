@@ -22,6 +22,24 @@ export default Ember.Component.extend({
   descriptionRequired: false,
   descriptionDisabled: false,
 
+  didInitAttrs() {
+    if ( this.get('model') ) {
+      this.modelChanged();
+    } else {
+      this.setProperties({
+        _name: this.get('name'),
+        _description: this.get('description'),
+      });
+    }
+  },
+
+  modelChanged: function() {
+    this.setProperties({
+      _name: this.get('model.name'),
+      _description: this.get('model.description'),
+    });
+  }.observes('model'),
+
   nameChanged: function() {
    Ember.run.once(() => {
     let val = this.get('_name');

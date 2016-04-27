@@ -25,7 +25,7 @@ function isSoftUser(type,key) {
     return false;
   }
 
-  // Include anythign else
+  // Include anything else
   return true;
 }
 
@@ -253,18 +253,18 @@ export default Ember.Mixin.create({
       if ( onlyOfType )
       {
         // Strict User, only those with type actually == user
-        if ( (onlyOfType === 'strictUser' && type !== 'user' ) ) {
+        if ( onlyOfType === 'strictUser' && type !== 'user' ) {
           return;
         }
 
-        // Soft user, user + system things that don't have UI controls
-        if ( onlyOfType === 'user' &&  !isSoftUser(type, key) ) {
-          return;
-        }
-
+        if ( onlyOfType === 'user' ) {
+          // Soft user := user + system things that don't have UI controls
+          if ( !isSoftUser(type, key) ) {
+            return;
+          }
+        } else if ( onlyOfType !== type ) {
         // Generally the wrong type, for system or affinity
-        if ( onlyOfType !== type ) {
-        return;
+          return;
         }
       }
 
