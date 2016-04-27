@@ -4,7 +4,7 @@ export default Ember.Route.extend({
   redirect() {
     if ( this.modelFor('authenticated').swarmReady )
     {
-      this.transitionTo('applications-tab.compose-projects');
+      this.transitionTo('swarm-tab.projects');
     }
   },
 

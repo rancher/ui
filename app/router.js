@@ -144,21 +144,22 @@ Router.map(function() {
             });
           });
         });
+      });
 
-        this.route('compose-projects', function() {
+      this.route('swarm-tab', {path: '/swarm', resetNamespace: true}, function() {
+        this.route('projects', function() {
           this.route('index', {path: '/'});
           this.route('new', {path: '/add'});
-          this.route('compose-project', {path: '/:compose_project_id'}, function() {
+          this.route('project', {path: '/:compose_project_id'}, function() {
           });
         });
 
-        this.route('compose-services', function() {
+        this.route('services', function() {
           this.route('index', {path: '/'});
-          this.route('compose-service', {path: '/:compose_service_id'});
         });
 
-        this.route('compose-console');
-        this.route('compose-waiting');
+        this.route('waiting');
+        this.route('console');
       });
 
       // Catalog
@@ -170,7 +171,7 @@ Router.map(function() {
       // Kubernetes
       this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('waiting', {path: '/waiting'});
+        this.route('waiting');
 
         this.route('apply', {path: '/apply'});
         this.route('kubectl', {path: '/kubectl'});
