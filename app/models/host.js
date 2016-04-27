@@ -45,7 +45,7 @@ var Host = Resource.extend({
         var url = machine.linkFor('config');
         if ( url )
         {
-          url = this.get('endpoint').addAuthParams(url);
+          url = this.get('endpointSvc').addAuthParams(url);
           Util.download(url);
         }
       }
