@@ -63,8 +63,9 @@ module.exports = function(environment) {
       apiEndpoint: '/v1',
       catalogServer: '',
       catalogEndpoint: '/v1-catalog',
-      kubernetesEndpoint: '/r/kubernetes',
-      kubectlEndpoint: '/r/kubectld:8091/v1-kubectl',
+      projectToken: '%PROJECTID%',
+      kubernetesEndpoint: '/r/projects/%PROJECTID%/kubernetes',
+      kubectlEndpoint: '/r/projects/%PROJECTID%/kubectld:8091/v1-kubectl',
       proxyEndpoint: '/v1/proxy',
       wsEndpoint: '/v1/projects/%PROJECTID%/subscribe' +
                     '?eventNames=resource.change' +

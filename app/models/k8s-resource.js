@@ -1,9 +1,11 @@
+import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import { normalizeType } from 'ember-api-store/utils/normalize';
-import Util from 'ui/utils/util';
 
 var K8sResource = Resource.extend({
+  endpointSvc: Ember.inject.service('endpoint'),
+
   actions: {
     edit() {
       this.get('router').transitionTo('k8s-tab.apply', {
@@ -15,21 +17,7 @@ var K8sResource = Resource.extend({
     },
 
     goToApi: function() {
-      var endpoint = this.get('endpoint.absolute'); // http://e.f.g.h/ , does not include version.  e.f.g.h is where the API actually is.
-      var projectId = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
-      var relative = this.linkFor('self').replace(/^\/r\/kubernetes/,'');
-      var url = `${endpoint}r/projects/${projectId}/kubernetes${relative}`;
-
-      // For local development where API doesn't match origin, add basic auth token
-      if ( url.indexOf(window.location.origin) !== 0 )
-      {
-        var token = this.get('cookies').get(C.COOKIE.TOKEN);
-        if ( token )
-        {
-          url = Util.addAuthorization(url, C.USER.BASIC_BEARER, token);
-        }
-      }
-
+      var url = this.linkFor('self').replace(/^\//,'');
       window.open(url, '_blank');
     },
   },
@@ -38,7 +26,7 @@ var K8sResource = Resource.extend({
     var url = this.get(`metadata.${name}Link`);
     if ( url )
     {
-      url = this.get('store.baseUrl') + this.get('app.kubernetesEndpoint') + url;
+      url = this.get('app.kubernetesEndpoint').replace(this.get('app.projectToken'), this.get(`tab-session.${C.SESSION.PROJECT}`)) + url;
     }
     return url;
   },

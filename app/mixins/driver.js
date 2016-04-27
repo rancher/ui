@@ -38,8 +38,12 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   },
 
   afterInit: function() {
+    this.set('error', null);
+    this.set('editing', false);
+
     if (this.get('clonedModel')) {
       this.set('model', this.get('clonedModel'));
+      this.set('prefix', this.get('primaryResource.name')||'');
     } else if (typeof this.get('bootstrap') === 'function') {
       this.bootstrap();
     }
@@ -108,11 +112,6 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
       this.set('primaryResource.name', first);
     }
   }.observes('nameParts'),
-
-  initFields: function() {
-    this._super();
-    this.set('prefix', this.get('primaryResource.name')||'');
-  },
 
   willSave: function() {
     this.set('multiTemplate', this.get('primaryResource').clone());

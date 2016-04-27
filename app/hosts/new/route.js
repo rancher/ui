@@ -22,13 +22,56 @@ export default Ember.Route.extend({
   settings       : Ember.inject.service(),
   backTo         : null,
 
-
   queryParams: {
     driver: {
       refreshModel: true
     },
     machineId: {
       refreshModel: false,
+    }
+  },
+
+  actions: {
+    cancel() {
+      this.send('goBack');
+    },
+
+    savedHost() {
+      this.controllerFor('hosts.new').set('apiHostSet', true);
+      this.refresh();
+    },
+
+    goBack() {
+      if ( this.get('backTo') === 'k8s' ) {
+        this.transitionTo('k8s-tab.waiting');
+      } else if ( this.get('backTo') === 'swarm' ) {
+        this.transitionTo('applications-tab.compose-waiting');
+      } else {
+        let appRoute = getOwner(this).lookup('route:application');
+        let opts     = this.get('previousOpts');
+
+        appRoute.set('previousRoute', opts.name);
+        appRoute.set('previousParams', opts.params);
+
+        this.send('goToPrevious','hosts');
+      }
+    }
+  },
+
+  activate() {
+    let appRoute = getOwner(this).lookup('route:application');
+    this.set('previousOpts', {name: appRoute.get('previousRoute'), params: appRoute.get('previousParams')});
+  },
+
+  deactivate() {
+    this.set('lastRoute', null);
+  },
+
+  resetController(controller, isExisting /*, transition*/) {
+    if ( isExisting )
+    {
+      controller.set('machineId', null);
+      controller.set('clonedModel', null);
     }
   },
 
@@ -148,41 +191,5 @@ export default Ember.Route.extend({
     }).catch(() => {
       return Ember.RSVP.reject({type: 'error', message: 'Failed to retrieve cloned model'}) ;
     });
-  },
-
-  activate() {
-    let appRoute = getOwner(this).lookup('route:application');
-    this.set('previousOpts', {name: appRoute.get('previousRoute'), params: appRoute.get('previousParams')});
-  },
-
-  deactivate() {
-    this.set('lastRoute', this.get('something'));
-  },
-
-  actions: {
-    cancel() {
-      this.send('goBack');
-    },
-
-    savedHost() {
-      this.controllerFor('hosts.new').set('apiHostSet', true);
-      this.refresh();
-    },
-
-    goBack() {
-      if ( this.get('backTo') === 'k8s' ) {
-        this.transitionTo('k8s-tab.waiting');
-      } else if ( this.get('backTo') === 'swarm' ) {
-        this.transitionTo('applications-tab.compose-waiting');
-      } else {
-        let appRoute = getOwner(this).lookup('route:application');
-        let opts     = this.get('previousOpts');
-
-        appRoute.set('previousRoute', opts.name);
-        appRoute.set('previousParams', opts.params);
-
-        this.send('goToPrevious','hosts');
-      }
-    }
   },
 });

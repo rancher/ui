@@ -88,6 +88,15 @@ export default Ember.Service.extend({
   // The current namespace
   namespace: null,
 
+  kubernetesEndpoint: function() {
+    return this.get('app.kubernetesEndpoint').replace(this.get('app.projectToken'), this.get(`tab-session.${C.TABSESSION.PROJECT}`));
+  }.property(`tab-session.${C.TABSESSION.PROJECT}`,'app.kubernetesEndpoint'),
+
+  kubectlEndpoint: function() {
+    return this.get('app.kubectlEndpoint').replace(this.get('app.projectToken'), this.get(`tab-session.${C.TABSESSION.PROJECT}`));
+  }.property(`tab-session.${C.TABSESSION.PROJECT}`,'app.kubectlEndpoint'),
+
+
   promiseQueue: null,
   init() {
     this._super();
@@ -113,9 +122,6 @@ export default Ember.Service.extend({
       opt.url = path;
       opt.data = data;
     }
-
-    opt.headers = opt.headers || {};
-    opt.headers[C.HEADER.PROJECT] = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
 
     var promise = new Ember.RSVP.Promise(function(resolve,reject) {
       store.rawRequest(opt).then(success, fail);
@@ -318,7 +324,7 @@ export default Ember.Service.extend({
     {
       if ( opt.url.substr(0,1) !== '/' )
       {
-        opt.url = `${self.get('app.kubernetesEndpoint')}/${C.K8S.BASE_VERSION}/` + opt.url;
+        opt.url = `${self.get('kubernetesEndpoint')}/${C.K8S.BASE_VERSION}/` + opt.url;
       }
 
       return findWithUrl(opt.url);
@@ -427,7 +433,7 @@ export default Ember.Service.extend({
 
   isReady() {
     return this.request({
-      url: `${this.get('app.kubernetesEndpoint')}/${C.K8S.BASE}`
+      url: `${this.get('kubernetesEndpoint')}/${C.K8S.BASE}`
     }).then(() => {
       return true;
     }).catch(() => {
@@ -592,7 +598,7 @@ export default Ember.Service.extend({
 
   create(body) {
     return this.request({
-      url: `${this.get('app.kubectlEndpoint')}/create`,
+      url: `${this.get('kubectlEndpoint')}/create`,
       method: 'POST',
       contentType: 'application/yaml',
       data: body
@@ -604,7 +610,7 @@ export default Ember.Service.extend({
   getYaml(type, id, defaultNs) {
     var parts = splitId(id, defaultNs);
     return this.request({
-      url: `${this.get('app.kubectlEndpoint')}/${encodeURIComponent(type)}/${encodeURIComponent(parts.name)}?namespace=${encodeURIComponent(parts.namespace)}`,
+      url: `${this.get('kubectlEndpoint')}/${encodeURIComponent(type)}/${encodeURIComponent(parts.name)}?namespace=${encodeURIComponent(parts.namespace)}`,
     }).then((body) => {
       return body.stdOut.trim();
     }).catch((err) => {
@@ -614,7 +620,7 @@ export default Ember.Service.extend({
 
   edit(body) {
     return this.request({
-      url: `${this.get('app.kubectlEndpoint')}/apply`,
+      url: `${this.get('kubectlEndpoint')}/apply`,
       method: 'POST',
       contentType: 'application/yaml',
       data: body
@@ -625,7 +631,7 @@ export default Ember.Service.extend({
 
   catalog(files,answers) {
     return this.request({
-      url: `${this.get('app.kubectlEndpoint')}/catalog`,
+      url: `${this.get('kubectlEndpoint')}/catalog`,
       method: 'POST',
       contentType: 'application/json',
       data: {
