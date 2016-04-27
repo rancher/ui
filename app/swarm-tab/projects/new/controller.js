@@ -12,6 +12,6 @@ export default Ember.Controller.extend(NewOrEdit, {
   editing: false,
 
   doneSaving: function() {
-    return this.transitionToRoute('applications-tab.compose-projects');
+    return this.transitionToRoute('swarm-tab.projects');
   },
 });
