@@ -75,7 +75,7 @@ export default Ember.Route.extend({
 
   actions: {
     cancel: function() {
-      this.transitionTo('applications-tab.compose-projects');
+      this.transitionTo('swarm-tab.projects');
     },
   }
 });

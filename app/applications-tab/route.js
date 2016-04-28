@@ -36,7 +36,7 @@ export default Ember.Route.extend({
     {
       if ( hasSwarm )
       {
-        this.transitionTo('applications-tab.compose-waiting');
+        this.transitionTo('swarm-tab.waiting');
       }
       else if ( hasKubernetes )
       {

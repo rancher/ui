@@ -66,7 +66,7 @@ export default Ember.Controller.extend({
   stepChanged: function(){
     if ( this.get('currentStep') === 4 )
     {
-      this.transitionToRoute('applications-tab.compose-projects');
+      this.transitionToRoute('swarm-tab.projects');
     }
   }.observes('currentStep'),
 });
