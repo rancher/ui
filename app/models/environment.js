@@ -1,9 +1,8 @@
-import Ember from 'ember';
-import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
 import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 var Environment = Resource.extend({
   type: 'environment',
