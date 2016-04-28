@@ -20,42 +20,56 @@ import { parseCatalogSetting } from 'ui/utils/parse-catalog-setting';
 */
 
 export const getProjectId = function() { return this.get('projectId'); };
-export const getNamespaceId = function() { return this.get('projectId'); };
+export const getNamespaceId = function() { return this.get('namespaceId'); };
+export const hasK8s = function() { return this.get('hasKubernetes'); };
+export const k8sReady = function() { return this.get('kubernetesReady'); };
+export const swarmReady = function() { return this.get('swarmReady'); };
+
+function fnOrValue(val, ctx) {
+  if ( typeof val === 'function' )
+  {
+    return val.call(ctx);
+  }
+  else
+  {
+    return val;
+  }
+}
 
 const navTree = [
   {
     label: 'Kubernetes',
     route: 'k8s-tab',
     ctx: [getProjectId],
-    condition: function() { return this.get('showKubernetes'); },
+    condition: hasK8s,
     submenu: [
       {
         label: 'Services',
         icon: 'icon icon-compass',
         route: 'k8s-tab.namespace.services',
         ctx: [getProjectId, getNamespaceId],
-        condition: function() { return this.hasNamespace(); },
+        condition: k8sReady,
       },
       {
         label: 'Replication Controllers',
         icon: 'icon icon-tachometer',
         route: 'k8s-tab.namespace.rcs',
         ctx: [getProjectId, getNamespaceId],
-        condition: function() { return this.hasNamespace(); },
+        condition: k8sReady,
       },
       {
         label: 'Pods',
         icon: 'icon icon-containers',
         route: 'k8s-tab.namespace.pods',
         ctx: [getProjectId, getNamespaceId],
-        condition: function() { return this.hasNamespace(); },
+        condition: k8sReady,
       },
       {
         label: 'Kubectl',
         icon: 'icon icon-terminal',
         route: 'k8s-tab.kubectl',
         ctx: [getProjectId],
-        condition: function() { return this.hasNamespace(); },
+        condition: k8sReady,
       },
     ],
   },
@@ -71,21 +85,21 @@ const navTree = [
         icon: 'icon icon-layeredgroup',
         route: 'swarm-tab.projects',
         ctx: [getProjectId],
-        condition: function() { return this.get('swarmReady'); },
+        condition: swarmReady,
       },
       {
         label: 'Services',
         icon: 'icon icon-layers',
         route: 'swarm-tab.services',
         ctx: [getProjectId],
-        condition: function() { return this.get('swarmReady'); },
+        condition: swarmReady,
       },
       {
         label: 'CLI',
         icon: 'icon icon-terminal',
         route: 'swarm-tab.console',
         ctx: [getProjectId],
-        condition: function() { return this.get('swarmReady'); },
+        condition: swarmReady,
       },
     ]
   },
@@ -95,7 +109,7 @@ const navTree = [
     label: 'Stacks',
     route: 'environments',
     ctx: [getProjectId],
-    condition: function() { return this.get('hasProject') && !this.get('showKubernetes') && !this.get('hasSwarm'); },
+    condition: function() { return this.get('hasProject') && !this.get('hasKubernetes') && !this.get('hasSwarm'); },
   },
 
   // Cattle System
@@ -107,7 +121,7 @@ const navTree = [
     condition: function() {
       return this.get('hasProject') &&
       this.get('hasSystem') &&
-      !this.get('showKubernetes') &&
+      !this.get('hasKubernetes') &&
       !this.get('hasSwarm');
     },
   },
@@ -120,7 +134,7 @@ const navTree = [
     queryParams: {which: 'not-kubernetes'},
     condition: function() {
       return this.get('hasProject') &&
-      this.get('showKubernetes');
+      this.get('hasKubernetes');
     },
   },
 
@@ -141,7 +155,7 @@ const navTree = [
       return this.get('hasProject') &&
       this.get(`settings.${C.SETTING.CATALOG_URL}`) &&
       (!this.get('hasSwarm') || this.get('swarmReady')) &&
-      (!this.get('showKubernetes') || this.hasNamespace());
+      (!this.get('hasKubernetes') || this.get('kubernetesReady'));
     },
     submenu: getCatalogSubtree,
   },
@@ -150,12 +164,7 @@ const navTree = [
     label: 'Infrastructure',
     route: 'infrastructure-tab',
     ctx: [getProjectId],
-    condition: function() {
-      return this.get('hasProject') &&
-      this.get(`settings.${C.SETTING.CATALOG_URL}`) &&
-      (!this.get('hasSwarm') || this.get('swarmReady')) &&
-      (!this.get('showKubernetes') || this.hasNamespace());
-    },
+    condition: function() { return this.get('hasProject'); },
     submenu: [
       {
         label: 'Hosts',
@@ -174,7 +183,7 @@ const navTree = [
         icon: 'icon icon-vm',
         route: 'virtualmachines',
         ctx: [getProjectId],
-        condition: function() { return this.get('hasVm'); },
+        condition: function() { return this.get('settings.hasVm'); },
       },
       {
         label: 'Storage Pools',
@@ -286,11 +295,6 @@ function getCatalogSubtree() {
 export default Ember.Component.extend({
   // Inputs
   currentPath: null,
-  hasKubernetes: null,
-  hasSwarm: null,
-  swarmReady: null,
-  hasSystem: null,
-  hasVm: null,
 
   // Injections
   projects         : Ember.inject.service(),
@@ -317,9 +321,15 @@ export default Ember.Component.extend({
     },
   },
 
+  didInitAttrs() {
+    this._super();
+    this.updateNavTree();
+  },
+
   // This computed property generates the active list of choices to display
-  navTree: function() {
-    return navTree.map((item) => {
+  navTree: null,
+  updateNavTree() {
+    let out = navTree.map((item) => {
       return Ember.copy(item,true);
     }).filter((item) => {
       if ( typeof item.condition === 'function' )
@@ -330,31 +340,12 @@ export default Ember.Component.extend({
         }
       }
 
-      if ( typeof item.label === 'function' )
-      {
-        item.label = item.label.call(this);
-      }
-
-      if ( typeof item.route === 'function' )
-      {
-        item.route = item.route.call(this);
-      }
-
-      item.ctx = (item.ctx||[]).map((ctx) => {
-        if ( typeof ctx === 'function' )
-        {
-          return ctx.call(this);
-        }
-        else
-        {
-          return ctx;
-        }
+      item.label = fnOrValue(item.label, this);
+      item.route = fnOrValue(item.route, this);
+      item.ctx = (item.ctx||[]).map((prop) => {
+        return fnOrValue(prop, this);
       });
-
-      if ( typeof item.submenu === 'function' )
-      {
-        item.submenu = item.submenu.call(this);
-      }
+      item.submenu = fnOrValue(item.submenu, this);
 
       item.submenu = (item.submenu||[]).filter((subitem) => {
         if ( typeof subitem.condition === 'function' )
@@ -362,12 +353,24 @@ export default Ember.Component.extend({
           return subitem.condition.call(this);
         }
 
+        subitem.label = fnOrValue(subitem.label, this);
+        subitem.route = fnOrValue(subitem.route, this);
+        subitem.ctx = (subitem.ctx||[]).map((prop) => {
+          return fnOrValue(prop, this);
+        });
+
         return true;
       });
 
       return true;
     });
-  }.property('currentPath','showKubernetes','hasSwarm','swarmReady','hasSystem','hasVm','projectId','namespaceId',`settings.${C.SETTING.CATALOG_URL}`,'isAdmin'),
+
+    this.set('navTree', out);
+  },
+
+  shouldUpdateNavTree: function() {
+    Ember.run.once(this, 'updateNavTree');
+  }.observes('currentPath','project.orchestrationState','projectId','namespaceId',`settings.${C.SETTING.CATALOG_URL}`,'settings.hasVm','isAdmin'),
 
   // Utilities you can use in the condition() function to decide if an item is shown or hidden,
   // beyond things listed in "Inputs"
@@ -379,11 +382,13 @@ export default Ember.Component.extend({
     return !!this.get('project');
   }.property('project'),
 
-  showKubernetes: function() {
-    return this.get('hasKubernetes') || this.pathIs('authenticated.project.k8s-tab');
-  }.property('hasKubernetes','currentPath'),
+  hasSwarm:       Ember.computed.alias('project.orchestrationState.hasSwarm'),
+  hasKubernetes:  Ember.computed.alias('project.orchestrationState.hasKubernetes'),
+  hasMesos:       Ember.computed.alias('project.orchestrationState.hasMesos'),
 
-  hasNamespace() {
-    return this.get('showKubernetes') && this.get('namespaceId');
-  }
+  kubernetesReady: function() {
+    return this.get('hasKubernetes') &&
+    this.get('project.orchestrationState.kubernetesReady') &&
+    this.get('namespaceId');
+  }.property('hasKubernetes','project.orchestrationState.kubernetesReady','namespaceId'),
 });

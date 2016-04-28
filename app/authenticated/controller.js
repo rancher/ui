@@ -7,25 +7,5 @@ export default Ember.Controller.extend({
   currentPath : Ember.computed.alias('application.currentPath'),
   error       : null,
 
-  // These are set by project/route and project/controller
-  hasKubernetes : false,
-  hasSwarm      : false,
-  hasSystem     : false,
-  hasVm         : Ember.computed.alias('settings.hasVm'),
-  swarmReady    : Ember.computed.alias('model.swarmReady'),
-
-  init() {
-    this._super();
-    this.k8sChanged();
-  },
-
-  k8sChanged: function() {
-    this.set('hasKubernetes', !!this.get('projects.current.kubernetes'));
-  }.observes('projects.current.kubernetes'),
-
-  swarmChanged: function() {
-    this.set('hasSwarm', !!this.get('projects.current.swarm'));
-  }.observes('projects.current.swarm'),
-
   isPopup: Ember.computed.alias('application.isPopup'),
 });

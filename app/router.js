@@ -52,6 +52,7 @@ Router.map(function() {
 
     this.route('project', {path: '/env/:project_id'}, function() {
       this.route('index', {path: '/'});
+      this.route('waiting');
 
       // Infrastructure
       this.route('infrastructure-tab', {path: '/infra', resetNamespace: true}, function() {
@@ -119,7 +120,6 @@ Router.map(function() {
       // Applications
       this.route('applications-tab', {path: '/apps', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('splash', {path: '/welcome', resetNamespace: true});
         this.route('service.new', {path: '/add-service', resetNamespace: true});
         this.route('service.new-virtualmachine', {path: '/add-vm-service', resetNamespace: true});
         this.route('service.new-balancer', {path: '/add-balancer', resetNamespace: true});
@@ -158,7 +158,6 @@ Router.map(function() {
           this.route('index', {path: '/'});
         });
 
-        this.route('waiting');
         this.route('console');
       });
 
@@ -171,7 +170,6 @@ Router.map(function() {
       // Kubernetes
       this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('waiting');
 
         this.route('apply', {path: '/apply'});
         this.route('kubectl', {path: '/kubectl'});
