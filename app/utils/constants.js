@@ -265,6 +265,7 @@ C.INITIALIZING_STATES = [
 C.VM_CAPABLE_STORAGE_DRIVERS = [
   'convoy-gluster',
   'convoy-longhorn',
+  'longhorn',
 ];
 
 // This is populated by each app/components/schema/*
