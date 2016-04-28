@@ -44,6 +44,10 @@ export default Ember.Route.extend({
     {
       return 'swarm';
     }
+    else if ( this.get('projects.current.mesos') )
+    {
+      return 'mesos';
+    }
     else
     {
       return 'cattle';
