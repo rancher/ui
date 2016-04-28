@@ -3,6 +3,8 @@ import PolledResource from 'ui/mixins/cattle-polled-resource';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
+const { getOwner } = Ember;
+
 var Project = Resource.extend(PolledResource, {
   prefs: Ember.inject.service(),
   projects: Ember.inject.service(),
@@ -164,8 +166,8 @@ var Project = Resource.extend(PolledResource, {
       };
     }
 
-
-    var promises = [];
+    let projectStore = getOwner(this).lookup('store:main');
+    let promises = [];
 
     function _hasSystem(stacks) {
       stacks.forEach((stack) => {
@@ -183,7 +185,7 @@ var Project = Resource.extend(PolledResource, {
     }
     else
     {
-      promises.push(this.get('store').findAllUnremoved('environment').then((stacks) => {
+      promises.push(projectStore.findAllUnremoved('environment').then((stacks) => {
         this.set('_stacks', stacks);
         _hasSystem(stacks);
       }));
@@ -195,7 +197,7 @@ var Project = Resource.extend(PolledResource, {
     }
     else
     {
-      promises.push(this.get('store').findAllActive('host').then((hosts) => {
+      promises.push(projectStore.findAllActive('host').then((hosts) => {
         hash.hasHost = hosts.get('length') > 0;
       }));
     }
@@ -243,6 +245,21 @@ var Project = Resource.extend(PolledResource, {
       this.updateOrchestrationState(false);
     }
   }.observes('_stacks.@each.externalId','_hosts.[]'),
+
+  isReady: function() {
+    var state = this.get('orchestrationState');
+
+    if ( !state )
+    {
+      return false;
+    }
+
+    return ( state.hasHost &&
+      (!state.hasKubernetes || state.kubernetesReady) &&
+      (!state.hasSwarm || state.swarmReady) &&
+      (!state.hasMesos || state.mesosReady)
+    );
+  }.property('orchestrationState'), // The state object is always completely replaced, so this is ok
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often

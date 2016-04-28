@@ -27,7 +27,7 @@ export default Ember.Route.extend({
         return project.updateOrchestrationState().then(done);
       }
 
-      done();
+      return done();
 
       function done() {
         return Ember.Object.create({
@@ -39,10 +39,12 @@ export default Ember.Route.extend({
     });
   },
 
-  afterModel(model, transition) {
+  afterModel(model/*, transition*/) {
     var project = model.get('project');
-    var state = model.get('project.orchestrationState');
-    debugger;
+    if ( !project.get('isReady') )
+    {
+      this.replaceWith('authenticated.project.waiting', project.get('id'));
+    }
   },
 
   loadingError(err, transition, ret) {
