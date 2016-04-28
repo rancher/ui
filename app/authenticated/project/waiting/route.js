@@ -1,6 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+/*
   redirect: function() {
     var main = this.modelFor('applications-tab');
     if ( main.get('hosts.length') && main.get('services.length') )
@@ -22,4 +23,5 @@ export default Ember.Route.extend({
 
     return main;
   }
+*/
 });
