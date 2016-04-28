@@ -33,12 +33,18 @@ export default Ember.Component.extend({
       ports.forEach(function(value) {
         if ( typeof value === 'object' )
         {
+          var pub = '';
           var existing = !forceNew && !!value.id;
-          var pub = value.publicPort+'';
-          if ( !existing && value.bindAddress )
+          if ( value.publicPort )
+          {
+            pub = value.publicPort+'';
+          }
+
+          if ( !existing && pub && value.bindAddress )
           {
             pub = value.bindAddress + ':' + pub;
           }
+
           out.push({
             existing: existing,
             obj: value,
