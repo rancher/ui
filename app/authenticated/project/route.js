@@ -21,19 +21,9 @@ export default Ember.Route.extend({
     }
 
     return this.loadSchemas().then(() => {
-      if ( !project.get('orchestrationState') )
-      {
-        console.log('project update state');
-        return project.updateOrchestrationState().then(done);
-      }
-
-      return done();
-
-      function done() {
-        return Ember.Object.create({
-          project: project,
-        });
-      }
+      return Ember.Object.create({
+        project: project,
+      });
     }).catch((err) => {
       return this.loadingError(err, transition, null);
     });
@@ -41,7 +31,8 @@ export default Ember.Route.extend({
 
   afterModel(model/*, transition*/) {
     var project = model.get('project');
-    if ( !project.get('isReady') )
+    var authController = this.controllerFor('authenticated');
+    if ( !authController.get('isReady') )
     {
       this.replaceWith('authenticated.project.waiting', project.get('id'));
     }

@@ -3,8 +3,6 @@ import PolledResource from 'ui/mixins/cattle-polled-resource';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
-const { getOwner } = Ember;
-
 var Project = Resource.extend(PolledResource, {
   prefs: Ember.inject.service(),
   projects: Ember.inject.service(),
@@ -145,18 +143,20 @@ var Project = Resource.extend(PolledResource, {
   _stacks: null,
   _hosts: null,
   orchestrationState: null,
-  updateOrchestrationState(full=false) {
+  updateOrchestrationState() {
     let hash;
+    if ( this.get('id') !== this.get(`tab-session.${C.SESSION.PROJECT}`) )
+    {
+      return null;
+    }
+
     if ( this.get('orchestrationState') )
     {
       hash = Ember.copy(this.get('orchestrationState'));
     }
     else
     {
-      full = true;
       hash = {
-        hasSystem: false,
-        hasHost: false,
         hasKubernetes: false,
         hasSwarm: false,
         hasMesos: false,
@@ -166,43 +166,9 @@ var Project = Resource.extend(PolledResource, {
       };
     }
 
-    let projectStore = getOwner(this).lookup('store:main');
     let promises = [];
 
-    function _hasSystem(stacks) {
-      stacks.forEach((stack) => {
-        var info = stack.get('externalIdInfo');
-        if ( C.EXTERNALID.SYSTEM_KINDS.indexOf(info.kind) >= 0 )
-        {
-          hash.hasSystem = true;
-        }
-      });
-    }
-
-    if ( this.get('_stacks') )
-    {
-      _hasSystem(this.get('_stacks'));
-    }
-    else
-    {
-      promises.push(projectStore.findAllUnremoved('environment').then((stacks) => {
-        this.set('_stacks', stacks);
-        _hasSystem(stacks);
-      }));
-    }
-
-    if ( this.get('_hosts') )
-    {
-      hash.hasHost = this.get('_hosts.length') > 0;
-    }
-    else
-    {
-      promises.push(projectStore.findAllActive('host').then((hosts) => {
-        hash.hasHost = hosts.get('length') > 0;
-      }));
-    }
-
-    if ( this.get('kubernetes') && full )
+    if ( this.get('kubernetes') )
     {
       hash.hasKubernetes = true;
       promises.push(this.get('k8sSvc').isReady().then((ready) => {
@@ -210,7 +176,7 @@ var Project = Resource.extend(PolledResource, {
       }));
     }
 
-    if ( this.get('swarm') && full )
+    if ( this.get('swarm') )
     {
       hash.hasSwarm = true;
       promises.push(this.get('swarmSvc').isReady().then((ready) => {
@@ -218,7 +184,7 @@ var Project = Resource.extend(PolledResource, {
       }));
     }
 
-    if ( this.get('mesos') && full )
+    if ( this.get('mesos') )
     {
       hash.hasMesos = true;
       promises.push(this.get('mesosSvc').isReady().then((ready) => {
@@ -232,19 +198,9 @@ var Project = Resource.extend(PolledResource, {
     });
   },
 
-  expensiveShouldChange: function() {
-    console.log('model update state true');
+  orchestrationStateShouldChange: function() {
     Ember.run.once(this, 'updateOrchestrationState', true);
   }.observes('kubernetes','swarm','mesos'),
-
-  cheapShouldChange: function() {
-    // Don't fire if we're still setting up the initial model
-    if ( this.get('orchestrationState') )
-    {
-      console.log('model update state false', this.get('id'), this.get('orchestrationState'));
-      this.updateOrchestrationState(false);
-    }
-  }.observes('_stacks.@each.externalId','_hosts.[]'),
 
   isReady: function() {
     var state = this.get('orchestrationState');
@@ -254,7 +210,7 @@ var Project = Resource.extend(PolledResource, {
       return false;
     }
 
-    return ( state.hasHost &&
+    return (
       (!state.hasKubernetes || state.kubernetesReady) &&
       (!state.hasSwarm || state.swarmReady) &&
       (!state.hasMesos || state.mesosReady)
