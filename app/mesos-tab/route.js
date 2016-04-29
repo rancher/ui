@@ -8,6 +8,10 @@ export default Ember.Route.extend({
     {
       this.transitionTo('mesos-tab.waiting');
     }
+    else 
+    {
+      this.transitionTo('mesos-tab.frameworks');
+    }
   },
 
   model() {

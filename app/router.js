@@ -199,6 +199,12 @@ Router.map(function() {
       // Mesos
       this.route('mesos-tab', {path: '/mesos', resetNamespace: true}, function() {
         this.route('waiting', {path: '/waiting'});
+
+        this.route('frameworks', {path: '/frameworks'}, function() {
+          // TODO this screen should be the framework GUI, 
+          // or if no GUI present (kafka), a shell to the container for CLI exposure
+          // this.route('framework', {path: '/:name'});
+        });
       });
 
       this.route('help');
