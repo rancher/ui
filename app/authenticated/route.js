@@ -59,11 +59,18 @@ export default Ember.Route.extend(Subscribe, {
       return this.get('projects').selectDefault(projectId).then((project) => {
         // Load stuff that is needed to draw the header
         hash.project = project;
-        console.log('authenticated update state');
-        return project.updateOrchestrationState().then((state) => {
-          if ( state.kubernetesReady ) {
-            return this.loadKubernetes(project, hash).then((hash2) => {
-              return Ember.Object.create(hash2);
+
+        return Ember.RSVP.hash({
+          orchestrationState: project.updateOrchestrationState(),
+          hosts: this.get('store').findAllUnremoved('host'),
+          stacks: this.get('store').findAllUnremoved('environment'),
+        }).then((moreHash) => {
+          Ember.merge(hash, moreHash);
+
+          if ( hash.orchestrationState.kubernetesReady ) {
+            return this.loadKubernetes().then((k8sHash) => {
+              Ember.merge(hash, k8sHash);
+              return Ember.Object.create(hash);
             });
           } else {
             return Ember.Object.create(hash);
@@ -118,14 +125,19 @@ export default Ember.Route.extend(Subscribe, {
     });
   },
 
-  loadKubernetes(project, hash) {
+  loadKubernetes() {
     return this.get('k8s').allNamespaces().then((all) => {
       return this.get('k8s').selectNamespace().then((ns) => {
-        hash.kubernetesReady = true;
-        hash.namespaces = all;
-        hash.namespace = ns;
-        return hash;
+        return {
+          namespaces: all,
+          namespace: ns,
+        };
       });
+    }).catch(() => {
+      return {
+        namespaces: null,
+        namespace: null,
+      };
     });
   },
 
