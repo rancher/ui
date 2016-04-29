@@ -31,8 +31,8 @@ export default Ember.Route.extend({
 
   afterModel(model/*, transition*/) {
     var project = model.get('project');
-    var authController = this.controllerFor('authenticated');
-    if ( !authController.get('isReady') )
+    var auth = this.modelFor('authenticated');
+    if ( auth.get('hosts.length') === 0 || !auth.get('project.isReady') )
     {
       this.replaceWith('authenticated.project.waiting', project.get('id'));
     }
