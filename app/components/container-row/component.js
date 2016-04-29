@@ -13,14 +13,11 @@ export default Ember.Component.extend({
 
   tagName: 'TR',
 
-  detailBaseUrl: function() {
-    if ( this.get('model.isVm') )
-    {
-      return `/env/${this.get('projects.current.id')}/infra/vms/`;
-    }
-    else
-    {
-      return `/env/${this.get('projects.current.id')}/infra/containers/`;
+  detailRoute: function() {
+    if ( this.get('isVm') ) {
+      return 'virtualmachine';
+    } else {
+      return 'container';
     }
   }.property('model.isVm'),
 });

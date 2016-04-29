@@ -11,6 +11,8 @@ export default Ember.Component.extend({
   githubBase: C.EXT_REFERENCES.GITHUB,
   forumBase: C.EXT_REFERENCES.FORUM,
 
+  projectId        : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
+
   actions: {
     showAbout() {
       this.sendAction('showAbout');

@@ -1,349 +1,77 @@
-<div class="top-row clearfix">
-  <div class="logo hidden-sm hidden-xs"></div>
-  <div class="navbar-header hidden-md hidden-lg">
-    <div class="logo"></div>
-    <button type="button" class="navbar-toggle collapse hidden-md hidden-lg" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-      <i class="icon icon-ellipsis"></i>
-    </button>
-    <!--user btn-->
-    <div class="dropdown user-btn">
-      <button role="button" class="user-toggle btn-link" id="user-dropdown" data-toggle="dropdown" aria-expanded="true" aria-label="User Menu: {{session.user}}">
-        {{#if accessEnabled}}
-          {{identity-avatar link=false identity=access.identity}}
-          <i class="icon icon-chevron-down"></i>
-          <span class="sr-only">Toggle Dropdown</span>
-        {{else}}
-          <div class="gh-avatar">
-            <div class="gh-placeholder">
-              <i class="icon icon-user"></i>
-            </div>
-          </div>
-          <i class="icon icon-chevron-down"></i>
-          <span class="sr-only">Toggle Dropdown</span>
-        {{/if}}
+<nav class="navbar">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <span class="sr-only">Toggle navigation</span>
+        <i class="icon icon-ellipsis"></i>
       </button>
-      <ul class="dropdown-menu dropdown-menu-right user-menu" role="menu" aria-labelledby="user-dropdown">
-        {{#if accessEnabled}}
-          <li role="presentation" class="user-auth">
-            {{identity-block avatar=false identity=access.identity}}
-            {{#link-to "logout" class="user-logout"}}<i class="icon icon-logout"></i> Log Out{{/link-to}}
-          </li>
-        {{/if}}
-
-        {{#if isLocalAuth}}
-          <li role="presentation" class="dropdown-header">
-            Your Account
-          </li>
-
-          <li role="presentation">
-            <a {{action "changePassword"}} role="menuitem">Change Password</a>
-          </li>
-
-        {{/if}}
-
-        <li class="dropdown-header">Theme</li>
-        <li role="presentation" class="theme-toggle text-center btn-group">
-          {{theme-toggle}}
-        </li>
-
-      </ul>
+      <a class="navbar-brand logo"></a>
+      {{page-header-environment
+        currentPath=currentPath
+        switchProject="switchProject"
+        switchNamespace="switchNamespace"
+      }}
     </div>
-    <!--/user btn-->
-    <!--project btn-->
-    {{#if project}}
-    <div class="dropdown btn-group project-btn {{if isKubernetesTab 'alt'}} pull-right">
-      <button role="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="clip"><i class="{{project.icon}} icon-fw"></i>&nbsp;{{project.displayName}}</span>
-        <i class="icon icon-chevron-down"></i>
-        <span class="sr-only">Toggle Dropdown</span>
-        <label>Environment</label>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
-        {{#if projectChoices.length}}
-          <li class="dropdown-header">
-            {{#if accessEnabled}}
-              Your Environments
-            {{else}}
-              All Environments
-            {{/if}}
-          </li>
-          {{#each projectChoices as |p|}}
-            <li class="{{if p.active 'disabled selected'}}">
-              <a href="#" {{action "switchProject" p.id}} class="clip">
-                <i class="icon {{p.icon}}"></i>
-                &nbsp;
-                {{p.displayName}}
-              </a>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        {{#each navTree as |item|}}
+          {{#if item.url}}
+            <li>
+              <a href="{{item.url}}" target="{{item.target}}">{{item.label}}</a>
             </li>
-          {{/each}}
-        {{/if}}
-        {{#if projectChoices.length}}
-          <li role="presentation" class="divider"></li>
-        {{/if}}
-        {{#if projectIsMissing}}
-          <li role="presentation" class="dropdown-header">Selected Environment:</li>
-          <li class="{{if project.active 'disabled selected'}}">
-            <a href="#" {{action "switchProject" project.id}} class="clip">
-              <i class="icon {{project.icon}}"></i>
-              &nbsp;
-              {{project.displayName}}
-            </a>
-          </li>
-          <li role="presentation" class="divider"></li>
-        {{/if}}
-        <li>{{#link-to "settings.projects"}}Manage Environments{{/link-to}}</li>
-      </ul>
-    </div>
-  {{/if}}
-
-  {{#if (and isKubernetesTab k8s.namespace)}}
-    <div class="dropdown btn-group project-btn pull-right">
-      <button role="button" type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="icon icon-thumbnails icon-fw"></i>&nbsp;{{k8s.namespace.displayName}}
-        <i class="icon icon-chevron-down"></i>
-        <span class="sr-only">Toggle Dropdown</span>
-        <label>Namespace</label>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
-        {{#if k8s.namespaces.length}}
-          <li role="presentation" class="dropdown-header">Namespaces</li>
-          {{#each k8s.namespaces as |ns|}}
-            {{#unless ns.isSystem}}
-              <li class="{{if (eq ns k8s.namespace) 'disabled selected'}}">
-                <a href="#" {{action "switchNamespace" ns.id}} class="clip">
-                  <i class="{{ns.icon}}"></i>
-                  &nbsp;
-                  {{ns.displayName}}
-                </a>
-              </li>
-            {{/unless}}
-          {{/each}}
-          <li role="presentation" class="divider"></li>
-          {{#each k8s.namespaces as |ns|}}
-            {{#if ns.isSystem}}
-              <li class="{{if (eq ns k8s.namespace) 'disabled selected'}}">
-                <a {{action "switchNamespace" ns.id}} class="clip">
-                  <i class="{{ns.icon}}"></i>
-                  &nbsp;
-                  {{ns.displayName}}
-                </a>
-              </li>
-            {{/if}}
-          {{/each}}
-          <li role="presentation" class="divider"></li>
-        {{/if}}
-        <li>{{#link-to "k8s-tab.namespaces"}}Manage Namespaces{{/link-to}}</li>
-      </ul>
-    </div>
-  {{/if}}
-  <!--/project btn-->
-  </div>
-
-  <nav id="navbar" class="navbar-collapse collapse">
-    {{#if project}}
-      {{#if (or isKubernetesTab hasKubernetes)}}
-        <li>
-          {{#link-to "k8s-tab" projectId id="k8s-tab"}}Kubernetes{{/link-to}}
-            <ul class="hidden-md hidden-lg">
-              {{partial 'tabs/k8s-tab'}}
-            </ul>
-        </li>
-      {{/if}}
-
-      <li>
-        {{#link-to "applications-tab" projectId id="applications-tab"}}
-          {{#if hasKubernetes}}
-            System
           {{else}}
-            {{#if hasSwarm}}
-              Swarm
+            {{#if item.submenu.length}}
+              {{! Has a submenu }}
+              {{#active-link class="dropdown"}}
+                {{#link-to-as-attrs
+                  item.route
+                  models=item.ctx
+                  query=item.queryParams
+                  class="dropdown-toggle"
+                  data-toggle="dropdown"
+                  role="button"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                }}
+                  {{item.label}} <span class="caret"/>
+                  <ul class="dropdown-menu">
+                    {{#each item.submenu as |subitem|}}
+                      {{#if subitem.divider}}
+                        <li class="divider"></li>
+                      {{else}}
+                        {{#if subitem.url}}
+                          <li>
+                            <a href="{{subitem.url}}" target="{{subitem.target}}">
+                              <i class="icon {{subitem.icon}}"/> {{subitem.label}}
+                            </a>
+                          </li>
+                        {{else}}
+                          {{#active-link}}
+                            {{#link-to-as-attrs subitem.route models=subitem.ctx query=subitem.queryParams}}
+                              <i class="icon {{subitem.icon}}"/> {{subitem.label}}
+                            {{/link-to-as-attrs}}
+                          {{/active-link}}
+                        {{/if}}
+                      {{/if}}
+                    {{/each}}
+                  </ul>
+                {{/link-to-as-attrs}}
+              {{/active-link}}
             {{else}}
-              Applications
+              {{! No submenu }}
+              {{#active-link}}
+                {{#link-to-as-attrs item.route models=item.ctx query=item.queryParams}}
+                  {{item.label}}
+                {{/link-to-as-attrs}}
+              {{/active-link}}
             {{/if}}
           {{/if}}
-        {{/link-to}}
-        <ul class="hidden-md hidden-lg">
-          {{partial 'tabs/applications-tab'}}
-        </ul>
-      </li>
+        {{/each}}
+      </ul>
 
-      <li>
-        {{#link-to "catalog-tab" projectId id="catalog-tab"}}Catalog{{/link-to}}
-
-        <ul class="hidden-md hidden-lg">
-          {{partial 'tabs/catalog-tab'}}
-        </ul>
-      </li>
-
-      <li>
-        {{#link-to "infrastructure-tab" projectId id="infrastructure-tab"}}Infrastructure{{/link-to}}
-        <ul class="hidden-md hidden-lg">
-          {{partial 'tabs/infrastructure-tab'}}
-        </ul>
-      </li>
-
-      {{#if isAdmin}}
-        <li class="link-admin">
-          {{#link-to "admin-tab" id="admin-tab"}}Admin{{/link-to}}
-          <ul class="hidden-md hidden-lg">
-            {{partial 'tabs/admin-tab'}}
-          </ul>
-
-          {{#if showAccessWarning}}
-            {{#tooltip-element class="tooltip-warning" type='tooltip-warning'}}
-              {{#link-to "admin-tab.auth" data-toggle="tooltip" data-placement="bottom"}}!{{/link-to}}
-            {{/tooltip-element}}
-          {{/if}}
-        </li>
-      {{/if}}
-      <li>
-        {{#link-to "authenticated.project.apikeys" projectId id="api-tab"}}API{{/link-to}}
-      </li>
-
-      <li>
-        {{#link-to "authenticated.project.help" projectId id="help-tab"}}Help{{/link-to}}
-      </li>
-    {{/if}}
-  </nav>
-
-
-
-  <div class="dropdown user-btn hidden-sm hidden-xs">
-    <button class="user-toggle btn-link" role="button" id="user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="User Menu: {{session.user}}">
-      {{#if accessEnabled}}
-        {{identity-avatar link=false identity=access.identity}}
-        <i class="icon icon-chevron-down"></i>
-      {{else}}
-        <div class="gh-avatar">
-          <div class="gh-placeholder">
-            <i class="icon icon-user"></i>
-          </div>
-        </div>
-        <i class="icon icon-chevron-down"></i>
-      {{/if}}
-    </button>
-    <ul class="dropdown-menu dropdown-menu-right user-menu" role="menu" aria-labelledby="user-dropdown">
-      {{#if accessEnabled}}
-        <li role="presentation" class="user-auth">
-          {{identity-block avatar=false identity=access.identity}}
-          {{#link-to "logout" class="user-logout"}}<i class="icon icon-logout"></i> Log Out{{/link-to}}
-        </li>
-      {{/if}}
-
-      {{#if isLocalAuth}}
-        <li role="presentation" class="dropdown-header">
-          Your Account
-        </li>
-
-        <li role="presentation">
-          <a {{action "changePassword"}} role="menuitem">Change Password</a>
-        </li>
-
-      {{/if}}
-
-      <li class="dropdown-header">Theme</li>
-      <li role="presentation" class="theme-toggle text-center btn-group">
-        {{theme-toggle}}
-      </li>
-
-    </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>{{page-header-user}}</li>
+      </ul>
+    </div>
   </div>
-<!--end user btn-->
-
-</div>
-
-<div class="bottom-row clearfix hidden-sm hidden-xs">
-  <nav class="pull-left">
-    {{!-- if you're going to create a new sub-nav menu create a partial under the 'templates/tabs' folder --}}
-    {{!-- with the same name as the route, e.g. infrastructure-tab has a tabs/infrastructure-tab.hbs --}}
-    {{!-- this is so we have have hover over toplevel nav and see secondary nav choices --}}
-    {{partial subnavPartial}}
-  </nav>
-
-  {{#if project}}
-    <div class="dropdown btn-group project-btn {{if isKubernetesTab 'alt'}} pull-right">
-      <button role="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <span class="clip"><i class="{{project.icon}} icon-fw"></i>&nbsp;{{project.displayName}}</span>
-        <i class="icon icon-chevron-down"></i>
-        <span class="sr-only">Toggle Dropdown</span>
-        <label>Environment</label>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
-        {{#if projectChoices.length}}
-          <li role="presentation" class="dropdown-header">
-            {{#if accessEnabled}}
-              Your Environments
-            {{else}}
-              All Environments
-            {{/if}}
-          </li>
-          {{#each projectChoices as |p|}}
-            <li class="{{if p.active 'disabled selected'}}">
-              <a href="#" {{action "switchProject" p.id}} class="clip">
-                <i class="icon {{p.icon}}"></i>
-                &nbsp;
-                {{p.displayName}}
-              </a>
-            </li>
-          {{/each}}
-        {{/if}}
-        {{#if projectChoices.length}}
-          <li role="presentation" class="divider"></li>
-        {{/if}}
-        {{#if projectIsMissing}}
-          <li role="presentation" class="dropdown-header">Selected Environment:</li>
-          <li class="{{if project.active 'disabled selected'}}">
-            <a href="#" {{action "switchProject" project.id}} class="clip">
-              <i class="icon {{project.icon}}"></i>
-              &nbsp;
-              {{project.displayName}}
-            </a>
-          </li>
-          <li role="presentation" class="divider"></li>
-        {{/if}}
-        <li>{{#link-to "settings.projects"}}Manage Environments{{/link-to}}</li>
-      </ul>
-    </div>
-  {{/if}}
-  {{#if (and isKubernetesTab k8s.namespace)}}
-    <div class="dropdown btn-group project-btn pull-right">
-      <button role="button" type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="icon icon-thumbnails icon-fw"></i>&nbsp;{{k8s.namespace.displayName}}
-        <i class="icon icon-chevron-down"></i>
-        <span class="sr-only">Toggle Dropdown</span>
-        <label>Namespace</label>
-      </button>
-      <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
-        {{#if k8s.namespaces.length}}
-          <li role="presentation" class="dropdown-header">Namespaces</li>
-          {{#each k8s.namespaces as |ns|}}
-            {{#unless ns.isSystem}}
-              <li class="{{if (eq ns k8s.namespace) 'disabled selected'}}">
-                <a {{action "switchNamespace" ns.id}} class="clip">
-                  <i class="{{ns.icon}}"></i>
-                  &nbsp;
-                  {{ns.displayName}}
-                </a>
-              </li>
-            {{/unless}}
-          {{/each}}
-          <li role="presentation" class="divider"></li>
-          {{#each k8s.namespaces as |ns|}}
-            {{#if ns.isSystem}}
-              <li class="{{if (eq ns k8s.namespace) 'disabled selected'}}">
-                <a {{action "switchNamespace" ns.id}} class="clip">
-                  <i class="{{ns.icon}}"></i>
-                  &nbsp;
-                  {{ns.displayName}}
-                </a>
-              </li>
-            {{/if}}
-          {{/each}}
-          <li role="presentation" class="divider"></li>
-        {{/if}}
-        <li>{{#link-to "k8s-tab.namespaces"}}Manage Namespaces{{/link-to}}</li>
-      </ul>
-    </div>
-  {{/if}}
-
-</div>
+</nav>

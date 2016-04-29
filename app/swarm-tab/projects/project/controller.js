@@ -12,7 +12,7 @@ export default Ember.Controller.extend(Sortable, {
 
   actions: {
     changeProject(project) {
-      this.transitionToRoute('applications-tab.compose-projects.compose-project', project.get('id'));
+      this.transitionToRoute('swarm-tab.projects.project', project.get('id'));
     },
   }
 });
