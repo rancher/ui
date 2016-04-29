@@ -10,7 +10,7 @@ export default Ember.Controller.extend({
 
   isPopup: Ember.computed.alias('application.isPopup'),
 
-  hasSystem: function() {
+  hasCattleSystem: function() {
     var out = false;
     (this.get('model.stacks')||[]).forEach((stack) => {
       var info = stack.get('externalIdInfo');

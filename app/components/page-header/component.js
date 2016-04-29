@@ -120,7 +120,7 @@ const navTree = [
     queryParams: {which: 'system'},
     condition: function() {
       return this.get('hasProject') &&
-      this.get('hasSystem') &&
+      this.get('hasCattleSystem') &&
       !this.get('hasKubernetes') &&
       !this.get('hasSwarm');
     },
@@ -294,6 +294,7 @@ function getCatalogSubtree() {
 
 export default Ember.Component.extend({
   // Inputs
+  hasCattleSystem: null,
   currentPath: null,
 
   // Injections
