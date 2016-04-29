@@ -7,7 +7,7 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('styleguide');
+  this.route('guide');
   this.route('ie');
   this.route('index');
   this.route('failWhale', {path: '/fail'});
