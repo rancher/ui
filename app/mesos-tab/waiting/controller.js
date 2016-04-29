@@ -89,7 +89,7 @@ export default Ember.Controller.extend({
     {
       this.send('refreshMesos');
       console.log('transitioning!!');
-      this.transitionToRoute('mesos.index');
+      this.transitionToRoute('mesos.frameworks');
     }
   }.observes('currentStep'),
 

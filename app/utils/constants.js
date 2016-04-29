@@ -219,7 +219,8 @@ var C = {
   },
 
   MESOS: {
-    HEALTH: 'health'
+    HEALTH: 'health',
+    FRAMEWORKS: 'frameworks',
   }
 };
 

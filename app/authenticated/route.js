@@ -9,6 +9,7 @@ export default Ember.Route.extend(Subscribe, {
   prefs     : Ember.inject.service(),
   projects  : Ember.inject.service(),
   k8s       : Ember.inject.service(),
+  mesos     : Ember.inject.service(),
   access    : Ember.inject.service(),
   userTheme : Ember.inject.service('user-theme'),
 
