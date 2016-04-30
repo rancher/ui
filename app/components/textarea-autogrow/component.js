@@ -25,10 +25,18 @@ export default Ember.TextArea.extend({
   }.observes('value'),
 
   isSmall: function() {
+    if ( this._state === 'destroying' ) {
+      return;
+    }
+
     return this.$().hasClass('input-sm');
   }.property(),
 
   autoSize() {
+    if ( this._state === 'destroying' ) {
+      return;
+    }
+
     let el = this.element;
     let $el = $(el);
 
