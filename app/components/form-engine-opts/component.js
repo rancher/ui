@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   machine: null,
   settings: Ember.inject.service(),
 
-  didInitAttrs() {
+  didReceiveAttrs() {
     if ( !this.get('machine.engineInstallUrl') )
     {
       this.set('machine.engineInstallUrl', this.get(`settings.${C.SETTING.ENGINE_URL}`) || '');
