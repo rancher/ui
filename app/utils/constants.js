@@ -4,8 +4,10 @@ const KIND_SYSTEM = 'system';
 const KIND_SYSTEM_CATALOG = 'system-catalog';
 const KIND_KUBERNETES = 'kubernetes';
 const KIND_SWARM = 'swarm';
+const KIND_MESOS = 'mesos';
 const KIND_NOT_KUBERNETES = `not-${KIND_KUBERNETES}`;
 const KIND_NOT_SWARM = `not-${KIND_SWARM}`;
+const KIND_NOT_MESOS = `not-${KIND_MESOS}`;
 
 var C = {
   COOKIE: {
@@ -27,6 +29,7 @@ var C = {
     KIND_SWARM: KIND_SWARM,
     KIND_NOT_KUBERNETES: KIND_NOT_KUBERNETES,
     KIND_NOT_SWARM: KIND_NOT_SWARM,
+    KIND_NOT_MESOS: KIND_NOT_MESOS,
     UPGRADEABLE: [
       KIND_CATALOG,
       KIND_SYSTEM_CATALOG
@@ -221,9 +224,14 @@ var C = {
     ID_SEPARATOR: '::'
   },
 
+  MESOS: {
+    HEALTH: 'health',
+    FRAMEWORKS: 'frameworks',
+  },
+
   I18N_PREFS: {
     FORMAT_RELATIVE_TIMEOUT: 1000
-  }
+  },
 };
 
 C.TOKEN_TO_SESSION_KEYS = [

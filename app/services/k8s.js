@@ -192,10 +192,6 @@ export default Ember.Service.extend({
     return promise;
   },
 
-  // JSON.parse() will call this for every key and value when parsing a JSON document.
-  // It does a recursive descent so the deepest keys are processed first.
-  // The value in the output for the key will be the value returned.
-  // If no value is returned, the key will not be included in the output.
   _typeify(obj) {
     var self = this;
     var store = this.get('store');

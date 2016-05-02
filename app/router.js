@@ -53,6 +53,7 @@ Router.map(function() {
 
     this.route('project', {path: '/env/:project_id'}, function() {
       this.route('index', {path: '/'});
+      this.route('waiting');
 
       // Infrastructure
       this.route('infrastructure-tab', {path: '/infra', resetNamespace: true}, function() {
@@ -120,7 +121,6 @@ Router.map(function() {
       // Applications
       this.route('applications-tab', {path: '/apps', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('splash', {path: '/welcome', resetNamespace: true});
         this.route('service.new', {path: '/add-service', resetNamespace: true});
         this.route('service.new-virtualmachine', {path: '/add-vm-service', resetNamespace: true});
         this.route('service.new-balancer', {path: '/add-balancer', resetNamespace: true});
@@ -145,21 +145,25 @@ Router.map(function() {
             });
           });
         });
+      });
 
-        this.route('compose-projects', function() {
+      this.route('swarm-tab', {path: '/swarm', resetNamespace: true}, function() {
+        this.route('projects', function() {
           this.route('index', {path: '/'});
           this.route('new', {path: '/add'});
-          this.route('compose-project', {path: '/:compose_project_id'}, function() {
+          this.route('project', {path: '/:compose_project_id'}, function() {
           });
         });
 
-        this.route('compose-services', function() {
+        this.route('services', function() {
           this.route('index', {path: '/'});
-          this.route('compose-service', {path: '/:compose_service_id'});
         });
 
-        this.route('compose-console');
-        this.route('compose-waiting');
+        this.route('console');
+      });
+
+      // Mesos
+      this.route('mesos-tab', {path: '/mesos', resetNamespace: true}, function() {
       });
 
       // Catalog
@@ -171,7 +175,6 @@ Router.map(function() {
       // Kubernetes
       this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('waiting', {path: '/waiting'});
 
         this.route('apply', {path: '/apply'});
         this.route('kubectl', {path: '/kubectl'});

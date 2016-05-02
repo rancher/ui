@@ -1,185 +1,83 @@
 /**********
  * Header (top bar)
  **********/
-$topHeight    : ($header-height * 0.45);
-$bottomHeight : ($header-height * 0.55);
+
+/*navbar*/
+.navbar-toggle {
+  padding: 11px;
+  margin: 0;
+  background: $logo-bg;
+  color: white;
+  position: relative;
+
+  &.navbar-toggle:before {
+    content: "";
+    border-color: transparent;
+    border-style: solid;
+    border-width: 8px;
+    border-right-color: $logo-bg;
+    position: absolute;
+    left: -15px;
+    top: 12px;
+  }
+}
+
+@media (min-width: $screen-md) {
+  UL.nav LI.dropdown:hover UL.dropdown-menu {
+    display: block;
+    margin-top: 0;
+
+    li a {
+      text-transform: none;
+    }
+  }
+}
+
+@media (max-width: $screen-sm-max) {
+  UL.nav LI.dropdown UL.dropdown-menu {
+    display: block;
+  }
+}
 
 HEADER {
   position : relative;
   z-index  : 5;
 
+  .logo {
+    display: inline-block;
+    height: $navbar-height;
+    width: 68px;
+    background-image: url('images/logos/main.svg');
+    background-color: $logo-bg;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
   NAV {
-    &> li {
+    background-color: $top-row;
+    min-height: $navbar-height;
+    padding: 0;
+    font-size : 14px;
+
+
+    .nav > LI {
       list-style: none;
       display        : inline-block;
 
-      &> A,
-      &>.link-admin > a{
+      & > A,
+      & > .link-admin > A {
+        min-height     : $navbar-height;
+        line-height    : $navbar-height;
         padding        : 0 20px;
         font-weight    : normal;
         text-transform : uppercase;
-        border-bottom  : 2px solid transparent;
         color          : $lightGray;
         font-size      : 13px;
         display        : block;
 
-        &:hover {
+        &:hover, &:focus {
           color: $lightTeal;
-        }
-      }
-    }
-  }
-
-  .top-row {
-    background-color: $top-row;
-    min-height: $topHeight;
-
-    .warning {
-      background-color : $redDark;
-      background-color : #c0392b;
-      height           : 15px;
-      width            : 15px;
-      border-radius    : 50%;
-      position         : absolute;
-      right            : 10px;
-      top              : 10px;
-      padding          : 0;
-      line-height      : 15px;
-      text-align       : center;
-      font-weight      : bold;
-      color            : white;
-      box-shadow       : 0 0 0 4px $top-row;
-    }
-
-    .dropdown {
-
-      &.open {
-        & .icon-chevron-down {
-          transform:rotate(-180deg);
-        }
-      }
-
-      .icon-chevron-down {
-        transition: ease all 350ms;
-        font-size: .75em;
-      }
-
-      .dropdown-toggle {
-        height: $topHeight;
-        line-height: $topHeight;
-        padding: 0;
-        margin-right: 10px;
-        max-width: 100%;
-        color: $top-row-link;
-
-        &:focus {
-          outline: 5px auto -webkit-focus-ring-color !important;
-          outline-offset: -2px;
-        }
-      }
-
-      .user-toggle {
-        cursor: pointer;
-        position: relative;
-        color: $top-row-link;
-        display: inline-block;
-        height: 40px;
-        z-index: 1001; /* These have to be > 990 for bootstrap on touch devices */
-      }
-
-      .dropdown-menu {
-        max-height: 300px;
-        width: 300px;
-        overflow-y: auto;
-        box-shadow: none;
-        background: $dropdown-bg ;
-        color: $dropdown-link-color;
-        margin: 0;
-        border-radius: 0 0 2px 2px;
-
-        > li > A {
-          color: $dropdown-link-color;
-
-          &:hover {
-            color: $dropdown-link-hover-color;
-            background: $dropdown-link-hover-bg;
-          }
-        }
-
-        & > li.selected > a,
-        & > li.selected > a:hover,
-        & > li.selected > a:focus {
-          color: $greenTwoDark
-        }
-
-        .dropdown-header {
-          color: $lightGray;
-          padding: 5px 20px;
-        }
-
-        .divider {
-          background: black;
-        }
-
-        > li[role=presentation] {
-          padding: 5px 20px;
-
-          button {
-            width: 86px;
-          }
-        }
-      }/*end dropdown-menu*/
-
-      &.language-dropdown {
-        .dropdown-menu {
-          width: 150px;
-        }
-      }
-
-    }/*end dropdown*/
-
-
-    NAV {
-      float     : left;
-      font-size : 14px;
-
-      .link-admin {
-        position : relative;
-      }
-
-      .tophover {
-        &:after {
-          content: "";
-          border-width: 5px;
-          border-color: transparent;
-          border-bottom-color: #e7eaeb;
-          border-style: solid;
-          position: absolute;
-          bottom: -2px;
-          left: 45%;
-        }
-      }
-      &>li{
-      &>A,
-      &>.link-admin > a,
-       {
-        height      : $topHeight;
-        line-height : $topHeight;
-        position    : relative;
-
-        &:hover {
           background: rgba(0,0,0,.15);
-
-            &:after {
-              content             : "";
-              border-width        : 5px;
-              border-color        : transparent;
-              border-bottom-color : lighten($accent-two, 10%);
-              border-style        : solid;
-              position            : absolute;
-              bottom              : -2px;
-              left                : 45%;
-            }
         }
 
         &.active,
@@ -191,7 +89,6 @@ HEADER {
             content             : "";
             border-width        : 5px;
             border-color        : transparent;
-            border-bottom-color : $bottom-row;
             border-style        : solid;
             position            : absolute;
             bottom              : -2px;
@@ -199,28 +96,35 @@ HEADER {
           }
         }
       }
-      }
     }
 
-    .logo {
-      float: left;
-      height: $topHeight;
-      width: 68px;
-      background-image: url('images/logos/main.svg');
-      background-color: $logo-bg;
-      background-position: center center;
-      background-repeat: no-repeat;
-    }
-
-    .user-btn {
-      float: right;
-      vertical-align: top;
+    .user-menu {
+      max-height: 300px;
+      width: 300px;
+      overflow-y: auto;
+      box-shadow: none;
+      background: #fff;
+      color: #334851;
+      margin: 0;
+      border-radius: 0 0 2px 2px;
     }
 
     .user-menu {
       padding-top: 0;
-      width: 250px;
       border-radius: 2px;
+
+      & .theme-toggle, .dropdown-header {
+        padding: 5px 20px;
+
+        & button {
+          width: 86px;
+        }
+      }
+    }
+
+
+   .user-btn {
+      vertical-align: top;
     }
 
     .user-noauth,
@@ -275,26 +179,56 @@ HEADER {
           font-size: 20px;
           vertical-align: middle;
         }
-      } /*end user logout*/
-    } /*end user auth*/
+      }
+    }
 
-    /*project btn*/
     .project-btn {
       max-width: 200px;
-      height: $topHeight;
+      height: $navbar-height;
       color: white;
-      border-right: dotted 2px rgba($logo-bg,.5);
+      background: $primaryDark;
+      position: relative;
+
+      span {
+        color: white;
+      }
+
+      &:after {
+        content: "";
+        border-color: transparent transparent transparent $primaryDark;
+        border-style: solid;
+        border-width: 8px;
+        position: absolute;
+        right: -16px;
+        top: 33%;
+        z-index: 2;
+      }
+
+      &.kub-btn {
+        background: rgba($primaryDark,.5);
+        left: -4px;
+
+        &:after {
+          border-color: transparent transparent transparent rgba($primaryDark,.5);
+        }
+
+        span {
+          color: white;
+        }
+      }
 
       .btn {
         text-transform: inherit;
+        padding: 0 10px;
 
         &.dropdown-toggle {
           line-height: inherit !important;
-          height: auto !important;
+          height: 45px !important;
 
             &:focus {
               outline: -webkit-focus-ring-color auto 5px !important;
             }
+
         }
 
         & * {
@@ -305,166 +239,25 @@ HEADER {
         .clip {
           max-width: 155px;
         }
+
         .icon-folder-open, .icon-home {
-          color: $top-row;
           line-height: 10px;
           text-align: center;
         }
+
         .icon-chevron-down {
           font-size: .75em;
         }
+
         LABEL {
-        font-weight: normal;
-        color: $text-muted;
-        font-size: 11px;
-        text-align: right;
-        display: block;
-        margin: 0;
-        }
-      }
-    }
-
-  }/*end top row*/
-
-  /*start bottom row*/
-  .bottom-row {
-    min-height: $bottomHeight;
-    background-color: $bottom-row;
-    transition: ease all .05s;
-
-    &.subactive {
-      background-color: lighten($accent-two, 10%);
-
-      & .project-btn.pull-right:before {
-        border-left-color: lighten($accent-two, 10%);
-      }
-    }
-
-    NAV {
-      font-size: 14px;
-      margin-left: 68px;
-
-      &>A,
-      &>span.dropdown >A {
-        height: $bottomHeight;
-        line-height: $bottomHeight;
-        color: $bottom-row-link;
-        line-height: 19px;
-        text-align: center;
-        position: relative;
-        display: inline-block;
-        padding        : 12px 20px 0 20px;
-        text-transform : uppercase;
-
-        &:hover {
-          color: $blueTwo
-        }
-
-        &.active {
-          font-weight: bold;
-          color: $bottom-row-link-active;
-          &:after{
-            content: "";
-            border-width: 7px;
-            border-color: transparent;
-            border-bottom-color: $body-bg;
-            border-style: solid;
-            position: absolute;
-            bottom: -2px;
-            left: 43%;
-          }
-        }
-
-        I {
+          font-weight: normal;
+          color: $text-muted;
+          font-size: 11px;
           display: block;
-          font-size: 17px;
+          margin: 0;
         }
       }
-    } /*end nav*/
-
-   .project-btn {
-      max-width: 200px;
-      height: $bottomHeight;
-      background: rgba($accent-two, .5);
-
-
-      &.pull-right:before {
-        content: "";
-        border-color: transparent;
-        border-style: solid;
-        border-width: 8px;
-        border-left-color: $bottom-row;
-        position: absolute;
-        left: 0px;
-        top: 33%;
-      }
-
-      &.alt {
-        background: rgba($accent-two, .25);
-        &.pull-right:before {
-          border-left-color: rgba($accent-two, .5);
-        }
-      }
-
-      .btn {
-        text-transform: inherit;
-        padding: 9px 14px;
-
-        & * {
-        display: inline-block;
-        vertical-align: middle;
-        }
-
-        .clip {
-          max-width: 155px;
-        }
-        .icon-folder-open, .icon-home {
-          color: $top-row;
-          line-height: 10px;
-          text-align: center;
-        }
-        .icon-chevron-down {
-          font-size: .75em;
-        }
-        LABEL {
-        font-weight: normal;
-        color: $text-muted;
-        font-size: 11px;
-        text-align: right;
-        display: block;
-        margin: 0;
-      }
-      }
-
-
-
-    .project-menu {
-        margin-top: -13px;
-        margin-left: -13px;
-        max-width: 300px;
-        padding-top: 0;
-        border-radius: 2px;
-      }
-    }/*end project button*/
-
-  }/*end bottom row*/
-
-  H3 {
-    margin: 0;
-    line-height: $bottomHeight;
-    color: #fff;
-    padding-left: 20px;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-    overflow: hidden;
-
-    A,
-    A:visited,
-    A:hover,
-    A:focus {
-      cursor: pointer;
-      text-decoration: none;
-      color: $header-link-text;
     }
-  } /*end h3 */
+
+  }
 }

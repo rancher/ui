@@ -1,10 +1,14 @@
 <a href="#" class="btn btn-sm btn-link" {{action "showAbout"}} aria-label="About Rancher">{{if settings.rancherVersion settings.rancherVersion (t 'pageFooter.notARelease')}}</a>
 
 {{#if settings.isRancher}}
+  {{#if projectId}}
+    {{#link-to "authenticated.project.help" projectId role="button" class="btn btn-sm btn-link"}}{{t 'pageFooter.help}}{{/link-to}}
+  {{/if}}
   <a role="button" class="btn btn-sm btn-link" target="blank" href="{{docsBase}}">{{t 'pageFooter.documentation'}}</a>
   <a role="button" class="btn btn-sm btn-link" target="blank" href="{{docsBase}}/faqs/">{{t 'pageFooter.faq'}}</a>
   <a role="button" class="btn btn-sm btn-link" target="blank" href="{{settings.issueUrl}}">{{t 'pageFooter.issues'}}</a>
   <a role="button" class="btn btn-sm btn-link" target="blank" href="{{forumBase}}">{{t 'pageFooter.forums'}}</a>
+>>>>>>> master
 {{/if}}
 <div class="pull-right">
   <div class="compose-download inline-block">

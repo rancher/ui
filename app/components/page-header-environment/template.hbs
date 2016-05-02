@@ -1,0 +1,88 @@
+{{#if project}}
+  <div class="dropdown btn-group project-btn  {{if isKubernetesTab 'alt'}}">
+    <button role="button" class="btn btn-link dropdown-toggle text-left" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="clip"><i class="{{project.icon}} icon-fw"></i>&nbsp;{{project.displayName}}</span>
+      <i class="icon icon-chevron-down"></i>
+      <span class="sr-only">Toggle Dropdown</span>
+      <label>Environment</label>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
+      {{#if projectChoices.length}}
+        <li role="presentation" class="dropdown-header">
+          {{#if accessEnabled}}
+            Your Environments
+          {{else}}
+            All Environments
+          {{/if}}
+        </li>
+        {{#each projectChoices as |p|}}
+          <li class="{{if p.active 'disabled selected'}}">
+            <a href="#" {{action "switchProject" p.id}} class="clip">
+              <i class="icon {{p.icon}}"></i>
+              &nbsp;
+              {{p.displayName}}
+            </a>
+          </li>
+        {{/each}}
+      {{/if}}
+      {{#if projectChoices.length}}
+        <li role="presentation" class="divider"></li>
+      {{/if}}
+      {{#if projectIsMissing}}
+        <li role="presentation" class="dropdown-header">Selected Environment:</li>
+        <li class="{{if project.active 'disabled selected'}}">
+          <a href="#" {{action "switchProject" project.id}} class="clip">
+            <i class="icon {{project.icon}}"></i>
+            &nbsp;
+            {{project.displayName}}
+          </a>
+        </li>
+        <li role="presentation" class="divider"></li>
+      {{/if}}
+      <li>{{#link-to "settings.projects"}}Manage Environments{{/link-to}}</li>
+    </ul>
+  </div>
+{{/if}}
+
+{{#if (and isKubernetesTab k8s.namespace)}}
+  <div class="dropdown btn-group project-btn kub-btn">
+    <button role="button" type="button" class="btn btn-link dropdown-toggle text-left clip" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      <span class="clip">      
+        <i class="icon icon-thumbnails icon-fw"></i>&nbsp;{{k8s.namespace.displayName}}
+      </span>
+      <i class="icon icon-chevron-down"></i>
+      <span class="sr-only">Toggle Dropdown</span>
+      <label>Namespace</label>
+    </button>
+    <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
+      {{#if k8s.namespaces.length}}
+        <li role="presentation" class="dropdown-header">Namespaces</li>
+        {{#each k8s.namespaces as |ns|}}
+          {{#unless ns.isSystem}}
+            <li class="{{if (eq ns k8s.namespace) 'disabled selected'}}">
+              <a {{action "switchNamespace" ns.id}} class="clip">
+                <i class="{{ns.icon}}"></i>
+                &nbsp;
+                {{ns.displayName}}
+              </a>
+            </li>
+          {{/unless}}
+        {{/each}}
+        <li role="presentation" class="divider"></li>
+        {{#each k8s.namespaces as |ns|}}
+          {{#if ns.isSystem}}
+            <li class="{{if (eq ns k8s.namespace) 'disabled selected'}}">
+              <a {{action "switchNamespace" ns.id}} class="clip">
+                <i class="{{ns.icon}}"></i>
+                &nbsp;
+                {{ns.displayName}}
+              </a>
+            </li>
+          {{/if}}
+        {{/each}}
+        <li role="presentation" class="divider"></li>
+      {{/if}}
+      <li>{{#link-to "k8s-tab.namespaces"}}Manage Namespaces{{/link-to}}</li>
+    </ul>
+  </div>
+{{/if}}

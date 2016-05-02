@@ -2,6 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   redirect: function() {
-    this.transitionTo('container.labels');
+    this.replaceWith('container.labels');
   }
 });

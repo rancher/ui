@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   application : Ember.inject.controller(),
@@ -7,25 +8,26 @@ export default Ember.Controller.extend({
   currentPath : Ember.computed.alias('application.currentPath'),
   error       : null,
 
-  // These are set by project/route and project/controller
-  hasKubernetes : false,
-  hasSwarm      : false,
-  hasSystem     : false,
-  hasVm         : Ember.computed.alias('settings.hasVm'),
-  swarmReady    : Ember.computed.alias('model.swarmReady'),
-
-  init() {
-    this._super();
-    this.k8sChanged();
-  },
-
-  k8sChanged: function() {
-    this.set('hasKubernetes', !!this.get('projects.current.kubernetes'));
-  }.observes('projects.current.kubernetes'),
-
-  swarmChanged: function() {
-    this.set('hasSwarm', !!this.get('projects.current.swarm'));
-  }.observes('projects.current.swarm'),
-
   isPopup: Ember.computed.alias('application.isPopup'),
+
+  hasCattleSystem: function() {
+    var out = false;
+    (this.get('model.stacks')||[]).forEach((stack) => {
+      var info = stack.get('externalIdInfo');
+      if ( C.EXTERNALID.SYSTEM_KINDS.indexOf(info.kind) >= 0 )
+      {
+        out = true;
+      }
+    });
+
+    return out;
+  }.property('model.stacks.@each.externalId'),
+
+  hasHosts: function() {
+    return this.get('model.hosts.length') > 0;
+  }.property('model.hosts'),
+
+  isReady: function() {
+    return this.get('model.project.isReady') && this.get('hasHosts');
+  }.property('model.project.isReady','hasHosts'),
 });

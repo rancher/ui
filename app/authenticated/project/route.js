@@ -1,39 +1,37 @@
 import Ember from 'ember';
-import { hasThings } from 'ui/authenticated/project/controller';
 
 export default Ember.Route.extend({
   access    : Ember.inject.service(),
+  projects  : Ember.inject.service(),
 
   model(params, transition) {
-    var project = this.modelFor('authenticated').project;
+    var project = this.get('projects.current');
+
     if ( !project )
     {
       this.replaceWith('settings.projects');
       return;
     }
 
-    // If the project ID in the URL is out of sync somehow, bail
+    // If the project ID in the URL is out of sync somehow, bail & try again
     if ( project.get('id') !== params.project_id )
     {
       this.replaceWith('authenticated');
       return;
     }
 
-    return Ember.RSVP.hash({
-      schemas: this.loadSchemas(),
-      stacks: this.loadStacks()
-    }).then(() => {
-      return this.get('store').findAllUnremoved('environment').then((stacks) => {
-        hasThings(stacks, project, this.controllerFor('authenticated'));
-
-        return Ember.Object.create({
-          project: project,
-          stacks: stacks,
-        });
+    return this.loadSchemas().then(() => {
+      return Ember.Object.create({
+        project: project,
       });
     }).catch((err) => {
       return this.loadingError(err, transition, null);
     });
+  },
+
+  afterModel(/*model, transition*/) {
+    var auth = this.modelFor('authenticated');
+    return this.get('projects.current').checkForWaiting(auth.get('hosts'));
   },
 
   loadingError(err, transition, ret) {
@@ -56,9 +54,4 @@ export default Ember.Route.extend({
       store._bulkAdd('schema', res.xhr.responseJSON.data);
     });
   },
-
-  loadStacks() {
-    return this.get('store').find('environment',null, {url: 'environment'});
-  },
-
 });

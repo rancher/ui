@@ -1,0 +1,21 @@
+<div class="well r-mt40 text" style="width: 50%; margin-left: 25%">
+  <h2 class="loading">{{label}}</h2>
+
+  <ul class="list-unstyled r-mt20">
+    {{#each steps as |step index|}}
+      <li class="{{if (lt currentStep index) 'text-muted'}}">
+        {{#if (eq currentStep index)}}
+          <i class="icon icon-spinner icon-spin" />
+        {{else}}
+          {{#if (gt currentStep index)}}
+            <i class="icon icon-check text-success" />
+          {{else}}
+            <i class="icon icon-circle-o" />
+          {{/if}}
+        {{/if}}
+
+        <span>{{step}}</span>
+      </li>
+    {{/each}}
+  </ul>
+</div>

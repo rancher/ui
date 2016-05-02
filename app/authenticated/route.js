@@ -57,11 +57,25 @@ export default Ember.Route.extend(Subscribe, {
       this.get('language').initLanguage();
       // Make sure a valid project is selected
       return this.get('projects').selectDefault(projectId).then((project) => {
+        // Load stuff that is needed to draw the header
         hash.project = project;
-        return this.loadKubernetes(project, hash).then((out) => {
-          return this.loadSwarm(project, out).then((out2) => {
-            return Ember.Object.create(out2);
-          });
+
+        return Ember.RSVP.hash({
+          orchestrationState: project.updateOrchestrationState(),
+          hosts: this.get('store').findAllUnremoved('host'),
+          machines: this.get('store').findAllUnremoved('machine'),
+          stacks: this.get('store').findAllUnremoved('environment'),
+        }).then((moreHash) => {
+          Ember.merge(hash, moreHash);
+
+          if ( hash.orchestrationState.kubernetesReady ) {
+            return this.loadKubernetes().then((k8sHash) => {
+              Ember.merge(hash, k8sHash);
+              return Ember.Object.create(hash);
+            });
+          } else {
+            return Ember.Object.create(hash);
+          }
         });
       });
     }).catch((err) => {
@@ -112,62 +126,22 @@ export default Ember.Route.extend(Subscribe, {
     });
   },
 
-  loadSwarm(project, hash) {
-    hash = hash || {};
-
-    if ( !project.get('swarm') )
-    {
-      hash.swarmReady = false;
-      return Ember.RSVP.resolve(hash);
-    }
-
-    var id = C.EXTERNALID.KIND_SYSTEM + C.EXTERNALID.KIND_SEPARATOR + C.EXTERNALID.KIND_SWARM;
-    return this.get('store').find('environment', null, {filter: {externalId: id}, include: ['services'], forceReload: true}).then((envs) => {
-      var ready = false;
-      envs.forEach((env) => {
-        var services = env.get('services');
-        var num = services.get('length');
-        var active = services.filterBy('state','active').get('length');
-        if ( env.get('state') === 'active' && num && num === active )
-        {
-          ready = true;
-        }
+  loadKubernetes() {
+    return this.get('k8s').allNamespaces().then((all) => {
+      return this.get('k8s').selectNamespace().then((ns) => {
+        return {
+          namespaces: all,
+          namespace: ns,
+        };
       });
-
-      hash.swarmReady = ready;
-      return Ember.RSVP.resolve(hash);
+    }).catch(() => {
+      return {
+        namespaces: null,
+        namespace: null,
+      };
     });
   },
 
-  loadKubernetes(project, hash) {
-    hash = hash || {};
-
-    if ( !project.get('kubernetes') )
-    {
-      hash.kubernetesReady = false;
-      return Ember.RSVP.resolve(hash);
-    }
-
-    var svc = this.get('k8s');
-    return svc.isReady().then((ready) => {
-      if ( ready )
-      {
-        return this.get('k8s').allNamespaces().then((all) => {
-          return this.get('k8s').selectNamespace().then((ns) => {
-            hash.kubernetesReady = true;
-            hash.namespaces = all;
-            hash.namespace = ns;
-            return hash;
-          });
-        });
-      }
-      else
-      {
-        hash.kubernetesReady = false;
-        return Ember.RSVP.resolve(hash);
-      }
-    });
-  },
 
   loadUserSchemas() {
     // @TODO Inline me into releases
@@ -237,14 +211,8 @@ export default Ember.Route.extend(Subscribe, {
 
     switchNamespace(namespaceId) {
       var route = this.get('app.currentRouteName');
-      var okRoutes = [
-        'k8s-tab.namespaces',
-        'k8s-tab.namespace.rcs.index',
-        'k8s-tab.namespace.services.index',
-        'k8s-tab.namespace.pods.index',
-      ];
 
-      if ( okRoutes.indexOf(route) === -1 )
+      if ( route !== 'k8s-tab.namespaces' && !route.match(/^k8s-tab\.namespace\.[^.]+.index$/) )
       {
         route = 'k8s-tab.namespace';
       }
