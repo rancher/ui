@@ -4,11 +4,11 @@ import {
 } from 'ember-qunit';
 
 import Ember from 'ember';
-import { initialize } from 'ui/initializers/extend-ember-view';
+import { initialize } from 'ui/initializers/extend-ember-input';
 
 var container, application;
 
-moduleFor('initializer:extend-ember-view', {
+moduleFor('initializer:extend-ember-input', {
   setup: function() {
     Ember.run(function() {
       container = new Ember.Container();

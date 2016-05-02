@@ -29,13 +29,9 @@ export default Ember.Route.extend({
     });
   },
 
-  afterModel(model/*, transition*/) {
-    var project = model.get('project');
+  afterModel(/*model, transition*/) {
     var auth = this.modelFor('authenticated');
-    if ( auth.get('hosts.length') === 0 || !auth.get('project.isReady') )
-    {
-      this.replaceWith('authenticated.project.waiting', project.get('id'));
-    }
+    return this.get('projects.current').checkForWaiting(auth.get('hosts'));
   },
 
   loadingError(err, transition, ret) {

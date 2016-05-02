@@ -3,21 +3,24 @@ import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   application: Ember.inject.controller(),
-  authenticated: Ember.inject.controller(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
   docsBase: C.EXT_REFERENCES.DOCS,
 
+  onInit: function() {
+    // Can't observe until you get()
+    this.get('projects.current.isReady');
+  }.on('init'),
+
   isReadyChanged: function() {
-    //console.log(this.get('application.currentRouteName'),this.get('model.hosts.length'),this.get('model.services.length'));
-    if ( this.get('application.currentRouteName') === 'authenticated.project.waiting')
+    if ( ['loading','authenticated.project.waiting'].indexOf(this.get('application.currentRouteName')) >= 0 )
     {
-      if ( this.get('authenticated.ready') )
+      if ( this.get('projects.current.isReady') )
       {
-        this.replaceRoute('authenticted.project.index');
+        this.replaceRoute('authenticated.project.index');
       }
     }
-  }.observes('authenticated.isReady'),
+  }.observes('projects.current.isReady'),
 
   hasHosts: Ember.computed.or('model.hosts.length','model.machines.length'),
 

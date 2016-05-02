@@ -4,6 +4,13 @@ import Ember from 'ember';
 export default Ember.LinkComponent.extend({
   attributeBindings: ['role','aria-haspopup','aria-expanded'],
 
+  'current-when': function() {
+    let base = this.get('qualifiedRouteName');
+    if ( this.get('moreCurrentWhen.length') ) {
+      return this.get('moreCurrentWhen').concat(base).join(' ');
+    }
+  }.property('moreCurrentWhen'),
+
   willRender() {
     this._super(...arguments);
     this.set('models', this.get('attrs.models.value')||[]);

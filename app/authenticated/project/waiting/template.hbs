@@ -1,20 +1,14 @@
 {{#if hasHosts}}
   {{#if (and model.orchestrationState.hasKubernetes (not model.orchestrationState.kubernetesReady))}}
     {{orchestration/wait-kubernetes model=model ready=(action "kubernetesReady")}}
-  {{else}}
-    <p>No K8s</p>
   {{/if}}
 
   {{#if (and model.orchestrationState.hasSwarm (not model.orchestrationState.swarmReady))}}
     {{orchestration/wait-swarm model=model ready=(action "swarmReady")}}
-  {{else}}
-    <p>No Swarm</p>
   {{/if}}
 
   {{#if (and model.orchestrationState.hasMesos (not model.orchestrationState.mesosReady))}}
     {{orchestration/wait-mesos model=model ready=(action "mesosReady")}}
-  {{else}}
-    <p>No Mesos</p>
   {{/if}}
 {{else}}
   <section class="welcome well">
