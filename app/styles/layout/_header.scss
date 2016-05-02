@@ -26,6 +26,10 @@
   UL.nav LI.dropdown:hover UL.dropdown-menu {
     display: block;
     margin-top: 0;
+
+    li a {
+      text-transform: none;
+    }
   }
 }
 
@@ -73,6 +77,7 @@ HEADER {
 
         &:hover {
           color: $lightTeal;
+          background: rgba(0,0,0,.15);
         }
 
         &.active,
@@ -242,7 +247,19 @@ HEADER {
       max-width: 200px;
       height: $navbar-height;
       color: white;
-      border-right: dotted 2px rgba($logo-bg,.5);
+      background: $primaryDark;
+      position: relative;
+
+      &:after {
+        content: "";
+        border-color: transparent transparent transparent $primaryDark;
+        border-style: solid;
+        border-width: 8px;
+        position: absolute;
+        right: -16px;
+        top: 33%;
+        z-index: 2;
+      }
 
       .btn {
         text-transform: inherit;
@@ -250,11 +267,12 @@ HEADER {
 
         &.dropdown-toggle {
           line-height: inherit !important;
-          height: auto !important;
+          height: 45px !important;
 
             &:focus {
               outline: -webkit-focus-ring-color auto 5px !important;
             }
+
         }
 
         & * {
