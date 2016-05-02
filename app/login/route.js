@@ -11,13 +11,11 @@ export default Ember.Route.extend({
 
     let lang = C.LANGUAGE.DEFAULT;
     const session       = this.get('session');
-    const fromLogin     = session.get(C.SESSION.LANGUAGE); // get local language
+    const fromSession     = session.get(C.SESSION.LANGUAGE); // get local language
 
-    if (fromLogin) {
-      lang = fromLogin;
+    if (fromSession) {
+      lang = fromSession;
     }
-
-    session.set(C.SESSION.LOGIN_LANGUAGE, lang);
 
     return this.get('language').sideLoadLanguage(lang).then(() => {
       if ( !this.get('access.enabled') )

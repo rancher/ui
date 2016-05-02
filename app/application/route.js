@@ -72,7 +72,7 @@ export default Ember.Route.extend({
 
       this.get('tab-session').clear();
 
-      this.get('access').clearSessionKeys(true);
+      this.get('access').clearSessionKeys();
 
       if ( transition ) {
         session.set(C.SESSION.BACK_TO, window.location.href);
