@@ -2,6 +2,7 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
+  projects: Ember.inject.service(),
   model: function() {
     var store = this.get('store');
 
@@ -24,10 +25,12 @@ export default Ember.Route.extend({
   },
 
   resetController: function (controller/*, isExisting, transition*/) {
-    if ( this.controllerFor('authenticated').get('hasKubernetes') ) {
+    if ( this.get('projects.current.orchestrationState.hasKubernetes') ) {
       controller.set('which', C.EXTERNALID.KIND_NOT_KUBERNETES);
-    } else if ( this.controllerFor('authenticated').get('hasSwarm') ) {
+    } else if ( this.get('projects.current.orchestrationState.hasSwarm') ) {
       controller.set('which', C.EXTERNALID.KIND_NOT_SWARM);
+    } else if ( this.get('projects.current.orchestrationState.hasMesos') ) {
+      controller.set('which', C.EXTERNALID.KIND_NOT_MESOS);
     } else {
       controller.set('which', C.EXTERNALID.KIND_USER);
     }

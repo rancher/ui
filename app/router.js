@@ -161,6 +161,10 @@ Router.map(function() {
         this.route('console');
       });
 
+      // Mesos
+      this.route('mesos-tab', {path: '/mesos', resetNamespace: true}, function() {
+      });
+
       // Catalog
       this.route('catalog-tab', {path: '/catalog', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
