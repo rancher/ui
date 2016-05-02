@@ -63,6 +63,7 @@ export default Ember.Route.extend(Subscribe, {
         return Ember.RSVP.hash({
           orchestrationState: project.updateOrchestrationState(),
           hosts: this.get('store').findAllUnremoved('host'),
+          machines: this.get('store').findAllUnremoved('machine'),
           stacks: this.get('store').findAllUnremoved('environment'),
         }).then((moreHash) => {
           Ember.merge(hash, moreHash);

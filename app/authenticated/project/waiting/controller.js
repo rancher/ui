@@ -19,25 +19,26 @@ export default Ember.Controller.extend({
     }
   }.observes('authenticated.isReady'),
 
+  hasHosts: Ember.computed.or('model.hosts.length','model.machines.length'),
+
   actions: {
-    newService() {
-      var environmentId = this.get('model.environmentId');
+    kubernetesReady() {
+      this.send('refreshKubernetes');
+      this.get('projects.current').updateOrchestrationState().then(() => {
+        this.transitionToRoute('k8s-tab');
+      });
+    },
 
-      if ( environmentId )
-      {
-        this.transitionToRoute('service.new', {queryParams: {environmentId: environmentId}});
-      }
-      else
-      {
-        var env = this.get('store').createRecord({
-          type: 'environment',
-          name: 'Default',
-        });
+    swarmReady() {
+      this.get('projects.current').updateOrchestrationState().then(() => {
+        this.transitionToRoute('swarm-tab');
+      });
+    },
 
-        return env.save().then(() => {
-          this.transitionToRoute('service.new', {queryParams: {environmentId: env.get('id') }});
-        });
-      }
+    mesosReady() {
+      this.get('projects.current').updateOrchestrationState().then(() => {
+        this.transitionToRoute('mesos-tab');
+      });
     },
   },
 });
