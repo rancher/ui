@@ -1,0 +1,391 @@
+languageName: "English (US)"
+
+# Routes
+loginPage:
+  greeting: "<h1>Howdy!<br>Welcome to {appName}</h1>"
+  greetingWhiteLabel: "<h1>Howdy!<br>Welcome</h1>"
+  githubMessage: "{appName} uses GitHub to manage accounts and teams.  Click the button below to log in and give us read-only access to your basic GitHub account information."
+
+splashPage:
+  hosts:
+    header: Adding your first host
+    content: |
+      Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker 1.9.1+ and be able to reach the {appName} server via HTTP.
+      {appName} supports adding Linux hosts in the form of a virtual or physical machine from any public cloud providers, privately hosted clouds, or even bare metal servers.
+    contentLink: Learn More
+    linkToHost: Add Host
+  service:
+    header: Adding your first Service
+    content:
+      paragraph1: |
+        "A service is simply a group of containers created from the same Docker image but extends Docker's 'link' concept to leverage {appName}'s lightweight distributed DNS service for service discovery.
+        Services can be added individually or by deploying an item from the Catalog."
+      paragraph2: "A service is also capable of leveraging other {appName} built-in services such as load balancers, health monitoring, upgrade support, and high-availability."
+    contentLink: Learn More
+    addService: Add Service
+    linkToCatalog: Add From Catalog
+
+helpPage:
+  header: Helpful links & Information
+  banner: Annoucements
+  releaseText: "Released:"
+  environment:
+    header: What is an environment?
+    content: |
+      <p>{appName} supports grouping resources into multiple environments. Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
+        <p>For example, you might create separate "dev", "test", and "production" environments to keep things isolated from each other, and give "dev" access to your entire organization but restrict the "production" environment to a smaller team.</p>
+    manageLink: Manage Environments
+  host:
+    header: What is a host?
+    content: |
+      Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker 1.9.1+ and be able to reach the {appName} server via HTTP. {appName} supports adding Linux hosts in the form of a virtual or physical
+          machine from any public cloud providers, privately hosted clouds, or even bare metal servers.
+    contentLink: Learn More
+    addHostLink: Add Host
+  stacks:
+    header: What are stacks and services?
+    content:
+      paragraph1: |
+        A service is simply a group of containers created from the same Docker image but extends Docker's "link" concept to leverage {appName}'s lightweight distributed DNS service for service discovery. Services can be added individually or by deploying an item from the Catalog.
+      paragraph2: A service is also capable of leveraging other {appName} built-in services such as load balancers, health monitoring, upgrade support, and high-availability.
+      #' fixes syntax highlighting so i dont go crazy
+      link: Learn More
+    addServiceLink: Manage Services
+    addCatalogLink: Add From Catalog
+    noHosts: You currently have no hosts. Please add a host before adding Services.
+    manageServiceLink: Manage Services
+  issues:
+    header:
+      text: Issues & Documentation
+      tagline: Uh oh, Find an issue?
+      fileBug: File a Bug
+    content:
+      paragraph1: |
+        {appName} is an open source software platform that implements a purpose-built infrastructure for running containers in production. Docker containers, as an increasingly popular application workload, create new requirements in infrastructure services such as networking, storage, load balancer, security, service discovery, and resource management.
+      graphic8:
+        text: Find a bug?
+        link: File an issue on GitHub.
+      graphic2:
+        text: For more information
+        link: |
+          <a href="{docsLink}" target="_blank">about using {appName} Visit our docs.</a>
+          <br/>or <a href="{companyLink}/learn/" target="_blank">check out our getting started documentation.</a>
+      graphic3:
+        text: Need help troubleshooting?
+        link: Check out our FAQs
+  forums:
+    header: From the Forums
+    tagline: Join the conversation
+    buttonText: On the forums
+    annoucements:
+      header: Annoucements
+      annouceText: |
+        <strong>Latest: </strong><a href="{latestLink}" target="_blank">{latestTitle}</a>
+      releaseText: |
+    general:
+      header: General
+      buttonText: View More General Topics
+    rancherOs:
+      header: RancherOS
+      buttonText: View More RancherOS Topics
+    rancher:
+      header: Rancher
+      buttonText: View More Rancher Topics
+    convoy:
+      header: Convoy
+      buttonText: View More Convoy Topics
+  commercial:
+    header: Commercial Support
+    content: |
+      At Rancher Labs we provide commercial, enterprise-grade support for {appName}, including an available 24x7 support team, and priority bug fixes.  In addition we provide implementation, integration and consulting services for organizations looking to implement and scale {appName}.  For more information on any of these services, please email our sales team. <a href="mailto:sales@rancher.com">sales@rancher.com</a>
+
+
+apiPage:
+  header: Environment API Keys
+  actionButton: Add Environment API Key
+  content: |
+    Environment API keys are tied to this specific Environment (<code>{displayName}</code>) and can only manipulate resources within there.  Other accounts with access to this Environment can also manage these keys.
+  labelText: 'Endpoint:'
+  table:
+    head:
+      state: State
+      name: Name
+      description: Description
+      publicValue: Access Key
+      created: Created
+    noData: There are no keys for this Environment yet.
+  advanced:
+    header: Account API Keys
+    buttonText: Add Account API Key
+    content:
+      paragraph1: Account API Keys are tied to your specific account
+      paragraph2: "and can create, delete, and manipulate all Environments which you have access to."
+      noData: "You don't have any Account API keys yet."
+
+accountsPage:
+  index:
+    header: Accounts
+    localLink: Add Account
+    table:
+      state: State
+      id: Id
+      kind: Kind
+      username: Username
+      name: Name
+      identitity: Identity
+      noData: "There are no accounts yet."
+  new:
+    header: Add Account
+    form:
+      username:
+        labelText: "Login Username*"
+        placeholder: "e.g. jsmith"
+      password:
+        labelText: "Password*"
+      name:
+        labelText: Name
+        placeholder: "e.g. John Smith"
+      type:
+        labelText: Account Type
+        dropdownList:
+      description:
+        labelText: Description
+        placeholder: "e.g. This account is for John Smith"
+
+auditLogsPage:
+  header: Audit Logs
+  form:
+    eventType:
+      placeholder: Event Type
+    resourceType:
+      placeholder: "Resource Type:"
+      dropdownList:
+    resourceId:
+      placeholder: Resource ID
+    requestIp:
+      placeholder: Request IP
+    authType:
+      placeholder: "Auth Type:"
+      dropdownList:
+    clearButtonText: Clear All
+    searchButtonText: Search
+  table:
+    time: Time
+    eventType: Event Type
+    description: Description
+    environment: Environment
+    resourceTypeId: "Resource Time:Id"
+    identity: Identity
+    authIp: "Auth & IP"
+
+authPage:
+  root:
+    header: Access Control
+  github:
+    header:
+      text: GitHub is
+      accessEnabled: enabled
+      accessNotEnabled: not configured
+      accessEnabledSubtext:
+        wasRestricted: "{appName} is configured to restrict access to {wasRestricted}."
+        wasNotRestricted:
+          text1: "{appName} is configured to allow access to any GitHub"
+          text2: Enterprise
+          text3: "user."
+      noAccessConfigured:
+        subtext: "{appName} can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
+    authenticated:
+      header:
+        text: Authentication
+        enterpriseHostName: "Enterprise Host:"
+        clientId:
+          text: "Client ID:"
+          helpText: "To change the configured GitHub application, disable access control below and then set it up again."
+      siteAccess:
+        accessControl:
+          header: Site Access
+          helpText: "Configure who should be allowed to log in and use {appName}.  <b>Note:</b> Members added to environments are automatically allowed."
+          radio1: Allow any GitHub user
+          radio2: Restrict to specific GitHub users and organization members
+          isRestricted:
+            header: Authorized Users and Organizations
+            noIdentity: None
+            saveAuthButton:
+              saved: Saved
+              saving: "Saving..."
+              pre: Save authorization configuration
+            helpText: "By default, only users that are a member of a environment are allowed to log in and access {appName}."
+            customizeButton: Customize
+      disableAccess:
+        header: "Danger Zone&trade;"
+        warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
+        confirmDisable: "Are you sure?  Click again to really disable access control"
+        disable: Disable access control
+    notAuthenticated:
+      header: "1. Setup a GitHub Application"
+      ul:
+        li1:
+          text: 'For standard GitHub, <a href="https://github.com/settings/developers" target="_blank">click here</a> to go applications settings in a new window.'
+          ul:
+            li1: "For Github Enterprise, login to your account.  Click on Settings, then Applications."
+        li2:
+          text: 'Click "Register new application" and fill out the form:'
+          ul:
+            li1: '<b>Application name:</b> <span class="text-muted">Anything you like, e.g. My {appName}</span>'
+            li2: "<b>Homepage URL: </b> "
+            li3: '<b>Application description:</b> <span class="text-muted">Anything you like, optional</span>'
+            li4: Authorization callback URL
+            li5: 'Click "Register Application" '
+      form:
+        headder: '2. Configure {appName} to use your application for authentication'
+        subtext: 'Copy and paste the Client ID and Secret from the upper-right corner of your newly-created application.'
+        clientId:
+          labelText: 'Client ID*'
+        clientSecret:
+          labelText: 'Client Secret*'
+        ghEnterprise:
+          labelText: Use a private GitHub Enterprise installation
+        isGHEnterprise:
+          labelText: Use a secure connection
+        enterpriseHost:
+          labelText: 'Enterprise Host*'
+          placeholder: 'e.g. github.example.com'
+    testAuth:
+      header: '3. Test and enable authentication'
+      subtext: 'Check that your application is configured correctly by testing authentication with it:'
+      buttonText:
+        pre: Authenticate with GitHub
+        post: Waiting to hear back from GitHub
+  index:
+  localAuth:
+
+pageFooter:
+  notARelease: (Not a Release)
+  documentation: Documentation
+  faq: FAQs
+  issues: File an Issue
+  forums: Forums
+  download:
+    link: Download CLI
+    mac: Mac OS X
+    windows: Windows
+    linux: Linux
+
+# Partials
+openLdap:
+  configuredIndication:
+    header:
+      providerName: "{providerName} is"
+      enabled: enabled
+      notEnabled: not configured
+      subtext:
+        enabled: "{appName} is configured to allow access to any {providerName} user."
+        notEnabled: "{appName} can be configured to restrict access to a set of users and group members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
+  accessEnabled:
+    header: Authentication
+    subtext: "To change the server configuration, disable access control below and then set it up again."
+    general:
+      header: General
+      server: "Server:"
+      tls: "TLS:"
+      serviceAccount: "Service Account:"
+      searchBase: "Search Base:"
+      defaultDomain: "Default Domain:"
+    users:
+      header: Users
+      objectClass: "Object Class:"
+      login: "Login Field:"
+      name: "Name Field:"
+      search: "Search Field:"
+      enabled: "Enabled Field:"
+      disabledBitMask: "Disabled BitMask:"
+    group:
+      header: Group
+      objectClass: "Object Class:"
+      name: "Name Field:"
+      search: "Search Field:"
+    disable:
+      header: "Danger Zone&trade;"
+      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {{settings.appName}} to anyone that can reach this page or the API.'
+      confirmDisable:
+        pre: Disable access control
+        post: "Are you sure?  Click again to really disable access control"
+  accessConfig:
+    header: "1. Configure an {providerName} server"
+    subtext1: "Enter the address, port, and protocol to connect to your {providerName} server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS."
+    subtext2: "{appName} needs a service account that has (read-only) access to all of the domains that will be able to login, so that we can determine what groups a user is a member of when they make a request with an API key."
+    hostName:
+      labelText: "Hostname or IP Address*"
+    port:
+      labelText: Port
+      checkbox: TLS
+    serviceUsername:
+      labelText: "Service Account Username*"
+    servicePassword:
+      labelText: "Service Account Password*"
+    searchBase:
+      helpText: "Only users and groups below the base will be used."
+      labelText: "Search Base*"
+      placeholder: "e.g. dc=mycompany,dc=com"
+    defaultDomain:
+      helpText: "This domain will be used if a user logs in without specifing one."
+      labelText: "Default Login Domain*"
+      placeholder: "e.g. mycompany"
+  customizeSchema:
+    header: "2. Customize Schema"
+    helpText: "If your schema does not match the standard ActiveDirectory format, you can customize it here."
+    users:
+      header: Users
+      objectClass:
+        labelText: Object Class
+      login:
+        labelText: Login Field
+      name:
+        labelText: Name Field
+      search:
+        labelText: Search Field
+      status:
+        labelText: Status Field
+      disabledBitMask:
+        labelText: Disabled Status Bitmask
+    groups:
+      header: Groups
+      objectClass:
+        labelText: Object Class
+      name:
+        labelText: Name Field
+      search:
+        labelText: Search Field
+  testAuth:
+    header: "3. Test and enable authentication"
+    helpText: "Check that everything is configured correctly by testing authentication with your {providerName} account:"
+    userName:
+      labelText: "Your Username*"
+    password:
+      labelText: "Your Password*"
+    authenticate:
+      pre: Authenticate
+      post: "Testing..."
+
+
+# Components
+advancedSection:
+  hrText: Advanced Options
+
+loginGithub:
+  buttonText: Authenticate with GitHub
+
+inputPassword:
+  buttonText: Generate
+
+loginUserPass:
+  userLabel: Username
+  userPlaceholder: e.g. jsmith
+  loginLabel: Log In
+  loggingInLabel: Logging In...
+  passwordLabel: Password
+
+
+
+# Utils
+

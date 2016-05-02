@@ -1,8 +1,8 @@
 <section class="header">
-  <h1>Accounts</h1>
+  <h1>{{t 'accountsPage.index.header'}}</h1>
 
   {{#if isLocal}}
-    {{#link-to "admin-tab.accounts.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add Account{{/link-to}}
+    {{#link-to "admin-tab.accounts.new" classNames="btn btn-sm btn-primary right-divider-btn"}}{{t 'accountsPage.index.localLink'}}{{/link-to}}
   {{/if}}
 </section>
 
@@ -10,14 +10,14 @@
   <table class="grid fixed" style="margin-bottom: 0;">
     <thead>
       <tr>
-        {{sortable-th sortable=this action="changeSort" name="state" width="125"}}
-        {{sortable-th sortable=this action="changeSort" name="id" label="ID" width="120"}}
-        {{sortable-th sortable=this action="changeSort" name="kind" width="120"}}
+        {{sortable-th sortable=this action="changeSort" name="state" label=(t 'accountsPage.index.table.state') width="125"}}
+        {{sortable-th sortable=this action="changeSort" name="id" label=(t 'accountsPage.index.table.id') width="120"}}
+        {{sortable-th sortable=this action="changeSort" name="kind" label=(t 'accountsPage.index.table.kind') width="120"}}
         {{#if isLocal}}
-          {{sortable-th sortable=this action="changeSort" name="username" label="Login Username"}}
-          {{sortable-th sortable=this action="changeSort" name="name"}}
+          {{sortable-th sortable=this action="changeSort" name="username" label=(t 'accountsPage.index.table.username')}}
+          {{sortable-th sortable=this action="changeSort" name="name" label=(t 'accountsPage.index.table.name')}}
         {{else}}
-          <th>Identity</th>
+          <th>{{t 'accountsPage.index.table.identity'}}</th>
         {{/if}}
         <th class="actions" width="75">&nbsp;</th>
       </tr>
@@ -26,7 +26,7 @@
       {{#each arranged as |account|}}
         {{account-row model=account isLocal=isLocal}}
       {{else}}
-        <tr><td colspan="{{if isLocal '6' '5'}}" class="text-center text-muted">There are no accounts yet.</td></tr>
+        <tr><td colspan="{{if isLocal '6' '5'}}" class="text-center text-muted">{{t 'accountsPage.index.table.noData'}}</td></tr>
       {{/each}}
     </tbody>
   </table>

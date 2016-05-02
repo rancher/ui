@@ -1,27 +1,27 @@
 {{#unless model.hosts.length}}
   <section class="welcome well">
     <i class="icon icon-host"></i>
-    <h2>Adding your first Host</h2>
+    <h2>{{t 'splashPage.hosts.header'}}</h2>
     <p>
-      Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker 1.9.1+ and be able to reach the {{settings.appName}} server via HTTP.
-      {{settings.appName}} supports adding Linux hosts in the form of a virtual or physical machine from any public cloud providers, privately hosted clouds, or even bare metal servers.
-      {{#if settings.isRancher}}<a href="{{docsBase}}/rancher-ui/infrastructure/hosts/" target="_blank">Learn More</a>{{/if}}
+      {{t 'splashPage.hosts.content' appName=settings.appName}}
+      {{#if settings.isRancher}}<a href="{{docsBase}}/rancher-ui/infrastructure/hosts/" target="_blank">{{t 'splashPage.hosts.contentLink'}}</a>{{/if}}
     </p>
-    {{#link-to "hosts.new" class="btn btn-primary"}}Add Host{{/link-to}}
+    {{#link-to "hosts.new" class="btn btn-primary"}}{{t 'splashPage.hosts.linkToHost'}}{{/link-to}}
   </section>
 {{/unless}}
 
 {{#unless model.services.length}}
   <section class="welcome alt">
     <i class="icon icon-stacks"></i>
-    <h2>Adding your first Service</h2>
+    <h2>{{t 'splashPage.service.header'}}</h2>
     <p>
-      A service is simply a group of containers created from the same Docker image but extends Docker's &quot;link&quot; concept to leverage {{settings.appName}}'s lightweight distributed DNS service for service discovery.
-      Services can be added individually or by deploying an item from the Catalog.</p>
-      <p>A service is also capable of leveraging other {{settings.appName}} built-in services such as load balancers, health monitoring, upgrade support, and high-availability.
-      {{#if settings.isRancher}}<a href="{{docsBase}}/rancher-ui/applications/stacks/adding-services/" target="_blank">Learn More</a>{{/if}}
+      {{t 'splashPage.service.content.paragraph1' appName=settings.appName}}
     </p>
-    <button role="button" class="btn btn-primary" {{action "newService"}}>Add Service</button>
-    {{#link-to "catalog-tab" class="btn btn-primary"}}Add From Catalog{{/link-to}}
+    <p>
+      {{t 'splashPage.service.content.paragraph2' appName=settings.appName}}
+      {{#if settings.isRancher}}<a href="{{docsBase}}/rancher-ui/applications/stacks/adding-services/" target="_blank">{{t 'splashPage.service.contentLink'}}</a>{{/if}}
+    </p>
+    <button role="button" class="btn btn-primary" {{action "newService"}}>{{t 'splashPage.service.addService'}}</button>
+    {{#link-to "catalog-tab" class="btn btn-primary"}}{{t 'splashPage.service.linkToCatalog'}}{{/link-to}}
   </section>
 {{/unless}}
