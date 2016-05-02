@@ -226,9 +226,11 @@ export default Ember.Route.extend(Subscribe, {
 
     refreshKubernetes() {
       var model = this.get('controller.model');
-      this.loadKubernetes(model.get('project')).then((hash) => {
-        model.setProperties(hash);
-      });
+      if ( model.get('project') ) {
+        this.loadKubernetes(model.get('project')).then((hash) => {
+          model.setProperties(hash);
+        });
+      }
     },
 
     switchNamespace(namespaceId) {
