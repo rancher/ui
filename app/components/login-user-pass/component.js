@@ -4,10 +4,6 @@ export default Ember.Component.extend({
   access: Ember.inject.service(),
 
   waiting: null,
-  userLabel: 'Username',
-  userPlaceholder: 'e.g. jsmith',
-  loginLabel: 'Log In',
-  loggingInLabel: 'Logging In...',
 
   username: null,
   password: null,

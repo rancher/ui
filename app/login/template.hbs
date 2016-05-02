@@ -1,12 +1,17 @@
 <div style="max-width: 360px; margin: 100px auto 0 auto;">
   <div class="farm-box login top-colors">
-    <h1>Howdy!<br>Welcome {{#if settings.appName}}to {{settings.appName}}{{/if}}</h1>
+    {{#if settings.appName}}
+      {{format-html-message 'loginPage.greeting'
+        appName=settings.appName}}
+    {{else}}
+      {{format-html-message 'loginPage.greetingWhiteLabel'}}
+    {{/if}}
     <div class="logo"></div>
     <section>
-      {{language-dropdown class='r-mt10 r-mb10'}}
+      {{!-- {{language-dropdown class='r-mt10 r-mb10'}}--}}
       <br/>
       {{#if isGithub}}
-        <p>{{settings.appName}} uses GitHub to manage accounts and teams.  Click the button below to log in and give us read-only access to your basic GitHub account information.</p>
+        <p>{{t 'loginPage.githubMessage' appName=settings.appName}}</p>
         <br/>
       {{/if}}
 

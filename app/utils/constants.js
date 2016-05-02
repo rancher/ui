@@ -219,6 +219,10 @@ var C = {
     BASE_VERSION: 'api/v1',
     TYPE_PREFIX: 'k8s-',
     ID_SEPARATOR: '::'
+  },
+
+  I18N_PREFS: {
+    FORMAT_RELATIVE_TIMEOUT: 1000
   }
 };
 
@@ -288,5 +292,6 @@ C.SUPPORTED_SCHEMA_INPUTS= [
   'service',
   'string',
 ];
+
 
 export default C;
