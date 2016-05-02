@@ -14,8 +14,6 @@ export default Ember.Service.extend(BrowserStore, {
       var old = event.originalEvent.oldValue;
       var neu = event.originalEvent.newValue;
 
-      console.log('Change', key, '=', old, '->', neu);
-
       if ( old !== neu )
       {
         this.notifyPropertyChange(key);
