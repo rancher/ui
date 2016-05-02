@@ -14,18 +14,20 @@ export default Ember.Controller.extend(Sortable, {
   selectedService: null,
 
   actions: {
-    showAddtlInfo: function(service) {
+    showAddtlInfo(service) {
       this.set('selectedService', service);
       this.set('showAddtlInfo', true);
     },
-    dismiss: function() {
+
+    dismiss() {
       this.set('showAddtlInfo', false);
       this.set('selectedService', null);
     },
-    sortResults: function(name) {
+
+    sortResults(name) {
       this.get('prefs').set(C.PREFS.SORT_STACKS_BY, name);
       this.send('setSort', name);
-    }
+    },
   },
 
   setup: function() {

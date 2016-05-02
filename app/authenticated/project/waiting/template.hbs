@@ -1,5 +1,22 @@
-Welcome, You've got Mail
-{{#unless model.hosts.length}}
+{{#if hasHosts}}
+  {{#if (and model.orchestrationState.hasKubernetes (not model.orchestrationState.kubernetesReady))}}
+    {{orchestration/wait-kubernetes model=model ready=(action "kubernetesReady")}}
+  {{else}}
+    <p>No K8s</p>
+  {{/if}}
+
+  {{#if (and model.orchestrationState.hasSwarm (not model.orchestrationState.swarmReady))}}
+    {{orchestration/wait-swarm model=model ready=(action "swarmReady")}}
+  {{else}}
+    <p>No Swarm</p>
+  {{/if}}
+
+  {{#if (and model.orchestrationState.hasMesos (not model.orchestrationState.mesosReady))}}
+    {{orchestration/wait-mesos model=model ready=(action "mesosReady")}}
+  {{else}}
+    <p>No Mesos</p>
+  {{/if}}
+{{else}}
   <section class="welcome well">
     <i class="icon icon-host"></i>
     <h2>Adding your first Host</h2>
@@ -10,19 +27,5 @@ Welcome, You've got Mail
     </p>
     {{#link-to "hosts.new" class="btn btn-primary"}}Add Host{{/link-to}}
   </section>
-{{/unless}}
+{{/if}}
 
-{{#unless model.services.length}}
-  <section class="welcome alt">
-    <i class="icon icon-stacks"></i>
-    <h2>Adding your first Service</h2>
-    <p>
-      A service is simply a group of containers created from the same Docker image but extends Docker's &quot;link&quot; concept to leverage {{settings.appName}}'s lightweight distributed DNS service for service discovery.
-      Services can be added individually or by deploying an item from the Catalog.</p>
-      <p>A service is also capable of leveraging other {{settings.appName}} built-in services such as load balancers, health monitoring, upgrade support, and high-availability.
-      {{#if settings.isRancher}}<a href="{{docsBase}}/rancher-ui/applications/stacks/adding-services/" target="_blank">Learn More</a>{{/if}}
-    </p>
-    <button role="button" class="btn btn-primary" {{action "newService"}}>Add Service</button>
-    {{#link-to "catalog-tab" class="btn btn-primary"}}Add From Catalog{{/link-to}}
-  </section>
-{{/unless}}

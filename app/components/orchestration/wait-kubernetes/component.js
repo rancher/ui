@@ -1,21 +1,31 @@
 import Ember from 'ember';
 import { debouncedObserver } from 'ui/utils/debounce';
 
-export default Ember.Controller.extend({
+export default Ember.Component.extend({
+  k8s: Ember.inject.service(),
   settings: Ember.inject.service(),
-  authenticated: Ember.inject.controller(),
 
   timer: null,
   currentStep: 0,
 
+  didInitAttrs() {
+    this.updateStep();
+  },
+
+  willDestroyElement() {
+    Ember.run.cancel(this.get('timer'));
+  },
+
   steps: [
     'Add at least one host',
     'Waiting for a host to be active',
-    'Creating Swarm system stack',
+    'Creating Kubernetes system stack',
     'Starting services',
+    'Waiting for Kubernetes API',
+    'Creating Namespace',
   ],
 
-  updateStep: debouncedObserver('model.hosts.@each.state','model.stacks.@each.{state,externalId}','model.services.@each.{state}', function() {
+  updateStep: debouncedObserver('model.hosts.@each.state','model.stacks.@each.{state,externalId}', function() {
     if ( (this.get('model.hosts.length') + this.get('model.machines.length')) === 0 )
     {
       this.set('currentStep', 0);
@@ -28,7 +38,7 @@ export default Ember.Controller.extend({
       return;
     }
 
-    var stack = this.get('model.stacks').filterBy('externalId','system://swarm')[0];
+    var stack = this.get('model.stacks').filterBy('externalId','system://kubernetes')[0];
     if ( !stack )
     {
       this.set('currentStep', 2);
@@ -56,17 +66,34 @@ export default Ember.Controller.extend({
     }
 
     this.set('currentStep', 4);
-    this.set('authenticated.swarmReady', true);
+    this.get('k8s').isReady().then((ready) => {
+      if ( ready )
+      {
+        this.get('k8s').getNamespace('default',true).then(() => {
+          this.set('currentStep', 6);
+        }).catch(() => {
+          this.set('currentStep', 5);
+          reschedule();
+        });
+      }
+      else
+      {
+        reschedule();
+      }
+    }).catch(() => {
+      reschedule();
+    });
+
+    var self = this;
+    function reschedule() {
+      self.set('timer', Ember.run.later(self, 'updateStep', 5000));
+    }
   }),
 
-  onInit: function() {
-    this.updateStep();
-  }.on('init'),
-
   stepChanged: function(){
-    if ( this.get('currentStep') === 4 )
+    if ( this.get('currentStep') >= this.get('steps.length') )
     {
-      this.transitionToRoute('swarm-tab.projects');
+      this.sendAction('ready');
     }
-  }.observes('currentStep'),
+  }.observes('currentStep','steps.length'),
 });
