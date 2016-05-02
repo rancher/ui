@@ -79,7 +79,6 @@ export default Ember.Component.extend(Driver, {
       type: 'machine',
       exoscaleConfig: config
     }));
-    this.initFields();
   },
 
   afterInit: function() {

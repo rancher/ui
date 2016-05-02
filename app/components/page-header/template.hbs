@@ -22,11 +22,13 @@
           {{else}}
             {{#if item.submenu.length}}
               {{! Has a submenu }}
-              {{#active-link class="dropdown"}}
+              <li class="dropdown">
                 {{#link-to-as-attrs
                   item.route
                   models=item.ctx
                   queryParams=item.queryParams
+                  moreCurrentWhen=item.moreCurrentWhen
+                  activeParent=true
                   class="dropdown-toggle"
                   data-toggle="dropdown"
                   role="button"
@@ -46,32 +48,36 @@
                             </a>
                           </li>
                         {{else}}
-                          {{#active-link}}
+                          <li>
                             {{#link-to-as-attrs
                               subitem.route
                               models=subitem.ctx
                               queryParams=subitem.queryParams
+                              activeParent=true
+                              moreCurrentWhen=subitem.moreCurrentWhen
                             }}
                               <i class="icon {{subitem.icon}}"/> {{subitem.label}}
                             {{/link-to-as-attrs}}
-                          {{/active-link}}
+                          </li>
                         {{/if}}
                       {{/if}}
                     {{/each}}
                   </ul>
                 {{/link-to-as-attrs}}
-              {{/active-link}}
+              </li>
             {{else}}
               {{! No submenu }}
-              {{#active-link}}
+              <li>
                 {{#link-to-as-attrs
                   item.route
                   models=item.ctx
                   queryParams=item.queryParams
+                  activeParent=true
+                  moreCurrentWhen=item.moreCurrentWhen
                 }}
                   {{item.label}}
                 {{/link-to-as-attrs}}
-              {{/active-link}}
+              </li>
             {{/if}}
           {{/if}}
         {{/each}}

@@ -216,6 +216,15 @@ var Project = Resource.extend(PolledResource, {
       (!state.hasMesos || state.mesosReady)
     );
   }.property('orchestrationState'), // The state object is always completely replaced, so this is ok
+
+  checkForWaiting(hosts) {
+    return this.updateOrchestrationState().then(() => {
+      if ( (hosts && hosts.get('length') === 0) || !this.get('isReady') )
+      {
+        this.get('router').replaceWith('authenticated.project.waiting', this.get('id'));
+      }
+    });
+  }
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often

@@ -9,8 +9,6 @@ export default Ember.Route.extend(Subscribe, {
   prefs     : Ember.inject.service(),
   projects  : Ember.inject.service(),
   k8s       : Ember.inject.service(),
-  swarm     : Ember.inject.service(),
-  mesos     : Ember.inject.service(),
   access    : Ember.inject.service(),
   userTheme : Ember.inject.service('user-theme'),
 
@@ -209,14 +207,8 @@ export default Ember.Route.extend(Subscribe, {
 
     switchNamespace(namespaceId) {
       var route = this.get('app.currentRouteName');
-      var okRoutes = [
-        'k8s-tab.namespaces',
-        'k8s-tab.namespace.rcs.index',
-        'k8s-tab.namespace.services.index',
-        'k8s-tab.namespace.pods.index',
-      ];
 
-      if ( okRoutes.indexOf(route) === -1 )
+      if ( route !== 'k8s-tab.namespaces' && !route.match(/^k8s-tab\.namespace\.[^.]+.index$/) )
       {
         route = 'k8s-tab.namespace';
       }

@@ -8,13 +8,37 @@ export const getNamespaceId = function() { return this.get('namespaceId'); };
 export const k8sReady = function() { return this.get('kubernetesReady'); };
 export const swarmReady = function() { return this.get('swarmReady'); };
 
+/* Tree item options
+  {
+    id: 'str' (identifier to allow removal... should be unique)
+    label: 'Displayed label', (or function that returns string)
+    icon: 'icon icon-somethign',
+    condition: function() { return true if this item should be displayed },
+      // condition can depend on anything page-header/component.js shouldUpdateNavTree() depends on:
+      // 'currentPath','project.orchestrationState','projectId','namespaceId',`settings.${C.SETTING.CATALOG_URL}`,'settings.hasVm','isAdmin',
+    url: 'http://any/url', (url or route required)
+    target: '_blank', (for url only)
+    route: 'target.route.path', // as in link-to
+    ctx: ['values', 'asContextToRoute', orFunctionThatReturnsValue, anotherFunction]
+    queryParams: {a: 'hello', b: 'world'],
+    moreCurrentWhen: ['additional.routes','for.current-when'],
+
+    submenu: [
+      // Another tree item (only one level of submenu supported, no arbitrary depth nesting)
+      {...},
+      {...}
+    ]
+  },
+*/
 const navTree = [
+  // Kubernetes
   {
     id: 'k8s',
     label: 'Kubernetes',
     route: 'k8s-tab',
     ctx: [getProjectId],
     condition: function() { return this.get('hasKubernetes'); },
+    moreCurrentWhen: ['authenticated.project.waiting'],
     submenu: [
       {
         id: 'k8s-services',
@@ -51,12 +75,14 @@ const navTree = [
     ],
   },
 
+  // Swarm
   {
     id: 'swarm',
     label: 'Swarm',
     condition: function() { return this.get('hasProject') && this.get('hasSwarm'); },
     route: 'swarm-tab',
     ctx: [getProjectId],
+    moreCurrentWhen: ['authenticated.project.waiting'],
     submenu: [
       {
         id: 'swarm-projects',
@@ -85,12 +111,23 @@ const navTree = [
     ]
   },
 
+  // Mesos
+  {
+    id: 'mesos',
+    label: 'Mesos',
+    condition: function() { return this.get('hasProject') && this.get('hasMesos'); },
+    route: 'mesos-tab',
+    ctx: [getProjectId],
+    moreCurrentWhen: ['authenticated.project.waiting'],
+  },
+
   // Cattle Stacks
   {
     id: 'cattle-stacks',
     label: 'Stacks',
     route: 'environments',
     ctx: [getProjectId],
+    moreCurrentWhen: ['authenticated.project.waiting'],
     condition: function() { return this.get('hasProject') && !this.get('hasKubernetes') && !this.get('hasSwarm'); },
   },
 
@@ -132,7 +169,7 @@ const navTree = [
     condition: function() { return this.get('hasProject') && this.get('hasSwarm'); },
   },
 
-  // Swarm System
+  // Mesos System
   {
     id: 'mesos-system',
     label: 'System',
@@ -142,6 +179,7 @@ const navTree = [
     condition: function() { return this.get('hasProject') && this.get('hasMesos'); },
   },
 
+  // Catalog
   {
     id: 'catalog',
     label: 'Catalog',
@@ -156,6 +194,7 @@ const navTree = [
     submenu: getCatalogSubtree,
   },
 
+  // Infrastructure
   {
     id: 'infrastructure',
     label: 'Infrastructure',
@@ -209,6 +248,7 @@ const navTree = [
     ],
   },
 
+  // Admin
   {
     id: 'admin',
     label: 'Admin',
@@ -255,6 +295,7 @@ const navTree = [
     ],
   },
 
+  // API
   {
     id: 'api',
     label: 'API',
@@ -265,27 +306,6 @@ const navTree = [
   }
 ];
 
-/* Tree item options
-  {
-    id: 'str' (identifier to allow removal... should be unique)
-    label: 'Displayed label', (or function that returns string)
-    icon: 'icon icon-somethign',
-    condition: function() { return true if this item should be displayed },
-      // condition can depend on anything page-header/component.js shouldUpdateNavTree() depends on:
-      // 'currentPath','project.orchestrationState','projectId','namespaceId',`settings.${C.SETTING.CATALOG_URL}`,'settings.hasVm','isAdmin',
-    url: 'http://any/url', (url or route required)
-    target: '_blank', (for url only)
-    route: 'target.route.path', // as in link-to
-    ctx: ['values', 'asContextToRoute', orFunctionThatReturnsValue, anotherFunction]
-    queryParams: {a: 'hello', b: 'world'],
-
-    submenu: [
-      // Another tree item (only one level of submenu supported, no arbitrary depth nesting)
-      {...},
-      {...}
-    ]
-  },
-*/
 export function addItem(opt) {
   navTree.pushObject(opt);
 }

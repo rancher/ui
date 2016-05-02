@@ -5,10 +5,9 @@ export default Ember.Route.extend({
   k8s: Ember.inject.service(),
 
   beforeModel() {
-    if ( !this.get('projects.current.orchestrationState.kubernetesReady') )
-    {
-      this.transitionTo('authenticated.project.waiting');
-    }
+    this._super(...arguments);
+    var auth = this.modelFor('authenticated');
+    return this.get('projects.current').checkForWaiting(auth.get('hosts'));
   },
 
   model() {
