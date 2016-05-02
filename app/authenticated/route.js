@@ -11,6 +11,7 @@ export default Ember.Route.extend(Subscribe, {
   k8s       : Ember.inject.service(),
   access    : Ember.inject.service(),
   userTheme : Ember.inject.service('user-theme'),
+  language  : Ember.inject.service('user-language'),
 
   beforeModel(transition) {
     this._super.apply(this,arguments);
@@ -53,6 +54,7 @@ export default Ember.Route.extend(Subscribe, {
         projectId = transition.params['authenticated.project'].project_id;
       }
 
+      this.get('language').initLanguage();
       // Make sure a valid project is selected
       return this.get('projects').selectDefault(projectId).then((project) => {
         // Load stuff that is needed to draw the header

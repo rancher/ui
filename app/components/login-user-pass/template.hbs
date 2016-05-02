@@ -1,15 +1,15 @@
 <form {{action "authenticate" on="submit"}} class="text-left">
   <div class="form-group">
-    <label>{{userLabel}}</label>
+    <label>{{t 'loginUserPass.userLabel'}}</label>
     <div>
-      {{input type="text" class="form-control login-user" value=username placeholder=userPlaceholder}}
+      {{input type="text" class="form-control login-user" value=username placeholder=(t 'loginUserPass.userPlaceholder')}}
     </div>
   </div>
 
   <br/>
 
   <div class="form-group">
-    <label>Password</label>
+    <label>{{t 'loginUserPass.passwordLabel'}}</label>
     <div>
       {{input type="password" class="form-control login-pass" value=password}}
     </div>
@@ -19,9 +19,9 @@
   <p class="text-center">
     <button disabled={{waiting}} class="btn btn-primary" {{action "authenticate"}}>
       {{#if waiting}}
-        <i class="icon icon-spinner icon-spin"></i> {{loggingInLabel}}
+        <i class="icon icon-spinner icon-spin"></i> {{t 'loginUserPass.loggingInLabel'}}
       {{else}}
-        {{loginLabel}}
+        {{t 'loginUserPass.loginLabel'}}
       {{/if}}
     </button>
   </p>

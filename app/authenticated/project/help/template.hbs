@@ -1,18 +1,18 @@
 <section class="header">
-  <h1>Helpful links &amp; Information</h1>
+  <h1>{{t 'helpPage.header'}}</h1>
 </section>
 
 {{#if (and settings.isRancher (not modelError))}}
-  <div class="banner r-ml20 r-mr20 r-mt10">
-    <span class="banner-head">Announcements</span>
-  {{#if modelResolved}}
-  <span class="banner-content">
-      <span ><strong>Latest: </strong><a href="{{latestAnnouncement.link}}" target="_blank">{{latestAnnouncement.title}}</a></span>
-      <span><strong>Released: </strong>{{date-from-now latestAnnouncement.created}}</span>
-  </span>
-    {{else}}
-      <div class="loading text-center"></div>
-  {{/if}}
+  <div class="alert alert-info alert-header r-ml20 r-mr20 r-mt10">
+    <span class="banner-head">{{t 'helpPage.banner'}}</span>
+    {{#if modelResolved}}
+      <span class="banner-content">
+          <span><strong>Latest: </strong><a href="{{latestAnnouncement.link}}" target="_blank">{{latestAnnouncement.title}}</a></span>
+          <span><strong>{{t 'helpPage.releaseText'}} </strong>{{format-relative latestAnnouncement.created interval=C.I18N_PREFS.FORMAT_RELATIVE_TIMEOUT}}</span>
+      </span>
+      {{else}}
+        <div class="loading text-center"></div>
+    {{/if}}
   </div>
 {{/if}}
 
@@ -20,41 +20,37 @@
   <div class="flex-wrap">
     <div class="flex-item">
       <div class="flex-content well">
-        <h4>What is an environment?</h4>
+        <h4>{{t 'helpPage.environment.header'}}</h4>
         <hr/>
-        <p>{{settings.appName}} supports grouping resources into multiple environments. Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
-
-        <p>For example, you might create separate "dev", "test", and "production" environments to keep things isolated from each other, and give "dev" access to your entire organization but restrict the "production" environment to a smaller team.</p>
-        {{#link-to 'settings.projects' class="btn btn-primary right-divider-btn"}} Manage Environments {{/link-to}}
+        {{format-html-message 'helpPage.environment.content' appName=settings.appName}}
+        {{#link-to 'settings.projects' class="btn btn-primary right-divider-btn"}} {{t 'helpPage.environment.manageLink'}} {{/link-to}}
       </div>
     </div>
 
     <div class="flex-item">
       <div class="flex-content well">
-        <h4>What is a host?</h4>
+        <h4>{{t 'helpPage.host.header'}}</h4>
         <hr/>
-        <p>Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker 1.9.1+ and be able to reach the {{settings.appName}} server via HTTP. {{settings.appName}} supports adding Linux hosts in the form of a virtual or physical
-          machine from any public cloud providers, privately hosted clouds, or even bare metal servers. <a href="{{docsLink}}/rancher-ui/infrastructure/hosts/" target="_blank">Learn More</a></p>
-        {{#link-to "hosts.new" class="btn btn-primary"}}Add Host{{/link-to}}
+        <p>{{t 'helpPage.host.content' appName=settings.appName}} <a href="{{docsLink}}/rancher-ui/infrastructure/hosts/" target="_blank">{{t 'helpPage.host.contentLink'}}</a></p>
+        {{#link-to "hosts.new" class="btn btn-primary"}}{{t 'helpPage.host.addHostLink'}}{{/link-to}}
       </div>
     </div>
 
     <div class="flex-item">
       <div class="flex-content well">
-        <h4>What are stacks and services?</h4>
+        <h4>{{t 'helpPage.stacks.header'}}</h4>
         <hr/>
-        <p>A service is simply a group of containers created from the same Docker image but extends Docker's "link" concept to leverage {{settings.appName}}'s lightweight distributed DNS service for service discovery. Services can be added individually or by deploying
-          an item from the Catalog.</p>
+        <p>{{t 'helpPage.stacks.content.paragraph1' appName=settings.appName}}</p>
 
-        <p>A service is also capable of leveraging other {{settings.appName}} built-in services such as load balancers, health monitoring, upgrade support, and high-availability. <a href="{{docsLink}}/rancher-ui/applications/stacks/adding-services/" target="_blank">Learn More</a></p>
+        <p>{{t 'helpPage.stacks.content.paragraph2' appName=settings.appName}} <a href="{{docsLink}}/rancher-ui/applications/stacks/adding-services/" target="_blank">{{t 'helpPage.stacks.content.link'}}</a></p>
 
         {{#if hasHosts}}
-          {{#link-to "applications-tab" class="btn btn-primary r-mb10"}} Manage Services{{/link-to}}
-          {{#link-to "catalog-tab" class="btn btn-primary"}}Add From Catalog{{/link-to}}
+          {{#link-to "applications-tab" class="btn btn-primary r-mb10"}} {{t 'helpPage.stacks.addServiceLink'}}{{/link-to}}
+          {{#link-to "catalog-tab" class="btn btn-primary"}} {{t 'helpPage.stacks.addCatalogLink'}}{{/link-to}}
         {{else}}
-          <div class="alert alert-danger">You currently have no hosts. Please add a host before adding Services.</div>
-          {{#link-to "applications-tab" class="btn btn-primary r-mb10" disabled=true}} Manage Services{{/link-to}}
-          {{#link-to "catalog-tab" class="btn btn-primary" disabled=true}}Add From Catalog{{/link-to}}
+          <div class="alert alert-danger">{{t 'helpPage.stacks.noHosts'}}</div>
+          {{#link-to "applications-tab" class="btn btn-primary r-mb10" disabled=true}}{{t 'helpPage.stacks.manageServiceLink'}}{{/link-to}}
+          {{#link-to "catalog-tab" class="btn btn-primary" disabled=true}}{{t 'helpPage.stacks.addCatalogLink'}}{{/link-to}}
         {{/if}}
       </div>
     </div>
@@ -64,42 +60,45 @@
 {{#if settings.isRancher}}
   <section class="well">
     <div class="header">
-      <h4>Issues &amp; Documentation</h4>
+      <h4>{{t 'helpPage.issues.header.text'}}</h4>
       <div class="pull-right r-mb20">
-        Uh oh, Find an issue? <a href="{{settings.issueUrl}}" class="btn btn-primary r-ml10" target="_blank">File a Bug</a>
+        {{t 'helpPage.issues.header.tagline'}} <a href="{{settings.issueUrl}}" class="btn btn-primary r-ml10" target="_blank">{{t 'helpPage.issues.header.fileBug'}}</a>
       </div>
     </div>
 
     <hr/>
 
     <div class="row">
-      <p class="text-center col-sm-12 col-md-8 col-md-offset-2">{{settings.appName}} is an open source software platform that implements a purpose-built infrastructure for running containers in production. Docker containers, as an increasingly popular application workload, create new requirements in infrastructure services such as networking, storage, load balancer, security, service discovery, and resource management.</p>
+      <p class="text-center col-sm-12 col-md-8 col-md-offset-2">{{t 'helpPage.issues.content.paragraph1' appName=settings.appName}}</p>
     </div>
 
     <div class="row">
       <div class="col-sm- col-md-4 text-center">
         <a href="{{settings.issueUrl}}" target="_blank"><img src="{{app.baseAssets}}assets/images/help-bug.svg" width="50%" /></a>
         <p>
-          Find a bug?
+          {{t 'helpPage.issues.content.graphic1.text'}}
           <br/>
-          <a href="{{settings.issueUrl}}" target="_blank">File an issue on GitHub.</a>
+          <a href="{{settings.issueUrl}}" target="_blank">{{t 'helpPage.issues.content.graphic1.link'}}</a>
         </p>
       </div>
 
       <div class="col-sm-12 col-md-4 text-center">
         <a href="{{companyLink}}/learn/" target="_blank"><img src="{{app.baseAssets}}assets/images/help-docs.svg" width="50%" /></a>
         <p>
-          For more information
-          <br/><a href="{{docsLink}}" target="_blank">about using {{settings.appName}} Visit our docs.</a>
-          <br/>or <a href="{{companyLink}}/learn/" target="_blank">check out our getting started documentation.</a>
+          {{t 'helpPage.issues.content.graphic2.text'}}
+          <br/>
+          {{format-html-message 'helpPage.issues.content.graphic2.link'
+            appName=settings.appName
+            companyLink=companyLink
+            docsLink=docsLink}}
         </p>
       </div>
 
       <div class="col-sm- col-md-4 text-center">
         <a href="{{docsLink}}/faqs/" target="_blank"><img src="{{app.baseAssets}}assets/images/help-troubleshoot.svg" width="50%" /></a>
         <p>
-          Need help troubleshooting?
-          <br/><a href="{{docsLink}}/faqs/" target="_blank">Check out our FAQs</a>
+          {{t 'helpPage.issues.content.graphic3.text'}}
+          <br/><a href="{{docsLink}}/faqs/" target="_blank">{{t 'helpPage.issues.content.graphic3.link'}}</a>
         </p>
       </div>
     </div>
@@ -108,9 +107,9 @@
 
   <section class="well">
     <div class="header">
-      <h4>From the Forums</h4>
+      <h4>{{t 'helpPage.forums.header'}}</h4>
       <div class="pull-right r-mb20">
-        Join the conversation <a href="{{forumsLink}}" class="btn btn-primary r-ml10" target="_blank">On the forums</a>
+        {{t 'helpPage.forums.tagline'}} <a href="{{forumsLink}}" class="btn btn-primary r-ml10" target="_blank">{{t 'helpPage.forums.buttonText'}}</a>
       </div>
     </div>
     <hr/>
@@ -118,12 +117,16 @@
     {{#unless modelError}}
       <div class="row">
         <div class="col-sm-12 col-md-4 right-divider">
-          <h5>Announcements</h5>
-          <p><strong>Latest: </strong><a href="{{latestAnnouncement.link}}" target="_blank">{{latestAnnouncement.title}}</a></p>
-          <p><strong>Released: </strong>{{date-from-now latestAnnouncement.created}}</p>
+          <h5>{{t 'helpPage.forums.annoucements.header'}}</h5>
+          <p>
+            {{format-html-message 'helpPage.forums.annoucements.annouceText'
+              latestLink=latestannouncement.link
+              latestTitle=latestAnnouncement.title}}
+          </p>
+          <p><strong>{{t 'helpPage.forums.annoucements.releaseText'}}</strong>{{date-from-now latestAnnouncement.created}}</p>
         </div>
         <div class="col-sm-12 col-md-4">
-          <h5>General</h5>
+          <h5>{{t 'helpPage.forums.general.header'}}</h5>
           <ul class="list-unstyled">
             {{#each model.general.topics as |topic|}}
               <li class="clip">
@@ -131,9 +134,9 @@
               </li>
             {{/each}}
           </ul>
-          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/general" target="blank">View More General Topics</a>
+          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/general" target="blank">{{t 'helpPage.forums.general.buttonText'}}</a>
 
-          <h5>RancherOS</h5>
+          <h5>{{t 'helpPage.forums.rancherOs.header'}}</h5>
           <ul class="list-unstyled">
             {{#each model.rancherOS.topics as |topic|}}
               <li class="clip">
@@ -141,10 +144,10 @@
               </li>
             {{/each}}
           </ul>
-          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/rancher-os" target="blank">View More RancherOS Topics</a>
+          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/rancher-os" target="blank">{{t 'helpPage.forums.rancherOs.buttonText'}}</a>
         </div>
         <div class="col-sm-12 col-md-4">
-          <h5>Rancher</h5>
+          <h5>{{t 'helpPage.forums.rancher.header'}}</h5>
           <ul class="list-unstyled">
             {{#each model.rancher.topics as |topic|}}
               <li class="clip">
@@ -152,9 +155,9 @@
               </li>
             {{/each}}
           </ul>
-          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/rancher" target="blank">View More Rancher Topics</a>
+          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/rancher" target="blank">{{t 'helpPage.forums.rancher.buttonText'}}</a>
 
-          <h5>Convoy</h5>
+          <h5>{{t 'helpPage.forums.convoy.header'}}</h5>
           <ul class="list-unstyled">
             {{#each model.convoy.topics as |topic|}}
               <li class="clip">
@@ -162,7 +165,7 @@
               </li>
             {{/each}}
           </ul>
-          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/convoy" target="blank">View More Convoy Topics</a>
+          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/convoy" target="blank">{{t 'helpPage.forums.convoy.buttonText'}}</a>
         </div>
       </div>
     {{else}}
@@ -174,9 +177,12 @@
   </section>
 
   <section class="well">
-    <h4>Commercial Support</h4>
+    <h4>{{t 'helpPage.commercial.header'}}</h4>
     <hr/>
-    <p>At Rancher Labs we provide commercial, enterprise-grade support for {{settings.appName}}, including an available 24x7 support team, and priority bug fixes.  In addition we provide implementation, integration and consulting services for organizations looking to implement and scale {{settings.appName}}.  For more information on any of these services, please email our sales team. <a href="mailto:sales@rancher.com">sales@rancher.com</a></p>
+    <p>
+      {{format-html-message 'helpPage.commercial.content'
+        appName=settings.appName}}
+    </p>
   </section>
 {{/if}}
 

@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('controller:styleguide', 'Unit | Controller | styleguide', {
+moduleFor('controller:guide', 'Unit | Controller | guide', {
   // Specify the other units that are required for this test.
   // needs: ['controller:foo']
 });

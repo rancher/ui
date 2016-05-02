@@ -13,13 +13,12 @@
 {{else}}
   <section class="welcome well">
     <i class="icon icon-host"></i>
-    <h2>Adding your first Host</h2>
+    <h2>{{t 'splashPage.hosts.header'}}</h2>
     <p>
-      Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker 1.9.1+ and be able to reach the {{settings.appName}} server via HTTP.
-      {{settings.appName}} supports adding Linux hosts in the form of a virtual or physical machine from any public cloud providers, privately hosted clouds, or even bare metal servers.
-      {{#if settings.isRancher}}<a href="{{docsBase}}/rancher-ui/infrastructure/hosts/" target="_blank">Learn More</a>{{/if}}
+      {{t 'splashPage.hosts.content' appName=settings.appName}}
+      {{#if settings.isRancher}}<a href="{{docsBase}}/rancher-ui/infrastructure/hosts/" target="_blank">{{t 'splashPage.hosts.contentLink'}}</a>{{/if}}
     </p>
-    {{#link-to "hosts.new" (query-params backTo="waiting") class="btn btn-primary"}}Add Host{{/link-to}}
+    {{#link-to "hosts.new" (query-params backTo="waiting") class="btn btn-primary"}}{{t 'splashPage.hosts.linkToHost'}}{{/link-to}}
   </section>
 {{/if}}
 
