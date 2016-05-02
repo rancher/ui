@@ -75,7 +75,7 @@ HEADER {
         font-size      : 13px;
         display        : block;
 
-        &:hover {
+        &:hover, &:focus {
           color: $lightTeal;
           background: rgba(0,0,0,.15);
         }
@@ -98,94 +98,33 @@ HEADER {
       }
     }
 
-    .dropdown {
-      &.open {
-        &.icon-chevron-down {
-          transform:rotate(-180deg);
-        }
-      }
-
-      .icon-chevron-down {
-        transition: ease all 350ms;
-        font-size: .75em;
-      }
-
-      .dropdown-toggle {
-        &.project-btn {
-          padding: 0;
-        }
-
-        max-width: 100%;
-        color: $top-row-link;
-
-        &:focus {
-          outline: 5px auto -webkit-focus-ring-color !important;
-          outline-offset: -2px;
-        }
-      }
-
-      .user-toggle {
-        cursor: pointer;
-        position: relative;
-        color: $top-row-link;
-        display: inline-block;
-        height: 40px;
-        z-index: 1001; // These have to be > 990 for bootstrap on touch devices
-      }
-
-
-      .project-menu {
-        max-height: 300px;
-        width: 300px;
-        overflow-y: auto;
-        box-shadow: none;
-        background: $dropdown-bg ;
-        color: $dropdown-link-color;
-        margin: 0;
-        border-radius: 0 0 2px 2px;
-
-        > LI > A {
-          color: $dropdown-link-color;
-
-          &:hover {
-            color: $dropdown-link-hover-color;
-            background: $dropdown-link-hover-bg;
-          }
-        }
-
-        & > LI.selected > A,
-        & > LI.selected > A:hover,
-        & > LI.selected > A:focus {
-          color: $greenTwoDark
-        }
-
-        .dropdown-header {
-          color: $lightGray;
-          padding: 5px 20px;
-        }
-
-        .divider {
-          background: black;
-        }
-
-        .theme-toggle {
-          padding: 5px 20px;
-
-          BUTTON {
-            width: 86px;
-          }
-        }
-      }
-    }
-
-    .user-btn {
-      vertical-align: top;
+    .user-menu {
+      max-height: 300px;
+      width: 300px;
+      overflow-y: auto;
+      box-shadow: none;
+      background: #fff;
+      color: #334851;
+      margin: 0;
+      border-radius: 0 0 2px 2px;
     }
 
     .user-menu {
       padding-top: 0;
-      width: 250px;
       border-radius: 2px;
+
+      & .theme-toggle, .dropdown-header {
+        padding: 5px 20px;
+
+        & button {
+          width: 86px;
+        }
+      }
+    }
+
+
+   .user-btn {
+      vertical-align: top;
     }
 
     .user-noauth,
@@ -250,6 +189,10 @@ HEADER {
       background: $primaryDark;
       position: relative;
 
+      span {
+        color: white;
+      }
+
       &:after {
         content: "";
         border-color: transparent transparent transparent $primaryDark;
@@ -259,6 +202,19 @@ HEADER {
         right: -16px;
         top: 33%;
         z-index: 2;
+      }
+
+      &.kub-btn {
+        background: rgba($primaryDark,.5);
+        left: -4px;
+
+        &:after {
+          border-color: transparent transparent transparent rgba($primaryDark,.5);
+        }
+
+        span {
+          color: white;
+        }
       }
 
       .btn {
