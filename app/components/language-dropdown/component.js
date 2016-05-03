@@ -31,10 +31,9 @@ export default Ember.Component.extend({
   },
 
   selected : Ember.computed('intl._locale', function() {
-    let out = null;
     let locale = this.get('intl._locale');
     if (locale) {
-      out = locale[0];
+      return locale[0];
     }
     return null;
   }),
