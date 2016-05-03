@@ -27,7 +27,7 @@ export default Ember.Component.extend({
 
       this.get('language').sideLoadLanguage(language).then(() => {
         if (!this.get('login')) {
-          this.get('language').setLanguage(language, false);
+          this.get('language').setLanguage(language);
         }
       });
     }
