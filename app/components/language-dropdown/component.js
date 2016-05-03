@@ -2,6 +2,9 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
+  // Set to true on login to savesession value instead of user-pref
+  login        : false,
+
   tagName      : 'div',
   classNames   : ['dropdown', 'language-dropdown', 'inline-block'],
   classNameBindings: ['hideSingle:hide'],
@@ -18,14 +21,14 @@ export default Ember.Component.extend({
 
   actions: {
     selectLanguage(language) {
-      let route = this.get('app.currentRouteName');
-
-      if (route === 'login') {
+      if (this.get('login')) {
         this.get('session').set(C.SESSION.LOGIN_LANGUAGE, language);
       }
 
       this.get('language').sideLoadLanguage(language).then(() => {
-        this.get('language').setLanguage(language);
+        if (!this.get('login')) {
+          this.get('language').setLanguage(language, false);
+        }
       });
     }
   },
@@ -36,6 +39,21 @@ export default Ember.Component.extend({
       return locale[0];
     }
     return null;
+  }),
+
+  selectedLabel: Ember.computed('selected','locales', function() {
+    let sel = this.get('selected');
+    let out = '';
+    if (sel) {
+      out = this.get('locales')[sel];
+    }
+
+    if (!out) {
+      out = 'Language';
+    }
+
+    // Strip parens for display
+    return out.replace(/\s+\(.+\)$/,'');
   }),
 
 });

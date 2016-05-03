@@ -47,6 +47,7 @@ export default Ember.Route.extend(Subscribe, {
       projects: this.loadProjects(),
       preferences: this.loadPreferences(),
       settings: this.loadPublicSettings(),
+      language: this.get('language').initLanguage(),
     }).then((hash) => {
       var projectId = null;
       if ( transition.params && transition.params['authenticated.project'] && transition.params['authenticated.project'].project_id )
@@ -54,7 +55,6 @@ export default Ember.Route.extend(Subscribe, {
         projectId = transition.params['authenticated.project'].project_id;
       }
 
-      this.get('language').initLanguage();
       // Make sure a valid project is selected
       return this.get('projects').selectDefault(projectId).then((project) => {
         // Load stuff that is needed to draw the header

@@ -9,22 +9,21 @@ export default Ember.Route.extend({
   beforeModel() {
     this._super.apply(this,arguments);
 
+    let lang = C.LANGUAGE.DEFAULT;
     const session       = this.get('session');
-    const language      = this.get('language');
-    const uplLocal      = this.get('session').get(C.SESSION.LANGUAGE); // get local language
-    let defaultLanguage = C.LANGUAGE.DEFAULT;
+    const fromLogin     = session.get(C.SESSION.LANGUAGE); // get local language
 
-    if (uplLocal) {
-      defaultLanguage = uplLocal;
+    if (fromLogin) {
+      lang = fromLogin;
     }
 
-    language.sideLoadLanguage(defaultLanguage);
+    session.set(C.SESSION.LOGIN_LANGUAGE, lang);
 
-    session.set(C.SESSION.LOGIN_LANGUAGE, defaultLanguage);
-
-    if ( !this.get('access.enabled') )
-    {
-      this.transitionTo('authenticated');
-    }
+    return this.get('language').sideLoadLanguage(lang).then(() => {
+      if ( !this.get('access.enabled') )
+      {
+        this.transitionTo('authenticated');
+      }
+    });
   },
 });
