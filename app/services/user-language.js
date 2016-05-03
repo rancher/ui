@@ -39,7 +39,8 @@ export default Ember.Service.extend({
   },
 
   setLanguage(lang) {
-    return this.set(`prefs.${C.PREFS.LANGAUGE}`, lang);
+    this.get('session').set(C.SESSION.LANGUAGE, lang);
+    return this.set(`prefs.${C.PREFS.LANGUAGE}`, lang);
   },
 
   sideLoadLanguage(language) {

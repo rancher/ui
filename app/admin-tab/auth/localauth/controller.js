@@ -1,18 +1,19 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  access: Ember.inject.service(),
-  settings: Ember.inject.service(),
+  access            : Ember.inject.service(),
+  settings          : Ember.inject.service(),
+  intl              : Ember.inject.service(),
 
-  confirmDisable: false,
-  errors: null,
-  testing: false,
-  error: null,
+  confirmDisable    : false,
+  errors            : null,
+  testing           : false,
+  error             : null,
 
-  adminName: '',
-  adminPublicValue: '',
-  adminSecretValue: '',
-  adminSecretValue2: '',
+  adminName         : '',
+  adminPublicValue  : '',
+  adminSecretValue  : '',
+  adminSecretValue2 : '',
 
   createDisabled: function() {
     var ok = this.get('adminPublicValue.length') && this.get('adminSecretValue.length') && (this.get('adminSecretValue') === this.get('adminSecretValue2'));
@@ -146,4 +147,12 @@ export default Ember.Controller.extend({
       });
     },
   },
+  headerText: Ember.computed('access.enabled', function() {
+    let out = this.get('intl').findTranslationByKey('authPage.localAuth.header.disabled');
+    if (this.get('access.enabled')) {
+      out = this.get('intl').findTranslationByKey('authPage.localAuth.header.enabled');
+
+    }
+    return this.get('intl').formatHtmlMessage(out);
+  }),
 });

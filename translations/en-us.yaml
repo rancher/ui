@@ -255,12 +255,55 @@ authPage:
       buttonText:
         pre: Authenticate with GitHub
         post: Waiting to hear back from GitHub
-  index:
   localAuth:
+    header:
+      enabled: 'Local Authentication is <b>enabled</b>'
+      disabled: 'Local Authentication is <b class="text-warning">not configured</b>'
+    subtext:
+      enable:
+        text1: '{appName} is configured to allow access to'
+        text2: 'in its local database.'
+        linkText: accounts
+      disabled: '{appName} can be configured to restrict access to a set of accounts defined in the {appName} database.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.'
+    accessEnabled:
+      header: 'Danger Zone&trade;'
+      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {{settings.appName}} to anyone that can reach this page or the API.'
+      buttonText:
+        disable: 'Are you sure?  Click again to really disable access control'
+        prompt: Disable access control
+    accessDisabled:
+      header: '1. Setup an Admin user'
+      helpText: 'This user will become the admin that has full control over {appName}.'
+      form:
+        login:
+          labelText: 'Login Username*'
+          placeholder: 'e.g. jsmith'
+        name:
+          labelText: Full Name
+          placeholder: 'e.g. John Smith'
+        password:
+          labelText: 'Password*'
+        confirmPassword:
+          labelText: 'Confirm Password*'
+    accessControl:
+      header: '2. Enable Access Control'
+      helpText: 'Click to enable access control and log in.'
+      buttonText:
+        pre: Enable Local Auth
+        post: 'Enabling...'
+
+highAvailabilityPage:
+  header:
+  subtext:
+  haConfigured:
+
+
+
+
+
 
 pageFooter:
   notARelease: (Not a Release)
-  help: Help
   documentation: Documentation
   faq: FAQs
   issues: File an Issue
@@ -277,10 +320,10 @@ openLdap:
     header:
       providerName: "{providerName} is"
       enabled: enabled
-      notEnabled: not configured
+      disabled: not configured
       subtext:
         enabled: "{appName} is configured to allow access to any {providerName} user."
-        notEnabled: "{appName} can be configured to restrict access to a set of users and group members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
+        disabled: "{appName} can be configured to restrict access to a set of users and group members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
   accessEnabled:
     header: Authentication
     subtext: "To change the server configuration, disable access control below and then set it up again."
