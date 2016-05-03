@@ -1,8 +1,12 @@
 <a class="dropdown-toggle hand btn btn-sm btn-link lang-select" data-toggle="dropdown" aria-expanded="false">
   <i class="icon icon-globe"></i> Language <i class="icon icon-chevron-down"></i>
 </a>
-<ul class="dropdown-menu text-right" role="menu" style="min-width: 0">
-  {{#each-in translations as |language locale|}}
-    <li  class="hand" {{action 'selectLanguage' locale}}>{{#if (eq selected locale)}}<i class="icon icon-check"></i> {{/if}}{{language}}</li>
+<ul class="dropdown-menu dropdown-menu-right" role="menu">
+  {{#each-in locales as |label lang|}}
+    <li class="{{if (eq selected lang) 'disabled selected'}}">
+      <a {{action 'selectLanguage' lang}}>
+        {{label}}
+      </a>
+    </li>
   {{/each-in}}
 </ul>

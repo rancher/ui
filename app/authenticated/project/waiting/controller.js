@@ -15,14 +15,16 @@ export default Ember.Controller.extend({
   isReadyChanged: function() {
     if ( ['loading','authenticated.project.waiting'].indexOf(this.get('application.currentRouteName')) >= 0 )
     {
-      if ( this.get('projects.current.isReady') )
+      if ( this.get('hasHosts') && this.get('projects.current.isReady') )
       {
         this.replaceRoute('authenticated.project.index');
       }
     }
   }.observes('projects.current.isReady'),
 
-  hasHosts: Ember.computed.or('model.hosts.length','model.machines.length'),
+  hasHosts: function() {
+    return (this.get('model.hosts.length') + this.get('model.machines.length')) > 0;
+  }.property('model.hosts.length','model.machines.length'),
 
   actions: {
     kubernetesReady() {
