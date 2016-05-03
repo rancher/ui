@@ -18,13 +18,13 @@ export default Ember.Route.extend({
       defaultLanguage = uplLocal;
     }
 
-    language.sideLoadLanguage(defaultLanguage);
-
     session.set(C.SESSION.LOGIN_LANGUAGE, defaultLanguage);
 
-    if ( !this.get('access.enabled') )
-    {
-      this.transitionTo('authenticated');
-    }
+    return language.sideLoadLanguage(defaultLanguage).then(() => {;
+      if ( !this.get('access.enabled') )
+      {
+        this.transitionTo('authenticated');
+      }
+    });
   },
 });

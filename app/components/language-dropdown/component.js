@@ -38,4 +38,19 @@ export default Ember.Component.extend({
     return null;
   }),
 
+  selectedLabel: Ember.computed('selected','locales', function() {
+    let sel = this.get('selected');
+    let out = '';
+    if (sel) {
+      out = this.get('locales')[sel];
+    }
+
+    if (!out) {
+      out = 'Language';
+    }
+
+    // Strip parens for display
+    return out.replace(/\s+\(.+\)$/,'');
+  }),
+
 });

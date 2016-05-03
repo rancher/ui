@@ -6,7 +6,7 @@ export default Ember.Service.extend({
   prefs            : Ember.inject.service(),
   session          : Ember.inject.service(),
   intl             : Ember.inject.service(),
-  locales : Ember.computed.alias('app.locales'),
+  locales          : Ember.computed.alias('app.locales'),
   loadedLocales    : null,
 
   bootstrap: function() {
@@ -53,7 +53,7 @@ export default Ember.Service.extend({
         dataType: 'json',
       }).then((resp) => {
         loadedLocales.push(language);
-        this.get('intl').addTranslations(language, resp.xhr.responseJSON).then(() => {
+        return this.get('intl').addTranslations(language, resp.xhr.responseJSON).then(() => {
           this.get('intl').setLocale(language);
         });
       });
