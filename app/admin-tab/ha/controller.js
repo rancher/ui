@@ -2,20 +2,21 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 
 export default Ember.Controller.extend({
-  settings: Ember.inject.service(),
-  growl: Ember.inject.service(),
-  cookies: Ember.inject.service(),
-  projects: Ember.inject.service(),
+  settings      : Ember.inject.service(),
+  growl         : Ember.inject.service(),
+  cookies       : Ember.inject.service(),
+  projects      : Ember.inject.service(),
+  intl          : Ember.inject.service(),
 
-  csrf: Ember.computed.alias('cookies.CSRF'),
+  csrf          : Ember.computed.alias('cookies.CSRF'),
 
-  userUrl: '',
-  selfSign: true,
-  generating: false,
-  justGenerated: false,
-  errors: null,
-  confirmPanic: false,
-  haProject: null,
+  userUrl       : '',
+  selfSign      : true,
+  generating    : false,
+  justGenerated : false,
+  errors        : null,
+  confirmPanic  : false,
+  haProject     : null,
 
   configExecute: function() {
     return 'sudo bash ./rancher-ha.sh rancher/server:' + (this.get('settings.rancherVersion') || 'latest');
@@ -200,4 +201,40 @@ rancher/server:${version}`;
       this.getHosts();
     });
   }.observes('haProject'),
+
+  headerText: Ember.computed('model.haConfig.enabled', function() {
+    const intl = this.get('intl');
+    let out    = intl.findTranslationByKey('haPage.header.disabled');
+
+    if (this.get('model.haConfig.enabled')) {
+      out = intl.findTranslationByKey('haPage.header.enabled');
+    }
+
+    return intl.formatHtmlMessage(out);
+  }),
+
+  hostRegistrationHelpText: Ember.computed('model.createScript.clusterSize', function() {
+    const intl = this.get('intl');
+    let out    = intl.findTranslationByKey('haPage.haDisabled.haConfigScript.form.hostRegistrationHelpText.multiCluster');
+    out = intl.formatHtmlMessage(out, {clusterSize: this.get('model.createScript.clusterSize')});
+
+    if (this.get('model.createScript.clusterSize') === 1) {
+      out = intl.findTranslationByKey('haPage.haDisabled.haConfigScript.form.hostRegistrationHelpText.singleCluster');
+      out = intl.formatHtmlMessage(out);
+    }
+    return out;
+  }),
+
+  uploadCertificateText: Ember.computed('model.createScript.hostRegistrationUrl', function() {
+    const intl = this.get('intl');
+    let out    = intl.findTranslationByKey('haPage.haDisabled.haConfigScript.form.certificate.radio2.noHostUrl');
+
+    out = intl.formatHtmlMessage(out);
+    if (this.get('model.createScript.hostRegistrationUrl')) {
+      out = intl.findTranslationByKey('haPage.haDisabled.haConfigScript.form.certificate.radio2.hasHostUrl');
+      out = intl.formatHtmlMessage(out, {hostRegistrationUrl: this.get('model.createScript.hostRegistrationUrl')});
+    }
+
+    return out;
+  }),
 });

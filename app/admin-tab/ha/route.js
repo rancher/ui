@@ -12,8 +12,10 @@ export default Ember.Route.extend({
     });
   },
 
-  setupController(controller/*, model*/) {
+  setupController(controller, model) {
     this._super(...arguments);
-    controller.findProject();
+    if (model.haConfig.enabled) {
+      controller.findProject();
+    }
   }
 });
