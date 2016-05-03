@@ -61,6 +61,7 @@ export default Ember.Route.extend(Subscribe, {
         hash.project = project;
 
         return Ember.RSVP.hash({
+          language: this.get('language').setLanguage(),
           orchestrationState: project.updateOrchestrationState(),
           hosts: this.get('store').findAllUnremoved('host'),
           machines: this.get('store').findAllUnremoved('machine'),

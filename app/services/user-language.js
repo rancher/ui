@@ -30,7 +30,6 @@ export default Ember.Service.extend({
     }
 
     session.set(C.SESSION.LANGUAGE, lang);
-    this.set(`prefs.${C.PREFS.LANGUAGE}`, lang);
     return this.sideLoadLanguage(lang);
   },
 
@@ -39,7 +38,9 @@ export default Ember.Service.extend({
   },
 
   setLanguage(lang) {
-    this.get('session').set(C.SESSION.LANGUAGE, lang);
+    let session = this.get('session');
+    lang = lang || session.get(C.SESSION.LANGUAGE);
+    session.set(C.SESSION.LANGUAGE, lang);
     return this.set(`prefs.${C.PREFS.LANGUAGE}`, lang);
   },
 
