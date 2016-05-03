@@ -55,7 +55,7 @@ export default Ember.Service.extend({
       this.get('intl').setLocale(language);
       return Ember.RSVP.resolve();
     } else {
-      return ajaxPromise({url: `/translations/${language}.json`,
+      return ajaxPromise({url: `${this.get('app.baseURL')}/translations/${language}.json`,
         method: 'GET',
         dataType: 'json',
       }).then((resp) => {
