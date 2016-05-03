@@ -15,38 +15,31 @@ export default Ember.Service.extend({
 
   initLanguage() {
     const session       = this.get('session');
-    const upl           = this.getLanguage(); // get language from user prefs
-    const uplLocal      = session.get(C.SESSION.LANGUAGE); // get local language
-    let defaultLanguage = C.LANGUAGE.DEFAULT;
+    const fromLogin     = session.get(C.SESSION.LOGIN_LANGUAGE);
+    const fromPrefs     = this.getLanguage(); // get language from user prefs
+    const fromSession   = session.get(C.SESSION.LANGUAGE); // get local language
+    let lang = C.LANGUAGE.DEFAULT;
 
-    if (session.get(C.SESSION.LOGIN_LANGUAGE)){
-      defaultLanguage = session.get(C.SESSION.LOGIN_LANGUAGE);
+    if ( fromLogin ) {
+      lang = fromLogin;
       session.set(C.SESSION.LOGIN_LANGUAGE, undefined);
-      session.set(C.SESSION.LANGUAGE, defaultLanguage);
-
-    } else {
-      if (upl) { // if user prefs
-
-        defaultLanguage = upl;
-        session.set(C.SESSION.LANGUAGE, defaultLanguage);
-
-      } else { // no user pref language
-        if (uplLocal) {
-
-          defaultLanguage = uplLocal;
-
-          this.set(`prefs.${C.PREFS.LANGUAGE}`, defaultLanguage);
-        }
-      }
+    } else if ( fromPrefs ) {
+      lang = fromPrefs;
+    } else if (fromSession) {
+      lang = fromSession;
     }
 
-    this.sideLoadLanguage(defaultLanguage);
+    session.set(C.SESSION.LANGUAGE, lang);
+    this.set(`prefs.${C.PREFS.LANGUAGE}`, lang);
+    return this.sideLoadLanguage(lang);
   },
 
   getLanguage() {
-    const languagePrefs = `prefs.${C.PREFS.LANGUAGE}`;
+    return this.get(`prefs.${C.PREFS.LANGAUGE}`);
+  },
 
-    return this.get(languagePrefs);
+  setLanguage(lang) {
+    return this.set(`prefs.${C.PREFS.LANGAUGE}`, lang);
   },
 
   sideLoadLanguage(language) {

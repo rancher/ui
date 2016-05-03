@@ -36,34 +36,34 @@
                   aria-expanded="false"
                 }}
                   {{item.label}} <span class="icon icon-chevron-down"/>
-                  <ul class="dropdown-menu">
-                    {{#each item.submenu as |subitem|}}
-                      {{#if subitem.divider}}
-                        <li class="divider"></li>
-                      {{else}}
-                        {{#if subitem.url}}
-                          <li>
-                            <a href="{{subitem.url}}" target="{{subitem.target}}">
-                              <i class="icon {{subitem.icon}}"/> {{subitem.label}}
-                            </a>
-                          </li>
-                        {{else}}
-                          <li>
-                            {{#link-to-as-attrs
-                              subitem.route
-                              models=subitem.ctx
-                              queryParams=subitem.queryParams
-                              activeParent=true
-                              moreCurrentWhen=subitem.moreCurrentWhen
-                            }}
-                              <i class="icon {{subitem.icon}}"/> {{subitem.label}}
-                            {{/link-to-as-attrs}}
-                          </li>
-                        {{/if}}
-                      {{/if}}
-                    {{/each}}
-                  </ul>
                 {{/link-to-as-attrs}}
+                <ul class="dropdown-menu">
+                  {{#each item.submenu as |subitem|}}
+                    {{#if subitem.divider}}
+                      <li class="divider"></li>
+                    {{else}}
+                      {{#if subitem.url}}
+                        <li>
+                          <a href="{{subitem.url}}" target="{{subitem.target}}">
+                            <i class="icon {{subitem.icon}}"/> {{subitem.label}}
+                          </a>
+                        </li>
+                      {{else}}
+                        <li>
+                          {{#link-to-as-attrs
+                            subitem.route
+                            models=subitem.ctx
+                            queryParams=subitem.queryParams
+                            activeParent=true
+                            moreCurrentWhen=subitem.moreCurrentWhen
+                          }}
+                            <i class="icon {{subitem.icon}}"/> {{subitem.label}}
+                          {{/link-to-as-attrs}}
+                        </li>
+                      {{/if}}
+                    {{/if}}
+                  {{/each}}
+                </ul>
               </li>
             {{else}}
               {{! No submenu }}
@@ -84,9 +84,7 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li>
-          {{language-dropdown class='pull-right hidden-sm hidden-xs'}}
-        </li>
+        <li>{{language-dropdown}}</li>
         <li>{{page-header-user}}</li>
       </ul>
     </div>

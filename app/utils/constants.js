@@ -124,7 +124,8 @@ var C = {
   },
 
   LANGUAGE: {
-    DEFAULT: 'en-us'
+    DEFAULT: 'en-us',
+    FORMAT_RELATIVE_TIMEOUT: 1000,
   },
 
   THEME: {
@@ -164,7 +165,7 @@ var C = {
     GITHUB_CACHE   : 'githubCache',
     GITHUB_ORGS    : 'orgs',
     GITHUB_TEAMS   : 'teams',
-    LANGUAGE       : 'langugae',
+    LANGUAGE       : 'language',
     LOGIN_LANGUAGE : 'loginLanguage',
   },
 
@@ -227,10 +228,6 @@ var C = {
   MESOS: {
     HEALTH: 'health',
     FRAMEWORKS: 'frameworks',
-  },
-
-  I18N_PREFS: {
-    FORMAT_RELATIVE_TIMEOUT: 1000
   },
 };
 

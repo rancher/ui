@@ -22,16 +22,20 @@ function normalizeHost(host,defaultPort) {
   return host;
 }
 
-function readLocales() {
+function readLocales(environment) {
   /* Parse the translations from the translations folder*/
   /* ember intl getLocalesByTranslations does not work if intl is not managing them (bundled) */
   /* This needs a little work to read the yaml files for the langugae name prop*/
   var translations = fs.readdirSync('./translations');
   var translationsOut = {};
   translations.forEach(function(item) {
+    if ( environment === 'production' && item === 'none.yaml' ) {
+      // Don't show the "None" language in prod
+      return;
+    }
     var ymlFile = YAML.load('./translations/' + item);
     var name  = ymlFile.languageName;
-    var value = item.split('.')[0]; // eventually this will be langugae name (ie english)
+    var value = item.split('.')[0];
     translationsOut[name] = value;
   });
   return translationsOut;
@@ -95,7 +99,7 @@ module.exports = function(environment) {
                     '&include=instanceLinks' +
                     '&include=ipAddresses',
       baseAssets: '/',
-      locales: readLocales()
+      locales: readLocales(environment)
     },
   };
 
