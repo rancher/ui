@@ -1,45 +1,22 @@
 /**********
  * Header (top bar)
  **********/
-
-/*navbar*/
-.navbar-toggle {
-  padding: 11px;
-  margin: 0;
-  background: $logo-bg;
-  color: white;
-  position: relative;
-
-  &.navbar-toggle:before {
-    content: "";
-    border-color: transparent;
-    border-style: solid;
-    border-width: 8px;
-    border-right-color: $logo-bg;
-    position: absolute;
-    left: -15px;
-    top: 12px;
-  }
-}
-
-  .nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
-    background-repeat: transparent!important;
- }
-
-@media (min-width: $screen-md) {
-  UL.nav LI.dropdown:hover UL.dropdown-menu {
-    display: block;
-    margin-top: 0;
-
-    li a {
-      text-transform: none;
-    }
-  }
-}
-
 @media (max-width: $screen-sm-max) {
   UL.nav LI.dropdown UL.dropdown-menu {
     display: block;
+  }
+}
+
+
+@media (min-width: $screen-md) {
+  UL.nav LI.dropdown:hover UL.dropdown-menu,
+  UL.nav LI.dropdown:focus UL.dropdown-menu {
+    display: block;
+    margin-top: 0;
+
+    LI A {
+      text-transform: none;
+    }
   }
 }
 
@@ -63,22 +40,45 @@ HEADER {
     color: $lightTeal;
   }
 
-  NAV {
+  NAV.navbar {
     background-color: $top-row;
     min-height: $navbar-height;
+    border: 0;
+    margin: 0;
     padding: 0;
     font-size : 14px;
 
+    .navbar-toggle {
+      padding: 11px;
+      margin: 0;
+      background: $logo-bg;
+      color: white;
+      position: relative;
+
+      &.navbar-toggle:before {
+        content: "";
+        border-color: transparent;
+        border-style: solid;
+        border-width: 8px;
+        border-right-color: $logo-bg;
+        position: absolute;
+        left: -15px;
+        top: 12px;
+      }
+    }
+
+    .navbar-collapse {
+      padding: 0;
+    }
 
     .nav > LI {
-      list-style: none;
-      display        : inline-block;
+      list-style       : none;
+      display          : inline-block;
 
-      & > A,
-      & > .link-admin > A {
+      & > A {
         min-height     : $navbar-height;
         line-height    : $navbar-height;
-        padding        : 0 20px;
+        padding        : 0 13px;
         font-weight    : normal;
         text-transform : uppercase;
         color          : $lightGray;
@@ -106,6 +106,10 @@ HEADER {
           }
         }
       }
+
+      &:first-of-type > A {
+        padding-left: 20px;
+      }
     }
 
     .user-menu {
@@ -116,10 +120,6 @@ HEADER {
       background: #fff;
       color: #334851;
       margin: 0;
-      border-radius: 0 0 2px 2px;
-    }
-
-    .user-menu {
       padding-top: 0;
       border-radius: 2px;
 
@@ -131,7 +131,6 @@ HEADER {
         }
       }
     }
-
 
    .user-btn {
       vertical-align: top;
@@ -268,6 +267,13 @@ HEADER {
         }
       }
     }
-
   }
 }
+
+@media (min-width: $screen-lg) {
+  HEADER NAV.navbar .nav > LI > A {
+    padding: 0 20px;
+  }
+}
+
+

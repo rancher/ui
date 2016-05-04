@@ -1,6 +1,7 @@
 <button class="dropdown user-toggle btn-link" role="button" id="user-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="User Menu: {{session.user}}">
   {{#if accessEnabled}}
     {{identity-avatar link=false identity=access.identity}}
+    <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
     <i class="icon icon-chevron-down"></i>
   {{else}}
     <div class="gh-avatar">
@@ -8,6 +9,7 @@
         <i class="icon icon-user"></i>
       </div>
     </div>
+    <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
     <i class="icon icon-chevron-down"></i>
   {{/if}}
 </button>
@@ -15,24 +17,23 @@
   {{#if accessEnabled}}
     <li role="presentation" class="user-auth">
       {{identity-block avatar=false identity=access.identity}}
-      {{#link-to "logout" class="user-logout"}}<i class="icon icon-logout"></i> Log Out{{/link-to}}
+      {{#link-to "logout" class="user-logout"}}<i class="icon icon-logout"></i> {{t 'nav.user.logout'}}{{/link-to}}
     </li>
   {{/if}}
 
   {{#if isLocalAuth}}
     <li role="presentation" class="dropdown-header">
-      Your Account
+      {{t 'nav.user.yourAccount'}}
     </li>
 
     <li role="presentation">
-      <a {{action "changePassword"}} role="menuitem">Change Password</a>
+      <a {{action "changePassword"}} role="menuitem">{{t 'nav.user.changePassword'}}</a>
     </li>
 
   {{/if}}
 
-  <li class="dropdown-header">Theme</li>
+  <li class="dropdown-header">{{t 'nav.user.theme'}}</li>
   <li role="presentation" class="theme-toggle text-center btn-group">
     {{theme-toggle}}
   </li>
-
 </ul>

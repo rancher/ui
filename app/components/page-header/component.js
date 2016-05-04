@@ -103,9 +103,11 @@ export default Ember.Component.extend({
     return !!this.get('project');
   }.property('project'),
 
-  hasSwarm:       Ember.computed.alias('project.orchestrationState.hasSwarm'),
-  hasKubernetes:  Ember.computed.alias('project.orchestrationState.hasKubernetes'),
-  hasMesos:       Ember.computed.alias('project.orchestrationState.hasMesos'),
+  hasSwarm:         Ember.computed.alias('project.orchestrationState.hasSwarm'),
+  hasKubernetes:    Ember.computed.alias('project.orchestrationState.hasKubernetes'),
+  hasMesos:         Ember.computed.alias('project.orchestrationState.hasMesos'),
+  swarmReady:       Ember.computed.alias('project.orchestrationState.swarmReady'),
+  mesosReady:       Ember.computed.alias('project.orchestrationState.mesosReady'),
 
   kubernetesReady: function() {
     return this.get('hasKubernetes') &&

@@ -42,10 +42,6 @@ rancher/server:${version}`;
       Util.download(this.get('model.haConfig').linkFor('dbdump'));
     },
 
-    readFile(field, text) {
-      this.set('model.createScript.'+field, text.trim());
-    },
-
     promptPanic() {
       this.set('confirmPanic', true);
       Ember.run.later(() => {

@@ -9,7 +9,6 @@ export default Ember.Controller.extend(Sortable, {
   prefs: Ember.inject.service(),
 
   which: Ember.computed.alias('environments.which'),
-  single: null,
   showAddtlInfo: false,
   selectedService: null,
 
@@ -72,17 +71,12 @@ export default Ember.Controller.extend(Sortable, {
     name: ['name','id']
   },
 
-  showAdd: function() {
-    if ( this.get('single') )
-    {
-      return false;
-    }
-
-    return !this.get('showWitch');
-  }.property('single','showWitch'),
+  addSystem: function() {
+    return [C.EXTERNALID.KIND_USER,C.EXTERNALID.KIND_ALL].indexOf(this.get('which')) === -1;
+  }.property('which'),
 
   showWhich: function() {
     return [C.EXTERNALID.KIND_NOT_KUBERNETES,C.EXTERNALID.KIND_NOT_SWARM,C.EXTERNALID.KIND_USER].indexOf(this.get('which')) === -1;
-  }.property('single','which'),
+  }.property('which'),
 
 });

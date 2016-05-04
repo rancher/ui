@@ -193,6 +193,7 @@ export default Ember.Route.extend(Subscribe, {
     },
 
     switchProject(projectId, transition=true) {
+      this.disconnectSubscribe();
       this.reset();
       if ( transition ) {
         this.intermediateTransitionTo('authenticated');
