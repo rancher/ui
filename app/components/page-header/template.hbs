@@ -2,7 +2,7 @@
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-        <span class="sr-only">Toggle navigation</span>
+        <span class="sr-only">{{t 'nav.srToggleNav'}}</span>
         <i class="icon icon-ellipsis"></i>
       </button>
       <a class="navbar-brand logo"></a>
@@ -17,7 +17,7 @@
         {{#each navTree as |item|}}
           {{#if item.url}}
             <li>
-              <a href="{{item.url}}" target="{{item.target}}">{{item.label}}</a>
+              <a href="{{item.url}}" target="{{item.target}}">{{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}}</a>
             </li>
           {{else}}
             {{#if item.submenu.length}}
@@ -35,7 +35,7 @@
                   aria-haspopup="true"
                   aria-expanded="false"
                 }}
-                  {{item.label}} <span class="icon icon-chevron-down"/>
+                  {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}} <span class="icon icon-chevron-down"/>
                 {{/link-to-as-attrs}}
                 <ul class="dropdown-menu">
                   {{#each item.submenu as |subitem|}}
@@ -45,7 +45,7 @@
                       {{#if subitem.url}}
                         <li>
                           <a href="{{subitem.url}}" target="{{subitem.target}}">
-                            <i class="icon {{subitem.icon}}"/> {{subitem.label}}
+                            <i class="icon {{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
                           </a>
                         </li>
                       {{else}}
@@ -57,7 +57,7 @@
                             activeParent=true
                             moreCurrentWhen=subitem.moreCurrentWhen
                           }}
-                            <i class="icon {{subitem.icon}}"/> {{subitem.label}}
+                            <i class="icon {{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
                           {{/link-to-as-attrs}}
                         </li>
                       {{/if}}
@@ -75,7 +75,7 @@
                   activeParent=true
                   moreCurrentWhen=item.moreCurrentWhen
                 }}
-                  {{item.label}}
+                  {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}}
                 {{/link-to-as-attrs}}
               </li>
             {{/if}}
@@ -84,7 +84,6 @@
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li>{{language-dropdown}}</li>
         <li>{{page-header-user}}</li>
       </ul>
     </div>

@@ -8,10 +8,6 @@ export default Ember.Controller.extend(NewOrEdit,{
   }.property('model.key'),
 
   actions: {
-    readFile(field, text) {
-      this.set('model.'+field, text.trim());
-    },
-
     cancel() {
       this.transitionToRoute('certificates');
     },

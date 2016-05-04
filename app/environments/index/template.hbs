@@ -3,9 +3,7 @@
     {{#if showWhich}}{{uc-first which}} {{/if}}Stacks
   </h1>
 
-  {{#if showAdd}}
-    {{#link-to "environments.new" classNames="btn btn-sm btn-primary"}}Add Stack{{/link-to}}
-  {{/if}}
+  {{#link-to "environments.new" (query-params system=addSystem) classNames="btn btn-sm btn-primary"}}Add Stack{{/link-to}}
 
   <div class="pull-right">
     <label class="text-muted r-pr5" style="font-size: 13px;">Sort By: </label>
@@ -21,7 +19,11 @@
     {{#each arranged as |stack|}}
       {{stack-section model=stack showAddtlInfo='showAddtlInfo'}}
     {{else}}
-      {{hero-add-service}}
+      {{#if addSystem}}
+        <div class="r-m20 text-center text-muted">No System Stacks</div>
+      {{else}}
+        {{hero-add-service}}
+      {{/if}}
     {{/each}}
   </div>
 </section>

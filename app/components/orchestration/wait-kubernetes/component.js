@@ -7,9 +7,13 @@ export default Ember.Component.extend({
 
   timer: null,
   currentStep: 0,
+  services: null,
 
   didInitAttrs() {
     this.updateStep();
+    this.get('store').findAllUnremoved('service').then((services) => {
+      this.set('services', services);
+    });
   },
 
   willDestroyElement() {
@@ -25,7 +29,7 @@ export default Ember.Component.extend({
     'Creating Namespace',
   ],
 
-  updateStep: debouncedObserver('model.hosts.@each.state','model.stacks.@each.{state,externalId}', function() {
+  updateStep: debouncedObserver('model.hosts.@each.state','model.stacks.@each.{state,externalId}','services.@each.state', function() {
     if ( (this.get('model.hosts.length') + this.get('model.machines.length')) === 0 )
     {
       this.set('currentStep', 0);
@@ -56,7 +60,7 @@ export default Ember.Component.extend({
       return;
     }
 
-    var services = this.get('model.services').filterBy('environmentId', stack.get('id'));
+    var services = this.get('services').filterBy('environmentId', stack.get('id'));
     var num = services.get('length');
     var active = services.filterBy('state','active').get('length');
     if ( num === 0 || active < num )

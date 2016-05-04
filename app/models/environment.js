@@ -4,6 +4,20 @@ import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
+export function activeIcon(env)
+{
+  let kind = env.get('externalIdInfo.kind');
+
+  if ( C.EXTERNALID.SYSTEM_KINDS.indexOf(kind) >= 0 )
+  {
+    return 'icon icon-network';
+  }
+  else
+  {
+    return 'icon icon-layers';
+  }
+}
+
 var Environment = Resource.extend({
   type: 'environment',
 
@@ -199,7 +213,7 @@ var Environment = Resource.extend({
 
 Environment.reopenClass({
   stateMap: {
-    'active':             {icon: 'icon icon-layers',          color: 'text-success'},
+    'active':             {icon: activeIcon,          color: 'text-success'},
     'canceled-rollback':  {icon: 'icon icon-life-ring',       color: 'text-info'},
     'canceled-upgrade':   {icon: 'icon icon-life-ring',       color: 'text-info'},
     'canceling-rollback': {icon: 'icon icon-life-ring',       color: 'text-info'},

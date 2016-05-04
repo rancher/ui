@@ -17,10 +17,6 @@ export default Ember.Component.extend(NewOrEdit, {
     cancel() {
       this.sendAction('dismiss');
     },
-
-    readFile(field, text) {
-      this.set('model.'+field, text.trim());
-    },
   },
 
   doneSaving() {
