@@ -6,27 +6,50 @@ export default Ember.Route.extend({
   github         : Ember.inject.service(),
   access         : Ember.inject.service(),
   settings       : Ember.inject.service(),
+  language       : Ember.inject.service('user-language'),
 
   previousParams : null,
   previousRoute  : null,
+  loadingShown   : false,
+  loadingId      : 0,
+  hideTimer      : null,
+  previousLang   : null,
 
   actions: {
-    loading(transition/*, originRoute*/) {
-      //console.log('Loading action...');
-      let show = Ember.run.next(() => {
-        $('#loading-underlay').show().fadeIn({duration: 100, queue: false, easing: 'linear', complete: function() {
-          $('#loading-overlay').show().fadeIn({duration: 200, queue: false, easing: 'linear'});
-        }});
-      });
+    loading(transition) {
+      this.incrementProperty('loadingId');
+      let id = this.get('loadingId');
+      Ember.run.cancel(this.get('hideTimer'));
 
-      transition.finally(function() {
-        Ember.run.cancel(show);
-        Ember.run.next(() => {
-          //console.log('Loading action done...');
-          $('#loading-overlay').fadeOut({duration: 200, queue: false, easing: 'linear', complete: function() {
-            $('#loading-underlay').fadeOut({duration: 100, queue: false, easing: 'linear'});
+      console.log('Loading', id);
+      if ( !this.get('loadingShown') ) {
+        this.set('loadingShown', true);
+        console.log('Loading Show', id);
+
+        $('#loading-underlay').stop().show().fadeIn({duration: 100, queue: false, easing: 'linear', complete: function() {
+          $('#loading-overlay').stop().show().fadeIn({duration: 200, queue: false, easing: 'linear'});
+        }});
+      }
+
+      transition.finally(() => {
+        var self = this;
+        function hide() {
+          console.log('Loading hide', id);
+          self.set('loadingShown', false);
+          $('#loading-overlay').stop().fadeOut({duration: 200, queue: false, easing: 'linear', complete: function() {
+            $('#loading-underlay').stop().fadeOut({duration: 100, queue: false, easing: 'linear'});
           }});
-        });
+        }
+
+        if ( this.get('loadingId') === id ) {
+          if ( transition.isAborted ) {
+            console.log('Loading aborted', id, this.get('loadingId'));
+            this.set('hideTimer', Ember.run.next(hide));
+          } else {
+            console.log('Loading finished', id, this.get('loadingId'));
+            hide();
+          }
+        }
       });
 
       return true;
@@ -89,7 +112,22 @@ export default Ember.Route.extend({
       }
 
       this.transitionTo('login', params);
+    },
+
+    langToggle() {
+      let svc = this.get('language');
+      let cur = svc.getLanguage();
+      if ( cur === 'none' ) {
+        svc.sideLoadLanguage(this.get('previousLang')||'en-us');
+      } else {
+        this.set('previousLang', cur);
+        svc.sideLoadLanguage('none');
+      }
     }
+  },
+
+  shortcuts: {
+    'shift+l': 'langToggle',
   },
 
   finishLogin() {

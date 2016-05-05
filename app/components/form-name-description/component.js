@@ -10,15 +10,15 @@ export default Ember.Component.extend({
   _name: '',
   _description: '',
 
-  nameLabel: 'Name',
-  namePlaceholder: 'Name',
+  nameLabel: 'formNameDescription.name.label',
+  namePlaceholder: 'formNameDescription.name.placeholder',
   nameHelp: '',
   nameRequired: false,
   nameDisabled: false,
 
-  descriptionLabel: 'Description',
+  descriptionLabel: 'formNameDescription.name.label',
   descriptionHelp: '',
-  descriptionPlaceholder: 'Description',
+  descriptionPlaceholder: 'formNameDescription.name.placeholder',
   descriptionRequired: false,
   descriptionDisabled: false,
 

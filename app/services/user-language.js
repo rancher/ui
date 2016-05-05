@@ -16,7 +16,7 @@ export default Ember.Service.extend({
   initLanguage() {
     const session       = this.get('session');
     const fromLogin     = session.get(C.SESSION.LOGIN_LANGUAGE);
-    const fromPrefs     = this.getLanguage(); // get language from user prefs
+    const fromPrefs     = this.get(`prefs.${C.PREFS.LANGUAGE}`); // get language from user prefs
     const fromSession   = session.get(C.SESSION.LANGUAGE); // get local language
     let lang = C.LANGUAGE.DEFAULT;
 
@@ -34,7 +34,7 @@ export default Ember.Service.extend({
   },
 
   getLanguage() {
-    return this.get(`prefs.${C.PREFS.LANGAUGE}`);
+    return this.get('intl._locale')[0];
   },
 
   setLanguage(lang) {

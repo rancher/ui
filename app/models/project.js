@@ -221,7 +221,9 @@ var Project = Resource.extend(PolledResource, {
     return this.updateOrchestrationState().then(() => {
       if ( (hosts && hosts.get('length') === 0) || !this.get('isReady') )
       {
-        this.get('router').replaceWith('authenticated.project.waiting', this.get('id'));
+        console.log('BEFORE');
+        this.get('router').transitionTo('authenticated.project.waiting', this.get('id'));
+        console.log('AFTER');
       }
     });
   }

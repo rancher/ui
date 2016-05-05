@@ -13,12 +13,9 @@ export default Ember.Controller.extend({
   }.on('init'),
 
   isReadyChanged: function() {
-    if ( ['loading','authenticated.project.waiting'].indexOf(this.get('application.currentRouteName')) >= 0 )
+    if ( this.get('hasHosts') && this.get('projects.current.isReady') )
     {
-      if ( this.get('hasHosts') && this.get('projects.current.isReady') )
-      {
-        this.replaceRoute('authenticated.project.index');
-      }
+      this.replaceRoute('authenticated.project.index');
     }
   }.observes('projects.current.isReady'),
 
