@@ -7,7 +7,6 @@
   }
 }
 
-
 @media (min-width: $screen-md) {
   UL.nav LI.dropdown:hover UL.dropdown-menu,
   UL.nav LI.dropdown:focus UL.dropdown-menu {
@@ -85,6 +84,10 @@ HEADER {
         font-size      : 13px;
         display        : block;
 
+        &.user-toggle {
+          line-height: 42px;
+        }
+
         &:hover, &:focus {
           color: $lightTeal;
           background: rgba(0,0,0,.15);
@@ -112,12 +115,16 @@ HEADER {
       }
     }
 
+    .icon-chevron-down {
+      color: $lightGray;
+    }
+
     .user-menu {
       max-height: 300px;
       width: 300px;
       overflow-y: auto;
       box-shadow: none;
-      background: #fff;
+      background: $dropdown-bg;
       color: #334851;
       margin: 0;
       padding-top: 0;
@@ -125,6 +132,13 @@ HEADER {
 
       & .theme-toggle, .dropdown-header {
         padding: 5px 20px;
+        color: $lightTeal;
+      
+      .icon-chevron-down {
+        color: $lightGray;
+        height: 45px;
+        line-height: 45px;
+      }
 
         & button {
           width: 86px;
@@ -195,7 +209,7 @@ HEADER {
       max-width: 200px;
       height: $navbar-height;
       color: white;
-      background: $primaryDark;
+      background: $project-btn;
       position: relative;
 
       span {
@@ -204,7 +218,7 @@ HEADER {
 
       &:after {
         content: "";
-        border-color: transparent transparent transparent $primaryDark;
+        border-color: transparent transparent transparent $project-btn;
         border-style: solid;
         border-width: 8px;
         position: absolute;
@@ -214,15 +228,21 @@ HEADER {
       }
 
       &.kub-btn {
-        background: rgba($primaryDark,.5);
+        background: $kubbtn;
         left: -4px;
 
         &:after {
-          border-color: transparent transparent transparent rgba($primaryDark,.5);
+          border-color: transparent transparent transparent $kubbtn;
         }
 
         span {
           color: white;
+        }
+      }
+
+      .project-menu {
+        .active a {
+          cursor: $cursor-disabled;
         }
       }
 
