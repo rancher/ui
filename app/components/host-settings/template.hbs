@@ -1,23 +1,23 @@
-<h4>Host Registration URL</h4>
+<h4>{{t 'hostSettings.header'}}</h4>
 <hr>
-<h5>What base URL should hosts use to connect to the {{settings.appName}} API?</h5>
+<h5>{{t 'hostSettings.subtext' appName=settings.appName}}</h5>
 
 <div class="r-mt15">
-  <label style="width: 150px;">{{radio-button selection=customRadio value="no"}}&nbsp;This site's address:&nbsp;&nbsp;</label>
+  <label style="width: 150px;">{{radio-button selection=customRadio value="no"}}&nbsp;{{t 'hostSettings.hostUrl.local'}}&nbsp;&nbsp;</label>
   <code class="form-control-static r-pl20 r-pr20">{{thisPage}}</code>
 </div>
 
 <div class="r-mt10">
-  <label style="width: 150px;">{{radio-button selection=customRadio value="yes"}}&nbsp;Something else:&nbsp;&nbsp;</label>
-  {{input type="text" class="form-control" value=customValue placeholder="e.g. http://example.com:8080" safeStyle="width: calc(100% - 170px); display: inline-block;  min-width: 300px;"}}
+  <label style="width: 150px;">{{radio-button selection=customRadio value="yes"}}&nbsp;{{t 'hostSettings.hostUrl.new.labelText'}}&nbsp;&nbsp;</label>
+  {{input type="text" class="form-control" value=customValue placeholder=(t 'hostSettings.hostUrl.new.placeholder') safeStyle="width: calc(100% - 170px); display: inline-block;  min-width: 300px;"}}
   <p class="help-block">
-    Don't include <code>/v1</code> or any other path, but if you are doing
+    {{format-html-message 'hostSettings.helpText.static1'}}
     {{#if settings.isRancher}}
-      <a href="{{docsBase}}/installing-rancher/installing-server/basic-ssl-config/" target="_blank">SSL termination</a>
+      {{format-html-message 'hostSettings.helpText.isRancher' docsBase=docsBase}}
     {{else}}
-      SSL termination
+      {{t 'hostSettings.helpText.sslTerm'}}
     {{/if}}
-    in front of {{settings.appName}}, be sure to use <code>https://</code>.
+    {{format-html-message 'hostSettings.helpText.static2' appName=settings.appName}}
   </p>
 </div>
 
@@ -25,7 +25,7 @@
   <div class="alert alert-info" style="margin-top: 30px;">
     <i class="icon icon-info" style="font-size: 35px; float: left;"></i>
     <p style="margin-left: 50px;">
-      Are you sure all the hosts you will create will be able to reach <code>{{activeValue}}</code> ?<br/>It looks like a private IP or local network.
+      {{format-html-message 'hostSettings.notPublic.alert' activeValue=activeValue}}
     </p>
   </div>
 {{/unless}}

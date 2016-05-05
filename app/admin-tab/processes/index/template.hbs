@@ -1,20 +1,20 @@
 <section class="header">
-  <h1>Processes</h1>
+  <h1>{{t 'processesPage.indexPage.header'}}</h1>
 </section>
 <section class="processes">
   <ul class="nav nav-tabs nav-tabs-well shadowed" role="tablist">
     <li role="tab" aria-controls="panel" class={{if showRunning 'active' ''}}>
-      <a href="#" {{action 'showRunningProcesses'}}>Running</a>
+      <a href="#" {{action 'showRunningProcesses'}}>{{t 'processesPage.indexPage.tabNav.running'}}</a>
     </li>
     <li role="tab" aria-controls="panel" class={{if showRunning '' 'active'}}>
-      <a href="#" {{action 'showRunningProcesses'}}>All</a>
+      <a href="#" {{action 'showRunningProcesses'}}>{{t 'processesPage.indexPage.tabNav.all'}}</a>
     </li>
   </ul>
   <div  class="well" role="tabpanel">
     <div class="row r-mb20">
       <div class="form-inline r-ml15 inline-block">
         <div class="form-group">
-          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if resourceTypeReadable resourceTypeReadable 'Select a Resource type: '}} <i class="icon icon-chevron-down"></i></button>
+          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if resourceTypeReadable resourceTypeReadable (t 'processesPage.indexPage.form.resourceType')}} <i class="icon icon-chevron-down"></i></button>
           <ul class="dropdown-menu" role="menu">
             {{#each model.resourceTypes as |resource|}}
             <li {{action 'updateType' resource}}>
@@ -23,22 +23,22 @@
             {{/each}}
           </ul>
 
-          {{input value=ownResourceId class="form-control input-sm r-mr5" enter='submit' placeholder='Resource Id' disabled=disableId}}
-          {{input value=ownProcessName class="form-control input-sm r-mr5" enter='submit' placeholder='Process Name'}}
-          <button class="btn btn-primary btn-danger btn-sm inline-block" {{action 'reset'}}>Clear</button>
-          <button class="btn btn-primary btn-sm inline-block" {{action 'submit'}}>Search</button>
+          {{input value=ownResourceId class="form-control input-sm r-mr5" enter='submit' placeholder=(t 'processesPage.indexPage.form.resourceId.placeholder') disabled=disableId}}
+          {{input value=ownProcessName class="form-control input-sm r-mr5" enter='submit' placeholder=(t 'processesPage.indexPage.form.processName.placeholder')}}
+          <button class="btn btn-primary btn-danger btn-sm inline-block" {{action 'reset'}}>{{t 'processesPage.indexPage.form.clear'}}</button>
+          <button class="btn btn-primary btn-sm inline-block" {{action 'submit'}}>{{t 'processesPage.indexPage.form.search'}}</button>
         </div>
       </div>
     </div>
     <table class="grid fixed table table-hover">
       <thead>
-        {{sortable-th sortable=this action="changeSort" name="id" width="75"}}
-        {{sortable-th sortable=this action="changeSort" name="processName" label="Name"}}
-        {{sortable-th sortable=this action="changeSort" name="resource" label="Resource Type:Id"}}
-        {{sortable-th sortable=this action="changeSort" name="exitReason" width="150"}}
-        {{sortable-th sortable=this action="changeSort" name="startTime" label="Started" width="100"}}
-        {{sortable-th sortable=this action="changeSort" name="endTime" label="Ended" width="100"}}
-        {{sortable-th sortable=this action="changeSort" name="runTime" label="Duration" width="100"}}
+        {{sortable-th sortable=this action="changeSort" name="id" label=(t 'processesPage.indexPage.table.header.id') width="75"}}
+        {{sortable-th sortable=this action="changeSort" name="processName" label=(t 'processesPage.indexPage.table.header.processName')}}
+        {{sortable-th sortable=this action="changeSort" name="resource" label=(t 'processesPage.indexPage.table.header.resource')}}
+        {{sortable-th sortable=this action="changeSort" name="exitReason" label=(t 'processesPage.indexPage.table.header.exitReason') width="150"}}
+        {{sortable-th sortable=this action="changeSort" name="startTime" label=(t 'processesPage.indexPage.table.header.startTime') width="100"}}
+        {{sortable-th sortable=this action="changeSort" name="endTime" label=(t 'processesPage.indexPage.table.header.endTime') width="100"}}
+        {{sortable-th sortable=this action="changeSort" name="runTime" label=(t 'processesPage.indexPage.table.header.duration') width="100"}}
       </thead>
       <tbody>
         {{#each arranged as |instance|}}

@@ -5,7 +5,7 @@
       {{#if wasRestricted}}
         {{t 'authPage.github.header.accessEnabledSubtext.wasRestricted' appName=settings.appName wasRestricted=wasRestricted}}
       {{else}}
-        {{t 'authPage.github.header.accessEnabledSubtext.wasNotRestricted.text1' appName=settings.appName}}{{#if model.hostname}} {{t 'authPage.github.header.accessEnabledSubtext.wasNotRestricted.text2'}}{{/if}} {{t 'authPage.github.header.accessEnabledSubtext.wasNotRestricted.text3'}}
+        {{t (if model.hostname 'authPage.github.header.accessEnabledSubtext.wasNotRestricted.host' 'authPage.github.header.accessEnabledSubtext.wasNotRestricted.noHost')}}
       {{/if}}
     {{else}}
       {{t 'authPage.github.header.noAccessConfigured.subtext' appName=settings.appName}}

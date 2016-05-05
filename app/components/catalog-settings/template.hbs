@@ -1,38 +1,38 @@
-<h4>Catalog</h4>
-<h5>Catalogs contain rancher-compose templates that allow users to easily deploy applications by answering a few questions</h5>
+<h4>{{t 'catalogSettings.header'}}</h4>
+<h5>{{t 'catalogSettings.subtext'}}</h5>
 
 <hr>
 
 <div class="row">
   <div class="col-md-6 r-pl0">
-    <h5>{{if settings.isRancher 'Rancher'}} Certified</h5>
+    <h5>{{t (if settings.isRancher 'catalogSettings.rancherCertified.header.rancherCertified' 'catalogSettings.rancherCertified.header.rancherCertified.plCertified') appName=settings.appName}}</h5>
     <p class="help-block">
       {{#if settings.isRancher}}
-        Certified templates maintained and supported by Rancher Labs.
+        {{t 'catalogSettings.rancherCertified.helpText.isRancher'}}
       {{else}}
-        Officially maintained and supported templates.
+        {{t 'catalogSettings.rancherCertified.helpText.community'}}
       {{/if}}
     </p>
     <div class="r-mt10">
       <label class="r-mr20 hand">
-        {{radio-button selection=enableLibrary value=true}} Enabled
+        {{radio-button selection=enableLibrary value=true}} {{t 'generic.enabled'}}
       </label>
       <label class="hand">
-        {{radio-button selection=enableLibrary value=false}} Disabled
+        {{radio-button selection=enableLibrary value=false}} {{t 'generic.disabled'}}
       </label>
     </div>
   </div>
   <div class="col-md-6 r-pr0">
-    <h5>Community Contributed</h5>
+    <h5>{{t 'catalogSettings.community.header'}}</h5>
     <p class="help-block">
-      Templates created and maintained by community members.{{#if settings.isRancher}}  Not certified by Rancher Labs.{{/if}}
+      {{t 'catalogSettings.community.helpText.text'}}{{#if settings.isRancher}}  {{t 'catalogSettings.community.helpText.isRancher'}}{{/if}}
     </p>
     <div class="r-mt10">
       <label class="r-mr20 hand">
-        {{radio-button selection=enableCommunity value=true}} Enabled
+        {{radio-button selection=enableCommunity value=true}} {{t 'generic.enabled'}}
       </label>
       <label class="hand">
-        {{radio-button selection=enableCommunity value=false}} Disabled
+        {{radio-button selection=enableCommunity value=false}} {{t 'generic.disabled'}}
       </label>
     </div>
   </div>
@@ -40,8 +40,8 @@
 
 <hr>
 
-<h5>More</h5>
-<p class="help-block">You can define your own custom catalog sources here.  Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> for more info).</p>
+<h5>{{t 'catalogSettings.more.header'}}</h5>
+<p class="help-block">{{format-html-message 'catalogSettings.more.helpText'}}</p>
 {{form-key-value
   nameLabel="Catalog"
   initialMap=keymap
