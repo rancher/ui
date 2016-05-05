@@ -1,14 +1,14 @@
 <section class="well">
-  <h2>High Availability is {{#if model.haConfig.enabled}}<b class="text-success">enabled</b>{{else}}<b class="text-warning">not configured</b>{{/if}}</h2>
+  <h2>{{headerText}}</h2>
 </section>
 
 {{#if model.haConfig.enabled}}
   {{#if (lt activeHosts expectedHosts)}}
     <section class="well">
-      <h4>5. Add hosts</h4>
+      <h4>{{t 'haPage.haConfigured.addHost.header'}}</h4>
       <hr/>
       <p>
-        Copy the downloaded script and run it on to each HA host to register them:
+        {{t 'haPage.haConfigured.addHost.subtext'}}
         {{code-block code=configExecute language="bash" constrained=false}}
       </p>
     </section>
@@ -17,38 +17,38 @@
   <div class="row">
     <div class="col-md-3">
       <div class="well">
-        <h4 class="r-mb10">Hosts:</h4>
+        <h4 class="r-mb10">{{t 'haPage.haConfigured.hosts.header'}}</h4>
         {{#if hosts}}
           <h1 class="text-center">{{hostBlurb}}</h1>
         {{else}}
-          <i class="icon icon-spinner icon-spin"></i> Waiting for a host...
+          <i class="icon icon-spinner icon-spin"></i> {{t 'haPage.haConfigured.hosts.waiting'}}
         {{/if}}
       </div>
     </div>
     <div class="col-md-9">
       <div class="well">
-        <h4 class="r-mb10">Management Server Certificate: {{#if cert.certChain}}{{copy-to-clipboard size="small" clipboardText=cert.certChain}}{{/if}}</h4>
+        <h4 class="r-mb10">{{t 'haPage.haConfigured.hosts.managementServerCert.text'}} {{#if cert.certChain}}{{copy-to-clipboard size="small" clipboardText=cert.certChain}}{{/if}}</h4>
         {{#if cert.certChain}}
           <pre><code>{{cert.certChain}}</code></pre>
         {{else}}
-          <i class="icon icon-spinner icon-spin"></i> Waiting for a host...
+          <i class="icon icon-spinner icon-spin"></i> {{t 'haPage.haConfigured.hosts.managementServerCert.waiting'}}
         {{/if}}
       </div>
     </div>
   </div>
 
   <section class="well">
-    <h4>Danger Zone&trade;</h4>
+    <h4>{{format-html-message 'haPage.haConfigured.disable.header'}}</h4>
     <hr/>
 
     <p>
       {{#if confirmPanic}}
         <button class="btn btn-danger" {{action "panic"}}>
-          <i class="icon icon-alert"></i> Are you sure?  Click again to really disable access HA
+          <i class="icon icon-alert"></i> {{t 'haPage.haConfigured.disable.confirm.pre'}}
         </button>
       {{else}}
         <button class="btn btn-danger" {{action "promptPanic"}}>
-          <i class="icon icon-umbrella"></i> Disable HA
+          <i class="icon icon-umbrella"></i> {{t 'haPage.haConfigured.disable.confirm.prompt'}}
         </button>
       {{/if}}
     </p>
@@ -57,69 +57,70 @@
 
   <section class="well">
     {{#if isLocalDb}}
-      <h4>1. Setup an external database</h4>
+      <h4>{{t 'haPage.haDisabled.header'}}</h4>
       <hr/>
       <p>
-        This {{settings.appName}} installation is currently configured to use the built-in database server, but HA requires a standalone installation of MySQL.
+        {{t 'haPage.haDisabled.subtext' appName=settings.appName}}
       </p>
       <p>
         <ul>
           <li>
-            Setup an external database instance.
+            {{t 'haPage.haDisabled.externalDatabase.ul.li1.text'}}
             <ul>
-              <li>This can be a hosted solution like Amazon RDS or Google Cloud SQL,</li>
-              <li>Or a self-hosted instance or multi-master cluster.</li>
+              <li>{{t 'haPage.haDisabled.externalDatabase.ul.li1.ul.li1'}}</li>
+              <li>{{t 'haPage.haDisabled.externalDatabase.ul.li1.ul.li2'}}</li>
             </ul>
           </li>
-          <li>Click the export button below to export the entire contents of the current database.</li>
-          <li>Import the data into the new external database.</li>
+          <li>{{t 'haPage.haDisabled.externalDatabase.ul.li2'}}</li>
+          <li>{{t 'haPage.haDisabled.externalDatabase.ul.li3'}}</li>
         </ul>
       </p>
       <p class="r-mb0 r-mt20">
-        <button class="btn btn-primary" {{action "exportDatabase"}}>Export Database</button>
-        <p class="help-block r-mb0">Uncompressed Size: {{format-mib model.haConfig.dbSize}}</p>
+        <button class="btn btn-primary" {{action "exportDatabase"}}>{{t 'haPage.haDisabled.externalDatabase.exportDatabase'}}</button>
+        <p class="help-block r-mb0">{{t 'haPage.haDisabled.externalDatabase.size'}} {{format-mib model.haConfig.dbSize}}</p>
       </p>
     {{else}}
-      <h4 class="text-success">1. Setup an external database <i class="icon icon-check"/></h4>
+      <h4 class="text-success">{{t 'haPage.haDisabled.externalDatabase.noLocalDb.header'}} <i class="icon icon-check"/></h4>
       <p class="text-muted r-mb0">
-        Complete, running off of an external database.
+        {{t 'haPage.haDisabled.externalDatabase.noLocalDb.subtext'}}
       </p>
     {{/if}}
   </section>
 
   <section class="well">
     {{#if isLocalDb}}
-      <h4>2. Use the new external database</h4>
+      <h4>{{t 'haPage.haDisabled.databaseUsage.localDb.header'}}</h4>
       <hr/>
       <ul>
-        <li>Re-launch the server container pointed at the external database:
+        <li>
+          {{t 'haPage.haDisabled.databaseUsage.localDb.ul.li1'}}
           {{code-block code=runCode language="bash" constrained=false}}
         </li>
         {{#if settings.isRancher}}
           <li>
-            <a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank">See docs</a> for more detail.
+            {{format-html-message 'haPage.haDisabled.databaseUsage.localDb.ul.isRancher.li1'}}
           </li>
         {{/if}}
       </ul>
     {{else}}
-      <h4 class="text-success">2. Use the new external database <i class="icon icon-check"/></h4>
+    <h4 class="text-success">{{t 'haPage.haDisabled.databaseUsage.noLocalDb.header'}} <i class="icon icon-check"/></h4>
       <p class="text-muted r-mb0">
-        Complete, <code>{{model.haConfig.dbHost}}</code> will be used as the external database for HA.
+        {{format-html-message 'haPage.haDisabled.databaseUsage.noLocalDb.subtext' dbHost=model.haConfig.dbHost}}
       </p>
     {{/if}}
   </section>
 
   <section class="well">
     {{#if justGenerated}}
-      <h4 class="text-success">3. Generate HA config script <i class="icon icon-check"/></h4>
+    <h4 class="text-success">{{t 'haPage.haDisabled.haConfigScript.generated.header'}} <i class="icon icon-check"/></h4>
       <p class="text-muted r-mb0">
-        Complete.
+        {{t 'haPage.haDisabled.haConfigScript.generated.subtext'}}
       </p>
     {{else}}
-      <h4>3. Generate HA config script</h4>
+      <h4>{{t 'haPage.haDisabled.haConfigScript.notGenerated.header'}}</h4>
       <hr/>
       {{#if isLocalDb}}
-        <p class="text-muted">Come back here once you are running off the external database...</p>
+        <p class="text-muted">{{t 'haPage.haDisabled.haConfigScript.notGenerated.subtext'}}</p>
       {{/if}}
     {{/if}}
 
@@ -129,25 +130,25 @@
       <input type="hidden" name="CSRF" value="{{csrf}}"/>
       <div class="row form-group">
         <div class="col-sm-6 col-md-2 form-control-static">
-          <label>Cluster Size</label>
+          <label>{{t 'haPage.haDisabled.haConfigScript.form.clusterSize'}}</label>
         </div>
         <div class="col-sm-6 col-md-10">
           <div class="radio">
             <label>
               {{radio-button selection=model.createScript.clusterSize value=1}}
-              <span class="text-bold" style="display: inline-block: width: 120px;">1 Host:</span> Not really very HA at all
+              {{format-html-message 'haPage.haDisabled.haConfigScript.form.radio1'}}
             </label>
           </div>
           <div class="radio">
             <label>
               {{radio-button selection=model.createScript.clusterSize value=3}}
-              <span class="text-bold" style="display: inline-block: width: 120px;">3 Hosts:</span> Any <b>one</b> host can fail
+              {{format-html-message 'haPage.haDisabled.haConfigScript.form.radio2'}}
             </label>
           </div>
           <div class="radio">
             <label>
               {{radio-button selection=model.createScript.clusterSize value=5}}
-              <span class="text-bold" style="display: inline-block: width: 120px;">5 Hosts:</span> Any <b>two</b> hosts can fail
+              {{format-html-message 'haPage.haDisabled.haConfigScript.form.radio3'}}
             </label>
           </div>
         </div>
@@ -164,23 +165,23 @@
             </span>
             {{input type="text" value=userUrl type="text" classNames="form-control"}}
           </div>
-          <p class="help-block">This should be a FQDN that resolves to the addresses of or is a load balancer for {{#if (eq model.createScript.clusterSize 1)}}the HA host{{else}}all {{model.createScript.clusterSize}} HA hosts{{/if}}.  Do not include <code>/v1</code> or any other path.</p>
+          <p class="help-block">{{hostRegistrationHelpText}}</p>
         </div>
       </div>
 
       <div class="row form-group">
         <div class="col-sm-6 col-md-2 form-control-static">
-          <label>Certificate</label>
+          <label>{{t 'haPage.haDisabled.haConfigScript.form.certificate.labelText'}}</label>
         </div>
         <div class="col-sm-6 col-md-10">
           <div class="radio">
             <label>
-              {{radio-button selection=selfSign value=true}} Generate a self-signed certificate
+              {{radio-button selection=selfSign value=true}} {{t 'haPage.haDisabled.haConfigScript.form.certificate.radio1'}}
             </label>
           </div>
           <div class="radio">
             <label>
-              {{radio-button selection=selfSign value=false}} Upload a valid certificate{{#if model.createScript.hostRegistrationUrl}} for <code>{{model.createScript.hostRegistrationUrl}}</code>{{/if}}
+              {{radio-button selection=selfSign value=false}} {{uploadCertificateText}}
             </label>
           </div>
         </div>
@@ -193,29 +194,29 @@
       {{#advanced-section}}
         <div class="row">
           <div class="col-sm-6 col-md-2 form-control-static">
-            <label>Listening Ports</label>
+            <label>{{t 'haPage.haDisabled.haConfigScript.form.listeningPorts.labelText'}}</label>
           </div>
           <div class="col-sm-6 col-md-5 r-pt5">
             <table class="fixed">
               <tbody>
                 <tr>
-                  <td width="200">HTTPS</td>
+                  <td width="200">{{t 'haPage.haDisabled.haConfigScript.form.listeningPorts.table.https'}}</td>
                   <td width="100">{{input name="httpsPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.httpsPort}}</td>
                 </tr>
                 <tr>
-                  <td>HTTP</td>
+                  <td>{{t 'haPage.haDisabled.haConfigScript.form.listeningPorts.table.http'}}</td>
                   <td>{{input name="httpPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.httpPort disabled=(not model.createScript.httpEnabled)}}</td>
                 </tr>
                 <tr>
-                  <td>Swarm</td>
+                  <td>{{t 'haPage.haDisabled.haConfigScript.form.listeningPorts.table.swarm'}}</td>
                   <td>{{input name="swarmPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.swarmPort disabled=(not model.createScript.swarmEnabled)}}</td>
                 </tr>
                 <tr>
-                  <td><a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">PROXY</a> to HTTPS</td>
+                  <td>{{format-html-message 'haPage.haDisabled.haConfigScript.form.listeningPorts.table.proxyToHttps'}}</td>
                   <td>{{input name="ppHttpsPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.ppHttpsPort}}</td>
                 </tr>
                 <tr>
-                  <td><a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">PROXY</a> to HTTP</td>
+                  <td>{{format-html-message 'haPage.haDisabled.haConfigScript.form.listeningPorts.table.proxyToHttp'}}</td>
                   <td>{{input name="ppHttpPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.ppHttpPort}}</td>
                 </tr>
               </tbody>
@@ -225,19 +226,19 @@
             <table class="fixed">
               <tbody>
                 <tr class="r-mb5">
-                  <td width="200">Redis</td>
+                  <td width="200">{{t 'haPage.haDisabled.haConfigScript.form.listeningPorts.table.redis'}}</td>
                   <td width="100">{{input name="redisPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.redisPort}}</td>
                 </tr>
                 <tr>
-                  <td>ZooKeeper Client</td>
+                  <td>{{t 'haPage.haDisabled.haConfigScript.form.listeningPorts.table.zookeeperClient'}}</td>
                   <td>{{input name="zookeeperClientPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperClientPort}}</td>
                 </tr>
                 <tr>
-                  <td>ZooKeeper Quorum</td>
+                  <td>{{t 'haPage.haDisabled.haConfigScript.form.listeningPorts.table.zookeeperQuorum'}}</td>
                   <td>{{input name="zookeeperQuorumPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperQuorumPort}}</td>
                 </tr>
                 <tr>
-                  <td>ZooKeeper Leader</td>
+                  <td>{{t 'haPage.haDisabled.haConfigScript.form.listeningPorts.table.zookeeperLeader'}}</td>
                   <td>{{input name="zookeeperLeaderPort" class="form-control input-sm r-mb5" type="number" min=1 max=65535 value=model.createScript.zookeeperLeaderPort}}</td>
                 </tr>
               </tbody>
@@ -250,9 +251,9 @@
         {{top-errors errors=errors}}
 
         {{#if generating}}
-          <button class="btn btn-primary btn-disabled" type="button" disabled><i class="icon icon-spinner icon-spin"/> Generating...</button>
+          <button class="btn btn-primary btn-disabled" type="button" disabled><i class="icon icon-spinner icon-spin"/> {{t 'haPage.haDisabled.haConfigScript.configScriptButton.post'}}</button>
         {{else}}
-          <button class="btn btn-primary" type="button" {{action "generateConfig"}}>Generate Config Script</button>
+          <button class="btn btn-primary" type="button" {{action "generateConfig"}}>{{t 'haPage.haDisabled.haConfigScript.configScriptButton.pre'}}</button>
         {{/if}}
       </p>
     </form>
@@ -260,26 +261,25 @@
 
   <section class="well">
     {{#if downloaded}}
-      <h4 class="text-success">4. Download script <i class="icon icon-check"/></h4>
+      <h4 class="text-success">{{t 'haPage.haDisabled.haConfigScript.downloadScript.downloaded.header'}} <i class="icon icon-check"/></h4>
       <p class="text-muted r-mb0">
-        Complete, check your Downloads folder.
+        {{t 'haPage.haDisabled.haConfigScript.downloadScript.downloaded.subtext'}}
       </p>
     {{else}}
-      <h4>4. Download script</h4>
+      <h4>{{t 'haPage.haDisabled.haConfigScript.downloadScript.notDownloaded.header'}}</h4>
       <hr/>
       {{#if justGenerated}}
         <p>
-          Click the button below to download a shell script.
+          {{t 'haPage.haDisabled.haConfigScript.downloadScript.notDownloaded.subtext'}}
           <div class="alert alert-info">
-            The script generates new encryption keys that will be used for the HA hosts to communicate with each other, so keep it safe.
-            New keys are generated every time you download the config script, and all hosts must have the same keys for HA to work.
+            {{t 'haPage.haDisabled.haConfigScript.downloadScript.notDownloaded.alert'}}
           </div>
         </p>
 
-        <button class="btn btn-primary" type="button" {{action "downloadConfig"}}>Download Config Script</button>
+        <button class="btn btn-primary" type="button" {{action "downloadConfig"}}>{{t 'haPage.haDisabled.haConfigScript.downloadScript.notDownloaded.buttonText'}}</button>
       {{else}}
         <p class="text-muted r-mb0">
-          Generate the script in step 3.
+          {{t 'haPage.haDisabled.haConfigScript.downloadScript.notDownloaded.generateScript'}}
         </p>
       {{/if}}
     {{/if}}
