@@ -93,6 +93,7 @@ module.exports = function(defaults) {
   app.import('vendor/novnc.js');
   app.import('bower_components/commonmark/dist/commonmark.js');
   app.import('bower_components/momentjs/moment.js');
+  app.import('bower_components/ember-shortcuts/ember-shortcuts.js');
 
 
   app.import('vendor/icons/style.css');

@@ -5,8 +5,10 @@ export default Ember.Route.extend({
     return this.modelFor('authenticated');
   },
 
-  setupController(controller/*, model*/) {
-    this._super(...arguments);
-    controller.isReadyChanged();
+  afterModel: function(model) {
+    if ( (model.get('hosts.length') + model.get('machines.length')) > 0 && model.get('project.isReady') )
+    {
+      this.replaceWith('authenticated.project.index');
+    }
   }
 });

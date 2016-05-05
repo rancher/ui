@@ -7,6 +7,7 @@ export default Ember.Controller.extend(Sortable, {
   projects: Ember.inject.service(),
   sortableContent: Ember.computed.alias('filteredStacks'),
   prefs: Ember.inject.service(),
+  intl: Ember.inject.service(),
 
   which: Ember.computed.alias('environments.which'),
   showAddtlInfo: false,
@@ -75,8 +76,14 @@ export default Ember.Controller.extend(Sortable, {
     return [C.EXTERNALID.KIND_USER,C.EXTERNALID.KIND_ALL].indexOf(this.get('which')) === -1;
   }.property('which'),
 
-  showWhich: function() {
-    return [C.EXTERNALID.KIND_NOT_KUBERNETES,C.EXTERNALID.KIND_NOT_SWARM,C.EXTERNALID.KIND_USER].indexOf(this.get('which')) === -1;
+  pageHeader: function() {
+    let which = this.get('which');
+    if ( which === C.EXTERNALID.KIND_ALL ) {
+      return 'stacksPage.header.all';
+    } else if ( C.EXTERNALID.SHOW_AS_SYSTEM.indexOf(which) >= 0 ) {
+      return 'stacksPage.header.system';
+    } else {
+      return 'stacksPage.header.user';
+    }
   }.property('which'),
-
 });
