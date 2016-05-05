@@ -211,9 +211,9 @@
 
 {{#unless isSidekick}}
   {{top-errors errors=errors}}
-  {{#save-cancel saveDisabled=noLaunchConfigsEnabled createLabel=(if isUpgrade 'Upgrade' 'Create') save="save" cancel="cancel"}}
+  {{#save-cancel saveDisabled=noLaunchConfigsEnabled createLabel=(if isUpgrade 'newContainer.saveUpgrade' 'newContainer.saveNew') save="save" cancel="cancel"}}
     {{#if (and (not isUpgrade) (not-eq launchConfigIndex -1))}}
-      <button class="btn btn-default" {{action "removeSidekick"}}>Remove this Sidekick</button>
+      <button class="btn btn-default" {{action "removeSidekick"}}>{{newContainer.removeSidekick}}</button>
     {{/if}}
   {{/save-cancel}}
 {{/unless}}
