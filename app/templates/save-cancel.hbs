@@ -1,10 +1,16 @@
 <div class="footer-actions">
   {{#if saving}}
-    <button class="btn btn-primary btn-disabled"><i class="icon icon-spinner icon-spin"></i> Saving...</button>
+    <button class="btn btn-primary btn-disabled"><i class="icon icon-spinner icon-spin"></i> {t 'saveCancel.saving'}}</button>
   {{else}}
-    <button {{action "save"}} class="btn btn-primary">{{#if editing}}Save{{else}}Create{{/if}}</button>
+    <button {{action "save"}} class="btn btn-primary">
+      {{#if editing}}
+        {{t 'saveCancel.edit'}}
+      {{else}}
+        {{t 'saveCancel.create'}}
+      {{/if}}
+    </button>
   {{/if}}
   {{#unless disableCancel}}
-    <button {{action "cancel"}} class="btn btn-link">Cancel</button>
+    <button {{action "cancel"}} class="btn btn-link">{{t 'saveCancel.cancel'}}</button>
   {{/unless}}
 </div>

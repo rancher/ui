@@ -2,12 +2,12 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   editing: null,
-  createLabel: 'Create',
-  editLabel: 'Save',
-  cancelLabel: 'Cancel',
+  createLabel: 'saveCancel.create',
+  editLabel: 'saveCancel.edit',
+  cancelLabel: 'saveCancel.cancel',
   saveDisabled: false,
   cancelDisabled: false,
-  savedLabel: 'Saved!',
+  savedLabel: 'saveCancel.saved',
 
   classNames: ['footer-actions'],
   saving: false,

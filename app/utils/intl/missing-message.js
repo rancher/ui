@@ -3,8 +3,19 @@ import Ember from 'ember';
 const { Logger:logger } = Ember;
 
 export default function missingMessage(key, locales) {
-  locales = locales||['unknown'];
-  logger.warn(`translation not found: locale='${locales.join(', ')}', key='${key}'.`);
-  return `*%${key}%*`;
+  if ( key )
+  {
+    locales = locales||['unknown'];
+    if ( locales[0] !== 'none' )
+    {
+      logger.warn(`translation not found: locale='${locales.join(', ')}', key='${key}'.`);
+    }
+
+    return `*%${key}%*`;
+  }
+  else
+  {
+    return '';
+  }
 }
 

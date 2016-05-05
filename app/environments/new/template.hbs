@@ -1,5 +1,5 @@
 <section class="header">
-  <h1>{{#if editing}}Edit{{else}}Add{{/if}} Stack</h1>
+  <h1>{{t 'stacksPage.new.header'}}</h1>
 </section>
 
 <section class="horizontal-form container-fluid well">
@@ -7,44 +7,40 @@
 
   {{form-name-description
     model=primaryResource
-    namePlaceholder="e.g. myapp"
-    descriptionPlaceholder="e.g. MyApp Stack"
+    namePlaceholder="stacksPage.new.form.name.placeholder"
+    descriptionPlaceholder="stacksPage.new.form.description.placeholder"
   }}
 
-  <div class="over-hr"><span>Optional: Import Compose</span></div>
+  <div class="over-hr"><span>{{t 'stacksPage.new.composeLabel'}}</span></div>
   <div class="row form-group">
       <div class="form-group">
         <div class="col-sm-12 col-md-6">
           <div class="clearfix r-mb10 r-mt15">
-            <label class="r-pt5">Optional: docker-compose.yml</label>
+            <label class="r-pt5">{{t 'stacksPage.new.form.dockerCompose.label'}}</label>
           </div>
           {{input-text-file
             accept=".yml, .yaml"
             value=primaryResource.dockerCompose
-            placeholder="Contents of docker-compose.yml"
+            placeholder="stacksPage.new.form.dockerCompose.placeholder"
           }}
         </div>
         <div class="col-sm-12 col-md-6">
           <div class="clearfix r-mb10 r-mt15">
-            <label class="r-pt5">Optional: rancher-compose.yml</label>
+            <label class="r-pt5">{{t 'stacksPage.new.form.rancherCompose.label'}}</label>
           </div>
           {{input-text-file
             accept=".yml, .yaml"
             value=primaryResource.rancherCompose
-            placeholder="Contents of rancher-compose.yml"
+            placeholder="stacksPage.new.form.rancherCompose.placeholder"
           }}
         </div>
     </div>
     <div class="row">
       <div class="col-sm-12 col-md-12 r-mt10">
-        <label class="form-control-static">{{input type="checkbox" checked=primaryResource.startOnCreate}} Start services after creating</label>
+        <label class="form-control-static">{{input type="checkbox" checked=primaryResource.startOnCreate}} {{t 'stacksPage.new.form.startOnCreate.label'}}</label>
       </div>
     </div>
   </div>
-
-  <div class="alert alert-info r-mb0">
-    <i class="icon icon-info" /> You can always define additional services later
-  </div>
 </section>
 
-{{partial "save-cancel"}}
+{{save-cancel save="save" cancel="cancel"}}
