@@ -3,10 +3,8 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   value        : null,
   placeholder  : "",
-  tooltip      : "Read from a file",
   accept       : "text/*",
   btnClass     : "btn btn-primary",
-  btnLabel     : "Read from File",
   encode       : false,
   minHeight    : 0,
   maxHeight    : 200,

@@ -2,11 +2,18 @@ import Ember from 'ember';
 import { isGecko } from 'ui/utils/platform';
 
 export default Ember.TextArea.extend({
+  intl: Ember.inject.service(),
+
   minHeight: 0,
   maxHeight: 200,
 
   tagName: 'textarea',
   classNames: ['no-resize'],
+  attributeBindings: ['i18nPlaceholder:placeholder'],
+
+  i18nPlaceholder: function() {
+    return this.get('intl').t(this.get('placeholder'));
+  }.property('placeholder','intl._locale'),
 
   didInsertElement() {
     if ( this.get('minHeight') === 0 ) {
