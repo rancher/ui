@@ -1,17 +1,17 @@
 <section class="header">
-  <h1>Certificates</h1>
+  <h1>{{t 'certificatesPage.index.header'}}</h1>
 
-  {{#link-to "certificates.new" classNames="btn btn-sm btn-primary right-divider-btn"}}Add Certificate{{/link-to}}
+  {{#link-to "certificates.new" classNames="btn btn-sm btn-primary right-divider-btn"}}{{t 'certificatesPage.index.linkTo'}}{{/link-to}}
 </section>
 
 <section class="well instances">
   <table class="grid fixed" style="margin-bottom: 0;">
     <thead>
       <tr>
-        {{sortable-th sortable=this action="changeSort" name="state" width="125"}}
-        {{sortable-th sortable=this action="changeSort" name="name"}}
-        {{sortable-th sortable=this action="changeSort" name="cn" label="Domain Name"}}
-        {{sortable-th sortable=this action="changeSort" name="expires" width="120"}}
+        {{sortable-th sortable=this action="changeSort" name="state" label='certificatesPage.index.table.header.state' width="125"}}
+        {{sortable-th sortable=this action="changeSort" name="name" label='certificatesPage.index.table.header.name'}}
+        {{sortable-th sortable=this action="changeSort" name="cn" label='certificatesPage.index.table.header.domain'}}
+        {{sortable-th sortable=this action="changeSort" name="expires" label='certificatesPage.index.table.header.expires' width="120"}}
         <th class="actions" width="75">&nbsp;</th>
       </tr>
     </thead>
@@ -19,7 +19,7 @@
       {{#each arranged as |cert|}}
         {{certificate-row model=cert}}
       {{else}}
-        <tr><td colspan="5" class="text-center text-muted">You do not have any certificates yet.</td></tr>
+        <tr><td colspan="5" class="text-center text-muted">{{t 'certificatesPage.index.table.body.noData'}}</td></tr>
       {{/each}}
     </tbody>
   </table>

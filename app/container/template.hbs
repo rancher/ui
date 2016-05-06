@@ -1,5 +1,5 @@
 <section class="header r-pt20 clearfix">
-  <h1>{{#link-to "containers"}}Container:{{/link-to}}</h1>
+  <h1>{{#link-to "containers"}}{{t 'containersPage.containerPage.header'}}{{/link-to}}</h1>
   {{#power-select options=model.primaryHost.instances selected=model onchange=(action "changeContainer") searchField="displayName" as |obj|}}
     <div class="clip r-mr15">
       {{select-dot model=obj}}
@@ -7,11 +7,11 @@
   {{/power-select}}
 
   {{#if model.primaryHost}}
-    <strong>on {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}</strong>
+    <strong> {{t 'containersPage.containerPage.subtext.on'}} {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}</strong>
   {{/if}}
 
   {{#if model.primaryService}}
-    <strong>in {{#link-to "service" model.primaryService.environmentId model.primaryService.id}}{{model.primaryService.displayName}}{{/link-to}}</strong>
+    <strong> {{t 'containersPage.containerPage.subtext.in'}} {{#link-to "service" model.primaryService.environmentId model.primaryService.id}}{{model.primaryService.displayName}}{{/link-to}}</strong>
   {{/if}}
 
   <div class="pull-right">
@@ -25,47 +25,47 @@
   {{#info-multi-stats model=model linkName="containerStats" single=true}}
     <div class="container-flex bordered">
       <div class="col-flex">
-        <label>Host:</label>
+        <label>{{t 'containersPage.containerPage.infoMultiStats.host'}}</label>
         {{#if model.primaryHost}}
           {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}
-          {{copy-to-clipboard clipboardText=model.primaryHost.displayIp tooltipText="Copy IP To Clipboard" size="small"}}
+          {{copy-to-clipboard clipboardText=model.primaryHost.displayIp tooltipText=(t 'containersPage.containerPage.infoMultiStats.tooltip.host') size="small"}}
         {{else}}
-          <span class="text-muted">None</span>
+          <span class="text-muted">{{t 'generic.none'}}</span>
         {{/if}}
       </div>
       <div class="col-flex">
-        <label>Container IP:</label>
+        <label>{{t 'containersPage.containerPage.infoMultiStats.ip'}}</label>
         {{format-ip ip=model.displayIp showCopy=true}}
       </div>
       <div class="col-flex">
-        <label>Docker ID:</label>
+        <label>{{t 'containersPage.containerPage.infoMultiStats.docker'}}</label>
         {{model.displayExternalId}} {{copy-to-clipboard clipboardText=model.externalId size='small'}}
       </div>
     </div>
     <div class="container-flex bordered">
       <div class="col-flex">
-        <label>Image:</label>
+        <label>{{t 'containersPage.containerPage.infoMultiStats.image'}}</label>
         <span class="force-wrap">
           {{model.displayImage}} {{copy-to-clipboard clipboardText=model.displayImage size='small'}}
         </span>
       </div>
       <div class="col-flex">
-        <label>Command:</label>
+        <label>{{t 'containersPage.containerPage.infoMultiStats.command'}}</label>
         <span class="force-wrap">
           {{#if model.command}}
             {{concat-str model.command}}
           {{else}}
-            <span class="text-muted">None</span>
+            <span class="text-muted">{{t 'generic.none'}}</span>
           {{/if}}
         </span>
       </div>
       <div class="col-flex">
-        <label>Entrypoint:</label>
+        <label>{{t 'containersPage.containerPage.infoMultiStats.entryPoint'}}</label>
         <span class="force-wrap">
           {{#if model.entryPoint}}
             {{concat-str model.entryPoint}}
           {{else}}
-            <span class="text-muted">None</span>
+            <span class="text-muted">{{t 'generic.none'}}</span>
           {{/if}}
         </span>
       </div>
@@ -73,7 +73,7 @@
     {{#if model.description}}
       <div class="container-flex">
         <div class="col-flex description">
-          <label>Description: </label>
+          <label>{{t 'containersPage.containerPage.infoMultiStats.description'}} </label>
           <span>{{model.description}}</span>
         </div>
       </div>
@@ -83,9 +83,9 @@
 
 <section>
   <ul class="nav nav-tabs nav-tabs-well shadowed">
-    {{#link-to "container.labels" tagName="li" href=false}}<a href="#"><i class="icon icon-tag"></i> Labels</a>{{/link-to}}
-    {{#link-to "container.volumes" tagName="li" href=false}}<a href="#"><i class="icon icon-hdd"></i> Volumes</a>{{/link-to}}
-    {{#link-to "container.ports" tagName="li" href=false}}<a href="#"><i class="icon icon-network"></i> Ports</a>{{/link-to}}
+    {{#link-to "container.labels" tagName="li" href=false}}<a href="#"><i class="icon icon-tag"></i> {{t 'containersPage.containerPage.navTabs.labels'}}</a>{{/link-to}}
+    {{#link-to "container.volumes" tagName="li" href=false}}<a href="#"><i class="icon icon-hdd"></i> {{t 'containersPage.containerPage.navTabs.volumes'}}</a>{{/link-to}}
+    {{#link-to "container.ports" tagName="li" href=false}}<a href="#"><i class="icon icon-network"></i> {{t 'containersPage.containerPage.navTabs.ports'}}</a>{{/link-to}}
   </ul>
   <div class="table-flat well">
     {{outlet}}

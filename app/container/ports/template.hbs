@@ -1,48 +1,48 @@
 <table class="grid fixed">
   <thead>
     <tr>
-      <th width="90">State</th>
-      <th width="150">IP Address</th>
-      <th>Public on Host</th>
-      <th>Private in Container</th>
-      <th width="90">Protocol</th>
+      <th width="90">{{t 'containersPage.containerPage.portsTab.table.header.state'}}</th>
+      <th width="150">{{t 'containersPage.containerPage.portsTab.table.header.ip'}}</th>
+      <th>{{t 'containersPage.containerPage.portsTab.table.header.public'}}</th>
+      <th>{{t 'containersPage.containerPage.portsTab.table.header.private'}}</th>
+      <th width="90">{{t 'containersPage.containerPage.portsTab.table.header.protocol'}}</th>
     </tr>
   </thead>
   <tbody>
     {{#each model as |port|}}
       <tr>
-        <td data-title="State">
+        <td data-title={{t 'containersPage.containerPage.portsTab.table.body.state'}}>
           {{badge-state model=port}}
         </td>
-        <td data-title="IP Address">
+        <td data-title={{t 'containersPage.containerPage.portsTab.table.body.ip'}}>
           {{#if port.displayPublicIp}}
             {{port.displayPublicIp}}
           {{else}}
-            <span class="text-muted">None</span>
+            <span class="text-muted">{{t 'generic.none'}}</span>
           {{/if}}
         </td>
-        <td data-title="Public (on Host)">
+        <td data-title={{t 'containersPage.containerPage.portsTab.table.body.public'}}>
           {{#if port.publicPort}}
             {{port.publicPort}}
           {{else}}
-            <span class="text-muted">None</span>
+            <span class="text-muted">{{t 'generic.none'}}</span>
           {{/if}}
         </td>
-        <td data-title="Private (in Container)">
+        <td data-title={{t 'containersPage.containerPage.portsTab.table.body.private'}}>
           {{#if port.privatePort}}
             {{port.privatePort}}
           {{else}}
-            <span class="text-muted">None</span>
+            <span class="text-muted">{{t 'generic.none'}}</span>
           {{/if}}
         </td>
-        <td data-title="Protocol">
+        <td data-title={{t 'containersPage.containerPage.portsTab.table.body.protocol'}}>
           {{upper-case port.protocol}}
         </td>
       </tr>
     {{else}}
       <tr>
         <td colspan="5">
-          <div class="text-muted text-center">This container has no ports.</div>
+          <div class="text-muted text-center">{{t 'containersPage.containerPage.portsTab.table.body.noData'}}</div>
         </td>
       </tr>
     {{/each}}
