@@ -1,16 +1,16 @@
-<h4>Machine Drivers</h4>
-<h5>Additional <code>docker-machine</code> drivers can be loaded here and used in the Add Host screen.</h5>
+<h4>{{t 'dynamicDriverSettings.header'}}</h4>
+<h5>{{t 'dynamicDriverSettings.subtext'}}</h5>
 <hr>
 
-<button class="btn-circle-text r-mb10" {{action 'addNewDriver'}}><i class="icon icon-plus-circle"/> <span>Add Machine Driver</span></button>
+<button class="btn-circle-text r-mb10" {{action 'addNewDriver'}}><i class="icon icon-plus-circle"/> <span>{{t 'dynamicDriverSettings.add'}}</span></button>
 <table class="grid fixed" style="margin-bottom: 0;">
   <thead>
     <tr>
-      <th width="100">State</th>
-      {{sortable-th sortable=this action="changeSort" name="name" width="175"}}
-      {{sortable-th sortable=this action="changeSort" name="url" width="" label='Driver URL'}}
-      {{sortable-th sortable=this action="changeSort" name="uiUrl" width="" label='UI URL'}}
-      {{sortable-th sortable=this action="changeSort" name="md5" width="" label='MD5 Checksum'}}
+      <th width="100">{{t 'dynamicDriverSettings.table.header.state'}}</th>
+      {{sortable-th sortable=this action="changeSort" name="name" label=(t 'dynamicDriverSettings.table.header.name') width="175"}}
+      {{sortable-th sortable=this action="changeSort" name="url" width="" label=(t 'dynamicDriverSettings.table.header.url')}}
+      {{sortable-th sortable=this action="changeSort" name="uiUrl" width="" label=(t 'dynamicDriverSettings.table.header.uiUrl')}}
+      {{sortable-th sortable=this action="changeSort" name="md5" width="" label=(t 'dynamicDriverSettings.table.header.md5')}}
       <th class="actions" width="50">&nbsp;</th>
     </tr>
   </thead>
@@ -26,14 +26,14 @@
           {{#if driver.uiUrl}}
             <a href={{driver.uiUrl}} target="_blank">{{driver.displayUiUrl}}</a>
           {{else}}
-            <span class="text-muted">None</span>
+            <span class="text-muted">{{t 'generic.none'}}</span>
           {{/if}}
         </td>
         <td>
           {{#if driver.md5checksum}}
             {{driver.md5checksum}}
           {{else}}
-            <span class="text-muted">None</span>
+            <span class="text-muted">{{t 'generic.none'}}</span>
           {{/if}}
         </td>
         <td class="clip">
@@ -41,7 +41,7 @@
         </td>
       </tr>
     {{else}}
-      <tr><td colspan="4" class="text-center text-muted">You have no Dynamic Machine Drivers.</td></tr>
+      <tr><td colspan="4" class="text-center text-muted">{{t 'dynamicDriverSettings.table.noData'}}</td></tr>
     {{/each}}
   </tbody>
 </table>

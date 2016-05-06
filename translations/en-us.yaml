@@ -1,4 +1,8 @@
 languageName: "English (US)"
+generic:
+  enabled: Enabled
+  disabled: Disabled
+  none: None
 
 ##############################
 # Routes
@@ -69,9 +73,8 @@ authPage:
       accessEnabledSubtext:
         wasRestricted: "{appName} is configured to restrict access to {wasRestricted}."
         wasNotRestricted:
-          text1: "{appName} is configured to allow access to any GitHub"
-          text2: Enterprise
-          text3: "user."
+          host: "{appName} is configured to allow access to any GitHub Enterprise user."
+          noHost: "{appName} is configured to allow access to any GitHub user."
       noAccessConfigured:
         subtext: "{appName} can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
     authenticated:
@@ -141,10 +144,9 @@ authPage:
       enabled: 'Local Authentication is <b>enabled</b>'
       disabled: 'Local Authentication is <b class="text-warning">not configured</b>'
     subtext:
-      enable:
-        text1: '{appName} is configured to allow access to'
-        text2: 'in its local database.'
-        linkText: accounts
+      enabled:
+        text: '{appName} is configured to allow access to accounts in its local database.'
+        linkText: Manage Accounts
       disabled: '{appName} can be configured to restrict access to a set of accounts defined in the {appName} database.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.'
     accessEnabled:
       header: 'Danger Zone&trade;'
@@ -432,6 +434,33 @@ swarmPage:
         description:
           placeholder: e.g. MyApp Project
 
+
+processesPage:
+  indexPage:
+    header: Processes
+    tabNav:
+      running: Running
+      all: All
+    form:
+      resourceType: 'Select a Resource type: '
+      resourceId:
+        placeholder: Resource Id
+      processName:
+        placeholder: Process Name
+      clear: Clear
+      search: Search
+    table:
+      header:
+        id: Id
+        processName: Name
+        resource: 'Resource Type:Id'
+        exitReason: Exit Reason
+        startTime: Started
+        endTime: Ended
+        duration: Duration
+  processPage:
+    header: Settings
+
 waitingPage:
   hosts:
     header: Adding your first host
@@ -546,6 +575,40 @@ openLdap:
 advancedSection:
   hrText: Advanced Options
 
+catalogSettings:
+  header: Catalog
+  subtext: Catalogs contain rancher-compose templates that allow users to easily deploy applications by answering a few questions
+  rancherCertified:
+    header:
+      rancherCertified: "{appName} Certified"
+      plCertified: Certified
+    helpText:
+      isRancher: Certified templates maintained and supported by Rancher Labs.
+      community: Officially maintained and supported templates.
+  community:
+    header: Community Contributed
+    helpText:
+      text: Templates created and maintained by community members.
+      isRancher: Not certified by Rancher Labs.
+  more:
+    header: More
+    helpText: You can define your own custom catalog sources here.  Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> for more info).
+
+
+dynamicDriverSettings:
+  header: Machine Drivers
+  subtext: Additional <code>docker-machine</code> drivers can be loaded here and used in the Add Host screen.
+  add: Add Machine Driver
+  table:
+    header:
+      state: State
+      name: Name
+      url: Driver URL
+      uiUrl: UI URL
+      md5: MD5 Checksum
+    noData: You have no Dynamic Machine Drivers.
+
+
 formNameDescription:
   name:
     label: Name
@@ -564,6 +627,22 @@ heroAddService:
   addService: Add Service
   linkToCatalog: Add From Catalog
 
+hostSettings:
+  header: Host Registration URL
+  subtext: What base URL should hosts use to connect to the {appName} API?
+  hostUrl:
+    local: "This site's address:"
+    new:
+      labelText: "Something else:"
+      placeholder: "e.g. http://example.com:8080"
+  helpText:
+    static1: "Don't include <code>/v1</code> or any other path, but if you are doing"
+    static2: "in front of {appName}, be sure to use <code>https://</code>."
+    isRancher: '<a href="{docsBase}/installing-rancher/installing-server/basic-ssl-config/" target="_blank">SSL termination</a>'
+    sslTerm: SSL termination
+  notPublic:
+    alert: |
+      Are you sure all the hosts you will create will be able to reach <code>{activeValue}</code> ?<br/>It looks like a private IP or local network.
 
 inputPassword:
   buttonText: Generate
@@ -607,6 +686,11 @@ viewEditDescription:
       placeholder: e.g. lab
     description:
       placeholder: e.g. Environment for developer experimentation
+
+virtualMachineSettings:
+  header: Virtual Machine Support
+  subtext: |
+    Requires hosts that have the <a href="https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine" target="_blank">KVM</a> kernel module loaded.
 
 ##############################
 # Utils
