@@ -70,16 +70,16 @@ var Project = Resource.extend(PolledResource, {
     var a = this.get('actionLinks');
 
     var choices = [
-      {label: 'Switch to this Environment', icon: 'icon icon-folder-open',  action: 'switchTo',     enabled: this.get('canSwitchTo')},
-      {label: 'Set as login default',       icon: 'icon icon-home',         action: 'setAsDefault', enabled: this.get('canSetDefault')},
+      { label: 'action.switchEnvironment',icon: 'icon icon-folder-open',  action: 'switchTo',     enabled: this.get('canSwitchTo')},
+      { label: 'action.setDefault',       icon: 'icon icon-home',         action: 'setAsDefault', enabled: this.get('canSetDefault')},
       { divider: true },
-      { label: 'Edit',                      icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
-      { label: 'Activate',                  icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
-      { label: 'Deactivate',                icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate,        altAction: 'deactivate'},
+      { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
+      { label: 'action.activate',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
+      { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate,        altAction: 'deactivate'},
       { divider: true },
-      { label: 'Delete',                    icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canRemove'), altAction: 'delete' },
-      { label: 'Restore',                   icon: '',                       action: 'restore',      enabled: !!a.restore },
-      { label: 'Purge',                     icon: '',                       action: 'purge',        enabled: !!a.purge },
+      { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canRemove'), altAction: 'delete' },
+      { label: 'action.restore',          icon: '',                       action: 'restore',      enabled: !!a.restore },
+      { label: 'action.purge',            icon: '',                       action: 'purge',        enabled: !!a.purge },
     ];
 
 

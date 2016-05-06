@@ -8,11 +8,11 @@ var Volume = Resource.extend({
     var a = this.get('actionLinks');
 
     return [
-      { label: 'Delete',      icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
+      { label: 'action.delete',    icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
       { divider: true },
-      { label: 'View in API', icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
-      { label: 'Restore',     icon: '',                       action: 'restore',      enabled: !!a.restore },
-      { label: 'Purge',       icon: '',                       action: 'purge',        enabled: !!a.purge },
+      { label: 'action.viewInApi', icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
+      { label: 'action.restore',   icon: '',                       action: 'restore',      enabled: !!a.restore },
+      { label: 'action.purge',     icon: '',                       action: 'purge',        enabled: !!a.purge },
     ];
   }.property('actionLinks.{restore,purge}','model.canDelete'),
 

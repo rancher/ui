@@ -78,10 +78,10 @@ var K8sResource = Resource.extend({
 
   availableActions: function() {
     var choices = [
-      { label: 'Edit',        icon: 'icon icon-edit',           action: 'edit',         enabled: true },
-      { label: 'View in API', icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
+      { label: 'action.edit',      icon: 'icon icon-edit',           action: 'edit',         enabled: true },
+      { label: 'action.viewInApi', icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
       { divider: true },
-      { label: 'Delete',      icon: 'icon icon-trash',          action: 'promptDelete', enabled: true, altAction: 'delete', color: 'text-warning' },
+      { label: 'action.remove',    icon: 'icon icon-trash',          action: 'promptDelete', enabled: true, altAction: 'delete'},
     ];
 
     return choices;

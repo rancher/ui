@@ -1,10 +1,10 @@
-<td data-title="State:">
+<td data-title="{{t 'generic.state'}}:">
   {{badge-state model=model}}
 </td>
-<td data-title="Name:" class="force-wrap">
+<td data-title="{{t 'generic.name'}}:" class="force-wrap">
   {{#link-to "certificates.detail" model.id}}{{model.displayName}}{{/link-to}}
 </td>
-<td data-title="Domain Name:">
+<td data-title="{{t 'certificatesPage.table.cn'}}:">
   {{#if model.CN}}
     {{model.CN}}
     {{#if model.countableSans.length}}
@@ -14,11 +14,11 @@
     <span class="text-muted">None</span>
   {{/if}}
 </td>
-<td data-title="Expires:">
+<td data-title="certificatesPage.table.expiresDate:">
   <span class="{{if model.expiresSoon "text-bold text-danger"}}">
     {{date-from-now model.expiresDate}}
   </span>
 </td>
-<td data-title="Actions:" class="actions">
+<td data-title="{{t 'generic.actions'}}:" class="actions">
   {{action-menu model=model}}
 </td>

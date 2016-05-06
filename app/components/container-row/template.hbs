@@ -1,47 +1,69 @@
-<td data-title="State:" class="state">
+<td data-title="{{t 'generic.state'}}:" class="state">
   {{badge-state model=model}}
 </td>
-<td data-title="Name:" class="force-wrap">
+<td data-title="{{t 'generic.name'}}:" class="force-wrap">
   {{#link-to detailRoute model.id}}{{model.displayName}}{{/link-to}}
 </td>
-<td data-title="IP Address:">
-  {{model.displayIp}}
+<td data-title="{{t 'containersPage.table.ipAddress'}}">
+  {{format-ip ip=model.displayIp}}
 </td>
 {{#if showHost}}
-  <td data-title="Primary Host:">
+  <td data-title="{{t 'containersPage.table.primaryHost'}}">
     {{#if model.primaryHost}}
       {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}
     {{else}}
-      <span class="text-muted">Unknown</span>
+      <span class="text-muted">{{t 'containersPage.table.primaryHostUnknown'}}</span>
     {{/if}}
   </td>
 {{/if}}
-<td data-title="Image:" class="clip">
+<td data-title="{{t 'containersPage.table.image'}}:" class="clip">
   {{model.displayImage}}
   {{#if (and (eq showCommand "inline") model.command)~}}
     ({{model.command}})
   {{/if}}
 </td>
 {{#if showStats}}
-  <td data-title="Stats:" class="spark-td">
+  <td data-title="{{t 'containersPage.table.stats'}}:" class="spark-td">
     {{#if model.cpuSpark}}
-      {{spark-line data=model.cpuSpark     width=60 height=25 max=cpuMax     prefix="CPU: " formatter="percent" type="cpu"}}
-      {{spark-line data=model.memorySpark  width=60 height=25 max=memoryMax  prefix="Memory: " formatter="mib" type="memory"}}
-      {{spark-line data=model.networkSpark width=60 height=25 max=networkMax prefix="Network: " formatter="kbps" type="network"}}
-      {{spark-line data=model.storageSpark width=60 height=25 max=storageMax prefix="Storage: " formatter="kbps" type="storage"}}
+      {{spark-line
+        data=model.cpuSpark
+        width=60 height=25 max=cpuMax
+        prefix="containersPage.table.sparkPrefixCpu"
+        formatter="percent"
+        type="cpu"
+      }}
+      {{spark-line
+        data=model.memorySpark
+        width=60 height=25 max=memoryMax
+        prefix="containersPage.table.sparkPrefixMemory"
+        formatter="mib"
+        type="memory"
+      }}
+      {{spark-line
+        data=model.networkSpark
+        width=60 height=25 max=networkMax
+        prefix="containersPage.table.sparkPrefixNetwork"
+        formatter="kbps"
+        type="network"}}
+      {{spark-line
+        data=model.storageSpark
+        width=60 height=25 max=storageMax
+        prefix="containersPage.table.sparkPrefixStorage"
+        formatter="kbps"
+        type="storage"}}
     {{/if}}
   </td>
 {{else}}
   {{#if (eq showCommand "column")}}
-    <td data-title="Command:" class="clip">
+    <td data-title="{{t 'containersPage.table.command'}}" class="clip">
       {{#if model.command}}
         {{model.command}}
       {{else}}
-        <span class="text-muted">None</span>
+        <span class="text-muted">{{t 'containersPage.table.noCommand'}}</span>
       {{/if}}
     </td>
   {{/if}}
 {{/if}}
-<td data-title="Actions:" class="actions">
+<td data-title="{{t 'generic.actions'}}:" class="actions">
   {{action-menu model=model}}
 </td>

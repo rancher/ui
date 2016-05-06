@@ -1,27 +1,27 @@
 <h2>
-  <i class="icon icon-file"></i> Logs: {{instance.displayName}}
+  <i class="icon icon-file"></i> {{t 'containerLogs.title' instanceName=instance.displayName}}
 </h2>
 {{#if onlyCombinedLog}}
-  <div class="text-muted"><b>Note:</b> Only combined stdout/stderr logs are available for this container because it was run with the TTY (-t) flag.</div>
+  <div class="text-muted">{{tHtml 'containerLogs.onlyCombined'}}</div>
 {{else}}
   <ul class="nav nav-tabs" style="border-bottom: 0">
-    <li role="presentation" class="{{if isCombined 'active'}}"><a {{action "changeShow" "combined"}}>Combined</a></li>
-    <li role="presentation" class="{{if isStdOut 'active'}}"><a {{action "changeShow" "stdout"}}>Standard Out</a></li>
-    <li role="presentation" class="{{if isStdErr 'active'}}"><a {{action "changeShow" "stderr"}}>Standard Error</a></li>
+    <li role="presentation" class="{{if isCombined 'active'}}"><a {{action "changeShow" "combined"}}>{{t 'containerLogs.combined'}}</a></li>
+    <li role="presentation" class="{{if isStdOut 'active'}}"><a {{action "changeShow" "stdout"}}>{{t 'containerLogs.stderr'}}</a></li>
+    <li role="presentation" class="{{if isStdErr 'active'}}"><a {{action "changeShow" "stderr"}}>{{t 'containerLogs.stderr'}}</a></li>
   </ul>
 {{/if}}
 {{#if showProtip}}
   <div class="text-muted r-mt5 r-mb5" style="font-size: 12px;">
-      ProTip: Hold the {{alternateLabel}} key when opening logs to launch a new window.
+      {{t 'containerLogs.protip' key=alternateLabel}}
   </div>
 {{/if}}
 <pre class="log-body {{unless stdErrVisible 'hide-stderr'}} {{unless stdOutVisible 'hide-stdout'}}">
 </pre>
 {{yield}}
 <div class="footer-actions">
-  <div class="console-status text-muted">{{status}}</div>
-  <button {{action "scrollToTop"}} class="btn btn-default">Scroll to Top</button>
-  <button {{action "scrollToBottom"}} class="btn btn-default">Scroll to Bottom</button>
-  <button {{action "clear"}} class="btn btn-default">Clear Screen</button>
-  <button {{action "cancel"}} class="btn btn-primary">Close</button>
+  <div class="console-status text-muted">{{t (concat-str 'containerLogs.status' status character='.')}}</div>
+  <button {{action "scrollToTop"}} class="btn btn-default">{{t 'containerLogs.scrollTop'}}</button>
+  <button {{action "scrollToBottom"}} class="btn btn-default">{{t 'containerLogs.scrollBottom'}}</button>
+  <button {{action "clear"}} class="btn btn-default">{{t 'containerLogs.clear'}}</button>
+  <button {{action "cancel"}} class="btn btn-primary">{{t 'generic.closeModal'}}</button>
 </div>

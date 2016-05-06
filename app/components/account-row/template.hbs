@@ -1,32 +1,32 @@
-<td data-title="State:" >
+<td data-title="{{t 'generic.state'}}:" >
   {{badge-state model=model}}
 </td>
-<td data-title="ID:" >
+<td data-title="{{t 'generic.id'}}:" >
   {{model.id}}
 </td>
-<td data-title="Type:" >
+<td data-title="{{t 'accountsPage.index.table.kind'}}:" >
   {{uc-first model.kind}}
 </td>
 {{#if isLocal}}
-  <td data-title="Username:" >
+  <td data-title="{{t 'accountsPage.index.table.username'}}:" >
     {{#if model.username}}
       {{model.username}}
     {{else}}
-      <span class="text-muted">None</span>
+      <span class="text-muted">{{t 'accountsPage.index.table.noName'}}</span>
     {{/if}}
   </td>
-  <td data-title="Name:" class="force-wrap">
+  <td data-title="{{t 'generic.name'}}:" class="force-wrap">
     {{model.displayName}}
   </td>
 {{else}}
-  <td data-title="ID:" >
+  <td data-title="{{t 'accountsPage.index.table.identity'}}" >
     {{#if (and model.externalId model.externalIdType)}}
       {{identity-block externalIdType=model.externalIdType externalId=model.externalId}}
     {{else}}
-      <span class="text-muted">None</span>
+      <span class="text-muted">{{t 'accountsPage.index.table.noName'}}</span>
     {{/if}}
   </td>
 {{/if}}
-<td data-title="Actions:" class="actions">
+<td data-title="{{t 'generic.actions'}}:" class="actions">
   {{action-menu model=model}}
 </td>

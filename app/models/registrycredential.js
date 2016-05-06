@@ -4,6 +4,6 @@ export default Resource.extend({
   type: 'registryCredential',
   name: '',
   publicValue: '',
-  //secretValue: '', -- This can't be se because the secret isn't sent back on edit
+  //secretValue: '', -- This can't be set because the secret isn't sent back on edit
   email: ''
 });

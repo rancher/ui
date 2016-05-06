@@ -27,7 +27,7 @@ var Namespace = K8sResource.extend({
   availableActions: function() {
     var choices = this._super();
     choices.unshift({ divider: true });
-    choices.unshift({label: 'Switch to this Namespace', icon: 'icon icon-folder-open',  action: 'switchTo', enabled: this.get('canSwitchTo')});
+    choices.unshift({label: 'action.switchNamespace', icon: 'icon icon-folder-open',  action: 'switchTo', enabled: this.get('canSwitchTo')});
     return choices;
   }.property('canSwitchTo'),
 

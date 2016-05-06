@@ -9,19 +9,6 @@ export default Ember.Component.extend({
   label: null,
   ariaRole: ['columnheader'],
 
-  displayLabel: function() {
-    var label = this.get('label');
-    if ( label )
-    {
-      return label;
-    }
-    else
-    {
-      // e.g. publicValue => Public Value
-      return (this.get('name')||'').dasherize().split('-').map((str) => { return str.capitalize(); }).join(' ');
-    }
-  }.property('name','label'),
-
   current: Ember.computed.alias('sortable.sortBy'),
   descending: Ember.computed.alias('sortable.descending'),
 

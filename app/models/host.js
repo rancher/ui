@@ -56,25 +56,25 @@ var Host = Resource.extend({
     var a = this.get('actionLinks');
 
     var out = [
-      { label: 'Activate',      icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate,    color: 'text-success'},
-      { label: 'Deactivate',    icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate,  color: 'text-danger'},
-      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
-      { label: 'Purge',         icon: '',                       action: 'purge',        enabled: !!a.purge,       color: 'text-danger'},
+      { label: 'action.activate',   icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
+      { label: 'action.deactivate', icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate},
+      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete'},
+      { label: 'action.purge',      icon: '',                       action: 'purge',        enabled: !!a.purge},
       { divider: true },
-      { label: 'View in API',   icon: 'icon icon-external-link',action: 'goToApi',      enabled: true},
+      { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true},
     ];
 
     if ( this.get('machine') )
     {
       if ( this.get('machine.links.config') )
       {
-        out.push({ label: 'Machine Config', icon: 'icon icon-download', action: 'machineConfig', enabled: true});
+        out.push({ label: 'action.machineConfig', icon: 'icon icon-download', action: 'machineConfig', enabled: true});
       }
 
-      out.push({ label: 'Clone', icon: 'icon icon-copy', action: 'clone', enabled: true });
+      out.push({ label: 'action.clone', icon: 'icon icon-copy', action: 'clone', enabled: true });
     }
 
-    out.push({ label: 'Edit', icon: 'icon icon-edit', action: 'edit', enabled: !!a.update });
+    out.push({ label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!a.update });
 
     return out;
   }.property('actionLinks.{activate,deactivate,remove,purge,update}','machine','machine.links.config'),

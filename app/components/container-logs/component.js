@@ -3,20 +3,18 @@ import ThrottledResize from 'ui/mixins/throttled-resize';
 import Util from 'ui/utils/util';
 import { alternateLabel } from 'ui/utils/platform';
 
-
 var typeClass = {
   0: 'log-combined',
   1: 'log-stdout',
   2: 'log-stderr',
 };
 
-
 export default Ember.Component.extend(ThrottledResize, {
   instance: null,
   alternateLabel: alternateLabel,
   showProtip: true,
 
-  status: 'Connecting...',
+  status: 'connecting',
   socket: null,
 
   logHeight: 300,
@@ -88,14 +86,14 @@ export default Ember.Component.extend(ThrottledResize, {
     var body = this.$('.log-body')[0];
     var $body = $(body);
 
-    this.set('status','Initializing...');
+    this.set('status','initializing');
 
     socket.onopen = () => {
-      this.set('status','Connected');
+      this.set('status','connected');
     };
 
     socket.onmessage = (message) => {
-      this.set('status','Connected');
+      this.set('status','connected');
 
       var isFollow = ($body.scrollTop() + $body.outerHeight() + 10) >= body.scrollHeight;
 
@@ -134,12 +132,12 @@ export default Ember.Component.extend(ThrottledResize, {
     };
 
     socket.onclose = () => {
-      this.set('status','Disconnected');
+      this.set('status','disconnected');
     };
   },
 
   disconnect: function() {
-    this.set('status','Closed');
+    this.set('status','closed');
 
     var socket = this.get('socket');
     if (socket)
