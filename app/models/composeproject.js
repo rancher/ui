@@ -10,9 +10,9 @@ var ComposeProject = Environment.extend({
     var a = this.get('actionLinks');
 
     var out = [
-      { label   : 'Edit',            icon : 'icon icon-edit',             action : 'edit',                enabled  : true },
-      { label   : 'Delete',          icon : 'icon icon-trash',            action : 'promptDelete',        enabled  : !!a.remove,                altAction : 'delete', color : 'text-warning' },
-      { label   : 'View in API',     icon : 'icon icon-external-link',    action : 'goToApi',             enabled  : true },
+      { label   : 'action.edit',       icon : 'icon icon-edit',           action : 'edit',          enabled  : true },
+      { label   : 'action.remove',     icon : 'icon icon-trash',          action : 'promptDelete',  enabled  : !!a.remove, altAction : 'delete'},
+      { label   : 'action.viewInApi',  icon : 'icon icon-external-link',  action : 'goToApi',       enabled  : true },
     ];
 
     return out;

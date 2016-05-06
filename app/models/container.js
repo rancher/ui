@@ -97,20 +97,19 @@ var Container = Resource.extend({
     var isK8s = labelKeys.indexOf(C.LABEL.K8S_POD_NAME) >= 0;
 
     var choices = [
-      { label: 'Restart',       icon: 'icon icon-refresh',      action: 'restart',      enabled: !!a.restart },
-      { label: 'Start',         icon: 'icon icon-play',         action: 'start',        enabled: !!a.start },
-      { label: 'Stop',          icon: 'icon icon-stop',         action: 'stop',         enabled: !!a.stop },
-      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
-//      { label: 'Restore',       icon: '',                       action: 'restore',      enabled: !!a.restore },
-      { label: 'Purge',         icon: '',                       action: 'purge',        enabled: !!a.purge },
+      { label: 'action.restart',    icon: 'icon icon-refresh',      action: 'restart',      enabled: !!a.restart },
+      { label: 'action.start',      icon: 'icon icon-play',         action: 'start',        enabled: !!a.start },
+      { label: 'action.stop',       icon: 'icon icon-stop',         action: 'stop',         enabled: !!a.stop },
+      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
+      { label: 'action.purge',      icon: '',                       action: 'purge',        enabled: !!a.purge },
       { divider: true },
-      { label: 'Execute Shell', icon: '',                       action: 'shell',        enabled: !!a.execute && !isVm, altAction:'popoutShell'},
-      { label: 'Open Console',  icon: '',                       action: 'console',      enabled: !!a.console &&  isVm, altAction:'popoutShellVm' },
-      { label: 'View Logs',     icon: '',                       action: 'logs',         enabled: !!a.logs, altAction: 'popoutLogs' },
-      { label: 'View in API',   icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
+      { label: 'action.execute',    icon: '',                       action: 'shell',        enabled: !!a.execute && !isVm, altAction:'popoutShell'},
+      { label: 'action.console',    icon: '',                       action: 'console',      enabled: !!a.console &&  isVm, altAction:'popoutShellVm' },
+      { label: 'action.logs',       icon: '',                       action: 'logs',         enabled: !!a.logs, altAction: 'popoutLogs' },
+      { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
       { divider: true },
-      { label: 'Clone',         icon: 'icon icon-copy',         action: 'clone',        enabled: !isSystem && !isService && !isK8s},
-      { label: 'Edit',          icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update && !isK8s },
+      { label: 'action.clone',      icon: 'icon icon-copy',         action: 'clone',        enabled: !isSystem && !isService && !isK8s},
+      { label: 'action.edit',       icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update && !isK8s },
     ];
 
     return choices;
@@ -156,7 +155,7 @@ var Container = Resource.extend({
   }.property('state'),
 
   displayIp: function() {
-    return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress') || new Ember.Handlebars.SafeString('<span class="text-muted">None</span>');
+    return this.get('primaryAssociatedIpAddress') || this.get('primaryIpAddress') || null;
   }.property('primaryIpAddress','primaryAssociatedIpAddress'),
 
   sortIp: function() {

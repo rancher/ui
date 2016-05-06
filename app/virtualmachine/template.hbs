@@ -28,15 +28,11 @@
       </div>
       <div class="col-flex">
         <label>Host IP:</label>
-        {{#if model.vm.primaryHost}}
-          {{model.vm.primaryHost.displayIp}} {{copy-to-clipboard clipboardText=model.vm.primaryHost.displayIp size="small"}}
-        {{else}}
-          <span class="text-muted">Unknown</span>
-        {{/if}}
+        {{format-ip ip-model.vm.primaryHost.displayIp noIp='formatIp.unknownIp' showCopy=true}}
       </div>
       <div class="col-flex">
         <label>VM IP:</label>
-        {{model.vm.displayIp}} {{copy-to-clipboard clipboardText=model.vm.displayIp size="small"}}
+        {{format-ip ip=model.vm.displayIp showCopy=true}}
       </div>
     </div>
     <div class="container-flex bordered">

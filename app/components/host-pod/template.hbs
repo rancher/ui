@@ -37,7 +37,7 @@
 {{else}}
   <div class="pod-info">
     <div class="pod-info-container">
-      <div class="pod-info-item"><i class="icon icon-link"></i> {{model.displayIp}}</div>
+      <div class="pod-info-item"><i class="icon icon-link"></i> {{format-ip ip=model.displayIp}}</div>
       {{#if model.dockerBlurb}}
         <div class="pod-info-item"><i class="icon icon-docker"></i> {{model.dockerBlurb}}</div>
       {{/if}}
@@ -92,7 +92,7 @@
               {{/each}}
               {{#unless group.name}}
                 {{#if showAdd}}
-                  {{add-subpod action="newContainer" label="Add Container" groupHasChildren=group.hasChildren}}
+                  {{add-subpod action="newContainer" label="hostsPage.addContainer" groupHasChildren=group.hasChildren}}
                 {{/if}}
               {{/unless}}
             </div>
@@ -100,7 +100,7 @@
         {{/if}}
       {{else}}
         {{#if showAdd}}
-          {{add-subpod action="newContainer" label="Add Container" groupHasChildren=group.hasChildren}}
+          {{add-subpod action="newContainer" label="hostsPage.addContainer" groupHasChildren=group.hasChildren}}
         {{/if}}
       {{/each}}
     {{/if}}

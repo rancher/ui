@@ -159,20 +159,20 @@ var Service = Resource.extend({
     var isSwarm = this.get('isSwarm');
 
     var choices = [
-      { label: 'Finish Upgrade',  icon: 'icon icon-success',          action: 'finishUpgrade',  enabled: !!a.finishupgrade },
-      { label: 'Rollback',        icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback },
-      { label: 'Start',           icon: 'icon icon-play',             action: 'activate',       enabled: !!a.activate,    color: 'text-success'},
-      { label: 'Stop',            icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate', color: 'text-danger'},
-      { label: 'Delete',          icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete', color: 'text-warning' },
-      { label: 'Purge',           icon: '',                           action: 'purge',          enabled: !!a.purge},
+      { label: 'action.finishUpgrade',  icon: 'icon icon-success',          action: 'finishUpgrade',  enabled: !!a.finishupgrade },
+      { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback },
+      { label: 'action.start',          icon: 'icon icon-play',             action: 'activate',       enabled: !!a.activate},
+      { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate'},
+      { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete'},
+      { label: 'action.purge',          icon: '',                           action: 'purge',          enabled: !!a.purge},
       { divider: true },
-      { label: 'Upgrade',         icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: canUpgrade },
-      { label: 'Cancel Upgrade',  icon: 'icon icon-life-ring',        action: 'cancelUpgrade',  enabled: !!a.cancelupgrade },
-      { label: 'Cancel Rollback', icon: 'icon icon-life-ring',        action: 'cancelRollback', enabled: !!a.cancelrollback },
+      { label: 'action.upgrade',        icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: canUpgrade },
+      { label: 'action.cancelUpgrade',  icon: 'icon icon-life-ring',        action: 'cancelUpgrade',  enabled: !!a.cancelupgrade },
+      { label: 'action.cancelRollback', icon: 'icon icon-life-ring',        action: 'cancelRollback', enabled: !!a.cancelrollback },
       { divider: true },
-      { label: 'View in API',     icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
-      { label: 'Clone',           icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isSwarm },
-      { label: 'Edit',            icon: 'icon icon-edit',             action: 'edit',           enabled: !!a.update && !isK8s && !isSwarm },
+      { label: 'action.viewInApi',      icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
+      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isSwarm },
+      { label: 'action.edit',           icon: 'icon icon-edit',             action: 'edit',           enabled: !!a.update && !isK8s && !isSwarm },
     ];
 
     return choices;

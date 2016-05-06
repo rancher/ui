@@ -12,6 +12,7 @@ export function denormalizeName(str) {
 export default Ember.Service.extend(Ember.Evented, {
   access: Ember.inject.service(),
   cookies: Ember.inject.service(),
+  projects: Ember.inject.service(),
 
   all: null,
   promiseCount: 0,
@@ -139,11 +140,12 @@ export default Ember.Service.extend(Ember.Evented, {
         str += '|Access|`Disabled`|\n';
       }
 
+      str += `|Orchestration|\`${this.get('projects.current.displayOrchestration')}\`|\n`;
       str += `|Route|\`${this.get('app.currentRouteName')}\`|\n`;
 
     var url = C.EXT_REFERENCES.GITHUB + '/issues/new?body=' + encodeURIComponent(str);
     return url;
-  }.property('app.currentRouteName','access.{provider,admin}','cattleVersion','rancherVersion','uiVersion'),
+  }.property('app.currentRouteName','access.{provider,admin}','cattleVersion','rancherVersion','uiVersion','projects.current.displayOrchestration'),
 
   rancherVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_RANCHER}.value`),
   composeVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_COMPOSE}.value`),

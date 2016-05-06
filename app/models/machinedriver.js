@@ -39,10 +39,10 @@ var machineDriver = Resource.extend(PolledResource, {
     var a = this.get('actionLinks');
 
     return [
-      { label: 'Retry',         icon: 'icon icon-refresh',      action: 'retry',        enabled: !!a.retry },
-      { label: 'Delete',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
+      { label: 'action.retry',         icon: 'icon icon-refresh',      action: 'retry',        enabled: !!a.retry },
+      { label: 'action.remove',        icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
       { divider: true },
-      { label: 'View in API',   icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
+      { label: 'action.viewInApi',   icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
       { divider: true },
     ];
   }.property('actionLinks.{update,activate,deactivate,restore,remove,purge}'),

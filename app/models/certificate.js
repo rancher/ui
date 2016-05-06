@@ -17,13 +17,13 @@ export default Resource.extend({
     }
 
     var choices = [
-      { label: 'Delete',        icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
-      { label: 'Restore',       icon: 'icon icon-medicalcross',   action: 'restore',      enabled: !!a.restore },
-      { label: 'Purge',         icon: '',                         action: 'purge',        enabled: !!a.purge },
+      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
+      { label: 'action.restore',    icon: 'icon icon-medicalcross',   action: 'restore',      enabled: !!a.restore },
+      { label: 'action.purge',      icon: '',                         action: 'purge',        enabled: !!a.purge },
       { divider: true },
-      { label: 'View in API',   icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
+      { label: 'action.viewInApi',  icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
       { divider: true },
-      { label: 'Edit',          icon: 'icon icon-edit',           action: 'edit',         enabled: !!a.update },
+      { label: 'action.edit',       icon: 'icon icon-edit',           action: 'edit',         enabled: !!a.update },
     ];
 
     return choices;

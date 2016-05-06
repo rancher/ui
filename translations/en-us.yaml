@@ -1,12 +1,54 @@
 languageName: "English (US)"
+
+##############################
+# Really generic things used in multiple places (use sparingly)
+##############################
 generic:
-  enabled: Enabled
+  actions: Actions
+  closeModal: Close
   disabled: Disabled
+  enabled: Enabled
+  emptyString: "" 
+  id: ID
+  missing: "*%MISSING%*"
+  moreActions: More Actions
+  name: Name
   none: None
+  state: State
 
 ##############################
 # Routes
 ##############################
+accountsPage:
+  index:
+    header: Accounts
+    localLink: Add Account
+    table:
+      state: State
+      id: Id
+      kind: Kind
+      username: Username
+      name: Name
+      identitity: Identity
+      noData: There are no accounts yet
+      noName: None
+  new:
+    header: Add Account
+    form:
+      username:
+        labelText: "Login Username*"
+        placeholder: "e.g. jsmith"
+      password:
+        labelText: "Password*"
+      name:
+        labelText: Name
+        placeholder: "e.g. John Smith"
+      type:
+        labelText: Account Type
+        dropdownList:
+      description:
+        labelText: Description
+        placeholder: "e.g. This account is for John Smith"
 
 apiPage:
   header: Environment API Keys
@@ -15,13 +57,15 @@ apiPage:
     Environment API keys are tied to this specific Environment (<code>{displayName}</code>) and can only manipulate resources within there.  Other accounts with access to this Environment can also manage these keys.
   labelText: 'Endpoint:'
   table:
-    head:
-      state: State
-      name: Name
-      description: Description
-      publicValue: Access Key
-      created: Created
+    state: State
+    name: Name
+    description: Description
+    publicValue: Access Key
+    created: Created
     noData: There are no keys for this Environment yet.
+    noName: None
+    noDescription: None
+    noPublicValue: No public value
   advanced:
     header: Account API Keys
     buttonText: Add Account API Key
@@ -176,6 +220,10 @@ authPage:
         post: 'Enabling...'
 
 certificatesPage:
+  table:
+    cn: Domain Name
+    expiresDate: Expires
+    noCn: None
   new:
     form:
       name:
@@ -183,6 +231,18 @@ certificatesPage:
       description: e.g. EV cert for mydomain.com
 
 containersPage:
+  table:
+    ipAddress: IP Address
+    primaryHost: Primary Host
+    primaryHostUnknown: Unknown
+    image: Image
+    stats: Stats
+    sparkPrefixCpu: "CPU: "
+    sparkPrefixMemory: "Memory: "
+    sparkPrefixNetwork: "Network: "
+    sparkPrefixStorage: "Storage: "
+    command: Command
+    noCommand: None
   new:
     form:
       name:
@@ -362,6 +422,7 @@ helpPage:
       At Rancher Labs we provide commercial, enterprise-grade support for {appName}, including an available 24x7 support team, and priority bug fixes.  In addition we provide implementation, integration and consulting services for organizations looking to implement and scale {appName}.  For more information on any of these services, please email our sales team. <a href="mailto:sales@rancher.com">sales@rancher.com</a>
 
 hostsPage:
+  addContainer: Add Container
   new:
     form:
       name:
@@ -572,6 +633,8 @@ openLdap:
 ##############################
 # Components
 ##############################
+accountRow:
+
 advancedSection:
   hrText: Advanced Options
 
@@ -594,6 +657,22 @@ catalogSettings:
     header: More
     helpText: You can define your own custom catalog sources here.  Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> for more info).
 
+containerLogs:
+  title: "Logs: {instanceName}"
+  onlyCombined: "<b>Note:</b> Only combined stdout/stderr logs are available for this container because it was run with the TTY (-t) flag."
+  combined: Combined
+  stdout: Standard Out
+  stderr: Standard Error
+  protip: "ProTip: Hold the {key} key when opening logs to launch a new window."
+  scrollTop: Scroll to Top
+  scrollBottom: Scroll to Bottom
+  clear: Clear Screen
+  status:
+    initializing: Initializing...
+    connected: Connected
+    disconnected: Disconnected
+    closed: Closed
+
 
 dynamicDriverSettings:
   header: Machine Drivers
@@ -608,6 +687,9 @@ dynamicDriverSettings:
       md5: MD5 Checksum
     noData: You have no Dynamic Machine Drivers.
 
+formatIp:
+  noIp: None
+  unknownIp: Unknown
 
 formNameDescription:
   name:
@@ -659,6 +741,15 @@ loginUserPass:
   loginLabel: Log In
   loggingInLabel: Logging In...
   passwordLabel: Password
+
+newCatalog:
+  saveUpgrade: Upgrade
+  saveNew: Launch
+
+newContainer:
+  saveUpgrade: Upgrade
+  saveNew: Create
+  removeSidekick: Remove this Sidekick
 
 pageFooter:
   notARelease: (Not a Release)
@@ -762,3 +853,37 @@ nav:
     themeLight: Light
     themeAuto: Auto
     themeDark: Dark
+
+##############################
+# Resource Actions
+##############################
+action:
+  activate: Activate
+  cancelUpgrade: Cancel Upgrade
+  cancelRollback: Cancel Rollback
+  clone: Clone
+  console: Open Console
+  deactivate: Deactivate
+  edit: Edit
+  execute: Execute Shell
+  exportConfig: Export Config
+  finishUpgrade: Finish Upgrade
+  logs: View Logs
+  machineConfig: Machine Config
+  purge: Purge
+  remove: Delete
+  restart: Restart
+  restore: Restore
+  retry: Retry
+  rollback: Rollback
+  setDefault: Set as Default
+  start: Start
+  startServices: Start Services
+  stop: Stop
+  stopServices: Stop Services
+  switchNamespace: Switch to this Namespace
+  switchEnvironment: Switch to this Envrionment
+  upgrade: Upgrade
+  viewConfig: View Config
+  viewGraph: View Graph
+  viewInApi: View in API
