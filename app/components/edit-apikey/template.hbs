@@ -1,32 +1,32 @@
 <section class="horizontal-form container-fluid">
   {{#if justCreated}}
-    <h2>API Key Created</h2>
+    <h2>{{t 'editApiKey.title.justCreated'}}</h2>
     <div class="form-group">
-      <label>Access Key (Username)</label>
+      <label>{{t 'editApiKey.publicValue.label'}}</label>
       <h4>{{clone.publicValue}} {{copy-to-clipboard clipboardText=clone.publicValue size='small'}}</h4>
     </div>
 
     <div class="form-group">
-      <label>Secret Key (Password)</label>
+      <label>{{t 'editApiKey.secretValue.label'}}</label>
       <h4>{{clone.secretValue}} {{copy-to-clipboard clipboardText=clone.secretValue size='small'}}</h4>
     </div>
 
     <div class="alert alert-warning">
-      <i style="float: left;" class="icon icon-alert icon-3x"></i>
-      <p style="margin-left: 50px">Save the keys above!  This is the only time you'll be able to see the secret.</p>
-      <p style="margin-left: 50px">If you lose it, you'll need to create a new API key.</p>
+      <i class="pull-left icon icon-alert icon-3x"></i>
+      <p class="r-ml50">{{t 'editApiKey.saveWarning1'}}</p>
+      <p class="r-ml50">{{t 'editApiKey.saveWarning2'}}</p>
     </div>
 
     <div class="footer-actions">
-      <button {{action "cancel"}} class="btn btn-primary">Close</button>
+      <button {{action "cancel"}} class="btn btn-primary">{{t 'generic.closeModal'}}</button>
     </div>
   {{else}}
-    <h2>{{#if editing}}Edit API Key{{else}}Add API Key{{/if}}</h2>
+    <h2>{{t (if editing 'editApiKey.title.editing' 'editApiKey.title.new')}}</h2>
 
     {{#if editing}}
       <div class="row">
         <div class="col-xs-12">
-          <label>Access Key (Username)</label>
+          <label>{{t 'editApiKey.publicValue.label'}}</label>
           <div class="form-control-static">{{originalModel.publicValue}}</div>
         </div>
       </div>
@@ -34,14 +34,14 @@
 
     {{form-name-description
       model=model
-      namePlaceholder="apiPage.edit.form.name.placeholder"
-      descriptionPlaceholder="apiPage.edit.form.description.placeholder"
+      namePlaceholder="editApiKey.name.placeholder"
+      descriptionPlaceholder="editApiKey.description.placeholder"
     }}
 
     {{#unless editing}}
       <div class="row">
         <div class="col-xs-12">
-          <p class="help-block">Name and/or description are optional to help you remember what it's used for.  You can just create a key by clicking Create</p>
+          <p class="help-block">{{t 'editApiKey.noteOptional'}}</p>
         </div>
       </div>
     {{/unless}}

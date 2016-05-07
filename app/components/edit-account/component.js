@@ -15,8 +15,8 @@ export default Ember.Component.extend(NewOrEdit,{
   newPassword2: '',
 
   accountTypeChoices: [
-    {label: 'User', value: 'user'},
-    {label: 'Admin', value: 'admin'},
+    {label: 'editAccount.form.kind.user', value: 'user'},
+    {label: 'editAccount.form.kind.admin', value: 'admin'},
   ],
 
   isLocalAuth: function() {

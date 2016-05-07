@@ -1,39 +1,39 @@
 <section class="horizontal-form container-fluid">
-  <h2>{{#if editing}}Edit{{else}}Add{{/if}} Host</h2>
+  <h2>{{t 'editHost.title'}}</h2>
   {{top-errors errors=errors}}
 
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label>Hostname</label>
+      <label>{{t 'editHost.hostname.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-8">
       {{model.hostname}}
-      <p class="help-block">As reported by the host operating system.</p>
+      <p class="help-block">{{t 'editHost.hostname.help'}}</p>
     </div>
   </div>
 
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label>Custom Name</label>
+      <label>{{t 'editHost.customName.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-8">
-      {{input type="text" value=primaryResource.name classNames="form-control" placeholder="e.g. dev1"}}
-      <p class="help-block">If this is left empty, the Hostname will be used as the Name.</p>
+      {{input type="text" value=primaryResource.name classNames="form-control" placeholder=(t 'editHost.customName.placeholder')}}
+      <p class="help-block">{{t 'editHost.customName.help'}}</p>
     </div>
   </div>
 
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label>Description</label>
+      <label>{{t 'editHost.description.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-8">
-      {{textarea value=primaryResource.description classNames="form-control no-resize" rows="5" placeholder="e.g. My development host"}}
+      {{textarea value=primaryResource.description classNames="form-control no-resize" rows="5" placeholder=(t 'editHost.description.placeholder')}}
     </div>
   </div>
 
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Labels</label>
+      <label class="form-control-static">{{t 'editHost.labels.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-8">
       {{form-user-labels
