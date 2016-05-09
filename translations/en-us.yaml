@@ -8,13 +8,14 @@ generic:
   closeModal: Close
   disabled: Disabled
   enabled: Enabled
-  emptyString: "" 
+  emptyString: ""
   id: ID
   missing: "*%MISSING%*"
   moreActions: More Actions
   name: Name
   none: None
   state: State
+  unknown: Unknown
 
 ##############################
 # Routes
@@ -224,7 +225,32 @@ certificatesPage:
     cn: Domain Name
     expiresDate: Expires
     noCn: None
+  detail:
+    header: 'Certificate:'
+    description: Description
+    info:
+      labelText: Info
+      valid: Valid Beginning
+      expires: Expires
+      algorithm: Algorithm
+      issuer: Issuer
+      serialNumber: Serial Number
+      version: Version
+    domainNames:
+      labelText: Domain Names
+  index:
+    header: Certificates
+    linkTo: Add Certificate
+    table:
+      header:
+        state: State
+        name: Name
+        domain: Domain Name
+        expires: Expires
+      body:
+        noData: You do not have any certificates yet.
   new:
+    header: Add Certificate
     form:
       name:
         placeholder: e.g. mydomain.com
@@ -243,12 +269,75 @@ containersPage:
     sparkPrefixStorage: "Storage: "
     command: Command
     noCommand: None
+  index:
+    header: Containers
+    linkTo: Add Container
+    table:
+      header:
+        state: State
+        name: Name
+        ip: Ip Address
+        host: Host
+        image: Image
+        command: Command
+      body:
+        noData: You do not have any containers yet.
   new:
     form:
       name:
         placeholder: e.g. myapp
       description:
         placeholder: e.g. My Application
+  containerPage:
+    header: 'Container:'
+    subtext:
+      on: on
+      in: in
+    infoMultiStats:
+      tooltip:
+        host: Copy IP To Clipboard
+      host: 'Host:'
+      ip: 'Container Ip:'
+      docker: 'Docker ID:'
+      image: 'Image:'
+      command: 'Command:'
+      entryPoint: 'Entry Point:'
+      description: 'Description:'
+    navTabs:
+      labels: Labels
+      volumes: Volumes
+      ports: Ports
+    portsTab:
+      table:
+        header:
+          state: State
+          ip: Ip Address
+          public: Public on Host
+          private: Private in Container
+          protocol: Protocol
+        body:
+          state: 'State:'
+          ip: 'Ip Address:'
+          public: 'Public (on Host):'
+          private: 'Private (in Container):'
+          protocol: 'Protocol:'
+    volumesTab:
+      table:
+        header:
+          state: State
+          mount: Mount Point
+          shared: Shared With
+          writable: Writable
+        body:
+          state: 'State:'
+          mount: 'Mount Point:'
+          shared: 'Shared With:'
+          writable: 'Writable:'
+          error:
+            data: 'Error:'
+            error: Error
+            noData: This container has no volumes.
+          noContainers: No other containers
 
 haPage:
   header:
@@ -423,14 +512,104 @@ helpPage:
 
 hostsPage:
   addContainer: Add Container
+  index:
+    header: Hosts
+    addHost: Add Host
+    tooltip:
+      listView: List
+      groupedView: Grouped Stacks & Sidekicks
+    columns:
+      emptyMessage: No hosts or containers yet.
   new:
+    header:
+      linkTo: "Hosts: "
+      text: Add Host
     form:
       name:
         placeholder: e.g. host01
+  hostPage:
+    header:
+      linkTo: 'Host:'
+    addContainer:
+      linkTo: Add Container
+    infoMultiStats:
+      ip: 'IP:'
+      cpu: 'CPU:'
+      memory: 'Memory:'
+      storage: 'Storage:'
+      provider:
+        labelText: 'Provider:'
+        noHost: Custom
+      kernel: 'Kernel:'
+      docker: 'Docker:'
+      os: 'OS:'
+      description: 'Description:'
+    navTabs:
+      containers: Containers
+      ports: Ports
+      labels: Labels
+      storage: Storage
+    containersTab:
+      table:
+        header:
+          state: State
+          name: Name
+          ip: Ip Address
+          image: Image (Command)
+          stats: Stats
+        body:
+          noData: 'This host does not have any containers yet.'
+    portsTab:
+      table:
+        header:
+          ip: Ip Address
+          port: Port
+          service: Service
+          container: Container
+        body:
+          noData: This host does not have any ports.
+    storageTab:
+      table:
+        header:
+          state: State
+          hostPath: Host Path
+          mounts: Mounts
+        body:
+          noData: This host does not have any volumes.
 
 loginPage:
   greeting: "Howdy!<br>Welcome to {appName}"
   githubMessage: "{appName} uses GitHub to manage accounts and teams.  Click the button below to log in and give us read-only access to your basic GitHub account information."
+
+registriesPage:
+  index:
+    header: Registries
+    linkTo: Add Registry
+    table:
+      header:
+        state: State
+        address: Address
+        email: Email
+        username: Username
+        created: Created
+      body:
+        noData: You don't have any registries yet.
+  new:
+    header: Add Registry
+    form:
+      custom:
+        labelText: Address
+        placeholder: e.g. registry.example.com
+      email:
+        labelText: Email
+        placeholder: e.g. you@example.com
+      username:
+        labelText: Username
+        placeholder: e.g. username
+      password:
+        labelText: Password
+        placeholder: e.g. password
+
 
 servicePage:
   new:
@@ -485,6 +664,18 @@ stacksPage:
         placeholder: Contents of rancher-compose.yml
       startOnCreate:
         label: Start services after creating
+
+storagePoolsPage:
+  index:
+    header: Storage Pools
+    noData: No storage pools
+  newVolume:
+    header: Add Volume
+    form:
+      driverOptions: Driver Options
+      formLabelName: Option
+
+
 
 swarmPage:
   project:

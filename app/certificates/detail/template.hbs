@@ -1,5 +1,5 @@
 <section class="header">
-  <h1>{{#link-to "certificates"}}Certificate:{{/link-to}}</h1>
+  <h1>{{#link-to "certificates"}}{{t 'certificatesPage.detail.header'}}{{/link-to}}</h1>
 
   {{#power-select options=model.allCertificates selected=model.certificate onchange=(action "changeCertificate") searchField="displayName" as |obj|}}
     <div class="clip">
@@ -13,7 +13,7 @@
 {{#if model.certificate.description}}
   <section>
     <div class="well description">
-      <label>Description</label>
+      <label>{{t 'certificatesPage.detail.description'}}</label>
       <p>{{model.certificate.description}}</p>
     </div>
   </section>
@@ -25,34 +25,34 @@
       <div class="col-sm-12 col-md-6 col-md-height col-md-full-height col-top" style="margin-bottom: 20px;">
         <div class="well no-padding-margin" style="height: 100%;">
           <div style="padding: 20px;">
-            <label class="section">Info</label>
+            <label class="section">{{t 'certificatesPage.detail.info.labelText'}}</label>
             <div>
               <ul class="list-lines">
                 <li>
-                  <label>Valid Beginning</label>
+                  <label>{{t 'certificatesPage.detail.info.valid'}}</label>
                   {{date-calendar model.certificate.issuedAt}} ({{date-from-now model.certificate.issuedDate}})
                 </li>
                 <li>
-                  <label>Expires</label>
+                  <label>{{t 'certificatesPage.detail.info.expires'}}</label>
                   <span class="{{if model.certificate.expiresSoon "text-bold text-danger"}}">
                     {{date-calendar model.certificate.expiresAt}}
                     ({{date-from-now model.certificate.expiresDate}})
                   </span>
                 </li>
                 <li class="force-wrap">
-                  <label>Algorithm</label>
+                  <label>{{t 'certificatesPage.detail.info.algorithm'}}</label>
                   {{model.certificate.algorithm}}{{#if model.certificate.keySize}} - {{model.certificate.keySize}} bits{{/if}}
                 </li>
                 <li class="force-wrap">
-                  <label>Issuer</label>
+                  <label>{{t 'certificatesPage.detail.info.issuer'}}</label>
                   {{model.certificate.displayIssuer}}
                 </li>
                 <li class="force-wrap">
-                  <label>Serial Number</label>
+                  <label>{{t 'certificatesPage.detail.info.serialNumber'}}</label>
                   {{model.certificate.serialNumber}}
                 </li>
                 <li>
-                  <label>Version</label>
+                  <label>{{t 'certificatesPage.detail.info.version'}}</label>
                   {{model.certificate.version}}
                 </li>
               </ul>
@@ -63,7 +63,7 @@
       <div class="col-sm-12 col-md-6 col-md-height col-md-full-height col-top" style="margin-bottom: 20px;">
         <div class="well no-padding-margin" style="height: 100%;">
           <div style="padding: 20px;">
-            <label class="section">Domain Names</label>
+            <label class="section">{{t 'certificatesPage.detail.domainNames.labelText'}}</label>
             <div>
               <ul class="list-unstyled">
                 {{#if model.certificate.CN}}
@@ -72,7 +72,7 @@
                     <li><a href="https://{{san}}" target="_blank">{{san}}</a></li>
                   {{/each}}
                 {{else}}
-                  <span class="text-muted">None</span>
+                  <span class="text-muted">{{t 'generic.none'}}</span>
                 {{/if}}
               </ul>
             </div>
