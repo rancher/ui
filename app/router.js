@@ -211,11 +211,11 @@ Router.map(function() {
 
 
   // Modals
-  this.modal('delete-confirmation', {
+  this.modal('confirm-delete', {
     dismissWithOutsideClick : false,
     dialogClass             : 'small',
-    withParams              : {'confirmDeleteResources' : 'resources'},
-    actions                 : {confirm                  : 'confirmDelete'}
+    withParams              : {confirmDeleteResources : 'resources'},
+    actions                 : {confirm                : 'confirmDelete'}
   });
 
   this.modal('modal-about', {

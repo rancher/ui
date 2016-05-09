@@ -10,10 +10,12 @@ generic:
   enabled: Enabled
   emptyString: ""
   id: ID
+  loading: "Loading..."
   missing: "*%MISSING%*"
   moreActions: More Actions
   name: Name
   none: None
+  remove: Remove
   state: State
   unknown: Unknown
 
@@ -74,12 +76,6 @@ apiPage:
       paragraph1: Account API Keys are tied to your specific account
       paragraph2: "and can create, delete, and manipulate all Environments which you have access to."
       noData: "You don't have any Account API keys yet."
-  edit:
-    form:
-      name:
-        placeholder: e.g. App servers
-      description:
-        placeholder: e.g. This key is used by the app servers to deploy containers
 
 auditLogsPage:
   header: Audit Logs
@@ -254,7 +250,8 @@ certificatesPage:
     form:
       name:
         placeholder: e.g. mydomain.com
-      description: e.g. EV cert for mydomain.com
+      description:
+        placeholder: e.g. EV cert for mydomain.com
 
 containersPage:
   table:
@@ -338,6 +335,10 @@ containersPage:
             error: Error
             noData: This container has no volumes.
           noContainers: No other containers
+
+containerSubpod:
+  childContainers: Containers
+  childSidekicks: Sidekicks
 
 haPage:
   header:
@@ -624,12 +625,6 @@ servicePage:
         placeholder: e.g. myapp
       description:
         placeholder: e.g. Current version of MyApp
-  newExternal:
-    form:
-      name:
-        placeholder: e.g. external-db
-      description:
-        placeholder: e.g. External physical database server
   newBalancer:
     form:
       name:
@@ -710,6 +705,7 @@ processesPage:
         startTime: Started
         endTime: Ended
         duration: Duration
+      noData: There are no recent processes.
   processPage:
     header: Settings
 
@@ -848,6 +844,13 @@ catalogSettings:
     header: More
     helpText: You can define your own custom catalog sources here.  Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> for more info).
 
+confirmDelete:
+  title: 'Are you sure you want to delete'
+  environmentNote: 'Note: All resources inside this Environment will be permanently removed, including any Hosts that were created through {appName}.'
+  protip: 'ProTip: Hold the {key} key while clicking Delete to bypass this confirmation.'
+  confirmAction: Delete
+  cancelAction: Cancel
+
 containerLogs:
   title: "Logs: {instanceName}"
   onlyCombined: "<b>Note:</b> Only combined stdout/stderr logs are available for this container because it was run with the TTY (-t) flag."
@@ -864,10 +867,29 @@ containerLogs:
     disconnected: Disconnected
     closed: Closed
 
+containerShell:
+  protip: "ProTip: Hold the {key} key when opening shell access to launch a new window."
+  status:
+    initializing: Initializing...
+    error: "Error: {error}"
+    connected: Connected
+    disconnected: Disconnected
+    closed: Closed
+
+copyToClipboard:
+  tooltip: Copy to Clipboard
+  copied: Copied!
+
+devicePermissions:
+  all: All
+  none: None
+  read: Read
+  write: Write
+  mknod: Mknod
 
 dynamicDriverSettings:
   header: Machine Drivers
-  subtext: Additional <code>docker-machine</code> drivers can be loaded here and used in the Add Host screen.
+  subtext: "Additional <code>docker-machine</code> drivers can be loaded here and used in the Add Host screen."
   add: Add Machine Driver
   table:
     header:
@@ -878,9 +900,103 @@ dynamicDriverSettings:
       md5: MD5 Checksum
     noData: You have no Dynamic Machine Drivers.
 
+editAccount:
+  title: Edit Account
+  form:
+    name:
+      label: Name
+      placeholder: e.g. John Smith
+    kind:
+      label: Account Type
+      user: User
+      admin: Admin
+    description:
+      label: Description
+      placeholder: e.g. This account is for John Smith
+    publicValue:
+      label: Login Username
+    oldPassword:
+      label: Current Password
+    newPassword:
+      label: New Password
+    confirmPassword:
+      label: Confirm Password
+    identity:
+      label: Identity
+
+editAliasService:
+  title: Edit Service Alias
+
+editApiKey:
+  title:
+    justCreated: API Key Created
+    editing: Edit API Key
+    new: New API Key
+  publicValue:
+    label: Access Key (Username)
+  secretValue:
+    label: Secret Key (Password)
+  name:
+    placeholder: e.g. App servers
+  description:
+    placeholder: e.g. This key is used by the app servers to deploy containers
+  saveWarning1: Save the keys above!  This is the only time you'll be able to see the secret.
+  saveWarning2: If you lose it, you'll need to create a new API key.
+  noteOptional: Name and/or description are optional to help you remember what it's used for.  You can just create a key by clicking Create.
+
+editCertificate:
+  title: Edit Certificate
+  name:
+    placeholder: e.g. mydomain.com
+  description:
+    placeholder: e.g. EV cert for mydomain.com
+  noteKeyWriteOnly: "Note: The Private Key is intentionally blank because the field is write-only.  You will need to provide the Private Key again to update the certificate, even if it hasn't changed."
+
+editContainer:
+  title:
+    vm: Edit VM
+    container: Edit Container
+  name:
+    placeholder: e.g. myapp
+  description:
+    placeholder: e.g. My Application
+
+editExternalService:
+  title: Edit External Service
+  name:
+    placeholder: e.g. external-db
+  description:
+    placeholder: e.g. External physical database server
+
+editHost:
+  title: Edit Host
+  hostname:
+    label: Hostname
+    help: As reported by the host operating system.
+  customName:
+    label: Custom Name
+    placeholder: e.g. dev1
+    help: If this is left empty, the Hostname will be shown as the Name.
+  description:
+    label: Description
+    placeholder: e.g. My development host
+  labels:
+    label: Labels
+
+editStack:
+  title: Edit Stack
+  name:
+    placeholder: e.g. myapp
+  description:
+    placeholder: e.g. MyApp Stack
+
 formatIp:
   noIp: None
   unknownIp: Unknown
+
+formContainerLinks:
+  targetInstance:
+    prompt: Select a Container...
 
 formNameDescription:
   name:
@@ -889,6 +1005,27 @@ formNameDescription:
   description:
     label: Description
     placeholder: Description
+
+formServiceLinks:
+  service:
+    prompt: Select a Service...
+
+formSslTermination:
+  defaultCertificate:
+    prompt: Choose a Certificate...
+  alternateCertificate:
+    prompt: Choose a Certificate...
+
+formUserLabels:
+  addAction: Add Label
+  key: Key
+  separator: "="
+  value: Value
+  protip: "ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
+
+formVolumes:
+  value:
+    prompt: Select a Container...
 
 heroAddService:
   header: Adding your first Service
@@ -917,11 +1054,21 @@ hostSettings:
     alert: |
       Are you sure all the hosts you will create will be able to reach <code>{activeValue}</code> ?<br/>It looks like a private IP or local network.
 
+schema:
+  inputCertificate:
+    prompt: Choose a Certificate...
+  inputService:
+    prompt: Choose a Service...
+
 inputPassword:
   buttonText: Generate
 
 inputTextFile:
   tooltip: Read from a file
+
+loadbalancerTargetRow:
+  value:
+    prompt: Select a Service...
 
 loginGithub:
   buttonText: Authenticate with GitHub
@@ -933,7 +1080,12 @@ loginUserPass:
   loggingInLabel: Logging In...
   passwordLabel: Password
 
+modalShell:
+  title: "Shell: {instanceName}"
+
 newCatalog:
+  version:
+    prompt: Choose a version...
   saveUpgrade: Upgrade
   saveNew: Launch
 
@@ -941,6 +1093,10 @@ newContainer:
   saveUpgrade: Upgrade
   saveNew: Create
   removeSidekick: Remove this Sidekick
+  name:
+    placeholder: e.g. myapp
+  description:
+    placeholder: e.g. My Application
 
 pageFooter:
   notARelease: (Not a Release)
