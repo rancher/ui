@@ -1,19 +1,19 @@
 <section class="header">
-  <h1>Services</h1>
+  <h1>{{t 'k8sTab.namespace.services.header'}}</h1>
 
-  {{#link-to "k8s-tab.apply" (query-params kind="Service") classNames="btn btn-sm btn-primary"}}Add Service{{/link-to}}
+  {{#link-to "k8s-tab.apply" (query-params kind="Service") classNames="btn btn-sm btn-primary"}}{{t 'k8sTab.namespace.services.linkTo'}}{{/link-to}}
 </section>
 
 <section class="well instances">
   <table class="grid fixed" style="margin-bottom: 0;">
     <thead>
       <tr>
-        {{sortable-th sortable=this action="changeSort" name="name"}}
-        {{sortable-th sortable=this action="changeSort" name="serviceType" width="150" label="Type"}}
-        <th width="150">Cluster IP</th>
-        <th width="80">Pods</th>
-        <th>Ports</th>
-        <th>Selectors</th>
+        {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
+        {{sortable-th sortable=this action="changeSort" name="serviceType" width="150" label="generic.type"}}
+        <th width="150">{{t 'k8sTab.namespace.services.table.header.cluster'}}</th>
+        <th width="80">{{t 'k8sTab.namespace.services.table.header.pods'}}</th>
+        <th>{{t 'k8sTab.namespace.services.table.header.ports'}}</th>
+        <th>{{t 'k8sTab.namespace.services.table.header.selectors'}}</th>
         <th class="actions" width="85">&nbsp;</th>
       </tr>
     </thead>
@@ -21,7 +21,7 @@
       {{#each arranged as |service|}}
         {{k8s/service-row model=service}}
       {{else}}
-        <tr><td colspan="7" class="text-center text-muted">You do not have any Services yet.</td></tr>
+        <tr><td colspan="7" class="text-center text-muted">{{t 'k8sTab.namespace.services.table.body.noData'}}</td></tr>
       {{/each}}
     </tbody>
   </table>

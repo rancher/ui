@@ -2,9 +2,9 @@
   <thead>
     {{#if labelArray.length}}
       <tr>
-        {{#if showKind}}{{sortable-th sortable=this action="changeSort" name="kind" width="90"}}{{/if}}
-        {{sortable-th sortable=this action="changeSort" name="key"}}
-        {{sortable-th sortable=this action="changeSort" name="value"}}
+        {{#if showKind}}{{sortable-th sortable=this action="changeSort" name="kind" label='labelsSection.kind' width="90"}}{{/if}}
+        {{sortable-th sortable=this action="changeSort" name="key" label='labelsSection.key'}}
+        {{sortable-th sortable=this action="changeSort" name="value" label='labelsSection.value'}}
       </tr>
     {{/if}}
   </thead>
@@ -16,7 +16,7 @@
         <td data-title="Value:" class="force-wrap">{{pretty-json value=label.value}}</td>
       </tr>
     {{else}}
-      <tr><td colspan="3" class="text-center text-muted">No labels</td></tr>
+      <tr><td colspan="3" class="text-center text-muted">{{t 'labelsSection.noData'}}</td></tr>
     {{/each}}
   </tbody>
 </table>
