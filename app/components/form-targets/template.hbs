@@ -1,9 +1,9 @@
 <div class="row">
   <div class="col-xs-6 col-md-2 form-label">
-    <label>Targets</label>
+    <label>{{t 'formTargets.title'}}</label>
   </div>
   <div class="col-xs-6 col-md-8">
-    <button class="btn-circle-text" {{action "addTargetService"}}><i class="icon icon-plus-circle"/> <span>Add Service</span></button>
+    <button class="btn-circle-text" {{action "addTargetService"}}><i class="icon icon-plus-circle"/> <span>{{t 'formTargets.addAction'}}</span></button>
   </div>
 </div>
 <div class="row">
@@ -13,18 +13,18 @@
         <thead>
           <tr>
             {{#if isAdvanced}}
-              <th>Request Host</th>
-              <th width="90">Source Port</th>
-              <th>Request Path</th>
+              <th>{{t 'formTargets.hostname.label'}}</th>
+              <th width="90">{{t 'formTargets.srcPort.label'}}</th>
+              <th>{{t 'formTargets.srcPort.path'}}</th>
               <th width="30">&nbsp;</th>
             {{/if}}
             {{#if isBalancer}}
-              <th>Target Service*</th>
+              <th>{{t 'formTargets.value.label'}}*</th>
             {{else}}
               <th>&nbsp;</th>
             {{/if}}
             {{#if isAdvanced}}
-              <th width="90">Target Port</th>
+              <th width="90">{{t 'formTargets.dstPort.label'}}</th>
             {{/if}}
             <th width="30">&nbsp;</th>
           </tr>
@@ -41,15 +41,15 @@
 {{#if isAdvanced}}
   <div class="row">
     <div class="col-sm-12 col-md-8 col-md-offset-2">
-      <p class="help-block">If Request Host and/or Path are specified, connections to HTTP listening ports will be routed to the appropriate target based on the request.  For example, you could use this to send traffic for domain1.com to a different service than domain2.com, or domain3.com/admin to a different service than domain3.com.</p>
-      <p class="help-block">Matching requests will be sent to the Target Service on the Target Port.  If that is not set, then the Default Target port for the Source Port.  If that is also not set, then the Source Port.</p>
+      <p class="help-block">{{t 'formTargets.advanced.help1'}}</p>
+      <p class="help-block">{{t 'formTargets.advanced.help2'}}</p>
     </div>
   </div>
 {{else}}
   {{#if (and isBalancer targetsArray.length)}}
     <div class="row">
       <div class="col-sm-12 col-md-8 col-md-offset-2">
-        <button {{action "setAdvanced"}} class="btn btn-link btn-sm r-p0" type="button">Show advanced routing options</button><small>&ndash; Direct requests to different services based on port, Host header, or request path</small>
+        <button {{action "setAdvanced"}} class="btn btn-link btn-sm r-p0" type="button">{{t 'formTargets.advanced.toggle'}}</button><small>&ndash; {{t 'formTargets.advanced.detail'}}</small>
       </div>
     </div>
   {{/if}}

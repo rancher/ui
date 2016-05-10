@@ -1,21 +1,21 @@
 {{#if isAdvanced}}
-  <td>
-    {{input classNames="form-control input-sm" value=tgt.hostname placeholder="e.g. svc.com"}}
+  <td data-title="{{t 'formTargets.hostname.label'}}">
+    {{input classNames="form-control input-sm" value=tgt.hostname placeholder=(t 'formTargets.hostname.placeholder')}}
   </td>
-  <td>
-    {{input classNames="form-control input-sm" value=tgt.srcPort placeholder="e.g. 80"}}
+  <td data-title="{{t 'formTargets.hostname.srcPort'}}">
+    {{input classNames="form-control input-sm" value=tgt.srcPort placeholder=(t 'formTargets.srcPort.placeholder')}}
   </td>
-  <td>
-    {{input classNames="form-control input-sm" value=tgt.path placeholder="e.g. /svc"}}
+  <td data-title="{{t 'formTargets.hostname.path'}}">
+    {{input classNames="form-control input-sm" value=tgt.path placeholder=(t 'formTargets.path.placeholder')}}
   </td>
   <td class="text-center">
     <div class="form-control-static input-sm"><i class="icon icon-chevron-right"></i></div>
   </td>
 {{/if}}
-<td>
+<td data-title="{{t 'formTargets.value.label'}}">
   {{new-select
     classNames="form-control input-sm lb-target"
-    prompt="loadbalancerTargetRow.value.prompt"
+    prompt="formTargets.value.prompt"
     value=tgt.value
     content=targetChoices
     optionValuePath="id"
@@ -23,10 +23,10 @@
   }}
 </td>
 {{#if isAdvanced}}
-  <td>
-    {{input classNames="form-control input-sm" value=tgt.dstPort placeholder="e.g. 8080"}}
+  <td data-title="{{t 'formTargets.dstPort.label'}}">
+    {{input classNames="form-control input-sm" value=tgt.dstPort placeholder=(t 'formTargets.dstPort.placeholder')}}
   </td>
 {{/if}}
 <td class="text-right">
-  <button class="btn btn-primary btn-sm" {{action "remove"}}><i class="icon icon-minus"/></button>
+  <button class="btn btn-primary btn-sm" {{action "remove"}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
 </td>

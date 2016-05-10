@@ -1,18 +1,18 @@
 {{#if (or editing (not showGlobal))}}
   <div class="row">
     <div class="col-xs-12 form-label">
-      <label class="form-control-static">{{label}}</label>
+      <label class="form-control-static">{{t 'formScale.label'}}</label>
     </div>
   </div>
 
   <div class="row form-group">
     {{#if isGlobal}}
       <div class="col-sm-12 col-md-12">
-        <span class="text-muted"> Always run one instance of this {{if isVm 'virtual machine' 'container'}} on every host</span>
+        <span class="text-muted">{{t (if isVm 'formScale.global.vm' 'formScale.global.container')}}</span>
       </div>
     {{else}}
       <div class="col-sm-2 col-md-2">
-        {{scale}}
+        {{format-number scale}}
       </div>
       <div class="col-sm-10 col-md-10">
         {{input-slider value=scale valueMax=max scaleMax=oneLouder}}
@@ -22,13 +22,13 @@
 {{else}}
   <div class="row">
     <div class="col-xs-12 form-label">
-      <label class="form-control-static">{{label}}</label>
+      <label class="form-control-static">{{t 'formScale.label'}}</label>
     </div>
   </div>
   <div class="row">
     <div class="col-sm-3 col-md-3">
       <div class="radio">
-        <label>{{radio-button selection=isGlobal value=false}} Run {{scale}} {{if isVm 'virtual machine' 'container'}}{{#if (not (eq scale 1))}}s{{/if}}</label>
+        <label>{{radio-button selection=isGlobal value=false}} {{t (if isVm 'formScale.regular.vm' 'formScale.regular.container') scale=scale}}</label>
       </div>
     </div>
     <div class="col-sm-9 col-md-9">
@@ -38,7 +38,7 @@
   <div class="row">
     <div class="col-sm-12 col-md-12">
       <div class="radio">
-        <label>{{radio-button selection=isGlobal value=true}} Always run one instance of this {{if isVm 'virtual machine' 'container'}} on every host</label>
+        <label>{{radio-button selection=isGlobal value=true}} {{t (if isVm 'formScale.global.vm' 'formScale.global.container')}}</label>
       </div>
     </div>
   </div>

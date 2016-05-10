@@ -3,46 +3,46 @@
     {{#unless editing}}
       <div class="over-hr r-p10">
         <span>
-          <button class="btn-circle" {{action "addPort"}}><i class="icon icon-plus-circle"/> Port Map</button>
+          <button class="btn-circle" {{action "addPort"}}><i class="icon icon-plus-circle"/> {{t 'formPorts.addAction'}}</button>
         </span>
       </div>
     {{/unless}}
     {{#if portsArray.length}}
       <table class="table fixed no-lines no-top-padding tight small">
         <tr class="text-muted">
-          <th>Public Host [IP:]Port</th>
+          <th>{{t 'formPorts.public.label'}}</th>
           <th width="30">&nbsp;</th>
-          <th>Private Container Port</th>
+          <th>{{t 'formPorts.private.label'}}</th>
           <th width="30">&nbsp;</th>
-          <th width="60">Protocol</th>
+          <th width="60">{{t 'formPorts.protocol.label'}}</th>
           <th width="30">&nbsp;</th>
         </tr>
         {{#each portsArray as |port|}}
           <tr>
-            <td>
+            <td data-title="{{t 'formPorts.public.label'}}">
               {{#if (and port.existing port.bindAddress)}}
                 <div class="input-group">
                   <span class="input-group-addon input-sm">
                     {{port.bindAddress}}:
                   </span>
-                  {{input class="form-control input-sm" type="text" value=port.public placeholder="e.g. 80"}}
+                  {{input class="form-control input-sm" type="text" value=port.public placeholder=(t 'formPorts.public.placeholderWithoutIp')}}
                 </div>
               {{else}}
-                {{input class="form-control input-sm" type="text" value=port.public placeholder="e.g. 80 or 1.2.3.4:80"}}
+                {{input class="form-control input-sm" type="text" value=port.public placeholder=(t 'formPorts.public.placeholderWithIp')}}
               {{/if}}
             </td>
             <td class="text-center">
               <p class="form-control-static"><i class="icon icon-chevron-right"></i></p>
             </td>
-            <td>
+            <td data-title="{{t 'formPorts.private.label'}}">
               {{#if port.existing}}
                 <div class="form-control-static text-muted">{{port.private}}</div>
               {{else}}
-                {{input class="form-control input-sm" type="number" min="1" max="65535" value=port.private placeholder="e.g. 8080"}}
+                {{input class="form-control input-sm" type="number" min="1" max="65535" value=port.private placeholder=(t 'formPorts.private.placeholder')}}
               {{/if}}
             </td>
             <td class="text-center">/</td>
-            <td>
+            <td data-title="{{t 'formPorts.protocol.label'}}">
               {{#if port.existing}}
                 <div class="form-control-static text-muted">{{upper-case port.protocol}}</div>
               {{else}}
@@ -56,7 +56,7 @@
               {{#if port.existing}}
                 &nbsp;
               {{else}}
-                <button class="btn btn-primary btn-sm" {{action "removePort" port}}><i class="icon icon-minus"/></button>
+                <button class="btn btn-primary btn-sm" {{action "removePort" port}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
               {{/if}}
             </td>
           </tr>
@@ -64,7 +64,7 @@
       </table>
     {{else}}
       {{#if editing}}
-        <span class="text-center text-muted">This container has no port maps.</span>
+        <span class="text-center text-muted">{{t 'formPorts.noPorts'}}</span>
       {{/if}}
     {{/if}}
   </div>

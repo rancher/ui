@@ -1,25 +1,24 @@
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label>Links</label>
+    <label>{{t 'formContainerLinks.label'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">
     {{#unless editing}}
       <div>
         {{#if containersOnRequestedHostIfUnmanaged.length}}
-          <button class="btn-circle" {{action "addLink"}}><i class="icon icon-plus-circle"/></button>
-
+          <button class="btn-circle" {{action "addLink"}}><i class="icon icon-plus-circle"/> {{t 'formContainerLinks.addActionLabel'}}</button>
         {{else}}
-          <span class="text-muted">There are no other containers to link to.</span>
+          <span class="text-muted">{{t 'formContainerLinks.noContainers'}}</span>
         {{/if}}
       </div>
     {{/unless}}
     {{#if linksArray.length}}
       <table class="table fixed no-lines no-top-padding tight small">
         <tr class="text-muted">
-          <th>Destination Container</th>
+          <th>{{t 'formContainerLinks.targetInstance.label'}}</th>
           <th width="30">&nbsp;</th>
-          <th>As Name</th>
+          <th>{{t 'formContainerLinks.name.label'}}</th>
           <th width="30">&nbsp;</th>
         </tr>
         {{#each linksArray as |link|}}
@@ -42,12 +41,12 @@
               {{#if editing}}
                 <p class="form-control-static input-sm text-muted">{{link.name}}</p>
               {{else}}
-                {{input class="form-control input-sm" type="text" value=link.name placeholder="e.g. database"}}
+                {{input class="form-control input-sm" type="text" value=link.name placeholder=(t 'formContainerLinks.name.placeholder')}}
               {{/if}}
             </td>
             <td class="text-right">
               {{#unless link.existing}}
-                <button class="btn btn-primary btn-sm" {{action "removeLink" link}}><i class="icon icon-minus"/></button>
+                <button class="btn btn-primary btn-sm" {{action "removeLink" link}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
               {{/unless}}
             </td>
           </tr>
@@ -55,7 +54,7 @@
       </table>
     {{else}}
       {{#if editing}}
-        <span class="text-center text-muted">This container has no links.</span>
+        <span class="text-center text-muted">{{t 'formContainerLinks.noLinks'}}</span>
       {{/if}}
     {{/if}}
   </div>

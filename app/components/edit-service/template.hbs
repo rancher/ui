@@ -1,13 +1,12 @@
 {{#liquid-if loading}}
   <div class="text-center">
     <p>
-      <i class="icon icon-spinner icon-spin"></i> Loading...
+      <i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}
     </p>
   </div>
 {{else}}
   <section class="horizontal-form container-fluid">
-    <h2>{{#if editing}}Edit{{else}}Add{{/if}} Service</h2>
-    {{top-errors errors=errors}}
+    <h2>{{t 'editService.title'}}</h2>
 
     {{form-scale
       editing=true
@@ -29,5 +28,6 @@
     }}
   </section>
 
+  {{top-errors errors=errors}}
   {{save-cancel save="save" cancel="cancel"}}
 {{/liquid-if}}

@@ -3,28 +3,28 @@
     <div class="over-hr r-p10">
       {{#if serviceChoices.length}}
       <span>
-        <button class="btn-circle" {{action "addServiceLink"}}><i class="icon icon-plus-circle"/> Service Links</button>
+        <button class="btn-circle" {{action "addServiceLink"}}><i class="icon icon-plus-circle"/> {{t 'formServiceLinks.addAction'}}</button>
       </span>
       {{else}}
-        <span class="text-muted">There are no other services to link to.</span>
+        <span class="text-muted">{{t 'formServiceLinks.noServices'}}</span>
       {{/if}}
     </div>
     {{#if serviceLinksArray.length}}
       <table class="table fixed no-lines no-top-padding tight small">
         <tr class="text-muted">
-          <th>Destination Service</th>
+          <th>{{t 'formServiceLinks.service.label'}}</th>
           {{#if withAlias}}
             <th width="30">&nbsp;</th>
-            <th>As Name</th>
+            <th>{{t 'formServiceLinks.name.label'}}</th>
           {{/if}}
           <th width="30">&nbsp;</th>
         </tr>
         {{#each serviceLinksArray as |link|}}
           <tr>
-            <td>
+            <td data-title="{{t 'formServiceLinks.service.label'}}">
               {{new-select
                 classNames="form-control service-link input-sm"
-                prompt="formServiceLInks.service.prompt"
+                prompt="formServiceLinks.service.prompt"
                 value=link.serviceId
                 content=serviceChoices
                 optionValuePath="id"
@@ -36,19 +36,19 @@
               <td class="text-center">
                 <p class="form-control-static"><i class="icon icon-chevron-right"></i></p>
               </td>
-              <td>
-                {{input class="form-control input-sm" type="text" value=link.name placeholder="e.g. database"}}
+              <td data-title="{{t 'formServiceLinks.name.label'}}">
+                {{input class="form-control input-sm" type="text" value=link.name placeholder=(t 'formServiceLinks.name.placeholder')}}
               </td>
             {{/if}}
             <td class="text-right">
-              <button class="btn btn-primary btn-sm" {{action "removeServiceLink" link}}><i class="icon icon-minus"/></button>
+              <button class="btn btn-primary btn-sm" {{action "removeServiceLink" link}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
             </td>
           </tr>
         {{/each}}
       </table>
     {{else}}
       {{#if editing}}
-        <span class="text-center text-muted">This service has no service links.</span>
+        <span class="text-center text-muted">{{t 'formServiceLinks.noLinks'}}</span>
       {{/if}}
     {{/if}}
   </div>

@@ -295,7 +295,7 @@ Router.map(function() {
     otherParams             : 'originalModel',
   });
 
-  this.modal('edit-loadbalancerservice', {
+  this.modal('edit-balancerservice', {
     dismissWithOutsideClick : false,
     withParams              : 'editLoadBalancerService',
     otherParams             : 'originalModel',
