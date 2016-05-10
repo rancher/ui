@@ -1,9 +1,9 @@
-<button class="btn-circle-text" {{action "add"}}><i class="icon icon-plus-circle"/> <span>Add {{nameLabel}}</span></button>
+<button class="btn-circle-text" {{action "add"}}><i class="icon icon-plus-circle"/> <span>{{t addActionLabel}}</span></button>
 
 {{#if ary.length}}
   <table class="table fixed no-lines no-top-padding tight small">
     <tr class="text-muted hidden-sm">
-      <th>{{valueLabel}}</th>
+      <th>{{t valueLabel}}</th>
       <th width="30">&nbsp;</th>
     </tr>
     {{#each ary as |row|}}
@@ -13,14 +13,14 @@
         </td>
 
         <td class="text-right">
-          <button class="btn btn-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/></button>
+          <button class="btn btn-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
         </td>
       </tr>
     {{/each}}
   </table>
   {{#if showProTip}}
     <div class="text-muted" style="font-size: 12px; margin-bottom: 12px;">
-      ProTip: Paste one or more lines of values into any field for easy bulk entry.
+      {{t 'formValueArray.protip'}}
     </div>
   {{/if}}
 {{/if}}

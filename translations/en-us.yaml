@@ -191,7 +191,7 @@ authPage:
       disabled: '{appName} can be configured to restrict access to a set of accounts defined in the {appName} database.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.'
     accessEnabled:
       header: 'Danger Zone&trade;'
-      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {{settings.appName}} to anyone that can reach this page or the API.'
+      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName}} to anyone that can reach this page or the API.'
       buttonText:
         disable: 'Are you sure?  Click again to really disable access control'
         prompt: Disable access control
@@ -757,7 +757,7 @@ openLdap:
       search: "Search Field:"
     disable:
       header: "Danger Zone&trade;"
-      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {{settings.appName}} to anyone that can reach this page or the API.'
+      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
       confirmDisable:
         pre: Disable access control
         post: "Are you sure?  Click again to really disable access control"
@@ -1115,22 +1115,50 @@ formContainerLinks:
     label: As Name
     placeholder: e.g. database
 
+formDisks:
+  addDiskLabel: Add Disk
+  addRootDiskLabel: Add Root Disk
+  name:
+    rootDisk: Root Disk
+    label: Name
+    placeholder: e.g. data
+  size:
+    label: Size
+  driver:
+    label: Driver
+
 formEngineOpts:
-  opts:
+  engineInstallUrl:
+    label: Docker Install URL
+    placeholder: e.g. http://get.docker.com/
+  engineStorageDriver:
+    label: Storage Driver
+    placeholder: e.g. overlay
+  engineOpts:
     label: Engine Options
     addActionLabel: Add Engine Option
     keyPlaceholder: e.g. log-driver
     valuePlaceholder: e.g. syslog
-  labels:
+  engineLabels:
     label: Engine Labels
     addActionLabel: Add Engine Label
     keyLabel: Label
-  env:
+  engineEnv:
     label: Engine Environment
     addActionLabel: Add Environment Variable
     keyLabel: Variable
     keyPlaceholder: e.g. HTTP_PROXY
     valuePlaceholder: e.g. http://your-proxy:8080
+  engineInsecureRegistry:
+    label: Insecure Registries
+    addActionLabel: Add Insecure Registry
+    valueLabel: Registry Domain
+    valuePlaceholder: e.g. registry.example.com
+  engineRegistryMirror:
+    label: Registry Mirrors
+    addActionLabel: Add Registry Mirror
+    valueLabel: Mirror URL
+    valuePlaceholder: e.g. https://my-mirror.example.com:5000
 
 formKeyValue:
   addAction: Add Pair
@@ -1241,6 +1269,12 @@ formUserLabels:
   separator: "="
   value: Value
   protip: "ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
+
+formValueArray:
+  addActionLabel: Add Value
+  valueLabel: Value
+  valuePlacholder: Value
+  protip: "ProTip: Paste one or more lines of values into any field for easy bulk entry."
 
 formVolumes:
   value:
