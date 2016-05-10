@@ -1,25 +1,25 @@
 <div class="form-control-static">
-  <button class="btn-circle-text" {{action "addDisk"}}><i class="icon icon-plus-circle"/> <span>Add Disk</span></button>
-  <button class="btn-circle-text r-ml20" {{action "addRootDisk"}} disabled={{hasRoot}}><i class="icon icon-plus-circle"/> <span>Add Root Disk</span></button>
+  <button class="btn-circle-text" {{action "addDisk"}}><i class="icon icon-plus-circle"/> <span>{{t 'formDisks.addDiskLabel'}}</span></button>
+  <button class="btn-circle-text r-ml20" {{action "addRootDisk"}} disabled={{hasRoot}}><i class="icon icon-plus-circle"/> <span>{{t 'formDisks.addRootDiskLabel'}}</span></button>
 </div>
 
 {{#if disksArray.length}}
   <table class="table fixed no-lines no-top-padding tight">
     <tr class="text-muted">
-      <th>Name*</th>
+      <th>{{t 'formDisks.name.label'}}*</th>
       <th width="30">&nbsp;</th>
-      <th>Size</th>
+      <th>{{t 'formDisks.size.label'}}</th>
       <th width="30">&nbsp;</th>
-      <th width="130">Driver</th>
+      <th width="130">{{t 'formDisks.driver.label'}}</th>
       <th width="50"></th>
     </tr>
     {{#each disksArray as |disk|}}
       <tr>
         <td>
           {{#if disk.root}}
-            Root Disk
+            {{t 'formDisks.name.rootDisk'}}
           {{else}}
-            {{input class="form-control input-sm" type="text" value=disk.name placeholder="e.g. data"}}
+            {{input class="form-control input-sm" type="text" value=disk.name placeholder=(t 'formDisks.name.placeholder')}}
           {{/if}}
         </td>
 
@@ -43,7 +43,7 @@
         </td>
 
         <td class="text-right">
-          <button class="btn btn-primary btn-sm" {{action "removeDisk" disk}}><i class="icon icon-minus"/></button>
+          <button class="btn btn-primary btn-sm" {{action "removeDisk" disk}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
         </td>
       </tr>
     {{/each}}

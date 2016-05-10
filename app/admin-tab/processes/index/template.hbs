@@ -43,28 +43,28 @@
       <tbody>
         {{#each arranged as |instance|}}
           <tr>
-            <td data-title="ID:">
+            <td data-title="{{t 'processesPage.indexPage.table.header.id'}}:">
               <span class={{if instance.endTime 'label label-success' 'label label-warning'}}>{{instance.id}}</span>
             </td>
-            <td data-title="Name:" class="clip">{{#link-to 'admin-tab.processes.process' instance.id classNames='hand'}}<span title={{instance.processName}}>{{instance.processName}}</span>{{/link-to}}</td>
-            <td data-title="Resource Type(ID):" class="clip">
+            <td data-title="{{t 'processesPage.indexPage.table.header.processName'}}:" class="clip">{{#link-to 'admin-tab.processes.process' instance.id classNames='hand'}}<span title={{instance.processName}}>{{instance.processName}}</span>{{/link-to}}</td>
+            <td data-title="{{t 'processesPage.indexPage.table.header.resource'}}:" class="clip">
               {{process-link model=instance}}
             </td>
-            <td data-title="Exit Reason:">{{instance.exitReason}}</td>
+            <td data-title="{{t 'processesPage.indexPage.table.header.processName'}}:">{{instance.exitReason}}</td>
             {{#if instance.startTime}}
-              <td data-title="Started:">{{date-from-now instance.startTime}}</td>
+              <td data-title="{{t 'processesPage.indexPage.table.header.startTime'}}:">{{date-from-now instance.startTime}}</td>
             {{else}}
               <td></td>
             {{/if}}
             {{#if instance.endTime}}
-              <td data-title="Ended:">{{date-from-now instance.endTime}}</td>
+              <td data-title="{{t 'processesPage.indexPage.table.header.endTime'}}:">{{date-from-now instance.endTime}}</td>
             {{else}}
               <td></td>
             {{/if}}
-            <td data-title="Duration:">{{run-time instance.startTimeTS instance.endTimeTS}}</td>
+            <td data-title="{{t 'processesPage.indexPage.table.header.duration'}}:">{{run-time instance.startTimeTS instance.endTimeTS}}</td>
           </tr>
         {{else}}
-          <tr><td colspan="7" class="text-center text-muted">There are no recent processes.</td></tr>
+          <tr><td colspan="7" class="text-center text-muted">{{t 'processesPage.indexPage.table.noData'}}</td></tr>
         {{/each}}
       </tbody>
     </table>

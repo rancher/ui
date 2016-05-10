@@ -1,20 +1,28 @@
 {{#if prompt}}
   <option selected={{not selection}}>
-    {{prompt}}
+    {{t prompt}}
   </option>
 {{/if}}
 
 {{#each ungroupedContent as |item|}}
   <option value="{{get item optionValuePath}}" selected={{eq value (get item optionValuePath)}} disabled={{get item optionDisabledPath}}>
-    {{get item optionLabelPath}}
+    {{#if localizedLabel}}
+      {{t (get item optionLabelPath)}}
+    {{else}}
+      {{get item optionLabelPath}}
+    {{/if}}
   </option>
 {{/each}}
 
 {{#each groupedContent as |group|}}
-  <optgroup label="{{group.group}}">
+  <optgroup label="{{if localizedLabel (t group.group) group.group}}">
     {{#each group.options as |item|}}
       <option value="{{get item optionValuePath}}" selected={{eq value (get item optionValuePath)}} disabled={{get item optionDisabledPath}}>
-        {{get item optionLabelPath}}
+        {{#if localizedLabel}}
+          {{t (get item optionLabelPath)}}
+        {{else}}
+          {{get item optionLabelPath}}
+        {{/if}}
       </option>
     {{/each}}
   </optgroup>

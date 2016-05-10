@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  intl: Ember.inject.service(),
+
   rSelected: false,
   wSelected: false,
   mSelected: false,
@@ -29,8 +31,8 @@ export default Ember.Component.extend({
     var opts = {
       buttonClass: 'btn btn-default' + (moreClass ? ' '+moreClass : ''),
       numberDisplayed: 2,
-      nonSelectedText: 'None',
-      allSelectedText: 'All',
+      nonSelectedText: this.get('intl').t('devicePermissions.none'),
+      allSelectedText: this.get('intl').t('devicePermissions.all'),
 
       templates: {
         li: '<li><a tabindex="0"><label></label></a></li>',
@@ -39,4 +41,14 @@ export default Ember.Component.extend({
 
     this.$('SELECT').multiselect(opts);
   },
+
+  rebuild: function() {
+    Ember.run.next(() => {
+      this.$('SELECT').multiselect('setOptions', {
+        nonSelectedText: this.get('intl').t('devicePermissions.none'),
+        allSelectedText: this.get('intl').t('devicePermissions.all'),
+      });
+      this.$('SELECT').multiselect('rebuild');
+    });
+  }.observes('intl._locale'),
 });

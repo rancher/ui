@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import { isGecko } from 'ui/utils/platform';
+import IntlPlaceholder from 'ui/mixins/intl-placeholder';
 
-export default Ember.TextArea.extend({
+export default Ember.TextArea.extend(IntlPlaceholder, {
   intl: Ember.inject.service(),
 
   minHeight: 0,
@@ -9,11 +10,6 @@ export default Ember.TextArea.extend({
 
   tagName: 'textarea',
   classNames: ['no-resize'],
-  attributeBindings: ['i18nPlaceholder:placeholder'],
-
-  i18nPlaceholder: function() {
-    return this.get('intl').t(this.get('placeholder'));
-  }.property('placeholder','intl._locale'),
 
   didInsertElement() {
     if ( this.get('minHeight') === 0 ) {

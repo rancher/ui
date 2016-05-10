@@ -1,6 +1,7 @@
 import Ember from 'ember';
+import IntlPlaceholder from 'ui/mixins/intl-placeholder';
 
-export default Ember.TextField.extend({
+export default Ember.TextField.extend(IntlPlaceholder, {
   _onPaste: null,
   didInsertElement: function() {
     this._super();

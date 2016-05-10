@@ -1,10 +1,10 @@
 <div class="row">
   <div class="col-xs-6 col-md-2 form-label">
-    <label>Listening Ports</label>
+    <label>{{t 'formBalancerListeners.label'}}</label>
   </div>
   <div class="col-xs-6 col-md-8">
     {{#unless editing}}
-      <button class="btn-circle-text" {{action "addListener"}}><i class="icon icon-plus-circle"/> <span>Add Port</span></button>
+      <button class="btn-circle-text" {{action "addListener"}}><i class="icon icon-plus-circle"/> <span>{{t 'formBalancerListeners.addAction'}}</span></button>
     {{/unless}}
   </div>
 </div>
@@ -14,13 +14,13 @@
       {{#if listenersArray.length}}
         <thead>
           <tr>
-            <th>Source IP/Port{{#unless editing}}*{{/unless}}</th>
+            <th>{{t 'formBalancerListeners.table.host'}}{{#unless editing}}*{{/unless}}</th>
             <th width="20"></th>
-            <th width="60">Protocol</th>
-            <th width="50" class="text-center">SSL</th>
-            <th>Default Target Port</th>
+            <th width="80">{{t 'formBalancerListeners.table.protocol'}}</th>
+            <th width="50" class="text-center">{{t 'formBalancerListeners.table.ssl'}}</th>
+            <th>{{t 'formBalancerListeners.table.container'}}</th>
             <th width="20"></th>
-            <th width="80">Access</th>
+            <th width="80">{{t 'formBalancerListeners.table.listener'}}</th>
             <th width="40">&nbsp;</th>
           </tr>
         </thead>
@@ -29,27 +29,27 @@
         {{#each listenersArray as |listener|}}
           <tr>
             {{#if editing}}
-              <td>{{listener.host}}</td>
+              <td data-title="{{t 'formBalancerListeners.table.host'}}">{{listener.host}}</td>
               <td>&nbsp;</td>
-              <td>{{listener.protocol}}</td>
-              <td class="text-center">{{#if listener.ssl}}<i class="icon icon-check"></i>{{/if}}</td>
-              <td>
+              <td data-title="{{t 'formBalancerListeners.table.protocol'}}">{{listener.protocol}}</td>
+              <td data-title="{{t 'formBalancerListeners.table.ssl'}}" class="text-center">{{#if listener.ssl}}<i class="icon icon-check"></i>{{/if}}</td>
+              <td data-title="{{t 'formBalancerListeners.table.container'}}">
                 {{listener.container}}
               </td>
               <td>&nbsp;</td>
-              <td>{{if listener.isPublic "Public" "Internal"}}</td>
+              <td data-title="{{t 'formBalancerListeners.table.access'}}">{{t (if listener.isPublic 'formBalancerListeners.listen.public' 'formBalancerListeners.listen.internal')}}</td>
               <td class="text-right">&nbsp;</td>
             {{else}}
-              <td data-title="Source IP/Port*:">
-                {{input type="text" classNames="form-control lb-listener-source-port input-sm" value=listener.host placeholder="On Host, e.g. 80 or 1.2.3.4:80"}}
+              <td data-title="{{t 'formBalancerListeners.table.host'}}*:">
+                {{input type="text" classNames="form-control lb-listener-source-port input-sm" value=listener.host placeholder=(t 'formBalancerListeners.host.placeholder')}}
               </td>
               <td>&nbsp;</td>
-              <td data-title="Protocol:">
+              <td data-title="{{t 'formBalancerListeners.table.protocol'}}*:">
                 <div class="btn-group">
                   <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">{{listener.protocol}} <i class="icon icon-chevron-down"></i></button>
                   <ul class="dropdown-menu" role="menu">
                     <li role="presentation" class="dropdown-header">
-                      Select a protocol:
+                      {{t 'formBalancerListeners.protocol.placeholder'}}
                     </li>
                     {{#each sourceProtocolOptions as |choice|}}
                       <li {{action "changeListener" listener "protocol" choice}}>
@@ -59,27 +59,27 @@
                   </ul>
                 </div>
               </td>
-              <td data-title="SSL:" class="text-center">
+              <td data-title="{{t 'formBalancerListeners.table.ssl'}}:" class="text-center">
                 {{input safeStyle="margin-top: 10px;" type="checkbox" checked=listener.ssl}}
               </td>
-              <td data-title="Default Target Port:">
-                {{input type="text" classNames="form-control lb-listener-target-port input-sm" min="1" max="65535" step="1" value=listener.container placeholder="In Container, e.g. 8080"}}
+              <td data-title="{{t 'formBalancerListeners.table.container'}}:">
+                {{input type="text" classNames="form-control lb-listener-target-port input-sm" min="1" max="65535" step="1" value=listener.container placeholder=(t 'formBalancerListeners.container.placeholder')}}
               </td>
               <td>&nbsp;</td>
-              <td data-title="Access">
+              <td data-title="{{t 'formBalancerListeners.table.listen'}}:">
                 <div class="btn-group">
-                  <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">{{if listener.isPublic "Public" "Internal"}} <i class="icon icon-chevron-down"></i></button>
+                  <button type="button" class="btn btn-default dropdown-toggle btn-sm" data-toggle="dropdown" aria-expanded="false">{{t (if listener.isPublic 'formBalancerListeners.listen.public' 'formBalancerListeners.listen.internal')}} <i class="icon icon-chevron-down"></i></button>
                   <ul class="dropdown-menu" role="menu">
                     <li role="presentation" class="dropdown-header">
                       Select access:
                     </li>
-                    <li {{action "changeListener" listener "isPublic" true}}><a href="#">Public</a></li>
-                    <li {{action "changeListener" listener "isPublic" false}}><a href="#">Internal</a></li>
+                    <li {{action "changeListener" listener "isPublic" true}}><a href="#">{{t 'formBalancerListeners.listen.public'}}</a></li>
+                    <li {{action "changeListener" listener "isPublic" false}}><a href="#">{{t 'formBalancerListeners.listen.internal'}}</a></li>
                   </ul>
                 </div>
               </td>
               <td class="text-right">
-                <button role="button" class="btn btn-primary btn-sm" {{action "removeListener" listener}}><i class="icon icon-minus"/></button>
+                <button role="button" class="btn btn-primary btn-sm" {{action "removeListener" listener}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
               </td>
             {{/if}}
           </tr>

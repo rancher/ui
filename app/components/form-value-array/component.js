@@ -3,9 +3,9 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   // Inputs
   initialValues: null,
-  nameLabel: 'Value',
-  valueLabel: 'Value',
-  valuePlaceholder: 'Value',
+  addActionLabel: 'formValueArray.addActionLabel',
+  valueLabel: 'formValueArray.valueLabel',
+  valuePlaceholder: 'formValueArray.valuePlaceholder',
   showProTip: true,
 
   ary: null,

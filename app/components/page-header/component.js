@@ -69,9 +69,8 @@ export default Ember.Component.extend({
       item.submenu = fnOrValue(item.submenu, this);
 
       item.submenu = (item.submenu||[]).filter((subitem) => {
-        if ( typeof subitem.condition === 'function' )
-        {
-          return subitem.condition.call(this);
+        if ( typeof subitem.condition === 'function' && !subitem.condition.call(this) ) {
+          return false;
         }
 
         subitem.label = fnOrValue(subitem.label, this);

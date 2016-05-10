@@ -1,14 +1,14 @@
 <section class="horizontal-form container-fluid">
-  <h2>Edit Account</h2>
+  <h2>{{t 'editAccount.title'}}</h2>
   {{top-errors errors=errors}}
 
   <div class="row form-group">
     <div class="col-sm-12 col-md-3 form-label">
-      <label class="form-control-static">Name</label>
+      <label class="form-control-static">{{t 'editAccount.form.name.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-7">
       {{#if isAdmin}}
-        {{input type="text" value=model.account.name classNames="form-control" placeholder="e.g. John Smith"}}
+        {{input type="text" value=model.account.name classNames="form-control" placeholder=(t 'editAccount.form.name.placeholder')}}
       {{else}}
         <div class="form-control-static">
           {{model.account.name}}
@@ -20,13 +20,14 @@
   {{#if isAdmin}}
     <div class="row form-group">
       <div class="col-sm-12 col-md-3 form-label">
-        <label class="form-control-static">Account Type</label>
+        <label class="form-control-static">{{t 'editAccount.form.kind.label'}}</label>
       </div>
       <div class="col-sm-12 col-md-7">
         {{new-select
           classNames="form-control"
           content=accountTypeChoices
           value=model.account.kind
+          localizedLabel=true
         }}
       </div>
     </div>
@@ -35,10 +36,10 @@
   {{#if isAdmin}}
     <div class="row form-group">
       <div class="col-sm-12 col-md-3 form-label">
-        <label for="description">Description</label>
+        <label for="description">{{t 'editAccount.form.description.label'}}</label>
       </div>
       <div class="col-sm-12 col-md-7">
-        {{textarea value=model.account.description classNames="form-control no-resize" rows="2" placeholder="e.g. This account is for John Smith"}}
+        {{textarea value=model.account.description classNames="form-control no-resize" rows="2" placeholder=(t 'editAccount.form.description.placeholder')}}
       </div>
     </div>
   {{/if}}
@@ -46,7 +47,7 @@
   {{#if isLocalAuth}}
     <div class="row form-group">
       <div class="col-sm-12 col-md-3 form-label">
-        <label class="form-control-static">Login Username</label>
+        <label class="form-control-static">{{t 'editAccount.form.publicValue.label'}}</label>
       </div>
       <div class="col-sm-12 col-md-7">
         <div class="form-control-static">
@@ -58,7 +59,7 @@
     {{#if needOld}}
       <div class="row form-group">
         <div class="col-sm-12 col-md-3 form-label">
-          <label class="form-control-static">Current Password</label>
+          <label class="form-control-static">{{t 'editAccount.form.oldPasword.label'}}</label>
         </div>
         <div class="col-sm-12 col-md-7">
           {{input type="password" value=oldPassword classNames="form-control"}}
@@ -68,7 +69,7 @@
 
     <div class="row form-group">
       <div class="col-sm-12 col-md-3 form-label">
-        <label class="form-control-static">New Password</label>
+        <label class="form-control-static">{{t 'editAccount.form.newPassword.label'}}</label>
       </div>
       <div class="col-sm-12 col-md-7">
         {{input-password value=newPassword generated="generated"}}
@@ -78,7 +79,7 @@
     {{#liquid-if showConfirm}}
       <div class="row form-group">
         <div class="col-sm-12 col-md-3 form-label">
-          <label class="form-control-static">Confirm Password</label>
+          <label class="form-control-static">{{t 'editAccount.form.confirmPassword.label'}}</label>
         </div>
         <div class="col-sm-12 col-md-7">
           {{input type="password" value=newPassword2 classNames="form-control"}}
@@ -88,14 +89,14 @@
   {{else}}
     <div class="row form-group">
       <div class="col-sm-12 col-md-3 form-label">
-        <label class="form-control-static">Identity</label>
+        <label class="form-control-static">{{t 'editAccount.form.identity.label'}}</label>
       </div>
       <div class="col-sm-12 col-md-7">
         {{#if (and model.account.externalId model.account.externalIdType)}}
           {{identity-block externalIdType=model.account.externalIdType externalId=model.account.externalId}}
         {{else}}
           <div class="form-control-static text-muted">
-            None
+            {{t 'generic.none'}}
           </div>
         {{/if}}
       </div>

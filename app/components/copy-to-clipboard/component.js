@@ -2,7 +2,7 @@ import Ember from 'ember';
 import { isSafari } from 'ui/utils/platform';
 
 const DELAY = 1000;
-const DEFAULT_TEXT = 'Copy To Clipboard';
+const DEFAULT_TEXT = 'copyToClipboard.tooltip';
 
 export default Ember.Component.extend({
   tagName          : 'div',
@@ -18,6 +18,9 @@ export default Ember.Component.extend({
   target           : null,
   clipboardText    : null,
   textChangedEvent : null,
+
+  didInitAttrs() {
+  },
 
   mouseEnter() {
     this.set('model', new Object({tooltipText: DEFAULT_TEXT}));
@@ -35,7 +38,7 @@ export default Ember.Component.extend({
     alertSuccess: function() {
       this.set('status', 'success');
       let orig = this.get('model.tooltipText');
-      this.set('model', new Object({tooltipText: 'Copied!'}));
+      this.set('model', new Object({tooltipText: 'copyToClipboard.copied'}));
 
       Ember.run.later(() =>{
         this.set('status', null);

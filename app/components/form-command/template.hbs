@@ -1,48 +1,48 @@
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Command</label>
+    <label class="form-control-static">{{t 'formCommand.command.label'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">
-    {{input-command class="form-control" type="text" changed=(action (mut instance.command)) initialValue=instance.command placeholder="e.g. /usr/sbin/httpd -f httpd.conf"}}
+    {{input-command class="form-control" type="text" changed=(action (mut instance.command)) initialValue=instance.command placeholder=(t 'formCommand.command.placeholder')}}
   </div>
 </div>
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Entry Point</label>
+    <label class="form-control-static">{{t 'formCommand.entryPoint.label'}}</label>
   </div>
   <div class="col-sm-12 col-md-8">
-    {{input-command class="form-control" type="text" changed=(action (mut instance.entryPoint)) initialValue=instance.entryPoint placeholder="e.g. /bin/sh -c"}}
+    {{input-command class="form-control" type="text" changed=(action (mut instance.entryPoint)) initialValue=instance.entryPoint placeholder=(t 'formCommand.entryPoint.placeholder')}}
   </div>
 </div>
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Working Dir</label>
+    <label class="form-control-static">{{t 'formCommand.workingDir.label'}}</label>
   </div>
   <div class="col-sm-12 col-md-4">
-    {{input type="text" value=instance.workingDir classNames="form-control" placeholder="e.g. /myapp"}}
+    {{input type="text" value=instance.workingDir classNames="form-control" placeholder=(t 'formCommand.workingDir.placeholder')}}
   </div>
   <div class="col-sm-12 col-md-1 form-label" style="text-align: left">
-    <label class="form-control-static">User</label>
+    <label class="form-control-static">{{t 'formCommand.user.label'}}</label>
   </div>
   <div class="col-sm-12 col-md-3">
-    {{input type="text" value=instance.user classNames="form-control" placeholder="e.g. apache"}}
+    {{input type="text" value=instance.user classNames="form-control" placeholder=(t 'formCommand.user.placeholder')}}
   </div>
 </div>
 
 <div class="row">
   <div class="col-sm-12 col-md-2 form-label">
-    <label>Console</label>
+    <label>{{t 'formCommand.console.label'}}</label>
   </div>
 
   <div class="col-xs-12 col-sm-6 col-md-4">
     <div class="radio small">
-      <label>{{radio-button selection=terminal value="both"}} Interactive &amp; TTY <span class="text-muted">(-i -t)</span></label>
+      <label>{{radio-button selection=terminal value="both"}} {{format-html-message 'formCommand.console.both'}}</label>
     </div>
   </div>
   <div class="col-xs-12 col-sm-6 col-md-4">
     <div class="radio small">
-      <label>{{radio-button selection=terminal value="interactive"}} Interactive <span class="text-muted">(-i)</span></label>
+      <label>{{radio-button selection=terminal value="interactive"}} {{format-html-message 'formCommand.console.interactive'}}</label>
     </div>
   </div>
 </div>
@@ -50,12 +50,12 @@
   <div class="hidden-xs hidden-sm col-md-2 form-label">&nbsp;</div>
   <div class="col-xs-12 col-sm-6 col-md-4">
     <div class="radio small">
-      <label>{{radio-button selection=terminal value="terminal"}} TTY <span class="text-muted">(-t)</span></label>
+      <label>{{radio-button selection=terminal value="terminal"}} {{format-html-message 'formCommand.console.terminal'}}></label>
     </div>
   </div>
   <div class="col-xs-12 col-sm-6 col-md-4">
     <div class="radio small">
-      <label>{{radio-button selection=terminal value="none"}} None</label>
+      <label>{{radio-button selection=terminal value="none"}} {{format-html-message 'formCommand.console.none'}}</label>
     </div>
   </div>
 </div>
@@ -63,34 +63,34 @@
 {{#if isService}}
   <div class="row">
     <div class="col-sm-12 col-md-2 form-label">
-      <label>Auto Restart</label>
+      <label>{{t 'formCommand.autoRestart.label'}}</label>
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-4">
       <div class="radio small">
-        <label>{{radio-button selection=startOnce value=false}} Always</label>
+        <label>{{radio-button selection=startOnce value=false}} {{t 'formCommand.autoRestart.startOnceFalse'}}</label>
       </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4">
       <div class="radio small">
-        <label>{{radio-button selection=startOnce value=true}} Never (Start Once)</label>
+        <label>{{radio-button selection=startOnce value=true}} {{t 'formCommand.autoRestart.startOnceTrue'}}</label>
       </div>
     </div>
   </div>
 {{else}}
   <div class="row">
     <div class="col-sm-12 col-md-2 form-label">
-      <label>Auto Restart</label>
+      <label>{{t 'formCommand.autoRestart.label'}}</label>
     </div>
 
     <div class="col-xs-12 col-sm-6 col-md-4">
       <div class="radio small">
-        <label>{{radio-button selection=restart value="no"}} Never</label>
+        <label>{{radio-button selection=restart value="no"}} {{t 'formCommand.autoRestart.no'}}</label>
       </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4">
       <div class="radio small">
-        <label>{{radio-button selection=restart value="on-failure"}} On failure <span class="text-muted">(non-0 exit code)</span>, forever</label>
+        <label>{{radio-button selection=restart value="on-failure"}} {{t 'formCommand.autoRestart.onFailure'}}</label>
       </div>
     </div>
   </div>
@@ -98,12 +98,19 @@
     <div class="hidden-xs hidden-sm col-md-2 form-label">&nbsp;</div>
     <div class="col-xs-12 col-sm-6 col-md-4">
       <div class="radio small">
-        <label>{{radio-button selection=restart value="always"}} Always</label>
+        <label>{{radio-button selection=restart value="always"}} {{t 'formCommand.autoRestart.always'}}</label>
       </div>
     </div>
     <div class="col-xs-12 col-sm-6 col-md-4">
       <div class="radio small">
-        <label>{{radio-button selection=restart value="on-failure-cond"}} <span class="with-input">On failure, up to {{input type="number" min=1 safeStyle="width: 60px; padding: 0 2px; display: inline-block;" class="form-control input-sm" value=restartLimit}} time{{if (eq restartLimit "1") '' 's'}}</span></label>
+        <label>
+          {{radio-button selection=restart value="on-failure-cond"}}
+          <span class="with-input">
+            {{t 'formCommand.autoRestart.onFailureCondPrefix' limit=restartLimit}}
+            {{input type="number" min=1 safeStyle="width: 60px; padding: 0 2px; display: inline-block;" class="form-control input-sm" value=restartLimit}}
+            {{t 'formCommand.autoRestart.onFailureCondSuffix' limit=restartLimit}}
+          </span>
+        </label>
       </div>
     </div>
   </div>
@@ -111,17 +118,18 @@
 
 <div class="row">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Environment Vars</label>
+    <label class="form-control-static">{{t 'formCommand.environment.label'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">
     {{form-key-value
       initialMap=instance.environment
       changed=(action (mut instance.environment))
-      nameLabel="Environment Variable"
-      keyLabel="Variable"
-      keyPlaceholder="e.g. FOO"
-      valuePlaceholder="e.g. bar"
+      addActionLabel="formCommand.environment.addAction"
+      keyLabel="formCommand.environment.keyLabel"
+      keyPlaceholder="formCommand.environment.keyPlaceholder"
+      valueLabel="formCommand.environment.valueLabel"
+      valuePlaceholder="formCommand.environment.valuePlaceholder"
       allowEmptyValue=true
     }}
   </div>

@@ -1,15 +1,19 @@
 import Ember from 'ember';
 
 export default Ember.Service.extend({
+  intl: Ember.inject.service(),
+
   choices() {
-    var store = this.get('store');
+    let store = this.get('store');
+    let intl = this.get('intl');
+
     return Ember.RSVP.hash({
       environments: store.findAllUnremoved('environment'),
       services: store.find('service', null, {forceReload: true}) // Need force-reload to get response with mixed types
     }).then((hash) => {
       return hash.services.map((service) => {
         return {
-          group: 'Stack: ' + envName(service),
+          group: intl.t('allServices.stackGroup', {name: envName(service)}),
           id: service.get('id'),
           name: service.get('displayName'),
           kind: service.get('type'),
@@ -31,7 +35,7 @@ export default Ember.Service.extend({
         }
         else
         {
-          return '(Stack ' + service.get('environmentId') + ')';
+          return intl.t('allServices.noName', {id: service.get('environmentId')});
         }
       }
     });

@@ -2,6 +2,8 @@ import Ember from 'ember';
 import {parseTarget, stringifyTarget} from 'ui/utils/parse-target';
 
 export default Ember.Component.extend({
+  intl: Ember.inject.service(),
+
   existing: null,
   isBalancer: null,
   allServices: null,
@@ -115,7 +117,7 @@ export default Ember.Component.extend({
       if ( isBalancer && !service.lbSafe )
       {
         service.disabled = true;
-        service.name += " (Can't balance to hostnames)";
+        service.name += " " + this.get('intl').t('formTargets.noHostnames');
       }
 
       return service;

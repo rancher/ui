@@ -11,7 +11,8 @@ export default Ember.Component.extend({
   alternateLabel: alternateLabel,
   showProtip: true,
 
-  status: 'Connecting...',
+  status: 'connecting',
+  error: null,
   socket: null,
   term: null,
 
@@ -33,7 +34,10 @@ export default Ember.Component.extend({
       exec.set('instance', instance);
       this.connect(exec);
     }).catch((err) => {
-      this.set('status', 'Error:', err);
+      this.setProperties({
+        status: 'error',
+        error: err
+      });
     });
   },
 
@@ -43,7 +47,7 @@ export default Ember.Component.extend({
     this.set('socket', socket);
 
     socket.onopen = () => {
-      this.set('status','Initializing...');
+      this.set('status','initializing');
 
       var term = new Terminal({
         cols: this.get('cols'),
@@ -62,7 +66,7 @@ export default Ember.Component.extend({
       term.open(this.$('.shell-body')[0]);
 
       socket.onmessage = (message) => {
-        this.set('status','Connected');
+        this.set('status','connected');
         this.sendAction('connected');
         //console.log('From Server:',message);
         term.write(atob(message.data));
@@ -70,7 +74,7 @@ export default Ember.Component.extend({
 
       socket.onclose = () => {
         try {
-          this.set('status','Closed');
+          this.set('status','closed');
           term.destroy();
           if ( !this.get('userClosed') )
           {
@@ -83,7 +87,7 @@ export default Ember.Component.extend({
   },
 
   disconnect: function() {
-    this.set('status','Closed');
+    this.set('status','closed');
     this.set('userClosed',true);
 
     var term = this.get('term');

@@ -10,10 +10,12 @@ generic:
   enabled: Enabled
   emptyString: ""
   id: ID
+  loading: "Loading..."
   missing: "*%MISSING%*"
   moreActions: More Actions
   name: Name
   none: None
+  remove: Remove
   state: State
   unknown: Unknown
 
@@ -74,12 +76,6 @@ apiPage:
       paragraph1: Account API Keys are tied to your specific account
       paragraph2: "and can create, delete, and manipulate all Environments which you have access to."
       noData: "You don't have any Account API keys yet."
-  edit:
-    form:
-      name:
-        placeholder: e.g. App servers
-      description:
-        placeholder: e.g. This key is used by the app servers to deploy containers
 
 auditLogsPage:
   header: Audit Logs
@@ -195,7 +191,7 @@ authPage:
       disabled: '{appName} can be configured to restrict access to a set of accounts defined in the {appName} database.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.'
     accessEnabled:
       header: 'Danger Zone&trade;'
-      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {{settings.appName}} to anyone that can reach this page or the API.'
+      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName}} to anyone that can reach this page or the API.'
       buttonText:
         disable: 'Are you sure?  Click again to really disable access control'
         prompt: Disable access control
@@ -254,7 +250,8 @@ certificatesPage:
     form:
       name:
         placeholder: e.g. mydomain.com
-      description: e.g. EV cert for mydomain.com
+      description:
+        placeholder: e.g. EV cert for mydomain.com
 
 containersPage:
   table:
@@ -338,6 +335,10 @@ containersPage:
             error: Error
             noData: This container has no volumes.
           noContainers: No other containers
+
+containerSubpod:
+  childContainers: Containers
+  childSidekicks: Sidekicks
 
 haPage:
   header:
@@ -431,8 +432,8 @@ haPage:
           header: '4. Download script'
           subtext: 'Click the button below to download a shell script.'
           alert: |
-            "The script generates new encryption keys that will be used for the HA hosts to communicate with each other, so keep it safe.
-            New keys are generated every time you download the config script, and all hosts must have the same keys for HA to work."
+            The script generates new encryption keys that will be used for the HA hosts to communicate with each other, so keep it safe.
+            New keys are generated every time you download the config script, and all hosts must have the same keys for HA to work.
           buttonText: Download Config Script
           generateScript: 'Generate the script in step 3.'
 
@@ -624,12 +625,6 @@ servicePage:
         placeholder: e.g. myapp
       description:
         placeholder: e.g. Current version of MyApp
-  newExternal:
-    form:
-      name:
-        placeholder: e.g. external-db
-      description:
-        placeholder: e.g. External physical database server
   newBalancer:
     form:
       name:
@@ -673,9 +668,7 @@ storagePoolsPage:
     header: Add Volume
     form:
       driverOptions: Driver Options
-      formLabelName: Option
-
-
+      addActionLabel: Add Option
 
 swarmPage:
   project:
@@ -685,7 +678,11 @@ swarmPage:
           placeholder: e.g. myapp
         description:
           placeholder: e.g. MyApp Project
-
+        variables:
+          addActionLabel: Add Variable Substitution
+          keyLabel: Variable
+          keyPlaceholder: e.g. FOO
+          valuePlaceholder: e.g. bar
 
 processesPage:
   indexPage:
@@ -710,6 +707,7 @@ processesPage:
         startTime: Started
         endTime: Ended
         duration: Duration
+      noData: There are no recent processes.
   processPage:
     header: Settings
 
@@ -759,7 +757,7 @@ openLdap:
       search: "Search Field:"
     disable:
       header: "Danger Zone&trade;"
-      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {{settings.appName}} to anyone that can reach this page or the API.'
+      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
       confirmDisable:
         pre: Disable access control
         post: "Are you sure?  Click again to really disable access control"
@@ -847,6 +845,19 @@ catalogSettings:
   more:
     header: More
     helpText: You can define your own custom catalog sources here.  Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> for more info).
+    addActionLabel: Add Catalog
+    keyLabel: Name
+    keyPlaceholder: e.g. mycatalog
+    valueLabel: URL
+    valuePlaceholder: 'e.g. https://github.com/mycompany/mycatalog.git'
+
+
+confirmDelete:
+  title: 'Are you sure you want to delete'
+  environmentNote: 'Note: All resources inside this Environment will be permanently removed, including any Hosts that were created through {appName}.'
+  protip: 'ProTip: Hold the {key} key while clicking Delete to bypass this confirmation.'
+  confirmAction: Delete
+  cancelAction: Cancel
 
 containerLogs:
   title: "Logs: {instanceName}"
@@ -864,10 +875,29 @@ containerLogs:
     disconnected: Disconnected
     closed: Closed
 
+containerShell:
+  protip: "ProTip: Hold the {key} key when opening shell access to launch a new window."
+  status:
+    initializing: Initializing...
+    error: "Error: {error}"
+    connected: Connected
+    disconnected: Disconnected
+    closed: Closed
+
+copyToClipboard:
+  tooltip: Copy to Clipboard
+  copied: Copied!
+
+devicePermissions:
+  all: All
+  none: None
+  read: Read
+  write: Write
+  mknod: Mknod
 
 dynamicDriverSettings:
   header: Machine Drivers
-  subtext: Additional <code>docker-machine</code> drivers can be loaded here and used in the Add Host screen.
+  subtext: "Additional <code>docker-machine</code> drivers can be loaded here and used in the Add Host screen."
   add: Add Machine Driver
   table:
     header:
@@ -878,9 +908,268 @@ dynamicDriverSettings:
       md5: MD5 Checksum
     noData: You have no Dynamic Machine Drivers.
 
+editAccount:
+  title: Edit Account
+  form:
+    name:
+      label: Name
+      placeholder: e.g. John Smith
+    kind:
+      label: Account Type
+      user: User
+      admin: Admin
+    description:
+      label: Description
+      placeholder: e.g. This account is for John Smith
+    publicValue:
+      label: Login Username
+    oldPassword:
+      label: Current Password
+    newPassword:
+      label: New Password
+    confirmPassword:
+      label: Confirm Password
+    identity:
+      label: Identity
+
+editAliasService:
+  title: Edit Service Alias
+
+editApiKey:
+  title:
+    justCreated: API Key Created
+    editing: Edit API Key
+    new: New API Key
+  publicValue:
+    label: Access Key (Username)
+  secretValue:
+    label: Secret Key (Password)
+  name:
+    placeholder: e.g. App servers
+  description:
+    placeholder: e.g. This key is used by the app servers to deploy containers
+  saveWarning1: Save the keys above!  This is the only time you'll be able to see the secret.
+  saveWarning2: If you lose it, you'll need to create a new API key.
+  noteOptional: Name and/or description are optional to help you remember what it's used for.  You can just create a key by clicking Create.
+
+editBalancerService:
+  title: Edit Load Balancer
+  haproxy:
+    label: haproxy.cfg
+    help: |
+      Additional <a href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html" target="_blank">haproxy.cfg</a>
+      configuration can be put here and will be appended to the configuration generated by {appName}.
+    global:
+      label: '<code>global</code> section'
+      prompt: Custom global section lines
+    defaults:
+      label: '<code>defaults</code> section'
+      prompt: Custom defaults section lines
+
+
+editCertificate:
+  title: Edit Certificate
+  name:
+    placeholder: e.g. mydomain.com
+  description:
+    placeholder: e.g. EV cert for mydomain.com
+  noteKeyWriteOnly: "Note: The Private Key is intentionally blank because the field is write-only.  You will need to provide the Private Key again to update the certificate, even if it hasn't changed."
+
+editContainer:
+  title:
+    vm: Edit VM
+    container: Edit Container
+  name:
+    placeholder: e.g. myapp
+  description:
+    placeholder: e.g. My Application
+
+editExternalService:
+  title: Edit External Service
+  name:
+    placeholder: e.g. external-db
+  description:
+    placeholder: e.g. External physical database server
+
+editHost:
+  title: Edit Host
+  hostname:
+    label: Hostname
+    help: As reported by the host operating system.
+  customName:
+    label: Custom Name
+    placeholder: e.g. dev1
+    help: If this is left empty, the Hostname will be shown as the Name.
+  description:
+    label: Description
+    placeholder: e.g. My development host
+  labels:
+    label: Labels
+
+editRegistry:
+  title: Edit Registry
+  address:
+    label: Address
+  email:
+    label: Email
+    placeholder: e.g. you@example.com
+  username:
+    label: Username
+    placeholder: e.g. username
+  password:
+    label: Password
+    placeholder: e.g. password
+
+editService:
+  title: Edit Service
+
+editStack:
+  title: Edit Stack
+  name:
+    placeholder: e.g. myapp
+  description:
+    placeholder: e.g. MyApp Stack
+
+environmentHeader:
+  backLink: "Stack:"
+  outputs: Outputs
+  add:
+    service: Add Service
+    balancer: Add Load Balancer
+    external: Add External Service
+    alias: Add Service Alias
+    vm: Add Virtual Machine
+
 formatIp:
   noIp: None
   unknownIp: Unknown
+
+formBalancerListeners:
+  label: Listening Ports
+  addAction: Add Port
+  table:
+    host: Source IP/Port
+    protocol: Protocol
+    ssl: SSL
+    container: Default Target Port
+    listener: Access
+  host:
+    placeholder: "On Host, e.g. 80 or 1.2.3.4:80"
+  protocol:
+    placeholder: "Select a protocol:"
+  container:
+    placeholder: "In Container, e.g. 8080"
+  listen:
+    public: Public
+    internal: Internal
+
+formCommand:
+  command:
+    label: Command
+    placeholder: e.g. /usr/sbin/httpd -f httpd.conf
+  entryPoint:
+    label: Entry Point
+    placeholder: e.g. /bin/sh -c
+  workingDir:
+    label: Working Dir
+    placeholder: e.g. /myapp
+  user:
+    label: User
+    placeholder: e.g. apache
+  console:
+    label: Console
+    both: 'Interactive &amp; TTY <span class="text-muted">(-i -t)</span>'
+    interactive: 'Interactive <span class="text-muted">(-i)</span>'
+    terminal: 'TTY <span class="text-muted">(-t)</span>'
+    none: None
+  autoRestart:
+    label: Auto Restart
+    startOnceFalse: Always
+    startOnceTrue: Never (Start Once)
+    no: Never
+    onFailure: 'On failure <span class="text-muted">(non-0 exit code)</span>, forever'
+    onFailureCondPrefix: On failure, up to
+    onFailureCondSuffix: |
+      {limit, plural,
+        =1 {# time}
+        other {# times}
+      }
+    always: Always
+  environment:
+    label: Envirionment Vars
+    addAction: Add Environment Variable
+    keyLabel: Variable
+    keyPlaceholder: e.g. FOO
+    valueLabel: Value
+    valuePlaceholder: e.g. bar
+
+formContainerLinks:
+  label: Links
+  addActionLabel: Add Link
+  noContainers: There are no other containers to link to.
+  noLinks: This container has no links.
+  targetInstance:
+    label: Destination Container
+    prompt: Select a Container...
+  name:
+    label: As Name
+    placeholder: e.g. database
+
+formDisks:
+  addDiskLabel: Add Disk
+  addRootDiskLabel: Add Root Disk
+  name:
+    rootDisk: Root Disk
+    label: Name
+    placeholder: e.g. data
+  size:
+    label: Size
+  driver:
+    label: Driver
+
+formEngineOpts:
+  engineInstallUrl:
+    label: Docker Install URL
+    placeholder: e.g. http://get.docker.com/
+  engineStorageDriver:
+    label: Storage Driver
+    placeholder: e.g. overlay
+  engineOpts:
+    label: Engine Options
+    addActionLabel: Add Engine Option
+    keyPlaceholder: e.g. log-driver
+    valuePlaceholder: e.g. syslog
+  engineLabels:
+    label: Engine Labels
+    addActionLabel: Add Engine Label
+    keyLabel: Label
+  engineEnv:
+    label: Engine Environment
+    addActionLabel: Add Environment Variable
+    keyLabel: Variable
+    keyPlaceholder: e.g. HTTP_PROXY
+    valuePlaceholder: e.g. http://your-proxy:8080
+  engineInsecureRegistry:
+    label: Insecure Registries
+    addActionLabel: Add Insecure Registry
+    valueLabel: Registry Domain
+    valuePlaceholder: e.g. registry.example.com
+  engineRegistryMirror:
+    label: Registry Mirrors
+    addActionLabel: Add Registry Mirror
+    valueLabel: Mirror URL
+    valuePlaceholder: e.g. https://my-mirror.example.com:5000
+
+formKeyValue:
+  addAction: Add Pair
+  key:
+    label: Key
+    placeholder: Key
+  separator: "="
+  value:
+    label: Value
+    placeholder: Value
+  protip: 'ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry.'
 
 formNameDescription:
   name:
@@ -889,6 +1178,107 @@ formNameDescription:
   description:
     label: Description
     placeholder: Description
+
+formPorts:
+  addAction: Port Map
+  public:
+    label: Public Host [IP:]Port
+    placeholderWithIp: "e.g. 80 or 1.2.3.4:80"
+    placeholderWithoutIp: "e.g. 80"
+  private:
+    label: Private Container Port
+    placeholder: "e.g. 8080"
+  protocol:
+    label: Protocol
+  noPorts: This container has no port maps.
+
+formScale:
+  label: Scale
+  global:
+    vm: Always run one instance of this virtual machine on every host
+    container: Always run one instance of this container on every host
+  regular:
+    vm: |
+      Run {scale, plural,
+        =0 {no virtual machines}
+        =1 {1 virtual machine}
+        other {# virtual machines}
+      }
+    container: |
+      Run {scale, plural,
+        =0 {no containers}
+        =1 {1 container}
+        other {# containers}
+      }
+
+formSecurity:
+  logConfig:
+    addActionLabel: Add Option
+    keyPlaceholder: e.g. syslog-facility
+    valuePlaceholder: e.g. daemon
+
+formServiceLinks:
+  addAction: Service Links
+  noServices: There are no other services to link to.
+  noLinks: This service has no service links.
+  service:
+    label: Destination Service
+    prompt: Select a Service...
+  name:
+    label: As Name
+    placeholder: e.g. database
+
+formSslTermination:
+  defaultCertificate:
+    prompt: Choose a Certificate...
+  alternateCertificate:
+    prompt: Choose a Certificate...
+
+formTargets:
+  title: Targets
+  addAction: Add Service
+  hostname:
+    label: Request Host
+    placeholder: e.g. svc.com
+  srcPort:
+    label: Source Port
+    placeholder: e.g. 80
+  value:
+    label: Target Service
+    prompt: Select a Service...
+  path:
+    label: Request Path
+    placeholder: e.g. /svc
+  dstPort:
+    label: Target Port
+    placeholder: e.g. 8080
+  advanced:
+    toggle: Show advanced routing options
+    detail: Direct requests to different services based on port, Host header, or request path
+    help1: |
+      If Request Host and/or Path are specified, connections to HTTP listening ports will be routed to the appropriate target based on the request.
+      For example, you could use this to send traffic for domain1.com to a different service than domain2.com, or domain3.com/admin to a different service than domain3.com.
+    help2: |
+      Matching requests will be sent to the Target Service on the Target Port.
+      If that is not set, then the Default Target port for the Source Port.  If that is also not set, then the Source Port.
+  noHostnames: "(Can't balance to hostnames)"
+
+formUserLabels:
+  addAction: Add Label
+  key: Key
+  separator: "="
+  value: Value
+  protip: "ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
+
+formValueArray:
+  addActionLabel: Add Value
+  valueLabel: Value
+  valuePlacholder: Value
+  protip: "ProTip: Paste one or more lines of values into any field for easy bulk entry."
+
+formVolumes:
+  value:
+    prompt: Select a Container...
 
 heroAddService:
   header: Adding your first Service
@@ -917,6 +1307,12 @@ hostSettings:
     alert: |
       Are you sure all the hosts you will create will be able to reach <code>{activeValue}</code> ?<br/>It looks like a private IP or local network.
 
+schema:
+  inputCertificate:
+    prompt: Choose a Certificate...
+  inputService:
+    prompt: Choose a Service...
+
 inputPassword:
   buttonText: Generate
 
@@ -933,7 +1329,12 @@ loginUserPass:
   loggingInLabel: Logging In...
   passwordLabel: Password
 
+modalShell:
+  title: "Shell: {instanceName}"
+
 newCatalog:
+  version:
+    prompt: Choose a version...
   saveUpgrade: Upgrade
   saveNew: Launch
 
@@ -941,6 +1342,10 @@ newContainer:
   saveUpgrade: Upgrade
   saveNew: Create
   removeSidekick: Remove this Sidekick
+  name:
+    placeholder: e.g. myapp
+  description:
+    placeholder: e.g. My Application
 
 pageFooter:
   notARelease: (Not a Release)
@@ -973,6 +1378,23 @@ virtualMachineSettings:
   header: Virtual Machine Support
   subtext: |
     Requires hosts that have the <a href="https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine" target="_blank">KVM</a> kernel module loaded.
+
+##############################
+# Mixins
+##############################
+containerChoices:
+  hostGroup: "Host: {name}"
+  hostGroupWithState: "Host: {name} ({state})"
+  unknownHost: "Host: ???"
+  containerOption: "{name}"
+  containerOptionWithState: "{name} ({state})"
+
+##############################
+# Services
+##############################
+allServices:
+  stackGroup: "Stack: {name}"
+  noName: "(Stack: {id})"
 
 ##############################
 # Utils

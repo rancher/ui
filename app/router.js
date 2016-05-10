@@ -211,11 +211,11 @@ Router.map(function() {
 
 
   // Modals
-  this.modal('delete-confirmation', {
+  this.modal('confirm-delete', {
     dismissWithOutsideClick : false,
     dialogClass             : 'small',
-    withParams              : {'confirmDeleteResources' : 'resources'},
-    actions                 : {confirm                  : 'confirmDelete'}
+    withParams              : {confirmDeleteResources : 'resources'},
+    actions                 : {confirm                : 'confirmDelete'}
   });
 
   this.modal('modal-about', {
@@ -295,7 +295,7 @@ Router.map(function() {
     otherParams             : 'originalModel',
   });
 
-  this.modal('edit-loadbalancerservice', {
+  this.modal('edit-balancerservice', {
     dismissWithOutsideClick : false,
     withParams              : 'editLoadBalancerService',
     otherParams             : 'originalModel',

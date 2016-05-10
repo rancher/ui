@@ -1,92 +1,92 @@
 <div class="row form-group">
   <div class="col-md-2 form-label">
-    <label class="form-control-static">Docker Install URL</label>
+    <label class="form-control-static">{{t 'formEngineOpts.engineInstallUrl.label'}}</label>
   </div>
   <div class="col-md-10">
-    {{input type="text" value=machine.engineInstallUrl classNames="form-control" placeholder="e.g. http://get.docker.com/"}}
+    {{input type="text" value=machine.engineInstallUrl classNames="form-control" placeholder=(t 'formEngineOpts.engineInstallUrl.placeholder')}}
   </div>
 </div>
 
 <div class="row form-group">
   <div class="col-md-2 form-label">
-    <label class="form-control-static">Storage Driver</label>
+    <label class="form-control-static">{{t 'formEngineOpts.engineStorageDriver.label'}}</label>
   </div>
   <div class="col-md-10">
-    {{input type="text" value=machine.engineStorageDriver classNames="form-control" placeholder="e.g. overlay"}}
+    {{input type="text" value=machine.engineStorageDriver classNames="form-control" placeholder=(t 'formEngineOpts.engineStorageDriver.placeholder')}}
   </div>
 </div>
 
 <div class="row form-group">
   <div class="col-md-2 form-label">
-    <label class="form-control-static">Engine Options</label>
+    <label class="form-control-static">{{t 'formEngineOpts.engineOpts.label'}}</label>
   </div>
   <div class="col-md-10">
     {{form-key-value
       initialMap=machine.engineOpt
       changed=(action (mut machine.engineOpt))
-      nameLabel="Engine Option"
-      keyPlaceholder="e.g. log-driver"
-      valuePlaceholder="e.g. syslog"
+      addActionLabel="formEngineOpts.engineOpts.addActionLabel"
+      keyPlaceholder="formEngineOpts.engineOpts.keyPlaceholder"
+      valuePlaceholder="formEngineOpts.engineOpts.valuePlaceholder"
     }}
   </div>
 </div>
 
 <div class="row form-group">
   <div class="col-md-2 form-label">
-    <label class="form-control-static">Engine Labels</label>
+    <label class="form-control-static">{{t 'formEngineOpts.engineLabels.label'}}</label>
   </div>
   <div class="col-md-10">
     {{form-key-value
       initialMap=machine.engineLabel
       changed=(action (mut machine.engineLabel))
-      nameLabel="Engine Label"
-      keyLabel="Label"
+      addActionLabel="formEngineOpts.engineLabels.addActionLabel"
+      keyLabel="formEngineOpts.engineLabels.keyLabel"
     }}
   </div>
 </div>
 
 <div class="row form-group">
   <div class="col-md-2 form-label">
-    <label class="form-control-static">Engine Environment</label>
+    <label class="form-control-static">{{t 'formEngineOpts.engineEnv.label'}}</label>
   </div>
   <div class="col-md-10">
     {{form-key-value
       initialMap=machine.engineEnv
       changed=(action (mut machine.engineEnv))
-      nameLabel="Environment Variable"
-      keyLabel="Variable"
-      keyPlaceholder="e.g. HTTP_PROXY"
-      valuePlaceholder="e.g. http://your-proxy:8080"
+      addActionLabel="formEngineOpts.engineEnv.addActionLabel"
+      keyLabel="formEngineOpts.engineEnv.keyLabel"
+      keyPlaceholder="formEngineOpts.engineEnv.keyPlaceholder"
+      valuePlaceholder="formEngineOpts.engineEnv.valuePlaceholder"
     }}
   </div>
 </div>
 
 <div class="row form-group">
   <div class="col-md-2 form-label">
-    <label class="form-control-static">Insecure Registries</label>
+    <label class="form-control-static">{{t 'formEngineOpts.engineInsecureRegistry.label'}}</label>
   </div>
   <div class="col-md-10">
     {{form-value-array
       initialValues=machine.engineInsecureRegistry
       changed=(action (mut machine.engineInsecureRegistry))
-      nameLabel="Insecure Registry"
-      valueLabel="Registry Domain"
-      valuePlaceholder="e.g. registry.example.com"
+      addActionLabel="formEngineOpts.engineInsecureRegistry.addActionLabel"
+      valueLabel="formEngineOpts.engineInsecureRegistry.valueLabel"
+      valuePlaceholder="formEngineOpts.engineInsecureRegistry.valuePlaceholder"
     }}
   </div>
 </div>
 
 <div class="row form-group">
   <div class="col-md-2 form-label">
-    <label class="form-control-static">Registry Mirrors</label>
+    <label class="form-control-static">{{t 'formEngineOpts.engineRegistryMirror.label'}}</label>
   </div>
   <div class="col-md-10">
     {{form-value-array
       initialValues=machine.engineRegistryMirror
       changed=(action (mut machine.engineRegistryMirror))
-      nameLabel="Registry Mirror"
-      valueLabel="Mirror URL"
-      valuePlaceholder="e.g. https://my-mirror.example.com:5000"
+      addActionLabel="formEngineOpts.engineRegistryMirror.addActionLabel"
+      valueLabel="formEngineOpts.engineRegistryMirror.valueLabel"
+      valuePlaceholder="formEngineOpts.engineRegistryMirror.valuePlaceholder"
     }}
   </div>
 </div>
