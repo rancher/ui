@@ -6,6 +6,7 @@ import C from 'ui/utils/constants';
 import { addAction } from 'ui/utils/add-view-action';
 
 export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
+  intl: Ember.inject.service(),
   settings: Ember.inject.service(),
   docsBase:  C.EXT_REFERENCES.DOCS,
   createDelayMs: 0,
@@ -97,8 +98,8 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
 
     let first = parts.prefix + Util.strPad(parts.start, parts.minLength, '0');
     let last = parts.prefix + Util.strPad(parts.end, parts.minLength, '0');
-    return new Ember.Handlebars.SafeString('Hosts will be named <b>' + first + '</b> &mdash; <b>' + last + '</b>');
-  }.property('nameParts'),
+    return this.get('intl').tHtml('driver.multiHostNames',{first: first, last: last});
+  }.property('nameParts','intl._locale'),
 
   nameDidChange: function() {
     let parts = this.get('nameParts');

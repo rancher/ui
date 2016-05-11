@@ -7,6 +7,7 @@ export const getProjectId = function() { return this.get('projectId'); };
 export const getNamespaceId = function() { return this.get('namespaceId'); };
 export const k8sReady = function() { return this.get('kubernetesReady'); };
 export const swarmReady = function() { return this.get('swarmReady'); };
+export const mesosReady = function() { return this.get('mesosReady'); };
 
 /* Tree item options
   {
@@ -137,6 +138,14 @@ const navTree = [
     moreCurrentWhen: ['authenticated.project.waiting'],
     submenu: [
       {
+        id: 'mesos-web',
+        localizedLabel: 'nav.mesos.web',
+        icon: 'icon icon-link',
+        route: 'mesos-tab.index',
+        ctx: [getProjectId],
+        condition: mesosReady,
+      },
+      {
         id: 'mesos-system',
         localizedLabel: 'nav.mesos.system',
         icon: 'icon icon-network',
@@ -155,7 +164,7 @@ const navTree = [
     queryParams: {which: 'all'},
     ctx: [getProjectId],
     moreCurrentWhen: ['authenticated.project.waiting'],
-    condition: function() { return this.get('hasProject') && !this.get('hasKubernetes') && !this.get('hasSwarm'); },
+    condition: function() { return this.get('hasProject') && !this.get('hasKubernetes') && !this.get('hasSwarm') && !this.get('hasMesos'); },
     submenu: [
       {
         id: 'cattle-all',

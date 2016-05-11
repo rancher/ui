@@ -60,6 +60,12 @@ export default Ember.Controller.extend(Sortable, {
         return obj.get('grouping') !== C.EXTERNALID.KIND_SWARM;
       });
     }
+    else if ( which === C.EXTERNALID.KIND_NOT_MESOS )
+    {
+      return all.filter((obj) => {
+        return obj.get('grouping') !== C.EXTERNALID.KIND_MESOS;
+      });
+    }
     else
     {
       return all.filterBy('grouping', which);

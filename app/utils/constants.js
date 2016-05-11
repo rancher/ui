@@ -233,6 +233,8 @@ var C = {
   MESOS: {
     HEALTH: 'health',
     FRAMEWORKS: 'frameworks',
+    MASTER_SERVICE: 'mesos-master',
+    MASTER_PORT: 5050,
   },
 };
 

@@ -14,7 +14,7 @@ export default Ember.Route.extend({
     }
     else if ( this.get('projects.current.mesos') )
     {
-      this.replaceWith('applications-tab');
+      this.replaceWith('mesos-tab');
     }
     else
     {

@@ -2,11 +2,11 @@
   <i class="icon icon-file"></i> {{t 'containerLogs.title' instanceName=instance.displayName}}
 </h2>
 {{#if onlyCombinedLog}}
-  <div class="text-muted">{{tHtml 'containerLogs.onlyCombined'}}</div>
+  <div class="text-muted">{{format-html-message 'containerLogs.onlyCombined'}}</div>
 {{else}}
   <ul class="nav nav-tabs" style="border-bottom: 0">
     <li role="presentation" class="{{if isCombined 'active'}}"><a {{action "changeShow" "combined"}}>{{t 'containerLogs.combined'}}</a></li>
-    <li role="presentation" class="{{if isStdOut 'active'}}"><a {{action "changeShow" "stdout"}}>{{t 'containerLogs.stderr'}}</a></li>
+    <li role="presentation" class="{{if isStdOut 'active'}}"><a {{action "changeShow" "stdout"}}>{{t 'containerLogs.stdout'}}</a></li>
     <li role="presentation" class="{{if isStdErr 'active'}}"><a {{action "changeShow" "stderr"}}>{{t 'containerLogs.stderr'}}</a></li>
   </ul>
 {{/if}}

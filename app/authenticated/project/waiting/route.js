@@ -6,9 +6,11 @@ export default Ember.Route.extend({
   },
 
   afterModel: function(model) {
-    if ( (model.get('hosts.length') + model.get('machines.length')) > 0 && model.get('project.isReady') )
-    {
-      this.replaceWith('authenticated.project.index');
-    }
+    return model.get('project').updateOrchestrationState().then(() => {
+      if ( (model.get('hosts.length') + model.get('machines.length')) > 0 && model.get('project.isReady') )
+      {
+        this.replaceWith('authenticated.project.index');
+      }
+    });
   }
 });
