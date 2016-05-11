@@ -7,6 +7,8 @@ export default Ember.Component.extend({
 
   timer: null,
   currentStep: 0,
+  subStep: 0,
+  subCount: 0,
   services: null,
 
   didInitAttrs() {
@@ -30,6 +32,9 @@ export default Ember.Component.extend({
   ],
 
   updateStep: debouncedObserver('model.hosts.@each.state','model.stacks.@each.{state,externalId}','services.@each.state', function() {
+    this.set('subStep', 0);
+    this.set('subCount', 0);
+
     if ( (this.get('model.hosts.length') + this.get('model.machines.length')) === 0 )
     {
       this.set('currentStep', 0);
@@ -60,12 +65,17 @@ export default Ember.Component.extend({
       return;
     }
 
-    var services = this.get('services').filterBy('environmentId', stack.get('id'));
+    var services = (this.get('services')||[]).filterBy('environmentId', stack.get('id'));
     var num = services.get('length');
     var active = services.filterBy('state','active').get('length');
     if ( num === 0 || active < num )
     {
-      this.set('currentStep', 3);
+      this.setProperties({
+        currentStep: 3,
+        subStep: active,
+        subCount: num
+      });
+
       return;
     }
 

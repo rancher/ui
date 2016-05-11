@@ -5,15 +5,15 @@
 {{#if userLabelArray.length}}
   <table class="table fixed no-lines no-top-padding tight small">
     <tr class="text-muted hidden-sm">
-      <th>{{t 'formUserLabels.key'}}</th>
+      <th>{{t 'formUserLabels.key.label'}}</th>
       <th width="30">&nbsp;</th>
-      <th>{{t 'formUserLabels.value'}}</th>
+      <th>{{t 'formUserLabels.value.label'}}</th>
       <th width="30">&nbsp;</th>
     </tr>
     {{#each userLabelArray as |label|}}
       <tr>
         <td data-title="key">
-          {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=label.key placeholder="e.g. foo"}}
+          {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=label.key placeholder="formUserLabels.key.placeholder"}}
         </td>
 
         <td class="text-center">
@@ -21,7 +21,7 @@
         </td>
 
         <td data-title="label">
-          {{input class="form-control input-sm" type="text" value=label.value placeholder="e.g. bar"}}
+          {{input class="form-control input-sm" type="text" value=label.value placeholder=(t 'formUserLabels.value.placeholder')}}
         </td>
 
         <td class="text-right">
