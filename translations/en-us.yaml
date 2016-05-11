@@ -21,6 +21,7 @@ generic:
   description: Description
   default: Default
   type: Type
+  role: Role
 
 ##############################
 # Routes
@@ -1286,7 +1287,6 @@ formDisks:
     placeholder: e.g. data
   size:
     label: Size
-    rootDisk: Determined by root image
   driver:
     label: Driver
 
@@ -1428,13 +1428,9 @@ formTargets:
 
 formUserLabels:
   addAction: Add Label
-  key:
-    label: Key
-    placeholder: e.g. foo
+  key: Key
   separator: "="
-  value:
-    label: Value
-    placeholder: e.g. bar
+  value: Value
   protip: "ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
 
 formValueArray:
@@ -1542,12 +1538,88 @@ pageFooter:
     windows: Windows
     linux: Linux
 
+pageHeaderEnvironment: 
+  namespace: Namespace
+
+projectRow:
+  none: No description
+
 saveCancel:
   saving: Saving...
   saved: Saved!
   edit: Save
   create: Create
   cancel: Cancel
+
+schedulingRuleRow:
+  theHost: The host
+  haveA: have a
+  of: of
+
+sidekickAddtlInfo:
+  info: Info
+  image: Image
+  entryPoint: Entrypoint
+  command: Command
+  containers: Containers
+  noContainers: No Containers
+  labels: Labels
+  noLabels: No Labels
+
+stackSection:
+  outputs: Outputs
+  toggle: Toggle Dropdown
+  description: Description
+  none: No Services
+  container: |
+    {numContainers, plural,
+      =1 {Container}
+      other {Containers}
+    }
+  service: |
+    {numServices, plural,
+      =1 {Service}
+      other {Services}
+    }
+  sidekick: |
+    {numSidekicks, plural,
+      =1 {Sidekick}
+      other {Sidekicks}
+    }
+  add:
+    service: Add Service
+    loadBalancer: Add Load Balancer
+    serviceAlias: Add Service Alias
+    externalService: Add External Service
+    virtualMachine: Add Virtual 
+
+storagePoolSection:
+  outputs: Outputs
+  readOnly: "(read-only)"
+  subSection: 
+    hosts:
+      header: Hosts
+      none: No Hosts
+    volumes:
+      header: Volumes
+      add: Add Volume
+      none: No Volumes
+
+svgServiceContainer:
+  sidekicks: Sidekicks
+
+swarm: 
+  containerSection: 
+    state: State
+    name: Container Name
+    image: Image
+    none: No Containers
+  serviceSection:
+    state: State
+    name: Service Name
+    ports: Ports
+    containers: Containers
+    none: No Services
 
 viewEditDescription:
   form:
@@ -1556,11 +1628,35 @@ viewEditDescription:
     description:
       placeholder: e.g. Environment for developer experimentation
 
+viewEditProject:
+  showDdit:
+    edit: "Edit Environment:"
+    add: Add Environment
+    orchestration: Container Orchestration
+    formControl: Access Control
+  header: "Environment:"
+  description: Description
+  helpBlock: |
+    Access Control is not enabled.<br/>
+    Anybody with access to the API/UI acts as an admin and will be able to use any environment.
+
 virtualMachineSettings:
   header: Virtual Machine Support
   subtext: |
     Requires hosts that have the <a href="https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine" target="_blank">KVM</a> kernel module loaded.
 
+vmConsole:
+  header: "console:"
+  protip: "ProTip: Hold the {alternateLabel} key when opening shell access to launch a new window."
+  canvas: Canvas not supported.
+
+  footeractions:
+    buttonsend: Send Ctrl-Alt-Delete
+    buttoncancel: Close 
+
+volumeRow:
+  activeMounts:
+    readOnly: "(read-only)"
 ##############################
 # Mixins
 ##############################

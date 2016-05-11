@@ -14,7 +14,7 @@
       {{#if outputs.length}}
         <div class="btn-group r-ml10">
           <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Outputs <i class="icon icon-fw icon-chevron-down"></i>
+            {{t 'storagePoolSection.outputs'}} <i class="icon icon-fw icon-chevron-down"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-right">
             {{#each outputs as |obj|}}
@@ -28,7 +28,7 @@
 
   <div class="header-right right-divider stack-actions" style="width: auto">
     {{#unless single}}
-      {{#link-to "storagepools.new-volume" (query-params driverName=model.driverName) classNames="btn btn-primary btn-sm"}}Add Volume{{/link-to}}
+      {{#link-to "storagepools.new-volume" (query-params driverName=model.driverName) classNames="btn btn-primary btn-sm"}}{{t 'storagePoolSection.volumes.add'}}{{/link-to}}
     {{/unless}}
   </div>
 </div>
@@ -37,23 +37,23 @@
 
 <div class="stack-body r-p10 row row-full-height">
   <div class="subsection gutter col-xs-6 col-md-3 col-full-height">
-    <h6>Hosts</h6>
+    <h6>{{t 'storagePoolSection.hosts.header'}}</h6>
     <div class="clearfix r-p10 hosts">
       {{#each hostsByName as |host|}}
         <div class="r-m10"><i class="icon {{host.stateIcon}} {{host.stateBackground}}"></i> {{#link-to "host" host.id}}{{host.displayName}}{{/link-to}}</div>
       {{else}}
-        <div class="text-center text-muted">No hosts</div>
+        <div class="text-center text-muted">{{t 'storagePoolSection.hosts.none'}}</div>
       {{/each}}
     </div>
   </div>
   {{#if model.volumes.length}}
     <div class="subsection gutter col-xs-6 col-md-9 col-full-height">
-      <h6>Volumes</h6>
+      <h6>{{t 'storagePoolSection.volumes.header'}}</h6>
       <table class="grid fixed" style="margin-bottom: 0">
         <thead>
           <tr>
-            {{sortable-th sortable=this action="changeSort" name="state" width="125"}}
-            {{sortable-th sortable=this action="changeSort" name="name"}}
+            {{sortable-th sortable=this action="changeSort" name="state" width="125" label="generic.state"}}
+            {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
             {{sortable-th sortable=this action="changeSort" name="activeMounts" label="Mounts (Container: Path)"}}
             <th width="70">&nbsp;</th>
           </tr>
@@ -80,12 +80,12 @@
                       {{~/if~}}
                       : {{mount.path}}
                       {{#if (eq mount.permissions "ro")}}
-                        <span class="text-muted">(read-only)</span>
+                        <span class="text-muted">{{t 'storagePoolSection.readOnly'}}</span>
                       {{/if}}
                     </div>
                   {{/each}}
                 {{else}}
-                  <span class="text-muted">None</span>
+                  <span class="text-muted">{{t 'generic.none'}}</span>
                 {{/if}}
               </td>
               <td class="actions wide">
@@ -97,6 +97,6 @@
       </table>
     </div>
   {{else}}
-    <div class="text-muted text-center r-p10">No Volumes</div>
+    <div class="text-muted text-center r-p10">{{t 'storagePoolSection.volumes.none'}}</div>
   {{/if}}
 </div>
