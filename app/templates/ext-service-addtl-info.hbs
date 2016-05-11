@@ -1,9 +1,9 @@
 {{log service}}
 <div class="content-box col-sm-12 col-md-12">
-  <label class="text-muted">External Service (<small>{{#link-to 'service' service.environmentId service.id class=''}} View Details {{/link-to}}</small>)</label>
+  <label class="text-muted">{{t 'externalServicePartial.extService.labelText'}} (<small>{{#link-to 'service' service.environmentId service.id class=''}} {{t 'externalServicePartial.extService.linkTo'}} {{/link-to}}</small>)</label>
   <div class="content">
     {{#if service.externalIpAddresses}}
-      <label class="text-muted">IPs</label>
+      <label class="text-muted">{{t 'externalServicePartial.ips'}}</label>
       {{#if service.externalIpAddresses.length}}
         <ul class="list-unstyled" style="mergin:0 auto;">
           {{#each service.externalIpAddresses as |ip|}}
@@ -15,13 +15,13 @@
       {{/if}}
     {{/if}}
     {{#if service.hostname}}
-      <label class="text-muted">Hostname: </label>
+      <label class="text-muted">{{t 'externalServicePartial.hostname'}} </label>
       <div>
         {{service.hostname}}
       </div>
     {{/if}}
     {{#if service.description}}
-      <label class="text-muted r-mt10">Description:</label>
+      <label class="text-muted r-mt10">{{t 'externalServicePartial.description'}}</label>
       <div>
         {{service.description}}
       </div>
