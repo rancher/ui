@@ -8,7 +8,7 @@ var Volume = Resource.extend({
     var a = this.get('actionLinks');
 
     return [
-      { label: 'action.delete',    icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
+      { label: 'action.remove',    icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
       { divider: true },
       { label: 'action.viewInApi', icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
       { label: 'action.restore',   icon: '',                       action: 'restore',      enabled: !!a.restore },

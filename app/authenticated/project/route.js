@@ -29,11 +29,6 @@ export default Ember.Route.extend({
     });
   },
 
-  afterModel(/*model, transition*/) {
-    var auth = this.modelFor('authenticated');
-    return this.get('projects.current').checkForWaiting(auth.get('hosts'));
-  },
-
   loadingError(err, transition, ret) {
     var isAuthEnabled = this.get('access.enabled');
 

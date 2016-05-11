@@ -12,7 +12,7 @@ export default Ember.Component.extend({
 
   nameLabel: 'formNameDescription.name.label',
   namePlaceholder: 'formNameDescription.name.placeholder',
-  nameHelp: '',
+  nameHelpText: '',
   nameRequired: false,
   nameDisabled: false,
 
