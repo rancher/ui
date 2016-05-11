@@ -1,7 +1,5 @@
 <section class="header">
-  <h1>
-    Catalog: <span class="text-capitalize">{{selectedCatalog}}</span>
-  </h1>
+  <h1>{{t 'catalogPage.index.header'}} <span class="text-capitalize">{{selectedCatalog}}</span></h1>
 
   <div class="pull-right">
     <button type="button" class="btn btn-default btn-sm" disabled={{eq updating 'yes'}} {{action "update"}}>
@@ -32,7 +30,7 @@
 
   <div class="btn-group searchable pull-right">
     <i class="icon icon-search"></i>
-    {{input placeholder="Search..." class="form-control input-sm" value=search}}
+    {{input placeholder=(t 'catalogPage.index.search.placeholder') class="form-control input-sm" value=search}}
   </div>
 </section>
 
@@ -41,7 +39,7 @@
     <div class="container-catalog text-center">
       {{#if catalogItem.official}}
         <div class='badge-certified'>
-          <strong>Certified</strong>
+          <strong>{{t 'catalogPage.index.certified'}}</strong>
         </div>
       {{/if}}
       <div class="catalog-icon">
@@ -61,5 +59,12 @@
     </div>
   {{else}}
     <div class="text-muted r-mt20">There are no compatible templates{{#if showCatalogDropdown}} in this Catalog{{/if}}.</div>
+    <div class="text-muted r-mt20">
+      {{#if showCatalogDropdown}}
+        {{t 'catalogPage.index.noData.plural'}}
+      {{else}}
+        {{t 'catalogPage.index.noData.singular'}}
+      {{/if}}
+    </div>
   {{/each}}
 </section>

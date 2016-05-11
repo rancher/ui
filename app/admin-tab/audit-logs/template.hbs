@@ -5,14 +5,14 @@
   <div class="well">
     <div class="form-inline r-mb25 inline-block">
       <div class="form-group">
-        {{input class="form-control input-sm r-mr5" value=filters.eventType placeholder="auditLogsPage.form.eventType.placeholder"}}
+        {{input class="form-control input-sm r-mr5" value=filters.eventType placeholder=(t "auditLogsPage.form.eventType.placeholder")}}
         <div class="input-group r-mr5">
           <span class="input-group-btn">
-            {{input class="form-control input-sm pull-right" value=filters.resourceId  placeholder="auditLogsPage.form.resourceId.placeholder" disabled=resourceIdReady}}
-            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if filters.resourceType filters.resourceType "auditLogsPage.form.resourceType.placeholder"}} <i class="icon icon-chevron-down"></i></button>
+            {{input class="form-control input-sm pull-right" value=filters.resourceId  placeholder=(t "auditLogsPage.form.resourceId.placeholder") disabled=resourceIdReady}}
+            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if filters.resourceType filters.resourceType (t "auditLogsPage.form.resourceType.placeholder")}} <i class="icon icon-chevron-down"></i></button>
             <ul class="dropdown-menu" role="menu">
               <li role="presentation" class="dropdown-header">
-                Select a Resource Type:
+                {{t 'auditLogsPage.form.resourceType.dropdownPlaceholder'}}
               </li>
               {{#each model.resourceTypes as |resource|}}
                 <li {{action "updateResourceType" resource}}>
@@ -22,12 +22,12 @@
             </ul>
           </span>
         </div>
-        {{input class="form-control input-sm r-mr5" value=filters.clientIp placeholder="auditLogsPage.form.requestIp.placeholder"}}
+        {{input class="form-control input-sm r-mr5" value=filters.clientIp placeholder=(t "auditLogsPage.form.requestIp.placeholder")}}
         <span class="dropdown">
-          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if authTypeReadable authTypeReadable "auditLogsPage.form.authType.placeholder"}} <i class="icon icon-chevron-down"></i></button>
+          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if authTypeReadable authTypeReadable (t "auditLogsPage.form.authType.placeholder")}} <i class="icon icon-chevron-down"></i></button>
           <ul class="dropdown-menu" role="menu">
             <li role="presentation" class="dropdown-header">
-              Select an Auth Type:
+              {{t 'auditLogsPage.form.authType.dropdownPlaceholder'}}
             </li>
             {{#each authTypes as |type|}}
               <li {{action "updateAuthType" type}}>
@@ -53,27 +53,27 @@
       <tbody>
         {{#each model.auditLog as |log|}}
           <tr>
-            <td data-title="Time:">{{format-relative log.created interval=C.LANGUAGE.FORMAT_RELATIVE_TIMEOUT}}</td>
-            <td data-title="Event Type:" class="force-wrap" title="{{log.eventType}}">
+            <td data-title="{{t 'auditLogsPage.table.time'}}:">{{format-relative log.created interval=C.LANGUAGE.FORMAT_RELATIVE_TIMEOUT}}</td>
+            <td data-title="{{t 'auditLogsPage.table.eventType'}}:" class="force-wrap" title="{{log.eventType}}">
               {{log.eventType}} <i class="icon icon-info addtl-info-trigger" {{action 'showResponseObjects' log.requestObject log.responseObject }}></i>
             </td>
-            <td data-title="Description:">{{#if log.description}}{{log.description}}{{else}}<span class="text-muted">None</span>{{/if}}</td>
-            <td data-title="Environment:" class="clip">
+            <td data-title="{{t 'auditLogsPage.table.description'}}:">{{#if log.description}}{{log.description}}{{else}}<span class="text-muted">None</span>{{/if}}</td>
+            <td data-title="{{t 'auditLogsPage.table.environment'}}:" class="clip">
               {{#if (eq log.account.type "project")}}
                 {{log.account.name}}
               {{else}}
                 <span class="text-muted">-</span>
               {{/if}}
             </td>
-            <td data-title="Resource Type(ID):" class="clip" title="{{log.resourceType}}">
+            <td data-title="{{t 'auditLogsPage.table.resourceTypeId'}}:" class="clip" title="{{log.resourceType}}">
               {{#if log.links.resource}}
                 <a href="{{log.links.resource}}" target="_blank">{{log.resourceType}}{{#if log.resourceId}}: {{log.resourceId}}{{/if}}</a>
               {{else}}
                 {{log.resourceType}}{{#if log.resourceId}}: {{log.resourceId}}{{/if}}
               {{/if}}
             </td>
-            <td data-title="Identity:">{{identity-block identityNotParsed=log.authenticatedAsIdentityId}}</td>
-            <td data-title="Auth &amp; IP:" class="clip">{{auth-type log.authType}}<div>{{format-ip ip=log.clientIp noIp='generic.emptyString'}}</div></td>
+            <td data-title="{{t 'auditLogsPage.table.identity'}}:">{{identity-block identityNotParsed=log.authenticatedAsIdentityId}}</td>
+            <td data-title="{{t 'auditLogsPage.table.authIp'}}:" class="clip">{{auth-type log.authType}}<div>{{format-ip ip=log.clientIp noIp='generic.emptyString'}}</div></td>
           </tr>
         {{/each}}
       </tbody>

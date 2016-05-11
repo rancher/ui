@@ -1,17 +1,17 @@
 <section class="header">
-  <h1 style="display: block">kubectl</h1>
+  <h1 style="display: block">{{t 'k8sTab.kubectl.header'}}</h1>
 </section>
 
 <section class="well">
   {{#if (eq step 1)}}
-    <p>To use <a href="http://kubernetes.io/docs/getting-started-guides/docker/#download-kubectl" target="_blank">kubectl</a> (v1.2+ only) on your workstation, click the button to generate an API key and config file:</p>
-    <button {{action "generate"}} class="btn btn-primary">Generate Config</button>
+    <p>{{format-html-message 'k8sTab.kubectl.stepOne.generateConfigText'}}</p>
+    <button {{action "generate"}} class="btn btn-primary">{{t 'k8sTab.kubectl.stepOne.generateButton'}}</button>
   {{/if}}
   {{#if (eq step 2)}}
-    <i class="icon icon-spinner icon-spin"></i> Generating...
+    <i class="icon icon-spinner icon-spin"></i> {{t 'k8sTab.kubectl.stepTwo.progress'}}
   {{/if}}
   {{#if (eq step 3)}}
-    <p>Put this into <code>~/.kube/config</code>:</p>
+    <p>{{format-html-message 'k8sTab.kubectl.stepThree.helpText'}}</p>
     <pre><code>{{kubeconfig}}</code></pre>
     {{copy-to-clipboard tooltipText="" buttonText="copyToClipboard.tooltip" clipboardText=kubeconfig class="with-clip"}}
     <p class="r-mt10 r-mb0">Then <a href="http://kubernetes.io/docs/getting-started-guides/docker/#download-kubectl" target="_blank">download</a> (if needed) and run <code>kubectl</code></p>
@@ -19,14 +19,14 @@
 </section>
 
 <section class="well">
-  <p>Or use this handy shell to directly execute <code>kubectl</code> commands:</p>
+  <p>{{format-html-message 'k8sTab.kubectl.shell.helpText'}}</p>
 
   {{container-shell
-    classNames="inline-block"
-    command=model.command
-    instance=model.instance
-    cols=120
-    rows=30
-    showProtip=false
+  classNames="inline-block"
+  command=model.command
+  instance=model.instance
+  cols=120
+  rows=30
+  showProtip=false
   }}
 </section>

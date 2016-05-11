@@ -18,6 +18,9 @@ generic:
   remove: Remove
   state: State
   unknown: Unknown
+  description: Description
+  default: Default
+  type: Type
 
 ##############################
 # Routes
@@ -84,6 +87,7 @@ auditLogsPage:
       placeholder: Event Type
     resourceType:
       placeholder: "Resource Type:"
+      dropdownPlaceholder: 'Select a Resource Type:'
       dropdownList:
     resourceId:
       placeholder: Resource ID
@@ -91,6 +95,7 @@ auditLogsPage:
       placeholder: Request IP
     authType:
       placeholder: "Auth Type:"
+      dropdownPlaceholder: 'Select an Auth Type:'
       dropdownList:
     clearButtonText: Clear All
     searchButtonText: Search
@@ -216,6 +221,23 @@ authPage:
         pre: Enable Local Auth
         post: 'Enabling...'
 
+
+catalogPage:
+  index:
+    header: 'Catalog:'
+    search:
+      placeholder: Search...
+    certified: Certified
+    noData:
+      singular: There are no compatible templates.
+      plural: There are no compatible templates in this catalog.
+
+
+consolePage:
+  header: 'Shell:'
+  closeButton: Close
+
+
 certificatesPage:
   table:
     cn: Domain Name
@@ -339,6 +361,13 @@ containersPage:
 containerSubpod:
   childContainers: Containers
   childSidekicks: Sidekicks
+
+failWhalePage:
+  header: Error
+  reloadButton: |
+    <a href="#" onclick="window.location.href = window.location.href; return false;">Reload</a> to try again or
+  logoutButton: log out
+
 
 haPage:
   header:
@@ -474,7 +503,7 @@ helpPage:
     content:
       paragraph1: |
         {appName} is an open source software platform that implements a purpose-built infrastructure for running containers in production. Docker containers, as an increasingly popular application workload, create new requirements in infrastructure services such as networking, storage, load balancer, security, service discovery, and resource management.
-      graphic8:
+      graphic1:
         text: Find a bug?
         link: File an issue on GitHub.
       graphic2:
@@ -578,6 +607,98 @@ hostsPage:
         body:
           noData: This host does not have any volumes.
 
+
+k8sTab:
+  kubectl:
+    header: kubectl
+    stepOne:
+      generateConfigText: |
+        To use <a href="http://kubernetes.io/docs/getting-started-guides/docker/#download-kubectl" target="_blank">kubectl</a> (v1.2+ only) on your workstation, click the button to generate an API key and config file:
+      generateButton: Generate Config
+    stepTwo:
+      progress: Generating...
+    stepThree:
+      helpText: |
+        Put this into <code>~/.kube/config</code>:
+      downloadText: |
+        Then <a href="http://kubernetes.io/docs/getting-started-guides/docker/#download-kubectl" target="_blank">download</a> (if needed) and run <code>kubectl</code>
+    shell:
+      helpText: |
+        Or use this handy shell to directly execute <code>kubectl</code> commands:
+  multistat:
+    header:
+      type: 'Type:'
+      cluster: 'Cluster IP:'
+      balancer: 'Balancer IP:'
+      session: 'Session Affinity:'
+      external: 'External IPs:'
+      selectors: 'Selectors'
+  navTabs:
+    pods: Pods
+    labels: Labels
+    ports: Ports
+  namespace:
+    pods:
+      index:
+        header: Pods
+        linkTo: Add Pod
+        table:
+          header:
+            status: Status
+            containers: Containers
+            host: Host IP
+            pod: Pod IP
+          body:
+            noData: You do not have any Pods yet.
+      pod:
+        header:
+          linkTo: 'Pod:'
+        type:
+          header: 'Type:'
+        navTabs:
+          containers: Containers
+    rcs:
+      index:
+        header: RCs
+        linkTo: Add RC
+        table:
+          header:
+            replicas: Replicas
+            selectors: Selectors
+            containers: Containers
+          body:
+            noData: You do not have any Replication Controllers yet.
+      rc:
+        header: 'RC:'
+        navTabs:
+          pods: Pods
+          labels: Labels
+          ports: Ports
+    services:
+      header: Services
+      linkTo: Add Service
+      table:
+        header:
+          cluster: Cluster IP
+          pods: Pods
+          ports: Ports
+          selectors: Selectors
+        body:
+          noData: You do not have any Services yet.
+      service:
+        index:
+          header: 'Service:'
+  namespaces:
+    header: Namespaces
+    linkTo: Add Namespace
+    table:
+      body:
+        noData: You do not have any Namespaces yet.
+
+
+
+
+
 loginPage:
   greeting: "Howdy!<br>Welcome to {appName}"
   githubMessage: "{appName} uses GitHub to manage accounts and teams.  Click the button below to log in and give us read-only access to your basic GitHub account information."
@@ -613,6 +734,16 @@ registriesPage:
 
 
 servicePage:
+  containersTab:
+    table:
+      header:
+        ipAddress: IP Address
+        host: Host
+        image: Image
+        stats: Stats
+  linksTab:
+    header: Links
+    noData: No Links
   new:
     form:
       name:
@@ -631,6 +762,31 @@ servicePage:
         placeholder: e.g. website
       description:
         placeholder: e.g. Balancer for mycompany.com
+  portsTab:
+    table:
+      header:
+        port: Port
+        host: Host IP
+      body:
+        noData: This Service has no ports.
+    notActive: Ports are only available while the service is Active.
+
+
+settingsPage:
+  index:
+    header: Environments
+    linkTo: Add Environment
+    subtext: |
+      <p>{appName} supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
+      <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
+
+    alert: There are no active environments.  You will need to create or activate one before you can do anything else.
+    table:
+      header:
+        orchestration: Orchestration
+      body:
+        noData: You don't have any environments yet.
+
 
 stacksPage:
   header:
@@ -1307,6 +1463,15 @@ hostSettings:
     alert: |
       Are you sure all the hosts you will create will be able to reach <code>{activeValue}</code> ?<br/>It looks like a private IP or local network.
 
+machine:
+  driverAzure:
+    accountAccess:
+      subscriptionCert:
+        placeholder: Your Azure subscription certificate
+    instance:
+      publishSettingsFile:
+        placeholder: Your Publish Settings file
+
 schema:
   inputCertificate:
     prompt: Choose a Certificate...
@@ -1318,6 +1483,12 @@ inputPassword:
 
 inputTextFile:
   tooltip: Read from a file
+
+labelsSection:
+  kind: Kind
+  key: Key
+  value: Value
+  noData: No labels
 
 loginGithub:
   buttonText: Authenticate with GitHub
