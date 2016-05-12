@@ -14,7 +14,12 @@
           {{/if}}
         {{/if}}
 
-        <span>{{step}}</span>
+        <span>
+          {{step}}
+          {{#if (and (eq currentStep index) subCount)}}
+            ({{if subStep subStep '0'}} of {{subCount}})
+          {{/if}}
+        </span>
       </li>
     {{/each}}
   </ul>

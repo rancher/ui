@@ -12,7 +12,6 @@ function isPublic(name) {
 export default Ember.Component.extend({
   endpoint      : Ember.inject.service(),
   settings      : Ember.inject.service(),
-  docsBase      : C.EXT_REFERENCES.DOCS,
 
   customRadio   : null,
   customValue   : '',

@@ -313,11 +313,11 @@ export default Ember.Mixin.create({
         return;
       }
 
-      // System and Affinity values are always lowercase.
-      if ( type !== USER )
-      {
-        value = value.toLowerCase();
-      }
+      // System and Affinity values used to be always lowercase.
+      //if ( type !== USER )
+      //{
+      //  value = value.toLowerCase();
+      //}
 
       // Affinity & System labels can be concatenated, Users just overwrite the previous value.
       if ( map[key] && type !== USER )

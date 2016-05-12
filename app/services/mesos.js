@@ -22,13 +22,26 @@ export default Ember.Service.extend({
   masterUrl: function() {
     let projectId = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
     return this.get('app.mesosEndpoint').replace('%PROJECTID%', projectId);
-  }.property(),
+  }.property('app.mesosEndpoint',`tab-session.${C.TABSESSION.PROJECT}`),
 
   isReady: function() {
-    return this.get('store').request({
-      url: `${this.get('masterUrl')}/${C.MESOS.HEALTH}`
-    }).then(() => {
-      return true;
+    return this.get('store').find('environment').then((stacks) => {
+      let eId = C.EXTERNALID.KIND_SYSTEM + C.EXTERNALID.KIND_SEPARATOR + C.EXTERNALID.KIND_KUBERNETES;
+      let matching = stacks.filterBy('externalId', eId);
+      let expect = matching.get('length');
+      let healthy = matching.filterBy('healthState', 'healthy').get('length');
+      if ( expect === healthy )
+      {
+        return this.get('store').rawRequest({
+          url: `${this.get('masterUrl')}/${C.MESOS.HEALTH}`
+        }).then(() => {
+          return true;
+        });
+      }
+      else
+      {
+        return false;
+      }
     }).catch(() => {
       return Ember.RSVP.resolve(false);
     });

@@ -4,7 +4,8 @@ import Driver from 'ui/mixins/driver';
 export default Ember.Component.extend(Driver, {
   driverName         : 'vsphere',
   model              : null,
-  config : Ember.computed.alias('model.vmwarevsphereConfig'),
+  config             : Ember.computed.alias('model.vmwarevsphereConfig'),
+  showEngineUrl      : false,
 
   bootstrap: function() {
     let config = this.get('store').createRecord({
@@ -18,6 +19,7 @@ export default Ember.Component.extend(Driver, {
     this.set('model', this.get('store').createRecord({
       type: 'machine',
       vmwarevsphereConfig: config,
+      engineInstallUrl: '',
     }));
   },
 });
