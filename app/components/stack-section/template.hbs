@@ -23,7 +23,7 @@
       <div class="header-left">
         <div class="btn-group r-ml10">
           <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Outputs <i class="icon icon-chevron-down"></i>
+            {{t 'stackSection.outputs'}} <i class="icon icon-chevron-down"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-right" role="dropdown">
             {{#each outputs as |obj|}}
@@ -40,28 +40,28 @@
 
     <div class="header-right right-divider count">
       <p>{{instanceCount}}</p>
-      <label>Container{{unless (eq instanceCount 1) 's'}}</label>
+      <label>{{t 'stackSection.container' numContainers=instanceCount}}</label>
     </div>
 
     <div class="header-right right-divider count">
       <p>{{model.unremovedServices.length}}</p>
-      <label>Service{{unless (eq model.unremovedServices.length 1) 's'}}</label>
+      <label>{{t 'stackSection.service' numServices=instanceCount}}</label>
     </div>
 
     <div class="header-right right-divider stack-template">
       {{upgrade-btn environmentResource=model}}
       <div class="btn-group">
-        {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-default btn-sm"}}Add Service{{/link-to}}
+        {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-default btn-sm"}}{{t 'stackSection.add.service'}}{{/link-to}}
         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
           <i class="icon icon-fw icon-chevron-down"></i>
-          <span class="sr-only">Toggle Dropdown</span>
+          <span class="sr-only">{{t 'stackSection.add.toggle'}}</span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu">
-          <li>{{#link-to "service.new-balancer" (query-params environmentId=model.id)}}Add Load Balancer{{/link-to}}</li>
-          <li>{{#link-to "service.new-alias" (query-params environmentId=model.id)}}Add Service Alias{{/link-to}}</li>
-          <li>{{#link-to "service.new-external" (query-params environmentId=model.id)}}Add External Service{{/link-to}}</li>
+          <li>{{#link-to "service.new-balancer" (query-params environmentId=model.id)}}{{t 'stackSection.add.loadBalancer'}}{{/link-to}}</li>
+          <li>{{#link-to "service.new-alias" (query-params environmentId=model.id)}}{{t 'stackSection.add.serviceAlias'}}{{/link-to}}</li>
+          <li>{{#link-to "service.new-external" (query-params environmentId=model.id)}}{{t 'stackSection.add.externalService'}}{{/link-to}}</li>
           {{#if hasVm}}
-            <li>{{#link-to "service.new-virtualmachine" (query-params environmentId=model.id)}}Add Virtual Machine{{/link-to}}</li>
+            <li>{{#link-to "service.new-virtualmachine" (query-params environmentId=model.id)}}{{t 'stackSection.add.virtualMachine'}}{{/link-to}}</li>
           {{/if}}
         </ul>
       </div>
@@ -74,7 +74,7 @@
     {{#if single}}
       {{#if model.description}}
       <div class="r-pt20 r-pr20 r-pb20 r-pl20">
-          <label>Description:&nbsp;</label>{{model.description}}
+          <label>{{t 'stackSection.add.description'}}:&nbsp;</label>{{model.description}}
         </div>
       {{/if}}
     {{/if}}
@@ -89,7 +89,7 @@
               <td data-title="Service Name:"class="force-wrap">
                 {{#link-to "service" service.environmentId service.id}}{{service.displayName}}{{/link-to}}
                 {{#if service.hasSidekicks}}
-                  + {{service.secondaryLaunchConfigs.length}} Sidekick{{unless (eq service.secondaryLaunchConfigs.length 1) 's'}}
+                  + {{service.secondaryLaunchConfigs.length}} {{t 'stackSection.sidekick' numSidekicks=instanceCount}}
                 {{/if}}
                 <button type="button" class="btn-link" role="button" {{action 'addtlInfo' service target=controller}}>
                   <i class="icon icon-info addtl-info-trigger"/>
@@ -103,7 +103,7 @@
               </td>
               <td data-title="Containers:">
                 {{#if service.hasContainers}}
-                  {{default-str service.instances.length default="0"}} Container{{unless (eq service.instances.length 1) 's'}}
+                  {{default-str service.instances.length default="0"}} {{t 'stackSection.container' numContainers=instanceCount}}
                 {{/if}}
               </td>
               <td data-title="Actions:" class="actions wide">
@@ -114,7 +114,7 @@
         </tbody>
       </table>
     {{else}}
-      <div class="text-muted text-center r-p10">No Services</div>
+      <div class="text-muted text-center r-p10">{{t 'viewEditProject.showEdit.none'}}</div>
     {{/if}}
   </div>
 {{/liquid-if}}

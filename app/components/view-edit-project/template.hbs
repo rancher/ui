@@ -2,13 +2,13 @@
   {{#if showEdit}}
     <h1>
       {{#if editing}}
-        Edit Environment: {{originalProject.displayName}}
+        {{t 'viewEditProject.showEdit.edit'}} {{originalProject.displayName}}
       {{else}}
-        Add Environment
+        {{t 'viewEditProject.showEdit.add'}}
       {{/if}}
     </h1>
   {{else}}
-    <h1>{{#link-to "settings.projects"}}Environment:{{/link-to}}</h1>
+    <h1>{{#link-to "settings.projects"}}{{t 'viewEditProject.header'}}{{/link-to}}</h1>
       {{#power-select options=model.all selected=project onchange=(action "changeProject") searchField="displayName" as |obj|}}
           {{select-dot model=obj}}
       {{/power-select}}
@@ -24,7 +24,7 @@
 
 {{#if showEdit}}
   <section class="well">
-    <label>Container Orchestration</label>
+    <label>{{t 'viewEditProject.showEdit.orchestration'}}</label>
     <div class="nav nav-boxes checked-active">
       {{#each orchestrationChoices as |driver|}}
         {{#if driver.disabled}}
@@ -46,7 +46,7 @@
 {{else}}
  {{#if project.description}}
     <section class="well r-mb0">
-      <label>Description</label>
+      <label>{{t 'viewEditProject.description'}}</label>
       <p>{{project.description}}</p>
     </section>
   {{/if}}
@@ -56,7 +56,7 @@
   <div class="row form-group">
     {{#if showEdit}}
       <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">Access Control</label>
+        <label class="form-control-static">{{t 'viewEditProject.showEdit.formControl'}}</label>
       </div>
     {{/if}}
 
@@ -74,9 +74,9 @@
           <table class="grid fixed" style="margin-bottom: 0;">
             <thead>
               <tr>
-                {{sortable-th sortable=this action="changeSort" name="name"}}
-                {{sortable-th sortable=this action="changeSort" name="type"}}
-                {{sortable-th sortable=this action="changeSort" name="role"}}
+                {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
+                {{sortable-th sortable=this action="changeSort" name="type" label="generic.type"}}
+                {{sortable-th sortable=this action="changeSort" name="role" label="generic.role"}}
                 {{#if showEdit}}<th width="40">&nbsp;</th>{{/if}}
               </tr>
             </thead>
@@ -119,8 +119,7 @@
           </table>
         {{else}}
           <p class="help-block text-center">
-            Access Control is not enabled.<br/>
-            Anybody with access to the API/UI acts as an admin and will be able to use any environment.
+            {{t 'viewEditProject.helpBlock'}}
           </p>
         {{/if}}
       </div>
