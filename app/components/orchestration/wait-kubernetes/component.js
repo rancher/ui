@@ -67,12 +67,12 @@ export default Ember.Component.extend({
 
     var services = (this.get('services')||[]).filterBy('environmentId', stack.get('id'));
     var num = services.get('length');
-    var active = services.filterBy('state','active').get('length');
-    if ( num === 0 || active < num )
+    var healthy = services.filterBy('healthState','healthy').get('length');
+    if ( num === 0 || healthy < num )
     {
       this.setProperties({
         currentStep: 3,
-        subStep: active,
+        subStep: healthy,
         subCount: num
       });
 

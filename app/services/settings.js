@@ -13,6 +13,7 @@ export default Ember.Service.extend(Ember.Evented, {
   access: Ember.inject.service(),
   cookies: Ember.inject.service(),
   projects: Ember.inject.service(),
+  intl: Ember.inject.service(),
 
   all: null,
   promiseCount: 0,
@@ -173,4 +174,16 @@ export default Ember.Service.extend(Ember.Evented, {
       return this.get('_plValue');
     }
   }.property('isRancher','_plValue'),
+
+  minDockerVersion: Ember.computed.alias(`asMap.${C.SETTING.MIN_DOCKER}.value`),
+
+  docsBase: function() {
+    let version = this.get(`asMap.${C.SETTING.HELP_VERSION}.value`);
+    let lang = (this.get('intl._locale')[0]||'').replace(/-.*$/,'');
+    if ( !lang || lang === 'none' ) {
+      lang = 'en';
+    }
+
+    return `${C.EXT_REFERENCES.DOCS}/${version}/${lang}`;
+  }.property('intl._locale',`asMap.${C.SETTING.HELP_VERSION}.value`)
 });

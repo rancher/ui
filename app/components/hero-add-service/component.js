@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  settings: Ember.inject.service(),
+
   environmentId: null,
 
   tagName: 'section',

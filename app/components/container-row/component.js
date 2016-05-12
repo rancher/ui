@@ -14,7 +14,7 @@ export default Ember.Component.extend({
   tagName: 'TR',
 
   detailRoute: function() {
-    if ( this.get('isVm') ) {
+    if ( this.get('model.isVm') ) {
       return 'virtualmachine';
     } else {
       return 'container';

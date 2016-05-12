@@ -1,11 +1,9 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   application: Ember.inject.controller(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
-  docsBase: C.EXT_REFERENCES.DOCS,
 
   hasHosts: function() {
     return (this.get('model.hosts.length') + this.get('model.machines.length')) > 0;

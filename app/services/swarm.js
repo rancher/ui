@@ -8,7 +8,7 @@ export default Ember.Service.extend({
       let matching = stacks.filterBy('externalId', eId);
       let expect = matching.get('length');
       let healthy = matching.filterBy('healthState', 'healthy').get('length');
-      return ( expect === healthy )
+      return ( expect === healthy );
     }).catch(() => {
       return Ember.RSVP.resolve(false);
     });
