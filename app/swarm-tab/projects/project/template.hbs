@@ -1,5 +1,5 @@
 <section class="header r-pt20 clearfix">
-  <h1>{{#link-to "applications-tab"}}Project:{{/link-to}}</h1>
+  <h1>{{#link-to "applications-tab"}}{{t 'swarmPage.projects.project.linkTo'}}{{/link-to}}</h1>
   {{#power-select options=model.projects selected=model.project onchange=(action "changeProject") searchField="displayName" as |obj|}}
     <div class="clip r-mr15">
       {{select-dot model=obj}}
@@ -16,10 +16,10 @@
   <table class="grid fixed r-mb0">
     <thead>
       <tr>
-        {{sortable-th sortable=this action="changeSort" name="state" width="125" label="State"}}
-        {{sortable-th sortable=this action="changeSort" name="name"}}
-        <th>Ports</th>
-        {{sortable-th sortable=this action="changeSort" name="containers" width="100"}}
+        {{sortable-th sortable=this action="changeSort" name="state" width="125" label="generic.state"}}
+        {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
+        <th>{{t 'swarmPage.projects.project.table.header.ports'}}</th>
+        {{sortable-th sortable=this action="changeSort" name="containers" width="100" label='swarmPage.projects.project.table.header.containers'}}
         <th class="actions" width="85">&nbsp;</th>
       </tr>
     </thead>
@@ -27,7 +27,7 @@
       {{#each arranged as |service|}}
         {{swarm/service-row model=service}}
       {{else}}
-        <tr><td colspan="7" class="text-center text-muted">This Project does not have any Services yet.</td></tr>
+        <tr><td colspan="7" class="text-center text-muted">{{t 'swarmPage.projects.project.table.body.noData'}}</td></tr>
       {{/each}}
     </tbody>
   </table>

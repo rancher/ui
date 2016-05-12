@@ -22,6 +22,9 @@ generic:
   default: Default
   type: Type
   role: Role
+  na: 'N/A'
+  ipAddress: IP Address
+  image: Image
 
 ##############################
 # Routes
@@ -706,6 +709,10 @@ mesosPage:
   header: Mesos
   actionLink: Open Mesos UI
 
+notFoundPage:
+  header: The page you were looking for doesn't exist!
+  linkTo:
+
 registriesPage:
   index:
     header: Registries
@@ -737,6 +744,24 @@ registriesPage:
 
 
 servicePage:
+  header: 'Service:'
+  multistat:
+    type: 'Type:'
+    fqdn: 'FQDN:'
+    scale: 'Scale:'
+    image: 'Image:'
+    entryPoint: 'Entrypoint:'
+    command: 'Command:'
+    description: 'Description:'
+    global: Global
+  external:
+    externalIp: External IPs
+    externalHostname: 'External Hostname:'
+  navTabs:
+    ports: Ports
+    containers: Containers
+    labels: Labels
+    links: Links
   containersTab:
     table:
       header:
@@ -744,6 +769,8 @@ servicePage:
         host: Host
         image: Image
         stats: Stats
+      body:
+        noData: This service does not have any containers yet.
   linksTab:
     header: Links
     noData: No Links
@@ -830,8 +857,17 @@ storagePoolsPage:
       addActionLabel: Add Option
 
 swarmPage:
-  project:
+  projects:
+    index:
+      header: Projects
+      linkTo: Add Project
+      table:
+        header:
+          services: Services
+        body:
+          noData: You do not have any Projects yet.
     new:
+      header: Add Project
       form:
         name:
           placeholder: e.g. myapp
@@ -842,6 +878,25 @@ swarmPage:
           keyLabel: Variable
           keyPlaceholder: e.g. FOO
           valuePlaceholder: e.g. bar
+        dockerCompose:
+          labelText: dcoker-compose.yml
+          placeholder: Paste in the contents of docker-compose.yml
+    project:
+      linkTo: 'Project:'
+      table:
+        header:
+          ports: Ports
+          containers: Containers
+        body:
+          noData: This Project does not have any Services yet.
+  services:
+    header: Services
+    table:
+      header:
+        ports: Ports
+        containers: Containers
+      body:
+        noData: You do not have any Services yet.
 
 processesPage:
   indexPage:
@@ -870,6 +925,26 @@ processesPage:
   processPage:
     header: Settings
 
+virtualMachinePage:
+  header: 'Virtual Machine:'
+  multistat:
+    host: 'Host:'
+    hostIp: 'Host IP:'
+    vmIp: 'VM IP:'
+    image: 'Image:'
+    description: 'Description:'
+  navTabs:
+    labels: Labels
+
+
+
+virtualMachinesPage:
+  header: Virtual Machines
+  linkTo: Add Virtual Machine
+  table:
+    body:
+      noData: You do not have any virtual machines yet.
+
 waitingPage:
   hosts:
     header: Adding your first host
@@ -882,6 +957,35 @@ waitingPage:
 ##############################
 # Partials
 ##############################
+aliasServicePartial:
+  serviceLinks:
+    labelText: Services Links
+    linkTo: View Details
+  links: Links
+  noLinks: No Links
+  description: 'Description:'
+
+externalServicePartial:
+  extService:
+    labelText: Exernal Service
+    linkTo: View Details
+  ips: IPs
+  hostname: 'Host Name:'
+  description: 'Description:'
+
+
+hostPartial:
+  host:
+    addCommon:
+      quanity: Quantity
+      new:
+        form:
+          name:
+            placeholder: e.g. host01
+    addOptions:
+      labels: Labels
+
+
 openLdap:
   configuredIndication:
     header:
@@ -977,7 +1081,28 @@ openLdap:
       pre: Authenticate
       post: "Testing..."
 
+servicePartial:
+  noContainers:
+    label: No containers yet.
+    inactive:
+      start: Start
 
+serviceInfoPartial:
+  info:
+    label: Info
+    linkTo: View Details
+  image: 'Image:'
+  entryPoint: 'Entrypoint:'
+  command: 'Command:'
+  description: 'Description:'
+  containers: Containers
+  scale: Scale
+  noContainers: No Containers
+  ports: Ports
+  noPublicPorts: No Public Ports
+  links: Links
+  noLinks: No Links
+  fqdn: 'FQDN:'
 ##############################
 # Components
 ##############################
@@ -1430,11 +1555,11 @@ formTargets:
 formUserLabels:
   addAction: Add Label
   key:
-    label: Key   
+    label: Key
     placeholder: e.g. foo
   separator: "="
   value:
-    label: Value    
+    label: Value
     placeholder: e.g. bar
   protip: "ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
 
@@ -1483,12 +1608,6 @@ machine:
     instance:
       publishSettingsFile:
         placeholder: Your Publish Settings file
-
-schema:
-  inputCertificate:
-    prompt: Choose a Certificate...
-  inputService:
-    prompt: Choose a Service...
 
 inputPassword:
   buttonText: Generate
@@ -1543,11 +1662,17 @@ pageFooter:
     windows: Windows
     linux: Linux
 
-pageHeaderEnvironment: 
+pageHeaderEnvironment:
   namespace: Namespace
 
 projectRow:
   none: No description
+
+schema:
+  inputCertificate:
+    prompt: Choose a Certificate...
+  inputService:
+    prompt: Choose a Service...
 
 saveCancel:
   saving: Saving...
@@ -1603,12 +1728,12 @@ stackSection:
     loadBalancer: Add Load Balancer
     serviceAlias: Add Service Alias
     externalService: Add External Service
-    virtualMachine: Add Virtual 
+    virtualMachine: Add Virtual
 
 storagePoolSection:
   outputs: Outputs
   readOnly: "(read-only)"
-  subSection: 
+  subSection:
     hosts:
       header: Hosts
       none: No Hosts
@@ -1620,8 +1745,8 @@ storagePoolSection:
 svgServiceContainer:
   sidekicks: Sidekicks
 
-swarm: 
-  containerSection: 
+swarm:
+  containerSection:
     state: State
     name: Container Name
     image: Image
@@ -1632,6 +1757,15 @@ swarm:
     ports: Ports
     containers: Containers
     none: No Services
+
+tooltipLink:
+  list: List
+  linkGraph: Link Graph
+  composeYaml: Compose YAML
+
+tooltipWarning:
+  notConfigured: Access Control Not Configured
+  dismiss: Dismiss
 
 viewEditDescription:
   form:
@@ -1664,7 +1798,7 @@ vmConsole:
 
   footeractions:
     buttonsend: Send Ctrl-Alt-Delete
-    buttoncancel: Close 
+    buttoncancel: Close
 
 volumeRow:
   activeMounts:

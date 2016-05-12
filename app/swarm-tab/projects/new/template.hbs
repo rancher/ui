@@ -1,23 +1,23 @@
 <section class="header">
-  <h1>Add Project</h1>
+  <h1>{{t 'swarmPage.projects.new.header'}}</h1>
 </section>
 
 <section class="horizontal-form container-fluid well">
   {{form-name-description
     model=primaryResource
-    namePlaceholder="swarmPage.project.new.form.name.placeholder"
-    descriptionPlaceholder="swarmPage.project.new.form.description.placeholder"
+    namePlaceholder="swarmPage.projects.new.form.name.placeholder"
+    descriptionPlaceholder="swarmPage.projects.new.form.description.placeholder"
   }}
 </section>
 
 <section class="horizontal-form container-fluid well">
   <div class="clearfix r-mb10">
-    <label class="r-pt5">docker-compose.yml</label>
+    <label class="r-pt5">{{t 'swarmPage.projects.new.form.dockerCompose.labelText'}}</label>
   </div>
   {{input-text-file
     accept=".yml, .yaml"
     value=primaryResource.templates.docker-compose
-    placeholder="Paste in the contents of docker-compose.yml"
+    placeholder="swarmPage.projects.new.form.dockerCompose.placeholder"
     minHeight=60
     maxHeight=400
   }}
@@ -25,10 +25,10 @@
   {{form-key-value
     initialMap=primaryResource.environment
     changed=(action (mut primaryResource.environment))
-    addActionLabel="swarmPage.new.form.variables.addActionLabel"
-    keyLabel="swarmPage.new.form.variables.keyLabel"
-    keyPlaceholder="swarmPage.new.form.variables.keyPlaceholder"
-    valuePlaceholder="swarmPage.new.form.variables.valuePlaceholder"
+    addActionLabel="swarmPage.projects.new.form.variables.addActionLabel"
+    keyLabel="swarmPage.projects.new.form.variables.keyLabel"
+    keyPlaceholder="swarmPage.projects.new.form.variables.keyPlaceholder"
+    valuePlaceholder="swarmPage.projects.new.form.variables.valuePlaceholder"
     allowEmptyValue=true
   }}
 </section>

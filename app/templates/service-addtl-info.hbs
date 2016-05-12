@@ -1,5 +1,5 @@
 <div class="content-box col-md-3 col-md-height col-md-full-height">
-  <label class="text-muted">Info (<small>{{#link-to 'service' service.environmentId service.id class=''}} View Details {{/link-to}}</small>)</label>
+  <label class="text-muted">{{t 'serviceInfoPartial.info.label'}} (<small>{{#link-to 'service' service.environmentId service.id class=''}} {{t 'serviceInfoPartial.info.linkTo'}} {{/link-to}}</small>)</label>
   <div class="content">
     <div class="state">
       <div class="pull-left">{{badge-state model=service}}</div>
@@ -9,45 +9,45 @@
 
     </div>
     <div>
-      <label class="text-muted r-mt10">Image: </label>
+      <label class="text-muted r-mt10">{{t 'serviceInfoPartial.image'}} </label>
       <span class="force-wrap">
         {{service.launchConfig.displayImage}}
       </span>
     </div>
     <div>
-      <label class="text-muted r-mt10">Entrypoint: </label>
+      <label class="text-muted r-mt10">{{t 'serviceInfoPartial.entryPoint'}} </label>
       <span class="force-wrap">
         {{#if service.launchConfig.entryPoint}}
           {{concat-str service.launchConfig.entryPoint}}
         {{else}}
-          <span class="text-muted">None</span>
+          <span class="text-muted">{{t 'generic.none'}}</span>
         {{/if}}
       </span>
     </div>
     <div>
-      <label class="text-muted r-mt10">Command: </label>
+      <label class="text-muted r-mt10">{{t 'serviceInfoPartial.command'}} </label>
       <span class="force-wrap">
         {{#if service.launchConfig.command}}
           {{concat-str service.launchConfig.command}}
         {{else}}
-          <span class="text-muted">None</span>
+          <span class="text-muted">{{t 'generic.none'}}</span>
         {{/if}}
       </span>
     </div>
     <div>
       {{#if service.description}}
-        <label class="text-muted r-mt10">Description:</label>
+        <label class="text-muted r-mt10">{{t 'serviceInfoPartial.description'}}</label>
         {{service.description}}
       {{/if}}
     </div>
   </div>
 </div>
 <div class="content-box col-md-3 col-md-height col-md-full-height">
-  <label class="text-muted">Containers ({{primaryContainers.length}})</label>
+  <label class="text-muted">{{t 'serviceInfoPartial.containers'}} ({{primaryContainers.length}})</label>
   <div class="content">
     <div class="container-dots clearfix">
       <div>
-        <label class="text-muted">Scale</label>
+        <label class="text-muted">{{t 'serviceInfoPartial.scale'}}</label>
         {{#if service.canScale}}
           <span class="r-ml20 r-mr20">{{service.scale}}</span>
           <div class="btn-group btn-group-xs">
@@ -62,7 +62,7 @@
         {{#each primaryContainers as |instance|}}
           {{container-dot model=instance}}
         {{else}}
-          <span class="text-muted">No Containers</span>
+          <span class="text-muted">{{t 'serviceInfoPartial.noContainers'}}</span>
         {{/each}}
       </div>
 
@@ -70,7 +70,7 @@
   </div>
 </div>
 <div class="content-box col-md-3 col-md-height col-md-full-height">
-  <label class="text-muted">Ports</label>
+  <label class="text-muted">{{t 'serviceInfoPartial.ports'}}</label>
   <div class="content" style="overflow: auto;">
     <ul class="list-unstyled">
       {{#each service.endpointsByPort as |endpoint|}}
@@ -78,16 +78,16 @@
           <li><a href="http://{{ip}}:{{endpoint.port}}" target="_blank">{{ip}}:{{endpoint.port}}</a></li>
         {{/each}}
       {{else}}
-        <li class="text-muted">No public ports</li>
+        <li class="text-muted">{{t 'serviceInfoPartial.noPublicPorts'}}</li>
       {{/each}}
     </ul>
   </div>
 </div>
 <div class="content-box col-md-3 col-md-height col-md-full-height">
-  <label class="text-muted">Links</label>
+  <label class="text-muted">{{t 'serviceInfoPartial.links'}}</label>
 
   {{#if service.fqdn}}
-    <label class="text-muted">FQDN:</label>
+    <label class="text-muted">{{t 'serviceInfoPartial.fqdn'}}</label>
     <span>{{service.fqdn}} {{copy-to-clipboard clipboardText=service.fqdn size='small'}}</span>
   {{/if}}
 
@@ -96,7 +96,7 @@
       {{#each service.consumedServicesWithNames as |link|}}
         <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.name}} {{/link-to}}</li>
       {{else}}
-        <li class="text-muted">No Links</li>
+        <li class="text-muted">{{t 'serviceInfoPartial.noLinks'}}</li>
       {{/each}}
     </ul>
   </div>
