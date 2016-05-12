@@ -63,7 +63,6 @@ export default Ember.Component.extend({
       this.get('instance.disks').unshiftObject({
         name: 'root',
         root: true,
-        size: 80,
         driver: this.get('availableDrivers').objectAt(0)
       });
     },

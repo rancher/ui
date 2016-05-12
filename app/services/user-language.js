@@ -45,12 +45,13 @@ export default Ember.Service.extend({
   },
 
   sideLoadLanguage(language) {
+    let application = this.get('app');
     let loadedLocales = this.get('loadedLocales');
     if (loadedLocales.contains(language)) {
       this.get('intl').setLocale(language);
       return Ember.RSVP.resolve();
     } else {
-      return ajaxPromise({url: `${this.get('app.baseAssets')}translations/${language}.json`,
+      return ajaxPromise({url: `${this.get('app.baseAssets')}translations/${language}.json?${application.version}`,
         method: 'GET',
         dataType: 'json',
       }).then((resp) => {

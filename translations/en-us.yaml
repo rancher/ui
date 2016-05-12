@@ -1449,6 +1449,52 @@ formEngineOpts:
     valueLabel: Mirror URL
     valuePlaceholder: e.g. https://my-mirror.example.com:5000
 
+formHealthCheck:
+  label: Health Check
+  checkType:
+    none: None
+    tcp: TCP Connection Opens
+    http: HTTP Responds 2xx/3xx
+  request:
+    label: HTTP Request
+  method:
+    prompt: "Select a HTTP Method:"
+  path:
+    placeholder: Request Path e.g. /healthcheck
+  version:
+    prompt: "Select a HTTP Version:"
+  host:
+    label: Host Header
+    placeholder: e.g. www.example.com
+  port:
+    label: Port
+    placeholder: e.g. 80
+  initializingTimeout:
+    label: Initializing Timeout
+    unit: ms
+  interval:
+    label: Check Interval
+    unit: ms
+  timeout:
+    label: Check Timeout
+    unit: ms
+  healthyThreshold:
+    label: Healthy Threshold
+    unit: successes
+  unhealthyThreshold:
+    label: Unhealthy Threshold
+    unit: failures
+  strategy:
+    label: When Unhealthy
+    none: Take no action
+    recreate: Re-create
+    recreateOnQuorumPrefix: Re-create, only when at least
+    recreateOnQuorumSuffix: |
+      {quorum, plural,
+        =1 {container is}
+        other {containers are}
+      } healthy
+
 formKeyValue:
   addAction: Add Pair
   key:
@@ -1459,6 +1505,16 @@ formKeyValue:
     label: Value
     placeholder: Value
   protip: 'ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry.'
+
+formImage:
+  label: Select Image
+  vm:
+    placeholder: e.g. rancher/vm-ubuntu
+    dropdownLabel: "{appName} Images"
+  container:
+    placeholder: "e.g. ubuntu:trusty"
+  pullImage:
+    label: Always pull image before creating
 
 formNameDescription:
   name:
@@ -1648,6 +1704,10 @@ newContainer:
     placeholder: e.g. myapp
   description:
     placeholder: e.g. My Application
+  emptyPrimaryService: "(Primary Service)"
+  emptySidekick: "(Sidekick #{num})"
+  addSidekickContainer: Add Sidekick Container
+  addSidekickVm: Add Sidekick VM
 
 pageFooter:
   notARelease: (Not a Release)

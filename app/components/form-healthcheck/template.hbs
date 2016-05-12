@@ -1,16 +1,16 @@
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Health Check</label>
+    <label class="form-control-static">{{t 'formHealthCheck.label'}}</label>
   </div>
   <div class="col-sm-12 col-md-9">
     <div class="radio input pull-left r-mr20">
-      <label class="form-control-static">{{radio-button selection=checkType value="none"}} None</label>
+      <label class="form-control-static">{{radio-button selection=checkType value="none"}} {{t 'formHealthCheck.checkType.none'}}</label>
     </div>
     <div class="radio input pull-left r-mr20">
-      <label class="form-control-static">{{radio-button selection=checkType value="tcp"}} TCP Connection Opens</label>
+      <label class="form-control-static">{{radio-button selection=checkType value="tcp"}} {{t 'formHealthCheck.checkType.tcp'}}</label>
     </div>
     <div class="radio input pull-left">
-      <label class="form-control-static">{{radio-button selection=checkType value="http"}} HTTP Responds 2xx/3xx</label>
+      <label class="form-control-static">{{radio-button selection=checkType value="http"}} {{t 'formHealthCheck.checkType.http'}}</label>
     </div>
   </div>
 </div>
@@ -19,7 +19,7 @@
   {{#if (eq checkType "http")}}
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">HTTP Request*</label>
+        <label class="form-control-static">{{t 'formHealthCheck.request.label'}}*</label>
       </div>
       <div class="col-sm-12 col-md-8">
         <div class="input-group">
@@ -27,7 +27,7 @@
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{uriMethod}} <i class="icon icon-chevron-down"></i></button>
             <ul class="dropdown-menu" role="menu">
               <li role="presentation" class="dropdown-header">
-                Select A HTTP Method:
+                {{t 'formHealthCheck.method.prompt'}}
               </li>
               {{#each uriMethodChoices as |choice|}}
                 <li {{action "chooseUriMethod" choice}}>
@@ -37,13 +37,13 @@
             </ul>
           </div>
 
-          {{input type="text" classNames="form-control" placeholder="Request Path e.g. /healthcheck" value=uriPath}}
+          {{input type="text" classNames="form-control" placeholder=(t 'formHealthCheck.path.placeholder') value=uriPath}}
 
           <div class="input-group-btn">
             <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{uriVersion}} <i class="icon icon-chevron-down"></i></button>
             <ul class="dropdown-menu" role="menu">
               <li role="presentation" class="dropdown-header">
-                Select A HTTP Version:
+                {{t 'formHealthCheck.version.prompt'}}
               </li>
               {{#each uriVersionChoices as |choice|}}
                 <li {{action "chooseUriVersion" choice}}>
@@ -58,10 +58,10 @@
     {{#if showUriHost}}
       <div class="row form-group">
         <div class="col-sm-12 col-md-2 form-label">
-          <label class="form-control-static">Host Header</label>
+          <label class="form-control-static">{{t 'formHealthCheck.host.label'}}</label>
         </div>
         <div class="col-sm-12 col-md-8">
-          {{input type="text" classNames="form-control" placeholder="e.g. www.example.com" value=uriHost}}
+          {{input type="text" classNames="form-control" placeholder=(t 'formHealthCheck.host.placeholder') value=uriHost}}
         </div>
       </div>
     {{/if}}
@@ -69,18 +69,18 @@
 
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Port*</label>
+      <label class="form-control-static">{{t 'formHealthCheck.port.label'}}*</label>
     </div>
     <div class="col-sm-12 col-md-3">
-      {{input type="number" min="1" max="65535" classNames="form-control" placeholder="e.g. 80" value=healthCheck.port}}
+      {{input type="number" min="1" max="65535" classNames="form-control" placeholder=(t 'formHealthCheck.port.placeholder') value=healthCheck.port}}
     </div>
     <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Initializing Timeout</label>
+      <label class="form-control-static">{{t 'formHealthCheck.initializingTimeout.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-3">
       <div class="input-group">
         {{input type="number" step=100 classNames="form-control" value=healthCheck.initializingTimeout}}
-        <span class="input-group-addon">ms</span>
+        <span class="input-group-addon">{{t 'formHealthCheck.initializingTimeout.unit'}}</span>
       </div>
     </div>
   </div>
@@ -88,42 +88,42 @@
 
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Check Interval</label>
+      <label class="form-control-static">{{t 'formHealthCheck.interval.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-3">
       <div class="input-group">
         {{input type="number" min=1 step=1000 classNames="form-control" value=healthCheck.interval}}
-        <span class="input-group-addon">ms</span>
+        <span class="input-group-addon">{{t 'formHealthCheck.interval.unit'}}</span>
       </div>
     </div>
     <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Check Timeout</label>
+      <label class="form-control-static">{{t 'formHealthCheck.timeout.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-3">
       <div class="input-group">
         {{input type="number" min=1 step=100 classNames="form-control" value=healthCheck.responseTimeout}}
-        <span class="input-group-addon">ms</span>
+        <span class="input-group-addon">{{t 'formHealthCheck.timeout.unit'}}</span>
       </div>
     </div>
   </div>
 
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Healthy Threshold</label>
+      <label class="form-control-static">{{t 'formHealthCheck.healthyThreshold.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-3">
       <div class="input-group">
         {{input type="number" min=1 step=1 classNames="form-control" value=healthCheck.healthyThreshold}}
-        <span class="input-group-addon">successes</span>
+        <span class="input-group-addon">{{t 'formHealthCheck.healthyThreshold.unit'}}</span>
       </div>
     </div>
     <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Unhealthy Threshold</label>
+      <label class="form-control-static">{{t 'formHealthCheck.unhealthyThreshold.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-3">
       <div class="input-group">
         {{input type="number" min=1 step=1 classNames="form-control" value=healthCheck.unhealthyThreshold}}
-        <span class="input-group-addon">failures</span>
+        <span class="input-group-addon">{{t 'formHealthCheck.unhealthyThreshold.unit'}}</span>
       </div>
     </div>
   </div>
@@ -131,17 +131,24 @@
   {{#if (and isService showStrategy)}}
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label>When Unhealthy</label>
+        <label>{{t 'formHealthCheck.strategy.label'}}</label>
       </div>
       <div class="col-sm-12 col-md-8">
         <div class="radio input">
-          <label>{{radio-button selection=strategy value="none"}} Take no action</label>
+          <label>{{radio-button selection=strategy value="none"}} {{t 'formHealthCheck.strategy.none'}}</label>
         </div>
         <div class="radio input">
-          <label>{{radio-button selection=strategy value="recreate"}} Re-create</label>
+          <label>{{radio-button selection=strategy value="recreate"}} {{t 'formHealthCheck.strategy.recreate'}}</label>
         </div>
         <div class="radio input">
-          <label>{{radio-button selection=strategy value="recreateOnQuorum"}}<span class="with-input">Re-create, only when at least {{input type="number" min=1 safeStyle="width: 60px; display: inline-block;" class="form-control input-sm" value=quorum}} container{{if (eq quorum "1") ' is' 's are'}} healthy</span></label>
+          <label>
+            {{radio-button selection=strategy value="recreateOnQuorum"}}
+            <span class="with-input">
+              {{t 'formHealthCheck.strategy.recreateOnQuorumPrefix' quorum=quorum}}
+              {{input type="number" min=1 safeStyle="width: 60px; display: inline-block;" class="form-control input-sm" value=quorum}}
+              {{t 'formHealthCheck.strategy.recreateOnQuorumSuffix' quorum=quorum}}
+            </span>
+          </label>
         </div>
       </div>
     </div>

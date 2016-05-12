@@ -7,7 +7,6 @@ export default Ember.Component.extend({
   index: null,
   choices: null,
   showAdd: true,
-  addLabel: 'Sidekick Container',
   initialIndex: -1,
 
   actions: {
