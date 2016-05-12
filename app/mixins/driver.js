@@ -2,14 +2,13 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import ManageLabels from 'ui/mixins/manage-labels';
-import C from 'ui/utils/constants';
 import { addAction } from 'ui/utils/add-view-action';
 
 export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   intl: Ember.inject.service(),
   settings: Ember.inject.service(),
-  docsBase:  C.EXT_REFERENCES.DOCS,
   createDelayMs: 0,
+  showEngineUrl: true,
 
   queryParams   : ['machineId'],
   machineId     : null,

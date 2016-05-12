@@ -479,7 +479,7 @@ helpPage:
   host:
     header: What is a host?
     content: |
-      Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker 1.9.1+ and be able to reach the {appName} server via HTTP. {appName} supports adding Linux hosts in the form of a virtual or physical
+      Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker {minVersion} or higher and be able to reach the {appName} server via HTTP. {appName} supports adding Linux hosts in the form of a virtual or physical
           machine from any public cloud providers, privately hosted clouds, or even bare metal servers.
     contentLink: Learn More
     addHostLink: Add Host
@@ -1284,6 +1284,7 @@ formDisks:
     placeholder: e.g. data
   size:
     label: Size
+    rootDisk: Determined by root image
   driver:
     label: Driver
 
@@ -1425,9 +1426,13 @@ formTargets:
 
 formUserLabels:
   addAction: Add Label
-  key: Key
+  key:
+    label: Key
+    placeholder: e.g. foo
   separator: "="
-  value: Value
+  value:
+    label: Value
+    placeholder: e.g. bar
   protip: "ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
 
 formValueArray:

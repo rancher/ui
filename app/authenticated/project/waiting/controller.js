@@ -1,23 +1,9 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   application: Ember.inject.controller(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
-  docsBase: C.EXT_REFERENCES.DOCS,
-
-  onInit: function() {
-    // Can't observe until you get()
-    this.get('projects.current.isReady');
-  }.on('init'),
-
-  isReadyChanged: function() {
-    if ( this.get('hasHosts') && this.get('projects.current.isReady') )
-    {
-      this.replaceRoute('authenticated.project.index');
-    }
-  }.observes('projects.current.isReady'),
 
   hasHosts: function() {
     return (this.get('model.hosts.length') + this.get('model.machines.length')) > 0;

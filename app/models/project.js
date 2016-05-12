@@ -15,6 +15,11 @@ var Project = Resource.extend(PolledResource, {
   name: null,
   description: null,
 
+  init() {
+    this._super(...arguments);
+    console.log('INIT PROJECT');
+  },
+
   actions: {
     edit: function() {
       this.get('router').transitionTo('settings.projects.detail', this.get('id'), {queryParams: {editing: true}});
@@ -140,9 +145,9 @@ var Project = Resource.extend(PolledResource, {
     }
   }.property('kubernetes','swarm', 'mesos'),
 
-  _stacks: null,
-  _hosts: null,
-  orchestrationState: null,
+  //_stacks: null,
+  //_hosts: null,
+  //orchestrationState: null,
   updateOrchestrationState() {
     let hash;
     if ( this.get('id') !== this.get(`tab-session.${C.SESSION.PROJECT}`) )
@@ -217,9 +222,11 @@ var Project = Resource.extend(PolledResource, {
     );
   }.property('orchestrationState'), // The state object is always completely replaced, so this is ok
 
-  checkForWaiting(hosts) {
+  checkForWaiting(hosts,machines) {
+    var hasHosts = (hosts && hosts.get('length') > 0) || (machines && machines.get('length') > 0);
+
     return this.updateOrchestrationState().then(() => {
-      if ( (hosts && hosts.get('length') === 0) || !this.get('isReady') )
+      if ( !hasHosts || !this.get('isReady') )
       {
         this.get('router').transitionTo('authenticated.project.waiting', this.get('id'));
       }

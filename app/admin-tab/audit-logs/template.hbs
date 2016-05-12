@@ -45,7 +45,7 @@
         {{sortable-th sortable=this action="changeSort" name="id" label="auditLogsPage.table.time" width="115" class="r-pl10"}}
         {{sortable-th sortable=this action="changeSort" name="eventType" label="auditLogsPage.table.eventType" class="r-pl10"}}
         {{sortable-th sortable=this action="changeSort" name="description" label="auditLogsPage.table.description" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="authenticatedAsAccountId" label="auditLogsPage.table.environment" width="125" class="r-pl10"}}
+        {{sortable-th sortable=this action="changeSort" name="accountId" label="auditLogsPage.table.environment" width="125" class="r-pl10"}}
         {{sortable-th sortable=this action="changeSort" name="resourceType" label="auditLogsPage.table.resourceTypeId" class="r-pl10"}}
         {{sortable-th sortable=this action="changeSort" name="authenticatedAsIdentityId" label="auditLogsPage.table.identity" width="175" class="r-pl10"}}
         <th width="150" class="r-pl10">{{t 'auditLogsPage.table.authIp'}}</th>
@@ -59,11 +59,7 @@
             </td>
             <td data-title="{{t 'auditLogsPage.table.description'}}:">{{#if log.description}}{{log.description}}{{else}}<span class="text-muted">None</span>{{/if}}</td>
             <td data-title="{{t 'auditLogsPage.table.environment'}}:" class="clip">
-              {{#if (eq log.account.type "project")}}
-                {{log.account.name}}
-              {{else}}
-                <span class="text-muted">-</span>
-              {{/if}}
+              {{environment-name environmentId=log.accountId onlyType="project"}}
             </td>
             <td data-title="{{t 'auditLogsPage.table.resourceTypeId'}}:" class="clip" title="{{log.resourceType}}">
               {{#if log.links.resource}}
