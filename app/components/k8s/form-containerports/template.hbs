@@ -1,43 +1,43 @@
 <div class="col-sm-12 col-md-2 form-label">
-  <label>Port Map</label>
+  <label>{{t 'k8s.formContainerPorts.portMap'}}</label>
 </div>
 <div class="col-sm-12 col-md-12">
   {{#unless editing}}
     <div>
-      <button class="btn-circle" {{action "addPort"}}><i class="icon icon-plus-circle"/> Add Port</button>
+      <button class="btn-circle" {{action "addPort"}}><i class="icon icon-plus-circle"/> {{t 'k8s.formContainerPorts.addPort'}}</button>
     </div>
   {{/unless}}
 
   {{#if portsArray.length}}
     <table class="table fixed no-lines no-top-padding tight small">
       <tr class="text-muted">
-        <th>Name</th>
+        <th>{{t 'generic.name'}}</th>
         <th width="30">&nbsp;</th>
-        <th>Host IP</th>
+        <th>{{t 'k8s.formContainerPorts.table.header.hostIp'}}</th>
         <th width="30">&nbsp;</th>
-        <th>Host Port</th>
+        <th>{{t 'k8s.formContainerPorts.table.header.hostPort'}}</th>
         <th width="30">&nbsp;</th>
-        <th>Container Port</th>
+        <th>{{t 'k8s.formContainerPorts.table.header.containerPort'}}</th>
         <th width="30">&nbsp;</th>
-        <th width="60">Protocol</th>
+        <th width="60">{{t 'k8s.formContainerPorts.table.header.protocol'}}</th>
         <th width="30">&nbsp;</th>
       </tr>
       {{#each portsArray as |row|}}
         <tr>
           <td>
-            {{input class="form-control input-sm" type="text" value=row.name placeholder="e.g. web"}}
+            {{input class="form-control input-sm" type="text" value=row.name placeholder=(t 'k8s.formContainerPorts.table.body.name')}}
           </td>
 
           <td class="text-center">&nbsp;</td>
 
           <td>
-            {{input class="form-control input-sm" type="text" value=row.hostIP placeholder="e.g. 19.82.2.24"}}
+            {{input class="form-control input-sm" type="text" value=row.hostIP placeholder=(t 'k8s.formContainerPorts.table.body.hostIp')}}
           </td>
 
           <td class="text-center">&nbsp;</td>
 
           <td>
-            {{input class="form-control input-sm" type="number" min="1" max="65535" value=row.hostPort placeholder="e.g. 80"}}
+            {{input class="form-control input-sm" type="number" min="1" max="65535" value=row.hostPort placeholder=(t 'k8s.formContainerPorts.table.body.hostPort')}}
           </td>
 
           <td class="text-center">
@@ -45,7 +45,7 @@
           </td>
 
           <td>
-            {{input class="form-control input-sm" type="text" value=row.containerPort placeholder="e.g. 8080"}}
+            {{input class="form-control input-sm" type="text" value=row.containerPort placeholder=(t 'k8s.formContainerPorts.table.body.containerPortcontainerPort')}}
           </td>
 
           <td class="text-center">/</td>
@@ -66,7 +66,7 @@
     </table>
   {{else}}
     {{#if editing}}
-      <span class="text-center text-muted">This container has no port maps.</span>
+      <span class="text-center text-muted">{{t 'k8s.formContainerPorts.noPorts'}}</span>
     {{/if}}
   {{/if}}
 </div>

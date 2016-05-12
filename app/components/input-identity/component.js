@@ -58,17 +58,6 @@ export default Ember.Component.extend({
     return this.get('checking') || this.get('addInput').trim().length === 0;
   }.property('addInput','checking'),
 
-  placeholder: function() {
-    if ( this.get('access.provider') === 'githubconfig' )
-    {
-      return "Add a GitHub user or organization name";
-    }
-    else
-    {
-      return "Add a user or group by name";
-    }
-  }.property('access.provider'),
-
   dropdownChoices: function() {
     var allowTeams = this.get('allowTeams');
     return this.get('allIdentities').filter((identity) => {

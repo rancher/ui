@@ -4,7 +4,7 @@
     {{#link-to "k8s-tab.namespace.services.service" model.displayName}}{{model.displayName}}{{/link-to}}
   </td>
   <td>
-    {{default-str model.spec.type default="Cluster IP"}}
+    {{default-str model.spec.type default=(t 'k8s.serviceRow.clusterIp')}}
   </td>
   <td>
     {{model.spec.clusterIP}}
@@ -24,7 +24,7 @@
     {{#each model.selectorsAsArray as |sel|}}
       <span class="badge badge-default">{{sel.label}}={{sel.value}}</span>
     {{else}}
-      <span class="text-muted">None</span>
+      <span class="text-muted">{{t 'generic.none'}}</span>
     {{/each}}
   </td>
   <td class="actions">

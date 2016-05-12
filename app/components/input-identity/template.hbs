@@ -1,6 +1,10 @@
 <form {{action "add" on="submit"}}>
   <div class="input-group">
-    {{input type="text" value=addInput placeholder=placeholder class="form-control"}}
+    {{#if (eq access.provider 'githubconfig')}}
+      {{input type="text" value=addInput placeholder=(t 'inputIdentity.placeholder.github') class="form-control"}}
+    {{else}}
+      {{input type="text" value=addInput placeholder=(t 'inputIdentity.placeholder.generic') class="form-control"}}
+    {{/if}}
     <div class="input-group-btn">
       {{#if checking}}
         <button class="btn btn-primary btn-disabled"><i class="icon icon-spinner icon-spin"></i></button>
@@ -21,7 +25,7 @@
             {{/each}}
           {{else}}
             <li role="presentation" class="dropdown-header">
-              <i class="icon icon-spinner icon-spin"></i> Loading...
+              <i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}
             <</li>
           {{/if}}
         </ul>
