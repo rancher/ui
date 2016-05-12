@@ -28,6 +28,7 @@ export default Ember.Component.extend({
   namespaceId      : Ember.computed.alias('k8s.namespace.id'),
   settings         : Ember.inject.service(),
   access           : Ember.inject.service(),
+  prefs            : Ember.inject.service(),
   isAdmin          : Ember.computed.alias('access.admin'),
 
   // Component options
@@ -61,6 +62,7 @@ export default Ember.Component.extend({
         }
       }
 
+      item.localizedLabel = fnOrValue(item.localizedLabel, this);
       item.label = fnOrValue(item.label, this);
       item.route = fnOrValue(item.route, this);
       item.ctx = (item.ctx||[]).map((prop) => {
@@ -68,11 +70,17 @@ export default Ember.Component.extend({
       });
       item.submenu = fnOrValue(item.submenu, this);
 
+      item.showAlert = false;
+      if ( typeof item.alertCondition === 'function' && item.alertCondition.call(this) === true ) {
+        item.showAlert = true;
+      }
+
       item.submenu = (item.submenu||[]).filter((subitem) => {
         if ( typeof subitem.condition === 'function' && !subitem.condition.call(this) ) {
           return false;
         }
 
+        subitem.localizedLabel = fnOrValue(subitem.localizedLabel, this);
         subitem.label = fnOrValue(subitem.label, this);
         subitem.route = fnOrValue(subitem.route, this);
         subitem.ctx = (subitem.ctx||[]).map((prop) => {
@@ -90,14 +98,18 @@ export default Ember.Component.extend({
 
   shouldUpdateNavTree: function() {
     Ember.run.once(this, 'updateNavTree');
-  }.observes('currentPath','project.orchestrationState','projectId','namespaceId',`settings.${C.SETTING.CATALOG_URL}`,'settings.hasVm','isAdmin'),
+  }.observes(
+    'projectId',
+    'namespaceId',
+    'project.orchestrationState',
+    `settings.{hasVm,${C.SETTING.CATALOG_URL}}`,
+    `prefs.{${C.PREFS.ACCESS_WARNING}}`,
+    'access.enabled',
+    'isAdmin'
+  ),
 
   // Utilities you can use in the condition() function to decide if an item is shown or hidden,
   // beyond things listed in "Inputs"
-  pathIs(prefix) {
-    return this.get('currentPath').indexOf(prefix) === 0;
-  },
-
   hasProject: function() {
     return !!this.get('project');
   }.property('project'),

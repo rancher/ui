@@ -75,7 +75,6 @@ export default Ember.Route.extend({
 
     error(err) {
       this.controllerFor('application').set('error',err);
-      this.set('app.showArticles',false);
       this.transitionTo('failWhale');
       console.log('Application Error', (err ? err.stack : undefined));
     },

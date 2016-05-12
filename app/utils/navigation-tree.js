@@ -12,11 +12,18 @@ export const mesosReady = function() { return this.get('mesosReady'); };
 /* Tree item options
   {
     id: 'str' (identifier to allow removal... should be unique)
-    label: 'Displayed label', (or function that returns string)
-    icon: 'icon icon-somethign',
-    condition: function() { return true if this item should be displayed },
-      // condition can depend on anything page-header/component.js shouldUpdateNavTree() depends on:
-      // 'currentPath','project.orchestrationState','projectId','namespaceId',`settings.${C.SETTING.CATALOG_URL}`,'settings.hasVm','isAdmin',
+    localizedLabel: 'i18n key', (or function that returns one)
+    label: 'Displayed unlocalized label', (or function that returns string)
+    icon: 'icon icon-something',
+    condition: function() {
+      // return true if this item should be displayed
+      // condition can depend on anything page-header/component.js shouldUpdateNavTree() depends on
+    }
+    alertRoute: 'target.route.path', // as in link-to
+    alertCondition: function() {
+      // return true if the alert (!) icon should be displayed
+      // can depend on anything page-header/component.js shouldUpdateNavTree() depends on
+    }
     url: 'http://any/url', (url or route required)
     target: '_blank', (for url only)
     route: 'target.route.path', // as in link-to
@@ -270,6 +277,10 @@ const navTree = [
     localizedLabel: 'nav.admin.tab',
     route: 'admin-tab',
     condition: function() { return this.get('isAdmin'); },
+    alertRoute: 'admin-tab.auth',
+    alertCondition: function() {
+      return !this.get('access.enabled') && this.get('prefs.'+C.PREFS.ACCESS_WARNING) !== false;
+    },
     submenu: [
       {
         id: 'admin-audit',
