@@ -245,7 +245,7 @@ const navTree = [
         icon: 'icon icon-vm',
         route: 'virtualmachines',
         ctx: [getProjectId],
-        condition: function() { return this.get('settings.hasVm'); },
+        condition: function() { return this.get('hasVm'); },
       },
       {
         id: 'infra-storagepools',

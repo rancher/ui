@@ -6,25 +6,25 @@ languageName: "English (US)"
 generic:
   actions: Actions
   closeModal: Close
+  default: Default
+  description: Description
   disabled: Disabled
-  enabled: Enabled
   emptyString: ""
+  enabled: Enabled
   id: ID
+  image: Image
+  ipAddress: IP Address
   loading: "Loading..."
   missing: "*%MISSING%*"
   moreActions: More Actions
+  na: 'N/A'
   name: Name
   none: None
   remove: Remove
-  state: State
-  unknown: Unknown
-  description: Description
-  default: Default
-  type: Type
   role: Role
-  na: 'N/A'
-  ipAddress: IP Address
-  image: Image
+  state: State
+  type: Type
+  unknown: Unknown
 
 ##############################
 # Routes
@@ -227,7 +227,6 @@ authPage:
         pre: Enable Local Auth
         post: 'Enabling...'
 
-
 catalogPage:
   index:
     header: 'Catalog:'
@@ -238,11 +237,9 @@ catalogPage:
       singular: There are no compatible templates.
       plural: There are no compatible templates in this catalog.
 
-
 consolePage:
   header: 'Shell:'
   closeButton: Close
-
 
 certificatesPage:
   table:
@@ -374,7 +371,6 @@ failWhalePage:
   reloadButton: |
     <a href="#" onclick="window.location.href = window.location.href; return false;">Reload</a> to try again or
   logoutButton: log out
-
 
 haPage:
   header:
@@ -614,7 +610,6 @@ hostsPage:
         body:
           noData: This host does not have any volumes.
 
-
 k8sTab:
   kubectl:
     header: kubectl
@@ -743,7 +738,6 @@ registriesPage:
         labelText: Password
         placeholder: e.g. password
 
-
 servicePage:
   header: 'Service:'
   multistat:
@@ -802,7 +796,6 @@ servicePage:
         noData: This Service has no ports.
     notActive: Ports are only available while the service is Active.
 
-
 settingsPage:
   index:
     header: Environments
@@ -817,7 +810,6 @@ settingsPage:
         orchestration: Orchestration
       body:
         noData: You don't have any environments yet.
-
 
 stacksPage:
   header:
@@ -937,8 +929,6 @@ virtualMachinePage:
   navTabs:
     labels: Labels
 
-
-
 virtualMachinesPage:
   header: Virtual Machines
   linkTo: Add Virtual Machine
@@ -974,7 +964,6 @@ externalServicePartial:
   hostname: 'Host Name:'
   description: 'Description:'
 
-
 hostPartial:
   host:
     addCommon:
@@ -985,7 +974,6 @@ hostPartial:
             placeholder: e.g. host01
     addOptions:
       labels: Labels
-
 
 openLdap:
   configuredIndication:
@@ -1136,7 +1124,6 @@ catalogSettings:
     valueLabel: URL
     valuePlaceholder: 'e.g. https://github.com/mycompany/mycatalog.git'
 
-
 confirmDelete:
   title: 'Are you sure you want to delete'
   environmentNote: 'Note: All resources inside this Environment will be permanently removed, including any Hosts that were created through {appName}.'
@@ -1238,6 +1225,7 @@ editApiKey:
   saveWarning1: Save the keys above!  This is the only time you'll be able to see the secret.
   saveWarning2: If you lose it, you'll need to create a new API key.
   noteOptional: Name and/or description are optional to help you remember what it's used for.  You can just create a key by clicking Create.
+  #' fixes syntax highlighting so i dont go crazy
 
 editBalancerService:
   title: Edit Load Balancer
@@ -1252,7 +1240,6 @@ editBalancerService:
     defaults:
       label: '<code>defaults</code> section'
       prompt: Custom defaults section lines
-
 
 editCertificate:
   title: Edit Certificate
@@ -1666,6 +1653,17 @@ machine:
       publishSettingsFile:
         placeholder: Your Publish Settings file
 
+inputCertificate:
+  key:
+    label: Private Key
+    placeholder: "Paste in the private key, starting with -----BEGIN RSA PRIVATE KEY-----"
+  cert:
+    label: Certificate
+    placeholder: "Paste in the primary certificate, starting with -----BEGIN CERTIFICATE-----"
+  certChain:
+    label: Chain Certs
+    placeholder: "Optional; Paste in the additional chained certificates, starting with -----BEGIN CERTIFICATE-----"
+
 inputPassword:
   buttonText: Generate
 
@@ -1789,7 +1787,7 @@ stackSection:
     loadBalancer: Add Load Balancer
     serviceAlias: Add Service Alias
     externalService: Add External Service
-    virtualMachine: Add Virtual
+    virtualMachine: Add Virtual Machine
 
 storagePoolSection:
   outputs: Outputs
@@ -1836,7 +1834,7 @@ viewEditDescription:
       placeholder: e.g. Environment for developer experimentation
 
 viewEditProject:
-  showDdit:
+  showEdit:
     edit: "Edit Environment:"
     add: Add Environment
     orchestration: Container Orchestration
@@ -1846,11 +1844,11 @@ viewEditProject:
   helpBlock: |
     Access Control is not enabled.<br/>
     Anybody with access to the API/UI acts as an admin and will be able to use any environment.
+  virtualMachine:
+    label: Virtual Machine Support
+    subtext: |
+      Requires hosts that have the <a href="https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine" target="_blank">KVM</a> kernel module loaded.
 
-virtualMachineSettings:
-  header: Virtual Machine Support
-  subtext: |
-    Requires hosts that have the <a href="https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine" target="_blank">KVM</a> kernel module loaded.
 
 vmConsole:
   header: "console:"

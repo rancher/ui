@@ -8,7 +8,6 @@ export default Ember.Route.extend({
     return this.get('settings').load([
       C.SETTING.API_HOST,
       C.SETTING.CATALOG_URL,
-      C.SETTING.VM_ENABLED,
     ]);
   },
 
@@ -19,7 +18,6 @@ export default Ember.Route.extend({
       return Ember.Object.create({
         host           : settings.get(C.SETTING.API_HOST),
         catalog        : settings.get(C.SETTING.CATALOG_URL),
-        vm             : settings.get(C.SETTING.VM_ENABLED) || false,
         machineDrivers : drivers,
       });
     });

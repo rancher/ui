@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  settings: Ember.inject.service(),
-  hasVm: Ember.computed.alias('settings.hasVm'),
+  projects: Ember.inject.service(),
+  hasVm: Ember.computed.alias('projects.current.virtualMachine'),
 
   index: null,
   choices: null,

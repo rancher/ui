@@ -196,7 +196,6 @@ var C = {
     },
     API_HOST:         'api$host',
     CATALOG_URL:      'catalog$url',
-    VM_ENABLED:       'vm$enabled',
     SWARM_PORT:       'swarm$tls$port',
     ENGINE_URL:       'engine$install$url',
     MIN_DOCKER:       'ui$min$docker$version',

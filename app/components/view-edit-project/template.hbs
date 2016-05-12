@@ -119,7 +119,7 @@
           </table>
         {{else}}
           <p class="help-block text-center">
-            {{t 'viewEditProject.helpBlock'}}
+            {{format-html-message 'viewEditProject.helpBlock'}}
           </p>
         {{/if}}
       </div>
@@ -128,6 +128,26 @@
 </section>
 
 {{#if showEdit}}
+  <section class="r-pt0">
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        {{t 'viewEditProject.virtualMachine.label'}}
+      </div>
+
+      <div class="col-md-10">
+        <div>
+          <label class="r-mr20 hand">
+            {{radio-button selection=project.virtualMachine value=true}} {{t 'generic.enabled'}}
+          </label>
+          <label class="hand">
+            {{radio-button selection=project.virtualMachine value=false}} {{t 'generic.disabled'}}
+          </label>
+        </div>
+        <p class="help-block">{{format-html-message 'viewEditProject.virtualMachine.subtext'}}</p>
+      </div>
+    </div>
+  </section>
+
   {{top-errors errors=errors}}
   {{save-cancel editing=editing save="save" cancel="cancel"}}
 {{/if}}

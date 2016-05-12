@@ -101,9 +101,9 @@ export default Ember.Component.extend({
   }.observes(
     'projectId',
     'namespaceId',
-    'project.orchestrationState',
-    `settings.{hasVm,${C.SETTING.CATALOG_URL}}`,
-    `prefs.{${C.PREFS.ACCESS_WARNING}}`,
+    'project.{virtualMachine,orchestrationState}',
+    `settings.${C.SETTING.CATALOG_URL}`,
+    `prefs.${C.PREFS.ACCESS_WARNING}`,
     'access.enabled',
     'isAdmin'
   ),
@@ -114,6 +114,7 @@ export default Ember.Component.extend({
     return !!this.get('project');
   }.property('project'),
 
+  hasVm:            Ember.computed.alias('project.virtualMachine'),
   hasSwarm:         Ember.computed.alias('project.orchestrationState.hasSwarm'),
   hasKubernetes:    Ember.computed.alias('project.orchestrationState.hasKubernetes'),
   hasMesos:         Ember.computed.alias('project.orchestrationState.hasMesos'),
