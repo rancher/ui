@@ -155,6 +155,8 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     return this.get('targetsArray').filterBy('value').get('length') >= 2;
   }.property('targetsArray.@each.value'),
 
+  showAdvancedMatchingWarning: Ember.computed.and('hasAdvancedSourcePorts','hasMultipleListeners','hasMultipleTargets'),
+
   // ----------------------------------
   // Labels
   // ----------------------------------

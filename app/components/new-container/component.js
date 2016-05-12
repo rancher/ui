@@ -6,6 +6,8 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
+  intl: Ember.inject.service(),
+
   isStandalone: true,
   isService: false,
   isSidekick: false,
@@ -154,18 +156,27 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   launchConfigChoices: function() {
     var isUpgrade = this.get('isUpgrade');
+    let intl = this.get('intl');
 
     // Enabled is only for upgrade, and isn't maintained if the names change, but they can't on upgrade.
     var out = [
-      {index: -1, name: this.get('service.name') || '(Primary Service)', enabled: true}
+      {
+        index: -1,
+        name: this.get('service.name') || intl.t('newContainer.emptyPrimaryService'),
+        enabled: true
+      }
     ];
 
     (this.get('service.secondaryLaunchConfigs')||[]).forEach((item, index) => {
-      out.push({index: index, name: item.get('name') || `(Sidekick #${index+1})`, enabled: !isUpgrade });
+      out.push({
+        index: index,
+        name: item.get('name') || intl.t('newContainer.emptySidekick', {num: index+1}),
+        enabled: !isUpgrade 
+      });
     });
 
     return out;
-  }.property('service.name','service.secondaryLaunchConfigs.@each.name'),
+  }.property('service.name','service.secondaryLaunchConfigs.@each.name','intl._locale'),
 
   noLaunchConfigsEnabled: function() {
     return this.get('launchConfigChoices').filterBy('enabled',true).get('length') === 0;

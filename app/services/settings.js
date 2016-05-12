@@ -154,8 +154,6 @@ export default Ember.Service.extend(Ember.Evented, {
   dockerMachineVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_MACHINE}.value`),
   goMachineVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_GMS}.value`),
 
-  hasVm: Ember.computed.equal(`asMap.${C.SETTING.VM_ENABLED}.value`, 'true'),
-
   _plValue: function() {
     return this.get(`cookies.${C.COOKIE.PL}`) || '';
   }.property(`cookies.${C.COOKIE.PL}`),

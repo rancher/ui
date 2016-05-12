@@ -5,8 +5,8 @@ import FilterState from 'ui/mixins/filter-state';
 
 export default Ember.Component.extend(FilterState, {
   prefs: Ember.inject.service(),
-  settings: Ember.inject.service(),
-  hasVm: Ember.computed.alias('settings.hasVm'),
+  projects: Ember.inject.service(),
+  hasVm: Ember.computed.alias('projects.current.virtualMachine'),
 
   model: null,
   single: false,

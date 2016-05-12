@@ -15,11 +15,6 @@ var Project = Resource.extend(PolledResource, {
   name: null,
   description: null,
 
-  init() {
-    this._super(...arguments);
-    console.log('INIT PROJECT');
-  },
-
   actions: {
     edit: function() {
       this.get('router').transitionTo('settings.projects.detail', this.get('id'), {queryParams: {editing: true}});
@@ -85,6 +80,7 @@ var Project = Resource.extend(PolledResource, {
       { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canRemove'), altAction: 'delete' },
       { label: 'action.restore',          icon: '',                       action: 'restore',      enabled: !!a.restore },
       { label: 'action.purge',            icon: '',                       action: 'purge',        enabled: !!a.purge },
+      { label: 'action.viewInApi',        icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
 
 

@@ -76,7 +76,7 @@ export default Ember.Component.extend(ManageLabels, {
     var sslPorts = this.get('listenersArray')
       .filterBy('ssl',true)
       .map((listener) => { return parseIpPort(listener.get('host'),'http'); })
-      .filterBy('port')
+      .filter((obj) => { return obj && obj.port; })
       .map((obj) => { return obj.port; })
       .sort().uniq();
 

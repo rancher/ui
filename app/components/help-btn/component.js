@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   settings: Ember.inject.service(),
@@ -14,7 +13,7 @@ export default Ember.Component.extend({
   classNameBindings: ['settings.isRancher::hide'],
 
   href: function() {
-    return C.EXT_REFERENCES.DOCS + this.get('link');
+    return this.get('settings.docsBase') + this.get('link');
   }.property('link')
 
 });

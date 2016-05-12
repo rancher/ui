@@ -23,7 +23,7 @@ export default Ember.Component.extend(Driver, {
       projectId    : '',
       os           : 'ubuntu_14_04',
       facilityCode : 'ewr1',
-      plan         : 'baremetal_1',
+      plan         : 'baremetal_0',
       billingCycle : 'hourly',
     });
 

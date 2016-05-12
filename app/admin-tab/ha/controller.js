@@ -215,11 +215,11 @@ rancher/server:${version}`;
 
   hostRegistrationHelpText: Ember.computed('model.createScript.clusterSize', function() {
     const intl = this.get('intl');
-    let out    = intl.findTranslationByKey('haPage.haDisabled.haConfigScript.form.hostRegistrationHelpText.multiCluster');
+    let out    = intl.findTranslationByKey('haPage.haDisabled.haConfigScript.form.hostRegistration.helpText.multiCluster');
     out = intl.formatHtmlMessage(out, {clusterSize: this.get('model.createScript.clusterSize')});
 
     if (this.get('model.createScript.clusterSize') === 1) {
-      out = intl.findTranslationByKey('haPage.haDisabled.haConfigScript.form.hostRegistrationHelpText.singleCluster');
+      out = intl.findTranslationByKey('haPage.haDisabled.haConfigScript.form.hostRegistration.helpText.singleCluster');
       out = intl.formatHtmlMessage(out);
     }
     return out;

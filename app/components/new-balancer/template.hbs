@@ -1,7 +1,8 @@
-<section class="horizontal-form container-fluid">
-  <h2>Add Load Balancer {{help-btn  link="/rancher-ui/applications/stacks/adding-balancers/"}}</h2>
-  {{top-errors errors=errors}}
+<section class="header">
+  <h1>Add Load Balancer {{help-btn link="/rancher-ui/applications/stacks/adding-balancers/"}}</h1>
+</section>
 
+<section class="horizontal-form container-fluid">
   {{form-scale
     initialLabels=launchConfig.labels
     initialScale=service.scale
@@ -26,7 +27,7 @@
     setLabels=(action 'setLabels' 'ssl')
   }}
 
-  {{#if (and hasAdvancedSourcePorts hasMultipleListeners hasMultipleTargets)}}
+  {{#if showAdvancedMatchingWarning}}
     <div class="row">
       <div class="col-sm-12 col-md-8 col-md-offset-2">
         <div class="alert alert-info">
@@ -121,4 +122,5 @@
 </div>
 </section>
 
+{{top-errors errors=errors}}
 {{save-cancel save="save" cancel="cancel"}}
