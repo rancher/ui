@@ -3,10 +3,10 @@
     {{#if model.length}}
       <tr>
         {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
-        {{sortable-th sortable=this action="changeSort" name="port" label="Port"}}
-        {{sortable-th sortable=this action="changeSort" name="targetPort" label="Container Port"}}
-        {{sortable-th sortable=this action="changeSort" name="nodepPort" label="Node Port"}}
-        {{sortable-th sortable=this action="changeSort" name="protocol" label="Protocol"}}
+        {{sortable-th sortable=this action="changeSort" name="port" label="k8s.servicePorts.port"}}
+        {{sortable-th sortable=this action="changeSort" name="targetPort" label="k8s.serviceports.containerport"}}
+        {{sortable-th sortable=this action="changeSort" name="nodepPort" label="k8s.serviceports.nodePort"}}
+        {{sortable-th sortable=this action="changeSort" name="protocol" label="k8s.serviceports.protocol"}}
       </tr>
     {{/if}}
   </thead>
@@ -20,7 +20,7 @@
         <td class="force-wrap">{{obj.protocol}}</td>
       </tr>
     {{else}}
-      <tr><td colspan="5" class="text-center text-muted">No Ports.</td></tr>
+      <tr><td colspan="5" class="text-center text-muted">{{t 'k8s.serviceports.noPorts'}}</td></tr>
     {{/each}}
   </tbody>
 </table>

@@ -9,8 +9,10 @@ generic:
   default: Default
   description: Description
   disabled: Disabled
+  domainName: Domain Name
   emptyString: ""
   enabled: Enabled
+  expires: Expires
   id: ID
   image: Image
   ipAddress: IP Address
@@ -1644,6 +1646,42 @@ hostSettings:
     alert: |
       Are you sure all the hosts you will create will be able to reach <code>{activeValue}</code> ?<br/>It looks like a private IP or local network.
 
+hostPod:
+  machineInfo:
+    active:
+      activating: |
+        Almost there&hellip;<br/>
+        <i class="icon icon-spinner icon-spin"></i> Waiting for agent connection
+    deactivated:
+      error: Error creating machine
+      setup: Setting up machine...
+    groupedInstances:
+      namespace: 'Namespace:'
+      stack: 'Stack:'
+      standalone: Standalone Containers
+
+identityBlock:
+  loading: Loading...
+
+infoMultiStats:
+  connecting: Connecting...
+  utilizationStats: Utilization stats are only available while active/running.
+  cpuSection:
+    labelText: CPU
+    system: System
+    user: User
+  networkSection:
+    labelText: Network
+    transmit: Transmit
+    receive: Receive
+  memorySection:
+    labelText: Memory
+    used: Used
+  storageSection:
+    labelText: Storage
+    read: Read
+    write: Write
+
 inputCertificate:
   key:
     label: Private Key
@@ -1655,11 +1693,71 @@ inputCertificate:
     label: Chain Certs
     placeholder: "Optional; Paste in the additional chained certificates, starting with -----BEGIN CERTIFICATE-----"
 
+inputIdentity:
+  placeholder:
+    github: Add a GitHub user or organization name
+    generic: Add a user or group by name
+
 inputPassword:
   buttonText: Generate
 
 inputTextFile:
   tooltip: Read from a file
+
+
+k8s:
+  servicePorts:
+    port: Port
+    containerPort: Container Port
+    nodePort: Node Port
+    protocol: Protocol
+    noPorts: No Ports.
+  containersSection:
+    containerName: Container Name
+    status: Status
+    message: Message
+    ready: Ready
+    restarts: Restarts
+    noContainers: No Containers
+  formContainerPorts:
+    portMap: Port Map
+    addPort: Add Port
+    table:
+      header:
+        hostIp: Host IP
+        hostPort: Host Port
+        containerPort: Container Port
+        protocol: Protocol
+      body:
+        name: e.g. web
+        hostIp: e.g. 19.82.8.24
+        hostPort: e.g. 80
+        containerPort: e.g. 8080
+    noPorts: This container has no port maps.
+  newOrEditResource:
+    placeholder: Resouce YAML or JSON definition
+  podSection:
+    podName: Pod Name
+    containers: Containers
+    status: Status
+    hostIp: Host IP
+    podIp: Pod IP
+    noPods: No Pods
+  serviceRow:
+    clusterIp: Cluster IP
+
+lbAddtlInfo:
+  viewDetails: View Details
+  defaultCertificate: Default Certificate
+  alternateCertificate: Alternate Certificate
+  description: 'Description: '
+  containers: Containers
+  noContainers: No Containers
+  scale: Scale
+  ports: Ports
+  noPorts: No public host ports
+  targets: Targets
+  to: to
 
 labelsSection:
   kind: Kind
@@ -1750,12 +1848,12 @@ machine:
     step5Copy: Copy, paste, and run the command below to register the host with
     generating: Generating registration URL...
     step5Close:
-      part1: Click close below.  The new host should pop up on the 
+      part1: Click close below.  The new host should pop up on the
       link: Hosts
       part2: screen within a minute.
     close: Close
 
-  driverDigitalOcean: 
+  driverDigitalOcean:
     accountAccess: Account Access
     accessToken: Access Token*
     helpBlock: <p class="help-block">A Personal Access Token from the DigitalOcean <a href="https://cloud.digitalocean.com/settings/applications" target="_blank">Apps & API</a> screen</p>
@@ -1788,7 +1886,7 @@ machine:
     driverNote: Driver*
     options: Options
 
-  driverPacket: 
+  driverPacket:
     accountAccess: Account Access
     project: Project*
     apiKey: API Key*
@@ -1822,7 +1920,7 @@ machine:
     image: Image
     flavor: Flavor
 
-  driverVsphere: 
+  driverVsphere:
     accountAccess: Account Access
     vCenterHost: vCenter Host*
     vCenterPort: vCenter Port*
@@ -1925,7 +2023,7 @@ newCatalog:
   questionType: "Unrecognized question type:"
   startService: Start services after creating
   preview: Preview
-  txt: answers.txt 
+  txt: answers.txt
 
 newContainer:
   service: |
@@ -1958,7 +2056,7 @@ newContainer:
 
 newExternalService:
   header: Add External Service
-  alert: "Note: This will only be used if the external service is a target of a load balancer." 
+  alert: "Note: This will only be used if the external service is a target of a load balancer."
 
 pageFooter:
   notARelease: (Not a Release)
@@ -2051,6 +2149,10 @@ storagePoolSection:
     header: Volumes
     add: Add Volume
     none: No Volumes
+  models:
+    table:
+      header:
+        activeMounts: 'Mounts (Container: Path)'
 
 svgServiceContainer:
   sidekicks: Sidekicks
