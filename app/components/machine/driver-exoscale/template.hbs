@@ -2,12 +2,12 @@
   <form>
     <div class="container-fluid">
       <div class="over-hr r-mt20 r-mb20">
-        <span>Account Access</span>
+        <span>{{t 'machine.driverExoscale.accountAccess'}}</span>
       </div>
 
       <div class="row {{if isStep1 'form-group'}}">
         <div class="col-md-2 form-label">
-          <label class="form-control-static">API Key</label>
+          <label class="form-control-static">{{t 'machine.driverExoscale.aPIKey'}}</label>
         </div>
         <div class="col-md-10">
           {{#if isStep1}}
@@ -19,16 +19,16 @@
       </div>
       <div class="row {{if isStep1 'form-group'}}">
         <div class="col-md-2 form-label">
-          <label class="form-control-static">Secret Key</label>
+          <label class="form-control-static">{{t 'machine.driverExoscale.secretKey'}}</label>
         </div>
         <div class="col-md-10">
           {{#if isStep1}}
             {{input type="password" name="password" classNames="form-control" placeholder="Your Exoscale secret key" value=exoscaleConfig.apiSecretKey}}
           {{else}}
-            <div class="form-control-static text-muted text-italic">Provided</div>
+            <div class="form-control-static text-muted text-italic">{{t 'machine.driverExoscale.provided'}}</div>
           {{/if}}
           {{#if isStep1}}
-            <p class="help-block">Paste in your Exoscale key pair here.  We'll use this key to create your new Instances.</p>
+            <p class="help-block">{{t 'machine.driverExoscale.paste'}}</p>
           {{/if}}
         </div>
       </div>
@@ -37,8 +37,8 @@
       {{top-errors errors=errors}}
 
       <div class="footer-actions">
-        <button {{action "exoscaleLogin"}} name="submit" class="btn btn-primary">Next: Authenticate &amp; select a Security Group</button>
-        <button {{action "cancel"}} class="btn btn-link">Cancel</button>
+        <button {{action "exoscaleLogin"}} name="submit" class="btn btn-primary">{{t 'machine.driverExoscale.next'}}</button>
+        <button {{action "cancel"}} class="btn btn-link">{{t 'machine.driverExoscale.Cancel'}}</button>
       </div>
     {{/if}}
   </form>
@@ -46,7 +46,7 @@
 
 <section class="horizontal-form {{unless isStep2 'hide'}}" style="padding-top: 0">
   <div class="text-center">
-    <i class="icon icon-spinner icon-spin"></i> Loading security group info from Exoscale...
+    <i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverExoscale.loadingSecurity'}}
   </div>
 </section>
 
@@ -58,16 +58,16 @@
 
     <div class="row {{if isStep3 'form-group'}}">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">Security Group</label>
+        <label class="form-control-static">{{t 'machine.driverExoscale.securityGroup'}}</label>
       </div>
       <div class="col-md-10">
         {{#if isStep3}}
           <div class="radio r-pt10"><label>
-            {{radio-button selection=whichSecurityGroup value="default"}} Standard:
+            {{radio-button selection=whichSecurityGroup value="default"}} {{t 'machine.driverExoscale.standard'}}
             {{#if defaultSecurityGroup}}
-              Use the existing <code>{{defaultSecurityGroupName}}</code> group
+              {{t 'machine.driverExoscale.existing'}} <code>{{defaultSecurityGroupName}}</code> {{t 'machine.driverExoscale.group'}}
             {{else}}
-              Automatically create a <code>{{defaultSecurityGroupName}}</code> group
+              {{t 'machine.driverExoscale.autoCreate'}} <code>{{defaultSecurityGroupName}}</code> {{t 'machine.driverExoscale.group'}}
             {{/if}}
           </label></div>
 

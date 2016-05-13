@@ -4,44 +4,44 @@
       <ul class="list-circles list-circles-clear">
         <li>
           <i>1</i>
-          Start up a Linux machine somewhere and install the latest version of <a href="http://www.docker.com/" target="_blank">Docker</a> on it.
+          {{format-html-message 'machine.driverCustom.step1'}}
         </li>
         <li>
           <i>2</i>
-          Make sure any security groups or firewalls allow traffic:
+          {{t 'machine.driverCustom.step2'}}
           <ul>
-            <li>From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+            <li>{{format-html-message 'machine.driverCustom.step2li'}}</li>
           </ul>
         </li>
         <li>
           <i>3</i>
-          Optional: Add labels to be applied to the host.
+          {{t 'machine.driverCustom.step3'}}
           <div class="r-mt10">
             {{form-user-labels setLabels=(action 'setLabels')}}
           </div>
         </li>
         <li>
           <i>4</i>
-          Optional: Specify the public IP that should be used for this host.  This is required if you're trying to add the host the <code>rancher/server</code> container is on.
+          {{t 'machine.driverCustom.step4'}}
           <div class="checkbox r-mt10">
             {{input type="text" value=cattleAgentIp classNames="form-control" placeholder="e.g. 172.16.0.2"}}
           </div>
         </li>
         <li>
           <i>5</i>
-          Copy, paste, and run the command below to register the host with {{settings.appName}}:
+          {{t 'machine.driverCustom.step5Copy'}} {{settings.appName}}:
           {{#if registrationCommand}}
             <div class="copy-pre">
               <pre id="registration-command">{{registrationCommand}}</pre>
               {{copy-to-clipboard clipboardText=registrationCommand}}
             </div>
           {{else}}
-            <div><i class="icon icon-spinner icon-spin"></i> Generating registration URL...</div>
+            <div><i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverCustom.generating'}}</div>
           {{/if}}
         </li>
         <li>
           <i>5</i>
-          Click close below.  The new host should pop up on the {{#link-to "hosts"}}Hosts{{/link-to}} screen within a minute.
+          {{t 'machine.driverCustom.step5Close.part1'}} {{#link-to "hosts"}}{{t 'machine.driverCustom.step5Close.link'}}{{/link-to}} {{t 'machine.driverCustom.step5Close.part2'}}
         </li>
       </ul>
     </div>
@@ -49,5 +49,16 @@
 </div>
 
 <div class="footer-actions">
-  <button {{action "cancel"}} class="btn btn-primary">Close</button>
+  <button {{action "cancel"}} class="btn btn-primary">{{t 'machine.driverCustom.close'}}</button>
 </div>
+
+
+
+
+
+
+
+
+
+
+

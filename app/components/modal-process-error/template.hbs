@@ -1,27 +1,27 @@
 <section class="horizontal-form container-fluid">
-  <h2>Exception Info</h2>
+  <h2>{{t 'modalProcessError.header'}}</h2>
   <hr>
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label>Cause:</label>
+      <label>{{t 'modalProcessError.cause'}}</label>
     </div>
     <div class="col-sm-12 col-md-8 text-muted">
       {{#if exception.cause}}
         {{exception.cause}}
       {{else}}
-        N/A
+        {{t 'modalProcessError.none'}}
       {{/if}}
     </div>
   </div>
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label>Stack Trace:</label>
+      <label>{{t 'modalProcessError.stackTrace'}}</label>
     </div>
     <div class="col-sm-12 col-md-12">
       {{code-block language="yaml" code=exception.stackTrace}}
     </div>
   </div>
   <div class="r-mb15">
-    <button class="btn btn-primary center-block" {{action 'dismiss'}}>Close</button>
+    <button class="btn btn-primary center-block" {{action 'dismiss'}}>{{t 'modalProcessError.close'}}</button>
   </div>
 </section>

@@ -1,9 +1,9 @@
 <section class="header">
 
   {{#if editing}}
-    <h1>Upgrade: <span style="font-weight: normal">{{environmentResource.name}}</span></h1>
+    <h1>{{t 'newCatalog.upgrade'}} <span style="font-weight: normal">{{environmentResource.name}}</span></h1>
   {{else}}
-    <h1>{{#link-to parentRoute}}Catalog:{{/link-to}}</h1>
+    <h1>{{#link-to parentRoute}}{{t 'newCatalog.catalog'}}{{/link-to}}</h1>
     {{#power-select options=allTemplates selected=templateResource onchange=(action "changeTemplate") searchField="name" as |obj|}}
       <div class="clip">{{obj.name}}</div>
     {{/power-select}}
@@ -19,30 +19,30 @@
         {{/if}}
 
         <div>
-          <small><strong>Catalog:</strong> <span class="text-capitalize">{{templateResource.catalogId}}</span></small>
+          <small><strong>{{t 'newCatalog.catalog'}}</strong> <span class="text-capitalize">{{templateResource.catalogId}}</span></small>
         </div>
         <div>
-          <small><strong>Category:</strong> <span class="text-capitalize">{{templateResource.category}}</span></small>
+          <small><strong>{{t 'newCatalog.category'}}</strong> <span class="text-capitalize">{{templateResource.category}}</span></small>
         </div>
         {{#if (eq templateResource.catalogId 'library')}}
-          <small><strong>Support: </strong>Officially Certified</small>
+          <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.official'}}</small>
         {{else}}
           {{#if (eq templateResource.catalogId 'community')}}
-            <small><strong>Support: </strong>Maintained by community members</small>
+            <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.maintainedBy'}}</small>
           {{/if}}
         {{/if}}
         {{#if templateResource.maintainer}}
           <div>
-            <small><strong>Maintainer:</strong> {{templateResource.maintainer}}</small>
+            <small><strong>{{t 'newCatalog.maintainer'}}</strong> {{templateResource.maintainer}}</small>
           </div>
         {{/if}}
         {{#if templateResource.license}}
           <div>
-            <small><strong>License:</strong> {{templateResource.license}}</small>
+            <small><strong>{{t 'newCatalog.license'}}</strong> {{templateResource.license}}</small>
           </div>
         {{/if}}
         {{#if templateResource.links.project}}
-          <small class="force-wrap"><strong>Project URL:</strong> <a href="{{templateResource.cleanProjectUrl}}" target="_blank">{{templateResource.cleanProjectUrl}}</a></small>
+          <small class="force-wrap"><strong>{{t 'newCatalog.url'}}</strong> <a href="{{templateResource.cleanProjectUrl}}" target="_blank">{{templateResource.cleanProjectUrl}}</a></small>
         {{/if}}
       </div>
       {{#if readmeContent}}
@@ -51,7 +51,7 @@
         </div>
       {{else}}
         <h2 class="r-mb10">
-          {{if editing "Upgrade" "Add"}} {{templateResource.name}} Stack
+          {{if editing "Upgrade" "Add"}} {{templateResource.name}} {{t 'newCatalog.stack'}}
         </h2>
         <p>{{templateResource.description}}</p>
       {{/if}}
@@ -59,7 +59,7 @@
   </section>
 
   <section class="well">
-    <h4>Template Version</h4>
+    <h4>{{t 'newCatalog.templateVersion'}}</h4>
     <hr/>
     <div class="row">
       <div class="col-sm-12 col-md-6">
@@ -71,14 +71,14 @@
           optionValuePath="link"
           value=selectedTemplateUrl
         }}
-        <p class="help-block">Select a version of the template to {{if editing 'upgrade to' 'deploy'}}</p>
+        <p class="help-block">{{t 'newCatalog.selectVersion'}} {{if editing 'upgrade to' 'deploy'}}</p>
       </div>
     </div>
   </section>
 
   {{#if (and (not editing) selectedTemplateModel)}}
     <section class="well">
-      <h4>New Stack</h4>
+      <h4>{{t 'newCatalog.newStack'}}</h4>
       <hr/>
 
       {{form-name-description
@@ -98,7 +98,7 @@
 
     {{#if selectedTemplateModel}}
       <form {{action "submitTemplate" on="submit"}} class="{{if loading 'hide'}}">
-        <h4>Configuration Options</h4>
+        <h4>{{t 'newCatalog.config'}}</h4>
         <hr/>
 
         <div class="row"><div class="col-sm-12"><div class="row">
@@ -110,7 +110,7 @@
                 {{component question.inputComponent field=question value=question.answer}}
               {{else}}
                 {{input type="text" value=question.answer class="form-control"}}
-                <p>Unrecognized question type: {{question.type}}</p>
+                <p>{{t 'newCatalog.questionType:'}} {{question.type}}</p>
               {{/if}}
 
               <p class="help-block">{{question.description}}</p>
@@ -120,7 +120,7 @@
         {{#if (eq templateBase "cattle")}}
           <div class="row">
             <div class="col-md-12">
-              <label>{{input type="checkbox" checked=environmentResource.startOnCreate}} Start services after creating</label>
+              <label>{{input type="checkbox" checked=environmentResource.startOnCreate}} {{t 'newCatalog.startService'}}</label>
             </div>
           </div>
         {{/if}}
@@ -140,14 +140,14 @@
     {{/if}}
 
     <section>
-      <div class="over-hr"><span {{action "togglePreview"}}>Preview <i class="icon {{if previewOpen 'icon-chevron-up' 'icon-chevron-down'}}"></i></span></div>
+      <div class="over-hr"><span {{action "togglePreview"}}>{{t 'newCatalog.preview'}} <i class="icon {{if previewOpen 'icon-chevron-up' 'icon-chevron-down'}}"></i></span></div>
 
       {{#if previewOpen}}
         <ul class="nav nav-tabs nav-tabs-well" role="tablist">
           {{#each selectedTemplateModel.filesAsArray as |file|}}
             <li role="tab" class="{{if (eq previewTab file.name) 'active'}}" {{action "selectPreviewTab" file.name}}><a href="#">{{file.name}} {{copy-to-clipboard clipboardText=file.body size="small"}}</a></li>
           {{/each}}
-          <li role="tab" class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a href="#">answers.txt {{copy-to-clipboard clipboardText=answersString size="small"}}</a></li>
+          <li role="tab" class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a href="#">{{t 'newCatalog.txt'}} {{copy-to-clipboard clipboardText=answersString size="small"}}</a></li>
         </ul>
         <div class="well nav-well preview-content" role="tabpanel">
           {{#each selectedTemplateModel.filesAsArray as |file|}}
