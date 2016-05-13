@@ -6,6 +6,7 @@ var TLS_PORT = 636;
 
 export default Ember.Controller.extend({
   access: Ember.inject.service(),
+  settings: Ember.inject.service(),
 
   confirmDisable: false,
   errors: null,
@@ -15,7 +16,7 @@ export default Ember.Controller.extend({
   error: null,
   originalModel: null,
 
-  providerName: 'Active Directory',
+  providerName: 'ldap.providerName.ad',
 
   addUserInput: '',
   addOrgInput: '',
