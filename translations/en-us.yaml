@@ -1644,15 +1644,6 @@ hostSettings:
     alert: |
       Are you sure all the hosts you will create will be able to reach <code>{activeValue}</code> ?<br/>It looks like a private IP or local network.
 
-machine:
-  driverAzure:
-    accountAccess:
-      subscriptionCert:
-        placeholder: Your Azure subscription certificate
-    instance:
-      publishSettingsFile:
-        placeholder: Your Publish Settings file
-
 inputCertificate:
   key:
     label: Private Key
@@ -1686,16 +1677,273 @@ loginUserPass:
   loggingInLabel: Logging In...
   passwordLabel: Password
 
+machine:
+  driverAmazon:
+    accountAccess: Account Access
+    accessKey: Access Key
+    secretKey: Secret Key
+    provided: Provided
+    helpBlock1: Paste in your AWS key pair here. We'll use this key to create your new Instances.
+    authenticate: "Next: Authenticate &amp; select a network"
+    cancel: Cancel
+    loadingAvailability: Loading Availablility Zone and VPC info from EC2...
+    vpc: Availability Zone &amp; VPC
+    availabilityZone: Availability Zone
+    subnet: VPC/Subnet
+    securityGroupSelect: "Next: Select a Security Group"
+    loadingSecurity: Loading security group info from EC2...
+    securityGroup: Security Group
+    standard: "Standard:"
+    defaultSecurity: Use the existing <code>{defaultSecurityGroupName}</code> group
+    autoCreate: Automatically create a <code>{defaultSecurityGroupName}</code> group
+    helpBlock2:
+      link: Learn more
+      text: about the ports that will be opened.
+    custom: "Custom: Choose an existing group"
+    allowTraffic: "For {appName} to work correctly your security group will need to allow traffic:"
+    list:
+      item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
+      item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+    setInstance: "Next: Set Instance options"
+    updating: Updating
+    creating: Creating
+    securityGroupDot: Security Group...
+    instance: Instance
+    instanceOptions: Instance Options
+    instanceType: Instance Type
+    rootSize: Root Size
+    gb: GB
+    ami: AMI
+    amiList: RancherOS AMI List
+    sshUser: SSH User
+    iam: IAM Profile
+    privateIp: Private IP
+    onlyPrivate: Use only private IP address
+
+  driverAzure:
+    accountAccess:
+      subscriptionCert:
+        placeholder: Your Azure subscription certificate
+    instance:
+      publishSettingsFile:
+        placeholder: Your Publish Settings file
+    accountAccessSpan: Account Access
+    username: Username
+    password: Password
+    subscriptionId: Subscription Id*
+    subscriptionCert: Subscription Cert*
+    instanceLabel: Instance
+    image: Image
+    size: Size
+    sshPort: SSH Port
+    dockerPort: Docker Port
+    dockerSwarm: Docker Swarm Master Port
+    publishSettings: Publish Settings File
+    region: Region
+
+  driverCustom:
+    step1: Start up a Linux machine somewhere and install the latest version of <a href="http://www.docker.com/" target="_blank">Docker</a> on it.
+    step2: "Make sure any security groups or firewalls allow traffic:"
+    step2li: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span>
+    step3: "Optional: Add labels to be applied to the host."
+    step4: "Optional: Specify the public IP that should be used for this host.  This is required if you're trying to add the host the <code>rancher/server</code> container is on."
+    step5Copy: Copy, paste, and run the command below to register the host with
+    generating: Generating registration URL...
+    step5Close:
+      part1: Click close below.  The new host should pop up on the 
+      link: Hosts
+      part2: screen within a minute.
+    close: Close
+
+  driverDigitalOcean: 
+    accountAccess: Account Access
+    accessToken: Access Token*
+    helpBlock: <p class="help-block">A Personal Access Token from the DigitalOcean <a href="https://cloud.digitalocean.com/settings/applications" target="_blank">Apps & API</a> screen</p>
+    instance: Instance
+    image: Image
+    size: Size
+    region: Region
+    options: Options
+    enableBackups: Enable Backups
+    enableIPv6: Enable IPv6
+    enablePrivate Networking: Enable Private Networking
+
+  driverExoscale:
+    accountAccess: Account Access
+    aPIKey: API Key
+    secretKey: Secret Key
+    provided: Provided
+    paste: Paste in your Exoscale key pair here.  We'll use this key to create your new Instances.
+    next: "Next: Authenticate &amp; select a Security Group"
+    Cancel: Cancel
+    loadingSecurity: Loading security group info from Exoscale...
+    securityGroup: Security Group
+    standard:: "Standard:"
+    existing: Use the existing
+    group: group
+    autoCreate: Automatically create a
+
+  driverOther:
+    driver: Driver
+    driverNote: Driver*
+    options: Options
+
+  driverPacket: 
+    accountAccess: Account Access
+    project: Project*
+    apiKey: API Key*
+    packet: From the Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> screen
+    instance: Instance
+    image: Image
+    size: Size
+    region: Region
+
+  driverRackspace:
+    accountAccess: Account Access
+    username: Username*
+    apiKey: API Key*
+    settings: From the Account Settings screen of the RackSpace control panel
+    region: Region
+    instance: Instance
+    flavor: Flavor
+
+  driverUbiquity:
+    accountAccess: Account Access
+    resellerID: Reseller ID
+    remoteID: Remote ID
+    accessKey: Access Key
+    provided: Provided
+    helpBlock: You can find your Ubiquity Hosting API credentials <a href="https://motion.ubiquityhosting.com/api">here</a>. Don't have an account? Learn more about <a href="http://www.ubiquityhosting.com/">Ubiquity Hosting</a> today!
+    button: "Next: Authenticate &amp; Create a New Cloud Instance"
+    cancel: Cancel
+    loading: Loading cloud instance creation details...
+    instance: Instance
+    region: Region
+    image: Image
+    flavor: Flavor
+
+  driverVsphere: 
+    accountAccess: Account Access
+    vCenterHost: vCenter Host*
+    vCenterPort: vCenter Port*
+    username: Username*
+    password: Password*
+    instance: Instance
+    cpus: CPUs
+    memory: Memory
+    mb: MB
+    disk: Disk
+    os: OS ISO URL
+    scheduling: Scheduling
+    dataCenter: Data Center
+    pool: Pool
+    host: Host
+    network: Network
+    dataStore: Data Store
+
+modalAboutComponent:
+  component: Component
+  version: Version
+  cattle: Cattle
+  ui: User Interface
+  compose: Compose
+  machineService: Machine Service
+  docerkMachine: docker-machine
+  close: Close
+
+modalAuditlogInfo:
+  header: Additional Log Info
+  request: "Request Object:"
+  response: "Response Object:"
+  closer: Close
+
+modalConfirmDeactiviate:
+  header: Are you sure you want to
+  protip: "ProTip: Hold the {alternateLabel} key while clicking {isServiceButton} to bypass this confirmation."
+  cancel: Cancel
+
+modalNewDriver:
+  header: Add Machine Driver
+  name: Name*
+  downloadLabel: Download URL*
+  downloadUrl: The URL to download the machine driver binary 64-bit Linux.
+  customUrl: Custom UI URL
+  helpBlock1:
+      text: "Optional: The URL to load for customized Add Hosts screen for this driver."
+      link: See <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> for more info.
+  checksum: MD5 Checksum
+  helpBlock2: "Optional: Verify that the downloaded driver matches the expected checksum."
+
+modalProcessError:
+  header: Exception Info
+  cause: "Cause:"
+  none: N/A
+  stackTrace: "Stack Trace:"
+  close: Close
+
 modalShell:
   title: "Shell: {instanceName}"
+
+newAliasService:
+  header: Add Service Alias
+
+newBalancer:
+  header: Add Load Balancer
+  note: |
+    <p><strong>Note:</strong> Requests that do not match any of the &quot;advanced request options&quot; will be sent to the <strong>all</strong> ({targetResources}) of the configured target services (round-robin) on the default target port corresponding to the source port of the request.</p>
+  tabs:
+    ssl: SSL Termination
+    stickiness: Stickiness
+    custom: Custom haproxy.cfg
+    labels: Labels
+    scheduling: Scheduling
+  helpBlock: |
+    <p class="help-block">Additional <a href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html" target="_blank">haproxy.cfg</a> configuration can be put here and will be appended to the configuration generated by {appName}.</p>
+  labelGlobal: <code>global</code> section
+  labelDefault: <code>defaults</code> section
+
 
 newCatalog:
   version:
     prompt: Choose a version...
   saveUpgrade: Upgrade
   saveNew: Launch
+  upgrade: "Upgrade:"
+  catalog: "Catalog:"
+  category: "Category:"
+  support: "Support:"
+  official: Officially Certified
+  maintainedBy: Maintained by community members
+  maintainer: "Maintainer:"
+  license: "License:"
+  url: "Project URL:"
+  stack: Stack
+  templateVersion: Template Version
+  selectVersion: Select a version of the template to
+  newStack: New Stack
+  config: Configuration Options
+  questionType: "Unrecognized question type:"
+  startService: Start services after creating
+  preview: Preview
+  txt: answers.txt 
 
 newContainer:
+  service: |
+    {numServices, plural,
+      =1 {Service}
+      other {Services}
+    }
+  tabs:
+    disks: Disks
+    userData: User Data
+    command: Command
+    volumes: Volumes
+    networking: Networking
+    security: Security/Host
+    healthCheck: Health Check
+    labels: Labels
+    scheduling: Scheduling
+  selectUpgrade: Select one or more services to upgrade.
   saveUpgrade: Upgrade
   saveNew: Create
   removeSidekick: Remove this Sidekick
@@ -1707,6 +1955,10 @@ newContainer:
   emptySidekick: "(Sidekick #{num})"
   addSidekickContainer: Add Sidekick Container
   addSidekickVm: Add Sidekick VM
+
+newExternalService:
+  header: Add External Service
+  alert: "Note: This will only be used if the external service is a target of a load balancer." 
 
 pageFooter:
   notARelease: (Not a Release)

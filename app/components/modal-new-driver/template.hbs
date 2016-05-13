@@ -1,28 +1,28 @@
 {{top-errors errors=errors}}
 
-<h2>Add Machine Driver</h2>
+<h2>{{t 'modalNewDriver.header'}}</h2>
 
 <div class="form-group">
-  <label>Name*</label>
+  <label>{{t 'modalNewDriver.name'}}</label>
   {{input class="form-control" value=originalModel.name }}
 </div>
 
 <div class="form-group">
-  <label>Download URL*</label>
+  <label>{{t 'modalNewDriver.downloadLabel'}}</label>
   {{input class="form-control" value=originalModel.uri }}
-  <span class="help-block">The URL to download the machine driver binary 64-bit Linux.</span>
+  <span class="help-block">{{t 'modalNewDriver.downloadUrl'}}</span>
 </div>
 
 <div class="form-group">
-  <label>Custom UI URL</label>
+  <label>{{t 'modalNewDriver.customUrl'}}</label>
   {{input class="form-control" value=originalModel.uiUrl }}
-  <span class="help-block">Optional: The URL to load for customized Add Hosts screen for this driver.{{#if settings.isRancher}}  See <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> for more info.{{/if}}</span>
+  <span class="help-block">{{t 'modalNewDriver.helpblock1.text'}}{{#if settings.isRancher}}  {{format-html-message 'modalNewDriver.helpblock1.link'}}{{/if}}</span>
 </div>
 
 <div class="form-group">
-  <label>MD5 Checksum</label>
+  <label>{{t 'modalNewDriver.checksum'}}</label>
   {{input class="form-control" value=originalModel.md5checksum }}
-  <span class="help-block">Optional: Verify that the downloaded driver matches the expected checksum.</span>
+  <span class="help-block">{{t 'modalNewDriver.helpblock2'}}</span>
 </div>
 
 {{save-cancel editing=false save="save" cancel="cancel"}}

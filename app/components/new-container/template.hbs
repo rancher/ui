@@ -2,7 +2,7 @@
   <section class="header">
     <h1>{{if isUpgrade 'Upgrade' 'Add'}}
       {{#if isService}}
-        Service{{if hasSidekicks 's'}}
+        {{t 'newContainer.service' numServices=hasSidekicks}}
       {{else}}
         {{if isVm 'Virtual Machine' 'Container'}}
       {{/if}}
@@ -45,7 +45,7 @@
 {{/unless}}
 
 {{#if noLaunchConfigsEnabled}}
-  <div class="text-muted text-center">Select one or more services to upgrade.</div>
+  <div class="text-muted text-center">{{t 'newContainer.selectUpgrade'}}</div>
 {{/if}}
 
 <div data-launchindex="{{if isSidekick '' '-1'}}">
@@ -94,18 +94,19 @@
   <section>
     <ul class="nav nav-tabs nav-tabs-well shadowed" style="display: inline-block" role="tablist">
       {{#if isVm}}
-        <li role="tab" aria-controls="panel" class="tab" data-section="disks" {{action "selectTab" "disks"}}><a href="#">Disks</a></li>
-        <li role="tab" aria-controls="panel" class="tab" data-section="userdata" {{action "selectTab" "userdata"}}><a href="#">User Data</a></li>
+        <li role="tab" aria-controls="panel" class="tab" data-section="disks" {{action "selectTab" "disks"}}><a href="#">{{t 'newContainer.tabs.disks'}}</a></li>
+        <li role="tab" aria-controls="panel" class="tab" data-section="userdata" {{action "selectTab" "userdata"}}><a href="#">{{t 'newContainer.tabs.userData'}}</a></li>
       {{else}}
-        <li role="tab" aria-controls="panel" class="tab" data-section="command" {{action "selectTab" "command"}}><a href="#">Command</a></li>
-        <li role="tab" aria-controls="panel" class="tab" data-section="volumes" {{action "selectTab" "volumes"}}><a href="#">Volumes</a></li>
-        <li role="tab" aria-controls="panel" class="tab" data-section="network" {{action "selectTab" "network"}}><a href="#">Networking</a></li>
-        <li role="tab" aria-controls="panel" class="tab" data-section="security" {{action "selectTab" "security"}}><a href="#">Security/Host</a></li>
+        <li role="tab" aria-controls="panel" class="tab" data-section="command" {{action "selectTab" "command"}}><a href="#">{{t 'newContainer.tabs.command'}}</a></li>
+        <li role="tab" aria-controls="panel" class="tab" data-section="volumes" {{action "selectTab" "volumes"}}><a href="#">{{t 'newContainer.tabs.volumes'}}
+</a></li>
+        <li role="tab" aria-controls="panel" class="tab" data-section="network" {{action "selectTab" "network"}}><a href="#">{{t 'newContainer.tabs.networking'}}</a></li>
+        <li role="tab" aria-controls="panel" class="tab" data-section="security" {{action "selectTab" "security"}}><a href="#">{{t 'newContainer.tabs.security'}}</a></li>
       {{/if}}
 
-      <li role="tab" aria-controls="panel" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}><a href="#">Health Check</a></li>
-      <li role="tab" aria-controls="panel" class="tab" data-section="labels" {{action "selectTab" "labels"}}><a href="#">Labels</a></li>
-      <li role="tab" aria-controls="panel" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}><a href="#">Scheduling</a></li>
+      <li role="tab" aria-controls="panel" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}><a href="#">{{t 'newContainer.tabs.healthCheck'}}</a></li>
+      <li role="tab" aria-controls="panel" class="tab" data-section="labels" {{action "selectTab" "labels"}}><a href="#">{{t 'newContainer.tabs.labels'}}</a></li>
+      <li role="tab" aria-controls="panel" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}><a href="#">{{t 'newContainer.tabs.scheduling'}}</a></li>
     </ul>
 
   <div class="horizontal-form well" role="tabpanel">

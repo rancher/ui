@@ -2,12 +2,12 @@
   <form name="login">
     <div class="container-fluid">
       <div class="over-hr r-mt20 r-mb20">
-        <span>Account Access</span>
+        <span>{{t 'machine.driverUbiquity.accountAccess'}}</span>
       </div>
 
       <div class="row {{if isStep1 'form-group'}}">
         <div class="col-md-2 form-label">
-          <label class="form-control-static">Reseller ID</label>
+          <label class="form-control-static">{{t 'machine.driverUbiquity.resellerID'}}</label>
         </div>
         <div class="col-md-10">
           {{#if isStep1}}
@@ -19,7 +19,7 @@
       </div>
       <div class="row {{if isStep1 'form-group'}}">
         <div class="col-md-2 form-label">
-          <label class="form-control-static">Remote ID</label>
+          <label class="form-control-static">{{t 'machine.driverUbiquity.remoteID'}}</label>
         </div>
         <div class="col-md-10">
           {{#if isStep1}}
@@ -31,16 +31,16 @@
       </div>
       <div class="row {{if isStep1 'form-group'}}">
         <div class="col-md-2 form-label">
-          <label class="form-control-static">Access Key</label>
+          <label class="form-control-static">{{t 'machine.driverUbiquity.accessKey'}}</label>
         </div>
         <div class="col-md-10">
           {{#if isStep1}}
             {{input type="password" name="apiToken" classNames="form-control" placeholder="Your Ubiquity Hosting Access Key" value=ubiquityConfig.apiToken}}
           {{else}}
-            <div class="form-control-static text-muted text-italic">Provided</div>
+            <div class="form-control-static text-muted text-italic">{{t 'machine.driverUbiquity.provided'}}</div>
           {{/if}}
           {{#if isStep1}}
-            <p class="help-block">You can find your Ubiquity Hosting API credentials <a href="https://motion.ubiquityhosting.com/api">here</a>. Don't have an account? Learn more about <a href="http://www.ubiquityhosting.com/">Ubiquity Hosting</a> today!</p>
+            <p class="help-block">{{format-html-message 'machine.driverUbiquity.helpBlock'}}</p>
           {{/if}}
         </div>
       </div>
@@ -48,8 +48,8 @@
     {{#if isStep1}}
       {{top-errors errors=errors}}
       <div class="footer-actions">
-        <button {{action "ubiLogin"}} name="submit" class="btn btn-primary">Next: Authenticate &amp; Create a New Cloud Instance</button>
-        <button {{action "cancel"}} class="btn btn-link">Cancel</button>
+        <button {{action "ubiLogin"}} name="submit" class="btn btn-primary">{{t 'machine.driverUbiquity.button'}}</button>
+        <button {{action "cancel"}} class="btn btn-link">{{t 'machine.driverUbiquity.cancel'}}</button>
       </div>
     {{/if}}
   </form>
@@ -57,25 +57,25 @@
 
 <section class="horizontal-form {{unless isStep2 'hide'}}" style="padding-top: 0">
   <div class="text-center">
-    <i class="icon icon-spinner icon-spin"></i> Loading cloud instance creation details...
+    <i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverUbiquity.loading'}}
   </div>
 </section>
 
 <section class="horizontal-form {{unless isGteStep3 'hide'}}" style="padding-top: 0;">
   <div class="container-fluid">
        <div class="over-hr r-mt20 r-mb20">
-      <span>Instance</span>
+      <span>{{t 'machine.driverUbiquity.instance'}}</span>
     </div>
 
     {{partial "host/add-common"}}
 
     <div class="over-hr r-mt20 r-mb20">
-      <span>Region</span>
+      <span>{{t 'machine.driverUbiquity.region'}}</span>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">Region</label>
+        <label class="form-control-static">{{t 'machine.driverUbiquity.region'}}</label>
       </div>
       <div class="col-md-10">
         <select class="form-control" onchange={{action "setZone" target.value}}>
@@ -88,7 +88,7 @@
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">Image</label>
+        <label class="form-control-static">{{t 'machine.driverUbiquity.image'}}</label>
       </div>
       <div class="col-md-4">
         <select class="form-control" onchange={{action (mut ubiquityConfig.imageId) value="target.value"}}>
@@ -98,7 +98,7 @@
         </select>
       </div>
       <div class="col-md-2 form-label">
-        <label class="form-control-static">Flavor</label>
+        <label class="form-control-static">{{t 'machine.driverUbiquity.flavor'}}</label>
       </div>
       <div class="col-md-4">
         <select class="form-control" onchange={{action (mut ubiquityConfig.flavorId) value="target.value"}}>
