@@ -168,7 +168,7 @@ const navTree = [
     id: 'cattle',
     localizedLabel: 'nav.cattle.tab',
     route: 'environments',
-    queryParams: {which: 'all'},
+    queryParams: {which: 'user'},
     ctx: [getProjectId],
     moreCurrentWhen: ['authenticated.project.waiting'],
     condition: function() { return this.get('hasProject') && !this.get('hasKubernetes') && !this.get('hasSwarm') && !this.get('hasMesos'); },

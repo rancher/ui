@@ -71,13 +71,9 @@ export default Ember.Component.extend({
       this.get('instance.disks').pushObject({
         name: '',
         root: false,
-        size: 40,
+        size: '40g',
         driver: this.get('availableDrivers').objectAt(0)
       });
-    },
-
-    setDiskSize(disk,size) {
-      Ember.set(disk, 'size', size+'g');
     },
 
     removeDisk(obj) {
