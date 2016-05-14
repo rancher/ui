@@ -2,16 +2,16 @@
   <form>
     <div class="container-fluid">
       <div class="over-hr r-mt20 r-mb20">
-        <span>{{t 'machine.driverAmazon.accountAccess'}}</span>
+        <span>{{t 'machine.driverAmazon.accessSection'}}</span>
       </div>
 
       <div class="row {{if isStep1 'form-group'}}">
         <div class="col-md-2 form-label">
-          <label class="form-control-static">{{t 'machine.driverAmazon.accessKey'}}</label>
+          <label class="form-control-static">{{t 'machine.driverAmazon.accessKey.label'}}</label>
         </div>
         <div class="col-md-8">
           {{#if isStep1}}
-            {{input type="text" name="username" classNames="form-control" placeholder="Your AWS access key" value=amazonec2Config.accessKey}}
+            {{input type="text" name="username" classNames="form-control" placeholder=(t 'machine.driverAmazon.accessKey.placeholder') value=amazonec2Config.accessKey}}
           {{else}}
             <div class="form-control-static">{{amazonec2Config.accessKey}}</div>
           {{/if}}
@@ -19,16 +19,16 @@
       </div>
       <div class="row {{if isStep1 'form-group'}}">
         <div class="col-md-2 form-label">
-          <label class="form-control-static">{{t 'machine.driverAmazon.secretKey'}}</label>
+          <label class="form-control-static">{{t 'machine.driverAmazon.secretKey.label'}}</label>
         </div>
         <div class="col-md-8">
           {{#if isStep1}}
-            {{input type="password" name="password" classNames="form-control" placeholder="Your AWS secret key" value=amazonec2Config.secretKey}}
+            {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverAmazon.secretKey.placeholder') value=amazonec2Config.secretKey}}
           {{else}}
-            <div class="form-control-static text-muted text-italic">{{t 'machine.driverAmazon.provided'}}</div>
+            <div class="form-control-static text-muted text-italic">{{t 'machine.driverAmazon.secretKey.provided'}}</div>
           {{/if}}
           {{#if isStep1}}
-            <p class="help-block">{{t 'machine.driverAmazon.helpBlock1'}}</p>
+            <p class="help-block">{{t 'machine.driverAmazon.accessKeyHelp'}}</p>
           {{/if}}
         </div>
       </div>
@@ -37,8 +37,8 @@
       {{top-errors errors=errors}}
 
       <div class="footer-actions">
-        <button {{action "awsLogin"}} name="submit" class="btn btn-primary">{{t 'machine.driverAmazon.authenticate'}}</button>
-        <button {{action "cancel"}} class="btn btn-link">{{t 'machine.driverAmazon.cancel'}}</button>
+        <button {{action "awsLogin"}} name="submit" class="btn btn-primary">{{t 'machine.driverAmazon.loginAction'}}</button>
+        <button {{action "cancel"}} class="btn btn-link">{{t 'generic.cancel'}}</button>
       </div>
     {{/if}}
   </form>
@@ -53,7 +53,7 @@
 <section class="horizontal-form {{unless isGteStep3 'hide'}}" style="padding-top: 0">
   <div class="container-fluid">
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverAmazon.vpc'}}</span>
+      <span>{{t 'machine.driverAmazon.vpcSection'}}</span>
     </div>
     <div class="row {{if isStep3 'form-group'}}">
       <div class="col-md-2 form-label">
@@ -109,7 +109,7 @@
 
     <div class="footer-actions">
       <button {{action "selectSubnet"}} class="btn btn-primary">{{t 'machine.driverAmazon.securityGroupSelect'}}</button>
-      <button {{action "cancel"}} class="btn btn-link">{{t 'machine.driverAmazon.cancel'}}</button>
+      <button {{action "cancel"}} class="btn btn-link">{{t 'generic.cancel'}}</button>
     </div>
   {{/if}}
 </section>
@@ -123,29 +123,37 @@
 <section class="horizontal-form {{unless isGteStep5 'hide'}}" style="padding-top: 0">
   <div class="container-fluid">
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverAmazon.securityGroup'}}</span>
+      <span>{{t 'machine.driverAmazon.securityGroupSection'}}</span>
     </div>
 
     <div class="row {{if isStep5 'form-group'}}">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.securityGroup'}}</label>
+        <label class="form-control-static">{{t 'machine.driverAmazon.securityGroup.label'}}</label>
       </div>
       <div class="col-md-8">
         {{#if isStep5}}
-          <div class="radio r-pt10"><label>
-            {{radio-button selection=whichSecurityGroup value="default"}} {{t 'machine.driverAmazon.standard'}}
-            {{#if defaultSecurityGroup}}
-              {{format-html-message 'machine.driverAmazon.defaultSecurity' defaultSecurityGroupName=defaultSecurityGroupName}}
-            {{else}}
-              {{format-html-message 'machine.driverAmazon.autoCreate'}}
-            {{/if}}
-          </label></div>
+          <div class="radio r-pt10">
+            <label>
+              {{radio-button selection=whichSecurityGroup value="default"}}
+              {{#if defaultSecurityGroup}}
+                {{format-html-message 'machine.driverAmazon.securityGroup.defaultExisting' groupName=defaultSecurityGroupName}}
+              {{else}}
+                {{format-html-message 'machine.driverAmazon.securityGroup.defaultCreate' groupName=defaultSecurityGroupName}}
+              {{/if}}
+            </label>
+          </div>
 
           {{#if (and settings.isRancher (not isCustomSecurityGroup))}}
-            <p class="help-block r-ml20"><a href="{{settings.docsBase}}/rancher-ui/infrastructure/hosts/amazon/#required-ports-for-rancher-to-work" target="_blank">{{t 'machine.driverAmazon.helpBlock2.link'}}</a> {{t 'machine.driverAmazon.helpBlock2.text'}}</p>
+            <p class="help-block r-ml20"><a href="{{settings.docsBase}}/rancher-ui/infrastructure/hosts/amazon/#required-ports-for-rancher-to-work" target="_blank">{{t 'machine.driverAmazon.portHelp.link'}}</a> {{t 'machine.driverAmazon.portHelp.text'}}</p>
           {{/if}}
 
-          <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="custom"}} Custom: Choose an existing group{{#if isCustomSecurityGroup}}:{{/if}}</label></div>
+          <div class="radio">
+            <label>
+              {{radio-button selection=whichSecurityGroup value="custom"}}
+              {{t 'machine.driverAmazon.securityGroup.custom'}}
+            </label>
+          </div>
+
           {{#if isCustomSecurityGroup}}
             <select class="form-control" onchange={{action (mut selectedSecurityGroup) value="target.value"}}>
               {{#each allSecurityGroups as |choice|}}
@@ -153,10 +161,10 @@
               {{/each}}
             </select>
 
-            <p style="margin: 10px 0 0 0;">{{t 'machine.driverAmazon.allTraffic' appName=settings.appName}}</p>
+            <p style="margin: 10px 0 0 0;">{{t 'machine.driverAmazon.needs.label' appName=settings.appName}}</p>
             <ul>
-              <li>{{t 'machine.driverAmazon.list.item1' appName=settings.appName}}</li>
-              <li>{{t 'machine.driverAmazon.list.item2'}}</li>
+              <li>{{format-html-message 'machine.driverAmazon.needs.item1' appName=settings.appName}}</li>
+              <li>{{format-html-message 'machine.driverAmazon.needs.item2' appName=settings.appName}}</li>
             </ul>
           {{/if}}
         {{else}}
@@ -171,33 +179,38 @@
     {{top-errors errors=errors}}
 
     <div class="footer-actions">
-      <button {{action "selectSecurityGroup"}} class="btn btn-primary">{{t 'machine.driverAmazon.setInstance'}}</button>
-      <button {{action "cancel"}} class="btn btn-link">{{t 'machine.driverAmazon.cancel'}}</button>
+      <button {{action "selectSecurityGroup"}} class="btn btn-primary">{{t 'machine.driverAmazon.setInstanceAction'}}</button>
+      <button {{action "cancel"}} class="btn btn-link">{{t 'generic.cancel'}}</button>
     </div>
   {{/if}}
 </section>
 
 <section class="horizontal-form {{unless isStep6 'hide'}}" style="padding-top: 0">
   <div class="text-center">
-    <i class="icon icon-spinner icon-spin"></i> {{#if defaultSecurityGroup}}{{t 'machine.driverAmazon.updating'}}{{else}}{{t 'machine.driverAmazon.creating'}}{{/if}} {{t 'machine.driverAmazon.securityGroupDot'}}
+    <i class="icon icon-spinner icon-spin"></i>
+    {{#if defaultSecurityGroup}}
+      {{t 'machine.driverAmazon.securityGroupDot.updating'}}
+    {{else}}
+      {{t 'machine.driverAmazon.securityGroupDot.creating'}}
+    {{/if}}
   </div>
 </section>
 
 <section class="horizontal-form {{unless isGteStep7 'hide'}}" style="padding-top: 0;">
   <div class="container-fluid">
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverAmazon.instance'}}</span>
+      <span>{{t 'machine.driverAmazon.instanceSection'}}</span>
     </div>
 
     {{partial "host/add-common"}}
 
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverAmazon.instanceOptions'}}</span>
+      <span>{{t 'machine.driverAmazon.instanceOptionsSection'}}</span>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.instanceType'}}</label>
+        <label class="form-control-static">{{t 'machine.driverAmazon.instanceType.label'}}</label>
       </div>
       <div class="col-md-4">
         <select class="form-control" onchange={{action (mut amazonec2Config.instanceType) value="target.value"}}>
@@ -207,48 +220,48 @@
         </select>
       </div>
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.rootSize'}}</label>
+        <label class="form-control-static">{{t 'machine.driverAmazon.rootSize.label'}}</label>
       </div>
       <div class="col-md-4">
         <div class="input-group">
           {{input type="text" classNames="form-control" placeholder="" value=amazonec2Config.rootSize}}
-          <span class="input-group-addon">{{t 'machine.driverAmazon.gb'}}</span>
+          <span class="input-group-addon">{{t 'machine.driverAmazon.rootSize.unit'}}</span>
         </div>
       </div>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.ami'}}</label>
+        <label class="form-control-static">{{t 'machine.driverAmazon.ami.label'}}</label>
       </div>
       <div class="col-md-4">
-        {{input type="text" classNames="form-control" placeholder="An Ubuntu AMI" value=amazonec2Config.ami}}
+        {{input type="text" classNames="form-control" placeholder=(t 'machine.driverAmazon.ami.placeholder') value=amazonec2Config.ami}}
         {{#if settings.isRancher}}
           <p class="help-block">
-            <a href="https://github.com/rancher/os/blob/master/README.md/#user-content-amazon" target="_blank">{{t 'machine.driverAmazon.amiList'}}</a>
+            <a href="https://github.com/rancher/os/blob/master/README.md/#user-content-amazon" target="_blank">{{t 'machine.driverAmazon.ami.rancherList'}}</a>
           </p>
         {{/if}}
       </div>
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.sshUser'}}</label>
+        <label class="form-control-static">{{t 'machine.driverAmazon.sshUser.label'}}</label>
       </div>
       <div class="col-md-4">
-        {{input type="text" classNames="form-control" placeholder="e.g. ubuntu" value=amazonec2Config.sshUser}}
+        {{input type="text" classNames="form-control" placeholder=(t 'machine.driverAmazon.sshUser.placeholder') value=amazonec2Config.sshUser}}
       </div>
     </div>
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.iam'}}</label>
+        <label class="form-control-static">{{t 'machine.driverAmazon.iam.label'}}</label>
       </div>
       <div class="col-md-4">
-        {{input type="text" classNames="form-control" placeholder="" value=amazonec2Config.iamInstanceProfile}}
+        {{input type="text" classNames="form-control" value=amazonec2Config.iamInstanceProfile}}
       </div>
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.privateIp'}}</label>
+        <label class="form-control-static">{{t 'machine.driverAmazon.privateIp.label'}}</label>
       </div>
       <div class="col-md-4">
         <div class="checkbox form-control-static">
-          <label>{{input type="checkbox" checked=amazonec2Config.privateAddressOnly}} {{t 'machine.driverAmazon.onlyPrivate'}}</label>
+          <label>{{input type="checkbox" checked=amazonec2Config.privateAddressOnly}} {{t 'machine.driverAmazon.onlyPrivate.label'}}</label>
         </div>
       </div>
     </div>
