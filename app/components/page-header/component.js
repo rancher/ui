@@ -34,6 +34,7 @@ export default Ember.Component.extend({
   // Component options
   tagName          : 'header',
   classNames       : ['clearfix','no-select'],
+  classNameBindings: ['project.swarm','project.mesos','project.kubernetes'],
 
   actions: {
     switchProject(id) {
