@@ -27,7 +27,9 @@ This replaces the entire folder, so you must supply all the files or they will b
 | login-bg.jpg                | Background for the login screen box                       |
 | main.svg                    | Top-left corner of the main header                        |
 | main-loading.svg            | On the branded loading screen (for ui.pl="rancher" only)  |
-| main_k8s.svg                | Top-left corner of the main header, for k8s tab           |
+| main-k8s.svg                | Top-left corner of the main header, for k8s env           |
+| main-mesos.svg              | Top-left corner of the main header, for mesos env         |
+| main-swarm.svg              | Top-left corner of the main header, for swarm env         |
 | provider-custom.svg         | Custom "Add Host" provider                                |
 | provider-local.svg          | Local "Access Control" provider                           |
 | provider-orchestration.svg  | "Cattle" environment orchestration provider               |

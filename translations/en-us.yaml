@@ -6,6 +6,7 @@ languageName: "English (US)"
 generic:
   actions: Actions
   closeModal: Close
+  cancel: Cancel
   default: Default
   description: Description
   disabled: Disabled
@@ -1780,46 +1781,58 @@ loginUserPass:
 
 machine:
   driverAmazon:
-    accountAccess: Account Access
-    accessKey: Access Key
-    secretKey: Secret Key
-    provided: Provided
-    helpBlock1: Paste in your AWS key pair here. We'll use this key to create your new Instances.
-    authenticate: "Next: Authenticate &amp; select a network"
-    cancel: Cancel
+    accessSection: Account Access
+    accessKey:
+      label: Access Key
+      placeholder: Your AWS access key
+    secretKey:
+      label: Secret Key
+      placeholder: Your AWS secret key
+      provided: Provided
+    accessKeyHelp: Paste in your AWS key pair here. We'll use this key to create your new Instances.
+    loginAction: "Next: Authenticate & select a network"
     loadingAvailability: Loading Availablility Zone and VPC info from EC2...
-    vpc: Availability Zone &amp; VPC
+    vpcSection: Availability Zone & VPC
     availabilityZone: Availability Zone
     subnet: VPC/Subnet
     securityGroupSelect: "Next: Select a Security Group"
     loadingSecurity: Loading security group info from EC2...
-    securityGroup: Security Group
-    standard: "Standard:"
-    defaultSecurity: Use the existing <code>{defaultSecurityGroupName}</code> group
-    autoCreate: Automatically create a <code>{defaultSecurityGroupName}</code> group
-    helpBlock2:
+    securityGroupSection: Security Group
+    securityGroup:
+      label: Security Group
+      defaultExisting: "Standard: Use the existing <code>{groupName}</code> group"
+      defaultCreate: "Standard: Automatically create a <code>{groupName}</code> group"
+      custom: "Custom: Choose an existing group"
+      updating: Updating Security Group...
+      creating: Creating Security Group...
+    portHelp:
       link: Learn more
       text: about the ports that will be opened.
-    custom: "Custom: Choose an existing group"
-    allowTraffic: "For {appName} to work correctly your security group will need to allow traffic:"
-    list:
+    needs:
+      label: "For {appName} to work correctly your security group will need to allow traffic:"
       item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
       item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
-    setInstance: "Next: Set Instance options"
-    updating: Updating
-    creating: Creating
-    securityGroupDot: Security Group...
-    instance: Instance
+    setInstanceAction: "Next: Set Instance options"
+    instanceSection: Instance
     instanceOptions: Instance Options
-    instanceType: Instance Type
-    rootSize: Root Size
-    gb: GB
-    ami: AMI
-    amiList: RancherOS AMI List
-    sshUser: SSH User
-    iam: IAM Profile
-    privateIp: Private IP
-    onlyPrivate: Use only private IP address
+    instanceType:
+      label: Instance Type
+    rootSize:
+      label: Root Size
+      unit: GB
+    ami:
+      label: AMI
+      placeholder: An Ubuntu AMI
+      rancherList: RancherOS AMI List
+    sshUser:
+      label: SSH User
+      placeholder: e.g. ubuntu
+    iam:
+      label: IAM Profile
+    privateIp:
+      label: Private IP
+    onlyPrivate:
+      label: Use only private IP address
 
   driverAzure:
     accountAccess:
@@ -1875,11 +1888,11 @@ machine:
     secretKey: Secret Key
     provided: Provided
     paste: Paste in your Exoscale key pair here.  We'll use this key to create your new Instances.
-    next: "Next: Authenticate &amp; select a Security Group"
+    next: "Next: Authenticate & select a Security Group"
     Cancel: Cancel
     loadingSecurity: Loading security group info from Exoscale...
     securityGroup: Security Group
-    standard:: "Standard:"
+    standard: "Standard:"
     existing: Use the existing
     group: group
     autoCreate: Automatically create a
@@ -1915,7 +1928,7 @@ machine:
     accessKey: Access Key
     provided: Provided
     helpBlock: You can find your Ubiquity Hosting API credentials <a href="https://motion.ubiquityhosting.com/api">here</a>. Don't have an account? Learn more about <a href="http://www.ubiquityhosting.com/">Ubiquity Hosting</a> today!
-    button: "Next: Authenticate &amp; Create a New Cloud Instance"
+    button: "Next: Authenticate & Create a New Cloud Instance"
     cancel: Cancel
     loading: Loading cloud instance creation details...
     instance: Instance
@@ -2023,7 +2036,7 @@ newCatalog:
   selectVersion: Select a version of the template to
   newStack: New Stack
   config: Configuration Options
-  questionType: "Unrecognized question type:"
+  unknownType: "Unrecognized question type:"
   startService: Start services after creating
   preview: Preview
   txt: answers.txt
