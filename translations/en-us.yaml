@@ -1835,25 +1835,39 @@ machine:
       label: Use only private IP address
 
   driverAzure:
-    accountAccess:
-      subscriptionCert:
-        placeholder: Your Azure subscription certificate
-    instance:
-      publishSettingsFile:
-        placeholder: Your Publish Settings file
-    accountAccessSpan: Account Access
-    username: Username
-    password: Password
-    subscriptionId: Subscription Id*
-    subscriptionCert: Subscription Cert*
-    instanceLabel: Instance
-    image: Image
-    size: Size
-    sshPort: SSH Port
-    dockerPort: Docker Port
-    dockerSwarm: Docker Swarm Master Port
-    publishSettings: Publish Settings File
-    region: Region
+    accountAccessSection: Account Access
+    username:
+      label: Username
+      placeholder: Your Azure account username
+    password:
+      label: Password
+      placeholder: Your Azure account password
+    subscriptionId:
+      label: Subscription ID
+      placeholder: Your Azure subscription ID
+    subscriptionCert:
+      label: Subscription Cert
+      placeholder: Your Azure subscription certificate
+    instanceSection: Instance
+    image:
+      label: Image
+      placeholder: Ubuntu 15.10 x64
+    size:
+      label: Size
+    sshPort:
+      label: SSH Port
+      placeholder: e.g. 22
+    dockerPort:
+      label: Docker Port
+      placeholder: e.g. 2376
+    dockerSwarm:
+      label: Docker Swarm Master Port
+      placeholder: e.g. 3376
+    publishSettingsFile:
+      placeholder: Your Publish Settings file
+    regionSection: Region
+    region:
+      label: Region
 
   driverCustom:
     step1: Start up a Linux machine somewhere and install the latest version of <a href="http://www.docker.com/" target="_blank">Docker</a> on it.
@@ -1869,18 +1883,29 @@ machine:
       part2: screen within a minute.
     close: Close
 
-  driverDigitalOcean:
-    accountAccess: Account Access
-    accessToken: Access Token*
-    helpBlock: <p class="help-block">A Personal Access Token from the DigitalOcean <a href="https://cloud.digitalocean.com/settings/applications" target="_blank">Apps & API</a> screen</p>
-    instance: Instance
-    image: Image
-    size: Size
-    region: Region
-    options: Options
-    enableBackups: Enable Backups
-    enableIPv6: Enable IPv6
-    enablePrivate Networking: Enable Private Networking
+  driverDigitalocean:
+    accountSection: Account Access
+    accessToken:
+      label: Access Token*
+      placeholder: Your DigitalOcean API access token
+      help: |
+        A Personal Access Token from the DigitalOcean
+        <a href="https://cloud.digitalocean.com/settings/applications" target="_blank">Apps & API</a> screen
+    instanceSection: Instance
+    image:
+      label: Image
+    size:
+      label: Size
+    regionSection: Region
+    region:
+      label: Region
+    optionsSection: Options
+    backups:
+      label: Enable Backups
+    ipv6:
+      label: Enable IPv6
+    privateNetworking:
+      label: Enable Private Networking
 
   driverExoscale:
     accountAccess: Account Access

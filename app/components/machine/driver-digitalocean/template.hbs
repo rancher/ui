@@ -3,26 +3,26 @@
     {{partial "host/add-common"}}
 
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverDigitalOcean.accountAccess'}}</span>
+      <span>{{t 'machine.driverDigitalocean.accountSection'}}</span>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverDigitalOcean.accessToken'}}</label>
+        <label class="form-control-static">{{t 'machine.driverDigitalocean.accessToken.label'}}</label>
       </div>
       <div class="col-md-10">
-        {{input type="password" value=digitaloceanConfig.accessToken classNames="form-control" placeholder="Your DigitalOcean API access token"}}
-        {{format-html-message 'machine.driverDigitalOcean.helpBlock'}}
+        {{input type="password" value=digitaloceanConfig.accessToken classNames="form-control" placeholder=(t 'machine.driverDigitalocean.accessToken.placeholder')}}
+        <p class="help-block">{{format-html-message 'machine.driverDigitalocean.accessToken.help'}}</p>
       </div>
     </div>
 
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverDigitalOcean.instance'}}</span>
+      <span>{{t 'machine.driverDigitalocean.instanceSection'}}</span>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverDigitalOcean.image'}}</label>
+        <label class="form-control-static">{{t 'machine.driverDigitalocean.image.label'}}</label>
       </div>
       <div class="col-md-4">
         <select class="form-control" onchange={{action (mut digitaloceanConfig.image) value="target.value"}}>
@@ -32,7 +32,7 @@
         </select>
       </div>
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverDigitalOcean.size'}}</label>
+        <label class="form-control-static">{{t 'machine.driverDigitalocean.size.label'}}</label>
       </div>
       <div class="col-md-4">
         <select class="form-control" onchange={{action (mut digitaloceanConfig.size) value="target.value"}}>
@@ -46,12 +46,12 @@
     </div>
 
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverDigitalOcean.region'}}</span>
+      <span>{{t 'machine.driverDigitalocean.regionSection'}}</span>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverDigitalOcean.region'}}</label>
+        <label class="form-control-static">{{t 'machine.driverDigitalocean.region.label'}}</label>
       </div>
       <div class="col-md-10">
         <select class="form-control" onchange={{action (mut digitaloceanConfig.region) value="target.value"}}>
@@ -63,24 +63,24 @@
     </div>
 
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverDigitalOcean.options'}}</span>
+      <span>{{t 'machine.driverDigitalocean.optionsSection'}}</span>
     </div>
 
     <table style="margin: 0 auto;">
       <tr>
         <td style="padding: 0 10px;">
           <div class="form-label checkbox">
-            <label>{{input type="checkbox" checked=digitaloceanConfig.backups}} {{t 'machine.driverDigitalOcean.enableBackups'}}</label>
+            <label>{{input type="checkbox" checked=digitaloceanConfig.backups}} {{t 'machine.driverDigitalocean.backups.label'}}</label>
           </div>
         </td>
         <td style="padding: 0 10px;">
           <div class="form-label checkbox">
-            <label>{{input type="checkbox" checked=digitaloceanConfig.ipv6}} {{t 'machine.driverDigitalOcean.enableIPv6'}}</label>
+            <label>{{input type="checkbox" checked=digitaloceanConfig.ipv6}} {{t 'machine.driverDigitalocean.ipv6.label'}}</label>
           </div>
         </td>
         <td style="padding: 0 10px;">
           <div class="form-label checkbox">
-            <label>{{input type="checkbox" checked=digitaloceanConfig.privateNetworking}} {{t 'machine.driverDigitalOcean.enablePrivate Networking'}}</label>
+            <label>{{input type="checkbox" checked=digitaloceanConfig.privateNetworking}} {{t 'machine.driverDigitalocean.privateNetworking.label'}}</label>
           </div>
         </td>
       </tr>
