@@ -2,16 +2,16 @@
   <form>
     <div class="container-fluid">
       <div class="over-hr r-mt20 r-mb20">
-        <span>{{t 'machine.driverExoscale.accountAccess'}}</span>
+        <span>{{t 'machine.driverExoscale.accountSection'}}</span>
       </div>
 
       <div class="row {{if isStep1 'form-group'}}">
         <div class="col-md-2 form-label">
-          <label class="form-control-static">{{t 'machine.driverExoscale.aPIKey'}}</label>
+          <label class="form-control-static">{{t 'machine.driverExoscale.apiKey.label'}}</label>
         </div>
         <div class="col-md-10">
           {{#if isStep1}}
-            {{input type="text" name="username" classNames="form-control" placeholder="Your Exoscale API key" value=exoscaleConfig.apiKey}}
+            {{input type="text" name="username" classNames="form-control" placeholder=(t 'machine.driverExoscale.apiKey.placeholder') value=exoscaleConfig.apiKey}}
           {{else}}
             <div class="form-control-static">{{exoscaleConfig.apiKey}}</div>
           {{/if}}
@@ -19,16 +19,16 @@
       </div>
       <div class="row {{if isStep1 'form-group'}}">
         <div class="col-md-2 form-label">
-          <label class="form-control-static">{{t 'machine.driverExoscale.secretKey'}}</label>
+          <label class="form-control-static">{{t 'machine.driverExoscale.secretKey.label'}}</label>
         </div>
         <div class="col-md-10">
           {{#if isStep1}}
-            {{input type="password" name="password" classNames="form-control" placeholder="Your Exoscale secret key" value=exoscaleConfig.apiSecretKey}}
+            {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverExoscale.secretKey.placeholder') value=exoscaleConfig.apiSecretKey}}
           {{else}}
-            <div class="form-control-static text-muted text-italic">{{t 'machine.driverExoscale.provided'}}</div>
+            <div class="form-control-static text-muted text-italic">{{t 'machine.driverExoscale.secretKey.provided'}}</div>
           {{/if}}
           {{#if isStep1}}
-            <p class="help-block">{{t 'machine.driverExoscale.paste'}}</p>
+            <p class="help-block">{{t 'machine.driverExoscale.accountHelp'}}</p>
           {{/if}}
         </div>
       </div>
@@ -37,45 +37,45 @@
       {{top-errors errors=errors}}
 
       <div class="footer-actions">
-        <button {{action "exoscaleLogin"}} name="submit" class="btn btn-primary">{{t 'machine.driverExoscale.next'}}</button>
-        <button {{action "cancel"}} class="btn btn-link">{{t 'machine.driverExoscale.Cancel'}}</button>
+        <button {{action "exoscaleLogin"}} name="submit" class="btn btn-primary">{{t 'machine.driverExoscale.loginAction'}}</button>
+        <button {{action "cancel"}} class="btn btn-link">{{t 'generic.cancel'}}</button>
       </div>
     {{/if}}
   </form>
 </section>
 
-<section class="horizontal-form {{unless isStep2 'hide'}}" style="padding-top: 0">
+<section class="horizontal-form r-pt0 {{unless isStep2 'hide'}}">
   <div class="text-center">
     <i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverExoscale.loadingSecurity'}}
   </div>
 </section>
 
-<section class="horizontal-form {{unless isGteStep3 'hide'}}" style="padding-top: 0">
+<section class="horizontal-form r-pt0 {{unless isGteStep3 'hide'}}">
   <div class="container-fluid">
     <div class="over-hr r-mt20 r-mb20">
-      <span>Security Group</span>
+      <span>{{t 'machine.driverExoscale.securityGroupSection'}}</span>
     </div>
 
     <div class="row {{if isStep3 'form-group'}}">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverExoscale.securityGroup'}}</label>
+        <label class="form-control-static">{{t 'machine.driverExoscale.securityGroup.label'}}</label>
       </div>
       <div class="col-md-10">
         {{#if isStep3}}
           <div class="radio r-pt10"><label>
-            {{radio-button selection=whichSecurityGroup value="default"}} {{t 'machine.driverExoscale.standard'}}
+            {{radio-button selection=whichSecurityGroup value="default"}}
             {{#if defaultSecurityGroup}}
-              {{t 'machine.driverExoscale.existing'}} <code>{{defaultSecurityGroupName}}</code> {{t 'machine.driverExoscale.group'}}
+              {{format-html-message 'machine.driverExoscale.securityGroup.defaultExisting' groupName=defaultSecurityGroupName}}
             {{else}}
-              {{t 'machine.driverExoscale.autoCreate'}} <code>{{defaultSecurityGroupName}}</code> {{t 'machine.driverExoscale.group'}}
+              {{format-html-message 'machine.driverExoscale.securityGroup.defaultCreate' groupName=defaultSecurityGroupName}}
             {{/if}}
           </label></div>
 
           {{#if (and settings.isRancher (not isCustomSecurityGroup))}}
-            <p class="help-block r-ml20"><a href="{{settings.docsBase}}/rancher-ui/infrastructure/hosts/exoscale/#required-ports-for-rancher-to-work" target="_blank">Learn more</a> about the ports that will be opened.</p>
+            <p class="help-block r-ml20"><a href="{{settings.docsBase}}/rancher-ui/infrastructure/hosts/exoscale/#required-ports-for-rancher-to-work" target="_blank">{{t 'machine.driverExoscale.portHelp.link'}}</a> {{t 'machine.driverExoscale.portHelp.text'}}</p>
           {{/if}}
 
-          <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="custom"}} Custom: Choose an existing group{{#if isCustomSecurityGroup}}:{{/if}}</label></div>
+          <div class="radio"><label>{{radio-button selection=whichSecurityGroup value="custom"}} {{t 'machine.driverExoscale.securityGroup.custom'}}</label></div>
           {{#if isCustomSecurityGroup}}
             <select class="form-control" onchange={{action (mut selectedSecurityGroup) value="target.value"}}>
               {{#each allSecurityGroups as |choice|}}
@@ -83,12 +83,12 @@
               {{/each}}
             </select>
 
-            <p style="margin: 10px 0 0 0;">For {{settings.appName}} to work correctly your security group will need to allow traffic:</p>
+            <p style="r-m0 r-mt10">{{t 'machine.driverExoscale.needs.label' appName=settings.appName}}</p>
             <ul>
-              <li>From the {{settings.appName}} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span> and <code>TCP</code> port <code>2376</code> <span class="text-muted">(access to Docker daemon)</span></li>
-              <li>From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+              <li>{{format-html-message 'machine.driverExoscale.needs.item1' appName=settings.appName}}</li>
+              <li>{{format-html-message 'machine.driverExoscale.needs.item2' appName=settings.appName}}</li>
+              <li>{{format-html-message 'machine.driverExoscale.needs.item3' appName=settings.appName}}</li>
             </ul>
-            <p style="margin: 0;">These rules will <b>not</b> be added automatically.</p>
           {{/if}}
         {{else}}
           <div class="form-control-static">
@@ -102,7 +102,7 @@
     {{top-errors errors=errors}}
 
     <div class="footer-actions">
-      <button {{action "selectSecurityGroup"}} class="btn btn-primary">Next: Set Instance options</button>
+      <button {{action "selectSecurityGroup"}} class="btn btn-primary">{{t 'machine.driverExoscale.selectSecurityGroupAction'}}</button>
       <button {{action "cancel"}} class="btn btn-link">Cancel</button>
     </div>
   {{/if}}
@@ -110,27 +110,32 @@
 
 <section class="horizontal-form {{unless isStep4 'hide'}}" style="padding-top: 0">
   <div class="text-center">
-    <i class="icon icon-spinner icon-spin"></i> {{#if defaultSecurityGroup}}Updating{{else}}Creating{{/if}} Security Group...
+    <i class="icon icon-spinner icon-spin"></i>
+    {{#if defaultSecurityGroup}}
+      {{t 'machine.driverExoscale.securityGroup.updating'}}
+    {{else}}
+      {{t 'machine.driverExoscale.securityGroup.creating'}}
+    {{/if}}
   </div>
 </section>
 
-<section class="horizontal-form {{unless isStep5 'hide'}}" style="padding-top: 0">
+<section class="horizontal-form r-pt0 {{unless isStep5 'hide'}}">
   <div class="text-center">
-    <i class="icon icon-spinner icon-spin"></i> Fetching available Instance settings...
+    <i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverExoscale.loadingInstance'}}
   </div>
 </section>
 
-<section class="horizontal-form {{unless isGteStep6 'hide'}}" style="padding-top: 0;">
+<section class="horizontal-form r-pt0 {{unless isGteStep6 'hide'}}">
   <div class="container-fluid">
     <div class="over-hr r-mt20 r-mb20">
-      <span>Instance</span>
+      <span>{{t 'machine.driverExoscale.instanceSection'}}</span>
     </div>
 
     {{partial "host/add-common"}}
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">Instance Profile</label>
+        <label class="form-control-static">{{t 'machine.driverExoscale.instanceProfile.label'}}</label>
       </div>
       <div class="col-md-4">
         <select class="form-control" onchange={{action (mut exoscaleConfig.instanceProfile) value="target.value"}}>
@@ -140,7 +145,7 @@
         </select>
       </div>
       <div class="col-md-2 form-label">
-        <label class="form-control-static">Root Size</label>
+        <label class="form-control-static">{{t 'machine.driverExoscale.diskSize.label'}}</label>
       </div>
       <div class="col-md-4">
         <select class="form-control" onchange={{action (mut exoscaleConfig.diskSize) value="target.value"}}>

@@ -1812,9 +1812,10 @@ machine:
       label: "For {appName} to work correctly your security group will need to allow traffic:"
       item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
       item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+      item3: These rules will <b>not</b> be added automatically.
     setInstanceAction: "Next: Set Instance options"
     instanceSection: Instance
-    instanceOptions: Instance Options
+    instanceOptionsSection: Instance Options
     instanceType:
       label: Instance Type
     rootSize:
@@ -1908,77 +1909,141 @@ machine:
       label: Enable Private Networking
 
   driverExoscale:
-    accountAccess: Account Access
-    aPIKey: API Key
-    secretKey: Secret Key
-    provided: Provided
-    paste: Paste in your Exoscale key pair here.  We'll use this key to create your new Instances.
-    next: "Next: Authenticate & select a Security Group"
-    Cancel: Cancel
+    accountSection: Account Access
+    apiKey:
+      label: API Key
+      placeholder: Your Exoscale API Key
+    secretKey:
+      label: Secret Key
+      placeholder: Your Exoscale secret key
+      provided: Provided
+    accountHelp: Paste in your Exoscale key pair here.  We'll use this key to create your new Instances.
+    loginAction: "Next: Authenticate & select a Security Group"
     loadingSecurity: Loading security group info from Exoscale...
-    securityGroup: Security Group
-    standard: "Standard:"
-    existing: Use the existing
-    group: group
-    autoCreate: Automatically create a
+    securityGroupSection: Security Group
+    securityGroup:
+      label: Security Group
+      defaultExisting: "Standard: Use the existing <code>{groupName}</code> group"
+      defaultCreate: "Standard: Automatically create a <code>{groupName}</code> group"
+      custom: "Custom: Choose an existing group"
+      updating: Updating Security Group...
+      creating: Creating Security Group...
+    portHelp:
+      link: Learn more
+      text: about the ports that will be opened.
+    needs:
+      label: "For {appName} to work correctly your security group will need to allow traffic:"
+      item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
+      item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
+      item3: These rules will <b>not</b> be added automatically.
+    selectSecurityGroupAction: "Next: Set Instance options"
+    loadingInstance: Fetching available Instance settings...
+    instanceSection: Instance
+    instanceProfile:
+      label: Instance Profile
+    diskSize:
+      label: Root Size
+
 
   driverOther:
-    driver: Driver
-    driverNote: Driver*
-    options: Options
+    driverSection: Driver
+    driver:
+      label: Driver
+    optionsSection: "{driverName} Options"
 
   driverPacket:
-    accountAccess: Account Access
-    project: Project*
-    apiKey: API Key*
-    packet: From the Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> screen
-    instance: Instance
-    image: Image
-    size: Size
-    region: Region
+    accountSection: Account Access
+    projectId:
+      label: Project
+      placeholder: Your Packet project ID
+    apiKey:
+      label: API Key
+      placeholder: Your Packet API key
+    apiKeyHelp: From the Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> screen
+    instanceSection: Instance
+    image:
+      label: Image
+    size:
+      label: Size
+    regionSection: Region
+    region:
+      label: Region
 
   driverRackspace:
-    accountAccess: Account Access
-    username: Username*
-    apiKey: API Key*
-    settings: From the Account Settings screen of the RackSpace control panel
-    region: Region
-    instance: Instance
-    flavor: Flavor
+    accountSection: Account Access
+    username:
+      label: Username
+      placeholder: Your RackSpace username
+    apiKey:
+      label: API Key
+      placeholder: Your RackSpace API key
+    accountHelp: From the Account Settings screen of the RackSpace control panel
+    regionSection: Region
+    region:
+      label: Region
+    instanceSection: Instance
+    flavor:
+      label: Flavor
 
   driverUbiquity:
-    accountAccess: Account Access
-    resellerID: Reseller ID
-    remoteID: Remote ID
-    accessKey: Access Key
-    provided: Provided
-    helpBlock: You can find your Ubiquity Hosting API credentials <a href="https://motion.ubiquityhosting.com/api">here</a>. Don't have an account? Learn more about <a href="http://www.ubiquityhosting.com/">Ubiquity Hosting</a> today!
-    button: "Next: Authenticate & Create a New Cloud Instance"
-    cancel: Cancel
-    loading: Loading cloud instance creation details...
-    instance: Instance
-    region: Region
-    image: Image
-    flavor: Flavor
+    accountSection: Account Access
+    clientId:
+      label: Reseller ID
+      placeholder: Your Ubiquity Hosting API Reseller ID
+    apiUsername:
+      label: Remote ID
+      placeholder: Your Ubiquity Hosting Remote ID
+    apiToken:
+      label: Access Key
+      placeholder: Your Ubiquity Hosting Access Key
+      provided: Provided
+    accountHelp: You can find your Ubiquity Hosting API credentials <a href="https://motion.ubiquityhosting.com/api">here</a>. Don't have an account? Learn more about <a href="http://www.ubiquityhosting.com/">Ubiquity Hosting</a> today!
+    loginAction: "Next: Authenticate & Create a New Cloud Instance"
+    loadingInstance: Loading cloud instance creation details...
+    instanceSection: Instance
+    regionSection: Region
+    region:
+      label: Region
+    image:
+      label: Image
+    flavor:
+      label: Flavor
 
   driverVsphere:
-    accountAccess: Account Access
-    vCenterHost: vCenter Host*
-    vCenterPort: vCenter Port*
-    username: Username*
-    password: Password*
-    instance: Instance
-    cpus: CPUs
-    memory: Memory
-    mb: MB
-    disk: Disk
-    os: OS ISO URL
-    scheduling: Scheduling
-    dataCenter: Data Center
-    pool: Pool
-    host: Host
-    network: Network
-    dataStore: Data Store
+    accountSection: Account Access
+    vcenter:
+      label: vCenter Host
+      placeholder: vCenter or ESXi hostname/IP
+    vcenterPort:
+      label: vCenter Port
+    username:
+      label: Username
+    password:
+      label: Password
+    instanceSection: Instance
+    cpuCount:
+      label: CPUs
+    memorySize:
+      label: Memory
+      unit: MB
+    diskSize:
+      label: Disk
+      unit: MB
+    boot2dockerUrl:
+      label: OS ISO URL
+      placeholder: "Default: Latest boot2docker image"
+    schedulingSection: Scheduling
+    dataCenter:
+      label: Data Center
+    pool:
+      label: Pool
+    host:
+      label: Host
+      placeholder: "Use '/' if using a cluster"
+    network:
+      label: Network
+    dataStore:
+      label: Data Store
 
 modalAboutComponent:
   component: Component
