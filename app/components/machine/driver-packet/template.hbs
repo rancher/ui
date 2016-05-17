@@ -4,35 +4,35 @@
     {{partial "host/add-common"}}
 
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverPacket.accountAccess'}}</span>
+      <span>{{t 'machine.driverPacket.accountSection'}}</span>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverPacket.project'}}</label>
+        <label class="form-control-static">{{t 'machine.driverPacket.projectId.label'}}*</label>
       </div>
       <div class="col-md-10">
-        {{input type="text" name="username" value=packetConfig.projectId classNames="form-control" placeholder="Your Packet project ID"}}
+        {{input type="text" name="username" value=packetConfig.projectId classNames="form-control" placeholder=(t 'machine.driverPacket.projectId.placeholder')}}
       </div>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverPacket.apiKey'}}</label>
+        <label class="form-control-static">{{t 'machine.driverPacket.apiKey.label'}}*</label>
       </div>
       <div class="col-md-10">
-        {{input type="password" name="password" value=packetConfig.apiKey classNames="form-control" placeholder="Your Packet API key"}}
-        <p class="help-block">{{format-html-message 'machine.driverPacket.packet'}}</p>
+        {{input type="password" name="password" value=packetConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverPacket.apiKey.placeholder')}}
+        <p class="help-block">{{format-html-message 'machine.driverPacket.apiKeyHelp'}}</p>
       </div>
     </div>
 
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverPacket.instance'}}</span>
+      <span>{{t 'machine.driverPacket.instanceSection'}}</span>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverPacket.image'}}</label>
+        <label class="form-control-static">{{t 'machine.driverPacket.image.label'}}</label>
       </div>
       <div class="col-md-4">
         <select class="form-control" onchange={{action (mut packetConfig.os) value="target.value"}}>
@@ -42,7 +42,7 @@
         </select>
       </div>
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverPacket.size'}}</label>
+        <label class="form-control-static">{{t 'machine.driverPacket.size.label'}}</label>
       </div>
       <div class="col-md-4">
         <select class="form-control" onchange={{action (mut packetConfig.plan) value="target.value"}}>
@@ -54,12 +54,12 @@
     </div>
 
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverPacket.region'}}</span>
+      <span>{{t 'machine.driverPacket.regionSection'}}</span>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverPacket.region'}}</label>
+        <label class="form-control-static">{{t 'machine.driverPacket.region.label'}}</label>
       </div>
       <div class="col-md-10">
         <select class="form-control" onchange={{action (mut packetConfig.facility) value="target.value"}}>

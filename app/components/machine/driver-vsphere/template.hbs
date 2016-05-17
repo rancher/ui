@@ -5,18 +5,18 @@
     {{partial "host/add-common"}}
 
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverVsphere.accountAccess'}}</span>
+      <span>{{t 'machine.driverVsphere.accountSection'}}</span>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverVsphere.vCenterHost'}}</label>
+        <label class="form-control-static">{{t 'machine.driverVsphere.vcenter.label'}}*</label>
       </div>
       <div class="col-md-4">
-        {{input type="text" class="form-control" value=config.vcenter placeholder="vCenter or ESXi hostname/IP"}}
+        {{input type="text" class="form-control" value=config.vcenter placeholder=(t 'machine.driverVsphere.vcenter.placeholder')}}
       </div>
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverVsphere.vCenterPort'}}</label>
+        <label class="form-control-static">{{t 'machine.driverVsphere.vcenterPort.label'}}*</label>
       </div>
       <div class="col-md-4">
         {{input type="number" min=1 max=65535 class="form-control" value=config.vcenterPort}}
@@ -25,14 +25,14 @@
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverVsphere.username'}}</label>
+        <label class="form-control-static">{{t 'machine.driverVsphere.username.label'}}*</label>
       </div>
       <div class="col-md-4">
         {{input type="text" value=config.username classNames="form-control"}}
       </div>
 
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverVsphere.password'}}</label>
+        <label class="form-control-static">{{t 'machine.driverVsphere.password.label'}}*</label>
       </div>
       <div class="col-md-4">
         {{input type="password" value=config.password classNames="form-control"}}
@@ -40,12 +40,12 @@
     </div>
 
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverVsphere.instance'}}</span>
+      <span>{{t 'machine.driverVsphere.instanceSection'}}</span>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverVsphere.cpus'}}</label>
+        <label class="form-control-static">{{t 'machine.driverVsphere.cpuCount.label'}}</label>
       </div>
 
       <div class="col-sm-2 col-md-1 form-control-static">
@@ -56,72 +56,72 @@
       </div>
 
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverVsphere.memory'}}</label>
+        <label class="form-control-static">{{t 'machine.driverVsphere.memorySize.label'}}</label>
       </div>
       <div class="col-md-4">
         <div class="input-group">
           {{input type="number" min=1 value=config.memorySize classNames="form-control"}}
-          <div class="input-group-addon">{{t 'machine.driverVsphere.mb'}}</div>
+          <div class="input-group-addon">{{t 'machine.driverVsphere.memorySize.unit'}}</div>
         </div>
       </div>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverVsphere.disk'}}</label>
+        <label class="form-control-static">{{t 'machine.driverVsphere.diskSize.label'}}</label>
       </div>
       <div class="col-md-4">
         <div class="input-group">
           {{input type="number" min=1 value=config.diskSize classNames="form-control"}}
-          <div class="input-group-addon">{{t 'machine.driverVsphere.mb'}}</div>
+          <div class="input-group-addon">{{t 'machine.driverVsphere.diskSize.unit'}}</div>
         </div>
       </div>
 
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverVsphere.os'}}</label>
+        <label class="form-control-static">{{t 'machine.driverVsphere.boot2dockerUrl.label'}}</label>
       </div>
       <div class="col-md-4">
-        {{input type="text" value=config.boot2dockerUrl classNames="form-control" placeholder="Default: Latest boot2docker image"}}
+        {{input type="text" value=config.boot2dockerUrl classNames="form-control" placeholder=(t 'machine.driverVsphere.boot2dockerUrl.placeholder')}}
       </div>
     </div>
 
     <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverVsphere.scheduling'}}</span>
+      <span>{{t 'machine.driverVsphere.schedulingSection'}}</span>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverVsphere.dataCenter'}}</label>
+        <label class="form-control-static">{{t 'machine.driverVsphere.dataCenter.label'}}</label>
       </div>
       <div class="col-md-2">
         {{input type="text" value=config.datacenter classNames="form-control"}}
       </div>
 
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverVsphere.pool'}}</label>
+        <label class="form-control-static">{{t 'machine.driverVsphere.pool.label'}}</label>
       </div>
       <div class="col-md-2">
         {{input type="text" value=config.pool classNames="form-control"}}
       </div>
 
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverVsphere.host'}}</label>
+        <label class="form-control-static">{{t 'machine.driverVsphere.host.label'}}</label>
       </div>
       <div class="col-md-2">
-        {{input type="text" value=config.hostsystem classNames="form-control" placeholder="Use '/' if using a cluster"}}
+        {{input type="text" value=config.hostsystem classNames="form-control" placeholder=(t 'machine.driverVsphere.host.placeholder')}}
       </div>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverVsphere.network'}}</label>
+        <label class="form-control-static">{{t 'machine.driverVsphere.network.label'}}</label>
       </div>
       <div class="col-md-4">
         {{input type="text" value=config.network classNames="form-control"}}
       </div>
 
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverVsphere.dataStore'}}</label>
+        <label class="form-control-static">{{t 'machine.driverVsphere.dataStore.label'}}</label>
       </div>
       <div class="col-md-4">
         {{input type="text" value=config.datastore classNames="form-control"}}
