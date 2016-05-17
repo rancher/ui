@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Driver from 'ui/mixins/driver';
 
 export default Ember.Component.extend(Driver, {
-  driverName         : 'vsphere',
+  driverName         : 'vmwarevsphere',
   model              : null,
   config             : Ember.computed.alias('model.vmwarevsphereConfig'),
   showEngineUrl      : false,
