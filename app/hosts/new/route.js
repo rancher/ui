@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import DriverChoices from 'ui/utils/driver-choices';
 import Util from 'ui/utils/util';
 const { getOwner } = Ember;
 
@@ -21,6 +20,9 @@ export default Ember.Route.extend({
   access         : Ember.inject.service(),
   settings       : Ember.inject.service(),
   backTo         : null,
+
+  defaultDriver: 'custom',
+  lastDriver: null,
 
   queryParams: {
     driver: {
@@ -61,10 +63,6 @@ export default Ember.Route.extend({
     this.set('previousOpts', {name: appRoute.get('previousRoute'), params: appRoute.get('previousParams')});
   },
 
-  deactivate() {
-    this.set('lastRoute', null);
-  },
-
   resetController(controller, isExisting /*, transition*/) {
     if ( isExisting )
     {
@@ -73,106 +71,141 @@ export default Ember.Route.extend({
     }
   },
 
+  machineDrivers: null,
+
+  // Loads all the machine drivers and selects the active ones with a corresponding schema into machineDrivers
   beforeModel(/*transition*/) {
     this._super(...arguments);
-    return this.get('userStore').findAll('machinedriver',  {authAsUser: true}).then((drivers) => {
-      return new Ember.RSVP.Promise((resolve, reject) => {
-        let choices = DriverChoices.get();
-        let completed = 0, expected = 0;
-        let timer = null;
 
-        function loaded() {
-          completed++;
-          if ( completed === expected ) {
-            resolve();
-            clearTimeout(timer);
-          }
+    let us = this.get('userStore');
+    let drivers = [];
+
+    return us.find('machinedriver', null, {forceReload: true}).then((possible) => {
+      let promises = [];
+
+      for ( let i = possible.get('length')-1 ; i > 0 ; i--) {
+        process(i);
+      }
+
+      function process(i) {
+        let driver = possible.objectAt(i);
+        let schemaName = driver.get('name') + 'Config';
+        if ( driver.get('state') === 'active' )
+        {
+          promises.push(us.find('schema', schemaName).then(() => {
+            drivers.push(driver);
+          }).catch(() => {
+            return Ember.RSVP.resolve();
+          }));
         }
-
-        function errored(name) {
-          clearTimeout(timer);
-          reject({type: 'error', message: 'Error loading custom driver UI: ' + name});
-        }
-
-        drivers.forEach((driver) => {
-          var id = 'driver-ui-js-' + driver.name;
-          if (driver.uiUrl && $(`#${id}`).length === 0 ) {
-            if (!choices.findBy('name', driver.name)) {
-
-              expected++;
-              let script     = document.createElement('script');
-              script.onload  = function() { loaded(driver.name); };
-              script.onerror = function() {errored(driver.name); };
-              script.src     = proxifyUrl(driver.uiUrl, this.get('app.proxyEndpoint'));
-              script.id      = id;
-              document.getElementsByTagName('BODY')[0].appendChild(script);
-
-              expected++;
-              let link     = document.createElement('link');
-              link.rel     = 'stylesheet';
-              link.id      = id;
-              link.href    = proxifyUrl(driver.uiUrl.replace(/\.js$/,'.css'), this.get('app.proxyEndpoint'));
-              link.onload  = function() { loaded(driver.name); };
-              link.onerror = function() { errored(driver.name); };
-              document.getElementsByTagName('HEAD')[0].appendChild(link);
-
-              DriverChoices.add({
-                name   : driver.name, //driver.name
-                label  : driver.name.capitalize(),
-                css    : driver.name,
-                sort   : 2,
-                schema : `${driver.name}Config`,
-                src    : driver.uiUrl,
-              });
-            }
-          }
-        });
-
-        if ( expected === 0 ) {
-          resolve();
-        } else {
-          timer = setTimeout(function() {
-            reject({type: 'error', message: 'Timeout loading custom machine drivers'});
-          }, 10000);
-        }
-      });
+      }
+    }).then(() => {
+      this.set('machineDrivers', drivers);
     });
   },
 
   model(params) {
     this.set('backTo', params.backTo);
 
-    if (params.driver) {
-      this.controllerFor('hosts/new').set('lastRoute',`${params.driver}`);
+    let promises = {
+      reloadMachine: this.get('userStore').find('schema','machine', {forceReload: true}),
+      loadCustomUi: this.loadCustomUi(),
+    };
+
+    if ( params.machineId )
+    {
+      promises.existing = this.getMachine(params.machineId);
     }
 
     if ( this.get('access.admin') ) {
       let settings = this.get('settings');
-      let out = null;
-      return settings.load(C.SETTING.API_HOST).then(() => {
+      promises.apiHostSet = settings.load(C.SETTING.API_HOST).then(() => {
         let controller = this.controllerFor('hosts.new');
         if ( settings.get(C.SETTING.API_HOST) ) {
           controller.set('apiHostSet', true);
+          return true;
         } else {
           controller.setProperties({
             apiHostSet: false,
             hostModel: settings.get(C.SETTING.API_HOST)
           });
+          return false;
         }
-
-        if (params.machineId) {
-          out = this.getMachine(params.machineId);
-        } else {
-          out = Ember.RSVP.resolve();
-        }
-
-        return out;
       });
-    } else {
-      if (params.machineId) {
-        return this.getMachine(params.machineId);
-      }
     }
+
+    return Ember.RSVP.hash(promises).then((hash) => {
+      hash.availableDrivers = this.get('machineDrivers');
+
+      let defaultDriver = this.get('defaultDriver');
+      let targetDriver = params.driver || this.get('lastDriver') || defaultDriver;
+
+      if ( ['custom','other'].indexOf(targetDriver) === -1 && hash.availableDrivers.filterBy('name', targetDriver).length === 0 )
+      {
+        targetDriver = defaultDriver;
+      }
+
+      if ( params.driver !== targetDriver )
+      {
+        this.transitionTo('hosts.new', {queryParams: {driver: targetDriver}});
+      }
+      else
+      {
+        return Ember.Object.create(hash);
+      }
+    });
+  },
+
+  // Loads the custom UI CSS/JS for drivers that have a uiUrl,
+  loadCustomUi() {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      let completed = 0, expected = 0;
+      let timer = null;
+
+      function loaded() {
+        completed++;
+        if ( completed === expected ) {
+          resolve();
+          clearTimeout(timer);
+        }
+      }
+
+      function errored(name) {
+        clearTimeout(timer);
+        reject({type: 'error', message: 'Error loading custom driver UI: ' + name});
+      }
+
+      // machineDrivers already contains only the active ones with a schema
+      this.get('machineDrivers').forEach((driver) => {
+        let id = 'driver-ui-js-' + driver.name;
+        if (driver.uiUrl && $(`#${id}`).length === 0 ) {
+          expected++;
+          let script     = document.createElement('script');
+          script.onload  = function() { loaded(driver.name); };
+          script.onerror = function() {errored(driver.name); };
+          script.src     = proxifyUrl(driver.uiUrl, this.get('app.proxyEndpoint'));
+          script.id      = id;
+          document.getElementsByTagName('BODY')[0].appendChild(script);
+
+          expected++;
+          let link     = document.createElement('link');
+          link.rel     = 'stylesheet';
+          link.id      = id;
+          link.href    = proxifyUrl(driver.uiUrl.replace(/\.js$/,'.css'), this.get('app.proxyEndpoint'));
+          link.onload  = function() { loaded(driver.name); };
+          link.onerror = function() { errored(driver.name); };
+          document.getElementsByTagName('HEAD')[0].appendChild(link);
+        }
+      });
+
+      if ( expected === 0 ) {
+        resolve();
+      } else {
+        timer = setTimeout(function() {
+          reject({type: 'error', message: 'Timeout loading custom machine drivers'});
+        }, 10000);
+      }
+    });
   },
 
   getMachine(machineId) {

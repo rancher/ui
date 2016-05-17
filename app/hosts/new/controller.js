@@ -1,15 +1,16 @@
 import Ember from 'ember';
-import DriverChoices from 'ui/utils/driver-choices';
 
 export default Ember.Controller.extend({
   queryParams : ['backTo', 'driver', 'machineId'],
   backTo      : null,
   driver      : null,
 
-  lastRoute   : null,
   apiHostSet  : true,
   clonedModel : null,
   machineId   : null,
+
+  allowCustom : true,
+  allowOther  : true,
 
   actions: {
     switchDriver(name) {
@@ -23,30 +24,16 @@ export default Ember.Controller.extend({
     },
   },
 
-  onInit: function() {
-    this.set('lastRoute', DriverChoices.getDefault());
-  }.on('init'),
+  hasOther: function() {
+    return this.get('model.availableDrivers').filterBy('hasUi',false).length > 0;
+  }.property('model.availableDrivers.@each.hasUi'),
 
+  showPicker: function() {
+    return this.get('model.availableDrivers.length') +
+            (this.get('allowOther') && this.get('hasOther') ? 1 : 0) +
+            (this.get('allowCustom') ? 1 : 0) > 1;
+  }.property('model.availableDrivers.length','allowOther','hasOther','allowCustom'),
 
-  drivers: function() {
-    let store = this.get('store');
-    let has = store.hasRecordFor.bind(store,'schema');
-
-    let actuallyHaveNames = Object.keys(store.getById('schema','machine').get('resourceFields')).filter((name) => {
-      return !!name.match(/.+Config$/);
-    }).map((name) => {
-      return name.toLowerCase();
-    });
-
-    return DriverChoices.get().filter((driver) => {
-      Ember.set(driver,'active', `${driver.name}` === this.get('lastRoute'));
-
-      if ( driver.schema ) {
-        let name = driver.schema.toLowerCase();
-        return has(name) && actuallyHaveNames.indexOf(name) >= 0;
-      } else {
-        return true;
-      }
-    }).sortBy('sort','label');
-  }.property('lastRoute'),
+  sortedDrivers: Ember.computed.sort('model.availableDrivers','sortBy'),
+  sortBy: ['name'],
 });

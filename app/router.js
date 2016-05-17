@@ -340,9 +340,9 @@ Router.map(function() {
   });
 
   // End: Modals
-  this.modal('modal-new-driver', {
+  this.modal('modal-edit-driver', {
     dismissWithOutsideClick : true,
-    withParams              : 'showNewDriver',
+    withParams              : 'editMachineDriver',
     otherParams             : {originalModel: 'originalModel'},
   });
 

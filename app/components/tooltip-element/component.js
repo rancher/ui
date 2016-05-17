@@ -5,7 +5,8 @@ const DELAY = 100;
 export default Ember.Component.extend({
   tooltipService : Ember.inject.service('tooltip'),
   inlineBlock    : true,
-  classNameBindings : ['inlineBlock:inline-block'],
+  clip: false,
+  classNameBindings : ['inlineBlock:inline-block','clip:clip'],
   model          : null,
   size           : 'default',
   ariaRole       : ['tooltip'],

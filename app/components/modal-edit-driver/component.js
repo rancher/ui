@@ -4,9 +4,19 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 export default Ember.Component.extend(NewOrEdit, {
   settings: Ember.inject.service(),
 
+  clone           : null,
   originalModel   : null,
   primaryResource : Ember.computed.alias('originalModel'),
   errors          : null,
+
+  didReceiveAttrs() {
+    this.set('clone', this.get('originalModel').clone());
+    this.set('model', this.get('originalModel').clone());
+  },
+
+  editing: function() {
+    return !!this.get('clone.id');
+  }.property('clone.id'),
 
   actions: {
     cancel: function() {
@@ -25,11 +35,11 @@ export default Ember.Component.extend(NewOrEdit, {
     var errors = this.get('errors', errors) || [];
 
     if (!this.get('originalModel.name')) {
-      errors.push('Driver name is requried');
+      errors.push('Driver Name is required');
     }
 
-    if (!this.get('originalModel.uri')) {
-      errors.push('Driver URI is requried');
+    if (!this.get('originalModel.url')) {
+      errors.push('Driver URL is required');
     }
 
     this.set('errors', errors);

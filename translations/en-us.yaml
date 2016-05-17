@@ -1177,19 +1177,6 @@ devicePermissions:
   write: Write
   mknod: Mknod
 
-dynamicDriverSettings:
-  header: Machine Drivers
-  subtext: "Additional <code>docker-machine</code> drivers can be loaded here and used in the Add Host screen."
-  add: Add Machine Driver
-  table:
-    header:
-      state: State
-      name: Name
-      url: Driver URL
-      uiUrl: UI URL
-      md5: MD5 Checksum
-    noData: You have no Dynamic Machine Drivers.
-
 editAccount:
   title: Edit Account
   form:
@@ -2047,6 +2034,21 @@ machine:
     dataStore:
       label: Data Store
 
+machineDriverSettings:
+  header: Machine Drivers
+  subtext: "Additional <code>docker-machine</code> drivers can be loaded here and used in the Add Host screen."
+  add: Add Machine Driver
+  builtin: Built-In
+  other: Other
+  table:
+    header:
+      state: State
+      name: Name
+      url: Driver URL
+      uiUrl: UI URL
+      checksum: Checksum
+    noData: You have no Machine Drivers
+
 modalAboutComponent:
   component: Component
   version: Version
@@ -2068,17 +2070,20 @@ modalConfirmDeactiviate:
   protip: "ProTip: Hold the {alternateLabel} key while clicking {isServiceButton} to bypass this confirmation."
   cancel: Cancel
 
-modalNewDriver:
-  header: Add Machine Driver
-  name: Name*
-  downloadLabel: Download URL*
-  downloadUrl: The URL to download the machine driver binary 64-bit Linux.
-  customUrl: Custom UI URL
-  helpBlock1:
-      text: "Optional: The URL to load for customized Add Hosts screen for this driver."
-      link: See <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> for more info.
-  checksum: MD5 Checksum
-  helpBlock2: "Optional: Verify that the downloaded driver matches the expected checksum."
+modalEditDriver:
+  header:
+    create: Add Machine Driver
+    edit: Edit Machine Driver
+  url:
+    label: Download URL
+    help: The URL to download the machine driver binary 64-bit Linux.
+  uiUrl:
+    label: Custom UI URL
+    help: "Optional: The URL to load for customized Add Hosts screen for this driver."
+    link: See <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> for more info.
+  checksum:
+    label: Checksum
+    help: "Optional: Verify that the downloaded driver matches the expected checksum."
 
 modalProcessError:
   header: Exception Info

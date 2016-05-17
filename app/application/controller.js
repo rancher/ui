@@ -51,6 +51,6 @@ export default Ember.Controller.extend({
   showConfirmDeactivate   : null,
   showConsole             : null,
   showContainerLogs       : null,
-  showNewDriver           : null,
+  editMachineDriver       : null,
   showShell               : null,
 });

@@ -1,0 +1,28 @@
+{{top-errors errors=errors}}
+
+<h2>{{t (if editing 'modalEditDriver.header.edit' 'modalEditDriver.header.create')}}</h2>
+
+<div class="form-group">
+  <label>{{t 'modalEditDriver.url.label'}}*</label>
+  {{input class="form-control" value=originalModel.url }}
+  <span class="help-block">{{t 'modalEditDriver.url.help'}}</span>
+</div>
+
+<div class="form-group">
+  <label>{{t 'modalEditDriver.uiUrl.label'}}</label>
+  {{input class="form-control" value=originalModel.uiUrl }}
+  <span class="help-block">
+    {{t 'modalEditDriver.uiUrl.help'}}
+    {{#if settings.isRancher}}
+      {{format-html-message 'modalEditDriver.uiUrl.link'}}
+    {{/if}}
+  </span>
+</div>
+
+<div class="form-group">
+  <label>{{t 'modalEditDriver.checksum.label'}}</label>
+  {{input class="form-control" value=originalModel.checksum }}
+  <span class="help-block">{{t 'modalEditDriver.checksum.help'}}</span>
+</div>
+
+{{save-cancel editing=editing save="save" cancel="cancel"}}

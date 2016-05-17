@@ -11,10 +11,11 @@ export default Ember.Component.extend(FilterState, Sortable, {
 
   classNames      : ['machine-drivers'],
   sorts: {
-    name:  ['name', 'id'],
-    url:   ['uri', 'name', 'id'],
-    uiUrl: ['uiUrl', 'name', 'id'],
-    md5:   ['md5checksum', 'name', 'id'],
+    state:    ['state',    'name', 'id'],
+    name:     ['name',     'id'],
+    url:      ['url',      'name', 'id'],
+    uiUrl:    ['uiUrl',    'name', 'id'],
+    checksum: ['checksum', 'name', 'id'],
   },
 
   model: null,
@@ -25,11 +26,12 @@ export default Ember.Component.extend(FilterState, Sortable, {
         type        : 'machineDriver',
         name        : null,
         description : null,
-        md5         : null,
-        uri         : null,
+        checksum    : null,
+        url         : null,
       }));
+
       this.get('application').setProperties({
-        showNewDriver: true,
+        editMachineDriver: true,
         originalModel: this.get('model'),
       });
     },
@@ -38,7 +40,4 @@ export default Ember.Component.extend(FilterState, Sortable, {
       driver.doAction('remove').then(( /*response*/ ) => {}, ( /*error*/ ) => {});
     },
   },
-
-
-
 });

@@ -80,11 +80,24 @@ export default Ember.Mixin.create({
       //console.log('Poll Finished', this.toString());
       if ( this.get('needsPolling') )
       {
+        let interval = this.constructor.pollTransitioningInterval;
+        let factor = this.constructor.pollTransitioningIntervalFactor;
+        if ( factor )
+        {
+          interval *= factor;
+        }
+
+        let max = this.constructor.pollTransitioningIntervalMax;
+        if ( max )
+        {
+          interval = Math.min(max,interval);
+        }
+
         //console.log('Rescheduling', this.toString());
         this.set('pollTimer', setTimeout(function() {
           //console.log('2 expired', this.toString());
           this.transitioningPoll();
-        }.bind(this), Util.timerFuzz(this.constructor.pollTransitioningInterval)));
+        }.bind(this), Util.timerFuzz(interval)));
       }
       else
       {

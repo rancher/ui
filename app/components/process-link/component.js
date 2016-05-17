@@ -33,7 +33,7 @@ export default Ember.Component.extend({
 
   actions: {
     showInApp() {
-      this.get('store').find(this.get('model.resourceType'), this.get('model.resourceId'), {authAsUser: true}).then((response) => {
+      this.get('userStore').find(this.get('model.resourceType'), this.get('model.resourceId')).then((response) => {
 
         let type          = response.type;
         let accountId     = response.accountId;
