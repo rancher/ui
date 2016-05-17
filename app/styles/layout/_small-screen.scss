@@ -1,4 +1,12 @@
 /*mobile and small screens*/
+@media (max-width: $screen-xs-max) {
+  .pods {
+    .pod-column {
+      width: 100%;
+    }
+  }
+}
+
 @media (max-width: $screen-sm-max) {
   .alert {
     padding: 0;
@@ -16,12 +24,88 @@
       display: block;
     }
   }
-}
 
-@media (max-width: $screen-xs-max) {
-  .pods {
-    .pod-column {
-      width: 100%;
+  .horizontal-form {
+    .form-label {
+      text-align : left;
+    }
+  }
+
+  HEADER {
+    .gh-avatar {
+      height: 30px;
+      width: 30px;
+
+      & .gh-placeholder {
+        line-height: 26px;
+      }
+    }
+
+    & .top-row .project-btn .btn *,
+    & .top-row .project-btn .btn LABEL,
+    & .top-row .dropdown .user-toggle {
+      color: white !important;
+    }
+
+    .project-btn span {
+      font-size: 12px;
+    }
+
+    .top-row NAV {
+      float: none;
+
+      &> li {
+        display        : block;
+
+        &> A,
+        &>.link-admin > a {
+          display        : block;
+          color: white;
+          border-top: solid thin rgba($accent-two,.5);
+
+          &.active:after {
+            display: none;
+          }
+
+          + ul {
+            padding: 0;
+            &>a {
+              display: block;
+              color: white;
+              padding: 5px 5px 5px 40px;
+
+              &:hover {
+                background: rgba(0,0,0,.15);
+              }
+
+              > I {
+                font-size: 20px;
+                padding-right: 10px;
+                vertical-align: middle;
+                color: $brand-info;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .stack-section {
+    .header-right {
+      width: 20%;
+      margin: 0;
+      border-top: dotted 1px $lightGray;
+
+      &.stack-template {
+        width: 40%;
+      }
+    }
+    .header-left.name {
+      width: 70%;
+    }
+    .stack-actions {
+      text-align: center !important;
     }
   }
 }
