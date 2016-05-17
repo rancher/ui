@@ -5,9 +5,6 @@ export default Ember.Component.extend({
 
   environmentId: null,
 
-  tagName: 'section',
-  classNames: ['welcome'],
-
   actions: {
     newService() {
       var environmentId = this.get('environmentId');
