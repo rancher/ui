@@ -1,11 +1,11 @@
 import Ember from 'ember';
 import Driver from 'ui/mixins/driver';
-import DriverChoices from 'ui/utils/driver-choices';
 
 export default Ember.Component.extend(Driver, {
   driverName      : 'other',
   model           : null,
   driver          : null,
+  availableDrivers: null,
   primaryResource : Ember.computed.alias('model.machine'),
   driverOpts      : null,
 
@@ -57,25 +57,13 @@ export default Ember.Component.extend(Driver, {
   }.observes('driver', 'model.machine'),
 
   otherChoices: function() {
-    let schema = this.get('store').getById('schema','machine');
-    let fields = schema.get('resourceFields');
-    let keys   = Object.keys(fields);
-    let out    = [];
-    let exclude = DriverChoices.get().map((driver) => { return (driver.schema||'').toLowerCase(); });
-
-    keys.forEach((key) => {
-      let field = fields[key];
-      let match;
-
-      if ( exclude.indexOf(key.toLowerCase()) === -1 ) {
-        if ( match = field.type.match(/^(.*)Config$/) ) {
-          out.push({label: match[1], value: key});
-        }
-      }
+    let out = [];
+    this.get('availableDrivers').filterBy('hasUi',false).forEach((driver) => {
+      out.push({label: driver.name, value: driver.name+'Config'});
     });
 
     return out;
-  }.property(),
+  }.property('availableDrivers.@each.{hasUi,name}'),
 
   willSave() {
     // Null out all the drivers that aren't the active one, because the API only accepts one.

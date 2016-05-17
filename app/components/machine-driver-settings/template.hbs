@@ -1,0 +1,66 @@
+<h4>{{t 'machineDriverSettings.header'}}</h4>
+<h5>{{format-html-message 'machineDriverSettings.subtext'}}</h5>
+<hr>
+
+<button class="btn-circle-text r-mb10" {{action 'addNewDriver'}}><i class="icon icon-plus-circle"/> <span>{{t 'machineDriverSettings.add'}}</span></button>
+<table class="grid fixed" style="margin-bottom: 0;">
+  <thead>
+    <tr>
+      {{sortable-th sortable=this action="changeSort" name="state" label="machineDriverSettings.table.header.state" width="100"}}
+      {{sortable-th sortable=this action="changeSort" name="name" label="machineDriverSettings.table.header.name" width="175"}}
+      {{sortable-th sortable=this action="changeSort" name="url" label="machineDriverSettings.table.header.url"}}
+      {{sortable-th sortable=this action="changeSort" name="uiUrl" label="machineDriverSettings.table.header.uiUrl"}}
+      {{sortable-th sortable=this action="changeSort" name="checksum" label="machineDriverSettings.table.header.checksum" width="100"}}
+      <th class="actions" width="90">&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each arranged as |driver|}}
+      <tr>
+        <td>{{badge-state model=driver}}</td>
+        <td class="clip">{{driver.name}}</td>
+        <td class="clip">
+          {{#if driver.builtin}}
+            <span class="text-muted">{{t 'machineDriverSettings.builtin'}}</span>
+          {{else}}
+            <a href={{driver.uri}} target="_blank">{{driver.displayUrl}}</a>
+          {{/if}}
+        </td>
+        <td class="clip">
+          {{#if driver.uiUrl}}
+            <a href={{driver.uiUrl}} target="_blank">{{driver.displayUiUrl}}</a>
+          {{else}}
+            <span class="text-muted">
+              {{#if driver.hasBuiltInUi}}
+                {{t 'machineDriverSettings.builtin'}}
+              {{else}}
+                {{t 'machineDriverSettings.other'}}
+              {{/if}}
+            </span>
+          {{/if}}
+        </td>
+        <td>
+          {{#if driver.checksum}}
+            {{#tooltip-element clip=true inlineBlock=false type="tooltip-basic" tooltipTemplate="tooltip-static" model=driver.checksum}}
+              {{driver.checksum}}
+            {{/tooltip-element}}
+          {{else}}
+            <span class="text-muted">{{t (if driver.builtin 'machineDriverSettings.builtin' 'generic.none')}}</span>
+          {{/if}}
+        </td>
+        <td class="text-right">
+          {{action-menu model=driver}}
+        </td>
+      </tr>
+      {{#if (and driver.isError driver.showTransitioningMessage)}}
+        <tr class="no-border">
+          <td colspan="5">
+            <span class="text-danger">{{driver.transitioningMessage}}</span>
+          </td>
+        </tr>
+      {{/if}}
+    {{else}}
+      <tr><td colspan="5" class="text-center text-muted">{{t 'machineDriverSettings.table.noData'}}</td></tr>
+    {{/each}}
+  </tbody>
+</table>

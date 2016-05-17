@@ -6,19 +6,35 @@
 </section>
 
 {{#if apiHostSet}}
-  {{#if (gt drivers.length 1)}}
+  {{#if showPicker}}
     <section class="well">
       <div class="nav nav-boxes checked-active">
-        {{#each drivers as |driver|}}
-          <a {{action "switchDriver" driver.name}} alt={{driver.label}} class="nav-box-item driver machine-driver {{driver.css}} {{if driver.active 'active'}}" href="#"></a>
+
+        {{#if allowCustom}}
+          <a {{action "switchDriver" "custom"}} alt="custom" class="nav-box-item driver machine-driver custom {{if (eq driver 'custom') 'active'}}" href="#"></a>
+        {{/if}}
+
+        {{#each sortedDrivers as |choice|}}
+          {{#if choice.hasUi}}
+            <a {{action "switchDriver" choice.name}} alt={{choice.name}} class="nav-box-item driver machine-driver {{choice.name}} {{if (eq choice.name driver) 'active'}}" href="#"></a>
+          {{/if}}
         {{/each}}
+
+        {{#if (and allowOther hasOther)}}
+          <a {{action "switchDriver" "other"}} alt="other" class="nav-box-item driver machine-driver other {{if (eq driver 'other') 'active'}}" href="#"></a>
+        {{/if}}
       </div>
     </section>
   {{/if}}
 
   {{#if driver}}
     <section>
-      {{component (concat "machine/driver-" driver) cancel=(route-action 'cancel') goBack=(route-action 'goBack') clonedModel=clonedModel}}
+      {{component (concat "machine/driver-" driver)
+        cancel=(route-action 'cancel')
+        goBack=(route-action 'goBack')
+        clonedModel=clonedModel
+        availableDrivers=model.availableDrivers
+      }}
     </section>
   {{/if}}
 {{else}}
