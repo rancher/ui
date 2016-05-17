@@ -30,22 +30,6 @@ export default Ember.Component.extend(NewOrEdit, {
     }, 500);
   },
 
-  validate() {
-    this._super();
-    var errors = this.get('errors', errors) || [];
-
-    if (!this.get('originalModel.name')) {
-      errors.push('Driver Name is required');
-    }
-
-    if (!this.get('originalModel.url')) {
-      errors.push('Driver URL is required');
-    }
-
-    this.set('errors', errors);
-    return this.get('errors.length') === 0;
-  },
-
   doneSaving() {
     this.sendAction('dismiss');
   }

@@ -83,22 +83,16 @@ export default Ember.Route.extend({
     return us.find('machinedriver', null, {forceReload: true}).then((possible) => {
       let promises = [];
 
-      for ( let i = possible.get('length')-1 ; i > 0 ; i--) {
-        process(i);
-      }
-
-      function process(i) {
-        let driver = possible.objectAt(i);
+      possible.filterBy('state','active').forEach((driver) => {
         let schemaName = driver.get('name') + 'Config';
-        if ( driver.get('state') === 'active' )
-        {
-          promises.push(us.find('schema', schemaName).then(() => {
-            drivers.push(driver);
-          }).catch(() => {
-            return Ember.RSVP.resolve();
-          }));
-        }
-      }
+        promises.push(us.find('schema', schemaName).then(() => {
+          drivers.push(driver);
+        }).catch(() => {
+          return Ember.RSVP.resolve();
+        }));
+      });
+
+      return Ember.RSVP.all(promises);
     }).then(() => {
       this.set('machineDrivers', drivers);
     });
