@@ -21,10 +21,10 @@ export default Ember.Route.extend({
       let id = this.get('loadingId');
       Ember.run.cancel(this.get('hideTimer'));
 
-      console.log('Loading', id);
+      //console.log('Loading', id);
       if ( !this.get('loadingShown') ) {
         this.set('loadingShown', true);
-        console.log('Loading Show', id);
+        //console.log('Loading Show', id);
 
         $('#loading-underlay').stop().show().fadeIn({duration: 100, queue: false, easing: 'linear', complete: function() {
           $('#loading-overlay').stop().show().fadeIn({duration: 200, queue: false, easing: 'linear'});
@@ -34,7 +34,7 @@ export default Ember.Route.extend({
       transition.finally(() => {
         var self = this;
         function hide() {
-          console.log('Loading hide', id);
+          //console.log('Loading hide', id);
           self.set('loadingShown', false);
           $('#loading-overlay').stop().fadeOut({duration: 200, queue: false, easing: 'linear', complete: function() {
             $('#loading-underlay').stop().fadeOut({duration: 100, queue: false, easing: 'linear'});
@@ -43,10 +43,10 @@ export default Ember.Route.extend({
 
         if ( this.get('loadingId') === id ) {
           if ( transition.isAborted ) {
-            console.log('Loading aborted', id, this.get('loadingId'));
+            //console.log('Loading aborted', id, this.get('loadingId'));
             this.set('hideTimer', Ember.run.next(hide));
           } else {
-            console.log('Loading finished', id, this.get('loadingId'));
+            //console.log('Loading finished', id, this.get('loadingId'));
             hide();
           }
         }

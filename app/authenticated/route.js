@@ -203,9 +203,10 @@ export default Ember.Route.extend(Subscribe, {
     },
 
     refreshKubernetes() {
-      var model = this.get('controller.model');
-      if ( model.get('project') ) {
-        this.loadKubernetes(model.get('project')).then((hash) => {
+      let model = this.get('controller.model');
+      let project = model.get('project');
+      if ( project && project.get('kubernetes') ) {
+        this.loadKubernetes(project).then((hash) => {
           model.setProperties(hash);
         });
       }
