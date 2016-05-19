@@ -3,16 +3,16 @@ import Ember from 'ember';
 const DELAY = 100;
 
 export default Ember.Component.extend({
-  tooltipService : Ember.inject.service('tooltip'),
-  inlineBlock    : true,
-  clip: false,
   classNameBindings : ['inlineBlock:inline-block','clip:clip'],
-  model          : null,
-  size           : 'default',
-  ariaRole       : ['tooltip'],
-  textChangedEvent: null,
+  tooltipService   : Ember.inject.service('tooltip'),
+  inlineBlock      : true,
+  clip             : false,
+  model            : null,
+  size             : 'default',
+  ariaRole         : ['tooltip'],
+  textChangedEvent : null,
 
-  showTimer      : null,
+  showTimer        : null,
 
   textChanged: Ember.observer('textChangedEvent', function() {
     this.show(this.get('textChangedEvent'));

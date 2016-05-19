@@ -1,14 +1,14 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  currentPath      : null,
+  currentPath : null,
 
-  tagName: '',
+  tagName     : '',
 
-  projects         : Ember.inject.service(),
-  project          : Ember.computed.alias('projects.current'),
-  k8s              : Ember.inject.service(),
-  namespace        : Ember.computed.alias('k8s.namespace'),
+  projects    : Ember.inject.service(),
+  project     : Ember.computed.alias('projects.current'),
+  k8s         : Ember.inject.service(),
+  namespace   : Ember.computed.alias('k8s.namespace'),
 
   projectChoices: function() {
     return this.get('projects.active').sortBy('name','id');
