@@ -6,7 +6,8 @@ export default Ember.Route.extend({
   model() {
     return this.get('mesos').publicUrl().then((url) => {
       return Ember.Object.create({
-        url: url
+        url: url,
+        hosts: this.modelFor('authenticated').get('hosts'),
       });
     });
   }
