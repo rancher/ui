@@ -128,8 +128,11 @@ export default Ember.Route.extend(Subscribe, {
   },
 
   loadKubernetes() {
-    return this.get('k8s').allNamespaces().then((all) => {
-      return this.get('k8s').selectNamespace().then((ns) => {
+    let k8s = this.get('k8s');
+
+    return k8s.allNamespaces().then((all) => {
+      k8s.set('namespaces', all);
+      return k8s.selectNamespace().then((ns) => {
         return {
           namespaces: all,
           namespace: ns,
