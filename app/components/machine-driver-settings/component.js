@@ -23,11 +23,12 @@ export default Ember.Component.extend(FilterState, Sortable, {
   actions: {
     addNewDriver: function() {
       this.set('model', this.get('userStore').createRecord({
-        type        : 'machineDriver',
-        name        : null,
-        description : null,
-        checksum    : null,
-        url         : null,
+        type            : 'machineDriver',
+        name            : null,
+        description     : null,
+        checksum        : null,
+        url             : null,
+        activateOnCreate: true,
       }));
 
       this.get('application').setProperties({
