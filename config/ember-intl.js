@@ -3,7 +3,7 @@
 module.exports = function(environment) {
   return {
     locales: null,
-    baseLocale: null,
+    baseLocale: 'en-us',
     disablePolyfill: false,
     publicOnly: true,
     inputPath: 'translations',
