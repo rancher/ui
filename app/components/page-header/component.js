@@ -32,11 +32,11 @@ export default Ember.Component.extend(HoverDropdown, {
   prefs         : Ember.inject.service(),
   isAdmin       : Ember.computed.alias('access.admin'),
   hasVm         : Ember.computed.alias('project.virtualMachine'),
-  hasSwarm      : Ember.computed.alias('project.orchestrationState.hasSwarm'),
-  hasKubernetes : Ember.computed.alias('project.orchestrationState.hasKubernetes'),
-  hasMesos      : Ember.computed.alias('project.orchestrationState.hasMesos'),
-  swarmReady    : Ember.computed.alias('project.orchestrationState.swarmReady'),
-  mesosReady    : Ember.computed.alias('project.orchestrationState.mesosReady'),
+  hasSwarm      : Ember.computed.alias('projects.orchestrationState.hasSwarm'),
+  hasKubernetes : Ember.computed.alias('projects.orchestrationState.hasKubernetes'),
+  hasMesos      : Ember.computed.alias('projects.orchestrationState.hasMesos'),
+  swarmReady    : Ember.computed.alias('projects.orchestrationState.swarmReady'),
+  mesosReady    : Ember.computed.alias('projects.orchestrationState.mesosReady'),
 
   // Component options
   tagName           : 'header',
@@ -111,7 +111,8 @@ export default Ember.Component.extend(HoverDropdown, {
   }.observes(
     'projectId',
     'namespaceId',
-    'project.{virtualMachine,orchestrationState}',
+    'projects.orchestrationState',
+    'project.virtualMachine',
     `settings.${C.SETTING.CATALOG_URL}`,
     `prefs.${C.PREFS.ACCESS_WARNING}`,
     'access.enabled',
@@ -126,7 +127,7 @@ export default Ember.Component.extend(HoverDropdown, {
 
   kubernetesReady: function() {
     return this.get('hasKubernetes') &&
-    this.get('project.orchestrationState.kubernetesReady') &&
+    this.get('projects.orchestrationState.kubernetesReady') &&
     this.get('namespaceId');
-  }.property('hasKubernetes','project.orchestrationState.kubernetesReady','namespaceId'),
+  }.property('hasKubernetes','projects.orchestrationState.kubernetesReady','namespaceId'),
 });

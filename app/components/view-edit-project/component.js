@@ -45,7 +45,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
         return;
       }
 
-      member.set('role','member');
+      member.set('role', (this.get('hasOwner') ? 'member' : 'owner'));
 
       this.send('error',null);
       this.get('project.projectMembers').pushObject(member);

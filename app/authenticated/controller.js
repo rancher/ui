@@ -24,10 +24,10 @@ export default Ember.Controller.extend({
   }.property('model.stacks.@each.externalId'),
 
   hasHosts: function() {
-    return this.get('model.hosts.length') > 0;
-  }.property('model.hosts'),
+    return (this.get('model.hosts.length') > 0) || (this.get('model.machines.length') > 0);
+  }.property('model.{hosts,machines}'),
 
   isReady: function() {
-    return this.get('model.project.isReady') && this.get('hasHosts');
-  }.property('model.project.isReady','hasHosts'),
+    return this.get('projects.isReady') && this.get('hasHosts');
+  }.property('projects.isReady','hasHosts'),
 });

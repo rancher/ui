@@ -1,9 +1,11 @@
 import Ember from "ember";
 import { isSafari } from 'ui/utils/platform';
+import Util from 'ui/utils/util';
 
 var INSECURE = 'ws://';
 var SECURE   = 'wss://';
 var sockId = 1;
+var safariWarningShown = false;
 
 export default Ember.Object.extend(Ember.Evented, {
   growl: Ember.inject.service(),
@@ -15,6 +17,7 @@ export default Ember.Object.extend(Ember.Evented, {
   tries: 0,
   disconnectedAt: null,
   disconnectCb: null,
+  closingId: null,
 
   connect: function() {
     var socket = this.get('socket');
@@ -34,7 +37,7 @@ export default Ember.Object.extend(Ember.Evented, {
     var id = sockId++;
     console.log('Socket connect',id,'to', url.replace(/\?.*/,'')+'...');
 
-    socket = new WebSocket(url);
+    socket = new WebSocket(Util.addQueryParam(url,'sockId',id));
     socket.__sockId = id;
     this.set('socket', socket);
 
@@ -45,8 +48,6 @@ export default Ember.Object.extend(Ember.Evented, {
   },
 
   disconnect: function(cb) {
-    this._log('disconnect');
-
     if ( !this.get('connected') )
     {
       if ( cb )
@@ -66,6 +67,11 @@ export default Ember.Object.extend(Ember.Evented, {
     {
       try {
         this._log('closing');
+        if ( this.get('closingId') )
+        {
+          console.log('Socket double closed', this.get('closingId'), socket.__sockId);
+        }
+        this.set('closingId', socket.__sockId);
         socket.onopen = null;
         socket.onerror = null;
         socket.onmessage = null;
@@ -115,15 +121,24 @@ export default Ember.Object.extend(Ember.Evented, {
 
   _error: function() {
     this._log('error');
-    this.disconnect();
+    if ( this.get('autoReconnect') )
+    {
+      this._reconnect();
+    }
+  },
+
+  _reconnect: function() {
+    this.incrementProperty('tries');
+    var delay = Math.max(1000, Math.min(1000 * this.get('tries'), 30000));
+    Ember.run.later(this, this.connect, delay);
   },
 
   _closed: function() {
-    console.log('Socket closed');
+    console.log('Socket', this.get('closingId'), 'closed');
+    this.set('closingId', null);
 
     var wasConnected = this.get('connected');
     this.set('connected',false);
-    this.incrementProperty('tries');
 
     if ( this.get('disconnectedAt') === null )
     {
@@ -132,11 +147,11 @@ export default Ember.Object.extend(Ember.Evented, {
 
     if ( wasConnected && this.get('autoReconnect') )
     {
-      var delay = Math.max(1000, Math.min(1000 * this.get('tries'), 30000));
-      Ember.run.later(this, this.connect, delay);
+      this._reconnect();
     }
-    else if ( isSafari && !wasConnected && this.get('url').indexOf('wss://') === 0 )
+    else if ( isSafari && !safariWarningShown && !wasConnected && this.get('url').indexOf('wss://') === 0 )
     {
+      safariWarningShown = true;
       window.l('service:growl').error('Error connecting to WebSocket','Safari does not support WebSockets connecting to a self-signed or unrecognized certificate.  Use http:// instead of https:// or reconfigure the server with a valid certificate from a recognized certificate authority.  Streaming stats, logs, shell/console, and auto-updating of the state of resources in the UI will not work until this is resolved.');
     }
 

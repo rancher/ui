@@ -26,11 +26,11 @@ export default Ember.Service.extend({
 
   isReady: function() {
     return this.get('store').find('environment').then((stacks) => {
-      let eId = C.EXTERNALID.KIND_SYSTEM + C.EXTERNALID.KIND_SEPARATOR + C.EXTERNALID.KIND_KUBERNETES;
+      let eId = C.EXTERNALID.KIND_SYSTEM + C.EXTERNALID.KIND_SEPARATOR + C.EXTERNALID.KIND_MESOS;
       let matching = stacks.filterBy('externalId', eId);
       let expect = matching.get('length');
       let healthy = matching.filterBy('healthState', 'healthy').get('length');
-      if ( expect === healthy )
+      if ( expect > 0 && expect === healthy )
       {
         return this.get('store').rawRequest({
           url: `${this.get('masterUrl')}/${C.MESOS.HEALTH}`

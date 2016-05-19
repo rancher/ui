@@ -16,8 +16,6 @@ export default Ember.Mixin.create({
     this.disconnectSubscribe();
     var projectId = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
 
-    console.log('Connect socket for', projectId);
-
     var store = this.get('store');
     var boundTypeify = store._typeify.bind(store);
 
@@ -63,6 +61,7 @@ export default Ember.Mixin.create({
     });
 
     socket.connect();
+    console.log('Subscribe connect', this.forStr());
   },
 
   disconnectSubscribe() {
@@ -71,10 +70,42 @@ export default Ember.Mixin.create({
     var socket = this.get('subscribeSocket');
     if ( socket )
     {
-      console.log('Disconnect socket for', socket._projectId);
+      console.log('Subscribe disconnect', this.forStr());
       socket.disconnect();
       this.set('socket', null);
     }
+  },
+
+  watchdog() {
+    if ( this.get('pingTimer') )
+    {
+      Ember.run.cancel(this.get('pingTimer'));
+    }
+
+    this.set('pingTimer', Ember.run.later(this, function() {
+      let socket = this.get('subscribeSocket');
+      if ( socket )
+      {
+        console.log('Subscribe missed 2 pings', this.forStr());
+        socket.connect();
+      }
+    }, 11000));
+  },
+
+  forStr() {
+    let out = '';
+    let socket = this.get('subscribeSocket');
+    if ( socket )
+    {
+      out = 'for ' + socket._projectId;
+
+      if ( socket.socket && socket.socket.__sockId )
+      {
+        out += ' via ' + socket.socket.__sockId;
+      }
+    }
+
+    return out;
   },
 
   actions: {
@@ -85,7 +116,7 @@ export default Ember.Mixin.create({
 
     // WebSocket connected
     subscribeConnected: function(tries,msec) {
-      var msg = 'Subscribe connected';
+      let msg = 'Subscribe connected ' + this.forStr();
       if (tries > 0)
       {
         msg += ' (after '+ tries + ' ' + (tries === 1 ? 'try' : 'tries');
@@ -96,29 +127,20 @@ export default Ember.Mixin.create({
 
         msg += ')';
       }
+
       console.log(msg);
+      this.watchdog();
     },
 
-    // WebSocket disconnected
+    // WebSocket disconnected (unexpectedly
     subscribeDisconnected: function() {
-      console.log('Subscribe disconnected');
-      this.disconnectSubscribe();
+      console.log('Subscribe disconnected', this.forStr(), 'reconnecting');
+      this.connectSubscribe();
     },
 
     subscribePing: function() {
-      console.log('Subscribe ping');
-      if ( this.get('pingTimer') )
-      {
-        Ember.run.cancel(this.get('pingTimer'));
-      }
-
-      this.set('pingTimer', Ember.run.later(this, function() {
-        console.log('Subscribe missed 2 pings...');
-        if ( this.get('subscribeSocket') )
-        {
-          this.get('subscribeSocket').connect();
-        }
-      }, 11000));
+      console.log('Subscribe ping', this.forStr());
+      this.watchdog();
     },
 
     hostChanged: function(change) {

@@ -1,13 +1,13 @@
 {{#if hasHosts}}
-  {{#if (and model.orchestrationState.hasKubernetes (not model.orchestrationState.kubernetesReady))}}
+  {{#if (and projects.orchestrationState.hasKubernetes (not projects.orchestrationState.kubernetesReady))}}
     {{orchestration/wait-kubernetes model=model ready=(action "kubernetesReady")}}
   {{/if}}
 
-  {{#if (and model.orchestrationState.hasSwarm (not model.orchestrationState.swarmReady))}}
+  {{#if (and projects.orchestrationState.hasSwarm (not projects.orchestrationState.swarmReady))}}
     {{orchestration/wait-swarm model=model ready=(action "swarmReady")}}
   {{/if}}
 
-  {{#if (and model.orchestrationState.hasMesos (not model.orchestrationState.mesosReady))}}
+  {{#if (and projects.orchestrationState.hasMesos (not projects.orchestrationState.mesosReady))}}
     {{orchestration/wait-mesos model=model ready=(action "mesosReady")}}
   {{/if}}
 {{else}}
@@ -21,7 +21,6 @@
   </div>
 
   <section class="welcome well">
-    
     <h2>{{t 'waitingPage.hosts.header'}}</h2>
     <p>
       {{t 'waitingPage.hosts.content' appName=settings.appName minVersion=settings.minDockerVersion}}

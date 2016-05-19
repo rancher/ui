@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  access: Ember.inject.service(),
+
   queryParams : ['backTo', 'driver', 'machineId'],
   backTo      : null,
   driver      : null,
