@@ -7,9 +7,6 @@ var Project = Resource.extend(PolledResource, {
   prefs: Ember.inject.service(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
-  k8sSvc: Ember.inject.service('k8s'),
-  swarmSvc: Ember.inject.service('swarm'),
-  mesosSvc: Ember.inject.service('mesos'),
 
   type: 'project',
   name: null,
@@ -140,94 +137,6 @@ var Project = Resource.extend(PolledResource, {
       return 'Cattle';
     }
   }.property('kubernetes','swarm', 'mesos'),
-
-  //_stacks: null,
-  //_hosts: null,
-  //orchestrationState: null,
-  updateOrchestrationState() {
-    let hash;
-    if ( this.get('id') !== this.get(`tab-session.${C.SESSION.PROJECT}`) )
-    {
-      return null;
-    }
-
-    if ( this.get('orchestrationState') )
-    {
-      hash = Ember.copy(this.get('orchestrationState'));
-    }
-    else
-    {
-      hash = {
-        hasKubernetes: false,
-        hasSwarm: false,
-        hasMesos: false,
-        kubernetesReady: false,
-        swarmReady: false,
-        mesosReady: false,
-      };
-    }
-
-    let promises = [];
-
-    if ( this.get('kubernetes') )
-    {
-      hash.hasKubernetes = true;
-      promises.push(this.get('k8sSvc').isReady().then((ready) => {
-        hash.kubernetesReady = ready;
-      }));
-    }
-
-    if ( this.get('swarm') )
-    {
-      hash.hasSwarm = true;
-      promises.push(this.get('swarmSvc').isReady().then((ready) => {
-        hash.swarmReady = ready;
-      }));
-    }
-
-    if ( this.get('mesos') )
-    {
-      hash.hasMesos = true;
-      promises.push(this.get('mesosSvc').isReady().then((ready) => {
-        hash.mesosReady = ready;
-      }));
-    }
-
-    return Ember.RSVP.all(promises).then(() => {
-      this.set('orchestrationState', hash);
-      return Ember.RSVP.resolve(hash);
-    });
-  },
-
-  orchestrationStateShouldChange: function() {
-    Ember.run.once(this, 'updateOrchestrationState', true);
-  }.observes('kubernetes','swarm','mesos'),
-
-  isReady: function() {
-    var state = this.get('orchestrationState');
-
-    if ( !state )
-    {
-      return false;
-    }
-
-    return (
-      (!state.hasKubernetes || state.kubernetesReady) &&
-      (!state.hasSwarm || state.swarmReady) &&
-      (!state.hasMesos || state.mesosReady)
-    );
-  }.property('orchestrationState'), // The state object is always completely replaced, so this is ok
-
-  checkForWaiting(hosts,machines) {
-    var hasHosts = (hosts && hosts.get('length') > 0) || (machines && machines.get('length') > 0);
-
-    return this.updateOrchestrationState().then(() => {
-      if ( !hasHosts || !this.get('isReady') )
-      {
-        this.get('router').transitionTo('authenticated.project.waiting', this.get('id'));
-      }
-    });
-  }
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often

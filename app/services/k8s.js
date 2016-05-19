@@ -433,7 +433,7 @@ export default Ember.Service.extend({
       let matching = stacks.filterBy('externalId', eId);
       let expect = matching.get('length');
       let healthy = matching.filterBy('healthState', 'healthy').get('length');
-      if ( expect === healthy )
+      if ( expect > 0 && expect === healthy )
       {
         return this.request({
           url: `${this.get('kubernetesEndpoint')}/${C.K8S.BASE}`

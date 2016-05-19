@@ -6,8 +6,8 @@
 </section>
 
 {{#if apiHostSet}}
-  {{#if showPicker}}
-    <section class="well">
+  <section class="well">
+    {{#if showPicker}}
       <div class="nav nav-boxes checked-active">
 
         {{#if allowCustom}}
@@ -24,8 +24,13 @@
           <a {{action "switchDriver" "other"}} alt="other" class="nav-box-item driver machine-driver other {{if (eq driver 'other') 'active'}}" href="#"></a>
         {{/if}}
       </div>
-    </section>
-  {{/if}}
+    {{/if}}
+    {{#if access.admin}}
+      <p class="text-center small r-m0">
+        {{#link-to "admin-tab.settings"}}{{t 'hostsPage.new.manageLink'}}{{/link-to}}
+      </p>
+    {{/if}}
+  </section>
 
   {{#if driver}}
     <section>

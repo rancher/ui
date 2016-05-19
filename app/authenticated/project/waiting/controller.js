@@ -12,19 +12,19 @@ export default Ember.Controller.extend({
   actions: {
     kubernetesReady() {
       this.send('refreshKubernetes');
-      this.get('projects.current').updateOrchestrationState().then(() => {
+      this.get('projects').updateOrchestrationState().then(() => {
         this.transitionToRoute('k8s-tab');
       });
     },
 
     swarmReady() {
-      this.get('projects.current').updateOrchestrationState().then(() => {
+      this.get('projects').updateOrchestrationState().then(() => {
         this.transitionToRoute('swarm-tab');
       });
     },
 
     mesosReady() {
-      this.get('projects.current').updateOrchestrationState().then(() => {
+      this.get('projects').updateOrchestrationState().then(() => {
         this.transitionToRoute('mesos-tab');
       });
     },

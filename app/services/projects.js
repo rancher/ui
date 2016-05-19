@@ -1,12 +1,16 @@
 import Ember from 'ember';
+const { getOwner } = Ember;
 import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
+
 
 export default Ember.Service.extend({
   access: Ember.inject.service(),
   'tab-session': Ember.inject.service('tab-session'),
   prefs: Ember.inject.service(),
-  k8s: Ember.inject.service(),
+  k8sSvc: Ember.inject.service('k8s'),
+  swarmSvc: Ember.inject.service('swarm'),
+  mesosSvc: Ember.inject.service('mesos'),
 
   current: null,
   all: null,
@@ -142,4 +146,85 @@ export default Ember.Service.extend({
     });
   },
 
+  orchestrationState: null,
+  updateOrchestrationState() {
+    let hash = {
+      hasKubernetes: false,
+      hasSwarm: false,
+      hasMesos: false,
+      kubernetesReady: false,
+      swarmReady: false,
+      mesosReady: false,
+    };
+
+    let promises = [];
+
+    if ( this.get('current') )
+    {
+      if ( this.get('current.kubernetes') )
+      {
+        hash.hasKubernetes = true;
+        promises.push(this.get('k8sSvc').isReady().then((ready) => {
+          hash.kubernetesReady = ready;
+        }));
+      }
+
+      if ( this.get('current.swarm') )
+      {
+        hash.hasSwarm = true;
+        promises.push(this.get('swarmSvc').isReady().then((ready) => {
+          hash.swarmReady = ready;
+        }));
+      }
+
+      if ( this.get('current.mesos') )
+      {
+        hash.hasMesos = true;
+        promises.push(this.get('mesosSvc').isReady().then((ready) => {
+          hash.mesosReady = ready;
+        }));
+      }
+    }
+
+    return Ember.RSVP.all(promises).then(() => {
+      this.set('orchestrationState', hash);
+      return Ember.RSVP.resolve(hash);
+    });
+  },
+
+  orchestrationStateShouldChange: function() {
+    Ember.run.once(this, 'updateOrchestrationState', true);
+  }.observes('current.{id,kubernetes,swarm,mesos}'),
+
+  isReady: function() {
+    var state = this.get('orchestrationState');
+
+    if ( !state )
+    {
+      return false;
+    }
+
+    return (
+      (!state.hasKubernetes || state.kubernetesReady) &&
+      (!state.hasSwarm || state.swarmReady) &&
+      (!state.hasMesos || state.mesosReady)
+    );
+  }.property('orchestrationState'), // The state object is always completely replaced, so this is ok
+
+  checkForWaiting(hosts,machines) {
+    let router = getOwner(this).get('router');
+
+    let hasHosts = (hosts && hosts.get('length') > 0) || (machines && machines.get('length') > 0);
+    if ( !hasHosts )
+    {
+      router.transitionTo('authenticated.project.waiting', this.get('current.id'));
+    }
+
+    return this.updateOrchestrationState().then(() => {
+      if ( !this.get('isReady') )
+      {
+        router.transitionTo('authenticated.project.waiting', this.get('current.id'));
+      }
+    });
+  }
 });

@@ -1,19 +1,21 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  projects: Ember.inject.service(),
+
   model() {
     return this.modelFor('authenticated');
   },
 
-  afterModel(model) {
-    return model.get('project').updateOrchestrationState().then(() => {
+  afterModel() {
+    return this.get('projects').updateOrchestrationState().then(() => {
       this.redirectIfReady();
     });
   },
 
   redirectIfReady() {
     let model = this.modelFor('authenticated');
-    if ( (model.get('hosts.length') + model.get('machines.length')) > 0 && model.get('project.isReady') )
+    if ( (model.get('hosts.length') + model.get('machines.length')) > 0 && this.get('projects.isReady') )
     {
       this.replaceWith('authenticated.project.index');
     }

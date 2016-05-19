@@ -7,6 +7,6 @@ export default ApplicationsTabRoute.extend({
   beforeModel() {
     this._super(...arguments);
     var auth = this.modelFor('authenticated');
-    return this.get('projects.current').checkForWaiting(auth.get('hosts'),auth.get('machines'));
+    return this.get('projects').checkForWaiting(auth.get('hosts'),auth.get('machines'));
   },
 });
