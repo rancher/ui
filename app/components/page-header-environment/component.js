@@ -18,9 +18,7 @@ export default Ember.Component.extend({
     return this.get('projectChoices').filterBy('id', this.get('project.id')).get('length') === 0;
   }.property('project.id','projectChoices.@each.id'),
 
-  isKubernetesTab: function() {
-    return this.get('currentPath').indexOf('authenticated.project.k8s-tab') === 0;
-  }.property('currentPath'),
+  hasKubernetes : Ember.computed.alias('projects.orchestrationState.hasKubernetes'),
 
   actions: {
     switchProject(id) {

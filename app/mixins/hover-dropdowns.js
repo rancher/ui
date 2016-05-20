@@ -9,8 +9,14 @@ export default Ember.Mixin.create({
     let timerObj             = null;
     let selector             = this.get('dropdownSelector');
 
-    Ember.$(selector).on('mouseenter', (e) => {
+    Ember.$(selector).on('click', (e) => {
+      let anchor = Ember.$(e.currentTarget).find('a:first');
+      if ( anchor[0].href.match(/#$/) ) {
+        e.preventDefault();
+      }
+    });
 
+    Ember.$(selector).on('mouseenter', (e) => {
       let anchor = Ember.$(e.currentTarget).find('a:first');
 
       Ember.run.cancel(timerObj);
@@ -42,7 +48,6 @@ export default Ember.Mixin.create({
     });
 
     Ember.$(selector).on('mouseleave', () => {
-
       timerObj = Ember.run.later(() => {
 
         if (dropdown) {

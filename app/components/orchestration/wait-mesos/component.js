@@ -29,7 +29,7 @@ export default Ember.Component.extend({
     'Waiting for leading Mesos Master'
   ],
 
-  updateStep: debouncedObserver('model.hosts.@each.state','model.stacks.@each.{state,externalId}','services.@each.state', function() {
+  updateStep: debouncedObserver('model.hosts.@each.state','model.stacks.@each.{state,externalId}','services.@each.{state,healthState}', function() {
     this.set('subStep', 0);
     this.set('subCount', 0);
 

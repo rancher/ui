@@ -55,4 +55,12 @@ export default Ember.Route.extend({
       this.controllerFor('authenticated.project.help').set('hasHosts', hosts.get('length') > 0);
     });
   },
+
+  resetController: function (controller, isExisting/*, transition*/) {
+    if (isExisting)
+    {
+      controller.set('modelResolved', false);
+      controller.set('modelError', false);
+    }
+  }
 });

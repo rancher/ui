@@ -1,12 +1,14 @@
 {{#if project}}
-  <div class="dropdown btn-group project-btn  {{if isKubernetesTab 'alt'}}">
-    <a role="button" class="btn btn-link dropdown-toggle text-left" href="#" aria-haspopup="true" aria-expanded="false" aria-label="environment">
-      <span class="clip"><i class="{{project.icon}} project-icon icon-fw"></i>&nbsp;{{project.displayName}}</span>
+  <div class="dropdown btn-group project-btn {{if hasKubernetes 'alt'}}">
+    <a role="button" class="btn btn-link dropdown-toggle text-left" href="#" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.label'}}">
+      <span class="clip">
+        <i class="{{project.icon}} project-icon icon-fw"></i>&nbsp;{{project.displayName}}
+      </span>
       <i class="icon icon-chevron-down project-chevron"></i>
       <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
       <label>{{t 'nav.environment.label'}}</label>
     </a>
-    <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
+    <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu" data-dropdown-id="enviroment">
       {{#if projectChoices.length}}
         <li role="presentation" class="dropdown-header">
           {{#if accessEnabled}}
@@ -44,23 +46,23 @@
   </div>
 {{/if}}
 
-{{#if (and isKubernetesTab k8s.namespace)}}
+{{#if (and hasKubernetes k8s.namespace)}}
   <div class="dropdown btn-group project-btn kub-btn">
-    <a role="button" type="button" class="btn btn-link dropdown-toggle text-left clip" href="#"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="environment">
+    <a role="button" class="btn btn-link dropdown-toggle text-left clip" href="#" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.namespace.label'}}">
       <span class="clip">
-        <i class="icon icon-thumbnails icon-fw"></i>&nbsp;{{k8s.namespace.displayName}}
+        <i class="icon icon-folder-open icon-fw"></i>&nbsp;{{k8s.namespace.displayName}}
       </span>
       <i class="icon icon-chevron-down"></i>
       <span class="sr-only">{{nav.srToggleDropdown}}</span>
       <label>{{t 'nav.namespace.label'}}</label>
     </a>
-    <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu">
+    <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu" data-dropdown-id="namespace">
       {{#if k8s.namespaces.length}}
         <li role="presentation" class="dropdown-header">{{t 'pageHeaderEnvironment.namespace'}}</li>
         {{#each k8s.namespaces as |ns|}}
           {{#unless ns.isSystem}}
             <li class="{{if (eq ns k8s.namespace) 'active selected'}}">
-              <a {{action "switchNamespace" ns.id}} class="clip">
+              <a href="#" {{action "switchNamespace" ns.id}} class="clip">
                 <i class="{{ns.icon}}"></i>
                 &nbsp;
                 {{ns.displayName}}
@@ -72,7 +74,7 @@
         {{#each k8s.namespaces as |ns|}}
           {{#if ns.isSystem}}
             <li class="{{if (eq ns k8s.namespace) 'active selected'}}">
-              <a {{action "switchNamespace" ns.id}} class="clip">
+              <a href="#" {{action "switchNamespace" ns.id}} class="clip">
                 <i class="{{ns.icon}}"></i>
                 &nbsp;
                 {{ns.displayName}}
