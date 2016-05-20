@@ -1,5 +1,7 @@
+import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
+import C from 'ui/utils/constants';
 
 const builtInUi = ['amazonec2','azure','digitalocean','exoscale','packet','rackspace','ubiquity','vmwarevsphere'];
 
@@ -40,21 +42,47 @@ var machineDriver = Resource.extend(PolledResource, {
     },
   },
 
+  iconMapFromConstants: Ember.computed('name', function() {
+    let name = this.get('name').toUpperCase();
+    let icon = C.MACHINE_DRIVER_IMAGES[name];
+
+    if (icon) {
+      return icon;
+    } else {
+      return C.MACHINE_DRIVER_IMAGES.GENERIC;
+    }
+
+  }),
+
   displayUrl: function() {
     return displayUrl(this.get('url'));
   }.property('url'),
+
+  displayChecksum: Ember.computed('checksum', function() {
+    return this.get('checksum').substring(0, 8);
+  }),
 
   displayUiUrl: function() {
     return displayUrl(this.get('uiUrl'));
   }.property('uiUrl'),
 
-  hasBuiltInUi: function() {
+  hasBuiltinUi: function() {
     return builtInUi.indexOf(this.get('name')) >= 0;
   }.property('name'),
 
+  isCustom: function() {
+    return !this.get('builtin') && !this.get('externalId');
+  }.property('builtin','externalId'),
+
   hasUi: function() {
-    return this.get('hasBuiltInUi') || !!this.get('uiUrl');
-  }.property('hasBuiltInUi'),
+    return this.get('hasBuiltinUi') || !!this.get('uiUrl');
+  }.property('hasBuiltinUi'),
+
+  newExternalId: function() {
+    var externalId = ( this.get('isSystem') ? C.EXTERNALID.KIND_SYSTEM_CATALOG : C.EXTERNALID.KIND_CATALOG );
+    externalId += C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
+    return externalId;
+  }.property('isSystem','selectedTemplateModel.id'),
 
   availableActions: function() {
     let a = this.get('actionLinks');

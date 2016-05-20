@@ -37,12 +37,16 @@ $lines-to-show: 4;
   }
 }
 
+$container-height: 270px;
+$container-width: 250px;
+$play-button-height-width: 60px;
+
 .container-catalog {
   position: relative;
   background: $accent-one;
   border:solid transparent;
-  height: 290px;
-  width: 250px;
+  height: $container-height;
+  width: $container-width;
   margin-right: 35px;
   margin-bottom: 35px;
   float: left;
@@ -62,6 +66,51 @@ $lines-to-show: 4;
     padding-top: 15px;
     margin: 0 15px;
     font-weight: bold;
+  }
+
+  &.machine {
+    font-size: 12px;
+    .resource-actions {
+      position: absolute;
+      top: 7px;
+      right: 10px;
+    }
+    .catalog-header {
+      height: 30px;
+    }
+    h5 {
+      text-align: left;
+      padding-top: 10px;
+      max-width: 160px;
+    }
+    .copy-button-container {
+      height:12px;
+    }
+  }
+
+  .inactive-driver {
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    text-align: center;
+    height: $container-height;
+    width: $container-width;
+    background: rgba(0,0,0,0.4);
+    z-index: 2;
+    button {
+      color: white;
+      border-color: white;
+      position: absolute;
+      height: $play-button-height-width;
+      width: $play-button-height-width;
+      border-radius: 50%;
+      top: 70px;
+      left: calc((#{$container-width} / 2) - (#{$play-button-height-width / 2}));
+      i {
+        font-size: 36px;
+        margin-left: -3px;
+      }
+    }
   }
 
   .catalog-icon {
@@ -93,7 +142,7 @@ $lines-to-show: 4;
     box-sizing:border-box;
   }
 
-  .btn {
+  .view-details {
     position: absolute;
     bottom: 0px;
     left: 0;
@@ -138,5 +187,59 @@ $lines-to-show: 4;
     left: 30px;
     right: 17px;
     top: 0;
+  }
+}
+.machine-catalog-icon {
+  min-height: 100px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 50% 100%;
+
+  &.amazonec2 {
+    @include amazonec2;
+  }
+
+  &.azure {
+    @include azure;
+  }
+
+  &.digitalocean {
+    @include digitalocean;
+  }
+
+  &.exoscale {
+    @include exoscale;
+  }
+
+  &.openstack {
+    @include openstack;
+  }
+
+  &.packet {
+    @include packet;
+  }
+
+  &.rackspace {
+    @include rackspace;
+  }
+
+  &.ubiquity {
+    @include ubiquity;
+  }
+
+  &.vmwarevsphere {
+    @include vmwarevsphere;
+  }
+
+  &.other {
+    @include other;
+  }
+
+  &.custom {
+    @include custom;
+  }
+
+  &.generic {
+    @include generic;
   }
 }

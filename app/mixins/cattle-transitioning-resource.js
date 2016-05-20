@@ -20,6 +20,7 @@ const defaultStateMap = {
   'removing':                 {icon: 'icon icon-trash',         color: 'text-info'   },
   'requested':                {icon: 'icon icon-tag',           color: 'text-info'   },
   'registering':              {icon: 'icon icon-tag',           color: 'text-info'   },
+  'reinitializing':           {icon: 'icon icon-alert',         color: 'text-warning'},
   'restoring':                {icon: 'icon icon-medicalcross',  color: 'text-info'   },
   'running':                  {icon: 'icon icon-circle-o',      color: 'text-success'},
   'started-once':             {icon: 'icon icon-dot-circlefill',color: 'text-success'},

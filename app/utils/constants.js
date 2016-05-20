@@ -252,6 +252,22 @@ var C = {
     MASTER_SERVICE: 'mesos-master',
     MASTER_PORT: 5050,
   },
+
+  // CSS map to driver icons
+  MACHINE_DRIVER_IMAGES: {
+    AMAZONEC2: 'amazonec2',
+    AZURE: 'azure',
+    DIGITALOCEAN: 'digitalocean',
+    EXOSCALE: 'exoscale',
+    GENERIC: 'generic',
+    OPENSTACK: 'openstack',
+    PACKET: 'packet',
+    RACKSPACE: 'rackspace',
+    UBIQUITY: 'ubiquity',
+    VMWAREVSPHERE: 'vmwarevsphere',
+    OTHER: 'other',
+    CUSTOM: 'custom',
+  }
 };
 
 C.TOKEN_TO_SESSION_KEYS = [

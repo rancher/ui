@@ -168,6 +168,7 @@ export default Ember.Route.extend(Subscribe, {
   },
 
   reset() {
+    console.log('Store Reset');
     // Forget all the things
     console.log('Store Reset');
     this.get('userStore').reset();
