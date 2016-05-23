@@ -9,27 +9,29 @@ export default Ember.Mixin.create({
   'tab-session'   : Ember.inject.service(),
 
   subscribeSocket : null,
-  pingTimer       : null,
+  reconnect: true,
   k8sUidBlacklist : null,
 
-  connectSubscribe() {
-    this.disconnectSubscribe();
-    var projectId = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
+  init() {
+    this._super();
+    this.set('k8sUidBlacklist', []);
 
     var store = this.get('store');
     var boundTypeify = store._typeify.bind(store);
 
-    if ( !this.get('k8sUidBlacklist') )
-    {
-      this.set('k8sUidBlacklist', []);
-    }
-
-    var url = ("ws://"+window.location.host + this.get('app.wsEndpoint')).replace(this.get('app.projectToken'), projectId);
-    var socket = Socket.create({url: url});
-    socket._projectId = projectId;
-    this.set('subscribeSocket', socket);
+    var socket = Socket.create();
 
     socket.on('message', (event) => {
+      // Fail-safe: make sure the message is for this project
+      var currentProject = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
+      var metadata = socket.getMetadata();
+      var socketProject = metadata.projectId;
+      if ( currentProject !== socketProject ) {
+        console.error(`Subscribe ignoring message, current=${currentProject} socket=${socketProject}`, this.forStr());
+        this.connectSubscribe();
+        return;
+      }
+
       var d = JSON.parse(event.data, boundTypeify);
       //this._trySend('subscribeMessage',d);
 
@@ -60,49 +62,41 @@ export default Ember.Mixin.create({
       this._trySend('subscribeDisconnected', this.get('tries'));
     });
 
-    socket.connect();
-    console.log('Subscribe connect', this.forStr());
+    this.set('subscribeSocket', socket);
+  },
+
+  connectSubscribe() {
+    var socket = this.get('subscribeSocket');
+    var projectId = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
+    var url = ("ws://"+window.location.host + this.get('app.wsEndpoint')).replace(this.get('app.projectToken'), projectId);
+
+    this.set('reconnect', true);
+
+    socket.setProperties({
+      url: url,
+      autoReconnect: true,
+    });
+    socket.reconnect({projectId: projectId});
   },
 
   disconnectSubscribe() {
-    Ember.run.cancel(this.get('pingTimer'));
-
+    this.set('reconnect', false);
     var socket = this.get('subscribeSocket');
     if ( socket )
     {
       console.log('Subscribe disconnect', this.forStr());
       socket.disconnect();
-      this.set('socket', null);
     }
   },
 
-  watchdog() {
-    if ( this.get('pingTimer') )
-    {
-      Ember.run.cancel(this.get('pingTimer'));
-    }
-
-    this.set('pingTimer', Ember.run.later(this, function() {
-      let socket = this.get('subscribeSocket');
-      if ( socket )
-      {
-        console.log('Subscribe missed 2 pings', this.forStr());
-        socket.connect();
-      }
-    }, 11000));
-  },
 
   forStr() {
     let out = '';
     let socket = this.get('subscribeSocket');
+    var projectId = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
     if ( socket )
     {
-      out = 'for ' + socket._projectId;
-
-      if ( socket.socket && socket.socket.__sockId )
-      {
-        out += ' via ' + socket.socket.__sockId;
-      }
+      out = '(projectId=' + projectId + ', sockId=' + socket.getId() + ')';
     }
 
     return out;
@@ -129,18 +123,18 @@ export default Ember.Mixin.create({
       }
 
       console.log(msg);
-      this.watchdog();
     },
 
-    // WebSocket disconnected (unexpectedly
+    // WebSocket disconnected (unexpectedly)
     subscribeDisconnected: function() {
-      console.log('Subscribe disconnected', this.forStr(), 'reconnecting');
-      this.connectSubscribe();
+      console.log('Subscribe disconnected', this.forStr());
+      if ( this.get('reconnect') ) {
+        this.connectSubscribe();
+      }
     },
 
     subscribePing: function() {
       console.log('Subscribe ping', this.forStr());
-      this.watchdog();
     },
 
     hostChanged: function(change) {
