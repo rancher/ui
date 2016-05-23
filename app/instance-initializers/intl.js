@@ -1,5 +1,7 @@
 import Ember from 'ember';
+import IntlMissingMsgHanlder from 'ui/utils/intl/missing-message';
 const { get, makeArray } = Ember;
+const { missingMessage } = IntlMissingMsgHanlder;
 
 export function initialize(instance) {
   var intl = instance.lookup('service:intl');
@@ -10,9 +12,11 @@ export function initialize(instance) {
     findTranslationByKey(key, locales) {
       locales = makeArray(locales || get(this, '_locale'));
 
-      if ( key ) {
+      if (locales[0] === 'none') {
+        return missingMessage(key, locales);
+      } else if ( key ) {
         return this._findTranslationByKey(...arguments);
-      } else {
+      }else {
         return this._findTranslationByKey('generic.missing', locales);
       }
     },
