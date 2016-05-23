@@ -1,49 +1,48 @@
-
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Privileged</label>
+    <label class="form-control-static">{{t 'formSecurity.privileged'}}</label>
   </div>
   <div class="col-sm-12 col-md-3 form-label">
     <div class="checkbox form-control-static text-left">
-      <label>{{input type="checkbox" checked=instance.privileged}} Full access to the host</label>
+      <label>{{input type="checkbox" checked=instance.privileged}} {{t 'formSecurity.fullAccess'}}</label>
     </div>
   </div>
 
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">PID Mode</label>
+    <label class="form-control-static">{{t 'formSecurity.pidMode'}}</label>
   </div>
   <div class="col-sm-12 col-md-3 form-label">
     <div class="checkbox form-control-static text-left">
-      <label>{{input type="checkbox" checked=pidHost}} Host</label>
+      <label>{{input type="checkbox" checked=pidHost}} {{t 'formSecurity.host'}}</label>
     </div>
   </div>
 </div>
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Memory Limit</label>
+    <label class="form-control-static">{{t 'formSecurity.memoryLimit'}}</label>
   </div>
   <div class="col-sm-12 col-md-3">
     <div class="input-group">
       {{input type="number" min="1" step="1" value=memoryMb classNames="form-control" placeholder="Unlimited"}}
-      <div class="input-group-addon">MB</div>
+      <div class="input-group-addon">{{t 'formSecurity.mb'}}</div>
     </div>
   </div>
 
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">+ Swap Limit</label>
+    <label class="form-control-static">{{t 'formSecurity.swapLimit'}}</label>
   </div>
   <div class="col-sm-12 col-md-3">
     <div class="input-group">
       {{input type="number" min="1" step="1" value=swapMb classNames="form-control" placeholder=(if memoryMb 'Unlimited' 'Requires Memory Limit') disabled=(not memoryMb)}}
-      <div class="input-group-addon">MB</div>
+      <div class="input-group-addon">{{t 'formSecurity.mb'}}</div>
     </div>
   </div>
 </div>
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">CPU Pinning</label>
+    <label class="form-control-static">{{t 'formSecurity.cpuPinning'}}</label>
   </div>
 
 
@@ -51,7 +50,7 @@
     {{input type="text" value=instance.cpuSet classNames="form-control" placeholder="e.g. 0,3; Default: All"}}
   </div>
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Shares</label>
+    <label class="form-control-static">{{t 'formSecurity.shares'}}</label>
   </div>
   <div class="col-sm-12 col-md-3">
     {{input type="number" value=instance.cpuShares step=128 min=0 classNames="form-control" placeholder="1024"}}
@@ -60,7 +59,7 @@
 
 <div class="row">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Capabilities</label>
+    <label class="form-control-static">{{t 'formSecurity.capabilities'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-4">
@@ -74,15 +73,15 @@
 <div class="row">
   <div class="col-sm-12 col-md-8 col-md-offset-2">
     <span class="help-block">
-      Capabilities allow you to provide fine-grained control over superuser privileges available to the container.
-      <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank">More information</a>
+      {{t 'formSecurity.helpBlock.text'}}
+      <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank">{{t 'formSecurity.helpBlock.link'}}</a>
     </span>
   </div>
 </div>
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Device Binding</label>
+    <label class="form-control-static">{{t 'formSecurity.deviceBinding'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">
@@ -91,12 +90,12 @@
     </div>
     {{#if devicesArray.length}}
       <table class="table fixed no-lines no-top-padding tight small">
-        <tr class="text-muted hidden-xs hidden-sm">
-          <th>Path in Host</th>
+        <tr class="text-muted">
+          <th>{{t 'formSecurity.pathHost'}}</th>
           <th width="30">&nbsp;</th>
-          <th>Path in Container</th>
+          <th>{{t 'formSecurity.pathContainer'}}</th>
           <th width="30">&nbsp;</th>
-          <th width="100">Permissions</th>
+          <th width="100">{{t 'formSecurity.permissions'}}</th>
           <th width="30">&nbsp;</th>
         </tr>
         {{#each devicesArray as |device|}}
@@ -126,7 +125,7 @@
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Log Driver</label>
+    <label class="form-control-static">{{t 'formSecurity.logDriver'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">
@@ -146,7 +145,7 @@
 
 <div class="row">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Log Options</label>
+    <label class="form-control-static">{{t 'formSecurity.logOptions'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">
