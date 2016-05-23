@@ -83,10 +83,10 @@
         <tbody>
           {{#each filtered as |service|}}
             <tr>
-              <td data-title="State:" class="state">
+              <td data-title={{t 'stackSection.table.dataTitle.state'}} class="state">
                 {{badge-state model=service}}
               </td>
-              <td data-title="Service Name:"class="force-wrap">
+              <td data-title={{t 'stackSection.table.dataTitle.serviceName'}} class="force-wrap">
                 {{#link-to "service" service.environmentId service.id}}{{service.displayName}}{{/link-to}}
                 {{#if service.hasSidekicks}}
                   + {{service.secondaryLaunchConfigs.length}} {{t 'stackSection.sidekick' numSidekicks=instanceCount}}
@@ -95,18 +95,18 @@
                   <i class="icon icon-info addtl-info-trigger"/>
                 </button>
               </td>
-              <td data-title="Details:" class="force-wrap service-detail">{{service.displayDetail}}{{service.displayPorts}}</td>
+              <td data-title={{t 'stackSection.table.dataTitle.details'}} class="force-wrap service-detail">{{service.displayDetail}}{{service.displayPorts}}</td>
               <td data-title="Kind:">
                 {{#if service.displayType}}
                   {{service.displayType}}
                 {{/if}}
               </td>
-              <td data-title="Containers:">
+              <td data-title={{t 'stackSection.table.dataTitle.containers'}}>
                 {{#if service.hasContainers}}
-                  {{default-str service.instances.length default="0"}} {{t 'stackSection.container' numContainers=instanceCount}}
+                  {{default-str service.instanceCount.length default="0"}} {{t 'stackSection.container' numContainers=service.instanceCount}}
                 {{/if}}
               </td>
-              <td data-title="Actions:" class="actions wide">
+              <td data-title={{t 'stackSection.table.dataTitle.actions'}} class="actions wide">
                 {{action-menu model=service}}
               </td>
             </tr>

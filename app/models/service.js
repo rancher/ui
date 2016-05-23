@@ -380,6 +380,16 @@ var Service = Resource.extend({
     ].indexOf(this.get('type').toLowerCase()) >= 0;
   }.property('type'),
 
+  instanceCount: Ember.computed('instances.@each.state', function() {
+    let instances = (this.get('instances') || []);
+
+    let filtered = instances.filter((inst) => {
+      return C.REMOVEDISH_STATES.indexOf(inst.get('state').toLowerCase()) === -1;
+    });
+
+    return filtered;
+  }),
+
   isK8s: function() {
     return ['kubernetesservice'].indexOf(this.get('type').toLowerCase()) >= 0;
   }.property('type'),

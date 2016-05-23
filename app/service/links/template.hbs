@@ -1,7 +1,8 @@
 <label class="text-muted r-ml15">{{t 'servicePage.linksTab.header'}}</label>
 <ul class="list-unstyled list-inline with-room">
+  {{log model.consumedServicesWithNames}}
   {{#each model.consumedServicesWithNames as |link|}}
-    <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.name}} {{/link-to}}</li>
+    <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.name}} as {{link.name}} {{/link-to}}</li>
   {{else}}
     <li class="text-muted">{{t 'servicePage.linksTab.noData'}}</li>
   {{/each}}

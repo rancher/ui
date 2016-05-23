@@ -3,20 +3,25 @@ import C from 'ui/utils/constants';
 
 export default Ember.Mixin.create({
   dropdownSelector: '.navbar .dropdown',
-  didRender: function() {
+  didInsertElement: function() {
     const dropdownCloseTimer = 250;
     let dropdown             = null;
     let timerObj             = null;
     let selector             = this.get('dropdownSelector');
 
-    Ember.$(selector).on('click', (e) => {
+    this.$().on('click', selector, (e) => {
       let anchor = Ember.$(e.currentTarget).find('a:first');
       if ( anchor[0].href.match(/#$/) ) {
         e.preventDefault();
       }
+
+      timerObj = null;
+      dropdown = null;
+
+      this.clearHeaderMenus();
     });
 
-    Ember.$(selector).on('mouseenter', (e) => {
+    this.$().on('mouseenter', selector, (e) => {
       let anchor = Ember.$(e.currentTarget).find('a:first');
 
       Ember.run.cancel(timerObj);
@@ -47,7 +52,7 @@ export default Ember.Mixin.create({
 
     });
 
-    Ember.$(selector).on('mouseleave', () => {
+    this.$().on('mouseleave', selector, () => {
       timerObj = Ember.run.later(() => {
 
         if (dropdown) {
@@ -61,7 +66,7 @@ export default Ember.Mixin.create({
       }, dropdownCloseTimer);
     });
 
-    Ember.$(`${selector} a`).on('keydown', (e) => {
+    this.$().on('keydown', `${selector} a`, (e) => {
       let items = this.get('items');
       let currentIndex = 0;
 

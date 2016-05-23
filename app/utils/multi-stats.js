@@ -58,33 +58,35 @@ export default Ember.Object.extend(Ember.Evented, {
     if ( this.get('resource').hasLink(this.get('linkName')) )
     {
       this.get('resource').followLink(this.get('linkName')).then((response) => {
-        var url = response.get('url') + '?token=' + encodeURIComponent(response.get('token'));
+        if (response.get('url') && response.get('token')) {
+          var url = response.get('url') + '?token=' + encodeURIComponent(response.get('token'));
 
-        var socket = Socket.create({url: url});
+          var socket = Socket.create({url: url});
 
-        socket.on('message', (event) => {
-          if ( this.get('connected') )
-          {
-            //console.log('message', event);
-            JSON.parse(event.data).forEach((row) => {
-              //console.log('row', row);
-              this.process(row);
-            });
-          }
-        });
+          socket.on('message', (event) => {
+            if ( this.get('connected') )
+            {
+              //console.log('message', event);
+              JSON.parse(event.data).forEach((row) => {
+                //console.log('row', row);
+                this.process(row);
+              });
+            }
+          });
 
-        socket.on('connected', (/*tries, after*/) => {
-          this.set('connected',true);
-          this.trigger('connected');
-        });
+          socket.on('connected', (/*tries, after*/) => {
+            this.set('connected',true);
+            this.trigger('connected');
+          });
 
-        socket.on('disconnected', (/*tries*/) => {
-          this.set('connected',false);
-          this.trigger('disconnected');
-        });
+          socket.on('disconnected', (/*tries*/) => {
+            this.set('connected',false);
+            this.trigger('disconnected');
+          });
 
-        this.set('socket', socket);
-        socket.connect();
+          this.set('socket', socket);
+          socket.connect();
+        }
       });
     }
   },
