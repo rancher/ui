@@ -5,8 +5,12 @@ export default Ember.Controller.extend({
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
 
+  expectHosts: function() {
+    return ( this.get('projects.current.mesos') ? 3 : 1);
+  }.property('projects.current.mesos'),
+
   hasHosts: function() {
-    return (this.get('model.hosts.length') + this.get('model.machines.length')) > 0;
+    return (this.get('model.hosts.length') + this.get('model.machines.length')) >= this.get('expectHosts');
   }.property('model.hosts.length','model.machines.length'),
 
   actions: {

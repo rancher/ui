@@ -205,7 +205,7 @@ authPage:
       disabled: '{appName} can be configured to restrict access to a set of accounts defined in the {appName} database.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.'
     accessEnabled:
       header: 'Danger Zone&trade;'
-      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName}} to anyone that can reach this page or the API.'
+      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
       buttonText:
         disable: 'Are you sure?  Click again to really disable access control'
         prompt: Disable access control
@@ -709,7 +709,7 @@ loginPage:
   githubMessage: "{appName} uses GitHub to manage accounts and teams.  Click the button below to log in and give us read-only access to your basic GitHub account information."
 
 mesosPage:
-  header: Mesos
+  header: Overview
   actionLink: Open Mesos UI
 
   banner:
@@ -728,8 +728,8 @@ mesosPage:
 
   manage:
     header: Manage
-    content: Manage Mesos from the default UI.
-    button: Default UI
+    content: Manage Mesos from the Mesos UI.
+    button: Mesos UI
 
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 # those are present in case we have an error in the app and can not load the translations file
@@ -967,9 +967,16 @@ virtualMachinesPage:
 
 waitingPage:
   hosts:
-    header: Adding your first host
+    header: |
+      {expectHosts, plural,
+        =1 {Adding your first host}
+        other {Add hosts}
+      }
     content: |
-      You must add at least a single Linux host that supports Docker {minVersion} or higher and be able to reach the {appName} server via HTTP.
+      You must add at least {expectHosts, plural,
+        =1 {a single Linux host that supports}
+        other {# Linux hosts that support}
+      } Docker {minVersion} or higher and be able to reach the {appName} server via HTTP.<br/>
       {appName} supports adding Linux hosts in the form of a virtual or physical machine from any public cloud providers, privately hosted clouds, or even bare metal servers.
     contentLink: Learn More
     linkToHost: Add Host
@@ -2434,7 +2441,7 @@ nav:
     system: System
   mesos:
     tab: Mesos
-    web: Mesos UI
+    web: Overview
     system: System
   cattle:
     tab: Stacks

@@ -13,9 +13,9 @@
 {{else}}
 
   <section class="welcome well">
-    <h2>{{t 'waitingPage.hosts.header'}}</h2>
+    <h2>{{t 'waitingPage.hosts.header' expectHosts=expectHosts}}</h2>
     <p>
-      {{t 'waitingPage.hosts.content' appName=settings.appName minVersion=settings.minDockerVersion}}
+      {{format-html-message 'waitingPage.hosts.content' appName=settings.appName minVersion=settings.minDockerVersion expectHosts=expectHosts}}
       {{#if settings.isRancher}}<a href="{{settings.docsBase}}/rancher-ui/infrastructure/hosts/" target="_blank">{{t 'waitingPage.hosts.contentLink'}}</a>{{/if}}
     </p>
     {{#link-to "hosts.new" (query-params backTo="waiting") class="btn btn-primary"}}{{t 'waitingPage.hosts.linkToHost'}}{{/link-to}}

@@ -15,7 +15,14 @@ export default Ember.Route.extend({
 
   redirectIfReady() {
     let model = this.modelFor('authenticated');
-    if ( (model.get('hosts.length') + model.get('machines.length')) > 0 && this.get('projects.isReady') )
+    if ( this.get('projects.current.mesos') )
+    {
+      if ( ((model.get('hosts')||[]).filterBy('state','active').get('length') >= 2) && this.get('projects.isReady') )
+      {
+        this.replaceWith('authenticated.project.index');
+      }
+    }
+    else if ( (model.get('hosts.length') + model.get('machines.length')) > 0 && this.get('projects.isReady') )
     {
       this.replaceWith('authenticated.project.index');
     }
