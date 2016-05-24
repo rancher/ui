@@ -1,6 +1,6 @@
-{{#if project}}
-  <button class="btn dropdown project-btn r-p0 {{if hasKubernetes 'alt'}}">
-    <a role="button" class="btn btn-link dropdown-toggle r-p10" href="#" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.label'}}">
+{{~#if project~}}
+  <li class="btn dropdown project-btn r-p0 {{if hasKubernetes 'alt'}}">
+    <a role="button" class="btn btn-link dropdown-toggle text-left" href="#" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.label'}}">
       <label>{{t 'nav.environment.label'}}</label>
       <span class="clip">
         <i class="{{project.icon}} project-icon icon-fw"></i>&nbsp;{{project.displayName}}
@@ -43,12 +43,11 @@
       {{/if}}
       <li>{{#link-to "settings.projects"}}{{t 'nav.environment.manage'}}{{/link-to}}</li>
     </ul>
-  </button>
-{{/if}}
-
-{{#if (and hasKubernetes k8s.namespace)}}
-  <button class="dropdown btn project-btn kub-btn r-p0">
-    <a role="button" class="btn btn-link dropdown-toggle text-left r-p10" href="#" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.namespace.label'}}">
+  </li>
+{{~/if~}}
+{{~#if (and hasKubernetes k8s.namespace)~}}
+  <li class="dropdown btn project-btn kub-btn r-p0">
+    <a role="button" class="btn btn-link dropdown-toggle text-left" href="#" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.namespace.label'}}">
       <label>{{t 'nav.namespace.label'}}</label>
       <span class="clip">
         <i class="icon icon-folder-open icon-fw project-icon"></i>&nbsp;{{k8s.namespace.displayName}}
@@ -86,5 +85,5 @@
       {{/if}}
       <li>{{#link-to "k8s-tab.namespaces"}}{{t 'nav.namespace.manage'}}{{/link-to}}</li>
     </ul>
-  </button>
-{{/if}}
+  </li>
+{{~/if~}}
