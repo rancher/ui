@@ -429,22 +429,26 @@ export default Ember.Service.extend({
 
   isReady() {
     return this.get('store').find('environment').then((stacks) => {
-      let eId = C.EXTERNALID.KIND_SYSTEM + C.EXTERNALID.KIND_SEPARATOR + C.EXTERNALID.KIND_KUBERNETES;
-      let matching = stacks.filterBy('externalId', eId);
-      let expect = matching.get('length');
-      let healthy = matching.filterBy('healthState', 'healthy').get('length');
-      if ( expect > 0 && expect === healthy )
-      {
-        return this.request({
-          url: `${this.get('kubernetesEndpoint')}/${C.K8S.BASE}`
-        }).then(() => {
-          return true;
-        });
-      }
-      else
-      {
-        return Ember.RSVP.resolve(false);
-      }
+      return this.get('store').find('service').then((services) => {
+        let eId = C.EXTERNALID.KIND_SYSTEM + C.EXTERNALID.KIND_SEPARATOR + C.EXTERNALID.KIND_KUBERNETES;
+        let stack = stacks.filterBy('externalId', eId)[0];
+        if ( stack )
+        {
+          let matching = services.filterBy('environmentId', stack.get('id'));
+          let expect = matching.get('length');
+          let healthy = matching.filterBy('healthState', 'healthy').get('length');
+          if ( expect > 0 && expect === healthy )
+          {
+            return this.request({
+              url: `${this.get('kubernetesEndpoint')}/${C.K8S.BASE}`
+            }).then(() => {
+              return true;
+            });
+          }
+        }
+
+        return false;
+      });
     }).catch(() => {
       return Ember.RSVP.resolve(false);
     });
