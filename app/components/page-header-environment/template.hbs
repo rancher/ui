@@ -1,12 +1,12 @@
 {{#if project}}
-  <div class="dropdown btn-group project-btn {{if hasKubernetes 'alt'}}">
-    <a role="button" class="btn btn-link dropdown-toggle text-left" href="#" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.label'}}">
+  <button class="btn dropdown project-btn r-p10 {{if hasKubernetes 'alt'}}">
+    <a role="button" class="btn btn-link dropdown-toggle r-p0" href="#" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.environment.label'}}">
+      <label>{{t 'nav.environment.label'}}</label>
       <span class="clip">
         <i class="{{project.icon}} project-icon icon-fw"></i>&nbsp;{{project.displayName}}
       </span>
       <i class="icon icon-chevron-down project-chevron"></i>
       <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
-      <label>{{t 'nav.environment.label'}}</label>
     </a>
     <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu" data-dropdown-id="enviroment">
       {{#if projectChoices.length}}
@@ -43,18 +43,18 @@
       {{/if}}
       <li>{{#link-to "settings.projects"}}{{t 'nav.environment.manage'}}{{/link-to}}</li>
     </ul>
-  </div>
+  </button>
 {{/if}}
 
 {{#if (and hasKubernetes k8s.namespace)}}
-  <div class="dropdown btn-group project-btn kub-btn">
-    <a role="button" class="btn btn-link dropdown-toggle text-left clip" href="#" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.namespace.label'}}">
-      <span class="clip">
-        <i class="icon icon-folder-open icon-fw"></i>&nbsp;{{k8s.namespace.displayName}}
-      </span>
-      <i class="icon icon-chevron-down"></i>
-      <span class="sr-only">{{nav.srToggleDropdown}}</span>
+  <button class="dropdown btn project-btn kub-btn r-p10">
+    <a role="button" class="btn btn-link dropdown-toggle text-left r-p0" href="#" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.namespace.label'}}">
       <label>{{t 'nav.namespace.label'}}</label>
+      <span class="clip">
+        <i class="icon icon-folder-open icon-fw project-icon"></i>&nbsp;{{k8s.namespace.displayName}}
+      </span>
+      <i class="icon icon-chevron-down project-chevron"></i>
+      <span class="sr-only">{{nav.srToggleDropdown}}</span>
     </a>
     <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu" data-dropdown-id="namespace">
       {{#if k8s.namespaces.length}}
@@ -86,5 +86,5 @@
       {{/if}}
       <li>{{#link-to "k8s-tab.namespaces"}}{{t 'nav.namespace.manage'}}{{/link-to}}</li>
     </ul>
-  </div>
+  </button>
 {{/if}}
