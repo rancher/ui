@@ -27,7 +27,7 @@ export default Ember.Mixin.create({
       var metadata = socket.getMetadata();
       var socketProject = metadata.projectId;
       if ( currentProject !== socketProject ) {
-        console.error(`Subscribe ignoring message, current=${currentProject} socket=${socketProject}`, this.forStr());
+        console.error(`Subscribe ignoring message, current=${currentProject} socket=${socketProject} ` + this.forStr());
         this.connectSubscribe();
         return;
       }
@@ -84,7 +84,7 @@ export default Ember.Mixin.create({
     var socket = this.get('subscribeSocket');
     if ( socket )
     {
-      console.log('Subscribe disconnect', this.forStr());
+      console.log('Subscribe disconnect ' + this.forStr());
       socket.disconnect();
     }
   },
@@ -127,14 +127,14 @@ export default Ember.Mixin.create({
 
     // WebSocket disconnected (unexpectedly)
     subscribeDisconnected: function() {
-      console.log('Subscribe disconnected', this.forStr());
+      console.log('Subscribe disconnected ' + this.forStr());
       if ( this.get('reconnect') ) {
         this.connectSubscribe();
       }
     },
 
     subscribePing: function() {
-      console.log('Subscribe ping', this.forStr());
+      console.log('Subscribe ping ' + this.forStr());
     },
 
     hostChanged: function(change) {

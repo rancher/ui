@@ -169,6 +169,7 @@ export default Ember.Route.extend(Subscribe, {
 
   reset() {
     // Forget all the things
+    console.log('Store Reset');
     this.get('userStore').reset();
     this.get('store').reset();
     // Service has extra special hackery to cache relationships

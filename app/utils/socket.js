@@ -14,8 +14,6 @@ const CLOSING = 'closing';
 const RECONNECTING = 'reconnecting';
 
 export default Ember.Object.extend(Ember.Evented, {
-  growl: Ember.inject.service(),
-
   url: null,
   autoReconnect: true,
   frameTimeout: 11000,
@@ -170,7 +168,7 @@ export default Ember.Object.extend(Ember.Evented, {
   },
 
   _closed() {
-    console.log('Socket', this.get('_closingId'), 'closed');
+    console.log(`Socket ${this.get('_closingId')} closed`);
 
     let wasConnected = false;
     if ( [CONNECTED, CLOSING].indexOf(this.get('_state')) >= 0 )
@@ -189,12 +187,15 @@ export default Ember.Object.extend(Ember.Evented, {
       this.set('_disconnectedAt', (new Date()).getTime());
     }
 
-    if ( isSafari && !safariWarningShown && !wasConnected && this.get('url').indexOf('wss://') === 0 )
+    if ( isSafari && !wasConnected && this.get('url').indexOf('wss://') === 0 )
     {
       this.set('autoReconnect', false);
       this.set('_state', DISCONNECTED);
-      safariWarningShown = true;
-      this.get('growl').error('Error connecting to WebSocket','Safari does not support WebSockets connecting to a self-signed or unrecognized certificate.  Use http:// instead of https:// or reconfigure the server with a valid certificate from a recognized certificate authority.  Streaming stats, logs, shell/console, and auto-updating of the state of resources in the UI will not work until this is resolved.');
+      if ( !safariWarningShown )
+      {
+        safariWarningShown = true;
+        window.l('service:growl').error('Error connecting to WebSocket','Safari does not support WebSockets connecting to a self-signed or unrecognized certificate.  Use http:// instead of https:// or reconfigure the server with a valid certificate from a recognized certificate authority.  Streaming stats, logs, shell/console, and auto-updating of the state of resources in the UI will not work until this is resolved.');
+      }
     }
     else if ( this.get('autoReconnect') )
     {
@@ -218,6 +219,6 @@ export default Ember.Object.extend(Ember.Evented, {
 
     args.push(`(state=${this.get('_state')}, id=${this.get('_socket.__sockId')})`);
 
-    console.log.apply(console, args);
+    console.log(args.join(" "));
   },
 });
