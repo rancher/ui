@@ -171,7 +171,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       out.push({
         index: index,
         name: item.get('name') || intl.t('newContainer.emptySidekick', {num: index+1}),
-        enabled: !isUpgrade 
+        enabled: !isUpgrade
       });
     });
 

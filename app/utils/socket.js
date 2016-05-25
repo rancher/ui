@@ -37,6 +37,7 @@ export default Ember.Object.extend(Ember.Evented, {
     this.set('metadata', metadata||this.get('metadata')||{});
 
     var url = this.get('url');
+
     // If the site is SSL, the WebSocket should be too...
     if ( window.location.protocol === 'https:' && url.indexOf(INSECURE) === 0 )
     {

@@ -14,25 +14,26 @@ const formatters = {
 };
 
 export default Ember.Component.extend({
-  data: null,
-  tagName: 'span',
-  classNames: ['spark-line'],
   attributeBindings: ['cssSize:style', 'tooltip'],
+  tagName       : 'span',
+  classNames    : ['spark-line'],
 
-  width: null,
-  height: 20,
-  min: 0,
-  max: null,
-  interpolation: 'step-after',
-  formatter: 'value',
-  prefix: '',
-  type: null,
+  intl          : Ember.inject.service(),
+  data          : null,
+  width         : null,
+  height        : 20,
+  min           : 0,
+  max           : null,
+  interpolation : 'step-after',
+  formatter     : 'value',
+  prefix        : '',
+  type          : null,
 
-  svg: null,
-  line: null,
-  dot: null,
-  x: null,
-  y: null,
+  svg           : null,
+  line          : null,
+  dot           : null,
+  x             : null,
+  y             : null,
 
   init() {
     window.spark = this;
@@ -61,7 +62,17 @@ export default Ember.Component.extend({
   }.property('data.[]'),
 
   tooltip: function() {
-    return (this.get('prefix') || '') + formatters[this.get('formatter')](this.get('lastValue'));
+    let prefix     = this.get('prefix');
+    let prefixI18n = null;
+    let out        = null;
+
+    if (prefix) {
+      prefixI18n = this.get('intl').findTranslationByKey(prefix);
+      out = `${this.get('intl').formatMessage(prefixI18n)} ${formatters[this.get('formatter')](this.get('lastValue'))}`;
+    } else {
+      out = ` ${formatters[this.get('formatter')](this.get('lastValue'))}`;
+    }
+    return out;
   }.property('prefix', 'lastValue', 'formatter'),
 
   create() {
