@@ -26,6 +26,10 @@ var Service = Resource.extend({
       return this.doAction('deactivate');
     },
 
+    restart() {
+      return this.doAction('restart', {rollingRestartStrategy: {}});
+    },
+
     cancelUpgrade() {
       return this.doAction('cancelupgrade');
     },
@@ -157,6 +161,7 @@ var Service = Resource.extend({
     var canUpgrade = !!a.upgrade && this.get('type') === 'service';
     var isK8s = this.get('isK8s');
     var isSwarm = this.get('isSwarm');
+    var hasContainers = this.get('hasContainers');
 
     var choices = [
       { label: 'action.finishUpgrade',  icon: 'icon icon-success',          action: 'finishUpgrade',  enabled: !!a.finishupgrade },
@@ -165,7 +170,7 @@ var Service = Resource.extend({
       { label: 'action.cancelUpgrade',  icon: 'icon icon-life-ring',        action: 'cancelUpgrade',  enabled: !!a.cancelupgrade },
       { label: 'action.cancelRollback', icon: 'icon icon-life-ring',        action: 'cancelRollback', enabled: !!a.cancelrollback },
       { divider: true },
-      { label: 'action.restart',        icon: 'icon icon-refresh'    ,      action: 'restart',        enabled: !!a.restart },
+      { label: 'action.restart',        icon: 'icon icon-refresh'    ,      action: 'restart',        enabled: !!a.restart && hasContainers },
       { label: 'action.start',          icon: 'icon icon-play',             action: 'activate',       enabled: !!a.activate},
       { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate'},
       { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete'},
@@ -177,7 +182,7 @@ var Service = Resource.extend({
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type','isK8s','isSwarm'),
+  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type','isK8s','isSwarm','hasContainers'),
 
 
   // !! If you add a new one of these, you need to add it to reset() below too
