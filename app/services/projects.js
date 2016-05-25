@@ -214,7 +214,16 @@ export default Ember.Service.extend({
   checkForWaiting(hosts,machines) {
     let router = getOwner(this).get('router');
 
-    let hasHosts = (hosts && hosts.get('length') > 0) || (machines && machines.get('length') > 0);
+    let hasHosts = false;
+    if ( this.get('current.mesos') )
+    {
+      hasHosts = (hosts && hosts.filterBy('state','active').get('length') >= 2);
+    }
+    else
+    {
+      hasHosts = (hosts && hosts.get('length') > 0) || (machines && machines.get('length') > 0);
+    }
+
     if ( !hasHosts )
     {
       router.transitionTo('authenticated.project.waiting', this.get('current.id'));
