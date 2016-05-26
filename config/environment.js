@@ -92,6 +92,7 @@ module.exports = function(environment) {
       wsEndpoint: '/v1/projects/%PROJECTID%/subscribe' +
                     '?eventNames=resource.change' +
                     '&eventNames=service.kubernetes.change' +
+                    '&limit=-1' +
                     '&include=hosts' +
                     '&include=services' +
                     '&include=instances' +
