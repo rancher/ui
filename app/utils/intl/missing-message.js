@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 const { Logger:logger } = Ember;
 
-export function missingMessage(key, locales) {
+export default function missingMessage(key, locales) {
   if ( key )
   {
     locales = locales||['unknown'];
@@ -18,6 +18,3 @@ export function missingMessage(key, locales) {
     return '';
   }
 }
-export default {
-  missingMessage: missingMessage
-};
