@@ -94,7 +94,11 @@
   <div class="content">
     <ul class="list-unstyled">
       {{#each service.consumedServicesWithNames as |link|}}
-        <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.name}} {{/link-to}}</li>
+        {{# if (eq link.service.name link.name)}}
+          <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.name}} {{/link-to}}</li>
+        {{else}}
+          <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.name}} {{t 'generic.as'}} {{link.name}} {{/link-to}}</li>
+        {{/if}}
       {{else}}
         <li class="text-muted">{{t 'serviceInfoPartial.noLinks'}}</li>
       {{/each}}
