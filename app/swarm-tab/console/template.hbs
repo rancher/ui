@@ -1,32 +1,32 @@
 <section class="header">
-  <h1 style="display: block">Docker CLI</h1>
+  <h1 style="display: block">{{t 'dockerCLI.header'}}</h1>
 </section>
 
 <section class="well">
   {{#if (eq step 1)}}
-    <p>To use docker or docker-compose on your workstation, click the button to generate an API key and config file:</p>
-    <button {{action "generate"}} class="btn btn-primary">Generate Config</button>
+    <p>{{t 'dockerCLI.step1'}}:</p>
+    <button {{action "generate"}} class="btn btn-primary">{{t 'dockerCLI.step1Generate'}}</button>
   {{/if}}
   {{#if (eq step 2)}}
-    <i class="icon icon-spinner icon-spin"></i> Generating...
+    <i class="icon icon-spinner icon-spin"></i> {{t 'dockerCLI.step2'}}
   {{/if}}
   {{#if (eq step 3)}}
-    <i class="icon icon-spinner icon-spin"></i> Activating...
+    <i class="icon icon-spinner icon-spin"></i> {{t 'dockerCLI.step3'}}
   {{/if}}
   {{#if (eq step 4)}}
-    <p>Now configure your workstation:</p>
+    <p>{{t 'dockerCLI.step4'}}</p>
     <ul>
-      <li>Create the <code>.docker</code> directory: <code>mkdir -pv ~/.docker</code></li>
-      <li>Extract the ZIP file that just downloaded</li>
-      <li>Copy all the files from the extracted ZIP into the <code>.docker</code> directory</li>
-      <li>Run <code>export DOCKER_HOST={{endpoint.swarm}} DOCKER_TLS_VERIFY=1</code> or add to your profile</li>
-      <li>Test with <code>docker ps</code></li>
+      <li>{{format-html-message 'dockerCLI.item1'}}</li>
+      <li>{{t 'dockerCLI.item2'}}</li>
+      <li>{{format-html-message 'dockerCLI.item3'}}</li>
+      <li>{{format-html-message 'dockerCLI.item4'}}</li>
+      <li>{{format-html-message 'dockerCLI.item5'}}</li>
     </ul>
   {{/if}}
 </section>
 
 <section class="well">
-  <p>Or use this handy shell to directly execute <code>docker</code> or <code>docker-compose</code> commands:</p>
+  <p>{{format-html-message 'dockerCLI.well'}}:</p>
 
   {{container-shell
     classNames="inline-block"
