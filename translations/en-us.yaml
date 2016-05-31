@@ -15,8 +15,10 @@ generic:
   emptyString: ""
   enabled: Enabled
   expires: Expires
+  healthy: Healthy
   id: ID
   image: Image
+  internal: Internal
   ipAddress: IP Address
   loading: "Loading..."
   missing: "*%MISSING%*"
@@ -24,11 +26,14 @@ generic:
   na: 'N/A'
   name: Name
   none: None
+  ports: Ports
   remove: Remove
   role: Role
   state: State
+  to: To
   type: Type
   unknown: Unknown
+
 
 ##############################
 # Routes
@@ -116,6 +121,8 @@ auditLogsPage:
     resourceTypeId: "Resource Time:Id"
     identity: Identity
     authIp: "Auth & IP"
+  first: First Page
+  next: Next Page
 
 authPage:
   root:
@@ -236,10 +243,12 @@ catalogPage:
     header: 'Catalog:'
     search:
       placeholder: Search...
+    category: "Category:"
     certified: Certified
     noData:
       singular: There are no compatible templates.
       plural: There are no compatible templates in this catalog.
+    viewDetails: View Details
 
 consolePage:
   header: 'Shell:'
@@ -1366,6 +1375,7 @@ formBalancerListeners:
     placeholder: "Select a protocol:"
   container:
     placeholder: "In Container, e.g. 8080"
+  selectAccess: "Select access:"
   listen:
     public: Public
     internal: Internal
@@ -1543,6 +1553,23 @@ formNameDescription:
     label: Description
     placeholder: Description
 
+formNetwork: 
+  network: Network
+  container: Container
+  requestedIP: Requested IP
+  requestSpecific: Request a specific IP in the 10.42.0.0/16 block.  If the IP is already in use a random one will be assigned.
+  retainIP: Retain IP
+  reuseIP: Reuse IP addresses when upgrading or replacing unhealthy instances.
+  dns: DNS
+  serviceDiscovery: DNS service discovery
+  hostname: Hostname
+  useDockerID: Use the Docker container ID
+  containerName: Use the container name
+  specificHostname: "Set a specific hostname:"
+  domainName: Domain Name
+  resolvingServers: Resolving Servers
+  searchDomains: Search Domains
+
 formPorts:
   addAction: Port Map
   public:
@@ -1575,6 +1602,23 @@ formScale:
         other {# containers}
       }
 
+formScheduling:
+  canRequestHost:
+    vm: Run <b>all</b> virtual machines on a specific host
+    containers: Run <b>all</b> containers on a specific host
+  runSpecific: Run on a specific host
+  autoRun: "Automatically run on every host matching scheduling rules:"
+  autoPick:
+    vm: "Automatically pick hosts for each virtual machine matching scheduling rules:"
+    container: "Automatically pick hosts for each container matching scheduling rules:"
+    host: "Automatically pick a host matching scheduling rules:"
+  addRule: Add Scheduling Rule
+  condition: Condition
+  field: Field
+  key: Key
+  value: Value
+
+
 formSecurity:
   logConfig:
     addActionLabel: Add Option
@@ -1598,7 +1642,14 @@ formSecurity:
   pathContainer: Path in Container
   permissions: Permissions
   logDriver: Log Driver
-  logOptions: Log Options
+  logOptions: Log 
+  placeholder:
+    unlimited: Unlimited
+    egDefault: "e.g. 0,3; Default: All"
+    number: 1024
+    egsdc: e.g. /dev/sdc
+    egxsdc: e.g. /dev/xsdc
+    egsyslog: e.g. syslog
 
 formServiceLinks:
   addAction: Service Links
@@ -1610,12 +1661,42 @@ formServiceLinks:
   name:
     label: As Name
     placeholder: e.g. database
-
+    
 formSslTermination:
   defaultCertificate:
     prompt: Choose a Certificate...
   alternateCertificate:
     prompt: Choose a Certificate...
+  certificate: Certificate*
+  alternateCerts: Alternate Certs
+  addAlternate: Add Alternate Certificate
+  noCertificates: There are no other certificates to use.
+  helpBlock: |
+    "Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
+  muted: There are no SSL listening ports configured.
+
+formStickiness:
+  stickiness: Stickiness
+  none: None
+  newCookie: Create new cookie
+  cookieName: Cookie Name
+  mode: Mode
+  somain: Domain
+  options: Options
+  indirect: Indirect
+  sendHeader: Send no-cache header
+  onPost: Only set cookie on POST
+  noPorts: There are no HTTP listening ports configured.
+
+  placeholder:
+    sticky: e.g. sticky
+    domain: e.g. mydomain.com
+
+formTarget:
+  target: Target
+  pointAddress: Point to IP Address(es)
+  pointHostname: Point to a Hostname
+  addTarget: Add Target IP
 
 formTargets:
   title: Targets
@@ -1657,15 +1738,33 @@ formUserLabels:
     placeholder: e.g. bar
   protip: "ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
 
+formUpgrade:
+  size: Batch Size
+  interval: Batch Interval
+  sec: sec
+  behavior: Start Behavior
+  startStop: Start before Stopping
+  whichServices: Which Services
+
 formValueArray:
   addActionLabel: Add Value
   valueLabel: Value
   valuePlacholder: Value
   protip: "ProTip: Paste one or more lines of values into any field for easy bulk entry."
 
+formVirtualMachines:
+  vcpus: vCPUs
+  memory: Memory
+
 formVolumes:
   value:
     prompt: Select a Container...
+  volumes: Volumes
+  volumesFrom: Volumes From
+  volumeDriver: Volume Driver
+  text1: There are no other launch configs in this service to share volumes with.
+  text2: This host has no containers to use the volumes from.
+  text3: Only available when adding a container to a particular host.
 
 heroAddService:
   header: Adding your first Service
@@ -1745,6 +1844,9 @@ inputIdentity:
   placeholder:
     github: Add a GitHub user or organization name
     generic: Add a user or group by name
+  dropdownLabel: 
+    teams: Your Teams and Organizations
+    groups: Your Groups
 
 inputPassword:
   buttonText: Generate
@@ -1783,6 +1885,8 @@ k8s:
         containerPort: e.g. 8080
     noPorts: This container has no port maps.
   newOrEditResource:
+    edit: Edit
+    add: Add
     placeholder: Resouce YAML or JSON definition
   podSection:
     podName: Pod Name
@@ -2311,6 +2415,7 @@ stackSection:
       details: 'Details:'
       containers: 'Containers:'
       actions: 'Actions:'
+      kind: 'Kind'
 
 
 storagePoolSection:

@@ -3,7 +3,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   access: Ember.inject.service(),
-
+  intl: Ember.inject.service(),
   allowTeams: true,
   checking: false,
   addInput: '',
@@ -81,13 +81,16 @@ export default Ember.Component.extend({
   }.property('allIdentities.@each.{logicalType,externalIdType}','allowTeams'),
 
   dropdownLabel: function() {
+    let out = '';
+    let intl = this.get('intl');
     if ( this.get('access.provider') === 'githubconfig' )
     {
-      return "Your Teams and Organizations";
+      out = intl.findTranslationByKey('inputIdentity.dropdownLabel.teams');
     }
     else
     {
-      return "Your Groups";
+      out = intl.findTranslationByKey('inputIdentity.dropdownLabel.groups');
     }
-  }.property('access.provider'),
+    return intl.formatMessage(out);
+  }.property('access.provider', 'intl._locale'),
 });

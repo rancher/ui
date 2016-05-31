@@ -3,7 +3,12 @@
     <div class="radio">
       <label class="form-control-static">{{radio-button selection=isRequestedHost value=true}}
         {{#if isService}}
-          Run <b>all</b> {{if isVm 'virtual machines' 'containers'}} on a specific host{{if isRequestedHost ':'}}
+          {{#if (eq isVm 'virtual machines')}}
+            {{format-html-message 'formScheduling.canRequestHost.vm'}}
+          {{else}}
+            {{format-html-message 'formScheduling.canRequestHost.containers'}}
+          {{/if~}}
+          {{if isRequestedHost ':'}}
         {{else}}
           Run on a specific host{{if isRequestedHost ':'}}
         {{/if}}</label>
@@ -24,43 +29,51 @@
       <label>{{radio-button selection=isRequestedHost value=false}}
         {{#if isService}}
           {{#if isGlobal}}
-            Automatically run on every host matching scheduling rules:
+            {{t 'formScheduling.autoRun'}}
           {{else}}
-            Automatically pick hosts for each {{if isVm 'virtual machine' 'container'}} matching scheduling rules:
+            {{#if (eq isVm 'virtual machines')}}
+              {{t 'formScheduling.autoPick.vm'}}
+            {{else}}
+              {{t 'formScheduling.autoPick.containers'}}
+            {{/if~}}
           {{/if}}
         {{else}}
-          Automatically pick a host matching scheduling rules:
+          {{t 'formScheduling.autoPick.host'}}
         {{/if}}
       </label>
     </div>
   {{else}}
     {{#if isService}}
       {{#if isGlobal}}
-        Automatically run on every host matching scheduling rules:
+        {{t 'formScheduling.autoRun'}}
       {{else}}
-        Automatically pick hosts for each {{if isVm 'virtual machine' 'container'}} matching scheduling rules:
+        {{#if (eq isVm 'virtual machines')}}
+          {{t 'formScheduling.autoPick.vm'}}
+        {{else}}
+          {{t 'formScheduling.autoPick.containers'}}
+        {{/if~}}
       {{/if}}
     {{else}}
-      Automatically pick a host matching scheduling rules:
+      {{t 'formScheduling.autoPick.host'}}
     {{/if}}
   {{/if}}
 
   {{#unless isRequestedHost}}
     <div class="form-control-static">
-      <button class="btn-circle-text" {{action "addSchedulingRule"}}><i class="icon icon-plus-circle"/> <span>Add Scheduling Rule</span></button>
+      <button class="btn-circle-text" {{action "addSchedulingRule"}}><i class="icon icon-plus-circle"/> <span>{{t 'formScheduling.addRule'}}</span></button>
     </div>
     {{#if affinityLabelArray.length}}
       <table class="table fixed no-lines no-top-padding tight small">
         <thead>
           <tr class="text-muted">
             <th width="70"></th>
-            <th width="100">Condition</th>
+            <th width="100">{{t 'formScheduling.condition'}}</th>
             <th width="60"></th>
-            <th width="180">Field</th>
+            <th width="180">{{t 'formScheduling.field'}}</th>
             <th width="30"></th>
-            <th>Key</th>
+            <th>{{t 'formScheduling.key'}}</th>
             <th width="30"></th>
-            <th>Value</th>
+            <th>{{t 'formScheduling.value'}}</th>
             <th width="30"></th>
           </tr>
         </thead>
