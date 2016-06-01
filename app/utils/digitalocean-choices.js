@@ -10,7 +10,7 @@ export let Regions = {
     {"name":"New York 3","slug":"nyc3","sizes":["32gb","16gb","2gb","1gb","4gb","8gb","512mb","64gb","48gb"],"features":["private_networking","backups","ipv6","metadata"],"available":true},
     {"name":"Amsterdam 3","slug":"ams3","sizes":["32gb","16gb","2gb","1gb","4gb","8gb","512mb","64gb","48gb"],"features":["private_networking","backups","ipv6","metadata"],"available":true},
     {"name":"Frankfurt 1","slug":"fra1","sizes":["32gb","16gb","2gb","1gb","4gb","8gb","512mb","64gb","48gb"],"features":["private_networking","backups","ipv6","metadata"],"available":true},
-    {"name":"Toronto 1","slug":"tor1","sizes":["32gb","16gb","2gb","1gb","4gb","8gb","512mb","64gb","48gb"],"features":["private_networking","backups","ipv6","metadata"],"available":true}
+    {"name":"Toronto 1","slug":"tor1","sizes":["32gb","16gb","2gb","1gb","4gb","8gb","512mb","64gb","48gb"],"features":["private_networking","backups","ipv6","metadata"],"available":true},
     {"name":"Bangalore 1","slug":"blr1","sizes":["32gb","16gb","2gb","1gb","4gb","8gb","512mb","64gb","48gb"],"features":["private_networking","backups","ipv6","metadata"],"available":true}
   ],
   "links":{},
