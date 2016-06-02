@@ -69,11 +69,29 @@
         {{/if}}
       </div>
       {{#if driver.upgradeAvailable}}
-        <button type="button" class="btn btn-warning btn-xs r-mt5" {{action 'upgradeDriver' driver}}>Upgrade Available</button>
-      {{/if}}
+        <div class="btn-group r-mt5">
+          <button type="button" class="btn btn-warning btn-xs">
+            {{#if upgrading}}
+              <i class="icon icon-spinner icon-spin"></i> {{t 'machinePage.upgrading'}}
+            {{else}}
+              {{t 'machinePage.upgradeAvailable'}}
+            {{/if}}
+          </button>
+          <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+            <i class="icon icon-fw icon-chevron-down"></i>
+            <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            {{!-- each over versions --}}
+            {{#each-in driver.upgradeVersionLinks as |version path|}}
+              <li class='hand' {{action "upgradeDriver" driver version path}}>{{version}}</li>
+            {{/each-in}}
+          </ul>
+        </div>
+        {{/if}}
       {{#if (or (eq driver.state 'inactive') (not driver.state))}}
         <span class="state badge r-mt5">
-          {{t 'machinePage.inactive'}}
+          {{if driver.state driver.state (t 'machinePage.inactive')}}
         </span>
       {{/if}}
     </div>
