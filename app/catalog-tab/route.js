@@ -60,10 +60,14 @@ export default Ember.Route.extend({
   },
 
   beforeModel: function() {
-    return this.get('store').request({url: `${this.get('app.catalogEndpoint')}/catalogs`}).then((response) => {
-      this.set('catalogs', response);
-      let ids = uniqKeys(response, 'id');
-      this.set('uniqueCatalogIds', ids);
+    this._super(...arguments);
+    var auth = this.modelFor('authenticated');
+    return this.get('projects').checkForWaiting(auth.get('hosts'),auth.get('machines')).then(() => {
+      return this.get('store').request({url: `${this.get('app.catalogEndpoint')}/catalogs`}).then((response) => {
+        this.set('catalogs', response);
+        let ids = uniqKeys(response, 'id');
+        this.set('uniqueCatalogIds', ids);
+      });
     });
   },
 
