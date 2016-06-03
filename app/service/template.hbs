@@ -1,5 +1,5 @@
 <section class="header r-pt20 clearfix">
-  <h1>{{t 'servicePage.header'}}</h1>
+  <h1>{{t 'servicePage.header'}}:</h1>
   {{#power-select options=model.stack.services selected=service onchange=(action "changeService") searchField="displayName" as |obj|}}
     <div class="clip">
       {{select-dot model=obj}}
@@ -19,11 +19,11 @@
 
         <div class="container-flex bordered">
           <div class="col-flex">
-            <label>{{t 'servicePage.multistat.type'}}</label>
+            <label>{{t 'servicePage.multistat.type'}}:</label>
             {{service.displayType}}
           </div>
           <div class="col-flex">
-            <label>{{t 'servicePage.multistat.fqdn'}}</label>
+            <label>{{t 'servicePage.multistat.fqdn'}}:</label>
             {{#if service.fqdn}}
               <span><a href="http://{{service.fqdn}}">{{service.fqdn}}</a> {{copy-to-clipboard clipboardText=service.fqdn size="small"}}</span>
             {{else}}
@@ -31,7 +31,7 @@
             {{/if}}
           </div>
           <div class="col-flex">
-            <label>{{t 'servicePage.multistat.scale'}}</label>
+            <label>{{t 'servicePage.multistat.scale'}}:</label>
             {{#if service.canScale}}
               {{service.scale}}
               &nbsp;
@@ -48,13 +48,13 @@
         {{#if service.hasImage}}
           <div class="container-flex bordered">
             <div class="col-flex">
-              <label>{{t 'servicePage.multistat.image'}}</label>
+              <label>{{t 'servicePage.multistat.image'}}:</label>
               <span class="force-wrap">
                 {{service.launchConfig.displayImage}} {{copy-to-clipboard clipboardText=service.launchConfig.displayImage size="small"}}
               </span>
             </div>
             <div class="col-flex">
-              <label>{{t 'servicePage.multistat.entryPoint'}}</label>
+              <label>{{t 'servicePage.multistat.entryPoint'}}:</label>
               <span class="force-wrap">
                 {{#if service.launchConfig.entryPoint}}
                   {{service.launchConfig.entryPoint}}
@@ -64,7 +64,7 @@
               </span>
             </div>
             <div class="col-flex">
-              <label>{{t 'servicePage.multistat.command'}}</label>
+              <label>{{t 'servicePage.multistat.command'}}:</label>
               <span class="force-wrap">
                 {{#if service.launchConfig.command}}
                   {{concat-str service.launchConfig.command}}
@@ -78,7 +78,7 @@
         {{#if service.description}}
           <div class="container-flex bordered">
             <div class="col-flex description">
-              <label>{{t 'servicePage.multistat.description'}} </label>
+              <label>{{t 'servicePage.multistat.description'}}: </label>
               <span>{{service.description}}</span>
             </div>
           </div>
@@ -100,7 +100,7 @@
           {{/each}}
         </ul>
       {{else}}
-        <label class="text-muted">{{t 'servicePage.external.externalHostname'}} </label> {{service.hostname}}
+        <label class="text-muted">{{t 'servicePage.external.externalHostname'}}: </label> {{service.hostname}}
       {{/if}}
     </div>
   </section>
