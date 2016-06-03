@@ -1,5 +1,5 @@
 <section class="header r-pt20 clearfix">
-  <h1>{{#link-to "hosts"}}{{t 'hostsPage.hostPage.header.linkTo'}}{{/link-to}}</h1>
+  <h1>{{#link-to "hosts"}}{{t 'hostsPage.hostPage.header.linkTo'}}:{{/link-to}}</h1>
 
   {{#power-select options=model.all selected=host onchange=(action "changeHost") searchField="displayName" as |obj|}}
     <div class="clip">
@@ -20,12 +20,12 @@
   {{#info-multi-stats model=host linkName="hostStats" single=true}}
     <div class="container-flex bordered">
       <div class="col-flex">
-        <label>{{t 'hostsPage.hostPage.infoMultiStats.ip'}}</label>
+        <label>{{t 'hostsPage.hostPage.infoMultiStats.ip'}}:</label>
         {{format-ip ip=host.displayIp showCopy=true}}
       </div>
       <div class="col-flex">
         {{#if host.cpuBlurb}}
-          <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
+          <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}:</label>
           {{host.cpuBlurb}}
           {{#if host.cpuTooltip}}
               {{#tooltip-element type='tooltip-basic' model=host tooltipTemplate='tooltip-cpu'}}
@@ -36,7 +36,7 @@
         </div>
         <div class="col-flex">
           {{#if host.memoryBlurb}}
-            <label>{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
+            <label>{{t 'hostsPage.hostPage.infoMultiStats.memory'}}:</label>
             {{host.memoryBlurb}}
           {{else}}
             <span class="text-muted">{{t 'generic.unknown'}}</span>
@@ -44,7 +44,7 @@
         </div>
         <div class="col-flex">
           {{#if host.diskBlurb}}
-            <label>{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
+            <label>{{t 'hostsPage.hostPage.infoMultiStats.storage'}}:</label>
             {{#if host.diskDetail}}
               {{#each host.diskDetail as |disk|}}
                 <span style="display: inline-block; padding-right: 10px;">{{disk.value}}
@@ -63,7 +63,7 @@
       </div>
       <div class="container-flex bordered">
         <div class="col-flex">
-          <label>{{t 'hostsPage.hostPage.infoMultiStats.provider.labelText'}}</label>
+          <label>{{t 'hostsPage.hostPage.infoMultiStats.provider.labelText'}}:</label>
           {{#if host.machine}}
             {{host.machine.driver}}
           {{else}}
@@ -72,13 +72,13 @@
         </div>
         <div class="col-flex">
           {{#if host.info.osInfo.kernelVersion}}
-            <label>{{t 'hostsPage.hostPage.infoMultiStats.kernel'}}</label>
+            <label>{{t 'hostsPage.hostPage.infoMultiStats.kernel'}}:</label>
             {{host.info.osInfo.kernelVersion}}
           {{/if}}
         </div>
         <div class="col-flex">
           {{#if host.dockerBlurb}}
-            <label>{{t 'hostsPage.hostPage.infoMultiStats.docker'}}</label>
+            <label>{{t 'hostsPage.hostPage.infoMultiStats.docker'}}:</label>
             {{host.dockerBlurb}}
           {{else}}
             <span class="text-muted">{{t 'generic.unknown'}}</span>
@@ -86,7 +86,7 @@
         </div>
         <div class="col-flex">
           {{#if host.osDetail}}
-            <label>{{t 'hostsPage.hostPage.infoMultiStats.os'}}</label>
+            <label>{{t 'hostsPage.hostPage.infoMultiStats.os'}}:</label>
             {{host.osDetail}}
           {{else}}
             <span class="text-muted">{{t 'generic.unknown'}}</span>
@@ -96,7 +96,7 @@
       {{#if host.description}}
         <div class="row multi-stats">
           <div class="col-xs-12 description">
-            <label>{{t 'hostsPage.hostPage.infoMultiStats.description'}} </label>
+            <label>{{t 'hostsPage.hostPage.infoMultiStats.description'}}: </label>
             <span>{{host.description}}</span>
           </div>
         </div>

@@ -2,13 +2,13 @@
   {{#if showEdit}}
     <h1>
       {{#if editing}}
-        {{t 'viewEditProject.showEdit.edit'}} {{originalProject.displayName}}
+        {{t 'viewEditProject.showEdit.edit'}}: {{originalProject.displayName}}
       {{else}}
         {{t 'viewEditProject.showEdit.add'}}
       {{/if}}
     </h1>
   {{else}}
-    <h1>{{#link-to "settings.projects"}}{{t 'viewEditProject.header'}}{{/link-to}}</h1>
+    <h1>{{#link-to "settings.projects"}}{{t 'viewEditProject.header'}}:{{/link-to}}</h1>
       {{#power-select options=model.all selected=project onchange=(action "changeProject") searchField="displayName" as |obj|}}
           {{select-dot model=obj}}
       {{/power-select}}
