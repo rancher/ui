@@ -446,8 +446,9 @@ haPage:
         notDownloaded:
           header: "4. 下载脚本"
           subtext: 点击下方按钮以下载命令行脚本。
-          alert: "脚本生成新的加密秘钥用于高可用主机间的通讯，请确保相关信息的安全。\n\
-              每次您下载配置脚本时将生成新的秘钥，为确保高可用正常工作，所有的主机必须拥有相同的密钥。 "
+          alert: |
+              脚本生成新的加密秘钥用于高可用主机间的通讯，请确保相关信息的安全。
+              每次您下载配置脚本时将生成新的秘钥，为确保高可用正常工作，所有的主机必须拥有相同的密钥。
           buttonText: 下载配置脚本
           generateScript: 生成步骤3中的脚本
 helpPage:
@@ -456,7 +457,7 @@ helpPage:
   releaseText: 发布时间：
   environment:
     header: 什么是环境？
-    content: "<p>{appName} 支持将资源分组归属到多个环境中。每个环境具有自己独立的基础架构资源及服务，并由一个或多个用户、团队或组织所管理。</p>\n\
+    content: "<p>{appName} 支持将资源分组归属到多个环境中。每个环境具有自己独立的基础架构资源及服务，并由一个或多个用户、团队或组织所管理。</p>
         <p>例如，您可以创建独立的“开发”、“测试”及“生产”环境以确保环境之间的安全隔离，将“开发”环境的访问权限赋予全部人员，但限制“生产”环境的访问权限给一个小的团队。</p> "
     manageLink: 管理环境
   host:
@@ -486,8 +487,9 @@ helpPage:
         link: 在Github上提出问题
       graphic2:
         text: 更多有用信息
-        link: "<a href=\"{docsLink}\" target=\"_blank\">关于{appName} 使用请参考官方文档</a>\n\
-            <br/>或 <a href=\"{companyLink}/learn/\" target=\"_blank\">观看我们的快速上手教程</a> "
+        link: |
+            <a href=\"{docsLink}\" target=\"_blank\">关于{appName} 使用请参考官方文档</a>
+            <br/>或 <a href=\"{companyLink}/learn/\" target=\"_blank\">观看我们的快速上手教程</a>
       graphic3:
         text: 需要故障诊断协助？
         link: 参考我们的常见问题解答
@@ -671,9 +673,9 @@ mesosPage:
   actionLink: "打开Mesos UI"
   banner:
     header: 群集
-    content: "当前有 {hosts, plural,\n\
-        =1 {# 活动主机}\n\
-        other {# 活动主机}\n\
+    content: "当前有 {hosts, plural,
+        =1 {# 活动主机}
+        other {# 活动主机}
         } 在Mesos群集中 "
     link: 查看或添加主机
   launch:
@@ -776,7 +778,7 @@ settingsPage:
   index:
     header: 环境
     linkTo: 添加环境
-    subtext: "<p>{appName} 支持将资源分组归属到多个<b>环境</b>中。每个环境具有自己独立的基础架构资源及服务，并由一个或多个用户、团队或组织所管理。</p>\n\
+    subtext: "<p>{appName} 支持将资源分组归属到多个<b>环境</b>中。每个环境具有自己独立的基础架构资源及服务，并由一个或多个用户、团队或组织所管理。</p>
         <p>例如，您可以创建独立的“开发”、“测试”及“生产”环境以确保环境之间的安全隔离，将“开发”环境的访问权限赋予全部人员，但限制“生产”环境的访问权限给一个小的团队。</p> "
     alert: 当前没有活动环境。在进行其他操作前，需要先创建或激活一个环境。
     table:
@@ -905,14 +907,14 @@ virtualMachinesPage:
       noData: 当前没有任何虚拟机
 waitingPage:
   hosts:
-    header: "{expectHosts, plural,\n\
-        =1 {添加第一台主机}\n\
-        other {添加主机}\n\
+    header: "{expectHosts, plural,
+        =1 {添加第一台主机}
+        other {添加主机}
         } "
-    content: "至少需要添加 {expectHosts, plural,\n\
-        =1 {1台支持}\n\
-        other {# 台支持}\n\
-        } Docker {minVersion} 或以上版本的Linux主机，该主机需要能够通过HTTP方式访问{appName} 服务器。<br/>\n\
+    content: "至少需要添加 {expectHosts, plural,
+        =1 {1台支持}
+        other {# 台支持}
+        } Docker {minVersion} 或以上版本的Linux主机，该主机需要能够通过HTTP方式访问{appName} 服务器。<br/>
         {appName} 支持添加多种形式的Linux主机，包括由任何公有云、私有云或裸机方式提供的虚拟机或物理机。 "
     contentLink: 了解更多
     linkToHost: 添加主机
@@ -1173,7 +1175,7 @@ editBalancerService:
   title: 编辑负载均衡
   haproxy:
     label: 配置文件(haproxy.cfg)
-    help: "此处可以设置其他 <a href=\"http://cbonte.github.io/haproxy-dconv/configuration-1.5.html\" target=\"_blank\">haproxy.cfg</a>\n\
+    help: "此处可以设置其他 <a href=\"http://cbonte.github.io/haproxy-dconv/configuration-1.5.html\" target=\"_blank\">haproxy.cfg</a>
         配置项，相关内容将被附加到 {appName} 生成的配置中。 "
     global:
       label: "<code>global</code> section"
@@ -1295,9 +1297,9 @@ formCommand:
     no: 从不
     onFailure: "失败时 <span class=\"text-muted\">(非0退出代码)</span> 总是"
     onFailureCondPrefix: 失败时，最多
-    onFailureCondSuffix: "{limit, plural,\n\
-        =1 {次}\n\
-        other {次}\n\
+    onFailureCondSuffix: "{limit, plural,
+        =1 {次}
+        other {次}
         } "
     always: 总是
   environment:
@@ -1402,9 +1404,9 @@ formHealthCheck:
     none: 不进行操作
     recreate: 重新创建
     recreateOnQuorumPrefix: 重新创建，仅当至少
-    recreateOnQuorumSuffix: "{quorum, plural,\n\
-        =1 {个容器}\n\
-        other {个容器}\n\
+    recreateOnQuorumSuffix: "{quorum, plural,
+        =1 {个容器}
+        other {个容器}
         }健康时 "
 formKeyValue:
   addAction: 添加键值对
@@ -1450,15 +1452,15 @@ formScale:
     vm: 总是在每台主机上运行一个此虚拟机的实例
     container: 总是在每台主机上运行一个此容器的实例
   regular:
-    vm: "Run {scale, plural,\n\
-        =0 {无虚拟机}\n\
-        =1 {1 台虚拟机}\n\
-        other {# 台虚拟机}\n\
+    vm: "Run {scale, plural,
+        =0 {无虚拟机}
+        =1 {1 台虚拟机}
+        other {# 台虚拟机}
         } "
-    container: "Run {scale, plural,\n\
-        =0 {无容器}\n\
-        =1 {1 个容器}\n\
-        other {# 个容器}\n\
+    container: "Run {scale, plural,
+        =0 {无容器}
+        =1 {1 个容器}
+        other {# 个容器}
         } "
 formSecurity:
   logConfig:
@@ -1543,7 +1545,7 @@ formVolumes:
     prompt: 选择容器...
 heroAddService:
   header: 添加第一个服务
-  paragraph1: "简单而言，服务是一组由相同docker镜像创建的容器，Rancher服务扩展了Docker的“link”概念以利用{appName}的轻量级分布式DNS服务用于服务发现。\n\
+  paragraph1: "简单而言，服务是一组由相同docker镜像创建的容器，Rancher服务扩展了Docker的“link”概念以利用{appName}的轻量级分布式DNS服务用于服务发现。
       服务可以单独添加或通过应用商店部署。 "
   paragraph2: "服务也能够利用其他{appName}内置服务，如负载均衡、健康监控、升级支持以及高可用。"
   contentLink: 了解更多
@@ -1567,7 +1569,7 @@ hostSettings:
 hostPod:
   machineInfo:
     active:
-      activating: "即将完成&hellip;<br/>\n\
+      activating: "即将完成&hellip;<br/>
           <i class=\"icon icon-spinner icon-spin\"></i> 等待客户端代理连接 "
     deactivated:
       error: 创建主机出错
@@ -1998,7 +2000,7 @@ newBalancer:
     custom: 自定义haproxy.cfg
     labels: 标签
     scheduling: 调度
-  helpBlock: "<p class=\"help-block\">此处可以设置其他 <a href=\"http://cbonte.github.io/haproxy-dconv/configuration-1.5.html\" target=\"_blank\">haproxy.cfg</a>\n\
+  helpBlock: "<p class=\"help-block\">此处可以设置其他 <a href=\"http://cbonte.github.io/haproxy-dconv/configuration-1.5.html\" target=\"_blank\">haproxy.cfg</a>
       配置项，相关内容将被附加到 {appName} 生成的配置中。 </p> "
   labelGlobal: "<code>global</code> section"
   labelDefault: "<code>defaults</code> section"
@@ -2026,9 +2028,9 @@ newCatalog:
   preview: 预览
   txt: answers.txt
 newContainer:
-  service: "{numServices, plural,\n\
-      =1 {服务}\n\
-      other {服务}\n\
+  service: "{numServices, plural,
+      =1 {服务}
+      other {服务}
       } "
   tabs:
     disks: 磁盘
@@ -2104,17 +2106,17 @@ stackSection:
   outputs: 输出
   description: 描述
   none: 无服务
-  container: "{numContainers, plural,\n\
-      =1 {容器}\n\
-      other {容器}\n\
+  container: "{numContainers, plural,
+      =1 {容器}
+      other {容器}
       } "
-  service: "{numServices, plural,\n\
-      =1 {服务}\n\
-      other {服务}\n\
+  service: "{numServices, plural,
+      =1 {服务}
+      other {服务}
       } "
-  sidekick: "{numSidekicks, plural,\n\
-      =1 {从容器}\n\
-      other {从容器}\n\
+  sidekick: "{numSidekicks, plural,
+      =1 {从容器}
+      other {从容器}
       } "
   add:
     service: 添加服务
@@ -2178,7 +2180,7 @@ viewEditProject:
     formControl: 访问控制
   header: 环境
   description: 描述
-  helpBlock: "未启用访问控制。<br/>\n\
+  helpBlock: "未启用访问控制。<br/>
       任何访问API/UI的人都具有管理员权限，并能够使用任何环境。 "
   virtualMachine:
     label: 虚拟机支持
