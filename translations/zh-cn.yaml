@@ -1,4 +1,8 @@
 languageName: "Chinese Simplified (ZH-CN)"
+
+##############################
+# Really generic things used in multiple places (use sparingly)
+##############################
 generic:
   actions: 操作
   closeModal: 关闭
@@ -7,16 +11,16 @@ generic:
   description: 描述
   disabled: 禁用
   domainName: 域名
-  emptyString: "\"\""
+  emptyString: ""
   enabled: 启用
   expires: 过期
   id: ID
   image: 镜像
   ipAddress: IP地址
-  loading: 加载中...
+  loading: "加载中..."
   missing: "*%MISSING%*"
   moreActions: 更多操作
-  na: N/A
+  na: 'N/A'
   name: 名称
   none: 无
   remove: 移除
@@ -24,6 +28,10 @@ generic:
   state: 状态
   type: 类型
   unknown: 未知
+  
+##############################
+# Routes
+##############################
 accountsPage:
   index:
     header: 账号
@@ -41,10 +49,10 @@ accountsPage:
     header: 添加账号
     form:
       username:
-        labelText: 登录用户名*
-        placeholder: 例如：jsmith
+        labelText: "登录用户名*"
+        placeholder: "例如：jsmith"
       password:
-        labelText: 密码*
+        labelText: "密码*"
       name:
         labelText: 姓名
         placeholder: "例如：John Smith"
@@ -54,11 +62,13 @@ accountsPage:
       description:
         labelText: 描述
         placeholder: "例如：这是John Smith的账号"
+        
 apiPage:
   header: "环境API Keys"
   actionButton: "添加环境API Key"
-  content: "环境API Keys与当前环境(<code>{displayName}</code>)绑定，仅能用于管理当前环境的资源。当前环境中具有权限的其他账号也能够管理这些API Keys。 "
-  labelText: 端点
+  content: |
+    环境API Keys与当前环境(<code>{displayName}</code>)绑定，仅能用于管理当前环境的资源。当前环境中具有权限的其他账号也能够管理这些API Keys。
+  labelText: '端点:'
   table:
     state: 状态
     name: 名称
@@ -77,6 +87,7 @@ apiPage:
       paragraph2: 能够创建、删除及管理您有权限访问的所有环境。
     table:
       noData: "您还没有创建任何账号API Keys。"
+      
 auditLogsPage:
   header: 审计日志
   form:
@@ -85,7 +96,7 @@ auditLogsPage:
     resourceType:
       placeholder: 资源类型：
       dropdownPlaceholder: 选择一种资源类型：
-      dropdownList: ~
+      dropdownList: 
     resourceId:
       placeholder: 资源ID
     requestIp:
@@ -93,7 +104,7 @@ auditLogsPage:
     authType:
       placeholder: 认证类型：
       dropdownPlaceholder: 选择认证类型：
-      dropdownList: ~
+      dropdownList: 
     clearButtonText: 全部清除
     searchButtonText: 搜索
   table:
@@ -104,6 +115,7 @@ auditLogsPage:
     resourceTypeId: 资源类型：Id
     identity: 认证用户
     authIp: 认证类型&IP
+    
 authPage:
   root:
     header: 访问控制
@@ -143,25 +155,25 @@ authPage:
             customizeButton: 自定义
       disableAccess:
         header: 危险区域&trade;
-        warning: <b class=\"text-danger\">警告：</b> 禁用访问控制将导致任何能够访问此页面或API的用户拥有对  {appName}  的完全控制权限。
+        warning: '<b class=\"text-danger\">警告：</b> 禁用访问控制将导致任何能够访问此页面或API的用户拥有对  {appName}  的完全控制权限。'
         confirmDisable: "确认? 再次点击将关闭访问控制。"
         disable: 关闭访问控制
     notAuthenticated:
       header: "1. 设置Github应用"
       ul:
         li1:
-          text: "标准Github， <a href=\"https://github.com/settings/developers\" target=\"_blank\">点击此处</a> 在弹出的新窗口中进行应用设置。"
+          text: '标准Github， <a href=\"https://github.com/settings/developers\" target=\"_blank\">点击此处</a> 在弹出的新窗口中进行应用设置。'
           ul:
-            li1: 企业版Github，请登陆你的账号，点击Settings，然后点击Applications进行设置。
+            li1: "企业版Github，请登陆你的账号，点击Settings，然后点击Applications进行设置。"
         li2:
-          text: "点击 \"Register new application\" 并填写表单内容："
+          text: '点击 \"Register new application\" 并填写表单内容：'
           ul:
-            li1: <b>Application name:</b> <span class=\"text-muted\">任何您喜欢的应用名称, 例如 My {appName}</span>
-            li2: <b>Homepage URL: </b>
-            li3: '<b>Application description:</b> <span class=\"text-muted\">任何你喜欢的描述，可选</span>'
+            li1: '<b>Application name:</b> <span class=\"text-muted\">任何您喜欢的应用名称, 例如 My {appName}</span>'
+            li2: "<b>Homepage URL: </b> "
+            li3: '<b>Application description:</b> <span class=\"text-muted\">Anything you like, optional</span>'
             li4: "<b>Authorization callback URL:</b>"
         li3:
-          text: "点击 \"Register Application\" "
+          text: '点击 \"Register Application\" '
       form:
         headder: "2. 设置 {appName} 使用你的Github应用验证"
         subtext: "将新创建Github应用的Client ID和Secret复制粘贴到下方的对应输入框中"
@@ -185,7 +197,7 @@ authPage:
   localAuth:
     header:
       enabled: "本地验证 <b>已启用</b>"
-      disabled: "本地验证 <b class=\"text-warning\">未设置</b>"
+      disabled: '本地验证 <b class=\"text-warning\">未设置</b>'
     subtext:
       enabled:
         text: "{appName} 已设置为允许本地数据库中的账号访问。"
@@ -217,6 +229,7 @@ authPage:
       buttonText:
         pre: 启用本地验证
         post: 启用中...
+
 catalogPage:
   index:
     header: 应用商店
@@ -226,9 +239,11 @@ catalogPage:
     noData:
       singular: 没有符合的应用模板
       plural: 当前目录下没有符合的应用模板
+
 consolePage:
   header: 命令行：
   closeButton: 关闭
+ 
 certificatesPage:
   table:
     cn: 域名
@@ -265,6 +280,7 @@ certificatesPage:
         placeholder: 例如：mydomain.com
       description:
         placeholder: 例如：mydomain.com的EV证书
+
 containersPage:
   table:
     ipAddress: IP地址
@@ -273,9 +289,9 @@ containersPage:
     image: 镜像
     stats: 统计
     sparkPrefixCpu: "CPU： "
-    sparkPrefixMemory: "内存 "
-    sparkPrefixNetwork: "网络 "
-    sparkPrefixStorage: "存储 "
+    sparkPrefixMemory: "内存："
+    sparkPrefixNetwork: "网络："
+    sparkPrefixStorage: "存储："
     command: 命令
     noCommand: 无
   index:
@@ -348,20 +364,27 @@ containersPage:
             error: 错误
             noData: 该容器未使用卷
           noContainers: 无其他容器
+
 containerSubpod:
   childContainers: 容器
   childSidekicks: 从
+
+# If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
+# those are present incase we have an error in the app and can not load the translations file
+# the error page will at least make a little sense
 failWhalePage:
   header: 错误
-  reloadButton: "<a href=\"#\" onclick=\"window.location.href = window.location.href; return false;\">重新加载</a> 以重试或 "
+  reloadButton: |
+    <a href=\"#\" onclick=\"window.location.href = window.location.href; return false;\">重新加载</a> 以重试或
   logoutButton: 注销
+
 haPage:
   header:
-    enabled: "高可用已 <b class=\"text-success\">启用</b>"
+    enabled: '高可用已 <b class=\"text-success\">启用</b>'
     disabled: 高可用未设置
   haConfigured:
     addHost:
-      header: "5. 添加主机"
+      header: '5. 添加主机'
       subtext: 将下载的脚本拷贝到每一台高可用主机上运行以注册
     hosts:
       header: 主机：
@@ -397,7 +420,7 @@ haPage:
         ul:
           li1: 通过以下命令重新运行服务器容器并指向外部数据库
           isRancher:
-            li1: "<a href=\"http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database\" target=\"_blank\">查看文档</a> 以获取更多信息。"
+            li1: '<a href=\"http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database\" target=\"_blank\">查看文档</a> 以获取更多信息。'
       noLocalDb:
         header: 使用新的外部数据库
         subtext: "完成， <code>{dbHost}</code> 将作为高可用部署的外部数据库。"
@@ -411,27 +434,27 @@ haPage:
       form:
         clusterSize:
           labelText: 群集规模
-          radio1: "<span class=\"text-bold\" style=\"display: inline-block: width: 120px;\">1 台主机：</span> 无高可用"
-          radio2: "<span class=\"text-bold\" style=\"display: inline-block: width: 120px;\">3 台主机：</span> 任意 <b>1台</b> 主机发生故障时系统可继续运行"
-          radio3: "<span class=\"text-bold\" style=\"display: inline-block: width: 120px;\">5 台主机：</span> 任意 <b>2 台</b> 主机发生故障时系统可继续运行"
+          radio1: '<span class=\"text-bold\" style=\"display: inline-block: width: 120px;\">1 台主机：</span> 无高可用'
+          radio2: '<span class=\"text-bold\" style=\"display: inline-block: width: 120px;\">3 台主机：</span> 任意 <b>1台</b> 主机发生故障时系统可继续运行'
+          radio3: '<span class=\"text-bold\" style=\"display: inline-block: width: 120px;\">5 台主机：</span> 任意 <b>2 台</b> 主机发生故障时系统可继续运行'
         hostRegistration:
           helpText:
-            singleCluster: 此处应设置为FQDN，此FQDN解析为高可用主机地址或负载均衡全部高可用主机的负载均衡地址。不要包含<code>/v1</code>或其它路径信息。
-            multiCluster: "此处应设置为FQDN，此FQDN解析为高可用主机地址或负载均衡全部{clusterSize} 台高可用主机的负载均衡地址。不要包含<code>/v1</code>或其它路径信息。"
+            singleCluster: '此处应设置为FQDN，此FQDN解析为高可用主机地址或负载均衡全部高可用主机的负载均衡地址。不要包含<code>/v1</code>或其它路径信息。'
+            multiCluster: '此处应设置为FQDN，此FQDN解析为高可用主机地址或负载均衡全部{clusterSize} 台高可用主机的负载均衡地址。不要包含<code>/v1</code>或其它路径信息。'
         certificate:
           labelText: 证书
           radio1: 生成自签名证书
           radio2:
             noHostUrl: 上传证书
-            hasHostUrl: "上传证书用于 <code>{hostRegistrationUrl}</code>"
+            hasHostUrl: '上传证书用于 <code>{hostRegistrationUrl}</code>'
         listeningPorts:
           labelText: 监听端口
           table:
             https: HTTPS
             http: HTTP
             swarm: Swarm
-            proxyToHttps: "<a href=\"http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt\" target=\"_blank\">PROXY</a> to HTTPS"
-            proxyToHttp: "<a href=\"http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt\" target=\"_blank\">PROXY</a> to HTTP"
+            proxyToHttps: '<a href=\"http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt\" target=\"_blank\">PROXY</a> to HTTPS'
+            proxyToHttp: '<a href=\"http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt\" target=\"_blank\">PROXY</a> to HTTP'
             redis: Redis
             zookeeperClient: ZooKeeper客户端
             zookeeperQuorum: Zookeeper仲裁
@@ -451,6 +474,7 @@ haPage:
               每次您下载配置脚本时将生成新的秘钥，为确保高可用正常工作，所有的主机必须拥有相同的密钥。
           buttonText: 下载配置脚本
           generateScript: 生成步骤3中的脚本
+
 helpPage:
   header: 常用链接及信息
   banner: 公告
@@ -458,12 +482,13 @@ helpPage:
   environment:
     header: 什么是环境？
     content: | 
-	<p>{appName} 支持将资源分组归属到多个环境中。每个环境具有自己独立的基础架构资源及服务，并由一个或多个用户、团队或组织所管理。</p>
+        <p>{appName} 支持将资源分组归属到多个环境中。每个环境具有自己独立的基础架构资源及服务，并由一个或多个用户、团队或组织所管理。</p>
         <p>例如，您可以创建独立的“开发”、“测试”及“生产”环境以确保环境之间的安全隔离，将“开发”环境的访问权限赋予全部人员，但限制“生产”环境的访问权限给一个小的团队。</p>
     manageLink: 管理环境
   host:
     header: 什么是主机？
-    content: "在添加第一个服务或容器之前，必须至少添加一台支持Docker{minVersion} 或以上版本的Linux主机，该主机需要能够通过HTTP方式访问{appName} 服务器。{appName} 支持添加多种形式的Linux主机，包括由任何公有云、私有云或裸机方式提供的虚拟机或物理机。 "
+    content: | 
+      在添加第一个服务或容器之前，必须至少添加一台支持Docker{minVersion} 或以上版本的Linux主机，该主机需要能够通过HTTP方式访问{appName} 服务器。{appName} 支持添加多种形式的Linux主机，包括由任何公有云、私有云或裸机方式提供的虚拟机或物理机。
     contentLink: 了解更多
     addHostLink: 添加主机
   stacks:
@@ -482,7 +507,8 @@ helpPage:
       tagline: 发现问题？
       fileBug: 提交Bug
     content:
-      paragraph1: "{appName}是一个开源的软件平台，实现了一个在生产环境中运行容器的专用基础设施。Docker容器，作为一个越来越受欢迎的应用程序工作负载，对于基础设施服务，包括网络、存储、负载均衡器、安全、服务发现及资源管理等各方面提出了新的需求。 "
+      paragraph1: | 
+        {appName}是一个开源的软件平台，实现了一个在生产环境中运行容器的专用基础设施。Docker容器，作为一个越来越受欢迎的应用程序工作负载，对于基础设施服务，包括网络、存储、负载均衡器、安全、服务发现及资源管理等各方面提出了新的需求。
       graphic1:
         text: 发现bug？
         link: 在Github上提出问题
@@ -500,7 +526,7 @@ helpPage:
     buttonText: 进入论坛
     annoucements:
       header: 公告
-      annouceText: <strong>最新版本：</strong><a href=\"{latestLink}\" target=\"_blank\">{latestTitle}</a>
+      annouceText: "<strong>最新版本：</strong><a href=\"{latestLink}\" target=\"_blank\">{latestTitle}</a> "
       releaseText: ""
     general:
       header: 综合
@@ -517,6 +543,7 @@ helpPage:
   commercial:
     header: 商业支持
     content: "Rancher Labs提供对{appName}的商业化的企业级支持服务，包括24x7技术支持团队、漏洞优先修复等。此外我们还提供实施、集成及顾问服务以满足不同组织部署及扩展{appName}的需求。关于上述服务的详细信息，请联系我们的销售团队<a href=\"mailto:sales@rancher.com\">sales@rancher.com</a>。 "
+
 hostsPage:
   addContainer: 添加容器
   index:
@@ -591,7 +618,7 @@ k8sTab:
       generateConfigText: "要在你的工作站使用 <a href=\"http://kubernetes.io/docs/getting-started-guides/docker/#download-kubectl\" target=\"_blank\">kubectl</a> (v1.2及以上) ，单击按钮生成API Key及配置文件： "
       generateButton: 生成配置
     stepTwo:
-      progress: 生产中...
+      progress: 生成中...
     stepThree:
       helpText: "将设置保存到 <code>~/.kube/config</code>： "
       downloadText: "然后 <a href=\"http://kubernetes.io/docs/getting-started-guides/docker/#download-kubectl\" target=\"_blank\">下载</a> (如果需要) 并运行 <code>kubectl</code> "
@@ -674,10 +701,11 @@ mesosPage:
   actionLink: "打开Mesos UI"
   banner:
     header: 群集
-    content: "当前有 {hosts, plural,
-        =1 {# 活动主机}
-        other {# 活动主机}
-        } 在Mesos群集中 "
+    content: |
+      当前有 {hosts, plural,
+        =1 {# 台活动主机}
+        other {# 台活动主机}
+      } 在Mesos群集中
     link: 查看或添加主机
   launch:
     header: 启动
@@ -779,9 +807,8 @@ settingsPage:
   index:
     header: 环境
     linkTo: 添加环境
-    subtext: | 
-	<p>{appName} 支持将资源分组归属到多个<b>环境</b>中。每个环境具有自己独立的基础架构资源及服务，并由一个或多个用户、团队或组织所管理。</p>
-        <p>例如，您可以创建独立的“开发”、“测试”及“生产”环境以确保环境之间的安全隔离，将“开发”环境的访问权限赋予全部人员，但限制“生产”环境的访问权限给一个小的团队。</p>
+    subtext: <p>{appName} 支持将资源分组归属到多个<b>环境</b>中。每个环境具有自己独立的基础架构资源及服务，并由一个或多个用户、团队或组织所管理。</p>
+        <p>例如，您可以创建独立的“开发”、“测试”及“生产”环境以确保环境之间的安全隔离，将“开发”环境的访问权限赋予全部人员，但限制“生产”环境的访问权限给一个小的团队。</p> 
     alert: 当前没有活动环境。在进行其他操作前，需要先创建或激活一个环境。
     table:
       header:
@@ -909,15 +936,17 @@ virtualMachinesPage:
       noData: 当前没有任何虚拟机
 waitingPage:
   hosts:
-    header: "{expectHosts, plural,
+    header: |
+      {expectHosts, plural,
         =1 {添加第一台主机}
         other {添加主机}
-        } "
-    content: "至少需要添加 {expectHosts, plural,
+      }
+    content: |
+      至少需要添加 {expectHosts, plural,
         =1 {1台支持}
         other {# 台支持}
-        } Docker {minVersion} 或以上版本的Linux主机，该主机需要能够通过HTTP方式访问{appName} 服务器。<br/>
-        {appName} 支持添加多种形式的Linux主机，包括由任何公有云、私有云或裸机方式提供的虚拟机或物理机。 "
+      } Docker {minVersion} 或以上版本的Linux主机，该主机需要能够通过HTTP方式访问{appName} 服务器。<br/>
+      {appName} 支持添加多种形式的Linux主机，包括由任何公有云、私有云或裸机方式提供的虚拟机或物理机。 
     contentLink: 了解更多
     linkToHost: 添加主机
     setup:
@@ -985,7 +1014,7 @@ ldap:
       search: 搜索字段：
     disable:
       header: 危险区域&trade;
-      warning: <b class=\"text-danger\">警告：</b> 禁用访问控制将导致任何能够访问此页面或API的用户拥有对  {appName} 的完全控制权限。
+      warning: '<b class=\"text-danger\">警告：</b> 禁用访问控制将导致任何能够访问此页面或API的用户拥有对  {appName} 的完全控制权限。'
       confirmDisable:
         pre: 关闭访问控制
         post: "确认? 再次点击将关闭访问控制。"
@@ -1086,7 +1115,7 @@ catalogSettings:
       isRancher: "未经过Rancher Labs认证"
   more:
     header: 更多
-    helpText: "此处可以添加自定义的应用商店。每个应用商店必须有唯一的名称和一个支持 <code>git clone</code> 操作的URL。（更多信息请参考此 <a href=\"https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a\" target=\"_blank\">文档</a>）"
+    helpText: '此处可以添加自定义的应用商店。每个应用商店必须有唯一的名称和一个支持 <code>git clone</code> 操作的URL。（更多信息请参考此 <a href=\"https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a\" target=\"_blank\">文档</a>）'
     addActionLabel: 添加应用商店
     keyLabel: 名称
     keyPlaceholder: 例如：mycatalog
@@ -1100,7 +1129,7 @@ confirmDelete:
   cancelAction: 取消
 containerLogs:
   title: "日志： {instanceName}"
-  onlyCombined: <b>注意：</b> 此容器运行时带有TTY(-t)参数，仅有合并的标准输出和标准错误日志可见。
+  onlyCombined: "<b>注意：</b> 此容器运行时带有TTY(-t)参数，仅有合并的标准输出和标准错误日志可见"
   combined: 合并日志
   stdout: 标准输出
   stderr: 标准错误
@@ -1177,14 +1206,14 @@ editBalancerService:
   title: 编辑负载均衡
   haproxy:
     label: 配置文件(haproxy.cfg)
-    help: "此处可以设置其他 <a href=\"http://cbonte.github.io/haproxy-dconv/configuration-1.5.html\" target=\"_blank\">haproxy.cfg</a>
-        配置项，相关内容将被附加到 {appName} 生成的配置中。 "
+    help: '此处可以设置其他 <a href=\"http://cbonte.github.io/haproxy-dconv/configuration-1.5.html\" target=\"_blank\">haproxy.cfg</a>
+        配置项，相关内容将被附加到 {appName} 生成的配置中。 '
     global:
       label: <code>global</code> section
-      prompt: "自定义的global section设置"
+      prompt: 自定义的global section设置
     defaults:
       label: <code>defaults</code> section
-      prompt: "自定义的default section设置"
+      prompt: 自定义的default section设置
 editCertificate:
   title: 编辑证书
   name:
@@ -1299,10 +1328,11 @@ formCommand:
     no: 从不
     onFailure: "失败时 <span class=\"text-muted\">(非0退出代码)</span> 总是"
     onFailureCondPrefix: 失败时，最多
-    onFailureCondSuffix: "{limit, plural,
+    onFailureCondSuffix: |
+      {limit, plural,
         =1 {次}
         other {次}
-        } "
+      } 
     always: 总是
   environment:
     label: 环境变量
@@ -1406,10 +1436,11 @@ formHealthCheck:
     none: 不进行操作
     recreate: 重新创建
     recreateOnQuorumPrefix: 重新创建，仅当至少
-    recreateOnQuorumSuffix: "{quorum, plural,
+    recreateOnQuorumSuffix: |
+      {quorum, plural,
         =1 {个容器}
         other {个容器}
-        }健康时 "
+      } 健康时
 formKeyValue:
   addAction: 添加键值对
   key:
@@ -1419,7 +1450,7 @@ formKeyValue:
   value:
     label: 值
     placeholder: 值
-  protip: "高级技巧： 在键(Key)输入栏中粘贴一行或多行的 key=value键值对能够批量输入。"
+  protip: "高级技巧： 在键(Key)输入栏中粘贴一行或多行的key=value键值对能够批量输入。"
 formImage:
   label: 选择镜像
   vm:
@@ -1454,16 +1485,18 @@ formScale:
     vm: 总是在每台主机上运行一个此虚拟机的实例
     container: 总是在每台主机上运行一个此容器的实例
   regular:
-    vm: "Run {scale, plural,
+    vm: |
+      Run {scale, plural,
         =0 {无虚拟机}
         =1 {1 台虚拟机}
         other {# 台虚拟机}
-        } "
-    container: "Run {scale, plural,
+      } 
+    container: |
+      Run {scale, plural,
         =0 {无容器}
         =1 {1 个容器}
         other {# 个容器}
-        } "
+      } 
 formSecurity:
   logConfig:
     addActionLabel: 添加选项
@@ -1547,8 +1580,9 @@ formVolumes:
     prompt: 选择容器...
 heroAddService:
   header: 添加第一个服务
-  paragraph1: "简单而言，服务是一组由相同docker镜像创建的容器，Rancher服务扩展了Docker的“link”概念以利用{appName}的轻量级分布式DNS服务用于服务发现。
-      服务可以单独添加或通过应用商店部署。 "
+  paragraph1: | 
+      简单而言，服务是一组由相同docker镜像创建的容器，Rancher服务扩展了Docker的“link”概念以利用{appName}的轻量级分布式DNS服务用于服务发现。
+      服务可以单独添加或通过应用商店部署。
   paragraph2: "服务也能够利用其他{appName}内置服务，如负载均衡、健康监控、升级支持以及高可用。"
   contentLink: 了解更多
   addService: 添加服务
@@ -1564,15 +1598,18 @@ hostSettings:
   helpText:
     static1: "不要包含 <code>/v1</code> 或任何其他路径，但如果你设置了"
     static2: "在 {appName} 前面，请确保使用<code>https://</code>."
-    isRancher: <a href=\"{docsBase}/installing-rancher/installing-server/basic-ssl-config/\" target=\"_blank\">SSL Termination(SSL终止) </a>
+    isRancher: '<a href=\"{docsBase}/installing-rancher/installing-server/basic-ssl-config/\" target=\"_blank\">SSL Termination(SSL终止) </a>'
     sslTerm: SSL终止
   notPublic:
-    alert: "确定要创建的所有主机都能够连接 <code>{activeValue}</code> ？<br/> 当前地址似乎是私有IP或内部网络。 "
+    alert: |
+      确定要创建的所有主机都能够连接 <code>{activeValue}</code> ？<br/> 当前地址似乎是私有IP或内部网络。
+
 hostPod:
   machineInfo:
     active:
-      activating: "即将完成&hellip;<br/>
-          <i class=\"icon icon-spinner icon-spin\"></i> 等待客户端代理连接 "
+      activating: |
+        即将完成&hellip;<br/>
+        <i class=\"icon icon-spinner icon-spin\"></i> 等待客户端代理连接
     deactivated:
       error: 创建主机出错
       setup: 设置主机中...
@@ -1714,9 +1751,9 @@ machine:
       text: 关于将要开放的端口信息
     needs:
       label: "{appName} 正常工作需要安全组允许以下通讯："
-      item1: "从 {appName} 服务器到主机的 <code>TCP</code> port <code>22</code> <span class=\"text-muted\">(SSH连接以安置配置Docker)</span>"
-      item2: "与其他所有主机之间的 <code>UDP</code> 端口 <code>500</code> 和 <code>4500</code> <span class=\"text-muted\">(用于IPsec网络)</span></li>"
-      item3: "这些规则 <b>不会</b> 被自动添加"
+      item1: 从 {appName} 服务器到主机的 <code>TCP</code> port <code>22</code> <span class=\"text-muted\">(SSH连接以安置配置Docker)</span>
+      item2: 与其他所有主机之间的 <code>UDP</code> 端口 <code>500</code> 和 <code>4500</code> <span class=\"text-muted\">(用于IPsec网络)</span></li>
+      item3: 这些规则 <b>不会</b> 被自动添加
     setInstanceAction: 下一步：设置实例选项
     instanceSection: 实例
     instanceOptionsSection: 实例选项
@@ -1791,7 +1828,8 @@ machine:
     accessToken:
       label: 访问令牌*
       placeholder: "你的DigitalOcean API访问令牌"
-      help: "由<a href=\"https://cloud.digitalocean.com/settings/applications\" target=\"_blank\">Apps & API</a> 页面获取的DigitalOcean个人访问令牌 "
+      help: |
+        由<a href=\"https://cloud.digitalocean.com/settings/applications\" target=\"_blank\">Apps & API</a> 页面获取的DigitalOcean个人访问令牌
     instanceSection: 实例
     image:
       label: 镜像
@@ -1832,9 +1870,9 @@ machine:
       text: 关于将要开放的端口信息
     needs:
       label: "{appName} 正常工作需要安全组允许以下通讯："
-      item1: "从 {appName} 服务器到主机的 <code>TCP</code> 端口 <code>22</code> <span class=\"text-muted\">(SSH连接以安装配置Docker)</span>"
-      item2: "与其他所有主机之间的 <code>UDP</code> 端口 <code>500</code> 和 <code>4500</code> <span class=\"text-muted\">(用于IPsec网络)</span>"
-      item3: "这些规则 <b>不会</b> 被自动添加"
+      item1: 从 {appName} 服务器到主机的 <code>TCP</code> 端口 <code>22</code> <span class=\"text-muted\">(SSH连接以安装配置Docker)</span>
+      item2: 与其他所有主机之间的 <code>UDP</code> 端口 <code>500</code> 和 <code>4500</code> <span class=\"text-muted\">(用于IPsec网络)</span>
+      item3: 这些规则 <b>不会</b> 被自动添加
     selectSecurityGroupAction: 下一步：设置实例选项
     loadingInstance: 读取可用实例配置...
     instanceSection: 实例
@@ -1855,7 +1893,7 @@ machine:
     apiKey:
       label: "API Key"
       placeholder: "你的Packet API Key"
-    apiKeyHelp: "由Packet的 <a href=\"https://app.packet.net/portal#/api-keys\" target=\"_blank\">API Keys</a> 页面获取"
+    apiKeyHelp: 由Packet的 <a href=\"https://app.packet.net/portal#/api-keys\" target=\"_blank\">API Keys</a> 页面获取
     instanceSection: 实例
     image:
       label: 镜像
@@ -1891,7 +1929,7 @@ machine:
       label: "Access Key"
       placeholder: "你的Ubiquity Hosting Access Key"
       provided: 已提供
-    accountHelp: "你可以从 <a href=\"https://motion.ubiquityhosting.com/api\"> 这里 </a>找到你的Ubiquity Hosting API密码。还没有账号？了解更多 <a href=\"http://www.ubiquityhosting.com/\">Ubiquity Hosting</a> 信息！"
+    accountHelp: 你可以从 <a href=\"https://motion.ubiquityhosting.com/api\"> 这里 </a>找到你的Ubiquity Hosting API密码。还没有账号？了解更多 <a href=\"http://www.ubiquityhosting.com/\">Ubiquity Hosting</a> 信息！
     loginAction: 下一步：认证并创建一个Cloud实例
     loadingInstance: 加载Cloud实例创建过程详细..
     instanceSection: 实例
@@ -1995,7 +2033,7 @@ newAliasService:
   header: 添加服务别名
 newBalancer:
   header: 添加负载均衡
-  note: | 
+  note: |
     <p><strong>注意：</strong> 未匹配任何&quot;高级路由选项&quot;的请求将被发送到<strong>全部</strong> ({targetResources}) 配置的目标服务（轮询方式）的默认目标端口（根据请求的源端口确认）。</p>
   tabs:
     ssl: SSL终止
@@ -2003,10 +2041,10 @@ newBalancer:
     custom: 自定义haproxy.cfg
     labels: 标签
     scheduling: 调度
-  helpBlock: <p class=\"help-block\">此处可以设置其他 <a href=\"http://cbonte.github.io/haproxy-dconv/configuration-1.5.html\" target=\"_blank\">haproxy.cfg</a>
-      配置项，相关内容将被附加到 {appName} 生成的配置中。 </p>
-  labelGlobal: "<code>global</code> section"
-  labelDefault: "<code>defaults</code> section"
+  helpBlock: |
+    <p class=\"help-block\">此处可以设置其他 <a href=\"http://cbonte.github.io/haproxy-dconv/configuration-1.5.html\" target=\"_blank\">haproxy.cfg</a> 配置项，相关内容将被附加到 {appName} 生成的配置中。 </p>
+  labelGlobal: <code>global</code> section
+  labelDefault: <code>defaults</code> section
 newCatalog:
   version:
     prompt: 选择版本...
@@ -2031,10 +2069,11 @@ newCatalog:
   preview: 预览
   txt: answers.txt
 newContainer:
-  service: "{numServices, plural,
-      =1 {服务}
+  service: |
+    {numServices, plural,
+      =1 {服务
       other {服务}
-      } "
+    } 
   tabs:
     disks: 磁盘
     userData: 用户数据
@@ -2109,18 +2148,21 @@ stackSection:
   outputs: 输出
   description: 描述
   none: 无服务
-  container: "{numContainers, plural,
+  container: |
+    {numContainers, plural,
       =1 {容器}
       other {容器}
-      } "
-  service: "{numServices, plural,
+    } 
+  service: |
+    {numServices, plural,
       =1 {服务}
       other {服务}
-      } "
-  sidekick: "{numSidekicks, plural,
+    }
+  sidekick: |
+    {numSidekicks, plural,
       =1 {从容器}
       other {从容器}
-      } "
+    } 
   add:
     service: 添加服务
     loadBalancer: 添加负载均衡
@@ -2183,11 +2225,12 @@ viewEditProject:
     formControl: 访问控制
   header: 环境
   description: 描述
-  helpBlock: "未启用访问控制。<br/>
-      任何访问API/UI的人都具有管理员权限，并能够使用任何环境。 "
+  helpBlock: | 
+      未启用访问控制。<br/>
+      任何访问API/UI的人都具有管理员权限，并能够使用任何环境。
   virtualMachine:
     label: 虚拟机支持
-    subtext: "要求主机加载 <a href=\"https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine\" target=\"_blank\">KVM</a> 内核模块 "
+    subtext: '要求主机加载 <a href=\"https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine\" target=\"_blank\">KVM</a> 内核模块 '
 vmConsole:
   header: 控制台：
   protip: "高级技巧：启动命令行时按下 {alternateLabel} 键可在新窗口中打开."
