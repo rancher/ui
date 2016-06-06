@@ -3,12 +3,11 @@
   {{log model.consumedServicesWithNames}}
   {{#each model.consumedServicesWithNames as |link|}}
     {{# if (eq link.service.name link.name)}}
-      <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.name}} {{/link-to}}</li>
+      <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.displayEnvironment}}/{{link.service.name}} {{/link-to}}</li>
     {{else}}
-      <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.name}} {{t 'generic.as'}} {{link.name}} {{/link-to}}</li>
+      <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.displayEnvironment}}/{{link.service.name}} {{t 'generic.as'}} {{link.name}} {{/link-to}}</li>
     {{/if}}
   {{else}}
     <li class="text-muted">{{t 'servicePage.linksTab.noData'}}</li>
   {{/each}}
 </ul>
-
