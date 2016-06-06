@@ -9,10 +9,10 @@
         <div class="input-group r-mr5">
           <span class="input-group-btn">
             {{input class="form-control input-sm pull-right" value=filters.resourceId  placeholder=(t "auditLogsPage.form.resourceId.placeholder") disabled=resourceIdReady}}
-            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if filters.resourceType filters.resourceType (t "auditLogsPage.form.resourceType.placeholder")}} <i class="icon icon-chevron-down"></i></button>
+            <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if filters.resourceType filters.resourceType (t "auditLogsPage.form.resourceType.placeholder")}}: <i class="icon icon-chevron-down"></i></button>
             <ul class="dropdown-menu" role="menu">
               <li role="presentation" class="dropdown-header">
-                {{t 'auditLogsPage.form.resourceType.dropdownPlaceholder'}}
+                {{t 'auditLogsPage.form.resourceType.dropdownPlaceholder'}}:
               </li>
               {{#each model.resourceTypes as |resource|}}
                 <li {{action "updateResourceType" resource}}>
@@ -24,10 +24,10 @@
         </div>
         {{input class="form-control input-sm r-mr5" value=filters.clientIp placeholder=(t "auditLogsPage.form.requestIp.placeholder")}}
         <span class="dropdown">
-          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if authTypeReadable authTypeReadable (t "auditLogsPage.form.authType.placeholder")}} <i class="icon icon-chevron-down"></i></button>
+          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if authTypeReadable authTypeReadable (t "auditLogsPage.form.authType.placeholder")}}: <i class="icon icon-chevron-down"></i></button>
           <ul class="dropdown-menu" role="menu">
             <li role="presentation" class="dropdown-header">
-              {{t 'auditLogsPage.form.authType.dropdownPlaceholder'}}
+              {{t 'auditLogsPage.form.authType.dropdownPlaceholder'}}:
             </li>
             {{#each authTypes as |type|}}
               <li {{action "updateAuthType" type}}>
@@ -75,9 +75,9 @@
       </tbody>
     </table>
       <div class="container-paginatio text-center">
-        <button class="btn btn-sm btn-default" {{action 'first'}}>First Page</button>
+        <button class="btn btn-sm btn-default" {{action 'first'}}>{{t 'auditLogsPage.first'}}</button>
         {{#if showPagination }}
-          <button class="btn btn-sm btn-default" {{action 'next'}}>Next Page</button>
+          <button class="btn btn-sm btn-default" {{action 'next'}}>{{t 'auditLogsPage.next'}}</button>
         {{/if}}
       </div>
   </div>

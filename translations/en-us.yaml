@@ -15,8 +15,10 @@ generic:
   emptyString: ""
   enabled: Enabled
   expires: Expires
+  healthy: Healthy
   id: ID
   image: Image
+  internal: Internal
   ipAddress: IP Address
   loading: "Loading..."
   missing: "*%MISSING%*"
@@ -24,11 +26,14 @@ generic:
   na: 'N/A'
   name: Name
   none: None
+  ports: Ports
   remove: Remove
   role: Role
   state: State
+  to: To
   type: Type
   unknown: Unknown
+
 
 ##############################
 # Routes
@@ -50,10 +55,10 @@ accountsPage:
     header: Add Account
     form:
       username:
-        labelText: "Login Username*"
+        labelText: Login Username
         placeholder: "e.g. jsmith"
       password:
-        labelText: "Password*"
+        labelText: Password
       name:
         labelText: Name
         placeholder: "e.g. John Smith"
@@ -69,7 +74,7 @@ apiPage:
   actionButton: Add Environment API Key
   content: |
     Environment API keys are tied to this specific Environment (<code>{displayName}</code>) and can only manipulate resources within there.  Other accounts with access to this Environment can also manage these keys.
-  labelText: 'Endpoint:'
+  labelText: Endpoint
   table:
     state: State
     name: Name
@@ -95,16 +100,16 @@ auditLogsPage:
     eventType:
       placeholder: Event Type
     resourceType:
-      placeholder: "Resource Type:"
-      dropdownPlaceholder: 'Select a Resource Type:'
+      placeholder: Resource Type
+      dropdownPlaceholder: Select a Resource Type
       dropdownList:
     resourceId:
       placeholder: Resource ID
     requestIp:
       placeholder: Request IP
     authType:
-      placeholder: "Auth Type:"
-      dropdownPlaceholder: 'Select an Auth Type:'
+      placeholder: Auth Type
+      dropdownPlaceholder: Select an Auth Type
       dropdownList:
     clearButtonText: Clear All
     searchButtonText: Search
@@ -116,6 +121,8 @@ auditLogsPage:
     resourceTypeId: "Resource Time:Id"
     identity: Identity
     authIp: "Auth & IP"
+  first: First Page
+  next: Next Page
 
 authPage:
   root:
@@ -135,9 +142,9 @@ authPage:
     authenticated:
       header:
         text: Authentication
-        enterpriseHostName: "Enterprise Host:"
+        enterpriseHostName: Enterprise Host
         clientId:
-          text: "Client ID:"
+          text: Client ID
           helpText: "To change the configured GitHub application, disable access control below and then set it up again."
       siteAccess:
         accessControl:
@@ -167,7 +174,7 @@ authPage:
           ul:
             li1: "For Github Enterprise, login to your account.  Click on Settings, then Applications."
         li2:
-          text: 'Click "Register new application" and fill out the form:'
+          text: Click "Register new application" and fill out the form
           ul:
             li1: '<b>Application name:</b> <span class="text-muted">Anything you like, e.g. My {appName}</span>'
             li2: "<b>Homepage URL: </b> "
@@ -179,19 +186,19 @@ authPage:
         headder: '2. Configure {appName} to use your application for authentication'
         subtext: 'Copy and paste the Client ID and Secret from the upper-right corner of your newly-created application.'
         clientId:
-          labelText: 'Client ID*'
+          labelText: Client ID
         clientSecret:
-          labelText: 'Client Secret*'
+          labelText: Client Secret
         ghEnterprise:
           labelText: Use a private GitHub Enterprise installation
         isGHEnterprise:
           labelText: Use a secure connection
         enterpriseHost:
-          labelText: 'Enterprise Host*'
+          labelText: Enterprise Host
           placeholder: 'e.g. github.example.com'
     testAuth:
       header: '3. Test and enable authentication'
-      subtext: 'Check that your application is configured correctly by testing authentication with it:'
+      subtext: Check that your application is configured correctly by testing authentication with it
       buttonText:
         pre: Authenticate with GitHub
         post: Waiting to hear back from GitHub
@@ -215,15 +222,15 @@ authPage:
       helpText: 'This user will become the admin that has full control over {appName}.'
       form:
         login:
-          labelText: 'Login Username*'
+          labelText: Login Username
           placeholder: 'e.g. jsmith'
         name:
           labelText: Full Name
           placeholder: 'e.g. John Smith'
         password:
-          labelText: 'Password*'
+          labelText: Password
         confirmPassword:
-          labelText: 'Confirm Password*'
+          labelText: Confirm Password
     accessControl:
       header: '2. Enable Access Control'
       helpText: 'Click to enable access control and log in.'
@@ -233,16 +240,18 @@ authPage:
 
 catalogPage:
   index:
-    header: 'Catalog:'
+    header: Catalog
     search:
       placeholder: Search...
+    category: Category
     certified: Certified
     noData:
       singular: There are no compatible templates.
       plural: There are no compatible templates in this catalog.
+    viewDetails: View Details
 
 consolePage:
-  header: 'Shell:'
+  header: Shell
   closeButton: Close
 
 certificatesPage:
@@ -251,7 +260,7 @@ certificatesPage:
     expiresDate: Expires
     noCn: None
   detail:
-    header: 'Certificate:'
+    header: Certificate
     description: Description
     info:
       labelText: Info
@@ -315,20 +324,20 @@ containersPage:
       description:
         placeholder: e.g. My Application
   containerPage:
-    header: 'Container:'
+    header: Container
     subtext:
       on: on
       in: in
     infoMultiStats:
       tooltip:
         host: Copy IP To Clipboard
-      host: 'Host:'
-      ip: 'Container Ip:'
-      docker: 'Docker ID:'
-      image: 'Image:'
-      command: 'Command:'
-      entryPoint: 'Entry Point:'
-      description: 'Description:'
+      host: Host
+      ip: Container Ip
+      docker: Docker ID
+      image: Image
+      command: Command
+      entryPoint: Entry Point
+      description: Description
     navTabs:
       labels: Labels
       volumes: Volumes
@@ -342,11 +351,11 @@ containersPage:
           private: Private in Container
           protocol: Protocol
         body:
-          state: 'State:'
-          ip: 'Ip Address:'
-          public: 'Public (on Host):'
-          private: 'Private (in Container):'
-          protocol: 'Protocol:'
+          state: State
+          ip: Ip Address
+          public: Public (on Host)
+          private: Private (in Container)
+          protocol: Protocol
           noData: 'This container has no ports.'
     volumesTab:
       table:
@@ -356,12 +365,12 @@ containersPage:
           shared: Shared With
           writable: Writable
         body:
-          state: 'State:'
-          mount: 'Mount Point:'
-          shared: 'Shared With:'
-          writable: 'Writable:'
+          state: State
+          mount: Mount Point
+          shared: Shared With
+          writable: Writable
           error:
-            data: 'Error:'
+            data: Error
             error: Error
             noData: This container has no volumes.
           noContainers: No other containers
@@ -369,6 +378,25 @@ containersPage:
 containerSubpod:
   childContainers: Containers
   childSidekicks: Sidekicks
+
+dockerCLI:
+  header: Docker CLI
+  step1: To use docker or docker-compose on your workstation, click the button to generate an API key and config file
+  step1Generate: Generate Config
+  step2: Generating...
+  step3: Activating...
+  step4: Now configure your workstation
+  item1: |
+    Create the <code>.docker</code> directory: <code>mkdir -pv ~/.docker</code>
+  item2: Extract the ZIP file that just downloaded
+  item3: |
+    Copy all the files from the extracted ZIP into the <code>.docker</code> directory
+  item4: |
+    Run <code>export DOCKER_HOST={{endpoint.swarm}} DOCKER_TLS_VERIFY=1</code> or add to your profile
+  item5: |
+    Test with <code>docker ps</code>
+  well: |
+    Or use this handy shell to directly execute <code>docker</code> or <code>docker-compose</code> commands:
 
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 # those are present incase we have an error in the app and can not load the translations file
@@ -386,12 +414,12 @@ haPage:
   haConfigured:
     addHost:
       header: '5. Add hosts'
-      subtext: 'Copy the downloaded script and run it on to each HA host to register them:'
+      subtext: Copy the downloaded script and run it on to each HA host to register them
     hosts:
-      header: 'Hosts:'
+      header: Hosts
       waiting: 'Waiting for a host...'
       managementServerCert:
-        text: 'Management Server Certificate:'
+        text: Management Server Certificate
         waiting: 'Waiting for a host...'
     disable:
       header: 'Danger Zone&trade;'
@@ -411,7 +439,7 @@ haPage:
         li2: 'Click the export button below to export the entire contents of the current database.'
         li3: 'Import the data into the new external database.'
       exportDatabase: Export Database
-      size: 'Uncompressed Size:'
+      size: Uncompressed Size
       noLocalDb:
         header: '1. Setup an external database'
         subtext: 'Complete, running off of an external database.'
@@ -419,7 +447,7 @@ haPage:
       localDb:
         header: '2. Use the new external database'
         ul:
-          li1: 'Re-launch the server container pointed at the external database:'
+          li1: Re-launch the server container pointed at the external database
           isRancher:
             li1: '<a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank">See docs</a> for more detail.'
       noLocalDb:
@@ -479,7 +507,8 @@ haPage:
 helpPage:
   header: Helpful links & Information
   banner: Annoucements
-  releaseText: "Released:"
+  latest: Latest
+  releaseText: Released
   environment:
     header: What is an environment?
     content: |
@@ -570,21 +599,21 @@ hostsPage:
         placeholder: e.g. host01
   hostPage:
     header:
-      linkTo: 'Host:'
+      linkTo: Host
     addContainer:
       linkTo: Add Container
     infoMultiStats:
-      ip: 'IP:'
-      cpu: 'CPU:'
-      memory: 'Memory:'
-      storage: 'Storage:'
+      ip: IP
+      cpu: CPU
+      memory: Memory
+      storage: Storage
       provider:
-        labelText: 'Provider:'
+        labelText: Provider
         noHost: Custom
-      kernel: 'Kernel:'
-      docker: 'Docker:'
-      os: 'OS:'
-      description: 'Description:'
+      kernel: Kernel
+      docker: Docker
+      os: OS
+      description: Description
     navTabs:
       containers: Containers
       ports: Ports
@@ -637,12 +666,12 @@ k8sTab:
         Or use this handy shell to directly execute <code>kubectl</code> commands:
   multistat:
     header:
-      type: 'Type:'
-      cluster: 'Cluster IP:'
-      balancer: 'Balancer IP:'
-      session: 'Session Affinity:'
-      external: 'External IPs:'
-      selectors: 'Selectors'
+      type: Type
+      cluster: Cluster IP
+      balancer: Balancer IP
+      session: Session Affinity
+      external: External IPs
+      selectors: Selectors'
   navTabs:
     pods: Pods
     labels: Labels
@@ -662,9 +691,9 @@ k8sTab:
             noData: You do not have any Pods yet.
       pod:
         header:
-          linkTo: 'Pod:'
+          linkTo: Pod
         type:
-          header: 'Type:'
+          header: Type
         navTabs:
           containers: Containers
     rcs:
@@ -679,7 +708,7 @@ k8sTab:
           body:
             noData: You do not have any Replication Controllers yet.
       rc:
-        header: 'RC:'
+        header: RC
         navTabs:
           pods: Pods
           labels: Labels
@@ -697,7 +726,7 @@ k8sTab:
           noData: You do not have any Services yet.
       service:
         index:
-          header: 'Service:'
+          header: Service
   namespaces:
     header: Namespaces
     linkTo: Add Namespace
@@ -769,19 +798,19 @@ registriesPage:
         placeholder: e.g. password
 
 servicePage:
-  header: 'Service:'
+  header: Service
   multistat:
-    type: 'Type:'
-    fqdn: 'FQDN:'
-    scale: 'Scale:'
-    image: 'Image:'
-    entryPoint: 'Entrypoint:'
-    command: 'Command:'
-    description: 'Description:'
+    type: Type
+    fqdn: FQDN
+    scale: Scale
+    image: Image
+    entryPoint: Entrypoint
+    command: Command
+    description: Description
     global: Global
   external:
     externalIp: External IPs
-    externalHostname: 'External Hostname:'
+    externalHostname: External Hostname
   navTabs:
     ports: Ports
     containers: Containers
@@ -905,7 +934,7 @@ swarmPage:
           labelText: dcoker-compose.yml
           placeholder: Paste in the contents of docker-compose.yml
     project:
-      linkTo: 'Project:'
+      linkTo: Project
       table:
         header:
           ports: Ports
@@ -949,13 +978,13 @@ processesPage:
     header: Settings
 
 virtualMachinePage:
-  header: 'Virtual Machine:'
+  header: Virtual Machine
   multistat:
-    host: 'Host:'
-    hostIp: 'Host IP:'
-    vmIp: 'VM IP:'
-    image: 'Image:'
-    description: 'Description:'
+    host: Host
+    hostIp: Host IP
+    vmIp: VM IP
+    image: Image
+    description: Description
   navTabs:
     labels: Labels
 
@@ -995,15 +1024,15 @@ aliasServicePartial:
     linkTo: View Details
   links: Links
   noLinks: No Links
-  description: 'Description:'
+  description: Description
 
 externalServicePartial:
   extService:
     labelText: Exernal Service
     linkTo: View Details
   ips: IPs
-  hostname: 'Host Name:'
-  description: 'Description:'
+  hostname: Host Name
+  description: Description
 
 hostPartial:
   host:
@@ -1033,24 +1062,24 @@ ldap:
     subtext: "To change the server configuration, disable access control below and then set it up again."
     general:
       header: General
-      server: "Server:"
-      tls: "TLS:"
-      serviceAccount: "Service Account:"
-      searchBase: "Search Base:"
-      defaultDomain: "Default Domain:"
+      server: Server
+      tls: TLS
+      serviceAccount: Service Account
+      searchBase: Search Base
+      defaultDomain: Default Domain
     users:
       header: Users
-      objectClass: "Object Class:"
-      login: "Login Field:"
-      name: "Name Field:"
-      search: "Search Field:"
-      enabled: "Enabled Field:"
-      disabledBitMask: "Disabled BitMask:"
+      objectClass: Object Class
+      login: Login Field
+      name: Name Field
+      search: Search Field
+      enabled: Enabled Field
+      disabledBitMask: Disabled BitMask
     group:
       header: Group
-      objectClass: "Object Class:"
-      name: "Name Field:"
-      search: "Search Field:"
+      objectClass: Object Class
+      name: Name Field
+      search: Search Field
     disable:
       header: "Danger Zone&trade;"
       warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
@@ -1062,21 +1091,21 @@ ldap:
     subtext1: "Enter the address, port, and protocol to connect to your {providerName} server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS."
     subtext2: "{appName} needs a service account that has (read-only) access to all of the domains that will be able to login, so that we can determine what groups a user is a member of when they make a request with an API key."
     hostName:
-      labelText: "Hostname or IP Address*"
+      labelText: Hostname or IP Address
     port:
       labelText: Port
       checkbox: TLS
     serviceUsername:
-      labelText: "Service Account Username*"
+      labelText: Service Account Username
     servicePassword:
-      labelText: "Service Account Password*"
+      labelText: Service Account Password
     searchBase:
       helpText: "Only users and groups below the base will be used."
-      labelText: "Search Base*"
+      labelText: Search Base
       placeholder: "e.g. dc=mycompany,dc=com"
     defaultDomain:
       helpText: "This domain will be used if a user logs in without specifing one."
-      labelText: "Default Login Domain*"
+      labelText: Default Login Domain
       placeholder: "e.g. mycompany"
   customizeSchema:
     header: "2. Customize Schema"
@@ -1105,11 +1134,11 @@ ldap:
         labelText: Search Field
   testAuth:
     header: "3. Test and enable authentication"
-    helpText: "Check that everything is configured correctly by testing authentication with your {providerName} account:"
+    helpText: Check that everything is configured correctly by testing authentication with your {providerName} account
     userName:
-      labelText: "Your Username*"
+      labelText: Your Username
     password:
-      labelText: "Your Password*"
+      labelText: Your Password
     authenticate:
       pre: Authenticate
       post: "Testing..."
@@ -1124,10 +1153,10 @@ serviceInfoPartial:
   info:
     label: Info
     linkTo: View Details
-  image: 'Image:'
-  entryPoint: 'Entrypoint:'
-  command: 'Command:'
-  description: 'Description:'
+  image: Image
+  entryPoint: Entrypoint
+  command: Command
+  description: Description
   containers: Containers
   scale: Scale
   noContainers: No Containers
@@ -1135,7 +1164,7 @@ serviceInfoPartial:
   noPublicPorts: No Public Ports
   links: Links
   noLinks: No Links
-  fqdn: 'FQDN:'
+  fqdn: FQDN
 ##############################
 # Components
 ##############################
@@ -1338,7 +1367,7 @@ editStack:
     placeholder: e.g. MyApp Stack
 
 environmentHeader:
-  backLink: "Stack:"
+  backLink: Stack
   outputs: Outputs
   add:
     service: Add Service
@@ -1363,9 +1392,10 @@ formBalancerListeners:
   host:
     placeholder: "On Host, e.g. 80 or 1.2.3.4:80"
   protocol:
-    placeholder: "Select a protocol:"
+    placeholder: Select a protocol
   container:
     placeholder: "In Container, e.g. 8080"
+  selectAccess: Select access
   listen:
     public: Public
     internal: Internal
@@ -1477,11 +1507,11 @@ formHealthCheck:
   request:
     label: HTTP Request
   method:
-    prompt: "Select a HTTP Method:"
+    prompt: Select a HTTP Method
   path:
     placeholder: Request Path e.g. /healthcheck
   version:
-    prompt: "Select a HTTP Version:"
+    prompt: Select a HTTP Version
   host:
     label: Host Header
     placeholder: e.g. www.example.com
@@ -1543,6 +1573,23 @@ formNameDescription:
     label: Description
     placeholder: Description
 
+formNetwork: 
+  network: Network
+  container: Container
+  requestedIP: Requested IP
+  requestSpecific: Request a specific IP in the 10.42.0.0/16 block.  If the IP is already in use a random one will be assigned.
+  retainIP: Retain IP
+  reuseIP: Reuse IP addresses when upgrading or replacing unhealthy instances.
+  dns: DNS
+  serviceDiscovery: DNS service discovery
+  hostname: Hostname
+  useDockerID: Use the Docker container ID
+  containerName: Use the container name
+  specificHostname: Set a specific hostname
+  domainName: Domain Name
+  resolvingServers: Resolving Servers
+  searchDomains: Search Domains
+
 formPorts:
   addAction: Port Map
   public:
@@ -1575,6 +1622,23 @@ formScale:
         other {# containers}
       }
 
+formScheduling:
+  canRequestHost:
+    vm: Run <b>all</b> virtual machines on a specific host
+    containers: Run <b>all</b> containers on a specific host
+  runSpecific: Run on a specific host
+  autoRun: Automatically run on every host matching scheduling rules
+  autoPick:
+    vm: Automatically pick hosts for each virtual machine matching scheduling rules
+    container: Automatically pick hosts for each container matching scheduling rules
+    host: Automatically pick a host matching scheduling rules
+  addRule: Add Scheduling Rule
+  condition: Condition
+  field: Field
+  key: Key
+  value: Value
+
+
 formSecurity:
   logConfig:
     addActionLabel: Add Option
@@ -1598,7 +1662,14 @@ formSecurity:
   pathContainer: Path in Container
   permissions: Permissions
   logDriver: Log Driver
-  logOptions: Log Options
+  logOptions: Log 
+  placeholder:
+    unlimited: Unlimited
+    egDefault: "e.g. 0,3; Default: All"
+    number: 1024
+    egsdc: e.g. /dev/sdc
+    egxsdc: e.g. /dev/xsdc
+    egsyslog: e.g. syslog
 
 formServiceLinks:
   addAction: Service Links
@@ -1610,12 +1681,42 @@ formServiceLinks:
   name:
     label: As Name
     placeholder: e.g. database
-
+    
 formSslTermination:
   defaultCertificate:
     prompt: Choose a Certificate...
   alternateCertificate:
     prompt: Choose a Certificate...
+  certificate: Certificate*
+  alternateCerts: Alternate Certs
+  addAlternate: Add Alternate Certificate
+  noCertificates: There are no other certificates to use.
+  helpBlock: |
+    "Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
+  muted: There are no SSL listening ports configured.
+
+formStickiness:
+  stickiness: Stickiness
+  none: None
+  newCookie: Create new cookie
+  cookieName: Cookie Name
+  mode: Mode
+  somain: Domain
+  options: Options
+  indirect: Indirect
+  sendHeader: Send no-cache header
+  onPost: Only set cookie on POST
+  noPorts: There are no HTTP listening ports configured.
+
+  placeholder:
+    sticky: e.g. sticky
+    domain: e.g. mydomain.com
+
+formTarget:
+  target: Target
+  pointAddress: Point to IP Address(es)
+  pointHostname: Point to a Hostname
+  addTarget: Add Target IP
 
 formTargets:
   title: Targets
@@ -1657,15 +1758,33 @@ formUserLabels:
     placeholder: e.g. bar
   protip: "ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
 
+formUpgrade:
+  size: Batch Size
+  interval: Batch Interval
+  sec: sec
+  behavior: Start Behavior
+  startStop: Start before Stopping
+  whichServices: Which Services
+
 formValueArray:
   addActionLabel: Add Value
   valueLabel: Value
   valuePlacholder: Value
   protip: "ProTip: Paste one or more lines of values into any field for easy bulk entry."
 
+formVirtualMachines:
+  vcpus: vCPUs
+  memory: Memory
+
 formVolumes:
   value:
     prompt: Select a Container...
+  volumes: Volumes
+  volumesFrom: Volumes From
+  volumeDriver: Volume Driver
+  text1: There are no other launch configs in this service to share volumes with.
+  text2: This host has no containers to use the volumes from.
+  text3: Only available when adding a container to a particular host.
 
 heroAddService:
   header: Adding your first Service
@@ -1681,9 +1800,9 @@ hostSettings:
   header: Host Registration URL
   subtext: What base URL should hosts use to connect to the {appName} API?
   hostUrl:
-    local: "This site's address:"
+    local: This site's address
     new:
-      labelText: "Something else:"
+      labelText: Something else
       placeholder: "e.g. http://example.com:8080"
   helpText:
     static1: "Don't include <code>/v1</code> or any other path, but if you are doing"
@@ -1704,8 +1823,8 @@ hostPod:
       error: Error creating machine
       setup: Setting up machine...
     groupedInstances:
-      namespace: 'Namespace:'
-      stack: 'Stack:'
+      namespace: Namespace
+      stack: Stack
       standalone: Standalone Containers
 
 identityBlock:
@@ -1745,6 +1864,9 @@ inputIdentity:
   placeholder:
     github: Add a GitHub user or organization name
     generic: Add a user or group by name
+  dropdownLabel: 
+    teams: Your Teams and Organizations
+    groups: Your Groups
 
 inputPassword:
   buttonText: Generate
@@ -1783,6 +1905,8 @@ k8s:
         containerPort: e.g. 8080
     noPorts: This container has no port maps.
   newOrEditResource:
+    edit: Edit
+    add: Add
     placeholder: Resouce YAML or JSON definition
   podSection:
     podName: Pod Name
@@ -1853,7 +1977,7 @@ machine:
       link: Learn more
       text: about the ports that will be opened.
     needs:
-      label: "For {appName} to work correctly your security group will need to allow traffic:"
+      label: For {appName} to work correctly your security group will need to allow traffic
       item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
       item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
       item3: These rules will <b>not</b> be added automatically.
@@ -1917,7 +2041,7 @@ machine:
 
   driverCustom:
     step1: Start up a Linux machine somewhere and install the latest version of <a href="http://www.docker.com/" target="_blank">Docker</a> on it.
-    step2: "Make sure any security groups or firewalls allow traffic:"
+    step2: Make sure any security groups or firewalls allow traffic
     step2li: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span>
     step3: "Optional: Add labels to be applied to the host."
     step4: "Optional: Specify the public IP that should be used for this host.  This is required if you're trying to add the host the <code>rancher/server</code> container is on."
@@ -1977,7 +2101,7 @@ machine:
       link: Learn more
       text: about the ports that will be opened.
     needs:
-      label: "For {appName} to work correctly your security group will need to allow traffic:"
+      label: For {appName} to work correctly your security group will need to allow traffic
       item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
       item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
       item3: These rules will <b>not</b> be added automatically.
@@ -2117,8 +2241,8 @@ modalAboutComponent:
 
 modalAuditlogInfo:
   header: Additional Log Info
-  request: "Request Object:"
-  response: "Response Object:"
+  request: Request Object
+  response: Response Object
   closer: Close
 
 modalConfirmDeactiviate:
@@ -2143,9 +2267,9 @@ modalEditDriver:
 
 modalProcessError:
   header: Exception Info
-  cause: "Cause:"
+  cause: Cause
   none: N/A
-  stackTrace: "Stack Trace:"
+  stackTrace: Stack Trace
   close: Close
 
 modalShell:
@@ -2175,21 +2299,21 @@ newCatalog:
     prompt: Choose a version...
   saveUpgrade: Upgrade
   saveNew: Launch
-  upgrade: "Upgrade:"
-  catalog: "Catalog:"
-  category: "Category:"
-  support: "Support:"
+  upgrade: Upgrade
+  catalog: Catalog
+  category: Category
+  support: Support
   official: Officially Certified
   maintainedBy: Maintained by community members
-  maintainer: "Maintainer:"
-  license: "License:"
-  url: "Project URL:"
+  maintainer: Maintainer
+  license: License
+  url: Project URL
   stack: Stack
   templateVersion: Template Version
   selectVersion: Select a version of the template to
   newStack: New Stack
   config: Configuration Options
-  unknownType: "Unrecognized question type:"
+  unknownType: Unrecognized question type
   startService: Start services after creating
   preview: Preview
   txt: answers.txt
@@ -2306,11 +2430,12 @@ stackSection:
     virtualMachine: Add Virtual Machine
   table:
     dataTitle:
-      state: 'State:'
-      serviceName: 'Service Name:'
-      details: 'Details:'
-      containers: 'Containers:'
-      actions: 'Actions:'
+      state: State
+      serviceName: Service Name
+      details: Details
+      containers: Containers
+      actions: Actions
+      kind: Kind
 
 
 storagePoolSection:
@@ -2362,11 +2487,11 @@ viewEditDescription:
 
 viewEditProject:
   showEdit:
-    edit: "Edit Environment:"
+    edit: Edit Environment
     add: Add Environment
     orchestration: Container Orchestration
     formControl: Access Control
-  header: "Environment:"
+  header: Environment
   description: Description
   helpBlock: |
     Access Control is not enabled.<br/>
@@ -2378,7 +2503,7 @@ viewEditProject:
 
 
 vmConsole:
-  header: "Console:"
+  header: Console
   protip: "ProTip: Hold the {alternateLabel} key when opening shell access to launch a new window."
   canvas: Canvas not supported.
   footerActions:

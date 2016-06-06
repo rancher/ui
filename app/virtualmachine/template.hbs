@@ -1,5 +1,5 @@
 <section class="header r-pt20 clearfix">
-  <h1>{{#link-to "virtualmachines"}}{{t 'virtualMachinePage.header'}}{{/link-to}}</h1>
+  <h1>{{#link-to "virtualmachines"}}{{t 'virtualMachinePage.header'}}:{{/link-to}}</h1>
 
   {{#power-select options=model.vm.primaryHost.instances selected=model.vm onchange=(action "changeVirtualMachine") searchField="displayName" as |obj|}}
     <div class="clip r-mr15">
@@ -19,7 +19,7 @@
   {{#info-multi-stats model=model.vm linkName="containerStats" single=true showGraphs=false}}
     <div class="container-flex bordered">
       <div class="col-flex">
-        <label>{{t 'virtualMachinePage.multistat.host'}}</label>
+        <label>{{t 'virtualMachinePage.multistat.host'}}:</label>
         {{#if model.vm.primaryHost}}
           {{#link-to "host" model.vm.primaryHost.id}}{{model.vm.primaryHost.displayName}}{{/link-to}}
         {{else}}
@@ -27,17 +27,17 @@
         {{/if}}
       </div>
       <div class="col-flex">
-        <label>{{t 'virtualMachinePage.multistat.hostIp'}}</label>
+        <label>{{t 'virtualMachinePage.multistat.hostIp'}}:</label>
         {{format-ip ip-model.vm.primaryHost.displayIp noIp='formatIp.unknownIp' showCopy=true}}
       </div>
       <div class="col-flex">
-        <label>{{t 'virtualMachinePage.multistat.vmIp'}}</label>
+        <label>{{t 'virtualMachinePage.multistat.vmIp'}}:</label>
         {{format-ip ip=model.vm.displayIp showCopy=true}}
       </div>
     </div>
     <div class="container-flex bordered">
       <div class="col-flex">
-        <label>{{t 'virtualMachinePage.multistat.image'}}</label>
+        <label>{{t 'virtualMachinePage.multistat.image'}}:</label>
         <span class="force-wrap">
           {{model.vm.displayImage}} {{copy-to-clipboard clipboardText=model.vm.displayImage size="small"}}
         </span>
@@ -50,7 +50,7 @@
     {{#if model.vm.description}}
       <div class="container-flex bordered">
         <div class="col-flex">
-          <label>{{t 'virtualMachinePage.multistat.description'}} </label>
+          <label>{{t 'virtualMachinePage.multistat.description'}}: </label>
           <span>{{model.vm.description}}</span>
         </div>
       </div>
