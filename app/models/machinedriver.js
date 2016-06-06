@@ -6,6 +6,7 @@ import C from 'ui/utils/constants';
 const builtInUi = ['amazonec2','azure','digitalocean','exoscale','packet','rackspace','ubiquity','vmwarevsphere'];
 
 function displayUrl(url) {
+  url = url||'';
   let parts = url.split('/');
   let out    = null;
 

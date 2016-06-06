@@ -47,7 +47,7 @@ export default Ember.Component.extend({
       return;
     }
 
-    var stack = this.get('model.stacks').filterBy('externalId','system://kubernetes')[0];
+    var stack = this.get('k8s').filterSystemStack(this.get('model.stacks'));
     if ( !stack )
     {
       this.set('currentStep', 2);

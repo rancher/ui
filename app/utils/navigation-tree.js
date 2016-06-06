@@ -286,22 +286,31 @@ const navTree = [
         route: 'admin-tab.audit-logs',
       },
       {
-        id: 'admin-processes',
-        localizedLabel: 'nav.admin.processes',
-        icon: 'icon icon-processes',
-        route: 'admin-tab.processes',
-      },
-      {
         id: 'admin-accounts',
         localizedLabel: 'nav.admin.accounts',
         icon: 'icon icon-users',
         route: 'admin-tab.accounts',
       },
       {
+        id: 'admin-processes',
+        localizedLabel: 'nav.admin.processes',
+        icon: 'icon icon-processes',
+        route: 'admin-tab.processes',
+      },
+      {
+        divider: true
+      },
+      {
         id: 'admin-access',
         localizedLabel: 'nav.admin.access',
         icon: 'icon icon-key',
         route: 'admin-tab.auth',
+      },
+      {
+        id: 'admin-ha',
+        localizedLabel: 'nav.admin.ha',
+        icon: 'icon icon-umbrella',
+        route: 'admin-tab.ha',
       },
       {
         id: 'admin-machine',
@@ -314,12 +323,6 @@ const navTree = [
         localizedLabel: 'nav.admin.settings',
         icon: 'icon icon-network',
         route: 'admin-tab.settings',
-      },
-      {
-        id: 'admin-ha',
-        localizedLabel: 'nav.admin.ha',
-        icon: 'icon icon-umbrella',
-        route: 'admin-tab.ha',
       },
     ],
   },

@@ -10,6 +10,7 @@ export default Ember.Mixin.create({
 
   subscribeSocket : null,
   reconnect: true,
+  connected: false,
   k8sUidBlacklist : null,
 
   init() {
@@ -79,13 +80,17 @@ export default Ember.Mixin.create({
     socket.reconnect({projectId: projectId});
   },
 
-  disconnectSubscribe() {
+  disconnectSubscribe(cb) {
     this.set('reconnect', false);
     var socket = this.get('subscribeSocket');
     if ( socket )
     {
       console.log('Subscribe disconnect ' + this.forStr());
-      socket.disconnect();
+      socket.disconnect(cb);
+    }
+    else if ( cb )
+    {
+      cb();
     }
   },
 
@@ -110,6 +115,8 @@ export default Ember.Mixin.create({
 
     // WebSocket connected
     subscribeConnected: function(tries,msec) {
+      this.set('connected', true);
+
       let msg = 'Subscribe connected ' + this.forStr();
       if (tries > 0)
       {
@@ -127,6 +134,8 @@ export default Ember.Mixin.create({
 
     // WebSocket disconnected (unexpectedly)
     subscribeDisconnected: function() {
+      this.set('connected', false);
+
       console.log('Subscribe disconnected ' + this.forStr());
       if ( this.get('reconnect') ) {
         this.connectSubscribe();

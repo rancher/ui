@@ -1,9 +1,5 @@
 import Ember from 'ember';
 import { debouncedObserver } from 'ui/utils/debounce';
-import C from 'ui/utils/constants';
-
-const OLD_STACK_ID = C.EXTERNALID.KIND_SYSTEM + C.EXTERNALID.KIND_SEPARATOR + C.EXTERNALID.KIND_MESOS;
-const NEW_STACK_PREFIX = C.EXTERNALID.KIND_SYSTEM_CATALOG + C.EXTERNALID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNALID.GROUP_SEPARATOR + C.EXTERNALID.KIND_MESOS + C.EXTERNALID.GROUP_SEPARATOR;
 
 export default Ember.Component.extend({
   mesos: Ember.inject.service(),
@@ -49,11 +45,7 @@ export default Ember.Component.extend({
       return;
     }
 
-    var stack = this.get('model.stacks').filter((stack) => {
-      let externalId = stack.get('externalId')||'';
-      return externalId === OLD_STACK_ID || externalId.indexOf(NEW_STACK_PREFIX) === 0;
-    })[0];
-
+    var stack = this.get('mesos').filterSystemStack(this.get('model.stacks'));
     if ( !stack )
     {
       this.set('currentStep', 2);

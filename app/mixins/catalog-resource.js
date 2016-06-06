@@ -11,8 +11,7 @@ export default Ember.Mixin.create({
   uniqueCatalogIds : null,
 
   templateBase: function() {
-    if ( this.get('projects.current.kubernetes') )
-    {
+    if ( this.get('projects.current.kubernetes') ) {
       return 'kubernetes';
     } else if ( this.get('projects.current.swarm') ) {
       return 'swarm';
@@ -21,7 +20,7 @@ export default Ember.Mixin.create({
     } else {
       return 'cattle';
     }
-  }.property('projects.current.{kubernetes,swarm}'),
+  }.property('projects.current.{kubernetes,swarm,mesos}'),
 
   uniqKeys: function (data, name) {
     let out = data.map((item) => item[name]);

@@ -2,6 +2,8 @@ import Ember from 'ember';
 import { debouncedObserver } from 'ui/utils/debounce';
 
 export default Ember.Component.extend({
+  swarm: Ember.inject.service(),
+
   currentStep: 0,
   subStep: 0,
   subCount: 0,
@@ -37,7 +39,7 @@ export default Ember.Component.extend({
       return;
     }
 
-    var stack = this.get('model.stacks').filterBy('externalId','system://swarm')[0];
+    var stack = this.get('swarm').filterSystemStack(this.get('model.stacks'));
     if ( !stack )
     {
       this.set('currentStep', 2);
