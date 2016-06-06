@@ -49,7 +49,7 @@
   {{#if model.volumes.length}}
     <div class="subsection gutter col-xs-6 col-md-9 col-full-height">
       <h6>{{t 'storagePoolSection.volumes.header'}}</h6>
-      <table class="grid fixed" style="margin-bottom: 0">
+      <table class="grid" style="margin-bottom: 0">
         <thead>
           <tr>
             {{sortable-th sortable=this action="changeSort" name="state" width="125" label="generic.state"}}
@@ -63,6 +63,13 @@
             <tr>
               <td class="state">
                 {{badge-state model=vol}}
+                {{#if vol.snapshots}}
+                  {{#if vol.showSnapshots}}
+                    <span><i class="icon hand icon-minus-square" {{action 'toggleCollapse' vol}}></i></span>
+                  {{else}}
+                    <span><i class="icon hand icon-plus-square" {{action 'toggleCollapse' vol}}></i></span>
+                  {{/if}}
+                {{/if}}
               </td>
               <td class="force-wrap">
                 {{#tooltip-element type="tooltip-basic" model=vol tooltipTemplate="tooltip-storage"}}
@@ -92,6 +99,27 @@
                 {{action-menu model=vol}}
               </td>
             </tr>
+            {{#if vol.showSnapshots}}
+              <tr class="nohover">
+                <td colspan="6" class="subtable">
+                  <table class="grid fixed no-lines r-mb0">
+                    <thead>
+                      <tr>
+                        <th>{{t 'generic.state'}}</th>
+                        <th>{{t 'generic.name'}}</th>
+                        <th>{{t 'generic.backups'}}</th>
+                        <th>{{t 'generic.actions'}}</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {{#each vol.snapshots as |snapshot|}}
+                        {{snapshot-section volume=vol snapshot=snapshot}}
+                      {{/each}}
+                    </tbody>
+                  </table>
+                </td>
+              </tr>
+            {{/if}}
           {{/each}}
         </tbody>
       </table>

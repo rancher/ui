@@ -107,8 +107,15 @@ Router.map(function() {
           this.route('detail', {path: '/:certificate_id'});
         });
 
+        this.route('backuptargets', {resetNamespace: true}, function() {
+          this.route('index', {path: '/'});
+        });
+        this.route('backuptargets.new-target', {path: '/add-target', resetNamespace: true});
+
         this.route('storagepools', {resetNamespace: true}, function() {
           this.route('index', {path: '/'});
+          this.route('pools', {path: '/pools'});
+          this.route('backups', {path: '/backups'});
           this.route('detail', {path: '/:storagepool_id'});
         });
         this.route('storagepools.new-volume', {path: '/add-volume', resetNamespace: true});
@@ -340,12 +347,24 @@ Router.map(function() {
     otherParams             : {originalModel           : 'originalModel', action : 'action'},
   });
 
-  // End: Modals
   this.modal('modal-edit-driver', {
     dismissWithOutsideClick : true,
     withParams              : 'editMachineDriver',
     otherParams             : {originalModel: 'originalModel'},
   });
+
+  this.modal('modal-edit-snapshot', {
+    dismissWithOutsideClick : 'true',
+    withParams: 'editSnapshot',
+    otherParams: {originalModel: 'originalModel'}
+  });
+
+  this.modal('modal-edit-backup', {
+    dismissWithOutsideClick : 'true',
+    withParams: 'editBackup',
+    otherParams: {originalModel: 'originalModel', backupTargets: 'backupTargets'}
+  });
+  // End: Modals
 
   // Load any custom routes from additional-routes
   var cb = applyRoutes("application");
