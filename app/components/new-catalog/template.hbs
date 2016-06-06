@@ -1,9 +1,9 @@
 <section class="header">
 
   {{#if editing}}
-    <h1>{{t 'newCatalog.upgrade'}} <span style="font-weight: normal">{{environmentResource.name}}</span></h1>
+    <h1>{{t 'newCatalog.upgrade'}}: <span style="font-weight: normal">{{environmentResource.name}}</span></h1>
   {{else}}
-    <h1>{{#link-to parentRoute}}{{t 'newCatalog.catalog'}}{{/link-to}}</h1>
+    <h1>{{#link-to parentRoute}}{{t 'newCatalog.catalog'}}:{{/link-to}}</h1>
     {{#power-select options=allTemplates selected=templateResource onchange=(action "changeTemplate") searchField="name" as |obj|}}
       <div class="clip">{{obj.name}}</div>
     {{/power-select}}
@@ -19,13 +19,13 @@
         {{/if}}
 
         <div>
-          <small><strong>{{t 'newCatalog.catalog'}}</strong> <span class="text-capitalize">{{templateResource.catalogId}}</span></small>
+          <small><strong>{{t 'newCatalog.catalog'}}:</strong> <span class="text-capitalize">{{templateResource.catalogId}}</span></small>
         </div>
         <div>
-          <small><strong>{{t 'newCatalog.category'}}</strong> <span class="text-capitalize">{{templateResource.category}}</span></small>
+          <small><strong>{{t 'newCatalog.category'}}:</strong> <span class="text-capitalize">{{templateResource.category}}</span></small>
         </div>
         {{#if (eq templateResource.catalogId 'library')}}
-          <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.official'}}</small>
+          <small><strong>{{t 'newCatalog.support'}}: </strong>{{t 'newCatalog.official'}}</small>
         {{else}}
           {{#if (eq templateResource.catalogId 'community')}}
             <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.maintainedBy'}}</small>
@@ -33,16 +33,16 @@
         {{/if}}
         {{#if templateResource.maintainer}}
           <div>
-            <small><strong>{{t 'newCatalog.maintainer'}}</strong> {{templateResource.maintainer}}</small>
+            <small><strong>{{t 'newCatalog.maintainer'}}:</strong> {{templateResource.maintainer}}</small>
           </div>
         {{/if}}
         {{#if templateResource.license}}
           <div>
-            <small><strong>{{t 'newCatalog.license'}}</strong> {{templateResource.license}}</small>
+            <small><strong>{{t 'newCatalog.license'}}:</strong> {{templateResource.license}}</small>
           </div>
         {{/if}}
         {{#if templateResource.links.project}}
-          <small class="force-wrap"><strong>{{t 'newCatalog.url'}}</strong> <a href="{{templateResource.cleanProjectUrl}}" target="_blank">{{templateResource.cleanProjectUrl}}</a></small>
+          <small class="force-wrap"><strong>{{t 'newCatalog.url'}}:</strong> <a href="{{templateResource.cleanProjectUrl}}" target="_blank">{{templateResource.cleanProjectUrl}}</a></small>
         {{/if}}
       </div>
       {{#if readmeContent}}
@@ -110,7 +110,7 @@
                 {{component question.inputComponent field=question value=question.answer}}
               {{else}}
                 {{input type="text" value=question.answer class="form-control"}}
-                <p>{{t 'newCatalog.unknownType'}} {{question.type}}</p>
+                <p>{{t 'newCatalog.unknownType'}}: {{question.type}}</p>
               {{/if}}
 
               <p class="help-block">{{question.description}}</p>

@@ -1,5 +1,5 @@
 <section class="header r-pt20 clearfix">
-  <h1>{{#link-to "containers"}}{{t 'containersPage.containerPage.header'}}{{/link-to}}</h1>
+  <h1>{{#link-to "containers"}}{{t 'containersPage.containerPage.header'}}:{{/link-to}}</h1>
   {{#power-select options=model.primaryHost.instances selected=model onchange=(action "changeContainer") searchField="displayName" as |obj|}}
     <div class="clip r-mr15">
       {{select-dot model=obj}}
@@ -25,7 +25,7 @@
   {{#info-multi-stats model=model linkName="containerStats" single=true}}
     <div class="container-flex bordered">
       <div class="col-flex">
-        <label>{{t 'containersPage.containerPage.infoMultiStats.host'}}</label>
+        <label>{{t 'containersPage.containerPage.infoMultiStats.host'}}:</label>
         {{#if model.primaryHost}}
           {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}
           {{copy-to-clipboard clipboardText=model.primaryHost.displayIp tooltipText=(t 'containersPage.containerPage.infoMultiStats.tooltip.host') size="small"}}
@@ -34,11 +34,11 @@
         {{/if}}
       </div>
       <div class="col-flex">
-        <label>{{t 'containersPage.containerPage.infoMultiStats.ip'}}</label>
+        <label>{{t 'containersPage.containerPage.infoMultiStats.ip'}}:</label>
         {{format-ip ip=model.displayIp showCopy=true}}
       </div>
       <div class="col-flex">
-        <label>{{t 'containersPage.containerPage.infoMultiStats.docker'}}</label>
+        <label>{{t 'containersPage.containerPage.infoMultiStats.docker'}}:</label>
         {{#if model.displayExternalId}}
           {{model.displayExternalId}} {{copy-to-clipboard clipboardText=model.externalId size='small'}}
         {{else}}
@@ -48,13 +48,13 @@
     </div>
     <div class="container-flex bordered">
       <div class="col-flex">
-        <label>{{t 'containersPage.containerPage.infoMultiStats.image'}}</label>
+        <label>{{t 'containersPage.containerPage.infoMultiStats.image'}}:</label>
         <span class="force-wrap">
           {{model.displayImage}} {{copy-to-clipboard clipboardText=model.displayImage size='small'}}
         </span>
       </div>
       <div class="col-flex">
-        <label>{{t 'containersPage.containerPage.infoMultiStats.command'}}</label>
+        <label>{{t 'containersPage.containerPage.infoMultiStats.command'}}:</label>
         <span class="force-wrap">
           {{#if model.command}}
             {{concat-str model.command}}
@@ -64,7 +64,7 @@
         </span>
       </div>
       <div class="col-flex">
-        <label>{{t 'containersPage.containerPage.infoMultiStats.entryPoint'}}</label>
+        <label>{{t 'containersPage.containerPage.infoMultiStats.entryPoint'}}:</label>
         <span class="force-wrap">
           {{#if model.entryPoint}}
             {{concat-str model.entryPoint}}
@@ -77,7 +77,7 @@
     {{#if model.description}}
       <div class="container-flex">
         <div class="col-flex description">
-          <label>{{t 'containersPage.containerPage.infoMultiStats.description'}} </label>
+          <label>{{t 'containersPage.containerPage.infoMultiStats.description'}}: </label>
           <span>{{model.description}}</span>
         </div>
       </div>

@@ -9,40 +9,40 @@
   </thead>
   <tbody>
     {{#each model.mounts as |mount|}}
-      <tr>
-        <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.state'}}>
-          <span class="state {{mount.stateBackground}}">
+    <tr>
+      <td data-title="{{t 'containersPage.containerPage.volumesTab.table.body.state'}}:">
+        <span class="state {{mount.stateBackground}}">
             {{mount.displayState}}
           </span>
-        </td>
-        <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.mount'}}>
-          {{mount.path}} {{copy-to-clipboard size='small' clipboardText=mount.path}}
-        </td>
-        <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.shared'}}>
-          <ul class="list-unstyled">
+      </td>
+      <td data-title="{{t 'containersPage.containerPage.volumesTab.table.body.mount'}}:">
+        {{mount.path}} {{copy-to-clipboard size='small' clipboardText=mount.path}}
+      </td>
+      <td data-title="{{t 'containersPage.containerPage.volumesTab.table.body.shared'}}:">
+        <ul class="list-unstyled">
           {{#each mount.volume.sharedWith as |container|}}
-            <li>
-              {{#link-to "container" container.id}}{{container.displayName}}{{/link-to}}
-            </li>
+          <li>
+            {{#link-to "container" container.id}}{{container.displayName}}{{/link-to}}
+          </li>
           {{else}}
-            <li class="text-muted">{{t 'containersPage.containerPage.volumesTab.table.body.noContainers'}}</li>
+          <li class="text-muted">{{t 'containersPage.containerPage.volumesTab.table.body.noContainers'}}</li>
           {{/each}}
-          </ul>
-        </td>
-        <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.writable'}}>
-          <i class="icon {{if mount.isReadWrite 'icon-check' 'icon-x text-muted'}}"></i>
-        </td>
-      </tr>
+        </ul>
+      </td>
+      <td data-title="{{t 'containersPage.containerPage.volumesTab.table.body.writable'}}:">
+        <i class="icon {{if mount.isReadWrite 'icon-check' 'icon-x text-muted'}}"></i>
+      </td>
+    </tr>
     {{else}}
-      <tr>
-        <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.error.data'}} colspan="4">
-          {{#if model.mountError}}
-            <div class="text-danger text-center">{{t 'containersPage.containerPage.volumesTab.table.body.error.error'}} {{model.mountError.message}}</div>
-          {{else}}
-            <div class="text-muted text-center">{{t 'containersPage.containerPage.volumesTab.table.body.error.noData'}}</div>
-          {{/if}}
-        </td>
-      </tr>
+    <tr>
+      <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.error.data'}} colspan="4">
+        {{#if model.mountError}}
+        <div class="text-danger text-center">{{t 'containersPage.containerPage.volumesTab.table.body.error.error'}} {{model.mountError.message}}</div>
+        {{else}}
+        <div class="text-muted text-center">{{t 'containersPage.containerPage.volumesTab.table.body.error.noData'}}</div>
+        {{/if}}
+      </td>
+    </tr>
     {{/each}}
   </tbody>
 </table>

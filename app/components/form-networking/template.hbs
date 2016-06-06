@@ -1,6 +1,6 @@
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Network</label>
+    <label class="form-control-static">{{t 'formNetwork.network'}}</label>
   </div>
 
   <div class="col-sm-12 {{if isContainerNetwork 'col-md-3' 'col-md-8'}}">
@@ -13,7 +13,7 @@
 
   {{#if isContainerNetwork}}
     <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Container</label>
+      <label class="form-control-static">{{t 'formNetwork.container'}}</label>
     </div>
     <div class="col-sm-12 col-md-3">
       {{new-select
@@ -31,22 +31,22 @@
 {{#if isManagedNetwork}}
   <div class="row">
     <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Requested IP</label>
+      <label class="form-control-static">{{t 'formNetwork.requestedIP'}}</label>
     </div>
 
     <div class="col-sm-12 col-md-8">
       {{input type="text" value=requestedIp classNames="form-control" placeholder="e.g. 10.42.2.24"}}
-      <p class="help-block">Request a specific IP in the 10.42.0.0/16 block.  If the IP is already in use a random one will be assigned.</p>
+      <p class="help-block">{{t 'formNetwork.requestSpecific'}}</p>
     </div>
   </div>
   {{#if isService}}
     <div class="row">
       <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">Retain IP</label>
+        <label class="form-control-static">{{t 'formNetwork.retainIP'}}</label>
       </div>
 
       <div class="col-sm-12 col-md-8">
-        <label class="form-control-static">{{input type="checkbox" checked=service.retainIp}} Reuse IP addresses when upgrading or replacing unhealthy instances.</label>
+        <label class="form-control-static">{{input type="checkbox" checked=service.retainIp}} {{t 'formNetwork.reuseIP'}}</label>
       </div>
     </div>
   {{/if}}
@@ -54,11 +54,11 @@
   {{#if isHostNetwork}}
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">DNS</label>
+        <label class="form-control-static">{{t 'formNetwork.dns'}}</label>
       </div>
 
       <div class="col-sm-12 col-md-8">
-        <label class="form-control-static">{{input type="checkbox" checked=dnsDiscovery}} Enable {{settings.appName}} DNS service discovery</label>
+        <label class="form-control-static">{{input type="checkbox" checked=dnsDiscovery}} Enable {{settings.appName}} {{t 'formNetwork.serviceDiscovery'}}</label>
       </div>
     </div>
   {{/if}}
@@ -70,19 +70,19 @@
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Hostname</label>
+    <label class="form-control-static">{{t 'formNetwork.hostname'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">
     {{#if isService}}
       <div class="radio small r-mt10">
-        <label>{{radio-button selection=hostname value="default"}} Use the Docker container ID</label>
+        <label>{{radio-button selection=hostname value="default"}} {{t 'formNetwork.useDockerID'}}</label>
       </div>
       <div class="radio small r-mt10">
-        <label>{{radio-button selection=hostname value="override"}} Use the container name</label>
+        <label>{{radio-button selection=hostname value="override"}} {{t 'formNetwork.containerName'}}</label>
       </div>
       <div class="radio small">
-        <label>{{radio-button selection=hostname value="custom"}} Set a specific hostname:</label>
+        <label>{{radio-button selection=hostname value="custom"}} {{t 'formNetwork.specificHostname'}}:</label>
         {{input type="text" value=instance.hostname classNames="form-control r-ml10 input-sm" safeStyle="display:inline; width: 200px;" placeholder="e.g. web" disabled=(not-eq hostname "custom")}}
       </div>
     {{else}}
@@ -93,7 +93,7 @@
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Domain Name</label>
+    <label class="form-control-static">{{t 'formNetwork.domainName'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">
@@ -103,7 +103,7 @@
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Resolving Servers</label>
+    <label class="form-control-static">{{t 'formNetwork.resolvingServers'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">
@@ -129,7 +129,7 @@
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Search Domains</label>
+    <label class="form-control-static">{{t 'formNetwork.searchDomains'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">

@@ -1,5 +1,5 @@
 <section class="header">
-  <h1>{{t 'catalogPage.index.header'}} <span class="text-capitalize">{{selectedCatalog}}</span></h1>
+  <h1>{{t 'catalogPage.index.header'}}: <span class="text-capitalize">{{selectedCatalog}}</span></h1>
 
   <div class="pull-right">
     <button type="button" class="btn btn-default btn-sm" disabled={{eq updating 'yes'}} {{action "update"}}>
@@ -16,7 +16,7 @@
   </div>
 
   <div class="btn-group pull-right r-ml10">
-    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Category: <span class="text-capitalize">{{category}}</span> <i class="icon icon-chevron-down"></i></button>
+    <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{t 'catalogPage.index.category'}}: <span class="text-capitalize">{{category}}</span> <i class="icon icon-chevron-down"></i></button>
     <ul class="dropdown-menu dropdown-menu-right">
       {{#each categories as |category|}}
       <li>
@@ -55,7 +55,7 @@
         <hr class="r-m10" />
         <div class="r-mt10 description">{{catalogItem.description}}</div>
       </div>
-      {{#link-to launchRoute catalogItem.id class="btn btn-sm btn-primary view-details"}}View Details{{/link-to}}
+      {{#link-to launchRoute catalogItem.id class="btn btn-sm btn-primary"}}{{t 'catalogPage.index.viewDetails'}}{{/link-to}}
     </div>
   {{else}}
     <div class="text-muted r-mt20">
