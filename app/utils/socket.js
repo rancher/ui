@@ -25,15 +25,17 @@ export default Ember.Object.extend(Ember.Evented, {
   _frameTimer: null,
   _reconnectTimer: null,
   _tries: 0,
+  _disconnectCbs: null,
   _disconnectedAt: null,
   _closingId: null,
 
   connect(metadata) {
     if ( this.get('_socket') ) {
-      console.log('Socket refusing to connect while another socket exists');
+      console.error('Socket refusing to connect while another socket exists');
       return;
     }
 
+    this.set('_disconnectCbs', this.get('_disconnectCbs')||[]);
     this.set('metadata', metadata||this.get('metadata')||{});
 
     var url = this.get('url');
@@ -62,7 +64,12 @@ export default Ember.Object.extend(Ember.Evented, {
     });
   },
 
-  disconnect() {
+  disconnect(cb) {
+    if ( cb )
+    {
+      this.get('_disconnectCbs').pushObject(cb);
+    }
+
     this.set('autoReconnect', false);
     this._close();
   },
@@ -138,6 +145,7 @@ export default Ember.Object.extend(Ember.Evented, {
 
     this.trigger('connected', this.get('_tries'), after);
     this._resetWatchdog();
+    Ember.run.cancel(this.get('_reconnectTimer'));
   },
 
   _message(event) {
@@ -171,17 +179,23 @@ export default Ember.Object.extend(Ember.Evented, {
   _closed() {
     console.log(`Socket ${this.get('_closingId')} closed`);
 
+    this.set('_closingId', null);
+    this.set('_socket', null);
+    Ember.run.cancel(this.get('_reconnectTimer'));
+    Ember.run.cancel(this.get('_frameTimer'));
+
+    let cbs = this.get('_disconnectCbs')||[];
+    while ( cbs.get('length') ) {
+      let cb = cbs.popObject();
+      cb.apply(this);
+    }
+
     let wasConnected = false;
     if ( [CONNECTED, CLOSING].indexOf(this.get('_state')) >= 0 )
     {
       this.trigger('disconnected');
       wasConnected = true;
     }
-
-    this.set('_closingId', null);
-    this.set('_socket', null);
-    Ember.run.cancel(this.get('_reconnectTimer'));
-    Ember.run.cancel(this.get('_frameTimer'));
 
     if ( this.get('_disconnectedAt') === null )
     {
