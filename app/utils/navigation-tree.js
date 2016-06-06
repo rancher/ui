@@ -304,6 +304,12 @@ const navTree = [
         route: 'admin-tab.auth',
       },
       {
+        id: 'admin-machine',
+        localizedLabel: 'nav.admin.machine',
+        icon: 'icon icon-host',
+        route: 'admin-tab.machine',
+      },
+      {
         id: 'admin-settings',
         localizedLabel: 'nav.admin.settings',
         icon: 'icon icon-network',

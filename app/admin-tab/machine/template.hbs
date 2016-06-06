@@ -1,0 +1,99 @@
+<section class="header">
+  <h1>{{t 'machinePage.header'}}</h1>
+  <button class="btn btn-sm btn-primary right-divider-btn" {{action 'addNewDriver'}}>{{t 'machinePage.add'}}</button>
+</section>
+
+<section>
+  <h5>{{format-html-message 'machinePage.subtext'}}</h5>
+  <hr>
+</section>
+
+<section class="r-plr15 clearfix">
+  {{#each arranged as |driver|}}
+    <div class="container-catalog machine text-center">
+      <div class='catalog-header r-mb10'>
+        {{#if driver.catalogId}}
+          <div class=" btn-group resource-actions action-menu">
+            {{#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=(t 'generic.activate') tagName="span"}}
+              <button class="btn btn-default btn-xs" aria-label={{t 'generic.activate'}} {{action 'addCatalogDriver' driver}}>
+                <i class="icon-fw icon icon-play" alt={{t 'generic.activate'}}></i>
+              </button>
+            {{/tooltip-element~}}
+          </div>
+        {{else}}
+          {{action-menu model=driver}}
+        {{/if}}
+        <h5 class="clip">{{driver.name}}</h5>
+      </div>
+      <div class="catalog-icon r-mb10">
+        {{#if (or driver.builtin driver.hasBuiltinUi)}}
+          <div class="machine-catalog-icon {{driver.iconMapFromConstants}}"></div>
+        {{else}}
+          <div class="machine-catalog-icon generic"></div>
+        {{/if}}
+      </div>
+      <div class="itemwrap r-mt15">
+        {{#if driver.builtin}}
+          <div class="text-muted">{{t 'machinePage.table.header.url'}}: {{t 'machinePage.builtin'}}</div>
+        {{else}}
+          <div>
+            {{#tooltip-element clip=true inlineBlock=false type="tooltip-basic" tooltipTemplate="tooltip-static" model=driver.displayUrl tagName="span"}}
+              {{t 'machinePage.table.header.url'}}: <a href={{driver.url}} target="_blank">{{t 'machinePage.download'}}</a>
+            {{/tooltip-element~}}
+            {{copy-to-clipboard size='small' clipboardText=driver.url}}
+          </div>
+        {{/if}}
+
+        {{#if driver.uiUrl}}
+          <!--change this to match the driver url - but say external vs built in and link out to with tooltip-->
+          <div>{{t 'machinePage.table.header.uiUrl'}}: <a href={{driver.uiUrl}} target="_blank">{{t 'machinePage.viewUi'}}</a> </div>
+        {{else}}
+          <div class="text-muted">
+            {{t 'machinePage.table.header.uiUrl'}}:
+            {{#if driver.hasBuiltinUi}}
+              {{t 'machinePage.builtin'}}
+            {{else}}
+              {{t 'machinePage.other'}}
+            {{/if}}
+          </div>
+        {{/if}}
+
+        {{#if driver.checksum}}
+          <div>{{t 'machinePage.table.header.checksum'}}:
+            {{#tooltip-element clip=true inlineBlock=false type="tooltip-basic" tooltipTemplate="tooltip-static" model=driver.checksum tagName='span'}}
+              {{driver.displayChecksum}}
+            {{/tooltip-element}}
+          </div>
+        {{else}}
+          <div class="text-muted">{{t 'machinePage.table.header.checksum'}}: {{t (if driver.builtin 'machinePage.builtin' 'generic.none')}}</div>
+        {{/if}}
+      </div>
+      {{#if driver.upgradeAvailable}}
+        <div class="btn-group r-mt5">
+          <button type="button" class="btn btn-warning btn-xs">
+            {{#if upgrading}}
+              <i class="icon icon-spinner icon-spin"></i> {{t 'machinePage.upgrading'}}
+            {{else}}
+              {{t 'machinePage.upgradeAvailable'}}
+            {{/if}}
+          </button>
+          <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+            <i class="icon icon-fw icon-chevron-down"></i>
+            <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            {{!-- each over versions --}}
+            {{#each-in driver.upgradeVersionLinks as |version path|}}
+              <li class='hand' {{action "upgradeDriver" driver version path}}>{{version}}</li>
+            {{/each-in}}
+          </ul>
+        </div>
+        {{/if}}
+      {{#if (or (eq driver.state 'inactive') (not driver.state))}}
+        <span class="state badge r-mt5">
+          {{if driver.state driver.state (t 'machinePage.inactive')}}
+        </span>
+      {{/if}}
+    </div>
+  {{/each}}
+</section>

@@ -1,0 +1,35 @@
+<h4>{{t 'hostSettings.header'}}</h4>
+<h5>{{t 'hostSettings.subtext' appName=settings.appName}}</h5>
+<hr>
+
+<div class="r-mt15">
+  <label style="width: 150px;">{{radio-button selection=customRadio value="no"}}&nbsp;{{t 'hostSettings.hostUrl.local'}}&nbsp;&nbsp;</label>
+  <code class="form-control-static r-pl20 r-pr20">{{thisPage}}</code>
+</div>
+
+<div class="r-mt10">
+  <label style="width: 150px;">{{radio-button selection=customRadio value="yes"}}&nbsp;{{t 'hostSettings.hostUrl.new.labelText'}}&nbsp;&nbsp;</label>
+  {{input type="text" class="form-control" value=customValue placeholder=(t 'hostSettings.hostUrl.new.placeholder') safeStyle="width: calc(100% - 170px); display: inline-block;  min-width: 300px;"}}
+  <p class="help-block">
+    {{format-html-message 'hostSettings.helpText.static1'}}
+    {{#if settings.isRancher}}
+      {{format-html-message 'hostSettings.helpText.isRancher' docsBase=settings.docsBase}}
+    {{else}}
+      {{t 'hostSettings.helpText.sslTerm'}}
+    {{/if}}
+    {{format-html-message 'hostSettings.helpText.static2' appName=settings.appName}}
+  </p>
+</div>
+
+{{#unless looksPublic}}
+  <div class="alert alert-info" style="margin-top: 30px;">
+    <i class="icon icon-info" style="font-size: 35px; float: left;"></i>
+    <p style="margin-left: 50px;">
+      {{format-html-message 'hostSettings.notPublic.alert' activeValue=activeValue}}
+    </p>
+  </div>
+{{/unless}}
+
+{{top-errors errors=errors}}
+
+{{save-cancel cancelDisabled=true editing=true save="save"}}

@@ -14,12 +14,9 @@ export default Ember.Route.extend({
   model() {
     let settings = this.get('settings');
 
-    return this.get('userStore').findAll('machinedriver', null, {forceReload: true}).then((drivers) => {
-      return Ember.Object.create({
-        host           : settings.get(C.SETTING.API_HOST),
-        catalog        : settings.get(C.SETTING.CATALOG_URL),
-        machineDrivers : drivers,
-      });
+    return Ember.Object.create({
+      host           : settings.get(C.SETTING.API_HOST),
+      catalog        : settings.get(C.SETTING.CATALOG_URL),
     });
   },
 
