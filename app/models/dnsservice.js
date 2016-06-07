@@ -14,10 +14,8 @@ var DnsService = Service.extend({
 
   displayDetail: function() {
     let intl = this.get('intl');
-    let toTranslation = intl.t('translation.key')('generic.to');
-    let noneTranslation = intl.t('translation.key')('generic.none');
-    toTranslation = intl.formatMessage(toTranslation);
-    noneTranslation = intl.formatMessage(noneTranslation);
+    let toTranslation = intl.tHtml('translation.key')('generic.to');
+    let noneTranslation = intl.tHtml('translation.key')('generic.none');
 
     var services = '';
     (this.get('consumedServicesWithNames')||[]).forEach((map, idx) => {
@@ -28,7 +26,7 @@ var DnsService = Service.extend({
 
     var out = '<label>'+ toTranslation +': </label>' + services || '<span class="text-muted">'+ noneTranslation +'</span>';
 
-    return out.htmlSafe();
+    return out;
   }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated', 'intl._locale'),
 });
 

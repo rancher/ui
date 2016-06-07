@@ -64,15 +64,13 @@ var LoadBalancerService = Service.extend({
     });
 
     let intl = this.get('intl');
-    let portsTranslation = intl.t('translation.key')('generic.ports');
-    let internalTranslation = intl.t('translation.key')('generic.internal');
-    portsTranslation = intl.formatMessage(portsTranslation);
-    internalTranslation = intl.formatMessage(internalTranslation);
+    let portsTranslation = intl.tHtml('translation.key')('generic.ports');
+    let internalTranslation = intl.tHtml('translation.key')('generic.internal');
 
     var out = (pub      ? ' <label>'+portsTranslation+': </label>'   + pub : '') +
               (internal ? '<label>'+internalTranslation+': </label>' + internal : '');
 
-    return out.htmlSafe();
+    return out;
   }.property('launchConfig.ports.[]','launchConfig.expose.[]','endpointsMap', 'intl._locale'),
 
   displayDetail: function() {
@@ -84,12 +82,11 @@ var LoadBalancerService = Service.extend({
     });
 
     let intl = this.get('intl');
-    let toTranslation = intl.t('translation.key')('generic.to');
-    toTranslation = intl.formatMessage(toTranslation);
+    let toTranslation = intl.tHtml('translation.key')('generic.to');
 
     var out = '<label>'+toTranslation+': </label>' + services;
 
-    return out.htmlSafe();
+    return out;
   }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated', 'intl._locale'),
 });
 
