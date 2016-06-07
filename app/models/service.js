@@ -424,7 +424,7 @@ var Service = Resource.extend({
   }.property('secondaryLaunchConfigs.length'),
 
   displayDetail: function() {
-    let translation = intl.t('translation.key')('generic.image');
+    let translation = this.get('intl').findTranslationByKey('generic.image');
     translation = this.get('intl').formatMessage(translation);
       return ('<label>'+ translation +': </label><span>' + (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'') + '</span>').htmlSafe();
   }.property('launchConfig.imageUuid', 'intl._locale'),
