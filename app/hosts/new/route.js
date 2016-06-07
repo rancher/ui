@@ -68,6 +68,7 @@ export default Ember.Route.extend({
     {
       controller.set('machineId', null);
       controller.set('clonedModel', null);
+      controller.set('backTo', null);
     }
   },
 
