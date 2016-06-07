@@ -1,15 +1,14 @@
 <label class="text-muted r-ml15">{{t 'servicePage.linksTab.header'}}</label>
 <ul class="list-unstyled list-inline with-room">
-  {{log model.consumedServicesWithNames}}
   {{#each model.consumedServicesWithNames as |link|}}
     {{#if (eq link.service.name link.name)}}
-      {{t (if (eq link.service.environmentId model.environmentID) 'serviceLink.noAlias.sameStack' 'serviceLink.noAlias.differentStack') 
+      {{t (if (eq link.service.environmentId model.environmentID) 'serviceLink.noAlias.sameStack' 'serviceLink.noAlias.differentStack')
         stack=link.service.displayEnvironment
         service=link.service.displayName
         alias=link.name
       }}
     {{else}}
-      {{t (if (eq link.service.environmentId model.environmentID) 'serviceLink.withAlias.sameStack' 'serviceLink.withAlias.differentStack') 
+      {{t (if (eq link.service.environmentId model.environmentID) 'serviceLink.withAlias.sameStack' 'serviceLink.withAlias.differentStack')
         stack=link.service.displayEnvironment
         service=link.service.displayName
         alias=link.name
