@@ -2,10 +2,18 @@
 <ul class="list-unstyled list-inline with-room">
   {{log model.consumedServicesWithNames}}
   {{#each model.consumedServicesWithNames as |link|}}
-    {{# if (eq link.service.name link.name)}}
-      <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.displayEnvironment}}/{{link.service.name}} {{/link-to}}</li>
+    {{#if (eq link.service.name link.name)}}
+      {{t (if (eq link.service.environmentId model.environmentID) 'serviceLink.noAlias.sameStack' 'serviceLink.noAlias.differentStack') 
+        stack=link.service.displayEnvironment
+        service=link.service.displayName
+        alias=link.name
+      }}
     {{else}}
-      <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.displayEnvironment}}/{{link.service.name}} {{t 'generic.as'}} {{link.name}} {{/link-to}}</li>
+      {{t (if (eq link.service.environmentId model.environmentID) 'serviceLink.withAlias.sameStack' 'serviceLink.withAlias.differentStack') 
+        stack=link.service.displayEnvironment
+        service=link.service.displayName
+        alias=link.name
+      }}
     {{/if}}
   {{else}}
     <li class="text-muted">{{t 'servicePage.linksTab.noData'}}</li>
