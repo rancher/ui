@@ -8,14 +8,14 @@ var DnsService = Service.extend({
   intl: Ember.inject.service(),
 
   healthState: function() {
-    let out = this.get('intl').findTranslationByKey('generic.healthy');
-    return this.get('intl').formatMessage(out);
+    let out = this.get('intl').intl.t('translation.key')('generic.healthy');
+    return out;
   }.property('intl._locale'),
 
   displayDetail: function() {
     let intl = this.get('intl');
-    let toTranslation = intl.findTranslationByKey('generic.to');
-    let noneTranslation = intl.findTranslationByKey('generic.none');
+    let toTranslation = intl.t('translation.key')('generic.to');
+    let noneTranslation = intl.t('translation.key')('generic.none');
     toTranslation = intl.formatMessage(toTranslation);
     noneTranslation = intl.formatMessage(noneTranslation);
 

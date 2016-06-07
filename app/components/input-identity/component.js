@@ -85,12 +85,12 @@ export default Ember.Component.extend({
     let intl = this.get('intl');
     if ( this.get('access.provider') === 'githubconfig' )
     {
-      out = intl.findTranslationByKey('inputIdentity.dropdownLabel.teams');
+      out = intl.t('translation.key')('inputIdentity.dropdownLabel.teams');
     }
     else
     {
-      out = intl.findTranslationByKey('inputIdentity.dropdownLabel.groups');
+      out = intl.t('translation.key')('inputIdentity.dropdownLabel.groups');
     }
-    return intl.formatMessage(out);
+    return out;
   }.property('access.provider', 'intl._locale'),
 });

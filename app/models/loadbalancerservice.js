@@ -64,8 +64,8 @@ var LoadBalancerService = Service.extend({
     });
 
     let intl = this.get('intl');
-    let portsTranslation = intl.findTranslationByKey('generic.ports');
-    let internalTranslation = intl.findTranslationByKey('generic.internal');
+    let portsTranslation = intl.t('translation.key')('generic.ports');
+    let internalTranslation = intl.t('translation.key')('generic.internal');
     portsTranslation = intl.formatMessage(portsTranslation);
     internalTranslation = intl.formatMessage(internalTranslation);
 
@@ -84,7 +84,7 @@ var LoadBalancerService = Service.extend({
     });
 
     let intl = this.get('intl');
-    let toTranslation = intl.findTranslationByKey('generic.to');
+    let toTranslation = intl.t('translation.key')('generic.to');
     toTranslation = intl.formatMessage(toTranslation);
 
     var out = '<label>'+toTranslation+': </label>' + services;
