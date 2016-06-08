@@ -3,17 +3,17 @@ import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend(Sortable, {
-  application: Ember.inject.controller(),
-  settings:    Ember.inject.service(),
-  newMachine: null,
-  sortBy: 'name',
-  sorts: {name: ['name']},
-  upgrading: false,
+  application : Ember.inject.controller(),
+  growl       : Ember.inject.service(),
+  settings    : Ember.inject.service(),
+  sortBy      : 'name',
+  upgrading   : false,
+  sorts       : {name: ['name']},
 
   actions: {
     activate: function(driver) {
       let action = null;
-      if (driver.get('actionLinks.activate')) {
+      if (driver.hasAction('activate')) {
         action = 'activate';
       } else if (driver.get('actionLinks.reactivate')) {
         action = 'reactivate';
@@ -22,33 +22,36 @@ export default Ember.Controller.extend(Sortable, {
       driver.doAction(action);
     },
     addNewDriver: function(driver) {
-      let newDriver = {
+      let newDriver = this.get('userStore').createRecord({
         type            : 'machineDriver',
         name            : null,
         description     : null,
         checksum        : null,
         url             : null,
         activateOnCreate: true,
-      };
+      });
 
       if (driver) {
-        newDriver.name        = driver.name;
-        newDriver.description = driver.description;
-        newDriver.checksum    = driver.checksum;
-        newDriver.url         = driver.url;
-        newDriver.externalId  = driver.id;
+        newDriver.setProperties({
+          name        : driver.name,
+          description : driver.description,
+          checksum    : driver.checksum,
+          url         : driver.url,
+          externalId  : driver.id,
+        });
       }
-
-      this.set('newMachine', this.get('userStore').createRecord(newDriver));
 
       this.get('application').setProperties({
         editMachineDriver: true,
-        originalModel: this.get('newMachine'),
+        originalModel: newDriver,
       });
     },
+
     addCatalogDriver: function(driver) {
       this.get('store').request({url: this.get('app.catalogEndpoint')+'/templates/'+driver.id}).then((template) =>{
+
         this.get('store').request({url: template.versionLinks[template.defaultVersion]}).then((driver) =>{
+
           let newDriver = {
             type            : 'machineDriver',
             description     : (driver.description || null),
@@ -57,9 +60,13 @@ export default Ember.Controller.extend(Sortable, {
             externalId      : driver.id,
             activateOnCreate: true,
           };
-          this.get('userStore').createRecord(newDriver).save().then((newDriver) => {
-            this.get('model.drivers').pushObject(newDriver);
+
+          this.get('userStore').createRecord(newDriver).save().then((result) => {
+            this.get('model.drivers').pushObject(result);
+          }).catch((err) => {
+            this.get('growl').fromError(err);
           });
+
         });
       });
     },
@@ -77,6 +84,9 @@ export default Ember.Controller.extend(Sortable, {
           });
           driver.save().then(() => {
             this.set('upgrading', false);
+          }).catch((err) => {
+            this.set('upgrading', false);
+            this.get('growl').fromError(err);
           });
         });
       });
