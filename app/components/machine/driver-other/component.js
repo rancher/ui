@@ -3,27 +3,25 @@ import Driver from 'ui/mixins/driver';
 
 export default Ember.Component.extend(Driver, {
   driverName      : 'other',
-  model           : null,
   driver          : null,
   availableDrivers: null,
-  primaryResource : Ember.computed.alias('model.machine'),
+  typeDocumentations: null,
+  schemas         : null,
   driverOpts      : null,
 
-  bootstrap: function() {
-    let store = this.get('store');
+  didInitAttrs() {
+    this._super();
+    this.driverChanged();
+  },
 
-    this.set('model', {machine: store.createRecord({type : 'machine'})});
+  bootstrap() {
+    let model = this.get('store').createRecord({
+      type: 'machine',
+    });
 
-    store.findAll('schema').then((schemas) => {
-      store.findAll('typedocumentation').then((typeDocs) => {
-        this.set('model', Ember.Object.create({
-          machine            : this.get('model.machine'),
-          schemas            : schemas,
-          typeDocumentations : typeDocs,
-          otherChoices       : this.get('otherChoices')
-        }));
-        this.set('driver', this.get('otherChoices.firstObject.value'));
-      });
+    this.setProperties({
+      driver: this.get('otherChoices.firstObject.value'),
+      model: model
     });
   },
 
@@ -44,17 +42,16 @@ export default Ember.Component.extend(Driver, {
 
   driverChanged: function() {
     let driver  = this.get('driver');
-    let machine = this.get('model.machine');
+    let machine = this.get('model');
 
     if ( driver && machine) {
-
       if ( !machine.get(driver) ) {
         machine.set(driver, this.get('store').createRecord({ type: driver }));
       }
 
       this.set('driverOpts', machine.get(driver));
     }
-  }.observes('driver', 'model.machine'),
+  }.observes('driver','model'),
 
   otherChoices: function() {
     let out = [];
@@ -68,8 +65,8 @@ export default Ember.Component.extend(Driver, {
   willSave() {
     // Null out all the drivers that aren't the active one, because the API only accepts one.
     let activeDriver = this.get('driver');
-    let machine      = this.get('model.machine');
-    this.get('model.otherChoices').forEach((choice) => {
+    let machine      = this.get('model');
+    this.get('otherChoices').forEach((choice) => {
       let cur = choice.value;
       if ( choice.value !== activeDriver ) {
         machine.set(cur, null);

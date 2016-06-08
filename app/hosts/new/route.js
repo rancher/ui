@@ -39,7 +39,6 @@ export default Ember.Route.extend({
     },
 
     savedHost() {
-      this.controllerFor('hosts.new').set('apiHostSet', true);
       this.refresh();
     },
 
@@ -67,7 +66,6 @@ export default Ember.Route.extend({
     if ( isExisting )
     {
       controller.set('machineId', null);
-      controller.set('clonedModel', null);
       controller.set('backTo', null);
     }
   },
@@ -105,27 +103,19 @@ export default Ember.Route.extend({
     let promises = {
       reloadMachine: this.get('userStore').find('schema','machine', {forceReload: true}),
       loadCustomUi: this.loadCustomUi(),
+      schemas: this.get('userStore').find('schema'),
+      typeDocumentations: this.get('userStore').findAll('typedocumentation') 
     };
 
     if ( params.machineId )
     {
-      promises.existing = this.getMachine(params.machineId);
+      promises.clonedModel = this.getMachine(params.machineId);
     }
 
     if ( this.get('access.admin') ) {
       let settings = this.get('settings');
       promises.apiHostSet = settings.load(C.SETTING.API_HOST).then(() => {
-        let controller = this.controllerFor('hosts.new');
-        if ( settings.get(C.SETTING.API_HOST) ) {
-          controller.set('apiHostSet', true);
-          return true;
-        } else {
-          controller.setProperties({
-            apiHostSet: false,
-            hostModel: settings.get(C.SETTING.API_HOST)
-          });
-          return false;
-        }
+        return !!settings.get(C.SETTING.API_HOST);
       });
     }
 
@@ -209,11 +199,8 @@ export default Ember.Route.extend({
       let machineOut = machine.cloneForNew();
       let config = this.get('store').createRecord(machine[`${machine.driver}Config`]);
 
-      machine.set(`${machine.driver}Config`, config);
-
-      this.controllerFor('hosts.new').set('clonedModel', machineOut);
-
-      return Ember.RSVP.resolve();
+      machineOut.set(`${machine.driver}Config`, config);
+      return machineOut;
     }).catch(() => {
       return Ember.RSVP.reject({type: 'error', message: 'Failed to retrieve cloned model'}) ;
     });

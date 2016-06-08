@@ -5,7 +5,7 @@
   </h1>
 </section>
 
-{{#if apiHostSet}}
+{{#if model.apiHostSet}}
   <section class="well">
     {{#if showPicker}}
       <div class="nav nav-boxes checked-active">
@@ -34,10 +34,13 @@
 
   {{#if driver}}
     <section>
-      {{component (concat "machine/driver-" driver)
+      {{component (if driverObj.hasUi (concat "machine/driver-" driver) 'machine/driver-other')
         cancel=(route-action 'cancel')
         goBack=(route-action 'goBack')
-        clonedModel=clonedModel
+        clonedModel=model.clonedModel
+        driver=(concat driver 'Config')
+        schemas=model.schemas
+        typeDocumentations=model.typeDocumentations
         availableDrivers=model.availableDrivers
       }}
     </section>

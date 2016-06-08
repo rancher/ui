@@ -6,9 +6,6 @@ export default Ember.Controller.extend({
   queryParams : ['backTo', 'driver', 'machineId'],
   backTo      : null,
   driver      : null,
-
-  apiHostSet  : true,
-  clonedModel : null,
   machineId   : null,
 
   allowCustom : true,
@@ -17,14 +14,16 @@ export default Ember.Controller.extend({
   actions: {
     switchDriver(name) {
       if (this.get('machineId')) {
-        this.setProperties({
-          machineId: null,
-          clonedModel: null
-        });
+        this.set('machineId', null);
+        this.set('model.clonedModel', null);
       }
       this.set('driver', name);
     },
   },
+
+  driverObj: function() {
+    return this.get('model.availableDrivers').filterBy('name', this.get('driver'))[0];
+  }.property('driver'),
 
   hasOther: function() {
     return this.get('model.availableDrivers').filterBy('hasUi',false).length > 0;
