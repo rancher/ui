@@ -1,11 +1,13 @@
 <div class="container-subpod">
   <div class="subpod-name">
     <i class="{{model.stateIcon}} {{model.stateColor}} dot "></i>
+    <span class="clip">
     {{#link-to (if model.isVm "virtualmachine" "container") model.id classNameBindings="showEllipsis:tiny-hellip"}}
       {{#tooltip-element type="tooltip-basic" model=model tooltipTemplate='tooltip-container-subpod' }}
         {{displayName}}
       {{/tooltip-element}}
     {{/link-to}}
+    </span>
   </div>
   {{#if model.showTransitioningMessage}}
     <div class="subpod-detail clip {{if model.isError 'text-danger'}}">
