@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import ThrottledResize from 'ui/mixins/throttled-resize';
 
-const MIN_WIDTH     = 260; // Minimum width of a column, including margin-right
+const MIN_WIDTH     = 300; // Minimum width of a column, including margin-right
 const COLUMN_MARGIN = 10; // this must match the rule in styles/pod.scss .pod-column
 const SELECTOR      = '.pod-column'; // Each column must have this class
 
