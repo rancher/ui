@@ -212,6 +212,7 @@ export default Ember.Route.extend(Subscribe, {
         this.intermediateTransitionTo('authenticated');
       }
       this.set(`tab-session.${C.TABSESSION.PROJECT}`, projectId);
+      this.set(`tab-session.${C.TABSESSION.NAMESPACE}`, undefined);
       this.refresh();
       console.log('Switch finished');
     },

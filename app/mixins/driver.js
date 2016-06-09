@@ -37,7 +37,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     }
   },
 
-  afterInit: function() {
+  didInitAttrs: function() {
     this.set('error', null);
     this.set('editing', false);
 
@@ -47,7 +47,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     } else if (typeof this.get('bootstrap') === 'function') {
       this.bootstrap();
     }
-  }.on('init'),
+  },
 
   nameParts: function() {
     let input = this.get('prefix')||'';

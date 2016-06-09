@@ -243,7 +243,8 @@ var C = {
     BASE: 'api',
     BASE_VERSION: 'api/v1',
     TYPE_PREFIX: 'k8s-',
-    ID_SEPARATOR: '::'
+    ID_SEPARATOR: '::',
+    DEFAULT_NS: 'defaultNamespace',
   },
 
   MESOS: {

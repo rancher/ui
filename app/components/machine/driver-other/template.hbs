@@ -12,13 +12,11 @@
         <label class="form-control-static">{{t 'machine.driverOther.driver.label'}}*</label>
       </div>
       <div class="col-md-8">
-        {{#if model}}
         {{new-select
           classNames="form-control"
-          content=model.otherChoices
+          content=otherChoices
           value=driver
         }}
-      {{/if}}
       </div>
     </div>
 
@@ -32,14 +30,12 @@
         resourceType=driver
         field=fieldName
         value=(get driverOpts fieldName)
-        schemas=model.schemas
-        typeDocs=model.typeDocumentations
+        schemas=schemas
+        typeDocs=typeDocumentations
       }}
     {{/each}}
 
-    {{#if model}}
-      {{partial "host/add-options"}}
-    {{/if}}
+    {{partial "host/add-options"}}
   </div>
 
   {{top-errors errors=errors}}

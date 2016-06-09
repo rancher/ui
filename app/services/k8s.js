@@ -3,6 +3,7 @@ import { normalizeType } from 'ember-api-store/utils/normalize';
 import { applyHeaders } from 'ember-api-store/utils/apply-headers';
 import ApiError from 'ember-api-store/models/error';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 const { getOwner } = Ember;
 
@@ -622,7 +623,7 @@ export default Ember.Service.extend({
 
   create(body) {
     return this.request({
-      url: `${this.get('kubectlEndpoint')}/create`,
+      url: Util.addQueryParam(`${this.get('kubectlEndpoint')}/create`, C.K8S.DEFAULT_NS, this.get(`tab-session.${C.TABSESSION.NAMESPACE}`)),
       method: 'POST',
       contentType: 'application/yaml',
       data: body
@@ -644,7 +645,7 @@ export default Ember.Service.extend({
 
   edit(body) {
     return this.request({
-      url: `${this.get('kubectlEndpoint')}/apply`,
+      url: Util.addQueryParam(`${this.get('kubectlEndpoint')}/apply`, C.K8S.DEFAULT_NS, this.get(`tab-session.${C.TABSESSION.NAMESPACE}`)),
       method: 'POST',
       contentType: 'application/yaml',
       data: body
