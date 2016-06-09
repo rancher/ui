@@ -10,6 +10,7 @@ generic:
   backups: Backups
   closeModal: Close
   cancel: Cancel
+  created: Created
   default: Default
   description: Description
   disabled: Disabled
@@ -240,6 +241,22 @@ authPage:
         pre: Enable Local Auth
         post: 'Enabling...'
 
+backupTargetsPage:
+  header: Backup Targets
+  linkTo: Add Backup Target
+  newTarget:
+    hr: NFS Config Options
+    header: Add Backup Target
+    nfsLable:
+      server:
+        label: NFS Server
+        placeholder: '127.0.0.1'
+      share:
+        label: NFS Share
+        placeholder: '/var/nfs/two'
+      mount:
+        label: NFS Mount Options
+        placeholder: 'nfsvers=4,proto=udp'
 catalogPage:
   index:
     header: 'Catalog:'
@@ -921,8 +938,13 @@ stacksPage:
         label: Start services after creating
 
 storagePoolsPage:
+  header: Storage
+  volumeId: Volume Id
+  orphaned: Orphaned Backup
+  nav:
+    pools: Pools
+    backups: Backups
   index:
-    header: Storage Pools
     noData: No storage pools
   newVolume:
     header: Add Volume
@@ -2273,6 +2295,13 @@ modalConfirmDeactiviate:
   protip: "ProTip: Hold the {alternateLabel} key while clicking {isServiceButton} to bypass this confirmation."
   cancel: Cancel
 
+modalEditBackup:
+  edit: Edit Backup
+  create: Create Backup
+  nameLabel: Backup Name
+  backupTarget: Backup Target
+  backupTargetPlaceholder: 'Select a Backup target...'
+
 modalEditDriver:
   header:
     create: Add Machine Driver
@@ -2481,6 +2510,11 @@ stackSection:
       actions: Actions
 
 
+snapshotSection:
+  none: No Backups
+  multiple: 'Multiple:'
+
+
 storagePoolSection:
   outputs: Outputs
   readOnly: "(read-only)"
@@ -2626,7 +2660,9 @@ nav:
     hosts: Hosts
     containers: Containers
     vms: Virtual Machines
+    storagePage: Storage
     storagePools: Storage Pools
+    backupTarget: Backup Targets
     certificates: Certificates
     registries: Registries
   admin:
@@ -2655,7 +2691,8 @@ nav:
 ##############################
 action:
   activate: Activate
-  backup: Backup
+  backup: Backup Snapshot
+  deleteBackup: Delete Backup
   cancelUpgrade: Cancel Upgrade
   cancelRollback: Cancel Rollback
   clone: Clone

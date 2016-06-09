@@ -9,6 +9,8 @@ export default Ember.Route.extend({
       }).forEach((pool) => {
         (pool.get('volumes')||[]).forEach((volume) => {
           promises.push(volume.importLink('mounts'));
+          promises.push(volume.importLink('snapshots')); // snapshots will be in the individual pool items
+          promises.push(volume.importLink('backups'));
         });
       });
 

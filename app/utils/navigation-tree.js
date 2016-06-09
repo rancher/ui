@@ -246,9 +246,16 @@ const navTree = [
       },
       {
         id: 'infra-storagepools',
-        localizedLabel: 'nav.infra.storagePools',
+        localizedLabel: 'nav.infra.storagePage',
         icon: 'icon icon-hdd',
         route: 'storagepools',
+        ctx: [getProjectId],
+      },
+      {
+        id: 'infra-backuptargets',
+        localizedLabel: 'nav.infra.backupTarget',
+        icon: 'icon icon-target',
+        route: 'backuptargets',
         ctx: [getProjectId],
       },
       {

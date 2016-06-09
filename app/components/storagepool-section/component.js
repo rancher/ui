@@ -6,6 +6,11 @@ export default Ember.Component.extend(Sortable, FilterState, {
   model: null,
   single: false,
 
+  actions: {
+    toggleCollapse(volume) {
+      volume.toggleProperty('showSnapshots');
+    },
+  },
   init: function() {
     this._super();
     this.set('filterStates', ['purged']);
@@ -25,5 +30,5 @@ export default Ember.Component.extend(Sortable, FilterState, {
     return (this.get('model.hosts')||[]).sortBy('displayName');
   }.property('model.hosts.@each.displayName'),
 
-  classNames: ['stack-section','storage'],
+  classNames: ['stack-section','storage', 'clear-section'],
 });
