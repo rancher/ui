@@ -3,7 +3,7 @@
     {{#if labelArray.length}}
       <tr>
         {{#if showKind}}{{sortable-th sortable=this action="changeSort" name="kind" label='labelsSection.kind' width="90"}}{{/if}}
-        {{sortable-th sortable=this action="changeSort" name="key" label='labelsSection.key'}}
+        {{sortable-th sortable=this action="changeSort" name="key" label='labelsSection.key' width="350"}}
         {{sortable-th sortable=this action="changeSort" name="value" label='labelsSection.value'}}
       </tr>
     {{/if}}
@@ -11,9 +11,9 @@
   <tbody>
     {{#each arranged as |label|}}
       <tr>
-        {{#if showKind}}<td data-title="{{t 'labelsSection.kind'}}:">{{uc-first label.type}}</td>{{/if}}
-        <td data-title="{{t 'labelsSection.key'}}:" class="force-wrap">{{label.key}}</td>
-        <td data-title="{{t 'labelsSection.value'}}:" class="force-wrap">{{pretty-json value=label.value}}</td>
+        {{#if showKind}}<td data-title="{{t 'labelsSection.kind'}}:" class="valign-top">{{uc-first label.type}}</td>{{/if}}
+        <td data-title="{{t 'labelsSection.key'}}:" class="force-wrap valign-top">{{label.key}}</td>
+        <td data-title="{{t 'labelsSection.value'}}:" class="force-wrap valign-top">{{pretty-json value=label.value}}</td>
       </tr>
     {{else}}
       <tr><td colspan="3" class="text-center text-muted">{{t 'labelsSection.noData'}}</td></tr>
