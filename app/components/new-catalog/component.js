@@ -164,10 +164,19 @@ export default Ember.Component.extend(NewOrEdit, {
   }.property('isSystem','selectedTemplateModel.id'),
 
   isSystem: function() {
-    var systemCategories = C.EXTERNALID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
-    var category = (this.get('templateResource.category')||'').trim().toLowerCase();
+    if ( this.get('editing') ) {
+      return this.get('environmentResource.externalId').indexOf(C.EXTERNALID.KIND_SYSTEM_CATALOG + C.EXTERNALID.KIND_SEPARATOR) === 0;
+    }
+
+    let explicit = this.get('templateResource.isSystem');
+    if ( explicit === true || explicit === false ) {
+      return explicit;
+    }
+
+    let systemCategories = C.EXTERNALID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
+    let category = (this.get('templateResource.category')||'').trim().toLowerCase();
     return systemCategories.indexOf(category) >= 0;
-  }.property('templateResource.category'),
+  }.property('editing','environmentResource.externalId','templateResource.{category,isSystem}'),
 
   willSave() {
     this.set('errors', null);
