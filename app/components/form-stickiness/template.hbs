@@ -1,13 +1,13 @@
 {{#liquid-if hasHttpListeners}}
   <div class="row {{unless isStickyNone 'form-group'}}">
     <div class="col-sm-12 col-md-2 form-label">
-      <label>Stickiness</label>
+      <label>{{t 'formStickiness.stickiness'}}</label>
     </div>
     <div class="col-sm-6 col-md-2 radio">
-      <label>{{radio-button selection=stickiness value="none"}} None</label>
+      <label>{{radio-button selection=stickiness value="none"}} {{t 'formStickiness.none'}}</label>
     </div>
     <div class="col-sm-6 col-md-4 radio">
-      <label>{{radio-button selection=stickiness value="lbCookie"}} Create new cookie</label>
+      <label>{{radio-button selection=stickiness value="lbCookie"}} {{t 'formStickiness.newCookie'}}</label>
     </div>
   </div>
 
@@ -15,13 +15,13 @@
     <div>
       <div class="row form-group">
         <div class="col-sm-12 col-md-2 form-label">
-          <label class="form-control-static">Cookie Name</label>
+          <label class="form-control-static">{{t 'formStickiness.cookieName'}}</label>
         </div>
         <div class="col-sm-12 col-md-3">
-          {{input type="text" classNames="form-control" value=lbCookie.cookie placeholder="e.g. sticky"}}
+          {{input type="text" classNames="form-control" value=lbCookie.cookie placeholder=('t formStickiness.placeholder.sticky')}}
         </div>
         <div class="col-sm-12 col-md-2 form-label">
-          <label class="form-control-static">Mode</label>
+          <label class="form-control-static">{{t 'formStickiness.mode'}}</label>
         </div>
         <div class="col-sm-12 col-md-3">
           {{new-select
@@ -33,25 +33,25 @@
       </div>
       <div class="row form-group">
         <div class="col-sm-12 col-md-2 form-label">
-          <label class="form-control-static">Domain</label>
+          <label class="form-control-static">{{t 'formStickiness.domain'}}</label>
         </div>
         <div class="col-sm-12 col-md-8">
-          {{input type="text" classNames="form-control" value=lbCookie.domain placeholder="e.g. mydomain.com"}}
+          {{input type="text" classNames="form-control" value=lbCookie.domain placeholder=('t formStickiness.placeholder.domain')}}
         </div>
       </div>
       <div class="row form-group">
         <div class="col-sm-12 col-md-2 form-label">
-          <label class="form-control-static">Options</label>
+          <label class="form-control-static">{{t 'formStickiness.options'}}</label>
         </div>
         <div class="col-sm-12 col-md-8">
           <div class="checkbox">
-            <label>{{input type="checkbox" checked=lbCookie.indirect}} Indirect</label>
+            <label>{{input type="checkbox" checked=lbCookie.indirect}} {{t 'formStickiness.indirect'}}</label>
           </div>
           <div class="checkbox">
-            <label>{{input type="checkbox" checked=lbCookie.nocache}} Send no-cache header</label>
+            <label>{{input type="checkbox" checked=lbCookie.nocache}} {{t 'formStickiness.sendHeader'}}</label>
           </div>
           <div class="checkbox">
-            <label>{{input type="checkbox" checked=lbCookie.postonly}} Only set cookie on POST</label>
+            <label>{{input type="checkbox" checked=lbCookie.postonly}} {{t 'formStickiness.onPost'}}</label>
           </div>
         </div>
       </div>
@@ -59,6 +59,6 @@
   {{/liquid-if}}
 {{else}}
   <div class="text-muted text-center">
-    There are no HTTP listening ports configured.
+    {{t 'formStickiness.noPorts'}}
   </div>
 {{/liquid-if}}

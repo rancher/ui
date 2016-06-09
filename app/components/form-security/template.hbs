@@ -1,65 +1,64 @@
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.privileged'}}</label>
+    <label class="form-control-static">{{t 'formSecurity.privileged.label'}}</label>
   </div>
   <div class="col-sm-12 col-md-3 form-label">
     <div class="checkbox form-control-static text-left">
-      <label>{{input type="checkbox" checked=instance.privileged}} {{t 'formSecurity.fullAccess'}}</label>
+      <label>{{input type="checkbox" checked=instance.privileged.checkbox}} {{t 'formSecurity.privileged.checkbox'}}</label>
     </div>
   </div>
 
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.pidMode'}}</label>
+    <label class="form-control-static">{{t 'formSecurity.pidMode.label'}}</label>
   </div>
   <div class="col-sm-12 col-md-3 form-label">
     <div class="checkbox form-control-static text-left">
-      <label>{{input type="checkbox" checked=pidHost}} {{t 'formSecurity.host'}}</label>
+      <label>{{input type="checkbox" checked=pidHost}} {{t 'formSecurity.pidMode.checkbox'}}</label>
     </div>
   </div>
 </div>
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.memoryLimit'}}</label>
+    <label class="form-control-static">{{t 'formSecurity.memoryLimit.label'}}</label>
   </div>
   <div class="col-sm-12 col-md-3">
     <div class="input-group">
-      {{input type="number" min="1" step="1" value=memoryMb classNames="form-control" placeholder="Unlimited"}}
-      <div class="input-group-addon">{{t 'formSecurity.mb'}}</div>
+      {{input type="number" min="1" step="1" value=memoryMb classNames="form-control" placeholder=(t 'formSecurity.memoryLimit.placeholder')}}
+      <div class="input-group-addon">{{t 'formSecurity.memoryLimit.mb'}}</div>
     </div>
   </div>
 
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.swapLimit'}}</label>
+    <label class="form-control-static">{{t 'formSecurity.swapLimit.label'}}</label>
   </div>
   <div class="col-sm-12 col-md-3">
     <div class="input-group">
-      {{input type="number" min="1" step="1" value=swapMb classNames="form-control" placeholder=(if memoryMb 'Unlimited' 'Requires Memory Limit') disabled=(not memoryMb)}}
-      <div class="input-group-addon">{{t 'formSecurity.mb'}}</div>
+      {{input type="number" min="1" step="1" value=swapMb classNames="form-control" placeholder=(if memoryMb 'Requires Memory Limit' 'Unlimited') disabled=(not memoryMb)}}
+      <div class="input-group-addon">{{t 'formSecurity.swapLimit.mb'}}</div>
     </div>
   </div>
 </div>
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.cpuPinning'}}</label>
+    <label class="form-control-static">{{t 'formSecurity.cpuPinning.label'}}</label>
   </div>
 
-
   <div class="col-sm-12 col-md-3">
-    {{input type="text" value=instance.cpuSet classNames="form-control" placeholder="e.g. 0,3; Default: All"}}
+    {{input type="text" value=instance.cpuSet classNames="form-control" placeholder=(t 'formSecurity.cpuPinning.placeholder')}}
   </div>
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.shares'}}</label>
+    <label class="form-control-static">{{t 'formSecurity.shares.label'}}</label>
   </div>
   <div class="col-sm-12 col-md-3">
-    {{input type="number" value=instance.cpuShares step=128 min=0 classNames="form-control" placeholder="1024"}}
+    {{input type="number" value=instance.cpuShares step=128 min=0 classNames="form-control" placeholder=(t 'formSecurity.shares.placeholder')}}
   </div>
 </div>
 
 <div class="row">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.capabilities'}}</label>
+    <label class="form-control-static">{{t 'formSecurity.capabilities.label'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-4">
@@ -73,15 +72,15 @@
 <div class="row">
   <div class="col-sm-12 col-md-8 col-md-offset-2">
     <span class="help-block">
-      {{t 'formSecurity.helpBlock.text'}}
-      <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank">{{t 'formSecurity.helpBlock.link'}}</a>
+      {{t 'formSecurity.capabilities.helpBlock.text'}}
+      <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank">{{t 'formSecurity.capabilities.helpBlock.link'}}</a>
     </span>
   </div>
 </div>
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.deviceBinding'}}</label>
+    <label class="form-control-static">{{t 'formSecurity.deviceBinding.label'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">
@@ -91,23 +90,23 @@
     {{#if devicesArray.length}}
       <table class="table fixed no-lines no-top-padding tight small">
         <tr class="text-muted">
-          <th>{{t 'formSecurity.pathHost'}}</th>
+          <th>{{t 'formSecurity.deviceBinding.pathHost.label'}}</th>
           <th width="30">&nbsp;</th>
-          <th>{{t 'formSecurity.pathContainer'}}</th>
+          <th>{{t 'formSecurity.deviceBinding.pathContainer.label'}}</th>
           <th width="30">&nbsp;</th>
-          <th width="100">{{t 'formSecurity.permissions'}}</th>
+          <th width="100">{{t 'formSecurity.deviceBinding.permissions.label'}}</th>
           <th width="30">&nbsp;</th>
         </tr>
         {{#each devicesArray as |device|}}
           <tr>
             <td>
-              {{input class="form-control input-sm device-host" type="text" value=device.host placeholder="e.g. /dev/sdc"}}
+              {{input class="form-control input-sm device-host" type="text" value=device.host placeholder=(t 'formSecurity.deviceBinding.pathHost.placeholder')}}
             </td>
             <td style="text-align: center">
               <p class="form-control-static input-sm"><i class="icon icon-chevron-right"></i></p>
             </td>
             <td>
-              {{input class="form-control input-sm" type="text" value=device.container placeholder="e.g. /dev/xsdc"}}
+              {{input class="form-control input-sm" type="text" value=device.container placeholder=(t 'formSecurity.deviceBinding.pathContainer.placeholder')}}
             </td>
             <td>&nbsp;</td>
             <td>
@@ -125,12 +124,12 @@
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.logDriver'}}</label>
+    <label class="form-control-static">{{t 'formSecurity.logDriver.label'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">
     <div class="input-group">
-      {{input type="text" value=instance.logConfig.driver classNames="form-control" placeholder="e.g. syslog"}}
+      {{input type="text" value=instance.logConfig.driver classNames="form-control" placeholder=(t 'formSecurity.logDriver.placeholder')}}
       <div class="input-group-btn">
         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu">
@@ -145,7 +144,7 @@
 
 <div class="row">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.logOptions'}}</label>
+    <label class="form-control-static">{{t 'formSecurity.logOptions.label'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">

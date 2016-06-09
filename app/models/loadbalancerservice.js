@@ -18,6 +18,7 @@ function specToPort(spec) {
 
 var LoadBalancerService = Service.extend({
   type: 'loadBalancerService',
+  intl : Ember.inject.service(),
 
   sslPorts: function() {
     return (((this.get('launchConfig.labels')||{})[C.LABEL.BALANCER_SSL_PORTS]||'')).split(',').map((str) => {
@@ -62,11 +63,15 @@ var LoadBalancerService = Service.extend({
       }
     });
 
-    var out = (pub      ? ' <label>Ports: </label>'   + pub : '') +
-              (internal ? '<label>Internal: </label>' + internal : '');
+    let intl = this.get('intl');
+    let portsTranslation = intl.t('generic.ports');
+    let internalTranslation = intl.t('generic.internal');
+
+    var out = (pub      ? ' <label>'+portsTranslation+': </label>'   + pub : '') +
+              (internal ? '<label>'+internalTranslation+': </label>' + internal : '');
 
     return out.htmlSafe();
-  }.property('launchConfig.ports.[]','launchConfig.expose.[]','endpointsMap'),
+  }.property('launchConfig.ports.[]','launchConfig.expose.[]','endpointsMap', 'intl._locale'),
 
   displayDetail: function() {
     var services = '';
@@ -76,10 +81,13 @@ var LoadBalancerService = Service.extend({
       esc(map.get('service.displayName')) + '</span>';
     });
 
-    var out = '<label>To: </label>' + services;
+    let intl = this.get('intl');
+    let toTranslation = intl.tHtml('generic.to');
+
+    var out = '<label>'+toTranslation+': </label>' + services;
 
     return out.htmlSafe();
-  }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated'),
+  }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated', 'intl._locale'),
 });
 
 export default LoadBalancerService;
