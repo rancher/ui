@@ -27,14 +27,14 @@
     {{/if}}
     {{#if access.admin}}
       <p class="text-center small r-m0">
-        {{#link-to "admin-tab.settings"}}{{t 'hostsPage.new.manageLink'}}{{/link-to}}
+        {{#link-to "admin-tab.machine"}}{{t 'hostsPage.new.manageLink'}}{{/link-to}}
       </p>
     {{/if}}
   </section>
 
   {{#if driver}}
     <section>
-      {{component (if driverObj.hasUi (concat "machine/driver-" driver) 'machine/driver-other')
+      {{component (if (or (not driverObj) driverObj.hasUi) (concat "machine/driver-" driver) 'machine/driver-other')
         cancel=(route-action 'cancel')
         goBack=(route-action 'goBack')
         clonedModel=model.clonedModel
