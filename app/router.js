@@ -30,6 +30,7 @@ Router.map(function() {
     this.route('admin-tab', {path: '/admin', resetNamespace: true}, function() {
       this.route('auth', {path: '/access'}, function() {
         this.route('activedirectory');
+        this.route('azuread');
         this.route('github');
         this.route('openldap');
         this.route('localauth', {path: 'local'});
