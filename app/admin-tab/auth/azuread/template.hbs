@@ -1,0 +1,111 @@
+<section class="well">
+  <h2>{{headerText}}</h2>
+  <div>
+    {{#if access.enabled}}
+      {{t 'authPage.azuread.subtext.enabled' appName=settings.appName}}
+    {{else}}
+      {{t 'authPage.azuread.subtext.disabled' appName=settings.appName}}
+    {{/if}}
+  </div>
+</section>
+
+{{#if access.enabled}}
+  <section class="well">
+    <h4>{{format-html-message 'authPage.azuread.enabled.header'}}</h4>
+    <hr/>
+
+    <p>
+      {{format-html-message 'authPage.azuread.enabled.warning' appName=settings.appName}}
+    </p>
+
+    {{#if confirmDisable}}
+      <button class="btn btn-danger" {{action "disable"}}>
+        <i class="icon icon-alert"></i> {{t 'authPage.azuread.enabled.reallyDisable'}}
+      </button>
+    {{else}}
+      <button class="btn btn-danger" {{action "promptDisable"}}>
+        <i class="icon icon-umbrella"></i> {{t 'authPage.azuread.enabled.promptDisable'}}
+      </button>
+    {{/if}}
+
+  </section>
+{{/if}}
+
+{{#unless access.enabled}}
+  <section class="well">
+    <h4>{{t 'authPage.azuread.configure.header'}}</h4>
+    <hr/>
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>{{t 'authPage.azuread.configure.tenantId.label'}}*</label>
+          {{input type="text" value=model.tenantId placeholder=(t 'authPage.azuread.configure.tenantId.placeholder') classNames="form-control"}}
+          <p class="help-block">{{t 'authPage.azuread.configure.tenantId.help'}}</p>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>{{t 'authPage.azuread.configure.clientId.label'}}*</label>
+          {{input type="text" value=model.clientId placeholder=(t 'authPage.azuread.configure.clientId.placeholder') classNames="form-control"}}
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>{{t 'authPage.azuread.configure.domain.label'}}*</label>
+          {{input type="text" value=model.domain placeholder=(t 'authPage.azuread.configure.domain.placeholder') classNames="form-control"}}
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>{{t 'authPage.azuread.configure.adminAccountUsername.label'}}*</label>
+          {{input type="text" value=model.adminAccountUsername placeholder=(t 'authPage.azuread.configure.adminAccountUsername.placeholder') classNames="form-control"}}
+          <p class="help-block">{{t 'authPage.azuread.configure.adminAccountUsername.help'}}</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label>{{t 'authPage.azuread.configure.adminAccountPassword.label'}}*</label>
+          {{input type="password" value=model.adminAccountPassword classNames="form-control"}}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="well">
+    <h4>{{t 'authPage.azuread.test.header'}}</h4>
+    <hr/>
+    <p class="help-block">{{t 'authPage.azuread.test.help'}}</p>
+    {{top-errors errors=errors}}
+
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>{{t 'authPage.azuread.test.username.label'}}*</label>
+          {{input type="text" value=loginUsername prompt=(t 'authPage.azuread.test.username.placeholder') classNames="form-control"}}
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>{{t 'authPage.azuread.test.password.label'}}*</label>
+          {{input type="password" value=loginPassword classNames="form-control"}}
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label>&nbsp;</label>
+          <button class="btn btn-primary" style="display: block;" {{action "test"}}>
+            {{#if testing}}
+              <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.azuread.test.post'}}
+            {{else}}
+              {{t 'authPage.azuread.test.pre'}}
+            {{/if}}
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+{{/unless}}

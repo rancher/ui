@@ -205,6 +205,49 @@ authPage:
       buttonText:
         pre: Authenticate with GitHub
         post: Waiting to hear back from GitHub
+
+  azuread:
+    header:
+      enabled: 'Azure AD Authentication is <b>enabled</b>'
+      disabled: 'Azure AD Authentication is <b class="text-warning">not configured</b>'
+    subtext:
+      enabled: '{appName} is configured to allow access to accounts in Azure AD'
+      disabled: '{appName} can be configured to restrict access to a set of accounts defined in the {appName} database.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system.'
+    enabled:
+      header: 'Danger Zone&trade;'
+      warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
+      reallyDisable: 'Are you sure?  Click again to really disable access control'
+      promptDisable: Disable access control
+    configure:
+      header: '1. Configure Azure AD Account'
+      tenantId:
+        label: Tenant ID
+        placeholder: A long UUID string
+        help: From the Azure AD portal
+      clientId:
+        label: Client ID
+        placeholder: A long UUID string
+      domain:
+        label: Domain
+        placeholder: e.g. youcompany.onmicrosoft.com
+      adminAccountUsername:
+        label: Admin Account Username
+        placeholder: e.g. rancher-admin
+        help: A user that can read information about other users
+      adminAccountPassword:
+        label: Admin Account Password
+    test:
+      header: '2. Test and enable authentication'
+      help: 'Check that everything is configured correctly by testing authentication with your account:'
+      username:
+        label: Login Username
+        placeholder: 'e.g. jsmith'
+      password:
+        label: Login Password
+      pre: Authenticate with Azure
+      post: Waiting to hear back from Azure
+
+
   localAuth:
     header:
       enabled: 'Local Authentication is <b>enabled</b>'
@@ -1618,7 +1661,7 @@ formNameDescription:
     label: Description
     placeholder: Description
 
-formNetwork: 
+formNetwork:
   network: Network
   container: Container
   requestedIP: Requested IP
@@ -1689,48 +1732,48 @@ formSecurity:
     addActionLabel: Add Option
     keyPlaceholder: e.g. syslog-facility
     valuePlaceholder: e.g. daemon
-  privileged: 
+  privileged:
     label: Privileged
     checkbox: Full access to the host
-  pidMode: 
+  pidMode:
     label: PID Mode
     checkbox: Host
-  memoryLimit: 
+  memoryLimit:
     label: Memory Limit
     placeholder: Unlimited
     mb: MB
-  swapLimit: 
+  swapLimit:
     label: + Swap Limit
     mb: MB
     placeholder1: Requires Memory Limit
     placeholder2: Unlimited
-  cpuPinning: 
+  cpuPinning:
     label: CPU Pinning
     placeholder: "e.g. 0,3; Default: All"
-  shares: 
+  shares:
     label: Shares
-    placeholder: 1024
-  capabilities: 
+    placeholder: e.g. 1024
+  capabilities:
     label: Capabilities
     helpBlock:
       text: Capabilities allow you to provide fine-grained control over superuser privileges available to the container.
       link: More information
-  deviceBinding: 
+  deviceBinding:
     label: Device Binding
-    pathHost: 
+    pathHost:
       label: Path in Host
       placeholder: e.g. /dev/sdc
-    pathContainer: 
+    pathContainer:
       label: Path in Container
       placeholder: e.g. /dev/xsdc
-    permissions: 
+    permissions:
       label: Permissions
       placeholder: "e.g. 0,3; Default: All"
-  logDriver: 
+  logDriver:
     label: Log Driver
     placeholder: e.g. syslog
-  logOptions: 
-    label: Log 
+  logOptions:
+    label: Log
 
 formServiceLinks:
   addAction: Service Links
@@ -1742,7 +1785,7 @@ formServiceLinks:
   name:
     label: As Name
     placeholder: e.g. database
-    
+
 formSslTermination:
   defaultCertificate:
     prompt: Choose a Certificate...
@@ -1925,7 +1968,7 @@ inputIdentity:
   placeholder:
     github: Add a GitHub user or organization name
     generic: Add a user or group by name
-  dropdownLabel: 
+  dropdownLabel:
     teams: Your Teams and Organizations
     groups: Your Groups
 
@@ -2465,7 +2508,7 @@ serviceLink:
     noAlias:
         sameStack: "{service}"
         differentStack: "{stack}/{service}"
-        
+
 sidekickAddtlInfo:
   info: Info
   image: Image
