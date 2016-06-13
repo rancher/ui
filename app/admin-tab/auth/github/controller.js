@@ -7,6 +7,7 @@ export default Ember.Controller.extend({
   endpoint                : Ember.inject.service(),
   access                  : Ember.inject.service(),
   settings                : Ember.inject.service(),
+  intl                    : Ember.inject.service(),
 
   confirmDisable          : false,
   errors                  : null,
@@ -42,26 +43,21 @@ export default Ember.Controller.extend({
     }
   }.property('model.{clientId,clientSecret,hostname}','testing','isEnterprise'),
 
-
-  wasRestrictedMsg: function() {
-    let users      = this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_USER).get('length');
-    let orgs       = this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_ORG).get('length');
-    let enterprise = !!this.get('originalModel.hostname');
-
-    let github     = 'GitHub' + ( enterprise ? ' Enterprise' : '');
-
-    let str        = 'project members';
-
-    if ( users ) {
-      str += (orgs ? ', ' : ' and ') +  users + ' ' + github + ' user' + (users === 1 ? '' : 's');
+  wasLabel: function() {
+    if ( !!this.get('originalModel.hostname') ) {
+      return this.get('intl').t('authPage.github.enterprise');
+    } else {
+      return this.get('intl').t('authPage.github.standard');
     }
+  }.property('originalModel.hostname','intl._lcoale'),
 
-    if ( orgs ) {
-      str += ' and ' + orgs + (users ? '' : ' ' + github) + ' organization' + ( orgs === 1 ? '' : 's');
-    }
+  wasUsers: function() {
+    return this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_USER).get('length');
+  }.property('originalModel.allowedIdentities.@each.externalIdType','wasRestricted'),
 
-    return str;
-  }.property('originalModel.allowedIdentities.[]','wasRestricted'),
+  wasOrgs: function() {
+    return this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_ORG).get('length');
+  }.property('originalModel.allowedIdentities.@each.externalIdType','wasRestricted'),
 
   showingAccessControl: function() {
     let show       = this.get('wasShowing');
