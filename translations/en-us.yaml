@@ -131,17 +131,26 @@ authPage:
   root:
     header: Access Control
   github:
+    standard: GitHub
+    enterprise: GitHub Enterprise
     header:
-      text: GitHub is
-      accessEnabled: enabled
-      accessNotEnabled: not configured
-      accessEnabledSubtext:
-        wasRestricted: "{appName} is configured to restrict access to {wasRestricted}."
-        wasNotRestricted:
-          host: "{appName} is configured to allow access to any GitHub Enterprise user."
-          noHost: "{appName} is configured to allow access to any GitHub user."
-      noAccessConfigured:
-        subtext: "{appName} can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
+      enabled:
+        label: "{github} is enabled"
+        restricted: |
+          {appName} is configured to allow access to project members, {orgs, plural,
+            =0 {no Organizations}
+            =1 {# Organization}
+            other {# Organizations}
+          }, and {users, plural,
+            =0 {no Users}
+            =1 {# User}
+            other {# Users}
+          }.
+        unrestricted: "{appName} is configured to allow access to any {github} user."
+      disabled:
+        label: GitHub is not configured
+        warning: "{appName} can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
+
     authenticated:
       header:
         text: Authentication
@@ -290,7 +299,7 @@ backupTargetsPage:
   newTarget:
     hr: NFS Config Options
     header: Add Backup Target
-    nfsLable:
+    nfsLabel:
       server:
         label: NFS Server
         placeholder: '127.0.0.1'
@@ -1148,6 +1157,18 @@ ldap:
   accessEnabled:
     header: Authentication
     subtext: "To change the server configuration, disable access control below and then set it up again."
+    siteAccess:
+      header: Site Access
+      helpText: "Configure who should be allowed to log in and use {appName}."
+      unrestricted: Allow any valid ActiveDirectory user
+      restricted: Restrict to specific users and groups
+      isRestricted:
+        header: Authorized Users and Groups
+        noIdentity: None
+        saveAuthButton:
+          saved: Saved
+          saving: "Saving..."
+          pre: Save authorization configuration
     general:
       header: General
       server: "Server:"

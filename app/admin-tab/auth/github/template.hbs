@@ -1,14 +1,20 @@
 <section class="well">
-  <h2>{{t 'authPage.github.header.text'}} {{#if access.enabled}}<b>{{t 'authPage.github.header.accessEnabled'}}</b>{{else}}<b class="text-warning">{{t 'authPage.github.header.accessNotEnabled'}}</b>{{/if}}</h2>
+  <h2>
+    {{#if access.enabled}}
+      <b>{{t 'authPage.github.header.enabled.label' github=wasLabel}}</b>
+    {{else}}
+      <b class="text-warning">{{t 'authPage.github.header.disabled.label'}}</b>
+    {{/if}}
+  </h2>
   <div>
     {{#if access.enabled}}
       {{#if wasRestricted}}
-        {{t 'authPage.github.header.accessEnabledSubtext.wasRestricted' appName=settings.appName wasRestricted=wasRestricted}}
+        {{t 'authPage.github.header.enabled.restricted' appName=settings.appName github=wasLabel users=wasUsers orgs=wasOrgs}}
       {{else}}
-        {{t (if model.hostname 'authPage.github.header.accessEnabledSubtext.wasNotRestricted.host' 'authPage.github.header.accessEnabledSubtext.wasNotRestricted.noHost') appName=settings.appName}}
+        {{t 'authPage.github.header.enabled.unrestricted' appName=settings.appName github=wasLabel}}
       {{/if}}
     {{else}}
-      {{t 'authPage.github.header.noAccessConfigured.subtext' appName=settings.appName}}
+      {{t 'authPage.github.header.disabled.warning' appName=settings.appName}}
     {{/if}}
   </div>
 </section>

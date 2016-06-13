@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Errors from 'ui/utils/errors';
+import C from 'ui/utils/constants';
 
 var PLAIN_PORT = 389;
 var TLS_PORT = 636;
@@ -29,6 +30,24 @@ export default Ember.Controller.extend({
   }.property('username.length','password.length'),
 
   saveDisabled: Ember.computed.or('saving','saved'),
+  isRestricted            : Ember.computed.equal('model.accessMode','restricted'),
+  wasRestricted           : Ember.computed.equal('originalModel.accessMode','restricted'),
+  allowedActualIdentities : Ember.computed.alias('model.allowedIdentities'),
+
+  wasUsers: function() {
+    return this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_USER).get('length');
+  }.property('originalModel.allowedIdentities.@each.externalIdType','wasRestricted'),
+
+  wasOrgs: function() {
+    return this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_ORG).get('length');
+  }.property('originalModel.allowedIdentities.@each.externalIdType','wasRestricted'),
+
+  accessModeChanged: function() {
+    if ( !this.get('model.allowedIdentities') ) {
+      this.set('model.allowedIdentities', []);
+    }
+    this.set('saved',false);
+  }.observes('model.accessMode'),
 
   tlsChanged: function() {
     var on = this.get('model.tls');
@@ -107,7 +126,39 @@ export default Ember.Controller.extend({
       }, 1000);
     },
 
-    addAuthorized: function(/*data*/) {
+    addAuthorized: function(data) {
+      this.send('clearError');
+      this.set('saved', false);
+      this.get('model.allowedIdentities').pushObject(data);
+    },
+
+    removeIdentity: function(ident) {
+      this.set('saved', false);
+      this.get('model.allowedIdentities').removeObject(ident);
+    },
+
+    saveAuthorization: function() {
+      this.send('clearError');
+
+      if ( this.get('isRestricted') && !this.get('model.allowedIdentities.length') )
+      {
+        this.send('showError','Add at least one authorized user or group');
+        return;
+      }
+
+      this.set('saving', true);
+      this.set('saved', false);
+
+      let model = this.get('model');
+      model.save().then(() => {
+        this.get('originalModel').replaceWith(model);
+        this.set('originalModel.allowedIdentities', this.get('model.allowedIdentities').slice());
+        this.set('saved', true);
+      }).catch((err) => {
+        this.send('gotError', err);
+      }).finally(() => {
+        this.set('saving', false);
+      });
     },
 
     promptDisable: function() {

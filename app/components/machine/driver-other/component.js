@@ -39,7 +39,7 @@ export default Ember.Component.extend(Driver, {
     let driver = this.get('otherDriver');
 
     if ( driver ) {
-      return Object.keys(this.get('store').getById('schema', driver.toLowerCase()).get('resourceFields'));
+      return Object.keys(this.get('userStore').getById('schema', driver.toLowerCase()).get('resourceFields'));
     }
   }.property('otherDriver', 'model'),
 
