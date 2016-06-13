@@ -9,6 +9,7 @@ export default Ember.Controller.extend({
   isActiveDirectory : Ember.computed.equal('access.provider', 'ldapconfig'),
   isOpenLdap        : Ember.computed.equal('access.provider', 'openldapconfig'),
   isLocal           : Ember.computed.equal('access.provider', 'localauthconfig'),
+  isAzureAd         : Ember.computed.equal('access.provider', 'azureadconfig'),
 
   timedOut          : false,
   waiting           : false,
