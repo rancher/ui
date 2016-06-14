@@ -3,6 +3,7 @@ import C from 'ui/utils/constants';
 import Service from 'ui/models/service';
 import Volume from 'ui/models/volume';
 import Snapshot from 'ui/models/snapshot';
+import Backup from 'ui/models/backup';
 import Subscribe from 'ui/mixins/subscribe';
 
 const CHECK_AUTH_TIMER = 600000;
@@ -180,6 +181,7 @@ export default Ember.Route.extend(Subscribe, {
     Service.reset();
     Volume.reset();
     Snapshot.reset();
+    Backup.reset();
   },
 
   actions: {
