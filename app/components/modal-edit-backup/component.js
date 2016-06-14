@@ -8,12 +8,14 @@ export default Ember.Component.extend({
   model         : null,
   backupName    : null,
   backupTarget  : null,
+  backupTargets : null,
 
 
   actions: {
     cancel: function() {
       this.sendAction('dismiss');
     },
+
     saveBackup: function() {
       let opts = {
         name: this.get('backupName'),

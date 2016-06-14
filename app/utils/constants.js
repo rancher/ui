@@ -106,6 +106,7 @@ var C = {
     SYSTEM_PREFIX: 'io.rancher.',
     AFFINITY_PREFIX: 'io.rancher.scheduler.affinity:',
 
+    SYSTEM_TYPE: 'io.rancher.container.system',
     SERVICE_NAME: 'io.rancher.stack_service.name',
     STACK_NAME: 'io.rancher.stack.name',
     SCHED_GLOBAL: 'io.rancher.scheduler.global',

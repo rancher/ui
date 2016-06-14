@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Service from 'ui/models/service';
+import Volume from 'ui/models/volume';
+import Snapshot from 'ui/models/snapshot';
 import Subscribe from 'ui/mixins/subscribe';
 
 const CHECK_AUTH_TIMER = 600000;
@@ -173,8 +175,11 @@ export default Ember.Route.extend(Subscribe, {
     console.log('Store Reset');
     this.get('userStore').reset();
     this.get('store').reset();
-    // Service has extra special hackery to cache relationships
+
+    // Some classes have extra special hackery to cache relationships
     Service.reset();
+    Volume.reset();
+    Snapshot.reset();
   },
 
   actions: {

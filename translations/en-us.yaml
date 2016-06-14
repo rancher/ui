@@ -7,7 +7,6 @@ generic:
   actions: Actions
   activate: Activate
   as: As
-  backups: Backups
   closeModal: Close
   cancel: Cancel
   created: Created
@@ -299,16 +298,16 @@ backupTargetsPage:
   newTarget:
     hr: NFS Config Options
     header: Add Backup Target
-    nfsLabel:
-      server:
-        label: NFS Server
-        placeholder: '127.0.0.1'
-      share:
-        label: NFS Share
-        placeholder: '/var/nfs/two'
-      mount:
-        label: NFS Mount Options
-        placeholder: 'nfsvers=4,proto=udp'
+  server:
+    label: NFS Server
+    placeholder: 'e.g. my-nfs-server.example.com'
+  share:
+    label: NFS Share
+    placeholder: 'e.g. /mnt/volume-backups'
+  mountOptions:
+    label: NFS Mount Options
+    placeholder: 'e.g. nfsvers=4,proto=udp'
+
 catalogPage:
   index:
     header: 'Catalog:'
@@ -1571,6 +1570,12 @@ formDisks:
   size:
     label: Size
     rootDisk: Determined by root image
+  readIops:
+    label: Read Iops
+    placeholder: e.g. 1000
+  writeIops:
+    label: Write Iops
+    placeholder: e.g. 1000
   driver:
     label: Driver
 
@@ -2394,6 +2399,11 @@ modalProcessError:
   stackTrace: "Stack Trace:"
   close: Close
 
+modalRollbackVolume:
+ title:
+  snapshot: Rollback to a Snapshot
+  backup: Rollback to a Backup
+
 modalShell:
   title: "Shell: {instanceName}"
 
@@ -2576,9 +2586,8 @@ stackSection:
 
 
 snapshotSection:
-  none: No Backups
-  multiple: 'Multiple:'
-
+  none: Not backed up
+  multiple: 'Multiple: {latestDate}'
 
 storagePoolSection:
   outputs: Outputs
@@ -2593,6 +2602,10 @@ storagePoolSection:
   models:
     table:
       header:
+        volumeName: 'Volume Name'
+        snapshotState: 'Snapshot State'
+        snapshotName: 'Snapshot Name'
+        backedUp: 'Backed Up'
         activeMounts: 'Mounts (Container: Path)'
 
 svgServiceContainer:
@@ -2775,6 +2788,8 @@ action:
   restore: Restore
   retry: Retry
   rollback: Rollback
+  revertToSnapshot: Rollback to Snapshot
+  restoreFromBackup: Rollback to Backup
   setDefault: Set as Default
   snapshot: Snapshot
   start: Start

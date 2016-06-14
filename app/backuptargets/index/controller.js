@@ -5,9 +5,11 @@ export default Ember.Controller.extend(Sortable, {
   sortableContent   : Ember.computed.alias('model.all'),
   sortBy: 'name',
   sorts: {
-    state   : ['stateSort','name','id'],
-    name    : ['name','id'],
-    created : ['created','id'],
+    state        : ['stateSort','name','id'],
+    name         : ['name','id'],
+    server       : ['nfsConfig.server','name','id'],
+    label        : ['nfsConfig.label','name','id'],
+    mountOptions : ['nfsConfig.mountOptions','name','id'],
   },
 
 });

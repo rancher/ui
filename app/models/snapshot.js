@@ -1,16 +1,40 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
+const { getOwner } = Ember;
+
+// !! If you add a new one of these, you need to add it to reset() below too
+var _allBackups;
+// !! If you add a new one of these, you need to add it to reset() below too
 
 var Snapshot = Resource.extend({
   type: 'snapshot',
 
-  backupCount: null,
-  latestBackup: null,
-  backups: null,
+  // !! If you add a new one of these, you need to add it to reset() below too
+  _allBackups: null,
+
+  reservedKeys: [
+    '_allBackups',
+  ],
+
+  init: function() {
+    this._super();
+
+    // this.get('store') isn't set yet at init
+    var store = getOwner(this).lookup('store:main');
+    if ( !_allBackups )
+    {
+      _allBackups = store.allUnremoved('backup');
+    }
+
+    this.setProperties({
+      '_allBackups': _allBackups,
+    });
+  },
+  // !! If you add a new one of these, you need to add it to reset() below too
 
   actions: {
     backup() {
-      let backupTargets = this.get('store').find('backupTargets').then((backupTargets) => {// jshint ignore:line
+      let backupTargets = this.get('store').find('backuptarget').then((backupTargets) => {// jshint ignore:line
         this.get('application').setProperties({
           editBackup: true,
           originalModel: this,
@@ -18,57 +42,45 @@ var Snapshot = Resource.extend({
         });
       });
     },
+
     deleteBackup() {
       this.get('latestBackup').doAction('remove');
     },
   },
 
-  hasBackups: Ember.computed('store.backups.[]', function() {
-    let backups = this.get('store').allUnremoved('backup').content;
-    let snapshotBackups = this.get('backups');
+  backups: function() {
+    return this.get('_allBackups').filterBy('snapshotId', this.get('id'));
+  }.property('_allBackups.@each.snapshotId','id'),
 
-    if (!snapshotBackups) {
-      snapshotBackups = [];
-    }
+  latestBackup: function() {
+    return this.get('backups').sortBy('id').pop();
+  }.property('backups.@each.id'),
 
-    backups.forEach((bu) => {
-      if (bu.snapshotId === this.get('id')) {
-        this.incrementProperty('backupCount');
-        //push backups into the snapshot model
-        snapshotBackups.push(bu);
-      }
-    });
+  latestCompleteBackup: function() {
+    return this.get('backups').filterBy('state','created').sortBy('id').pop();
+  }.property('backups.@each.{id,state}'),
 
-    if (snapshotBackups) {
-      if (snapshotBackups.length > 1) {
-        this.set('latestBackup', snapshotBackups[0]);
-      }
-      return true;
-    }
-
-    return false;
-  }),
-
-  backupEnabled: Ember.computed('backupCount', function() {
-    if (this.get('backupCount') > 1) {
-      return false;
-    }
-    return true;
-  }),
+  backupCount: Ember.computed.alias('backups.length'),
+  hasBackups: Ember.computed.gte('backupCount',1),
+  backupEnabled: Ember.computed.equal('backupCount', 0),
 
   availableActions: function() {
+    var a = this.get('actionLinks');
+
     return [
-      { label: 'action.remove',    icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
+      { label: 'action.remove',       icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
       { divider: true },
-      { label: 'action.backup',    icon: 'icon icon-hdd',          action: 'backup',       enabled: this.get('backupEnabled') },
-      { label: 'action.deleteBackup',    icon: 'icon icon-hdd',          action: 'deleteBackup',       enabled: !this.get('backupEnabled') },
-      { label: 'action.viewInApi', icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
+      { label: 'action.backup',       icon: 'icon icon-hdd',          action: 'backup',       enabled: this.get('backupEnabled') },
+      { label: 'action.deleteBackup', icon: 'icon icon-hdd',          action: 'deleteBackup', enabled: !this.get('backupEnabled') },
+      { label: 'action.viewInApi',    icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
-  }.property('actionLinks.{restore,purge}','model.canDelete'),
+  }.property('actionLinks.remove','backupEnabled'),
 });
 
 Snapshot.reopenClass({
-  alwaysInclude: ['backups'],
+  reset: function() {
+    _allBackups = null;
+  }
 });
 
 export default Snapshot;
