@@ -47,7 +47,7 @@ export default Ember.Mixin.create({
     }
 
 
-    (this.get('model.instances')||[]).forEach((instance) => {
+    this.get('filteredInstances').forEach((instance) => {
       var labels = instance.get('labels')||{};
       var deploymentUnit = labels[C.LABEL.DEPLOYMENT_UNIT] || null;
       var isSidekick = deploymentUnit && labels[C.LABEL.LAUNCH_CONFIG] !== C.LABEL.LAUNCH_CONFIG_PRIMARY;
@@ -98,5 +98,5 @@ export default Ember.Mixin.create({
 
 
     return groups;
-  }.property('model.instances.@each.{name,id}'),
+  }.property('filteredInstances.@each.{name,id,labels}'),
 });

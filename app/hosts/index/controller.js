@@ -2,13 +2,22 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   mode: 'grouped',
-  queryParams: ['mode'],
+  show: 'standard',
+  queryParams: ['mode','show'],
 
   actions: {
     newContainer: function(hostId) {
       this.transitionToRoute('containers.new', {queryParams: {hostId: hostId}});
     },
   },
+
+  showSystem: null,
+  initSystem: function() {
+    this.set('showSystem', this.get('show') == 'all');
+  }.on('init'),
+  showSystemChanged: function() {
+    this.set('show', (this.get('showSystem') ? 'all' : 'standard'));
+  }.observes('showSystem'),
 
   pods: function() {
     var out = [];

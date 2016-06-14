@@ -7,12 +7,16 @@
     {{tooltip-link icon="icon-ellipsis" text=(t 'hostsPage.index.tooltip.listView') options=listLinkOptions}}
     {{tooltip-link icon="icon-layeredgroup" text=(t 'hostsPage.index.tooltip.groupedView') options=groupLinkOptions}}
   </div>
+
+  <div class="btn-group pull-right r-mr10 r-mt5">
+    <label style="font-weight: normal;">{{input type="checkbox" checked=showSystem}} Show System</label>
+  </div>
 </section>
 
 {{#columns-section pods=pods emptyMessage=(t 'hostsPage.index.columns.emptyMessage') as |item| }}
   {{#if item.isPendingMachine}}
     {{host-pod model=item.machine mode=mode newContainer="newContainer"}}
   {{else}}
-    {{host-pod model=item mode=mode newContainer="newContainer"}}
+    {{host-pod model=item mode=mode newContainer="newContainer" show=show}}
   {{/if}}
 {{/columns-section}}
