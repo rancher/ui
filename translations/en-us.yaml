@@ -7,7 +7,6 @@ generic:
   actions: Actions
   activate: Activate
   as: As
-  backups: Backups
   closeModal: Close
   cancel: Cancel
   created: Created
@@ -1571,6 +1570,12 @@ formDisks:
   size:
     label: Size
     rootDisk: Determined by root image
+  readIops:
+    label: Read Iops
+    placeholder: e.g. 1000
+  writeIops:
+    label: Write Iops
+    placeholder: e.g. 1000
   driver:
     label: Driver
 
@@ -2576,9 +2581,8 @@ stackSection:
 
 
 snapshotSection:
-  none: No Backups
-  multiple: 'Multiple:'
-
+  none: Not backed up
+  multiple: 'Multiple: {latestDate}'
 
 storagePoolSection:
   outputs: Outputs
@@ -2593,6 +2597,10 @@ storagePoolSection:
   models:
     table:
       header:
+        volumeName: 'Volume Name'
+        snapshotState: 'Snapshot State'
+        snapshotName: 'Snapshot Name'
+        backedUp: 'Backed Up'
         activeMounts: 'Mounts (Container: Path)'
 
 svgServiceContainer:

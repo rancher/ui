@@ -8,15 +8,21 @@
     {{/tooltip-element}}
   </td>
   <td class="force-wrap">
-    {{#if snapshot.hasBackups}}
-      {{#if (gte snapshot.backupCount 1)}}
-        {{#if (eq snapshot.backupCount 1)}}
-          {{date-str snapshot.latestBackup}}
+    {{#if (gt snapshot.backupCount 1)}}
+      {{#if snapshot.latestCompleteBackup}}
+        {{t 'snapshotSection.multiple' latestDate=(date-str snapshot.latestCompleteBackup.created)}}
+      {{else}}
+        {{badge-state model=snapshot.latestBackup}}
+      {{/if}}
+    {{else}}
+      {{#if (eq snapshot.backupCount 1)}}
+        {{#if snapshot.latestCompleteBackup}}
+          {{date-str snapshot.latestCompleteBackup.created}}
         {{else}}
-          {{t 'snapshotSection.multiple'}} {{date-str snapshot.latestBackup.created}}
+          {{badge-state model=snapshot.latestBackup}}
         {{/if}}
       {{else}}
-        {{t 'snapshotSection.none'}}
+        <span class="text-warning">{{t 'snapshotSection.none'}}</span>
       {{/if}}
     {{/if}}
   </td>

@@ -197,30 +197,6 @@ export default Ember.Mixin.create({
       }
     },
 
-    mountChanged: function(change) {
-      var mount = change.data.resource;
-      var volume = this.get('store').getById('volume', mount.get('volumeId'));
-      if ( volume )
-      {
-        var mounts = volume.get('mounts');
-        if ( !Ember.isArray(mounts) )
-        {
-          mounts = [];
-          volume.set('mounts',mounts);
-        }
-
-        var existingMount = mounts.filterBy('id', mount.get('id')).get('firstObject');
-        if ( existingMount )
-        {
-          existingMount.setProperties(mount);
-        }
-        else
-        {
-          mounts.pushObject(mount);
-        }
-      }
-    },
-
     registryCredentialChanged: function(change) {
       this._includeChanged('registry', 'credentials', 'registryId', change.data.resource);
     },
