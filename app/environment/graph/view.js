@@ -116,17 +116,18 @@ export default Ember.View.extend(ThrottledResize,{
   },
 
   showService: function(id) {
+    let svgHeight;
     if ( id )
     {
-      var svgHeight = $('#environment-svg').height() - 0; // svg minus the height of info service-addtl-info.scss
+      svgHeight = $('#environment-svg').height() - 0; // svg minus the height of info service-addtl-info.scss
       this.styleSvg(`${svgHeight}px`);
       this.set('context.showServiceInfo', true);
       this.set('context.selectedService', this.get('context.stack.services').findBy('id', id));
     }
     else
     {
-      var svgHeight = $('#environment-svg').height() - 310; // svg minus the height of info service-addtl-info.scss
-      this.styleSvg();
+      svgHeight = $('#environment-svg').height() - 310; // svg minus the height of info service-addtl-info.scss
+      this.styleSvg(svgHeight);
       this.set('context.showServiceInfo', null);
     }
   },
