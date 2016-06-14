@@ -158,6 +158,8 @@ var C = {
 
   PROJECT: {
     TYPE_RANCHER:         'rancher_id',
+    TYPE_AZURE_USER:      'azuread_user',
+    TYPE_AZURE_GROUP:     'azuread_group',
     TYPE_GITHUB_USER:     'github_user',
     TYPE_GITHUB_TEAM:     'github_team',
     TYPE_GITHUB_ORG:      'github_org',
@@ -243,7 +245,8 @@ var C = {
     BASE: 'api',
     BASE_VERSION: 'api/v1',
     TYPE_PREFIX: 'k8s-',
-    ID_SEPARATOR: '::'
+    ID_SEPARATOR: '::',
+    DEFAULT_NS: 'defaultNamespace',
   },
 
   MESOS: {

@@ -43,6 +43,7 @@ export default Ember.Component.extend({
     this.set('groupedContent', Ember.computed('content.@each.'+this.get('optionGroupPath'), () => {
       var groupPath = this.get('optionGroupPath');
       var out = [];
+
       this.get('content').forEach((opt) => {
         var key = Ember.get(opt, groupPath);
         if ( key )

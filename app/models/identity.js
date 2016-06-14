@@ -35,6 +35,7 @@ var Identity = Resource.extend({
     switch ( this.get('externalIdType') )
     {
       case C.PROJECT.TYPE_RANCHER:
+      case C.PROJECT.TYPE_AZURE_USER:
       case C.PROJECT.TYPE_GITHUB_USER:
       case C.PROJECT.TYPE_LDAP_USER:
       case C.PROJECT.TYPE_OPENLDAP_USER:
@@ -44,6 +45,7 @@ var Identity = Resource.extend({
         return C.PROJECT.TEAM;
 
       case C.PROJECT.TYPE_GITHUB_ORG:
+      case C.PROJECT.TYPE_AZURE_GROUP:
       case C.PROJECT.TYPE_LDAP_GROUP:
       case C.PROJECT.TYPE_OPENLDAP_GROUP:
         return C.PROJECT.ORG;
@@ -64,11 +66,13 @@ var Identity = Resource.extend({
     switch ( this.get('externalIdType') )
     {
       case C.PROJECT.TYPE_GITHUB_USER:
+      case C.PROJECT.TYPE_AZURE_USER:
       case C.PROJECT.TYPE_LDAP_USER:
       case C.PROJECT.TYPE_OPENLDAP_USER:  return 'User';
 
       case C.PROJECT.TYPE_GITHUB_TEAM:    return 'Team';
       case C.PROJECT.TYPE_GITHUB_ORG:     return 'Organization';
+      case C.PROJECT.TYPE_AZURE_GROUP:    return 'Group';
       case C.PROJECT.TYPE_LDAP_GROUP:     return 'Group';
       case C.PROJECT.TYPE_OPENLDAP_GROUP: return 'Group';
       case C.PROJECT.TYPE_RANCHER:        return 'Local User';

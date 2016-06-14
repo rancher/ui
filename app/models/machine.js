@@ -27,6 +27,7 @@ var Machine = Resource.extend(PolledResource, {
     var out = [
       { label: 'action.remove', icon: 'icon icon-trash', action: 'promptDelete', enabled: !!a.remove, altAction: 'delete'},
       { divider: true },
+      { label: 'action.clone', icon: 'icon icon-copy', action: 'clone', enabled: true },
     ];
 
     if ( this.hasLink('config') )

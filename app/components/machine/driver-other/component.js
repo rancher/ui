@@ -2,59 +2,62 @@ import Ember from 'ember';
 import Driver from 'ui/mixins/driver';
 
 export default Ember.Component.extend(Driver, {
+  // Set by Driver
   driverName      : 'other',
-  model           : null,
   driver          : null,
+
+  otherDriver     : null,
   availableDrivers: null,
-  primaryResource : Ember.computed.alias('model.machine'),
+  typeDocumentations: null,
+  schemas         : null,
   driverOpts      : null,
 
-  bootstrap: function() {
-    let store = this.get('store');
+  didInitAttrs() {
+    this._super();
+    this.driverChanged();
+  },
 
-    this.set('model', {machine: store.createRecord({type : 'machine'})});
+  bootstrap() {
+    let model = this.get('store').createRecord({
+      type: 'machine',
+    });
 
-    store.findAll('schema').then((schemas) => {
-      store.findAll('typedocumentation').then((typeDocs) => {
-        this.set('model', Ember.Object.create({
-          machine            : this.get('model.machine'),
-          schemas            : schemas,
-          typeDocumentations : typeDocs,
-          otherChoices       : this.get('otherChoices')
-        }));
-        this.set('driver', this.get('otherChoices.firstObject.value'));
-      });
+    this.setProperties({
+      otherDriver: this.get('otherChoices.firstObject.value'),
+      model: model
     });
   },
 
   willDestroyElement() {
     this.setProperties({
-      driver     : null,
+      otherDriver: null,
       driverOpts : null,
     });
   },
 
   fieldNames: function() {
-    let driver = this.get('driver');
+    let driver = this.get('otherDriver');
 
     if ( driver ) {
-      return Object.keys(this.get('store').getById('schema', driver.toLowerCase()).get('resourceFields'));
+      return Object.keys(this.get('userStore').getById('schema', driver.toLowerCase()).get('resourceFields'));
     }
-  }.property('driver', 'model'),
+  }.property('otherDriver', 'model'),
 
   driverChanged: function() {
-    let driver  = this.get('driver');
-    let machine = this.get('model.machine');
+    let driver  = this.get('otherDriver');
+    let machine = this.get('model');
 
     if ( driver && machine) {
-
       if ( !machine.get(driver) ) {
         machine.set(driver, this.get('store').createRecord({ type: driver }));
       }
 
       this.set('driverOpts', machine.get(driver));
     }
-  }.observes('driver', 'model.machine'),
+    else {
+      this.set('otherDriver', this.get('otherChoices.firstObject.value'));
+    }
+  }.observes('otherDriver','model'),
 
   otherChoices: function() {
     let out = [];
@@ -67,9 +70,9 @@ export default Ember.Component.extend(Driver, {
 
   willSave() {
     // Null out all the drivers that aren't the active one, because the API only accepts one.
-    let activeDriver = this.get('driver');
-    let machine      = this.get('model.machine');
-    this.get('model.otherChoices').forEach((choice) => {
+    let activeDriver = this.get('otherDriver');
+    let machine      = this.get('model');
+    this.get('otherChoices').forEach((choice) => {
       let cur = choice.value;
       if ( choice.value !== activeDriver ) {
         machine.set(cur, null);

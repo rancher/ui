@@ -3,6 +3,16 @@ import Resource from 'ember-api-store/models/resource';
 
 var Volume = Resource.extend({
   type: 'volume',
+  showSnapshots: false,
+
+  actions: {
+    snapshot() {
+      this.get('application').setProperties({
+        editSnapshot: true,
+        originalModel: this,
+      });
+    },
+  },
 
   availableActions: function() {
     var a = this.get('actionLinks');
@@ -13,6 +23,7 @@ var Volume = Resource.extend({
       { label: 'action.viewInApi', icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
       { label: 'action.restore',   icon: '',                       action: 'restore',      enabled: !!a.restore },
       { label: 'action.purge',     icon: '',                       action: 'purge',        enabled: !!a.purge },
+      { label: 'action.snapshot',  icon: 'icon icon-copy',         action: 'snapshot',     enabled: !!a.snapshot },
     ];
   }.property('actionLinks.{restore,purge}','model.canDelete'),
 

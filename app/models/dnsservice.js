@@ -5,12 +5,18 @@ const esc = Ember.Handlebars.Utils.escapeExpression;
 
 var DnsService = Service.extend({
   type: 'dnsService',
+  intl: Ember.inject.service(),
 
   healthState: function() {
-    return 'healthy';
-  }.property(),
+    let out = this.get('intl').intl.t('generic.healthy');
+    return out;
+  }.property('intl._locale'),
 
   displayDetail: function() {
+    let intl = this.get('intl');
+    let toTranslation = intl.tHtml('generic.to');
+    let noneTranslation = intl.tHtml('generic.none');
+
     var services = '';
     (this.get('consumedServicesWithNames')||[]).forEach((map, idx) => {
       services += '<span>'+ (idx === 0 ? '' : ', ') +
@@ -18,10 +24,10 @@ var DnsService = Service.extend({
       esc(map.get('service.displayName')) + '</span>';
     });
 
-    var out = '<label>To: </label>' + services || '<span class="text-muted">None</span>';
+    var out = '<label>'+ toTranslation +': </label>' + services || '<span class="text-muted">'+ noneTranslation +'</span>';
 
-    return out.htmlSafe();
-  }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated'),
+    return out;
+  }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated', 'intl._locale'),
 });
 
 export default DnsService;

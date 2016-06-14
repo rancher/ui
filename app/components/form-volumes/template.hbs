@@ -1,6 +1,6 @@
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">Volumes</label>
+    <label class="form-control-static">{{t 'formVolumes.volumes'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">
@@ -27,7 +27,7 @@
 {{#if isService}}
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Volumes From</label>
+      <label class="form-control-static">{{t 'formVolumes.volumesFrom'}}</label>
     </div>
 
     <div class="col-sm-12 col-md-8 form-control-static">
@@ -36,14 +36,14 @@
           <label class="r-mr10" style="color: inherit; text-transform: none;">{{input type="checkbox" checked=choice.enabled}} {{choice.displayName}}</label>
         {{/each}}
       {{else}}
-        <span class="text-muted">There are no other launch configs in this service to share volumes with.</span>
+        <span class="text-muted">{{t 'formVolumes.text1'}}</span>
       {{/if}}
     </div>
   </div>
 {{else}}
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Volumes From</label>
+      <label class="form-control-static">{{t 'formVolumes.volumesFrom'}}</label>
     </div>
 
     <div class="col-sm-12 col-md-8">
@@ -52,10 +52,10 @@
           {{#if hostContainerChoices.length}}
             <button class="btn-circle" {{action "addVolumeFrom"}}><i class="icon icon-plus-circle"/></button>
           {{else}}
-            <span class="text-muted">This host has no containers to use the volumes from.</span>
+            <span class="text-muted">{{t 'formVolumes.text2'}}</span>
           {{/if}}
         {{else}}
-            <span class="text-muted">Only available when adding a container to a particular host.</span>
+            <span class="text-muted">{{t 'formVolumes.text3'}}</span>
         {{/if}}
       </div>
       {{#if volumesFromArray.length}}
@@ -86,7 +86,7 @@
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label for="volumeDriver" class="form-control-static">Volume Driver</label>
+    <label for="volumeDriver" class="form-control-static">{{t 'formVolumes.volumeDriver'}}</label>
   </div>
 
   <div class="col-sm-12 col-md-8">

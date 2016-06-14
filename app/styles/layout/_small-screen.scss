@@ -80,6 +80,20 @@
       padding: 0;
     }
   }
+
+  .header > .pull-right {
+    float: left!important;
+    padding-top: 10px;
+    margin-top: 10px;
+    border-top: solid thin $table-border-color;
+    text-align: left;
+    width: 100%;
+
+    > .header-state {
+      float: none!important;
+    }
+  }
+
   .alert {
     padding: 0;
     & .banner-head {
@@ -119,8 +133,47 @@
       color: white !important;
     }
 
-    .project-btn span {
-      font-size: 12px;
+    .dropdown.project-btn {
+      position: relative;
+      top: 0;
+
+      span {
+        font-size: 12px;
+      }
+    }
+
+    .navbar {
+      position: relative;
+      z-index: 1;
+    }
+
+    NAV.navbar .nav > LI {
+      float: left;
+    }
+
+    NAV.navbar .nav > LI > A.user-toggle {
+      width: 10%;
+      background-color: $btn-default-color;
+      float: left;
+      min-height: 57px;
+      line-height: 50px;
+      padding: 0 29px;
+
+
+      i {
+        display: none;
+      }
+    }
+
+    NAV.navbar .user-menu {
+      min-width: 90%;
+      border-radius: 0;
+      display: inline-block;
+
+      & > li {
+        display: inline-block;
+        position: static;
+      }
     }
 
     .top-row NAV {
@@ -164,9 +217,10 @@
   }
 
   .service-addtl-info {
-    height: auto;
+    height: 100%!important;
+    top: 110px;
 
-    > * {
+    .container-dots {
       height: auto;
     }
   }
@@ -187,5 +241,9 @@
     .stack-actions {
       text-align: center !important;
     }
+  }
+
+    .navbar-nav .dropdown-menu > li > a:hover {
+    color: $link-color;
   }
 }

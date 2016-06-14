@@ -1,7 +1,7 @@
 {{#if hasSslListeners}}
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Certificate*</label>
+      <label class="form-control-static">{{t 'formSslTermination.certificate'}}</label>
     </div>
     <div class="col-sm-12 col-md-8">
       {{new-select
@@ -17,7 +17,7 @@
 
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">Alternate Certs</label>
+      <label class="form-control-static">{{t 'formSslTermination.alternateCerts'}}</label>
     </div>
     <div class="col-sm-12 col-md-8">
       <table class="table fixed no-lines no-top-padding tight small">
@@ -25,9 +25,9 @@
           <tr class="text-muted">
             <td>
               {{#if alternateCertificates.length}}
-                <button class="btn-circle-text" {{action "addAlternate"}}><i class="icon icon-plus-circle"/> <span>Add Alternate Certificate</span></button>
+                <button class="btn-circle-text" {{action "addAlternate"}}><i class="icon icon-plus-circle"/> <span>{{t 'formSslTermination.addAlternate'}}</span></button>
               {{else}}
-                <div class="text-muted form-control-static">There are no other certificates to use.</div>
+                <div class="text-muted form-control-static">{{t 'formSslTermination.noCertificates'}}</div>
               {{/if}}
             </td>
             <th width="30">&nbsp;</th>
@@ -60,11 +60,11 @@
 
   <div class="row form-group">
     <div class="col-sm-12 col-md-offset-2 col-md-8">
-      <p class="help-block">Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found.</p>
+      <p class="help-block">{{format-html-message 'formSslTermination.helpBlock'}}</p>
     </div>
   </div>
 {{else}}
   <div class="text-muted text-center">
-    There are no SSL listening ports configured.
+    {{t 'formSslTermination.muted'}}
   </div>
 {{/if}}

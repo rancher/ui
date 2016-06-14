@@ -10,6 +10,7 @@ export default Ember.Controller.extend({
 
     return [
       {route: 'admin-tab.auth.activedirectory', label: 'Active Directory',  css: 'activedirectory', available: has('ldapconfig')  },
+      {route: 'admin-tab.auth.azuread',         label: 'Azure AD',          css: 'azuread',         available: has('azureadconfig')  },
       {route: 'admin-tab.auth.github',          label: 'GitHub',            css: 'github',          available: has('githubconfig')  },
       {route: 'admin-tab.auth.localauth',       label: 'Local',             css: 'local',           available: has('localauthconfig')  },
       {route: 'admin-tab.auth.openldap',        label: 'OpenLDAP',          css: 'openldap',        available: has('openldapconfig')  },

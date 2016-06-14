@@ -16,6 +16,7 @@ var _allComposeServices;
 
 var Service = Resource.extend({
   type: 'service',
+  intl: Ember.inject.service(),
 
   actions: {
     activate() {
@@ -423,8 +424,10 @@ var Service = Resource.extend({
   }.property('secondaryLaunchConfigs.length'),
 
   displayDetail: function() {
-      return ('<label>Image: </label><span>' + (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'') + '</span>').htmlSafe();
-  }.property('launchConfig.imageUuid'),
+    let translation = this.get('intl').findTranslationByKey('generic.image');
+    translation = this.get('intl').formatMessage(translation);
+      return ('<label>'+ translation +': </label><span>' + (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'') + '</span>').htmlSafe();
+  }.property('launchConfig.imageUuid', 'intl._locale'),
 
 
   activeIcon: function() {
@@ -484,13 +487,15 @@ var Service = Resource.extend({
 
     if ( pub )
     {
-      return ('<label>Ports: </label>' + pub).htmlSafe();
+      let out = this.get('intl').findTranslationByKey('generic.ports');
+      out = this.get('intl').formatMessage(out);
+      return ('<label>'+out+': </label>' + pub).htmlSafe();
     }
     else
     {
       return '';
     }
-  }.property('endpointsByPort.@each.{port,ipAddresses}'),
+  }.property('endpointsByPort.@each.{port,ipAddresses}', 'intl._locale'),
 
 
 });
