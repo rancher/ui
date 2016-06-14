@@ -257,6 +257,7 @@ const navTree = [
         icon: 'icon icon-target',
         route: 'backuptargets',
         ctx: [getProjectId],
+        condition: function() { return this.get('hasVm'); },
       },
       {
         id: 'infra-certificates',

@@ -13,7 +13,7 @@ export default Ember.Controller.extend({
 
   showSystem: null,
   initSystem: function() {
-    this.set('showSystem', this.get('show') == 'all');
+    this.set('showSystem', this.get('show') === 'all');
   }.on('init'),
   showSystemChanged: function() {
     this.set('show', (this.get('showSystem') ? 'all' : 'standard'));
