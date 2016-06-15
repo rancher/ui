@@ -108,7 +108,9 @@ export default Ember.Controller.extend({
 
       var model = this.get('model');
       model.setProperties({
-        enabled: true,
+        'enabled': true,
+        'accessMode': 'unrestricted',
+        'allowedIdentities': [auth.userIdentity],
       });
 
       model.save().then(() => {
