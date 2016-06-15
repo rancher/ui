@@ -43,7 +43,7 @@ var Snapshot = Resource.extend({
 
   actions: {
     backup() {
-      this.get('store').find('backuptarget').then((backupTargets) => {
+      this.get('store').findAllUnremoved('backuptarget').then((backupTargets) => {
         this.get('application').setProperties({
           editBackup: true,
           originalModel: this,
@@ -105,7 +105,7 @@ var Snapshot = Resource.extend({
       { label: 'action.deleteBackup', icon: 'icon icon-hdd',          action: 'deleteBackup',     enabled: this.get('hasBackups') },
       { label: 'action.viewInApi',    icon: 'icon icon-external-link',action: 'goToApi',          enabled: true },
     ];
-  }.property('actionLinks.remove','backupEnabled','hasBackups','latestCompleteBackup','volume.actionLinks.reverttosnapshot','state'),
+  }.property('actionLinks.remove','backupEnabled','hasBackups','latestCompleteBackup','volume.actionLinks.reverttosnapshot','state','volume.state'),
 });
 
 Snapshot.reopenClass({

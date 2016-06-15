@@ -48,7 +48,7 @@ var Backup = Resource.extend({
       { divider: true },
       { label: 'action.viewInApi', icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
-  }.property('actionLinks.remove','volume.actionLinks.restorefrombackup','state'),
+  }.property('actionLinks.remove','volume.actionLinks.restorefrombackup','state','volume.state'),
 
   actions: {
     restoreFromBackup() {
