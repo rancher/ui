@@ -136,14 +136,14 @@ authPage:
       enabled:
         label: "{github} is enabled"
         restricted: |
-          {appName} is configured to allow access to project members, {orgs, plural,
-            =0 {no Organizations}
-            =1 {# Organization}
-            other {# Organizations}
-          }, and {users, plural,
-            =0 {no Users}
-            =1 {# User}
-            other {# Users}
+          {appName} is configured to allow access to {orgs, plural,
+            =0 {no organizations}
+            =1 {# organization}
+            other {# organizations}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
           }.
         unrestricted: "{appName} is configured to allow access to any {github} user."
       disabled:
@@ -160,7 +160,7 @@ authPage:
       siteAccess:
         accessControl:
           header: Site Access
-          helpText: "Configure who should be allowed to log in and use {appName}.  <b>Note:</b> Members added to environments are automatically allowed."
+          helpText: "Configure who should be allowed to log in and use {appName}."
           radio1: Allow any GitHub user
           radio2: Restrict to specific GitHub users and organization members
           isRestricted:
@@ -991,7 +991,7 @@ stacksPage:
 
 storagePoolsPage:
   header: Storage
-  volumeId: Volume Id
+  volume: Volume Id
   orphaned: Orphaned Backup
   nav:
     pools: Pools
@@ -2087,6 +2087,8 @@ machine:
       label: Secret Key
       placeholder: Your AWS secret key
       provided: Provided
+    region:
+      label: Region
     accessKeyHelp: Paste in your AWS key pair here. We'll use this key to create your new Instances.
     loginAction: "Next: Authenticate & select a network"
     loadingAvailability: Loading Availablility Zone and VPC info from EC2...
@@ -2788,8 +2790,8 @@ action:
   restore: Restore
   retry: Retry
   rollback: Rollback
-  revertToSnapshot: Rollback to Snapshot
-  restoreFromBackup: Rollback to Backup
+  revertToSnapshot: Revert Volume to Snapshot
+  restoreFromBackup: Restore Volume from Backup
   setDefault: Set as Default
   snapshot: Snapshot
   start: Start

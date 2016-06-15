@@ -27,7 +27,6 @@ export default Ember.Controller.extend({
 
   allowedActualIdentities : Ember.computed.alias('model.allowedIdentities'),
 
-  wasShowing              : false,
   isEnterprise: false,
   secure : true,
 
@@ -58,25 +57,6 @@ export default Ember.Controller.extend({
   wasOrgs: function() {
     return this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_ORG).get('length');
   }.property('originalModel.allowedIdentities.@each.externalIdType','wasRestricted'),
-
-  showingAccessControl: function() {
-    let show       = this.get('wasShowing');
-    let restricted = this.get('isRestricted');
-
-    if ( restricted ) {
-      if ( this.get('allowedActualIdentities.length') > 1 ) {
-        show = true;
-      } else if ( this.get('allowedActualIdentities.firstObject.id') !== this.get('access.identity.id') ) {
-        show = true;
-      }
-    } else {
-      show = true;
-    }
-
-    this.set('wasShowing', show);
-
-    return show;
-  }.property('allowedActualIdentities.@each.id','isRestricted','wasShowing'),
 
   destinationUrl: function() {
     return window.location.origin+'/';

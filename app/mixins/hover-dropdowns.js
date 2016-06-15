@@ -10,9 +10,11 @@ export default Ember.Mixin.create({
     let selector             = this.get('dropdownSelector');
 
     this.$().on('click', selector, (e) => {
-      let anchor = Ember.$(e.currentTarget).find('a:first');
-      if ( anchor[0].href.match(/#$/) ) {
+      let anchor = Ember.$(e.target).closest('A');
+      if ( anchor.hasClass('dropdown-toggle') && anchor[0].href.match(/#$/) ) {
         e.preventDefault();
+        e.stopPropagation();
+        return false;
       }
 
       timerObj = null;

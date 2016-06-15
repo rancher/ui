@@ -3,7 +3,7 @@
       <tr>
         {{sortable-th sortable=this action="changeSort" name="state" width="125" label="generic.state"}}
         {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
-        {{sortable-th sortable=this action="changeSort" name="volumeId" label="storagePoolsPage.volumeId"}}
+        {{sortable-th sortable=this action="changeSort" name="volumeId" label="storagePoolsPage.volume"}}
         {{sortable-th sortable=this action="changeSort" name="created" label="generic.created"}}
         <th width="70">&nbsp;</th>
       </tr>
@@ -18,8 +18,8 @@
             {{target.name}}
           </td>
           <td class="force-wrap">
-            {{#if target.volumeId}}
-              {{target.volumeId}}
+            {{#if target.volume}}
+              {{target.volume.displayName}} ({{target.volumeId}})
             {{else}}
               {{t 'storagePoolsPage.orphaned'}}
             {{/if}}
