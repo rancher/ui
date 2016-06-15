@@ -7,10 +7,7 @@ var DnsService = Service.extend({
   type: 'dnsService',
   intl: Ember.inject.service(),
 
-  healthState: function() {
-    let out = this.get('intl').intl.t('generic.healthy');
-    return out;
-  }.property('intl._locale'),
+  healthState: 'healthy',
 
   displayDetail: function() {
     let intl = this.get('intl');
@@ -26,7 +23,7 @@ var DnsService = Service.extend({
 
     var out = '<label>'+ toTranslation +': </label>' + services || '<span class="text-muted">'+ noneTranslation +'</span>';
 
-    return out;
+    return out.htmlSafe();
   }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated', 'intl._locale'),
 });
 
