@@ -43,7 +43,7 @@ var Snapshot = Resource.extend({
 
   actions: {
     backup() {
-      this.get('store').find('backuptarget').then((backupTargets) => {
+      this.get('store').findAllUnremoved('backuptarget').then((backupTargets) => {
         this.get('application').setProperties({
           editBackup: true,
           originalModel: this,
