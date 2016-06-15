@@ -117,6 +117,8 @@ export default Ember.Route.extend({
       promises.apiHostSet = settings.load(C.SETTING.API_HOST).then(() => {
         return !!settings.get(C.SETTING.API_HOST);
       });
+    } else {
+      promises.apiHostSet = Ember.RSVP.resolve(true);
     }
 
     return Ember.RSVP.hash(promises).then((hash) => {
