@@ -14,7 +14,7 @@ export function arrayIntersect(a, b) {
 
 export function filterByValues(ary,field,values) {
   return ary.filter((obj) => {
-    return values.indexOf(obj.get('field')) >= 0;
+    return values.indexOf(obj.get(field)) >= 0;
   });
 }
 
