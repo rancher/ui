@@ -310,6 +310,11 @@ C.ACTIVEISH_STATES = [
   'started-once',
 ];
 
+C.READY_STATES = [
+  'healthy',
+  'started-once',
+];
+
 C.REMOVEDISH_STATES = [
   'removed',
   'purging',
