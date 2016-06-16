@@ -80,17 +80,25 @@ export default Ember.Mixin.create({
     // multiple primaryActions, you can override this in a specific model.
     var all = this.get('availableActions');
     var obj;
+    var seenAnAction = false;
     for ( var i = 0 ; i < all.get('length') ; i++ )
     {
       obj = all.objectAt(i);
       if ( Ember.get(obj,'divider') )
       {
         // Nothing was found, stop at the first divider;
-        return [];
+        if ( seenAnAction )
+        {
+          return [];
+        }
       }
-      else if ( Ember.get(obj,'enabled') && Ember.get(obj,'icon') && Ember.get(obj,'action') !== 'promptDelete')
+      else if ( Ember.get(obj,'enabled') )
       {
-        return [obj];
+        seenAnAction = true;
+        if ( Ember.get(obj,'icon') && Ember.get(obj,'action') !== 'promptDelete')
+        {
+          return [obj];
+        }
       }
     }
 
