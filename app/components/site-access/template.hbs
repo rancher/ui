@@ -1,0 +1,48 @@
+<h4>{{t 'siteAccess.header'}}</h4>
+<p class="help-block">
+  {{format-html-message 'siteAccess.helpText' appName=settings.appName}}
+</p>
+<hr/>
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="radio">
+      <label>{{radio-button selection=copy.accessMode value="unrestricted"}} {{t 'siteAccess.unrestricted' individuals=(t individuals) collection=(t collection)}}</label>
+    </div>
+    <div class="radio">
+      <label>{{radio-button selection=copy.accessMode value="restricted"}} {{t 'siteAccess.restricted' individuals=(t individuals) collection=(t collection)}}</label>
+    </div>
+    <div class="radio">
+      <label>{{radio-button selection=copy.accessMode value="required"}} {{t 'siteAccess.required' individuals=(t individuals) collection=(t collection)}}</label>
+    </div>
+  </div>
+  <div class="col-md-6">
+    {{#if showList}}
+      {{input-identity allowTeams=false action="addAuthorized" onError="showError"}}
+
+      <hr/>
+      <h5>{{t 'siteAccess.listHeader' individuals=(t individuals) collection=(t collection)}}</h5>
+
+      <ul class="list-unstyled gh-block-list r-mt10">
+        {{#each copy.allowedIdentities as |item|}}
+          <li>
+            {{#identity-block identity=item}}
+              <button class="btn btn-primary btn-sm pull-right gh-action" {{action "removeIdentity" item}}><i class="icon icon-minus"/></button>
+            {{/identity-block}}
+          </li>
+        {{/each}}
+      </ul>
+      {{#if (eq copy.allowedIdentities.length 0)}}
+        <span class="text-muted">{{t 'siteAccess.noIdentity'}}</span>
+      {{/if}}
+    {{/if}}
+  </div>
+</div>
+
+<hr/>
+
+{{top-errors errors=errors}}
+
+<div class="inline-block">
+  {{save-cancel cancelDisabled=true saved=saved savedDisabled=saved editing=true save="save"}}
+</div>

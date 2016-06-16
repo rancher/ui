@@ -24,14 +24,11 @@ export default Ember.Route.extend({
 
   setupController: function(controller, model) {
     controller.setProperties({
-      model: model.clone(),
-      originalModel: model,
+      model: model,
       confirmDisable: false,
-      saving: false,
-      saved: true,
       testing: false,
       organizations: this.get('session.orgs')||[],
-      error: null,
+      errors: null,
     });
   }
 });
