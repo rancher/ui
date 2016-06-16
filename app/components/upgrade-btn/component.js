@@ -44,6 +44,7 @@ function getUpgradeInfo(task, cb) {
 export default Ember.Component.extend({
   environmentResource: null,
   upgradeStatus: null,
+  intl: Ember.inject.service(),
 
   tagName: 'button',
   classNames: ['btn','btn-sm'],
@@ -90,6 +91,7 @@ export default Ember.Component.extend({
   }.property('upgradeStatus','isUpgradeState'),
 
   btnLabel: function() {
+    let intl = this.get('intl');
     if ( this.get('isUpgradeState') )
     {
       return 'Upgrade in progress';
@@ -99,17 +101,17 @@ export default Ember.Component.extend({
       case NONE:
         return '';
       case LOADING:
-        return 'Checking upgrades...';
+        return intl.t('upgradeBtn.status.loading');
       case CURRENT:
-        return 'Up to date';
+        return intl.t('upgradeBtn.status.current');
       case AVAILABLE:
-        return 'Upgrade available';
+        return intl.t('upgradeBtn.status.available');
       case NOTFOUND:
-        return 'Template version not found';
+        return intl.t('upgradeBtn.status.notfound');
       default:
-        return 'Error checking for upgrade';
+        return intl.t('upgradeBtn.status.default');
     }
-  }.property('upgradeStatus','isUpgradeState'),
+  }.property('upgradeStatus','isUpgradeState', 'intl._locale'),
 
   updateStatus() {
     var info = this.get('environmentResource.externalIdInfo');
