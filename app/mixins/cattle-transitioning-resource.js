@@ -34,6 +34,7 @@ const defaultStateMap = {
   'updating-unhealthy':       {icon: 'icon icon-tag',           color: 'text-info'   },
   'updating-reinitializing':  {icon: 'icon icon-alert',         color: 'text-info'   },
   'updating-inactive':        {icon: 'icon icon-tag',           color: 'text-info'   },
+  'waiting':                  {icon: 'icon icon-tag',           color: 'text-info'   },
 };
 
 const stateColorSortMap = {

@@ -55,6 +55,18 @@ var Machine = Resource.extend(PolledResource, {
       return this.get('state') === 'active' && this.get('hosts.length') === 0;
     }
   }.property('state','hosts.[]','hostsUpdated'),
+
+  combinedState: function() {
+    let state = this.get('state');
+    if (state === 'active' )
+    {
+      return 'waiting';
+    }
+    else
+    {
+      return state;
+    }
+  }.property('state'),
 });
 
 Machine.reopenClass({
