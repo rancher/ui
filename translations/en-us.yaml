@@ -135,8 +135,18 @@ authPage:
     header:
       enabled:
         label: "{github} is enabled"
-        restricted: |
+        required: |
           {appName} is configured to allow access to {orgs, plural,
+            =0 {no organizations}
+            =1 {# organization}
+            other {# organizations}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
+          }.
+        restricted: |
+          {appName} is configured to allow access to environment members, {orgs, plural,
             =0 {no organizations}
             =1 {# organization}
             other {# organizations}
@@ -157,21 +167,6 @@ authPage:
         clientId:
           text: "Client ID:"
           helpText: "To change the configured GitHub application, disable access control below and then set it up again."
-      siteAccess:
-        accessControl:
-          header: Site Access
-          helpText: "Configure who should be allowed to log in and use {appName}."
-          radio1: Allow any GitHub user
-          radio2: Restrict to specific GitHub users and organization members
-          isRestricted:
-            header: Authorized Users and Organizations
-            noIdentity: None
-            saveAuthButton:
-              saved: Saved
-              saving: "Saving..."
-              pre: Save authorization configuration
-            helpText: "By default, only users that are a member of a environment are allowed to log in and access {appName}."
-            customizeButton: Customize
       disableAccess:
         header: "Danger Zone&trade;"
         warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
@@ -1145,29 +1140,37 @@ ldap:
   providerName:
     openldap: OpenLDAP
     ad: Active Directory
-  configuredIndication:
-    header:
-      providerName: "{providerName} is"
-      enabled: enabled
-      disabled: not configured
-      subtext:
-        enabled: "{appName} is configured to allow access to any {providerName} user."
-        disabled: "{appName} can be configured to restrict access to a set of users and group members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
+  header:
+    enabled:
+      label: "{providerName} is enabled"
+      required: |
+        {appName} is configured to allow access to {groups, plural,
+          =0 {no groups}
+          =1 {# group}
+          other {# groups}
+        } and {users, plural,
+          =0 {no users}
+          =1 {# user}
+          other {# users}
+        }.
+      restricted: |
+        {appName} is configured to allow access to environment members, {groups, plural,
+          =0 {no groups}
+          =1 {# group}
+          other {# groups}
+        } and {users, plural,
+          =0 {no users}
+          =1 {# user}
+          other {# users}
+        }.
+      unrestricted: "{appName} is configured to allow access to any {providerName} user."
+    disabled:
+      label: "{providerName} is not configured"
+      warning: "{appName} can be configured to restrict access to a set of {providerName} users and groups.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
+
   accessEnabled:
     header: Authentication
     subtext: "To change the server configuration, disable access control below and then set it up again."
-    siteAccess:
-      header: Site Access
-      helpText: "Configure who should be allowed to log in and use {appName}."
-      unrestricted: Allow any valid ActiveDirectory user
-      restricted: Restrict to specific users and groups
-      isRestricted:
-        header: Authorized Users and Groups
-        noIdentity: None
-        saveAuthButton:
-          saved: Saved
-          saving: "Saving..."
-          pre: Save authorization configuration
     general:
       header: General
       server: "Server:"
@@ -1181,7 +1184,7 @@ ldap:
       login: "Login Field:"
       name: "Name Field:"
       search: "Search Field:"
-      enabled: "Enabled Field:"
+      enabled: "Status Field:"
       disabledBitMask: "Disabled BitMask:"
     group:
       header: Group
@@ -2551,6 +2554,18 @@ sidekickAddtlInfo:
   noContainers: No Containers
   labels: Labels
   noLabels: No Labels
+
+siteAccess:
+  header: Site Access
+  helpText: "Configure who should be allowed to log in and use {appName}."
+  unrestricted: "Allow any valid {individuals}"
+  restricted: "Allow members of Environments, plus specific {individuals} and {collection}"
+  required: "Restrict access to only specific {individuals} and {collection}"
+  listHeader: "Authorized {individuals} and {collection}"
+  noIdentity: None
+  users: Users
+  groups: Groups
+  organizations: Organizations
 
 stackSection:
   outputs: Outputs

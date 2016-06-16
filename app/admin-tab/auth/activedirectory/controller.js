@@ -12,12 +12,10 @@ export default Ember.Controller.extend({
   confirmDisable: false,
   errors: null,
   testing: false,
-  saving: false,
-  saved: true,
-  error: null,
-  originalModel: null,
 
   providerName: 'ldap.providerName.ad',
+  userType: C.PROJECT.TYPE_LDAP_USER,
+  groupType: C.PROJECT.TYPE_LDAP_GROUP,
 
   addUserInput: '',
   addOrgInput: '',
@@ -29,25 +27,13 @@ export default Ember.Controller.extend({
     return !this.get('username.length') || !this.get('password.length');
   }.property('username.length','password.length'),
 
-  saveDisabled: Ember.computed.or('saving','saved'),
-  isRestricted            : Ember.computed.equal('model.accessMode','restricted'),
-  wasRestricted           : Ember.computed.equal('originalModel.accessMode','restricted'),
-  allowedActualIdentities : Ember.computed.alias('model.allowedIdentities'),
+  numUsers: function() {
+    return (this.get('model.allowedIdentities')||[]).filterBy('externalIdType', this.get('userType')).get('length');
+  }.property('model.allowedIdentities.@each.externalIdType','userType','groupType'),
 
-  wasUsers: function() {
-    return this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_USER).get('length');
-  }.property('originalModel.allowedIdentities.@each.externalIdType','wasRestricted'),
-
-  wasOrgs: function() {
-    return this.get('originalModel.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_ORG).get('length');
-  }.property('originalModel.allowedIdentities.@each.externalIdType','wasRestricted'),
-
-  accessModeChanged: function() {
-    if ( !this.get('model.allowedIdentities') ) {
-      this.set('model.allowedIdentities', []);
-    }
-    this.set('saved',false);
-  }.observes('model.accessMode'),
+  numGroups: function() {
+    return (this.get('model.allowedIdentities')||[]).filterBy('externalIdType', this.get('groupType')).get('length');
+  }.property('model.allowedIdentities.@each.externalIdType','userType','groupType'),
 
   tlsChanged: function() {
     var on = this.get('model.tls');
@@ -129,41 +115,6 @@ export default Ember.Controller.extend({
       }, 1000);
     },
 
-    addAuthorized: function(data) {
-      this.send('clearError');
-      this.set('saved', false);
-      this.get('model.allowedIdentities').pushObject(data);
-    },
-
-    removeIdentity: function(ident) {
-      this.set('saved', false);
-      this.get('model.allowedIdentities').removeObject(ident);
-    },
-
-    saveAuthorization: function() {
-      this.send('clearError');
-
-      if ( this.get('isRestricted') && !this.get('model.allowedIdentities.length') )
-      {
-        this.send('showError','Add at least one authorized user or group');
-        return;
-      }
-
-      this.set('saving', true);
-      this.set('saved', false);
-
-      let model = this.get('model');
-      model.save().then(() => {
-        this.get('originalModel').replaceWith(model);
-        this.set('originalModel.allowedIdentities', this.get('model.allowedIdentities').slice());
-        this.set('saved', true);
-      }).catch((err) => {
-        this.send('gotError', err);
-      }).finally(() => {
-        this.set('saving', false);
-      });
-    },
-
     promptDisable: function() {
       this.set('confirmDisable', true);
       Ember.run.later(this, function() {
@@ -174,7 +125,6 @@ export default Ember.Controller.extend({
     gotError: function(err) {
       this.set('errors', [Errors.stringify(err)]);
       this.set('testing', false);
-      this.set('saving', false);
     },
 
     clearError: function() {

@@ -1,18 +1,14 @@
 <section class="well">
   <h2>
     {{#if access.enabled}}
-      <b>{{t 'authPage.github.header.enabled.label' github=wasLabel}}</b>
+      <b>{{t 'authPage.github.header.enabled.label' github=(t providerName)}}</b>
     {{else}}
       <b class="text-warning">{{t 'authPage.github.header.disabled.label'}}</b>
     {{/if}}
   </h2>
   <div>
     {{#if access.enabled}}
-      {{#if wasRestricted}}
-        {{t 'authPage.github.header.enabled.restricted' appName=settings.appName github=wasLabel users=wasUsers orgs=wasOrgs}}
-      {{else}}
-        {{t 'authPage.github.header.enabled.unrestricted' appName=settings.appName github=wasLabel}}
-      {{/if}}
+      {{t (concat-str 'authPage.github.header.enabled.' model.accessMode character='') appName=settings.appName github=(t providerName) users=numUsers orgs=numOrgs}}
     {{else}}
       {{t 'authPage.github.header.disabled.warning' appName=settings.appName}}
     {{/if}}
@@ -29,59 +25,10 @@
     <p class="help-block">{{t 'authPage.github.authenticated.header.clientId.helpText'}}</p>
   </section>
 
-  <section class="well">
-    <h4>{{t 'authPage.github.authenticated.siteAccess.accessControl.header'}}</h4>
-    <p class="help-block">
-      {{format-html-message 'authPage.github.authenticated.siteAccess.accessControl.helpText' appName=settings.appName}}
-    </p>
-    <hr/>
-
-    <div class="row">
-      <div class="col-md-6">
-        <div class="radio">
-          <label>{{radio-button selection=model.accessMode value="unrestricted"}} {{t 'authPage.github.authenticated.siteAccess.accessControl.radio1'}}</label>
-        </div>
-        <div class="radio">
-          <label>{{radio-button selection=model.accessMode value="restricted"}} {{t 'authPage.github.authenticated.siteAccess.accessControl.radio2'}}{{#if isRestricted}}:{{/if}}</label>
-        </div>
-      </div>
-      <div class="col-md-6">
-        {{#if isRestricted}}
-          {{input-identity allowTeams=false action="addAuthorized" onError="showError"}}
-
-          <hr/>
-          <h5>{{t 'authPage.github.authenticated.siteAccess.accessControl.isRestricted.header'}}</h5>
-
-          <ul class="list-unstyled gh-block-list r-mt10">
-            {{#each allowedActualIdentities as |item|}}
-              <li>
-                {{#identity-block identity=item}}
-                  <button class="btn btn-primary btn-sm pull-right gh-action" {{action "removeIdentity" item}}><i class="icon icon-minus"/></button>
-                {{/identity-block}}
-              </li>
-            {{/each}}
-          </ul>
-          {{#if (eq allowedActualIdentities.length 0)}}
-            <span class="text-muted">{{t 'authPage.github.authenticated.siteAccess.accessControl.isRestricted.noIdentity'}}</span>
-          {{/if}}
-        {{/if}}
-      </div>
-    </div>
-
-    <hr/>
-
-    <button class="btn btn-primary" disabled={{saveDisabled}} {{action "saveAuthorization"}}>
-      {{#if saved}}
-        {{t 'authPage.github.authenticated.siteAccess.accessControl.isRestricted.saveAuthButton.saved'}}
-      {{else}}
-        {{#if saving}}
-          <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.github.authenticated.siteAccess.accessControl.isRestricted.saveAuthButton.saving'}}
-        {{else}}
-          {{t 'authPage.github.authenticated.siteAccess.accessControl.isRestricted.saveAuthButton.pre'}}
-        {{/if}}
-      {{/if}}
-    </button>
-  </section>
+  {{site-access
+    model=model
+    collection='siteAccess.organizations'
+  }}
 
   <section class="well">
     <h4>{{format-html-message 'authPage.github.authenticated.disableAccess.header'}}</h4>
