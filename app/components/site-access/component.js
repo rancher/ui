@@ -1,10 +1,6 @@
 import Ember from 'ember';
 import Errors from 'ui/utils/errors';
 
-let UNRESTRICTED = 'unrestricted',
-    RESTRICTED = 'restricted',
-    REQUIRED = 'required';
-
 export default Ember.Component.extend({
   tagName: 'section',
   classNames: ['well'],
@@ -18,7 +14,7 @@ export default Ember.Component.extend({
   errors: null,
 
   showList: function() {
-    return this.get('copy.accessMode') !== UNRESTRICTED;
+    return this.get('copy.accessMode') !== 'unrestricted';
   }.property('copy.accessMode'),
 
   actions: {
