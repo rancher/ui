@@ -28,11 +28,8 @@ function readLocales(environment) {
   /* This needs a little work to read the yaml files for the langugae name prop*/
   var files = fs.readdirSync('./translations');
   var translationsOut = {};
-  console.log('Read Locales, cwd=', process.cwd());
   files.forEach(function(filename) {
-    console.log('Reading ',filename);
-
-    if ( !filename.match(/\.ya?ml$/) ) {
+    if ( !filename.match(/\.ya?ml$/) && !filename.match(/\.json$/) ) {
       // Ignore non-YAML files
       return;
     }
