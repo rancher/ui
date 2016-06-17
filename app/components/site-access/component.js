@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   tagName: 'section',
   classNames: ['well'],
   settings: Ember.inject.service(),
+  access: Ember.inject.service(),
 
   model: null,
   individuals: 'siteAccess.users',
@@ -69,6 +70,22 @@ export default Ember.Component.extend({
 
   accessModeChanged: function() {
     this.set('saved',false);
+    let identities = this.get('copy.allowedIdentities');
+    if ( !identities )
+    {
+      identities = [];
+      this.set('copy.allowedIdentities', identities);
+    }
+
+    if ( this.get('copy.accessMode') !== 'unrestricted' )
+    {
+      let me = this.get('access.identity');
+      let found = identities.filterBy('id', me.get('id')).length > 0;
+      if ( !found )
+      {
+        identities.push(me);
+      }
+    }
   }.observes('copy.accessMode'),
 
 });
