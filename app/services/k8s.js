@@ -656,7 +656,7 @@ export default Ember.Service.extend({
 
   catalog(files,answers) {
     return this.request({
-      url: `${this.get('kubectlEndpoint')}/catalog`,
+      url: Util.addQueryParam(`${this.get('kubectlEndpoint')}/catalog`, C.K8S.DEFAULT_NS, this.get(`tab-session.${C.TABSESSION.NAMESPACE}`)),
       method: 'POST',
       contentType: 'application/json',
       data: {

@@ -13,11 +13,11 @@ export default Ember.Component.extend(NewOrEdit, {
   versionsArray: null,
   versionsLinks: null,
   serviceChoices: null,
-  templateBase: null,
 
   classNames: ['launch-catalog'],
 
   primaryResource: Ember.computed.alias('environmentResource'),
+  templateBase: Ember.computed.alias('templateResource.templateBase'),
   editing: false,
 
   previewOpen: false,

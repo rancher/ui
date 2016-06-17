@@ -115,10 +115,12 @@
 
               <p class="help-block">{{question.description}}</p>
             </div>
+          {{else}}
+            <span class="text-muted">{{t 'newCatalog.noConfig'}}</span>
           {{/each}}
         </div></div></div>
-        {{#if (eq templateBase "cattle")}}
-          <div class="row">
+        {{#if (and (not editing) (eq templateBase ""))}}
+          <div class="row r-mt20">
             <div class="col-md-12">
               <label>{{input type="checkbox" checked=environmentResource.startOnCreate}} {{t 'newCatalog.startService'}}</label>
             </div>
