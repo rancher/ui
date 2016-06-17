@@ -27,7 +27,7 @@
         {{#each copy.allowedIdentities as |item|}}
           <li>
             {{#identity-block identity=item}}
-              <button class="btn btn-primary btn-sm pull-right gh-action" {{action "removeIdentity" item}}><i class="icon icon-minus"/></button>
+              <button class="btn btn-primary btn-sm pull-right gh-action" {{action "removeIdentity" item}} disabled={{eq item.id access.identity.id}}><i class="icon icon-minus"/></button>
             {{/identity-block}}
           </li>
         {{/each}}
