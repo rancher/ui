@@ -66,8 +66,15 @@ module.exports = function(environment) {
     minifyCSS: {
         enabled: false
     },
+
     minifyJS: {
         enabled: false
+    },
+
+    intl: {
+      locales: ['en-us'],
+      baseLocale: 'en-us',
+      publicOnly: true,
     },
 
     contentSecurityPolicy: {
