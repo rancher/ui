@@ -29,6 +29,11 @@ function readLocales(environment) {
   var files = fs.readdirSync('./translations');
   var translationsOut = {};
   files.forEach(function(filename) {
+    if ( !filename.match(/\.ya?ml$/) ) {
+      // Ignore non-YAML files
+      return;
+    }
+
     if ( environment === 'production' && filename === 'none.yaml' ) {
       // Don't show the "None" language in prod
       return;
