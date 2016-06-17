@@ -4,7 +4,17 @@
       <label class="form-control-static">{{t 'formEngineOpts.engineInstallUrl.label'}}</label>
     </div>
     <div class="col-md-10">
-      {{input type="text" value=machine.engineInstallUrl classNames="form-control" placeholder=(t 'formEngineOpts.engineInstallUrl.placeholder')}}
+      <div class="input-group">
+        {{input type="text" value=machine.engineInstallUrl classNames="form-control" placeholder=(t 'formEngineOpts.engineInstallUrl.placeholder')}}
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu" style="min-width: 250px; max-height: 300px; overflow-y: auto;">
+            {{#each engineUrlChoices as |choice|}}
+              <li><a href="#" {{action "setEngine" choice.value}}>{{choice.label}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
     </div>
   </div>
 {{/if}}
