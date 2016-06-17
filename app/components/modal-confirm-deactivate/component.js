@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   originalModel  : null,
   action         : null,
   alternateLabel : alternateLabel,
+  intl           : Ember.inject.service(),
 
   actions: {
 
@@ -25,22 +26,23 @@ export default Ember.Component.extend({
     }, 500);
   },
 
-  isService: Ember.computed('originalModel.type', function() {
+  isService: Ember.computed('originalModel.type','intl._locale', function() {
     let type = this.get('originalModel.type');
     let out  = {};
+    let intl = this.get('intl');
 
     switch (type) {
       case 'project':
-        out.message = 'deactivate your environment';
-        out.button  = 'Deactivate';
+        out.message = intl.t('modalConfirmDeactiviate.buttons.project.message');
+        out.button  = intl.t('modalConfirmDeactiviate.buttons.project.button');
         break;
       case 'environment':
-        out.message = 'stop services for';
-        out.button  = 'Stop Services';
+        out.message = intl.t('modalConfirmDeactiviate.buttons.environment.message');
+        out.button  = intl.t('modalConfirmDeactiviate.buttons.environment.button');
         break;
       default:
-        out.message = 'deactivate';
-        out.button  = 'Deactivate';
+        out.message = intl.t('modalConfirmDeactiviate.buttons.default.message');
+        out.button  = intl.t('modalConfirmDeactiviate.buttons.default.button');
         break;
     }
 
