@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
+import { loadScript } from 'ui/utils/load-script';
 
 export default Ember.Service.extend({
   prefs         : Ember.inject.service(),
@@ -57,9 +58,18 @@ export default Ember.Service.extend({
         method: 'GET',
         dataType: 'json',
       }).then((resp) => {
-        loadedLocales.push(language);
-        return this.get('intl').addTranslations(language, resp.xhr.responseJSON).then(() => {
-          this.get('intl').setLocale(language);
+        let promise;
+        if ( this.get('app.needIntlPolyfill') ) {
+          promise = loadScript(`${this.get('app.baseAssets')}assets/intl/locales/${language.toLowerCase()}.js?${application.version}`);
+        } else {
+          promise = Ember.RSVP.resolve();
+        }
+
+        return promise.then(() => {
+          loadedLocales.push(language);
+          return this.get('intl').addTranslations(language, resp.xhr.responseJSON).then(() => {
+            this.get('intl').setLocale(language);
+          });
         });
       });
     }

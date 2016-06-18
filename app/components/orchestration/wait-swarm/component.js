@@ -1,5 +1,7 @@
 import Ember from 'ember';
 import { debouncedObserver } from 'ui/utils/debounce';
+import Util from 'ui/utils/util';
+import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   swarm: Ember.inject.service(),
@@ -59,7 +61,7 @@ export default Ember.Component.extend({
 
     var services = (this.get('services')||[]).filterBy('environmentId', stack.get('id'));
     var num = services.get('length');
-    var healthy = services.filterBy('healthState','healthy').get('length');
+    var healthy = Util.filterByValues(services, 'healthState', C.READY_STATES).get('length');
     if ( num === 0 || healthy < num )
     {
       this.setProperties({

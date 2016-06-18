@@ -323,45 +323,45 @@ Router.map(function() {
   });
 
   this.modal('modal-catalog-launch', {
-    dismissWithOutsideClick : true,
+    dismissWithOutsideClick : false,
     withParams              : 'launchCatalog',
     otherParams             : {originalModel   : 'originalModel', environmentResource : 'environmentResource'}
   });
 
   this.modal('modal-process-error', {
-    dismissWithOutsideClick : true,
+    dismissWithOutsideClick : false,
     withParams              : 'openProcessesError',
     otherParams             : 'exception'
   });
 
 
   this.modal('modal-auditlog-info', {
-    dismissWithOutsideClick : true,
+    dismissWithOutsideClick : false,
     withParams              : 'showAuditLogResponses',
     otherParams             : {requestObject           : 'requestObject', responseObject : 'responseObject'},
   });
 
   this.modal('modal-confirm-deactivate', {
-    dismissWithOutsideClick : true,
+    dismissWithOutsideClick : false,
     dialogClass             : 'small',
     withParams              : 'showConfirmDeactivate',
     otherParams             : {originalModel           : 'originalModel', action : 'action'},
   });
 
   this.modal('modal-edit-driver', {
-    dismissWithOutsideClick : true,
+    dismissWithOutsideClick : false,
     withParams              : 'editMachineDriver',
     otherParams             : {originalModel: 'originalModel'},
   });
 
   this.modal('modal-edit-snapshot', {
-    dismissWithOutsideClick : 'true',
+    dismissWithOutsideClick : false,
     withParams: 'editSnapshot',
     otherParams: {originalModel: 'originalModel'}
   });
 
   this.modal('modal-edit-backup', {
-    dismissWithOutsideClick : 'true',
+    dismissWithOutsideClick : false,
     withParams: 'editBackup',
     otherParams: {originalModel: 'originalModel', backupTargets: 'backupTargets'}
   });

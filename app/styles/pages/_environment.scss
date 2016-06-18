@@ -94,7 +94,6 @@ $singleCountWidth : 120px;
     width: 65px;
     text-align: right;
     border-right: 0;
-    padding: 0;
   }
 
   .stack-body {
@@ -122,20 +121,26 @@ $singleCountWidth : 120px;
       border-bottom: 1px solid $table-border-color ;
     }
 
-    TD:nth-child(1) {
-      width: 125px;
-      padding: 0;
-      position: relative;
+    &.sized {
+      TD:nth-child(1) {
+        width: 125px;
+        padding: 0;
+        position: relative;
+      }
+
+      TD:nth-child(4),
+      TD:nth-child(5) {
+        width: ($countWidth + 7);
+        text-align: center;
+      }
+
+      TD.actions {
+        width: 80px;
+      }
     }
 
-    TD:nth-child(4),
-    TD:nth-child(5) {
-      width: ($countWidth + 7);
+    TD.actions {
       text-align: center;
-    }
-
-    TD:last-child {
-      width: 80px;
     }
 
     TR:nth-child(even) {

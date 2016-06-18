@@ -7,7 +7,7 @@ export default Ember.Controller.extend(Sortable, {
   sorts: {
     state    : ['stateSort','name','id'],
     name     : ['name','id'],
-    volumeId : ['volumeId','id'],
+    volume   : ['volume.name','id'],
     created  : ['created','id'],
   },
 

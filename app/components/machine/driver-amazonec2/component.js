@@ -48,6 +48,22 @@ let INSTANCE_TYPES = [
   'd2.xlarge','d2.2xlarge','d2.4xlarge','d2.8xlarge',
 ];
 
+// These need to match the supported list in docker-machine:
+// https://github.com/docker/machine/blob/master/drivers/amazonec2/region.go
+let REGIONS = [
+  "ap-northeast-1",
+  "ap-northeast-2",
+  "ap-southeast-1",
+  "ap-southeast-2",
+  "cn-north-1",
+  "eu-west-1",
+  "eu-central-1",
+  "sa-east-1",
+  "us-east-1",
+  "us-west-1",
+  "us-west-2",
+  "us-gov-west-1",
+];
 
 export default Ember.Component.extend(Driver, {
   prefs                    : Ember.inject.service(),
@@ -64,6 +80,7 @@ export default Ember.Component.extend(Driver, {
   whichSecurityGroup       : 'default',
   isCustomSecurityGroup    : Ember.computed.equal('whichSecurityGroup','custom'),
   instanceTypes            : INSTANCE_TYPES,
+  regionChoices            : REGIONS,
 
   step                     : 1,
   isStep1                  : Ember.computed.equal('step',1),
@@ -147,69 +164,42 @@ export default Ember.Component.extend(Driver, {
       this.set('amazonec2Config.accessKey', (this.get('amazonec2Config.accessKey')||'').trim());
       this.set('amazonec2Config.secretKey', (this.get('amazonec2Config.secretKey')||'').trim());
 
+      let subnets = [];
+      let rName = this.get('amazonec2Config.region');
       let ec2 = new AWS.EC2({
         accessKeyId     : this.get('amazonec2Config.accessKey'),
         secretAccessKey : this.get('amazonec2Config.secretKey'),
-        region          : this.get('amazonec2Config.region'),
+        region          : rName,
       });
 
-      let subnets = [];
-
-      ec2.describeRegions({}, (err, data) => {
-        if ( err ) {
-          done(err);
-          return;
-        }
-
-        async.eachLimit(data.Regions, 3, readRegion, done);
-      });
-
-      function readRegion(region, cb) {
-        let rName = region.RegionName;
-
-        let ec2 = new AWS.EC2({
-          accessKeyId     : self.get('amazonec2Config.accessKey'),
-          secretAccessKey : self.get('amazonec2Config.secretKey'),
-          region          : rName,
-        });
-
-        ec2.describeSubnets({}, (err, data) => {
-          if ( err ) {
-            return void cb(err);
-          }
-
-          self.get('clients').set(rName, ec2);
-
-          data.Subnets.forEach((subnet) => {
-            if ( (subnet.State||'').toLowerCase() !== 'available' )
-            {
-              return;
-            }
-
-            subnets.pushObject(Ember.Object.create({
-              subnetId : subnet.SubnetId,
-              vpcId    : subnet.VpcId,
-              zone     : subnet.AvailabilityZone,
-              region   : rName
-            }));
-          });
-
-          cb();
-        });
-      }
-
-      function done(err) {
+      ec2.describeSubnets({}, (err, data) => {
         if ( err ) {
           let errors = self.get('errors')||[];
           errors.pushObject(err);
-          self.set('errors', errors);
-          self.set('step', 1);
+          this.set('errors', errors);
+          this.set('step', 1);
           return;
         }
 
-        self.set('allSubnets', subnets);
-        self.set('step', 3);
-      }
+        this.get('clients').set(rName, ec2);
+
+        data.Subnets.forEach((subnet) => {
+          if ( (subnet.State||'').toLowerCase() !== 'available' )
+          {
+            return;
+          }
+
+          subnets.pushObject(Ember.Object.create({
+            subnetId : subnet.SubnetId,
+            vpcId    : subnet.VpcId,
+            zone     : subnet.AvailabilityZone,
+            region   : rName
+          }));
+        });
+
+        this.set('allSubnets', subnets);
+        this.set('step', 3);
+      });
     },
 
     selectSubnet: function() {

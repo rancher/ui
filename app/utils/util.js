@@ -12,6 +12,12 @@ export function arrayIntersect(a, b) {
   });
 }
 
+export function filterByValues(ary,field,values) {
+  return ary.filter((obj) => {
+    return values.indexOf(obj.get(field)) >= 0;
+  });
+}
+
 export function download(url, id='__downloadIframe') {
   var iframe = document.getElementById(id);
   if ( !iframe )
@@ -306,6 +312,7 @@ var Util = {
   popupWindowOptions: popupWindowOptions,
   escapeHtml: escapeHtml,
   escapeRegex: escapeRegex,
+  filterByValues: filterByValues,
   addQueryParam: addQueryParam,
   addQueryParams: addQueryParams,
   parseUrl: parseUrl,

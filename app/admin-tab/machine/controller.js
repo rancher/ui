@@ -21,6 +21,7 @@ export default Ember.Controller.extend(Sortable, {
 
       driver.doAction(action);
     },
+
     addNewDriver: function(driver) {
       let newDriver = this.get('userStore').createRecord({
         type            : 'machineDriver',
@@ -55,8 +56,9 @@ export default Ember.Controller.extend(Sortable, {
           let newDriver = {
             type            : 'machineDriver',
             description     : (driver.description || null),
-            checksum        : (driver.files.checksum || null),
-            url             : driver.files.url.replace(/[\n\r]+/g, ''),
+            checksum        : (driver.files.checksum||'').trim() || null,
+            uiUrl           : (driver.files.uiUrl||'').trim() || null,
+            url             : (driver.files.url||'').trim() || null,
             externalId      : driver.id,
             activateOnCreate: true,
           };

@@ -85,20 +85,23 @@ export default Ember.Component.extend(ManageLabels, {
     (this.get('service.instances')||[]).forEach((instance) => {
       var lc = instance.get('labels')[C.LABEL.LAUNCH_CONFIG];
 
-      if (C.ACTIVEISH_STATES.contains(instance.state)) {
-        // Primary service
-        if ( lc === C.LABEL.LAUNCH_CONFIG_PRIMARY)
+      if ( C.REMOVEDISH_STATES.contains(instance.state) )
+      {
+        return;
+      }
+
+      // Primary service
+      if ( lc === C.LABEL.LAUNCH_CONFIG_PRIMARY)
+      {
+        primary.push(instance);
+      }
+      else
+      {
+        // Sidekick services
+        var sidekick = sidekickByName[lc];
+        if ( sidekick )
         {
-          primary.push(instance);
-        }
-        else
-        {
-          // Sidekick services
-          var sidekick = sidekickByName[lc];
-          if ( sidekick )
-          {
-            sidekick.instances.push(instance);
-          }
+          sidekick.instances.push(instance);
         }
       }
     });
@@ -107,5 +110,5 @@ export default Ember.Component.extend(ManageLabels, {
       primaryContainers: primary,
       sidekicks: sidekicks,
     });
-  }.observes('service.instances.@each.state'),
+  }.observes('service.instances.@each.{state,labels}'),
 });

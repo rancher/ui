@@ -42,6 +42,7 @@ module.exports = function(defaults) {
     fingerprint: {
       exclude: [
         'assets/images/logos', // These can be bind-mounted in
+        'assets/intl', // Locales get version added to query string so JS doesn't have to know the fingerprint
         'ui-light.css', 'ui-dark.css', 'ui.css' // Themes get version added to query string so JS doesn't have to know the fingerprint
       ],
       extensions: (appConfig.fingerprint === 'no' ? [] : ['js', 'css', 'png', 'jpg', 'gif', 'svg', 'map', 'woff', 'woff2', 'ttf']),
@@ -73,7 +74,6 @@ module.exports = function(defaults) {
   app.import('bower_components/c3/c3.js');
   app.import('bower_components/c3/c3.css');
   app.import('vendor/term.js/src/term.js');
-  app.import('vendor/jquery.initialize/jquery.initialize.js');
   app.import('bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js');
   app.import('bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css');
   app.import('bower_components/prism/prism.js');

@@ -3,24 +3,31 @@ import ThrottledResize from 'ui/mixins/throttled-resize';
 
 const MIN_WIDTH     = 260; // Minimum width of a column, including margin-right
 const COLUMN_MARGIN = 10; // this must match the rule in styles/pod.scss .pod-column
-const SELECTOR      = '.pod-column'; // Each column must have this class
-
-let columnWidth     = MIN_WIDTH; // this will get changed by onResize;
-
-// Automatically apply the width to any columns that get added without a resize
-jQuery(SELECTOR).initialize(function() {
-  $(this).css('width', columnWidth+'px');
-});
 
 export default Ember.Component.extend(ThrottledResize, {
   pods         : null, // Override me with an array of content pods
   emptyMessage : null,
+
+  columnWidth  : MIN_WIDTH,
+  columnFudge  : 0,
 
   classNames   : ['pods','clearfix'],
   tagName      : 'section',
 
   columnCount  : 3, // Will be reset on didInsertElement and resize
   podCount     : Ember.computed.alias('pods.length'),
+
+  lastIndex: function() {
+    return this.get('columnCount')-1;
+  }.property('columnCount'),
+
+  columnWidthCss: function() {
+    return Ember.String.htmlSafe('width: ' + this.get('columnWidth') + 'px');
+  }.property('columnWidth'),
+
+  lastColumnWidthCss: function() {
+    return Ember.String.htmlSafe('width: ' + (this.get('columnWidth')+this.get('columnFudge')) + 'px');
+  }.property('columnWidth','columnFudge'),
 
   onResize: function() {
     try {
@@ -31,17 +38,26 @@ export default Ember.Component.extend(ThrottledResize, {
         sectionWidth = elem.width();
       }
 
-      let logicalWidth = (sectionWidth + 10); // Add one extra COLUMN_MARGIN because the last column doesn't actually have one
-      let columnCount  = Math.max(1, Math.floor(logicalWidth/(MIN_WIDTH+COLUMN_MARGIN)));
-      columnWidth      = Math.max(50, Math.floor(logicalWidth/columnCount) - COLUMN_MARGIN - columnCount);
+      let margins = COLUMN_MARGIN + 2;
+      let logicalWidth = (sectionWidth + margins); // Add one extra COLUMN_MARGIN because the last column doesn't actually have one
+      let columnCount  = Math.max(1, Math.floor(logicalWidth/MIN_WIDTH));
+      let columnWidth  = Math.max(50, Math.floor((logicalWidth/columnCount) - margins));
+      let columnFudge  = logicalWidth - (columnCount*(columnWidth+margins)); // Extra pixels that didn't divide evenly go onto the last column.
 
-      if ( this.get('columnCount') !== columnCount )
-      {
-        this.set('columnCount', columnCount);
-      }
+      /*
+      console.log(
+        'section='+sectionWidth,
+        'logical='+logicalWidth,
+        'count='+columnCount,
+        'width='+columnWidth,
+        'fudge='+columnFudge
+      );
+      */
 
-      Ember.run(this, () => {
-        this.$(SELECTOR).css('width', columnWidth+'px');
+      this.setProperties({
+        columnCount: columnCount,
+        columnWidth: columnWidth,
+        columnFudge: columnFudge,
       });
     } catch (e) {
       // Just in case..

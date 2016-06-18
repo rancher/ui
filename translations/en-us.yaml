@@ -7,7 +7,6 @@ generic:
   actions: Actions
   activate: Activate
   as: As
-  backups: Backups
   closeModal: Close
   cancel: Cancel
   created: Created
@@ -136,15 +135,25 @@ authPage:
     header:
       enabled:
         label: "{github} is enabled"
+        required: |
+          {appName} is configured to allow access to {orgs, plural,
+            =0 {no organizations}
+            =1 {# organization}
+            other {# organizations}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
+          }.
         restricted: |
-          {appName} is configured to allow access to project members, {orgs, plural,
-            =0 {no Organizations}
-            =1 {# Organization}
-            other {# Organizations}
-          }, and {users, plural,
-            =0 {no Users}
-            =1 {# User}
-            other {# Users}
+          {appName} is configured to allow access to environment members, {orgs, plural,
+            =0 {no organizations}
+            =1 {# organization}
+            other {# organizations}
+          } and {users, plural,
+            =0 {no users}
+            =1 {# user}
+            other {# users}
           }.
         unrestricted: "{appName} is configured to allow access to any {github} user."
       disabled:
@@ -158,21 +167,6 @@ authPage:
         clientId:
           text: "Client ID:"
           helpText: "To change the configured GitHub application, disable access control below and then set it up again."
-      siteAccess:
-        accessControl:
-          header: Site Access
-          helpText: "Configure who should be allowed to log in and use {appName}.  <b>Note:</b> Members added to environments are automatically allowed."
-          radio1: Allow any GitHub user
-          radio2: Restrict to specific GitHub users and organization members
-          isRestricted:
-            header: Authorized Users and Organizations
-            noIdentity: None
-            saveAuthButton:
-              saved: Saved
-              saving: "Saving..."
-              pre: Save authorization configuration
-            helpText: "By default, only users that are a member of a environment are allowed to log in and access {appName}."
-            customizeButton: Customize
       disableAccess:
         header: "Danger Zone&trade;"
         warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
@@ -299,16 +293,16 @@ backupTargetsPage:
   newTarget:
     hr: NFS Config Options
     header: Add Backup Target
-    nfsLabel:
-      server:
-        label: NFS Server
-        placeholder: '127.0.0.1'
-      share:
-        label: NFS Share
-        placeholder: '/var/nfs/two'
-      mount:
-        label: NFS Mount Options
-        placeholder: 'nfsvers=4,proto=udp'
+  server:
+    label: NFS Server
+    placeholder: 'e.g. my-nfs-server.example.com'
+  share:
+    label: NFS Share
+    placeholder: 'e.g. /mnt/volume-backups'
+  mountOptions:
+    label: NFS Mount Options
+    placeholder: 'e.g. nfsvers=4,proto=udp'
+
 catalogPage:
   index:
     header: 'Catalog:'
@@ -659,6 +653,7 @@ hostsPage:
       groupedView: Grouped Stacks & Sidekicks
     columns:
       emptyMessage: No hosts or containers yet.
+    showSystem: Show System
   new:
     header:
       linkTo: "Hosts: "
@@ -992,7 +987,7 @@ stacksPage:
 
 storagePoolsPage:
   header: Storage
-  volumeId: Volume Id
+  volume: Volume Id
   orphaned: Orphaned Backup
   nav:
     pools: Pools
@@ -1146,29 +1141,37 @@ ldap:
   providerName:
     openldap: OpenLDAP
     ad: Active Directory
-  configuredIndication:
-    header:
-      providerName: "{providerName} is"
-      enabled: enabled
-      disabled: not configured
-      subtext:
-        enabled: "{appName} is configured to allow access to any {providerName} user."
-        disabled: "{appName} can be configured to restrict access to a set of users and group members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
+  header:
+    enabled:
+      label: "{providerName} is enabled"
+      required: |
+        {appName} is configured to allow access to {groups, plural,
+          =0 {no groups}
+          =1 {# group}
+          other {# groups}
+        } and {users, plural,
+          =0 {no users}
+          =1 {# user}
+          other {# users}
+        }.
+      restricted: |
+        {appName} is configured to allow access to environment members, {groups, plural,
+          =0 {no groups}
+          =1 {# group}
+          other {# groups}
+        } and {users, plural,
+          =0 {no users}
+          =1 {# user}
+          other {# users}
+        }.
+      unrestricted: "{appName} is configured to allow access to any {providerName} user."
+    disabled:
+      label: "{providerName} is not configured"
+      warning: "{appName} can be configured to restrict access to a set of {providerName} users and groups.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
+
   accessEnabled:
     header: Authentication
     subtext: "To change the server configuration, disable access control below and then set it up again."
-    siteAccess:
-      header: Site Access
-      helpText: "Configure who should be allowed to log in and use {appName}."
-      unrestricted: Allow any valid ActiveDirectory user
-      restricted: Restrict to specific users and groups
-      isRestricted:
-        header: Authorized Users and Groups
-        noIdentity: None
-        saveAuthButton:
-          saved: Saved
-          saving: "Saving..."
-          pre: Save authorization configuration
     general:
       header: General
       server: "Server:"
@@ -1182,7 +1185,7 @@ ldap:
       login: "Login Field:"
       name: "Name Field:"
       search: "Search Field:"
-      enabled: "Enabled Field:"
+      enabled: "Status Field:"
       disabledBitMask: "Disabled BitMask:"
     group:
       header: Group
@@ -1571,6 +1574,12 @@ formDisks:
   size:
     label: Size
     rootDisk: Determined by root image
+  readIops:
+    label: Read Iops
+    placeholder: e.g. 1000
+  writeIops:
+    label: Write Iops
+    placeholder: e.g. 1000
   driver:
     label: Driver
 
@@ -1578,6 +1587,8 @@ formEngineOpts:
   engineInstallUrl:
     label: Docker Install URL
     placeholder: e.g. http://get.docker.com/
+    recommended: Recommended
+    latest: Latest
   engineStorageDriver:
     label: Storage Driver
     placeholder: e.g. overlay
@@ -1872,6 +1883,9 @@ formTargets:
       If that is not set, then the Default Target port for the Source Port.  If that is also not set, then the Source Port.
   noHostnames: "(Can't balance to hostnames)"
 
+formUserData:
+  placeholder: "e.g. Configuration information for the container"
+  isVmPlaceholder: "e.g. Configuration information for the virtual machine"
 formUserLabels:
   addAction: Add Label
   key:
@@ -2006,7 +2020,7 @@ k8s:
     containerPort: Container Port
     nodePort: Node Port
     protocol: Protocol
-    noPorts: No Ports.
+    noPorts: No Ports
   containersSection:
     containerName: Container Name
     status: Status
@@ -2082,6 +2096,8 @@ machine:
       label: Secret Key
       placeholder: Your AWS secret key
       provided: Provided
+    region:
+      label: Region
     accessKeyHelp: Paste in your AWS key pair here. We'll use this key to create your new Instances.
     loginAction: "Next: Authenticate & select a network"
     loadingAvailability: Loading Availablility Zone and VPC info from EC2...
@@ -2359,6 +2375,16 @@ modalConfirmDeactiviate:
   header: Are you sure you want to
   protip: "ProTip: Hold the {alternateLabel} key while clicking {isServiceButton} to bypass this confirmation."
   cancel: Cancel
+  buttons:
+    project:
+      message: deactivate your environment
+      button: Deactivate
+    environment:
+      message: stop services for
+      button: Stop Services
+    default:
+      message: deactivate
+      button: Deactivate
 
 modalEditBackup:
   edit: Edit Backup
@@ -2393,6 +2419,11 @@ modalProcessError:
   none: N/A
   stackTrace: "Stack Trace:"
   close: Close
+
+modalRollbackVolume:
+ title:
+  snapshot: Rollback to a Snapshot
+  backup: Rollback to a Backup
 
 modalShell:
   title: "Shell: {instanceName}"
@@ -2439,6 +2470,7 @@ newCatalog:
   startService: Start services after creating
   preview: Preview
   txt: answers.txt
+  noConfig: This template has no configuration options
 
 newContainer:
   service: |
@@ -2540,6 +2572,18 @@ sidekickAddtlInfo:
   labels: Labels
   noLabels: No Labels
 
+siteAccess:
+  header: Site Access
+  helpText: "Configure who should be allowed to log in and use {appName}."
+  unrestricted: "Allow any valid {individuals}"
+  restricted: "Allow members of Environments, plus Authorized {individuals} and {collection}"
+  required: "Restrict access to only Authorized {individuals} and {collection}"
+  listHeader: "Authorized {individuals} and {collection}"
+  noIdentity: None
+  users: Users
+  groups: Groups
+  organizations: Organizations
+
 stackSection:
   outputs: Outputs
   description: Description
@@ -2576,9 +2620,8 @@ stackSection:
 
 
 snapshotSection:
-  none: No Backups
-  multiple: 'Multiple:'
-
+  none: Not backed up
+  multiple: 'Multiple: {latestDate}'
 
 storagePoolSection:
   outputs: Outputs
@@ -2593,6 +2636,10 @@ storagePoolSection:
   models:
     table:
       header:
+        volumeName: 'Volume Name'
+        snapshotState: 'Snapshot State'
+        snapshotName: 'Snapshot Name'
+        backedUp: 'Backed Up'
         activeMounts: 'Mounts (Container: Path)'
 
 svgServiceContainer:
@@ -2619,6 +2666,14 @@ tooltipLink:
 tooltipWarning:
   notConfigured: Access Control Not Configured
   dismiss: Dismiss
+
+upgradeBtn:
+  status:
+    loading: 'Checking upgrades...'
+    current: 'Up to date'
+    available: 'Upgrade available'
+    notFound: 'Template version not found'
+    default: 'Error checking for upgrade'
 
 viewEditDescription:
   form:
@@ -2775,6 +2830,8 @@ action:
   restore: Restore
   retry: Retry
   rollback: Rollback
+  revertToSnapshot: Revert Volume to Snapshot
+  restoreFromBackup: Restore Volume from Backup
   setDefault: Set as Default
   snapshot: Snapshot
   start: Start

@@ -6,11 +6,6 @@ export default Ember.Component.extend(Sortable, FilterState, {
   model: null,
   single: false,
 
-  actions: {
-    toggleCollapse(volume) {
-      volume.toggleProperty('showSnapshots');
-    },
-  },
   init: function() {
     this._super();
     this.set('filterStates', ['purged']);

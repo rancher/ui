@@ -436,7 +436,7 @@ export default Ember.Service.extend({
         {
           let matching = services.filterBy('environmentId', stack.get('id'));
           let expect = matching.get('length');
-          let healthy = matching.filterBy('healthState', 'healthy').get('length');
+          let healthy = Util.filterByValues(matching, 'healthState', C.READY_STATES).get('length');
           if ( expect > 0 && expect === healthy )
           {
             return this.request({
@@ -656,7 +656,7 @@ export default Ember.Service.extend({
 
   catalog(files,answers) {
     return this.request({
-      url: `${this.get('kubectlEndpoint')}/catalog`,
+      url: Util.addQueryParam(`${this.get('kubectlEndpoint')}/catalog`, C.K8S.DEFAULT_NS, this.get(`tab-session.${C.TABSESSION.NAMESPACE}`)),
       method: 'POST',
       contentType: 'application/json',
       data: {

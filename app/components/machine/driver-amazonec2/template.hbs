@@ -7,6 +7,22 @@
 
       <div class="row {{if isStep1 'form-group'}}">
         <div class="col-md-2 form-label">
+          <label class="form-control-static">{{t 'machine.driverAmazon.region.label'}}</label>
+        </div>
+        <div class="col-md-8">
+          {{#if isStep1}}
+            <select class="form-control" onchange={{action (mut amazonec2Config.region) value="target.value"}}>
+              {{#each regionChoices as |choice|}}
+                <option value={{choice}} selected={{eq amazonec2Config.region choice}}>{{choice}}</option>
+              {{/each}}
+            </select>
+          {{else}}
+            <div class="form-control-static">{{amazonec2Config.region}}</div>
+          {{/if}}
+        </div>
+      </div>
+      <div class="row {{if isStep1 'form-group'}}">
+        <div class="col-md-2 form-label">
           <label class="form-control-static">{{t 'machine.driverAmazon.accessKey.label'}}</label>
         </div>
         <div class="col-md-8">

@@ -91,12 +91,12 @@ export default Ember.View.extend(ThrottledResize,{
 
         }
 
+
         var serviceId = $('span[data-service]', fo).data('service');
 
         if ( serviceId )
         {
           this.showService(serviceId);
-
           return;
         }
       }
@@ -116,17 +116,25 @@ export default Ember.View.extend(ThrottledResize,{
   },
 
   showService: function(id) {
-    if ( id )
-    {
-      var svgHeight = $('#environment-svg').height() - 0; // svg minus the height of info service-addtl-info.scss
-      this.styleSvg(`${svgHeight}px`);
-      this.set('context.showServiceInfo', true);
-      this.set('context.selectedService', this.get('context.stack.services').findBy('id', id));
-    }
-    else
-    {
-      var svgHeight = $('#environment-svg').height() - 310; // svg minus the height of info service-addtl-info.scss
-      this.styleSvg();
+    let svgHeight;
+    if ( id ) {
+        svgHeight = $('#environment-svg').height() - 260; // svg minus the height of info service-addtl-info.scss
+        this.styleSvg(`${svgHeight}px`);
+
+        if (!this.get('context.showServiceInfo')) {
+          this.zoomAndScale(1.5);
+        }
+
+        this.set('context.showServiceInfo', true);
+        this.set('context.selectedService', this.get('context.stack.services').findBy('id', id));
+    } else {
+      svgHeight = $('#environment-svg').height() - 0; // svg minus the height of info service-addtl-info.scss
+      this.styleSvg(svgHeight);
+
+      if (this.get('context.showServiceInfo')) {
+        this.zoomAndScale(2);
+      }
+
       this.set('context.showServiceInfo', null);
     }
   },
@@ -232,26 +240,32 @@ export default Ember.View.extend(ThrottledResize,{
     this.renderGraph();
   },
 
-  renderGraph: function() {
+  zoomAndScale: function(scaleFactor=2.0) {
     var zoom = this.get('graphZoom');
-    var render = this.get('graphRender');
-    var inner = this.get('graphInner');
     var outer = this.get('graphOuter');
     var g = this.get('graph');
-
-    inner.call(render, g);
 
     // Zoom and scale to fit
     var zoomScale = zoom.scale();
     var graphWidth = g.graph().width;
     var graphHeight = g.graph().height;
-    var width = $('#environment-svg').width();
-    var height = $('#environment-svg').height();
-    zoomScale = Math.min(2.0, Math.min(width / graphWidth, height / graphHeight));
+    var width = $('#environment-svg svg').width();
+    var height = $('#environment-svg svg').height();
+    zoomScale = Math.min(scaleFactor, Math.min(width / graphWidth, height / graphHeight));
     var translate = [(width/2) - ((graphWidth*zoomScale)/2), (height/2) - ((graphHeight*zoomScale)/2)];
     zoom.translate(translate);
     zoom.scale(zoomScale);
     zoom.event(outer);
+  },
+
+  renderGraph: function() {
+    var render = this.get('graphRender');
+    var inner = this.get('graphInner');
+    var g = this.get('graph');
+
+    inner.call(render, g);
+
+    this.zoomAndScale();
 
     // Overflow the foreignObjects
     $(this.get('graphElem').getElementsByTagName('foreignObject')).css('overflow','visible');
