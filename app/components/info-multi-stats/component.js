@@ -72,6 +72,24 @@ export default Ember.Component.extend({
     this.connect();
   },
 
+  // The SVG gradients have the path name in them, so they have to be updated when the route changes.
+  routeChanged: function() {
+    Ember.run.next(() => {
+      let graphs = [this.get('cpuGraph'), this.get('memoryGraph'), this.get('storageGraph'), this.get('networkGraph')];
+      graphs.forEach((graph) => {
+        try {
+          let colors = graph.internal.config.data_colors;
+          Object.keys(colors).forEach((key) => {
+            let neu = 'url(' + window.location.pathname + colors[key].replace(/^[^#]+/,'');
+            colors[key] = neu;
+          });
+        } catch (e) {
+          // eh....
+        }
+      });
+    });
+  }.observes('application.currentRouteName'),
+
   willDestroyElement: function() {
     this._super();
     this.disconnect();
@@ -158,7 +176,6 @@ export default Ember.Component.extend({
 
 
 setupMarkers: function() {
-
     var svg = d3.select('body').append('svg:svg');
     svg.attr('height','0');
     svg.attr('width','0');
