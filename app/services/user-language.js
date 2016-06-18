@@ -60,7 +60,7 @@ export default Ember.Service.extend({
       }).then((resp) => {
         let promise;
         if ( this.get('app.needIntlPolyfill') ) {
-          promise = loadScript(this.get('app.baseAssets')+'assets/intl/locales/'+language.toLowerCase()+'.js');
+          promise = loadScript(`${this.get('app.baseAssets')}assets/intl/locales/${language.toLowerCase()}.js?${application.version}`);
         } else {
           promise = Ember.RSVP.resolve();
         }
