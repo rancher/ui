@@ -1,9 +1,5 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import Service from 'ui/models/service';
-import Volume from 'ui/models/volume';
-import Snapshot from 'ui/models/snapshot';
-import Backup from 'ui/models/backup';
 import Subscribe from 'ui/mixins/subscribe';
 
 const CHECK_AUTH_TIMER = 600000;
@@ -15,6 +11,7 @@ export default Ember.Route.extend(Subscribe, {
   access    : Ember.inject.service(),
   userTheme : Ember.inject.service('user-theme'),
   language  : Ember.inject.service('user-language'),
+  storeReset: Ember.inject.service(),
 
   beforeModel(transition) {
     this._super.apply(this,arguments);
@@ -41,8 +38,8 @@ export default Ember.Route.extend(Subscribe, {
 
   model(params, transition) {
     // Save whether the user is admin
-    var type = this.get(`session.${C.SESSION.USER_TYPE}`);
-    var isAdmin = (type === C.USER.TYPE_ADMIN) || !this.get('access.enabled');
+    let type = this.get(`session.${C.SESSION.USER_TYPE}`);
+    let isAdmin = (type === C.USER.TYPE_ADMIN) || !this.get('access.enabled');
     this.set('access.admin', isAdmin);
 
     return Ember.RSVP.hash({
@@ -52,7 +49,7 @@ export default Ember.Route.extend(Subscribe, {
       settings: this.loadPublicSettings(),
       language: this.get('language').initLanguage(),
     }).then((hash) => {
-      var projectId = null;
+      let projectId = null;
       if ( transition.params && transition.params['authenticated.project'] && transition.params['authenticated.project'].project_id )
       {
         projectId = transition.params['authenticated.project'].project_id;
@@ -100,14 +97,13 @@ export default Ember.Route.extend(Subscribe, {
     this.disconnectSubscribe();
 
     // Forget all the things
-    this.reset();
+    this.get('storeReset').reset();
   },
 
   loadingError(err, transition, ret) {
-    var isAuthEnabled = this.get('access.enabled');
+    let isAuthEnabled = this.get('access.enabled');
 
-    if ( err && err.status && [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
-    {
+    if ( err && isAuthEnabled ) {
       this.send('logout',transition, (transition.targetName !== 'authenticated.index'));
       return;
     }
@@ -152,14 +148,14 @@ export default Ember.Route.extend(Subscribe, {
 
   loadUserSchemas() {
     // @TODO Inline me into releases
-    var userStore = this.get('userStore');
+    let userStore = this.get('userStore');
     return userStore.rawRequest({url:'schema', dataType: 'json'}).then((res) => {
       userStore._bulkAdd('schema', res.xhr.responseJSON.data);
     });
   },
 
   loadProjects() {
-    var svc = this.get('projects');
+    let svc = this.get('projects');
     return svc.getAll().then((all) => {
       svc.set('all', all);
       return all;
@@ -168,20 +164,6 @@ export default Ember.Route.extend(Subscribe, {
 
   loadPublicSettings() {
     return this.get('userStore').find('setting', null, {url: 'setting', forceReload: true, filter: {all: 'false'}});
-  },
-
-  reset() {
-    console.log('Store Reset');
-    // Forget all the things
-    console.log('Store Reset');
-    this.get('userStore').reset();
-    this.get('store').reset();
-
-    // Some classes have extra special hackery to cache relationships
-    Service.reset();
-    Volume.reset();
-    Snapshot.reset();
-    Backup.reset();
   },
 
   actions: {
@@ -214,7 +196,7 @@ export default Ember.Route.extend(Subscribe, {
 
     finishSwitchProject(projectId, transition) {
       console.log('Switch finishing');
-      this.reset();
+      this.get('storeReset').reset();
       if ( transition ) {
         this.intermediateTransitionTo('authenticated');
       }
@@ -235,7 +217,7 @@ export default Ember.Route.extend(Subscribe, {
     },
 
     switchNamespace(namespaceId) {
-      var route = this.get('app.currentRouteName');
+      let route = this.get('app.currentRouteName');
 
       if ( route !== 'k8s-tab.namespaces' && !route.match(/^k8s-tab\.namespace\.[^.]+.index$/) )
       {
