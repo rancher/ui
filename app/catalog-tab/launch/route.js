@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   allServices: Ember.inject.service(),
+  settings: Ember.inject.service(),
 
   parentRoute: 'catalog-tab',
 
@@ -14,7 +15,14 @@ export default Ember.Route.extend({
 
     if ( params.upgrade )
     {
-      dependencies.upgrade = store.request({url: this.get('app.catalogEndpoint')+'/templateversions/'+params.upgrade});
+      var version = this.get('settings.rancherVersion');
+      var url = this.get('app.catalogEndpoint')+'/templateversions/'+params.upgrade;
+      if ( version )
+      {
+        url = Util.addQueryParam(url, 'minimumRancherVersion_lte', version);
+      }
+
+      dependencies.upgrade = store.request({url: url});
     }
 
     if ( params.environmentId )
