@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import Util from 'ui/utils/util';
 
 export default Ember.Route.extend({
   allServices: Ember.inject.service(),
