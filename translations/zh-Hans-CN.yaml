@@ -6,9 +6,10 @@ languageName: "简体中文(ZH-CN)"
 generic:
   actions: 操作
   activate: 激活
-  as: As
+  as: 以
   closeModal: 关闭
   cancel: 取消
+  created: 创建
   default: 默认
   description: 描述
   disabled: 禁用
@@ -16,8 +17,10 @@ generic:
   emptyString: ""
   enabled: 启用
   expires: 过期
+  healthy: 健康
   id: ID
   image: 镜像
+  internal: 内部
   ipAddress: IP地址
   loading: "加载中..."
   missing: "*%MISSING%*"
@@ -25,12 +28,15 @@ generic:
   na: 'N/A'
   name: 名称
   none: 无
+  ports: 端口
   remove: 移除
   role: 角色
   state: 状态
+  to: To
   type: 类型
   unknown: 未知
 
+  
 ##############################
 # Routes
 ##############################
@@ -117,44 +123,50 @@ auditLogsPage:
     resourceTypeId: '资源类型:Id'
     identity: 认证用户
     authIp: 认证类型&IP
-
+  first: 第一页
+  next: 下一页
+    
 authPage:
   root:
     header: 访问控制
   github:
+    standard: GitHub
+    enterprise: GitHub企业版
     header:
-      text: GitHub访问控制
-      accessEnabled: 已启用
-      accessNotEnabled: 未设置
-      accessEnabledSubtext:
-        wasRestricted: "{appName} 已设置为允许 {wasRestricted} 访问。"
-        wasNotRestricted:
-          host: "{appName} 已设置为允许任何GitHub企业用户访问。"
-          noHost: "{appName} 已设置为允许任何GitHub用户访问。"
-      noAccessConfigured:
-        subtext: "{appName} 可以设置为允许一组 GitHub 用户和组织成员访问。 由于当前未完成此设置，所以任何可以访问此页面(或API)的用户都对系统有完全控制权限。"
+      enabled:
+        label: "{github} 已启用"
+        required: |
+          {appName} 已被设置为允许 {orgs, plural,
+            =0 {无组织}
+            =1 {# 个组织}
+            other {# 个组织}
+          } 和 {users, plural,
+            =0 {无用户}
+            =1 {# 个用户}
+            other {# 个用户}
+          } 访问.
+        restricted: |
+          {appName} 已被设置为允许 {orgs, plural,
+            =0 {无组织}
+            =1 {# 个组织}
+            other {# 个组织}
+          } and {users, plural,
+            =0 {无用户}
+            =1 {# 个用户}
+            other {# 个用户}
+          } 以环境成员身份访问.
+        unrestricted: "{appName} 已被设置为允许任何 {github} 用户访问."
+      disabled:
+        label: GitHub 未设置
+        warning: "{appName} 可以设置为允许一组 GitHub 用户和组织成员访问。 由于当前未完成此设置，所以任何可以访问此页面(或API)的用户都对系统有完全控制权限。"
+
     authenticated:
       header:
         text: 认证信息
-        enterpriseHostName: '企业版主机:'
+        enterpriseHostName: "企业版主机:"
         clientId:
-          text: '客户端ID:'
-          helpText: 要修改设置的GitHub应用，请在下方禁用访问控制后重新设置。
-      siteAccess:
-        accessControl:
-          header: 站点访问
-          helpText: "设置允许哪些GitHub用户登录并使用 {appName}。 <b>注意:</b> 添加到环境的成员会自动被设置为允许访问。"
-          radio1: 允许任何GitHub用户
-          radio2: 限制为特定GitHub用户及组织成员
-          isRestricted:
-            header: 已授权的用户及组织
-            noIdentity: 无
-            saveAuthButton:
-              saved: 已保存
-              saving: 保存中...
-              pre: 保存授权设置
-            helpText: "缺省情况下，仅当用户是环境成员时才允许登录和访问 {appName}。"
-            customizeButton: 自定义
+          text: "客户端ID:"
+          helpText: 要修改设置的GitHub应用，请在下方禁用访问控制后重新设置。        
       disableAccess:
         header: 危险区域&trade;
         warning: '<b class="text-danger">警告:</b> 禁用访问控制将导致任何能够访问此页面或API的用户拥有对  {appName}  的完全控制权限。'
@@ -172,17 +184,17 @@ authPage:
           ul:
             li1: '<b>Application name:</b> <span class="text-muted">任何您喜欢的应用名称, 例如 My {appName}</span>'
             li2: "<b>Homepage URL: </b> "
-            li3: '<b>Application description:</b> <span class="text-muted">Anything you like, optional</span>'
-            li4: "<b>Authorization callback URL:</b>"
+            li3: '<b>Application description:</b> <span class="text-muted">任何你喜欢的描述，可选</span>'
+            li4: Authorization callback URL
         li3:
           text: '点击 "Register Application" '
       form:
         headder: "2. 设置 {appName} 使用你的GitHub应用验证"
         subtext: "将新创建GitHub应用的Client ID和Secret复制粘贴到下方的对应输入框中"
         clientId:
-          labelText: "Client ID"
+          labelText: "客户端ID"
         clientSecret:
-          labelText: "Client Secret"
+          labelText: "客户端秘钥"
         ghEnterprise:
           labelText: 使用私有GitHub企业版部署
         isGHEnterprise:
@@ -196,6 +208,49 @@ authPage:
       buttonText:
         pre: GitHub验证
         post: 等待GitHub返回
+
+  azuread:
+    header:
+      enabled: 'Azure AD 验证已 <b>启用</b>'
+      disabled: 'Azure AD 验证 <b class="text-warning">未设置</b>'
+    subtext:
+      enabled: '{appName} 已经被设置为允许 Azure AD 账户访问'
+      disabled: "{appName} 能够被设置为仅允许 {appName} 数据库中定义的用户访问。 当前系统未进行设置， 因此任何访问此页面（或API）的用户都具有系统的完全控制权限。"
+    enabled:
+      header: '危险区域&trade;'
+      warning: '<b class="text-danger">警告:</b> 禁用访问控制将导致任何能够访问此页面或API的用户拥有对  {appName}  的完全控制权限。'
+      reallyDisable: '确认? 再次点击将关闭访问控制。'
+      promptDisable: 关闭访问控制
+    configure:
+      header: '1. 设置 Azure AD 账户'
+      tenantId:
+        label: 租户ID
+        placeholder: UUID 字符串
+        help: 由 Azure AD portal 获取
+      clientId:
+        label: 客户端ID
+        placeholder: UUID 字符串
+      domain:
+        label: 域名
+        placeholder: '例如: youcompany.onmicrosoft.com'
+      adminAccountUsername:
+        label: 管理员账号用户名
+        placeholder: '例如: rancher-admin'
+        help: 可以读取其他用户信息的账号
+      adminAccountPassword:
+        label: 管理员账号密码
+    test:
+      header: '2. 测试并启用验证'
+      help: '测试验证以确认配置是否正确:'
+      username:
+        label: 登录用户名
+        placeholder: '例如: jsmith'
+      password:
+        label: 登录密码
+      pre: 通过Azure验证
+      post: 等待Azure返回    
+
+      
   localAuth:
     header:
       enabled: "本地验证 <b>已启用</b>"
@@ -231,17 +286,35 @@ authPage:
       buttonText:
         pre: 启用本地验证
         post: 启用中...
-
+      
+backupTargetsPage:
+  header: 备份目标
+  linkTo: 添加备份目标
+  newTarget:
+    hr: NFS 配置选项
+    header: 添加备份目标
+  server:
+    label: NFS 服务器
+    placeholder: '例如: my-nfs-server.example.com'
+  share:
+    label: NFS 共享
+    placeholder: '例如: /mnt/volume-backups'
+  mountOptions:
+    label: NFS 挂载选项
+    placeholder: '例如: nfsvers=4,proto=udp'
+        
 catalogPage:
   index:
     header: 应用商店
     search:
       placeholder: 搜索....
+    category: "分类:"
     certified: 官方认证
     noData:
       singular: 没有符合的应用模板
       plural: 当前目录下没有符合的应用模板
-
+    viewDetails: 查看详情
+      
 consolePage:
   header: '命令行:'
   closeButton: 关闭
@@ -252,7 +325,7 @@ certificatesPage:
     expiresDate: 过期时间
     noCn: 无
   detail:
-    header: 证书
+    header: '证书:'
     description: 描述
     info:
       labelText: 信息
@@ -371,6 +444,25 @@ containerSubpod:
   childContainers: 容器
   childSidekicks: 从
 
+dockerCLI:
+  header: Docker 命令行界面
+  step1: 要在你的工作站使用docker或者docker-compose, 点击下面的按钮生成API key和配置文件
+  step1Generate: 生成配置
+  step2: 生成中...
+  step3: 激活中...
+  step4: 现在配置你的工作站
+  item1: |
+    创建 <code>.docker</code> 目录: <code>mkdir -pv ~/.docker</code>
+  item2: 解压刚才下载的ZIP文件
+  item3: |
+    将从ZIP中解压出的全部文件拷贝到 <code>.docker</code> 目录
+  item4: |
+    运行 <code>export DOCKER_HOST={{endpoint.swarm}} DOCKER_TLS_VERIFY=1</code> 或添加你的配置文件
+  item5: |
+    运行以下命令测试 <code>docker ps</code>
+  well: |
+    或者使用下面的 shell 直接运行 <code>docker</code> 或 <code>docker-compose</code> 命令:
+  
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 # those are present incase we have an error in the app and can not load the translations file
 # the error page will at least make a little sense
@@ -561,6 +653,7 @@ hostsPage:
       groupedView: 分组
     columns:
       emptyMessage: 当前没有主机或容器
+    showSystem: 显示系统容器      
   new:
     header:
       linkTo: "主机: "
@@ -643,10 +736,10 @@ k8sTab:
       balancer: 'Balancer IP:'
       session: '会话关联:'
       external: '外部IPs:'
-      selectors: 'Selectors'
+      selectors: '选择器'
   navTabs:
     pods: Pods
-    labels: Labels
+    labels: 标签
     ports: 端口
   namespace:
     pods:
@@ -670,32 +763,32 @@ k8sTab:
           containers: 容器
     rcs:
       index:
-        header: RCs
-        linkTo: 添加RC
+        header: 副本控制器
+        linkTo: 添加副本控制器
         table:
           header:
             replicas: 副本
-            selectors: Selectors
+            selectors: 选择器
             containers: 容器
           body:
-            noData: "当前未创建任何Replication Controller"
+            noData: "当前未创建任何副本控制器"
       rc:
-        header: 'RC:'
+        header: '副本控制器:'
         navTabs:
           pods: Pods
-          labels: Labels
+          labels: 标签
           ports: 端口
     services:
       header: 服务
-      linkTo: 添加Service
+      linkTo: 添加服务
       table:
         header:
           cluster: "Cluster IP"
           pods: Pods
           ports: 端口
-          selectors: Selectors
+          selectors: 选择器
         body:
-          noData: 当前未创建任何Service
+          noData: 当前未创建任何服务
       service:
         index:
           header: '服务:'
@@ -780,6 +873,7 @@ registriesPage:
       custom:
         labelText: 地址
         placeholder: '例如:registry.example.com'
+        help: 仅添加主机名或IP地址, 不要包含协议 (https://)
       email:
         labelText: 邮箱
         placeholder: '例如:you@example.com'
@@ -892,8 +986,13 @@ stacksPage:
         label: 创建后启动服务
 
 storagePoolsPage:
+  header: 存储
+  volume: 卷ID
+  orphaned: 孤立备份
+  nav:
+    pools: 池
+    backups: 备份
   index:
-    header: 存储池
     noData: 无存储池
   newVolume:
     header: 添加卷
@@ -1042,14 +1141,34 @@ ldap:
   providerName:
     openldap: OpenLDAP
     ad: 活动目录
-  configuredIndication:
-    header:
-      providerName: "{providerName} 是"
-      enabled: 启用
-      disabled: 未设置
-      subtext:
-        enabled: "{appName} 已设置为允许任何 {providerName} 用户访问。"
-        disabled: "{appName} 可以设置为仅允许特定的用户和组成员访问。当前系统未设置，任何能够访问此页面或API的用户拥有对  {appName} 的完全控制权限。"
+  header:
+    enabled:
+      label: "{providerName} 已启用"
+      required: |
+        {appName} 已被设置为允许 {groups, plural,
+          =0 {无组}
+          =1 {# 个组}
+          other {# 个组}
+        } 和 {users, plural,
+          =0 {无用户}
+          =1 {# 个用户}
+          other {# 个用户}
+        }访问.
+      restricted: |
+        {appName} 已被设置为允许 {groups, plural,
+          =0 {无组}
+          =1 {# 个组}
+          other {# 个组}
+        } 和 {users, plural,
+          =0 {无用户}
+          =1 {# 个用户}
+          other {# 个用户}
+        }以环境成员身份访问.
+      unrestricted: "{appName} 已设置为允许任何 {providerName} 用户访问。"
+    disabled:
+      label: "{providerName} 未设置"
+      warning: "{appName} 可以设置为仅允许一组 {providerName} 用户和组访问。当前系统未设置，任何能够访问此页面或API的用户拥有对 {appName} 的完全控制权限。"
+
   accessEnabled:
     header: 验证
     subtext: 如需修改服务器配置，请在下方关闭访问控制后重新设置。
@@ -1388,7 +1507,8 @@ formBalancerListeners:
     placeholder: '选择协议:'
   container:
     placeholder: "容器侧端口，例如:8080"
-  listen:
+  selectAccess: "选择访问类型:"
+  isten:
     public: 公开
     internal: 内部
 
@@ -1454,6 +1574,12 @@ formDisks:
   size:
     label: 大小
     rootDisk: 由系统镜像决定
+  readIops:
+    label: 读IOPS
+    placeholder: '例如: 1000'
+  writeIops:
+    label: 写IOPS
+    placeholder: '例如: 1000'
   driver:
     label: 驱动
 
@@ -1461,6 +1587,8 @@ formEngineOpts:
   engineInstallUrl:
     label: Docker安装URL
     placeholder: "例如:http://get.docker.com"
+    recommended: 推荐
+    latest: 最新
   engineStorageDriver:
     label: 存储驱动
     placeholder: '例如:overlay'
@@ -1565,6 +1693,23 @@ formNameDescription:
     label: 描述
     placeholder: 描述
 
+formNetwork:
+  network: 网络
+  container: 容器
+  requestedIP: 请求IP
+  requestSpecific: 从10.42.0.0/16段中请求一个指定的IP地址，如果此IP地址已经被使用则会分配一个随机IP。
+  retainIP: 保持IP
+  reuseIP: 当升级或替换不健康的容器实例时保持IP地址不变。
+  dns: DNS
+  serviceDiscovery: DNS服务发现
+  hostname: 主机名
+  useDockerID: 使用Docker容器ID
+  containerName: 使用容器名称
+  specificHostname: "设置主机名:"
+  domainName: 域名
+  resolvingServers: 解析服务器
+  searchDomains: 搜索域
+    
 formPorts:
   addAction: 端口映射
   public:
@@ -1597,30 +1742,69 @@ formScale:
         other {# 个容器}
       }
 
+formScheduling:
+  canRequestHost:
+    vm: 在指定主机上运行 <b>全部</b> 虚拟机
+    containers: 在指定主机上运行 <b>全部</b> 容器 
+  runSpecific: 在指定主机上运行
+  autoRun: "自动在符合调度规则的每一台主机上运行:"
+  autoPick:
+    vm: "为每一个虚拟机自动选择符合调度规则的主机:"
+    container: "为每一个容器自动选择符合调度规则的主机:"
+    host: "自动选择符合调度规则的主机:"
+  addRule: 添加调度规则
+  condition: 条件
+  field: 字段
+  key: 键
+  value: 值
+
 formSecurity:
   logConfig:
     addActionLabel: 添加选项
-    keyPlaceholder: '例如:syslog-facility'
-    valuePlaceholder: '例如:daemon'
-  privileged: 特权
-  fullAccess: 主机完全访问权限
-  pidMode: PID模式
-  host: 主机
-  memoryLimit: 内存限制
-  mb: MB
-  swapLimit: +Swap限制
-  cpuPinning: CPU绑定
-  shares: 份额
-  capabilities: 内核能力
-  helpBlock:
-    text: 内核能力能够对容器所拥有的超级用户权限进行更细粒度的控制
-    link: 更多信息
-  deviceBinding: 设备绑定
-  pathHost: 主机内路径
-  pathContainer: 容器内路径
-  permissions: 权限
-  logDriver: 日志驱动
-  logOptions: 日志选项
+    keyPlaceholder: '例如: syslog-facility'
+    valuePlaceholder: '例如: daemon'
+  privileged:
+    label: 特权
+    checkbox: 主机完全访问权限
+  pidMode:
+    label: PID 模式
+    checkbox: 主机
+  memoryLimit:
+    label: 内存限制
+    placeholder: 无限制
+    mb: MB
+  swapLimit:
+    label: + 交换限制
+    mb: MB
+    placeholder1: 请求内存限制
+    placeholder2: 无限制
+  cpuPinning:
+    label: CPU 绑定
+    placeholder: "例如: 0,3; Default: All"
+  shares:
+    label: 份额
+    placeholder: '例如: 1024'
+  capabilities:
+    label: 内核能力
+    helpBlock:
+      text: 内核能力能够对容器所拥有的超级用户权限进行更细粒度的控制.
+      link: 更多信息
+  deviceBinding:
+    label: 设备绑定
+    pathHost:
+      label: 主机内路径
+      placeholder: '例如: /dev/sdc'
+    pathContainer:
+      label: 容器内路径
+      placeholder: '例如: /dev/xsdc'
+    permissions:
+      label: 权限
+      placeholder: "例如: 0,3; Default: All"
+  logDriver:
+    label: 日志驱动
+    placeholder: '例如: syslog'
+  logOptions:
+    label: 日志  
 
 formServiceLinks:
   addAction: 服务链接
@@ -1635,10 +1819,40 @@ formServiceLinks:
 
 formSslTermination:
   defaultCertificate:
-    prompt: 选择证书...
+    prompt: 选择一个证书...
   alternateCertificate:
-    prompt: 选择证书...
+    prompt: 选择一个证书...
+  certificate: 证书*
+  alternateCerts: 备选证书
+  addAlternate: 添加备选证书
+  noCertificates: 没有其他证书可使用
+  helpBlock: |
+    "注意: 一些旧的 SSL/TLS 客户的不支持 <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a> 功能，对于这些客户端将只提供主证书。 对于支持SNI功能的现代客户端将根据匹配结果从备选证书列表中选择一个合适的证书。"
+  muted: 未配置SSL监听端口
 
+formStickiness:
+  stickiness: 会话保持
+  none: 无
+  newCookie: 创建新的Cookie
+  cookieName: Cookie名称
+  mode: 模式
+  domain: 域名
+  options: 选项
+  indirect: 间接
+  sendHeader: 发送no-cache头
+  onPost: 仅对POST请求设置Cookie
+  noPorts: 未设置HTTP监听端口
+
+  placeholder:
+    sticky: '例如: sticky'
+    domain: '例如: mydomain.com'
+    
+formTarget:
+  target: 目标
+  pointAddress: 指向IP地址
+  pointHostname: 指向主机名
+  addTarget: 添加目标IP  
+  
 formTargets:
   title: 目标
   addAction: 添加服务
@@ -1668,6 +1882,9 @@ formTargets:
       如果目标端口未设置，将使用缺省目标端口。如果缺省目标端口也未设置，将使用源端口。
   noHostnames: (不能负载均衡到主机名)
 
+formUserData:
+  placeholder: "例如: 容器的配置信息"
+  isVmPlaceholder: "例如: 虚拟机的配置信息"
 formUserLabels:
   addAction: 添加标签
   key:
@@ -1679,16 +1896,34 @@ formUserLabels:
     placeholder: '例如:bar'
   protip: "高级技巧: 粘贴一行或多行的 key=value键值对能够批量输入。"
 
+formUpgrade:
+  size: 批量大小
+  interval: 批量间隔
+  sec: 秒
+  behavior: 启动行为
+  startStop: 先启动再停止
+  whichServices: 升级服务对象
+  
 formValueArray:
   addActionLabel: 添加值
   valueLabel: 值
   valuePlacholder: 值
   protip: "高级技巧: 在任意输入栏中粘贴一行或多行的 value能够批量输入。"
 
+formVirtualMachines:
+  vcpus: vCPU
+  memory: 内存
+  
 formVolumes:
   value:
-    prompt: 选择容器...
-
+    prompt: 选择一个容器...
+  volumes: 卷
+  volumesFrom: 卷来自
+  volumeDriver: 卷驱动
+  text1: 此服务下没有可共享卷的启动配置.
+  text2: 该主机没有可以提供共享卷的容器.
+  text3: 仅当添加容器到特定主机时适用.
+  
 heroAddService:
   header: 添加第一个服务
   paragraph1: |
@@ -1767,7 +2002,10 @@ inputIdentity:
   placeholder:
     github: 添加GitHub用户或组织名称
     generic: 添加用户名或组名
-
+  dropdownLabel:
+    teams: 你的团队和组织
+    groups: 你的组
+    
 inputPassword:
   buttonText: 生成
 
@@ -1805,6 +2043,8 @@ k8s:
         containerPort: '例如:8080'
     noPorts: 此容器没有映射端口
   newOrEditResource:
+    edit: 编辑
+    add: 添加
     placeholder: 资源YAML或JSON定义
   podSection:
     podName: Pod名称
@@ -1855,6 +2095,8 @@ machine:
       label: "Secret Key"
       placeholder: "你的AWS secret key"
       provided: 已提供
+    region:
+      label: 区域
     accessKeyHelp: 在此粘贴你的AWS密钥对，我们将用秘钥创建新的实例。
     loginAction: '下一步:验证及选择网络'
     loadingAvailability: 从EC2加载可用区和VPC信息...
@@ -2132,7 +2374,24 @@ modalConfirmDeactiviate:
   header: 是否确认要
   protip: "高级技巧:在点击 {isServiceButton} 时按住 {alternateLabel}  键以跳过确认操作"
   cancel: 取消
+  buttons:
+    project:
+      message: 停用你的环境
+      button: 停用
+    environment:
+      message: 停止服务
+      button: 停止服务
+    default:
+      message: 停用
+      button: 停用
 
+modalEditBackup:
+  edit: 编辑备份
+  create: 创建备份
+  nameLabel: 备份名称
+  backupTarget: 备份目标
+  backupTargetPlaceholder: '选择一个备份目标...'
+  
 modalEditDriver:
   header:
     create: "添加Machine 驱动"
@@ -2148,6 +2407,11 @@ modalEditDriver:
     label: 校验和
     help: "可选: 检验下载的驱动是否匹配期望的校验和"
 
+modalEditSnapshot:
+  edit: 编辑快照
+  create: 创建快照
+  nameLabel: 快照名称
+  
 modalProcessError:
   header: 异常信息
   cause: '原因:'
@@ -2155,6 +2419,11 @@ modalProcessError:
   stackTrace: '堆栈跟踪:'
   close: 关闭
 
+modalRollbackVolume:
+ title:
+  snapshot: 回滚到快照
+  backup: 回滚到备份
+  
 modalShell:
   title: "命令行:{instanceName}"
 
@@ -2200,11 +2469,12 @@ newCatalog:
   startService: 创建后启动服务
   preview: 预览
   txt: answers.txt
-
+  noConfig: 该模板没有配置选项
+  
 newContainer:
   service: |
     {numServices, plural,
-      =1 {服务
+      =1 {服务}
       other {服务}
     }
   tabs:
@@ -2283,6 +2553,14 @@ schedulingRuleRow:
   haveA: 具有
   of: 其
 
+serviceLink:
+    withAlias:
+        sameStack: "{service} 链接为 {alias}"
+        differentStack: "{stack}/{service} 链接为 {alias}"
+    noAlias:
+        sameStack: "{service}"
+        differentStack: "{stack}/{service}"
+        
 sidekickAddtlInfo:
   info: 信息
   image: 镜像
@@ -2293,6 +2571,18 @@ sidekickAddtlInfo:
   labels: 标签
   noLabels: 无标签
 
+siteAccess:
+  header: 站点访问
+  helpText: "配置允许哪些人登录和使用 {appName}."
+  unrestricted: "允许任何有效的 {individuals}"
+  restricted: "允许环境成员, 以及授权的 {individuals} 和 {collection}"
+  required: "仅允许授权的 {individuals} 和 {collection}"
+  listHeader: "授权的 {individuals} 和 {collection}"
+  noIdentity: 无
+  users: 用户
+  groups: 组
+  organizations: 组织
+  
 stackSection:
   outputs: 输出
   description: 描述
@@ -2328,6 +2618,10 @@ stackSection:
       actions: 操作
 
 
+snapshotSection:
+  none: 未备份
+  multiple: '多份: {latestDate}'
+  
 storagePoolSection:
   outputs: 输出
   readOnly: (只读)
@@ -2341,6 +2635,10 @@ storagePoolSection:
   models:
     table:
       header:
+        volumeName: '卷名称'
+        snapshotState: '快照状态'
+        snapshotName: '快照名称'
+        backedUp: '已备份'
         activeMounts: '挂载(容器:主机)'
 
 svgServiceContainer:
@@ -2368,6 +2666,14 @@ tooltipWarning:
   notConfigured: 未设置访问控制
   dismiss: 取消
 
+upgradeBtn:
+  status:
+    loading: '检查更新...'
+    current: '已经是最新版本'
+    available: '有可用更新'
+    notFound: '未发现模板版本'
+    default: '检查更新出错'
+    
 viewEditDescription:
   form:
     name:
@@ -2473,7 +2779,9 @@ nav:
     hosts: 主机
     containers: 容器
     vms: 虚拟机
+    storagePage: 存储
     storagePools: 存储池
+    backupTarget: 备份目标
     certificates: 证书
     registries: 镜像库
   admin:
@@ -2502,6 +2810,8 @@ nav:
 ##############################
 action:
   activate: 激活
+  backup: 备份快照
+  deleteBackup: 删除备份
   cancelUpgrade: 取消升级
   cancelRollback: 取消回滚
   clone: 克隆
@@ -2519,7 +2829,10 @@ action:
   restore: 恢复
   retry: 重试
   rollback: 回滚
-  setDefault: 设置为登录缺省
+  revertToSnapshot: 恢复卷到快照
+  restoreFromBackup: 从备份恢复卷
+  setDefault: 设置为缺省
+  snapshot: 快照
   start: 启动
   startServices: 启动服务
   stop: 停止
@@ -2530,3 +2843,4 @@ action:
   viewConfig: 查看配置
   viewGraph: 查看图形
   viewInApi: API查看
+  
