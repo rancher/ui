@@ -17,7 +17,11 @@ export default Ember.View.extend(ThrottledResize,{
     var elem = $('<div id="environment-svg"><svg style="width: 100%; height: 100%;"><g/></svg></div>').appendTo('BODY');
     this.set('graphElem', elem[0]);
 
-    Ember.run.later(this,'initGraph',100);
+    if (this.get('context.stack.services.length')) {
+      Ember.run.later(this,'initGraph',100);
+    } else {
+      this.set('controller.noServices', true);
+    }
   },
 
 
@@ -277,6 +281,7 @@ export default Ember.View.extend(ThrottledResize,{
 
   willDestroyElement: function() {
     this._super();
+    this.set('controller.noServices', false);
     var elem = this.get('graphElem');
     if ( elem )
     {

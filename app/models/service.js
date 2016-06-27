@@ -548,6 +548,11 @@ Service.reopenClass({
   },
 
   consumedServicesFor: function(serviceId) {
+    // when switching environment the service model is reset and this is recalculated
+    if (!_allMaps) {
+      return;
+    }
+
     return _allMaps.filterBy('serviceId', serviceId).map((map) => {
       return Ember.Object.create({
         name: map.get('name'),

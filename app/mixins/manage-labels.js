@@ -2,8 +2,8 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 import { debouncedObserver } from 'ui/utils/debounce';
 
-const USER = 'user';
-const SYSTEM = 'system';
+const USER     = 'user';
+const SYSTEM   = 'system';
 const AFFINITY = 'affinity';
 
 function isSoftUser(type,key) {
@@ -62,7 +62,7 @@ export default Ember.Mixin.create({
     },
 
     pastedLabels(str, target) {
-      var ary = this.get('labelArray');
+      let ary = this.get('labelArray');
       str = str.trim();
       if ( str.indexOf('=') === -1 )
       {
@@ -71,7 +71,7 @@ export default Ember.Mixin.create({
         return;
       }
 
-      var lines = str.split(/\r?\n/);
+      let lines = str.split(/\r?\n/);
       lines.forEach((line) => {
         line = line.trim();
         if ( !line )
@@ -79,9 +79,9 @@ export default Ember.Mixin.create({
           return;
         }
 
-        var idx = line.indexOf('=');
-        var key = '';
-        var val = '';
+        let idx = line.indexOf('=');
+        let key = '';
+        let val = '';
         if ( idx > 0 )
         {
           key = line.substr(0,idx).trim();
@@ -93,7 +93,7 @@ export default Ember.Mixin.create({
           val = '';
         }
 
-        var existing = ary.filterBy('key',key)[0];
+        let existing = ary.filterBy('key',key)[0];
         if ( existing )
         {
           Ember.set(existing,'value',val);
@@ -105,7 +105,7 @@ export default Ember.Mixin.create({
       });
 
       // Clean up empty user entries
-      var toRemove = [];
+      let toRemove = [];
       ary.filterBy('type',USER).forEach((item) => {
         if ( !item.get('key') && !item.get('value') )
         {
@@ -136,12 +136,12 @@ export default Ember.Mixin.create({
   }.property('labelArray.@each.type'),
 
   getLabelObj: function(key) {
-    var lcKey = (key||'').toLowerCase();
-    var ary = this.get('labelArray');
-    var item;
+    let lcKey = (key||'').toLowerCase();
+    let ary   = this.get('labelArray');
+    let item;
 
     // Try specific case first
-    for ( var i = 0 ; i < ary.get('length') ; i++ )
+    for ( let i = 0 ; i < ary.get('length') ; i++ )
     {
       item = ary.objectAt(i);
       if ( item.get('key') === key )
@@ -151,7 +151,7 @@ export default Ember.Mixin.create({
     }
 
     // Then case-insensitive
-    for ( i = 0 ; i < ary.get('length') ; i++ )
+    for ( var i = 0 ; i < ary.get('length') ; i++ )
     {
       item = ary.objectAt(i);
       if ( item.get('key').toLowerCase() === lcKey )
@@ -164,7 +164,7 @@ export default Ember.Mixin.create({
   },
 
   getLabel: function(key) {
-    var obj = this.getLabelObj(key);
+    let obj = this.getLabelObj(key);
     if ( obj )
     {
       return obj.get('value');
@@ -174,8 +174,8 @@ export default Ember.Mixin.create({
   },
 
   setLabel: function(key, value) {
-    var lcKey = (key||'').toLowerCase();
-    var type = 'user';
+    let lcKey = (key||'').toLowerCase();
+    let type  = 'user';
 
     // Rancher keys are always lowercase
     if ( lcKey.indexOf(C.LABEL.AFFINITY_PREFIX) === 0 )
@@ -189,7 +189,7 @@ export default Ember.Mixin.create({
       key = lcKey;
     }
 
-    var existing = this.getLabelObj(key);
+    let existing = this.getLabelObj(key);
     if ( existing )
     {
       Ember.setProperties(existing,{
@@ -216,7 +216,7 @@ export default Ember.Mixin.create({
     }
     else
     {
-      var existing = this.getLabelObj(key);
+      let existing = this.getLabelObj(key);
       if ( existing )
       {
         this.get('labelArray').removeObject(existing);
@@ -225,7 +225,7 @@ export default Ember.Mixin.create({
   },
 
   initLabels: function(obj, onlyOfType, onlyKeys) {
-    var out = [];
+    let out = [];
 
     if ( onlyKeys && !Ember.isArray(onlyKeys) )
     {
@@ -234,7 +234,7 @@ export default Ember.Mixin.create({
 
 
     Object.keys(obj||{}).forEach(function(key) {
-      var type = 'user';
+      let type = 'user';
       if ( key.indexOf(C.LABEL.AFFINITY_PREFIX) === 0 )
       {
         type = 'affinity';
@@ -287,10 +287,10 @@ export default Ember.Mixin.create({
 
   labelsChanged: debouncedObserver('labelArray.@each.{type,key,value}', function() {
     // Make a map of the keys we care about, and combine multiple values together
-    var map = {};
+    let map = {};
     this.get('labelArray').forEach(function(row) {
-      var key   = row.get('key')   || '';
-      var type  = row.get('type')  || '';
+      let key   = row.get('key')   || '';
+      let type  = row.get('type')  || '';
 
       // System and Affinity labels are always lowercase.
       if ( type !== USER )
@@ -305,7 +305,7 @@ export default Ember.Mixin.create({
         return;
       }
 
-      var value = row.get('value') || '';
+      let value = row.get('value') || '';
 
       // Skip empty keys, and system/affinity labels with no value
       if ( !key || (type !== USER && value === ''))
@@ -331,7 +331,7 @@ export default Ember.Mixin.create({
     });
 
     // Then turn them back into an array because Ember hates maps.
-    var out = [];
+    let out = [];
     Object.keys(map).forEach((key) => {
       out.push({key: key, value: map[key]});
     });
