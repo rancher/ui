@@ -20,6 +20,12 @@ export default Ember.Mixin.create({
       timerObj = null;
       dropdown = null;
 
+      let collapsedNav = Ember.$('#navbar');
+
+      if (collapsedNav.hasClass('in')) {
+        collapsedNav.collapse('toggle');
+      }
+
       this.clearHeaderMenus();
     });
 
@@ -129,7 +135,8 @@ export default Ember.Mixin.create({
   },
 
   clearHeaderMenus: function() {
-    const navbar = Ember.$('.navbar');
+    const navbar       = Ember.$('.navbar');
+
     navbar.find('.dropdown-menu.block').removeClass('block');
     navbar.find('a.dropdown-toggle[aria-expanded=true]').attr('aria-expanded', false);
   }
