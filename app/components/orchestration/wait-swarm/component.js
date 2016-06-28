@@ -53,10 +53,9 @@ export default Ember.Component.extend({
       if ( stack.get('state') === 'inactive' )
       {
         stack.doAction('activate');
+        this.set('currentStep', 3);
+        return;
       }
-
-      this.set('currentStep', 3);
-      return;
     }
 
     var services = (this.get('services')||[]).filterBy('environmentId', stack.get('id'));
