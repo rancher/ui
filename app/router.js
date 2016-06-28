@@ -199,6 +199,10 @@ Router.map(function() {
             this.route('service', {path: '/:name'});
           });
 
+          this.route('deployments', {path: '/deployments'}, function() {
+            this.route('deployment', {path: '/:name'});
+          });
+
           this.route('rcs', {path: '/rcs'}, function() {
             this.route('rc', {path: '/:name'});
           });

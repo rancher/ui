@@ -57,6 +57,14 @@ const navTree = [
         condition: k8sReady,
       },
       {
+        id: 'k8s-deployments',
+        localizedLabel: 'nav.k8s.deployments',
+        icon: 'icon icon-tachometer',
+        route: 'k8s-tab.namespace.deployments',
+        ctx: [getProjectId, getNamespaceId],
+        condition: k8sReady,
+      },
+      {
         id: 'k8s-rcs',
         localizedLabel: 'nav.k8s.rcs',
         icon: 'icon icon-tachometer',

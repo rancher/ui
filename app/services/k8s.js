@@ -321,14 +321,24 @@ export default Ember.Service.extend({
     {
       if ( opt.url.substr(0,1) !== '/' )
       {
-        opt.url = `${self.get('kubernetesEndpoint')}/${C.K8S.BASE_VERSION}/` + opt.url;
+        let version;
+        if ( C.K8S.EXTENSION_TYPES.indexOf(type) >= 0 )
+        {
+          version = C.K8S.EXTENSION_VERSION;
+        }
+        else
+        {
+          version = C.K8S.BASE_VERSION;
+        }
+
+        opt.url = `${self.get('kubernetesEndpoint')}/${version}/` + opt.url;
       }
 
       return findWithUrl(opt.url);
     }
     else
     {
-      return Ember.RSVP.reject(new ApiError('k8s find requirs opt.url'));
+      return Ember.RSVP.reject(new ApiError('k8s find requires opt.url'));
     }
 
     function findWithUrl(url) {
@@ -589,6 +599,14 @@ export default Ember.Service.extend({
   allServices() { return this._allCollection('service','services'); },
   getServices() { return this._getCollection('service','services'); },
   getService(name) { return this._getNamespacedResource('service','services',name); },
+
+  allDeployments() { return this._allCollection('deployment','deployments'); },
+  getDeployments() { return this._getCollection('deployment','deployments'); },
+  getDeployment(name) { return this._getNamespacedResource('deployment','deployments',name); },
+
+  allReplicaSets() { return this._allCollection('replicaset','replicasets'); },
+  getReplicaSets() { return this._getCollection('replicaset','replicasets'); },
+  getReplicaSet(name) { return this._getNamespacedResource('replicaset','replicasets',name); },
 
   allRCs() { return this._allCollection('replicationcontroller','replicationcontrollers'); },
   getRCs() { return this._getCollection('replicationcontroller','replicationcontrollers'); },

@@ -232,7 +232,9 @@ var C = {
   K8S: {
     BASE: 'api',
     BASE_VERSION: 'api/v1',
+    EXTENSION_VERSION: 'apis/extensions/v1beta1',
     TYPE_PREFIX: 'k8s-',
+    EXTENSION_TYPES: ['k8s-deployment','k8s-replicaset'],
     ID_SEPARATOR: '::',
     DEFAULT_NS: 'defaultNamespace',
   },
