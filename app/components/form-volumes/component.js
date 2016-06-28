@@ -21,14 +21,17 @@ export default Ember.Component.extend({
   initVolumesFromLaunchConfig() {
     var dv = this.get('instance.dataVolumesFromLaunchConfigs');
     this.set('initEnabled', dv); 
-    this.volumesFromLaunchConfigChanged();
+    Ember.run.once(this,'updateChoices');
   },
 
   prevChoices: null,
   initEnabled: null,
-  volumesFromLaunchConfigChoices: function() {
+  volumesFromLaunchConfigChoices: null,
+
+  updateChoices: function() {
     var launchConfigIndex = this.get('launchConfigIndex');
-    var prevChoices = this.get('prevChoices')||[];
+    var allPrevChoices = this.get('prevChoices')||{};
+    var prevChoices = allPrevChoices[launchConfigIndex]||[];
     var initEnabled = this.get('initEnabled')||[];
 
     var prev = prevChoices.filterBy('index',-1)[0];
@@ -60,10 +63,15 @@ export default Ember.Component.extend({
       }
     });
 
-    this.set('prevChoices', out);
+    allPrevChoices[launchConfigIndex] = out;
+    this.set('prevChoices', allPrevChoices);
     this.set('initEnabled', null);
-    return out;
-  }.property('primaryService.name','primaryService.secondaryLaunchConfigs.@each.name','launchConfigIndex'),
+    this.set('volumesFromLaunchConfigChoices', out);
+  },
+
+  shouldUpdateChoices: function() {
+    Ember.run.once(this,'updateChoices');
+  }.observes('primaryService.name','primaryService.secondaryLaunchConfigs.@each.name','launchConfigIndex'),
 
   volumesFromLaunchConfigChanged: function() {
     var out = this.get('volumesFromLaunchConfigChoices').filterBy('enabled', true).filterBy('name').map((choice) => { return choice.name; });
