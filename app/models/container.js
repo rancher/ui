@@ -3,6 +3,10 @@ import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
+const { getOwner } = Ember;
+
+let _allMounts;
+
 var Container = Resource.extend({
   // Common to all instances
   requestedHostId            : null,
@@ -11,18 +15,38 @@ var Container = Resource.extend({
   projects                   : Ember.inject.service(),
 
   // Container-specific
-  type                 : 'container',
-  imageUuid            : null,
-  registryCredentialId : null,
-  command              : null,
-  commandArgs          : null,
-  environment          : null,
-  ports                : null,
-  instanceLinks        : null,
-  dataVolumes          : null,
-  dataVolumesFrom      : null,
-  devices              : null,
-  restartPolicy        : null,
+  type                       : 'container',
+  imageUuid                  : null,
+  registryCredentialId       : null,
+  command                    : null,
+  commandArgs                : null,
+  environment                : null,
+  ports                      : null,
+  instanceLinks              : null,
+  dataVolumes                : null,
+  dataVolumesFrom            : null,
+  devices                    : null,
+  restartPolicy              : null,
+
+  _allMounts                 : null,
+
+
+  init: function() {
+    this._super();
+
+    // this.get('store') isn't set yet at init
+    var store = getOwner(this).lookup('store:main');
+    if ( !_allMounts )
+    {
+      _allMounts = store.allUnremoved('mount');
+    }
+
+
+    this.setProperties({
+      '_allMounts'  : _allMounts,
+    });
+
+  },
 
   actions: {
     restart: function() {
@@ -194,9 +218,24 @@ var Container = Resource.extend({
       return (Ember.Handlebars.Utils.escapeExpression(id.substr(0,12))+"&hellip;").htmlSafe();
     }
   }.property('externalId'),
+
+  mounts: function() {
+    return this.get('_allMounts').filterBy('instanceId', this.get('id'));
+  }.property('_allMounts.@each.instanceId','id'),
+
+  activeMounts: function() {
+    var mounts = this.get('mounts')||[];
+    return mounts.filter(function(mount) {
+      return ['removed','purged', 'inactive'].indexOf(mount.get('state')) === -1;
+    });
+  }.property('mounts.@each.state'),
 });
 
 Container.reopenClass({
+  reset: function() {
+    _allMounts = null;
+  },
+
   alwaysInclude: ['services'],
 });
 

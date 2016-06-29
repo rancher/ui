@@ -66,6 +66,7 @@ export default Ember.Route.extend(Subscribe, {
           hosts: this.get('store').findAllUnremoved('host'),
           machines: this.get('store').findAllUnremoved('machine'),
           stacks: this.get('store').findAllUnremoved('environment'),
+          mounts: this.get('store').findAllUnremoved('mount'), // the container model needs access
         }).then((moreHash) => {
           Ember.merge(hash, moreHash);
 
