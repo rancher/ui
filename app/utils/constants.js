@@ -202,7 +202,8 @@ var C = {
   SETTING: {
     // Dots in key names do not mix well with Ember, so use $ in their place.
     DOT_CHAR:         '$',
-    VERSION_RANCHER:  'rancher$server$image',
+    IMAGE_RANCHER:    'rancher$server$image',
+    VERSION_RANCHER:  'rancher$server$version',
     VERSION_COMPOSE:  'rancher$compose$version',
     VERSION_CATTLE:   'cattle$version',
     VERSION_MACHINE:  'docker$machine$version',
