@@ -18,12 +18,16 @@ export default Ember.Controller.extend({
   confirmPanic  : false,
   haProject     : null,
 
+  imageStr: function() {
+    return (this.get('settings.rancherImage') || 'rancher/server') + ':' + (this.get('settings.rancherVersion') || 'latest');
+  }.property('settings.{rancherImage,rancherVersion}'),
+
   configExecute: function() {
-    return 'sudo bash ./rancher-ha.sh rancher/server:' + (this.get('settings.rancherVersion') || 'latest');
-  }.property('settings.rancherVersion'),
+    return 'sudo bash ./rancher-ha.sh ' + this.get('imageStr');
+  }.property('imageStr'),
 
   runCode: function() {
-    let version = this.get('settings.rancherVersion') || 'latest';
+    let image = this.get('imageStr');
 
     return `sudo docker run -d --restart=always -p 8080:8080 \\
 -e CATTLE_DB_CATTLE_MYSQL_HOST=<hostname or IP of MySQL instance> \\
@@ -31,8 +35,8 @@ export default Ember.Controller.extend({
 -e CATTLE_DB_CATTLE_MYSQL_NAME=<Name of database> \\
 -e CATTLE_DB_CATTLE_USERNAME=<Username> \\
 -e CATTLE_DB_CATTLE_PASSWORD=<Password> \\
-rancher/server:${version}`;
-  }.property('settings.rancherVersion'),
+${image}`;
+  }.property('imageStr'),
 
   isLocalDb: function() {
     return (this.get('model.haConfig.dbHost')||'').toLowerCase() === 'localhost';

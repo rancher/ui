@@ -148,6 +148,7 @@ export default Ember.Service.extend(Ember.Evented, {
     return url;
   }.property('app.currentRouteName','access.{provider,admin}','cattleVersion','rancherVersion','uiVersion','projects.current.displayOrchestration'),
 
+  rancherImage: Ember.computed.alias(`asMap.${C.SETTING.IMAGE_RANCHER}.value`),
   rancherVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_RANCHER}.value`),
   composeVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_COMPOSE}.value`),
   cattleVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_CATTLE}.value`),
