@@ -8,6 +8,7 @@ export default Ember.Service.extend({
   session       : Ember.inject.service(),
   intl          : Ember.inject.service(),
   locales       : Ember.computed.alias('app.locales'),
+  growl         : Ember.inject.service(),
   loadedLocales : null,
 
   bootstrap: function() {
@@ -71,6 +72,8 @@ export default Ember.Service.extend({
             this.get('intl').setLocale(language);
           });
         });
+      }).catch((err) => {
+        this.get('growl').fromError('Error loading language: ' + language, err);
       });
     }
   },

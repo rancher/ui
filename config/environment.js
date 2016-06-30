@@ -68,12 +68,6 @@ module.exports = function(environment) {
         enabled: false
     },
 
-    intl: {
-      locales: ['en-us'],
-      baseLocale: 'en-us',
-      publicOnly: true,
-    },
-
     contentSecurityPolicy: {
       // Allow the occasional <elem style="blah">...
       'style-src':  "'self' releases.rancher.com localhost:3000 'unsafe-inline'",
