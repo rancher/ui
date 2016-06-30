@@ -4,16 +4,18 @@ import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
-  k8s: Ember.inject.service(),
-  settings: Ember.inject.service(),
+  k8s         : Ember.inject.service(),
+  settings    : Ember.inject.service(),
 
-  timer: null,
-  currentStep: 0,
-  subStep: 0,
-  subCount: 0,
-  services: null,
+  timer       : null,
+  currentStep : 0,
+  subStep     : 0,
+  subCount    : 0,
+  services    : null,
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this.updateStep();
     this.get('store').findAllUnremoved('service').then((services) => {
       this.set('services', services);

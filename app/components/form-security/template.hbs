@@ -62,11 +62,19 @@
   </div>
 
   <div class="col-sm-12 col-md-4">
-    {{view "select" class="form-control select-cap-add" content=capabilityChoices selection=instance.capAdd multiple="true" optionValuePath="content" optionLabelPath="content"}}
+    <select class="form-control select-cap-add" multiple="true" onchange={{action 'modifyCapabilities' 'capAdd' }}>
+      {{#each capabilityChoices as |choice|}}
+        <option value={{choice}} selected={{include instance.capAdd choice}}>{{choice}}</option>
+      {{/each}}
+    </select>
   </div>
 
   <div class="col-sm-12 col-md-4">
-    {{view "select" class="form-control select-cap-drop" content=capabilityChoices selection=instance.capDrop multiple="true" optionValuePath="content" optionLabelPath="content"}}
+    <select class="form-control select-cap-drop" multiple="true" onchange={{action 'modifyCapabilities' 'capDrop'}}>
+      {{#each capabilityChoices as |choice|}}
+        <option value={{choice}} selected={{include instance.capDrop choice}}>{{choice}}</option>
+      {{/each}}
+    </select>
   </div>
 </div>
 <div class="row">

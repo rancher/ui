@@ -4,17 +4,17 @@ import { parseExternalId } from 'ui/utils/parse-externalid';
 import FilterState from 'ui/mixins/filter-state';
 
 export default Ember.Component.extend(FilterState, {
-  prefs: Ember.inject.service(),
-  projects: Ember.inject.service(),
-  hasVm: Ember.computed.alias('projects.current.virtualMachine'),
+  prefs             : Ember.inject.service(),
+  projects          : Ember.inject.service(),
+  hasVm             : Ember.computed.alias('projects.current.virtualMachine'),
 
-  model: null,
-  single: false,
+  model             : null,
+  single            : false,
 
-  collapsed: true,
-  classNames: ['stack-section'],
+  collapsed         : true,
+  classNames        : ['stack-section'],
 
-  filterableContent: Ember.computed.alias('model.unremovedServices'),
+  filterableContent : Ember.computed.alias('model.unremovedServices'),
 
   actions: {
     toggleCollapse() {
@@ -37,7 +37,9 @@ export default Ember.Component.extend(FilterState, {
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     var list = this.get('prefs.'+C.PREFS.EXPANDED_STACKS)||[];
     if ( list.indexOf(this.get('model.id')) >= 0 )
     {

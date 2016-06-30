@@ -15,10 +15,23 @@ export default Ember.Component.extend({
 
     setLogDriver: function(driver) {
       this.set('instance.logConfig.driver', driver);
-    }
+    },
+
+    modifyCapabilities: function(type, select) {
+      let options = Array.prototype.slice.call(select.target.options, 0);
+      let selectedOptions = [];
+
+      options.filterBy('selected', true).forEach((cap) => {
+        return selectedOptions.push(cap.value);
+      });
+
+      this.set(`instance.${type}`, selectedOptions);
+    },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this.initCapability();
     this.initDevices();
     this.initMemory();

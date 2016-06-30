@@ -20,7 +20,10 @@ export default Ember.Component.extend({
     },
   },
 
-  didInitAttrs: function() {
+  init() {
+    this._super(...arguments);
+
+
     let map = parseCatalogSetting(this.get('catalog'));
     let library = false;
     let community = false;

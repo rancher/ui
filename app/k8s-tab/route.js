@@ -24,4 +24,8 @@ export default Ember.Route.extend({
       });
     });
   },
+
+  deactivate: function() {
+    $('BODY').removeClass('k8s');
+  },
 });

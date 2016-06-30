@@ -3,16 +3,18 @@ import Driver from 'ui/mixins/driver';
 
 export default Ember.Component.extend(Driver, {
   // Set by Driver
-  driverName      : 'other',
-  driver          : null,
+  driverName         : 'other',
+  driver             : null,
 
-  otherDriver     : null,
-  availableDrivers: null,
-  typeDocumentations: null,
-  schemas         : null,
-  driverOpts      : null,
+  otherDriver        : null,
+  availableDrivers   : null,
+  typeDocumentations : null,
+  schemas            : null,
+  driverOpts         : null,
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this._super();
     this.driverChanged();
   },

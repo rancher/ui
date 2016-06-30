@@ -4,7 +4,8 @@ import ThrottledResize from 'ui/mixins/throttled-resize';
 import { activeIcon } from 'ui/models/service';
 import C from 'ui/utils/constants';
 
-export default Ember.View.extend(ThrottledResize,{
+
+export default Ember.Component.extend(ThrottledResize, {
   classNames: ['environment-graph'],
   graphZoom: null,
   graphInner: null,
@@ -17,7 +18,7 @@ export default Ember.View.extend(ThrottledResize,{
     var elem = $('<div id="environment-svg"><svg style="width: 100%; height: 100%;"><g/></svg></div>').appendTo('BODY');
     this.set('graphElem', elem[0]);
 
-    if (this.get('context.stack.services.length')) {
+    if (this.get('model.stack.services.length')) {
       Ember.run.later(this,'initGraph',100);
     } else {
       this.set('controller.noServices', true);
@@ -125,21 +126,21 @@ export default Ember.View.extend(ThrottledResize,{
         svgHeight = $('#environment-svg').height() - 260; // svg minus the height of info service-addtl-info.scss
         this.styleSvg(`${svgHeight}px`);
 
-        if (!this.get('context.showServiceInfo')) {
+        if (!this.get('model.showServiceInfo')) {
           this.zoomAndScale(1.5);
         }
 
-        this.set('context.showServiceInfo', true);
-        this.set('context.selectedService', this.get('context.stack.services').findBy('id', id));
+        this.set('model.showServiceInfo', true);
+        this.set('model.selectedService', this.get('model.stack.services').findBy('id', id));
     } else {
       svgHeight = $('#environment-svg').height() - 0; // svg minus the height of info service-addtl-info.scss
       this.styleSvg(svgHeight);
 
-      if (this.get('context.showServiceInfo')) {
+      if (this.get('model.showServiceInfo')) {
         this.zoomAndScale(2);
       }
 
-      this.set('context.showServiceInfo', null);
+      this.set('model.showServiceInfo', null);
     }
   },
 
@@ -147,23 +148,23 @@ export default Ember.View.extend(ThrottledResize,{
     // Add services that are cross-linked from another environment
     var out = [];
 
-    var unremovedServices = this.get('context.stack.services').filter(function(service) {
+    var unremovedServices = this.get('model.stack.services').filter(function(service) {
       return C.REMOVEDISH_STATES.indexOf(service.get('state')) === -1;
     });
 
     unremovedServices.forEach((service) => {
       var externals = (service.get('consumedServicesWithNames')||[]).filter((linked) => {
-        return linked.get('service.environmentId') !== this.get('context.stack.id');
+        return linked.get('service.environmentId') !== this.get('model.stack.id');
       }).map((linked) => { return linked.get('service'); });
       out.pushObjects(externals);
     });
 
     return out;
-  }.property('context.stack.services.@each.consumedServicesUpdated'),
+  }.property('model.stack.services.@each.consumedServicesUpdated'),
 
   updateGraph: function() {
     var g = this.get('graph');
-    var services = this.get('context.stack.services');
+    var services = this.get('model.stack.services');
     var unremovedServices = services.filter(function(service) {
       return ['removed','purging','purged'].indexOf(service.get('state')) === -1;
     });
@@ -178,7 +179,7 @@ export default Ember.View.extend(ThrottledResize,{
       var serviceId = service.get('id');
       var instances = service.get('instances.length')||'No';
       var color = service.get('stateColor').replace('text-','');
-      var isCrossLink = service.get('environmentId') !== this.get('context.stack.id');
+      var isCrossLink = service.get('environmentId') !== this.get('model.stack.id');
 
       var envName = '';
       if ( isCrossLink )
@@ -277,7 +278,7 @@ export default Ember.View.extend(ThrottledResize,{
 
   throttledUpdateGraph: function() {
     Ember.run.throttle(this,'updateGraph',250);
-  }.observes('context.stack.services.@each.{id,name,displayState,consumedServicesUpdated}','crosslinkServices.@each.{id,name,displayState,displayEnvironment}'),
+  }.observes('model.stack.services.@each.{id,name,displayState,consumedServicesUpdated}','crosslinkServices.@each.{id,name,displayState,displayEnvironment}'),
 
   willDestroyElement: function() {
     this._super();

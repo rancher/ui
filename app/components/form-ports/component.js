@@ -10,24 +10,24 @@ export default Ember.Component.extend({
   // Inputs
 
   // The initial ports to show, as an array of objects
-  initialPorts: null,
+  initialPorts    : null,
 
   // Ignore the ID and force each initial port to be considered 'new' (for clone)
-  forceNew: false,
+  forceNew        : false,
+  errors          : null,
+  editing         : false,
+  tagName         : '',
+  portsArray      : null,
+  portsAsStrArray : null,
+  protocolOptions : protocolOptions,
 
-  errors: null,
-  editing: false,
+  init() {
+    this._super(...arguments);
 
-  tagName: '',
-  portsArray: null,
-  portsAsStrArray: null,
-  protocolOptions: protocolOptions,
-
-  didInitAttrs() {
-    var out = [];
+    var out      = [];
     var forceNew = this.get('forceNew');
 
-    var ports = this.get('initialPorts');
+    var ports    = this.get('initialPorts');
     if ( ports )
     {
       ports.forEach(function(value) {

@@ -18,7 +18,8 @@ export default Ember.Component.extend(NewOrEdit, {
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
     var original = this.get('originalModel');
     this.set('service', original.clone());
   },

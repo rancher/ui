@@ -17,7 +17,9 @@ export default Ember.Component.extend(ManageLabels, {
     }
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this.initLabels(this.get('initialLabels'),'user');
     this.labelsChanged();
   },

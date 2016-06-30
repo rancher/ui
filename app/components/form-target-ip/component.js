@@ -10,11 +10,13 @@ export default Ember.Component.extend({
     },
   },
 
-  which: null,
-  userHostname: null,
-  targetIpArray: null,
+  which         : null,
+  userHostname  : null,
+  targetIpArray : null,
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     var hostname = this.get('service.hostname');
     if ( hostname )
     {

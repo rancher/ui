@@ -52,7 +52,8 @@ export default Ember.Component.extend({
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
     var check = this.get('healthCheck');
     if ( check )
     {

@@ -3,17 +3,20 @@ import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   // Identity or externalId+externalIdType
-  identity: null,
-  externalIdType: null,
-  externalId: null,
-  identityNotParsed: null,
+  identity          : null,
+  externalIdType    : null,
+  externalId        : null,
+  identityNotParsed : null,
 
-  avatar: true,
-  link: true,
-  size: 35,
+  avatar            : true,
+  link              : true,
+  size              : 35,
 
-  loading: false,
-  didInitAttrs: function() {
+  loading           : false,
+
+  init() {
+    this._super(...arguments);
+
     var type = this.get('externalIdType');
     var id = this.get('externalId');
     var identityOut = this.get('identityNotParsed') || `1i!${type}:${id}`;

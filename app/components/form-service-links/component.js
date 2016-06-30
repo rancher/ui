@@ -2,14 +2,16 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   // Inputs
-  service: null,
-  withAlias: true,
-  allServices: null,
-  serviceLinksArray: null,
+  service           : null,
+  withAlias         : true,
+  allServices       : null,
+  serviceLinksArray : null,
 
   tagName: '',
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     var out = [];
     var links;
     if ( this.get('service.id') )

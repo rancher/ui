@@ -1,13 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  projects: Ember.inject.service(),
-  hasVm: Ember.computed.alias('projects.current.virtualMachine'),
+  projects     : Ember.inject.service(),
+  hasVm        : Ember.computed.alias('projects.current.virtualMachine'),
 
-  index: null,
-  choices: null,
-  showAdd: true,
-  initialIndex: -1,
+  index        : null,
+  choices      : null,
+  showAdd      : true,
+  initialIndex : -1,
 
   actions: {
     switch(index) {
@@ -19,7 +19,8 @@ export default Ember.Component.extend({
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
     this.send('switch', this.get('initialIndex'));
   },
 

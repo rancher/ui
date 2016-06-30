@@ -32,11 +32,11 @@
   </div>
 </section>
 
-<section>
+{{#select-tab initialTab='pods' as |component|}}
   <ul class="nav nav-tabs nav-tabs-well" role="tablist">
-    <li role="tab" class="tab" data-section="pods" {{action "selectTab" "pods" target="view"}}><a href="#">{{t 'k8sTab.navTabs.pods'}}</a></li>
-    <li role="tab" class="tab" data-section="labels" {{action "selectTab" "labels" target="view"}}><a href="#">{{t 'k8sTab.navTabs.labels'}}</a></li>
-    <li role="tab" class="tab" data-section="ports" {{action "selectTab" "ports" target="view"}}><a href="#">{{t 'k8sTab.navTabs.ports'}}</a></li>
+    <li role="tab" class="tab" data-section="pods" {{action "selectTab" "pods" target="component"}}><a href="#">{{t 'k8sTab.navTabs.pods'}}</a></li>
+    <li role="tab" class="tab" data-section="labels" {{action "selectTab" "labels" target="component"}}><a href="#">{{t 'k8sTab.navTabs.labels'}}</a></li>
+    <li role="tab" class="tab" data-section="ports" {{action "selectTab" "ports" target="component"}}><a href="#">{{t 'k8sTab.navTabs.ports'}}</a></li>
   </ul>
 
   <div class="horizontal-form well nav-well" role="tabpanel">
@@ -50,4 +50,4 @@
       {{k8s/service-ports model=model.spec.ports}}
     </div>
   </div>
-</section>
+{{/select-tab}}
