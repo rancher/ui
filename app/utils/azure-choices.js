@@ -84,7 +84,7 @@ export let regions = [
     'location'  : 'Shanghai',
   },
   {
-    'region'   : 'Chaina North',
+    'region'   : 'China North',
     'location'  : 'Beijing',
   },
   // Newly Announced Azure Geographies And regions
