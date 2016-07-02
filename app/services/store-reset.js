@@ -1,8 +1,10 @@
 import Ember from 'ember';
-import Service from 'ui/models/service';
-import Volume from 'ui/models/volume';
-import Snapshot from 'ui/models/snapshot';
 import Backup from 'ui/models/backup';
+import Container from 'ui/models/container';
+import Mount from 'ui/models/mount';
+import Service from 'ui/models/service';
+import Snapshot from 'ui/models/snapshot';
+import Volume from 'ui/models/volume';
 
 export default Ember.Service.extend({
   reset: function() {
@@ -12,9 +14,11 @@ export default Ember.Service.extend({
     this.get('store').reset();
 
     // Some classes have extra special hackery to cache relationships
-    Service.reset();
-    Volume.reset();
-    Snapshot.reset();
     Backup.reset();
+    Container.reset();
+    Mount.reset();
+    Service.reset();
+    Snapshot.reset();
+    Volume.reset();
   },
 });
