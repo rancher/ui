@@ -86,7 +86,7 @@ module.exports = function(environment) {
       // when it is created
       version: pkg.version,
       appName: 'EduCaaS',
-      apiServer: 'http://rancher.fricolab.com',
+      apiServer: 'http://educaas.fricolab.com',
       apiEndpoint: '/v1',
       catalogServer: '',
       catalogEndpoint: '/v1-catalog',

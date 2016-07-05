@@ -359,6 +359,7 @@ const navTree = [
      condition: function() { return this.get('hasProject'); },
   },
   // EduCaaS UI
+/*
   {
     id: 'educaas-ui-legacy',
     localizedLabel: 'nav.educaas-ui.tab',
@@ -368,6 +369,7 @@ const navTree = [
     ctx: [getProjectId],
     condition: function() {return this.get('hasProject'); },
   }
+*/  
 ];
 
 export function addItem(opt) {
