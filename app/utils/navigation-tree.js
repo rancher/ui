@@ -122,7 +122,7 @@ const navTree = [
         icon: 'icon icon-terminal',
         route: 'swarm-tab.console',
         ctx: [getProjectId],
-        condition: swarmReady,
+        condition: swarmReady && function() { return this.get('isAdmin'); },
       },
       {
         id: 'swarm-system',
@@ -130,6 +130,7 @@ const navTree = [
         icon: 'icon icon-network',
         route: 'environments',
         ctx: [getProjectId],
+        condition: swarmReady && function() { return this.get('isAdmin'); },
         queryParams: {which: 'not-swarm'},
       },
     ]
@@ -242,7 +243,7 @@ const navTree = [
         icon: 'icon icon-vm',
         route: 'virtualmachines',
         ctx: [getProjectId],
-        condition: function() { return this.get('hasVm'); },
+        condition: function() { return this.get('hasVm') && this.get('isAdmin'); },
       },
       {
         id: 'infra-storagepools',
@@ -250,6 +251,7 @@ const navTree = [
         icon: 'icon icon-hdd',
         route: 'storagepools',
         ctx: [getProjectId],
+        condition: function() { return this.get('isAdmin'); },
       },
       {
         id: 'infra-backuptargets',
@@ -257,7 +259,7 @@ const navTree = [
         icon: 'icon icon-target',
         route: 'backuptargets',
         ctx: [getProjectId],
-        condition: function() { return this.get('hasVm'); },
+        condition: function() { return this.get('hasVm') && this.get('isAdmin'); },
       },
       {
         id: 'infra-certificates',
@@ -265,6 +267,7 @@ const navTree = [
         icon: 'icon icon-certificate',
         route: 'certificates',
         ctx: [getProjectId],
+        condition: function() { return this.get('isAdmin'); },
       },
       {
         id: 'infra-registries',
@@ -272,6 +275,7 @@ const navTree = [
         icon: 'icon icon-database',
         route: 'registries',
         ctx: [getProjectId],
+        condition: function() { return this.get('isAdmin'); },
       },
     ],
   },
@@ -342,7 +346,27 @@ const navTree = [
     icon: 'icon icon-terminal',
     route: 'authenticated.project.apikeys',
     ctx: [getProjectId],
-    condition: function() { return this.get('hasProject'); },
+    condition: function() { return this.get('hasProject') && this.get('isAdmin'); },
+  },
+  // MOOC
+  {
+    id: 'mooc',
+    localizedLabel: 'nav.mooc.tab',
+    icon: 'icon icon-terminal',
+    url: 'http://mooc.fricolab.com',
+    target: '_blank',
+    ctx: [getProjectId],
+     condition: function() { return this.get('hasProject'); },
+  },
+  // EduCaaS UI
+  {
+    id: 'educaas-ui-legacy',
+    localizedLabel: 'nav.educaas-ui.tab',
+    icon: 'icon icon-terminal',
+    url: 'http://educaas.fricolab.com',
+    target: '_blank',
+    ctx: [getProjectId],
+    condition: function() {return this.get('hasProject'); },
   }
 ];
 
@@ -429,4 +453,3 @@ function getCatalogSubtree() {
     return out;
   }
 }
-
