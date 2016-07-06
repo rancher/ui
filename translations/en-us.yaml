@@ -776,6 +776,8 @@ k8sTab:
         linkTo: Add Deployment
         table:
           header:
+            name: Deployment Name
+            generation: Generation
             replicas: Replicas
             selectors: Selectors
             containers: Containers
@@ -783,6 +785,24 @@ k8sTab:
             noData: You do not have any Deployments yet.
       deployment:
         header: 'Deployment:'
+        navTabs:
+          pods: Pods
+          labels: Labels
+          ports: Ports
+    replicaSets:
+      index:
+        header: Replica Sets
+        linkTo: Add Replica Set
+        table:
+          header:
+            name: Replica Set Name
+            replicas: Replicas
+            selectors: Selectors
+            containers: Containers
+          body:
+            noData: You do not have any Replica Sets yet.
+      replicaSet:
+        header: 'Replica Set:'
         navTabs:
           pods: Pods
           labels: Labels
@@ -2832,12 +2852,14 @@ nav:
     manage: Manage Namespaces
   k8s:
     tab: Kubernetes
-    services: Services
+    stacks: Stacks
     deployments: Deployments
+    services: Services
+    replicasets: Replica Sets
     rcs: Replication Controllers
     pods: Pods
     cli: Kubectl
-    system: System
+    system: System Stacks
   swarm:
     tab: Swarm
     projects: Projects

@@ -17,7 +17,7 @@ var C = {
     CSRF: 'CSRF',
   },
 
-  EXTERNALID: {
+  EXTERNAL_ID: {
     KIND_SEPARATOR: '://',
     GROUP_SEPARATOR: ':',
     KIND_ALL: 'all',
@@ -95,6 +95,7 @@ var C = {
     SYSTEM_TYPE: 'io.rancher.container.system',
     SERVICE_NAME: 'io.rancher.stack_service.name',
     STACK_NAME: 'io.rancher.stack.name',
+    EXTERNAL_ID: 'io.rancher.external_id',
     SCHED_GLOBAL: 'io.rancher.scheduler.global',
     SCHED_CONTAINER: 'io.rancher.scheduler.affinity:container',
     SCHED_HOST_LABEL: 'io.rancher.scheduler.affinity:host_label',

@@ -158,14 +158,14 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   newExternalId: function() {
-    var externalId = ( this.get('isSystem') ? C.EXTERNALID.KIND_SYSTEM_CATALOG : C.EXTERNALID.KIND_CATALOG );
-    externalId += C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
+    var externalId = ( this.get('isSystem') ? C.EXTERNAL_ID.KIND_SYSTEM_CATALOG : C.EXTERNAL_ID.KIND_CATALOG );
+    externalId += C.EXTERNAL_ID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
     return externalId;
   }.property('isSystem','selectedTemplateModel.id'),
 
   isSystem: function() {
     if ( this.get('editing') ) {
-      return this.get('environmentResource.externalId').indexOf(C.EXTERNALID.KIND_SYSTEM_CATALOG + C.EXTERNALID.KIND_SEPARATOR) === 0;
+      return this.get('environmentResource.externalId').indexOf(C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR) === 0;
     }
 
     let explicit = this.get('templateResource.isSystem');
@@ -173,7 +173,7 @@ export default Ember.Component.extend(NewOrEdit, {
       return explicit;
     }
 
-    let systemCategories = C.EXTERNALID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
+    let systemCategories = C.EXTERNAL_ID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
     let category = (this.get('templateResource.category')||'').trim().toLowerCase();
     return systemCategories.indexOf(category) >= 0;
   }.property('editing','environmentResource.externalId','templateResource.{category,isSystem}'),
@@ -200,10 +200,14 @@ export default Ember.Component.extend(NewOrEdit, {
 
   doSave() {
     if ( this.get('templateBase') === 'kubernetes' ) {
-      return this.get('k8s').catalog(
-        this.get('selectedTemplateModel.files'),
-        this.get('environmentResource.environment')
-      );
+      return this.get('k8s').catalog({
+        files: this.get('selectedTemplateModel.files'),
+        environment: this.get('environmentResource.environment'),
+        annotations: {
+          [C.LABEL.STACK_NAME]:  this.get('environmentResource.name'),
+          [C.LABEL.EXTERNAL_ID]: this.get('newExternalId'),
+        },
+      });
     } else if ( this.get('templateBase') === 'swarm' ) {
       var env = this.get('environmentResource');
       return this.get('store').createRecord({

@@ -24,7 +24,7 @@ spec:
   selector:
 `,
 
-  replicationcontroller: `apiVersion: v1
+replicationcontroller: `apiVersion: v1
 kind: ReplicationController
 metadata:
   labels:
@@ -54,6 +54,22 @@ spec:
   type:
   ports:
   selector:
+`,
+
+deployment: `apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ""
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+    spec:
+      containers:
+      - name: ""
+        image: ""
+        ports:
 `,
 };
 
@@ -85,6 +101,10 @@ export default Ember.Route.extend({
         break;
       case 'pod':
         fn = k8s.getPod;
+        break;
+      case 'deployment':
+        fn = k8s.getDeployment;
+        label = 'Deployment';
         break;
       default:
         return Ember.RSVP.reject('Unknown Kind');

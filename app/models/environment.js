@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 import { parseExternalId } from 'ui/utils/parse-externalid';
@@ -8,7 +9,7 @@ export function activeIcon(env)
 {
   let kind = env.get('externalIdInfo.kind');
 
-  if ( C.EXTERNALID.SYSTEM_KINDS.indexOf(kind) >= 0 )
+  if ( C.EXTERNAL_ID.SYSTEM_KINDS.indexOf(kind) >= 0 )
   {
     return 'icon icon-network';
   }
@@ -20,6 +21,7 @@ export function activeIcon(env)
 
 var Environment = Resource.extend({
   type: 'environment',
+  k8s: Ember.inject.service(),
 
   actions: {
     activateServices: function() {
@@ -105,7 +107,7 @@ var Environment = Resource.extend({
   availableActions: function() {
     var a = this.get('actionLinks');
 
-    if ( this.get('externalIdInfo.kind') === C.EXTERNALID.KIND_KUBERNETES )
+    if ( this.get('externalIdInfo.kind') === C.EXTERNAL_ID.KIND_KUBERNETES )
     {
       return [];
     }
@@ -196,19 +198,39 @@ var Environment = Resource.extend({
   grouping: function() {
     var kind = this.get('externalIdInfo.kind');
 
-    if ( kind === C.EXTERNALID.KIND_KUBERNETES )
+    if ( kind === C.EXTERNAL_ID.KIND_KUBERNETES )
     {
-      return C.EXTERNALID.KIND_KUBERNETES;
+      return C.EXTERNAL_ID.KIND_KUBERNETES;
     }
-    else if ( C.EXTERNALID.SYSTEM_KINDS.indexOf(kind) >= 0 )
+    else if ( C.EXTERNAL_ID.SYSTEM_KINDS.indexOf(kind) >= 0 )
     {
-      return C.EXTERNALID.KIND_SYSTEM;
+      return C.EXTERNAL_ID.KIND_SYSTEM;
     }
     else
     {
-      return C.EXTERNALID.KIND_USER;
+      return C.EXTERNAL_ID.KIND_USER;
     }
   }.property('externalIdInfo.kind'),
+
+
+  kubernetesResources: function() {
+    function fn(obj) {
+      return obj.hasAnnotation(C.LABEL.EXTERNAL_ID, this.get('uuid'));
+    }
+
+    return Ember.Object.create({
+      services:    this.get('k8s.services').filter(fn),
+      deployments: this.get('k8s.deployments').filter(fn),
+      replicasets: this.get('k8s.replicasets').filter(fn),
+      rcs:         this.get('k8s.rcs').filter(fn),
+    });
+  }.property(
+    'uuid',
+    'k8s.services.@each.annotations',
+    'k8s.deployments.@each.annotations',
+    'k8s.replicasets.@each.annotations',
+    'k8s.rcs.@each.annotations'
+  ),
 });
 
 Environment.reopenClass({

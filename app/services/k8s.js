@@ -85,6 +85,8 @@ export default Ember.Service.extend({
   rcs: null,
   pods: null,
   containers: null,
+  deployments: null,
+  replicasets: null,
 
   // The current namespace
   namespace: null,
@@ -465,8 +467,8 @@ export default Ember.Service.extend({
   },
 
   filterSystemStack(stacks) {
-    const OLD_STACK_ID = C.EXTERNALID.KIND_SYSTEM + C.EXTERNALID.KIND_SEPARATOR + C.EXTERNALID.KIND_KUBERNETES;
-    const NEW_STACK_PREFIX = C.EXTERNALID.KIND_SYSTEM_CATALOG + C.EXTERNALID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNALID.GROUP_SEPARATOR + C.EXTERNALID.KIND_KUBERNETES + C.EXTERNALID.GROUP_SEPARATOR;
+    const OLD_STACK_ID = C.EXTERNAL_ID.KIND_SYSTEM + C.EXTERNAL_ID.KIND_SEPARATOR + C.EXTERNAL_ID.KIND_KUBERNETES;
+    const NEW_STACK_PREFIX = C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNAL_ID.GROUP_SEPARATOR + C.EXTERNAL_ID.KIND_KUBERNETES + C.EXTERNAL_ID.GROUP_SEPARATOR;
 
     var stack = (stacks||[]).filter((stack) => {
       let externalId = stack.get('externalId')||'';
@@ -672,15 +674,12 @@ export default Ember.Service.extend({
     });
   },
 
-  catalog(files,answers) {
+  catalog(body) {
     return this.request({
       url: Util.addQueryParam(`${this.get('kubectlEndpoint')}/catalog`, C.K8S.DEFAULT_NS, this.get(`tab-session.${C.TABSESSION.NAMESPACE}`)),
       method: 'POST',
       contentType: 'application/json',
-      data: {
-        files: files,
-        environment: answers
-      }
+      data: body,
     }).catch((err) => {
       return Ember.RSVP.reject(this.parseKubectlError(err));
     });

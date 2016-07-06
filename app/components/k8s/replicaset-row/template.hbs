@@ -1,10 +1,7 @@
 <tr>
   <td>
     <a href="#" {{action "toggleExpand"}}><i class="icon {{if expanded 'icon-minus-square' 'icon-plus-square'}}"/></a>
-    {{#link-to "k8s-tab.namespace.deployments.deployment" model.displayName}}{{model.displayName}}{{/link-to}}
-  </td>
-  <td>
-    {{model.displayGeneration}}
+    {{#link-to "k8s-tab.namespace.replicasets.replicaset" model.displayName}}{{model.displayName}}{{/link-to}}
   </td>
   <td>
     {{model.displayReplicas}}
@@ -35,8 +32,8 @@
 </tr>
 {{#if expanded}}
   <tr class="nohover">
-    <td colspan="6" class="subtable">
-      {{k8s/replicaset-section model=model.selectedReplicaSets}}
+    <td colspan="5" class="subtable">
+      {{k8s/pod-section model=model.selectedPods}}
     </td>
   </tr>
 {{/if}}

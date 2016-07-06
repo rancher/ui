@@ -49,7 +49,7 @@ export default Ember.Component.extend(FilterState, {
 
   isKubernetes: function() {
     var parts = parseExternalId(this.get('model.externalId'));
-    return parts && parts.kind === C.EXTERNALID.KIND_KUBERNETES;
+    return parts && parts.kind === C.EXTERNAL_ID.KIND_KUBERNETES;
   }.property('model.externalId'),
 
 

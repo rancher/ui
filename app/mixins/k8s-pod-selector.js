@@ -34,20 +34,28 @@ export default Ember.Mixin.create({
     return out;
   }.property('spec.selector'),
 
-  selectedPods: function() {
+  _selected(field,method) {
     var selectors = this.get('selectorsAsArray');
     if ( selectors.length === 0 )
     {
       return [];
     }
 
-    var matching = this.get('k8s.pods').slice();
+    var matching = this.get(field).slice();
     selectors.forEach((sel) => {
       matching = matching.filter((pod) => {
-        return pod.hasLabel(sel.label, sel.value);
+        return pod[method](sel.label, sel.value);
       });
     });
 
     return matching;
-  }.property('selectorsAsArray.@each.{label,value}','k8s.pods.[]')
+  },
+
+  selectedPods: function() {
+    return this._selected('k8s.pods','hasLabel');
+  }.property('selectorsAsArray.@each.{label,value}','k8s.pods.[]'),
+
+  selectedReplicaSets: function() {
+    return this._selected('k8s.rs','hasLabel');
+  }.property('selectorsAsArray.@each.{label,value}','k8s.replicasets.[]'),
 });

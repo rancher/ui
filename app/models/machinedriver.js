@@ -80,8 +80,8 @@ var machineDriver = Resource.extend(PolledResource, {
   }.property('hasBuiltinUi'),
 
   newExternalId: function() {
-    var externalId = ( this.get('isSystem') ? C.EXTERNALID.KIND_SYSTEM_CATALOG : C.EXTERNALID.KIND_CATALOG );
-    externalId += C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
+    var externalId = ( this.get('isSystem') ? C.EXTERNAL_ID.KIND_SYSTEM_CATALOG : C.EXTERNAL_ID.KIND_CATALOG );
+    externalId += C.EXTERNAL_ID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
     return externalId;
   }.property('isSystem','selectedTemplateModel.id'),
 
