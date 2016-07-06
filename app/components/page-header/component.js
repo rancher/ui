@@ -17,33 +17,33 @@ function fnOrValue(val, ctx) {
 
 export default Ember.Component.extend(HoverDropdown, {
   // Inputs
-  hasCattleSystem: null,
-  currentPath: null,
+  hasCattleSystem      : null,
+  currentPath          : null,
 
   // Injections
-  projects      : Ember.inject.service(),
-  project       : Ember.computed.alias('projects.current'),
-  k8s           : Ember.inject.service(),
-  namespace     : Ember.computed.alias('k8s.namespace'),
-  projectId     : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
-  namespaceId   : Ember.computed.alias('k8s.namespace.id'),
-  settings      : Ember.inject.service(),
-  access        : Ember.inject.service(),
-  prefs         : Ember.inject.service(),
-  isAdmin       : Ember.computed.alias('access.admin'),
-  hasVm         : Ember.computed.alias('project.virtualMachine'),
-  hasSwarm      : Ember.computed.alias('projects.orchestrationState.hasSwarm'),
-  hasKubernetes : Ember.computed.alias('projects.orchestrationState.hasKubernetes'),
-  hasMesos      : Ember.computed.alias('projects.orchestrationState.hasMesos'),
-  swarmReady    : Ember.computed.alias('projects.orchestrationState.swarmReady'),
-  mesosReady    : Ember.computed.alias('projects.orchestrationState.mesosReady'),
+  projects             : Ember.inject.service(),
+  project              : Ember.computed.alias('projects.current'),
+  k8s                  : Ember.inject.service(),
+  namespace            : Ember.computed.alias('k8s.namespace'),
+  projectId            : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
+  namespaceId          : Ember.computed.alias('k8s.namespace.id'),
+  settings             : Ember.inject.service(),
+  access               : Ember.inject.service(),
+  prefs                : Ember.inject.service(),
+  isAdmin              : Ember.computed.alias('access.admin'),
+  hasVm                : Ember.computed.alias('project.virtualMachine'),
+  hasSwarm             : Ember.computed.alias('projects.orchestrationState.hasSwarm'),
+  hasKubernetes        : Ember.computed.alias('projects.orchestrationState.hasKubernetes'),
+  hasMesos             : Ember.computed.alias('projects.orchestrationState.hasMesos'),
+  swarmReady           : Ember.computed.alias('projects.orchestrationState.swarmReady'),
+  mesosReady           : Ember.computed.alias('projects.orchestrationState.mesosReady'),
 
   // Component options
-  tagName           : 'header',
-  classNames        : ['clearfix','no-select'],
-  classNameBindings : ['project.swarm','project.mesos','project.kubernetes'],
+  tagName              : 'header',
+  classNames           : ['clearfix','no-select'],
+  classNameBindings    : ['project.swarm','project.mesos','project.kubernetes'],
 
-  dropdownSelector  : '.navbar .dropdown',
+  dropdownSelector     : '.navbar .dropdown',
 
   actions: {
     switchProject(id) {
@@ -55,7 +55,9 @@ export default Ember.Component.extend(HoverDropdown, {
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this._super();
     this.updateNavTree();
   },

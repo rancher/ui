@@ -4,32 +4,32 @@ import SelectTab from 'ui/mixins/select-tab';
 import { debouncedObserver } from 'ui/utils/debounce';
 
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
-  settings: Ember.inject.service(),
+  settings                  : Ember.inject.service(),
 
-  isStandalone: true,
-  service: null,
-  existing: null,
-  balancerConfig: null,
-  haproxyConfig: null,
-  allHosts: null,
-  allServices: null,
-  allCertificates: null,
+  isStandalone              : true,
+  service                   : null,
+  existing                  : null,
+  balancerConfig            : null,
+  haproxyConfig             : null,
+  allHosts                  : null,
+  allServices               : null,
+  allCertificates           : null,
 
-  listenersArray: null,
-  targetResources: null,
-  targetsArray: null,
-  serviceLinksArray: null,
-  isGlobal: null,
-  isRequestedHost: null,
-  portsAsStrArray: null,
+  listenersArray            : null,
+  targetResources           : null,
+  targetsArray              : null,
+  serviceLinksArray         : null,
+  isGlobal                  : null,
+  isRequestedHost           : null,
+  portsAsStrArray           : null,
 
   // Errors from components
-  schedulingErrors: null,
-  scaleErrors: null,
-  portErrors: null,
+  schedulingErrors          : null,
+  scaleErrors               : null,
+  portErrors                : null,
 
-  primaryResource: Ember.computed.alias('service'),
-  launchConfig: Ember.computed.alias('service.launchConfig'),
+  primaryResource           : Ember.computed.alias('service'),
+  launchConfig              : Ember.computed.alias('service.launchConfig'),
 
   actions: {
     setScale(scale) {
@@ -70,7 +70,9 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this.labelsChanged();
     this.set('listenersArray',[]);
     this.set('targetsArray',[]);

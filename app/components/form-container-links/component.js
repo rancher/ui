@@ -21,7 +21,8 @@ export default Ember.Component.extend(ContainerChoices, {
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
     var out = [];
     var links = this.get('initialLinks')||[];
 

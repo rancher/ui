@@ -4,14 +4,16 @@ import GroupedInstances from 'ui/mixins/grouped-instances';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(ManageLabels, GroupedInstances, {
-  model: null,
-  mode: null,
-  show: null,
+  model             : null,
+  mode              : null,
+  show              : null,
 
-  classNames: ['pod','host'],
-  classNameBindings: ['isMachine:machine-host'],
+  classNames        : ['pod','host'],
+  classNameBindings : ['isMachine:machine-host'],
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this.initLabels(this.get('model.labels'));
   },
 

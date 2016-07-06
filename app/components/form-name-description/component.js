@@ -3,26 +3,28 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   // Inputs
   // You can either set model or name+description
-  model: null,
-  name: null,
-  description: null,
+  model                  : null,
+  name                   : null,
+  description            : null,
 
-  _name: '',
-  _description: '',
+  _name                  : '',
+  _description           : '',
 
-  nameLabel: 'formNameDescription.name.label',
-  namePlaceholder: 'formNameDescription.name.placeholder',
-  nameHelpText: '',
-  nameRequired: false,
-  nameDisabled: false,
+  nameLabel              : 'formNameDescription.name.label',
+  namePlaceholder        : 'formNameDescription.name.placeholder',
+  nameHelpText           : '',
+  nameRequired           : false,
+  nameDisabled           : false,
 
-  descriptionLabel: 'formNameDescription.description.label',
-  descriptionHelp: '',
-  descriptionPlaceholder: 'formNameDescription.description.placeholder',
-  descriptionRequired: false,
-  descriptionDisabled: false,
+  descriptionLabel       : 'formNameDescription.description.label',
+  descriptionHelp        : '',
+  descriptionPlaceholder : 'formNameDescription.description.placeholder',
+  descriptionRequired    : false,
+  descriptionDisabled    : false,
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     if ( this.get('model') ) {
       this.modelChanged();
     } else {

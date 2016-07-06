@@ -1,12 +1,12 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
-const NONE = 'none',
-      LOADING = 'loading',
-      CURRENT = 'current',
+const NONE      = 'none',
+      LOADING   = 'loading',
+      CURRENT   = 'current',
       AVAILABLE = 'available',
-      NOTFOUND = 'notfound',
-      ERROR = 'error';
+      NOTFOUND  = 'notfound',
+      ERROR     = 'error';
 
 var queue = async.queue(getUpgradeInfo, 2);
 
@@ -42,17 +42,19 @@ function getUpgradeInfo(task, cb) {
 }
 
 export default Ember.Component.extend({
-  environmentResource: null,
-  upgradeStatus: null,
-  intl: Ember.inject.service(),
+  environmentResource : null,
+  upgradeStatus       : null,
+  intl                : Ember.inject.service(),
 
-  tagName: 'button',
-  classNames: ['btn','btn-sm'],
-  classNameBindings: ['btnClass'],
+  tagName             : 'button',
+  classNames          : ['btn','btn-sm'],
+  classNameBindings   : ['btnClass'],
 
-  upgradeInfo: null,
+  upgradeInfo         : null,
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this.updateStatus();
   },
 

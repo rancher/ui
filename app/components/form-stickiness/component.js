@@ -1,13 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  config: null,
-  hasHttpListeners: null,
+  config           : null,
+  hasHttpListeners : null,
 
-  lbCookie: null,
-  stickiness: 'none',
-  isStickyNone: Ember.computed.equal('stickiness','none'),
-  isStickyLbCookie: Ember.computed.equal('stickiness','lbCookie'),
+  lbCookie         : null,
+  stickiness       : 'none',
+  isStickyNone     : Ember.computed.equal('stickiness','none'),
+  isStickyLbCookie : Ember.computed.equal('stickiness','lbCookie'),
 
   lbCookieModeChoices: [
     {value: 'rewrite', label: 'Rewrite'},
@@ -15,7 +15,9 @@ export default Ember.Component.extend({
     {value: 'prefix', label: 'Prefix'},
   ],
 
-  didInitAttrs: function() {
+  init() {
+    this._super(...arguments);
+
     var lbCookie  = this.get('config.lbCookieStickinessPolicy');
     var stickiness = 'none';
 

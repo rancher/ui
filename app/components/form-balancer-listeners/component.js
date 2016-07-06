@@ -33,7 +33,8 @@ export default Ember.Component.extend(ManageLabels, {
 
   listenersArray: null,
 
-  didInitAttrs: function() {
+  init() {
+    this._super(...arguments);
     var sslPorts = ((this.get('initialLabels')||{})[C.LABEL.BALANCER_SSL_PORTS]||'').split(/,/);
 
     // Filter empty ports

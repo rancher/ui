@@ -1,14 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  launchConfig: null,
-  hasSslListeners: null,
-  balancer: null,
-  allCertificates: null,
+  launchConfig    : null,
+  hasSslListeners : null,
+  balancer        : null,
+  allCertificates : null,
 
-  alternates: null,
+  alternates      : null,
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     var alternates = (this.get('balancer.certificateIds')||[]).map((id) => {
       return {value: id};
     });
