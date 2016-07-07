@@ -14,6 +14,11 @@ var Mount = Resource.extend({
   _allMounts                 : null,
   _allContainers             : null,
 
+  reservedKeys: [
+    '_allMounts',
+    '_allContainers'
+  ],
+
   init: function() {
     this._super();
 
