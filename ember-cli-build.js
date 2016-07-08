@@ -73,7 +73,9 @@ module.exports = function(defaults) {
   app.import('bower_components/d3/d3.js');
   app.import('bower_components/c3/c3.js');
   app.import('bower_components/c3/c3.css');
-  app.import('vendor/term.js/src/term.js');
+  //app.import('vendor/term.js/src/term.js');
+  app.import('bower_components/xterm.js/src/xterm.js');
+  app.import('bower_components/xterm.js/src/xterm.css');
   app.import('bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js');
   app.import('bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css');
   app.import('bower_components/prism/prism.js');
@@ -125,19 +127,6 @@ module.exports = function(defaults) {
     destDir: 'assets/fonts'
   });
   app.import('vendor/lato/lato-v11-latin-regular.woff2', {
-    destDir: 'assets/fonts'
-  });
-
-  app.import('vendor/roboto/roboto-v15-latin-700.woff', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/roboto/roboto-v15-latin-700.woff2', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/roboto/roboto-v15-latin-regular.woff', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/roboto/roboto-v15-latin-regular.woff2', {
     destDir: 'assets/fonts'
   });
 

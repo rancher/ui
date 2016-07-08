@@ -72,7 +72,7 @@ var Container = Resource.extend({
       let proj = this.get('projects.current.id');
       let id = this.get('id');
       Ember.run.later(() => {
-        window.open(`//${window.location.host}/env/${proj}/infra/console?instanceId=${id}&isPopup=true`, '_blank', "toolbars=0,width=717,height=497,left=200,top=200");
+        window.open(`//${window.location.host}/env/${proj}/infra/console?instanceId=${id}&isPopup=true`, '_blank', "toolbars=0,width=717,height=590,left=200,top=200");
       });
     },
 
