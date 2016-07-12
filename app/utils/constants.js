@@ -58,20 +58,6 @@ var C = {
     COMMUNITY_VALUE: 'https://github.com/rancher/community-catalog.git',
   },
 
-  // English Error Page translations will exist here incase we run in to a scenario in
-  // which the translation files cant be loaded so we may still have a semi-readable error page
-  FALLBACK_TRANSLATIONS: {
-    FAILWHALE: {
-      HEADER: 'Error',
-      RELOAD_BUTTON: '<a href="#" onclick="window.location.href = window.location.href; return false;">Reload</a> to try again or',
-      LOGOUT_BUTTON: 'log out'
-    },
-    NOT_FOUND: {
-      HEADER: "The page you were looking for doesn't exist!",
-      LINK_TO: 'Go Home'
-    }
-  },
-
   GITHUB: {
     DEFAULT_HOSTNAME: 'github.com',
     AUTH_PATH: '/login/oauth/authorize',
