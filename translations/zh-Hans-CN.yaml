@@ -446,19 +446,19 @@ containerSubpod:
 
 dockerCLI:
   header: Docker 命令行界面
-  step1: 要在你的工作站使用docker或者docker-compose, 点击下面的按钮生成API key和配置文件
-  step1Generate: 生成配置
-  step2: 生成中...
-  step3: 激活中...
-  step4: 现在配置你的工作站
-  item1: |
+  start: 要在你的工作站使用docker或者docker-compose, 点击下面的按钮生成API key和配置文件
+  button: 生成配置
+  generating: 生成中...
+  activating: 激活中...
+  complete: 现在配置你的工作站
+  createDirectory: |
     创建 <code>.docker</code> 目录: <code>mkdir -pv ~/.docker</code>
-  item2: 解压刚才下载的ZIP文件
-  item3: |
+  extractZip: 解压刚才下载的ZIP文件
+  copyFiles: |
     将从ZIP中解压出的全部文件拷贝到 <code>.docker</code> 目录
-  item4: |
-    运行 <code>export DOCKER_HOST={{endpoint.swarm}} DOCKER_TLS_VERIFY=1</code> 或添加你的配置文件
-  item5: |
+  exportVars: |
+    运行 <code>export DOCKER_HOST={swarmEndpoint} DOCKER_TLS_VERIFY=1</code> 或添加你的配置文件
+  test: |
     运行以下命令测试 <code>docker ps</code>
   well: |
     或者使用下面的 shell 直接运行 <code>docker</code> 或 <code>docker-compose</code> 命令:
@@ -528,9 +528,9 @@ haPage:
       form:
         clusterSize:
           labelText: 群集规模
-          radio1: '<span class="text-bold" style="display: inline-block: width: 120px;">1 台主机:</span> 无高可用'
-          radio2: '<span class="text-bold" style="display: inline-block: width: 120px;">3 台主机:</span> 任意 <b>1台</b> 主机发生故障时系统可继续运行'
-          radio3: '<span class="text-bold" style="display: inline-block: width: 120px;">5 台主机:</span> 任意 <b>2 台</b> 主机发生故障时系统可继续运行'
+          one: '<span class="text-bold" style="display: inline-block: width: 120px;">1 台主机:</span> 无高可用'
+          three: '<span class="text-bold" style="display: inline-block: width: 120px;">3 台主机:</span> 任意 <b>1台</b> 主机发生故障时系统可继续运行'
+          five: '<span class="text-bold" style="display: inline-block: width: 120px;">5 台主机:</span> 任意 <b>2 台</b> 主机发生故障时系统可继续运行'
         hostRegistration:
           helpText:
             singleCluster: '此处应设置为FQDN，此FQDN解析为高可用主机地址或负载均衡全部高可用主机的负载均衡地址。不要包含<code>/v1</code>或其它路径信息。'
@@ -1277,11 +1277,11 @@ serviceInfoPartial:
   links: 链接
   noLinks: 无链接
   fqdn: 'FQDN:'
+
 ##############################
 # Components
 ##############################
-accountRow:
-
+#
 advancedSection:
   hrText: 高级选项
 
@@ -1694,21 +1694,30 @@ formNameDescription:
     placeholder: 描述
 
 formNetwork:
-  network: 网络
-  container: 容器
-  requestedIP: 请求IP
-  requestSpecific: 从10.42.0.0/16段中请求一个指定的IP地址，如果此IP地址已经被使用则会分配一个随机IP。
-  retainIP: 保持IP
-  reuseIP: 当升级或替换不健康的容器实例时保持IP地址不变。
-  dns: DNS
-  serviceDiscovery: DNS服务发现
-  hostname: 主机名
-  useDockerID: 使用Docker容器ID
-  containerName: 使用容器名称
-  specificHostname: "设置主机名:"
-  domainName: 域名
-  resolvingServers: 解析服务器
-  searchDomains: 搜索域
+  networkMode:
+    label: 网络
+  container:
+    label: 容器
+  requestedIp:
+    label: 请求IP
+    help: 从10.42.0.0/16段中请求一个指定的IP地址，如果此IP地址已经被使用则会分配一个随机IP。
+  retainIp:
+    label: 保持IP
+    reuse: 当升级或替换不健康的容器实例时保持IP地址不变。
+  dns:
+    label: DNS
+    enable: Enable {appName} DNS服务发现
+  hostname:
+    label: 主机名
+    dockerId: 使用Docker容器ID
+    containerName: 使用容器名称
+    custom: 设置主机名
+  domainName:
+    label: 域名
+  resolvingServers:
+    label: 解析服务器
+  searchDomains:
+    label: 搜索域
     
 formPorts:
   addAction: 端口映射
@@ -1919,10 +1928,11 @@ formVolumes:
     prompt: 选择一个容器...
   volumes: 卷
   volumesFrom: 卷来自
-  volumeDriver: 卷驱动
-  text1: 此服务下没有可共享卷的启动配置.
-  text2: 该主机没有可以提供共享卷的容器.
-  text3: 仅当添加容器到特定主机时适用.
+  volumeDriver:
+    label: 卷驱动
+  noLaunchConfigs: 此服务下没有可共享卷的启动配置.
+  noHostContainers: 该主机没有可以提供共享卷的容器.
+  onlySingleHost: 仅当添加容器到特定主机时适用.
   
 heroAddService:
   header: 添加第一个服务
@@ -2599,8 +2609,8 @@ stackSection:
     }
   sidekick: |
     {numSidekicks, plural,
-      =1 {从容器}
-      other {从容器}
+      =1 {+ 1 从容器}
+      other {+ # 从容器}
     }
   add:
     service: 添加服务

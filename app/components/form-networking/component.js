@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Util from 'ui/utils/util';
 import ContainerChoices from 'ui/mixins/container-choices';
 import ManageLabels from 'ui/mixins/manage-labels';
 import C from 'ui/utils/constants';
@@ -62,7 +61,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
         return;
       }
 
-      out.push({label: Util.ucFirst(option), value: option});
+      out.push({label: 'formNetwork.networkMode.'+option, value: option});
     });
 
     this.set('networkChoices', out);
