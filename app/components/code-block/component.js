@@ -25,6 +25,6 @@ export default Ember.Component.extend({
   highlighted: null,
   highlightedChanged: function() {
     var lang = this.get('language');
-    this.set('highlighted', Prism.highlight(this.get('code'), Prism.languages[lang], lang));
+    this.set('highlighted', Prism.highlight(this.get('code')||'', Prism.languages[lang], lang));
   }.observes('language','code'),
 });

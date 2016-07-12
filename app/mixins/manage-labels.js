@@ -64,7 +64,7 @@ export default Ember.Mixin.create({
     pastedLabels(str, target) {
       let ary = this.get('labelArray');
       str = str.trim();
-      if ( str.indexOf('=') === -1 )
+      if ( str.indexOf('=') === -1 && str.indexOf(':') === -1)
       {
         // Just pasting a key
         $(target).val(str);
@@ -80,6 +80,10 @@ export default Ember.Mixin.create({
         }
 
         let idx = line.indexOf('=');
+        if ( idx === -1 ) {
+          idx = line.indexOf(':');
+        }
+
         let key = '';
         let val = '';
         if ( idx > 0 )
