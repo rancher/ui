@@ -10,6 +10,7 @@ const DEFAULTS = {
   interval: 2000,
   responseTimeout: 2000,
   initializingTimeout: 60000,
+  reinitializingTimeout: 60000,
   healthyThreshold: 2,
   unhealthyThreshold: 3,
   requestLine: '',
