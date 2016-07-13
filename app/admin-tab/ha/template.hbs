@@ -5,7 +5,7 @@
 {{#if model.haConfig.enabled}}
   {{#if (lt activeHosts expectedHosts)}}
     <section class="well">
-      <h4>{{t 'haPage.haConfigured.addHost.header'}}</h4>
+      <h3>{{t 'haPage.haConfigured.addHost.header'}}</h3>
       <hr/>
       <p>
         {{t 'haPage.haConfigured.addHost.subtext'}}
@@ -17,7 +17,7 @@
   <div class="row">
     <div class="col-md-3">
       <div class="well">
-        <h4 class="r-mb10">{{t 'haPage.haConfigured.hosts.header'}}</h4>
+        <h3 class="r-mb10">{{t 'haPage.haConfigured.hosts.header'}}</h3>
         {{#if hosts}}
           <h1 class="text-center">{{hostBlurb}}</h1>
         {{else}}
@@ -27,7 +27,7 @@
     </div>
     <div class="col-md-9">
       <div class="well">
-        <h4 class="r-mb10">{{t 'haPage.haConfigured.hosts.managementServerCert.text'}} {{#if cert.certChain}}{{copy-to-clipboard size="small" clipboardText=cert.certChain}}{{/if}}</h4>
+        <h3 class="r-mb10">{{t 'haPage.haConfigured.hosts.managementServerCert.text'}} {{#if cert.certChain}}{{copy-to-clipboard size="small" clipboardText=cert.certChain}}{{/if}}</h3>
         {{#if cert.certChain}}
           <pre><code>{{cert.certChain}}</code></pre>
         {{else}}
@@ -38,7 +38,7 @@
   </div>
 
   <section class="well">
-    <h4>{{format-html-message 'haPage.haConfigured.disable.header'}}</h4>
+    <h3>{{format-html-message 'haPage.haConfigured.disable.header'}}</h3>
     <hr/>
 
     <p>
@@ -57,7 +57,7 @@
 
   <section class="well">
     {{#if isLocalDb}}
-      <h4>{{t 'haPage.haDisabled.header'}}</h4>
+      <h3>{{t 'haPage.haDisabled.header'}}</h3>
       <hr/>
       <p>
         {{t 'haPage.haDisabled.subtext' appName=settings.appName}}
@@ -80,7 +80,7 @@
         <p class="help-block r-mb0">{{t 'haPage.haDisabled.externalDatabase.size'}} {{format-mib model.haConfig.dbSize}}</p>
       </p>
     {{else}}
-      <h4 class="text-success">{{t 'haPage.haDisabled.externalDatabase.noLocalDb.header'}} <i class="icon icon-check"/></h4>
+      <h3 class="text-success">{{t 'haPage.haDisabled.externalDatabase.noLocalDb.header'}} <i class="icon icon-check"/></h3>
       <p class="text-muted r-mb0">
         {{t 'haPage.haDisabled.externalDatabase.noLocalDb.subtext'}}
       </p>
@@ -89,7 +89,7 @@
 
   <section class="well">
     {{#if isLocalDb}}
-      <h4>{{t 'haPage.haDisabled.databaseUsage.localDb.header'}}</h4>
+      <h3>{{t 'haPage.haDisabled.databaseUsage.localDb.header'}}</h3>
       <hr/>
       <ul>
         <li>
@@ -103,7 +103,7 @@
         {{/if}}
       </ul>
     {{else}}
-    <h4 class="text-success">{{t 'haPage.haDisabled.databaseUsage.noLocalDb.header'}} <i class="icon icon-check"/></h4>
+    <h3 class="text-success">{{t 'haPage.haDisabled.databaseUsage.noLocalDb.header'}} <i class="icon icon-check"/></h3>
       <p class="text-muted r-mb0">
         {{format-html-message 'haPage.haDisabled.databaseUsage.noLocalDb.subtext' dbHost=model.haConfig.dbHost}}
       </p>
@@ -112,12 +112,12 @@
 
   <section class="well">
     {{#if justGenerated}}
-    <h4 class="text-success">{{t 'haPage.haDisabled.haConfigScript.generated.header'}} <i class="icon icon-check"/></h4>
+    <h3 class="text-success">{{t 'haPage.haDisabled.haConfigScript.generated.header'}} <i class="icon icon-check"/></h3>
       <p class="text-muted r-mb0">
         {{t 'haPage.haDisabled.haConfigScript.generated.subtext'}}
       </p>
     {{else}}
-      <h4>{{t 'haPage.haDisabled.haConfigScript.notGenerated.header'}}</h4>
+      <h3>{{t 'haPage.haDisabled.haConfigScript.notGenerated.header'}}</h3>
       <hr/>
       {{#if isLocalDb}}
         <p class="text-muted">{{t 'haPage.haDisabled.haConfigScript.notGenerated.subtext'}}</p>
@@ -261,12 +261,12 @@
 
   <section class="well">
     {{#if downloaded}}
-      <h4 class="text-success">{{t 'haPage.haDisabled.haConfigScript.downloadScript.downloaded.header'}} <i class="icon icon-check"/></h4>
+      <h3 class="text-success">{{t 'haPage.haDisabled.haConfigScript.downloadScript.downloaded.header'}} <i class="icon icon-check"/></h3>
       <p class="text-muted r-mb0">
         {{t 'haPage.haDisabled.haConfigScript.downloadScript.downloaded.subtext'}}
       </p>
     {{else}}
-      <h4>{{t 'haPage.haDisabled.haConfigScript.downloadScript.notDownloaded.header'}}</h4>
+      <h3>{{t 'haPage.haDisabled.haConfigScript.downloadScript.notDownloaded.header'}}</h3>
       <hr/>
       {{#if justGenerated}}
         <p>
