@@ -1,0 +1,50 @@
+{{#each model as |stack|}}
+  <div class="well">
+    <div class="clearfix">
+      <div class="stack-state pull-left {{stack.stateBackground}}">
+        {{#tooltip-element type="tooltip-basic" model=stack.displayState tooltipTemplate='tooltip-static' aria-describedby="tooltip-base"}}
+          <i class="{{stack.stateIcon}}" aria-label="{{stack.displayState}}"></i>
+        {{/tooltip-element}}
+      </div>
+
+      <div class="header-left name {{if stack.description 'with-description'}}">
+        <h4 class="divider clip environment-link">
+          {{stack.name}}
+        </h4>
+        {{#if stack.description}}
+          <div class="text-muted clip">{{stack.description}}</div>
+        {{/if}}
+      </div>
+
+      <div class="header-right right-divider stack-actions wide">
+        {{action-menu model=stack}}
+      </div>
+
+      <div class="header-right right-divider stack-template">
+        {{upgrade-btn environmentResource=stack}}
+      </div>
+    </div>
+
+    {{#if stack.deployedResources.services.length}}
+      {{k8s/service-section model=stack.deployedResources.services}}
+    {{/if}}
+
+    {{#if stack.deployedResources.deployments.length}}
+      {{k8s/deployment-section model=stack.deployedResources.deployments}}
+    {{/if}}
+
+    {{#if stack.deployedResources.replicasets.length}}
+      {{k8s/replicaset-section model=stack.deployedResources.replicasets}}
+    {{/if}}
+
+    {{#if stack.deployedResources.rcs.length}}
+      {{k8s/rc-section model=stack.deployedResources.rcs}}
+    {{/if}}
+
+    {{#if stack.deployedResources.pods.length}}
+      {{k8s/pod-section model=stack.deployedResources.pods}}
+    {{/if}}
+  </div>
+{{else}}
+  <div>No Stacks</div>
+{{/each}}

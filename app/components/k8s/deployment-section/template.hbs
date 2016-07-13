@@ -1,0 +1,21 @@
+{{#if model.length}}
+  <table class="grid fixed no-lines r-mb0">
+    <thead>
+      <tr>
+        <th>{{t 'k8s.deploymentSection.name'}}</th>
+        <th width="100">{{t 'k8s.deploymentSection.generation'}}</th>
+        <th width="100">{{t 'k8s.deploymentSection.replicas'}}</th>
+        <th>{{t 'k8s.deploymentSection.selectors'}}</th>
+        <th>{{t 'k8s.deploymentSection.containers'}}</th>
+        <th class="actions" width="85">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each model as |d|}}
+        {{k8s/deployment-row model=d}}
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <span class="text-muted">{{t 'k8s.deploymentSection.noData'}}</span>
+{{/if}}

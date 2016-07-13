@@ -199,17 +199,20 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   doSave() {
+    var env = this.get('environmentResource');
     if ( this.get('templateBase') === 'kubernetes' ) {
-      return this.get('k8s').catalog({
-        files: this.get('selectedTemplateModel.files'),
-        environment: this.get('environmentResource.environment'),
-        annotations: {
-          [C.LABEL.STACK_NAME]:  this.get('environmentResource.name'),
-          [C.LABEL.EXTERNAL_ID]: this.get('newExternalId'),
-        },
+      return this.get('store').createRecord({
+        type: 'kubernetesStack',
+        name: env.get('name'),
+        description: env.get('description'),
+        templates: this.get('selectedTemplateModel.files'),
+        environment: env.get('environment'),
+        externalId: this.get('newExternalId'),
+        namespace: this.get('k8s.namespace.metadata.name'),
+      }).save().then((newData) => {
+        return this.mergeResult(newData);
       });
     } else if ( this.get('templateBase') === 'swarm' ) {
-      var env = this.get('environmentResource');
       return this.get('store').createRecord({
         type: 'composeProject',
         name: env.get('name'),
@@ -221,10 +224,10 @@ export default Ember.Component.extend(NewOrEdit, {
         return this.mergeResult(newData);
       });
     } else if (this.get('editing')) {
-      return this.get('environmentResource').doAction('upgrade', {
-        dockerCompose: this.get('environmentResource.dockerCompose'),
-        rancherCompose: this.get('environmentResource.rancherCompose'),
-        environment: this.get('environmentResource.environment'),
+      return env.doAction('upgrade', {
+        dockerCompose: env.get('dockerCompose'),
+        rancherCompose: env.get('rancherCompose'),
+        environment: env.get('environment'),
         externalId: this.get('newExternalId'),
       });
     } else {

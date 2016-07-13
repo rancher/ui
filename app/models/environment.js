@@ -211,26 +211,6 @@ var Environment = Resource.extend({
       return C.EXTERNAL_ID.KIND_USER;
     }
   }.property('externalIdInfo.kind'),
-
-
-  kubernetesResources: function() {
-    function fn(obj) {
-      return obj.hasAnnotation(C.LABEL.EXTERNAL_ID, this.get('uuid'));
-    }
-
-    return Ember.Object.create({
-      services:    this.get('k8s.services').filter(fn),
-      deployments: this.get('k8s.deployments').filter(fn),
-      replicasets: this.get('k8s.replicasets').filter(fn),
-      rcs:         this.get('k8s.rcs').filter(fn),
-    });
-  }.property(
-    'uuid',
-    'k8s.services.@each.annotations',
-    'k8s.deployments.@each.annotations',
-    'k8s.replicasets.@each.annotations',
-    'k8s.rcs.@each.annotations'
-  ),
 });
 
 Environment.reopenClass({

@@ -95,6 +95,7 @@ var C = {
     SYSTEM_TYPE: 'io.rancher.container.system',
     SERVICE_NAME: 'io.rancher.stack_service.name',
     STACK_NAME: 'io.rancher.stack.name',
+    STACK_UUID: 'io.rancher.stack.uuid',
     EXTERNAL_ID: 'io.rancher.external_id',
     SCHED_GLOBAL: 'io.rancher.scheduler.global',
     SCHED_CONTAINER: 'io.rancher.scheduler.affinity:container',
