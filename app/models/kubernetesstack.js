@@ -11,13 +11,18 @@ var KubernetesStack = Environment.extend({
     var a = this.get('actionLinks');
 
     var out = [
+      { label: 'action.finishUpgrade',  icon: 'icon icon-success',        action: 'finishUpgrade',    enabled: !!a.finishupgrade },
+      { label: 'action.rollback',       icon: 'icon icon-history',        action: 'rollback',         enabled: !!a.rollback },
+      { label: 'action.cancelUpgrade',  icon: 'icon icon-life-ring',      action: 'cancelUpgrade',    enabled: !!a.cancelupgrade },
+      { label: 'action.cancelRollback', icon: 'icon icon-life-ring',      action: 'cancelRollback',   enabled: !!a.cancelrollback },
+      { divider: true},
       { label   : 'action.edit',       icon : 'icon icon-edit',           action : 'edit',          enabled  : true },
       { label   : 'action.remove',     icon : 'icon icon-trash',          action : 'promptDelete',  enabled  : !!a.remove, altAction : 'delete'},
       { label   : 'action.viewInApi',  icon : 'icon icon-external-link',  action : 'goToApi',       enabled  : true },
     ];
 
     return out;
-  }.property('actionLinks.{remove}'),
+  }.property('actionLinks.{remove,finishupgrade,rollback,cancelupgrade,cancelrollback}'),
 
   deployedResources: function() {
     let uuid = this.get('uuid');

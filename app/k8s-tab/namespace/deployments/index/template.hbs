@@ -5,24 +5,6 @@
 </section>
 
 <section class="well instances">
-  <table class="grid fixed" style="margin-bottom: 0;">
-    <thead>
-      <tr>
-        <th>{{t 'k8sTab.namespace.deployments.index.table.header.name'}}</th>
-        <th width="100">{{t 'k8sTab.namespace.deployments.index.table.header.generation'}}</th>
-        <th width="100">{{t 'k8sTab.namespace.deployments.index.table.header.replicas'}}</th>
-        <th>{{t 'k8sTab.namespace.deployments.index.table.header.selectors'}}</th>
-        <th>{{t 'k8sTab.namespace.deployments.index.table.header.containers'}}</th>
-        <th class="actions" width="85">&nbsp;</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each arranged as |deployment|}}
-        {{k8s/deployment-row model=deployment}}
-      {{else}}
-        <tr><td colspan="6" class="text-center text-muted">{{t 'k8sTab.namespace.deployments.index.table.body.noData'}}</td></tr>
-      {{/each}}
-    </tbody>
-  </table>
+  {{k8s/deployment-section model=arranged}}
 </section>
 

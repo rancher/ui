@@ -56,6 +56,6 @@ export default Ember.Mixin.create({
   }.property('selectorsAsArray.@each.{label,value}','k8s.pods.[]'),
 
   selectedReplicaSets: function() {
-    return this._selected('k8s.rs','hasLabel');
+    return this._selected('k8s.replicasets','hasLabel');
   }.property('selectorsAsArray.@each.{label,value}','k8s.replicasets.[]'),
 });

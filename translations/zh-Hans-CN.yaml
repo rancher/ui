@@ -746,14 +746,6 @@ k8sTab:
       index:
         header: Pods
         linkTo: 添加Pod
-        table:
-          header:
-            status: 状态
-            containers: 容器
-            host: 主机IP
-            pod: Pod IP
-          body:
-            noData: 当前未创建任何Pod
       pod:
         header:
           linkTo: 'Pod:'
@@ -765,13 +757,6 @@ k8sTab:
       index:
         header: 副本控制器
         linkTo: 添加副本控制器
-        table:
-          header:
-            replicas: 副本
-            selectors: 选择器
-            containers: 容器
-          body:
-            noData: "当前未创建任何副本控制器"
       rc:
         header: '副本控制器:'
         navTabs:
@@ -781,14 +766,6 @@ k8sTab:
     services:
       header: 服务
       linkTo: 添加服务
-      table:
-        header:
-          cluster: "Cluster IP"
-          pods: Pods
-          ports: 端口
-          selectors: 选择器
-        body:
-          noData: 当前未创建任何服务
       service:
         index:
           header: '服务:'
@@ -2024,19 +2001,13 @@ inputTextFile:
 
 
 k8s:
-  servicePorts:
-    port: 端口
-    containerPort: 容器端口
-    nodePort: Node端口
-    protocol: 协议
-    noPorts: 无端口
-  containersSection:
-    containerName: 容器名称
+  containerSection:
+    name: 容器名称
     status: 状态
     message: 消息
     ready: 就绪
     restarts: 重启
-    noContainers: 无容器
+    noData: 无容器
   formContainerPorts:
     portMap: 端口映射
     addPort: 添加端口
@@ -2057,14 +2028,29 @@ k8s:
     add: 添加
     placeholder: 资源YAML或JSON定义
   podSection:
-    podName: Pod名称
+    name: Pod名称
     containers: 容器
     status: 状态
     hostIp: 主机IP
     podIp: "Pod IP"
-    noPods: 无Pods
-  serviceRow:
-    clusterIp: "Cluster IP"
+    noData: 无Pods
+  rcSection:
+    replicas: 副本
+    selectors: 选择器
+    containers: 容器
+    noData: "当前未创建任何副本控制器"
+  servicePorts:
+    port: 端口
+    containerPort: 容器端口
+    nodePort: Node端口
+    protocol: 协议
+    noData: 无端口
+  serviceSection:
+    cluster: "Cluster IP"
+    pods: Pods
+    ports: 端口
+    selectors: 选择器
+    noData: 当前未创建任何服务
 
 lbAddtlInfo:
   viewDetails: 查看详情

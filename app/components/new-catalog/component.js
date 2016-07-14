@@ -201,17 +201,26 @@ export default Ember.Component.extend(NewOrEdit, {
   doSave() {
     var env = this.get('environmentResource');
     if ( this.get('templateBase') === 'kubernetes' ) {
-      return this.get('store').createRecord({
-        type: 'kubernetesStack',
-        name: env.get('name'),
-        description: env.get('description'),
-        templates: this.get('selectedTemplateModel.files'),
-        environment: env.get('environment'),
-        externalId: this.get('newExternalId'),
-        namespace: this.get('k8s.namespace.metadata.name'),
-      }).save().then((newData) => {
-        return this.mergeResult(newData);
-      });
+      if ( this.get('editing') ) {
+        return env.doAction('upgrade', {
+          templates: this.get('selectedTemplateModel.files'),
+          environment: env.get('environment'),
+          externalId: this.get('newExternalId'),
+          namespace: this.get('k8s.namespace.metadata.name'),
+        });
+      } else {
+        return this.get('store').createRecord({
+          type: 'kubernetesStack',
+          name: env.get('name'),
+          description: env.get('description'),
+          templates: this.get('selectedTemplateModel.files'),
+          environment: env.get('environment'),
+          externalId: this.get('newExternalId'),
+          namespace: this.get('k8s.namespace.metadata.name'),
+        }).save().then((newData) => {
+          return this.mergeResult(newData);
+        });
+      }
     } else if ( this.get('templateBase') === 'swarm' ) {
       return this.get('store').createRecord({
         type: 'composeProject',
@@ -241,7 +250,7 @@ export default Ember.Component.extend(NewOrEdit, {
     if ( base === 'kubernetes' )
     {
       var nsId = this.get('k8s.namespace.id');
-      return this.get('router').transitionTo('k8s-tab.namespace.services', projectId, nsId);
+      return this.get('router').transitionTo('k8s-tab.namespace.stacks', projectId, nsId);
     }
     else if ( base === 'swarm' )
     {
