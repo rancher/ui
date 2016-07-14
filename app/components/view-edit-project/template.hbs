@@ -36,32 +36,32 @@
     </div>
   </section>
 
-  <section>
-    {{form-name-description
-      model=project
-      namePlaceholder="viewEditDescription.form.name.placeholder"
-      descriptionPlaceholder="viewEditDescription.form.description.placeholder"
-    }}
-  </section>
-{{else}}
- {{#if project.description}}
-    <section class="well r-mb0">
-      <label>{{t 'viewEditProject.description'}}</label>
-      <p>{{project.description}}</p>
-    </section>
+<section class="well r-mb0">
+  {{form-name-description
+    model=project
+    namePlaceholder="viewEditDescription.form.name.placeholder"
+    descriptionPlaceholder="viewEditDescription.form.description.placeholder"
+  }}
+</section>
+  {{else}}
+   {{#if project.description}}
+    
+        <label>{{t 'viewEditProject.description'}}</label>
+        <p>{{project.description}}</p>
+    
+    {{/if}}
   {{/if}}
-{{/if}}
 
-<section>
+<section class="well r-mt0">
   <div class="row form-group">
     {{#if showEdit}}
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="form-label">
         <label class="form-control-static">{{t 'viewEditProject.showEdit.formControl'}}</label>
       </div>
     {{/if}}
 
-    <div class="{{if showEdit 'col-sm-12 col-md-8' 'col-xs-12'}}">
-      <div class="well">
+    <div>
+      <div>
         {{#if (and accessEnabled showEdit)}}
           <div class="row form-group">
             <div class="col-sm-12">
@@ -111,7 +111,7 @@
               {{else}}
                 <tr>
                   <td colspan="3" class="text-center text-muted">
-                    {{if showEdit 'No members yet, add at least one owner.' 'This project has no members.'}}
+                    {{if showEdit (t "viewEditProject.showEdit.noMembersYet") (t "viewEditProject.showEdit.noMembers")}}
                   </td>
                 </tr>
               {{/each}}
@@ -125,10 +125,8 @@
       </div>
     </div>
   </div>
-</section>
-
+<hr class="r-mt40 r-mb40" />
 {{#if showEdit}}
-  <section class="r-pt0">
     <div class="row form-group">
       <div class="col-md-2 form-label">
         {{t 'viewEditProject.virtualMachine.label'}}
@@ -146,8 +144,8 @@
         <p class="help-block">{{format-html-message 'viewEditProject.virtualMachine.subtext'}}</p>
       </div>
     </div>
-  </section>
 
   {{top-errors errors=errors}}
   {{save-cancel editing=editing save="save" cancel="cancel"}}
 {{/if}}
+</section>
