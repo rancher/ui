@@ -124,7 +124,7 @@ export default Ember.Route.extend({
       return Ember.Object.create({
         body: TEMPLATES[kind].replace('%NAMESPACE%', ns),
         editing: false,
-        label: 'k8sTabl.types.'+kind,
+        label: 'k8sTab.types.'+kind,
       });
     }
   },
