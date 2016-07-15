@@ -18,28 +18,44 @@ export default Ember.Mixin.create({
     }
     else if ( typeof sel === 'object' )
     {
-      Object.keys(sel).forEach((key) => {
-        out.push({label: key, value: sel[key]});
-      });
+      if ( sel.matchLabels ) {
+        Object.keys(sel.matchLabels).forEach((key) => {
+          out.push({label: key, value: sel.matchLabels[key]});
+        });
+      }
+      else
+      {
+        Object.keys(sel).forEach((key) => {
+          out.push({label: key, value: sel[key]});
+        });
+      }
     }
 
     return out;
   }.property('spec.selector'),
 
-  selectedPods: function() {
+  _selected(field,method) {
     var selectors = this.get('selectorsAsArray');
     if ( selectors.length === 0 )
     {
       return [];
     }
 
-    var matching = this.get('k8s.pods').slice();
+    var matching = this.get(field).slice();
     selectors.forEach((sel) => {
       matching = matching.filter((pod) => {
-        return pod.hasLabel(sel.label, sel.value);
+        return pod[method](sel.label, sel.value);
       });
     });
 
     return matching;
-  }.property('selectorsAsArray.@each.{label,value}','k8s.pods.[]')
+  },
+
+  selectedPods: function() {
+    return this._selected('k8s.pods','hasLabel');
+  }.property('selectorsAsArray.@each.{label,value}','k8s.pods.[]'),
+
+  selectedReplicaSets: function() {
+    return this._selected('k8s.replicasets','hasLabel');
+  }.property('selectorsAsArray.@each.{label,value}','k8s.replicasets.[]'),
 });

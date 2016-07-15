@@ -44,26 +44,26 @@ export default Ember.Controller.extend(Sortable, {
     var which = this.get('which');
     var all = this.get('model');
 
-    if ( which === C.EXTERNALID.KIND_ALL )
+    if ( which === C.EXTERNAL_ID.KIND_ALL )
     {
       return all;
     }
-    else if ( which === C.EXTERNALID.KIND_NOT_KUBERNETES )
+    else if ( which === C.EXTERNAL_ID.KIND_NOT_KUBERNETES )
     {
       return all.filter((obj) => {
-        return obj.get('grouping') !== C.EXTERNALID.KIND_KUBERNETES;
+        return obj.get('grouping') !== C.EXTERNAL_ID.KIND_KUBERNETES;
       });
     }
-    else if ( which === C.EXTERNALID.KIND_NOT_SWARM )
+    else if ( which === C.EXTERNAL_ID.KIND_NOT_SWARM )
     {
       return all.filter((obj) => {
-        return obj.get('grouping') !== C.EXTERNALID.KIND_SWARM;
+        return obj.get('grouping') !== C.EXTERNAL_ID.KIND_SWARM;
       });
     }
-    else if ( which === C.EXTERNALID.KIND_NOT_MESOS )
+    else if ( which === C.EXTERNAL_ID.KIND_NOT_MESOS )
     {
       return all.filter((obj) => {
-        return obj.get('grouping') !== C.EXTERNALID.KIND_MESOS;
+        return obj.get('grouping') !== C.EXTERNAL_ID.KIND_MESOS;
       });
     }
     else
@@ -79,14 +79,14 @@ export default Ember.Controller.extend(Sortable, {
   },
 
   addSystem: function() {
-    return [C.EXTERNALID.KIND_USER,C.EXTERNALID.KIND_ALL].indexOf(this.get('which')) === -1;
+    return [C.EXTERNAL_ID.KIND_USER,C.EXTERNAL_ID.KIND_ALL].indexOf(this.get('which')) === -1;
   }.property('which'),
 
   pageHeader: function() {
     let which = this.get('which');
-    if ( which === C.EXTERNALID.KIND_ALL ) {
+    if ( which === C.EXTERNAL_ID.KIND_ALL ) {
       return 'stacksPage.header.all';
-    } else if ( C.EXTERNALID.SHOW_AS_SYSTEM.indexOf(which) >= 0 ) {
+    } else if ( C.EXTERNAL_ID.SHOW_AS_SYSTEM.indexOf(which) >= 0 ) {
       return 'stacksPage.header.system';
     } else {
       return 'stacksPage.header.user';

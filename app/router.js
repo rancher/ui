@@ -195,8 +195,20 @@ Router.map(function() {
         this.route('namespace', {path: '/:namespace_id'}, function() {
           this.route('index', {path: '/'});
 
+          this.route('stacks', {path: '/stacks'}, function() {
+            this.route('stack', {path: '/:name'});
+          });
+
+          this.route('deployments', {path: '/deployments'}, function() {
+            this.route('deployment', {path: '/:name'});
+          });
+
           this.route('services', {path: '/services'}, function() {
             this.route('service', {path: '/:name'});
+          });
+
+          this.route('replicasets', {path: '/replicasets'}, function() {
+            this.route('replicaset', {path: '/:name'});
           });
 
           this.route('rcs', {path: '/rcs'}, function() {

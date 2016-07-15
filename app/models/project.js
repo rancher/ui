@@ -120,21 +120,32 @@ var Project = Resource.extend(PolledResource, {
   }.property('state','isDefault'),
 
   displayOrchestration: function() {
+    let count = 0;
+    let str = 'Cattle';
+
     if ( this.get('kubernetes') )
     {
-      return 'Kubernetes';
+      count++;
+      str = 'Kubernetes';
     }
     else if ( this.get('swarm') )
     {
-      return 'Swarm';
+      count++;
+      str = 'Swarm';
     }
     else if ( this.get('mesos') )
     {
-      return 'Mesos';
+      count++;
+      str = 'Mesos';
+    }
+
+    if ( count > 1 )
+    {
+      return 'Multiple';
     }
     else
     {
-      return 'Cattle';
+      return str;
     }
   }.property('kubernetes','swarm', 'mesos'),
 });

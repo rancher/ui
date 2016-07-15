@@ -1,0 +1,20 @@
+{{#if model.length}}
+  <table class="grid fixed no-lines r-mb0">
+    <thead>
+      <tr>
+        <th>{{t 'k8s.replicasetSection.name'}}</th>
+        <th width="80">{{t 'k8s.replicasetSection.replicas'}}</th>
+        <th>{{t 'k8s.replicasetSection.selectors'}}</th>
+        <th>{{t 'k8s.replicasetSection.containers'}}</th>
+        <th class="actions" width="85">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each model as |rs|}}
+        {{k8s/replicaset-row model=rs}}
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <span class="text-muted">{{t 'k8s.replicasetSection.noData'}}</span>
+{{/if}}

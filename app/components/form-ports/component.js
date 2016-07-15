@@ -88,14 +88,25 @@ export default Ember.Component.extend({
   portsArrayDidChange: function() {
     var out = [];
     this.get('portsArray').forEach(function(row) {
-      if ( row.private && row.protocol )
+      if ( !row.protocol ) {
+        return;
+      }
+
+      // If there's a public and no private, the private should be the same as public.
+      if ( row.public && !row.private )
       {
-        var str = row.private+'/'+row.protocol;
+        let str = row.public +':'+ row.public +'/'+ row.protocol;
+        out.push(str);
+      }
+      else if ( row.private )
+      {
+        let str = '';
         if ( row.public )
         {
-          str = row.public + ':' + str;
+          str = row.public+':';
         }
 
+        str += row.private +'/'+ row.protocol;
         out.push(str);
       }
     });

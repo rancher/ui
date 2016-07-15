@@ -189,7 +189,7 @@ authPage:
         li3:
           text: 'Click "Register Application" '
       form:
-        headder: '2. Configure {appName} to use your application for authentication'
+        header: '2. Configure {appName} to use your application for authentication'
         subtext: 'Copy and paste the Client ID and Secret from the upper-right corner of your newly-created application.'
         clientId:
           labelText: Client ID
@@ -755,14 +755,6 @@ k8sTab:
       index:
         header: Pods
         linkTo: Add Pod
-        table:
-          header:
-            status: Status
-            containers: Containers
-            host: Host IP
-            pod: Pod IP
-          body:
-            noData: You do not have any Pods yet.
       pod:
         header:
           linkTo: 'Pod:'
@@ -774,30 +766,26 @@ k8sTab:
       index:
         header: Deployments
         linkTo: Add Deployment
-        table:
-          header:
-            replicas: Replicas
-            selectors: Selectors
-            containers: Containers
-          body:
-            noData: You do not have any Deployments yet.
       deployment:
         header: 'Deployment:'
         navTabs:
           pods: Pods
           labels: Labels
           ports: Ports
+    replicasets:
+      index:
+        header: Replica Sets
+        linkTo: Add Replica Set
+      replicaSet:
+        header: 'Replica Set:'
+        navTabs:
+          pods: Pods
+          labels: Labels
+          ports: Ports
     rcs:
       index:
-        header: RCs
+        header: Replication Controllers
         linkTo: Add RC
-        table:
-          header:
-            replicas: Replicas
-            selectors: Selectors
-            containers: Containers
-          body:
-            noData: You do not have any Replication Controllers yet.
       rc:
         header: 'RC:'
         navTabs:
@@ -807,14 +795,6 @@ k8sTab:
     services:
       header: Services
       linkTo: Add Service
-      table:
-        header:
-          cluster: Cluster IP
-          pods: Pods
-          ports: Ports
-          selectors: Selectors
-        body:
-          noData: You do not have any Services yet.
       service:
         index:
           header: 'Service:'
@@ -2063,19 +2043,20 @@ inputTextFile:
   tooltip: Read from a file
 
 k8s:
-  servicePorts:
-    port: Port
-    containerPort: Container Port
-    nodePort: Node Port
-    protocol: Protocol
-    noPorts: No Ports
-  containersSection:
-    containerName: Container Name
+  containerSection:
+    name: Container Name
     status: Status
     message: Message
     ready: Ready
     restarts: Restarts
-    noContainers: No Containers
+    noData: No Containers
+  deploymentSection:
+    name: Deployment Name
+    generation: Generation
+    replicas: Replicas
+    selectors: Selectors
+    containers: Containers
+    noData: No Deployments
   formContainerPorts:
     portMap: Port Map
     addPort: Add Port
@@ -2096,14 +2077,40 @@ k8s:
     add: Add {type}
     placeholder: Resouce YAML or JSON definition
   podSection:
-    podName: Pod Name
-    containers: Containers
+    name: Pod Name
     status: Status
+    containers: Containers
     hostIp: Host IP
     podIp: Pod IP
-    noPods: No Pods
+    noData: No Pods
+  rcSection:
+    name: RC Name
+    replicas: Replicas
+    selectors: Selectors
+    containers: Containers
+    noData: No Replication Controllers
+  replicasetSection:
+    name: Replica Set Name
+    replicas: Replicas
+    selectors: Selectors
+    containers: Containers
+    noData: No Replica Sets
+  servicePorts:
+    port: Port
+    containerPort: Container Port
+    nodePort: Node Port
+    protocol: Protocol
+    noPorts: No Ports
   serviceRow:
+    defaultType: ClusterIP
+  serviceSection:
+    name: Service Name
     clusterIp: Cluster IP
+    pods: Pods
+    clusterPorts: Cluster Ports
+    nodePorts: Node Ports
+    selectors: Selectors
+    noData: No Services
 
 lbAddtlInfo:
   info: Info
@@ -2148,7 +2155,7 @@ machine:
       provided: Provided
     region:
       label: Region
-    accessKeyHelp: Paste in your AWS key pair here. We'll use this key to create your new Instances.
+    accessKeyHelp: "Paste in your AWS key pair here. We'll use this key to create your new Instances."
     loginAction: "Next: Authenticate & select a network"
     loadingAvailability: Loading Availablility Zone and VPC info from EC2...
     vpcSection: Availability Zone & VPC
@@ -2235,7 +2242,7 @@ machine:
     step2: "Make sure any security groups or firewalls allow traffic:"
     step2li: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span>
     step3: "Optional: Add labels to be applied to the host."
-    step4: "Optional: Specify the public IP that should be used for this host.  This is required if you're trying to add the host the <code>{rancherImage}</code> container is on."
+    step4: "Optional: Specify the public IP that should be used for this host.  This is required if you're trying to add the host the <code>{rancherImage}</code> container is on." 
     step5Copy: Copy, paste, and run the command below to register the host with
     generating: Generating registration URL...
     step5Close:
@@ -2245,11 +2252,11 @@ machine:
     close: Close
 
   driverDigitalocean:
-    imageChoices:
-      gb: gb
-      ram: RAM
-      vCpu: vCPU
-      disk: Disk
+    sizeLabel: |
+      {slug} RAM, {disk}gb Disk, {vcpus, plural,
+        =1 {# vCPU}
+        other {# vCPUs}
+      }
     accountSection: Account Access
     authAccountButton: 'Next: Configure Droplet'
     accessToken:
@@ -2832,12 +2839,14 @@ nav:
     manage: Manage Namespaces
   k8s:
     tab: Kubernetes
-    services: Services
+    stacks: Stacks
     deployments: Deployments
+    services: Services
+    replicasets: Replica Sets
     rcs: Replication Controllers
     pods: Pods
     cli: Kubectl
-    system: System
+    system: System Stacks
   swarm:
     tab: Swarm
     projects: Projects
