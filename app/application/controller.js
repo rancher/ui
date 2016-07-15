@@ -10,6 +10,7 @@ export default Ember.Controller.extend({
   tooltipService  : Ember.inject.service('tooltip'),
 
   tooltip         : Ember.computed.alias('tooltipService.tooltipOpts.type'),
+  tooltipTemplate         : Ember.computed.alias('tooltipService.tooltipOpts.template'),
 
   error             : null,
   error_description : null,

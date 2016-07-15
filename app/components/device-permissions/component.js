@@ -1,17 +1,20 @@
 import Ember from 'ember';
 
+const { computed, get/*, set*/ } = Ember;
+
 export default Ember.Component.extend({
-  intl: Ember.inject.service(),
+  intl:       Ember.inject.service(),
 
-  rSelected: false,
-  wSelected: false,
-  mSelected: false,
+  rSelected:  false,
+  wSelected:  false,
+  mSelected:  false,
+  editing:    false,
 
-  selection: null,
+  selection:  null,
 
   init: function() {
     this._super();
-    var sel = this.get('initialSelection');
+    var sel = get(this, 'initialSelection');
     this.setProperties({
       rSelected: sel.indexOf('r') >= 0,
       wSelected: sel.indexOf('w') >= 0,
@@ -27,28 +30,56 @@ export default Ember.Component.extend({
   },
 
   didInsertElement: function() {
-    var moreClass = this.get('buttonClass')||'';
-    var opts = {
-      buttonClass: 'btn btn-default' + (moreClass ? ' '+moreClass : ''),
-      numberDisplayed: 2,
-      nonSelectedText: this.get('intl').t('devicePermissions.none'),
-      allSelectedText: this.get('intl').t('devicePermissions.all'),
+    if (get(this, 'editing')) {
+      var moreClass = get(this, 'buttonClass')||'';
+      var opts = {
+        buttonClass: 'btn btn-default' + (moreClass ? ' '+moreClass : ''),
+        numberDisplayed: 2,
+        nonSelectedText: get(this, 'intl').t('devicePermissions.none'),
+        allSelectedText: get(this, 'intl').t('devicePermissions.all'),
 
-      templates: {
-        li: '<li><a tabindex="0"><label></label></a></li>',
-      },
-    };
+        templates: {
+          li: '<li><a tabindex="0"><label></label></a></li>',
+        },
+      };
 
-    this.$('SELECT').multiselect(opts);
+      this.$('SELECT').multiselect(opts);
+    }
   },
+
+  humanReadableList: computed('initialSelection', function() {
+    let permissions = get(this, 'initialSelection').split('');
+    let out = [];
+
+    permissions.forEach((perm) => {
+      switch (perm) {
+        case 'r':
+          out.push(get(this, 'intl').tHtml('devicePermissions.read'));
+          break;
+        case 'w':
+          out.push(get(this, 'intl').tHtml('devicePermissions.write'));
+          break;
+        case 'm':
+          out.push(get(this, 'intl').tHtml('devicePermissions.mknod'));
+          break;
+        default:
+          break;
+      }
+    });
+
+    return out.join('/');
+
+  }),
 
   rebuild: function() {
     Ember.run.next(() => {
-      this.$('SELECT').multiselect('setOptions', {
-        nonSelectedText: this.get('intl').t('devicePermissions.none'),
-        allSelectedText: this.get('intl').t('devicePermissions.all'),
-      });
-      this.$('SELECT').multiselect('rebuild');
+      if (get(this, 'editing')) {
+        this.$('SELECT').multiselect('setOptions', {
+          nonSelectedText: get(this, 'intl').t('devicePermissions.none'),
+          allSelectedText: get(this, 'intl').t('devicePermissions.all'),
+        });
+        this.$('SELECT').multiselect('rebuild');
+      }
     });
   }.observes('intl._locale'),
 });

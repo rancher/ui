@@ -6,8 +6,6 @@ export default Ember.Route.extend({
     return Ember.RSVP.hash({
       pools:     store.findAllUnremoved('storagepool'),
       mounts:    store.findAllUnremoved('mounts'),
-      snapshots: store.findAllUnremoved('snapshots'),
-      backups:   store.findAllUnremoved('backups'),
     }).then((hash) => {
       return hash.pools.filter((pool) => {
         return !!pool.get('driverName');

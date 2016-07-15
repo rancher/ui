@@ -181,6 +181,12 @@ export default Ember.Component.extend({
     }
   }.observes('isGlobal'),
 
+  getSuffixLabel: Ember.computed('suffix', function() {
+    let label = this.get('schedulingRuleSuffixChoices').findBy('value', this.get('suffix')).label;
+    label = label.split('.');
+    return label[label.length -1];
+  }),
+
   schedulingRuleSuffixChoices: function() {
     var out = [
       {label: 'schedulingRuleRow.must', value: ''},

@@ -14,6 +14,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   initialLabels : null,
 
   tagName       : '',
+  editing: true,
 
   init() {
     this._super(...arguments);

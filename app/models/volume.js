@@ -4,7 +4,6 @@ const { getOwner } = Ember;
 
 // !! If you add a new one of these, you need to add it to reset() below too
 var _allMounts;
-var _allBackups;
 var _allSnapshots;
 // !! If you add a new one of these, you need to add it to reset() below too
 
@@ -13,12 +12,10 @@ var Volume = Resource.extend({
 
   // !! If you add a new one of these, you need to add it to reset() below too
   _allMounts: null,
-  _allBackups: null,
   _allSnapshots: null,
 
   reservedKeys: [
     '_allMounts',
-    '_allBackups',
     '_allSnapshots',
   ],
 
@@ -32,11 +29,6 @@ var Volume = Resource.extend({
       _allMounts = store.allUnremoved('mount');
     }
 
-    if ( !_allBackups )
-    {
-      _allBackups = store.allUnremoved('backup');
-    }
-
     if ( !_allSnapshots )
     {
       _allSnapshots = store.allUnremoved('snapshot');
@@ -44,7 +36,6 @@ var Volume = Resource.extend({
 
     this.setProperties({
       '_allMounts': _allMounts,
-      '_allBackups': _allBackups,
       '_allSnapshots': _allSnapshots,
     });
   },
@@ -93,15 +84,6 @@ var Volume = Resource.extend({
     });
   }.property('mounts.@each.state'),
 
-  backups: function() {
-    return this.get('_allBackups').filterBy('volumeId', this.get('id'));
-  }.property('_all_allBackups.@each.volumeId','id'),
-
-  activeBackups: function() {
-    var backups = this.get('backups')||[];
-    return backups.filterBy('state','created');
-  }.property('backups.@each.state'),
-
   snapshots: function() {
     return this.get('_allSnapshots').filterBy('volumeId', this.get('id'));
   }.property('_allSnapshots.@each.volumeId','id'),
@@ -110,7 +92,6 @@ var Volume = Resource.extend({
 Volume.reopenClass({
   reset: function() {
     _allMounts = null;
-    _allBackups = null;
     _allSnapshots = null;
   },
 

@@ -105,6 +105,10 @@ export default Ember.Component.extend(ManageLabels, {
     this.sendAction('setRequestedHost', hostId);
   }.observes('requestedHostId'),
 
+  selectedChoice: Ember.computed('allHosts.@each.{id,name,state}', function() {
+    return this.get('hostChoices').findBy('id', this.get('initialHostId'));
+  }),
+
   hostChoices: function() {
     var list = this.get('allHosts').map((host) => {
       var hostLabel = host.get('displayName');

@@ -17,6 +17,7 @@ Router.map(function() {
   this.route('logout');
   this.route('authenticated', {path: '/'}, function() {
 
+    this.route('dummy-dev', {path: '/dev'});
     // Settings
     this.route('settings', {resetNamespace: true}, function() {
       this.route('projects', {path: '/env'}, function() {
@@ -90,6 +91,11 @@ Router.map(function() {
             this.route('ports');
             this.route('volumes');
             this.route('labels');
+            this.route('commands');
+            this.route('networking');
+            this.route('healthcheck');
+            this.route('scheduling');
+            this.route('security');
           });
         });
 
@@ -116,7 +122,6 @@ Router.map(function() {
         this.route('storagepools', {resetNamespace: true}, function() {
           this.route('index', {path: '/'});
           this.route('pools', {path: '/pools'});
-          this.route('backups', {path: '/backups'});
           this.route('detail', {path: '/:storagepool_id'});
         });
         this.route('storagepools.new-volume', {path: '/add-volume', resetNamespace: true});

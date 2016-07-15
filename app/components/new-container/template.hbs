@@ -136,7 +136,7 @@
 
       <div class="section container-fluid" data-section="network">
         {{form-networking
-          editing=editing
+          editing=true
           instance=launchConfig
           errors=networkingErrors
           allHosts=allHosts
@@ -148,12 +148,16 @@
       </div>
 
       <div class="section" data-section="security">
-        {{form-security instance=launchConfig errors=securityErrors}}
+        {{form-security instance=launchConfig errors=securityErrors editing=true}}
       </div>
     {{/if}}
 
     <div class="section container-fluid" data-section="healthcheck">
-      {{form-healthcheck isService=isService healthCheck=launchConfig.healthCheck errors=healthCheckErrors}}
+      {{form-healthcheck
+        isService=isService
+        healthCheck=launchConfig.healthCheck
+        errors=healthCheckErrors
+        editing=true}}
     </div>
 
     <div class="section" data-section="labels">
@@ -171,6 +175,7 @@
         initialHostId=launchConfig.requestedHostId
         initialLabels=launchConfig.labels
         errors=schedulingErrors
+        editing=true
         allHosts=allHosts
         setLabels=(action 'setLabels' 'scheduling')
         setGlobal=(action 'setGlobal')

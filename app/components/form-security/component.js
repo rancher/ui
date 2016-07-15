@@ -273,4 +273,8 @@ export default Ember.Component.extend({
     'splunk',
     'syslog',
   ],
+
+  hasLogConfig: Ember.computed('instance.logConfig.config', function() {
+    return Ember.isEmpty(this.get('instance.logConfig.config'));
+  }),
 });

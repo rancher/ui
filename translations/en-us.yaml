@@ -408,6 +408,11 @@ containersPage:
       labels: Labels
       volumes: Volumes
       ports: Ports
+      command: Command
+      networking: Networking
+      healthCheck: Health Check
+      scheduling: Scheduling
+      security: Security
     portsTab:
       table:
         header:
@@ -426,15 +431,21 @@ containersPage:
     volumesTab:
       table:
         header:
+          name: Name
           state: State
           mount: Mount Point
           shared: Shared With
           writable: Writable
+          snapshot: Snapshot Timeline
+          actions: Actions
         body:
+          name: 'Name:'
           state: 'State:'
           mount: 'Mount Point:'
           shared: 'Shared With:'
           writable: 'Writable:'
+          snapshot: 'Snapshot Timeline:'
+          actions: 'Actions:'
           error:
             data: 'Error:'
             error: Error
@@ -1009,7 +1020,7 @@ stacksPage:
         label: Start services after creating
 
 storagePoolsPage:
-  header: Storage
+  header: Storage Pools
   volume: Volume Id
   orphaned: Orphaned Backup
   nav:
@@ -1720,14 +1731,22 @@ formNameDescription:
     placeholder: Description
 
 formNetwork:
+  links:
+    table:
+      dest: Destination Container
+      as: As Name
+      data:
+        dest: 'Destination Container:'
+        as: 'As Name:'
   networkMode:
     label: Network
     bridge: Bridge
+    container: container
     host: Host
     managed: Managed
     none: None
   container:
-    label: ontainer
+    label: container
   requestedIp:
     label: Requested IP
     placeholder: e.g. 10.42.2.24
@@ -1804,6 +1823,8 @@ formScheduling:
 
 
 formSecurity:
+  key: Key
+  value: Value
   logConfig:
     addActionLabel: Add Option
     keyPlaceholder: e.g. syslog-facility
@@ -1849,7 +1870,7 @@ formSecurity:
     label: Log Driver
     placeholder: e.g. syslog
   logOptions:
-    label: Log
+    label: Log Options
 
 formServiceLinks:
   addAction: Service Links
@@ -2686,6 +2707,9 @@ siteAccess:
   users: Users
   groups: Groups
   organizations: Organizations
+
+snapshotTimeline:
+  noData: No Snapshot Data
 
 stackSection:
   outputs: Outputs
