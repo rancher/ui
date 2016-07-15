@@ -47,7 +47,6 @@ export default Ember.Controller.extend({
 
   bootstrap: function() {
     Ember.run.schedule('afterRender', this, () => {
-      $('BODY').addClass('farm');
       var user = Ember.$('.login-user')[0];
       var pass = Ember.$('.login-pass')[0];
       if ( user )
@@ -74,7 +73,4 @@ export default Ember.Controller.extend({
     }
   }.property('timedOut','errorMsg'),
 
-  willDestroy: function() {
-    $('BODY').removeClass('farm');
-  },
 });
