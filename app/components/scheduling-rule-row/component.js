@@ -200,15 +200,15 @@ export default Ember.Component.extend({
 
   schedulingRuleKindChoices: function() {
     var out = [
-      {label: 'scheulingRuleRow.hostLabel', value: 'host_label'},
+      {label: 'schedulingRuleRow.hostLabel', value: 'host_label'},
     ];
 
     if ( !this.get('isGlobal') )
     {
       out.pushObjects([
-        {label: 'scheulingRuleRow.containerLabel', value: 'container_label'},
-        {label: 'scheulingRuleRow.serviceName', value: 'service_name'},
-        {label: 'scheulingRuleRow.containerName', value: 'container_name'},
+        {label: 'schedulingRuleRow.containerLabel', value: 'container_label'},
+        {label: 'schedulingRuleRow.serviceName', value: 'service_name'},
+        {label: 'schedulingRuleRow.containerName', value: 'container_name'},
       ]);
     }
 
