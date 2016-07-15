@@ -79,7 +79,9 @@ export function containerStateInator(state) {
 
 export default Ember.Service.extend({
   'tab-session': Ember.inject.service('tab-session'),
+  'cookies': Ember.inject.service('cookies'),
 
+  version: null,
   namespaces: null,
   services: null,
   rcs: null,
@@ -87,6 +89,7 @@ export default Ember.Service.extend({
   containers: null,
   deployments: null,
   replicasets: null,
+  hosts: null,
 
   // The current namespace
   namespace: null,
@@ -99,12 +102,20 @@ export default Ember.Service.extend({
     return this.get('app.kubectlEndpoint').replace(this.get('app.projectToken'), this.get(`tab-session.${C.TABSESSION.PROJECT}`));
   }.property(`tab-session.${C.TABSESSION.PROJECT}`,'app.kubectlEndpoint'),
 
+  clusterIp: function() {
+    return this.get('hosts.firstObject.displayIp');
+  }.property('hosts.@each.displayIp'),
 
   promiseQueue: null,
   init() {
     this._super();
     this.get('store.metaKeys').addObject('metadata');
     this.set('promiseQueue', {});
+
+    this.set('hosts', []);
+    this.get('store').findAllActive('host').then((hosts) => {
+      this.set('hosts', hosts);
+    });
   },
 
   // request({ options});
@@ -452,8 +463,9 @@ export default Ember.Service.extend({
           if ( expect > 0 && expect === healthy )
           {
             return this.request({
-              url: `${this.get('kubernetesEndpoint')}/${C.K8S.BASE}`
-            }).then(() => {
+              url: `${this.get('kubernetesEndpoint')}/version`
+            }).then((res) => {
+              this.set('version', res);
               return true;
             });
           }
@@ -465,6 +477,24 @@ export default Ember.Service.extend({
       return Ember.RSVP.resolve(false);
     });
   },
+
+  supportsStacks: function() {
+    if ( this.get('cookies.icanhasstacks') ) {
+      return true;
+    }
+
+    let v = this.get('version');
+    if ( v )
+    {
+      let major = parseInt(v.get('major'),10);
+      let minor = parseInt(v.get('minor'),10);
+      return (major > 1) || (major === 1 && minor > 2);
+    }
+    else
+    {
+      return false;
+    }
+  }.property('version.{minor,major}'),
 
   filterSystemStack(stacks) {
     const OLD_STACK_ID = C.EXTERNAL_ID.KIND_SYSTEM + C.EXTERNAL_ID.KIND_SEPARATOR + C.EXTERNAL_ID.KIND_KUBERNETES;

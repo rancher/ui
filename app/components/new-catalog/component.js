@@ -2,6 +2,7 @@ import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import ShellQuote from 'npm:shell-quote';
 import C from 'ui/utils/constants';
+import { compare as compareVersion} from 'ui/utils/parse-version';
 
 export default Ember.Component.extend(NewOrEdit, {
   k8s: Ember.inject.service(),
@@ -65,6 +66,12 @@ export default Ember.Component.extend(NewOrEdit, {
       this.set('readmeContent', response);
     });
   },
+
+  sortedVersions: function() {
+    return this.get('versionsArray').sort((a,b) => {
+      return compareVersion(a.version, b.version);
+    });
+  }.property('versionsArray'),
 
   templateChanged: function() {
     var link = this.get('selectedTemplateUrl');
@@ -201,24 +208,35 @@ export default Ember.Component.extend(NewOrEdit, {
   doSave() {
     var env = this.get('environmentResource');
     if ( this.get('templateBase') === 'kubernetes' ) {
-      if ( this.get('editing') ) {
-        return env.doAction('upgrade', {
-          templates: this.get('selectedTemplateModel.files'),
-          environment: env.get('environment'),
-          externalId: this.get('newExternalId'),
-          namespace: this.get('k8s.namespace.metadata.name'),
-        });
+      if ( this.get('k8s.supportsStacks') ) {
+        if ( this.get('editing') ) {
+          return env.doAction('upgrade', {
+            templates: this.get('selectedTemplateModel.files'),
+            environment: env.get('environment'),
+            externalId: this.get('newExternalId'),
+            namespace: this.get('k8s.namespace.metadata.name'),
+          });
+        } else {
+          return this.get('store').createRecord({
+            type: 'kubernetesStack',
+            name: env.get('name'),
+            description: env.get('description'),
+            templates: this.get('selectedTemplateModel.files'),
+            environment: env.get('environment'),
+            externalId: this.get('newExternalId'),
+            namespace: this.get('k8s.namespace.metadata.name'),
+          }).save().then((newData) => {
+            return this.mergeResult(newData);
+          });
+        }
       } else {
-        return this.get('store').createRecord({
-          type: 'kubernetesStack',
-          name: env.get('name'),
-          description: env.get('description'),
-          templates: this.get('selectedTemplateModel.files'),
-          environment: env.get('environment'),
-          externalId: this.get('newExternalId'),
-          namespace: this.get('k8s.namespace.metadata.name'),
-        }).save().then((newData) => {
-          return this.mergeResult(newData);
+        return this.get('k8s').catalog({
+          files: this.get('selectedTemplateModel.files'),
+          environment: this.get('environmentResource.environment'),
+          annotations: {
+            [C.LABEL.STACK_NAME]:  this.get('environmentResource.name'),
+            [C.LABEL.EXTERNAL_ID]: this.get('newExternalId'),
+          },
         });
       }
     } else if ( this.get('templateBase') === 'swarm' ) {

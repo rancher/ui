@@ -117,6 +117,7 @@ export default Ember.Component.extend(HoverDropdown, {
     'project.virtualMachine',
     `settings.${C.SETTING.CATALOG_URL}`,
     `prefs.${C.PREFS.ACCESS_WARNING}`,
+    `k8s.supportsStacks`,
     'access.enabled',
     'isAdmin'
   ),

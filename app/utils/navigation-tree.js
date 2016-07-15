@@ -6,6 +6,7 @@ import { parseCatalogSetting } from 'ui/utils/parse-catalog-setting';
 export const getProjectId = function() { return this.get('projectId'); };
 export const getNamespaceId = function() { return this.get('namespaceId'); };
 export const k8sReady = function() { return this.get('kubernetesReady'); };
+export const k8sStacks = function() { return this.get('kubernetesReady') && this.get('k8s.supportsStacks'); };
 export const swarmReady = function() { return this.get('swarmReady'); };
 export const mesosReady = function() { return this.get('mesosReady'); };
 
@@ -54,7 +55,7 @@ const navTree = [
         icon: 'icon icon-stacks',
         route: 'k8s-tab.namespace.stacks',
         ctx: [getProjectId, getNamespaceId],
-        condition: k8sReady,
+        condition: k8sStacks,
       },
       {
         id: 'k8s-deployments',
