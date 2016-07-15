@@ -21,6 +21,7 @@ export default Ember.Component.extend({
   descriptionPlaceholder : 'formNameDescription.description.placeholder',
   descriptionRequired    : false,
   descriptionDisabled    : false,
+  descriptionShown       : true,
 
   init() {
     this._super(...arguments);

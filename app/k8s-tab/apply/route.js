@@ -104,7 +104,6 @@ export default Ember.Route.extend({
         break;
       case 'deployment':
         fn = k8s.getDeployment;
-        label = 'Deployment';
         break;
       default:
         return Ember.RSVP.reject('Unknown Kind');

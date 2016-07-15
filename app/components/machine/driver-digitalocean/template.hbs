@@ -1,7 +1,7 @@
 <section class="horizontal-form">
   {{#if step1}}
     <form>
-      <div class="over-hr r-mt20 r-mb20">
+      <div class="over-hr r-mb20">
         <span>{{t 'machine.driverDigitalocean.accountSection'}}</span>
       </div>
 
@@ -57,7 +57,7 @@
         <div class="col-md-4">
           <select class="form-control" onchange={{action (mut digitaloceanConfig.image) value="target.value"}}>
             {{#each imageChoices as |choice|}}
-              <option value={{choice.slug}} selected={{eq digitaloceanConfig.image choice.slug}}>{{choice.distribution}} {{choice.name}}</option>
+              <option value={{choice.slug}} disabled={{choice.disabled}} selected={{eq digitaloceanConfig.image choice.slug}}>{{choice.distribution}} {{choice.name}}</option>
             {{/each}}
           </select>
         </div>
@@ -67,7 +67,7 @@
         <div class="col-md-4">
           <select class="form-control" onchange={{action (mut digitaloceanConfig.size) value="target.value"}}>
             {{#each filteredSizeChoices as |choice|}}
-            <option value={{choice.slug}} selected={{eq digitaloceanConfig.size choice.slug}}>{{choice.slug}} {{t 'machine.driverDigitalocean.imageChoices.ram'}}, {{choice.disk}}{{t 'machine.driverDigitalocean.imageChoices.gb'}} {{t 'machine.driverDigitalocean.imageChoices.disk'}}, {{choice.vcpus}} {{t 'machine.driverDigitalocean.imageChoices.vCpu'}} </option>
+            <option value={{choice.slug}} selected={{eq digitaloceanConfig.size choice.slug}}>{{t 'machine.driverDigitalocean.sizeLabel' slug=choice.slug disk=choice.disk vcpus=choice.vcpus}}</option>
             {{/each}}
           </select>
         </div>
