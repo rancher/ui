@@ -713,6 +713,15 @@ hostsPage:
           noData: 主机未使用任何数据卷
 
 k8sTab:
+  types:
+    namespace: 命名空间
+    service: 服务
+    deployment: 部署
+    replicationcontroller: 复制控制器
+    replicaset: 副本集
+    petset: Pet集
+    pod: Pod
+  
   kubectl:
     header: kubectl
     stepOne:
@@ -757,25 +766,28 @@ k8sTab:
       index:
         header: 部署
         linkTo: 添加部署
-        table:
-          header:
-            replicas: 副本
-            selectors: 选择器
-            containers: 容器
-          body:
-            noData: 当前无任何部署.
       deployment:
         header: '部署:'
         navTabs:
           pods: Pods
           labels: 标签
           ports: 端口
+    replicasets:
+      index:
+        header: 副本集
+        linkTo: 添加副本集
+      replicaSet:
+        header: '副本集:'
+        navTabs:
+          pods: Pods
+          labels: 标签
+          ports: 端口
     rcs:
       index:
-        header: 副本控制器
-        linkTo: 添加副本控制器
+        header: 复制控制器
+        linkTo: 添加复制控制器
       rc:
-        header: '副本控制器:'
+        header: '复制控制器:'
         navTabs:
           pods: Pods
           labels: 标签
@@ -1635,6 +1647,9 @@ formHealthCheck:
   initializingTimeout:
     label: 初始化超时
     unit: 毫秒
+  reinitializingTimeout:
+    label: 重新初始化超时
+    unit: 毫秒
   interval:
     label: 检查间隔
     unit: 毫秒
@@ -1690,28 +1705,37 @@ formNameDescription:
 formNetwork:
   networkMode:
     label: 网络
+    bridge: 桥接
+    host: 主机
+    managed: 托管
+    none: 无
   container:
     label: 容器
   requestedIp:
     label: 请求IP
+    placeholder: "例如：10.42.2.24"
     help: 从10.42.0.0/16段中请求一个指定的IP地址，如果此IP地址已经被使用则会分配一个随机IP。
   retainIp:
     label: 保持IP
     reuse: 当升级或替换不健康的容器实例时保持IP地址不变。
   dns:
     label: DNS
-    enable: Enable {appName} DNS服务发现
+    enable: 启用 {appName} DNS服务发现
   hostname:
     label: 主机名
+    placeholder: "例如: web"
     dockerId: 使用Docker容器ID
     containerName: 使用容器名称
     custom: 设置主机名
   domainName:
     label: 域名
+    placeholder: "例如: example.com"
   resolvingServers:
     label: 解析服务器
+    placeholder: "例如: 8.8.4.4"
   searchDomains:
     label: 搜索域
+    placeholder: "例如: prod.example.com"
     
 formPorts:
   addAction: 端口映射
@@ -1893,7 +1917,7 @@ formUserLabels:
   addAction: 添加标签
   key:
     label: 键
-    placeholder: '例如:foo'
+    placeholder: '例如: foo'
   separator: "="
   value:
     label: 值
@@ -1925,6 +1949,7 @@ formVolumes:
   volumesFrom: 卷来自
   volumeDriver:
     label: 卷驱动
+    placeholder: '例如: convoy-nfs'
   noLaunchConfigs: 此服务下没有可共享卷的启动配置.
   noHostContainers: 该主机没有可以提供共享卷的容器.
   onlySingleHost: 仅当添加容器到特定主机时适用.
@@ -2017,7 +2042,6 @@ inputPassword:
 inputTextFile:
   tooltip: 从文件读取
 
-
 k8s:
   containerSection:
     name: 容器名称
@@ -2026,6 +2050,13 @@ k8s:
     ready: 就绪
     restarts: 重启
     noData: 无容器
+  deploymentSection:
+    name: 部署名称
+    generation: 代
+    replicas: 副本
+    selectors: 选择器
+    containers: 容器
+    noData: 无部署
   formContainerPorts:
     portMap: 端口映射
     addPort: 添加端口
@@ -2047,30 +2078,42 @@ k8s:
     placeholder: 资源YAML或JSON定义
   podSection:
     name: Pod名称
-    containers: 容器
     status: 状态
+    containers: 容器
     hostIp: 主机IP
     podIp: "Pod IP"
     noData: 无Pods
   rcSection:
+    name: 复制控制器名称
     replicas: 副本
     selectors: 选择器
     containers: 容器
-    noData: "当前未创建任何副本控制器"
+    noData: "当前未创建任何复制控制器"
+  replicasetSection:
+    name: 副本集名称
+    replicas: 副本
+    selectors: 选择器
+    containers: 容器
+    noData: 无副本集
   servicePorts:
     port: 端口
     containerPort: 容器端口
     nodePort: Node端口
     protocol: 协议
-    noData: 无端口
+    noPorts: 无端口
+  serviceRow:
+    defaultType: ClusterIP
   serviceSection:
+    name: 服务名称
     cluster: "Cluster IP"
     pods: Pods
-    ports: 端口
+    clusterPorts: Cluster端口
+    nodePorts: Node端口
     selectors: 选择器
     noData: 当前未创建任何服务
 
 lbAddtlInfo:
+  info: 信息
   viewDetails: 查看详情
   defaultCertificate: 缺省证书
   alternateCertificate: 替换证书
@@ -2078,6 +2121,7 @@ lbAddtlInfo:
   containers: 容器
   noContainers: 无容器
   scale: 数量
+  global: 全局
   ports: 端口
   noPorts: 无公开主机端口
   targets: 目标
@@ -2208,7 +2252,13 @@ machine:
     close: 关闭
 
   driverDigitalocean:
+    sizeLabel: |
+      {slug} 内存, {disk}gb 磁盘, {vcpus, plural,
+        =1 {# vCPU}
+        other {# vCPUs}
+      }
     accountSection: 账户访问
+    authAccountButton: '下一步: 配置 Droplet'
     accessToken:
       label: 访问令牌*
       placeholder: "你的DigitalOcean API访问令牌"
@@ -2543,6 +2593,13 @@ registryRow:
   username: 用户名
   created: 创建时间
 
+saveCancel:
+  saving: 保存中...
+  saved: 已保存!
+  edit: 保存
+  create: 创建
+  cancel: 取消
+
 schema:
   inputBoolean:
     y: "True"
@@ -2554,17 +2611,18 @@ schema:
   inputService:
     prompt: 选择服务...
 
-saveCancel:
-  saving: 保存中...
-  saved: 已保存！
-  edit: 保存
-  create: 创建
-  cancel: 取消
-
 schedulingRuleRow:
   theHost: 主机
+  must: 必须
+  should: 最好
+  shouldNot: 最好没有
+  mustNot: 必须没有
   haveA: 具有
   of: 其
+  hostLabel: 主机标签
+  containerLabel: 容器标签
+  serviceName: 服务名称
+  containerName: 容器名称
 
 serviceLink:
     withAlias:
@@ -2721,7 +2779,29 @@ vmConsole:
 
 volumeRow:
   activeMounts:
-    readOnly: （只读）
+    readOnly: '(只读)'
+
+waitKubernetes:
+  addHost: '添加至少一台主机'
+  activateHost: '等待主机激活'
+  createStack: '创建 Kubernetes 系统应用栈'
+  startServices: '启动服务 ({sub} / {count})'
+  waitApi: '等待 Kubernetes API'
+  createNamespace: '创建命名空间'
+
+waitMesos:
+  addHost: '添加至少三台主机'
+  activateHost: '等待主机激活'
+  createStack: '创建 Mesos 系统应用栈'
+  startServices: '启动服务 ({sub} / {count})'
+  waitApi: '等待 Mesos Master'
+
+waitSwarm:
+  addHost: '添加至少一台主机'
+  activateHost: '等待主机激活'
+  createStack: '创建 Swarm 系统应用栈'
+  startServices: '启动服务 ({sub} / {count})'
+
 ##############################
 # Mixins
 ##############################
@@ -2743,10 +2823,6 @@ allServices:
   noName: "(应用栈:{id})"
 
 ##############################
-# Utils
-##############################
-
-##############################
 # Navigation
 ##############################
 nav:
@@ -2763,9 +2839,11 @@ nav:
     manage: 命名空间管理
   k8s:
     tab: Kubernets
-    services: 服务
+    stacks: 应用栈
     deployments: 部署
-    rcs: 副本控制器
+    services: 服务
+    replicasets: 副本集
+    rcs: 复制控制器
     pods: Pods
     cli: Kubectl
     system: 系统
@@ -2858,3 +2936,29 @@ action:
   viewGraph: 查看图形
   viewInApi: API查看
   
+##############################
+# Model Properties
+##############################
+model:
+  account:
+    kind:
+      registeredAgent: 已注册代理
+      agent: 代理
+      service: 服务
+      user: 用户
+      admin: 管理员
+      project: 环境
+  identity:
+    displayType:
+      user: 用户
+      team: 团队
+      group: 组
+      org: 组织
+      localUser: 本地用户
+      unknown: "{type}?"
+  projectMember:
+    role:
+      member: 成员
+      owner: 所有者
+      readonly: 只读
+      restricted: 受限
