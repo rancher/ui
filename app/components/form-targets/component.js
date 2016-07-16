@@ -2,14 +2,14 @@ import Ember from 'ember';
 import {parseTarget, stringifyTarget} from 'ui/utils/parse-target';
 
 export default Ember.Component.extend({
-  intl: Ember.inject.service(),
+  intl        : Ember.inject.service(),
 
-  existing: null,
-  isBalancer: null,
-  allServices: null,
-  editing: false,
+  existing    : null,
+  isBalancer  : null,
+  allServices : null,
+  editing     : false,
 
-  classNames: ['form-group'],
+  classNames  : ['form-group'],
 
   actions: {
     addTargetService: function() {
@@ -27,7 +27,9 @@ export default Ember.Component.extend({
   isAdvanced: false,
   targetsArray: null,
 
-  didInitAttrs: function() {
+  init() {
+    this._super(...arguments);
+
     this.set('isAdvanced', this.get('editing'));
 
     var out = [];

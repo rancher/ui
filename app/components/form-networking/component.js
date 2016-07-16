@@ -1,22 +1,22 @@
 import Ember from 'ember';
-import Util from 'ui/utils/util';
 import ContainerChoices from 'ui/mixins/container-choices';
 import ManageLabels from 'ui/mixins/manage-labels';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(ManageLabels, ContainerChoices,{
-  settings: Ember.inject.service(),
+  settings      : Ember.inject.service(),
 
   //Inputs
-  instance: null,
-  isService: null,
-  allHosts: null,
-  errors: null,
-  initialLabels: null,
+  instance      : null,
+  isService     : null,
+  allHosts      : null,
+  errors        : null,
+  initialLabels : null,
 
-  tagName: '',
+  tagName       : '',
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
     this.initLabels(this.get('initialLabels'), null, [C.LABEL.DNS, C.LABEL.HOSTNAME_OVERRIDE, C.LABEL.REQUESTED_IP]);
     this.initNetwork();
     this.initRequestedIp();
@@ -61,7 +61,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
         return;
       }
 
-      out.push({label: Util.ucFirst(option), value: option});
+      out.push({label: 'formNetwork.networkMode.'+option, value: option});
     });
 
     this.set('networkChoices', out);

@@ -16,22 +16,22 @@ export function parseExternalId(externalId) {
     return out;
   }
 
-  var idx = externalId.indexOf(C.EXTERNALID.KIND_SEPARATOR);
+  var idx = externalId.indexOf(C.EXTERNAL_ID.KIND_SEPARATOR);
   if (idx >= 0) {
     // New style kind://[group:]ido
     out.kind = externalId.substr(0, idx);
 
-    var rest = externalId.substr(idx + C.EXTERNALID.KIND_SEPARATOR.length);
-    idx = rest.indexOf(C.EXTERNALID.GROUP_SEPARATOR);
+    var rest = externalId.substr(idx + C.EXTERNAL_ID.KIND_SEPARATOR.length);
+    idx = rest.indexOf(C.EXTERNAL_ID.GROUP_SEPARATOR);
     out.id = rest;
     if (idx >= 0) {
       // With group kind://group/id
       out.group = rest.substr(0, idx);
     } else {
       // Without group kind://id
-      if (out.kind === C.EXTERNALID.KIND_CATALOG) {
+      if (out.kind === C.EXTERNAL_ID.KIND_CATALOG) {
         // For catalog kinds, we have a default group
-        out.group = C.EXTERNALID.CATALOG_DEFAULT_GROUP;
+        out.group = C.EXTERNAL_ID.CATALOG_DEFAULT_GROUP;
       }
 
     }
@@ -40,10 +40,10 @@ export function parseExternalId(externalId) {
     var dashedIdx = externalId.lastIndexOf('-');
 
     // Old style just an ID
-    out.kind = C.EXTERNALID.KIND_CATALOG;
+    out.kind = C.EXTERNAL_ID.KIND_CATALOG;
     // defaultgroup:extid:version
-    out.id = `${C.EXTERNALID.CATALOG_DEFAULT_GROUP}:${externalId.substr(0, dashedIdx)}:${externalId.substr(dashedIdx + 1)}`;
-    out.group = C.EXTERNALID.CATALOG_DEFAULT_GROUP;
+    out.id = `${C.EXTERNAL_ID.CATALOG_DEFAULT_GROUP}:${externalId.substr(0, dashedIdx)}:${externalId.substr(dashedIdx + 1)}`;
+    out.group = C.EXTERNAL_ID.CATALOG_DEFAULT_GROUP;
   }
 
   return out;

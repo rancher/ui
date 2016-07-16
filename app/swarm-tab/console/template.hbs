@@ -4,23 +4,23 @@
 
 <section class="well">
   {{#if (eq step 1)}}
-    <p>{{t 'dockerCLI.step1'}}:</p>
-    <button {{action "generate"}} class="btn btn-primary">{{t 'dockerCLI.step1Generate'}}</button>
+    <p>{{t 'dockerCLI.start'}}:</p>
+    <button {{action "generate"}} class="btn btn-primary">{{t 'dockerCLI.button'}}</button>
   {{/if}}
   {{#if (eq step 2)}}
-    <i class="icon icon-spinner icon-spin"></i> {{t 'dockerCLI.step2'}}
+    <i class="icon icon-spinner icon-spin"></i> {{t 'dockerCLI.generating'}}
   {{/if}}
   {{#if (eq step 3)}}
-    <i class="icon icon-spinner icon-spin"></i> {{t 'dockerCLI.step3'}}
+    <i class="icon icon-spinner icon-spin"></i> {{t 'dockerCLI.activating'}}
   {{/if}}
   {{#if (eq step 4)}}
-    <p>{{t 'dockerCLI.step4'}}</p>
+    <p>{{t 'dockerCLI.complete'}}</p>
     <ul>
-      <li>{{format-html-message 'dockerCLI.item1'}}</li>
-      <li>{{t 'dockerCLI.item2'}}</li>
-      <li>{{format-html-message 'dockerCLI.item3'}}</li>
-      <li>{{format-html-message 'dockerCLI.item4'}}</li>
-      <li>{{format-html-message 'dockerCLI.item5'}}</li>
+      <li>{{format-html-message 'dockerCLI.createDirectory'}}</li>
+      <li>{{t 'dockerCLI.extractZip'}}</li>
+      <li>{{format-html-message 'dockerCLI.copyFiles'}}</li>
+      <li>{{format-html-message 'dockerCLI.exportVars' swarmEndpoint=endpoint.swarm}}</li>
+      <li>{{format-html-message 'dockerCLI.test'}}</li>
     </ul>
   {{/if}}
 </section>

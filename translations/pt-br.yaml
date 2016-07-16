@@ -175,7 +175,7 @@ authPage:
         li3:
           text: 'Clique em "Register Application" '
       form:
-        headder: '2. Configurar {appName} para usar a sua aplicação para autenticação'
+        header: '2. Configurar {appName} para usar a sua aplicação para autenticação'
         subtext: 'Copie e cole o Client ID e Secret a partir do canto superior direito do seu aplicativo recém-criado.'
         clientId:
           labelText: 'Client ID*'
@@ -651,14 +651,6 @@ k8sTab:
       index:
         header: Pods
         linkTo: Adicionar Pod
-        table:
-          header:
-            status: Status
-            containers: Contêineres
-            host: IP do Host
-            pod: IP do Pod
-          body:
-            noData: Você não tem nenhum Pod ainda.
       pod:
         header:
           linkTo: 'Pod:'
@@ -670,13 +662,6 @@ k8sTab:
       index:
         header: RCs
         linkTo: Adicionar RC
-        table:
-          header:
-            replicas: Réplicas
-            selectors: Seletores
-            containers: Contêineres
-          body:
-            noData: Você não tem nenhum Controlador de Replicação ainda.
       rc:
         header: 'RC:'
         navTabs:
@@ -686,14 +671,6 @@ k8sTab:
     services:
       header: Serviços
       linkTo: Adicionar Serviços
-      table:
-        header:
-          cluster: IP do Cluster
-          pods: Pods
-          ports: Portas
-          selectors: Seletores
-        body:
-          noData: Você não tem nenhum Serviço ainda.
       service:
         index:
           header: 'Serviço:'
@@ -901,7 +878,7 @@ swarmPage:
           keyPlaceholder: p.ex. FOO
           valuePlaceholder: p.ex. bar
         dockerCompose:
-          labelText: dcoker-compose.yml
+          labelText: docker-compose.yml
           placeholder: Cole o conteúdo do docker-compose.yml
     project:
       linkTo: 'Projeto:'
@@ -1753,13 +1730,7 @@ inputTextFile:
 
 
 k8s:
-  servicePorts:
-    port: Porta
-    containerPort: Porta do Contêiner
-    nodePort: Porto do Nó
-    protocol: Protocolo
-    noPorts: Sem Portas.
-  containersSection:
+  containerSection:
     containerName: Nome do Contêiner
     status: Status
     message: Mensagem
@@ -1784,14 +1755,29 @@ k8s:
   newOrEditResource:
     placeholder: Definição de Recurso YAML ou JSON
   podSection:
-    podName: Nome do Pod
+    name: Nome do Pod
     containers: Contêineres
     status: Status
     hostIp: IP do Host
     podIp: IP do Pod
-    noPods: Sem Pods
-  serviceRow:
-    clusterIp: IP do Cluster
+    noData: Sem Pods
+  rcSection:
+    replicas: Réplicas
+    selectors: Seletores
+    containers: Contêineres
+    noData: Você não tem nenhum Controlador de Replicação ainda.
+  servicePorts:
+    port: Porta
+    containerPort: Porta do Contêiner
+    nodePort: Porto do Nó
+    protocol: Protocolo
+    noPorts: Sem Portas.
+  serviceSection:
+    cluster: IP do Cluster
+    pods: Pods
+    ports: Portas
+    selectors: Seletores
+    noData: Você não tem nenhum Serviço ainda.
 
 lbAddtlInfo:
   viewDetails: Exibir detalhes
@@ -2294,8 +2280,8 @@ stackSection:
     }
   sidekick: |
     {numSidekicks, plural,
-      =1 {Sidekick}
-      other {Sidekicks}
+      =1 {+ 1 Sidekick}
+      other {+ # Sidekicks}
     }
   add:
     service: Adicionar Serviço

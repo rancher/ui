@@ -73,9 +73,13 @@ export default Ember.Route.extend({
       });
     },
 
-    error(err) {
+    error(err, transition) {
+      /*if we dont abort the transition we'll call the model calls again and fail transition correctly*/
+      transition.abort();
+
       this.controllerFor('application').set('error',err);
       this.transitionTo('failWhale');
+
       console.log('Application Error', (err ? err.stack : undefined));
     },
 
@@ -145,6 +149,8 @@ export default Ember.Route.extend({
   model(params, transition) {
     let github   = this.get('github');
     let stateMsg = 'Authorization state did not match, please try again.';
+
+    this.get('language').initLanguage();
 
     if (params.isPopup) {
       this.controllerFor('application').set('isPopup', true);

@@ -25,23 +25,25 @@ function clientX(event) {
 }
 
 export default Ember.Component.extend({
-  classNames: ['slider'],
-  classNameBindings: ['disabled','active'],
+  classNames        : ['slider'],
+  classNameBindings : ['disabled','active'],
 
-  disabled: false,
-  initialValue: null,
-  value: null,  // Bind something to this to get the value, or use the action to get it
-  valueMin: 0,  // The smallest and biggest value is allowed to be
-  valueMax: 100,
-  scaleMin: null, // The smallest and biggest values shown on the display.  If these are not equal to valueMin/max then there will be
-  scaleMax: null, // a part of the slider that the user can't select, e.g. if you want to show 0 but have a minimum value of 1.
-  step: 1, // Increment
+  disabled          : false,
+  initialValue      : null,
+  value             : null,  // Bind something to this to get the value, or use the action to get it
+  valueMin          : 0,  // The smallest and biggest value is allowed to be
+  valueMax          : 100,
+  scaleMin          : null, // The smallest and biggest values shown on the display.  If these are not equal to valueMin/max then there will be
+  scaleMax          : null, // a part of the slider that the user can't select, e.g. if you want to show 0 but have a minimum value of 1.
+  step              : 1, // Increment
 
-  active: false,
-  dragFn: null,
-  upFn: null,
+  active            : false,
+  dragFn            : null,
+  upFn              : null,
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     var initial = this.get('initialValue');
     if ( initial !== null )
     {

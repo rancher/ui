@@ -2,6 +2,7 @@ import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import ShellQuote from 'npm:shell-quote';
 import C from 'ui/utils/constants';
+import { compare as compareVersion} from 'ui/utils/parse-version';
 
 export default Ember.Component.extend(NewOrEdit, {
   k8s: Ember.inject.service(),
@@ -65,6 +66,12 @@ export default Ember.Component.extend(NewOrEdit, {
       this.set('readmeContent', response);
     });
   },
+
+  sortedVersions: function() {
+    return this.get('versionsArray').sort((a,b) => {
+      return compareVersion(a.version, b.version);
+    });
+  }.property('versionsArray'),
 
   templateChanged: function() {
     var link = this.get('selectedTemplateUrl');
@@ -158,14 +165,14 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   newExternalId: function() {
-    var externalId = ( this.get('isSystem') ? C.EXTERNALID.KIND_SYSTEM_CATALOG : C.EXTERNALID.KIND_CATALOG );
-    externalId += C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
+    var externalId = ( this.get('isSystem') ? C.EXTERNAL_ID.KIND_SYSTEM_CATALOG : C.EXTERNAL_ID.KIND_CATALOG );
+    externalId += C.EXTERNAL_ID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
     return externalId;
   }.property('isSystem','selectedTemplateModel.id'),
 
   isSystem: function() {
     if ( this.get('editing') ) {
-      return this.get('environmentResource.externalId').indexOf(C.EXTERNALID.KIND_SYSTEM_CATALOG + C.EXTERNALID.KIND_SEPARATOR) === 0;
+      return this.get('environmentResource.externalId').indexOf(C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR) === 0;
     }
 
     let explicit = this.get('templateResource.isSystem');
@@ -173,7 +180,7 @@ export default Ember.Component.extend(NewOrEdit, {
       return explicit;
     }
 
-    let systemCategories = C.EXTERNALID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
+    let systemCategories = C.EXTERNAL_ID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
     let category = (this.get('templateResource.category')||'').trim().toLowerCase();
     return systemCategories.indexOf(category) >= 0;
   }.property('editing','environmentResource.externalId','templateResource.{category,isSystem}'),
@@ -199,13 +206,40 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   doSave() {
+    var env = this.get('environmentResource');
     if ( this.get('templateBase') === 'kubernetes' ) {
-      return this.get('k8s').catalog(
-        this.get('selectedTemplateModel.files'),
-        this.get('environmentResource.environment')
-      );
+      if ( this.get('k8s.supportsStacks') ) {
+        if ( this.get('editing') ) {
+          return env.doAction('upgrade', {
+            templates: this.get('selectedTemplateModel.files'),
+            environment: env.get('environment'),
+            externalId: this.get('newExternalId'),
+            namespace: this.get('k8s.namespace.metadata.name'),
+          });
+        } else {
+          return this.get('store').createRecord({
+            type: 'kubernetesStack',
+            name: env.get('name'),
+            description: env.get('description'),
+            templates: this.get('selectedTemplateModel.files'),
+            environment: env.get('environment'),
+            externalId: this.get('newExternalId'),
+            namespace: this.get('k8s.namespace.metadata.name'),
+          }).save().then((newData) => {
+            return this.mergeResult(newData);
+          });
+        }
+      } else {
+        return this.get('k8s').catalog({
+          files: this.get('selectedTemplateModel.files'),
+          environment: this.get('environmentResource.environment'),
+          annotations: {
+            [C.LABEL.STACK_NAME]:  this.get('environmentResource.name'),
+            [C.LABEL.EXTERNAL_ID]: this.get('newExternalId'),
+          },
+        });
+      }
     } else if ( this.get('templateBase') === 'swarm' ) {
-      var env = this.get('environmentResource');
       return this.get('store').createRecord({
         type: 'composeProject',
         name: env.get('name'),
@@ -217,10 +251,10 @@ export default Ember.Component.extend(NewOrEdit, {
         return this.mergeResult(newData);
       });
     } else if (this.get('editing')) {
-      return this.get('environmentResource').doAction('upgrade', {
-        dockerCompose: this.get('environmentResource.dockerCompose'),
-        rancherCompose: this.get('environmentResource.rancherCompose'),
-        environment: this.get('environmentResource.environment'),
+      return env.doAction('upgrade', {
+        dockerCompose: env.get('dockerCompose'),
+        rancherCompose: env.get('rancherCompose'),
+        environment: env.get('environment'),
         externalId: this.get('newExternalId'),
       });
     } else {
@@ -234,7 +268,7 @@ export default Ember.Component.extend(NewOrEdit, {
     if ( base === 'kubernetes' )
     {
       var nsId = this.get('k8s.namespace.id');
-      return this.get('router').transitionTo('k8s-tab.namespace.services', projectId, nsId);
+      return this.get('router').transitionTo('k8s-tab.namespace.stacks', projectId, nsId);
     }
     else if ( base === 'swarm' )
     {

@@ -7,7 +7,8 @@ export default Ember.Component.extend({
 
   disksArray: Ember.computed.alias('instance.disks'),
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
     var defaultDriver = this.get('availableDrivers').objectAt(0);
 
     var disks = (this.get('instance.disks')||[]).slice();

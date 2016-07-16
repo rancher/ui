@@ -17,7 +17,7 @@ var C = {
     CSRF: 'CSRF',
   },
 
-  EXTERNALID: {
+  EXTERNAL_ID: {
     KIND_SEPARATOR: '://',
     GROUP_SEPARATOR: ':',
     KIND_ALL: 'all',
@@ -58,20 +58,6 @@ var C = {
     COMMUNITY_VALUE: 'https://github.com/rancher/community-catalog.git',
   },
 
-  // English Error Page translations will exist here incase we run in to a scenario in
-  // which the translation files cant be loaded so we may still have a semi-readable error page
-  FALLBACK_TRANSLATIONS: {
-    FAILWHALE: {
-      HEADER: 'Error',
-      RELOAD_BUTTON: '<a href="#" onclick="window.location.href = window.location.href; return false;">Reload</a> to try again or',
-      LOGOUT_BUTTON: 'log out'
-    },
-    NOT_FOUND: {
-      HEADER: "The page you were looking for doesn't exist!",
-      LINK_TO: 'Go Home'
-    }
-  },
-
   GITHUB: {
     DEFAULT_HOSTNAME: 'github.com',
     AUTH_PATH: '/login/oauth/authorize',
@@ -109,6 +95,8 @@ var C = {
     SYSTEM_TYPE: 'io.rancher.container.system',
     SERVICE_NAME: 'io.rancher.stack_service.name',
     STACK_NAME: 'io.rancher.stack.name',
+    STACK_UUID: 'io.rancher.stack.uuid',
+    EXTERNAL_ID: 'io.rancher.external_id',
     SCHED_GLOBAL: 'io.rancher.scheduler.global',
     SCHED_CONTAINER: 'io.rancher.scheduler.affinity:container',
     SCHED_HOST_LABEL: 'io.rancher.scheduler.affinity:host_label',
@@ -246,7 +234,9 @@ var C = {
   K8S: {
     BASE: 'api',
     BASE_VERSION: 'api/v1',
+    EXTENSION_VERSION: 'apis/extensions/v1beta1',
     TYPE_PREFIX: 'k8s-',
+    EXTENSION_TYPES: ['k8s-deployment','k8s-replicaset'],
     ID_SEPARATOR: '::',
     DEFAULT_NS: 'defaultNamespace',
   },

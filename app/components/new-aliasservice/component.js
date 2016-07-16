@@ -2,14 +2,14 @@ import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
 export default Ember.Component.extend(NewOrEdit, {
-  service: null,
-  existing: null,
-  allServices: null,
+  service         : null,
+  existing        : null,
+  allServices     : null,
 
-  targetResources: null,
-  targetsArray: null,
+  targetResources : null,
+  targetsArray    : null,
 
-  primaryResource: Ember.computed.alias('service'),
+  primaryResource : Ember.computed.alias('service'),
 
   actions: {
     setTargets(array, resources) {
@@ -26,7 +26,9 @@ export default Ember.Component.extend(NewOrEdit, {
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this.set('targetsArray',[]);
     this.set('targetResources',[]);
   },

@@ -16,6 +16,15 @@
 </div>
 
 {{#if (not (eq checkType "none"))}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formHealthCheck.port.label'}}*</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      {{input type="number" min="1" max="65535" classNames="form-control" placeholder=(t 'formHealthCheck.port.placeholder') value=healthCheck.port}}
+    </div>
+  </div>
+
   {{#if (eq checkType "http")}}
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
@@ -67,13 +76,8 @@
     {{/if}}
   {{/if}}
 
+
   <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">{{t 'formHealthCheck.port.label'}}*</label>
-    </div>
-    <div class="col-sm-12 col-md-3">
-      {{input type="number" min="1" max="65535" classNames="form-control" placeholder=(t 'formHealthCheck.port.placeholder') value=healthCheck.port}}
-    </div>
     <div class="col-sm-12 col-md-2 form-label">
       <label class="form-control-static">{{t 'formHealthCheck.initializingTimeout.label'}}</label>
     </div>
@@ -81,6 +85,15 @@
       <div class="input-group">
         {{input type="number" step=100 classNames="form-control" value=healthCheck.initializingTimeout}}
         <span class="input-group-addon">{{t 'formHealthCheck.initializingTimeout.unit'}}</span>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formHealthCheck.reinitializingTimeout.label'}}</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      <div class="input-group">
+        {{input type="number" step=100 classNames="form-control" value=healthCheck.reinitializingTimeout}}
+        <span class="input-group-addon">{{t 'formHealthCheck.reinitializingTimeout.unit'}}</span>
       </div>
     </div>
   </div>

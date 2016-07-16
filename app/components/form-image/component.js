@@ -25,7 +25,8 @@ export default Ember.Component.extend(ManageLabels, {
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
     this.initLabels(this.get('initialLabels'), null, C.LABEL.PULL_IMAGE);
 
     var pull = this.getLabel(C.LABEL.PULL_IMAGE) === C.LABEL.PULL_IMAGE_VALUE;

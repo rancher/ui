@@ -58,7 +58,33 @@ var K8sResource = Resource.extend({
     }
 
     // Sorta matches
-    return (have && want && (have+"") === (want+""));
+    return (have && want && ((have+"") === (want+"")));
+  },
+
+  hasAnnotation(key, want=undefined) {
+    var annotations = this.get('metadata.annotations')||{};
+    var have = annotations[key];
+
+    // The key doesn't exist
+    if ( have === undefined )
+    {
+      return false;
+    }
+
+    // Just checking if the key exists
+    if ( want === undefined )
+    {
+      return true;
+    }
+
+    // Really matches
+    if ( have === want )
+    {
+      return true;
+    }
+
+    // Sorta matches
+    return (have && want && ((have+"") === (want+"")));
   },
 
   delete: function(/*arguments*/) {

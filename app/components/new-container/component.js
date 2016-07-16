@@ -6,38 +6,38 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
-  intl: Ember.inject.service(),
+  intl                      : Ember.inject.service(),
 
-  isStandalone: true,
-  isService: false,
-  isSidekick: false,
-  isUpgrade: false,
-  primaryResource: null,
-  primaryService: null,
-  launchConfig: null,
-  service: null,
-  allHosts: null,
-  allServices: null,
-  allStoragePools: null,
+  isStandalone              : true,
+  isService                 : false,
+  isSidekick                : false,
+  isUpgrade                 : false,
+  primaryResource           : null,
+  primaryService            : null,
+  launchConfig              : null,
+  service                   : null,
+  allHosts                  : null,
+  allServices               : null,
+  allStoragePools           : null,
 
-  serviceLinksArray: null,
-  isGlobal: null,
-  isRequestedHost: null,
-  portsAsStrArray: null,
-  launchConfigIndex: -1,
-  upgradeOptions: null,
+  serviceLinksArray         : null,
+  isGlobal                  : null,
+  isRequestedHost           : null,
+  portsAsStrArray           : null,
+  launchConfigIndex         : -1,
+  upgradeOptions            : null,
 
   // Errors from components
-  commandErrors: null,
-  volumeErrors: null,
-  networkingErrors: null,
-  healthCheckErrors: null,
-  schedulingErrors: null,
-  securityErrors: null,
-  scaleErrors: null,
-  imageErrors: null,
-  portErrors: null,
-  diskErrors: null,
+  commandErrors             : null,
+  volumeErrors              : null,
+  networkingErrors          : null,
+  healthCheckErrors         : null,
+  schedulingErrors          : null,
+  securityErrors            : null,
+  scaleErrors               : null,
+  imageErrors               : null,
+  portErrors                : null,
+  diskErrors                : null,
 
   actions: {
     selectLaunchConfig(index) {
@@ -121,7 +121,9 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this.labelsChanged();
   },
 

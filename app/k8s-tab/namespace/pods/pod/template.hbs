@@ -13,9 +13,9 @@
   </div>
 </section>
 
-<section>
+{{#select-tab initialTab='containers' as |component|}}
   <ul class="nav nav-tabs nav-tabs-well" role="tablist">
-    <li role="tab" class="tab" data-section="containers" {{action "selectTab" "containers" target="view"}}><a href="#">{{t 'k8sTab.namespace.pods.pod.navTabs.containers'}}</a></li>
+    <li role="tab" class="tab" data-section="containers" {{action "selectTab" "containers" target="component"}}><a href="#">{{t 'k8sTab.namespace.pods.pod.navTabs.containers'}}</a></li>
   </ul>
 
   <div class="horizontal-form well nav-well" role="tabpanel">
@@ -23,4 +23,4 @@
       {{k8s/container-section model=model.displayContainers}}
     </div>
   </div>
-</section>
+{{/select-tab}}

@@ -4,15 +4,17 @@ import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
-  mesos: Ember.inject.service(),
+  mesos       : Ember.inject.service(),
 
-  timer: null,
-  currentStep: 0,
-  subStep: 0,
-  subCount: 0,
-  services: null,
+  timer       : null,
+  currentStep : 0,
+  subStep     : 0,
+  subCount    : 0,
+  services    : null,
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this.updateStep();
     this.get('store').findAllUnremoved('service').then((services) => {
       this.set('services', services);
@@ -24,11 +26,11 @@ export default Ember.Component.extend({
   },
 
   steps: [
-    'Add at least three hosts',
-    'Waiting for hosts to be active',
-    'Creating Mesos system stack',
-    'Starting services',
-    'Waiting for leading Mesos Master'
+    'waitMesos.addHost',
+    'waitMesos.activateHost',
+    'waitMesos.createStack',
+    'waitMesos.startServices',
+    'waitMesos.waitApi'
   ],
 
   updateStep: debouncedObserver('model.hosts.@each.state','model.stacks.@each.{state,externalId}','services.@each.{state,healthState}', function() {

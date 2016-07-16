@@ -45,6 +45,24 @@ export default Ember.Controller.extend({
     }
   },
 
+  bootstrap: function() {
+    Ember.run.schedule('afterRender', this, () => {
+      var user = Ember.$('.login-user')[0];
+      var pass = Ember.$('.login-pass')[0];
+      if ( user )
+      {
+        if ( user.value )
+        {
+          pass.focus();
+        }
+        else
+        {
+          user.focus();
+        }
+      }
+    });
+  }.on('init'),
+
   infoMsg: function() {
     if ( this.get('errorMsg') ) {
       return this.get('errorMsg');
@@ -54,4 +72,5 @@ export default Ember.Controller.extend({
       return '';
     }
   }.property('timedOut','errorMsg'),
+
 });

@@ -10,7 +10,8 @@ export default Ember.Component.extend(ManageLabels, {
 
   tagName: '',
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
     this.initLabels(this.get('initialLabels'), null, C.LABEL.START_ONCE);
     this.initTerminal();
     this.initStartOnce();

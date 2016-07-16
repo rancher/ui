@@ -189,7 +189,7 @@ authPage:
         li3:
           text: 'Click "Register Application" '
       form:
-        headder: '2. Configure {appName} to use your application for authentication'
+        header: '2. Configure {appName} to use your application for authentication'
         subtext: 'Copy and paste the Client ID and Secret from the upper-right corner of your newly-created application.'
         clientId:
           labelText: Client ID
@@ -446,19 +446,19 @@ containerSubpod:
 
 dockerCLI:
   header: Docker CLI
-  step1: To use docker or docker-compose on your workstation, click the button to generate an API key and config file
-  step1Generate: Generate Config
-  step2: Generating...
-  step3: Activating...
-  step4: Now configure your workstation
-  item1: |
+  start: To use docker or docker-compose on your workstation, click the button to generate an API key and config file
+  button: Generate Config
+  generating: Generating...
+  activating: Activating...
+  complete: Now configure your workstation
+  createDirectory: |
     Create the <code>.docker</code> directory: <code>mkdir -pv ~/.docker</code>
-  item2: Extract the ZIP file that just downloaded
-  item3: |
+  extractZip: Extract the ZIP file that just downloaded
+  copyFiles: |
     Copy all the files from the extracted ZIP into the <code>.docker</code> directory
-  item4: |
-    Run <code>export DOCKER_HOST={{endpoint.swarm}} DOCKER_TLS_VERIFY=1</code> or add to your profile
-  item5: |
+  exportVars: |
+    Run <code>export DOCKER_HOST={swarmEndpoint} DOCKER_TLS_VERIFY=1</code> or add to your profile
+  test: |
     Test with <code>docker ps</code>
   well: |
     Or use this handy shell to directly execute <code>docker</code> or <code>docker-compose</code> commands:
@@ -528,9 +528,9 @@ haPage:
       form:
         clusterSize:
           labelText: Cluster Size
-          radio1: '<span class="text-bold" style="display: inline-block: width: 120px;">1 Host:</span> Not really very HA at all'
-          radio2: '<span class="text-bold" style="display: inline-block: width: 120px;">3 Hosts:</span> Any <b>one</b> host can fail'
-          radio3: '<span class="text-bold" style="display: inline-block: width: 120px;">5 Hosts:</span> Any <b>two</b> hosts can fail'
+          one: '<span class="text-bold" style="display: inline-block: width: 120px;">1 Host:</span> Not really very HA at all'
+          three: '<span class="text-bold" style="display: inline-block: width: 120px;">3 Hosts:</span> Any <b>one</b> host can fail'
+          five: '<span class="text-bold" style="display: inline-block: width: 120px;">5 Hosts:</span> Any <b>two</b> hosts can fail'
         hostRegistration:
           helpText:
             singleCluster: 'This should be a FQDN that resolves to the addresses of or is a load balancer for the HA host. Do not include <code>/v1</code> or any other path.'
@@ -713,6 +713,15 @@ hostsPage:
           noData: This host does not have any volumes.
 
 k8sTab:
+  types:
+    namespace: Namespace
+    service: Service
+    deployment: Deployment
+    replicationcontroller: Replication Controller
+    replicaset: Replica Set
+    petset: Pet Set
+    pod: Pod
+
   kubectl:
     header: kubectl
     stepOne:
@@ -746,14 +755,6 @@ k8sTab:
       index:
         header: Pods
         linkTo: Add Pod
-        table:
-          header:
-            status: Status
-            containers: Containers
-            host: Host IP
-            pod: Pod IP
-          body:
-            noData: You do not have any Pods yet.
       pod:
         header:
           linkTo: 'Pod:'
@@ -765,30 +766,26 @@ k8sTab:
       index:
         header: Deployments
         linkTo: Add Deployment
-        table:
-          header:
-            replicas: Replicas
-            selectors: Selectors
-            containers: Containers
-          body:
-            noData: You do not have any Deployments yet.
       deployment:
         header: 'Deployment:'
         navTabs:
           pods: Pods
           labels: Labels
           ports: Ports
+    replicasets:
+      index:
+        header: Replica Sets
+        linkTo: Add Replica Set
+      replicaSet:
+        header: 'Replica Set:'
+        navTabs:
+          pods: Pods
+          labels: Labels
+          ports: Ports
     rcs:
       index:
-        header: RCs
+        header: Replication Controllers
         linkTo: Add RC
-        table:
-          header:
-            replicas: Replicas
-            selectors: Selectors
-            containers: Containers
-          body:
-            noData: You do not have any Replication Controllers yet.
       rc:
         header: 'RC:'
         navTabs:
@@ -798,14 +795,6 @@ k8sTab:
     services:
       header: Services
       linkTo: Add Service
-      table:
-        header:
-          cluster: Cluster IP
-          pods: Pods
-          ports: Ports
-          selectors: Selectors
-        body:
-          noData: You do not have any Services yet.
       service:
         index:
           header: 'Service:'
@@ -1040,7 +1029,7 @@ swarmPage:
           keyPlaceholder: e.g. FOO
           valuePlaceholder: e.g. bar
         dockerCompose:
-          labelText: dcoker-compose.yml
+          labelText: docker-compose.yml
           placeholder: Paste in the contents of docker-compose.yml
     project:
       linkTo: 'Project:'
@@ -1288,17 +1277,17 @@ serviceInfoPartial:
   description: 'Description:'
   containers: Containers
   scale: Scale
+  global: Global
   noContainers: No Containers
   ports: Ports
   noPublicPorts: No Public Ports
   links: Links
   noLinks: No Links
   fqdn: 'FQDN:'
+
 ##############################
 # Components
 ##############################
-accountRow:
-
 advancedSection:
   hrText: Advanced Options
 
@@ -1658,6 +1647,9 @@ formHealthCheck:
   initializingTimeout:
     label: Initializing Timeout
     unit: ms
+  reinitializingTimeout:
+    label: Reinitializing Timeout
+    unit: ms
   interval:
     label: Check Interval
     unit: ms
@@ -1711,21 +1703,39 @@ formNameDescription:
     placeholder: Description
 
 formNetwork:
-  network: Network
-  container: Container
-  requestedIP: Requested IP
-  requestSpecific: Request a specific IP in the 10.42.0.0/16 block.  If the IP is already in use a random one will be assigned.
-  retainIP: Retain IP
-  reuseIP: Reuse IP addresses when upgrading or replacing unhealthy instances.
-  dns: DNS
-  serviceDiscovery: DNS service discovery
-  hostname: Hostname
-  useDockerID: Use the Docker container ID
-  containerName: Use the container name
-  specificHostname: "Set a specific hostname:"
-  domainName: Domain Name
-  resolvingServers: Resolving Servers
-  searchDomains: Search Domains
+  networkMode:
+    label: Network
+    bridge: Bridge
+    host: Host
+    managed: Managed
+    none: None
+  container:
+    label: ontainer
+  requestedIp:
+    label: Requested IP
+    placeholder: e.g. 10.42.2.24
+    help: Request a specific IP in the 10.42.0.0/16 block.  If the IP is already in use a random one will be assigned.
+  retainIp:
+    label: Retain IP
+    reuse: Reuse IP addresses when upgrading or replacing unhealthy instances.
+  dns:
+    label: DNS
+    enable: Enable {appName} DNS service discovery
+  hostname:
+    label: Hostname
+    placeholder: e.g. web
+    dockerId: Use the Docker container ID
+    containerName: Use the container name
+    custom: Set a specific hostname
+  domainName:
+    label: Domain Name
+    placeholder: e.g. example.com
+  resolvingServers:
+    label: Resolving Servers
+    placeholder: e.g. 8.8.4.4
+  searchDomains:
+    label: Search Domains
+    placeholder: e.g. prod.example.com
 
 formPorts:
   addAction: Port Map
@@ -1937,10 +1947,12 @@ formVolumes:
     prompt: Select a Container...
   volumes: Volumes
   volumesFrom: Volumes From
-  volumeDriver: Volume Driver
-  text1: There are no other launch configs in this service to share volumes with.
-  text2: This host has no containers to use the volumes from.
-  text3: Only available when adding a container to a particular host.
+  volumeDriver:
+    label: Volume Driver
+    placeholder: 'e.g. convoy-nfs'
+  noLaunchConfigs: There are no other launch configs in this service to share volumes with.
+  noHostContainers: This host has no containers to use the volumes from.
+  onlySingleHost: Only available when adding a container to a particular host.
 
 heroAddService:
   header: Adding your first Service
@@ -2030,21 +2042,21 @@ inputPassword:
 inputTextFile:
   tooltip: Read from a file
 
-
 k8s:
-  servicePorts:
-    port: Port
-    containerPort: Container Port
-    nodePort: Node Port
-    protocol: Protocol
-    noPorts: No Ports
-  containersSection:
-    containerName: Container Name
+  containerSection:
+    name: Container Name
     status: Status
     message: Message
     ready: Ready
     restarts: Restarts
-    noContainers: No Containers
+    noData: No Containers
+  deploymentSection:
+    name: Deployment Name
+    generation: Generation
+    replicas: Replicas
+    selectors: Selectors
+    containers: Containers
+    noData: No Deployments
   formContainerPorts:
     portMap: Port Map
     addPort: Add Port
@@ -2061,20 +2073,47 @@ k8s:
         containerPort: e.g. 8080
     noPorts: This container has no port maps.
   newOrEditResource:
-    edit: Edit
-    add: Add
+    edit: Edit {type}
+    add: Add {type}
     placeholder: Resouce YAML or JSON definition
   podSection:
-    podName: Pod Name
-    containers: Containers
+    name: Pod Name
     status: Status
+    containers: Containers
     hostIp: Host IP
     podIp: Pod IP
-    noPods: No Pods
+    noData: No Pods
+  rcSection:
+    name: RC Name
+    replicas: Replicas
+    selectors: Selectors
+    containers: Containers
+    noData: No Replication Controllers
+  replicasetSection:
+    name: Replica Set Name
+    replicas: Replicas
+    selectors: Selectors
+    containers: Containers
+    noData: No Replica Sets
+  servicePorts:
+    port: Port
+    containerPort: Container Port
+    nodePort: Node Port
+    protocol: Protocol
+    noPorts: No Ports
   serviceRow:
+    defaultType: ClusterIP
+  serviceSection:
+    name: Service Name
     clusterIp: Cluster IP
+    pods: Pods
+    clusterPorts: Cluster Ports
+    nodePorts: Node Ports
+    selectors: Selectors
+    noData: No Services
 
 lbAddtlInfo:
+  info: Info
   viewDetails: View Details
   defaultCertificate: Default Certificate
   alternateCertificate: Alternate Certificate
@@ -2082,6 +2121,7 @@ lbAddtlInfo:
   containers: Containers
   noContainers: No Containers
   scale: Scale
+  global: Globl
   ports: Ports
   noPorts: No public host ports
   targets: Targets
@@ -2115,7 +2155,7 @@ machine:
       provided: Provided
     region:
       label: Region
-    accessKeyHelp: Paste in your AWS key pair here. We'll use this key to create your new Instances.
+    accessKeyHelp: "Paste in your AWS key pair here. We'll use this key to create your new Instances."
     loginAction: "Next: Authenticate & select a network"
     loadingAvailability: Loading Availablility Zone and VPC info from EC2...
     vpcSection: Availability Zone & VPC
@@ -2202,7 +2242,7 @@ machine:
     step2: "Make sure any security groups or firewalls allow traffic:"
     step2li: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span>
     step3: "Optional: Add labels to be applied to the host."
-    step4: "Optional: Specify the public IP that should be used for this host.  This is required if you're trying to add the host the <code>{rancherImage}</code> container is on."
+    step4: "Optional: Specify the public IP that should be used for this host.  This is required if you're trying to add the host the <code>{rancherImage}</code> container is on." 
     step5Copy: Copy, paste, and run the command below to register the host with
     generating: Generating registration URL...
     step5Close:
@@ -2212,7 +2252,13 @@ machine:
     close: Close
 
   driverDigitalocean:
+    sizeLabel: |
+      {slug} RAM, {disk}gb Disk, {vcpus, plural,
+        =1 {# vCPU}
+        other {# vCPUs}
+      }
     accountSection: Account Access
+    authAccountButton: 'Next: Configure Droplet'
     accessToken:
       label: Access Token*
       placeholder: Your DigitalOcean API access token
@@ -2547,6 +2593,13 @@ registryRow:
   username: Username
   created: Created
 
+saveCancel:
+  saving: Saving...
+  saved: Saved!
+  edit: Save
+  create: Create
+  cancel: Cancel
+
 schema:
   inputBoolean:
     y: "True"
@@ -2558,17 +2611,18 @@ schema:
   inputService:
     prompt: Choose a Service...
 
-saveCancel:
-  saving: Saving...
-  saved: Saved!
-  edit: Save
-  create: Create
-  cancel: Cancel
-
 schedulingRuleRow:
   theHost: The host
+  must: must
+  should: should
+  shouldNot: should not
+  mustNot: must not
   haveA: have a
   of: of
+  hostLabel: host label
+  containerLabel: container with label
+  serviceName: service with the name
+  containerName: container with the name
 
 serviceLink:
     withAlias:
@@ -2616,8 +2670,8 @@ stackSection:
     }
   sidekick: |
     {numSidekicks, plural,
-      =1 {Sidekick}
-      other {Sidekicks}
+      =1 {+ 1 Sidekick}
+      other {+ # Sidekicks}
     }
   add:
     service: Add Service
@@ -2726,6 +2780,28 @@ vmConsole:
 volumeRow:
   activeMounts:
     readOnly: "(read-only)"
+
+waitKubernetes:
+  addHost: 'Add at least one host'
+  activateHost: 'Waiting for a host to be active'
+  createStack: 'Creating Kubernetes system stack'
+  startServices: 'Starting services ({sub} of {count})'
+  waitApi: 'Waiting for Kubernetes API'
+  createNamespace: 'Creating Namespace'
+
+waitMesos:
+  addHost: 'Add at least three hosts'
+  activateHost: 'Waiting for hosts to be active'
+  createStack: 'Creating Mesos system stack'
+  startServices: 'Starting services ({sub} of {count})'
+  waitApi: 'Waiting for leading Mesos Master'
+
+waitSwarm:
+  addHost: 'Add at least one host'
+  activateHost: 'Waiting for a host to be active'
+  createStack: 'Creating Swarm system stack'
+  startServices: 'Starting services ({sub} of {count})'
+
 ##############################
 # Mixins
 ##############################
@@ -2747,10 +2823,6 @@ allServices:
   noName: "(Stack: {id})"
 
 ##############################
-# Utils
-##############################
-
-##############################
 # Navigation
 ##############################
 nav:
@@ -2767,12 +2839,14 @@ nav:
     manage: Manage Namespaces
   k8s:
     tab: Kubernetes
-    services: Services
+    stacks: Stacks
     deployments: Deployments
+    services: Services
+    replicasets: Replica Sets
     rcs: Replication Controllers
     pods: Pods
     cli: Kubectl
-    system: System
+    system: System Stacks
   swarm:
     tab: Swarm
     projects: Projects
@@ -2861,3 +2935,30 @@ action:
   viewConfig: View Config
   viewGraph: View Graph
   viewInApi: View in API
+
+##############################
+# Model Properties
+##############################
+model:
+  account:
+    kind:
+      registeredAgent: Registered Agent
+      agent: Agent
+      service: Service
+      user: User
+      admin: Admin
+      project: Environment
+  identity:
+    displayType:
+      user: User
+      team: Team
+      group: Group
+      org: Organization
+      localUser: Local User
+      unknown: "{type}?"
+  projectMember:
+    role:
+      member: Member
+      owner: Owner
+      readonly: Read-Only
+      restricted: Restricted

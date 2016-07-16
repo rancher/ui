@@ -9,18 +9,19 @@ function roundScale(num) {
 }
 
 export default Ember.Component.extend(ManageLabels, {
-  initialLabels: null,
-  initialScale: null,
-  showGlobal: true,
-  isGlobal: null,
-  editing: false,
-  isVm: null,
+  initialLabels : null,
+  initialScale  : null,
+  showGlobal    : true,
+  isGlobal      : null,
+  editing       : false,
+  isVm          : null,
 
-  scale: null,
-  max: 11,
+  scale         : null,
+  max           : 11,
 
-  didInitAttrs() {
-    this._super();
+  init() {
+    this._super(...arguments);
+
 
     this.set('scale', this.get('initialScale')||1);
     this.set('max', Math.max(11, roundScale(this.get('scale'))));

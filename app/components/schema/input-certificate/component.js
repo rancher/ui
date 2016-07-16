@@ -1,13 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  field: null,
-  value: null,
+  field   : null,
+  value   : null,
 
-  choices: null,
-  default: Ember.computed.alias('field.default'),
-  loading: true,
-  didInitAttrs: function() {
+  choices : null,
+  default : Ember.computed.alias('field.default'),
+  loading : true,
+
+  init() {
+    this._super(...arguments);
+
     this.get('store').findAll('certificate').then((choices) => {
       var def = this.get('default');
       if ( this.get('value') === undefined )

@@ -2,17 +2,19 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   // Inputs
-  instance: null,
-  primaryService: null,
-  launchConfigChoices: null,
-  launchConfigIndex: null,
-  isService: null,
-  allHosts: null,
-  errors: null,
+  instance            : null,
+  primaryService      : null,
+  launchConfigChoices : null,
+  launchConfigIndex   : null,
+  isService           : null,
+  allHosts            : null,
+  errors              : null,
 
   tagName: '',
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this.initVolumes();
     this.initVolumesFrom();
     this.initVolumesFromLaunchConfig();
@@ -20,7 +22,7 @@ export default Ember.Component.extend({
 
   initVolumesFromLaunchConfig() {
     var dv = this.get('instance.dataVolumesFromLaunchConfigs');
-    this.set('initEnabled', dv); 
+    this.set('initEnabled', dv);
     Ember.run.once(this,'updateChoices');
   },
 

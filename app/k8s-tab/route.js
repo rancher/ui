@@ -17,11 +17,17 @@ export default Ember.Route.extend({
       services: k8s.allServices(),
       rcs: k8s.allRCs(),
       pods: k8s.allPods(),
+      deployments: k8s.allDeployments(),
+      replicasets: k8s.allReplicaSets(),
       containers: this.get('store').findAll('container'),
     }).then((hash) => {
       return k8s.selectNamespace().then(() => {
         k8s.setProperties(hash);
       });
     });
+  },
+
+  deactivate: function() {
+    $('BODY').removeClass('k8s');
   },
 });

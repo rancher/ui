@@ -4,7 +4,9 @@ import ShellQuote from 'npm:shell-quote';
 export default Ember.TextField.extend({
   type: 'text',
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     let initial = this.get('initialValue')||'';
     if ( Ember.isArray(initial) )
     {

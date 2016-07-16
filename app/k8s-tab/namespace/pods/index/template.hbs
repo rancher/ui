@@ -5,24 +5,6 @@
 </section>
 
 <section class="well instances">
-  <table class="grid fixed" style="margin-bottom: 0;">
-    <thead>
-      <tr>
-        {{sortable-th sortable=this action="changeSort" name="name" label='generic.name'}}
-        <th width="80">{{t 'k8sTab.namespace.pods.index.table.header.status'}}</th>
-        <th>{{t 'k8sTab.namespace.pods.index.table.header.containers'}}</th>
-        <th>{{t 'k8sTab.namespace.pods.index.table.header.host'}}</th>
-        <th>{{t 'k8sTab.namespace.pods.index.table.header.pod'}}</th>
-        <th class="actions" width="85">&nbsp;</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each arranged as |pod|}}
-        {{k8s/pod-row model=pod}}
-      {{else}}
-        <tr><td colspan="7" class="text-center text-muted">{{t 'k8sTab.namespace.pods.index.table.body.noData'}}</td></tr>
-      {{/each}}
-    </tbody>
-  </table>
+  {{k8s/pod-section model=arranged}}
 </section>
 

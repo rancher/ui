@@ -11,8 +11,8 @@ export default Ember.Controller.extend(NewOrEdit, {
   },
 
   accountTypeChoices: [
-    {label: 'User', value: 'user'},
-    {label: 'Admin', value: 'admin'},
+    {label: 'model.account.kind.user', value: 'user'},
+    {label: 'model.account.kind.admin', value: 'admin'},
   ],
 
   validate: function() {

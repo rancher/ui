@@ -5,10 +5,10 @@ import ManageLabels from 'ui/mixins/manage-labels';
 import { addAction } from 'ui/utils/add-view-action';
 
 export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
-  intl: Ember.inject.service(),
-  settings: Ember.inject.service(),
-  createDelayMs: 0,
-  showEngineUrl: true,
+  intl          : Ember.inject.service(),
+  settings      : Ember.inject.service(),
+  createDelayMs : 0,
+  showEngineUrl : true,
 
   queryParams   : ['machineId'],
   machineId     : null,
@@ -37,7 +37,9 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     }
   },
 
-  didInitAttrs: function() {
+  init() {
+    this._super(...arguments);
+
     this.set('error', null);
     this.set('editing', false);
 

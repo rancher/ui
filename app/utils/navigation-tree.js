@@ -6,6 +6,7 @@ import { parseCatalogSetting } from 'ui/utils/parse-catalog-setting';
 export const getProjectId = function() { return this.get('projectId'); };
 export const getNamespaceId = function() { return this.get('namespaceId'); };
 export const k8sReady = function() { return this.get('kubernetesReady'); };
+export const k8sStacks = function() { return this.get('kubernetesReady') && this.get('k8s.supportsStacks'); };
 export const swarmReady = function() { return this.get('swarmReady'); };
 export const mesosReady = function() { return this.get('mesosReady'); };
 
@@ -49,6 +50,22 @@ const navTree = [
     moreCurrentWhen: ['authenticated.project.waiting'],
     submenu: [
       {
+        id: 'k8s-stacks',
+        localizedLabel: 'nav.k8s.stacks',
+        icon: 'icon icon-stacks',
+        route: 'k8s-tab.namespace.stacks',
+        ctx: [getProjectId, getNamespaceId],
+        condition: k8sStacks,
+      },
+      {
+        id: 'k8s-deployments',
+        localizedLabel: 'nav.k8s.deployments',
+        icon: 'icon icon-tachometer',
+        route: 'k8s-tab.namespace.deployments',
+        ctx: [getProjectId, getNamespaceId],
+        condition: k8sReady,
+      },
+      {
         id: 'k8s-services',
         localizedLabel: 'nav.k8s.services',
         icon: 'icon icon-compass',
@@ -56,10 +73,19 @@ const navTree = [
         ctx: [getProjectId, getNamespaceId],
         condition: k8sReady,
       },
+      {divider: true},
+      {
+        id: 'k8s-replicasets',
+        localizedLabel: 'nav.k8s.replicasets',
+        icon: 'icon icon-services',
+        route: 'k8s-tab.namespace.replicasets',
+        ctx: [getProjectId, getNamespaceId],
+        condition: k8sReady,
+      },
       {
         id: 'k8s-rcs',
         localizedLabel: 'nav.k8s.rcs',
-        icon: 'icon icon-tachometer',
+        icon: 'icon icon-services',
         route: 'k8s-tab.namespace.rcs',
         ctx: [getProjectId, getNamespaceId],
         condition: k8sReady,
@@ -80,6 +106,7 @@ const navTree = [
         ctx: [getProjectId],
         condition: k8sReady,
       },
+      {divider: true},
       {
         id: 'k8s-system',
         localizedLabel: 'nav.k8s.system',
