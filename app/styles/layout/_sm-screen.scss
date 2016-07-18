@@ -92,88 +92,87 @@
     }
   }
 
-  .well {
-    padding: 0;
-  }
-}
+  /*responsive tables and nav 695-959*/
 
-/*responsive tables and nav*/
-@media (max-width: $screen-sm-max) {
- table,
- thead,
- tbody,
- th,
- td,
- tr {
-    display: block;
-  }
+   table,
+   thead,
+   tbody,
+   th,
+   td,
+   tr {
+      display: block;
+    }
 
- thead {
-    height: 0;
-    position: absolute;
-    top: -9999px;
-    left: -9999px;
-
-    & tr {
+   thead {
+      height: 0;
       position: absolute;
       top: -9999px;
       left: -9999px;
+
+      & tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+      }
+    }
+
+   tr {
+    border: 1px solid $table-border-color;
+    margin: 10px 0;
+
+    &.sm-noborder{
+      border-width: 0px;
     }
   }
 
- tr {
-  border: 1px solid $table-border-color;
-  margin: 10px 0;
-}
+   td {
+      border: none;
+      border-bottom: 1px solid #eee;
+      position: relative;
+      padding-left: 50%;
+      white-space: normal;
+      text-align:left;
+      width: 100% !important;
+      border-right: none !important;
 
- td {
-    border: none;
-    border-bottom: 1px solid #eee;
-    position: relative;
-    padding-left: 50%;
-    white-space: normal;
-    text-align:left;
-    width: 100% !important;
-    border-right: none !important;
+      & .spark-line {
+        width: 44px !important;
+      }
+    }
 
-    & .spark-line {
-      width: 44px !important;
+   td:before {
+      content: attr(data-title);
+      width: 45%;
+      margin-right: 10px;
+      white-space: nowrap;
+      text-align:left;
+      font-weight: bold;
+    }
+
+    .stack-section .grid td.state {
+      padding: 10px !important;
+    }
+
+  .grid TD.actions {
+      position: static;
+      text-align: left;
+    }
+
+    .stack-section {
+      background: transparent !important;
+    }
+    .stack-section .grid TD, .stack-section .grid TH {
+      border-bottom: 1px dotted $table-border-color !important;
+      border-top: none;
+      text-align: left !important;
+    }
+
+    .grid > thead > tr > th,
+    .grid > thead > tr > td,
+    .grid > tbody > tr > th,
+    .grid > tbody > tr > td,
+    .grid > tfoot > tr > th,
+    .grid > tfoot > tr > td {
+      border-top: none;
     }
   }
-
- td:before {
-    content: attr(data-title);
-    width: 45%;
-    margin-right: 10px;
-    white-space: nowrap;
-    text-align:left;
-    font-weight: bold;
-  }
-
-  .stack-section .grid td.state {
-    padding: 10px !important;
-  }
-
-.grid TD.actions {
-    position: static;
-    text-align: left;
-  }
-
-  .stack-section {
-    background: transparent !important;
-  }
-  .stack-section .grid TD, .stack-section .grid TH {
-    border-bottom: 1px dotted $table-border-color !important;
-    border-top: none;
-    text-align: left !important;
-  }
-
-  .grid > thead > tr > th,
-  .grid > thead > tr > td,
-  .grid > tbody > tr > th,
-  .grid > tbody > tr > td,
-  .grid > tfoot > tr > th,
-  .grid > tfoot > tr > td {
-    border-top: none;
-  }
-}
