@@ -741,15 +741,23 @@ k8sTab:
   multistat:
     header:
       type: 'Type:'
+      pod: 'Pod IP:'
+      host: 'Host IP:'
       cluster: 'Cluster IP:'
       balancer: 'Balancer IP:'
       session: 'Session Affinity:'
       external: 'External IPs:'
-      selectors: 'Selectors'
+      selectors: 'Selectors:'
+      replicas: 'Replicas:'
+      generation: 'Generation:'
+      phase: 'Phase:'
+      startTime: 'Started:'
+      created: 'Created:'
   navTabs:
-    pods: Pods
     labels: Labels
+    pods: Pods
     ports: Ports
+    replicasets: Replica Sets
   namespace:
     pods:
       index:
@@ -776,12 +784,8 @@ k8sTab:
       index:
         header: Replica Sets
         linkTo: Add Replica Set
-      replicaSet:
+      replicaset:
         header: 'Replica Set:'
-        navTabs:
-          pods: Pods
-          labels: Labels
-          ports: Ports
     rcs:
       index:
         header: Replication Controllers
@@ -2801,11 +2805,14 @@ volumeRow:
   activeMounts:
     readOnly: "(read-only)"
 
+waitOrchestration:
+  count: '({sub} of {count})'
+
 waitKubernetes:
   addHost: 'Add at least one host'
   activateHost: 'Waiting for a host to be active'
   createStack: 'Creating Kubernetes system stack'
-  startServices: 'Starting services ({sub} of {count})'
+  startServices: 'Starting services'
   waitApi: 'Waiting for Kubernetes API'
   createNamespace: 'Creating Namespace'
 
@@ -2813,14 +2820,14 @@ waitMesos:
   addHost: 'Add at least three hosts'
   activateHost: 'Waiting for hosts to be active'
   createStack: 'Creating Mesos system stack'
-  startServices: 'Starting services ({sub} of {count})'
+  startServices: 'Starting services'
   waitApi: 'Waiting for leading Mesos Master'
 
 waitSwarm:
   addHost: 'Add at least one host'
   activateHost: 'Waiting for a host to be active'
   createStack: 'Creating Swarm system stack'
-  startServices: 'Starting services ({sub} of {count})'
+  startServices: 'Starting services'
 
 ##############################
 # Mixins
