@@ -798,12 +798,24 @@ k8sTab:
       service:
         index:
           header: 'Service:'
+    stacks:
+      index:
+        header: Stacks
+        linkTo: Add From Catalog
   namespaces:
     header: Namespaces
     linkTo: Add Namespace
     table:
       body:
         noData: You do not have any Namespaces yet.
+  error:
+    header: Error
+    linkTo: Reload
+    detail: |
+      {count, plural,
+        =1 {An error}
+        other {Erorrs }
+      } occured while trying to talk to the Kubernetes API.
 
 loginPage:
   greeting: "Howdy!<br>Welcome to {appName}"
@@ -2072,6 +2084,11 @@ k8s:
         hostPort: e.g. 80
         containerPort: e.g. 8080
     noPorts: This container has no port maps.
+  heroAddStack:
+    header: Adding your first Stack
+    content: |
+      Stacks are deployed from the {appName} Catalog and keep a group of related Deployments, Replication Controllers, or other resources organized.
+    linkToCatalog: Add From Catalog
   newOrEditResource:
     edit: Edit {type}
     add: Add {type}
@@ -2739,11 +2756,14 @@ tooltipWarning:
 
 upgradeBtn:
   status:
+    none: 'None'
     loading: 'Checking upgrades...'
     current: 'Up to date'
     available: 'Upgrade available'
+    inprogress: 'Upgrade in progress'
+    upgraded: 'Upgraded: Finish Upgrade'
     notfound: 'Template version not found'
-    default: 'Error checking for upgrade'
+    error: 'Error checking for upgrade'
 
 viewEditDescription:
   form:

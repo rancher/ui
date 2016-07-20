@@ -59,27 +59,13 @@
       {{#if k8s.namespaces.length}}
         <li role="presentation" class="dropdown-header">{{t 'pageHeaderEnvironment.namespace'}}</li>
         {{#each k8s.namespaces as |ns|}}
-          {{#unless ns.isSystem}}
-            <li class="{{if (eq ns k8s.namespace) 'active selected'}}">
-              <a href="#" {{action "switchNamespace" ns.id}} class="clip">
-                <i class="{{ns.icon}}"></i>
-                &nbsp;
-                {{ns.displayName}}
-              </a>
-            </li>
-          {{/unless}}
-        {{/each}}
-        <li role="presentation" class="divider"></li>
-        {{#each k8s.namespaces as |ns|}}
-          {{#if ns.isSystem}}
-            <li class="{{if (eq ns k8s.namespace) 'active selected'}}">
-              <a href="#" {{action "switchNamespace" ns.id}} class="clip">
-                <i class="{{ns.icon}}"></i>
-                &nbsp;
-                {{ns.displayName}}
-              </a>
-            </li>
-          {{/if}}
+          <li class="{{if (eq ns k8s.namespace) 'active selected'}}">
+            <a href="#" {{action "switchNamespace" ns.id}} class="clip">
+              <i class="{{ns.icon}}"></i>
+              &nbsp;
+              {{ns.displayName}}
+            </a>
+          </li>
         {{/each}}
         <li role="presentation" class="divider"></li>
       {{/if}}
