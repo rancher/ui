@@ -1,21 +1,25 @@
 import Ember from 'ember';
 import K8sResource from 'ui/models/k8s-resource';
+import C from 'ui/utils/constants';
 
 var Namespace = K8sResource.extend({
   k8s: Ember.inject.service(),
-
-  isSystem: Ember.computed.equal('id','kube-system'),
+  'tab-session': Ember.inject.service(),
 
   icon: function() {
-    if ( this.get('isSystem') )
+    if ( this.get('active') )
     {
-      return 'icon icon-gear';
+      return 'icon icon-folder-open';
     }
     else
     {
       return 'icon icon-folder';
     }
-  }.property('isSystem'),
+  }.property('active'),
+
+  active: function() {
+     return ( this.get('id') === this.get(`tab-session.${C.TABSESSION.NAMESPACE}`) );
+  }.property(`tab-session.${C.TABSESSION.PROJECT}`, 'id'),
 
   actions: {
     switchTo: function() {

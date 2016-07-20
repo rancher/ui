@@ -89,7 +89,10 @@ export default Ember.Route.extend(Subscribe, {
 
   activate() {
     this._super();
-    this.connectSubscribe();
+    if ( !this.controllerFor('application').get('isPopup') )
+    {
+      this.connectSubscribe();
+    }
   },
 
   deactivate() {

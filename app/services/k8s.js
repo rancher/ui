@@ -81,6 +81,7 @@ export default Ember.Service.extend({
   'tab-session': Ember.inject.service('tab-session'),
   'cookies': Ember.inject.service('cookies'),
 
+  loadingErrors: null,
   version: null,
   namespaces: null,
   services: null,
@@ -165,6 +166,9 @@ export default Ember.Service.extend({
         if ( (xhr.getResponseHeader('content-type')||'').toLowerCase().indexOf('/json') !== -1 )
         {
           body = self._typeify(JSON.parse(xhr.responseText));
+          body.status = body.code;
+          body.code = body.reason;
+          delete body.reason;
         }
         else if ( err )
         {
@@ -459,8 +463,8 @@ export default Ember.Service.extend({
         {
           let matching = services.filterBy('environmentId', stack.get('id'));
           let expect = matching.get('length');
-          let healthy = Util.filterByValues(matching, 'healthState', C.READY_STATES).get('length');
-          if ( expect > 0 && expect === healthy )
+          //let healthy = Util.filterByValues(matching, 'healthState', C.READY_STATES).get('length');
+          if ( expect > 0 /*&& expect === healthy */ )
           {
             return this.request({
               url: `${this.get('kubernetesEndpoint')}/version`
@@ -543,29 +547,7 @@ export default Ember.Service.extend({
   },
 
   allNamespaces() {
-    var store = this.get('store');
-    var type = `${C.K8S.TYPE_PREFIX}namespace`;
-    var name = 'kube-system';
-
-    return this._allCollection('namespace','namespaces').then((namespaces) => {
-      // kube-system is special and doesn't feel like it needs to come back in a list...
-      if ( !store.getById(type,name) )
-      {
-        store._add(type, store.createRecord({
-          apiVersion: 'v1',
-          type: type,
-          id: name,
-          metadata: {
-            name: name,
-          },
-          kind: 'Namespace',
-          spec: {},
-        }));
-
-      }
-
-      return namespaces;
-    });
+    return this._allCollection('namespace','namespaces');
   },
 
   getNamespaces() { return this._getCollection('namespace','namespaces'); },
@@ -677,6 +659,18 @@ export default Ember.Service.extend({
       method: 'POST',
       contentType: 'application/yaml',
       data: body
+    }).catch((err) => {
+      return Ember.RSVP.reject(this.parseKubectlError(err));
+    });
+  },
+
+  remove(type,name) {
+    return this.request({
+      method: 'POST',
+      url: Util.addQueryParams(`${this.get('kubectlEndpoint')}/delete`, {
+        [C.K8S.DEFAULT_NS]: this.get(`tab-session.${C.TABSESSION.NAMESPACE}`),
+        arg: [type, name],
+      }),
     }).catch((err) => {
       return Ember.RSVP.reject(this.parseKubectlError(err));
     });

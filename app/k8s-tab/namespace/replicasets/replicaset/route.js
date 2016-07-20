@@ -4,6 +4,6 @@ export default Ember.Route.extend({
   k8s: Ember.inject.service(),
 
   model(params) {
-    return this.get('k8s').getRC(params.name);
+    return this.get('k8s').getReplicaSet(params.name);
   }
 });

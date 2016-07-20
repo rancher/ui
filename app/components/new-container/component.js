@@ -393,4 +393,20 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   doneSaving() {
     this.sendAction('done');
   },
+
+  headerLabel: function() {
+    let k = 'newContainer.';
+    k += (this.get('isUpgrade') ? 'upgrade' : 'add') + '.';
+    if ( this.get('isService') ) {
+      k += 'service';
+    } else if ( this.get('isVm') ) {
+      k += 'vm';
+    } else {
+      k += 'container';
+    }
+
+    let count = this.get('service.secondaryLaunchConfigs.length') + 1;
+
+    return this.get('intl').t(k, {numServices: count});
+  }.property('intl._locale','isUpgrade','isService','isVm','service.secondaryLaunchConfigs.length'),
 });
