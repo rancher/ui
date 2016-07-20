@@ -69,7 +69,17 @@ function escapeRegex(string){
 }
 
 export function addQueryParam(url, key, val) {
-  return url + (url.indexOf('?') >= 0 ? '&' : '?') + encodeURIComponent(key) + '=' + encodeURIComponent(val);
+  let out = url + (url.indexOf('?') >= 0 ? '&' : '?');
+
+  // val can be a string or an array of strings
+  if ( !Array.isArray(val) ) {
+    val = [val];
+  }
+  out += val.map(function (v) {
+    return encodeURIComponent(key) + '=' + encodeURIComponent(v);
+  }).join('&');
+
+  return out;
 }
 
 export function addQueryParams(url, params) {
