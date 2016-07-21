@@ -14,7 +14,7 @@ export default Ember.Controller.extend({
     var out = false;
     (this.get('model.stacks')||[]).forEach((stack) => {
       var info = stack.get('externalIdInfo');
-      if ( C.EXTERNALID.SYSTEM_KINDS.indexOf(info.kind) >= 0 )
+      if ( C.EXTERNAL_ID.SYSTEM_KINDS.indexOf(info.kind) >= 0 )
       {
         out = true;
       }

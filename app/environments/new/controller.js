@@ -17,7 +17,7 @@ export default Ember.Controller.extend(NewOrEdit, {
     let externalId = '';
     if ( this.get('system') )
     {
-      externalId = C.EXTERNALID.KIND_SYSTEM + C.EXTERNALID.KIND_SEPARATOR + 'user';
+      externalId = C.EXTERNAL_ID.KIND_SYSTEM + C.EXTERNAL_ID.KIND_SEPARATOR + 'user';
     }
 
     this.set('primaryResource.externalId', externalId);

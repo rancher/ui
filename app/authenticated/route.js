@@ -47,7 +47,6 @@ export default Ember.Route.extend(Subscribe, {
       projects: this.loadProjects(),
       preferences: this.loadPreferences(),
       settings: this.loadPublicSettings(),
-      language: this.get('language').initLanguage(),
     }).then((hash) => {
       let projectId = null;
       if ( transition.params && transition.params['authenticated.project'] && transition.params['authenticated.project'].project_id )
@@ -90,7 +89,10 @@ export default Ember.Route.extend(Subscribe, {
 
   activate() {
     this._super();
-    this.connectSubscribe();
+    if ( !this.controllerFor('application').get('isPopup') )
+    {
+      this.connectSubscribe();
+    }
   },
 
   deactivate() {

@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
-import Util from 'ui/utils/util';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
 export default Ember.Component.extend(NewOrEdit, Sortable, {
@@ -98,7 +97,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   roleOptions: function() {
     return (this.get('userStore').getById('schema','projectmember').get('resourceFields.role.options')||[]).map((role) => {
       return {
-        label: Util.ucFirst(role),
+        label: 'model.projectMember.role.'+role,
         value: role
       };
     });

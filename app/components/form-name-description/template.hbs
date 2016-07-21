@@ -8,11 +8,15 @@
   </div>
 
   <div class="col-md-6">
-    <div class="form-label">
-      <label class="form-control-static">{{t descriptionLabel}}{{if descriptionRequired '*'}}</label>
-    </div>
-    {{textarea-autogrow value=_description classNames="form-control no-resize" rows="1" placeholder=descriptionPlaceholder disabled=descriptionDisabled}}
-    {{#if descriptionHelp}}<p class="help-block">{{t descriptionHelp}}</p>{{/if}}
+    {{#if descriptionShown}}
+      <div class="form-label">
+        <label class="form-control-static">{{t descriptionLabel}}{{if descriptionRequired '*'}}</label>
+      </div>
+      {{textarea-autogrow value=_description classNames="form-control no-resize" rows="1" placeholder=descriptionPlaceholder disabled=descriptionDisabled}}
+      {{#if descriptionHelp}}<p class="help-block">{{t descriptionHelp}}</p>{{/if}}
+    {{else}}
+      {{yield}}
+    {{/if}}
   </div>
 </div>
 

@@ -21,10 +21,10 @@ export default Ember.Component.extend({
   },
 
   steps: [
-    'Add at least one host',
-    'Waiting for a host to be active',
-    'Creating Swarm system stack',
-    'Starting services',
+    'waitSwarm.addHost',
+    'waitSwarm.activateHost',
+    'waitSwarm.createStack',
+    'waitSwarm.startService',
   ],
 
   updateStep: debouncedObserver('model.hosts.@each.state','model.stacks.@each.{state,externalId}','services.@each.{state,healthState}', function() {

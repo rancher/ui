@@ -9,6 +9,10 @@ function applyLinesIntoArray(lines, ary) {
     }
 
     var idx = line.indexOf('=');
+    if ( idx === -1 ) {
+      idx = line.indexOf(': ');
+    }
+
     var key = '';
     var val = '';
     if ( idx > 0 )

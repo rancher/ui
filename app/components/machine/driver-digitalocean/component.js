@@ -1,21 +1,96 @@
 import Ember from 'ember';
-import {Regions} from 'ui/utils/digitalocean-choices';
 import Driver from 'ui/mixins/driver';
+import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
 
-let regionChoices = Regions.regions.filter(function(region) {
-  return region.available && (region.features.indexOf('metadata') >= 0);
-}).map(function(region) {
-  return {
-    id: region.slug,
-    name: region.name,
-  };
-}).sortBy('name');
+const DIGITALOCEAN_API = 'api.digitalocean.com/v2';
+const VALID_IMAGES = [
+//  'centos-6-x64',
+//  'centos-7-0-x64',
+//  'coreos-alpha',
+//  'coreos-beta',
+//  'coreos-stable',
+//  'debian-7-x64',
+//  'debian-8-x64',
+//  'fedora-23-x64',
+//  'fedora-24-x64',
+//  'freebsd-10-1-x64',
+//  'freebsd-10-2-x64',
+  'ubuntu-14-04-x64',
+//  'ubuntu-16-04-x64'
+];
 
 export default Ember.Component.extend(Driver, {
-  driverName         : 'digitalocean',
-  regionChoices      : regionChoices,
-  model              : null,
-  digitaloceanConfig : Ember.computed.alias('model.digitaloceanConfig'),
+  driverName:          'digitalocean',
+  regionChoices:       null,
+  model:               null,
+  digitaloceanConfig:  Ember.computed.alias('model.digitaloceanConfig'),
+  step1:               true,
+  sizeChoices:         null,
+  imageChoices:        null,
+  gettingData:         false,
+
+  filteredSizeChoices: Ember.computed('digitaloceanConfig.region', function(){
+    let region = this.get('regionChoices').findBy('slug', this.get('digitaloceanConfig.region'));
+    let sizes = this.get('sizeChoices');
+    let out = sizes.filter((size) => {
+      return region.sizes.indexOf(size.slug) >= 0;
+    });
+
+    return out;
+  }),
+
+  actions: {
+    getData() {
+      let promises = {
+        regions:  this.apiRequest('regions'),
+        images:   this.apiRequest('images', {type:  'distribution'}),
+        sizes:    this.apiRequest('sizes')
+      };
+
+      this.set('gettingData', true);
+
+      Ember.RSVP.hash(promises).then((hash) => {
+
+        let filteredRegions = hash.regions.regions.filter(function(region) {
+          return region.available && (region.features.indexOf('metadata') >= 0);
+        }).sortBy('name');
+
+        let filteredSizes = hash.sizes.sizes.filter((size) => {
+          return size.available;
+        });
+
+        let filteredImages = hash.images.images.filter(function(image) {
+          return !((image.name||'').match(/x32$/));
+        }).map(function(image) {
+          image.disabled = VALID_IMAGES.indexOf(image.slug) === -1;
+          return image;
+        }).sortBy('distribution','name');
+
+        this.setProperties({
+          regionChoices: filteredRegions,
+          sizeChoices: filteredSizes,
+          imageChoices: filteredImages
+        });
+
+        this.setProperties({
+          step1: false,
+          gettingData: false,
+          errors: null,
+        });
+
+      }, (err) => {
+
+        let errors = this.get('errors') || [];
+        errors.push(`${err.xhr.status}: ${err.err}`);
+
+        this.setProperties({
+          errors: errors,
+          gettingData: false,
+        });
+
+      });
+    },
+  },
 
   bootstrap: function() {
     let config = this.get('store').createRecord({
@@ -32,28 +107,6 @@ export default Ember.Component.extend(Driver, {
     }));
   },
 
-
-  sizeChoices: function() {
-    let slug = this.get('digitaloceanConfig.region');
-    return Regions.regions.filter(function(choice) {
-      return choice.slug === slug;
-    })[0].sizes.sort(function(a,b) {
-      let aMb = a.indexOf('mb') >= 0;
-      let bMb = b.indexOf('mb') >= 0;
-
-      if ( aMb === bMb ) {
-        return parseInt(a,10) - parseInt(b,10);
-      } else if ( aMb ) {
-        return -1;
-      } else {
-        return 1;
-      }
-    });
-  }.property('digitaloceanConfig.region'),
-
-  imageChoices: [
-    'ubuntu-14-04-x64',
-  ],
 
   validate: function() {
     this._super();
@@ -81,4 +134,20 @@ export default Ember.Component.extend(Driver, {
 
     return true;
   },
+
+  apiRequest: function(command, params, method='GET') {
+    let proxyEndpoint = this.get('app.proxyEndpoint');
+    let url           = `${proxyEndpoint}/${DIGITALOCEAN_API}/${command}?per_page=100`;
+    let accessToken   = this.get('model.digitaloceanConfig.accessToken');
+
+    return ajaxPromise({
+      url: url,
+      method: method,
+      header: {
+        'Accept': 'application/json',
+      },
+      beforeSend: function(xhr) { xhr.setRequestHeader('x-api-auth-header','Bearer ' + accessToken); },
+      data: params,
+    }, true);
+  }
 });

@@ -6,6 +6,12 @@ export function initialize(/*application */) {
   Ember.TextField.reopen(SafeStyle);
   Ember.TextArea.reopen(SafeStyle);
   Ember.Checkbox.reopen(SafeStyle);
+
+  // Disable iOS auto-capitalization
+  Ember.TextField.reopen({
+    attributeBindings: ['autocapitalize'],
+    autocapitalize: 'none',
+  });
 }
 
 export default {

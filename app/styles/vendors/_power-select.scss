@@ -1,6 +1,7 @@
 .header {
   .ember-power-select {
     max-width: calc(100% - 175px);
+    min-width: 175px;
   }
 }
 
@@ -8,6 +9,10 @@
   display: inline-block;
   width: auto !important;
   font-size: 14px;
+}
+
+.ember-power-select-status-icon {
+  opacity: 0;
 }
 
 .ember-power-select:not([dir=rtl]) .ember-power-select-trigger {
@@ -34,6 +39,12 @@
     top: 0;
     font-size: .85em;
   }
+
+  .icon {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: .75em;
+  }
 }
 .ember-power-select-options:not(.nested) {
   overflow-y: auto;
@@ -46,7 +57,7 @@
 }
 
 .ember-basic-dropdown-content {
-  z-index: 1;
+  z-index: 2;
   background-color: $bottom-row !important;
 }
 
@@ -76,4 +87,11 @@
 .ember-power-select-option--selected {
   background: $table-bg-accent !important;
   color: $link-color !important;
+}
+
+.ember-basic-dropdown--opened {
+  .ember-power-select-trigger:after {
+    transform: rotate(180deg);
+    transition: ease-in-out all .25s;
+  }
 }

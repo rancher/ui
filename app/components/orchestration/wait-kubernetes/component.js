@@ -27,12 +27,12 @@ export default Ember.Component.extend({
   },
 
   steps: [
-    'Add at least one host',
-    'Waiting for a host to be active',
-    'Creating Kubernetes system stack',
-    'Starting services',
-    'Waiting for Kubernetes API',
-    'Creating Namespace',
+    'waitKubernetes.addHost',
+    'waitKubernetes.activateHost',
+    'waitKubernetes.createStack',
+    'waitKubernetes.startServices',
+    'waitKubernetes.waitApi',
+    'waitKubernetes.createNamespace',
   ],
 
   updateStep: debouncedObserver('model.hosts.@each.state','model.stacks.@each.{state,externalId}','services.@each.{state,healthState}', function() {

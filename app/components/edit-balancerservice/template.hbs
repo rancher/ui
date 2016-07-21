@@ -7,7 +7,6 @@
 {{else}}
   <section class="horizontal-form container-fluid">
     <h2>{{t 'editBalancerService.title'}}</h2>
-    {{top-errors errors=errors}}
 
     {{form-scale
       initialLabels=launchConfig.labels
@@ -51,12 +50,12 @@
       allCertificates=allCertificates
     }}
 
-
+    <hr/>
     <div class="row">
-      <div class="col-sm-12 col-md-2 form-label form-control-static">
+      <h4>
         <label>{{t 'editBalancerService.haproxy.label'}}</label>
-      </div>
-      <div class="col-md-8">
+      </h4>
+      <div>
         <p class="help-block">{{format-html-message 'editBalancerService.haproxy.help' appName=settings.appName}}</p>
 
         <div>
@@ -79,5 +78,6 @@
     </div>
   </section>
 
+  {{top-errors errors=errors}}
   {{save-cancel editing=editing save="save" cancel="cancel"}}
 {{/liquid-if}}

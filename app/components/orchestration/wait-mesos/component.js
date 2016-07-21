@@ -26,11 +26,11 @@ export default Ember.Component.extend({
   },
 
   steps: [
-    'Add at least three hosts',
-    'Waiting for hosts to be active',
-    'Creating Mesos system stack',
-    'Starting services',
-    'Waiting for leading Mesos Master'
+    'waitMesos.addHost',
+    'waitMesos.activateHost',
+    'waitMesos.createStack',
+    'waitMesos.startServices',
+    'waitMesos.waitApi'
   ],
 
   updateStep: debouncedObserver('model.hosts.@each.state','model.stacks.@each.{state,externalId}','services.@each.{state,healthState}', function() {

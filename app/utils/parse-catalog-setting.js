@@ -15,7 +15,7 @@ export function parseCatalogSetting(str) {
       key = item.substr(0, idx);
       val = item.substr(idx + 1);
     } else {
-      key = C.EXTERNALID.CATALOG_DEFAULT_GROUP;
+      key = C.EXTERNAL_ID.CATALOG_DEFAULT_GROUP;
       val = item;
     }
 

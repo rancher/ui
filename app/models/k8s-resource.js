@@ -5,6 +5,7 @@ import { normalizeType } from 'ember-api-store/utils/normalize';
 
 var K8sResource = Resource.extend({
   endpointSvc: Ember.inject.service('endpoint'),
+  k8s: Ember.inject.service(),
 
   actions: {
     edit() {
@@ -58,14 +59,40 @@ var K8sResource = Resource.extend({
     }
 
     // Sorta matches
-    return (have && want && (have+"") === (want+""));
+    return (have && want && ((have+"") === (want+"")));
+  },
+
+  hasAnnotation(key, want=undefined) {
+    var annotations = this.get('metadata.annotations')||{};
+    var have = annotations[key];
+
+    // The key doesn't exist
+    if ( have === undefined )
+    {
+      return false;
+    }
+
+    // Just checking if the key exists
+    if ( want === undefined )
+    {
+      return true;
+    }
+
+    // Really matches
+    if ( have === want )
+    {
+      return true;
+    }
+
+    // Sorta matches
+    return (have && want && ((have+"") === (want+"")));
   },
 
   delete: function(/*arguments*/) {
     var store = this.get('store');
     var type = this.get('type');
 
-    return this.request({
+    return this.get('k8s').remove({
       method: 'DELETE',
       url: this.linkFor('self')
     }).then((newData) => {

@@ -79,12 +79,18 @@ export function containerStateInator(state) {
 
 export default Ember.Service.extend({
   'tab-session': Ember.inject.service('tab-session'),
+  'cookies': Ember.inject.service('cookies'),
 
+  loadingErrors: null,
+  version: null,
   namespaces: null,
   services: null,
   rcs: null,
   pods: null,
   containers: null,
+  deployments: null,
+  replicasets: null,
+  hosts: null,
 
   // The current namespace
   namespace: null,
@@ -97,12 +103,20 @@ export default Ember.Service.extend({
     return this.get('app.kubectlEndpoint').replace(this.get('app.projectToken'), this.get(`tab-session.${C.TABSESSION.PROJECT}`));
   }.property(`tab-session.${C.TABSESSION.PROJECT}`,'app.kubectlEndpoint'),
 
+  clusterIp: function() {
+    return this.get('hosts.firstObject.displayIp');
+  }.property('hosts.@each.displayIp'),
 
   promiseQueue: null,
   init() {
     this._super();
     this.get('store.metaKeys').addObject('metadata');
     this.set('promiseQueue', {});
+
+    this.set('hosts', []);
+    this.get('store').findAllActive('host').then((hosts) => {
+      this.set('hosts', hosts);
+    });
   },
 
   // request({ options});
@@ -152,6 +166,9 @@ export default Ember.Service.extend({
         if ( (xhr.getResponseHeader('content-type')||'').toLowerCase().indexOf('/json') !== -1 )
         {
           body = self._typeify(JSON.parse(xhr.responseText));
+          body.status = body.code;
+          body.code = body.reason;
+          delete body.reason;
         }
         else if ( err )
         {
@@ -321,14 +338,24 @@ export default Ember.Service.extend({
     {
       if ( opt.url.substr(0,1) !== '/' )
       {
-        opt.url = `${self.get('kubernetesEndpoint')}/${C.K8S.BASE_VERSION}/` + opt.url;
+        let version;
+        if ( C.K8S.EXTENSION_TYPES.indexOf(type) >= 0 )
+        {
+          version = C.K8S.EXTENSION_VERSION;
+        }
+        else
+        {
+          version = C.K8S.BASE_VERSION;
+        }
+
+        opt.url = `${self.get('kubernetesEndpoint')}/${version}/` + opt.url;
       }
 
       return findWithUrl(opt.url);
     }
     else
     {
-      return Ember.RSVP.reject(new ApiError('k8s find requirs opt.url'));
+      return Ember.RSVP.reject(new ApiError('k8s find requires opt.url'));
     }
 
     function findWithUrl(url) {
@@ -436,12 +463,13 @@ export default Ember.Service.extend({
         {
           let matching = services.filterBy('environmentId', stack.get('id'));
           let expect = matching.get('length');
-          let healthy = Util.filterByValues(matching, 'healthState', C.READY_STATES).get('length');
-          if ( expect > 0 && expect === healthy )
+          //let healthy = Util.filterByValues(matching, 'healthState', C.READY_STATES).get('length');
+          if ( expect > 0 /*&& expect === healthy */ )
           {
             return this.request({
-              url: `${this.get('kubernetesEndpoint')}/${C.K8S.BASE}`
-            }).then(() => {
+              url: `${this.get('kubernetesEndpoint')}/version`
+            }).then((res) => {
+              this.set('version', res);
               return true;
             });
           }
@@ -454,9 +482,27 @@ export default Ember.Service.extend({
     });
   },
 
+  supportsStacks: function() {
+    if ( this.get('cookies.icanhasstacks') ) {
+      return true;
+    }
+
+    let v = this.get('version');
+    if ( v )
+    {
+      let major = parseInt(v.get('major'),10);
+      let minor = parseInt(v.get('minor'),10);
+      return (major > 1) || (major === 1 && minor > 2);
+    }
+    else
+    {
+      return false;
+    }
+  }.property('version.{minor,major}'),
+
   filterSystemStack(stacks) {
-    const OLD_STACK_ID = C.EXTERNALID.KIND_SYSTEM + C.EXTERNALID.KIND_SEPARATOR + C.EXTERNALID.KIND_KUBERNETES;
-    const NEW_STACK_PREFIX = C.EXTERNALID.KIND_SYSTEM_CATALOG + C.EXTERNALID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNALID.GROUP_SEPARATOR + C.EXTERNALID.KIND_KUBERNETES + C.EXTERNALID.GROUP_SEPARATOR;
+    const OLD_STACK_ID = C.EXTERNAL_ID.KIND_SYSTEM + C.EXTERNAL_ID.KIND_SEPARATOR + C.EXTERNAL_ID.KIND_KUBERNETES;
+    const NEW_STACK_PREFIX = C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNAL_ID.GROUP_SEPARATOR + C.EXTERNAL_ID.KIND_KUBERNETES + C.EXTERNAL_ID.GROUP_SEPARATOR;
 
     var stack = (stacks||[]).filter((stack) => {
       let externalId = stack.get('externalId')||'';
@@ -501,29 +547,7 @@ export default Ember.Service.extend({
   },
 
   allNamespaces() {
-    var store = this.get('store');
-    var type = `${C.K8S.TYPE_PREFIX}namespace`;
-    var name = 'kube-system';
-
-    return this._allCollection('namespace','namespaces').then((namespaces) => {
-      // kube-system is special and doesn't feel like it needs to come back in a list...
-      if ( !store.getById(type,name) )
-      {
-        store._add(type, store.createRecord({
-          apiVersion: 'v1',
-          type: type,
-          id: name,
-          metadata: {
-            name: name,
-          },
-          kind: 'Namespace',
-          spec: {},
-        }));
-
-      }
-
-      return namespaces;
-    });
+    return this._allCollection('namespace','namespaces');
   },
 
   getNamespaces() { return this._getCollection('namespace','namespaces'); },
@@ -590,6 +614,14 @@ export default Ember.Service.extend({
   getServices() { return this._getCollection('service','services'); },
   getService(name) { return this._getNamespacedResource('service','services',name); },
 
+  allDeployments() { return this._allCollection('deployment','deployments'); },
+  getDeployments() { return this._getCollection('deployment','deployments'); },
+  getDeployment(name) { return this._getNamespacedResource('deployment','deployments',name); },
+
+  allReplicaSets() { return this._allCollection('replicaset','replicasets'); },
+  getReplicaSets() { return this._getCollection('replicaset','replicasets'); },
+  getReplicaSet(name) { return this._getNamespacedResource('replicaset','replicasets',name); },
+
   allRCs() { return this._allCollection('replicationcontroller','replicationcontrollers'); },
   getRCs() { return this._getCollection('replicationcontroller','replicationcontrollers'); },
   getRC(name) { return this._getNamespacedResource('replicationcontroller','replicationcontrollers',name); },
@@ -632,6 +664,18 @@ export default Ember.Service.extend({
     });
   },
 
+  remove(type,name) {
+    return this.request({
+      method: 'POST',
+      url: Util.addQueryParams(`${this.get('kubectlEndpoint')}/delete`, {
+        [C.K8S.DEFAULT_NS]: this.get(`tab-session.${C.TABSESSION.NAMESPACE}`),
+        arg: [type, name],
+      }),
+    }).catch((err) => {
+      return Ember.RSVP.reject(this.parseKubectlError(err));
+    });
+  },
+
   getYaml(type, id, defaultNs) {
     var parts = splitId(id, defaultNs);
     return this.request({
@@ -654,15 +698,12 @@ export default Ember.Service.extend({
     });
   },
 
-  catalog(files,answers) {
+  catalog(body) {
     return this.request({
       url: Util.addQueryParam(`${this.get('kubectlEndpoint')}/catalog`, C.K8S.DEFAULT_NS, this.get(`tab-session.${C.TABSESSION.NAMESPACE}`)),
       method: 'POST',
       contentType: 'application/json',
-      data: {
-        files: files,
-        environment: answers
-      }
+      data: body,
     }).catch((err) => {
       return Ember.RSVP.reject(this.parseKubectlError(err));
     });
