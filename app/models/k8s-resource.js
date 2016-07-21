@@ -5,6 +5,7 @@ import { normalizeType } from 'ember-api-store/utils/normalize';
 
 var K8sResource = Resource.extend({
   endpointSvc: Ember.inject.service('endpoint'),
+  k8s: Ember.inject.service(),
 
   actions: {
     edit() {
@@ -91,7 +92,7 @@ var K8sResource = Resource.extend({
     var store = this.get('store');
     var type = this.get('type');
 
-    return this.request({
+    return this.get('k8s').remove({
       method: 'DELETE',
       url: this.linkFor('self')
     }).then((newData) => {

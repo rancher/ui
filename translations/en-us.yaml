@@ -741,15 +741,23 @@ k8sTab:
   multistat:
     header:
       type: 'Type:'
+      pod: 'Pod IP:'
+      host: 'Host IP:'
       cluster: 'Cluster IP:'
       balancer: 'Balancer IP:'
       session: 'Session Affinity:'
       external: 'External IPs:'
-      selectors: 'Selectors'
+      selectors: 'Selectors:'
+      replicas: 'Replicas:'
+      generation: 'Generation:'
+      phase: 'Phase:'
+      startTime: 'Started:'
+      created: 'Created:'
   navTabs:
-    pods: Pods
     labels: Labels
+    pods: Pods
     ports: Ports
+    replicasets: Replica Sets
   namespace:
     pods:
       index:
@@ -776,12 +784,8 @@ k8sTab:
       index:
         header: Replica Sets
         linkTo: Add Replica Set
-      replicaSet:
+      replicaset:
         header: 'Replica Set:'
-        navTabs:
-          pods: Pods
-          labels: Labels
-          ports: Ports
     rcs:
       index:
         header: Replication Controllers
@@ -798,12 +802,24 @@ k8sTab:
       service:
         index:
           header: 'Service:'
+    stacks:
+      index:
+        header: Stacks
+        linkTo: Add From Catalog
   namespaces:
     header: Namespaces
     linkTo: Add Namespace
     table:
       body:
         noData: You do not have any Namespaces yet.
+  error:
+    header: Error
+    linkTo: Reload
+    detail: |
+      {count, plural,
+        =1 {An error}
+        other {Erorrs }
+      } occured while trying to talk to the Kubernetes API.
 
 loginPage:
   greeting: "Howdy!<br>Welcome to {appName}"
@@ -2072,6 +2088,11 @@ k8s:
         hostPort: e.g. 80
         containerPort: e.g. 8080
     noPorts: This container has no port maps.
+  heroAddStack:
+    header: Adding your first Stack
+    content: |
+      Stacks are deployed from the {appName} Catalog and keep a group of related Deployments, Replication Controllers, or other resources organized.
+    linkToCatalog: Add From Catalog
   newOrEditResource:
     edit: Edit {type}
     add: Add {type}
@@ -2535,11 +2556,22 @@ newCatalog:
   noConfig: This template has no configuration options
 
 newContainer:
-  service: |
-    {numServices, plural,
-      =1 {Service}
-      other {Services}
-    }
+  add:
+    container: Add Container
+    vm: Add Virtual Machine
+    service: |
+      Add {numServices, plural,
+        =1 {Service}
+        other {Services}
+      }
+  upgrade:
+    container: Upgrade Container
+    vm: Upgrade Virtual Machine
+    service: |
+      Upgrade {numServices, plural,
+        =1 {Service}
+        other {# Services}
+      }
   tabs:
     disks: Disks
     userData: User Data
@@ -2739,11 +2771,14 @@ tooltipWarning:
 
 upgradeBtn:
   status:
+    none: 'None'
     loading: 'Checking upgrades...'
     current: 'Up to date'
     available: 'Upgrade available'
+    inprogress: 'Upgrade in progress'
+    upgraded: 'Upgraded: Finish Upgrade'
     notfound: 'Template version not found'
-    default: 'Error checking for upgrade'
+    error: 'Error checking for upgrade'
 
 viewEditDescription:
   form:
@@ -2781,11 +2816,14 @@ volumeRow:
   activeMounts:
     readOnly: "(read-only)"
 
+waitOrchestration:
+  count: '({sub} of {count})'
+
 waitKubernetes:
   addHost: 'Add at least one host'
   activateHost: 'Waiting for a host to be active'
   createStack: 'Creating Kubernetes system stack'
-  startServices: 'Starting services ({sub} of {count})'
+  startServices: 'Starting services'
   waitApi: 'Waiting for Kubernetes API'
   createNamespace: 'Creating Namespace'
 
@@ -2793,14 +2831,14 @@ waitMesos:
   addHost: 'Add at least three hosts'
   activateHost: 'Waiting for hosts to be active'
   createStack: 'Creating Mesos system stack'
-  startServices: 'Starting services ({sub} of {count})'
+  startServices: 'Starting services'
   waitApi: 'Waiting for leading Mesos Master'
 
 waitSwarm:
   addHost: 'Add at least one host'
   activateHost: 'Waiting for a host to be active'
   createStack: 'Creating Swarm system stack'
-  startServices: 'Starting services ({sub} of {count})'
+  startServices: 'Starting services'
 
 ##############################
 # Mixins
