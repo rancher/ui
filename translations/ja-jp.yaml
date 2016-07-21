@@ -740,15 +740,23 @@ k8sTab:
   multistat:
     header:
       type: 'タイプ:'
+      pod: 'ポッド IP:'
+      host: 'ホスト IP:'
       cluster: 'クラスター IP:'
       balancer: 'バランサー IP:'
       session: 'セッションアフィニティ:'
       external: '外部 IP:'
       selectors: 'セレクター'
+      replicas: 'レプリカ:'
+      generation: 'Generation:'
+      phase: 'フェイズ:'
+      startTime: '起動日:'
+      created: '作成日:'
   navTabs:
-    pods: ポッド
     labels: ラベル
+    pods: ポッド
     ports: ポート
+    replicasets: レプリカセット
   namespace:
     pods:
       index:
@@ -775,12 +783,8 @@ k8sTab:
       index:
         header: レプリカセット
         linkTo: レプリカセットを追加
-      replicaSet:
+      replicaset:
         header: 'レプリカセット:'
-        navTabs:
-          pods: ポッド
-          labels: ラベル
-          ports: ポート
     rcs:
       index:
         header: レプリケーションコントローラー
@@ -797,12 +801,24 @@ k8sTab:
       service:
         index:
           header: 'サービス:'
+    stacks:
+      index:
+        header: スタック
+        linkTo: カタログから追加
   namespaces:
     header: 名前空間
     linkTo: 名前空間を追加
     table:
       body:
         noData: まだ名前空間はありません
+  error:
+    header: エラー
+    linkTo: 再読み込み
+    detail: |
+      Kubernetes API との通信中に {count, plural,
+        =1 {エラー}
+        other {エラー}
+      } が発生しました。
 
 loginPage:
   greeting: "<br>ようこそ {appName} へ!"
@@ -2071,9 +2087,14 @@ k8s:
         hostPort: e.g. 80
         containerPort: e.g. 8080
     noPorts: このコンテナはポートマップがありません
+  heroAddStack:
+    header: 最初のスタックを追加
+    content: |
+      スタックは {appName} カタログからデプロイされ、関連する環境、レプリケーションコントローラーまたはその他のまとまったリソースのグループを保持します。
+    linkToCatalog: カタログから追加
   newOrEditResource:
-    edit: 編集
-    add: 追加
+    edit: "{type} を編集"
+    add: "{type} を編集"
     placeholder: YAML または JSON で定義されたリソース
   podSection:
     name: ポッド名
@@ -2533,11 +2554,22 @@ newCatalog:
   noConfig: このテンプレートには設定オプションがありません
 
 newContainer:
-  service: |
-    {numServices, plural,
-      =1 {サービス}
-      other {サービス}
-    }
+  add:
+    container: コンテナを追加
+    vm: 仮想マシンを追加
+    service: |
+      {numServices, plural,
+        =1 {サービス}
+        other {サービス}
+      } を追加
+  upgrade:
+    container: コンテナをアップグレード
+    vm: 仮想マシンをアップグレード
+    service: |
+      {numServices, plural,
+        =1 {サービス}
+        other {# サービス}
+      } をアップグレード
   tabs:
     disks: ディスク
     userData: ユーザーデータ
@@ -2737,11 +2769,14 @@ tooltipWarning:
 
 upgradeBtn:
   status:
+    none: 'None'
     loading: 'アップグレードを確認中...'
     current: '最新'
     available: 'アップグレードが利用できます'
+    inprogress: 'アップグレード中です'
+    upgraded: 'アップグレード完了: アップグレードが終了しました'
     notfound: 'テンプレートバージョンが見つかりません'
-    default: 'アップグレードのチェックに失敗しました'
+    error: 'アップグレードのチェックに失敗しました'
 
 viewEditDescription:
   form:
@@ -2779,6 +2814,9 @@ volumeRow:
   activeMounts:
     readOnly: "(read-only)"
 
+waitOrchestration:
+  count: '({sub} of {count})'
+
 waitKubernetes:
   addHost: '1台のホストを追加しています'
   activateHost: 'ホストがアクティブになるのを待っています'
@@ -2791,14 +2829,14 @@ waitMesos:
   addHost: '3台のホストを追加しています'
   activateHost: 'ホストがアクティブになるのを待っています'
   createStack: 'Mesos のシステムスタックを作成中'
-  startServices: 'サービスを起動中 ({sub} of {count})'
+  startServices: 'サービスを起動中'
   waitApi: 'Mesos マスターを待っています'
 
 waitSwarm:
   addHost: '1台のホストを追加しています'
   activateHost: 'ホストがアクティブになるのを待っています'
   createStack: 'Swarm のシステムスタックを作成中'
-  startServices: 'サービスを起動中 ({sub} of {count})'
+  startServices: 'サービスを起動中'
 
 ##############################
 # Mixins
