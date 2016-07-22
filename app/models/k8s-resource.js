@@ -89,14 +89,12 @@ var K8sResource = Resource.extend({
   },
 
   delete: function(/*arguments*/) {
-    var store = this.get('store');
+    //var store = this.get('store');
     var type = this.get('type');
+    var name = this.get('metadata.name');
 
-    return this.get('k8s').remove({
-      method: 'DELETE',
-      url: this.linkFor('self')
-    }).then((newData) => {
-      store._remove(type, this);
+    return this.get('k8s').remove(type.replace(C.K8S.TYPE_PREFIX,''), name).then((newData) => {
+      //store._remove(type, this);
       return newData;
     }).catch((err) => {
       this.get('growl').fromError('Error deleting',err);
