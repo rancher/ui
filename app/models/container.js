@@ -30,6 +30,10 @@ var Container = Resource.extend({
 
   _allMounts                 : null,
 
+  reservedKeys: [
+    '_allMounts',
+  ],
+
 
   init: function() {
     this._super();

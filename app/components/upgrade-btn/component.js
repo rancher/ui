@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 const NONE       = 'none',
       LOADING    = 'loading',
@@ -29,9 +30,15 @@ function getUpgradeInfo(task, cb) {
     {
       upgradeInfo.id = task.id;
       obj.set('upgradeInfo', upgradeInfo);
-      if ( upgradeInfo && upgradeInfo.upgradeVersionLinks && Object.keys(upgradeInfo.upgradeVersionLinks).length )
+      if ( upgradeInfo && upgradeInfo.upgradeVersionLinks )
       {
-        obj.set('upgradeStatus', AVAILABLE);
+        // Filter out keys with empty values because of catalog bug (rancher/rancher#5494)
+        let available = Object.keys(upgradeInfo.upgradeVersionLinks).filter((key) => {
+          return !!upgradeInfo.upgradeVersionLinks[key];
+        });
+
+
+        obj.set('upgradeStatus', available.length ? AVAILABLE : CURRENT);
       }
       else
       {
@@ -56,6 +63,7 @@ export default Ember.Component.extend({
   environmentResource : null,
   upgradeStatus       : null,
   intl                : Ember.inject.service(),
+  settings            : Ember.inject.service(),
 
   tagName             : 'button',
   classNames          : ['btn','btn-sm'],
@@ -123,9 +131,17 @@ export default Ember.Component.extend({
     if ( info && C.EXTERNAL_ID.UPGRADEABLE.indexOf(info.kind) >= 0 )
     {
       this.set('upgradeStatus', LOADING);
+
+      var version = this.get('settings.rancherVersion');
+      var url = this.get('app.catalogEndpoint')+'/templateversions/'+info.id;
+      if ( version )
+      {
+        url = Util.addQueryParam(url, 'minimumRancherVersion_lte', version);
+      }
+
       queue.push({
         id: info.id,
-        url: this.get('app.catalogEndpoint')+'/templateversions/'+ info.id,
+        url: url,
         obj: this
       });
     }
