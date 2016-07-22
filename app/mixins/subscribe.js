@@ -233,7 +233,7 @@ export default Ember.Mixin.create({
 
       if ( changeType === 'deleted' )
       {
-        this.get('k8sUidBlacklist').pushObject(obj.metadata.uid);
+        this.get('k8sUidBlacklist').addObject(obj.metadata.uid);
         this.get('store')._remove(resource.get('type'), resource);
       }
     }

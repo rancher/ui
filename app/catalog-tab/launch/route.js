@@ -64,7 +64,10 @@ export default Ember.Route.extend({
         links = results.tpl.versionLinks;
       }
 
-      var verArr = Object.keys(links).map((key) => {
+      var verArr = Object.keys(links).filter((key) => {
+        // Filter out empty values for rancher/rancher#5494
+        return !!links[key];
+      }).map((key) => {
         return {version: key, link: links[key]};
       });
 
