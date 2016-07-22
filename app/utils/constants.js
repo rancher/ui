@@ -134,7 +134,7 @@ var C = {
   },
 
   LANGUAGE: {
-    DEFAULT: 'en-us',
+    DEFAULT: 'en-US',
     FORMAT_RELATIVE_TIMEOUT: 1000,
   },
 
