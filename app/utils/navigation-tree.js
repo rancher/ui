@@ -63,7 +63,7 @@ const navTree = [
         icon: 'icon icon-tachometer',
         route: 'k8s-tab.namespace.deployments',
         ctx: [getProjectId, getNamespaceId],
-        condition: k8sReady,
+        condition: k8sStacks,
       },
       {
         id: 'k8s-services',
@@ -73,14 +73,17 @@ const navTree = [
         ctx: [getProjectId, getNamespaceId],
         condition: k8sReady,
       },
-      {divider: true},
+      {
+        divider: true,
+        condition: k8sStacks
+      },
       {
         id: 'k8s-replicasets',
         localizedLabel: 'nav.k8s.replicasets',
         icon: 'icon icon-services',
         route: 'k8s-tab.namespace.replicasets',
         ctx: [getProjectId, getNamespaceId],
-        condition: k8sReady,
+        condition: k8sStacks,
       },
       {
         id: 'k8s-rcs',

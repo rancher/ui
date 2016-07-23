@@ -39,10 +39,7 @@ export default Ember.Service.extend({
   },
 
   normalizeLang(lang) {
-    let parts = lang.split('-');
-    parts[0] = parts[0].toLowerCase();
-    parts[parts.length-1] = parts[parts.length-1].toUpperCase();
-    return parts.join('-');
+    return lang.toLowerCase();
   },
 
   getLanguage() {
