@@ -233,10 +233,6 @@ export default Ember.Component.extend(NewOrEdit, {
         return this.get('k8s').catalog({
           files: this.get('selectedTemplateModel.files'),
           environment: this.get('environmentResource.environment'),
-          annotations: {
-            [C.LABEL.STACK_NAME]:  this.get('environmentResource.name'),
-            [C.LABEL.EXTERNAL_ID]: this.get('newExternalId'),
-          },
         });
       }
     } else if ( this.get('templateBase') === 'swarm' ) {
@@ -268,7 +264,11 @@ export default Ember.Component.extend(NewOrEdit, {
     if ( base === 'kubernetes' )
     {
       var nsId = this.get('k8s.namespace.id');
-      return this.get('router').transitionTo('k8s-tab.namespace.stacks', projectId, nsId);
+      if ( this.get('k8s.supportsStacks') ) {
+        return this.get('router').transitionTo('k8s-tab.namespace.stacks', projectId, nsId);
+      } else {
+        return this.get('router').transitionTo('k8s-tab.namespace.services', projectId, nsId);
+      }
     }
     else if ( base === 'swarm' )
     {

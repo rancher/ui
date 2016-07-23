@@ -93,7 +93,17 @@ var K8sResource = Resource.extend({
     var type = this.get('type');
     var name = this.get('metadata.name');
 
-    return this.get('k8s').remove(type.replace(C.K8S.TYPE_PREFIX,''), name).then((newData) => {
+    var promise;
+    if ( this.get('k8s.supportsStacks') ) {
+      promise = this.get('k8s').remove(type.replace(C.K8S.TYPE_PREFIX,''), name);
+    } else {
+      promise = this.request({
+        method: 'DELETE',
+        url: this.linkFor('self')
+      });
+    }
+
+    promise.then((newData) => {
       //store._remove(type, this);
       return newData;
     }).catch((err) => {
