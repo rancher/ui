@@ -23,14 +23,23 @@ function propKeys(object) {
 
   return result;
 }
+
 TranslationReducer.prototype.findMissingKeys = function(target, defaultTranslationKeys, locale) {
   var targetProps = propKeys(target);
   var log = this.options.log;
 
+  var total = defaultTranslationKeys.length;
+  var missing = {};
+
   defaultTranslationKeys.forEach(function (property) {
     if (targetProps.indexOf(property) === -1 && locale !== 'none') {
-      log(property + '\' missing from ' + locale);
+      missing[locale] = (missing[locale]||0) + 1;
+      //log(property + '\' missing from ' + locale);
     }
+  });
+
+  Object.keys(missing).forEach(function(locale) {
+    log(missing[locale] + ' keys missing in ' + locale);
   });
 };
 

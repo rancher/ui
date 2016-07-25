@@ -32,8 +32,14 @@ export default Ember.Service.extend({
       lang = fromSession;
     }
 
+    lang = this.normalizeLang(lang);
+
     session.set(C.SESSION.LANGUAGE, lang);
     return this.sideLoadLanguage(lang);
+  },
+
+  normalizeLang(lang) {
+    return lang.toLowerCase();
   },
 
   getLanguage() {
@@ -61,7 +67,7 @@ export default Ember.Service.extend({
       }).then((resp) => {
         let promise;
         if ( this.get('app.needIntlPolyfill') ) {
-          promise = loadScript(`${this.get('app.baseAssets')}assets/intl/locales/${language.toLowerCase()}.js?${application.version}`);
+          promise = loadScript(`${this.get('app.baseAssets')}assets/intl/locales/${language}.js?${application.version}`);
         } else {
           promise = Ember.RSVP.resolve();
         }

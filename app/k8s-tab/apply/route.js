@@ -24,6 +24,42 @@ spec:
   selector:
 `,
 
+deployment: `apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ""
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+    spec:
+      containers:
+      - name: ""
+        image: ""
+        ports:
+`,
+
+replicaset: `apiVersion: extensions/v1beta1
+kind: ReplicaSet
+metadata:
+  labels:
+  name: ""
+  namespace: "%NAMESPACE%"
+spec:
+  replicas: 2
+  selector:
+  template:
+    metadata:
+      labels:
+    spec:
+      restartPolicy: Always
+      containers:
+      - image: ""
+        imagePullPolicy: Always
+        name: ""
+`,
+
 replicationcontroller: `apiVersion: v1
 kind: ReplicationController
 metadata:
@@ -56,21 +92,6 @@ spec:
   selector:
 `,
 
-deployment: `apiVersion: extensions/v1beta1
-kind: Deployment
-metadata:
-  name: ""
-spec:
-  replicas: 2
-  template:
-    metadata:
-      labels:
-    spec:
-      containers:
-      - name: ""
-        image: ""
-        ports:
-`,
 };
 
 export default Ember.Route.extend({
