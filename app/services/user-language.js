@@ -67,7 +67,7 @@ export default Ember.Service.extend({
       }).then((resp) => {
         let promise;
         if ( this.get('app.needIntlPolyfill') ) {
-          promise = loadScript(`${this.get('app.baseAssets')}assets/intl/locales/${language}.js?${application.version}`);
+          promise = loadScript(`${this.get('app.baseAssets')}assets/intl/locales/${language.toLowerCase()}.js?${application.version}`);
         } else {
           promise = Ember.RSVP.resolve();
         }
@@ -80,6 +80,9 @@ export default Ember.Service.extend({
         });
       }).catch((err) => {
         this.get('growl').fromError('Error loading language: ' + language, err);
+        if ( language !== C.LANGUAGE.DEFAULT ) {
+          return this.sideLoadLanguage(C.LANGUAGE.DEFAULT);
+        }
       });
     }
   },
