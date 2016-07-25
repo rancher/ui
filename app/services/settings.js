@@ -179,7 +179,7 @@ export default Ember.Service.extend(Ember.Evented, {
   docsBase: function() {
     let version = this.get(`asMap.${C.SETTING.HELP_VERSION}.value`);
     let lang = (this.get('intl._locale')[0]||'').replace(/-.*$/,'');
-    if ( !lang || lang === 'none' ) {
+    if ( !lang || lang === 'none' || C.LANGUAGE.DOCS.indexOf(lang) === -1 ) {
       lang = 'en';
     }
 

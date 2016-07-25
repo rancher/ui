@@ -136,6 +136,7 @@ var C = {
   LANGUAGE: {
     DEFAULT: 'en-us',
     FORMAT_RELATIVE_TIMEOUT: 1000,
+    DOCS: ['en'],
   },
 
   THEME: {
