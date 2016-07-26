@@ -18,7 +18,7 @@ export function parseExternalId(externalId) {
 
   var idx = externalId.indexOf(C.EXTERNAL_ID.KIND_SEPARATOR);
   if (idx >= 0) {
-    // New style kind://[group:]ido
+    // New style kind://[group:]id
     out.kind = externalId.substr(0, idx);
 
     var rest = externalId.substr(idx + C.EXTERNAL_ID.KIND_SEPARATOR.length);

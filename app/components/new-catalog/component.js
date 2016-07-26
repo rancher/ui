@@ -2,11 +2,13 @@ import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import ShellQuote from 'npm:shell-quote';
 import C from 'ui/utils/constants';
-import { compare as compareVersion} from 'ui/utils/parse-version';
+import Util from 'ui/utils/util';
+import { compare as compareVersion } from 'ui/utils/parse-version';
 
 export default Ember.Component.extend(NewOrEdit, {
   k8s: Ember.inject.service(),
   projects: Ember.inject.service(),
+  settings: Ember.inject.service(),
 
   allTemplates: null,
   templateResource: null,
@@ -74,13 +76,18 @@ export default Ember.Component.extend(NewOrEdit, {
   }.property('versionsArray'),
 
   templateChanged: function() {
-    var link = this.get('selectedTemplateUrl');
-    if (link) {
+    var url = this.get('selectedTemplateUrl');
+    if (url) {
       this.set('loading', true);
+
+      var version = this.get('settings.rancherVersion');
+      if ( version ) {
+        url = Util.addQueryParam(url, 'minimumRancherVersion_lte', version);
+      }
 
       var current = this.get('environmentResource.environment');
       this.get('store').request({
-        url: link
+        url: url
       }).then((response) => {
         if (response.questions) {
           response.questions.forEach((item) => {
