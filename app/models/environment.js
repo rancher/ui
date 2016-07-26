@@ -192,13 +192,35 @@ var Environment = Resource.extend({
   }.property('services'),
 
   externalIdInfo: function() {
-    return parseExternalId(this.get('externalId'));
+    let eid = this.get('externalId');
+    let info = parseExternalId(eid);
+
+    // Migrate kubernetes -> k8s
+    // 1.1.x did not send minimumRancherVersion correctly, so the catalog template
+    // was changed from "kubernetes" to "k8s" so that they won't upgrade from 1.2 to 1.3
+    if ( info && info.kind === C.EXTERNAL_ID.KIND_SYSTEM_CATALOG )
+    {
+      const base = C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNAL_ID.GROUP_SEPARATOR;
+      let old_prefix = base + C.EXTERNAL_ID.KIND_LEGACY_KUBERNETES + C.EXTERNAL_ID.GROUP_SEPARATOR;
+      let neu_prefix = base + C.EXTERNAL_ID.KIND_KUBERNETES + C.EXTERNAL_ID.GROUP_SEPARATOR;
+
+      if ( eid.indexOf(old_prefix) === 0 )
+      {
+        let neu = eid.replace(old_prefix,neu_prefix);
+        console.log('Migrating Stack ' + this.get('id') + ' from ' + eid + ' to ' + neu);
+        this.set('externalId', neu);
+        this.save();
+        return parseExternalId(neu);
+      }
+    }
+
+    return info;
   }.property('externalId'),
 
   grouping: function() {
     var kind = this.get('externalIdInfo.kind');
 
-    if ( kind === C.EXTERNAL_ID.KIND_KUBERNETES )
+    if ( kind === C.EXTERNAL_ID.KIND_KUBERNETES || kind === C.EXTERNAL_ID.KIND_LEGACY_KUBERNETES )
     {
       return C.EXTERNAL_ID.KIND_KUBERNETES;
     }
