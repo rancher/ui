@@ -65,6 +65,22 @@ let REGIONS = [
   "us-gov-west-1",
 ];
 
+function nameFromResource(r, idField) {
+  let id = r[idField];
+  let out = id;
+
+  if ( r && r.Tags && r.Tags.length )
+  {
+    let match = r.Tags.filterBy('Key','Name')[0];
+    if ( match )
+    {
+      out = match.Value + ' (' + id + ')';
+    }
+  }
+
+  return out;
+}
+
 export default Ember.Component.extend(Driver, {
   prefs                    : Ember.inject.service(),
   driverName               : 'amazonec2',
@@ -172,7 +188,9 @@ export default Ember.Component.extend(Driver, {
         region          : rName,
       });
 
-      ec2.describeSubnets({}, (err, data) => {
+      let vpcNames = {};
+
+      ec2.describeVpcs({}, (err, vpcs) => {
         if ( err ) {
           let errors = self.get('errors')||[];
           errors.pushObject(err);
@@ -181,24 +199,40 @@ export default Ember.Component.extend(Driver, {
           return;
         }
 
-        this.get('clients').set(rName, ec2);
+        vpcs.Vpcs.forEach((vpc) => {
+          vpcNames[vpc.VpcId] = nameFromResource(vpc, 'VpcId');
+        });
 
-        data.Subnets.forEach((subnet) => {
-          if ( (subnet.State||'').toLowerCase() !== 'available' )
-          {
+        ec2.describeSubnets({}, (err, data) => {
+          if ( err ) {
+            let errors = self.get('errors')||[];
+            errors.pushObject(err);
+            this.set('errors', errors);
+            this.set('step', 1);
             return;
           }
 
-          subnets.pushObject(Ember.Object.create({
-            subnetId : subnet.SubnetId,
-            vpcId    : subnet.VpcId,
-            zone     : subnet.AvailabilityZone,
-            region   : rName
-          }));
-        });
+          this.get('clients').set(rName, ec2);
 
-        this.set('allSubnets', subnets);
-        this.set('step', 3);
+          data.Subnets.forEach((subnet) => {
+            if ( (subnet.State||'').toLowerCase() !== 'available' )
+            {
+              return;
+            }
+
+            subnets.pushObject(Ember.Object.create({
+              subnetName: nameFromResource(subnet, 'SubnetId'),
+              subnetId:   subnet.SubnetId,
+              vpcName:    vpcNames[subnet.VpcId] || subnet.VpcId,
+              vpcId:      subnet.VpcId,
+              zone:       subnet.AvailabilityZone,
+              region:     rName
+            }));
+          });
+
+          this.set('allSubnets', subnets);
+          this.set('step', 3);
+        });
       });
     },
 
@@ -371,22 +405,24 @@ export default Ember.Component.extend(Driver, {
     let seenVpcs = [];
 
     (this.get('allSubnets')||[]).filterBy('zone', this.get('selectedZone')).forEach((subnet) => {
-      let vpcId    = subnet.get('vpcId');
-      let subnetId = subnet.get('subnetId');
+      let vpcName    = subnet.get('vpcName');
+      let vpcId      = subnet.get('vpcId');
+      let subnetId   = subnet.get('subnetId');
+      let subnetName = subnet.get('subnetName');
 
       if ( seenVpcs.indexOf(vpcId) === -1 ) {
         seenVpcs.pushObject(vpcId);
         out.pushObject({
           sortKey : vpcId,
-          label   : vpcId,
+          label   : vpcName,
           value   : vpcId,
           isVpc   : true
         });
       }
 
       out.pushObject({
-        sortKey : `${vpcId} ${subnetId}`,
-        label   : subnetId,
+        sortKey : `${vpcId} ${subnetName}`,
+        label   : subnetName,
         value   : subnetId,
         isVpc   : false,
       });
