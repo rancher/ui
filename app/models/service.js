@@ -17,6 +17,7 @@ var _allComposeServices;
 var Service = Resource.extend({
   type: 'service',
   intl: Ember.inject.service(),
+  growl: Ember.inject.service(),
 
   actions: {
     activate() {
@@ -150,7 +151,9 @@ var Service = Resource.extend({
     }
 
     var timer = Ember.run.later(this, function() {
-      this.save();
+      this.save().catch((err) => {
+        this.get('growl').fromError('Error updating scale',err);
+      });
     }, 500);
 
     this.set('scaleTimer', timer);
