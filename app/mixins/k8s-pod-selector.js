@@ -41,10 +41,16 @@ export default Ember.Mixin.create({
       return [];
     }
 
+    var ns = this.get('k8s.namespace.id');
+
     var matching = this.get(field).slice();
     selectors.forEach((sel) => {
-      matching = matching.filter((pod) => {
-        return pod[method](sel.label, sel.value);
+      matching = matching.filter((r) => {
+        if ( r.metadata && r.metadata.namespace && r.metadata.namespace !== ns ) {
+          return false;
+        }
+
+        return r[method](sel.label, sel.value);
       });
     });
 
@@ -53,9 +59,9 @@ export default Ember.Mixin.create({
 
   selectedPods: function() {
     return this._selected('k8s.pods','hasLabel');
-  }.property('selectorsAsArray.@each.{label,value}','k8s.pods.[]'),
+  }.property('selectorsAsArray.@each.{label,value}','k8s.pods.[]','k8s.namespace.id'),
 
   selectedReplicaSets: function() {
     return this._selected('k8s.replicasets','hasLabel');
-  }.property('selectorsAsArray.@each.{label,value}','k8s.replicasets.[]'),
+  }.property('selectorsAsArray.@each.{label,value}','k8s.replicasets.[]','k8s.namespace.id'),
 });

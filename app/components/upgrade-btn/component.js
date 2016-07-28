@@ -81,7 +81,7 @@ export default Ember.Component.extend({
     let upgradeInfo = this.get('upgradeInfo');
     let status = this.get('upgradeStatus');
 
-    if ( status === AVAILABLE )
+    if ( [AVAILABLE,CURRENT].indexOf(status) >= 0 )
     {
       // Hackery, but no good way to get the template from upgradeInfo
       var tpl = upgradeInfo.id;
@@ -101,8 +101,9 @@ export default Ember.Component.extend({
     switch ( this.get('upgradeStatus') ) {
       case NONE:
         return 'hide';
-      case LOADING:
       case CURRENT:
+        return 'btn-info';
+      case LOADING:
       case NOTFOUND:
       case ERROR:
       case INPROGRESS:
