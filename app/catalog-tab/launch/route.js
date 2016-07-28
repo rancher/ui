@@ -77,6 +77,14 @@ export default Ember.Route.extend({
         return {version: key, link: links[key]};
       });
 
+      if ( results.upgrade )
+      {
+        verArr.unshift({
+          version: results.upgrade.version + ' (current)',
+          link: results.upgrade.links.self
+        });
+      }
+
       return Ember.Object.create({
         environment: results.env,
         tpl: results.tpl,
