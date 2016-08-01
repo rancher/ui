@@ -9,15 +9,21 @@ export default Ember.Route.extend({
 
   model: function(params/*, transition*/) {
     var store = this.get('store');
+    var version = this.get('settings.rancherVersion');
+
+    let url = this.get('app.catalogEndpoint')+'/templates/'+params.template;
+    if ( version )
+    {
+      url = Util.addQueryParam(url, 'minimumRancherVersion_lte', version);
+    }
 
     var dependencies = {
-      tpl: store.request({url: this.get('app.catalogEndpoint')+'/templates/'+params.template}),
+      tpl: store.request({url: url}),
     };
 
     if ( params.upgrade )
     {
-      var version = this.get('settings.rancherVersion');
-      var url = this.get('app.catalogEndpoint')+'/templateversions/'+params.upgrade;
+      url = this.get('app.catalogEndpoint')+'/templateversions/'+params.upgrade;
       if ( version )
       {
         url = Util.addQueryParam(url, 'minimumRancherVersion_lte', version);
@@ -64,7 +70,10 @@ export default Ember.Route.extend({
         links = results.tpl.versionLinks;
       }
 
-      var verArr = Object.keys(links).map((key) => {
+      var verArr = Object.keys(links).filter((key) => {
+        // Filter out empty values for rancher/rancher#5494
+        return !!links[key];
+      }).map((key) => {
         return {version: key, link: links[key]};
       });
 
