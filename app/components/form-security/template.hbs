@@ -54,7 +54,7 @@
   </div>
 
   <div class="col-sm-12 col-md-3">
-    {{#input-or-display editable=false value=instance.cpuSet}}
+    {{#input-or-display editable=editing value=instance.cpuSet}}
       {{input type="text" value=instance.cpuSet classNames="form-control" placeholder=(t 'formSecurity.cpuPinning.placeholder')}}
     {{/input-or-display}}
   </div>
@@ -67,12 +67,12 @@
     {{/input-or-display}}
   </div>
 </div>
-<div class="row">
+<div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.capabilities.label'}}</label>
+    <label class="form-control-static">{{t 'formSecurity.capabilities.label'}}{{#unless editing}}({{t 'formSecurity.capabilities.add'}}){{/unless}}</label>
   </div>
 
-  <div class="col-sm-12 col-md-4">
+  <div class="col-sm-12 {{if editing "col-md-4" "col-md-3"}}">
     {{#if editing}}
       <select class="form-control select-cap-add" multiple="true" onchange={{action 'modifyCapabilities' 'capAdd' }}>
         {{#each capabilityChoices as |choice|}}
@@ -89,6 +89,12 @@
       {{/if}}
     {{/if}}
   </div>
+
+  {{#unless editing}}
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">{{t 'formSecurity.capabilities.label'}}({{t 'formSecurity.capabilities.drop'}})</label>
+  </div>
+  {{/unless}}
 
   <div class="col-sm-12 col-md-4">
     {{#if editing}}
@@ -107,7 +113,6 @@
       {{/if}}
     {{/if}}
   </div>
-</div>
 {{#if editing}}
   <div class="row">
     <div class="col-sm-12 col-md-8 col-md-offset-2">
@@ -118,6 +123,7 @@
     </div>
   </div>
 {{/if}}
+</div>
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">

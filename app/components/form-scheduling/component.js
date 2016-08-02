@@ -32,7 +32,9 @@ export default Ember.Component.extend(ManageLabels, {
   // Internal properties
   isRequestedHost: false,
 
-  tagName: '',
+  classNameBindings: ['editing:component-editing:component-static'],
+  editing: true,
+
 
   actions: {
     addSchedulingRule() {

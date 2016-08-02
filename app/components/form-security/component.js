@@ -3,6 +3,8 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   // Inputs
   instance: null,
+  classNameBindings: ['editing:component-editing:component-static'],
+  editing: true,
 
   actions: {
     addDevice: function() {
