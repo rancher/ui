@@ -12,11 +12,11 @@ export function parse(str) {
   return parts;
 }
 
-export function isNumeric(str) {
+function isNumeric(str) {
   return typeof str === 'string' && str.match(/^[0-9]*$/);
 }
 
-export function comparePart(in1, in2) {
+function comparePart(in1, in2) {
   in1 = (in1+"").toLowerCase();
   in2 = (in2+"").toLowerCase();
 
@@ -49,4 +49,19 @@ export function compare(in1, in2) {
   }
 
   return p1.length - p2.length;
+}
+
+export function stableMinor(str) {
+  let [major, minor, patch, pre] = parse(str);
+  if ( !minor )
+  {
+    return 'v'+ major +'.0';
+  }
+
+  if ( pre && pre.toLowerCase().indexOf('pre') === 0 && comparePart(patch,'0') === 0 )
+  {
+    return 'v' + major + '.' + Math.max(0,(minor-1));
+  }
+
+  return 'v' + major + '.' + minor;
 }

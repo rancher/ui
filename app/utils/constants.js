@@ -210,7 +210,6 @@ var C = {
     SWARM_PORT:       'swarm$tls$port',
     ENGINE_URL:       'engine$install$url',
     MIN_DOCKER:       'ui$min$docker$version',
-    HELP_VERSION:     'ui$help$version',
   },
 
   USER: {
