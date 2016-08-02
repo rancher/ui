@@ -132,7 +132,8 @@ var C = {
     EXPANDED_STACKS : 'expandedStacks',
     SORT_STACKS_BY  : 'sortStacksBy',
     THEME           : 'theme',
-    LANGUAGE        : 'language'
+    LANGUAGE        : 'language',
+    I_HATE_SPINNERS: 'ihatespinners'
   },
 
   LANGUAGE: {

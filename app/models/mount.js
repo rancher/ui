@@ -2,21 +2,27 @@ import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
-const { getOwner } = Ember;
+const { getOwner, computed } = Ember;
 
 let _allMounts;
 let _allContainers;
+let _allVolumes;
+let _allSnapshots;
 
 var Mount = Resource.extend({
   isReadWrite: Ember.computed.equal('permissions','rw'),
   isReadOnly:  Ember.computed.equal('permissions','ro'),
 
-  _allMounts                 : null,
-  _allContainers             : null,
+  _allMounts:      null,
+  _allContainers:  null,
+  _allVolumes:     null,
+  _allSnapshots:   null,
 
   reservedKeys: [
     '_allMounts',
-    '_allContainers'
+    '_allContainers',
+    '_allVolumes',
+    '_allSnapshots',
   ],
 
   init: function() {
@@ -33,9 +39,20 @@ var Mount = Resource.extend({
       _allContainers = store.allUnremoved('container');
     }
 
+    if ( !_allVolumes ) {
+      _allVolumes = store.allUnremoved('volume');
+    }
+
+    if ( !_allSnapshots )
+    {
+      _allSnapshots = store.allUnremoved('snapshot');
+    }
+
     this.setProperties({
       '_allMounts'  : _allMounts,
       '_allContainers' : _allContainers,
+      '_allVolumes' : _allVolumes,
+      '_allSnapshots': _allSnapshots,
     });
 
   },
@@ -85,12 +102,23 @@ var Mount = Resource.extend({
 
     return out;
   }.property('_allContainers.@each.instanceId', 'id'),
+
+  snapshotsAndBackups: computed('_allSnapshots.[]', function() {
+    let volumeId = this.get('volumeId');
+    return this.get('_allSnapshots').get('content').filterBy('volumeId', volumeId);
+  }),
+
+  ownedVolume: computed('_allVolumes.[]', function() {
+    return this.get('_allVolumes').findBy('id', this.get('volumeId'));
+  }),
 });
 
 Mount.reopenClass({
   reset: function() {
-    _allMounts = null;
-    _allContainers = null;
+    _allMounts =      null;
+    _allContainers =  null;
+    _allVolumes =     null;
+    _allSnapshots =   null;
   },
 
 });

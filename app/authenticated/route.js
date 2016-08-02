@@ -42,6 +42,8 @@ export default Ember.Route.extend(Subscribe, {
     let isAdmin = (type === C.USER.TYPE_ADMIN) || !this.get('access.enabled');
     this.set('access.admin', isAdmin);
 
+    var store = this.get('store');
+
     return Ember.RSVP.hash({
       schemas: this.loadUserSchemas(),
       projects: this.loadProjects(),
@@ -54,6 +56,10 @@ export default Ember.Route.extend(Subscribe, {
         projectId = transition.params['authenticated.project'].project_id;
       }
 
+      if (this.get(`prefs.${C.PREFS.I_HATE_SPINNERS}`)) {
+        Ember.$('BODY').addClass('i-hate-spinners');
+      }
+
       // Make sure a valid project is selected
       return this.get('projects').selectDefault(projectId).then((project) => {
         // Load stuff that is needed to draw the header
@@ -62,10 +68,12 @@ export default Ember.Route.extend(Subscribe, {
         return Ember.RSVP.hash({
           language: this.get('language').setLanguage(),
           orchestrationState: this.get('projects').updateOrchestrationState(),
-          hosts: this.get('store').findAllUnremoved('host'),
-          machines: this.get('store').findAllUnremoved('machine'),
-          stacks: this.get('store').findAllUnremoved('environment'),
-          mounts: this.get('store').findAllUnremoved('mount'), // the container model needs access
+          hosts: store.findAllUnremoved('host'),
+          machines: store.findAllUnremoved('machine'),
+          stacks: store.findAllUnremoved('environment'),
+          mounts: store.findAllUnremoved('mount'), // the container model needs access
+          volumes: store.findAllUnremoved('volume'),
+          snapshots: store.findAllUnremoved('snapshot'),
         }).then((moreHash) => {
           Ember.merge(hash, moreHash);
 

@@ -9,13 +9,18 @@ export default Ember.Component.extend(Tooltip, StrippedName, {
   model           : Ember.computed.alias('tooltipService.tooltipOpts.model'),
   actionsOpen     : Ember.computed.alias('resourceActions.open'),
   inTooltip       : false,
+  layoutName: 'tooltip-action-menu',
 
-  setup: function() {
+  init: function() {
+    if (this.get('tooltipTemplate')) {
+      this.set('layoutName', this.get('tooltipTemplate'));
+    }
+    this._super(...arguments);
     // Just so openChanged is ready to go, otherwise you have to chain on('init') on openChanged
     // which because of the context menu click on container dot can cause some issues with checking
     // flags and such. This was the least compliated way to ensure that openChanged would recognize changes
     this.set('actionsOpen', false);
-  }.on('init'),
+  },
 
   mouseEnter: function() {
     this._super();

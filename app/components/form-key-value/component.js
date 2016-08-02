@@ -58,18 +58,18 @@ function removeEmptyEntries(ary, allowEmptyValue=false) {
 
 export default Ember.Component.extend({
   // Inputs
-  initialStr          : null,
-  initialMap          : null,
-  addActionLabel      : 'formKeyValue.addAction',
-  keyLabel            : 'formKeyValue.key.label',
-  valueLabel          : 'formKeyValue.value.label',
-  keyPlaceholder      : 'formKeyValue.key.placeholder',
-  valuePlaceholder    : 'formKeyValue.value.placeholder',
-  allowEmptyValue     : false,
-  addInitialEmptyRow  : false,
-  allowMultilineValue : true,
-
-  ary                 : null,
+  initialStr:           null,
+  initialMap:           null,
+  addActionLabel:       'formKeyValue.addAction',
+  keyLabel:             'formKeyValue.key.label',
+  valueLabel:           'formKeyValue.value.label',
+  keyPlaceholder:       'formKeyValue.key.placeholder',
+  valuePlaceholder:     'formKeyValue.value.placeholder',
+  allowEmptyValue:      false,
+  addInitialEmptyRow:   false,
+  allowMultilineValue:  true,
+  editing:              true,
+  ary:                  null,
 
   actions: {
     add() {
