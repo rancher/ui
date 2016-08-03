@@ -18,15 +18,22 @@
     <div class="col-md-3 r-mb15">
       {{#if model.description}}
         <div>
-          <label class="block text-muted">{{t 'containersPage.containerPage.infoMultiStats.description'}}</label>
+          <label class="block">{{t 'containersPage.containerPage.infoMultiStats.description'}}</label>
           <div>{{model.description}}</div>
         </div>
 
         <hr>
       {{/if}}
 
+      {{#if model.primaryService}}
+          <label class="block">{{t 'containersPage.containerPage.infoMultiStats.stack'}}</label>
+
+          <div>{{#link-to "environment" model.primaryService.environmentId}}{{stackName}}{{/link-to}}/{{#link-to "service" model.primaryService.environmentId model.primaryService.id}}{{model.primaryService.displayName}}{{/link-to}}</div>
+        <hr>
+      {{/if}}
+
       <div>
-        <label class="block text-muted">{{t 'containersPage.containerPage.infoMultiStats.host'}}</label>
+        <label class="block">{{t 'containersPage.containerPage.infoMultiStats.host'}}</label>
         {{#if model.primaryHost}}
           {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}
           {{copy-to-clipboard clipboardText=model.primaryHost.displayIp tooltipText=(t 'containersPage.containerPage.infoMultiStats.tooltip.host') size="small"}}
@@ -38,14 +45,14 @@
       <hr>
 
       <div>
-        <label class="block text-muted">{{t 'containersPage.containerPage.infoMultiStats.ip'}}</label>
+        <label class="block">{{t 'containersPage.containerPage.infoMultiStats.ip'}}</label>
         {{format-ip ip=model.displayIp showCopy=true}}
       </div>
 
       <hr>
 
       <div>
-        <label class="block text-muted">{{t 'containersPage.containerPage.infoMultiStats.docker'}}</label>
+        <label class="block">{{t 'containersPage.containerPage.infoMultiStats.docker'}}</label>
         {{#if model.displayExternalId}}
           {{model.displayExternalId}} {{copy-to-clipboard clipboardText=model.externalId size='small'}}
         {{else}}
@@ -56,35 +63,9 @@
       <hr>
 
       <div>
-        <label class="block text-muted">{{t 'containersPage.containerPage.infoMultiStats.image'}}</label>
+        <label class="block">{{t 'containersPage.containerPage.infoMultiStats.image'}}</label>
         <span class="force-wrap">
           {{model.displayImage}} {{copy-to-clipboard clipboardText=model.displayImage size='small'}}
-        </span>
-      </div>
-
-      <hr>
-
-      <div>
-        <label class="block text-muted">{{t 'containersPage.containerPage.infoMultiStats.command'}}</label>
-        <span class="force-wrap">
-          {{#if model.command}}
-            {{concat-str model.command}}
-          {{else}}
-            <span class="text-muted">{{t 'generic.none'}}</span>
-          {{/if}}
-        </span>
-      </div>
-
-      <hr>
-
-      <div>
-        <label class="block text-muted">{{t 'containersPage.containerPage.infoMultiStats.entryPoint'}}</label>
-        <span class="force-wrap">
-          {{#if model.entryPoint}}
-            {{concat-str model.entryPoint}}
-          {{else}}
-            <span class="text-muted">{{t 'generic.none'}}</span>
-          {{/if}}
         </span>
       </div>
     </div>
@@ -94,14 +75,14 @@
       </div>
       <div class="row r-p15">
         <ul class="nav nav-tabs nav-tabs-well shadowed">
-          {{#link-to "container.ports" tagName="li" href=false replace=true}}<a href="#"><i class="icon icon-network"></i> {{t 'containersPage.containerPage.navTabs.ports'}}</a>{{/link-to}}
-          {{#link-to "container.commands" tagName="li" href=false replace=true}}<a href="#"><i class="icon icon-tag"></i> {{t 'containersPage.containerPage.navTabs.command'}}</a>{{/link-to}}
-          {{#link-to "container.volumes" tagName="li" href=false replace=true}}<a href="#"><i class="icon icon-hdd"></i> {{t 'containersPage.containerPage.navTabs.volumes'}}</a>{{/link-to}}
-          {{#link-to "container.networking" tagName="li" href=false replace=true}}<a href="#"><i class="icon icon-hdd"></i> {{t 'containersPage.containerPage.navTabs.networking'}}</a>{{/link-to}}
-          {{#link-to "container.security" tagName="li" href=false replace=true}}<a href="#"><i class="icon icon-tag"></i> {{t 'containersPage.containerPage.navTabs.security'}}</a>{{/link-to}}
-          {{#link-to "container.healthcheck" tagName="li" href=false replace=true}}<a href="#"><i class="icon icon-tag"></i> {{t 'containersPage.containerPage.navTabs.healthCheck'}}</a>{{/link-to}}
-          {{#link-to "container.labels" tagName="li" href=false replace=true}}<a href="#"><i class="icon icon-tag"></i> {{t 'containersPage.containerPage.navTabs.labels'}}</a>{{/link-to}}
-          {{#link-to "container.scheduling" tagName="li" href=false replace=true}}<a href="#"><i class="icon icon-network"></i> {{t 'containersPage.containerPage.navTabs.scheduling'}}</a>{{/link-to}}
+          {{#link-to "container.ports" tagName="li" href=false replace=true}}<a href="#">{{t 'containersPage.containerPage.navTabs.ports'}}</a>{{/link-to}}
+          {{#link-to "container.commands" tagName="li" href=false replace=true}}<a href="#">{{t 'containersPage.containerPage.navTabs.command'}}</a>{{/link-to}}
+          {{#link-to "container.volumes" tagName="li" href=false replace=true}}<a href="#">{{t 'containersPage.containerPage.navTabs.volumes'}}</a>{{/link-to}}
+          {{#link-to "container.networking" tagName="li" href=false replace=true}}<a href="#">{{t 'containersPage.containerPage.navTabs.networking'}}</a>{{/link-to}}
+          {{#link-to "container.security" tagName="li" href=false replace=true}}<a href="#">{{t 'containersPage.containerPage.navTabs.security'}}</a>{{/link-to}}
+          {{#link-to "container.healthcheck" tagName="li" href=false replace=true}}<a href="#">{{t 'containersPage.containerPage.navTabs.healthCheck'}}</a>{{/link-to}}
+          {{#link-to "container.labels" tagName="li" href=false replace=true}}<a href="#">{{t 'containersPage.containerPage.navTabs.labels'}}</a>{{/link-to}}
+          {{#link-to "container.scheduling" tagName="li" href=false replace=true}}<a href="#">{{t 'containersPage.containerPage.navTabs.scheduling'}}</a>{{/link-to}}
         </ul>
         <div class="table-flat well">
           {{outlet}}

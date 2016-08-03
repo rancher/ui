@@ -28,7 +28,8 @@ export default Ember.Component.extend({
   isService: null,
   showStrategy: true,
 
-  tagName: '',
+  classNameBindings: ['editing:component-editing:component-static'],
+  editing: true,
 
   uriMethodChoices: METHOD_CHOICES,
   uriVersionChoices: [HTTP_1_0,HTTP_1_1],
