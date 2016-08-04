@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { alternateLabel } from 'ui/utils/platform';
+import Terminal from 'npm:xterm';
 
 const DEFAULT_COMMAND = ["/bin/sh","-c",'TERM=xterm-256color; export TERM; [ -x /bin/bash ] && ([ -x /usr/bin/script ] && /usr/bin/script -q -c "/bin/bash" /dev/null || exec /bin/bash) || exec /bin/sh'];
 
@@ -59,8 +60,8 @@ export default Ember.Component.extend({
       this.set('term', term);
 
       term.on('data', function(data) {
-        //console.log('To Server:',data);
-        socket.send(btoa(data));
+        console.log('To Server:',data);
+        socket.send(btoa(unescape(encodeURIComponent(data))));// jshint ignore:line
       });
 
       term.open(this.$('.shell-body')[0]);
@@ -68,8 +69,8 @@ export default Ember.Component.extend({
       socket.onmessage = (message) => {
         this.set('status','connected');
         this.sendAction('connected');
-        //console.log('From Server:',message);
-        term.write(atob(message.data));
+        console.log('From Server:',message.data);
+        term.write(decodeURIComponent(escape(atob(message.data))));// jshint ignore:line
       };
 
       socket.onclose = () => {
