@@ -24,7 +24,7 @@ export default Ember.Component.extend({
     'waitSwarm.addHost',
     'waitSwarm.activateHost',
     'waitSwarm.createStack',
-    'waitSwarm.startService',
+    'waitSwarm.startServices',
   ],
 
   updateStep: debouncedObserver('model.hosts.@each.state','model.stacks.@each.{state,externalId}','services.@each.{state,healthState}', function() {

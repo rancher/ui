@@ -1,4 +1,4 @@
-<div class="form-group">
+<div class="{{if editing 'form-group' ''}}">
   {{#if canRequestHost}}
     {{#if editing}}
       <div class="radio">
@@ -9,10 +9,10 @@
             {{else}}
               {{format-html-message 'formScheduling.canRequestHost.containers'}}
             {{/if~}}
-            {{if isRequestedHost ':'}}
           {{else}}
-            Run on a specific host{{if isRequestedHost ':'}}
-          {{/if}}</label>
+            {{t 'formScheduling.runSpecific'}}
+          {{/if}}
+        </label>
           {{#if isRequestedHost}}
             {{new-select
               class="form-control"
@@ -52,12 +52,13 @@
             {{else}}
               {{format-html-message 'formScheduling.canRequestHost.containers'}}
             {{/if~}}
-            {{if isRequestedHost ':'}}
           {{else}}
-            Run on a specific host{{if isRequestedHost ':'}}
+            {{t 'formScheduling.runSpecific'}}
           {{/if}}
         </label>
         <span class="form-static-control">{{selectedChoice.name}}</span>
+      {{else}}
+        {{t 'formScheduling.noRules'}}
       {{/if}}
     {{/if}}
   {{else}}

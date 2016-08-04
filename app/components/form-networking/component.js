@@ -13,7 +13,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   errors        : null,
   initialLabels : null,
 
-  tagName       : '',
+  classNameBindings: ['editing:component-editing:component-static'],
   editing: true,
 
   init() {
