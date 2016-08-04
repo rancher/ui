@@ -3,7 +3,7 @@ import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 import C from 'ui/utils/constants';
 
-const builtInUi = ['amazonec2','azure','digitalocean','exoscale','packet','rackspace','ubiquity','vmwarevsphere'];
+const builtInUi = ['amazonec2','azure','digitalocean','exoscale','packet','rackspace','ubiquity','vmwarevsphere','aliyunecs'];
 
 function displayUrl(url) {
   url = url||'';

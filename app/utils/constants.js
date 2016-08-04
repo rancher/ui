@@ -266,6 +266,7 @@ var C = {
     VMWAREVSPHERE: 'vmwarevsphere',
     OTHER: 'other',
     CUSTOM: 'custom',
+    ALIYUNECS: 'aliyunecs',
   }
 };
 
