@@ -251,6 +251,18 @@ Router.map(function() {
     dialogClass             : 'about',
   });
 
+  this.modal('modal-feedback', {
+    dismissWithOutsideClick : false,
+    withParams              : 'showFeedback',
+    dialogClass             : 'about',
+  });
+
+  this.modal('modal-welcome', {
+    dismissWithOutsideClick : false,
+    withParams              : 'showWelcome',
+    dialogClass             : 'about',
+  });
+
   this.modal('modal-shell', {
     dismissWithOutsideClick : false,
     dismissWithEscape       : false,

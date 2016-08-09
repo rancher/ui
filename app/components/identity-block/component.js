@@ -17,24 +17,31 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
-    var type = this.get('externalIdType');
-    var id = this.get('externalId');
-    var identityOut = this.get('identityNotParsed') || `1i!${type}:${id}`;
+    var eType = this.get('externalIdType');
+    var eId = this.get('externalId');
+    var id = this.get('identityNotParsed');
+
+    if ( !id && eType && eId ) {
+     id =`1i!${type}:${id}`;
+    }
 
     if ( !this.get('identity') )
     {
-      this.set('loading', true);
-      this.get('userStore').find('identity',identityOut).then((identity) => {
-        if (this._state !== 'destroying') {
-          this.set('identity', identity);
-        }
-      }).catch((/*err*/) => {
-        // Do something..
-      }).finally(() => {
-        if (this._state !== 'destroying') {
-          this.set('loading', false);
-        }
-      });
+      if ( id )
+      {
+        this.set('loading', true);
+        this.get('userStore').find('identity', id).then((identity) => {
+          if (this._state !== 'destroying') {
+            this.set('identity', identity);
+          }
+        }).catch((/*err*/) => {
+          // Do something..
+        }).finally(() => {
+          if (this._state !== 'destroying') {
+            this.set('loading', false);
+          }
+        });
+      }
     }
   },
 

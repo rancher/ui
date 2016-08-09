@@ -7,6 +7,7 @@ const CHECK_AUTH_TIMER = 600000;
 export default Ember.Route.extend(Subscribe, {
   prefs     : Ember.inject.service(),
   projects  : Ember.inject.service(),
+  settings  : Ember.inject.service(),
   k8s       : Ember.inject.service(),
   access    : Ember.inject.service(),
   userTheme : Ember.inject.service('user-theme'),
@@ -96,10 +97,41 @@ export default Ember.Route.extend(Subscribe, {
   },
 
   activate() {
+    let app = this.controllerFor('application');
+
     this._super();
     if ( !this.controllerFor('application').get('isPopup') )
     {
       this.connectSubscribe();
+    }
+
+    if ( this.get('settings.isRancher') && !app.get('isPopup') )
+    {
+      // Show the telemetry opt-in
+      if ( this.get('access.admin') && !this.get(`settings.${C.SETTING.TELEMETRY}`)
+        )
+      {
+        Ember.run.scheduleOnce('afterRender', this, function() {
+          app.set('showWelcome', true);
+        });
+      }
+      else if ( !this.get(`prefs.${C.PREFS.FEEDBACK}`) )
+      {
+        // Show the feedback form
+        let time = this.get(`prefs.${C.PREFS.FEEDBACK_TIME}`);
+        if ( !time ) {
+          time = (new Date()).getTime() + C.PREFS.FEEDBACK_DELAY;
+          this.set(`prefs.${C.PREFS.FEEDBACK_TIME}`, time);
+        }
+
+        let now = (new Date()).getTime();
+        if ( (now - time) >= 0 )
+        {
+          Ember.run.scheduleOnce('afterRender', this, function() {
+            app.set('showFeedback', true);
+          });
+        }
+      }
     }
   },
 

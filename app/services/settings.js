@@ -164,6 +164,10 @@ export default Ember.Service.extend(Ember.Evented, {
     return this.get('_plValue').toUpperCase() === C.COOKIE.PL_RANCHER_VALUE.toUpperCase();
   }.property('_plValue'),
 
+  isOSS: function() {
+    return this.get('rancherImage') === 'rancher/server';
+  }.property('rancherImage'),
+
   appName: function() {
     if ( this.get('isRancher') )
     {

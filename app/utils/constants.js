@@ -134,7 +134,10 @@ var C = {
     SORT_STACKS_BY  : 'sortStacksBy',
     THEME           : 'theme',
     LANGUAGE        : 'language',
-    I_HATE_SPINNERS: 'ihatespinners'
+    I_HATE_SPINNERS : 'ihatespinners',
+    FEEDBACK        : 'feedback',
+    FEEDBACK_TIME   : 'feedbackTime',
+    FEEDBACK_DELAY  : 60000, //7*24*60*60*1000,
   },
 
   LANGUAGE: {
@@ -216,6 +219,7 @@ var C = {
     SWARM_PORT:       'swarm$tls$port',
     ENGINE_URL:       'engine$install$url',
     MIN_DOCKER:       'ui$min$docker$version',
+    TELEMETRY:        'telemetry$opt',
   },
 
   USER: {
