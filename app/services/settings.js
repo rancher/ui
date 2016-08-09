@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import { stableMinor } from 'ui/utils/parse-version';
 
 export function normalizeName(str) {
   return str.replace(/\./g, C.SETTING.DOT_CHAR).toLowerCase();
@@ -176,13 +177,23 @@ export default Ember.Service.extend(Ember.Evented, {
 
   minDockerVersion: Ember.computed.alias(`asMap.${C.SETTING.MIN_DOCKER}.value`),
 
+  stableMinor: function() {
+    let version = this.get('rancherVersion');
+    if ( !version )
+    {
+      return 'latest';
+    }
+
+    return stableMinor(version);
+  }.property('rancherVersion'),
+
   docsBase: function() {
-    let version = this.get(`asMap.${C.SETTING.HELP_VERSION}.value`);
+    let version = this.get('stableMinor');
     let lang = (this.get('intl._locale')[0]||'').replace(/-.*$/,'');
     if ( !lang || lang === 'none' || C.LANGUAGE.DOCS.indexOf(lang) === -1 ) {
       lang = 'en';
     }
 
     return `${C.EXT_REFERENCES.DOCS}/${version}/${lang}`;
-  }.property('intl._locale',`asMap.${C.SETTING.HELP_VERSION}.value`)
+  }.property('intl._locale','stableMinor')
 });
