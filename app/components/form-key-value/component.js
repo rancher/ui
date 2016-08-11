@@ -55,7 +55,6 @@ function removeEmptyEntries(ary, allowEmptyValue=false) {
   ary.removeObjects(toRemove);
 }
 
-
 export default Ember.Component.extend({
   // Inputs
   initialStr:           null,

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import { parseCatalogSetting } from 'ui/utils/parse-catalog-setting';
+import { getCatalogNames } from 'ui/utils/parse-catalog-setting';
 
 // Useful context/condition shortcuts
 export const getProjectId = function() { return this.get('projectId'); };
@@ -402,7 +402,7 @@ export function get() {
 }
 
 function getCatalogSubtree() {
-  let repos = Object.keys(parseCatalogSetting(this.get(`settings.${C.SETTING.CATALOG_URL}`))).sort();
+  let repos = getCatalogNames(this.get(`settings.${C.SETTING.CATALOG_URL}`));
   let showAll = false;
   let showLibrary = false;
 

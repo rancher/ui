@@ -3,16 +3,58 @@ import C from 'ui/utils/constants';
 import { parseCatalogSetting } from 'ui/utils/parse-catalog-setting';
 
 export default Ember.Component.extend({
-  settings        : Ember.inject.service(),
+  settings: Ember.inject.service(),
 
-  keymap          : null,
-  enableLibrary   : null,
-  enableCommunity : null,
-  catalog         : null,
+  initialValue: null,
+
+  parsed: null,
+  ary: null,
+  enableLibrary: null,
+  enableCommunity: null,
 
   actions: {
-    save: function(btnCb) {
-      this.get('settings').set(C.SETTING.CATALOG_URL, this.get('catalog'));
+    add() {
+      this.get('ary').pushObject(Ember.Object.create({name: '', branch: 'master', url: ''}));
+      Ember.run.next(() => {
+        if ( this._state !== 'destroying' )
+        {
+          this.$('INPUT.name').last()[0].focus();
+        }
+      });
+    },
+
+    remove(obj) {
+      this.get('ary').removeObject(obj);
+    },
+
+    save(btnCb) {
+      const def = C.CATALOG.DEFAULT_BRANCH;
+
+      let map = {};
+      // Start with ours, then load the users in case they override the value
+      if (this.get('enableLibrary')) {
+        map[C.CATALOG.LIBRARY_KEY] = {url: C.CATALOG.LIBRARY_VALUE, branch: def};
+      }
+
+      if (this.get('enableCommunity')) {
+        map[C.CATALOG.COMMUNITY_KEY] = {url: C.CATALOG.COMMUNITY_VALUE, branch: def};
+      }
+
+      // Load the user's non-empty rows
+      this.get('ary').forEach((row) => {
+        let name = (row.name||'').trim();
+        let url = (row.url||'').trim();
+        let branch = (row.branch||'').trim() || def;
+
+        if (name && url) {
+          map[name] = {url: url, branch: branch};
+        }
+      });
+
+      let neu = this.get('parsed')||{};
+      neu.catalogs = map;
+
+      this.get('settings').set(C.SETTING.CATALOG_URL, JSON.stringify(neu));
       this.get('settings').one('settingsPromisesResolved', () => {
         btnCb(true);
         this.sendAction('saved');
@@ -23,58 +65,31 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
+    let parsed = parseCatalogSetting(this.get('initialValue'));
+    let map = parsed.catalogs || {};
 
-    let map = parseCatalogSetting(this.get('catalog'));
     let library = false;
-    let community = false;
-
-    if (map[C.CATALOG.LIBRARY_KEY] === C.CATALOG.LIBRARY_VALUE) {
+    if (map[C.CATALOG.LIBRARY_KEY] && map[C.CATALOG.LIBRARY_KEY].url=== C.CATALOG.LIBRARY_VALUE) {
       library = true;
       delete map[C.CATALOG.LIBRARY_KEY];
     }
 
-    if (map[C.CATALOG.COMMUNITY_KEY] === C.CATALOG.COMMUNITY_VALUE) {
+    let community = false;
+    if (map[C.CATALOG.COMMUNITY_KEY] && map[C.CATALOG.COMMUNITY_KEY].url === C.CATALOG.COMMUNITY_VALUE) {
       community = true;
       delete map[C.CATALOG.COMMUNITY_KEY];
     }
 
+    var ary = [];
+    Object.keys(map).forEach((name) => {
+      ary.push(Ember.Object.create({name: name, branch: map[name].branch, url: map[name].url}));
+    });
+
     this.setProperties({
-      keymap: map,
+      ary: ary,
+      parsed: parsed,
       enableLibrary: library,
       enableCommunity: community
     });
   },
-
-  keymapObserver: function() {
-    let neu = {};
-
-    // Start with ours, then load the users in case they override the value
-    if (this.get('enableLibrary')) {
-      neu[C.CATALOG.LIBRARY_KEY] = C.CATALOG.LIBRARY_VALUE;
-    }
-
-    if (this.get('enableCommunity')) {
-      neu[C.CATALOG.COMMUNITY_KEY] = C.CATALOG.COMMUNITY_VALUE;
-    }
-
-    // Load the user's non-empty rows
-    let user = this.get('keymap');
-
-    Object.keys(user).forEach((key) => {
-      let val = (user[key] || '').trim();
-      key = (key || '').trim();
-
-      if (key && val) {
-        neu[key] = val;
-      }
-    });
-
-    let ary = [];
-
-    Object.keys(neu).forEach((key) => {
-      ary.push(`${key}=${neu[key]}`);
-    });
-
-    this.set('catalog', ary.join(','));
-  }.observes('keymap', 'enableLibrary', 'enableCommunity'),
 });
