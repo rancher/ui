@@ -41,14 +41,39 @@
 
 <h5>{{t 'catalogSettings.more.header'}}</h5>
 <p class="help-block">{{format-html-message 'catalogSettings.more.helpText'}}</p>
-{{form-key-value
-  addActionLabel="catalogSettings.more.addActionLabel"
-  initialMap=keymap
-  keyLabel="catalogSettings.more.keyLabel"
-  keyPlaceholder="catalogSettings.more.keyPlaceholder"
-  valueLabel="catalogSettings.more.valueLabel"
-  valuePlaceholder="catalogSettings.more.valuePlaceholder"
-  changed=(action (mut keymap))
-}}
+
+<button class="btn-circle-text" {{action "add"}}><i class="icon icon-plus-circle"/> <span>{{t 'catalogSettings.more.addActionLabel'}}</span></button>
+
+{{#if ary.length}}
+  <table class="table fixed no-lines no-top-padding tight small">
+    <tr class="text-muted hidden-xs hidden-sm">
+      <th width="25%">{{t 'catalogSettings.more.name.label'}}</th>
+      <td width="30">&nbsp;</td>
+      <th width="50%">{{t 'catalogSettings.more.url.label'}}</th>
+      <td width="30">&nbsp;</td>
+      <th width="25%">{{t 'catalogSettings.more.branch.label'}}</th>
+      <th width="30">&nbsp;</th>
+    </tr>
+    {{#each ary as |row|}}
+      <tr>
+        <td class="valign-top" data-title="{{t 'catalogSettings.more.name.label'}}:">
+          {{input class="form-control input-sm name" type="text" value=row.name placeholder=(t 'catalogSettings.more.name.placeholder')}}
+        </td>
+        <td>&nbsp;</td>
+        <td class="valign-top" data-title="{{t 'catalogSettings.more.url.label'}}:">
+          {{input class="form-control input-sm" type="text" value=row.url placeholder=(t 'catalogSettings.more.url.placeholder')}}
+        </td>
+        <td>&nbsp;</td>
+        <td class="valign-top" data-title="{{t 'catalogSettings.more.branch.label'}}:">
+          {{input class="form-control input-sm" type="text" value=row.branch placeholder=(t 'catalogSettings.more.branch.placeholder')}}
+        </td>
+
+        <td class="valign-top text-right">
+          <button class="btn btn-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+{{/if}}
 
 {{save-cancel cancelDisabled=true editing=true save="save"}}

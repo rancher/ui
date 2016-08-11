@@ -24,6 +24,14 @@ export default Ember.Component.extend({
         Util.download(url);
       }
     },
+
+    cliDownload(os) {
+      var url = this.get('settings').get(C.SETTING.CLI_URL[os.toUpperCase()]);
+      if ( url )
+      {
+        Util.download(url);
+      }
+    },
   }
 });
 

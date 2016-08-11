@@ -58,6 +58,7 @@ var C = {
     LIBRARY_VALUE: 'https://github.com/rancher/rancher-catalog.git',
     COMMUNITY_KEY: 'community',
     COMMUNITY_VALUE: 'https://github.com/rancher/community-catalog.git',
+    DEFAULT_BRANCH: 'master',
   },
 
   GITHUB: {
@@ -200,6 +201,11 @@ var C = {
     VERSION_CATTLE:   'cattle$version',
     VERSION_MACHINE:  'docker$machine$version',
     VERSION_GMS:      'go$machine$service$version',
+    CLI_URL: {
+      DARWIN:         'rancher$cli$darwin$url',
+      WINDOWS:        'rancher$cli$windows$url',
+      LINUX:          'rancher$cli$linux$url',
+    },
     COMPOSE_URL: {
       DARWIN:         'rancher$compose$darwin$url',
       WINDOWS:        'rancher$compose$windows$url',
