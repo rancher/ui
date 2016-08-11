@@ -53,15 +53,7 @@ export default Ember.Controller.extend(Sortable, {
 
         this.get('store').request({url: template.versionLinks[template.defaultVersion]}).then((driver) =>{
 
-          let newDriver = {
-            type            : 'machineDriver',
-            description     : (driver.description || null),
-            checksum        : (driver.files.checksum||'').trim() || null,
-            uiUrl           : (driver.files.uiUrl||'').trim() || null,
-            url             : (driver.files.url||'').trim() || null,
-            externalId      : driver.id,
-            activateOnCreate: true,
-          };
+          let newDriver = this.createNewDriver(driver);
 
           this.get('userStore').createRecord(newDriver).save().then((result) => {
             this.get('model.drivers').pushObject(result);
@@ -76,14 +68,11 @@ export default Ember.Controller.extend(Sortable, {
       let templateVersion = version;
 
       this.set('upgrading', true);
+
       // find latest version of driver
       this.get('store').request({url: this.get('app.catalogEndpoint')+'/templateversions/'+driver.externalId}).then((template) => {
         this.get('store').request({url: template.upgradeVersionLinks[templateVersion]}).then((item) => {
-          driver.setProperties({
-            url      : item.files.url,
-            checksum : item.files.checksum,
-            uiUrl    : item.files.uiUrl,
-          });
+          driver.setProperties(this.createNewDriver(item));
           driver.save().then(() => {
             this.set('upgrading', false);
           }).catch((err) => {
@@ -95,7 +84,19 @@ export default Ember.Controller.extend(Sortable, {
     }
   },
 
-  sortableContent: Ember.computed('model.drivers.@each', 'model.catalogDrivers.@each', function() {
+  createNewDriver: function(driver) {
+    return {
+      type            : 'machineDriver',
+      description     : (driver.description || null),
+      checksum        : (driver.files.checksum||'').trim() || null,
+      uiUrl           : (driver.files.uiUrl||'').trim() || null,
+      url             : (driver.files.url||'').trim() || null,
+      externalId      : driver.id,
+      activateOnCreate: true,
+    };
+  },
+
+  sortableContent: Ember.computed('model.drivers.[]', 'model.catalogDrivers.[]', function() {
     // possibly add some search here
     let cDrivers   = this.get('model.catalogDrivers.catalog');
     let drivers    = this.get('model.drivers.content');
@@ -109,18 +110,25 @@ export default Ember.Controller.extend(Sortable, {
           let extId = driver.externalId.split(':');
           extId     = extId.slice(0, extId.length - 1).join(':');
 
-          if (cDriver.id === extId) {
-            this.get('store').request({url: this.get('app.catalogEndpoint')+'/templateversions/'+ driver.externalId}).then((upgradeInfo) => {
-              if (upgradeInfo.id === driver.externalId) {
-                return false;
-              }
-              if (upgradeInfo.upgradeVersionLinks && Object.keys(upgradeInfo.upgradeVersionLinks).length) {
-                driver.set('upgradeAvailable', true);
-                driver.set('upgradeVersionLinks', upgradeInfo.upgradeVersionLinks);
-              }
-            });
+          driver.set('fullVersionInfo', null);
 
-            return true;
+          if (cDriver.id === extId) {
+
+            this.get('store').request({url: `${this.get('app.catalogEndpoint')}/templateversions/${cDriver.id}`}).then((fullUpdgradeInfo) => {
+
+              driver.set('fullVersionInfo', fullUpdgradeInfo.versionLinks);
+              driver.set('currentVersion', getCurrentVersion(fullUpdgradeInfo.versionLinks, driver.externalId));
+
+              this.get('store').request({url: this.get('app.catalogEndpoint')+'/templateversions/'+ driver.externalId}).then((upgradeInfo) => {
+
+                if (upgradeInfo.upgradeVersionLinks && Object.keys(upgradeInfo.upgradeVersionLinks).length) {
+                  driver.set('upgradeAvailable', true);
+                }
+
+                return true;
+              });
+
+            });
           }
         }
 
@@ -131,6 +139,14 @@ export default Ember.Controller.extend(Sortable, {
         newContent.push(cDriver);
       }
     });
+
+    var getCurrentVersion = function(driverList, externalId) {
+      for (var key in driverList) {
+        if (driverList[key].indexOf(externalId) > -1) {
+          return key;
+        }
+      }
+    };
 
     newContent = newContent.concat(drivers);
 
