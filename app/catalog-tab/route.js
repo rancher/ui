@@ -1,8 +1,8 @@
 import Ember from 'ember';
 import CatalogResource from 'ui/mixins/catalog-resource';
 
-
 export default Ember.Route.extend(CatalogResource, {
+  catalogService: Ember.inject.service(),
 
   queryParams: {
     category: {
@@ -29,13 +29,15 @@ export default Ember.Route.extend(CatalogResource, {
 
   beforeModel: function() {
     this._super(...arguments);
+
     var auth = this.modelFor('authenticated');
-    return this.get('projects').checkForWaiting(auth.get('hosts'),auth.get('machines')).then(() => {
-      return this.get('store').request({url: `${this.get('app.catalogEndpoint')}/catalogs`}).then((response) => {
-        this.set('catalogs', response);
-        let ids = this.uniqKeys(response, 'id');
-        this.set('uniqueCatalogIds', ids);
-      });
+
+    return this.get('catalogService').fetchCatalogs(auth).then((response) => {
+      this.get('catalogs', response);
+
+      let ids = this.uniqKeys(response, 'id');
+
+      this.get('uniqueCatalogIds', ids);
     });
   },
 

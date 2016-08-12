@@ -22,24 +22,53 @@ export default Ember.Component.extend({
 
   initVolumesFromLaunchConfig() {
     var dv = this.get('instance.dataVolumesFromLaunchConfigs');
-    this.set('initEnabled', dv);
-    Ember.run.once(this,'updateChoices');
+    Ember.run.once(this,'initChoices', dv);
+  },
+
+  initChoices: function(initEnabled=[]) {
+    let launchConfigIndex = this.get('launchConfigIndex');
+    let enabled = initEnabled ? initEnabled.indexOf(this.get('primaryService.name')) >= 0 : false;
+    let out = [];
+
+    if ( launchConfigIndex !== -1 )
+    {
+      out.push({
+        index: -1,
+        displayName: this.get('primaryService.name') || '(Primary Service)',
+        name: this.get('primaryService.name'),
+        enabled: enabled
+      });
+    }
+
+    (this.get('primaryService.secondaryLaunchConfigs')||[]).forEach((item, index) => {
+      if ( launchConfigIndex !== index )
+      {
+        out.push({
+          index: index,
+          displayName: item.get('name') || `(Sidekick #${index+1})`,
+          name: item.get('name'),
+          enabled: (initEnabled.indexOf(item.get('name')) >= 0 ? true : false),
+          uiId: item.get('uiId'),
+        });
+      }
+    });
+
+    let tempObj = {};
+
+    this.set('prevChoices', tempObj[launchConfigIndex] = out);
+    this.set('volumesFromLaunchConfigChoices', out);
+
   },
 
   prevChoices: null,
-  initEnabled: null,
   volumesFromLaunchConfigChoices: null,
 
   updateChoices: function() {
-    var launchConfigIndex = this.get('launchConfigIndex');
-    var allPrevChoices = this.get('prevChoices')||{};
-    var prevChoices = allPrevChoices[launchConfigIndex]||[];
-    var initEnabled = this.get('initEnabled')||[];
-
-    var prev = prevChoices.filterBy('index',-1)[0];
-    var enabled = (prev ? prev.enabled : (initEnabled.indexOf(this.get('primaryService.name')) >= 0));
-
-    var out = [];
+    let launchConfigIndex = this.get('launchConfigIndex');
+    let prevChoices = this.get('prevChoices')||{};
+    let prev = prevChoices.filterBy('index',-1)[0];
+    let enabled = (prev ? prev.enabled : false);
+    let out = [];
 
     if ( launchConfigIndex !== -1 )
     {
@@ -59,15 +88,13 @@ export default Ember.Component.extend({
           index: index,
           displayName: item.get('name') || `(Sidekick #${index+1})`,
           name: item.get('name'),
-          enabled: (prev ? prev.enabled : (initEnabled.indexOf(item.get('name')) >= 0)),
+          enabled: (prev ? prev.enabled : false),
           uiId: item.get('uiId'),
         });
       }
     });
 
-    allPrevChoices[launchConfigIndex] = out;
-    this.set('prevChoices', allPrevChoices);
-    this.set('initEnabled', null);
+    this.set('prevChoices', out);
     this.set('volumesFromLaunchConfigChoices', out);
   },
 

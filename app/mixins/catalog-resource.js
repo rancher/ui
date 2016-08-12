@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import { addQueryParams } from 'ui/utils/util';
 
 export default Ember.Mixin.create({
   settings         : Ember.inject.service(),
   projects         : Ember.inject.service(),
+  catalogService   : Ember.inject.service(),
 
   cache            : null,
   catalogs         : null,
@@ -35,9 +35,7 @@ export default Ember.Mixin.create({
     let templateBase = (params.templateBase || this.get('templateBase'));
     let version      = this.get('settings.rancherVersion');
     let catalogId    = params.catalogId;
-    let url          = null;
     let combined     = false;
-    let store        = this.get('store');
     let qp           = {
       'category_ne': 'system',
     };
@@ -64,16 +62,13 @@ export default Ember.Mixin.create({
     }
 
     if (combined) {
-      url = {};
+      let hash = [];
       [C.CATALOG.LIBRARY_KEY,C.CATALOG.COMMUNITY_KEY].forEach((key) => {
         let tmpQp = qp;
         tmpQp['catalogId'] = key;
-        url[key] = addQueryParams(`${this.get('app.catalogEndpoint')}/templates`, tmpQp);
+        hash.push(this.get('catalogService').fetchAllTemplates(tmpQp));
       });
-      return Ember.RSVP.all([
-        store.request({url : url[C.CATALOG.LIBRARY_KEY]}),
-        store.request({url : url[C.CATALOG.COMMUNITY_KEY]})
-      ]).then((arrays) => {
+      return Ember.RSVP.all(hash).then((arrays) => {
         let tmpArr = [];
         arrays.forEach((ary) => {
           tmpArr = tmpArr.concat(ary.content);
@@ -83,9 +78,7 @@ export default Ember.Mixin.create({
         return this.filter(tmpArr, params.category, this.get('uniqueCatalogIds'), templateBase);
       });
     } else {
-      url = addQueryParams(`${this.get('app.catalogEndpoint')}/templates`, qp);
-
-      return store.request({url: url}).then((response) => {
+      return this.get('catalogService').fetchAllTemplates(qp).then((response) => {
         response.catalogId = catalogId;
         this.set('cache', response);
         return this.filter(response, params.category, this.get('uniqueCatalogIds'), templateBase);
