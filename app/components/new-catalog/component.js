@@ -183,10 +183,15 @@ export default Ember.Component.extend(NewOrEdit, {
     }
 
     let explicit = this.get('templateResource.isSystem');
-    if ( explicit === true || explicit === false ) {
-      return explicit;
+    if ( explicit === true || explicit === "true" ) {
+      return true;
     }
 
+    if ( explicit === false || explicit === "false" ) {
+      return false;
+    }
+
+    // Things in one of the system categories go in system.
     let systemCategories = C.EXTERNAL_ID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
     let category = (this.get('templateResource.category')||'').trim().toLowerCase();
     return systemCategories.indexOf(category) >= 0;
