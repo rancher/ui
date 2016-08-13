@@ -497,6 +497,36 @@ var Service = Resource.extend({
     }
   }.property('endpointsByPort.@each.{port,ipAddresses}', 'intl._locale'),
 
+  displayAccess: function() {
+    var pub = '';
+
+    this.get('endpointsByPort').forEach((obj) => {
+      var url = Util.constructUrl(false, obj.ipAddresses[0], obj.port);
+      let out = this.get('intl').findTranslationByKey('generic.access');
+      pub += '<span>' +
+        '<a href="'+ url +'" target="_blank">' +
+          out +
+        '</a>,' +
+      '</span> ';
+    });
+
+    // Remove last comma
+    pub = pub.replace(/,([^,]*)$/,'$1');
+
+
+    if ( pub )
+    {
+      //let out = this.get('intl').findTranslationByKey('generic.ports');
+      //out = this.get('intl').formatMessage(out);
+      //return ('<label>'+out+': </label>' + pub).htmlSafe();
+      return (pub).htmlSafe();
+    }
+    else
+    {
+      return '';
+    }
+  }.property('endpointsByPort.@each.{port,ipAddresses}', 'intl._locale'),
+
 
 });
 
