@@ -1,10 +1,23 @@
 ---
 pipeline:
+
   build:
     privileged: true
     image: rancher/dind:v0.3.0
     commands:
       - ./scripts/ci
+    when:
+      branch: "master"
+
+  build:
+    privileged: true
+    image: rancher/dind:v0.3.0
+    commands:
+      - ./scripts/ci
+    when:
+      branch:
+       exclude: ["master"]
+
   notify:
     slack:
       webhook_url: $$SLACK_URL
@@ -13,6 +26,7 @@ pipeline:
       on_started: true
       on_success: true
       on_failure: true
+
 #  cache:
 #    - /var/cache/npm
 #    - /var/cache/apt
