@@ -45,18 +45,22 @@
       </div>
     {{else}}
       {{#if requestedHostId}}
-        <label class="form-control-static">
-          {{#if isService}}
-            {{#if (eq isVm 'virtual machines')}}
-              {{format-html-message 'formScheduling.canRequestHost.vm'}}
-            {{else}}
-              {{format-html-message 'formScheduling.canRequestHost.containers'}}
-            {{/if~}}
-          {{else}}
-            {{t 'formScheduling.runSpecific'}}
-          {{/if}}
-        </label>
-        <span class="form-static-control">{{selectedChoice.name}}</span>
+        <div class="component-static">
+          <div class="row">
+            <label class="form-control-static">
+              {{#if isService}}
+                {{#if (eq isVm 'virtual machines')}}
+                  {{format-html-message 'formScheduling.canRequestHost.vm'}}
+                {{else}}
+                  {{format-html-message 'formScheduling.canRequestHost.containers'}}
+                {{/if~}}
+              {{else}}
+                {{t 'formScheduling.runSpecific'}}
+              {{/if}}
+            </label>
+            <span class="form-static-control">{{selectedChoice.name}}</span>
+          </div>
+        </div>
       {{else}}
         {{t 'formScheduling.noRules'}}
       {{/if}}
