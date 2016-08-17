@@ -1,35 +1,21 @@
 import Ember from 'ember';
-import Util from 'ui/utils/util';
 
 export default Ember.Route.extend({
   allServices: Ember.inject.service(),
-  settings: Ember.inject.service(),
+  catalogService   : Ember.inject.service(),
 
   parentRoute: 'catalog-tab',
 
   model: function(params/*, transition*/) {
     var store = this.get('store');
-    var version = this.get('settings.rancherVersion');
-
-    let url = this.get('app.catalogEndpoint')+'/templates/'+params.template;
-    if ( version )
-    {
-      url = Util.addQueryParam(url, 'minimumRancherVersion_lte', version);
-    }
 
     var dependencies = {
-      tpl: store.request({url: url}),
+      tpl: this.get('catalogService').fetchTemplate(params.template),
     };
 
     if ( params.upgrade )
     {
-      url = this.get('app.catalogEndpoint')+'/templateversions/'+params.upgrade;
-      if ( version )
-      {
-        url = Util.addQueryParam(url, 'minimumRancherVersion_lte', version);
-      }
-
-      dependencies.upgrade = store.request({url: url});
+      dependencies.upgrade = this.get('catalogService').fetchTemplate(params.upgrade, true);
     }
 
     if ( params.environmentId )

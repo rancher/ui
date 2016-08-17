@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   application: Ember.inject.controller(),
+  catalogService: Ember.inject.service('catalog-service'),
 
   catalogController: Ember.inject.controller('catalog-tab'),
   category: Ember.computed.alias('catalogController.category'),
@@ -25,11 +26,7 @@ export default Ember.Controller.extend({
 
     update() {
       this.set('updating', 'yes');
-      this.get('store').request({
-        url: `${this.get('app.catalogEndpoint')}/templates?refresh&action=refresh`,
-        method: 'POST',
-        timeout: null, // I'm willing to wait...
-      }).then(() => {
+      this.get('catalogService').refresh().then(() => {
         this.set('updating', 'no');
         this.send('refresh');
       }).catch(() => {
@@ -39,11 +36,10 @@ export default Ember.Controller.extend({
   },
 
   selectedCatalog: Ember.computed('catalogController', function() {
-
     return this.get('catalogController.catalogId');
   }),
 
-  arrangedContent: function() {
+  arrangedContent: Ember.computed('model.catalog', 'search', function() {
     var search = this.get('search').toUpperCase();
     var result = [];
 
@@ -57,5 +53,5 @@ export default Ember.Controller.extend({
       }
     });
     return result;
-  }.property('model.catalog', 'search'),
+  }),
 });

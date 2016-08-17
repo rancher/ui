@@ -103,7 +103,7 @@ export default Ember.Controller.extend(Sortable, {
     let newContent = [];
 
     cDrivers.forEach((cDriver) => {
-      let check = drivers.find((driver) =>{
+      let driverExistsInDrivers = drivers.find((driver) =>{
 
         if (driver.externalId && C.REMOVEDISH_STATES.indexOf(driver.get('state')) === -1) {
 
@@ -125,17 +125,17 @@ export default Ember.Controller.extend(Sortable, {
                   driver.set('upgradeAvailable', true);
                 }
 
-                return true;
               });
 
             });
+            return true;
           }
         }
 
         return false;
       });
 
-      if (!check) { //not in drivers
+      if (!driverExistsInDrivers) { //not in drivers
         newContent.push(cDriver);
       }
     });
