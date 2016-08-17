@@ -12,6 +12,7 @@ const defaultStateMap = {
   'creating':                 {icon: 'icon icon-tag',           color: 'text-info'   },
   'deactivating':             {icon: 'icon icon-adjust',        color: 'text-info'   },
   'degraded':                 {icon: 'icon icon-alert',         color: 'text-warning'},
+  'disconnected':             {icon: 'icon icon-alert',         color: 'text-warning' },
   'error':                    {icon: 'icon icon-alert',         color: 'text-danger' },
   'inactive':                 {icon: 'icon icon-circle',        color: 'text-danger' },
   'initializing':             {icon: 'icon icon-alert',         color: 'text-warning'},
