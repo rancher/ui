@@ -13,16 +13,9 @@ else
   cd `dirname $CWD`
 fi
 
-# -------------------------------------
+source ./scripts/utils.sh
 
-# Execute something and exit if it fails
-function runCmd() {
-  $@
-  if [[ $? -ne 0 ]]; then
-    echo "Command: $@ failed"
-    exit 2
-  fi
-}
+# -------------------------------------
 
 function printHelp() {
     cat 1>&2 <<EOF
@@ -185,19 +178,17 @@ fi
 
 # Upload asset, either from laptop or from CI pipeline
 if [[ -z "$UPLOAD" ]]; then
+
+    echo "Uploading..."
+    gce_upload_asset
+    
+	$GS_SERVICE_ACCOUNT_KEY $GS_SERVICE_ACCOUNT_ID $GS_PROJECT_NAME $LATEST $CACHE $BUILD_TGZ $GS_URL $BUILD_DIR runCmd ./scripts/gce_upload_asset
+    fi
+
     GSUTIL_CMD="runCmd docker -ti --name gcloud-config google/cloud-sdk"
     
+	
 
-    # For use on your laptop, manually
-    if [[ $UPLOAD -eq 1 ]]; then
-	echo "Uploading..."
-
-	# service account auth requires a little bit of setup
-	GS_SERVICE_ACCOUNT_KEYFILE=$(mktemp -dt "$0.XXXXXXXXXX")
-	echo ${GS_SERVICE_ACCOUNT_KEY} > ${GS_SERVICE_ACCOUNT_KEYFILE}
-	runCmd gcloud auth activate-service-account ${GS_SERVICE_ACCOUNT_ID} --key-file ${GS_SERVICE_ACCOUNT_KEYFILE} \
-	       --project ${GS_PROJECT_NAME}
-	rm -f $GS_SERVICE_ACCOUNT_KEYFILE
 
 	if [[ $LATEST -eq 1 ]]; then
 	   runCmd gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R ${BUILD_DIR} "${GS_URL}/_upload"
