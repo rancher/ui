@@ -138,7 +138,7 @@ BUILD_DIR="${BUILD_PAR}/${VERSION}"
 BUILD_TGZ="${BUILD_PAR}/${VERSION}.tar.gz"
 GS_URL="gs://${CDN}"
 CACHE="Cache-Control:no-cache,must-revalidate"
-GZIP="html,js,css,xml,txt,map,svg,ttf,woff,woff2"
+
 GCLOUD_UUID="google/cloud-sdk@sha256:506775439bd4f44d90a3f6784f2b625e55c43635f9f2c4cae24ac4b3dea0277a"
 
 echo "Branch: ${BRANCH}"
@@ -180,44 +180,22 @@ fi
 if [[ -z "$UPLOAD" ]]; then
 
     echo "Uploading..."
-    gce_upload_asset
-    
-	$GS_SERVICE_ACCOUNT_KEY $GS_SERVICE_ACCOUNT_ID $GS_PROJECT_NAME $LATEST $CACHE $BUILD_TGZ $GS_URL $BUILD_DIR runCmd ./scripts/gce_upload_asset
+    if [[ $UPLOAD -eq 1 ]]; then
+	gce_upload_asset #  FIXME: parameters
     fi
 
-    GSUTIL_CMD="runCmd docker -ti --name gcloud-config google/cloud-sdk"
-    
-	
-
-
-	if [[ $LATEST -eq 1 ]]; then
-	   runCmd gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R ${BUILD_DIR} "${GS_URL}/_upload"
-	   runCmd gsutil -h "${CACHE}" rsync -c -r -d "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
-	   runCmd gsutil rm -a -f -R "${GS_URL}/_upload"
-	   else
-	       runCmd gsutil -m cp ${BUILD_TGZ} ${GS_URL}
-	       runCmd gsutil -m cp -z "${GZIP}" -R ${BUILD_DIR} ${GS_URL}
-	fi
-    fi
-
-    # For use from Drone, automatically
     if [[ $UPLOAD -eq 2 ]]; then
-	ABS_BUILD_DIR="$(pwd)/${BUILD_DIR}"
-	echo "Updating latest ($ABS_BUILD_DIR) thru Docker..."
-	
-	GSUTIL_CMD="runCmd docker run --rm -v ${ABS_BUILD_DIR}:/upload ${GCLOUD_UUID} gsutil -h ${CACHE}"
-	
-	# Upload new files, with gzip headers (rsync doesn't have this)
-	#  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R /upload "${GS_URL}/_upload"
-	${GSUTIL_CMD} -m cp -z ${GZIP} -R /upload "${GS_URL}/_upload"
-	
-	# Rsync new files into latest diff
-	# Beware of the leopard: -m will break rsync on versioned buckets.
-	# runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil -h "${CACHE}" rsync -c -r "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
-	${GSUTIL_CMD} rsync -c -r "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
-	
-	# Remove temp dir
-	# runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil rm -a -f -R "${GS_URL}/_upload"
-	${GSUTIL_CMD} rm -a -f -R "${GS_URL}/_upload"
+	runCmd docker run --rm --name 'gcloud-config' \
+	       -v "${ABS_BUILD_DIR}:/upload" -v "./scripts:/scripts" "${GCLOUD_UUID}" \
+	       google/cloud-sdk \
+	       /scripts/gce_upload_asset # FIXME parameters
     fi
+# # What is this?
+#     runCmd gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R ${BUILD_DIR} "${GS_URL}/_upload"
+#     runCmd gsutil -h "${CACHE}" rsync -c -r -d "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
+#     runCmd gsutil rm -a -f -R "${GS_URL}/_upload"
+# else
+#     runCmd gsutil -m cp ${BUILD_TGZ} ${GS_URL}
+# 	       runCmd gsutil -m cp -z "${GZIP}" -R ${BUILD_DIR} ${GS_URL}
+
 fi
