@@ -183,31 +183,50 @@ if [[ $TAG -eq 1 ]]; then
   runCmd git push --tags
 fi
 
-# For use on your laptop, manually
-if [[ $UPLOAD -eq 1 ]]; then
-  echo "Uploading..."
-  if [[ $LATEST -eq 1 ]]; then
-    runCmd gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R ${BUILD_DIR} "${GS_URL}/_upload"
-    runCmd gsutil -h "${CACHE}" rsync -c -r -d "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
-    runCmd gsutil rm -a -f -R "${GS_URL}/_upload"
-  else
-    runCmd gsutil -m cp ${BUILD_TGZ} ${GS_URL}
-    runCmd gsutil -m cp -z "${GZIP}" -R ${BUILD_DIR} ${GS_URL}
-  fi
-fi
+# Upload asset, either from laptop or from CI pipeline
+if [[ -z "$UPLOAD" ]]; then
+    GSUTIL_CMD="runCmd docker -ti --name gcloud-config google/cloud-sdk"
+    
 
-# For use from Drone, automatically
-if [[ $UPLOAD -eq 2 ]]; then
-  ABS_BUILD_DIR="$(pwd)/${BUILD_DIR}"
-  echo "Updating latest ($ABS_BUILD_DIR) thru Docker..."
+    # For use on your laptop, manually
+    if [[ $UPLOAD -eq 1 ]]; then
+	echo "Uploading..."
 
-  # Upload new files, with gzip headers (rsync doesn't have this)
-  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R /upload "${GS_URL}/_upload"
+	# service account auth requires a little bit of setup
+	GS_SERVICE_ACCOUNT_KEYFILE=$(mktemp -dt "$0.XXXXXXXXXX")
+	echo ${GS_SERVICE_ACCOUNT_KEY} > ${GS_SERVICE_ACCOUNT_KEYFILE}
+	runCmd gcloud auth activate-service-account ${GS_SERVICE_ACCOUNT_ID} --key-file ${GS_SERVICE_ACCOUNT_KEYFILE} \
+	       --project ${GS_PROJECT_NAME}
+	rm -f $GS_SERVICE_ACCOUNT_KEYFILE
 
-  # Rsync new files into latest diff
-  # Beware of the leopard: -m will break rsync on versioned buckets.
-  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil -h "${CACHE}" rsync -c -r "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
+	if [[ $LATEST -eq 1 ]]; then
+	   runCmd gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R ${BUILD_DIR} "${GS_URL}/_upload"
+	   runCmd gsutil -h "${CACHE}" rsync -c -r -d "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
+	   runCmd gsutil rm -a -f -R "${GS_URL}/_upload"
+	   else
+	       runCmd gsutil -m cp ${BUILD_TGZ} ${GS_URL}
+	       runCmd gsutil -m cp -z "${GZIP}" -R ${BUILD_DIR} ${GS_URL}
+	fi
+    fi
 
-  # Remove temp dir
-  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil rm -a -f -R "${GS_URL}/_upload"
+    # For use from Drone, automatically
+    if [[ $UPLOAD -eq 2 ]]; then
+	ABS_BUILD_DIR="$(pwd)/${BUILD_DIR}"
+	echo "Updating latest ($ABS_BUILD_DIR) thru Docker..."
+	
+	GSUTIL_CMD="runCmd docker run --rm -v ${ABS_BUILD_DIR}:/upload ${GCLOUD_UUID} gsutil -h ${CACHE}"
+	
+	# Upload new files, with gzip headers (rsync doesn't have this)
+	#  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R /upload "${GS_URL}/_upload"
+	${GSUTIL_CMD} -m cp -z ${GZIP} -R /upload "${GS_URL}/_upload"
+	
+	# Rsync new files into latest diff
+	# Beware of the leopard: -m will break rsync on versioned buckets.
+	# runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil -h "${CACHE}" rsync -c -r "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
+	${GSUTIL_CMD} rsync -c -r "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
+	
+	# Remove temp dir
+	# runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil rm -a -f -R "${GS_URL}/_upload"
+	${GSUTIL_CMD} rm -a -f -R "${GS_URL}/_upload"
+    fi
 fi
