@@ -108,8 +108,8 @@ export default Ember.Route.extend(Subscribe, {
     if ( this.get('settings.isRancher') && !app.get('isPopup') )
     {
       // Show the telemetry opt-in
-      if ( this.get('access.admin') && !this.get(`settings.${C.SETTING.TELEMETRY}`)
-        )
+      let opt = this.get(`settings.${C.SETTING.TELEMETRY}`);
+      if ( this.get('access.admin') && (!opt || opt === 'prompt') )
       {
         Ember.run.scheduleOnce('afterRender', this, function() {
           app.set('showWelcome', true);
