@@ -22,7 +22,7 @@ export default Ember.Component.extend({
     var id = this.get('identityNotParsed');
 
     if ( !id && eType && eId ) {
-     id =`1i!${type}:${id}`;
+     id =`1i!${eType}:${eId}`;
     }
 
     if ( !this.get('identity') )
