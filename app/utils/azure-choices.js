@@ -1,109 +1,93 @@
-export let regions = [
+export let regions =
+[
   {
-    'region'   : 'Central US',
-    'location' : 'Iowa',
+    "name": "eastasia",
+    "displayName": "East Asia",
   },
   {
-    'region'   : 'East US',
-    'location' : 'Virginia',
+    "name": "southeastasia",
+    "displayName": "Southeast Asia",
   },
   {
-    'region'   : 'East US 2',
-    'location' : 'Virginia',
+    "name": "centralus",
+    "displayName": "Central US",
   },
   {
-    'region'   : 'US Gov Iowa',
-    'location' : 'Iowa',
+    "name": "eastus",
+    "displayName": "East US",
   },
   {
-    'region'   : 'US Gov Virginia',
-    'location' : 'Virginia',
+    "name": "eastus2",
+    "displayName": "East US 2",
   },
   {
-    'region'   : 'North Central US',
-    'location' : 'Illinois',
+    "name": "westus",
+    "displayName": "West US",
   },
   {
-    'region'   : 'South Central US',
-    'location' : 'Texas',
+    "name": "northcentralus",
+    "displayName": "North Central US",
   },
   {
-    'region'   : 'West US',
-    'location' : 'California',
+    "name": "southcentralus",
+    "displayName": "South Central US",
   },
   {
-    'region'   : 'North Europe',
-    'location' : 'Ireland',
+    "name": "northeurope",
+    "displayName": "North Europe",
   },
   {
-    'region'   : 'West Europe',
-    'location' : 'Netherlands',
+    "name": "westeurope",
+    "displayName": "West Europe",
   },
   {
-    'region'   : 'East Asia',
-    'location'  : 'Hong Kong',
+    "name": "japanwest",
+    "displayName": "Japan West",
   },
   {
-    'region'   : 'Southeast Asia',
-    'location'  : 'Singapore',
+    "name": "japaneast",
+    "displayName": "Japan East",
   },
   {
-    'region'   : 'Japan East',
-    'location'  : 'Tokyo, Saitama',
+    "name": "brazilsouth",
+    "displayName": "Brazil South",
   },
   {
-    'region'   : 'Japan West',
-    'location'  : 'Osaka',
+    "name": "australiaeast",
+    "displayName": "Australia East",
   },
   {
-    'region'   : 'Brazil South',
-    'location'  : 'Sao Paulo State',
+    "name": "australiasoutheast",
+    "displayName": "Australia Southeast",
   },
   {
-    'region'   : 'Australia East',
-    'location'  : 'New South Wales',
+    "name": "southindia",
+    "displayName": "South India",
   },
   {
-    'region'   : 'Australia Southeast',
-    'location'  : 'Victoria',
+    "name": "centralindia",
+    "displayName": "Central India",
   },
   {
-    'region'   : 'Central India',
-    'location'  : 'Pune',
+    "name": "westindia",
+    "displayName": "West India",
   },
   {
-    'region'   : 'South India',
-    'location'  : 'Chennai',
+    "name": "canadacentral",
+    "displayName": "Canada Central",
   },
   {
-    'region'   : 'West India',
-    'location'  : 'Mumbai',
+    "name": "canadaeast",
+    "displayName": "Canada East",
   },
   {
-    'region'   : 'China East',
-    'location'  : 'Shanghai',
+    "name": "westcentralus",
+    "displayName": "West Central US",
   },
   {
-    'region'   : 'China North',
-    'location'  : 'Beijing',
-  },
-  // Newly Announced Azure Geographies And regions
-  {
-    'region'   : 'Canada Central',
-    'location'  : 'Toronto',
-  },
-  {
-    'region'   : 'Canada East',
-    'location'  : 'Quebec City',
-  },
-  {
-    'region'   : 'Germany Central',
-    'location'  : 'Frankfurt',
-  },
-  {
-    'region'   : 'Germany Northeast',
-    'location' : 'Magdeburg',
-  },
+    "name": "westus2",
+    "displayName": "West US 2",
+  }
 ];
 
 export let sizes = [
@@ -259,3 +243,25 @@ export let sizes = [
   },
 ];
 
+export let storageTypes = [
+  {
+    name: 'Standard LRS',
+    value: 'Standard_LRS',
+  },
+  {
+    name: 'Standard ZRS',
+    value: 'Standard_ZRS',
+  },
+  {
+    name: 'Standard GRS',
+    value: 'Standard_GRS',
+  },
+  {
+    name: 'Standard RAGRS',
+    value: 'Standard_RAGRS',
+  },
+  {
+    name: 'Premium LRS',
+    value: 'Premium_LRS',
+  }
+];
