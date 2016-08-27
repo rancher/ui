@@ -99,7 +99,7 @@ export default Ember.Service.extend({
         }
       });
 
-      this.get('cookies').set(C.COOKIE.TOKEN, auth['jwt'], {
+      this.get('cookies').setWithOptions(C.COOKIE.TOKEN, auth['jwt'], {
         path: '/',
         secure: window.location.protocol === 'https:'
       });
