@@ -115,7 +115,7 @@ export default Ember.Route.extend(Subscribe, {
           app.set('showWelcome', true);
         });
       }
-      else if ( this.get('settings.isOSS') && !this.get(`prefs.${C.PREFS.FEEDBACK}`) )
+      else if ( false && this.get('settings.isOSS') && !this.get(`prefs.${C.PREFS.FEEDBACK}`) )
       {
         // Show the feedback form
         let time = this.get(`prefs.${C.PREFS.FEEDBACK_TIME}`);
