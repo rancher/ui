@@ -2,6 +2,7 @@ import Ember from 'ember';
 import ThrottledResize from 'ui/mixins/throttled-resize';
 import Util from 'ui/utils/util';
 import { alternateLabel } from 'ui/utils/platform';
+import AnsiUp from 'npm:ansi_up';
 
 var typeClass = {
   0: 'log-combined',
@@ -118,7 +119,7 @@ export default Ember.Component.extend(ThrottledResize, {
         body.insertAdjacentHTML('beforeend',
           '<div class="log-msg '+ typeClass[type]  +'">' +
             dateStr +
-            Util.escapeHtml(msg) +
+            AnsiUp.ansi_to_html(Util.escapeHtml(msg)) +
           '</div>'
         );
       });
