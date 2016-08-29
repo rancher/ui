@@ -8,6 +8,7 @@ export default Ember.Route.extend({
     return this.get('settings').load([
       C.SETTING.API_HOST,
       C.SETTING.CATALOG_URL,
+      C.SETTING.TELEMETRY,
     ]);
   },
 
@@ -17,6 +18,7 @@ export default Ember.Route.extend({
     return Ember.Object.create({
       host           : settings.get(C.SETTING.API_HOST),
       catalog        : settings.get(C.SETTING.CATALOG_URL),
+      telemtry       : settings.get(C.SETTING.TELEMETRY),
     });
   },
 

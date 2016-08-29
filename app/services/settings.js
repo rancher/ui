@@ -164,6 +164,10 @@ export default Ember.Service.extend(Ember.Evented, {
     return this.get('_plValue').toUpperCase() === C.COOKIE.PL_RANCHER_VALUE.toUpperCase();
   }.property('_plValue'),
 
+  isOSS: function() {
+    return this.get('rancherImage') === 'rancher/server';
+  }.property('rancherImage'),
+
   appName: function() {
     if ( this.get('isRancher') )
     {
@@ -189,7 +193,7 @@ export default Ember.Service.extend(Ember.Evented, {
 
   docsBase: function() {
     let version = this.get('stableMinor');
-    let lang = (this.get('intl._locale')[0]||'').replace(/-.*$/,'');
+    let lang = ((this.get('intl._locale')||[])[0]||'').replace(/-.*$/,'');
     if ( !lang || lang === 'none' || C.LANGUAGE.DOCS.indexOf(lang) === -1 ) {
       lang = 'en';
     }
