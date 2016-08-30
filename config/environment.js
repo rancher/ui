@@ -87,6 +87,7 @@ module.exports = function(environment) {
       version: pkg.version,
       appName: 'Rancher',
       apiServer: 'http://localhost:8080',
+      legacyApiEndpoint: '/v1',
       apiEndpoint: '/v2-beta',
       catalogServer: '',
       catalogEndpoint: '/v1-catalog',
