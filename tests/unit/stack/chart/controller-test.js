@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('controller:environment/chart', {
+moduleFor('controller:stack/chart', {
   // Specify the other units that are required for this test.
   // needs: ['controller:foo']
 });

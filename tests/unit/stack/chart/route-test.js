@@ -1,6 +1,6 @@
 import { moduleFor, test } from 'ember-qunit';
 
-moduleFor('route:environment/chart', 'Unit | Route | environment/chart', {
+moduleFor('route:stack/chart', 'Unit | Route | stack/chart', {
   // Specify the other units that are required for this test.
   // needs: ['controller:foo']
 });
