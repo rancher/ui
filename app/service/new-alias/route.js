@@ -30,7 +30,7 @@ export default Ember.Route.extend({
           type: 'dnsService',
           name: '',
           description: '',
-          environmentId: params.environmentId,
+          stackId: params.stackId,
           startOnCreate: true,
         });
       }
@@ -46,7 +46,7 @@ export default Ember.Route.extend({
   resetController: function (controller, isExisting/*, transition*/) {
     if (isExisting)
     {
-      controller.set('environmentId', null);
+      controller.set('stackId', null);
       controller.set('serviceId', null);
     }
   },

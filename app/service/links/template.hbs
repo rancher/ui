@@ -2,14 +2,14 @@
 <ul class="list-unstyled list-inline with-room">
   {{#each model.consumedServicesWithNames as |link|}}
     <li>{{#if (eq link.service.name link.name)}}
-      {{t (if (eq link.service.environmentId model.environmentID) 'serviceLink.noAlias.sameStack' 'serviceLink.noAlias.differentStack')
-        stack=link.service.displayEnvironment
+      {{t (if (eq link.service.stackId model.stackId) 'serviceLink.noAlias.sameStack' 'serviceLink.noAlias.differentStack')
+        stack=link.service.displayStack
         service=link.service.displayName
         alias=link.name
       }}
     {{else}}
-      {{t (if (eq link.service.environmentId model.environmentID) 'serviceLink.withAlias.sameStack' 'serviceLink.withAlias.differentStack')
-        stack=link.service.displayEnvironment
+      {{t (if (eq link.service.stackId model.stackId) 'serviceLink.withAlias.sameStack' 'serviceLink.withAlias.differentStack')
+        stack=link.service.displayStack
         service=link.service.displayName
         alias=link.name
       }}

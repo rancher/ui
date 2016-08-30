@@ -5,9 +5,9 @@ import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
-export function activeIcon(env)
+export function activeIcon(stack)
 {
-  let kind = env.get('externalIdInfo.kind');
+  let kind = stack.get('externalIdInfo.kind');
 
   if ( C.EXTERNAL_ID.SYSTEM_KINDS.indexOf(kind) >= 0 )
   {
@@ -19,8 +19,8 @@ export function activeIcon(env)
   }
 }
 
-var Environment = Resource.extend({
-  type: 'environment',
+var Stack = Resource.extend({
+  type: 'stack',
   k8s: Ember.inject.service(),
 
   actions: {
@@ -61,7 +61,7 @@ var Environment = Resource.extend({
     addService: function() {
       this.get('router').transitionTo('service.new', {
         queryParams: {
-          environmentId: this.get('id'),
+          stackId: this.get('id'),
         },
       });
     },
@@ -69,14 +69,14 @@ var Environment = Resource.extend({
     addBalancer: function() {
       this.get('router').transitionTo('service.new-balancer', {
         queryParams: {
-          environmentId: this.get('id'),
+          stackId: this.get('id'),
         },
       });
     },
 
     edit: function() {
       this.get('application').setProperties({
-        editEnvironment: true,
+        editStack: true,
         originalModel: this,
       });
     },
@@ -87,18 +87,18 @@ var Environment = Resource.extend({
     },
 
     viewCode: function() {
-      this.get('application').transitionToRoute('environment.code', this.get('id'));
+      this.get('application').transitionToRoute('stack.code', this.get('id'));
     },
 
     viewGraph: function() {
-      this.get('application').transitionToRoute('environment.graph', this.get('id'));
+      this.get('application').transitionToRoute('stack.graph', this.get('id'));
     },
 
     delete: function() {
       return this._super().then(() => {
-        if ( this.get('application.currentRouteName') === 'environment.index' )
+        if ( this.get('application.currentRouteName') === 'stack.index' )
         {
-          this.get('router').transitionTo('environments');
+          this.get('router').transitionTo('stacks');
         }
       });
     },
@@ -135,17 +135,17 @@ var Environment = Resource.extend({
   }.property('actionLinks.{remove,purge,exportconfig,finishupgrade,cancelupgrade,rollback,cancelrollback,update}','canActivate','canDeactivate','externalIdInfo.kind'),
 
   combinedState: function() {
-    var env = this.get('state');
+    var stack = this.get('state');
     var health = this.get('healthState');
-    if ( ['active','updating-active'].indexOf(env) === -1 )
+    if ( ['active','updating-active'].indexOf(stack) === -1 )
     {
-      // If the environment isn't active, return its state
-      return env;
+      // If the stack isn't active, return its state
+      return stack;
     }
 
     if ( health === 'healthy' )
     {
-      return env;
+      return stack;
     }
     else
     {
@@ -248,7 +248,7 @@ var Environment = Resource.extend({
   }.property('externalIdInfo.kind'),
 });
 
-Environment.reopenClass({
+Stack.reopenClass({
   stateMap: {
     'active':             {icon: activeIcon,          color: 'text-success'},
     'canceled-rollback':  {icon: 'icon icon-life-ring',       color: 'text-info'},
@@ -262,4 +262,4 @@ Environment.reopenClass({
   }
 });
 
-export default Environment;
+export default Stack;

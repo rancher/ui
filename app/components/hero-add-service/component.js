@@ -3,25 +3,25 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   settings: Ember.inject.service(),
 
-  environmentId: null,
+  stackId: null,
 
   actions: {
     newService() {
-      var environmentId = this.get('environmentId');
+      var stackId = this.get('stackId');
 
-      if ( environmentId )
+      if ( stackId )
       {
-        this.get('router').transitionTo('service.new', {queryParams: {environmentId: environmentId}});
+        this.get('router').transitionTo('service.new', {queryParams: {stackId: stackId}});
       }
       else
       {
-        var env = this.get('store').createRecord({
-          type: 'environment',
+        var stack = this.get('store').createRecord({
+          type: 'stack',
           name: 'Default',
         });
 
-        return env.save().then(() => {
-          this.get('router').transitionTo('service.new', {queryParams: {environmentId: env.get('id') }});
+        return stack.save().then(() => {
+          this.get('router').transitionTo('service.new', {queryParams: {stackId: stack.get('id') }});
         });
       }
     },

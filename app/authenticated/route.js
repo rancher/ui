@@ -71,7 +71,7 @@ export default Ember.Route.extend(Subscribe, {
           orchestrationState: this.get('projects').updateOrchestrationState(),
           hosts: store.findAllUnremoved('host'),
           machines: store.findAllUnremoved('machine'),
-          stacks: store.findAllUnremoved('environment'),
+          stacks: store.findAllUnremoved('stack'),
           mounts: store.findAllUnremoved('mount'), // the container model needs access
           volumes: store.findAllUnremoved('volume'),
           snapshots: store.findAllUnremoved('snapshot'),

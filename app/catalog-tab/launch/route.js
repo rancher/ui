@@ -18,13 +18,13 @@ export default Ember.Route.extend({
       dependencies.upgrade = this.get('catalogService').fetchTemplate(params.upgrade, true);
     }
 
-    if ( params.environmentId )
+    if ( params.stackId )
     {
-      dependencies.env = store.find('environment', params.environmentId);
+      dependencies.stack = store.find('stack', params.stackId);
     }
 
     return Ember.RSVP.hash(dependencies, 'Load dependencies').then((results) => {
-      if ( !results.env )
+      if ( !results.stack )
       {
         var name = results.tpl.id;
         var base = results.tpl.templateBase;
@@ -38,8 +38,8 @@ export default Ember.Route.extend({
           }
         }
 
-        results.env = store.createRecord({
-          type: 'environment',
+        results.stack = store.createRecord({
+          type: 'stack',
           name: name,
           startOnCreate: true,
           environment: {}, // Question answers
@@ -72,7 +72,7 @@ export default Ember.Route.extend({
       }
 
       return Ember.Object.create({
-        environment: results.env,
+        stack: results.stack,
         tpl: results.tpl,
         upgrade: results.upgrade,
         versionLinks: links,
@@ -86,7 +86,7 @@ export default Ember.Route.extend({
   resetController: function (controller, isExiting/*, transition*/) {
     if (isExiting)
     {
-      controller.set('environmentId', null);
+      controller.set('stackId', null);
       controller.set('upgrade', null);
     }
   }

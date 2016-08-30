@@ -3,13 +3,13 @@ import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend(Sortable, {
-  environments: Ember.inject.controller(),
+  stacks: Ember.inject.controller(),
   projects: Ember.inject.service(),
   sortableContent: Ember.computed.alias('filteredStacks'),
   prefs: Ember.inject.service(),
   intl: Ember.inject.service(),
 
-  which: Ember.computed.alias('environments.which'),
+  which: Ember.computed.alias('stacks.which'),
   showAddtlInfo: false,
   selectedService: null,
 

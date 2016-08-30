@@ -6,7 +6,7 @@ import C from 'ui/utils/constants';
 
 
 export default Ember.Component.extend(ThrottledResize, {
-  classNames: ['environment-graph'],
+  classNames: ['stack-graph'],
   graphZoom: null,
   graphInner: null,
   graphOuter: null,
@@ -15,7 +15,7 @@ export default Ember.Component.extend(ThrottledResize, {
 
   didInsertElement: function() {
     this._super();
-    var elem = $('<div id="environment-svg"><svg style="width: 100%; height: 100%;"><g/></svg></div>').appendTo('BODY');
+    var elem = $('<div id="stack-svg"><svg style="width: 100%; height: 100%;"><g/></svg></div>').appendTo('BODY');
     this.set('graphElem', elem[0]);
 
     if (this.get('model.stack.services.length')) {
@@ -33,8 +33,8 @@ export default Ember.Component.extend(ThrottledResize, {
   },
 
   onResize: function() {
-    $('#environment-svg').css('top', $('MAIN').position().top + 55 + 'px');
-    $('#environment-svg').css('bottom', $('FOOTER').outerHeight() + 'px');
+    $('#stack-svg').css('top', $('MAIN').position().top + 55 + 'px');
+    $('#stack-svg').css('bottom', $('FOOTER').outerHeight() + 'px');
     if ( this.get('graph') )
     {
       this.renderGraph();
@@ -42,7 +42,7 @@ export default Ember.Component.extend(ThrottledResize, {
   },
 
   initGraph: function() {
-    var outer = d3.select("#environment-svg svg");  // SVG must be lowercase!   This is case sensitive in not-Chrome
+    var outer = d3.select("#stack-svg svg");  // SVG must be lowercase!   This is case sensitive in not-Chrome
     var inner = outer.select("g");
     var zoom = d3.behavior.zoom().on("zoom", function() {
        inner.attr("transform", "translate(" + d3.event.translate + ")" +
@@ -117,13 +117,13 @@ export default Ember.Component.extend(ThrottledResize, {
   },
 
   styleSvg: function(height='100%') {
-    $('#environment-svg svg').css('height', height);
+    $('#stack-svg svg').css('height', height);
   },
 
   showService: function(id) {
     let svgHeight;
     if ( id ) {
-        svgHeight = $('#environment-svg').height() - 260; // svg minus the height of info service-addtl-info.scss
+        svgHeight = $('#stack-svg').height() - 260; // svg minus the height of info service-addtl-info.scss
         this.styleSvg(`${svgHeight}px`);
 
         if (!this.get('model.showServiceInfo')) {
@@ -133,7 +133,7 @@ export default Ember.Component.extend(ThrottledResize, {
         this.set('model.showServiceInfo', true);
         this.set('model.selectedService', this.get('model.stack.services').findBy('id', id));
     } else {
-      svgHeight = $('#environment-svg').height() - 0; // svg minus the height of info service-addtl-info.scss
+      svgHeight = $('#stack-svg').height() - 0; // svg minus the height of info service-addtl-info.scss
       this.styleSvg(svgHeight);
 
       if (this.get('model.showServiceInfo')) {
@@ -145,7 +145,7 @@ export default Ember.Component.extend(ThrottledResize, {
   },
 
   crosslinkServices: function() {
-    // Add services that are cross-linked from another environment
+    // Add services that are cross-linked from another stack
     var out = [];
 
     var unremovedServices = this.get('model.stack.services').filter(function(service) {
@@ -154,7 +154,7 @@ export default Ember.Component.extend(ThrottledResize, {
 
     unremovedServices.forEach((service) => {
       var externals = (service.get('consumedServicesWithNames')||[]).filter((linked) => {
-        return linked.get('service.environmentId') !== this.get('model.stack.id');
+        return linked.get('service.stackId') !== this.get('model.stack.id');
       }).map((linked) => { return linked.get('service'); });
       out.pushObjects(externals);
     });
@@ -179,16 +179,16 @@ export default Ember.Component.extend(ThrottledResize, {
       var serviceId = service.get('id');
       var instances = service.get('instances.length')||'No';
       var color = service.get('stateColor').replace('text-','');
-      var isCrossLink = service.get('environmentId') !== this.get('model.stack.id');
+      var isCrossLink = service.get('stackId') !== this.get('model.stack.id');
 
-      var envName = '';
+      var stackName = '';
       if ( isCrossLink )
       {
-        envName = service.get('displayEnvironment') + '/';
+        stackName = service.get('displayStack') + '/';
       }
 
       var html = `<span data-service="${service.get('id')}"></span><i class="icon  ${activeIcon(service)}"></i>
-                  <h4 class="clip">${envName}${Util.escapeHtml(service.get('displayName'))}</h4>
+                  <h4 class="clip">${stackName}${Util.escapeHtml(service.get('displayName'))}</h4>
                   <h6 class="count"><b>${instances}</b> container${(instances === 1 ? '' : 's')}</h6>
                   <h6><span class="state ${color}">${Util.escapeHtml(service.get('displayState'))}</span></h6>`;
 
@@ -254,8 +254,8 @@ export default Ember.Component.extend(ThrottledResize, {
     var zoomScale = zoom.scale();
     var graphWidth = g.graph().width;
     var graphHeight = g.graph().height;
-    var width = $('#environment-svg svg').width();
-    var height = $('#environment-svg svg').height();
+    var width = $('#stack-svg svg').width();
+    var height = $('#stack-svg svg').height();
     zoomScale = Math.min(scaleFactor, Math.min(width / graphWidth, height / graphHeight));
     var translate = [(width/2) - ((graphWidth*zoomScale)/2), (height/2) - ((graphHeight*zoomScale)/2)];
     zoom.translate(translate);
@@ -278,7 +278,7 @@ export default Ember.Component.extend(ThrottledResize, {
 
   throttledUpdateGraph: function() {
     Ember.run.throttle(this,'updateGraph',250);
-  }.observes('model.stack.services.@each.{id,name,displayState,consumedServicesUpdated}','crosslinkServices.@each.{id,name,displayState,displayEnvironment}'),
+  }.observes('model.stack.services.@each.{id,name,displayState,consumedServicesUpdated}','crosslinkServices.@each.{id,name,displayState,displayStack}'),
 
   willDestroyElement: function() {
     this._super();

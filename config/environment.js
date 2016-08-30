@@ -87,15 +87,17 @@ module.exports = function(environment) {
       version: pkg.version,
       appName: 'Rancher',
       apiServer: 'http://localhost:8080',
-      apiEndpoint: '/v1',
+      legacyApiEndpoint: '/v1',
+      apiEndpoint: '/v2-beta',
+      authEndpoint: '/v1-auth',
       catalogServer: '',
       catalogEndpoint: '/v1-catalog',
       projectToken: '%PROJECTID%',
       kubernetesEndpoint: '/r/projects/%PROJECTID%/kubernetes',
       kubectlEndpoint: '/r/projects/%PROJECTID%/kubectld:8091/v1-kubectl',
       mesosEndpoint: '/r/projects/%PROJECTID%/mesos-master:5050',
-      proxyEndpoint: '/v1/proxy',
-      wsEndpoint: '/v1/projects/%PROJECTID%/subscribe' +
+      proxyEndpoint: '/v2-beta/proxy',
+      wsEndpoint: '/v2-beta/projects/%PROJECTID%/subscribe' +
                     '?eventNames=resource.change' +
                     '&eventNames=service.kubernetes.change' +
                     '&limit=-1' +

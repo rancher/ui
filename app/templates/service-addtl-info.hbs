@@ -1,5 +1,5 @@
 <div class="content-box col-md-3 col-md-height col-md-full-height">
-  <label class="text-muted">{{t 'serviceInfoPartial.info.label'}} (<small>{{#link-to 'service' service.environmentId service.id class=''}} {{t 'serviceInfoPartial.info.linkTo'}} {{/link-to}}</small>)</label>
+  <label class="text-muted">{{t 'serviceInfoPartial.info.label'}} (<small>{{#link-to 'service' service.stackId service.id class=''}} {{t 'serviceInfoPartial.info.linkTo'}} {{/link-to}}</small>)</label>
   <div class="content">
     <div class="state">
       <div class="pull-left">{{badge-state model=service}}</div>
@@ -98,9 +98,9 @@
     <ul class="list-unstyled">
       {{#each service.consumedServicesWithNames as |link|}}
         {{# if (eq link.service.name link.name)}}
-          <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.name}} {{/link-to}}</li>
+          <li>{{#link-to 'service' link.service.stackId link.service.id}} {{link.service.name}} {{/link-to}}</li>
         {{else}}
-          <li>{{#link-to 'service' link.service.environmentId link.service.id}} {{link.service.name}} {{t 'generic.as'}} {{link.name}} {{/link-to}}</li>
+          <li>{{#link-to 'service' link.service.stackId link.service.id}} {{link.service.name}} {{t 'generic.as'}} {{link.name}} {{/link-to}}</li>
         {{/if}}
       {{else}}
         <li class="text-muted">{{t 'serviceInfoPartial.noLinks'}}</li>

@@ -112,7 +112,7 @@ var Service = Resource.extend({
       this.get('application').transitionToRoute(route, {queryParams: {
         serviceId: this.get('id'),
         upgrade: true,
-        environmentId: this.get('environmentId'),
+        stackId: this.get('stackId'),
       }});
     },
 
@@ -138,7 +138,7 @@ var Service = Resource.extend({
 
       this.get('application').transitionToRoute(route, {queryParams: {
         serviceId: this.get('id'),
-        environmentId: this.get('environmentId'),
+        stackId: this.get('stackId'),
       }});
     },
   },
@@ -213,8 +213,8 @@ var Service = Resource.extend({
     'consumedServices',
     'consumedServicesUpdated',
     'serviceLinks',
-    '_environment',
-    '_environmentState',
+    '_stack',
+    '_stackState',
   ],
 
   init: function() {
@@ -276,30 +276,30 @@ var Service = Resource.extend({
     });
   },
 
-  _environment: null,
-  _environmentState: 0,
-  displayEnvironment: function() {
-    var env = this.get('_environment');
-    if ( env )
+  _stack: null,
+  _stackState: 0,
+  displayStack: function() {
+    var stack = this.get('_stack');
+    if ( stack )
     {
-      return env.get('displayName');
+      return stack.get('displayName');
     }
-    else if ( this && this.get('_environmentState') === 2 )
+    else if ( this && this.get('_stackState') === 2 )
     {
       return '???';
     }
-    else if ( this && this.get('_environmentState') === 0 )
+    else if ( this && this.get('_stackState') === 0 )
     {
-      var existing = this.get('store').getById('environment', this.get('environmentId'));
+      var existing = this.get('store').getById('stack', this.get('stackId'));
       if ( existing )
       {
-        this.set('_environment', existing);
+        this.set('_stack', existing);
         return existing.get('displayName');
       }
 
-      this.set('_environmentState', 1);
-      this.get('store').find('environment', this.get('environmentId')).then((env) => {
-        this.set('_environment', env);
+      this.set('_stackState', 1);
+      this.get('store').find('stack', this.get('stackId')).then((stack) => {
+        this.set('_stack', stack);
       }).catch(() => {
         this.set('_publicIpState', 2);
       });
@@ -308,11 +308,11 @@ var Service = Resource.extend({
     }
 
     return null;
-  }.property('_environment.displayName','_environmentState','environmentId'),
+  }.property('_stack.displayName','_stackState','stackId'),
 
-  onDisplayEnvironmentChanged: function() {
+  onDisplayStackChanged: function() {
     this.incrementProperty('consumedServicesUpdated');
-  }.observes('displayEnvironment'),
+  }.observes('displayStack'),
 
   consumedServicesWithNames: function() {
     return Service.consumedServicesFor(this.get('id'));

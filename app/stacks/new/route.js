@@ -20,7 +20,7 @@ function githubUrl(repo,branch,file) {
 export default Ember.Route.extend({
   model: function(params/*, transition*/) {
     var stack = this.get('store').createRecord({
-      type: 'environment',
+      type: 'stack',
       startOnCreate: true,
     });
 
@@ -86,7 +86,7 @@ export default Ember.Route.extend({
 
   actions: {
     cancel: function() {
-      this.transitionTo('environments');
+      this.transitionTo('stacks');
     },
   }
 });

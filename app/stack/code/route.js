@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function(/*params, transition*/) {
-    var par = this.modelFor('environment');
+    var par = this.modelFor('stack');
     var stack = par.get('stack');
     return stack.doAction('exportconfig').then((config) => {
       // Windows needs CRLFs
