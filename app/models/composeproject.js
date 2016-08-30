@@ -1,9 +1,9 @@
 import Ember from 'ember';
-import Environment from 'ui/models/environment';
+import Stack from 'ui/models/stack';
 import FilteredSortedArrayProxy from 'ui/utils/filtered-sorted-array-proxy';
 import C from 'ui/utils/constants';
 
-var ComposeProject = Environment.extend({
+var ComposeProject = Stack.extend({
   type: 'composeProject',
 
   availableActions: function() {
@@ -21,9 +21,9 @@ var ComposeProject = Environment.extend({
   unremovedServices: function() {
     var proxy = FilteredSortedArrayProxy.create({
       sourceContent: this.get('store').reallyAll('composeservice'),
-      dependentKeys: ['sourceContent.@each.state','sourceContent.@each.environmentId'],
+      dependentKeys: ['sourceContent.@each.state','sourceContent.@each.stackId'],
       filterFn: function(item) {
-        return Ember.get(item,'environmentId') === this.get('id') &&
+        return Ember.get(item,'stackId') === this.get('id') &&
                C.REMOVEDISH_STATES.indexOf((Ember.get(item,'state')||'').toLowerCase()) === -1;
       }.bind(this),
     });

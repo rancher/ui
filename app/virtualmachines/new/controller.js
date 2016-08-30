@@ -1,9 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  queryParams: ['environmentId','virtualMachineId','hostId'],
+  queryParams: ['stackId','virtualMachineId','hostId'],
   hostId: null,
-  environmentId: null,
+  stackId: null,
   virtualMachineId: null,
   editing: false,
 

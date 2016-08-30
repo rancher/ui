@@ -27,14 +27,14 @@ export default Ember.Component.extend({
   }.property('model.outputs','model.id'),
 
   listLinkOptions: {
-    route: 'environment.index',
+    route: 'stack.index',
   },
 
   graphLinkOptions: {
-    route: 'environment.graph',
+    route: 'stack.graph',
   },
 
   yamlLinkOptions: {
-    route: 'environment.code',
+    route: 'stack.code',
   }
 });

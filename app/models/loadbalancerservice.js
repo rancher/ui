@@ -77,7 +77,7 @@ var LoadBalancerService = Service.extend({
     var services = '';
     (this.get('consumedServicesWithNames')||[]).forEach((map, idx) => {
       services += '<span>'+ (idx === 0 ? '' : ', ') +
-      (map.get('service.environmentId') === this.get('environmentId') ? '' : esc(map.get('service.displayEnvironment')) + '/') +
+      (map.get('service.stackId') === this.get('stackId') ? '' : esc(map.get('service.displayStack')) + '/') +
       esc(map.get('service.displayName')) + '</span>';
     });
 

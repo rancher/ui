@@ -25,6 +25,6 @@ export default Ember.Controller.extend(NewOrEdit, {
   },
 
   doneSaving: function() {
-    return this.transitionToRoute('environment', this.get('primaryResource.id'));
+    return this.transitionToRoute('stack', this.get('primaryResource.id'));
   },
 });

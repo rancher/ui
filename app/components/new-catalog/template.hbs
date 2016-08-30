@@ -1,7 +1,7 @@
 <section class="header">
 
   {{#if editing}}
-    <h1>{{t 'newCatalog.upgrade'}} <span style="font-weight: normal">{{environmentResource.name}}</span></h1>
+    <h1>{{t 'newCatalog.upgrade'}} <span style="font-weight: normal">{{stackResource.name}}</span></h1>
   {{else}}
     <h1>{{#link-to parentRoute}}{{t 'newCatalog.catalog'}}{{/link-to}}</h1>
     {{#power-select options=allTemplates selected=templateResource onchange=(action "changeTemplate") searchField="name" as |obj|}}
@@ -82,7 +82,7 @@
       <hr/>
 
       {{form-name-description
-        model=environmentResource
+        model=stackResource
         nameRequired=true
       }}
 
@@ -122,7 +122,7 @@
         {{#if (and (not editing) (eq templateBase ""))}}
           <div class="row r-mt20">
             <div class="col-md-12">
-              <label class="checkbox small">{{input type="checkbox" checked=environmentResource.startOnCreate}} {{t 'newCatalog.startService'}}</label>
+              <label class="checkbox small">{{input type="checkbox" checked=stackResource.startOnCreate}} {{t 'newCatalog.startService'}}</label>
             </div>
           </div>
         {{/if}}

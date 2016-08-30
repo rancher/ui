@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
-    return this.modelFor('environment');
+    return this.modelFor('stack');
   },
 
   resetController: function (controller, isExiting/*, transition*/) {

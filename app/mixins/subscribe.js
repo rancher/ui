@@ -202,23 +202,23 @@ export default Ember.Mixin.create({
     },
 
     loadBalancerServiceChanged: function(change) {
-      this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
+      this._includeChanged('stack', 'services', 'stackId', change.data.resource);
     },
 
     dnsServiceChanged: function(change) {
-      this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
+      this._includeChanged('stack', 'services', 'stackId', change.data.resource);
     },
 
     externalServiceChanged: function(change) {
-      this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
+      this._includeChanged('stack', 'services', 'stackId', change.data.resource);
     },
 
     serviceChanged: function(change) {
-      this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
+      this._includeChanged('stack', 'services', 'stackId', change.data.resource);
     },
 
     kubernetesServiceChanged: function(change) {
-      this._includeChanged('environment', 'services', 'environmentId', change.data.resource);
+      this._includeChanged('stack', 'services', 'stackId', change.data.resource);
     },
 
     k8sResourceChanged: function(changeType, obj) {

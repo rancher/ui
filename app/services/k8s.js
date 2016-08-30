@@ -456,12 +456,12 @@ export default Ember.Service.extend({
 
 
   isReady() {
-    return this.get('store').find('environment').then((stacks) => {
+    return this.get('store').find('stack').then((stacks) => {
       return this.get('store').find('service').then((services) => {
         let stack = this.filterSystemStack(stacks);
         if ( stack )
         {
-          let matching = services.filterBy('environmentId', stack.get('id'));
+          let matching = services.filterBy('stackId', stack.get('id'));
           let expect = matching.get('length');
           let healthy = Util.filterByValues(matching, 'healthState', C.READY_STATES).get('length');
           if ( expect > 0 && expect === healthy )

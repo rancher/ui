@@ -1,8 +1,8 @@
 import Ember from 'ember';
-import Environment from 'ui/models/environment';
+import Stack from 'ui/models/stack';
 import C from 'ui/utils/constants';
 
-var KubernetesStack = Environment.extend({
+var KubernetesStack = Stack.extend({
   type: 'kubernetesStack',
 
   k8s: Ember.inject.service(),
