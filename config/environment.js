@@ -89,6 +89,7 @@ module.exports = function(environment) {
       apiServer: 'http://localhost:8080',
       legacyApiEndpoint: '/v1',
       apiEndpoint: '/v2-beta',
+      authEndpoint: '/v1-auth',
       catalogServer: '',
       catalogEndpoint: '/v1-catalog',
       projectToken: '%PROJECTID%',
