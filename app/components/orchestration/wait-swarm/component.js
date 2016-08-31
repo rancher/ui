@@ -60,7 +60,7 @@ export default Ember.Component.extend({
       }
     }
 
-    var services = (this.get('services')||[]).filterBy('environmentId', stack.get('id'));
+    var services = (this.get('services')||[]).filterBy('stackId', stack.get('id'));
     var num = services.get('length');
     var healthy = Util.filterByValues(services, 'healthState', C.READY_STATES).get('length');
     if ( num === 0 || healthy < num )

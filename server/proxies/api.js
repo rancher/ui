@@ -26,13 +26,31 @@ module.exports = function(app, options) {
 
   // Rancher API
   console.log('Proxying API to', config.apiServer);
-  var apiPath =  config.apiEndpoint;
-  app.use(apiPath, function(req, res, next) {
+  app.use(config.apiEndpoint, function(req, res, next) {
     // include root path in proxied request
-    req.url = path.join(apiPath, req.url);
+    req.url = path.join(config.apiEndpoint, req.url);
     req.headers['X-Forwarded-Proto'] = req.protocol;
 
     proxyLog('API', req);
+    proxy.web(req, res);
+  });
+
+  app.use(config.legacyApiEndpoint, function(req, res, next) {
+    // include root path in proxied request
+    req.url = path.join(config.legacyApiEndpoint, req.url);
+    req.headers['X-Forwarded-Proto'] = req.protocol;
+
+    proxyLog('Legacy API', req);
+    proxy.web(req, res);
+  });
+
+  // Auth API
+  app.use(config.authEndpoint, function(req, res, next) {
+    // include root path in proxied request
+    req.url = path.join(config.authEndpoint, req.url);
+    req.headers['X-Forwarded-Proto'] = req.protocol;
+
+    proxyLog('Auth', req);
     proxy.web(req, res);
   });
 

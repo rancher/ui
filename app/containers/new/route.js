@@ -69,7 +69,7 @@ export default Ember.Route.extend({
     if (isExiting)
     {
       controller.set('hostId', null);
-      controller.set('environmentId', null);
+      controller.set('stackId', null);
       controller.set('containerId', null);
     }
   }

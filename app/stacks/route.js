@@ -7,20 +7,20 @@ export default Ember.Route.extend({
     var store = this.get('store');
 
     return Ember.RSVP.hash({
-      environments: store.findAllUnremoved('environment'),
+      stacks: store.findAllUnremoved('stack'),
       services: store.find('service', null, {include: ['instances']})
     }).then((hash) => {
-      hash.environments.forEach((env) => {
+      hash.stacks.forEach((stack) => {
         let list = hash.services
-          .filterBy('environmentId',env.get('id'))
+          .filterBy('stackId',stack.get('id'))
           .filter((svc) => {
             return C.REMOVEDISH_STATES.indexOf(svc.get('state').toLowerCase()) === -1;
         });
 
-        env.set('services',list);
+        stack.set('services',list);
       });
 
-      return hash.environments;
+      return hash.stacks;
     });
   },
 

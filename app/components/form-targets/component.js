@@ -124,5 +124,5 @@ export default Ember.Component.extend({
 
       return service;
     });
-  }.property('isBalancer','allServices.@each.{id,name,state,environmentId}'),
+  }.property('isBalancer','allServices.@each.{id,name,state,stackId}'),
 });

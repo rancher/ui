@@ -34,7 +34,7 @@ export default Ember.Component.extend({
 
             obj.setProperties({
               isService: true,
-              environmentId: map.get('service.environmentId'),
+              stackId: map.get('service.stackId'),
               value: map.get('service.displayName'),
               id: map.get('service.id'),
               service: map.get('service'),
@@ -48,7 +48,7 @@ export default Ember.Component.extend({
           isService: true,
           value: map.get('service.displayName'),
           id: map.get('service.id'),
-          environmentId: map.get('service.environmentId'),
+          stackId: map.get('service.stackId'),
           service: map.get('service'),
         }));
       }
