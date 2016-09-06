@@ -64,39 +64,39 @@ GS_PROJECT_NAME="${GS_PROJECT_NAME:-Rancher}"
 while getopts ":dlutfv:c:p:" opt;do
     case $opt in
     d)
-	ENVIRONMENT="development"
-	;;
+        ENVIRONMENT="development"
+        ;;
     f)
-	FORCE=1
-	;;
+        FORCE=1
+        ;;
     l)
-	LATEST=1
-	;;
+        LATEST=1
+        ;;
     t)
-	TAG=1
-	;;
+        TAG=1
+        ;;
     u)
-	UPLOAD=1
-	;;
+        UPLOAD=1
+        ;;
     v)
-	FORCE_VERSION=$OPTARG
-	;;
+        FORCE_VERSION=$OPTARG
+        ;;
     c)
-	CDN=$OPTARG
-	;;
+        CDN=$OPTARG
+        ;;
     p)
-	GS_PROJECT_NAME=$OPTARG
-	;;
+        GS_PROJECT_NAME=$OPTARG
+        ;;
     \?)
-	echo "Invalid arguemnt: ${OPTARG}"
-	printHelp
-	exit 1
-	;;
+        echo "Invalid arguemnt: ${OPTARG}"
+        printHelp
+        exit 1
+        ;;
     :)
-	echo "Option -${OPTARG} requires an argument." >&2
-	printHelp
-	exit 1
-	;;
+        echo "Option -${OPTARG} requires an argument." >&2
+        printHelp
+        exit 1
+        ;;
     esac
 done
 
@@ -187,34 +187,33 @@ fi
 
 # Upload asset, either from laptop or from CI pipeline
 if [[ -n "$UPLOAD" ]]; then
-    
-    echo "Uploading..."
+  echo "Uploading..."
 
-    ABS_BUILD_DIR="$(pwd)/${BUILD_DIR}"
-    GS_UPLOAD_COMMAND="gcs_upload_asset project_name=${GS_PROJECT_NAME} version=${VERSION} upload_target=${GS_URL}"
+  ABS_BUILD_DIR="$(pwd)/${BUILD_DIR}"
+  GS_UPLOAD_COMMAND="gcs_upload_asset project_name=${GS_PROJECT_NAME} version=${VERSION} upload_target=${GS_URL}"
 
-    if [[ $LATEST -ne 1 ]]; then
-	GS_UPLOAD_COMMAND+=" version=${VERSION} tgz_file=${BUILD_TGZ}"
-    else
-	GS_UPLOAD_COMMAND+=" version=latest is_latest=true"
-    fi
+  if [[ $LATEST -ne 1 ]]; then
+    GS_UPLOAD_COMMAND+=" tgz_file=${BUILD_TGZ}"
+  else
+    GS_UPLOAD_COMMAND+=" is_latest=true"
+  fi
 
-    if [[ $UPLOAD -eq 1 ]]; then
-	runCmd "${GS_UPLOAD_COMMAND} upload_source=${BUILD_DIR} disable_svcacct_auth=true"
-    fi
+  if [[ $UPLOAD -eq 1 ]]; then
+    runCmd "${GS_UPLOAD_COMMAND} upload_source=${BUILD_DIR} disable_svcacct_auth=true"
+  fi
 
-    if [[ $UPLOAD -eq 2 ]]; then
-	GS_SERVICE_ACCOUNT_KEYFILE="$(TMPDIR=$(pwd) && mktemp -t gs_service_account_keyfile.XXXXXXX)"
-	echo "${GS_SERVICE_ACCOUNT_KEY}" > "${GS_SERVICE_ACCOUNT_KEYFILE}"
+  if [[ $UPLOAD -eq 2 ]]; then
+    GS_SERVICE_ACCOUNT_KEYFILE="$(TMPDIR=$(pwd) && mktemp -t gs_service_account_keyfile.XXXXXXX)"
+    echo "${GS_SERVICE_ACCOUNT_KEY}" > "${GS_SERVICE_ACCOUNT_KEYFILE}"
 
-	GS_UPLOAD_COMMAND+=" service_account_id=${GS_SERVICE_ACCOUNT_ID}"
-	runCmd "docker run --rm --name gcloud-config \
-	       -v ${GS_SERVICE_ACCOUNT_KEYFILE}:/tmp/keyfile.json \
-	       -v $(pwd)/scripts:/opt/rancher/scripts \
-	       -v ${ABS_BUILD_DIR}:/upload \
-	       ${GCLOUD_UUID} \
-	       /opt/rancher/scripts/${GS_UPLOAD_COMMAND}"
-    
-	rm "${GS_SERVICE_ACCOUNT_KEYFILE}"
-    fi    
+    GS_UPLOAD_COMMAND+=" service_account_id=${GS_SERVICE_ACCOUNT_ID}"
+    runCmd "docker run --rm --name gcloud-config \
+            -v ${GS_SERVICE_ACCOUNT_KEYFILE}:/tmp/keyfile.json \
+            -v $(pwd)/scripts:/opt/rancher/scripts \
+            -v ${ABS_BUILD_DIR}:/upload \
+            ${GCLOUD_UUID} \
+            /opt/rancher/scripts/${GS_UPLOAD_COMMAND}"
+
+    rm "${GS_SERVICE_ACCOUNT_KEYFILE}"
+  fi
 fi
