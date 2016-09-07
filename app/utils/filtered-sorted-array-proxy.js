@@ -1,6 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.ArrayProxy.extend({
+  content: Ember.computed.alias('sourceContent'),
+});
+
+/*
+export default Ember.ArrayProxy.extend({
   sourceContent: null,
   sortProperties: null,
 
@@ -45,3 +50,4 @@ export default Ember.ArrayProxy.extend({
   // The array proxy reads this property
   arrangedContent: Ember.computed.sort('content','sortProperties'),
 });
+*/

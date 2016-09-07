@@ -1,8 +1,9 @@
 <table class="grid fixed">
   <thead>
     <tr>
-      <th width="150">{{t 'servicePage.logTab.table.header.date'}}</th>
+      <th width="100">{{t 'servicePage.logTab.table.header.date'}}</th>
       <th width="75">{{t 'servicePage.logTab.table.header.level'}}</th>
+      <th>{{t 'servicePage.logTab.table.header.event'}}</th>
       <th>{{t 'servicePage.logTab.table.header.description'}}</th>
       <th class="actions" width="75">&nbsp;</th>
     </tr>
@@ -11,10 +12,13 @@
     {{#each model.logs.arrangedContent as |obj|}}
       <tr>
         <td>
-          {{date-calendar obj.created}}
+          {{date-str obj.created format="hh:mm:ss A"}}
         </td>
         <td>
-          {{upper-case obj.level}}
+          <span class="state badge {{obj.stateColor}} {{obj.stateBackground}}">{{upper-case obj.level}}</span>
+        </td>
+        <td>
+          {{obj.eventType}}{{#if obj.runTime}} ({{obj.runTime}}){{/if}}
         </td>
         <td>
           {{obj.description}}
