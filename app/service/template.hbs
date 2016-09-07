@@ -48,7 +48,7 @@
         </div>
         <hr>
         {{#if service.hasImage}}
-      
+
             <div>
               <label class="block">{{t 'servicePage.multistat.image'}}</label>
               <div>
@@ -77,7 +77,7 @@
                 {{/if}}
               </div>
             </div>
-      
+
         {{/if}}
         {{#if service.description}}
           <hr>
@@ -112,7 +112,9 @@
       {{#if (or (or service.hasLabels service.hasContainers) service.consumedServicesWithNames.length) }}
         <section>
           <ul class="nav nav-tabs nav-tabs-well">
-            {{#if (not-eq service.kind 'dnsService')}}
+            {{#if (eq service.kind 'dnsService')}}
+              {{#link-to 'service.links' tagName='li' href=false classNames='hide'}}<a href="#">{{t 'servicePage.navTabs.links'}}</a>{{/link-to}}
+            {{else}}
               {{#if service.hasPorts}}
                 {{#link-to "service.ports" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.ports'}}</a>{{/link-to}}
               {{/if}}
@@ -123,8 +125,9 @@
                 {{#link-to "service.labels" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.labels'}}</a>{{/link-to}}
               {{/if}}
               {{#link-to 'service.links' tagName='li' href=false}}<a href="#">{{t 'servicePage.navTabs.links'}}</a>{{/link-to}}
-            {{else}}
-              {{#link-to 'service.links' tagName='li' href=false classNames='hide'}}<a href="#">{{t 'servicePage.navTabs.links'}}</a>{{/link-to}}
+              {{#if service.hasContainers}}
+                {{#link-to "service.log" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.log'}}</a>{{/link-to}}
+              {{/if}}
             {{/if}}
           </ul>
           <div class="well nav-well">

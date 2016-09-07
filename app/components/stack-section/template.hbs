@@ -85,6 +85,9 @@
             <tr>
               <td data-title="{{t 'stackSection.table.dataTitle.state'}}:" class="state">
                 {{badge-state model=service}}
+                {{#if service.isError}}
+                  {{#link-to "service.log" service.stackId service.id}}<i class="icon icon-alert"/>{{/link-to}}
+                {{/if}}
               </td>
               <td data-title="{{t 'stackSection.table.dataTitle.serviceName'}}:" class="force-wrap">
                 {{#link-to "service" service.stackId service.id}}{{service.displayName}}{{/link-to}}
