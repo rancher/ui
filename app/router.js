@@ -156,6 +156,7 @@ Router.map(function() {
               this.route('labels');
               this.route('ports');
               this.route('links');
+              this.route('log');
             });
           });
         });

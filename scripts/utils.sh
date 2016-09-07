@@ -2,8 +2,8 @@
 function runCmd() {
   $@
   if [[ $? -ne 0 ]]; then
-    echo "Command: $@ failed" >&2
-    exit 2
+  echo "Command: $@ failed" >&2
+  exit 2
   fi
 }
 
@@ -22,52 +22,52 @@ function runCmd() {
 #   disable_svcacct_auth: disable automagic Service Account auto-authentication when. Primarily used for non-CI runs. Default 'false'.
 #   tgz_file: if upload is not latest, specify the relative path to tarball to upload.
 function gcs_upload_asset() {
-    local $*
+  local $*
 
-    disable_svcacct_auth="${disable_svcacct_auth:-false}"
-    service_account_id="${service_account_id:-}"
-    service_account_keyfile="${service_account_keyfile:-/tmp/keyfile.json}"
-    project_name="${project_name:-}"
-    
-    if [[ -z "${disable_svcacct_auth}" ]]; then
-	if [[ -z "${service_account_id}" || -z "${project_name}" ]]; then
-	    printf 'ERROR: gce_upload_asset():: must specify service_account_id and project_name!' 1>&2
-	    return 1
-	fi
+  disable_svcacct_auth="${disable_svcacct_auth:-false}"
+  service_account_id="${service_account_id:-}"
+  service_account_keyfile="${service_account_keyfile:-/tmp/keyfile.json}"
+  project_name="${project_name:-}"
+
+  if [[ -z "${disable_svcacct_auth}" ]]; then
+    if [[ -z "${service_account_id}" || -z "${project_name}" ]]; then
+      printf 'ERROR: gce_upload_asset():: must specify service_account_id and project_name!' 1>&2
+      return 1
     fi
+  fi
 
-    version="${version:-''}"
-    if [[ -z "${version}" ]]; then
-	printf 'ERROR: gce_upload_asset(): must specify version!' 1>&2
-	return 1
+  version="${version:-''}"
+  if [[ -z "${version}" ]]; then
+    printf 'ERROR: gce_upload_asset(): must specify version!' 1>&2
+    return 1
+  fi
+
+  upload_source="${upload_source:-/upload}"
+  upload_target="${upload_target:-gs://${project_name}/}"
+  is_latest="${is_latest:-false}"
+
+  if [ "false" ==  "${is_latest}" ]; then
+    if [[ -z "${tgz_file}" ]]; then
+      printf 'ERROR: is_latest requires tgz_file!' 1>&2
+      return 1
     fi
+  fi
 
-    upload_source="${upload_source:-/upload}"
-    upload_target="${upload_target:-gs://${project_name}/}"
-    is_latest="${is_latest:-false}"
+  gzip_settings='html,js,css,xml,txt,map,svg,ttf,woff,woff2'
+  cache_settings='Cache-Control:no-cache,must-revalidate'
 
-    if [ "false" ==  "${is_latest}" ]; then
-	if [[ -z "${tgz_file}" ]]; then
-	    printf 'ERROR: is_latest requires tgz_file!' 1>&2
-	    return 1
-	fi
-    fi
+  if [ "false" == "${disable_svcacct_auth}" ]; then
+    runCmd gcloud auth activate-service-account "${service_account_id}" --key-file "${service_account_keyfile}" --project "${project_name}"
+  else
+    echo "INFO: Automatic Service Account auth has been disabled. Falling back to existing account auth..."
+  fi
 
-    gzip_settings='html,js,css,xml,txt,map,svg,ttf,woff,woff2'
-    cache_settings='Cache-Control:no-cache,must-revalidate'
-
-    if [ "false" == "${disable_svcacct_auth}" ]; then
-	runCmd gcloud auth activate-service-account "${service_account_id}" --key-file "${service_account_keyfile}" --project "${project_name}"
-    else
-	echo "INFO: Automatic Service Account auth has been disabled. Falling back to existing account auth..."
-    fi
-
-    if [ "false" == "${is_latest}" ]; then
-	runCmd gsutil -m cp "${tgz_file} ${upload_target}"
-	runCmd gsutil -m cp -z "${gzip_settings}" -R "${upload_source} ${upload_target}"
-    else
-	runCmd gsutil -h "$cache_settings" -m cp -z "$gzip_settings" -R "${upload_source} ${upload_target}/_upload"
-	runCmd gsutil -h "$cache_settings" -m rsync -c -r -d "${upload_target}/_upload ${upload_target}/${version}"
-	runCmd gsutil -m rm  -a -f -R "${upload_target}/_upload"
-    fi
+  if [ "false" == "${is_latest}" ]; then
+    runCmd gsutil -m cp "${tgz_file} ${upload_target}"
+    runCmd gsutil -m cp -z "${gzip_settings}" -R "${upload_source} ${upload_target}"
+  else
+    runCmd gsutil -h "$cache_settings" -m cp -z "$gzip_settings" -R "${upload_source} ${upload_target}/_upload"
+    runCmd gsutil -h "$cache_settings" -m rsync -c -r -d "${upload_target}/_upload ${upload_target}/${version}"
+    runCmd gsutil -m rm  -a -f -R "${upload_target}/_upload"
+  fi
 }

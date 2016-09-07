@@ -97,6 +97,9 @@
                 <button type="button" class="btn-link" role="button" {{action 'addtlInfo' service target=controller}}>
                   <i class="icon icon-info addtl-info-trigger"/>
                 </button>
+                {{#if service.isError}}
+                  {{#link-to "service.log" service.stackId service.id class="btn-link"}}<i class="icon icon-alert"/>{{/link-to}}
+                {{/if}}
               </td>
               <td data-title="{{t 'stackSection.table.dataTitle.details'}}:" class="force-wrap service-detail">{{service.displayDetail}}{{service.displayPorts}}</td>
               <td data-title="{{t 'stackSection.table.dataTitle.kind'}}:">

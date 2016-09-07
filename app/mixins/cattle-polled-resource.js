@@ -9,10 +9,12 @@ export default Ember.Mixin.create({
     this.transitioningChanged();
   },
 
+  // ember-api-store hook
   wasAdded: function() {
     this.transitioningChanged();
   },
 
+  // ember-api-store hook
   wasRemoved: function() {
     this.transitioningChanged();
   },
