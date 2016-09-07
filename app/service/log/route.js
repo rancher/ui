@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import FilteredSorted from 'ui/utils/actually-filtered-sorted-array-proxy';
+import FilteredSorted from 'ui/utils/filtered-sorted-array-proxy';
 
 export default Ember.Route.extend({
   model: function() {
