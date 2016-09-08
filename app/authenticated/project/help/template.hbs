@@ -2,7 +2,7 @@
   <h1>{{t 'helpPage.header'}}</h1>
 </section>
 
-{{#if (and settings.isRancher (not modelError))}}
+{{#if (and settings.isRancher latestAnnouncement (not modelError))}}
   <div class="alert alert-info alert-header r-ml20 r-mr20 r-mt10">
     <span class="banner-head">{{t 'helpPage.banner'}}</span>
     {{#if modelResolved}}
@@ -116,16 +116,17 @@
   {{#if modelResolved}}
     {{#unless modelError}}
       <div class="row">
-        <div class="col-sm-12 col-md-4 right-divider">
-          <h5>{{t 'helpPage.forums.annoucements.header'}}</h5>
-          <p>
-            {{format-html-message 'helpPage.forums.annoucements.annouceText'
-              latestLink=latestAnnouncement.link
-              latestTitle=latestAnnouncement.title}}
-          </p>
-          <p><strong>{{t 'helpPage.forums.annoucements.releaseText'}}</strong>{{date-from-now latestAnnouncement.created}}</p>
-        </div>
-        <div class="col-sm-12 col-md-4">
+        <div class="col-sm-12 col-md-6">
+          <h5>{{t 'helpPage.forums.announcements.header'}}</h5>
+          <ul class="list-unstyled">
+            {{#each model.announcements.topics as |topic|}}
+              <li class="clip">
+                <a href="{{forumsLink}}/t/{{topic.slug}}" target="_blank">{{topic.title}}</a>
+              </li>
+            {{/each}}
+          </ul>
+          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/announcements" target="blank">{{t 'helpPage.forums.announcements.buttonText'}}</a>
+
           <h5>{{t 'helpPage.forums.general.header'}}</h5>
           <ul class="list-unstyled">
             {{#each model.general.topics as |topic|}}
@@ -136,17 +137,8 @@
           </ul>
           <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/general" target="blank">{{t 'helpPage.forums.general.buttonText'}}</a>
 
-          <h5>{{t 'helpPage.forums.rancherOs.header'}}</h5>
-          <ul class="list-unstyled">
-            {{#each model.rancherOS.topics as |topic|}}
-              <li class="clip">
-                <a href="{{forumsLink}}/t/{{topic.slug}}" target="_blank">{{topic.title}}</a>
-              </li>
-            {{/each}}
-          </ul>
-          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/rancher-os" target="blank">{{t 'helpPage.forums.rancherOs.buttonText'}}</a>
         </div>
-        <div class="col-sm-12 col-md-4">
+        <div class="col-sm-12 col-md-6">
           <h5>{{t 'helpPage.forums.rancher.header'}}</h5>
           <ul class="list-unstyled">
             {{#each model.rancher.topics as |topic|}}
@@ -157,15 +149,15 @@
           </ul>
           <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/rancher" target="blank">{{t 'helpPage.forums.rancher.buttonText'}}</a>
 
-          <h5>{{t 'helpPage.forums.convoy.header'}}</h5>
+          <h5>{{t 'helpPage.forums.rancherOs.header'}}</h5>
           <ul class="list-unstyled">
-            {{#each model.convoy.topics as |topic|}}
+            {{#each model.rancherOS.topics as |topic|}}
               <li class="clip">
                 <a href="{{forumsLink}}/t/{{topic.slug}}" target="_blank">{{topic.title}}</a>
               </li>
             {{/each}}
           </ul>
-          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/convoy" target="blank">{{t 'helpPage.forums.convoy.buttonText'}}</a>
+          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/rancher-os" target="blank">{{t 'helpPage.forums.rancherOs.buttonText'}}</a>
         </div>
       </div>
     {{else}}

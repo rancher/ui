@@ -51,16 +51,11 @@ export function compare(in1, in2) {
   return p1.length - p2.length;
 }
 
-export function stableMinor(str) {
-  let [major, minor, patch, pre] = parse(str);
+export function minorVersion(str) {
+  let [major, minor /*, patch, pre*/] = parse(str);
   if ( !minor )
   {
     return 'v'+ major +'.0';
-  }
-
-  if ( pre && pre.toLowerCase().indexOf('pre') === 0 && comparePart(patch,'0') === 0 )
-  {
-    return 'v' + major + '.' + Math.max(0,(minor-1));
   }
 
   return 'v' + major + '.' + minor;
