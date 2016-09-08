@@ -4,49 +4,57 @@ import C from 'ui/utils/constants';
 export default Ember.Route.extend({
   actions: {
     didTransition: function() {
-      var modelOut;
-
       Ember.$.getJSON(`${C.EXT_REFERENCES.FORUM}/categories.json`).then((response) => {
-        modelOut = {
+        let modelOut = {
           resolved: true,
         };
 
-        response.category_list.categories.forEach((item) => {
+        let promises = {};
 
+        response.category_list.categories.forEach((item) => {
           switch (item.name) {
             case 'Announcements':
-              modelOut.annoucements = item;
+              modelOut.announcements = item;
+              promises['announcements'] = Ember.$.getJSON(`${C.EXT_REFERENCES.FORUM}/c/${item.id}/l/latest.json`);
               break;
             case 'General':
               modelOut.general = item;
+              promises['general'] = Ember.$.getJSON(`${C.EXT_REFERENCES.FORUM}/c/${item.id}/l/latest.json`);
               break;
             case 'Rancher':
               modelOut.rancher = item;
+              promises['rancher'] = Ember.$.getJSON(`${C.EXT_REFERENCES.FORUM}/c/${item.id}/l/latest.json`);
               break;
             case 'RancherOS':
               modelOut.rancherOS = item;
-              break;
-            case 'Convoy':
-              modelOut.convoy = item;
+              promises['rancherOS'] = Ember.$.getJSON(`${C.EXT_REFERENCES.FORUM}/c/${item.id}/l/latest.json`);
               break;
             default:
               break;
           }
         });
 
-        this.controller.set('model', modelOut);
+        Ember.RSVP.hash(promises).then((hash) => {
+          Object.keys(hash).forEach((key) => {
+            let topics = hash[key].topic_list.topics.filterBy('pinned',false);
+            topics.length = 5;
+            modelOut[key].topics = topics;
+          });
 
-      }, (/*error*/) => {
+          this.controller.set('model', modelOut);
+        }).catch(fail);
+      }, fail);
 
-        modelOut = {
+      return true; //bubble the transition event
+
+      function fail(/*error*/) {
+        let modelOut = {
           resolved: true,
           error: true
         };
 
         this.controller.set('model', modelOut);
-      });
-
-      return true; //bubble the transition event
+      }
     },
   },
 
