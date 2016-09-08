@@ -138,6 +138,7 @@ Router.map(function() {
 
         this.route('environments', {path: '/stacks', resetNamespace: true}, function() {
           this.route('index', {path: '/'});
+          this.route('original');
           this.route('new', {path: '/add'});
 
           this.route('environment', {path: '/:environment_id', resetNamespace: true}, function() {
