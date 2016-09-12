@@ -66,7 +66,6 @@ export default Ember.Controller.extend(Sortable, {
     },
 
     upgradeDriver: function(driver, version/*, path*/) {
-      let templateVersion = version;
 
       this.set('upgrading', true);
 
