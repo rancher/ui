@@ -178,6 +178,7 @@ export default Ember.Route.extend({
           // Can't call this.send() here because the initial transition isn't done yet
           this.finishLogin();
         }).catch((err) => {
+          transition.abort();
           this.transitionTo('login', {queryParams: { errorMsg: err.message}});
         }).finally(() => {
           this.controllerFor('application').setProperties({
