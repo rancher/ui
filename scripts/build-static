@@ -30,6 +30,7 @@ build-static Usage:
   -l - Build as "latest" instead of the version in package.json
   -t - Tag and push tag
   -u - Upload to GCE
+  -s - Skip tests
   -c=CDN - Force a CDN path for static asset delivery. Default <releases.rancher.com/ui>
   -v=VERSION - Force version to be VERSION instead of what is in package.json
   -p=PROJECT_NAME - name of the Google Cloud project hosting the storage bucket
@@ -56,12 +57,13 @@ FORCE=0
 LATEST=0
 UPLOAD=0
 TAG=0
+TEST=1
 ENVIRONMENT="production"
 FINGERPRINT="yes"
 : ${FORCE_VERSION:=""}
 GS_PROJECT_NAME="${GS_PROJECT_NAME:-Rancher}"
 
-while getopts ":dlutfv:c:p:" opt;do
+while getopts ":dlustfv:c:p:" opt;do
     case $opt in
     d)
         ENVIRONMENT="development"
@@ -71,6 +73,9 @@ while getopts ":dlutfv:c:p:" opt;do
         ;;
     l)
         LATEST=1
+        ;;
+    s)
+        TEST=0
         ;;
     t)
         TAG=1
@@ -156,12 +161,16 @@ if [[ "${VERSION}" != "${PKG_VERSION}" ]]; then
 fi
 echo "Version: ${VERSION}"
 echo "Build Dir: ${BUILD_DIR}"
-echo "Options: Force=${FORCE}, Latest=${LATEST}, Upload=${UPLOAD}, Tag=${TAG}"
+echo "Options: Force=${FORCE}, Latest=${LATEST}, Test=${TEST}, Upload=${UPLOAD}, Tag=${TAG}"
 echo "Current Directory: $(pwd)"
 
-echo "Testing..."
-runCmd ./node_modules/.bin/ember test
-echo "Done Testing."
+if [[ $TEST -eq 1 ]]; then
+  echo "Testing..."
+  runCmd ./node_modules/.bin/ember test
+  echo "Done Testing."
+else
+  echo "Skipping Tests"
+fi
 
 if [[ $LATEST -ne 1 ]]; then
   echo "Building Static Tarball..."
