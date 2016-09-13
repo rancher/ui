@@ -7,6 +7,8 @@ pipeline:
       - ENABLE_DOCKER=true UPLOAD_LATEST=true ./scripts/ci
     when:
       branch: "master"
+      event:
+        exclude: [pull_request]
 
   build:
     privileged: true
