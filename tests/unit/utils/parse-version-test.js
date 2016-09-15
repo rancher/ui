@@ -1,4 +1,3 @@
-import Ember from 'ember';
 import { parse, minorVersion } from 'ui/utils/parse-version';
 import { module, test } from 'qunit';
 

@@ -64,6 +64,7 @@ export default Ember.Component.extend({
   upgradeStatus       : null,
   intl                : Ember.inject.service(),
   settings            : Ember.inject.service(),
+  userStore           : Ember.inject.service('user-store'),
 
   tagName             : 'button',
   classNames          : ['btn','btn-sm'],

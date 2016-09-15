@@ -21,7 +21,7 @@ var Snapshot = Resource.extend({
     this._super();
 
     // this.get('store') isn't set yet at init
-    var store = getOwner(this).lookup('store:main');
+    var store = getOwner(this).lookup('service:store');
 
     if ( !_allVolumes )
     {

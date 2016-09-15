@@ -78,8 +78,9 @@ export function containerStateInator(state) {
 }
 
 export default Ember.Service.extend({
-  'tab-session': Ember.inject.service('tab-session'),
-  'cookies': Ember.inject.service('cookies'),
+  'tab-session': Ember.inject.service(),
+  cookies: Ember.inject.service(),
+  store: Ember.inject.service('store'),
 
   loadingErrors: null,
   version: null,

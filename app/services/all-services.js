@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
   intl: Ember.inject.service(),
+  store: Ember.inject.service('store'),
 
   choices() {
     let store = this.get('store');
