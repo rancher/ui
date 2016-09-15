@@ -5,6 +5,7 @@ import { addQueryParam, addQueryParams } from 'ui/utils/util';
 const VERSIONKEY = 'minimumRancherVersion_lte';
 export default Ember.Service.extend(CatalogResource, {
   settings: Ember.inject.service(),
+  store: Ember.inject.service('store'),
 
   refresh() {
     const store = this.get('store');

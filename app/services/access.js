@@ -5,6 +5,7 @@ export default Ember.Service.extend({
   cookies: Ember.inject.service(),
   session: Ember.inject.service(),
   github:  Ember.inject.service(),
+  userStore: Ember.inject.service('user-store'),
 
   testAuth: function() {
 
@@ -45,10 +46,9 @@ export default Ember.Service.extend({
     return this.get('userStore').rawRequest({
       url: 'token',
     })
-    .then((obj) => {
+    .then((xhr) => {
       // If we get a good response back, the API supports authentication
-      var body = JSON.parse(obj.xhr.responseText);
-      var token = body.data[0];
+      var token = xhr.body.data[0];
 
       this.setProperties({
         'enabled': token.security,
@@ -89,8 +89,8 @@ export default Ember.Service.extend({
         code: code,
         authProvider: this.get('provider'),
       },
-    }).then((res) => {
-      var auth = JSON.parse(res.xhr.responseText);
+    }).then((xhr) => {
+      var auth = xhr.body;
       var interesting = {};
       C.TOKEN_TO_SESSION_KEYS.forEach((key) => {
         if ( typeof auth[key] !== 'undefined' )
@@ -105,11 +105,11 @@ export default Ember.Service.extend({
       });
 
       session.setProperties(interesting);
-      return res;
+      return xhr;
     }).catch((res) => {
       let err;
       try {
-        err = JSON.parse(res.xhr.responseText);
+        err = res.body;
       } catch(e) {
         err = {type: 'error', message: 'Error logging in'};
       }

@@ -45,8 +45,8 @@ export default Ember.Route.extend({
   loadSchemas() {
     var store = this.get('store');
     store.resetType('schema');
-    return store.rawRequest({url:'schema', dataType: 'json'}).then((res) => {
-      store._bulkAdd('schema', res.xhr.responseJSON.data);
+    return store.rawRequest({url:'schema', dataType: 'json'}).then((xhr) => {
+      store._bulkAdd('schema', xhr.body.data);
     });
   },
 });

@@ -1,38 +1,29 @@
 import Ember from 'ember';
 import {normalizeType} from 'ember-api-store/utils/normalize';
-import UnpurgedArrayProxy from 'ui/utils/unpurged-array-proxy';
 import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
 
 export default Ember.Mixin.create({
+  cookies: Ember.inject.service(),
+
   defaultPageSize: -1,
+  removeAfterDelete: false,
+  dropKeys: ['data'],
 
   headers: function() {
-    return {
-      // Please don't send us www-authenticate headers
-      [C.HEADER.NO_CHALLENGE]: C.HEADER.NO_CHALLENGE_VALUE,
+    let out = {
+      [C.HEADER.ACTIONS]: C.HEADER.ACTIONS_VALUE,
+      [C.HEADER.NO_CHALLENGE]: C.HEADER.NO_CHALLENGE_VALUE
     };
-  }.property(),
 
-  // Override store.all() so that it only returns un-purged resources.
-  reallyAll: function(type) {
-    type = normalizeType(type);
-    var proxy = Ember.ArrayProxy.create({
-      content: this._group(type)
-    });
+    let csrf = this.get(`cookies.${C.COOKIE.CSRF}`);
+    if ( csrf ) {
+      out[C.HEADER.CSRF] = csrf;
+    }
 
-    return proxy;
-  },
-
-  all: function(type) {
-    type = normalizeType(type);
-    var proxy = UnpurgedArrayProxy.create({
-      sourceContent: this._group(type)
-    });
-
-    return proxy;
-  },
+    return out;
+  }.property().volatile(),
 
   // find(type) && return allActive(type)
   findAllActive: function(type) {

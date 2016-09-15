@@ -15,6 +15,7 @@ export default Ember.Service.extend(Ember.Evented, {
   cookies: Ember.inject.service(),
   projects: Ember.inject.service(),
   intl: Ember.inject.service(),
+  userStore: Ember.inject.service('user-store'),
 
   all: null,
   promiseCount: 0,

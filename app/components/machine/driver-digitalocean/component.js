@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import Driver from 'ui/mixins/driver';
-import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
+import fetch from 'ember-api-store/utils/fetch';
 
 const DIGITALOCEAN_API = 'api.digitalocean.com/v2';
 const VALID_IMAGES = [
@@ -140,13 +140,13 @@ export default Ember.Component.extend(Driver, {
     let url           = `${proxyEndpoint}/${DIGITALOCEAN_API}/${command}?per_page=100`;
     let accessToken   = this.get('model.digitaloceanConfig.accessToken');
 
-    return ajaxPromise({
+    return fetch({
       url: url,
       method: method,
       header: {
         'Accept': 'application/json',
+        'X-Api-Auth-Header': 'Bearer ' + accessToken
       },
-      beforeSend: function(xhr) { xhr.setRequestHeader('x-api-auth-header','Bearer ' + accessToken); },
       data: params,
     }, true);
   }

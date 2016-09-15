@@ -11,6 +11,8 @@ export default Ember.Service.extend({
   k8sSvc: Ember.inject.service('k8s'),
   swarmSvc: Ember.inject.service('swarm'),
   mesosSvc: Ember.inject.service('mesos'),
+  userStore: Ember.inject.service('user-store'),
+  store: Ember.inject.service(),
 
   current: null,
   all: null,

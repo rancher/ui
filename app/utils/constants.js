@@ -69,10 +69,13 @@ var C = {
   },
 
   HEADER: {
-    //PROJECT: 'x-api-project-id',
-    NO_CHALLENGE: 'x-api-no-challenge',
+    //PROJECT: 'X-Api-Project-Id',
+    ACCOUNT_ID: 'X-Api-Account-Id',
+    ACTIONS: 'X-Api-Action-Links',
+    ACTIONS_VALUE: 'actionLinks',
+    CSRF: 'X-Api-Csrf',
+    NO_CHALLENGE: 'X-Api-No-Challenge',
     NO_CHALLENGE_VALUE: 'true',
-    ACCOUNT_ID: 'x-api-account-id',
   },
 
   KEY: {

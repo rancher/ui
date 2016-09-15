@@ -7,6 +7,9 @@ import Snapshot from 'ui/models/snapshot';
 import Volume from 'ui/models/volume';
 
 export default Ember.Service.extend({
+  store: Ember.inject.service(),
+  userStore: Ember.inject.service('user-store'),
+
   reset: function() {
     // Forget all the things
     console.log('Store Reset');

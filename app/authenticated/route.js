@@ -158,9 +158,9 @@ export default Ember.Route.extend(Subscribe, {
   loadPreferences() {
     return this.get('userStore').find('userpreference', null, {url: 'userpreferences', forceReload: true}).then((res) => {
       // Save the account ID from the response headers into session
-      if ( res && res.xhr )
+      if ( res )
       {
-        this.set(`session.${C.SESSION.ACCOUNT_ID}`, res.xhr.getResponseHeader(C.HEADER.ACCOUNT_ID));
+        this.set(`session.${C.SESSION.ACCOUNT_ID}`, res.xhr.headers.get(C.HEADER.ACCOUNT_ID));
       }
 
       this.get('userTheme').setupTheme();
@@ -192,8 +192,8 @@ export default Ember.Route.extend(Subscribe, {
   loadUserSchemas() {
     // @TODO Inline me into releases
     let userStore = this.get('userStore');
-    return userStore.rawRequest({url:'schema', dataType: 'json'}).then((res) => {
-      userStore._bulkAdd('schema', res.xhr.responseJSON.data);
+    return userStore.rawRequest({url:'schema', dataType: 'json'}).then((xhr) => {
+      userStore._bulkAdd('schema', xhr.body.data);
     });
   },
 
