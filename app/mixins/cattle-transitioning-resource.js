@@ -218,27 +218,31 @@ export default Ember.Mixin.create({
   }.property('relevantState','transitioning'),
 
   stateColor: function() {
-      var map = this.constructor.stateMap;
-      var key = (this.get('relevantState')||'').toLowerCase();
-      if ( map && map[key] && map[key].color !== undefined )
-      {
-        if ( typeof map[key].color === 'function' )
-        {
-          return map[key].color(this);
-        }
-        else
-        {
-          return map[key].color;
-        }
-      }
+    if ( this.get('isError') ) {
+      return 'text-danger';
+    }
 
-      if ( defaultStateMap[key] && defaultStateMap[key].color )
+    var map = this.constructor.stateMap;
+    var key = (this.get('relevantState')||'').toLowerCase();
+    if ( map && map[key] && map[key].color !== undefined )
+    {
+      if ( typeof map[key].color === 'function' )
       {
-        return defaultStateMap[key].color;
+        return map[key].color(this);
       }
+      else
+      {
+        return map[key].color;
+      }
+    }
+
+    if ( defaultStateMap[key] && defaultStateMap[key].color )
+    {
+      return defaultStateMap[key].color;
+    }
 
     return this.constructor.defaultStateColor;
-  }.property('relevantState','transitioning'),
+  }.property('relevantState','isError'),
 
   stateSort: function() {
     var color = this.get('stateColor').replace('text-','');

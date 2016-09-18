@@ -64,21 +64,18 @@ export default Ember.Controller.extend(Sortable, {
         });
       });
     },
+
     upgradeDriver: function(driver, version/*, path*/) {
-      let templateVersion = version;
 
       this.set('upgrading', true);
 
-      // find latest version of driver
-      this.get('store').request({url: this.get('app.catalogEndpoint')+'/templateversions/'+driver.externalId}).then((template) => {
-        this.get('store').request({url: template.upgradeVersionLinks[templateVersion]}).then((item) => {
-          driver.setProperties(this.createNewDriver(item));
-          driver.save().then(() => {
-            this.set('upgrading', false);
-          }).catch((err) => {
-            this.set('upgrading', false);
-            this.get('growl').fromError(err);
-          });
+      this.get('store').request({url: driver.fullVersionInfo[version]}).then((template) => {
+        driver.setProperties(this.createNewDriver(template));
+        driver.save().then(() => {
+          this.set('upgrading', false);
+        }).catch((err) => {
+          this.set('upgrading', false);
+          this.get('growl').fromError(err);
         });
       });
     }

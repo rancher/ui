@@ -12,14 +12,14 @@ export default Ember.Component.extend(NewOrEdit, {
 
   allTemplates: null,
   templateResource: null,
-  environmentResource: null,
+  stackResource: null,
   versionsArray: null,
   versionsLinks: null,
   serviceChoices: null,
 
   classNames: ['launch-catalog'],
 
-  primaryResource: Ember.computed.alias('environmentResource'),
+  primaryResource: Ember.computed.alias('stackResource'),
   templateBase: Ember.computed.alias('templateResource.templateBase'),
   editing: false,
 
@@ -85,7 +85,7 @@ export default Ember.Component.extend(NewOrEdit, {
         url = Util.addQueryParam(url, 'minimumRancherVersion_lte', version);
       }
 
-      var current = this.get('environmentResource.environment');
+      var current = this.get('stackResource.environment');
       this.get('store').request({
         url: url
       }).then((response) => {
@@ -150,7 +150,7 @@ export default Ember.Component.extend(NewOrEdit, {
   validate() {
     var errors = [];
 
-    if (!this.get('editing') && !this.get('environmentResource.name')) {
+    if (!this.get('editing') && !this.get('stackResource.name')) {
       errors.push('Name is required');
     }
 
@@ -179,7 +179,7 @@ export default Ember.Component.extend(NewOrEdit, {
 
   isSystem: function() {
     if ( this.get('editing') ) {
-      return this.get('environmentResource.externalId').indexOf(C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR) === 0;
+      return this.get('stackResource.externalId').indexOf(C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR) === 0;
     }
 
     let explicit = this.get('templateResource.isSystem');
@@ -195,7 +195,7 @@ export default Ember.Component.extend(NewOrEdit, {
     let systemCategories = C.EXTERNAL_ID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
     let category = (this.get('templateResource.category')||'').trim().toLowerCase();
     return systemCategories.indexOf(category) >= 0;
-  }.property('editing','environmentResource.externalId','templateResource.{category,isSystem}'),
+  }.property('editing','stackResource.externalId','templateResource.{category,isSystem}'),
 
   willSave() {
     this.set('errors', null);
@@ -207,7 +207,7 @@ export default Ember.Component.extend(NewOrEdit, {
 
     var files = this.get('selectedTemplateModel.files');
 
-    this.get('environmentResource').setProperties({
+    this.get('stackResource').setProperties({
       dockerCompose: files['docker-compose.yml'],
       rancherCompose: files['rancher-compose.yml'],
       environment: this.get('answers'),
@@ -218,23 +218,23 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   doSave() {
-    var env = this.get('environmentResource');
+    var stack = this.get('stackResource');
     if ( this.get('templateBase') === 'kubernetes' ) {
       if ( this.get('k8s.supportsStacks') ) {
         if ( this.get('editing') ) {
-          return env.doAction('upgrade', {
+          return stack.doAction('upgrade', {
             templates: this.get('selectedTemplateModel.files'),
-            environment: env.get('environment'),
+            environment: stack.get('environment'),
             externalId: this.get('newExternalId'),
             namespace: this.get('k8s.namespace.metadata.name'),
           });
         } else {
           return this.get('store').createRecord({
             type: 'kubernetesStack',
-            name: env.get('name'),
-            description: env.get('description'),
+            name: stack.get('name'),
+            description: stack.get('description'),
             templates: this.get('selectedTemplateModel.files'),
-            environment: env.get('environment'),
+            environment: stack.get('environment'),
             externalId: this.get('newExternalId'),
             namespace: this.get('k8s.namespace.metadata.name'),
           }).save().then((newData) => {
@@ -244,25 +244,25 @@ export default Ember.Component.extend(NewOrEdit, {
       } else {
         return this.get('k8s').catalog({
           files: this.get('selectedTemplateModel.files'),
-          environment: this.get('environmentResource.environment'),
+          environment: stack.get('environment')
         });
       }
     } else if ( this.get('templateBase') === 'swarm' ) {
       return this.get('store').createRecord({
         type: 'composeProject',
-        name: env.get('name'),
-        description: env.get('description'),
+        name: stack.get('name'),
+        description: stack.get('description'),
         templates: this.get('selectedTemplateModel.files'),
         externalId: this.get('newExternalId'),
-        environment: env.get('environment')
+        environment: stack.get('environment')
       }).save().then((newData) => {
         return this.mergeResult(newData);
       });
     } else if (this.get('editing')) {
-      return env.doAction('upgrade', {
-        dockerCompose: env.get('dockerCompose'),
-        rancherCompose: env.get('rancherCompose'),
-        environment: env.get('environment'),
+      return stack.doAction('upgrade', {
+        dockerCompose: stack.get('dockerCompose'),
+        rancherCompose: stack.get('rancherCompose'),
+        environment: stack.get('environment'),
         externalId: this.get('newExternalId'),
       });
     } else {
@@ -290,11 +290,11 @@ export default Ember.Component.extend(NewOrEdit, {
     {
       if ( this.get('isSystem') )
       {
-        return this.get('router').transitionTo('environment', projectId, this.get('primaryResource.id'), {queryParams: {which: 'system'}});
+        return this.get('router').transitionTo('stack', projectId, this.get('primaryResource.id'), {queryParams: {which: 'system'}});
       }
       else
       {
-        return this.get('router').transitionTo('environment', projectId, this.get('primaryResource.id'));
+        return this.get('router').transitionTo('stack', projectId, this.get('primaryResource.id'));
       }
     }
   }

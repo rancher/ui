@@ -5,7 +5,7 @@
       {{select-dot model=obj}}
     </div>
   {{/power-select}}
-  <strong class="r-mr5 r-ml5">in {{#link-to "environment" model.stack.id}}{{model.stack.displayName}}{{/link-to}}</strong>
+  <strong class="r-mr5 r-ml5">in {{#link-to "stack" model.stack.id}}{{model.stack.displayName}}{{/link-to}}</strong>
 
   <div class="pull-right">
     {{action-menu model=service classNames="r-ml5 pull-right" size="sm"}}
@@ -15,117 +15,126 @@
 
 {{!todo copy pasta}}
 <section>
-  <div class="container-multi-stat">
-
-        <div class="container-flex bordered">
-          <div class="col-flex">
-            <label>{{t 'servicePage.multistat.type'}}</label>
-            {{service.displayType}}
-          </div>
-          <div class="col-flex">
-            <label>{{t 'servicePage.multistat.fqdn'}}</label>
-            {{#if service.fqdn}}
-              <span><a href="http://{{service.fqdn}}">{{service.fqdn}}</a> {{copy-to-clipboard clipboardText=service.fqdn size="small"}}</span>
-            {{else}}
-              <span class="text-muted">None</span>
-            {{/if}}
-          </div>
-          <div class="col-flex">
-            <label>{{t 'servicePage.multistat.scale'}}</label>
-            {{#if service.canScale}}
-              {{service.scale}}
-              &nbsp;
-              &nbsp;
-              <div class="btn-group btn-group-xs">
-                <button class="btn btn-default btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
-                <button class="btn btn-default btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
-              </div>
-            {{else}}
-              {{if service.isGlobalScale (t 'servicePage.multistat.global') (t 'generic.na')}}
-            {{/if}}
-          </div>
+  <div class="row">
+    <div class="col-md-3 r-mb15">
+        <div>
+          <label class="block">{{t 'servicePage.multistat.type'}}</label>
+          <div>{{service.displayType}}</div>
         </div>
-        {{#if service.hasImage}}
-          <div class="container-flex bordered">
-            <div class="col-flex">
-              <label>{{t 'servicePage.multistat.image'}}</label>
-              <span class="force-wrap">
-                {{service.launchConfig.displayImage}} {{copy-to-clipboard clipboardText=service.launchConfig.displayImage size="small"}}
-              </span>
+        <hr>
+        <div>
+          <label class="block">{{t 'servicePage.multistat.fqdn'}}</label>
+          {{#if service.fqdn}}
+            <span><a href="http://{{service.fqdn}}">{{service.fqdn}}</a> {{copy-to-clipboard clipboardText=service.fqdn size="small"}}</span>
+          {{else}}
+            <span class="text-muted">None</span>
+          {{/if}}
+        </div>
+        <hr>
+        <div>
+          <label class="block">{{t 'servicePage.multistat.scale'}}</label>
+          {{#if service.canScale}}
+            {{service.scale}}
+            &nbsp;
+
+            &nbsp;
+            <div class="btn-group btn-group-xs">
+              <button class="btn btn-default btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
+              <button class="btn btn-default btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
             </div>
-            <div class="col-flex">
-              <label>{{t 'servicePage.multistat.entryPoint'}}</label>
-              <span class="force-wrap">
+          {{else}}
+            {{if service.isGlobalScale (t 'servicePage.multistat.global') (t 'generic.na')}}
+          {{/if}}
+        </div>
+        <hr>
+        {{#if service.hasImage}}
+
+            <div>
+              <label class="block">{{t 'servicePage.multistat.image'}}</label>
+              <div>
+                {{service.launchConfig.displayImage}} {{copy-to-clipboard clipboardText=service.launchConfig.displayImage size="small"}}
+              </div>
+            </div>
+            <hr>
+            <div>
+              <label class="block">{{t 'servicePage.multistat.entryPoint'}}</label>
+              <div>
                 {{#if service.launchConfig.entryPoint}}
                   {{service.launchConfig.entryPoint}}
                 {{else}}
                   <span class="text-muted">{{t 'generic.none'}}</span>
                 {{/if}}
-              </span>
+              </div>
             </div>
-            <div class="col-flex">
-              <label>{{t 'servicePage.multistat.command'}}</label>
-              <span class="force-wrap">
+            <hr>
+            <div>
+              <label class="block">{{t 'servicePage.multistat.command'}}</label>
+              <div>
                 {{#if service.launchConfig.command}}
                   {{concat-str service.launchConfig.command}}
                 {{else}}
                   <span class="text-muted">{{t 'generic.none'}}</span>
                 {{/if}}
-              </span>
+              </div>
             </div>
-          </div>
+
         {{/if}}
         {{#if service.description}}
-          <div class="container-flex bordered">
-            <div class="col-flex description">
-              <label>{{t 'servicePage.multistat.description'}} </label>
-              <span>{{service.description}}</span>
-            </div>
+          <hr>
+          <div>
+            <label class="block">{{t 'servicePage.multistat.description'}} </label>
+            <div>{{service.description}}</div>
           </div>
         {{/if}}
-  </div>
+      </div>
+
+      <div class="col-md-9">
+      {{#if (eq service.kind 'externalService')}}
+        {{!-- since external services are the only ones that have externalIp/hostname it didnt make sense to give extIps its own route like other services  --}}
+        <section>
+          <div class="well">
+            {{#if service.externalIpAddresses}}
+              <label class="text-muted r-ml15">{{t 'servicePage.external.externalIp'}}</label>
+              <ul class="list-unstyled list-inline with-room">
+                {{#each service.externalIpAddresses as |ip|}}
+                  <li>
+                    <i class="icon icon-external-link"></i> {{ip}}
+                  </li>
+                {{/each}}
+              </ul>
+            {{else}}
+              <label class="text-muted">{{t 'servicePage.external.externalHostname'}} </label> {{service.hostname}}
+            {{/if}}
+          </div>
+        </section>
+      {{/if}}
+
+      {{#if (or (or service.hasLabels service.hasContainers) service.consumedServicesWithNames.length) }}
+        <section>
+          <ul class="nav nav-tabs nav-tabs-well">
+            {{#if (eq service.kind 'dnsService')}}
+              {{#link-to 'service.links' tagName='li' href=false classNames='hide'}}<a href="#">{{t 'servicePage.navTabs.links'}}</a>{{/link-to}}
+            {{else}}
+              {{#if service.hasPorts}}
+                {{#link-to "service.ports" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.ports'}}</a>{{/link-to}}
+              {{/if}}
+              {{#if service.hasContainers}}
+                {{#link-to "service.containers" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.containers'}}</a>{{/link-to}}
+              {{/if}}
+              {{#if service.hasLabels}}
+                {{#link-to "service.labels" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.labels'}}</a>{{/link-to}}
+              {{/if}}
+              {{#link-to 'service.links' tagName='li' href=false}}<a href="#">{{t 'servicePage.navTabs.links'}}</a>{{/link-to}}
+              {{#if service.hasContainers}}
+                {{#link-to "service.log" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.log'}}</a>{{/link-to}}
+              {{/if}}
+            {{/if}}
+          </ul>
+          <div class="well nav-well">
+            {{outlet}}
+          </div>
+        </section>
+      {{/if}}
+      </div>
+    </div>
 </section>
-
-{{#if (eq service.kind 'externalService')}}
-  {{!-- since external services are the only ones that have externalIp/hostname it didnt make sense to give extIps its own route like other services  --}}
-  <section>
-    <div class="well">
-      {{#if service.externalIpAddresses}}
-        <label class="text-muted r-ml15">{{t 'servicePage.external.externalIp'}}</label>
-        <ul class="list-unstyled list-inline with-room">
-          {{#each service.externalIpAddresses as |ip|}}
-            <li>
-              <i class="icon icon-external-link"></i> {{ip}}
-            </li>
-          {{/each}}
-        </ul>
-      {{else}}
-        <label class="text-muted">{{t 'servicePage.external.externalHostname'}} </label> {{service.hostname}}
-      {{/if}}
-    </div>
-  </section>
-{{/if}}
-
-{{#if (or (or service.hasLabels service.hasContainers) service.consumedServicesWithNames.length) }}
-  <section>
-    <ul class="nav nav-tabs nav-tabs-well">
-      {{#if (not-eq service.kind 'dnsService')}}
-        {{#if service.hasPorts}}
-          {{#link-to "service.ports" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.ports'}}</a>{{/link-to}}
-        {{/if}}
-        {{#if service.hasContainers}}
-          {{#link-to "service.containers" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.containers'}}</a>{{/link-to}}
-        {{/if}}
-        {{#if service.hasLabels}}
-          {{#link-to "service.labels" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.labels'}}</a>{{/link-to}}
-        {{/if}}
-        {{#link-to 'service.links' tagName='li' href=false}}<a href="#">{{t 'servicePage.navTabs.links'}}</a>{{/link-to}}
-      {{else}}
-        {{#link-to 'service.links' tagName='li' href=false classNames='hide'}}<a href="#">{{t 'servicePage.navTabs.links'}}</a>{{/link-to}}
-      {{/if}}
-    </ul>
-    <div class="well nav-well">
-      {{outlet}}
-    </div>
-  </section>
-{{/if}}

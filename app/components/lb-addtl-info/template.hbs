@@ -1,5 +1,5 @@
 <div class="content-box col-md-3 col-md-height col-md-full-height">
-  <label class="text-muted">{{t 'lbAddtlInfo.info'}} (<small>{{#link-to 'service' service.environmentId service.id class=''}} {{t 'lbAddtlInfo.viewDetails'}} {{/link-to}}</small>)</label>
+  <label class="text-muted">{{t 'lbAddtlInfo.info'}} (<small>{{#link-to 'service' service.stackId service.id class=''}} {{t 'lbAddtlInfo.viewDetails'}} {{/link-to}}</small>)</label>
   <div class="content">
     <div class="state">
       {{badge-state model=service}}  {{action-menu model=service size='xs' class="no-wrap pull-right"}}
@@ -83,8 +83,8 @@
             {{target.hostname}}{{if target.srcPort ":"}}{{target.srcPort}}{{target.path}}
             <span class="text-muted"> {{t 'lbAddtlInfo.to'}} </span>
           {{~/if~}}
-          {{~#link-to 'service' target.environmentId target.id~}}
-            {{~#if (not (eq target.environmentId service.environmentId))~}}{{target.service.displayEnvironment}}/{{~/if~}}
+          {{~#link-to 'service' target.stackId target.id~}}
+            {{~#if (not (eq target.stackId service.stackId))~}}{{target.service.displayStack}}/{{~/if~}}
             {{target.value}}
           {{~/link-to~}}
           {{~#if target.dstPort~}}:{{target.dstPort}}{{~/if~}}

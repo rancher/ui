@@ -11,8 +11,8 @@
     </div>
 
     <div class="header-left name {{if model.description 'with-description'}}">
-      <h4 class="divider clip environment-link">
-        {{#link-to "environment" model.id}}{{model.name}}{{/link-to}}
+      <h4 class="divider clip stack-link">
+        {{#link-to "stack" model.id}}{{model.name}}{{/link-to}}
       </h4>
       {{#if model.description}}
         <div class="text-muted clip">{{model.description}}</div>
@@ -49,19 +49,19 @@
     </div>
 
     <div class="header-right right-divider stack-template">
-      {{upgrade-btn environmentResource=model}}
+      {{upgrade-btn stackResource=model}}
       <div class="btn-group">
-        {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-default btn-sm"}}{{t 'stackSection.add.service'}}{{/link-to}}
+        {{#link-to "service.new" (query-params stackId=model.id) classNames="btn btn-default btn-sm"}}{{t 'stackSection.add.service'}}{{/link-to}}
         <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
           <i class="icon icon-fw icon-chevron-down"></i>
           <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
         </button>
         <ul class="dropdown-menu dropdown-menu-right" role="menu">
-          <li>{{#link-to "service.new-balancer" (query-params environmentId=model.id)}}{{t 'stackSection.add.loadBalancer'}}{{/link-to}}</li>
-          <li>{{#link-to "service.new-alias" (query-params environmentId=model.id)}}{{t 'stackSection.add.serviceAlias'}}{{/link-to}}</li>
-          <li>{{#link-to "service.new-external" (query-params environmentId=model.id)}}{{t 'stackSection.add.externalService'}}{{/link-to}}</li>
+          <li>{{#link-to "service.new-balancer" (query-params stackId=model.id)}}{{t 'stackSection.add.loadBalancer'}}{{/link-to}}</li>
+          <li>{{#link-to "service.new-alias" (query-params stackId=model.id)}}{{t 'stackSection.add.serviceAlias'}}{{/link-to}}</li>
+          <li>{{#link-to "service.new-external" (query-params stackId=model.id)}}{{t 'stackSection.add.externalService'}}{{/link-to}}</li>
           {{#if hasVm}}
-            <li>{{#link-to "service.new-virtualmachine" (query-params environmentId=model.id)}}{{t 'stackSection.add.virtualMachine'}}{{/link-to}}</li>
+            <li>{{#link-to "service.new-virtualmachine" (query-params stackId=model.id)}}{{t 'stackSection.add.virtualMachine'}}{{/link-to}}</li>
           {{/if}}
         </ul>
       </div>
@@ -87,7 +87,7 @@
                 {{badge-state model=service}}
               </td>
               <td data-title="{{t 'stackSection.table.dataTitle.serviceName'}}:" class="force-wrap">
-                {{#link-to "service" service.environmentId service.id}}{{service.displayName}}{{/link-to}}
+                {{#link-to "service" service.stackId service.id}}{{service.displayName}}{{/link-to}}
                 {{#if service.hasSidekicks}}
                   {{t 'stackSection.sidekick' numSidekicks=service.secondaryLaunchConfigs.length}}
                 {{/if}}
@@ -97,6 +97,9 @@
                 <button type="button" class="btn-link" role="button" {{action 'addtlInfo' service target=controller}}>
                   <i class="icon icon-info addtl-info-trigger"/>
                 </button>
+                {{#if service.isError}}
+                  {{#link-to "service.log" service.stackId service.id class="btn-link"}}<i class="icon icon-alert"/>{{/link-to}}
+                {{/if}}
               </td>
               <td data-title="{{t 'stackSection.table.dataTitle.details'}}:" class="force-wrap service-detail">{{service.displayDetail}}{{service.displayPorts}}</td>
               <td data-title="{{t 'stackSection.table.dataTitle.kind'}}:">

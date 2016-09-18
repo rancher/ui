@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const IN_APP = ['container', 'instance', 'environment', 'host', 'service'];
+const IN_APP = ['container', 'instance', 'stack', 'host', 'service'];
 
 export default Ember.Component.extend({
   model: null,
@@ -35,10 +35,10 @@ export default Ember.Component.extend({
     showInApp() {
       this.get('userStore').find(this.get('model.resourceType'), this.get('model.resourceId')).then((response) => {
 
-        let type          = response.type;
-        let accountId     = response.accountId;
-        let id            = response.id;
-        let environmentId = response.environmentId;
+        let type = response.type;
+        let accountId = response.accountId;
+        let id = response.id;
+        let stackId = response.stackId;
 
         var url = this.get('model').linkFor('self');
 
@@ -54,7 +54,7 @@ export default Ember.Component.extend({
             url = `/env/${accountId}/infra/hosts/${id}/containers`;
             break;
           case 'service':
-            url = `/env/${accountId}/apps/stacks/${environmentId}/services/${id}`;
+            url = `/env/${accountId}/apps/stacks/${stackId}/services/${id}`;
             break;
         }
 

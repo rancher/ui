@@ -18,7 +18,7 @@ export default Ember.Component.extend({
       var def = this.get('default');
 
       choices.forEach((service) => {
-        service.value = `${service.envName}/${service.name}`;
+        service.value = `${service.stackName}/${service.name}`;
 
         if ( def === service.value )
         {

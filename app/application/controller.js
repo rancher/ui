@@ -42,6 +42,8 @@ export default Ember.Controller.extend({
   showContainerLogs       : null,
   editMachineDriver       : null,
   showShell               : null,
+  showFeedback            : null,
+  showWelcome             : null,
 
 
   actions: {

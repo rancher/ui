@@ -12,7 +12,7 @@ export default Ember.Route.extend({
     }
     else
     {
-      this.transitionTo('environments');
+      this.transitionTo('stacks');
     }
   }
 });

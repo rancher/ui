@@ -1,13 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  queryParams: ['environmentId','serviceId'],
-  environmentId: null,
+  queryParams: ['stackId','serviceId'],
+  stackId: null,
   serviceId: null,
 
   actions: {
     done() {
-      return this.transitionToRoute('environment', this.get('model.service.environmentId'));
+      return this.transitionToRoute('stack', this.get('model.service.stackId'));
     },
 
     cancel() {

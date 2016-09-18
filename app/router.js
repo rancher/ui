@@ -7,7 +7,6 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('guide');
   this.route('ie');
   this.route('index');
   this.route('failWhale', {path: '/fail'});
@@ -141,11 +140,11 @@ Router.map(function() {
         this.route('service.new-alias', {path: '/add-alias', resetNamespace: true});
         this.route('service.new-external', {path: '/add-external', resetNamespace: true});
 
-        this.route('environments', {path: '/stacks', resetNamespace: true}, function() {
+        this.route('stacks', {path: '/stacks', resetNamespace: true}, function() {
           this.route('index', {path: '/'});
           this.route('new', {path: '/add'});
 
-          this.route('environment', {path: '/:environment_id', resetNamespace: true}, function() {
+          this.route('stack', {path: '/:stack_id', resetNamespace: true}, function() {
             this.route('index', {path: '/'});
             this.route('code', {path: '/code'});
             this.route('graph', {path: '/graph'});
@@ -156,6 +155,7 @@ Router.map(function() {
               this.route('labels');
               this.route('ports');
               this.route('links');
+              this.route('log');
             });
           });
         });
@@ -251,6 +251,18 @@ Router.map(function() {
     dialogClass             : 'about',
   });
 
+  this.modal('modal-feedback', {
+    dismissWithOutsideClick : false,
+    withParams              : 'showFeedback',
+    dialogClass             : 'about',
+  });
+
+  this.modal('modal-welcome', {
+    dismissWithOutsideClick : false,
+    withParams              : 'showWelcome',
+    dialogClass             : 'about',
+  });
+
   this.modal('modal-shell', {
     dismissWithOutsideClick : false,
     dismissWithEscape       : false,
@@ -298,9 +310,9 @@ Router.map(function() {
     otherParams             : 'originalModel',
   });
 
-  this.modal('edit-environment', {
+  this.modal('edit-stack', {
     dismissWithOutsideClick : false,
-    withParams              : 'editEnvironment',
+    withParams              : 'editStack',
     otherParams             : 'originalModel',
   });
 
@@ -343,7 +355,7 @@ Router.map(function() {
   this.modal('modal-catalog-launch', {
     dismissWithOutsideClick : false,
     withParams              : 'launchCatalog',
-    otherParams             : {originalModel   : 'originalModel', environmentResource : 'environmentResource'}
+    otherParams             : {originalModel   : 'originalModel', stackResource : 'stackResource'}
   });
 
   this.modal('modal-process-error', {

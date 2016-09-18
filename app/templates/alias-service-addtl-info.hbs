@@ -1,12 +1,12 @@
 <div class="content-box col-sm-12 col-md-12">
-  <label class="text-muted">{{t 'aliasServicePartial.serviceLinks.labelText'}} (<small>{{#link-to 'service' service.environmentId service.id class=''}} {{t 'aliasServicePartial.serviceLinks.linkTo'}} {{/link-to}}</small>)</label>
+  <label class="text-muted">{{t 'aliasServicePartial.serviceLinks.labelText'}} (<small>{{#link-to 'service' service.stackId service.id class=''}} {{t 'aliasServicePartial.serviceLinks.linkTo'}} {{/link-to}}</small>)</label>
   <div class="content">
     <label class="text-muted">{{t 'aliasServicePartial.links'}}</label>
     <ul class="list-unstyled">
       {{#each service.consumedServicesWithNames as |link|}}
         <li>
-          {{#link-to 'service' link.service.environmentId link.service.id~}}
-            {{#if (not (eq link.service.environmentId service.environmentId))}}{{link.service.displayEnvironment}}/{{/if}}
+          {{#link-to 'service' link.service.stackId link.service.id~}}
+            {{#if (not (eq link.service.stackId service.stackId))}}{{link.service.displayStack}}/{{/if}}
             {{~link.service.displayName~}}
           {{~/link-to}}
         </li>

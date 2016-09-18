@@ -60,7 +60,7 @@ function getUpgradeInfo(task, cb) {
 }
 
 export default Ember.Component.extend({
-  environmentResource : null,
+  stackResource : null,
   upgradeStatus       : null,
   intl                : Ember.inject.service(),
   settings            : Ember.inject.service(),
@@ -87,13 +87,13 @@ export default Ember.Component.extend({
       var tpl = upgradeInfo.id;
 
       this.get('application').transitionToRoute('catalog-tab.launch', tpl, {queryParams: {
-        environmentId: this.get('environmentResource.id'),
+        stackId: this.get('stackResource.id'),
         upgrade: this.get('upgradeInfo.id'),
       }});
     }
     else if ( status === UPGRADED )
     {
-      this.get('environmentResource').send('finishUpgrade');
+      this.get('stackResource').send('finishUpgrade');
     }
   },
 
@@ -115,7 +115,7 @@ export default Ember.Component.extend({
   }.property('upgradeStatus'),
 
   updateStatus() {
-    let state = this.get('environmentResource.state');
+    let state = this.get('stackResource.state');
     if ( state === 'upgraded' )
     {
       this.set('upgradeStatus', UPGRADED);
@@ -128,7 +128,7 @@ export default Ember.Component.extend({
       return;
     }
 
-    let info = this.get('environmentResource.externalIdInfo');
+    let info = this.get('stackResource.externalIdInfo');
     if ( info && C.EXTERNAL_ID.UPGRADEABLE.indexOf(info.kind) >= 0 )
     {
       this.set('upgradeStatus', LOADING);
@@ -154,5 +154,5 @@ export default Ember.Component.extend({
 
   externalIdChanged: function() {
     this.updateStatus();
-  }.observes('environmentResource.{externalId,state}'),
+  }.observes('stackResource.{externalId,state}'),
 });

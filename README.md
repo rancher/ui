@@ -3,7 +3,7 @@ Rancher UI
 
 Perhaps you like managing Cattle.
 
-[![Build Status](http://ci.rancher.io/api/badge/github.com/rancher/ui/status.svg?branch=master)](http://ci.rancher.io/github.com/rancher/ui)
+[![Build Status](https://drone.rancher.io/api/badges/rancher/ui/status.svg)](https://drone.rancher.io/rancher/ui)
 
 ## Usage
 

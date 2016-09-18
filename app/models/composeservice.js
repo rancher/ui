@@ -5,7 +5,7 @@ var ComposeService = Service.extend({
 });
 
 ComposeService.reopenClass({
-  alwaysInclude: ['environment','instances']
+  alwaysInclude: ['stack','instances']
 });
 
 export default ComposeService;

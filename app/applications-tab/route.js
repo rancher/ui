@@ -19,12 +19,12 @@ export default Ember.Route.extend({
   model: function() {
     var store = this.get('store');
     return Ember.RSVP.all([
-      store.findAllUnremoved('environment'),
+      store.findAllUnremoved('stack'),
       store.findAllUnremoved('service'),
       store.findAllUnremoved('serviceconsumemap'),
     ]).then((results) => {
       return Ember.Object.create({
-        environments: results[0],
+        stacks: results[0],
         services: results[1],
         consumeMaps: results[2],
       });

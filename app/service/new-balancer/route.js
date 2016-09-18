@@ -76,7 +76,7 @@ export default Ember.Route.extend({
           name: '',
           description: '',
           scale: 1,
-          environmentId: params.environmentId,
+          stackId: params.stackId,
           launchConfig: launchConfig,
           consumedServices: null,
           startOnCreate: true,
@@ -121,7 +121,7 @@ export default Ember.Route.extend({
     {
       controller.set('tab', 'ssl');
       controller.set('stickiness', 'none');
-      controller.set('environmentId', null);
+      controller.set('stackId', null);
       controller.set('serviceId', null);
     }
   },

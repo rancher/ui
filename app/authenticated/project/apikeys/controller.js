@@ -62,60 +62,54 @@ export default Ember.Controller.extend(Sortable, {
     },
   },
 
-  displayEndpoint: function() {
+  endpoint: function() {
     // Strip trailing slash off of the absoluteEndpoint
-    var url = this.get('endpointService.absolute').replace(/\/+$/,'');
+    var base = this.get('endpointService.absolute').replace(/\/+$/,'');
     // Add a single slash
-    url += '/';
+    base += '/';
 
-    // And strip leading slashes off the API endpoint
-    url += this.get('app.apiEndpoint').replace(/^\/+/,'');
-
-    return url;
-  }.property('endpointService.absolute','app.apiEndpoint',`tab-session.${C.TABSESSION.PROJECT}`),
-
-  displayEndpointEnvironment: function() {
-    var url = this.get('displayEndpoint');
+    var current = this.get('app.apiEndpoint').replace(/^\/+/,'');
+    var legacy = this.get('app.legacyApiEndpoint').replace(/^\/+/,'');
 
     // Go to the project-specific version
     var projectId = this.get('tab-session').get(C.TABSESSION.PROJECT);
+    var project = '';
     if ( projectId )
     {
-      url += '/projects/' + projectId;
+      project = '/projects/' + projectId;
     }
 
-    return url;
-  }.property('displayEndpoint'),
-
-  endpointWithAuth: function() {
-    var url = this.get('displayEndpoint');
-
     // For local development where API doesn't match origin, add basic auth token
-    if ( url.indexOf(window.location.origin) !== 0 )
+    var authBase = base;
+    if ( base.indexOf(window.location.origin) !== 0 )
     {
       var token = this.get('cookies').get(C.COOKIE.TOKEN);
-      if ( token )
-      {
-        url = Util.addAuthorization(url, C.USER.BASIC_BEARER, token);
+      if ( token ) {
+        authBase = Util.addAuthorization(base, C.USER.BASIC_BEARER, token);
       }
     }
 
-    return url;
-  }.property('displayEndpoint', `session.${C.SESSION.TOKEN}`,`tab-session.${C.TABSESSION.PROJECT}`),
-
-  endpointWithAuthEnvironment: function() {
-    var url = this.get('displayEndpointEnvironment');
-
-    // For local development where API doesn't match origin, add basic auth token
-    if ( url.indexOf(window.location.origin) !== 0 )
-    {
-      var token = this.get('cookies').get(C.COOKIE.TOKEN);
-      if ( token )
-      {
-        url = Util.addAuthorization(url, C.USER.BASIC_BEARER, token);
-      }
-    }
-
-    return url;
-  }.property('displayEndpointEnvironment', `session.${C.SESSION.TOKEN}`,`tab-session.${C.TABSESSION.PROJECT}`)
+    return {
+      auth: {
+        account: {
+          current: authBase + current,
+          legacy:  authBase + legacy
+        },
+        environment: {
+          current: authBase + current + project,
+          legacy:  authBase + legacy + project
+        }
+      },
+      display: {
+        account: {
+          current: base + current,
+          legacy:  base + legacy
+        },
+        environment: {
+          current: base + current + project,
+          legacy:  base + legacy + project
+        }
+      },
+    };
+  }.property('endpointService.absolute', 'app.{apiEndpoint,legacyApiEndpoint}', `tab-session.${C.TABSESSION.PROJECT}`),
 });
