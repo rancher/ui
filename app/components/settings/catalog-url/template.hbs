@@ -2,40 +2,66 @@
 <h5>{{t 'catalogSettings.subtext'}}</h5>
 <hr>
 
-<div class="row">
-  <div class="col-md-6 r-pl0">
-    <h5>{{t (if settings.isRancher 'catalogSettings.rancherCertified.header.rancherCertified' 'catalogSettings.rancherCertified.header.rancherCertified.plCertified') appName=settings.appName}}</h5>
-    <p class="help-block">
-      {{#if settings.isRancher}}
-        {{t 'catalogSettings.rancherCertified.helpText.isRancher'}}
-      {{else}}
-        {{t 'catalogSettings.rancherCertified.helpText.community'}}
-      {{/if}}
-    </p>
-    <div class="r-mt10">
+<table class="fixed nolines">
+  <tr>
+    <td width="34%" valign="top">
+      <h5>{{t (if settings.isRancher 'catalogSettings.infra.header.rancher' 'catalogSettings.infra.header.pl') appName=settings.appName}}</h5>
+      <p class="help-block">
+        {{#if settings.isRancher}}
+          {{t 'catalogSettings.infra.detail.rancher'}}
+        {{else}}
+          {{t 'catalogSettings.infra.detail.pl'}}
+        {{/if}}
+      </p>
+    </td>
+    <td width="33%" valign="top">
+      <h5>{{t (if settings.isRancher 'catalogSettings.certified.header.rancher' 'catalogSettings.certified.header.pl') appName=settings.appName}}</h5>
+      <p class="help-block">
+        {{#if settings.isRancher}}
+          {{t 'catalogSettings.certified.detail.rancher'}}
+        {{else}}
+          {{t 'catalogSettings.certified.detail.pl'}}
+        {{/if}}
+      </p>
+    </td>
+    <td width="33%" valign="top">
+      <h5>{{t (if settings.isRancher 'catalogSettings.community.header.rancher' 'catalogSettings.community.header.pl') appName=settings.appName}}</h5>
+      <p class="help-block">
+        {{#if settings.isRancher}}
+          {{t 'catalogSettings.community.detail.rancher'}}
+        {{else}}
+          {{t 'catalogSettings.community.detail.pl'}}
+        {{/if}}
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <label class="r-mr20 hand">
+        {{radio-button selection=enableInfra value=true}} {{t 'generic.enabled'}}
+      </label>
+      <label class="hand">
+        {{radio-button selection=enableInfra value=false}} {{t 'generic.disabled'}}
+      </label>
+    </td>
+    <td>
       <label class="r-mr20 hand">
         {{radio-button selection=enableLibrary value=true}} {{t 'generic.enabled'}}
       </label>
       <label class="hand">
         {{radio-button selection=enableLibrary value=false}} {{t 'generic.disabled'}}
       </label>
-    </div>
-  </div>
-  <div class="col-md-6 r-pl0">
-    <h5>{{t 'catalogSettings.community.header'}}</h5>
-    <p class="help-block">
-      {{t 'catalogSettings.community.helpText.text'}}{{#if settings.isRancher}}  {{t 'catalogSettings.community.helpText.isRancher'}}{{/if}}
-    </p>
-    <div class="r-mt10">
+    </td>
+    <td>
       <label class="r-mr20 hand">
         {{radio-button selection=enableCommunity value=true}} {{t 'generic.enabled'}}
       </label>
       <label class="hand">
         {{radio-button selection=enableCommunity value=false}} {{t 'generic.disabled'}}
       </label>
-    </div>
-  </div>
-</div>
+    </td>
+  </tr>
+</table>
 
 <hr>
 

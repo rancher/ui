@@ -19,7 +19,6 @@ export default Ember.Controller.extend({
   isTest            : null,
   isPopup           : null,
 
-
   actions: {
     clickedAction: function(actionName) {
       this.get('resourceActions').triggerAction(actionName);

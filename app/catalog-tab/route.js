@@ -32,12 +32,14 @@ export default Ember.Route.extend(CatalogResource, {
 
     var auth = this.modelFor('authenticated');
 
-    return this.get('catalogService').fetchCatalogs(auth).then((response) => {
-      this.get('catalogs', response);
+    return this.get('projects').checkForWaiting(auth.get('hosts'),auth.get('machines')).then(() => {
+      return this.get('catalogService').fetchCatalogs().then((response) => {
+        this.get('catalogs', response);
 
-      let ids = this.uniqKeys(response, 'id');
+        let ids = this.uniqKeys(response, 'id');
 
-      this.get('uniqueCatalogIds', ids);
+        this.get('uniqueCatalogIds', ids);
+      });
     });
   },
 

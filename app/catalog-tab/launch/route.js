@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   allServices: Ember.inject.service(),
-  catalogService   : Ember.inject.service(),
+  catalogService: Ember.inject.service(),
 
   parentRoute: 'catalog-tab',
 
@@ -11,6 +11,7 @@ export default Ember.Route.extend({
 
     var dependencies = {
       tpl: this.get('catalogService').fetchTemplate(params.template),
+      serviceChoices: this.get('allServices').choices(),
     };
 
     if ( params.upgrade )

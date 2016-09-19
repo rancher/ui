@@ -1331,19 +1331,28 @@ advancedSection:
 
 catalogSettings:
   header: Catalog
-  subtext: Catalogs contain rancher-compose templates that allow users to easily deploy applications by answering a few questions
-  rancherCertified:
+  subtext: Catalogs contain templates that allow users to easily deploy applications by answering a few questions
+  infra:
     header:
-      rancherCertified: "{appName} Certified"
-      plCertified: Certified
-    helpText:
-      isRancher: Certified templates maintained and supported by Rancher Labs.
-      community: Officially maintained and supported templates.
+      rancher: "{appName} Infrastructure"
+      pl: Infrastructure
+    detail:
+      rancher: Templates required for core Rancher infrastructure features, maintained and supported by Rancher Labs.
+      pl: Officially maintained templates required for core infrastructure features.
+  certified:
+    header:
+      rancher: "{appName} Certified"
+      pl: Certified
+    detail:
+      rancher: Optional templates maintained and supported by Rancher Labs.
+      pl: Officially maintained and supported optional templates.
   community:
-    header: Community Contributed
-    helpText:
-      text: Templates created and maintained by community members.
-      isRancher: Not certified by Rancher Labs.
+    header:
+      rancher: Community Contributed
+      pl: Community Contributed
+    detail:
+      rancher: Templates created and maintained by community members.  Not certified by Rancher Labs.
+      pl: Templates created and maintained by community members.
   more:
     header: Custom
     helpText: You can define your own custom catalog sources here.  Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> for more info).
@@ -2966,15 +2975,24 @@ viewEditProject:
     add: Add Environment
     orchestration: Container Orchestration
     formControl: Access Control
+    noMembers: Add one or more members who can use this enviornment.
   header: "Environment:"
   description: Description
+  noTemplates: No templates available
   helpBlock: |
     Access Control is not enabled.<br/>
     Anybody with access to the API/UI acts as an admin and will be able to use any environment.
+  stacks:
+    enable: Configure
+    disable: Remove
   virtualMachine:
     label: Virtual Machine Support
     subtext: |
       Requires hosts that have the <a href="https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine" target="_blank">KVM</a> kernel module loaded.
+  tab:
+    access: Access Control
+    stacks: System Stacks
+    vm: Virtual Machine
 
 
 vmConsole:

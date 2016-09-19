@@ -408,6 +408,7 @@ function getCatalogSubtree() {
   let showAll = false;
   let showLibrary = false;
 
+  repos.removeObject(C.CATALOG.INFRA_KEY);
   if ( repos.indexOf(C.CATALOG.LIBRARY_KEY) >= 0 || repos.indexOf(C.CATALOG.COMMUNITY_KEY) >= 0 ) {
     showLibrary = true;
     repos.removeObject(C.CATALOG.LIBRARY_KEY);

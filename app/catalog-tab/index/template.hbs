@@ -36,27 +36,21 @@
 
 <section class="r-plr15 clearfix">
   {{#each arrangedContent as |catalogItem|}}
-    <div class="container-catalog text-center">
-      {{#if catalogItem.official}}
-        <div class='badge-certified'>
-          <strong>{{t 'catalogPage.index.certified'}}</strong>
-        </div>
-      {{/if}}
-      <div class="catalog-icon">
-        <img src="{{catalogItem.links.icon}}"/>
-      </div>
-      <div class="itemwrap">
-        <h5>
-          {{catalogItem.name}}
-        </h5>
-        {{#if showCatalogDropdown}}
-          <span class="small">in <span class="text-capitalize">{{catalogItem.catalogId}}</span></span>
+    {{#catalog-box model=catalogItem showSource=showCatalogDropdown as |section|}}
+      {{#if (eq section 'header')}}
+        {{#if model.official}}
+          <div class='badge-certified'>
+            <strong>{{t 'catalogPage.index.certified'}}</strong>
+          </div>
         {{/if}}
-        <hr class="r-m10" />
-        <div class="r-mt10 description">{{catalogItem.description}}</div>
-      </div>
-      {{#link-to launchRoute catalogItem.id class="btn btn-sm btn-primary"}}{{t 'catalogPage.index.viewDetails'}}{{/link-to}}
-    </div>
+      {{else if (eq section 'icon')}}
+        <div class="catalog-icon">
+          <img src="{{model.links.icon}}"/>
+        </div>
+      {{else if (eq section 'footer')}}
+        {{#link-to launchRoute catalogItem.id class="footer btn btn-sm btn-primary"}}{{t 'catalogPage.index.viewDetails'}}{{/link-to}}
+      {{/if}}
+    {{/catalog-box}}
   {{else}}
     <div class="text-muted r-mt20">
       {{#if showCatalogDropdown}}

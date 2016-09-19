@@ -10,70 +10,79 @@
 
 <section class="r-plr15 clearfix">
   {{#each arranged as |driver|}}
-    <div class="container-catalog machine text-center {{if (or (eq driver.state 'inactive') (eq driver.type 'template')) 'inactive-driver'}}">
-      <div class='catalog-header r-mt5'>
-        <div class="clearfix r-mb5 r-pl10 r-pr10">
-          {{#if driver.state}}
-            {{badge-state model=driver class="pull-left"}}
+    {{#catalog-box
+      model=driver
+      active=(not (and (eq driver.state 'inactive') (eq driver.type 'template')))
+      classNames='machine'
+      showIcon=false
+      showDescription=false
+      as |section|
+    }}
+      {{#if (eq section 'header')}}
+        <div class='catalog-header r-mt5'>
+          <div class="clearfix r-mb5 r-pl10 r-pr10">
+            {{#if driver.state}}
+              {{badge-state model=driver class="pull-left"}}
+            {{else}}
+              <span class="state badge text-danger bg-danger pull-left">
+                <i class="icon icon-circle"></i> {{t 'machinePage.inactive'}}
+              </span>
+            {{/if}}
+            {{#if driver.catalogId}}
+              <div class=" btn-group resource-actions action-menu pull-right">
+                {{#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=(t 'generic.activate') tagName="span"}}
+                  <button class="btn btn-default btn-xs" aria-label={{t 'generic.activate'}} {{action 'addCatalogDriver' driver}}>
+                    <i class="icon-fw icon icon-play" alt={{t 'generic.activate'}}></i>
+                  </button>
+                {{/tooltip-element~}}
+              </div>
+            {{else}}
+              {{action-menu model=driver class="pull-right"}}
+            {{/if}}
+          </div>
+        </div>
+        <div class="catalog-icon r-mb10">
+          {{#if (or driver.builtin driver.hasBuiltinUi)}}
+            <div class="machine-catalog-icon {{driver.iconMapFromConstants}}"></div>
           {{else}}
-            <span class="state badge text-danger bg-danger pull-left">
-              <i class="icon icon-circle"></i> {{t 'machinePage.inactive'}}
-            </span>
-          {{/if}}
-          {{#if driver.catalogId}}
-            <div class=" btn-group resource-actions action-menu pull-right">
-              {{#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=(t 'generic.activate') tagName="span"}}
-                <button class="btn btn-default btn-xs" aria-label={{t 'generic.activate'}} {{action 'addCatalogDriver' driver}}>
-                  <i class="icon-fw icon icon-play" alt={{t 'generic.activate'}}></i>
-                </button>
-              {{/tooltip-element~}}
-            </div>
-          {{else}}
-            {{action-menu model=driver class="pull-right"}}
+            <div class="machine-catalog-icon generic"></div>
           {{/if}}
         </div>
-      </div>
-      <div class="catalog-icon r-mb10">
-        {{#if (or driver.builtin driver.hasBuiltinUi)}}
-          <div class="machine-catalog-icon {{driver.iconMapFromConstants}}"></div>
-        {{else}}
-          <div class="machine-catalog-icon generic"></div>
-        {{/if}}
-      </div>
-      <h5>{{driver.name}}</h5>
-      {{#if driver.fullVersionInfo}}
-        <div class="btn-group r-mt5">
-          {{#if driver.upgradeAvailable}}
-            <button type="button" class="btn btn-warning btn-xs">
-              {{#if upgrading}}
-                <i class="icon icon-spinner icon-spin"></i> {{t 'machinePage.upgrading'}}
-              {{else}}
-                {{t 'machinePage.upgradeAvailable'}}
-              {{/if}}
+      {{else if (eq section 'footer')}}
+        {{#if driver.fullVersionInfo}}
+          <div class="btn-group r-mt5">
+            {{#if driver.upgradeAvailable}}
+              <button type="button" class="btn btn-warning btn-xs">
+                {{#if upgrading}}
+                  <i class="icon icon-spinner icon-spin"></i> {{t 'machinePage.upgrading'}}
+                {{else}}
+                  {{t 'machinePage.upgradeAvailable'}}
+                {{/if}}
+              </button>
+            {{else}}
+              <button type="button" class="btn btn-warning btn-xs">
+                {{#if upgrading}}
+                  <i class="icon icon-spinner icon-spin"></i> {{t 'machinePage.upgrading'}}
+                {{else}}
+                  {{driver.currentVersion}}
+                {{/if}}
+              </button>
+            {{/if}}
+            <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+              <i class="icon icon-fw icon-chevron-down"></i>
+              <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
             </button>
-          {{else}}
-            <button type="button" class="btn btn-warning btn-xs">
-              {{#if upgrading}}
-                <i class="icon icon-spinner icon-spin"></i> {{t 'machinePage.upgrading'}}
-              {{else}}
-                {{driver.currentVersion}}
-              {{/if}}
-            </button>
-          {{/if}}
-          <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-            <i class="icon icon-fw icon-chevron-down"></i>
-            <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-right r-p10" role="menu">
-            {{!-- each over versions --}}
-            {{#each-in driver.fullVersionInfo as |version path|}}
-              <li class='hand r-mt5 r-mb5' {{action "upgradeDriver" driver version path}}>
-                <span class="{{if (eq driver.currentVersion version) 'btn-warning'}}">{{version}}</span>
-              </li>
-            {{/each-in}}
-          </ul>
-        </div>
+            <ul class="dropdown-menu dropdown-menu-right r-p10" role="menu">
+              {{!-- each over versions --}}
+              {{#each-in driver.fullVersionInfo as |version path|}}
+                <li class='hand r-mt5 r-mb5' {{action "upgradeDriver" driver version path}}>
+                  <span class="{{if (eq driver.currentVersion version) 'btn-warning'}}">{{version}}</span>
+                </li>
+              {{/each-in}}
+            </ul>
+          </div>
         {{/if}}
-    </div>
+      {{/if}}
+    {{/catalog-box}}
   {{/each}}
 </section>

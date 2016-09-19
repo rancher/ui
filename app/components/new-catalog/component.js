@@ -16,6 +16,10 @@ export default Ember.Component.extend(NewOrEdit, {
   versionsArray: null,
   versionsLinks: null,
   serviceChoices: null,
+  actuallySave: true,
+  showHeader: true,
+  showPreview: true,
+  showName: true,
 
   classNames: ['launch-catalog'],
 
@@ -205,16 +209,22 @@ export default Ember.Component.extend(NewOrEdit, {
       return false;
     }
 
-    var files = this.get('selectedTemplateModel.files');
+    let files = this.get('selectedTemplateModel.files');
+    let stack = this.get('stackResource');
 
-    this.get('stackResource').setProperties({
+    stack.setProperties({
       dockerCompose: files['docker-compose.yml'],
       rancherCompose: files['rancher-compose.yml'],
       environment: this.get('answers'),
       externalId: this.get('newExternalId'),
     });
 
-    return true;
+    if ( this.get('actuallySave') ) {
+      return true;
+    } else {
+      this.sendAction('doSave', this.get('templateResource.externalIdInfo.templateId'), stack, this.get('selectedTemplateModel'));
+      return false;
+    }
   },
 
   doSave() {

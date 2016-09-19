@@ -3,19 +3,28 @@ import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
+const ORCH_TEMPLATES = [
+  C.EXTERNAL_ID.ID_K8S,
+  C.EXTERNAL_ID.ID_SWARM,
+  C.EXTERNAL_ID.ID_MESOS
+];
+
 export default Ember.Component.extend(NewOrEdit, Sortable, {
+  catalogService: Ember.inject.service('catalog-service'),
   projects: Ember.inject.service(),
   access: Ember.inject.service(),
   accessEnabled: Ember.computed.alias('access.enabled'),
-
-  model: null,
-  project: Ember.computed.alias('model.project'),
-  originalProject: Ember.computed.alias('model.originalProject'),
-  primaryResource: Ember.computed.alias('model.project'),
-
   queryParams: ['editing'],
-  editing: false,
 
+  project: null,
+  originalProject: null,
+  allProjects: null,
+  catalogTemplates: null,
+  initialStacks: null,
+  editing: false,
+  tab: 'access',
+
+  primaryResource: Ember.computed.alias('project'),
   sortableContent: Ember.computed.alias('project.projectMembers'),
   sortBy: 'name',
   sorts: {
@@ -23,6 +32,8 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     type:   ['externalIdType','externalId'],
     role:   ['role','externalId'],
   },
+
+  stacks: null,
 
   actions: {
     changeProject(project) {
@@ -54,13 +65,23 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
       this.get('project.projectMembers').removeObject(item);
     },
 
-    selectOrchestration(name) {
-      this.get('project').setProperties({
-        kubernetes: (name === 'kubernetes'),
-        swarm: (name === 'swarm'),
-        mesos: (name === 'mesos'),
+    selectOrchestration(id) {
+      let stacks = this.get('stacks');
+      ORCH_TEMPLATES.forEach((cur) => {
+        if ( stacks[cur] ) {
+          stacks[cur].set('enabled', id === cur);
+        }
       });
-      this.set('activeOrchestration', name);
+
+      this.set('activeOrchestration', id);
+    },
+
+    enableStack(obj) {
+      obj.set('enabled', true);
+    },
+
+    disableStack(obj) {
+      obj.set('enabled', false);
     },
   },
 
@@ -68,18 +89,14 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   init() {
     this._super(...arguments);
     var orch = 'rancher';
-    if ( this.get('project.kubernetes') )
-    {
-      orch = 'kubernetes';
-    }
-    else if ( this.get('project.swarm') )
-    {
-      orch = 'swarm';
-    }
-    else if ( this.get('project.mesos') )
-    {
-      orch = 'mesos';
-    }
+    ORCH_TEMPLATES.forEach((key) => {
+      if ( stacks[key] && stacks[key].get('enabled') ) {
+        orch = key;
+      }
+    });
+
+    // @TODO this shouldn't be needed 
+    this.set('project.systemTemplates',[]);
 
     this.set('activeOrchestration', orch);
   },
@@ -95,6 +112,51 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     }
   },
 
+  projectBase: function() {
+    return this.get('app.projectEndpoint').replace(this.get('app.projectToken'), this.get('project.id'));
+  }.property('project.id'),
+
+  initStacks() {
+    let stacks = {};
+    let enabled = this.get('initialStacks');
+    this.get('catalogTemplates').forEach((tpl) => {
+      let tplId = tpl.get('id');
+      let cur = enabled.findBy('externalIdInfo.templateId', tplId);
+      if ( cur ) {
+        stacks[tplId] = Ember.Object.create({
+          enabled: true,
+          tpl: tpl,
+          stack: cur,
+          changed: false,
+        });
+      } else {
+        stacks[tplId] = Ember.Object.create({
+          enabled: false,
+          tpl: tpl,
+          changed: false,
+          stack: this.get('userStore').createRecord({
+            type: 'stack',
+            accountId: this.get('proejct.id'),
+            name: tpl.get('name'),
+            system: true,
+            environment: {},
+            startOnCreate: true,
+          }),
+        });
+      }
+    });
+
+    ORCH_TEMPLATES.forEach((key) => {
+      if ( !stacks[key]) {
+        stacks[key] = {
+          enabled: false
+        };
+      }
+    });
+
+    this.set('stacks', stacks);
+  },
+
   roleOptions: function() {
     return (this.get('userStore').getById('schema','projectmember').get('resourceFields.role.options')||[]).map((role) => {
       return {
@@ -104,29 +166,28 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     });
   }.property(),
 
-
   hasOwner: function() {
     return this.get('project.projectMembers').filterBy('role', C.PROJECT.ROLE_OWNER).get('length') > 0;
   }.property('project.projectMembers.@each.role'),
 
   orchestrationChoices: function() {
     var active = this.get('activeOrchestration');
-    var fields = this.get('userStore').getById('schema','project').get('resourceFields');
 
     var drivers = [
-      {name: 'rancher',     label: 'Corral',      css: 'rancher'}
+      {name: 'rancher',     label: 'Cattle',      css: 'rancher'}
     ];
 
-    if ( fields.kubernetes ) {
-      drivers.push({name: 'kubernetes',  label: 'Kubernetes',  css: 'kubernetes'});
+    let stacks = this.get('stacks');
+    if ( stacks[C.EXTERNAL_ID.ID_K8S].tpl ) {
+      drivers.push({name: C.EXTERNAL_ID.ID_K8S, label: 'Kubernetes',  css: 'kubernetes'});
     }
 
-    if ( fields.mesos ) {
-      drivers.push({name: 'mesos',       label: 'Mesos',       css: 'mesos'});
+    if ( stacks[C.EXTERNAL_ID.ID_MESOS].tpl ) {
+      drivers.push({name: C.EXTERNAL_ID.ID_MESOS,  label: 'Mesos',       css: 'mesos'});
     }
 
-    if ( fields.swarm ) {
-      drivers.push({name: 'swarm',       label: 'Swarm',       css: 'swarm'});
+    if ( stacks[C.EXTERNAL_ID.ID_SWARM].tpl ) {
+      drivers.push({name: C.EXTERNAL_ID.ID_SWARM,  label: 'Swarm',       css: 'swarm'});
     }
 
     drivers.forEach(function(driver) {
@@ -164,7 +225,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     return out;
   },
 
-  didSave: function() {
+  didSave() {
     if ( this.get('editing') && this.get('access.enabled') )
     {
       var members = this.get('project.projectMembers').map((member) => {
@@ -176,11 +237,74 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
         };
       });
 
-      return this.get('project').doAction('setmembers',{members: members});
+      return this.get('project').doAction('setmembers',{members: members}).then(() => {
+        return this.loadTemplates().then(() => {
+          return this.saveStacks();
+        });
+      });
     }
   },
 
-  doneSaving: function() {
+  loadTemplates() {
+    let promises = [];
+    let stacks = this.get('stacks');
+    Object.keys(stacks).forEach((key) => {
+      let stack = stacks[key];
+      if ( stack && stack.get('enabled') && !stack.get('tplVersion') ) {
+        let tpl = stack.get('tpl');
+        promises.push(
+          this.get('store').request({url: tpl.versionLinks[tpl.defaultVersion]}).then((tplVersion) => {
+            stack.set('tplVersion', tplVersion);
+          })
+        );
+      }
+    });
+
+    return Ember.RSVP.all(promises);
+  },
+
+  saveStacks() {
+    let promises = [];
+
+    let stacks = this.get('stacks');
+    Object.keys(stacks).forEach((key) => {
+      let obj = stacks[key];
+      let stack = obj.get('stack');
+      let version = obj.get('tplVersion');
+      if ( stack.get('id') ) {
+        if ( obj.get('enabled') ) {
+/*
+          if ( version && obj.get('changed') ) {
+            // Upgrade
+            promises.push(stack.doAction('upgrade', {
+              dockerCompose: version.get('files')['docker-compose.yml'],
+              rancherCompose: version.get('files')['rancher-compose.yml'],
+              environment: stack.get('environment'),
+              externalId: C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + version.get('id'),
+            }, {url: this.get('projectBase')+'/stacks'+stack.get('id')+'?action=upgrade'}));
+          }
+*/
+        } else {
+          // Remove
+          promises.push(stack.delete({url: this.get('projectBase')+'/stacks/'+stack.get('id')}));
+        }
+      } else if ( obj.get('enabled') && obj.get('tplVersion') ) {
+        // Create
+        let version = obj.get('tplVersion');
+        stack.setProperties({
+          dockerCompose: version.get('files')['docker-compose.yml'],
+          rancherCompose: version.get('files')['rancher-compose.yml'],
+          environment: stack.get('environment'),
+          externalId: C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + version.get('id'),
+        });
+        promises.push(stack.save({url: this.get('projectBase')+'/stacks'}));
+      }
+    });
+
+    return Ember.RSVP.all(promises);
+  },
+
+  doneSaving() {
     var out = this._super();
     this.get('projects').refreshAll();
     this.sendAction('done');
