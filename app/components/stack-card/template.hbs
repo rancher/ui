@@ -2,9 +2,9 @@
   <div class="stack-card-icon">
     {{!-- Implements a generic icon --}}
     {{#if publicLink}}
-      <a href={{publicLink}} target="_blank"><img src={{iconUrl}} /></a>
+      <a href={{publicLink}} target="_blank"><img src={{model.urlImage}} /></a>
     {{else}}
-      <img src={{iconUrl}} />
+      <img src={{model.urlImage}} />
     {{/if}}
     <img src=""/>
   </div>
@@ -12,9 +12,17 @@
     <h5>
       {{#link-to "environment" model.id}}{{model.name}}{{/link-to}}
     </h5>
-    <hr class="r-m10" />
-    <div class="stack-state {{model.stateBackground}}">
-      <i class="{{model.stateIcon}}"></i> {{model.displayState}}
+  <hr class="r-m10" />
+
+    <div class="stack-state">
+
+      <i class="card-state-icon {{model.stateIcon}} {{model.stateBackground}}"></i>
+
+      {{model.displayState}}
+      <div class="card-action-menu-container">
+        {{action-menu model=model}}
+      </div>
     </div>
+
   </div>
 </div>

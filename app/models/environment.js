@@ -209,6 +209,15 @@ var Environment = Resource.extend({
       return C.EXTERNALID.KIND_USER;
     }
   }.property('externalIdInfo.kind'),
+
+  // FIXME
+  // I do not have control about what is in the backend. This is the best I can
+  // do with the data I have.
+  urlImage: function() {
+    let baeseUrl = `${this.get('app.catalogEndpoint')}/templates/`;
+    let catalogRef = this.get('externalId').split('//')[1].split(':', 2).join(':');
+    return `${baeseUrl}${catalogRef}?image`;
+  }.property('externalId', 'app.catalogEndpoint')
 });
 
 Environment.reopenClass({
