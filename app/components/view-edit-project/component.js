@@ -21,6 +21,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   allProjects: null,
   catalogTemplates: null,
   initialStacks: null,
+  serviceChoices: null,
   editing: false,
   tab: 'access',
 
@@ -78,6 +79,16 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
 
     enableStack(obj) {
       obj.set('enabled', true);
+      return;
+      this.get('application').setProperties({
+        catalogConfigure: true,
+        originalModel: Ember.Object.create({
+          serviceChoices: this.get('serviceChoices'),
+          stack: obj.get('stack'),
+          tpl: obj.get('tpl'),
+          versionLinks: obj.get('tpl.versionLinks'),
+        }),
+      });
     },
 
     disableStack(obj) {
@@ -270,7 +281,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     Object.keys(stacks).forEach((key) => {
       let obj = stacks[key];
       let stack = obj.get('stack');
-      let version = obj.get('tplVersion');
+//      let version = obj.get('tplVersion');
       if ( stack.get('id') ) {
         if ( obj.get('enabled') ) {
 /*

@@ -1,12 +1,12 @@
-import Ember from' ember';
+import Ember from 'ember';
 
 export default Ember.Component.extend({
   model: null,
 
   didInitAttrs() {
     let orig = this.get('originalModel');
-
-    let links = this.get('orig.tpl.versionLinks');
+    let tpl = orig.get('tpl');
+    let links = tpl.get('versionLinks');
     var verArr = Object.keys(links).filter((key) => {
       // Filter out empty values for rancher/rancher#5494
       return !!links[key];
@@ -19,8 +19,8 @@ export default Ember.Component.extend({
       serviceChoices: orig.get('serviceChoices'),
       tpl: tpl,
       versionLinks: links,
-      versionsArray: verArray,
-    }
+      versionsArray: verArr,
+    };
   },
 
   actions: {
