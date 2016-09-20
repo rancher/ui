@@ -1,8 +1,10 @@
 import Ember from 'ember';
 import { alternateLabel } from 'ui/utils/platform';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default Ember.Component.extend({
-  resources: null,
+export default ModalBase.extend({
+  classNames: ['lacsso', 'modal-container', 'span-6', 'offset-3'],
+  resources: Ember.computed.alias('modalService.modalOpts'),
   alternateLabel: alternateLabel,
   settings: Ember.inject.service(),
 
@@ -14,12 +16,9 @@ export default Ember.Component.extend({
         resource.delete();
       });
 
-      this.sendAction('dismiss');
+      this.send('cancel');
     },
 
-    cancel: function() {
-      this.sendAction('dismiss');
-    },
   },
 
   isEnvironment: Ember.computed('resources', function() {

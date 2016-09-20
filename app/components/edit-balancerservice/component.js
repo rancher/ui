@@ -1,26 +1,14 @@
-import NewBalancer from 'ui/components/new-balancer/component';
 import Ember from 'ember';
+import NewBalancer from 'ui/mixins/new-balancer';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default NewBalancer.extend({
-  settings: Ember.inject.service(),
-  allServicesService: Ember.inject.service('all-services'),
-  allServices: null,
-  allCertificates: null,
-  existing: Ember.computed.alias('originalModel'),
-  editing: true,
-  loading: true,
+export default ModalBase.extend(NewBalancer, {
+  classNames         : ['lacsso', 'modal-container', 'span-6', 'offset-3', 'modal-logs'],
+  originalModel      : Ember.computed.alias('modalService.modalOpts'),
 
   actions: {
     done() {
-      this.sendAction('dismiss');
-    },
-
-    outsideClick() {
-      this.sendAction('dismiss');
-    },
-
-    cancel() {
-      this.sendAction('dismiss');
+      this.send('cancel');
     },
   },
 

@@ -8,6 +8,7 @@ var _allVolumes;
 
 var Snapshot = Resource.extend({
   type: 'snapshot',
+  modalService: Ember.inject.service('modal'),
 
   // !! If you add a new one of these, you need to add it to reset() below too
   _allVolumes: null,
@@ -36,8 +37,7 @@ var Snapshot = Resource.extend({
   actions: {
     backup() {
       this.get('store').findAllUnremoved('backuptarget').then((backupTargets) => {
-        this.get('application').setProperties({
-          editBackup: true,
+        this.get('modalService').toggleModal('modal-edit-backup', {
           originalModel: this,
           backupTargets: backupTargets
         });

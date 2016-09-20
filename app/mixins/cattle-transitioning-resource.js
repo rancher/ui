@@ -53,6 +53,7 @@ export default Ember.Mixin.create({
   cookies: Ember.inject.service(),
   growl: Ember.inject.service(),
 
+  modalService: Ember.inject.service('modal'),
   reservedKeys: ['waitInterval','waitTimeout'],
 
   state: null,
@@ -111,7 +112,7 @@ export default Ember.Mixin.create({
 
   actions: {
     promptDelete: function() {
-      this.get('application').set('confirmDeleteResources', [ this ] );
+      this.get('modalService').toggleModal('confirm-delete', [this]);
     },
 
     delete: function() {

@@ -18,6 +18,7 @@ var Service = Resource.extend({
   type: 'service',
   intl: Ember.inject.service(),
   growl: Ember.inject.service(),
+  modalService: Ember.inject.service('modal'),
 
   actions: {
     activate() {
@@ -49,43 +50,29 @@ var Service = Resource.extend({
     },
 
     promptStop: function() {
-      this.get('application').setProperties({
-        showConfirmDeactivate : true,
-        originalModel         : this,
-        action                : 'deactivate'
+      this.get('modalService').toggleModal('modal-confirm-deactivate', {
+        originalModel: this,
+        action: 'deactivate'
       });
-
     },
 
     edit() {
       var type = this.get('type').toLowerCase();
       if ( type === 'loadbalancerservice' )
       {
-        this.get('application').setProperties({
-          editLoadBalancerService: true,
-          originalModel: this,
-        });
+        this.get('modalService').toggleModal('edit-balancerservice', this);
       }
       else if ( type === 'dnsservice' )
       {
-        this.get('application').setProperties({
-          editAliasService: true,
-          originalModel: this,
-        });
+        this.get('modalService').toggleModal('edit-aliasservice', this);
       }
       else if ( type === 'externalservice' )
       {
-        this.get('application').setProperties({
-          editExternalService: true,
-          originalModel: this,
-        });
+        this.get('modalService').toggleModal('edit-externalservice', this);
       }
       else
       {
-        this.get('application').setProperties({
-          editService: true,
-          originalModel: this,
-        });
+        this.get('modalService').toggleModal('edit-service', this);
       }
     },
 

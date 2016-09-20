@@ -12,9 +12,10 @@ export default Ember.Component.extend({
 
   projectId        : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
 
+  modalService: Ember.inject.service('modal'),
   actions: {
     showAbout() {
-      this.sendAction('showAbout');
+      this.get('modalService').toggleModal('modal-about');
     },
 
     composeDownload(os) {

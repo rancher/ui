@@ -21,7 +21,7 @@ export default Ember.Component.extend(ThrottledResize, {
     if (this.get('model.stack.services.length')) {
       Ember.run.later(this,'initGraph',100);
     } else {
-      this.set('controller.noServices', true);
+      this.sendAction('setNoServices', true);
     }
   },
 
@@ -282,7 +282,7 @@ export default Ember.Component.extend(ThrottledResize, {
 
   willDestroyElement: function() {
     this._super();
-    this.set('controller.noServices', false);
+    this.sendAction('setNoServices', false);
     var elem = this.get('graphElem');
     if ( elem )
     {

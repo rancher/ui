@@ -39,7 +39,7 @@ export default Ember.Component.extend(ManageLabels, {
     else
     {
       this.$().animate({height: '0'}, 250, () => {
-        if ( this._state !== 'destroying' )
+        if ( this._state === 'inDOM' )
         {
           this.$().hide();
         }
@@ -85,7 +85,7 @@ export default Ember.Component.extend(ManageLabels, {
     (this.get('service.instances')||[]).forEach((instance) => {
       var lc = instance.get('labels')[C.LABEL.LAUNCH_CONFIG];
 
-      if ( C.REMOVEDISH_STATES.contains(instance.state) )
+      if ( C.REMOVEDISH_STATES.includes(instance.state) )
       {
         return;
       }

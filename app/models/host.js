@@ -8,6 +8,7 @@ import C from 'ui/utils/constants';
 
 var Host = Resource.extend({
   type: 'host',
+  modalService: Ember.inject.service('modal'),
 
   actions: {
     activate: function() {
@@ -32,10 +33,7 @@ var Host = Resource.extend({
     },
 
     edit: function() {
-      this.get('application').setProperties({
-        editHost: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('edit-host', this);
     },
 
     machineConfig: function() {

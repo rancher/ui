@@ -1,7 +1,10 @@
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import Ember from 'ember';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default Ember.Component.extend(NewOrEdit, {
+export default ModalBase.extend(NewOrEdit, {
+  classNames         : ['lacsso', 'modal-container', 'span-6', 'offset-3', 'modal-logs'],
+  originalModel      : Ember.computed.alias('modalService.modalOpts'),
   existing: Ember.computed.alias('originalModel'),
   editing: true,
 
@@ -10,11 +13,7 @@ export default Ember.Component.extend(NewOrEdit, {
 
   actions: {
     done() {
-      this.sendAction('dismiss');
-    },
-
-    cancel() {
-      this.sendAction('dismiss');
+      this.send('cancel');
     },
   },
 
@@ -25,7 +24,7 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   doneSaving: function() {
-    this.send('done');
+    this.send('cancel');
   },
 
   didInsertElement() {

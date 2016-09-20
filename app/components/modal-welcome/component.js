@@ -1,25 +1,23 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default Ember.Component.extend({
+export default ModalBase.extend({
+  classNames: ['lacsso', 'modal-container', 'span-6', 'offset-3', 'modal-welcome'],
   settings: Ember.inject.service(),
-
-  classNames      : ['modal-welcome'],
 
   optIn: null,
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
     let cur = this.get('settings').get(C.SETTING.TELEMETRY);
     this.set('optIn', cur !== 'out');
   },
 
   actions: {
-    outsideClick() {
-    },
-
     cancel() {
       this.get('settings').set(C.SETTING.TELEMETRY, (this.get('optIn') ? 'in' : 'out'));
-      this.sendAction('dismiss');
+      this.get('modalService').toggleModal();
     },
   },
 });

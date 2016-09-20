@@ -1,3 +1,4 @@
+import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 import C from 'ui/utils/constants';
@@ -7,6 +8,7 @@ var ApiKey = Resource.extend(PolledResource,{
   type: 'apiKey',
   publicValue: null,
   secretValue: null,
+  modalService: Ember.inject.service('modal'),
 
   actions: {
     deactivate: function() {
@@ -18,10 +20,7 @@ var ApiKey = Resource.extend(PolledResource,{
     },
 
     edit: function() {
-      this.get('application').setProperties({
-        editApikey: true,
-        originalModel: this
-      });
+      this.get('modalService').toggleModal('edit-apikey', this);
     },
   },
 
