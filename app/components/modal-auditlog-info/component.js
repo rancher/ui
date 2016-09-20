@@ -1,9 +1,11 @@
 import Ember from 'ember';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default Ember.Component.extend({
-  requestObject  : null,
+export default ModalBase.extend({
+  classNames: ['lacsso', 'modal-container', 'span-6', 'offset-3', 'modal-logs'],
+  requestObject  : Ember.computed.alias('modalService.modalOpts.requestObject'),
+  responseObject  : Ember.computed.alias('modalService.modalOpts.responseObject'),
   requestJSON    : null,
-  responseObject : null,
   responseJSON   : null,
 
   init() {
@@ -16,7 +18,7 @@ export default Ember.Component.extend({
 
   actions: {
     dismiss: function() {
-      this.sendAction('dismiss');
+      this.send('cancel');
     }
   },
 });

@@ -25,6 +25,7 @@ function displayUrl(url) {
 
 var machineDriver = Resource.extend(PolledResource, {
   type: 'machineDriver',
+  modalService: Ember.inject.service('modal'),
 
   actions: {
     activate: function() {
@@ -36,10 +37,7 @@ var machineDriver = Resource.extend(PolledResource, {
     },
 
     edit: function() {
-      this.get('application').setProperties({
-        editMachineDriver: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('modal-edit-driver', this);
     },
   },
 

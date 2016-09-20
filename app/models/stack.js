@@ -22,6 +22,7 @@ export function activeIcon(stack)
 var Stack = Resource.extend({
   type: 'stack',
   k8s: Ember.inject.service(),
+  modalService: Ember.inject.service('modal'),
 
   actions: {
     activateServices: function() {
@@ -49,12 +50,10 @@ var Stack = Resource.extend({
     },
 
     promptStop: function() {
-      this.get('application').setProperties({
-        showConfirmDeactivate : true,
-        originalModel         : this,
-        action                : 'deactivateServices'
+      this.get('modalService').toggleModal('modal-confirm-deactivate', {
+        originalModel: this,
+        action: 'deactivateServices'
       });
-
     },
 
 
@@ -75,10 +74,7 @@ var Stack = Resource.extend({
     },
 
     edit: function() {
-      this.get('application').setProperties({
-        editStack: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('edit-stack', this);
     },
 
     exportConfig: function() {

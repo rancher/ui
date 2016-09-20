@@ -65,7 +65,8 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   },
 
   activeOrchestration: null,
-  didReceiveAttrs() {
+  init() {
+    this._super(...arguments);
     var orch = 'rancher';
     if ( this.get('project.kubernetes') )
     {

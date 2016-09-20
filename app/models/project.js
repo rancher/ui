@@ -7,6 +7,7 @@ var Project = Resource.extend(PolledResource, {
   prefs: Ember.inject.service(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
+  modalService: Ember.inject.service('modal'),
 
   type: 'project',
   name: null,
@@ -54,10 +55,9 @@ var Project = Resource.extend(PolledResource, {
     },
 
     promptStop: function() {
-      this.get('application').setProperties({
-        showConfirmDeactivate : true,
-        originalModel         : this,
-        action                : 'deactivate'
+      this.get('modalService').toggleModal('modal-confirm-deactivate', {
+        originalModel: this,
+        action: 'deactivate'
       });
     },
 

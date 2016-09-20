@@ -44,7 +44,6 @@ export default Ember.Component.extend(ManageLabels, {
     }
 
     this.set('userInput', initial);
-    this.userInputDidChange();
   },
 
   updateLabels(labels) {

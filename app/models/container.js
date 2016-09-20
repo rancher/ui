@@ -13,6 +13,7 @@ var Container = Resource.extend({
   primaryIpAddress           : null,
   primaryAssociatedIpAddress : null,
   projects                   : Ember.inject.service(),
+  modalService: Ember.inject.service('modal'),
 
   // Container-specific
   type                       : 'container',
@@ -66,10 +67,7 @@ var Container = Resource.extend({
     },
 
     shell: function() {
-      this.get('application').setProperties({
-        showShell: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('modal-shell', this);
     },
 
     popoutShell: function() {
@@ -89,17 +87,11 @@ var Container = Resource.extend({
     },
 
     logs: function() {
-      this.get('application').setProperties({
-        showContainerLogs: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('modal-container-logs', this);
     },
 
     edit: function() {
-      this.get('application').setProperties({
-        editContainer: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('edit-container', this);
     },
 
     clone: function() {

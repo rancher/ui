@@ -5,7 +5,7 @@ export default Ember.Mixin.create({
 
   actions: {
     selectTab: function(name) {
-      this.set('context.tab',name);
+      this.set('tab', name);
       this.$('.tab').removeClass('active');
       this.$('.tab[data-section="'+name+'"]').addClass('active');
       this.$('.section').addClass('hide');

@@ -52,7 +52,6 @@ export default Ember.Component.extend(ContainerChoices, {
     }
 
     this.set('linksArray', out);
-    this.linksDidChange();
   },
 
   linksDidChange: function() {

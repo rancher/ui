@@ -4,6 +4,7 @@ import Resource from 'ember-api-store/models/resource';
 var Registry = Resource.extend({
   type: 'registry',
   serverAddress: null,
+  modalService: Ember.inject.service('modal'),
 
   actions: {
     deactivate: function() {
@@ -16,14 +17,11 @@ var Registry = Resource.extend({
 
     edit: function() {
       this.get('store').find('registry').then((registries) => {
-        this.get('application').setProperties({
-          editRegistry: true,
-          originalModel: Ember.Object.create({
-            registries: registries,
-            registry: this,
-            credential: this.get('credential'),
-          })
-        });
+        this.get('modalService').toggleModal('edit-registry', Ember.Object.create({
+          registries: registries,
+          registry: this,
+          credential: this.get('credential'),
+        }));
       });
     },
   },

@@ -13,6 +13,7 @@ export default Ember.Route.extend(Subscribe, {
   userTheme : Ember.inject.service('user-theme'),
   language  : Ember.inject.service('user-language'),
   storeReset: Ember.inject.service(),
+  modalService: Ember.inject.service('modal'),
 
   beforeModel(transition) {
     this._super.apply(this,arguments);
@@ -107,17 +108,17 @@ export default Ember.Route.extend(Subscribe, {
 
     if ( this.get('settings.isRancher') && !app.get('isPopup') )
     {
-      // Show the telemetry opt-in
+     //Show the telemetry opt-in
       let opt = this.get(`settings.${C.SETTING.TELEMETRY}`);
       if ( this.get('access.admin') && (!opt || opt === 'prompt') )
       {
         Ember.run.scheduleOnce('afterRender', this, function() {
-          app.set('showWelcome', true);
+          this.get('modalService').toggleModal('modal-welcome');
         });
       }
       else if ( false && this.get('settings.isOSS') && !this.get(`prefs.${C.PREFS.FEEDBACK}`) )
       {
-        // Show the feedback form
+       //Show the feedback form
         let time = this.get(`prefs.${C.PREFS.FEEDBACK_TIME}`);
         if ( !time ) {
           time = (new Date()).getTime() + C.PREFS.FEEDBACK_DELAY;
@@ -128,7 +129,7 @@ export default Ember.Route.extend(Subscribe, {
         if ( (now - time) >= 0 )
         {
           Ember.run.scheduleOnce('afterRender', this, function() {
-            app.set('showFeedback', true);
+            this.get('modalService').toggleModal('modal-feedback');
           });
         }
       }

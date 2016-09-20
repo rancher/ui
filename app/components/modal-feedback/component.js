@@ -1,28 +1,28 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default Ember.Component.extend({
+export default ModalBase.extend({
+  classNames: ['lacsso', 'modal-container', 'span-6', 'offset-3'],
   settings: Ember.inject.service(),
   prefs: Ember.inject.service(),
 
   actions: {
-    outsideClick() {
-    },
 
     send() {
       this.set(`prefs.${C.PREFS.FEEDBACK}`,'sent');
-      this.sendAction('dismiss');
+      this.send('cancel');
     },
 
     cancel() {
       let time = (new Date()).getTime() + C.PREFS.FEEDBACK_DELAY;
       this.set(`prefs.${C.PREFS.FEEDBACK_TIME}`, time);
-      this.sendAction('dismiss');
+      this.get('modalService').toggleModal();
     },
 
     never() {
       this.set(`prefs.${C.PREFS.FEEDBACK}`,'never');
-      this.sendAction('dismiss');
+      this.send('cancel');
     }
   },
 });

@@ -73,7 +73,6 @@ export default Ember.Component.extend({
     }
 
     this.set('portsArray', out);
-    this.portsArrayDidChange();
   },
 
   actions: {

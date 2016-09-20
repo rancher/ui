@@ -57,7 +57,7 @@ export default Ember.Service.extend({
     let application   = this.get('app');
     let loadedLocales = this.get('loadedLocales');
 
-    if (loadedLocales.contains(language)) {
+    if (loadedLocales.includes(language)) {
       this.get('intl').setLocale(language);
       return Ember.RSVP.resolve();
     } else {

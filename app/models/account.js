@@ -1,8 +1,10 @@
+import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 
 var Account = Resource.extend(PolledResource, {
   type: 'account',
+  modalService: Ember.inject.service('modal'),
 
   actions: {
     deactivate() {
@@ -14,10 +16,7 @@ var Account = Resource.extend(PolledResource, {
     },
 
     edit: function() {
-      this.get('application').setProperties({
-        editAccount: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('edit-account', this);
     },
   },
 

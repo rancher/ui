@@ -2,12 +2,10 @@ import Ember from 'ember';
 import Container from 'ui/models/container';
 
 export default Container.extend({
+  modalService: Ember.inject.service('modal'),
   actions: {
     console: function() {
-      this.get('application').setProperties({
-        showConsole: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('modal-console', this);
     },
 
     clone: function() {
