@@ -16,7 +16,8 @@ export default Ember.Component.extend({
   iconUrl,
 
   publicLink: computed('model.services.firstObject.endpointsMap', function(){
-    let endpoints = this.get('model.services.firstObject.endpointsMap') || {};
+    let services = this.get('model.services').filterBy('publicEndpoints');
+    let endpoints = services.get('firstObject.endpointsMap') || {};
     let ports = Object.keys(endpoints);
     if (ports.length > 0) {
       let [ port ] = ports;
