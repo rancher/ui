@@ -1,6 +1,5 @@
 {{#if showHeader}}
   <section class="header">
-
     {{#if editing}}
       <h1>{{t 'newCatalog.upgrade'}} <span style="font-weight: normal">{{stackResource.name}}</span></h1>
     {{else}}
@@ -12,54 +11,52 @@
   </section>
 {{/if}}
 
-<section>
-  <div class="well row">
-    <div class="col-sm-12 col-md-3">
-      {{#if templateResource.links.icon}}
-        <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="r-mr20" style="height:75px;max-width: 100%;">
-      {{/if}}
+<section class="{{sectionClass}} row">
+  <div class="col-sm-12 col-md-3">
+    {{#if templateResource.links.icon}}
+      <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="r-mr20" style="height:75px;max-width: 100%;">
+    {{/if}}
 
-      <div>
-        <small><strong>{{t 'newCatalog.catalog'}}</strong> <span class="text-capitalize">{{templateResource.catalogId}}</span></small>
-      </div>
-      <div>
-        <small><strong>{{t 'newCatalog.category'}}</strong> <span class="text-capitalize">{{templateResource.category}}</span></small>
-      </div>
-      {{#if (eq templateResource.catalogId 'library')}}
-        <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.official'}}</small>
-      {{else}}
-        {{#if (eq templateResource.catalogId 'community')}}
-          <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.maintainedBy'}}</small>
-        {{/if}}
-      {{/if}}
-      {{#if templateResource.maintainer}}
-        <div>
-          <small><strong>{{t 'newCatalog.maintainer'}}</strong> {{templateResource.maintainer}}</small>
-        </div>
-      {{/if}}
-      {{#if templateResource.license}}
-        <div>
-          <small><strong>{{t 'newCatalog.license'}}</strong> {{templateResource.license}}</small>
-        </div>
-      {{/if}}
-      {{#if templateResource.links.project}}
-        <small class="force-wrap"><strong>{{t 'newCatalog.url'}}</strong> <a href="{{templateResource.cleanProjectUrl}}" target="_blank">{{templateResource.cleanProjectUrl}}</a></small>
-      {{/if}}
+    <div>
+      <small><strong>{{t 'newCatalog.catalog'}}</strong> <span class="text-capitalize">{{templateResource.catalogId}}</span></small>
     </div>
-    {{#if readmeContent}}
-      <div class="col-sm-12 col-md-9" style="overflow-y: auto; max-height: 500px;">
-        {{common-mark markdown=readmeContent}}
-      </div>
+    <div>
+      <small><strong>{{t 'newCatalog.category'}}</strong> <span class="text-capitalize">{{templateResource.category}}</span></small>
+    </div>
+    {{#if (eq templateResource.catalogId 'library')}}
+      <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.official'}}</small>
     {{else}}
-      <h2 class="r-mb10">
-        {{if editing "Upgrade" "Add"}} {{templateResource.name}} {{t 'newCatalog.stack'}}
-      </h2>
-      <p>{{templateResource.description}}</p>
+      {{#if (eq templateResource.catalogId 'community')}}
+        <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.maintainedBy'}}</small>
+      {{/if}}
+    {{/if}}
+    {{#if templateResource.maintainer}}
+      <div>
+        <small><strong>{{t 'newCatalog.maintainer'}}</strong> {{templateResource.maintainer}}</small>
+      </div>
+    {{/if}}
+    {{#if templateResource.license}}
+      <div>
+        <small><strong>{{t 'newCatalog.license'}}</strong> {{templateResource.license}}</small>
+      </div>
+    {{/if}}
+    {{#if templateResource.links.project}}
+      <small class="force-wrap"><strong>{{t 'newCatalog.url'}}</strong> <a href="{{templateResource.cleanProjectUrl}}" target="_blank">{{templateResource.cleanProjectUrl}}</a></small>
     {{/if}}
   </div>
+  {{#if readmeContent}}
+    <div class="col-sm-12 col-md-9" style="overflow-y: auto; max-height: 500px;">
+      {{common-mark markdown=readmeContent}}
+    </div>
+  {{else}}
+    <h2 class="r-mb10">
+      {{t (if editing titleUpgrade titleAdd) name=templateResource.name}}
+    </h2>
+    <p>{{templateResource.description}}</p>
+  {{/if}}
 </section>
 
-<section class="well">
+<section class="{{sectionClass}}">
   <h4>{{t 'newCatalog.templateVersion'}}</h4>
   <hr/>
   <div class="row">
@@ -72,13 +69,13 @@
         optionValuePath="link"
         value=selectedTemplateUrl
       }}
-      <p class="help-block">{{t 'newCatalog.selectVersion'}} {{if editing 'upgrade to' 'deploy'}}</p>
+      <p class="help-block">{{t (if editing selectVersionUpgrade selectVersionAdd)}}</p>
     </div>
   </div>
 </section>
 
 {{#if (and showName (not editing) selectedTemplateModel)}}
-  <section class="well">
+  <section class="{{sectionClass}}">
     <h4>{{t 'newCatalog.newStack'}}</h4>
     <hr/>
 
@@ -90,9 +87,9 @@
   </section>
 {{/if}}
 
-<section class="well">
+<section class="{{sectionClass}}">
   {{#if loading}}
-    <div class="col-md-12 text-center r-mt15 r-mb15">
+    <div class="text-center">
       <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
     </div>
   {{/if}}
@@ -164,7 +161,7 @@
   {{/if}}
 
   <div class="footer-actions">
-    {{save-cancel createLabel=(if editing 'newCatalog.saveUpgrade' 'newCatalog.saveNew') save="save" cancel="cancel"}}
+    {{save-cancel createLabel=(if editing saveUpgrade saveNew) save="save" cancel="cancel"}}
   </div>
 {{else}}
   <div class="footer-actions">

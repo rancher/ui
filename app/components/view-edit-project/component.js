@@ -78,16 +78,10 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     },
 
     enableStack(obj) {
-      obj.set('enabled', true);
-      return;
       this.get('application').setProperties({
         catalogConfigure: true,
-        originalModel: Ember.Object.create({
-          serviceChoices: this.get('serviceChoices'),
-          stack: obj.get('stack'),
-          tpl: obj.get('tpl'),
-          versionLinks: obj.get('tpl.versionLinks'),
-        }),
+        serviceChoices: this.get('serviceChoices'),
+        originalModel: obj,
       });
     },
 
@@ -148,7 +142,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
           stack: this.get('userStore').createRecord({
             type: 'stack',
             accountId: this.get('proejct.id'),
-            name: tpl.get('name'),
+            name: tpl.get('defaultName'),
             system: true,
             environment: {},
             startOnCreate: true,
@@ -281,10 +275,9 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     Object.keys(stacks).forEach((key) => {
       let obj = stacks[key];
       let stack = obj.get('stack');
-//      let version = obj.get('tplVersion');
+      let version = obj.get('tplVersion');
       if ( stack.get('id') ) {
         if ( obj.get('enabled') ) {
-/*
           if ( version && obj.get('changed') ) {
             // Upgrade
             promises.push(stack.doAction('upgrade', {
@@ -294,7 +287,6 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
               externalId: C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + version.get('id'),
             }, {url: this.get('projectBase')+'/stacks'+stack.get('id')+'?action=upgrade'}));
           }
-*/
         } else {
           // Remove
           promises.push(stack.delete({url: this.get('projectBase')+'/stacks/'+stack.get('id')}));

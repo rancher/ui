@@ -21,11 +21,29 @@ export default Ember.Component.extend({
       versionLinks: links,
       versionsArray: verArr,
     };
+
+    this.set('model', out);
   },
 
   actions: {
-    doSave() {
-      debugger;
+    doSave(templateId, newStack, tpl) {
+      let orig = this.get('originalModel');
+      let stack = orig.get('stack');
+      stack.merge(newStack);
+
+      orig.setProperties({
+        changed: true,
+        enabled: true,
+        stack: stack,
+        tplVersion: tpl,
+      });
+      this.sendAction('dismiss');
+    },
+
+    outsideClick() {},
+
+    cancel() {
+      this.sendAction('dismiss');
     },
   },
 });

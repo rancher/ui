@@ -14,4 +14,24 @@ export default Resource.extend({
 
     return Ember.String.htmlSafe(projectUrl);
   }),
+
+  defaultName: Ember.computed('id','templateBase', function() {
+    var name = this.get('id');
+    var base = this.get('templateBase');
+
+    name = name.replace(/^[^:\/]+[:\/]/,'');  // Strip the "catalog-name:"
+    if ( base )
+    {
+      var idx = name.indexOf(base);
+      if ( idx === 0 )
+      {
+        name = name.substr(base.length+1); // Strip the "template-base*"
+      }
+    }
+
+    // Strip anything else invalid
+    name = name.replace(/[^a-z0-9-]+/ig,'');
+
+    return name;
+  }),
 });
