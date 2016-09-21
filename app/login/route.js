@@ -13,7 +13,7 @@ export default Ember.Route.extend({
     let lang = C.LANGUAGE.DEFAULT;
     const session       = this.get('session');
     const fromSession     = session.get(C.SESSION.LANGUAGE); // get local language
-    const fromCookie = this.get('cookies').get('default-language');
+    const fromCookie = this.get('cookies').get(C.COOKIE.LANG);
     if (fromSession) {
       lang = fromSession;
     } else if(fromCookie){

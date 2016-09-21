@@ -16,6 +16,7 @@ var C = {
     PL: 'PL',
     PL_RANCHER_VALUE: 'rancher',
     CSRF: 'CSRF',
+    LANG: 'LANG',
   },
 
   EXTERNAL_ID: {
