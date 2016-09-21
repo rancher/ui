@@ -7,16 +7,35 @@ import { denormalizeServiceArray } from 'ui/utils/denormalize-snowflakes';
 
 export function activeIcon(stack)
 {
-  let kind = stack.get('externalIdInfo.kind');
-
-  if ( C.EXTERNAL_ID.SYSTEM_KINDS.indexOf(kind) >= 0 )
+  if ( stack.get('system') )
   {
-    return 'icon icon-network';
+    return 'icon icon-gear';
   }
   else
   {
     return 'icon icon-layers';
   }
+}
+
+export function normalizeTag(name) {
+  return (name||'').replace(/[^a-z0-9_ -]/ig,'');
+}
+
+export function tagsToArray(str) {
+  return (str||'').split(/\s*,\s*/).
+    map((tag) => normalizeTag(tag)).
+    filter((tag) => tag.length > 0);
+}
+
+export function normalizedChoices(all) {
+  let choices = [];
+  (all||[]).forEach((stack) => {
+    choices.addObjects(stack.get('tags'));
+  });
+
+  return choices.sort((a,b) => {
+    return a.toLowerCase().localeCompare(b.toLowerCase());
+  });
 }
 
 var Stack = Resource.extend({
@@ -228,7 +247,7 @@ var Stack = Resource.extend({
     {
       return C.EXTERNAL_ID.KIND_KUBERNETES;
     }
-    else if ( C.EXTERNAL_ID.SYSTEM_KINDS.indexOf(kind) >= 0 )
+    else if ( this.get('system') /*|| C.EXTERNAL_ID.SYSTEM_KINDS.indexOf(kind) >= 0 */)
     {
       return C.EXTERNAL_ID.KIND_SYSTEM;
     }
@@ -236,7 +255,32 @@ var Stack = Resource.extend({
     {
       return C.EXTERNAL_ID.KIND_USER;
     }
-  }.property('externalIdInfo.kind'),
+  }.property('externalIdInfo.kind','group','system'),
+
+  tags: Ember.computed('group', {
+    get() {
+      return tagsToArray(this.get('group'));
+    },
+    set(key,value) {
+      this.set('group', (value||[]).map((x) => normalizeTag(x)).join(', '));
+      return value;
+    }
+  }),
+
+  hasTags(want) {
+    if ( !want || !want.length ) {
+      return true;
+    }
+
+    let have = this.get('tags');
+    for ( let i = 0 ; i < want.length ; i++ ) {
+      if ( !have.contains(want[i]) ) {
+        return false;
+      }
+    }
+
+    return true;
+  },
 });
 
 Stack.reopenClass({

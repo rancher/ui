@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import { getCatalogNames } from 'ui/utils/parse-catalog-setting';
+import {normalizedChoices} from 'ui/models/stack';
 
 // Useful context/condition shortcuts
 export const getProjectId = function() { return this.get('projectId'); };
@@ -109,7 +110,9 @@ const navTree = [
         ctx: [getProjectId],
         condition: k8sReady,
       },
-      {divider: true},
+      {
+        divider: true,
+      },
       {
         id: 'k8s-system',
         localizedLabel: 'nav.k8s.system',
@@ -211,7 +214,7 @@ const navTree = [
         ctx: [getProjectId],
         queryParams: {which: C.EXTERNAL_ID.KIND_ALL},
       },
-      {divider: true},
+      { divider: true },
       {
         id: 'cattle-user',
         localizedLabel: 'nav.cattle.user',
@@ -223,12 +226,12 @@ const navTree = [
       {
         id: 'cattle-system',
         localizedLabel: 'nav.cattle.system',
-        icon: 'icon icon-network',
+        icon: 'icon icon-gear',
         route: 'stacks',
         ctx: [getProjectId],
         queryParams: {which: C.EXTERNAL_ID.KIND_SYSTEM},
-      },
-    ],
+      }
+    ]
   },
 
   // Catalog
@@ -462,4 +465,3 @@ function getCatalogSubtree() {
     return out;
   }
 }
-

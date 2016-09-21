@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   model: null,
 
-  didInitAttrs() {
+  didReceiveAttrs() {
     let orig = this.get('originalModel');
     let tpl = orig.get('tpl');
     let links = tpl.get('versionLinks');

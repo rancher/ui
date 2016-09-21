@@ -3,6 +3,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   access: Ember.inject.service(),
+  catalogService: Ember.inject.service(),
 
   model: function(/*params, transition*/) {
     var userStore = this.get('userStore');

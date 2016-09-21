@@ -61,7 +61,15 @@ export default Ember.Service.extend(CatalogResource, {
 
   fetchInfraTemplates() {
     return this.fetchAllTemplates({
-      catalogId: 'infra',
+      templateBase: 'infra',
+    }).then((all) => {
+      return FilteredSorted.create({
+        sourceContent: all,
+        dependentKeys: ['templateBase'],
+        filterFn: function(obj)  {
+          return obj.get('templateBase') === 'infra';
+        },
+      });
     });
   },
 

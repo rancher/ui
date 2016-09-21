@@ -1,9 +1,19 @@
 <section class="header">
   <h1>
-    {{t pageHeader}}
+    {{t pageHeader name=which}}
   </h1>
 
-  {{#link-to "stacks.new" (query-params system=addSystem) classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.actionButton'}}{{/link-to}}
+  {{#unless (eq which "system")}}
+    {{#link-to "stacks.new" classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.actionButton'}}{{/link-to}}
+  {{/unless}}
+
+  <div class="pull-right r-ml20">
+    <select class="form-control stack-tags" multiple="true" onchange={{action 'updateTags'}}>
+      {{#each tagChoices as |choice|}}
+        <option value={{choice}} selected={{include tagsArray choice}}>{{choice}}</option>
+      {{/each}}
+    </select>
+  </div>
 
   <div class="pull-right">
     <label class="text-muted r-pr5" style="font-size: 13px;">{{t 'stacksPage.sort.label'}}: </label>
@@ -17,10 +27,10 @@
 <section class="stacks-wrap">
   <div>
     {{#each arranged as |stack|}}
-      {{stack-section model=stack showAddtlInfo='showAddtlInfo'}}
+      {{stack-section model=stack showAddtlInfo='showAddtlInfo' showAddService=(not stack.system)}}
     {{else}}
-      {{#if addSystem}}
-        <div class="r-m20 text-center text-muted">{{t 'stacksPage.noSystemStacks'}}</div>
+      {{#if model.length}}
+        <div class="r-m20 text-center text-muted">{{t 'stacksPage.noMatch'}}</div>
       {{else}}
         {{hero-add-service}}
       {{/if}}

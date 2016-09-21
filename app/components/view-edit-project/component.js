@@ -123,7 +123,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
 
   initStacks() {
     let stacks = {};
-    let enabled = this.get('initialStacks');
+    let enabled = this.get('initialStacks')||[];
     this.get('catalogTemplates').forEach((tpl) => {
       let tplId = tpl.get('id');
       let cur = enabled.findBy('externalIdInfo.templateId', tplId);
@@ -243,14 +243,20 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
       });
 
       return this.get('project').doAction('setmembers',{members: members}).then(() => {
-        return this.loadTemplates().then(() => {
+        return this.defaultTemplateVersions().then(() => {
           return this.saveStacks();
         });
       });
     }
+    else
+    {
+      return this.defaultTemplateVersions().then(() => {
+        return this.saveStacks();
+      });
+    }
   },
 
-  loadTemplates() {
+  defaultTemplateVersions() {
     let promises = [];
     let stacks = this.get('stacks');
     Object.keys(stacks).forEach((key) => {
