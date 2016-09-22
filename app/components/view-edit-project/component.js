@@ -70,15 +70,17 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
 
     selectOrchestration(id) {
       let stacks = this.get('stacks');
+      let keys = Object.keys(stacks);
 
-      Object.keys(stacks).forEach((cur) => {
-        let obj = stacks[cur];
+      for ( let i = 0 ; i < keys.length ; i++ ) {
+        let obj = stacks[keys[i]];
         let tpl = obj.get('tpl');
         if ( obj.get('enabled') && tpl && !tpl.supportsOrchestration(id) ) {
-          this.get('growl').error('Conflict','The currently enabled system service "'+tpl.get('name')+'" does not support ' + Util.ucFirst(id) + ' Orchestration.');
+          let orch = stacks[id].get('tpl.name');
+          this.get('growl').error('Conflict','The currently enabled system service "'+tpl.get('name')+'" does not support ' + orch + ' Orchestration.');
           return;
         }
-      });
+      }
 
       ORCH_TEMPLATES.forEach((cur) => {
         if ( stacks[cur] ) {

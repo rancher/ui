@@ -61,7 +61,12 @@ export default Ember.Component.extend(NewOrEdit, {
 
   didReceiveAttrs() {
     this._super();
+
     // Select the default version
+    if ( this.get('selectedTemplateUrl') ) {
+      return;
+    }
+
     var def = this.get('templateResource.defaultVersion');
     var links = this.get('versionLinks');
     if (links[def]) {

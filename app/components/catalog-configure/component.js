@@ -18,6 +18,7 @@ export default Ember.Component.extend({
       stack: orig.get('stack').clone(),
       serviceChoices: orig.get('serviceChoices'),
       tpl: tpl,
+      currentUrl: orig.get('tplVersion.links.self'),
       versionLinks: links,
       versionsArray: verArr,
     };
