@@ -17,4 +17,4 @@ export default Ember.Route.extend({
       controller.set('which', C.EXTERNAL_ID.KIND_USER);
     }
   },
-})
+});
