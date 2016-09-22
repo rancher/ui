@@ -9,7 +9,7 @@ export default Ember.Component.extend({
 
   parsed: null,
   ary: null,
-  enableInfra: null,
+  enableSystem: null,
   enableLibrary: null,
   enableCommunity: null,
 
@@ -33,8 +33,8 @@ export default Ember.Component.extend({
 
       let map = {};
       // Start with ours, then load the users in case they override the value
-      if (this.get('enableInfra')) {
-        map[C.CATALOG.INFRA_KEY] = {url: C.CATALOG.INFRA_VALUE, branch: def};
+      if (this.get('enableSystem')) {
+        map[C.CATALOG.SYSTEM_KEY] = {url: C.CATALOG.SYSTEM_VALUE, branch: def};
       }
 
       if (this.get('enableLibrary')) {
@@ -73,10 +73,10 @@ export default Ember.Component.extend({
     let parsed = parseCatalogSetting(this.get('initialValue'));
     let map = parsed.catalogs || {};
 
-    let infra = false;
-    if (map[C.CATALOG.INFRA_KEY] && map[C.CATALOG.INFRA_KEY].url=== C.CATALOG.INFRA_VALUE) {
-      infra = true;
-      delete map[C.CATALOG.INFRA_KEY];
+    let system = false;
+    if (map[C.CATALOG.SYSTEM_KEY] && map[C.CATALOG.SYSTEM_KEY].url=== C.CATALOG.SYSTEM_VALUE) {
+      system = true;
+      delete map[C.CATALOG.SYSTEM_KEY];
     }
 
     let library = false;
@@ -99,7 +99,7 @@ export default Ember.Component.extend({
     this.setProperties({
       ary: ary,
       parsed: parsed,
-      enableInfra: infra,
+      enableSystem: system,
       enableLibrary: library,
       enableCommunity: community
     });

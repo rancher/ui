@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
+import C from 'ui/utils/constants';
 
 export default Resource.extend({
   cleanProjectUrl: Ember.computed('links.project', function() {
@@ -32,6 +33,19 @@ export default Resource.extend({
     // Strip anything else invalid
     name = name.replace(/[^a-z0-9-]+/ig,'');
 
+    if ( name === 'k8s' ) {
+      name = 'kubernetes';
+    }
+
     return name;
   }),
+
+  supportsOrchestration(orch) {
+    orch = orch.replace(/.*\*/,'');
+    if ( orch === 'k8s' ) {
+      orch = 'kubernetes';
+    }
+    let list = ((this.get('labels')||{})[C.LABEL.ORCHESTRATION_SUPPORTED]||'').split(/\s*,\s*/).filter((x) => x.length > 0);
+    return list.length === 0 || list.contains(orch);
+  },
 });

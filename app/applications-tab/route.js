@@ -9,8 +9,8 @@ export default Ember.Route.extend({
     let project = this.get('projects.current');
     let auth = this.modelFor('authenticated');
 
-    // Check for waiting only if cattle, because other orchestrations have system services menus that link here
-    if ( !project.get('kubernetes') && !project.get('swarm') && !project.get('mesos') )
+    // Check for waiting only if not cattle, because other orchestrations have system services menus that link here
+    if ( project.get('orchestration') !== 'cattle' )
     {
       return this.get('projects').checkForWaiting(auth.get('hosts'));
     }

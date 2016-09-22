@@ -105,19 +105,7 @@ export default Ember.Controller.extend(Sortable, {
     var needTags = tagsToArray(this.get('tags'));
     var out = this.get('model');
 
-    if ( which === C.EXTERNAL_ID.KIND_NOT_KUBERNETES )
-    {
-      out = out.filter((obj) => obj.get('grouping') !== C.EXTERNAL_ID.KIND_KUBERNETES);
-    }
-    else if ( which === C.EXTERNAL_ID.KIND_NOT_SWARM )
-    {
-      out = out.filter((obj) => obj.get('grouping') !== C.EXTERNAL_ID.KIND_SWARM);
-    }
-    else if ( which === C.EXTERNAL_ID.KIND_NOT_MESOS )
-    {
-      out = out.filter((obj) => obj.get('grouping') !== C.EXTERNAL_ID.KIND_MESOS);
-    }
-    else if ( which !== C.EXTERNAL_ID.KIND_ALL )
+    if ( which !== C.EXTERNAL_ID.KIND_ALL )
     {
       out = out.filterBy('grouping', which);
     }

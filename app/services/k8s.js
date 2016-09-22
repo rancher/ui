@@ -502,12 +502,16 @@ export default Ember.Service.extend({
   }.property('version.{minor,major}'),
 
   filterSystemStack(stacks) {
-    const OLD_STACK_ID = C.EXTERNAL_ID.KIND_SYSTEM + C.EXTERNAL_ID.KIND_SEPARATOR + C.EXTERNAL_ID.KIND_LEGACY_KUBERNETES;
-    const NEW_STACK_PREFIX = C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNAL_ID.GROUP_SEPARATOR + C.EXTERNAL_ID.KIND_KUBERNETES + C.EXTERNAL_ID.GROUP_SEPARATOR;
+    // Run away
+    const REALLY_OLD = C.EXTERNAL_ID.KIND_SYSTEM + C.EXTERNAL_ID.KIND_SEPARATOR + C.EXTERNAL_ID.KIND_LEGACY_KUBERNETES;
+    const OLD_PREFIX = C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNAL_ID.GROUP_SEPARATOR + C.EXTERNAL_ID.KIND_KUBERNETES + C.EXTERNAL_ID.GROUP_SEPARATOR;
+    const OLD_SYSTEM_PREFIX = C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNAL_ID.GROUP_SEPARATOR + C.EXTERNAL_ID.KIND_KUBERNETES + C.EXTERNAL_ID.GROUP_SEPARATOR;
+    const CUR_PREFIX = "system-catalog://system:system*k8s:"; // I give up..
+
 
     var stack = (stacks||[]).filter((stack) => {
       let externalId = stack.get('externalId')||'';
-      return externalId === OLD_STACK_ID || externalId.indexOf(NEW_STACK_PREFIX) === 0;
+      return externalId === REALLY_OLD || externalId.indexOf(OLD_PREFIX) === 0 || externalId.indexOf(OLD_SYSTEM_PREFIX) === 0 || externalId.indexOf(CUR_PREFIX) === 0;
     })[0];
 
     return stack;

@@ -163,7 +163,8 @@ export default Ember.Service.extend({
 
     if ( this.get('current') )
     {
-      if ( this.get('current.kubernetes') )
+      let orch = this.get('current.orchestration');
+      if ( orch === 'kubernetes' )
       {
         hash.hasKubernetes = true;
         promises.push(this.get('k8sSvc').isReady().then((ready) => {
@@ -171,7 +172,7 @@ export default Ember.Service.extend({
         }));
       }
 
-      if ( this.get('current.swarm') )
+      if ( orch === 'swarm' )
       {
         hash.hasSwarm = true;
         promises.push(this.get('swarmSvc').isReady().then((ready) => {
@@ -179,7 +180,7 @@ export default Ember.Service.extend({
         }));
       }
 
-      if ( this.get('current.mesos') )
+      if ( orch === 'mesos' )
       {
         hash.hasMesos = true;
         promises.push(this.get('mesosSvc').isReady().then((ready) => {
@@ -196,7 +197,7 @@ export default Ember.Service.extend({
 
   orchestrationStateShouldChange: function() {
     Ember.run.once(this, 'updateOrchestrationState', true);
-  }.observes('current.{id,kubernetes,swarm,mesos}'),
+  }.observes('current.{id,orchestration}'),
 
   isReady: function() {
     var state = this.get('orchestrationState');

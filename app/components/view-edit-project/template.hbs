@@ -140,9 +140,11 @@
           {{#catalog-box model=obj.tpl active=obj.enabled as |section|}}
             {{#if (eq section 'footer')}}
               {{#if obj.enabled}}
-                <button type="button" class="footer btn btn-default" {{action "disableStack" obj}}>{{t 'viewEditProject.stacks.disable'}}</button>
+                <button type="button" class="btn btn-danger" {{action "disableStack" obj}}>{{t 'viewEditProject.stacks.disable'}}</button>
+              {{else if obj.supported}}
+                <button type="button" class="btn btn-primary" {{action "enableStack" obj}}>{{t 'viewEditProject.stacks.enable'}}</button>
               {{else}}
-                <button type="button" class="footer btn btn-primary" {{action "enableStack" obj}}>{{t 'viewEditProject.stacks.enable'}}</button>
+                <button type="button" class="btn btn-default btn-disabled" disabled="disabled">{{t 'viewEditProject.stacks.notCompatible'}}</button>
               {{/if}}
             {{/if}}
           {{/catalog-box}}

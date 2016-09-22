@@ -59,21 +59,21 @@ export default Ember.Service.extend(CatalogResource, {
     return store.request({url: url});
   },
 
-  fetchInfraTemplates() {
+  fetchSystemTemplates() {
     return this.fetchAllTemplates({
-      templateBase: 'infra',
+      templateBase: 'system',
     }).then((all) => {
       return FilteredSorted.create({
         sourceContent: all,
         dependentKeys: ['templateBase'],
         filterFn: function(obj)  {
-          return obj.get('templateBase') === 'infra';
+          return obj.get('templateBase') === 'system';
         },
       });
     });
   },
 
-  fetchInfraStacks(projectId) {
+  fetchSystemStacks(projectId) {
     this.get('userStore').resetType('stack');
     return this.get('userStore').find('stack', null, {filter: {accountId: projectId, system: 'true'}}).then(() => {
       return FilteredSorted.create({

@@ -16,8 +16,8 @@ export default Ember.Route.extend({
       return userStore.find('project', params.project_id).then((project) => {
         return Ember.RSVP.hash({
           importProject: project.importLink('projectMembers'),
-          templates: this.get('catalogService').fetchInfraTemplates(),
-          stacks: this.get('catalogService').fetchInfraStacks(params.project_id),
+          templates: this.get('catalogService').fetchSystemTemplates(),
+          stacks: this.get('catalogService').fetchSystemStacks(params.project_id),
           serviceChoices: this.get('allServices').choices(),
         }).then((hash) => {
           let out = Ember.Object.create({

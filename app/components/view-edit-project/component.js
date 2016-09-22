@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
 import NewOrEdit from 'ui/mixins/new-or-edit';
+import Util from 'ui/utils/util';
 
 const ORCH_TEMPLATES = [
   C.EXTERNAL_ID.ID_K8S,
@@ -13,6 +14,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   catalogService: Ember.inject.service('catalog-service'),
   projects: Ember.inject.service(),
   access: Ember.inject.service(),
+  growl: Ember.inject.service(),
   accessEnabled: Ember.computed.alias('access.enabled'),
   queryParams: ['editing'],
 
@@ -68,6 +70,16 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
 
     selectOrchestration(id) {
       let stacks = this.get('stacks');
+
+      Object.keys(stacks).forEach((cur) => {
+        let obj = stacks[cur];
+        let tpl = obj.get('tpl');
+        if ( obj.get('enabled') && tpl && !tpl.supportsOrchestration(id) ) {
+          this.get('growl').error('Conflict','The currently enabled system service "'+tpl.get('name')+'" does not support ' + Util.ucFirst(id) + ' Orchestration.');
+          return;
+        }
+      });
+
       ORCH_TEMPLATES.forEach((cur) => {
         if ( stacks[cur] ) {
           stacks[cur].set('enabled', id === cur);
@@ -75,6 +87,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
       });
 
       this.set('activeOrchestration', id);
+      this.updateSupported();
     },
 
     enableStack(obj) {
@@ -90,21 +103,14 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     },
   },
 
-  activeOrchestration: null,
   init() {
     this._super(...arguments);
-    var orch = 'rancher';
-    ORCH_TEMPLATES.forEach((key) => {
-      if ( stacks[key] && stacks[key].get('enabled') ) {
-        orch = key;
-      }
-    });
-
-    // @TODO this shouldn't be needed 
-    this.set('project.systemTemplates',[]);
-
-    this.set('activeOrchestration', orch);
+    this.initStacks();
+    this.initOrchestration();
+    this.updateSupported();
   },
+
+  activeOrchestration: null,
 
   didInsertElement() {
     if ( this.get('showEdit') )
@@ -130,6 +136,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
       if ( cur ) {
         stacks[tplId] = Ember.Object.create({
           enabled: true,
+          compatible: false,
           tpl: tpl,
           stack: cur,
           changed: false,
@@ -139,9 +146,10 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
           enabled: false,
           tpl: tpl,
           changed: false,
+          compatible: false,
           stack: this.get('userStore').createRecord({
             type: 'stack',
-            accountId: this.get('proejct.id'),
+            accountId: this.get('project.id'),
             name: tpl.get('defaultName'),
             system: true,
             environment: {},
@@ -153,13 +161,45 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
 
     ORCH_TEMPLATES.forEach((key) => {
       if ( !stacks[key]) {
-        stacks[key] = {
+        stacks[key] = Ember.Object.create({
           enabled: false
-        };
+        });
       }
     });
 
     this.set('stacks', stacks);
+  },
+
+  initOrchestration() {
+    let stacks = this.get('stacks');
+
+    var orch = 'cattle';
+    ORCH_TEMPLATES.forEach((key) => {
+      if ( stacks[key] && Ember.get(stacks[key],'enabled') ) {
+        orch = key;
+      }
+    });
+
+    this.set('activeOrchestration', orch);
+  },
+
+  updateSupported() {
+    let stacks = this.get('stacks');
+    let orch = this.get('activeOrchestration');
+
+    Object.keys(stacks).forEach((cur) => {
+      let obj = stacks[cur];
+      if (!obj) {
+        return;
+      }
+      let tpl = obj.get('tpl');
+      if (!tpl) {
+        return;
+      }
+
+      let supported = tpl.supportsOrchestration(orch);
+      obj.set('supported', supported);
+    });
   },
 
   roleOptions: function() {
@@ -179,7 +219,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     var active = this.get('activeOrchestration');
 
     var drivers = [
-      {name: 'rancher',     label: 'Cattle',      css: 'rancher'}
+      {name: 'cattle',     label: 'Cattle',      css: 'cattle'}
     ];
 
     let stacks = this.get('stacks');
@@ -227,7 +267,24 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
       // For create the members go in the request
       this.set('project.members', this.get('project.projectMembers'));
     }
-    return out;
+
+    return this.defaultTemplateVersions().then(() => {
+      let stacks = this.get('stacks');
+      let enabled = Object.keys(stacks).filterBy('enabled',true);
+      let orch = this.get('activeOrchestration');
+      for ( let i = 0 ; i < enabled.length ; i++ ) {
+        let obj = stacks[enabled[i]];
+        let tpl = obj.get('tpl');
+        if ( !tpl.supportsOrchestration(orch) ) {
+          this.get('growl').error('Conflict','The selected version of "'+tpl.get('name')+'" does not support ' + Util.ucFirst(orch) + ' Orchestration.');
+          return false;
+        }
+      }
+
+      return out;
+    }).catch(() => {
+      return false;
+    });
   },
 
   didSave() {
@@ -243,16 +300,12 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
       });
 
       return this.get('project').doAction('setmembers',{members: members}).then(() => {
-        return this.defaultTemplateVersions().then(() => {
-          return this.saveStacks();
-        });
+        return this.saveStacks();
       });
     }
     else
     {
-      return this.defaultTemplateVersions().then(() => {
-        return this.saveStacks();
-      });
+      return this.saveStacks();
     }
   },
 
@@ -290,7 +343,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
               dockerCompose: version.get('files')['docker-compose.yml'],
               rancherCompose: version.get('files')['rancher-compose.yml'],
               environment: stack.get('environment'),
-              externalId: C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + version.get('id'),
+              externalId: C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + version.get('id'),
             }, {url: this.get('projectBase')+'/stacks'+stack.get('id')+'?action=upgrade'}));
           }
         } else {

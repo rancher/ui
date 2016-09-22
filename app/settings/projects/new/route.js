@@ -9,7 +9,7 @@ export default Ember.Route.extend({
     var userStore = this.get('userStore');
     return Ember.RSVP.hash({
       all: userStore.findAllUnremoved('project'),
-      templates: this.get('catalogService').fetchInfraTemplates(),
+      templates: this.get('catalogService').fetchSystemTemplates(),
     }).then((hash) => {
       var project = userStore.createRecord({
         type: 'project',

@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import { getCatalogNames } from 'ui/utils/parse-catalog-setting';
-import {normalizedChoices} from 'ui/models/stack';
 
 // Useful context/condition shortcuts
 export const getProjectId = function() { return this.get('projectId'); };
@@ -119,7 +118,7 @@ const navTree = [
         icon: 'icon icon-network',
         route: 'stacks',
         ctx: [getProjectId],
-        queryParams: {which: C.EXTERNAL_ID.KIND_NOT_KUBERNETES},
+        queryParams: {which: C.EXTERNAL_ID.KIND_SYSTEM},
       },
     ],
   },
@@ -163,7 +162,7 @@ const navTree = [
         icon: 'icon icon-network',
         route: 'stacks',
         ctx: [getProjectId],
-        queryParams: {which: C.EXTERNAL_ID.KIND_NOT_SWARM},
+        queryParams: {which: C.EXTERNAL_ID.KIND_SYSTEM},
       },
     ]
   },
@@ -191,7 +190,7 @@ const navTree = [
         icon: 'icon icon-network',
         route: 'stacks',
         ctx: [getProjectId],
-        queryParams: {which: C.EXTERNAL_ID.KIND_NOT_MESOS},
+        queryParams: {which: C.EXTERNAL_ID.KIND_SYSTEM},
       },
     ],
   },

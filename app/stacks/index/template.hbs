@@ -7,6 +7,7 @@
     {{#link-to "stacks.new" classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.actionButton'}}{{/link-to}}
   {{/unless}}
 
+<!--
   <div class="pull-right r-ml20">
     <select class="form-control stack-tags" multiple="true" onchange={{action 'updateTags'}}>
       {{#each tagChoices as |choice|}}
@@ -14,6 +15,7 @@
       {{/each}}
     </select>
   </div>
+-->
 
   <div class="pull-right">
     <label class="text-muted r-pr5" style="font-size: 13px;">{{t 'stacksPage.sort.label'}}: </label>
@@ -29,7 +31,7 @@
     {{#each arranged as |stack|}}
       {{stack-section model=stack showAddtlInfo='showAddtlInfo' showAddService=(not stack.system)}}
     {{else}}
-      {{#if model.length}}
+      {{#if (and model.length tagArray.length)}}
         <div class="r-m20 text-center text-muted">{{t 'stacksPage.noMatch'}}</div>
       {{else}}
         {{hero-add-service}}

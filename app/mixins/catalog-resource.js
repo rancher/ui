@@ -10,17 +10,7 @@ export default Ember.Mixin.create({
   catalogs         : null,
   uniqueCatalogIds : null,
 
-  templateBase: function() {
-    if ( this.get('projects.current.kubernetes') ) {
-      return 'kubernetes';
-    } else if ( this.get('projects.current.swarm') ) {
-      return 'swarm';
-    } else if ( this.get('projects.current.mesos') ) {
-      return 'mesos';
-    } else {
-      return 'cattle';
-    }
-  }.property('projects.current.{kubernetes,swarm,mesos}'),
+  templateBase: Ember.computed.alias('projects.current.orchestration'),
 
   uniqKeys: function (data, name) {
     let out = data.map((item) => item[name]);
