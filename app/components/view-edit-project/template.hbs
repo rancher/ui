@@ -63,12 +63,11 @@
     <li role="tab" class="tab" data-section="access" {{action "selectTab" "access" target="component"}}>
       <a href="#">{{t 'viewEditProject.tab.access'}}</a>
     </li>
-    <li role="tab" class="tab" data-section="stacks" {{action "selectTab" "stacks" target="component"}}>
-      <a href="#">{{t 'viewEditProject.tab.stacks'}}</a>
-    </li>
-    <li role="tab" class="tab" data-section="vm" {{action "selectTab" "vm" target="component"}}>
-      <a href="#">{{t 'viewEditProject.tab.vm'}}</a>
-    </li>
+    {{#each categories as |category|}}
+      <li role="tab" class="tab" data-section="{{category}}" {{action "selectTab" category target="component"}}>
+        <a href="#">{{category}}</a>
+      </li>
+    {{/each}}
   </ul>
 
   <div class="well nav-well" role="tabpanel">
@@ -134,45 +133,30 @@
       {{/if}}
     </div>
 
-    <div class="section container-fluid container-catalog clearfix" data-section="stacks">
-      {{#each-in stacks as |id obj|}}
-        {{#if (not-eq obj.tpl.category "Orchestration")}}
-          {{#catalog-box model=obj.tpl active=obj.enabled as |section|}}
-            {{#if (eq section 'footer')}}
-              {{#if obj.enabled}}
-                {{#unless obj.stack.id}}
-                  <button type="button" class="btn btn-default" {{action "enableStack" obj}}>{{t 'viewEditProject.stacks.edit'}}</button>
-                {{/unless}}
-                <button type="button" class="btn btn-danger" {{action "disableStack" obj}}>{{t 'viewEditProject.stacks.disable'}}</button>
-              {{else if obj.supported}}
-                <button type="button" class="btn btn-primary" {{action "enableStack" obj}}>{{t 'viewEditProject.stacks.enable'}}</button>
-              {{else}}
-                <button type="button" class="btn btn-default btn-disabled" disabled="disabled">{{t 'viewEditProject.stacks.notCompatible'}}</button>
+    {{#each categories as |category|}}
+      <div class="section container-fluid container-catalog clearfix" data-section="{{category}}">
+        {{#each-in stacks as |id obj|}}
+          {{#if (eq obj.tpl.category category)}}
+            {{#catalog-box model=obj.tpl active=obj.enabled as |section|}}
+              {{#if (eq section 'footer')}}
+                {{#if obj.enabled}}
+                  {{#unless obj.stack.id}}
+                    <button type="button" class="btn btn-default" {{action "enableStack" obj}}>{{t 'viewEditProject.stacks.edit'}}</button>
+                  {{/unless}}
+                  <button type="button" class="btn btn-danger" {{action "disableStack" obj}}>{{t 'viewEditProject.stacks.disable'}}</button>
+                {{else if obj.supported}}
+                  <button type="button" class="btn btn-primary" {{action "enableStack" obj}}>{{t 'viewEditProject.stacks.enable'}}</button>
+                {{else}}
+                  <button type="button" class="btn btn-default btn-disabled" disabled="disabled">{{t 'viewEditProject.stacks.notCompatible'}}</button>
+                {{/if}}
               {{/if}}
-            {{/if}}
-          {{/catalog-box}}
-        {{/if}}
-      {{else}}
-        <div class="text-muted r-p10">{{t 'viewEditProject.noTemplates'}}</div>
-      {{/each-in}}
-    </div>
-    <div class="section container-fluid" data-section="vm">
-      {{#if showEdit}}
-        <label class="form-control-static">{{t 'viewEditProject.virtualMachine.label'}}</label>
-        <div>
-          <label class="r-mr20 hand">
-            {{radio-button selection=project.virtualMachine value=true}} {{t 'generic.enabled'}}
-          </label>
-          <label class="hand">
-            {{radio-button selection=project.virtualMachine value=false}} {{t 'generic.disabled'}}
-          </label>
-        </div>
-      {{else}}
-        <label class="inline-block r-m0">{{t 'viewEditProject.virtualMachine.label'}}: </label>
-        {{t (if project.virtualMachine 'generic.enabled' 'generic.disabled')}}
-      {{/if}}
-      <p class="help-block">{{format-html-message 'viewEditProject.virtualMachine.subtext'}}</p>
-    </div>
+            {{/catalog-box}}
+          {{/if}}
+        {{else}}
+          <div class="text-muted r-p10">{{t 'viewEditProject.noTemplates'}}</div>
+        {{/each-in}}
+      </div>
+    {{/each}}
   </div>
 {{/select-tab}}
 

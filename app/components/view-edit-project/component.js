@@ -77,7 +77,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
         let tpl = obj.get('tpl');
         if ( obj.get('enabled') && tpl && !tpl.supportsOrchestration(id) ) {
           let orch = stacks[id].get('tpl.name');
-          this.get('growl').error('Conflict','The currently enabled system service "'+tpl.get('name')+'" does not support ' + orch + ' Orchestration.');
+          this.get('growl').error('Conflict','The currently enabled '+ tpl.get('category') +' stack "'+ tpl.get('name') +'" does not support '+ orch +' Orchestration.');
           return;
         }
       }
@@ -204,6 +204,12 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     });
   },
 
+  categories: function() {
+    let out = this.get('catalogTemplates').map(tpl => tpl.category).uniq().sort();
+    out.removeObject('Orchestration');
+    return out;
+  }.property('catalogTemplates.@each.category'),
+
   roleOptions: function() {
     return (this.get('userStore').getById('schema','projectmember').get('resourceFields.role.options')||[]).map((role) => {
       return {
@@ -278,7 +284,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
         let obj = stacks[enabled[i]];
         let tpl = obj.get('tpl');
         if ( !tpl.supportsOrchestration(orch) ) {
-          this.get('growl').error('Conflict','The selected version of "'+tpl.get('name')+'" does not support ' + Util.ucFirst(orch) + ' Orchestration.');
+          this.get('growl').error('Conflict','The selected version of ' + tpl.get('category') + ' stack "'+tpl.get('name')+'" does not support ' + Util.ucFirst(orch) + ' Orchestration.');
           return false;
         }
       }
