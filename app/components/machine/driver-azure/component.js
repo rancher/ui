@@ -91,6 +91,16 @@ export default Ember.Component.extend(Driver, {
   validate: function() {
     let errors = [];
 
+    this.set('prefix',(this.get('prefix')||'').toLowerCase());
+    let name = this.get('model.name');
+    if ( name.length < 4 || name > 62 ) {
+      errors.push('Name must be between 4 and 62 characters long');
+    }
+
+    if ( name.match(/[^a-z0-9-]/) ) {
+      errors.push('Name can only contain a-z, 0-9, and hyphen');
+    }
+
     if (!this.get('azureConfig.subscriptionId') ) {
       errors.push('Subscription ID is required');
     }
