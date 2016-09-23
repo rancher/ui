@@ -3,7 +3,6 @@ import Util from 'ui/utils/util';
 
 const {
   computed,
-//  keys
 } = Ember;
 
 const {
