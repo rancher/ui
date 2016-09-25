@@ -11,7 +11,7 @@ export default Ember.Component.extend(StrippedName, {
   classNameBindings: ['model.isManaged:managed'],
 
   stateBackground: function() {
-    return this.get('model.stateColor').replace("text-","bg-");
+    return 'bg-'+this.get('model.stateColor').substr(5);
   }.property('model.stateColor'),
 
   isKubernetes: function() {

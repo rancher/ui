@@ -70,7 +70,7 @@ export default Ember.Mixin.create({
     }
 
     return list.sortBy('group','name','id');
-  }.property('allHosts.@each.instancesUpdated','intl._locale').volatile(),
+  }.property('allHosts.@each.instances','intl._locale'),
 
   containersOnRequestedHost: function() {
     var requestedHostId = this.get('instance.requestedHostId');

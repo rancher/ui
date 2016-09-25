@@ -3,6 +3,8 @@ import Socket from 'ui/utils/socket';
 import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
+let DEADTOME = ['removed','purging','purged'];
+
 export default Ember.Mixin.create({
   k8s             : Ember.inject.service(),
   projects        : Ember.inject.service(),
@@ -18,49 +20,63 @@ export default Ember.Mixin.create({
     this.set('k8sUidBlacklist', []);
 
     var store = this.get('store');
-    var boundTypeify = store._typeify.bind(store);
 
     var socket = Socket.create();
 
     socket.on('message', (event) => {
-      // Fail-safe: make sure the message is for this project
-      var currentProject = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
-      var metadata = socket.getMetadata();
-      var socketProject = metadata.projectId;
-      if ( currentProject !== socketProject ) {
-        console.error(`Subscribe ignoring message, current=${currentProject} socket=${socketProject} ` + this.forStr());
-        this.connectSubscribe();
-        return;
-      }
-
-      var d = JSON.parse(event.data, boundTypeify);
-      //this._trySend('subscribeMessage',d);
-
-      if ( d.name === 'resource.change' )
-      {
-        this._trySend(d.resourceType+'Changed', d);
-      }
-      else if ( d.name === 'service.kubernetes.change' )
-      {
-        var changeType = (Ember.get(d, 'data.type')||'').toLowerCase();
-        var obj = Ember.get(d, 'data.object');
-        if ( changeType && obj )
-        {
-          this._trySend('k8sResourceChanged', changeType, obj);
+      Ember.run.schedule('actions', this, function() {
+        // Fail-safe: make sure the message is for this project
+        var currentProject = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
+        var metadata = socket.getMetadata();
+        var socketProject = metadata.projectId;
+        if ( currentProject !== socketProject ) {
+          console.error(`Subscribe ignoring message, current=${currentProject} socket=${socketProject} ` + this.forStr());
+          this.connectSubscribe();
+          return;
         }
-      }
-      else if ( d.name === 'ping' )
-      {
-        this._trySend('subscribePing', d);
-      }
+
+        var d = JSON.parse(event.data);
+        let resource;
+        if ( d.data && d.data.resource ) {
+          resource = store._typeify(d.data.resource);
+          d.data.resource = resource;
+        }
+
+        //this._trySend('subscribeMessage',d);
+
+        if ( d.name === 'resource.change' )
+        {
+          let key = d.resourceType+'Changed';
+          if ( this[key] ) {
+            this[key](d);
+          }
+
+          if ( resource && DEADTOME.contains(resource.state) ) {
+            store._remove(resource.type, resource);
+          }
+        }
+        else if ( d.name === 'service.kubernetes.change' )
+        {
+          var changeType = (Ember.get(d, 'data.type')||'').toLowerCase();
+          var obj = Ember.get(d, 'data.object');
+          if ( changeType && obj )
+          {
+            this.k8sResourceChanged(changeType, obj);
+          }
+        }
+        else if ( d.name === 'ping' )
+        {
+          this.subscribePing(d);
+        }
+      });
     });
 
     socket.on('connected', (tries, after) => {
-      this._trySend('subscribeConnected', tries, after);
+      this.subscribeConnected(tries, after);
     });
 
     socket.on('disconnected', () => {
-      this._trySend('subscribeDisconnected', this.get('tries'));
+      this.subscribeDisconnected(this.get('tries'));
     });
 
     this.set('subscribeSocket', socket);
@@ -107,153 +123,106 @@ export default Ember.Mixin.create({
     return out;
   },
 
-  actions: {
-    // Raw message from the WebSocket
-    //subscribeMessage: function(/*data*/) {
-      //console.log('subscribeMessage',data);
-    //},
+  // WebSocket connected
+  subscribeConnected: function(tries,msec) {
+    this.set('connected', true);
 
-    // WebSocket connected
-    subscribeConnected: function(tries,msec) {
-      this.set('connected', true);
-
-      let msg = 'Subscribe connected ' + this.forStr();
-      if (tries > 0)
+    let msg = 'Subscribe connected ' + this.forStr();
+    if (tries > 0)
+    {
+      msg += ' (after '+ tries + ' ' + (tries === 1 ? 'try' : 'tries');
+      if (msec)
       {
-        msg += ' (after '+ tries + ' ' + (tries === 1 ? 'try' : 'tries');
-        if (msec)
-        {
-          msg += ', ' + (msec/1000) + ' sec';
-        }
-
-        msg += ')';
+        msg += ', ' + (msec/1000) + ' sec';
       }
 
-      console.log(msg);
-    },
+      msg += ')';
+    }
 
-    // WebSocket disconnected (unexpectedly)
-    subscribeDisconnected: function() {
-      this.set('connected', false);
+    console.log(msg);
+  },
 
-      console.log('Subscribe disconnected ' + this.forStr());
-      if ( this.get('reconnect') ) {
-        this.connectSubscribe();
-      }
-    },
+  // WebSocket disconnected (unexpectedly)
+  subscribeDisconnected: function() {
+    this.set('connected', false);
 
-    subscribePing: function() {
-      console.log('Subscribe ping ' + this.forStr());
-    },
-
-    hostChanged: function(change) {
-      // If the host has a physicalHostId, ensure it is in the machine's hosts array.
-      var host = change.data.resource;
-      var machine = this.get('store').getById('machine', host.get('physicalHostId'));
-      if ( machine )
-      {
-        machine.get('hosts').addObject(host);
-      }
-    },
-
-    containerChanged: function(change) {
-      this._includeChanged('host', 'instances', 'hosts', change.data.resource);
-    },
-
-    virtualMachineChanged: function(change) {
-      this._includeChanged('host', 'instances', 'hosts', change.data.resource);
-    },
-
-    instanceChanged: function(change) {
-      this._includeChanged('host', 'instances', 'hosts', change.data.resource);
-    },
-
-    ipAddressChanged: function(change) {
-      this._includeChanged('host', 'ipAddresses', 'hosts', change.data.resource);
-//      this._includeChanged('container', 'container', 'ipAddresses', 'containers', change.data.resource);
-    },
-
-    loadBalancerTargetChanged: function(change) {
-      this._includeChanged('loadBalancer', 'loadBalancerTargets', 'loadBalancerId', change.data.resource);
-    },
-
-    loadBalancerChanged: function(change) {
-      var balancer = change.data.resource;
-      var config = balancer.get('loadBalancerConfig');
-      var balancers = config.get('loadBalancers');
-      if ( !balancers )
-      {
-        balancers = [];
-        config.set('loadBalancers',balancers);
-      }
-
-      if ( config.get('state') === 'removed' )
-      {
-        balancers.removeObject(balancer);
-      }
-      else
-      {
-        balancers.addObject(balancer);
-      }
-    },
-
-    registryCredentialChanged: function(change) {
-      this._includeChanged('registry', 'credentials', 'registryId', change.data.resource);
-    },
-
-    loadBalancerServiceChanged: function(change) {
-      this._includeChanged('stack', 'services', 'stackId', change.data.resource);
-    },
-
-    dnsServiceChanged: function(change) {
-      this._includeChanged('stack', 'services', 'stackId', change.data.resource);
-    },
-
-    externalServiceChanged: function(change) {
-      this._includeChanged('stack', 'services', 'stackId', change.data.resource);
-    },
-
-    serviceChanged: function(change) {
-      this._includeChanged('stack', 'services', 'stackId', change.data.resource);
-    },
-
-    kubernetesServiceChanged: function(change) {
-      this._includeChanged('stack', 'services', 'stackId', change.data.resource);
-    },
-
-    k8sResourceChanged: function(changeType, obj) {
-      //console.log('k8s change', changeType, (obj && obj.metadata && obj.metadata.uid ? obj.metadata.uid : 'none'));
-      if ( obj && obj.metadata && obj.metadata.uid && this.get('k8sUidBlacklist').indexOf(obj.metadata.uid) >= 0 )
-      {
-        //console.log('^-- Ignoring', changeType, 'for removed resource');
-        return;
-      }
-
-      var resource = this.get('k8s')._typeify(obj);
-
-      if ( changeType === 'deleted' )
-      {
-        this.get('k8sUidBlacklist').addObject(obj.metadata.uid);
-        this.get('store')._remove(resource.get('type'), resource);
-      }
+    console.log('Subscribe disconnected ' + this.forStr());
+    if ( this.get('reconnect') ) {
+      this.connectSubscribe();
     }
   },
 
-  _trySend: function(/*arguments*/) {
-    try
+  subscribePing: function() {
+    console.log('Subscribe ping ' + this.forStr());
+  },
+
+  ipAddressChanged: function(change) {
+    this._includeChanged('host', 'ipAddresses', 'hosts', change.data.resource);
+//      this._includeChanged('container', 'container', 'ipAddresses', 'containers', change.data.resource);
+  },
+
+  loadBalancerTargetChanged: function(change) {
+    this._includeChanged('loadBalancer', 'loadBalancerTargets', 'loadBalancerId', change.data.resource);
+  },
+
+  loadBalancerChanged: function(change) {
+    var balancer = change.data.resource;
+    var config = balancer.get('loadBalancerConfig');
+    var balancers = config.get('loadBalancers');
+    if ( !balancers )
     {
-      this.send.apply(this,arguments);
+      balancers = [];
+      config.set('loadBalancers',balancers);
     }
-    catch (err)
+
+    if ( config.get('state') === 'removed' )
     {
-      if ( err instanceof Ember.Error && err.message.indexOf('Nothing handled the action') === 0 )
-      {
-        // Don't care
-      }
-      else
-      {
-        throw err;
-      }
+      balancers.removeObject(balancer);
+    }
+    else
+    {
+      balancers.addObject(balancer);
+    }
+  },
+
+  registryCredentialChanged: function(change) {
+    this._includeChanged('registry', 'credentials', 'registryId', change.data.resource);
+  },
+
+  loadBalancerServiceChanged: function(change) {
+    this._includeChanged('stack', 'services', 'stackId', change.data.resource);
+  },
+
+  dnsServiceChanged: function(change) {
+    this._includeChanged('stack', 'services', 'stackId', change.data.resource);
+  },
+
+  externalServiceChanged: function(change) {
+    this._includeChanged('stack', 'services', 'stackId', change.data.resource);
+  },
+
+  serviceChanged: function(change) {
+    this._includeChanged('stack', 'services', 'stackId', change.data.resource);
+  },
+
+  kubernetesServiceChanged: function(change) {
+    this._includeChanged('stack', 'services', 'stackId', change.data.resource);
+  },
+
+  k8sResourceChanged: function(changeType, obj) {
+    //console.log('k8s change', changeType, (obj && obj.metadata && obj.metadata.uid ? obj.metadata.uid : 'none'));
+    if ( obj && obj.metadata && obj.metadata.uid && this.get('k8sUidBlacklist').indexOf(obj.metadata.uid) >= 0 )
+    {
+      //console.log('^-- Ignoring', changeType, 'for removed resource');
+      return;
+    }
+
+    var resource = this.get('k8s')._typeify(obj);
+
+    if ( changeType === 'deleted' )
+    {
+      this.get('k8sUidBlacklist').addObject(obj.metadata.uid);
+      this.get('store')._remove(resource.get('type'), resource);
     }
   },
 
@@ -267,6 +236,8 @@ export default Ember.Mixin.create({
     {
       return;
     }
+
+    let start = (new Date().getTime());
 
     var changedId = changed.get('id');
     var store = this.get('store');
@@ -342,5 +313,8 @@ export default Ember.Mixin.create({
         }
       }).catch(() => {});
     });
+
+    let diff = ((new Date()).getTime())-start;
+    console.log('includechanged:', resourceName, destProperty, expectedProperty, diff);
   },
 });

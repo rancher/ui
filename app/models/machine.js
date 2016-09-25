@@ -70,19 +70,6 @@ var Machine = Resource.extend(PolledResource, {
 });
 
 Machine.reopenClass({
-  alwaysInclude: ['hosts'],
-  pollTransitioningDelay: 60000,
-  pollTransitioningInterval: 60000,
-
-  mangleIn: function(data) {
-    if ( !data.hosts )
-    {
-      data.hosts = [];
-    }
-
-    return data;
-  },
-
   stateMap: {
     'bootstrapping':  {icon: 'icon icon-tag',       color: 'text-info'},
     'active':         {icon: 'icon icon-tag',       color: 'text-info'},

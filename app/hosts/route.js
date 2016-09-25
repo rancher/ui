@@ -6,6 +6,7 @@ export default Ember.Route.extend({
     return Ember.RSVP.hash({
       machines: store.findAll('machine'),
       hosts: store.findAll('host'),
+      instances: store.findAll('instance'),
     }).then((hash) => {
       return hash.hosts;
     });

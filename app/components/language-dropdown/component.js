@@ -12,6 +12,7 @@ export default Ember.Component.extend({
   language     : Ember.inject.service('user-language'),
   intl         : Ember.inject.service(),
   session      : Ember.inject.service(),
+  settings     : Ember.inject.service(),
 
   locales : Ember.computed.alias('language.locales'),
 

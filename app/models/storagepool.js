@@ -6,7 +6,7 @@ var StoragePool = Resource.extend({
 });
 
 StoragePool.reopenClass({
-  alwaysInclude: ['hosts','volumes'],
+  alwaysInclude: ['volumes'],
 });
 
 export default StoragePool;
