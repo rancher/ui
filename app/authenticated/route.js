@@ -43,51 +43,42 @@ export default Ember.Route.extend(Subscribe, {
     let isAdmin = (type === C.USER.TYPE_ADMIN) || !this.get('access.enabled');
     this.set('access.admin', isAdmin);
 
-    var store = this.get('store');
+    let store = this.get('store');
+    let promise = new Ember.RSVP.Promise((resolve, reject) => {
+      let tasks = {
+        userSchemas:                                    this.toCb('loadUserSchemas'),
+        projects:                                       this.toCb('loadProjects'),
+        preferences:                                    this.toCb('loadPreferences'),
+        settings:                                       this.toCb('loadPublicSettings'),
+        project:            ['projects', 'preferences', this.toCb('selectProject',transition)],
+        projectSchemas:     ['project',                 this.toCb('loadProjectSchemas')],
+        orchestrationState: ['projectSchemas',          this.toCb('updateOrchestration')],
+        hosts:              ['projectSchemas',          this.cbFindAllUnremoved('host')],
+        machines:           ['projectSchemas',          this.cbFindAllUnremoved('machine')],
+        stacks:             ['projectSchemas',          this.cbFindAllUnremoved('stack')],
+        mounts:             ['projectSchemas',          this.cbFindAllUnremoved('mount')], // the container model needs access
+        volumes:            ['projectSchemas',          this.cbFindAllUnremoved('volume')],
+        snapshots:          ['projectSchemas',          this.cbFindAllUnremoved('snapshot')],
+      };
 
-    return Ember.RSVP.hash({
-      schemas: this.loadUserSchemas(),
-      projects: this.loadProjects(),
-      preferences: this.loadPreferences(),
-      settings: this.loadPublicSettings(),
-    }).then((hash) => {
-      let projectId = null;
-      if ( transition.params && transition.params['authenticated.project'] && transition.params['authenticated.project'].project_id )
-      {
-        projectId = transition.params['authenticated.project'].project_id;
-      }
-
-      if (this.get(`prefs.${C.PREFS.I_HATE_SPINNERS}`)) {
-        Ember.$('BODY').addClass('i-hate-spinners');
-      }
-
-      // Make sure a valid project is selected
-      return this.get('projects').selectDefault(projectId).then((project) => {
-        // Load stuff that is needed to draw the header
-        hash.project = project;
-
-        return Ember.RSVP.hash({
-          language: this.get('language').setLanguage(),
-          orchestrationState: this.get('projects').updateOrchestrationState(),
-          hosts: store.findAllUnremoved('host'),
-          machines: store.findAllUnremoved('machine'),
-          stacks: store.findAllUnremoved('stack'),
-          mounts: store.findAllUnremoved('mount'), // the container model needs access
-          volumes: store.findAllUnremoved('volume'),
-          snapshots: store.findAllUnremoved('snapshot'),
-        }).then((moreHash) => {
-          Ember.merge(hash, moreHash);
-
-          if ( hash.orchestrationState.kubernetesReady ) {
-            return this.loadKubernetes().then((k8sHash) => {
-              Ember.merge(hash, k8sHash);
-              return Ember.Object.create(hash);
-            });
-          } else {
-            return Ember.Object.create(hash);
-          }
-        });
+      async.auto(tasks, function(err, res) {
+        if ( err ) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
       });
+    }, 'Load all the things');
+
+    return promise.then((hash) => {
+      if ( hash.orchestrationState.kubernetesReady ) {
+        return this.loadKubernetes().then((k8sHash) => {
+          Ember.merge(hash, k8sHash);
+          return Ember.Object.create(hash);
+        });
+      } else {
+        return Ember.Object.create(hash);
+      }
     }).catch((err) => {
       return this.loadingError(err, transition, Ember.Object.create({
         projects: [],
@@ -155,6 +146,26 @@ export default Ember.Route.extend(Subscribe, {
     return ret;
   },
 
+  toCb(name, ...args) {
+    return (cb) => {
+      this[name](...args).then(function(res) {
+        cb(null, res);
+      }).catch(function(err) {
+        cb(err, null);
+      });
+    };
+  },
+
+  cbFindAllUnremoved(type) {
+    return (cb) => {
+      return this.get('store').findAllUnremoved(type).then(function(res) {
+        cb(null, res);
+      }).catch(function(err) {
+        cb(err, null);
+      });
+    };
+  },
+
   loadPreferences() {
     return this.get('userStore').find('userpreference', null, {url: 'userpreferences', forceReload: true}).then((res) => {
       // Save the account ID from the response headers into session
@@ -164,6 +175,12 @@ export default Ember.Route.extend(Subscribe, {
       }
 
       this.get('userTheme').setupTheme();
+
+      if (this.get(`prefs.${C.PREFS.I_HATE_SPINNERS}`)) {
+        Ember.$('BODY').addClass('i-hate-spinners');
+      }
+
+      this.get('language').setLanguage();
 
       return res;
     });
@@ -188,6 +205,13 @@ export default Ember.Route.extend(Subscribe, {
     });
   },
 
+  loadProjectSchemas() {
+    var store = this.get('store');
+    store.resetType('schema');
+    return store.rawRequest({url:'schema', dataType: 'json'}).then((xhr) => {
+      store._bulkAdd('schema', xhr.body.data);
+    });
+  },
 
   loadUserSchemas() {
     // @TODO Inline me into releases
@@ -205,8 +229,23 @@ export default Ember.Route.extend(Subscribe, {
     });
   },
 
+  updateOrchestration() {
+    return this.get('projects').updateOrchestrationState();
+  },
+
   loadPublicSettings() {
     return this.get('userStore').find('setting', null, {url: 'setting', forceReload: true, filter: {all: 'false'}});
+  },
+
+  selectProject(transition) {
+    let projectId = null;
+    if ( transition.params && transition.params['authenticated.project'] && transition.params['authenticated.project'].project_id )
+    {
+      projectId = transition.params['authenticated.project'].project_id;
+    }
+
+    // Make sure a valid project is selected
+    return this.get('projects').selectDefault(projectId);
   },
 
   actions: {
