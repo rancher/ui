@@ -5,6 +5,15 @@ import { byId as serviceById } from 'ui/models/service';
 import { formatMib } from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
+function getByInstanceId(store,id) {
+  let obj = store.getById('container', id);
+  if ( !obj ) {
+    obj = store.getById('virtualmachine', id);
+  }
+
+  return obj;
+}
+
 
 var Host = Resource.extend({
   type: 'host',
@@ -78,10 +87,19 @@ var Host = Resource.extend({
   }.property('actionLinks.{activate,deactivate,remove,purge,update}','machine','machine.links.config'),
 
 
-  instancesUpdated: 0,
-  onInstanceChanged: function() {
-    this.incrementProperty('instancesUpdated');
-  }.observes('instances.@each.{id,name,state}','instances.length'),
+  instances: function() {
+    let out = [];
+    let store = this.get('store');
+
+    (this.get('instanceIds')||[]).forEach((id) => {
+      let obj = getByInstanceId(store,id);
+      if ( obj ) {
+        out.push(obj);
+      }
+    });
+
+    return out;
+  }.property('instanceIds.[]'),
 
   state: function() {
     var host = this.get('hostState');
@@ -233,20 +251,14 @@ var Host = Resource.extend({
         endpoint.service = serviceById(endpoint.serviceId);
       }
 
-      if ( !endpoint.instance ) {
-        endpoint.instance = store.getById('container', endpoint.instanceId);
-        if ( !endpoint.instanceId ) {
-          endpoint.instance = store.getById('virtualmachine', endpoint.instanceId);
-        }
-      }
-
+      endpoint.instance = getByInstanceId(store, endpoint.instanceId);
       return endpoint;
     });
   }.property('publicEndpoints.@each.{ipAddress,port,serviceId,instanceId}'),
 });
 
 Host.reopenClass({
-  alwaysInclude: ['instances','ipAddresses'],
+  alwaysInclude: ['ipAddresses'],
 
   // Remap the host state to hostState so the regular state can be a computed combination of host+agent state.
   mangleIn: function(data) {

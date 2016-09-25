@@ -184,7 +184,7 @@ export default Ember.Component.extend({
     });
 
     return list.sortBy('group','name','id');
-  }.property('instance.requestedHostId','allHosts.@each.instancesUpdated'),
+  }.property('instance.requestedHostId','allHosts.@each.instances'),
 
   volumesFromArray: null,
   initVolumesFrom: function() {

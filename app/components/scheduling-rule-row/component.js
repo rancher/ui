@@ -246,7 +246,7 @@ export default Ember.Component.extend({
     });
 
     return out.sortBy('name','id').uniq();
-  }.property('allHosts.@each.instancesUpdated'),
+  }.property('allHosts.@each.instances'),
 
   normalizedContainerLabels: function() {
     return normalizedLabels(this.get('allContainers'));
