@@ -13,6 +13,8 @@ export default Ember.Component.extend({
   classNames      : ['btn-group','resource-actions','action-menu'],
   tooltipService  : Ember.inject.service('tooltip'),
 
+  primaryAction   : Ember.computed.alias('model.primaryAction'),
+
   click(e) {
     var tgt = Ember.$(e.target);
     var more = tgt.closest('.more-actions');
@@ -30,7 +32,7 @@ export default Ember.Component.extend({
     } else {
       let idx = parseInt(tgt.closest('BUTTON').data('primary'),10);
       if ( !isNaN(idx) ) {
-        var action = (this.get('model.primaryActions')||[]).objectAt(idx);
+        var action = this.get('model.primaryAction');
         if ( action ) {
           e.preventDefault();
           e.stopPropagation();
