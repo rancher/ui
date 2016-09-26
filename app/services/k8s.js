@@ -227,7 +227,7 @@ export default Ember.Service.extend({
         return typeifyResource(item, type);
       });
 
-      output = store.createCollection(obj,'items');
+      output = store.createCollection(obj,{key: 'items'});
     }
     else
     {
@@ -251,7 +251,7 @@ export default Ember.Service.extend({
         }
       }
 
-      var output = store.createRecord(obj, type);
+      var output = store.createRecord(obj, {type: type});
       if (output && output.metadata && output.metadata.uid)
       {
         var cacheEntry = self.getByUid(type, output.metadata.uid);
