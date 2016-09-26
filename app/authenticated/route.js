@@ -44,7 +44,6 @@ export default Ember.Route.extend(Subscribe, {
     let isAdmin = (type === C.USER.TYPE_ADMIN) || !this.get('access.enabled');
     this.set('access.admin', isAdmin);
 
-    let store = this.get('store');
     let promise = new Ember.RSVP.Promise((resolve, reject) => {
       let tasks = {
         userSchemas:                                    this.toCb('loadUserSchemas'),
