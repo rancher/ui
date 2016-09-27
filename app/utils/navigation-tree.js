@@ -118,7 +118,7 @@ const navTree = [
         icon: 'icon icon-network',
         route: 'stacks',
         ctx: [getProjectId],
-        queryParams: {which: C.EXTERNAL_ID.KIND_SYSTEM},
+        queryParams: {which: C.EXTERNAL_ID.KIND_INFRA},
       },
     ],
   },
@@ -162,7 +162,7 @@ const navTree = [
         icon: 'icon icon-network',
         route: 'stacks',
         ctx: [getProjectId],
-        queryParams: {which: C.EXTERNAL_ID.KIND_SYSTEM},
+        queryParams: {which: C.EXTERNAL_ID.KIND_INFRA},
       },
     ]
   },
@@ -190,7 +190,7 @@ const navTree = [
         icon: 'icon icon-network',
         route: 'stacks',
         ctx: [getProjectId],
-        queryParams: {which: C.EXTERNAL_ID.KIND_SYSTEM},
+        queryParams: {which: C.EXTERNAL_ID.KIND_INFRA},
       },
     ],
   },
@@ -223,12 +223,12 @@ const navTree = [
         queryParams: {which: C.EXTERNAL_ID.KIND_USER},
       },
       {
-        id: 'cattle-system',
+        id: 'cattle-infra',
         localizedLabel: 'nav.cattle.system',
         icon: 'icon icon-gear',
         route: 'stacks',
         ctx: [getProjectId],
-        queryParams: {which: C.EXTERNAL_ID.KIND_SYSTEM},
+        queryParams: {which: C.EXTERNAL_ID.KIND_INFRA},
       }
     ]
   },
@@ -407,17 +407,7 @@ export function get() {
 
 function getCatalogSubtree() {
   let repos = getCatalogNames(this.get(`settings.${C.SETTING.CATALOG_URL}`));
-  let showAll = false;
-  let showLibrary = false;
-
-  repos.removeObject(C.CATALOG.INFRA_KEY);
-  if ( repos.indexOf(C.CATALOG.LIBRARY_KEY) >= 0 || repos.indexOf(C.CATALOG.COMMUNITY_KEY) >= 0 ) {
-    showLibrary = true;
-    repos.removeObject(C.CATALOG.LIBRARY_KEY);
-    repos.removeObject(C.CATALOG.COMMUNITY_KEY);
-  }
-
-  showAll = repos.length > 1 || (repos.length === 1 && showLibrary);
+  let showAll = repos.length > 1;
 
   let out = [];
   if ( showAll ) {
@@ -429,13 +419,24 @@ function getCatalogSubtree() {
       ctx: [getProjectId],
       queryParams: {catalogId: 'all'}
     });
+
+    out.push({divider: true});
   }
 
-  if ( showLibrary ) {
-    if ( showAll ) {
-      out.push({divider: true});
-    }
+  if (repos.indexOf(C.CATALOG.INFRA_KEY) >= 0 ) {
+    repos.removeObject(C.CATALOG.INFRA_KEY);
+    out.push({
+      id: 'catalog-infra',
+      localizedLabel: 'nav.catalog.infra',
+      icon: 'icon icon-gear',
+      route: 'catalog-tab',
+      ctx: [getProjectId],
+      queryParams: {catalogId: 'infra'}
+    });
+  }
 
+  if (repos.indexOf(C.CATALOG.LIBRARY_KEY) >= 0 ) {
+    repos.removeObject(C.CATALOG.LIBRARY_KEY);
     out.push({
       id: 'catalog-library',
       localizedLabel: 'nav.catalog.library',
@@ -446,11 +447,27 @@ function getCatalogSubtree() {
     });
   }
 
+  if (repos.indexOf(C.CATALOG.COMMUNITY_KEY) >= 0 ) {
+    repos.removeObject(C.CATALOG.COMMUNITY_KEY);
+    out.push({
+      id: 'catalog-community',
+      localizedLabel: 'nav.catalog.community',
+      icon: 'icon icon-users',
+      route: 'catalog-tab',
+      ctx: [getProjectId],
+      queryParams: {catalogId: 'community'}
+    });
+  }
+
+  if ( out.length > 2 ) {
+    out.push({divider: true});
+  }
+
   repos.forEach((repo) => {
     out.push({
       id: 'catalog-'+repo,
       label: repo,
-      icon: 'icon icon-users',
+      icon: 'icon icon-user',
       route: 'catalog-tab',
       ctx: [getProjectId],
       queryParams: {catalogId: repo}

@@ -3,10 +3,11 @@
     {{t pageHeader name=which}}
   </h1>
 
-  {{#if (eq which "system")}}
-    {{#link-to "settings.projects.detail" projects.current.id (query-params editing=true) classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.manageButton'}}{{/link-to}}
+  {{#if (eq which "infra")}}
+    {{#link-to "catalog-tab" projects.current.id (query-params catalogId="infra") classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
   {{else}}
     {{#link-to "stacks.new" classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.actionButton'}}{{/link-to}}
+    {{#link-to "catalog-tab" projects.current.id (query-params catalogId=null) classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
   {{/if}}
 
 <!--
@@ -33,8 +34,8 @@
     {{#each arranged as |stack|}}
       {{stack-section model=stack showAddtlInfo='showAddtlInfo' showAddService=(not stack.system)}}
     {{else}}
-      {{#if (eq which 'system')}}
-        <div class="r-m20 text-center text-muted">{{t 'stacksPage.noSystem'}}</div>
+      {{#if (eq which 'infra')}}
+        <div class="r-m20 text-center text-muted">{{t 'stacksPage.noInfra'}}</div>
       {{else if (and model.length tagArray.length)}}
         <div class="r-m20 text-center text-muted">{{t 'stacksPage.noMatch'}}</div>
       {{else}}

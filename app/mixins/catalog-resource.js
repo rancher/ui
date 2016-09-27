@@ -25,7 +25,7 @@ export default Ember.Mixin.create({
     let templateBase = (params.templateBase || this.get('templateBase'));
     let version      = this.get('settings.rancherVersion');
     let catalogId    = params.catalogId;
-    let combined     = false;
+    let plusInfra    = (params.plusInfra || false);
     let qp           = {
       'category_ne': 'system',
     };
@@ -33,15 +33,13 @@ export default Ember.Mixin.create({
     // If the catalogIds dont match we need to go get the other catalog from the store since we do not cache all catalogs
     if ( cache && cache.catalogId === catalogId)
     {
-      return this.filter(cache, params.category, this.get('uniqueCatalogIds'), templateBase);
+      return this.filter(cache, params.category, this.get('uniqueCatalogIds'), templateBase, plusInfra);
     }
 
     if (catalogId) {
       this.controllerFor('catalog-tab.index').set('selectedCatalog', catalogId);
 
-      if (catalogId === 'library') {
-        combined = true;
-      } else if (catalogId !== 'all') {
+      if (catalogId !== 'all') {
         qp['catalogId'] = catalogId;
       }
     }
@@ -51,34 +49,27 @@ export default Ember.Mixin.create({
       qp['minimumRancherVersion_lte'] = version;
     }
 
-    if (combined) {
-      let hash = [];
-      [C.CATALOG.LIBRARY_KEY,C.CATALOG.COMMUNITY_KEY].forEach((key) => {
-        let tmpQp = qp;
-        tmpQp['catalogId'] = key;
-        hash.push(this.get('catalogService').fetchAllTemplates(tmpQp));
-      });
-      return Ember.RSVP.all(hash).then((arrays) => {
-        let tmpArr = [];
-        arrays.forEach((ary) => {
-          tmpArr = tmpArr.concat(ary.content);
-        });
-        tmpArr.catalogId = catalogId;
-        this.set('cache', tmpArr);
-        return this.filter(tmpArr, params.category, this.get('uniqueCatalogIds'), templateBase);
-      });
-    } else {
-      return this.get('catalogService').fetchAllTemplates(qp).then((response) => {
-        response.catalogId = catalogId;
-        this.set('cache', response);
-        return this.filter(response, params.category, this.get('uniqueCatalogIds'), templateBase);
-      });
-    }
-
+    return this.get('catalogService').fetchAllTemplates(qp).then((response) => {
+      response.catalogId = catalogId;
+      this.set('cache', response);
+      return this.filter(response, params.category, this.get('uniqueCatalogIds'), templateBase, plusInfra);
+    });
   },
 
-  filter: function (data, category, catalogIds, templateBase) {
-      data = data.filterBy('templateBase', (templateBase === 'cattle' ? '' : templateBase));
+  filter: function (data, category, catalogIds, templateBase, plusInfra) {
+      let bases = [];
+      if ( templateBase === 'cattle' ) {
+        bases.push('');
+      } else {
+        bases.push(templateBase);
+      }
+
+      if ( plusInfra ) {
+        bases.push(C.EXTERNAL_ID.KIND_INFRA);
+      }
+
+      data = data.filter((x) => bases.contains(x.get('templateBase')||''));
+
       let categories = this.uniqKeys(data, 'category');
 
       if ( category !== 'all' ) {

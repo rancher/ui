@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   allServices: Ember.inject.service(),
@@ -31,6 +32,7 @@ export default Ember.Route.extend({
           type: 'stack',
           name: results.tpl.get('defaultName'),
           startOnCreate: true,
+          system: (results.tpl.get('templateBase') === C.EXTERNAL_ID.KIND_INFRA),
           environment: {}, // Question answers
         });
       }

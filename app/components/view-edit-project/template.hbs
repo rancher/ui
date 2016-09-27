@@ -27,138 +27,81 @@
       namePlaceholder="viewEditDescription.form.name.placeholder"
       descriptionPlaceholder="viewEditDescription.form.description.placeholder"
     }}
-
-    <div class="row">
-      <div class="col-xs-12">
-        <label>{{t 'viewEditProject.showEdit.orchestration'}}</label>
-        <div class="nav nav-boxes checked-active">
-          {{#each orchestrationChoices as |driver|}}
-            {{#if driver.disabled}}
-              <a href="#" tabindex="1" alt={{driver.label}} class="nav-box-item driver orchestration-driver {{driver.css}}"></a>
-            {{else}}
-              <a href="#" tabindex="1" {{action "selectOrchestration" driver.name}} alt={{driver.label}} class="nav-box-item driver orchestration-driver {{if driver.active 'active'}} {{driver.css}}"></a>
-            {{/if}}
-          {{/each}}
-        </div>
-      </div>
-    </div>
   </section>
-
-{{else}}
-  {{#if project.description}}
-    <section class="well r-mb0">
-      <label class="inline-block r-m0">{{t 'viewEditProject.description'}}: </label>
-      <p class="inline-block r-m0">{{project.description}}</p>
-    </section>
-  {{/if}}
-
+{{else if project.description}}
   <section class="well r-mb0">
-    <label class="inline-block r-m0">{{t 'viewEditProject.showEdit.orchestration'}}: </label>
-    <p class="inline-block r-m0">{{project.displayOrchestration}}</p>
+    <label class="inline-block r-m0">{{t 'viewEditProject.description'}}: </label>
+    <p class="inline-block r-m0">{{project.description}}</p>
   </section>
 {{/if}}
 
-{{#select-tab initialTab=tab tab=tab as |component|}}
-  <ul class="nav nav-tabs nav-tabs-well" role="tablist">
-    <li role="tab" class="tab" data-section="access" {{action "selectTab" "access" target="component"}}>
-      <a href="#">{{t 'viewEditProject.tab.access'}}</a>
-    </li>
-    {{#each categories as |category|}}
-      <li role="tab" class="tab" data-section="{{category}}" {{action "selectTab" category target="component"}}>
-        <a href="#">{{category}}</a>
-      </li>
-    {{/each}}
-  </ul>
-
-  <div class="well nav-well" role="tabpanel">
-    <div class="section container-fluid" data-section="access">
-      {{#if (and accessEnabled showEdit)}}
-        <div class="form-group">
-          {{input-identity action="checkMember" onError="error"}}
-        </div>
-      {{/if}}
-
-      {{#if accessEnabled}}
-        <table class="grid fixed" style="margin-bottom: 0;">
-          <thead>
-            <tr>
-              {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
-              {{sortable-th sortable=this action="changeSort" name="type" label="generic.type"}}
-              {{sortable-th sortable=this action="changeSort" name="role" label="generic.role"}}
-              {{#if showEdit}}<th width="40">&nbsp;</th>{{/if}}
-            </tr>
-          </thead>
-          <tbody>
-            {{#each arranged as |member|}}
-              <tr>
-                <td>
-                  {{identity-block identity=member}}
-                </td>
-                <td>{{member.displayType}}</td>
-                <td>
-                  {{#if showEdit}}
-                    <select class="form-control input-sm" onchange={{action (mut member.role) value="target.value"}}>
-                      {{#each roleOptions as |choice|}}
-                        <option value={{choice.value}} selected={{eq member.role choice.value}}>{{t choice.label}}</option>
-                      {{/each}}
-                    </select>
-                  {{else}}
-                    {{uc-first member.role}}
-                  {{/if}}
-                </td>
-                {{#if showEdit}}
-                  <td>
-                    {{#if accessEnabled}}
-                      <button class="btn btn-primary btn-sm pull-right gh-action" {{action "removeMember" member}}><i class="icon icon-minus"/></button>
-                    {{else}}
-                      &nbsp;
-                    {{/if}}
-                  </td>
-                {{/if}}
-              </tr>
-            {{else}}
-              <tr>
-                <td colspan="3" class="text-center text-muted">
-                  {{t 'viewEditProject.showEdit.noMembers'}}
-                </td>
-              </tr>
-            {{/each}}
-          </tbody>
-        </table>
-        <hr class="r-m0" />
-      {{else}}
-        <p class="help-block text-center">
-          {{format-html-message 'viewEditProject.helpBlock'}}
-        </p>
-      {{/if}}
+<section class="well">
+  <div class="section container-fluid" data-section="access">
+    <div class="form-label">
+      <label class="form-control-static">{{t 'viewEditProject.showEdit.accessControl'}}</label>
     </div>
 
-    {{#each categories as |category|}}
-      <div class="section container-fluid container-catalog clearfix" data-section="{{category}}">
-        {{#each-in stacks as |id obj|}}
-          {{#if (eq obj.tpl.category category)}}
-            {{#catalog-box model=obj.tpl active=obj.enabled as |section|}}
-              {{#if (eq section 'footer')}}
-                {{#if obj.enabled}}
-                  {{#unless obj.stack.id}}
-                    <button type="button" class="btn btn-default" {{action "enableStack" obj}}>{{t 'viewEditProject.stacks.edit'}}</button>
-                  {{/unless}}
-                  <button type="button" class="btn btn-danger" {{action "disableStack" obj}}>{{t 'viewEditProject.stacks.disable'}}</button>
-                {{else if obj.supported}}
-                  <button type="button" class="btn btn-primary" {{action "enableStack" obj}}>{{t 'viewEditProject.stacks.enable'}}</button>
-                {{else}}
-                  <button type="button" class="btn btn-default btn-disabled" disabled="disabled">{{t 'viewEditProject.stacks.notCompatible'}}</button>
-                {{/if}}
-              {{/if}}
-            {{/catalog-box}}
-          {{/if}}
-        {{else}}
-          <div class="text-muted r-p10">{{t 'viewEditProject.noTemplates'}}</div>
-        {{/each-in}}
+    {{#if (and accessEnabled showEdit)}}
+      <div class="form-group">
+        {{input-identity action="checkMember" onError="error"}}
       </div>
-    {{/each}}
+    {{/if}}
+
+    {{#if accessEnabled}}
+      <table class="grid fixed" style="margin-bottom: 0;">
+        <thead>
+          <tr>
+            {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
+            {{sortable-th sortable=this action="changeSort" name="type" label="generic.type"}}
+            {{sortable-th sortable=this action="changeSort" name="role" label="generic.role"}}
+            {{#if showEdit}}<th width="40">&nbsp;</th>{{/if}}
+          </tr>
+        </thead>
+        <tbody>
+          {{#each arranged as |member|}}
+            <tr>
+              <td>
+                {{identity-block identity=member}}
+              </td>
+              <td>{{member.displayType}}</td>
+              <td>
+                {{#if showEdit}}
+                  <select class="form-control input-sm" onchange={{action (mut member.role) value="target.value"}}>
+                    {{#each roleOptions as |choice|}}
+                      <option value={{choice.value}} selected={{eq member.role choice.value}}>{{t choice.label}}</option>
+                    {{/each}}
+                  </select>
+                {{else}}
+                  {{uc-first member.role}}
+                {{/if}}
+              </td>
+              {{#if showEdit}}
+                <td>
+                  {{#if accessEnabled}}
+                    <button class="btn btn-primary btn-sm pull-right gh-action" {{action "removeMember" member}}><i class="icon icon-minus"/></button>
+                  {{else}}
+                    &nbsp;
+                  {{/if}}
+                </td>
+              {{/if}}
+            </tr>
+          {{else}}
+            <tr>
+              <td colspan="3" class="text-center text-muted">
+                {{t 'viewEditProject.showEdit.noMembers'}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <hr class="r-m0" />
+    {{else}}
+      <p class="help-block text-center">
+        {{format-html-message 'viewEditProject.helpBlock'}}
+      </p>
+    {{/if}}
   </div>
-{{/select-tab}}
+</section>
 
 {{#if showEdit}}
   {{top-errors errors=errors}}

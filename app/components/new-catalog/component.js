@@ -25,7 +25,7 @@ export default Ember.Component.extend(NewOrEdit, {
   selectVersionAdd: 'newCatalog.selectVersionAdd',
   selectVersionUpgrade: 'newCatalog.selectVersionUpgrade',
   saveUpgrade: 'newCatalog.saveUpgrade',
-  saveAdd: 'newCatalog.saveNew',
+  saveNew: 'newCatalog.saveNew',
   sectionClass: 'well',
 
   classNames: ['launch-catalog'],
@@ -287,7 +287,7 @@ export default Ember.Component.extend(NewOrEdit, {
     {
       if ( this.get('stackResource.system') )
       {
-        return this.get('router').transitionTo('stack', projectId, this.get('primaryResource.id'), {queryParams: {which: 'system'}});
+        return this.get('router').transitionTo('stack', projectId, this.get('primaryResource.id'), {queryParams: {which: 'infra'}});
       }
       else
       {

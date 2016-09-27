@@ -48,7 +48,17 @@
           <img src="{{model.links.icon}}"/>
         </div>
       {{else if (eq section 'footer')}}
-        {{#link-to launchRoute catalogItem.id class="btn btn-sm btn-primary"}}{{t 'catalogPage.index.viewDetails'}}{{/link-to}}
+        {{#if (eq catalogItem.templateBase 'infra')}}
+          {{#if catalogItem.exists}}
+            <button type="button" class="btn btn-default btn-disabled" disabled="disabled">Already Deployed</button>
+          {{else if catalogItem.supported}}
+            {{#link-to launchRoute catalogItem.id class="btn btn-sm btn-primary"}}{{t 'catalogPage.index.viewDetails'}}{{/link-to}}
+          {{else}}
+            <button type="button" class="btn btn-default btn-disabled" disabled="disabled">Not Compatible</button>
+          {{/if}}
+        {{else}}
+          {{#link-to launchRoute catalogItem.id class="btn btn-sm btn-primary"}}{{t 'catalogPage.index.viewDetails'}}{{/link-to}}
+        {{/if}}
       {{/if}}
     {{/catalog-box}}
   {{else}}

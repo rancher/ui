@@ -247,9 +247,9 @@ var Stack = Resource.extend({
     {
       return C.EXTERNAL_ID.KIND_KUBERNETES;
     }
-    else if ( this.get('system') /*|| C.EXTERNAL_ID.SYSTEM_KINDS.indexOf(kind) >= 0 */)
+    else if ( this.get('system') )
     {
-      return C.EXTERNAL_ID.KIND_SYSTEM;
+      return C.EXTERNAL_ID.KIND_INFRA;
     }
     else
     {

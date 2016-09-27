@@ -61,13 +61,13 @@ export default Ember.Service.extend(CatalogResource, {
 
   fetchSystemTemplates() {
     return this.fetchAllTemplates({
-      templateBase: 'system',
+      templateBase: 'infra',
     }).then((all) => {
       return FilteredSorted.create({
         sourceContent: all,
         dependentKeys: ['templateBase'],
         filterFn: function(obj)  {
-          return obj.get('templateBase') === 'system';
+          return obj.get('templateBase') === 'infra';
         },
       });
     });

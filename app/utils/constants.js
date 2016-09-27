@@ -6,6 +6,7 @@ const KIND_LEGACY_KUBERNETES = 'kubernetes';
 const KIND_KUBERNETES = 'k8s';
 const KIND_SWARM = 'swarm';
 const KIND_MESOS = 'mesos';
+const KIND_INFRA = 'infra';
 
 var C = {
   COOKIE: {
@@ -29,6 +30,7 @@ var C = {
     KIND_KUBERNETES: KIND_KUBERNETES,
     KIND_SWARM: KIND_SWARM,
     KIND_MESOS: KIND_MESOS,
+    KIND_INFRA: KIND_INFRA,
     UPGRADEABLE: [
       KIND_CATALOG,
       KIND_SYSTEM_CATALOG
@@ -39,6 +41,7 @@ var C = {
     ],
     SHOW_AS_SYSTEM: [
       KIND_SYSTEM,
+      KIND_INFRA,
     ],
     SYSTEM_CATEGORIES: [
       'Rancher services'
@@ -50,8 +53,8 @@ var C = {
   },
 
   CATALOG: {
-    SYSTEM_KEY: 'system',
-    SYSTEM_VALUE: 'https://github.com/rancher/system-catalog.git',
+    INFRA_KEY: 'infra',
+    INFRA_VALUE: 'https://github.com/rancher/infra-catalog.git',
     LIBRARY_KEY: 'library',
     LIBRARY_VALUE: 'https://github.com/rancher/rancher-catalog.git',
     COMMUNITY_KEY: 'community',

@@ -34,7 +34,7 @@ export default Ember.Component.extend({
       let map = {};
       // Start with ours, then load the users in case they override the value
       if (this.get('enableSystem')) {
-        map[C.CATALOG.SYSTEM_KEY] = {url: C.CATALOG.SYSTEM_VALUE, branch: def};
+        map[C.CATALOG.INFRA_KEY] = {url: C.CATALOG.INFRA_VALUE, branch: def};
       }
 
       if (this.get('enableLibrary')) {
@@ -74,9 +74,9 @@ export default Ember.Component.extend({
     let map = parsed.catalogs || {};
 
     let system = false;
-    if (map[C.CATALOG.SYSTEM_KEY] && map[C.CATALOG.SYSTEM_KEY].url=== C.CATALOG.SYSTEM_VALUE) {
+    if (map[C.CATALOG.INFRA_KEY] && map[C.CATALOG.INFRA_KEY].url=== C.CATALOG.INFRA_VALUE) {
       system = true;
-      delete map[C.CATALOG.SYSTEM_KEY];
+      delete map[C.CATALOG.INFRA_KEY];
     }
 
     let library = false;

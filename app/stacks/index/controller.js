@@ -131,7 +131,7 @@ export default Ember.Controller.extend(Sortable, {
     if ( which === C.EXTERNAL_ID.KIND_ALL ) {
       return 'stacksPage.header.all';
     } else if ( C.EXTERNAL_ID.SHOW_AS_SYSTEM.indexOf(which) >= 0 ) {
-      return 'stacksPage.header.system';
+      return 'stacksPage.header.infra';
     } else if ( which.toLowerCase() === 'user') {
       return 'stacksPage.header.user';
     } else {

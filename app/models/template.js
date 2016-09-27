@@ -3,6 +3,8 @@ import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
 export default Resource.extend({
+  projects: Ember.inject.service(),
+
   cleanProjectUrl: Ember.computed('links.project', function() {
     let projectUrl = this.get('links.project');
     let pattern = new RegExp('^([a-z]+://|//)', 'i');
@@ -48,4 +50,13 @@ export default Resource.extend({
     let list = ((this.get('labels')||{})[C.LABEL.ORCHESTRATION_SUPPORTED]||'').split(/\s*,\s*/).filter((x) => x.length > 0);
     return list.length === 0 || list.contains(orch);
   },
+
+  supported: function() {
+    let orch = this.get('projects.current.orchestration');
+    if ( (this.get('category')||'').toLowerCase() === 'orchestration' ) {
+      return orch === 'cattle';
+    } else {
+      return this.supportsOrchestration(orch);
+    }
+  }.property('labels','projects.current.orchestration'),
 });
