@@ -50,7 +50,7 @@ export default Ember.Route.extend(CatalogResource, {
   model(params) {
     params.plusInfra = true;
     let stacks = this.get('stacks');
-    return this.getCatalogs(params).then((res) => {
+    return this.get('catalogService').getCatalogs(params).then((res) => {
       res.catalog.forEach((tpl) => {
         let exists = stacks.findBy('externalIdInfo.templateId', tpl.get('id'));
         tpl.set('exists', !!exists);

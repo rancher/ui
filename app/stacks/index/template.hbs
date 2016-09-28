@@ -7,7 +7,9 @@
     {{#link-to "catalog-tab" projects.current.id (query-params catalogId="infra") classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
   {{else}}
     {{#link-to "stacks.new" classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.actionButton'}}{{/link-to}}
-    {{#link-to "catalog-tab" projects.current.id (query-params catalogId=null) classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
+    {{#if arranged.length}}
+      {{#link-to "catalog-tab" projects.current.id (query-params catalogId=null) classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
+    {{/if}}
   {{/if}}
 
 <!--

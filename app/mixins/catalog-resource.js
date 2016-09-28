@@ -33,11 +33,11 @@ export default Ember.Mixin.create({
     // If the catalogIds dont match we need to go get the other catalog from the store since we do not cache all catalogs
     if ( cache && cache.catalogId === catalogId)
     {
-      return this.filter(cache, params.category, this.get('uniqueCatalogIds'), templateBase, plusInfra);
+      return Ember.RSVP.resolve(this.filter(cache, params.category, this.get('uniqueCatalogIds'), templateBase, plusInfra));
     }
 
     if (catalogId) {
-      this.controllerFor('catalog-tab.index').set('selectedCatalog', catalogId);
+//      this.controllerFor('catalog-tab.index').set('selectedCatalog', catalogId);
 
       if (catalogId !== 'all') {
         qp['catalogId'] = catalogId;

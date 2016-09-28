@@ -5,6 +5,7 @@ import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
 var Project = Resource.extend(PolledResource, {
+  access: Ember.inject.service(),
   prefs: Ember.inject.service(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
