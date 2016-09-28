@@ -354,6 +354,7 @@ C.SUPPORTED_SCHEMA_INPUTS= [
   'password',
   'service',
   'string',
+  'masked',
 ];
 
 
