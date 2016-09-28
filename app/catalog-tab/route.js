@@ -38,7 +38,7 @@ export default Ember.Route.extend(CatalogResource, {
         catalogs: this.get('catalogService').fetchCatalogs(),
       }).then((hash) => {
         this.set('catalogs', hash.catalogs);
-        this.set('stacks', this.get('store').all('stack'));
+        this.set('stacks', this.get('store').allUnremoved('stack'));
 
         let ids = this.uniqKeys(hash.catalogs, 'id');
 
