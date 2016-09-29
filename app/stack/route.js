@@ -9,7 +9,6 @@ export default Ember.Route.extend({
         filter: {
           stackId: stack.get('id'),
         },
-        include: ['instances']
       }).then((services) => {
         stack.set('services', services||[]);
         return Ember.Object.create({

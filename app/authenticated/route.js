@@ -53,12 +53,13 @@ export default Ember.Route.extend(Subscribe, {
         project:            ['projects', 'preferences', this.toCb('selectProject',transition)],
         projectSchemas:     ['project',                 this.toCb('loadProjectSchemas')],
         orchestrationState: ['projectSchemas',          this.toCb('updateOrchestration')],
-        hosts:              ['projectSchemas',          this.cbFindAllUnremoved('host')],
-        machines:           ['projectSchemas',          this.cbFindAllUnremoved('machine')],
-        stacks:             ['projectSchemas',          this.cbFindAllUnremoved('stack')],
-        mounts:             ['projectSchemas',          this.cbFindAllUnremoved('mount')], // the container model needs access
-        volumes:            ['projectSchemas',          this.cbFindAllUnremoved('volume')],
-        snapshots:          ['projectSchemas',          this.cbFindAllUnremoved('snapshot')],
+        hosts:              ['projectSchemas',          this.cbFind('host')],
+        machines:           ['projectSchemas',          this.cbFind('machine')],
+        services:           ['projectSchemas',          this.cbFind('service')],
+        stacks:             ['projectSchemas',          this.cbFind('stack')],
+        mounts:             ['projectSchemas',          this.cbFind('mount')], // the container model needs access
+        volumes:            ['projectSchemas',          this.cbFind('volume')],
+        snapshots:          ['projectSchemas',          this.cbFind('snapshot')],
       };
 
       async.auto(tasks, function(err, res) {
@@ -156,9 +157,9 @@ export default Ember.Route.extend(Subscribe, {
     };
   },
 
-  cbFindAllUnremoved(type) {
+  cbFind(type) {
     return (cb) => {
-      return this.get('store').findAllUnremoved(type).then(function(res) {
+      return this.get('store').find(type).then(function(res) {
         cb(null, res);
       }).catch(function(err) {
         cb(err, null);

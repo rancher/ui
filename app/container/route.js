@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function(params) {
+    debugger;
     var store = this.get('store');
     var ports;
 
@@ -14,6 +15,7 @@ export default Ember.Route.extend({
         return hash.container;
       });
     }).then(function(container) {
+      debugger;
       var host = container.get('primaryHost');
       if ( !host || !host.get || !host.hasLink('instances') )
       {

@@ -177,7 +177,7 @@ export default Ember.Mixin.create({
     var icon = '';
     if ( trans === 'yes' )
     {
-      icon = 'icon icon-spinner icon-spin';
+      icon = 'icon icon-spinner';
     }
     else if ( trans === 'error' )
     {

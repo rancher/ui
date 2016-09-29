@@ -4,6 +4,7 @@ import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
+import { denormalizeInstanceArray } from 'ui/utils/denormalize-instance';
 
 export function activeIcon(stack)
 {
@@ -23,6 +24,8 @@ var Stack = Resource.extend({
   type: 'stack',
   k8s: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
+
+  services: denormalizeInstanceArray('serviceIds'),
 
   actions: {
     activateServices: function() {
@@ -179,13 +182,6 @@ var Stack = Resource.extend({
     return this.get('services').filterBy('actionLinks.deactivate').get('length') > 0;
   }.property('services.@each.state','actionLinks.deactivateservices'),
 
-
-  unremovedServices: function() {
-    return UnremovedArrayProxy.create({
-      sourceContent: this.get('services'),
-      sortProperties: ['displayName','id']
-    });
-  }.property('services'),
 
   externalIdInfo: function() {
     let eid = this.get('externalId');

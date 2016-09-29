@@ -63,8 +63,7 @@ export default Ember.Controller.extend({
       this.send('clearError');
       var code = this.get('adminPublicValue')+':'+this.get('adminSecretValue');
       this.get('access').login(code).then(res => {
-        var auth = JSON.parse(res.xhr.responseText);
-        this.send('authenticationSucceeded', auth);
+        this.send('authenticationSucceeded', res.body);
       }).catch(err => {
         this.send('gotError', err);
       });
