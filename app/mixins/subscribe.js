@@ -156,11 +156,6 @@ export default Ember.Mixin.create({
     console.log('Subscribe ping ' + this.forStr());
   },
 
-  ipAddressChanged: function(change) {
-    this._includeChanged('host', 'ipAddresses', 'hosts', change.data.resource);
-//      this._includeChanged('container', 'container', 'ipAddresses', 'containers', change.data.resource);
-  },
-
   loadBalancerTargetChanged: function(change) {
     this._includeChanged('loadBalancer', 'loadBalancerTargets', 'loadBalancerId', change.data.resource);
   },

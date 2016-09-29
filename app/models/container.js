@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
+import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 
 const { getOwner } = Ember;
 
@@ -29,6 +30,10 @@ var Container = Resource.extend({
   restartPolicy              : null,
 
   _allMounts                 : null,
+
+  primaryHost                : denormalizeId('hostId', 'host'),
+  services                   : denormalizeIdArray('serviceIds'),
+  primaryService             : Ember.computed.alias('services.firstObject'),
 
   reservedKeys: [
     '_allMounts',
@@ -203,13 +208,6 @@ var Container = Resource.extend({
   }.property('state'),
 
   isManaged: Ember.computed.notEmpty('systemContainer'),
-  primaryHost: function() {
-    if ( this.get('hostId') )
-    {
-      return this.get('store').getById('host', this.get('hostId'));
-    }
-  }.property('hostId'),
-  primaryService: Ember.computed.alias('services.firstObject'),
 
   displayImage: function() {
     return (this.get('imageUuid')||'').replace(/^docker:/,'');
@@ -223,6 +221,7 @@ var Container = Resource.extend({
     }
   }.property('externalId'),
 
+  // @TODO PERF
   mounts: function() {
     return this.get('_allMounts').filterBy('instanceId', this.get('id'));
   }.property('_allMounts.@each.instanceId','id'),
@@ -233,14 +232,13 @@ var Container = Resource.extend({
       return ['removed','purged', 'inactive'].indexOf(mount.get('state')) === -1;
     });
   }.property('mounts.@each.state'),
+  // @TODO PERF
 });
 
 Container.reopenClass({
   reset: function() {
     _allMounts = null;
   },
-
-  alwaysInclude: ['services'],
 });
 
 export default Container;

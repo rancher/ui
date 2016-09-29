@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import Backup from 'ui/models/backup';
-import Container from 'ui/models/container';
 import Mount from 'ui/models/mount';
 import Service from 'ui/models/service';
 import Snapshot from 'ui/models/snapshot';
@@ -18,7 +17,6 @@ export default Ember.Service.extend({
 
     // Some classes have extra special hackery to cache relationships
     Backup.reset();
-    Container.reset();
     Mount.reset();
     Service.reset();
     Snapshot.reset();
