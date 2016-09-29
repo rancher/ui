@@ -1,14 +1,14 @@
 import Ember from 'ember';
-import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
+import Instance from 'ui/models/instance';
 
 const { getOwner } = Ember;
 
 let _allMounts;
 
-var Container = Resource.extend({
+var Container = Instance.extend({
   // Common to all instances
   requestedHostId            : null,
   primaryIpAddress           : null,

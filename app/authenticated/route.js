@@ -52,9 +52,10 @@ export default Ember.Route.extend(Subscribe, {
         project:            ['projects', 'preferences', this.toCb('selectProject',transition)],
         projectSchemas:     ['project',                 this.toCb('loadProjectSchemas')],
         orchestrationState: ['projectSchemas',          this.toCb('updateOrchestration')],
-        hosts:              ['projectSchemas',          this.cbFind('host')],
+        instances:          ['projectSchemas',          this.cbFind('instance')],
         machines:           ['projectSchemas',          this.cbFind('machine')],
         services:           ['projectSchemas',          this.cbFind('service')],
+        hosts:              ['projectSchemas',          this.cbFind('host')],
         stacks:             ['projectSchemas',          this.cbFind('stack')],
         mounts:             ['projectSchemas',          this.cbFind('mount')], // the container model needs access
         volumes:            ['projectSchemas',          this.cbFind('volume')],
