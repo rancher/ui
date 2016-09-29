@@ -72,7 +72,10 @@ export default Ember.Component.extend({
       });
     }
 
-    this.set('portsArray', out);
+    Ember.run.scheduleOnce('afterRender', () => {
+      this.set('portsArray', out);
+      this.portsArrayDidChange();
+    });
   },
 
   actions: {

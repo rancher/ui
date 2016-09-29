@@ -43,7 +43,10 @@ export default Ember.Component.extend(ManageLabels, {
       initial = ( this.get('isVm') ? lastVm : lastContainer);
     }
 
-    this.set('userInput', initial);
+    Ember.run.scheduleOnce('afterRender', () => {
+      this.set('userInput', initial);
+      this.userInputDidChange();
+    });
   },
 
   updateLabels(labels) {
