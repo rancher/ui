@@ -91,7 +91,7 @@ export default Ember.Controller.extend(Sortable, {
     };
   },
 
-  sortableContent: Ember.computed('model.drivers.[]', 'model.catalogDrivers.[]', function() {
+  sortableContent: Ember.computed('model.drivers.@each.{state,id,version}', 'model.catalogDrivers.[]', function() {
     // possibly add some search here
     let cDrivers   = this.get('model.catalogDrivers.catalog');
     let drivers    = this.get('model.drivers.content');

@@ -72,7 +72,10 @@ export default Ember.Component.extend({
       }));
     }
 
-    this.set('targetsArray', out);
+    Ember.run.scheduleOnce('afterRender', () => {
+      this.set('targetsArray', out);
+      this.targetsChanged();
+    });
   },
 
   targetResources: function() {
@@ -103,7 +106,7 @@ export default Ember.Component.extend({
 
   targetsChanged: function() {
     this.sendAction('changed', this.get('targetsArray'), this.get('targetResources'));
-  }.observes('targetResources','targetResources.@each.{serviceId,ports}', 'targetsArray.[]'),
+  }.observes('targetResources','targetResources.@each.{serviceId,ports}'),
 
   hasAdvancedSourcePorts: function() {
     return this.get('targetsArray').filterBy('isService',true).filter((target) => {

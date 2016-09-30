@@ -23,7 +23,11 @@ export default Ember.Route.extend({
       var allCertificates = results[2];
       var existing = results[3];
 
-      var launchConfig, lbConfig, balancer, lbCookie, haproxyConfig;
+      var launchConfig = null,
+          lbConfig = null,
+          balancer = null,
+          lbCookie = null,
+          haproxyConfig = null;
       if ( existing )
       {
         balancer = existing.cloneForNew();
@@ -63,7 +67,7 @@ export default Ember.Route.extend({
       else
       {
         launchConfig = store.createRecord({
-          type: 'container',
+          type: 'launchConfig',
           commandArgs: [],
           environment: {},
           tty: true,
