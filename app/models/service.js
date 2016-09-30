@@ -22,6 +22,7 @@ var Service = Resource.extend({
   modalService: Ember.inject.service('modal'),
 
   instances: denormalizeInstanceArray('instanceIds'),
+  instanceCount: Ember.computed.alias('instances.length'),
 
   actions: {
     activate() {

@@ -9,7 +9,6 @@ export default Ember.Mixin.create({
 
   defaultPageSize: -1,
   removeAfterDelete: false,
-  dropKeys: ['data'],
 
   headers: function() {
     let out = {

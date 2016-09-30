@@ -51,7 +51,7 @@ export default Ember.Mixin.create({
             this[key](d);
           }
 
-          if ( resource && DEADTOME.contains(resource.state) ) {
+          if ( resource && DEADTOME.includes(resource.state) ) {
             store._remove(resource.type, resource);
           }
         }
@@ -182,26 +182,6 @@ export default Ember.Mixin.create({
 
   registryCredentialChanged: function(change) {
     this._includeChanged('registry', 'credentials', 'registryId', change.data.resource);
-  },
-
-  loadBalancerServiceChanged: function(change) {
-    this._includeChanged('stack', 'services', 'stackId', change.data.resource);
-  },
-
-  dnsServiceChanged: function(change) {
-    this._includeChanged('stack', 'services', 'stackId', change.data.resource);
-  },
-
-  externalServiceChanged: function(change) {
-    this._includeChanged('stack', 'services', 'stackId', change.data.resource);
-  },
-
-  serviceChanged: function(change) {
-    this._includeChanged('stack', 'services', 'stackId', change.data.resource);
-  },
-
-  kubernetesServiceChanged: function(change) {
-    this._includeChanged('stack', 'services', 'stackId', change.data.resource);
   },
 
   k8sResourceChanged: function(changeType, obj) {

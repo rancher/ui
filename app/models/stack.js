@@ -3,7 +3,7 @@ import Resource from 'ember-api-store/models/resource';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
-import { denormalizeInstanceArray } from 'ui/utils/denormalize-instance';
+import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 
 export function activeIcon(stack)
 {
@@ -24,7 +24,21 @@ var Stack = Resource.extend({
   k8s: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
 
-  services: denormalizeInstanceArray('serviceIds'),
+  services: denormalizeIdArray('serviceIds'),
+  services2: Ember.computed('serviceIds.[]', function() {
+    let field = 'serviceIds';
+    let type = field.replace(/Ids$/,'');
+    let out = [];
+    let store = this.get('store');
+    (this.get(field)||[]).forEach((id) => {
+      let obj = store.getById(type, id);
+      if ( obj ) {
+        out.push(obj);
+      }
+    });
+
+    return out;
+  }),
 
   actions: {
     activateServices: function() {
