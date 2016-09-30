@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import { byId } from 'ui/models/service';
+import { getByServiceId } from 'ui/utils/denormalize-snowflakes';
 
 export default Ember.Route.extend({
   model: function(params) {
     var stack = this.modelFor('stack');
-    var service = byId(params.service_id);
+    var service = getByServiceId(this.get('store'), params.service_id);
     if ( service )
     {
       return Ember.Object.create({

@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
-import { byId as serviceById } from 'ui/models/service';
+import { getByServiceId } from 'ui/utils/denormalize-snowflakes';
 import { formatMib } from 'ui/utils/util';
 import C from 'ui/utils/constants';
-import { getByInstanceId, denormalizeInstanceArray } from 'ui/utils/denormalize-instance';
+import { getByInstanceId, denormalizeInstanceArray } from 'ui/utils/denormalize-snowflakes';
 
 var Host = Resource.extend({
   type: 'host',
@@ -215,7 +215,7 @@ var Host = Resource.extend({
     var store = this.get('store');
     return (this.get('publicEndpoints')||[]).map((endpoint) => {
       if ( !endpoint.service ) {
-        endpoint.service = serviceById(endpoint.serviceId);
+        endpoint.service = getByServiceId(store, endpoint.serviceId);
       }
 
       endpoint.instance = getByInstanceId(store, endpoint.instanceId);

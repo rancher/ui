@@ -1,14 +1,16 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
-import { byId } from 'ui/models/service';
+import { getByServiceId } from 'ui/utils/denormalize-snowflakes';
 
 export default Resource.extend({
   type: 'serviceConsumeMap',
 
   forceUpdate: function() {
+    let store = this.get('store');
+
     Ember.run.next(this, function() {
       try {
-        var consumer = byId(this.get('serviceId'));
+        var consumer = getByServiceId(store, this.get('serviceId'));
         if ( consumer )
         {
           //console.log('Update consumer', this.get('serviceId'), '->', this.get('consumedServiceId'));
@@ -19,7 +21,7 @@ export default Resource.extend({
           //console.log('The consumer service', this.get('serviceId'), 'does not exist yet');
         }
 
-        var consumed = byId(this.get('consumedServiceId'));
+        var consumed = getByServiceId(store, this.get('consumedServiceId'));
         if ( consumed )
         {
           //console.log('Update consumed', this.get('serviceId'), '->', this.get('consumedServiceId'));

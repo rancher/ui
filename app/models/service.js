@@ -3,16 +3,10 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 const { getOwner } = Ember;
-import { denormalizeInstanceArray } from 'ui/utils/denormalize-instance';
+import { denormalizeInstanceArray, getByServiceId } from 'ui/utils/denormalize-snowflakes';
 
 // !! If you add a new one of these, you need to add it to reset() below too
 var _allMaps;
-var _allRegularServices;
-var _allLbServices;
-var _allExternalServices;
-var _allDnsServices;
-var _allKubernetesServices;
-var _allComposeServices;
 // !! If you add a new one of these, you need to add it to reset() below too
 
 var Service = Resource.extend({
@@ -182,12 +176,6 @@ var Service = Resource.extend({
 
   // !! If you add a new one of these, you need to add it to reset() below too
   _allMaps: null,
-  _allRegularServices: null,
-  _allLbServices: null,
-  _allExternalServices: null,
-  _allDnsServices: null,
-  _allKubernetesServices: null,
-  _allComposeServices: null,
   // !! If you add a new one of these, you need to add it to reset() below too
 
   consumedServicesUpdated: 0,
@@ -195,12 +183,6 @@ var Service = Resource.extend({
   serviceLinks: null, // Used for clone
   reservedKeys: [
     '_allMaps',
-    '_allRegularServices',
-    '_allLbServices',
-    '_allExternalServices',
-    '_allDnsServices',
-    '_allKubernetesServices',
-    '_allComposeServices',
     'consumedServices',
     'consumedServicesUpdated',
     'serviceLinks',
@@ -223,47 +205,11 @@ var Service = Resource.extend({
       _allMaps = store.allUnremoved('serviceconsumemap');
     }
 
-    if ( !_allRegularServices )
-    {
-      _allRegularServices = store.allUnremoved('service');
-    }
-
-    if ( !_allLbServices )
-    {
-      _allLbServices = store.allUnremoved('loadbalancerservice');
-    }
-
-    if ( !_allExternalServices )
-    {
-      _allExternalServices = store.allUnremoved('externalservice');
-    }
-
-    if ( !_allDnsServices )
-    {
-      _allDnsServices = store.allUnremoved('dnsservice');
-    }
-
-    if ( !_allKubernetesServices )
-    {
-      _allKubernetesServices = store.allUnremoved('kubernetesservice');
-    }
-
-    if ( !_allComposeServices )
-    {
-      _allComposeServices = store.allUnremoved('composeservice');
-    }
-
     // !! If you add a new one of these, you need to add it to reset() below too
 
     // And we need this here so that consumedServices can watch for changes
     this.setProperties({
       '_allMaps': _allMaps,
-      '_allRegularServices': _allRegularServices,
-      '_allLbServices': _allLbServices,
-      '_allExternalServices': _allExternalServices,
-      '_allDnsServices': _allDnsServices,
-      '_allKubernetesServices': _allKubernetesServices,
-      '_allComposeServices': _allComposeServices,
     });
   },
 
@@ -499,36 +445,9 @@ export function activeIcon(service)
   return out;
 }
 
-export function byId(serviceId) {
-  var allTypes = [
-    _allRegularServices,
-    _allLbServices,
-    _allExternalServices,
-    _allDnsServices,
-    _allKubernetesServices,
-    _allComposeServices,
-  ];
-
-  var i = 0;
-  var service = null;
-  while ( i < allTypes.length && !service )
-  {
-    service = allTypes[i].filterBy('id', serviceId)[0];
-    i++;
-  }
-
-  return service;
-}
-
 Service.reopenClass({
   reset: function() {
     _allMaps = null;
-    _allRegularServices = null;
-    _allLbServices = null;
-    _allExternalServices = null;
-    _allDnsServices = null;
-    _allKubernetesServices = null;
-    _allComposeServices = null;
   },
 
   consumedServicesFor: function(serviceId) {
@@ -540,7 +459,7 @@ Service.reopenClass({
     return _allMaps.filterBy('serviceId', serviceId).map((map) => {
       return Ember.Object.create({
         name: map.get('name'),
-        service: byId(map.get('consumedServiceId')),
+        service: getByServiceId(l('service:store'), map.get('consumedServiceId')), // @TODO
         ports: map.get('ports')||[],
       });
     }).filter((obj) => {
