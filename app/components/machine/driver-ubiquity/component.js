@@ -30,7 +30,7 @@ export default Ember.Component.extend(Driver, {
     });
 
     this.set('model', store.createRecord({
-      type: 'machine',
+      type: 'host',
       ubiquityConfig: config,
     }));
   },

@@ -24,8 +24,8 @@ export default Ember.Controller.extend({
   }.property('model.stacks.@each.externalId'),
 
   hasHosts: function() {
-    return (this.get('model.hosts.length') > 0) || (this.get('model.machines.length') > 0);
-  }.property('model.{hosts,machines}'),
+    return (this.get('model.hosts.length') > 0);
+  }.property('model.hosts.length'),
 
   isReady: function() {
     return this.get('projects.isReady') && this.get('hasHosts');

@@ -83,9 +83,11 @@ export function addQueryParam(url, key, val) {
 }
 
 export function addQueryParams(url, params) {
-  Object.keys(params).forEach(function(key) {
-    url = addQueryParam(url, key, params[key]);
-  });
+  if ( params && typeof params === 'object' ) {
+    Object.keys(params).forEach(function(key) {
+      url = addQueryParam(url, key, params[key]);
+    });
+  }
 
   return url;
 }

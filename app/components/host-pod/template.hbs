@@ -4,33 +4,25 @@
   <div class="pull-right">{{action-menu model=model}}</div>
 </div>
   <div class="pod-name">
-    {{#if isMachine}}
-      {{model.displayName}}
-    {{else}}
-      <a href="{{href-to 'host' model.id}}">{{model.displayName}}</a>
-      {{#if model.showTransitioningMessage}}
-        <div class="pod-message {{if model.isError 'text-danger' 'text-muted'}}">
-          {{model.transitioningMessage}}
-        </div>
-      {{/if}}
+    <a href="{{href-to 'host' model.id}}">{{model.displayName}}</a>
+    {{#if model.showTransitioningMessage}}
+      <div class="pod-message {{if model.isError 'text-danger' 'text-muted'}}">
+        {{model.transitioningMessage}}
+      </div>
     {{/if}}
   </div>
 
-{{#if isMachine}}
+{{#if isProvisioning}}
   <div class="machine-info force-wrap">
-    {{#if isActive}}
-      {{format-html-message 'hostPod.machineInfo.active.activating'}}
-    {{else}}
-      {{#if model.isError}}
-        {{#if model.transitioningMessage}}
-          <span class="text-danger">{{model.transitioningMessage}}</span>
-        {{else}}
-          <span class="text-danger">{{t 'hostPod.machineInfo.deactivated.error'}}</span>
-        {{/if}}
+    {{#if model.isError}}
+      {{#if model.transitioningMessage}}
+        <span class="text-danger">{{model.transitioningMessage}}</span>
       {{else}}
-        <div class="color:black;">{{t 'hostPod.machineInfo.deactivated.setup'}}</div>
-        {{model.transitioningMessage}}
+        <span class="text-danger">{{t 'hostPod.machineInfo.deactivated.error'}}</span>
       {{/if}}
+    {{else}}
+      <div class="color:black;">{{t 'hostPod.machineInfo.deactivated.setup'}}</div>
+      {{model.transitioningMessage}}
     {{/if}}
   </div>
 {{else}}
@@ -58,8 +50,8 @@
       {{/if}}
     </div>
     <div class="pod-info-container">
-      {{#if model.machine}}
-        <div class="pod-info-item"><i class="icon icon-cloud"></i> {{model.machine.driver}}</div>
+      {{#if model.driver}}
+        <div class="pod-info-item"><i class="icon icon-cloud"></i> {{model.driver}}</div>
       {{/if}}
     </div>
   </div>

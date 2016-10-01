@@ -21,7 +21,7 @@ export default Ember.Component.extend(Driver, {
 
   bootstrap() {
     let model = this.get('store').createRecord({
-      type: 'machine',
+      type: 'host',
     });
 
     this.setProperties({
@@ -47,14 +47,14 @@ export default Ember.Component.extend(Driver, {
 
   driverChanged: function() {
     let driver  = this.get('otherDriver');
-    let machine = this.get('model');
+    let host = this.get('model');
 
-    if ( driver && machine) {
-      if ( !machine.get(driver) ) {
-        machine.set(driver, this.get('store').createRecord({ type: driver }));
+    if ( driver && host) {
+      if ( !host.get(driver) ) {
+        host.set(driver, this.get('store').createRecord({ type: driver }));
       }
 
-      this.set('driverOpts', machine.get(driver));
+      this.set('driverOpts', host.get(driver));
     }
     else {
       this.set('otherDriver', this.get('otherChoices.firstObject.value'));
@@ -73,11 +73,11 @@ export default Ember.Component.extend(Driver, {
   willSave() {
     // Null out all the drivers that aren't the active one, because the API only accepts one.
     let activeDriver = this.get('otherDriver');
-    let machine      = this.get('model');
+    let host      = this.get('model');
     this.get('otherChoices').forEach((choice) => {
       let cur = choice.value;
       if ( choice.value !== activeDriver ) {
-        machine.set(cur, null);
+        host.set(cur, null);
       }
     });
 

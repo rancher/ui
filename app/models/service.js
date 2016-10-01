@@ -459,7 +459,7 @@ Service.reopenClass({
     return _allMaps.filterBy('serviceId', serviceId).map((map) => {
       return Ember.Object.create({
         name: map.get('name'),
-        service: getByServiceId(l('service:store'), map.get('consumedServiceId')), // @TODO
+        service: getByServiceId(window.l('service:store'), map.get('consumedServiceId')), // @TODO boooo
         ports: map.get('ports')||[],
       });
     }).filter((obj) => {

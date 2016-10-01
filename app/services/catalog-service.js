@@ -20,7 +20,7 @@ export default Ember.Service.extend(CatalogResource, {
   fetchCatalogs(auth) {
     const store = this.get('store');
 
-    return this.get('projects').checkForWaiting(auth.get('hosts'),auth.get('machines')).then(() => {
+    return this.get('projects').checkForWaiting(auth.get('hosts')).then(() => {
       return store.request({url: `${this.get('app.catalogEndpoint')}/catalogs`});
     });
   },

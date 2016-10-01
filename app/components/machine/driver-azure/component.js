@@ -35,7 +35,7 @@ export default Ember.Component.extend(Driver, {
     });
 
     this.set('model', this.get('store').createRecord({
-      type: 'machine',
+      type: 'host',
       azureConfig: config,
     }));
 

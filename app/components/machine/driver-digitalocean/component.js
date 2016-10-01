@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import Driver from 'ui/mixins/driver';
 import fetch from 'ember-api-store/utils/fetch';
+import Util from 'ui/utils/util';
 
 const DIGITALOCEAN_API = 'api.digitalocean.com/v2';
 const VALID_IMAGES = [
@@ -81,7 +82,7 @@ export default Ember.Component.extend(Driver, {
       }, (err) => {
 
         let errors = this.get('errors') || [];
-        errors.push(`${err.xhr.status}: ${err.err}`);
+        errors.push(`${err.statusText}: ${err.body.message}`);
 
         this.setProperties({
           errors: errors,
@@ -102,7 +103,7 @@ export default Ember.Component.extend(Driver, {
     });
 
     this.set('model', this.get('store').createRecord({
-      type: 'machine',
+      type: 'host',
       digitaloceanConfig: config,
     }));
   },
@@ -135,19 +136,19 @@ export default Ember.Component.extend(Driver, {
     return true;
   },
 
-  apiRequest: function(command, params, method='GET') {
+  apiRequest: function(command, params) {
     let proxyEndpoint = this.get('app.proxyEndpoint');
     let url           = `${proxyEndpoint}/${DIGITALOCEAN_API}/${command}?per_page=100`;
+    url = Util.addQueryParams(url,params);
     let accessToken   = this.get('model.digitaloceanConfig.accessToken');
 
-    return fetch({
-      url: url,
-      method: method,
-      header: {
+    return fetch(url, {
+      headers: {
         'Accept': 'application/json',
         'X-Api-Auth-Header': 'Bearer ' + accessToken
       },
-      data: params,
-    }, true);
+    }).then((res) => {
+      return res.body;
+    });
   }
 });

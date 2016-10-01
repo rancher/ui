@@ -12,7 +12,7 @@ export default Ember.Route.extend({
     // Check for waiting only if cattle, because other orchestrations have system services menus that link here
     if ( !project.get('kubernetes') && !project.get('swarm') && !project.get('mesos') )
     {
-      return this.get('projects').checkForWaiting(auth.get('hosts'),auth.get('machines'));
+      return this.get('projects').checkForWaiting(auth.get('hosts'));
     }
   },
 

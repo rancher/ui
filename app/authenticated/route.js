@@ -54,7 +54,6 @@ export default Ember.Route.extend(Subscribe, {
         projectSchemas:     ['project',                 this.toCb('loadProjectSchemas')],
         orchestrationState: ['projectSchemas',          this.toCb('updateOrchestration')],
         instances:          ['projectSchemas',          this.cbFind('instance')],
-        machines:           ['projectSchemas',          this.cbFind('machine')],
         services:           ['projectSchemas',          this.cbFind('service')],
         hosts:              ['projectSchemas',          this.cbFind('host')],
         stacks:             ['projectSchemas',          this.cbFind('stack')],

@@ -30,8 +30,7 @@ var Host = Resource.extend({
     },
 
     clone: function() {
-      var machine = this.get('machine');
-      this.get('application').transitionToRoute('hosts.new', {queryParams: {machineId: machine.get('id'), driver: machine.get('driver')}});
+      this.get('application').transitionToRoute('hosts.new', {queryParams: {hostId: this.get('id'), driver: this.get('driver')}});
     },
 
     edit: function() {
@@ -39,15 +38,11 @@ var Host = Resource.extend({
     },
 
     machineConfig: function() {
-      var machine = this.get('machine');
-      if ( machine )
+      var url = this.linkFor('config');
+      if ( url )
       {
-        var url = machine.linkFor('config');
-        if ( url )
-        {
-          url = this.get('endpointSvc').addAuthParams(url);
-          Util.download(url);
-        }
+        url = this.get('endpointSvc').addAuthParams(url);
+        Util.download(url);
       }
     }
   },
@@ -64,53 +59,22 @@ var Host = Resource.extend({
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true},
     ];
 
-    if ( this.get('machine') )
+    if ( this.get('links.config') )
     {
-      if ( this.get('machine.links.config') )
-      {
-        out.push({ label: 'action.machineConfig', icon: 'icon icon-download', action: 'machineConfig', enabled: true});
-      }
-
-      out.push({ label: 'action.clone', icon: 'icon icon-copy', action: 'clone', enabled: true });
+      out.push({ label: 'action.machineConfig', icon: 'icon icon-download', action: 'machineConfig', enabled: true});
     }
 
+    out.push({ label: 'action.clone', icon: 'icon icon-copy', action: 'clone', enabled: true });
     out.push({ label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!a.update });
 
     return out;
-  }.property('actionLinks.{activate,deactivate,remove,purge,update}','machine','machine.links.config'),
-
-
-  state: function() {
-    var host = this.get('hostState');
-    var agent = this.get('agentState');
-    if ( host === 'active' && agent )
-    {
-      return agent;
-    }
-    else
-    {
-      return host;
-    }
-  }.property('hostState','agentState'),
+  }.property('actionLinks.{activate,deactivate,remove,purge,update}','links.config'),
 
   displayIp: Ember.computed.alias('agentIpAddress'),
 
   displayName: function() {
     return this.get('name') || this.get('hostname') || '('+this.get('id')+')';
   }.property('name','hostname','id'),
-
-  //@TODO PERF
-  machine: function() {
-    var phid = this.get('physicalHostId');
-    if ( !phid )
-    {
-      return null;
-    }
-
-    var machine = this.get('store').getById('machine', phid);
-    return machine;
-  }.property('physicalHostId'),
-  //@TODO PERF
 
   osBlurb: function() {
     var out = this.get('info.osInfo.operatingSystem')||'';
@@ -225,15 +189,10 @@ var Host = Resource.extend({
 });
 
 Host.reopenClass({
-  // Remap the host state to hostState so the regular state can be a computed combination of host+agent state.
-  mangleIn: function(data) {
-    data['hostState'] = data['state'];
-    delete data['state'];
-    return data;
-  },
-
+  defaultSortBy: 'name,hostname',
   stateMap: {
     'active':           {icon: 'icon icon-host',    color: 'text-success'},
+    'provisioning':     {icon: 'icon icon-host',    color: 'text-info'},
     'reconnecting':     {icon: 'icon icon-help',    color: 'text-danger'},
   }
 });

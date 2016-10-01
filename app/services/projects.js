@@ -213,7 +213,7 @@ export default Ember.Service.extend({
     );
   }.property('orchestrationState'), // The state object is always completely replaced, so this is ok
 
-  checkForWaiting(hosts,machines) {
+  checkForWaiting(hosts) {
     let router = getOwner(this).get('router');
 
     let hasHosts = false;
@@ -223,7 +223,7 @@ export default Ember.Service.extend({
     }
     else
     {
-      hasHosts = (hosts && hosts.get('length') > 0) || (machines && machines.get('length') > 0);
+      hasHosts = (hosts && hosts.get('length') > 0);
     }
 
     if ( !hasHosts )
