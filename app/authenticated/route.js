@@ -60,6 +60,7 @@ export default Ember.Route.extend(Subscribe, {
         mounts:             ['projectSchemas',          this.cbFind('mount')], // the container model needs access
         volumes:            ['projectSchemas',          this.cbFind('volume')],
         snapshots:          ['projectSchemas',          this.cbFind('snapshot')],
+        identities:         ['userSchemas', this.cbFind('identity', 'userStore')],
       };
 
       async.auto(tasks, function(err, res) {
@@ -158,9 +159,9 @@ export default Ember.Route.extend(Subscribe, {
     };
   },
 
-  cbFind(type) {
+  cbFind(type, store='store') {
     return (cb) => {
-      return this.get('store').find(type).then(function(res) {
+      return this.get(store).find(type).then(function(res) {
         cb(null, res);
       }).catch(function(err) {
         cb(err, null);
