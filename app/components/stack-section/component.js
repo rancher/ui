@@ -13,17 +13,27 @@ export default Ember.Component.extend({
   collapsed         : true,
   classNames        : ['stack-section'],
 
+  sortedServices    : Ember.computed.sort('model.services','sortBy'),
+  sortBy: ['name','id'],
+
   actions: {
     toggleCollapse() {
       var collapsed = this.toggleProperty('collapsed');
       var list = this.get('prefs.'+C.PREFS.EXPANDED_STACKS)||[];
+      let id = this.get('model.id');
       if ( collapsed )
       {
-        list.removeObject(this.get('model.id'));
+        list.removeObject(id);
       }
-      else
+      else if (!list.includes(id))
       {
-        list.addObject(this.get('model.id'));
+        // Add at the front
+        list.unshift(id);
+      }
+
+      // Cut off the back to keep the list reasonable
+      if ( list.length > 100 ) {
+        list.length = 100;
       }
 
       this.get('prefs').set(C.PREFS.EXPANDED_STACKS, list);

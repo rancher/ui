@@ -5,7 +5,6 @@ import C from 'ui/utils/constants';
 export default Ember.Controller.extend(Sortable, {
   stacks: Ember.inject.controller(),
   projects: Ember.inject.service(),
-  sortableContent: Ember.computed.alias('filteredStacks'),
   prefs: Ember.inject.service(),
   intl: Ember.inject.service(),
 
@@ -70,9 +69,12 @@ export default Ember.Controller.extend(Sortable, {
     {
       return all.filterBy('grouping', which);
     }
-  }.property('model.[]','model.@each.grouping','which'),
 
-  sortBy: 'state',
+  // stateSort isn't really a dependency here, but sortable won't recompute when it changes otherwise
+  }.property('model.[]','model.@each.{stateSort,grouping}','which'),
+
+  sortableContent: Ember.computed.alias('filteredStacks'),
+  sortBy: 'name',
   sorts: {
     state: ['stateSort','name','id'],
     name: ['name','id']

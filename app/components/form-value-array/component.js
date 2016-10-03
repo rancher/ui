@@ -15,7 +15,7 @@ export default Ember.Component.extend({
     add() {
       this.get('ary').pushObject(Ember.Object.create({value: ''}));
       Ember.run.next(() => {
-        if ( this._state !== 'destroying' )
+        if ( !this.isDestroyed )
         {
           this.$('INPUT.value').last()[0].focus();
         }

@@ -71,7 +71,7 @@ export default Ember.Component.extend(ThrottledResize, {
 
     this.updateGraph();
     $(outer[0]).on('click', (event) => {
-      if ( this._state === 'destroying' )
+      if ( !this.isDestroyed )
       {
         return;
       }

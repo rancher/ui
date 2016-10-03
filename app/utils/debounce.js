@@ -22,7 +22,7 @@ export function debouncedObserver(...args) {
   keys = args.slice(0, funcIndex);
 
   var fn = function() {
-    if ( this._state !== 'destroying' ) {
+    if ( !this.isDestroyed ) {
     opt[0].apply(this);
     }
   };

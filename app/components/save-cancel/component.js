@@ -45,7 +45,7 @@ export default Ember.Component.extend({
     if ( this.get('saved') )
     {
       Ember.run.later(this, () => {
-        if ( this._state !== 'destroying' )
+        if ( !this.isDestroyed )
         {
           this.set('saved', false);
         }

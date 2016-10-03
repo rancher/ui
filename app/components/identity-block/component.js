@@ -31,13 +31,13 @@ export default Ember.Component.extend({
       {
         this.set('loading', true);
         this.get('userStore').find('identity', id).then((identity) => {
-          if (this._state !== 'destroying') {
+          if ( !this.isDestroyed ) {
             this.set('identity', identity);
           }
         }).catch((/*err*/) => {
           // Do something..
         }).finally(() => {
-          if (this._state !== 'destroying') {
+          if ( !this.isDestroyed ) {
             this.set('loading', false);
           }
         });
