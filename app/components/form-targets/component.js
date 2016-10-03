@@ -37,7 +37,7 @@ export default Ember.Component.extend({
     var existing = this.get('existing');
     if ( existing )
     {
-      existing.get('consumedServicesWithNames').forEach((map) => {
+      existing.get('consumedServicesWithNamesAndPorts').forEach((map) => {
         if ( map.get('ports.length') )
         {
           map.get('ports').forEach((str) => {

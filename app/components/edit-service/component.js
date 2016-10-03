@@ -49,6 +49,19 @@ export default ModalBase.extend(NewOrEdit, {
     });
   },
 
+  didSave() {
+    var service = this.get('service');
+    var ary = [];
+    this.get('serviceLinksArray').forEach((row) => {
+      if ( row.serviceId )
+      {
+        ary.push({name: row.name, serviceId: row.serviceId});
+      }
+    });
+
+    return service.doAction('setservicelinks', {serviceLinks: ary});
+  },
+
   doneSaving() {
     this.send('cancel');
   }

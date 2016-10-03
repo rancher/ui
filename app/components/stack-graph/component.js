@@ -148,11 +148,7 @@ export default Ember.Component.extend(ThrottledResize, {
     // Add services that are cross-linked from another stack
     var out = [];
 
-    var unremovedServices = this.get('model.stack.services').filter(function(service) {
-      return C.REMOVEDISH_STATES.indexOf(service.get('state')) === -1;
-    });
-
-    unremovedServices.forEach((service) => {
+    this.get('model.stack.services').forEach((service) => {
       var externals = (service.get('consumedServicesWithNames')||[]).filter((linked) => {
         return linked.get('service.stackId') !== this.get('model.stack.id');
       }).map((linked) => { return linked.get('service'); });
@@ -160,7 +156,7 @@ export default Ember.Component.extend(ThrottledResize, {
     });
 
     return out;
-  }.property('model.stack.services.@each.consumedServicesUpdated'),
+  }.property('model.stack.services.@each.consumedServicesWithNames'),
 
   updateGraph: function() {
     var g = this.get('graph');
@@ -278,7 +274,7 @@ export default Ember.Component.extend(ThrottledResize, {
 
   throttledUpdateGraph: function() {
     Ember.run.throttle(this,'updateGraph',250);
-  }.observes('model.stack.services.@each.{id,name,displayState,consumedServicesUpdated}','crosslinkServices.@each.{id,name,displayState,displayStack}'),
+  }.observes('model.stack.services.@each.{id,name,displayState,consumedServicesWithNames}','crosslinkServices.@each.{id,name,displayState,displayStack}'),
 
   willDestroyElement: function() {
     this._super();

@@ -2,12 +2,8 @@ import Resource from 'ember-api-store/models/resource';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
-const { getOwner } = Ember;
+import { denormalizeId } from 'ember-api-store/utils/denormalize';
 import { denormalizeInstanceArray, getByServiceId } from 'ui/utils/denormalize-snowflakes';
-
-// !! If you add a new one of these, you need to add it to reset() below too
-var _allMaps;
-// !! If you add a new one of these, you need to add it to reset() below too
 
 var Service = Resource.extend({
   type: 'service',
@@ -17,6 +13,7 @@ var Service = Resource.extend({
 
   instances: denormalizeInstanceArray('instanceIds'),
   instanceCount: Ember.computed.alias('instances.length'),
+  stack: denormalizeId('stackId'),
 
   actions: {
     activate() {
@@ -174,96 +171,50 @@ var Service = Resource.extend({
   }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type','isK8s','isSwarm','hasContainers'),
 
 
-  // !! If you add a new one of these, you need to add it to reset() below too
-  _allMaps: null,
-  // !! If you add a new one of these, you need to add it to reset() below too
-
-  consumedServicesUpdated: 0,
-  consumedByServicesUpdated: 0,
   serviceLinks: null, // Used for clone
   reservedKeys: [
-    '_allMaps',
-    'consumedServices',
-    'consumedServicesUpdated',
     'serviceLinks',
-    '_stack',
-    '_stackState',
   ],
 
-  init: function() {
+  init() {
     this._super();
-
-    // this.get('store') isn't set yet at init
-    var store = getOwner(this).lookup('service:store');
-
-    // Hack: keep only one copy of all the services and serviceconsumemaps
-    // But you have to load service and serviceconsumemap beforehand somewhere...
-    // Bonus hack: all('services') doesn't include the other kinds of services, so load all those too.
-    // !! If you add a new one of these, you need to add it to reset() below too
-    if ( !_allMaps )
-    {
-      _allMaps = store.allUnremoved('serviceconsumemap');
-    }
-
-    // !! If you add a new one of these, you need to add it to reset() below too
-
-    // And we need this here so that consumedServices can watch for changes
-    this.setProperties({
-      '_allMaps': _allMaps,
-    });
   },
 
-  _stack: null,
-  _stackState: 0,
   displayStack: function() {
-    var stack = this.get('_stack');
-    if ( stack )
-    {
+    var stack = this.get('stack');
+    if ( stack ) {
       return stack.get('displayName');
-    }
-    else if ( this && this.get('_stackState') === 2 )
-    {
-      return '???';
-    }
-    else if ( this && this.get('_stackState') === 0 )
-    {
-      var existing = this.get('store').getById('stack', this.get('stackId'));
-      if ( existing )
-      {
-        this.set('_stack', existing);
-        return existing.get('displayName');
-      }
-
-      this.set('_stackState', 1);
-      this.get('store').find('stack', this.get('stackId')).then((stack) => {
-        this.set('_stack', stack);
-      }).catch(() => {
-        this.set('_publicIpState', 2);
-      });
-
+    } else {
       return '...';
     }
-
-    return null;
-  }.property('_stack.displayName','_stackState','stackId'),
-
-  onDisplayStackChanged: function() {
-    this.incrementProperty('consumedServicesUpdated');
-  }.observes('displayStack'),
+  }.property('stack.displayName'),
 
   consumedServicesWithNames: function() {
-    return Service.consumedServicesFor(this.get('id'));
-  }.property('id','_allMaps.@each.{name,serviceId,consumedServiceId}','state'),
-
-  consumedServices: function() {
-    return this.get('consumedServicesWithNames').map((obj) => {
-      return obj.get('service');
+    let store = this.get('store');
+    let links = this.get('linkedServices')||{};
+    let out = Object.keys(links).map((key) => {
+      return Ember.Object.create({
+        name: key,
+        service: getByServiceId(store, links[key])
+      });
     });
-  }.property('consumedServicesWithNames.@each.service'),
 
-  onConsumedServicesChanged: function() {
-    this.incrementProperty('consumedServicesUpdated');
-  }.observes('consumedServicesWithNames.@each.{name,service}'),
+    return out;
+  }.property('linkedServices'),
+
+  // Only for old Load Balancer to get ports map
+  consumedServicesWithNamesAndPorts: function() {
+    let store = this.get('store');
+    return store.all('serviceconsumemap').filterBy('serviceId', this.get('id')).map((map) => {
+      return Ember.Object.create({
+        name: map.get('name'),
+        service: getByServiceId(store, map.get('consumedServiceId')),
+        ports: map.get('ports')||[],
+      });
+    }).filter((obj) => {
+      return obj && obj.get('service.id');
+    });
+  }.property('id','state').volatile(),
 
   combinedState: function() {
     var service = this.get('state');
@@ -446,46 +397,6 @@ export function activeIcon(service)
 }
 
 Service.reopenClass({
-  reset: function() {
-    _allMaps = null;
-  },
-
-  consumedServicesFor: function(serviceId) {
-    // when switching environment the service model is reset and this is recalculated
-    if (!_allMaps) {
-      return;
-    }
-
-    return _allMaps.filterBy('serviceId', serviceId).map((map) => {
-      return Ember.Object.create({
-        name: map.get('name'),
-        service: getByServiceId(window.l('service:store'), map.get('consumedServiceId')), // @TODO boooo
-        ports: map.get('ports')||[],
-      });
-    }).filter((obj) => {
-      return obj.get('service.id');
-    });
-  },
-
-  mangleIn: function(data, store) {
-    if ( data.launchConfig && !data.launchConfig.type )
-    {
-      data.launchConfig.type = 'launchConfig';
-      data.launchConfig = store.createRecord(data.launchConfig);
-    }
-
-    if ( data.secondaryLaunchConfigs )
-    {
-      // Secondary lanch configs are service-like
-      data.secondaryLaunchConfigs = data.secondaryLaunchConfigs.map((slc) => {
-        slc.type = 'secondaryLaunchConfig';
-        return store.createRecord(slc);
-      });
-    }
-
-    return data;
-  },
-
   stateMap: {
     'active':             {icon: activeIcon,                  color: 'text-success'},
     'canceled-rollback':  {icon: 'icon icon-life-ring',       color: 'text-info'},
