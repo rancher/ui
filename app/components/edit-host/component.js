@@ -4,7 +4,7 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 import ModalBase from 'lacsso/components/modal-base';
 
 export default ModalBase.extend(NewOrEdit, ManageLabels, {
-  classNames: ['lacsso', 'modal-container', 'span-6', 'offset-3'],
+  classNames: ['lacsso', 'modal-container', 'full-width-modal'],
   originalModel: Ember.computed.alias('modalService.modalOpts'),
   model: null,
   editing: true,

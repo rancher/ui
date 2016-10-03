@@ -4,7 +4,7 @@ import C from 'ui/utils/constants';
 import ModalBase from 'lacsso/components/modal-base';
 
 export default ModalBase.extend(NewOrEdit, {
-  classNames: ['lacsso', 'modal-container', 'span-6', 'offset-3'],
+  classNames: ['lacsso', 'modal-container', 'full-width-modal'],
   access: Ember.inject.service(),
   primaryResource: Ember.computed.alias('model.account'),
 

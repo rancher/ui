@@ -3,7 +3,7 @@ import NewBalancer from 'ui/mixins/new-balancer';
 import ModalBase from 'lacsso/components/modal-base';
 
 export default ModalBase.extend(NewBalancer, {
-  classNames         : ['lacsso', 'modal-container', 'span-6', 'offset-3', 'modal-logs'],
+  classNames         : ['lacsso', 'modal-container', 'full-width-modal', 'modal-logs'],
   originalModel      : Ember.computed.alias('modalService.modalOpts'),
 
   actions: {

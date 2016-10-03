@@ -15,7 +15,9 @@ export default Ember.Component.extend({
   modalService: Ember.inject.service('modal'),
   actions: {
     showAbout() {
-      this.get('modalService').toggleModal('modal-about');
+      this.get('modalService').toggleModal('modal-about', {
+        closeWithOutsideClick: true
+      });
     },
 
     composeDownload(os) {
