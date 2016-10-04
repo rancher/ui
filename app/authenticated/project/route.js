@@ -4,7 +4,7 @@ export default Ember.Route.extend({
   access    : Ember.inject.service(),
   projects  : Ember.inject.service(),
 
-  model(params, transition) {
+  model(params/*, transition*/) {
     var project = this.get('projects.current');
 
     if ( !project )
@@ -20,12 +20,8 @@ export default Ember.Route.extend({
       return;
     }
 
-    return this.loadSchemas().then(() => {
-      return Ember.Object.create({
-        project: project,
-      });
-    }).catch((err) => {
-      return this.loadingError(err, transition, null);
+    return Ember.Object.create({
+      project: project,
     });
   },
 
@@ -40,13 +36,5 @@ export default Ember.Route.extend({
 
     this.transitionTo('authenticated');
     return ret;
-  },
-
-  loadSchemas() {
-    var store = this.get('store');
-    store.resetType('schema');
-    return store.rawRequest({url:'schema', dataType: 'json'}).then((res) => {
-      store._bulkAdd('schema', res.xhr.responseJSON.data);
-    });
   },
 });

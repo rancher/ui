@@ -2,6 +2,8 @@ import Ember from 'ember';
 import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 
 export default Ember.Service.extend({
+  userStore: Ember.inject.service('user-store'),
+
   unremoved: function() {
     return UnremovedArrayProxy.create({
       sourceContent: this.get('userStore').all('userpreference')

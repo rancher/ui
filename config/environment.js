@@ -101,12 +101,7 @@ module.exports = function(environment) {
                     '?eventNames=resource.change' +
                     '&eventNames=service.kubernetes.change' +
                     '&limit=-1' +
-                    '&include=hosts' +
-                    '&include=services' +
-                    '&include=instances' +
-                    '&include=instance' +
-                    '&include=instanceLinks' +
-                    '&include=ipAddresses',
+                    '&include=instanceLinks',
       baseAssets: '/',
       locales: readLocales(environment)
     },

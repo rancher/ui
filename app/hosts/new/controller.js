@@ -3,18 +3,18 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   access: Ember.inject.service(),
 
-  queryParams : ['backTo', 'driver', 'machineId'],
+  queryParams : ['backTo', 'driver', 'hostId'],
   backTo      : null,
   driver      : null,
-  machineId   : null,
+  hostId      : null,
 
   allowCustom : true,
   allowOther  : true,
 
   actions: {
     switchDriver(name) {
-      if (this.get('machineId')) {
-        this.set('machineId', null);
+      if (this.get('hostId')) {
+        this.set('hostId', null);
         this.set('model.clonedModel', null);
       }
       this.set('driver', name);

@@ -37,7 +37,7 @@ export default Ember.Component.extend({
     this.set('subStep', 0);
     this.set('subCount', 0);
 
-    if ( (this.get('model.hosts.length') + this.get('model.machines.length')) < 3 )
+    if ( this.get('model.hosts.length') < 3 )
     {
       this.set('currentStep', 0);
       return;

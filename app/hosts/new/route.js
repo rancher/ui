@@ -28,7 +28,7 @@ export default Ember.Route.extend({
     driver: {
       refreshModel: true
     },
-    machineId: {
+    hostId: {
       refreshModel: false,
     }
   },
@@ -65,7 +65,7 @@ export default Ember.Route.extend({
   resetController(controller, isExisting /*, transition*/) {
     if ( isExisting )
     {
-      controller.set('machineId', null);
+      controller.set('hostId', null);
       controller.set('backTo', null);
     }
   },

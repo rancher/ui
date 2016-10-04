@@ -10,8 +10,8 @@ export default Ember.Controller.extend({
   }.property('projects.current.mesos'),
 
   hasHosts: function() {
-    return (this.get('model.hosts.length') + this.get('model.machines.length')) >= this.get('expectHosts');
-  }.property('model.hosts.length','model.machines.length'),
+    return this.get('model.hosts.length') >= this.get('expectHosts');
+  }.property('model.hosts.length'),
 
   actions: {
     kubernetesReady() {

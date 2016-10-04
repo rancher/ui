@@ -78,8 +78,9 @@ export function containerStateInator(state) {
 }
 
 export default Ember.Service.extend({
-  'tab-session': Ember.inject.service('tab-session'),
-  'cookies': Ember.inject.service('cookies'),
+  'tab-session': Ember.inject.service(),
+  cookies: Ember.inject.service(),
+  store: Ember.inject.service('store'),
 
   loadingErrors: null,
   version: null,
@@ -226,7 +227,7 @@ export default Ember.Service.extend({
         return typeifyResource(item, type);
       });
 
-      output = store.createCollection(obj,'items');
+      output = store.createCollection(obj,{key: 'items'});
     }
     else
     {
@@ -250,7 +251,7 @@ export default Ember.Service.extend({
         }
       }
 
-      var output = store.createRecord(obj, type);
+      var output = store.createRecord(obj, {type: type});
       if (output && output.metadata && output.metadata.uid)
       {
         var cacheEntry = self.getByUid(type, output.metadata.uid);

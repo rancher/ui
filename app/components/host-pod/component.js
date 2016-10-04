@@ -9,7 +9,6 @@ export default Ember.Component.extend(ManageLabels, GroupedInstances, {
   show              : null,
 
   classNames        : ['pod','host'],
-  classNameBindings : ['isMachine:machine-host'],
 
   init() {
     this._super(...arguments);
@@ -40,12 +39,9 @@ export default Ember.Component.extend(ManageLabels, GroupedInstances, {
     return this.get('filteredInstances').sortBy('name','id');
   }.property('filteredInstances.@each.{name,id}'),
 
-  isMachine: Ember.computed.equal('model.type','machine'),
   isActive: Ember.computed.equal('model.state','active'),
-
-  showAdd: function() {
-    return this.get('isActive') && !this.get('isMachine');
-  }.property('isActive','isMachine'),
+  isProvisioning: Ember.computed.equal('model.state','provisioning'),
+  showAdd: Ember.computed.alias('isActive'),
 
   stateBackground: function() {
     return this.get('model.stateColor').replace("text-","bg-");

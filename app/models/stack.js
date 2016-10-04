@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
-import UnremovedArrayProxy from 'ui/utils/unremoved-array-proxy';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
+import { denormalizeServiceArray } from 'ui/utils/denormalize-snowflakes';
 
 export function activeIcon(stack)
 {
@@ -22,6 +22,9 @@ export function activeIcon(stack)
 var Stack = Resource.extend({
   type: 'stack',
   k8s: Ember.inject.service(),
+  modalService: Ember.inject.service('modal'),
+
+  services: denormalizeServiceArray('serviceIds'),
 
   actions: {
     activateServices: function() {
@@ -49,12 +52,10 @@ var Stack = Resource.extend({
     },
 
     promptStop: function() {
-      this.get('application').setProperties({
-        showConfirmDeactivate : true,
-        originalModel         : this,
-        action                : 'deactivateServices'
+      this.get('modalService').toggleModal('modal-confirm-deactivate', {
+        originalModel: this,
+        action: 'deactivateServices'
       });
-
     },
 
 
@@ -75,10 +76,7 @@ var Stack = Resource.extend({
     },
 
     edit: function() {
-      this.get('application').setProperties({
-        editStack: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('edit-stack', this);
     },
 
     exportConfig: function() {
@@ -183,13 +181,6 @@ var Stack = Resource.extend({
     return this.get('services').filterBy('actionLinks.deactivate').get('length') > 0;
   }.property('services.@each.state','actionLinks.deactivateservices'),
 
-
-  unremovedServices: function() {
-    return UnremovedArrayProxy.create({
-      sourceContent: this.get('services'),
-      sortProperties: ['displayName','id']
-    });
-  }.property('services'),
 
   externalIdInfo: function() {
     let eid = this.get('externalId');

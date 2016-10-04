@@ -57,8 +57,10 @@ export default Ember.Component.extend(ManageLabels, {
         isRequestedHost: false,
         requestedHostId: null,
       });
-      this.sendAction('setGlobal', true);
-      this.sendAction('setRequestedHost', null);
+      Ember.run.scheduleOnce('afterRender', () => {
+        this.sendAction('setGlobal', true);
+        this.sendAction('setRequestedHost', null);
+      });
     }
     else if ( this.get('initialHostId') )
     {
@@ -67,8 +69,10 @@ export default Ember.Component.extend(ManageLabels, {
         requestedHostId: this.get('initialHostId'),
       });
 
-      this.sendAction('setGlobal', false);
-      this.sendAction('setRequestedHost', this.get('requestedHostId'));
+      Ember.run.scheduleOnce('afterRender', () => {
+        this.sendAction('setGlobal', false);
+        this.sendAction('setRequestedHost', this.get('requestedHostId'));
+      });
     }
   },
 

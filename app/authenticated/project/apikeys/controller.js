@@ -22,6 +22,7 @@ export default Ember.Controller.extend(Sortable, {
   growl: Ember.inject.service(),
   project: Ember.computed.alias('projects.current'),
   endpointService: Ember.inject.service('endpoint'),
+  modalService: Ember.inject.service('modal'),
 
   accountArranged: function() {
     var me = this.get(`session.${C.SESSION.ACCOUNT_ID}`);
@@ -41,7 +42,7 @@ export default Ember.Controller.extend(Sortable, {
     newApikey: function(kind) {
       var cred;
       if ( kind === 'account' )
-      { 
+      {
         cred = this.get('userStore').createRecord({
           type: 'apikey',
           accountId: this.get(`session.${C.SESSION.ACCOUNT_ID}`),
@@ -55,10 +56,7 @@ export default Ember.Controller.extend(Sortable, {
         });
       }
 
-      this.get('application').setProperties({
-        editApikey: true,
-        originalModel: cred,
-      });
+      this.get('modalService').toggleModal('edit-apikey', cred);
     },
   },
 

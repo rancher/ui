@@ -9,6 +9,7 @@ export default Ember.Controller.extend(Sortable, {
   sortBy      : 'name',
   upgrading   : false,
   sorts       : {name: ['name']},
+  modalService: Ember.inject.service('modal'),
 
   actions: {
     activate: function(driver) {
@@ -42,10 +43,7 @@ export default Ember.Controller.extend(Sortable, {
         });
       }
 
-      this.get('application').setProperties({
-        editMachineDriver: true,
-        originalModel: newDriver,
-      });
+      this.get('modalService').toggleModal('modal-edit-driver', newDriver);
     },
 
     addCatalogDriver: function(driver) {
@@ -93,7 +91,7 @@ export default Ember.Controller.extend(Sortable, {
     };
   },
 
-  sortableContent: Ember.computed('model.drivers.[]', 'model.catalogDrivers.[]', function() {
+  sortableContent: Ember.computed('model.drivers.@each.{state,id,version}', 'model.catalogDrivers.[]', function() {
     // possibly add some search here
     let cDrivers   = this.get('model.catalogDrivers.catalog');
     let drivers    = this.get('model.drivers.content');

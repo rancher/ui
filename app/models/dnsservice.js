@@ -24,7 +24,7 @@ var DnsService = Service.extend({
     var out = '<label>'+ toTranslation +': </label>' + services || '<span class="text-muted">'+ noneTranslation +'</span>';
 
     return out.htmlSafe();
-  }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated', 'intl._locale'),
+  }.property('consumedServicesWithNames.@each.{name,service}','intl._locale'),
 });
 
 export default DnsService;

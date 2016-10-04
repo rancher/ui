@@ -51,8 +51,10 @@ export default Ember.Component.extend(ContainerChoices, {
       });
     }
 
-    this.set('linksArray', out);
-    this.linksDidChange();
+    Ember.run.scheduleOnce('afterRender', () => {
+      this.set('linksArray', out);
+      this.linksDidChange();
+    });
   },
 
   linksDidChange: function() {

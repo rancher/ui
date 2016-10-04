@@ -3,6 +3,8 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
 export default Ember.Service.extend({
+  store: Ember.inject.service(),
+
   isReady() {
     return this.get('store').find('stack').then((stacks) => {
       return this.get('store').find('service').then((services) => {

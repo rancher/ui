@@ -16,7 +16,7 @@ export default Ember.Component.extend({
     add() {
       this.get('ary').pushObject(Ember.Object.create({name: '', branch: 'master', url: ''}));
       Ember.run.next(() => {
-        if ( this._state !== 'destroying' )
+        if ( !this.isDestroyed )
         {
           this.$('INPUT.name').last()[0].focus();
         }

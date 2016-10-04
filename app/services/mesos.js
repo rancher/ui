@@ -4,6 +4,7 @@ import Util from 'ui/utils/util';
 
 export default Ember.Service.extend({
   'tab-session': Ember.inject.service('tab-session'),
+  store: Ember.inject.service(),
 
   publicUrl: function() {
     return this.get('store').find('service').then((services) => {

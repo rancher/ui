@@ -74,7 +74,7 @@ export default Ember.Component.extend({
     add() {
       this.get('ary').pushObject(Ember.Object.create({key: '', value: ''}));
       Ember.run.next(() => {
-        if ( this._state !== 'destroying' )
+        if ( !this.isDestroyed )
         {
           this.$('INPUT.key').last()[0].focus();
         }
@@ -131,7 +131,7 @@ export default Ember.Component.extend({
   }.observes('ary.@each.{key,value}'),
 
   fireChanged() {
-    if ( this._state === 'destroying' )
+    if ( this.isDestroyed )
     {
       return;
     }

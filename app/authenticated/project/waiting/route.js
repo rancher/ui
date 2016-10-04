@@ -22,7 +22,7 @@ export default Ember.Route.extend({
         this.replaceWith('authenticated.project.index');
       }
     }
-    else if ( (model.get('hosts.length') + model.get('machines.length')) > 0 && this.get('projects.isReady') )
+    else if ( model.get('hosts.length') > 0 && this.get('projects.isReady') )
     {
       this.replaceWith('authenticated.project.index');
     }

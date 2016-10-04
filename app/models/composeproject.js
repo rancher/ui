@@ -20,7 +20,7 @@ var ComposeProject = Stack.extend({
 
   unremovedServices: function() {
     var proxy = FilteredSortedArrayProxy.create({
-      sourceContent: this.get('store').reallyAll('composeservice'),
+      sourceContent: this.get('store').all('composeservice'),
       dependentKeys: ['sourceContent.@each.state','sourceContent.@each.stackId'],
       filterFn: function(item) {
         return Ember.get(item,'stackId') === this.get('id') &&

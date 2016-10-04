@@ -2,9 +2,7 @@
   <h1>{{#link-to "virtualmachines"}}{{t 'virtualMachinePage.header'}}{{/link-to}}</h1>
 
   {{#power-select options=model.vm.primaryHost.instances selected=model.vm onchange=(action "changeVirtualMachine") searchField="displayName" as |obj|}}
-    <div class="clip r-mr15">
-      {{select-dot model=obj}}
-    </div>
+    {{select-dot model=obj}}
   {{/power-select}}
 
   {{#if model.vm.primaryHost}}
@@ -39,14 +37,14 @@
 
       <div>
         <label>{{t 'virtualMachinePage.multistat.hostIp'}}</label>
-        {{format-ip ip=model.vm.primaryHost.displayIp noIp='formatIp.unknownIp' showCopy=true}}
+        {{copy-ip ip=model.vm.primaryHost.displayIp noIp='formatIp.unknownIp'}}
       </div>
 
       <hr>
 
       <div>
         <label>{{t 'virtualMachinePage.multistat.vmIp'}}</label>
-        {{format-ip ip=model.vm.displayIp showCopy=true}}
+        {{copy-ip ip=model.vm.displayIp}}
       </div>
 
       <hr>

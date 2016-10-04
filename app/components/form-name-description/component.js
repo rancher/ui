@@ -67,7 +67,7 @@ export default Ember.Component.extend({
 
   didInsertElement() {
     Ember.run.next(() => {
-      if ( this._state !== 'destroying' ) {
+      if ( !this.isDestroyed ) {
         this.$('INPUT')[0].focus();
       }
     });

@@ -37,7 +37,7 @@ export default Ember.Component.extend({
   },
 
   show(node) {
-    if ( this._state === 'destroying' )
+    if ( this.isDestroyed )
     {
       return;
     }

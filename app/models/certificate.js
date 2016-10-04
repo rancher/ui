@@ -1,12 +1,11 @@
+import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 
 export default Resource.extend({
+  modalService: Ember.inject.service('modal'),
   actions: {
     edit: function() {
-      this.get('application').setProperties({
-        editCertificate: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('edit-certificate', this);
     },
   },
   availableActions: function() {

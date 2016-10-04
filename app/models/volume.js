@@ -9,6 +9,7 @@ var _allSnapshots;
 
 var Volume = Resource.extend({
   type: 'volume',
+  modalService: Ember.inject.service('modal'),
 
   // !! If you add a new one of these, you need to add it to reset() below too
   _allMounts: null,
@@ -23,7 +24,7 @@ var Volume = Resource.extend({
     this._super();
 
     // this.get('store') isn't set yet at init
-    var store = getOwner(this).lookup('store:main');
+    var store = getOwner(this).lookup('service:store');
     if ( !_allMounts )
     {
       _allMounts = store.allUnremoved('mount');
@@ -43,6 +44,7 @@ var Volume = Resource.extend({
 
   actions: {
     snapshot() {
+      this.get('modalService').toggleModal('modal-edit-snapshot', this);
       this.get('application').setProperties({
         editSnapshot: true,
         originalModel: this,

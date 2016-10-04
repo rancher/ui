@@ -44,7 +44,7 @@
     </div>
 
     <div class="header-right right-divider count">
-      <p>{{model.unremovedServices.length}}</p>
+      <p>{{model.services.length}}</p>
       <label>{{t 'stackSection.service' numServices=instanceCount}}</label>
     </div>
 
@@ -81,7 +81,7 @@
     {{#if model.services.length}}
       <table class="grid fixed sized" style="margin-bottom: 0">
         <tbody>
-          {{#each filtered as |service|}}
+          {{#each sortedServices as |service|}}
             <tr>
               <td data-title="{{t 'stackSection.table.dataTitle.state'}}:" class="state">
                 {{badge-state model=service}}
@@ -94,7 +94,7 @@
                 {{#if service.showTransitioningMessage}}
                   <span class="{{service.stateColor}}">({{service.transitioningMessage}})</span>
                 {{/if}}
-                <button type="button" class="btn-link" role="button" {{action 'addtlInfo' service target=controller}}>
+                <button type="button" class="btn-link" role="button" {{action 'addtlInfo' service}}>
                   <i class="icon icon-info addtl-info-trigger"/>
                 </button>
                 {{#if service.isError}}
@@ -109,7 +109,7 @@
               </td>
               <td data-title="{{t 'stackSection.table.dataTitle.containers'}}:">
                 {{#if service.hasContainers}}
-                  {{default-str service.instanceCount.length default="0"}} {{t 'stackSection.container' numContainers=service.instanceCount}}
+                  {{default-str service.instances.length default="0"}} {{t 'stackSection.container' numContainers=service.instances.length}}
                 {{/if}}
               </td>
               <td data-title="{{t 'stackSection.table.dataTitle.actions'}}:" class="actions wide">

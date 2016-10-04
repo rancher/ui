@@ -5,6 +5,7 @@ import { addQueryParam, addQueryParams } from 'ui/utils/util';
 const VERSIONKEY = 'minimumRancherVersion_lte';
 export default Ember.Service.extend(CatalogResource, {
   settings: Ember.inject.service(),
+  store: Ember.inject.service('store'),
 
   refresh() {
     const store = this.get('store');
@@ -19,7 +20,7 @@ export default Ember.Service.extend(CatalogResource, {
   fetchCatalogs(auth) {
     const store = this.get('store');
 
-    return this.get('projects').checkForWaiting(auth.get('hosts'),auth.get('machines')).then(() => {
+    return this.get('projects').checkForWaiting(auth.get('hosts')).then(() => {
       return store.request({url: `${this.get('app.catalogEndpoint')}/catalogs`});
     });
   },

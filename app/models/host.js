@@ -1,13 +1,16 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
-import { byId as serviceById } from 'ui/models/service';
+import { getByServiceId } from 'ui/utils/denormalize-snowflakes';
 import { formatMib } from 'ui/utils/util';
 import C from 'ui/utils/constants';
-
+import { getByInstanceId, denormalizeInstanceArray } from 'ui/utils/denormalize-snowflakes';
 
 var Host = Resource.extend({
   type: 'host',
+  modalService: Ember.inject.service('modal'),
+
+  instances: denormalizeInstanceArray('instanceIds'),
 
   actions: {
     activate: function() {
@@ -27,27 +30,19 @@ var Host = Resource.extend({
     },
 
     clone: function() {
-      var machine = this.get('machine');
-      this.get('application').transitionToRoute('hosts.new', {queryParams: {machineId: machine.get('id'), driver: machine.get('driver')}});
+      this.get('application').transitionToRoute('hosts.new', {queryParams: {hostId: this.get('id'), driver: this.get('driver')}});
     },
 
     edit: function() {
-      this.get('application').setProperties({
-        editHost: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('edit-host', this);
     },
 
     machineConfig: function() {
-      var machine = this.get('machine');
-      if ( machine )
+      var url = this.linkFor('config');
+      if ( url )
       {
-        var url = machine.linkFor('config');
-        if ( url )
-        {
-          url = this.get('endpointSvc').addAuthParams(url);
-          Util.download(url);
-        }
+        url = this.get('endpointSvc').addAuthParams(url);
+        Util.download(url);
       }
     }
   },
@@ -64,75 +59,27 @@ var Host = Resource.extend({
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true},
     ];
 
-    if ( this.get('machine') )
+    if ( this.get('links.config') )
     {
-      if ( this.get('machine.links.config') )
-      {
-        out.push({ label: 'action.machineConfig', icon: 'icon icon-download', action: 'machineConfig', enabled: true});
-      }
-
-      out.push({ label: 'action.clone', icon: 'icon icon-copy', action: 'clone', enabled: true });
+      out.push({ label: 'action.machineConfig', icon: 'icon icon-download', action: 'machineConfig', enabled: true});
     }
 
+    out.push({ label: 'action.clone', icon: 'icon icon-copy', action: 'clone', enabled: true });
     out.push({ label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!a.update });
 
     return out;
-  }.property('actionLinks.{activate,deactivate,remove,purge,update}','machine','machine.links.config'),
+  }.property('actionLinks.{activate,deactivate,remove,purge,update}','links.config'),
 
-
-  instancesUpdated: 0,
-  onInstanceChanged: function() {
-    this.incrementProperty('instancesUpdated');
-  }.observes('instances.@each.{id,name,state}','instances.length'),
-
-  state: function() {
-    var host = this.get('hostState');
-    var agent = this.get('agentState');
-    if ( host === 'active' && agent )
-    {
-      return agent;
-    }
-    else
-    {
-      return host;
-    }
-  }.property('hostState','agentState'),
-
-  triedToGetIp: false,
-  displayIp: function() {
-    var obj = (this.get('ipAddresses')||[]).get('firstObject');
-    if ( obj )
-    {
-      return obj.get('address');
-    }
-    else if ( this && this.hasLink && this.hasLink('ipAddresses') && !this.get('triedToGetIp'))
-    {
-      this.set('triedToGetIp',true);
-      this.importLink('ipAddresses');
-    }
-
-    return null;
-  }.property('ipAddresses','ipAddresses.[]'),
+  displayIp: Ember.computed.alias('agentIpAddress'),
 
   displayName: function() {
     return this.get('name') || this.get('hostname') || '('+this.get('id')+')';
   }.property('name','hostname','id'),
 
-  machine: function() {
-    var phid = this.get('physicalHostId');
-    if ( !phid )
-    {
-      return null;
-    }
-
-    var machine = this.get('store').getById('machine', phid);
-    return machine;
-  }.property('physicalHostId'),
-
   osBlurb: function() {
     var out = this.get('info.osInfo.operatingSystem')||'';
 
-    out = out.replace(/\s+\(.*?\)/,''); // Remove details in quotes
+    out = out.replace(/\s+\(.*?\)/,''); // Remove details in parens
     out = out.replace('Red Hat Enterprise Linux Server','RHEL'); // That's kinda long
 
     var hasKvm = (this.get('labels')||{})[C.LABEL.KVM] === 'true';
@@ -232,33 +179,20 @@ var Host = Resource.extend({
     var store = this.get('store');
     return (this.get('publicEndpoints')||[]).map((endpoint) => {
       if ( !endpoint.service ) {
-        endpoint.service = serviceById(endpoint.serviceId);
+        endpoint.service = getByServiceId(store, endpoint.serviceId);
       }
 
-      if ( !endpoint.instance ) {
-        endpoint.instance = store.getById('container', endpoint.instanceId);
-        if ( !endpoint.instanceId ) {
-          endpoint.instance = store.getById('virtualmachine', endpoint.instanceId);
-        }
-      }
-
+      endpoint.instance = getByInstanceId(store, endpoint.instanceId);
       return endpoint;
     });
   }.property('publicEndpoints.@each.{ipAddress,port,serviceId,instanceId}'),
 });
 
 Host.reopenClass({
-  alwaysInclude: ['instances','ipAddresses'],
-
-  // Remap the host state to hostState so the regular state can be a computed combination of host+agent state.
-  mangleIn: function(data) {
-    data['hostState'] = data['state'];
-    delete data['state'];
-    return data;
-  },
-
+  defaultSortBy: 'name,hostname',
   stateMap: {
     'active':           {icon: 'icon icon-host',    color: 'text-success'},
+    'provisioning':     {icon: 'icon icon-host',    color: 'text-info'},
     'reconnecting':     {icon: 'icon icon-help',    color: 'text-danger'},
   }
 });

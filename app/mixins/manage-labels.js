@@ -292,7 +292,7 @@ export default Ember.Mixin.create({
   labelsChanged: debouncedObserver('labelArray.@each.{type,key,value}', function() {
     // Make a map of the keys we care about, and combine multiple values together
     let map = {};
-    this.get('labelArray').forEach(function(row) {
+    (this.get('labelArray')||[]).forEach(function(row) {
       let key   = row.get('key')   || '';
       let type  = row.get('type')  || '';
 

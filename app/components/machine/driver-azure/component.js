@@ -35,14 +35,15 @@ export default Ember.Component.extend(Driver, {
     });
 
     this.set('model', this.get('store').createRecord({
-      type: 'machine',
+      type: 'host',
       azureConfig: config,
     }));
 
     this.set('editing', false);
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
 
     this.set('publicIpChoice', this.initPublicIpChoices(this.get('azureConfig.staticPublicIp'), this.get('azureConfig.noPublicIp')));
     this.set('openPorts', this.initOpenPorts(this.get('azureConfig.openPort')));

@@ -281,6 +281,7 @@ const navTree = [
         route: 'storagepools',
         ctx: [getProjectId],
       },
+      /*
       {
         id: 'infra-backuptargets',
         localizedLabel: 'nav.infra.backupTarget',
@@ -289,6 +290,7 @@ const navTree = [
         ctx: [getProjectId],
         condition: function() { return this.get('hasVm'); },
       },
+      */
       {
         id: 'infra-certificates',
         localizedLabel: 'nav.infra.certificates',

@@ -27,9 +27,10 @@ export default Ember.Component.extend(ManageLabels, {
     this.set('max', Math.max(11, roundScale(this.get('scale'))));
 
     this.initLabels(this.get('initialLabels'), null, C.LABEL.SCHED_GLOBAL);
-    var on = this.getLabel(C.LABEL.SCHED_GLOBAL) === 'true';
-    this.set('isGlobal', on);
-    this.sendAction('setGlobal', on);
+    Ember.run.scheduleOnce('afterRender', () => {
+      var on = this.getLabel(C.LABEL.SCHED_GLOBAL) === 'true';
+      this.sendAction('setGlobal', this.set('isGlobal', on));
+    });
   },
 
   updateLabels(labels) {

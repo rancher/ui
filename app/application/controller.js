@@ -19,32 +19,6 @@ export default Ember.Controller.extend({
   isTest            : null,
   isPopup           : null,
 
-  // Keys that trigger modals go in here
-  confirmDeleteResources  : null,
-  originalModel           : null,
-
-  editAccount             : null,
-  editAliasService        : null,
-  editApikey              : null,
-  editCertificate         : null,
-  editContainer           : null,
-  editExternalService     : null,
-  editHost                : null,
-  editLoadBalancerService : null,
-  editProject             : null,
-  editRegistry            : null,
-  editService             : null,
-  openProcessesError      : null,
-  showAbout               : null,
-  showAuditLogResponses   : null,
-  showConfirmDeactivate   : null,
-  showConsole             : null,
-  showContainerLogs       : null,
-  editMachineDriver       : null,
-  showShell               : null,
-  showFeedback            : null,
-  showWelcome             : null,
-
 
   actions: {
     clickedAction: function(actionName) {

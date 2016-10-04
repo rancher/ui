@@ -26,7 +26,7 @@ function getUpgradeInfo(task, cb) {
   var obj = task.obj;
 
   obj.get('userStore').request({url: task.url}).then((upgradeInfo) => {
-    if ( obj._state !== 'destroying' )
+    if ( !obj.isDestroyed )
     {
       upgradeInfo.id = task.id;
       obj.set('upgradeInfo', upgradeInfo);
@@ -64,6 +64,7 @@ export default Ember.Component.extend({
   upgradeStatus       : null,
   intl                : Ember.inject.service(),
   settings            : Ember.inject.service(),
+  userStore           : Ember.inject.service('user-store'),
 
   tagName             : 'button',
   classNames          : ['btn','btn-sm'],

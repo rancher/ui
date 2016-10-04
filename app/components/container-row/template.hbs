@@ -2,15 +2,15 @@
   {{badge-state model=model}}
 </td>
 <td data-title="{{t 'generic.name'}}:" class="force-wrap">
-  {{#link-to detailRoute model.id}}{{model.displayName}}{{/link-to}}
+  <a href="{{href-to detailRoute model.id}}">{{model.displayName}}</a>
 </td>
 <td data-title="{{t 'containersPage.table.ipAddress'}}:">
-  {{format-ip ip=model.displayIp}}
+  {{format-ip model.displayIp}}
 </td>
 {{#if showHost}}
   <td data-title="{{t 'containersPage.table.primaryHost'}}:">
     {{#if model.primaryHost}}
-      {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}
+      <a href="{{href-to "host" model.primaryHost.id}}">{{model.primaryHost.displayName}}</a>
     {{else}}
       <span class="text-muted">{{t 'containersPage.table.primaryHostUnknown'}}</span>
     {{/if}}
