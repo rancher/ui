@@ -1,9 +1,11 @@
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 import Ember from 'ember';
+import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
 var Project = Resource.extend(PolledResource, {
+  access: Ember.inject.service(),
   prefs: Ember.inject.service(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
@@ -120,34 +122,8 @@ var Project = Resource.extend(PolledResource, {
   }.property('state','isDefault'),
 
   displayOrchestration: function() {
-    let count = 0;
-    let str = 'Cattle';
-
-    if ( this.get('kubernetes') )
-    {
-      count++;
-      str = 'Kubernetes';
-    }
-    else if ( this.get('swarm') )
-    {
-      count++;
-      str = 'Swarm';
-    }
-    else if ( this.get('mesos') )
-    {
-      count++;
-      str = 'Mesos';
-    }
-
-    if ( count > 1 )
-    {
-      return 'Multiple';
-    }
-    else
-    {
-      return str;
-    }
-  }.property('kubernetes','swarm', 'mesos'),
+    return Util.ucFirst(this.get('orchestration'));
+  }.property('orchestration'),
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often

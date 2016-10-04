@@ -37,12 +37,11 @@ export default Ember.Component.extend(HoverDropdown, {
   hasMesos             : Ember.computed.alias('projects.orchestrationState.hasMesos'),
   swarmReady           : Ember.computed.alias('projects.orchestrationState.swarmReady'),
   mesosReady           : Ember.computed.alias('projects.orchestrationState.mesosReady'),
+  stacks               : null,
 
   // Component options
   tagName              : 'header',
   classNames           : ['clearfix','no-select'],
-  classNameBindings    : ['project.swarm','project.mesos','project.kubernetes'],
-
   dropdownSelector     : '.navbar .dropdown',
 
   actions: {
@@ -57,8 +56,7 @@ export default Ember.Component.extend(HoverDropdown, {
 
   init() {
     this._super(...arguments);
-
-    this._super();
+    this.set('stacks', this.get('store').all('stack'));
     this.updateNavTree();
   },
 
@@ -115,6 +113,7 @@ export default Ember.Component.extend(HoverDropdown, {
     'namespaceId',
     'projects.orchestrationState',
     'project.virtualMachine',
+    'stacks.@each.grouping',
     `settings.${C.SETTING.CATALOG_URL}`,
     `prefs.${C.PREFS.ACCESS_WARNING}`,
     `k8s.supportsStacks`,

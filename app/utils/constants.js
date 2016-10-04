@@ -6,9 +6,7 @@ const KIND_LEGACY_KUBERNETES = 'kubernetes';
 const KIND_KUBERNETES = 'k8s';
 const KIND_SWARM = 'swarm';
 const KIND_MESOS = 'mesos';
-const KIND_NOT_KUBERNETES = `sys-${KIND_KUBERNETES}`;
-const KIND_NOT_SWARM = `sys-${KIND_SWARM}`;
-const KIND_NOT_MESOS = `sys-${KIND_MESOS}`;
+const KIND_INFRA = 'infra';
 
 var C = {
   COOKIE: {
@@ -22,6 +20,7 @@ var C = {
   EXTERNAL_ID: {
     KIND_SEPARATOR: '://',
     GROUP_SEPARATOR: ':',
+    ID_SEPARATOR: ':',
     KIND_ALL: 'all',
     KIND_USER: KIND_USER,
     KIND_CATALOG: KIND_CATALOG,
@@ -31,9 +30,7 @@ var C = {
     KIND_KUBERNETES: KIND_KUBERNETES,
     KIND_SWARM: KIND_SWARM,
     KIND_MESOS: KIND_MESOS,
-    KIND_NOT_KUBERNETES: KIND_NOT_KUBERNETES,
-    KIND_NOT_SWARM: KIND_NOT_SWARM,
-    KIND_NOT_MESOS: KIND_NOT_MESOS,
+    KIND_INFRA: KIND_INFRA,
     UPGRADEABLE: [
       KIND_CATALOG,
       KIND_SYSTEM_CATALOG
@@ -44,17 +41,20 @@ var C = {
     ],
     SHOW_AS_SYSTEM: [
       KIND_SYSTEM,
-      KIND_NOT_KUBERNETES,
-      KIND_NOT_SWARM,
-      KIND_NOT_MESOS,
+      KIND_INFRA,
     ],
     SYSTEM_CATEGORIES: [
       'Rancher services'
     ],
     CATALOG_DEFAULT_GROUP: 'library',
+    ID_K8S: 'system:system*k8s',
+    ID_SWARM: 'system:system*swarm',
+    ID_MESOS: 'system:system*mesos',
   },
 
   CATALOG: {
+    INFRA_KEY: 'infra',
+    INFRA_VALUE: 'https://github.com/rancher/infra-catalog.git',
     LIBRARY_KEY: 'library',
     LIBRARY_VALUE: 'https://github.com/rancher/rancher-catalog.git',
     COMMUNITY_KEY: 'community',
@@ -129,6 +129,7 @@ var C = {
     K8S_KUBECTL: 'io.rancher.k8s.kubectld',
     K8S_API: 'io.rancher.k8s.api-server',
     SWARM_CLI: 'io.rancher.swarm.cli',
+    ORCHESTRATION_SUPPORTED: 'io.rancher.orchestration.supported',
   },
 
   PREFS: {
@@ -353,6 +354,7 @@ C.SUPPORTED_SCHEMA_INPUTS= [
   'password',
   'service',
   'string',
+  'masked',
 ];
 
 

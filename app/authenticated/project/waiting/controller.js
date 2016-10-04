@@ -6,8 +6,8 @@ export default Ember.Controller.extend({
   settings: Ember.inject.service(),
 
   expectHosts: function() {
-    return ( this.get('projects.current.mesos') ? 3 : 1);
-  }.property('projects.current.mesos'),
+    return ( this.get('projects.current.orchestration') === 'mesos' ? 3 : 1);
+  }.property('projects.current.orchestration'),
 
   hasHosts: function() {
     return this.get('model.hosts.length') >= this.get('expectHosts');

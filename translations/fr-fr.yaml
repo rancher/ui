@@ -65,6 +65,8 @@ apiPage:
   header: "Clés API d'environnement"
   actionButton: "Ajouter une clé API d'environnement"
   content: "Les clés API sont liées à l'environnement (<code>{displayName}</code>) et ne peuvent être utilisées que dans celui-ci. Elles peuvent être modifiées par tout utilisateur ayant accès a cet environnement."
+  currentEndpoint: 'Point de terminaison (v2-beta) :'
+  legacyEndpoint: 'Point de terminaison (v1) :'
   table:
     state: Etat
     name: Nom
@@ -591,6 +593,9 @@ helpPage:
     header: Des Forums
     tagline: Participez à la conversation
     buttonText: Sur les forums
+    announcements:
+      header: Annonces
+      buttonText: Voir plus de Nouvelles
     general:
       header: Généralités
       buttonText: Voir plus de sujets Généralités
@@ -867,6 +872,7 @@ servicePage:
     containers: Conteneurs
     labels: Étiquettes
     links: Liens
+    log: Journal
   containersTab:
     table:
       header:
@@ -905,6 +911,15 @@ servicePage:
       body:
         noData: Acun ports pour ce service.
     notActive: Les ports sont ouvert que si le service est actif.
+  logTab:
+    table:
+      header:
+        date: Date 
+        level: Niveau
+        event: Évènement
+        description: Description
+      body:
+        noData: Il n’y a eu encore aucun événement de journal.
 settingsPage:
   index:
     header: Environnements
@@ -1220,18 +1235,20 @@ advancedSection:
 catalogSettings:
   header: Catalogue
   subtext: Les Catalogues contiennent des modèles rancher-compose qui permettent aux utilisateurs de déployer facilement des applications en répondant à quelques questions
-  rancherCertified:
+  certified:
     header:
-      rancherCertified: '{appName} certifié'
-      plCertified: Certifié
-    helpText:
-      isRancher: Modèles certifiés maintenus et suivis par les laboratoires Rancher.
-      community: Modèles officiellement maintenus et supportés.
+      rancher: '{appName} certifié'
+      pl: Certifié
+    detail:
+      rancher: Modèles certifiés maintenus et suivis par les laboratoires Rancher.
+      pl: Modèles officiellement maintenus et supportés.
   community:
-    header: Contribué par la Communauté
-    helpText:
-      text: Modèles créés et maintenus par des membres de la communauté.
-      isRancher: Non certifié par les laboratoires Rancher.
+    header:
+      rancher: Contribué par la Communauté
+      pl: Contribué par la Communauté
+    detail:
+      rancher: 'Modèles créés et maintenus par des membres de la communauté.  Non certifié par les laboratoires Rancher.'
+      pl: Modèles créés et maintenus par des membres de la communauté.
   more:
     header: Personnalisé
     helpText: 'Vous pouvez définir vos propres sources de catalogue personnalisé ici.  Chacun a besoin d’un nom unique et une URL que <code>git clone</code> peut gérer (voir <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank"> docs</a> pour plus d’informations).'
@@ -1395,6 +1412,15 @@ editStack:
   description:
     label: Description
     placeholder: par exemple Pile MonAppli
+stackHeader:
+  backLink: 'Pile :'
+  outputs: Sorties
+  add:
+    service: Ajouter un Service
+    balancer: Ajouter un Équilibreur de Charge
+    external: Ajouter un Service Externe
+    alias: Ajouter un Alias de Service
+    vm: Ajouter une Machine Virtuelle
 formatIp:
   noIp: Aucun
   unknownIp: Inconnu
@@ -2408,6 +2434,11 @@ modalEditSnapshot:
   edit: "Modifier l'instantané"
   create: "Créer l'instantané"
   nameLabel: "Nom de l'Instantané"
+modalFeedback:
+  header: 'Vous appréciez {appName} ?'
+  send: Envoyer
+  later: Peut-être plus tard
+  never: Laissez-moi tranquille
 modalProcessError:
   header: "Information de l'exception"
   cause: 'Cause:'
@@ -2418,6 +2449,9 @@ modalRollbackVolume:
   title:
     snapshot: Restauration d’un instantané
     backup: Restauration d’une sauvegarde
+modalWelcome:
+  header: 'Bienvenue sur {appName} !'
+  closeModal: "J'ai compris"
 modalShell:
   title: 'Shell : {instanceName}'
 newAliasService:
@@ -2633,6 +2667,13 @@ swarm:
     ports: Ports
     containers: Conteneurs
     none: Aucun Service
+telemetryOpt:
+  header: Statistiques
+  subtext: 'Rancher Labs souhaiteraient recueillir des informations anonymes relatives à la configuration de votre installation de {appName}. <br/> Aucun nom de ressource spécifique, adresses IP ou d’autres identifiants seront collectées. <br/> Cette information nous aidera à apprendre comment les gens utilisent Rancher et guidera nos priorités de développement futures.'
+  learnMore:
+    link: http://docs.rancher.com/rancher/telemetry
+    label: En savoir Plus
+  label: Permettre la collecte de statistiques anonymes
 tooltipLink:
   list: Liste 
   linkGraph: Graphe des Liens
@@ -2815,6 +2856,7 @@ action:
   viewConfig: Voir Config
   viewGraph: Voir Graph
   viewInApi: "Vue dans l'API"
+  viewInstance: "Voir l'Instance"
 model:
   account:
     kind:

@@ -1,8 +1,9 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   allServices: Ember.inject.service(),
-  catalogService   : Ember.inject.service(),
+  catalogService: Ember.inject.service(),
 
   parentRoute: 'catalog-tab',
 
@@ -11,6 +12,7 @@ export default Ember.Route.extend({
 
     var dependencies = {
       tpl: this.get('catalogService').fetchTemplate(params.template),
+      serviceChoices: this.get('allServices').choices(),
     };
 
     if ( params.upgrade )
@@ -26,22 +28,11 @@ export default Ember.Route.extend({
     return Ember.RSVP.hash(dependencies, 'Load dependencies').then((results) => {
       if ( !results.stack )
       {
-        var name = results.tpl.id;
-        var base = results.tpl.templateBase;
-        name = name.replace(/^[^:\/]+[:\/]/,'');  // Strip the "catalog-name:"
-        if ( base )
-        {
-          var idx = name.indexOf(base);
-          if ( idx === 0 )
-          {
-            name = name.substr(base.length+1); // Strip the "template-base*"
-          }
-        }
-
         results.stack = store.createRecord({
           type: 'stack',
-          name: name,
+          name: results.tpl.get('defaultName'),
           startOnCreate: true,
+          system: (results.tpl.get('templateBase') === C.EXTERNAL_ID.KIND_INFRA),
           environment: {}, // Question answers
         });
       }

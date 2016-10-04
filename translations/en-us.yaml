@@ -1,4 +1,4 @@
-languageName: "English (US)"
+tanguageName: "English (US)"
 languageContribute: "Help Translate Rancher"
 
 ##############################
@@ -1005,13 +1005,16 @@ stacksPage:
   header:
     all: All Stacks
     user: User Stacks
-    system: System Stacks
+    custom: '{name} Stacks'
+    infra: Infrastructure Stacks
   actionButton: Add Stack
+  catalogButton: Add from Catalog
   sort:
     label: Sort By
     state: State
     name: Name
-  noSystemStacks: You do not have any System Stacks
+  noInfra: You do not currently have any Infrastructure Stacks
+  noMatch: No Stacks match the selected tags
   new:
     header: Add Stack
     composeLabel: "Optional: Import Compose"
@@ -1030,14 +1033,14 @@ stacksPage:
         label: Start services after creating
 
 storagePoolsPage:
-  header: Storage Pools
+  header: Storage Drivers
   volume: Volume ID
   orphaned: Orphaned Backup
   nav:
     pools: Pools
     backups: Backups
   index:
-    noData: No storage pools
+    noData: No storage drivers
   newVolume:
     header: Add Volume
     form:
@@ -1331,19 +1334,28 @@ advancedSection:
 
 catalogSettings:
   header: Catalog
-  subtext: Catalogs contain rancher-compose templates that allow users to easily deploy applications by answering a few questions
-  rancherCertified:
+  subtext: Catalogs contain templates that allow users to easily deploy applications by answering a few questions
+  system:
     header:
-      rancherCertified: "{appName} Certified"
-      plCertified: Certified
-    helpText:
-      isRancher: Certified templates maintained and supported by Rancher Labs.
-      community: Officially maintained and supported templates.
+      rancher: "{appName} Infrastructure"
+      pl: Infrastructure
+    detail:
+      rancher: Templates required for core Rancher infrastructure features such as Kubernetes/Mesos/Swarm support.  Maintained and supported by Rancher Labs.
+      pl: Officially maintained templates required for core infrastructure features such as Kubernetes/Mesos/Swarm support..
+  certified:
+    header:
+      rancher: "{appName} Certified Library"
+      pl: Certified Library
+    detail:
+      rancher: Optional templates maintained and supported by Rancher Labs.
+      pl: Officially maintained and supported optional templates.
   community:
-    header: Community Contributed
-    helpText:
-      text: Templates created and maintained by community members.
-      isRancher: Not certified by Rancher Labs.
+    header:
+      rancher: Community Contributed
+      pl: Community Contributed
+    detail:
+      rancher: Templates created and maintained by community members.  Not certified by Rancher Labs.
+      pl: Templates created and maintained by community members.
   more:
     header: Custom
     helpText: You can define your own custom catalog sources here.  Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> for more info).
@@ -1526,6 +1538,10 @@ editStack:
   description:
     label: Description
     placeholder: e.g. MyApp Stack
+  group:
+    label: Tags
+    placeholder: e.g. frontend, production
+    help: The stacks list can be filtered by tags (comma-separated)
 
 stackHeader:
   backLink: "Stack:"
@@ -2011,14 +2027,19 @@ formVolumes:
   onlySingleHost: Only available when adding a container to a particular host.
 
 heroAddService:
-  header: Adding your first Service
-  paragraph1: |
-    A service is simply a group of containers created from the same Docker image but extends Docker's 'link' concept to leverage {appName}'s lightweight distributed DNS service for service discovery.
-    Services can be added individually or by deploying an item from the Catalog.
-  paragraph2: "A service is also capable of leveraging other {appName} built-in services such as load balancers, health monitoring, upgrade support, and high-availability."
-  contentLink: Learn More
-  addService: Add Service
-  linkToCatalog: Add From Catalog
+  infra:
+    header: Add Infrastructure Stacks
+    paragraph: Infrastructure stacks add capabilities like new Orchestration engines, storage and networking providers to {appName} 
+  service:
+    header: Adding your first Stack
+    paragraph1: |
+      A service is simply a group of containers created from the same Docker image but extends Docker's 'link' concept to leverage {appName}'s lightweight distributed DNS service for service discovery.
+      Services can be added individually or by deploying an item from the Catalog.
+    paragraph2: "A service is also capable of leveraging other {appName} built-in services such as load balancers, health monitoring, upgrade support, and high-availability."
+    contentLink: Learn More
+  addService: Define a Service
+  addCatalog: Configure
+  linkToCatalog: Browse Catalog
 
 hostSettings:
   header: Host Registration URL
@@ -2694,6 +2715,7 @@ newCatalog:
     prompt: Choose a version...
   saveUpgrade: Upgrade
   saveNew: Launch
+  saveConfigure: Configure
   upgrade: "Upgrade:"
   catalog: "Catalog:"
   category: "Category:"
@@ -2703,9 +2725,13 @@ newCatalog:
   maintainer: "Maintainer:"
   license: "License:"
   url: "Project URL:"
-  stack: Stack
+  titleAdd: "Add {name} Stack"
+  titleUpgrade: "Upgrade {name} Stack"
+  titleConfigure: "Configure {name} Stack"
   templateVersion: Template Version
-  selectVersion: Select a version of the template to
+  selectVersionAdd: Select a version of the template to deploy
+  selectVersionUpgrade: Select a version of the template to upgrade to
+  selectVersionConfigure: Select a version of the template to configure
   newStack: New Stack
   config: Configuration Options
   unknownType: "Unrecognized question type:"
@@ -2964,17 +2990,13 @@ viewEditProject:
   showEdit:
     edit: "Edit Environment:"
     add: Add Environment
-    orchestration: Container Orchestration
-    formControl: Access Control
+    accessControl: Access Control
+    noMembers: Add one or more members who can use this environment.
   header: "Environment:"
   description: Description
   helpBlock: |
     Access Control is not enabled.<br/>
     Anybody with access to the API/UI acts as an admin and will be able to use any environment.
-  virtualMachine:
-    label: Virtual Machine Support
-    subtext: |
-      Requires hosts that have the <a href="https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine" target="_blank">KVM</a> kernel module loaded.
 
 
 vmConsole:
@@ -3057,33 +3079,34 @@ nav:
     rcs: Replication Controllers
     pods: Pods
     cli: Kubectl
-    system: System Stacks
+    system: Infrastructure Stacks
   swarm:
     tab: Swarm
     projects: Projects
     services: Services
     cli: CLI
-    system: System
+    system: Infrastructure
   mesos:
     tab: Mesos
     web: Overview
-    system: System
+    system: Infrastructure
   cattle:
     tab: Stacks
     all: All
     user: User
-    system: System
+    system: Infrastructure
   catalog:
     tab: Catalog
     all: All
+    infra: Infrastructure
     library: Library
+    community: Community
   infra:
     tab: Infrastructure
     hosts: Hosts
     containers: Containers
     vms: Virtual Machines
     storagePage: Storage
-    storagePools: Storage Pools
     backupTarget: Backup Targets
     certificates: Certificates
     registries: Registries

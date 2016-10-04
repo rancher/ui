@@ -32,17 +32,33 @@ export default Ember.Route.extend(CatalogResource, {
 
     var auth = this.modelFor('authenticated');
 
-    return this.get('catalogService').fetchCatalogs(auth).then((response) => {
-      this.get('catalogs', response);
+    return this.get('projects').checkForWaiting(auth.get('hosts'),auth.get('machines')).then(() => {
+      return Ember.RSVP.hash({
+        stacks: this.get('store').find('stack'),
+        catalogs: this.get('catalogService').fetchCatalogs(),
+      }).then((hash) => {
+        this.set('catalogs', hash.catalogs);
+        this.set('stacks', this.get('store').allUnremoved('stack'));
 
-      let ids = this.uniqKeys(response, 'id');
+        let ids = this.uniqKeys(hash.catalogs, 'id');
 
-      this.get('uniqueCatalogIds', ids);
+        this.set('uniqueCatalogIds', ids);
+      });
     });
   },
 
   model(params) {
-    return this.getCatalogs(params);
+    params.plusInfra = true;
+    let stacks = this.get('stacks');
+    return this.get('catalogService').getCatalogs(params).then((res) => {
+      res.catalog.forEach((tpl) => {
+        let exists = stacks.findBy('externalIdInfo.templateId', tpl.get('id'));
+        tpl.set('exists', !!exists);
+
+      });
+
+      return res;
+    });
   },
 
   resetController: function (controller, isExiting/*, transition*/) {

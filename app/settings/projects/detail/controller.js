@@ -3,8 +3,9 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   model: null,
   editing: false,
+  tab: 'access',
 
-  queryParams: ['editing'],
+  queryParams: ['editing','tab'],
 
   actions: {
     done() {

@@ -9,6 +9,7 @@ export default Ember.Component.extend({
 
   model             : null,
   single            : false,
+  showAddService    : true,
 
   collapsed         : true,
   classNames        : ['stack-section'],

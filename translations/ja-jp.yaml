@@ -57,6 +57,8 @@ apiPage:
   header: 環境 API キー
   actionButton: 環境 API キーを追加
   content: '環境 API キーはこの環境 (<code>{displayName}</code>) に紐付けられ、環境内のリソースのみ操作できます。また、この環境にアクセス可能な他のアカウントはこれらのキーを管理できます。'
+  currentEndpoint: 'エンドポイント(v2-beta):'
+  legacyEndpoint: 'エンドポイント(v1):'
   table:
     state: 状態
     name: 名前
@@ -562,6 +564,9 @@ helpPage:
     header: フォーラム
     tagline: 議論に参加する
     buttonText: フォーラムへ
+    announcements:
+      header: アナウンス
+      buttonText: さらにアナウンストピックを見る
     general:
       header: 一般
       buttonText: もっと一般トピックを見る
@@ -833,6 +838,7 @@ servicePage:
     containers: コンテナ
     labels: ラベル
     links: リンク
+    log: ログ
   containersTab:
     table:
       header:
@@ -853,6 +859,13 @@ servicePage:
       body:
         noData: このサービスにはポートがありません
     notActive: ポートはサービスがアクティブの場合のみ利用できます。
+  logTab:
+    table:
+      header:
+        event: イベント
+        description: 詳細情報
+      body:
+        noData: ログイベントはまだありません。
 settingsPage:
   index:
     header: 環境
@@ -1160,18 +1173,20 @@ advancedSection:
 catalogSettings:
   header: カタログ
   subtext: カタログはユーザーが少ない質問に回答するだけで簡単にアプリケーションをデプロイするための rancher-compose のテンプレートを含みます
-  rancherCertified:
+  certified:
     header:
-      rancherCertified: '{appName} 認証済み'
-      plCertified: 認証済み
-    helpText:
-      isRancher: 認証済みテンプレートは Rancher Labs によってメンテナンス、サポートされます。
-      community: 正式にメンテナンス、サポートされるテンプレート。
+      rancher: '{appName} 認証済み'
+      pl: 認証済み
+    detail:
+      rancher: 認証済みテンプレートは Rancher Labs によってメンテナンス、サポートされます。
+      pl: 正式にメンテナンス、サポートされるテンプレート。
   community:
-    header: コミュニティサポート
-    helpText:
-      text: テンプレートはコミュニティメンバーによって作成、メンテナンスされ、
-      isRancher: Rancher Labs によって認証されていません。
+    header:
+      rancher: コミュニティサポート
+      pl: コミュニティサポート
+    detail:
+      rancher: テンプレートはコミュニティメンバーによって作成、メンテナンスされ、Rancher Labs によって認証されていません。
+      pl: テンプレートはコミュニティメンバーによって作成、メンテナンスされ、
   more:
     header: カスタム
     helpText: 'ここでは独自のカスタムカタログソースを定義できます。 それぞれユニークな名前と <code>git clone</code> によってハンドルされる URL が必要となります(詳細は <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> を参照してください)。'
@@ -1311,6 +1326,15 @@ editStack:
     label: 名前
   description:
     label: 詳細情報
+stackHeader:
+  backLink: 'スタック:'
+  outputs: 出力
+  add:
+    service: サービスを追加
+    balancer: ロードバランサーを追加
+    external: 外部サービスを追加
+    alias: サービスのエイリアスを追加
+    vm: 仮想マシンを追加
 formatIp:
   noIp: None
   unknownIp: 不明
@@ -1346,6 +1370,7 @@ formCommand:
     label: コンソール
     both: 'インタラクティブ &amp; TTY <span class="text-muted">(-i -t)</span>'
     interactive: 'インタラクティブ <span class="text-muted">(-i)</span>'
+    terminal: 'TTY <span class="text-muted">(-t)</span>'
     none: None
   autoRestart:
     label: 自動リスタート
@@ -1486,11 +1511,20 @@ formNameDescription:
     label: 詳細情報
     placeholder: 詳細情報
 formNetwork:
+  links:
+    table:
+      dest: 対象コンテナ
+      as: エイリアス名
+      data:
+        dest: '対象コンテナ:'
+        as: 'エイリアス名:'
   networkMode:
     label: ネットワーク
     bridge: ブリッジ
+    container: コンテナ
     host: ホスト
     managed: 管理
+    none: None
   container:
     label: コンテナ
   requestedIp:
@@ -2279,6 +2313,9 @@ modalEditSnapshot:
   edit: スナップショットを編集
   create: スナップショットを作成
   nameLabel: スナップショット名
+modalFeedback:
+  send: 送信
+  later: あとで
 modalProcessError:
   header: 例外情報
   cause: '理由:'
@@ -2288,6 +2325,9 @@ modalRollbackVolume:
   title:
     snapshot: スナップショットへのロールバック
     backup: バックアップへのロールバック
+modalWelcome:
+  header: '{appName} へようこそ!'
+  closeModal: 完了!
 modalShell:
   title: 'シェル: {instanceName}'
 newAliasService:
@@ -2495,6 +2535,13 @@ swarm:
     ports: ポート
     containers: コンテナ
     none: サービスはありません
+telemetryOpt:
+  header: 統計情報
+  subtext: 'Rancher Labs では {appName} のインストール構成に関する匿名の情報を収集したいと思います<br/>。特定のリソース名、IP アドレス、その他識別情報などは収集されません<br/>。収集された情報はどのようにユーザーが Rancher を利用しているかを理解し、将来の開発における優先度を決めるために利用されます。'
+  learnMore:
+    link: http://docs.rancher.com/rancher/telemetry
+    label: 詳細を見る
+  label: 匿名の統計情報の収集を許可する
 tooltipLink:
   list: リスト
   linkGraph: リンクグラフ
@@ -2668,6 +2715,7 @@ action:
   viewConfig: 設定を見る
   viewGraph: グラフを見る
   viewInApi: API を見る
+  viewInstance: インスタンスを見る
 model:
   account:
     kind:

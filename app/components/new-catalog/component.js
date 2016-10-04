@@ -16,12 +16,23 @@ export default Ember.Component.extend(NewOrEdit, {
   versionsArray: null,
   versionsLinks: null,
   serviceChoices: null,
+  actuallySave: true,
+  showHeader: true,
+  showPreview: true,
+  showName: true,
+  titleAdd: 'newCatalog.titleAdd',
+  titleUpgrade: 'newCatalog.titleUpgrade',
+  selectVersionAdd: 'newCatalog.selectVersionAdd',
+  selectVersionUpgrade: 'newCatalog.selectVersionUpgrade',
+  saveUpgrade: 'newCatalog.saveUpgrade',
+  saveNew: 'newCatalog.saveNew',
+  sectionClass: 'well',
 
   classNames: ['launch-catalog'],
 
   primaryResource: Ember.computed.alias('stackResource'),
   templateBase: Ember.computed.alias('templateResource.templateBase'),
-  editing: false,
+  editing: Ember.computed.notEmpty('stackResource.id'),
 
   previewOpen: false,
   previewTab: null,
@@ -51,9 +62,11 @@ export default Ember.Component.extend(NewOrEdit, {
   didReceiveAttrs() {
     this._super();
 
-    this.set('editing', !!this.get('primaryResource.id'));
-
     // Select the default version
+    if ( this.get('selectedTemplateUrl') ) {
+      return;
+    }
+
     var def = this.get('templateResource.defaultVersion');
     var links = this.get('versionLinks');
     if (links[def]) {
@@ -172,30 +185,8 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   newExternalId: function() {
-    var externalId = ( this.get('isSystem') ? C.EXTERNAL_ID.KIND_SYSTEM_CATALOG : C.EXTERNAL_ID.KIND_CATALOG );
-    externalId += C.EXTERNAL_ID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
-    return externalId;
-  }.property('isSystem','selectedTemplateModel.id'),
-
-  isSystem: function() {
-    if ( this.get('editing') ) {
-      return this.get('stackResource.externalId').indexOf(C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR) === 0;
-    }
-
-    let explicit = this.get('templateResource.isSystem');
-    if ( explicit === true || explicit === "true" ) {
-      return true;
-    }
-
-    if ( explicit === false || explicit === "false" ) {
-      return false;
-    }
-
-    // Things in one of the system categories go in system.
-    let systemCategories = C.EXTERNAL_ID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
-    let category = (this.get('templateResource.category')||'').trim().toLowerCase();
-    return systemCategories.indexOf(category) >= 0;
-  }.property('editing','stackResource.externalId','templateResource.{category,isSystem}'),
+    return C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
+  }.property('selectedTemplateModel.id'),
 
   willSave() {
     this.set('errors', null);
@@ -205,16 +196,22 @@ export default Ember.Component.extend(NewOrEdit, {
       return false;
     }
 
-    var files = this.get('selectedTemplateModel.files');
+    let files = this.get('selectedTemplateModel.files');
+    let stack = this.get('stackResource');
 
-    this.get('stackResource').setProperties({
+    stack.setProperties({
       dockerCompose: files['docker-compose.yml'],
       rancherCompose: files['rancher-compose.yml'],
       environment: this.get('answers'),
       externalId: this.get('newExternalId'),
     });
 
-    return true;
+    if ( this.get('actuallySave') ) {
+      return true;
+    } else {
+      this.sendAction('doSave', this.get('templateResource.id'), stack, this.get('selectedTemplateModel'));
+      return false;
+    }
   },
 
   doSave() {
@@ -288,9 +285,9 @@ export default Ember.Component.extend(NewOrEdit, {
     }
     else
     {
-      if ( this.get('isSystem') )
+      if ( this.get('stackResource.system') )
       {
-        return this.get('router').transitionTo('stack', projectId, this.get('primaryResource.id'), {queryParams: {which: 'system'}});
+        return this.get('router').transitionTo('stack', projectId, this.get('primaryResource.id'), {queryParams: {which: 'infra'}});
       }
       else
       {
