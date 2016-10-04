@@ -26,7 +26,7 @@ function getUpgradeInfo(task, cb) {
   var obj = task.obj;
 
   obj.get('userStore').request({url: task.url}).then((upgradeInfo) => {
-    if ( !this.isDestroyed )
+    if ( !obj.isDestroyed )
     {
       upgradeInfo.id = task.id;
       obj.set('upgradeInfo', upgradeInfo);
