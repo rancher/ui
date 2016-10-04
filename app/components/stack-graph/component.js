@@ -2,8 +2,6 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 import ThrottledResize from 'ui/mixins/throttled-resize';
 import { activeIcon } from 'ui/models/service';
-import C from 'ui/utils/constants';
-
 
 export default Ember.Component.extend(ThrottledResize, {
   classNames: ['stack-graph'],
