@@ -52,7 +52,7 @@ export default Resource.extend({
   },
 
   supported: function() {
-    let orch = this.get('projects.current.orchestration');
+    let orch = this.get('projects.current.orchestration')||'cattle';
     if ( (this.get('category')||'').toLowerCase() === 'orchestration' ) {
       return orch === 'cattle';
     } else {

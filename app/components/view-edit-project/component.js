@@ -3,12 +3,6 @@ import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
-const ORCH_TEMPLATES = [
-  C.EXTERNAL_ID.ID_K8S,
-  C.EXTERNAL_ID.ID_SWARM,
-  C.EXTERNAL_ID.ID_MESOS
-];
-
 export default Ember.Component.extend(NewOrEdit, Sortable, {
   catalogService: Ember.inject.service('catalog-service'),
   projects: Ember.inject.service(),
