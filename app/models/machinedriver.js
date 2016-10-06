@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 import C from 'ui/utils/constants';
+import { parseExternalId } from 'ui/utils/parse-externalid';
 
 const builtInUi = ['amazonec2','azure','digitalocean','exoscale','packet','rackspace','ubiquity','vmwarevsphere','aliyunecs'];
 
@@ -97,6 +98,9 @@ var machineDriver = Resource.extend(PolledResource, {
     ];
   }.property('actionLinks.{update,activate,deactivate,remove}','builtin'),
 
+  externalIdInfo: function() {
+    return parseExternalId(this.get('externalId'));
+  }.property('externalId'),
 });
 
 machineDriver.reopenClass({

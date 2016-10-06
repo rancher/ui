@@ -6,10 +6,13 @@ export default Resource.extend({
   type: 'serviceConsumeMap',
 
   forceUpdate: function() {
-    let store = this.get('store');
-
     Ember.run.next(this, function() {
       try {
+        let store = this.get('store');
+        if ( !store ) {
+          return;
+        }
+
         var consumer = getByServiceId(store, this.get('serviceId'));
         if ( consumer )
         {

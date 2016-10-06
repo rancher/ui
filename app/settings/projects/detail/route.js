@@ -1,7 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  catalogService: Ember.inject.service('catalog-service'),
   allServices: Ember.inject.service(),
 
   queryParams: {

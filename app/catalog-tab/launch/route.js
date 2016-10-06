@@ -3,7 +3,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   allServices: Ember.inject.service(),
-  catalogService: Ember.inject.service(),
+  catalog: Ember.inject.service(),
 
   parentRoute: 'catalog-tab',
 
@@ -11,13 +11,13 @@ export default Ember.Route.extend({
     var store = this.get('store');
 
     var dependencies = {
-      tpl: this.get('catalogService').fetchTemplate(params.template),
+      tpl: this.get('catalog').fetchTemplate(params.template),
       serviceChoices: this.get('allServices').choices(),
     };
 
     if ( params.upgrade )
     {
-      dependencies.upgrade = this.get('catalogService').fetchTemplate(params.upgrade, true);
+      dependencies.upgrade = this.get('catalog').fetchTemplate(params.upgrade, true);
     }
 
     if ( params.stackId )
