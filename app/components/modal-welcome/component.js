@@ -6,6 +6,8 @@ export default ModalBase.extend({
   classNames: ['lacsso', 'modal-container', 'span-6', 'offset-3', 'modal-welcome'],
   settings: Ember.inject.service(),
 
+  classNames      : ['modal-welcome'],
+
   optIn: null,
 
   init() {
