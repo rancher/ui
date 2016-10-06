@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { addQueryParam, addQueryParams } from 'ui/utils/util';
+import { addQueryParams } from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
 const MIN_VERSION = 'minimumRancherVersion_lte';
