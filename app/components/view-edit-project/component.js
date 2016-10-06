@@ -4,7 +4,6 @@ import C from 'ui/utils/constants';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
 export default Ember.Component.extend(NewOrEdit, Sortable, {
-  catalogService: Ember.inject.service('catalog-service'),
   projects: Ember.inject.service(),
   access: Ember.inject.service(),
   growl: Ember.inject.service(),

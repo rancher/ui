@@ -41,46 +41,12 @@
             {{/if}}
           </div>
         </div>
-        <div class="catalog-icon r-mb10">
-          {{#if (or driver.builtin driver.hasBuiltinUi)}}
-            <div class="machine-catalog-icon {{driver.iconMapFromConstants}}"></div>
-          {{else}}
-            <div class="machine-catalog-icon generic"></div>
-          {{/if}}
-        </div>
+        <div class="catalog-icon r-mb10 {{if (or driver.builtin driver.hasBuiltinUi) driver.iconMapFromConstants 'generic'}}"/>
       {{else if (eq section 'footer')}}
-        {{#if driver.fullVersionInfo}}
-          <div class="btn-group r-mt5">
-            {{#if driver.upgradeAvailable}}
-              <button type="button" class="btn btn-warning btn-xs">
-                {{#if upgrading}}
-                  <i class="icon icon-spinner icon-spin"></i> {{t 'machinePage.upgrading'}}
-                {{else}}
-                  {{t 'machinePage.upgradeAvailable'}}
-                {{/if}}
-              </button>
-            {{else}}
-              <button type="button" class="btn btn-warning btn-xs">
-                {{#if upgrading}}
-                  <i class="icon icon-spinner icon-spin"></i> {{t 'machinePage.upgrading'}}
-                {{else}}
-                  {{driver.currentVersion}}
-                {{/if}}
-              </button>
-            {{/if}}
-            <button type="button" class="btn btn-warning btn-xs dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-              <i class="icon icon-fw icon-chevron-down"></i>
-              <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
-            </button>
-            <ul class="dropdown-menu dropdown-menu-right r-p10" role="menu">
-              {{!-- each over versions --}}
-              {{#each-in driver.fullVersionInfo as |version path|}}
-                <li class='hand r-mt5 r-mb5' {{action "upgradeDriver" driver version path}}>
-                  <span class="{{if (eq driver.currentVersion version) 'btn-warning'}}">{{version}}</span>
-                </li>
-              {{/each-in}}
-            </ul>
-          </div>
+        {{#if driver.externalId}}
+          {{upgrade-dropdown model=driver btnClass="btn-sm" currentId=driver.externalId upgradeOnly=false changeVersion=(action "upgradeDriver" driver)}}
+        {{else if driver.builtin}}
+          <span class="text-muted">{{t 'machinePage.builtin'}}</span>
         {{/if}}
       {{/if}}
     {{/catalog-box}}

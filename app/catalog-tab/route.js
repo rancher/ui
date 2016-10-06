@@ -1,8 +1,8 @@
 import Ember from 'ember';
-import CatalogResource from 'ui/mixins/catalog-resource';
 
-export default Ember.Route.extend(CatalogResource, {
-  catalogService: Ember.inject.service(),
+export default Ember.Route.extend({
+  catalog: Ember.inject.service(),
+  projects: Ember.inject.service(),
 
   queryParams: {
     category: {
@@ -32,17 +32,13 @@ export default Ember.Route.extend(CatalogResource, {
 
     var auth = this.modelFor('authenticated');
 
-    return this.get('projects').checkForWaiting(auth.get('hosts'),auth.get('machines')).then(() => {
+    return this.get('projects').checkForWaiting(auth.get('hosts')).then(() => {
       return Ember.RSVP.hash({
         stacks: this.get('store').find('stack'),
-        catalogs: this.get('catalogService').fetchCatalogs(),
+        catalogs: this.get('catalog').fetchCatalogs(),
       }).then((hash) => {
         this.set('catalogs', hash.catalogs);
         this.set('stacks', this.get('store').allUnremoved('stack'));
-
-        let ids = this.uniqKeys(hash.catalogs, 'id');
-
-        this.set('uniqueCatalogIds', ids);
       });
     });
   },
@@ -50,11 +46,10 @@ export default Ember.Route.extend(CatalogResource, {
   model(params) {
     params.plusInfra = true;
     let stacks = this.get('stacks');
-    return this.get('catalogService').getCatalogs(params).then((res) => {
+    return this.get('catalog').fetchTemplates(params).then((res) => {
       res.catalog.forEach((tpl) => {
         let exists = stacks.findBy('externalIdInfo.templateId', tpl.get('id'));
         tpl.set('exists', !!exists);
-
       });
 
       return res;

@@ -3,13 +3,11 @@ import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   access: Ember.inject.service(),
-  catalogService: Ember.inject.service(),
 
   model: function(/*params, transition*/) {
     var userStore = this.get('userStore');
     return Ember.RSVP.hash({
       all: userStore.findAllUnremoved('project'),
-      templates: this.get('catalogService').fetchSystemTemplates(),
     }).then((hash) => {
       var project = userStore.createRecord({
         type: 'project',
@@ -34,7 +32,6 @@ export default Ember.Route.extend({
         originalProject: null,
         project: project,
         all: hash.all,
-        templates: hash.templates,
         stacks: [],
       });
     });
