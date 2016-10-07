@@ -67,6 +67,12 @@ export default Ember.Service.extend({
       res.catalogId = catalogId;
       this.set('cache', res);
       return this.filter(res, params.category, templateBase, plusInfra);
+    }).catch((err) => {
+      if ( params.allowFailure ) {
+        return this.filter([], params.category, templateBase, plusInfra);
+      } else {
+        return Ember.RSVP.reject(err);
+      }
     });
   },
 
