@@ -256,7 +256,7 @@ var Stack = Resource.extend({
 
   updateOrchestrationState: function() {
     if ( ORCHESTRATION_STACKS.indexOf(this.get('externalIdInfo.name')) >= 0 ) {
-      Ember.run.onec(this, function() {
+      Ember.run.once(this, function() {
         this.get('projectsService').updateOrchestrationState();
       });
     }
