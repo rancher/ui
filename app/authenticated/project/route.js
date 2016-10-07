@@ -26,9 +26,7 @@ export default Ember.Route.extend({
   },
 
   loadingError(err, transition, ret) {
-    var isAuthEnabled = this.get('access.enabled');
-
-    if ( err && err.status && [401,403].indexOf(err.status) >= 0 && isAuthEnabled )
+    if ( err && err.status && [401,403].indexOf(err.status) >= 0 )
     {
       this.send('logout',transition,true);
       return;

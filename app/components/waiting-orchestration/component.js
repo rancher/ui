@@ -1,7 +1,6 @@
 import Ember from 'ember';
 
-export default Ember.Controller.extend({
-  application: Ember.inject.controller(),
+export default Ember.Component.extend({
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
   k8s: Ember.inject.service(),

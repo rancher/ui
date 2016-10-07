@@ -138,9 +138,9 @@ export default Ember.Route.extend(Subscribe, {
   loadingError(err, transition, ret) {
     let isAuthEnabled = this.get('access.enabled');
 
-    if ( err && isAuthEnabled ) {
-      this.controllerFor('application').set('error',err);
-      this.transitionTo('failWhale');
+    console.log('Loading Error:', err);
+    if ( err && (isAuthEnabled || [401,403].indexOf(err.status) >= 0) ) {
+      this.send('logout',transition, (transition.targetName !== 'authenticated.index'));
       return;
     }
 
