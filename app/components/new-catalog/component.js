@@ -61,11 +61,7 @@ export default Ember.Component.extend(NewOrEdit, {
 
   didReceiveAttrs() {
     this._super();
-
-    // Select the default version
-    if ( this.get('selectedTemplateUrl') ) {
-      return;
-    }
+    this.set('selectedTemplateModel', null);
 
     var def = this.get('templateResource.defaultVersion');
     var links = this.get('versionLinks');
@@ -76,11 +72,15 @@ export default Ember.Component.extend(NewOrEdit, {
     }
   },
 
-  getReadme: function() {
-    this.get('selectedTemplateModel').followLink('readme').then((response) => {
-      this.set('readmeContent', response);
-    });
-  },
+  updateReadme: function() {
+    let model = this.get('selectedTemplateModel');
+    this.set('readmeContent', null);
+    if ( model && model.hasLink('readme') ) {
+      model.followLink('readme').then((response) => {
+        this.set('readmeContent', response);
+      });
+    }
+  }.observes('selectedTemplateModel.links.readme'),
 
   sortedVersions: function() {
     return this.get('versionsArray').sort((a,b) => {
@@ -127,17 +127,13 @@ export default Ember.Component.extend(NewOrEdit, {
 
         this.set('selectedTemplateModel', response);
         this.set('previewTab', Object.keys(response.get('files')||[])[0]);
-        if (response.links.readme) {
-          this.getReadme();
-        } else {
-          this.set('readmeContent', null);
-        }
         this.set('loading', false);
       }, ( /*error*/ ) => {});
     } else {
       this.set('selectedTemplateModel', null);
+      this.set('readmeContent', null);
     }
-  }.observes('selectedTemplateUrl').on('init'),
+  }.observes('selectedTemplateUrl'),
 
   answers: function() {
     var out = {};

@@ -140,6 +140,7 @@ export default Ember.Route.extend({
     session.set(C.SESSION.BACK_TO, undefined);
 
     if ( backTo ) {
+      console.log('Going back to', backTo);
       window.location.href = backTo;
     } else {
       this.replaceWith('authenticated');

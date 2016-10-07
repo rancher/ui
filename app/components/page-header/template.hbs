@@ -1,4 +1,4 @@
-<nav class="navbar">
+<nav class="navbar clearfix">
   <div class="container-fluid">
     <div class="navbar-header">
       <a role="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false">
@@ -95,4 +95,15 @@
     </div>
   </div>
 </nav>
-<div class="clearfix"></div>
+{{#unless hosts.length}}
+  <div class="lacsso banner bg-info r-m0 r-p0">
+    <div class="banner-icon" style="width: 68px;"><span class="icon icon-alert"></span></div>
+    <div class="banner-message">
+      <p class="r-mt15 r-mb15">
+        {{~t 'nav.noHosts.prefix' appName=settings.appName minVersion=settings.minDockerVersion~}}
+        <a href="{{href-to 'hosts.new'}}">{{~t 'nav.noHosts.link' appName=settings.appName minVersion=settings.minDockerVersion~}}</a>
+        {{~t 'nav.noHosts.suffix' appName=settings.appName minVersion=settings.minDockerVersion~}}
+      </p>
+    </div>
+  </div>
+{{/unless}}

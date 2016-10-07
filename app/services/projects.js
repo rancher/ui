@@ -1,5 +1,4 @@
 import Ember from 'ember';
-const { getOwner } = Ember;
 import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
 
@@ -213,30 +212,4 @@ export default Ember.Service.extend({
       (!state.hasMesos || state.mesosReady)
     );
   }.property('orchestrationState'), // The state object is always completely replaced, so this is ok
-
-  checkForWaiting(hosts) {
-    let router = getOwner(this).get('router');
-
-    let hasHosts = false;
-    if ( this.get('current.mesos') )
-    {
-      hasHosts = (hosts && hosts.filterBy('state','active').get('length') >= 2);
-    }
-    else
-    {
-      hasHosts = (hosts && hosts.get('length') > 0);
-    }
-
-    if ( !hasHosts )
-    {
-      router.transitionTo('authenticated.project.waiting', this.get('current.id'));
-    }
-
-    return this.updateOrchestrationState().then(() => {
-      if ( !this.get('isReady') )
-      {
-        router.transitionTo('authenticated.project.waiting', this.get('current.id'));
-      }
-    });
-  }
 });

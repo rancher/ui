@@ -139,7 +139,8 @@ export default Ember.Route.extend(Subscribe, {
     let isAuthEnabled = this.get('access.enabled');
 
     if ( err && isAuthEnabled ) {
-      this.send('logout',transition, (transition.targetName !== 'authenticated.index'));
+      this.controllerFor('application').set('error',err);
+      this.transitionTo('failWhale');
       return;
     }
 

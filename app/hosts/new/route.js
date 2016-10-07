@@ -101,15 +101,15 @@ export default Ember.Route.extend({
     this.set('backTo', params.backTo);
 
     let promises = {
-      reloadMachine: this.get('userStore').find('schema','machine', {forceReload: true}),
+      reloadHost: this.get('userStore').find('schema','host', {forceReload: true}),
       loadCustomUi: this.loadCustomUi(),
       schemas: this.get('userStore').find('schema'),
       typeDocumentations: this.get('userStore').findAll('typedocumentation') 
     };
 
-    if ( params.machineId )
+    if ( params.hostId )
     {
-      promises.clonedModel = this.getMachine(params.machineId);
+      promises.clonedModel = this.getHost(params.hostId);
     }
 
     if ( this.get('access.admin') ) {
@@ -195,14 +195,14 @@ export default Ember.Route.extend({
     });
   },
 
-  getMachine(machineId) {
-    return this.get('store').find('machine', machineId).then((machine) => {
+  getHost(hostId) {
+    return this.get('store').find('host', hostId).then((host) => {
 
-      let machineOut = machine.cloneForNew();
-      let config = this.get('store').createRecord(machine[`${machine.driver}Config`]);
+      let hostOut = host.cloneForNew();
+      let config = this.get('store').createRecord(host[`${host.driver}Config`]);
 
-      machineOut.set(`${machine.driver}Config`, config);
-      return machineOut;
+      hostOut.set(`${host.driver}Config`, config);
+      return hostOut;
     }).catch(() => {
       return Ember.RSVP.reject({type: 'error', message: 'Failed to retrieve cloned model'}) ;
     });

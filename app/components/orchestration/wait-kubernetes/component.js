@@ -11,15 +11,19 @@ export default Ember.Component.extend({
   currentStep : 0,
   subStep     : 0,
   subCount    : 0,
+
   services    : null,
+  hosts       : null,
+  stacks      : null,
 
   init() {
     this._super(...arguments);
 
+    let store = this.get('store');
+    this.set('services', store.all('service'));
+    this.set('hosts', store.all('host'));
+    this.set('stacks', store.all('stack'));
     this.updateStep();
-    this.get('store').findAllUnremoved('service').then((services) => {
-      this.set('services', services);
-    });
   },
 
   willDestroyElement() {
@@ -35,23 +39,23 @@ export default Ember.Component.extend({
     'waitKubernetes.createNamespace',
   ],
 
-  updateStep: debouncedObserver('model.hosts.@each.state','model.stacks.@each.{state,externalId}','services.@each.{state,healthState}', function() {
+  updateStep: debouncedObserver('hosts.@each.state','stacks.@each.{state,externalId}','services.@each.{state,healthState}', function() {
     this.set('subStep', 0);
     this.set('subCount', 0);
 
-    if ( this.get('model.hosts.length') === 0 )
+    if ( this.get('hosts.length') === 0 )
     {
       this.set('currentStep', 0);
       return;
     }
 
-    if ( this.get('model.hosts').filterBy('state','active').get('length') === 0 )
+    if ( this.get('hosts').filterBy('state','active').get('length') === 0 )
     {
       this.set('currentStep', 1);
       return;
     }
 
-    var stack = this.get('k8s').filterSystemStack(this.get('model.stacks'));
+    var stack = this.get('k8s').filterSystemStack(this.get('stacks'));
     if ( !stack )
     {
       this.set('currentStep', 2);

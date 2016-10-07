@@ -10,8 +10,8 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   createDelayMs : 0,
   showEngineUrl : true,
 
-  queryParams   : ['machineId'],
-  machineId     : null,
+  queryParams   : ['hostId'],
+  hostId        : null,
   error         : null,
 
   count         : null,
@@ -45,7 +45,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
 
     if (this.get('clonedModel')) {
       this.set('model', this.get('clonedModel'));
-      this.set('prefix', this.get('primaryResource.name')||'');
+      this.set('prefix', '');
     } else if (typeof this.get('bootstrap') === 'function') {
       this.bootstrap();
     }
@@ -106,12 +106,12 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     let parts = this.get('nameParts');
     if ( typeof parts.name !== 'undefined' || !parts.prefix )
     {
-      this.set('primaryResource.name', parts.name || '');
+      this.set('primaryResource.hostname', parts.name || '');
     }
     else
     {
       let first = parts.prefix + Util.strPad(parts.start, parts.minLength, '0');
-      this.set('primaryResource.name', first);
+      this.set('primaryResource.hostname', first);
     }
   }.observes('nameParts'),
 
@@ -127,16 +127,16 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
       let tpl = this.get('multiTemplate');
       let delay = this.get('createDelayMs');
       var promise = new Ember.RSVP.Promise(function(resolve,reject) {
-        let machines = [];
+        let hosts = [];
         for ( let i = parts.start + 1 ; i <= parts.end ; i++ )
         {
-          let machine = tpl.clone();
-          machine.set('name', parts.prefix + Util.strPad(i, parts.minLength, '0'));
-          machines.push(machine);
+          let host = tpl.clone();
+          host.set('hostname', parts.prefix + Util.strPad(i, parts.minLength, '0'));
+          hosts.push(host);
         }
 
-        async.eachSeries(machines, function(machine, cb) {
-          machine.save().then(() => {
+        async.eachSeries(hosts, function(host, cb) {
+          host.save().then(() => {
             setTimeout(cb, delay);
           }).catch((err) => {
             cb(err);
