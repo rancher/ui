@@ -196,12 +196,15 @@ export default Ember.Route.extend({
   },
 
   getHost(hostId) {
-    return this.get('store').find('host', hostId).then((host) => {
+    let store = this.get('store');
+    return store.find('host', hostId).then((host) => {
 
       let hostOut = host.cloneForNew();
-      let config = this.get('store').createRecord(host[`${host.driver}Config`]);
-
-      hostOut.set(`${host.driver}Config`, config);
+      let src = host[`${host.driver}Config`];
+      if ( src ) {
+        let config = store.createRecord(config);
+        hostOut.set(`${host.driver}Config`, config);
+      }
       return hostOut;
     }).catch(() => {
       return Ember.RSVP.reject({type: 'error', message: 'Failed to retrieve cloned model'}) ;
