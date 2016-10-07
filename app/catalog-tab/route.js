@@ -30,9 +30,7 @@ export default Ember.Route.extend({
   beforeModel: function() {
     this._super(...arguments);
 
-    var auth = this.modelFor('authenticated');
-
-    return this.get('projects').checkForWaiting(auth.get('hosts')).then(() => {
+    return this.get('projects').updateOrchestrationState().then(() => {
       return Ember.RSVP.hash({
         stacks: this.get('store').find('stack'),
         catalogs: this.get('catalog').fetchCatalogs(),

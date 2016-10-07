@@ -8,11 +8,11 @@ export default Ember.Route.extend({
 
   beforeModel() {
     this._super(...arguments);
-    var auth = this.modelFor('authenticated');
-    return this.get('projects').checkForWaiting(auth.get('hosts'));
+    return this.get('projects').updateOrchestrationState();
   },
 
   model() {
+    var auth = this.modelFor('authenticated');
     var k8s = this.get('k8s');
     return Ember.RSVP.hashSettled({
       namespaces: k8s.allNamespaces(),
@@ -24,14 +24,14 @@ export default Ember.Route.extend({
       containers: this.get('store').findAll('container'),
     }).then((hash) => {
       let errors = [];
-      let out = {};
+      let toSet = {};
       Object.keys(hash).forEach((key) => {
         if ( hash[key].state === 'rejected' ) {
           let err = hash[key].reason;
           err.key = key;
           errors.push(err);
         } else {
-          out[key] = hash[key].value;
+          toSet[key] = hash[key].value;
         }
       });
 
@@ -43,7 +43,8 @@ export default Ember.Route.extend({
       } else {
         return k8s.selectNamespace().then(() => {
           k8s.set('loadingErrors', null);
-          k8s.setProperties(out);
+          k8s.setProperties(toSet);
+          return auth;
         });
       }
     });

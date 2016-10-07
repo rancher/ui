@@ -143,53 +143,30 @@ export default Ember.Service.extend({
       store.rawRequest(opt).then(success, fail);
 
       function success(obj) {
-        var xhr = obj.xhr;
-
-        if ( (xhr.getResponseHeader('content-type')||'').toLowerCase().indexOf('/json') !== -1 )
+        if ( (obj.headers.get('content-type')||'').toLowerCase().indexOf('/json') !== -1 )
         {
-          var response = self._typeify(JSON.parse(xhr.responseText));
-          Object.defineProperty(response, 'xhr', { value: obj.xhr, configurable: true, writable: true});
-          Object.defineProperty(response, 'textStatus', { value: obj.textStatus, configurable: true, writable: true});
+          var response = self._typeify(obj.body);
           resolve(response);
         }
         else
         {
-          resolve(xhr.responseText);
+          resolve(obj.body);
         }
       }
 
       function fail(obj) {
         var response, body;
-        var xhr = obj.xhr;
-        var err = obj.err;
-        var textStatus = obj.textStatus;
 
-        if ( (xhr.getResponseHeader('content-type')||'').toLowerCase().indexOf('/json') !== -1 )
+        if ( (obj.headers.get('content-type')||'').toLowerCase().indexOf('/json') !== -1 )
         {
-          body = self._typeify(JSON.parse(xhr.responseText));
+          body = self._typeify(obj.body);
           body.status = body.code;
           body.code = body.reason;
           delete body.reason;
         }
-        else if ( err )
-        {
-          if ( err === 'timeout' )
-          {
-            body = {
-              code: 'Timeout',
-              status: xhr.status,
-              message: `API request timeout (${opt.timeout/1000} sec)`,
-              detail: (opt.method||'GET') + ' ' + opt.url,
-            };
-          }
-          else
-          {
-            body = {status: xhr.status, message: err};
-          }
-        }
         else
         {
-          body = {status: xhr.status, message: xhr.responseText};
+          body = {status: obj.status, message: obj.body};
         }
 
         if ( ApiError.detectInstance(body) )
@@ -200,9 +177,6 @@ export default Ember.Service.extend({
         {
           response = ApiError.create(body);
         }
-
-        Object.defineProperty(response, 'xhr', { value: xhr, configurable: true, writable: true});
-        Object.defineProperty(response, 'textStatus', { value: textStatus, configurable: true, writable: true});
 
         reject(response);
       }
@@ -312,7 +286,7 @@ export default Ember.Service.extend({
     // See if we already have this resource, unless forceReload is on.
     if ( opt.forceReload !== true )
     {
-      if ( isForAll && store.get('_foundAll').get(type) )
+      if ( isForAll && store.get('_state.foundAll')[type] )
       {
         return Ember.RSVP.resolve(store.all(type),'Cached find all '+type);
       }
@@ -406,7 +380,7 @@ export default Ember.Service.extend({
         }).then((result) => {
           if ( isForAll )
           {
-            store.get('_foundAll').set(type,true);
+            store.get('_state.foundAll')[type] = true;
           }
 
           resolvePromisesInQueue(url, result, 'resolve');
@@ -458,26 +432,26 @@ export default Ember.Service.extend({
 
   isReady() {
     return this.get('store').find('stack').then((stacks) => {
-      return this.get('store').find('service').then((services) => {
-        let stack = this.filterSystemStack(stacks);
-        if ( stack )
-        {
-          let matching = services.filterBy('stackId', stack.get('id'));
-          let expect = matching.get('length');
-          let healthy = Util.filterByValues(matching, 'healthState', C.READY_STATES).get('length');
-          if ( expect > 0 && expect === healthy )
-          {
-            return this.request({
-              url: `${this.get('kubernetesEndpoint')}/version`
-            }).then((res) => {
-              this.set('version', res);
+      let stack = this.filterSystemStack(stacks);
+      if ( stack )
+      {
+        return this.request({
+          url: `${this.get('kubernetesEndpoint')}/version`
+        }).then((res) => {
+          this.set('version', res);
+          return this.selectNamespace().then(() => {
+            if ( this.get(`tab-session.${C.TABSESSION.NAMESPACE}`) ) {
               return true;
-            });
-          }
-        }
+            } else {
+              return false;
+            }
+          });
+        }).catch(() => {
+          return false;
+        });
+      }
 
-        return false;
-      });
+      return false;
     }).catch(() => {
       return Ember.RSVP.resolve(false);
     });
@@ -506,12 +480,12 @@ export default Ember.Service.extend({
     const REALLY_OLD = C.EXTERNAL_ID.KIND_SYSTEM + C.EXTERNAL_ID.KIND_SEPARATOR + C.EXTERNAL_ID.KIND_LEGACY_KUBERNETES;
     const OLD_PREFIX = C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNAL_ID.GROUP_SEPARATOR + C.EXTERNAL_ID.KIND_KUBERNETES + C.EXTERNAL_ID.GROUP_SEPARATOR;
     const OLD_SYSTEM_PREFIX = C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNAL_ID.GROUP_SEPARATOR + C.EXTERNAL_ID.KIND_KUBERNETES + C.EXTERNAL_ID.GROUP_SEPARATOR;
-    const CUR_PREFIX = "system-catalog://system:system*k8s:"; // I give up..
+    const CUR_PREFIX = "catalog://infra:infra*k8s:"; // I give up... also includes system-catalog://
 
 
     var stack = (stacks||[]).filter((stack) => {
       let externalId = stack.get('externalId')||'';
-      return externalId === REALLY_OLD || externalId.indexOf(OLD_PREFIX) === 0 || externalId.indexOf(OLD_SYSTEM_PREFIX) === 0 || externalId.indexOf(CUR_PREFIX) === 0;
+      return externalId === REALLY_OLD || externalId.indexOf(OLD_PREFIX) >= 0 || externalId.indexOf(OLD_SYSTEM_PREFIX) >= 0 || externalId.indexOf(CUR_PREFIX) >= 0;
     })[0];
 
     return stack;
@@ -594,6 +568,7 @@ export default Ember.Service.extend({
         return select(obj);
       }
 
+      // I give up
       return select(null);
 
       function objForName(name) {
@@ -650,11 +625,10 @@ export default Ember.Service.extend({
   */
 
   parseKubectlError(err) {
-    var response = (JSON.parse(err.xhr.responseText));
     return ApiError.create({
       status: err.status,
-      code: response.exitCode,
-      message: response.stdErr.split(/\n/),
+      code: err.body.exitCode,
+      message: err.body.stdErr.split(/\n/),
     });
   },
 

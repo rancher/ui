@@ -4,20 +4,28 @@ export default Ember.Controller.extend({
   application: Ember.inject.controller(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
+  k8s: Ember.inject.service(),
+
+  hosts: null,
+
+  didReceiveAttrs() {
+    this.set('hosts', this.get('store').all('host'));
+  },
 
   expectHosts: function() {
     return ( this.get('projects.current.orchestration') === 'mesos' ? 3 : 1);
   }.property('projects.current.orchestration'),
 
   hasHosts: function() {
-    return this.get('model.hosts.length') >= this.get('expectHosts');
-  }.property('model.hosts.length'),
+    return this.get('hosts.length') >= this.get('expectHosts');
+  }.property('hosts.length'),
 
   actions: {
     kubernetesReady() {
-      this.send('refreshKubernetes');
-      this.get('projects').updateOrchestrationState().then(() => {
-        this.transitionToRoute('k8s-tab');
+      this.get('k8s').allNamespaces().then(() => {
+        this.get('projects').updateOrchestrationState().then(() => {
+          this.transitionToRoute('k8s-tab');
+        });
       });
     },
 

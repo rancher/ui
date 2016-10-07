@@ -57,6 +57,7 @@ export default Ember.Component.extend(HoverDropdown, {
   init() {
     this._super(...arguments);
     this.set('stacks', this.get('store').all('stack'));
+    this.set('hosts', this.get('store').all('host'));
     this.updateNavTree();
   },
 
