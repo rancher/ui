@@ -79,7 +79,7 @@ export default Ember.Service.extend({
   filter(data, category, templateBase, plusInfra) {
     let bases = [];
 
-    category = category.toLowerCase();
+    category = (category||'all').toLowerCase();
 
     if ( templateBase === 'cattle' ) {
       bases.push('');
