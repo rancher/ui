@@ -55,24 +55,6 @@ export default Ember.Route.extend({
       return true;
     },
 
-    openOverlay(template, view, model, controller) {
-      view = view || 'overlay';
-      return this.render(template, {
-        into       : 'application',
-        outlet     : 'overlay',
-        view       : view,
-        model      : model,
-        controller : controller,
-      });
-    },
-
-    closeOverlay() {
-      return this.disconnectOutlet({
-        parentView : 'application',
-        outlet     : 'overlay'
-      });
-    },
-
     error(err, transition) {
       /*if we dont abort the transition we'll call the model calls again and fail transition correctly*/
       transition.abort();

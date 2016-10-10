@@ -4,13 +4,15 @@ import C from 'ui/utils/constants';
 import { tagsToArray, normalizedChoices } from 'ui/models/stack';
 
 export default Ember.Controller.extend(Sortable, {
-  stacks: Ember.inject.controller(),
+  stacksController: Ember.inject.controller('stacks'),
   projects: Ember.inject.service(),
   prefs: Ember.inject.service(),
   intl: Ember.inject.service(),
 
-  which: Ember.computed.alias('stacks.which'),
-  tags: Ember.computed.alias('stacks.tags'),
+  stacks: Ember.computed.alias('stacksController.stacks'),
+  infraTemplates: Ember.computed.alias('stacksController.infraTemplates'),
+  which: Ember.computed.alias('stacksController.which'),
+  tags: Ember.computed.alias('stacksController.tags'),
   showAddtlInfo: false,
   selectedService: null,
 
@@ -103,7 +105,7 @@ export default Ember.Controller.extend(Sortable, {
   filteredStacks: function() {
     var which = this.get('which');
     var needTags = tagsToArray(this.get('tags'));
-    var out = this.get('model');
+    var out = this.get('model.stacks');
 
     if ( which !== C.EXTERNAL_ID.KIND_ALL )
     {
