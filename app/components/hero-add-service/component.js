@@ -3,7 +3,26 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   settings: Ember.inject.service(),
 
+  catalog: null,
+
   stackId: null,
+  hasKubernetes: null,
+  hasMesos: null,
+  hasSwarm: null,
+  hasInfra: null,
+
+  didReceiveAttrs() {
+    let k8s = this.get('catalog.catalog').findBy('id','infra:infra*k8s');
+    let mesos = this.get('catalog.catalog').findBy('id','infra:infra*k8s');
+    let swarm = this.get('catalog.catalog').findBy('id','infra:infra*k8s');
+    let infra = this.get('catalog.catalog').findBy('templateBase','infra');
+    this.setProperties({
+      hasKubernetes: !!k8s,
+      hasMesos: !!mesos,
+      hasSwarm: !!swarm,
+      hasInfra: !!infra,
+    });
+  },
 
   actions: {
     newService() {

@@ -4,6 +4,7 @@ import { parseCatalogSetting } from 'ui/utils/parse-catalog-setting';
 
 export default Ember.Component.extend({
   settings: Ember.inject.service(),
+  catalog: Ember.inject.service(),
 
   initialValue: null,
 
@@ -63,6 +64,7 @@ export default Ember.Component.extend({
       this.get('settings').one('settingsPromisesResolved', () => {
         btnCb(true);
         this.sendAction('saved');
+        this.get('catalog').clearCache();
       });
     },
   },
