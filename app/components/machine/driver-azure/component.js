@@ -92,7 +92,7 @@ export default Ember.Component.extend(Driver, {
     let errors = [];
 
     this.set('prefix',(this.get('prefix')||'').toLowerCase());
-    let name = this.get('model.name');
+    let name = this.get('model.hostname');
     if ( name.length < 4 || name > 62 ) {
       errors.push('Name must be between 4 and 62 characters long');
     }
