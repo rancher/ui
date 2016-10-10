@@ -1,5 +1,5 @@
 ---
-languageName: 简体中文(ZH-CN)
+languageName: 简体中文
 generic:
   actions: 操作
   activate: 激活
@@ -566,7 +566,6 @@ helpPage:
     buttonText: 进入论坛
     announcements:
       header: 公告
-      annouceText: '<strong>最新版本:</strong><a href="{latestLink}" target="_blank">{latestTitle}</a>'
     general:
       header: 综合
       buttonText: 查看更多综合讨论
@@ -860,13 +859,11 @@ stacksPage:
   header:
     all: 全部应用
     user: 用户应用
-    system: 系统应用
   actionButton: 添加应用栈
   sort:
     label: 排序
     state: 状态
     name: 名称
-  noSystemStacks: 当前没有系统应用
   new:
     header: 添加应用栈
     composeLabel: 可选:导入Compose
@@ -884,14 +881,11 @@ stacksPage:
       startOnCreate:
         label: 创建后启动服务
 storagePoolsPage:
-  header: 存储
   volume: 卷ID
   orphaned: 孤立备份
   nav:
     pools: 池
     backups: 备份
-  index:
-    noData: 无存储池
   newVolume:
     header: 添加卷
     form:
@@ -1170,9 +1164,6 @@ catalogSettings:
     header: 更多
     helpText: '此处可以添加自定义的应用商店。每个应用商店必须有唯一的名称和一个支持 <code>git clone</code> 操作的URL。（更多信息请参考此 <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">文档</a>）'
     addActionLabel: 添加应用商店
-    keyLabel: 名称
-    keyPlaceholder: 例如:mycatalog
-    valuePlaceholder: 例如:https://github.com/mycompany/mycatalog.git
 confirmDelete:
   title: 是否确认要删除
   environmentNote: '注意:此环境内的所有资源都将被永久性的删除，包括通过{appName}创建的主机。'
@@ -1754,15 +1745,6 @@ formVolumes:
   noLaunchConfigs: 此服务下没有可共享卷的启动配置.
   noHostContainers: 该主机没有可以提供共享卷的容器.
   onlySingleHost: 仅当添加容器到特定主机时适用.
-heroAddService:
-  header: 添加第一个服务
-  paragraph1: |
-    简单而言，服务是一组由相同docker镜像创建的容器，Rancher服务扩展了Docker的“link”概念以利用{appName}的轻量级分布式DNS服务用于服务发现。
-    服务可以单独添加或通过应用商店部署。
-  paragraph2: '服务也能够利用其他{appName}内置服务，如负载均衡、健康监控、升级支持以及高可用。'
-  contentLink: 了解更多
-  addService: 添加服务
-  linkToCatalog: 从应用商店添加
 hostSettings:
   header: 主机注册URL
   subtext: '主机连接{appName} API的Base URL是？'
@@ -1973,14 +1955,189 @@ machine:
       label: 私有IP
     onlyPrivate:
       label: 仅使用私有IP地址
-
+  driverAzure:
+    accountAccessSection: 账户访问
+    subscriptionId:
+      label: 订阅ID
+      placeholder: Azure订阅ID
+    subscriptionCert:
+      label: 订阅证书
+      placeholder: Azure订阅证书
+    instanceSection: 实例
+    image:
+      label: 镜像
+    size:
+      label: 规格
+    dockerPort:
+      label: Docker端口
+      placeholder: 例如:2376
+    publishSettingsFile:
+      label: 发布配置
+      placeholder: 发布配置文件
+    regionSection: 区域
+    region:
+      label: 区域
+  driverCustom:
+    step1: '启动一台Linux机器并安装最新版本的 <a href="http://www.docker.com/" target="_blank">Docker</a> 。'
+    step2: '确认安全组或防火墙允许以下通讯:'
+    step2li: '与其他所有主机之间的 <code>UDP</code> 端口 <code>500</code> 和 <code>4500</code> <span class="text-muted">(用于IPsec网络)</span>'
+    step3: '可选项: 在主机上增加标签'
+    step4: '可选项:设置主机使用的Public IP。如果添加的是运行 <code>rancher/server</code> 容器的主机则必须设置此选项。'
+    step5Copy: 将下列脚本拷贝到每一台主机上运行以注册
+    generating: 生成注册URL...
+    step5Close:
+      part1: 点击下面的关闭按钮，新的主机注册后会显示在
+      link: 主机
+      part2: 页面。
+    close: 关闭
+  driverDigitalocean:
+    sizeLabel: |
+      {slug} 内存, {disk}gb 磁盘, {vcpus, plural,
+      =1 {# vCPU}
+      other {# vCPUs}
+      }
+    accountSection: 账户访问
+    authAccountButton: '下一步: 配置 Droplet'
+    accessToken:
+      label: '访问令牌*'
+      placeholder: 你的DigitalOcean API访问令牌
+      help: |
+        由<a href="https://cloud.digitalocean.com/settings/applications" target="_blank">Apps & API</a>
+        页面获取的DigitalOcean个人访问令牌
+    instanceSection: 实例
+    image:
+      label: 镜像
+    size:
+      label: 大小
+    regionSection: 区域
+    region:
+      label: 区域
+    optionsSection: 选项
+    backups:
+      label: 启用备份
+    ipv6:
+      label: 启用IPv6
+    privateNetworking:
+      label: 启用私有网络
+  driverExoscale:
+    accountSection: 账户访问
+    apiKey:
+      placeholder: 你的Exoscale API Key
+    secretKey:
+      placeholder: 你的Exoscale secret key
+      provided: 已提供
+    accountHelp: 在此粘贴你的Exoscale密钥对，我们将用秘钥创建新的实例。
+    loginAction: 下一步:验证及选择安全组
+    loadingSecurity: 从Exoscale加载安全组...
+    securityGroupSection: 安全组
+    securityGroup:
+      label: 安全组
+      defaultExisting: '标准:使用现有的 <code>{groupName}</code> 安全组'
+      defaultCreate: '标准:自动创建 <code>{groupName}</code> 安全组'
+      custom: 自定义:选择现有安全组
+      updating: 更新安全组...
+      creating: 创建安全组...
+    portHelp:
+      link: 了解更多
+      text: 关于将要开放的端口信息
+    needs:
+      label: '{appName} 正常工作需要安全组允许以下通讯:'
+      item1: '从 {appName} 服务器到主机的 <code>TCP</code> 端口 <code>22</code> <span class="text-muted">(SSH连接以安装配置Docker)</span>'
+      item2: '与其他所有主机之间的 <code>UDP</code> 端口 <code>500</code> 和 <code>4500</code> <span class="text-muted">(用于IPsec网络)</span>'
+      item3: '这些规则 <b>不会</b> 被自动添加'
+    selectSecurityGroupAction: 下一步:设置实例选项
+    loadingInstance: 读取可用实例配置...
+    instanceSection: 实例
+    instanceProfile:
+      label: 实例配置文件
+    diskSize:
+      label: Root大小
+  driverOther:
+    driverSection: 驱动
+    driver:
+      label: 驱动
+    optionsSection: '{driverName} 选项'
+  driverPacket:
+    accountSection: 账户访问
+    projectId:
+      label: 项目
+      placeholder: 你的Packet项目ID
+    apiKey:
+      placeholder: 你的Packet API Key
+    apiKeyHelp: '由Packet的 <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> 页面获取'
+    instanceSection: 实例
+    image:
+      label: 镜像
+    size:
+      label: 大小
+    regionSection: 区域
+    region:
+      label: 区域
+  driverRackspace:
+    accountSection: 账户访问
+    username:
+      label: 用户名
+      placeholder: 你的RackSpace用户名
+    apiKey:
+      placeholder: 你的RackSpace APK Key
+    accountHelp: RackSpace控制面板中的账户配置
+    regionSection: 区域
+    region:
+      label: 区域
+    instanceSection: 实例
+  driverUbiquity:
+    accountSection: 账户访问
+    clientId:
+      placeholder: 你的Ubiquity Hosting API Reseller ID
+    apiUsername:
+      placeholder: 你的Ubiquity Hosting API Reseller ID
+    apiToken:
+      placeholder: 你的Ubiquity Hosting Access Key
+      provided: 已提供
+    accountHelp: '你可以从 <a href="https://motion.ubiquityhosting.com/api"> 这里 </a>找到你的Ubiquity Hosting API密码。还没有账号？了解更多 <a href="http://www.ubiquityhosting.com/">Ubiquity Hosting</a> 信息！'
+    loginAction: 下一步:认证并创建一个Cloud实例
+    loadingInstance: 加载Cloud实例创建过程详细..
+    instanceSection: 实例
+    regionSection: 区域
+    region:
+      label: 区域
+    image:
+      label: 镜像
+  driverVsphere:
+    accountSection: 账户访问
+    vcenter:
+      label: vCenter 主机
+      placeholder: vCenter或者ESXi主机名/IP
+    vcenterPort:
+      label: vCenter端口
+    username:
+      label: 用户名
+    password:
+      label: 密码
+    instanceSection: 实例
+    memorySize:
+      label: 内存
+    diskSize:
+      label: 磁盘
+    boot2dockerUrl:
+      placeholder: 缺省:最新的boot2docker镜像
+    schedulingSection: 计划
+    dataCenter:
+      label: 数据中心
+    pool:
+      label: 池
+    host:
+      label: 主机
+      placeholder: '使用群集时输入"/"'
+    network:
+      label: 网络
+    dataStore:
+      label: 数据存储
   driverAliyunecs:
     accountSection: 账户设置
     accessKey:
-      label: Access Key*
       placeholder: 阿里云账号中的 Access Key
     accessKeySecret:
-      label: Access Key Secret*
       placeholder: 阿里云账号Access Key 对应的Secret
     apiEndpoint:
       label: API网关地址
@@ -2000,7 +2157,6 @@ machine:
       placeholder: 阿里云中实例显示的标签
     internetMaxBandwidth:
       label: 最大网络带宽
-      placeholder: 1 to 100
     aliyunSLB:
       label: 阿里云负载均衡ID
       placeholder: 如果需要使用阿里云的负载均衡服务,请输入ID
@@ -2023,9 +2179,6 @@ machine:
       label: 可用区
       placeholder: 留空代表自动选择
     networkSection: 网络设置
-    routeCIDR:
-      label: Route CIDR
-      placeholder: e.g. 192.168.1.0/24
     vpcId:
       label: 阿里云虚拟网络ID
       placeholder: 如果需要使用阿里云虚拟网络,请输入虚拟网络ID
@@ -2044,7 +2197,6 @@ machine:
     sshPassword:
       label: SSH 密码
       placeholder: 创建实例后SSH远程登录密码,留空则自动设置
-
 modalAboutComponent:
   component: 组件
   version: 版本
@@ -2129,9 +2281,7 @@ newCatalog:
   maintainer: '维护者:'
   license: '授权:'
   url: '项目URL:'
-  stack: 应用栈
   templateVersion: 模板版本
-  selectVersion: 选择一个模板版本
   newStack: 新应用栈
   config: 配置选项
   unknownType: '未识别问题类型:'
@@ -2321,16 +2471,11 @@ viewEditProject:
   showEdit:
     edit: 编辑环境
     add: 添加环境
-    orchestration: 容器编排
-    formControl: 访问控制
   header: 环境
   description: 描述
   helpBlock: |
     未启用访问控制。<br/>
     任何访问API/UI的人都具有管理员权限，并能够使用任何环境。
-  virtualMachine:
-    label: 虚拟机支持
-    subtext: '要求主机加载 <a href="https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine" target="_blank">KVM</a> 内核模块'
 vmConsole:
   header: '控制台:'
   protip: '高级技巧:启动命令行时按下 {alternateLabel} 键可在新窗口中打开.'
@@ -2387,19 +2532,15 @@ nav:
     services: 服务
     replicasets: 副本集
     rcs: 复制控制器
-    system: 系统
   swarm:
     projects: 项目
     services: 服务
-    system: 系统
   mesos:
     web: 概览
-    system: 系统
   cattle:
     tab: 应用栈
     all: 全部
     user: 用户
-    system: 系统
   catalog:
     tab: 应用商店
     all: 全部
@@ -2409,7 +2550,6 @@ nav:
     containers: 容器
     vms: 虚拟机
     storagePage: 存储
-    storagePools: 存储池
     backupTarget: 备份目标
     certificates: 证书
     registries: 镜像库

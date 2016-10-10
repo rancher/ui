@@ -1,5 +1,6 @@
 ---
-languageName: 日本語 (JP)
+languageName: 日本語
+languageContribute: Rancher の翻訳にご協力ください
 generic:
   actions: アクション
   activate: アクティベート
@@ -862,6 +863,8 @@ servicePage:
   logTab:
     table:
       header:
+        date: 日付
+        level: レベル
         event: イベント
         description: 詳細情報
       body:
@@ -883,13 +886,11 @@ stacksPage:
   header:
     all: 全てのスタック
     user: ユーザーのスタック
-    system: システムのスタック
   actionButton: スタックを追加
   sort:
     label: 並び替え
     state: 状態
     name: 名前
-  noSystemStacks: システムのスタックはありません
   new:
     header: スタックを追加
     composeLabel: 'オプション: Compose をインポート'
@@ -903,14 +904,11 @@ stacksPage:
       startOnCreate:
         label: 作成後にサービスを開始
 storagePoolsPage:
-  header: ストレージ
   volume: ボリューム ID
   orphaned: 孤立したバックアップ
   nav:
     pools: プール
     backups: バックアップ
-  index:
-    noData: ストレージプールはありません
   newVolume:
     header: ボリュームを追加
     form:
@@ -1174,9 +1172,6 @@ catalogSettings:
   header: カタログ
   subtext: カタログはユーザーが少ない質問に回答するだけで簡単にアプリケーションをデプロイするための rancher-compose のテンプレートを含みます
   certified:
-    header:
-      rancher: '{appName} 認証済み'
-      pl: 認証済み
     detail:
       rancher: 認証済みテンプレートは Rancher Labs によってメンテナンス、サポートされます。
       pl: 正式にメンテナンス、サポートされるテンプレート。
@@ -1730,15 +1725,6 @@ formVolumes:
   noLaunchConfigs: このサービスにはボリュームを共有するための起動設定がありません。
   noHostContainers: このホストには他コンテナのボリュームを利用するためのコンテナがありません。
   onlySingleHost: 特定ホストにコンテナを追加した場合のみ利用できます
-heroAddService:
-  header: 最初のサービスを追加
-  paragraph1: |
-    サービスは同一の Docker イメージから作成されたコンテナのシンプルなグループですが {appName} におけるサービス検出向けの軽量な分散 DNS サービスを利用するため Docker の 'リンク' コンセプトを拡張しています。
-    サービスは個別に追加することもできますしカタログから選択してデプロイすることもできます。
-  paragraph2: 'サービスはロードバランサーやヘルスモニタリング、アップグレードサポート、高可用性のような他の {appName} ビルトインサービスを利用することもできます。'
-  contentLink: 詳細を見る
-  addService: サービスを追加
-  linkToCatalog: カタログから追加
 hostSettings:
   header: ホスト登録 URL
   subtext: '{appName} API に接続するための URL は何にしますか?'
@@ -2004,6 +1990,7 @@ machine:
       placeholder: 可用性セット名
     openPort:
       label: 解放するポート
+      placeholder: カンマ区切り, e.g. 80,443
     privateIpAddress:
       label: プライベート IP
       placeholder: 127.0.0.1
@@ -2097,6 +2084,9 @@ machine:
       label: インスタンスプロファイル
     diskSize:
       label: ルートサイズ
+    sshUser:
+      label: SSH ユーザー
+      placeholder: usr1
   driverOther:
     driverSection: ドライバー
     driver:
@@ -2314,8 +2304,10 @@ modalEditSnapshot:
   create: スナップショットを作成
   nameLabel: スナップショット名
 modalFeedback:
+  header: '{appName} を楽しんでますか?'
   send: 送信
   later: あとで
+  never: そのままにする
 modalProcessError:
   header: 例外情報
   cause: '理由:'
@@ -2358,9 +2350,7 @@ newCatalog:
   maintainer: 'メンテナー:'
   license: 'ライセンス:'
   url: 'プロジェクト URL:'
-  stack: スタック
   templateVersion: テンプレートバージョン
-  selectVersion: '次の処理のためテンプレートバージョンを選択してください:'
   newStack: 新しいスタック
   config: 設定オプション
   unknownType: '有効でないパラメータータイプ:'
@@ -2446,6 +2436,13 @@ schema:
     option: オプションを選択してください...
   inputService:
     prompt: サービスを選択してください...
+serviceLink:
+  withAlias:
+    sameStack: '{service} を {alias} とする'
+    differentStack: '{stack}/{service} を {alias} とする'
+  noAlias:
+    sameStack: '{service}'
+    differentStack: '{stack}/{service}'
 sidekickAddtlInfo:
   info: 情報
   image: イメージ
@@ -2506,6 +2503,7 @@ snapshotSection:
   multiple: '複数: {latestDate}'
 storagePoolSection:
   outputs: 出力
+  readOnly: (read-only)
   hosts:
     header: ホスト
     none: ホストはありません
@@ -2567,16 +2565,11 @@ viewEditProject:
   showEdit:
     edit: '環境を編集:'
     add: 環境を追加
-    orchestration: コンテナオーケストレーション
-    formControl: アクセスコントロール
   header: '環境:'
   description: 詳細情報
   helpBlock: |
     アクセスコントロールが有効化されていません。<br/>
     API/UI にアクセスできる誰でも管理者として全ての環境を利用できます。
-  virtualMachine:
-    label: 仮想マシンサポート
-    subtext: '<a href="https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine" target="_blank">KVM</a> カーネルモジュールがロードされているホストが必要になります。'
 vmConsole:
   header: 'コンソール:'
   protip: 'ProTip: 新しいウィンドウで起動する場合はシェルアクセスを開く際に {alternateLabel} を長押ししてください。'
@@ -2584,6 +2577,9 @@ vmConsole:
   footerActions:
     buttonSend: Ctrl-Alt-Delete を送る
     buttonCancel: 閉じる
+volumeRow:
+  activeMounts:
+    readOnly: (read-only)
 waitKubernetes:
   addHost: 1台のホストを追加しています
   activateHost: ホストがアクティブになるのを待っています
@@ -2606,6 +2602,8 @@ containerChoices:
   hostGroup: 'ホスト: {name}'
   hostGroupWithState: 'ホスト: {name} ({state})'
   unknownHost: 'ホスト: ???'
+  containerOption: '{name}'
+  containerOptionWithState: '{name} ({state})'
 driver:
   multiHostNames: 'ホストは <b>{first}</b> &mdash; <b>{last}</b> と命名されます'
 allServices:
@@ -2632,22 +2630,18 @@ nav:
     rcs: レプリケーションコントローラー
     pods: ポッド
     cli: Kubectl
-    system: システムスタック
   swarm:
     tab: Swarm
     projects: プロジェクト
     services: サービス
     cli: CLI
-    system: システム
   mesos:
     tab: Mesos
     web: 概要
-    system: システム
   cattle:
     tab: スタック
     all: 全て
     user: ユーザー
-    system: システム
   catalog:
     tab: カタログ
     all: 全て
@@ -2658,7 +2652,6 @@ nav:
     containers: コンテナ
     vms: 仮想マシン
     storagePage: ストレージ
-    storagePools: ストレージプール
     backupTarget: バックアップ対象
     certificates: 証明書
     registries: レジストリ
@@ -2732,8 +2725,10 @@ model:
       group: グループ
       org: 組織
       localUser: ローカルユーザー
+      unknown: '{type}?'
   projectMember:
     role:
       member: メンバー
       owner: オーナー
+      readonly: Read-Only
       restricted: 制限済み
