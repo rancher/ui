@@ -11,29 +11,37 @@
   {{#link-to "catalog-tab" class="btn btn-primary"}}{{t 'heroAddService.linkToCatalog'}}{{/link-to}}
 </section>
 
-<section class="well welcome">
-  <h2>{{t 'heroAddService.infra.header'}}</h2>
-  <p>
-    {{t 'heroAddService.infra.paragraph' appName=settings.appName}}
-  </p>
+{{#if hasInfra}}
+  <section class="well welcome">
+    <h2>{{t 'heroAddService.infra.header'}}</h2>
+    <p>
+      {{t 'heroAddService.infra.paragraph' appName=settings.appName}}
+    </p>
 
-  <div class="infra-container">
-    <div class="infra-box">
-      <img class="backhill" height="100" src="{{app.baseAssets}}assets/images/providers/kubernetes.svg" />
-      {{#link-to "catalog-tab.launch" "infra:infra*k8s" class="btn btn-primary"}}{{t 'heroAddService.addCatalog'}}{{/link-to}}
-    </div>
-    <div class="infra-box">
-      <img class="backhill" height="100" src="{{app.baseAssets}}assets/images/providers/mesos.svg" />
-      {{#link-to "catalog-tab.launch" "infra:infra*mesos" class="btn btn-primary"}}{{t 'heroAddService.addCatalog'}}{{/link-to}}
-    </div>
-    <div class="infra-box">
-      <img class="backhill" height="100" src="{{app.baseAssets}}assets/images/providers/swarm.svg" />
-      {{#link-to "catalog-tab.launch" "infra:infra*swarm" class="btn btn-primary"}}{{t 'heroAddService.addCatalog'}}{{/link-to}}
-    </div>
-    <div class="infra-box">
-      <i class="icon icon-gear" style="font-size: 80px; margin: 10px 0 20px 0;"></i>
-      {{#link-to "catalog-tab" (query-params catalogId="infra") class="btn btn-primary"}}{{t 'heroAddService.linkToCatalog'}}{{/link-to}}
-    </div>
-  </div>
-</section>
+    <div class="infra-container">
+      {{#if hasKubernetes}}
+        <div class="infra-box">
+          <img class="backhill" height="100" src="{{app.baseAssets}}assets/images/providers/kubernetes.svg" />
+          {{#link-to "catalog-tab.launch" "infra:infra*k8s" class="btn btn-primary"}}{{t 'heroAddService.addCatalog'}}{{/link-to}}
+        </div>
+      {{/if}}
+      {{#if hasMesos}}
+        <div class="infra-box">
+          <img class="backhill" height="100" src="{{app.baseAssets}}assets/images/providers/mesos.svg" />
+          {{#link-to "catalog-tab.launch" "infra:infra*mesos" class="btn btn-primary"}}{{t 'heroAddService.addCatalog'}}{{/link-to}}
+        </div>
+      {{/if}}
+      {{#if hasSwarm}}
+        <div class="infra-box">
+          <img class="backhill" height="100" src="{{app.baseAssets}}assets/images/providers/swarm.svg" />
+          {{#link-to "catalog-tab.launch" "infra:infra*swarm" class="btn btn-primary"}}{{t 'heroAddService.addCatalog'}}{{/link-to}}
+        </div>
+      {{/if}}
 
+      <div class="infra-box">
+        <i class="icon icon-gear" style="font-size: 80px; margin: 10px 0 20px 0;"></i>
+        {{#link-to "catalog-tab" (query-params catalogId="infra") class="btn btn-primary"}}{{t 'heroAddService.linkToCatalog'}}{{/link-to}}
+      </div>
+    </div>
+  </section>
+{{/if}}

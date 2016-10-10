@@ -117,6 +117,10 @@ export default Ember.Service.extend({
     });
   },
 
+  clearCache() {
+    this.set('cache', null);
+  },
+
   _addLimits(url, qp) {
     let version = this.get('settings.rancherVersion');
     qp = qp || {};

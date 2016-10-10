@@ -36,7 +36,9 @@ export default ModalBase.extend({
 
   didRender: function() {
     setTimeout(() => {
-      this.$('BUTTON')[0].focus();
+      try {
+        this.$('BUTTON')[0].focus();
+      } catch (e) {}
     }, 500);
   }
 });

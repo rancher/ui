@@ -8,7 +8,7 @@ export default Ember.Route.extend({
   model: function() {
     return Ember.RSVP.hash({
       stacks: this.get('store').findAll('stack'),
-      infraTemplates: this.get('catalog').fetchTemplates({plusInfra: true, allowFailure: true}),
+      catalog: this.get('catalog').fetchTemplates({plusInfra: true, allowFailure: true}),
     });
   },
 
