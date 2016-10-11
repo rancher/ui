@@ -64,11 +64,11 @@ var Host = Resource.extend({
       out.push({ label: 'action.machineConfig', icon: 'icon icon-download', action: 'machineConfig', enabled: true});
     }
 
-    out.push({ label: 'action.clone', icon: 'icon icon-copy', action: 'clone', enabled: true });
+    out.push({ label: 'action.clone', icon: 'icon icon-copy', action: 'clone', enabled: !!this.get('driver') });
     out.push({ label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!a.update });
 
     return out;
-  }.property('actionLinks.{activate,deactivate,remove,purge,update}','links.config'),
+  }.property('actionLinks.{activate,deactivate,remove,purge,update}','links.config','driver'),
 
   displayIp: Ember.computed.alias('agentIpAddress'),
 
