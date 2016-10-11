@@ -72,12 +72,21 @@ export default Ember.Component.extend(Driver, {
       return false;
   }),
 
+  ipChoiceObserver: Ember.observer('publicIpChoice', function() {
+      let publicIpChoice = this.get('publicIpChoice');
+      if (this.get('publicIpChoices').findBy('value', publicIpChoice).name === 'None') {
+        this.set('azureConfig.usePrivateIp', true);
+      } else {
+        this.set('azureConfig.usePrivateIp', false);
+      }
+  }),
+
   setUsePrivateIp: Ember.computed('publicIpChoice', function() {
       let publicIpChoice = this.get('publicIpChoice');
       if (publicIpChoice && this.get('publicIpChoices').findBy('value', publicIpChoice).name === 'None') {
         return this.set('azureConfig.usePrivateIp', true);
       }
-      return this.set('azureConfig.usePrivateIp', false);
+      return false;
   }),
 
   publicIpObserver: Ember.observer('publicIpChoice', function() {

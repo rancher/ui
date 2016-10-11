@@ -17,11 +17,11 @@ export default Ember.Controller.extend({
   testing        : false,
   disableAuth       : true,
   numUsers: function() {
-    return this.get('model.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_SHIBBOLETH_USER).get('length');
+    return (this.get('model.allowedIdentities')|| []).filterBy('externalIdType',C.PROJECT.TYPE_SHIBBOLETH_USER).get('length');
   }.property('model.allowedIdentities.@each.externalIdType','wasRestricted'),
 
   numOrgs: function() {
-    return this.get('model.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_SHIBBOLETH_GROUP).get('length');
+    return (this.get('model.allowedIdentities')|| []).filterBy('externalIdType',C.PROJECT.TYPE_SHIBBOLETH_GROUP).get('length');
   }.property('model.allowedIdentities.@each.externalIdType','wasRestricted'),
   actions: {
     disable: function() {

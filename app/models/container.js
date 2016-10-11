@@ -67,12 +67,21 @@ var Container = Instance.extend({
       return this.doAction('start');
     },
 
+    promptStop: function() {
+      this.get('modalService').toggleModal('modal-container-stop', {
+        model: this
+      });
+    },
+
     stop: function() {
-      return this.doAction('stop');
+      this.doAction('stop');
     },
 
     shell: function() {
-      this.get('modalService').toggleModal('modal-shell', this);
+      this.get('modalService').toggleModal('modal-shell', {
+        model: this,
+        escToClose: false,
+      });
     },
 
     popoutShell: function() {
@@ -124,7 +133,7 @@ var Container = Instance.extend({
     var choices = [
       { label: 'action.restart',    icon: 'icon icon-refresh',      action: 'restart',      enabled: !!a.restart },
       { label: 'action.start',      icon: 'icon icon-play',         action: 'start',        enabled: !!a.start },
-      { label: 'action.stop',       icon: 'icon icon-stop',         action: 'stop',         enabled: !!a.stop },
+      { label: 'action.stop',       icon: 'icon icon-stop',         action: 'promptStop',         enabled: !!a.stop, altAction: 'stop' },
       { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
       { label: 'action.purge',      icon: '',                       action: 'purge',        enabled: !!a.purge },
       { divider: true },

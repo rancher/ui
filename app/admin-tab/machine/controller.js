@@ -43,9 +43,7 @@ export default Ember.Controller.extend(Sortable, {
 
           let newDriver = this.createNewDriver(driver);
 
-          this.get('userStore').createRecord(newDriver).save().then((result) => {
-            this.get('model.drivers').pushObject(result);
-          }).catch((err) => {
+          this.get('userStore').createRecord(newDriver).save().catch((err) => {
             this.get('growl').fromError(err);
           });
 
@@ -75,7 +73,7 @@ export default Ember.Controller.extend(Sortable, {
     };
   },
 
-  sortableContent: Ember.computed('model.drivers.@each.{state,id,version,externalId}', 'model.catalogDrivers.[]', function() {
+  sortableContent: Ember.computed('model.drivers.@each.{state,id,version,externalId}', 'model.catalogDrivers.@each.{id,catalogId,name}', function() {
     // possibly add some search here
     let cDrivers   = this.get('model.catalogDrivers.catalog');
     let drivers    = this.get('model.drivers.content');
@@ -102,5 +100,4 @@ export default Ember.Controller.extend(Sortable, {
     newContent = newContent.concat(drivers);
     return newContent;
   }),
-
 });

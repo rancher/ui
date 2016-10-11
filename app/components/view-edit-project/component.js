@@ -127,9 +127,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
         };
       });
 
-      return this.get('project').doAction('setmembers',{members: members}).then(() => {
-        return this.saveStacks();
-      });
+      return this.get('project').doAction('setmembers',{members: members});
     }
   },
 
