@@ -12,10 +12,6 @@ export default ModalBase.extend(NewOrEdit, {
   actions: {
     outsideClick() {},
 
-    cancel() {
-      this.sendAction('dismiss');
-    },
-
     addTag(tag) {
       let neu = tagsToArray(this.get('primaryResource.group'));
       neu.addObject(tag);
