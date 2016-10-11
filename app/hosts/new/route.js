@@ -202,7 +202,8 @@ export default Ember.Route.extend({
       let hostOut = host.cloneForNew();
       let src = host[`${host.driver}Config`];
       if ( src ) {
-        let config = store.createRecord(config);
+        src.type = `${host.driver}Config`;
+        let config = store.createRecord(src);
         hostOut.set(`${host.driver}Config`, config);
       }
       return hostOut;

@@ -692,7 +692,7 @@ k8sTab:
   kubectl:
     header: kubectl
     stepOne:
-      generateConfigText: 'Pour utiliser <a href="http://kubernetes.io/docs/getting-started-guides/docker/#download-kubectl" target="_blank"> kubectl</a> (v1.2 + seulement) sur votre poste de travail, cliquez sur le bouton pour générer une clé d’API et un fichier de config  :'
+      generateConfigText: 'Pour utiliser <a href="http://kubernetes.io/docs/user-guide/prereqs/" target="_blank"> kubectl</a> (v1.2 + seulement) sur votre poste de travail, cliquez sur le bouton pour générer une clé d’API et un fichier de config  :'
       generateButton: Générer la Configuration
     stepTwo:
       progress: Génération...
@@ -778,7 +778,7 @@ k8sTab:
   error:
     header: Erreur
     linkTo: Recharger
-    detail: '{nombre, pluriel, = 1 {An error} autres {# Errors }} s’est produite en essayant de communiquer avec l’API Kubernetes.'
+    detail: '{nombre, plural, =1 {An error} other {# Errors }} s’est produite en essayant de communiquer avec l’API Kubernetes.'
 loginPage:
   greeting: 'Howdy!<br>Bienvenue a {appName}'
   githubMessage: "{appName} Utilise GitHub pour gerer l'authentifiation.  Cliquer sur le bouton ci-dessous pour se connecter (en lecture seule) pour acceder aux information de compte Github."
@@ -937,13 +937,11 @@ stacksPage:
   header:
     all: Toutes les Piles
     user: "Piles de l'Utilisateur"
-    system: Piles Système
   actionButton: Ajouter une Pile
   sort:
     label: Trier Par
     state: État
     name: Nom
-  noSystemStacks: "Vous n'avez pas de Piles Système"
   new:
     header: Ajouter une Pile
     composeLabel: 'Facultatif : Importer Compose'
@@ -961,14 +959,11 @@ stacksPage:
       startOnCreate:
         label: Démarrer les services après la création
 storagePoolsPage:
-  header: Groupes de Stockage
   volume: Id du Volume
   orphaned: Sauvegarde Orpheline
   nav:
     pools: Réserves
     backups: Sauvegarde
-  index:
-    noData: Aucun pool de stockage
   newVolume:
     header: Ajouter un Volume
     form:
@@ -1117,7 +1112,7 @@ ldap:
         =1 {# user}
         autres {# users}
         }.
-      restricted: '{appName} est configuré pour autoriser l’accès aux membres de l’environnement, {groupes, pluriel, = 0 {no groups} = 1 {# group} autres {# groups}} et {utilisateurs, pluriel, = 0 {no users} = 1 {# user} autres {# users}}.'
+      restricted: '{appName} est configuré pour autoriser l’accès aux membres de l’environnement, {groupes, plural, =0 {no groups} =1 {# group} other {# groups}} et {utilisateurs, plural, =0 {no users} =1 {# user} other {# users}}.'
       unrestricted: '{appName} est configuré pour autoriser l’accès à n’importe quel utilisateur {providerName}.'
     disabled:
       label: '{providerName} n’est pas configuré'
@@ -1236,9 +1231,6 @@ catalogSettings:
   header: Catalogue
   subtext: Les Catalogues contiennent des modèles rancher-compose qui permettent aux utilisateurs de déployer facilement des applications en répondant à quelques questions
   certified:
-    header:
-      rancher: '{appName} certifié'
-      pl: Certifié
     detail:
       rancher: Modèles certifiés maintenus et suivis par les laboratoires Rancher.
       pl: Modèles officiellement maintenus et supportés.
@@ -1470,7 +1462,7 @@ formCommand:
     onFailure: |-
       En cas d'Échec <span class="text-muted"> (code de sortie non-0)</span>, pour toujours
     onFailureCondPrefix: "En cas d’échec, jusqu'à"
-    onFailureCondSuffix: '{limite, pluriel, = 1 {time} autres {times}}'
+    onFailureCondSuffix: '{limite, plural, =1 {time} other {times}}'
     always: Toujours
   environment:
     label: "Variables d'Environnement"
@@ -1585,7 +1577,7 @@ formHealthCheck:
     none: Ne prendre aucune mesure
     recreate: Re-créer
     recreateOnQuorumPrefix: Re-créer, uniquement lorsqu’au moins
-    recreateOnQuorumSuffix: '{quorum, pluriel, = 1 {container is} autres {containers are}} en bonne santé'
+    recreateOnQuorumSuffix: '{quorum, plural, =1 {container is} other {containers are}} en bonne santé'
 formKeyValue:
   addAction: Ajouter une Paire
   key:
@@ -1672,8 +1664,8 @@ formScale:
     vm: Toujours exécuter une instance de cette machine virtuelle sur chaque hôte
     container: Toujours exécuter une instance de ce conteneur sur chaque hôte
   regular:
-    vm: 'Exécutez {échelle, pluriel, = 0 {no virtual machines} = 1 {1 virtual machine} autres {# virtual machines}}'
-    container: 'Exécutez {échelle, pluriel, = 0 {no containers} = 1 {1 container} autres {# containers}}'
+    vm: 'Exécutez {échelle, plural, =0 {no virtual machines} =1 {1 virtual machine} other {# virtual machines}}'
+    container: 'Exécutez {échelle, plural, =0 {no containers} =1 {1 container} other {# containers}}'
 formScheduling:
   canRequestHost:
     vm: 'Exécuter <b>toutes les</b> machines virtuelles sur un hôte spécifique'
@@ -1847,13 +1839,6 @@ formVolumes:
   noLaunchConfigs: Il n’y a aucune autres configurations de lancement de ce service pour partager des volumes avec celui-ci.
   noHostContainers: Cet hôte n’a aucun conteneurs ayant des volumes sur lesquels se connecter.
   onlySingleHost: Disponible uniquement lorsque vous ajoutez un conteneur à un hôte particulier.
-heroAddService:
-  header: Ajouter votre premier Service
-  paragraph1: 'Un service est simplement un groupe de conteneurs créés à partir de la même image Docker, mais étend la notion de « lien » Docker afin de tirer parti du service léger de DNS distribué de {appName} pour la découverte de service. Les Services peuvent être ajoutés individuellement ou en déployant un élément du catalogue.'
-  paragraph2: "Un service est également capable de tirer parti d'autres services intégrés de {appName} comme les équilibreurs de charge, la surveillance de la santé, la mise à niveau et la haute disponibilité."
-  contentLink: En savoir Plus
-  addService: Ajouter un Service
-  linkToCatalog: Ajouter depuis le Catalogue
 hostSettings:
   header: "URL d’Enregistrement de l'Hôte"
   subtext: 'Quelle URL de base les hôtes doivent utiliser pour se connecter à l’API de {appName} ?'
@@ -2159,7 +2144,7 @@ machine:
       part2: écran dans une minute.
     close: Fermer
   driverDigitalocean:
-    sizeLabel: '{slug} RAM, disque {disk}gb, {vcpus, pluriel, = 1 {# vCPU} autres {# vCPUs}}'
+    sizeLabel: '{slug} RAM, disque {disk}gb, {vcpus, plural, =1 {# vCPU} other {# vCPUs}}'
     accountSection: Accès du Compte
     authAccountButton: 'Suivant : Configurer Droplet'
     accessToken:
@@ -2216,6 +2201,9 @@ machine:
       label: Profil de l’instance
     diskSize:
       label: Taille de la Racine
+    sshUser:
+      label: Utilisateur SSH
+      placeholder: utilisateur1
   driverOther:
     driverSection: Pilote
     driver:
@@ -2482,9 +2470,7 @@ newCatalog:
   maintainer: 'Responsable :'
   license: 'Licence :'
   url: 'Url du Projet :'
-  stack: Pile
   templateVersion: Version du Modèle
-  selectVersion: Sélectionner une version du modèle pour
   newStack: Nouvelle Pile
   config: Options de Configuration
   unknownType: 'Type de question non reconnu :'
@@ -2496,11 +2482,11 @@ newContainer:
   add:
     container: Ajouter un conteneur
     vm: Ajouter une Machine Virtuelle
-    service: 'Ajouter {numServices, pluriel, = 1 {Service} autres {Services}}'
+    service: 'Ajouter {numServices, plural, =1 {Service} other {Services}}'
   upgrade:
     container: Mise à niveau du Conteneur
     vm: Mettre à niveau la Machine virtuelle
-    service: 'Mise à niveau {numServices, pluriel, = 1 {Service} autres {# Services}}'
+    service: 'Mise à niveau {numServices, plural, =1 {Service} other {# Services}}'
   tabs:
     disks: Disques
     userData: Données de l’Utilisateur
@@ -2611,8 +2597,8 @@ stackSection:
   outputs: Sorties
   description: Description
   none: Aucun Service
-  container: '{numContainers, pluriel, = 1 {Container} autres {Containers}}'
-  service: '{numServices, pluriel, = 1 {Service} autres {Services}}'
+  container: '{numContainers, plural, =1 {Container} other {Containers}}'
+  service: '{numServices, plural, =1 {Service} other {Services}}'
   sidekick: |
     {numSidekicks, plural,
     =1 {Sidekick}
@@ -2701,14 +2687,9 @@ viewEditProject:
   showEdit:
     edit: 'Modifier l’Environnement :'
     add: Ajouter un Environnement
-    orchestration: Orchestration de conteneur
-    formControl: "Contrôle d'Accès"
   header: 'Environnement :'
   description: Description
   helpBlock: 'Le contrôle d’accès n’est pas activé. <br/> Toute personne ayant accès à l’API/interface utilisateur agit en tant qu’administrateur et sera en mesure d’utiliser n’importe quel environnement.'
-  virtualMachine:
-    label: Support de Machine Virtuelle
-    subtext: 'Nécessite des hôtes qui ont le module noyau <a href="https://en.wikipedia.org/wiki/Kernel-based_Virtual_Machine" target="_blank"> KVM</a> chargé.'
 vmConsole:
   header: 'Console :'
   protip: 'Astuce : Maintenez la touche {alternateLabel} lors de l’ouverture de la console pour lancer une nouvelle fenêtre.'
@@ -2771,22 +2752,18 @@ nav:
     rcs: Contrôleurs de réplication
     pods: Pods
     cli: Kubectl
-    system: Systeme
   swarm:
     tab: Swarm
     projects: Projets
     services: Services
     cli: Interface de Ligne de Commande (CLI)
-    system: Systeme
   mesos:
     tab: Mesos
     web: Aperçu
-    system: Systeme
   cattle:
     tab: Piles
     all: Tout
     user: Utilisateur
-    system: Systeme
   catalog:
     tab: Catalogue
     all: Tout
@@ -2797,7 +2774,6 @@ nav:
     containers: Conteneur
     vms: Machines Virtuelles
     storagePage: Stockage
-    storagePools: Pool de Stockage
     backupTarget: Espace de sauvegarde
     certificates: Certificats
     registries: Registres

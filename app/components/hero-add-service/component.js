@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   settings: Ember.inject.service(),
 
+  showUser: true,
   catalog: null,
 
   stackId: null,
