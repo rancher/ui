@@ -92,6 +92,8 @@ module.exports = function(environment) {
       authEndpoint: '/v1-auth',
       catalogServer: '',
       catalogEndpoint: '/v1-catalog',
+      authServer: '',
+      authEndpoint: '/v1-auth',
       projectToken: '%PROJECTID%',
       kubernetesEndpoint: '/r/projects/%PROJECTID%/kubernetes',
       kubectlEndpoint: '/r/projects/%PROJECTID%/kubectld:8091/v1-kubectl',

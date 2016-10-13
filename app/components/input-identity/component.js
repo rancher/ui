@@ -12,9 +12,6 @@ export default Ember.Component.extend({
     return this.get('access.provider') !== 'localauthconfig';
   }.property('access.provider'),
 
-  // @TODO bad...
-  dropdownLoaded: Ember.computed.alias('userStore._foundAll.identity'),
-
   init: function() {
     this.set('allIdentities', this.get('userStore').all('identity'));
     this.get('userStore').findAll('identity');

@@ -45,8 +45,10 @@ export default Ember.Component.extend(Driver, {
   init() {
     this._super(...arguments);
 
-    this.set('publicIpChoice', this.initPublicIpChoices(this.get('azureConfig.staticPublicIp'), this.get('azureConfig.noPublicIp')));
-    this.set('openPorts', this.initOpenPorts(this.get('azureConfig.openPort')));
+    Ember.run.scheduleOnce('afterRender', () => {
+      this.set('publicIpChoice', this.initPublicIpChoices(this.get('azureConfig.staticPublicIp'), this.get('azureConfig.noPublicIp')));
+      this.set('openPorts', this.initOpenPorts(this.get('azureConfig.openPort')));
+    });
   },
 
   initOpenPorts: function(ports) {
@@ -62,10 +64,17 @@ export default Ember.Component.extend(Driver, {
       return this.get('publicIpChoices').findBy('name', 'Dynamic').value;
     }
   },
+  privateSet: Ember.computed('publicIpChoice', function() {
+      let publicIpChoice = this.get('publicIpChoice');
+      if (publicIpChoice && this.get('publicIpChoices').findBy('value', publicIpChoice).name === 'None') {
+        return true;
+      }
+      return false;
+  }),
 
   setUsePrivateIp: Ember.computed('publicIpChoice', function() {
       let publicIpChoice = this.get('publicIpChoice');
-      if (this.get('publicIpChoices').findBy('value', publicIpChoice).name === 'None') {
+      if (publicIpChoice && this.get('publicIpChoices').findBy('value', publicIpChoice).name === 'None') {
         return this.set('azureConfig.usePrivateIp', true);
       }
       return this.set('azureConfig.usePrivateIp', false);

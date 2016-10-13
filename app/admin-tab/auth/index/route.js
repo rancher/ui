@@ -10,6 +10,10 @@ export default Ember.Route.extend({
       route = 'activedirectory';
     }
 
+    if (route === 'shibboleth') {
+      route = 'saml';
+    }
+
     if ( this.get('access.enabled') )
     {
       this.replaceWith('admin-tab.auth.' + route);

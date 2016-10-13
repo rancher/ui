@@ -2,8 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
-    return this.get('userStore').find('githubconfig', null, {forceReload: true}).then(function(collection) {
-      return collection.get('firstObject');
+    return this.get('authStore').find('config', null, {forceReload: true}).then(function(collection) {
+      return collection;
     });
   },
 

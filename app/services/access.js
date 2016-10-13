@@ -5,7 +5,9 @@ export default Ember.Service.extend({
   cookies: Ember.inject.service(),
   session: Ember.inject.service(),
   github:  Ember.inject.service(),
+  samlAuth: Ember.inject.service(),
   userStore: Ember.inject.service('user-store'),
+  token: null,
 
   testAuth: function() {
 
@@ -55,17 +57,12 @@ export default Ember.Service.extend({
         'provider': (token.authProvider||'').toLowerCase(),
       });
 
-      if ( (token.authProvider||'').toLowerCase() === 'githubconfig' )
-      {
-        this.setProperties({
-          'github.clientId': token.clientId,
-          'github.hostname': token.hostname,
-          'github.scheme': token.scheme || 'https://',
-        });
-      }
+      this.set('token', token);
 
-      if ( !token.security )
-      {
+      if (this.samlConfigured(token)) {
+        this.get('samlAuth').set('hasToken', token);
+        this.get('session').set(C.SESSION.USER_TYPE, token.userType);
+      } else if ( !token.security ) {
         this.clearSessionKeys();
       }
 
@@ -77,6 +74,14 @@ export default Ember.Service.extend({
       this.set('app.initError', err);
       return Ember.RSVP.resolve(undefined,'Error determining API authentication');
     });
+  },
+
+  samlConfigured: function(token) {
+    let rv = false;
+    if ((token.authProvider||'') === 'shibbolethconfig' && token.userIdentity) {
+      rv = true;
+    }
+    return rv;
   },
 
   login: function(code) {

@@ -7,6 +7,7 @@ export default Ember.Controller.extend({
   endpoint                : Ember.inject.service(),
   access                  : Ember.inject.service(),
   settings                : Ember.inject.service(),
+  githubConfig            : Ember.computed.alias('model.githubConfig'),
 
   confirmDisable          : false,
   errors                  : null,
@@ -14,12 +15,12 @@ export default Ember.Controller.extend({
   error                   : null,
 
   organizations           : null,
-  scheme                  : Ember.computed.alias('model.scheme'),
+  scheme                  : Ember.computed.alias('githubConfig.scheme'),
   isEnterprise: false,
   secure : true,
 
   createDisabled: function() {
-    if ( this.get('isEnterprise') && !this.get('model.hostname') )
+    if ( this.get('isEnterprise') && !this.get('githubConfig.hostname') )
     {
       return true;
     }
@@ -28,15 +29,15 @@ export default Ember.Controller.extend({
     {
       return true;
     }
-  }.property('model.{clientId,clientSecret,hostname}','testing','isEnterprise'),
+  }.property('githubConfig.{clientId,clientSecret,hostname}','testing','isEnterprise'),
 
   providerName: function() {
-    if ( !!this.get('model.hostname') ) {
+    if ( !!this.get('githubConfig.hostname') ) {
       return 'authPage.github.enterprise';
     } else {
       return 'authPage.github.standard';
     }
-  }.property('model.hostname'),
+  }.property('githubConfig.hostname'),
 
   numUsers: function() {
     return this.get('model.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_GITHUB_USER).get('length');
@@ -53,19 +54,21 @@ export default Ember.Controller.extend({
   updateEnterprise: function() {
     if ( this.get('isEnterprise') ) {
       var match;
-      var hostname = this.get('model.hostname')||'';
+      var hostname = this.get('githubConfig.hostname')||'';
 
       if ( match = hostname.match(/^http(s)?:\/\//i) ) {
         this.set('secure', ((match[1]||'').toLowerCase() === 's'));
         hostname = hostname.substr(match[0].length).replace(/\/.*$/,'');
-        this.set('model.hostname', hostname);
+        this.set('githubConfig.hostname', hostname);
       }
 
     }
     else
     {
-      this.set('model.hostname', null);
-      this.set('secure', true);
+      if (this.get('githubConfig')) {
+        this.set('githubConfig.hostname', null);
+        this.set('secure', true);
+      }
     }
 
     this.set('scheme', this.get('secure') ? 'https://' : 'http://');
@@ -73,7 +76,7 @@ export default Ember.Controller.extend({
 
   enterpriseDidChange: function() {
     Ember.run.once(this,'updateEnterprise');
-  }.observes('isEnterprise','model.hostname','secure'),
+  }.observes('isEnterprise','githubConfig.hostname','secure'),
 
   protocolChoices: [
     {label: 'https:// -- Requires a cert from a public CA', value: 'https://'},
@@ -85,25 +88,38 @@ export default Ember.Controller.extend({
       this.send('clearError');
       this.set('testing', true);
 
-      let model = this.get('model');
-      model.setProperties({
-        'clientId'          : (model.get('clientId')||'').trim(),
-        'clientSecret'      : (model.get('clientSecret')||'').trim(),
+      let githubConfig = Ember.Object.create(this.get('githubConfig'));
+      githubConfig.setProperties({
+        'clientId'          : (githubConfig.get('clientId')||'').trim(),
+        'clientSecret'      : (githubConfig.get('clientSecret')||'').trim(),
+      });
+
+      this.get('model').setProperties({
+        'provider'          : 'githubconfig',
         'enabled'           : false, // It should already be, but just in case..
         'accessMode'        : 'unrestricted',
         'allowedIdentities' : [],
       });
 
-      // Send authenticate immediately so that the popup isn't blocked,
-      // even though the config isn't necessarily saved yet...
       this.get('github').setProperties({
-        hostname : model.get('hostname'),
-        scheme   : model.get('scheme'),
-        clientId : model.get('clientId')
+        hostname : githubConfig.get('hostname'),
+        scheme   : githubConfig.get('scheme'),
+        clientId : githubConfig.get('clientId')
       });
-      this.send('authenticate');
 
-      model.save().catch(err => {
+      this.get('model').save().then((/*resp*/) => {
+        // we need to go get he new token before we open the popup
+        // if you've authed with any other services in v1-auth
+        // the redirect token will be stale and representitive
+        // of the old auth method
+        this.get('github').getToken().then((resp) => {
+          this.get('access').set('token', resp);
+          this.send('authenticate');
+        }).catch((err) => {
+          this.set('testing', false);
+          this.send('gotError', err);
+        });
+      }).catch(err => {
         this.set('testing', false);
         this.send('gotError', err);
       });
@@ -217,8 +233,10 @@ export default Ember.Controller.extend({
         'allowedIdentities': [],
         'accessMode': 'unrestricted',
         'enabled': false,
-        'hostname': null,
-        'clientSecret': '',
+        'githubConfig': {
+          'hostname': null,
+          'clientSecret': '',
+        }
       });
 
       model.save().then(() => {

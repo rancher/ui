@@ -12,7 +12,10 @@ Router.map(function() {
   this.route('failWhale', {path: '/fail'});
   this.route('not-found', {path: '*path'});
 
-  this.route('login');
+  this.route('login', function() {
+    this.route('index', {path: '/'});
+    this.route('saml-auth');
+  });
   this.route('logout');
   this.route('authenticated', {path: '/'}, function() {
 
@@ -34,6 +37,7 @@ Router.map(function() {
         this.route('github');
         this.route('openldap');
         this.route('localauth', {path: 'local'});
+        this.route('saml');
       });
 
       this.route('settings');
