@@ -12,6 +12,10 @@ export default Ember.Controller.extend({
   errors         : null,
   confirmDisable : false,
   redirectUrl    : null,
+  saving         : false,
+  saved          : false,
+  testing        : false,
+  disableAuth       : true,
   numUsers: function() {
     return this.get('model.allowedIdentities').filterBy('externalIdType',C.PROJECT.TYPE_SAML_USER).get('length');
   }.property('model.allowedIdentities.@each.externalIdType','wasRestricted'),
@@ -48,6 +52,7 @@ export default Ember.Controller.extend({
 
     save: function() {
       if (this.validate()) {
+        this.set('saving', true);
         this.get('model').setProperties({
           'provider'          : 'shibbolethconfig',
           'enabled'           : false, // It should already be, but just in case..
@@ -56,8 +61,13 @@ export default Ember.Controller.extend({
         });
         this.get('model').save().then((/*resp*/) => {
           this.get('samlAuth').getToken().then((token) => {
-            this.set('redirectUrl', token.redirectUrl);
-            this.send('authTest');
+            this.setProperties({
+              saving: false,
+              saved: true,
+              disableAuth: false,
+              redirectUrl: token.redirectUrl
+            })
+            this.get('access').set('token', token);
           });
         }).catch(err => {
             this.set('errors', [err]);
@@ -66,12 +76,14 @@ export default Ember.Controller.extend({
     },
     authTest: function() {
       var responded = false;
+      this.set('testing', true);
       window.onSAMLTest = (err) => {
         if ( !responded ) {
           responded = true;
           if (err) {
             this.set('errors', [err]);
           } else {
+            this.set('testing', false);
             this.get('samlAuth').authenticationSucceeded(this.get('model'));
           }
         }
@@ -83,6 +95,7 @@ export default Ember.Controller.extend({
           clearInterval(timer);
           if( !responded ) {
             responded = true;
+            this.set('testing', false);
             this.set('errors', ['SAML access was not authorized']);
           }
         }

@@ -71,16 +71,36 @@
         }}
       </div>
     </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>&nbsp;</label>
+        <button class="btn btn-primary" style="display: block;margin: 0 auto;" {{action "save"}}>
+          {{#if saving}}
+            <i class="icon icon-spinner icon-spin"></i> {{t 'generic.saving'}}
+          {{else if saved}}
+            {{t 'generic.saved'}}
+          {{else}}
+            {{t 'generic.save'}}
+          {{/if}}
+        </button>
+      </div>
+    </div>
   </div>
+</section>
+<section class="well">
+  <h3>{{t 'authPage.saml.disabled.testAuth.header'}}</h3>
+  <hr/>
+  {{top-errors errors=errors}}
   <div class="row">
-    {{top-errors errors=errors}}
-    <div class="form-group">
-      <label>&nbsp;</label>
-      <button class="btn btn-primary" style="display: block;margin: 0 auto;" {{action "save"}}>
+    <div class="col-md-6">
+      <p>{{t 'authPage.github.testAuth.subtext'}}</p>
+    </div>
+    <div class="col-md-6">
+      <button class="btn btn-primary" {{action "authTest"}} disabled={{disableAuth}}>
         {{#if testing}}
-          <i class="icon icon-spinner icon-spin"></i> {{t 'generic.authenticating'}}
+          <i class="icon icon-spinner icon-spin"></i> {{t 'generic.testing'}}
         {{else}}
-          {{t 'generic.authenticate'}}
+          {{t 'generic.test'}}
         {{/if}}
       </button>
     </div>
