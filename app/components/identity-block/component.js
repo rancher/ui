@@ -48,7 +48,7 @@ export default Ember.Component.extend({
   classNames: ['gh-block'],
   attributeBindings: ['aria-label:identity.name'],
 
-  avatarSrc: Ember.computed.alias('identity.avatarSrc'),
+  avatarSrc: Ember.computed.alias('identity.profilePicture'),
   url: Ember.computed.alias('identity.profileUrl'),
   login: Ember.computed.alias('identity.login'),
 

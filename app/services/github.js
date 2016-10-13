@@ -3,6 +3,7 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
 export default Ember.Service.extend({
+  access: Ember.inject.service(),
   cookies  : Ember.inject.service(),
   session  : Ember.inject.service(),
 
@@ -30,10 +31,8 @@ export default Ember.Service.extend({
       redirect = Util.addQueryParam(redirect, 'isTest', 1);
     }
 
-    var url = Util.addQueryParams((this.get('scheme') ||'https://') + (this.get('hostname') || C.GITHUB.DEFAULT_HOSTNAME) + C.GITHUB.AUTH_PATH, {
-      client_id: this.get('clientId'),
+    var url = Util.addQueryParams(this.get('access.token.redirectUrl'), {
       state: this.generateState(),
-      scope: C.GITHUB.SCOPE,
       redirect_uri: redirect
     });
 

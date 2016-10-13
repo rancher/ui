@@ -6,6 +6,7 @@ export default Ember.Service.extend({
   session: Ember.inject.service(),
   github:  Ember.inject.service(),
   userStore: Ember.inject.service('user-store'),
+  token: null,
 
   testAuth: function() {
 
@@ -55,14 +56,7 @@ export default Ember.Service.extend({
         'provider': (token.authProvider||'').toLowerCase(),
       });
 
-      if ( (token.authProvider||'').toLowerCase() === 'githubconfig' )
-      {
-        this.setProperties({
-          'github.clientId': token.clientId,
-          'github.hostname': token.hostname,
-          'github.scheme': token.scheme || 'https://',
-        });
-      }
+      this.set('token', token);
 
       if ( !token.security )
       {

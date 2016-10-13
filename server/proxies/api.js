@@ -105,6 +105,27 @@ module.exports = function(app, options) {
     proxyLog('Catalog', req);
     catalogProxy.web(req, res);
   });
+
+  // Auth API
+  var authPath = config.authEndpoint;
+  var authServer = config.authServer || config.apiServer;
+  if ( authServer !== config.apiServer ) {
+    console.log('Proxying Catalog to', authServer);
+  }
+  app.use(authPath, function(req, res, next) {
+    req.headers['X-Forwarded-Proto'] = req.protocol;
+    var catalogProxy = HttpProxy.createProxyServer({
+      xfwd: false,
+      target: authServer
+    });
+
+    catalogProxy.on('error', onProxyError);
+
+    req.url = path.join(authPath, req.url);
+
+    proxyLog('Catalog', req);
+    catalogProxy.web(req, res);
+  });
 }
 
 function onProxyError(err, req, res) {
