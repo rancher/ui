@@ -13,6 +13,9 @@ export default Ember.Controller.extend({
   errors                  : null,
   testing                 : false,
   error                   : null,
+  saved                   : false,
+  saving                  : false,
+  haveToken               : false,
 
   organizations           : null,
   scheme                  : Ember.computed.alias('githubConfig.scheme'),
@@ -20,6 +23,9 @@ export default Ember.Controller.extend({
   secure : true,
 
   createDisabled: function() {
+    if (!this.get('haveToken')) {
+      return true;
+    }
     if ( this.get('isEnterprise') && !this.get('githubConfig.hostname') )
     {
       return true;
@@ -29,7 +35,8 @@ export default Ember.Controller.extend({
     {
       return true;
     }
-  }.property('githubConfig.{clientId,clientSecret,hostname}','testing','isEnterprise'),
+
+  }.property('githubConfig.{clientId,clientSecret,hostname}','testing','isEnterprise', 'haveToken'),
 
   providerName: function() {
     if ( !!this.get('githubConfig.hostname') ) {
@@ -82,15 +89,16 @@ export default Ember.Controller.extend({
   ],
 
   actions: {
-    test: function() {
+    save: function() {
       this.send('clearError');
-      this.set('testing', true);
+      this.set('saving', true);
 
       let githubConfig = Ember.Object.create(this.get('githubConfig'));
       githubConfig.setProperties({
         'clientId'          : (githubConfig.get('clientId')||'').trim(),
         'clientSecret'      : (githubConfig.get('clientSecret')||'').trim(),
       });
+
 
       this.get('model').setProperties({
         'provider'          : 'githubconfig',
@@ -99,31 +107,55 @@ export default Ember.Controller.extend({
         'allowedIdentities' : [],
       });
 
-      // Send authenticate immediately so that the popup isn't blocked,
-      // even though the config isn't necessarily saved yet...
       this.get('github').setProperties({
         hostname : githubConfig.get('hostname'),
         scheme   : githubConfig.get('scheme'),
         clientId : githubConfig.get('clientId')
       });
-      this.send('authenticate');
 
-      this.get('model').save().catch(err => {
-        this.set('testing', false);
+      this.get('model').save().then((/*resp*/) => {
+        // we need to go get he new token before we open the popup
+        // if you've authed with any other services in v1-auth
+        // the redirect token will be stale and representitive
+        // of the old auth method
+        this.get('github').getToken().then((resp) => {
+          this.get('access').set('token', resp);
+          this.setProperties({
+            saving: false,
+            saved: true,
+            haveToken: true,
+          });
+        }).catch((err) => {
+          this.setProperties({
+            saving: false,
+            saved: false,
+            haveToken: false,
+          });
+          this.send('gotError', err);
+        });
+      }).catch(err => {
+          this.setProperties({
+            saving: false,
+            saved: false,
+            haveToken: false,
+          });
         this.send('gotError', err);
       });
     },
 
     authenticate: function() {
       this.send('clearError');
+      this.set('testing', true);
       this.get('github').authorizeTest((err,code) => {
         if ( err )
         {
           this.send('gotError', err);
+          this.set('testing', false);
         }
         else
         {
           this.send('gotCode', code);
+          this.set('testing', false);
         }
       });
     },

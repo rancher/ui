@@ -116,6 +116,19 @@
           {{/liquid-if}}
         </div>
       </div>
+      <div class="row">
+        <div class="form-group">
+          <button class="btn btn-primary" style="display: block;margin: 0 auto;" {{action "save"}}>
+            {{#if saving}}
+              <i class="icon icon-spinner icon-spin"></i> {{t 'generic.saving'}}
+            {{else if doneSaving}}
+              {{t 'generic.saved'}}
+            {{else}}
+              {{t 'generic.save'}}
+            {{/if}}
+          </button>
+        </div>
+      </div>
     </section>
 
     <section class="well">
@@ -129,7 +142,7 @@
           <p>{{t 'authPage.github.testAuth.subtext'}}</p>
         </div>
         <div class="col-md-6">
-          <button disabled={{createDisabled}} class="btn btn-primary" {{action "test"}}>
+          <button disabled={{createDisabled}} class="btn btn-primary" {{action "authenticate"}}>
             {{#if testing}}
               <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.github.testAuth.buttonText.post'}}
             {{else}}
