@@ -2,8 +2,6 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
-// NOTE TO SELF: The model is actually the config without the shibbolethconfig and
-// we just push the shibbolethconfig in to the model then save that. NOT the shibbolethconfig itself
 export default Ember.Controller.extend({
   access         : Ember.inject.service(),
   settings       : Ember.inject.service(),
