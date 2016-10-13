@@ -3,6 +3,7 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
 export default Ember.Service.extend({
+  userStore: Ember.inject.service('user-store'),
   access: Ember.inject.service(),
   cookies  : Ember.inject.service(),
   session  : Ember.inject.service(),
@@ -16,6 +17,21 @@ export default Ember.Service.extend({
     var state = Math.random()+'';
     this.get('session').set('githubState', state);
     return state;
+  },
+
+  getToken: function() {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      this.get('userStore').rawRequest({
+        url: 'token',
+      })
+      .then((xhr) => {
+        resolve(xhr.body.data[0]);
+        return ;
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    });
   },
 
   stateMatches: function(actual) {

@@ -12,6 +12,7 @@ export default Ember.Controller.extend({
       {route: 'admin-tab.auth.github',          label: 'GitHub',            css: 'github',          available: this.hasRecord('githubconfig')  },
       {route: 'admin-tab.auth.localauth',       label: 'Local',             css: 'local',           available: this.hasRecord('localauthconfig')  },
       {route: 'admin-tab.auth.openldap',        label: 'OpenLDAP',          css: 'openldap',        available: this.hasRecord('openldapconfig')  },
+      {route: 'admin-tab.auth.saml',            label: 'SAML',              css: 'saml',            available: this.hasRecord('shibbolethconfig')  },
     ];
   }.property(),
 

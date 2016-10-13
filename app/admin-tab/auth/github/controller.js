@@ -65,8 +65,10 @@ export default Ember.Controller.extend({
     }
     else
     {
-      this.set('githubConfig.hostname', null);
-      this.set('secure', true);
+      if (this.get('githubConfig')) {
+        this.set('githubConfig.hostname', null);
+        this.set('secure', true);
+      }
     }
 
     this.set('scheme', this.get('secure') ? 'https://' : 'http://');
@@ -99,16 +101,25 @@ export default Ember.Controller.extend({
         'allowedIdentities' : [],
       });
 
-      // Send authenticate immediately so that the popup isn't blocked,
-      // even though the config isn't necessarily saved yet...
       this.get('github').setProperties({
         hostname : githubConfig.get('hostname'),
         scheme   : githubConfig.get('scheme'),
         clientId : githubConfig.get('clientId')
       });
-      this.send('authenticate');
 
-      this.get('model').save().catch(err => {
+      this.get('model').save().then((/*resp*/) => {
+        // we need to go get he new token before we open the popup
+        // if you've authed with any other services in v1-auth
+        // the redirect token will be stale and representitive
+        // of the old auth method
+        this.get('github').getToken().then((resp) => {
+          this.get('access').set('token', resp);
+          this.send('authenticate');
+        }).catch((err) => {
+          this.set('testing', false);
+          this.send('gotError', err);
+        });
+      }).catch(err => {
         this.set('testing', false);
         this.send('gotError', err);
       });

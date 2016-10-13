@@ -12,6 +12,11 @@
         <br/>
       {{/if}}
 
+      {{#if isSAML}}
+        <p>{{t 'loginPage.samlMessage' appName=settings.appName}}</p>
+        <br/>
+      {{/if}}
+
       {{#if infoMsg}}
         <div class="alert {{if errorMsg 'alert-danger' 'alert-warning'}}" role="alert">{{infoMsg}}</div>
       {{/if}}
@@ -21,6 +26,9 @@
       {{/if}}
       {{#if isGithub}}
         {{login-github action="started" waiting=waiting}}
+      {{/if}}
+      {{#if isSAML}}
+        {{login-saml action="started" waiting=waiting}}
       {{/if}}
     </section>
   </div>
