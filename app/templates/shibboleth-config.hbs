@@ -1,0 +1,108 @@
+<section class="well">
+  <h2>
+    <b class="text-warning">{{t 'authPage.shibboleth.disabled.label' providerName=(t providerName)}}</b>
+  </h2>
+  <div>
+    {{t 'authPage.shibboleth.disabled.warning' appName=settings.appName providerName=(t providerName)}}
+  </div>
+
+
+</section>
+<section class="well">
+  <h2>{{t 'authPage.shibboleth.disabled.header'}}</h2>
+  <hr />
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>{{t 'authPage.shibboleth.disabled.name.labelText'}}*</label>
+        {{input type="text" value=config.displayNameField classNames="form-control"}}
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>{{t 'authPage.shibboleth.disabled.username.labelText'}}*</label>
+        {{input type="text" value=config.userNameField classNames="form-control"}}
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>{{t 'authPage.shibboleth.disabled.uid.labelText'}}*</label>
+        {{input type="text" value=config.uidField classNames="form-control"}}
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label>{{t 'authPage.shibboleth.disabled.groups.labelText'}}*</label>
+        {{input type="text" value=config.groupsField classNames="form-control"}}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="form-group">
+        <label class="r-pt5">{{t 'inputCertificate.key.label'}}*</label>
+        {{input-text-file
+          value=config.spKey
+          accept="text/*, .pem, .pkey, .key"
+          minHeight=60
+          placeholder="inputCertificate.key.placeholder"
+        }}
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label class="r-pt5">{{t 'inputCertificate.cert.label'}}*</label>
+        {{input-text-file
+          accept="text/*, .pem, .crt"
+          value=config.spCert
+          minHeight=60
+          placeholder="inputCertificate.cert.placeholder"
+        }}
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="form-group">
+        <label class="r-pt5">{{t 'inputCertificate.metaXML.label'}}*</label>
+        {{input-text-file
+          accept="text/xml"
+          value=config.idpMetadataContent
+          minHeight=60
+          placeholder="inputCertificate.metaXML.placeholder"
+        }}
+      </div>
+    </div>
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>&nbsp;</label>
+        <button class="btn btn-primary" style="display: block;margin: 0 auto;" {{action "save"}}>
+          {{#if saving}}
+            <i class="icon icon-spinner icon-spin"></i> {{t 'generic.saving'}}
+          {{else if saved}}
+            {{t 'generic.saved'}}
+          {{else}}
+            {{t 'generic.save'}}
+          {{/if}}
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="well">
+  <h3>{{t 'authPage.shibboleth.disabled.testAuth.header'}}</h3>
+  <hr/>
+  {{top-errors errors=errors}}
+  <div class="row">
+    <div class="col-md-6">
+      <p>{{t 'authPage.github.testAuth.subtext'}}</p>
+    </div>
+    <div class="col-md-6">
+      <button class="btn btn-primary" {{action "authTest"}} disabled={{disableAuth}}>
+        {{#if testing}}
+          <i class="icon icon-spinner icon-spin"></i> {{t 'generic.testing'}}
+        {{else}}
+          {{t 'generic.test'}}
+        {{/if}}
+      </button>
+    </div>
+  </div>
+</section>

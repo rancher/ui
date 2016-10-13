@@ -38,6 +38,8 @@ generic:
   state: State
   to: To
   type: Type
+  test: Test
+  testing: Testing
   unknown: Unknown
 
 
@@ -132,6 +134,67 @@ auditLogsPage:
   next: Next Page
 
 authPage:
+  shibboleth:
+    header:
+      title: Shibboleth Authentication
+    enabled:
+      header: "{providerName} is enabled"
+      required: |
+        {appname} is configured to allow access to {orgs, plural,
+          =0 {no organizations}
+          =1 {# organization}
+          other {# organizations}
+        } and {users, plural,
+          =0 {no users}
+          =1 {# user}
+          other {# users}
+        }.
+      restricted: |
+        {appname} is configured to allow access to environment members, {orgs, plural,
+          =0 {no organizations}
+          =1 {# organization}
+          other {# organizations}
+        } and {users, plural,
+          =0 {no users}
+          =1 {# user}
+          other {# users}
+        }.
+      unrestricted: "{appname} is configured to allow access to any {providerName} user."
+      authenticated:
+        header:
+          text: Authentication
+          helpText: "To change the configured Shibboleth application, disable access control below and then set it up again."
+      disableAccess:
+        header: "Danger Zone&trade;"
+        warning: '<b class="text-danger">Caution:</b> Disabling access control will give complete control over {appName} to anyone that can reach this page or the API.'
+        confirmDisable: "Are you sure?  Click again to really disable access control"
+        disable: Disable access control
+      groupsField: 'Groups:'
+      displayName: 'Display Name:'
+      userName: 'Username:'
+      userId: 'User ID:'
+    disabled:
+      header: '1. Configure Shibboleth Account'
+      label: "{providerName} is not configured"
+      warning: "{appName} can be configured to restrict access to a set of {providerName} users and groups.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
+      name:
+        labelText: Display Name Field
+      username:
+        labelText: User Name Field
+      uid:
+        labelText: UID Field
+      groups:
+        labelText: Groups Field
+      testAuth:
+        header: '3. Test and enable authentication'
+        subtext: 'Check that your application is configured correctly by testing authentication with it:'
+        buttonText:
+          pre: Authenticate with IDP
+          post: Waiting to hear back from IDP
+
+
+    providerName:
+      shibboleth: Shibboleth
   root:
     header: Access Control
   github:
@@ -839,6 +902,7 @@ k8sTab:
 loginPage:
   greeting: "Howdy!<br>Welcome to {appName}"
   githubMessage: "{appName} uses GitHub to manage accounts and teams.  Click the button below to log in and give us read-only access to your basic GitHub account information."
+  shibbolethMessage: "{appName} uses Shibboleth to manage accounts.  Click the button below to log in to the configured Shibboleth IDP."
 
 machinePage:
   header: Machine Drivers
@@ -2217,6 +2281,9 @@ labelsSection:
   key: Key
   value: Value
   noData: No labels
+
+loginShibboleth:
+  buttonText: Authenticate with Shibboleth
 
 loginGithub:
   buttonText: Authenticate with GitHub
