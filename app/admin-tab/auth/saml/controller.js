@@ -66,7 +66,7 @@ export default Ember.Controller.extend({
               saved: true,
               disableAuth: false,
               redirectUrl: token.redirectUrl
-            })
+            });
             this.get('access').set('token', token);
           });
         }).catch(err => {

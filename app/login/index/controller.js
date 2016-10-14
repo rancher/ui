@@ -10,7 +10,7 @@ export default Ember.Controller.extend({
   isOpenLdap        : Ember.computed.equal('access.provider', 'openldapconfig'),
   isLocal           : Ember.computed.equal('access.provider', 'localauthconfig'),
   isAzureAd         : Ember.computed.equal('access.provider', 'azureadconfig'),
-  isSAML            : Ember.computed.equal('access.provider', 'shibbolethconfig'),
+  isShibboleth      : Ember.computed.equal('access.provider', 'shibbolethconfig'),
 
   timedOut          : false,
   waiting           : false,
