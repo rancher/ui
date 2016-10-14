@@ -37,7 +37,7 @@ Router.map(function() {
         this.route('github');
         this.route('openldap');
         this.route('localauth', {path: 'local'});
-        this.route('saml');
+        this.route('shibboleth', {path: 'saml'});
       });
 
       this.route('settings');
