@@ -5,6 +5,12 @@ import C from 'ui/utils/constants';
 
 let DEADTOME = ['removed','purging','purged'];
 
+const ORCHESTRATION_STACKS = [
+  'infra*k8s',
+  'infra*swarm',
+  'infra*mesos'
+];
+
 export default Ember.Mixin.create({
   k8s             : Ember.inject.service(),
   projects        : Ember.inject.service(),
@@ -156,32 +162,16 @@ export default Ember.Mixin.create({
     console.log('Subscribe ping ' + this.forStr());
   },
 
-  loadBalancerTargetChanged: function(change) {
-    this._includeChanged('loadBalancer', 'loadBalancerTargets', 'loadBalancerId', change.data.resource);
-  },
+  stackChanged: function(change) {
+    let stack = change.data.resource;
 
-  loadBalancerChanged: function(change) {
-    var balancer = change.data.resource;
-    var config = balancer.get('loadBalancerConfig');
-    var balancers = config.get('loadBalancers');
-    if ( !balancers )
-    {
-      balancers = [];
-      config.set('loadBalancers',balancers);
+    if ( ORCHESTRATION_STACKS.indexOf(stack.get('externalIdInfo.name')) >= 0 ) {
+      Ember.run.once(this, function() {
+        this.get('projects.current').reload().then(() => {
+          this.get('projects').updateOrchestrationState();
+        });
+      });
     }
-
-    if ( config.get('state') === 'removed' )
-    {
-      balancers.removeObject(balancer);
-    }
-    else
-    {
-      balancers.addObject(balancer);
-    }
-  },
-
-  registryCredentialChanged: function(change) {
-    this._includeChanged('registry', 'credentials', 'registryId', change.data.resource);
   },
 
   k8sResourceChanged: function(changeType, obj) {
@@ -199,97 +189,5 @@ export default Ember.Mixin.create({
       this.get('k8sUidBlacklist').addObject(obj.metadata.uid);
       this.get('store')._remove(resource.get('type'), resource);
     }
-  },
-
-  // Update the `?include=`-ed arrays of a host,
-  // e.g. when an instance changes:
-  //   Update the destProperty='instances' array on all models of type resourceName='hosts'.
-  //   to match the list in the the 'changed' resource's expectedProperty='hosts'
-  // _includeChanged(       'host',       'hosts',        'instances', 'hosts',          instance)
-  _includeChanged: function(resourceName, destProperty, expectedProperty, changed) {
-    if (!changed)
-    {
-      return;
-    }
-
-    let start = (new Date().getTime());
-
-    var changedId = changed.get('id');
-    var store = this.get('store');
-
-    //console.log('Include changed',resourceName,destProperty,expectedProperty,changedId);
-
-    // All the resources
-    var all = store.all(resourceName);
-
-    // IDs the resource should be on
-    var expectedIds = [];
-    var expected = changed.get(expectedProperty)||[];
-    if ( !Ember.isArray(expected) )
-    {
-      expected = [expected];
-    }
-
-    if ( changed.get('state') !== 'purged' )
-    {
-      expectedIds = expected.map(function(item) {
-        if ( typeof item === 'object' )
-        {
-          return item.get('id');
-        }
-        else
-        {
-          return item;
-        }
-      });
-    }
-
-    // IDs it is currently on
-    var curIds = [];
-    all.forEach(function(item) {
-      var existing = (item.get(destProperty)||[]).filterBy('id', changedId);
-      if ( existing.length )
-      {
-        curIds.push(item.get('id'));
-      }
-    });
-
-    // Remove from resources the changed shouldn't be on
-    var remove = Util.arrayDiff(curIds, expectedIds);
-    remove.forEach((id) => {
-      //console.log('Remove',id);
-      store.find(resourceName, id).then((item) => {
-        var list = item.get(destProperty);
-        if ( list )
-        {
-          //console.log('Removing',changedId,'from',item.get('id'));
-          list.removeObjects(list.filterBy('id', changedId));
-        }
-      }).catch(() => {});
-    });
-
-    // Add or update resources the changed should be on
-    expectedIds.forEach((id) => {
-      //console.log('Expect',id);
-      store.find(resourceName, id).then((item) => {
-        var list = item.get(destProperty);
-        if ( !list )
-        {
-          list = [];
-          //console.log('Adding empty to',item.get('id'), destProperty);
-          item.set(destProperty, list);
-        }
-
-        var existing = list.filterBy('id', changedId);
-        if ( existing.length === 0)
-        {
-          //console.log('Adding',changedId,'to',item.get('id'), destProperty);
-          list.pushObject(changed);
-        }
-      }).catch(() => {});
-    });
-
-    let diff = ((new Date()).getTime())-start;
-    console.log('includechanged:', resourceName, destProperty, expectedProperty, diff);
   },
 });
