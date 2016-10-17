@@ -5,12 +5,6 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import { denormalizeServiceArray } from 'ui/utils/denormalize-snowflakes';
 
-const ORCHESTRATION_STACKS = [
-  'infra*k8s',
-  'infra*swarm',
-  'infra*mesos'
-];
-
 export function activeIcon(stack)
 {
   if ( stack.get('system') )
@@ -253,17 +247,6 @@ var Stack = Resource.extend({
 
     return true;
   },
-
-  updateOrchestrationState: function() {
-    if ( ORCHESTRATION_STACKS.indexOf(this.get('externalIdInfo.name')) >= 0 ) {
-      Ember.run.once(this, function() {
-        this.get('projectsService').updateOrchestrationState();
-        if ( ['updating-active','activating','active'].indexOf(this.get('state')) >= 0 ) {
-          this.get('projectsService.current').reload();
-        }
-      });
-    }
-  }.observes('combinedState'),
 });
 
 Stack.reopenClass({

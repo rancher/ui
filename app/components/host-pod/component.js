@@ -41,7 +41,9 @@ export default Ember.Component.extend(ManageLabels, GroupedInstances, {
 
   isActive: Ember.computed.equal('model.state','active'),
   isProvisioning: Ember.computed.equal('model.state','provisioning'),
+  isError: Ember.computed.equal('model.state','error'),
   showAdd: Ember.computed.alias('isActive'),
+  showOnlyMessage: Ember.computed.or('isProvisioning','isError'),
 
   stateBackground: function() {
     return this.get('model.stateColor').replace("text-","bg-");

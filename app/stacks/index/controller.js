@@ -118,8 +118,8 @@ export default Ember.Controller.extend(Sortable, {
 
     return out;
 
-  // stateSort isn't really a dependency here, but sortable won't recompute when it changes otherwise
-  }.property('model.[]','model.@each.{stateSort,grouping}','which','tags'),
+  // state isn't really a dependency here, but sortable won't recompute when it changes otherwise
+  }.property('model.stacks.[]','model.stacks.@each.{state,grouping}','which','tags'),
 
   sortableContent: Ember.computed.alias('filteredStacks'),
   sortBy: 'name',
