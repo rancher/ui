@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import Socket from 'ui/utils/socket';
-import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
 let DEADTOME = ['removed','purging','purged'];
