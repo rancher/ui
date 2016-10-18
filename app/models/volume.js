@@ -56,24 +56,20 @@ var Volume = Resource.extend({
     var a = this.get('actionLinks');
 
     return [
-      { label: 'action.remove',           icon: 'icon icon-trash',          action: 'promptDelete',      enabled: this.get('canDelete'), altAction: 'delete' },
+      { label: 'action.remove',           icon: 'icon icon-trash',          action: 'promptDelete',      enabled: !!a.remove, altAction: 'delete' },
       { divider: true },
       { label: 'action.viewInApi',        icon: 'icon icon-external-link',  action: 'goToApi',           enabled: true },
       { label: 'action.restore',          icon: '',                         action: 'restore',           enabled: !!a.restore },
       { label: 'action.purge',            icon: '',                         action: 'purge',             enabled: !!a.purge },
       { label: 'action.snapshot',         icon: 'icon icon-copy',           action: 'snapshot',          enabled: !!a.snapshot },
     ];
-  }.property('actionLinks.{restore,purge}','model.canDelete'),
+  }.property('actionLinks.{restore,purge,remove}'),
 
   displayUri: function() {
     return (this.get('uri')||'').replace(/^file:\/\//,'');
   }.property('uri'),
 
   isRoot: Ember.computed.notEmpty('instanceId'),
-
-  canDelete: function() {
-    return ['inactive', 'requested'].indexOf(this.get('state')) >= 0 && !this.get('isRoot');
-  }.property('state','isRoot'),
 
   mounts: function() {
     return this.get('_allMounts').filterBy('volumeId', this.get('id'));
