@@ -59,55 +59,18 @@ export default Ember.Controller.extend(Sortable, {
     },
   },
 
-  setup: function() {
-    // Need this to setup the observer for filteredStacks
-    this.get('which');
-
-    var sort = this.get(`prefs.${C.PREFS.SORT_STACKS_BY}`);
-    if (sort && sort !== this.get('sortBy')) {
-      this.set('sortBy', sort);
-    }
-
-    this.set('tagsArray', tagsToArray(this.get('tags')));
-
-    Ember.run.schedule('afterRender', this, () => {
-      var opts = {
-        maxHeight: 200,
-        buttonClass: 'btn btn-sm btn-default',
-
-        templates: {
-          li: '<li><a tabindex="0"><label></label></a></li>',
-        },
-
-        buttonText: function(options, select) {
-          if ( options.length === 0 ) {
-            return 'Filter Tags';
-          }
-          else if ( $('option',select).length === options.length)
-          {
-            return 'All Tags';
-          }
-          else if ( options.length === 1 )
-          {
-            return "Tag: " +$(options[0]).text();
-          }
-          else
-          {
-            return options.length + ' Tags';
-          }
-        },
-      };
-
-      Ember.$('.stack-tags').multiselect(opts);
-    });
-  }.on('init'),
-
   filteredStacks: function() {
     var which = this.get('which');
     var needTags = tagsToArray(this.get('tags'));
     var out = this.get('model.stacks');
 
-    if ( which !== C.EXTERNAL_ID.KIND_ALL )
+    if ( which === C.EXTERNAL_ID.KIND_NOT_ORCHESTRATION )
+    {
+      out = out.filter(function(obj) {
+        return C.EXTERNAL_ID.KIND_ORCHESTRATION.indexOf(obj.get('grouping')) === -1;
+      });
+    }
+    else if ( which !== C.EXTERNAL_ID.KIND_ALL )
     {
       out = out.filterBy('grouping', which);
     }

@@ -686,6 +686,8 @@ k8sTab:
         navTabs:
           containers: Контейнеры
     deployments:
+      index:
+        header: Развертывание
       deployment:
         header: 'Развертывание:'
         navTabs:
@@ -1337,6 +1339,7 @@ formCommand:
     label: Автоматический перезапуск
     startOnceFalse: Всегда
     startOnceTrue: Никогда (стартовать один раз)
+    "no": Никогда
     always: Всегда
   environment:
     keyPlaceholder: напр. FOO
@@ -1409,6 +1412,8 @@ formHealthCheck:
   timeout:
     label: Проверьте время ожидания
     unit: мс
+  healthyThreshold:
+    unit: успех
   strategy:
     recreate: Повторное создание
 formKeyValue:
@@ -1426,6 +1431,8 @@ formImage:
     dropdownLabel: "{appName} Образы"
   container:
     placeholder: "напр. ubuntu:trusty"
+  pullImage:
+    label: Всегда получать образ перед созданием
 formNameDescription:
   name:
     label: Имя
@@ -1457,6 +1464,7 @@ formNetwork:
   resolvingServers:
     placeholder: напр. 8.8.4.4
   searchDomains:
+    label: Домен для поиска
     placeholder: напр. prod.example.com
 formPorts:
   addAction: Карта порта
@@ -1498,8 +1506,10 @@ formSecurity:
     mb: Мб
     placeholder2: Без ограничений
   cpuPinning:
+    label: Количество CPU
     placeholder: 'напр. 0,3; По умолчанию: все'
   shares:
+    label: CPU единиц
     placeholder: напр. 1024
   capabilities:
     add: Добавить
@@ -1591,6 +1601,7 @@ identityBlock:
   loading: Загрузка...
 infoMultiStats:
   connecting: Подключение...
+  utilizationStats: Статистика доступна только тогда, когда активный или запущенный.
   cpuSection:
     labelText: Проц
     system: Системные
@@ -1598,11 +1609,14 @@ infoMultiStats:
   networkSection:
     labelText: Сеть
     transmit: Передача
+    receive: Получено
   memorySection:
     labelText: Память
     used: Использовано
   storageSection:
     labelText: Диск
+    read: Прочитано
+    write: Записано
 inputCertificate:
   key:
     label: Закрытый ключ
@@ -1675,6 +1689,8 @@ k8s:
 lbAddtlInfo:
   info: Инфо
   viewDetails: Детально
+  defaultCertificate: Сертификат по умолчанию
+  alternateCertificate: Альтернативный сертификат
   description: 'Описание: '
   containers: Контейнеры
   noContainers: Нет контейнеров
@@ -1686,6 +1702,8 @@ labelsSection:
   key: Ключ
   value: Значение
   noData: Без меток
+loginGithub:
+  buttonText: Аунтефицироваться с ГитХабом
 loginUserPass:
   userLabel: Имя пользователя
   userPlaceholder: Напр. jsmith
@@ -1702,6 +1720,10 @@ machine:
       placeholder: AWS секретный ключ
     region:
       label: Регион
+    securityGroupSelect: 'Далее: Выберите группу безопасности'
+    securityGroupSection: Группа безопасности
+    securityGroup:
+      label: Группа безопасности
     portHelp:
       link: Подробнее
     instanceSection: Инстанс
@@ -1712,6 +1734,8 @@ machine:
       unit: ГБ
     ami:
       label: AMI
+      placeholder: Ubuntu AMI
+      rancherList: RancherOS AMI список
     sshUser:
       label: SSH пользователь
       placeholder: напр. ubuntu
@@ -1730,6 +1754,10 @@ machine:
     dockerPort:
       label: Докер порт
       placeholder: '2376'
+    environment:
+      label: Окружения
+    resourceGroup:
+      placeholder: 'docker-machine'
     sshUser:
       label: SSH пользователь
       placeholder: usr1
@@ -1777,6 +1805,9 @@ machine:
       label: API Key
     secretKey:
       label: Секретный ключ
+    securityGroupSection: Группа безопасности
+    securityGroup:
+      label: Группа безопасности
     portHelp:
       link: Подробнее
     instanceSection: Инстанс
@@ -1784,7 +1815,15 @@ machine:
       label: Профиль инстанса
     sshUser:
       label: SSH пользователь
+      placeholder: 'usr1'
+  driverOther:
+    driverSection: Драйвер
+    driver:
+      label: Драйвер
+    optionsSection: "{driverName} параметры"
   driverPacket:
+    projectId:
+      label: Проект
     apiKey:
       label: API Key
     instanceSection: Инстанс
@@ -1806,6 +1845,8 @@ machine:
       label: Регион
     instanceSection: Инстанс
   driverUbiquity:
+    apiUsername:
+      label: Удаленный ID
     apiToken:
       label: Ключ доступа
     instanceSection: Инстанс
@@ -1830,6 +1871,8 @@ machine:
     diskSize:
       label: Диски
       unit: Мб
+    pool:
+      label: Пул
     host:
       label: Хост
     network:
@@ -1846,6 +1889,8 @@ machine:
       placeholder: Образ системы
     instanceTag:
       label: Тиг инстанса
+    dataDiskSize:
+      placeholder: Размер диска
     region:
       label: Регион
       placeholder: Регион
@@ -1853,6 +1898,9 @@ machine:
       placeholder: напр. 192.168.1.0/24
     privateIp:
       label: Приватный IP
+    securityGroup:
+      label: Группа безопасности
+      placeholder: Группа безопасности
     sshPassword:
       label: SSH пароль
 modalAboutComponent:
@@ -1860,6 +1908,7 @@ modalAboutComponent:
   version: Версия
   cattle: Cattle
   ui: Пользовательский интерфейс
+  docerkMachine: docker-machine
   close: Закрыть
 modalConfirmDeactiviate:
   cancel: Отмена
@@ -1872,9 +1921,16 @@ modalConfirmDeactiviate:
 modalEditBackup:
   create: Создать Резервную Копию
   nameLabel: Название резервной копии
+modalEditDriver:
+  checksum:
+    label: Контрольная сумма
+modalFeedback:
+  send: Отправить
 modalProcessError:
   none: Н/Д
   close: Закрыть
+modalWelcome:
+  header: Добро пожаловать в {appName}!
 modalShell:
   title: 'Консоль: {instanceName}'
 newAliasService:
@@ -1884,6 +1940,8 @@ newBalancer:
   tabs:
     labels: Метки
 newCatalog:
+  version:
+    prompt: Выберите версию...
   saveUpgrade: Обновить
   saveNew: Запустить
   saveConfigure: Настроить
@@ -1893,7 +1951,11 @@ newCatalog:
   support: "Служба поддержки:"
   official: Официально сертифицирован
   license: "Лицензия:"
+  url: "URL проекта:"
+  templateVersion: Версия шаблона
+  selectVersionAdd: Выберите версию шаблона для развертывания
   newStack: Новый Стек
+  config: Параметры конфигурации
   startService: Запустить сервис после создания
   preview: Предварительный просмотр
   txt: answers.txt
@@ -1910,6 +1972,7 @@ newContainer:
     command: Команда
     volumes: Диски
     networking: Сеть
+    security: Безопасность/Хост
     healthCheck: Проверка работоспособности
     labels: Метки
   saveUpgrade: Обновить
@@ -1931,9 +1994,16 @@ pageFooter:
   forums: Форум
   download:
     link: Скачать CLI
+    headerCli: Rancher CLI (beta)
+    headerCompose: Rancher Compose
+    mac: Mac OS X
+    windows: Windows
+    linux: Linux
 projectRow:
   none: Нет описания
+  orchestration: Оркестрирование
 registryRow:
+  address: Адрес
   email: Эл. адрес
   username: Имя пользователя
 saveCancel:
@@ -2029,7 +2099,10 @@ viewEditDescription:
       placeholder: напр. lab
 viewEditProject:
   showEdit:
+    edit: "Изменить окружение:"
+    add: Добавить окружение
     accessControl: Контроль доступа
+  header: "Окружения:"
   description: Описание
 vmConsole:
   header: "Консоль:"

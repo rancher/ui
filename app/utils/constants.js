@@ -7,6 +7,7 @@ const KIND_KUBERNETES = 'k8s';
 const KIND_SWARM = 'swarm';
 const KIND_MESOS = 'mesos';
 const KIND_INFRA = 'infra';
+const KIND_NOT_ORCHESTRATION = 'not-orch';
 
 var C = {
   COOKIE: {
@@ -31,6 +32,12 @@ var C = {
     KIND_SWARM: KIND_SWARM,
     KIND_MESOS: KIND_MESOS,
     KIND_INFRA: KIND_INFRA,
+    KIND_NOT_ORCHESTRATION: KIND_NOT_ORCHESTRATION,
+    KIND_ORCHESTRATION: [
+      KIND_KUBERNETES,
+      KIND_SWARM,
+      KIND_MESOS,
+    ],
     UPGRADEABLE: [
       KIND_CATALOG,
       KIND_SYSTEM_CATALOG
@@ -42,6 +49,7 @@ var C = {
     SHOW_AS_SYSTEM: [
       KIND_SYSTEM,
       KIND_INFRA,
+      KIND_NOT_ORCHESTRATION,
     ],
     SYSTEM_CATEGORIES: [
       'Rancher services'
