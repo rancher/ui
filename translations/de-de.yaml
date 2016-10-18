@@ -203,6 +203,7 @@ authPage:
     configure:
       header: '1. Azure AD Zugang konfigurieren'
       tenantId:
+        label: Kunden ID
         placeholder: Eine lange UUID Zeichenfolge
         help: Aus dem Azure AD Portal
       clientId:
@@ -376,6 +377,7 @@ containersPage:
       volumes: Volumes
       ports: Ports
       networking: Netzwerk
+      security: Sicherheit
     portsTab:
       table:
         header:
@@ -684,7 +686,7 @@ k8sTab:
     header: kubectl
     stepOne:
       generateConfigText: |
-        Um <a href="http://kubernetes.io/docs/getting-started-guides/docker/#download-kubectl" target="_blank">kubectl</a> (v1.2+ only) auf ihrer Workstation zu verwenden, klicken Sie auf den Button um einen API Schlüssel und eine Konfiguration zu generieren:
+        Um <a href="{downloadUrl}" target="_blank">kubectl</a> (v1.2+ only) auf ihrer Workstation zu verwenden, klicken Sie auf den Button um einen API Schlüssel und eine Konfiguration zu generieren:
       generateButton: Konfiguration generieren
     stepTwo:
       progress: Generiere...
@@ -692,7 +694,7 @@ k8sTab:
       helpText: |
         Fügen Sie das in <code>~/.kube/config</code> hinzu:
       downloadText: |
-        Dann <a href="http://kubernetes.io/docs/getting-started-guides/docker/#download-kubectl" target="_blank">laden Sie</a> (wenn benötigt) und führen Sie <code>kubectl</code> aus
+        Dann <a href="{downloadUrl}" target="_blank">laden Sie</a> (wenn benötigt) und führen Sie <code>kubectl</code> aus
     shell:
       helpText: |
         Oder verwenden Sie dieses praktische Shell Skript um direkt <code>kubectl</code> Befehle auszuführen:
@@ -729,7 +731,15 @@ k8sTab:
         header: RCs
         linkTo: RC hinzufügen
     services:
+      header: Dienste
       linkTo: Service hinzufügen
+      service:
+        index:
+          header: 'Dienst:'
+    stacks:
+      index:
+        header: Stapel
+        linkTo: Aus dem Katalog hinzufügen
   namespaces:
     header: Namensräume
     linkTo: Namensraum hinzufügen
@@ -817,9 +827,11 @@ servicePage:
   multistat:
     type: 'Typ:'
     fqdn: 'FQDN:'
+    scale: 'Skalieren:'
     image: 'Image:'
     command: 'Befehl:'
     description: 'Beschreibung:'
+    global: Global
   external:
     externalIp: Externe IPs
     externalHostname: 'Externer Hostname:'
@@ -828,6 +840,7 @@ servicePage:
     containers: Container
     labels: Labels
     links: Links
+    log: Log
   containersTab:
     table:
       header:
@@ -2383,6 +2396,9 @@ nav:
     themeLight: Hell
     themeAuto: Automatisch
     themeDark: Dunkel
+  noHosts:
+    prefix: "Vor dem Hinzufügen Ihres ersten Services oder Containers müssen Sie einen Linux-Host anlegen, der mindestens Docker {minVersion} oder höher installiert hat.  "
+    link: "Host hinzufügen"
 action:
   activate: Aktivieren
   deleteBackup: Backup löschen

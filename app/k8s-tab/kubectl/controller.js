@@ -29,6 +29,8 @@ export default Ember.Controller.extend({
   step: 1,
   kubeconfig: '',
 
+  downloadUrl: 'http://kubernetes.io/docs/user-guide/prereqs/',
+
   actions: {
     generate() {
       this.set('step', 2);
