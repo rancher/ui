@@ -1,6 +1,6 @@
 ---
--languageName: Русский
-languageContribute: Помощь для перевода Rancher
+languageName: "Русский"
+languageContribute: "Помощь для перевода Rancher"
 generic:
   actions: Действия
   activate: Активировать
@@ -19,9 +19,10 @@ generic:
   image: Образ
   internal: Внутренний
   ipAddress: IP Адрес
-  loading: Думаю...
-  missing: '*%ПАНИКА%*'
+  loading: "Думаю..."
+  missing: "*%ПАНИКА%*"
   moreActions: Больше действий
+  na: 'н/д'
   name: Имя
   none: Нету
   ports: Порты
@@ -37,16 +38,34 @@ accountsPage:
     localLink: Добавить учётку
     table:
       state: Состояние
+      id: ID
       kind: Тип
       username: Юзернейм
       name: Имя
       identity: Личность
       noData: У вас пока нет учёток
       noName: Нету
+  new:
+    header: добавить аккаунт
+    form:
+      username:
+        labelText: Имя пользователя
+        placeholder: "Напр. jsmith"
+      password:
+        labelText: Пароль
+      name:
+        labelText: Имя
+        placeholder: "напр. Джон Смит"
+      type:
+        labelText: Тип Аккаунта
+      description:
+        labelText: Описание
+        placeholder: "напр. эта учетная запись является для Джона Смита"
 apiPage:
   header: API Ключи Окружения
   actionButton: Добавить API Ключ Окружения
-  content: 'API ключи окружения привязаны к конкретному Окружению (<code>{displayName}</code>), и могут управлять только ресурсами внутри него. Другие учётки с доступом к этому Окружению тоже могут управлять этими ключами.'
+  content: |
+    API ключи окружения привязаны к конкретному Окружению (<code>{displayName}</code>), и могут управлять только ресурсами внутри него. Другие учётки с доступом к этому Окружению тоже могут управлять этими ключами.
   table:
     state: Состояние
     name: Имя
@@ -61,23 +80,23 @@ apiPage:
     buttonText: Добавить API Ключ Учётки
     content:
       paragraph1: API Ключи учётки привязаны к Вашей учётке
-      paragraph2: и могут создавать, удалять и управлять всеми Окружениями, к которым у Вас есть доступ.
+      paragraph2: "и могут создавать, удалять и управлять всеми Окружениями, к которым у Вас есть доступ."
     table:
-      noData: У Вашей Учётки пока нет API Ключей.
+      noData: "У Вашей Учётки пока нет API Ключей."
 auditLogsPage:
   header: Журнал аудита
   form:
     eventType:
       placeholder: Тип События
     resourceType:
-      placeholder: 'Тип Ресурса:'
+      placeholder: "Тип Ресурса:"
       dropdownPlaceholder: 'Возможные варианты:'
     resourceId:
       placeholder: ID Ресурса
     requestIp:
       placeholder: IP Запроса
     authType:
-      placeholder: 'Тип аунтификации:'
+      placeholder: "Тип аунтификации:"
       dropdownPlaceholder: 'Возможные варианты:'
     clearButtonText: Сбросить Фильтры
     searchButtonText: Поиск
@@ -86,9 +105,9 @@ auditLogsPage:
     eventType: Событие
     description: Описание
     environment: Окружение
-    resourceTypeId: 'Тип ресурса: ID'
+    resourceTypeId: "Тип ресурса: ID"
     identity: Представился как
-    authIp: Аунтификация и IP
+    authIp: "Аунтификация и IP"
   first: В начало
   next: Дальше
 authPage:
@@ -99,7 +118,7 @@ authPage:
     enterprise: Энтерпрайз ГитХаб
     header:
       enabled:
-        label: Аунтификация через ГитХаб включена
+        label: "Аунтификация через ГитХаб включена"
         required: |
           Система {appName} настроена {orgs, plural,
           =0 {не предоставлять доступ никаким организациям}
@@ -120,37 +139,38 @@ authPage:
           =1 {одному пользователю}
           other {# пользователям}
           }.
-        unrestricted: 'Система {appName} настроена предоставлять доступ любому пользователю {github}а.'
+        unrestricted: "Система {appName} настроена предоставлять доступ любому пользователю {github}а."
       disabled:
         label: Аунтификация черех ГитХаб не настроена
-        warning: 'Система {appName} может быть настроена на предоставление доступа выбранному набору пользователей ГитХаба и/или членам ГитХаб Организации. Прямо сейчас это не настроено, так что все, кто могут зайти на эту страницу (или достучаться до API) имеют полный контроль над системой. Не порядок!'
+        warning: "Система {appName} может быть настроена на предоставление доступа выбранному набору пользователей ГитХаба и/или членам ГитХаб Организации. Прямо сейчас это не настроено, так что все, кто могут зайти на эту страницу (или достучаться до API) имеют полный контроль над системой. Не порядок!"
     authenticated:
       header:
         text: Аунтификация
         clientId:
-          text: 'ID Клиента:'
-          helpText: 'Чтобы перенастроить ГитХаб интеграцию - отключите контроль доступа чуть ниже и настройте всё по-новой.'
+          text: "ID Клиента:"
+          helpText: "Чтобы перенастроить ГитХаб интеграцию - отключите контроль доступа чуть ниже и настройте всё по-новой."
       disableAccess:
-        header: 'Зона Риска&trade;'
+        header: "Зона Риска&trade;"
         warning: '<b class="text-danger">Внимание:</b> Отключение контроля доступа предоставит полный доступ к Системе {appName} любому, кто может зайти на эту страницу или достучаться до API. Мы предупреждали!'
-        confirmDisable: 'Вы хорошо подумали? Если да - нажмите еше раз, чтобы окончательно отключить контроль доступа. Мы предупреждали.'
+        confirmDisable: "Вы хорошо подумали? Если да - нажмите еше раз, чтобы окончательно отключить контроль доступа. Мы предупреждали."
         disable: Отключай уже!
     notAuthenticated:
-      header: 1. Настройте ГитХаб Приложение
+      header: "1. Настройте ГитХаб Приложение"
       ul:
         li1:
           text: 'Для обычного (облачного) ГитХаба, <a href="https://github.com/settings/developers" target="_blank">нажмите тут</a>, чтобы открыть настройки Приложений в новой вкладке.'
           ul:
-            li1: 'Для Энтерпрайз ГитХаба, зайдите в свою учётку. Нажмите "Settings", затем "Applications".'
+            li1: "Для Энтерпрайз ГитХаба, зайдите в свою учётку. Нажмите \"Settings\", затем \"Applications\"."
         li2:
           text: 'Нажмите "Register new application" и заполните форму:'
           ul:
             li1: '<b>Application name:</b> <span class="text-muted">Что угодно, напр. My {appName}</span>'
+            li2: '<b>URL главной страницы:</b> '
             li3: '<b>Application description:</b> <span class="text-muted">Что угодно, можете оставить пустым</span>'
         li3:
           text: 'Нажмите "Register Application" '
       form:
-        subtext: Скопируйте Client ID и Secret из вернего правого угла странцы Вашего свежесозданного Приложения.
+        subtext: 'Скопируйте Client ID и Secret из вернего правого угла странцы Вашего свежесозданного Приложения.'
         clientId:
           labelText: ID Клиента (Client ID)
         clientSecret:
@@ -161,9 +181,9 @@ authPage:
           labelText: Использовать шифрование
         enterpriseHost:
           labelText: Хостнэйм Энтерпрайз ГитХаба
-          placeholder: напр. github.example.com
+          placeholder: 'напр. github.example.com'
     testAuth:
-      header: 3. Протестируйте и включите аунтификацию
+      header: '3. Протестируйте и включите аунтификацию'
       subtext: 'Проверьте, что ваше Приложение настроено правильно, протестировав аунтификацию с ним:'
       buttonText:
         pre: Аунтефицироваться с ГитХабом
@@ -181,7 +201,7 @@ authPage:
       reallyDisable: 'Вы хорошо подумали? Если да - нажмите еше раз.'
       promptDisable: Отключай уже!
     configure:
-      header: 1. Настройте Azure AD учётку
+      header: '1. Настройте Azure AD учётку'
       tenantId:
         label: ID Организации (Tenant ID)
         help: Скопируйте с портала Azure AD
@@ -198,11 +218,11 @@ authPage:
       adminAccountPassword:
         label: Пароль
     test:
-      header: 2. Протестируйте и включите аунтификацию
+      header: '2. Протестируйте и включите аунтификацию'
       help: 'Проверьте, что все настроено правильно, протестировав аунтификацию с вашей учёткой:'
       username:
         label: Имя пользователя
-        placeholder: Напр. jsmith
+        placeholder: 'Напр. jsmith'
       password:
         label: Пароль
       pre: Аунтефицироваться с Azure
@@ -223,25 +243,25 @@ authPage:
         disable: 'Вы хорошо подумали? Если да - нажмите еше раз.'
         prompt: Отключить контроль доступа
     accessDisabled:
-      header: 1. Создайте администратора
+      header: '1. Создайте администратора'
       helpText: 'Этот пользователь будет адимном с полным доступом к Сисиеме {appName}.'
       form:
         login:
           labelText: Имя пользователя
-          placeholder: e.g. ivan_god
+          placeholder: 'e.g. ivan_god'
         name:
           labelText: Полное имя
-          placeholder: напр. Ivan Ivanov
+          placeholder: 'напр. Ivan Ivanov'
         password:
           labelText: Пароль
         confirmPassword:
           labelText: Повторите пароль
     accessControl:
-      header: 2. Включите контроль доступа
-      helpText: Нажмите, чтобы включить контроль доступа и войти в систему.
+      header: '2. Включите контроль доступа'
+      helpText: 'Нажмите, чтобы включить контроль доступа и войти в систему.'
       buttonText:
         pre: Включить встроенную аунтификацию
-        post: Включаю...
+        post: 'Включаю...'
   0:
     header: Контроль доступа
 backupTargetsPage:
@@ -252,19 +272,19 @@ backupTargetsPage:
     header: Добавить Цель Копирования
   server:
     label: Сервер NFS
-    placeholder: напр. my-nfs-server.example.com
+    placeholder: 'напр. my-nfs-server.example.com'
   share:
     label: Шара NFS
-    placeholder: напр. /mnt/volume-backups
+    placeholder: 'напр. /mnt/volume-backups'
   mountOptions:
     label: Допольнительные параметры для NFS Mount
-    placeholder: напр. nfsvers=4,proto=udp
+    placeholder: 'напр. nfsvers=4,proto=udp'
 catalogPage:
   index:
     header: 'Каталог:'
     search:
       placeholder: Поиск...
-    category: 'Категория:'
+    category: "Категория:"
     certified: Одобрено
     noData:
       singular: Подходящие шаблоны отсутствуют.
@@ -351,14 +371,20 @@ containersPage:
         host: Копировать IP в буфер обмена
       host: 'Хост:'
       ip: 'IP контейнера:'
+      docker: 'Докер ID:'
       image: 'Образ:'
       command: 'Команда:'
       entryPoint: 'Точка входа:'
       description: 'Описание:'
+      stack: 'Стек/Сервисы:'
     navTabs:
       labels: Лейблы
       volumes: Разделы
       ports: Порты
+      command: Команда
+      networking: Сеть
+      healthCheck: Проверка работоспособности
+      security: Безопасноть
     portsTab:
       table:
         header:
@@ -369,13 +395,19 @@ containersPage:
           state: 'Состояние:'
           ip: 'IP адрес:'
           protocol: 'Протокол:'
-          noData: У контейнера нет портов
+          noData: 'У контейнера нет портов'
     volumesTab:
       table:
         header:
+          name: Имя
           state: Состояние
+          mount: Точка монтирования
+          actions: Действия
         body:
+          name: 'Имя:'
           state: 'Состояние:'
+          mount: 'Точка монтирования:'
+          actions: 'Действия:'
           error:
             data: 'Ошибка:'
             error: Ошибка
@@ -385,64 +417,68 @@ containerSubpod:
   childContainers: Контейнеры
   childSidekicks: Сайдкики
 dockerCLI:
-  well: 'Или используйте эту консоль, чтобы удобно запускать команды <code>docker</code> и <code>docker-compose</code>:'
+  header: Докер CLI
+  activating: Активация...
+  well: |
+    Или используйте эту консоль, чтобы удобно запускать команды <code>docker</code> и <code>docker-compose</code>:
 failWhalePage:
   header: Эвакуация!
-  reloadButton: 'Если <a href="#" onclick="window.location.href = window.location.href; return false;">перезагрузка страницы</a> не помоглает -'
+  reloadButton: |
+    Если <a href="#" onclick="window.location.href = window.location.href; return false;">перезагрузка страницы</a> не помоглает -
   logoutButton: попробуйте разлогиниться
 haPage:
   header:
     enabled: 'Высокодоступность <b class="text-success">включена</b>'
-    disabled: Высокодоступность не настроена
+    disabled: 'Высокодоступность не настроена'
   haConfigured:
     addHost:
-      header: 5. Добавьте хосты
+      header: '5. Добавьте хосты'
       subtext: 'Прогоните скаченный скрипт на каждом из высокодоступных хостов, чтобы их зарегистрировать:'
     hosts:
       header: 'Хосты:'
-      waiting: Ждем хоста...
+      waiting: 'Ждем хоста...'
       managementServerCert:
         text: 'Сертификат управляющего сервера:'
-        waiting: Ждем хоста...
+        waiting: 'Ждем хоста...'
     disable:
       header: 'Зона Риска&trade;'
       confirm:
-        pre: Вы уверены? Нажмите еще раз, чтобы взаправду отключить высокодоступность
+        pre: 'Вы уверены? Нажмите еще раз, чтобы взаправду отключить высокодоступность'
         prompt: Отключить высокодоступность
   haDisabled:
-    header: 1. Установите внешнюю базу данных
+    header: '1. Установите внешнюю базу данных'
     subtext: 'Эта инсталляция Системы {appName} прямо сейчас использует встроенный сервер базы данных. Для высокодоступной конфигурация нам понадобится отдельный сервер MySQL.'
     externalDatabase:
       ul:
         li1:
-          text: Установите внешнюю базу данных.
+          text: 'Установите внешнюю базу данных.'
           ul:
-            li1: Это может быть обслуживаемое решение вроде Amazon RDS или Google Cloud SQL,
-            li2: Или ваш собственный сервер, или мульти-мастер кластер.
-        li2: Нажмите кнопку ниже, чтобы экспортировать все содержимое текущей базы данных.
-        li3: Импортируйте данные в новую внешнюю базу данных.
+            li1: 'Это может быть обслуживаемое решение вроде Amazon RDS или Google Cloud SQL,'
+            li2: 'Или ваш собственный сервер, или мульти-мастер кластер.'
+        li2: 'Нажмите кнопку ниже, чтобы экспортировать все содержимое текущей базы данных.'
+        li3: 'Импортируйте данные в новую внешнюю базу данных.'
       exportDatabase: Экспортировать БД
       size: 'Несжатый размер:'
       noLocalDb:
-        header: 1. Установите внешнюю базу данных
-        subtext: Все ОК, мы на внешней базе.
+        header: '1. Установите внешнюю базу данных'
+        subtext: 'Все ОК, мы на внешней базе.'
     databaseUsage:
       localDb:
-        header: 2. Используйте внешнюю базу данных
+        header: '2. Используйте внешнюю базу данных'
         ul:
           li1: 'Перезапустите контейнер сервера, натравив его на внешнюю базу данных:'
           isRancher:
             li1: '<a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank">В документации</a> написано подробнее.'
       noLocalDb:
-        header: 2. Используйте внешнюю базу данных
+        header: '2. Используйте внешнюю базу данных'
         subtext: 'Готово, теперь используем <code>{dbHost}</code> как БД для высокодоступной конфигурации'
     haConfigScript:
       generated:
-        header: 3. Сгенерируйте скрипт для конфигурации высокодоступности
-        subtext: Готово.
+        header: '3. Сгенерируйте скрипт для конфигурации высокодоступности'
+        subtext: 'Готово.'
       notGenerated:
-        header: 3. Сгенерируйте скрипт для конфигурации высокодоступности
-        subtext: Возвращайтесь, когда мы будем на внешней базе...
+        header: '3. Сгенерируйте скрипт для конфигурации высокодоступности'
+        subtext: 'Возвращайтесь, когда мы будем на внешней базе...'
       form:
         clusterSize:
           labelText: Размер кластера
@@ -452,33 +488,39 @@ haPage:
             multiCluster: 'Это должно быть полное доменное имя, которое разворачивается в адреса, или является балансировщиком нагрузки для всех {clusterSize} высокодоступных хостов. Не включайте <code>/v1</code> или какой-то другой относительный путь.'
         certificate:
           labelText: Сертификат
-          radio1: Сгенерировать самоподписанный сертификат
+          radio1: 'Сгенерировать самоподписанный сертификат'
           radio2:
-            noHostUrl: Загрузите действительный сертификат
+            noHostUrl: 'Загрузите действительный сертификат'
             hasHostUrl: 'Загрузите действительный сертификат для <code>{hostRegistrationUrl}</code>'
         listeningPorts:
           table:
+            https: HTTPS
+            http: HTTP
+            swarm: Swarm
             proxyToHttps: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">Проксировать</a> HTTPS'
             proxyToHttp: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">Проксировать</a> HTTP'
+            redis: Redis
+            zookeeperClient: ZooKeeper клиент
+            zookeeperQuorum: ZooKeeper кворум
       configScriptButton:
         pre: Сгенерировать скрипт
-        post: Генерируем...
+        post: 'Генерируем...'
       downloadScript:
         downloaded:
-          header: 4. Скачайте скрипт
+          header: '4. Скачайте скрипт'
           subtext: 'Готово - проверяйте свою папку с загрузками.'
         notDownloaded:
-          header: 4. Скачайте скрипт
-          subtext: Нажмите кнопку ниже, чтобы скачать shell скрипт.
+          header: '4. Скачайте скрипт'
+          subtext: 'Нажмите кнопку ниже, чтобы скачать shell скрипт.'
           alert: |
             Скрипт генерирует новые ключи шифрования, которые используются высокодоступными хостами для интеркоммуникации. Рекомендуем хранить его под подушкой или в другом безопасном месте.
             Новые ключи генерируются каждый раз, когда Вы скачиваете конфигурационный скрипт, и все хосты должны иметь одни и те же ключи, чтобы высокодоступность работала.
           buttonText: Давайте уже свой скрипт!
-          generateScript: Сначала сгенерируйте скрипт в шаге 3, а потом поговорим.
+          generateScript: 'Сначала сгенерируйте скрипт в шаге 3, а потом поговорим.'
 helpPage:
   header: Полезные ссылки и информация
   banner: Анонсы
-  releaseText: 'Когда:'
+  releaseText: "Когда:"
   environment:
     header: Что такое Окружение?
     content: |
@@ -487,14 +529,16 @@ helpPage:
     manageLink: Управлять Окружениями
   host:
     header: Что такое хост?
-    content: 'Перед тем, как добавить свой первый сервис или запустить контейнер - было бы здорово добавить хотя бы один Linux хост, который поддерживает Docker версии {minVersion} и выше, и который может достучаться до сервера {appName} по HTTP. Система {appName} поддерживает добавление хостов Linux в виде виртуальных машин из любых публичных и частных облаков, или даже физических серверов.'
+    content: |
+      Перед тем, как добавить свой первый сервис или запустить контейнер - было бы здорово добавить хотя бы один Linux хост, который поддерживает Docker версии {minVersion} и выше, и который может достучаться до сервера {appName} по HTTP. Система {appName} поддерживает добавление хостов Linux в виде виртуальных машин из любых публичных и частных облаков, или даже физических серверов.
     contentLink: Подробнее здесь
     addHostLink: Добавить хост
   stacks:
     header: Что такое стеки и сервисы?
     content:
-      paragraph1: 'Сервис - это всего-навсего группа контейнеров, созданная из одного и того же образа Docker, которая умеет использовать распределенный лекговесный DNS Системы {appName} для нахождения сервисов, дополнительно к концепциио Docker "линка". Сервисы могут быть добавлены вручную или путем разворачивания их из Каталога.'
-      paragraph2: 'Сервисы так же могут использовать другие встроенные службы Системы {appName}, такие как балансировщики нагрузки, мониторинг здоровья (?), поддержку обновлений и высокодоступность.'
+      paragraph1: |
+        Сервис - это всего-навсего группа контейнеров, созданная из одного и того же образа Docker, которая умеет использовать распределенный лекговесный DNS Системы {appName} для нахождения сервисов, дополнительно к концепциио Docker "линка". Сервисы могут быть добавлены вручную или путем разворачивания их из Каталога.
+      paragraph2: Сервисы так же могут использовать другие встроенные службы Системы {appName}, такие как балансировщики нагрузки, мониторинг здоровья (?), поддержку обновлений и высокодоступность.
       link: Читать подробнее
     addServiceLink: Управлять Сервисами
     addCatalogLink: Добавить из Каталога
@@ -506,7 +550,8 @@ helpPage:
       tagline: Упс, нашли ошибку?
       fileBug: Зафайлить Баг
     content:
-      paragraph1: 'Система {appName} - платформа с открытым исходным кодом, специально созданная для эксплуатации контейнеров в промышленной среде. Контейнеры Docker, набирая все большую популярность, выдвигают новые требования к инфраструктурным службам, таким как сети, хранилища, балансировщики нагрузки, нахождение сервисов и управление ресурсами.'
+      paragraph1: |
+        Система {appName} - платформа с открытым исходным кодом, специально созданная для эксплуатации контейнеров в промышленной среде. Контейнеры Docker, набирая все большую популярность, выдвигают новые требования к инфраструктурным службам, таким как сети, хранилища, балансировщики нагрузки, нахождение сервисов и управление ресурсами.
       graphic1:
         text: Нашли ошибку?
         link: Заведите проблему на GitHub.
@@ -526,6 +571,7 @@ helpPage:
       header: Обо всем подряд
       buttonText: Больше тем обо всем подряд
     rancherOs:
+      header: RancherOS
       buttonText: Больше тем о RancherOS
     rancher:
       header: Система Rancher
@@ -534,7 +580,8 @@ helpPage:
       buttonText: Больше тем о Системе Convoy
   commercial:
     header: Рекламная пауза
-    content: 'Наша компания Rancher Labs предоставляет услуги коммерческой поддержки Системы {appName} высочайшего класса, включая круглосуточную службу поддержки и скоростные багфиксы. Кроме того, мы умеем имплементировать, интегрировать, консультировать и просто помогать компаниям, решившим внедрить Систему {appName} в промышленных масштабах. Для получения дополнительной информации о любом наборе услуг - свяжитесь с нашим отделом продаж по адресу электронной почты <a href="mailto:sales@rancher.com">sales@rancher.com</a>'
+    content: |
+      Наша компания Rancher Labs предоставляет услуги коммерческой поддержки Системы {appName} высочайшего класса, включая круглосуточную службу поддержки и скоростные багфиксы. Кроме того, мы умеем имплементировать, интегрировать, консультировать и просто помогать компаниям, решившим внедрить Систему {appName} в промышленных масштабах. Для получения дополнительной информации о любом наборе услуг - свяжитесь с нашим отделом продаж по адресу электронной почты <a href="mailto:sales@rancher.com">sales@rancher.com</a>
 hostsPage:
   addContainer: Добавить Контейнер
   index:
@@ -544,7 +591,7 @@ hostsPage:
       listView: Список
       groupedView: Группы стеков и сайдкиков
     columns:
-      emptyMessage: 'Ни хостов, ни контейнеров - скучно у вас тут!'
+      emptyMessage: Ни хостов, ни контейнеров - скучно у вас тут!
     showSystem: Покажите системные
   new:
     header:
@@ -560,12 +607,15 @@ hostsPage:
     addContainer:
       linkTo: Добавить контейнер
     infoMultiStats:
+      ip: 'IP:'
       cpu: 'Проц:'
       memory: 'Память:'
       storage: 'Диск:'
       provider:
         labelText: 'Провайдер:'
+        noHost: Пользовательский
       kernel: 'Ядро:'
+      docker: 'Докер:'
       os: 'ОС:'
       description: 'Описание:'
     navTabs:
@@ -582,7 +632,7 @@ hostsPage:
           image: Образ (Команда)
           stats: Статы
         body:
-          noData: На этом хосте пока нет контейнеров.
+          noData: 'На этом хосте пока нет контейнеров.'
     portsTab:
       table:
         header:
@@ -600,9 +650,73 @@ hostsPage:
           mounts: Маунты
         body:
           noData: На этом хосте пока нет разделов.
+k8sTab:
+  types:
+    service: Сервис
+    deployment: Развертывание
+    pod: Pod
+  kubectl:
+    header: kubectl
+    stepTwo:
+      progress: Генерируем...
+  multistat:
+    header:
+      type: 'Тип:'
+      pod: 'Pod IP:'
+      host: 'IP хоста:'
+      cluster: 'Кластер IP:'
+      external: 'Внешние IP:'
+      generation: 'Генерация:'
+      startTime: 'Запущен:'
+      created: 'Был создан:'
+  navTabs:
+    labels: Метки
+    pods: Pods
+    ports: Порты
+  namespace:
+    pods:
+      index:
+        header: Pods
+        linkTo: Добавить Pod
+      pod:
+        header:
+          linkTo: 'Pod:'
+        type:
+          header: 'Тип:'
+        navTabs:
+          containers: Контейнеры
+    deployments:
+      deployment:
+        header: 'Развертывание:'
+        navTabs:
+          pods: Pods
+          labels: Метки
+          ports: Порты
+    rcs:
+      index:
+        linkTo: Добавить RC
+      rc:
+        header: 'RC:'
+        navTabs:
+          pods: Pods
+          labels: Метки
+          ports: Порты
+    services:
+      header: Сервисы
+      linkTo: Добавить Сервис
+      service:
+        index:
+          header: 'Сервис:'
+    stacks:
+      index:
+        header: Стеки
+        linkTo: Добавить из Каталога
+  error:
+    header: Ошибка
+    linkTo: Перезагрузка
 loginPage:
-  greeting: 'Система {appName} приветствует Вас!<br/>Представьтесь.'
-  githubMessage: 'Система {appName} использует ГитХаб для управления пользователями и командами. Нажмите на кнопку чуть ниже, чтобы войти в систему и предоставить нам права на чтение базовой информации вашей учетной записи на ГитХабе.'
+  greeting: "Система {appName} приветствует Вас!<br/>Представьтесь."
+  githubMessage: "Система {appName} использует ГитХаб для управления пользователями и командами. Нажмите на кнопку чуть ниже, чтобы войти в систему и предоставить нам права на чтение базовой информации вашей учетной записи на ГитХабе."
 machinePage:
   header: Драйвера Машин
   inactive: Выключен
@@ -611,7 +725,7 @@ machinePage:
   upgrading: Обновляем
   activating: Активируем
   viewUi: Смотреть UI
-  subtext: 'Здесь можно загрузить дополнительные драйвера <code>docker-machine</code>, и в дальнейшем использовать на экране Добавления Хоста.'
+  subtext: "Здесь можно загрузить дополнительные драйвера <code>docker-machine</code>, и в дальнейшем использовать на экране Добавления Хоста."
   add: Добавить машинный драйвер
   builtin: Встроен
   other: Другие
@@ -623,8 +737,15 @@ machinePage:
       uiUrl: URL интерфейса
       checksum: Контрольная сумма
     noData: У вас нет Драйверов Машин. Как же так?
+mesosPage:
+  header: Общие сведения
+  actionLink: Откройте Mesos UI
+  launch:
+    header: Запустить
+  manage:
+    button: Mesos UI
 notFoundPage:
-  header: Вы запросили несуществующую страницу. Пожалуйста, аккуратнее.
+  header: "Вы запросили несуществующую страницу. Пожалуйста, аккуратнее."
   linkTo: Начать сначала
 registriesPage:
   index:
@@ -634,6 +755,7 @@ registriesPage:
       header:
         state: Состояние
         address: Адрес
+        email: Эл. адрес
         username: Юзернейм
         created: Был создан
       body:
@@ -644,8 +766,9 @@ registriesPage:
       custom:
         labelText: Адрес
         placeholder: напр. registry.example.com
-        help: Просто доменное имя или IP адрес, протокол указывать НЕ нужно (https://)
+        help: 'Просто доменное имя или IP адрес, протокол указывать НЕ нужно (https://)'
       email:
+        labelText: Эл. адрес
         placeholder: напр. you@example.com
       username:
         labelText: Юзернейм
@@ -672,6 +795,7 @@ servicePage:
     containers: Контейнеры
     labels: Лейблы
     links: Привязки
+    log: Лог
   containersTab:
     table:
       header:
@@ -709,7 +833,13 @@ servicePage:
         host: IP хоста
       body:
         noData: На этом сервере нет портов.
-    notActive: 'Порты доступны только пока сервис "Активен".'
+    notActive: Порты доступны только пока сервис "Активен".
+  logTab:
+    table:
+      header:
+        date: Дата
+        event: Событие
+        description: Описание
 settingsPage:
   index:
     header: Окружения
@@ -727,7 +857,9 @@ stacksPage:
   header:
     all: Все Стеки
     user: Пользовательские
+    custom: '{name} стеки'
   actionButton: Добавить Стек
+  catalogButton: Добавить из Каталога
   sort:
     label: Сортировка
     state: Состояние
@@ -749,6 +881,7 @@ stacksPage:
       startOnCreate:
         label: Запустить сервис после создания
 storagePoolsPage:
+  header: Драйверы устройств хранения данных
   volume: ID раздела
   orphaned: Осиротевшая резервная копия
   nav:
@@ -782,6 +915,7 @@ swarmPage:
           keyPlaceholder: напр. FOO
           valuePlaceholder: напр. bar
         dockerCompose:
+          labelText: docker-compose.yml
           placeholder: Скопируйте сюда содержимое файла docker-compose.yml
     project:
       linkTo: 'Проект:'
@@ -817,7 +951,7 @@ processesPage:
       header:
         id: ID
         processName: Имя
-        resource: Тип ресурса:ID
+        resource: 'Тип ресурса:ID'
         exitReason: Причина завершения
         startTime: Запущен
         endTime: Закончен
@@ -888,9 +1022,11 @@ hostPartial:
     addOptions:
       labels: Лейблы
 ldap:
+  providerName:
+    openldap: OpenLDAP
   header:
     enabled:
-      label: 'Аунтификация через {providerName} включена'
+      label: "Аунтификация через {providerName} включена"
       required: |
         Система {appName} настроена {groups, plural,
         =0 {не предоставлять доступ никаким группам}
@@ -911,61 +1047,63 @@ ldap:
         =1 {одному пользователю}
         other {# пользователям}
         }.
-      unrestricted: 'Система {appName} настроена предоставлять доступ любому пользователю директории {providerName}.'
+      unrestricted: "Система {appName} настроена предоставлять доступ любому пользователю директории {providerName}."
     disabled:
-      label: 'Аунтификация через {providerName} не настроена'
-      warning: 'Система {appName} может быть настроена на предоставление доступа набору пользователей и/или групп директории {providerName}. Прямо сейчас это не настроено, так что все, кто могут зайти на эту страницу (или достучаться до API) имеют полный контроль над системой. Не порядок!'
+      label: "Аунтификация через {providerName} не настроена"
+      warning: "Система {appName} может быть настроена на предоставление доступа набору пользователей и/или групп директории {providerName}. Прямо сейчас это не настроено, так что все, кто могут зайти на эту страницу (или достучаться до API) имеют полный контроль над системой. Не порядок!"
   accessEnabled:
     header: Аунтификация
-    subtext: 'Чтобы изменить настройки сервера - отключите контроль доступа чуть ниже и настройте всё по-новой.'
+    subtext: "Чтобы изменить настройки сервера - отключите контроль доступа чуть ниже и настройте всё по-новой."
     general:
       header: Общие
-      server: 'Сервер:'
-      serviceAccount: 'Сервисная учётка:'
-      searchBase: 'Базовый поиск:'
-      defaultDomain: 'Домен по умолчанию:'
+      server: "Сервер:"
+      tls: "TLS:"
+      serviceAccount: "Сервисная учётка:"
+      searchBase: "Базовый поиск:"
+      defaultDomain: "Домен по умолчанию:"
     users:
       header: Пользователи
-      objectClass: 'Класс объекта (Object Class):'
-      login: 'Поле логина (Login Field):'
-      name: 'Поле имени (Name Field):'
-      search: 'Поле поиска (Search Field):'
-      enabled: 'Поле статуса (Status Field):'
-      disabledBitMask: 'Маска отключения (Disabled BitMask):'
+      objectClass: "Класс объекта (Object Class):"
+      login: "Поле логина (Login Field):"
+      name: "Поле имени (Name Field):"
+      search: "Поле поиска (Search Field):"
+      enabled: "Поле статуса (Status Field):"
+      disabledBitMask: "Маска отключения (Disabled BitMask):"
     group:
       header: Группа
-      objectClass: 'Класс объекта (Object Class):'
-      name: 'Поле названия (Name Field):'
-      search: 'Поле поиска (Search Field):'
+      objectClass: "Класс объекта (Object Class):"
+      name: "Поле названия (Name Field):"
+      search: "Поле поиска (Search Field):"
     disable:
-      header: 'Зона Риска&trade;'
+      header: "Зона Риска&trade;"
       warning: '<b class="text-danger">Внимание:</b> Отключение контроля доступа предоставит полный доступ к Системе {appName} любому, кто может зайти на эту страницу или достучаться до API. Мы предупреждали!'
       confirmDisable:
         pre: Отключить контроль доступа
-        post: 'Вы хорошо подумали? Если да - нажмите еще раз, чтобы окончательно отключить контроль доступа.'
+        post: "Вы хорошо подумали? Если да - нажмите еще раз, чтобы окончательно отключить контроль доступа."
   accessConfig:
-    header: '1. Укажите настройки сервера {providerName}'
-    subtext1: 'Расскажите о своем сервере {providerName}. Стандартный порт для незащищенного соединения - <code>389</code> , а для TLS шифрования -  <code>636</code> .'
-    subtext2: 'Системе {appName} потребуется сервисная учётная запись с правами на чтение во всех доменах, пользователи которых должны иметь возможность залогиниться. Мы будем проверять, в каких группах состоит пользователь, когда он делает запросы со своим API ключом.'
+    header: "1. Укажите настройки сервера {providerName}"
+    subtext1: "Расскажите о своем сервере {providerName}. Стандартный порт для незащищенного соединения - <code>389</code> , а для TLS шифрования -  <code>636</code> ."
+    subtext2: "Системе {appName} потребуется сервисная учётная запись с правами на чтение во всех доменах, пользователи которых должны иметь возможность залогиниться. Мы будем проверять, в каких группах состоит пользователь, когда он делает запросы со своим API ключом."
     hostName:
       labelText: Имя сервера или IP адрес
     port:
       labelText: Порт
+      checkbox: TLS
     serviceUsername:
       labelText: Имя сервисной учётной записи
     servicePassword:
       labelText: Пароль сервисной учётной записи
     searchBase:
-      helpText: Будут использоваться только пользователи и группы внутри базы.
+      helpText: "Будут использоваться только пользователи и группы внутри базы."
       labelText: База поиска (Search Base)
-      placeholder: напр. dc=mycompany,dc=com
+      placeholder: "напр. dc=mycompany,dc=com"
     defaultDomain:
-      helpText: Мы будем использовать этот домен, если пользователь не укажет никакой.
+      helpText: "Мы будем использовать этот домен, если пользователь не укажет никакой."
       labelText: Домен по умолчанию
-      placeholder: напр. mycompany
+      placeholder: "напр. mycompany"
   customizeSchema:
-    header: 2. Кастомная схема
-    helpText: 'Если Ваша схема данных не соответствует стандартному формату Active Directory - вам сюда.'
+    header: "2. Кастомная схема"
+    helpText: "Если Ваша схема данных не соответствует стандартному формату Active Directory - вам сюда."
     users:
       header: Пользователи
       objectClass:
@@ -989,15 +1127,15 @@ ldap:
       search:
         labelText: Поле поиска (Search Field)
   testAuth:
-    header: 3. Протестируйте и включите аунтификацию
-    helpText: 'Проверьте, что все настроено правильно, протестировав аунтификацию с учётной записью из Вашей {providerName} директории:'
+    header: "3. Протестируйте и включите аунтификацию"
+    helpText: "Проверьте, что все настроено правильно, протестировав аунтификацию с учётной записью из Вашей {providerName} директории:"
     userName:
       labelText: Ваше имя пользователя
     password:
       labelText: Ваш пароль
     authenticate:
       pre: Аунтифицировать
-      post: Проверяем...
+      post: "Проверяем..."
 servicePartial:
   noContainers:
     label: Контейнеров пока не завезли.
@@ -1018,6 +1156,772 @@ serviceInfoPartial:
   noPublicPorts: Нет доступных портов
   links: Привязки
   noLinks: Привязок нет
+  fqdn: 'Полное доменное имя:'
+advancedSection:
+  hrText: Дополнительные опции
+catalogSettings:
+  header: Каталог
+  system:
+    header:
+      pl: Инфраструктура
+  more:
+    header: Пользовательский
+    addActionLabel: Добавить каталог
+    name:
+      label: Имя
+      placeholder: напр. mycatalog
+    url:
+      label: Ссылка (URL)
+      placeholder: 'напр. https://github.com/mycompany/mycatalog.git'
+    branch:
+      label: Ветка
+      placeholder: 'напр. master'
+confirmDelete:
+  title: 'Вы действительно хотите удалить'
+  confirmAction: Удалить
+  cancelAction: Отмена
+containerLogs:
+  title: 'Логи: {instanceName}'
+  scrollTop: Прокрутки к началу
+  scrollBottom: Прокрутка вниз
+  clear: Очистить экран
+  status:
+    initializing: Инициализация...
+    connecting: Подключение...
+    connected: Подключен
+    disconnected: Отключен
+    closed: Закрыт
+containerShell:
+  status:
+    initializing: Инициализация...
+    error: 'Ошибка: {error}'
+    connecting: Подключение...
+    connected: Подключен
+    disconnected: Отключен
+    closed: Закрыт
+copyToClipboard:
+  copied: Скопировано!
+devicePermissions:
+  all: Все
+  none: Отсутсвует
+editAccount:
+  title: Изменить профиль
+  form:
+    name:
+      label: Имя
+      placeholder: напр. Джон Смит
+    kind:
+      label: Тип Аккаунта
+      user: Пользователь
+      admin: Админ
+    description:
+      label: Описание
+      placeholder: напр. эта учетная запись является для Джона Смита
+    publicValue:
+      label: Имя пользователя
+    oldPassword:
+      label: Текущий пароль
+    newPassword:
+      label: Новый Пароль
+    confirmPassword:
+      label: Повторите пароль
+editAliasService:
+  title: Изменить псевдоним сервиса
+editApiKey:
+  title:
+    new: Новый API ключ
+  secretValue:
+    label: Секретный ключ (пароль)
+  name:
+    placeholder: напр. App servers
+editBalancerService:
+  title: Изменить систему балансировки нагрузки
+  haproxy:
+    label: haproxy.cfg
+editCertificate:
+  name:
+    placeholder: напр. mydomain.com
+editContainer:
+  title:
+    container: Изменить контейнер
+  name:
+    placeholder: напр. myapp
+  description:
+    placeholder: например мое приложение
+editExternalService:
+  title: Редактирование внешней сервисы
+  name:
+    placeholder: напр. external-db
+  description:
+    placeholder: напр. сервер внешней физической базы данных
+editHost:
+  title: Редактирование хоста
+  hostname:
+    label: Имя Хоста
+  customName:
+    label: Пользовательское имя
+    placeholder: напр. dev1
+  description:
+    label: Описание
+  labels:
+    label: Метки
+editRegistry:
+  address:
+    label: Адрес
+  email:
+    label: Эл. адрес
+    placeholder: напр. you@example.com
+  username:
+    label: Имя пользователя
+    placeholder: напр. username
+  password:
+    label: Пароль
+    placeholder: напр. пароль
+editService:
+  title: Редактировать сервис
+editStack:
+  title: Редактировать стек
+  name:
+    label: Имя
+    placeholder: напр. myapp
+  description:
+    label: Описание
+    placeholder: напр. MyApp Stack
+  group:
+    label: Теги
+stackHeader:
+  backLink: "Стек:"
+  add:
+    service: Добавить Сервис
+    balancer: Добавление системы балансировки нагрузки
+    external: Добавление внешнего сервиса
+    alias: Добавить псевдоним сервиса
+    vm: Добавить виртуалку
+formatIp:
+  noIp: Отсутсвует
+  unknownIp: Неизвестный
+formBalancerListeners:
+  addAction: Добавить порт
+  table:
+    host: IP/Порт источника
+    protocol: Протокол
+    ssl: SSL
+    container: Порт назначения по умолчанию
+    listener: Доступ
+  host:
+    placeholder: "На хосте, напр. 80 или 1.2.3.4:80"
+  protocol:
+    placeholder: "Выберите протокол:"
+  container:
+    placeholder: "В контейнере, напр. 8080"
+  selectAccess: "Выберите доступ:"
+  listen:
+    public: Публичные
+formCommand:
+  command:
+    label: Команда
+    placeholder: напр. /usr/sbin/httpd -f httpd.conf
+  entryPoint:
+    label: Точка входа
+    placeholder: напр. /bin/sh - c
+  workingDir:
+    label: Рабочая Папка
+    placeholder: напр. /myapp
+  user:
+    label: Пользователь
+    placeholder: напр. apache
+  console:
+    label: Консоль
+    none: Отсутсвует
+  autoRestart:
+    label: Автоматический перезапуск
+    startOnceFalse: Всегда
+    startOnceTrue: Никогда (стартовать один раз)
+    always: Всегда
+  environment:
+    keyPlaceholder: напр. FOO
+    valueLabel: Значение
+    valuePlaceholder: напр. bar
+formContainerLinks:
+  label: Ссылки
+  addActionLabel: Добавить ссылку
+  noLinks: Этот контейнер не имеет никаких связей.
+  targetInstance:
+    prompt: Выберите контейнер...
+  name:
+    placeholder: напр. database
+formDisks:
+  addDiskLabel: Добавить диск
+  addRootDiskLabel: Добавить корневой диск
+  name:
+    rootDisk: Корневой диск
+    label: Имя
+    placeholder: например, данные
+  size:
+    label: Размер
+  readIops:
+    placeholder: напр. 1000
+  writeIops:
+    placeholder: напр. 1000
+  driver:
+    label: Драйвер
+formEngineOpts:
+  engineInstallUrl:
+    placeholder: 'напр. http://get.docker.com/'
+    recommended: Рекомендуется
+    latest: Последнее
+  engineStorageDriver:
+    placeholder: напр. overlay
+  engineOpts:
+    keyPlaceholder: напр. log-driver
+    valuePlaceholder: напр. syslog
+  engineLabels:
+    keyLabel: Метка
+  engineEnv:
+    keyLabel: Переменная
+    keyPlaceholder: напр. HTTP_PROXY
+    valuePlaceholder: 'напр. http://your-proxy:8080'
+  engineInsecureRegistry:
+    valuePlaceholder: напр. registry.example.com
+  engineRegistryMirror:
+    valuePlaceholder: 'напр. https://my-mirror.example.com:5000'
+formHealthCheck:
+  label: Проверка работоспособности
+  checkType:
+    none: Отсутсвует
+    http: Ответ HTTP 2xx/3xx
+  request:
+    label: HTTP-запрос
+  method:
+    prompt: "Выберите HTTP-метод:"
+  host:
+    placeholder: напр. www.example.com
+  port:
+    label: Порт
+    placeholder: напр. 80
+  initializingTimeout:
+    unit: мс
+  reinitializingTimeout:
+    unit: мс
+  interval:
+    label: Интервал проверки
+    unit: мс
+  timeout:
+    label: Проверьте время ожидания
+    unit: мс
+  strategy:
+    recreate: Повторное создание
+formKeyValue:
+  key:
+    label: Ключ
+    placeholder: Ключ
+  separator: "="
+  value:
+    label: Значение
+    placeholder: Значение
+formImage:
+  label: Выбрать образ
+  vm:
+    placeholder: напр. rancher/vm-ubuntu
+    dropdownLabel: "{appName} Образы"
+  container:
+    placeholder: "напр. ubuntu:trusty"
+formNameDescription:
+  name:
+    label: Имя
+    placeholder: Имя
+  description:
+    label: Описание
+    placeholder: Описание
+formNetwork:
+  networkMode:
+    label: Сеть
+    bridge: Мост
+    container: контейнер
+    host: Хост
+    none: Отсутсвует
+  container:
+    label: контейнер
+  requestedIp:
+    placeholder: напр. 10.42.2.24
+  dns:
+    label: DNS
+  hostname:
+    label: Имя Хоста
+    placeholder: напр. web
+    dockerId: Используйте идентификатор контейнера Docker
+    containerName: Используйте имя контейнера
+  domainName:
+    label: Доменное имя
+    placeholder: напр. example.com
+  resolvingServers:
+    placeholder: напр. 8.8.4.4
+  searchDomains:
+    placeholder: напр. prod.example.com
+formPorts:
+  addAction: Карта порта
+  public:
+    label: 'Публичный Хост [IP:] Порт'
+    placeholderWithIp: "напр. 80 или 1.2.3.4:80"
+    placeholderWithoutIp: "напр. 80"
+  private:
+    label: Порт Частного Контейнера
+    placeholder: "напр. 8080"
+  protocol:
+    label: Протокол
+formScale:
+  label: Масштаб
+  global:
+    vm: Всегда запускать один инстанс этой виртуальной машины на каждом хосте
+    container: Всегда запускать один инстанс этого контейнера на каждом хосте
+formScheduling:
+  canRequestHost:
+    containers: Запуск <b>всех</b> контейнеров на конкретном хосте
+  key: Ключ
+  value: Значение
+formSecurity:
+  key: Ключ
+  value: Значение
+  logConfig:
+    addActionLabel: Добавить параметр
+    keyPlaceholder: напр. syslog-facility
+    valuePlaceholder: напр. daemon
+  pidMode:
+    label: PID режим
+    checkbox: Хост
+  memoryLimit:
+    label: Предел памяти
+    placeholder: Без ограничений
+    mb: Мб
+  swapLimit:
+    label: + Swap лимит
+    mb: Мб
+    placeholder2: Без ограничений
+  cpuPinning:
+    placeholder: 'напр. 0,3; По умолчанию: все'
+  shares:
+    placeholder: напр. 1024
+  capabilities:
+    add: Добавить
+    label: Возможности
+    helpBlock:
+      link: Больше информации
+  deviceBinding:
+    pathHost:
+      placeholder: напр. /dev/sdc
+    pathContainer:
+      label: Путь в контейнере
+      placeholder: напр. /dev/sdc
+    permissions:
+      placeholder: 'напр. 0,3; По умолчанию: все'
+  logDriver:
+    placeholder: напр. syslog
+formServiceLinks:
+  service:
+    prompt: Выберите сервис...
+  name:
+    placeholder: напр. database
+formSslTermination:
+  certificate: Сертификат*
+formStickiness:
+  none: Отсутсвует
+  newCookie: Создать новый файл cookie
+  cookieName: Имя файла cookie
+  mode: Режим
+  domain: Домен
+  options: Параметры
+  placeholder:
+    sticky: напр. sticky
+    domain: напр. mydomain.com
+formTargets:
+  title: Цели
+  addAction: Добавить Сервис
+  hostname:
+    placeholder: напр. svc.com
+  srcPort:
+    label: Порт источника
+    placeholder: напр. 80
+  value:
+    prompt: Выберите сервис...
+  path:
+    placeholder: напр. /svc
+  dstPort:
+    placeholder: напр. 8080
+formUserLabels:
+  addAction: Добавить метку
+  key:
+    label: Ключ
+    placeholder: напр. foo
+  separator: "="
+  value:
+    label: Значение
+    placeholder: напр. bar
+formUpgrade:
+  sec: сек
+formValueArray:
+  addActionLabel: Добавить значение
+  valueLabel: Значение
+  valuePlacholder: Значение
+formVirtualMachines:
+  vcpus: vCPUs
+  memory: Память
+formVolumes:
+  value:
+    prompt: Выберите контейнер...
+  volumes: Диски
+  volumeDriver:
+    placeholder: 'напр. convoy-nfs'
+heroAddService:
+  service:
+    header: Добавление первого стека
+    contentLink: Читать подробнее
+  addCatalog: Настроить
+  linkToCatalog: Просмотреть каталог
+hostSettings:
+  hostUrl:
+    new:
+      placeholder: "напр. http://example.com:8080"
+hostPod:
+  machineInfo:
+    deactivated:
+      error: Ошибка создания машины
+    groupedInstances:
+      stack: 'Стек:'
+identityBlock:
+  loading: Загрузка...
+infoMultiStats:
+  connecting: Подключение...
+  cpuSection:
+    labelText: Проц
+    system: Системные
+    user: Пользователь
+  networkSection:
+    labelText: Сеть
+    transmit: Передача
+  memorySection:
+    labelText: Память
+    used: Использовано
+  storageSection:
+    labelText: Диск
+inputCertificate:
+  key:
+    label: Закрытый ключ
+  cert:
+    label: Сертификат
+inputIdentity:
+  dropdownLabel:
+    groups: Группы
+inputPassword:
+  buttonText: Сгенерировать
+inputTextFile:
+  tooltip: Чтение из файла
+k8s:
+  containerSection:
+    name: Имя контейнера
+    status: Статус
+    message: Сообщения
+    ready: Готов
+    restarts: Перезагрузка
+    noData: Нет контейнеров
+  deploymentSection:
+    containers: Контейнеры
+    noData: Без развертывания
+  formContainerPorts:
+    portMap: Карта порта
+    addPort: Добавить порт
+    table:
+      header:
+        hostIp: IP хоста
+        hostPort: Порт Хоста
+        containerPort: Порт Контейнера
+        protocol: Протокол
+      body:
+        name: напр. web
+        hostIp: напр. 19.82.8.24
+        hostPort: напр. 80
+        containerPort: напр. 8080
+  heroAddStack:
+    header: Добавление первого стека
+    linkToCatalog: Добавить из Каталога
+  newOrEditResource:
+    edit: Изменить {type}
+    add: Добавить {type}
+  podSection:
+    name: Pod Имя
+    status: Статус
+    containers: Контейнеры
+    hostIp: IP хоста
+    podIp: Pod IP
+    noData: Нет Pods
+  rcSection:
+    name: RC имя
+    containers: Контейнеры
+  replicasetSection:
+    containers: Контейнеры
+  servicePorts:
+    port: Порт
+    containerPort: Контейнерный порт
+    nodePort: Порт узла
+    protocol: Протокол
+    noPorts: Нет портов
+  serviceRow:
+    defaultType: КластерIP
+  serviceSection:
+    name: Имя Сервиса
+    clusterIp: Кластер IP
+    pods: Pods
+    clusterPorts: Кластер портов
+    nodePorts: Порты узла
+lbAddtlInfo:
+  info: Инфо
+  viewDetails: Детально
+  description: 'Описание: '
+  containers: Контейнеры
+  noContainers: Нет контейнеров
+  scale: Масштаб
+  ports: Порты
+  targets: Цели
+labelsSection:
+  kind: Тип
+  key: Ключ
+  value: Значение
+  noData: Без меток
+loginUserPass:
+  userLabel: Имя пользователя
+  userPlaceholder: Напр. jsmith
+  loginLabel: Войти
+  loggingInLabel: Выполняется вход...
+  passwordLabel: Пароль
+machine:
+  driverAmazon:
+    accessKey:
+      label: Ключ доступа
+      placeholder: Ваш ключ доступа AWS
+    secretKey:
+      label: Секретный ключ
+      placeholder: AWS секретный ключ
+    region:
+      label: Регион
+    portHelp:
+      link: Подробнее
+    instanceSection: Инстанс
+    instanceOptionsSection: Параметры инстанса
+    instanceType:
+      label: Тип инстанса
+    rootSize:
+      unit: ГБ
+    ami:
+      label: AMI
+    sshUser:
+      label: SSH пользователь
+      placeholder: напр. ubuntu
+    iam:
+      label: IAM профиль
+    privateIp:
+      label: Частный IP
+  driverAzure:
+    networkSection: Сеть
+    instanceSection: Инстанс
+    image:
+      label: Образ
+      placeholder: 'canonical:UbuntuServer:16.04.0-LTS:latest'
+    size:
+      label: Размер
+    dockerPort:
+      label: Докер порт
+      placeholder: '2376'
+    sshUser:
+      label: SSH пользователь
+      placeholder: usr1
+    storageType:
+      label: Тип хранения
+    vnet:
+      label: VNet
+    subnet:
+      label: Подсеть
+    subnetPrefix:
+      placeholder: 128.42.0.0/21
+    openPort:
+      label: Открытый порт
+      placeholder: 'Разделенных запятыми, например 80,443'
+    privateIpAddress:
+      label: Приватный IP
+      placeholder: 127.0.0.1
+    staticPublicIp:
+      label: Публичный IP
+    noPublicIp:
+      label: Нет публичного IP
+    clientId:
+      label: ID клиента
+    regionSection: Регион
+    region:
+      label: Регион
+  driverCustom:
+    step5Close:
+      link: Хосты
+    close: Закрыть
+  driverDigitalocean:
+    instanceSection: Инстанс
+    image:
+      label: Образ
+    size:
+      label: Размер
+    regionSection: Регион
+    region:
+      label: Регион
+    optionsSection: Параметры
+    ipv6:
+      label: Включить IPv6
+  driverExoscale:
+    apiKey:
+      label: API Key
+    secretKey:
+      label: Секретный ключ
+    portHelp:
+      link: Подробнее
+    instanceSection: Инстанс
+    instanceProfile:
+      label: Профиль инстанса
+    sshUser:
+      label: SSH пользователь
+  driverPacket:
+    apiKey:
+      label: API Key
+    instanceSection: Инстанс
+    image:
+      label: Образ
+    size:
+      label: Размер
+    regionSection: Регион
+    region:
+      label: Регион
+  driverRackspace:
+    username:
+      label: Имя пользователя
+      placeholder: Ваше имя пользователя RackSpace
+    apiKey:
+      label: API Key
+    regionSection: Регион
+    region:
+      label: Регион
+    instanceSection: Инстанс
+  driverUbiquity:
+    apiToken:
+      label: Ключ доступа
+    instanceSection: Инстанс
+    regionSection: Регион
+    region:
+      label: Регион
+    image:
+      label: Образ
+  driverVsphere:
+    vcenterPort:
+      label: Порт vCenter
+    username:
+      label: Имя пользователя
+    password:
+      label: Пароль
+    instanceSection: Инстанс
+    cpuCount:
+      label: Процессоры
+    memorySize:
+      label: Память
+      unit: Мб
+    diskSize:
+      label: Диски
+      unit: Мб
+    host:
+      label: Хост
+    network:
+      label: Сеть
+  driverAliyunecs:
+    instanceDescription:
+      label: Описание инстанса
+      placeholder: Описание инстанса
+    instanceType:
+      label: Тип инстанса
+      placeholder: Тип инстанса
+    systemImage:
+      label: Образ системы
+      placeholder: Образ системы
+    instanceTag:
+      label: Тиг инстанса
+    region:
+      label: Регион
+      placeholder: Регион
+    routeCIDR:
+      placeholder: напр. 192.168.1.0/24
+    privateIp:
+      label: Приватный IP
+    sshPassword:
+      label: SSH пароль
+modalAboutComponent:
+  component: Компонент
+  version: Версия
+  cattle: Cattle
+  ui: Пользовательский интерфейс
+  close: Закрыть
+modalConfirmDeactiviate:
+  cancel: Отмена
+  buttons:
+    project:
+      button: Деактивировать
+    default:
+      message: деактивировать
+      button: Деактивировать
+modalEditBackup:
+  create: Создать Резервную Копию
+  nameLabel: Название резервной копии
+modalProcessError:
+  none: Н/Д
+  close: Закрыть
+modalShell:
+  title: 'Консоль: {instanceName}'
+newAliasService:
+  header: Добавить псевдоним сервиса
+newBalancer:
+  header: Добавить систему балансировки нагрузки
+  tabs:
+    labels: Метки
+newCatalog:
+  saveUpgrade: Обновить
+  saveNew: Запустить
+  saveConfigure: Настроить
+  upgrade: "Обновить:"
+  catalog: "Каталог:"
+  category: "Категория:"
+  support: "Служба поддержки:"
+  official: Официально сертифицирован
+  license: "Лицензия:"
+  newStack: Новый Стек
+  startService: Запустить сервис после создания
+  preview: Предварительный просмотр
+  txt: answers.txt
+newContainer:
+  add:
+    container: Добавить Контейнер
+    vm: Добавить виртуалку
+  upgrade:
+    container: Обновление контейнера
+    vm: Обновление виртуальной машины
+  tabs:
+    disks: Диски
+    userData: Данные Пользователя
+    command: Команда
+    volumes: Диски
+    networking: Сеть
+    healthCheck: Проверка работоспособности
+    labels: Метки
+  saveUpgrade: Обновить
+  saveNew: Создать
+  name:
+    placeholder: напр. myapp
+  description:
+    placeholder: напр. My Application
+  addSidekickContainer: Добавить контейнер Sidekick
+  addSidekickVm: Добавить Sidekick VM
+newExternalService:
+  header: Добавление внешнего сервиса
 pageFooter:
   notARelease: (Это не релиз)
   help: Помощь
@@ -1027,6 +1931,128 @@ pageFooter:
   forums: Форум
   download:
     link: Скачать CLI
+projectRow:
+  none: Нет описания
+registryRow:
+  email: Эл. адрес
+  username: Имя пользователя
+saveCancel:
+  saving: Сохранение...
+  saved: Сохранено!
+  edit: Сохранить
+  create: Создать
+  cancel: Отмена
+schema:
+  inputBoolean:
+    "n": "Неверно"
+schedulingRuleRow:
+  hostLabel: Метка хоста
+  containerLabel: контейнер с меткой
+serviceLink:
+  withAlias:
+    sameStack: '{service} как {alias}'
+    differentStack: '{stack}/{service} как {alias}'
+  noAlias:
+    sameStack: '{service}'
+    differentStack: '{stack}/{service}'
+sidekickAddtlInfo:
+  info: Информация
+  image: Образ
+  entryPoint: Точка входа (entrypoint)
+  command: Команда
+  containers: Контейнеры
+  noContainers: Нет контейнеров
+  labels: Метки
+  noLabels: Без меток
+siteAccess:
+  noIdentity: Отсутсвует
+  users: Пользователи
+  groups: Группы
+  organizations: Организации
+stackSection:
+  description: Описание
+  add:
+    service: Добавить Сервис
+    loadBalancer: Добавление системы балансировки нагрузки
+    serviceAlias: Добавить псевдоним сервиса
+    externalService: Добавление внешнего сервиса
+    virtualMachine: Добавить виртуалку
+  table:
+    dataTitle:
+      state: Состояние
+      serviceName: Имя Сервиса
+      kind: Тип
+      details: Детали
+      containers: Контейнеры
+      actions: Действия
+storagePoolSection:
+  readOnly: "(только для чтения)"
+  hosts:
+    header: Хосты
+    none: Нет хостов
+  volumes:
+    header: Диски
+    add: Добавить раздел
+svgServiceContainer:
+  sidekicks: Сайдкики
+swarm:
+  containerSection:
+    state: Состояние
+    name: Имя контейнера
+    image: Образ
+    none: Нет контейнеров
+  serviceSection:
+    state: Состояние
+    name: Имя Сервиса
+    ports: Порты
+    containers: Контейнеры
+telemetryOpt:
+  header: Статистика
+  learnMore:
+    link: "http://docs.rancher.com/rancher/telemetry"
+    label: Подробнее
+  label: Разрешить сбор анонимной статистики
+tooltipLink:
+  list: Список
+upgradeBtn:
+  status:
+    none: 'Отсутсвует'
+    loading: 'Проверка обновления...'
+    available: 'Доступно обновление'
+    inprogress: 'Обновление выполняется'
+    upgraded: 'Обновление: Готово'
+    notfound: 'Версия не найдена'
+    error: 'Ошибка проверки обновления'
+viewEditDescription:
+  form:
+    name:
+      placeholder: напр. lab
+viewEditProject:
+  showEdit:
+    accessControl: Контроль доступа
+  description: Описание
+vmConsole:
+  header: "Консоль:"
+  canvas: Canvas не поддерживается.
+  footerActions:
+    buttonSend: Послать Ctrl-Alt-Delete
+    buttonCancel: Закрыть
+volumeRow:
+  activeMounts:
+    readOnly: "(только для чтения)"
+waitKubernetes:
+  addHost: 'Добавьте хотя бы один узел'
+  createStack: 'Создание Kubernetes системы стека'
+  waitApi: 'Ожидание для Kubernetes API'
+containerChoices:
+  hostGroup: 'Хост: {name}'
+  hostGroupWithState: 'Хост: {name} ({state})'
+  unknownHost: 'Хост:?'
+  containerOption: "{имя}"
+  containerOptionWithState: "{name} ({state})"
+allServices:
+  stackGroup: 'Стек: {name}'
+  noName: '(Стек: {id})'
 nav:
   srToggleNav: Панель навигации
   srToggleDropdown: Выпадающий список
@@ -1039,14 +2065,33 @@ nav:
   namespace:
     label: Пространства имён
     manage: Управление пространствами
+  k8s:
+    tab: Kubernetes
+    stacks: Стеки
+    services: Сервисы
+    pods: Pods
+    cli: Kubectl
+  swarm:
+    tab: Swarm
+    projects: Проекты
+    services: Сервисы
+    cli: CLI
+    system: Инфраструктура
+  mesos:
+    tab: Mesos
+    web: Общие сведения
+    system: Инфраструктура
   cattle:
     tab: Стеки
     all: Все
     user: Пользовательские
+    system: Инфраструктура
   catalog:
     tab: Каталог
     all: Все
+    infra: Инфраструктура
     library: Библиотека
+    community: Сообщество
   infra:
     tab: Инфраструктура
     hosts: Хосты
@@ -1065,6 +2110,8 @@ nav:
     machine: Драйвера машин
     settings: Настройки
     ha: Высокодоступность
+  api:
+    tab: АПИ
   user:
     label: 'Меню пользователя: {username}'
     logout: Выйти
@@ -1074,6 +2121,8 @@ nav:
     themeLight: День
     themeAuto: Авто
     themeDark: Ночь
+  noHosts:
+    link: "Добавление хоста"
 action:
   activate: Активировать
   backup: Забекапить
@@ -1084,6 +2133,7 @@ action:
   console: Открыть консоль
   deactivate: Деактивировать
   edit: Редактировать
+  execute: Подключиться к Консоле
   exportConfig: Экспортировать конфиг
   finishUpgrade: Закончить обновление
   logs: Смотреть логи
@@ -1108,3 +2158,26 @@ action:
   viewConfig: Открыть конфиг
   viewGraph: Открыть график
   viewInApi: Открыть в API
+  viewInstance: Просмотр инстанса
+model:
+  account:
+    kind:
+      registeredAgent: Зарегистрированный агент
+      agent: Агент
+      service: Сервис
+      user: Пользователь
+      admin: Админ
+      project: Окружения
+  identity:
+    displayType:
+      user: Пользователь
+      team: Команда
+      group: Группа
+      org: Организация
+      localUser: Локальный пользователь
+      unknown: "{type}?"
+  projectMember:
+    role:
+      member: Участник
+      owner: Владелец
+      readonly: Только для чтения
