@@ -38,9 +38,9 @@
   {{#each arrangedContent as |catalogItem|}}
     {{#catalog-box model=catalogItem showSource=showCatalogDropdown as |section|}}
       {{#if (eq section 'header')}}
-        {{#if catalogItem.official}}
+        {{#if catalogItem.certified}}
           <div class='badge-certified'>
-            <strong>{{t 'catalogPage.index.certified'}}</strong>
+            <strong>{{t (concat 'catalogPage.index.certified.' (if settings.isRancher 'rancher' 'pl') '.' catalogItem.certified)}}</strong>
           </div>
         {{/if}}
       {{else if (eq section 'icon')}}

@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Controller.extend({
   application: Ember.inject.controller(),
   catalog: Ember.inject.service(),
+  settings: Ember.inject.service(),
 
   catalogController: Ember.inject.controller('catalog-tab'),
   category: Ember.computed.alias('catalogController.category'),
