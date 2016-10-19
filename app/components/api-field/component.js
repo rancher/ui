@@ -52,7 +52,9 @@ export default Ember.Component.extend({
     return out;
   }.property('field','resourceType','schemas.[]'),
 
-  valueChanged: function() {
-    this.get('resource').set(this.get('field'), this.get('value'));
-  }.observes('value'),
+  valueChanged: Ember.observer('value', function() {
+    Ember.run.schedule('afterRender', () => {
+      this.get('resource').set(this.get('field'), this.get('value'));
+    });
+  }),
 });

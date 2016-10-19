@@ -43,7 +43,7 @@
         </div>
         <div class="catalog-icon r-mb10 {{if (or driver.builtin driver.hasBuiltinUi) driver.iconMapFromConstants 'generic'}}"/>
       {{else if (eq section 'footer')}}
-        {{#if driver.externalId}}
+        {{#if (and driver.externalId (not-eq driver.state 'inactive'))}}
           {{upgrade-dropdown model=driver btnClass="btn-sm" currentId=driver.externalId upgradeOnly=false changeVersion=(action "upgradeDriver" driver)}}
         {{else if driver.builtin}}
           <span class="text-muted">{{t 'machinePage.builtin'}}</span>
