@@ -101,8 +101,9 @@ export default Ember.Service.extend({
       }
 
       // While we're looping through them all..
-      if (tpl.catalogId === C.CATALOG.LIBRARY_KEY) {
-        Ember.set(tpl, 'official', true);
+      if ((tpl.catalogId === C.CATALOG.LIBRARY_KEY || tpl.catalogId === C.CATALOG.INFRA_KEY) && tpl.labels && tpl.labels[C.LABEL.CERTIFIED] )
+      {
+        Ember.set(tpl, 'certified', tpl.labels[C.LABEL.CERTIFIED]);
       }
 
       return true;
