@@ -28,9 +28,14 @@ generic:
   ports: Ports
   remove: Retirer
   role: Rôle
+  save: Enregistrer
+  saved: Enregistré
+  saving: Enregistrement en cours
   state: Etat
   to: A
   type: Catégorie
+  test: Test
+  testing: En test
   unknown: Inconnu
 accountsPage:
   index:
@@ -114,6 +119,49 @@ auditLogsPage:
   first: 1er Page
   next: Page Suivante
 authPage:
+  shibboleth:
+    header:
+      title: Authentification Shibboleth
+    enabled:
+      header: "{providerName} est activé"
+      required: |
+        {appname} est configurée pour permettre l'accès à {orgs, plural, =0 {no organizations} =1 {# organization} other {# organizations} } et {users, plural, =0 {no users} =1 {# user} other {# users} }.
+      restricted: |
+        {appname} est configurée pour permettre l'accès aux membres de l'environnement, {orgs, plural, =0 {no organizations} =1 {# organization} other {# organizations} } et {users, plural, =0 {no users} =1 {# user} other {# users} }.
+      unrestricted: "{appname} est configuré pour autoriser l’accès à n’importe quel utilisateur {providerName}."
+      authenticated:
+        header:
+          text: Authentification
+          helpText: "Pour modifier l’application configurée avec Shibboleth, désactiver le contrôle d’accès ci-dessous et mettez-le à nouveau en place."
+      disableAccess:
+        header: "Zone dangereuse&trade;"
+        warning: '<b class="text-danger">Attention:</b> Désactiver le contrôle d''accès donne le contrôle complet à {appName}, à quiconque accède à cette page ou l''API .'
+        confirmDisable: "Êtes-vous sûr ? Cliquez encore une fois pour vraiment désactiver le contrôle d'accès"
+        disable: Désactiver le contrôle d’accès
+      groupsField: 'Groupes :'
+      displayName: 'Nom Public :'
+      userName: 'Nom d''utilisateur :'
+      userId: 'Identifiant de l''Utilisateur :'
+    disabled:
+      header: '1. configurer le compte Shibboleth'
+      label: "{providerName} n’est pas configuré"
+      warning: "{appName} peut être configuré pour restreindre l'accès à un ensemble d'utilisateurs ou groupes {providerName}. Cela n'est pas encore fait, donc quiconque pouvant accéder à cette page (ou à l'API) a un contrôle entier sur le système."
+      name:
+        labelText: Champ Nom Public
+      username:
+        labelText: Champ Nom d’Utilisateur
+      uid:
+        labelText: Champ UID
+      groups:
+        labelText: Champ Groupes
+      testAuth:
+        header: '3. Tester et activer l''authentification'
+        subtext: 'Vérifier que votre application est correctement configurée en testant l''authentification :'
+        buttonText:
+          pre: S’authentifier avec IDP
+          post: En attente de validation d'IDP
+    providerName:
+      shibboleth: Shibboleth
   root:
     header: Access Control
   github:
@@ -795,6 +843,7 @@ k8sTab:
 loginPage:
   greeting: "Howdy!<br>Bienvenue a {appName}"
   githubMessage: "{appName} Utilise GitHub pour gerer l'authentifiation.  Cliquer sur le bouton ci-dessous pour se connecter (en lecture seule) pour acceder aux information de compte Github."
+  shibbolethMessage: "{appName} utilise Shibboleth pour gérer les comptes.  Cliquez sur le bouton ci-dessous pour vous connecter à l’IDP Shibboleth configuré."
 machinePage:
   header: Pilotes Docker Machine
   inactive: Inactif
@@ -2055,6 +2104,8 @@ labelsSection:
   key: Clé
   value: Valeur
   noData: Pas d'étiquette
+loginShibboleth:
+  buttonText: S’authentifier avec Shibboleth
 loginGithub:
   buttonText: Authentification avec GitHub
 loginUserPass:

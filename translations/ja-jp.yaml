@@ -25,8 +25,13 @@ generic:
   ports: ポート
   remove: 削除
   role: ロール
+  save: 保存
+  saved: 保存済み
+  saving: 保存中
   state: 状態
   type: タイプ
+  test: テスト
+  testing: テスト中
   unknown: 不明
 accountsPage:
   index:
@@ -107,6 +112,65 @@ auditLogsPage:
   first: 最初のページ
   next: 次のページ
 authPage:
+  shibboleth:
+    header:
+      title: シボレス認証
+    enabled:
+      header: "{providerName} は有効です"
+      required: |
+        {appname} は {orgs, plural,
+        =0 {0 組織}
+        =1 {# 組織}
+        other {# 組織}
+        } と {users, plural,
+        =0 {0 ユーザー}
+        =1 {# ユーザー}
+        other {# ユーザー}
+        }に対してアクセス許可が設定されています。
+      restricted: |
+        {appname} は {orgs, plural,
+        =0 {0 組織}
+        =1 {# 組織}
+        other {# 組織}
+        } と {users, plural,
+        =0 {0 ユーザー}
+        =1 {# ユーザー}
+        other {# ユーザー}
+        }の環境メンバーに対してアクセス許可が設定されています。
+      unrestricted: "{appname} は全ての {providerName} ユーザーに対しアクセス許可が設定されています。"
+      authenticated:
+        header:
+          text: 認証
+          helpText: "シボレスアプリケーションの設定を変更するには以下のアクセスコントロールを無効化し、再度設定し直して下さい。"
+      disableAccess:
+        header: "Danger Zone&trade;"
+        warning: '<b class="text-danger">注意:</b> アクセスコントロールを無効化すると、このページや API にアクセスできる全ての人が {appName} 経由でフルコントロールするこ>とができます。'
+        confirmDisable: "本当によろしいですか? アクセスコントロールを無効化する場合は再度クリックしてください"
+        disable: アクセスコントロールを無効化
+      groupsField: 'グループ:'
+      displayName: '表示名:'
+      userName: 'ユーザー名:'
+      userId: 'ユーザー ID:'
+    disabled:
+      header: '1. シボレスアカウントを設定する'
+      label: "{providerName} が設定されていません"
+      warning: "{appName} はいくつかの {providerName} ユーザーやグループに対してアクセスを制限するよう設定できます。 現在はこの設定がされていないため、このページ(または API)にアクセスできる誰でもシステムを介しフルコントロールできます。"
+      name:
+        labelText: 表示名フィールド
+      username:
+        labelText: ユーザー名フィールド
+      uid:
+        labelText: UID フィールド
+      groups:
+        labelText: グループ フィールド
+      testAuth:
+        header: '3. テストのうえ認証を有効化する'
+        subtext: '認証テストを行うことであなたのアプリケーションが正常に設定されたことを確認します:'
+        buttonText:
+          pre: IDPによる認証
+          post: IDP からの返答を待っています
+    providerName:
+      shibboleth: シボレス
   root:
     header: Access Control
   github:
@@ -769,6 +833,7 @@ k8sTab:
 loginPage:
   greeting: "<br>ようこそ {appName} へ!"
   githubMessage: "{appName} はアカウントやチームの管理に GitHub を利用しています。 ログインしてあなたの GitHub アカウント情報に読み込み権限でアクセスするために以下のボタンを押して下さい。"
+  shibbolethMessage: "{appName} はアカウントの管理にシボレスを利用しています。 設定済みのシボレス IDP にログインするには以下のボタンを押して下さい。"
 machinePage:
   header: マシンドライバー
   inactive: 休止
@@ -1195,7 +1260,17 @@ advancedSection:
 catalogSettings:
   header: カタログ
   subtext: カタログはユーザーが少ない質問に回答するだけで簡単にアプリケーションをデプロイするための rancher-compose のテンプレートを含みます
+  system:
+    header:
+      rancher: "{appName} インフラストラクチャ"
+      pl: インフラストラクチャ
+    detail:
+      rancher: Kubernetes/Mesos/Swarm サポートのようなコアの Rancher インフラストラクチャ機能に必要なテンプレートであり、Rancher Labs によってメンテナンス、サポートされます。
+      pl: 公式にメンテナンスされているテンプレートは Kubernetes/Mesos/Swarm サポートのようなコアの Rancher インフラストラクチャ機能に必要となります。
   certified:
+    header:
+      rancher: "{appName} 認証済みライブラリ"
+      pl: 認証済みライブラリ
     detail:
       rancher: 認証済みテンプレートは Rancher Labs によってメンテナンス、サポートされます。
       pl: 正式にメンテナンス、サポートされるテンプレート。
@@ -1346,6 +1421,7 @@ editStack:
   description:
     label: 詳細情報
   group:
+    label: タグ
     help: スタックのリストはタグ(カンマ区切り) によりフィルターできます
 stackHeader:
   backLink: "スタック:"
@@ -1922,6 +1998,8 @@ labelsSection:
   key: キー
   value: 値
   noData: ラベルはありません
+loginShibboleth:
+  buttonText: シボレスで認証
 loginGithub:
   buttonText: GitHub で認証
 loginUserPass:
@@ -2619,6 +2697,8 @@ viewEditProject:
   showEdit:
     edit: "環境を編集:"
     add: 環境を追加
+    accessControl: アクセスコントロール
+    noMembers: この環境を利用することができる 1 つまたは複数のメンバーを追加します。
   header: "環境:"
   description: 詳細情報
   helpBlock: |
@@ -2684,22 +2764,28 @@ nav:
     rcs: レプリケーションコントローラー
     pods: ポッド
     cli: Kubectl
+    system: インフラストラクチャ スタック
   swarm:
     tab: Swarm
     projects: プロジェクト
     services: サービス
     cli: CLI
+    system: インフラストラクチャ
   mesos:
     tab: Mesos
     web: 概要
+    system: インフラストラクチャ
   cattle:
     tab: スタック
     all: 全て
     user: ユーザー
+    system: インフラストラクチャ
   catalog:
     tab: カタログ
     all: 全て
+    infra: インフラストラクチャ
     library: ライブラリ
+    community: コミュニティ
   infra:
     tab: インフラストラクチャ
     hosts: ホスト
@@ -2728,6 +2814,7 @@ nav:
     theme: テーマ
     themeAuto: 自動
   noHosts:
+    prefix: "最初のサービスまたはコンテナを起動する前に Docker {minVersion} もしくはそれ以上のバージョンをサポートしている Linux ホストを追加する必要があります。"
     link: "ホストを追加"
 action:
   activate: アクティブ化

@@ -101,9 +101,16 @@ export default Ember.Service.extend({
       }
 
       // While we're looping through them all..
-      if ((tpl.catalogId === C.CATALOG.LIBRARY_KEY || tpl.catalogId === C.CATALOG.INFRA_KEY) && tpl.labels && tpl.labels[C.LABEL.CERTIFIED] )
+      if ((tpl.catalogId === C.CATALOG.LIBRARY_KEY || tpl.catalogId === C.CATALOG.INFRA_KEY) )
       {
-        Ember.set(tpl, 'certified', tpl.labels[C.LABEL.CERTIFIED]);
+        if ( tpl.labels && tpl.labels[C.LABEL.CERTIFIED] )
+        {
+          Ember.set(tpl, 'certified', tpl.labels[C.LABEL.CERTIFIED]);
+        }
+        else
+        {
+          Ember.set(tpl, 'certified', 'rancher');
+        }
       }
 
       return true;
