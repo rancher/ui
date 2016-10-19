@@ -20,7 +20,7 @@ export default Ember.Component.extend(ThrottledResize, {
 
   logHeight: 300,
 
-  onlyCombinedLog: Ember.computed.alias('context.instance.tty'),
+  onlyCombinedLog: Ember.computed.alias('instance.tty'),
   which: 'combined',
   isCombined: Ember.computed.equal('which','combined'),
   isStdOut: Ember.computed.equal('which','stdout'),
