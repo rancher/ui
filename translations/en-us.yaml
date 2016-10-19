@@ -186,7 +186,7 @@ authPage:
       groups:
         labelText: Groups Field
       testAuth:
-        header: '3. Test and enable authentication'
+        header: '2. Test and enable authentication'
         subtext: 'Check that your application is configured correctly by testing authentication with it:'
         buttonText:
           pre: Authenticate with IDP
@@ -909,6 +909,10 @@ loginPage:
   greeting: "Howdy!<br>Welcome to {appName}"
   githubMessage: "{appName} uses GitHub to manage accounts and teams.  Click the button below to log in and give us read-only access to your basic GitHub account information."
   shibbolethMessage: "{appName} uses Shibboleth to manage accounts.  Click the button below to log in to the configured Shibboleth IDP."
+  shibbolethError:
+    401: "Unauthorized"
+    500: "Internal Server Error"
+    generic: "There was an error ({errorCode}) while trying to log you in. Please try again."
 
 machinePage:
   header: Machine Drivers
@@ -2704,10 +2708,11 @@ modalAuditlogInfo:
   response: "Response Object:"
 
 modalContainerStop:
-  header: Are you sure you want to stop
-  helpText: You can provide a stop timer or use the default {defaultTimeout} seconds.
+  uom: seconds
+  header: "Are you sure you want to stop"
+  helpText: "The container will be forcibly terminated if it does not stop itself before the timeout expires"
   protip: "ProTip: Hold the {alternateLabel} key while clicking stop to bypass this confirmation."
-  label: Stop Timer
+  label: Timeout
   placeholder: '10'
   button: Stop
 

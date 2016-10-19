@@ -4,7 +4,7 @@ import ModalBase from 'lacsso/components/modal-base';
 import {normalizedChoices, tagsToArray} from 'ui/models/stack';
 
 export default ModalBase.extend(NewOrEdit, {
-  classNames: ['lacsso', 'modal-container', 'full-width-modal'],
+  classNames: ['lacsso', 'modal-container', 'large-modal'],
   originalModel: Ember.computed.alias('modalService.modalOpts'),
   editing: true,
   model: null,

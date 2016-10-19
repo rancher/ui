@@ -213,29 +213,30 @@ var C = {
 
   SETTING: {
     // Dots in key names do not mix well with Ember, so use $ in their place.
-    DOT_CHAR:         '$',
-    IMAGE_RANCHER:    'rancher$server$image',
-    VERSION_RANCHER:  'rancher$server$version',
-    VERSION_COMPOSE:  'rancher$compose$version',
-    VERSION_CATTLE:   'cattle$version',
-    VERSION_MACHINE:  'docker$machine$version',
-    VERSION_GMS:      'go$machine$service$version',
-    CLI_URL: {
-      DARWIN:         'rancher$cli$darwin$url',
-      WINDOWS:        'rancher$cli$windows$url',
-      LINUX:          'rancher$cli$linux$url',
+    DOT_CHAR:                  '$',
+    IMAGE_RANCHER:             'rancher$server$image',
+    VERSION_RANCHER:           'rancher$server$version',
+    VERSION_COMPOSE:           'rancher$compose$version',
+    VERSION_CATTLE:            'cattle$version',
+    VERSION_MACHINE:           'docker$machine$version',
+    VERSION_GMS:               'go$machine$service$version',
+    CLI_URL:                   {
+      DARWIN:                  'rancher$cli$darwin$url',
+      WINDOWS:                 'rancher$cli$windows$url',
+      LINUX:                   'rancher$cli$linux$url',
     },
-    COMPOSE_URL: {
-      DARWIN:         'rancher$compose$darwin$url',
-      WINDOWS:        'rancher$compose$windows$url',
-      LINUX:          'rancher$compose$linux$url',
+    COMPOSE_URL:               {
+      DARWIN:                  'rancher$compose$darwin$url',
+      WINDOWS:                 'rancher$compose$windows$url',
+      LINUX:                   'rancher$compose$linux$url',
     },
-    API_HOST:         'api$host',
-    CATALOG_URL:      'catalog$url',
-    SWARM_PORT:       'swarm$tls$port',
-    ENGINE_URL:       'engine$install$url',
-    MIN_DOCKER:       'ui$min$docker$version',
-    TELEMETRY:        'telemetry$opt',
+    API_HOST:                  'api$host',
+    CATALOG_URL:               'catalog$url',
+    SWARM_PORT:                'swarm$tls$port',
+    ENGINE_URL:                'engine$install$url',
+    MIN_DOCKER:                'ui$min$docker$version',
+    TELEMETRY:                 'telemetry$opt',
+    AUTH_LOCAL_VALIDATE_DESC:  'api$auth$local$validate$description',
   },
 
   USER: {

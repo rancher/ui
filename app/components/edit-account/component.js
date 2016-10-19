@@ -4,9 +4,10 @@ import C from 'ui/utils/constants';
 import ModalBase from 'lacsso/components/modal-base';
 
 export default ModalBase.extend(NewOrEdit, {
-  classNames: ['lacsso', 'modal-container', 'full-width-modal'],
+  classNames: ['lacsso', 'modal-container', 'large-modal'],
   access: Ember.inject.service(),
   primaryResource: Ember.computed.alias('model.account'),
+  settings: Ember.inject.service(),
 
   originalModel: Ember.computed.alias('modalService.modalOpts'),
   account: null,
@@ -15,6 +16,10 @@ export default ModalBase.extend(NewOrEdit, {
   oldPassword: '',
   newPassword: '',
   newPassword2: '',
+
+  validateDescription: Ember.computed(function() {
+    return this.get('settings').get(C.SETTING.AUTH_LOCAL_VALIDATE_DESC) || null;
+  }),
 
   accountTypeChoices: [
     {label: 'editAccount.form.kind.user', value: 'user'},
