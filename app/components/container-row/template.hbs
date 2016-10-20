@@ -24,7 +24,7 @@
 </td>
 {{#if showStats}}
   <td data-title="{{t 'containersPage.table.stats'}}:" class="spark-td">
-    {{#if model.cpuSpark}}
+    {{#if (and statsAvailable model.cpuSpark)}}
       {{spark-line
         data=model.cpuSpark
         width=60 height=25 max=cpuMax
@@ -51,6 +51,8 @@
         prefix="containersPage.table.sparkPrefixStorage"
         formatter="kbps"
         type="storage"}}
+    {{else}}
+      <span class="text-muted">{{t 'generic.na'}}</span>
     {{/if}}
   </td>
 {{else}}

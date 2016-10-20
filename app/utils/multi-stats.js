@@ -28,8 +28,8 @@ export default Ember.Object.extend(Ember.Evented, {
   },
 
   available: function() {
-    return C.ACTIVEISH_STATES.indexOf(this.get('resource.state')) >= 0;
-  }.property('resource.state'),
+    return C.ACTIVEISH_STATES.indexOf(this.get('resource.state')) >= 0 && this.get('resource.healthState') !== 'started-once';
+  }.property('resource.{state,healthState}'),
 
   active: Ember.computed.and('available', 'connected'),
 
