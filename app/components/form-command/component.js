@@ -66,12 +66,12 @@ export default Ember.Component.extend(ManageLabels, {
   },
 
   terminalDidChange: function() {
-    var val = this.get('terminal');
+    var val = this.get('terminal.type');
     var stdinOpen = ( val === 'interactive' || val === 'both' );
-    var tty = (val.type === 'terminal' || val.type === 'both');
+    var tty = (val === 'terminal' || val === 'both');
     this.set('instance.tty', tty);
     this.set('instance.stdinOpen', stdinOpen);
-  }.observes('terminal'),
+  }.observes('terminal.type'),
 
   // ----------------------------------
   // Start Once

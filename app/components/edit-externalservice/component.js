@@ -3,7 +3,7 @@ import Ember from 'ember';
 import ModalBase from 'lacsso/components/modal-base';
 
 export default ModalBase.extend(NewOrEdit, {
-  classNames         : ['lacsso', 'modal-container', 'full-width-modal', 'modal-logs'],
+  classNames         : ['lacsso', 'modal-container', 'full-width-modal'],
   originalModel      : Ember.computed.alias('modalService.modalOpts'),
   existing: Ember.computed.alias('originalModel'),
   editing: true,

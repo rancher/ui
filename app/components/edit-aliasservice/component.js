@@ -3,7 +3,7 @@ import ModalBase from 'lacsso/components/modal-base';
 import NewServiceAlias from 'ui/mixins/new-service-alias';
 
 export default ModalBase.extend(NewServiceAlias, {
-  classNames: ['lacsso', 'modal-container', 'full-width-modal', 'modal-logs'],
+  classNames: ['lacsso', 'modal-container', 'full-width-modal'],
   originalModel  : Ember.computed.alias('modalService.modalOpts'),
   allServicesService: Ember.inject.service('all-services'),
   editing: true,

@@ -22,6 +22,10 @@ export default Ember.Component.extend(ManageLabels, GroupedInstances, {
     },
   },
 
+  shouldUpdateLabels: function() {
+    this.initLabels(this.get('model.labels'));
+  }.observes('model.labels'),
+
   filteredInstances: function() {
     let out = this.get('model.instances')||[];
 
