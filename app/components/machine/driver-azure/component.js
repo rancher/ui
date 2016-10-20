@@ -32,6 +32,8 @@ export default Ember.Component.extend(Driver, {
       subscriptionId   : '',
       clientId         : '',
       clientSecret     : '',
+      openPorts        : '',
+//      openPorts        : '500/udp,4500/udp',
     });
 
     this.set('model', this.get('store').createRecord({
@@ -103,7 +105,13 @@ export default Ember.Component.extend(Driver, {
   }),
 
   openPort: Ember.observer('openPorts', function() {
-    this.set('azureConfig.openPort', this.get('openPorts').split(','));
+    let str = (this.get('openPorts')||'').trim();
+    let ary = [];
+    if ( str.length ) {
+      ary = str.split(/\s*,\s*/);
+    }
+
+    this.set('azureConfig.openPort', ary);
   }),
 
   validate: function() {
