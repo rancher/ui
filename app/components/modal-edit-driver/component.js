@@ -3,7 +3,7 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 import ModalBase from 'lacsso/components/modal-base';
 
 export default ModalBase.extend(NewOrEdit, {
-  classNames: ['lacsso', 'modal-container', 'full-width-modal'],
+  classNames: ['lacsso', 'modal-container', 'large-modal'],
   originalModel: Ember.computed.alias('modalService.modalOpts'),
   settings: Ember.inject.service(),
 
@@ -15,19 +15,14 @@ export default ModalBase.extend(NewOrEdit, {
     this._super(...arguments);
     this.set('clone', this.get('originalModel').clone());
     this.set('model', this.get('originalModel').clone());
+    Ember.run.scheduleOnce('afterRender', () => {
+      this.$('INPUT')[0].focus();
+    });
   },
 
   editing: function() {
     return !!this.get('clone.id');
   }.property('clone.id'),
-
-  didRender() {
-    setTimeout(() => {
-      if (this._state === 'inDOM') {
-        this.$('INPUT')[0].focus();
-      }
-    }, 500);
-  },
 
   doneSaving() {
     this.send('cancel');

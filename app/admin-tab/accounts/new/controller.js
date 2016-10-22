@@ -1,14 +1,20 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
+import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend(NewOrEdit, {
   primaryResource: Ember.computed.alias('model.account'),
+  settings: Ember.inject.service(),
 
   actions: {
     cancel() {
       this.transitionToRoute('admin-tab.accounts');
     },
   },
+
+  validateDescription: Ember.computed(function() {
+    return this.get('settings').get(C.SETTING.AUTH_LOCAL_VALIDATE_DESC) || null;
+  }),
 
   accountTypeChoices: [
     {label: 'model.account.kind.user', value: 'user'},

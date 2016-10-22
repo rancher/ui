@@ -3,7 +3,7 @@ import { alternateLabel } from 'ui/utils/platform';
 import ModalBase from 'lacsso/components/modal-base';
 
 export default ModalBase.extend({
-  classNames: ['lacsso', 'modal-container', 'span-6', 'offset-3'],
+  classNames: ['lacsso', 'modal-container', 'medium-modal', 'modal-logs'],
   originalModel  : Ember.computed.alias('modalService.modalOpts.originalModel'),
   action         : Ember.computed.alias('modalService.modalOpts.action'),
   alternateLabel : alternateLabel,

@@ -3,6 +3,11 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   redirectUrl: null,
   shibbolethAuth: Ember.inject.service(),
+  outRoute: null,
+  init: function() {
+    this._super(...arguments);
+    this.set('outRoute', window.location.origin);
+  },
   actions: {
     authenticate() {
       this.sendAction('action');
