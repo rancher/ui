@@ -32,8 +32,7 @@ export default Ember.Component.extend(Driver, {
       subscriptionId   : '',
       clientId         : '',
       clientSecret     : '',
-      openPorts        : '',
-//      openPorts        : '500/udp,4500/udp',
+      openPort         : ['500/udp','4500/udp'],
     });
 
     this.set('model', this.get('store').createRecord({
