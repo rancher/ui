@@ -4,17 +4,19 @@ import ManageLabels from 'ui/mixins/manage-labels';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(ManageLabels, ContainerChoices,{
-  settings      : Ember.inject.service(),
+  settings:            Ember.inject.service(),
 
   //Inputs
-  instance      : null,
-  isService     : null,
-  allHosts      : null,
-  errors        : null,
-  initialLabels : null,
+  instance:            null,
+  isService:           null,
+  allHosts:            null,
+  errors:              null,
+  initialLabels:       null,
+  isUpgrade:           false,
+  retainWasSetOnInit:  false,
+  editing:             true,
 
   classNameBindings: ['editing:component-editing:component-static'],
-  editing: true,
 
   init() {
     this._super(...arguments);
@@ -25,6 +27,9 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
     this.initDnsDiscovery();
     this.initDnsResolver();
     this.initDnsSearch();
+    if (this.get('service.retainIp')) {
+      this.set('retainWasSetOnInit', this.get('service.retainIp'));
+    }
   },
 
   actions: {
@@ -42,6 +47,17 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
       this.get('dnsSearchArray').removeObject(obj);
     },
   },
+
+  canUpdateRetainIp: Ember.computed('isUpgrade', 'service.retainIp', 'retainWasSetOnInit', function() {
+    let isUpgrade = this.get('isUpgrade');
+    let retained = this.get('service.retainIp');
+    let wasNotSet = this.get('retainWasSetOnInit');
+    if (retained && isUpgrade && wasNotSet) {
+      return true;
+    } else {
+      return false;
+    }
+  }),
 
   updateLabels(labels) {
     this.sendAction('setLabels', labels);

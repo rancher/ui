@@ -68,6 +68,7 @@
         optionLabelPath="version"
         optionValuePath="link"
         value=selectedTemplateUrl
+        disabled=loading
       }}
       <p class="help-block">{{t (if editing selectVersionUpgrade selectVersionAdd)}}</p>
     </div>
@@ -99,24 +100,26 @@
       <h4>{{t 'newCatalog.config'}}</h4>
       <hr/>
 
-      <div class="row"><div class="col-sm-12"><div class="row">
+      <div class="container-flex">
         {{#each selectedTemplateModel.questions as |question|}}
-          <div class="col-sm-12 {{if (eq selectedTemplateModel.questions.length 1) 'col-md-12' 'col-md-6'}} form-label r-mb10">
-            <label class="form-label form-control-static">{{question.label}}{{if question.required "*"}}</label>
+          <div class="flex-item-half">
+            <div class="col-sm-12 form-label r-mb10">
+              <label class="form-label form-control-static">{{question.label}}{{if question.required "*"}}</label>
 
-            {{#if question.supported}}
-              {{component question.inputComponent field=question value=question.answer}}
-            {{else}}
-              {{input type="text" value=question.answer class="form-control"}}
-              <p>{{t 'newCatalog.unknownType'}} {{question.type}}</p>
-            {{/if}}
+              {{#if question.supported}}
+                {{component question.inputComponent field=question value=question.answer}}
+              {{else}}
+                {{input type="text" value=question.answer class="form-control"}}
+                <p>{{t 'newCatalog.unknownType'}} {{question.type}}</p>
+              {{/if}}
 
-            <p class="help-block">{{question.description}}</p>
+              <p class="help-block">{{question.description}}</p>
+            </div>
           </div>
         {{else}}
           <span class="text-muted">{{t 'newCatalog.noConfig'}}</span>
         {{/each}}
-      </div></div></div>
+      </div>
       {{#if (and (not editing) (eq templateBase ""))}}
         <div class="row r-mt20">
           <div class="col-md-12">

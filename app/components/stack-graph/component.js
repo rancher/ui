@@ -10,11 +10,17 @@ export default Ember.Component.extend(ThrottledResize, {
   graphOuter: null,
   graphRender: null,
   graph: null,
+  stackId: null,
 
   didInsertElement: function() {
     this._super();
+    this.bootstrap();
+  },
+
+  bootstrap: function() {
     var elem = $('<div id="stack-svg"><svg style="width: 100%; height: 100%;"><g/></svg></div>').appendTo('BODY');
     this.set('graphElem', elem[0]);
+    this.set('stackId', this.get('model.stack.id'));
 
     if (this.get('model.stack.services.length')) {
       Ember.run.later(this,'initGraph',100);
@@ -270,13 +276,28 @@ export default Ember.Component.extend(ThrottledResize, {
     $(this.get('graphElem').getElementsByTagName('foreignObject')).css('overflow','visible');
   },
 
+  stackIdObserver: Ember.observer('model.stack.id', function() {
+    if (this.get('model.stack.id') !== this.get('stackId')) {
+      this.tearDown();
+      Ember.run.once(() => {
+        this.sendAction('setNoServices', false);
+      });
+      Ember.run.later(this,'bootstrap',100);
+    }
+  }),
+
   throttledUpdateGraph: function() {
-    Ember.run.throttle(this,'updateGraph',250);
+    if (this.get('model.stack.id') === this.get('stackId')) {
+      Ember.run.throttle(this,'updateGraph',250);
+    }
   }.observes('model.stack.services.@each.{id,name,displayState,consumedServicesWithNames}','crosslinkServices.@each.{id,name,displayState,displayStack}'),
 
   willDestroyElement: function() {
     this._super();
     this.sendAction('setNoServices', false);
+    this.tearDown();
+  },
+  tearDown: function() {
     var elem = this.get('graphElem');
     if ( elem )
     {
