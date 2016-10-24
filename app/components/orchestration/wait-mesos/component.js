@@ -14,11 +14,11 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
-
+    let store = this.get('store');
+    this.set('services', store.all('service'));
+    this.set('hosts', store.all('host'));
+    this.set('stacks', store.all('stack'));
     this.updateStep();
-    this.get('store').findAllUnremoved('service').then((services) => {
-      this.set('services', services);
-    });
   },
 
   willDestroyElement() {
@@ -33,23 +33,23 @@ export default Ember.Component.extend({
     'waitMesos.waitApi'
   ],
 
-  updateStep: debouncedObserver('model.hosts.@each.state','model.stacks.@each.{state,externalId}','services.@each.{state,healthState}', function() {
+  updateStep: debouncedObserver('hosts.@each.state','stacks.@each.{state,externalId}','services.@each.{state,healthState}', function() {
     this.set('subStep', 0);
     this.set('subCount', 0);
 
-    if ( this.get('model.hosts.length') < 3 )
+    if ( this.get('hosts.length') < 3 )
     {
       this.set('currentStep', 0);
       return;
     }
 
-    if ( this.get('model.hosts').filterBy('state','active').get('length') < 2 )
+    if ( this.get('hosts').filterBy('state','active').get('length') < 2 )
     {
       this.set('currentStep', 1);
       return;
     }
 
-    var stack = this.get('mesos').filterSystemStack(this.get('model.stacks'));
+    var stack = this.get('mesos').filterSystemStack(this.get('stacks'));
     if ( !stack )
     {
       this.set('currentStep', 2);

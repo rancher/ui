@@ -58,6 +58,7 @@ export default Ember.Component.extend(HoverDropdown, {
     this._super(...arguments);
     this.set('stacks', this.get('store').all('stack'));
     this.set('hosts', this.get('store').all('host'));
+    this.set('stackSchema', this.get('store').getById('schema','stack'));
     this.updateNavTree();
   },
 
@@ -127,6 +128,11 @@ export default Ember.Component.extend(HoverDropdown, {
   hasProject: function() {
     return !!this.get('project');
   }.property('project'),
+
+  // Hackery: You're an owner if you can write to the 'system' field of a stack
+  isOwner: function() {
+    return !!this.get('stackSchema.resourceFields.system.update') 
+  }.property('stackSchema.resourceFields.system.update'),
 
   kubernetesReady: function() {
     return this.get('hasKubernetes') &&

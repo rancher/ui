@@ -61,15 +61,11 @@
   <hr/>
   <div class="row">
     <div class="col-sm-12 col-md-6">
-      {{new-select
-        classNames="form-control"
-        content=sortedVersions
-        prompt="newCatalog.version.prompt"
-        optionLabelPath="version"
-        optionValuePath="link"
-        value=selectedTemplateUrl
-        disabled=loading
-      }}
+      <select class="form-control" onchange={{action (mut selectedTemplateUrl) value="target.value"}} disabled={{loading}}>
+        {{#each sortedVersions as |choice|}}
+          <option value={{choice.link}} selected={{eq selectedTemplateUrl choice.link}}>{{choice.version}}</option>
+        {{/each}}
+      </select>
       <p class="help-block">{{t (if editing selectVersionUpgrade selectVersionAdd)}}</p>
     </div>
   </div>

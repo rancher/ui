@@ -55,9 +55,9 @@ var C = {
       'Rancher services'
     ],
     CATALOG_DEFAULT_GROUP: 'library',
-    ID_K8S: 'system:system*k8s',
-    ID_SWARM: 'system:system*swarm',
-    ID_MESOS: 'system:system*mesos',
+    ID_K8S: 'infra:infra*k8s',
+    ID_SWARM: 'infra:infra*swarm',
+    ID_MESOS: 'infra:infra*mesos',
   },
 
   CATALOG: {

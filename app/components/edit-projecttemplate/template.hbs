@@ -1,0 +1,63 @@
+<section class="header clearfix">
+  <h1>
+    {{#if editing}}
+      {{t 'editProjectTemplate.title.edit' displayName=originalProjectTemplate.displayName}}
+    {{else}}
+      {{t 'editProjectTemplate.title.add'}}
+    {{/if}}
+  </h1>
+</section>
+
+<section class="well r-mb0">
+  {{form-name-description
+    model=projectTemplate
+  }}
+
+  <div class="row">
+    <div class="col-xs-12">
+      <label>{{t 'editProjectTemplate.orchestration'}}</label>
+      <div class="nav nav-boxes checked-active">
+        {{#each orchestrationChoices as |driver|}}
+          {{#if driver.disabled}}
+            <a href="#" tabindex="1" alt={{driver.label}} class="nav-box-item driver orchestration-driver {{driver.css}}"></a>
+          {{else}}
+            <a href="#" tabindex="1" {{action "selectOrchestration" driver.name}} alt={{driver.label}} class="nav-box-item driver orchestration-driver {{if driver.active 'active'}} {{driver.css}}"></a>
+          {{/if}}
+        {{/each}}
+      </div>
+      {{#if (not-eq activeOrchestration 'cattle')}}
+        <div class="text-center">
+          <button type="button" class="btn btn-default" {{action "editOrchestration"}}>{{t 'editProjectTemplate.stackEdit'}}</button>
+        </div>
+      {{/if}}
+    </div>
+  </div>
+</section>
+
+{{#each categories as |category|}}
+  <section>
+    <h4>{{category}}</h4>
+    <hr/>
+    <div class="section container-fluid container-catalog clearfix">
+      {{#each-in stacksMap as |id obj|}}
+        {{#if (and obj.supported (eq obj.tpl.category category))}}
+          {{#catalog-box model=obj.tpl active=obj.enabled as |section|}}
+            {{#if (eq section 'footer')}}
+              {{#if obj.enabled}}
+                <button type="button" class="btn btn-default" {{action "enableStack" obj}}>{{t 'editProjectTemplate.stackEdit'}}</button>
+                <button type="button" class="btn btn-danger" {{action "disableStack" obj}}>{{t 'generic.disable'}}</button>
+              {{else if obj.supported}}
+                <button type="button" class="btn btn-primary" {{action "enableStack" obj}}>{{t 'generic.enable'}}</button>
+              {{/if}}
+            {{/if}}
+          {{/catalog-box}}
+        {{/if}}
+      {{/each-in}}
+    </div>
+  </section>
+{{/each}}
+
+
+<hr/>
+{{top-errors errors=errors}}
+{{save-cancel editing=editing save="save" cancel="cancel"}}

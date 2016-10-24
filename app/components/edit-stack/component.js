@@ -10,8 +10,6 @@ export default ModalBase.extend(NewOrEdit, {
   model: null,
 
   actions: {
-    outsideClick() {},
-
     addTag(tag) {
       let neu = tagsToArray(this.get('primaryResource.group'));
       neu.addObject(tag);
