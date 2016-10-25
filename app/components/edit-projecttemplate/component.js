@@ -236,6 +236,7 @@ export default Ember.Component.extend(NewOrEdit, {
     Object.keys(map).forEach((key) => {
       let obj = map[key];
       if ( obj && obj.enabled ) {
+        Ember.set(obj,'stack.externalId', C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + obj.tplVersion.id);
         ary.push(obj.stack);
       }
     });

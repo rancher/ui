@@ -29,11 +29,8 @@ export default Ember.Component.extend(ManageLabels, GroupedInstances, {
   filteredInstances: function() {
     let out = this.get('model.instances')||[];
 
-    if ( this.get('show') !== 'all' ) {
-      out = out.filter((inst) => {
-        let labels = inst.get('labels');
-        return !labels || !labels[C.LABEL.SYSTEM_TYPE];
-      });
+    if ( this.get('show') === 'standard' ) {
+      out = out.filterBy('isSystem', false);
     }
 
     return out;
