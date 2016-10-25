@@ -62,11 +62,11 @@ var C = {
 
   CATALOG: {
     INFRA_KEY: 'infra',
-    INFRA_VALUE: 'https://github.com/rancher/infra-catalog.git',
+    INFRA_VALUE: 'https://git.rancher.io/infra-catalog.git',
     LIBRARY_KEY: 'library',
-    LIBRARY_VALUE: 'https://github.com/rancher/rancher-catalog.git',
+    LIBRARY_VALUE: 'https://git.rancher.io/rancher-catalog.git',
     COMMUNITY_KEY: 'community',
-    COMMUNITY_VALUE: 'https://github.com/rancher/community-catalog.git',
+    COMMUNITY_VALUE: 'https://git.rancher.io/community-catalog.git',
     DEFAULT_BRANCH: 'master',
   },
 
