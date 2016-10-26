@@ -3,8 +3,16 @@ import Driver from 'ui/mixins/driver';
 import { PacketFacilities, PacketOs, PacketPlans} from 'ui/utils/packet-choices';
 
 
-let osChoices = PacketOs.filter(function(os) {
-  return (os.distro||'').toLowerCase() === 'ubuntu';
+let osChoices = PacketOs.map(function(os) {
+  os.enabled = (os.slug||'').toLowerCase() === 'ubuntu_14_04';
+  return os;
+});
+
+let planChoices = PacketPlans.filter(function(plan) {
+  return (plan.line||'').toLowerCase() === 'baremetal';
+}).map((plan) => {
+  plan.enabled = (plan.slug||'').toLowerCase() !== 'baremetal_2';
+  return plan;
 });
 
 export default Ember.Component.extend(Driver, {
@@ -12,7 +20,7 @@ export default Ember.Component.extend(Driver, {
   packetConfig    : Ember.computed.alias('model.packetConfig'),
 
   facilityChoices : PacketFacilities,
-  planChoices     : PacketPlans,
+  planChoices     : planChoices,
   osChoices       : osChoices,
 
   bootstrap: function() {
