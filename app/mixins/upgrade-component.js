@@ -189,5 +189,5 @@ export default Ember.Mixin.create({
 
   externalIdChanged: function() {
     Ember.run.once(this, 'updateStatus');
-  }.observes('model.externalId'),
+  }.observes('model.{externalId,state}'),
 });

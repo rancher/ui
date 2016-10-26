@@ -6,9 +6,7 @@ export default Ember.Route.extend({
 
     var dependencies = [
       store.findAll('host'),
-      store.find('stack', params.stackId).then(function(stack) {
-        return stack.importLink('services');
-      })
+      store.find('stack', params.stackId)
     ];
 
     if ( params.serviceId )
