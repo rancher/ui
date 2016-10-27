@@ -41,12 +41,12 @@
             {{/if}}
           </div>
         </div>
-        {{#if driver.iconMapFromConstants}}
-          <div class="catalog-icon r-mb10 {{driver.iconMapFromConstants}}"/>
-        {{else if driver.machineHasIcon driver}}
+        {{#if driver.externalId}}
+          <div class="catalog-icon r-mb10" style="background-image:url({{driver.catalogTemplateIcon}});"/>
+        {{else if driver.machineHasIcon}}
           <div class="catalog-icon r-mb10" style="background-image:url({{driver.machineHasIcon}});"/>
         {{else}}
-          <div class="catalog-icon r-mb10 generic"/>
+          <div class="catalog-icon r-mb10 {{driver.iconMapFromConstants}}"/>
         {{/if}}
       {{else if (eq section 'footer')}}
         {{#if (and driver.externalId (not-eq driver.state 'inactive'))}}
