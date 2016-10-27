@@ -6,25 +6,12 @@ export default Ember.Route.extend({
     var ports;
 
     return Ember.RSVP.hash({
-      hosts: store.findAll('host'),
       container: store.find('container', params.container_id),
     }).then((hash) => {
       return hash.container.followLink('ports').then(function(p) {
         ports = p;
         return hash.container;
       });
-    }).then(function(container) {
-      var host = container.get('primaryHost');
-      if ( !host || !host.get || !host.hasLink('instances') )
-      {
-        return container;
-      }
-      else
-      {
-        return host.importLink('instances').then(() => {
-          return container;
-        });
-      }
     }).then(function(container) {
       return Ember.Object.create({
         container: container,
