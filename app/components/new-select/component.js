@@ -12,6 +12,8 @@ export default Ember.Component.extend({
   action: Ember.K, // action to fire on change
   value: null,
   localizedLabel: false,
+  disabled: false,
+  attributeBindings: ['disabled'],
 
   ungroupedContent: null,
   groupedContent: null,

@@ -42,6 +42,15 @@ export default Resource.extend({
     return name;
   }),
 
+  machineHasIcon: Ember.computed('templateBase', function(){
+    if (this.get('templateBase') === 'machine') {
+      if (this.get('links.icon')) {
+        return this.get('links.icon');
+      }
+    }
+    return false;
+  }),
+
   supportsOrchestration(orch) {
     orch = orch.replace(/.*\*/,'');
     if ( orch === 'k8s' ) {

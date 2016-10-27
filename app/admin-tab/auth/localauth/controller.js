@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   access            : Ember.inject.service(),
@@ -19,6 +20,10 @@ export default Ember.Controller.extend({
     var ok = this.get('adminPublicValue.length') && this.get('adminSecretValue.length') && (this.get('adminSecretValue') === this.get('adminSecretValue2'));
     return !ok;
   }.property('adminPublicValue','adminSecretValue','adminSecretValue2'),
+
+  validateDescription: Ember.computed(function() {
+    return this.get('settings').get(C.SETTING.AUTH_LOCAL_VALIDATE_DESC) || null;
+  }),
 
   actions: {
     test: function() {

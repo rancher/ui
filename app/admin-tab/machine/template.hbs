@@ -41,7 +41,13 @@
             {{/if}}
           </div>
         </div>
-        <div class="catalog-icon r-mb10 {{if (or driver.builtin driver.hasBuiltinUi) driver.iconMapFromConstants 'generic'}}"/>
+        {{#if driver.iconMapFromConstants}}
+          <div class="catalog-icon r-mb10 {{driver.iconMapFromConstants}}"/>
+        {{else if driver.machineHasIcon driver}}
+          <div class="catalog-icon r-mb10" style="background-image:url({{driver.machineHasIcon}});"/>
+        {{else}}
+          <div class="catalog-icon r-mb10 generic"/>
+        {{/if}}
       {{else if (eq section 'footer')}}
         {{#if (and driver.externalId (not-eq driver.state 'inactive'))}}
           {{upgrade-dropdown model=driver btnClass="btn-sm" currentId=driver.externalId upgradeOnly=false changeVersion=(action "upgradeDriver" driver)}}

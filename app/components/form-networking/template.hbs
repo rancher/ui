@@ -46,7 +46,7 @@
       {{/input-or-display}}
     </div>
   </div>
-  {{#if isService}}
+  {{#if (and isService (not isSidekick))}}
     <div class="row">
       <div class="col-sm-12 col-md-2 form-label">
         <label class="form-control-static">{{t 'formNetwork.retainIp.label'}}</label>
@@ -54,7 +54,7 @@
 
       <div class="col-sm-12 col-md-8">
         {{#input-or-display editable=editing value=service.retainIp}}
-          <label class="form-control-static radio small">{{input type="checkbox" checked=service.retainIp}} {{t 'formNetwork.retainIp.reuse'}}</label>
+          <label class="form-control-static radio small">{{input type="checkbox" checked=service.retainIp disabled=isUpgrade}} {{t 'formNetwork.retainIp.reuse'}}</label>
         {{/input-or-display}}
       </div>
     </div>
