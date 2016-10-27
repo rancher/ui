@@ -33,6 +33,32 @@ var ProjectTemplate = Resource.extend(PolledResource, {
   }.property('canEdit'),
 
   icon: 'icon icon-file',
+
+  summary: function() {
+    let map = {
+      'Orchestration': [],
+    };
+
+    this.get('stacks').forEach((stack) => {
+      let category = stack.get('category');
+      if ( !map[category] ) {
+        map[category] = [];
+      }
+
+      map[category].push(stack.get('catalogTemplate.name'));
+    });
+
+    return map;
+  }.property('stacks.[]'),
+
+  orchestrationIcon: function() {
+    let orch = this.get('stacks').findBy('catalogTemplate.category','Orchestration');
+    if ( orch ) {
+      return orch.get('icon');
+    } else {
+      return `${this.get('app.baseAssets')}assets/images/logos/provider-orchestration.svg`;
+    }
+  }.property('stacks.[]'),
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often

@@ -94,7 +94,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     ];
 
     this.get('projectTemplates').forEach((tpl) => {
-      choices.push({id: tpl.id, name: tpl.name, image: tpl.links.icon});
+      choices.push({id: tpl.id, name: tpl.name, image: tpl.get('orchestrationIcon')});
     });
 
     choices.forEach(function(driver) {

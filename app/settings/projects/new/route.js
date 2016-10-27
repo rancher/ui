@@ -3,12 +3,14 @@ import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   access: Ember.inject.service(),
+  catalog: Ember.inject.service(),
 
   model: function(/*params, transition*/) {
     var userStore = this.get('userStore');
     return Ember.RSVP.hash({
       all: userStore.findAllUnremoved('project'),
       projectTemplates: userStore.findAll('projectTemplate'),
+      catalogTemplates: this.get('catalog').fetchTemplates({templateBase: C.EXTERNAL_ID.KIND_INFRA}),
     }).then((hash) => {
       var project = userStore.createRecord({
         type: 'project',

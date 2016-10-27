@@ -32,6 +32,10 @@ export default Ember.Service.extend({
     return this.get('store').request({url: `${this.get('app.catalogEndpoint')}/catalogs`});
   },
 
+  getTemplateFromCache(id) {
+    return this.get('store').getById('template', id);
+  },
+
   fetchTemplate(id, upgrade=false) {
     let type = 'templates';
     if ( upgrade === true ) {
