@@ -28,6 +28,24 @@
       descriptionPlaceholder="viewEditDescription.form.description.placeholder"
     }}
   </section>
+
+  {{#unless editing}}
+    <section class="well">
+      <div class="row">
+        <div class="col-xs-12">
+          <label>{{t 'viewEditProject.showEdit.template'}}</label>
+          <div class="nav nav-boxes checked-active">
+            {{#each templateChoices as |tpl|}}
+              <a href="#" tabindex="1" {{action "selectTemplate" tpl.id}} class="nav-box-item driver orchestration-driver r-p5 {{if (eq project.projectTemplateId tpl.id) 'active'}}">
+                <img src="{{tpl.image}}"/>
+                {{tpl.name}}
+              </a>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+    </section>
+  {{/unless}}
 {{else if project.description}}
   <section class="well r-mb0">
     <label class="inline-block r-m0">{{t 'viewEditProject.description'}}: </label>

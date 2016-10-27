@@ -28,6 +28,10 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   stacks: null,
 
   actions: {
+    selectTemplate(id) {
+      this.set('project.projectTemplateId', id);
+    },
+
     changeProject(project) {
       this.get('router').transitionTo('settings.projects.detail', project.get('id'));
     },
@@ -81,6 +85,24 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
       };
     });
   }.property(),
+
+  templateChoices: function() {
+    var active = this.get('project.projectTemplateId');
+
+    var choices = [
+      {id: null, name: 'None', image: `${this.get('app.baseAssets')}assets/images/logos/provider-orchestration.svg`}
+    ];
+
+    this.get('projectTemplates').forEach((tpl) => {
+      choices.push({id: tpl.id, name: tpl.name, image: tpl.links.icon});
+    });
+
+    choices.forEach(function(driver) {
+      driver.active = ( active === driver.name );
+    });
+
+    return choices;
+  }.property('project.projectTemplateId'),
 
   hasOwner: function() {
     return this.get('project.projectMembers').filterBy('role', C.PROJECT.ROLE_OWNER).get('length') > 0;

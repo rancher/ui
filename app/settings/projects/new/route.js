@@ -8,11 +8,13 @@ export default Ember.Route.extend({
     var userStore = this.get('userStore');
     return Ember.RSVP.hash({
       all: userStore.findAllUnremoved('project'),
+      projectTemplates: userStore.findAll('projectTemplate'),
     }).then((hash) => {
       var project = userStore.createRecord({
         type: 'project',
         name: '',
         description: '',
+        projectTemplateId: null,
       });
 
       if ( this.get('access.enabled') )
@@ -32,6 +34,7 @@ export default Ember.Route.extend({
         originalProject: null,
         project: project,
         all: hash.all,
+        projectTemplates: hash.projectTemplates,
         stacks: [],
       });
     });

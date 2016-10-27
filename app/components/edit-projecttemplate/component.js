@@ -91,14 +91,20 @@ export default Ember.Component.extend(NewOrEdit, {
         orch.push(tpl.get('id'));
       }
 
-      let cur = stacks.findBy('externalIdInfo.templateId', tpl.get('id'));
+      let cur = stacks.findBy('externalIdInfo.templateId', tplId);
+
        if ( cur ) {
          map[tplId] = Ember.Object.create({
            enabled: true,
            compatible: null,
            tpl: tpl,
-           stack: cur,
-           changed: false,
+           stack: this.get('store').createRecord({
+             type: 'stack',
+             name: cur.get('name'),
+             description: cur.get('description'),
+             environment: cur.get('answers'),
+             templateVersionId: cur.get('externalId'),
+           }),
          });
        } else {
          map[tplId] = Ember.Object.create({
@@ -108,9 +114,7 @@ export default Ember.Component.extend(NewOrEdit, {
            stack: this.get('store').createRecord({
              type: 'stack',
              name: tpl.get('defaultName'),
-             system: true,
              environment: {},
-             startOnCreate: true,
            }),
          });
        }
@@ -243,6 +247,8 @@ export default Ember.Component.extend(NewOrEdit, {
   doSave() {
     let map = this.get('stacksMap');
     let ary = [];
+
+    // Only look at enabled stacks
     Object.keys(map).forEach((key) => {
       let obj = map[key];
       if ( obj && obj.enabled ) {
@@ -250,6 +256,7 @@ export default Ember.Component.extend(NewOrEdit, {
       }
     });
 
+    // Map to the catalogTemplate objects the API wants
     let stacks = ary.map((obj) => {
       let s = obj.stack;
       return {

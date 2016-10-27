@@ -5,9 +5,9 @@ import C from 'ui/utils/constants';
 let DEADTOME = ['removed','purging','purged'];
 
 const ORCHESTRATION_STACKS = [
-  'infra*k8s',
-  'infra*swarm',
-  'infra*mesos'
+  'k8s',
+  'swarm',
+  'mesos'
 ];
 
 export default Ember.Mixin.create({
@@ -163,8 +163,9 @@ export default Ember.Mixin.create({
 
   stackChanged: function(change) {
     let stack = change.data.resource;
+    let info = stack.get('externalIdInfo');
 
-    if ( ORCHESTRATION_STACKS.indexOf(stack.get('externalIdInfo.name')) >= 0 ) {
+    if ( info && info.name && ORCHESTRATION_STACKS.includes(info.name) ) {
       Ember.run.once(this, function() {
         this.get('projects.current').reload().then(() => {
           this.get('projects').updateOrchestrationState();

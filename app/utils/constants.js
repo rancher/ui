@@ -21,6 +21,7 @@ var C = {
   EXTERNAL_ID: {
     KIND_SEPARATOR: '://',
     GROUP_SEPARATOR: ':',
+    BASE_SEPARATOR: '*',
     ID_SEPARATOR: ':',
     KIND_ALL: 'all',
     KIND_USER: KIND_USER,
