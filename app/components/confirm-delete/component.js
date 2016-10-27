@@ -9,8 +9,6 @@ export default ModalBase.extend({
   settings: Ember.inject.service(),
 
   actions: {
-    outsideClick: function() {},
-
     confirm: function() {
       this.get('resources').forEach((resource) => {
         resource.delete();

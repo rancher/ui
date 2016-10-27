@@ -3,12 +3,10 @@ import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   projects: Ember.inject.service(),
-  catalog: Ember.inject.service(),
 
   model: function() {
     return Ember.RSVP.hash({
       stacks: this.get('store').findAll('stack'),
-      catalog: this.get('catalog').fetchTemplates({plusInfra: true, allowFailure: true}),
     });
   },
 

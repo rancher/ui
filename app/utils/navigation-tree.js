@@ -9,6 +9,7 @@ export const k8sReady = function() { return this.get('kubernetesReady'); };
 export const k8sStacks = function() { return this.get('kubernetesReady') && this.get('k8s.supportsStacks'); };
 export const swarmReady = function() { return this.get('swarmReady'); };
 export const mesosReady = function() { return this.get('mesosReady'); };
+export const isOwner = function() { return this.get('isOwner'); };
 
 /* Tree item options
   {
@@ -228,6 +229,7 @@ const navTree = [
         icon: 'icon icon-gear',
         route: 'stacks',
         ctx: [getProjectId],
+        condition: isOwner,
         queryParams: {which: C.EXTERNAL_ID.KIND_INFRA},
       }
     ]
@@ -421,18 +423,6 @@ function getCatalogSubtree() {
     });
 
     out.push({divider: true});
-  }
-
-  if (repos.indexOf(C.CATALOG.INFRA_KEY) >= 0 ) {
-    repos.removeObject(C.CATALOG.INFRA_KEY);
-    out.push({
-      id: 'catalog-infra',
-      localizedLabel: 'nav.catalog.infra',
-      icon: 'icon icon-gear',
-      route: 'catalog-tab',
-      ctx: [getProjectId],
-      queryParams: {catalogId: 'infra'}
-    });
   }
 
   if (repos.indexOf(C.CATALOG.LIBRARY_KEY) >= 0 ) {

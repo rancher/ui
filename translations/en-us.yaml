@@ -13,9 +13,11 @@ generic:
   created: Created
   default: Default
   description: Description
+  disable: Disable
   disabled: Disabled
   domainName: Domain Name
   emptyString: ""
+  enable: Enable
   enabled: Enabled
   expires: Expires
   healthy: Healthy
@@ -1066,9 +1068,9 @@ servicePage:
 settingsPage:
   index:
     header: Environments
-    linkTo: Add Environment
+    new: Add Environment
     subtext: |
-      <p>{appName} supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
+      <p>{appName} supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more users or groups.</p>
       <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
 
     alert: There are no active environments.  You will need to create or activate one before you can do anything else.
@@ -1076,7 +1078,20 @@ settingsPage:
       header:
         orchestration: Orchestration
       body:
-        noData: You don't have any environments yet.
+        noData: "You don't have any environments yet."
+  indexTemplate:
+    header: Environment Templates
+    new: Add Template
+    subtext: |
+      <p>{appName} supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more users or groups.</p>
+      <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
+
+    table:
+      header:
+        stacks: Stacks
+        isPublic: Public
+      body:
+        noData: "You don't have any environment templates yet."
 
 stacksPage:
   header:
@@ -1418,20 +1433,13 @@ advancedSection:
 catalogSettings:
   header: Catalog
   subtext: Catalogs contain templates that allow users to easily deploy applications by answering a few questions
-  system:
-    header:
-      rancher: "{appName} Infrastructure"
-      pl: Infrastructure
-    detail:
-      rancher: Templates required for core Rancher infrastructure features such as Kubernetes/Mesos/Swarm support.  Maintained and supported by Rancher Labs.
-      pl: Officially maintained templates required for core infrastructure features such as Kubernetes/Mesos/Swarm support.
   certified:
     header:
       rancher: "{appName} Certified Library"
       pl: Certified Library
     detail:
-      rancher: Optional templates maintained and supported by Rancher Labs.
-      pl: Officially maintained and supported optional templates.
+      rancher: Templates required for core Rancher features such as Kubernetes/Mesos/Swarm orchestration support.  Maintained and supported by Rancher Labs.
+      pl: Officially maintained templates required for core features such as Kubernetes/Mesos/Swarm support.
   community:
     header:
       rancher: Community Contributed
@@ -1595,6 +1603,21 @@ editHost:
     placeholder: e.g. My development host
   labels:
     label: Labels
+
+editProjectTemplate:
+  title:
+    add: Add Template
+    edit: "Edit Template: {displayName}"
+  orchestration: Orchestration
+  stackEdit: Edit Config
+  access:
+    label: Sharing
+    private: "Private: Only available to me"
+    public: "Public: Available to all users (admin only)"
+  error:
+    conflict: Conflict
+    enabling: "The selected version of {tplCategory} stack \"{stackName}\" does not support {orchestration} Orchestration."
+    changing: "The currently enabled {tplCategory} stack \"{stackName}\" does not support {orchestration} Orchestration."
 
 editRegistry:
   title: Edit Registry
@@ -3088,6 +3111,7 @@ viewEditProject:
   showEdit:
     edit: "Edit Environment:"
     add: Add Environment
+    template: Environment Template
     accessControl: Access Control
     noMembers: Add one or more members who can use this environment.
   header: "Environment:"
@@ -3165,6 +3189,7 @@ nav:
     your: Your Environments
     selected: Selected Environment
     manage: Manage Environments
+    edit: 'Edit "{name}"'
   namespace:
     label: Namespace
     manage: Manage Namespaces
@@ -3196,7 +3221,6 @@ nav:
   catalog:
     tab: Catalog
     all: All
-    infra: Infrastructure
     library: Library
     community: Community
   infra:

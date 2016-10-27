@@ -36,14 +36,10 @@
     {{#each arranged as |stack|}}
       {{stack-section model=stack showAddtlInfo='showAddtlInfo' showAddService=(not stack.system)}}
     {{else}}
-      {{#if (eq which 'infra')}}
-        {{#hero-add-service catalog=model.catalog showUser=false}}
-          <div class="r-m20 text-center text-muted">{{t 'stacksPage.noInfra'}}</div>
-        {{/hero-add-service}}
-      {{else if (and model.length tagArray.length)}}
+      {{#if (and model.length tagArray.length)}}
         <div class="r-m20 text-center text-muted">{{t 'stacksPage.noMatch'}}</div>
       {{else}}
-        {{hero-add-service catalog=model.catalog}}
+        {{hero-add-service}}
       {{/if}}
     {{/each}}
   </div>

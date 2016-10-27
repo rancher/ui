@@ -1,0 +1,31 @@
+<section class="header">
+  <h1>{{t 'settingsPage.indexTemplate.header'}}</h1>
+  {{#link-to "settings.projects.new-template" class="btn btn-sm btn-primary"}}{{t 'settingsPage.indexTemplate.new'}}{{/link-to}}
+</section>
+<section>
+  <div class="well">
+    {{format-html-message 'settingsPage.indexTemplate.subtext' appName=settings.appName}}
+  </div>
+</section>
+
+<section class="well">
+  <table class="grid fixed" style="margin-bottom: 0">
+    <thead>
+      <tr>
+        {{sortable-th sortable=this action="changeSort" name="name" label='generic.name'}}
+        {{sortable-th sortable=this action="changeSort" name="description" label='generic.description'}}
+        <th>{{t 'settingsPage.indexTemplate.table.header.stacks'}}</th>
+        <th width="80">{{t 'settingsPage.indexTemplate.table.header.isPublic'}}</th>
+        <th width="75">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each arranged as |row|}}
+        {{project-template-row model=row}}
+      {{else}}
+        <tr><td colspan="5" class="text-center text-muted">{{t 'settingsPage.indexTemplate.table.body.noData'}}</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>
+

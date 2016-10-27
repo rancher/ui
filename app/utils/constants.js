@@ -21,6 +21,7 @@ var C = {
   EXTERNAL_ID: {
     KIND_SEPARATOR: '://',
     GROUP_SEPARATOR: ':',
+    BASE_SEPARATOR: '*',
     ID_SEPARATOR: ':',
     KIND_ALL: 'all',
     KIND_USER: KIND_USER,
@@ -55,14 +56,9 @@ var C = {
       'Rancher services'
     ],
     CATALOG_DEFAULT_GROUP: 'library',
-    ID_K8S: 'system:system*k8s',
-    ID_SWARM: 'system:system*swarm',
-    ID_MESOS: 'system:system*mesos',
   },
 
   CATALOG: {
-    INFRA_KEY: 'infra',
-    INFRA_VALUE: 'https://git.rancher.io/infra-catalog.git',
     LIBRARY_KEY: 'library',
     LIBRARY_VALUE: 'https://git.rancher.io/rancher-catalog.git',
     COMMUNITY_KEY: 'community',

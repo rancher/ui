@@ -12,6 +12,7 @@ export function parseExternalId(externalId) {
   var out = {
     kind: null,
     group: null,
+    base: null,
     id: null,
     name: null,
     version: null,
@@ -58,11 +59,23 @@ export function parseExternalId(externalId) {
   }
 
   if ( nameVersion ) {
-    let parts = nameVersion.split(CE.ID_SEPARATOR);
-    if ( parts && parts.length === 2 ) {
-      out.name = parts[0];
-      out.version = parts[1];
-      out.templateId = `${out.group}${CE.GROUP_SEPARATOR}${out.name}`;
+    idx = nameVersion.lastIndexOf(CE.ID_SEPARATOR);
+    let nameBase;
+    if ( idx > 0 ) {
+      out.version = nameVersion.substr(idx+1);
+      nameBase = nameVersion.substr(0,idx);
+    } else {
+      nameBase = nameVersion;
+    }
+
+    out.templateId = `${out.group}${CE.GROUP_SEPARATOR}${nameBase}`;
+
+    idx = nameBase.lastIndexOf(CE.BASE_SEPARATOR);
+    if ( idx > 0 ) {
+      out.base = nameBase.substr(0, idx);
+      out.name = nameBase.substr(idx+1);
+    } else {
+      out.name = nameBase;
     }
   }
 

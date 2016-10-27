@@ -59,11 +59,11 @@ export default Ember.Component.extend(NewOrEdit, {
     },
   },
 
-  init() {
-    this._super(...arguments);
-    Ember.run.scheduleOnce('afterRender', () => {
-      this.set('selectedTemplateModel', null);
+  onInit: function() {
+    this._super();
+    this.set('selectedTemplateModel', null);
 
+    Ember.run.scheduleOnce('afterRender', () => {
       var def = this.get('templateResource.defaultVersion');
       var links = this.get('versionLinks');
       if (links[def]) {
@@ -72,7 +72,7 @@ export default Ember.Component.extend(NewOrEdit, {
         this.set('selectedTemplateUrl', null);
       }
     });
-  },
+  }.on('init'),
 
   updateReadme: function() {
     let model = this.get('selectedTemplateModel');

@@ -34,7 +34,7 @@ export function denormalizeInstanceId(field) {
 }
 
 // Service
-const SERVICE_TYPES = ['composeservice','kubernetesservice','externalservice','dnsservice','loadbalancerservice','service'];
+const SERVICE_TYPES = ['composeservice','kubernetesservice','networkdriverservice','storagedriverservice','externalservice','dnsservice','loadbalancerservice','service'];
 export function getByServiceId(store, id) {
   let obj;
   let i = SERVICE_TYPES.length-1;
