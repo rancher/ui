@@ -43,6 +43,16 @@
             {{/each}}
           </div>
         </div>
+
+        {{#each-in selectedProjectTemplate.summary as |category names|}}
+          <div class="text-center">
+            <label class="text-capitalize">{{category}}</label>: {{names}}
+          </div>
+        {{else}}
+          <div class="text-center">
+            <label class="text-capitalize">Orchestration</label>: Cattle
+          </div>
+        {{/each-in}}
       </div>
     </section>
   {{/unless}}

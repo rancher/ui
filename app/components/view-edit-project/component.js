@@ -104,6 +104,10 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     return choices;
   }.property('project.projectTemplateId'),
 
+  selectedProjectTemplate: function() {
+    return this.get('projectTemplates').findBy('id', this.get('project.projectTemplateId'));
+  }.property('project.projectTemplateId'),
+
   hasOwner: function() {
     return this.get('project.projectMembers').filterBy('role', C.PROJECT.ROLE_OWNER).get('length') > 0;
   }.property('project.projectMembers.@each.role'),

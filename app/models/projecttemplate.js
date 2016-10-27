@@ -36,16 +36,16 @@ var ProjectTemplate = Resource.extend(PolledResource, {
 
   summary: function() {
     let map = {
-      'Orchestration': [],
+      'Orchestration': '',
     };
 
     this.get('stacks').forEach((stack) => {
       let category = stack.get('category');
       if ( !map[category] ) {
-        map[category] = [];
+        map[category] = '';
       }
 
-      map[category].push(stack.get('catalogTemplate.name'));
+      map[category] += (map[category] ? ', ' : '') + stack.get('catalogTemplate.name');
     });
 
     return map;
