@@ -27,6 +27,7 @@ function displayUrl(url) {
 var machineDriver = Resource.extend(PolledResource, {
   type: 'machineDriver',
   modalService: Ember.inject.service('modal'),
+  catalog: Ember.inject.service(),
 
   actions: {
     activate: function() {
@@ -41,6 +42,17 @@ var machineDriver = Resource.extend(PolledResource, {
       this.get('modalService').toggleModal('modal-edit-driver', this);
     },
   },
+
+  catalogTemplateIcon: Ember.computed('externalId', function() {
+    let parsedExtId = parseExternalId(this.get('externalId')) || null;
+
+    if (!parsedExtId) {
+      return null;
+    }
+
+    return this.get('catalog').getTemplateFromCache(parsedExtId.templateId).get('links.icon');
+
+  }),
 
   iconMapFromConstants: Ember.computed('name', function() {
     let name = this.get('name').toUpperCase();
