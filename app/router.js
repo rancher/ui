@@ -26,6 +26,7 @@ Router.map(function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
         this.route('new-template', {path: '/add-template'});
+        this.route('edit-template', {path: '/template/:template_id'});
         this.route('detail', {path: '/:project_id'});
       });
     });

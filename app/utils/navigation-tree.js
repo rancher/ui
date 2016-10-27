@@ -425,20 +425,6 @@ function getCatalogSubtree() {
     out.push({divider: true});
   }
 
-  if (repos.indexOf(C.CATALOG.INFRA_KEY) >= 0 ) {
-    repos.removeObject(C.CATALOG.INFRA_KEY);
-    if ( this.get('isOwner') ) {
-      out.push({
-        id: 'catalog-infra',
-        localizedLabel: 'nav.catalog.infra',
-        icon: 'icon icon-gear',
-        route: 'catalog-tab',
-        ctx: [getProjectId],
-        queryParams: {catalogId: 'infra'}
-      });
-    }
-  }
-
   if (repos.indexOf(C.CATALOG.LIBRARY_KEY) >= 0 ) {
     repos.removeObject(C.CATALOG.LIBRARY_KEY);
     out.push({

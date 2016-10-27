@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import ManageLabels from 'ui/mixins/manage-labels';
 import GroupedInstances from 'ui/mixins/grouped-instances';
-import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(ManageLabels, GroupedInstances, {
   model             : null,

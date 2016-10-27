@@ -101,7 +101,7 @@ export default Ember.Service.extend({
       }
 
       // While we're looping through them all..
-      if ((tpl.catalogId === C.CATALOG.LIBRARY_KEY || tpl.catalogId === C.CATALOG.INFRA_KEY) )
+      if ( tpl.catalogId === C.CATALOG.LIBRARY_KEY )
       {
         if ( tpl.labels && tpl.labels[C.LABEL.CERTIFIED] )
         {
@@ -109,7 +109,7 @@ export default Ember.Service.extend({
         }
         else
         {
-          Ember.set(tpl, 'certified', 'rancher');
+          Ember.set(tpl, 'certified', null);
         }
       }
 

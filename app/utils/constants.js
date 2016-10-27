@@ -55,14 +55,9 @@ var C = {
       'Rancher services'
     ],
     CATALOG_DEFAULT_GROUP: 'library',
-    ID_K8S: 'infra:infra*k8s',
-    ID_SWARM: 'infra:infra*swarm',
-    ID_MESOS: 'infra:infra*mesos',
   },
 
   CATALOG: {
-    INFRA_KEY: 'infra',
-    INFRA_VALUE: 'https://git.rancher.io/infra-catalog.git',
     LIBRARY_KEY: 'library',
     LIBRARY_VALUE: 'https://git.rancher.io/rancher-catalog.git',
     COMMUNITY_KEY: 'community',

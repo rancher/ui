@@ -1,7 +1,7 @@
 <section class="header clearfix">
   <h1>
     {{#if editing}}
-      {{t 'editProjectTemplate.title.edit' displayName=originalProjectTemplate.displayName}}
+      {{t 'editProjectTemplate.title.edit' displayName=originalProjectTemplate.name}}
     {{else}}
       {{t 'editProjectTemplate.title.add'}}
     {{/if}}
@@ -13,16 +13,37 @@
     model=projectTemplate
   }}
 
+  {{#if access.admin}}
+    <div class="row">
+      <div class="col-xs-12">
+        <label>{{t 'editProjectTemplate.access.label'}}</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6">
+        <div class="radio">
+          <label>{{radio-button selection=projectTemplate.isPublic value=false}} {{t 'editProjectTemplate.access.private'}}</label>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="radio">
+          <label>{{radio-button selection=projectTemplate.isPublic value=true}} {{t 'editProjectTemplate.access.public'}}</label>
+        </div>
+      </div>
+    </div>
+  {{/if}}
+</section>
+
+<section class="well r-mb0">
   <div class="row">
     <div class="col-xs-12">
       <label>{{t 'editProjectTemplate.orchestration'}}</label>
       <div class="nav nav-boxes checked-active">
         {{#each orchestrationChoices as |driver|}}
-          {{#if driver.disabled}}
-            <a href="#" tabindex="1" alt={{driver.label}} class="nav-box-item driver orchestration-driver {{driver.css}}"></a>
-          {{else}}
-            <a href="#" tabindex="1" {{action "selectOrchestration" driver.name}} alt={{driver.label}} class="nav-box-item driver orchestration-driver {{if driver.active 'active'}} {{driver.css}}"></a>
-          {{/if}}
+          <a href="#" tabindex="1" {{action "selectOrchestration" driver.name}} title="{{driver.title}}" class="nav-box-item driver orchestration-driver r-p5 {{if driver.active 'active'}}">
+            <img src="{{driver.image}}"/>
+            {{#if showOrchestrationOrigin}}<div class="small clip r-pt5">{{driver.source}}</div>{{/if}}
+          </a>
         {{/each}}
       </div>
       {{#if (not-eq activeOrchestration 'cattle')}}
@@ -41,7 +62,7 @@
     <div class="section container-fluid container-catalog clearfix">
       {{#each-in stacksMap as |id obj|}}
         {{#if (and obj.supported (eq obj.tpl.category category))}}
-          {{#catalog-box model=obj.tpl active=obj.enabled as |section|}}
+          {{#catalog-box model=obj.tpl active=obj.enabled showSource=true as |section|}}
             {{#if (eq section 'footer')}}
               {{#if obj.enabled}}
                 <button type="button" class="btn btn-default" {{action "enableStack" obj}}>{{t 'editProjectTemplate.stackEdit'}}</button>

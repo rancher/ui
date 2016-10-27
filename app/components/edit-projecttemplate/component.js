@@ -1,15 +1,9 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import Util from 'ui/utils/util';
 
-const ORCH_TEMPLATES = [
-  C.EXTERNAL_ID.ID_K8S,
-  C.EXTERNAL_ID.ID_SWARM,
-  C.EXTERNAL_ID.ID_MESOS
-];
-
 export default Ember.Component.extend(NewOrEdit, {
+  access: Ember.inject.service(),
   growl: Ember.inject.service(),
   intl: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
@@ -18,6 +12,7 @@ export default Ember.Component.extend(NewOrEdit, {
   catalogInfo: null,
 
   stacksMap: null,
+  orchestrationIds: null,
   activeOrchestration: null,
   primaryResource: Ember.computed.alias('projectTemplate'),
   editing: Ember.computed.notEmpty('projectTemplate.id'),
@@ -51,7 +46,7 @@ export default Ember.Component.extend(NewOrEdit, {
         }
       }
 
-      ORCH_TEMPLATES.forEach((cur) => {
+      this.get('orchestrationIds').forEach((cur) => {
         if ( map[cur] ) {
           map[cur].set('enabled', id === cur);
         }
@@ -77,14 +72,25 @@ export default Ember.Component.extend(NewOrEdit, {
     disableStack(obj) {
       obj.set('enabled', false);
     },
+
+    cancel() {
+      return this.get('router').transitionTo('settings.projects');
+    },
   },
 
   initMap() {
     let map = {};
+    let orch = [];
     let stacks = this.get('projectTemplate.stacks');
 
     this.get('catalogInfo.catalog').forEach((tpl) => {
       let tplId = tpl.get('id');
+
+      if ( (tpl.get('category')||'').toLowerCase() === 'orchestration')
+      {
+        orch.push(tpl.get('id'));
+      }
+
       let cur = stacks.findBy('externalIdInfo.templateId', tpl.get('id'));
        if ( cur ) {
          map[tplId] = Ember.Object.create({
@@ -111,13 +117,14 @@ export default Ember.Component.extend(NewOrEdit, {
      });
 
      this.set('stacksMap', map);
+     this.set('orchestrationIds', orch);
   },
 
   initOrchestration() {
     let map = this.get('stacksMap');
 
     var orch = 'cattle';
-    ORCH_TEMPLATES.forEach((key) => {
+    this.get('orchestrationIds').forEach((key) => {
       if ( map[key] && Ember.get(map[key],'enabled') ) {
         orch = key;
       }
@@ -151,29 +158,30 @@ export default Ember.Component.extend(NewOrEdit, {
     return out;
   }.property('catalogInfo.catalog.@each.category'),
 
+  showOrchestrationOrigin: false,
   orchestrationChoices: function() {
     var active = this.get('activeOrchestration');
 
     var drivers = [
-      {name: 'cattle', label: 'Cattle', css: 'cattle'}
+      {name: 'cattle', title: 'Cattle', source: 'Built-In', image: `${this.get('app.baseAssets')}assets/images/logos/provider-orchestration.svg`}
     ];
 
     let map = this.get('stacksMap');
-    if ( map[C.EXTERNAL_ID.ID_K8S].tpl ) {
-      drivers.push({name: C.EXTERNAL_ID.ID_K8S, label: 'Kubernetes', css: 'kubernetes'});
-    }
-
-    if ( map[C.EXTERNAL_ID.ID_MESOS].tpl ) {
-      drivers.push({name: C.EXTERNAL_ID.ID_MESOS, label: 'Mesos', css: 'mesos'});
-    }
-
-    if ( map[C.EXTERNAL_ID.ID_SWARM].tpl ) {
-      drivers.push({name: C.EXTERNAL_ID.ID_SWARM, label: 'Swarm', css: 'swarm'});
-    }
+    let seen = {};
+    this.get('orchestrationIds').forEach((id) => {
+      let tpl = (map[id]||{}).tpl;
+      if ( tpl ) {
+        drivers.push({name: id, title: tpl.name, source: 'in ' + Util.ucFirst(tpl.catalogId), image: tpl.links.icon});
+        seen[tpl.name] = (seen[tpl.name]||0)+1;
+      }
+    });
 
     drivers.forEach(function(driver) {
       driver.active = ( active === driver.name );
     });
+
+    let multiple = Object.keys(seen).map((k) => seen[k]).filter((x) => x > 1).length > 0;
+    this.set('showOrchestrationOrigin', multiple);
 
     return drivers;
   }.property('activeOrchestration'),
@@ -206,12 +214,13 @@ export default Ember.Component.extend(NewOrEdit, {
 
     return this.applyDefaultTemplateVersions().then(() => {
       let map = this.get('stacksMap');
-      let enabled = Object.keys(map).filterBy('enabled',true);
       let orch = this.get('activeOrchestration');
-      for ( let i = 0 ; i < enabled.length ; i++ ) {
-        let obj = map[enabled[i]];
+      let ok = true;
+
+      Object.keys(map).forEach((key) => {
+        let obj = map[key];
         let tpl = obj.get('tpl');
-        if ( !tpl.supportsOrchestration(orch) ) {
+        if ( obj.enabled && !tpl.supportsOrchestration(orch) ) {
           this.get('growl').error(
             intl.t('editProjectTemplate.error.conflict'),
             intl.t('editProjectTemplate.error.enabling', {
@@ -220,28 +229,42 @@ export default Ember.Component.extend(NewOrEdit, {
               orchestration: Util.ucFirst(orch),
             })
           );
-          return false;
-        }
-      }
 
-      return out;
+          ok = false;
+        }
+      });
+
+      return ok;
     }).catch(() => {
       return false;
     });
   },
 
   doSave() {
-    let ary = [];
     let map = this.get('stacksMap');
+    let ary = [];
     Object.keys(map).forEach((key) => {
       let obj = map[key];
       if ( obj && obj.enabled ) {
-        Ember.set(obj,'stack.externalId', C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + obj.tplVersion.id);
-        ary.push(obj.stack);
+        ary.push(obj);
       }
     });
 
-    this.set('projectTemplate.stacks', ary);
+    let stacks = ary.map((obj) => {
+      let s = obj.stack;
+      return {
+        name: s.name,
+        description: s.description,
+        answers: s.environment,
+        templateVersionId: obj.tplVersion.id,
+      };
+    });
+
+    this.set('projectTemplate.stacks', stacks);
     return this._super();
+  },
+
+  doneSaving() {
+    this.send('cancel');
   }
 });
