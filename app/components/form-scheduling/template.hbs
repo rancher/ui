@@ -1,7 +1,7 @@
 <div class="{{if editing 'form-group' ''}}">
   {{#if canRequestHost}}
     {{#if editing}}
-      <div class="radio">
+      <div class="radio r-mb0">
         <label class="form-control-static">{{radio-button selection=isRequestedHost value=true}}
           {{#if isService}}
             {{#if (eq isVm 'virtual machines')}}
@@ -15,7 +15,7 @@
         </label>
           {{#if isRequestedHost}}
             {{new-select
-              class="form-control"
+              class="form-control r-mb15"
               content=hostChoices
               value=requestedHostId
               optionValuePath="id"
@@ -26,18 +26,16 @@
           {{/if}}
       </div>
 
-      <div class="radio">
+      <div class="radio r-mb0">
         <label>{{radio-button selection=isRequestedHost value=false}}
           {{#if isService}}
             {{#if isGlobal}}
               {{t 'formScheduling.autoRun'}}
+            {{else if (eq isVm 'virtual machines')}}
+              {{t 'formScheduling.autoPick.vm'}}
             {{else}}
-              {{#if (eq isVm 'virtual machines')}}
-                {{t 'formScheduling.autoPick.vm'}}
-              {{else}}
-                {{t 'formScheduling.autoPick.container'}}
-              {{/if~}}
-            {{/if}}
+              {{t 'formScheduling.autoPick.container'}}
+            {{/if~}}
           {{else}}
             {{t 'formScheduling.autoPick.host'}}
           {{/if}}
@@ -67,13 +65,11 @@
     {{#if isService}}
       {{#if isGlobal}}
         {{t 'formScheduling.autoRun'}}
-      {{else}}
-        {{#if isVm}}
+      {{else if isVm}}
           {{t 'formScheduling.autoPick.vm'}}
-        {{else}}
-          {{t 'formScheduling.autoPick.container'}}
-        {{/if~}}
-      {{/if}}
+      {{else}}
+        {{t 'formScheduling.autoPick.container'}}
+      {{/if~}}
     {{else}}
       {{t 'formScheduling.autoPick.host'}}
     {{/if}}
@@ -114,7 +110,7 @@
         </tbody>
       </table>
     {{else}}
-      {{t 'formScheduling.noRules'}}
+      <span class="text-muted">{{t 'formScheduling.noRules'}}</span>
     {{/if}}
   {{/unless}}
 </div>

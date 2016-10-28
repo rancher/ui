@@ -4,7 +4,7 @@
   </section>
 
 {{#if isService}}
-  <section class="horizontal-form container-fluid well">
+  <section class="horizontal-form well">
       {{#if isUpgrade}}
         {{form-upgrade
           switch=(action 'selectLaunchConfig')
@@ -43,30 +43,27 @@
 {{/if}}
 
 <div data-launchindex="{{if isSidekick '' '-1'}}">
-  <section class="horizontal-form container-fluid well">
-    <div>
-      {{#unless isUpgrade}}
-        {{form-name-description
-          model=primaryResource
-          namePlaceholder="newContainer.name.placeholder"
-          descriptionPlaceholder="newContainer.description.placeholder"
-        }}
-      {{/unless}}
-    </div>
-    <div class="row r-ml15 r-mr15">
-      {{form-image
-        isVm=isVm
-        initialValue=launchConfig.imageUuid
-        errors=imageErrors
-        changed=(action 'setImage')
-        initialLabels=launchConfig.labels
-        setLabels=(action 'setLabels' 'image')
+  <section class="horizontal-form well">
+    {{#unless isUpgrade}}
+      {{form-name-description
+        model=primaryResource
+        namePlaceholder="newContainer.name.placeholder"
+        descriptionPlaceholder="newContainer.description.placeholder"
       }}
+    {{/unless}}
 
-      {{#if isVm}}
-        {{form-virtualmachine launchConfig=launchConfig}}
-      {{/if}}
-    </div>
+    {{form-image
+      isVm=isVm
+      initialValue=launchConfig.imageUuid
+      errors=imageErrors
+      changed=(action 'setImage')
+      initialLabels=launchConfig.labels
+      setLabels=(action 'setLabels' 'image')
+    }}
+
+    {{#if isVm}}
+      {{form-virtualmachine launchConfig=launchConfig}}
+    {{/if}}
 
     {{form-ports
       initialPorts=launchConfig.ports
@@ -76,7 +73,6 @@
     }}
 
     {{#if (and isService (not isSidekick))}}
-
       {{form-service-links
         service=service
         allServices=allServices
@@ -105,15 +101,15 @@
 
   <div class="horizontal-form well" role="tabpanel">
     {{#if isVm}}
-      <div class="section container-fluid" data-section="disks">
+      <div class="section" data-section="disks">
         {{form-disks instance=launchConfig availableDrivers=storageDriverChoices errors=diskErrors}}
       </div>
 
-      <div class="section container-fluid" data-section="userdata">
+      <div class="section" data-section="userdata">
         {{form-userdata instance=launchConfig}}
       </div>
     {{else}}
-      <div class="section container-fluid" data-section="command">
+      <div class="section" data-section="command">
         {{form-command
           instance=launchConfig
           initialLabels=launchConfig.labels
@@ -123,7 +119,7 @@
         }}
       </div>
 
-      <div class="section container-fluid" data-section="volumes">
+      <div class="section" data-section="volumes">
         {{form-volumes
           instance=launchConfig
           isService=isService
@@ -134,7 +130,7 @@
           allHosts=allHosts}}
       </div>
 
-      <div class="section container-fluid" data-section="network">
+      <div class="section" data-section="network">
         {{form-networking
           editing=true
           instance=launchConfig
@@ -154,7 +150,7 @@
       </div>
     {{/if}}
 
-    <div class="section container-fluid" data-section="healthcheck">
+    <div class="section" data-section="healthcheck">
       {{form-healthcheck
         isService=isService
         healthCheck=launchConfig.healthCheck

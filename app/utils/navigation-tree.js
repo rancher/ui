@@ -5,8 +5,6 @@ import { getCatalogNames } from 'ui/utils/parse-catalog-setting';
 // Useful context/condition shortcuts
 export const getProjectId = function() { return this.get('projectId'); };
 export const getNamespaceId = function() { return this.get('namespaceId'); };
-export const k8sReady = function() { return this.get('kubernetesReady'); };
-export const k8sStacks = function() { return this.get('kubernetesReady') && this.get('k8s.supportsStacks'); };
 export const swarmReady = function() { return this.get('swarmReady'); };
 export const mesosReady = function() { return this.get('mesosReady'); };
 export const isOwner = function() { return this.get('isOwner'); };
@@ -56,7 +54,6 @@ const navTree = [
         icon: 'icon icon-stacks',
         route: 'k8s-tab.namespace.stacks',
         ctx: [getProjectId, getNamespaceId],
-        condition: k8sStacks,
       },
       {
         id: 'k8s-deployments',
@@ -64,7 +61,6 @@ const navTree = [
         icon: 'icon icon-tachometer',
         route: 'k8s-tab.namespace.deployments',
         ctx: [getProjectId, getNamespaceId],
-        condition: k8sStacks,
       },
       {
         id: 'k8s-services',
@@ -72,11 +68,9 @@ const navTree = [
         icon: 'icon icon-compass',
         route: 'k8s-tab.namespace.services',
         ctx: [getProjectId, getNamespaceId],
-        condition: k8sReady,
       },
       {
         divider: true,
-        condition: k8sStacks
       },
       {
         id: 'k8s-replicasets',
@@ -84,7 +78,6 @@ const navTree = [
         icon: 'icon icon-services',
         route: 'k8s-tab.namespace.replicasets',
         ctx: [getProjectId, getNamespaceId],
-        condition: k8sStacks,
       },
       {
         id: 'k8s-rcs',
@@ -92,7 +85,6 @@ const navTree = [
         icon: 'icon icon-services',
         route: 'k8s-tab.namespace.rcs',
         ctx: [getProjectId, getNamespaceId],
-        condition: k8sReady,
       },
       {
         id: 'k8s-pods',
@@ -100,7 +92,6 @@ const navTree = [
         icon: 'icon icon-containers',
         route: 'k8s-tab.namespace.pods',
         ctx: [getProjectId, getNamespaceId],
-        condition: k8sReady,
       },
       {
         id: 'k8s-cli',
@@ -108,7 +99,6 @@ const navTree = [
         icon: 'icon icon-terminal',
         route: 'k8s-tab.kubectl',
         ctx: [getProjectId],
-        condition: k8sReady,
       },
       {
         divider: true,

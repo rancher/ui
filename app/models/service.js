@@ -148,6 +148,7 @@ var Service = Resource.extend({
     var isK8s = this.get('isK8s');
     var isSwarm = this.get('isSwarm');
     var hasContainers = this.get('hasContainers');
+    var isDriver = ['networkdriverservice','storagedriverservice'].includes(this.get('type').toLowerCase());
 
     var choices = [
       { label: 'action.start',          icon: 'icon icon-play',             action: 'activate',       enabled: !!a.activate},
@@ -163,7 +164,7 @@ var Service = Resource.extend({
       { label: 'action.purge',          icon: '',                           action: 'purge',          enabled: !!a.purge},
       { divider: true },
       { label: 'action.viewInApi',      icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
-      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isSwarm },
+      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isSwarm && !isDriver },
       { label: 'action.edit',           icon: 'icon icon-edit',             action: 'edit',           enabled: !!a.update && !isK8s && !isSwarm },
     ];
 
@@ -241,7 +242,7 @@ var Service = Resource.extend({
   }.property('launchConfig.labels'),
 
   canScale: function() {
-    if ( ['service','loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0 )
+    if ( ['service','networkdriverservice','storagedriverservice','loadbalancerservice'].includes(this.get('type').toLowerCase()) )
     {
       return !this.get('isGlobalScale');
     }
@@ -254,28 +255,26 @@ var Service = Resource.extend({
   hasContainers: function() {
     return [
       'service',
+      'networkdriverservice',
+      'storagedriverservice',
       'loadbalancerservice',
       'kubernetesservice',
       'composeservice',
-    ].indexOf(this.get('type').toLowerCase()) >= 0;
+    ].includes(this.get('type').toLowerCase());
   }.property('type'),
 
-  hasPorts: function() {
+  isReal: function() {
     return [
       'service',
+      'networkdriverservice',
+      'storagedriverservice',
       'loadbalancerservice',
-    ].indexOf(this.get('type').toLowerCase()) >= 0;
+    ].includes(this.get('type').toLowerCase());
   }.property('type'),
 
-  hasImage: function() {
-    return this.get('type') === 'service';
-  }.property('type'),
-
-  hasLabels: function() {
-    return [
-      'loadbalancerservice','service'
-    ].indexOf(this.get('type').toLowerCase()) >= 0;
-  }.property('type'),
+  hasPorts: Ember.computed.alias('isReal'),
+  hasImage: Ember.computed.alias('isReal'),
+  hasLabels: Ember.computed.alias('isReal'),
 
   isK8s: function() {
     return ['kubernetesservice'].indexOf(this.get('type').toLowerCase()) >= 0;
@@ -294,6 +293,8 @@ var Service = Resource.extend({
       case 'externalservice':     out = 'External'; break;
       case 'kubernetesservice':   out = 'K8s Service'; break;
       case 'composeservice':      out = 'Compose Service'; break;
+      case 'networkdriverservice':out = 'Network Service'; break;
+      case 'storagedriverservice':out = 'Storage Service'; break;
       default:                    out = 'Service'; break;
     }
 
