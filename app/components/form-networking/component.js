@@ -48,11 +48,10 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
     },
   },
 
-  canUpdateRetainIp: Ember.computed('isUpgrade', 'service.retainIp', 'retainWasSetOnInit', function() {
+  disableRetainIp: Ember.computed('isUpgrade', 'service.retainIp', 'retainWasSetOnInit', function() {
     let isUpgrade = this.get('isUpgrade');
-    let retained = this.get('service.retainIp');
-    let wasNotSet = this.get('retainWasSetOnInit');
-    if (retained && isUpgrade && wasNotSet) {
+    let wasSet = this.get('retainWasSetOnInit');
+    if ( isUpgrade && wasSet ) {
       return true;
     } else {
       return false;

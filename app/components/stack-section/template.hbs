@@ -80,51 +80,51 @@
         </div>
       {{/if}}
     {{/if}}
-    <table class="grid fixed sized" style="margin-bottom: 0">
-      <tbody>
-        {{#each sortedServices as |service|}}
-          <tr>
-            <td data-title="{{t 'stackSection.table.dataTitle.state'}}:" class="state">
-              {{badge-state model=service}}
-            </td>
-            <td data-title="{{t 'stackSection.table.dataTitle.serviceName'}}:" class="force-wrap">
-              {{#link-to "service" service.stackId service.id}}{{service.displayName}}{{/link-to}}
-              {{#if service.hasSidekicks}}
-                {{t 'stackSection.sidekick' numSidekicks=service.secondaryLaunchConfigs.length}}
-              {{/if}}
-              {{#if service.showTransitioningMessage}}
-                <span class="{{service.stateColor}}">({{service.transitioningMessage}})</span>
-              {{/if}}
-              <button type="button" class="btn-link" role="button" {{action 'addtlInfo' service}}>
-                <i class="icon icon-info addtl-info-trigger"/>
-              </button>
-              {{#if service.isError}}
-                {{#link-to "service.log" service.stackId service.id class="btn-link"}}<i class="icon icon-alert"/>{{/link-to}}
-              {{/if}}
-            </td>
-            <td data-title="{{t 'stackSection.table.dataTitle.details'}}:" class="force-wrap service-detail">{{service.displayDetail}}{{service.displayPorts}}</td>
-            <td data-title="{{t 'stackSection.table.dataTitle.kind'}}:">
-              {{#if service.displayType}}
-                {{service.displayType}}
-              {{/if}}
-            </td>
-            <td data-title="{{t 'stackSection.table.dataTitle.containers'}}:">
-              {{#if service.hasContainers}}
-                {{default-str service.instances.length default="0"}} {{t 'stackSection.container' numContainers=service.instances.length}}
-              {{/if}}
-            </td>
-            <td data-title="{{t 'stackSection.table.dataTitle.actions'}}:" class="actions wide">
-              {{action-menu model=service}}
-            </td>
-          </tr>
-        {{else}}
-          <tr>
-            <td colspan="6" class="text-muted text-center r-p10">
-              {{t 'stackSection.none'}}
-            </td>
-          </tr>
-        {{/each}}
-      </tbody>
-    </table>
+    {{#if sortedServices.length}}
+      <table class="grid fixed sized" style="margin-bottom: 0">
+        <tbody>
+          {{#each sortedServices as |service|}}
+            <tr>
+              <td data-title="{{t 'stackSection.table.dataTitle.state'}}:" class="state">
+                {{badge-state model=service}}
+              </td>
+              <td data-title="{{t 'stackSection.table.dataTitle.serviceName'}}:" class="force-wrap">
+                {{#link-to "service" service.stackId service.id}}{{service.displayName}}{{/link-to}}
+                {{#if service.hasSidekicks}}
+                  {{t 'stackSection.sidekick' numSidekicks=service.secondaryLaunchConfigs.length}}
+                {{/if}}
+                {{#if service.showTransitioningMessage}}
+                  <span class="{{service.stateColor}}">({{service.transitioningMessage}})</span>
+                {{/if}}
+                <button type="button" class="btn-link" role="button" {{action 'addtlInfo' service}}>
+                  <i class="icon icon-info addtl-info-trigger"/>
+                </button>
+                {{#if service.isError}}
+                  {{#link-to "service.log" service.stackId service.id class="btn-link"}}<i class="icon icon-alert"/>{{/link-to}}
+                {{/if}}
+              </td>
+              <td data-title="{{t 'stackSection.table.dataTitle.details'}}:" class="force-wrap service-detail">{{service.displayDetail}}{{service.displayPorts}}</td>
+              <td data-title="{{t 'stackSection.table.dataTitle.kind'}}:">
+                {{#if service.displayType}}
+                  {{service.displayType}}
+                {{/if}}
+              </td>
+              <td data-title="{{t 'stackSection.table.dataTitle.containers'}}:">
+                {{#if service.hasContainers}}
+                  {{default-str service.instances.length default="0"}} {{t 'stackSection.container' numContainers=service.instances.length}}
+                {{/if}}
+              </td>
+              <td data-title="{{t 'stackSection.table.dataTitle.actions'}}:" class="actions wide">
+                {{action-menu model=service}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    {{else}}
+      <div class="stack-section">
+        <div class="text-muted text-center r-p10">{{t 'stackSection.none'}}</div>
+      </div>
+    {{/if}}
   </div>
 {{/liquid-if}}
