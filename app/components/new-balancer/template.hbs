@@ -21,32 +21,10 @@
     descriptionPlaceholder="servicePage.newBalancer.form.description.placeholder"
   }}
 
-  {{form-balancer-listeners
-    initialPorts=launchConfig.ports
-    initialExpose=launchConfig.expose
-    initialLabels=launchConfig.labels
-    changed=(action "setListeners")
-    setLabels=(action 'setLabels' 'ssl')
-  }}
-
-  {{#if showAdvancedMatchingWarning}}
-    <div class="row">
-      <div class="col-sm-12 col-md-8 col-md-offset-2">
-        <div class="alert alert-info">
-          {{format-html-message 'newBalancer.note' targetResources=targetResources.length}}
-        </div>
-      </div>
-    </div>
-  {{/if}}
-
-  {{form-targets
-    isBalancer=true
-    existing=existing
+  {{form-balancer-rules
+    model=service
     allServices=allServices
-    changed=(action "setTargets")
   }}
-
-
 </section>
 
 {{#select-tab initialTab='ssl' as |component|}}

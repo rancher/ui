@@ -1663,25 +1663,43 @@ formatIp:
   noIp: None
   unknownIp: Unknown
 
-formBalancerListeners:
-  label: Listening Ports
-  addAction: Add Port
-  table:
-    host: Source IP/Port
-    protocol: Protocol
-    ssl: SSL
-    container: Default Target Port
-    listener: Access
-  host:
-    placeholder: "On Host, e.g. 80 or 1.2.3.4:80"
-  protocol:
-    placeholder: "Select a protocol:"
-  container:
-    placeholder: "In Container, e.g. 8080"
-  selectAccess: "Select access:"
-  listen:
+formBalancerRules:
+  label: Port Rules
+  noRules: No Rules
+  addServiceLabel: Add Service Rule
+  addSelectorLabel: Add Selector Rule
+  target: Target
+  access:
+    label: Access
     public: Public
     internal: Internal
+  protocol:
+    label: Protocol
+  sourcePort:
+    label: Port
+    placeholder: e.g. 80
+  path:
+    label: Path
+    placeholder: e.g. /foo
+  hostname:
+    label: Request Host
+    placeholder: e.g. example.com
+  backendName:
+    label: Backend
+    placeholder: e.g. webapp
+  targetPort:
+    label: Port
+    placeholder: e.g. 80
+  priority:
+    label: Priority
+    moveUp: Move Up
+    moveDown: Move Down
+  serviceId:
+    label: Service
+    prompt: Select a Service...
+    noHostnames: "(Can't balance to hostnames)"
+  selector:
+    placeholder: e.g. foo=bar
 
 formCommand:
   command:

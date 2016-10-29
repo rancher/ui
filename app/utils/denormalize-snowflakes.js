@@ -10,7 +10,7 @@ export function getByInstanceId(store,id) {
   return obj;
 }
 
-export function denormalizeInstanceArray(field) {
+export function denormalizeInstanceArray(field='instanceIds') {
   return Ember.computed(field+'.[]', function() {
     let out = [];
     let store = this.get('store');
@@ -26,7 +26,7 @@ export function denormalizeInstanceArray(field) {
   });
 }
 
-export function denormalizeInstanceId(field) {
+export function denormalizeInstanceId(field='instanceId') {
   return Ember.computed(field, function() {
     let id = this.get(field);
     return getByInstanceId(this.get('store'), id);
@@ -48,7 +48,7 @@ export function getByServiceId(store, id) {
   return obj;
 }
 
-export function denormalizeServiceArray(field) {
+export function denormalizeServiceArray(field='serviceIds') {
   return Ember.computed(field+'.[]', function() {
     let out = [];
     let store = this.get('store');
@@ -64,7 +64,7 @@ export function denormalizeServiceArray(field) {
   });
 }
 
-export function denormalizeServiceId(field) {
+export function denormalizeServiceId(field='serviceId') {
   return Ember.computed(field, function() {
     let id = this.get(field);
     return getByServiceId(this.get('store'), id);
