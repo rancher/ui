@@ -22,11 +22,10 @@
             <th class="divided">{{t 'formBalancerRules.hostname.label'}}</th>
             <th width="90">{{t 'formBalancerRules.sourcePort.label'}}*</th>
             <th>{{t 'formBalancerRules.path.label'}}</th>
-            <th class="divided">{{t 'formBalancerRules.target'}}
-            `</th>
+            <th class="divided">{{t 'formBalancerRules.target'}}*</th>
             <th width="90">{{t 'formBalancerRules.targetPort.label'}}*</th>
             {{#if showBackend}}
-              <th width="100">{{t 'formBalancerRules.backendName.label'}}</th>
+              <th class="divided">{{t 'formBalancerRules.backendName.label'}}</th>
             {{/if}}
             <th width="40">&nbsp;</th>
           </tr>
@@ -36,21 +35,18 @@
           {{#each rules as |rule idx|}}
             <tr>
               <td data-title="{{t 'formBalancerRules.priority.label'}}">
-                <span class="sr-only">
-                  <a href="#" {{action "moveUp" rule}}>{{t 'formBalancerRules.priority.moveUp'}}</a>
-                </span>
-                <span class="sr-only">
-                  <a href="#" {{action "moveDown" rule}}>{{t 'formBalancerRules.priority.moveDown'}}</a>
-                </span>
-                <button class="btn btn-primary btn-sm">
-                  <i class="icon icon-sort"></i>
+                <button class="btn btn-primary btn-xs" {{action "moveUp" rule}} disabled={{eq rule.priority minPriority}}>
+                  <i class="icon icon-chevron-up"></i>
+                </button>
+                <button class="btn btn-primary btn-xs" {{action "moveDown" rule}} disabled={{eq rule.priority maxPriority}}>
+                  <i class="icon icon-chevron-down"></i>
                 </button>
               </td>
 
               <td data-title="{{t 'formBalancerRules.access.label'}}">
-                <select class="form-control input-sm" onchange={{action (mut rule.isPublic) value="target.value"}}>
-                  <option value=true>{{t 'formBalancerRules.access.public'}}</option>
-                  <option value=false>{{t 'formBalancerRules.access.internal'}}</option>
+                <select class="form-control input-sm" onchange={{action (mut rule.access) value="target.value"}}>
+                  <option value="public">{{t 'formBalancerRules.access.public'}}</option>
+                  <option value="internal">{{t 'formBalancerRules.access.internal'}}</option>
                 </select>
               </td>
 
@@ -104,7 +100,7 @@
               </td>
 
               {{#if showBackend}}
-                <td data-title="{{t 'formBalancerRules.backendName.label'}}">
+                <td class="divided" data-title="{{t 'formBalancerRules.backendName.label'}}">
                   {{input type="text" class="form-control input-sm" value=rule.backendName placeholder=(t 'formBalancerRules.backendName.placeholder')}}
                 </td>
               {{/if}}
@@ -116,6 +112,15 @@
           {{/each}}
         </tbody>
       </table>
+      <p class="help-block">
+        {{t 'formBalancerRules.help.prefix'}}
+        {{#unless showBackend}}
+          <a href="#" {{action "showBackend"}}>
+            {{t 'formBalancerRules.help.showBackendLink'}}
+          </a>
+        {{/unless}}
+        {{t 'formBalancerRules.help.suffix'}}
+      </p>
     {{else}}
       <span class="text-muted">{{t 'formBalancerRules.noRules'}}</span>
     {{/if}}

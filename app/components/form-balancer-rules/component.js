@@ -1,18 +1,33 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  model: null,
+  intl: Ember.inject.service(),
+
+  service: null,
   allServices: null,
 
   rules: null,
   protocolChoices: null,
+  showBackend: null,
 
   onInit: function() {
-    this.set('rules', []);
+    let rules = this.get('service.lbConfig.portRules');
+    if ( !rules ) {
+      rules = [];
+      this.set('service.lbConfig.portRules', rules);
+    }
+
+    this.set('rules', rules);
+    if ( rules.length === 0 ) {
+      this.send('addRule');
+    }
 
     let protos = this.get('store').getById('schema','portrule').optionsFor('protocol');
     protos.sort();
     this.set('protocolChoices', protos);
+
+    let hasName = !!rules.findBy('backendName');
+    this.set('showBackend', hasName);
   }.on('init'),
 
   actions: {
@@ -25,7 +40,7 @@ export default Ember.Component.extend({
 
       rules.pushObject(this.get('store').createRecord({
         type: 'portRule',
-        isPublic: true,
+        access: 'public',
         isSelector: isSelector,
         protocol: 'http',
         priority: max+1
@@ -33,15 +48,70 @@ export default Ember.Component.extend({
     },
 
     moveUp(rule) {
+      let rules = this.get('rules');
+      let idx = rules.indexOf(rule);
+      if ( idx <= 0 ) {
+        return;
+      }
+
+      let tmp = rules.objectAt(idx-1);
+      rules.replace(idx-1, 1, rule);
+      rules.replace(idx, 1, tmp);
+      this.updatePriorities();
     },
 
     moveDown(rule) {
+      let rules = this.get('rules');
+      let idx = rules.indexOf(rule);
+      if ( idx < 0 || idx-1 >= rules.get('length') ) {
+        return;
+      }
+
+      let tmp = rules.objectAt(idx+1);
+      rules.replace(idx+1, 1, rule);
+      rules.replace(idx, 1, tmp);
+      this.updatePriorities();
     },
 
     removeRule(rule) {
       this.get('rules').removeObject(rule);
     },
+
+    showBackend() {
+      this.set('showBackend', true);
+    },
   },
+
+  updatePriorities() {
+    let pri = 1;
+    this.get('rules').forEach((rule) => {
+      rule.set('priority', pri);
+      pri++;
+    });
+  },
+
+  minPriority: function() {
+    let val = null;
+    this.get('rules').forEach((rule) => {
+      let cur = rule.get('priority');
+      if ( val === null ) {
+        val = cur;
+      } else {
+        val = Math.min(val, cur);
+      }
+    });
+
+    return val;
+  }.property('rules.@each.priority'),
+
+  maxPriority: function() {
+    let val = 0;
+    this.get('rules').forEach((rule) => {
+      val = Math.max(val, rule.get('priority'));
+    });
+
+    return val;
+  }.property('rules.@each.priority'),
 
   serviceChoices: function() {
     let out = {};
