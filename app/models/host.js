@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
 import { getByServiceId } from 'ui/utils/denormalize-snowflakes';
-import { formatMib } from 'ui/utils/util';
+import { formatMib, formatSi } from 'ui/utils/util';
 import C from 'ui/utils/constants';
 import { getByInstanceId, denormalizeInstanceArray } from 'ui/utils/denormalize-snowflakes';
 
@@ -133,6 +133,19 @@ var Host = Resource.extend({
       return formatMib(this.get('info.memoryInfo.memTotal'));
     }
   }.property('info.memoryInfo.memTotal'),
+
+  memoryLimitBlurb: Ember.computed('memory', function() {
+    if ( this.get('memory') )
+    {
+      return formatSi(this.get('memory'), 1024, 'iB', 'B');
+    }
+  }),
+
+  localStorageBlurb: Ember.computed('localStorageMb', function() {
+    if (this.get('localStorageMb')) {
+      return formatSi(this.get('localStorageMb'), 1024, 'iB', 'B');
+    }
+  }),
 
   diskBlurb: function() {
     var totalMb = 0;

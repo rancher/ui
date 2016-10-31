@@ -8,8 +8,8 @@ generic:
   actions: Actions
   activate: Activate
   as: As
-  closeModal: Close
   cancel: Cancel
+  closeModal: Close
   created: Created
   default: Default
   description: Description
@@ -25,6 +25,7 @@ generic:
   image: Image
   internal: Internal
   ipAddress: IP Address
+  limit: Limit
   loading: "Loading..."
   missing: "*%MISSING%*"
   moreActions: More Actions
@@ -38,10 +39,11 @@ generic:
   saved: Saved
   saving: Saving
   state: State
-  to: To
-  type: Type
   test: Test
   testing: Testing
+  to: To
+  total: Total
+  type: Type
   unknown: Unknown
 
 
@@ -480,6 +482,10 @@ containersPage:
       entryPoint: 'Entry Point:'
       description: 'Description:'
       stack: 'Stack/Service:'
+      memoryReservation:
+        labelText: 'Memory Reservation: '
+      milliCpuReservation:
+        labelText: 'mCPU Reservation: '
     navTabs:
       labels: Labels
       volumes: Volumes
@@ -765,6 +771,10 @@ hostsPage:
       docker: 'Docker:'
       os: 'OS:'
       description: 'Description:'
+      milliCpu:
+        labelText: mCPU
+      localStorageMb:
+        labelText: Local Limit
     navTabs:
       containers: Containers
       ports: Ports
@@ -2041,6 +2051,10 @@ formSecurity:
     placeholder: e.g. syslog
   logOptions:
     label: Log Options
+  memoryReservation:
+    label: Memory Reservation
+  milliCpuReservation:
+    label: mCPU Reservation
 
 formServiceLinks:
   addAction: Service Links
@@ -2973,6 +2987,17 @@ registryRow:
   email: Email
   username: Username
   created: Created
+
+reservationParameters:
+  localStorage:
+    labelText: 'Local Storage Limit'
+    placeholder: '1024'
+  memory:
+    labelText: 'Memory Limit'
+    placeholder: '2048'
+  milliCpu:
+    labelText: mCPU Limit
+    placeholder: '1000'
 
 saveCancel:
   saving: Saving...

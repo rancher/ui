@@ -61,12 +61,19 @@ export default Ember.Component.extend({
   // Memory
   // ----------------------------------
   memoryMb: null,
+  memoryReservationMb: null,
   swapMb: null,
   initMemory: function() {
     var memBytes = this.get('instance.memory') || 0;
     var memPlusSwapBytes = this.get('instance.memorySwap') || 0;
+    var memReservation = this.get('instance.memoryReservation');
     var swapBytes = Math.max(0, memPlusSwapBytes - memBytes);
 
+    if (memReservation) {
+      this.set('memoryReservationMb', parseInt(memBytes,10)/1048576);
+    } else {
+      this.set('memoryReservationMb', '');
+    }
     if ( memBytes )
     {
       this.set('memoryMb', parseInt(memBytes,10)/1048576);
@@ -86,6 +93,17 @@ export default Ember.Component.extend({
     }
 
   },
+
+  memoryReservationChanged: Ember.observer('memoryReservationMb', function() {
+    var mem = this.get('memoryReservationMb');
+
+    if ( isNaN(mem) || mem <= 0) {
+      this.set('instance.memoryReservation', '');
+    }
+    else {
+      this.set('instance.memoryReservation', mem * 1048576);
+    }
+  }),
 
   memoryDidChange: function() {
     // The actual parameter we're interested in is 'memory', in bytes.

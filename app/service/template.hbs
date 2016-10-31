@@ -15,10 +15,33 @@
 <section>
   <div class="row">
     <div class="col-md-3 r-mb15">
+        {{#if service.description}}
+          <div>
+            <label class="block">{{t 'servicePage.multistat.description'}} </label>
+            <div>{{service.description}}</div>
+          </div>
+          <hr>
+        {{/if}}
         <div>
           <label class="block">{{t 'servicePage.multistat.type'}}</label>
           <div>{{service.displayType}}</div>
         </div>
+        {{#if service.launchConfig.memoryReservation}}
+          <hr/>
+          <div>
+            <label class="block">{{t 'containersPage.containerPage.infoMultiStats.memoryReservation.labelText'}}</label>
+            {{service.memoryReservationBlurb}}
+          </div>
+
+        {{/if}}
+
+        {{#if service.launchConfig.milliCpuReservation}}
+          <hr/>
+          <div>
+            <label class="block">{{t 'containersPage.containerPage.infoMultiStats.milliCpuReservation.labelText'}}</label>
+            {{service.launchConfig.milliCpuReservation}}
+          </div>
+        {{/if}}
         <hr>
         <div>
           <label class="block">{{t 'servicePage.multistat.fqdn'}}</label>
@@ -76,13 +99,6 @@
               </div>
             </div>
 
-        {{/if}}
-        {{#if service.description}}
-          <hr>
-          <div>
-            <label class="block">{{t 'servicePage.multistat.description'}} </label>
-            <div>{{service.description}}</div>
-          </div>
         {{/if}}
       </div>
 
