@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
-import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
+import { denormalizeId } from 'ember-api-store/utils/denormalize';
+import { denormalizeServiceArray } from 'ui/utils/denormalize-snowflakes';
 import Instance from 'ui/models/instance';
 
 const { getOwner } = Ember;
@@ -33,7 +34,7 @@ var Container = Instance.extend({
   _allMounts                 : null,
 
   primaryHost                : denormalizeId('hostId', 'host'),
-  services                   : denormalizeIdArray('serviceIds'),
+  services                   : denormalizeServiceArray(),
   primaryService             : Ember.computed.alias('services.firstObject'),
 
   reservedKeys: [

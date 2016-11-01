@@ -16,9 +16,9 @@
       <table class="grid fixed no-lines no-top-padding tight" style="margin-bottom: 0;">
         <thead>
           <tr>
-            <th width="40">&nbsp;</th>
-            <th width="100">{{t 'formBalancerRules.access.label'}}*</th>
-            <th width="100">{{t 'formBalancerRules.protocol.label'}}*</th>
+            <th width="30">&nbsp;</th>
+            <th width="90">{{t 'formBalancerRules.access.label'}}*</th>
+            <th width="90">{{t 'formBalancerRules.protocol.label'}}*</th>
             <th class="divided">{{t 'formBalancerRules.hostname.label'}}</th>
             <th width="90">{{t 'formBalancerRules.sourcePort.label'}}*</th>
             <th>{{t 'formBalancerRules.path.label'}}</th>
@@ -87,7 +87,7 @@
                     {{#each-in serviceChoices as |group list|}}
                       <optgroup label={{group}}>
                         {{#each list as |svc|}}
-                          <option value={{svc.id}}>{{svc.name}}</option>
+                          <option selected={{eq svc.id rule.serviceId}} value={{svc.id}}>{{svc.name}}</option>
                         {{/each}}
                       </optgroup>
                     {{/each-in}}

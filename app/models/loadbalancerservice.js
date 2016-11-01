@@ -74,17 +74,21 @@ var LoadBalancerService = Service.extend({
   }.property('launchConfig.ports.[]','launchConfig.expose.[]','endpointsMap', 'intl._locale'),
 
   displayDetail: function() {
-    var services = '';
-    (this.get('consumedServicesWithNames')||[]).forEach((map, idx) => {
-      services += '<span>'+ (idx === 0 ? '' : ', ') +
-      (map.get('service.stackId') === this.get('stackId') ? '' : esc(map.get('service.displayStack')) + '/') +
-      esc(map.get('service.displayName')) + '</span>';
-    });
+    var services = (this.get('lbConfig.portRules')||[]).map((rule) => {
+      let out = '';
+      if ( rule.get('service.stackId') !== this.get('stackId') ) {
+        out += esc(rule.get('service.displayStack'))+'/';
+      }
+
+      return out + esc(rule.get('service.displayName'));
+    }).uniq();
+
+    services.sort();
+
+    let str = '<span>' + services.join('</span><span>') + '</span>';
 
     let intl = this.get('intl');
-    let toTranslation = intl.tHtml('generic.to');
-
-    var out = '<label>'+toTranslation+': </label>' + services;
+    var out = '<label>'+ intl.t('generic.to')+': </label>' + str;
 
     return out.htmlSafe();
   }.property('consumedServicesWithNames.@each.{name,service}', 'intl._locale'),

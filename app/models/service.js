@@ -86,9 +86,10 @@ var Service = Resource.extend({
 
     upgrade() {
       var route = 'service.new';
-      if ( (this.get('launchConfig.kind')||'').toLowerCase() === 'virtualmachine')
-      {
+      if ( (this.get('launchConfig.kind')||'').toLowerCase() === 'virtualmachine') {
         route = 'service.new-virtualmachine';
+      } else if ( this.get('type').toLowerCase() === 'loadbalancerservice' ) {
+        route = 'service.new-balancer';
       }
 
       this.get('application').transitionToRoute(route, {queryParams: {
@@ -144,7 +145,7 @@ var Service = Resource.extend({
   availableActions: function() {
     var a = this.get('actionLinks');
 
-    var canUpgrade = !!a.upgrade && this.get('type') === 'service';
+    var canUpgrade = !!a.upgrade && this.get('canUpgrade');
     var isK8s = this.get('isK8s');
     var isSwarm = this.get('isSwarm');
     var hasContainers = this.get('hasContainers');
@@ -169,7 +170,7 @@ var Service = Resource.extend({
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type','isK8s','isSwarm','hasContainers'),
+  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type','isK8s','isSwarm','hasContainers','canUpgrade'),
 
 
   serviceLinks: null, // Used for clone
@@ -275,6 +276,7 @@ var Service = Resource.extend({
   hasPorts: Ember.computed.alias('isReal'),
   hasImage: Ember.computed.alias('isReal'),
   hasLabels: Ember.computed.alias('isReal'),
+  canUpgrade: Ember.computed.alias('isReal'),
 
   isK8s: function() {
     return ['kubernetesservice'].indexOf(this.get('type').toLowerCase()) >= 0;

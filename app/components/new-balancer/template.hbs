@@ -1,17 +1,23 @@
 <section class="header">
-  <h1>{{t 'newBalancer.header'}} {{help-btn link="/rancher-ui/applications/stacks/adding-balancers/"}}</h1>
+  <h1>{{headerLabel}} {{help-btn link="/rancher-ui/applications/stacks/adding-balancers/"}}</h1>
 </section>
 
 <section class="horizontal-form container-fluid well">
-  {{form-scale
-    initialLabels=launchConfig.labels
-    initialScale=service.scale
-    isGlobal=isGlobal
-    errors=scaleErrors
-    setLabels=(action 'setLabels' 'scale')
-    setGlobal=(action 'setGlobal')
-    setScale=(action  'setScale')
-  }}
+  {{#liquid-if needsUpgrade}}
+    {{form-upgrade
+      optionsChanged=(action 'setUpgrade')
+    }}
+  {{else}}
+    {{form-scale
+      initialLabels=launchConfig.labels
+      initialScale=service.scale
+      isGlobal=isGlobal
+      errors=scaleErrors
+      setLabels=(action 'setLabels' 'scale')
+      setGlobal=(action 'setGlobal')
+      setScale=(action  'setScale')
+    }}
+  {{/liquid-if}}
 </section>
 
 <section class="horizontal-form container-fluid well">
@@ -87,4 +93,4 @@
 {{/select-tab}}
 
 {{top-errors errors=errors}}
-{{save-cancel save="save" cancel="cancel"}}
+{{save-cancel editing=editing editLabel=editLabel save="save" cancel="cancel"}}

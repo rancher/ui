@@ -11,7 +11,6 @@ function roundScale(num) {
 export default Ember.Component.extend(ManageLabels, {
   initialLabels : null,
   initialScale  : null,
-  showGlobal    : true,
   isGlobal      : null,
   editing       : false,
   isVm          : null,

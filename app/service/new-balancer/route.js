@@ -1,6 +1,8 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
+  settings: Ember.inject.service(),
   allServices: Ember.inject.service(),
 
   model: function(params/*, transition*/) {
@@ -14,13 +16,20 @@ export default Ember.Route.extend({
 
     if ( params.serviceId )
     {
-      dependencies['existing'] = store.find('service', params.serviceId);
+      dependencies['existingService'] = store.find('service', params.serviceId);
     }
 
     return Ember.RSVP.hash(dependencies).then((hash) => {
       let service;
-      if ( hash.existing ) {
-        service = hash.existing.cloneForNew();
+      if ( hash.existingService ) {
+        if ( params.upgrade+'' === 'true' ) {
+          service = hash.existingService;
+          hash.existing = service.clone();
+        } else {
+          service = hash.existingService.cloneForNew();
+        }
+
+        delete hash.existingService;
         delete service.instanceIds;
       } else {
         service = store.createRecord({
@@ -31,6 +40,7 @@ export default Ember.Route.extend({
           stackId: params.stackId,
           startOnCreate: true,
           launchConfig: store.createRecord({
+            imageUuid: 'docker:' + this.get(`settings.${C.SETTING.BALANCER_IMAGE}`),
             type: 'launchConfig',
             restartPolicy: {name: 'always'},
           }),
@@ -63,6 +73,7 @@ export default Ember.Route.extend({
       controller.set('stickiness', 'none');
       controller.set('stackId', null);
       controller.set('serviceId', null);
+      controller.set('upgrade', null);
     }
   },
 
