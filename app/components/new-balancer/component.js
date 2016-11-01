@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
-import { parsePortSpec } from 'ui/utils/parse-port';
 
 export default Ember.Component.extend(NewOrEdit, {
   intl                      : Ember.inject.service(),

@@ -69,7 +69,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   isContainerNetwork: Ember.computed.equal('instance.networkMode','container'),
   initNetwork: function() {
     var isService = this.get('isService')||false;
-    var choices = this.get('store').getById('schema','container').get('resourceFields.networkMode').options.sort();
+    var choices = ['bridge','container','host','managed','none'];
     var out = [];
     choices.forEach((option) => {
       if ( isService && option === 'container' )
