@@ -29,7 +29,7 @@ export default Ember.Component.extend(NewOrEdit, {
   init() {
     this._super(...arguments);
     this.labelsChanged();
-    this.initPorts();
+    this.get('service').initPorts();
     this.updatePorts();
   },
 
@@ -75,31 +75,6 @@ export default Ember.Component.extend(NewOrEdit, {
   // ----------------------------------
   // Ports
   // ----------------------------------
-  initPorts() {
-    console.log('initPorts');
-    let rules = this.get('service.lbConfig.portRules')||[];
-    let publish = this.get('service.launchConfig.ports')||[];
-    publish.forEach((str) => {
-      let spec = parsePortSpec(str,'tcp');
-      if ( !spec.hostPort || spec.hostIp ) {
-        this.set('hasUnsupportedPorts', true);
-      }
-
-      if ( spec.hostPort ) {
-        rules.filterBy('sourcePort', spec.hostPort).forEach((rule) => {
-          rule.set('access', 'public');
-        });
-      }
-    });
-
-
-    rules.forEach((rule) => {
-      if ( !rule.get('access') ) {
-        rule.set('access', 'internal');
-      }
-    });
-  },
-
   updatePorts() {
     console.log('updatePorts');
     let rules = this.get('service.lbConfig.portRules');

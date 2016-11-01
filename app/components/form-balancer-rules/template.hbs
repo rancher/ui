@@ -13,7 +13,7 @@
 <div class="row">
   <div class="col-xs-12">
     {{#if rules.length}}
-      <table class="grid fixed no-lines no-top-padding tight" style="margin-bottom: 0;">
+      <table class="grid fixed no-lines no-top-padding tight r-mb0">
         <thead>
           <tr>
             <th width="30">&nbsp;</th>
@@ -45,15 +45,15 @@
 
               <td data-title="{{t 'formBalancerRules.access.label'}}">
                 <select class="form-control input-sm" onchange={{action (mut rule.access) value="target.value"}}>
-                  <option value="public">{{t 'formBalancerRules.access.public'}}</option>
-                  <option value="internal">{{t 'formBalancerRules.access.internal'}}</option>
+                  <option value="public" selected={{eq rule.access "public"}}>{{t 'formBalancerRules.access.public'}}</option>
+                  <option value="internal" selected={{eq rule.access "internal"}}>{{t 'formBalancerRules.access.internal'}}</option>
                 </select>
               </td>
 
               <td data-title="{{t 'formBalancerRules.protocol.label'}}">
                 <select class="form-control input-sm" onchange={{action (mut rule.protocol) value="target.value"}}>
                   {{#each protocolChoices as |proto|}}
-                    <option value={{proto}}>{{upper-case proto}}</option>
+                    <option value={{proto}} selected={{eq rule.protocol proto}}>{{upper-case proto}}</option>
                   {{/each}}
                 </select>
               </td>

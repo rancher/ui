@@ -59,6 +59,7 @@ export default Ember.Route.extend(Subscribe, {
         stacks:             ['projectSchemas',          this.cbFind('stack')],
         mounts:             ['projectSchemas',          this.cbFind('mount')], // the container model needs access
         volumes:            ['projectSchemas',          this.cbFind('volume')],
+        certificate:        ['projectSchemas',          this.cbFind('certificate')],
         snapshots:          ['projectSchemas',          this.cbFind('snapshot')],
         identities:         ['userSchemas', this.cbFind('identity', 'userStore')],
       };

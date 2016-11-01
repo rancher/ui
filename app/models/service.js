@@ -278,6 +278,10 @@ var Service = Resource.extend({
   hasLabels: Ember.computed.alias('isReal'),
   canUpgrade: Ember.computed.alias('isReal'),
 
+  isBalancer: function() {
+    return ['loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0;
+  }.property('type'),
+
   isK8s: function() {
     return ['kubernetesservice'].indexOf(this.get('type').toLowerCase()) >= 0;
   }.property('type'),

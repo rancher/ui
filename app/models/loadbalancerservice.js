@@ -20,6 +20,30 @@ var LoadBalancerService = Service.extend({
   type: 'loadBalancerService',
   intl : Ember.inject.service(),
 
+  initPorts() {
+    let rules = this.get('lbConfig.portRules')||[];
+    let publish = this.get('launchConfig.ports')||[];
+    publish.forEach((str) => {
+      let spec = parsePortSpec(str,'tcp');
+      if ( !spec.hostPort || spec.hostIp ) {
+        this.set('hasUnsupportedPorts', true);
+      }
+
+      if ( spec.hostPort ) {
+        rules.filterBy('sourcePort', spec.hostPort).forEach((rule) => {
+          rule.set('access', 'public');
+        });
+      }
+    });
+
+
+    rules.forEach((rule) => {
+      if ( !rule.get('access') ) {
+        rule.set('access', 'internal');
+      }
+    });
+  },
+
   sslPorts: function() {
     return (((this.get('launchConfig.labels')||{})[C.LABEL.BALANCER_SSL_PORTS]||'')).split(',').map((str) => {
       return parseInt(str,10);
@@ -45,16 +69,17 @@ var LoadBalancerService = Service.extend({
 
     var pub = '';
     var fqdn = this.get('fqdn');
-    (this.get('launchConfig.ports')||[]).forEach((portSpec, idx) => {
+    let ports = (this.get('launchConfig.ports')||[]);
+    ports.forEach((portSpec, idx) => {
       var portNum = specToPort(portSpec);
       var endpoints = this.get('endpointsMap')[portNum];
       if ( endpoints )
       {
         var url = Util.constructUrl((sslPorts.indexOf(portNum) >= 0), fqdn||endpoints[0], portNum);
-        pub += '<span>' + (idx === 0 ? '' : ', ') +
+        pub += '<span>' +
         '<a href="'+ url +'" target="_blank">' +
         esc(portToStr(portSpec)) +
-        '</a>' +
+        '</a>' + (idx+1 === ports.length ? '' : ', ') +
         '</span>';
       }
       else
