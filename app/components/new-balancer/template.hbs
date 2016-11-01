@@ -1,50 +1,36 @@
 <section class="header">
-  <h1>{{t 'newBalancer.header'}} {{help-btn link="/rancher-ui/applications/stacks/adding-balancers/"}}</h1>
+  <h1>{{headerLabel}} {{help-btn link="/rancher-ui/applications/stacks/adding-balancers/"}}</h1>
 </section>
 
 <section class="horizontal-form container-fluid well">
-  {{form-scale
-    initialLabels=launchConfig.labels
-    initialScale=service.scale
-    isGlobal=isGlobal
-    errors=scaleErrors
-    setLabels=(action 'setLabels' 'scale')
-    setGlobal=(action 'setGlobal')
-    setScale=(action  'setScale')
-  }}
+  {{#liquid-if needsUpgrade}}
+    {{form-upgrade
+      optionsChanged=(action 'setUpgrade')
+    }}
+  {{else}}
+    {{form-scale
+      initialLabels=launchConfig.labels
+      initialScale=service.scale
+      isGlobal=isGlobal
+      errors=scaleErrors
+      setLabels=(action 'setLabels' 'scale')
+      setGlobal=(action 'setGlobal')
+      setScale=(action  'setScale')
+    }}
+  {{/liquid-if}}
+</section>
 
+<section class="horizontal-form container-fluid well">
   {{form-name-description
     model=service
     namePlaceholder="servicePage.newBalancer.form.name.placeholder"
     descriptionPlaceholder="servicePage.newBalancer.form.description.placeholder"
   }}
 
-  {{form-balancer-listeners
-    initialPorts=launchConfig.ports
-    initialExpose=launchConfig.expose
-    initialLabels=launchConfig.labels
-    changed=(action "setListeners")
-    setLabels=(action 'setLabels' 'ssl')
-  }}
-
-  {{#if showAdvancedMatchingWarning}}
-    <div class="row">
-      <div class="col-sm-12 col-md-8 col-md-offset-2">
-        <div class="alert alert-info">
-          {{format-html-message 'newBalancer.note' targetResources=targetResources.length}}
-        </div>
-      </div>
-    </div>
-  {{/if}}
-
-  {{form-targets
-    isBalancer=true
-    existing=existing
+  {{form-balancer-rules
+    service=service
     allServices=allServices
-    changed=(action "setTargets")
   }}
-
-
 </section>
 
 {{#select-tab initialTab='ssl' as |component|}}
@@ -60,43 +46,27 @@
 <div class="horizontal-form well" role="tabpanel">
   <div class="section container-fluid tab-section" data-section="ssl">
     {{form-ssl-termination
-      balancer=service
-      hasSslListeners=hasSslListeners
-      launchConfig=launchConfig
+      service=service
       allCertificates=allCertificates
     }}
   </div>
 
   <div class="section container-fluid tab-section" data-section="stickiness">
     {{form-stickiness
-      config=balancerConfig
-      hasHttpListeners=hasHttpListeners
+      service=service
     }}
   </div>
 
   <div class="section container-fluid tab-section" data-section="custom">
-    {{format-html-message 'newBalancer.helpBlock' appName=settings.appName}}
+    <div class="r-mb10">{{format-html-message 'newBalancer.custom' appName=settings.appName}}</div>
+    <hr/>
 
-    <div class="row form-group">
-      <div class="col-md-6">
-        <label class="r-pt5 r-pb5">{{format-html-message 'newBalancer.labelGlobal'}}</label>
-        {{textarea
-          value=haproxyConfig.global
-          prompt="Custom global section lines"
-          rows="8"
-          classNames="form-control"
-        }}
-      </div>
-      <div class="col-md-6">
-        <label class="r-pt5 r-pb5">{{format-html-message 'newBalancer.labelDefault'}}</label>
-        {{textarea
-          value=haproxyConfig.defaults
-          prompt="Custom defaults section lines"
-          rows="8"
-          classNames="form-control"
-        }}
-      </div>
-    </div>
+    {{textarea
+      value=service.lbConfig.config
+      placeholder=(t 'newBalancer.config.prompt')
+      rows="8"
+      classNames="form-control"
+    }}
   </div>
 
   <div class="section" data-section="labels">
@@ -123,4 +93,4 @@
 {{/select-tab}}
 
 {{top-errors errors=errors}}
-{{save-cancel save="save" cancel="cancel"}}
+{{save-cancel editing=editing editLabel=editLabel save="save" cancel="cancel"}}

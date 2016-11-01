@@ -494,7 +494,7 @@ export default Ember.Mixin.create({
   cloneForNew: function() {
     var copy = this.clone();
     delete copy.id;
-    delete copy.actions;
+    delete copy.actionLinks;
     delete copy.links;
     delete copy.uuid;
     return copy;
@@ -503,7 +503,7 @@ export default Ember.Mixin.create({
   serializeForNew: function() {
     var copy = this.serialize();
     delete copy.id;
-    delete copy.actions;
+    delete copy.actionLinks;
     delete copy.links;
     delete copy.uuid;
     return copy;

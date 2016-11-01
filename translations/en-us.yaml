@@ -979,7 +979,7 @@ registriesPage:
         username: Username
         created: Created
       body:
-        noData: You don't have any registries yet.
+        noData: "You don't have any registries yet."
   new:
     header: Add Registry
     form:
@@ -1012,6 +1012,8 @@ servicePage:
     externalIp: External IPs
     externalHostname: 'External Hostname:'
   navTabs:
+    portRules: Balancer Rules
+    certificates: Certificates
     ports: Ports
     containers: Containers
     labels: Labels
@@ -1029,6 +1031,9 @@ servicePage:
   linksTab:
     header: Links
     noData: No Links
+  certsTab:
+    default: Default Certificate
+    additional: Additional SNI Certificates
   new:
     form:
       name:
@@ -1663,25 +1668,47 @@ formatIp:
   noIp: None
   unknownIp: Unknown
 
-formBalancerListeners:
-  label: Listening Ports
-  addAction: Add Port
-  table:
-    host: Source IP/Port
-    protocol: Protocol
-    ssl: SSL
-    container: Default Target Port
-    listener: Access
-  host:
-    placeholder: "On Host, e.g. 80 or 1.2.3.4:80"
-  protocol:
-    placeholder: "Select a protocol:"
-  container:
-    placeholder: "In Container, e.g. 8080"
-  selectAccess: "Select access:"
-  listen:
+formBalancerRules:
+  label: Port Rules
+  noRules: No Rules
+  addServiceLabel: Add Service Rule
+  addSelectorLabel: Add Selector Rule
+  target: Target
+  access:
+    label: Access
     public: Public
     internal: Internal
+  protocol:
+    label: Protocol
+  sourcePort:
+    label: Port
+    placeholder: e.g. 80
+  path:
+    label: Path
+    placeholder: e.g. /foo
+  hostname:
+    label: Request Host
+    placeholder: e.g. example.com
+  backendName:
+    label: Backend
+    placeholder: e.g. webapp
+  targetPort:
+    label: Port
+    placeholder: e.g. 80
+  priority:
+    label: Priority
+    moveUp: Move Up
+    moveDown: Move Down
+  serviceId:
+    label: Service
+    prompt: Select a Service...
+    noHostnames: "(Can't balance to hostnames)"
+  selector:
+    placeholder: e.g. foo=bar
+  help:
+    prefix: "Host and Path rules are matched top-to-bottom in the order shown.  Backends will be named randomly by default;  to customize the generated backends, provide a name and then refer to that in the custom haproxy.cfg.  "
+    showBackendLink: "Show custom backend names"
+    suffix: ""
 
 formCommand:
   command:
@@ -1716,7 +1743,7 @@ formCommand:
       }
     always: Always
   environment:
-    label: Environment Vars
+    label: Environment
     addAction: Add Environment Variable
     keyLabel: Variable
     keyPlaceholder: e.g. FOO
@@ -1790,7 +1817,7 @@ formEngineOpts:
     valuePlaceholder: e.g. https://my-mirror.example.com:5000
 
 formHealthCheck:
-  label: Health Check
+  label: Type
   checkType:
     none: None
     tcp: TCP Connection Opens
@@ -1822,10 +1849,10 @@ formHealthCheck:
     label: Check Timeout
     unit: ms
   healthyThreshold:
-    label: Healthy Threshold
+    label: Healthy After
     unit: successes
   unhealthyThreshold:
-    label: Unhealthy Threshold
+    label: Unhealthy After
     unit: failures
   strategy:
     label: When Unhealthy
@@ -1905,10 +1932,12 @@ formNetwork:
     placeholder: e.g. example.com
   resolvingServers:
     label: Resolving Servers
+    addActionLabel: Add Server
     placeholder: e.g. 8.8.4.4
   searchDomains:
     label: Search Domains
     placeholder: e.g. prod.example.com
+    addActionLabel: Add Domain
 
 formPorts:
   addAction: Port Map
@@ -1997,6 +2026,7 @@ formSecurity:
       link: More information
   deviceBinding:
     label: Device Binding
+    addActionLabel: Add Binding
     pathHost:
       label: Path in Host
       placeholder: e.g. /dev/sdc
@@ -2031,10 +2061,11 @@ formSslTermination:
   certificate: Certificate*
   alternateCerts: Alternate Certs
   addAlternate: Add Alternate Certificate
-  noCertificates: There are no other certificates to use.
+  noCertificates: There are no certificates to use.
+  noAlternateCertificates: There are no other certificates to use.
   helpBlock: |
     "Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
-  muted: There are no SSL listening ports configured.
+  notNeeded: There are no SSL/TLS ports configured.
 
 formStickiness:
   stickiness: Stickiness
@@ -2047,7 +2078,7 @@ formStickiness:
   indirect: Indirect
   sendHeader: Send no-cache header
   onPost: Only set cookie on POST
-  noPorts: There are no HTTP listening ports configured.
+  noPorts: There are no HTTP Port Rules configured.
 
   placeholder:
     sticky: e.g. sticky
@@ -2063,7 +2094,7 @@ formTargets:
   title: Targets
   addAction: Add Service
   hostname:
-    label: Request Host
+    label: Request Host Header
     placeholder: e.g. svc.com
   srcPort:
     label: Source Port
@@ -2101,6 +2132,7 @@ formUserLabels:
     label: Value
     placeholder: e.g. bar
   protip: "ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
+  noLabels: No Labels
 
 formUpgrade:
   size: Batch Size
@@ -2131,6 +2163,7 @@ formVolumes:
   noLaunchConfigs: There are no other launch configs in this service to share volumes with.
   noHostContainers: This host has no containers to use the volumes from.
   onlySingleHost: Only available when adding a container to a particular host.
+  addActionLabel: Add Volume
 
 heroAddService:
   infra:
@@ -2816,20 +2849,28 @@ newAliasService:
   header: Add Service Alias
 
 newBalancer:
-  header: Add Load Balancer
-  note: |
-    <p><strong>Note:</strong> Requests that do not match any of the &quot;advanced request options&quot; will be sent to the <strong>all</strong> ({targetResources}) of the configured target services (round-robin) on the default target port corresponding to the source port of the request.</p>
+  header: 
+    add: Add Load Balancer
+    edit: Edit Load Balancer
+    upgrade: Upgrade Load Balancer
   tabs:
     ssl: SSL Termination
     stickiness: Stickiness
     custom: Custom haproxy.cfg
     labels: Labels
     scheduling: Scheduling
-  helpBlock: |
-    <p class="help-block">Additional <a href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html" target="_blank">haproxy.cfg</a> configuration can be put here and will be appended to the configuration generated by {appName}.</p>
-  labelGlobal: <code>global</code> section
-  labelDefault: <code>defaults</code> section
-
+  custom: |
+    Additional <a href="https://cbonte.github.io/haproxy-dconv/1.6/configuration.html" target="_blank" rel="nofollow noopener">haproxy.cfg</a> configuration can be put here and will be merged together with the configuration generated by {appName}.
+  config:
+    prompt: Custom haproxy.cfg content
+  error:
+    noRules: "Choose one or more port rules to listen on"
+    noSourcePort: "Source Port is required on each rule"
+    invalidSourcePort: "Invalid source port: '{num}'"
+    invalidTargetPort: "Invalid target port: '{num}'"
+    mixedPort: "Port {num} has multiple rules with conflicting access/protcols"
+    noTarget: "Target is required on each rule"
+    needsCertificate: "A certificate is required because there are SSL/TLS port rules"
 
 newCatalog:
   version:
@@ -3292,6 +3333,7 @@ action:
   switchNamespace: Switch to this Namespace
   switchEnvironment: Switch to this Environment
   upgrade: Upgrade
+  upgradeOrEdit: Upgrade/Edit
   viewConfig: View Config
   viewGraph: View Graph
   viewInApi: View in API

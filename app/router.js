@@ -162,6 +162,8 @@ Router.map(function() {
               this.route('ports');
               this.route('links');
               this.route('log');
+              this.route('port-rules');
+              this.route('certificates');
             });
           });
         });

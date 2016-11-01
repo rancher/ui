@@ -39,7 +39,7 @@ export default Ember.Component.extend({
     } else {
       return this.get('createLabel');
     }
-  }.property('saved','editing'),
+  }.property('saved','editing','savedLabel','editLabel','createLabel'),
 
   savedChanged: function() {
     if ( this.get('saved') )

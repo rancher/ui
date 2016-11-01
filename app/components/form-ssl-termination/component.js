@@ -1,17 +1,17 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  launchConfig    : null,
-  hasSslListeners : null,
-  balancer        : null,
+  service         : null,
   allCertificates : null,
+
+  lbConfig: Ember.computed.alias('service.lbConfig'),
 
   alternates      : null,
 
   init() {
     this._super(...arguments);
 
-    var alternates = (this.get('balancer.certificateIds')||[]).map((id) => {
+    var alternates = (this.get('lbConfig.certificateIds')||[]).map((id) => {
       return {value: id};
     });
 
@@ -29,24 +29,24 @@ export default Ember.Component.extend({
   },
 
   alternateCertificates: function() {
-    var def = this.get('balancer.defaultCertificateId');
+    var def = this.get('lbConfig.defaultCertificateId');
     return this.get('allCertificates').slice().filter((obj) => {
       return Ember.get(obj, 'id') !== def;
     });
-  }.property('allCertificates.@each.id','balancer.defaultCertificateId'),
+  }.property('allCertificates.@each.id','lbConfig.defaultCertificateId'),
 
   defaultDidChange: function() {
-    var def = this.get('balancer.defaultCertificateId');
+    var def = this.get('lbConfig.defaultCertificateId');
     this.get('alternates').forEach((obj) => {
       if ( Ember.get(obj, 'value') === def )
       {
         Ember.set(obj,'value',null);
       }
     });
-  }.observes('balancer.defaultCertificateId'),
+  }.observes('lbConfig.defaultCertificateId'),
 
   alternatesDidChange: function() {
-    this.set('balancer.certificateIds', this.get('alternates').map((obj) => {
+    this.set('lbConfig.certificateIds', this.get('alternates').map((obj) => {
       return Ember.get(obj, 'value');
     }).filter((id) => { return !!id; }).uniq());
   }.observes('alternates.@each.value'),

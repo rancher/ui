@@ -358,14 +358,19 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
         }
       });
 
-      return this.get('service').doAction('upgrade', {
-        inServiceStrategy: {
-          batchSize: this.get('upgradeOptions.batchSize'),
-          intervalMillis: this.get('upgradeOptions.intervalMillis'),
-          startFirst: this.get('upgradeOptions.startFirst'),
-          launchConfig: primary,
-          secondaryLaunchConfigs: slc
-        },
+      let service = this.get('service');
+      return this._super.apply(this,arguments).then(() => {
+        return service.waitForAction('upgrade').then(() => {
+          return service.doAction('upgrade', {
+            inServiceStrategy: {
+              batchSize: this.get('upgradeOptions.batchSize'),
+              intervalMillis: this.get('upgradeOptions.intervalMillis'),
+              startFirst: this.get('upgradeOptions.startFirst'),
+              launchConfig: primary,
+              secondaryLaunchConfigs: slc
+            },
+          });
+        });
       });
     }
     else

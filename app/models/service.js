@@ -51,26 +51,6 @@ var Service = Resource.extend({
       });
     },
 
-    edit() {
-      var type = this.get('type').toLowerCase();
-      if ( type === 'loadbalancerservice' )
-      {
-        this.get('modalService').toggleModal('edit-balancerservice', this);
-      }
-      else if ( type === 'dnsservice' )
-      {
-        this.get('modalService').toggleModal('edit-aliasservice', this);
-      }
-      else if ( type === 'externalservice' )
-      {
-        this.get('modalService').toggleModal('edit-externalservice', this);
-      }
-      else
-      {
-        this.get('modalService').toggleModal('edit-service', this);
-      }
-    },
-
     scaleUp() {
       this.incrementProperty('scale');
       this.saveScale();
@@ -86,9 +66,10 @@ var Service = Resource.extend({
 
     upgrade() {
       var route = 'service.new';
-      if ( (this.get('launchConfig.kind')||'').toLowerCase() === 'virtualmachine')
-      {
+      if ( (this.get('launchConfig.kind')||'').toLowerCase() === 'virtualmachine') {
         route = 'service.new-virtualmachine';
+      } else if ( this.get('type').toLowerCase() === 'loadbalancerservice' ) {
+        route = 'service.new-balancer';
       }
 
       this.get('application').transitionToRoute(route, {queryParams: {
@@ -144,16 +125,18 @@ var Service = Resource.extend({
   availableActions: function() {
     var a = this.get('actionLinks');
 
-    var canUpgrade = !!a.upgrade && this.get('type') === 'service';
+    var canUpgrade = !!a.upgrade && this.get('canUpgrade');
     var isK8s = this.get('isK8s');
     var isSwarm = this.get('isSwarm');
     var hasContainers = this.get('hasContainers');
+    var isBalancer = this.get('isBalancer');
+    var isDriver = ['networkdriverservice','storagedriverservice'].includes(this.get('type').toLowerCase());
 
     var choices = [
       { label: 'action.start',          icon: 'icon icon-play',             action: 'activate',       enabled: !!a.activate},
       { label: 'action.finishUpgrade',  icon: 'icon icon-success',          action: 'finishUpgrade',  enabled: !!a.finishupgrade },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback },
-      { label: 'action.upgrade',        icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: canUpgrade },
+      { label: (isBalancer ? 'action.upgradeOrEdit' : 'action.upgrade'),        icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: canUpgrade },
       { label: 'action.cancelUpgrade',  icon: 'icon icon-life-ring',        action: 'cancelUpgrade',  enabled: !!a.cancelupgrade },
       { label: 'action.cancelRollback', icon: 'icon icon-life-ring',        action: 'cancelRollback', enabled: !!a.cancelrollback },
       { divider: true },
@@ -163,12 +146,12 @@ var Service = Resource.extend({
       { label: 'action.purge',          icon: '',                           action: 'purge',          enabled: !!a.purge},
       { divider: true },
       { label: 'action.viewInApi',      icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
-      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isSwarm },
-      { label: 'action.edit',           icon: 'icon icon-edit',             action: 'edit',           enabled: !!a.update && !isK8s && !isSwarm },
+      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isSwarm && !isDriver },
+      { label: 'action.edit',           icon: 'icon icon-edit',             action: 'edit',           enabled: !!a.update && !isK8s && !isSwarm && !isBalancer},
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type','isK8s','isSwarm','hasContainers'),
+  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type','isK8s','isSwarm','hasContainers','canUpgrade','isBalancer'),
 
 
   serviceLinks: null, // Used for clone
@@ -241,7 +224,7 @@ var Service = Resource.extend({
   }.property('launchConfig.labels'),
 
   canScale: function() {
-    if ( ['service','loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0 )
+    if ( ['service','networkdriverservice','storagedriverservice','loadbalancerservice'].includes(this.get('type').toLowerCase()) )
     {
       return !this.get('isGlobalScale');
     }
@@ -254,27 +237,30 @@ var Service = Resource.extend({
   hasContainers: function() {
     return [
       'service',
+      'networkdriverservice',
+      'storagedriverservice',
       'loadbalancerservice',
       'kubernetesservice',
       'composeservice',
-    ].indexOf(this.get('type').toLowerCase()) >= 0;
+    ].includes(this.get('type').toLowerCase());
   }.property('type'),
 
-  hasPorts: function() {
+  isReal: function() {
     return [
       'service',
+      'networkdriverservice',
+      'storagedriverservice',
       'loadbalancerservice',
-    ].indexOf(this.get('type').toLowerCase()) >= 0;
+    ].includes(this.get('type').toLowerCase());
   }.property('type'),
 
-  hasImage: function() {
-    return this.get('type') === 'service';
-  }.property('type'),
+  hasPorts: Ember.computed.alias('isReal'),
+  hasImage: Ember.computed.alias('isReal'),
+  hasLabels: Ember.computed.alias('isReal'),
+  canUpgrade: Ember.computed.alias('isReal'),
 
-  hasLabels: function() {
-    return [
-      'loadbalancerservice','service'
-    ].indexOf(this.get('type').toLowerCase()) >= 0;
+  isBalancer: function() {
+    return ['loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0;
   }.property('type'),
 
   isK8s: function() {
@@ -294,6 +280,8 @@ var Service = Resource.extend({
       case 'externalservice':     out = 'External'; break;
       case 'kubernetesservice':   out = 'K8s Service'; break;
       case 'composeservice':      out = 'Compose Service'; break;
+      case 'networkdriverservice':out = 'Network Service'; break;
+      case 'storagedriverservice':out = 'Storage Service'; break;
       default:                    out = 'Service'; break;
     }
 

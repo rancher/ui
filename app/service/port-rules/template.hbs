@@ -1,0 +1,90 @@
+{{#if rules.length}}
+  <table class="grid fixed no-lines no-top-padding tight r-mb0">
+    <thead>
+      <tr>
+        <th width="65">{{t 'formBalancerRules.priority.label'}}</th>
+        <th width="60">{{t 'formBalancerRules.access.label'}}</th>
+        <th width="70">{{t 'formBalancerRules.protocol.label'}}</th>
+        <th class="divided">{{t 'formBalancerRules.hostname.label'}}</th>
+        <th width="60">{{t 'formBalancerRules.sourcePort.label'}}</th>
+        <th>{{t 'formBalancerRules.path.label'}}</th>
+        <th class="divided">{{t 'formBalancerRules.target'}}</th>
+        <th width="60">{{t 'formBalancerRules.targetPort.label'}}</th>
+        <th class="divided">{{t 'formBalancerRules.backendName.label'}}</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {{#each rules as |rule idx|}}
+        <tr>
+          <td data-title="{{t 'formBalancerRules.priority.label'}}">
+            {{rule.priority}}
+          </td>
+
+          <td data-title="{{t 'formBalancerRules.access.label'}}">
+            {{uc-first rule.access}}
+          </td>
+
+          <td data-title="{{t 'formBalancerRules.protocol.label'}}">
+            {{upper-case rule.protocol}}
+          </td>
+
+          <td class="divided" data-title="{{t 'formBalancerRules.hostname.label'}}">
+            {{#if rule.canHostname}}
+              {{#if rule.hostname}}
+                {{rule.hostname}}
+              {{else}}
+                <span class="text-muted">{{t 'generic.none'}}</span>
+              {{/if}}
+            {{else}}
+              <span class="text-muted">{{t 'generic.na'}}</span>
+            {{/if}}
+          </td>
+
+          <td data-title="{{t 'formBalancerRules.sourcePort.label'}}">
+            {{rule.sourcePort}}
+          </td>
+
+          <td data-title="{{t 'formBalancerRules.path.label'}}">
+            {{#if rule.canPath}}
+              {{#if rule.path}}
+                {{rule.path}}
+              {{else}}
+                <span class="text-muted">{{t 'generic.none'}}</span>
+              {{/if}}
+            {{else}}
+              <span class="text-muted">{{t 'generic.na'}}</span>
+            {{/if}}
+          </td>
+
+          <td class="divided" data-title="{{t (if rule.isSelector 'formBalancerRules.selector.label' 'formBalancerRules.serviceId.label')}}">
+            {{#if rule.selector}}
+              {{rule.selector}}
+            {{else}}
+              <a href="{{href-to "service" rule.serviceId}}">
+                {{#if (not-eq service.stackId rule.service.stackId)~}}
+                  {{rule.service.displayStack}}/
+                {{~/if~}}
+                {{~rule.service.displayName~}}
+              </a>
+            {{~/if~}}
+          </td>
+
+          <td data-title="{{t 'formBalancerRules.targetPort.label'}}">
+            {{rule.targetPort}}
+          </td>
+
+          <td class="divided" data-title="{{t 'formBalancerRules.backendName.label'}}">
+            {{#if rule.backendName}}
+              {{rule.backendName}}
+            {{else}}
+              <span class="text-muted">{{t 'generic.none'}}</span>
+            {{/if}}
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <div class="text-muted text-center">{{t 'formBalancerRules.noRules'}}</div>
+{{/if}}
