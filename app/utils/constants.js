@@ -7,7 +7,7 @@ const KIND_KUBERNETES = 'k8s';
 const KIND_SWARM = 'swarm';
 const KIND_MESOS = 'mesos';
 const KIND_INFRA = 'infra';
-const KIND_NOT_ORCHESTRATION = 'not-orch';
+const KIND_NOT_ORCHESTRATION = 'cattle';
 
 var C = {
   COOKIE: {
@@ -183,6 +183,10 @@ var C = {
 
     ROLE_MEMBER:  'member',
     ROLE_OWNER:   'owner',
+  },
+
+  PROJECT_TEMPLATE: {
+    DEFAULT: 'cattle',
   },
 
   // Ephemeral but same but across all browser tabs

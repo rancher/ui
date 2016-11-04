@@ -12,18 +12,19 @@
           choices=launchConfigChoices
           index=activeLaunchConfigIndex
         }}
-      {{else}}
-        {{form-scale
-          initialLabels=launchConfig.labels
-          initialScale=service.scale
-          isGlobal=isGlobal
-          errors=scaleErrors
-          setLabels=(action 'setLabels' 'scale')
-          setGlobal=(action 'setGlobal')
-          setScale=(action  'setScale')
-          isVm=isVm
-        }}
       {{/if}}
+
+      {{form-scale
+        initialLabels=launchConfig.labels
+        initialScale=service.scale
+        isGlobal=isGlobal
+        errors=scaleErrors
+        setLabels=(action 'setLabels' 'scale')
+        setGlobal=(action 'setGlobal')
+        setScale=(action  'setScale')
+        isVm=isVm
+        classNames=(if isUpgrade 'hide')
+      }}
 
       {{form-launch-config-switch
         index=activeLaunchConfigIndex
@@ -96,6 +97,9 @@
       <li role="tab" aria-controls="panel" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}><a href="#">{{t 'newContainer.tabs.healthCheck'}}</a></li>
       <li role="tab" aria-controls="panel" class="tab" data-section="labels" {{action "selectTab" "labels"}}><a href="#">{{t 'newContainer.tabs.labels'}}</a></li>
       <li role="tab" aria-controls="panel" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}><a href="#">{{t 'newContainer.tabs.scheduling'}}</a></li>
+      {{#if (and false isService)}}
+        <li role="tab" aria-controls="panel" class="tab" data-section="balancing" {{action "selectTab" "balancing"}}><a href="#">{{t 'newContainer.tabs.balancing'}}</a></li>
+      {{/if}}
     </ul>
 
   <div class="horizontal-form well" role="tabpanel">
@@ -179,6 +183,16 @@
         setRequestedHost=(action 'setRequestedHostId')
       }}
     </div>
+
+    {{#if (and false isService)}}
+      <div class="section" data-section="balancing">
+        {{form-balancer-rules
+          service=service
+          allServices=allServices
+          showListeners=false
+        }}
+      </div>
+    {{/if}}
 
   </div>
   </section>

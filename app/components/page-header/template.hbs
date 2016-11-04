@@ -21,70 +21,76 @@
             <li>
               <a href="{{item.url}}" target="{{item.target}}">{{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}}</a>
             </li>
+          {{else if item.submenu.length}}
+            {{! Has a submenu }}
+            <li class="dropdown">
+              {{#link-to-as-attrs
+                item.route
+                models=item.ctx
+                queryParams=item.queryParams
+                moreCurrentWhen=item.moreCurrentWhen
+                activeParent=true
+                class="dropdown-toggle"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+              }}
+                {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}} <span class="icon icon-chevron-down hidden-sm hidden-xs"/>
+              {{/link-to-as-attrs}}
+              <ul class="dropdown-menu" data-dropdown-id={{item.id}}>
+                {{#each item.submenu as |subitem|}}
+                  {{#if subitem.divider}}
+                    <li class="divider"></li>
+                  {{else if subitem.url}}
+                    <li>
+                      <a href="{{subitem.url}}" target="{{subitem.target}}">
+                        <i class="{{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
+                      </a>
+                    </li>
+                  {{else if subitem.route}}
+                    <li>
+                      {{#link-to-as-attrs
+                        subitem.route
+                        models=subitem.ctx
+                        queryParams=subitem.queryParams
+                        activeParent=true
+                        moreCurrentWhen=subitem.moreCurrentWhen
+                      }}
+                        <i class="{{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
+                      {{/link-to-as-attrs}}
+                    </li>
+                  {{else}}
+                    {{! Just a label }}
+                    <li class="dropdown-header">
+                     <i class="{{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
+                    </li>
+                  {{/if}}
+                {{/each}}
+              </ul>
+              {{#if item.showAlert}}
+                {{#tooltip-element class="tooltip-warning" type='tooltip-warning'}}
+                  {{#link-to item.alertRoute data-toggle="tooltip" data-placement="bottom"}}!{{/link-to}}
+                {{/tooltip-element}}
+              {{/if}}
+            </li>
+          {{else if item.route}}
+            {{! No submenu }}
+            <li>
+              {{#link-to-as-attrs
+                item.route
+                models=item.ctx
+                queryParams=item.queryParams
+                activeParent=true
+                moreCurrentWhen=item.moreCurrentWhen
+              }}
+                {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}}
+              {{/link-to-as-attrs}}
+            </li>
           {{else}}
-            {{#if item.submenu.length}}
-              {{! Has a submenu }}
-              <li class="dropdown">
-                {{#link-to-as-attrs
-                  item.route
-                  models=item.ctx
-                  queryParams=item.queryParams
-                  moreCurrentWhen=item.moreCurrentWhen
-                  activeParent=true
-                  class="dropdown-toggle"
-                  role="button"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                }}
-                  {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}} <span class="icon icon-chevron-down hidden-sm hidden-xs"/>
-                {{/link-to-as-attrs}}
-                <ul class="dropdown-menu" data-dropdown-id={{item.id}}>
-                  {{#each item.submenu as |subitem|}}
-                    {{#if subitem.divider}}
-                      <li class="divider"></li>
-                    {{else}}
-                      {{#if subitem.url}}
-                        <li>
-                          <a href="{{subitem.url}}" target="{{subitem.target}}">
-                            <i class="icon {{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
-                          </a>
-                        </li>
-                      {{else}}
-                        <li>
-                          {{#link-to-as-attrs
-                            subitem.route
-                            models=subitem.ctx
-                            queryParams=subitem.queryParams
-                            activeParent=true
-                            moreCurrentWhen=subitem.moreCurrentWhen
-                          }}
-                            <i class="icon {{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
-                          {{/link-to-as-attrs}}
-                        </li>
-                      {{/if}}
-                    {{/if}}
-                  {{/each}}
-                </ul>
-                {{#if item.showAlert}}
-                  {{#tooltip-element class="tooltip-warning" type='tooltip-warning'}}
-                    {{#link-to item.alertRoute data-toggle="tooltip" data-placement="bottom"}}!{{/link-to}}
-                  {{/tooltip-element}}
-                {{/if}}
-              </li>
-            {{else}}
-              {{! No submenu }}
-              <li>
-                {{#link-to-as-attrs
-                  item.route
-                  models=item.ctx
-                  queryParams=item.queryParams
-                  activeParent=true
-                  moreCurrentWhen=item.moreCurrentWhen
-                }}
-                  {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}}
-                {{/link-to-as-attrs}}
-              </li>
-            {{/if}}
+            {{! Just a label }}
+            <li class="dropdown-header">
+              {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}}
+            </li>
           {{/if}}
         {{/each}}
       </ul>

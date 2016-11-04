@@ -476,19 +476,12 @@ export default Ember.Service.extend({
   }.property('version.{minor,major}'),
 
   filterSystemStack(stacks) {
-    // Run away
-    const REALLY_OLD = C.EXTERNAL_ID.KIND_SYSTEM + C.EXTERNAL_ID.KIND_SEPARATOR + C.EXTERNAL_ID.KIND_LEGACY_KUBERNETES;
-    const OLD_PREFIX = C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNAL_ID.GROUP_SEPARATOR + C.EXTERNAL_ID.KIND_KUBERNETES + C.EXTERNAL_ID.GROUP_SEPARATOR;
-    const OLD_SYSTEM_PREFIX = C.EXTERNAL_ID.KIND_SYSTEM_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNAL_ID.GROUP_SEPARATOR + C.EXTERNAL_ID.KIND_KUBERNETES + C.EXTERNAL_ID.GROUP_SEPARATOR;
-    const CUR_PREFIX = "catalog://infra:infra*k8s:"; // I give up... also includes system-catalog://
-
-
-    var stack = (stacks||[]).filter((stack) => {
-      let externalId = stack.get('externalId')||'';
-      return externalId === REALLY_OLD || externalId.indexOf(OLD_PREFIX) >= 0 || externalId.indexOf(OLD_SYSTEM_PREFIX) >= 0 || externalId.indexOf(CUR_PREFIX) >= 0;
-    })[0];
-
-    return stack;
+    return (stacks||[]).find((stack) => {
+      let info = stack.get('externalIdInfo');
+      return (info.kind === C.EXTERNAL_ID.KIND_CATALOG || info.kind === C.EXTERNAL_ID.KIND_SYSTEM_CATALOG) &&
+        info.base === C.EXTERNAL_ID.KIND_INFRA &&
+        info.name === C.EXTERNAL_ID.KIND_KUBERNETES;
+    });
   },
 
   _getCollection(type, resourceName) {

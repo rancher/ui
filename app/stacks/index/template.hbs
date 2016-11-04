@@ -4,7 +4,7 @@
   </h1>
 
   {{#if (eq which "infra")}}
-    {{#link-to "catalog-tab" projects.current.id (query-params catalogId="infra") classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
+    {{#link-to "catalog-tab" projects.current.id (query-params catalogId="all" templateBase="infra") classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
   {{else}}
     {{#link-to "stacks.new" classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.actionButton'}}{{/link-to}}
     {{#if arranged.length}}
@@ -38,6 +38,8 @@
     {{else}}
       {{#if (and model.length tagArray.length)}}
         <div class="r-m20 text-center text-muted">{{t 'stacksPage.noMatch'}}</div>
+      {{else if (eq which "infra")}}
+        <div class="r-m20 text-center text-muted">{{t 'stacksPage.noInfra'}}</div>
       {{else}}
         {{hero-add-service}}
       {{/if}}

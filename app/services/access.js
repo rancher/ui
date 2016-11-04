@@ -6,6 +6,7 @@ export default Ember.Service.extend({
   session: Ember.inject.service(),
   github:  Ember.inject.service(),
   shibbolethAuth: Ember.inject.service(),
+  store: Ember.inject.service(),
   userStore: Ember.inject.service('user-store'),
   token: null,
 
@@ -143,4 +144,13 @@ export default Ember.Service.extend({
   isLoggedIn: function() {
     return !!this.get('cookies').get(C.COOKIE.TOKEN);
   },
+
+  isOwner: function() {
+    let schema = this.get('store').getById('schema','stack');
+    if ( schema && schema.resourceFields.system ) {
+      return schema.resourceFields.system.create;
+    }
+
+    return false;
+  }
 });

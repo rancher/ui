@@ -10,6 +10,7 @@ export default Ember.Component.extend(Sortable, {
     state:        ['stateSort','name','id'],
     name:         ['name','id'],
     description:  ['description','name','id'],
+    projectTemplate:['projectTemplate.name','name','id'],
     orchestration:['displayOrchestration','name','id'],
   },
 });

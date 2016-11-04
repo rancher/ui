@@ -16,7 +16,7 @@ export default Ember.Mixin.create({
   showEllipsis: Ember.computed.and('stripProject','prefixLength'),
 
   displayName: function() {
-    var name = this.get('model.displayName');
+    var name = this.get('model.displayName')||'';
     if ( this.get('stripProject') )
     {
       var len = this.get('prefixLength');

@@ -40,12 +40,35 @@ var ProjectTemplate = Resource.extend(PolledResource, {
     };
 
     this.get('stacks').forEach((stack) => {
-      let category = stack.get('category');
+      let category = stack.get('category')||'Unknown';
       if ( !map[category] ) {
         map[category] = '';
       }
 
-      map[category] += (map[category] ? ', ' : '') + stack.get('catalogTemplate.name');
+      let tpl = stack.get('catalogTemplate');
+      let name;
+      if ( tpl ) {
+        name = tpl.get('name');
+      } else {
+        name = stack.get('name');
+      }
+
+      map[category] += (map[category] ? ', ' : '') + name;
+    });
+
+    if ( !map['Orchestration'] ) {
+      map['Orchestration'] = 'Cattle';
+    }
+
+    // Sort the keys by map
+    Object.keys(map).sort().forEach((key) => {
+      if ( key === 'Orchestration') {
+        return;
+      }
+
+      let tmp = map[key];
+      delete map[key];
+      map[key] = tmp;
     });
 
     return map;

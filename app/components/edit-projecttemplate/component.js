@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import Util from 'ui/utils/util';
+import { isAlternate } from 'ui/utils/platform';
 
 export default Ember.Component.extend(NewOrEdit, {
   access: Ember.inject.service(),
@@ -69,7 +70,11 @@ export default Ember.Component.extend(NewOrEdit, {
       });
     },
 
-    disableStack(obj) {
+    disableStack(obj, onlyAlternate) {
+      if ( onlyAlternate && !isAlternate(event) ) {
+        return false;
+      }
+
       obj.set('enabled', false);
     },
 
@@ -85,43 +90,47 @@ export default Ember.Component.extend(NewOrEdit, {
 
     this.get('catalogInfo.catalog').forEach((tpl) => {
       let tplId = tpl.get('id');
+      let category = (tpl.get('category')||'').toLowerCase();
 
-      if ( (tpl.get('category')||'').toLowerCase() === 'orchestration')
+      if ( category === 'orchestration')
       {
         orch.push(tpl.get('id'));
       }
 
       let cur = stacks.findBy('externalIdInfo.templateId', tplId);
+      let required = category === 'framework';
 
-       if ( cur ) {
-         map[tplId] = Ember.Object.create({
-           enabled: true,
-           compatible: null,
-           tpl: tpl,
-           stack: this.get('store').createRecord({
-             type: 'stack',
-             name: cur.get('name'),
-             description: cur.get('description'),
-             environment: cur.get('answers'),
-             templateVersionId: cur.get('externalId'),
-           }),
-         });
-       } else {
-         map[tplId] = Ember.Object.create({
-           enabled: false,
-           tpl: tpl,
-           compatible: null,
-           stack: this.get('store').createRecord({
-             type: 'stack',
-             name: tpl.get('defaultName'),
-             environment: {},
-           }),
-         });
-       }
-     });
+      if ( cur ) {
+        map[tplId] = Ember.Object.create({
+          required: required,
+          enabled: true,
+          compatible: null,
+          tpl: tpl,
+          stack: this.get('store').createRecord({
+            type: 'stack',
+            name: cur.get('name'),
+            description: cur.get('description'),
+            environment: cur.get('answers'),
+            templateVersionId: cur.get('externalId'),
+          }),
+        });
+      } else {
+        map[tplId] = Ember.Object.create({
+          required: required,
+          enabled: false,
+          tpl: tpl,
+          compatible: null,
+          stack: this.get('store').createRecord({
+            type: 'stack',
+            name: tpl.get('defaultName'),
+            environment: {},
+          }),
+        });
+      }
+    });
 
-     this.set('stacksMap', map);
-     this.set('orchestrationIds', orch);
+    this.set('stacksMap', map);
+    this.set('orchestrationIds', orch);
   },
 
   initOrchestration() {
@@ -159,6 +168,10 @@ export default Ember.Component.extend(NewOrEdit, {
   categories: function() {
     let out = this.get('catalogInfo.catalog').map(tpl => tpl.category).uniq().sort();
     out.removeObject('Orchestration');
+    if ( out.includes('Framework') ) {
+      out.removeObject('Framework');
+      out.push('Framework');
+    }
     return out;
   }.property('catalogInfo.catalog.@each.category'),
 
@@ -197,11 +210,16 @@ export default Ember.Component.extend(NewOrEdit, {
       let stack = map[key];
       if ( stack && stack.get('enabled') && !stack.get('tplVersion') ) {
         let tpl = stack.get('tpl');
-        promises.push(
-          this.get('store').request({url: tpl.versionLinks[tpl.defaultVersion]}).then((tplVersion) => {
-            stack.set('tplVersion', tplVersion);
-          })
-        );
+        let version = tpl.defaultVersion;
+        if ( tpl.versionLinks[version] ) {
+          promises.push(
+            this.get('store').request({url: tpl.versionLinks[version]}).then((tplVersion) => {
+              stack.set('tplVersion', tplVersion);
+            })
+          );
+        } else {
+          console.warn('No default template for ' + tpl.id);
+        }
       }
     });
 

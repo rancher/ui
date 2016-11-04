@@ -75,7 +75,6 @@ export default Ember.Component.extend(NewOrEdit, {
   // Ports
   // ----------------------------------
   updatePorts() {
-    console.log('updatePorts');
     let rules = this.get('service.lbConfig.portRules');
     let publish = [];
     let expose = [];
@@ -197,7 +196,6 @@ export default Ember.Component.extend(NewOrEdit, {
 
 
     if ( diff.call(this,'ports') || diff.call(this,'expose') ) {
-      console.log('needsUpgrade: true1');
       return true;
     }
 
@@ -209,7 +207,6 @@ export default Ember.Component.extend(NewOrEdit, {
 
     let old = arrayToStr(this.get('existing.launchConfig.labels'));
     let neu = arrayToStr(this.get('service.launchConfig.labels'));
-    console.log('needsUpgrade: '+(old !== neu ? 'true2' : 'false2'));
     return old !== neu;
   }.property(
     'service.launchConfig.ports.[]',
@@ -226,7 +223,6 @@ export default Ember.Component.extend(NewOrEdit, {
   labelsReady: false,
 
   labelsChanged: function() {
-    console.log('labelsChanged');
     Ember.run.once(this,'mergeLabels');
   }.observes(
     'userLabels.@each.{key,value}',
@@ -235,7 +231,6 @@ export default Ember.Component.extend(NewOrEdit, {
   ),
 
   mergeLabels() {
-    console.log('mergeLabels');
     let user = this.get('userLabels');
     let scale = this.get('scaleLabels');
     let scheduling = this.get('schedulingLabels');

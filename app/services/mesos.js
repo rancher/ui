@@ -46,14 +46,11 @@ export default Ember.Service.extend({
   },
 
   filterSystemStack(stacks) {
-    const OLD_STACK_ID = C.EXTERNAL_ID.KIND_SYSTEM + C.EXTERNAL_ID.KIND_SEPARATOR + C.EXTERNAL_ID.KIND_MESOS;
-    const NEW_STACK_PREFIX = C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNAL_ID.GROUP_SEPARATOR + C.EXTERNAL_ID.KIND_MESOS + C.EXTERNAL_ID.GROUP_SEPARATOR;
-
-    var stack = (stacks||[]).filter((stack) => {
-      let externalId = stack.get('externalId')||'';
-      return externalId === OLD_STACK_ID || externalId.indexOf(NEW_STACK_PREFIX) >= 0;
-    })[0];
-
-    return stack;
+    return (stacks||[]).find((stack) => {
+      let info = stack.get('externalIdInfo');
+      return (info.kind === C.EXTERNAL_ID.KIND_CATALOG || info.kind === C.EXTERNAL_ID.KIND_SYSTEM_CATALOG) &&
+        info.base === C.EXTERNAL_ID.KIND_INFRA &&
+        info.name === C.EXTERNAL_ID.KIND_MESOS;
+    });
   },
 });
