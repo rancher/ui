@@ -138,7 +138,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
       this.set('project.members', this.get('project.projectMembers'));
     }
 
-    return true;
+    return out;
   },
 
   didSave() {
