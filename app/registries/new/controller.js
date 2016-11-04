@@ -35,7 +35,20 @@ export default Ember.Controller.extend(NewOrEdit, {
     return drivers;
   }.property('activeDriver'),
 
+  cleanAddress: function() {
+    let cur = this.get('model.registry.serverAddress')||'';
+    let neu = cur.replace(/^http(s)?:\/\/(.*)$/,'$2');
+    neu = neu.replace(/\/.*$/,'');
+
+    if ( cur !== neu ) {
+      this.set('model.registry.serverAddress', neu);
+    }
+
+  },
+
   validate: function() {
+    this.cleanAddress();
+
     this._super();
     var errors = this.get('errors')||[];
 
