@@ -287,7 +287,6 @@ catalogPage:
     search:
       placeholder: Suche...
     category: "Kategorie:"
-    certified: Zertifiziert
     noData:
       singular: Keine kompatiblen Templates vorhanden.
       plural: Keine kompatiblen Templates in diesem Katalog vorhanden.
@@ -806,7 +805,7 @@ registriesPage:
         username: Benutzername
         created: Erstellt
       body:
-        noData: Sie haben noch keine Registries.
+        noData: "Sie haben noch keine Registries."
   new:
     header: Registry hinzufügen
     form:
@@ -891,16 +890,12 @@ servicePage:
 settingsPage:
   index:
     header: Umgebungen
-    linkTo: Umgebung hinzufügen
-    subtext: |
-      <p>{appName} unterstützt das Zusammenfassen von Ressourcen in mehrere Umgebungen. Jede Umgebung erhält dabei ihre eigenen Services und Infrakstrukturkomponenten und wird von einem oder mehreren GitHub Anwendern, Teams oder Organsiationen verwaltet.</p>
-      <p>Zum Beispiel können Sie separate "dev", "test" und "production" Umgebungen einrichten um die Services von einander zu trennen und z.B. der gesamten Organsiation "dev" Zugriff zu geben und die "production" Umgebung auf ein kleineres Team zu beschränken.</p>
     alert: Keine aktiven Umgebungen vorhanden. Sie müssen zuerst eine Umgebung erstellen..
     table:
       header:
         orchestration: Orchestrierung
       body:
-        noData: Sie haben noch keine Umgebungen.
+        noData: "Sie haben noch keine Umgebungen."
 stacksPage:
   header:
     all: Alle Stacks
@@ -1206,20 +1201,10 @@ advancedSection:
 catalogSettings:
   header: Katalog
   subtext: Kataloge enthalten rancher-compose Templates die es Benutzern erlauben Anwendungen mit wenigen Fragen auszurollen.
-  system:
-    header:
-      rancher: "{appName} Infrastruktur"
-      pl: Infrastruktur
-    detail:
-      rancher: Templates welche für Rancher Kernfunktionen wie z. B. die Unterstützung von Kubernetes, Mesos, oder Swarm benötigt werden. Sie werden von Rancher Labs gepflegt und unterstützt.
-      pl: Offizielle, für Kernfunktionen wie z. B. die Unterstützung von Kubernetes/Mesos/Swarm benötigte Templates.
   certified:
     header:
       rancher: "{appName} Zertifizierte Bibliothek"
       pl: Zertifizierte Bibliothek
-    detail:
-      rancher: Zertifizierte Templates die von Rancher Labs gepflegte und unterstützt werden.
-      pl: Offiziell gepflegte und unterstützte Templates.
   community:
     header:
       rancher: Community Templates
@@ -1388,24 +1373,6 @@ stackHeader:
 formatIp:
   noIp: Keine
   unknownIp: Unbekannt
-formBalancerListeners:
-  label: lauschende Ports
-  addAction: Port hinzufügen
-  table:
-    host: Quell IP/Port
-    protocol: Protokoll
-    container: Default Ziel Port
-    listener: Zugriff
-  host:
-    placeholder: "Auf Host, z.B. 80 oder 1.2.3.4:80"
-  protocol:
-    placeholder: "Protokoll auswählen:"
-  container:
-    placeholder: "Im Container, z.B. 8080"
-  selectAccess: "Zugriff auswählen:"
-  listen:
-    public: Öffentlich
-    internal: Intern
 formCommand:
   command:
     label: Befehl
@@ -1438,7 +1405,6 @@ formCommand:
       }
     always: Immer
   environment:
-    label: Umgebungsvariablen
     addAction: Umgebungsvariable hinzufügen
     keyLabel: Variable
     keyPlaceholder: z.B. FOO
@@ -1499,7 +1465,6 @@ formEngineOpts:
     valueLabel: Spiegel URL
     valuePlaceholder: 'z.B. https://my-mirror.example.com:5000'
 formHealthCheck:
-  label: Überwachung
   checkType:
     none: Keine
     tcp: TCP Verbindung wird geöffnet
@@ -1523,10 +1488,8 @@ formHealthCheck:
   timeout:
     label: Prüfungs Timeout
   healthyThreshold:
-    label: Schwellwert in Ordnung
     unit: erfolge
   unhealthyThreshold:
-    label: Schwellwert nicht Ordnung
     unit: fehlschläge
   strategy:
     label: Wenn nicht Ordnung
@@ -1694,10 +1657,8 @@ formSslTermination:
   certificate: Zertifikat*
   alternateCerts: Alternatives Zertifikat
   addAlternate: Alternatives Zertifikat hinzufügen
-  noCertificates: Keine weiteren Zertifikate verfügbar.
   helpBlock: |
     "Hinweis: Einige alte SSL/TLS Clients unterstützen keine <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; Diese Clients werden immer das Hauptzertifikat erhalten. Aktuelle Clients werden das passende Zertifikat der alternativen Zertifikatsliste erhalten sofern eine Übereinstimmung gefunden wird."
-  muted: Es sind keine lauschenden SSL Ports konfiguriert.
 formStickiness:
   none: Keine
   newCookie: Neues Cookie erstellen
@@ -1707,7 +1668,6 @@ formStickiness:
   indirect: Indirekt
   sendHeader: No-Cache Header senden
   onPost: Cookie nur bei POST senden
-  noPorts: Es sind keine lauschenden HTTP Ports konfiguriert.
   placeholder:
     sticky: z.B. sticky
     domain: z.B. mydomain.com
@@ -1720,7 +1680,6 @@ formTargets:
   title: Ziel
   addAction: Service hinzufügen
   hostname:
-    label: Anfrage Host
     placeholder: z.B. svc.com
   srcPort:
     label: Quell Port
@@ -2117,15 +2076,9 @@ modalRollbackVolume:
 newAliasService:
   header: Service Alias hinzufügen
 newBalancer:
-  header: Load Balancer hinzufügen
-  note: |
-    <p><strong>Note:</strong> Anfragen die keiner der &quot;erweiterten Anfrageoptionen&quot; entsprechen, werden über <strong>alle</strong> ({targetResources}) der konfigurierten Zielservices (round-robin) an den standard Zielport der entsprechenden Anfrage gesendet.</p>
   tabs:
     custom: benutzerdefinierte haproxy.cfg
     scheduling: Planung
-  helpBlock: |
-    <p class="help-block">Zusätzliche <a href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html" target="_blank">haproxy.cfg</a> Konfigurationseinstellungen können hier eingefügt werden. Diese werden an die von {appName} generierte Konfiguration angehängt.</p>
-  labelDefault: <code>standard</code> section
 newCatalog:
   version:
     prompt: Version auswählen...
@@ -2369,7 +2322,6 @@ nav:
   catalog:
     tab: Katalog
     all: Alle
-    infra: Infrastruktur
     library: Bibliothek
     community: Community
   infra:
