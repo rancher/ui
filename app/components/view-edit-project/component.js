@@ -20,7 +20,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   sortableContent: Ember.computed.alias('project.projectMembers'),
   sortBy: 'name',
   sorts: {
-    name:   ['externalId'],
+    name:   ['name', 'externalId'],
     type:   ['externalIdType','externalId'],
     role:   ['role','externalId'],
   },

@@ -34,12 +34,19 @@
 
       <div>
         <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
-        <div>
-          {{host.cpuBlurb}}
-          {{#if host.cpuTooltip}}
-            {{#tooltip-element type='tooltip-basic' model=host tooltipTemplate='tooltip-cpu'}}
-              <i class="icon icon-info"></i>
-            {{/tooltip-element}}
+        <div class="row">
+          <div class="col-md-6 r-p0">
+            {{#if host.milliCpu}}{{t 'generic.total'}}{{/if}}: {{host.cpuBlurb}}
+            {{#if host.cpuTooltip}}
+              {{#tooltip-element type='tooltip-basic' model=host tooltipTemplate='tooltip-cpu'}}
+                <i class="icon icon-info"></i>
+              {{/tooltip-element}}
+            {{/if}}
+          </div>
+          {{#if host.milliCpu}}
+            <div class="col-md-6 r-p0">
+              {{t 'generic.limit'}}: {{host.milliCpu}} {{t 'hostsPage.hostPage.infoMultiStats.milliCpu.labelText'}}
+            </div>
           {{/if}}
         </div>
       </div>
@@ -48,32 +55,47 @@
 
       <div>
         <label>{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
-        {{#if host.memoryBlurb}}
-          <div>{{host.memoryBlurb}}</div>
-        {{else}}
-          <div class="text-muted">{{t 'generic.unknown'}}</div>
-        {{/if}}
+        <div class="row">
+          <div class="col-md-6 r-p0">
+            {{#if host.memory}}{{t 'generic.total'}}{{/if}}:
+            {{#if host.memoryBlurb}}
+              {{host.memoryBlurb}}
+            {{else}}
+              <span class="text-muted">{{t 'generic.unknown'}}</span>
+            {{/if}}
+          </div>
+          {{#if host.memory}}
+            <div class="col-md-6 r-p0">
+              {{t 'generic.limit'}}: {{host.memoryLimitBlurb}}
+            </div>
+          {{/if}}
+        </div>
       </div>
 
       <hr>
 
       <div>
         <label>{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
-        {{#if host.diskBlurb}}
-          {{#if host.diskDetail}}
-            {{#each host.diskDetail as |disk|}}
-              <div>{{disk.value}}
-                {{#tooltip-element type='tooltip-basic' tooltipTemplate='tooltip-basic-literal' model=disk}}
-                  <i class="icon icon-info"></i>
-                {{/tooltip-element}}
-             </div>
-            {{/each}}
+        <div class="row">
+          {{#if host.diskBlurb}}
+            {{#if host.diskDetail}}
+              {{#each host.diskDetail as |disk|}}
+                <div class="col-md-6 r-p0">{{disk.value}}
+                  {{#tooltip-element type='tooltip-basic' tooltipTemplate='tooltip-basic-literal' model=disk}}
+                    <i class="icon icon-info"></i>
+                  {{/tooltip-element}}
+               </div>
+              {{/each}}
+            {{else}}
+              <div class="col-md-6 r-p0">{{host.diskBlurb}} (total)</div>
+            {{/if}}
+            <div class="col-md-6 r-p0">
+              {{t 'hostsPage.hostPage.infoMultiStats.localStorageMb.labelText'}}: {{host.localStorageBlurb}}
+            </div>
           {{else}}
-            <div>{{host.diskBlurb}} (total)</div>
+            <div class="text-muted">{{t 'generic.unknown'}}</div>
           {{/if}}
-        {{else}}
-          <div class="text-muted">{{t 'generic.unknown'}}</div>
-        {{/if}}
+        </div>
       </div>
 
       <hr>

@@ -4,6 +4,7 @@ import Util from 'ui/utils/util';
 import { denormalizeId } from 'ember-api-store/utils/denormalize';
 import { denormalizeServiceArray } from 'ui/utils/denormalize-snowflakes';
 import Instance from 'ui/models/instance';
+import { formatSi } from 'ui/utils/util';
 
 const { getOwner } = Ember;
 
@@ -116,6 +117,7 @@ var Container = Instance.extend({
     cloneToService: function() {
       this.get('router').transitionTo('service.new', {queryParams: {containerId: this.get('id')}});
     },
+
   },
 
   availableActions: function() {
@@ -151,6 +153,11 @@ var Container = Instance.extend({
   }.property('actionLinks.{restart,start,stop,restore,purge,execute,logs,update,remove}','systemContainer','canDelete','labels','isVm'),
 
 
+  memoryReservationBlurb: Ember.computed('memoryReservation', function() {
+    if ( this.get('memoryReservation') ) {
+      return formatSi(this.get('memoryReservation'), 1024, 'iB', 'B');
+    }
+  }),
   // Hacks
   hasManagedNetwork: function() {
     return this.get('primaryIpAddress') && this.get('primaryIpAddress').indexOf('10.') === 0;

@@ -366,6 +366,12 @@ var Service = Resource.extend({
     }
   }.property('endpointsByPort.@each.{port,ipAddresses}', 'intl._locale'),
 
+  memoryReservationBlurb: Ember.computed('launchConfig.memoryReservation', function() {
+    if ( this.get('launchConfig.memoryReservation') ) {
+      return Util.formatSi(this.get('launchConfig.memoryReservation'), 1024, 'iB', 'B');
+    }
+  }),
+
 
 });
 
