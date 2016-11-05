@@ -10,8 +10,10 @@ generic:
   created: Crée le
   default: Defaut
   description: Description 
+  disable: Désactiver
   disabled: Desactivé
   domainName: Nom de Domaine
+  enable: Activer
   enabled: Activé
   expires: Expire
   healthy: Sans erreur
@@ -155,7 +157,7 @@ authPage:
       groups:
         labelText: Champ Groupes
       testAuth:
-        header: '3. Tester et activer l''authentification'
+        header: '2. Tester et activer l''authentification'
         subtext: 'Vérifier que votre application est correctement configurée en testant l''authentification :'
         buttonText:
           pre: S’authentifier avec IDP
@@ -340,7 +342,13 @@ catalogPage:
     search:
       placeholder: Recherche...
     category: "Catégorie:"
-    certified: Certifié
+    certified:
+      rancher:
+        rancher: Certifié
+        partner: Partenaire
+      pl:
+        rancher: Certifié
+        partner: Partenaire
     noData:
       singular: Il n’y a aucun modèle compatible.
       plural: Il n’y a aucun modèle compatible dans ce catalogue.
@@ -844,6 +852,10 @@ loginPage:
   greeting: "Howdy!<br>Bienvenue a {appName}"
   githubMessage: "{appName} Utilise GitHub pour gerer l'authentifiation.  Cliquer sur le bouton ci-dessous pour se connecter (en lecture seule) pour acceder aux information de compte Github."
   shibbolethMessage: "{appName} utilise Shibboleth pour gérer les comptes.  Cliquez sur le bouton ci-dessous pour vous connecter à l’IDP Shibboleth configuré."
+  shibbolethError:
+    401: "Non autorisé"
+    500: "Erreur interne du serveur"
+    generic: "Un problème a eu lieu ({errorCode}) pendant votre connexion. Veuillez essayer à nouveau."
 machinePage:
   header: Pilotes Docker Machine
   inactive: Inactif
@@ -898,7 +910,7 @@ registriesPage:
         username: Utilisateur
         created: Crée le
       body:
-        noData: Aucun registre.
+        noData: "Aucun registre."
   new:
     header: Ajouter Registre
     form:
@@ -930,6 +942,8 @@ servicePage:
     externalIp: IPs externes
     externalHostname: 'Nom d''hôte externe:'
   navTabs:
+    portRules: Règles d'Équilibrage
+    certificates: Certificats
     ports: Ports
     containers: Conteneurs
     labels: Étiquettes
@@ -947,6 +961,9 @@ servicePage:
   linksTab:
     header: Liens
     noData: Aucun liens
+  certsTab:
+    default: Certificat par Défaut
+    additional: Certificats Additionnels SNI
   new:
     form:
       name:
@@ -985,16 +1002,28 @@ servicePage:
 settingsPage:
   index:
     header: Environnements
-    linkTo: Ajouter Environnement
+    new: Ajouter un Environnement
     subtext: |
-      <p>{appName} permet de regrouper les ressources en de multiples <b>environnements</b>.  Chacun ayant ses propres ressources d'infrastructure et de services, et appartenant à un ou plusieurs utilisateurs, groupes ou organisations.</p>
-      <p>Il est possible de créer des environnements de &quot;dev&quot;, &quot;test&quot; et &quot;production&quot; separer les uns des autres, et de ne restreindre que les accès à l'environnement de &quot;production&quot;. </p>
+      <p>{appName} permet de regrouper les ressources en de multiples <b>environnements</b>.  Chacun ayant ses propres ressources d'infrastructure et services, et appartenant à un ou plusieurs utilisateurs ou groupes.</p>
+      <p>Il est possible de créer des environnements de &quot;dev&quot;, &quot;test&quot; et &quot;production&quot; séparés les uns des autres, et de ne restreindre que les accès à l'environnement de &quot;production&quot;. </p>
     alert: Aucun environnement actif.  You will need to create or activate one before you can do anything else.
     table:
       header:
         orchestration: Orchestration
       body:
-        noData: Aucun Environnement.
+        noData: "Aucun Environnement."
+  indexTemplate:
+    header: Modèles d'Environnement
+    new: Ajouter un Modèle
+    subtext: |
+      <p>{appName} permet de regrouper les ressources en de multiples <b>environnements</b>.  Chacun ayant ses propres ressources d'infrastructure et services, et appartenant à un ou plusieurs utilisateurs ou groupes.</p>
+      <p>Il est possible de créer des environnements de &quot;dev&quot;, &quot;test&quot; et &quot;production&quot; séparés les uns des autres, et de ne restreindre que les accès à l'environnement de &quot;production&quot;. </p>
+    table:
+      header:
+        stacks: Piles
+        isPublic: Public
+      body:
+        noData: "Vous n'avez pas encore de modèles d'environnement."
 stacksPage:
   header:
     all: Toutes les Piles
@@ -1263,6 +1292,12 @@ ldap:
         labelText: Champ Nom
       search:
         labelText: Champ Recherche
+      groupMemberUser:
+        labelText: Attribut Utilisateur de membre de Groupe
+        placeholder: uid
+      groupDN:
+        labelText: Champ Groupe DN
+        placeholder: Identifiant unique (DN)
   testAuth:
     header: "3. Tester et activer l'authentification"
     helpText: "Vérifier que tout est correctement configuré en testant l’authentification avec votre compte {providerName} :"
@@ -1300,20 +1335,13 @@ advancedSection:
 catalogSettings:
   header: Catalogue
   subtext: Les Catalogues contiennent des modèles rancher-compose qui permettent aux utilisateurs de déployer facilement des applications en répondant à quelques questions
-  system:
-    header:
-      rancher: "Infrastructure {appName}"
-      pl: Infrastructure
-    detail:
-      rancher: Modèles nécessaires aux fonctionnalités d'infrastructure principales de Rancher telles que Kubernetes/Mesos/Swarm. Maintenus et soutenus par les laboratoires Rancher.
-      pl: Modèles officiellement mantenus et requis pour les fonctionnalités essentielles d'infrastructure tel que le support de Kubernetes/Mesos/Swarm..
   certified:
     header:
       rancher: "Bibliothèque certifiée {appName}"
       pl: Bibliothèque certifiée
     detail:
-      rancher: Modèles certifiés maintenus et suivis par les laboratoires Rancher.
-      pl: Modèles officiellement maintenus et supportés.
+      rancher: Modèles nécessaires aux fonctionnalités d'infrastructure principales de Rancher telles que le support d'orchestration Kubernetes/Mesos/Swarm. Maintenus et soutenus par les laboratoires Rancher.
+      pl: Modèles officiellement maintenus et requis pour les fonctionnalités essentielles tel que le support de Kubernetes/Mesos/Swarm.
   community:
     header:
       rancher: Contribué par la Communauté
@@ -1462,6 +1490,20 @@ editHost:
     placeholder: par exemple mon hôte de développement
   labels:
     label: Étiquettes
+editProjectTemplate:
+  title:
+    add: Ajouter un Modèle
+    edit: 'Éditer un Modèle : {displayName}'
+  orchestration: Orchestration
+  stackEdit: Éditer une Configuration
+  access:
+    label: Partage en cours
+    private: 'Privé : disponible seulement pour moi'
+    public: 'Public : Disponible pour tous les utilisateurs (administrateur seulement)'
+  error:
+    conflict: Conflit
+    enabling: "La version séléctionnée de la pile \"{stackName}\" de la catégorie {tplCategory} ne supporte pas l'orchestration {orchestration}."
+    changing: "La pile \"{stackName}\" courante de la catégorie {tplCategory} ne supporte pas l'orchestration {orchestration}."
 editRegistry:
   title: Modifier le Registre
   address:
@@ -1501,25 +1543,46 @@ stackHeader:
 formatIp:
   noIp: Aucun
   unknownIp: Inconnu
-formBalancerListeners:
-  label: Ports d’Écoute
-  addAction: Ajouter un Port
-  table:
-    host: IP/Port Source
-    protocol: Protocole 
-    ssl: SSL
-    container: Port par Défaut de la Cible
-    listener: Accès
-  host:
-    placeholder: "Sur l’Hôte, par exemple 80 ou 1.2.3.4:80"
-  protocol:
-    placeholder: "Sélectionner un protocole :"
-  container:
-    placeholder: "Dans le Conteneur, par exemple : 8080"
-  selectAccess: "- Sélectionner un niveau d'accès :"
-  listen:
+formBalancerRules:
+  label: Règles de Port
+  noRules: Aucune Règle
+  addServiceLabel: Ajouter une Règle de Service
+  addSelectorLabel: Ajouter une Règle de Sélection
+  target: Cible 
+  access:
+    label: Accès
     public: Public
     internal: Interne
+  protocol:
+    label: Protocole 
+  sourcePort:
+    label: Port
+    placeholder: par exemple 80
+  path:
+    label: Chemin d'accès
+    placeholder: par exemple foo
+  hostname:
+    label: Hôte de la Requête
+    placeholder: par exemple exemple.com
+  backendName:
+    label: Infrastructure
+    placeholder: par exemple webapp
+  targetPort:
+    label: Port
+    placeholder: par exemple 80
+  priority:
+    label: Priorité
+    moveUp: Déplacer Vers le Haut
+    moveDown: Déplacer Vers le Bas
+  serviceId:
+    label: Service
+    prompt: Sélectionnez un Service ...
+    noHostnames: "(Ne peut pas équilibrer vers des noms d’hôtes)"
+  selector:
+    placeholder: par exemple foo=bar
+  help:
+    prefix: "Les règles d'Hôte et de Chemin d'accès sont évaluées du haut vers le bas dans l'ordre affiché. Les infrastructures seront nommées au hasard par défaut ; pour choisir les noms des infrastructures générées, fournissez un nom et référez-vous y dans le fichier haproxy.cfg spécifique.  "
+    showBackendLink: "Montrer les noms spécifiques d'infrastructure"
 formCommand:
   command:
     label: Commande
@@ -1550,7 +1613,7 @@ formCommand:
       {limite, pluriel, = 1 {time} autres {times}}
     always: Toujours
   environment:
-    label: Variables d'Environnement
+    label: Environnement
     addAction: Ajouter une Variable d’environnement
     keyLabel: Variable
     keyPlaceholder: par exemple FOO
@@ -1620,7 +1683,7 @@ formEngineOpts:
     valueLabel: URL de Miroir
     valuePlaceholder: 'par exemple https://mon-miroir.exemple.com:5000'
 formHealthCheck:
-  label: Bilan de Santé
+  label: Catégorie
   checkType:
     none: Aucun
     tcp: Ouverture de connexion TCP
@@ -1652,10 +1715,10 @@ formHealthCheck:
     label: Vérifiez le délai d’attente
     unit: ms
   healthyThreshold:
-    label: Seuil de bonne Santé
+    label: En bonne santé après
     unit: succès
   unhealthyThreshold:
-    label: Seuil de mauvaise Santé
+    label: En mauvaise santé après
     unit: erreurs
   strategy:
     label: Quand en mauvaise Santé
@@ -1728,10 +1791,12 @@ formNetwork:
     placeholder: par exemple exemple.com
   resolvingServers:
     label: Résolution des Serveurs
+    addActionLabel: Ajouter un Serveur
     placeholder: par exemple 8.8.4.4
   searchDomains:
     label: Domaines de Recherche
     placeholder: par exemple prod.exemple.com
+    addActionLabel: Ajouter un Domaine
 formPorts:
   addAction: Correspondance des Ports
   public:
@@ -1807,6 +1872,7 @@ formSecurity:
       link: Plus d'informations
   deviceBinding:
     label: Liaison du Dispositif
+    addActionLabel: Ajouter une Liaison
     pathHost:
       label: Chemin d’accès dans l'Hôte
       placeholder: par exemple /dev/sdc
@@ -1839,10 +1905,11 @@ formSslTermination:
   certificate: Certificat*
   alternateCerts: Certificats Alternatifs
   addAlternate: Ajouter le Certificat Alternatif
-  noCertificates: Il n’y a aucun autre certificat à utiliser.
+  noCertificates: Il n’y a aucun certificat à utiliser.
+  noAlternateCertificates: Il n’y a aucun autre certificat à utiliser.
   helpBlock: |
     « Note : certains anciens clients SSL/TLS ne supportent pas le <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank"> Server Name Indication (SNI)</a> ; ces clients recevront toujours le certificat principal ; les clients modernes recevront le certificat approprié à partir de la liste de certificats alternatifs si une correspondance est trouvée. »
-  muted: Il n’y a aucun port d’écoute SSL configuré.
+  notNeeded: Il n’y a aucun port d’écoute SSL/TLS configuré.
 formStickiness:
   stickiness: Adhésivité
   none: Aucun
@@ -1854,7 +1921,7 @@ formStickiness:
   indirect: Indirecte
   sendHeader: Envoyer l’en-tête no-cache
   onPost: Définie uniquement un cookie avec POST
-  noPorts: Il n’y a aucun port d’écoute HTTP configuré.
+  noPorts: Il n’y a aucune Règle de Port HTTP configuré.
   placeholder:
     sticky: p. ex. affinité
     domain: par exemple mondomaine.com
@@ -1867,7 +1934,7 @@ formTargets:
   title: Cibles
   addAction: Ajouter un Service
   hostname:
-    label: Hôte de la Requête
+    label: Entête de l'Hôte de la Requête
     placeholder: par exemple svc.com
   srcPort:
     label: Port Source
@@ -1903,6 +1970,7 @@ formUserLabels:
     label: Valeur 
     placeholder: par exemple bar
   protip: 'Astuce : Coller une ou plusieurs lignes de paires clé=valeur dans n’importe quel champ clé pour une saisie facilitée en masse.'
+  noLabels: Pas d'étiquette
 formUpgrade:
   size: Taille du Lot
   interval: Intervalle des Lots
@@ -1929,6 +1997,7 @@ formVolumes:
   noLaunchConfigs: Il n’y a aucune autres configurations de lancement de ce service pour partager des volumes avec celui-ci.
   noHostContainers: Cet hôte n’a aucun conteneurs ayant des volumes sur lesquels se connecter.
   onlySingleHost: Disponible uniquement lorsque vous ajoutez un conteneur à un hôte particulier.
+  addActionLabel: Ajouter un Volume
 heroAddService:
   infra:
     header: Ajouter des Piles d’Infrastructure
@@ -2000,6 +2069,9 @@ inputCertificate:
   certChain:
     label: Chaîne de Certificats
     placeholder: "En option ; Collez les certificats additionnels chaînés , commençant par -----BEGIN CERTIFICATE-----"
+  metaXML:
+    label: Métadonnées XML
+    placeholder: "Coller dans les métadonnées XML de l’IDP"
 inputIdentity:
   placeholder:
     github: Ajouter un nom d’utilisateur ou d’organisation GitHub
@@ -2493,6 +2565,14 @@ modalAuditlogInfo:
   header: Info complémentaires de connexion
   request: "Objet de la Requête :"
   response: "Objet Réponse :"
+modalContainerStop:
+  uom: secondes
+  header: "Êtes-vous sûr de vouloir l'arrêter"
+  helpText: "Le conteneur sera arrêté de force si il ne se stoppe pas lui-même avant le délai d'expiration"
+  protip: 'Astuce Pro : Maintenez la touche {alternateLabel} tout en cliquant sur arrêter afin de contourner cette confirmation.'
+  label: Délai d'expiration
+  placeholder: '10'
+  button: Arrêter
 modalConfirmDeactiviate:
   header: Êtes-vous sur de vouloir
   protip: 'Astuce Pro : Maintenez la touche {alternateLabel} tout en cliquant sur {isServiceButton} afin de contourner cette confirmation.'
@@ -2554,19 +2634,28 @@ modalShell:
 newAliasService:
   header: Ajouter un Alias de Service
 newBalancer:
-  header: Ajouter un Équilibreur de Charge
-  note: |
-    <p><strong>Remarque :</strong> les requêtes qui ne correspondent à aucune des &quot; options avancées de requête  &quot; seront envoyés à <strong>tous</strong> les ({targetResources}) des services cibles configurés (chacun leur tour) sur le port cible par défaut correspondant au port de la requête source.</p>
+  header:
+    add: Ajouter un Équilibreur de Charge
+    edit: Modifier l’équilibreur de charge
+    upgrade: Mettre à jour l'Équilibreur de Charge
   tabs:
     ssl: Terminaison SSL
     stickiness: Adhésivité
     custom: Haproxy.cfg personnalisé
     labels: Étiquettes
     scheduling: Planification en cours
-  helpBlock: |
-    <p class="help-block">Une Configuration <a href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html" target="_blank"> haproxy.cfg</a> supplémentaire peut être mise ici et sera ajoutée à la configuration générée par {appName}.</p>
-  labelGlobal: section <code>globale</code>
-  labelDefault: section <code>des paramètres par défaut</code>
+  custom: |
+    Une Configuration <a href="http://cbonte.github.io/haproxy-dconv/configuration-1.6.html" target="_blank" rel="nofollow noopener"> haproxy.cfg</a> supplémentaire peut être mise ici et sera ajoutée à la configuration générée par {appName}.
+  config:
+    prompt: Contenu spécifique de haproxy.cfg
+  error:
+    noRules: "Choisissez une ou plusieurs règles de port à l'écoute"
+    noSourcePort: "Le Port Source est requis pour chaque règle"
+    invalidSourcePort: 'Port source invalide : ''{num}'''
+    invalidTargetPort: 'Port cible invalide : ''{num}'''
+    mixedPort: "Le port {num} a plusieurs règles avec des conflits d'accès/de protocole"
+    noTarget: "La Cible est requise pour chaque règle"
+    needsCertificate: "Un certificat est requis parce qu'il y a des règles de port SSL/TLS"
 newCatalog:
   version:
     prompt: Choisissez une version...
@@ -2810,6 +2899,7 @@ viewEditProject:
   showEdit:
     edit: "Modifier l’Environnement :"
     add: Ajouter un Environnement
+    template: Modèle d'Environnement
     accessControl: Contrôle d'Accès
     noMembers: Ajouter un ou plusieurs membres qui peuvent utiliser cet environnement.
   header: "Environnement :"
@@ -2866,6 +2956,7 @@ nav:
     your: Your Environnements
     selected: Environnement Sélectionné
     manage: Manage Environnements
+    edit: 'Éditer "{name}"'
   namespace:
     label: Espace de noms
     manage: Gérer les Espaces de noms
@@ -2897,7 +2988,6 @@ nav:
   catalog:
     tab: Catalogue
     all: Tout
-    infra: Infrastructure
     library: Bibliothèque
     community: Communauté
   infra:

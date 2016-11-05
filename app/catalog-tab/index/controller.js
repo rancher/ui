@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { isAlternate } from 'ui/utils/platform';
 
 export default Ember.Controller.extend({
   application: Ember.inject.controller(),
@@ -18,12 +19,12 @@ export default Ember.Controller.extend({
   updating: 'no',
 
   actions: {
-    launch(model) {
-      this.get('application').setProperties({
-        launchCatalog: true,
-        originalModel: model,
-        stackResource: null,
-      });
+    launch(id, onlyAlternate) {
+      if ( onlyAlternate && !isAlternate(event) ) {
+        return false;
+      }
+
+      this.transitionToRoute(this.get('launchRoute'), id);
     },
 
     update() {

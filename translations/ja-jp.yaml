@@ -9,8 +9,10 @@ generic:
   created: 作成日
   default: デフォルト
   description: 詳細情報
+  disable: 無効
   disabled: 無効
   domainName: ドメイン名
+  enable: 有効
   enabled: 有効
   expires: 期限
   healthy: ヘルス
@@ -164,7 +166,7 @@ authPage:
       groups:
         labelText: グループ フィールド
       testAuth:
-        header: '3. テストのうえ認証を有効化する'
+        header: '2. テストのうえ認証を有効化する'
         subtext: '認証テストを行うことであなたのアプリケーションが正常に設定されたことを確認します:'
         buttonText:
           pre: IDPによる認証
@@ -340,7 +342,13 @@ catalogPage:
     search:
       placeholder: 検索...
     category: "カテゴリー:"
-    certified: 認証済み
+    certified:
+      rancher:
+        rancher: 認証済み
+        partner: パートナー
+      pl:
+        rancher: 認証済み
+        partner: パートナー
     noData:
       singular: 互換性のあるテンプレートがありません
       plural: このカタログには互換性のあるテンプレートがありません
@@ -834,6 +842,10 @@ loginPage:
   greeting: "<br>ようこそ {appName} へ!"
   githubMessage: "{appName} はアカウントやチームの管理に GitHub を利用しています。 ログインしてあなたの GitHub アカウント情報に読み込み権限でアクセスするために以下のボタンを押して下さい。"
   shibbolethMessage: "{appName} はアカウントの管理にシボレスを利用しています。 設定済みのシボレス IDP にログインするには以下のボタンを押して下さい。"
+  shibbolethError:
+    401: "認証に失敗しました"
+    500: "サーバ内部エラー"
+    generic: "ログイン中にエラー {{errorCode}} が発生しました。もう一度やり直してください。"
 machinePage:
   header: マシンドライバー
   inactive: 休止
@@ -888,7 +900,7 @@ registriesPage:
         username: ユーザー名
         created: 作成日
       body:
-        noData: まだレジストリはありません
+        noData: "まだレジストリはありません"
   new:
     header: レジストリを追加
     form:
@@ -916,6 +928,8 @@ servicePage:
     externalIp: 外部 IP
     externalHostname: '外部ホスト名:'
   navTabs:
+    portRules: バランサールール
+    certificates: 証明書
     ports: ポート
     containers: コンテナ
     labels: ラベル
@@ -933,6 +947,9 @@ servicePage:
   linksTab:
     header: リンク
     noData: リンクがありません
+  certsTab:
+    default: デフォルト証明書
+    additional: 追加の SNI 証明書
   portsTab:
     table:
       header:
@@ -953,16 +970,28 @@ servicePage:
 settingsPage:
   index:
     header: 環境
-    linkTo: 環境を追加
+    new: 環境を追加
     subtext: |
-      <p>{appName} は複数の <b>環境</b>に対してリソースのグループ化をサポートします。 それぞれ、個別に複数サービスやインフラストラクチャのリソースを持ち、1人もしくは複数の GitHub ユーザーやチーム、組織により管理されます。</p>
-      <p>例えば、それぞれの環境を隔離するために &quot;dev&quot;, &quot;test&quot; もしくは &quot;production&quot; といった分離された環境を作成し、 &quot;dev&quot; に対しては組織の全員がアクセスできるが、 &quot;production&quot; に対しては小さなチームのみに制限するといったことが可能です。</p>
+      <p>{appName} は複数の<b>環境</b>に対してリソースのグループ化をサポートします。 それぞれ、個別に複数サービスやインフラストラクチャのリソースを持ち、1人もしくは複数のユーザーやグループにより管理されます。</p>
+      <p>例えば、 それぞれの環境を隔離するために &quot;dev&quot;, &quot;test&quot; もしくは &quot;production&quot; といった分離された環境を作成し、 &quot;dev&quot; に対しては組織の全員がアクセスできるが、 &quot;production&quot; に対しては小さなチームのみに制限するといったことが可能です。</p>
     alert: アクティブな環境がありません。 他の作業を実施する前に環境を作成もしくはアクティブ化する必要があります。
     table:
       header:
         orchestration: オーケストレーション
       body:
-        noData: まだ環境はありません
+        noData: "まだ環境はありません"
+  indexTemplate:
+    header: 環境のテンプレート
+    new: テンプレートを追加
+    subtext: |
+      <p>{appName} は複数の<b>環境</b>に対してリソースのグループ化をサポートします。 それぞれ、個別に複数サービスやインフラストラクチャのリソースを持ち、1人もしくは複数のユーザーやグループにより管理されます。</p>
+      <p>例えば、 それぞれの環境を隔離するために &quot;dev&quot;, &quot;test&quot; もしくは &quot;production&quot; といった分離された環境を作成し、 &quot;dev&quot; に対しては組織の全員がアクセスできるが、 &quot;production&quot; に対しては小さなチームのみに制限するといったことが可能です。</p>
+    table:
+      header:
+        stacks: スタック
+        isPublic: パブリック
+      body:
+        noData: "まだ環境のテンプレートはありません"
 stacksPage:
   header:
     all: 全てのスタック
@@ -1223,6 +1252,11 @@ ldap:
         labelText: Name Field
       search:
         labelText: Search Field
+      groupMemberUser:
+        labelText: グループメンバーのユーザー属性
+        placeholder: uid
+      groupDN:
+        labelText: グループ DN フィールド
   testAuth:
     header: "3. テストのうえ認証を有効化する"
     helpText: "あなたの {providerName} アカウントで認証テストを行うことで全てが正常に設定されたことを確認します:"
@@ -1260,20 +1294,13 @@ advancedSection:
 catalogSettings:
   header: カタログ
   subtext: カタログはユーザーが少ない質問に回答するだけで簡単にアプリケーションをデプロイするための rancher-compose のテンプレートを含みます
-  system:
-    header:
-      rancher: "{appName} インフラストラクチャ"
-      pl: インフラストラクチャ
-    detail:
-      rancher: Kubernetes/Mesos/Swarm サポートのようなコアの Rancher インフラストラクチャ機能に必要なテンプレートであり、Rancher Labs によってメンテナンス、サポートされます。
-      pl: 公式にメンテナンスされているテンプレートは Kubernetes/Mesos/Swarm サポートのようなコアの Rancher インフラストラクチャ機能に必要となります。
   certified:
     header:
       rancher: "{appName} 認証済みライブラリ"
       pl: 認証済みライブラリ
     detail:
-      rancher: 認証済みテンプレートは Rancher Labs によってメンテナンス、サポートされます。
-      pl: 正式にメンテナンス、サポートされるテンプレート。
+      rancher: テンプレートは Kubernetes/Mesos/Swarm オーケストレーションサポートのような Rancher のコアとなる機能に必要となり、Rancher Labs によりメンテナンス、サポートされます。
+      pl: 公式にメンテナンスされているテンプレートは Kubernetes/Mesos/Swarm サポートのようなコアとなる機能に必要となります。
   community:
     header:
       rancher: コミュニティサポート
@@ -1402,6 +1429,20 @@ editHost:
     label: 詳細情報
   labels:
     label: ラベル
+editProjectTemplate:
+  title:
+    add: テンプレートを追加
+    edit: 'テンプレートを編集: {displayName}'
+  orchestration: オーケストレーション
+  stackEdit: 設定を編集
+  access:
+    label: 共有
+    private: 'プライベート: 自身のみ利用可能'
+    public: 'パブリック: 全てのユーザー(管理者のみ)が利用可能'
+  error:
+    conflict: 競合
+    enabling: "選択されたバージョンの {tplCategory} スタック \"{stackName}\" は {orchestration} オーケストレーションをサポートしていません。"
+    changing: "現在有効な {tplCategory} スタック \"{stackName}\" は {orchestration} オーケストレーションをサポートしていません。"
 editRegistry:
   title: レジストリを編集
   address:
@@ -1435,25 +1476,39 @@ stackHeader:
 formatIp:
   noIp: None
   unknownIp: 不明
-formBalancerListeners:
-  label: リッスンポート
-  addAction: ポートを追加
-  table:
-    host: 元 IP/ポート
-    protocol: プロトコル
-    ssl: SSL
-    container: デフォルト対象ポート
-    listener: アクセス
-  host:
-    placeholder: "ホスト上, e.g. 80 or 1.2.3.4:80"
-  protocol:
-    placeholder: "プロトコルを選択:"
-  container:
-    placeholder: "コンテナ内, e.g. 8080"
-  selectAccess: "アクセスを選択:"
-  listen:
+formBalancerRules:
+  label: ポートルール
+  noRules: ルールはありません
+  addServiceLabel: サービスルールを追加
+  addSelectorLabel: セレクタールールを追加
+  target: 対象
+  access:
+    label: アクセス
     public: パブリック
     internal: 内部
+  protocol:
+    label: プロトコル
+  sourcePort:
+    label: ポート
+  path:
+    label: パス
+  hostname:
+    label: リクエストホスト
+  backendName:
+    label: バックエンド
+  targetPort:
+    label: ポート
+  priority:
+    label: 優先度
+    moveUp: 上に移動
+    moveDown: 下に移動
+  serviceId:
+    label: サービス
+    prompt: サービスを選択してください...
+    noHostnames: "(ホスト名でバランシングできません)"
+  help:
+    prefix: "ホストとパスルールは上位から下位への順番でマッチングが評価されます。バックエンドはデフォルトでランダム名が利用され、生成されるバックエンドをカスタマイズするには名前を入力しカスタマイズされた haproxy.cfg を参照してください。"
+    showBackendLink: "カスタムバックエンド名を見る"
 formCommand:
   command:
     label: コマンド
@@ -1483,7 +1538,7 @@ formCommand:
       }再起動
     always: 常に
   environment:
-    label: 環境変数
+    label: 環境
     addAction: 環境変数を追加
     keyLabel: 変数
     valueLabel: 値
@@ -1539,7 +1594,7 @@ formEngineOpts:
     addActionLabel: レジストリミラーを追加
     valueLabel: ミラー URL
 formHealthCheck:
-  label: ヘルスチェック
+  label: タイプ
   checkType:
     none: None
     tcp: TCP 接続
@@ -1569,10 +1624,8 @@ formHealthCheck:
     label: チェックタイムアウト
     unit: ms
   healthyThreshold:
-    label: 正常時スレッシュホールド
     unit: 成功
   unhealthyThreshold:
-    label: 異常時スレッシュホールド
     unit: 失敗
   strategy:
     label: 異常時
@@ -1642,8 +1695,10 @@ formNetwork:
     label: ドメイン名
   resolvingServers:
     label: DNS サーバー
+    addActionLabel: サーバーを追加
   searchDomains:
     label: サーチドメイン
+    addActionLabel: ドメインを追加
 formPorts:
   addAction: ポートマップ
   public:
@@ -1720,6 +1775,7 @@ formSecurity:
       link: 詳細を見る
   deviceBinding:
     label: デバイスバインディング
+    addActionLabel: バインディングを追加
     pathHost:
       label: ホスト上のパス
     pathContainer:
@@ -1747,10 +1803,11 @@ formSslTermination:
   certificate: 証明書*
   alternateCerts: 代替証明書
   addAlternate: 代替証明書を追加
-  noCertificates: 利用可能な証明書はありません。
+  noCertificates: 利用可能な証明書はありません
+  noAlternateCertificates: 他の利用可能な証明書はありません。
   helpBlock: |
     "Note: いくつかの古い SSL/TLS クライアントは <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a> をサポートされていません; これらのクライアントでは常にメイン証明書の提示を求められますが比較的新しいクライアントは一致するものが見つかると代替証明書のリストから適切な証明書を求めてきます。"
-  muted: SSL のリッスンポートが設定されていません。
+  notNeeded: SSL/TLS ポートは設定されていません
 formStickiness:
   stickiness: スティッキー
   none: None
@@ -1762,7 +1819,7 @@ formStickiness:
   indirect: Indirect
   sendHeader: no-cache ヘッダーを送信
   onPost: POST にのみ cookie を設定
-  noPorts: HTTP のリッスンポートが設定されていません。
+  noPorts: HTTP ポートルールは設定されていません
 formTarget:
   target: 対象
   pointAddress: IP アドレスを指定
@@ -1772,7 +1829,7 @@ formTargets:
   title: 対象
   addAction: サービスを追加
   hostname:
-    label: リクエストホスト
+    label: リクエストホストヘッダー
   srcPort:
     label: 元ポート
   value:
@@ -1803,6 +1860,7 @@ formUserLabels:
   value:
     label: 値
   protip: 'ProTip: 簡単に入力するには1行以上の key=value ペアをペースト>してください。'
+  noLabels: ラベルはありません
 formUpgrade:
   size: バッチサイズ
   interval: バッチ間隔
@@ -1828,6 +1886,7 @@ formVolumes:
   noLaunchConfigs: このサービスにはボリュームを共有するための起動設定がありません。
   noHostContainers: このホストには他コンテナのボリュームを利用するためのコンテナがありません。
   onlySingleHost: 特定ホストにコンテナを追加した場合のみ利用できます
+  addActionLabel: ボリュームを追加
 heroAddService:
   infra:
     header: インフラストラクチャ スタックを追加
@@ -1900,6 +1959,9 @@ inputCertificate:
   certChain:
     label: 証明書チェーン
     placeholder: "オプション; -----BEGIN CERTIFICATE----- から始まる追加の証明書チェーンをペーストしてください"
+  metaXML:
+    label: メタデータ XML
+    placeholder: "IDP メタデータ XML でペースト"
 inputIdentity:
   placeholder:
     github: GitHub ユーザーまたは組織名を追加
@@ -2387,6 +2449,14 @@ modalAuditlogInfo:
   header: 追加のログ情報
   request: "リクエストオブジェクト:"
   response: "レスポンスオブジェクト:"
+modalContainerStop:
+  uom: 秒
+  header: "本当に停止してもよろしいですか?"
+  helpText: "タイムアウト時間内に停止しない場合、コンテナは強制終了されます"
+  protip: 'ProTip: この確認画面を飛ばす場合は停止ボタンのクリック時に {alternateLabel} キーを長押ししてください。'
+  label: タイムアウト
+  placeholder: '10'
+  button: 停止
 modalConfirmDeactiviate:
   header: 本当にこの処理を行ってよろしいですか?
   protip: 'ProTip: この確認画面を飛ばす場合は {isServiceButton} クリック時に {alternateLabel} キーを長押ししてください。'
@@ -2447,19 +2517,28 @@ modalShell:
 newAliasService:
   header: サービスのエイリアスを追加
 newBalancer:
-  header: ロードバランサーを追加
-  note: |
-    <p><strong>Note:</strong> &quot;拡張リクエストオプション&quot; に一致しないリクエストはリクエストの元ポートに対応するデフォルトの対象ポートに設定された対象サービス(ラウンドロビン)の <strong>全て</strong> ({targetResources}) に送信されます。</p>
+  header:
+    add: ロードバランサーを追加
+    edit: ロードバランサーを編集
+    upgrade: ロードバランサーをアップグレード
   tabs:
     ssl: SSL 終端処理
     stickiness: スティッキー
     custom: カスタム haproxy.cfg
     labels: ラベル
     scheduling: スケジューリング
-  helpBlock: |
-    ここに記述された <p class="help-block">追加の <a href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html" target="_blank">haproxy.cfg</a> 設定は {appName} によって生成された設定に追記されます。</p>
-  labelGlobal: <code>global</code> セクション
-  labelDefault: <code>defaults</code> セクション
+  custom: |
+    追加の <a href="https://cbonte.github.io/haproxy-dconv/1.6/configuration.html" target="_blank" rel="nofollow noopener">haproxy.cfg</a> 設定はこちらに記述でき、{appName} によって生成された設定とマージされます。
+  config:
+    prompt: カスタムされた haproxy.cfg の内容 
+  error:
+    noRules: "リッスンするためのポートルールを1つもしくは複数選んでください"
+    noSourcePort: "各ルールにはソースポートが必要です"
+    invalidSourcePort: '無効なソースポート: ''{num}'''
+    invalidTargetPort: '無効な対象ポート: ''{num}'''
+    mixedPort: "ポート {num} はアクセスするプロトコルが競合する複数のルールを持っています"
+    noTarget: "各ルールには対象が必要です"
+    needsCertificate: "SSL/TLS ポートルールであるため証明書が必要です"
 newCatalog:
   version:
     prompt: バージョンを選択してください...
@@ -2697,6 +2776,7 @@ viewEditProject:
   showEdit:
     edit: "環境を編集:"
     add: 環境を追加
+    template: 環境のテンプレート
     accessControl: アクセスコントロール
     noMembers: この環境を利用することができる 1 つまたは複数のメンバーを追加します。
   header: "環境:"
@@ -2752,6 +2832,7 @@ nav:
     your: あなたの環境
     selected: 選択された環境
     manage: 環境を管理
+    edit: '"{name}" を編集'
   namespace:
     label: 名前空間
     manage: 名前空間を管理
@@ -2783,7 +2864,6 @@ nav:
   catalog:
     tab: カタログ
     all: 全て
-    infra: インフラストラクチャ
     library: ライブラリ
     community: コミュニティ
   infra:

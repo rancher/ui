@@ -68,4 +68,14 @@ export default Resource.extend({
       return this.supportsOrchestration(orch);
     }
   }.property('labels','projects.current.orchestration'),
+
+  certified: function() {
+    let out = null;
+    let labels = this.get('labels');
+    if ( this.get('catalogId') === C.CATALOG.LIBRARY_KEY && labels && labels[C.LABEL.CERTIFIED] ) {
+      out = labels[C.LABEL.CERTIFIED];
+    }
+
+    return out;
+  }.property('catalogId','labels'),
 });

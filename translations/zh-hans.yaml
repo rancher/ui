@@ -282,7 +282,6 @@ catalogPage:
     search:
       placeholder: 搜索....
     category: "分类:"
-    certified: 官方认证
     noData:
       singular: 没有符合的应用模板
       plural: 当前目录下没有符合的应用模板
@@ -783,7 +782,7 @@ registriesPage:
         username: 用户名
         created: 创建时间
       body:
-        noData: 当前未创建任何镜像库
+        noData: "当前未创建任何镜像库"
   new:
     header: 添加镜像库
     form:
@@ -859,16 +858,12 @@ servicePage:
 settingsPage:
   index:
     header: 环境
-    linkTo: 添加环境
-    subtext: |
-      <p> {appName} 支持将资源分组归属到多个<b>环境</b>中。每个环境具有自己独立的基础架构资源及服务，并由一个或多个用户、团队或组织所管理。</p>
-      <p>例如，您可以创建独立的“开发”、“测试”及“生产”环境以确保环境之间的安全隔离，将“开发”环境的访问权限赋予全部人员，但限制“生产”环境的访问权限给一个小的团队。</p>
     alert: 当前没有活动环境。在进行其他操作前，需要先创建或激活一个环境。
     table:
       header:
         orchestration: 编排
       body:
-        noData: 当前未创建任何环境
+        noData: "当前未创建任何环境"
 stacksPage:
   header:
     all: 全部应用
@@ -1339,21 +1334,6 @@ stackHeader:
 formatIp:
   noIp: 无
   unknownIp: 未知
-formBalancerListeners:
-  label: 监听端口
-  addAction: 添加端口
-  table:
-    host: 源IP/端口
-    protocol: 协议
-    container: 缺省目标端口
-    listener: 通道
-  host:
-    placeholder: "主机侧端口，例如:80"
-  protocol:
-    placeholder: "选择协议:"
-  container:
-    placeholder: "容器侧端口，例如:8080"
-  selectAccess: "选择访问类型:"
 formCommand:
   command:
     label: 命令
@@ -1387,7 +1367,6 @@ formCommand:
       }
     always: 总是
   environment:
-    label: 环境变量
     addAction: 添加环境变量
     keyLabel: 变量
     keyPlaceholder: '例如:foo'
@@ -1457,7 +1436,6 @@ formEngineOpts:
     valueLabel: 镜像URL
     valuePlaceholder: '例如:https://my-mirror.example.com:5000'
 formHealthCheck:
-  label: 健康检查
   checkType:
     none: 无
     tcp: TCP连接
@@ -1489,10 +1467,8 @@ formHealthCheck:
     label: 检查超时
     unit: 毫秒
   healthyThreshold:
-    label: 健康阈值
     unit: 次成功
   unhealthyThreshold:
-    label: 不健康阈值
     unit: 次失败
   strategy:
     label: 不健康时
@@ -1670,10 +1646,8 @@ formSslTermination:
   certificate: 证书*
   alternateCerts: 备选证书
   addAlternate: 添加备选证书
-  noCertificates: 没有其他证书可使用
   helpBlock: |
     "注意: 一些旧的 SSL/TLS 客户的不支持 <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a> 功能，对于这些客户端将只提供主证书。 对于支持SNI功能的现代客户端将根据匹配结果从备选证书列表中选择一个合适的证书。"
-  muted: 未配置SSL监听端口
 formStickiness:
   stickiness: 会话保持
   none: 无
@@ -1685,7 +1659,6 @@ formStickiness:
   indirect: 间接
   sendHeader: 发送no-cache头
   onPost: 仅对POST请求设置Cookie
-  noPorts: 未设置HTTP监听端口
   placeholder:
     sticky: '例如: sticky'
     domain: '例如: mydomain.com'
@@ -1698,7 +1671,6 @@ formTargets:
   title: 目标
   addAction: 添加服务
   hostname:
-    label: 请求主机
     placeholder: '例如:svc.com'
   srcPort:
     label: 源端口
@@ -2274,17 +2246,12 @@ modalShell:
 newAliasService:
   header: 添加服务别名
 newBalancer:
-  header: 添加负载均衡
-  note: |
-    <p><strong>注意:</strong> 未匹配任何&quot;高级路由选项&quot;的请求将被发送到<strong>全部</strong> ({targetResources}) 配置的目标服务（轮询方式）的默认目标端口（根据请求的源端口确认）。</p>
   tabs:
     ssl: SSL终止
     stickiness: 会话粘性
     custom: 自定义haproxy.cfg
     labels: 标签
     scheduling: 调度
-  helpBlock: |
-    <p class="help-block">此处可以设置其他 <a href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html" target="_blank">haproxy.cfg</a> 配置项，相关内容将被附加到 {appName} 生成的配置中。 </p>
 newCatalog:
   version:
     prompt: 选择版本...

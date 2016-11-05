@@ -5,6 +5,8 @@ export default Ember.Component.extend({
 
   service: null,
   allServices: null,
+  ruleType: 'portRule',
+  showListeners: Ember.computed.equal('ruleType','portRule'),
 
   rules: null,
   protocolChoices: null,
@@ -17,6 +19,10 @@ export default Ember.Component.extend({
       this.set('service.lbConfig.portRules', rules);
     }
 
+    rules.forEach((rule) => {
+      rule.isSelector = !!rule.selector;
+    });
+
     this.set('rules', rules);
     if ( rules.length === 0 ) {
       this.send('addRule');
@@ -26,8 +32,10 @@ export default Ember.Component.extend({
     protos.sort();
     this.set('protocolChoices', protos);
 
-    let hasName = !!rules.findBy('backendName');
-    this.set('showBackend', hasName);
+    if ( this.get('showBackend') === null ) {
+      let hasName = !!rules.findBy('backendName');
+      this.set('showBackend', hasName);
+    }
   }.on('init'),
 
   actions: {
@@ -39,11 +47,11 @@ export default Ember.Component.extend({
       });
 
       rules.pushObject(this.get('store').createRecord({
-        type: 'portRule',
+        type: this.get('ruleType'),
         access: 'public',
         isSelector: isSelector,
         protocol: 'http',
-        priority: max+1
+        priority: max+1,
       }));
     },
 

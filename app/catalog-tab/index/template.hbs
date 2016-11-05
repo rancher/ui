@@ -19,11 +19,16 @@
     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{t 'catalogPage.index.category'}} <span class="text-capitalize">{{category}}</span> <i class="icon icon-chevron-down"></i></button>
     <ul class="dropdown-menu dropdown-menu-right">
       {{#each categories as |category|}}
-      <li>
-        {{#link-to parentRoute (query-params category=category)}}
-          <span class="text-capitalize">{{category}}</span>
-        {{/link-to}}
-      </li>
+        {{#if (eq category "all")}}
+          <li class="text-capitalize">{{#link-to parentRoute (query-params cateogry=category)}}{{category}}{{/link-to}}</li>
+          <li class="divider"></li>
+        {{else}}
+          <li>
+            {{#link-to parentRoute (query-params category=category)}}
+              {{category}}
+            {{/link-to}}
+          </li>
+        {{/if}}
       {{/each}}
     </ul>
   </div>
@@ -50,14 +55,14 @@
       {{else if (eq section 'footer')}}
         {{#if (eq catalogItem.templateBase 'infra')}}
           {{#if catalogItem.exists}}
-            <button type="button" class="btn btn-default btn-disabled" disabled="disabled">Already Deployed</button>
+            <button type="button" class="btn btn-sm btn-default btn-disabled" {{action "launch" catalogItem.id true allowedKeys="meta ctrl"}}>{{t 'catalogPage.index.action.alreadyDeployed'}}</button>
           {{else if catalogItem.supported}}
-            {{#link-to launchRoute catalogItem.id class="btn btn-sm btn-primary"}}{{t 'catalogPage.index.viewDetails'}}{{/link-to}}
+            <button class="btn btn-sm btn-primary" {{action "launch" catalogItem.id}}>{{t 'catalogPage.index.action.launch'}}</button>
           {{else}}
-            <button type="button" class="btn btn-default btn-disabled" disabled="disabled">Not Compatible</button>
+            <button type="button" class="btn btn-sm btn-default btn-disabled" {{action "launch" catalogItem.id true allowedKeys="meta ctrl"}}>{{t 'catalogPage.index.action.notCompatible'}}</button>
           {{/if}}
         {{else}}
-          {{#link-to launchRoute catalogItem.id class="btn btn-sm btn-primary"}}{{t 'catalogPage.index.viewDetails'}}{{/link-to}}
+          <button type="button" class="btn btn-sm btn-primary" {{action "launch" catalogItem.id}}>{{t 'catalogPage.index.action.launch'}}</button>
         {{/if}}
       {{/if}}
     {{/catalog-box}}

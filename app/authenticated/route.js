@@ -15,6 +15,8 @@ export default Ember.Route.extend(Subscribe, {
   storeReset: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
 
+  testTimer: null,
+
   beforeModel(transition) {
     this._super.apply(this,arguments);
 
@@ -29,13 +31,15 @@ export default Ember.Route.extend(Subscribe, {
   },
 
   testAuthToken: function() {
-    Ember.run.later(() => {
+    let timer = Ember.run.later(() => {
       this.get('access').testAuth().then((/* res */) => {
         this.testAuthToken();
       }, (/* err */) => {
         this.send('logout',null,true);
       });
     }, CHECK_AUTH_TIMER);
+
+    this.set('testTimer', timer);
   },
 
   model(params, transition) {
@@ -132,6 +136,7 @@ export default Ember.Route.extend(Subscribe, {
   deactivate() {
     this._super();
     this.disconnectSubscribe();
+    Ember.run.cancel(this.get('testTimer'));
 
     // Forget all the things
     this.get('storeReset').reset();

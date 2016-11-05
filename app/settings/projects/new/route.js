@@ -12,11 +12,17 @@ export default Ember.Route.extend({
       projectTemplates: userStore.findAll('projectTemplate'),
       catalogTemplates: this.get('catalog').fetchTemplates({templateBase: C.EXTERNAL_ID.KIND_INFRA}),
     }).then((hash) => {
+      let tplId = null;
+      let tpl = hash.projectTemplates.objectAt(0);
+      if ( tpl ) {
+        tplId = tpl.get('id');
+      }
+
       var project = userStore.createRecord({
         type: 'project',
         name: '',
         description: '',
-        projectTemplateId: null,
+        projectTemplateId: tplId,
       });
 
       if ( this.get('access.enabled') )

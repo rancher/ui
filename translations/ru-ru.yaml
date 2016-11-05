@@ -28,9 +28,14 @@ generic:
   ports: Порты
   remove: Убрать
   role: Роль
+  save: Сохранить
+  saved: Сохранено
+  saving: Сохранение
   state: Состояние
   to: В
   type: Тип
+  test: Тест
+  testing: Тестирование
   unknown: Неизвестный
 accountsPage:
   index:
@@ -111,6 +116,18 @@ auditLogsPage:
   first: В начало
   next: Дальше
 authPage:
+  shibboleth:
+    enabled:
+      header: "{providerName} включен"
+      authenticated:
+        header:
+          text: Аунтификация
+      disableAccess:
+        warning: '<b class="text-danger">Внимание:</b> Отключение контроля доступа предоставит полный доступ к Системе {appName} любому, кто может зайти на эту страницу или достучаться до API. Мы предупреждали.'
+      groupsField: 'Группы:'
+      displayName: 'Отображаемое имя:'
+      userName: 'Логин:'
+      userId: 'ID пользователя:'
   root:
     header: Access Control
   github:
@@ -285,7 +302,11 @@ catalogPage:
     search:
       placeholder: Поиск...
     category: "Категория:"
-    certified: Одобрено
+    certified:
+      rancher:
+        partner: Партнер
+      pl:
+        partner: Партнер
     noData:
       singular: Подходящие шаблоны отсутствуют.
       plural: В каталоге нет подходящих шаблонов.
@@ -383,7 +404,8 @@ containersPage:
       ports: Порты
       command: Команда
       networking: Сеть
-      healthCheck: Проверка работоспособности
+      healthCheck: Проверка здоровья
+      scheduling: Назначить
       security: Безопасноть
     portsTab:
       table:
@@ -418,6 +440,8 @@ containerSubpod:
   childSidekicks: Сайдкики
 dockerCLI:
   header: Докер CLI
+  button: Создание конфигурации
+  generating: Создание...
   activating: Активация...
   well: |
     Или используйте эту консоль, чтобы удобно запускать команды <code>docker</code> и <code>docker-compose</code>:
@@ -577,6 +601,7 @@ helpPage:
       header: Система Rancher
       buttonText: Больше тем о Системе Rancher
     convoy:
+      header: Convoy
       buttonText: Больше тем о Системе Convoy
   commercial:
     header: Рекламная пауза
@@ -652,6 +677,7 @@ hostsPage:
           noData: На этом хосте пока нет разделов.
 k8sTab:
   types:
+    namespace: Пространство имен
     service: Сервис
     deployment: Развертывание
     pod: Pod
@@ -761,7 +787,7 @@ registriesPage:
         username: Юзернейм
         created: Был создан
       body:
-        noData: У вас пока нет реестров контейнеров.
+        noData: "У вас пока нет реестров контейнеров."
   new:
     header: Добавить реестр
     form:
@@ -840,21 +866,18 @@ servicePage:
     table:
       header:
         date: Дата
+        level: Уровень
         event: Событие
         description: Описание
 settingsPage:
   index:
     header: Окружения
-    linkTo: Добавить окружение
-    subtext: |
-      <p>Система {appName} позволяет группировать наборы ресурсов в <b>Окружения</b>. Каждое из них содержит свой собственный набор сервисов и инфраструктурных компонент, и может быть доступно одному или нескольким пользователям ГитХаба, командам или организациям.</p>
-      <p>К примеру, Вы можете создать отдельные Окружения &quot;dev&quot;, &quot;test&quot; и &quot;production&quot;, чтобы отделять овец от бифштексов и иметь возможность дать доступ к "dev" всей компании, при этом оставив окружение &quot;production&quot; доступным более узкому кругу лиц.</p>
     alert: У Вас нет активных Окружений. Создайте или активируйте хотя бы одно, иначе у нас с Вами ничего не получится.
     table:
       header:
         orchestration: Оркестрирование
       body:
-        noData: У вас пока нет Окружений.
+        noData: "У вас пока нет Окружений."
 stacksPage:
   header:
     all: Все Стеки
@@ -1128,6 +1151,8 @@ ldap:
         labelText: Поле названия (Name Field)
       search:
         labelText: Поле поиска (Search Field)
+      groupMemberUser:
+        placeholder: uid
   testAuth:
     header: "3. Протестируйте и включите аунтификацию"
     helpText: "Проверьте, что все настроено правильно, протестировав аунтификацию с учётной записью из Вашей {providerName} директории:"
@@ -1153,6 +1178,7 @@ serviceInfoPartial:
   description: 'Описание:'
   containers: Контейнеры
   scale: Масштаб
+  global: Общие настройки
   noContainers: Контейнеров нет
   ports: Порты
   noPublicPorts: Нет доступных портов
@@ -1163,9 +1189,6 @@ advancedSection:
   hrText: Дополнительные опции
 catalogSettings:
   header: Каталог
-  system:
-    header:
-      pl: Инфраструктура
   more:
     header: Пользовательский
     addActionLabel: Добавить каталог
@@ -1202,10 +1225,13 @@ containerShell:
     disconnected: Отключен
     closed: Закрыт
 copyToClipboard:
+  tooltip: Скопировать ссылку
   copied: Скопировано!
 devicePermissions:
   all: Все
   none: Отсутсвует
+  read: Прочитано
+  write: Записано
 editAccount:
   title: Изменить профиль
   form:
@@ -1302,23 +1328,6 @@ stackHeader:
 formatIp:
   noIp: Отсутсвует
   unknownIp: Неизвестный
-formBalancerListeners:
-  addAction: Добавить порт
-  table:
-    host: IP/Порт источника
-    protocol: Протокол
-    ssl: SSL
-    container: Порт назначения по умолчанию
-    listener: Доступ
-  host:
-    placeholder: "На хосте, напр. 80 или 1.2.3.4:80"
-  protocol:
-    placeholder: "Выберите протокол:"
-  container:
-    placeholder: "В контейнере, напр. 8080"
-  selectAccess: "Выберите доступ:"
-  listen:
-    public: Публичные
 formCommand:
   command:
     label: Команда
@@ -1334,6 +1343,8 @@ formCommand:
     placeholder: напр. apache
   console:
     label: Консоль
+    both: 'Интерактивные и Телетайп <span class="text-muted"> (-i -t)</span>'
+    interactive: 'Интерактивная <span class="text-muted">(-i)</span>'
     none: Отсутсвует
   autoRestart:
     label: Автоматический перезапуск
@@ -1342,6 +1353,8 @@ formCommand:
     "no": Никогда
     always: Всегда
   environment:
+    addAction: Добавить переменную среды
+    keyLabel: Переменная
     keyPlaceholder: напр. FOO
     valueLabel: Значение
     valuePlaceholder: напр. bar
@@ -1381,6 +1394,7 @@ formEngineOpts:
   engineLabels:
     keyLabel: Метка
   engineEnv:
+    addActionLabel: Добавить переменную среды
     keyLabel: Переменная
     keyPlaceholder: напр. HTTP_PROXY
     valuePlaceholder: 'напр. http://your-proxy:8080'
@@ -1389,7 +1403,6 @@ formEngineOpts:
   engineRegistryMirror:
     valuePlaceholder: 'напр. https://my-mirror.example.com:5000'
 formHealthCheck:
-  label: Проверка работоспособности
   checkType:
     none: Отсутсвует
     http: Ответ HTTP 2xx/3xx
@@ -1446,11 +1459,15 @@ formNetwork:
     bridge: Мост
     container: контейнер
     host: Хост
+    managed: Управляемый
     none: Отсутсвует
   container:
     label: контейнер
   requestedIp:
+    label: Назначить IP
     placeholder: напр. 10.42.2.24
+  retainIp:
+    label: Сохранить IP
   dns:
     label: DNS
   hostname:
@@ -1458,6 +1475,7 @@ formNetwork:
     placeholder: напр. web
     dockerId: Используйте идентификатор контейнера Docker
     containerName: Используйте имя контейнера
+    custom: Установить имя хоста
   domainName:
     label: Доменное имя
     placeholder: напр. example.com
@@ -1467,7 +1485,7 @@ formNetwork:
     label: Домен для поиска
     placeholder: напр. prod.example.com
 formPorts:
-  addAction: Карта порта
+  addAction: Прокинуть порт
   public:
     label: 'Публичный Хост [IP:] Порт'
     placeholderWithIp: "напр. 80 или 1.2.3.4:80"
@@ -1494,6 +1512,8 @@ formSecurity:
     addActionLabel: Добавить параметр
     keyPlaceholder: напр. syslog-facility
     valuePlaceholder: напр. daemon
+  privileged:
+    checkbox: Полный доступ к хосту
   pidMode:
     label: PID режим
     checkbox: Хост
@@ -1527,9 +1547,13 @@ formSecurity:
   logDriver:
     placeholder: напр. syslog
 formServiceLinks:
+  addAction: Сервис ссылок
+  noLinks: Этот сервис не имеет никаких сервисных ссылок.
   service:
+    label: Укажите сервис
     prompt: Выберите сервис...
   name:
+    label: Имя
     placeholder: напр. database
 formSslTermination:
   certificate: Сертификат*
@@ -1579,7 +1603,9 @@ formVolumes:
   value:
     prompt: Выберите контейнер...
   volumes: Диски
+  volumesFrom: Диск от
   volumeDriver:
+    label: Драйвер Диска
     placeholder: 'напр. convoy-nfs'
 heroAddService:
   service:
@@ -1596,6 +1622,7 @@ hostPod:
     deactivated:
       error: Ошибка создания машины
     groupedInstances:
+      namespace: 'Пространство имен:'
       stack: 'Стек:'
 identityBlock:
   loading: Загрузка...
@@ -1871,6 +1898,7 @@ machine:
     diskSize:
       label: Диски
       unit: Мб
+    schedulingSection: Назначить
     pool:
       label: Пул
     host:
@@ -1927,6 +1955,7 @@ modalEditDriver:
 modalFeedback:
   send: Отправить
 modalProcessError:
+  cause: "Причина:"
   none: Н/Д
   close: Закрыть
 modalWelcome:
@@ -1936,9 +1965,9 @@ modalShell:
 newAliasService:
   header: Добавить псевдоним сервиса
 newBalancer:
-  header: Добавить систему балансировки нагрузки
   tabs:
     labels: Метки
+    scheduling: Назначить
 newCatalog:
   version:
     prompt: Выберите версию...
@@ -1952,6 +1981,8 @@ newCatalog:
   official: Официально сертифицирован
   license: "Лицензия:"
   url: "URL проекта:"
+  titleAdd: "Добавить {name} Стек"
+  titleUpgrade: "Обновить {name} Стек"
   templateVersion: Версия шаблона
   selectVersionAdd: Выберите версию шаблона для развертывания
   newStack: Новый Стек
@@ -1959,6 +1990,7 @@ newCatalog:
   startService: Запустить сервис после создания
   preview: Предварительный просмотр
   txt: answers.txt
+  noConfig: В этом шаблоне нет настроек с конфигурацией
 newContainer:
   add:
     container: Добавить Контейнер
@@ -1973,14 +2005,18 @@ newContainer:
     volumes: Диски
     networking: Сеть
     security: Безопасность/Хост
-    healthCheck: Проверка работоспособности
+    healthCheck: Проверка здоровья
     labels: Метки
+    scheduling: Назначить
+  selectUpgrade: Выберите одну или несколько служб для обновления.
   saveUpgrade: Обновить
   saveNew: Создать
+  removeSidekick: Удалить этот Sidekick
   name:
     placeholder: напр. myapp
   description:
     placeholder: напр. My Application
+  emptyPrimaryService: "(Основной сервис)"
   addSidekickContainer: Добавить контейнер Sidekick
   addSidekickVm: Добавить Sidekick VM
 newExternalService:
@@ -1999,6 +2035,8 @@ pageFooter:
     mac: Mac OS X
     windows: Windows
     linux: Linux
+pageHeaderEnvironment:
+  namespace: Пространство имен
 projectRow:
   none: Нет описания
   orchestration: Оркестрирование
@@ -2006,6 +2044,7 @@ registryRow:
   address: Адрес
   email: Эл. адрес
   username: Имя пользователя
+  created: Создан
 saveCancel:
   saving: Сохранение...
   saved: Сохранено!
@@ -2016,6 +2055,11 @@ schema:
   inputBoolean:
     "n": "Неверно"
 schedulingRuleRow:
+  theHost: Хост
+  must: должен
+  mustNot: не должен
+  haveA: иметь
+  of: для
   hostLabel: Метка хоста
   containerLabel: контейнер с меткой
 serviceLink:
@@ -2043,7 +2087,7 @@ stackSection:
   description: Описание
   add:
     service: Добавить Сервис
-    loadBalancer: Добавление системы балансировки нагрузки
+    loadBalancer: Добавить систему балансировки нагрузки
     serviceAlias: Добавить псевдоним сервиса
     externalService: Добавление внешнего сервиса
     virtualMachine: Добавить виртуалку
@@ -2088,6 +2132,7 @@ upgradeBtn:
   status:
     none: 'Отсутсвует'
     loading: 'Проверка обновления...'
+    current: 'Актуально'
     available: 'Доступно обновление'
     inprogress: 'Обновление выполняется'
     upgraded: 'Обновление: Готово'
@@ -2162,7 +2207,6 @@ nav:
   catalog:
     tab: Каталог
     all: Все
-    infra: Инфраструктура
     library: Библиотека
     community: Сообщество
   infra:
@@ -2254,3 +2298,4 @@ model:
       member: Участник
       owner: Владелец
       readonly: Только для чтения
+      restricted: Ограниченный

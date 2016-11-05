@@ -104,19 +104,6 @@ export default Ember.Service.extend({
         return false;
       }
 
-      // While we're looping through them all..
-      if ( tpl.catalogId === C.CATALOG.LIBRARY_KEY )
-      {
-        if ( tpl.labels && tpl.labels[C.LABEL.CERTIFIED] )
-        {
-          Ember.set(tpl, 'certified', tpl.labels[C.LABEL.CERTIFIED]);
-        }
-        else
-        {
-          Ember.set(tpl, 'certified', null);
-        }
-      }
-
       return true;
     });
 
@@ -147,9 +134,18 @@ export default Ember.Service.extend({
     return url;
   },
 
-  _uniqKeys(data, name) {
-    let out = data.map((item) => item[name]);
-    out = out.uniq().sort((a,b) => a.localeCompare(b, 'en', {sensitivity: 'base'}));
+  _uniqKeys(data, field) {
+    // Make a map of all the unique category names.
+    // If multiple casings of the same name are present, first wins.
+    let cased = {};
+    data.map((obj) => obj[field]).forEach((str) => {
+      let lc = str.toLowerCase();
+      if ( !cased[lc] ) {
+        cased[lc] = str;
+      }
+    });
+
+    let out = Object.keys(cased).uniq().sort().map((str) => cased[str]);
     out.unshift('all');
     return out;
   },

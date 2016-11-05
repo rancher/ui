@@ -12,7 +12,9 @@ export default Ember.Service.extend({
       stacks: store.findAllUnremoved('stack'),
       services: store.find('service', null, {forceReload: true}) // Need force-reload to get response with mixed types
     }).then((hash) => {
-      return hash.services.map((service) => {
+      return hash.services.filter((service) => {
+        return service.get('system') !== true;
+      }).map((service) => {
         return {
           group: intl.t('allServices.stackGroup', {name: stackName(service)}),
           id: service.get('id'),

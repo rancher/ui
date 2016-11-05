@@ -8,7 +8,6 @@ export default Ember.Mixin.create({
   cookies: Ember.inject.service(),
 
   defaultPageSize: -1,
-  removeAfterDelete: false,
 
   headers: function() {
     let out = {

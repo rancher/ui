@@ -5,8 +5,12 @@ import { getCatalogNames } from 'ui/utils/parse-catalog-setting';
 // Useful context/condition shortcuts
 export const getProjectId = function() { return this.get('projectId'); };
 export const getNamespaceId = function() { return this.get('namespaceId'); };
+export const k8sReady = function() { return this.get('kubernetesReady'); };
+export const k8sNotReady = function() { return !this.get('kubernetesReady'); };
 export const swarmReady = function() { return this.get('swarmReady'); };
+export const swarmNotReady = function() { return this.get('swarmNotReady'); };
 export const mesosReady = function() { return this.get('mesosReady'); };
+export const mesosNotReady = function() { return !this.get('mesosReady'); };
 export const isOwner = function() { return this.get('isOwner'); };
 
 /* Tree item options
@@ -54,6 +58,7 @@ const navTree = [
         icon: 'icon icon-stacks',
         route: 'k8s-tab.namespace.stacks',
         ctx: [getProjectId, getNamespaceId],
+        condition: k8sReady,
       },
       {
         id: 'k8s-deployments',
@@ -61,6 +66,7 @@ const navTree = [
         icon: 'icon icon-tachometer',
         route: 'k8s-tab.namespace.deployments',
         ctx: [getProjectId, getNamespaceId],
+        condition: k8sReady,
       },
       {
         id: 'k8s-services',
@@ -68,9 +74,11 @@ const navTree = [
         icon: 'icon icon-compass',
         route: 'k8s-tab.namespace.services',
         ctx: [getProjectId, getNamespaceId],
+        condition: k8sReady,
       },
       {
         divider: true,
+        condition: k8sReady,
       },
       {
         id: 'k8s-replicasets',
@@ -78,6 +86,7 @@ const navTree = [
         icon: 'icon icon-services',
         route: 'k8s-tab.namespace.replicasets',
         ctx: [getProjectId, getNamespaceId],
+        condition: k8sReady,
       },
       {
         id: 'k8s-rcs',
@@ -85,6 +94,7 @@ const navTree = [
         icon: 'icon icon-services',
         route: 'k8s-tab.namespace.rcs',
         ctx: [getProjectId, getNamespaceId],
+        condition: k8sReady,
       },
       {
         id: 'k8s-pods',
@@ -92,6 +102,7 @@ const navTree = [
         icon: 'icon icon-containers',
         route: 'k8s-tab.namespace.pods',
         ctx: [getProjectId, getNamespaceId],
+        condition: k8sReady,
       },
       {
         id: 'k8s-cli',
@@ -99,6 +110,13 @@ const navTree = [
         icon: 'icon icon-terminal',
         route: 'k8s-tab.kubectl',
         ctx: [getProjectId],
+        condition: k8sReady,
+      },
+      {
+        id: 'k8s-notready',
+        icon: 'icon icon-spinner icon-spin',
+        localizedLabel: 'nav.notReady',
+        condition: k8sNotReady,
       },
       {
         divider: true,
@@ -148,6 +166,12 @@ const navTree = [
         condition: swarmReady,
       },
       {
+        id: 'swarm-notready',
+        icon: 'icon icon-spinner icon-spin',
+        localizedLabel: 'nav.notReady',
+        condition: swarmNotReady,
+      },
+      {
         id: 'swarm-system',
         localizedLabel: 'nav.swarm.system',
         icon: 'icon icon-network',
@@ -174,6 +198,12 @@ const navTree = [
         route: 'mesos-tab.index',
         ctx: [getProjectId],
         condition: mesosReady,
+      },
+      {
+        id: 'mesos-notready',
+        icon: 'icon icon-spinner icon-spin',
+        localizedLabel: 'nav.notReady',
+        condition: mesosNotReady,
       },
       {
         id: 'mesos-system',
@@ -203,8 +233,11 @@ const navTree = [
         route: 'stacks',
         ctx: [getProjectId],
         queryParams: {which: C.EXTERNAL_ID.KIND_ALL},
+        condition: isOwner,
       },
-      { divider: true },
+      { divider: true ,
+        condition: isOwner,
+      },
       {
         id: 'cattle-user',
         localizedLabel: 'nav.cattle.user',
@@ -212,6 +245,7 @@ const navTree = [
         route: 'stacks',
         ctx: [getProjectId],
         queryParams: {which: C.EXTERNAL_ID.KIND_USER},
+        condition: isOwner,
       },
       {
         id: 'cattle-infra',
@@ -230,6 +264,7 @@ const navTree = [
     id: 'catalog',
     localizedLabel: 'nav.catalog.tab',
     route: 'catalog-tab',
+    queryParams: {catalogId: 'all'},
     ctx: [getProjectId],
     condition: function() {
       return this.get('hasProject') &&

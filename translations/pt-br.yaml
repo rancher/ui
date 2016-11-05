@@ -206,7 +206,6 @@ catalogPage:
     header: 'Catálogo:'
     search:
       placeholder: Pesquisar...
-    certified: Certificado
     noData:
       singular: Não há templates compatíveis.
       plural: Não há templates compatíveis neste catálogo.
@@ -626,7 +625,7 @@ registriesPage:
         username: Nome de usuário
         created: Criado
       body:
-        noData: Você não tem nenhum registros ainda.
+        noData: "Você não tem nenhum registros ainda."
   new:
     header: Adicionar Registro
     form:
@@ -698,16 +697,12 @@ servicePage:
 settingsPage:
   index:
     header: Ambientes
-    linkTo: Adicionar Ambiente
-    subtext: |
-      <p>{appName} suporta recursos de agrupamento em múltiplo <b>ambientes</b>.  Cada um recebe seu próprio conjunto de recursos de infra-estrutura e serviços e é possuído por um ou mais usuários do GitHub, equipes ou organizações.</p>
-      <p>Por exemplo, você pode criar separado os ambientes &quot;dev&quot;, &quot;test&quot;, e &quot;production&quot; para manter as coisas isoladas umas das outras, e dar &quot;dev&quot; acesso a toda a organização, mas restringir o ambiente &quot;production&quot; para uma equipe menor.</p>
     alert: Não há nenhum ambiente ativo.  Você precisará criar ou ativar um antes, você pode fazer mais nada.
     table:
       header:
         orchestration: Orquestração
       body:
-        noData: Você não tem nenhum ambientes ainda.
+        noData: "Você não tem nenhum ambientes ainda."
 stacksPage:
   header:
     all: Todas as Pilhas
@@ -966,10 +961,6 @@ advancedSection:
 catalogSettings:
   header: Catálogo
   subtext: Catálogos contêm templates rancher-compose que permitem aos usuários facilmente implantar aplicativos, respondendo a algumas perguntas
-  certified:
-    detail:
-      rancher: Templates certificados mantidos e suportado por Rancher Labs.
-      pl: Templates oficialmente com suporte e manutenção.
   community:
     header:
       rancher: Contribuição da Comunidade
@@ -1130,23 +1121,6 @@ editStack:
 formatIp:
   noIp: Nenhum
   unknownIp: Desconhecido
-formBalancerListeners:
-  label: Portas de Escuta
-  addAction: Adicionar Porta
-  table:
-    host: IP/Porta de Origem
-    protocol: Protocolo
-    container: Porta de Destino Padrão
-    listener: Acesso
-  host:
-    placeholder: "Sem Host, p.ex. 80 ou 1.2.3.4:80"
-  protocol:
-    placeholder: "Selecione um protocolo:"
-  container:
-    placeholder: "Sem Contêiner, p.ex. 8080"
-  listen:
-    public: Público
-    internal: Interno
 formCommand:
   command:
     label: Comando
@@ -1177,7 +1151,6 @@ formCommand:
       }
     always: Sempre
   environment:
-    label: Variáveis de Ambiente
     addAction: Adicionar Variável de Ambiente
     keyLabel: Variável
     keyPlaceholder: p.ex. FOO
@@ -1236,7 +1209,6 @@ formEngineOpts:
     valueLabel: URL Espelho
     valuePlaceholder: 'p.ex. https://meu-espelho.exemplo.com:5000'
 formHealthCheck:
-  label: Exame de Saúde
   checkType:
     none: Nenhum
     tcp: Conexões TCP Abertas
@@ -1262,10 +1234,8 @@ formHealthCheck:
   timeout:
     label: Timeout de Verificação
   healthyThreshold:
-    label: Limite Saudável
     unit: sucessos
   unhealthyThreshold:
-    label: Limite Insalubre
     unit: falhas
   strategy:
     label: Quando Insalubre
@@ -1356,7 +1326,6 @@ formTargets:
   title: Destinos
   addAction: Adicionar Serviço
   hostname:
-    label: Pedido de Host
     placeholder: p.ex. svc.com
   srcPort:
     label: Porta de Origem
@@ -1787,18 +1756,11 @@ modalProcessError:
 newAliasService:
   header: Adicionar Serviço de Alias
 newBalancer:
-  header: Adicionar Balanceador de Carga
-  note: |
-    <p><strong>Nota:</strong>olicitações que não correspondem a qualquer uma das &quot;opções avançadas de solicitação&quot; serão enviadas para <strong>todos</strong> ({targetResources}) os serviços de destino configurado (round-robin) na porta de destino padrão correspondente a porta de origem da solicitação.</p>
   tabs:
     ssl: Terminação SSL
     custom: haproxy.cfg Personalizado
     labels: Rótulos
     scheduling: Agendamento
-  helpBlock: |
-    <p class="help-block">Configuração adicionais <a href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html" target="_blank">haproxy.cfg</a> pode ser colocado aqui e será acrescentada à configuração gerada pelo {appName}.</p>
-  labelGlobal: seções <code>global</code>
-  labelDefault: seções <code>padrões</code>
 newCatalog:
   version:
     prompt: Escolha uma versão...

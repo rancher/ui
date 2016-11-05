@@ -1,16 +1,14 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  access: Ember.inject.service(),
   catalog: Ember.inject.service(),
   projects: Ember.inject.service(),
 
   queryParams: {
-    category: {
-      refreshModel: true
-    },
-    catalogId: {
-      refreshModel: true
-    }
+    category: { refreshModel: true },
+    catalogId: { refreshModel: true },
+    templateBase: { refreshModel: true },
   },
 
   actions: {
@@ -42,7 +40,7 @@ export default Ember.Route.extend({
   },
 
   model(params) {
-    params.plusInfra = true;
+    params.plusInfra = this.get('access').isOwner();
     let stacks = this.get('stacks');
     return this.get('catalog').fetchTemplates(params).then((res) => {
       res.catalog.forEach((tpl) => {
@@ -59,6 +57,7 @@ export default Ember.Route.extend({
     {
       controller.set('category', 'all');
       controller.set('catalogId', 'all');
+      controller.set('templateBase', '');
     }
   }
 });

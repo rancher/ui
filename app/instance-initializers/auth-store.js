@@ -6,7 +6,6 @@ export function initialize(instance) {
 
   store.reopen(StoreTweaks);
   store.reopen({
-    removeAfterDelete: false,
     baseUrl: application.authEndpoint,
     skipTypeifyKeys: ['labels'],
   });
