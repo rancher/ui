@@ -19,11 +19,16 @@
     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{t 'catalogPage.index.category'}} <span class="text-capitalize">{{category}}</span> <i class="icon icon-chevron-down"></i></button>
     <ul class="dropdown-menu dropdown-menu-right">
       {{#each categories as |category|}}
-      <li>
-        {{#link-to parentRoute (query-params category=category)}}
-          <span class="text-capitalize">{{category}}</span>
-        {{/link-to}}
-      </li>
+        {{#if (eq category "all")}}
+          <li class="text-capitalize">{{#link-to parentRoute (query-params cateogry=category)}}{{category}}{{/link-to}}</li>
+          <li class="divider"></li>
+        {{else}}
+          <li>
+            {{#link-to parentRoute (query-params category=category)}}
+              {{category}}
+            {{/link-to}}
+          </li>
+        {{/if}}
       {{/each}}
     </ul>
   </div>

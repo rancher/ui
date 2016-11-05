@@ -21,14 +21,12 @@
       <small><strong>{{t 'newCatalog.catalog'}}</strong> <span class="text-capitalize">{{templateResource.catalogId}}</span></small>
     </div>
     <div>
-      <small><strong>{{t 'newCatalog.category'}}</strong> <span class="text-capitalize">{{templateResource.category}}</span></small>
+      <small><strong>{{t 'newCatalog.category'}}</strong> {{templateResource.category}}</small>
     </div>
-    {{#if (eq templateResource.catalogId 'library')}}
+    {{#if (eq templateResource.certified 'rancher')}}
       <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.official'}}</small>
     {{else}}
-      {{#if (eq templateResource.catalogId 'community')}}
-        <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.maintainedBy'}}</small>
-      {{/if}}
+      <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.maintainedBy'}}</small>
     {{/if}}
     {{#if templateResource.maintainer}}
       <div>
