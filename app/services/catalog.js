@@ -95,6 +95,8 @@ export default Ember.Service.extend({
       bases.push(C.EXTERNAL_ID.KIND_INFRA);
     }
 
+    let categories = this._uniqKeys(data, 'category');
+
     data = data.filter((tpl) => {
       if ( category !== 'all' && (tpl.get('category')||'').toLowerCase() !== category ) {
         return false;
@@ -110,7 +112,7 @@ export default Ember.Service.extend({
     data = data.sortBy('name');
 
     return Ember.Object.create({
-      categories: this._uniqKeys(data, 'category'),
+      categories: categories,
       catalog: data,
       templateBase: templateBase,
     });

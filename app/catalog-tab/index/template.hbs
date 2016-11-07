@@ -18,14 +18,14 @@
   <div class="btn-group pull-right r-ml10">
     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{t 'catalogPage.index.category'}} <span class="text-capitalize">{{category}}</span> <i class="icon icon-chevron-down"></i></button>
     <ul class="dropdown-menu dropdown-menu-right">
-      {{#each categories as |category|}}
-        {{#if (eq category "all")}}
-          <li class="text-capitalize">{{#link-to parentRoute (query-params cateogry=category)}}{{category}}{{/link-to}}</li>
+      {{#each categories as |opt|}}
+        {{#if (eq opt "all")}}
+          <li class="text-capitalize {{if (eq category opt) 'active'}}">{{#link-to parentRoute (query-params category=opt)}}{{opt}}{{/link-to}}</li>
           <li class="divider"></li>
         {{else}}
-          <li>
-            {{#link-to parentRoute (query-params category=category)}}
-              {{category}}
+          <li class="{{if (eq category opt) 'active'}}">
+            {{#link-to parentRoute (query-params category=opt)}}
+              {{opt}}
             {{/link-to}}
           </li>
         {{/if}}
