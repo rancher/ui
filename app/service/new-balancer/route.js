@@ -23,8 +23,8 @@ export default Ember.Route.extend({
       let service;
       if ( hash.existingService ) {
         if ( params.upgrade+'' === 'true' ) {
-          service = hash.existingService;
-          hash.existing = service.clone();
+          service = hash.existingService.clone();
+          hash.existing = hash.existingService;
         } else {
           service = hash.existingService.cloneForNew();
         }
