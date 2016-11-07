@@ -70,7 +70,7 @@ export default Ember.Component.extend({
     var swapBytes = Math.max(0, memPlusSwapBytes - memBytes);
 
     if (memReservation) {
-      this.set('memoryReservationMb', parseInt(memBytes,10)/1048576);
+      this.set('memoryReservationMb', parseInt(memReservation,10)/1048576);
     } else {
       this.set('memoryReservationMb', '');
     }

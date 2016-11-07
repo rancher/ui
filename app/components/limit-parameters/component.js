@@ -4,9 +4,9 @@ export default Ember.Component.extend({
   memoryLimit: null,
   init: function() {
     this._super(...arguments);
-    var memReservation = this.get('model.memoryReservation');
+    var memReservation = this.get('model.memory');
     if (memReservation) {
-      this.set('memoryLimit', memReservation);
+      this.set('memoryLimit', parseInt(memReservation,10)/1048576);
     } else {
       this.set('memoryLimit', '');
     }
