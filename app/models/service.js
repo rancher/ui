@@ -16,6 +16,22 @@ var Service = Resource.extend({
   stack: denormalizeId('stackId'),
 
   actions: {
+    edit() {
+      var type = this.get('type').toLowerCase();
+      if ( type === 'dnsservice' )
+      {
+        this.get('modalService').toggleModal('edit-aliasservice', this);
+      }
+      else if ( type === 'externalservice' )
+      {
+        this.get('modalService').toggleModal('edit-externalservice', this);
+      }
+      else
+      {
+        this.get('modalService').toggleModal('edit-service', this);
+      }
+    },
+
     activate() {
       return this.doAction('activate');
     },
