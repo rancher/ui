@@ -14,8 +14,11 @@ export default Ember.Route.extend({
 
       let def = existing.find((tpl) => tpl.get('name').toLowerCase() === C.PROJECT_TEMPLATE.DEFAULT);
       if ( def ) {
-        hash.projectTemplate = def.cloneForNew();
-        hash.projectTemplate.isPublic = false;
+        let tpl = def.cloneForNew();
+        tpl.isPublic = false;
+        tpl.name = '';
+        tpl.description = '';
+        hash.projectTemplate = tpl;
       } else {
         hash.projectTemplate = this.get('userStore').createRecord({
           type: 'projectTemplate',

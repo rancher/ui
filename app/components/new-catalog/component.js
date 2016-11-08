@@ -7,6 +7,7 @@ import { compare as compareVersion } from 'ui/utils/parse-version';
 
 export default Ember.Component.extend(NewOrEdit, {
   k8s: Ember.inject.service(),
+  intl: Ember.inject.service(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
 
@@ -27,6 +28,7 @@ export default Ember.Component.extend(NewOrEdit, {
   saveUpgrade: 'newCatalog.saveUpgrade',
   saveNew: 'newCatalog.saveNew',
   sectionClass: 'well',
+  showDefaultVersionOption: false,
 
   classNames: ['launch-catalog'],
 
@@ -64,12 +66,16 @@ export default Ember.Component.extend(NewOrEdit, {
     this.set('selectedTemplateModel', null);
 
     Ember.run.scheduleOnce('afterRender', () => {
-      var def = this.get('templateResource.defaultVersion');
-      var links = this.get('versionLinks');
-      if (links[def]) {
-        this.set('selectedTemplateUrl', links[def]);
+      if ( this.get('selectedTemplateUrl') === 'default') {
+        this.templateChanged();
       } else {
-        this.set('selectedTemplateUrl', null);
+        var def = this.get('templateResource.defaultVersion');
+        var links = this.get('versionLinks');
+        if (links[def]) {
+          this.set('selectedTemplateUrl', links[def]);
+        } else {
+          this.set('selectedTemplateUrl', null);
+        }
       }
     });
   }.on('init'),
@@ -85,15 +91,30 @@ export default Ember.Component.extend(NewOrEdit, {
   }.observes('selectedTemplateModel.links.readme'),
 
   sortedVersions: function() {
-    return this.get('versionsArray').sort((a,b) => {
+    let out = this.get('versionsArray').sort((a,b) => {
       return compareVersion(a.version, b.version);
     });
-  }.property('versionsArray'),
+
+    let def = this.get('templateResource.defaultVersion');
+    if ( this.get('showDefaultVersionOption') && def ) {
+      out.unshift({version:  this.get('intl').t('newCatalog.version.default', {version: def}), link: 'default'});
+    }
+
+    return out;
+  }.property('versionsArray','templateResource.defaultVersion'),
 
   templateChanged: function() {
     var url = this.get('selectedTemplateUrl');
     if (url) {
       this.set('loading', true);
+
+      if ( url === 'default' ) {
+        var def = this.get('templateResource.defaultVersion');
+        var links = this.get('versionLinks');
+        if ( def && links ) {
+          url = links[def];
+        }
+      }
 
       var version = this.get('settings.rancherVersion');
       if ( version ) {
@@ -101,6 +122,11 @@ export default Ember.Component.extend(NewOrEdit, {
       }
 
       var current = this.get('stackResource.environment');
+      if ( !current ) {
+        current = {};
+        this.set('stackResource.environment', current);
+      }
+
       this.get('store').request({
         url: url
       }).then((response) => {
@@ -135,7 +161,7 @@ export default Ember.Component.extend(NewOrEdit, {
       this.set('selectedTemplateModel', null);
       this.set('readmeContent', null);
     }
-  }.observes('selectedTemplateUrl'),
+  }.observes('selectedTemplateUrl','templateResource.defaultVersion'),
 
   answers: function() {
     var out = {};
@@ -197,17 +223,26 @@ export default Ember.Component.extend(NewOrEdit, {
     let files = this.get('selectedTemplateModel.files');
     let stack = this.get('stackResource');
 
-    stack.setProperties({
-      dockerCompose: files['docker-compose.yml'],
-      rancherCompose: files['rancher-compose.yml'],
-      environment: this.get('answers'),
-      externalId: this.get('newExternalId'),
-    });
-
     if ( this.get('actuallySave') ) {
+      stack.setProperties({
+        dockerCompose: files['docker-compose.yml'],
+        rancherCompose: files['rancher-compose.yml'],
+        environment: this.get('answers'),
+        externalId: this.get('newExternalId'),
+      });
+
       return true;
     } else {
-      this.sendAction('doSave', this.get('templateResource.id'), stack, this.get('selectedTemplateModel'));
+      let versionId = null;
+      if ( this.get('selectedTemplateUrl') !== 'default' && this.get('selectedTemplateModel') ) {
+        versionId = this.get('selectedTemplateModel.id');
+      }
+
+      this.sendAction('doSave', {
+        templateId: this.get('templateResource.id'),
+        templateVersionId: versionId,
+        answers: this.get('answers'),
+      });
       return false;
     }
   },

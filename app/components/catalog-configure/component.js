@@ -6,6 +6,7 @@ export default ModalBase.extend({
 
   serviceChoices: Ember.computed.alias('modalService.modalOpts.serviceChoices'),
   originalModel: Ember.computed.alias('modalService.modalOpts.originalModel'),
+  selectedTemplateUrl: Ember.computed.alias('modalService.modalOpts.selectedTemplateUrl'),
 
   model: null,
 
@@ -26,7 +27,7 @@ export default ModalBase.extend({
       stack: orig.get('stack').clone(),
       serviceChoices: this.get('serviceChoices'),
       tpl: tpl,
-      currentUrl: orig.get('tplVersion.links.self'),
+      currentUrl: this.get('selectedTemplateUrl')||orig.get('tplVersion.links.self'),
       versionLinks: links,
       versionsArray: verArr,
     };
@@ -35,16 +36,17 @@ export default ModalBase.extend({
   }.on('init'),
 
   actions: {
-    doSave(templateId, newStack, tpl) {
+    doSave(opt) {
       let orig = this.get('originalModel');
       let stack = orig.get('stack');
-      stack.merge(newStack);
 
-      orig.setProperties({
-        enabled: true,
-        stack: stack,
-        tplVersion: tpl,
+      stack.setProperties({
+        templateId: opt.templateId,
+        templateVersionId: opt.templateVersionId,
+        answers: opt.answers
       });
+
+      orig.set('enabled', true);
       this.send('cancel');
     },
   },

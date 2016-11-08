@@ -64,9 +64,15 @@ export default Ember.Component.extend(NewOrEdit, {
     },
 
     enableStack(obj) {
+      let url = 'default';
+      if ( obj.stack.templateVersionId ) {
+        url = null;
+      }
+
       this.get('modalService').toggleModal('catalog-configure', {
         serviceChoices: this.get('serviceChoices'),
         originalModel: obj,
+        selectedTemplateUrl: url
       });
     },
 
@@ -106,13 +112,7 @@ export default Ember.Component.extend(NewOrEdit, {
           enabled: true,
           compatible: null,
           tpl: tpl,
-          stack: this.get('store').createRecord({
-            type: 'stack',
-            name: cur.get('name'),
-            description: cur.get('description'),
-            environment: cur.get('answers'),
-            templateVersionId: cur.get('externalId'),
-          }),
+          stack: cur.clone(),
         });
       } else {
         map[tplId] = Ember.Object.create({
@@ -121,9 +121,10 @@ export default Ember.Component.extend(NewOrEdit, {
           tpl: tpl,
           compatible: null,
           stack: this.get('store').createRecord({
-            type: 'stack',
+            type: 'catalogTemplate',
             name: tpl.get('defaultName'),
-            environment: {},
+            answers: {},
+            templateId: tplId,
           }),
         });
       }
@@ -203,29 +204,6 @@ export default Ember.Component.extend(NewOrEdit, {
     return drivers;
   }.property('activeOrchestration'),
 
-  applyDefaultTemplateVersions() {
-    let promises = [];
-    let map = this.get('stacksMap');
-    Object.keys(map).forEach((key) => {
-      let stack = map[key];
-      if ( stack && stack.get('enabled') && !stack.get('tplVersion') ) {
-        let tpl = stack.get('tpl');
-        let version = tpl.defaultVersion;
-        if ( tpl.versionLinks[version] ) {
-          promises.push(
-            this.get('store').request({url: tpl.versionLinks[version]}).then((tplVersion) => {
-              stack.set('tplVersion', tplVersion);
-            })
-          );
-        } else {
-          console.warn('No default template for ' + tpl.id);
-        }
-      }
-    });
-
-    return Ember.RSVP.all(promises);
-  },
-
   willSave() {
     let intl = this.get('intl');
 
@@ -234,58 +212,50 @@ export default Ember.Component.extend(NewOrEdit, {
       return out;
     }
 
-    return this.applyDefaultTemplateVersions().then(() => {
-      let map = this.get('stacksMap');
-      let orch = this.get('activeOrchestration');
-      let ok = true;
+    let map = this.get('stacksMap');
+    let orch = this.get('activeOrchestration');
+    let ok = true;
 
-      Object.keys(map).forEach((key) => {
-        let obj = map[key];
-        let tpl = obj.get('tpl');
-        if ( obj.enabled && !tpl.supportsOrchestration(orch) ) {
-          this.get('growl').error(
-            intl.t('editProjectTemplate.error.conflict'),
-            intl.t('editProjectTemplate.error.enabling', {
-              tplCategory: tpl.get('category'),
-              stackName: tpl.get('name'),
-              orchestration: Util.ucFirst(orch),
-            })
-          );
+    Object.keys(map).forEach((key) => {
+      let obj = map[key];
+      let tpl = obj.get('tpl');
+      if ( obj.enabled && !tpl.supportsOrchestration(orch) ) {
+        this.get('growl').error(
+          intl.t('editProjectTemplate.error.conflict'),
+          intl.t('editProjectTemplate.error.enabling', {
+            tplCategory: tpl.get('category'),
+            stackName: tpl.get('name'),
+            orchestration: Util.ucFirst(orch),
+          })
+        );
 
-          ok = false;
-        }
-      });
-
-      return ok;
-    }).catch(() => {
-      return false;
+        ok = false;
+      }
     });
+
+    return ok;
   },
 
   doSave() {
     let map = this.get('stacksMap');
     let ary = [];
 
-    // Only look at enabled stacks
+    // only look at enabled stacks
     Object.keys(map).forEach((key) => {
       let obj = map[key];
       if ( obj && obj.enabled ) {
-        ary.push(obj);
+        let stack = obj.stack;
+        if ( stack.templateVersionId ) {
+          delete stack.templateId;
+        } else {
+          delete stack.templateVersionId;
+        }
+
+        ary.push(obj.stack);
       }
     });
 
-    // Map to the catalogTemplate objects the API wants
-    let stacks = ary.map((obj) => {
-      let s = obj.stack;
-      return {
-        name: s.name,
-        description: s.description,
-        answers: s.environment,
-        templateVersionId: obj.tplVersion.id,
-      };
-    });
-
-    this.set('projectTemplate.stacks', stacks);
+    this.set('projectTemplate.stacks', ary);
     return this._super();
   },
 
