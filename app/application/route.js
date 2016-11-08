@@ -2,11 +2,12 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
+  access         : Ember.inject.service(),
   cookies        : Ember.inject.service(),
   github         : Ember.inject.service(),
-  access         : Ember.inject.service(),
-  settings       : Ember.inject.service(),
   language       : Ember.inject.service('user-language'),
+  modal          : Ember.inject.service(),
+  settings       : Ember.inject.service(),
 
   previousParams : null,
   previousRoute  : null,
@@ -90,6 +91,10 @@ export default Ember.Route.extend({
 
       if ( transition ) {
         session.set(C.SESSION.BACK_TO, window.location.href);
+      }
+
+      if ( this.get('modal.modalVisible') ) {
+        this.get('modal').toggleModal();
       }
 
       let params = {queryParams: {}};
