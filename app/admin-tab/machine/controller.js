@@ -66,7 +66,7 @@ export default Ember.Controller.extend(Sortable, {
       type            : 'machineDriver',
       description     : (driver.description || null),
       checksum        : (driver.files.checksum||'').trim() || null,
-      uiUrl           : (driver.files.uiUrl||'').trim() || null,
+      uiUrl           : (driver.files['ui-url']||driver.files.uiUrl||'').trim() || null,
       url             : (driver.files.url||'').trim() || null,
       externalId      : C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + driver.id,
       activateOnCreate: true,
