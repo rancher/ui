@@ -186,14 +186,19 @@ export default Ember.Service.extend(Ember.Evented, {
     let version = this.get('rancherVersion');
     if ( !version )
     {
-      return 'latest';
+      return null;
     }
 
     return minorVersion(version);
   }.property('rancherVersion'),
 
   docsBase: function() {
-    let version = this.get('minorVersion');
+    let full = this.get('rancherVersion');
+    let version = 'latest';
+    if ( full ) {
+      version = minorVersion(full);
+    }
+
     let lang = ((this.get('intl._locale')||[])[0]||'').replace(/-.*$/,'');
     if ( !lang || lang === 'none' || C.LANGUAGE.DOCS.indexOf(lang) === -1 ) {
       lang = 'en';

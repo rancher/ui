@@ -2,8 +2,6 @@ import Ember from 'ember';
 import Socket from 'ui/utils/socket';
 import C from 'ui/utils/constants';
 
-let DEADTOME = ['removed','purging','purged'];
-
 const ORCHESTRATION_STACKS = [
   'k8s',
   'swarm',
@@ -56,7 +54,7 @@ export default Ember.Mixin.create({
             this[key](d);
           }
 
-          if ( resource && DEADTOME.includes(resource.state) ) {
+          if ( resource && C.REMOVEDISH_STATES.includes(resource.state) ) {
             store._remove(resource.type, resource);
           }
         }

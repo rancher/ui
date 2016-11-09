@@ -35,6 +35,14 @@ function comparePart(in1, in2) {
 }
 
 export function compare(in1, in2) {
+  if ( !in1 ) {
+    return 1;
+  }
+
+  if ( !in2 ) {
+    return -1;
+  }
+
   let p1 = parse(in1);
   let p2 = parse(in2);
 

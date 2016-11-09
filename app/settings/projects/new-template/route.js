@@ -7,7 +7,7 @@ export default Ember.Route.extend({
 
   model() {
     return Ember.RSVP.hash({
-      catalogInfo: this.get('catalog').fetchTemplates({templateBase: 'infra', category: 'all'}),
+      catalogInfo: this.get('catalog').fetchTemplates({templateBase: C.EXTERNAL_ID.KIND_INFRA, category: C.EXTERNAL_ID.KIND_ALL}),
       serviceChoices: this.get('allServices').choices(),
     }).then((hash) => {
       let existing = this.modelFor('settings.projects').projectTemplates;

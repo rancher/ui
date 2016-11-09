@@ -152,6 +152,10 @@ var Stack = Resource.extend({
     return out;
   }.property('actionLinks.{remove,purge,exportconfig,finishupgrade,cancelupgrade,rollback,cancelrollback,update}','canActivate','canDeactivate','externalIdInfo.kind'),
 
+  canViewConfig: function() {
+    return !!this.get('actionLinks.exportconfig');
+  }.property('actionLinks.exportconfig'),
+
   combinedState: function() {
     var stack = this.get('state');
     var health = this.get('healthState');
