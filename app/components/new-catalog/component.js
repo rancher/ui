@@ -201,7 +201,6 @@ export default Ember.Component.extend(NewOrEdit, {
 
     if (errors.length) {
       this.set('errors', errors.uniq());
-      this.$().parent().scrollTop(0);
       return false;
     }
 
