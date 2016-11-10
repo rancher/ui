@@ -140,7 +140,9 @@
               {{#if service.hasLabels}}
                 {{#link-to "service.labels" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.labels'}}</a>{{/link-to}}
               {{/if}}
-              {{#link-to 'service.links' tagName='li' href=false}}<a href="#">{{t 'servicePage.navTabs.links'}}</a>{{/link-to}}
+              {{#if service.consumedServicesWithNames.length}}
+                {{#link-to 'service.links' tagName='li' href=false}}<a href="#">{{t 'servicePage.navTabs.links'}}</a>{{/link-to}}
+              {{/if}}
               {{#if service.hasContainers}}
                 {{#link-to "service.log" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.log'}}</a>{{/link-to}}
               {{/if}}

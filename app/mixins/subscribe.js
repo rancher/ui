@@ -102,7 +102,7 @@ export default Ember.Mixin.create({
   disconnectSubscribe(cb) {
     this.set('reconnect', false);
     var socket = this.get('subscribeSocket');
-    if ( socket )
+    if ( socket  && socket._state !== 'disconnected')
     {
       console.log('Subscribe disconnect ' + this.forStr());
       socket.disconnect(cb);
