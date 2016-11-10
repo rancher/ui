@@ -18,6 +18,13 @@ export default Ember.Service.extend({
     return this.get('projects.current.orchestration') || 'cattle';
   }),
 
+  reset() {
+    this.setProperties({
+      cache: null,
+      catalogs: null,
+    });
+  },
+
   refresh() {
     const store = this.get('store');
 

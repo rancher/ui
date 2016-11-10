@@ -10,7 +10,7 @@ export default Ember.Route.extend({
     return Ember.RSVP.hash({
       all: userStore.findAllUnremoved('project'),
       projectTemplates: userStore.findAll('projectTemplate'),
-      catalogTemplates: this.get('catalog').fetchTemplates({templateBase: C.EXTERNAL_ID.KIND_INFRA}),
+      catalogTemplates: this.get('catalog').fetchTemplates({templateBase: C.EXTERNAL_ID.KIND_INFRA, category: C.EXTERNAL_ID.KIND_ALL}),
     }).then((hash) => {
       let tplId = null;
       let tpl = hash.projectTemplates.objectAt(0);
