@@ -18,6 +18,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   prefix        : null,
   multiTemplate : null,
   clonedModel   : null,
+  useHost       : true,
 
   actions: {
     addLabel: addAction('addLabel', '.key'),
@@ -104,14 +105,18 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
 
   nameDidChange: function() {
     let parts = this.get('nameParts');
+    let nameField = 'hostname';
+    if (this.get('primaryResource.type') === 'machine') {
+      nameField = 'name';
+    }
     if ( typeof parts.name !== 'undefined' || !parts.prefix )
     {
-      this.set('primaryResource.hostname', parts.name || '');
+      this.set(`primaryResource.${nameField}`, parts.name || '');
     }
     else
     {
       let first = parts.prefix + Util.strPad(parts.start, parts.minLength, '0');
-      this.set('primaryResource.hostname', first);
+      this.set(`primaryResource.${nameField}`, first);
     }
   }.observes('nameParts'),
 

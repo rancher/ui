@@ -18,7 +18,7 @@ export default Ember.Mixin.create({
         Ember.$('#navbar').collapse('toggle');
       });
 
-    } else if ($body.hasClass('touch') && Ember.$(window).width() > WINDOW_SM) {
+    } else {
 
       // ipad/tablet width
       $body.on('touchend', (e) => {
@@ -40,18 +40,6 @@ export default Ember.Mixin.create({
           this.enterHandler(e);
         }
       });
-
-      this.$().on('click', SELECTOR, (e) => {
-        let $el = $(e.currentTarget).find('a.dropdown-toggle');
-
-        if ($el.attr('aria-expanded') === 'true') {
-          Ember.run.next(() => {
-            this.clearHeaderMenus();
-          });
-        }
-      });
-
-    } else {
 
       // desktop width
       this.$().on('click', SELECTOR, (e) => {
