@@ -62,9 +62,8 @@ export default Ember.Component.extend({
         return;
       }
 
-      let tmp = rules.objectAt(idx-1);
-      rules.replace(idx-1, 1, rule);
-      rules.replace(idx, 1, tmp);
+      rules.removeAt(idx);
+      rules.insertAt(idx-1, rule);
       this.updatePriorities();
     },
 
@@ -76,8 +75,8 @@ export default Ember.Component.extend({
       }
 
       let tmp = rules.objectAt(idx+1);
-      rules.replace(idx+1, 1, rule);
-      rules.replace(idx, 1, tmp);
+      rules.removeAt(idx);
+      rules.insertAt(idx+1, rule);
       this.updatePriorities();
     },
 
