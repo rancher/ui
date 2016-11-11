@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { addQueryParams } from 'ui/utils/util';
+import { addQueryParams, uniqKeys } from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
 const MIN_VERSION = 'minimumRancherVersion_lte';
@@ -11,7 +11,7 @@ export default Ember.Service.extend({
   userStore: Ember.inject.service('user-store'),
   projects : Ember.inject.service(),
 
-  cache            : null,
+  templateCache    : null,
   catalogs         : null,
 
   templateBase: Ember.computed('projects.current.orchestration', function() {
@@ -20,7 +20,7 @@ export default Ember.Service.extend({
 
   reset() {
     this.setProperties({
-      cache: null,
+      templateCache: null,
       catalogs: null,
     });
   },
@@ -44,10 +44,22 @@ export default Ember.Service.extend({
     return this.get('store').getById('template', id);
   },
 
+  getVersionFromCache(id) {
+    return this.get('store').getById('templateversion', id);
+  },
+
   fetchTemplate(id, upgrade=false) {
-    let type = 'templates';
+    let type, cached;
     if ( upgrade === true ) {
       type = 'templateversions';
+      cached = this.getVersionFromCache(id);
+    } else {
+      type = 'templates';
+      cached = this.getTemplateFromCache(id);
+    }
+
+    if ( cached ) {
+      return Ember.RSVP.resolve(cached);
     }
 
     let url = this._addLimits(`${this.get('app.catalogEndpoint')}/${type}/${id}`);
@@ -55,7 +67,7 @@ export default Ember.Service.extend({
   },
 
   fetchTemplates(params) {
-    let cache        = this.get('cache');
+    let cache        = this.get('templateCache');
     let templateBase = params.templateBase || this.get('templateBase');
     let catalogId    = params.catalogId;
     let plusInfra    = (params.plusInfra || false);
@@ -77,7 +89,7 @@ export default Ember.Service.extend({
     let url = this._addLimits(`${this.get('app.catalogEndpoint')}/templates`, qp);
     return this.get('store').request({url: url}).then((res) => {
       res.catalogId = catalogId;
-      this.set('cache', res);
+      this.set('templateCache', res);
       return this.filter(res, params.category, templateBase, plusInfra);
     }).catch((err) => {
       if ( params.allowFailure ) {
@@ -103,7 +115,8 @@ export default Ember.Service.extend({
       bases.push(C.EXTERNAL_ID.KIND_INFRA);
     }
 
-    let categories = this._uniqKeys(data, 'category');
+    let categories = uniqKeys(data, 'category');
+    categories.unshift('all');
 
     data = data.filter((tpl) => {
       if ( category !== 'all' && (tpl.get('category')||'').toLowerCase() !== category ) {
@@ -138,21 +151,5 @@ export default Ember.Service.extend({
     url = addQueryParams(url, qp);
 
     return url;
-  },
-
-  _uniqKeys(data, field) {
-    // Make a map of all the unique category names.
-    // If multiple casings of the same name are present, first wins.
-    let cased = {};
-    data.map((obj) => obj[field]).forEach((str) => {
-      let lc = str.toLowerCase();
-      if ( !cased[lc] ) {
-        cased[lc] = str;
-      }
-    });
-
-    let out = Object.keys(cased).uniq().sort().map((str) => cased[str]);
-    out.unshift('all');
-    return out;
   },
 });

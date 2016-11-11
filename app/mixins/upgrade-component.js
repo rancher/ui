@@ -26,7 +26,7 @@ function getUpgradeInfo(task, cb) {
   var obj = task.obj;
 
   let deps = {
-    upgradeInfo: obj.get('catalog').fetchTemplate(task.id)
+    upgradeInfo: obj.get('catalog').fetchTemplate(task.id, true)
   };
 
   if ( task.upgradeOnly === false ) {
