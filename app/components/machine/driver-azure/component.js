@@ -114,7 +114,8 @@ export default Ember.Component.extend(Driver, {
   }),
 
   validate: function() {
-    let errors = [];
+    this._super();
+    let errors = this.get('errors')||[];
 
     this.set('prefix',(this.get('prefix')||'').toLowerCase());
     let name = this.get('model.hostname');
@@ -131,7 +132,7 @@ export default Ember.Component.extend(Driver, {
     }
 
     if (!this.get('azureConfig.clientId') ) {
-      errors.push('Client Id is requried');
+      errors.push('Client ID is requried');
     }
 
     if (!this.get('azureConfig.clientSecret') ) {
