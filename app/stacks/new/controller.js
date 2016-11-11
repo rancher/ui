@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import C from 'ui/utils/constants';
-import {normalizedChoices} from 'ui/models/stack';
+import {tagChoices} from 'ui/models/stack';
 
 export default Ember.Controller.extend(NewOrEdit, {
   queryParams: ['githubRepo','githubBranch','composeFiles','system'],
@@ -20,7 +20,7 @@ export default Ember.Controller.extend(NewOrEdit, {
   },
 
   groupChoices: function() {
-    return normalizedChoices(this.get('allStacks'));
+    return tagChoices(this.get('allStacks'));
   }.property('allStacks.@each.grouping'),
 
   willSave: function() {

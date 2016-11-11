@@ -74,7 +74,6 @@ export default Ember.Component.extend({
         return;
       }
 
-      let tmp = rules.objectAt(idx+1);
       rules.removeAt(idx);
       rules.insertAt(idx+1, rule);
       this.updatePriorities();

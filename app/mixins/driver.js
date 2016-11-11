@@ -129,7 +129,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     let errors = [];
 
     if ( !this.get('nameParts.prefix') ) {
-      errors.push('Name is required')
+      errors.push('Name is required');
     }
 
     this.set('errors', errors);
