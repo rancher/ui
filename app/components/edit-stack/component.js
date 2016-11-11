@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import ModalBase from 'lacsso/components/modal-base';
-import {normalizedChoices, tagsToArray} from 'ui/models/stack';
+import {tagChoices, tagsToArray} from 'ui/models/stack';
 
 export default ModalBase.extend(NewOrEdit, {
   classNames: ['lacsso', 'modal-container', 'large-modal'],
@@ -28,7 +28,7 @@ export default ModalBase.extend(NewOrEdit, {
   },
 
   tagChoices: function() {
-    return normalizedChoices(this.get('allStacks'));
+    return tagChoices(this.get('allStacks'));
   }.property('allStacks.@each.group'),
 
   doneSaving: function() {

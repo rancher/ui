@@ -1,7 +1,8 @@
 import Ember from 'ember';
 import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
-import { tagsToArray, normalizedChoices } from 'ui/models/stack';
+import { tagsToArray, tagChoices } from 'ui/models/stack';
+import { uniqKeys } from 'ui/utils/util';
 
 export default Ember.Controller.extend(Sortable, {
   stacksController: Ember.inject.controller('stacks'),
@@ -9,24 +10,21 @@ export default Ember.Controller.extend(Sortable, {
   prefs: Ember.inject.service(),
   intl: Ember.inject.service(),
 
-  stacks: Ember.computed.alias('stacksController.stacks'),
   infraTemplates: Ember.computed.alias('stacksController.infraTemplates'),
   which: Ember.computed.alias('stacksController.which'),
   tags: Ember.computed.alias('stacksController.tags'),
   showAddtlInfo: false,
   selectedService: null,
 
-  tagsArray: null,
+  tag: null,
   tagChoices: function() {
-    let out = normalizedChoices(this.get('model'));
+    let choices = tagChoices(this.get('model.stacks'));
     tagsToArray(this.get('tags')).forEach((tag) => {
-      out.addObject(tag);
+      choices.addObject(tag);
     });
 
-    return out.sort((a,b) => {
-      return a.toLowerCase().localeCompare(b.toLowerCase());
-    });
-  }.property('model.@each.group'),
+    return uniqKeys(choices);
+  }.property('model.stacks.@each.group'), // tags is derived from group..
 
   actions: {
     showAddtlInfo(service) {
@@ -44,18 +42,8 @@ export default Ember.Controller.extend(Sortable, {
       this.send('setSort', name);
     },
 
-    updateTags(select) {
-      let options = Array.prototype.slice.call(select.target.options, 0);
-      let selected = options.filterBy('selected',true).map(opt => opt.value);
-
-      if ( selected.length === 0 )
-      {
-        this.set('tags','');
-      }
-      else
-      {
-        this.set('tags', selected.join(','));
-      }
+    switchTag(str) {
+      this.set('tags', str);
     },
   },
 

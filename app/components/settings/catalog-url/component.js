@@ -59,7 +59,7 @@ export default Ember.Component.extend({
       this.get('settings').one('settingsPromisesResolved', () => {
         btnCb(true);
         this.sendAction('saved');
-        this.get('catalog').clearCache();
+        this.get('catalog').reset();
       });
     },
   },

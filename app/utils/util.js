@@ -312,6 +312,22 @@ export function pluralize(count,singular,plural) {
   }
 }
 
+export function uniqKeys(data, field=undefined) {
+  // Make a map of all the unique category names.
+  // If multiple casings of the same name are present, first wins.
+  let cased = {};
+  data.map((obj) => (field ? obj[field] : obj))
+    .filter((str) => str && str.length)
+    .forEach((str) => {
+      let lc = str.toLowerCase();
+      if ( !cased[lc] ) {
+        cased[lc] = str;
+      }
+  });
+
+  return Object.keys(cased).uniq().sort().map((str) => cased[str]);
+}
+
 export function camelToTitle(str) {
   return (str||'').dasherize().split('-').map((str) => { return ucFirst(str); }).join(' ');
 }
@@ -341,7 +357,8 @@ var Util = {
   formatKbps: formatKbps,
   formatSi: formatSi,
   pluralize: pluralize,
-  camelToTitle: camelToTitle
+  camelToTitle: camelToTitle,
+  uniqKeys: uniqKeys,
 };
 
 window.Util = Util;

@@ -39,5 +39,25 @@ export default Ember.Component.extend(Driver, {
       type: 'host',
       packetConfig: config,
     }));
-  }
+  },
+
+  validate: function() {
+    this._super();
+    let errors = this.get('errors')||[];
+
+    if (!this.get('packetConfig.projectId') ) {
+      errors.push('Project ID is required');
+    }
+
+    if (!this.get('packetConfig.apiKey') ) {
+      errors.push('API Key is requried');
+    }
+
+    if ( errors.length ) {
+      this.set('errors',errors.uniq());
+      return false;
+    }
+
+    return true;
+  },
 });

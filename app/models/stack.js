@@ -2,7 +2,7 @@ import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
-import Util from 'ui/utils/util';
+import { download } from 'ui/utils/util';
 import { denormalizeServiceArray } from 'ui/utils/denormalize-snowflakes';
 
 export function activeIcon(stack)
@@ -27,15 +27,13 @@ export function tagsToArray(str) {
     filter((tag) => tag.length > 0);
 }
 
-export function normalizedChoices(all) {
+export function tagChoices(all) {
   let choices = [];
   (all||[]).forEach((stack) => {
     choices.addObjects(stack.get('tags'));
   });
 
-  return choices.sort((a,b) => {
-    return a.toLowerCase().localeCompare(b.toLowerCase());
-  });
+  return choices;
 }
 
 var Stack = Resource.extend({
@@ -101,7 +99,7 @@ var Stack = Resource.extend({
 
     exportConfig: function() {
       var url = this.get('endpointSvc').addAuthParams(this.linkFor('composeConfig'));
-      Util.download(url);
+      download(url);
     },
 
     viewCode: function() {

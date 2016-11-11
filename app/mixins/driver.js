@@ -120,12 +120,24 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     }
   }.observes('nameParts'),
 
-  willSave: function() {
+  willSave() {
     this.set('multiTemplate', this.get('primaryResource').clone());
     return this._super();
   },
 
-  didSave: function() {
+  validate() {
+    let errors = [];
+
+    if ( !this.get('nameParts.prefix') ) {
+      errors.push('Name is required');
+    }
+
+    this.set('errors', errors);
+    return errors.length === 0;
+  },
+
+
+  didSave() {
     if ( this.get('count') > 1 )
     {
       let parts = this.get('nameParts');
@@ -159,12 +171,13 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     }
   },
 
-  doneSaving: function() {
+  doneSaving() {
     let out = this._super();
     this.send('goBack');
     return out;
   },
-  didInsertElement: function() {
+
+  didInsertElement() {
     this._super();
     Ember.run.next(() => {
       try {

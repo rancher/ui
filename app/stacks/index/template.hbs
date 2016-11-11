@@ -12,16 +12,6 @@
     {{/if}}
   {{/if}}
 
-<!--
-  <div class="pull-right r-ml20">
-    <select class="form-control stack-tags" multiple="true" onchange={{action 'updateTags'}}>
-      {{#each tagChoices as |choice|}}
-        <option value={{choice}} selected={{include tagsArray choice}}>{{choice}}</option>
-      {{/each}}
-    </select>
-  </div>
--->
-
   <div class="pull-right">
     <label class="text-muted r-pr5" style="font-size: 13px;">{{t 'stacksPage.sort.label'}}: </label>
     <div class="btn-group r-pr0" role="group" aria-label="{{t 'stacksPage.sort.label'}}">
@@ -29,9 +19,26 @@
       <button {{action 'sortResults' 'name'}}  type="button" class="btn btn-sm btn-default {{if (eq sortBy "name") 'active'}}">{{t 'stacksPage.sort.name'}}</button>
     </div>
   </div>
+
+  {{#if tagChoices.length}}
+    <div class="btn-group pull-right r-mr10">
+      <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{t (if tags 'stacksPage.tags.one' 'stacksPage.tags.all' ) name=tags}} <i class="icon icon-chevron-down"></i></button>
+      <ul class="dropdown-menu dropdown-menu-right">
+        <li class="{{if (eq tags '') 'active'}}"><a href="#" {{action 'switchTag' ''}}>{{t 'stacksPage.tags.all'}}</a></li>
+        <li class="divider"></li>
+        {{#each tagChoices as |opt|}}
+          <li class="{{if (eq tags opt) 'active'}}">
+            <a href="#" {{action 'switchTag' opt}}>
+              {{opt}}
+            </a>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+  {{/if}}
 </section>
 
-<section class="stacks-wrap">
+<section class="stacks-wrap r-pl0 r-pr0">
   <div>
     {{#each arranged as |stack|}}
       {{stack-section model=stack showAddtlInfo='showAddtlInfo' showAddService=(not stack.system)}}

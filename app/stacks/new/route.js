@@ -19,11 +19,9 @@ function githubUrl(repo,branch,file) {
 
 export default Ember.Route.extend({
   model: function(params/*, transition*/) {
-    let group = 'user';
     var stack = this.get('store').createRecord({
       type: 'stack',
       startOnCreate: true,
-      group: group
     });
 
     var dockerUrl = null;
