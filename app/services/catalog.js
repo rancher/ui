@@ -28,6 +28,7 @@ export default Ember.Service.extend({
   refresh() {
     const store = this.get('store');
 
+    this.reset();
     return store.request({
       url: `${this.get('app.catalogEndpoint')}/templates?refresh&action=refresh`,
       method: 'POST',
@@ -123,10 +124,6 @@ export default Ember.Service.extend({
       catalog: data,
       templateBase: templateBase,
     });
-  },
-
-  clearCache() {
-    this.set('cache', null);
   },
 
   _addLimits(url, qp) {
