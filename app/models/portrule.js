@@ -29,7 +29,7 @@ let PortRule = Resource.extend({
   service: denormalizeServiceId(),
 
   needsCertificate: function() {
-    return ['tls','https','sni'].includes(this.get('protocol'));
+    return ['tls','https'].includes(this.get('protocol'));
   }.property('protocol'),
 
   canHostname: function() {
