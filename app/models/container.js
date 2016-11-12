@@ -242,6 +242,10 @@ var Container = Instance.extend({
     });
   }.property('mounts.@each.state'),
   // @TODO PERF
+  //
+  isGlobalScale: function() {
+    return (this.get('labels')||{})[C.LABEL.SCHED_GLOBAL] + '' === 'true';
+  }.property('labels'),
 });
 
 Container.reopenClass({
