@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import { parseExternalId } from 'ui/utils/parse-externalid';
 
 const NONE       = 'none',
       LOADING    = 'loading',
@@ -120,18 +119,9 @@ export default Ember.Mixin.create({
     }
   }),
 
-  // @TODO hacky hacky mchackerson...
-  currentVersion: Ember.computed('versions','model.externalId', function() {
-    let parsed = parseExternalId(this.get('model.externalId'));
-
-    let versions = this.get('versions')||[];
-    let keys = Object.keys(versions);
-    for ( let i = 0 ; i < keys.length ; i++ ) {
-      let key = keys[i];
-      if ( versions[key].indexOf(parsed.id) >= 0 ) {
-        return key;
-      }
-    }
+  currentVersion: Ember.computed('upgradeInfo','model.externalId', function() {
+    let text = this.get('intl').findTranslationByKey('upgradeBtn.version.current');
+    return `${text}: ${this.get('upgradeInfo.version')}`;
   }),
 
   doUpgrade() {

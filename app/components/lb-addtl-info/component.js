@@ -1,8 +1,4 @@
 import Ember from 'ember';
-import {
-  parseTarget
-}
-from 'ui/utils/parse-target';
 
 export default Ember.Component.extend({
   service: null,
@@ -16,45 +12,17 @@ export default Ember.Component.extend({
 
   willInsertElement: function() {
     if (this.get('service')) {
-      this.setup();
+      this.bootstrap();
     }
   },
 
   serviceObserver: function() {
-    this.setup();
+    this.bootstrap();
   }.observes('service'),
 
-  setup: function() {
-    var targets = [];
-    this.get('service.consumedServicesWithNames').forEach((map) => {
-      if (map.get('ports.length')) {
-        map.get('ports').forEach((str) => {
-          var obj = parseTarget(str);
-          if (obj) {
+  targets: Ember.computed.alias('service.lbConfig.portRules'),
 
-            obj.setProperties({
-              isService: true,
-              stackId: map.get('service.stackId'),
-              value: map.get('service.displayName'),
-              id: map.get('service.id'),
-              service: map.get('service'),
-            });
-
-            targets.pushObject(obj);
-          }
-        });
-      } else {
-        targets.pushObject(Ember.Object.create({
-          isService: true,
-          value: map.get('service.displayName'),
-          id: map.get('service.id'),
-          stackId: map.get('service.stackId'),
-          service: map.get('service'),
-        }));
-      }
-    });
-    this.set('targetsArray', targets);
-
+  bootstrap: function() {
     this.get('store').findAllUnremoved('certificate').then((result) => {
       result.forEach((cert) => {
         if (this.get('service.defaultCertificateId') === cert.id) {

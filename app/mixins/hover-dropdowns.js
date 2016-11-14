@@ -14,9 +14,28 @@ export default Ember.Mixin.create({
     if ($body.hasClass('touch') && Ember.$(window).width() <= WINDOW_SM) {
 
       // below iphone 6plus vertical width no need for dropdown logic
-      this.$().on('click', SELECTOR, () => {
-        Ember.$('#navbar').collapse('toggle');
+      this.$().on('click', () => {
+        if (dropdown) {
+          Ember.run.later(() => {
+            this.clearHeaderMenus();
+          }, DROPDOWNCLOSETIMER);
+        }
       });
+
+      this.$('#environment-dropdown').on('touchstart', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.touchHandler(e);
+      });
+
+      this.$('ul[data-dropdown-id="enviroment"] > li > a').on('touchend', () => {
+        if (dropdown) {
+          Ember.run.later(() => {
+            this.clearHeaderMenus();
+          }, DROPDOWNCLOSETIMER);
+        }
+      });
+
 
     } else {
 
@@ -59,6 +78,34 @@ export default Ember.Mixin.create({
       });
     }
 
+  },
+
+  touchHandler(e) {
+    let anchor = Ember.$(e.currentTarget);
+
+    Ember.run.cancel(timerObj);
+
+    timerObj   = null;
+    if (dropdown) { // dropdown open alread
+
+      if (dropdown.data('dropdown-id') !== Ember.$(e.currentTarget).find('ul').data('dropdown-id')) { // not the same dropdown
+
+        this.clearHeaderMenus();
+
+        dropdown = Ember.$(e.currentTarget).siblings('ul');
+
+        if (dropdown) {
+          this.showMenu(anchor, dropdown);
+        }
+      }
+    } else { // no dropdown open
+
+      dropdown = Ember.$(e.currentTarget).siblings('ul');
+
+      if (dropdown) {
+        this.showMenu(anchor, dropdown);
+      }
+    }
   },
 
   enterHandler(e) {

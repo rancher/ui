@@ -112,7 +112,6 @@ export default Ember.Component.extend(Driver, {
 
 
   validate: function() {
-    this._super();
     let errors      = this.get('errors')||[];
     let name        = this.get('model.hostname')||'';
     let accessToken = this.get('digitaloceanConfig.accessToken')||'';

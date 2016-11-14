@@ -77,17 +77,19 @@
   <label class="text-muted">{{t 'lbAddtlInfo.targets'}}</label>
   <div class="content" style="overflow:auto;">
     <ul class="list-unstyled">
-      {{#each targetsArray as |target|~}}
+      {{#each targets as |target|~}}
         <li>
-          {{~#if (or target.hostname target.srcPort target.path)~}}
-            {{target.hostname}}{{if target.srcPort ":"}}{{target.srcPort}}{{target.path}}
-            <span class="text-muted"> {{t 'lbAddtlInfo.to'}} </span>
+          {{#if target.selector}}
+            {{target.selector}}
+          {{else}}
+            <a href="{{href-to "service" target.service.stackId target.service.id}}">
+              {{#if (not-eq service.stackId target.service.stackId)~}}
+                {{target.service.displayStack}}/
+              {{~/if~}}
+              {{~target.service.displayName~}}
+            </a>
           {{~/if~}}
-          {{~#link-to 'service' target.stackId target.id~}}
-            {{~#if (not (eq target.stackId service.stackId))~}}{{target.service.displayStack}}/{{~/if~}}
-            {{target.value}}
-          {{~/link-to~}}
-          {{~#if target.dstPort~}}:{{target.dstPort}}{{~/if~}}
+          {{~#if target.targetPort~}}:{{target.targetPort}}{{~/if~}}
         </li>
       {{~/each}}
     </ul>
