@@ -66,7 +66,11 @@ export default Ember.Controller.extend(Sortable, {
 
   pageHeader: function() {
     let which = this.get('which');
-    if ( which === C.EXTERNAL_ID.KIND_ALL ) {
+    let tags = this.get('tags');
+
+    if ( tags ) {
+      return 'stacksPage.header.tags';
+    } else if ( which === C.EXTERNAL_ID.KIND_ALL ) {
       return 'stacksPage.header.all';
     } else if ( C.EXTERNAL_ID.SHOW_AS_SYSTEM.indexOf(which) >= 0 ) {
       return 'stacksPage.header.infra';
