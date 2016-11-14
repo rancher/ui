@@ -19,23 +19,6 @@
       <button {{action 'sortResults' 'name'}}  type="button" class="btn btn-sm btn-default {{if (eq sortBy "name") 'active'}}">{{t 'stacksPage.sort.name'}}</button>
     </div>
   </div>
-
-  {{#if tagChoices.length}}
-    <div class="btn-group pull-right r-mr10">
-      <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{t (if tags 'stacksPage.tags.one' 'stacksPage.tags.all' ) name=tags}} <i class="icon icon-chevron-down"></i></button>
-      <ul class="dropdown-menu dropdown-menu-right">
-        <li class="{{if (eq tags '') 'active'}}"><a href="#" {{action 'switchTag' ''}}>{{t 'stacksPage.tags.all'}}</a></li>
-        <li class="divider"></li>
-        {{#each tagChoices as |opt|}}
-          <li class="{{if (eq tags opt) 'active'}}">
-            <a href="#" {{action 'switchTag' opt}}>
-              {{opt}}
-            </a>
-          </li>
-        {{/each}}
-      </ul>
-    </div>
-  {{/if}}
 </section>
 
 <section class="stacks-wrap r-pl0 r-pr0">
