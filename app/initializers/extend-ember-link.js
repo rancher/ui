@@ -16,7 +16,7 @@ export function initialize(/*application */) {
     }.on('didInsertElement'),
 
     activeChanged() {
-      if ( this.isDestroyed ) {
+      if ( this.isDestroyed || this.isDestroying ) {
         return;
       }
 

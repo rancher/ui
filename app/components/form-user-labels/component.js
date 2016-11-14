@@ -9,10 +9,11 @@ export default Ember.Component.extend(ManageLabels, {
     addUserLabel() {
       this._super();
       Ember.run.next(() => {
-        if ( !this.isDestroyed )
-        {
-          this.$('INPUT.key').last()[0].focus();
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
         }
+
+        this.$('INPUT.key').last()[0].focus();
       });
     }
   },

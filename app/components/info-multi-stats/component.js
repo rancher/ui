@@ -234,8 +234,7 @@ setupMarkers: function() {
   },
 
   onDataPoint(point) {
-    if ( this.isDestroyed )
-    {
+    if ( this.isDestroyed || this.isDestroying ) {
       return;
     }
 

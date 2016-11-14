@@ -34,12 +34,12 @@ function getUpgradeInfo(task, cb) {
   }
 
   Ember.RSVP.hash(deps).then((hash) => {
-    let upgradeInfo = hash.upgradeInfo;
-    let fullInfo = hash.fullInfo;
-    if ( obj.isDestroyed )
-    {
+    if ( this.isDestroyed || this.isDestroying ) {
       return;
     }
+
+    let upgradeInfo = hash.upgradeInfo;
+    let fullInfo = hash.fullInfo;
 
     if ( !upgradeInfo ) {
       obj.set('upgradeStatus', CURRENT);

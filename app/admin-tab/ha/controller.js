@@ -50,10 +50,11 @@ ${image}`;
     promptPanic() {
       this.set('confirmPanic', true);
       Ember.run.later(() => {
-        if ( !this.isDestroyed )
-        {
-          this.set('confirmPanic', false);
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
         }
+
+        this.set('confirmPanic', false);
       }, 5000);
     },
 
