@@ -128,7 +128,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   validate() {
     let errors = [];
 
-    if ( !this.get('nameParts.prefix') ) {
+    if ( !this.get('nameParts.prefix') && !this.get('nameParts.name') ) {
       errors.push('Name is required');
     }
 
