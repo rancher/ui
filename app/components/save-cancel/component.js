@@ -45,10 +45,11 @@ export default Ember.Component.extend({
     if ( this.get('saved') )
     {
       Ember.run.later(this, () => {
-        if ( !this.isDestroyed )
-        {
-          this.set('saved', false);
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
         }
+
+        this.set('saved', false);
       }, 5000);
     }
   }.observes('saved'),

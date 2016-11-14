@@ -50,8 +50,7 @@ export default Ember.Component.extend({
 
     var self = this;
     function updateState(rfb, state, oldstate, msg) {
-      if ( this.isDestroyed )
-      {
+      if ( this.isDestroyed || this.isDestroying ) {
         return;
       }
 

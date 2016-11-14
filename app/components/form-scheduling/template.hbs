@@ -1,6 +1,6 @@
 <div class="{{if editing 'form-group' ''}}">
-  {{#if canRequestHost}}
-    {{#if editing}}
+  {{#if editing}}
+    {{#if canRequestHost}}
       <div class="radio r-mb0">
         <label class="form-control-static">{{radio-button selection=isRequestedHost value=true}}
           {{#if isService}}
@@ -42,37 +42,41 @@
         </label>
       </div>
     {{else}}
-      {{#if requestedHostId}}
-        <div class="component-static">
-          <div class="row">
-            <label class="form-control-static">
-              {{#if isService}}
-                {{#if (eq isVm 'virtual machines')}}
-                  {{format-html-message 'formScheduling.canRequestHost.vm'}}
-                {{else}}
-                  {{format-html-message 'formScheduling.canRequestHost.containers'}}
-                {{/if~}}
-              {{else}}
-                {{t 'formScheduling.runSpecific'}}
-              {{/if}}
-            </label>
-            <span class="form-static-control">{{selectedChoice.name}}</span>
-          </div>
-        </div>
+      {{#if isService}}
+        {{#if isGlobal}}
+          {{t 'formScheduling.autoRun'}}
+        {{else if isVm}}
+            {{t 'formScheduling.autoPick.vm'}}
+        {{else}}
+          {{t 'formScheduling.autoPick.container'}}
+        {{/if~}}
+      {{else}}
+        {{t 'formScheduling.autoPick.host'}}
       {{/if}}
     {{/if}}
+  {{else if isGlobal}}
+    {{t 'formScheduling.autoRun'}}
+  {{else if requestedHostId}}
+    <div class="component-static">
+      <div class="row">
+        <label class="form-control-static">
+          {{#if isService}}
+            {{#if (eq isVm 'virtual machines')}}
+              {{format-html-message 'formScheduling.canRequestHost.vm'}}
+            {{else}}
+              {{format-html-message 'formScheduling.canRequestHost.containers'}}
+            {{/if~}}
+          {{else}}
+            {{t 'formScheduling.runSpecific'}}
+          {{/if}}
+        </label>
+        <span class="form-static-control">{{selectedChoice.name}}</span>
+      </div>
+    </div>
+  {{else if (eq isVm 'virtual machines')}}
+    {{t 'formScheduling.autoPick.vm'}}
   {{else}}
-    {{#if isService}}
-      {{#if isGlobal}}
-        {{t 'formScheduling.autoRun'}}
-      {{else if isVm}}
-          {{t 'formScheduling.autoPick.vm'}}
-      {{else}}
-        {{t 'formScheduling.autoPick.container'}}
-      {{/if~}}
-    {{else}}
-      {{t 'formScheduling.autoPick.host'}}
-    {{/if}}
+    {{t 'formScheduling.autoPick.container'}}
   {{/if}}
 
   {{#unless isRequestedHost}}
@@ -110,7 +114,7 @@
         </tbody>
       </table>
     {{else}}
-      <span class="text-muted">{{t 'formScheduling.noRules'}}</span>
+      <div class="text-muted">{{t 'formScheduling.noRules'}}</div>
     {{/if}}
   {{/unless}}
 </div>

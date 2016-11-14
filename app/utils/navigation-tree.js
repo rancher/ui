@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import { getCatalogNames } from 'ui/utils/parse-catalog-setting';
+import { tagChoices } from 'ui/models/stack';
+import { uniqKeys } from 'ui/utils/util';
 
 // Useful context/condition shortcuts
 export const getProjectId = function() { return this.get('projectId'); };
@@ -50,7 +52,6 @@ const navTree = [
     route: 'k8s-tab',
     ctx: [getProjectId],
     condition: function() { return this.get('hasKubernetes'); },
-    moreCurrentWhen: ['authenticated.project.waiting'],
     submenu: [
       {
         id: 'k8s-stacks',
@@ -139,7 +140,7 @@ const navTree = [
     condition: function() { return this.get('hasProject') && this.get('hasSwarm'); },
     route: 'swarm-tab',
     ctx: [getProjectId],
-    moreCurrentWhen: ['authenticated.project.waiting','stacks'],
+    moreCurrentWhen: ['stacks'],
     submenu: [
       {
         id: 'swarm-projects',
@@ -189,7 +190,6 @@ const navTree = [
     condition: function() { return this.get('hasProject') && this.get('hasMesos'); },
     route: 'mesos-tab',
     ctx: [getProjectId],
-    moreCurrentWhen: ['authenticated.project.waiting'],
     submenu: [
       {
         id: 'mesos-web',
@@ -223,40 +223,8 @@ const navTree = [
     route: 'stacks',
     queryParams: {which: C.EXTERNAL_ID.KIND_USER},
     ctx: [getProjectId],
-    moreCurrentWhen: ['authenticated.project.waiting'],
     condition: function() { return this.get('hasProject') && !this.get('hasKubernetes') && !this.get('hasSwarm') && !this.get('hasMesos'); },
-    submenu: [
-      {
-        id: 'cattle-all',
-        localizedLabel: 'nav.cattle.all',
-        icon: 'icon icon-globe',
-        route: 'stacks',
-        ctx: [getProjectId],
-        queryParams: {which: C.EXTERNAL_ID.KIND_ALL},
-        condition: isOwner,
-      },
-      { divider: true ,
-        condition: isOwner,
-      },
-      {
-        id: 'cattle-user',
-        localizedLabel: 'nav.cattle.user',
-        icon: 'icon icon-layers',
-        route: 'stacks',
-        ctx: [getProjectId],
-        queryParams: {which: C.EXTERNAL_ID.KIND_USER},
-        condition: isOwner,
-      },
-      {
-        id: 'cattle-infra',
-        localizedLabel: 'nav.cattle.system',
-        icon: 'icon icon-gear',
-        route: 'stacks',
-        ctx: [getProjectId],
-        condition: isOwner,
-        queryParams: {which: C.EXTERNAL_ID.KIND_INFRA},
-      }
-    ]
+    submenu: getStacksSubtree,
   },
 
   // Catalog
@@ -430,6 +398,63 @@ export function removeId(id) {
 
 export function get() {
   return Ember.copy(navTree,true);
+}
+
+function getStacksSubtree() {
+  let out = [
+    {
+      id: 'cattle-all',
+      localizedLabel: 'nav.cattle.all',
+      icon: 'icon icon-globe',
+      route: 'stacks',
+      ctx: [getProjectId],
+      queryParams: {which: C.EXTERNAL_ID.KIND_ALL, tags: ''},
+      condition: isOwner,
+    },
+    { divider: true ,
+      condition: isOwner,
+    },
+    {
+      id: 'cattle-user',
+      localizedLabel: 'nav.cattle.user',
+      icon: 'icon icon-layers',
+      route: 'stacks',
+      ctx: [getProjectId],
+      queryParams: {which: C.EXTERNAL_ID.KIND_USER, tags: ''},
+      condition: isOwner,
+    },
+    {
+      id: 'cattle-infra',
+      localizedLabel: 'nav.cattle.system',
+      icon: 'icon icon-gear',
+      route: 'stacks',
+      ctx: [getProjectId],
+      condition: isOwner,
+      queryParams: {which: C.EXTERNAL_ID.KIND_INFRA, tags: ''},
+    }
+  ];
+
+  let stacks = this.get('store').all('stack');
+  let choices = uniqKeys(tagChoices(stacks));
+
+  if ( choices.length ) {
+    out.push({divider: true});
+
+    choices.forEach((choice) => {
+      out.push({
+        id: 'cattle-tag-'+choice,
+        label: choice,
+        icon: 'icon icon-tag',
+        route: 'stacks',
+        ctx: [getProjectId],
+        condition: isOwner,
+        queryParams: {which: C.EXTERNAL_ID.KIND_ALL, tags: choice},
+      });
+    });
+  }
+
+
+  return out;
 }
 
 function getCatalogSubtree() {

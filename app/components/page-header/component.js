@@ -115,7 +115,7 @@ export default Ember.Component.extend(HoverDropdown, {
     'namespaceId',
     'projects.orchestrationState',
     'project.virtualMachine',
-    'stacks.@each.grouping',
+    'stacks.@each.group',
     `settings.${C.SETTING.CATALOG_URL}`,
     `prefs.${C.PREFS.ACCESS_WARNING}`,
     `k8s.supportsStacks`,

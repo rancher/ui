@@ -32,7 +32,7 @@ export default Ember.TextArea.extend(IntlPlaceholder, {
   }.observes('value'),
 
   isSmall: function() {
-    if ( this.isDestroyed ) {
+    if ( this.isDestroyed || this.isDestroying ) {
       return;
     }
 
@@ -40,7 +40,7 @@ export default Ember.TextArea.extend(IntlPlaceholder, {
   }.property(),
 
   autoSize() {
-    if ( this.isDestroyed ) {
+    if ( this.isDestroyed || this.isDestroying ) {
       return;
     }
 

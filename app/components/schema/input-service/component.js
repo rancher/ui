@@ -14,7 +14,7 @@ export default Ember.Component.extend({
     this._super(...arguments);
 
     this.get('allServices').choices().then((choices) => {
-      if ( this.isDestroyed ) {
+      if ( this.isDestroyed || this.isDestroying ) {
         return;
       }
 

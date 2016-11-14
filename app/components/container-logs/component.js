@@ -133,9 +133,11 @@ export default Ember.Component.extend(ThrottledResize, {
     };
 
     socket.onclose = () => {
-      if ( !this.isDestroyed ) {
-        this.set('status','disconnected');
+      if ( this.isDestroyed || this.isDestroying ) {
+        return;
       }
+
+      this.set('status','disconnected');
     };
   },
 

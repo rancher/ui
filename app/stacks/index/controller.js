@@ -1,8 +1,7 @@
 import Ember from 'ember';
 import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
-import { tagsToArray, tagChoices } from 'ui/models/stack';
-import { uniqKeys } from 'ui/utils/util';
+import { tagsToArray } from 'ui/models/stack';
 
 export default Ember.Controller.extend(Sortable, {
   stacksController: Ember.inject.controller('stacks'),
@@ -15,16 +14,6 @@ export default Ember.Controller.extend(Sortable, {
   tags: Ember.computed.alias('stacksController.tags'),
   showAddtlInfo: false,
   selectedService: null,
-
-  tag: null,
-  tagChoices: function() {
-    let choices = tagChoices(this.get('model.stacks'));
-    tagsToArray(this.get('tags')).forEach((tag) => {
-      choices.addObject(tag);
-    });
-
-    return uniqKeys(choices);
-  }.property('model.stacks.@each.group'), // tags is derived from group..
 
   actions: {
     showAddtlInfo(service) {
@@ -40,10 +29,6 @@ export default Ember.Controller.extend(Sortable, {
     sortResults(name) {
       this.get('prefs').set(C.PREFS.SORT_STACKS_BY, name);
       this.send('setSort', name);
-    },
-
-    switchTag(str) {
-      this.set('tags', str);
     },
   },
 
@@ -81,7 +66,11 @@ export default Ember.Controller.extend(Sortable, {
 
   pageHeader: function() {
     let which = this.get('which');
-    if ( which === C.EXTERNAL_ID.KIND_ALL ) {
+    let tags = this.get('tags');
+
+    if ( tags ) {
+      return 'stacksPage.header.tags';
+    } else if ( which === C.EXTERNAL_ID.KIND_ALL ) {
       return 'stacksPage.header.all';
     } else if ( C.EXTERNAL_ID.SHOW_AS_SYSTEM.indexOf(which) >= 0 ) {
       return 'stacksPage.header.infra';

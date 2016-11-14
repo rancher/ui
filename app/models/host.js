@@ -11,6 +11,9 @@ var Host = Resource.extend({
   modalService: Ember.inject.service('modal'),
 
   instances: denormalizeInstanceArray('instanceIds'),
+  arrangedInstances: function() {
+    return this.get('instances').sortBy('isSystem','displayName');
+  }.property('instances.@each.{isSystem,displayName}'),
 
   actions: {
     activate: function() {
