@@ -68,7 +68,7 @@ export default Ember.Controller.extend(Sortable, {
     let which = this.get('which');
     let tags = this.get('tags');
 
-    if ( tags ) {
+    if ( tags && tags.length ) {
       return 'stacksPage.header.tags';
     } else if ( which === C.EXTERNAL_ID.KIND_ALL ) {
       return 'stacksPage.header.all';
@@ -79,5 +79,5 @@ export default Ember.Controller.extend(Sortable, {
     } else {
       return 'stacksPage.header.custom';
     }
-  }.property('which'),
+  }.property('which','tags'),
 });

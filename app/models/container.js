@@ -128,7 +128,7 @@ var Container = Instance.extend({
     }
 
     var labelKeys = Object.keys(this.get('labels')||{});
-    var isSystem = this.get('systemContainer') !== null;
+    var isSystem = !!this.get('system') || labelKeys.indexOf(C.LABEL.SYSTEM_TYPE) >= 0;
     var isService = labelKeys.indexOf(C.LABEL.SERVICE_NAME) >= 0;
     var isVm = this.get('isVm');
     var isK8s = labelKeys.indexOf(C.LABEL.K8S_POD_NAME) >= 0;
