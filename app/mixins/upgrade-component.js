@@ -33,7 +33,7 @@ function getUpgradeInfo(task, cb) {
   }
 
   Ember.RSVP.hash(deps).then((hash) => {
-    if ( this.isDestroyed || this.isDestroying ) {
+    if ( obj.isDestroyed || obj.isDestroying ) {
       return;
     }
 
