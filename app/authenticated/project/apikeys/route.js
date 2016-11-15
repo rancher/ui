@@ -17,8 +17,8 @@ export default Ember.Route.extend({
       });
 
       return Proxy.create({
-        account: this.get('userStore').allUnremoved('apikey'),
-        environment: this.get('store').allUnremoved('apikey'),
+        account: this.get('userStore').all('apikey'),
+        environment: this.get('store').all('apikey'),
       });
     });
   },

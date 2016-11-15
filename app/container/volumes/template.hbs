@@ -11,16 +11,16 @@
     {{#each model.activeMounts as |mount|}}
       <tr>
         <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.name'}}>
-          {{mount.ownedVolume.name}}
+          {{mount.volume.name}}
         </td>
         <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.mount'}}>
           {{mount.path}} {{if mount.isReadWrite '' '(ro)'}} {{copy-to-clipboard size='small' clipboardText=mount.path}}
         </td>
         <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.snapshot'}}>
-          {{snapshot-timeline model=mount.snapshotsAndBackups}}
+          {{snapshot-timeline model=mount.volume.snapshots}}
         </td>
         <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.actions'}}>
-          {{action-menu model=mount.ownedVolume}}
+          {{action-menu model=mount.volume}}
         </td>
       </tr>
     {{else}}

@@ -1,42 +1,19 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
-const { getOwner } = Ember;
+import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
-// !! If you add a new one of these, you need to add it to reset() below too
-var _allVolumes;
-// !! If you add a new one of these, you need to add it to reset() below too
-
-var Snapshot = Resource.extend({
+export default Resource.extend({
   type: 'snapshot',
   modalService: Ember.inject.service('modal'),
 
-  // !! If you add a new one of these, you need to add it to reset() below too
-  _allVolumes: null,
+  volume: denormalizeId('volumeId'),
 
-  reservedKeys: [
-    '_allVolumes',
-  ],
-
-  init: function() {
-    this._super();
-
-    // this.get('store') isn't set yet at init
-    var store = getOwner(this).lookup('service:store');
-
-    if ( !_allVolumes )
-    {
-      _allVolumes = store.allUnremoved('volume');
-    }
-
-    this.setProperties({
-      '_allVolumes': _allVolumes,
-    });
-  },
-  // !! If you add a new one of these, you need to add it to reset() below too
+  hasBackups: Ember.computed.notEmpty('backupTargetId'),
+  backupEnabled: Ember.computed.empty('backupTargetId'),
 
   actions: {
     backup() {
-      this.get('store').findAllUnremoved('backuptarget').then((backupTargets) => {
+      this.get('store').findAll('backuptarget').then((backupTargets) => {
         this.get('modalService').toggleModal('modal-edit-backup', {
           originalModel: this,
           backupTargets: backupTargets
@@ -61,13 +38,6 @@ var Snapshot = Resource.extend({
     },
   },
 
-  volume: function() {
-    return this.get('_allVolumes').filterBy('id', this.get('volumeId'))[0];
-  }.property('_allVolumes.@each.volumeId','id'),
-
-  hasBackups: Ember.computed.notEmpty('backupTargetId'),
-  backupEnabled: Ember.computed.empty('backupTargetId'),
-
   availableActions: function() {
     var a = this.get('actionLinks');
     var volA = this.get('volume.actionLinks');
@@ -85,11 +55,3 @@ var Snapshot = Resource.extend({
     ];
   }.property('actionLinks.remove','backupEnabled','hasBackups','volume.actionLinks.reverttosnapshot','state','volume.state'),
 });
-
-Snapshot.reopenClass({
-  reset: function() {
-    _allVolumes = null;
-  }
-});
-
-export default Snapshot;

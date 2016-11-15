@@ -9,7 +9,7 @@ export default Ember.Route.extend({
     var dependencies = {
       allHosts: store.findAll('host'), // Need inactive ones in case a link points to an inactive host
       allServices: this.get('allServices').choices(),
-      allStoragePools: store.findAllUnremoved('storagepool'),
+      allStoragePools: store.findAll('storagepool'),
     };
 
     if ( params.serviceId )
