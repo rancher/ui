@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import C from 'ui/utils/constants';
-import {tagChoices} from 'ui/models/stack';
+import {tagChoices, tagsToArray} from 'ui/models/stack';
 
 export default Ember.Controller.extend(NewOrEdit, {
   queryParams: ['githubRepo','githubBranch','composeFiles','system'],
@@ -17,6 +17,14 @@ export default Ember.Controller.extend(NewOrEdit, {
   init() {
     this._super(...arguments);
     this.set('allStacks', this.get('store').all('stack'));
+  },
+
+  actions: {
+    addTag(tag) {
+      let neu = tagsToArray(this.get('model.group'));
+      neu.addObject(tag);
+      this.set('model.group', neu.join(', '));
+    },
   },
 
   groupChoices: function() {

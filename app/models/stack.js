@@ -18,7 +18,7 @@ export function activeIcon(stack)
 }
 
 export function normalizeTag(name) {
-  return (name||'').replace(/[^a-z0-9_ -]/ig,'');
+  return (name||'').trim().toLowerCase();
 }
 
 export function tagsToArray(str) {
