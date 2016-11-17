@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
 import NewOrEdit from 'ui/mixins/new-or-edit';
+import { sortInsensitiveBy } from 'ui/utils/sort';
 
 export default Ember.Component.extend(NewOrEdit, Sortable, {
   projects: Ember.inject.service(),
@@ -101,7 +102,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
       driver.active = ( active === driver.name );
     });
 
-    return choices;
+    return sortInsensitiveBy(choices,'name');
   }.property('project.projectTemplateId'),
 
   selectedProjectTemplate: function() {
