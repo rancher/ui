@@ -5,7 +5,7 @@ import { alternateLabel } from 'ui/utils/platform';
 const TIMEOUT = 10;
 export default ModalBase.extend({
   classNames: ['lacsso', 'modal-container', 'medium-modal'],
-  originalModel: Ember.computed.alias('modalService.modalOpts.model'),
+  resources: Ember.computed.alias('modalService.modalOpts.model'),
   inputTimeout: null,
   alternateLabel: alternateLabel,
   defaultTimeout: TIMEOUT,
@@ -15,8 +15,12 @@ export default ModalBase.extend({
   },
   actions: {
     stop: function() {
-      this.get('originalModel').doAction('stop', { timeout: (this.get('inputTimeout') || TIMEOUT) });
-      this.send('cancel');
+      this.get('resources').forEach((resource) => {
+        resource.doAction('stop', { timeout: (this.get('inputTimeout') || TIMEOUT) });
+      });
+      Ember.run.next(() => {
+        this.send('cancel');
+      });
     }
   }
 });
