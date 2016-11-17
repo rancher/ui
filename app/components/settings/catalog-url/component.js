@@ -15,7 +15,7 @@ export default Ember.Component.extend({
 
   actions: {
     add() {
-      this.get('ary').pushObject(Ember.Object.create({name: '', branch: 'master', url: ''}));
+      this.get('ary').pushObject(Ember.Object.create({name: '', branch: C.CATALOG.DEFAULT_BRANCH, url: ''}));
       Ember.run.next(() => {
         if ( this.isDestroyed || this.isDestroying ) {
           return;
@@ -68,17 +68,20 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
+    const def = C.CATALOG.DEFAULT_BRANCH;
     let parsed = parseCatalogSetting(this.get('initialValue'));
     let map = parsed.catalogs || {};
 
     let library = false;
-    if (map[C.CATALOG.LIBRARY_KEY] && map[C.CATALOG.LIBRARY_KEY].url=== C.CATALOG.LIBRARY_VALUE) {
+    let entry = map[C.CATALOG.LIBRARY_KEY];
+    if ( entry && entry.url === C.CATALOG.LIBRARY_VALUE && entry.branch === def ) {
       library = true;
       delete map[C.CATALOG.LIBRARY_KEY];
     }
 
     let community = false;
-    if (map[C.CATALOG.COMMUNITY_KEY] && map[C.CATALOG.COMMUNITY_KEY].url === C.CATALOG.COMMUNITY_VALUE) {
+    entry = map[C.CATALOG.COMMUNITY_KEY];
+    if ( entry && entry.url === C.CATALOG.COMMUNITY_VALUE && entry.branch === def ) {
       community = true;
       delete map[C.CATALOG.COMMUNITY_KEY];
     }
