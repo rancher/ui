@@ -4,8 +4,8 @@ languageContribute: "Rancher の翻訳にご協力ください"
 generic:
   actions: アクション
   activate: アクティベート
-  closeModal: 閉じる
   cancel: キャンセル
+  closeModal: 閉じる
   created: 作成日
   default: デフォルト
   description: 詳細情報
@@ -31,9 +31,9 @@ generic:
   saved: 保存済み
   saving: 保存中
   state: 状態
-  type: タイプ
   test: テスト
   testing: テスト中
+  type: タイプ
   unknown: 不明
 accountsPage:
   index:
@@ -53,14 +53,17 @@ accountsPage:
     form:
       username:
         labelText: ログイン ユーザー名
+        placeholder: "例: jsmith"
       password:
         labelText: パスワード
       name:
         labelText: 名前
+        placeholder: "例: ジョン ・ スミス"
       type:
         labelText: アカウントタイプ
       description:
         labelText: 詳細情報
+        placeholder: "例: このアカウントは、ジョン ・ スミス用"
 apiPage:
   header: 環境 API キー
   actionButton: 環境 API キーを追加
@@ -277,6 +280,7 @@ authPage:
         label: ドメイン
       adminAccountUsername:
         label: 管理者アカウント ユーザー名
+        placeholder: '例: rancher-admin'
         help: 他のユーザーの情報を見ることができるユーザー
       adminAccountPassword:
         label: 管理者アカウント パスワード
@@ -332,10 +336,12 @@ backupTargetsPage:
     header: バックアップ対象を追加
   server:
     label: NFS サーバー
+    placeholder: '例: my-nfs-server.example.com'
   share:
     label: NFS パス
   mountOptions:
     label: NFS マウントオプション
+    placeholder: '例: nfsvers=4,proto=udp'
 catalogPage:
   index:
     header: 'カタログ:'
@@ -352,7 +358,10 @@ catalogPage:
     noData:
       singular: 互換性のあるテンプレートがありません
       plural: このカタログには互換性のあるテンプレートがありません
-    viewDetails: 詳細を見る
+    action:
+      launch: 詳細を見る
+      notCompatible: 互換性がありません
+      alreadyDeployed: 既にデプロイ済みです
 consolePage:
   header: 'シェル:'
   closeButton: 閉じる
@@ -387,6 +396,11 @@ certificatesPage:
         noData: まだ証明書はありません
   new:
     header: 証明書を追加
+    form:
+      name:
+        placeholder: '例: mydomain.com'
+      description:
+        placeholder: '例: mydomain.com の EV 証明書'
 containersPage:
   table:
     ipAddress: IP アドレス
@@ -413,6 +427,10 @@ containersPage:
         command: コマンド
       body:
         noData: まだコンテナはありません
+  new:
+    form:
+      description:
+        placeholder: '例: マイ アプリケーション'
   containerPage:
     header: 'コンテナ:'
     subtext:
@@ -950,6 +968,10 @@ servicePage:
   certsTab:
     default: デフォルト証明書
     additional: 追加の SNI 証明書
+  newBalancer:
+    form:
+      name:
+        placeholder: '例: ウェブサイト'
   portsTab:
     table:
       header:
@@ -978,6 +1000,7 @@ settingsPage:
     table:
       header:
         orchestration: オーケストレーション
+        projectTemplate: テンプレート
       body:
         noData: "まだ環境はありません"
   indexTemplate:
@@ -1318,6 +1341,7 @@ catalogSettings:
       label: URL
     branch:
       label: ブランチ
+      placeholder: '例: master'
 confirmDelete:
   title: '本当に削除してもよろしいですか?'
   environmentNote: 'Note: {appName} によって作成されたホストなどこの環境内の全てのリソースは完全に削除されます。'
@@ -1435,6 +1459,7 @@ editProjectTemplate:
     edit: 'テンプレートを編集: {displayName}'
   orchestration: オーケストレーション
   stackEdit: 設定を編集
+  stackRequired: 必須
   access:
     label: 共有
     private: 'プライベート: 自身のみ利用可能'
@@ -1490,6 +1515,7 @@ formBalancerRules:
     label: プロトコル
   sourcePort:
     label: ポート
+    placeholder: '例: 80'
   path:
     label: パス
   hostname:
@@ -1766,6 +1792,7 @@ formSecurity:
     label: CPU ピンニング
   shares:
     label: 共有
+    placeholder: '例: 1024'
   capabilities:
     add: 追加
     drop: ドロップ
@@ -1784,6 +1811,7 @@ formSecurity:
       label: 権限
   logDriver:
     label: ログドライバー
+    placeholder: '例: syslog'
   logOptions:
     label: ログ
 formServiceLinks:
@@ -2836,6 +2864,7 @@ nav:
   namespace:
     label: 名前空間
     manage: 名前空間を管理
+  notReady: セットアップ中...
   k8s:
     tab: Kubernetes
     stacks: スタック
@@ -2928,6 +2957,7 @@ action:
   switchNamespace: この名前空間に切り替え
   switchEnvironment: この環境に切り替え
   upgrade: アップグレード
+  upgradeOrEdit: アップグレード/編集
   viewConfig: 設定を見る
   viewGraph: グラフを見る
   viewInApi: API を見る
