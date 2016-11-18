@@ -67,11 +67,17 @@ function getUpgradeInfo(task, cb) {
       });
     }
 
-    obj.setProperties({
-      upgradeStatus: Object.keys(upgradeVersions).length ? AVAILABLE : CURRENT,
-      upgradeVersions: upgradeVersions,
-      allVersions: allVersions,
-    });
+    if (upgradeVersions && obj.get('upgradeStatus') !== UPGRADED) {
+      obj.setProperties({
+        upgradeStatus: Object.keys(upgradeVersions).length ? AVAILABLE : CURRENT,
+        upgradeVersions: upgradeVersions,
+        allVersions: allVersions,
+      });
+    } else { // we're in upgraded status and have not finished but still need a verison for tooltip
+      obj.setProperties({
+        allVersions: allVersions,
+      });
+    }
   }).catch((err) => {
     if ( err.status === 404 )
     {
@@ -147,9 +153,20 @@ export default Ember.Mixin.create({
   updateStatus() {
     let upgradeOnly = this.get('upgradedOnly') === true;
     let state = this.get('model.state');
+    let info = this.get('model.externalIdInfo');
+    var queueUpgradeStatus = () => {
+      queue.push({
+        obj: this,
+        id: info.id,
+        templateId: info.templateId,
+        upgradeOnly: upgradeOnly,
+      });
+    };
+
     if ( state === 'upgraded' )
     {
       this.set('upgradeStatus', UPGRADED);
+      queueUpgradeStatus();
       return;
     }
 
@@ -159,22 +176,16 @@ export default Ember.Mixin.create({
       return;
     }
 
-    let info = this.get('model.externalIdInfo');
     if ( info && C.EXTERNAL_ID.UPGRADEABLE.indexOf(info.kind) >= 0 )
     {
       this.set('upgradeStatus', LOADING);
-
-      queue.push({
-        obj: this,
-        id: info.id,
-        templateId: info.templateId,
-        upgradeOnly: upgradeOnly,
-      });
+      queueUpgradeStatus();
     }
     else
     {
       this.set('upgradeStatus', NONE);
     }
+
   },
 
   externalIdChanged: function() {
