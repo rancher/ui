@@ -133,7 +133,7 @@ export default Ember.Service.extend({
       }
 
       this.get('userStore').find('project', projectId, {url: 'projects/'+encodeURIComponent(projectId)}).then((project) => {
-        if ( project.get('state') === 'active' )
+        if ( ['active','upgrading'].includes(project.get('state')) )
         {
           resolve(project);
         }

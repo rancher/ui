@@ -146,6 +146,13 @@ var Project = Resource.extend(PolledResource, {
       return health;
     }
   }.property('state', 'healthState'),
+
+  isUpgrading: Ember.computed.equal('state','upgrading'),
+
+  needsUpgrade: function() {
+    return this.get('isActive') && this.get('version') !== this.get(`settings.${C.SETTING.PROJECT_VERSION}`);
+  }.property('isActive','version',`settings.${C.SETTING.PROJECT_VERSION}`),
+
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often
