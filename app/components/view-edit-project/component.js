@@ -103,7 +103,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     });
 
     return sortInsensitiveBy(choices,'name');
-  }.property('project.projectTemplateId'),
+  }.property('project.projectTemplateId','projectTemplates.@each.name'),
 
   selectedProjectTemplate: function() {
     return this.get('projectTemplates').findBy('id', this.get('project.projectTemplateId'));
