@@ -1,7 +1,7 @@
 import Ember from 'ember';
-import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
 
+let ACTIVEISH = ['active','upgrading'];
 
 export default Ember.Service.extend({
   access: Ember.inject.service(),
@@ -15,11 +15,12 @@ export default Ember.Service.extend({
 
   current: null,
   all: null,
+
   active: function() {
-    return ActiveArrayProxy.create({
-      sourceContent: this.get('all')||[]
+    return this.get('all').filter((project) => {
+      return ACTIVEISH.includes(project.get('state'));
     });
-  }.property('all.[]'),
+  }.property('all.@each.state'),
 
   getAll: function() {
     var opt = {
@@ -65,7 +66,10 @@ export default Ember.Service.extend({
           {
             // Then if you're an admin the first active of any kind
             return this.getAll().then((all) => {
-              var firstActive = all.filterBy('state','active')[0];
+              var firstActive = all.find((project) => {
+                return ACTIVEISH.includes(project.get('state'));
+              });
+
               if ( firstActive )
               {
                 return select(firstActive, true);
@@ -133,7 +137,7 @@ export default Ember.Service.extend({
       }
 
       this.get('userStore').find('project', projectId, {url: 'projects/'+encodeURIComponent(projectId)}).then((project) => {
-        if ( ['active','upgrading'].includes(project.get('state')) )
+        if ( ACTIVEISH.includes(project.get('state')) )
         {
           resolve(project);
         }
