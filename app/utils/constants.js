@@ -237,7 +237,8 @@ var C = {
     MIN_DOCKER:                'ui$min$docker$version',
     TELEMETRY:                 'telemetry$opt',
     AUTH_LOCAL_VALIDATE_DESC:  'api$auth$local$validate$description',
-    BALANCER_IMAGE:            'lb$instance$image'
+    BALANCER_IMAGE:            'lb$instance$image',
+    PROJECT_VERSION:           'account$version',
   },
 
   USER: {

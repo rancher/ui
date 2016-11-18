@@ -108,7 +108,7 @@ export default Ember.Route.extend(Subscribe, {
     let app = this.controllerFor('application');
 
     this._super();
-    if ( !this.controllerFor('application').get('isPopup') )
+    if ( !this.controllerFor('application').get('isPopup') && this.get('projects.current') )
     {
       this.connectSubscribe();
     }
