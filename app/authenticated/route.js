@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Subscribe from 'ui/mixins/subscribe';
+import { isSafari, version as safariVersion } from 'ui/utils/platform';
 
 const CHECK_AUTH_TIMER = 600000;
 
@@ -68,7 +69,16 @@ export default Ember.Route.extend(Subscribe, {
         identities:         ['userSchemas', this.cbFind('identity', 'userStore')],
       };
 
-      async.auto(tasks, function(err, res) {
+      let concur = 99;
+      if ( isSafari ) {
+        let version = safariVersion();
+        if ( version && version < 10 ) {
+          // Safari for iOS9 has problems with multiple simultaneous requests
+          concur = 1;
+        }
+      }
+
+      async.auto(tasks, concur, function(err, res) {
         if ( err ) {
           reject(err);
         } else {
@@ -156,7 +166,12 @@ export default Ember.Route.extend(Subscribe, {
   },
 
   toCb(name, ...args) {
-    return (cb) => {
+    return (results, cb) => {
+      if ( typeof results === 'function' ) {
+        cb = results;
+        results = null;
+      }
+
       this[name](...args).then(function(res) {
         cb(null, res);
       }).catch(function(err) {
@@ -166,7 +181,12 @@ export default Ember.Route.extend(Subscribe, {
   },
 
   cbFind(type, store='store') {
-    return (cb) => {
+    return (results, cb) => {
+      if ( typeof results === 'function' ) {
+        cb = results;
+        results = null;
+      }
+
       return this.get(store).find(type).then(function(res) {
         cb(null, res);
       }).catch(function(err) {
