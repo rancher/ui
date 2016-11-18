@@ -15,9 +15,9 @@ export default Ember.Component.extend(Sortable, FilterState, {
   sortableContent: Ember.computed.alias('filtered'),
 
   sorts: {
-    state:   ['state','displayName','id'],
+    state:  ['state','displayName','id'],
     name:   ['displayName','id'],
-    activeMounts:   ['activeMounts.length','displayName','id'],
+    mounts: ['mounts.length','displayName','id'],
   },
   sortBy: 'name',
 

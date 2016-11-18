@@ -203,13 +203,6 @@ var Container = Instance.extend({
     }
   }.property('externalId'),
 
-  activeMounts: function() {
-    var mounts = this.get('mounts')||[];
-    return mounts.filter(function(mount) {
-      return ['removed','purged', 'inactive'].indexOf(mount.get('state')) === -1;
-    });
-  }.property('mounts.@each.state'),
-
   isGlobalScale: function() {
     return (this.get('labels')||{})[C.LABEL.SCHED_GLOBAL] + '' === 'true';
   }.property('labels'),

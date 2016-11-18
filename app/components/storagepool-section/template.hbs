@@ -44,7 +44,7 @@
           <tr>
             {{sortable-th sortable=this action="changeSort" name="state" width="115" label="generic.state"}}
             {{sortable-th sortable=this action="changeSort" name="name" width="350" label="storagePoolSection.models.table.header.volumeName"}}
-            <th>{{t 'storagePoolSection.models.table.header.activeMounts'}}</th>
+            <th>{{t 'storagePoolSection.models.table.header.mounts'}}</th>
             <th width="75">&nbsp;</th>
           </tr>
         </thead>
@@ -60,8 +60,8 @@
                 {{/tooltip-element}}
               </td>
               <td class="force-wrap">
-                {{#if vol.activeMounts.length}}
-                  {{#each vol.activeMounts as |mount|}}
+                {{#if vol.mounts.length}}
+                  {{#each vol.mounts as |mount|}}
                     <div>
                       {{~#if mount.instance.isVm~}}
                         {{#link-to "virtualmachine" mount.instanceId}}{{mount.instance.displayName}}{{/link-to}}

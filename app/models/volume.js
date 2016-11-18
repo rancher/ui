@@ -37,13 +37,6 @@ var Volume = Resource.extend({
   displayUri: function() {
     return (this.get('uri')||'').replace(/^file:\/\//,'');
   }.property('uri'),
-
-  activeMounts: function() {
-    var mounts = this.get('mounts')||[];
-    return mounts.filter(function(mount) {
-      return ['removed','purged', 'inactive'].indexOf(mount.get('state')) === -1;
-    });
-  }.property('mounts.@each.state'),
 });
 
 Volume.reopenClass({
