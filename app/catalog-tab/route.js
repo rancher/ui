@@ -34,7 +34,7 @@ export default Ember.Route.extend({
         catalogs: this.get('catalog').fetchCatalogs(),
       }).then((hash) => {
         this.set('catalogs', hash.catalogs);
-        this.set('stacks', this.get('store').allUnremoved('stack'));
+        this.set('stacks', this.get('store').all('stack'));
       });
     });
   },

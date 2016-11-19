@@ -5,7 +5,7 @@ export default Ember.Route.extend({
     var store = this.get('store');
     return store.find('composeservice').then(() => {
       // services include projects, so they will be loaded here already
-      return store.allUnremoved('composeproject');
+      return store.all('composeproject');
     });
   }
 });

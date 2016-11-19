@@ -23,7 +23,7 @@ export default Ember.Component.extend({
   targets: Ember.computed.alias('service.lbConfig.portRules'),
 
   bootstrap: function() {
-    this.get('store').findAllUnremoved('certificate').then((result) => {
+    this.get('store').findAll('certificate').then((result) => {
       result.forEach((cert) => {
         if (this.get('service.defaultCertificateId') === cert.id) {
           this.set('defaultCert', cert);

@@ -23,7 +23,6 @@ export default Ember.Route.extend({
   setupController: function(controller, data) {
     this._super(controller, data.get('container'));
     controller.setProperties({
-      mountError: data.get('mountError'),
       relatedVolumes: data.get('relatedVolumes'),
       ports: data.get('ports'),
     });

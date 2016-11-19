@@ -5,7 +5,7 @@ export default Ember.Route.extend({
     var store = this.get('store');
     return Ember.RSVP.hash({
       services: store.find('composeservice'),
-      projects: store.findAllUnremoved('composeproject'),
+      projects: store.findAll('composeproject'),
     }).then((hash) => {
       return store.find('composeproject', params.compose_project_id).then((project) => {
         return Ember.Object.create({

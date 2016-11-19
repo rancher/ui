@@ -2,6 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model() {
-    return this.get('store').findAllUnremoved('composeservice');
+    return this.get('store').findAll('composeservice');
   }
 });

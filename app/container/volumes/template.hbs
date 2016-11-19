@@ -8,29 +8,25 @@
     </tr>
   </thead>
   <tbody>
-    {{#each model.activeMounts as |mount|}}
+    {{#each model.mounts as |mount|}}
       <tr>
         <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.name'}}>
-          {{mount.ownedVolume.name}}
+          {{mount.volumeName}}
         </td>
         <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.mount'}}>
           {{mount.path}} {{if mount.isReadWrite '' '(ro)'}} {{copy-to-clipboard size='small' clipboardText=mount.path}}
         </td>
         <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.snapshot'}}>
-          {{snapshot-timeline model=mount.snapshotsAndBackups}}
+          {{snapshot-timeline model=mount.volume.snapshots}}
         </td>
         <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.actions'}}>
-          {{action-menu model=mount.ownedVolume}}
+          {{action-menu model=mount.volume}}
         </td>
       </tr>
     {{else}}
       <tr>
         <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.error.data'}} colspan="4">
-          {{#if model.mountError}}
-            <div class="text-danger text-center">{{t 'containersPage.containerPage.volumesTab.table.body.error.error'}} {{model.mountError.message}}</div>
-          {{else}}
-            <div class="text-muted text-center" style="display:inline-block;">{{t 'containersPage.containerPage.volumesTab.table.body.error.noData'}}</div>
-          {{/if}}
+          <div class="text-muted text-center" style="display:inline-block;">{{t 'containersPage.containerPage.volumesTab.table.body.error.noData'}}</div>
         </td>
       </tr>
     {{/each}}
