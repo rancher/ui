@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  intl: Ember.inject.service(),
+
   // Inputs
   instance            : null,
   primaryService      : null,
@@ -212,4 +214,22 @@ export default Ember.Component.extend({
     });
     out.endPropertyChanges();
   }.observes('volumesFromArray.@each.value'),
+
+  validate: function() {
+    var errors = [];
+
+    this.get('volumesArray').forEach((row) => {
+      let val = row.value;
+      if ( val.substr(0,1) === '/' ) {
+        return;
+      }
+
+      val = val.replace(/:.*/,'');
+      if ( val.match(/[^a-z0-9._-]/i) ) {
+        errors.push(this.get('intl').t('formVolumes.errors.invalidName'));
+      }
+    });
+
+    this.set('errors', errors.uniq());
+  }.observes('volumesArray.@each.value'),
 });

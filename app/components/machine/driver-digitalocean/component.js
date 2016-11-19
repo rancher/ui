@@ -7,18 +7,19 @@ const DIGITALOCEAN_API = 'api.digitalocean.com/v2';
 const VALID_IMAGES = [
 //  'centos-6-x64',
   'centos-7-0-x64',
+  'centos-7-2-x64',
   'coreos-alpha',
   'coreos-beta',
   'coreos-stable',
-//  'debian-7-x64',
-//  'debian-8-x64',
+  'debian-7-x64',
+  'debian-8-x64',
   'fedora-23-x64',
   'fedora-24-x64',
 //  'freebsd-10-1-x64',
 //  'freebsd-10-2-x64',
   'ubuntu-14-04-x64',
-  'ubuntu-16-04-x64'
-//  'ubuntu-16-10-x64'
+  'ubuntu-16-04-x64',
+  'ubuntu-16-10-x64'
 ];
 
 export default Ember.Component.extend(Driver, {
