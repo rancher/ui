@@ -169,14 +169,6 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   needsUpgrade: function() {
-    function diff(field) {
-      let old = (this.get('existing.launchConfig.'+field)||[]).uniq();
-      let neu = (this.get('service.launchConfig.'+field)||[]).uniq();
-      old.sort();
-      neu.sort();
-      return old.join(',').toLowerCase() !== neu.join(',').toLowerCase();
-    }
-
     function arrayToStr(map) {
       map = map || {};
       let out = [];
@@ -194,11 +186,6 @@ export default Ember.Component.extend(NewOrEdit, {
       return false;
     }
 
-
-    if ( diff.call(this,'ports') || diff.call(this,'expose') ) {
-      return true;
-    }
-
     // Label arrays are updated one at a time and make this flap,
     // so ignore them until they're all set
     if ( !this.get('labelsReady') ) {
@@ -209,8 +196,6 @@ export default Ember.Component.extend(NewOrEdit, {
     let neu = arrayToStr(this.get('service.launchConfig.labels'));
     return old !== neu;
   }.property(
-    'service.launchConfig.ports.[]',
-    'service.launchConfig.expose.[]',
     'service.launchConfig.labels'
   ),
 
