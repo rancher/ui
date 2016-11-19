@@ -8,7 +8,7 @@ export default Ember.Route.extend({
   model: function(/*params, transition*/) {
     var userStore = this.get('userStore');
     return Ember.RSVP.hash({
-      all: userStore.findAllUnremoved('project'),
+      all: userStore.findAll('project'),
       projectTemplates: userStore.findAll('projectTemplate'),
       catalogTemplates: this.get('catalog').fetchTemplates({templateBase: C.EXTERNAL_ID.KIND_INFRA, category: C.EXTERNAL_ID.KIND_ALL}),
     }).then((hash) => {

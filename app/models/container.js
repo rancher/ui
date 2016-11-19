@@ -1,14 +1,10 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
-import { denormalizeId } from 'ember-api-store/utils/denormalize';
+import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 import { denormalizeServiceArray } from 'ui/utils/denormalize-snowflakes';
 import Instance from 'ui/models/instance';
 import { formatSi } from 'ui/utils/util';
-
-const { getOwner } = Ember;
-
-let _allMounts;
 
 var Container = Instance.extend({
   // Common to all instances
@@ -32,33 +28,10 @@ var Container = Instance.extend({
   devices                    : null,
   restartPolicy              : null,
 
-  _allMounts                 : null,
-
-  primaryHost                : denormalizeId('hostId', 'host'),
+  mounts                     : denormalizeIdArray('mountIds'),
+  primaryHost                : denormalizeId('hostId'),
   services                   : denormalizeServiceArray(),
   primaryService             : Ember.computed.alias('services.firstObject'),
-
-  reservedKeys: [
-    '_allMounts',
-  ],
-
-
-  init: function() {
-    this._super();
-
-    // this.get('store') isn't set yet at init
-    var store = getOwner(this).lookup('service:store');
-    if ( !_allMounts )
-    {
-      _allMounts = store.allUnremoved('mount');
-    }
-
-
-    this.setProperties({
-      '_allMounts'  : _allMounts,
-    });
-
-  },
 
   actions: {
     restart: function() {
@@ -230,28 +203,9 @@ var Container = Instance.extend({
     }
   }.property('externalId'),
 
-  // @TODO PERF
-  mounts: function() {
-    return this.get('_allMounts').filterBy('instanceId', this.get('id'));
-  }.property('_allMounts.@each.instanceId','id'),
-
-  activeMounts: function() {
-    var mounts = this.get('mounts')||[];
-    return mounts.filter(function(mount) {
-      return ['removed','purged', 'inactive'].indexOf(mount.get('state')) === -1;
-    });
-  }.property('mounts.@each.state'),
-  // @TODO PERF
-  //
   isGlobalScale: function() {
     return (this.get('labels')||{})[C.LABEL.SCHED_GLOBAL] + '' === 'true';
   }.property('labels'),
-});
-
-Container.reopenClass({
-  reset: function() {
-    _allMounts = null;
-  },
 });
 
 export default Container;

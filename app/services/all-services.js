@@ -9,7 +9,7 @@ export default Ember.Service.extend({
     let intl = this.get('intl');
 
     return Ember.RSVP.hash({
-      stacks: store.findAllUnremoved('stack'),
+      stacks: store.findAll('stack'),
       services: store.find('service', null, {forceReload: true}) // Need force-reload to get response with mixed types
     }).then((hash) => {
       return hash.services.filter((service) => {
