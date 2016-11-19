@@ -11,7 +11,7 @@ export default Ember.Route.extend({
 
   model: function(params /* , transition*/) {
     var userStore = this.get('userStore');
-    return userStore.findAllUnremoved('project').then((all) => {
+    return userStore.findAll('project').then((all) => {
       return userStore.find('project', params.project_id).then((project) => {
         return Ember.RSVP.hash({
           importProject: project.importLink('projectMembers'),

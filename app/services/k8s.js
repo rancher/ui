@@ -115,7 +115,7 @@ export default Ember.Service.extend({
     this.set('promiseQueue', {});
 
     this.set('hosts', []);
-    this.get('store').findAllActive('host').then((hosts) => {
+    this.get('store').findAll('host').then((hosts) => {
       this.set('hosts', hosts);
     });
   },
