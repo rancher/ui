@@ -29,7 +29,7 @@ export function insensitiveCompare(a,b) {
 
 export function sortInsensitiveBy(ary, ...fields) {
   // sortInsensitiveBy(ary, field1, field2) or sortInsensitiveBy(ary, [field1, field2])
-  if ( fields.length === 1 && Ember.isArray(fields) ) {
+  if ( fields.length === 1 && Ember.isArray(fields[0]) ) {
     fields = fields[0];
   }
 
