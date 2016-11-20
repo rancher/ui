@@ -1,10 +1,15 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  classNames: ['upgrade-project'],
+  classNames: ['project-upgrade'],
 
+  access: Ember.inject.service(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
+
+  canUpgrade: function() {
+    return this.get('access').isOwner();
+  }.property('projects.current.id'),
 
   actions: {
     upgrade() {
