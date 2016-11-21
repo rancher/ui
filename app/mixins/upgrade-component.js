@@ -127,7 +127,11 @@ export default Ember.Mixin.create({
 
   currentVersion: Ember.computed('upgradeInfo','model.externalId', function() {
     let text = this.get('intl').findTranslationByKey('upgradeBtn.version.current');
-    return `${text}: ${this.get('upgradeInfo.version')}`;
+    if (typeof this.get('upgradeInfo.version') !== 'object') {
+      return `${text}: ${this.get('upgradeInfo.version')}`;
+    } else {
+      return null;
+    }
   }),
 
   doUpgrade() {

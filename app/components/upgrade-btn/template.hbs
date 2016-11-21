@@ -1,3 +1,7 @@
-{{#tooltip-element type="tooltip-basic" model=currentVersion tooltipTemplate='tooltip-static' aria-describedby="tooltip-base"}}
+{{#if currentVersion}}
+  {{#tooltip-element type="tooltip-basic" model=currentVersion tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="upgrade"}}
+    {{t (concat-str 'upgradeBtn.status.' upgradeStatus character='')}}
+  {{/tooltip-element}}
+{{else}}
   {{t (concat-str 'upgradeBtn.status.' upgradeStatus character='')}}
-{{/tooltip-element}}
+{{/if}}

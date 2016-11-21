@@ -38,7 +38,7 @@
           <div class="col-md-6 r-p0">
             {{#if host.milliCpu}}{{t 'generic.total'}}{{/if}}: {{host.cpuBlurb}}
             {{#if host.cpuTooltip}}
-              {{#tooltip-element type='tooltip-basic' model=host tooltipTemplate='tooltip-cpu'}}
+              {{#tooltip-element type='tooltip-basic' model=host tooltipTemplate='tooltip-cpu' tooltipFor="tooltipCPU"}}
                 <i class="icon icon-info"></i>
               {{/tooltip-element}}
             {{/if}}
@@ -81,7 +81,7 @@
             {{#if host.diskDetail}}
               {{#each host.diskDetail as |disk|}}
                 <div class="col-md-6 r-p0">{{disk.value}}
-                  {{#tooltip-element type='tooltip-basic' tooltipTemplate='tooltip-basic-literal' model=disk}}
+                  {{#tooltip-element type='tooltip-basic' tooltipTemplate='tooltip-basic-literal' model=disk tooltipFor="hostDisk"}}
                     <i class="icon icon-info"></i>
                   {{/tooltip-element}}
                </div>
