@@ -36,4 +36,12 @@ export default Ember.Route.extend({
       }
     });
   },
+
+  resetController: function (controller, isExiting/*, transition*/) {
+    if (isExiting)
+    {
+      controller.set('step', 1);
+      controller.set('kubeconfig', null);
+    }
+  },
 });
