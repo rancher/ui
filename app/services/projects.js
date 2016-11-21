@@ -195,6 +195,8 @@ export default Ember.Service.extend({
     return Ember.RSVP.all(promises).then(() => {
       this.set('orchestrationState', hash);
       return Ember.RSVP.resolve(hash);
+    }).catch((e) => {
+      return Ember.RSVP.reject(e);
     });
   },
 

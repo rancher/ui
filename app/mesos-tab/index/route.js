@@ -9,6 +9,12 @@ export default Ember.Route.extend({
         url: url,
         hosts: this.modelFor('authenticated').get('hosts'),
       });
+    }).catch(() => {
+      return Ember.Object.create({
+        url: null,
+        hosts: this.modelFor('authenticated').get('hosts'),
+        ready: false,
+      });
     });
   }
 });
