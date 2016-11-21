@@ -32,6 +32,7 @@ export default Ember.Controller.extend({
   }.property('projects.isReady','hasHosts'),
 
   forceUpgrade: function() {
-    return this.get('currentPath').indexOf('authenticated.settings.projects') !== 0;
+    return this.get('currentPath').indexOf('authenticated.settings.projects') !== 0 &&
+      this.get('currentPath').indexOf('authenticated.admin-tab.') !== 0;
   }.property('currentPath'),
 });
