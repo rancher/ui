@@ -30,7 +30,8 @@ module.exports = function(defaults) {
       app: {
         css: {
           'app-light': '/assets/ui-light.css',
-          'app-dark': '/assets/ui-dark.css'
+          'app-dark': '/assets/ui-dark.css',
+          'app-rtl': '/assets/ui-rtl.css'
         }
       }
     },
@@ -51,7 +52,7 @@ module.exports = function(defaults) {
       exclude: [
         'assets/images/logos', // These can be bind-mounted in
         'assets/intl', // Locales get version added to query string so JS doesn't have to know the fingerprint
-        'ui-light.css', 'ui-dark.css', 'ui.css' // Themes get version added to query string so JS doesn't have to know the fingerprint
+        'ui-light.css', 'ui-dark.css', 'ui-rtl.css', 'ui.css' // Themes get version added to query string so JS doesn't have to know the fingerprint
       ],
       extensions: (appConfig.fingerprint === 'no' ? [] : ['js', 'css', 'png', 'jpg', 'gif', 'svg', 'map', 'woff', 'woff2', 'ttf']),
     },
@@ -103,7 +104,6 @@ module.exports = function(defaults) {
   app.import('bower_components/commonmark/dist/commonmark.js');
   app.import('bower_components/momentjs/moment.js');
   app.import('bower_components/ember-shortcuts/ember-shortcuts.js');
-
 
   app.import('vendor/icons/style.css');
   app.import('vendor/icons/fonts/rancher-icons.svg', {

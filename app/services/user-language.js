@@ -36,8 +36,9 @@ export default Ember.Service.extend({
     }
 
     lang = this.normalizeLang(lang);
-
-    session.set(C.SESSION.LANGUAGE, lang);
+    if (lang === 'fa-ir') {
+      $('head').append('<link id="rtl" rel="stylesheet" href="/assets/ui-rtl.css">');        
+    }    session.set(C.SESSION.LANGUAGE, lang);
     return this.sideLoadLanguage(lang);
   },
 
@@ -50,8 +51,16 @@ export default Ember.Service.extend({
   },
 
   setLanguage(lang) {
-    let session = this.get('session');
+    let session = this.get('session'); 
     lang = lang || session.get(C.SESSION.LANGUAGE);
+    if (lang === 'fa-ir') {
+      $('head').append('<link id="rtl" rel="stylesheet" href="/assets/ui-rtl.css">');        
+    }
+    else {
+      if ($('#rtl').length > 0) {
+        $('#rtl').remove();
+      }
+    }
     session.set(C.SESSION.LANGUAGE, lang);
     return this.set(`prefs.${C.PREFS.LANGUAGE}`, lang);
   },
