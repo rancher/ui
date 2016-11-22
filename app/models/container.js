@@ -2,7 +2,6 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
-import { denormalizeServiceArray } from 'ui/utils/denormalize-snowflakes';
 import Instance from 'ui/models/instance';
 import { formatSi } from 'ui/utils/util';
 
@@ -30,7 +29,7 @@ var Container = Instance.extend({
 
   mounts                     : denormalizeIdArray('mountIds'),
   primaryHost                : denormalizeId('hostId'),
-  services                   : denormalizeServiceArray(),
+  services                   : denormalizeIdArray('serviceIds'),
   primaryService             : Ember.computed.alias('services.firstObject'),
 
   actions: {

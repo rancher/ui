@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
-import { denormalizeServiceId } from 'ui/utils/denormalize-snowflakes';
+import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 function setTlsPort() {
   if ( this.get('targetPort') ) {
@@ -26,7 +26,7 @@ let PortRule = Resource.extend({
   type: 'portRule',
   reservedKeys: ['access','isSelector'],
 
-  service: denormalizeServiceId(),
+  service: denormalizeId('serviceId'),
 
   needsCertificate: function() {
     return ['tls','https'].includes(this.get('protocol'));

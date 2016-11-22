@@ -2,8 +2,7 @@ import Resource from 'ember-api-store/models/resource';
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
-import { denormalizeId } from 'ember-api-store/utils/denormalize';
-import { denormalizeInstanceArray, getByServiceId } from 'ui/utils/denormalize-snowflakes';
+import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 
 var Service = Resource.extend({
   type: 'service',
@@ -11,7 +10,7 @@ var Service = Resource.extend({
   growl: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
 
-  instances: denormalizeInstanceArray('instanceIds'),
+  instances: denormalizeIdArray('instanceIds'),
   instanceCount: Ember.computed.alias('instances.length'),
   stack: denormalizeId('stackId'),
 
@@ -194,7 +193,7 @@ var Service = Resource.extend({
     let out = Object.keys(links).map((key) => {
       return Ember.Object.create({
         name: key,
-        service: getByServiceId(store, links[key])
+        service: store.getById('service', links[key])
       });
     });
 
@@ -207,7 +206,7 @@ var Service = Resource.extend({
     return store.all('serviceconsumemap').filterBy('serviceId', this.get('id')).map((map) => {
       return Ember.Object.create({
         name: map.get('name'),
-        service: getByServiceId(store, map.get('consumedServiceId')),
+        service: store.getById('service', map.get('consumedServiceId')),
         ports: map.get('ports')||[],
       });
     }).filter((obj) => {

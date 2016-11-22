@@ -1,16 +1,15 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
 import Resource from 'ember-api-store/models/resource';
-import { getByServiceId } from 'ui/utils/denormalize-snowflakes';
 import { formatMib, formatSi } from 'ui/utils/util';
 import C from 'ui/utils/constants';
-import { getByInstanceId, denormalizeInstanceArray } from 'ui/utils/denormalize-snowflakes';
+import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 
 var Host = Resource.extend({
   type: 'host',
   modalService: Ember.inject.service('modal'),
 
-  instances: denormalizeInstanceArray('instanceIds'),
+  instances: denormalizeIdArray('instanceIds'),
   arrangedInstances: function() {
     return this.get('instances').sortBy('isSystem','displayName');
   }.property('instances.@each.{isSystem,displayName}'),
@@ -195,10 +194,10 @@ var Host = Resource.extend({
     var store = this.get('store');
     return (this.get('publicEndpoints')||[]).map((endpoint) => {
       if ( !endpoint.service ) {
-        endpoint.service = getByServiceId(store, endpoint.serviceId);
+        endpoint.service = store.getById('service', endpoint.serviceId);
       }
 
-      endpoint.instance = getByInstanceId(store, endpoint.instanceId);
+      endpoint.instance = store.getById('instance', endpoint.instanceId);
       return endpoint;
     });
   }.property('publicEndpoints.@each.{ipAddress,port,serviceId,instanceId}'),
