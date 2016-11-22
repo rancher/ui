@@ -3,7 +3,7 @@ import Resource from 'ember-api-store/models/resource';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
 import { download } from 'ui/utils/util';
-import { denormalizeServiceArray } from 'ui/utils/denormalize-snowflakes';
+import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 
 export function activeIcon(stack)
 {
@@ -42,7 +42,7 @@ var Stack = Resource.extend({
   modalService: Ember.inject.service('modal'),
   projectsService: Ember.inject.service('projects'),
 
-  services: denormalizeServiceArray('serviceIds'),
+  services: denormalizeIdArray('serviceIds'),
 
   actions: {
     activateServices: function() {

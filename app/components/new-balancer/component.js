@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
+import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(NewOrEdit, {
   intl                      : Ember.inject.service(),
@@ -181,6 +182,13 @@ export default Ember.Component.extend(NewOrEdit, {
       return JSON.stringify(out);
     }
 
+    function removeKeys(map,keys) {
+      map = map || {};
+      keys.forEach((key) => {
+        delete map[key];
+      });
+    }
+
     if ( !this.get('editing') )
     {
       return false;
@@ -192,9 +200,9 @@ export default Ember.Component.extend(NewOrEdit, {
       return false;
     }
 
-    let old = arrayToStr(this.get('existing.launchConfig.labels'));
-    let neu = arrayToStr(this.get('service.launchConfig.labels'));
-    return old !== neu;
+    let old = removeKeys(this.get('existing.launchConfig.labels'),C.LABELS_TO_IGNORE);
+    let neu = removeKeys(this.get('service.launchConfig.labels'),C.LABELS_TO_IGNORE);
+    return arrayToStr(old) !== arrayToStr(neu);
   }.property(
     'service.launchConfig.labels'
   ),

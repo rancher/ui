@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
-import { getByServiceId } from 'ui/utils/denormalize-snowflakes';
 
 export default Resource.extend({
   type: 'serviceConsumeMap',
@@ -13,7 +12,7 @@ export default Resource.extend({
           return;
         }
 
-        var consumer = getByServiceId(store, this.get('serviceId'));
+        var consumer = store.getById('service', this.get('serviceId'));
         if ( consumer )
         {
           //console.log('Update consumer', this.get('serviceId'), '->', this.get('consumedServiceId'));
@@ -24,7 +23,7 @@ export default Resource.extend({
           //console.log('The consumer service', this.get('serviceId'), 'does not exist yet');
         }
 
-        var consumed = getByServiceId(store, this.get('consumedServiceId'));
+        var consumed = store.getById('service', this.get('consumedServiceId'));
         if ( consumed )
         {
           //console.log('Update consumed', this.get('serviceId'), '->', this.get('consumedServiceId'));
