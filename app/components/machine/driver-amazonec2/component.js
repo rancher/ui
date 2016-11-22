@@ -7,33 +7,50 @@ let RANCHER_INGRESS_RULES = [
   // Docker machine creates these ports if we don't,
   // but explodes with race coditions if try to deploy 2 hosts simultaneously and they both want to create it.
   // So we'll just have the UI create them up front.
-  // SSH, for docker-machine to isntall Docker
-{
-  FromPort: 22,
-  ToPort: 22,
-  CidrIp: '0.0.0.0/0',
-  IpProtocol: 'tcp'
-},
-{
-  FromPort: 2376,
-  ToPort: 2376,
-  CidrIp: '0.0.0.0/0',
-  IpProtocol: 'tcp'
-},
+  // SSH, for docker-machine to install Docker
+  {
+    FromPort: 22,
+    ToPort: 22,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'tcp'
+  },
+  {
+    FromPort: 2376,
+    ToPort: 2376,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'tcp'
+  },
 
-  // Rancher IPSec needs these
-{
-  FromPort: 500,
-  ToPort: 500,
-  CidrIp: '0.0.0.0/0',
-  IpProtocol: 'udp'
-},
-{
-  FromPort: 4500,
-  ToPort: 4500,
-  CidrIp: '0.0.0.0/0',
-  IpProtocol: 'udp'
-}
+  // Rancher IPSec
+  {
+    FromPort: 500,
+    ToPort: 500,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'udp'
+  },
+  {
+    FromPort: 4500,
+    ToPort: 4500,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'udp'
+  },
+
+  // Rancher VXLAN
+  //{
+  //  FromPort: 4789,
+  //  ToPort: 4789,
+  //  SourceSecurityGroupName: RANCHER_GROUP,
+  //  IpProtocol: 'udp'
+  //},
+
+  // MTU Path discovery
+  // shouldiblockicmp.com
+  {
+    FromPort: -1,
+    ToPort: -1,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'icmp'
+  }
 ];
 
 let INSTANCE_TYPES = [

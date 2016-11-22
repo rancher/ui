@@ -122,7 +122,7 @@ var Container = Instance.extend({
     ];
 
     return choices;
-  }.property('actionLinks.{restart,start,stop,restore,purge,execute,logs,update,remove}','systemContainer','canDelete','labels','isVm'),
+  }.property('actionLinks.{restart,start,stop,restore,purge,execute,logs,update}','systemContainer','canDelete','labels','isVm'),
 
 
   memoryReservationBlurb: Ember.computed('memoryReservation', function() {
@@ -185,8 +185,8 @@ var Container = Instance.extend({
   }.property('primaryIpAddress','primaryAssociatedIpAddress'),
 
   canDelete: function() {
-    return ['removed','removing','purging','purged'].indexOf(this.get('state')) === -1;
-  }.property('state'),
+    return !!this.get('actionLinks.remove') && ['removed','removing','purging','purged'].indexOf(this.get('state')) === -1;
+  }.property('state','actionLinks.remove'),
 
   isManaged: Ember.computed.notEmpty('systemContainer'),
 
