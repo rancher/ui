@@ -2,6 +2,8 @@ import Ember from 'ember';
 import Socket from 'ui/utils/socket';
 import C from 'ui/utils/constants';
 
+const { get } = Ember;
+
 const ORCHESTRATION_STACKS = [
   'k8s',
   'swarm',
@@ -55,8 +57,16 @@ export default Ember.Mixin.create({
           }
 
           if ( resource && C.REMOVEDISH_STATES.includes(resource.state) ) {
-            store._remove(resource.type, resource);
+            let type = get(resource,'type');
+            let baseType = get(resource,'baseType');
+
+            store._remove(type, resource);
+
+            if ( baseType && type !== baseType ) {
+              store._remove(baseType, resource);
+            }
           }
+
         }
         else if ( d.name === 'service.kubernetes.change' )
         {
