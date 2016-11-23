@@ -26,17 +26,33 @@ export default Ember.Controller.extend(Sortable, {
 
   accountArranged: function() {
     var me = this.get(`session.${C.SESSION.ACCOUNT_ID}`);
-    return this.get('arranged').filter((row) => {
+    let sort = this.get('sorts')[this.get('sortBy')];
+
+    let out = this.get('model.account').filter((row) => {
       return row.get('accountId') === me;
-    });
-  }.property('arranged.@each.accountId'),
+    }).sortBy(...sort);
+
+    if ( this.get('descending') ) {
+      out = out.reverse();
+    }
+
+    return out;
+  }.property('model.account.@each.{accountId,name,createdTs}','sortBy','descending'),
 
   environmentArranged: function() {
-    var me = this.get(`session.${C.SESSION.ACCOUNT_ID}`);
-    return this.get('arranged').filter((row) => {
-      return row.get('accountId') !== me;
-    });
-  }.property('arranged.@each.accountId'),
+    var project = this.get('project.id');
+    let sort = this.get('sorts')[this.get('sortBy')];
+
+    let out = this.get('model.environment').filter((row) => {
+      return row.get('accountId') === project;
+    }).sortBy(...sort);
+
+    if ( this.get('descending') ) {
+      out = out.reverse();
+    }
+
+    return out;
+  }.property('model.environment.@each.{accountId,name,createdTs}','sortBy','descending'),
 
   actions: {
     newApikey: function(kind) {
