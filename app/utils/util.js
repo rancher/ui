@@ -2,19 +2,19 @@
 
 export function arrayDiff(a, b) {
   return a.filter(function(i) {
-    return b.indexOf(i) < 0;
+    return !b.includes(i);
   });
 }
 
 export function arrayIntersect(a, b) {
   return a.filter(function(i) {
-    return b.indexOf(i) >= 0;
+    return b.includes(i);
   });
 }
 
 export function filterByValues(ary,field,values) {
   return ary.filter((obj) => {
-    return values.indexOf(obj.get(field)) >= 0;
+    return values.includes(obj.get(field));
   });
 }
 

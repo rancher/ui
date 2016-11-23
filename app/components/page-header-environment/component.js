@@ -2,6 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   currentPath : null,
+  isOwner     : null,
 
   tagName     : '',
 

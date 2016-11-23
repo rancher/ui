@@ -1,18 +1,24 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 export default Ember.Service.extend({
   store: Ember.inject.service(),
 
   isReady() {
     return this.get('store').find('stack').then((stacks) => {
-      let stack = this.filterSystemStack(stacks);
-      if ( stack )
-      {
-        return true;
-      }
+      return this.get('store').find('service').then((services) => {
+        let stack = this.filterSystemStack(stacks);
+        if ( stack )
+        {
+          let matching = services.filterBy('stackId', stack.get('id'));
+          let expect = matching.get('length');
+          let healthy = Util.filterByValues(matching, 'healthState', C.READY_STATES).get('length');
+          return ( expect > 0 && expect === healthy );
+        }
 
-      return false;
+        return false;
+      });
     }).catch(() => {
       return Ember.RSVP.resolve(false);
     });
