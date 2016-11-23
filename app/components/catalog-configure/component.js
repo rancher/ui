@@ -23,8 +23,13 @@ export default ModalBase.extend({
       return {version: key, link: links[key]};
     });
 
+    // New-Catalog wants answers as the environment property
+    let stackish = orig.get('stack').clone();
+    stackish.set('environment', stackish.get('answers'));
+    stackish.set('answers', null);
+
     let out = {
-      stack: orig.get('stack').clone(),
+      stack: stackish,
       serviceChoices: this.get('serviceChoices'),
       tpl: tpl,
       currentUrl: this.get('selectedTemplateUrl')||orig.get('tplVersion.links.self'),
