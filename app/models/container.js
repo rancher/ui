@@ -185,8 +185,8 @@ var Container = Instance.extend({
   }.property('primaryIpAddress','primaryAssociatedIpAddress'),
 
   canDelete: function() {
-    return !!this.get('actionLinks.remove') && ['removed','removing','purging','purged'].indexOf(this.get('state')) === -1;
-  }.property('state','actionLinks.remove'),
+    return ['removed','removing','purging','purged'].indexOf(this.get('state')) === -1;
+  }.property('state'),
 
   isManaged: Ember.computed.notEmpty('systemContainer'),
 
