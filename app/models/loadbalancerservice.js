@@ -100,12 +100,17 @@ var LoadBalancerService = Service.extend({
 
   displayDetail: function() {
     var services = (this.get('lbConfig.portRules')||[]).map((rule) => {
-      let out = '';
-      if ( rule.get('service.stackId') !== this.get('stackId') ) {
-        out += esc(rule.get('service.displayStack'))+'/';
-      }
+      if ( rule.get('selector') ) {
+        return rule.get('selector');
+      } else {
 
-      return out + esc(rule.get('service.displayName'));
+        let out = '';
+        if ( rule.get('service.stackId') !== this.get('stackId') ) {
+          out += esc(rule.get('service.displayStack'))+'/';
+        }
+
+        return out + esc(rule.get('service.displayName'));
+      }
     }).uniq();
 
     services.sort();
