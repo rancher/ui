@@ -55,7 +55,6 @@ Router.map(function() {
       });
 
       this.route('audit-logs');
-      this.route('ha');
       this.route('machine');
     });
 
