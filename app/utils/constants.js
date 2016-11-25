@@ -139,6 +139,7 @@ var C = {
 
   PREFS: {
     ACCESS_WARNING  : 'accessWarning',
+    BODY_BACKGROUND : 'bodyBackground',
     PROJECT_DEFAULT : 'defaultProjectId',
     EXPANDED_STACKS : 'expandedStacks',
     SORT_STACKS_BY  : 'sortStacksBy',

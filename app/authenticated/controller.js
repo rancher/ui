@@ -4,11 +4,21 @@ import C from 'ui/utils/constants';
 export default Ember.Controller.extend({
   application : Ember.inject.controller(),
   settings    : Ember.inject.service(),
+  prefs       : Ember.inject.service(),
   projects    : Ember.inject.service(),
   currentPath : Ember.computed.alias('application.currentPath'),
   error       : null,
 
   isPopup: Ember.computed.alias('application.isPopup'),
+
+  bootstrap: function() {
+    Ember.run.schedule('afterRender', this, () => {
+      let bg = this.get(`prefs.${C.PREFS.BODY_BACKGROUND}`);
+      if ( bg ) {
+        $('BODY').css('background', bg);
+      }
+    });
+  }.on('init'),
 
   hasCattleSystem: function() {
     var out = false;
