@@ -187,6 +187,8 @@ export default Ember.Component.extend(NewOrEdit, {
       keys.forEach((key) => {
         delete map[key];
       });
+
+      return map;
     }
 
     if ( !this.get('editing') )

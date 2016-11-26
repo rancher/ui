@@ -24,44 +24,25 @@ module.exports = function(app, options) {
     proxy.ws(req, socket, head);
   });
 
+  let map = {
+    'API': config.apiEndpoint,
+    'Legacy API': config.legacyApiEndpoint,
+    'Magic': config.magicEndpoint,
+    'Telemetry': config.telemetryEndpoint,
+  }
+
   // Rancher API
   console.log('Proxying API to', config.apiServer);
-  app.use(config.apiEndpoint, function(req, res, next) {
-    // include root path in proxied request
-    req.url = path.join(config.apiEndpoint, req.url);
-    req.headers['X-Forwarded-Proto'] = req.protocol;
+  Object.keys(map).forEach(function(label) {
+    let base = map[label];
+    app.use(base, function(req, res, next) {
+      // include root path in proxied request
+      req.url = path.join(base, req.url);
+      req.headers['X-Forwarded-Proto'] = req.protocol;
 
-    proxyLog('API', req);
-    proxy.web(req, res);
-  });
-
-  app.use(config.legacyApiEndpoint, function(req, res, next) {
-    // include root path in proxied request
-    req.url = path.join(config.legacyApiEndpoint, req.url);
-    req.headers['X-Forwarded-Proto'] = req.protocol;
-
-    proxyLog('Legacy API', req);
-    proxy.web(req, res);
-  });
-
-  // Auth API
-  app.use(config.authEndpoint, function(req, res, next) {
-    // include root path in proxied request
-    req.url = path.join(config.authEndpoint, req.url);
-    req.headers['X-Forwarded-Proto'] = req.protocol;
-
-    proxyLog('Auth', req);
-    proxy.web(req, res);
-  });
-
-  // Magic container proxy API
-  app.use('/r', function(req, res, next) {
-    // include root path in proxied request
-    req.url = path.join('/r', req.url);
-    req.headers['X-Forwarded-Proto'] = req.protocol;
-
-    proxyLog('Magic', req);
-    proxy.web(req, res);
+      proxyLog(label, req);
+      proxy.web(req, res);
+    });
   });
 
   // Kubernetes needs this API
@@ -110,7 +91,7 @@ module.exports = function(app, options) {
   var authPath = config.authEndpoint;
   var authServer = config.authServer || config.apiServer;
   if ( authServer !== config.apiServer ) {
-    console.log('Proxying Catalog to', authServer);
+    console.log('Proxying Auth to', authServer);
   }
   app.use(authPath, function(req, res, next) {
     req.headers['X-Forwarded-Proto'] = req.protocol;
@@ -123,7 +104,7 @@ module.exports = function(app, options) {
 
     req.url = path.join(authPath, req.url);
 
-    proxyLog('Catalog', req);
+    proxyLog('Auth', req);
     catalogProxy.web(req, res);
   });
 }
