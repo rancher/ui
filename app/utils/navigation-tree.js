@@ -429,7 +429,7 @@ function getStacksSubtree() {
   ];
 
   let stacks = this.get('store').all('stack');
-  let choices = uniqKeys(tagChoices(stacks));
+  let choices = uniqKeys(tagChoices(stacks)).sort();
 
   if ( choices.length ) {
     out.push({divider: true});
