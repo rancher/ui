@@ -42,17 +42,7 @@
 <section class="r-plr15 clearfix">
   {{#each arrangedContent as |catalogItem|}}
     {{#catalog-box model=catalogItem showSource=showCatalogDropdown as |section|}}
-      {{#if (eq section 'header')}}
-        {{#if catalogItem.certified}}
-          <div class='badge-certified'>
-            <strong>{{t (concat 'catalogPage.index.certified.' (if settings.isRancher 'rancher' 'pl') '.' catalogItem.certified)}}</strong>
-          </div>
-        {{/if}}
-      {{else if (eq section 'icon')}}
-        <div class="catalog-icon">
-          <img src="{{model.links.icon}}"/>
-        </div>
-      {{else if (eq section 'footer')}}
+      {{#if (eq section 'footer')}}
         {{#if (eq catalogItem.templateBase 'infra')}}
           {{#if catalogItem.exists}}
             <button type="button" class="btn btn-sm btn-default btn-disabled" {{action "launch" catalogItem.id true allowedKeys="meta ctrl"}}>{{t 'catalogPage.index.action.alreadyDeployed'}}</button>
