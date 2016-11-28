@@ -1,7 +1,6 @@
 <table class="grid fixed">
   <thead>
     <tr>
-      <th width="90">{{t 'containersPage.containerPage.portsTab.table.header.state'}}</th>
       <th width="150">{{t 'containersPage.containerPage.portsTab.table.header.ip'}}</th>
       <th>{{t 'containersPage.containerPage.portsTab.table.header.public'}}</th>
       <th>{{t 'containersPage.containerPage.portsTab.table.header.private'}}</th>
@@ -9,33 +8,30 @@
     </tr>
   </thead>
   <tbody>
-    {{#each model as |port|}}
+    {{#each model.ports as |port|}}
       <tr>
-        <td data-title={{t 'containersPage.containerPage.portsTab.table.body.state'}}>
-          {{badge-state model=port}}
-        </td>
-        <td data-title={{t 'containersPage.containerPage.portsTab.table.body.ip'}}>
+        <td data-title="{{t 'containersPage.containerPage.portsTab.table.header.ip'}}:">
           {{#if port.displayPublicIp}}
             {{port.displayPublicIp}}
           {{else}}
             <span class="text-muted">{{t 'generic.none'}}</span>
           {{/if}}
         </td>
-        <td data-title={{t 'containersPage.containerPage.portsTab.table.body.public'}}>
+        <td data-title="{{t 'containersPage.containerPage.portsTab.table.header.public'}}:">
           {{#if port.publicPort}}
             {{port.publicPort}}
           {{else}}
             <span class="text-muted">{{t 'generic.none'}}</span>
           {{/if}}
         </td>
-        <td data-title={{t 'containersPage.containerPage.portsTab.table.body.private'}}>
+        <td data-title="{{t 'containersPage.containerPage.portsTab.table.header.private'}}:">
           {{#if port.privatePort}}
             {{port.privatePort}}
           {{else}}
             <span class="text-muted">{{t 'generic.none'}}</span>
           {{/if}}
         </td>
-        <td data-title={{t 'containersPage.containerPage.portsTab.table.body.protocol'}}>
+        <td data-title="{{t 'containersPage.containerPage.portsTab.table.header.protocol'}}:">
           {{upper-case port.protocol}}
         </td>
       </tr>
