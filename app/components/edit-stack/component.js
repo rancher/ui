@@ -28,7 +28,7 @@ export default ModalBase.extend(NewOrEdit, {
   },
 
   tagChoices: function() {
-    return tagChoices(this.get('allStacks'));
+    return tagChoices(this.get('allStacks')).sort();
   }.property('allStacks.@each.group'),
 
   doneSaving: function() {
