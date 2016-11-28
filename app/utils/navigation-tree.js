@@ -144,22 +144,6 @@ const navTree = [
     moreCurrentWhen: ['stacks'],
     submenu: [
       {
-        id: 'swarm-projects',
-        localizedLabel: 'nav.swarm.projects',
-        icon: 'icon icon-layeredgroup',
-        route: 'swarm-tab.projects',
-        ctx: [getProjectId],
-        condition: swarmReady,
-      },
-      {
-        id: 'swarm-services',
-        localizedLabel: 'nav.swarm.services',
-        icon: 'icon icon-layers',
-        route: 'swarm-tab.services',
-        ctx: [getProjectId],
-        condition: swarmReady,
-      },
-      {
         id: 'swarm-cli',
         localizedLabel: 'nav.swarm.cli',
         icon: 'icon icon-terminal',

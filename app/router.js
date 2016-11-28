@@ -169,17 +169,6 @@ Router.map(function() {
       });
 
       this.route('swarm-tab', {path: '/swarm', resetNamespace: true}, function() {
-        this.route('projects', function() {
-          this.route('index', {path: '/'});
-          this.route('new', {path: '/add'});
-          this.route('project', {path: '/:compose_project_id'}, function() {
-          });
-        });
-
-        this.route('services', function() {
-          this.route('index', {path: '/'});
-        });
-
         this.route('console');
       });
 
