@@ -1,7 +1,13 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  model: function() {
-    return this.modelFor('container').ports;
+  model() {
+    let container = this.modelFor('container');
+    return container.followLink('ports').then((ports) => {
+      return {
+        container: container,
+        ports: ports,
+      };
+    });
   }
 });

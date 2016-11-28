@@ -4,22 +4,22 @@
       <th width="80">{{t 'containersPage.containerPage.volumesTab.table.header.name'}}</th>
       <th width="175">{{t 'containersPage.containerPage.volumesTab.table.header.mount'}}</th>
       <th>{{t 'containersPage.containerPage.volumesTab.table.header.snapshot'}}</th>
-      <th width="80">{{t 'containersPage.containerPage.volumesTab.table.header.actions'}}</th>
+      <th width="80">{{t 'generic.actions'}}</th>
     </tr>
   </thead>
   <tbody>
     {{#each model.mounts as |mount|}}
       <tr>
-        <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.name'}}>
+        <td data-title="{{t 'containersPage.containerPage.volumesTab.table.header.name'}}:">
           {{mount.volumeName}}
         </td>
-        <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.mount'}}>
+        <td data-title="{{t 'containersPage.containerPage.volumesTab.table.header.mount'}}:">
           {{mount.path}} {{if mount.isReadWrite '' '(ro)'}} {{copy-to-clipboard size='small' clipboardText=mount.path}}
         </td>
-        <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.snapshot'}}>
+        <td data-title="{{t 'containersPage.containerPage.volumesTab.table.header.snapshot'}}:">
           {{snapshot-timeline model=mount.volume.snapshots}}
         </td>
-        <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.actions'}}>
+        <td data-title="{{t 'generic.actions'}}:">
           {{action-menu model=mount.volume}}
         </td>
       </tr>

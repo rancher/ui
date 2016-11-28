@@ -2,7 +2,7 @@ import Resource from 'ember-api-store/models/resource';
 
 var Port = Resource.extend({
   _publicIp: null,
-  _publicIpState: 0,
+  _publicIpState: null,
   displayPublicIp: function() {
     var bind = this.get('bindAddress');
     if ( bind )
@@ -19,16 +19,16 @@ var Port = Resource.extend({
     {
       return ip;
     }
-    else if ( this && this.get('_publicIpState') === 2 )
+    else if ( this.get('_publicIpState') === 2 )
     {
       return '(Unknown IP)';
     }
-    else if ( this && this.get('_publicIpState') === 0 )
+    else if ( !this.get('_publicIpState') )
     {
       this.set('_publicIpState', 1);
       this.get('store').find('ipaddress', this.get('publicIpAddressId')).then((ip) => {
         this.set('_publicIp', ip.get('address'));
-      }).catch(() => {
+      }).finally(() => {
         this.set('_publicIpState', 2);
       });
 
