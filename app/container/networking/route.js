@@ -5,7 +5,7 @@ export default Ember.Route.extend({
     return this.get('store').findAll('host').then((hosts) => {
       return {
         hosts: hosts,
-        container: this.modelFor('container').container,
+        container: this.modelFor('container'),
       };
     });
   }

@@ -132,7 +132,6 @@ var C = {
     K8S_POD_NAME: 'io.kubernetes.pod.name',
     K8S_KUBECTL: 'io.rancher.k8s.kubectld',
     K8S_API: 'io.rancher.k8s.api-server',
-    SWARM_CLI: 'io.rancher.swarm.cli',
     ORCHESTRATION_SUPPORTED: 'io.rancher.orchestration.supported',
     CERTIFIED: 'io.rancher.certified',
   },
