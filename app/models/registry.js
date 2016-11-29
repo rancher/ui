@@ -59,18 +59,16 @@ var Registry = Resource.extend({
     }
   }.property('serverAddress'),
 
+  _allCredentials: null,
   credential: function() {
-    var credentials = this.get('credentials');
-    if ( credentials )
-    {
-      return credentials.objectAt(credentials.get('length')-1);
+    let all = this.get('_allCredentials');
+    if ( !all ) {
+      all = this.get('store').all('registrycredential');
+      this.set('_allCredentials', all);
     }
 
-  }.property('credentials.@each.{publicValue,email}'),
-});
-
-Registry.reopenClass({
-  alwaysInclude: ['credentials'],
+    return all.filterBy('registryId', this.get('id')).get('lastObject');
+  }.property('_allCredentials.@each.registryId','id'),
 });
 
 export default Registry;

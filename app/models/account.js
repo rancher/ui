@@ -49,16 +49,22 @@ var Account = Resource.extend(PolledResource, {
   }.property('passwordCredential.{state,publicValue}'),
 
   passwordCredential: function() {
-    return (this.get('credentials')||[]).filterBy('state','active').filterBy('kind','password')[0];
-  }.property('credentials.@each.kind'),
+    return (this.get('passwords')||[]).objectAt(0);
+  }.property('passwords.@each.kind'),
 
-  apiKeys: function() {
-    return (this.get('credentials')||[]).filterBy('kind','apiKey');
-  }.property('credentials.@each.kind')
+  _allPasswords: null,
+  passwords: function() {
+    let all = this.get('_allPasswords');
+    if ( !all ) {
+      all = this.get('store').all('password');
+      this.set('_allPasswords', all);
+    }
+
+    return all.filterBy('accountId', this.get('id'));
+  }.property('_allPasswords.@each.accountId','id'),
 });
 
 Account.reopenClass({
-  alwaysInclude: ['credentials'],
   pollTransitioningDelay: 1000,
   pollTransitioningInterval: 5000,
 });

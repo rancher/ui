@@ -28,7 +28,7 @@ export default Ember.Controller.extend(NewOrEdit, {
   },
 
   groupChoices: function() {
-    return tagChoices(this.get('allStacks'));
+    return tagChoices(this.get('allStacks')).sort();
   }.property('allStacks.@each.grouping'),
 
   willSave: function() {

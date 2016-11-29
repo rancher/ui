@@ -4,6 +4,7 @@ export default Ember.Controller.extend({
   queryParams       : ['timedOut','errorMsg'],
   access            : Ember.inject.service(),
   settings          : Ember.inject.service(),
+  intl              : Ember.inject.service(),
 
   isGithub          : Ember.computed.equal('access.provider', 'githubconfig'),
   isActiveDirectory : Ember.computed.equal('access.provider', 'ldapconfig'),
@@ -35,7 +36,7 @@ export default Ember.Controller.extend({
           this.set('waiting', false);
 
           if ( err.status === 401 ) {
-            this.set('errorMsg', 'Username or Password incorrect.');
+            this.set('errorMsg', this.get('intl').t('loginPage.error.timedOut'));
           } else {
             this.set('errorMsg', err.message);
           }
@@ -68,10 +69,10 @@ export default Ember.Controller.extend({
     if ( this.get('errorMsg') ) {
       return this.get('errorMsg');
     } else if ( this.get('timedOut') ) {
-      return 'Your session has timed out.  Log in again to continue.';
+      return this.get('intl').t('loginPage.error.timedOut');
     } else {
       return '';
     }
-  }.property('timedOut','errorMsg'),
+  }.property('timedOut','errorMsg','intl._locale'),
 
 });
