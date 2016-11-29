@@ -20,14 +20,23 @@ export default Ember.TextField.extend({
 
   valueChanged: function() {
     let out = ShellQuote.parse(this.get('value')||'').map(function(piece) {
-      if ( typeof piece === 'object' && piece && piece.pattern )
+      if ( typeof piece === 'object' && piece )
       {
-        return piece.pattern;
+        if ( piece.pattern )
+        {
+          return piece.pattern;
+        }
+        else if ( piece.op )
+        {
+          return piece.op;
+        }
+        else
+        {
+          return '';
+        }
       }
-      else
-      {
-        return piece;
-      }
+
+      return piece;
     });
 
     if ( out.length )

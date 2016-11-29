@@ -15,10 +15,6 @@ export default Ember.Route.extend({
           instance: inst,
         });
       }
-      else
-      {
-        return Ember.RSVP.reject('Unable to find an active Swarm container');
-      }
     });
   },
 });

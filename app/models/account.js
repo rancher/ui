@@ -6,6 +6,8 @@ var Account = Resource.extend(PolledResource, {
   type: 'account',
   modalService: Ember.inject.service('modal'),
 
+  reservedKeys: ['_allPasswords'],
+
   actions: {
     deactivate() {
       return this.doAction('deactivate');
@@ -37,16 +39,8 @@ var Account = Resource.extend(PolledResource, {
   }.property('actionLinks.{update,activate,deactivate,restore,remove,purge}'),
 
   username: function() {
-    var cred = this.get('passwordCredential');
-    if ( cred )
-    {
-      return cred.get('publicValue');
-    }
-    else
-    {
-      return null;
-    }
-  }.property('passwordCredential.{state,publicValue}'),
+    return this.get('passwordCredential.publicValue');
+  }.property('passwordCredential.publicValue'),
 
   passwordCredential: function() {
     return (this.get('passwords')||[]).objectAt(0);

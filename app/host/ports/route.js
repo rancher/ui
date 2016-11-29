@@ -7,8 +7,7 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.all([
       store.findAll('service'),
-      store.findAll('container'),
-      store.findAll('virtualmachine'),
+      store.findAll('instance'),
     ]).then(() => {
       return host;
     });

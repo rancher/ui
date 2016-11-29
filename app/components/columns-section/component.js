@@ -30,6 +30,10 @@ export default Ember.Component.extend(ThrottledResize, {
   }.property('columnWidth','columnFudge'),
 
   onResize: function() {
+    if ( this.isDestroyed || this.isDestroying ) {
+      return;
+    }
+
     try {
       let elem         = this.$();
       let sectionWidth = $('#application').width(); // On first call the pods aren't rendered yet, so approximate with the screen width

@@ -4,10 +4,10 @@ export default Ember.Route.extend({
   model: function() {
     var store = this.get('store');
     return Ember.RSVP.hash({
-      containers: store.findAll('container'),
+      instances: store.findAll('instance'),
       hosts: store.findAll('host'),
-    }).then((hash) => {
-      return hash.containers;
+    }).then(() => {
+      return store.all('container');
     });
   },
 });

@@ -36,7 +36,7 @@ export default Ember.Controller.extend({
           this.set('waiting', false);
 
           if ( err.status === 401 ) {
-            this.set('errorMsg', this.get('intl').t('loginPage.error.timedOut'));
+            this.set('errorMsg', this.get('intl').t('loginPage.error.authFailed'));
           } else {
             this.set('errorMsg', err.message);
           }
