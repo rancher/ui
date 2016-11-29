@@ -77,6 +77,8 @@ export default Ember.Service.extend({
   },
 
   writeStyleNode: function(theme) {
+    const session     = this.get('session');
+    let lang          = session.get(C.SESSION.LANGUAGE);
     var application = this.get('app');
     var $body = $('BODY');
 
@@ -88,6 +90,10 @@ export default Ember.Service.extend({
     });
 
     $body.addClass('theme-' + theme);
+    
+    if (lang === 'fa-ir') {
+      theme = theme + '.rtl';
+    }
 
     Ember.$('#theme').attr('href', `${application.baseAssets}assets/${theme}.css?${application.version}`);
   },

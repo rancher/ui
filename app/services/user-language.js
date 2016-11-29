@@ -37,6 +37,10 @@ export default Ember.Service.extend({
 
     lang = this.normalizeLang(lang);
 
+    if (lang === 'fa-ir') {
+      this.switchThemeTo('rtl');       
+    }
+
     session.set(C.SESSION.LANGUAGE, lang);
     return this.sideLoadLanguage(lang);
   },
@@ -52,6 +56,12 @@ export default Ember.Service.extend({
   setLanguage(lang) {
     let session = this.get('session');
     lang = lang || session.get(C.SESSION.LANGUAGE);
+    if (lang === 'fa-ir') {
+      this.switchThemeTo('rtl');       
+    }
+    else {
+      this.switchThemeTo('ltr');
+    }
     session.set(C.SESSION.LANGUAGE, lang);
     return this.set(`prefs.${C.PREFS.LANGUAGE}`, lang);
   },
@@ -92,5 +102,31 @@ export default Ember.Service.extend({
 
   getAvailableTranslations() {
     return this.get('intl').getLocalesByTranslations();
+  },
+
+  switchThemeTo(direction) {
+    var application = this.get('app');
+    var $body = $('BODY');
+    var theme = 'ui-light'; 
+    direction = '.' + direction;
+
+    $body.attr('class').split(/\s+/).forEach((cls) => {
+      if ( cls.indexOf('theme-') === 0 )
+      {
+        theme = cls.replace('theme-', '');
+      }
+    });
+
+    $body.addClass('theme-' + theme);
+
+    if (direction === '.rtl') {
+      theme = theme + direction;
+    }
+    else {
+      direction = '';
+    }
+
+    Ember.$('#theme').attr('href', `${application.baseAssets}assets/${theme}.css?${application.version}`);
+    Ember.$('#vendor').attr('href', `${application.baseAssets}assets/vendor${direction}.css?${application.version}`);
   },
 });

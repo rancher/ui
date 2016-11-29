@@ -65,6 +65,10 @@ Rancher UI supports localization via translations files. You can swap translatio
 - While developing you can use ```SHFT + L``` when not focused in an input or text area to toggle the languages between your currently selected language and a special *none* language to see what key values are missing
 - When you've finished you're translations issue a pull request back to the Rancher UI repo to have your translation included
 
+### RTL support
+To add support for Right-to-left languages, run:
+```ember install ember-cli-rtlcss```
+
 ### Hosting remotely
 
 If you want to customize the UI, re-packaging all of Rancher to distribute the UI is possible but not terribly convenient. Instead you can change Cattle to load the UI source from a remote web server:
