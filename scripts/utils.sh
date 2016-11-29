@@ -70,6 +70,8 @@ function gcs_upload_asset() {
     # cp is eventually consistent.. hopefully eventually comes soon.
     sleep 5
     runCmd gsutil -h "$cache_settings" -m rsync -c -r -d "${upload_target}/_upload ${upload_target}/${version}"
+    sleep 5
+    runCmd gsutil -h "$cache_settings" -m rsync -c -r -d "${upload_target}/_upload ${upload_target}/${version}"
     gsutil -m rm -a -f -R "${upload_target}/_upload" # not runcmd, don't care if it fails
   fi
 }
