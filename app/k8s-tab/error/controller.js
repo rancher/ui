@@ -11,7 +11,7 @@ export default Ember.Controller.extend({
   readyChanged: function() {
     if ( this.get('projects.orchestrationState.kubernetesReady') ) {
       this.set('k8s.loadingErrors', null);
-      this.transitionTo('k8s-tab');
+      this.transitionToRoute('k8s-tab');
     }
   }.observes('projects.orchestrationState.kubernetesReady'),
 });
