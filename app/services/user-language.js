@@ -10,6 +10,7 @@ export default Ember.Service.extend({
   locales       : Ember.computed.alias('app.locales'),
   growl         : Ember.inject.service(),
   cookies       : Ember.inject.service(),
+  userTheme     : Ember.inject.service('user-theme'),
   loadedLocales : null,
 
   bootstrap: function() {
@@ -37,10 +38,6 @@ export default Ember.Service.extend({
 
     lang = this.normalizeLang(lang);
 
-    if (lang === 'fa-ir') {
-      this.switchThemeTo('rtl');       
-    }
-
     session.set(C.SESSION.LANGUAGE, lang);
     return this.sideLoadLanguage(lang);
   },
@@ -56,22 +53,19 @@ export default Ember.Service.extend({
   setLanguage(lang) {
     let session = this.get('session');
     lang = lang || session.get(C.SESSION.LANGUAGE);
-    if (lang === 'fa-ir') {
-      this.switchThemeTo('rtl');       
-    }
-    else {
-      this.switchThemeTo('ltr');
-    }
     session.set(C.SESSION.LANGUAGE, lang);
+    this.get('userTheme').writeStyleNode(session.get(C.PREFS.THEME));
     return this.set(`prefs.${C.PREFS.LANGUAGE}`, lang);
   },
 
   sideLoadLanguage(language) {
     let application   = this.get('app');
     let loadedLocales = this.get('loadedLocales');
+    let session = this.get('session');
 
     if (loadedLocales.includes(language)) {
       this.get('intl').setLocale(language);
+      this.get('userTheme').writeStyleNode(session.get(C.PREFS.THEME));
       return Ember.RSVP.resolve();
     } else {
       return ajaxPromise({url: `${this.get('app.baseAssets')}translations/${language}.json?${application.version}`,
@@ -89,6 +83,7 @@ export default Ember.Service.extend({
           loadedLocales.push(language);
           return this.get('intl').addTranslations(language, resp.xhr.responseJSON).then(() => {
             this.get('intl').setLocale(language);
+           this.get('userTheme').writeStyleNode(session.get(C.PREFS.THEME));
           });
         });
       }).catch((err) => {
@@ -104,29 +99,8 @@ export default Ember.Service.extend({
     return this.get('intl').getLocalesByTranslations();
   },
 
-  switchThemeTo(direction) {
-    var application = this.get('app');
-    var $body = $('BODY');
-    var theme = 'ui-light'; 
-    direction = '.' + direction;
-
-    $body.attr('class').split(/\s+/).forEach((cls) => {
-      if ( cls.indexOf('theme-') === 0 )
-      {
-        theme = cls.replace('theme-', '');
-      }
-    });
-
-    $body.addClass('theme-' + theme);
-
-    if (direction === '.rtl') {
-      theme = theme + direction;
-    }
-    else {
-      direction = '';
-    }
-
-    Ember.$('#theme').attr('href', `${application.baseAssets}assets/${theme}.css?${application.version}`);
-    Ember.$('#vendor').attr('href', `${application.baseAssets}assets/vendor${direction}.css?${application.version}`);
+  isRtl(lang) {
+    return ['fa-ir'].includes(lang);
   },
+
 });

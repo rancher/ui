@@ -4,6 +4,7 @@ import C from 'ui/utils/constants';
 export default Ember.Service.extend({
   prefs        : Ember.inject.service(),
   session      : Ember.inject.service(),
+  language     : Ember.inject.service('user-language'),
   currentTheme : null,
   updateTimer  : null,
 
@@ -77,11 +78,10 @@ export default Ember.Service.extend({
   },
 
   writeStyleNode: function(theme) {
-    const session     = this.get('session');
-    let lang          = session.get(C.SESSION.LANGUAGE);
     var application = this.get('app');
     var $body = $('BODY');
-
+    let lang = this.get(`session.${C.SESSION.LANGUAGE}`);
+    var direction = '';
     $body.attr('class').split(/\s+/).forEach((cls) => {
       if ( cls.indexOf('theme-') === 0 )
       {
@@ -90,12 +90,13 @@ export default Ember.Service.extend({
     });
 
     $body.addClass('theme-' + theme);
-    
-    if (lang === 'fa-ir') {
-      theme = theme + '.rtl';
+
+    if (this.get('language').isRtl(lang)) {
+      direction = '.rtl';
     }
 
-    Ember.$('#theme').attr('href', `${application.baseAssets}assets/${theme}.css?${application.version}`);
+    Ember.$('#theme').attr('href', `${application.baseAssets}assets/${theme}${direction}.css?${application.version}`);
+    Ember.$('#vendor').attr('href', `${application.baseAssets}assets/vendor${direction}.css?${application.version}`);
   },
 
 });
