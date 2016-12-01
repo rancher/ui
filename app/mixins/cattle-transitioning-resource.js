@@ -524,6 +524,7 @@ export default Ember.Mixin.create({
     {
       return promise.catch((err) => {
         this.get('growl').fromError(Util.ucFirst(name) + ' Error', err);
+        return Ember.RSVP.reject(err);
       });
     }
 

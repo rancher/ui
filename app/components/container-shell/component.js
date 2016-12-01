@@ -31,15 +31,17 @@ export default Ember.Component.extend({
       command: this.get('command') || DEFAULT_COMMAND,
     };
 
-    instance.doAction('execute',opt).then((exec) => {
-      exec.set('instance', instance);
-      this.connect(exec);
-    }).catch((err) => {
-      this.setProperties({
-        status: 'error',
-        error: err
+    if ( instance.hasAction('execute') ) {
+      instance.doAction('execute',opt).then((exec) => {
+        exec.set('instance', instance);
+        this.connect(exec);
+      }).catch((err) => {
+        this.setProperties({
+          status: 'error',
+          error: err
+        });
       });
-    });
+    }
   },
 
   connect: function(exec) {
