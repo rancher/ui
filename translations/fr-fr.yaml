@@ -21,6 +21,7 @@ generic:
   image: Image
   internal: Interne
   ipAddress: Addresse IP
+  limit: Limite
   loading: "Chargement..."
   missing: "*%ABSENT%*"
   moreActions: Plus
@@ -37,6 +38,7 @@ generic:
   test: Test
   testing: En test
   to: A
+  total: Total
   type: Catégorie
   unknown: Inconnu
 accountsPage:
@@ -443,6 +445,10 @@ containersPage:
       entryPoint: 'Point d’Entrée :'
       description: 'Description :'
       stack: 'Pile/Service :'
+      memoryReservation:
+        labelText: 'Mémoire Allouée : '
+      milliCpuReservation:
+        labelText: 'allocation mCPU : '
     navTabs:
       labels: Étiquettes
       volumes: Volumes
@@ -715,6 +721,10 @@ hostsPage:
       docker: 'Docker :'
       os: 'SYSTÈME D''EXPLOITATION :'
       description: 'Description :'
+      milliCpu:
+        labelText: mCPU
+      localStorageMb:
+        labelText: Limite Locale
     navTabs:
       containers: Conteneurs
       ports: Ports
@@ -850,7 +860,7 @@ k8sTab:
     header: Erreur
     linkTo: Recharger
     detail: |
-      {nombre, pluriel, = 1 {An error} autres {# Errors }} s’est produite en essayant de communiquer avec l’API Kubernetes.
+      {count, plural, =1 {An error} other {# Errors }} s’est produite en essayant de communiquer avec l’API Kubernetes.
 loginPage:
   greeting: "Howdy!<br>Bienvenue a {appName}"
   githubMessage: "{appName} Utilise GitHub pour gerer l'authentifiation.  Cliquer sur le bouton ci-dessous pour se connecter (en lecture seule) pour acceder aux information de compte Github."
@@ -887,7 +897,7 @@ mesosPage:
     content: |
       Vous avez actuellement  {hosts, plural,
       =1 {# active host}
-      autre {# active hosts}
+      other {# active hosts}
       } dans votre cluster Mesos
     link: Voir ou Ajouter des hôtes
   launch:
@@ -1033,6 +1043,7 @@ stacksPage:
     all: Toutes les Piles
     user: Piles de l'Utilisateur
     custom: '{name} Piles'
+    tags: 'Piles « {tags} »'
     infra: Piles d’infrastructure
   actionButton: Ajouter une Pile
   catalogButton: Ajouter depuis le Catalogue
@@ -1040,6 +1051,9 @@ stacksPage:
     label: Trier Par
     state: État
     name: Nom
+  tags:
+    all: Toutes les Étiquettes
+    one: 'Étiquette : {name}'
   noInfra: Vous n’avez pas actuellement de pile d'Infrastructure
   noMatch: Aucune pile ne correspond aux étiquettes sélectionnées
   new:
@@ -1206,17 +1220,17 @@ ldap:
     enabled:
       label: "{providerName} est activé"
       required: |
-        {appName} est configuré pour autoriser l'accès à {orgs, plural,
+        {appName} est configuré pour autoriser l'accès à {groups, plural,
         =0 {no groups}
         =1 {# group}
-        autres {# groups}
+        other {# groups}
         } and {users, plural,
         =0 {no users}
         =1 {# user}
-        autres {# users}
+        other {# users}
         }.
       restricted: |
-        {appName} est configuré pour autoriser l’accès aux membres de l’environnement, {groupes, pluriel, = 0 {no groups} = 1 {# group} autres {# groups}} et {utilisateurs, pluriel, = 0 {no users} = 1 {# user} autres {# users}}.
+        {appName} est configuré pour autoriser l’accès aux membres de l’environnement, {groups, plural, =0 {no groups} =1 {# group} other {# groups}} et {users, plural, =0 {no users} =1 {# user} other {# users}}.
       unrestricted: "{appName} est configuré pour autoriser l’accès à n’importe quel utilisateur {providerName}."
     disabled:
       label: "{providerName} n’est pas configuré"
@@ -1615,7 +1629,7 @@ formCommand:
     onFailure: 'En cas d''Échec <span class="text-muted"> (code de sortie non-0)</span>, pour toujours'
     onFailureCondPrefix: En cas d’échec, jusqu'à
     onFailureCondSuffix: |
-      {limite, pluriel, = 1 {time} autres {times}}
+      {limit, plural, =1 {time} other {times}}
     always: Toujours
   environment:
     label: Environnement
@@ -1731,7 +1745,7 @@ formHealthCheck:
     recreate: Re-créer
     recreateOnQuorumPrefix: Re-créer, uniquement lorsqu’au moins
     recreateOnQuorumSuffix: |
-      {quorum, pluriel, = 1 {container is} autres {containers are}} en bonne santé
+      {quorum, plural, =1 {container is} other {containers are}} en bonne santé
 formKeyValue:
   addAction: Ajouter une Paire
   key:
@@ -1821,9 +1835,13 @@ formScale:
     container: Toujours exécuter une instance de ce conteneur sur chaque hôte
   regular:
     vm: |
-      Exécutez {échelle, pluriel, = 0 {no virtual machines} = 1 {1 virtual machine} autres {# virtual machines}}
+      Exécutez {scale, plural, =0 {no virtual machines} =1 {1 virtual machine} other {# virtual machines}}
     container: |
-      Exécutez {échelle, pluriel, = 0 {no containers} = 1 {1 container} autres {# containers}}
+      Exécutez {scale, plural,
+      =0 {no containers}
+      =1 {1 container}
+      other {# containers}
+      }
 formScheduling:
   canRequestHost:
     vm: Exécuter <b>toutes les</b> machines virtuelles sur un hôte spécifique
@@ -1892,6 +1910,10 @@ formSecurity:
     placeholder: par exemple syslog
   logOptions:
     label: Journal
+  memoryReservation:
+    label: Mémoire Allouée
+  milliCpuReservation:
+    label: Allocation mCPU
 formServiceLinks:
   addAction: Liens des Services
   noServices: Il n’y a aucun autre service à lier.
@@ -2022,7 +2044,7 @@ hostSettings:
   hostUrl:
     local: "Adresse de ce site :"
     new:
-      labelText: "Autre chose :"
+      labelText: "Autre chose:"
       placeholder: "par exemple http://exemple.com:8080"
   helpText:
     static1: "N’incluez pas <code>/ v1</code> ou tout autre chemin, mais si vous faites"
@@ -2330,7 +2352,7 @@ machine:
     close: Fermer
   driverDigitalocean:
     sizeLabel: |
-      {slug} RAM, disque {disk}gb, {vcpus, pluriel, = 1 {# vCPU} autres {# vCPUs}}
+      {slug} RAM, disque {disk}gb, {vcpus, plural, =1 {# vCPU} other {# vCPUs}}
     accountSection: Accès du Compte
     authAccountButton: 'Suivant : Configurer Droplet'
     accessToken:
@@ -2664,6 +2686,7 @@ newBalancer:
 newCatalog:
   version:
     prompt: Choisissez une version...
+    default: La valeur par défaut à l’époque (actuellement {version})
   saveUpgrade: Mettre à niveau
   saveNew: Démarrer
   saveConfigure: Configurer
@@ -2695,7 +2718,7 @@ newContainer:
     container: Ajouter un conteneur
     vm: Ajouter une Machine Virtuelle
     service: |
-      Ajouter {numServices, pluriel, = 1 {Service} autres {Services}}
+      Ajouter {numServices, plural, =1 {Service} other {Services}}
   upgrade:
     container: Mise à niveau du Conteneur
     vm: Mettre à niveau la Machine virtuelle
@@ -2751,6 +2774,16 @@ registryRow:
   email: Mél
   username: Nom d'Utilisateur
   created: Crée
+reservationParameters:
+  localStorage:
+    labelText: 'Limite de stockage local'
+    placeholder: '1024'
+  memory:
+    labelText: 'Limite Mémoire'
+    placeholder: '2048'
+  milliCpu:
+    labelText: Limite mCPU
+    placeholder: '1000'
 saveCancel:
   saving: Sauvegarde en cours ...
   saved: Sauvegardé !
@@ -2813,9 +2846,9 @@ stackSection:
   description: Description
   none: Aucun Service
   container: |
-    {numContainers, pluriel, = 1 {Container} autres {Containers}}
+    {numContainers, plural, =1 {Container} other {Containers}}
   service: |
-    {numServices, pluriel, = 1 {Service} autres {Services}}
+    {numServices, plural, =1 {Service} other {Services}}
   sidekick: |
     {numSidekicks, plural,
     =1 {Sidekick}
@@ -2872,8 +2905,6 @@ swarm:
     none: Aucun Service
 telemetryOpt:
   header: Statistiques
-  subtext: |
-    Rancher Labs souhaiteraient recueillir des informations anonymes relatives à la configuration de votre installation de {appName}. <br/> Aucun nom de ressource spécifique, adresses IP ou d’autres identifiants seront collectées. <br/> Cette information nous aidera à apprendre comment les gens utilisent Rancher et guidera nos priorités de développement futures.
   learnMore:
     link: "http://docs.rancher.com/rancher/telemetry"
     label: En savoir Plus
@@ -2886,6 +2917,8 @@ tooltipWarning:
   notConfigured: Contrôle d’accès non configuré
   dismiss: Abandonner
 upgradeBtn:
+  version:
+    current: 'Courante'
   status:
     none: 'Aucun'
     loading: 'Vérification des mises à jour...'

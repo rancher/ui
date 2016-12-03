@@ -33,6 +33,7 @@ generic:
   state: 状態
   test: テスト
   testing: テスト中
+  total: 合計
   type: タイプ
   unknown: 不明
 accountsPage:
@@ -446,6 +447,10 @@ containersPage:
       entryPoint: 'エントリーポイント:'
       description: '詳細情報:'
       stack: 'スタック/サービス:'
+      memoryReservation:
+        labelText: 'メモリ予約: '
+      milliCpuReservation:
+        labelText: 'mCPU予約: '
     navTabs:
       labels: ラベル
       volumes: ボリューム
@@ -717,6 +722,10 @@ hostsPage:
       docker: 'Docker:'
       os: 'OS:'
       description: '詳細情報:'
+      milliCpu:
+        labelText: mCPU
+      localStorageMb:
+        labelText: ローカル制限
     navTabs:
       containers: コンテナ
       ports: ポート
@@ -1020,6 +1029,7 @@ stacksPage:
     all: 全てのスタック
     user: ユーザーのスタック
     custom: '{name} スタック'
+    tags: '"{tags}" スタック'
     infra: インフラストラクチャ スタック
   actionButton: スタックを追加
   catalogButton: カタログから追加
@@ -1027,6 +1037,9 @@ stacksPage:
     label: 並び替え
     state: 状態
     name: 名前
+  tags:
+    all: 全てのタグ
+    one: 'タグ: {name}'
   noInfra: まだインフラストラクチャ スタックはありません
   noMatch: 選択したタグに一致するスタックはありません
   new:
@@ -1814,6 +1827,10 @@ formSecurity:
     placeholder: '例: syslog'
   logOptions:
     label: ログ
+  memoryReservation:
+    label: メモリ予約
+  milliCpuReservation:
+    label: mCPU予約
 formServiceLinks:
   addAction: サービスリンク
   noServices: リンクする他のサービスはありません。
@@ -2623,6 +2640,7 @@ newContainer:
     healthCheck: ヘルスチェック
     labels: ラベル
     scheduling: スケジューリング
+    balancing: バランシング
   selectUpgrade: アップグレードするサービスを1つ以上選択してください
   saveUpgrade: アップグレード
   saveNew: 作成
@@ -2658,6 +2676,16 @@ registryRow:
   email: Email
   username: ユーザー名
   created: 作成日
+reservationParameters:
+  localStorage:
+    labelText: 'ローカルストレージ制限'
+    placeholder: '1024'
+  memory:
+    labelText: 'メモリ制限'
+    placeholder: '2048'
+  milliCpu:
+    labelText: mCPU制限
+    placeholder: '1000'
 saveCancel:
   saving: 保存中...
   saved: 完了!
@@ -2787,6 +2815,8 @@ tooltipWarning:
   notConfigured: アクセスコントロールは設定されていません
   dismiss: 表示しない
 upgradeBtn:
+  version:
+    current: '現行'
   status:
     none: 'None'
     loading: 'アップグレードを確認中...'
