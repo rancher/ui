@@ -17,7 +17,7 @@ HEADER {
     height: $navbar-height;
     width: 68px;
     background-image: url('images/logos/main.svg');
-    // background-color: $logo-bg;
+    background-color: $logo-bg;
     background-position: center center;
     background-repeat: no-repeat;
   }
@@ -46,9 +46,8 @@ HEADER {
   .lang-select {
     height: 45px;
     line-height: 32px;
-    // color: $lightTeal;
+    color: $lightTeal;
   }
-
 
   NAV.navbar {
     background-color: $top-row; //$top-row
@@ -57,9 +56,9 @@ HEADER {
     margin: 0;
     padding: 0;
     font-size : 14px;
+    line-height: 0;
 
     ul {
-      @extend .bg-transparent;
       margin: 0;
     }
 
@@ -300,6 +299,17 @@ HEADER {
       }
 
       .dropdown-menu {
+        background-color: $dropdown-bg;
+
+        > li {
+          display: block;
+
+          > a {
+            display: block;
+            width: 100%;
+          }
+        }
+
         &.project-menu {
           z-index: 2000;
           .active a {
@@ -307,6 +317,7 @@ HEADER {
           }
           a {
             position: relative;
+            display: block;
             &:after {
               content: " ";
               position: absolute;
