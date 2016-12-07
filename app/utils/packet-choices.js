@@ -24,6 +24,15 @@ export let PacketFacilities = [
     "code": "sjc1",
     "features": [],
     "address": null
+  },
+  {
+    "id": "8ea03255-89f9-4e62-9d3f-8817db82ceed",
+    "name": "Tokyo, JP (Beta)",
+    "code": "nrt1",
+    "features": [
+      "baremetal"
+    ],
+    "address": null
   }
 ];
 
@@ -181,6 +190,9 @@ export let PacketPlans = [
       },
       {
         "href": "/facilities/e1e9c52e-a0bc-4117-b996-0fc94843ea09"
+      },
+      {
+        "href": "/facilities/8ea03255-89f9-4e62-9d3f-8817db82ceed"
       }
     ],
     "pricing": {
@@ -230,6 +242,9 @@ export let PacketPlans = [
       },
       {
         "href": "/facilities/e1e9c52e-a0bc-4117-b996-0fc94843ea09"
+      },
+      {
+        "href": "/facilities/8ea03255-89f9-4e62-9d3f-8817db82ceed"
       }
     ],
     "pricing": {
@@ -276,6 +291,9 @@ export let PacketPlans = [
       },
       {
         "href": "/facilities/8e6470b3-b75e-47d1-bb93-45b225750975"
+      },
+      {
+        "href": "/facilities/8ea03255-89f9-4e62-9d3f-8817db82ceed"
       }
     ],
     "pricing": {
