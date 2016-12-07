@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { parsePortSpec } from 'ui/utils/parse-port';
 
 export default Ember.Component.extend({
   intl: Ember.inject.service(),
@@ -11,6 +12,7 @@ export default Ember.Component.extend({
   rules: null,
   protocolChoices: null,
   showBackend: null,
+  showIp: null,
 
   onInit: function() {
     let rules = this.get('service.lbConfig.portRules');
@@ -35,6 +37,15 @@ export default Ember.Component.extend({
     if ( this.get('showBackend') === null ) {
       let hasName = !!rules.findBy('backendName');
       this.set('showBackend', hasName);
+    }
+
+    if ( this.get('showIp') === null ) {
+      this.get('service.launchConfig.ports').forEach((port) => {
+        let parsed = parsePortSpec(port,'tcp');
+        if ( parsed.hostIp ) {
+          this.set('showIp', true);
+        }
+      });
     }
   }.on('init'),
 
@@ -85,6 +96,10 @@ export default Ember.Component.extend({
 
     showBackend() {
       this.set('showBackend', true);
+    },
+
+    showIp() {
+      this.set('showIp', true);
     },
   },
 
