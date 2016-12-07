@@ -145,7 +145,7 @@ var Host = Resource.extend({
 
   localStorageBlurb: Ember.computed('localStorageMb', function() {
     if (this.get('localStorageMb')) {
-      return formatSi(this.get('localStorageMb'), 1024, 'iB', 'B');
+      return formatSi(this.get('localStorageMb'), 1024, 'iB', 'B', 2 /*start at 1024^2==MB */);
     }
   }),
 
