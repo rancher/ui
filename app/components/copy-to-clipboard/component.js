@@ -55,7 +55,7 @@ export default Ember.Component.extend({
     }
 
     if (this.get('size')) {
-      out = `${out} small btn-link`;
+      out = `${out} small bg-transparent`;
     }
 
     return out;
