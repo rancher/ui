@@ -7,14 +7,14 @@
 
   <div class="pull-right">
     {{action-menu model=service classNames="ml-5 pull-right" size="sm"}}
-    {{header-state model=service classNames="pull-right"}}
+    {{header-state model=service}}
   </div>
 </section>
 
 {{!todo copy pasta}}
 <section>
   <div class="row">
-    <div class="col-md-3 mb-15">
+    <div class="col span-3 mb-15">
         {{#if service.description}}
           <div>
             <label class="block">{{t 'servicePage.multistat.description'}} </label>
@@ -100,7 +100,7 @@
         {{/if}}
       </div>
 
-      <div class="col-md-9">
+      <div class="col span-9">
       {{#if (eq service.kind 'externalService')}}
         {{!-- since external services are the only ones that have externalIp/hostname it didnt make sense to give extIps its own route like other services  --}}
         <section>
@@ -122,8 +122,8 @@
       {{/if}}
 
       {{#if (or (or service.hasLabels service.hasContainers) service.consumedServicesWithNames.length) }}
-        <section>
-          <ul class="nav nav-tabs nav-tabs-well">
+        <section class="tabs">
+          <ul class="tab-header">
             {{#if (eq service.kind 'dnsService')}}
               {{#link-to 'service.links' tagName='li' href=false classNames='hide'}}<a href="#">{{t 'servicePage.navTabs.links'}}</a>{{/link-to}}
             {{else}}

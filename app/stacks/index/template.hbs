@@ -4,11 +4,11 @@
   </h1>
 
   {{#if (eq which "infra")}}
-    {{#link-to "catalog-tab" projects.current.id (query-params catalogId="all" templateBase="infra") classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
+    {{#link-to "catalog-tab" projects.current.id (query-params catalogId="all" templateBase="infra") classNames="btn btn-sm bg-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
   {{else}}
-    {{#link-to "stacks.new" classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.actionButton'}}{{/link-to}}
+    {{#link-to "stacks.new" classNames="btn btn-sm bg-primary"}}{{t 'stacksPage.actionButton'}}{{/link-to}}
     {{#if arranged.length}}
-      {{#link-to "catalog-tab" projects.current.id (query-params catalogId="all") classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
+      {{#link-to "catalog-tab" projects.current.id (query-params catalogId="all") classNames="btn btn-sm bg-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
     {{/if}}
   {{/if}}
 
@@ -27,9 +27,9 @@
       {{stack-section model=stack showAddtlInfo='showAddtlInfo' showAddService=(not stack.system)}}
     {{else}}
       {{#if (and model.stacks.length tags)}}
-        <div class="r-m20 text-center text-muted">{{t 'stacksPage.noMatch'}}</div>
+        <div class="m-20 text-center text-muted">{{t 'stacksPage.noMatch'}}</div>
       {{else if (eq which "infra")}}
-        <div class="r-m20 text-center text-muted">{{t 'stacksPage.noInfra'}}</div>
+        <div class="m-20 text-center text-muted">{{t 'stacksPage.noInfra'}}</div>
       {{else}}
         {{hero-add-service}}
       {{/if}}
