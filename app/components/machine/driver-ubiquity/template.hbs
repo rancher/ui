@@ -6,10 +6,10 @@
       </div>
 
       <div class="row {{if isStep1 'form-group'}}">
-        <div class="col-md-2 form-label">
+        <div class="col span-2 form-label">
           <label class="form-control-static">{{t 'machine.driverUbiquity.clientId.label'}}</label>
         </div>
-        <div class="col-md-10">
+        <div class="col span-10">
           {{#if isStep1}}
             {{input type="text" name="clientId" classNames="form-control" placeholder=(t 'machine.driverUbiquity.clientId.placeholder') value=ubiquityConfig.clientId}}
           {{else}}
@@ -18,10 +18,10 @@
         </div>
       </div>
       <div class="row {{if isStep1 'form-group'}}">
-        <div class="col-md-2 form-label">
+        <div class="col span-2 form-label">
           <label class="form-control-static">{{t 'machine.driverUbiquity.apiUsername.label'}}</label>
         </div>
-        <div class="col-md-10">
+        <div class="col span-10">
           {{#if isStep1}}
             {{input type="text" name="apiUsername" classNames="form-control" placeholder=(t 'machine.driverUbiquity.apiUsername.placeholder') value=ubiquityConfig.apiUsername}}
           {{else}}
@@ -30,10 +30,10 @@
         </div>
       </div>
       <div class="row {{if isStep1 'form-group'}}">
-        <div class="col-md-2 form-label">
+        <div class="col span-2 form-label">
           <label class="form-control-static">{{t 'machine.driverUbiquity.apiToken.label'}}</label>
         </div>
-        <div class="col-md-10">
+        <div class="col span-10">
           {{#if isStep1}}
             {{input type="password" name="apiToken" classNames="form-control" placeholder=(t 'machine.driverUbiquity.apiToken.placeholder') value=ubiquityConfig.apiToken}}
           {{else}}
@@ -48,7 +48,7 @@
     {{#if isStep1}}
       {{top-errors errors=errors}}
       <div class="footer-actions">
-        <button {{action "ubiLogin"}} name="submit" class="btn btn-primary">{{t 'machine.driverUbiquity.loginAction'}}</button>
+        <button {{action "ubiLogin"}} name="submit" class="btn bg-primary">{{t 'machine.driverUbiquity.loginAction'}}</button>
         <button {{action "cancel"}} class="btn btn-link">{{t 'generic.cancel'}}</button>
       </div>
     {{/if}}
@@ -74,10 +74,10 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverUbiquity.region.label'}}</label>
       </div>
-      <div class="col-md-10">
+      <div class="col span-10">
         <select class="form-control" onchange={{action "setZone" target.value}}>
           {{#each allZones as |choice|}}
             <option value={{choice.id}} selected={{eq ubiquityConfig.zoneId choice.id}}>{{choice.name}}</option>
@@ -87,20 +87,20 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverUbiquity.image.label'}}</label>
       </div>
-      <div class="col-md-4">
+      <div class="col span-4">
         <select class="form-control" onchange={{action (mut ubiquityConfig.imageId) value="target.value"}}>
           {{#each allImages as |choice|}}
             <option value={{choice.id}} selected={{eq ubiquityConfig.imageId choice.id}}>{{choice.name}}</option>
           {{/each}}
         </select>
       </div>
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverUbiquity.flavor.label'}}</label>
       </div>
-      <div class="col-md-4">
+      <div class="col span-4">
         <select class="form-control" onchange={{action (mut ubiquityConfig.flavorId) value="target.value"}}>
           {{#each allFlavors as |choice|}}
             <option value={{choice.id}} selected={{eq ubiquityConfig.flavorId choice.id}}>{{choice.name}}</option>

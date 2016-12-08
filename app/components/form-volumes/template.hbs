@@ -1,10 +1,10 @@
 
 <div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
+  <div class="col span-2 form-label">
     <label class="form-control-static">{{t 'formVolumes.volumes'}}</label>
   </div>
 
-  <div class="col-sm-12 col-md-8">
+  <div class="col span-8">
     <div class="form-control-static">
       <button class="btn-circle-text" {{action "addVolume"}}><i class="icon icon-plus-circle"/> <span>{{t 'formVolumes.addActionLabel'}}</span></button>
     </div>
@@ -16,7 +16,7 @@
               {{input type="text" class="form-control volume-path" value=vol.value placeholder="e.g. [volumename: or /path/on/host:]/path/in/container[:ro]"}}
             </td>
             <td width="30" class="text-right">
-              <button class="btn btn-primary btn-sm" {{action "removeVolume" vol}}><i class="icon icon-minus"/></button>
+              <button class="btn bg-primary btn-sm" {{action "removeVolume" vol}}><i class="icon icon-minus"/></button>
             </td>
           </tr>
         {{/each}}
@@ -27,11 +27,11 @@
 
 {{#if isService}}
   <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formVolumes.volumesFrom'}}</label>
     </div>
 
-    <div class="col-sm-12 col-md-8 form-control-static">
+    <div class="col span-8 form-control-static">
       {{#if volumesFromLaunchConfigChoices.length}}
         {{#each volumesFromLaunchConfigChoices as |choice|}}
           <label class="mr-10 radio small" style="color: inherit; text-transform: none;">{{input type="checkbox" checked=choice.enabled}} {{choice.displayName}}</label>
@@ -43,11 +43,11 @@
   </div>
 {{else}}
   <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">{{t 'formVolumes.volumes'}}</label>
+    <div class="col span-2 form-label">
+      <label class="form-control-static">{{t 'formVolumes.volumesFrom'}}</label>
     </div>
 
-    <div class="col-sm-12 col-md-8">
+    <div class="col span-8">
       <div class="form-control-static">
         <button class="btn-circle-text" {{action "addVolume"}}><i class="icon icon-plus-circle"/> <span>{{t 'formVolumes.addActionLabel'}}</span></button>
       </div>
@@ -59,7 +59,7 @@
                 {{input type="text" class="form-control volume-path" value=vol.value placeholder="e.g. [volumename: or /path/on/host:]/path/in/container[:ro]"}}
               </td>
               <td width="30" class="text-right">
-                <button class="btn btn-primary btn-sm" {{action "removeVolume" vol}}><i class="icon icon-minus"/></button>
+                <button class="btn bg-primary btn-sm" {{action "removeVolumeFrom" vol}}><i class="icon icon-minus"/></button>
               </td>
             </tr>
           {{/each}}
@@ -68,73 +68,12 @@
     </div>
   </div>
 
-  {{#if isService}}
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">{{t 'formVolumes.volumesFrom'}}</label>
-      </div>
+<div class="row form-group">
+  <div class="col span-2 form-label">
+    <label for="volumeDriver" class="form-control-static">{{t 'formVolumes.volumeDriver.label'}}</label>
+  </div>
 
-      <div class="col-sm-12 col-md-8 form-control-static">
-        {{#if volumesFromLaunchConfigChoices.length}}
-          {{#each volumesFromLaunchConfigChoices as |choice|}}
-            <label class="r-mr10 radio small" style="color: inherit; text-transform: none;">{{input type="checkbox" checked=choice.enabled}} {{choice.displayName}}</label>
-          {{/each}}
-        {{else}}
-          <span class="text-muted">{{t 'formVolumes.noLaunchConfigs'}}</span>
-        {{/if}}
-      </div>
-    </div>
-  {{else}}
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">{{t 'formVolumes.volumesFrom'}}</label>
-      </div>
-
-      <div class="col-sm-12 col-md-8">
-        <div class="form-control-static">
-          {{#if instance.requestedHostId}}
-            {{#if hostContainerChoices.length}}
-              <button class="btn-circle" {{action "addVolumeFrom"}}><i class="icon icon-plus-circle"/></button>
-            {{else}}
-              <span class="text-muted">{{t 'formVolumes.noHostContainers'}}</span>
-            {{/if}}
-          {{else}}
-              <span class="text-muted">{{t 'formVolumes.onlySingleHost'}}</span>
-          {{/if}}
-        </div>
-        {{#if volumesFromArray.length}}
-          <table class="table fixed no-lines no-top-padding tight">
-            {{#each volumesFromArray as |vol|}}
-              <tr>
-                <td>
-                  {{new-select
-                    classNames="form-control input-sm volumefrom-container"
-                    prompt="formVolumes.value.prompt"
-                    value=vol.value
-                    content=hostContainerChoices
-                    optionValuePath="id"
-                    optionLabelPath="name"
-                    optionGroupPath="group"
-                  }}
-                </td>
-                <td width="30" class="text-right">
-                  <button class="btn btn-primary btn-sm" {{action "removeVolumeFrom" vol}}><i class="icon icon-minus"/></button>
-                </td>
-              </tr>
-            {{/each}}
-          </table>
-        {{/if}}
-      </div>
-    </div>
-  {{/if}}
-
-  <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label for="volumeDriver" class="form-control-static">{{t 'formVolumes.volumeDriver.label'}}</label>
-    </div>
-
-    <div class="col-sm-12 col-md-8">
-      {{input type="text" class="form-control" value=instance.volumeDriver placeholder=(t 'formVolumes.volumeDriver.placeholder')}}
-    </div>
+  <div class="col span-8">
+    {{input type="text" class="form-control" value=instance.volumeDriver placeholder=(t 'formVolumes.volumeDriver.placeholder')}}
   </div>
 {{/if}}

@@ -8,19 +8,19 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverPacket.projectId.label'}}*</label>
       </div>
-      <div class="col-md-10">
+      <div class="col span-10">
         {{input type="text" name="username" value=packetConfig.projectId classNames="form-control" placeholder=(t 'machine.driverPacket.projectId.placeholder')}}
       </div>
     </div>
 
     <div class="row form-group">
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverPacket.apiKey.label'}}*</label>
       </div>
-      <div class="col-md-10">
+      <div class="col span-10">
         {{input type="password" name="password" value=packetConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverPacket.apiKey.placeholder')}}
         <p class="help-block">{{format-html-message 'machine.driverPacket.apiKeyHelp'}}</p>
       </div>
@@ -31,20 +31,20 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverPacket.image.label'}}</label>
       </div>
-      <div class="col-md-4">
+      <div class="col span-4">
         <select class="form-control" onchange={{action (mut packetConfig.os) value="target.value"}}>
           {{#each osChoices as |choice|}}
             <option disabled={{not choice.enabled}} value={{choice.slug}} selected={{eq packetConfig.os choice.slug}}>{{choice.name}}</option>
           {{/each}}
         </select>
       </div>
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverPacket.size.label'}}</label>
       </div>
-      <div class="col-md-4">
+      <div class="col span-4">
         <select class="form-control" onchange={{action (mut packetConfig.plan) value="target.value"}}>
           {{#each planChoices as |choice|}}
             <option disabled={{not choice.enabled}} value={{choice.slug}} selected={{eq packetConfig.plan choice.slug}}>{{choice.name}}</option>
@@ -58,11 +58,11 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverPacket.region.label'}}</label>
       </div>
-      <div class="col-md-10">
-        <select class="form-control" onchange={{action (mut packetConfig.facilityCode) value="target.value"}}>
+      <div class="col span-10">
+        <select class="form-control" onchange={{action (mut packetConfig.facility) value="target.value"}}>
           {{#each facilityChoices as |choice|}}
             <option value={{choice.code}} selected={{eq packetConfig.facilityCode choice.code}}>{{choice.name}}</option>
           {{/each}}

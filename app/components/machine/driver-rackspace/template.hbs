@@ -9,19 +9,19 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverRackspace.username.label'}}*</label>
       </div>
-      <div class="col-md-10">
+      <div class="col span-10">
         {{input type="text" value=rackspaceConfig.username classNames="form-control" placeholder=(t 'machine.driverRackspace.username.placeholder')}}
       </div>
     </div>
 
     <div class="row form-group">
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverRackspace.apiKey.label'}}*</label>
       </div>
-      <div class="col-md-10">
+      <div class="col span-10">
         {{input type="password" value=rackspaceConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverRackspace.apiKey.placeholder')}}
         <p class="help-block">{{t 'machine.driverRackspace.accountHelp'}}</p>
       </div>
@@ -32,10 +32,10 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverRackspace.region.label'}}</label>
       </div>
-      <div class="col-md-10">
+      <div class="col span-10">
         <select class="form-control" onchange={{action (mut rackspaceConfig.region) value="target.value"}}>
           {{#each regionChoices as |choice|}}
             <option value={{choice.value}} selected={{eq rackspaceConfig.region choice.value}}>{{choice.label}}</option>
@@ -49,10 +49,10 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverRackspace.flavor.label'}}</label>
       </div>
-      <div class="col-md-10">
+      <div class="col span-10">
         <select class="form-control" onchange={{action (mut rackspaceConfig.flavorId) value="target.value"}}>
           {{#each flavorChoices as |choice|}}
             <option value={{choice.value}} selected={{eq rackspaceConfig.flavorId choice.value}}>{{choice.label}}</option>
