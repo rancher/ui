@@ -39,11 +39,11 @@
     </p>
 
     {{#if confirmDisable}}
-      <button class="btn btn-danger" {{action "disable"}}>
+      <button class="btn bg-danger" {{action "disable"}}>
         <i class="icon icon-alert"></i> {{t 'authPage.github.authenticated.disableAccess.confirmDisable'}}
       </button>
     {{else}}
-      <button class="btn btn-danger" {{action "promptDisable"}}>
+      <button class="btn bg-danger" {{action "promptDisable"}}>
         <i class="icon icon-umbrella"></i> {{t 'authPage.github.authenticated.disableAccess.disable'}}
       </button>
     {{/if}}
@@ -85,13 +85,13 @@
       <hr/>
       <p>{{t 'authPage.github.notAuthenticated.form.subtext'}}</p>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col span-6">
           <div class="form-group">
             <label>{{t 'authPage.github.notAuthenticated.form.clientId.labelText'}}*</label>
             {{input type="text" name="username" value=githubConfig.clientId classNames="form-control"}}
           </div>
         </div>
-        <div class="col-md-6">
+        <div class="col span-6">
           <div class="form-group">
             <label>{{t 'authPage.github.notAuthenticated.form.clientSecret.labelText'}}*</label>
             {{input type="password" name="password" value=githubConfig.clientSecret classNames="form-control"}}
@@ -99,7 +99,7 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12 col-md-6">
+        <div class="col span-6">
           <div class="checkbox">
             <label>{{input type="checkbox" checked=isEnterprise}} {{t 'authPage.github.notAuthenticated.form.ghEnterprise.labelText'}}</label>
           </div>
@@ -109,7 +109,7 @@
             </div>
           {{/liquid-if}}
         </div>
-        <div class="col-xs-12 col-md-6">
+        <div class="col span-6">
           {{#liquid-if isEnterprise}}
           <label>{{t 'authPage.github.notAuthenticated.form.enterpriseHost.labelText'}}*</label>
             {{input type="text" value=githubConfig.hostname classNames="form-control" placeholder=(t 'authPage.github.notAuthenticated.form.enterpriseHost.placeholder')}}
@@ -118,7 +118,7 @@
       </div>
       <div class="row">
         <div class="form-group">
-          <button class="btn btn-primary" style="display: block;margin: 0 auto;" {{action "save"}}>
+          <button class="btn bg-primary" style="display: block;margin: 0 auto;" {{action "save"}}>
             {{#if saving}}
               <i class="icon icon-spinner icon-spin"></i> {{t 'generic.saving'}}
             {{else if doneSaving}}
@@ -138,11 +138,11 @@
       {{top-errors errors=errors}}
 
       <div class="row">
-        <div class="col-md-6">
+        <div class="col span-6">
           <p>{{t 'authPage.github.testAuth.subtext'}}</p>
         </div>
-        <div class="col-md-6">
-          <button disabled={{createDisabled}} class="btn btn-primary" {{action "authenticate"}}>
+        <div class="col span-6">
+          <button disabled={{createDisabled}} class="btn bg-primary" {{action "authenticate"}}>
             {{#if testing}}
               <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.github.testAuth.buttonText.post'}}
             {{else}}

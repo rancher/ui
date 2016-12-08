@@ -6,10 +6,10 @@
       </div>
 
       <div class="row {{if isStep1 'form-group'}}">
-        <div class="col-md-2 form-label">
+        <div class="col span-2 form-label">
           <label class="form-control-static">{{t 'machine.driverExoscale.apiKey.label'}}</label>
         </div>
-        <div class="col-md-10">
+        <div class="col span-10">
           {{#if isStep1}}
             {{input type="text" name="username" classNames="form-control" placeholder=(t 'machine.driverExoscale.apiKey.placeholder') value=exoscaleConfig.apiKey}}
           {{else}}
@@ -18,10 +18,10 @@
         </div>
       </div>
       <div class="row {{if isStep1 'form-group'}}">
-        <div class="col-md-2 form-label">
+        <div class="col span-2 form-label">
           <label class="form-control-static">{{t 'machine.driverExoscale.secretKey.label'}}</label>
         </div>
-        <div class="col-md-10">
+        <div class="col span-10">
           {{#if isStep1}}
             {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverExoscale.secretKey.placeholder') value=exoscaleConfig.apiSecretKey}}
           {{else}}
@@ -37,7 +37,7 @@
       {{top-errors errors=errors}}
 
       <div class="footer-actions">
-        <button {{action "exoscaleLogin"}} name="submit" class="btn btn-primary">{{t 'machine.driverExoscale.loginAction'}}</button>
+        <button {{action "exoscaleLogin"}} name="submit" class="btn bg-primary">{{t 'machine.driverExoscale.loginAction'}}</button>
         <button {{action "cancel"}} class="btn btn-link">{{t 'generic.cancel'}}</button>
       </div>
     {{/if}}
@@ -57,10 +57,10 @@
     </div>
 
     <div class="row {{if isStep3 'form-group'}}">
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverExoscale.securityGroup.label'}}</label>
       </div>
-      <div class="col-md-10">
+      <div class="col span-10">
         {{#if isStep3}}
           <div class="radio pt-10"><label>
             {{radio-button selection=whichSecurityGroup value="default"}}
@@ -102,7 +102,7 @@
     {{top-errors errors=errors}}
 
     <div class="footer-actions">
-      <button {{action "selectSecurityGroup"}} class="btn btn-primary">{{t 'machine.driverExoscale.selectSecurityGroupAction'}}</button>
+      <button {{action "selectSecurityGroup"}} class="btn bg-primary">{{t 'machine.driverExoscale.selectSecurityGroupAction'}}</button>
       <button {{action "cancel"}} class="btn btn-link">Cancel</button>
     </div>
   {{/if}}
@@ -134,20 +134,20 @@
     {{partial "host/add-common"}}
 
     <div class="row form-group">
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverExoscale.instanceProfile.label'}}</label>
       </div>
-      <div class="col-md-4">
+      <div class="col span-4">
         <select class="form-control" onchange={{action (mut exoscaleConfig.instanceProfile) value="target.value"}}>
           {{#each allInstanceProfiles as |choice|}}
             <option value={{choice.name}} selected={{eq exoscaleConfig.instanceProfile choice.name}}>{{choice.displaytext}}</option>
           {{/each}}
         </select>
       </div>
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverExoscale.diskSize.label'}}</label>
       </div>
-      <div class="col-md-4">
+      <div class="col span-4">
         <select class="form-control" onchange={{action (mut exoscaleConfig.diskSize) value="target.value"}}>
           {{#each allDiskSizes as |choice|}}
             <option value={{choice}} selected={{eq exoscaleConfig.diskSize choice}}>{{choice}}</option>
@@ -157,10 +157,10 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'machine.driverExoscale.sshUser.label'}}</label>
       </div>
-      <div class="col-md-4">
+      <div class="col span-4">
         {{input type="text" classNames="form-control" placeholder=(t 'machine.driverExoscale.sshUser.placeholder') value=exoscaleConfig.sshUser}}
       </div>
     </div>

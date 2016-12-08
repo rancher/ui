@@ -22,7 +22,7 @@
     <p class="help-block">{{t 'ldap.accessEnabled.subtext'}}</p>
 
     <div class="row">
-      <div class="col-md-4">
+      <div class="col span-4">
         <h4>{{t 'ldap.accessEnabled.general.header'}}</h4>
         <div><b>{{t 'ldap.accessEnabled.general.server'}} </b> <span class="text-muted">{{model.server}}:{{model.port}}</span></div>
         <div><b>{{t 'ldap.accessEnabled.general.tls'}} </b> <span class="text-muted">{{if model.tls "Yes" "No"}}</span></div>
@@ -32,7 +32,7 @@
           <div><b>{{t 'ldap.accessEnabled.general.defaultDomain'}} </b> <span class="text-muted">{{model.loginDomain}}</span></div>
         {{/unless}}
       </div>
-      <div class="col-md-4">
+      <div class="col span-4">
         <h4>{{t 'ldap.accessEnabled.users.header'}}</h4>
         <div><b>{{t 'ldap.accessEnabled.users.objectClass'}} </b> <span class="text-muted">{{model.userObjectClass}}</span></div>
         <div><b>{{t 'ldap.accessEnabled.users.login'}} </b> <span class="text-muted">{{model.userLoginField}}</span></div>
@@ -41,7 +41,7 @@
         <div><b>{{t 'ldap.accessEnabled.users.enabled'}} </b> <span class="text-muted">{{model.userEnabledAttribute}}</span></div>
         <div><b>{{t 'ldap.accessEnabled.users.disabledBitMask'}} </b> <span class="text-muted">{{model.userDisabledBitMask}}</span></div>
       </div>
-      <div class="col-md-4">
+      <div class="col span-4">
         <h4>{{t 'ldap.accessEnabled.group.header'}}</h4>
         <div><b>{{t 'ldap.accessEnabled.group.objectClass'}} </b> <span class="text-muted">{{model.groupObjectClass}}</span></div>
         <div><b>{{t 'ldap.accessEnabled.group.name'}} </b> <span class="text-muted">{{model.groupNameField}}</span></div>
@@ -66,11 +66,11 @@
     </p>
 
     {{#if confirmDisable}}
-      <button class="btn btn-danger" {{action "disable"}}>
+      <button class="btn bg-danger" {{action "disable"}}>
         <i class="icon icon-alert"></i> {{t 'ldap.accessEnabled.disable.confirmDisable.post'}}
       </button>
     {{else}}
-      <button class="btn btn-danger" {{action "promptDisable"}}>
+      <button class="btn bg-danger" {{action "promptDisable"}}>
         <i class="icon icon-umbrella"></i> {{t 'ldap.accessEnabled.disable.confirmDisable.pre'}}
       </button>
     {{/if}}
@@ -85,13 +85,13 @@
     <hr/>
     <p class="help-block">{{format-html-message 'ldap.accessConfig.subtext1' providerName=(t providerName)}}</p>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col span-6">
         <div class="form-group">
           <label>{{t 'ldap.accessConfig.hostName.labelText'}}*</label>
           {{input type="text" value=model.server classNames="form-control"}}
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col span-6">
         <div class="form-group">
           <label>{{t 'ldap.accessConfig.port.labelText'}}</label>
           <div class="input-group">
@@ -102,7 +102,7 @@
           </div>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col span-4">
         <div class="checkbox">
         </div>
       </div>
@@ -110,13 +110,13 @@
 
     <p class="help-block">{{t 'ldap.accessConfig.subtext2' appName=settings.appName}}</p>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col span-6">
         <div class="form-group">
           <label>{{t 'ldap.accessConfig.serviceUsername.labelText'}}*</label>
           {{input type="text" value=model.serviceAccountUsername classNames="form-control"}}
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col span-6">
         <div class="form-group">
           <label>{{t 'ldap.accessConfig.servicePassword.labelText'}}*</label>
           {{input type="password" value=model.serviceAccountPassword classNames="form-control"}}
@@ -125,7 +125,7 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6">
+      <div class="col span-6">
         <div class="form-group">
           <p class="help-block">{{t 'ldap.accessConfig.searchBase.helpText'}}</p>
           <label>{{t 'ldap.accessConfig.searchBase.labelText'}}*</label>
@@ -133,7 +133,7 @@
         </div>
       </div>
       {{#unless isOpenLdap}}
-        <div class="col-md-6">
+        <div class="col span-6">
           <p class="help-block">{{t 'ldap.accessConfig.defaultDomain.helpText'}}</p>
           <div class="form-group">
             <label>{{t 'ldap.accessConfig.defaultDomain.labelText'}}</label>
@@ -149,7 +149,7 @@
     <hr/>
     <p class="help-block">{{t 'ldap.customizeSchema.helpText'}}</p>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col span-6">
         <h4>{{t 'ldap.customizeSchema.users.header'}}</h4>
         <div class="form-group">
           <label>{{t 'ldap.customizeSchema.users.objectClass.labelText'}}</label>
@@ -176,7 +176,7 @@
           {{input type="number" value=model.userDisabledBitMask min=1 classNames="form-control"}}
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col span-6">
         <h3>{{t 'ldap.customizeSchema.groups.header'}}</h3>
         <div class="form-group">
           <label>{{t 'ldap.customizeSchema.groups.objectClass.labelText'}}</label>
@@ -209,22 +209,22 @@
     {{top-errors errors=errors}}
 
     <div class="row">
-      <div class="col-md-4">
+      <div class="col span-4">
         <div class="form-group">
           <label>{{t 'ldap.testAuth.userName.labelText'}}*</label>
           {{input type="text" value=username classNames="form-control"}}
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col span-4">
         <div class="form-group">
           <label>{{t 'ldap.testAuth.password.labelText'}}*</label>
           {{input type="password" value=password classNames="form-control"}}
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col span-4">
         <div class="form-group">
           <label>&nbsp;</label>
-          <button disabled={{createDisabled}} class="btn btn-primary" style="display: block;" {{action "test"}}>
+          <button disabled={{createDisabled}} class="btn bg-primary" style="display: block;" {{action "test"}}>
             {{#if testing}}
               <i class="icon icon-spinner icon-spin"></i> {{t 'ldap.testAuth.authenticate.post'}}
             {{else}}
