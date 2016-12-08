@@ -223,7 +223,8 @@ const navTree = [
     ctx: [getProjectId],
     condition: function() {
       return this.get('hasProject') &&
-      this.get(`settings.${C.SETTING.CATALOG_URL}`);
+      this.get(`settings.${C.SETTING.CATALOG_URL}`) &&
+      !this.get('hasSwarm');
     },
     submenu: getCatalogSubtree,
   },
