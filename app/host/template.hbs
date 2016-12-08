@@ -10,13 +10,13 @@
       {{#link-to "containers.new" (query-params hostId=host.id) classNames="btn btn-sm btn-primary"}}{{t 'hostsPage.hostPage.addContainer.linkTo'}}{{/link-to}}
     {{/action-menu}}
 
-    {{header-state model=host classNames="pull-right"}}
+    {{header-state model=host}}
   </div>
 </section>
 
 <section>
   <div class="row">
-    <div class="col-md-3 mb-15">
+    <div class="col span-3 mb-15">
       {{#if host.description}}
         <div>
           <label>{{t 'hostsPage.hostPage.infoMultiStats.description'}} </label>
@@ -139,12 +139,12 @@
       </div>
 
     </div>
-    <div class="col-md-9">
+    <div class="col span-9">
       <div class="row">
         {{info-multi-stats model=host linkName="hostStats" single=true}}
       </div>
-      <div class="row pl-15">
-        <ul class="nav nav-tabs nav-tabs-well shadowed" role="tablist">
+      <div class="row tabs">
+        <ul class="tab-header shadowed" role="tablist">
           {{#link-to "host.containers" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.containers'}}</a>{{/link-to}}
           {{#link-to "host.ports" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.ports'}}</a>{{/link-to}}
           {{#link-to "host.labels" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.labels'}}</a>{{/link-to}}

@@ -43,7 +43,7 @@
     {{/if}}
   </div>
   {{#if readmeContent}}
-    <div class="col-sm-12 col-md-9" style="overflow-y: auto; max-height: 500px;">
+    <div class="col-sm-12 col span-9" style="overflow-y: auto; max-height: 500px;">
       {{common-mark markdown=readmeContent}}
     </div>
   {{else}}
@@ -135,12 +135,14 @@
       <div class="over-hr"><span {{action "togglePreview"}}>{{t 'newCatalog.preview'}} <i class="icon {{if previewOpen 'icon-chevron-up' 'icon-chevron-down'}}"></i></span></div>
 
       {{#if previewOpen}}
-        <ul class="nav nav-tabs nav-tabs-well" role="tablist">
+        <div class="tabs">
+        <ul class="tab-header" role="tablist">
           {{#each selectedTemplateModel.filesAsArray as |file|}}
             <li role="tab" class="{{if (eq previewTab file.name) 'active'}}" {{action "selectPreviewTab" file.name}}><a href="#">{{file.name}} {{copy-to-clipboard clipboardText=file.body size="small"}}</a></li>
           {{/each}}
           <li role="tab" class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a href="#">{{t 'newCatalog.txt'}} {{copy-to-clipboard clipboardText=answersString size="small"}}</a></li>
         </ul>
+        </div>
         <div class="well nav-well preview-content" role="tabpanel">
           {{#each selectedTemplateModel.filesAsArray as |file|}}
             {{code-block code=file.body language="yaml" hide=(not-eq previewTab file.name)}}
