@@ -43,6 +43,7 @@ Router.map(function() {
       });
 
       this.route('settings');
+      this.route('ha');
 
       this.route('accounts', {path: '/accounts'}, function() {
         this.route('index', {path: '/'});

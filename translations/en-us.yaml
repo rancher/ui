@@ -30,6 +30,7 @@ generic:
   missing: "*%MISSING%*"
   moreActions: More Actions
   na: 'n/a'
+  no: No
   name: Name
   none: None
   ports: Ports
@@ -45,6 +46,8 @@ generic:
   total: Total
   type: Type
   unknown: Unknown
+  uuid: UUID
+  yes: Yes
 
 
 ##############################
@@ -539,101 +542,11 @@ failWhalePage:
   logoutButton: log out
 
 haPage:
-  header:
-    enabled: 'High Availability is <b class="text-success">enabled</b>'
-    disabled: 'High Availability is not configured'
-  haConfigured:
-    addHost:
-      header: '5. Add hosts'
-      subtext: 'Copy the downloaded script and run it on to each HA host to register them:'
-    hosts:
-      header: 'Hosts:'
-      waiting: 'Waiting for a host...'
-      managementServerCert:
-        text: 'Management Server Certificate:'
-        waiting: 'Waiting for a host...'
-    disable:
-      header: 'Danger Zone&trade;'
-      confirm:
-        pre: 'Are you sure?  Click again to really disable access HA'
-        prompt: Disable HA
-  haDisabled:
-    header: '1. Setup an external database'
-    subtext: 'This {appName} installation is currently configured to use the built-in database server, but HA requires a standalone installation of MySQL.'
-    externalDatabase:
-      ul:
-        li1:
-          text: 'Setup an external database instance.'
-          ul:
-            li1: 'This can be a hosted solution like Amazon RDS or Google Cloud SQL,'
-            li2: 'Or a self-hosted instance or multi-master cluster.'
-        li2: 'Click the export button below to export the entire contents of the current database.'
-        li3: 'Import the data into the new external database.'
-      exportDatabase: Export Database
-      size: 'Uncompressed Size:'
-      noLocalDb:
-        header: '1. Setup an external database'
-        subtext: 'Complete, running off of an external database.'
-    databaseUsage:
-      localDb:
-        header: '2. Use the new external database'
-        ul:
-          li1: 'Re-launch the server container pointed at the external database:'
-          isRancher:
-            li1: '<a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank">See docs</a> for more detail.'
-      noLocalDb:
-        header: '2. Use the new external database'
-        subtext: 'Complete, <code>{dbHost}</code> will be used as the external database for HA.'
-    haConfigScript:
-      generated:
-        header: '3. Generate HA config script'
-        subtext: 'Complete.'
-      notGenerated:
-        header: '3. Generate HA config script'
-        subtext: 'Come back here once you are running off the external database...'
-      form:
-        clusterSize:
-          labelText: Cluster Size
-          one: '<span class="text-bold" style="display: inline-block: width: 120px;">1 Host:</span> Not really very HA at all'
-          three: '<span class="text-bold" style="display: inline-block: width: 120px;">3 Hosts:</span> Any <b>one</b> host can fail'
-          five: '<span class="text-bold" style="display: inline-block: width: 120px;">5 Hosts:</span> Any <b>two</b> hosts can fail'
-        hostRegistration:
-          helpText:
-            singleCluster: 'This should be a FQDN that resolves to the addresses of or is a load balancer for the HA host. Do not include <code>/v1</code> or any other path.'
-            multiCluster: 'This should be a FQDN that resolves to the addresses of or is a load balancer for all {clusterSize} HA hosts. Do not include <code>/v1</code> or any other path.'
-        certificate:
-          labelText: Certificate
-          radio1: 'Generate a self-signed certificate'
-          radio2:
-            noHostUrl: 'Upload a valid certificate'
-            hasHostUrl: 'Upload a valid certificate for <code>{hostRegistrationUrl}</code>'
-        listeningPorts:
-          labelText: Listening Ports
-          table:
-            https: HTTPS
-            http: HTTP
-            swarm: Swarm
-            proxyToHttps: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">PROXY</a> to HTTPS'
-            proxyToHttp: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">PROXY</a> to HTTP'
-            redis: Redis
-            zookeeperClient: ZooKeeper Client
-            zookeeperQuorum: ZooKeeper Quorum
-            zookeeperLeader: ZooKeeper Leader
-      configScriptButton:
-        pre: Generate Config Script
-        post: 'Generating...'
-      downloadScript:
-        downloaded:
-          header: '4. Download script'
-          subtext: 'Complete, check your Downloads folder.'
-        notDownloaded:
-          header: '4. Download script'
-          subtext: 'Click the button below to download a shell script.'
-          alert: |
-            The script generates new encryption keys that will be used for the HA hosts to communicate with each other, so keep it safe.
-            New keys are generated every time you download the config script, and all hosts must have the same keys for HA to work.
-          buttonText: Download Config Script
-          generateScript: 'Generate the script in step 3.'
+  header: High Availability
+  setup:
+    prefix: "Multiple server containers can be deployed on different hosts so that {{appName}} keeps running even if one of the hosts fail.  "
+    link: See documentation
+    suffix: for information on setup and usage.
 
 helpPage:
   header: Helpful links & Information

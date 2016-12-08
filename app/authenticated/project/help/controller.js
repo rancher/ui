@@ -15,11 +15,11 @@ export default Ember.Controller.extend({
   latestAnnouncement: Ember.computed('model.announcements', function() {
     if (this.get('model.announcements.topics')) {
       let sorted = this.get('model.announcements.topics').sortBy('id');
-      var annoucement = sorted[sorted.length-1];
+      var announcement = sorted[sorted.length-1];
       return {
-        title: annoucement.title,
-        link: `${this.get('forumsLink')}/t/${annoucement.slug}`,
-        created: annoucement.created_at
+        title: announcement.title,
+        link: `${this.get('forumsLink')}/t/${announcement.slug}`,
+        created: announcement.created_at
       };
     }
   }),

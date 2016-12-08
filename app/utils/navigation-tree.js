@@ -326,6 +326,12 @@ const navTree = [
         divider: true
       },
       {
+        id: 'admin-ha',
+        localizedLabel: 'nav.admin.ha',
+        icon: 'icon icon-umbrella',
+        route: 'admin-tab.ha',
+      },
+      {
         id: 'admin-access',
         localizedLabel: 'nav.admin.access',
         icon: 'icon icon-key',
