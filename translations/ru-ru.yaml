@@ -26,6 +26,7 @@ generic:
   missing: "*%ПАНИКА%*"
   moreActions: Больше действий
   na: 'н/д'
+  "no": false
   name: Имя
   none: Нету
   ports: Порты
@@ -41,6 +42,7 @@ generic:
   total: Всего
   type: Тип
   unknown: Неизвестный
+  "yes": true
 accountsPage:
   index:
     header: Учётки
@@ -312,8 +314,10 @@ catalogPage:
     category: "Категория:"
     certified:
       rancher:
+        rancher: Одобрено
         partner: Партнер
       pl:
+        rancher: Одобрено
         partner: Партнер
     noData:
       singular: Подходящие шаблоны отсутствуют.
@@ -420,26 +424,16 @@ containersPage:
     portsTab:
       table:
         header:
-          state: Состояние
           ip: IP адрес
           protocol: Протокол
         body:
-          state: 'Состояние:'
-          ip: 'IP адрес:'
-          protocol: 'Протокол:'
           noData: 'У контейнера нет портов'
     volumesTab:
       table:
         header:
           name: Имя
-          state: Состояние
           mount: Точка монтирования
-          actions: Действия
         body:
-          name: 'Имя:'
-          state: 'Состояние:'
-          mount: 'Точка монтирования:'
-          actions: 'Действия:'
           error:
             data: 'Ошибка:'
             error: Ошибка
@@ -448,109 +442,11 @@ containersPage:
 containerSubpod:
   childContainers: Контейнеры
   childSidekicks: Сайдкики
-dockerCLI:
-  header: Докер CLI
-  button: Создание конфигурации
-  generating: Создание...
-  activating: Активация...
-  well: |
-    Или используйте эту консоль, чтобы удобно запускать команды <code>docker</code> и <code>docker-compose</code>:
 failWhalePage:
   header: Эвакуация!
   reloadButton: |
     Если <a href="#" onclick="window.location.href = window.location.href; return false;">перезагрузка страницы</a> не помоглает -
   logoutButton: попробуйте разлогиниться
-haPage:
-  header:
-    enabled: 'Высокодоступность <b class="text-success">включена</b>'
-    disabled: 'Высокодоступность не настроена'
-  haConfigured:
-    addHost:
-      header: '5. Добавьте хосты'
-      subtext: 'Прогоните скаченный скрипт на каждом из высокодоступных хостов, чтобы их зарегистрировать:'
-    hosts:
-      header: 'Хосты:'
-      waiting: 'Ждем хоста...'
-      managementServerCert:
-        text: 'Сертификат управляющего сервера:'
-        waiting: 'Ждем хоста...'
-    disable:
-      header: 'Зона Риска&trade;'
-      confirm:
-        pre: 'Вы уверены? Нажмите еще раз, чтобы взаправду отключить высокодоступность'
-        prompt: Отключить высокодоступность
-  haDisabled:
-    header: '1. Установите внешнюю базу данных'
-    subtext: 'Эта инсталляция Системы {appName} прямо сейчас использует встроенный сервер базы данных. Для высокодоступной конфигурация нам понадобится отдельный сервер MySQL.'
-    externalDatabase:
-      ul:
-        li1:
-          text: 'Установите внешнюю базу данных.'
-          ul:
-            li1: 'Это может быть обслуживаемое решение вроде Amazon RDS или Google Cloud SQL,'
-            li2: 'Или ваш собственный сервер, или мульти-мастер кластер.'
-        li2: 'Нажмите кнопку ниже, чтобы экспортировать все содержимое текущей базы данных.'
-        li3: 'Импортируйте данные в новую внешнюю базу данных.'
-      exportDatabase: Экспортировать БД
-      size: 'Несжатый размер:'
-      noLocalDb:
-        header: '1. Установите внешнюю базу данных'
-        subtext: 'Все ОК, мы на внешней базе.'
-    databaseUsage:
-      localDb:
-        header: '2. Используйте внешнюю базу данных'
-        ul:
-          li1: 'Перезапустите контейнер сервера, натравив его на внешнюю базу данных:'
-          isRancher:
-            li1: '<a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank">В документации</a> написано подробнее.'
-      noLocalDb:
-        header: '2. Используйте внешнюю базу данных'
-        subtext: 'Готово, теперь используем <code>{dbHost}</code> как БД для высокодоступной конфигурации'
-    haConfigScript:
-      generated:
-        header: '3. Сгенерируйте скрипт для конфигурации высокодоступности'
-        subtext: 'Готово.'
-      notGenerated:
-        header: '3. Сгенерируйте скрипт для конфигурации высокодоступности'
-        subtext: 'Возвращайтесь, когда мы будем на внешней базе...'
-      form:
-        clusterSize:
-          labelText: Размер кластера
-        hostRegistration:
-          helpText:
-            singleCluster: 'Это должно быть полное доменное имя, которое разворачивается в адрес "высокодоступного" хоста, или указывает на его балансировщик нагрузки. Не включайте <code>/v1</code> или какой-то другой относительный путь.'
-            multiCluster: 'Это должно быть полное доменное имя, которое разворачивается в адреса, или является балансировщиком нагрузки для всех {clusterSize} высокодоступных хостов. Не включайте <code>/v1</code> или какой-то другой относительный путь.'
-        certificate:
-          labelText: Сертификат
-          radio1: 'Сгенерировать самоподписанный сертификат'
-          radio2:
-            noHostUrl: 'Загрузите действительный сертификат'
-            hasHostUrl: 'Загрузите действительный сертификат для <code>{hostRegistrationUrl}</code>'
-        listeningPorts:
-          table:
-            https: HTTPS
-            http: HTTP
-            swarm: Swarm
-            proxyToHttps: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">Проксировать</a> HTTPS'
-            proxyToHttp: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">Проксировать</a> HTTP'
-            redis: Redis
-            zookeeperClient: ZooKeeper клиент
-            zookeeperQuorum: ZooKeeper кворум
-      configScriptButton:
-        pre: Сгенерировать скрипт
-        post: 'Генерируем...'
-      downloadScript:
-        downloaded:
-          header: '4. Скачайте скрипт'
-          subtext: 'Готово - проверяйте свою папку с загрузками.'
-        notDownloaded:
-          header: '4. Скачайте скрипт'
-          subtext: 'Нажмите кнопку ниже, чтобы скачать shell скрипт.'
-          alert: |
-            Скрипт генерирует новые ключи шифрования, которые используются высокодоступными хостами для интеркоммуникации. Рекомендуем хранить его под подушкой или в другом безопасном месте.
-            Новые ключи генерируются каждый раз, когда Вы скачиваете конфигурационный скрипт, и все хосты должны иметь одни и те же ключи, чтобы высокодоступность работала.
-          buttonText: Давайте уже свой скрипт!
-          generateScript: 'Сначала сгенерируйте скрипт в шаге 3, а потом поговорим.'
 helpPage:
   header: Полезные ссылки и информация
   banner: Анонсы
@@ -1441,6 +1337,7 @@ formContainerLinks:
   targetInstance:
     prompt: Выберите контейнер...
   name:
+    label: Имя
     placeholder: напр. database
 formDisks:
   addDiskLabel: Добавить диск
@@ -1697,7 +1594,7 @@ formVolumes:
   volumesFrom: Диск от
   volumeDriver:
     label: Драйвер Диска
-    placeholder: 'напр. convoy-nfs'
+  addActionLabel: Добавить раздел
 heroAddService:
   service:
     header: Добавление первого стека
@@ -2065,11 +1962,11 @@ modalProcessError:
   cause: "Причина:"
   none: Н/Д
   close: Закрыть
+modalShell:
+  title: 'Консоль: {instanceName}'
 modalWelcome:
   header: Добро пожаловать в {appName}!
   closeModal: Понятно
-modalShell:
-  title: 'Консоль: {instanceName}'
 newAliasService:
   header: Добавить псевдоним сервиса
 newBalancer:
@@ -2284,9 +2181,6 @@ vmConsole:
   footerActions:
     buttonSend: Послать Ctrl-Alt-Delete
     buttonCancel: Закрыть
-volumeRow:
-  activeMounts:
-    readOnly: "(только для чтения)"
 waitKubernetes:
   addHost: 'Добавьте хотя бы один хост'
   activateHost: 'В ожидании активности хоста'

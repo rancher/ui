@@ -22,6 +22,7 @@ generic:
   ipAddress: IP アドレス
   loading: "読込中..."
   moreActions: その他の操作
+  "no": false
   name: 名前
   none: None
   ports: ポート
@@ -36,6 +37,7 @@ generic:
   total: 合計
   type: タイプ
   unknown: 不明
+  "yes": true
 accountsPage:
   index:
     header: アカウント
@@ -463,36 +465,21 @@ containersPage:
     portsTab:
       table:
         header:
-          state: 状態
           ip: IP アドレス
           public: ホスト上のパブリックポート
           private: コンテナ上のプライベートポート
           protocol: プロトコル
         body:
-          state: '状態:'
-          ip: 'IP アドレス:'
-          public: 'パブリックポート (ホスト上):'
-          private: 'プライベートポート (コンテナ上):'
-          protocol: 'プロトコル:'
           noData: 'このコンテナはポートを持っていません'
     volumesTab:
       table:
         header:
           name: 名前
-          state: 状態
           mount: マウントポイント
           shared: 共有対象
           writable: 書き込み可
           snapshot: スナップショットのタイムライン
-          actions: アクション
         body:
-          name: '名前:'
-          state: '状態:'
-          mount: 'マウントポイント:'
-          shared: '共有対象:'
-          writable: '書き込み可:'
-          snapshot: 'スナップショットのタイムライン:'
-          actions: 'アクション:'
           error:
             data: 'エラー:'
             error: エラー
@@ -501,125 +488,11 @@ containersPage:
 containerSubpod:
   childContainers: コンテナ
   childSidekicks: サイドキック
-dockerCLI:
-  header: Docker CLI
-  start: docker や docker-compose コマンドをワークステーション上で利用するには API キーと設定ファイルを生成するためにボタンをクリックしてください
-  button: 設定を生成
-  generating: 生成中...
-  activating: アクティブ化中...
-  complete: ワークステーションの設定が完了しました
-  createDirectory: |
-    <code>.docker</code> ディレクトリを作成してください: <code>mkdir -pv ~/.docker</code>
-  extractZip: ダウンロードした ZIP ファイルを解凍します
-  copyFiles: |
-    解凍した ZIP 内の全てファイルを <code>.docker</code> ディレクトリ内にコピーします
-  exportVars: |
-    <code>export DOCKER_HOST={{endpoint.swarm}} DOCKER_TLS_VERIFY=1</code> を実行するかあなたのプロファイルに追加します
-  test: |
-    <code>docker ps</code> でテストします
-  well: |
-    または使い易いシェルから <code>docker</code> または <code>docker-compose</code> コマンドを直接実行します:
 failWhalePage:
   header: エラー
   reloadButton: |
     再度試してみるために以下を実施してください<br> <a href="#" onclick="window.location.href = window.location.href; return false;">再読み込み</a>または
   logoutButton: ログアウト
-haPage:
-  header:
-    enabled: '高可用性は <b class="text-success">有効</b> です'
-    disabled: '高可用性は設定されていません'
-  haConfigured:
-    addHost:
-      header: '5. ホストを追加する'
-      subtext: 'ダウンロードしたスクリプトをコピーし、各 HA ホスト上でそれらを登録するために実行します:'
-    hosts:
-      header: 'ホスト:'
-      waiting: 'ホストを待っています...'
-      managementServerCert:
-        text: '管理サーバーの証明書:'
-        waiting: 'ホストを待っています...'
-    disable:
-      header: 'Danger Zone&trade;'
-      confirm:
-        pre: '本当によろしいですか? HA アクセスを無効化する場合は再度クリックしてください'
-        prompt: HAを無効化
-  haDisabled:
-    header: '1. 外部データベースをセットアップする'
-    subtext: '現在の {appName} インストールではビルトインのデータベースサーバーを使用するよう設定されていますが、HA では個別の MySQL インストールが必要となります。'
-    externalDatabase:
-      ul:
-        li1:
-          text: '外部データベースインスタンスをセットアップ。'
-          ul:
-            li1: 'この方式では Amazon RDS や Google Cloud SQL のようなホストされたサービスを利用するか、'
-            li2: '自身で用意したインスタンスやマルチマスター構成のクラスタを利用できます。'
-        li2: '現在のデータベース全体のコンテンツをエクスポートするには以下のエクスポートボタンをクリックします。'
-        li3: '新しい外部データベースにこのデータをインポートします。'
-      exportDatabase: データベースをエクスポート
-      size: '非圧縮サイズ:'
-      noLocalDb:
-        header: '1. 外部データベースをセットアップする'
-        subtext: '外部データベースのセットアップが完了しました。'
-    databaseUsage:
-      localDb:
-        header: '2. 新しい外部データベースを利用する'
-        ul:
-          li1: '外部データベースを利用しているサーバーコンテナを再起動します:'
-          isRancher:
-            li1: '詳細は<a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank">ドキュメントを参照</a>してください。'
-      noLocalDb:
-        header: '2. 新しい外部データベースを利用する'
-        subtext: '完了しました。 <code>{dbHost}</code> は HA 用の外部データベースとして利用されます。'
-    haConfigScript:
-      generated:
-        header: '3. HA 設定スクリプトを生成する'
-        subtext: '完了'
-      notGenerated:
-        header: '3. HA 設定スクリプトを生成する'
-        subtext: '外部データベースの設定が完了したらこちらの画面に戻ります...'
-      form:
-        clusterSize:
-          labelText: クラスターサイズ
-          one: '<span class="text-bold" style="display: inline-block: width: 120px;">1 ホスト:</span> HA は提供されません'
-          three: '<span class="text-bold" style="display: inline-block: width: 120px;">3 ホスト:</span> <b>1</b> ホスト障害まで許容されます'
-          five: '<span class="text-bold" style="display: inline-block: width: 120px;">5 ホスト:</span> <b>2</b> ホスト障害まで許容されます'
-        hostRegistration:
-          helpText:
-            singleCluster: 'HA ホスト用のロードバランサー、またはアドレス解決可能な FQDN である必要があります。<code>/v1/</code> のような他のパスは含まないで下さい。'
-            multiCluster: '全ての {clusterSize} HA ホスト用のロードバランサー、またはアドレス解決可能な FQDN である必要があります。<code>/v1/</code> のような他のパスは含まないで下さい。'
-        certificate:
-          labelText: 証明書
-          radio1: '自己証明書を生成'
-          radio2:
-            noHostUrl: '有効な証明書をアップロード'
-            hasHostUrl: '<code>{hostRegistrationUrl}</code> に有効な証明書をアップロード'
-        listeningPorts:
-          labelText: リスニングポート
-          table:
-            https: HTTPS
-            http: HTTP
-            swarm: Swarm
-            proxyToHttps: 'HTTPS 向け <a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">PROXY</a>'
-            proxyToHttp: 'HTTP 向け <a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">PROXY</a>'
-            redis: Redis
-            zookeeperClient: ZooKeeper クライアント
-            zookeeperQuorum: ZooKeeper クォーラム
-            zookeeperLeader: ZooKeeper リーダー
-      configScriptButton:
-        pre: 設定スクリプトを生成
-        post: '生成中...'
-      downloadScript:
-        downloaded:
-          header: '4. スクリプトをダウンロードする'
-          subtext: '完了しました、ダウンロードフォルダを確認してください'
-        notDownloaded:
-          header: '4. スクリプトをダウンロードする'
-          subtext: 'シェルスクリプトをダウンロードするために以下のボタンをクリックします。'
-          alert: |
-            スクリプトは HA ホスト間で通信するための新しい暗号化キーを生成するため管理には注意してください。
-            新しいキーは設定スクリプトをダウンロードする度に生成され HA を動作させるには全てのホストで同一のキーを保持する必要があります。
-          buttonText: 設定スクリプトをダウンロード
-          generateScript: 'ステップ3でスクリプトを生成します。'
 helpPage:
   header: リンク & インフォメーション
   banner: アナウンス
@@ -770,8 +643,6 @@ k8sTab:
   kubectl:
     header: kubectl
     stepOne:
-      generateConfigText: |
-        ワークステーション上で<a href="{downloadUrl}" target="_blank">kubectl</a> (v1.2 以上のみ) を利用するには API キーや設定ファイルを生成するためにボタンをクリックしてください:
       generateButton: 設定を生成
     stepTwo:
       progress: 生成中...
@@ -2554,11 +2425,11 @@ modalRollbackVolume:
   title:
     snapshot: スナップショットへのロールバック
     backup: バックアップへのロールバック
+modalShell:
+  title: 'シェル: {instanceName}'
 modalWelcome:
   header: '{appName} へようこそ!'
   closeModal: 完了!
-modalShell:
-  title: 'シェル: {instanceName}'
 newAliasService:
   header: サービスのエイリアスを追加
 newBalancer:
@@ -2784,7 +2655,6 @@ storagePoolSection:
         snapshotState: 'スナップショットの状態'
         snapshotName: 'スナップショット名'
         backedUp: 'バックアップ済み'
-        activeMounts: 'マウント (コンテナ: パス)'
 svgServiceContainer:
   sidekicks: サイドキック
 swarm:
@@ -2849,9 +2719,6 @@ vmConsole:
   footerActions:
     buttonSend: Ctrl-Alt-Delete を送る
     buttonCancel: 閉じる
-volumeRow:
-  activeMounts:
-    readOnly: "(read-only)"
 waitKubernetes:
   addHost: '1台のホストを追加しています'
   activateHost: 'ホストがアクティブになるのを待っています'

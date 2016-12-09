@@ -19,6 +19,7 @@ generic:
   ipAddress: IP地址
   loading: "加载中..."
   moreActions: 更多操作
+  "no": false
   name: 名称
   none: 无
   ports: 端口
@@ -27,6 +28,7 @@ generic:
   state: 状态
   type: 类型
   unknown: 未知
+  "yes": true
 accountsPage:
   index:
     header: 账号
@@ -376,30 +378,19 @@ containersPage:
     portsTab:
       table:
         header:
-          state: 状态
           ip: IP地址
           public: 主机映射端口
           private: 容器私有端口
           protocol: 协议
         body:
-          state: '状态'
-          ip: 'IP地址'
-          public: '主机映射端口'
-          private: '容器私有端口'
-          protocol: '协议'
           noData: '该容器未暴露任何端口。'
     volumesTab:
       table:
         header:
-          state: 状态
           mount: 挂载点
           shared: 共享
           writable: 可写
         body:
-          state: '状态'
-          mount: '挂载点'
-          shared: '共享'
-          writable: '可写'
           error:
             data: '错误:'
             error: 错误
@@ -408,118 +399,11 @@ containersPage:
 containerSubpod:
   childContainers: 容器
   childSidekicks: 从
-dockerCLI:
-  header: Docker 命令行界面
-  start: 要在你的工作站使用docker或者docker-compose, 点击下面的按钮生成API key和配置文件
-  button: 生成配置
-  generating: 生成中...
-  activating: 激活中...
-  complete: 现在配置你的工作站
-  createDirectory: |
-    创建 <code>.docker</code> 目录: <code>mkdir -pv ~/.docker</code>
-  extractZip: 解压刚才下载的ZIP文件
-  copyFiles: |
-    将从ZIP中解压出的全部文件拷贝到 <code>.docker</code> 目录
-  exportVars: |
-    运行 <code>export DOCKER_HOST={swarmEndpoint} DOCKER_TLS_VERIFY=1</code> 或添加你的配置文件
-  test: |
-    运行以下命令测试 <code>docker ps</code>
-  well: |
-    或者使用下面的 shell 直接运行 <code>docker</code> 或 <code>docker-compose</code> 命令:
 failWhalePage:
   header: 错误
   reloadButton: |
     <a href="#" onclick="window.location.href = window.location.href; return false;">重新加载</a> 以重试或
   logoutButton: 注销
-haPage:
-  header:
-    enabled: '高可用已 <b class="text-success">启用</b>'
-    disabled: '高可用未设置'
-  haConfigured:
-    addHost:
-      header: '5. 添加主机'
-      subtext: '将下载的脚本拷贝到每一台高可用主机上运行以注册'
-    hosts:
-      header: '主机:'
-      waiting: '等待主机加入...'
-      managementServerCert:
-        text: '管理服务器证书'
-        waiting: '等待主机加入...'
-    disable:
-      header: '危险区域&trade;'
-      confirm:
-        pre: '确认？再次点击将关闭高可用访问'
-        prompt: 关闭高可用
-  haDisabled:
-    header: '1. 设置外部数据库'
-    subtext: '当前 {appName} 配置为使用内置数据库服务器，高可用部署需要独立的MySQL数据库服务器。'
-    externalDatabase:
-      ul:
-        li1:
-          text: '安装外部数据库实例'
-          ul:
-            li1: '可以使用亚马逊RDS或谷歌Cloud SQL等托管解决方案'
-            li2: '或者使用自托管或多主机群集'
-        li2: '点击下方导出数据库按钮导出整个数据库'
-        li3: '将输入导入到新的外部数据库'
-      exportDatabase: 导出数据库
-      size: '数据库大小'
-      noLocalDb:
-        header: '1. 设置外部数据库'
-        subtext: '完成，已使用外部数据库运行。'
-    databaseUsage:
-      localDb:
-        header: '2. 使用新的外部数据库'
-        ul:
-          li1: '通过以下命令重新运行服务器容器并指向外部数据库'
-          isRancher:
-            li1: '<a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank">查看文档</a> 以获取更多信息。'
-      noLocalDb:
-        header: '使用新的外部数据库'
-        subtext: '完成， <code>{dbHost}</code> 将作为高可用部署的外部数据库。'
-    haConfigScript:
-      generated:
-        header: '3. 生成高可用配置脚本'
-        subtext: '完成'
-      notGenerated:
-        header: '3. 生成高可用配置脚本'
-        subtext: '完成配置外部数据库运行后回到此处'
-      form:
-        clusterSize:
-          labelText: 群集规模
-          one: '<span class="text-bold" style="display: inline-block: width: 120px;">1 台主机:</span> 无高可用'
-          three: '<span class="text-bold" style="display: inline-block: width: 120px;">3 台主机:</span> 任意 <b>1台</b> 主机发生故障时系统可继续运行'
-          five: '<span class="text-bold" style="display: inline-block: width: 120px;">5 台主机:</span> 任意 <b>2 台</b> 主机发生故障时系统可继续运行'
-        hostRegistration:
-          helpText:
-            singleCluster: '此处应设置为FQDN，此FQDN解析为高可用主机地址或负载均衡全部高可用主机的负载均衡地址。不要包含<code>/v1</code>或其它路径信息。'
-            multiCluster: '此处应设置为FQDN，此FQDN解析为高可用主机地址或负载均衡全部{clusterSize} 台高可用主机的负载均衡地址。不要包含<code>/v1</code>或其它路径信息。'
-        certificate:
-          labelText: 证书
-          radio1: '生成自签名证书'
-          radio2:
-            noHostUrl: '上传证书'
-            hasHostUrl: '上传证书用于 <code>{hostRegistrationUrl}</code>'
-        listeningPorts:
-          labelText: 监听端口
-          table:
-            zookeeperClient: ZooKeeper客户端
-            zookeeperQuorum: Zookeeper仲裁
-      configScriptButton:
-        pre: 生成配置脚本
-        post: '生成中...'
-      downloadScript:
-        downloaded:
-          header: '4. 下载脚本'
-          subtext: '完成，请查看下载目录。'
-        notDownloaded:
-          header: '4. 下载脚本'
-          subtext: '点击下方按钮以下载命令行脚本。'
-          alert: |
-            脚本生成新的加密秘钥用于高可用主机间的通讯，请确保相关信息的安全。
-            每次您下载配置脚本时将生成新的秘钥，为确保高可用正常工作，所有的主机必须拥有相同的密钥。
-          buttonText: 下载配置脚本
-          generateScript: '生成步骤3中的脚本'
 helpPage:
   header: 常用链接及信息
   banner: 公告
@@ -661,8 +545,6 @@ k8sTab:
     petset: Pet集
   kubectl:
     stepOne:
-      generateConfigText: |
-        要在你的工作站使用 <a href="{downloadUrl}" target="_blank">kubectl</a> (v1.2及以上) ，单击按钮生成API Key及配置文件:
       generateButton: 生成配置
     stepTwo:
       progress: 生成中...
@@ -1727,7 +1609,6 @@ formVolumes:
   volumesFrom: 卷来自
   volumeDriver:
     label: 卷驱动
-    placeholder: '例如: convoy-nfs'
   noLaunchConfigs: 此服务下没有可共享卷的启动配置.
   noHostContainers: 该主机没有可以提供共享卷的容器.
   onlySingleHost: 仅当添加容器到特定主机时适用.
@@ -2419,7 +2300,6 @@ storagePoolSection:
         snapshotState: '快照状态'
         snapshotName: '快照名称'
         backedUp: '已备份'
-        activeMounts: '挂载(容器:主机)'
 svgServiceContainer:
   sidekicks: 从容器
 swarm:
@@ -2467,9 +2347,6 @@ vmConsole:
   footerActions:
     buttonSend: 发送Ctrl-Alt-Delete
     buttonCancel: 关闭
-volumeRow:
-  activeMounts:
-    readOnly: "(只读)"
 waitKubernetes:
   addHost: '添加至少一台主机'
   activateHost: '等待主机激活'

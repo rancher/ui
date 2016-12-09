@@ -26,6 +26,7 @@ generic:
   missing: "*%ABSENT%*"
   moreActions: Plus
   na: 's/o'
+  "no": false
   name: Nom
   none: Aucun
   ports: Ports
@@ -41,6 +42,7 @@ generic:
   total: Total
   type: Catégorie
   unknown: Inconnu
+  "yes": true
 accountsPage:
   index:
     header: Utilisateur
@@ -461,36 +463,21 @@ containersPage:
     portsTab:
       table:
         header:
-          state: État
           ip: Addresse IP
           public: Public sur l’Hôte
           private: Privé dans le Conteneur
           protocol: Protocole 
         body:
-          state: 'État:'
-          ip: 'Addresse IP:'
-          public: 'Publique (sur l''Hôte) :'
-          private: 'Privé (dans le Conteneur) :'
-          protocol: 'Protocole :'
           noData: 'Ce conteneur n''expose aucun port.'
     volumesTab:
       table:
         header:
           name: Nom
-          state: État
           mount: Point de Montage
           shared: Partagé avec
           writable: Modifiable
           snapshot: Chronologie des instantanés
-          actions: Actions
         body:
-          name: 'Nom :'
-          state: 'État :'
-          mount: 'Point de Montage :'
-          shared: 'Partagé Avec :'
-          writable: 'Modifiable :'
-          snapshot: 'Chronologie des instantanés :'
-          actions: 'Actions :'
           error:
             data: 'Erreur:'
             error: Erreur
@@ -499,124 +486,11 @@ containersPage:
 containerSubpod:
   childContainers: Conteneurs
   childSidekicks: Compagnons
-dockerCLI:
-  header: CLI Docker
-  start: Afin d'utiliser docker ou docker-compose sur votre machine, cliquez sur le bouton pour générer une clé API ainsi qu'un fichier de configuration
-  button: Générer une configuration
-  generating: Génération...
-  activating: Activation...
-  complete: Maintenant, configurez votre machine
-  createDirectory: |
-    Créez le répertoire <code>.docker</code>: <code>mkdir -pv ~/.docker</code>
-  extractZip: Décompressez le fichier qui vient d'être téléchargé
-  copyFiles: |
-    Copiez tous les fichiers extraits du zip dans le dossier <code>.docker</code>
-  exportVars: |
-    Exécutez <code>export DOCKER_HOST ={swarmEndpoint} DOCKER_TLS_VERIFY = 1</code> ou ajouter à votre profil
-  test: |
-    Essayez via <code>docker ps</code>
-  well: |
-    Ou utilisez ce shell pour exécuter directement des commandes <code>docker</code> ou <code> docker-compose</code> :
 failWhalePage:
   header: Erreur
   reloadButton: |
     <a href="#" onclick="window.location.href = window.location.href; return false;">Rechargez</a> pour essayer de nouveau ou
   logoutButton: déconnexion
-haPage:
-  header:
-    enabled: 'La haute disponibilité est <b class="text-success">active</b>'
-    disabled: 'La haute disponibilité n''est pas configurée'
-  haConfigured:
-    addHost:
-      header: 'Ajouter des hôtes'
-      subtext: 'Copiez le fichier téléchargé et exécutez-le sur chaque noeud à ajouter au cluster :'
-    hosts:
-      header: 'Hôtes :'
-      waiting: 'En attente d''un hôte…'
-      managementServerCert:
-        text: 'Certificat de Gestion de Serveur :'
-        waiting: 'En attente d''un hôte...'
-    disable:
-      header: 'Zone dangereuse&trade;'
-      confirm:
-        pre: 'Êtes-vous certain ? Cliquez à nouveau pour réellement désactiver la Haute disponibilité'
-        prompt: Désactiver la Haute Disponibilité
-  haDisabled:
-    header: '1. Configurer une base de donnée externe'
-    subtext: 'Cette installation de {appName} est actuellement configurée pour utiliser le serveur de base de données intégré, mais la haute disponibilité (HA) nécessite une installation autonome de MySQL.'
-    externalDatabase:
-      ul:
-        li1:
-          text: 'Configurer une instance de base de données externe.'
-          ul:
-            li1: 'Il peut s’agir d’une solution hébergée comme Amazon RDS ou Google Cloud SQL,'
-            li2: 'Ou une instance auto-hébergé ou une grappe multi-maître.'
-        li2: 'Cliquez sur le bouton Exporter ci-dessous pour exporter l’intégralité du contenu de la base de données active.'
-        li3: 'Importer les données dans la nouvelle base de données externe.'
-      exportDatabase: Export de la base de données
-      size: 'Taille non compressée :'
-      noLocalDb:
-        header: '1. Configurer une base de données externe'
-        subtext: 'Terminé, en cours d’exécution sur une base de données externe.'
-    databaseUsage:
-      localDb:
-        header: '2. Utiliser la nouvelle base de données externe'
-        ul:
-          li1: 'Relancer le conteneur du serveur qui pointe sur la base de données externe :'
-          isRancher:
-            li1: '<a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank"> Voir les docs</a>, pour plus de détails.'
-      noLocalDb:
-        header: '2. Utiliser la nouvelle base de données externe'
-        subtext: 'Complet, <code>{dbHost}</code> servira en tant que base de données externe pour la haute disponibilité (HA).'
-    haConfigScript:
-      generated:
-        header: '3. Générer un script de configuration HA'
-        subtext: 'Terminé.'
-      notGenerated:
-        header: '3. générer un script de configuration HA'
-        subtext: 'Revenez sur cette page une fois que vous avez déconnecté la base de données externe ...'
-      form:
-        clusterSize:
-          labelText: Taille du Cluster
-          one: '<span class="text-bold" style="display: inline-block: width: 120px;"> 1 Hôte :</span> Pas vraiment hautement disponible (HA) du tout'
-          three: '<span class="text-bold" style="display: inline-block: width: 120px;"> 3 hôtes :</span> N’importe quel hôte (<b>un</b>) peut échouer'
-          five: '<span class="text-bold" style="display: inline-block: width: 120px;"> 5 hôtes :</span> Jusqu''à <b>deux</b> hôtes peuvent échouer'
-        hostRegistration:
-          helpText:
-            singleCluster: 'Ce doit être un nom de domaine complet qui résout les adresses ou est un équilibreur de charge pour l’hôte HA. N’incluez pas <code>/ v1</code> ou tout autre chemin.'
-            multiCluster: 'Ce doit être un nom de domaine complet (FQDN) qui résout les adresses ou est un équilibreur de charge pour tous les hôtes HA {clusterSize}. N’incluez pas <code>/ v1</code> ou tout autre chemin.'
-        certificate:
-          labelText: Certificat
-          radio1: 'Générer un certificat auto-signé'
-          radio2:
-            noHostUrl: 'Téléverser un certificat valide'
-            hasHostUrl: 'Téléverser un certificat valide pour <code>{hostRegistrationUrl}</code>'
-        listeningPorts:
-          labelText: Ports d'écoute
-          table:
-            https: HTTPS
-            http: HTTP
-            swarm: Swarm
-            proxyToHttps: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank"> PROXY</a> pour HTTPS'
-            proxyToHttp: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank"> PROXY</a> pour HTTP'
-            redis: Redis
-            zookeeperClient: Client ZooKeeper
-            zookeeperQuorum: Quorum ZooKeeper
-            zookeeperLeader: Leader ZooKeeper
-      configScriptButton:
-        pre: Générer le script de configuration
-        post: 'Génération...'
-      downloadScript:
-        downloaded:
-          header: '4. Télécharger le script'
-          subtext: 'Fini, vérifiez votre dossier de Téléchargement.'
-        notDownloaded:
-          header: '4. Télécharger le script'
-          subtext: 'Cliquez sur le bouton ci-dessous pour télécharger un script shell.'
-          alert: |
-            Ce script génère de nouvelles clés de chiffrement qui seront utilisées par les hôtes de haute disponibilité (HA) pour communiquer entre eux, donc gardez-le dans un endroit sûr. De nouvelles clés sont générées chaque fois que vous téléchargez le script de configuration, et tous les hôtes doivent avoir les même clés pour que la fonctionnalité de haute disponibilité fonctionne.
-          buttonText: Télécharger le Script de Configuration
-          generateScript: 'Générer le script à l’étape 3.'
 helpPage:
   header: Liens utiles & Information
   banner: Annonces
@@ -769,8 +643,6 @@ k8sTab:
   kubectl:
     header: kubectl
     stepOne:
-      generateConfigText: |
-        Pour utiliser <a href="{downloadUrl}" target="_blank"> kubectl</a> (v1.2 + seulement) sur votre poste de travail, cliquez sur le bouton pour générer une clé d’API et un fichier de config  :
       generateButton: Générer la Configuration
     stepTwo:
       progress: Génération...
@@ -2020,7 +1892,6 @@ formVolumes:
   volumesFrom: Volumes Depuis
   volumeDriver:
     label: Pilote de Volume
-    placeholder: 'par exemple, convoy-nfs'
   noLaunchConfigs: Il n’y a aucune autres configurations de lancement de ce service pour partager des volumes avec celui-ci.
   noHostContainers: Cet hôte n’a aucun conteneurs ayant des volumes sur lesquels se connecter.
   onlySingleHost: Disponible uniquement lorsque vous ajoutez un conteneur à un hôte particulier.
@@ -2653,11 +2524,11 @@ modalRollbackVolume:
   title:
     snapshot: Restauration d’un instantané
     backup: Restauration d’une sauvegarde
+modalShell:
+  title: 'Shell : {instanceName}'
 modalWelcome:
   header: Bienvenue sur {appName} !
   closeModal: J'ai compris
-modalShell:
-  title: 'Shell : {instanceName}'
 newAliasService:
   header: Ajouter un Alias de Service
 newBalancer:
@@ -2888,7 +2759,6 @@ storagePoolSection:
         snapshotState: 'État de l''Instantané'
         snapshotName: 'Nom de l’Instantané'
         backedUp: 'Sauvegardé'
-        activeMounts: 'Points de Montage (Conteneur : Chemin d''accès)'
 svgServiceContainer:
   sidekicks: Compagnons
 swarm:
@@ -2905,6 +2775,8 @@ swarm:
     none: Aucun Service
 telemetryOpt:
   header: Statistiques
+  subtext: |
+    Rancher Labs souhaite recueillir des informations anonymes sur la configuration de votre installation pour aider à améliorer {appName}. <br/> Vos données ne seront pas partagées avec une autre personne, et aucun des noms de ressources spécifiques ou les adresses ne sont collectées.
   learnMore:
     link: "http://docs.rancher.com/rancher/telemetry"
     label: En savoir Plus
@@ -2952,9 +2824,6 @@ vmConsole:
   footerActions:
     buttonSend: Envoyer Ctrl-Alt-Delete
     buttonCancel: Fermer
-volumeRow:
-  activeMounts:
-    readOnly: "(lecture seule)"
 waitOrchestration:
   count: '({sub} sur {count})'
 waitKubernetes:

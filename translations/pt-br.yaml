@@ -23,6 +23,7 @@ generic:
   missing: "*%FALTANDO%*"
   moreActions: Mais Ações
   na: 'N/D'
+  "no": false
   name: Nome
   none: Nenhum
   ports: Portas
@@ -31,6 +32,7 @@ generic:
   state: Estado
   type: Tipo
   unknown: Desconhecido
+  "yes": true
 accountsPage:
   index:
     header: Contas
@@ -295,30 +297,19 @@ containersPage:
     portsTab:
       table:
         header:
-          state: Estado
           ip: Endereço de IP
           public: Público no Host
           private: Privado no Contêiner
           protocol: Protocolo
         body:
-          state: 'Estado:'
-          ip: 'Endereço de IP:'
-          public: 'Público (no Host):'
-          private: 'Privado (no Contêiner):'
-          protocol: 'Protocolo:'
           noData: 'Este contêiner não tem portas.'
     volumesTab:
       table:
         header:
-          state: Estado
           mount: Ponto de Montagem
           shared: Compartilhado Com
           writable: Gravável
         body:
-          state: 'Estado:'
-          mount: 'Ponto de Montagem:'
-          shared: 'Compartilhado Com:'
-          writable: 'Gravável:'
           error:
             data: 'Erro:'
             error: Erro
@@ -331,88 +322,6 @@ failWhalePage:
   reloadButton: |
     <a href="#" onclick="window.location.href = window.location.href; return false;">Recarregar</a> para tentar novamente ou
   logoutButton: Sair
-haPage:
-  header:
-    enabled: 'Alta disponibilidade(HA) é <b class="text-success">ativado</b>'
-    disabled: 'Alta disponibilidade(HA) não está configurado'
-  haConfigured:
-    addHost:
-      header: '5. Adicionar hosts'
-      subtext: 'Copie o script baixado e executá-lo para cada host HA para registrá-los:'
-    hosts:
-      waiting: 'Esperando por um host...'
-      managementServerCert:
-        text: 'Gestão Certificado de Servidor:'
-        waiting: 'Esperando por um host...'
-    disable:
-      header: 'Zona Perigosa&trade;'
-      confirm:
-        pre: 'Você tem certeza?  Clique novamente para para desativar o acesso HA'
-        prompt: Desativar HA
-  haDisabled:
-    header: '1. Configurar um banco de dados externo'
-    subtext: 'Está {appName} instalação está actualmente configurada para usar o servidor de banco de dados embutido, Mas ele requer uma instalação independente do MySQL.'
-    externalDatabase:
-      ul:
-        li1:
-          text: 'Configurar uma instância de banco de dados externo.'
-          ul:
-            li1: 'Esta pode ser uma solução hospedada como a Amazon RDS ou Google Cloud SQL,'
-            li2: 'Ou uma instância auto-hospedado ou cluster multi-mestre.'
-        li2: 'Clique no botão de exportação abaixo para exportar todo o conteúdo do banco de dados atual.'
-        li3: 'Importar os dados para o novo banco de dados externo.'
-      exportDatabase: Exportar Banco de Dados
-      size: 'Tamanho descompactado:'
-      noLocalDb:
-        header: '1. Configurar um banco de dados externo'
-        subtext: 'Completo, executando fora em um banco de dados externo.'
-    databaseUsage:
-      localDb:
-        header: '2. Use o novo banco de dados externo'
-        ul:
-          li1: 'Re-iniciar o servidor contêiner apontando para o banco de dados externo:'
-          isRancher:
-            li1: '<a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank">Veja o docs</a> para mais detalhes.'
-      noLocalDb:
-        header: '2. Use o novo banco de dados externo'
-        subtext: 'Completo, <code>{dbHost}</code> vai ser utilizado como a base de dados externo para HA.'
-    haConfigScript:
-      generated:
-        header: '3. Gerar um script de configuração HA'
-        subtext: 'Completo.'
-      notGenerated:
-        header: '3. Gerar um script de configuração HA'
-        subtext: 'Volte aqui uma vez que você estiver executando o banco de dados externo...'
-      form:
-        clusterSize:
-          labelText: Tamanho do Cluster
-        hostRegistration:
-          helpText:
-            singleCluster: 'Este deve ser um FQDN que resolve para os endereços ou é um balanceador de carga para o Host HA. Não incluir <code>/v1</code> ou qualquer outro caminho.'
-            multiCluster: 'Este deve ser um FQDN que resolve para os endereços ou é um balanceador de carga para todos os {clusterSize} hosts HA. Não incluir <code>/v1</code> ou qualquer outro caminho.'
-        certificate:
-          labelText: Certificado
-          radio1: 'Gerar um certificado auto-assinado'
-          radio2:
-            noHostUrl: 'Fazer upload de um certificado válido'
-            hasHostUrl: 'Fazer upload de um certificado válido para <code>{hostRegistrationUrl}</code>'
-        listeningPorts:
-          labelText: Portas de escuta
-      configScriptButton:
-        pre: Gerar Script de Configuração
-        post: 'Gerando...'
-      downloadScript:
-        downloaded:
-          header: '4. Baixar script'
-          subtext: 'Completo, verifique a sua pasta de downloads.'
-        notDownloaded:
-          header: '4. Baixar script'
-          subtext: 'Clique no botão abaixo para baixar um shell script.'
-          alert: |
-            O script gerar novas chaves de criptografia que serão utilizados para os hosts HA para se comunicar uns com os outros, para mantê-lo seguro.
-            Novas chaves são gerados cada vez que você baixar o script de configuração, e todos os hosts devem ter as mesmas chaves, para HA poder trabalhar.
-          buttonText: Baixar Script de Configuração
-          generateScript: 'Gerar o script na etapa 3.'
 helpPage:
   header: Links úteis & Informações
   banner: Avisos
@@ -537,8 +446,6 @@ hostsPage:
 k8sTab:
   kubectl:
     stepOne:
-      generateConfigText: |
-        Para usar <a href="{downloadUrl}" target="_blank">kubectl</a> (v1.2+ only) no sua estação de trabalho,clique no botão para gerar uma Chave de API e arquivo de configuração:
       generateButton: Gerar Configuração
     stepTwo:
       progress: Gerando...
@@ -1878,10 +1785,6 @@ storagePoolSection:
   volumes:
     add: Adicionar Volume
     none: Sem Volumes
-  models:
-    table:
-      header:
-        activeMounts: 'Montagens (Contêiner: Caminho)'
 swarm:
   containerSection:
     state: Estado
@@ -1921,9 +1824,6 @@ vmConsole:
   footerActions:
     buttonSend: Enviar Ctrl-Alt-Delete
     buttonCancel: Fechar
-volumeRow:
-  activeMounts:
-    readOnly: "(somente leitura)"
 driver:
   multiHostNames: "Hosts serão nomeados <b>{first}</b> &mdash; <b>{last}</b>"
 allServices:
