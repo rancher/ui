@@ -190,6 +190,7 @@ Router.map(function() {
 
         this.route('apply', {path: '/apply'});
         this.route('kubectl', {path: '/kubectl'});
+        this.route('dashboard', {path: '/dashboard'});
 
         this.route('namespaces', {path: '/namespaces'}, function() {
           this.route('index', {path: '/'});
