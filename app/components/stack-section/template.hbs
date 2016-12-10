@@ -96,12 +96,19 @@
                 {{#if service.showTransitioningMessage}}
                   <span class="{{service.stateColor}}">({{service.transitioningMessage}})</span>
                 {{/if}}
-                <button type="button" class="btn-link" role="button" {{action 'addtlInfo' service}}>
-                  <i class="icon icon-info addtl-info-trigger"/>
+                <button type="button" class="btn-link service-icon-button" role="button" {{action 'addtlInfo' service}}>
+                  <i class="icon icon-info"/>
                 </button>
-                {{#if service.isError}}
-                  {{#link-to "service.log" service.stackId service.id class="btn-link"}}<i class="icon icon-alert"/>{{/link-to}}
-                {{/if}}
+                {{~#if service.imageUpgradeAvailable~}}
+                  {{#tooltip-element type="tooltip-basic" model=(t 'stackSection.upgradeImage') tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="upgradeImage"}}
+                    <button type="button" class="btn-link text-warning service-icon-button r-pl0" role="button" {{action 'upgradeImage' service}}>
+                      <i class="icon icon-arrow-circle-up"/>
+                    </button>
+                  {{/tooltip-element}}
+                {{~/if~}}
+                {{~#if service.isError~}}
+                  {{#link-to "service.log" service.stackId service.id class="btn-link service-icon-button"}}<i class="icon icon-alert"/>{{/link-to}}
+                {{~/if~}}
               </td>
               <td data-title="{{t 'stackSection.table.dataTitle.details'}}:" class="force-wrap service-detail">{{service.displayDetail}}{{service.displayPorts}}</td>
               <td data-title="{{t 'stackSection.table.dataTitle.kind'}}:">

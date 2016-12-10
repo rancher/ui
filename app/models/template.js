@@ -79,7 +79,7 @@ export default Resource.extend({
     }
 
     if ( str === C.LABEL.CERTIFIED_RANCHER && this.get('catalogId') === C.CATALOG.LIBRARY_KEY ) {
-      return 'badge-certified';
+      return 'badge-rancher';
     } else if ( str === C.LABEL.CERTIFIED_PARTNER ) {
       return 'badge-partner';
     } else {

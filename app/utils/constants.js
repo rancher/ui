@@ -131,7 +131,7 @@ var C = {
     K8S_POD_NAMESPACE: 'io.kubernetes.pod.namespace',
     K8S_POD_NAME: 'io.kubernetes.pod.name',
     K8S_KUBECTL: 'io.rancher.k8s.kubectld',
-    K8S_DASHBOARD: 'io.rancher.k8s.dashboard',
+    K8S_DASHBOARD: 'io.rancher.k8s.kubernetes-dashboard',
     ORCHESTRATION_SUPPORTED: 'io.rancher.orchestration.supported',
     CERTIFIED: 'io.rancher.certified',
     CERTIFIED_RANCHER: 'rancher',

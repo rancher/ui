@@ -79,7 +79,7 @@ var Service = Resource.extend({
       }
     },
 
-    upgrade() {
+    upgrade(upgradeImage='false') {
       var route = 'service.new';
       if ( (this.get('launchConfig.kind')||'').toLowerCase() === 'virtualmachine') {
         route = 'service.new-virtualmachine';
@@ -90,6 +90,7 @@ var Service = Resource.extend({
       this.get('application').transitionToRoute(route, {queryParams: {
         serviceId: this.get('id'),
         upgrade: true,
+        upgradeImage: upgradeImage,
         stackId: this.get('stackId'),
       }});
     },
@@ -386,8 +387,6 @@ var Service = Resource.extend({
       return Util.formatSi(this.get('launchConfig.memoryReservation'), 1024, 'iB', 'B');
     }
   }),
-
-
 });
 
 export function activeIcon(service)

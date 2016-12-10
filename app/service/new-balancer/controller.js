@@ -1,11 +1,12 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  queryParams: ['stackId','serviceId','tab','upgrade'],
+  queryParams: ['stackId','serviceId','tab','upgrade','upgradeImage'],
   stackId: null,
   serviceId: null,
   tab: 'ssl',
   upgrade: null,
+  upgradeImage: 'false',
 
   actions: {
     done() {
