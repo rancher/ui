@@ -4,6 +4,7 @@ import ManageLabels from 'ui/mixins/manage-labels';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(ManageLabels, ContainerChoices,{
+  projects:            Ember.inject.service(),
   settings:            Ember.inject.service(),
 
   //Inputs
@@ -69,7 +70,15 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   isContainerNetwork: Ember.computed.equal('instance.networkMode','container'),
   initNetwork: function() {
     var isService = this.get('isService')||false;
+
     var choices = ['bridge','container','host','managed','none'];
+    if ( this.get('projects.current.isWindows') ) {
+      choices = ['nat','transparent'];
+      if ( this.get('instance.networkMode') === 'managed' ) {
+        this.set('instance.networkMode','transparent');
+      }
+    }
+
     var out = [];
     choices.forEach((option) => {
       if ( isService && option === 'container' )

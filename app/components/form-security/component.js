@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  projects: Ember.inject.service(),
+
   // Inputs
   instance: null,
   classNameBindings: ['editing:component-editing:component-static'],
@@ -34,16 +36,22 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
-    this.initCapability();
-    this.initDevices();
-    this.initMemory();
-    this.initPidMode();
+    if ( this.get('projects.current.isWindows') ) {
+    } else {
+      this.initCapability();
+      this.initDevices();
+      this.initMemory();
+      this.initPidMode();
+    }
+
     this.initLogging();
   },
 
   didInsertElement() {
-    this.initMultiselect();
-    this.privilegedDidChange();
+    if ( ! this.get('projects.current.isWindows') ) {
+      this.initMultiselect();
+      this.privilegedDidChange();
+    }
   },
 
   // ----------------------------------
@@ -297,4 +305,11 @@ export default Ember.Component.extend({
   hasLogConfig: Ember.computed('instance.logConfig.config', function() {
     return Ember.isEmpty(this.get('instance.logConfig.config'));
   }),
+
+  isolationChoices: function() {
+    return [
+      {label: 'formSecurity.isolation.default', value: 'default'},
+      {label: 'formSecurity.isolation.hyperv', value: 'hyperv'},
+    ];
+  }.property(),
 });

@@ -153,6 +153,7 @@ var Project = Resource.extend(PolledResource, {
     return this.get('isActive') && this.get('version') !== this.get(`settings.${C.SETTING.PROJECT_VERSION}`);
   }.property('isActive','version',`settings.${C.SETTING.PROJECT_VERSION}`),
 
+  isWindows: Ember.computed.equal('orchestration','windows'),
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often

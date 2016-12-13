@@ -4,8 +4,9 @@ import Util from 'ui/utils/util';
 
 export default Ember.Component.extend(ManageLabels, {
   settings      : Ember.inject.service(),
+  projects      : Ember.inject.service(),
   cattleAgentIp : null,
-  model: null,
+  model         : null,
 
   actions: {
     cancel() {
@@ -75,5 +76,14 @@ export default Ember.Component.extend(ManageLabels, {
 
     return cmd;
   }.property('model.command','model.labels', 'cattleAgentIp'),
+
+  registrationCommandWindows: function() {
+    let url = this.get('model.registrationUrl');
+
+    return `New-Item -Path "C:\\Program Files\\rancher" -Type Directory
+Invoke-WebRequest -UseBasicParsing "https://github.com/rancher/agent/releases/download/v0.3.0/agent.exe" -OutFile "C:\\Program Files\\rancher\\agent.exe"
+C:\\Program Files\\rancher\\agent -register-service ${url}
+Start-Service rancher-agent`;
+  }.property('model.command'),
 
 });

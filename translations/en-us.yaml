@@ -1826,6 +1826,8 @@ formNetwork:
     container: container
     host: Host
     managed: Managed
+    nat: NAT
+    transparent: Transparent
     none: None
   container:
     label: container
@@ -1963,6 +1965,10 @@ formSecurity:
     label: Memory Reservation
   milliCpuReservation:
     label: mCPU Reservation
+  isolation:
+    label: Isolation
+    default: Default (Container)
+    hyperv: HyperV (VM)
 
 formServiceLinks:
   addAction: Service Links
@@ -2421,7 +2427,7 @@ machine:
       label: Region
 
   driverCustom:
-    step1: Start up a Linux machine somewhere and install the latest version of <a href="http://www.docker.com/" target="_blank">Docker</a> on it.
+    step1: Start up a Linux machine somewhere and install the latest version of <a href="http://www.docker.com/" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
     step2: "Make sure any security groups or firewalls allow traffic:"
     step2li: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span>
     step3: "Optional: Add labels to be applied to the host."
@@ -2433,6 +2439,10 @@ machine:
       link: Hosts
       part2: screen within a minute.
     close: Close
+    windows:
+      step1: Start up a Windows Server 2016 machine somewhere and install the latest version of <a href="https://msdn.microsoft.com/en-us/virtualization/windowscontainers/quick_start/quick_start_windows_server" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
+      step2: "Make sure any security groups or firewalls allow traffic:"
+      step3: Copy, paste, and run the command below in PowerShell to start the {appName} agent.
 
   driverDigitalocean:
     sizeLabel: |
