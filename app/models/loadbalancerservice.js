@@ -18,7 +18,9 @@ function specToPort(spec) {
 
 var LoadBalancerService = Service.extend({
   type: 'loadBalancerService',
-  intl : Ember.inject.service(),
+
+  intl: Ember.inject.service(),
+  settings: Ember.inject.service(),
 
   initPorts() {
     let rules = this.get('lbConfig.portRules')||[];
@@ -122,6 +124,12 @@ var LoadBalancerService = Service.extend({
 
     return out.htmlSafe();
   }.property('consumedServicesWithNames.@each.{name,service}', 'intl._locale'),
+
+  imageUpgradeAvailable: function() {
+    let cur = this.get('launchConfig.imageUuid').replace(/^docker:/,'');
+    let available = this.get(`settings.${C.SETTING.BALANCER_IMAGE}`);
+    return cur !== available && !!this.get('actionLinks.upgrade');
+  }.property('launchConfig.imageUuid',`settings.${C.SETTING.BALANCER_IMAGE}`,'actionLinks.upgrade'),
 });
 
 export default LoadBalancerService;

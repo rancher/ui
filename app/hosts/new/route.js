@@ -18,6 +18,7 @@ function proxifyUrl(url, proxyBase) {
 
 export default Ember.Route.extend({
   access         : Ember.inject.service(),
+  projects       : Ember.inject.service(),
   settings       : Ember.inject.service(),
   backTo         : null,
 
@@ -123,6 +124,9 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.hash(promises).then((hash) => {
       hash.availableDrivers = this.get('machineDrivers');
+      if ( this.get('projects.current.isWindows') ) {
+        hash.availableDrivers = [];
+      }
 
       let defaultDriver = this.get('defaultDriver');
       let targetDriver = params.driver || this.get('lastDriver') || defaultDriver;

@@ -21,10 +21,12 @@ generic:
   image: Image
   internal: Interne
   ipAddress: Addresse IP
+  limit: Limite
   loading: "Chargement..."
   missing: "*%ABSENT%*"
   moreActions: Plus
   na: 's/o'
+  "no": false
   name: Nom
   none: Aucun
   ports: Ports
@@ -37,8 +39,10 @@ generic:
   test: Test
   testing: En test
   to: A
+  total: Total
   type: Catégorie
   unknown: Inconnu
+  "yes": true
 accountsPage:
   index:
     header: Utilisateur
@@ -443,6 +447,10 @@ containersPage:
       entryPoint: 'Point d’Entrée :'
       description: 'Description :'
       stack: 'Pile/Service :'
+      memoryReservation:
+        labelText: 'Mémoire Allouée : '
+      milliCpuReservation:
+        labelText: 'allocation mCPU : '
     navTabs:
       labels: Étiquettes
       volumes: Volumes
@@ -455,36 +463,21 @@ containersPage:
     portsTab:
       table:
         header:
-          state: État
           ip: Addresse IP
           public: Public sur l’Hôte
           private: Privé dans le Conteneur
           protocol: Protocole 
         body:
-          state: 'État:'
-          ip: 'Addresse IP:'
-          public: 'Publique (sur l''Hôte) :'
-          private: 'Privé (dans le Conteneur) :'
-          protocol: 'Protocole :'
           noData: 'Ce conteneur n''expose aucun port.'
     volumesTab:
       table:
         header:
           name: Nom
-          state: État
           mount: Point de Montage
           shared: Partagé avec
           writable: Modifiable
           snapshot: Chronologie des instantanés
-          actions: Actions
         body:
-          name: 'Nom :'
-          state: 'État :'
-          mount: 'Point de Montage :'
-          shared: 'Partagé Avec :'
-          writable: 'Modifiable :'
-          snapshot: 'Chronologie des instantanés :'
-          actions: 'Actions :'
           error:
             data: 'Erreur:'
             error: Erreur
@@ -493,124 +486,11 @@ containersPage:
 containerSubpod:
   childContainers: Conteneurs
   childSidekicks: Compagnons
-dockerCLI:
-  header: CLI Docker
-  start: Afin d'utiliser docker ou docker-compose sur votre machine, cliquez sur le bouton pour générer une clé API ainsi qu'un fichier de configuration
-  button: Générer une configuration
-  generating: Génération...
-  activating: Activation...
-  complete: Maintenant, configurez votre machine
-  createDirectory: |
-    Créez le répertoire <code>.docker</code>: <code>mkdir -pv ~/.docker</code>
-  extractZip: Décompressez le fichier qui vient d'être téléchargé
-  copyFiles: |
-    Copiez tous les fichiers extraits du zip dans le dossier <code>.docker</code>
-  exportVars: |
-    Exécutez <code>export DOCKER_HOST ={swarmEndpoint} DOCKER_TLS_VERIFY = 1</code> ou ajouter à votre profil
-  test: |
-    Essayez via <code>docker ps</code>
-  well: |
-    Ou utilisez ce shell pour exécuter directement des commandes <code>docker</code> ou <code> docker-compose</code> :
 failWhalePage:
   header: Erreur
   reloadButton: |
     <a href="#" onclick="window.location.href = window.location.href; return false;">Rechargez</a> pour essayer de nouveau ou
   logoutButton: déconnexion
-haPage:
-  header:
-    enabled: 'La haute disponibilité est <b class="text-success">active</b>'
-    disabled: 'La haute disponibilité n''est pas configurée'
-  haConfigured:
-    addHost:
-      header: 'Ajouter des hôtes'
-      subtext: 'Copiez le fichier téléchargé et exécutez-le sur chaque noeud à ajouter au cluster :'
-    hosts:
-      header: 'Hôtes :'
-      waiting: 'En attente d''un hôte…'
-      managementServerCert:
-        text: 'Certificat de Gestion de Serveur :'
-        waiting: 'En attente d''un hôte...'
-    disable:
-      header: 'Zone dangereuse&trade;'
-      confirm:
-        pre: 'Êtes-vous certain ? Cliquez à nouveau pour réellement désactiver la Haute disponibilité'
-        prompt: Désactiver la Haute Disponibilité
-  haDisabled:
-    header: '1. Configurer une base de donnée externe'
-    subtext: 'Cette installation de {appName} est actuellement configurée pour utiliser le serveur de base de données intégré, mais la haute disponibilité (HA) nécessite une installation autonome de MySQL.'
-    externalDatabase:
-      ul:
-        li1:
-          text: 'Configurer une instance de base de données externe.'
-          ul:
-            li1: 'Il peut s’agir d’une solution hébergée comme Amazon RDS ou Google Cloud SQL,'
-            li2: 'Ou une instance auto-hébergé ou une grappe multi-maître.'
-        li2: 'Cliquez sur le bouton Exporter ci-dessous pour exporter l’intégralité du contenu de la base de données active.'
-        li3: 'Importer les données dans la nouvelle base de données externe.'
-      exportDatabase: Export de la base de données
-      size: 'Taille non compressée :'
-      noLocalDb:
-        header: '1. Configurer une base de données externe'
-        subtext: 'Terminé, en cours d’exécution sur une base de données externe.'
-    databaseUsage:
-      localDb:
-        header: '2. Utiliser la nouvelle base de données externe'
-        ul:
-          li1: 'Relancer le conteneur du serveur qui pointe sur la base de données externe :'
-          isRancher:
-            li1: '<a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank"> Voir les docs</a>, pour plus de détails.'
-      noLocalDb:
-        header: '2. Utiliser la nouvelle base de données externe'
-        subtext: 'Complet, <code>{dbHost}</code> servira en tant que base de données externe pour la haute disponibilité (HA).'
-    haConfigScript:
-      generated:
-        header: '3. Générer un script de configuration HA'
-        subtext: 'Terminé.'
-      notGenerated:
-        header: '3. générer un script de configuration HA'
-        subtext: 'Revenez sur cette page une fois que vous avez déconnecté la base de données externe ...'
-      form:
-        clusterSize:
-          labelText: Taille du Cluster
-          one: '<span class="text-bold" style="display: inline-block: width: 120px;"> 1 Hôte :</span> Pas vraiment hautement disponible (HA) du tout'
-          three: '<span class="text-bold" style="display: inline-block: width: 120px;"> 3 hôtes :</span> N’importe quel hôte (<b>un</b>) peut échouer'
-          five: '<span class="text-bold" style="display: inline-block: width: 120px;"> 5 hôtes :</span> Jusqu''à <b>deux</b> hôtes peuvent échouer'
-        hostRegistration:
-          helpText:
-            singleCluster: 'Ce doit être un nom de domaine complet qui résout les adresses ou est un équilibreur de charge pour l’hôte HA. N’incluez pas <code>/ v1</code> ou tout autre chemin.'
-            multiCluster: 'Ce doit être un nom de domaine complet (FQDN) qui résout les adresses ou est un équilibreur de charge pour tous les hôtes HA {clusterSize}. N’incluez pas <code>/ v1</code> ou tout autre chemin.'
-        certificate:
-          labelText: Certificat
-          radio1: 'Générer un certificat auto-signé'
-          radio2:
-            noHostUrl: 'Téléverser un certificat valide'
-            hasHostUrl: 'Téléverser un certificat valide pour <code>{hostRegistrationUrl}</code>'
-        listeningPorts:
-          labelText: Ports d'écoute
-          table:
-            https: HTTPS
-            http: HTTP
-            swarm: Swarm
-            proxyToHttps: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank"> PROXY</a> pour HTTPS'
-            proxyToHttp: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank"> PROXY</a> pour HTTP'
-            redis: Redis
-            zookeeperClient: Client ZooKeeper
-            zookeeperQuorum: Quorum ZooKeeper
-            zookeeperLeader: Leader ZooKeeper
-      configScriptButton:
-        pre: Générer le script de configuration
-        post: 'Génération...'
-      downloadScript:
-        downloaded:
-          header: '4. Télécharger le script'
-          subtext: 'Fini, vérifiez votre dossier de Téléchargement.'
-        notDownloaded:
-          header: '4. Télécharger le script'
-          subtext: 'Cliquez sur le bouton ci-dessous pour télécharger un script shell.'
-          alert: |
-            Ce script génère de nouvelles clés de chiffrement qui seront utilisées par les hôtes de haute disponibilité (HA) pour communiquer entre eux, donc gardez-le dans un endroit sûr. De nouvelles clés sont générées chaque fois que vous téléchargez le script de configuration, et tous les hôtes doivent avoir les même clés pour que la fonctionnalité de haute disponibilité fonctionne.
-          buttonText: Télécharger le Script de Configuration
-          generateScript: 'Générer le script à l’étape 3.'
 helpPage:
   header: Liens utiles & Information
   banner: Annonces
@@ -715,6 +595,10 @@ hostsPage:
       docker: 'Docker :'
       os: 'SYSTÈME D''EXPLOITATION :'
       description: 'Description :'
+      milliCpu:
+        labelText: mCPU
+      localStorageMb:
+        labelText: Limite Locale
     navTabs:
       containers: Conteneurs
       ports: Ports
@@ -759,8 +643,6 @@ k8sTab:
   kubectl:
     header: kubectl
     stepOne:
-      generateConfigText: |
-        Pour utiliser <a href="{downloadUrl}" target="_blank"> kubectl</a> (v1.2 + seulement) sur votre poste de travail, cliquez sur le bouton pour générer une clé d’API et un fichier de config  :
       generateButton: Générer la Configuration
     stepTwo:
       progress: Génération...
@@ -850,7 +732,7 @@ k8sTab:
     header: Erreur
     linkTo: Recharger
     detail: |
-      {nombre, pluriel, = 1 {An error} autres {# Errors }} s’est produite en essayant de communiquer avec l’API Kubernetes.
+      {count, plural, =1 {An error} other {# Errors }} s’est produite en essayant de communiquer avec l’API Kubernetes.
 loginPage:
   greeting: "Howdy!<br>Bienvenue a {appName}"
   githubMessage: "{appName} Utilise GitHub pour gerer l'authentifiation.  Cliquer sur le bouton ci-dessous pour se connecter (en lecture seule) pour acceder aux information de compte Github."
@@ -887,7 +769,7 @@ mesosPage:
     content: |
       Vous avez actuellement  {hosts, plural,
       =1 {# active host}
-      autre {# active hosts}
+      other {# active hosts}
       } dans votre cluster Mesos
     link: Voir ou Ajouter des hôtes
   launch:
@@ -1033,6 +915,7 @@ stacksPage:
     all: Toutes les Piles
     user: Piles de l'Utilisateur
     custom: '{name} Piles'
+    tags: 'Piles « {tags} »'
     infra: Piles d’infrastructure
   actionButton: Ajouter une Pile
   catalogButton: Ajouter depuis le Catalogue
@@ -1040,6 +923,9 @@ stacksPage:
     label: Trier Par
     state: État
     name: Nom
+  tags:
+    all: Toutes les Étiquettes
+    one: 'Étiquette : {name}'
   noInfra: Vous n’avez pas actuellement de pile d'Infrastructure
   noMatch: Aucune pile ne correspond aux étiquettes sélectionnées
   new:
@@ -1206,17 +1092,17 @@ ldap:
     enabled:
       label: "{providerName} est activé"
       required: |
-        {appName} est configuré pour autoriser l'accès à {orgs, plural,
+        {appName} est configuré pour autoriser l'accès à {groups, plural,
         =0 {no groups}
         =1 {# group}
-        autres {# groups}
+        other {# groups}
         } and {users, plural,
         =0 {no users}
         =1 {# user}
-        autres {# users}
+        other {# users}
         }.
       restricted: |
-        {appName} est configuré pour autoriser l’accès aux membres de l’environnement, {groupes, pluriel, = 0 {no groups} = 1 {# group} autres {# groups}} et {utilisateurs, pluriel, = 0 {no users} = 1 {# user} autres {# users}}.
+        {appName} est configuré pour autoriser l’accès aux membres de l’environnement, {groups, plural, =0 {no groups} =1 {# group} other {# groups}} et {users, plural, =0 {no users} =1 {# user} other {# users}}.
       unrestricted: "{appName} est configuré pour autoriser l’accès à n’importe quel utilisateur {providerName}."
     disabled:
       label: "{providerName} n’est pas configuré"
@@ -1615,7 +1501,7 @@ formCommand:
     onFailure: 'En cas d''Échec <span class="text-muted"> (code de sortie non-0)</span>, pour toujours'
     onFailureCondPrefix: En cas d’échec, jusqu'à
     onFailureCondSuffix: |
-      {limite, pluriel, = 1 {time} autres {times}}
+      {limit, plural, =1 {time} other {times}}
     always: Toujours
   environment:
     label: Environnement
@@ -1731,7 +1617,7 @@ formHealthCheck:
     recreate: Re-créer
     recreateOnQuorumPrefix: Re-créer, uniquement lorsqu’au moins
     recreateOnQuorumSuffix: |
-      {quorum, pluriel, = 1 {container is} autres {containers are}} en bonne santé
+      {quorum, plural, =1 {container is} other {containers are}} en bonne santé
 formKeyValue:
   addAction: Ajouter une Paire
   key:
@@ -1821,9 +1707,13 @@ formScale:
     container: Toujours exécuter une instance de ce conteneur sur chaque hôte
   regular:
     vm: |
-      Exécutez {échelle, pluriel, = 0 {no virtual machines} = 1 {1 virtual machine} autres {# virtual machines}}
+      Exécutez {scale, plural, =0 {no virtual machines} =1 {1 virtual machine} other {# virtual machines}}
     container: |
-      Exécutez {échelle, pluriel, = 0 {no containers} = 1 {1 container} autres {# containers}}
+      Exécutez {scale, plural,
+      =0 {no containers}
+      =1 {1 container}
+      other {# containers}
+      }
 formScheduling:
   canRequestHost:
     vm: Exécuter <b>toutes les</b> machines virtuelles sur un hôte spécifique
@@ -1892,6 +1782,10 @@ formSecurity:
     placeholder: par exemple syslog
   logOptions:
     label: Journal
+  memoryReservation:
+    label: Mémoire Allouée
+  milliCpuReservation:
+    label: Allocation mCPU
 formServiceLinks:
   addAction: Liens des Services
   noServices: Il n’y a aucun autre service à lier.
@@ -1998,7 +1892,6 @@ formVolumes:
   volumesFrom: Volumes Depuis
   volumeDriver:
     label: Pilote de Volume
-    placeholder: 'par exemple, convoy-nfs'
   noLaunchConfigs: Il n’y a aucune autres configurations de lancement de ce service pour partager des volumes avec celui-ci.
   noHostContainers: Cet hôte n’a aucun conteneurs ayant des volumes sur lesquels se connecter.
   onlySingleHost: Disponible uniquement lorsque vous ajoutez un conteneur à un hôte particulier.
@@ -2022,7 +1915,7 @@ hostSettings:
   hostUrl:
     local: "Adresse de ce site :"
     new:
-      labelText: "Autre chose :"
+      labelText: "Autre chose:"
       placeholder: "par exemple http://exemple.com:8080"
   helpText:
     static1: "N’incluez pas <code>/ v1</code> ou tout autre chemin, mais si vous faites"
@@ -2330,7 +2223,7 @@ machine:
     close: Fermer
   driverDigitalocean:
     sizeLabel: |
-      {slug} RAM, disque {disk}gb, {vcpus, pluriel, = 1 {# vCPU} autres {# vCPUs}}
+      {slug} RAM, disque {disk}gb, {vcpus, plural, =1 {# vCPU} other {# vCPUs}}
     accountSection: Accès du Compte
     authAccountButton: 'Suivant : Configurer Droplet'
     accessToken:
@@ -2631,11 +2524,11 @@ modalRollbackVolume:
   title:
     snapshot: Restauration d’un instantané
     backup: Restauration d’une sauvegarde
+modalShell:
+  title: 'Shell : {instanceName}'
 modalWelcome:
   header: Bienvenue sur {appName} !
   closeModal: J'ai compris
-modalShell:
-  title: 'Shell : {instanceName}'
 newAliasService:
   header: Ajouter un Alias de Service
 newBalancer:
@@ -2664,6 +2557,7 @@ newBalancer:
 newCatalog:
   version:
     prompt: Choisissez une version...
+    default: La valeur par défaut à l’époque (actuellement {version})
   saveUpgrade: Mettre à niveau
   saveNew: Démarrer
   saveConfigure: Configurer
@@ -2695,7 +2589,7 @@ newContainer:
     container: Ajouter un conteneur
     vm: Ajouter une Machine Virtuelle
     service: |
-      Ajouter {numServices, pluriel, = 1 {Service} autres {Services}}
+      Ajouter {numServices, plural, =1 {Service} other {Services}}
   upgrade:
     container: Mise à niveau du Conteneur
     vm: Mettre à niveau la Machine virtuelle
@@ -2751,6 +2645,16 @@ registryRow:
   email: Mél
   username: Nom d'Utilisateur
   created: Crée
+reservationParameters:
+  localStorage:
+    labelText: 'Limite de stockage local'
+    placeholder: '1024'
+  memory:
+    labelText: 'Limite Mémoire'
+    placeholder: '2048'
+  milliCpu:
+    labelText: Limite mCPU
+    placeholder: '1000'
 saveCancel:
   saving: Sauvegarde en cours ...
   saved: Sauvegardé !
@@ -2813,9 +2717,9 @@ stackSection:
   description: Description
   none: Aucun Service
   container: |
-    {numContainers, pluriel, = 1 {Container} autres {Containers}}
+    {numContainers, plural, =1 {Container} other {Containers}}
   service: |
-    {numServices, pluriel, = 1 {Service} autres {Services}}
+    {numServices, plural, =1 {Service} other {Services}}
   sidekick: |
     {numSidekicks, plural,
     =1 {Sidekick}
@@ -2855,7 +2759,6 @@ storagePoolSection:
         snapshotState: 'État de l''Instantané'
         snapshotName: 'Nom de l’Instantané'
         backedUp: 'Sauvegardé'
-        activeMounts: 'Points de Montage (Conteneur : Chemin d''accès)'
 svgServiceContainer:
   sidekicks: Compagnons
 swarm:
@@ -2873,7 +2776,7 @@ swarm:
 telemetryOpt:
   header: Statistiques
   subtext: |
-    Rancher Labs souhaiteraient recueillir des informations anonymes relatives à la configuration de votre installation de {appName}. <br/> Aucun nom de ressource spécifique, adresses IP ou d’autres identifiants seront collectées. <br/> Cette information nous aidera à apprendre comment les gens utilisent Rancher et guidera nos priorités de développement futures.
+    Rancher Labs souhaite recueillir des informations anonymes sur la configuration de votre installation pour aider à améliorer {appName}. <br/> Vos données ne seront pas partagées avec une autre personne, et aucun des noms de ressources spécifiques ou les adresses ne sont collectées.
   learnMore:
     link: "http://docs.rancher.com/rancher/telemetry"
     label: En savoir Plus
@@ -2886,6 +2789,8 @@ tooltipWarning:
   notConfigured: Contrôle d’accès non configuré
   dismiss: Abandonner
 upgradeBtn:
+  version:
+    current: 'Courante'
   status:
     none: 'Aucun'
     loading: 'Vérification des mises à jour...'
@@ -2919,9 +2824,6 @@ vmConsole:
   footerActions:
     buttonSend: Envoyer Ctrl-Alt-Delete
     buttonCancel: Fermer
-volumeRow:
-  activeMounts:
-    readOnly: "(lecture seule)"
 waitOrchestration:
   count: '({sub} sur {count})'
 waitKubernetes:

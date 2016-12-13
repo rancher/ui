@@ -106,6 +106,9 @@ const navTree = [
         condition: k8sReady,
       },
       {
+        divider: true,
+      },
+      {
         id: 'k8s-cli',
         localizedLabel: 'nav.k8s.cli',
         icon: 'icon icon-terminal',
@@ -113,6 +116,16 @@ const navTree = [
         ctx: [getProjectId],
         condition: k8sReady,
       },
+      /*
+      {
+        id: 'k8s-dashboard',
+        localizedLabel: 'nav.k8s.dashboard',
+        icon: 'icon icon-external-link',
+        route: 'k8s-tab.dashboard',
+        ctx: [getProjectId],
+        condition: k8sReady,
+      },
+      */
       {
         id: 'k8s-notready',
         icon: 'icon icon-spinner icon-spin',
@@ -223,7 +236,8 @@ const navTree = [
     ctx: [getProjectId],
     condition: function() {
       return this.get('hasProject') &&
-      this.get(`settings.${C.SETTING.CATALOG_URL}`);
+      this.get(`settings.${C.SETTING.CATALOG_URL}`) &&
+      !this.get('hasSwarm');
     },
     submenu: getCatalogSubtree,
   },
@@ -323,6 +337,12 @@ const navTree = [
       },
       {
         divider: true
+      },
+      {
+        id: 'admin-ha',
+        localizedLabel: 'nav.admin.ha',
+        icon: 'icon icon-umbrella',
+        route: 'admin-tab.ha',
       },
       {
         id: 'admin-access',

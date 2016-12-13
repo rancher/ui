@@ -50,6 +50,7 @@ export default Ember.Route.extend({
   },
 
   scheduleTimer: function() {
+    Ember.run.cancel(this.get('intervalId'));
     this.set('intervalId', Ember.run.later(() => {
       var params = this.paramsFor('admin-tab.processes');
 

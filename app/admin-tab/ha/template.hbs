@@ -1,0 +1,33 @@
+<section class="header">
+  <h1>{{t 'haPage.header'}}</h1>
+</section>
+
+<section class="well">
+  {{t 'haPage.setup.prefix' appName=settings.appName}}<a href="{{settings.docsBase}}/installing-rancher/installing-server/#launching-rancher-server---full-activeactive-ha">{t 'haPage.setup.link' appName=settings.appName}}</a>{{t 'haPage.setup.suffix' appName=settings.appName}}
+</section>
+
+<section class="well instances">
+  <table class="grid fixed r-mb0">
+    <thead>
+      <tr>
+        {{sortable-th sortable=this action="changeSort" name="uuid" label="generic.uuid"}}
+        {{sortable-th sortable=this action="changeSort" name="id" label="haPage.table.address"}}
+        {{sortable-th sortable=this action="changeSort" name="id" label="haPage.table.port"}}
+        {{sortable-th sortable=this action="changeSort" name="id" label="haPage.table.heartbeat"}}
+        {{sortable-th sortable=this action="changeSort" name="id" label="haPage.table.clustered"}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each arranged as |member|}}
+        <tr>
+          <td>{{member.uuid}}</td>
+          <td>{{member.advertiseAddress}}</td>
+          <td>{{member.httpPort}}</td>
+          <td>{{date-str member.heartbeat}}</td>
+          <td>{{t (if member.clustered 'generic.yes' 'generic.no')}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>
+

@@ -12,7 +12,7 @@ export default Ember.Route.extend({
     }).then((hash) => {
       let existing = this.modelFor('settings.projects').projectTemplates;
 
-      let def = existing.find((tpl) => tpl.get('name').toLowerCase() === C.PROJECT_TEMPLATE.DEFAULT);
+      let def = existing.find((tpl) => (tpl.get('name')||'').toLowerCase() === C.PROJECT_TEMPLATE.DEFAULT);
       if ( def ) {
         let tpl = def.cloneForNew();
         tpl.isPublic = false;

@@ -4,6 +4,8 @@ import C from 'ui/utils/constants';
 
 export default Resource.extend({
   projects: Ember.inject.service(),
+  settings: Ember.inject.service(),
+  intl: Ember.inject.service(),
 
   cleanProjectUrl: Ember.computed('links.project', function() {
     let projectUrl = this.get('links.project');
@@ -69,13 +71,55 @@ export default Resource.extend({
     }
   }.property('labels','projects.current.orchestration'),
 
+  certifiedClass: function() {
+    let str = null;
+    let labels = this.get('labels');
+    if ( labels && labels[C.LABEL.CERTIFIED] ) {
+      str = labels[C.LABEL.CERTIFIED];
+    }
+
+    if ( str === C.LABEL.CERTIFIED_RANCHER && this.get('catalogId') === C.CATALOG.LIBRARY_KEY ) {
+      return 'badge-rancher';
+    } else if ( str === C.LABEL.CERTIFIED_PARTNER ) {
+      return 'badge-partner';
+    } else {
+      return 'badge-thirdparty';
+    }
+  }.property('catalogId'),
+
   certified: function() {
     let out = null;
     let labels = this.get('labels');
-    if ( this.get('catalogId') === C.CATALOG.LIBRARY_KEY && labels && labels[C.LABEL.CERTIFIED] ) {
+    if ( labels && labels[C.LABEL.CERTIFIED] ) {
       out = labels[C.LABEL.CERTIFIED];
     }
 
+    let looksLikeCertified = false;
+    if ( out ) {
+      let display = this.get('intl').t('catalogPage.index.certified.rancher.rancher');
+      looksLikeCertified = normalize(out) === normalize(display);
+    }
+
+    if ( this.get('catalogId') !== C.CATALOG.LIBRARY_KEY && (out === C.LABEL.CERTIFIED_RANCHER || looksLikeCertified) ) {
+      // Rancher-certified things can only be in the library catalog.
+      out = null;
+    }
+
+    // For the standard labels, use translations
+    if ( [C.LABEL.CERTIFIED_RANCHER,C.LABEL.CERTIFIED_PARTNER].includes(out) ) {
+      let pl = 'pl';
+      if ( this.get('settings.isRancher') ) {
+        pl = 'rancher';
+      }
+      return this.get('intl').t('catalogPage.index.certified.'+pl+'.'+out);
+    }
+
+    // For custom strings, use what they said.
     return out;
   }.property('catalogId','labels'),
 });
+
+function normalize(str) {
+  return (str||'').replace(/[^a-z]/gi,'').toLowerCase();
+}
+
