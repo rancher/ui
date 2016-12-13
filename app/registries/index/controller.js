@@ -6,7 +6,6 @@ export default Ember.Controller.extend(Sortable, {
   sorts: {
     state:        ['stateSort','displayAddress','id'],
     address:      ['displayAddress','id'],
-    email:        ['credential.email','displayAddress','id'],
     username:     ['credential.publicValue','displayAddress','id'],
     created:      ['created','id']
   },
