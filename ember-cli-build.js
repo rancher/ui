@@ -49,9 +49,13 @@ module.exports = function(defaults) {
 
     fingerprint: {
       exclude: [
-        'assets/images/logos', // These can be bind-mounted in
-        'assets/intl', // Locales get version added to query string so JS doesn't have to know the fingerprint
-        'ui-light.css', 'ui-dark.css', 'ui.css' // Themes get version added to query string so JS doesn't have to know the fingerprint
+        // These can be bind-mounted in
+        'assets/images/logos',
+
+        // These get version added to the query string so JS doesn't have to know the fingerprint
+        'assets/intl',
+        'ui-light.css', 'ui-dark.css', 'ui-light.rtl.css', 'ui-dark.rtl.css', 'ui.css',
+        'vendor.css','vendor.rtl.css',
       ],
       extensions: (appConfig.fingerprint === 'no' ? [] : ['js', 'css', 'png', 'jpg', 'gif', 'svg', 'map', 'woff', 'woff2', 'ttf']),
     },
