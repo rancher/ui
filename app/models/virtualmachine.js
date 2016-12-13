@@ -1,13 +1,11 @@
 import Ember from 'ember';
 import Container from 'ui/models/container';
 
-export default Container.extend({
+var VirtualMachine = Container.extend({
+  modalService: Ember.inject.service('modal'),
   actions: {
     console: function() {
-      this.get('application').setProperties({
-        showConsole: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('modal-console', this);
     },
 
     clone: function() {
@@ -31,3 +29,14 @@ export default Container.extend({
     },
   },
 });
+
+VirtualMachine.reopenClass({
+  mangleIn: function(data) {
+    // VM's baseType is container, but store doesn't handle
+    // virtualMachine -> container -> instance
+    data.baseType = 'instance';
+    return data;
+  },
+});
+
+export default VirtualMachine;

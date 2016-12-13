@@ -8,7 +8,6 @@ a {
 H1, H2, H3, H4, H5, H6, SECTION.header {
   margin: 0;
   cursor: normal;
-  word-break: break-all;
 
   .btn {
     margin-left: 10px;
@@ -61,6 +60,10 @@ H1, H2, H3, H4, H5, H6, SECTION.header {
 
   .alert-link {
     text-decoration: none;
+  }
+
+  &.alert-default {
+    background: $btn-disabled-bg;
   }
 
   &.alert-header {
@@ -184,6 +187,7 @@ button {
     color: $blueTwo;
   }
 }
+
 .btn {
   transition: ease all 100ms;
 }
@@ -191,10 +195,12 @@ button {
   padding: 2px 3px;
   line-height: initial;
 }
+
 .btn-xs i {
   margin: 0;
   // font-size: 10px;
 }
+
 .btn-disabled,
 .btn.disabled {
   background-color: rgba($btn-disabled-bg, .15);
@@ -206,6 +212,7 @@ button {
   }
 
 }
+
 .btn-disabled,
 .btn.disabled,
 .btn[disabled],
@@ -216,6 +223,11 @@ fieldset[disabled] .btn {
 .btn-block {
   padding-left: 10px;
   padding-right: 10px;
+}
+
+.btn-full-width {
+  min-width: 100%;
+  text-align: left;
 }
 
 .btn-primary {
@@ -407,7 +419,7 @@ fieldset[disabled] .btn {
   &.bg-info    { background-color: $brand-info; }
 
   &.bg-default,   &.badge-default { background-color: $btn-default-bg; color: $btn-default-color;}
-  &.bg-primary ,  &.badge-primary { background-color: #cce3ee; color: $brand-primary; }
+  &.bg-primary ,  &.badge-primary { background-color: rgba($primary, .15); color: $primary; }
   &.bg-success,   &.badge-success { background-color: $brand-success; }
   &.bg-danger,    &.badge-danger  { background-color: $brand-danger; }
   &.bg-warning,   &.badge-warning { background-color: $brand-warning; }
@@ -427,11 +439,11 @@ fieldset[disabled] .btn {
     }
   }
 
-  &.text-default:hover, 
-  &.text-primary:hover, 
-  &.text-success:hover, 
-  &.text-danger:hover,  
-  &.text-warning:hover, 
+  &.text-default:hover,
+  &.text-primary:hover,
+  &.text-success:hover,
+  &.text-danger:hover,
+  &.text-warning:hover,
   &.text-info:hover  {
     color: $table-bg;
   }
@@ -535,7 +547,7 @@ fieldset[disabled] .btn {
 
   &.tight TH,
   &.tight TD {
-    padding: 3px 0;
+    padding: 4px 0;
   }
 
   &.small TH,
@@ -603,6 +615,7 @@ HR {
 
   .dropdown-header {
     padding-left: 10px;
+    font-size: 15px;
   }
 
   & > li > a {
@@ -661,7 +674,6 @@ FORM LABEL,
 .horizontal-form LABEL,
 .form-group LABEL {
   color: $text-color;
-  font-weight: $normal-weight;
   margin: 0;
 }
 
@@ -691,10 +703,12 @@ INPUT[type="checkbox"] {
 .checkbox.small,
 .radio.small {
   font-size: 12px;
+  font-weight: $normal-weight;
+}
 
-  LABEL {
-    min-height: 0;
-  }
+LABEL.checkbox, LABEL.radio {
+  min-height: 0;
+  font-weight: $normal-weight;
 }
 
 // Don't print out link hrefs.

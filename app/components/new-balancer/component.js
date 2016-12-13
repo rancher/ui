@@ -1,66 +1,40 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
-import SelectTab from 'ui/mixins/select-tab';
-import { debouncedObserver } from 'ui/utils/debounce';
+import C from 'ui/utils/constants';
 
-export default Ember.Component.extend(NewOrEdit, SelectTab, {
-  settings: Ember.inject.service(),
+export default Ember.Component.extend(NewOrEdit, {
+  intl                      : Ember.inject.service(),
+  settings                  : Ember.inject.service(),
 
-  isStandalone: true,
-  service: null,
-  existing: null,
-  balancerConfig: null,
-  haproxyConfig: null,
-  allHosts: null,
-  allServices: null,
-  allCertificates: null,
+  service                   : null,
+  editing                   : null,
+  existing                  : null,
+  allHosts                  : null,
+  allServices               : null,
+  allCertificates           : null,
+  upgradeImage              : null,
 
-  listenersArray: null,
-  targetResources: null,
-  targetsArray: null,
-  serviceLinksArray: null,
-  isGlobal: null,
-  isRequestedHost: null,
-  portsAsStrArray: null,
+  isGlobal                  : null,
+  isRequestedHost           : null,
+  upgradeOptions            : null,
+  hasUnsupportedPorts       : false,
 
   // Errors from components
-  schedulingErrors: null,
-  scaleErrors: null,
-  portErrors: null,
+  ruleErrors                : null,
+  schedulingErrors          : null,
+  scaleErrors               : null,
 
-  primaryResource: Ember.computed.alias('service'),
-  launchConfig: Ember.computed.alias('service.launchConfig'),
+  primaryResource           : Ember.computed.alias('service'),
+  launchConfig              : Ember.computed.alias('service.launchConfig'),
+
+  init() {
+    this._super(...arguments);
+    this.labelsChanged();
+    this.get('service').initPorts();
+    this.updatePorts();
+  },
 
   actions: {
-    setScale(scale) {
-      this.set('service.scale', scale);
-    },
-
-    toggleAdvanced() {
-      this.set('advanced', !this.get('advanced'));
-    },
-
-    setLabels(section,labels) {
-      this.set(section+'Labels', labels);
-    },
-
-    setGlobal(bool) {
-      this.set('isGlobal', bool);
-    },
-
-    setListeners(listeners) {
-      this.set('listenersArray', listeners);
-    },
-
-    setTargets(array, resources) {
-      this.set('targetsArray', array);
-      this.set('targetResources', resources);
-    },
-
-    setServiceLinks(links) {
-      this.set('serviceLinksArray', links);
-    },
-
     done() {
       this.sendAction('done');
     },
@@ -68,94 +42,207 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     cancel() {
       this.sendAction('cancel');
     },
+
+    setScale(scale) {
+      this.set('service.scale', scale);
+    },
+
+    setLabels(section,labels) {
+      this.set(section+'Labels', labels);
+    },
+
+    setUpgrade(upgrade) {
+      this.set('upgradeOptions', upgrade);
+    },
+
+    setGlobal(bool) {
+      this.set('isGlobal', bool);
+    },
   },
 
-  didInitAttrs() {
-    this.labelsChanged();
-    this.set('listenersArray',[]);
-    this.set('targetsArray',[]);
-    this.set('targetResources',[]);
-  },
+  headerLabel: function() {
+    let k;
+    if ( this.get('needsUpgrade') ) {
+      k = 'newBalancer.header.upgrade';
+    } else if ( this.get('existing') ) {
+      k = 'newBalancer.header.edit';
+    } else {
+      k = 'newBalancer.header.add';
+    }
 
-  didInsertElement() {
-    this.send('selectTab','ssl');
-    this.$('INPUT')[0].focus();
-  },
+    return this.get('intl').t(k);
+  }.property('intl._locale','needsUpgrade','isService','isVm','service.secondaryLaunchConfigs.length'),
 
-  hasMultipleListeners: function() {
-    return this.get('listenersArray').filterBy('host').get('length') >= 2;
-  }.property('listenersArray.@each.host'),
+  // ----------------------------------
+  // Ports
+  // ----------------------------------
+  updatePorts() {
+    let rules = this.get('service.lbConfig.portRules');
+    let publish = [];
+    let expose = [];
 
-  hasHttpListeners: function() {
-    return this.get('listenersArray').filterBy('protocol','http').get('length') > 0;
-  }.property('listenersArray.@each.protocol'),
-
-  hasSslListeners: function() {
-    return this.get('listenersArray').filterBy('ssl',true).get('length') > 0;
-
-  }.property('listenersArray.@each.ssl'),
-
-  listenersChanged: function() {
-    Ember.run.once(this, 'updateListeners');
-  }.observes('listenersArray.@each.{host,protocol,container,isPublic,ssl}'),
-
-  updateListeners: function() {
-    var ports = [];
-    var expose = [];
-    this.get('listenersArray').forEach(function(listener) {
-      var hostStr = listener.get('host');
-      var hostIp, hostPort;
-      var idx = hostStr.indexOf(':');
-      if ( idx >= 0 )
-      {
-        hostIp = hostStr.substr(0,idx);
-        hostPort = parseInt(hostStr.substr(idx+1),10);
-      }
-      else
-      {
-        hostIp = null;
-        hostPort = parseInt(hostStr,10);
+    // Set ports and publish on the launch config
+    rules.forEach((rule) => {
+      // The inner one eliminates null/undefined, then the outer one
+      // converts integers to string (so they can be re-parsed later)
+      let srcStr = ((rule.get('sourcePort')||'')+'').trim();
+      let src = parseInt(srcStr,10);
+      if ( !src || src < 1 || src > 65535 ) {
+        return;
       }
 
-      var container = parseInt(listener.get('container'),10);
-      var proto = listener.get('protocol');
-
-      // You almost definitely probably want 443->80.
-      if ( hostPort === 443 && !container && listener.get('ssl'))
-      {
-        container = 80;
-        listener.set('container', 80);
-      }
-
-      if ( hostPort && proto )
-      {
-        var str = (hostIp ? hostIp + ':' : '') + hostPort +':'+ (container ? + container : hostPort) + (proto === 'http' ? '': '/' + proto );
-        if ( listener.get('isPublic') )
-        {
-          ports.pushObject(str);
+      let entry = src+":"+src+"/"+rule.get('ipProtocol');
+      if ( rule.get('access') === 'public' ) {
+        // Source IP applies only to public rules
+        let ip = rule.get('sourceIp');
+        if ( ip ) {
+          // IPv6
+          if ( ip.indexOf(":") >= 0 && ip.substr(0,1) !== '[' ) {
+            entry = '['+ip+']:' + entry;
+          } else {
+            entry = ip + ':' + entry;
+          }
         }
-        else
-        {
-          expose.pushObject(str);
-        }
+
+        publish.push(entry);
+      } else {
+        expose.push(entry);
       }
     });
 
-    this.set('launchConfig.ports', ports.sort().uniq());
-    this.set('launchConfig.expose', expose.sort().uniq());
+    this.get('service.launchConfig').setProperties({
+      ports: publish.uniq(),
+      expose: expose.uniq(),
+    });
   },
 
-  hasAdvancedSourcePorts: function() {
-    return this.get('targetsArray').filterBy('isService',true).filter((target) => {
-      return parseInt(target.get('srcPort'),10) > 0;
-    }).get('length') > 0;
-  }.property('targetsArray.@each.{isService,srcPort}'),
+  shouldUpdatePorts: function() {
+    Ember.run.once(this,'updatePorts');
+  }.observes('service.lbConfig.portRules.@each.{sourceIp,sourcePort,access,protocol}'),
 
-  hasMultipleTargets: function() {
-    return this.get('targetsArray').filterBy('value').get('length') >= 2;
-  }.property('targetsArray.@each.value'),
 
-  showAdvancedMatchingWarning: Ember.computed.and('hasAdvancedSourcePorts','hasMultipleListeners','hasMultipleTargets'),
+  validateRules() {
+    let intl = this.get('intl');
+    let rules = this.get('service.lbConfig.portRules');
+    let errors = [];
+    let seen = {};
+
+    // Set ports and publish on the launch config
+    // And also do a bunch of validation while we're here
+    rules.forEach((rule) => {
+      // The inner one eliminates null/undefined, then the outer one
+      // converts integers to string (so they can be re-parsed later)
+      let srcStr = ((rule.get('sourcePort')||'')+'').trim();
+      let tgtStr = ((rule.get('targetPort')||'')+'').trim();
+
+      if ( !srcStr ) {
+        errors.push(intl.t('newBalancer.error.noSourcePort'));
+        return;
+      }
+
+      let src = parseInt(srcStr,10);
+      if ( !src || src < 1 || src > 65535 ) {
+        errors.push(intl.t('newBalancer.error.invalidSourcePort', {num: srcStr}));
+      } else if ( !tgtStr ) {
+        tgtStr = srcStr;
+      }
+
+      let tgt = parseInt(tgtStr,10);
+      if ( !tgt || tgt < 1 || tgt > 65535 ) {
+        errors.push(intl.t('newBalancer.error.invalidTargetPort', {num: tgtStr}));
+        return;
+      }
+
+      let sourceIp = rule.get('sourceIp');
+      let key;
+      if ( sourceIp ) {
+        key = '['+sourceIp+']:' + src;
+      } else {
+        key = '[0.0.0.0]:' + src;
+      }
+
+      let access = rule.get('access');
+      let id = access + '-' + rule.get('protocol') + '-' + src;
+
+      if ( seen[key] ) {
+        if ( seen[key] !== id ) {
+          errors.push(intl.t('newBalancer.error.mixedPort', {num: src}));
+        }
+      } else {
+        seen[key] = id;
+      }
+
+      if ( !rule.get('serviceId') && !rule.get('selector') ) {
+        errors.push(intl.t('newBalancer.error.noTarget'));
+      }
+
+      // Make ports always numeric
+      rule.setProperties({
+        sourcePort: src,
+        targetPort: tgt,
+      });
+    });
+
+    this.set('ruleErrors', errors);
+  },
+
+  needsUpgrade: function() {
+    function arrayToStr(map) {
+      map = map || {};
+      let out = [];
+      let keys = Object.keys(map);
+      keys.sort();
+      keys.forEach((key) => {
+        out.push(key + '=' + map[key]);
+      });
+
+      return JSON.stringify(out);
+    }
+
+    function removeKeys(map,keys) {
+      map = map || {};
+      keys.forEach((key) => {
+        delete map[key];
+      });
+
+      return map;
+    }
+
+    if ( !this.get('editing') )
+    {
+      return false;
+    }
+
+    if ( this.get('upgradeImage')+'' === 'true' ) {
+      return true;
+    }
+
+    // Label arrays are updated one at a time and make this flap,
+    // so ignore them until they're all set
+    if ( !this.get('labelsReady') ) {
+      return false;
+    }
+
+    let old = removeKeys(this.get('existing.launchConfig.labels'),C.LABELS_TO_IGNORE);
+    let neu = removeKeys(this.get('service.launchConfig.labels'),C.LABELS_TO_IGNORE);
+    return arrayToStr(old) !== arrayToStr(neu);
+  }.property(
+    'editing',
+    'upgradeImage',
+    'service.launchConfig.labels'
+  ),
+
+  upgradeInfo: function() {
+    let from = (this.get('existing.launchConfig.imageUuid')||'').replace(/^docker:/,'');
+    let to = (this.get('service.launchConfig.imageUuid')||'').replace(/^docker:/,'');
+
+    if ( this.get('upgradeImage')+'' === 'true' ) {
+      return Ember.Object.create({
+        from: from,
+        to: to,
+      });
+    }
+  }.property('existing.launchConfig.imageUuid','service.launchConfig.imageUuid'),
 
   // ----------------------------------
   // Labels
@@ -163,92 +250,63 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   userLabels: null,
   scaleLabels: null,
   schedulingLabels: null,
-  sslLabels: null,
+  labelsReady: false,
 
-  labelsChanged: debouncedObserver(
+  labelsChanged: function() {
+    Ember.run.once(this,'mergeLabels');
+  }.observes(
     'userLabels.@each.{key,value}',
     'scaleLabels.@each.{key,value}',
-    'schedulingLabels.@each.{key,value}',
-    'sslLabels.@each.{key,value}',
-    function() {
-      var out = {};
-
-      (this.get('userLabels')||[]).forEach((row) => { out[row.key] = row.value; });
-      (this.get('scaleLabels')||[]).forEach((row) => { out[row.key] = row.value; });
-      (this.get('schedulingLabels')||[]).forEach((row) => { out[row.key] = row.value; });
-      (this.get('sslLabels')||[]).forEach((row) => { out[row.key] = row.value; });
-
-      var config = this.get('launchConfig');
-      if ( config )
-      {
-        this.set('launchConfig.labels', out);
-      }
-    }
+    'schedulingLabels.@each.{key,value}'
   ),
+
+  mergeLabels() {
+    let user = this.get('userLabels');
+    let scale = this.get('scaleLabels');
+    let scheduling = this.get('schedulingLabels');
+    var out = {};
+
+    (this.get('userLabels')||[]).forEach((row) => { out[row.key] = row.value; });
+    (this.get('scaleLabels')||[]).forEach((row) => { out[row.key] = row.value; });
+    (this.get('schedulingLabels')||[]).forEach((row) => { out[row.key] = row.value; });
+
+    var config = this.get('launchConfig');
+    if ( config )
+    {
+      this.set('launchConfig.labels', out);
+    }
+
+    this.set('labelsReady', user && scale && scheduling);
+  },
+
+  editLabel: function() {
+    return (this.get('needsUpgrade') ? 'action.upgrade' : 'action.edit');
+  }.property('needsUpgrade'),
 
   // ----------------------------------
   // Save
   // ----------------------------------
   willSave() {
-    var errors = [];
-    if ( !this.get('editing') )
-    {
-      // Errors from components
-      errors.pushObjects(this.get('schedulingErrors')||[]);
-      errors.pushObjects(this.get('scaleErrors')||[]);
-
-      if ( errors.length )
-      {
-        this.set('errors', errors);
-        return false;
-      }
-    }
-
+    this.validateRules();
     return this._super();
   },
 
   validate: function() {
+    let intl = this.get('intl');
+
     var errors = [];
-    if (!this.get('launchConfig.ports.length') && !this.get('launchConfig.expose.length') )
+    // Errors from components
+    errors.pushObjects(this.get('ruleErrors')||[]);
+    errors.pushObjects(this.get('schedulingErrors')||[]);
+    errors.pushObjects(this.get('scaleErrors')||[]);
+
+    if (!this.get('service.launchConfig.ports.length') && !this.get('service.launchConfig.expose.length') )
     {
-      errors.push('Choose one or more ports to listen on');
+      errors.push(intl.t('newBalancer.error.noRules'/*just right*/));
     }
 
-    if ( !this.get('targetResources.length') )
-    {
-      errors.push('Choose one or more targets to send traffic to');
-    }
-
-    var bad = this.get('targetsArray').filter(function(obj) {
-      return !Ember.get(obj,'value');
-    });
-    if ( bad.get('length') )
-    {
-      if ( this.get('isAdvanced') )
-      {
-        errors.push('Target Service is required on each Target');
-      }
-      else
-      {
-        this.get('targetsArray').removeObjects(bad);
-      }
-    }
-
-    bad = this.get('targetsArray').filter(function(obj) {
-      return Ember.get(obj, 'srcPort') && !Ember.get(obj, 'hostname') && !Ember.get(obj, 'dstPort') && !Ember.get(obj,'path');
-    });
-    if ( bad.get('length') )
-    {
-      errors.push('A Target can\'t have just a Source Port.  Remove it, or add a Request Host, Request Path, or Target Port.');
-    }
-
-    if ( !this.get('service.defaultCertificateId') )
-    {
-      bad = this.get('listenersArray').filterBy('ssl',true);
-      if ( bad.get('length') )
-      {
-        errors.push('Certificate is required with SSL listening ports.');
-      }
+    if ( this.get('service.lbConfig.needsCertificate') && !this.get('service.lbConfig.defaultCertificateId')) {
+      errors.push(intl.t('newBalancer.error.needsCertificate'));
     }
 
     if ( errors.length )
@@ -272,12 +330,29 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     return true;
   },
 
-
-  didSave() {
-    // Set balancer targets
-    return this.get('service').doAction('setservicelinks', {
-      serviceLinks: this.get('targetResources'),
-    });
+  doSave() {
+    if ( this.get('editing') )
+    {
+      let service = this.get('service');
+      return this._super.apply(this,arguments).then(() => {
+        if ( this.get('needsUpgrade') ) {
+          return service.waitForAction('upgrade').then(() => {
+            return service.doAction('upgrade', {
+              inServiceStrategy: {
+                batchSize: this.get('upgradeOptions.batchSize'),
+                intervalMillis: this.get('upgradeOptions.intervalMillis'),
+                startFirst: this.get('upgradeOptions.startFirst'),
+                launchConfig: service.get('launchConfig'),
+              },
+            });
+          });
+        }
+      });
+    }
+    else
+    {
+      return this._super.apply(this,arguments);
+    }
   },
 
   doneSaving() {

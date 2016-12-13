@@ -1,14 +1,16 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  queryParams: ['environmentId','serviceId','tab'],
-  environmentId: null,
+  queryParams: ['stackId','serviceId','tab','upgrade','upgradeImage'],
+  stackId: null,
   serviceId: null,
   tab: 'ssl',
+  upgrade: null,
+  upgradeImage: 'false',
 
   actions: {
     done() {
-      return this.transitionToRoute('environment', this.get('model.service.environmentId'));
+      return this.transitionToRoute('stack', this.get('model.service.stackId'));
     },
 
     cancel() {

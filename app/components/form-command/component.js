@@ -7,10 +7,13 @@ export default Ember.Component.extend(ManageLabels, {
   instance: null,
   errors: null,
   isService: null,
+  editing: true,
+  classNameBindings: ['editing:component-editing:component-static'],
 
-  tagName: '',
+  intl: Ember.inject.service(),
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
     this.initLabels(this.get('initialLabels'), null, C.LABEL.START_ONCE);
     this.initTerminal();
     this.initStartOnce();
@@ -29,25 +32,32 @@ export default Ember.Component.extend(ManageLabels, {
     var instance = this.get('instance');
     var tty = instance.get('tty');
     var stdin = instance.get('stdinOpen');
-    var out = 'both';
+    var out = {
+      type: 'both',
+      name: this.get('intl').tHtml('formCommand.console.both'),
+    };
 
     if ( tty !== undefined || stdin !== undefined )
     {
       if ( tty && stdin )
       {
-        out = 'both';
+        out.type = 'both';
+        out.name = this.get('intl').tHtml('formCommand.console.both');
       }
       else if ( tty )
       {
-        out = 'terminal';
+        out.type = 'terminal';
+        out.name = this.get('intl').tHtml('formCommand.console.terminal');
       }
       else if ( stdin )
       {
-        out = 'interactive';
+        out.type = 'interactive';
+        out.name = this.get('intl').tHtml('formCommand.console.interactive');
       }
       else
       {
-        out = 'none';
+        out.type = 'none';
+        out.name = this.get('intl').tHtml('formCommand.console.none');
       }
     }
 
@@ -56,12 +66,12 @@ export default Ember.Component.extend(ManageLabels, {
   },
 
   terminalDidChange: function() {
-    var val = this.get('terminal');
+    var val = this.get('terminal.type');
     var stdinOpen = ( val === 'interactive' || val === 'both' );
     var tty = (val === 'terminal' || val === 'both');
     this.set('instance.tty', tty);
     this.set('instance.stdinOpen', stdinOpen);
-  }.observes('terminal'),
+  }.observes('terminal.type'),
 
   // ----------------------------------
   // Start Once

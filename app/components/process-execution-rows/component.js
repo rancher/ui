@@ -6,16 +6,14 @@ export default Ember.Component.extend({
   expandAll  : false,
   expandSelf : false,
   depth      : 0,
+  modalService: Ember.inject.service('modal'),
 
   actions: {
     expand: function() {
       this.toggleProperty('expanded');
     },
     showError: function(model) {
-      this.get('application').setProperties({
-        openProcessesError: true,
-        exception: model
-      });
+      this.get('modalService').toggleModal('modal-process-error', model);
     }
   },
 

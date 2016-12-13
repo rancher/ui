@@ -1,0 +1,36 @@
+<div style="max-width: 720px; margin: 80px auto 0 auto;">
+  <div class="farm-box login top-colors">
+    <h1>
+      {{format-html-message 'loginPage.greeting' appName=settings.appName}}
+      <div class="logo"></div>
+    </h1>
+    <section class="r-pb0">
+      {{language-dropdown login=true class='r-mt10 r-mb10'}}
+      <br/>
+      {{#if isGithub}}
+        <p>{{t 'loginPage.githubMessage' appName=settings.appName}}</p>
+        <br/>
+      {{/if}}
+
+     {{#if isShibboleth}}
+        <p>{{t 'loginPage.shibbolethMessage' appName=settings.appName}}</p>
+        <br/>
+      {{/if}}
+
+      {{#if infoMsg}}
+        <div class="alert {{if errorMsg 'alert-danger' 'alert-warning'}}" role="alert">{{infoMsg}}</div>
+      {{/if}}
+
+      {{#if (or isLocal isActiveDirectory isOpenLdap isAzureAd)}}
+        {{login-user-pass action="authenticate" waiting=waiting}}
+      {{/if}}
+      {{#if isGithub}}
+        {{login-github action="started" waiting=waiting}}
+      {{/if}}
+      {{#if isShibboleth}}
+        {{login-shibboleth action="started" waiting=waiting}}
+      {{/if}}
+      <span style="color: white">{{access.provider}}</span>
+    </section>
+  </div>
+</div>

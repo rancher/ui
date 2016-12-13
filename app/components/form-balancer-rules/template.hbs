@@ -1,0 +1,162 @@
+<div class="row">
+  <div class="col-xs-6 col-md-2 form-label form-control-static">
+    <label>{{t 'formBalancerRules.label'}}</label>
+  </div>
+  <div class="col-xs-6 col-md-8">
+    {{#unless editing}}
+      <button class="btn-circle-text" {{action "addRule" false}}><i class="icon icon-plus-circle"/> <span>{{t 'formBalancerRules.addServiceLabel'}}</span></button>
+      <button class="btn-circle-text r-pl20" {{action "addRule" true}}><i class="icon icon-plus-circle"/> <span>{{t 'formBalancerRules.addSelectorLabel'}}</span></button>
+    {{/unless}}
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    {{#if rules.length}}
+      <table class="grid fixed no-lines no-top-padding tight r-mb0">
+        <thead>
+          <tr>
+            {{#if showListeners}}
+              <th width="30">&nbsp;</th>
+              <th width="90">{{t 'formBalancerRules.access.label'}}*</th>
+              {{#if showIp}}
+                <th>{{t 'formBalancerRules.sourceIp.label'}}*</th>
+              {{/if}}
+              <th width="90">{{t 'formBalancerRules.protocol.label'}}*</th>
+              <th class="divided">{{t 'formBalancerRules.hostname.label'}}</th>
+              <th width="90">{{t 'formBalancerRules.sourcePort.label'}}*</th>
+              <th>{{t 'formBalancerRules.path.label'}}</th>
+              <th class="divided">{{t 'formBalancerRules.target'}}*</th>
+              <th width="90">{{t 'formBalancerRules.targetPort.label'}}*</th>
+            {{else}}
+              <th>{{t 'formBalancerRules.hostname.label'}}</th>
+              <th>{{t 'formBalancerRules.path.label'}}</th>
+              <th width="90" class="divided">{{t 'formBalancerRules.targetPort.label'}}*</th>
+            {{/if}}
+            {{#if showBackend}}
+              <th class="divided">{{t 'formBalancerRules.backendName.label'}}</th>
+            {{/if}}
+            {{#if showListeners}}
+              <th width="40">&nbsp;</th>
+            {{/if}}
+          </tr>
+        </thead>
+
+        <tbody>
+          {{#each rules as |rule idx|}}
+            <tr>
+              {{#if showListeners}}
+                <td data-title="{{t 'formBalancerRules.priority.label'}}">
+                  <button class="btn btn-primary btn-xs" {{action "moveUp" rule}} disabled={{eq rule.priority minPriority}}>
+                    <i class="icon icon-chevron-up"></i>
+                  </button>
+                  <button class="btn btn-primary btn-xs" {{action "moveDown" rule}} disabled={{eq rule.priority maxPriority}}>
+                    <i class="icon icon-chevron-down"></i>
+                  </button>
+                </td>
+
+                <td data-title="{{t 'formBalancerRules.access.label'}}">
+                  <select class="form-control input-sm" onchange={{action (mut rule.access) value="target.value"}}>
+                    <option value="public" selected={{eq rule.access "public"}}>{{t 'formBalancerRules.access.public'}}</option>
+                    <option value="internal" selected={{eq rule.access "internal"}}>{{t 'formBalancerRules.access.internal'}}</option>
+                  </select>
+                </td>
+
+                {{#if showIp}}
+                  <td data-title="{{t 'formBalancerRules.sourceIp.label'}}">
+                    {{#if (eq rule.access "public")}}
+                      {{input type="text" class="form-control input-sm" value=rule.sourceIp placeholder=(t 'formBalancerRules.sourceIp.placeholder')}}
+                    {{else}}
+                      <span class="text-muted">{{t 'generic.na'}}</span>
+                    {{/if}}
+                  </td>
+                {{/if}}
+
+                <td data-title="{{t 'formBalancerRules.protocol.label'}}">
+                  <select class="form-control input-sm" onchange={{action (mut rule.protocol) value="target.value"}}>
+                    {{#each protocolChoices as |proto|}}
+                      <option value={{proto}} selected={{eq rule.protocol proto}}>{{upper-case proto}}</option>
+                    {{/each}}
+                  </select>
+                </td>
+              {{/if}}
+
+              <td class="divided" data-title="{{t 'formBalancerRules.hostname.label'}}">
+                {{#if rule.canHostname}}
+                  {{input type="text" class="form-control input-sm" value=rule.hostname placeholder=(t 'formBalancerRules.hostname.placeholder')}}
+                {{else}}
+                  <span class="text-muted">{{t 'generic.na'}}</span>
+                {{/if}}
+              </td>
+
+              {{#if showListeners}}
+                <td data-title="{{t 'formBalancerRules.sourcePort.label'}}">
+                  {{input type="number" class="form-control input-sm" min="1" max="65535" value=rule.sourcePort placeholder=(t 'formBalancerRules.sourcePort.placeholder')}}
+                </td>
+              {{/if}}
+
+              <td data-title="{{t 'formBalancerRules.path.label'}}">
+                {{#if rule.canPath}}
+                  {{input type="text" class="form-control input-sm" value=rule.path placeholder=(t 'formBalancerRules.path.placeholder')}}
+                {{else}}
+                  <span class="text-muted">{{t 'generic.na'}}</span>
+                {{/if}}
+              </td>
+
+              {{#if showListeners}}
+                <td class="divided" data-title="{{t (if rule.isSelector 'formBalancerRules.selector.label' 'formBalancerRules.serviceId.label')}}">
+                  {{#if rule.isSelector}}
+                    {{input type="text" class="form-control input-sm" value=rule.selector placeholder=(t 'formBalancerRules.selector.placeholder')}}
+                  {{else}}
+                    <select class="form-control input-sm" onchange={{action (mut rule.serviceId) value="target.value"}}>
+                      <option>{{t 'formBalancerRules.serviceId.prompt'}}</option>
+                      {{#each-in serviceChoices as |group list|}}
+                        <optgroup label={{group}}>
+                          {{#each list as |svc|}}
+                            <option selected={{eq svc.id rule.serviceId}} value={{svc.id}}>{{svc.name}}</option>
+                          {{/each}}
+                        </optgroup>
+                      {{/each-in}}
+                    </select>
+                  {{/if}}
+                </td>
+              {{/if}}
+
+              <td data-title="{{t 'formBalancerRules.targetPort.label'}}">
+                {{input type="number" class="form-control input-sm" min="1" max="65535" value=rule.targetPort placeholder=(t 'formBalancerRules.targetPort.placeholder')}}
+              </td>
+
+              {{#if showBackend}}
+                <td class="divided" data-title="{{t 'formBalancerRules.backendName.label'}}">
+                  {{input type="text" class="form-control input-sm" value=rule.backendName placeholder=(t 'formBalancerRules.backendName.placeholder')}}
+                </td>
+              {{/if}}
+
+              {{#if showListeners}}
+                <td class="text-right">
+                  <button class="btn btn-primary btn-sm" {{action "removeRule" rule}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+                </td>
+              {{/if}}
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <p class="help-block">
+        {{t 'formBalancerRules.help.prefix'}}
+        {{#unless showBackend}}
+          <a href="#" {{action "showBackend"}}>
+            {{t 'formBalancerRules.help.showBackendLink'}}
+          </a>
+        {{/unless}}
+        {{#unless showIp}}
+          <a href="#" {{action "showIp"}}>
+            {{t 'formBalancerRules.help.showIpLink'}}
+          </a>
+        {{/unless}}
+        {{t 'formBalancerRules.help.suffix'}}
+      </p>
+    {{else}}
+      <span class="text-muted">{{t 'formBalancerRules.noRules'}}</span>
+    {{/if}}
+  </div>
+</div>

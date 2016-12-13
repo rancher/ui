@@ -1,6 +1,11 @@
 #!/bin/bash
-set -e
-set -u
+
+set -eu
+
+BUILD_DEBUG="${BUILD_DEBUG:-}"
+if [[ -n "${BUILD_DEBUG}" ]]; then
+    set -x
+fi
 
 : ${CI_BRANCH=""}
 : ${UPLOAD_LATEST=""}
@@ -13,16 +18,9 @@ else
   cd `dirname $CWD`
 fi
 
-# -------------------------------------
+source ./scripts/utils.sh
 
-# Execute something and exit if it fails
-function runCmd() {
-  $@
-  if [[ $? -ne 0 ]]; then
-    echo "Command: $@ failed"
-    exit 2
-  fi
-}
+# -------------------------------------
 
 function printHelp() {
     cat 1>&2 <<EOF
@@ -32,8 +30,10 @@ build-static Usage:
   -l - Build as "latest" instead of the version in package.json
   -t - Tag and push tag
   -u - Upload to GCE
+  -s - Skip tests
   -c=CDN - Force a CDN path for static asset delivery. Default <releases.rancher.com/ui>
   -v=VERSION - Force version to be VERSION instead of what is in package.json
+  -p=PROJECT_NAME - name of the Google Cloud project hosting the storage bucket
 EOF
   exit 1;
 }
@@ -57,11 +57,13 @@ FORCE=0
 LATEST=0
 UPLOAD=0
 TAG=0
+TEST=1
 ENVIRONMENT="production"
 FINGERPRINT="yes"
 : ${FORCE_VERSION:=""}
+GS_PROJECT_NAME="${GS_PROJECT_NAME:-Rancher}"
 
-while getopts ":dlutfv:c:" opt;do
+while getopts ":dlustfv:c:p:" opt;do
     case $opt in
     d)
         ENVIRONMENT="development"
@@ -71,6 +73,9 @@ while getopts ":dlutfv:c:" opt;do
         ;;
     l)
         LATEST=1
+        ;;
+    s)
+        TEST=0
         ;;
     t)
         TAG=1
@@ -83,6 +88,9 @@ while getopts ":dlutfv:c:" opt;do
         ;;
     c)
         CDN=$OPTARG
+        ;;
+    p)
+        GS_PROJECT_NAME=$OPTARG
         ;;
     \?)
         echo "Invalid arguemnt: ${OPTARG}"
@@ -143,9 +151,8 @@ fi
 BUILD_PAR="dist/static"
 BUILD_DIR="${BUILD_PAR}/${VERSION}"
 BUILD_TGZ="${BUILD_PAR}/${VERSION}.tar.gz"
-GS_URL="gs://${CDN}"
-CACHE="Cache-Control:no-cache,must-revalidate"
-GZIP="html,js,css,xml,txt,map,svg,ttf,woff,woff2"
+GS_URL="${GS_URL:-gs://${CDN}}"
+
 GCLOUD_UUID="google/cloud-sdk@sha256:506775439bd4f44d90a3f6784f2b625e55c43635f9f2c4cae24ac4b3dea0277a"
 
 echo "Branch: ${BRANCH}"
@@ -154,22 +161,26 @@ if [[ "${VERSION}" != "${PKG_VERSION}" ]]; then
 fi
 echo "Version: ${VERSION}"
 echo "Build Dir: ${BUILD_DIR}"
-echo "Options: Force=${FORCE}, Latest=${LATEST}, Upload=${UPLOAD}, Tag=${TAG}"
+echo "Options: Force=${FORCE}, Latest=${LATEST}, Test=${TEST}, Upload=${UPLOAD}, Tag=${TAG}"
 echo "Current Directory: $(pwd)"
 
-echo "Testing..."
-runCmd ./node_modules/.bin/ember test
-echo "Done Testing."
+if [[ $TEST -eq 1 ]]; then
+  echo "Testing..."
+  runCmd ./node_modules/.bin/ember test
+  echo "Done Testing."
+else
+  echo "Skipping Tests"
+fi
 
 if [[ $LATEST -ne 1 ]]; then
   echo "Building Static Tarball..."
   RANCHER="" CATALOG="" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
 
-# Create a file containing the version
-echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
+  # Create a file containing the version
+  echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
 
-# Create a tarball of the version
-runCmd tar -czf ${BUILD_TGZ} -C ${BUILD_PAR} ${VERSION}
+  # Create a tarball of the version
+  runCmd tar -czf ${BUILD_TGZ} -C ${BUILD_PAR} ${VERSION}
 fi;
 
 echo "Building Hosted Version..."
@@ -183,31 +194,35 @@ if [[ $TAG -eq 1 ]]; then
   runCmd git push --tags
 fi
 
-# For use on your laptop, manually
-if [[ $UPLOAD -eq 1 ]]; then
+# Upload asset, either from laptop or from CI pipeline
+if [[ -n "$UPLOAD" ]]; then
   echo "Uploading..."
-  if [[ $LATEST -eq 1 ]]; then
-    runCmd gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R ${BUILD_DIR} "${GS_URL}/_upload"
-    runCmd gsutil -h "${CACHE}" rsync -c -r -d "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
-    runCmd gsutil rm -a -f -R "${GS_URL}/_upload"
-  else
-    runCmd gsutil -m cp ${BUILD_TGZ} ${GS_URL}
-    runCmd gsutil -m cp -z "${GZIP}" -R ${BUILD_DIR} ${GS_URL}
-  fi
-fi
 
-# For use from Drone, automatically
-if [[ $UPLOAD -eq 2 ]]; then
   ABS_BUILD_DIR="$(pwd)/${BUILD_DIR}"
-  echo "Updating latest ($ABS_BUILD_DIR) thru Docker..."
+  GS_UPLOAD_COMMAND="gcs_upload_asset project_name=${GS_PROJECT_NAME} version=${VERSION} upload_target=${GS_URL}"
 
-  # Upload new files, with gzip headers (rsync doesn't have this)
-  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil -h "${CACHE}" -m cp -z "${GZIP}" -R /upload "${GS_URL}/_upload"
+  if [[ $LATEST -ne 1 ]]; then
+    GS_UPLOAD_COMMAND+=" tgz_file=${BUILD_TGZ}"
+  else
+    GS_UPLOAD_COMMAND+=" is_latest=true"
+  fi
 
-  # Rsync new files into latest diff
-  # Beware of the leopard: -m will break rsync on versioned buckets.
-  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil -h "${CACHE}" rsync -c -r "${GS_URL}/_upload" "${GS_URL}/${VERSION}"
+  if [[ $UPLOAD -eq 1 ]]; then
+    runCmd "${GS_UPLOAD_COMMAND} upload_source=${BUILD_DIR} disable_svcacct_auth=true"
+  fi
 
-  # Remove temp dir
-  runCmd docker run --rm -v $ABS_BUILD_DIR:/upload $GCLOUD_UUID gsutil rm -a -f -R "${GS_URL}/_upload"
+  if [[ $UPLOAD -eq 2 ]]; then
+    GS_SERVICE_ACCOUNT_KEYFILE="$(TMPDIR=$(pwd) && mktemp -t gs_service_account_keyfile.XXXXXXX)"
+    echo "${GS_SERVICE_ACCOUNT_KEY}" > "${GS_SERVICE_ACCOUNT_KEYFILE}"
+
+    GS_UPLOAD_COMMAND+=" service_account_id=${GS_SERVICE_ACCOUNT_ID}"
+    runCmd "docker run --rm --name gcloud-config \
+            -v ${GS_SERVICE_ACCOUNT_KEYFILE}:/tmp/keyfile.json \
+            -v $(pwd)/scripts:/opt/rancher/scripts \
+            -v ${ABS_BUILD_DIR}:/upload \
+            ${GCLOUD_UUID} \
+            /opt/rancher/scripts/${GS_UPLOAD_COMMAND}"
+
+    rm "${GS_SERVICE_ACCOUNT_KEYFILE}"
+  fi
 fi

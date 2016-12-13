@@ -1,4 +1,6 @@
-<button class="btn-circle-text" {{action "add"}}><i class="icon icon-plus-circle"/> <span>{{t addActionLabel}}</span></button>
+{{#if editing}}
+  <button class="btn-circle-text" {{action "add"}}><i class="icon icon-plus-circle"/> <span>{{t addActionLabel}}</span></button>
+{{/if}}
 
 {{#if ary.length}}
   <table class="table fixed no-lines no-top-padding tight small">
@@ -10,29 +12,47 @@
     </tr>
     {{#each ary as |row|}}
       <tr>
-        <td class="valign-top" data-title="Key">
-          {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=row.key placeholder=keyPlaceholder}}
+        <td class="valign-top" data-title="{{t keyLabel}}:">
+          {{#if editing}}
+            {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=row.key placeholder=keyPlaceholder}}
+          {{else}}
+            {{row.key}}
+          {{/if}}
         </td>
 
         <td class="valign-top text-center">
-          <p class="form-control-static input-sm">{{t 'formKeyValue.separator'}}</p>
+          {{#if editing}}
+            <p class="form-control-static input-sm">{{t 'formKeyValue.separator'}}</p>
+          {{/if}}
         </td>
 
-        <td class="valign-top" data-title="Value">
-          {{#if allowMultilineValue}}
-            {{textarea-autogrow class="form-control input-sm value" value=row.value placeholder=valuePlaceholder}}
+        <td class="valign-top" data-title="{{t valueLabel}}:">
+          {{#if editing}}
+            {{#if allowMultilineValue}}
+              {{textarea-autogrow class="form-control input-sm value" value=row.value placeholder=valuePlaceholder}}
+            {{else}}
+              {{input class="form-control input-sm value" type="text" value=row.value placeholder=valuePlaceholder}}
+            {{/if}}
           {{else}}
-            {{input class="form-control input-sm value" type="text" value=row.value placeholder=valuePlaceholder}}
+            {{row.value}}
           {{/if}}
         </td>
 
         <td class="valign-top text-right">
-          <button class="btn btn-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+          {{#if editing}}
+            <button class="btn btn-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+          {{/if}}
         </td>
       </tr>
     {{/each}}
   </table>
-  <div class="text-muted" style="font-size: 12px; margin-bottom: 12px;">
-    {{t 'formKeyValue.protip'}}
-  </div>
+  {{#if editing}}
+    <div class="text-muted" style="font-size: 12px; margin-bottom: 12px;">
+      {{t 'formKeyValue.protip'}}
+    </div>
+  {{/if}}
+{{else}}
+  {{#unless editing}}
+    <div class="form-control-static">{{t 'generic.none'}}</div>
+  {{/unless}}
 {{/if}}

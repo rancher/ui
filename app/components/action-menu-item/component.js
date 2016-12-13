@@ -18,7 +18,6 @@ export default Ember.Component.extend({
 
 
   click : function(event) {
-
     if ( isAlternate(event) && this.get('altActionArg'))
     {
       this.sendAction('action', this.get('altActionArg'));

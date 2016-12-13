@@ -2,40 +2,43 @@ import Ember from 'ember';
 
 export default Ember.Service.extend({
   intl: Ember.inject.service(),
+  store: Ember.inject.service('store'),
 
   choices() {
     let store = this.get('store');
     let intl = this.get('intl');
 
     return Ember.RSVP.hash({
-      environments: store.findAllUnremoved('environment'),
+      stacks: store.findAll('stack'),
       services: store.find('service', null, {forceReload: true}) // Need force-reload to get response with mixed types
     }).then((hash) => {
-      return hash.services.map((service) => {
+      return hash.services.filter((service) => {
+        return service.get('system') !== true;
+      }).map((service) => {
         return {
-          group: intl.t('allServices.stackGroup', {name: envName(service)}),
+          group: intl.t('allServices.stackGroup', {name: stackName(service)}),
           id: service.get('id'),
           name: service.get('displayName'),
           kind: service.get('type'),
           lbSafe: (service.get('type').toLowerCase() !== 'externalservice' || service.get('hostname') === null),
           obj: service,
-          envName: envName(service),
+          stackName: stackName(service),
         };
       });
 
-      function envObj(service) {
-        return hash.environments.filterBy('id', service.get('environmentId'))[0];
+      function stackObj(service) {
+        return hash.stacks.filterBy('id', service.get('stackId'))[0];
       }
 
-      function envName(service) {
-        var env = envObj(service);
-        if ( env )
+      function stackName(service) {
+        var stack = stackObj(service);
+        if ( stack )
         {
-          return env.get('displayName');
+          return stack.get('displayName');
         }
         else
         {
-          return intl.t('allServices.noName', {id: service.get('environmentId')});
+          return intl.t('allServices.noName', {id: service.get('stackId')});
         }
       }
     });

@@ -1,16 +1,18 @@
 /*xs*/
-@media (min-width: $screen-xs) { // 480px
+@media (min-width: $screen-xs) {
+  // 480px
   div.banner {
-    padding: 0 ;
+    padding: 0;
 
     .banner-head {
       display: block;
       position: relative;
 
       &::after {
-        display:none;
+        display: none;
       }
     }
+
     .banner-content {
       display: block;
       margin-left: 0;
@@ -22,7 +24,6 @@
     }
   }
 }
-
 
 /*small*/
 @media (min-width: $screen-sm) {
@@ -43,7 +44,7 @@
       position: absolute;
 
       &::after {
-        display:initial;
+        display: initial;
       }
     }
 
@@ -65,46 +66,71 @@
       text-transform: none;
     }
   }
+
 }
 
 /*695-959*/
 @media (max-width: $screen-sm-max) {
+  HEADER {
+    NAV.navbar {
+      .project-btn {
+        label {
+          visibility: visible;
+        }
+      }
+    }
+  }
+
+  .flex-item-half {
+    width: 100%;
+  }
+
   .stack-section {
     .header-right {
       width: 20%;
       margin: 0;
       border-top: dotted 1px $lightGray;
+
       &.count {
         width: 25%;
       }
+
       &.stack-actions {
         width: 11%;
       }
+
       &.stack-template {
         width: 50%;
       }
     }
+
     .header-left.name {
       width: 70%;
     }
+
     .stack-actions {
       text-align: center !important;
     }
   }
-}
 
-/*responsive tables and nav*/
-@media (max-width: $screen-sm-max) {
- table,
- thead,
- tbody,
- th,
- td,
- tr {
+  ul.nav-tabs.shadowed li {
+    display: block;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  /*responsive tables and nav 695-959*/
+
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
     display: block;
   }
 
- thead {
+  thead {
     height: 0;
     position: absolute;
     top: -9999px;
@@ -117,18 +143,22 @@
     }
   }
 
- tr {
-  border: 1px solid $table-border-color;
-  margin: 10px 0;
-}
+  tr {
+    border: 1px solid $table-border-color;
+    margin: 10px 0;
 
- td {
+    &.sm-noborder {
+      border-width: 0px;
+    }
+  }
+
+  td {
     border: none;
     border-bottom: 1px solid #eee;
     position: relative;
     padding-left: 50%;
     white-space: normal;
-    text-align:left;
+    text-align: left;
     width: 100% !important;
     border-right: none !important;
 
@@ -137,31 +167,40 @@
     }
   }
 
- td:before {
+  td:before {
     content: attr(data-title);
     width: 45%;
-    margin-right: 10px;
     white-space: nowrap;
-    text-align:left;
+    text-align: left;
     font-weight: bold;
+    padding-right: 5px;
   }
 
   .stack-section .grid td.state {
     padding: 10px !important;
   }
 
-.grid TD.actions {
+  .grid TD.actions {
     position: static;
     text-align: left;
   }
 
   .stack-section {
     background: transparent !important;
+
+    .header-right {
+      border: 0;
+    }
   }
+
   .stack-section .grid TD, .stack-section .grid TH {
     border-bottom: 1px dotted $table-border-color !important;
     border-top: none;
     text-align: left !important;
+  }
+
+  .stack-section .grid TD:last-child {
+    border-bottom: 0!important;
   }
 
   .grid > thead > tr > th,

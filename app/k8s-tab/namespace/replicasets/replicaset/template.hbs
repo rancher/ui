@@ -1,0 +1,39 @@
+<section class="header">
+  <h1>{{#link-to "k8s-tab.namespace.replicasets"}}{{t 'k8sTab.namespace.replicasets.replicaset.header'}}{{/link-to}} {{model.displayName}}</h1>
+  <div class="pull-right">
+    {{action-menu model=model}}
+  </div>
+</section>
+
+<section>
+  <div class="container-multi-stat">
+    <div class="container-flex bordered">
+      <div class="col-flex"><label>{{t 'k8sTab.multistat.header.created'}}</label> {{date-from-now model.metadata.creationTimestamp}}</div>
+      <div class="col-flex"><label>{{t 'k8sTab.multistat.header.replicas'}}</label> {{model.displayReplicas}}</div>
+      <div class="col-flex">
+        <label>{{t 'k8sTab.multistat.header.selectors'}}</label>
+        {{#each model.selectorsAsArray as |sel|}}
+          <span class="badge badge-default">{{sel.label}}={{sel.value}}</span>
+        {{else}}
+          {{t 'generic.none'}}
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</section>
+
+{{#select-tab initialTab='pods' as |component|}}
+  <ul class="nav nav-tabs nav-tabs-well shadowed" role="tablist" style="display: inline-block;">
+    <li role="tab" class="tab" data-section="pods" {{action "selectTab" "pods" target=component}}><a href="#">{{t 'k8sTab.navTabs.pods'}}</a></li>
+    <li role="tab" class="tab" data-section="labels" {{action "selectTab" "labels" target=component}}><a href="#">{{t 'k8sTab.navTabs.labels'}}</a></li>
+  </ul>
+
+  <div class="horizontal-form well" role="tabpanel">
+    <div class="section container-fluid" data-section="pods">
+      {{k8s/pod-section model=model.selectedPods}}
+    </div>
+    <div class="section container-fluid" data-section="labels">
+      {{labels-section model=model labelSource=model.metadata.labels showKind=false sortBy="key"}}
+    </div>
+  </div>
+{{/select-tab}}

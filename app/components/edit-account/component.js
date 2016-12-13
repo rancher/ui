@@ -1,18 +1,25 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import C from 'ui/utils/constants';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default Ember.Component.extend(NewOrEdit,{
+export default ModalBase.extend(NewOrEdit, {
+  classNames: ['lacsso', 'modal-container', 'large-modal'],
   access: Ember.inject.service(),
   primaryResource: Ember.computed.alias('model.account'),
+  settings: Ember.inject.service(),
 
-  originalModel: null,
+  originalModel: Ember.computed.alias('modalService.modalOpts'),
   account: null,
   credential: null,
 
   oldPassword: '',
   newPassword: '',
   newPassword2: '',
+
+  validateDescription: Ember.computed(function() {
+    return this.get('settings').get(C.SETTING.AUTH_LOCAL_VALIDATE_DESC) || null;
+  }),
 
   accountTypeChoices: [
     {label: 'editAccount.form.kind.user', value: 'user'},
@@ -28,7 +35,8 @@ export default Ember.Component.extend(NewOrEdit,{
   needOld: Ember.computed.not('isAdmin'),
   showConfirm: Ember.computed.not('generated'),
 
-  willInsertElement() {
+  init() {
+    this._super(...arguments);
     var accountClone = this.get('originalModel').clone();
     var credential = this.get('originalModel.passwordCredential');
     var credentialClone = (credential ? credential.clone() : null);
@@ -93,7 +101,7 @@ export default Ember.Component.extend(NewOrEdit,{
   },
 
   doneSaving() {
-    this.sendAction('dismiss');
+    this.send('cancel');
 
     // If you edit yourself and make yourself a user, drop the admin bit.
     if ( this.get('model.account.id') === this.get('session.'+C.SESSION.ACCOUNT_ID) && this.get('model.account.kind') !== 'admin' )
@@ -106,9 +114,6 @@ export default Ember.Component.extend(NewOrEdit,{
   },
 
   actions: {
-    outsideClick() {
-    },
-
     error(err) {
       if ( err.get('code') === 'InvalidOldPassword' )
       {
@@ -123,9 +128,5 @@ export default Ember.Component.extend(NewOrEdit,{
     generated() {
       this.set('generated', true);
     },
-
-    cancel() {
-      this.sendAction('dismiss');
-    }
   },
 });

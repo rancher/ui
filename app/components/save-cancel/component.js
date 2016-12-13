@@ -39,16 +39,17 @@ export default Ember.Component.extend({
     } else {
       return this.get('createLabel');
     }
-  }.property('saved','editing'),
+  }.property('saved','editing','savedLabel','editLabel','createLabel'),
 
   savedChanged: function() {
     if ( this.get('saved') )
     {
       Ember.run.later(this, () => {
-        if ( this._state !== 'destroying' )
-        {
-          this.set('saved', false);
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
         }
+
+        this.set('saved', false);
       }, 5000);
     }
   }.observes('saved'),

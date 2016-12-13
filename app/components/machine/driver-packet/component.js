@@ -3,8 +3,16 @@ import Driver from 'ui/mixins/driver';
 import { PacketFacilities, PacketOs, PacketPlans} from 'ui/utils/packet-choices';
 
 
-let osChoices = PacketOs.filter(function(os) {
-  return (os.distro||'').toLowerCase() === 'ubuntu';
+let osChoices = PacketOs.map(function(os) {
+  os.enabled = (os.slug||'').toLowerCase() === 'ubuntu_14_04';
+  return os;
+});
+
+let planChoices = PacketPlans.filter(function(plan) {
+  return (plan.line||'').toLowerCase() === 'baremetal';
+}).map((plan) => {
+  plan.enabled = (plan.slug||'').toLowerCase() !== 'baremetal_2';
+  return plan;
 });
 
 export default Ember.Component.extend(Driver, {
@@ -12,7 +20,7 @@ export default Ember.Component.extend(Driver, {
   packetConfig    : Ember.computed.alias('model.packetConfig'),
 
   facilityChoices : PacketFacilities,
-  planChoices     : PacketPlans,
+  planChoices     : planChoices,
   osChoices       : osChoices,
 
   bootstrap: function() {
@@ -28,8 +36,28 @@ export default Ember.Component.extend(Driver, {
     });
 
     this.set('model', store.createRecord({
-      type: 'machine',
+      type: 'host',
       packetConfig: config,
     }));
-  }
+  },
+
+  validate: function() {
+    this._super();
+    let errors = this.get('errors')||[];
+
+    if (!this.get('packetConfig.projectId') ) {
+      errors.push('Project ID is required');
+    }
+
+    if (!this.get('packetConfig.apiKey') ) {
+      errors.push('API Key is requried');
+    }
+
+    if ( errors.length ) {
+      this.set('errors',errors.uniq());
+      return false;
+    }
+
+    return true;
+  },
 });

@@ -4,15 +4,17 @@ export default Ember.Route.extend({
   projects: Ember.inject.service(),
 
   redirect() {
-    if ( this.get('projects.current.kubernetes') )
+    let orch = this.get('projects.current.orchestration');
+
+    if ( orch === 'kubernetes' )
     {
       this.replaceWith('k8s-tab');
     }
-    else if ( this.get('projects.current.swarm') )
+    else if ( orch === 'swarm' )
     {
       this.replaceWith('swarm-tab');
     }
-    else if ( this.get('projects.current.mesos') )
+    else if ( orch === 'mesos' )
     {
       this.replaceWith('mesos-tab');
     }

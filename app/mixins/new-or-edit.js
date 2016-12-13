@@ -49,33 +49,36 @@ export default Ember.Mixin.create({
     },
 
     save: function(cb) {
-      if ( !this.willSave() )
-      {
-        // Validation or something else said not to save
-        if ( cb )
+      // Will save can return true/false or a promise
+      Ember.RSVP.resolve(this.willSave()).then((ok) => {
+        if ( !ok )
         {
-          cb();
-        }
-        return;
-      }
-
-      this.doSave()
-      .then(this.didSave.bind(this))
-      .then(this.doneSaving.bind(this))
-      .catch((err) => {
-        this.send('error', err);
-        this.errorSaving(err);
-      }).finally(() => {
-        try {
-          this.set('saving',false);
-
+          // Validation or something else said not to save
           if ( cb )
           {
             cb();
           }
+          return;
         }
-        catch(e) {
-        }
+
+        this.doSave()
+        .then(this.didSave.bind(this))
+        .then(this.doneSaving.bind(this))
+        .catch((err) => {
+          this.send('error', err);
+          this.errorSaving(err);
+        }).finally(() => {
+          try {
+            this.set('saving',false);
+
+            if ( cb )
+            {
+              cb();
+            }
+          }
+          catch(e) {
+          }
+        });
       });
     }
   },

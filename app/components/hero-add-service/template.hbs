@@ -1,12 +1,16 @@
-<section class="well welcome">
-  <h2>{{t 'heroAddService.header'}}</h2>
-  <p>
-    {{t 'heroAddService.paragraph1' appName=settings.appName}}
-  </p>
-  <p>
-    {{t 'heroAddService.paragraph2' appName=settings.appName}}
-    {{#if settings.isRancher}}<a href="{{settings.docsBase}}/rancher-ui/applications/stacks/adding-services/" target="_blank">{{t 'heroAddService.contentLink'}}</a>{{/if}}
-  </p>
-  <button role="button" class="btn btn-primary" {{action "newService"}}>{{t 'heroAddService.addService'}}</button>
-  {{#link-to "catalog-tab" class="btn btn-primary"}}{{t 'heroAddService.linkToCatalog'}}{{/link-to}}
-</section>
+{{#if showUser}}
+  <section class="well welcome">
+    <h2>{{t 'heroAddService.service.header'}}</h2>
+    <p>
+      {{t 'heroAddService.service.paragraph1' appName=settings.appName}}
+    </p>
+    <p>
+      {{t 'heroAddService.service.paragraph2' appName=settings.appName}}
+      {{#if settings.isRancher}}<a href="{{settings.docsBase}}/rancher-ui/applications/stacks/adding-services/" target="_blank">{{t 'heroAddService.service.contentLink'}}</a>{{/if}}
+    </p>
+    <button role="button" class="btn btn-primary" {{action "newService"}}>{{t 'heroAddService.addService'}}</button>
+    {{#link-to "catalog-tab" class="btn btn-primary"}}{{t 'heroAddService.linkToCatalog'}}{{/link-to}}
+  </section>
+{{/if}}
+
+{{yield}}

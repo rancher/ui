@@ -2,6 +2,7 @@ import Ember from 'ember';
 import ThrottledResize from 'ui/mixins/throttled-resize';
 import Util from 'ui/utils/util';
 import { alternateLabel } from 'ui/utils/platform';
+import AnsiUp from 'npm:ansi_up';
 
 var typeClass = {
   0: 'log-combined',
@@ -19,7 +20,7 @@ export default Ember.Component.extend(ThrottledResize, {
 
   logHeight: 300,
 
-  onlyCombinedLog: Ember.computed.alias('context.instance.tty'),
+  onlyCombinedLog: Ember.computed.alias('instance.tty'),
   which: 'combined',
   isCombined: Ember.computed.equal('which','combined'),
   isStdOut: Ember.computed.equal('which','stdout'),
@@ -118,7 +119,7 @@ export default Ember.Component.extend(ThrottledResize, {
         body.insertAdjacentHTML('beforeend',
           '<div class="log-msg '+ typeClass[type]  +'">' +
             dateStr +
-            Util.escapeHtml(msg) +
+            AnsiUp.ansi_to_html(Util.escapeHtml(msg)) +
           '</div>'
         );
       });
@@ -132,6 +133,10 @@ export default Ember.Component.extend(ThrottledResize, {
     };
 
     socket.onclose = () => {
+      if ( this.isDestroyed || this.isDestroying ) {
+        return;
+      }
+
       this.set('status','disconnected');
     };
   },

@@ -1,22 +1,26 @@
 import Ember from 'ember';
-import Util from 'ui/utils/util';
 import ContainerChoices from 'ui/mixins/container-choices';
 import ManageLabels from 'ui/mixins/manage-labels';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(ManageLabels, ContainerChoices,{
-  settings: Ember.inject.service(),
+  projects:            Ember.inject.service(),
+  settings:            Ember.inject.service(),
 
   //Inputs
-  instance: null,
-  isService: null,
-  allHosts: null,
-  errors: null,
-  initialLabels: null,
+  instance:            null,
+  isService:           null,
+  allHosts:            null,
+  errors:              null,
+  initialLabels:       null,
+  isUpgrade:           false,
+  retainWasSetOnInit:  false,
+  editing:             true,
 
-  tagName: '',
+  classNameBindings: ['editing:component-editing:component-static'],
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
     this.initLabels(this.get('initialLabels'), null, [C.LABEL.DNS, C.LABEL.HOSTNAME_OVERRIDE, C.LABEL.REQUESTED_IP]);
     this.initNetwork();
     this.initRequestedIp();
@@ -24,6 +28,9 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
     this.initDnsDiscovery();
     this.initDnsResolver();
     this.initDnsSearch();
+    if (this.get('service.retainIp')) {
+      this.set('retainWasSetOnInit', this.get('service.retainIp'));
+    }
   },
 
   actions: {
@@ -42,6 +49,16 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
     },
   },
 
+  disableRetainIp: Ember.computed('isUpgrade', 'service.retainIp', 'retainWasSetOnInit', function() {
+    let isUpgrade = this.get('isUpgrade');
+    let wasSet = this.get('retainWasSetOnInit');
+    if ( isUpgrade && wasSet ) {
+      return true;
+    } else {
+      return false;
+    }
+  }),
+
   updateLabels(labels) {
     this.sendAction('setLabels', labels);
   },
@@ -53,7 +70,15 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   isContainerNetwork: Ember.computed.equal('instance.networkMode','container'),
   initNetwork: function() {
     var isService = this.get('isService')||false;
-    var choices = this.get('store').getById('schema','container').get('resourceFields.networkMode').options.sort();
+
+    var choices = ['bridge','container','host','managed','none'];
+    if ( this.get('projects.current.isWindows') ) {
+      choices = ['nat','transparent'];
+      if ( this.get('instance.networkMode') === 'managed' ) {
+        this.set('instance.networkMode','transparent');
+      }
+    }
+
     var out = [];
     choices.forEach((option) => {
       if ( isService && option === 'container' )
@@ -61,7 +86,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
         return;
       }
 
-      out.push({label: Util.ucFirst(option), value: option});
+      out.push({label: 'formNetwork.networkMode.'+option, value: option});
     });
 
     this.set('networkChoices', out);

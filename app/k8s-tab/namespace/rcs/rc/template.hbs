@@ -8,18 +8,8 @@
 <section>
   <div class="container-multi-stat">
     <div class="container-flex bordered">
-      <div class="col-flex"><label>{{t 'k8sTab.multistat.header.type'}}</label> {{model.spec.type}}</div>
-      <div class="col-flex"><label>{{t 'k8sTab.multistat.header.cluster'}}</label> {{model.spec.clusterIP}}</div>
-      <div class="col-flex"><label>{{t 'k8sTab.multistat.header.balancer'}}</label> {{default-str model.spec.loadBalancerIP default="None"}}</div>
-      <div class="col-flex"><label>{{t 'k8sTab.multistat.header.session'}}</label> {{model.spec.sessionAffinity}}</div>
-      <div class="col-flex">
-        <label>{{t 'k8sTab.multistat.header.external'}}</label>
-        {{#each model.spec.externalIPs as |ip index|}}
-          {{if (eq index 0) '' ','}}{{ip}}
-        {{else}}
-          {{t 'generic.none'}}
-        {{/each}}
-      </div>
+      <div class="col-flex"><label>{{t 'k8sTab.multistat.header.created'}}</label> {{date-from-now model.metadata.creationTimestamp}}</div>
+      <div class="col-flex"><label>{{t 'k8sTab.multistat.header.replicas'}}</label> {{model.displayReplicas}}</div>
       <div class="col-flex">
         <label>{{t 'k8sTab.multistat.header.selectors'}}</label>
         {{#each model.selectorsAsArray as |sel|}}
@@ -32,11 +22,10 @@
   </div>
 </section>
 
-<section>
-  <ul class="nav nav-tabs nav-tabs-well shadowed" role="tablist" style="display: inline-block">
-    <li role="tab" class="tab" data-section="pods" {{action "selectTab" "pods" target="view"}}><a href="#">{{t 'k8sTab.navTabs.pods'}}</a></li>
-    <li role="tab" class="tab" data-section="labels" {{action "selectTab" "labels" target="view"}}><a href="#">{{t 'k8sTab.navTabs.labels'}}</a></li>
-    <li role="tab" class="tab" data-section="ports" {{action "selectTab" "ports" target="view"}}><a href="#">{{t 'k8sTab.navTabs.ports'}}</a></li>
+{{#select-tab initialTab='pods' as |component|}}
+  <ul class="nav nav-tabs nav-tabs-well shadowed" role="tablist" style="display: inline-block;">
+    <li role="tab" class="tab" data-section="pods" {{action "selectTab" "pods" target=component}}><a href="#">{{t 'k8sTab.navTabs.pods'}}</a></li>
+    <li role="tab" class="tab" data-section="labels" {{action "selectTab" "labels" target=component}}><a href="#">{{t 'k8sTab.navTabs.labels'}}</a></li>
   </ul>
 
   <div class="horizontal-form well" role="tabpanel">
@@ -46,8 +35,6 @@
     <div class="section container-fluid" data-section="labels">
       {{labels-section model=model labelSource=model.metadata.labels showKind=false sortBy="key"}}
     </div>
-    <div class="section container-fluid" data-section="ports">
-      {{k8s/service-ports model=model.spec.ports}}
-    </div>
   </div>
-</section>
+
+{{/select-tab}}

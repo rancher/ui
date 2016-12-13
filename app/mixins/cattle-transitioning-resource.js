@@ -7,10 +7,12 @@ import C from 'ui/utils/constants';
 const defaultStateMap = {
   'activating':               {icon: 'icon icon-tag',           color: 'text-info'   },
   'active':                   {icon: 'icon icon-circle-o',      color: 'text-success'},
+  'backedup':                 {icon: 'icon icon-backup',        color: 'text-success'},
   'created':                  {icon: 'icon icon-tag',           color: 'text-info'   },
   'creating':                 {icon: 'icon icon-tag',           color: 'text-info'   },
   'deactivating':             {icon: 'icon icon-adjust',        color: 'text-info'   },
   'degraded':                 {icon: 'icon icon-alert',         color: 'text-warning'},
+  'disconnected':             {icon: 'icon icon-alert',         color: 'text-warning' },
   'error':                    {icon: 'icon icon-alert',         color: 'text-danger' },
   'inactive':                 {icon: 'icon icon-circle',        color: 'text-danger' },
   'initializing':             {icon: 'icon icon-alert',         color: 'text-warning'},
@@ -23,6 +25,7 @@ const defaultStateMap = {
   'reinitializing':           {icon: 'icon icon-alert',         color: 'text-warning'},
   'restoring':                {icon: 'icon icon-medicalcross',  color: 'text-info'   },
   'running':                  {icon: 'icon icon-circle-o',      color: 'text-success'},
+  'snapshotted':              {icon: 'icon icon-snapshot',      color: 'text-warning'},
   'started-once':             {icon: 'icon icon-dot-circlefill',color: 'text-success'},
   'starting':                 {icon: 'icon icon-adjust',        color: 'text-info'   },
   'stopped':                  {icon: 'icon icon-circle',        color: 'text-danger' },
@@ -50,6 +53,7 @@ export default Ember.Mixin.create({
   cookies: Ember.inject.service(),
   growl: Ember.inject.service(),
 
+  modalService: Ember.inject.service('modal'),
   reservedKeys: ['waitInterval','waitTimeout'],
 
   state: null,
@@ -75,7 +79,7 @@ export default Ember.Mixin.create({
     return [];
   }.property(),
 
-  primaryActions: function() {
+  primaryAction: function() {
     // The default implementation returns the first enabled item that has an icon
     // and is before the first divider.  If you want a different behavior or
     // multiple primaryActions, you can override this in a specific model.
@@ -90,7 +94,7 @@ export default Ember.Mixin.create({
         // Nothing was found, stop at the first divider;
         if ( seenAnAction )
         {
-          return [];
+          return null;
         }
       }
       else if ( Ember.get(obj,'enabled') )
@@ -98,17 +102,17 @@ export default Ember.Mixin.create({
         seenAnAction = true;
         if ( Ember.get(obj,'icon') && Ember.get(obj,'action') !== 'promptDelete')
         {
-          return [obj];
+          return obj;
         }
       }
     }
 
-    return [];
+    return null;
   }.property('availableActions.@each.enabled'),
 
   actions: {
     promptDelete: function() {
-      this.get('application').set('confirmDeleteResources', [ this ] );
+      this.get('modalService').toggleModal('confirm-delete', [this]);
     },
 
     delete: function() {
@@ -215,27 +219,31 @@ export default Ember.Mixin.create({
   }.property('relevantState','transitioning'),
 
   stateColor: function() {
-      var map = this.constructor.stateMap;
-      var key = (this.get('relevantState')||'').toLowerCase();
-      if ( map && map[key] && map[key].color !== undefined )
-      {
-        if ( typeof map[key].color === 'function' )
-        {
-          return map[key].color(this);
-        }
-        else
-        {
-          return map[key].color;
-        }
-      }
+    if ( this.get('isError') ) {
+      return 'text-danger';
+    }
 
-      if ( defaultStateMap[key] && defaultStateMap[key].color )
+    var map = this.constructor.stateMap;
+    var key = (this.get('relevantState')||'').toLowerCase();
+    if ( map && map[key] && map[key].color !== undefined )
+    {
+      if ( typeof map[key].color === 'function' )
       {
-        return defaultStateMap[key].color;
+        return map[key].color(this);
       }
+      else
+      {
+        return map[key].color;
+      }
+    }
+
+    if ( defaultStateMap[key] && defaultStateMap[key].color )
+    {
+      return defaultStateMap[key].color;
+    }
 
     return this.constructor.defaultStateColor;
-  }.property('relevantState','transitioning'),
+  }.property('relevantState','isError'),
 
   stateSort: function() {
     var color = this.get('stateColor').replace('text-','');
@@ -486,7 +494,7 @@ export default Ember.Mixin.create({
   cloneForNew: function() {
     var copy = this.clone();
     delete copy.id;
-    delete copy.actions;
+    delete copy.actionLinks;
     delete copy.links;
     delete copy.uuid;
     return copy;
@@ -495,7 +503,7 @@ export default Ember.Mixin.create({
   serializeForNew: function() {
     var copy = this.serialize();
     delete copy.id;
-    delete copy.actions;
+    delete copy.actionLinks;
     delete copy.links;
     delete copy.uuid;
     return copy;
@@ -516,6 +524,7 @@ export default Ember.Mixin.create({
     {
       return promise.catch((err) => {
         this.get('growl').fromError(Util.ucFirst(name) + ' Error', err);
+        return Ember.RSVP.reject(err);
       });
     }
 

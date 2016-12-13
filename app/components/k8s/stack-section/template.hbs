@@ -1,0 +1,50 @@
+<div class="clearfix well r-m0 r-p0">
+  <div class="stack-state pull-left {{model.stateBackground}}">
+    {{#tooltip-element type="tooltip-basic" model=model.displayState tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="k8sStackSection"}}
+      <i class="{{model.stateIcon}}" aria-label="{{model.displayState}}"></i>
+    {{/tooltip-element}}
+  </div>
+
+  <div class="header-left collapser">
+    <a {{action "toggleCollapse"}} class="btn btn-link"><i class="icon {{if collapsed 'icon-plus' 'icon-minus'}}" alt="Toggle stack details" title=""></i></a>
+  </div>
+
+  <div class="header-left name {{if model.description 'with-description'}}">
+    <h4 class="divider clip stack-link">
+      {{model.name}}
+    </h4>
+    {{#if model.description}}
+      <div class="text-muted clip">{{model.description}}</div>
+    {{/if}}
+  </div>
+
+  <div class="header-right right-divider stack-actions wide r-ml5">
+    {{action-menu model=model}}
+  </div>
+
+  <div class="header-right right-divider stack-template">
+    {{upgrade-btn model=model}}
+  </div>
+</div>
+
+{{#liquid-if (not collapsed)}}
+  {{#if model.deployedResources.services.length}}
+    {{k8s/service-section model=model.deployedResources.services class="r-mb5"}}
+  {{/if}}
+
+  {{#if model.deployedResources.deployments.length}}
+    {{k8s/deployment-section model=model.deployedResources.deployments class="r-mb5"}}
+  {{/if}}
+
+  {{#if model.deployedResources.replicasets.length}}
+    {{k8s/replicaset-section model=model.deployedResources.replicasets class="r-mb5"}}
+  {{/if}}
+
+  {{#if model.deployedResources.rcs.length}}
+    {{k8s/rc-section model=model.deployedResources.rcs class="r-mb5"}}
+  {{/if}}
+
+  {{#if model.deployedResources.pods.length}}
+    {{k8s/pod-section model=model.deployedResources.pods class="r-mb5"}}
+  {{/if}}
+{{/liquid-if}}

@@ -1,12 +1,10 @@
 {{yield}}
-{{#if showPrimary}}
-  {{#each model.primaryActions as |act index|}}
-    <button class="btn btn-default btn-{{size}}" data-primary="{{index}}" aria-label="{{t act.label}}">
-      {{#tooltip-element type="tooltip-basic" model=act}}
-        <i class="icon-fw {{act.icon}}" alt="{{t act.label}}"></i>
-      {{/tooltip-element}}
-    </button>
-  {{/each}}
+{{#if (and showPrimary model.primaryAction)}}
+  <button class="btn btn-default btn-{{size}}" data-primary="0" aria-label="{{t model.primaryAction.label}}">
+    {{#tooltip-element type="tooltip-basic" model=model.primaryAction tooltipFor="actionMenu"}}
+      <i class="icon-fw {{model.primaryAction.icon}}"></i>
+    {{/tooltip-element}}
+  </button>
 {{/if}}
 <button aria-label="{{t 'generic.moreActions'}}" aria-controls="resource-actions" class="btn btn-default btn-{{size}} more-actions" data-toggle="dropdown" data-target=".resource-actions" aria-expanded="false">
   <i class="icon icon-fw icon-vertical-ellipsis" alt="{{t 'generic.moreActions'}}"></i>

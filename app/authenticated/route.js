@@ -1,17 +1,22 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Subscribe from 'ui/mixins/subscribe';
+import { isSafari, version as safariVersion } from 'ui/utils/platform';
 
 const CHECK_AUTH_TIMER = 600000;
 
 export default Ember.Route.extend(Subscribe, {
   prefs     : Ember.inject.service(),
   projects  : Ember.inject.service(),
+  settings  : Ember.inject.service(),
   k8s       : Ember.inject.service(),
   access    : Ember.inject.service(),
   userTheme : Ember.inject.service('user-theme'),
   language  : Ember.inject.service('user-language'),
   storeReset: Ember.inject.service(),
+  modalService: Ember.inject.service('modal'),
+
+  testTimer: null,
 
   beforeModel(transition) {
     this._super.apply(this,arguments);
@@ -27,13 +32,15 @@ export default Ember.Route.extend(Subscribe, {
   },
 
   testAuthToken: function() {
-    Ember.run.later(() => {
+    let timer = Ember.run.later(() => {
       this.get('access').testAuth().then((/* res */) => {
         this.testAuthToken();
       }, (/* err */) => {
         this.send('logout',null,true);
       });
     }, CHECK_AUTH_TIMER);
+
+    this.set('testTimer', timer);
   },
 
   model(params, transition) {
@@ -42,44 +49,55 @@ export default Ember.Route.extend(Subscribe, {
     let isAdmin = (type === C.USER.TYPE_ADMIN) || !this.get('access.enabled');
     this.set('access.admin', isAdmin);
 
-    return Ember.RSVP.hash({
-      schemas: this.loadUserSchemas(),
-      projects: this.loadProjects(),
-      preferences: this.loadPreferences(),
-      settings: this.loadPublicSettings(),
-      language: this.get('language').initLanguage(),
-    }).then((hash) => {
-      let projectId = null;
-      if ( transition.params && transition.params['authenticated.project'] && transition.params['authenticated.project'].project_id )
-      {
-        projectId = transition.params['authenticated.project'].project_id;
+    let promise = new Ember.RSVP.Promise((resolve, reject) => {
+      let tasks = {
+        userSchemas:                                    this.toCb('loadUserSchemas'),
+        projects:                                       this.toCb('loadProjects'),
+        preferences:                                    this.toCb('loadPreferences'),
+        settings:                                       this.toCb('loadPublicSettings'),
+        project:            ['projects', 'preferences', this.toCb('selectProject',transition)],
+        projectSchemas:     ['project',                 this.toCb('loadProjectSchemas')],
+        orchestrationState: ['projectSchemas',          this.toCb('updateOrchestration')],
+        instances:          ['projectSchemas',          this.cbFind('instance')],
+        services:           ['projectSchemas',          this.cbFind('service')],
+        hosts:              ['projectSchemas',          this.cbFind('host')],
+        stacks:             ['projectSchemas',          this.cbFind('stack')],
+        mounts:             ['projectSchemas',          this.cbFind('mount')],
+        storagePools:       ['projectSchemas',          this.cbFind('storagepool')],
+        volumes:            ['projectSchemas',          this.cbFind('volume')],
+        snapshots:          ['projectSchemas',          this.cbFind('snapshot')],
+        backups:            ['projectSchemas',          this.cbFind('backup')],
+        certificate:        ['projectSchemas',          this.cbFind('certificate')],
+        identities:         ['userSchemas', this.cbFind('identity', 'userStore')],
+      };
+
+      let concur = 99;
+      if ( isSafari ) {
+        let version = safariVersion();
+        if ( version && version < 10 ) {
+          // Safari for iOS9 has problems with multiple simultaneous requests
+          concur = 1;
+        }
       }
 
-      // Make sure a valid project is selected
-      return this.get('projects').selectDefault(projectId).then((project) => {
-        // Load stuff that is needed to draw the header
-        hash.project = project;
-
-        return Ember.RSVP.hash({
-          language: this.get('language').setLanguage(),
-          orchestrationState: this.get('projects').updateOrchestrationState(),
-          hosts: this.get('store').findAllUnremoved('host'),
-          machines: this.get('store').findAllUnremoved('machine'),
-          stacks: this.get('store').findAllUnremoved('environment'),
-          mounts: this.get('store').findAllUnremoved('mount'), // the container model needs access
-        }).then((moreHash) => {
-          Ember.merge(hash, moreHash);
-
-          if ( hash.orchestrationState.kubernetesReady ) {
-            return this.loadKubernetes().then((k8sHash) => {
-              Ember.merge(hash, k8sHash);
-              return Ember.Object.create(hash);
-            });
-          } else {
-            return Ember.Object.create(hash);
-          }
-        });
+      async.auto(tasks, concur, function(err, res) {
+        if ( err ) {
+          reject(err);
+        } else {
+          resolve(res);
+        }
       });
+    }, 'Load all the things');
+
+    return promise.then((hash) => {
+      if ( hash.orchestrationState.kubernetesReady ) {
+        return this.loadKubernetes().then((k8sHash) => {
+          Ember.merge(hash, k8sHash);
+          return Ember.Object.create(hash);
+        });
+      } else {
+        return Ember.Object.create(hash);
+      }
     }).catch((err) => {
       return this.loadingError(err, transition, Ember.Object.create({
         projects: [],
@@ -89,13 +107,48 @@ export default Ember.Route.extend(Subscribe, {
   },
 
   activate() {
+    let app = this.controllerFor('application');
+
     this._super();
-    this.connectSubscribe();
+    if ( !this.controllerFor('application').get('isPopup') && this.get('projects.current') )
+    {
+      this.connectSubscribe();
+    }
+
+    if ( this.get('settings.isRancher') && !app.get('isPopup') )
+    {
+     //Show the telemetry opt-in
+      let opt = this.get(`settings.${C.SETTING.TELEMETRY}`);
+      if ( this.get('access.admin') && (!opt || opt === 'prompt') )
+      {
+        Ember.run.scheduleOnce('afterRender', this, function() {
+          this.get('modalService').toggleModal('modal-welcome');
+        });
+      }
+      else if ( false && this.get('settings.isOSS') && !this.get(`prefs.${C.PREFS.FEEDBACK}`) )
+      {
+       //Show the feedback form
+        let time = this.get(`prefs.${C.PREFS.FEEDBACK_TIME}`);
+        if ( !time ) {
+          time = (new Date()).getTime() + C.PREFS.FEEDBACK_DELAY;
+          this.set(`prefs.${C.PREFS.FEEDBACK_TIME}`, time);
+        }
+
+        let now = (new Date()).getTime();
+        if ( (now - time) >= 0 )
+        {
+          Ember.run.scheduleOnce('afterRender', this, function() {
+            this.get('modalService').toggleModal('modal-feedback');
+          });
+        }
+      }
+    }
   },
 
   deactivate() {
     this._super();
     this.disconnectSubscribe();
+    Ember.run.cancel(this.get('testTimer'));
 
     // Forget all the things
     this.get('storeReset').reset();
@@ -104,7 +157,8 @@ export default Ember.Route.extend(Subscribe, {
   loadingError(err, transition, ret) {
     let isAuthEnabled = this.get('access.enabled');
 
-    if ( err && isAuthEnabled ) {
+    console.log('Loading Error:', err);
+    if ( err && (isAuthEnabled || [401,403].indexOf(err.status) >= 0) ) {
       this.send('logout',transition, (transition.targetName !== 'authenticated.index'));
       return;
     }
@@ -113,15 +167,51 @@ export default Ember.Route.extend(Subscribe, {
     return ret;
   },
 
+  toCb(name, ...args) {
+    return (results, cb) => {
+      if ( typeof results === 'function' ) {
+        cb = results;
+        results = null;
+      }
+
+      this[name](...args).then(function(res) {
+        cb(null, res);
+      }).catch(function(err) {
+        cb(err, null);
+      });
+    };
+  },
+
+  cbFind(type, store='store') {
+    return (results, cb) => {
+      if ( typeof results === 'function' ) {
+        cb = results;
+        results = null;
+      }
+
+      return this.get(store).find(type).then(function(res) {
+        cb(null, res);
+      }).catch(function(err) {
+        cb(err, null);
+      });
+    };
+  },
+
   loadPreferences() {
     return this.get('userStore').find('userpreference', null, {url: 'userpreferences', forceReload: true}).then((res) => {
       // Save the account ID from the response headers into session
-      if ( res && res.xhr )
+      if ( res )
       {
-        this.set(`session.${C.SESSION.ACCOUNT_ID}`, res.xhr.getResponseHeader(C.HEADER.ACCOUNT_ID));
+        this.set(`session.${C.SESSION.ACCOUNT_ID}`, res.xhr.headers.get(C.HEADER.ACCOUNT_ID));
       }
 
       this.get('userTheme').setupTheme();
+
+      if (this.get(`prefs.${C.PREFS.I_HATE_SPINNERS}`)) {
+        Ember.$('BODY').addClass('i-hate-spinners');
+      }
+
+      this.get('language').setLanguage();
 
       return res;
     });
@@ -146,12 +236,19 @@ export default Ember.Route.extend(Subscribe, {
     });
   },
 
+  loadProjectSchemas() {
+    var store = this.get('store');
+    store.resetType('schema');
+    return store.rawRequest({url:'schema', dataType: 'json'}).then((xhr) => {
+      store._bulkAdd('schema', xhr.body.data);
+    });
+  },
 
   loadUserSchemas() {
     // @TODO Inline me into releases
     let userStore = this.get('userStore');
-    return userStore.rawRequest({url:'schema', dataType: 'json'}).then((res) => {
-      userStore._bulkAdd('schema', res.xhr.responseJSON.data);
+    return userStore.rawRequest({url:'schema', dataType: 'json'}).then((xhr) => {
+      userStore._bulkAdd('schema', xhr.body.data);
     });
   },
 
@@ -163,8 +260,23 @@ export default Ember.Route.extend(Subscribe, {
     });
   },
 
+  updateOrchestration() {
+    return this.get('projects').updateOrchestrationState();
+  },
+
   loadPublicSettings() {
     return this.get('userStore').find('setting', null, {url: 'setting', forceReload: true, filter: {all: 'false'}});
+  },
+
+  selectProject(transition) {
+    let projectId = null;
+    if ( transition.params && transition.params['authenticated.project'] && transition.params['authenticated.project'].project_id )
+    {
+      projectId = transition.params['authenticated.project'].project_id;
+    }
+
+    // Make sure a valid project is selected
+    return this.get('projects').selectDefault(projectId);
   },
 
   actions: {

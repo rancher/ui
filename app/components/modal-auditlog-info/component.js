@@ -1,12 +1,16 @@
 import Ember from 'ember';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default Ember.Component.extend({
-  requestObject: null,
-  requestJSON: null,
-  responseObject: null,
-  responseJSON: null,
+export default ModalBase.extend({
+  classNames: ['lacsso', 'modal-container', 'large-modal'],
+  requestObject  : Ember.computed.alias('modalService.modalOpts.requestObject'),
+  responseObject  : Ember.computed.alias('modalService.modalOpts.responseObject'),
+  requestJSON    : null,
+  responseJSON   : null,
 
-  didInitAttrs: function() {
+  init() {
+    this._super(...arguments);
+
     // Pretty-ify the JSON
     this.set('requestJSON', JSON.stringify(JSON.parse(this.get('requestObject')),null,2));
     this.set('responseJSON', JSON.stringify(JSON.parse(this.get('responseObject')),null,2));
@@ -14,7 +18,7 @@ export default Ember.Component.extend({
 
   actions: {
     dismiss: function() {
-      this.sendAction('dismiss');
+      this.send('cancel');
     }
   },
 });

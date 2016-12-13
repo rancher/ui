@@ -35,9 +35,30 @@ export default Ember.Controller.extend(NewOrEdit, {
     return drivers;
   }.property('activeDriver'),
 
+  cleanAddress: function() {
+    let cur = this.get('model.registry.serverAddress')||'';
+    let neu = cur.replace(/^http(s)?:\/\/(.*)$/,'$2');
+    neu = neu.replace(/\/.*$/,'');
+
+    if ( cur !== neu ) {
+      this.set('model.registry.serverAddress', neu);
+    }
+
+  },
+
   validate: function() {
+    this.cleanAddress();
+
     this._super();
+
     var errors = this.get('errors')||[];
+
+    var registry = this.get('model.registry');
+    var existing = this.get('model.allRegistries').filterBy('serverAddress', registry.get('serverAddress'))[0];
+    if ( existing )
+    {
+      errors.push('There is already a registry defined for ' + existing.get('displayAddress'));
+    }
 
     var cred = this.get('model.credential');
     cred.set('registryId', 'tbd');
@@ -51,20 +72,6 @@ export default Ember.Controller.extend(NewOrEdit, {
     }
 
     return true;
-  },
-
-  doSave: function() {
-    var registry = this.get('model.registry');
-    var existing = this.get('model.allRegistries').filterBy('serverAddress', registry.get('serverAddress'))[0];
-    if ( existing )
-    {
-      this.set('model.registry', existing);
-      return Ember.RSVP.resolve();
-    }
-    else
-    {
-      return this._super();
-    }
   },
 
   didSave: function() {

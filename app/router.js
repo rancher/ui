@@ -7,21 +7,26 @@ const Router = Ember.Router.extend({
 });
 
 Router.map(function() {
-  this.route('guide');
   this.route('ie');
   this.route('index');
   this.route('failWhale', {path: '/fail'});
   this.route('not-found', {path: '*path'});
 
-  this.route('login');
+  this.route('login', function() {
+    this.route('index', {path: '/'});
+    this.route('shibboleth-auth');
+  });
   this.route('logout');
   this.route('authenticated', {path: '/'}, function() {
 
+    this.route('dummy-dev', {path: '/dev'});
     // Settings
     this.route('settings', {resetNamespace: true}, function() {
       this.route('projects', {path: '/env'}, function() {
         this.route('index', {path: '/'});
         this.route('new', {path: '/add'});
+        this.route('new-template', {path: '/add-template'});
+        this.route('edit-template', {path: '/template/:template_id'});
         this.route('detail', {path: '/:project_id'});
       });
     });
@@ -34,9 +39,11 @@ Router.map(function() {
         this.route('github');
         this.route('openldap');
         this.route('localauth', {path: 'local'});
+        this.route('shibboleth');
       });
 
       this.route('settings');
+      this.route('ha');
 
       this.route('accounts', {path: '/accounts'}, function() {
         this.route('index', {path: '/'});
@@ -49,7 +56,6 @@ Router.map(function() {
       });
 
       this.route('audit-logs');
-      this.route('ha');
       this.route('machine');
     });
 
@@ -90,6 +96,11 @@ Router.map(function() {
             this.route('ports');
             this.route('volumes');
             this.route('labels');
+            this.route('commands');
+            this.route('networking');
+            this.route('healthcheck');
+            this.route('scheduling');
+            this.route('security');
           });
         });
 
@@ -116,7 +127,6 @@ Router.map(function() {
         this.route('storagepools', {resetNamespace: true}, function() {
           this.route('index', {path: '/'});
           this.route('pools', {path: '/pools'});
-          this.route('backups', {path: '/backups'});
           this.route('detail', {path: '/:storagepool_id'});
         });
         this.route('storagepools.new-volume', {path: '/add-volume', resetNamespace: true});
@@ -136,12 +146,12 @@ Router.map(function() {
         this.route('service.new-alias', {path: '/add-alias', resetNamespace: true});
         this.route('service.new-external', {path: '/add-external', resetNamespace: true});
 
-        this.route('environments', {path: '/stacks', resetNamespace: true}, function() {
+        this.route('stacks', {path: '/stacks', resetNamespace: true}, function() {
           this.route('index', {path: '/'});
           this.route('advanced', {path: '/advanced'});
           this.route('new', {path: '/add'});
 
-          this.route('environment', {path: '/:environment_id', resetNamespace: true}, function() {
+          this.route('stack', {path: '/:stack_id', resetNamespace: true}, function() {
             this.route('index', {path: '/'});
             this.route('code', {path: '/code'});
             this.route('graph', {path: '/graph'});
@@ -152,23 +162,15 @@ Router.map(function() {
               this.route('labels');
               this.route('ports');
               this.route('links');
+              this.route('log');
+              this.route('port-rules');
+              this.route('certificates');
             });
           });
         });
       });
 
       this.route('swarm-tab', {path: '/swarm', resetNamespace: true}, function() {
-        this.route('projects', function() {
-          this.route('index', {path: '/'});
-          this.route('new', {path: '/add'});
-          this.route('project', {path: '/:compose_project_id'}, function() {
-          });
-        });
-
-        this.route('services', function() {
-          this.route('index', {path: '/'});
-        });
-
         this.route('console');
       });
 
@@ -185,9 +187,11 @@ Router.map(function() {
       // Kubernetes
       this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
+        this.route('error', {path: '/error'});
 
         this.route('apply', {path: '/apply'});
         this.route('kubectl', {path: '/kubectl'});
+        this.route('dashboard', {path: '/dashboard'});
 
         this.route('namespaces', {path: '/namespaces'}, function() {
           this.route('index', {path: '/'});
@@ -196,8 +200,20 @@ Router.map(function() {
         this.route('namespace', {path: '/:namespace_id'}, function() {
           this.route('index', {path: '/'});
 
+          this.route('stacks', {path: '/stacks'}, function() {
+            this.route('stack', {path: '/:name'});
+          });
+
+          this.route('deployments', {path: '/deployments'}, function() {
+            this.route('deployment', {path: '/:name'});
+          });
+
           this.route('services', {path: '/services'}, function() {
             this.route('service', {path: '/:name'});
+          });
+
+          this.route('replicasets', {path: '/replicasets'}, function() {
+            this.route('replicaset', {path: '/:name'});
           });
 
           this.route('rcs', {path: '/rcs'}, function() {
@@ -218,155 +234,6 @@ Router.map(function() {
     });
   });
 
-
-
-  // Modals
-  this.modal('confirm-delete', {
-    dismissWithOutsideClick : false,
-    dialogClass             : 'small',
-    withParams              : {confirmDeleteResources : 'resources'},
-    actions                 : {confirm                : 'confirmDelete'}
-  });
-
-  this.modal('modal-about', {
-    dismissWithOutsideClick : false,
-    withParams              : 'showAbout',
-    dialogClass             : 'about',
-  });
-
-  this.modal('modal-shell', {
-    dismissWithOutsideClick : false,
-    dismissWithEscape       : false,
-    withParams              : 'showShell',
-    otherParams             : 'originalModel',
-    dialogClass             : 'modal-shell',
-  });
-
-  this.modal('modal-console', {
-    dismissWithOutsideClick : false,
-    dismissWithEscape       : false,
-    withParams              : 'showConsole',
-    otherParams             : 'originalModel',
-    dialogClass             : 'modal-shell',
-  });
-
-  this.modal('modal-container-logs', {
-    dismissWithOutsideClick : false,
-    withParams              : 'showContainerLogs',
-    otherParams             : 'originalModel',
-    dialogClass             : 'modal-logs',
-  });
-
-  this.modal('edit-container', {
-    dismissWithOutsideClick : false,
-    withParams              : 'editContainer',
-    otherParams             : 'originalModel',
-  });
-
-  this.modal('edit-host', {
-    dismissWithOutsideClick : false,
-    withParams              : 'editHost',
-    otherParams             : 'originalModel',
-  });
-
-  this.modal('edit-apikey', {
-    dismissWithOutsideClick : false,
-    withParams              : 'editApikey',
-    otherParams             : 'originalModel',
-  });
-
-  this.modal('edit-registry', {
-    dismissWithOutsideClick : false,
-    withParams              : 'editRegistry',
-    otherParams             : 'originalModel',
-  });
-
-  this.modal('edit-environment', {
-    dismissWithOutsideClick : false,
-    withParams              : 'editEnvironment',
-    otherParams             : 'originalModel',
-  });
-
-  this.modal('edit-service', {
-    dismissWithOutsideClick : false,
-    withParams              : 'editService',
-    otherParams             : 'originalModel',
-  });
-
-  this.modal('edit-aliasservice', {
-    dismissWithOutsideClick : false,
-    withParams              : 'editAliasService',
-    otherParams             : 'originalModel',
-  });
-
-  this.modal('edit-externalservice', {
-    dismissWithOutsideClick : false,
-    withParams              : 'editExternalService',
-    otherParams             : 'originalModel',
-  });
-
-  this.modal('edit-balancerservice', {
-    dismissWithOutsideClick : false,
-    withParams              : 'editLoadBalancerService',
-    otherParams             : 'originalModel',
-  });
-
-  this.modal('edit-account', {
-    dismissWithOutsideClick : false,
-    withParams              : 'editAccount',
-    otherParams             : 'originalModel',
-  });
-
-  this.modal('edit-certificate', {
-    dismissWithOutsideClick : false,
-    withParams              : 'editCertificate',
-    otherParams             : 'originalModel',
-  });
-
-  this.modal('modal-catalog-launch', {
-    dismissWithOutsideClick : false,
-    withParams              : 'launchCatalog',
-    otherParams             : {originalModel   : 'originalModel', environmentResource : 'environmentResource'}
-  });
-
-  this.modal('modal-process-error', {
-    dismissWithOutsideClick : false,
-    withParams              : 'openProcessesError',
-    otherParams             : 'exception'
-  });
-
-
-  this.modal('modal-auditlog-info', {
-    dismissWithOutsideClick : false,
-    withParams              : 'showAuditLogResponses',
-    otherParams             : {requestObject           : 'requestObject', responseObject : 'responseObject'},
-  });
-
-  this.modal('modal-confirm-deactivate', {
-    dismissWithOutsideClick : false,
-    dialogClass             : 'small',
-    withParams              : 'showConfirmDeactivate',
-    otherParams             : {originalModel           : 'originalModel', action : 'action'},
-  });
-
-  this.modal('modal-edit-driver', {
-    dismissWithOutsideClick : false,
-    withParams              : 'editMachineDriver',
-    otherParams             : {originalModel: 'originalModel'},
-  });
-
-  this.modal('modal-edit-snapshot', {
-    dismissWithOutsideClick : false,
-    withParams: 'editSnapshot',
-    otherParams: {originalModel: 'originalModel'}
-  });
-
-  this.modal('modal-edit-backup', {
-    dismissWithOutsideClick : false,
-    withParams: 'editBackup',
-    otherParams: {originalModel: 'originalModel', backupTargets: 'backupTargets'}
-  });
-  // End: Modals
 
   // Load any custom routes from additional-routes
   var cb = applyRoutes("application");

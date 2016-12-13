@@ -6,42 +6,43 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
-  intl: Ember.inject.service(),
+  intl                      : Ember.inject.service(),
 
-  isStandalone: true,
-  isService: false,
-  isSidekick: false,
-  isUpgrade: false,
-  primaryResource: null,
-  primaryService: null,
-  launchConfig: null,
-  service: null,
-  allHosts: null,
-  allServices: null,
-  allStoragePools: null,
+  isStandalone              : true,
+  isService                 : false,
+  isSidekick                : false,
+  isUpgrade                 : false,
+  primaryResource           : null,
+  primaryService            : null,
+  launchConfig              : null,
+  service                   : null,
+  allHosts                  : null,
+  allServices               : null,
+  allStoragePools           : null,
 
-  serviceLinksArray: null,
-  isGlobal: null,
-  isRequestedHost: null,
-  portsAsStrArray: null,
-  launchConfigIndex: -1,
-  upgradeOptions: null,
+  serviceLinksArray         : null,
+  isGlobal                  : null,
+  isRequestedHost           : null,
+  portsAsStrArray           : null,
+  launchConfigIndex         : -1,
+  upgradeOptions            : null,
 
   // Errors from components
-  commandErrors: null,
-  volumeErrors: null,
-  networkingErrors: null,
-  healthCheckErrors: null,
-  schedulingErrors: null,
-  securityErrors: null,
-  scaleErrors: null,
-  imageErrors: null,
-  portErrors: null,
-  diskErrors: null,
+  commandErrors             : null,
+  volumeErrors              : null,
+  networkingErrors          : null,
+  healthCheckErrors         : null,
+  schedulingErrors          : null,
+  securityErrors            : null,
+  scaleErrors               : null,
+  imageErrors               : null,
+  portErrors                : null,
+  diskErrors                : null,
+  activeLaunchConfigIndex   : -1,
 
   actions: {
     selectLaunchConfig(index) {
-      this.set('launchConfigIndex', index);
+      this.set('activeLaunchConfigIndex', index);
       if ( this.$() )
       {
         this.$().children('[data-launchindex]').addClass('hide');
@@ -73,15 +74,19 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     },
 
     removeSidekick() {
-      var idx = this.get('launchConfigIndex');
+      var idx = this.get('activeLaunchConfigIndex');
       var ary = this.get('service.secondaryLaunchConfigs');
       ary.removeAt(idx);
+
+      // If you remove the last one, go to the previous one
       if ( idx >= ary.get('length') )
       {
-        Ember.run.next(() => {
-          this.send('selectLaunchConfig', ary.get('length')-1);
-        });
+        idx = ary.get('length')-1;
       }
+
+      Ember.run.next(() => {
+        this.send('selectLaunchConfig', idx);
+      });
     },
 
     setScale(scale) {
@@ -121,7 +126,9 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this.labelsChanged();
   },
 
@@ -351,14 +358,19 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
         }
       });
 
-      return this.get('service').doAction('upgrade', {
-        inServiceStrategy: {
-          batchSize: this.get('upgradeOptions.batchSize'),
-          intervalMillis: this.get('upgradeOptions.intervalMillis'),
-          startFirst: this.get('upgradeOptions.startFirst'),
-          launchConfig: primary,
-          secondaryLaunchConfigs: slc
-        },
+      let service = this.get('service');
+      return this._super.apply(this,arguments).then(() => {
+        return service.waitForAction('upgrade').then(() => {
+          return service.doAction('upgrade', {
+            inServiceStrategy: {
+              batchSize: this.get('upgradeOptions.batchSize'),
+              intervalMillis: this.get('upgradeOptions.intervalMillis'),
+              startFirst: this.get('upgradeOptions.startFirst'),
+              launchConfig: primary,
+              secondaryLaunchConfigs: slc
+            },
+          });
+        });
       });
     }
     else
@@ -391,4 +403,20 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   doneSaving() {
     this.sendAction('done');
   },
+
+  headerLabel: function() {
+    let k = 'newContainer.';
+    k += (this.get('isUpgrade') ? 'upgrade' : 'add') + '.';
+    if ( this.get('isService') ) {
+      k += 'service';
+    } else if ( this.get('isVm') ) {
+      k += 'vm';
+    } else {
+      k += 'container';
+    }
+
+    let count = this.get('service.secondaryLaunchConfigs.length') + 1;
+
+    return this.get('intl').t(k, {numServices: count});
+  }.property('intl._locale','isUpgrade','isService','isVm','service.secondaryLaunchConfigs.length'),
 });

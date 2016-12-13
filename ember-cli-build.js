@@ -34,6 +34,14 @@ module.exports = function(defaults) {
         }
       }
     },
+    nodeAssets: {
+      'xterm': {
+        import: ['src/xterm.css']
+      },
+      'lacsso': {
+        import: ['lacsso.css']
+      }
+    },
 
     SRI: {
       enabled: false,
@@ -73,7 +81,8 @@ module.exports = function(defaults) {
   app.import('bower_components/d3/d3.js');
   app.import('bower_components/c3/c3.js');
   app.import('bower_components/c3/c3.css');
-  app.import('vendor/term.js/src/term.js');
+  //app.import('vendor/term.js/src/term.js');
+  //app.import('bower_components/xterm.js/src/xterm.css');
   app.import('bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js');
   app.import('bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css');
   app.import('bower_components/prism/prism.js');
@@ -83,7 +92,7 @@ module.exports = function(defaults) {
   app.import('bower_components/graphlib/dist/graphlib.core.js');
   app.import('bower_components/dagre/dist/dagre.core.js');
   //app.import('bower_components/dagre-d3/dist/dagre-d3.core.js');
-  app.import('bower_components/async/lib/async.js');
+  app.import('bower_components/async/dist/async.js');
   app.import('bower_components/position-calculator/dist/position-calculator.js');
   app.import('vendor/aws-sdk-ec2.js');
   app.import('bower_components/identicon.js/pnglib.js');
@@ -125,19 +134,6 @@ module.exports = function(defaults) {
     destDir: 'assets/fonts'
   });
   app.import('vendor/lato/lato-v11-latin-regular.woff2', {
-    destDir: 'assets/fonts'
-  });
-
-  app.import('vendor/roboto/roboto-v15-latin-700.woff', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/roboto/roboto-v15-latin-700.woff2', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/roboto/roboto-v15-latin-regular.woff', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/roboto/roboto-v15-latin-regular.woff2', {
     destDir: 'assets/fonts'
   });
 

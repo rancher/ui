@@ -1,0 +1,26 @@
+{{yield 'header'}}
+{{#if model.certified}}
+  <div class="{{model.certifiedClass}}">
+    <strong>{{model.certified}}</strong>
+  </div>
+{{/if}}
+{{#if showIcon}}
+  <div class="catalog-icon">
+    <img src="{{model.links.icon}}"/>
+  </div>
+{{/if}}
+<div class="itemwrap">
+  <h5>
+    {{model.name}}
+  </h5>
+  {{#if showSource}}
+    <span class="small">in <span class="text-capitalize">{{model.catalogId}}</span></span>
+  {{/if}}
+  {{#if showDescription}}
+    <hr class="r-m10" />
+    <div class="r-mt10 description">{{model.description}}</div>
+  {{/if}}
+</div>
+<div class="footer">
+  {{yield 'footer'}}
+</div>

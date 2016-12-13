@@ -4,7 +4,7 @@
 
 <section class="well">
   {{#if (eq step 1)}}
-    <p>{{format-html-message 'k8sTab.kubectl.stepOne.generateConfigText'}}</p>
+    <p>{{format-html-message 'k8sTab.kubectl.stepOne.generateConfigText' downloadUrl=downloadUrl}}</p>
     <button {{action "generate"}} class="btn btn-primary">{{t 'k8sTab.kubectl.stepOne.generateButton'}}</button>
   {{/if}}
   {{#if (eq step 2)}}
@@ -14,7 +14,7 @@
     <p>{{format-html-message 'k8sTab.kubectl.stepThree.helpText'}}</p>
     <pre><code>{{kubeconfig}}</code></pre>
     {{copy-to-clipboard tooltipText="" buttonText="copyToClipboard.tooltip" clipboardText=kubeconfig class="with-clip"}}
-    <p class="r-mt10 r-mb0">{{format-html-message 'k8sTab.kubectl.stepThree.downloadText'}}</p>
+    <p class="r-mt10 r-mb0">{{format-html-message 'k8sTab.kubectl.stepThree.downloadText' downloadUrl=downloadUrl}}</p>
   {{/if}}
 </section>
 

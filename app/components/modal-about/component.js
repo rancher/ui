@@ -1,13 +1,7 @@
 import Ember from 'ember';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default Ember.Component.extend({
+export default ModalBase.extend({
+  classNames: ['lacsso', 'modal-container', 'generic', 'about', 'medium-modal'],
   settings: Ember.inject.service(),
-
-  actions: {
-    outsideClick: function() {},
-
-    cancel: function() {
-      this.sendAction('dismiss');
-    }
-  },
 });

@@ -3,9 +3,6 @@
 </section>
 
 <section class="horizontal-form container-fluid">
-
-  {{top-errors errors=errors}}
-
   <div class="row form-group">
     <div class="col-sm-12 col-md-3 form-label">
       <label class="form-control-static">{{t 'accountsPage.new.form.username.labelText'}}*</label>
@@ -20,7 +17,8 @@
       <label class="form-control-static">{{t 'accountsPage.new.form.password.labelText'}}*</label>
     </div>
     <div class="col-sm-12 col-md-7">
-      {{input-password value=model.credential.secretValue}}
+      {{schema/input-password value=model.credential.secretValue}}
+      <div class="help-block">{{validateDescription}}</div>
     </div>
   </div>
 
@@ -41,6 +39,7 @@
       {{new-select
         classNames="form-control"
         content=accountTypeChoices
+        localizedLabel=true
         value=model.account.kind
       }}
     </div>
@@ -57,4 +56,5 @@
 
 </section>
 
+{{top-errors errors=errors}}
 {{save-cancel save="save" cancel="cancel"}}

@@ -1,7 +1,7 @@
 {{#unless single}}
   <div class="clearfix well r-p0 r-m0">
     <div class="stack-state pull-left {{model.stateBackground}}">
-      {{#tooltip-element type="tooltip-basic" model=model.displayState tooltipTemplate='tooltip-static' aria-describedby="tooltip-base"}}
+      {{#tooltip-element type="tooltip-basic" model=model.displayState tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="stackSection"}}
         <i class="{{model.stateIcon}}" aria-label="{{model.displayState}}"></i>
       {{/tooltip-element}}
     </div>
@@ -11,8 +11,8 @@
     </div>
 
     <div class="header-left name {{if model.description 'with-description'}}">
-      <h4 class="divider clip environment-link">
-        {{#link-to "environment" model.id}}{{model.name}}{{/link-to}}
+      <h4 class="divider clip stack-link">
+        {{#link-to "stack" model.id}}{{model.name}}{{/link-to}}
       </h4>
       {{#if model.description}}
         <div class="text-muted clip">{{model.description}}</div>
@@ -44,27 +44,29 @@
     </div>
 
     <div class="header-right right-divider count">
-      <p>{{model.unremovedServices.length}}</p>
+      <p>{{model.services.length}}</p>
       <label>{{t 'stackSection.service' numServices=instanceCount}}</label>
     </div>
 
     <div class="header-right right-divider stack-template">
-      {{upgrade-btn environmentResource=model}}
-      <div class="btn-group">
-        {{#link-to "service.new" (query-params environmentId=model.id) classNames="btn btn-default btn-sm"}}{{t 'stackSection.add.service'}}{{/link-to}}
-        <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-          <i class="icon icon-fw icon-chevron-down"></i>
-          <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-          <li>{{#link-to "service.new-balancer" (query-params environmentId=model.id)}}{{t 'stackSection.add.loadBalancer'}}{{/link-to}}</li>
-          <li>{{#link-to "service.new-alias" (query-params environmentId=model.id)}}{{t 'stackSection.add.serviceAlias'}}{{/link-to}}</li>
-          <li>{{#link-to "service.new-external" (query-params environmentId=model.id)}}{{t 'stackSection.add.externalService'}}{{/link-to}}</li>
-          {{#if hasVm}}
-            <li>{{#link-to "service.new-virtualmachine" (query-params environmentId=model.id)}}{{t 'stackSection.add.virtualMachine'}}{{/link-to}}</li>
-          {{/if}}
-        </ul>
-      </div>
+      {{upgrade-btn model=model}}
+      {{#if showAddService}}
+        <div class="btn-group">
+          {{#link-to "service.new" (query-params stackId=model.id) classNames="btn btn-default btn-sm"}}{{t 'stackSection.add.service'}}{{/link-to}}
+          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+            <i class="icon icon-fw icon-chevron-down"></i>
+            <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            <li>{{#link-to "service.new-balancer" (query-params stackId=model.id)}}{{t 'stackSection.add.loadBalancer'}}{{/link-to}}</li>
+            <li>{{#link-to "service.new-alias" (query-params stackId=model.id)}}{{t 'stackSection.add.serviceAlias'}}{{/link-to}}</li>
+            <li>{{#link-to "service.new-external" (query-params stackId=model.id)}}{{t 'stackSection.add.externalService'}}{{/link-to}}</li>
+            {{#if hasVm}}
+              <li>{{#link-to "service.new-virtualmachine" (query-params stackId=model.id)}}{{t 'stackSection.add.virtualMachine'}}{{/link-to}}</li>
+            {{/if}}
+          </ul>
+        </div>
+      {{/if}}
     </div>
   </div>
 {{/unless}}
@@ -78,10 +80,10 @@
         </div>
       {{/if}}
     {{/if}}
-    {{#if model.services.length}}
+    {{#if sortedServices.length}}
       <table class="grid fixed sized" style="margin-bottom: 0">
         <tbody>
-          {{#each filtered as |service|}}
+          {{#each sortedServices as |service|}}
             <tr>
               <td class="force-wrap state">
                 {{service.displayAccess}}
@@ -90,13 +92,26 @@
                 {{badge-state model=service}}
               </td>
               <td data-title="{{t 'stackSection.table.dataTitle.serviceName'}}:" class="force-wrap">
-                {{#link-to "service" service.environmentId service.id}}{{service.displayName}}{{/link-to}}
+                {{#link-to "service" service.stackId service.id}}{{service.displayName}}{{/link-to}}
                 {{#if service.hasSidekicks}}
-                  + {{service.secondaryLaunchConfigs.length}} {{t 'stackSection.sidekick' numSidekicks=instanceCount}}
+                  {{t 'stackSection.sidekick' numSidekicks=service.secondaryLaunchConfigs.length}}
                 {{/if}}
-                <button type="button" class="btn-link" role="button" {{action 'addtlInfo' service target=controller}}>
-                  <i class="icon icon-info addtl-info-trigger"/>
+                {{#if service.showTransitioningMessage}}
+                  <span class="{{service.stateColor}}">({{service.transitioningMessage}})</span>
+                {{/if}}
+                <button type="button" class="btn-link service-icon-button" role="button" {{action 'addtlInfo' service}}>
+                  <i class="icon icon-info"/>
                 </button>
+                {{~#if service.imageUpgradeAvailable~}}
+                  {{#tooltip-element type="tooltip-basic" model=(t 'stackSection.upgradeImage') tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="upgradeImage"}}
+                    <button type="button" class="btn-link text-warning service-icon-button r-pl0" role="button" {{action 'upgradeImage' service}}>
+                      <i class="icon icon-arrow-circle-up"/>
+                    </button>
+                  {{/tooltip-element}}
+                {{~/if~}}
+                {{~#if service.isError~}}
+                  {{#link-to "service.log" service.stackId service.id class="btn-link service-icon-button"}}<i class="icon icon-alert"/>{{/link-to}}
+                {{~/if~}}
               </td>
               <td data-title="{{t 'stackSection.table.dataTitle.details'}}:" class="force-wrap service-detail">{{service.displayDetail}}{{service.displayPorts}}</td>
               <td data-title="{{t 'stackSection.table.dataTitle.kind'}}:">
@@ -106,7 +121,7 @@
               </td>
               <td data-title="{{t 'stackSection.table.dataTitle.containers'}}:">
                 {{#if service.hasContainers}}
-                  {{default-str service.instanceCount.length default="0"}} {{t 'stackSection.container' numContainers=service.instanceCount}}
+                  {{default-str service.instances.length default="0"}} {{t 'stackSection.container' numContainers=service.instances.length}}
                 {{/if}}
               </td>
               <td data-title="{{t 'stackSection.table.dataTitle.actions'}}:" class="actions wide">
@@ -117,7 +132,9 @@
         </tbody>
       </table>
     {{else}}
-      <div class="text-muted text-center r-p10">{{t 'stackSection.none'}}</div>
+      <div class="stack-section">
+        <div class="text-muted text-center r-p10">{{t 'stackSection.none'}}</div>
+      </div>
     {{/if}}
   </div>
 {{/liquid-if}}

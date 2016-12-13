@@ -24,7 +24,43 @@ spec:
   selector:
 `,
 
-  replicationcontroller: `apiVersion: v1
+deployment: `apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ""
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+    spec:
+      containers:
+      - name: ""
+        image: ""
+        ports:
+`,
+
+replicaset: `apiVersion: extensions/v1beta1
+kind: ReplicaSet
+metadata:
+  labels:
+  name: ""
+  namespace: "%NAMESPACE%"
+spec:
+  replicas: 2
+  selector:
+  template:
+    metadata:
+      labels:
+    spec:
+      restartPolicy: Always
+      containers:
+      - image: ""
+        imagePullPolicy: Always
+        name: ""
+`,
+
+replicationcontroller: `apiVersion: v1
 kind: ReplicationController
 metadata:
   labels:
@@ -55,6 +91,7 @@ spec:
   ports:
   selector:
 `,
+
 };
 
 export default Ember.Route.extend({
@@ -65,24 +102,29 @@ export default Ember.Route.extend({
     var ns = k8s.get('namespace.metadata.name')||'';
     var kind = (params.kind||'').toLowerCase();
 
-    var fn, label;
+    var fn;
     switch ( kind )
     {
       case 'namespace':
         fn = k8s.getNamespace;
-        label = 'Namespace';
+        break;
+      case 'deployment':
+        fn = k8s.getDeployment;
         break;
       case 'service':
         fn = k8s.getService;
-        label = 'Service';
+        break;
+      case 'replicaset':
+        fn = k8s.getReplicaSet;
         break;
       case 'replicationcontroller':
         fn = k8s.getRC;
-        label = 'Replication Controller';
         break;
       case 'pod':
         fn = k8s.getPod;
-        label = 'Pod';
+        break;
+      case 'deployment':
+        fn = k8s.getDeployment;
         break;
       default:
         return Ember.RSVP.reject('Unknown Kind');
@@ -94,7 +136,7 @@ export default Ember.Route.extend({
         return Ember.Object.create({
           body: yaml,
           editing: true,
-          label: label,
+          label: 'k8sTab.types.'+kind,
         });
       });
     }
@@ -103,7 +145,7 @@ export default Ember.Route.extend({
       return Ember.Object.create({
         body: TEMPLATES[kind].replace('%NAMESPACE%', ns),
         editing: false,
-        label: label,
+        label: 'k8sTab.types.'+kind,
       });
     }
   },

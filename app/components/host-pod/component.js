@@ -1,17 +1,17 @@
 import Ember from 'ember';
 import ManageLabels from 'ui/mixins/manage-labels';
 import GroupedInstances from 'ui/mixins/grouped-instances';
-import C from 'ui/utils/constants';
 
 export default Ember.Component.extend(ManageLabels, GroupedInstances, {
-  model: null,
-  mode: null,
-  show: null,
+  model             : null,
+  mode              : null,
+  show              : null,
 
-  classNames: ['pod','host'],
-  classNameBindings: ['isMachine:machine-host'],
+  classNames        : ['pod','host'],
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this.initLabels(this.get('model.labels'));
   },
 
@@ -21,14 +21,15 @@ export default Ember.Component.extend(ManageLabels, GroupedInstances, {
     },
   },
 
+  shouldUpdateLabels: function() {
+    this.initLabels(this.get('model.labels'));
+  }.observes('model.labels'),
+
   filteredInstances: function() {
     let out = this.get('model.instances')||[];
 
-    if ( this.get('show') !== 'all' ) {
-      out = out.filter((inst) => {
-        let labels = inst.get('labels');
-        return !labels || !labels[C.LABEL.SYSTEM_TYPE];
-      });
+    if ( this.get('show') === 'standard' ) {
+      out = out.filterBy('isSystem', false);
     }
 
     return out;
@@ -38,12 +39,11 @@ export default Ember.Component.extend(ManageLabels, GroupedInstances, {
     return this.get('filteredInstances').sortBy('name','id');
   }.property('filteredInstances.@each.{name,id}'),
 
-  isMachine: Ember.computed.equal('model.type','machine'),
   isActive: Ember.computed.equal('model.state','active'),
-
-  showAdd: function() {
-    return this.get('isActive') && !this.get('isMachine');
-  }.property('isActive','isMachine'),
+  isProvisioning: Ember.computed.equal('model.state','provisioning'),
+  isError: Ember.computed.equal('model.state','error'),
+  showAdd: Ember.computed.alias('isActive'),
+  showOnlyMessage: Ember.computed.or('isProvisioning','isError'),
 
   stateBackground: function() {
     return this.get('model.stateColor').replace("text-","bg-");

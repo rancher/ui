@@ -1,39 +1,16 @@
-<section class="header">
-  <h1 style="display: block">{{t 'dockerCLI.header'}}</h1>
-</section>
+{{#if available}}
+  <section class="header">
+    <h1 style="display: block">{{t 'dockerCLI.header'}}</h1>
+  </section>
 
-<section class="well">
-  {{#if (eq step 1)}}
-    <p>{{t 'dockerCLI.step1'}}:</p>
-    <button {{action "generate"}} class="btn btn-primary">{{t 'dockerCLI.step1Generate'}}</button>
-  {{/if}}
-  {{#if (eq step 2)}}
-    <i class="icon icon-spinner icon-spin"></i> {{t 'dockerCLI.step2'}}
-  {{/if}}
-  {{#if (eq step 3)}}
-    <i class="icon icon-spinner icon-spin"></i> {{t 'dockerCLI.step3'}}
-  {{/if}}
-  {{#if (eq step 4)}}
-    <p>{{t 'dockerCLI.step4'}}</p>
-    <ul>
-      <li>{{format-html-message 'dockerCLI.item1'}}</li>
-      <li>{{t 'dockerCLI.item2'}}</li>
-      <li>{{format-html-message 'dockerCLI.item3'}}</li>
-      <li>{{format-html-message 'dockerCLI.item4'}}</li>
-      <li>{{format-html-message 'dockerCLI.item5'}}</li>
-    </ul>
-  {{/if}}
-</section>
-
-<section class="well">
-  <p>{{format-html-message 'dockerCLI.well'}}:</p>
-
-  {{container-shell
-    classNames="inline-block"
-    command=model.command
-    instance=model.instance
-    cols=120
-    rows=30
-    showProtip=false
-  }}
-</section>
+  <section class="well">
+    {{container-shell
+      classNames="inline-block"
+      command=model.command
+      instance=model.instance
+      cols=120
+      rows=30
+      showProtip=false
+    }}
+  </section>
+{{/if}}

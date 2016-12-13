@@ -3,8 +3,10 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
 export default Ember.Service.extend({
+  access: Ember.inject.service(),
   cookies  : Ember.inject.service(),
   session  : Ember.inject.service(),
+  userStore: Ember.inject.service(),
 
   // Set by app/services/access
   hostname : null,
@@ -15,6 +17,21 @@ export default Ember.Service.extend({
     var state = Math.random()+'';
     this.get('session').set('githubState', state);
     return state;
+  },
+
+  getToken: function() {
+    return new Ember.RSVP.Promise((resolve, reject) => {
+      this.get('userStore').rawRequest({
+        url: 'token',
+      })
+      .then((xhr) => {
+        resolve(xhr.body.data[0]);
+        return ;
+      })
+      .catch((err) => {
+        reject(err);
+      });
+    });
   },
 
   stateMatches: function(actual) {
@@ -30,10 +47,8 @@ export default Ember.Service.extend({
       redirect = Util.addQueryParam(redirect, 'isTest', 1);
     }
 
-    var url = Util.addQueryParams((this.get('scheme') ||'https://') + (this.get('hostname') || C.GITHUB.DEFAULT_HOSTNAME) + C.GITHUB.AUTH_PATH, {
-      client_id: this.get('clientId'),
+    var url = Util.addQueryParams(this.get('access.token.redirectUrl'), {
       state: this.generateState(),
-      scope: C.GITHUB.SCOPE,
       redirect_uri: redirect
     });
 

@@ -3,56 +3,77 @@
     <label class="form-control-static">{{t 'formHealthCheck.label'}}</label>
   </div>
   <div class="col-sm-12 col-md-9">
-    <div class="radio input pull-left r-mr20">
-      <label class="form-control-static">{{radio-button selection=checkType value="none"}} {{t 'formHealthCheck.checkType.none'}}</label>
-    </div>
-    <div class="radio input pull-left r-mr20">
-      <label class="form-control-static">{{radio-button selection=checkType value="tcp"}} {{t 'formHealthCheck.checkType.tcp'}}</label>
-    </div>
-    <div class="radio input pull-left">
-      <label class="form-control-static">{{radio-button selection=checkType value="http"}} {{t 'formHealthCheck.checkType.http'}}</label>
-    </div>
+    {{#if editing}}
+      <div class="radio input pull-left r-mr20">
+        <label class="form-control-static">{{radio-button selection=checkType value="none"}} {{t 'formHealthCheck.checkType.none'}}</label>
+      </div>
+      <div class="radio input pull-left r-mr20">
+        <label class="form-control-static">{{radio-button selection=checkType value="tcp"}} {{t 'formHealthCheck.checkType.tcp'}}</label>
+      </div>
+      <div class="radio input pull-left">
+        <label class="form-control-static">{{radio-button selection=checkType value="http"}} {{t 'formHealthCheck.checkType.http'}}</label>
+      </div>
+    {{else}}
+      {{#if checkType}}
+        <div class="form-control-static">{{checkType}}</div>
+      {{else}}
+        <div class="form-control-static">{{t 'generic.none'}}</div>
+      {{/if}}
+    {{/if}}
   </div>
 </div>
 
 {{#if (not (eq checkType "none"))}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formHealthCheck.port.label'}}*</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      {{#input-or-display editable=editing value=healthCheck.port}}
+        {{input type="number" min="1" max="65535" classNames="form-control" placeholder=(t 'formHealthCheck.port.placeholder') value=healthCheck.port}}
+      {{/input-or-display}}
+    </div>
+  </div>
+
   {{#if (eq checkType "http")}}
     <div class="row form-group">
       <div class="col-sm-12 col-md-2 form-label">
         <label class="form-control-static">{{t 'formHealthCheck.request.label'}}*</label>
       </div>
       <div class="col-sm-12 col-md-8">
-        <div class="input-group">
-          <div class="input-group-btn">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{uriMethod}} <i class="icon icon-chevron-down"></i></button>
-            <ul class="dropdown-menu" role="menu">
-              <li role="presentation" class="dropdown-header">
-                {{t 'formHealthCheck.method.prompt'}}
-              </li>
-              {{#each uriMethodChoices as |choice|}}
-                <li {{action "chooseUriMethod" choice}}>
-                  <a href="#">{{choice}}</a>
-                </li>
-              {{/each}}
-            </ul>
-          </div>
+        {{#input-or-display editable=editing value=healthCheck.requestLine}}
+            <div class="input-group">
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{uriMethod}} <i class="icon icon-chevron-down"></i></button>
+                <ul class="dropdown-menu" role="menu">
+                  <li role="presentation" class="dropdown-header">
+                    {{t 'formHealthCheck.method.prompt'}}
+                  </li>
+                  {{#each uriMethodChoices as |choice|}}
+                    <li {{action "chooseUriMethod" choice}}>
+                      <a href="#">{{choice}}</a>
+                    </li>
+                  {{/each}}
+                </ul>
+              </div>
 
-          {{input type="text" classNames="form-control" placeholder=(t 'formHealthCheck.path.placeholder') value=uriPath}}
+              {{input type="text" classNames="form-control" placeholder=(t 'formHealthCheck.path.placeholder') value=uriPath}}
 
-          <div class="input-group-btn">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{uriVersion}} <i class="icon icon-chevron-down"></i></button>
-            <ul class="dropdown-menu" role="menu">
-              <li role="presentation" class="dropdown-header">
-                {{t 'formHealthCheck.version.prompt'}}
-              </li>
-              {{#each uriVersionChoices as |choice|}}
-                <li {{action "chooseUriVersion" choice}}>
-                  <a href="#">{{choice}}</a>
-                </li>
-              {{/each}}
-            </ul>
-          </div>
-        </div>
+              <div class="input-group-btn">
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{uriVersion}} <i class="icon icon-chevron-down"></i></button>
+                <ul class="dropdown-menu" role="menu">
+                  <li role="presentation" class="dropdown-header">
+                    {{t 'formHealthCheck.version.prompt'}}
+                  </li>
+                  {{#each uriVersionChoices as |choice|}}
+                    <li {{action "chooseUriVersion" choice}}>
+                      <a href="#">{{choice}}</a>
+                    </li>
+                  {{/each}}
+                </ul>
+              </div>
+            </div>
+        {{/input-or-display}}
       </div>
     </div>
     {{#if showUriHost}}
@@ -61,27 +82,37 @@
           <label class="form-control-static">{{t 'formHealthCheck.host.label'}}</label>
         </div>
         <div class="col-sm-12 col-md-8">
-          {{input type="text" classNames="form-control" placeholder=(t 'formHealthCheck.host.placeholder') value=uriHost}}
+          {{#input-or-display editable=editing value=uriHost}}
+            {{input type="text" classNames="form-control" placeholder=(t 'formHealthCheck.host.placeholder') value=uriHost}}
+          {{/input-or-display}}
         </div>
       </div>
     {{/if}}
   {{/if}}
 
+
   <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
-      <label class="form-control-static">{{t 'formHealthCheck.port.label'}}*</label>
-    </div>
-    <div class="col-sm-12 col-md-3">
-      {{input type="number" min="1" max="65535" classNames="form-control" placeholder=(t 'formHealthCheck.port.placeholder') value=healthCheck.port}}
-    </div>
     <div class="col-sm-12 col-md-2 form-label">
       <label class="form-control-static">{{t 'formHealthCheck.initializingTimeout.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-3">
-      <div class="input-group">
-        {{input type="number" step=100 classNames="form-control" value=healthCheck.initializingTimeout}}
-        <span class="input-group-addon">{{t 'formHealthCheck.initializingTimeout.unit'}}</span>
-      </div>
+      {{#input-or-display editable=editing value=healthCheck.initializingTimeout}}
+        <div class="input-group">
+          {{input type="number" step=100 classNames="form-control" value=healthCheck.initializingTimeout}}
+          <span class="input-group-addon">{{t 'formHealthCheck.initializingTimeout.unit'}}</span>
+        </div>
+      {{/input-or-display}}
+    </div>
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formHealthCheck.reinitializingTimeout.label'}}</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      {{#input-or-display editable=editing value=healthCheck.reinitializingTimeout}}
+        <div class="input-group">
+          {{input type="number" step=100 classNames="form-control" value=healthCheck.reinitializingTimeout}}
+          <span class="input-group-addon">{{t 'formHealthCheck.reinitializingTimeout.unit'}}</span>
+        </div>
+      {{/input-or-display}}
     </div>
   </div>
 
@@ -91,19 +122,23 @@
       <label class="form-control-static">{{t 'formHealthCheck.interval.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-3">
-      <div class="input-group">
-        {{input type="number" min=1 step=1000 classNames="form-control" value=healthCheck.interval}}
-        <span class="input-group-addon">{{t 'formHealthCheck.interval.unit'}}</span>
-      </div>
+      {{#input-or-display editable=editing value=healthCheck.interval}}
+        <div class="input-group">
+          {{input type="number" min=1 step=1000 classNames="form-control" value=healthCheck.interval}}
+          <span class="input-group-addon">{{t 'formHealthCheck.interval.unit'}}</span>
+        </div>
+      {{/input-or-display}}
     </div>
     <div class="col-sm-12 col-md-2 form-label">
       <label class="form-control-static">{{t 'formHealthCheck.timeout.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-3">
-      <div class="input-group">
-        {{input type="number" min=1 step=100 classNames="form-control" value=healthCheck.responseTimeout}}
-        <span class="input-group-addon">{{t 'formHealthCheck.timeout.unit'}}</span>
-      </div>
+      {{#input-or-display editable=editing value=healthCheck.responseTimeout}}
+        <div class="input-group">
+          {{input type="number" min=1 step=100 classNames="form-control" value=healthCheck.responseTimeout}}
+          <span class="input-group-addon">{{t 'formHealthCheck.timeout.unit'}}</span>
+        </div>
+      {{/input-or-display}}
     </div>
   </div>
 
@@ -112,19 +147,23 @@
       <label class="form-control-static">{{t 'formHealthCheck.healthyThreshold.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-3">
-      <div class="input-group">
-        {{input type="number" min=1 step=1 classNames="form-control" value=healthCheck.healthyThreshold}}
-        <span class="input-group-addon">{{t 'formHealthCheck.healthyThreshold.unit'}}</span>
-      </div>
+      {{#input-or-display editable=editing value=healthCheck.healthyThreshold}}
+        <div class="input-group">
+          {{input type="number" min=1 step=1 classNames="form-control" value=healthCheck.healthyThreshold}}
+          <span class="input-group-addon">{{t 'formHealthCheck.healthyThreshold.unit'}}</span>
+        </div>
+      {{/input-or-display}}
     </div>
     <div class="col-sm-12 col-md-2 form-label">
       <label class="form-control-static">{{t 'formHealthCheck.unhealthyThreshold.label'}}</label>
     </div>
     <div class="col-sm-12 col-md-3">
-      <div class="input-group">
-        {{input type="number" min=1 step=1 classNames="form-control" value=healthCheck.unhealthyThreshold}}
-        <span class="input-group-addon">{{t 'formHealthCheck.unhealthyThreshold.unit'}}</span>
-      </div>
+      {{#input-or-display editable=editing value=healthCheck.unhealthyThreshold}}
+        <div class="input-group">
+          {{input type="number" min=1 step=1 classNames="form-control" value=healthCheck.unhealthyThreshold}}
+          <span class="input-group-addon">{{t 'formHealthCheck.unhealthyThreshold.unit'}}</span>
+        </div>
+      {{/input-or-display}}
     </div>
   </div>
 
@@ -134,6 +173,7 @@
         <label>{{t 'formHealthCheck.strategy.label'}}</label>
       </div>
       <div class="col-sm-12 col-md-8">
+      {{#input-or-display editable=editing value=strategy}}
         <div class="radio input">
           <label>{{radio-button selection=strategy value="none"}} {{t 'formHealthCheck.strategy.none'}}</label>
         </div>
@@ -150,6 +190,7 @@
             </span>
           </label>
         </div>
+      {{/input-or-display}}
       </div>
     </div>
   {{/if}}

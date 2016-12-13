@@ -6,6 +6,7 @@ export function initialize(/*application */) {
   Resource.reopenClass({
     defaultStateIcon: 'icon icon-help',
     defaultStateColor: 'text-primary',
+    defaultSortBy: 'name',
   });
 }
 

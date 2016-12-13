@@ -31,6 +31,7 @@ export default Ember.Component.extend({
   linkName: 'containerStats',
   single: true,
   showGraphs: true,
+  showMultiStat: true,
 
   renderSeconds: null,
 
@@ -233,8 +234,7 @@ setupMarkers: function() {
   },
 
   onDataPoint(point) {
-    if ( this._state === 'destroying' )
-    {
+    if ( this.isDestroyed || this.isDestroying ) {
       return;
     }
 

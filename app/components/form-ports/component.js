@@ -10,24 +10,24 @@ export default Ember.Component.extend({
   // Inputs
 
   // The initial ports to show, as an array of objects
-  initialPorts: null,
+  initialPorts    : null,
 
   // Ignore the ID and force each initial port to be considered 'new' (for clone)
-  forceNew: false,
+  forceNew        : false,
+  errors          : null,
+  editing         : false,
+  tagName         : '',
+  portsArray      : null,
+  portsAsStrArray : null,
+  protocolOptions : protocolOptions,
 
-  errors: null,
-  editing: false,
+  init() {
+    this._super(...arguments);
 
-  tagName: '',
-  portsArray: null,
-  portsAsStrArray: null,
-  protocolOptions: protocolOptions,
-
-  didInitAttrs() {
-    var out = [];
+    var out      = [];
     var forceNew = this.get('forceNew');
 
-    var ports = this.get('initialPorts');
+    var ports    = this.get('initialPorts');
     if ( ports )
     {
       ports.forEach(function(value) {
@@ -72,8 +72,10 @@ export default Ember.Component.extend({
       });
     }
 
-    this.set('portsArray', out);
-    this.portsArrayDidChange();
+    Ember.run.scheduleOnce('afterRender', () => {
+      this.set('portsArray', out);
+      this.portsArrayDidChange();
+    });
   },
 
   actions: {
@@ -88,14 +90,25 @@ export default Ember.Component.extend({
   portsArrayDidChange: function() {
     var out = [];
     this.get('portsArray').forEach(function(row) {
-      if ( row.private && row.protocol )
+      if ( !row.protocol ) {
+        return;
+      }
+
+      // If there's a public and no private, the private should be the same as public.
+      if ( row.public && !row.private )
       {
-        var str = row.private+'/'+row.protocol;
+        let str = row.public +':'+ row.public +'/'+ row.protocol;
+        out.push(str);
+      }
+      else if ( row.private )
+      {
+        let str = '';
         if ( row.public )
         {
-          str = row.public + ':' + str;
+          str = row.public+':';
         }
 
+        str += row.private +'/'+ row.protocol;
         out.push(str);
       }
     });

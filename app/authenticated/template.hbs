@@ -8,6 +8,10 @@
   }}
 {{/unless}}
 <main class="clearfix">
+  {{#if (and forceUpgrade projects.current.needsUpgrade)}}
+    {{project-upgrade model=projects.current}}
+  {{/if}}
+
   {{outlet}}
 </main>
 {{#unless isPopup}}

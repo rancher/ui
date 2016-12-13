@@ -8,19 +8,26 @@
 <section>
   <div class="container-multi-stat">
     <div class="container-flex bordered">
-      <div class="col-flex"><label>{{t 'k8sTab.namespace.pods.pod.type.header'}}</label> {{model.spec.type}}</div>
+      <div class="col-flex"><label>{{t 'k8sTab.multistat.header.phase'}}</label> {{model.status.phase}}</div>
+      <div class="col-flex"><label>{{t 'k8sTab.multistat.header.startTime'}}</label> {{date-from-now model.status.startTime}}</div>
+      <div class="col-flex"><label>{{t 'k8sTab.multistat.header.host'}}</label> {{model.status.hostIP}}</div>
+      <div class="col-flex"><label>{{t 'k8sTab.multistat.header.pod'}}</label> {{model.status.podIP}}</div>
     </div>
   </div>
 </section>
 
-<section>
+{{#select-tab initialTab='containers' as |component|}}
   <ul class="nav nav-tabs nav-tabs-well" role="tablist">
-    <li role="tab" class="tab" data-section="containers" {{action "selectTab" "containers" target="view"}}><a href="#">{{t 'k8sTab.namespace.pods.pod.navTabs.containers'}}</a></li>
+    <li role="tab" class="tab" data-section="containers" {{action "selectTab" "containers" target="component"}}><a href="#">{{t 'k8sTab.namespace.pods.pod.navTabs.containers'}}</a></li>
+    <li role="tab" class="tab" data-section="labels" {{action "selectTab" "labels" target=component}}><a href="#">{{t 'k8sTab.navTabs.labels'}}</a></li>
   </ul>
 
   <div class="horizontal-form well nav-well" role="tabpanel">
     <div class="section container-fluid" data-section="containers">
       {{k8s/container-section model=model.displayContainers}}
     </div>
+    <div class="section container-fluid" data-section="labels">
+      {{labels-section model=model labelSource=model.metadata.labels showKind=false sortBy="key"}}
+    </div>
   </div>
-</section>
+{{/select-tab}}

@@ -1,11 +1,11 @@
 <div class="container-subpod">
   <div class="subpod-name clip">
     <i class="{{model.stateIcon}} {{model.stateColor}} dot "></i>
-    {{#link-to (if model.isVm "virtualmachine" "container") model.id classNameBindings="showEllipsis:tiny-hellip"}}
-      {{#tooltip-element tagName="span" inlineBlock=false type="tooltip-basic" model=model tooltipTemplate='tooltip-container-subpod' }}
+    <a class="{{if showEllipsis 'tiny-hellip'}}" href="{{href-to (if model.isVm "virtualmachine" "container") model.id}}">
+      {{#tooltip-element tagName="span" inlineBlock=false type="tooltip-basic" model=model tooltipTemplate='tooltip-container-subpod' tooltipFor="containerSubpod"}}
         {{displayName}}
       {{/tooltip-element}}
-    {{/link-to}}
+    </a>
   </div>
   {{#if model.showTransitioningMessage}}
     <div class="subpod-detail clip {{if model.isError 'text-danger'}}">
@@ -13,7 +13,7 @@
     </div>
   {{else}}
     <div class="subpod-detail">
-      {{format-ip ip=model.displayIp}}
+      {{format-ip model.displayIp}}
     </div>
   {{/if}}
   {{action-menu model=model showPrimary=false}}

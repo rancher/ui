@@ -1,4 +1,4 @@
-<section class="header">
+<section class="header clearfix">
   {{#if showEdit}}
     <h1>
       {{#if editing}}
@@ -9,7 +9,7 @@
     </h1>
   {{else}}
     <h1>{{#link-to "settings.projects"}}{{t 'viewEditProject.header'}}{{/link-to}}</h1>
-      {{#power-select options=model.all selected=project onchange=(action "changeProject") searchField="displayName" as |obj|}}
+      {{#power-select options=allProjects selected=project onchange=(action "changeProject") searchField="displayName" as |obj|}}
           {{select-dot model=obj}}
       {{/power-select}}
 
@@ -20,134 +20,118 @@
   {{/if}}
 </section>
 
-<div class="clearfix"></div>
-
 {{#if showEdit}}
-  <section class="well">
-    <label>{{t 'viewEditProject.showEdit.orchestration'}}</label>
-    <div class="nav nav-boxes checked-active">
-      {{#each orchestrationChoices as |driver|}}
-        {{#if driver.disabled}}
-          <a href="#" tabindex="1" alt={{driver.label}} class="nav-box-item driver orchestration-driver {{driver.css}}"></a>
-        {{else}}
-          <a href="#" tabindex="1" {{action "selectOrchestration" driver.name}} alt={{driver.label}} class="nav-box-item driver orchestration-driver {{if driver.active 'active'}} {{driver.css}}"></a>
-        {{/if}}
-      {{/each}}
-    </div>
-  </section>
-
-  <section>
+  <section class="well r-mb0">
     {{form-name-description
       model=project
       namePlaceholder="viewEditDescription.form.name.placeholder"
       descriptionPlaceholder="viewEditDescription.form.description.placeholder"
     }}
   </section>
-{{else}}
- {{#if project.description}}
-    <section class="well r-mb0">
-      <label>{{t 'viewEditProject.description'}}</label>
-      <p>{{project.description}}</p>
+
+  {{#unless editing}}
+    <section class="well">
+      <div class="row">
+        <div class="col-xs-12">
+          <label>{{t 'viewEditProject.showEdit.template'}}</label>
+          <div class="nav nav-boxes checked-active">
+            {{#each templateChoices as |tpl|}}
+              <a href="#" tabindex="1" {{action "selectTemplate" tpl.id}} class="nav-box-item driver orchestration-driver r-p5 {{if (eq project.projectTemplateId tpl.id) 'active'}}">
+                <img src="{{tpl.image}}"/>
+                <div class="clip">{{tpl.name}}</div>
+              </a>
+            {{/each}}
+          </div>
+        </div>
+
+        {{#each-in selectedProjectTemplate.summary as |category names|}}
+          <div class="text-center">
+            <label class="text-capitalize">{{category}}</label>: {{names}}
+          </div>
+        {{else}}
+          <div class="text-center">
+            <label class="text-capitalize">Orchestration</label>: Cattle
+          </div>
+        {{/each-in}}
+      </div>
     </section>
-  {{/if}}
+  {{/unless}}
+{{else if project.description}}
+  <section class="well r-mb0">
+    <label class="inline-block r-m0">{{t 'viewEditProject.description'}}: </label>
+    <p class="inline-block r-m0">{{project.description}}</p>
+  </section>
 {{/if}}
 
-<section>
-  <div class="row form-group">
-    {{#if showEdit}}
-      <div class="col-sm-12 col-md-2 form-label">
-        <label class="form-control-static">{{t 'viewEditProject.showEdit.formControl'}}</label>
+<section class="well">
+  <div class="section container-fluid" data-section="access">
+    <div class="form-label">
+      <label class="form-control-static">{{t 'viewEditProject.showEdit.accessControl'}}</label>
+    </div>
+
+    {{#if (and accessEnabled showEdit)}}
+      <div class="form-group">
+        {{input-identity action="checkMember" onError="error"}}
       </div>
     {{/if}}
 
-    <div class="{{if showEdit 'col-sm-12 col-md-8' 'col-xs-12'}}">
-      <div class="well">
-        {{#if (and accessEnabled showEdit)}}
-          <div class="row form-group">
-            <div class="col-sm-12">
-              {{input-identity action="checkMember" onError="error"}}
-            </div>
-          </div>
-        {{/if}}
-
-        {{#if accessEnabled}}
-          <table class="grid fixed" style="margin-bottom: 0;">
-            <thead>
-              <tr>
-                {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
-                {{sortable-th sortable=this action="changeSort" name="type" label="generic.type"}}
-                {{sortable-th sortable=this action="changeSort" name="role" label="generic.role"}}
-                {{#if showEdit}}<th width="40">&nbsp;</th>{{/if}}
-              </tr>
-            </thead>
-            <tbody>
-              {{#each arranged as |member|}}
-                <tr>
-                  <td>
-                    {{identity-block identity=member}}
-                  </td>
-                  <td>{{member.displayType}}</td>
-                  <td>
-                    {{#if showEdit}}
-                      <select class="form-control input-sm" onchange={{action (mut member.role) value="target.value"}}>
-                        {{#each roleOptions as |choice|}}
-                          <option value={{choice.value}} selected={{eq member.role choice.value}}>{{choice.label}}</option>
-                        {{/each}}
-                      </select>
-                    {{else}}
-                      {{uc-first member.role}}
-                    {{/if}}
-                  </td>
-                  {{#if showEdit}}
-                    <td>
-                      {{#if accessEnabled}}
-                        <button class="btn btn-primary btn-sm pull-right gh-action" {{action "removeMember" member}}><i class="icon icon-minus"/></button>
-                      {{else}}
-                        &nbsp;
-                      {{/if}}
-                    </td>
+    {{#if accessEnabled}}
+      <table class="grid fixed" style="margin-bottom: 0;">
+        <thead>
+          <tr>
+            {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
+            {{sortable-th sortable=this action="changeSort" name="type" label="generic.type"}}
+            {{sortable-th sortable=this action="changeSort" name="role" label="generic.role"}}
+            {{#if showEdit}}<th width="40">&nbsp;</th>{{/if}}
+          </tr>
+        </thead>
+        <tbody>
+          {{#each arranged as |member|}}
+            <tr>
+              <td>
+                {{identity-block identity=member}}
+              </td>
+              <td>{{member.displayType}}</td>
+              <td>
+                {{#if showEdit}}
+                  <select class="form-control input-sm" onchange={{action (mut member.role) value="target.value"}}>
+                    {{#each roleOptions as |choice|}}
+                      <option value={{choice.value}} selected={{eq member.role choice.value}}>{{t choice.label}}</option>
+                    {{/each}}
+                  </select>
+                {{else}}
+                  {{uc-first member.role}}
+                {{/if}}
+              </td>
+              {{#if showEdit}}
+                <td>
+                  {{#if accessEnabled}}
+                    <button class="btn btn-primary btn-sm pull-right gh-action" {{action "removeMember" member}}><i class="icon icon-minus"/></button>
+                  {{else}}
+                    &nbsp;
                   {{/if}}
-                </tr>
-              {{else}}
-                <tr>
-                  <td colspan="3" class="text-center text-muted">
-                    {{if showEdit 'No members yet, add at least one owner.' 'This project has no members.'}}
-                  </td>
-                </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        {{else}}
-          <p class="help-block text-center">
-            {{format-html-message 'viewEditProject.helpBlock'}}
-          </p>
-        {{/if}}
-      </div>
-    </div>
+                </td>
+              {{/if}}
+            </tr>
+          {{else}}
+            <tr>
+              <td colspan="3" class="text-center text-muted">
+                {{t 'viewEditProject.showEdit.noMembers'}}
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <hr class="r-m0" />
+    {{else}}
+      <p class="help-block text-center">
+        {{format-html-message 'viewEditProject.helpBlock'}}
+      </p>
+    {{/if}}
   </div>
 </section>
 
 {{#if showEdit}}
-  <section class="r-pt0">
-    <div class="row form-group">
-      <div class="col-md-2 form-label">
-        {{t 'viewEditProject.virtualMachine.label'}}
-      </div>
-
-      <div class="col-md-10">
-        <div>
-          <label class="r-mr20 hand">
-            {{radio-button selection=project.virtualMachine value=true}} {{t 'generic.enabled'}}
-          </label>
-          <label class="hand">
-            {{radio-button selection=project.virtualMachine value=false}} {{t 'generic.disabled'}}
-          </label>
-        </div>
-        <p class="help-block">{{format-html-message 'viewEditProject.virtualMachine.subtext'}}</p>
-      </div>
-    </div>
-  </section>
-
   {{top-errors errors=errors}}
   {{save-cancel editing=editing save="save" cancel="cancel"}}
 {{/if}}

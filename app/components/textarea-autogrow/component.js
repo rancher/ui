@@ -12,6 +12,10 @@ export default Ember.TextArea.extend(IntlPlaceholder, {
   classNames: ['no-resize'],
 
   didInsertElement() {
+    Ember.run.scheduleOnce('afterRender', this, 'initHeights');
+  },
+
+  initHeights() {
     if ( this.get('minHeight') === 0 ) {
       this.set('minHeight', ( this.get('isSmall') ? 31 : 43));
     }
@@ -28,7 +32,7 @@ export default Ember.TextArea.extend(IntlPlaceholder, {
   }.observes('value'),
 
   isSmall: function() {
-    if ( this._state === 'destroying' ) {
+    if ( this.isDestroyed || this.isDestroying ) {
       return;
     }
 
@@ -36,7 +40,7 @@ export default Ember.TextArea.extend(IntlPlaceholder, {
   }.property(),
 
   autoSize() {
-    if ( this._state === 'destroying' ) {
+    if ( this.isDestroyed || this.isDestroying ) {
       return;
     }
 

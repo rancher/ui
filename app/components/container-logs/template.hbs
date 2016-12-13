@@ -1,3 +1,9 @@
+{{#if showProtip}}
+  <div class="protip">
+      {{t 'containerLogs.protip' key=alternateLabel}}
+  </div>
+  <hr>
+{{/if}}
 <h2>
   <i class="icon icon-file"></i> {{t 'containerLogs.title' instanceName=instance.displayName}}
 </h2>
@@ -9,11 +15,6 @@
     <li role="presentation" class="{{if isStdOut 'active'}}"><a {{action "changeShow" "stdout"}}>{{t 'containerLogs.stdout'}}</a></li>
     <li role="presentation" class="{{if isStdErr 'active'}}"><a {{action "changeShow" "stderr"}}>{{t 'containerLogs.stderr'}}</a></li>
   </ul>
-{{/if}}
-{{#if showProtip}}
-  <div class="text-muted r-mt5 r-mb5" style="font-size: 12px;">
-      {{t 'containerLogs.protip' key=alternateLabel}}
-  </div>
 {{/if}}
 <pre class="log-body {{unless stdErrVisible 'hide-stderr'}} {{unless stdOutVisible 'hide-stdout'}}">
 </pre>

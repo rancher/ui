@@ -1,11 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  driverChoices: null,
-  disk: null,
+  driverChoices : null,
+  disk          : null,
 
-  gigs: null,
-  tagName: 'tr',
+  gigs          : null,
+  tagName       : 'tr',
 
   actions: {
     remove() {
@@ -17,7 +17,8 @@ export default Ember.Component.extend({
     }
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
     if ( this.get('disk.size') ) {
       this.set('gigs', parseInt(this.get('disk.size',10)));
     } else {

@@ -12,13 +12,14 @@ export default Ember.Controller.extend({
   githubLink: C.EXT_REFERENCES.GITHUB,
   docsLink: C.EXT_REFERENCES.DOCS,
 
-  latestAnnouncement: Ember.computed('model.annoucements', function() {
-    if (this.get('model.annoucements.topics')) {
-      var annoucement = this.get('model.annoucements.topics')[0];
+  latestAnnouncement: Ember.computed('model.announcements', function() {
+    if (this.get('model.announcements.topics')) {
+      let sorted = this.get('model.announcements.topics').sortBy('id');
+      var announcement = sorted[sorted.length-1];
       return {
-        title: annoucement.title,
-        link: `${this.get('forumsLink')}/t/${annoucement.slug}`,
-        created: annoucement.created_at
+        title: announcement.title,
+        link: `${this.get('forumsLink')}/t/${announcement.slug}`,
+        created: announcement.created_at
       };
     }
   }),

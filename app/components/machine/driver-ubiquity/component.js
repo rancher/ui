@@ -30,7 +30,7 @@ export default Ember.Component.extend(Driver, {
     });
 
     this.set('model', store.createRecord({
-      type: 'machine',
+      type: 'host',
       ubiquityConfig: config,
     }));
   },
@@ -161,7 +161,7 @@ export default Ember.Component.extend(Driver, {
   validate: function() {
     this._super();
     let errors = this.get('errors')||[];
-    let name = this.get('model.name')||'';
+    let name = this.get('model.hostname')||'';
 
     if (name.length < 1 || name.length > 200) {
       errors.push('"name" should be 1-200 characters long');

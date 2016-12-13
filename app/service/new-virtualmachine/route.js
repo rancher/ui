@@ -9,7 +9,7 @@ export default Ember.Route.extend({
     var dependencies = {
       allHosts: store.findAll('host'), // Need inactive ones in case a link points to an inactive host
       allServices: this.get('allServices').choices(),
-      allStoragePools: store.findAllUnremoved('storagepool'),
+      allStoragePools: store.findAll('storagepool'),
     };
 
     if ( params.serviceId )
@@ -78,7 +78,7 @@ export default Ember.Route.extend({
       {
         serviceData = {
           type: 'service',
-          environmentId: params.environmentId,
+          stackId: params.stackId,
           scale: 1,
           startOnCreate: true,
         };
@@ -110,7 +110,7 @@ export default Ember.Route.extend({
   resetController: function (controller, isExiting/*, transition*/) {
     if (isExiting)
     {
-      controller.set('environmentId', null);
+      controller.set('stackId', null);
       controller.set('serviceId', null);
       controller.set('virtualMachineId', null);
       controller.set('upgrade', null);

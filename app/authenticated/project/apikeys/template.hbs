@@ -1,20 +1,21 @@
 <section class="header">
-  <h1>{{t 'apiPage.header'}}</h1>
+  <h1>{{t 'apiPage.account.header'}}</h1>
 
-  <button class="btn btn-sm btn-primary" {{action "newApikey" "environment"}}>{{t 'apiPage.actionButton'}}</button>
+  <button class="btn btn-sm btn-primary" {{action "newApikey" "account"}}>{{t 'apiPage.account.buttonText'}}</button>
 </section>
 
 <section class="well">
+  <p>{{t 'apiPage.account.content.paragraph1'}} {{#if access.identity.name}}(<code>{{access.identity.displayName}}</code>){{/if}} {{t 'apiPage.account.content.paragraph2'}}</p>
   <p>
-    {{format-html-message 'apiPage.content'
-      displayName=project.displayName
-    }}
+    <label>{{t 'apiPage.currentEndpoint'}}</label>
+    <code><a href="{{endpoint.auth.account.current}}" target="_blank">{{endpoint.display.account.current}}</a></code>
+    {{copy-to-clipboard clipboardText=endpoint.auth.account.current size="sm"}}
   </p>
-  <label>{{t 'apiPage.labelText'}}</label>
-  {{!--@@TODO: Does displayEndpointEnvironment need to be part of i18n --}}
-  <code><a href="{{endpointWithAuthEnvironment}}" target="_blank">{{displayEndpointEnvironment}}</a></code>
-  {{copy-to-clipboard clipboardText=endpointWithAuthEnvironment size="sm"}}
-
+  <p>
+    <label>{{t 'apiPage.legacyEndpoint'}}</label>
+    <code><a href="{{endpoint.auth.account.legacy}}" target="_blank">{{endpoint.display.account.legacy}}</a></code>
+    {{copy-to-clipboard clipboardText=endpoint.auth.account.legacy size="sm"}}
+  </p>
   <table class="grid fixed r-mb0 r-mt10">
     <thead>
       <tr>
@@ -27,10 +28,10 @@
       </tr>
     </thead>
     <tbody>
-      {{#each environmentArranged as |key|}}
+      {{#each accountArranged as |key|}}
         {{apikey-row model=key}}
       {{else}}
-        <tr><td colspan="6" class="text-center text-muted">{{t 'apiPage.table.noData'}}</td></tr>
+        <tr><td colspan="6" class="text-center text-muted">{{t 'apiPage.account.table.noData'}}</td></tr>
       {{/each}}
     </tbody>
   </table>
@@ -38,16 +39,28 @@
 
 {{#advanced-section}}
   <section class="header">
-    <h1>{{t 'apiPage.account.header'}}</h1>
+    <h1>{{t 'apiPage.header'}}</h1>
 
-    <button class="btn btn-sm btn-primary" {{action "newApikey" "account"}}>{{t 'apiPage.account.buttonText'}}</button>
+    <button class="btn btn-sm btn-primary" {{action "newApikey" "environment"}}>{{t 'apiPage.actionButton'}}</button>
   </section>
 
   <section class="well">
-    <p>{{t 'apiPage.account.content.paragraph1'}} {{#if access.identity.name}}(<code>{{access.identity.displayName}}</code>){{/if}} {{t 'apiPage.account.content.paragraph2'}}</p>
-    <label>{{t 'apiPage.labelText'}}</label>
-    <code><a href="{{endpointWithAuth}}" target="_blank">{{displayEndpoint}}</a></code>
-    {{copy-to-clipboard clipboardText=endpointWithAuth size="sm"}}
+    <p>
+      {{format-html-message 'apiPage.content'
+        displayName=project.displayName
+      }}
+    </p>
+    <p>
+      <label>{{t 'apiPage.currentEndpoint'}}</label>
+      <code><a href="{{endpoint.auth.environment.current}}" target="_blank">{{endpoint.display.environment.current}}</a></code>
+      {{copy-to-clipboard clipboardText=endpoint.auth.environment.current size="sm"}}
+    </p>
+    <p>
+      <label>{{t 'apiPage.legacyEndpoint'}}</label>
+      <code><a href="{{endpoint.auth.environment.legacy}}" target="_blank">{{endpoint.display.environment.legacy}}</a></code>
+      {{copy-to-clipboard clipboardText=endpoint.auth.environment.legacy size="sm"}}
+    </p>
+
     <table class="grid fixed r-mb0 r-mt10">
       <thead>
         <tr>
@@ -60,10 +73,10 @@
         </tr>
       </thead>
       <tbody>
-        {{#each accountArranged as |key|}}
+        {{#each environmentArranged as |key|}}
           {{apikey-row model=key}}
         {{else}}
-          <tr><td colspan="6" class="text-center text-muted">{{t 'apiPage.account.table.noData'}}</td></tr>
+          <tr><td colspan="6" class="text-center text-muted">{{t 'apiPage.table.noData'}}</td></tr>
         {{/each}}
       </tbody>
     </table>

@@ -26,7 +26,7 @@
 <hr/>
 
 <div class="stack-body r-p10 row row-full-height">
-  <div class="subsection gutter col-xs-6 col-md-3 col-full-height">
+  <div class="subsection gutter col-xs-12 col-md-3 col-full-height">
     <h6>{{t 'storagePoolSection.hosts.header'}}</h6>
     <div class="clearfix r-p10 hosts">
       {{#each hostsByName as |host|}}
@@ -37,15 +37,15 @@
     </div>
   </div>
   {{#if model.volumes.length}}
-    <div class="subsection gutter col-xs-6 col-md-9 col-full-height">
+    <div class="subsection gutter col-xs-12 col-md-9 col-full-height">
       <h6>{{t 'storagePoolSection.volumes.header'}}</h6>
       <table class="grid" style="margin-bottom: 0">
         <thead>
           <tr>
             {{sortable-th sortable=this action="changeSort" name="state" width="115" label="generic.state"}}
-            {{sortable-th sortable=this action="changeSort" name="name" label="storagePoolSection.models.table.header.volumeName"}}
-            <th>{{t 'storagePoolSection.models.table.header.activeMounts'}}</th>
-            <th width="70">&nbsp;</th>
+            {{sortable-th sortable=this action="changeSort" name="name" width="350" label="storagePoolSection.models.table.header.volumeName"}}
+            <th>{{t 'storagePoolSection.models.table.header.mounts'}}</th>
+            <th width="75">&nbsp;</th>
           </tr>
         </thead>
         <tbody>
@@ -55,13 +55,13 @@
                 {{badge-state model=vol}}
               </td>
               <td class="force-wrap">
-                {{#tooltip-element type="tooltip-basic" model=vol tooltipTemplate="tooltip-storage"}}
-                  <span class="hand force-wrap">{{vol.displayName}}</span> <i classs="icon icon-info"></i>
+                {{#tooltip-element type="tooltip-basic" model=vol tooltipTemplate="tooltip-storage" tooltipFor="storagePoolSection"}}
+                  <p class="hand force-wrap clip r-m0">{{vol.displayName}}</p> <i classs="icon icon-info"></i>
                 {{/tooltip-element}}
               </td>
-              <td>
-                {{#if vol.activeMounts.length}}
-                  {{#each vol.activeMounts as |mount|}}
+              <td class="force-wrap">
+                {{#if vol.mounts.length}}
+                  {{#each vol.mounts as |mount|}}
                     <div>
                       {{~#if mount.instance.isVm~}}
                         {{#link-to "virtualmachine" mount.instanceId}}{{mount.instance.displayName}}{{/link-to}}
@@ -90,7 +90,6 @@
                       <tr>
                         <th width="125">{{t 'storagePoolSection.models.table.header.snapshotState'}}</th>
                         <th>{{t 'storagePoolSection.models.table.header.snapshotName'}}</th>
-                        <th>{{t 'storagePoolSection.models.table.header.backedUp'}}</th>
                         <th width="70">&nbsp;</th>
                       </tr>
                     </thead>

@@ -1,12 +1,18 @@
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 import Ember from 'ember';
+import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
+import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 var Project = Resource.extend(PolledResource, {
+  access: Ember.inject.service(),
   prefs: Ember.inject.service(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
+  modalService: Ember.inject.service('modal'),
+
+  projectTemplate: denormalizeId('projectTemplateId'),
 
   type: 'project',
   name: null,
@@ -54,10 +60,9 @@ var Project = Resource.extend(PolledResource, {
     },
 
     promptStop: function() {
-      this.get('application').setProperties({
-        showConfirmDeactivate : true,
-        originalModel         : this,
-        action                : 'deactivate'
+      this.get('modalService').toggleModal('modal-confirm-deactivate', {
+        originalModel: this,
+        action: 'deactivate'
       });
     },
 
@@ -120,23 +125,35 @@ var Project = Resource.extend(PolledResource, {
   }.property('state','isDefault'),
 
   displayOrchestration: function() {
-    if ( this.get('kubernetes') )
+    return Util.ucFirst(this.get('orchestration'));
+  }.property('orchestration'),
+
+  combinedState: function() {
+    var project = this.get('state');
+    var health = this.get('healthState');
+    if ( ['active','updating-active'].indexOf(project) === -1 )
     {
-      return 'Kubernetes';
+      // If the project isn't active, return its state
+      return project;
     }
-    else if ( this.get('swarm') )
+
+    if ( health === 'healthy' )
     {
-      return 'Swarm';
-    }
-    else if ( this.get('mesos') )
-    {
-      return 'Mesos';
+      return project;
     }
     else
     {
-      return 'Cattle';
+      return health;
     }
-  }.property('kubernetes','swarm', 'mesos'),
+  }.property('state', 'healthState'),
+
+  isUpgrading: Ember.computed.equal('state','upgrading'),
+
+  needsUpgrade: function() {
+    return this.get('isActive') && this.get('version') !== this.get(`settings.${C.SETTING.PROJECT_VERSION}`);
+  }.property('isActive','version',`settings.${C.SETTING.PROJECT_VERSION}`),
+
+  isWindows: Ember.computed.equal('orchestration','windows'),
 });
 
 // Projects don't get pushed by /subscribe WS, so refresh more often

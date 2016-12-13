@@ -41,6 +41,7 @@ export default Ember.Component.extend({
         }
 
         this.set('value', out);
+        input.value = '';
       };
       reader.readAsText(input.files[0]);
     }

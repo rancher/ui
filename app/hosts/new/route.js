@@ -18,6 +18,7 @@ function proxifyUrl(url, proxyBase) {
 
 export default Ember.Route.extend({
   access         : Ember.inject.service(),
+  projects       : Ember.inject.service(),
   settings       : Ember.inject.service(),
   backTo         : null,
 
@@ -28,7 +29,7 @@ export default Ember.Route.extend({
     driver: {
       refreshModel: true
     },
-    machineId: {
+    hostId: {
       refreshModel: false,
     }
   },
@@ -65,7 +66,7 @@ export default Ember.Route.extend({
   resetController(controller, isExisting /*, transition*/) {
     if ( isExisting )
     {
-      controller.set('machineId', null);
+      controller.set('hostId', null);
       controller.set('backTo', null);
     }
   },
@@ -101,15 +102,15 @@ export default Ember.Route.extend({
     this.set('backTo', params.backTo);
 
     let promises = {
-      reloadMachine: this.get('userStore').find('schema','machine', {forceReload: true}),
+      reloadHost: this.get('userStore').find('schema','host', {forceReload: true}),
       loadCustomUi: this.loadCustomUi(),
       schemas: this.get('userStore').find('schema'),
       typeDocumentations: this.get('userStore').findAll('typedocumentation') 
     };
 
-    if ( params.machineId )
+    if ( params.hostId )
     {
-      promises.clonedModel = this.getMachine(params.machineId);
+      promises.clonedModel = this.getHost(params.hostId);
     }
 
     if ( this.get('access.admin') ) {
@@ -123,6 +124,9 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.hash(promises).then((hash) => {
       hash.availableDrivers = this.get('machineDrivers');
+      if ( this.get('projects.current.isWindows') ) {
+        hash.availableDrivers = [];
+      }
 
       let defaultDriver = this.get('defaultDriver');
       let targetDriver = params.driver || this.get('lastDriver') || defaultDriver;
@@ -195,14 +199,18 @@ export default Ember.Route.extend({
     });
   },
 
-  getMachine(machineId) {
-    return this.get('store').find('machine', machineId).then((machine) => {
+  getHost(hostId) {
+    let store = this.get('store');
+    return store.find('host', hostId).then((host) => {
 
-      let machineOut = machine.cloneForNew();
-      let config = this.get('store').createRecord(machine[`${machine.driver}Config`]);
-
-      machineOut.set(`${machine.driver}Config`, config);
-      return machineOut;
+      let hostOut = host.cloneForNew();
+      let src = host[`${host.driver}Config`];
+      if ( src ) {
+        src.type = `${host.driver}Config`;
+        let config = store.createRecord(src);
+        hostOut.set(`${host.driver}Config`, config);
+      }
+      return hostOut;
     }).catch(() => {
       return Ember.RSVP.reject({type: 'error', message: 'Failed to retrieve cloned model'}) ;
     });

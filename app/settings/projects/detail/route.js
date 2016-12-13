@@ -1,6 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
+  allServices: Ember.inject.service(),
+
   queryParams: {
     editing: {
       refreshModel: true
@@ -9,25 +11,31 @@ export default Ember.Route.extend({
 
   model: function(params /* , transition*/) {
     var userStore = this.get('userStore');
-    return userStore.findAllUnremoved('project').then((all) => {
+    return userStore.findAll('project').then((all) => {
       return userStore.find('project', params.project_id).then((project) => {
-        return project.importLink('projectMembers').then(() => {
+        return Ember.RSVP.hash({
+          importProject: project.importLink('projectMembers'),
+        }).then((/*hash*/) => {
+          let out = Ember.Object.create({
+            all: all,
+          });
+
           if ( params.editing )
           {
-            return Ember.Object.create({
+            out.setProperties({
               originalProject: project,
               project: project.clone(),
-              all: all,
             });
           }
           else
           {
-            return Ember.Object.create({
+            out.setProperties({
               originalProject: null,
               project: project,
-              all: all,
             });
           }
+
+          return out;
         });
       });
     });

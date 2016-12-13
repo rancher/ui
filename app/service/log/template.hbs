@@ -1,0 +1,38 @@
+<table class="grid fixed">
+  <thead>
+    <tr>
+      <th width="100">{{t 'servicePage.logTab.table.header.date'}}</th>
+      <th width="75">{{t 'servicePage.logTab.table.header.level'}}</th>
+      <th>{{t 'servicePage.logTab.table.header.event'}}</th>
+      <th>{{t 'servicePage.logTab.table.header.description'}}</th>
+      <th class="actions" width="75">&nbsp;</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each model.logs.arrangedContent as |obj|}}
+      <tr>
+        <td>
+          {{date-str obj.created format="hh:mm:ss A"}}
+        </td>
+        <td>
+          <span class="state badge {{obj.stateColor}} {{obj.stateBackground}}">{{upper-case obj.level}}</span>
+        </td>
+        <td>
+          {{obj.eventType}}{{#if obj.runTime}} ({{obj.runTime}}){{/if}}
+        </td>
+        <td>
+          {{obj.description}}
+        </td>
+        <td data-title="{{t 'generic.actions'}}:" class="actions">
+          {{action-menu model=obj}}
+        </td>
+      </tr>
+    {{else}}
+      <tr>
+        <td colspan="5">
+          <div class="text-muted text-center">{{t 'servicePage.logTab.table.body.noData'}}</div>
+        </td>
+      </tr>
+    {{/each}}
+  </tbody>
+</table>

@@ -6,6 +6,7 @@ export function initialize(application) {
   application.inject('component', 'app', 'application:main');
   application.inject('service',   'app', 'application:main');
   application.inject('model',     'app', 'application:main');
+  application.inject('component', 'shortcuts', 'shortcuts:main');
 }
 
 export default {

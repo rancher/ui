@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import { minorVersion } from 'ui/utils/parse-version';
 
 export function normalizeName(str) {
   return str.replace(/\./g, C.SETTING.DOT_CHAR).toLowerCase();
@@ -14,6 +15,7 @@ export default Ember.Service.extend(Ember.Evented, {
   cookies: Ember.inject.service(),
   projects: Ember.inject.service(),
   intl: Ember.inject.service(),
+  userStore: Ember.inject.service('user-store'),
 
   all: null,
   promiseCount: 0,
@@ -163,6 +165,10 @@ export default Ember.Service.extend(Ember.Evented, {
     return this.get('_plValue').toUpperCase() === C.COOKIE.PL_RANCHER_VALUE.toUpperCase();
   }.property('_plValue'),
 
+  isOSS: function() {
+    return this.get('rancherImage') === 'rancher/server';
+  }.property('rancherImage'),
+
   appName: function() {
     if ( this.get('isRancher') )
     {
@@ -176,13 +182,28 @@ export default Ember.Service.extend(Ember.Evented, {
 
   minDockerVersion: Ember.computed.alias(`asMap.${C.SETTING.MIN_DOCKER}.value`),
 
+  minorVersion: function() {
+    let version = this.get('rancherVersion');
+    if ( !version )
+    {
+      return null;
+    }
+
+    return minorVersion(version);
+  }.property('rancherVersion'),
+
   docsBase: function() {
-    let version = this.get(`asMap.${C.SETTING.HELP_VERSION}.value`);
-    let lang = (this.get('intl._locale')[0]||'').replace(/-.*$/,'');
-    if ( !lang || lang === 'none' ) {
+    let full = this.get('rancherVersion');
+    let version = 'latest';
+    if ( full ) {
+      version = minorVersion(full);
+    }
+
+    let lang = ((this.get('intl._locale')||[])[0]||'').replace(/-.*$/,'');
+    if ( !lang || lang === 'none' || C.LANGUAGE.DOCS.indexOf(lang) === -1 ) {
       lang = 'en';
     }
 
     return `${C.EXT_REFERENCES.DOCS}/${version}/${lang}`;
-  }.property('intl._locale',`asMap.${C.SETTING.HELP_VERSION}.value`)
+  }.property('intl._locale','minorVersion')
 });

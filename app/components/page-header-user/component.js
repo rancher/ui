@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   tagName: '',
 
   access: Ember.inject.service(),
+  modalService: Ember.inject.service('modal'),
 
   accessEnabled    : Ember.computed.alias('access.enabled'),
 
@@ -14,10 +15,11 @@ export default Ember.Component.extend({
 
   actions: {
     changePassword() {
-      this.get('userStore').find('account', this.get('session.'+C.SESSION.ACCOUNT_ID)).then((account) => {
-        this.get('application').setProperties({
-          editAccount: true,
-          originalModel: account
+      let us = this.get('userStore');
+
+      us.findAll('password').then(() => {
+        us.find('account', this.get('session.'+C.SESSION.ACCOUNT_ID)).then((account) => {
+          this.get('modalService').toggleModal('edit-account', account);
         });
       });
     },

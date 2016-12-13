@@ -2,8 +2,9 @@ import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 import C from 'ui/utils/constants';
+import { parseExternalId } from 'ui/utils/parse-externalid';
 
-const builtInUi = ['amazonec2','azure','digitalocean','exoscale','packet','rackspace','ubiquity','vmwarevsphere'];
+const builtInUi = ['amazonec2','azure','digitalocean','exoscale','packet','rackspace','ubiquity','vmwarevsphere','aliyunecs'];
 
 function displayUrl(url) {
   url = url||'';
@@ -25,6 +26,8 @@ function displayUrl(url) {
 
 var machineDriver = Resource.extend(PolledResource, {
   type: 'machineDriver',
+  modalService: Ember.inject.service('modal'),
+  catalog: Ember.inject.service(),
 
   actions: {
     activate: function() {
@@ -36,12 +39,20 @@ var machineDriver = Resource.extend(PolledResource, {
     },
 
     edit: function() {
-      this.get('application').setProperties({
-        editMachineDriver: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('modal-edit-driver', this);
     },
   },
+
+  catalogTemplateIcon: Ember.computed('externalId', function() {
+    let parsedExtId = parseExternalId(this.get('externalId')) || null;
+
+    if (!parsedExtId) {
+      return null;
+    }
+
+    return this.get('catalog').getTemplateFromCache(parsedExtId.templateId).get('links.icon');
+
+  }),
 
   iconMapFromConstants: Ember.computed('name', function() {
     let name = this.get('name').toUpperCase();
@@ -80,8 +91,7 @@ var machineDriver = Resource.extend(PolledResource, {
   }.property('hasBuiltinUi'),
 
   newExternalId: function() {
-    var externalId = ( this.get('isSystem') ? C.EXTERNALID.KIND_SYSTEM_CATALOG : C.EXTERNALID.KIND_CATALOG );
-    externalId += C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
+    var externalId = C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
     return externalId;
   }.property('isSystem','selectedTemplateModel.id'),
 
@@ -99,6 +109,9 @@ var machineDriver = Resource.extend(PolledResource, {
     ];
   }.property('actionLinks.{update,activate,deactivate,remove}','builtin'),
 
+  externalIdInfo: function() {
+    return parseExternalId(this.get('externalId'));
+  }.property('externalId'),
 });
 
 machineDriver.reopenClass({

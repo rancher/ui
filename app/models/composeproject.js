@@ -1,16 +1,13 @@
-import Ember from 'ember';
-import Environment from 'ui/models/environment';
-import FilteredSortedArrayProxy from 'ui/utils/filtered-sorted-array-proxy';
-import C from 'ui/utils/constants';
+import Stack from 'ui/models/stack';
 
-var ComposeProject = Environment.extend({
+export default Stack.extend({
   type: 'composeProject',
+  grouping: 'swarm',
 
   availableActions: function() {
     var a = this.get('actionLinks');
 
     var out = [
-      { label   : 'action.edit',       icon : 'icon icon-edit',           action : 'edit',          enabled  : true },
       { label   : 'action.remove',     icon : 'icon icon-trash',          action : 'promptDelete',  enabled  : !!a.remove, altAction : 'delete'},
       { label   : 'action.viewInApi',  icon : 'icon icon-external-link',  action : 'goToApi',       enabled  : true },
     ];
@@ -18,20 +15,4 @@ var ComposeProject = Environment.extend({
     return out;
   }.property('actionLinks.{remove}'),
 
-  unremovedServices: function() {
-    var proxy = FilteredSortedArrayProxy.create({
-      sourceContent: this.get('store').reallyAll('composeservice'),
-      dependentKeys: ['sourceContent.@each.state','sourceContent.@each.environmentId'],
-      filterFn: function(item) {
-        return Ember.get(item,'environmentId') === this.get('id') &&
-               C.REMOVEDISH_STATES.indexOf((Ember.get(item,'state')||'').toLowerCase()) === -1;
-      }.bind(this),
-    });
-
-    return proxy;
-  }.property('services'),
-
-  grouping: 'swarm',
 });
-
-export default ComposeProject;

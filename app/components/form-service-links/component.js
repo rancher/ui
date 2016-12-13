@@ -2,14 +2,16 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   // Inputs
-  service: null,
-  withAlias: true,
-  allServices: null,
-  serviceLinksArray: null,
+  service           : null,
+  withAlias         : true,
+  allServices       : null,
+  serviceLinksArray : null,
 
   tagName: '',
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     var out = [];
     var links;
     if ( this.get('service.id') )
@@ -53,9 +55,9 @@ export default Ember.Component.extend({
 
   serviceChoices: function() {
     return this.get('allServices').sortBy('group','name','id');
-  }.property('allServices.@each.{id,name,state,environmentId}'),
+  }.property('allServices.@each.{id,name,state,stackId}'),
 
   lbSafeServiceChoices: function() {
     return this.get('allServices').filterBy('lbSafe',true).sortBy('group','name','id');
-  }.property('allServices.@each.{id,name,state,environmentId}'),
+  }.property('allServices.@each.{id,name,state,stackId}'),
 });

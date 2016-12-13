@@ -1,109 +1,107 @@
-<section class="header">
+{{#if showHeader}}
+  <section class="header">
+    {{#if editing}}
+      <h1>{{t 'newCatalog.upgrade'}} <span style="font-weight: normal">{{stackResource.name}}</span></h1>
+    {{else}}
+      <h1>{{#link-to parentRoute}}{{t 'newCatalog.catalog'}}{{/link-to}}</h1>
+      {{#power-select options=allTemplates selected=templateResource onchange=(action "changeTemplate") searchField="name" as |obj|}}
+        <span class="clip">{{obj.name}}</span>
+      {{/power-select}}
+    {{/if}}
+  </section>
+{{/if}}
 
-  {{#if editing}}
-    <h1>{{t 'newCatalog.upgrade'}} <span style="font-weight: normal">{{environmentResource.name}}</span></h1>
+<section class="{{sectionClass}} row">
+  <div class="col-sm-12 col-md-3">
+    {{#if templateResource.links.icon}}
+      <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="r-mr20" style="height:75px;max-width: 100%;">
+    {{/if}}
+
+    <div>
+      <small><strong>{{t 'newCatalog.catalog'}}</strong> <span class="text-capitalize">{{templateResource.catalogId}}</span></small>
+    </div>
+    <div>
+      <small><strong>{{t 'newCatalog.category'}}</strong> {{templateResource.category}}</small>
+    </div>
+    {{#if (eq templateResource.certified 'rancher')}}
+      <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.official'}}</small>
+    {{else}}
+      <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.maintainedBy'}}</small>
+    {{/if}}
+    {{#if templateResource.maintainer}}
+      <div>
+        <small><strong>{{t 'newCatalog.maintainer'}}</strong> {{templateResource.maintainer}}</small>
+      </div>
+    {{/if}}
+    {{#if templateResource.license}}
+      <div>
+        <small><strong>{{t 'newCatalog.license'}}</strong> {{templateResource.license}}</small>
+      </div>
+    {{/if}}
+    {{#if templateResource.links.project}}
+      <small class="force-wrap"><strong>{{t 'newCatalog.url'}}</strong> <a href="{{templateResource.cleanProjectUrl}}" target="_blank">{{templateResource.cleanProjectUrl}}</a></small>
+    {{/if}}
+  </div>
+  {{#if readmeContent}}
+    <div class="col-sm-12 col-md-9" style="overflow-y: auto; max-height: 500px;">
+      {{common-mark markdown=readmeContent}}
+    </div>
   {{else}}
-    <h1>{{#link-to parentRoute}}{{t 'newCatalog.catalog'}}{{/link-to}}</h1>
-    {{#power-select options=allTemplates selected=templateResource onchange=(action "changeTemplate") searchField="name" as |obj|}}
-      <div class="clip">{{obj.name}}</div>
-    {{/power-select}}
+    <h2 class="r-mb10">
+      {{t (if editing titleUpgrade titleAdd) name=templateResource.name}}
+    </h2>
+    <p>{{templateResource.description}}</p>
   {{/if}}
 </section>
 
-<div>
-  <section>
-    <div class="well row">
-      <div class="col-sm-12 col-md-3">
-        {{#if templateResource.links.icon}}
-          <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="r-mr20" style="height:75px;max-width: 100%;">
-        {{/if}}
-
-        <div>
-          <small><strong>{{t 'newCatalog.catalog'}}</strong> <span class="text-capitalize">{{templateResource.catalogId}}</span></small>
-        </div>
-        <div>
-          <small><strong>{{t 'newCatalog.category'}}</strong> <span class="text-capitalize">{{templateResource.category}}</span></small>
-        </div>
-        {{#if (eq templateResource.catalogId 'library')}}
-          <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.official'}}</small>
-        {{else}}
-          {{#if (eq templateResource.catalogId 'community')}}
-            <small><strong>{{t 'newCatalog.support'}} </strong>{{t 'newCatalog.maintainedBy'}}</small>
-          {{/if}}
-        {{/if}}
-        {{#if templateResource.maintainer}}
-          <div>
-            <small><strong>{{t 'newCatalog.maintainer'}}</strong> {{templateResource.maintainer}}</small>
-          </div>
-        {{/if}}
-        {{#if templateResource.license}}
-          <div>
-            <small><strong>{{t 'newCatalog.license'}}</strong> {{templateResource.license}}</small>
-          </div>
-        {{/if}}
-        {{#if templateResource.links.project}}
-          <small class="force-wrap"><strong>{{t 'newCatalog.url'}}</strong> <a href="{{templateResource.cleanProjectUrl}}" target="_blank">{{templateResource.cleanProjectUrl}}</a></small>
-        {{/if}}
-      </div>
-      {{#if readmeContent}}
-        <div class="col-sm-12 col-md-9" style="overflow-y: auto; max-height: 500px;">
-          {{common-mark markdown=readmeContent}}
-        </div>
-      {{else}}
-        <h2 class="r-mb10">
-          {{if editing "Upgrade" "Add"}} {{templateResource.name}} {{t 'newCatalog.stack'}}
-        </h2>
-        <p>{{templateResource.description}}</p>
-      {{/if}}
-    </div>
-  </section>
-
-  <section class="well">
-    <h4>{{t 'newCatalog.templateVersion'}}</h4>
-    <hr/>
-    <div class="row">
-      <div class="col-sm-12 col-md-6">
-        {{new-select
-          classNames="form-control"
-          content=versionsArray
-          prompt="newCatalog.version.prompt"
-          optionLabelPath="version"
-          optionValuePath="link"
-          value=selectedTemplateUrl
-        }}
-        <p class="help-block">{{t 'newCatalog.selectVersion'}} {{if editing 'upgrade to' 'deploy'}}</p>
-      </div>
-    </div>
-  </section>
-
-  {{#if (and (not editing) selectedTemplateModel)}}
-    <section class="well">
-      <h4>{{t 'newCatalog.newStack'}}</h4>
-      <hr/>
-
-      {{form-name-description
-        model=environmentResource
-        nameRequired=true
+<section class="{{sectionClass}}">
+  <h4>{{t 'newCatalog.templateVersion'}}</h4>
+  <hr/>
+  <div class="row">
+    <div class="col-sm-12 col-md-6">
+      {{new-select
+        classNames="form-control"
+        content=sortedVersions
+        prompt="newCatalog.version.prompt"
+        optionLabelPath="version"
+        optionValuePath="link"
+        value=selectedTemplateUrl
+        disabled=loading
       }}
+      <p class="help-block">{{t (if editing selectVersionUpgrade selectVersionAdd)}}</p>
+    </div>
+  </div>
+</section>
 
-    </section>
+{{#if (and showName selectedTemplateModel)}}
+  <section class="{{sectionClass}}">
+    <h4>{{t 'newCatalog.newStack'}}</h4>
+    <hr/>
+
+    {{form-name-description
+      model=stackResource
+      nameRequired=true
+    }}
+
+  </section>
+{{/if}}
+
+<section class="{{sectionClass}}">
+  {{#if loading}}
+    <div class="text-center">
+      <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
+    </div>
   {{/if}}
 
-  <section class="well">
-    {{#if loading}}
-      <div class="col-md-12 text-center r-mt15 r-mb15">
-        <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
-      </div>
-    {{/if}}
+  {{#if selectedTemplateModel}}
+    <form {{action "submitTemplate" on="submit"}} class="{{if loading 'hide'}}">
+      <h4>{{t 'newCatalog.config'}}</h4>
+      <hr/>
 
-    {{#if selectedTemplateModel}}
-      <form {{action "submitTemplate" on="submit"}} class="{{if loading 'hide'}}">
-        <h4>{{t 'newCatalog.config'}}</h4>
-        <hr/>
-
-        <div class="row"><div class="col-sm-12"><div class="row">
-          {{#each selectedTemplateModel.questions as |question|}}
-            <div class="col-sm-12 {{if (eq selectedTemplateModel.questions.length 1) 'col-md-12' 'col-md-6'}} form-label r-mb10">
+      <div class="container-flex">
+        {{#each selectedTemplateModel.questions as |question|}}
+          <div class="flex-item-half">
+            <div class="col-sm-12 form-label r-mb10">
               <label class="form-label form-control-static">{{question.label}}{{if question.required "*"}}</label>
 
               {{#if question.supported}}
@@ -115,32 +113,24 @@
 
               <p class="help-block">{{question.description}}</p>
             </div>
-          {{else}}
-            <span class="text-muted">{{t 'newCatalog.noConfig'}}</span>
-          {{/each}}
-        </div></div></div>
-        {{#if (and (not editing) (eq templateBase ""))}}
-          <div class="row r-mt20">
-            <div class="col-md-12">
-              <label>{{input type="checkbox" checked=environmentResource.startOnCreate}} {{t 'newCatalog.startService'}}</label>
-            </div>
           </div>
-        {{/if}}
-      </form>
-    {{/if}}
-  </section>
-
-  {{#if (and selectedTemplateModel (not loading))}}
-    {{#if errors.length}}
-      <section>
-        <div class="row">
-          <div class="col-sm-12">
-            {{top-errors errors=errors}}
+        {{else}}
+          <span class="text-muted">{{t 'newCatalog.noConfig'}}</span>
+        {{/each}}
+      </div>
+      {{#if (and (not editing) (eq templateBase ""))}}
+        <div class="row r-mt20">
+          <div class="col-md-12">
+            <label class="checkbox small">{{input type="checkbox" checked=stackResource.startOnCreate}} {{t 'newCatalog.startService'}}</label>
           </div>
         </div>
-      </section>
-    {{/if}}
+      {{/if}}
+    </form>
+  {{/if}}
+</section>
 
+{{#if (and selectedTemplateModel (not loading))}}
+  {{#if showPreview}}
     <section>
       <div class="over-hr"><span {{action "togglePreview"}}>{{t 'newCatalog.preview'}} <i class="icon {{if previewOpen 'icon-chevron-up' 'icon-chevron-down'}}"></i></span></div>
 
@@ -159,11 +149,23 @@
         </div>
       {{/if}}
     </section>
-
-    {{save-cancel createLabel=(if editing 'newCatalog.saveUpgrade' 'newCatalog.saveNew') save="save" cancel="cancel"}}
-  {{else}}
-    <div class="footer-actions">
-      <button {{action "cancel"}} class="btn btn-default">{{t 'saveCancel.cancel'}}</button>
-    </div>
   {{/if}}
-</div>
+
+  {{#if errors.length}}
+    <section>
+      <div class="row">
+        <div class="col-sm-12">
+          {{top-errors errors=errors}}
+        </div>
+      </div>
+    </section>
+  {{/if}}
+
+  <div class="footer-actions">
+    {{save-cancel createLabel=(if editing saveUpgrade saveNew) save="save" cancel="cancel"}}
+  </div>
+{{else}}
+  <div class="footer-actions">
+    <button {{action "cancel"}} class="btn btn-default">{{t 'saveCancel.cancel'}}</button>
+  </div>
+{{/if}}

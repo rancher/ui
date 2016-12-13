@@ -2,7 +2,7 @@
   <h1>{{t 'helpPage.header'}}</h1>
 </section>
 
-{{#if (and settings.isRancher (not modelError))}}
+{{#if (and settings.isRancher latestAnnouncement (not modelError))}}
   <div class="alert alert-info alert-header r-ml20 r-mr20 r-mt10">
     <span class="banner-head">{{t 'helpPage.banner'}}</span>
     {{#if modelResolved}}
@@ -18,27 +18,27 @@
 
 <section>
   <div class="flex-wrap">
-    <div class="flex-item">
+    <div class="flex-item-third">
       <div class="flex-content well">
-        <h4>{{t 'helpPage.environment.header'}}</h4>
+        <h3>{{t 'helpPage.environment.header'}}</h3>
         <hr/>
         {{format-html-message 'helpPage.environment.content' appName=settings.appName}}
         {{#link-to 'settings.projects' class="btn btn-primary right-divider-btn"}} {{t 'helpPage.environment.manageLink'}} {{/link-to}}
       </div>
     </div>
 
-    <div class="flex-item">
+    <div class="flex-item-third">
       <div class="flex-content well">
-        <h4>{{t 'helpPage.host.header'}}</h4>
+        <h3>{{t 'helpPage.host.header'}}</h3>
         <hr/>
         <p>{{t 'helpPage.host.content' appName=settings.appName minVersion=settings.minDockerVersion}} <a href="{{docsLink}}/rancher-ui/infrastructure/hosts/" target="_blank">{{t 'helpPage.host.contentLink'}}</a></p>
         {{#link-to "hosts.new" class="btn btn-primary"}}{{t 'helpPage.host.addHostLink'}}{{/link-to}}
       </div>
     </div>
 
-    <div class="flex-item">
+    <div class="flex-item-third">
       <div class="flex-content well">
-        <h4>{{t 'helpPage.stacks.header'}}</h4>
+        <h3>{{t 'helpPage.stacks.header'}}</h3>
         <hr/>
         <p>{{t 'helpPage.stacks.content.paragraph1' appName=settings.appName}}</p>
 
@@ -60,7 +60,7 @@
 {{#if settings.isRancher}}
   <section class="well">
     <div class="header">
-      <h4>{{t 'helpPage.issues.header.text'}}</h4>
+      <h3>{{t 'helpPage.issues.header.text'}}</h3>
       <div class="pull-right r-mb20">
         {{t 'helpPage.issues.header.tagline'}} <a href="{{settings.issueUrl}}" class="btn btn-primary r-ml10" target="_blank">{{t 'helpPage.issues.header.fileBug'}}</a>
       </div>
@@ -107,7 +107,7 @@
 
   <section class="well">
     <div class="header">
-      <h4>{{t 'helpPage.forums.header'}}</h4>
+      <h3>{{t 'helpPage.forums.header'}}</h3>
       <div class="pull-right r-mb20">
         {{t 'helpPage.forums.tagline'}} <a href="{{forumsLink}}" class="btn btn-primary r-ml10" target="_blank">{{t 'helpPage.forums.buttonText'}}</a>
       </div>
@@ -116,16 +116,17 @@
   {{#if modelResolved}}
     {{#unless modelError}}
       <div class="row">
-        <div class="col-sm-12 col-md-4 right-divider">
-          <h5>{{t 'helpPage.forums.annoucements.header'}}</h5>
-          <p>
-            {{format-html-message 'helpPage.forums.annoucements.annouceText'
-              latestLink=latestannouncement.link
-              latestTitle=latestAnnouncement.title}}
-          </p>
-          <p><strong>{{t 'helpPage.forums.annoucements.releaseText'}}</strong>{{date-from-now latestAnnouncement.created}}</p>
-        </div>
-        <div class="col-sm-12 col-md-4">
+        <div class="col-sm-12 col-md-6">
+          <h5>{{t 'helpPage.forums.announcements.header'}}</h5>
+          <ul class="list-unstyled">
+            {{#each model.announcements.topics as |topic|}}
+              <li class="clip">
+                <a href="{{forumsLink}}/t/{{topic.slug}}" target="_blank">{{topic.title}}</a>
+              </li>
+            {{/each}}
+          </ul>
+          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/announcements" target="blank">{{t 'helpPage.forums.announcements.buttonText'}}</a>
+
           <h5>{{t 'helpPage.forums.general.header'}}</h5>
           <ul class="list-unstyled">
             {{#each model.general.topics as |topic|}}
@@ -135,6 +136,18 @@
             {{/each}}
           </ul>
           <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/general" target="blank">{{t 'helpPage.forums.general.buttonText'}}</a>
+
+        </div>
+        <div class="col-sm-12 col-md-6">
+          <h5>{{t 'helpPage.forums.rancher.header'}}</h5>
+          <ul class="list-unstyled">
+            {{#each model.rancher.topics as |topic|}}
+              <li class="clip">
+                <a href="{{forumsLink}}/t/{{topic.slug}}" target="_blank">{{topic.title}}</a>
+              </li>
+            {{/each}}
+          </ul>
+          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/rancher" target="blank">{{t 'helpPage.forums.rancher.buttonText'}}</a>
 
           <h5>{{t 'helpPage.forums.rancherOs.header'}}</h5>
           <ul class="list-unstyled">
@@ -146,27 +159,6 @@
           </ul>
           <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/rancher-os" target="blank">{{t 'helpPage.forums.rancherOs.buttonText'}}</a>
         </div>
-        <div class="col-sm-12 col-md-4">
-          <h5>{{t 'helpPage.forums.rancher.header'}}</h5>
-          <ul class="list-unstyled">
-            {{#each model.rancher.topics as |topic|}}
-              <li class="clip">
-                <a href="{{forumsLink}}/t/{{topic.slug}}" target="_blank">{{topic.title}}</a>
-              </li>
-            {{/each}}
-          </ul>
-          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/rancher" target="blank">{{t 'helpPage.forums.rancher.buttonText'}}</a>
-
-          <h5>{{t 'helpPage.forums.convoy.header'}}</h5>
-          <ul class="list-unstyled">
-            {{#each model.convoy.topics as |topic|}}
-              <li class="clip">
-                <a href="{{forumsLink}}/t/{{topic.slug}}" target="_blank">{{topic.title}}</a>
-              </li>
-            {{/each}}
-          </ul>
-          <a class="btn btn-sm btn-default r-mt10 r-mb20" href="{{forumsLink}}/c/convoy" target="blank">{{t 'helpPage.forums.convoy.buttonText'}}</a>
-        </div>
       </div>
     {{else}}
       <div class="text-center">Looks like you're offline. Please go online to see content from the forums.</div>
@@ -177,7 +169,7 @@
   </section>
 
   <section class="well">
-    <h4>{{t 'helpPage.commercial.header'}}</h4>
+    <h3>{{t 'helpPage.commercial.header'}}</h3>
     <hr/>
     <p>
       {{format-html-message 'helpPage.commercial.content'

@@ -4,39 +4,25 @@
   <div class="pull-right">{{action-menu model=model}}</div>
 </div>
   <div class="pod-name">
-    {{#if isMachine}}
-      {{model.displayName}}
-    {{else}}
-      {{#link-to "host" model.id}}{{model.displayName}}{{/link-to}}
-      {{#if model.showTransitioningMessage}}
-        <div class="pod-message {{if model.isError 'text-danger' 'text-muted'}}">
-          {{model.transitioningMessage}}
-        </div>
-      {{/if}}
+    <a href="{{href-to 'host' model.id}}">{{model.displayName}}</a>
+    {{#if (and (not showOnlyMessage) model.showTransitioningMessage)}}
+      <div class="pod-message {{if model.isError 'text-danger' 'text-muted'}}">
+        {{model.transitioningMessage}}
+      </div>
     {{/if}}
   </div>
 
-{{#if isMachine}}
-  <div class="machine-info force-wrap">
-    {{#if isActive}}
-      {{format-html-message 'hostPod.machineInfo.active.activating'}}
-    {{else}}
-      {{#if model.isError}}
-        {{#if model.transitioningMessage}}
-          <span class="text-danger">{{model.transitioningMessage}}</span>
-        {{else}}
-          <span class="text-danger">{{t 'hostPod.machineInfo.deactivated.error'}}</span>
-        {{/if}}
-      {{else}}
-        <div class="color:black;">{{t 'hostPod.machineInfo.deactivated.setup'}}</div>
-        {{model.transitioningMessage}}
-      {{/if}}
-    {{/if}}
+{{#if showOnlyMessage}}
+  <div class="machine-info text-center force-wrap">
+    <span class="{{if isError 'text-danger' 'text-muted'}}">{{model.transitioningMessage}}</span>
   </div>
 {{else}}
   <div class="pod-info">
     <div class="pod-info-container">
-      <div class="pod-info-item"><i class="icon icon-link"></i> {{format-ip ip=model.displayIp}}</div>
+      {{#if model.displayIp}}
+        <div class="pod-info-item"><i class="icon icon-link"></i> {{format-ip model.displayIp}}</div>
+      {{/if}}
+
       {{#if model.dockerBlurb}}
         <div class="pod-info-item"><i class="icon icon-docker"></i> {{model.dockerBlurb}}</div>
       {{/if}}
@@ -58,8 +44,8 @@
       {{/if}}
     </div>
     <div class="pod-info-container">
-      {{#if model.machine}}
-        <div class="pod-info-item"><i class="icon icon-cloud"></i> {{model.machine.driver}}</div>
+      {{#if model.driver}}
+        <div class="pod-info-item"><i class="icon icon-cloud"></i> {{model.driver}}</div>
       {{/if}}
     </div>
   </div>

@@ -1,0 +1,44 @@
+<section class="header">
+  <h1>
+    {{t pageHeader name=which tags=tags}}
+  </h1>
+
+  {{#if (eq which "infra")}}
+    {{#link-to "catalog-tab" projects.current.id (query-params catalogId="all" templateBase="infra") classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
+  {{else}}
+    {{#link-to "stacks.new" classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.actionButton'}}{{/link-to}}
+    {{#if arranged.length}}
+      {{#link-to "catalog-tab" projects.current.id (query-params catalogId="all") classNames="btn btn-sm btn-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
+    {{/if}}
+  {{/if}}
+
+  <div class="pull-right">
+    <label class="text-muted r-pr5" style="font-size: 13px;">{{t 'stacksPage.sort.label'}}: </label>
+    <div class="btn-group r-pr0" role="group" aria-label="{{t 'stacksPage.sort.label'}}">
+      <button {{action 'sortResults' 'state'}} type="button" class="btn btn-sm btn-default {{if (eq sortBy "state") 'active'}}">{{t 'stacksPage.sort.state'}}</button>
+      <button {{action 'sortResults' 'name'}}  type="button" class="btn btn-sm btn-default {{if (eq sortBy "name") 'active'}}">{{t 'stacksPage.sort.name'}}</button>
+    </div>
+  </div>
+</section>
+
+<section class="stacks-wrap r-pl0 r-pr0">
+  <div>
+    {{#each arranged as |stack|}}
+      {{stack-card model=stack showAddtlInfo='showAddtlInfo' showAddService=(not stack.system)}}
+    {{else}}
+      {{#if (and model.stacks.length tags)}}
+        <div class="r-m20 text-center text-muted">{{t 'stacksPage.noMatch'}}</div>
+      {{else if (eq which "infra")}}
+        <div class="r-m20 text-center text-muted">{{t 'stacksPage.noInfra'}}</div>
+      {{else}}
+        {{hero-add-service}}
+      {{/if}}
+    {{/each}}
+  </div>
+</section>
+
+{{service-addtl-info service=selectedService dismiss='dismiss' show=showAddtlInfo}}
+
+<div class='navigation-link'>
+  {{#link-to 'environments.advanced'}}{{t 'stacksPage.advancedDashboard'}}{{/link-to}}
+</div>

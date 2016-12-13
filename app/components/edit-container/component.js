@@ -1,14 +1,16 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default Ember.Component.extend(NewOrEdit, {
+export default ModalBase.extend(NewOrEdit, {
+  classNames: ['lacsso', 'modal-container', 'large-modal'],
+  originalModel: Ember.computed.alias('modalService.modalOpts'),
   editing: true,
   isService: false,
   isSidekick: false,
   loading: true,
 
 
-  originalModel: null,
   model: null,
 
   primaryResource: Ember.computed.alias('model.instance'),
@@ -18,18 +20,17 @@ export default Ember.Component.extend(NewOrEdit, {
   linksArray: null,
 
   actions: {
-    outsideClick() {},
-
-    cancel() {
-      this.sendAction('dismiss');
-    },
-
     setPorts(ports) {
       this.set('portsArray', ports);
     },
 
     setLinks(links) {
       this.set('linksArray', links);
+    },
+
+    save() {
+      this._super(...arguments);
+      this.send('cancel');
     }
   },
 

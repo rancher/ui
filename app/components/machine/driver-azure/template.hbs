@@ -3,41 +3,130 @@
     {{partial "host/add-common"}}
 
     <div class="over-hr r-mt20 r-mb20">
+      <span>{{t 'machine.driverAzure.placementSection'}}</span>
+    </div>
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'machine.driverAzure.environment.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text" value=azureConfig.environment classNames="form-control" placeholder=(t 'machine.driverAzure.environment.placeholder')}}
+      </div>
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'machine.driverAzure.region.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        {{new-select
+          classNames="form-control"
+          content=regionChoices
+          optionLabelPath='displayName'
+          optionValuePath='name'
+          value=azureConfig.location
+        }}
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'machine.driverAzure.availabilitySet.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text" value=azureConfig.availabilitySet classNames="form-control" placeholder=(t 'machine.driverAzure.availabilitySet.placeholder')}}
+      </div>
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'machine.driverAzure.resourceGroup.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text" value=azureConfig.resourceGroup classNames="form-control" placeholder=(t 'machine.driverAzure.resourceGroup.placeholder')}}
+      </div>
+    </div>
+
+    <div class="over-hr r-mt20 r-mb20">
       <span>{{t 'machine.driverAzure.accountAccessSection'}}</span>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAzure.username.label'}}</label>
-      </div>
-      <div class="col-md-4">
-        {{input type="text" value=azureConfig.username classNames="form-control" placeholder=(t 'machine.driverAzure.username.placeholder')}}
-      </div>
-      <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAzure.password.label'}}</label>
-      </div>
-      <div class="col-md-4">
-        {{input type="password" value=azureConfig.password classNames="form-control" placeholder=(t 'machine.driverAzure.password.placeholder')}}
-      </div>
+          <label class="form-control-static">{{t 'machine.driverAzure.subscriptionId.label'}}*</label>
+        </div>
+        <div class="col-md-4">
+          {{input type="text" value=azureConfig.subscriptionId classNames="form-control" placeholder=(t 'machine.driverAzure.subscriptionId.placeholder')}}
+        </div>
     </div>
+
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAzure.subscriptionId.label'}}*</label>
+        <label class="form-control-static">{{t 'machine.driverAzure.clientId.label'}}*</label>
       </div>
       <div class="col-md-4">
-        {{input type="text" value=azureConfig.subscriptionId classNames="form-control" placeholder=(t 'machine.driverAzure.subscriptionId.placeholder')}}
+        {{input type="text" value=azureConfig.clientId classNames="form-control"}}
       </div>
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAzure.subscriptionCert.label'}}*</label>
+        <label class="form-control-static">{{t 'machine.driverAzure.clientSecret.label'}}*</label>
       </div>
       <div class="col-md-4">
-        {{input-text-file
-          value=subscriptionCert
-          placeholder="machine.driverAzure.subscriptionCert.placeholder"
-          accept="text/*, .cer"
+
+        {{input type="password" value=azureConfig.clientSecret classNames="form-control"}}
+      </div>
+      <p class="col-md-4 col-md-offset-2 help-block">{{format-html-message 'machine.driverAzure.helpBlock'}}</p>
+
+    </div>
+
+    <div class="over-hr r-mt20 r-mb20">
+      <span>{{t 'machine.driverAzure.networkSection'}}</span>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'machine.driverAzure.subnet.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text" value=azureConfig.subnet classNames="form-control" placeholder=(t 'machine.driverAzure.subnet.placeholder')}}
+      </div>
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'machine.driverAzure.subnetPrefix.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text" value=azureConfig.subnetPrefix classNames="form-control" placeholder=(t 'machine.driverAzure.subnetPrefix.placeholder')}}
+      </div>
+    </div>
+
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'machine.driverAzure.vnet.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text" value=azureConfig.vnet classNames="form-control" placeholder=(t 'machine.driverAzure.vnet.placeholder')}}
+      </div>
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'machine.driverAzure.staticPublicIp.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        {{new-select
+          classNames="form-control"
+          content=publicIpChoices
+          optionLabelPath='name'
+          optionValuePath='value'
+          value=publicIpChoice
         }}
       </div>
     </div>
+
+    <div class="row form-group">
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'machine.driverAzure.privateIpAddress.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text" value=azureConfig.privateIpAddress classNames="form-control" placeholder=(t 'machine.driverAzure.privateIpAddress.placeholder')}}
+      </div>
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'machine.driverAzure.usePrivateIp.label'}}</label>
+      </div>
+      <div class="col-md-4 form-control-static">
+        {{input type="checkbox" checked=azureConfig.usePrivateIp disabled=privateSet}}
+      </div>
+    </div>
+
 
     <div class="over-hr r-mt20 r-mb20">
       <span>{{t 'machine.driverAzure.instanceSection'}}</span>
@@ -65,56 +154,40 @@
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAzure.sshPort.label'}}</label>
-      </div>
-      <div class="col-md-4">
-        {{input type="text" value=azureConfig.sshPort classNames="form-control" placeholder=(t 'machine.driverAzure.sshPort.placeholder')}}
-      </div>
-      <div class="col-md-2 form-label">
         <label class="form-control-static">{{t 'machine.driverAzure.dockerPort.label'}}</label>
       </div>
       <div class="col-md-4">
         {{input type="text" value=azureConfig.dockerPort classNames="form-control" placeholder=(t 'machine.driverAzure.dockerPort.placeholder')}}
       </div>
+      <div class="col-md-2 form-label">
+        <label class="form-control-static">{{t 'machine.driverAzure.openPort.label'}}</label>
+      </div>
+      <div class="col-md-4">
+        {{input type="text" value=openPorts classNames="form-control" placeholder=(t 'machine.driverAzure.openPort.placeholder')}}
+      </div>
     </div>
 
     <div class="row form-group">
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAzure.dockerSwarm.label'}}</label>
+        <label class="form-control-static">{{t 'machine.driverAzure.sshUser.label'}}</label>
       </div>
       <div class="col-md-4">
-        {{input type="text" value=azureConfig.dockerSwarmMasterPort classNames="form-control" placeholder=(t 'machine.driverAzure.dockerSwarm.placeholder')}}
+        {{input type="text" value=azureConfig.sshUser classNames="form-control" placeholder=(t 'machine.driverAzure.sshUser.placeholder')}}
       </div>
       <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAzure.publishSettingsFile.label'}}</label>
+        <label class="form-control-static">{{t 'machine.driverAzure.storageType.label'}}</label>
       </div>
       <div class="col-md-4">
-        {{input-text-file
-          value=azureConfig.publishSettingsFile
-          placeholder="machine.driverAzure.publishSettingsFile.placeholder"
-          accept="text/*, .publishsettings"
-        }}
-      </div>
-    </div>
-
-    <div class="over-hr r-mt20 r-mb20">
-      <span>{{t 'machine.driverAzure.regionSection'}}</span>
-    </div>
-
-    <div class="row form-group">
-      <div class="col-md-2 form-label">
-        <label class="form-control-static">{{t 'machine.driverAzure.region.label'}}</label>
-      </div>
-      <div class="col-md-10">
         {{new-select
           classNames="form-control"
-          content=regionChoices
-          optionLabelPath='region'
-          optionValuePath='region'
-          value=azureConfig.location
+          content=storageTypeChoices
+          optionLabelPath='name'
+          optionValuePath='value'
+          value=azureConfig.storageType
         }}
       </div>
     </div>
+
 
     {{partial "host/add-options"}}
   </div>

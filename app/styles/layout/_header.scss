@@ -93,6 +93,10 @@ HEADER {
       list-style       : none;
       display          : inline-block;
 
+      &.dropdown-header {
+        font-size: 15px;
+      };
+
       & > A {
         min-height     : $navbar-height;
         line-height    : $navbar-height;
@@ -203,6 +207,8 @@ HEADER {
 
       .gh-block-detail {
         color: $text-color;
+        max-width: 175px;
+        font-size: .85em;
       }
 
       .user-logout {
@@ -212,7 +218,7 @@ HEADER {
         position: absolute;
         top: 0;
         right: 0;
-        padding: 18px 10px;
+        padding: 17px 10px;
         font-size: 12px;
         text-align: center;
         vertical-align: middle;
@@ -276,9 +282,23 @@ HEADER {
         }
       }
 
-      .project-menu {
-        .active a {
-          cursor: $cursor-disabled;
+      .dropdown-menu {
+        &.project-menu {
+          z-index: 2000;
+          .active a {
+            cursor: $cursor-disabled;
+          }
+          a {
+            position: relative;
+            &:after {
+              content: " ";
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 177px;
+              height: 31px;
+            }
+          }
         }
       }
 

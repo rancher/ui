@@ -1,9 +1,11 @@
 import Ember from 'ember';
 import { alternateLabel } from 'ui/utils/platform';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default Ember.Component.extend({
-  originalModel  : null,
-  action         : null,
+export default ModalBase.extend({
+  classNames: ['lacsso', 'modal-container', 'medium-modal', 'modal-logs'],
+  originalModel  : Ember.computed.alias('modalService.modalOpts.originalModel'),
+  action         : Ember.computed.alias('modalService.modalOpts.action'),
   alternateLabel : alternateLabel,
   intl           : Ember.inject.service(),
 
@@ -11,18 +13,15 @@ export default Ember.Component.extend({
 
     confirm: function() {
       this.get('originalModel').send(this.get('action'));
-      this.sendAction('dismiss');
+      this.send('cancel');
     },
-
-    cancel: function() {
-      this.sendAction('dismiss');
-    },
-
   },
 
   didRender: function() {
     setTimeout(() => {
-      this.$('BUTTON')[0].focus();
+      try {
+        this.$('BUTTON')[0].focus();
+      } catch (e) {}
     }, 500);
   },
 

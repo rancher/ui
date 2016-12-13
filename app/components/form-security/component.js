@@ -1,8 +1,12 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  projects: Ember.inject.service(),
+
   // Inputs
   instance: null,
+  classNameBindings: ['editing:component-editing:component-static'],
+  editing: true,
 
   actions: {
     addDevice: function() {
@@ -15,20 +19,39 @@ export default Ember.Component.extend({
 
     setLogDriver: function(driver) {
       this.set('instance.logConfig.driver', driver);
-    }
+    },
+
+    modifyCapabilities: function(type, select) {
+      let options = Array.prototype.slice.call(select.target.options, 0);
+      let selectedOptions = [];
+
+      options.filterBy('selected', true).forEach((cap) => {
+        return selectedOptions.push(cap.value);
+      });
+
+      this.set(`instance.${type}`, selectedOptions);
+    },
   },
 
-  didInitAttrs() {
-    this.initCapability();
-    this.initDevices();
-    this.initMemory();
-    this.initPidMode();
+  init() {
+    this._super(...arguments);
+
+    if ( this.get('projects.current.isWindows') ) {
+    } else {
+      this.initCapability();
+      this.initDevices();
+      this.initMemory();
+      this.initPidMode();
+    }
+
     this.initLogging();
   },
 
   didInsertElement() {
-    this.initMultiselect();
-    this.privilegedDidChange();
+    if ( ! this.get('projects.current.isWindows') ) {
+      this.initMultiselect();
+      this.privilegedDidChange();
+    }
   },
 
   // ----------------------------------
@@ -46,12 +69,19 @@ export default Ember.Component.extend({
   // Memory
   // ----------------------------------
   memoryMb: null,
+  memoryReservationMb: null,
   swapMb: null,
   initMemory: function() {
     var memBytes = this.get('instance.memory') || 0;
     var memPlusSwapBytes = this.get('instance.memorySwap') || 0;
+    var memReservation = this.get('instance.memoryReservation');
     var swapBytes = Math.max(0, memPlusSwapBytes - memBytes);
 
+    if (memReservation) {
+      this.set('memoryReservationMb', parseInt(memReservation,10)/1048576);
+    } else {
+      this.set('memoryReservationMb', '');
+    }
     if ( memBytes )
     {
       this.set('memoryMb', parseInt(memBytes,10)/1048576);
@@ -71,6 +101,17 @@ export default Ember.Component.extend({
     }
 
   },
+
+  memoryReservationChanged: Ember.observer('memoryReservationMb', function() {
+    var mem = this.get('memoryReservationMb');
+
+    if ( isNaN(mem) || mem <= 0) {
+      this.set('instance.memoryReservation', '');
+    }
+    else {
+      this.set('instance.memoryReservation', mem * 1048576);
+    }
+  }),
 
   memoryDidChange: function() {
     // The actual parameter we're interested in is 'memory', in bytes.
@@ -252,10 +293,23 @@ export default Ember.Component.extend({
     'none',
     'json-file',
     'awslogs',
+    'etwlogs',
     'fluentd',
+    'gcplogs',
     'gelf',
     'journald',
     'splunk',
     'syslog',
   ],
+
+  hasLogConfig: Ember.computed('instance.logConfig.config', function() {
+    return Ember.isEmpty(this.get('instance.logConfig.config'));
+  }),
+
+  isolationChoices: function() {
+    return [
+      {label: 'formSecurity.isolation.default', value: 'default'},
+      {label: 'formSecurity.isolation.hyperv', value: 'hyperv'},
+    ];
+  }.property(),
 });

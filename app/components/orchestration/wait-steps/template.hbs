@@ -15,10 +15,7 @@
         {{/if}}
 
         <span>
-          {{step}}
-          {{#if (and (eq currentStep index) subCount)}}
-            ({{if subStep subStep '0'}} of {{subCount}})
-          {{/if}}
+          {{t step}}{{#if (and subStep subCount (eq currentStep index))}} {{t 'waitOrchestration.count' sub=subStep count=subCount}}{{/if}}
         </span>
       </li>
     {{/each}}

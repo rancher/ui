@@ -1,6 +1,5 @@
 <section class="horizontal-form container-fluid">
   <h2>{{t 'editHost.title'}}</h2>
-  {{top-errors errors=errors}}
 
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
@@ -31,6 +30,8 @@
     </div>
   </div>
 
+  {{limit-parameters model=primaryResource}}
+
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
       <label class="form-control-static">{{t 'editHost.labels.label'}}</label>
@@ -44,4 +45,5 @@
   </div>
 </section>
 
+{{top-errors errors=errors}}
 {{save-cancel editing=editing save="save" cancel="cancel"}}

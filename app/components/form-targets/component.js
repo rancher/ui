@@ -2,14 +2,14 @@ import Ember from 'ember';
 import {parseTarget, stringifyTarget} from 'ui/utils/parse-target';
 
 export default Ember.Component.extend({
-  intl: Ember.inject.service(),
+  intl        : Ember.inject.service(),
 
-  existing: null,
-  isBalancer: null,
-  allServices: null,
-  editing: false,
+  existing    : null,
+  isBalancer  : null,
+  allServices : null,
+  editing     : false,
 
-  classNames: ['form-group'],
+  classNames  : ['form-group'],
 
   actions: {
     addTargetService: function() {
@@ -27,7 +27,9 @@ export default Ember.Component.extend({
   isAdvanced: false,
   targetsArray: null,
 
-  didInitAttrs: function() {
+  init() {
+    this._super(...arguments);
+
     this.set('isAdvanced', this.get('editing'));
 
     var out = [];
@@ -35,7 +37,7 @@ export default Ember.Component.extend({
     var existing = this.get('existing');
     if ( existing )
     {
-      existing.get('consumedServicesWithNames').forEach((map) => {
+      existing.get('consumedServicesWithNamesAndPorts').forEach((map) => {
         if ( map.get('ports.length') )
         {
           map.get('ports').forEach((str) => {
@@ -70,8 +72,10 @@ export default Ember.Component.extend({
       }));
     }
 
-    this.set('targetsArray', out);
-    this.targetsChanged();
+    Ember.run.scheduleOnce('afterRender', () => {
+      this.set('targetsArray', out);
+      this.targetsChanged();
+    });
   },
 
   targetResources: function() {
@@ -122,5 +126,5 @@ export default Ember.Component.extend({
 
       return service;
     });
-  }.property('isBalancer','allServices.@each.{id,name,state,environmentId}'),
+  }.property('isBalancer','allServices.@each.{id,name,state,stackId}'),
 });

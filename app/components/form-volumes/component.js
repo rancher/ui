@@ -1,18 +1,23 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
+  intl: Ember.inject.service(),
+  projects: Ember.inject.service(),
+
   // Inputs
-  instance: null,
-  primaryService: null,
-  launchConfigChoices: null,
-  launchConfigIndex: null,
-  isService: null,
-  allHosts: null,
-  errors: null,
+  instance            : null,
+  primaryService      : null,
+  launchConfigChoices : null,
+  launchConfigIndex   : null,
+  isService           : null,
+  allHosts            : null,
+  errors              : null,
 
   tagName: '',
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this.initVolumes();
     this.initVolumesFrom();
     this.initVolumesFromLaunchConfig();
@@ -20,24 +25,53 @@ export default Ember.Component.extend({
 
   initVolumesFromLaunchConfig() {
     var dv = this.get('instance.dataVolumesFromLaunchConfigs');
-    this.set('initEnabled', dv); 
-    Ember.run.once(this,'updateChoices');
+    Ember.run.once(this,'initChoices', dv);
+  },
+
+  initChoices: function(initEnabled=[]) {
+    let launchConfigIndex = this.get('launchConfigIndex');
+    let enabled = initEnabled ? initEnabled.indexOf(this.get('primaryService.name')) >= 0 : false;
+    let out = [];
+
+    if ( launchConfigIndex !== -1 )
+    {
+      out.push({
+        index: -1,
+        displayName: this.get('primaryService.name') || '(Primary Service)',
+        name: this.get('primaryService.name'),
+        enabled: enabled
+      });
+    }
+
+    (this.get('primaryService.secondaryLaunchConfigs')||[]).forEach((item, index) => {
+      if ( launchConfigIndex !== index )
+      {
+        out.push({
+          index: index,
+          displayName: item.get('name') || `(Sidekick #${index+1})`,
+          name: item.get('name'),
+          enabled: (initEnabled.indexOf(item.get('name')) >= 0 ? true : false),
+          uiId: item.get('uiId'),
+        });
+      }
+    });
+
+    let tempObj = {};
+
+    this.set('prevChoices', tempObj[launchConfigIndex] = out);
+    this.set('volumesFromLaunchConfigChoices', out);
+
   },
 
   prevChoices: null,
-  initEnabled: null,
   volumesFromLaunchConfigChoices: null,
 
   updateChoices: function() {
-    var launchConfigIndex = this.get('launchConfigIndex');
-    var allPrevChoices = this.get('prevChoices')||{};
-    var prevChoices = allPrevChoices[launchConfigIndex]||[];
-    var initEnabled = this.get('initEnabled')||[];
-
-    var prev = prevChoices.filterBy('index',-1)[0];
-    var enabled = (prev ? prev.enabled : (initEnabled.indexOf(this.get('primaryService.name')) >= 0));
-
-    var out = [];
+    let launchConfigIndex = this.get('launchConfigIndex');
+    let prevChoices = this.get('prevChoices')||{};
+    let prev = prevChoices.filterBy('index',-1)[0];
+    let enabled = (prev ? prev.enabled : false);
+    let out = [];
 
     if ( launchConfigIndex !== -1 )
     {
@@ -57,15 +91,13 @@ export default Ember.Component.extend({
           index: index,
           displayName: item.get('name') || `(Sidekick #${index+1})`,
           name: item.get('name'),
-          enabled: (prev ? prev.enabled : (initEnabled.indexOf(item.get('name')) >= 0)),
+          enabled: (prev ? prev.enabled : false),
           uiId: item.get('uiId'),
         });
       }
     });
 
-    allPrevChoices[launchConfigIndex] = out;
-    this.set('prevChoices', allPrevChoices);
-    this.set('initEnabled', null);
+    this.set('prevChoices', out);
     this.set('volumesFromLaunchConfigChoices', out);
   },
 
@@ -155,7 +187,7 @@ export default Ember.Component.extend({
     });
 
     return list.sortBy('group','name','id');
-  }.property('instance.requestedHostId','allHosts.@each.instancesUpdated'),
+  }.property('instance.requestedHostId','allHosts.@each.instances'),
 
   volumesFromArray: null,
   initVolumesFrom: function() {
@@ -183,4 +215,22 @@ export default Ember.Component.extend({
     });
     out.endPropertyChanges();
   }.observes('volumesFromArray.@each.value'),
+
+  validate: function() {
+    var errors = [];
+
+    this.get('volumesArray').forEach((row) => {
+      let val = row.value;
+      if ( val.substr(0,1) === '/' ) {
+        return;
+      }
+
+      val = val.replace(/:.*/,'');
+      if ( val.match(/[^a-z0-9._-]/i) ) {
+        errors.push(this.get('intl').t('formVolumes.errors.invalidName'));
+      }
+    });
+
+    this.set('errors', errors.uniq());
+  }.observes('volumesArray.@each.value'),
 });

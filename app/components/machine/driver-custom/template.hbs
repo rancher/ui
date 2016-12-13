@@ -1,64 +1,85 @@
-<div class="container-fluid">
-  <div class="row form-group">
-    <div class="col-md-8 col-md-offset-2">
-      <ul class="list-circles list-circles-clear">
-        <li>
-          <i>1</i>
-          {{format-html-message 'machine.driverCustom.step1'}}
-        </li>
-        <li>
-          <i>2</i>
-          {{t 'machine.driverCustom.step2'}}
-          <ul>
-            <li>{{format-html-message 'machine.driverCustom.step2li'}}</li>
+<section>
+  <div class="container-fluid">
+    <div class="row form-group">
+      {{#if projects.current.isWindows}}
+        <div class="col-md-8 col-md-offset-2">
+          <ul class="list-circles list-circles-clear">
+            <li>
+              <i>1</i>
+              {{format-html-message 'machine.driverCustom.windows.step1'}}
+            </li>
+            <li>
+              <i>2</i>
+              {{t 'machine.driverCustom.step2'}}
+              <ul>
+                <li>{{format-html-message 'machine.driverCustom.step2li'}}</li>
+              </ul>
+            </li>
+            <li>
+              <i>3</i>
+              {{t 'machine.driverCustom.windows.step3' appName=settings.appName}}
+              <div class="copy-pre">
+                <pre id="registration-command">{{registrationCommandWindows}}</pre>
+                {{copy-to-clipboard clipboardText=registrationCommandWindows}}
+              </div>
+            </li>
+            <li>
+              <i>4</i>
+              {{t 'machine.driverCustom.step5Close.part1'}} {{#link-to "hosts"}}{{t 'machine.driverCustom.step5Close.link'}}{{/link-to}} {{t 'machine.driverCustom.step5Close.part2'}}
+            </li>
           </ul>
-        </li>
-        <li>
-          <i>3</i>
-          {{t 'machine.driverCustom.step3'}}
-          <div class="r-mt10">
-            {{form-user-labels setLabels=(action 'setLabels')}}
-          </div>
-        </li>
-        <li>
-          <i>4</i>
-          {{format-html-message 'machine.driverCustom.step4' rancherImage=settings.rancherImage}}
-          <div class="checkbox r-mt10">
-            {{input type="text" value=cattleAgentIp classNames="form-control" placeholder="e.g. 172.16.0.2"}}
-          </div>
-        </li>
-        <li>
-          <i>5</i>
-          {{t 'machine.driverCustom.step5Copy'}} {{settings.appName}}:
-          {{#if registrationCommand}}
-            <div class="copy-pre">
-              <pre id="registration-command">{{registrationCommand}}</pre>
-              {{copy-to-clipboard clipboardText=registrationCommand}}
-            </div>
-          {{else}}
-            <div><i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverCustom.generating'}}</div>
-          {{/if}}
-        </li>
-        <li>
-          <i>5</i>
-          {{t 'machine.driverCustom.step5Close.part1'}} {{#link-to "hosts"}}{{t 'machine.driverCustom.step5Close.link'}}{{/link-to}} {{t 'machine.driverCustom.step5Close.part2'}}
-        </li>
-      </ul>
+        </div>
+      {{else}}
+        <div class="col-md-8 col-md-offset-2">
+          <ul class="list-circles list-circles-clear">
+            <li>
+              <i>1</i>
+              {{format-html-message 'machine.driverCustom.step1'}}
+            </li>
+            <li>
+              <i>2</i>
+              {{t 'machine.driverCustom.step2'}}
+              <ul>
+                <li>{{format-html-message 'machine.driverCustom.step2li'}}</li>
+              </ul>
+            </li>
+            <li>
+              <i>3</i>
+              {{t 'machine.driverCustom.step3'}}
+              <div class="r-mt10">
+                {{form-user-labels setLabels=(action 'setLabels')}}
+              </div>
+            </li>
+            <li>
+              <i>4</i>
+              {{format-html-message 'machine.driverCustom.step4' rancherImage=settings.rancherImage}}
+              <div class="checkbox r-mt10">
+                {{input type="text" value=cattleAgentIp classNames="form-control" placeholder="e.g. 172.16.0.2"}}
+              </div>
+            </li>
+            <li>
+              <i>5</i>
+              {{t 'machine.driverCustom.step5Copy'}} {{settings.appName}}:
+              {{#if registrationCommand}}
+                <div class="copy-pre">
+                  <pre id="registration-command">{{registrationCommand}}</pre>
+                  {{copy-to-clipboard clipboardText=registrationCommand}}
+                </div>
+              {{else}}
+                <div><i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverCustom.generating'}}</div>
+              {{/if}}
+            </li>
+            <li>
+              <i>6</i>
+              {{t 'machine.driverCustom.step5Close.part1'}} {{#link-to "hosts"}}{{t 'machine.driverCustom.step5Close.link'}}{{/link-to}} {{t 'machine.driverCustom.step5Close.part2'}}
+            </li>
+          </ul>
+        </div>
+      {{/if}}
     </div>
   </div>
-</div>
 
-<div class="footer-actions">
-  <button {{action "cancel"}} class="btn btn-primary">{{t 'machine.driverCustom.close'}}</button>
-</div>
-
-
-
-
-
-
-
-
-
-
-
+  <div class="footer-actions">
+    <button {{action "cancel"}} class="btn btn-primary">{{t 'machine.driverCustom.close'}}</button>
+  </div>
+</section>

@@ -17,14 +17,14 @@ var DnsService = Service.extend({
     var services = '';
     (this.get('consumedServicesWithNames')||[]).forEach((map, idx) => {
       services += '<span>'+ (idx === 0 ? '' : ', ') +
-      (map.get('service.environmentId') === this.get('environmentId') ? '' : esc(map.get('service.displayEnvironment')) + '/') +
+      (map.get('service.stackId') === this.get('stackId') ? '' : esc(map.get('service.displayStack')) + '/') +
       esc(map.get('service.displayName')) + '</span>';
     });
 
     var out = '<label>'+ toTranslation +': </label>' + services || '<span class="text-muted">'+ noneTranslation +'</span>';
 
     return out.htmlSafe();
-  }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated', 'intl._locale'),
+  }.property('consumedServicesWithNames.@each.{name,service}','intl._locale'),
 });
 
 export default DnsService;

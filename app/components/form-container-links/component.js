@@ -21,7 +21,8 @@ export default Ember.Component.extend(ContainerChoices, {
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
     var out = [];
     var links = this.get('initialLinks')||[];
 
@@ -50,8 +51,10 @@ export default Ember.Component.extend(ContainerChoices, {
       });
     }
 
-    this.set('linksArray', out);
-    this.linksDidChange();
+    Ember.run.scheduleOnce('afterRender', () => {
+      this.set('linksArray', out);
+      this.linksDidChange();
+    });
   },
 
   linksDidChange: function() {
@@ -90,9 +93,9 @@ export default Ember.Component.extend(ContainerChoices, {
 
   serviceChoices: function() {
     return this.get('allServices').sortBy('group','name','id');
-  }.property('allServices.@each.{id,name,state,environmentId}'),
+  }.property('allServices.@each.{id,name,state,stackId}'),
 
   lbSafeServiceChoices: function() {
     return this.get('allServices').filterBy('lbSafe',true).sortBy('group','name','id');
-  }.property('allServices.@each.{id,name,state,environmentId}'),
+  }.property('allServices.@each.{id,name,state,stackId}'),
 });

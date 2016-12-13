@@ -55,7 +55,7 @@
           <tr>
             <td data-title="{{t 'auditLogsPage.table.time'}}:">{{date-from-now log.created}}</td>
             <td data-title="{{t 'auditLogsPage.table.eventType'}}:" class="force-wrap" title="{{log.eventType}}">
-              {{log.eventType}} <i class="icon icon-info addtl-info-trigger" {{action 'showResponseObjects' log.requestObject log.responseObject }}></i>
+              {{log.eventType}} <i class="icon icon-info service-icon-button" {{action 'showResponseObjects' log.requestObject log.responseObject }}></i>
             </td>
             <td data-title="{{t 'auditLogsPage.table.description'}}:">{{#if log.description}}{{log.description}}{{else}}<span class="text-muted">None</span>{{/if}}</td>
             <td data-title="{{t 'auditLogsPage.table.environment'}}:" class="clip">
@@ -69,7 +69,7 @@
               {{/if}}
             </td>
             <td data-title="{{t 'auditLogsPage.table.identity'}}:">{{identity-block identityNotParsed=log.authenticatedAsIdentityId}}</td>
-            <td data-title="{{t 'auditLogsPage.table.authIp'}}:" class="clip">{{auth-type log.authType}}<div>{{format-ip ip=log.clientIp noIp='generic.emptyString'}}</div></td>
+            <td data-title="{{t 'auditLogsPage.table.authIp'}}:" class="clip">{{auth-type log.authType}}<div>{{format-ip log.clientIp noIp='generic.emptyString'}}</div></td>
           </tr>
         {{/each}}
       </tbody>

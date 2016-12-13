@@ -101,7 +101,7 @@ export default Ember.Component.extend({
     }
 
     if (val) {
-      this.set('cusomRadio', 'yes');
+      this.set('customRadio', 'yes');
     }
   }.observes('customValue'),
 

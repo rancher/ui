@@ -1,0 +1,39 @@
+<tr>
+  <td>
+    <a href="#" {{action "toggleExpand"}}><i class="icon {{if expanded 'icon-minus-square' 'icon-plus-square'}}"/></a>
+    {{#link-to "k8s-tab.namespace.replicasets.replicaset" model.displayName}}{{model.displayName}}{{/link-to}}
+  </td>
+  <td>
+    {{model.displayReplicas}}
+  </td>
+  <td class="force-wrap">
+    {{#each model.selectorsAsArray as |sel|}}
+      <span class="badge badge-primary">{{sel.label}}={{sel.value}}</span>
+    {{else}}
+      <span class="text-muted">{{t 'generic.none'}}</span>
+    {{/each}}
+  </td>
+  <td class="force-wrap">
+    {{#each model.spec.template.spec.containers as |container index|}}
+      <span tooltip="{{if (gt model.spec.template.spec.containers.length 1) container.image}}">
+        {{~unless (eq index 0) ', '~}}
+        {{~container.name~}}
+        {{~#if (eq model.spec.template.spec.containers.length 1)~}}
+          <span class="text-muted"> ({{container.image}})</span>
+        {{~/if~}}
+      </span>
+    {{else}}
+      <span class="text-muted">{{t 'generic.none'}}</span>
+    {{/each}}
+  </td>
+  <td class="actions">
+    {{action-menu model=model}}
+  </td>
+</tr>
+{{#if expanded}}
+  <tr class="nohover">
+    <td colspan="5" class="subtable">
+      {{k8s/pod-section model=model.selectedPods}}
+    </td>
+  </tr>
+{{/if}}

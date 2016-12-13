@@ -4,25 +4,45 @@
     {{#link-to "k8s-tab.namespace.services.service" model.displayName}}{{model.displayName}}{{/link-to}}
   </td>
   <td>
-    {{default-str model.spec.type default=(t 'k8s.serviceRow.clusterIp')}}
+    {{default-str model.spec.type default=(t 'k8s.serviceRow.defaultType')}}
   </td>
   <td>
     {{model.spec.clusterIP}}
+  </td>
+  <td class="force-wrap">
+    {{#each model.spec.ports as |port|}}
+      <div title="{{port.name}}">
+        {{port.port}}:{{port.targetPort}}/{{lower-case port.protocol}}
+      </div>
+      {{else}}
+        <span class="text-muted">None</span>
+      {{/each}}
+    {{each}}
+  </td>
+  <td class="force-wrap">
+    {{#each model.spec.ports as |port|}}
+      <div title="{{port.name}}">
+        {{#if port.nodePort}}
+          {{#if k8s.clusterIp}}
+            <a href="http://{{k8s.clusterIp}}:{{port.nodePort}}" target="_blank" rel="noopener">{{port.nodePort}}</a>
+          {{else}}
+            {{port.nodePort}}
+          {{/if}}
+        {{else}}
+          <span class="text-muted">None</span>
+        {{/if}}
+      </div>
+      {{else}}
+        <span class="text-muted">None</span>
+      {{/each}}
+    {{each}}
   </td>
   <td>
     {{model.selectedPods.length}}
   </td>
   <td class="force-wrap">
-    {{#each model.spec.ports as |port|}}
-      <span tooltip="{{port.name}}">{{port.port}}:{{port.targetPort}}/{{lower-case port.protocol}}
-      </span>
-    {{else}}
-      <span class="text-muted">None</span>
-    {{/each}}
-  </td>
-  <td class="force-wrap">
     {{#each model.selectorsAsArray as |sel|}}
-      <span class="badge badge-default">{{sel.label}}={{sel.value}}</span>
+      <span class="badge badge-primary">{{sel.label}}={{sel.value}}</span>
     {{else}}
       <span class="text-muted">{{t 'generic.none'}}</span>
     {{/each}}

@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import Util from 'ui/utils/util';
+import C from 'ui/utils/constants';
 
 export default Ember.Mixin.create({
   reservedKeys: ['delayTimer','pollTimer'],
@@ -9,10 +10,12 @@ export default Ember.Mixin.create({
     this.transitioningChanged();
   },
 
+  // ember-api-store hook
   wasAdded: function() {
     this.transitioningChanged();
   },
 
+  // ember-api-store hook
   wasRemoved: function() {
     this.transitioningChanged();
   },
@@ -111,4 +114,16 @@ export default Ember.Mixin.create({
       // but leave delay set so that it doesn't restart, (don't clearDelay())
     });
   },
+
+  stateChanged: function() {
+    // Get rid of things that are removed
+    if ( C.REMOVEDISH_STATES.includes(this.state) ) {
+      try {
+        this.clearPoll();
+        this.clearDelay();
+        this.get('store')._remove(this.get('type'), this);
+      } catch (e) {
+      }
+    }
+  }.observes('state'),
 });

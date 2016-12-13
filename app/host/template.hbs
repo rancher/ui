@@ -2,9 +2,7 @@
   <h1>{{#link-to "hosts"}}{{t 'hostsPage.hostPage.header.linkTo'}}{{/link-to}}</h1>
 
   {{#power-select options=model.all selected=host onchange=(action "changeHost") searchField="displayName" as |obj|}}
-    <div class="clip">
-      {{select-dot model=obj}}
-    </div>
+    {{select-dot model=obj}}
   {{/power-select}}
 
   <div class="pull-right">
@@ -17,101 +15,145 @@
 </section>
 
 <section>
-  {{#info-multi-stats model=host linkName="hostStats" single=true}}
-    <div class="container-flex bordered">
-      <div class="col-flex">
+  <div class="row">
+    <div class="col-md-3 r-mb15">
+      {{#if host.description}}
+        <div>
+          <label>{{t 'hostsPage.hostPage.infoMultiStats.description'}} </label>
+          <div>{{host.description}}</div>
+        </div>
+        <hr>
+      {{/if}}
+
+      <div>
         <label>{{t 'hostsPage.hostPage.infoMultiStats.ip'}}</label>
-        {{format-ip ip=host.displayIp showCopy=true}}
+        <div>{{copy-ip ip=host.displayIp}}</div>
       </div>
-      <div class="col-flex">
-        {{#if host.cpuBlurb}}
-          <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
-          {{host.cpuBlurb}}
-          {{#if host.cpuTooltip}}
-              {{#tooltip-element type='tooltip-basic' model=host tooltipTemplate='tooltip-cpu'}}
+
+      <hr>
+
+      <div>
+        <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
+        <div class="row">
+          <div class="col-md-6 r-p0">
+            {{#if host.milliCpu}}{{t 'generic.total'}}{{/if}}: {{host.cpuBlurb}}
+            {{#if host.cpuTooltip}}
+              {{#tooltip-element type='tooltip-basic' model=host tooltipTemplate='tooltip-cpu' tooltipFor="tooltipCPU"}}
                 <i class="icon icon-info"></i>
               {{/tooltip-element}}
             {{/if}}
+          </div>
+          {{#if host.milliCpu}}
+            <div class="col-md-6 r-p0">
+              {{t 'generic.limit'}}: {{host.milliCpu}} {{t 'hostsPage.hostPage.infoMultiStats.milliCpu.labelText'}}
+            </div>
           {{/if}}
         </div>
-        <div class="col-flex">
-          {{#if host.memoryBlurb}}
-            <label>{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
-            {{host.memoryBlurb}}
-          {{else}}
-            <span class="text-muted">{{t 'generic.unknown'}}</span>
+      </div>
+
+      <hr>
+
+      <div>
+        <label>{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
+        <div class="row">
+          <div class="col-md-6 r-p0">
+            {{#if host.memory}}{{t 'generic.total'}}{{/if}}:
+            {{#if host.memoryBlurb}}
+              {{host.memoryBlurb}}
+            {{else}}
+              <span class="text-muted">{{t 'generic.unknown'}}</span>
+            {{/if}}
+          </div>
+          {{#if host.memory}}
+            <div class="col-md-6 r-p0">
+              {{t 'generic.limit'}}: {{host.memoryLimitBlurb}}
+            </div>
           {{/if}}
         </div>
-        <div class="col-flex">
+      </div>
+
+      <hr>
+
+      <div>
+        <label>{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
+        <div class="row">
           {{#if host.diskBlurb}}
-            <label>{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
             {{#if host.diskDetail}}
               {{#each host.diskDetail as |disk|}}
-                <span style="display: inline-block; padding-right: 10px;">{{disk.value}}
-                {{#tooltip-element type='tooltip-basic' tooltipTemplate='tooltip-basic-literal' model=disk}}
-                  <i class="icon icon-info"></i>
-                {{/tooltip-element}}
-               </span>
+                <div class="col-md-6 r-p0">{{disk.value}}
+                  {{#tooltip-element type='tooltip-basic' tooltipTemplate='tooltip-basic-literal' model=disk tooltipFor="hostDisk"}}
+                    <i class="icon icon-info"></i>
+                  {{/tooltip-element}}
+               </div>
               {{/each}}
             {{else}}
-              {{host.diskBlurb}} (total)
+              <div class="col-md-6 r-p0">{{host.diskBlurb}} (total)</div>
             {{/if}}
+            <div class="col-md-6 r-p0">
+              {{t 'hostsPage.hostPage.infoMultiStats.localStorageMb.labelText'}}: {{host.localStorageBlurb}}
+            </div>
           {{else}}
-            <span class="text-muted">{{t 'generic.unknown'}}</span>
+            <div class="text-muted">{{t 'generic.unknown'}}</div>
           {{/if}}
         </div>
       </div>
-      <div class="container-flex bordered">
-        <div class="col-flex">
-          <label>{{t 'hostsPage.hostPage.infoMultiStats.provider.labelText'}}</label>
-          {{#if host.machine}}
-            {{host.machine.driver}}
-          {{else}}
-            <span class="text-muted">{{t 'hostsPage.hostPage.infoMultiStats.provider.noHost'}}</span>
-          {{/if}}
-        </div>
-        <div class="col-flex">
-          {{#if host.info.osInfo.kernelVersion}}
-            <label>{{t 'hostsPage.hostPage.infoMultiStats.kernel'}}</label>
-            {{host.info.osInfo.kernelVersion}}
-          {{/if}}
-        </div>
-        <div class="col-flex">
-          {{#if host.dockerBlurb}}
-            <label>{{t 'hostsPage.hostPage.infoMultiStats.docker'}}</label>
-            {{host.dockerBlurb}}
-          {{else}}
-            <span class="text-muted">{{t 'generic.unknown'}}</span>
-          {{/if}}
-        </div>
-        <div class="col-flex">
-          {{#if host.osDetail}}
-            <label>{{t 'hostsPage.hostPage.infoMultiStats.os'}}</label>
-            {{host.osDetail}}
-          {{else}}
-            <span class="text-muted">{{t 'generic.unknown'}}</span>
-          {{/if}}
-        </div>
-      </div>
-      {{#if host.description}}
-        <div class="row multi-stats">
-          <div class="col-xs-12 description">
-            <label>{{t 'hostsPage.hostPage.infoMultiStats.description'}} </label>
-            <span>{{host.description}}</span>
-          </div>
-        </div>
-      {{/if}}
-    {{/info-multi-stats}}
-  </section>
 
-<section>
-  <ul class="nav nav-tabs nav-tabs-well shadowed" role="tablist" style="display:inline-block;">
-    {{#link-to "host.containers" tagName="li" href=false}}<a href="#"><i class="icon icon-box"></i> {{t 'hostsPage.hostPage.navTabs.containers'}}</a>{{/link-to}}
-    {{#link-to "host.ports" tagName="li" href=false}}<a href="#"><i class="icon icon-share"></i> {{t 'hostsPage.hostPage.navTabs.ports'}}</a>{{/link-to}}
-    {{#link-to "host.labels" tagName="li" href=false}}<a href="#"><i class="icon icon-tag"></i> {{t 'hostsPage.hostPage.navTabs.labels'}}</a>{{/link-to}}
-    {{#link-to "host.storage" tagName="li" href=false}}<a href="#"><i class="icon icon-hdd"></i> {{t 'hostsPage.hostPage.navTabs.storage'}}</a>{{/link-to}}
-  </ul>
-  <div class="table-flat well">
-    {{outlet}}
+      <hr>
+
+      <div>
+        <label>{{t 'hostsPage.hostPage.infoMultiStats.provider.labelText'}}</label>
+        {{#if host.driver}}
+          <div>{{host.driver}}</div>
+        {{else}}
+          <div class="text-muted">{{t 'hostsPage.hostPage.infoMultiStats.provider.noHost'}}</div>
+        {{/if}}
+      </div>
+
+      <hr>
+
+      <div>
+        <label>{{t 'hostsPage.hostPage.infoMultiStats.kernel'}}</label>
+        <div>{{host.info.osInfo.kernelVersion}}</div>
+      </div>
+
+      <hr>
+
+      <div>
+        <label>{{t 'hostsPage.hostPage.infoMultiStats.docker'}}</label>
+        {{#if host.dockerBlurb}}
+          <div>{{host.dockerBlurb}}</div>
+        {{else}}
+          <div class="text-muted">{{t 'generic.unknown'}}</div>
+        {{/if}}
+      </div>
+
+      <hr>
+
+      <div>
+        <label>{{t 'hostsPage.hostPage.infoMultiStats.os'}}</label>
+        {{#if host.osDetail}}
+          <div>{{host.osDetail}}</div>
+        {{else}}
+          <div class="text-muted">{{t 'generic.unknown'}}</div>
+        {{/if}}
+      </div>
+
+    </div>
+    <div class="col-md-9">
+      <div class="row">
+        {{info-multi-stats model=host linkName="hostStats" single=true}}
+      </div>
+      <div class="row r-p15">
+        <ul class="nav nav-tabs nav-tabs-well shadowed" role="tablist">
+          {{#link-to "host.containers" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.containers'}}</a>{{/link-to}}
+          {{#link-to "host.ports" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.ports'}}</a>{{/link-to}}
+          {{#link-to "host.labels" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.labels'}}</a>{{/link-to}}
+          {{#link-to "host.storage" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.storage'}}</a>{{/link-to}}
+        </ul>
+        <div class="table-flat well">
+          {{outlet}}
+        </div>
+      </div>
+    </div>
   </div>
 </section>

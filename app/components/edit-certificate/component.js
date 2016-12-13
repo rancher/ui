@@ -1,25 +1,19 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default Ember.Component.extend(NewOrEdit, {
+export default ModalBase.extend(NewOrEdit, {
+  classNames: ['lacsso', 'modal-container', 'large-modal'],
+  originalModel: Ember.computed.alias('modalService.modalOpts'),
   editing: true,
-  originalModel: null,
   model: null,
 
-  willInsertElement() {
+  init() {
+    this._super(...arguments);
     this.set('model', this.get('originalModel').clone());
   },
 
-  actions: {
-    outsideClick() {
-    },
-
-    cancel() {
-      this.sendAction('dismiss');
-    },
-  },
-
   doneSaving() {
-    this.sendAction('dismiss');
+    this.send('cancel');
   },
 });

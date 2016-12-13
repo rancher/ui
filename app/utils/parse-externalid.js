@@ -6,44 +6,77 @@ import C from 'ui/utils/constants';
 //  group: for catalog, what group it's in
 //  id: the actual external id
 export function parseExternalId(externalId) {
+  let CE = C.EXTERNAL_ID;
+
+  var nameVersion;
   var out = {
     kind: null,
     group: null,
+    base: null,
     id: null,
+    name: null,
+    version: null,
   };
 
   if (!externalId) {
     return out;
   }
 
-  var idx = externalId.indexOf(C.EXTERNALID.KIND_SEPARATOR);
+  var idx = externalId.indexOf(CE.KIND_SEPARATOR);
   if (idx >= 0) {
-    // New style kind://[group:]ido
+    // New style kind://[group:]id
     out.kind = externalId.substr(0, idx);
 
-    var rest = externalId.substr(idx + C.EXTERNALID.KIND_SEPARATOR.length);
-    idx = rest.indexOf(C.EXTERNALID.GROUP_SEPARATOR);
+    var rest = externalId.substr(idx + CE.KIND_SEPARATOR.length);
+    idx = rest.indexOf(CE.GROUP_SEPARATOR);
     out.id = rest;
     if (idx >= 0) {
       // With group kind://group/id
       out.group = rest.substr(0, idx);
+      nameVersion = rest.substr(idx+1);
     } else {
       // Without group kind://id
-      if (out.kind === C.EXTERNALID.KIND_CATALOG) {
+      if (out.kind === CE.KIND_CATALOG) {
         // For catalog kinds, we have a default group
-        out.group = C.EXTERNALID.CATALOG_DEFAULT_GROUP;
+        out.group = CE.CATALOG_DEFAULT_GROUP;
       }
 
+      nameVersion = rest;
     }
   } else {
 
     var dashedIdx = externalId.lastIndexOf('-');
 
     // Old style just an ID
-    out.kind = C.EXTERNALID.KIND_CATALOG;
+    out.kind = CE.KIND_CATALOG;
+    let group = CE.CATALOG_DEFAULT_GROUP;
+    let name = externalId.substr(0, dashedIdx);
+    let version = externalId.substr(dashedIdx + 1);
+    nameVersion = `${name}${CE.ID_SEPARATOR}${version}`;
     // defaultgroup:extid:version
-    out.id = `${C.EXTERNALID.CATALOG_DEFAULT_GROUP}:${externalId.substr(0, dashedIdx)}:${externalId.substr(dashedIdx + 1)}`;
-    out.group = C.EXTERNALID.CATALOG_DEFAULT_GROUP;
+    out.id = `${group}${CE.GROUP_SEPARATOR}${nameVersion}`;
+    out.group = group;
+  }
+
+  if ( nameVersion ) {
+    idx = nameVersion.lastIndexOf(CE.ID_SEPARATOR);
+    let nameBase;
+    if ( idx > 0 ) {
+      out.version = nameVersion.substr(idx+1);
+      nameBase = nameVersion.substr(0,idx);
+    } else {
+      nameBase = nameVersion;
+    }
+
+    out.templateId = `${out.group}${CE.GROUP_SEPARATOR}${nameBase}`;
+
+    idx = nameBase.lastIndexOf(CE.BASE_SEPARATOR);
+    if ( idx > 0 ) {
+      out.base = nameBase.substr(0, idx);
+      out.name = nameBase.substr(idx+1);
+    } else {
+      out.name = nameBase;
+    }
   }
 
   return out;

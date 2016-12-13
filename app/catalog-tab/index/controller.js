@@ -1,11 +1,15 @@
 import Ember from 'ember';
+import { isAlternate } from 'ui/utils/platform';
 
 export default Ember.Controller.extend({
   application: Ember.inject.controller(),
+  catalog: Ember.inject.service(),
+  settings: Ember.inject.service(),
 
   catalogController: Ember.inject.controller('catalog-tab'),
   category: Ember.computed.alias('catalogController.category'),
   categories: Ember.computed.alias('model.categories'),
+  catalogId: Ember.computed.alias('catalogController.catalogId'),
 
   parentRoute: 'catalog-tab',
   launchRoute: 'catalog-tab.launch',
@@ -15,21 +19,17 @@ export default Ember.Controller.extend({
   updating: 'no',
 
   actions: {
-    launch(model) {
-      this.get('application').setProperties({
-        launchCatalog: true,
-        originalModel: model,
-        environmentResource: null,
-      });
+    launch(id, onlyAlternate) {
+      if ( onlyAlternate && !isAlternate(event) ) {
+        return false;
+      }
+
+      this.transitionToRoute(this.get('launchRoute'), id);
     },
 
     update() {
       this.set('updating', 'yes');
-      this.get('store').request({
-        url: `${this.get('app.catalogEndpoint')}/templates?refresh&action=refresh`,
-        method: 'POST',
-        timeout: null, // I'm willing to wait...
-      }).then(() => {
+      this.get('catalog').refresh().then(() => {
         this.set('updating', 'no');
         this.send('refresh');
       }).catch(() => {
@@ -38,12 +38,10 @@ export default Ember.Controller.extend({
     }
   },
 
-  selectedCatalog: Ember.computed('catalogController', function() {
+  init() {
+  },
 
-    return this.get('catalogController.catalogId');
-  }),
-
-  arrangedContent: function() {
+  arrangedContent: Ember.computed('model.catalog', 'search', function() {
     var search = this.get('search').toUpperCase();
     var result = [];
 
@@ -57,5 +55,5 @@ export default Ember.Controller.extend({
       }
     });
     return result;
-  }.property('model.catalog', 'search'),
+  }),
 });

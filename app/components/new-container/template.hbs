@@ -1,22 +1,16 @@
 {{#unless isSidekick}}
   <section class="header">
-    <h1>{{if isUpgrade 'Upgrade' 'Add'}}
-      {{#if isService}}
-        {{t 'newContainer.service' numServices=hasSidekicks}}
-      {{else}}
-        {{if isVm 'Virtual Machine' 'Container'}}
-      {{/if}}
-    </h1>
+    <h1>{{headerLabel}}</h1>
   </section>
 
 {{#if isService}}
-  <section class="horizontal-form container-fluid well">
+  <section class="horizontal-form well">
       {{#if isUpgrade}}
         {{form-upgrade
           switch=(action 'selectLaunchConfig')
           optionsChanged=(action 'setUpgrade')
           choices=launchConfigChoices
-          index=launchConfigIndex
+          index=activeLaunchConfigIndex
         }}
       {{/if}}
 
@@ -33,7 +27,7 @@
       }}
 
       {{form-launch-config-switch
-        index=launchConfigIndex
+        index=activeLaunchConfigIndex
         choices=launchConfigChoices
         add=(action 'addSidekick')
         switch=(action 'selectLaunchConfig')
@@ -49,30 +43,27 @@
 {{/if}}
 
 <div data-launchindex="{{if isSidekick '' '-1'}}">
-  <section class="horizontal-form container-fluid well">
-    <div>
-      {{#unless isUpgrade}}
-        {{form-name-description
-          model=primaryResource
-          namePlaceholder="newContainer.name.placeholder"
-          descriptionPlaceholder="newContainer.description.placeholder"
-        }}
-      {{/unless}}
-    </div>
-    <div class="row r-ml15 r-mr15">
-      {{form-image
-        isVm=isVm
-        initialValue=launchConfig.imageUuid
-        errors=imageErrors
-        changed=(action 'setImage')
-        initialLabels=launchConfig.labels
-        setLabels=(action 'setLabels' 'image')
+  <section class="horizontal-form well">
+    {{#unless isUpgrade}}
+      {{form-name-description
+        model=primaryResource
+        namePlaceholder="newContainer.name.placeholder"
+        descriptionPlaceholder="newContainer.description.placeholder"
       }}
+    {{/unless}}
 
-      {{#if isVm}}
-        {{form-virtualmachine launchConfig=launchConfig}}
-      {{/if}}
-    </div>
+    {{form-image
+      isVm=isVm
+      initialValue=launchConfig.imageUuid
+      errors=imageErrors
+      changed=(action 'setImage')
+      initialLabels=launchConfig.labels
+      setLabels=(action 'setLabels' 'image')
+    }}
+
+    {{#if isVm}}
+      {{form-virtualmachine launchConfig=launchConfig}}
+    {{/if}}
 
     {{form-ports
       initialPorts=launchConfig.ports
@@ -82,7 +73,6 @@
     }}
 
     {{#if (and isService (not isSidekick))}}
-
       {{form-service-links
         service=service
         allServices=allServices
@@ -107,19 +97,22 @@
       <li role="tab" aria-controls="panel" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}><a href="#">{{t 'newContainer.tabs.healthCheck'}}</a></li>
       <li role="tab" aria-controls="panel" class="tab" data-section="labels" {{action "selectTab" "labels"}}><a href="#">{{t 'newContainer.tabs.labels'}}</a></li>
       <li role="tab" aria-controls="panel" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}><a href="#">{{t 'newContainer.tabs.scheduling'}}</a></li>
+      {{#if (and false isService)}}
+        <li role="tab" aria-controls="panel" class="tab" data-section="balancing" {{action "selectTab" "balancing"}}><a href="#">{{t 'newContainer.tabs.balancing'}}</a></li>
+      {{/if}}
     </ul>
 
   <div class="horizontal-form well" role="tabpanel">
     {{#if isVm}}
-      <div class="section container-fluid" data-section="disks">
+      <div class="section" data-section="disks">
         {{form-disks instance=launchConfig availableDrivers=storageDriverChoices errors=diskErrors}}
       </div>
 
-      <div class="section container-fluid" data-section="userdata">
+      <div class="section" data-section="userdata">
         {{form-userdata instance=launchConfig}}
       </div>
     {{else}}
-      <div class="section container-fluid" data-section="command">
+      <div class="section" data-section="command">
         {{form-command
           instance=launchConfig
           initialLabels=launchConfig.labels
@@ -129,7 +122,7 @@
         }}
       </div>
 
-      <div class="section container-fluid" data-section="volumes">
+      <div class="section" data-section="volumes">
         {{form-volumes
           instance=launchConfig
           isService=isService
@@ -140,26 +133,32 @@
           allHosts=allHosts}}
       </div>
 
-      <div class="section container-fluid" data-section="network">
+      <div class="section" data-section="network">
         {{form-networking
-          editing=editing
+          editing=true
           instance=launchConfig
           errors=networkingErrors
           allHosts=allHosts
           service=service
           isService=isService
+          isSidekick=isSidekick
           initialLabels=launchConfig.labels
+          isUpgrade=isUpgrade
           setLabels=(action 'setLabels' 'networking')
         }}
       </div>
 
       <div class="section" data-section="security">
-        {{form-security instance=launchConfig errors=securityErrors}}
+        {{form-security instance=launchConfig errors=securityErrors editing=true}}
       </div>
     {{/if}}
 
-    <div class="section container-fluid" data-section="healthcheck">
-      {{form-healthcheck isService=isService healthCheck=launchConfig.healthCheck errors=healthCheckErrors}}
+    <div class="section" data-section="healthcheck">
+      {{form-healthcheck
+        isService=isService
+        healthCheck=launchConfig.healthCheck
+        errors=healthCheckErrors
+        editing=true}}
     </div>
 
     <div class="section" data-section="labels">
@@ -177,12 +176,23 @@
         initialHostId=launchConfig.requestedHostId
         initialLabels=launchConfig.labels
         errors=schedulingErrors
+        editing=true
         allHosts=allHosts
         setLabels=(action 'setLabels' 'scheduling')
         setGlobal=(action 'setGlobal')
         setRequestedHost=(action 'setRequestedHostId')
       }}
     </div>
+
+    {{#if (and false isService)}}
+      <div class="section" data-section="balancing">
+        {{form-balancer-rules
+          service=service
+          allServices=allServices
+          showListeners=false
+        }}
+      </div>
+    {{/if}}
 
   </div>
   </section>
@@ -213,7 +223,7 @@
 {{#unless isSidekick}}
   {{top-errors errors=errors}}
   {{#save-cancel saveDisabled=noLaunchConfigsEnabled createLabel=(if isUpgrade 'newContainer.saveUpgrade' 'newContainer.saveNew') save="save" cancel="cancel"}}
-    {{#if (and (not isUpgrade) (not-eq launchConfigIndex -1))}}
+    {{#if (and (not isUpgrade) (not-eq activeLaunchConfigIndex -1))}}
       <button class="btn btn-default" {{action "removeSidekick"}}>{{t 'newContainer.removeSidekick'}}</button>
     {{/if}}
   {{/save-cancel}}

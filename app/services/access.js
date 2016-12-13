@@ -5,6 +5,10 @@ export default Ember.Service.extend({
   cookies: Ember.inject.service(),
   session: Ember.inject.service(),
   github:  Ember.inject.service(),
+  shibbolethAuth: Ember.inject.service(),
+  store: Ember.inject.service(),
+  userStore: Ember.inject.service('user-store'),
+  token: null,
 
   testAuth: function() {
 
@@ -45,27 +49,21 @@ export default Ember.Service.extend({
     return this.get('userStore').rawRequest({
       url: 'token',
     })
-    .then((obj) => {
+    .then((xhr) => {
       // If we get a good response back, the API supports authentication
-      var body = JSON.parse(obj.xhr.responseText);
-      var token = body.data[0];
+      var token = xhr.body.data[0];
 
       this.setProperties({
         'enabled': token.security,
         'provider': (token.authProvider||'').toLowerCase(),
       });
 
-      if ( (token.authProvider||'').toLowerCase() === 'githubconfig' )
-      {
-        this.setProperties({
-          'github.clientId': token.clientId,
-          'github.hostname': token.hostname,
-          'github.scheme': token.scheme || 'https://',
-        });
-      }
+      this.set('token', token);
 
-      if ( !token.security )
-      {
+      if (this.shibbolethConfigured(token)) {
+        this.get('shibbolethAuth').set('hasToken', token);
+        this.get('session').set(C.SESSION.USER_TYPE, token.userType);
+      } else if ( !token.security ) {
         this.clearSessionKeys();
       }
 
@@ -79,6 +77,14 @@ export default Ember.Service.extend({
     });
   },
 
+  shibbolethConfigured: function(token) {
+    let rv = false;
+    if ((token.authProvider||'') === 'shibbolethconfig' && token.userIdentity) {
+      rv = true;
+    }
+    return rv;
+  },
+
   login: function(code) {
     var session = this.get('session');
 
@@ -89,8 +95,8 @@ export default Ember.Service.extend({
         code: code,
         authProvider: this.get('provider'),
       },
-    }).then((res) => {
-      var auth = JSON.parse(res.xhr.responseText);
+    }).then((xhr) => {
+      var auth = xhr.body;
       var interesting = {};
       C.TOKEN_TO_SESSION_KEYS.forEach((key) => {
         if ( typeof auth[key] !== 'undefined' )
@@ -99,17 +105,17 @@ export default Ember.Service.extend({
         }
       });
 
-      this.get('cookies').set(C.COOKIE.TOKEN, auth['jwt'], {
+      this.get('cookies').setWithOptions(C.COOKIE.TOKEN, auth['jwt'], {
         path: '/',
         secure: window.location.protocol === 'https:'
       });
 
       session.setProperties(interesting);
-      return res;
+      return xhr;
     }).catch((res) => {
       let err;
       try {
-        err = JSON.parse(res.xhr.responseText);
+        err = res.body;
       } catch(e) {
         err = {type: 'error', message: 'Error logging in'};
       }
@@ -138,4 +144,13 @@ export default Ember.Service.extend({
   isLoggedIn: function() {
     return !!this.get('cookies').get(C.COOKIE.TOKEN);
   },
+
+  isOwner: function() {
+    let schema = this.get('store').getById('schema','stack');
+    if ( schema && schema.resourceFields.system ) {
+      return schema.resourceFields.system.create;
+    }
+
+    return false;
+  }
 });

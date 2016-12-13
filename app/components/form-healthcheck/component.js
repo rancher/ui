@@ -10,6 +10,7 @@ const DEFAULTS = {
   interval: 2000,
   responseTimeout: 2000,
   initializingTimeout: 60000,
+  reinitializingTimeout: 60000,
   healthyThreshold: 2,
   unhealthyThreshold: 3,
   requestLine: '',
@@ -27,7 +28,8 @@ export default Ember.Component.extend({
   isService: null,
   showStrategy: true,
 
-  tagName: '',
+  classNameBindings: ['editing:component-editing:component-static'],
+  editing: true,
 
   uriMethodChoices: METHOD_CHOICES,
   uriVersionChoices: [HTTP_1_0,HTTP_1_1],
@@ -52,7 +54,8 @@ export default Ember.Component.extend({
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
     var check = this.get('healthCheck');
     if ( check )
     {

@@ -6,9 +6,7 @@ export default Ember.Route.extend({
 
     var dependencies = [
       store.findAll('host'),
-      store.find('environment', params.environmentId).then(function(env) {
-        return env.importLink('services');
-      })
+      store.find('stack', params.stackId)
     ];
 
     if ( params.serviceId )
@@ -18,7 +16,7 @@ export default Ember.Route.extend({
 
     return Ember.RSVP.all(dependencies, 'Load dependencies').then(function(results) {
       var allHosts = results[0];
-      var environment = results[1];
+      var stack = results[1];
       var existing = results[2];
 
       var external;
@@ -32,7 +30,7 @@ export default Ember.Route.extend({
           type: 'externalService',
           name: '',
           description: '',
-          environmentId: environment.get('id'),
+          stackId: stack.get('id'),
           startOnCreate: true,
         });
       }
@@ -40,7 +38,7 @@ export default Ember.Route.extend({
       return {
         isService: true,
         allHosts: allHosts,
-        environment: environment,
+        stack: stack,
         service: external,
       };
     });
@@ -49,7 +47,7 @@ export default Ember.Route.extend({
   resetController: function (controller, isExisting/*, transition*/) {
     if (isExisting)
     {
-      controller.set('environmentId', null);
+      controller.set('stackId', null);
       controller.set('serviceId', null);
     }
   },

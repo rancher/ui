@@ -6,6 +6,7 @@ HTML {
 }
 
 BODY {
+  direction: ltr;
   background-color : $body-bg;
   min-height       : 100%;
   font-weight      : $normal-weight;
@@ -17,8 +18,50 @@ BODY {
   };
 }
 
+H4,
+H5 {
+  color: $midGray;
+}
+
+ol {
+  &.alphalist {
+    list-style-type: lower-alpha;
+
+    ul {
+      padding-left: 5px;
+    }
+
+    li {
+      padding: 8px;
+
+       li {
+          margin: 5px;
+          background-color: $accent-two;
+          list-style-type: none;
+          border-left: solid thick $primary;
+        }
+    }
+  }
+}
+
+.alphalist {
+  list-style-type: lower-alpha;
+  }
+
+.comma-seperated-list {
+  span:after {
+    content: ',';
+
+  }
+  span:last-of-type:after {
+    content: ''
+  }
+
+
+}
+
 .authenticated, #application {
-  padding-bottom : 75px;
+  padding-bottom : 150px;
 }
 
 B {
@@ -201,6 +244,10 @@ UL.list-lines {
   position       : relative;
 }
 
+.modal-container .footer-actions {
+  margin-bottom: 0;
+}
+
 .well {
   .footer-actions {
     padding-bottom: 0;
@@ -220,6 +267,16 @@ UL.list-lines {
   z-index: 13;
 }
 
+.underlay {
+  z-index: 10;
+  background-color: rgba(0,0,0,0.65);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
 .no-resize {
   resize : none;
 }
@@ -237,6 +294,7 @@ UL.list-lines {
 
 .force-wrap {
   word-wrap : break-word;
+  white-space: normal;
 }
 
 .main-jumbotron {
@@ -343,6 +401,9 @@ TABLE.graphs {
 .inline-block {
   display : inline-block;
 }
+.block {
+  display: block;
+}
 
 .no-select {
   -webkit-touch-callout : none;
@@ -440,6 +501,10 @@ max-width        : 100%;
     border-top: none;
   }
 
+  td.divided, th.divided {
+    border-left: 2px solid $table-border-color;
+  }
+
   // Bottom align for column headings
   > thead > tr > th {
         vertical-align   : bottom;
@@ -476,6 +541,7 @@ max-width        : 100%;
   }
 
   & > THEAD > TR > TH,
+  & > THEAD > TR > TH .btn,
   & > THEAD > TR > TD,
   & > TBODY > TR > TH,
   & > TBODY > TR > TD,
@@ -488,7 +554,7 @@ max-width        : 100%;
   }
 
   .actions {
-  text-align       : right;
+    text-align: right;
   }
 
   .state {
@@ -511,6 +577,7 @@ max-width        : 100%;
 .horizontal-form {
 
   .form-label {
+    font-weight: 700;
 
     > label + span {
     display    : block;
@@ -582,6 +649,24 @@ max-width        : 100%;
   }
 }
 
+.component-static {
+  .form-control-static {
+    padding: 0;
+    min-height: 10px;
+  }
+  .row {
+    font-size: 13px;
+  }
+
+  .form-group {
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid $accent-two;
+  }
+  label::after {
+    content: ':';
+  }
+}
 
 /**********
 * Nav boxes (chooes a host/registry driver)
@@ -692,13 +777,14 @@ max-width        : 100%;
   }
 
   LI {
-    margin-right : 6px;
+    margin-right : 2px;
 
     A {
       border           : 0 !important;
       background-color : $tab-bg;
       color            : $tab-color;
       transition       : ease all .2s;
+      padding: 10px;
 
         &:hover {
           background-color : $tab-hover;

@@ -1,5 +1,12 @@
 #!/bin/bash
+
 set -e
+
+BUILD_DEBUG="${BUILD_DEBUG:-}"
+if [[ -n "${BUILD_DEBUG}" ]]; then
+    set -x
+    env
+fi
 
 # cd to app root
 CWD=$(dirname $0)

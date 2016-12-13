@@ -1,25 +1,28 @@
-import NewAlias from 'ui/components/new-aliasservice/component';
 import Ember from 'ember';
+import ModalBase from 'lacsso/components/modal-base';
+import NewServiceAlias from 'ui/mixins/new-service-alias';
 
-export default NewAlias.extend({
+export default ModalBase.extend(NewServiceAlias, {
+  classNames: ['lacsso', 'modal-container', 'large-modal'],
+  originalModel  : Ember.computed.alias('modalService.modalOpts'),
   allServicesService: Ember.inject.service('all-services'),
-  allServices: null,
-  existing: Ember.computed.alias('originalModel'),
   editing: true,
   loading: true,
+  existing: Ember.computed.alias('originalModel'),
+
 
   actions: {
     done() {
-      this.sendAction('dismiss');
-    },
-
-    cancel() {
-      this.sendAction('dismiss');
+      this.send('cancel');
     },
   },
 
   didInsertElement: function() {
     Ember.run.next(this, 'loadDependencies');
+  },
+
+  doneSaving() {
+    this.send('cancel');
   },
 
   loadDependencies: function() {

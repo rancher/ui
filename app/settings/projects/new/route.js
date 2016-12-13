@@ -3,14 +3,26 @@ import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   access: Ember.inject.service(),
+  catalog: Ember.inject.service(),
 
   model: function(/*params, transition*/) {
     var userStore = this.get('userStore');
-    return userStore.findAllUnremoved('project').then((all) => {
+    return Ember.RSVP.hash({
+      all: userStore.findAll('project'),
+      projectTemplates: userStore.findAll('projectTemplate'),
+      catalogTemplates: this.get('catalog').fetchTemplates({templateBase: C.EXTERNAL_ID.KIND_INFRA, category: C.EXTERNAL_ID.KIND_ALL}),
+    }).then((hash) => {
+      let tplId = null;
+      let tpl = hash.projectTemplates.objectAt(0);
+      if ( tpl ) {
+        tplId = tpl.get('id');
+      }
+
       var project = userStore.createRecord({
         type: 'project',
         name: '',
         description: '',
+        projectTemplateId: tplId,
       });
 
       if ( this.get('access.enabled') )
@@ -29,7 +41,9 @@ export default Ember.Route.extend({
       return Ember.Object.create({
         originalProject: null,
         project: project,
-        all: all,
+        all: hash.all,
+        projectTemplates: hash.projectTemplates,
+        stacks: [],
       });
     });
   },

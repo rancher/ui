@@ -2,12 +2,12 @@ const KIND_USER = 'user';
 const KIND_CATALOG = 'catalog';
 const KIND_SYSTEM = 'system';
 const KIND_SYSTEM_CATALOG = 'system-catalog';
-const KIND_KUBERNETES = 'kubernetes';
+const KIND_LEGACY_KUBERNETES = 'kubernetes';
+const KIND_KUBERNETES = 'k8s';
 const KIND_SWARM = 'swarm';
 const KIND_MESOS = 'mesos';
-const KIND_NOT_KUBERNETES = `not-${KIND_KUBERNETES}`;
-const KIND_NOT_SWARM = `not-${KIND_SWARM}`;
-const KIND_NOT_MESOS = `not-${KIND_MESOS}`;
+const KIND_INFRA = 'infra';
+const KIND_NOT_ORCHESTRATION = 'cattle';
 
 var C = {
   COOKIE: {
@@ -15,22 +15,30 @@ var C = {
     PL: 'PL',
     PL_RANCHER_VALUE: 'rancher',
     CSRF: 'CSRF',
+    LANG: 'LANG',
   },
 
-  EXTERNALID: {
+  EXTERNAL_ID: {
     KIND_SEPARATOR: '://',
     GROUP_SEPARATOR: ':',
+    BASE_SEPARATOR: '*',
+    ID_SEPARATOR: ':',
     KIND_ALL: 'all',
     KIND_USER: KIND_USER,
     KIND_CATALOG: KIND_CATALOG,
     KIND_SYSTEM: KIND_SYSTEM,
     KIND_SYSTEM_CATALOG: KIND_SYSTEM_CATALOG,
+    KIND_LEGACY_KUBERNETES: KIND_LEGACY_KUBERNETES,
     KIND_KUBERNETES: KIND_KUBERNETES,
     KIND_SWARM: KIND_SWARM,
     KIND_MESOS: KIND_MESOS,
-    KIND_NOT_KUBERNETES: KIND_NOT_KUBERNETES,
-    KIND_NOT_SWARM: KIND_NOT_SWARM,
-    KIND_NOT_MESOS: KIND_NOT_MESOS,
+    KIND_INFRA: KIND_INFRA,
+    KIND_NOT_ORCHESTRATION: KIND_NOT_ORCHESTRATION,
+    KIND_ORCHESTRATION: [
+      KIND_KUBERNETES,
+      KIND_SWARM,
+      KIND_MESOS,
+    ],
     UPGRADEABLE: [
       KIND_CATALOG,
       KIND_SYSTEM_CATALOG
@@ -41,9 +49,8 @@ var C = {
     ],
     SHOW_AS_SYSTEM: [
       KIND_SYSTEM,
-      KIND_NOT_KUBERNETES,
-      KIND_NOT_SWARM,
-      KIND_NOT_MESOS,
+      KIND_INFRA,
+      KIND_NOT_ORCHESTRATION,
     ],
     SYSTEM_CATEGORIES: [
       'Rancher services'
@@ -53,23 +60,10 @@ var C = {
 
   CATALOG: {
     LIBRARY_KEY: 'library',
-    LIBRARY_VALUE: 'https://github.com/rancher/rancher-catalog.git',
+    LIBRARY_VALUE: 'https://git.rancher.io/rancher-catalog.git',
     COMMUNITY_KEY: 'community',
-    COMMUNITY_VALUE: 'https://github.com/rancher/community-catalog.git',
-  },
-
-  // English Error Page translations will exist here incase we run in to a scenario in
-  // which the translation files cant be loaded so we may still have a semi-readable error page
-  FALLBACK_TRANSLATIONS: {
-    FAILWHALE: {
-      HEADER: 'Error',
-      RELOAD_BUTTON: '<a href="#" onclick="window.location.href = window.location.href; return false;">Reload</a> to try again or',
-      LOGOUT_BUTTON: 'log out'
-    },
-    NOT_FOUND: {
-      HEADER: "The page you were looking for doesn't exist!",
-      LINK_TO: 'Go Home'
-    }
+    COMMUNITY_VALUE: 'https://git.rancher.io/community-catalog.git',
+    DEFAULT_BRANCH: 'master',
   },
 
   GITHUB: {
@@ -80,10 +74,13 @@ var C = {
   },
 
   HEADER: {
-    //PROJECT: 'x-api-project-id',
-    NO_CHALLENGE: 'x-api-no-challenge',
+    //PROJECT: 'X-Api-Project-Id',
+    ACCOUNT_ID: 'X-Api-Account-Id',
+    ACTIONS: 'X-Api-Action-Links',
+    ACTIONS_VALUE: 'actionLinks',
+    CSRF: 'X-Api-Csrf',
+    NO_CHALLENGE: 'X-Api-No-Challenge',
     NO_CHALLENGE_VALUE: 'true',
-    ACCOUNT_ID: 'x-api-account-id',
   },
 
   KEY: {
@@ -109,6 +106,8 @@ var C = {
     SYSTEM_TYPE: 'io.rancher.container.system',
     SERVICE_NAME: 'io.rancher.stack_service.name',
     STACK_NAME: 'io.rancher.stack.name',
+    STACK_UUID: 'io.rancher.stack.uuid',
+    EXTERNAL_ID: 'io.rancher.external_id',
     SCHED_GLOBAL: 'io.rancher.scheduler.global',
     SCHED_CONTAINER: 'io.rancher.scheduler.affinity:container',
     SCHED_HOST_LABEL: 'io.rancher.scheduler.affinity:host_label',
@@ -132,22 +131,32 @@ var C = {
     K8S_POD_NAMESPACE: 'io.kubernetes.pod.namespace',
     K8S_POD_NAME: 'io.kubernetes.pod.name',
     K8S_KUBECTL: 'io.rancher.k8s.kubectld',
-    K8S_API: 'io.rancher.k8s.api-server',
-    SWARM_CLI: 'io.rancher.swarm.cli',
+    K8S_DASHBOARD: 'io.rancher.k8s.kubernetes-dashboard',
+    ORCHESTRATION_SUPPORTED: 'io.rancher.orchestration.supported',
+    CERTIFIED: 'io.rancher.certified',
+    CERTIFIED_RANCHER: 'rancher',
+    CERTIFIED_PARTNER: 'partner',
+
   },
 
   PREFS: {
     ACCESS_WARNING  : 'accessWarning',
+    BODY_BACKGROUND : 'bodyBackground',
     PROJECT_DEFAULT : 'defaultProjectId',
     EXPANDED_STACKS : 'expandedStacks',
     SORT_STACKS_BY  : 'sortStacksBy',
     THEME           : 'theme',
-    LANGUAGE        : 'language'
+    LANGUAGE        : 'language',
+    I_HATE_SPINNERS : 'ihatespinners',
+    FEEDBACK        : 'feedback',
+    FEEDBACK_TIME   : 'feedbackTime',
+    FEEDBACK_DELAY  : 60000, //7*24*60*60*1000,
   },
 
   LANGUAGE: {
     DEFAULT: 'en-us',
     FORMAT_RELATIVE_TIMEOUT: 1000,
+    DOCS: ['en'],
   },
 
   THEME: {
@@ -168,6 +177,8 @@ var C = {
     TYPE_LDAP_GROUP:      'ldap_group',
     TYPE_OPENLDAP_USER:   'openldap_user',
     TYPE_OPENLDAP_GROUP:  'openldap_group',
+    TYPE_SHIBBOLETH_USER:       'shibboleth_user',
+    TYPE_SHIBBOLETH_GROUP:      'shibboleth_group',
 
     PERSON: 'person',
     TEAM: 'team',
@@ -175,6 +186,10 @@ var C = {
 
     ROLE_MEMBER:  'member',
     ROLE_OWNER:   'owner',
+  },
+
+  PROJECT_TEMPLATE: {
+    DEFAULT: 'cattle',
   },
 
   // Ephemeral but same but across all browser tabs
@@ -201,24 +216,32 @@ var C = {
 
   SETTING: {
     // Dots in key names do not mix well with Ember, so use $ in their place.
-    DOT_CHAR:         '$',
-    IMAGE_RANCHER:    'rancher$server$image',
-    VERSION_RANCHER:  'rancher$server$version',
-    VERSION_COMPOSE:  'rancher$compose$version',
-    VERSION_CATTLE:   'cattle$version',
-    VERSION_MACHINE:  'docker$machine$version',
-    VERSION_GMS:      'go$machine$service$version',
-    COMPOSE_URL: {
-      DARWIN:         'rancher$compose$darwin$url',
-      WINDOWS:        'rancher$compose$windows$url',
-      LINUX:          'rancher$compose$linux$url',
+    DOT_CHAR:                  '$',
+    IMAGE_RANCHER:             'rancher$server$image',
+    VERSION_RANCHER:           'rancher$server$version',
+    VERSION_COMPOSE:           'rancher$compose$version',
+    VERSION_CATTLE:            'cattle$version',
+    VERSION_MACHINE:           'docker$machine$version',
+    VERSION_GMS:               'go$machine$service$version',
+    CLI_URL:                   {
+      DARWIN:                  'rancher$cli$darwin$url',
+      WINDOWS:                 'rancher$cli$windows$url',
+      LINUX:                   'rancher$cli$linux$url',
     },
-    API_HOST:         'api$host',
-    CATALOG_URL:      'catalog$url',
-    SWARM_PORT:       'swarm$tls$port',
-    ENGINE_URL:       'engine$install$url',
-    MIN_DOCKER:       'ui$min$docker$version',
-    HELP_VERSION:     'ui$help$version',
+    COMPOSE_URL:               {
+      DARWIN:                  'rancher$compose$darwin$url',
+      WINDOWS:                 'rancher$compose$windows$url',
+      LINUX:                   'rancher$compose$linux$url',
+    },
+    API_HOST:                  'api$host',
+    CATALOG_URL:               'catalog$url',
+    SWARM_PORT:                'swarm$tls$port',
+    ENGINE_URL:                'engine$install$url',
+    MIN_DOCKER:                'ui$min$docker$version',
+    TELEMETRY:                 'telemetry$opt',
+    AUTH_LOCAL_VALIDATE_DESC:  'api$auth$local$validate$description',
+    BALANCER_IMAGE:            'lb$instance$image',
+    PROJECT_VERSION:           'account$version',
   },
 
   USER: {
@@ -246,7 +269,9 @@ var C = {
   K8S: {
     BASE: 'api',
     BASE_VERSION: 'api/v1',
+    EXTENSION_VERSION: 'apis/extensions/v1beta1',
     TYPE_PREFIX: 'k8s-',
+    EXTENSION_TYPES: ['k8s-deployment','k8s-replicaset'],
     ID_SEPARATOR: '::',
     DEFAULT_NS: 'defaultNamespace',
   },
@@ -272,6 +297,7 @@ var C = {
     VMWAREVSPHERE: 'vmwarevsphere',
     OTHER: 'other',
     CUSTOM: 'custom',
+    ALIYUNECS: 'aliyunecs',
   }
 };
 
@@ -345,6 +371,7 @@ C.SUPPORTED_SCHEMA_INPUTS= [
   'password',
   'service',
   'string',
+  'masked',
 ];
 
 

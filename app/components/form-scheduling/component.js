@@ -32,7 +32,9 @@ export default Ember.Component.extend(ManageLabels, {
   // Internal properties
   isRequestedHost: false,
 
-  tagName: '',
+  classNameBindings: ['editing:component-editing:component-static'],
+  editing: true,
+
 
   actions: {
     addSchedulingRule() {
@@ -44,7 +46,9 @@ export default Ember.Component.extend(ManageLabels, {
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     this.initLabels(this.get('initialLabels'), 'affinity');
 
     if ( this.get('isGlobal') )
@@ -53,8 +57,10 @@ export default Ember.Component.extend(ManageLabels, {
         isRequestedHost: false,
         requestedHostId: null,
       });
-      this.sendAction('setGlobal', true);
-      this.sendAction('setRequestedHost', null);
+      Ember.run.scheduleOnce('afterRender', () => {
+        this.sendAction('setGlobal', true);
+        this.sendAction('setRequestedHost', null);
+      });
     }
     else if ( this.get('initialHostId') )
     {
@@ -63,8 +69,10 @@ export default Ember.Component.extend(ManageLabels, {
         requestedHostId: this.get('initialHostId'),
       });
 
-      this.sendAction('setGlobal', false);
-      this.sendAction('setRequestedHost', this.get('requestedHostId'));
+      Ember.run.scheduleOnce('afterRender', () => {
+        this.sendAction('setGlobal', false);
+        this.sendAction('setRequestedHost', this.get('requestedHostId'));
+      });
     }
   },
 
@@ -102,6 +110,10 @@ export default Ember.Component.extend(ManageLabels, {
 
     this.sendAction('setRequestedHost', hostId);
   }.observes('requestedHostId'),
+
+  selectedChoice: Ember.computed('allHosts.@each.{id,name,state}', function() {
+    return this.get('hostChoices').findBy('id', this.get('initialHostId'));
+  }),
 
   hostChoices: function() {
     var list = this.get('allHosts').map((host) => {

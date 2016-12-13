@@ -1,51 +1,54 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  config: null,
-  hasHttpListeners: null,
+  service           : null,
 
-  lbCookie: null,
-  stickiness: 'none',
-  isStickyNone: Ember.computed.equal('stickiness','none'),
-  isStickyLbCookie: Ember.computed.equal('stickiness','lbCookie'),
+  lbConfig: Ember.computed.alias('service.lbConfig'),
 
-  lbCookieModeChoices: [
+  lbCookie         : null,
+  stickiness       : 'none',
+  isNone           : Ember.computed.equal('stickiness','none'),
+  isCookie         : Ember.computed.equal('stickiness','cookie'),
+
+  modeChoices: [
     {value: 'rewrite', label: 'Rewrite'},
-    {value: 'insert', label: 'Insert'},
-    {value: 'prefix', label: 'Prefix'},
+    {value: 'insert',  label: 'Insert'},
+    {value: 'prefix',  label: 'Prefix'},
   ],
 
-  didInitAttrs: function() {
-    var lbCookie  = this.get('config.lbCookieStickinessPolicy');
+  init() {
+    this._super(...arguments);
+
+    var policy  = this.get('lbConfig.stickinessPolicy');
     var stickiness = 'none';
 
-    if ( lbCookie )
+    if ( policy )
     {
-      stickiness = 'lbCookie';
+      stickiness = 'cookie';
     }
 
-    if ( !lbCookie )
+    if ( !policy )
     {
-      lbCookie = this.get('store').createRecord({
+      policy = this.get('store').createRecord({
         type: 'loadBalancerCookieStickinessPolicy'
       });
     }
 
     this.setProperties({
-      lbCookie: lbCookie,
+      policy: policy,
       stickiness: stickiness,
     });
   },
 
   stickinessDidChange: function() {
     var stickiness = this.get('stickiness');
-    if ( stickiness === 'none' )
+    if ( !this.get('lbConfig.canSticky') || stickiness === 'none' )
     {
-      this.set('config.lbCookieStickinessPolicy', null);
+      this.set('lbConfig.stickinessPolicy', null);
     }
-    else if ( stickiness === 'lbCookie' )
+    else if ( stickiness === 'cookie' )
     {
-      this.set('config.lbCookieStickinessPolicy', this.get('lbCookie'));
+      this.set('lbConfig.stickinessPolicy', this.get('policy'));
     }
-  }.observes('stickiness'),
+  }.observes('stickiness','lbConfig.canSticky'),
 });

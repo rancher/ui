@@ -11,6 +11,7 @@ export default Ember.Component.extend({
   size             : 'default',
   ariaRole         : ['tooltip'],
   textChangedEvent : null,
+  tooltipFor       : null,
 
   showTimer        : null,
 
@@ -37,8 +38,7 @@ export default Ember.Component.extend({
   },
 
   show(node) {
-    if ( this._state === 'destroying' )
-    {
+    if ( this.isDestroyed || this.isDestroying ) {
       return;
     }
 
@@ -54,6 +54,7 @@ export default Ember.Component.extend({
       originalNode  : node,
       model         : this.get('model'),
       template      : this.get('tooltipTemplate'),
+      tooltipFor    : this.get('tooltipFor'),
     };
 
     if ( this.get('isCopyTo') ) {
@@ -76,7 +77,7 @@ export default Ember.Component.extend({
 
   modelObserver: Ember.observer('model', 'textChangedEvent', function() {
     let opts = this.get('tooltipService.tooltipOpts');
-    if (opts) {
+    if ((opts) && this.get('tooltipFor') === opts.tooltipFor ) {
       this.set('tooltipService.tooltipOpts.model', this.get('model'));
     }
   })

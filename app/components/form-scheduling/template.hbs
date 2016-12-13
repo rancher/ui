@@ -1,69 +1,92 @@
-<div class="form-group">
-  {{#if canRequestHost}}
-    <div class="radio">
-      <label class="form-control-static">{{radio-button selection=isRequestedHost value=true}}
-        {{#if isService}}
-          {{#if (eq isVm 'virtual machines')}}
-            {{format-html-message 'formScheduling.canRequestHost.vm'}}
-          {{else}}
-            {{format-html-message 'formScheduling.canRequestHost.containers'}}
-          {{/if~}}
-          {{if isRequestedHost ':'}}
-        {{else}}
-          Run on a specific host{{if isRequestedHost ':'}}
-        {{/if}}</label>
-        {{#if isRequestedHost}}
-          {{new-select
-            class="form-control"
-            content=hostChoices
-            value=requestedHostId
-            optionValuePath="id"
-            optionLabelPath="name"
-            disabled=(not isRequestedHost)
-            style="display: inline-block; width: auto;"
-          }}
-        {{/if}}
-    </div>
-
-    <div class="radio">
-      <label>{{radio-button selection=isRequestedHost value=false}}
-        {{#if isService}}
-          {{#if isGlobal}}
-            {{t 'formScheduling.autoRun'}}
-          {{else}}
+<div class="{{if editing 'form-group' ''}}">
+  {{#if editing}}
+    {{#if canRequestHost}}
+      <div class="radio r-mb0">
+        <label class="form-control-static">{{radio-button selection=isRequestedHost value=true}}
+          {{#if isService}}
             {{#if (eq isVm 'virtual machines')}}
+              {{format-html-message 'formScheduling.canRequestHost.vm'}}
+            {{else}}
+              {{format-html-message 'formScheduling.canRequestHost.containers'}}
+            {{/if~}}
+          {{else}}
+            {{t 'formScheduling.runSpecific'}}
+          {{/if}}
+        </label>
+          {{#if isRequestedHost}}
+            {{new-select
+              class="form-control r-mb15"
+              content=hostChoices
+              value=requestedHostId
+              optionValuePath="id"
+              optionLabelPath="name"
+              disabled=(not isRequestedHost)
+              style="display: inline-block; width: auto;"
+            }}
+          {{/if}}
+      </div>
+
+      <div class="radio r-mb0">
+        <label>{{radio-button selection=isRequestedHost value=false}}
+          {{#if isService}}
+            {{#if isGlobal}}
+              {{t 'formScheduling.autoRun'}}
+            {{else if (eq isVm 'virtual machines')}}
               {{t 'formScheduling.autoPick.vm'}}
             {{else}}
               {{t 'formScheduling.autoPick.container'}}
             {{/if~}}
+          {{else}}
+            {{t 'formScheduling.autoPick.host'}}
           {{/if}}
-        {{else}}
-          {{t 'formScheduling.autoPick.host'}}
-        {{/if}}
-      </label>
-    </div>
-  {{else}}
-    {{#if isService}}
-      {{#if isGlobal}}
-        {{t 'formScheduling.autoRun'}}
-      {{else}}
-        {{#if isVm}}
-          {{t 'formScheduling.autoPick.vm'}}
+        </label>
+      </div>
+    {{else}}
+      {{#if isService}}
+        {{#if isGlobal}}
+          {{t 'formScheduling.autoRun'}}
+        {{else if isVm}}
+            {{t 'formScheduling.autoPick.vm'}}
         {{else}}
           {{t 'formScheduling.autoPick.container'}}
         {{/if~}}
+      {{else}}
+        {{t 'formScheduling.autoPick.host'}}
       {{/if}}
-    {{else}}
-      {{t 'formScheduling.autoPick.host'}}
     {{/if}}
+  {{else if isGlobal}}
+    {{t 'formScheduling.autoRun'}}
+  {{else if requestedHostId}}
+    <div class="component-static">
+      <div class="row">
+        <label class="form-control-static">
+          {{#if isService}}
+            {{#if (eq isVm 'virtual machines')}}
+              {{format-html-message 'formScheduling.canRequestHost.vm'}}
+            {{else}}
+              {{format-html-message 'formScheduling.canRequestHost.containers'}}
+            {{/if~}}
+          {{else}}
+            {{t 'formScheduling.runSpecific'}}
+          {{/if}}
+        </label>
+        <span class="form-static-control">{{selectedChoice.name}}</span>
+      </div>
+    </div>
+  {{else if (eq isVm 'virtual machines')}}
+    {{t 'formScheduling.autoPick.vm'}}
+  {{else}}
+    {{t 'formScheduling.autoPick.container'}}
   {{/if}}
 
   {{#unless isRequestedHost}}
-    <div class="form-control-static">
-      <button class="btn-circle-text" {{action "addSchedulingRule"}}><i class="icon icon-plus-circle"/> <span>{{t 'formScheduling.addRule'}}</span></button>
-    </div>
+    {{#if editing}}
+      <div class="form-control-static">
+        <button class="btn-circle-text" {{action "addSchedulingRule"}}><i class="icon icon-plus-circle"/> <span>{{t 'formScheduling.addRule'}}</span></button>
+      </div>
+    {{/if}}
     {{#if affinityLabelArray.length}}
-      <table class="table fixed no-lines no-top-padding tight small">
+      <table class="table fixed no-lines">
         <thead>
           <tr class="text-muted">
             <th width="70"></th>
@@ -80,11 +103,18 @@
         <tbody>
           {{#each labelArray as |rule|}}
             {{#if (eq rule.type "affinity")}}
-              {{scheduling-rule-row rule=rule allHosts=allHosts remove="removeSchedulingRule" isGlobal=isGlobal}}
+              {{scheduling-rule-row
+                editing=editing
+                rule=rule
+                allHosts=allHosts
+                remove="removeSchedulingRule"
+                isGlobal=isGlobal}}
             {{/if}}
           {{/each}}
         </tbody>
       </table>
+    {{else}}
+      <div class="text-muted">{{t 'formScheduling.noRules'}}</div>
     {{/if}}
   {{/unless}}
 </div>

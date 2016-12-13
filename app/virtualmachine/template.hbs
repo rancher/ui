@@ -2,9 +2,7 @@
   <h1>{{#link-to "virtualmachines"}}{{t 'virtualMachinePage.header'}}{{/link-to}}</h1>
 
   {{#power-select options=model.vm.primaryHost.instances selected=model.vm onchange=(action "changeVirtualMachine") searchField="displayName" as |obj|}}
-    <div class="clip r-mr15">
-      {{select-dot model=obj}}
-    </div>
+    {{select-dot model=obj}}
   {{/power-select}}
 
   {{#if model.vm.primaryHost}}
@@ -17,9 +15,16 @@
 </section>
 
 <section>
-  {{#info-multi-stats model=model.vm linkName="containerStats" single=true showGraphs=false}}
-    <div class="container-flex bordered">
-      <div class="col-flex">
+  <div class="row">
+    <div class="col-md-3">
+      {{#if model.vm.description}}
+        <div>
+          <label>{{t 'virtualMachinePage.multistat.description'}} </label>
+          <span>{{model.vm.description}}</span>
+        </div>
+        <hr>
+      {{/if}}
+      <div>
         <label>{{t 'virtualMachinePage.multistat.host'}}</label>
         {{#if model.vm.primaryHost}}
           {{#link-to "host" model.vm.primaryHost.id}}{{model.vm.primaryHost.displayName}}{{/link-to}}
@@ -27,43 +32,39 @@
           <span class="text-muted">Unknown</span>
         {{/if}}
       </div>
-      <div class="col-flex">
+
+      <hr>
+
+      <div>
         <label>{{t 'virtualMachinePage.multistat.hostIp'}}</label>
-        {{format-ip ip=model.vm.primaryHost.displayIp noIp='formatIp.unknownIp' showCopy=true}}
+        {{copy-ip ip=model.vm.primaryHost.displayIp noIp='formatIp.unknownIp'}}
       </div>
-      <div class="col-flex">
+
+      <hr>
+
+      <div>
         <label>{{t 'virtualMachinePage.multistat.vmIp'}}</label>
-        {{format-ip ip=model.vm.displayIp showCopy=true}}
+        {{copy-ip ip=model.vm.displayIp}}
       </div>
-    </div>
-    <div class="container-flex bordered">
-      <div class="col-flex">
+
+      <hr>
+
+      <div>
         <label>{{t 'virtualMachinePage.multistat.image'}}</label>
         <span class="force-wrap">
           {{model.vm.displayImage}} {{copy-to-clipboard clipboardText=model.vm.displayImage size="small"}}
         </span>
       </div>
-      <div class="col-flex">
-      </div>
-      <div class="col-flex">
-      </div>
     </div>
-    {{#if model.vm.description}}
-      <div class="container-flex bordered">
-        <div class="col-flex">
-          <label>{{t 'virtualMachinePage.multistat.description'}} </label>
-          <span>{{model.vm.description}}</span>
+    <div class="col-md-9">
+      <div class="row r-p15">
+        <ul class="nav nav-tabs nav-tabs-well shadowed">
+          {{#link-to "virtualmachine.labels" tagName="li" href=false}}<a href="#"><i class="icon icon-tag"></i> {{t 'virtualMachinePage.navTabs.labels'}}</a>{{/link-to}}
+        </ul>
+        <div class="table-flat well">
+          {{outlet}}
         </div>
       </div>
-    {{/if}}
-  {{/info-multi-stats}}
-</section>
-
-<section>
-  <ul class="nav nav-tabs nav-tabs-well shadowed">
-    {{#link-to "virtualmachine.labels" tagName="li" href=false}}<a href="#"><i class="icon icon-tag"></i> {{t 'virtualMachinePage.navTabs.labels'}}</a>{{/link-to}}
-  </ul>
-  <div class="table-flat well">
-    {{outlet}}
+    </div>
   </div>
 </section>

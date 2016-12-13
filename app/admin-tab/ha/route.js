@@ -1,21 +1,29 @@
 import Ember from 'ember';
 
+const INTERVAL = 2000;
+
 export default Ember.Route.extend({
-  settings: Ember.inject.service(),
   model() {
-    var userStore = this.get('userStore');
-    return userStore.find('haConfig', null, {forceReload: true}).then((res) => {
-      return Ember.Object.create({
-        haConfig: res.objectAt(0),
-        createScript: userStore.createRecord({type: 'haConfigInput'})
-      });
-    });
+    return this.get('userStore').find('clustermembership');
   },
 
-  setupController(controller, model) {
-    this._super(...arguments);
-    if (model.haConfig.enabled) {
-      controller.findProject();
-    }
-  }
+  activate() {
+    this.scheduleTimer();
+  },
+
+  deactivate() {
+    Ember.run.cancel(this.get('timer'));
+  },
+
+  timer: null,
+  scheduleTimer: function() {
+    Ember.run.cancel(this.get('timer'));
+    this.set('timer', Ember.run.later(() => {
+      this.get('userStore').find('clustermembership').then((response) => {
+        this.controller.get('model').replaceWith(response);
+        this.scheduleTimer();
+      });
+    }, INTERVAL));
+  },
+
 });

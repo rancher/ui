@@ -18,9 +18,17 @@ export default Ember.Mixin.create({
     }
     else if ( typeof sel === 'object' )
     {
-      Object.keys(sel).forEach((key) => {
-        out.push({label: key, value: sel[key]});
-      });
+      if ( sel.matchLabels ) {
+        Object.keys(sel.matchLabels).forEach((key) => {
+          out.push({label: key, value: sel.matchLabels[key]});
+        });
+      }
+      else
+      {
+        Object.keys(sel).forEach((key) => {
+          out.push({label: key, value: sel[key]});
+        });
+      }
     }
 
     return out;
@@ -52,4 +60,8 @@ export default Ember.Mixin.create({
   selectedPods: function() {
     return this._selected('k8s.pods','hasLabel');
   }.property('selectorsAsArray.@each.{label,value}','k8s.pods.[]','k8s.namespace.id'),
+
+  selectedReplicaSets: function() {
+    return this._selected('k8s.replicasets','hasLabel');
+  }.property('selectorsAsArray.@each.{label,value}','k8s.replicasets.[]','k8s.namespace.id'),
 });

@@ -3,24 +3,38 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 import ShellQuote from 'npm:shell-quote';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
+import { compare as compareVersion } from 'ui/utils/parse-version';
 
 export default Ember.Component.extend(NewOrEdit, {
   k8s: Ember.inject.service(),
+  intl: Ember.inject.service(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
 
   allTemplates: null,
   templateResource: null,
-  environmentResource: null,
+  stackResource: null,
   versionsArray: null,
   versionsLinks: null,
   serviceChoices: null,
+  actuallySave: true,
+  showHeader: true,
+  showPreview: true,
+  showName: true,
+  titleAdd: 'newCatalog.titleAdd',
+  titleUpgrade: 'newCatalog.titleUpgrade',
+  selectVersionAdd: 'newCatalog.selectVersionAdd',
+  selectVersionUpgrade: 'newCatalog.selectVersionUpgrade',
+  saveUpgrade: 'newCatalog.saveUpgrade',
+  saveNew: 'newCatalog.saveNew',
+  sectionClass: 'well',
+  showDefaultVersionOption: false,
 
   classNames: ['launch-catalog'],
 
-  primaryResource: Ember.computed.alias('environmentResource'),
+  primaryResource: Ember.computed.alias('stackResource'),
   templateBase: Ember.computed.alias('templateResource.templateBase'),
-  editing: false,
+  editing: Ember.computed.notEmpty('stackResource.id'),
 
   previewOpen: false,
   previewTab: null,
@@ -47,38 +61,73 @@ export default Ember.Component.extend(NewOrEdit, {
     },
   },
 
-  didReceiveAttrs() {
+  onInit: function() {
     this._super();
+    this.set('selectedTemplateModel', null);
 
-    this.set('editing', !!this.get('primaryResource.id'));
-
-    // Select the default version
-    var def = this.get('templateResource.defaultVersion');
-    var links = this.get('versionLinks');
-    if (links[def]) {
-      this.set('selectedTemplateUrl', links[def]);
-    } else {
-      this.set('selectedTemplateUrl', null);
-    }
-  },
-
-  getReadme: function() {
-    this.get('selectedTemplateModel').followLink('readme').then((response) => {
-      this.set('readmeContent', response);
+    Ember.run.scheduleOnce('afterRender', () => {
+      if ( this.get('selectedTemplateUrl') === 'default') {
+        this.templateChanged();
+      } else {
+        var def = this.get('templateResource.defaultVersion');
+        var links = this.get('versionLinks');
+        if (links[def]) {
+          this.set('selectedTemplateUrl', links[def]);
+        } else {
+          this.set('selectedTemplateUrl', null);
+        }
+      }
     });
-  },
+  }.on('init'),
+
+  updateReadme: function() {
+    let model = this.get('selectedTemplateModel');
+    this.set('readmeContent', null);
+    if ( model && model.hasLink('readme') ) {
+      model.followLink('readme').then((response) => {
+        this.set('readmeContent', response);
+      });
+    }
+  }.observes('selectedTemplateModel.links.readme'),
+
+  sortedVersions: function() {
+    let out = this.get('versionsArray').sort((a,b) => {
+      return compareVersion(a.version, b.version);
+    });
+
+    let def = this.get('templateResource.defaultVersion');
+    if ( this.get('showDefaultVersionOption') && def ) {
+      out.unshift({version:  this.get('intl').t('newCatalog.version.default', {version: def}), link: 'default'});
+    }
+
+    return out;
+  }.property('versionsArray','templateResource.defaultVersion'),
 
   templateChanged: function() {
     var url = this.get('selectedTemplateUrl');
     if (url) {
       this.set('loading', true);
 
+      if ( url === 'default' ) {
+        var def = this.get('templateResource.defaultVersion');
+        var links = this.get('versionLinks');
+        if ( def && links ) {
+          url = links[def];
+        }
+      }
+
       var version = this.get('settings.rancherVersion');
       if ( version ) {
         url = Util.addQueryParam(url, 'minimumRancherVersion_lte', version);
       }
 
-      var current = this.get('environmentResource.environment');
+
+      var current = this.get('stackResource.environment');
+      if ( !current ) {
+        current = {};
+        this.set('stackResource.environment', current);
+      }
+
       this.get('store').request({
         url: url
       }).then((response) => {
@@ -107,17 +156,13 @@ export default Ember.Component.extend(NewOrEdit, {
 
         this.set('selectedTemplateModel', response);
         this.set('previewTab', Object.keys(response.get('files')||[])[0]);
-        if (response.links.readme) {
-          this.getReadme();
-        } else {
-          this.set('readmeContent', null);
-        }
         this.set('loading', false);
       }, ( /*error*/ ) => {});
     } else {
       this.set('selectedTemplateModel', null);
+      this.set('readmeContent', null);
     }
-  }.observes('selectedTemplateUrl').on('init'),
+  }.observes('selectedTemplateUrl','templateResource.defaultVersion'),
 
   answers: function() {
     var out = {};
@@ -143,7 +188,7 @@ export default Ember.Component.extend(NewOrEdit, {
   validate() {
     var errors = [];
 
-    if (!this.get('editing') && !this.get('environmentResource.name')) {
+    if (!this.get('editing') && !this.get('stackResource.name')) {
       errors.push('Name is required');
     }
 
@@ -157,7 +202,6 @@ export default Ember.Component.extend(NewOrEdit, {
 
     if (errors.length) {
       this.set('errors', errors.uniq());
-      this.$().parent().scrollTop(0);
       return false;
     }
 
@@ -165,25 +209,8 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   newExternalId: function() {
-    var externalId = ( this.get('isSystem') ? C.EXTERNALID.KIND_SYSTEM_CATALOG : C.EXTERNALID.KIND_CATALOG );
-    externalId += C.EXTERNALID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
-    return externalId;
-  }.property('isSystem','selectedTemplateModel.id'),
-
-  isSystem: function() {
-    if ( this.get('editing') ) {
-      return this.get('environmentResource.externalId').indexOf(C.EXTERNALID.KIND_SYSTEM_CATALOG + C.EXTERNALID.KIND_SEPARATOR) === 0;
-    }
-
-    let explicit = this.get('templateResource.isSystem');
-    if ( explicit === true || explicit === false ) {
-      return explicit;
-    }
-
-    let systemCategories = C.EXTERNALID.SYSTEM_CATEGORIES.map((str) => { return str.trim().toLowerCase(); });
-    let category = (this.get('templateResource.category')||'').trim().toLowerCase();
-    return systemCategories.indexOf(category) >= 0;
-  }.property('editing','environmentResource.externalId','templateResource.{category,isSystem}'),
+    return C.EXTERNAL_ID.KIND_CATALOG + C.EXTERNAL_ID.KIND_SEPARATOR + this.get('selectedTemplateModel.id');
+  }.property('selectedTemplateModel.id'),
 
   willSave() {
     this.set('errors', null);
@@ -193,41 +220,79 @@ export default Ember.Component.extend(NewOrEdit, {
       return false;
     }
 
-    var files = this.get('selectedTemplateModel.files');
+    let files = this.get('selectedTemplateModel.files');
+    let stack = this.get('stackResource');
 
-    this.get('environmentResource').setProperties({
-      dockerCompose: files['docker-compose.yml'],
-      rancherCompose: files['rancher-compose.yml'],
-      environment: this.get('answers'),
-      externalId: this.get('newExternalId'),
-    });
+    if ( this.get('actuallySave') ) {
+      stack.setProperties({
+        dockerCompose: files['docker-compose.yml'],
+        rancherCompose: files['rancher-compose.yml'],
+        environment: this.get('answers'),
+        externalId: this.get('newExternalId'),
+      });
 
-    return true;
+      return true;
+    } else {
+      let versionId = null;
+      if ( this.get('selectedTemplateUrl') !== 'default' && this.get('selectedTemplateModel') ) {
+        versionId = this.get('selectedTemplateModel.id');
+      }
+
+      this.sendAction('doSave', {
+        templateId: this.get('templateResource.id'),
+        templateVersionId: versionId,
+        answers: this.get('answers'),
+      });
+      return false;
+    }
   },
 
   doSave() {
+    var stack = this.get('stackResource');
     if ( this.get('templateBase') === 'kubernetes' ) {
-      return this.get('k8s').catalog(
-        this.get('selectedTemplateModel.files'),
-        this.get('environmentResource.environment')
-      );
+      if ( this.get('k8s.supportsStacks') ) {
+        if ( this.get('editing') ) {
+          return stack.doAction('upgrade', {
+            templates: this.get('selectedTemplateModel.files'),
+            environment: stack.get('environment'),
+            externalId: this.get('newExternalId'),
+            namespace: this.get('k8s.namespace.metadata.name'),
+          });
+        } else {
+          return this.get('store').createRecord({
+            type: 'kubernetesStack',
+            name: stack.get('name'),
+            description: stack.get('description'),
+            templates: this.get('selectedTemplateModel.files'),
+            environment: stack.get('environment'),
+            externalId: this.get('newExternalId'),
+            namespace: this.get('k8s.namespace.metadata.name'),
+          }).save().then((newData) => {
+            return this.mergeResult(newData);
+          });
+        }
+      } else {
+        return this.get('k8s').catalog({
+          files: this.get('selectedTemplateModel.files'),
+          environment: stack.get('environment')
+        });
+      }
     } else if ( this.get('templateBase') === 'swarm' ) {
-      var env = this.get('environmentResource');
       return this.get('store').createRecord({
         type: 'composeProject',
-        name: env.get('name'),
-        description: env.get('description'),
+        name: stack.get('name'),
+        description: stack.get('description'),
         templates: this.get('selectedTemplateModel.files'),
         externalId: this.get('newExternalId'),
-        environment: env.get('environment')
+        environment: stack.get('environment')
       }).save().then((newData) => {
         return this.mergeResult(newData);
       });
     } else if (this.get('editing')) {
-      return this.get('environmentResource').doAction('upgrade', {
-        dockerCompose: this.get('environmentResource.dockerCompose'),
-        rancherCompose: this.get('environmentResource.rancherCompose'),
-        environment: this.get('environmentResource.environment'),
+      return stack.doAction('upgrade', {
+        dockerCompose: stack.get('dockerCompose'),
+        rancherCompose: stack.get('rancherCompose'),
+        environment: stack.get('environment'),
         externalId: this.get('newExternalId'),
       });
     } else {
@@ -241,7 +306,11 @@ export default Ember.Component.extend(NewOrEdit, {
     if ( base === 'kubernetes' )
     {
       var nsId = this.get('k8s.namespace.id');
-      return this.get('router').transitionTo('k8s-tab.namespace.services', projectId, nsId);
+      if ( this.get('k8s.supportsStacks') ) {
+        return this.get('router').transitionTo('k8s-tab.namespace.stacks', projectId, nsId);
+      } else {
+        return this.get('router').transitionTo('k8s-tab.namespace.services', projectId, nsId);
+      }
     }
     else if ( base === 'swarm' )
     {
@@ -249,13 +318,13 @@ export default Ember.Component.extend(NewOrEdit, {
     }
     else
     {
-      if ( this.get('isSystem') )
+      if ( this.get('stackResource.system') )
       {
-        return this.get('router').transitionTo('environment', projectId, this.get('primaryResource.id'), {queryParams: {which: 'system'}});
+        return this.get('router').transitionTo('stack', projectId, this.get('primaryResource.id'), {queryParams: {which: 'infra'}});
       }
       else
       {
-        return this.get('router').transitionTo('environment', projectId, this.get('primaryResource.id'));
+        return this.get('router').transitionTo('stack', projectId, this.get('primaryResource.id'));
       }
     }
   }

@@ -17,7 +17,7 @@
 
 {{#if access.enabled}}
   <section class="well">
-    <h4>{{t 'ldap.accessEnabled.header'}}</h4>
+    <h3>{{t 'ldap.accessEnabled.header'}}</h3>
     <hr/>
     <p class="help-block">{{t 'ldap.accessEnabled.subtext'}}</p>
 
@@ -58,7 +58,7 @@
   {{/unless}}
 
   <section class="well">
-    <h4>{{format-html-message 'ldap.accessEnabled.disable.header'}}</h4>
+    <h3>{{format-html-message 'ldap.accessEnabled.disable.header'}}</h3>
     <hr/>
 
     <p>
@@ -80,8 +80,8 @@
 
 {{#unless access.enabled}}
   <section class="well">
-    <h4></h4>
-    <h4>{{t 'ldap.accessConfig.header' providerName=(t providerName)}}</h4>
+    <h3></h3>
+    <h3>{{t 'ldap.accessConfig.header' providerName=(t providerName)}}</h3>
     <hr/>
     <p class="help-block">{{format-html-message 'ldap.accessConfig.subtext1' providerName=(t providerName)}}</p>
     <div class="row">
@@ -145,7 +145,7 @@
   </section>
 
   <section class="well">
-    <h4>{{t 'ldap.customizeSchema.header'}}</h4>
+    <h3>{{t 'ldap.customizeSchema.header'}}</h3>
     <hr/>
     <p class="help-block">{{t 'ldap.customizeSchema.helpText'}}</p>
     <div class="row">
@@ -153,49 +153,57 @@
         <h4>{{t 'ldap.customizeSchema.users.header'}}</h4>
         <div class="form-group">
           <label>{{t 'ldap.customizeSchema.users.objectClass.labelText'}}</label>
-          {{input type="text" value=model.userObjectClass type="text" classNames="form-control"}}
+          {{input type="text" value=model.userObjectClass classNames="form-control"}}
         </div>
         <div class="form-group">
           <label>{{t 'ldap.customizeSchema.users.login.labelText'}}</label>
-          {{input type="text" value=model.userLoginField type="text" classNames="form-control"}}
+          {{input type="text" value=model.userLoginField classNames="form-control"}}
         </div>
         <div class="form-group">
           <label>{{t 'ldap.customizeSchema.users.name.labelText'}}</label>
-          {{input type="text" value=model.userNameField type="text" classNames="form-control"}}
+          {{input type="text" value=model.userNameField classNames="form-control"}}
         </div>
         <div class="form-group">
           <label>{{t 'ldap.customizeSchema.users.search.labelText'}}</label>
-          {{input type="text" value=model.userSearchField type="text" classNames="form-control"}}
+          {{input type="text" value=model.userSearchField classNames="form-control"}}
         </div>
         <div class="form-group">
           <label>{{t 'ldap.customizeSchema.users.status.labelText'}}</label>
-          {{input type="text" value=model.userEnabledAttribute type="text" classNames="form-control"}}
+          {{input type="text" value=model.userEnabledAttribute classNames="form-control"}}
         </div>
         <div class="form-group">
           <label>{{t 'ldap.customizeSchema.users.disabledBitMask.labelText'}}</label>
-          {{input type="text" value=model.userDisabledBitMask type="number" min=1 classNames="form-control"}}
+          {{input type="number" value=model.userDisabledBitMask min=1 classNames="form-control"}}
         </div>
       </div>
       <div class="col-md-6">
-        <h4>{{t 'ldap.customizeSchema.groups.header'}}</h4>
+        <h3>{{t 'ldap.customizeSchema.groups.header'}}</h3>
         <div class="form-group">
           <label>{{t 'ldap.customizeSchema.groups.objectClass.labelText'}}</label>
-          {{input type="text" value=model.groupObjectClass type="text" classNames="form-control"}}
+          {{input type="text" value=model.groupObjectClass classNames="form-control"}}
         </div>
         <div class="form-group">
           <label>{{t 'ldap.customizeSchema.groups.name.labelText'}}</label>
-          {{input type="text" value=model.groupNameField type="text" classNames="form-control"}}
+          {{input type="text" value=model.groupNameField classNames="form-control"}}
         </div>
         <div class="form-group">
           <label>{{t 'ldap.customizeSchema.groups.search.labelText'}}</label>
-          {{input type="text" value=model.groupSearchField type="text" classNames="form-control"}}
+          {{input type="text" value=model.groupSearchField classNames="form-control"}}
+        </div>
+        <div class="form-group">
+          <label>{{t 'ldap.customizeSchema.groups.groupMemberUser.labelText'}}</label>
+          {{input type="text" value=model.groupMemberUserAttribute classNames="form-control" placeholder=(t 'ldap.customizeSchema.groups.groupMemberUser.placeholder')}}
+        </div>
+        <div class="form-group">
+          <label>{{t 'ldap.customizeSchema.groups.groupDN.labelText'}}</label>
+          {{input type="text" value=model.groupDNField classNames="form-control" placeholder=(t 'ldap.customizeSchema.groups.groupDN.placeholder')}}
         </div>
       </div>
     </div>
   </section>
 
   <section class="well">
-    <h4>{{t 'ldap.testAuth.header'}}</h4>
+    <h3>{{t 'ldap.testAuth.header'}}</h3>
     <hr/>
     <p class="help-block">{{t 'ldap.testAuth.helpText' providerName=(t providerName)}}</p>
     {{top-errors errors=errors}}

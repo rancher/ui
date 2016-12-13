@@ -18,7 +18,33 @@ function specToPort(spec) {
 
 var LoadBalancerService = Service.extend({
   type: 'loadBalancerService',
-  intl : Ember.inject.service(),
+
+  intl: Ember.inject.service(),
+  settings: Ember.inject.service(),
+
+  initPorts() {
+    let rules = this.get('lbConfig.portRules')||[];
+    let publish = this.get('launchConfig.ports')||[];
+    publish.forEach((str) => {
+      let spec = parsePortSpec(str,'tcp');
+      if ( !spec.hostPort || spec.hostIp ) {
+        this.set('hasUnsupportedPorts', true);
+      }
+
+      if ( spec.hostPort ) {
+        rules.filterBy('sourcePort', spec.hostPort).forEach((rule) => {
+          rule.set('access', 'public');
+        });
+      }
+    });
+
+
+    rules.forEach((rule) => {
+      if ( !rule.get('access') ) {
+        rule.set('access', 'internal');
+      }
+    });
+  },
 
   sslPorts: function() {
     return (((this.get('launchConfig.labels')||{})[C.LABEL.BALANCER_SSL_PORTS]||'')).split(',').map((str) => {
@@ -45,16 +71,17 @@ var LoadBalancerService = Service.extend({
 
     var pub = '';
     var fqdn = this.get('fqdn');
-    (this.get('launchConfig.ports')||[]).forEach((portSpec, idx) => {
+    let ports = (this.get('launchConfig.ports')||[]);
+    ports.forEach((portSpec, idx) => {
       var portNum = specToPort(portSpec);
       var endpoints = this.get('endpointsMap')[portNum];
       if ( endpoints )
       {
         var url = Util.constructUrl((sslPorts.indexOf(portNum) >= 0), fqdn||endpoints[0], portNum);
-        pub += '<span>' + (idx === 0 ? '' : ', ') +
+        pub += '<span>' +
         '<a href="'+ url +'" target="_blank">' +
         esc(portToStr(portSpec)) +
-        '</a>' +
+        '</a>' + (idx+1 === ports.length ? '' : ', ') +
         '</span>';
       }
       else
@@ -74,20 +101,35 @@ var LoadBalancerService = Service.extend({
   }.property('launchConfig.ports.[]','launchConfig.expose.[]','endpointsMap', 'intl._locale'),
 
   displayDetail: function() {
-    var services = '';
-    (this.get('consumedServicesWithNames')||[]).forEach((map, idx) => {
-      services += '<span>'+ (idx === 0 ? '' : ', ') +
-      (map.get('service.environmentId') === this.get('environmentId') ? '' : esc(map.get('service.displayEnvironment')) + '/') +
-      esc(map.get('service.displayName')) + '</span>';
-    });
+    var services = (this.get('lbConfig.portRules')||[]).map((rule) => {
+      if ( rule.get('selector') ) {
+        return rule.get('selector');
+      } else {
+
+        let out = '';
+        if ( rule.get('service.stackId') !== this.get('stackId') ) {
+          out += esc(rule.get('service.displayStack'))+'/';
+        }
+
+        return out + esc(rule.get('service.displayName'));
+      }
+    }).uniq();
+
+    services.sort();
+
+    let str = '<span>' + services.join('</span><span>') + '</span>';
 
     let intl = this.get('intl');
-    let toTranslation = intl.tHtml('generic.to');
-
-    var out = '<label>'+toTranslation+': </label>' + services;
+    var out = '<label>'+ intl.t('generic.to')+': </label>' + str;
 
     return out.htmlSafe();
-  }.property('consumedServicesWithNames.@each.{name,service}','consumedServicesUpdated', 'intl._locale'),
+  }.property('consumedServicesWithNames.@each.{name,service}', 'intl._locale'),
+
+  imageUpgradeAvailable: function() {
+    let cur = this.get('launchConfig.imageUuid').replace(/^docker:/,'');
+    let available = this.get(`settings.${C.SETTING.BALANCER_IMAGE}`);
+    return cur !== available && !!this.get('actionLinks.upgrade');
+  }.property('launchConfig.imageUuid',`settings.${C.SETTING.BALANCER_IMAGE}`,'actionLinks.upgrade'),
 });
 
 export default LoadBalancerService;

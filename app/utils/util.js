@@ -2,19 +2,19 @@
 
 export function arrayDiff(a, b) {
   return a.filter(function(i) {
-    return b.indexOf(i) < 0;
+    return !b.includes(i);
   });
 }
 
 export function arrayIntersect(a, b) {
   return a.filter(function(i) {
-    return b.indexOf(i) >= 0;
+    return b.includes(i);
   });
 }
 
 export function filterByValues(ary,field,values) {
   return ary.filter((obj) => {
-    return values.indexOf(obj.get(field)) >= 0;
+    return values.includes(obj.get(field));
   });
 }
 
@@ -69,13 +69,25 @@ function escapeRegex(string){
 }
 
 export function addQueryParam(url, key, val) {
-  return url + (url.indexOf('?') >= 0 ? '&' : '?') + encodeURIComponent(key) + '=' + encodeURIComponent(val);
+  let out = url + (url.indexOf('?') >= 0 ? '&' : '?');
+
+  // val can be a string or an array of strings
+  if ( !Array.isArray(val) ) {
+    val = [val];
+  }
+  out += val.map(function (v) {
+    return encodeURIComponent(key) + '=' + encodeURIComponent(v);
+  }).join('&');
+
+  return out;
 }
 
 export function addQueryParams(url, params) {
-  Object.keys(params).forEach(function(key) {
-    url = addQueryParam(url, key, params[key]);
-  });
+  if ( params && typeof params === 'object' ) {
+    Object.keys(params).forEach(function(key) {
+      url = addQueryParam(url, key, params[key]);
+    });
+  }
 
   return url;
 }
@@ -230,11 +242,11 @@ export function formatKbps(value) {
   return formatSi(value*1000,  1000, "bps", "Bps");
 }
 
-export function formatSi(inValue, increment=1000, suffix="", firstSuffix=null)
+export function formatSi(inValue, increment=1000, suffix="", firstSuffix=null, startingExponent=0)
 {
   var units = ['B','K','M','G','T','P'];
   var val = inValue;
-  var exp = 0;
+  var exp = startingExponent;
   while ( val >= increment && exp+1 < units.length )
   {
     val = val/increment;
@@ -300,6 +312,22 @@ export function pluralize(count,singular,plural) {
   }
 }
 
+export function uniqKeys(data, field=undefined) {
+  // Make a map of all the unique category names.
+  // If multiple casings of the same name are present, first wins.
+  let cased = {};
+  data.map((obj) => (field ? obj[field] : obj))
+    .filter((str) => str && str.length)
+    .forEach((str) => {
+      let lc = str.toLowerCase();
+      if ( !cased[lc] ) {
+        cased[lc] = str;
+      }
+  });
+
+  return Object.keys(cased).uniq().sort().map((str) => cased[str]);
+}
+
 export function camelToTitle(str) {
   return (str||'').dasherize().split('-').map((str) => { return ucFirst(str); }).join(' ');
 }
@@ -329,7 +357,8 @@ var Util = {
   formatKbps: formatKbps,
   formatSi: formatSi,
   pluralize: pluralize,
-  camelToTitle: camelToTitle
+  camelToTitle: camelToTitle,
+  uniqKeys: uniqKeys,
 };
 
 window.Util = Util;

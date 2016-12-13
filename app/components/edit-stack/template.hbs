@@ -1,0 +1,44 @@
+<section class="horizontal-form container-fluid">
+  <h2>{{t 'editStack.title'}}</h2>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>{{t 'editStack.name.label'}}</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{input type="text" value=primaryResource.name classNames="form-control" placeholder=(t 'editStack.description.placeholder')}}
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>{{t 'editStack.description.label'}}</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      {{textarea value=primaryResource.description classNames="form-control no-resize" rows="5" placeholder=(t 'editStack.description.placeholder')}}
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label>{{t 'editStack.group.label'}}</label>
+    </div>
+    <div class="col-sm-12 col-md-8">
+      <div class="input-group">
+        {{input type="text" value=primaryResource.group classNames="form-control" placeholder=(t 'editStack.group.placeholder')}}
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            {{#each tagChoices as |key|}}
+              <li><a {{action "addTag" key}}>{{key}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+      <p class="help-block">{{t 'editStack.group.help'}}</p>
+    </div>
+  </div>
+</section>
+
+{{top-errors errors=errors}}
+{{save-cancel editing=editing save="save" cancel="cancel"}}

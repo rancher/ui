@@ -6,7 +6,7 @@ export default Ember.Route.extend({
 
     var dependencies = {
       allHosts: store.findAll('host'), // Need inactive ones in case a link points to an inactive host
-      allStoragePools: store.findAllUnremoved('storagepool')
+      allStoragePools: store.findAll('storagepool')
     };
 
     if ( params.virtualMachineId )
@@ -65,7 +65,7 @@ export default Ember.Route.extend({
     if (isExiting)
     {
       controller.set('hostId', null);
-      controller.set('environmentId', null);
+      controller.set('stackId', null);
       controller.set('virtualMachineId', null);
     }
   }

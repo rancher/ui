@@ -1,8 +1,10 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
+import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend(NewOrEdit, {
   primaryResource: Ember.computed.alias('model.account'),
+  settings: Ember.inject.service(),
 
   actions: {
     cancel() {
@@ -10,9 +12,13 @@ export default Ember.Controller.extend(NewOrEdit, {
     },
   },
 
+  validateDescription: Ember.computed(function() {
+    return this.get('settings').get(C.SETTING.AUTH_LOCAL_VALIDATE_DESC) || null;
+  }),
+
   accountTypeChoices: [
-    {label: 'User', value: 'user'},
-    {label: 'Admin', value: 'admin'},
+    {label: 'model.account.kind.user', value: 'user'},
+    {label: 'model.account.kind.admin', value: 'admin'},
   ],
 
   validate: function() {

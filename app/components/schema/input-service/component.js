@@ -1,21 +1,28 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  allServices: Ember.inject.service(),
+  allServices : Ember.inject.service(),
 
-  field: null,
-  value: null,
+  field       : null,
+  value       : null,
 
-  choices: null,
-  default: Ember.computed.alias('field.default'),
-  loading: true,
-  didInitAttrs: function() {
+  choices     : null,
+  default     : Ember.computed.alias('field.default'),
+  loading     : true,
+
+  init() {
+    this._super(...arguments);
+
     this.get('allServices').choices().then((choices) => {
+      if ( this.isDestroyed || this.isDestroying ) {
+        return;
+      }
+
       var exact, justService;
       var def = this.get('default');
 
       choices.forEach((service) => {
-        service.value = `${service.envName}/${service.name}`;
+        service.value = `${service.stackName}/${service.name}`;
 
         if ( def === service.value )
         {

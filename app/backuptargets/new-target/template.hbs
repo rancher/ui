@@ -2,20 +2,21 @@
   <h1>{{t 'backupTargetsPage.newTarget.header'}}</h1>
 </section>
 <section class="horizontal-form container-fluid">
-  {{top-errors errors=errors}}
-
-  {{form-name-description model=model}}
+  {{form-name-description 
+    model=model
+    nameRequired=true
+  }}
 
   <div class="over-hr r-p10">
     <span>{{t 'backupTargetsPage.newTarget.hr'}} </span>
   </div>
   <div class="row form-group">
     <div class="col-md-6">
-      <label class="form-control-static">{{t 'backupTargetsPage.server.label'}}</label>
+      <label class="form-control-static">{{t 'backupTargetsPage.server.label'}}*</label>
       {{input type="text" value=model.nfsConfig.server classNames="form-control" placeholder=(t 'backupTargetsPage.server.placeholder')}}
     </div>
     <div class="col-md-6">
-      <label class="form-control-static">{{t 'backupTargetsPage.share.label'}}</label>
+      <label class="form-control-static">{{t 'backupTargetsPage.share.label'}}*</label>
       {{input type="text" value=model.nfsConfig.share classNames="form-control" placeholder=(t 'backupTargetsPage.share.placeholder')}}
     </div>
   </div>
@@ -28,4 +29,5 @@
 
 </section>
 
+{{top-errors errors=errors}}
 {{save-cancel save="save" cancel="cancel"}}

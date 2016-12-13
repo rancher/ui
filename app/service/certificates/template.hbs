@@ -1,0 +1,23 @@
+<div>
+  <label>{{t 'servicePage.certsTab.default'}}:</label>
+  {{#if model.lbConfig.defaultCertificateId}}
+    <a href="{{href-to "certificates.detail" model.lbConfig.defaultCertificateId}}">{{model.lbConfig.defaultCertificate.displayName}}</a>
+  {{else}}
+    <span class="text-muted">{{t 'generic.none'}}</span>
+  {{/if}}
+</div>
+
+<div>
+  <label>{{t 'servicePage.certsTab.additional'}}:</label>
+  {{#if model.lbConfig.certificateIds.length}}
+    <ul class="list-unstyled">
+      {{#each model.lbConfig.certificates as |cert|}}
+        <li>
+          <a href="{{href-to "certificates.detail" cert.id}}">{{cert.displayName}}</a>
+        </li>
+      {{/each}}
+    </ul>
+  {{else}}
+    <span class="text-muted">{{t 'generic.none'}}</span>
+  {{/if}}
+</div>

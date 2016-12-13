@@ -1,31 +1,38 @@
 import Ember from 'ember';
 import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
-import Util from 'ui/utils/util';
 import NewOrEdit from 'ui/mixins/new-or-edit';
+import { sortInsensitiveBy } from 'ui/utils/sort';
 
 export default Ember.Component.extend(NewOrEdit, Sortable, {
   projects: Ember.inject.service(),
   access: Ember.inject.service(),
+  growl: Ember.inject.service(),
   accessEnabled: Ember.computed.alias('access.enabled'),
-
-  model: null,
-  project: Ember.computed.alias('model.project'),
-  originalProject: Ember.computed.alias('model.originalProject'),
-  primaryResource: Ember.computed.alias('model.project'),
-
   queryParams: ['editing'],
-  editing: false,
 
+  project: null,
+  originalProject: null,
+  allProjects: null,
+  editing: false,
+  tab: 'access',
+
+  primaryResource: Ember.computed.alias('project'),
   sortableContent: Ember.computed.alias('project.projectMembers'),
   sortBy: 'name',
   sorts: {
-    name:   ['externalId'],
+    name:   ['name', 'externalId'],
     type:   ['externalIdType','externalId'],
     role:   ['role','externalId'],
   },
 
+  stacks: null,
+
   actions: {
+    selectTemplate(id) {
+      this.set('project.projectTemplateId', id);
+    },
+
     changeProject(project) {
       this.get('router').transitionTo('settings.projects.detail', project.get('id'));
     },
@@ -54,34 +61,6 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     removeMember(item) {
       this.get('project.projectMembers').removeObject(item);
     },
-
-    selectOrchestration(name) {
-      this.get('project').setProperties({
-        kubernetes: (name === 'kubernetes'),
-        swarm: (name === 'swarm'),
-        mesos: (name === 'mesos'),
-      });
-      this.set('activeOrchestration', name);
-    },
-  },
-
-  activeOrchestration: null,
-  didReceiveAttrs() {
-    var orch = 'rancher';
-    if ( this.get('project.kubernetes') )
-    {
-      orch = 'kubernetes';
-    }
-    else if ( this.get('project.swarm') )
-    {
-      orch = 'swarm';
-    }
-    else if ( this.get('project.mesos') )
-    {
-      orch = 'mesos';
-    }
-
-    this.set('activeOrchestration', orch);
   },
 
   didInsertElement() {
@@ -95,46 +74,44 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     }
   },
 
+  projectBase: function() {
+    return this.get('app.projectEndpoint').replace(this.get('app.projectToken'), this.get('project.id'));
+  }.property('project.id'),
+
   roleOptions: function() {
     return (this.get('userStore').getById('schema','projectmember').get('resourceFields.role.options')||[]).map((role) => {
       return {
-        label: Util.ucFirst(role),
+        label: 'model.projectMember.role.'+role,
         value: role
       };
     });
   }.property(),
 
+  templateChoices: function() {
+    var active = this.get('project.projectTemplateId');
+
+    var choices = this.get('projectTemplates').map((tpl) => {
+      return {id: tpl.id, name: tpl.name, image: tpl.get('orchestrationIcon')};
+    });
+
+    if ( !choices.length ) {
+      choices.push({id: null, name: 'None', image: `${this.get('app.baseAssets')}assets/images/logos/provider-orchestration.svg`});
+    }
+
+    choices.forEach(function(driver) {
+      driver.active = ( active === driver.name );
+    });
+
+    return sortInsensitiveBy(choices,'name');
+  }.property('project.projectTemplateId','projectTemplates.@each.name'),
+
+  selectedProjectTemplate: function() {
+    return this.get('projectTemplates').findBy('id', this.get('project.projectTemplateId'));
+  }.property('project.projectTemplateId'),
 
   hasOwner: function() {
     return this.get('project.projectMembers').filterBy('role', C.PROJECT.ROLE_OWNER).get('length') > 0;
   }.property('project.projectMembers.@each.role'),
-
-  orchestrationChoices: function() {
-    var active = this.get('activeOrchestration');
-    var fields = this.get('userStore').getById('schema','project').get('resourceFields');
-
-    var drivers = [
-      {name: 'rancher',     label: 'Corral',      css: 'rancher'}
-    ];
-
-    if ( fields.kubernetes ) {
-      drivers.push({name: 'kubernetes',  label: 'Kubernetes',  css: 'kubernetes'});
-    }
-
-    if ( fields.mesos ) {
-      drivers.push({name: 'mesos',       label: 'Mesos',       css: 'mesos'});
-    }
-
-    if ( fields.swarm ) {
-      drivers.push({name: 'swarm',       label: 'Swarm',       css: 'swarm'});
-    }
-
-    drivers.forEach(function(driver) {
-      driver.active = ( active === driver.name );
-    });
-
-    return drivers;
-  }.property('activeOrchestration'),
 
   validate() {
     this._super();
@@ -161,10 +138,11 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
       // For create the members go in the request
       this.set('project.members', this.get('project.projectMembers'));
     }
+
     return out;
   },
 
-  didSave: function() {
+  didSave() {
     if ( this.get('editing') && this.get('access.enabled') )
     {
       var members = this.get('project.projectMembers').map((member) => {
@@ -180,7 +158,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
     }
   },
 
-  doneSaving: function() {
+  doneSaving() {
     var out = this._super();
     this.get('projects').refreshAll();
     this.sendAction('done');

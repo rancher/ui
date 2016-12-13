@@ -87,24 +87,25 @@ module.exports = function(environment) {
       version: pkg.version,
       appName: 'EduCaaS',
       apiServer: 'http://wip.educaas.io',
-      apiEndpoint: '/v1',
+      legacyApiEndpoint: '/v1',
+      apiEndpoint: '/v2-beta',
       catalogServer: '',
       catalogEndpoint: '/v1-catalog',
+      authServer: '',
+      authEndpoint: '/v1-auth',
+      telemetryEndpoint: '/v1-telemetry',
       projectToken: '%PROJECTID%',
+      magicEndpoint: '/r',
       kubernetesEndpoint: '/r/projects/%PROJECTID%/kubernetes',
       kubectlEndpoint: '/r/projects/%PROJECTID%/kubectld:8091/v1-kubectl',
       mesosEndpoint: '/r/projects/%PROJECTID%/mesos-master:5050',
-      proxyEndpoint: '/v1/proxy',
-      wsEndpoint: '/v1/projects/%PROJECTID%/subscribe' +
+      projectEndpoint: '/v2-beta/projects/%PROJECTID%',
+      proxyEndpoint: '/v2-beta/proxy',
+      wsEndpoint: '/v2-beta/projects/%PROJECTID%/subscribe' +
                     '?eventNames=resource.change' +
                     '&eventNames=service.kubernetes.change' +
                     '&limit=-1' +
-                    '&include=hosts' +
-                    '&include=services' +
-                    '&include=instances' +
-                    '&include=instance' +
-                    '&include=instanceLinks' +
-                    '&include=ipAddresses',
+                    '&include=instanceLinks',
       baseAssets: '/',
       locales: readLocales(environment)
     },
@@ -112,7 +113,7 @@ module.exports = function(environment) {
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
-    ENV.APP.LOG_ACTIVE_GENERATION = true;
+    // ENV.APP.LOG_ACTIVE_GENERATION = true;
     ENV.APP.LOG_TRANSITIONS = true;
     ENV.APP.LOG_TRANSITIONS_INTERNAL = true;
     ENV.APP.LOG_VIEW_LOOKUPS = true;

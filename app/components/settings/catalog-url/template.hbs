@@ -1,18 +1,11 @@
-<h4>{{t 'catalogSettings.header'}}</h4>
+<h3>{{t 'catalogSettings.header'}}</h3>
 <h5>{{t 'catalogSettings.subtext'}}</h5>
 <hr>
 
-<div class="row">
-  <div class="col-md-6 r-pl0">
-    <h5>{{t (if settings.isRancher 'catalogSettings.rancherCertified.header.rancherCertified' 'catalogSettings.rancherCertified.header.rancherCertified.plCertified') appName=settings.appName}}</h5>
-    <p class="help-block">
-      {{#if settings.isRancher}}
-        {{t 'catalogSettings.rancherCertified.helpText.isRancher'}}
-      {{else}}
-        {{t 'catalogSettings.rancherCertified.helpText.community'}}
-      {{/if}}
-    </p>
-    <div class="r-mt10">
+<div class="row row-same-height">
+  <div class="col-md-6">
+    <h5>{{t (if settings.isRancher 'catalogSettings.certified.header.rancher' 'catalogSettings.certified.header.pl') appName=settings.appName}}</h5>
+    <div class="r-pt10">
       <label class="r-mr20 hand">
         {{radio-button selection=enableLibrary value=true}} {{t 'generic.enabled'}}
       </label>
@@ -20,13 +13,17 @@
         {{radio-button selection=enableLibrary value=false}} {{t 'generic.disabled'}}
       </label>
     </div>
-  </div>
-  <div class="col-md-6 r-pr0">
-    <h5>{{t 'catalogSettings.community.header'}}</h5>
     <p class="help-block">
-      {{t 'catalogSettings.community.helpText.text'}}{{#if settings.isRancher}}  {{t 'catalogSettings.community.helpText.isRancher'}}{{/if}}
+      {{#if settings.isRancher}}
+        {{t 'catalogSettings.certified.detail.rancher'}}
+      {{else}}
+        {{t 'catalogSettings.certified.detail.pl'}}
+      {{/if}}
     </p>
-    <div class="r-mt10">
+  </div>
+  <div class="col-md-6">
+    <h5>{{t (if settings.isRancher 'catalogSettings.community.header.rancher' 'catalogSettings.community.header.pl') appName=settings.appName}}</h5>
+    <div class="r-pt10">
       <label class="r-mr20 hand">
         {{radio-button selection=enableCommunity value=true}} {{t 'generic.enabled'}}
       </label>
@@ -34,6 +31,13 @@
         {{radio-button selection=enableCommunity value=false}} {{t 'generic.disabled'}}
       </label>
     </div>
+    <p class="help-block">
+      {{#if settings.isRancher}}
+        {{t 'catalogSettings.community.detail.rancher'}}
+      {{else}}
+        {{t 'catalogSettings.community.detail.pl'}}
+      {{/if}}
+    </p>
   </div>
 </div>
 
@@ -41,14 +45,39 @@
 
 <h5>{{t 'catalogSettings.more.header'}}</h5>
 <p class="help-block">{{format-html-message 'catalogSettings.more.helpText'}}</p>
-{{form-key-value
-  addActionLabel="catalogSettings.more.addActionLabel"
-  initialMap=keymap
-  keyLabel="catalogSettings.more.keyLabel"
-  keyPlaceholder="catalogSettings.more.keyPlaceholder"
-  valueLabel="catalogSettings.more.valueLabel"
-  valuePlaceholder="catalogSettings.more.valuePlaceholder"
-  changed=(action (mut keymap))
-}}
+
+<button class="btn-circle-text" {{action "add"}}><i class="icon icon-plus-circle"/> <span>{{t 'catalogSettings.more.addActionLabel'}}</span></button>
+
+{{#if ary.length}}
+  <table class="table fixed no-lines no-top-padding tight small">
+    <tr class="text-muted hidden-xs hidden-sm">
+      <th width="25%">{{t 'catalogSettings.more.name.label'}}</th>
+      <td width="30">&nbsp;</td>
+      <th width="50%">{{t 'catalogSettings.more.url.label'}}</th>
+      <td width="30">&nbsp;</td>
+      <th width="25%">{{t 'catalogSettings.more.branch.label'}}</th>
+      <th width="30">&nbsp;</th>
+    </tr>
+    {{#each ary as |row|}}
+      <tr>
+        <td class="valign-top" data-title="{{t 'catalogSettings.more.name.label'}}:">
+          {{input class="form-control input-sm name" type="text" value=row.name placeholder=(t 'catalogSettings.more.name.placeholder')}}
+        </td>
+        <td>&nbsp;</td>
+        <td class="valign-top" data-title="{{t 'catalogSettings.more.url.label'}}:">
+          {{input class="form-control input-sm" type="text" value=row.url placeholder=(t 'catalogSettings.more.url.placeholder')}}
+        </td>
+        <td>&nbsp;</td>
+        <td class="valign-top" data-title="{{t 'catalogSettings.more.branch.label'}}:">
+          {{input class="form-control input-sm" type="text" value=row.branch placeholder=(t 'catalogSettings.more.branch.placeholder')}}
+        </td>
+
+        <td class="valign-top text-right">
+          <button class="btn btn-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+        </td>
+      </tr>
+    {{/each}}
+  </table>
+{{/if}}
 
 {{save-cancel cancelDisabled=true editing=true save="save"}}

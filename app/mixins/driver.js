@@ -5,19 +5,20 @@ import ManageLabels from 'ui/mixins/manage-labels';
 import { addAction } from 'ui/utils/add-view-action';
 
 export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
-  intl: Ember.inject.service(),
-  settings: Ember.inject.service(),
-  createDelayMs: 0,
-  showEngineUrl: true,
+  intl          : Ember.inject.service(),
+  settings      : Ember.inject.service(),
+  createDelayMs : 0,
+  showEngineUrl : true,
 
-  queryParams   : ['machineId'],
-  machineId     : null,
+  queryParams   : ['hostId'],
+  hostId        : null,
   error         : null,
 
   count         : null,
   prefix        : null,
   multiTemplate : null,
   clonedModel   : null,
+  useHost       : true,
 
   actions: {
     addLabel: addAction('addLabel', '.key'),
@@ -37,13 +38,15 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     }
   },
 
-  didInitAttrs: function() {
+  init() {
+    this._super(...arguments);
+
     this.set('error', null);
     this.set('editing', false);
 
     if (this.get('clonedModel')) {
       this.set('model', this.get('clonedModel'));
-      this.set('prefix', this.get('primaryResource.name')||'');
+      this.set('prefix', '');
     } else if (typeof this.get('bootstrap') === 'function') {
       this.bootstrap();
     }
@@ -102,39 +105,55 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
 
   nameDidChange: function() {
     let parts = this.get('nameParts');
+    let nameField = 'hostname';
+    if (this.get('primaryResource.type') === 'machine') {
+      nameField = 'name';
+    }
     if ( typeof parts.name !== 'undefined' || !parts.prefix )
     {
-      this.set('primaryResource.name', parts.name || '');
+      this.set(`primaryResource.${nameField}`, parts.name || '');
     }
     else
     {
       let first = parts.prefix + Util.strPad(parts.start, parts.minLength, '0');
-      this.set('primaryResource.name', first);
+      this.set(`primaryResource.${nameField}`, first);
     }
   }.observes('nameParts'),
 
-  willSave: function() {
+  willSave() {
     this.set('multiTemplate', this.get('primaryResource').clone());
     return this._super();
   },
 
-  didSave: function() {
+  validate() {
+    let errors = [];
+
+    if ( !this.get('nameParts.prefix') && !this.get('nameParts.name') ) {
+      errors.push('Name is required');
+    }
+
+    this.set('errors', errors);
+    return errors.length === 0;
+  },
+
+
+  didSave() {
     if ( this.get('count') > 1 )
     {
       let parts = this.get('nameParts');
       let tpl = this.get('multiTemplate');
       let delay = this.get('createDelayMs');
       var promise = new Ember.RSVP.Promise(function(resolve,reject) {
-        let machines = [];
+        let hosts = [];
         for ( let i = parts.start + 1 ; i <= parts.end ; i++ )
         {
-          let machine = tpl.clone();
-          machine.set('name', parts.prefix + Util.strPad(i, parts.minLength, '0'));
-          machines.push(machine);
+          let host = tpl.clone();
+          host.set('hostname', parts.prefix + Util.strPad(i, parts.minLength, '0'));
+          hosts.push(host);
         }
 
-        async.eachSeries(machines, function(machine, cb) {
-          machine.save().then(() => {
+        async.eachSeries(hosts, function(host, cb) {
+          host.save().then(() => {
             setTimeout(cb, delay);
           }).catch((err) => {
             cb(err);
@@ -152,12 +171,13 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     }
   },
 
-  doneSaving: function() {
+  doneSaving() {
     let out = this._super();
     this.send('goBack');
     return out;
   },
-  didInsertElement: function() {
+
+  didInsertElement() {
     this._super();
     Ember.run.next(() => {
       try {

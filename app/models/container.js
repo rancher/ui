@@ -1,18 +1,17 @@
 import Ember from 'ember';
-import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
+import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
+import Instance from 'ui/models/instance';
+import { formatSi } from 'ui/utils/util';
 
-const { getOwner } = Ember;
-
-let _allMounts;
-
-var Container = Resource.extend({
+var Container = Instance.extend({
   // Common to all instances
   requestedHostId            : null,
   primaryIpAddress           : null,
   primaryAssociatedIpAddress : null,
   projects                   : Ember.inject.service(),
+  modalService: Ember.inject.service('modal'),
 
   // Container-specific
   type                       : 'container',
@@ -28,25 +27,10 @@ var Container = Resource.extend({
   devices                    : null,
   restartPolicy              : null,
 
-  _allMounts                 : null,
-
-
-  init: function() {
-    this._super();
-
-    // this.get('store') isn't set yet at init
-    var store = getOwner(this).lookup('store:main');
-    if ( !_allMounts )
-    {
-      _allMounts = store.allUnremoved('mount');
-    }
-
-
-    this.setProperties({
-      '_allMounts'  : _allMounts,
-    });
-
-  },
+  mounts                     : denormalizeIdArray('mountIds'),
+  primaryHost                : denormalizeId('hostId'),
+  services                   : denormalizeIdArray('serviceIds'),
+  primaryService             : Ember.computed.alias('services.firstObject'),
 
   actions: {
     restart: function() {
@@ -57,14 +41,20 @@ var Container = Resource.extend({
       return this.doAction('start');
     },
 
+    promptStop: function() {
+      this.get('modalService').toggleModal('modal-container-stop', {
+        model: this
+      });
+    },
+
     stop: function() {
-      return this.doAction('stop');
+      this.doAction('stop');
     },
 
     shell: function() {
-      this.get('application').setProperties({
-        showShell: true,
-        originalModel: this,
+      this.get('modalService').toggleModal('modal-shell', {
+        model: this,
+        escToClose: false,
       });
     },
 
@@ -72,7 +62,7 @@ var Container = Resource.extend({
       let proj = this.get('projects.current.id');
       let id = this.get('id');
       Ember.run.later(() => {
-        window.open(`//${window.location.host}/env/${proj}/infra/console?instanceId=${id}&isPopup=true`, '_blank', "toolbars=0,width=717,height=497,left=200,top=200");
+        window.open(`//${window.location.host}/env/${proj}/infra/console?instanceId=${id}&isPopup=true`, '_blank', "toolbars=0,width=717,height=590,left=200,top=200");
       });
     },
 
@@ -85,17 +75,11 @@ var Container = Resource.extend({
     },
 
     logs: function() {
-      this.get('application').setProperties({
-        showContainerLogs: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('modal-container-logs', this);
     },
 
     edit: function() {
-      this.get('application').setProperties({
-        editContainer: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('edit-container', this);
     },
 
     clone: function() {
@@ -105,6 +89,7 @@ var Container = Resource.extend({
     cloneToService: function() {
       this.get('router').transitionTo('service.new', {queryParams: {containerId: this.get('id')}});
     },
+
   },
 
   availableActions: function() {
@@ -115,7 +100,7 @@ var Container = Resource.extend({
     }
 
     var labelKeys = Object.keys(this.get('labels')||{});
-    var isSystem = this.get('systemContainer') !== null;
+    var isSystem = !!this.get('system') || labelKeys.indexOf(C.LABEL.SYSTEM_TYPE) >= 0;
     var isService = labelKeys.indexOf(C.LABEL.SERVICE_NAME) >= 0;
     var isVm = this.get('isVm');
     var isK8s = labelKeys.indexOf(C.LABEL.K8S_POD_NAME) >= 0;
@@ -123,7 +108,7 @@ var Container = Resource.extend({
     var choices = [
       { label: 'action.restart',    icon: 'icon icon-refresh',      action: 'restart',      enabled: !!a.restart },
       { label: 'action.start',      icon: 'icon icon-play',         action: 'start',        enabled: !!a.start },
-      { label: 'action.stop',       icon: 'icon icon-stop',         action: 'stop',         enabled: !!a.stop },
+      { label: 'action.stop',       icon: 'icon icon-stop',         action: 'promptStop',         enabled: !!a.stop, altAction: 'stop' },
       { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
       { label: 'action.purge',      icon: '',                       action: 'purge',        enabled: !!a.purge },
       { divider: true },
@@ -137,9 +122,14 @@ var Container = Resource.extend({
     ];
 
     return choices;
-  }.property('actionLinks.{restart,start,stop,restore,purge,execute,logs,update,remove}','systemContainer','canDelete','labels','isVm'),
+  }.property('actionLinks.{restart,start,stop,restore,purge,execute,logs,update}','systemContainer','canDelete','labels','isVm'),
 
 
+  memoryReservationBlurb: Ember.computed('memoryReservation', function() {
+    if ( this.get('memoryReservation') ) {
+      return formatSi(this.get('memoryReservation'), 1024, 'iB', 'B');
+    }
+  }),
   // Hacks
   hasManagedNetwork: function() {
     return this.get('primaryIpAddress') && this.get('primaryIpAddress').indexOf('10.') === 0;
@@ -199,13 +189,6 @@ var Container = Resource.extend({
   }.property('state'),
 
   isManaged: Ember.computed.notEmpty('systemContainer'),
-  primaryHost: function() {
-    if ( this.get('hostId') )
-    {
-      return this.get('store').getById('host', this.get('hostId'));
-    }
-  }.property('hostId'),
-  primaryService: Ember.computed.alias('services.firstObject'),
 
   displayImage: function() {
     return (this.get('imageUuid')||'').replace(/^docker:/,'');
@@ -219,24 +202,9 @@ var Container = Resource.extend({
     }
   }.property('externalId'),
 
-  mounts: function() {
-    return this.get('_allMounts').filterBy('instanceId', this.get('id'));
-  }.property('_allMounts.@each.instanceId','id'),
-
-  activeMounts: function() {
-    var mounts = this.get('mounts')||[];
-    return mounts.filter(function(mount) {
-      return ['removed','purged', 'inactive'].indexOf(mount.get('state')) === -1;
-    });
-  }.property('mounts.@each.state'),
-});
-
-Container.reopenClass({
-  reset: function() {
-    _allMounts = null;
-  },
-
-  alwaysInclude: ['services'],
+  isGlobalScale: function() {
+    return (this.get('labels')||{})[C.LABEL.SCHED_GLOBAL] + '' === 'true';
+  }.property('labels'),
 });
 
 export default Container;

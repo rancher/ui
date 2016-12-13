@@ -12,13 +12,24 @@ export default Ember.Component.extend({
 
   projectId        : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
 
+  modalService: Ember.inject.service('modal'),
   actions: {
     showAbout() {
-      this.sendAction('showAbout');
+      this.get('modalService').toggleModal('modal-about', {
+        closeWithOutsideClick: true
+      });
     },
 
     composeDownload(os) {
       var url = this.get('settings').get(C.SETTING.COMPOSE_URL[os.toUpperCase()]);
+      if ( url )
+      {
+        Util.download(url);
+      }
+    },
+
+    cliDownload(os) {
+      var url = this.get('settings').get(C.SETTING.CLI_URL[os.toUpperCase()]);
       if ( url )
       {
         Util.download(url);

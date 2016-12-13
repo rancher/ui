@@ -8,6 +8,7 @@ export default Ember.Controller.extend(Sortable, {
 
   sortableContent   : Ember.computed.alias('model.auditLog'),
   resourceTypeAndId : null,
+  modalService: Ember.inject.service('modal'),
 
   actions: {
     updateResourceType: function(type) {
@@ -35,8 +36,7 @@ export default Ember.Controller.extend(Sortable, {
     },
 
     showResponseObjects: function(request, response) {
-      this.get('application').setProperties({
-        showAuditLogResponses : true,
+      this.get('modalService').toggleModal('modal-auditlog-info', {
         requestObject         : request,
         responseObject        : response,
       });

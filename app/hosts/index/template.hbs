@@ -15,10 +15,6 @@
   </div>
 </section>
 
-{{#columns-section pods=pods emptyMessage=(t 'hostsPage.index.columns.emptyMessage') as |item| }}
-  {{#if item.isPendingMachine}}
-    {{host-pod model=item.machine mode=mode newContainer="newContainer"}}
-  {{else}}
-    {{host-pod model=item mode=mode newContainer="newContainer" show=show}}
-  {{/if}}
+{{#columns-section pods=model.hosts emptyMessage=(t 'hostsPage.index.columns.emptyMessage') as |item| }}
+  {{host-pod model=item mode=mode newContainer="newContainer" show=show}}
 {{/columns-section}}

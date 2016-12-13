@@ -51,7 +51,7 @@ export default Ember.Component.extend({
   }.observes('data.length'),
 
   cssSize: function() {
-    return new Ember.Handlebars.SafeString('width: ' + this.get('width') + 'px; height: ' + this.get('height') + 'px');
+    return new Ember.String.htmlSafe('width: ' + this.get('width') + 'px; height: ' + this.get('height') + 'px');
   }.property('width', 'height'),
 
   lastValue: function() {

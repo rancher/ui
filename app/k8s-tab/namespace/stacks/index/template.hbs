@@ -1,0 +1,12 @@
+<section class="header">
+  <h1>{{t 'k8sTab.namespace.stacks.index.header'}}</h1>
+  {{#link-to "catalog-tab" classNames="btn btn-sm btn-primary"}}{{t 'k8sTab.namespace.stacks.index.linkTo'}}{{/link-to}}
+</section>
+
+<section>
+  {{#each model as |stack|}}
+    {{k8s/stack-section model=stack}}
+  {{else}}
+    {{k8s/hero-add-stack}}
+  {{/each}}
+</section>

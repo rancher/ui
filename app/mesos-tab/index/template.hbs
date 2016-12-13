@@ -18,7 +18,11 @@
       </div>
       <h4>{{t 'mesosPage.manage.header'}}</h4>
       <p>{{t 'mesosPage.manage.content'}}</p>
-      <a href="{{model.url}}" target="_blank" rel="noreferrer nofollow" class="btn btn-primary">{{t 'mesosPage.manage.button'}}</a>
+      {{#if model.url}}
+        <a href="{{model.url}}" target="_blank" rel="noreferrer nofollow" class="btn btn-primary">{{t 'mesosPage.manage.button'}}</a>
+      {{else}}
+        <button class="btn btn-primary btn-disabled">{{t 'mesosPage.manage.button'}}</button>
+      {{/if}}
     </div>
   </div>
   <div class="text-center col-md-6 gutter">
@@ -28,7 +32,11 @@
       </div>
       <h4>{{t 'mesosPage.launch.header'}}</h4>
       <p>{{t 'mesosPage.launch.content'}}</p>
-      {{#link-to 'catalog-tab' class="btn btn-primary"}}{{t 'mesosPage.launch.button'}}{{/link-to}}
+      {{#if model.url}}
+        {{#link-to 'catalog-tab' class="btn btn-primary"}}{{t 'mesosPage.launch.button'}}{{/link-to}}
+      {{else}}
+        <button class="btn btn-primary btn-disabled">{{t 'mesosPage.launch.button'}}</button>
+      {{/if}}
     </div>
   </div>
 </div>

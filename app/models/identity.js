@@ -3,6 +3,8 @@ import Resource from 'ember-api-store/models/resource';
 import C from 'ui/utils/constants';
 
 var Identity = Resource.extend({
+  intl: Ember.inject.service(),
+
   isUser: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_USER),
   isTeam: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_TEAM),
   isOrg: Ember.computed.equal('externalIdType', C.PROJECT.TYPE_ORG),
@@ -63,23 +65,34 @@ var Identity = Resource.extend({
   }.property('logicalType'),
 
   displayType: function() {
-    switch ( this.get('externalIdType') )
+    let key = 'model.identity.displayType.unknown';
+    let type = this.get('externalIdType');
+    switch ( type )
     {
       case C.PROJECT.TYPE_GITHUB_USER:
       case C.PROJECT.TYPE_AZURE_USER:
       case C.PROJECT.TYPE_LDAP_USER:
-      case C.PROJECT.TYPE_OPENLDAP_USER:  return 'User';
-
-      case C.PROJECT.TYPE_GITHUB_TEAM:    return 'Team';
-      case C.PROJECT.TYPE_GITHUB_ORG:     return 'Organization';
-      case C.PROJECT.TYPE_AZURE_GROUP:    return 'Group';
-      case C.PROJECT.TYPE_LDAP_GROUP:     return 'Group';
-      case C.PROJECT.TYPE_OPENLDAP_GROUP: return 'Group';
-      case C.PROJECT.TYPE_RANCHER:        return 'Local User';
+      case C.PROJECT.TYPE_OPENLDAP_USER:
+        key = 'model.identity.displayType.user';
+        break;
+      case C.PROJECT.TYPE_AZURE_GROUP:
+      case C.PROJECT.TYPE_LDAP_GROUP:
+      case C.PROJECT.TYPE_OPENLDAP_GROUP:
+        key = 'model.identity.displayType.group';
+        break;
+      case C.PROJECT.TYPE_GITHUB_TEAM:
+        key = 'model.identity.displayType.team';
+        break;
+      case C.PROJECT.TYPE_GITHUB_ORG:
+        key = 'model.identity.displayType.org';
+        break;
+      case C.PROJECT.TYPE_RANCHER:
+        key = 'model.identity.displayType.localUser';
+        break;
     }
 
-    return this.get('externalIdType')+'?';
-  }.property('externalIdType'),
+    return this.get('intl').t(key, {type: type});
+  }.property('externalIdType','intl._locale'),
 });
 
 export default Identity;

@@ -181,34 +181,40 @@ export default Ember.Component.extend({
     }
   }.observes('isGlobal'),
 
+  getSuffixLabel: Ember.computed('suffix', function() {
+    let label = this.get('schedulingRuleSuffixChoices').findBy('value', this.get('suffix')).label;
+    label = label.split('.');
+    return label[label.length -1];
+  }),
+
   schedulingRuleSuffixChoices: function() {
     var out = [
-      {label: 'must',       value: ''},
+      {label: 'schedulingRuleRow.must', value: ''},
     ];
 
     if ( !this.get('isGlobal') )
     {
       out.pushObjects([
-        {label: 'should',     value: '_soft'},
-        {label: 'should not', value: '_soft_ne'},
+        {label: 'schedulingRuleRow.should', value: '_soft'},
+        {label: 'schedulingRuleRow.shouldNot', value: '_soft_ne'},
       ]);
     }
 
-    out.push({label: 'must not',   value: '_ne'});
+    out.push({label: 'schedulingRuleRow.mustNot', value: '_ne'});
     return out;
   }.property('isGlobal'),
 
   schedulingRuleKindChoices: function() {
     var out = [
-      {label: 'host label',               value: 'host_label'},
+      {label: 'schedulingRuleRow.hostLabel', value: 'host_label'},
     ];
 
     if ( !this.get('isGlobal') )
     {
       out.pushObjects([
-        {label: 'container with label',     value: 'container_label'},
-        {label: 'service with the name',    value: 'service_name'},
-        {label: 'container with the name',  value: 'container_name'},
+        {label: 'schedulingRuleRow.containerLabel', value: 'container_label'},
+        {label: 'schedulingRuleRow.serviceName', value: 'service_name'},
+        {label: 'schedulingRuleRow.containerName', value: 'container_name'},
       ]);
     }
 
@@ -240,7 +246,7 @@ export default Ember.Component.extend({
     });
 
     return out.sortBy('name','id').uniq();
-  }.property('allHosts.@each.instancesUpdated'),
+  }.property('allHosts.@each.instances'),
 
   normalizedContainerLabels: function() {
     return normalizedLabels(this.get('allContainers'));

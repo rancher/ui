@@ -2,23 +2,24 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   // Inputs
-  initialValues: null,
-  addActionLabel: 'formValueArray.addActionLabel',
-  valueLabel: 'formValueArray.valueLabel',
-  valuePlaceholder: 'formValueArray.valuePlaceholder',
-  showProTip: true,
+  initialValues    : null,
+  addActionLabel   : 'formValueArray.addActionLabel',
+  valueLabel       : 'formValueArray.valueLabel',
+  valuePlaceholder : 'formValueArray.valuePlaceholder',
+  showProTip       : true,
 
-  ary: null,
-  asValues: null,
+  ary              : null,
+  asValues         : null,
 
   actions: {
     add() {
       this.get('ary').pushObject(Ember.Object.create({value: ''}));
       Ember.run.next(() => {
-        if ( this._state !== 'destroying' )
-        {
-          this.$('INPUT.value').last()[0].focus();
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
         }
+
+        this.$('INPUT.value').last()[0].focus();
       });
     },
 
@@ -54,7 +55,9 @@ export default Ember.Component.extend({
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     var ary = [];
     (this.get('initialValues')||[]).forEach((value) => {
       ary.push(Ember.Object.create({value: value}));

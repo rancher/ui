@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 export default Ember.Route.extend({
   allServices: Ember.inject.service(),
@@ -78,7 +79,7 @@ export default Ember.Route.extend({
       {
         serviceData = {
           type: 'service',
-          environmentId: params.environmentId,
+          stackId: params.stackId,
           scale: 1,
           startOnCreate: true,
         };
@@ -106,10 +107,24 @@ export default Ember.Route.extend({
     });
   },
 
+  afterModel: function(model) {
+    model.set('service.secondaryLaunchConfigs', this.setUiId(model.get('service.secondaryLaunchConfigs')));
+  },
+
+  setUiId: function(configs) {
+    configs.forEach((config) => {
+      let uiId = Util.randomStr();
+      config.uiId = uiId;
+    });
+    return configs;
+  },
+
+
+
   resetController: function (controller, isExiting/*, transition*/) {
     if (isExiting)
     {
-      controller.set('environmentId', null);
+      controller.set('stackId', null);
       controller.set('serviceId', null);
       controller.set('containerId', null);
       controller.set('upgrade', null);

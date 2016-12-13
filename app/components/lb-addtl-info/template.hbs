@@ -1,5 +1,5 @@
 <div class="content-box col-md-3 col-md-height col-md-full-height">
-  <label class="text-muted">Info (<small>{{#link-to 'service' service.environmentId service.id class=''}} {{t 'lbAddtlInfo.viewDetails'}} {{/link-to}}</small>)</label>
+  <label class="text-muted">{{t 'lbAddtlInfo.info'}} (<small>{{#link-to 'service' service.stackId service.id class=''}} {{t 'lbAddtlInfo.viewDetails'}} {{/link-to}}</small>)</label>
   <div class="content">
     <div class="state">
       {{badge-state model=service}}  {{action-menu model=service size='xs' class="no-wrap pull-right"}}
@@ -53,7 +53,7 @@
             <button class="btn btn-default btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
           </div>
         {{else}}
-          {{if service.isGlobalScale 'Global'}}
+          {{if service.isGlobalScale (t 'lbAddtlInfo.global')}}
         {{/if}}
       </div>
     </div>
@@ -77,17 +77,19 @@
   <label class="text-muted">{{t 'lbAddtlInfo.targets'}}</label>
   <div class="content" style="overflow:auto;">
     <ul class="list-unstyled">
-      {{#each targetsArray as |target|~}}
+      {{#each targets as |target|~}}
         <li>
-          {{~#if (or target.hostname target.srcPort target.path)~}}
-            {{target.hostname}}{{if target.srcPort ":"}}{{target.srcPort}}{{target.path}}
-            <span class="text-muted"> {{t 'lbAddtlInfo.to'}} </span>
+          {{#if target.selector}}
+            {{target.selector}}
+          {{else}}
+            <a href="{{href-to "service" target.service.stackId target.service.id}}">
+              {{#if (not-eq service.stackId target.service.stackId)~}}
+                {{target.service.displayStack}}/
+              {{~/if~}}
+              {{~target.service.displayName~}}
+            </a>
           {{~/if~}}
-          {{~#link-to 'service' target.environmentId target.id~}}
-            {{~#if (not (eq target.environmentId service.environmentId))~}}{{target.service.displayEnvironment}}/{{~/if~}}
-            {{target.value}}
-          {{~/link-to~}}
-          {{~#if target.dstPort~}}:{{target.dstPort}}{{~/if~}}
+          {{~#if target.targetPort~}}:{{target.targetPort}}{{~/if~}}
         </li>
       {{~/each}}
     </ul>

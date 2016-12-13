@@ -1,4 +1,4 @@
-<nav class="navbar">
+<nav class="navbar clearfix">
   <div class="container-fluid">
     <div class="navbar-header">
       <a role="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false">
@@ -9,6 +9,7 @@
         <li><button class="navbar-brand logo btn"></button></li><!--
           -->{{~page-header-environment
             currentPath=currentPath
+            isOwner=isOwner
             switchProject="switchProject"
             switchNamespace="switchNamespace"
           ~}}
@@ -21,70 +22,76 @@
             <li>
               <a href="{{item.url}}" target="{{item.target}}">{{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}}</a>
             </li>
+          {{else if item.submenu.length}}
+            {{! Has a submenu }}
+            <li class="dropdown">
+              {{#link-to-as-attrs
+                item.route
+                models=item.ctx
+                queryParams=item.queryParams
+                moreCurrentWhen=item.moreCurrentWhen
+                activeParent=true
+                class="dropdown-toggle"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+              }}
+                {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}} <span class="icon icon-chevron-down hidden-sm hidden-xs"/>
+              {{/link-to-as-attrs}}
+              <ul class="dropdown-menu" data-dropdown-id={{item.id}}>
+                {{#each item.submenu as |subitem|}}
+                  {{#if subitem.divider}}
+                    <li class="divider"></li>
+                  {{else if subitem.url}}
+                    <li>
+                      <a href="{{subitem.url}}" target="{{subitem.target}}">
+                        <i class="{{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
+                      </a>
+                    </li>
+                  {{else if subitem.route}}
+                    <li>
+                      {{#link-to-as-attrs
+                        subitem.route
+                        models=subitem.ctx
+                        queryParams=subitem.queryParams
+                        activeParent=true
+                        moreCurrentWhen=subitem.moreCurrentWhen
+                      }}
+                        <i class="{{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
+                      {{/link-to-as-attrs}}
+                    </li>
+                  {{else}}
+                    {{! Just a label }}
+                    <li class="dropdown-header">
+                     <i class="{{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
+                    </li>
+                  {{/if}}
+                {{/each}}
+              </ul>
+              {{#if item.showAlert}}
+                {{#tooltip-element class="tooltip-warning" type='tooltip-warning' tooltipFor="showAlert"}}
+                  {{#link-to item.alertRoute data-toggle="tooltip" data-placement="bottom"}}!{{/link-to}}
+                {{/tooltip-element}}
+              {{/if}}
+            </li>
+          {{else if item.route}}
+            {{! No submenu }}
+            <li>
+              {{#link-to-as-attrs
+                item.route
+                models=item.ctx
+                queryParams=item.queryParams
+                activeParent=true
+                moreCurrentWhen=item.moreCurrentWhen
+              }}
+                {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}}
+              {{/link-to-as-attrs}}
+            </li>
           {{else}}
-            {{#if item.submenu.length}}
-              {{! Has a submenu }}
-              <li class="dropdown">
-                {{#link-to-as-attrs
-                  item.route
-                  models=item.ctx
-                  queryParams=item.queryParams
-                  moreCurrentWhen=item.moreCurrentWhen
-                  activeParent=true
-                  class="dropdown-toggle"
-                  role="button"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                }}
-                  {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}} <span class="icon icon-chevron-down hidden-sm hidden-xs"/>
-                {{/link-to-as-attrs}}
-                <ul class="dropdown-menu" data-dropdown-id={{item.id}}>
-                  {{#each item.submenu as |subitem|}}
-                    {{#if subitem.divider}}
-                      <li class="divider"></li>
-                    {{else}}
-                      {{#if subitem.url}}
-                        <li>
-                          <a href="{{subitem.url}}" target="{{subitem.target}}">
-                            <i class="icon {{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
-                          </a>
-                        </li>
-                      {{else}}
-                        <li>
-                          {{#link-to-as-attrs
-                            subitem.route
-                            models=subitem.ctx
-                            queryParams=subitem.queryParams
-                            activeParent=true
-                            moreCurrentWhen=subitem.moreCurrentWhen
-                          }}
-                            <i class="icon {{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
-                          {{/link-to-as-attrs}}
-                        </li>
-                      {{/if}}
-                    {{/if}}
-                  {{/each}}
-                </ul>
-                {{#if item.showAlert}}
-                  {{#tooltip-element class="tooltip-warning" type='tooltip-warning'}}
-                    {{#link-to item.alertRoute data-toggle="tooltip" data-placement="bottom"}}!{{/link-to}}
-                  {{/tooltip-element}}
-                {{/if}}
-              </li>
-            {{else}}
-              {{! No submenu }}
-              <li>
-                {{#link-to-as-attrs
-                  item.route
-                  models=item.ctx
-                  queryParams=item.queryParams
-                  activeParent=true
-                  moreCurrentWhen=item.moreCurrentWhen
-                }}
-                  {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}}
-                {{/link-to-as-attrs}}
-              </li>
-            {{/if}}
+            {{! Just a label }}
+            <li class="dropdown-header">
+              {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}}
+            </li>
           {{/if}}
         {{/each}}
       </ul>
@@ -95,4 +102,25 @@
     </div>
   </div>
 </nav>
-<div class="clearfix"></div>
+{{#unless hosts.length}}
+  <div class="lacsso banner bg-info m-0 p-0">
+    <div class="lacsso banner-icon" style="width: 68px;"><span class="icon icon-2x icon-alert"></span></div>
+    <div class="lacsso banner-message">
+      <p class="lacsso mt-15 mb-15">
+        {{~t 'nav.noHosts.prefix' appName=settings.appName minVersion=settings.minDockerVersion~}}
+        <a href="{{href-to 'hosts.new'}}">{{~t 'nav.noHosts.link' appName=settings.appName minVersion=settings.minDockerVersion~}}</a>
+        {{~t 'nav.noHosts.suffix' appName=settings.appName minVersion=settings.minDockerVersion~}}
+      </p>
+    </div>
+  </div>
+{{/unless}}
+{{#if projects.current.isUpgrading}}
+  <div class="lacsso banner bg-warning m-0 p-0">
+    <div class="lacsso banner-icon" style="width: 68px;"><span class="icon icon-2x icon-spinner icon-spin"></span></div>
+    <div class="lacsso banner-message">
+      <p class="lacsso mt-15 mb-15">
+        {{format-html-message 'projectUpgrade.banner'}}
+      </p>
+    </div>
+  </div>
+{{/if}}

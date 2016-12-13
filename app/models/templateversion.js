@@ -1,4 +1,5 @@
 import Resource from 'ember-api-store/models/resource';
+import C from 'ui/utils/constants';
 
 export default Resource.extend({
   filesAsArray: function() {
@@ -11,4 +12,13 @@ export default Resource.extend({
 
     return out;
   }.property('files'),
+
+  supportsOrchestration(orch) {
+    orch = orch.replace(/.*\*/,'');
+    if ( orch === 'k8s' ) {
+      orch = 'kubernetes';
+    }
+    let list = ((this.get('labels')||{})[C.LABEL.ORCHESTRATION_SUPPORTED]||'').split(/\s*,\s*/).filter((x) => x.length > 0);
+    return list.length === 0 || list.includes(orch);
+  },
 });

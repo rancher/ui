@@ -1,7 +1,7 @@
 <section class="horizontal-form">
   <form>
     <div class="container-fluid">
-      <div class="over-hr r-mt20 r-mb20">
+      <div class="over-hr r-mb20">
         <span>{{t 'machine.driverAmazon.accessSection'}}</span>
       </div>
 
@@ -171,9 +171,9 @@
           </div>
 
           {{#if isCustomSecurityGroup}}
-            <select class="form-control" onchange={{action (mut selectedSecurityGroup) value="target.value"}}>
+            <select class="form-control existing-security-groups" multiple="true" onchange={{action 'multiSecurityGroupSelect' ''}}>
               {{#each allSecurityGroups as |choice|}}
-                <option value={{choice.name}} selected={{eq selectedSecurityGroup choice.name}}>{{choice.name}} ({{choice.id}})</option>
+                <option value={{choice.name}} selected={{include selectedSecurityGroup choice.name}}>{{choice.name}} ({{choice.id}})</option>
               {{/each}}
             </select>
 
@@ -186,7 +186,15 @@
           {{/if}}
         {{else}}
           <div class="form-control-static">
-            {{amazonec2Config.securityGroup}}
+            {{#if (is-array amazonec2Config.securityGroup)}}
+              <div class="comma-seperated-list">
+                {{#each amazonec2Config.securityGroup as |group|}}
+                  <span>{{group}}</span>
+                {{/each}}
+              </div>
+            {{else}}
+              {{amazonec2Config.securityGroup}}
+            {{/if}}
           </div>
         {{/if}}
       </div>

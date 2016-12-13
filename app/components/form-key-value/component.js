@@ -9,6 +9,10 @@ function applyLinesIntoArray(lines, ary) {
     }
 
     var idx = line.indexOf('=');
+    if ( idx === -1 ) {
+      idx = line.indexOf(': ');
+    }
+
     var key = '';
     var val = '';
     if ( idx > 0 )
@@ -51,30 +55,30 @@ function removeEmptyEntries(ary, allowEmptyValue=false) {
   ary.removeObjects(toRemove);
 }
 
-
 export default Ember.Component.extend({
   // Inputs
-  initialStr: null,
-  initialMap: null,
-  addActionLabel: 'formKeyValue.addAction',
-  keyLabel: 'formKeyValue.key.label',
-  valueLabel: 'formKeyValue.value.label',
-  keyPlaceholder: 'formKeyValue.key.placeholder',
-  valuePlaceholder: 'formKeyValue.value.placeholder',
-  allowEmptyValue: false,
-  addInitialEmptyRow: false,
-  allowMultilineValue: true,
-
-  ary: null,
+  initialStr:           null,
+  initialMap:           null,
+  addActionLabel:       'formKeyValue.addAction',
+  keyLabel:             'formKeyValue.key.label',
+  valueLabel:           'formKeyValue.value.label',
+  keyPlaceholder:       'formKeyValue.key.placeholder',
+  valuePlaceholder:     'formKeyValue.value.placeholder',
+  allowEmptyValue:      false,
+  addInitialEmptyRow:   false,
+  allowMultilineValue:  true,
+  editing:              true,
+  ary:                  null,
 
   actions: {
     add() {
       this.get('ary').pushObject(Ember.Object.create({key: '', value: ''}));
       Ember.run.next(() => {
-        if ( this._state !== 'destroying' )
-        {
-          this.$('INPUT.key').last()[0].focus();
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
         }
+
+        this.$('INPUT.key').last()[0].focus();
       });
     },
 
@@ -98,7 +102,9 @@ export default Ember.Component.extend({
     },
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     var ary = [];
     var map = this.get('initialMap');
     if ( map )
@@ -126,8 +132,7 @@ export default Ember.Component.extend({
   }.observes('ary.@each.{key,value}'),
 
   fireChanged() {
-    if ( this._state === 'destroying' )
-    {
+    if ( this.isDestroyed || this.isDestroying ) {
       return;
     }
 

@@ -1,8 +1,7 @@
 import Ember from 'ember';
-const { getOwner } = Ember;
-import ActiveArrayProxy from 'ui/utils/active-array-proxy';
 import C from 'ui/utils/constants';
 
+let ACTIVEISH = ['active','upgrading','updating-active'];
 
 export default Ember.Service.extend({
   access: Ember.inject.service(),
@@ -11,14 +10,17 @@ export default Ember.Service.extend({
   k8sSvc: Ember.inject.service('k8s'),
   swarmSvc: Ember.inject.service('swarm'),
   mesosSvc: Ember.inject.service('mesos'),
+  userStore: Ember.inject.service('user-store'),
+  store: Ember.inject.service(),
 
   current: null,
   all: null,
+
   active: function() {
-    return ActiveArrayProxy.create({
-      sourceContent: this.get('all')||[]
+    return this.get('all').filter((project) => {
+      return ACTIVEISH.includes(project.get('state'));
     });
-  }.property('all.[]'),
+  }.property('all.@each.state'),
 
   getAll: function() {
     var opt = {
@@ -64,7 +66,10 @@ export default Ember.Service.extend({
           {
             // Then if you're an admin the first active of any kind
             return this.getAll().then((all) => {
-              var firstActive = all.filterBy('state','active')[0];
+              var firstActive = all.find((project) => {
+                return ACTIVEISH.includes(project.get('state'));
+              });
+
               if ( firstActive )
               {
                 return select(firstActive, true);
@@ -132,7 +137,7 @@ export default Ember.Service.extend({
       }
 
       this.get('userStore').find('project', projectId, {url: 'projects/'+encodeURIComponent(projectId)}).then((project) => {
-        if ( project.get('state') === 'active' )
+        if ( ACTIVEISH.includes(project.get('state')) )
         {
           resolve(project);
         }
@@ -161,7 +166,8 @@ export default Ember.Service.extend({
 
     if ( this.get('current') )
     {
-      if ( this.get('current.kubernetes') )
+      let orch = this.get('current.orchestration');
+      if ( orch === 'kubernetes' )
       {
         hash.hasKubernetes = true;
         promises.push(this.get('k8sSvc').isReady().then((ready) => {
@@ -169,7 +175,7 @@ export default Ember.Service.extend({
         }));
       }
 
-      if ( this.get('current.swarm') )
+      if ( orch === 'swarm' )
       {
         hash.hasSwarm = true;
         promises.push(this.get('swarmSvc').isReady().then((ready) => {
@@ -177,7 +183,7 @@ export default Ember.Service.extend({
         }));
       }
 
-      if ( this.get('current.mesos') )
+      if ( orch === 'mesos' )
       {
         hash.hasMesos = true;
         promises.push(this.get('mesosSvc').isReady().then((ready) => {
@@ -189,12 +195,14 @@ export default Ember.Service.extend({
     return Ember.RSVP.all(promises).then(() => {
       this.set('orchestrationState', hash);
       return Ember.RSVP.resolve(hash);
+    }).catch((e) => {
+      return Ember.RSVP.reject(e);
     });
   },
 
   orchestrationStateShouldChange: function() {
     Ember.run.once(this, 'updateOrchestrationState', true);
-  }.observes('current.{id,kubernetes,swarm,mesos}'),
+  }.observes('current.{id,orchestration}'),
 
   isReady: function() {
     var state = this.get('orchestrationState');
@@ -210,30 +218,4 @@ export default Ember.Service.extend({
       (!state.hasMesos || state.mesosReady)
     );
   }.property('orchestrationState'), // The state object is always completely replaced, so this is ok
-
-  checkForWaiting(hosts,machines) {
-    let router = getOwner(this).get('router');
-
-    let hasHosts = false;
-    if ( this.get('current.mesos') )
-    {
-      hasHosts = (hosts && hosts.filterBy('state','active').get('length') >= 2);
-    }
-    else
-    {
-      hasHosts = (hosts && hosts.get('length') > 0) || (machines && machines.get('length') > 0);
-    }
-
-    if ( !hasHosts )
-    {
-      router.transitionTo('authenticated.project.waiting', this.get('current.id'));
-    }
-
-    return this.updateOrchestrationState().then(() => {
-      if ( !this.get('isReady') )
-      {
-        router.transitionTo('authenticated.project.waiting', this.get('current.id'));
-      }
-    });
-  }
 });

@@ -22,9 +22,11 @@ export function debouncedObserver(...args) {
   keys = args.slice(0, funcIndex);
 
   var fn = function() {
-    if ( this._state !== 'destroying' ) {
-    opt[0].apply(this);
+    if ( this.isDestroyed || this.isDestroying ) {
+      return;
     }
+
+    opt[0].apply(this);
   };
 
   return Ember.observer.apply(Ember, keys.concat(function() {

@@ -1,12 +1,9 @@
 import Resource from 'ember-api-store/models/resource';
+import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 
-var StoragePool = Resource.extend({
+export default Resource.extend({
   type: 'storagePool',
 
+  hosts: denormalizeIdArray('hostIds'),
+  volumes: denormalizeIdArray('volumeIds'),
 });
-
-StoragePool.reopenClass({
-  alwaysInclude: ['hosts','volumes'],
-});
-
-export default StoragePool;

@@ -1,25 +1,22 @@
 import Ember from 'ember';
 import { alternateLabel } from 'ui/utils/platform';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default Ember.Component.extend({
-  resources: null,
+export default ModalBase.extend({
+  classNames: ['lacsso', 'modal-container', 'medium-modal'],
+  resources: Ember.computed.alias('modalService.modalOpts'),
   alternateLabel: alternateLabel,
   settings: Ember.inject.service(),
 
   actions: {
-    outsideClick: function() {},
-
     confirm: function() {
       this.get('resources').forEach((resource) => {
         resource.delete();
       });
 
-      this.sendAction('dismiss');
+      this.send('cancel');
     },
 
-    cancel: function() {
-      this.sendAction('dismiss');
-    },
   },
 
   isEnvironment: Ember.computed('resources', function() {
@@ -37,7 +34,9 @@ export default Ember.Component.extend({
 
   didRender: function() {
     setTimeout(() => {
-      this.$('BUTTON')[0].focus();
+      try {
+        this.$('BUTTON')[0].focus();
+      } catch (e) {}
     }, 500);
   }
 });

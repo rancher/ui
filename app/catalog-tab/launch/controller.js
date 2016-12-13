@@ -1,8 +1,8 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  queryParams: ['environmentId','upgrade'],
-  environmentId: null,
+  queryParams: ['stackId','upgrade'],
+  stackId: null,
   upgrade: null,
 
   parentRoute: 'catalog-tab',

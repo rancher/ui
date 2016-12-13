@@ -1,8 +1,12 @@
+import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
 
 var Account = Resource.extend(PolledResource, {
   type: 'account',
+  modalService: Ember.inject.service('modal'),
+
+  reservedKeys: ['_allPasswords'],
 
   actions: {
     deactivate() {
@@ -14,10 +18,7 @@ var Account = Resource.extend(PolledResource, {
     },
 
     edit: function() {
-      this.get('application').setProperties({
-        editAccount: true,
-        originalModel: this,
-      });
+      this.get('modalService').toggleModal('edit-account', this);
     },
   },
 
@@ -38,28 +39,26 @@ var Account = Resource.extend(PolledResource, {
   }.property('actionLinks.{update,activate,deactivate,restore,remove,purge}'),
 
   username: function() {
-    var cred = this.get('passwordCredential');
-    if ( cred )
-    {
-      return cred.get('publicValue');
-    }
-    else
-    {
-      return null;
-    }
-  }.property('passwordCredential.{state,publicValue}'),
+    return this.get('passwordCredential.publicValue');
+  }.property('passwordCredential.publicValue'),
 
   passwordCredential: function() {
-    return (this.get('credentials')||[]).filterBy('state','active').filterBy('kind','password')[0];
-  }.property('credentials.@each.kind'),
+    return (this.get('passwords')||[]).objectAt(0);
+  }.property('passwords.@each.kind'),
 
-  apiKeys: function() {
-    return (this.get('credentials')||[]).filterBy('kind','apiKey');
-  }.property('credentials.@each.kind')
+  _allPasswords: null,
+  passwords: function() {
+    let all = this.get('_allPasswords');
+    if ( !all ) {
+      all = this.get('store').all('password');
+      this.set('_allPasswords', all);
+    }
+
+    return all.filterBy('accountId', this.get('id'));
+  }.property('_allPasswords.@each.accountId','id'),
 });
 
 Account.reopenClass({
-  alwaysInclude: ['credentials'],
   pollTransitioningDelay: 1000,
   pollTransitioningInterval: 5000,
 });

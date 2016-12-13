@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import Util from 'ui/utils/util';
 
 export default Ember.Service.extend({
   'tab-session': Ember.inject.service('tab-session'),
+  store: Ember.inject.service(),
 
   publicUrl: function() {
     return this.get('store').find('service').then((services) => {
@@ -26,40 +26,31 @@ export default Ember.Service.extend({
   }.property('app.mesosEndpoint',`tab-session.${C.TABSESSION.PROJECT}`),
 
   isReady: function() {
-    return this.get('store').find('environment').then((stacks) => {
-      return this.get('store').find('service').then((services) => {
-        let stack = this.filterSystemStack(stacks);
-        if ( stack )
-        {
-          let matching = services.filterBy('environmentId', stack.get('id'));
-          let expect = matching.get('length');
-          let healthy = Util.filterByValues(matching, 'healthState', C.READY_STATES).get('length');
-          if ( expect > 0 && expect === healthy )
-          {
-            return this.get('store').rawRequest({
-              url: `${this.get('masterUrl')}/${C.MESOS.HEALTH}`
-            }).then(() => {
-              return true;
-            });
-          }
-        }
+    return this.get('store').find('stack').then((stacks) => {
+      let stack = this.filterSystemStack(stacks);
+      if ( stack )
+      {
+        return this.get('store').rawRequest({
+          url: `${this.get('masterUrl')}/${C.MESOS.HEALTH}`
+        }).then(() => {
+          return true;
+        }).catch(() => {
+          return Ember.RSVP.resolve(false);
+        });
+      }
 
-        return false;
-      });
+      return false;
     }).catch(() => {
       return Ember.RSVP.resolve(false);
     });
   },
 
   filterSystemStack(stacks) {
-    const OLD_STACK_ID = C.EXTERNALID.KIND_SYSTEM + C.EXTERNALID.KIND_SEPARATOR + C.EXTERNALID.KIND_MESOS;
-    const NEW_STACK_PREFIX = C.EXTERNALID.KIND_SYSTEM_CATALOG + C.EXTERNALID.KIND_SEPARATOR + C.CATALOG.LIBRARY_KEY + C.EXTERNALID.GROUP_SEPARATOR + C.EXTERNALID.KIND_MESOS + C.EXTERNALID.GROUP_SEPARATOR;
-
-    var stack = (stacks||[]).filter((stack) => {
-      let externalId = stack.get('externalId')||'';
-      return externalId === OLD_STACK_ID || externalId.indexOf(NEW_STACK_PREFIX) === 0;
-    })[0];
-
-    return stack;
+    return (stacks||[]).find((stack) => {
+      let info = stack.get('externalIdInfo');
+      return (info.kind === C.EXTERNAL_ID.KIND_CATALOG || info.kind === C.EXTERNAL_ID.KIND_SYSTEM_CATALOG) &&
+        info.base === C.EXTERNAL_ID.KIND_INFRA &&
+        info.name === C.EXTERNAL_ID.KIND_MESOS;
+    });
   },
 });

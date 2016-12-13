@@ -1,43 +1,57 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
-import FilterState from 'ui/mixins/filter-state';
 
-export default Ember.Component.extend(FilterState, {
-  prefs: Ember.inject.service(),
-  projects: Ember.inject.service(),
-  hasVm: Ember.computed.alias('projects.current.virtualMachine'),
+export default Ember.Component.extend({
+  prefs             : Ember.inject.service(),
+  projects          : Ember.inject.service(),
+  hasVm             : Ember.computed.alias('projects.current.virtualMachine'),
 
-  model: null,
-  single: false,
+  model             : null,
+  single            : false,
+  showAddService    : true,
 
-  collapsed: true,
-  classNames: ['stack-section'],
+  collapsed         : true,
+  classNames        : ['stack-section'],
 
-  filterableContent: Ember.computed.alias('model.unremovedServices'),
+  sortedServices    : Ember.computed.sort('model.services','sortBy'),
+  sortBy: ['name','id'],
 
   actions: {
     toggleCollapse() {
       var collapsed = this.toggleProperty('collapsed');
       var list = this.get('prefs.'+C.PREFS.EXPANDED_STACKS)||[];
+      let id = this.get('model.id');
       if ( collapsed )
       {
-        list.removeObject(this.get('model.id'));
+        list.removeObject(id);
       }
-      else
+      else if (!list.includes(id))
       {
-        list.addObject(this.get('model.id'));
+        // Add at the front
+        list.unshift(id);
+      }
+
+      // Cut off the back to keep the list reasonable
+      if ( list.length > 100 ) {
+        list.length = 100;
       }
 
       this.get('prefs').set(C.PREFS.EXPANDED_STACKS, list);
     },
 
-    addtlInfo: function(service) {
+    addtlInfo(service) {
       this.sendAction('showAddtlInfo', service);
     },
+
+    upgradeImage(service) {
+      service.send('upgrade','true');
+    }
   },
 
-  didInitAttrs() {
+  init() {
+    this._super(...arguments);
+
     var list = this.get('prefs.'+C.PREFS.EXPANDED_STACKS)||[];
     if ( list.indexOf(this.get('model.id')) >= 0 )
     {
@@ -47,18 +61,18 @@ export default Ember.Component.extend(FilterState, {
 
   isKubernetes: function() {
     var parts = parseExternalId(this.get('model.externalId'));
-    return parts && parts.kind === C.EXTERNALID.KIND_KUBERNETES;
+    return parts && parts.kind === C.EXTERNAL_ID.KIND_KUBERNETES;
   }.property('model.externalId'),
 
 
   instanceCount: function() {
     var count = 0;
-    (this.get('filtered')||[]).forEach((service) => {
-      count += service.get('instances.length')||0;
+    (this.get('model.services')||[]).forEach((service) => {
+      count += service.get('instanceCount')||0;
     });
 
     return count;
-  }.property('filtered.@each.healthState'),
+  }.property('model.services.@each.instanceCount'),
 
   outputs: function() {
     var out = [];

@@ -1,5 +1,5 @@
 <section class="header">
-  <h1>{{t 'catalogPage.index.header'}} <span class="text-capitalize">{{selectedCatalog}}</span></h1>
+  <h1>{{t 'catalogPage.index.header'}} <span class="text-capitalize">{{catalogId}}</span></h1>
 
   <div class="pull-right">
     <button type="button" class="btn btn-default btn-sm" disabled={{eq updating 'yes'}} {{action "update"}}>
@@ -18,12 +18,17 @@
   <div class="btn-group pull-right r-ml10">
     <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">{{t 'catalogPage.index.category'}} <span class="text-capitalize">{{category}}</span> <i class="icon icon-chevron-down"></i></button>
     <ul class="dropdown-menu dropdown-menu-right">
-      {{#each categories as |category|}}
-      <li>
-        {{#link-to parentRoute (query-params category=category)}}
-          <span class="text-capitalize">{{category}}</span>
-        {{/link-to}}
-      </li>
+      {{#each categories as |opt|}}
+        {{#if (eq opt "all")}}
+          <li class="text-capitalize {{if (eq category opt) 'active'}}">{{#link-to parentRoute (query-params category=opt)}}{{opt}}{{/link-to}}</li>
+          <li class="divider"></li>
+        {{else}}
+          <li class="{{if (eq category opt) 'active'}}">
+            {{#link-to parentRoute (query-params category=opt)}}
+              {{opt}}
+            {{/link-to}}
+          </li>
+        {{/if}}
       {{/each}}
     </ul>
   </div>
@@ -36,27 +41,21 @@
 
 <section class="r-plr15 clearfix">
   {{#each arrangedContent as |catalogItem|}}
-    <div class="container-catalog text-center">
-      {{#if catalogItem.official}}
-        <div class='badge-certified'>
-          <strong>{{t 'catalogPage.index.certified'}}</strong>
-        </div>
-      {{/if}}
-      <div class="catalog-icon">
-        <img src="{{catalogItem.links.icon}}"/>
-      </div>
-      <div class="itemwrap">
-        <h5>
-          {{catalogItem.name}}
-        </h5>
-        {{#if showCatalogDropdown}}
-          <span class="small">in <span class="text-capitalize">{{catalogItem.catalogId}}</span></span>
+    {{#catalog-box model=catalogItem showSource=showCatalogDropdown as |section|}}
+      {{#if (eq section 'footer')}}
+        {{#if (eq catalogItem.templateBase 'infra')}}
+          {{#if catalogItem.exists}}
+            <button type="button" class="btn btn-sm btn-default btn-disabled" {{action "launch" catalogItem.id true allowedKeys="meta ctrl"}}>{{t 'catalogPage.index.action.alreadyDeployed'}}</button>
+          {{else if catalogItem.supported}}
+            <button class="btn btn-sm btn-primary" {{action "launch" catalogItem.id}}>{{t 'catalogPage.index.action.launch'}}</button>
+          {{else}}
+            <button type="button" class="btn btn-sm btn-default btn-disabled" {{action "launch" catalogItem.id true allowedKeys="meta ctrl"}}>{{t 'catalogPage.index.action.notCompatible'}}</button>
+          {{/if}}
+        {{else}}
+          <button type="button" class="btn btn-sm btn-primary" {{action "launch" catalogItem.id}}>{{t 'catalogPage.index.action.launch'}}</button>
         {{/if}}
-        <hr class="r-m10" />
-        <div class="r-mt10 description">{{catalogItem.description}}</div>
-      </div>
-      {{#link-to launchRoute catalogItem.id class="btn btn-sm btn-primary"}}{{t 'catalogPage.index.viewDetails'}}{{/link-to}}
-    </div>
+      {{/if}}
+    {{/catalog-box}}
   {{else}}
     <div class="text-muted r-mt20">
       {{#if showCatalogDropdown}}

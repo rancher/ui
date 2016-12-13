@@ -1,5 +1,5 @@
-{{#liquid-if hasHttpListeners}}
-  <div class="row {{unless isStickyNone 'form-group'}}">
+{{#liquid-if lbConfig.canSticky}}
+  <div class="row {{unless isNone 'form-group'}}">
     <div class="col-sm-12 col-md-2 form-label">
       <label>{{t 'formStickiness.stickiness'}}</label>
     </div>
@@ -7,18 +7,18 @@
       <label>{{radio-button selection=stickiness value="none"}} {{t 'formStickiness.none'}}</label>
     </div>
     <div class="col-sm-6 col-md-4 radio">
-      <label>{{radio-button selection=stickiness value="lbCookie"}} {{t 'formStickiness.newCookie'}}</label>
+      <label>{{radio-button selection=stickiness value="cookie"}} {{t 'formStickiness.newCookie'}}</label>
     </div>
   </div>
 
-  {{#liquid-if isStickyLbCookie}}
+  {{#liquid-if isCookie}}
     <div>
       <div class="row form-group">
         <div class="col-sm-12 col-md-2 form-label">
           <label class="form-control-static">{{t 'formStickiness.cookieName'}}</label>
         </div>
         <div class="col-sm-12 col-md-3">
-          {{input type="text" classNames="form-control" value=lbCookie.cookie placeholder=(t 'formStickiness.placeholder.sticky')}}
+          {{input type="text" classNames="form-control" value=policy.cookie placeholder=(t 'formStickiness.placeholder.sticky')}}
         </div>
         <div class="col-sm-12 col-md-2 form-label">
           <label class="form-control-static">{{t 'formStickiness.mode'}}</label>
@@ -26,8 +26,8 @@
         <div class="col-sm-12 col-md-3">
           {{new-select
             class="form-control"
-            content=lbCookieModeChoices
-            value=lbCookie.mode
+            content=modeChoices
+            value=policy.mode
           }}
         </div>
       </div>
@@ -36,7 +36,7 @@
           <label class="form-control-static">{{t 'formStickiness.domain'}}</label>
         </div>
         <div class="col-sm-12 col-md-8">
-          {{input type="text" classNames="form-control" value=lbCookie.domain placeholder=(t 'formStickiness.placeholder.domain')}}
+          {{input type="text" classNames="form-control" value=policy.domain placeholder=(t 'formStickiness.placeholder.domain')}}
         </div>
       </div>
       <div class="row form-group">
@@ -45,20 +45,20 @@
         </div>
         <div class="col-sm-12 col-md-8">
           <div class="checkbox">
-            <label>{{input type="checkbox" checked=lbCookie.indirect}} {{t 'formStickiness.indirect'}}</label>
+            <label>{{input type="checkbox" checked=policy.indirect}} {{t 'formStickiness.indirect'}}</label>
           </div>
           <div class="checkbox">
-            <label>{{input type="checkbox" checked=lbCookie.nocache}} {{t 'formStickiness.sendHeader'}}</label>
+            <label>{{input type="checkbox" checked=policy.nocache}} {{t 'formStickiness.sendHeader'}}</label>
           </div>
           <div class="checkbox">
-            <label>{{input type="checkbox" checked=lbCookie.postonly}} {{t 'formStickiness.onPost'}}</label>
+            <label>{{input type="checkbox" checked=policy.postonly}} {{t 'formStickiness.onPost'}}</label>
           </div>
         </div>
       </div>
     </div>
   {{/liquid-if}}
 {{else}}
-  <div class="text-muted text-center">
+  <div class="text-muted">
     {{t 'formStickiness.noPorts'}}
   </div>
 {{/liquid-if}}

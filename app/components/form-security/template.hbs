@@ -1,126 +1,253 @@
-<div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.privileged.label'}}</label>
+{{#if projects.current.isWindows}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formSecurity.isolation.label'}}</label>
+    </div>
+    <div class="col-sm-12 {{if editing "col-md-4" "col-md-3"}}">
+      {{#input-or-display editable=editing value=instance.isolation}}
+        {{new-select
+          classNames="form-control"
+          content=isolationChoices
+          localizedLabel=true
+          value=instance.isolation
+        }}
+      {{/input-or-display}}
+    </div>
   </div>
-  <div class="col-sm-12 col-md-3 form-label">
-    <div class="checkbox form-control-static text-left">
-      <label>{{input type="checkbox" checked=instance.privileged}} {{t 'formSecurity.privileged.checkbox'}}</label>
+{{else}}
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formSecurity.privileged.label'}}</label>
+    </div>
+    <div class="col-sm-12 col-md-3 form-label">
+      {{#input-or-display editable=editing value=instance.privileged}}
+        <div class="checkbox form-control-static text-left">
+          <label>{{input type="checkbox" checked=instance.privileged}} {{t 'formSecurity.privileged.checkbox'}}</label>
+        </div>
+      {{/input-or-display}}
+    </div>
+    <hr class="visible-xs-block visible-sm-block" />
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formSecurity.pidMode.label'}}</label>
+    </div>
+    <div class="col-sm-12 col-md-3 form-label">
+      {{#input-or-display editable=editing value=pidHost}}
+        <div class="checkbox form-control-static text-left">
+          <label>{{input type="checkbox" checked=pidHost}} {{t 'formSecurity.pidMode.checkbox'}}</label>
+        </div>
+      {{/input-or-display}}
     </div>
   </div>
 
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.pidMode.label'}}</label>
-  </div>
-  <div class="col-sm-12 col-md-3 form-label">
-    <div class="checkbox form-control-static text-left">
-      <label>{{input type="checkbox" checked=pidHost}} {{t 'formSecurity.pidMode.checkbox'}}</label>
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formSecurity.memoryLimit.label'}}</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      {{#input-or-display editable=editing value=memoryMb}}
+        <div class="input-group">
+          {{input type="number" min="1" step="1" value=memoryMb classNames="form-control" placeholder=(t 'formSecurity.memoryLimit.placeholder')}}
+          <div class="input-group-addon">{{t 'formSecurity.memoryLimit.mb'}}</div>
+        </div>
+      {{/input-or-display}}
+    </div>
+    <hr class="visible-xs-block visible-sm-block" />
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formSecurity.swapLimit.label'}}</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      {{#input-or-display editable=editing value=swapMb}}
+        <div class="input-group">
+          {{input type="number" min="1" step="1" value=swapMb classNames="form-control" placeholder=(if memoryMb 'Requires Memory Limit' 'Unlimited') disabled=(not memoryMb)}}
+          <div class="input-group-addon">{{t 'formSecurity.swapLimit.mb'}}</div>
+        </div>
+      {{/input-or-display}}
     </div>
   </div>
-</div>
-
-<div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.memoryLimit.label'}}</label>
-  </div>
-  <div class="col-sm-12 col-md-3">
-    <div class="input-group">
-      {{input type="number" min="1" step="1" value=memoryMb classNames="form-control" placeholder=(t 'formSecurity.memoryLimit.placeholder')}}
-      <div class="input-group-addon">{{t 'formSecurity.memoryLimit.mb'}}</div>
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formSecurity.memoryReservation.label'}}</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      {{#input-or-display editable=editing value=memoryReservationMb}}
+        <div class="input-group">
+          {{input type="number" min="1" step="1" value=memoryReservationMb classNames="form-control" placeholder=(t 'formSecurity.memoryLimit.placeholder')}}
+          <div class="input-group-addon">{{t 'formSecurity.memoryLimit.mb'}}</div>
+        </div>
+      {{/input-or-display}}
+    </div>
+    <hr class="visible-xs-block visible-sm-block" />
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formSecurity.milliCpuReservation.label'}}</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      {{#input-or-display editable=editing value=instance.milliCpuReservation}}
+        <div class="input-group">
+          {{input type="number" min="1" step="1" value=instance.milliCpuReservation classNames="form-control"}}
+        </div>
+      {{/input-or-display}}
     </div>
   </div>
 
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.swapLimit.label'}}</label>
-  </div>
-  <div class="col-sm-12 col-md-3">
-    <div class="input-group">
-      {{input type="number" min="1" step="1" value=swapMb classNames="form-control" placeholder=(if memoryMb 'Requires Memory Limit' 'Unlimited') disabled=(not memoryMb)}}
-      <div class="input-group-addon">{{t 'formSecurity.swapLimit.mb'}}</div>
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formSecurity.cpuPinning.label'}}</label>
+    </div>
+
+    <div class="col-sm-12 col-md-3">
+      {{#input-or-display editable=editing value=instance.cpuSet}}
+        {{input type="text" value=instance.cpuSet classNames="form-control" placeholder=(t 'formSecurity.cpuPinning.placeholder')}}
+      {{/input-or-display}}
+    </div>
+    <hr class="visible-xs-block visible-sm-block" />
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formSecurity.shares.label'}}</label>
+    </div>
+    <div class="col-sm-12 col-md-3">
+      {{#input-or-display editable=editing value=instance.cpuShares}}
+        {{input type="number" value=instance.cpuShares step=128 min=0 classNames="form-control" placeholder=(t 'formSecurity.shares.placeholder')}}
+      {{/input-or-display}}
     </div>
   </div>
-</div>
-
-<div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.cpuPinning.label'}}</label>
-  </div>
-
-  <div class="col-sm-12 col-md-3">
-    {{input type="text" value=instance.cpuSet classNames="form-control" placeholder=(t 'formSecurity.cpuPinning.placeholder')}}
-  </div>
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.shares.label'}}</label>
-  </div>
-  <div class="col-sm-12 col-md-3">
-    {{input type="number" value=instance.cpuShares step=128 min=0 classNames="form-control" placeholder=(t 'formSecurity.shares.placeholder')}}
-  </div>
-</div>
-
-<div class="row">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.capabilities.label'}}</label>
-  </div>
-
-  <div class="col-sm-12 col-md-4">
-    {{view "select" class="form-control select-cap-add" content=capabilityChoices selection=instance.capAdd multiple="true" optionValuePath="content" optionLabelPath="content"}}
-  </div>
-
-  <div class="col-sm-12 col-md-4">
-    {{view "select" class="form-control select-cap-drop" content=capabilityChoices selection=instance.capDrop multiple="true" optionValuePath="content" optionLabelPath="content"}}
-  </div>
-</div>
-<div class="row">
-  <div class="col-sm-12 col-md-8 col-md-offset-2">
-    <span class="help-block">
-      {{t 'formSecurity.capabilities.helpBlock.text'}}
-      <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank">{{t 'formSecurity.capabilities.helpBlock.link'}}</a>
-    </span>
-  </div>
-</div>
-
-<div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formSecurity.deviceBinding.label'}}</label>
-  </div>
-
-  <div class="col-sm-12 col-md-8">
-    <div class="form-control-static">
-      <button class="btn-circle" {{action "addDevice"}}><i class="icon icon-plus-circle"/></button>
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formSecurity.capabilities.label'}}{{#unless editing}}({{t 'formSecurity.capabilities.add'}}){{/unless}}</label>
     </div>
-    {{#if devicesArray.length}}
-      <table class="table fixed no-lines no-top-padding tight small">
-        <tr class="text-muted">
-          <th>{{t 'formSecurity.deviceBinding.pathHost.label'}}</th>
-          <th width="30">&nbsp;</th>
-          <th>{{t 'formSecurity.deviceBinding.pathContainer.label'}}</th>
-          <th width="30">&nbsp;</th>
-          <th width="100">{{t 'formSecurity.deviceBinding.permissions.label'}}</th>
-          <th width="30">&nbsp;</th>
-        </tr>
-        {{#each devicesArray as |device|}}
-          <tr>
-            <td>
-              {{input class="form-control input-sm device-host" type="text" value=device.host placeholder=(t 'formSecurity.deviceBinding.pathHost.placeholder')}}
-            </td>
-            <td style="text-align: center">
-              <p class="form-control-static input-sm"><i class="icon icon-chevron-right"></i></p>
-            </td>
-            <td>
-              {{input class="form-control input-sm" type="text" value=device.container placeholder=(t 'formSecurity.deviceBinding.pathContainer.placeholder')}}
-            </td>
-            <td>&nbsp;</td>
-            <td>
-              {{device-permissions buttonClass="btn-sm" initialSelection=device.permissions changed=(action (mut device.permissions))}}
-            </td>
-            <td class="text-right">
-              <button class="btn btn-primary btn-sm" {{action "removeDevice" device}}><i class="icon icon-minus"/></button>
-            </td>
-          </tr>
-        {{/each}}
-      </table>
-    {{/if}}
+
+    <div class="col-sm-12 {{if editing "col-md-4" "col-md-3"}}">
+      {{#if editing}}
+        <select class="form-control select-cap-add" multiple="true" onchange={{action 'modifyCapabilities' 'capAdd' }}>
+          {{#each capabilityChoices as |choice|}}
+            <option value={{choice}} selected={{include instance.capAdd choice}}>{{choice}}</option>
+          {{/each}}
+        </select>
+      {{else}}
+        {{#if instance.capAdd}}
+          {{#each instance.capAdd as |choice index|}}
+            {{if index ", "}} {{choice}}
+          {{/each}}
+        {{else}}
+          <div class="form-control-static">{{t 'generic.none'}}</div>
+        {{/if}}
+      {{/if}}
+    </div>
+    <hr class="visible-xs-block visible-sm-block" />
+    {{#unless editing}}
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formSecurity.capabilities.label'}}({{t 'formSecurity.capabilities.drop'}})</label>
+    </div>
+    {{/unless}}
+
+    <div class="col-sm-12 col-md-4">
+      {{#if editing}}
+        <select class="form-control select-cap-drop" multiple="true" onchange={{action 'modifyCapabilities' 'capDrop'}}>
+          {{#each capabilityChoices as |choice|}}
+            <option value={{choice}} selected={{include instance.capDrop choice}}>{{choice}}</option>
+          {{/each}}
+        </select>
+      {{else}}
+        {{#if instance.capDrop}}
+          {{#each instance.capDrop as |choice index|}}
+            {{if index ", "}} {{choice}}
+          {{/each}}
+        {{else}}
+          <div class="form-control-static">{{t 'generic.none'}}</div>
+        {{/if}}
+      {{/if}}
+    </div>
+  {{#if editing}}
+    <div class="row">
+      <div class="col-sm-12 col-md-8 col-md-offset-2">
+        <span class="help-block">
+          {{t 'formSecurity.capabilities.helpBlock.text'}}
+          <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank">{{t 'formSecurity.capabilities.helpBlock.link'}}</a>
+        </span>
+      </div>
+    </div>
+  {{/if}}
   </div>
-</div>
+
+  <div class="row form-group">
+    <div class="col-sm-12 col-md-2 form-label">
+      <label class="form-control-static">{{t 'formSecurity.deviceBinding.label'}}</label>
+    </div>
+
+    <div class="col-sm-12 col-md-8">
+      {{#if editing}}
+        <div>
+          <button class="btn-circle-text" {{action "addDevice"}}><i class="icon icon-plus-circle"/> <span>{{t 'formSecurity.deviceBinding.addActionLabel'}}</span></button>
+        </div>
+        {{#if devicesArray.length}}
+          <table class="table fixed no-lines no-top-padding tight small">
+            <tr class="text-muted">
+              <th>{{t 'formSecurity.deviceBinding.pathHost.label'}}</th>
+              <th width="30">&nbsp;</th>
+              <th>{{t 'formSecurity.deviceBinding.pathContainer.label'}}</th>
+              <th width="30">&nbsp;</th>
+              <th width="200">{{t 'formSecurity.deviceBinding.permissions.label'}}</th>
+              <th width="30">&nbsp;</th>
+            </tr>
+            {{#each devicesArray as |device|}}
+              <tr>
+                <td>
+                  {{input class="form-control input-sm device-host" type="text" value=device.host placeholder=(t 'formSecurity.deviceBinding.pathHost.placeholder')}}
+                </td>
+                <td style="text-align: center">
+                  <p class="form-control-static input-sm"><i class="icon icon-chevron-right"></i></p>
+                </td>
+                <td>
+                  {{input class="form-control input-sm" type="text" value=device.container placeholder=(t 'formSecurity.deviceBinding.pathContainer.placeholder')}}
+                </td>
+                <td>&nbsp;</td>
+                <td>
+                  {{device-permissions buttonClass="btn-sm" initialSelection=device.permissions changed=(action (mut device.permissions))}}
+                </td>
+                <td class="text-right">
+                  <button class="btn btn-primary btn-sm" {{action "removeDevice" device}}><i class="icon icon-minus"/></button>
+                </td>
+              </tr>
+            {{/each}}
+          </table>
+        {{/if}}
+      {{else}}
+        {{#if devicesArray.length}}
+          <table class="table fixed no-lines no-top-padding tight small">
+            <tr class="text-muted">
+              <th>{{t 'formSecurity.deviceBinding.pathHost.label'}}</th>
+              <th width="30">&nbsp;</th>
+              <th>{{t 'formSecurity.deviceBinding.pathContainer.label'}}</th>
+              <th width="30">&nbsp;</th>
+              <th width="100">{{t 'formSecurity.deviceBinding.permissions.label'}}</th>
+              <th width="30">&nbsp;</th>
+            </tr>
+            {{#each devicesArray as |device|}}
+              <tr>
+                <td>
+                  {{device.host}}
+                </td>
+                <td style="text-align: center">
+                  <p class="form-control-static input-sm r-pt10"><i class="icon icon-chevron-right"></i></p>
+                </td>
+                <td>
+                  {{device.container}}
+                </td>
+                <td>&nbsp;</td>
+                <td>
+                  {{device-permissions buttonClass="btn-sm" initialSelection=device.permissions changed=(action (mut device.permissions)) editing=editing}}
+                </td>
+                <td class="text-right">
+                  &nbsp;
+                </td>
+              </tr>
+            {{/each}}
+          </table>
+        {{else}}
+          <div class="form-control-static">{{t 'generic.none'}}</div>
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
+{{/if}}
 
 <div class="row form-group">
   <div class="col-sm-12 col-md-2 form-label">
@@ -128,17 +255,19 @@
   </div>
 
   <div class="col-sm-12 col-md-8">
-    <div class="input-group">
-      {{input type="text" value=instance.logConfig.driver classNames="form-control" placeholder=(t 'formSecurity.logDriver.placeholder')}}
-      <div class="input-group-btn">
-        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-          {{#each logDriverChoices as |value|}}
-            <li><a {{action "setLogDriver" value}}>{{value}}</a></li>
-          {{/each}}
-        </ul>
+    {{#input-or-display editable=editing value=instance.logConfig.driver}}
+      <div class="input-group">
+        {{input type="text" value=instance.logConfig.driver classNames="form-control" placeholder=(t 'formSecurity.logDriver.placeholder')}}
+        <div class="input-group-btn">
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
+          <ul class="dropdown-menu dropdown-menu-right" role="menu">
+            {{#each logDriverChoices as |value|}}
+              <li><a {{action "setLogDriver" value}}>{{value}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
       </div>
-    </div>
+    {{/input-or-display}}
   </div>
 </div>
 
@@ -154,6 +283,7 @@
       addActionLabel="formSecurity.logConfig.addActionLabel"
       keyPlaceholder="formSecurity.logConfig.keyPlaceholder"
       valuePlaceholder="formSecurity.logConfig.valuePlaceholder"
+      editing=editing
     }}
   </div>
 </div>

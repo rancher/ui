@@ -1,23 +1,22 @@
 import Ember from 'ember';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default Ember.Component.extend({
+export default ModalBase.extend({
+  classNames: ['lacsso', 'modal-container', 'large-modal'],
+  originalModel: Ember.computed.alias('modalService.modalOpts'),
   editing       : false,
   clone         : null,
-  originalModel : null,
   errors        : null,
   model         : null,
   snapshotName  : null,
 
   actions: {
-    cancel: function() {
-      this.sendAction('dismiss');
-    },
     saveSnapshot: function() {
       let opts = {
         name: this.get('snapshotName')
       };
       this.get('model').doAction('snapshot', opts).then(() => {
-        this.sendAction('dismiss');
+        this.send('cancel');
       });
 
     }

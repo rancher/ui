@@ -7,33 +7,50 @@ let RANCHER_INGRESS_RULES = [
   // Docker machine creates these ports if we don't,
   // but explodes with race coditions if try to deploy 2 hosts simultaneously and they both want to create it.
   // So we'll just have the UI create them up front.
-  // SSH, for docker-machine to isntall Docker
-{
-  FromPort: 22,
-  ToPort: 22,
-  CidrIp: '0.0.0.0/0',
-  IpProtocol: 'tcp'
-},
-{
-  FromPort: 2376,
-  ToPort: 2376,
-  CidrIp: '0.0.0.0/0',
-  IpProtocol: 'tcp'
-},
+  // SSH, for docker-machine to install Docker
+  {
+    FromPort: 22,
+    ToPort: 22,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'tcp'
+  },
+  {
+    FromPort: 2376,
+    ToPort: 2376,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'tcp'
+  },
 
-  // Rancher IPSec needs these
-{
-  FromPort: 500,
-  ToPort: 500,
-  CidrIp: '0.0.0.0/0',
-  IpProtocol: 'udp'
-},
-{
-  FromPort: 4500,
-  ToPort: 4500,
-  CidrIp: '0.0.0.0/0',
-  IpProtocol: 'udp'
-}
+  // Rancher IPSec
+  {
+    FromPort: 500,
+    ToPort: 500,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'udp'
+  },
+  {
+    FromPort: 4500,
+    ToPort: 4500,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'udp'
+  },
+
+  // Rancher VXLAN
+  //{
+  //  FromPort: 4789,
+  //  ToPort: 4789,
+  //  SourceSecurityGroupName: RANCHER_GROUP,
+  //  IpProtocol: 'udp'
+  //},
+
+  // MTU Path discovery
+  // shouldiblockicmp.com
+  {
+    FromPort: -1,
+    ToPort: -1,
+    CidrIp: '0.0.0.0/0',
+    IpProtocol: 'icmp'
+  }
 ];
 
 let INSTANCE_TYPES = [
@@ -55,15 +72,33 @@ let REGIONS = [
   "ap-northeast-2",
   "ap-southeast-1",
   "ap-southeast-2",
+  "ap-south-1",
   "cn-north-1",
   "eu-west-1",
   "eu-central-1",
   "sa-east-1",
   "us-east-1",
+  "us-east-2",
   "us-west-1",
   "us-west-2",
   "us-gov-west-1",
 ];
+
+function nameFromResource(r, idField) {
+  let id = r[idField];
+  let out = id;
+
+  if ( r && r.Tags && r.Tags.length )
+  {
+    let match = r.Tags.filterBy('Key','Name')[0];
+    if ( match )
+    {
+      out = match.Value + ' (' + id + ')';
+    }
+  }
+
+  return out;
+}
 
 export default Ember.Component.extend(Driver, {
   prefs                    : Ember.inject.service(),
@@ -110,13 +145,13 @@ export default Ember.Component.extend(Driver, {
     });
 
     this.set('model', this.get('store').createRecord({
-      type            : 'machine',
+      type            : 'host',
       amazonec2Config : config,
     }));
   },
 
-  afterInit: function() {
-    this._super();
+  init: function() {
+    this._super(...arguments);
 
     this.set('editing', false);
     this.set('clients', Ember.Object.create());
@@ -135,7 +170,7 @@ export default Ember.Component.extend(Driver, {
         selectedSecurityGroup : cur,
       });
     }
-  }.on('init'),
+  },
 
   willDestroyElement: function() {
     this.setProperties({
@@ -153,6 +188,14 @@ export default Ember.Component.extend(Driver, {
       document.body.scrollTop = document.body.scrollHeight;
     });
   }.observes('context.step'),
+
+  selectedSecurityGroupChanged: Ember.observer('whichSecurityGroup', 'isStep5', function() {
+    if (this.get('isStep5') && this.get('whichSecurityGroup') === 'custom') {
+      Ember.run.scheduleOnce('afterRender', this, function() {
+        this.initMultiselect();
+      });
+    }
+  }),
 
 
   actions: {
@@ -172,7 +215,9 @@ export default Ember.Component.extend(Driver, {
         region          : rName,
       });
 
-      ec2.describeSubnets({}, (err, data) => {
+      let vpcNames = {};
+
+      ec2.describeVpcs({}, (err, vpcs) => {
         if ( err ) {
           let errors = self.get('errors')||[];
           errors.pushObject(err);
@@ -181,24 +226,40 @@ export default Ember.Component.extend(Driver, {
           return;
         }
 
-        this.get('clients').set(rName, ec2);
+        vpcs.Vpcs.forEach((vpc) => {
+          vpcNames[vpc.VpcId] = nameFromResource(vpc, 'VpcId');
+        });
 
-        data.Subnets.forEach((subnet) => {
-          if ( (subnet.State||'').toLowerCase() !== 'available' )
-          {
+        ec2.describeSubnets({}, (err, data) => {
+          if ( err ) {
+            let errors = self.get('errors')||[];
+            errors.pushObject(err);
+            this.set('errors', errors);
+            this.set('step', 1);
             return;
           }
 
-          subnets.pushObject(Ember.Object.create({
-            subnetId : subnet.SubnetId,
-            vpcId    : subnet.VpcId,
-            zone     : subnet.AvailabilityZone,
-            region   : rName
-          }));
-        });
+          this.get('clients').set(rName, ec2);
 
-        this.set('allSubnets', subnets);
-        this.set('step', 3);
+          data.Subnets.forEach((subnet) => {
+            if ( (subnet.State||'').toLowerCase() !== 'available' )
+            {
+              return;
+            }
+
+            subnets.pushObject(Ember.Object.create({
+              subnetName: nameFromResource(subnet, 'SubnetId'),
+              subnetId:   subnet.SubnetId,
+              vpcName:    vpcNames[subnet.VpcId] || subnet.VpcId,
+              vpcId:      subnet.VpcId,
+              zone:       subnet.AvailabilityZone,
+              region:     rName
+            }));
+          });
+
+          this.set('allSubnets', subnets);
+          this.set('step', 3);
+        });
       });
     },
 
@@ -261,6 +322,17 @@ export default Ember.Component.extend(Driver, {
         this.set('allSecurityGroups', groups);
         this.set('defaultSecurityGroup', defaultGroup);
       });
+    },
+
+    multiSecurityGroupSelect: function() {
+      let options = Array.prototype.slice.call(Ember.$('.existing-security-groups')[0], 0);
+      let selectedOptions = [];
+
+      options.filterBy('selected', true).forEach((cap) => {
+        return selectedOptions.push(cap.value);
+      });
+
+      this.set('selectedSecurityGroup', selectedOptions);
     },
 
     selectSecurityGroup: function() {
@@ -326,6 +398,76 @@ export default Ember.Component.extend(Driver, {
     },
   },
 
+  initMultiselect: function() {
+    var view = this;
+
+    var opts = {
+      maxHeight: 200,
+      buttonClass: 'btn btn-default',
+      buttonWidth: '100%',
+
+      templates: {
+        li: '<li><a tabindex="0"><label></label></a></li>',
+      },
+
+      buttonText: function(options/*, select*/) {
+        var label = 'Security Groups: ';
+        if ( options.length === 0 )
+        {
+          label += 'None';
+        }
+        else if ( options.length === 1 )
+        {
+          label += $(options[0]).text();
+        }
+        else
+        {
+          label += options.length + ' Selected';
+        }
+
+        return label;
+      },
+
+      onChange: function(/*option, checked*/) {
+        var self = this;
+        var options = $('option', this.$select);
+        var selectedOptions = this.getSelected();
+        var allOption = $('option[value="ALL"]',this.$select)[0];
+
+        var isAll = $.inArray(allOption, selectedOptions) >= 0;
+
+        if ( isAll )
+        {
+          options.each(function(k, option) {
+            var $option = $(option);
+            if ( option !== allOption )
+            {
+              self.deselect($(option).val());
+              $option.prop('disabled',true);
+              $option.parent('li').addClass('disabled');
+            }
+          });
+
+          // @TODO Figure out why deslect()/select() doesn't fix the state in the ember object and remove this hackery...
+          var ary = view.get('instance.' + (this.$select.hasClass('select-cap-add') ? 'capAdd' : 'capDrop'));
+          ary.clear();
+          ary.pushObject('ALL');
+        }
+        else
+        {
+          options.each(function(k, option) {
+            var $option = $(option);
+            $option.prop('disabled',false);
+            $option.parent('li').removeClass('disabled');
+          });
+        }
+
+        this.$select.multiselect('refresh');
+      }
+    };
+
+    this.$('.existing-security-groups').multiselect(opts);
+  },
   selectedZone: Ember.computed('amazonec2Config.{region,zone}', {
     get: function() {
       let config = this.get('amazonec2Config');
@@ -371,22 +513,24 @@ export default Ember.Component.extend(Driver, {
     let seenVpcs = [];
 
     (this.get('allSubnets')||[]).filterBy('zone', this.get('selectedZone')).forEach((subnet) => {
-      let vpcId    = subnet.get('vpcId');
-      let subnetId = subnet.get('subnetId');
+      let vpcName    = subnet.get('vpcName');
+      let vpcId      = subnet.get('vpcId');
+      let subnetId   = subnet.get('subnetId');
+      let subnetName = subnet.get('subnetName');
 
       if ( seenVpcs.indexOf(vpcId) === -1 ) {
         seenVpcs.pushObject(vpcId);
         out.pushObject({
           sortKey : vpcId,
-          label   : vpcId,
+          label   : vpcName,
           value   : vpcId,
           isVpc   : true
         });
       }
 
       out.pushObject({
-        sortKey : `${vpcId} ${subnetId}`,
-        label   : subnetId,
+        sortKey : `${vpcId} ${subnetName}`,
+        label   : subnetName,
         value   : subnetId,
         isVpc   : false,
       });

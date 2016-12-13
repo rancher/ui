@@ -2,11 +2,12 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
+  access         : Ember.inject.service(),
   cookies        : Ember.inject.service(),
   github         : Ember.inject.service(),
-  access         : Ember.inject.service(),
-  settings       : Ember.inject.service(),
   language       : Ember.inject.service('user-language'),
+  modal          : Ember.inject.service(),
+  settings       : Ember.inject.service(),
 
   previousParams : null,
   previousRoute  : null,
@@ -55,27 +56,19 @@ export default Ember.Route.extend({
       return true;
     },
 
-    openOverlay(template, view, model, controller) {
-      view = view || 'overlay';
-      return this.render(template, {
-        into       : 'application',
-        outlet     : 'overlay',
-        view       : view,
-        model      : model,
-        controller : controller,
-      });
-    },
+    error(err, transition) {
+      /*if we dont abort the transition we'll call the model calls again and fail transition correctly*/
+      transition.abort();
 
-    closeOverlay() {
-      return this.disconnectOutlet({
-        parentView : 'application',
-        outlet     : 'overlay'
-      });
-    },
+      if ( err && err.status && [401,403].indexOf(err.status) >= 0 )
+      {
+        this.send('logout',transition,true);
+        return;
+      }
 
-    error(err) {
       this.controllerFor('application').set('error',err);
       this.transitionTo('failWhale');
+
       console.log('Application Error', (err ? err.stack : undefined));
     },
 
@@ -98,6 +91,10 @@ export default Ember.Route.extend({
 
       if ( transition ) {
         session.set(C.SESSION.BACK_TO, window.location.href);
+      }
+
+      if ( this.get('modal.modalVisible') ) {
+        this.get('modal').toggleModal();
       }
 
       let params = {queryParams: {}};
@@ -136,6 +133,7 @@ export default Ember.Route.extend({
     session.set(C.SESSION.BACK_TO, undefined);
 
     if ( backTo ) {
+      console.log('Going back to', backTo);
       window.location.href = backTo;
     } else {
       this.replaceWith('authenticated');
@@ -145,6 +143,8 @@ export default Ember.Route.extend({
   model(params, transition) {
     let github   = this.get('github');
     let stateMsg = 'Authorization state did not match, please try again.';
+
+    this.get('language').initLanguage();
 
     if (params.isPopup) {
       this.controllerFor('application').set('isPopup', true);
@@ -172,6 +172,7 @@ export default Ember.Route.extend({
           // Can't call this.send() here because the initial transition isn't done yet
           this.finishLogin();
         }).catch((err) => {
+          transition.abort();
           this.transitionTo('login', {queryParams: { errorMsg: err.message}});
         }).finally(() => {
           this.controllerFor('application').setProperties({

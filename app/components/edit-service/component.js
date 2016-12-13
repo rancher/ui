@@ -1,7 +1,10 @@
-import NewContainer from 'ui/components/new-container/component';
 import Ember from 'ember';
+import NewOrEdit from 'ui/mixins/new-or-edit';
+import ModalBase from 'lacsso/components/modal-base';
 
-export default NewContainer.extend({
+export default ModalBase.extend(NewOrEdit, {
+  classNames: ['lacsso', 'modal-container', 'large-modal'],
+  originalModel: Ember.computed.alias('modalService.modalOpts'),
   service: null,
 
   primaryResource: Ember.computed.alias('service'),
@@ -14,16 +17,15 @@ export default NewContainer.extend({
 
   actions: {
     done() {
-      this.sendAction('dismiss');
+      this.send('cancel');
+    },
+    setScale(scale) {
+      this.set('service.scale', scale);
+    },
+    setServiceLinks(links) {
+      this.set('serviceLinksArray', links);
     },
 
-    outsideClick() {
-      this.sendAction('dismiss');
-    },
-
-    cancel() {
-      this.sendAction('dismiss');
-    },
   },
 
   didInsertElement: function() {
@@ -47,7 +49,20 @@ export default NewContainer.extend({
     });
   },
 
+  didSave() {
+    var service = this.get('service');
+    var ary = [];
+    this.get('serviceLinksArray').forEach((row) => {
+      if ( row.serviceId )
+      {
+        ary.push({name: row.name, serviceId: row.serviceId});
+      }
+    });
+
+    return service.doAction('setservicelinks', {serviceLinks: ary});
+  },
+
   doneSaving() {
-    this.sendAction('dismiss');
+    this.send('cancel');
   }
 });

@@ -19,9 +19,6 @@ export default Ember.Component.extend({
   clipboardText    : null,
   textChangedEvent : null,
 
-  didInitAttrs() {
-  },
-
   mouseEnter() {
     this.set('model', new Object({tooltipText: DEFAULT_TEXT}));
   },

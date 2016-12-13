@@ -3,28 +3,9 @@
     {{badge-state model=snapshot}}
   </td>
   <td class="force-wrap">
-    {{#tooltip-element type="tooltip-basic" model=snapshot tooltipTemplate="tooltip-storage"}}
+    {{#tooltip-element type="tooltip-basic" model=snapshot tooltipTemplate="tooltip-storage" tooltipFor="snapshotSection"}}
       <span class="hand">{{snapshot.name}}</span> <i classs="icon icon-info"></i>
     {{/tooltip-element}}
-  </td>
-  <td class="force-wrap">
-    {{#if (gt snapshot.backupCount 1)}}
-      {{#if snapshot.latestCompleteBackup}}
-        {{t 'snapshotSection.multiple' latestDate=(date-str snapshot.latestCompleteBackup.created)}}
-      {{else}}
-        {{badge-state model=snapshot.latestBackup}}
-      {{/if}}
-    {{else}}
-      {{#if (eq snapshot.backupCount 1)}}
-        {{#if snapshot.latestCompleteBackup}}
-          {{date-str snapshot.latestCompleteBackup.created}}
-        {{else}}
-          {{badge-state model=snapshot.latestBackup}}
-        {{/if}}
-      {{else}}
-        <span class="text-warning">{{t 'snapshotSection.none'}}</span>
-      {{/if}}
-    {{/if}}
   </td>
   <td class="actions">
     {{action-menu model=snapshot}}

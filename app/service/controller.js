@@ -7,7 +7,13 @@ export default Ember.Controller.extend({
 
   actions: {
     changeService(service) {
-      this.transitionToRoute(this.get('application.currentRouteName'), service.get('id'));
+      var transitionTo = this.get('application.currentRouteName');
+
+      if (service.type === 'dnsService') {
+        transitionTo = 'service.links';
+      }
+
+      this.transitionToRoute(transitionTo, service.get('id'));
     }
   }
 });

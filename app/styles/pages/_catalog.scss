@@ -1,173 +1,4 @@
-$font-size: 12px;
-$line-height: 1.4;
-$lines-to-show: 4;
-
-.badge-certified {
-  position: absolute;
-  background: $yellowCertified;
-  color: black;
-  padding: 3px 10px;
-  right: -13px;
-  top: 5px;
-
-  &:before {
-    content: "";
-    border-style: solid;
-    border-color: #eadf5a;
-    border-left-color: transparent;
-    position: absolute;
-    top: 0;
-    left: -16px;
-    border-width: 13.5px;
-    height: 27px;
-    z-index: 2;
-  }
-
-  &:after {
-    content: "";
-    border-color: #C4B823;
-    border-width: 6px;
-    right: -1px;
-    bottom: -11px;
-    display: block;
-    position: absolute;
-    border-bottom-color: transparent;
-    border-right-color: transparent;
-    border-style: solid;
-  }
-}
-
-$container-height: 300px;
-$container-width: 250px;
-$play-button-height-width: 60px;
-
-.container-catalog {
-  position: relative;
-  background: $accent-one;
-  border:solid transparent;
-  height: $container-height;
-  width: $container-width;
-  margin-right: 35px;
-  margin-bottom: 35px;
-  float: left;
-  box-shadow: 0 0 5px rgba(0,0,0,.15);
-  transition: ease all .25s;
-
-  .btn-primary {
-    position: absolute;
-    bottom: 25px;
-    left: 0;
-    right: 0;
-    width: 94px;
-    margin: 0 auto;
-  }
-
-  &:hover {
-    border: solid $greenTwo;
-  }
-  .itemwrap {
-    max-height: 119px;
-    overflow: hidden;
-  }
-
-  h5 {
-    text-align: center;
-    padding-top: 15px;
-    margin: 0 15px;
-    font-weight: bold;
-  }
-
-  &.machine {
-    font-size: 12px;
-    height: 220px;
-
-    &.inactive-driver {
-      background-color: $table-bg-accent;
-      box-shadow: none;
-
-      .catalog-icon {
-        background-color: $table-bg-accent;
-        opacity: 0.5;
-        filter: grayscale(100%);
-        -webkit-filter: grayscale(100%);
-        -moz-filter: grayscale(100%);
-        -ms-filter: grayscale(100%);
-        -o-filter: grayscale(100%);
-      }
-    }
-    h5 {
-      padding-top: 5px;
-    }
-    .copy-button-container {
-      height:12px;
-    }
-  }
-
-  .inactive-driver {
-    position: absolute;
-    top: -3px;
-    left: -3px;
-    text-align: center;
-    height: $container-height;
-    width: $container-width;
-    background: rgba(0,0,0,0.4);
-    z-index: 2;
-    button {
-      color: white;
-      border-color: white;
-      position: absolute;
-      height: $play-button-height-width;
-      width: $play-button-height-width;
-      border-radius: 50%;
-      top: 70px;
-      left: calc((#{$container-width} / 2) - (#{$play-button-height-width / 2}));
-      i {
-        font-size: 36px;
-        margin-left: -3px;
-      }
-    }
-  }
-
-  .catalog-icon {
-    margin: 0 auto;
-    line-height: 80px;
-    padding: 15px 5px 5px 5px;
-    background: rgba(255,255,255,.9);
-    min-height: 110px;
-
-    img {
-      width: auto;
-      height: auto;
-      max-height: 80px;
-      max-width: 180px;
-    }
-  }
-
-  .description {
-    display: block;
-    display: -webkit-box;
-    max-width: 200px;
-    margin: auto;
-    font-size: $font-size;
-    line-height: $line-height;
-    -webkit-line-clamp: $lines-to-show;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    box-sizing:border-box;
-  }
-
-  .view-details {
-    position: absolute;
-    bottom: 0px;
-    left: 0;
-    right: 0;
-    margin: 0 40px 20px 40px;
-  }
-}
-
 .launch-catalog {
-
   H4 {
     font-weight: $bold-weight;
 
@@ -204,6 +35,7 @@ $play-button-height-width: 60px;
     top: 0;
   }
 }
+
 .machine-catalog-icon {
   min-height: 100px;
   background-position: center;
@@ -256,5 +88,9 @@ $play-button-height-width: 60px;
 
   &.generic {
     @include generic;
+  }
+
+  &.aliyunecs {
+    @include aliyunecs;
   }
 }

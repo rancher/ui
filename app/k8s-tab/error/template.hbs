@@ -1,0 +1,18 @@
+{{#if projects.orchestrationState.kubernetesReady}}
+  <section class="header">
+    <h1>{{t 'k8sTab.error.header'}}</h1>
+
+    <button class="btn btn-sm btn-primary" {{action "reload"}}>{{t 'k8sTab.error.linkTo'}}</button>
+  </section>
+  <section>
+    {{t 'k8sTab.error.detail' count=model.length}}
+
+    {{#each model as |e|}}
+      <div class="well r-m20">
+        <h4>{{e.key}}: {{e.code}} {{#if e.status}}({{e.status}}){{/if}}</h4>
+        <p>{{e.message}}</p>
+        <p class="small">{{e.detail}}</p>
+      </div>
+    {{/each}}
+  </section>
+{{/if}}

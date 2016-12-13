@@ -3,42 +3,56 @@ import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   // Identity or externalId+externalIdType
-  identity: null,
-  externalIdType: null,
-  externalId: null,
-  identityNotParsed: null,
+  identity          : null,
+  externalIdType    : null,
+  externalId        : null,
+  identityNotParsed : null,
 
-  avatar: true,
-  link: true,
-  size: 35,
+  avatar            : true,
+  link              : true,
+  size              : 35,
 
-  loading: false,
-  didInitAttrs: function() {
-    var type = this.get('externalIdType');
-    var id = this.get('externalId');
-    var identityOut = this.get('identityNotParsed') || `1i!${type}:${id}`;
+  loading           : false,
+
+  init() {
+    this._super(...arguments);
+
+    var eType = this.get('externalIdType');
+    var eId = this.get('externalId');
+    var id = this.get('identityNotParsed');
+
+    if ( !id && eType && eId ) {
+     id =`1i!${eType}:${eId}`;
+    }
 
     if ( !this.get('identity') )
     {
-      this.set('loading', true);
-      this.get('userStore').find('identity',identityOut).then((identity) => {
-        if (this._state !== 'destroying') {
+      if ( id )
+      {
+        this.set('loading', true);
+        this.get('userStore').find('identity', id).then((identity) => {
+          if ( this.isDestroyed || this.isDestroying ) {
+            return;
+          }
+
           this.set('identity', identity);
-        }
-      }).catch((/*err*/) => {
-        // Do something..
-      }).finally(() => {
-        if (this._state !== 'destroying') {
+        }).catch((/*err*/) => {
+          // Do something..
+        }).finally(() => {
+          if ( this.isDestroyed || this.isDestroying ) {
+            return;
+          }
+
           this.set('loading', false);
-        }
-      });
+        });
+      }
     }
   },
 
   classNames: ['gh-block'],
   attributeBindings: ['aria-label:identity.name'],
 
-  avatarSrc: Ember.computed.alias('identity.avatarSrc'),
+  avatarSrc: Ember.computed.alias('identity.profilePicture'),
   url: Ember.computed.alias('identity.profileUrl'),
   login: Ember.computed.alias('identity.login'),
 

@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
-import { byId } from 'ui/models/service';
 
 export default Resource.extend({
   type: 'serviceConsumeMap',
@@ -8,7 +7,12 @@ export default Resource.extend({
   forceUpdate: function() {
     Ember.run.next(this, function() {
       try {
-        var consumer = byId(this.get('serviceId'));
+        let store = this.get('store');
+        if ( !store ) {
+          return;
+        }
+
+        var consumer = store.getById('service', this.get('serviceId'));
         if ( consumer )
         {
           //console.log('Update consumer', this.get('serviceId'), '->', this.get('consumedServiceId'));
@@ -19,7 +23,7 @@ export default Resource.extend({
           //console.log('The consumer service', this.get('serviceId'), 'does not exist yet');
         }
 
-        var consumed = byId(this.get('consumedServiceId'));
+        var consumed = store.getById('service', this.get('consumedServiceId'));
         if ( consumed )
         {
           //console.log('Update consumed', this.get('serviceId'), '->', this.get('consumedServiceId'));
