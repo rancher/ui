@@ -19,8 +19,8 @@ export default Ember.Route.extend({
   scheduleTimer: function() {
     Ember.run.cancel(this.get('timer'));
     this.set('timer', Ember.run.later(() => {
-      this.get('userStore').find('clustermembership').then((response) => {
-        this.controller.get('model').replaceWith(response);
+      this.get('userStore').find('clustermembership', null, {forceReload: true}).then((response) => {
+        this.controller.set('model', response);
         this.scheduleTimer();
       });
     }, INTERVAL));
