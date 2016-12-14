@@ -7,17 +7,20 @@
     {{form-upgrade
       optionsChanged=(action 'setUpgrade')
     }}
-  {{else}}
+  {{/liquid-if}}
+
+  <div class="{{if needsUpgrade 'hide'}}">
     {{form-scale
       initialLabels=launchConfig.labels
       initialScale=service.scale
+      editing=editing
       isGlobal=isGlobal
       errors=scaleErrors
       setLabels=(action 'setLabels' 'scale')
       setGlobal=(action 'setGlobal')
       setScale=(action  'setScale')
     }}
-  {{/liquid-if}}
+  </div>
 </section>
 
 <section class="horizontal-form container-fluid well">
