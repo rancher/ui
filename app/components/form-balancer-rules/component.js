@@ -31,6 +31,7 @@ export default Ember.Component.extend({
     }
 
     let protos = this.get('store').getById('schema','portrule').optionsFor('protocol');
+    protos.removeObject('udp');
     protos.sort();
     this.set('protocolChoices', protos);
 

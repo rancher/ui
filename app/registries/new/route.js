@@ -11,6 +11,7 @@ export default Ember.Route.extend({
     var credential = store.createRecord({
       type:'registryCredential',
       registryId: 'tbd',
+      email: "not-really@required.anymore"
     });
 
     return store.find('registry').then((registries) => {
