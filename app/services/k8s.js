@@ -198,6 +198,7 @@ export default Ember.Service.extend({
       obj.items = obj.items.map((item) => {
         item.kind = itemKind;
         item.apiVersion = obj.apiVersion;
+        item.type = type;
         return typeifyResource(item, type);
       });
 
