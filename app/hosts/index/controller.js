@@ -1,27 +1,33 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
+  prefs: Ember.inject.service(),
+
   mode        : 'grouped',
-  show        : 'standard',
-  showSystem  : null,
-  queryParams : ['mode','show'],
+  queryParams : ['mode'],
 
   actions: {
-    newContainer: function(hostId) {
+    newContainer(hostId) {
       this.transitionToRoute('containers.new', {queryParams: {hostId: hostId}});
     },
+
   },
 
-  // showChanged should be an observer rather then init to correctly set the showSystem checkbox
-  // if showSystem is set on init show does not contain the correct qp as the router has not set it
-  // so the checkbox never gets set
-  showChanged: function() {
-    this.set('showSystem', this.get('show') === 'all');
-  }.observes('show'),
+  showSystem: Ember.computed(`prefs.${C.PREFS.SHOW_SYSTEM}`, {
+    get() {
+      return this.get(`prefs.${C.PREFS.SHOW_SYSTEM}`) !== false;
+    },
 
-  showSystemChanged: function() {
-    this.set('show', (this.get('showSystem') ? 'all' : 'standard'));
-  }.observes('showSystem'),
+    set(key, value) {
+      this.set(`prefs.${C.PREFS.SHOW_SYSTEM}`, value);
+      return value;
+    }
+  }),
+
+  show: Ember.computed('showSystem', function() {
+    return this.get('showSystem') === false ? 'standard' : 'all';
+  }),
 
   listLinkOptions: {
     route: 'hosts',

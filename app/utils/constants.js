@@ -151,6 +151,7 @@ var C = {
     FEEDBACK        : 'feedback',
     FEEDBACK_TIME   : 'feedbackTime',
     FEEDBACK_DELAY  : 60000, //7*24*60*60*1000,
+    SHOW_SYSTEM     : 'showSystem',
   },
 
   LANGUAGE: {
