@@ -152,7 +152,7 @@ export default Ember.Mixin.create({
 
   isTransitioning: Ember.computed.equal('transitioning','yes'),
   isError: Ember.computed.equal('transitioning','error'),
-  isDeleted: Ember.computed.equal('state','removed'),
+  isRemoved: Ember.computed('state', () => { return !C.REMOVEDISH_STATES.includes(this.state); }),
   isPurged: Ember.computed.equal('state','purged'),
   isActive: Ember.computed.equal('state','active'),
 

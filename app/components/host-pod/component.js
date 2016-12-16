@@ -27,10 +27,12 @@ export default Ember.Component.extend(ManageLabels, GroupedInstances, {
 
   filteredInstances: function() {
     let out = this.get('model.instances')||[];
+    //out = out.filterBy('isRemoved', false);
 
     if ( this.get('show') === 'standard' ) {
       out = out.filterBy('isSystem', false);
     }
+
 
     return out;
   }.property('model.instances.@each.labels','show'),
