@@ -52,6 +52,8 @@ export default Ember.Controller.extend(Sortable, {
       out = out.filter((obj) => obj.hasTags(needTags));
     }
 
+    out = out.filter((obj) => obj.get('type').toLowerCase() !== 'kubernetesstack');
+
     return out;
 
   // state isn't really a dependency here, but sortable won't recompute when it changes otherwise
