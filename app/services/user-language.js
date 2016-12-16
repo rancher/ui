@@ -54,7 +54,7 @@ export default Ember.Service.extend({
     let session = this.get('session');
     lang = lang || session.get(C.SESSION.LANGUAGE);
     session.set(C.SESSION.LANGUAGE, lang);
-    this.get('userTheme').writeStyleNode(session.get(C.PREFS.THEME));
+    this.get('userTheme').writeStyleNode();
     return this.set(`prefs.${C.PREFS.LANGUAGE}`, lang);
   },
 
@@ -65,7 +65,7 @@ export default Ember.Service.extend({
 
     if (loadedLocales.includes(language)) {
       this.get('intl').setLocale(language);
-      this.get('userTheme').writeStyleNode(session.get(C.PREFS.THEME));
+      this.get('userTheme').writeStyleNode();
       return Ember.RSVP.resolve();
     } else {
       return ajaxPromise({url: `${this.get('app.baseAssets')}translations/${language}.json?${application.version}`,
@@ -83,7 +83,7 @@ export default Ember.Service.extend({
           loadedLocales.push(language);
           return this.get('intl').addTranslations(language, resp.xhr.responseJSON).then(() => {
             this.get('intl').setLocale(language);
-           this.get('userTheme').writeStyleNode(session.get(C.PREFS.THEME));
+           this.get('userTheme').writeStyleNode();
           });
         });
       }).catch((err) => {

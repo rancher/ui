@@ -78,6 +78,10 @@ export default Ember.Service.extend({
   },
 
   writeStyleNode: function(theme) {
+    if ( !theme ) {
+      theme = this.get('currentTheme');
+    }
+
     var application = this.get('app');
     var $body = $('BODY');
     let lang = this.get(`session.${C.SESSION.LANGUAGE}`);
