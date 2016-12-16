@@ -288,21 +288,24 @@ var Service = Resource.extend({
   }.property('type'),
 
   displayType: function() {
-    var out;
-    switch ( this.get('type').toLowerCase() )
-    {
-      case 'loadbalancerservice': out = 'Load Balancer'; break;
-      case 'dnsservice':          out = 'Service Alias'; break;
-      case 'externalservice':     out = 'External'; break;
-      case 'kubernetesservice':   out = 'K8s Service'; break;
-      case 'composeservice':      out = 'Compose Service'; break;
-      case 'networkdriverservice':out = 'Network Service'; break;
-      case 'storagedriverservice':out = 'Storage Service'; break;
-      default:                    out = 'Service'; break;
+    let known = [
+      'loadbalancerservice',
+      'dnsservice',
+      'externalservice',
+      'kubernetesservice',
+      'composeservice',
+      'networkdriverservice',
+      'storagedriverservice',
+      'service'
+    ];
+
+    let type = this.get('type').toLowerCase();
+    if ( !known.includes(type) ) {
+      type = 'service';
     }
 
-    return out;
-  }.property('type'),
+    return this.get('intl').t('servicePage.type.'+ type);
+  }.property('type','intl._locale'),
 
   hasSidekicks: function() {
     return this.get('secondaryLaunchConfigs.length') > 0;
