@@ -192,8 +192,14 @@ var Service = Resource.extend({
     let store = this.get('store');
     let links = this.get('linkedServices')||{};
     let out = Object.keys(links).map((key) => {
+      let name = key;
+      let pos = name.indexOf('/');
+      if ( pos >= 0 ) {
+        name = name.substr(pos+1);
+      }
+
       return Ember.Object.create({
-        name: key,
+        name: name,
         service: store.getById('service', links[key])
       });
     });
