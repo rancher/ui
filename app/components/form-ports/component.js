@@ -7,42 +7,39 @@ const protocolOptions = [
 ];
 
 export default Ember.Component.extend({
-  // Inputs
+  intl: Ember.inject.service(),
 
   // The initial ports to show, as an array of objects
   initialPorts    : null,
 
   // Ignore the ID and force each initial port to be considered 'new' (for clone)
-  forceNew        : false,
-  errors          : null,
   editing         : false,
   tagName         : '',
   portsArray      : null,
   portsAsStrArray : null,
   protocolOptions : protocolOptions,
+  showIp          : null,
 
   init() {
     this._super(...arguments);
 
     var out      = [];
-    var forceNew = this.get('forceNew');
-
     var ports    = this.get('initialPorts');
     if ( ports )
     {
-      ports.forEach(function(value) {
+      ports.forEach((value) => {
         if ( typeof value === 'object' )
         {
           var pub = '';
-          var existing = !forceNew && !!value.id;
+          var existing = !!value.id;
           if ( value.publicPort )
           {
             pub = value.publicPort+'';
           }
 
-          if ( !existing && pub && value.bindAddress )
+          if ( value.bindAddress )
           {
-            pub = value.bindAddress + ':' + pub;
+            Ember.run.next(() => { this.send('showIp'); });
           }
 
           out.push({
@@ -56,11 +53,18 @@ export default Ember.Component.extend({
         }
         else if ( typeof value === 'string' )
         {
-          // Strings, from clone
+          // Strings, from clone/edit
           var parsed = parsePortSpec(value);
+
+          if ( parsed.hostIp )
+          {
+            Ember.run.next(() => { this.send('showIp'); });
+          }
+
           out.push({
             existing: false,
-            public: parsed.host,
+            bindAddress: parsed.hostIp,
+            public: parsed.hostPort,
             private: parsed.container,
             protocol: parsed.protocol
           });
@@ -79,11 +83,16 @@ export default Ember.Component.extend({
   },
 
   actions: {
-    addPort: function() {
+    addPort() {
       this.get('portsArray').pushObject({public: '', private: '', protocol: 'tcp'});
     },
-    removePort: function(obj) {
+
+    removePort(obj) {
       this.get('portsArray').removeObject(obj);
+    },
+
+    showIp() {
+      this.set('showIp', true);
     },
   },
 
@@ -94,18 +103,32 @@ export default Ember.Component.extend({
         return;
       }
 
+      let bindAddress = row.bindAddress;
+      if ( bindAddress && bindAddress.indexOf(':') > 0 && bindAddress.indexOf('[') !== 0 ) {
+        // IPv6
+        bindAddress = '[' + bindAddress + ']';
+      }
+
       // If there's a public and no private, the private should be the same as public.
       if ( row.public && !row.private )
       {
         let str = row.public +':'+ row.public +'/'+ row.protocol;
+        if ( bindAddress ) {
+          str = bindAddress +':'+ str;
+        }
         out.push(str);
       }
       else if ( row.private )
       {
         let str = '';
+
         if ( row.public )
         {
-          str = row.public+':';
+          if ( bindAddress ) {
+            str += bindAddress +':';
+          }
+
+          str += row.public+':';
         }
 
         str += row.private +'/'+ row.protocol;
@@ -117,4 +140,34 @@ export default Ember.Component.extend({
     this.sendAction('changed', this.get('portsArray'));
     this.sendAction('changedStr', this.get('portsAsStrArray'));
   }.observes('portsArray.@each.{public,private,protocol}'),
+
+  validate: function() {
+    var errors = [];
+    let seen = {};
+
+    this.get('portsArray').forEach((row) => {
+      if ( !row.private && (row.public || row.bindAddress)) {
+        errors.push(this.get('intl').t('formPorts.error.privateRequired'));
+      }
+
+      if ( row.bindAddress && !row.public ) {
+        errors.push(this.get('intl').t('formPorts.error.publicRequired'));
+      }
+
+      if ( row.public ) {
+        let key = '['+ (row.bindAddress||'0.0.0.0') + ']:' + row.public + '/' + row.protocol;
+        if ( seen[key] ) {
+          errors.push(this.get('intl').t('formPorts.error.'+(row.bindAddress ? 'mixedIpPort' : 'mixedPort'), {
+            ip: row.bindAddress,
+            port: row.public,
+            proto: row.protocol,
+          }));
+        } else {
+          seen[key] = true;
+        }
+      }
+    });
+
+    this.set('errors', errors.uniq());
+  }.observes('portsArray.@each.{bindAddress,public,private,protocol}'),
 });
