@@ -73,7 +73,7 @@ export default Ember.Component.extend(Driver, {
 		this._super();
 
 		let errors		= this.get('errors') || [],
-            model		= this.get('model.%%DRIVERNAME%%Config'), 
+            model		= this.get('model.profitbricksConfig'), 
             error_keys	= {
                 cores:		'"Cores" is required',
                 cpuFamily:	'"CPU family" is required',
@@ -122,10 +122,10 @@ export default Ember.Component.extend(Driver, {
 			this.set('model.profitbricksConfig.diskType', type);
 		},
 		create () {
-			// console.log(this.get('model.%%DRIVERNAME%%Config'));
+			console.log(this.get('model.profitbricksConfig'));
 		},
 		cancel () {
-			// console.log('actions:cancel');
+			console.log('actions:cancel');
 		}
 	}
 
