@@ -13,6 +13,7 @@ export default Ember.Route.extend({
 
   deactivate() {
     Ember.run.cancel(this.get('timer'));
+    this.set('timer', null); // This prevents scheduleTimer from rescheduling if deactivate happened at just the wrong time.
   },
 
   timer: null,
@@ -21,9 +22,10 @@ export default Ember.Route.extend({
     this.set('timer', Ember.run.later(() => {
       this.get('userStore').find('clustermembership', null, {forceReload: true}).then((response) => {
         this.controller.set('model', response);
-        this.scheduleTimer();
+        if ( this.get('timer') ) {
+          this.scheduleTimer();
+        }
       });
     }, INTERVAL));
   },
-
 });
