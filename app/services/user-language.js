@@ -3,6 +3,8 @@ import C from 'ui/utils/constants';
 import { ajaxPromise } from 'ember-api-store/utils/ajax-promise';
 import { loadScript } from 'ui/utils/load-script';
 
+const RTL_LANGUAGES = ['fa-ir'];
+
 export default Ember.Service.extend({
   prefs         : Ember.inject.service(),
   session       : Ember.inject.service(),
@@ -17,13 +19,29 @@ export default Ember.Service.extend({
     this.set('loadedLocales', []);
   }.on('init'),
 
+  initUnauthed() {
+    let lang = C.LANGUAGE.DEFAULT;
+    const fromSession = this.get(`session.${C.SESSION.LANGUAGE}`);
+    const fromCookie  = this.get('cookies').get(C.COOKIE.LANG);
+
+    if (fromSession) {
+      lang = fromSession;
+    } else if(fromCookie){
+      lang = fromCookie;
+    }
+
+    return this.sideLoadLanguage(lang);
+  },
+
   initLanguage() {
+    let lang          = C.LANGUAGE.DEFAULT;
     const session     = this.get('session');
+
     const fromLogin   = session.get(C.SESSION.LOGIN_LANGUAGE);
     const fromPrefs   = this.get(`prefs.${C.PREFS.LANGUAGE}`); // get language from user prefs
     const fromSession = session.get(C.SESSION.LANGUAGE); // get local language
     const fromCookie  = this.get('cookies').get(C.COOKIE.LANG);// get language from cookie 
-    let lang          = C.LANGUAGE.DEFAULT;
+
 
     if ( fromLogin ) {
       lang = fromLogin;
@@ -46,7 +64,7 @@ export default Ember.Service.extend({
     return lang.toLowerCase();
   },
 
-  getLanguage() {
+  getLocale() {
     return this.get('intl._locale')[0];
   },
 
@@ -54,8 +72,11 @@ export default Ember.Service.extend({
     let session = this.get('session');
     lang = lang || session.get(C.SESSION.LANGUAGE);
     session.set(C.SESSION.LANGUAGE, lang);
-    this.get('userTheme').writeStyleNode();
-    return this.set(`prefs.${C.PREFS.LANGUAGE}`, lang);
+    if ( session.get(C.SESSION.ACCOUNT_ID) ) {
+      return this.set(`prefs.${C.PREFS.LANGUAGE}`, lang);
+    } else {
+      return Ember.RSVP.resolve();
+    }
   },
 
   sideLoadLanguage(language) {
@@ -65,6 +86,7 @@ export default Ember.Service.extend({
 
     if (loadedLocales.includes(language)) {
       this.get('intl').setLocale(language);
+      this.setLanguage(language);
       this.get('userTheme').writeStyleNode();
       return Ember.RSVP.resolve();
     } else {
@@ -83,7 +105,8 @@ export default Ember.Service.extend({
           loadedLocales.push(language);
           return this.get('intl').addTranslations(language, resp.xhr.responseJSON).then(() => {
             this.get('intl').setLocale(language);
-           this.get('userTheme').writeStyleNode();
+            this.setLanguage(language);
+            this.get('userTheme').writeStyleNode();
           });
         });
       }).catch((err) => {
@@ -100,7 +123,7 @@ export default Ember.Service.extend({
   },
 
   isRtl(lang) {
-    return ['fa-ir'].includes(lang);
+    return RTL_LANGUAGES.includes(lang.toLowerCase());
   },
 
 });

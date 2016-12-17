@@ -112,7 +112,7 @@ export default Ember.Route.extend({
 
     langToggle() {
       let svc = this.get('language');
-      let cur = svc.getLanguage();
+      let cur = svc.getLocale();
       if ( cur === 'none' ) {
         svc.sideLoadLanguage(this.get('previousLang')||'en-us');
       } else {
