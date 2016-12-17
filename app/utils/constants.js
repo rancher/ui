@@ -10,6 +10,32 @@ const KIND_INFRA = 'infra';
 const KIND_NOT_ORCHESTRATION = 'cattle';
 
 var C = {
+  BULK_ACTIONS: [
+    {
+      "label": "action.start",
+      "icon": "icon icon-play",
+      "action": "start",
+      "bulkActionName": "Start",
+    },
+    {
+      "label": "action.stop",
+      "icon": "icon icon-stop",
+      "action": "promptStop",
+      "bulkActionName": "Stop",
+    },
+    {
+      "label": "action.restart",
+      "icon": "icon icon-refresh",
+      "action": "restart",
+      "bulkActionName": "Restart",
+    },
+    {
+      "label": "action.remove",
+      "icon": "icon icon-trash",
+      "action": "promptDelete",
+      "bulkActionName": "Delete",
+    },
+  ],
   COOKIE: {
     TOKEN: 'token',
     PL: 'PL',
@@ -146,6 +172,7 @@ var C = {
     EXPANDED_STACKS : 'expandedStacks',
     SORT_STACKS_BY  : 'sortStacksBy',
     THEME           : 'theme',
+    TABLE_COUNT     : 'tableCount',
     LANGUAGE        : 'language',
     I_HATE_SPINNERS : 'ihatespinners',
     FEEDBACK        : 'feedback',
@@ -158,6 +185,11 @@ var C = {
     DEFAULT: 'en-us',
     FORMAT_RELATIVE_TIMEOUT: 1000,
     DOCS: ['en'],
+  },
+
+  TABLES: {
+    DEFAULT_COUNT: 50
+
   },
 
   THEME: {

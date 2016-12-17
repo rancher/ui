@@ -3,6 +3,7 @@ import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   projects: Ember.inject.service(),
+  session:  Ember.inject.service(),
 
   model: null,
   showCommand: 'column', // 'no', 'column', or 'inline'
@@ -11,8 +12,7 @@ export default Ember.Component.extend({
   memoryMax: null,
   storageMax: null,
   networkMax: null,
-
-  tagName: 'TR',
+  tagName: '',
 
   statsAvailable: function() {
     return C.ACTIVEISH_STATES.indexOf(this.get('model.state')) >= 0 && this.get('model.healthState') !== 'started-once';
