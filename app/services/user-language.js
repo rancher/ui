@@ -61,7 +61,6 @@ export default Ember.Service.extend({
   sideLoadLanguage(language) {
     let application   = this.get('app');
     let loadedLocales = this.get('loadedLocales');
-    let session = this.get('session');
 
     if (loadedLocales.includes(language)) {
       this.get('intl').setLocale(language);
