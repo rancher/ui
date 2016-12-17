@@ -10,6 +10,7 @@ function labelsMatching(ary,key,val) {
 
 export default Ember.Mixin.create({
   groupedInstances: function() {
+    console.log('groupedInstances',this.get('model.id'));
     var groups = [];
 
     function getOrCreateGroup(id, name, isK8s)
