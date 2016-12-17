@@ -7,6 +7,7 @@ languageContribute: "Help Translate Rancher"
 generic:
   actions: Actions
   activate: Activate
+  any: Any
   as: As
   cancel: Cancel
   closeModal: Close
@@ -981,6 +982,15 @@ servicePage:
         description: Description
       body:
         noData: There have been no log events yet.
+  type:
+    service: Service
+    loadbalancerservice: Load Balancer
+    dnsservice: Service Alias
+    externalservice: External
+    kubernetesservice: K8s Service
+    composeservice: Compose Service
+    networkdriverservice: Network Service
+    storagedriverservice: Storage Service
 
 settingsPage:
   index:
@@ -1866,16 +1876,24 @@ formNetwork:
 
 formPorts:
   addAction: Port Map
+  bindAddress:
+    label: Public Host IP (Optional)
+    placeholder: "e.g. 1.2.3.4; Default: any"
   public:
-    label: Public Host [IP:]Port
-    placeholderWithIp: "e.g. 80 or 1.2.3.4:80"
-    placeholderWithoutIp: "e.g. 80"
+    label: Public Host Port
+    placeholder: "e.g. 80"
   private:
     label: Private Container Port
     placeholder: "e.g. 8080"
   protocol:
     label: Protocol
   noPorts: This container has no port maps.
+  error:
+    privateRequired: Private Container Port is required for each port rule.
+    publicRequired: Public Host Port is required if Host IP is specified.
+    mixedIpPort: "Port {ip}:{port}/{proto} has more than one mapping."
+    mixedPort: "Port {port}/{proto} has more than one mapping."
+  showIpLink: Show Host IP field
 
 formScale:
   label: Scale

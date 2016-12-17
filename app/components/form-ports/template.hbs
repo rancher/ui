@@ -9,29 +9,39 @@
     {{/unless}}
     {{#if portsArray.length}}
       <table class="table fixed no-lines no-top-padding tight small">
-        <tr class="text-muted hidden-xs hidden-sm">
+        <tr class="text-muted hidden-sm">
+          {{#if showIp}}
+            <th>{{t 'formPorts.bindAddress.label'}}</th>
+            <th class="hidden-sm" width="30">&nbsp;</th>
+          {{/if}}
           <th>{{t 'formPorts.public.label'}}</th>
-          <th class="hidden-xs hidden-sm" width="30">&nbsp;</th>
+          <th class="hidden-sm" width="30">&nbsp;</th>
           <th>{{t 'formPorts.private.label'}}</th>
-          <th class="hidden-xs hidden-sm" width="30">&nbsp;</th>
+          <th class="hidden-sm" width="30">&nbsp;</th>
           <th width="60">{{t 'formPorts.protocol.label'}}</th>
-          <th class="hidden-xs hidden-sm" width="30">&nbsp;</th>
+          <th class="hidden-sm" width="40">&nbsp;</th>
         </tr>
         {{#each portsArray as |port|}}
           <tr>
+            {{#if showIp}}
+              <td data-title="{{t 'formPorts.public.label'}}">
+                {{#if port.existing}}
+                  {{#if port.bindAddress}}
+                    {{port.bindAddress}}
+                  {{else}}
+                    <span class="text-muted">{{t 'generic.any'}}</span>
+                  {{/if}}
+                {{else}}
+                  {{input class="form-control input-sm" type="text" value=port.bindAddress placeholder=(t 'formPorts.bindAddress.placeholder')}}
+                {{/if}}
+              </td>
+              <td class="text-center hidden-sm">:</td>
+            {{/if}}
+
             <td data-title="{{t 'formPorts.public.label'}}">
-              {{#if (and port.existing port.bindAddress)}}
-                <div class="input-group">
-                  <span class="input-group-addon input-sm">
-                    {{port.bindAddress}}:
-                  </span>
-                  {{input class="form-control input-sm" type="text" value=port.public placeholder=(t 'formPorts.public.placeholderWithoutIp')}}
-                </div>
-              {{else}}
-                {{input class="form-control input-sm" type="text" value=port.public placeholder=(t 'formPorts.public.placeholderWithIp')}}
-              {{/if}}
+              {{input class="form-control input-sm" type="number" min="1" max="65535" value=port.public placeholder=(t 'formPorts.public.placeholder')}}
             </td>
-            <td class="text-center">
+            <td class="text-center hidden-sm">
               <p class="form-control-static"><i class="icon icon-chevron-right"></i></p>
             </td>
             <td data-title="{{t 'formPorts.private.label'}}">
@@ -41,7 +51,7 @@
                 {{input class="form-control input-sm" type="number" min="1" max="65535" value=port.private placeholder=(t 'formPorts.private.placeholder')}}
               {{/if}}
             </td>
-            <td class="text-center">/</td>
+            <td class="text-center hidden-sm">/</td>
             <td data-title="{{t 'formPorts.protocol.label'}}">
               {{#if port.existing}}
                 <div class="form-control-static text-muted">{{upper-case port.protocol}}</div>
@@ -62,6 +72,13 @@
           </tr>
         {{/each}}
       </table>
+      {{#unless showIp}}
+        <p class="help-block">
+          <a href="#" {{action "showIp"}}>
+            {{t 'formPorts.showIpLink'}}
+          </a>
+        </p>
+      {{/unless}}
     {{else}}
       {{#if editing}}
         <span class="text-center text-muted">{{t 'formPorts.noPorts'}}</span>

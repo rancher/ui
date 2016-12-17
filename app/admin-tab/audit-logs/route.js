@@ -1,6 +1,6 @@
 import Ember from 'ember';
 
-const INTERVALCOUNT = 30000;
+const INTERVALCOUNT = 15000;
 
 export default Ember.Route.extend({
   queryParams: {
@@ -27,54 +27,43 @@ export default Ember.Route.extend({
     }
   },
 
-  runLaterId   : null,
+  timer   : null,
   userHasPaged : null,
 
   actions: {
-    filterLogs: function() {
-      Ember.run.cancel(this.get('runLaterId'));
-      this.set('runLaterId', null);
+    filterLogs() {
+      this.cancelLogUpdate();
     },
-    logsSorted: function() {
-      Ember.run.cancel(this.get('runLaterId'));
-      this.set('runLaterId', null);
+
+    logsSorted() {
+      this.cancelLogUpdate();
     },
-    next: function() {
 
-      Ember.run.cancel(this.get('runLaterId'));
-
+    next() {
+      this.cancelLogUpdate();
       this.set('userHasPaged', true);
-      this.set('runLaterId', null);
 
       this.controller.model.auditLog.followPagination('next').then((response) => {
-
         this.controller.set('model.auditLog', response);
       });
     },
-    first: function() {
 
+    first() {
       this.set('userHasPaged', false);
       this.refresh();
       this.scheduleLogUpdate();
     }
   },
 
-  deactivate: function() {
-
-    Ember.run.cancel(this.get('runLaterId'));
-
+  deactivate() {
+    this.cancelLogUpdate();
     this.set('userHasPaged', false);
-    this.set('runLaterId', null);
   },
 
-  model: function(params) {
+  model(params) {
+    this.cancelLogUpdate();
 
-    if (this.get('runLaterId')) {
-      Ember.run.cancel(this.get('runLaterId'));
-      this.set('runLaterId', null);
-    }
     return this.get('userStore').find('auditLog', null, this.parseFilters(params)).then((response) => {
-
       var resourceTypes = this.get('userStore').all('schema').filterBy('links.collection').map((x) => { return x.get('_id'); });
 
       return Ember.Object.create({
@@ -84,34 +73,37 @@ export default Ember.Route.extend({
     });
   },
 
-  setupController: function(controller, model) {
-
+  setupController(controller, model) {
     this._super(controller, model);
     this.scheduleLogUpdate();
-
   },
 
-  scheduleLogUpdate: function() {
+  scheduleLogUpdate() {
+    Ember.run.cancel(this.get('timer'));
 
-    this.set('runLaterId',
-      Ember.run.later(() => {
-        var params = this.paramsFor('admin-tab.audit-logs');
+    this.set('timer', Ember.run.later(() => {
+      var params = this.paramsFor('admin-tab.audit-logs');
 
-        this.get('userStore').find('auditLog', null, this.parseFilters(params)).then((response) => {
+      this.get('userStore').find('auditLog', null, this.parseFilters(params)).then((response) => {
+        // We can get into a state where the user paged but we have an unresolved promise from the previous
+        // run. If thats the case we dont want to replace the page with this unresolved promise.
+        if (!this.get('userHasPaged')) {
 
-          // We can get into a state where the user paged but we have an unresolved promise from the previous
-          // run. If thats the case we dont want to replace the page with this unresolved promise.
-          if (!this.get('userHasPaged')) {
-
-            this.controller.set('model.auditLog', response);
+          this.controller.set('model.auditLog', response);
+          if ( this.get('timer') ) {
             this.scheduleLogUpdate();
           }
-        }, (/* error */) => {});
-
-      }, INTERVALCOUNT));
+        }
+      }, (/* error */) => {});
+    }, INTERVALCOUNT));
   },
 
-  parseFilters: function(params) {
+  cancelLogUpdate() {
+    Ember.run.cancel(this.get('timer'));
+    this.set('timer', null);
+  },
+
+  parseFilters(params) {
     var returnValue = {
       filter      : {},
       limit       : 100,

@@ -71,7 +71,8 @@ export default Resource.extend({
     }
   }.property('labels','projects.current.orchestration'),
 
-  certifiedClass: function() {
+
+  certifiedType: function() {
     let str = null;
     let labels = this.get('labels');
     if ( labels && labels[C.LABEL.CERTIFIED] ) {
@@ -79,13 +80,17 @@ export default Resource.extend({
     }
 
     if ( str === C.LABEL.CERTIFIED_RANCHER && this.get('catalogId') === C.CATALOG.LIBRARY_KEY ) {
-      return 'badge-rancher';
+      return 'rancher';
     } else if ( str === C.LABEL.CERTIFIED_PARTNER ) {
-      return 'badge-partner';
+      return 'partner';
     } else {
-      return 'badge-thirdparty';
+      return 'thirdparty';
     }
   }.property('catalogId'),
+
+  certifiedClass: function() {
+    return 'badge-' + this.get('certifiedType');
+  }.property('certifiedType'),
 
   certified: function() {
     let out = null;
@@ -116,7 +121,7 @@ export default Resource.extend({
 
     // For custom strings, use what they said.
     return out;
-  }.property('catalogId','labels'),
+  }.property('certifiedType','catalogId','labels'),
 });
 
 function normalize(str) {

@@ -192,8 +192,14 @@ var Service = Resource.extend({
     let store = this.get('store');
     let links = this.get('linkedServices')||{};
     let out = Object.keys(links).map((key) => {
+      let name = key;
+      let pos = name.indexOf('/');
+      if ( pos >= 0 ) {
+        name = name.substr(pos+1);
+      }
+
       return Ember.Object.create({
-        name: key,
+        name: name,
         service: store.getById('service', links[key])
       });
     });
@@ -288,21 +294,24 @@ var Service = Resource.extend({
   }.property('type'),
 
   displayType: function() {
-    var out;
-    switch ( this.get('type').toLowerCase() )
-    {
-      case 'loadbalancerservice': out = 'Load Balancer'; break;
-      case 'dnsservice':          out = 'Service Alias'; break;
-      case 'externalservice':     out = 'External'; break;
-      case 'kubernetesservice':   out = 'K8s Service'; break;
-      case 'composeservice':      out = 'Compose Service'; break;
-      case 'networkdriverservice':out = 'Network Service'; break;
-      case 'storagedriverservice':out = 'Storage Service'; break;
-      default:                    out = 'Service'; break;
+    let known = [
+      'loadbalancerservice',
+      'dnsservice',
+      'externalservice',
+      'kubernetesservice',
+      'composeservice',
+      'networkdriverservice',
+      'storagedriverservice',
+      'service'
+    ];
+
+    let type = this.get('type').toLowerCase();
+    if ( !known.includes(type) ) {
+      type = 'service';
     }
 
-    return out;
-  }.property('type'),
+    return this.get('intl').t('servicePage.type.'+ type);
+  }.property('type','intl._locale'),
 
   hasSidekicks: function() {
     return this.get('secondaryLaunchConfigs.length') > 0;

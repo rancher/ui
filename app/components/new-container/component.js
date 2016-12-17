@@ -304,6 +304,21 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       });
     }
 
+    // Errors from components
+    errors.pushObjects(this.get('commandErrors')||[]);
+    errors.pushObjects(this.get('volumeErrors')||[]);
+    errors.pushObjects(this.get('networkingErrors')||[]);
+    errors.pushObjects(this.get('healthCheckErrors')||[]);
+    errors.pushObjects(this.get('schedulingErrors')||[]);
+    errors.pushObjects(this.get('securityErrors')||[]);
+    errors.pushObjects(this.get('scaleErrors')||[]);
+    errors.pushObjects(this.get('imageErrors')||[]);
+    errors.pushObjects(this.get('portErrors')||[]);
+    errors.pushObjects(this.get('diskErrors')||[]);
+
+
+    errors = errors.uniq();
+
     if ( errors.get('length') )
     {
       this.set('errors', errors);
@@ -312,31 +327,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
     this.set('errors', null);
     return true;
-  },
-  willSave() {
-    var errors = [];
-    if ( !this.get('editing') )
-    {
-      // Errors from components
-      errors.pushObjects(this.get('commandErrors')||[]);
-      errors.pushObjects(this.get('volumeErrors')||[]);
-      errors.pushObjects(this.get('networkingErrors')||[]);
-      errors.pushObjects(this.get('healthCheckErrors')||[]);
-      errors.pushObjects(this.get('schedulingErrors')||[]);
-      errors.pushObjects(this.get('securityErrors')||[]);
-      errors.pushObjects(this.get('scaleErrors')||[]);
-      errors.pushObjects(this.get('imageErrors')||[]);
-      errors.pushObjects(this.get('portErrors')||[]);
-      errors.pushObjects(this.get('diskErrors')||[]);
-
-      if ( errors.length )
-      {
-        this.set('errors', errors);
-        return false;
-      }
-    }
-
-    return this._super.apply(this,arguments);
   },
 
   doSave() {

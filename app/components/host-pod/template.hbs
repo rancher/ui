@@ -69,7 +69,19 @@
         {{#if (or showAdd group.instances.length)}}
           <div class="container-subpod-info">
             <div class="subpod-header">
-              <h6 class="clip">{{#if group.name}}{{if group.kubernetes (t 'hostPod.machineInfo.groupedInstances.namespace') (t 'hostPod.machineInfo.groupedInstances.stack')}} {{group.name}}{{else}}{{t 'hostPod.machineInfo.groupedInstances.standalone'}}{{/if}}</h6>
+              <h6 class="clip">
+                {{~#if group.name~}}
+                  {{#if group.kubernetes}}
+                    {{t 'hostPod.machineInfo.groupedInstances.namespace'}}
+                    {{group.name}}
+                  {{else}}
+                    {{t 'hostPod.machineInfo.groupedInstances.stack'}}
+                    {{#link-to "stack" group.id}}{{group.name}}{{/link-to}}
+                  {{/if}}
+                {{else}}
+                  {{t 'hostPod.machineInfo.groupedInstances.standalone'}}
+                {{/if}}
+              </h6>
             </div>
             <div class="subpod-inner clearfix">
               {{#each group.instances as |item|}}
