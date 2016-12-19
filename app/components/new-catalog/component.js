@@ -88,7 +88,7 @@ export default Ember.Component.extend(NewOrEdit, {
         this.set('readmeContent', response);
       });
     }
-  }.observes('selectedTemplateModel.links.readme'),
+  },
 
   sortedVersions: function() {
     let out = this.get('versionsArray').sort((a,b) => {
@@ -155,10 +155,12 @@ export default Ember.Component.extend(NewOrEdit, {
 
         this.set('selectedTemplateModel', response);
         this.set('previewTab', Object.keys(response.get('files')||[])[0]);
+        this.updateReadme();
         this.set('loading', false);
       }, ( /*error*/ ) => {});
     } else {
       this.set('selectedTemplateModel', null);
+      this.updateReadme();
       this.set('readmeContent', null);
     }
   }.observes('selectedTemplateUrl','templateResource.defaultVersion'),
