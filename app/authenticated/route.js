@@ -3,7 +3,7 @@ import C from 'ui/utils/constants';
 import Subscribe from 'ui/mixins/subscribe';
 import { isSafari, version as safariVersion } from 'ui/utils/platform';
 
-const CHECK_AUTH_TIMER = 600000;
+const CHECK_AUTH_TIMER = 60*10*1000;
 
 export default Ember.Route.extend(Subscribe, {
   prefs     : Ember.inject.service(),

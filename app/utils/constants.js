@@ -107,6 +107,7 @@ var C = {
     CSRF: 'X-Api-Csrf',
     NO_CHALLENGE: 'X-Api-No-Challenge',
     NO_CHALLENGE_VALUE: 'true',
+    RANCHER_VERSION: 'X-Rancher-Version',
   },
 
   KEY: {
