@@ -8,14 +8,24 @@ export default Ember.Service.extend({
   shibbolethAuth: Ember.inject.service(),
   store: Ember.inject.service(),
   userStore: Ember.inject.service('user-store'),
+
   token: null,
+  loadedVersion: null,
 
   testAuth: function() {
-
-    // make a call to v1 because it is authenticated
+    // make a call to api base because it is authenticated
     return this.get('userStore').rawRequest({
       url: '',
-    }).then((/* res */) => {
+    }).then((xhr) => {
+      let loaded = this.get('loadedVersion');
+      let cur = xhr.headers.get(C.HEADER.RANCHER_VERSION);
+
+      // Reload if the version changes
+      if ( loaded && cur && loaded !== cur ) {
+        window.location.href = window.location.href;
+        return;
+      }
+
       // Auth token still good
       return Ember.RSVP.resolve('Auth Succeeded');
     }, (/* err */) => {
@@ -56,6 +66,7 @@ export default Ember.Service.extend({
       this.setProperties({
         'enabled': token.security,
         'provider': (token.authProvider||'').toLowerCase(),
+        'loadedVersion': xhr.headers.get(C.HEADER.RANCHER_VERSION),
       });
 
       this.set('token', token);

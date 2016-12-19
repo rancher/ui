@@ -3,7 +3,7 @@ import C from 'ui/utils/constants';
 import Subscribe from 'ui/mixins/subscribe';
 import { isSafari, version as safariVersion } from 'ui/utils/platform';
 
-const CHECK_AUTH_TIMER = 600000;
+const CHECK_AUTH_TIMER = 60*10*1000;
 
 export default Ember.Route.extend(Subscribe, {
   prefs     : Ember.inject.service(),
@@ -205,13 +205,12 @@ export default Ember.Route.extend(Subscribe, {
         this.set(`session.${C.SESSION.ACCOUNT_ID}`, res.xhr.headers.get(C.HEADER.ACCOUNT_ID));
       }
 
+      this.get('language').setLanguage();
       this.get('userTheme').setupTheme();
 
       if (this.get(`prefs.${C.PREFS.I_HATE_SPINNERS}`)) {
         Ember.$('BODY').addClass('i-hate-spinners');
       }
-
-      this.get('language').setLanguage();
 
       return res;
     });
