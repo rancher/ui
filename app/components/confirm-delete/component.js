@@ -7,6 +7,7 @@ export default ModalBase.extend({
   resources: Ember.computed.alias('modalService.modalOpts'),
   alternateLabel: alternateLabel,
   settings: Ember.inject.service(),
+  intl: Ember.inject.service(),
 
   actions: {
     confirm: function() {
@@ -30,6 +31,14 @@ export default ModalBase.extend({
     });
 
     return out;
+  }),
+
+  largeDeleteText: Ember.computed(function() {
+    var resources = this.get('resources');
+    return this.get('intl').t('confirmDelete.largeDeleteText', {
+      key: resources[0].get('displayName'),
+      othersCount: resources.length
+    });
   }),
 
   didRender: function() {
