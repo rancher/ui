@@ -33,7 +33,7 @@ export default Ember.Service.extend({
     return this.sideLoadLanguage(lang);
   },
 
-  initLanguage() {
+  initLanguage(save=false) {
     let lang          = C.LANGUAGE.DEFAULT;
     const session     = this.get('session');
 
@@ -45,7 +45,9 @@ export default Ember.Service.extend({
 
     if ( fromLogin ) {
       lang = fromLogin;
-      session.set(C.SESSION.LOGIN_LANGUAGE, undefined);
+      if ( save ) {
+        session.set(C.SESSION.LOGIN_LANGUAGE, undefined);
+      }
     } else if ( fromPrefs ) {
       lang = fromPrefs;
     } else if (fromSession) {
@@ -56,7 +58,7 @@ export default Ember.Service.extend({
 
     lang = this.normalizeLang(lang);
 
-    session.set(C.SESSION.LANGUAGE, lang);
+    this.setLanguage(lang, save);
     return this.sideLoadLanguage(lang);
   },
 
@@ -68,11 +70,12 @@ export default Ember.Service.extend({
     return this.get('intl._locale')[0];
   },
 
-  setLanguage(lang) {
+  setLanguage(lang, savePref=true) {
     let session = this.get('session');
     lang = lang || session.get(C.SESSION.LANGUAGE);
+
     session.set(C.SESSION.LANGUAGE, lang);
-    if ( session.get(C.SESSION.ACCOUNT_ID) ) {
+    if ( savePref && session.get(C.SESSION.ACCOUNT_ID) ) {
       return this.set(`prefs.${C.PREFS.LANGUAGE}`, lang);
     } else {
       return Ember.RSVP.resolve();
@@ -86,7 +89,7 @@ export default Ember.Service.extend({
 
     if (loadedLocales.includes(language)) {
       this.get('intl').setLocale(language);
-      this.setLanguage(language);
+      this.setLanguage(language,false);
       this.get('userTheme').writeStyleNode();
       return Ember.RSVP.resolve();
     } else {
@@ -105,7 +108,7 @@ export default Ember.Service.extend({
           loadedLocales.push(language);
           return this.get('intl').addTranslations(language, resp.xhr.responseJSON).then(() => {
             this.get('intl').setLocale(language);
-            this.setLanguage(language);
+            this.setLanguage(language,false);
             this.get('userTheme').writeStyleNode();
           });
         });
