@@ -23,6 +23,7 @@ generic:
   missing: "*%FEHLT%*"
   moreActions: Weitere Aktionen
   na: 'Keine Angabe'
+  "no": false
   name: Name
   none: Kein
   ports: Ports
@@ -32,6 +33,7 @@ generic:
   to: Zu
   type: Typ
   unknown: Unbekannt
+  "yes": true
 accountsPage:
   index:
     header: Konten
@@ -380,34 +382,20 @@ containersPage:
     portsTab:
       table:
         header:
-          state: Status
           ip: Ip Addresse
           public: Public auf Host
           private: Private im Container
           protocol: Protokoll
         body:
-          state: 'Status:'
-          ip: 'Ip Addresse:'
-          public: 'Public (auf Host):'
-          private: 'Private (im Container):'
-          protocol: 'Protokoll:'
           noData: 'Dieser Container hat keine Ports.'
     volumesTab:
       table:
         header:
-          state: Status
           mount: Einhängepunkt
           shared: Geteilt mit
           writable: Beschreibbar
           snapshot: Snapshot-Timeline
-          actions: Aktionen
         body:
-          state: 'Status:'
-          mount: 'Einhängepunkt:'
-          shared: 'Geteilt mit:'
-          writable: 'Beschreibbar:'
-          snapshot: 'Snapshot-Timeline:'
-          actions: 'Aktionen:'
           error:
             data: 'Fehler:'
             error: Fehler
@@ -416,125 +404,11 @@ containersPage:
 containerSubpod:
   childContainers: Container
   childSidekicks: Sidekicks
-dockerCLI:
-  header: Docker CLI
-  start: Wenn Sie docker oder docker-compose auf Ihrem Computer verwenden möchten, können Sie mittels Klick auf die Schaltfläche einen API-Key und eine Config-Datei erzeugen
-  button: Konfiguration generieren
-  generating: Generiere...
-  activating: Aktiviere...
-  complete: Konfigurieren Sie jetzt ihren Computer
-  createDirectory: |
-    Erstellen Sie zunächst das Verzeichnis <code>.docker</code> in Ihrem Home-Verzeichnis: <code>mkdir -pv ~/.docker</code>
-  extractZip: Extrahieren Sie die heruntergeladene ZIP-Datei
-  copyFiles: |
-    Kopieren Sie alle Dateien aus der extrahierten Zip-Datei in das Verzeichnis <code>.docker</code>
-  exportVars: |
-    Führen Sie den Befehl <code>export DOCKER_HOST={swarmEndpoint} DOCKER_TLS_VERIFY=1</code> aus oder fügen Sie die Umgebungsvariablen ihrem Profil hinzu
-  test: |
-    Testen sie die Konfiguration mit dem Befehl <code>Docker ps</code>
-  well: |
-    Oder verwenden Sie diese praktische Shell um <code>docker</code> oder <code>docker-compose</code> Befehle direkt auszuführen:
 failWhalePage:
   header: Fehler
   reloadButton: |
     <a href="#" onclick="window.location.href = window.location.href; return false;">Neu laden</a> um es nochmal zu versuchen oder
   logoutButton: Abmelden
-haPage:
-  header:
-    enabled: 'High Availability ist <b class="text-success">aktiviert</b>'
-    disabled: 'High Availability isr nicht aktiviert'
-  haConfigured:
-    addHost:
-      header: '5. Hosts hinzufügen'
-      subtext: 'Kopieren Sie das heruntergeladene Skript und führen Sie es auf jedem HA Host aus um diese zu registrieren:'
-    hosts:
-      header: 'Hosts:'
-      waiting: 'Warte auf Host...'
-      managementServerCert:
-        text: 'Management Server Zertifikat:'
-        waiting: 'Warte auf Host...'
-    disable:
-      header: 'Gefahrenzone&trade;'
-      confirm:
-        pre: 'Sind Sie sicher?  Erneut klicken um HA Zugriff zu deaktivieren'
-        prompt: HA deaktivieren
-  haDisabled:
-    header: '1. Eine externe Datenbank  an external database'
-    subtext: 'Diese {appName} Installation ist momentan für die Nutzung des integrierten Datenbank Servers konfiguriert, aber HA benötigt eine eigenständige Installation von MySQL.'
-    externalDatabase:
-      ul:
-        li1:
-          text: 'Externe Datenbank Instanz aufsetzen.'
-          ul:
-            li1: 'Das keine gehostete Lösung wie  Amazon RDS oder Google Cloud SQL sein,'
-            li2: 'oder eine selbst gehostete Instanz oder ein Multi-Master Cluster.'
-        li2: 'Klicken Sie den Export Button unten um die gesamten Inhalte der aktuellen Datenbank zu exportieren.'
-        li3: 'Importieren Sie die Daten in die neue, externe Datenbank.'
-      exportDatabase: Datenbank exportieren
-      size: 'Ungepackte Größe:'
-      noLocalDb:
-        header: '1. Eine externe Datenbank konfigurieren'
-        subtext: 'Komplett, Setup läuft mit einer externen Datenbank.'
-    databaseUsage:
-      localDb:
-        header: '2. Neue, externe Datenbank verwenden'
-        ul:
-          li1: 'Rancher Server Container mit Anbindung an externe Datenbank neu starten:'
-          isRancher:
-            li1: '<a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank">Die Dokumentation</a> enthält weitere Details.'
-      noLocalDb:
-        header: '2. Neue, externe Datenbank verwenden'
-        subtext: 'Abgeschlossen, <code>{dbHost}</code> wird als externe Datenbank für HA verwendet werden.'
-    haConfigScript:
-      generated:
-        header: '3. HA Konfigurationsskript generieren'
-        subtext: 'Komplett.'
-      notGenerated:
-        header: '3. HA Konfigurationsskript generieren'
-        subtext: 'Kehren Sie hierher zurück sobald die externe Datenbank konfiguriert wurde...'
-      form:
-        clusterSize:
-          labelText: Cluster Größe
-          one: '<span class="text-bold" style="display: inline-block: width: 120px;"> 1 Host:</span> Nicht wirklich HA'
-          three: '<span class="text-bold" style="display: inline-block: width: 120px;"> 3 Hosts:</span> <b>Ein</b>beliebiger Host kann ausfallen'
-          five: '<span class="text-bold" style="display: inline-block: width: 120px;"> 5 Hosts:</span> <b>Zwei</b>beliebige Hosts können ausfallen'
-        hostRegistration:
-          helpText:
-            singleCluster: 'Das sollte ein FQDN sein der einen Loadbalancer oder einen Loadbalancer für den HA Host auflöst. Bitte keine Pfade wie <code>/v1</code> oder andere angeben.'
-            multiCluster: 'Das sollte ein FQDN sein der einen Loadbalancer oder einen Loadbalancer für alle {clusterSize} HA hosts auflöst. Bitte keine Pfade wie <code>/v1</code> oder andere angeben.'
-        certificate:
-          labelText: Zertifikate
-          radio1: 'Selbst-signierte Zertifikate generieren'
-          radio2:
-            noHostUrl: 'Ein gültiges Zertifikat hochladen'
-            hasHostUrl: 'Ein gültiges Zertifikat für <code>{hostRegistrationUrl}</code> hochladen'
-        listeningPorts:
-          labelText: Geöffnete Ports
-          table:
-            https: HTTPS
-            http: HTTP
-            swarm: Swarm
-            proxyToHttps: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">PROXY</a> zu HTTPS'
-            proxyToHttp: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">PROXY</a> zu HTTP'
-            redis: Redis
-            zookeeperClient: ZooKeeper Client
-            zookeeperQuorum: ZooKeeper Quorum
-            zookeeperLeader: ZooKeeper Leader
-      configScriptButton:
-        pre: Konfigurationsskript generieren
-        post: 'Generiere...'
-      downloadScript:
-        downloaded:
-          header: '4. Skript herunterladen'
-          subtext: 'Abgeschlossen, prüfen Sie ihr Downloads Verzeichnis.'
-        notDownloaded:
-          header: '4. Skript herunterladen'
-          subtext: 'Klicken Sie den Button um ein Shell Skript herunterzuladen.'
-          alert: |
-            Dieses Skript generiert neue Schlüssel die für die Kommunikation der HA Hosts untereinander verwendet werden. Bewahren Sie diese sicher auf.
-            Bei jedem Download dieses Skripts werden neue Keys generiert und alle Hosts müssen die selben Keys verwenden damit HA funktionieren kann.
-          buttonText: Konfigurationsskript herunterladen
-          generateScript: 'Konfigurationsskript in Schritt 3 generieren.'
 helpPage:
   header: Hilfreiche Links und Informationen
   banner: Ankündigungen
@@ -684,8 +558,6 @@ k8sTab:
   kubectl:
     header: kubectl
     stepOne:
-      generateConfigText: |
-        Um <a href="{downloadUrl}" target="_blank">kubectl</a> (v1.2+ only) auf ihrer Workstation zu verwenden, klicken Sie auf den Button um einen API Schlüssel und eine Konfiguration zu generieren:
       generateButton: Konfiguration generieren
     stepTwo:
       progress: Generiere...
@@ -2227,7 +2099,6 @@ storagePoolSection:
       header:
         snapshotState: 'Snapshot Status'
         backedUp: 'Backed erfolgt'
-        activeMounts: 'Mounts (Container: Pfad)'
 swarm:
   containerSection:
     state: Status
@@ -2269,9 +2140,6 @@ vmConsole:
   footerActions:
     buttonSend: Ctrl-Alt-Delete Senden
     buttonCancel: Schliessen
-volumeRow:
-  activeMounts:
-    readOnly: "(nur-lesen)"
 waitKubernetes:
   activateHost: 'Warte auf Aktivierung eines Hosts'
   createStack: 'Erstelle Kubernetes System-Stack'

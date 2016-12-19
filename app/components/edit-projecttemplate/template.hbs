@@ -65,9 +65,10 @@
           {{#catalog-box model=obj.tpl active=obj.enabled showSource=true as |section|}}
             {{#if (eq section 'footer')}}
               {{#if (and obj.required obj.enabled)}}
+                <button type="button" class="btn btn-primary" {{action "enableStack" obj}}>{{t 'editProjectTemplate.stackEdit'}}</button>
                 <button type="button" class="btn btn-default btn-disabled" {{action "disableStack" obj true allowedKeys="meta ctrl"}}>{{t 'editProjectTemplate.stackRequired'}}</button>
               {{else if obj.enabled}}
-                <button type="button" class="btn btn-default" {{action "enableStack" obj}}>{{t 'editProjectTemplate.stackEdit'}}</button>
+                <button type="button" class="btn btn-primary" {{action "enableStack" obj}}>{{t 'editProjectTemplate.stackEdit'}}</button>
                 <button type="button" class="btn btn-danger" {{action "disableStack" obj}}>{{t 'generic.disable'}}</button>
               {{else if obj.supported}}
                 <button type="button" class="btn btn-primary" {{action "enableStack" obj}}>{{t 'generic.enable'}}</button>

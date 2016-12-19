@@ -24,6 +24,11 @@ export default Ember.Route.extend({
       if ( hash.existingService ) {
         if ( params.upgrade+'' === 'true' ) {
           service = hash.existingService.clone();
+
+          if ( params.upgradeImage+'' === 'true' ) {
+            service.set('launchConfig.imageUuid', 'docker:' + this.get(`settings.${C.SETTING.BALANCER_IMAGE}`));
+          }
+
           hash.existing = hash.existingService;
         } else {
           service = hash.existingService.cloneForNew();
@@ -74,6 +79,7 @@ export default Ember.Route.extend({
       controller.set('stackId', null);
       controller.set('serviceId', null);
       controller.set('upgrade', null);
+      controller.set('upgradeImage', null);
     }
   },
 

@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { isSafari } from 'ui/utils/platform';
 
 export default Ember.Component.extend({
   value        : null,
@@ -46,4 +47,12 @@ export default Ember.Component.extend({
       reader.readAsText(input.files[0]);
     }
   },
+
+  actualAccept: function() {
+    if ( isSafari ) {
+      return '';
+    } else {
+      return this.get('accept');
+    }
+  }.property('accept'),
 });

@@ -7,6 +7,7 @@ languageContribute: "Help Translate Rancher"
 generic:
   actions: Actions
   activate: Activate
+  any: Any
   as: As
   cancel: Cancel
   closeModal: Close
@@ -30,6 +31,7 @@ generic:
   missing: "*%MISSING%*"
   moreActions: More Actions
   na: 'n/a'
+  no: No
   name: Name
   none: None
   ports: Ports
@@ -45,6 +47,8 @@ generic:
   total: Total
   type: Type
   unknown: Unknown
+  uuid: UUID
+  yes: Yes
 
 
 ##############################
@@ -539,101 +543,16 @@ failWhalePage:
   logoutButton: log out
 
 haPage:
-  header:
-    enabled: 'High Availability is <b class="text-success">enabled</b>'
-    disabled: 'High Availability is not configured'
-  haConfigured:
-    addHost:
-      header: '5. Add hosts'
-      subtext: 'Copy the downloaded script and run it on to each HA host to register them:'
-    hosts:
-      header: 'Hosts:'
-      waiting: 'Waiting for a host...'
-      managementServerCert:
-        text: 'Management Server Certificate:'
-        waiting: 'Waiting for a host...'
-    disable:
-      header: 'Danger Zone&trade;'
-      confirm:
-        pre: 'Are you sure?  Click again to really disable access HA'
-        prompt: Disable HA
-  haDisabled:
-    header: '1. Setup an external database'
-    subtext: 'This {appName} installation is currently configured to use the built-in database server, but HA requires a standalone installation of MySQL.'
-    externalDatabase:
-      ul:
-        li1:
-          text: 'Setup an external database instance.'
-          ul:
-            li1: 'This can be a hosted solution like Amazon RDS or Google Cloud SQL,'
-            li2: 'Or a self-hosted instance or multi-master cluster.'
-        li2: 'Click the export button below to export the entire contents of the current database.'
-        li3: 'Import the data into the new external database.'
-      exportDatabase: Export Database
-      size: 'Uncompressed Size:'
-      noLocalDb:
-        header: '1. Setup an external database'
-        subtext: 'Complete, running off of an external database.'
-    databaseUsage:
-      localDb:
-        header: '2. Use the new external database'
-        ul:
-          li1: 'Re-launch the server container pointed at the external database:'
-          isRancher:
-            li1: '<a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank">See docs</a> for more detail.'
-      noLocalDb:
-        header: '2. Use the new external database'
-        subtext: 'Complete, <code>{dbHost}</code> will be used as the external database for HA.'
-    haConfigScript:
-      generated:
-        header: '3. Generate HA config script'
-        subtext: 'Complete.'
-      notGenerated:
-        header: '3. Generate HA config script'
-        subtext: 'Come back here once you are running off the external database...'
-      form:
-        clusterSize:
-          labelText: Cluster Size
-          one: '<span class="text-bold" style="display: inline-block: width: 120px;">1 Host:</span> Not really very HA at all'
-          three: '<span class="text-bold" style="display: inline-block: width: 120px;">3 Hosts:</span> Any <b>one</b> host can fail'
-          five: '<span class="text-bold" style="display: inline-block: width: 120px;">5 Hosts:</span> Any <b>two</b> hosts can fail'
-        hostRegistration:
-          helpText:
-            singleCluster: 'This should be a FQDN that resolves to the addresses of or is a load balancer for the HA host. Do not include <code>/v1</code> or any other path.'
-            multiCluster: 'This should be a FQDN that resolves to the addresses of or is a load balancer for all {clusterSize} HA hosts. Do not include <code>/v1</code> or any other path.'
-        certificate:
-          labelText: Certificate
-          radio1: 'Generate a self-signed certificate'
-          radio2:
-            noHostUrl: 'Upload a valid certificate'
-            hasHostUrl: 'Upload a valid certificate for <code>{hostRegistrationUrl}</code>'
-        listeningPorts:
-          labelText: Listening Ports
-          table:
-            https: HTTPS
-            http: HTTP
-            swarm: Swarm
-            proxyToHttps: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">PROXY</a> to HTTPS'
-            proxyToHttp: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">PROXY</a> to HTTP'
-            redis: Redis
-            zookeeperClient: ZooKeeper Client
-            zookeeperQuorum: ZooKeeper Quorum
-            zookeeperLeader: ZooKeeper Leader
-      configScriptButton:
-        pre: Generate Config Script
-        post: 'Generating...'
-      downloadScript:
-        downloaded:
-          header: '4. Download script'
-          subtext: 'Complete, check your Downloads folder.'
-        notDownloaded:
-          header: '4. Download script'
-          subtext: 'Click the button below to download a shell script.'
-          alert: |
-            The script generates new encryption keys that will be used for the HA hosts to communicate with each other, so keep it safe.
-            New keys are generated every time you download the config script, and all hosts must have the same keys for HA to work.
-          buttonText: Download Config Script
-          generateScript: 'Generate the script in step 3.'
+  header: High Availability
+  setup:
+    prefix: "Multiple server containers can be deployed on different hosts so that {appName} keeps running even if one of the hosts fail.  "
+    link: See documentation
+    suffix: " for information on setup and usage."
+  table:
+    address: Advertised  Address
+    port: Port
+    heartbeat: Last Seen
+    clustered: Clustered
 
 helpPage:
   header: Helpful links & Information
@@ -657,7 +576,7 @@ helpPage:
     content:
       paragraph1: |
         A service is simply a group of containers created from the same Docker image but extends Docker's "link" concept to leverage {appName}'s lightweight distributed DNS service for service discovery. Services can be added individually or by deploying an item from the Catalog.
-      paragraph2: A service is also capable of leveraging other {appName} built-in services such as load balancers, health monitoring, upgrade support, and high-availability.
+      paragraph2: A service is also capable of leveraging other {appName} built-in services such as load balancers, health monitoring, upgrade support, and high availability.
       #' fixes syntax highlighting so i dont go crazy
       link: Learn More
     addServiceLink: Manage Services
@@ -789,6 +708,13 @@ k8sTab:
     replicaset: Replica Set
     petset: Pet Set
     pod: Pod
+
+  dashboard:
+    header: Kubernetes Dashboard
+    dashboard:
+      header: Dashboard
+      content: Kubernetes Dashboard is a general purpose, web-based UI for Kubernetes clusters. It allows users to manage applications running in the cluster and troubleshoot them, as well as manage the cluster itself.
+      button: Kubernetes UI
 
   kubectl:
     header: kubectl
@@ -1033,6 +959,7 @@ servicePage:
       description:
         placeholder: e.g. Current version of MyApp
   newBalancer:
+    upgradeImage: "The balancer software image will be upgraded from <code>{from}</code> to <code>{to}</code>."
     form:
       name:
         placeholder: e.g. website
@@ -1055,6 +982,15 @@ servicePage:
         description: Description
       body:
         noData: There have been no log events yet.
+  type:
+    service: Service
+    loadbalancerservice: Load Balancer
+    dnsservice: Service Alias
+    externalservice: External
+    kubernetesservice: K8s Service
+    composeservice: Compose Service
+    networkdriverservice: Network Service
+    storagedriverservice: Storage Service
 
 settingsPage:
   index:
@@ -1672,6 +1608,9 @@ formBalancerRules:
     internal: Internal
   protocol:
     label: Protocol
+  sourceIp:
+    label: Host IP
+    placeholder: e.g. 1.2.3.4
   sourcePort:
     label: Port
     placeholder: e.g. 80
@@ -1700,7 +1639,8 @@ formBalancerRules:
     placeholder: e.g. foo=bar
   help:
     prefix: "Host and Path rules are matched top-to-bottom in the order shown.  Backends will be named randomly by default;  to customize the generated backends, provide a name and then refer to that in the custom haproxy.cfg.  "
-    showBackendLink: "Show custom backend names"
+    showBackendLink: "Show custom backend names."
+    showIpLink: "Show host IP address options."
     suffix: ""
 
 formCommand:
@@ -1901,6 +1841,8 @@ formNetwork:
     container: container
     host: Host
     managed: Managed
+    nat: NAT
+    transparent: Transparent
     none: None
   container:
     label: container
@@ -1934,16 +1876,24 @@ formNetwork:
 
 formPorts:
   addAction: Port Map
+  bindAddress:
+    label: Public Host IP (Optional)
+    placeholder: "e.g. 1.2.3.4; Default: any"
   public:
-    label: Public Host [IP:]Port
-    placeholderWithIp: "e.g. 80 or 1.2.3.4:80"
-    placeholderWithoutIp: "e.g. 80"
+    label: Public Host Port
+    placeholder: "e.g. 80"
   private:
     label: Private Container Port
     placeholder: "e.g. 8080"
   protocol:
     label: Protocol
   noPorts: This container has no port maps.
+  error:
+    privateRequired: Private Container Port is required for each port rule.
+    publicRequired: Public Host Port is required if Host IP is specified.
+    mixedIpPort: "Port {ip}:{port}/{proto} has more than one mapping."
+    mixedPort: "Port {port}/{proto} has more than one mapping."
+  showIpLink: Show Host IP field
 
 formScale:
   label: Scale
@@ -2038,6 +1988,10 @@ formSecurity:
     label: Memory Reservation
   milliCpuReservation:
     label: mCPU Reservation
+  isolation:
+    label: Isolation
+    default: Default (Container)
+    hyperv: HyperV (VM)
 
 formServiceLinks:
   addAction: Service Links
@@ -2173,7 +2127,7 @@ heroAddService:
     paragraph1: |
       A service is simply a group of containers created from the same Docker image but extends Docker's 'link' concept to leverage {appName}'s lightweight distributed DNS service for service discovery.
       Services can be added individually or by deploying an item from the Catalog.
-    paragraph2: "A service is also capable of leveraging other {appName} built-in services such as load balancers, health monitoring, upgrade support, and high-availability."
+    paragraph2: "A service is also capable of leveraging other {appName} built-in services such as load balancers, health monitoring, upgrade support, and high availability."
     contentLink: Learn More
   addService: Define a Service
   addCatalog: Configure
@@ -2496,7 +2450,7 @@ machine:
       label: Region
 
   driverCustom:
-    step1: Start up a Linux machine somewhere and install the latest version of <a href="http://www.docker.com/" target="_blank">Docker</a> on it.
+    step1: Start up a Linux machine somewhere and install the latest version of <a href="http://www.docker.com/" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
     step2: "Make sure any security groups or firewalls allow traffic:"
     step2li: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span>
     step3: "Optional: Add labels to be applied to the host."
@@ -2508,6 +2462,10 @@ machine:
       link: Hosts
       part2: screen within a minute.
     close: Close
+    windows:
+      step1: Start up a Windows Server 2016 machine somewhere and install the latest version of <a href="https://msdn.microsoft.com/en-us/virtualization/windowscontainers/quick_start/quick_start_windows_server" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
+      step2: "Make sure any security groups or firewalls allow traffic:"
+      step3: Copy, paste, and run the command below in PowerShell to start the {appName} agent.
 
   driverDigitalocean:
     sizeLabel: |
@@ -3093,6 +3051,7 @@ stackSection:
       details: Details
       containers: Containers
       actions: Actions
+  upgradeImage: Upgrade Container Image
 
 
 snapshotSection:
@@ -3268,6 +3227,7 @@ nav:
     rcs: Replication Controllers
     pods: Pods
     cli: Kubectl
+    dashboard: Dashboard
     system: Infrastructure Stacks
   swarm:
     tab: Swarm
@@ -3306,7 +3266,7 @@ nav:
     access: Access Control
     machine: Machine Drivers
     settings: Settings
-    ha: High-Availability
+    ha: High Availability
   api:
     tab: API
   user:

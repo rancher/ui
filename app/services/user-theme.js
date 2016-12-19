@@ -78,6 +78,10 @@ export default Ember.Service.extend({
   },
 
   writeStyleNode: function(theme) {
+    if ( !theme ) {
+      theme = this.get('currentTheme');
+    }
+
     var application = this.get('app');
     var $body = $('BODY');
     let lang = this.get(`session.${C.SESSION.LANGUAGE}`);
@@ -95,8 +99,16 @@ export default Ember.Service.extend({
       direction = '.rtl';
     }
 
-    Ember.$('#theme').attr('href', `${application.baseAssets}assets/${theme}${direction}.css?${application.version}`);
-    Ember.$('#vendor').attr('href', `${application.baseAssets}assets/vendor${direction}.css?${application.version}`);
+    updateHref('#theme', `${application.baseAssets}assets/${theme}${direction}.css?${application.version}`);
+    updateHref('#vendor',`${application.baseAssets}assets/vendor${direction}.css?${application.version}`);
+
+    function updateHref(node, neu) {
+      let elem = Ember.$(node);
+      let cur = elem.attr('href');
+      if ( cur !== neu ) {
+        elem.attr('href', neu);
+      }
+    }
   },
 
 });

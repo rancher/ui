@@ -1,21 +1,17 @@
+---
 languageName: "فارسی"
 languageContribute: "در ترجمه رنچر کمک کنید!"
-
-##############################
-# Really generic things used in multiple places (use sparingly)
-##############################
 generic:
   actions: اکشن ها
   activate: قعال سازی
   as: به عنوان
-  closeModal: بستن
   cancel: لغو
+  closeModal: بستن
   created: ساخته شد
   default: پیش فرض
   description: توضیح
   disabled: غیر فعال
   domainName: نام دامنه
-  emptyString: ""
   enabled: فعال
   expires: منقضی می شود
   healthy: سالم
@@ -26,7 +22,7 @@ generic:
   loading: "در حال بارگزاری..."
   missing: "*%یافت نشده%*"
   moreActions: اکشن های بیشتر
-  na: 'n/a'
+  "no": false
   name: نام
   none: هیچ یک
   ports: پورت ها
@@ -36,16 +32,12 @@ generic:
   saved: ذخیره شد
   saving: در حال ذخیره سازی
   state: وضعیت
-  to: به
-  type: نوع
   test: تست
   testing: در حال تست
+  to: به
+  type: نوع
   unknown: ناشناس
-
-
-##############################
-# Routes
-##############################
+  "yes": true
 accountsPage:
   index:
     header: حساب ها
@@ -56,7 +48,6 @@ accountsPage:
       kind: نوع
       username: نام کاربری
       name: نام
-      identity: Identity
       noData: هنوز حسابی وجود ندارد
       noName: هیچ یک
   new:
@@ -72,18 +63,12 @@ accountsPage:
         placeholder: "مثال. John Smith"
       type:
         labelText: نوع حساب
-        dropdownList:
       description:
         labelText: توضیح
         placeholder: "مثال. این حساب متعلق به آقای حسینی است"
-
 apiPage:
   header: کلید های API محیط
   actionButton: افزودن کلید API
-  content: |
-    Environment API keys are tied to this specific Environment (<code>{displayName}</code>) and can only manipulate resources within there.  Other accounts with access to this Environment can also manage these keys.
-  currentEndpoint: 'Endpoint (v2-beta):'
-  legacyEndpoint: 'Endpoint (v1):'
   table:
     state: وضعیت
     name: نام
@@ -97,29 +82,21 @@ apiPage:
   account:
     header: کلید های API حساب
     buttonText: افزودن کلید API
-    content:
-      paragraph1: Account API Keys are tied to your specific account
-      paragraph2: "and can create, delete, and manipulate all Environments which you have access to."
     table:
       noData: "شما هنوز هیچ کلیدی ندارید."
-
 auditLogsPage:
-  header: Audit Logs
   form:
     eventType:
       placeholder: نوع رویداد
     resourceType:
       placeholder: "نوع منبع:"
       dropdownPlaceholder: 'یک منیع انتخاب کنید:'
-      dropdownList:
     resourceId:
       placeholder: شناسه منبع
     requestIp:
       placeholder: آی پی درخواست
     authType:
-      placeholder: "Auth Type:"
       dropdownPlaceholder: 'یک نوع اهراز هویت انتخاب کنید:'
-      dropdownList:
     clearButtonText: پاک کردن فیلتر ها
     searchButtonText: جستجو
   table:
@@ -128,44 +105,18 @@ auditLogsPage:
     description: توضیح
     environment: محیر
     resourceTypeId: "نوع منبع:شناسه"
-    identity: Identity
-    authIp: "Auth & IP"
   first: صفحه اول
   next: صفحه بعد
-
 authPage:
   shibboleth:
-    header:
-      title: Shibboleth Authentication
     enabled:
       header: "{providerName} فعال است"
-      required: |
-        {appname} is configured to allow access to {orgs, plural,
-          =0 {no organizations}
-          =1 {# organization}
-          other {# organizations}
-        } and {users, plural,
-          =0 {no users}
-          =1 {# user}
-          other {# users}
-        }.
-      restricted: |
-        {appname} is configured to allow access to environment members, {orgs, plural,
-          =0 {no organizations}
-          =1 {# organization}
-          other {# organizations}
-        } and {users, plural,
-          =0 {no users}
-          =1 {# user}
-          other {# users}
-        }.
       unrestricted: "{appname} تنظیم شده تا به هر کاربر {providerName} دسترسی دهد."
       authenticated:
         header:
           text: اهراز هویت
           helpText: "برای تغییر Shibboleth application, کنترل دسترسی زیر را غیر فعال کرده و دوباره تنظیم کنید."
       disableAccess:
-        header: "Danger Zone&trade;"
         warning: '<b class="text-danger">هشدار:</b> غیر فعال سازی کنترل دسترسی به هر شهصی که به این صفحه دسترسی یابد کنترل کامل خواهد داد.'
         confirmDisable: "آیا مطمئن هستید؟  برای تایید عیر فعال سازی دوباره کلیک کنید."
         disable: غیر فعال سازی کنترل دسترسی
@@ -191,52 +142,21 @@ authPage:
         buttonText:
           pre: اهراز هویت با IDP
           post: در انتظار دریافت پاسخ از IDP
-
-
-    providerName:
-      shibboleth: Shibboleth
   root:
-    header: کنترل دسترسی
+    header: Access Control
   github:
-    standard: GitHub
-    enterprise: GitHub Enterprise
     header:
       enabled:
         label: "{github} فعال است"
-        required: |
-          {appName} is configured to allow access to {orgs, plural,
-            =0 {no organizations}
-            =1 {# organization}
-            other {# organizations}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
-        restricted: |
-          {appName} is configured to allow access to environment members, {orgs, plural,
-            =0 {no organizations}
-            =1 {# organization}
-            other {# organizations}
-          } and {users, plural,
-            =0 {no users}
-            =1 {# user}
-            other {# users}
-          }.
         unrestricted: "{appName} تنظیم شده تا به هر کاربر {github} دسترسی دهد."
       disabled:
         label: GitHub تنظیم نشده است
-        warning: "{appName} can be configured to restrict access to a set of GitHub users and organization members.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
-
     authenticated:
       header:
         text: اهراز هویت
-        enterpriseHostName: "Enterprise Host:"
         clientId:
-          text: "Client ID:"
           helpText: "برای تغییر برنامه GitHub, دسترسی کنترل زیر را غیر فعال کرده و دوباره تنظیم کنید."
       disableAccess:
-        header: "Danger Zone&trade;"
         warning: '<b class="text-danger">هشدار:</b> غیر فعال سازی کنترل دسترسی به هر کاربری در {appName} اجازه می دهد به این صفحه دسترسی داشته باشد.'
         confirmDisable: "برای غیر فعال سازی کنترل دسترسی دوباره کلیک کنید."
         disable: غیر فعال سازی کنترل دسترسی
@@ -251,9 +171,8 @@ authPage:
           text: ' "Register new application" را انتخاب و فرم را پر کنید:'
           ul:
             li1: '<b>نام Application :</b> <span class="text-muted">Anything you like, مثال. My {appName}</span>'
-            li2: "<b>آدرس صفحه خانه: </b> "
+            li2: '<b>آدرس صفحه خانه: </b> '
             li3: '<b>توضیحات Application:</b> <span class="text-muted">پر کردن این گزینه دلخواه است</span>'
-            li4: Authorization callback URL
         li3:
           text: '"ثبت Application" را انتخاب کنید '
       form:
@@ -261,10 +180,6 @@ authPage:
         subtext: 'Client ID و Secret را از قسمت بالا-سمت راست کپی و پیست کرده.'
         clientId:
           labelText: شناسه کلاینت
-        clientSecret:
-          labelText: Client Secret
-        ghEnterprise:
-          labelText: Use a private GitHub Enterprise installation
         isGHEnterprise:
           labelText: استفاده از اتصال امن
         enterpriseHost:
@@ -272,32 +187,23 @@ authPage:
           placeholder: 'مثال. github.example.com'
     testAuth:
       header: '3. تست و فعال سازی اهراز هویت'
-      subtext: 'Check that your application is configured correctly by testing authentication with it:'
       buttonText:
         pre: اهراز هویت with GitHub
         post: در انتظار پاسخ از GitHub
-
   azuread:
     header:
       enabled: 'اهراز هویت Azure AD <b>فعال است</b>'
       disabled: 'اهراز هویت Azure AD <b class="text-warning">تنظیم نشده است</b>'
     subtext:
-      enabled: '{appName} is configured to allow access to accounts in Azure AD'
       disabled: '{appName} می تواند تنظیم شود تا دسترسی به برخی حساب ها که در دیتابیس تعریف شده اند را محدود کند. این کار هنوز انجام نشده، بنابراین هر شخصی با دسترسی به این صفحه،  به سیستم کنترل کامل دارد.'
     enabled:
-      header: 'Danger Zone&trade;'
       warning: '<b class="text-danger">هشدار:</b> غیر فعال سازی کنترل دسترسی دسترسی کامل به {appName} را به هر شخصی که به این صفحه دسترسی پیدا کند می دهد'
       reallyDisable: 'آیا مطمئن هستید؟  برای غیر فعال سازی کنترل دسترسی دوباره کلیک کنید'
       promptDisable: غیر فعال سازی کنترل دسترسی
     configure:
       header: '1. تنظیم Azure AD Account'
-      tenantId:
-        label: Tenant ID
-        placeholder: A long UUID string
-        help: From the Azure AD portal
       clientId:
         label: شناسه کلاینت
-        placeholder: A long UUID string
       domain:
         label: دامنه
         placeholder: مثال. youcompany.onmicrosoft.com
@@ -309,7 +215,6 @@ authPage:
         label: رمز عبور مدیر
     test:
       header: '2. تست و فعال سازی اعراز هویت'
-      help: 'Check that everything is configured correctly by testing authentication with your account:'
       username:
         label: نام کاربری
         placeholder: 'مثال. jsmith'
@@ -317,15 +222,12 @@ authPage:
         label: رمز عبور
       pre: اهراز هویت با Azure
       post: در انتظار پاسخ از Azure
-
-
   localAuth:
     header:
       enabled: 'اهراز هویت لوکال <b>فعال است</b>'
       disabled: 'اهراز هویت لوکال <b class="text-warning">تنظیم نشده است</b>'
     subtext:
       enabled:
-        text: '{appName} is configured to allow access to accounts in its local database.'
         linkText: مدیریت حساب ها
       disabled: '{appName} می تواند تنظیم شود تا دسترسی به برخی حساب ها که در دیتابیس تعریف شده اند را محدود کند. این کار هنوز انجام نشده، بنابراین هر شخصی با دسترسی به این صفحه،  به سیستم کنترل کامل دارد.'
     accessEnabled:
@@ -354,59 +256,42 @@ authPage:
       buttonText:
         pre: فعال سازی اهراز هویت لوکال
         post: 'در حال فعال سازی...'
-
+  0:
+    header: کنترل دسترسی
 backupTargetsPage:
-  header: Backup Targets
   linkTo: افزودن Backup Target
   newTarget:
-    hr: NFS Config Options
     header: افزودن Backup Target
   server:
-    label: NFS Server
     placeholder: 'مثال. my-nfs-server.example.com'
   share:
-    label: NFS Share
     placeholder: 'مثال. /mnt/volume-backups'
   mountOptions:
-    label: NFS Mount Options
     placeholder: 'مثال. nfsvers=4,proto=udp'
-
 catalogPage:
   index:
     header: 'کاتالوگ:'
     search:
       placeholder: جستجو...
     category: "دسته بندی:"
-    certified: Certified
     noData:
       singular: هیچ templates سازگاری وجود ندارد.
       plural: هیچ templates سازگاری در این کاتالوگ وجود ندارد.
-    viewDetails: مشاهده جزئیات
-
 consolePage:
-  header: 'Shell:'
   closeButton: بستن
-
 certificatesPage:
   table:
     cn: نام دامنه
-    expiresDate: Expires
     noCn: هیچ یک
   detail:
-    header: 'Certificate:'
     description: توضیح
     info:
       labelText: اطلاعات
-      valid: Valid Beginning
-      expires: Expires
-      algorithm: Algorithm
-      issuer: Issuer
       serialNumber: شماره سریال
       version: نسخه
     domainNames:
       labelText: نام های دامنه
   index:
-    header: Certificates
     linkTo: افزودن Certificate
     table:
       header:
@@ -423,22 +308,14 @@ certificatesPage:
         placeholder: مثال. mydomain.com
       description:
         placeholder: مثال. EV cert for mydomain.com
-
 containersPage:
   table:
     ipAddress: آدرس آی پی
-    primaryHost: Primary Host
     primaryHostUnknown: ناشناخته
     image: تصویر
-    stats: Stats
-    sparkPrefixCpu: "CPU: "
-    sparkPrefixMemory: "Memory: "
-    sparkPrefixNetwork: "Network: "
-    sparkPrefixStorage: "Storage: "
     command: دستور
     noCommand: هیچ یک
   index:
-    header: Containers
     linkTo: افزودن Container
     table:
       header:
@@ -457,222 +334,51 @@ containersPage:
       description:
         placeholder: مثال. My Application
   containerPage:
-    header: 'Container:'
     subtext:
-      on: on
-      in: in
+      "on": true
     infoMultiStats:
       tooltip:
         host: کپی گرفتن از IP
       host: 'میزبان:'
-      ip: 'Container IP:'
-      docker: 'Docker ID:'
       image: 'تصویر:'
       command: 'دستور:'
-      entryPoint: 'Entry Point:'
       description: 'توضیح:'
-      stack: 'Stack/Service:'
     navTabs:
       labels: برچسب ها
-      volumes: Volumes
       ports: پورت ها
       command: دستور
-      networking: Networking
-      healthCheck: Health Check
-      scheduling: Scheduling
-      security: Security
     portsTab:
       table:
         header:
-          state: وضعیت
           ip: آدرس آی پی
-          public: Public on Host
-          private: Private in Container
           protocol: پروتوکل
         body:
-          state: 'وضعیت:'
-          ip: 'آدرس آی پی:'
-          public: 'Public (on Host):'
-          private: 'Private (in Container):'
-          protocol: 'Protocol:'
           noData: 'این container هیچ پورتی ندارد.'
     volumesTab:
       table:
         header:
           name: نام
-          state: وضعیت
-          mount: Mount Point
-          shared: Shared With
           writable: قابل نوشتن
-          snapshot: Snapshot Timeline
-          actions: اکشن ها
         body:
-          name: 'نام:'
-          state: 'وضعیت:'
-          mount: 'Mount Point:'
-          shared: 'در اشتراک با:'
-          writable: 'قابل نوشتن:'
-          snapshot: 'Snapshot Timeline:'
-          actions: 'Actions:'
           error:
             data: 'توجه:'
             error: خطا
-            noData: This container has no volumes.
-          noContainers: No other containers
-
-containerSubpod:
-  childContainers: Containers
-  childSidekicks: Sidekicks
-
-dockerCLI:
-  header: Docker CLI
-  start: To use docker or docker-compose on your workstation, click the button to generate an API key and config file
-  button: تولید تنظیمات
-  generating: در حال تولید...
-  activating: در حال فعال سازی...
-  complete: Now configure your workstation
-  createDirectory: |
-    پوشه ی <code>.docker</code> را بسازید: <code>mkdir -pv ~/.docker</code>
-  extractZip: فایل زیپ دانلود شده را از حالت فشرده خارج کنید
-  copyFiles: |
-    همه اطلاعات داحل فایل زیپ را به پوشه <code>.docker</code> انتقال دهید
-  exportVars: |
-    Run <code>export DOCKER_HOST={swarmEndpoint} DOCKER_TLS_VERIFY=1</code> or add to your profile
-  test: |
-    تست با <code>docker ps</code>
-  well: |
-    Or use this handy shell to directly execute <code>docker</code> or <code>docker-compose</code> commands:
-
-# If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
-# those are present incase we have an error in the app and can not load the translations file
-# the error page will at least make a little sense
 failWhalePage:
   header: خطا
   reloadButton: |
     <a href="#" onclick="window.location.href = window.location.href; return false;">بارگزاری مجدد</a> یا
   logoutButton: خروج
-
-haPage:
-  header:
-    enabled: 'High Availability is <b class="text-success">enabled</b>'
-    disabled: 'High Availability تنظیم نشده است'
-  haConfigured:
-    addHost:
-      header: '5. افزودن هاست'
-      subtext: 'Copy the downloaded script and run it on to each HA host to register them:'
-    hosts:
-      header: 'میزبان ها:'
-      waiting: 'Waiting for a host...'
-      managementServerCert:
-        text: 'Management Server Certificate:'
-        waiting: 'Waiting for a host...'
-    disable:
-      header: 'Danger Zone&trade;'
-      confirm:
-        pre: 'آیا مطمئن هستید؟  برای غیر فعال سازی دسترسی HA دوباره کلیک کنید'
-        prompt: غیر فعال سازی HA
-  haDisabled:
-    header: '1. Setup an external database'
-    subtext: 'This {appName} installation is currently configured to use the built-in database server, but HA requires a standalone installation of MySQL.'
-    externalDatabase:
-      ul:
-        li1:
-          text: 'Setup an external database instance.'
-          ul:
-            li1: 'This can be a hosted solution like Amazon RDS or Google Cloud SQL,'
-            li2: 'Or a self-hosted instance or multi-master cluster.'
-        li2: 'Click the export button below to export the entire contents of the current database.'
-        li3: 'Import the data into the new external database.'
-      exportDatabase: خروجی گرفتن از پایگاه داده
-      size: 'اندازه فشرده نشده:'
-      noLocalDb:
-        header: '1. Setup an external database'
-        subtext: 'کامل شد, running off of an external database.'
-    databaseUsage:
-      localDb:
-        header: '2. Use the new external database'
-        ul:
-          li1: 'Re-launch the server container pointed at the external database:'
-          isRancher:
-            li1: '<a href="http://docs.rancher.com/rancher/installing-rancher/installing-server/#using-an-external-database" target="_blank">See docs</a> for more detail.'
-      noLocalDb:
-        header: '2. Use the new external database'
-        subtext: 'کامل شد, <code>{dbHost}</code> will be used as the external database for HA.'
-    haConfigScript:
-      generated:
-        header: '3. Generate HA config script'
-        subtext: 'کامل شد.'
-      notGenerated:
-        header: '3. Generate HA config script'
-        subtext: 'Come back here once you are running off the external database...'
-      form:
-        clusterSize:
-          labelText: Cluster Size
-          one: '<span class="text-bold" style="display: inline-block: width: 120px;">1 Host:</span> Not really very HA at all'
-          three: '<span class="text-bold" style="display: inline-block: width: 120px;">3 Hosts:</span> Any <b>one</b> host can fail'
-          five: '<span class="text-bold" style="display: inline-block: width: 120px;">5 Hosts:</span> Any <b>two</b> hosts can fail'
-        hostRegistration:
-          helpText:
-            singleCluster: 'This should be a FQDN that resolves to the addresses of or is a load balancer for the HA host. Do not include <code>/v1</code> or any other path.'
-            multiCluster: 'This should be a FQDN that resolves to the addresses of or is a load balancer for all {clusterSize} HA hosts. Do not include <code>/v1</code> or any other path.'
-        certificate:
-          labelText: Certificate
-          radio1: 'Generate a self-signed certificate'
-          radio2:
-            noHostUrl: 'Upload a valid certificate'
-            hasHostUrl: 'Upload a valid certificate for <code>{hostRegistrationUrl}</code>'
-        listeningPorts:
-          labelText: Listening Ports
-          table:
-            https: HTTPS
-            http: HTTP
-            swarm: Swarm
-            proxyToHttps: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">PROXY</a> to HTTPS'
-            proxyToHttp: '<a href="http://www.haproxy.org/download/1.5/doc/proxy-protocol.txt" target="_blank">PROXY</a> to HTTP'
-            redis: Redis
-            zookeeperClient: ZooKeeper Client
-            zookeeperQuorum: ZooKeeper Quorum
-            zookeeperLeader: ZooKeeper Leader
-      configScriptButton:
-        pre: تولید اسکریپت تنظیمات
-        post: 'در حال تولید...'
-      downloadScript:
-        downloaded:
-          header: '4. دانلود اسکریپت'
-          subtext: 'کامل شد, پوشه دنلود ها را بررسی کنید.'
-        notDownloaded:
-          header: '4. دانلود اسکریپت'
-          subtext: 'Click the button below to download a shell script.'
-          alert: |
-            The script generates new encryption keys that will be used for the HA hosts to communicate with each other, so keep it safe.
-            New keys are generated every time you download the config script, and all hosts must have the same keys for HA to work.
-          buttonText: دانلود اسکریپت تنظیمات
-          generateScript: 'تولید اسکریپت در قدم 3.'
-
 helpPage:
   header: اطلاعات و پیوند های مفید
-  banner: Announcements
-  releaseText: "Released:"
   environment:
     header: محیط چیست؟
-    content: |
-      <p>{appName} supports grouping resources into multiple environments. Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
-        <p>For example, you might create separate "dev", "test", and "production" environments to keep things isolated from each other, and give "dev" access to your entire organization but restrict the "production" environment to a smaller team.</p>
     manageLink: مدیریت محیط ها
   host:
     header: هاست چیست؟
-    content: |
-      Before adding your first service or launching a container, you must add at least a single Linux host that supports Docker {minVersion} or higher and be able to reach the {appName} server via HTTP. {appName} supports adding Linux hosts in the form of a virtual or physical
-          machine from any public cloud providers, privately hosted clouds, or even bare metal servers.
     contentLink: اطلاعات بیشتر
     addHostLink: افزودن Host
   stacks:
-    header: What are stacks and services?
     content:
-      paragraph1: |
-        A service is simply a group of containers created from the same Docker image but extends Docker's "link" concept to leverage {appName}'s lightweight distributed DNS service for service discovery. Services can be added individually or by deploying an item from the Catalog.
-      paragraph2: A service is also capable of leveraging other {appName} built-in services such as load balancers, health monitoring, upgrade support, and high-availability.
-      #' fixes syntax highlighting so i dont go crazy
       link: اطلاعات بیشتر
     addServiceLink: مدیریت سرویس ها
     addCatalogLink: افزودن از کاتالوگ
@@ -684,8 +390,6 @@ helpPage:
       tagline: مشکلی یافته اید?
       fileBug: گزارش مشکل
     content:
-      paragraph1: |
-        {appName} is an open source software platform that implements a purpose-built infrastructure for running containers in production. Docker containers, as an increasingly popular application workload, create new requirements in infrastructure services such as networking, storage, load balancer, security, service discovery, and resource management.
       graphic1:
         text: مشکلی پیدا کرده اید؟
         link: گزارش مشکلی در GitHub.
@@ -696,31 +400,20 @@ helpPage:
           <br/>or <a href="{companyLink}/learn/" target="_blank">مشاهده مستندات</a>
       graphic3:
         text: نیاز به راهنمایی دارید؟
-        link: Check out our FAQs
   forums:
     header: از تالار های گفتگو
     tagline: به مکالمه بپیوندید
     buttonText: در تالار های گفتگو
     announcements:
-      header: Announcements
-      buttonText: مشاهده موضوعات بیشتر در مورد Annoucement 
+      buttonText: مشاهده موضوعات بیشتر در مورد Annoucement
     general:
-      header: General
-      buttonText: مشاهده موضوعات بیشتر در مورد General 
+      buttonText: مشاهده موضوعات بیشتر در مورد General
     rancherOs:
-      header: RancherOS
-      buttonText: مشاهده موضوعات بیشتر در مورد RancherOS 
+      buttonText: مشاهده موضوعات بیشتر در مورد RancherOS
     rancher:
-      header: Rancher
-      buttonText: مشاهده موضوعات بیشتر در مورد Rancher 
+      buttonText: مشاهده موضوعات بیشتر در مورد Rancher
     convoy:
-      header: Convoy
-      buttonText: مشاهده موضوعات بیشتر در مورد Convoy 
-  commercial:
-    header: Commercial Support
-    content: |
-      At Rancher Labs we provide commercial, enterprise-grade support for {appName}, including an available 24x7 support team, and priority bug fixes.  In addition we provide implementation, integration and consulting services for organizations looking to implement and scale {appName}.  For more information on any of these services, please email our sales team. <a href="mailto:sales@rancher.com">sales@rancher.com</a>
-
+      buttonText: مشاهده موضوعات بیشتر در مورد Convoy
 hostsPage:
   addContainer: افزودن Container
   index:
@@ -728,15 +421,11 @@ hostsPage:
     addHost: افزودن هاست
     tooltip:
       listView: لیست
-      groupedView: Grouped Stacks & Sidekicks
-    columns:
-      emptyMessage: No hosts or containers yet.
     showSystem: نمایش سیستم
   new:
     header:
-      linkTo: "میزبان: "
+      linkTo: 'میزبان: '
       text: افزودن میزبان
-    manageLink: Manage available machine drivers
     form:
       name:
         placeholder: مثال. host01
@@ -746,22 +435,10 @@ hostsPage:
     addContainer:
       linkTo: افزودن Container
     infoMultiStats:
-      ip: 'IP:'
-      cpu: 'CPU:'
-      memory: 'Memory:'
-      storage: 'Storage:'
-      provider:
-        labelText: 'Provider:'
-        noHost: Custom
-      kernel: 'Kernel:'
-      docker: 'Docker:'
-      os: 'OS:'
       description: 'توضیح:'
     navTabs:
-      containers: Containers
       ports: پورت ها
       labels: برچسب ها
-      storage: Storage
     containersTab:
       table:
         header:
@@ -769,16 +446,13 @@ hostsPage:
           name: نام
           ip: آدرس آی پی
           image: تصویر (Command)
-          stats: Stats
         body:
           noData: 'این هاست هیچ containers ندارد.'
     portsTab:
       table:
         header:
           ip: آدرس آی پی
-          port: Port
           service: سرویس
-          container: Container
         body:
           noData: این هاست هیچ پورتی ندارد.
     storageTab:
@@ -786,92 +460,47 @@ hostsPage:
         header:
           state: وضعیت
           hostPath: میزبان Path
-          mounts: Mounts
         body:
           noData: این هاست هیچ volumes ندارد.
-
 k8sTab:
   types:
-    namespace: Namespace
     service: سرویس
-    deployment: Deployment
-    replicationcontroller: Replication Controller
-    replicaset: Replica Set
-    petset: Pet Set
-    pod: Pod
-
   kubectl:
-    header: kubectl
     stepOne:
-      generateConfigText: |
-        To use <a href="{downloadUrl}" target="_blank">kubectl</a> (v1.2+ only) on your workstation, click the button to generate an API key and config file:
       generateButton: تولید تنظیمات
     stepTwo:
       progress: در حال تولید...
-    stepThree:
-      helpText: |
-        Put this into <code>~/.kube/config</code>:
-      downloadText: |
-        Then <a href="{downloadUrl}" target="_blank">download</a> (if needed) and run <code>kubectl</code>
-    shell:
-      helpText: |
-        Or use this handy shell to directly execute <code>kubectl</code> commands:
   multistat:
     header:
       type: 'نوع:'
-      pod: 'Pod IP:'
       host: 'آی پی میزبان:'
-      cluster: 'Cluster IP:'
-      balancer: 'Balancer IP:'
-      session: 'Session Affinity:'
-      external: 'External IPs:'
-      selectors: 'Selectors:'
-      replicas: 'Replicas:'
-      generation: 'Generation:'
-      phase: 'Phase:'
       startTime: 'شروع شده:'
       created: 'ساخته شده:'
   navTabs:
     labels: برچسب ها
-    pods: Pods
     ports: پورت ها
-    replicasets: Replica Sets
   namespace:
     pods:
       index:
-        header: Pods
         linkTo: افزودن Pod
       pod:
-        header:
-          linkTo: 'Pod:'
         type:
           header: 'نوع:'
-        navTabs:
-          containers: Containers
     deployments:
       index:
-        header: Deployments
         linkTo: افزودن Deployment
       deployment:
-        header: 'Deployment:'
         navTabs:
-          pods: Pods
           labels: برچسب ها
           ports: پورت ها
     replicasets:
       index:
-        header: Replica Sets
         linkTo: افزودن Replica Set
-      replicaset:
-        header: 'Replica Set:'
     rcs:
       index:
-        header: Replication Controllers
         linkTo: افزودن RC
       rc:
-        header: 'RC:'
         navTabs:
-          pods: Pods
           labels: برچسب ها
           ports: پورت ها
     services:
@@ -882,10 +511,8 @@ k8sTab:
           header: 'سرویس:'
     stacks:
       index:
-        header: Stacks
         linkTo: افزودن از کاتالوگ
   namespaces:
-    header: Namespaces
     linkTo: افزودن Namespace
     table:
       body:
@@ -893,17 +520,10 @@ k8sTab:
   error:
     header: خطا
     linkTo: بارگزاری مجدد
-    detail: |
-      {count, plural,
-        =1 {An error}
-        other {# Errors }
-      } occured while trying to talk to the Kubernetes API.
-
 loginPage:
   greeting: "سلام!<br>به {appName} خوش آمدید"
   githubMessage: "{appName} از GitHub برای مدیریت حساب ها و تیم ها استفاده می کند.  دکمه زیر را فشار دهید و وارد شوید و به ما دسترسی خواندن اطلاعات اولیه خساب GitHub تان را بدهید."
   shibbolethMessage: "{appName} از Shibboleth  برای مدیریت حساب ها استفاده می کند. برای ورود به Shibboleth IDP بر روی دکمه زیر کلیک کنید."
-
 machinePage:
   header: درایور های ماشین
   inactive: غیر فعال
@@ -914,50 +534,29 @@ machinePage:
   viewUi: مشاهده رابط کاربری
   subtext: "<code>docker-machine</code> های اضافی می توانند اینجا بارگزاری شده و در صفحه افزودن هاست استفاده شوند."
   add: افزودن درایور ماشی
-  builtin: Built-In
   other: دیگر
   table:
     header:
       state: وضعیت
       name: نام
-      url: Driver URL
-      uiUrl: UI URL
-      checksum: Checksum
     noData: شما هیچ درایور ماشینی ندارید
-
 mesosPage:
-  header: Overview
   actionLink: باز کردن Mesos UI
-
   banner:
     header: cluster شما
-    content: |
-      You currently have {hosts, plural,
-       =1 {# active host}
-       other {# active hosts}
-      } in your Mesos cluster
     link: مشاهده یا افزودن هاست
-
   launch:
     header: اجرا
     content: شما می توانید فریموورک ها را از کاتالوگ ما اجرا کنید.
     button: اجرای یک فریموورک
-
   manage:
     header: مدیریت
     content: مدیریت Mesos از Mesos UI.
-    button: Mesos UI
-
-# If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
-# those are present in case we have an error in the app and can not load the translations file
-# the error page will at least make a little sense
 notFoundPage:
   header: "چنین صفحه ای وجود ندارد"
   linkTo: خانه
-
 registriesPage:
   index:
-    header: Registries
     linkTo: افزودن Registry
     table:
       header:
@@ -966,15 +565,13 @@ registriesPage:
         email: ایمیل
         username: نام کاربری
         created: ساخته شد
-      body:
-        noData: You don't have any registries yet.
   new:
     header: افزودن Registry
     form:
       custom:
         labelText: آدرس
         placeholder: مثال. registry.example.com
-        help: فقط نام هاست یا آدرس آی پی, پروتوکل را وارد نکنید (https://)
+        help: 'فقط نام هاست یا آدرس آی پی, پروتوکل را وارد نکنید (https://)'
       email:
         labelText: ایمیل
         placeholder: مثال. you@example.com
@@ -984,39 +581,28 @@ registriesPage:
       password:
         labelText: رمز عبور
         placeholder: مثال. password
-
 servicePage:
   header: 'سرویس:'
   multistat:
     type: 'نوع:'
-    fqdn: 'FQDN:'
-    scale: 'Scale:'
     image: 'تصویر:'
-    entryPoint: 'Entrypoint:'
     command: 'دستور:'
     description: 'توضیح:'
     global: سراسری
-  external:
-    externalIp: External IPs
-    externalHostname: 'External Hostname:'
   navTabs:
     ports: پورت ها
-    containers: Containers
     labels: برچسب ها
     links: پیوند ها
-    log: Log
   containersTab:
     table:
       header:
         ipAddress: آدرس آی پی
         host: میزبان
         image: تصویر
-        stats: Stats
       body:
         noData: این سرویس هنوز containers ای ندارد.
   linksTab:
     header: پیوند ها
-    noData: No Links
   new:
     form:
       name:
@@ -1050,30 +636,20 @@ servicePage:
         level: سطح
         event: رویداد
         description: توضیح
-      body:
-        noData: There have been no log events yet.
-
 settingsPage:
   index:
     header: محیط ها
-    linkTo: افزودن محیط
     subtext: |
       <p>{appName} supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more GitHub users, teams or organizations.</p>
       <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
-
     alert: محیط فعالی یافت نشد. شما قبل از هر کاری ابتدا باید یک محیط را فعال یا ایجاد کنید.
     table:
-      header:
-        orchestration: Orchestration
       body:
-        noData: شما هیچ محیطی ندارید.
-
+        noData: "شما هیچ محیطی ندارید."
 stacksPage:
   header:
     all: همه Stacks
     user: Stack های کاربر
-    custom: '{name} Stacks'
-    infra: Infrastructure Stacks
   actionButton: افزودن Stack
   catalogButton: افزودن fاز کاتالوگ
   sort:
@@ -1081,39 +657,27 @@ stacksPage:
     state: وضعیت
     name: نام
   noInfra: شما هیچ Infrastructure Stacks ندارید
-  noMatch: No Stacks match the selected tags
   new:
     header: افزودن Stack
-    composeLabel: "اختیاری: Import Compose"
+    composeLabel: 'اختیاری: Import Compose'
     form:
       name:
         placeholder: مثال. myapp
       description:
         placeholder: مثال. MyApp Stack
       dockerCompose:
-        label: "اختیاری: docker-compose.yml"
+        label: 'اختیاری: docker-compose.yml'
         placeholder: محتوای docker-compose.yml
       rancherCompose:
-        label: "اختیاری: rancher-compose.yml"
+        label: 'اختیاری: rancher-compose.yml'
         placeholder: محتوای rancher-compose.yml
       startOnCreate:
         label: شروع سرویس ها بعد ایجاد
-
 storagePoolsPage:
-  header: Storage Drivers
-  volume: Volume ID
-  orphaned: Orphaned Backup
-  nav:
-    pools: Pools
-    backups: Backups
-  index:
-    noData: No storage drivers
   newVolume:
     header: افزودن Volume
     form:
-      driverOptions: Driver Options
       addActionLabel: افزودن گزینه
-
 swarmPage:
   projects:
     index:
@@ -1137,14 +701,12 @@ swarmPage:
           keyPlaceholder: مثال. FOO
           valuePlaceholder: مثال. bar
         dockerCompose:
-          labelText: docker-compose.yml
           placeholder: اطلاعات docker-compose.yml را پیست کنید
     project:
       linkTo: 'پروژه:'
       table:
         header:
           ports: پورت ها
-          containers: Containers
         body:
           noData: این پروژه هیچ سرویسی ندارد.
   services:
@@ -1152,10 +714,8 @@ swarmPage:
     table:
       header:
         ports: پورت ها
-        containers: Containers
       body:
         noData: شما هیچ سرویسی ندارید.
-
 processesPage:
   indexPage:
     header: پردازه ها
@@ -1172,174 +732,125 @@ processesPage:
       search: جستجو
     table:
       header:
-        id: ID
         processName: نام
         resource: 'نوع منبع:ID'
         exitReason: علت خروج
         startTime: شروع شده
         endTime: پایان یافته
         duration: مدت
-      noData: There are no recent processes.
   processPage:
     header: تنظیمات
-
 virtualMachinePage:
   header: 'ماشین مجازی:'
   multistat:
     host: 'میزبان:'
     hostIp: 'آی پی میزبان:'
-    vmIp: 'VM IP:'
     image: 'تصویر:'
     description: 'توضیح:'
   navTabs:
     labels: برچسب ها
-
 virtualMachinesPage:
   header: ماشین های مجازی
   linkTo: افزودن ماشین مجازی
   table:
     body:
       noData: شما هیچ ماشین مجازی ندارید.
-
 waitingPage:
   hosts:
-    header: |
-      {expectHosts, plural,
-        =1 {Adding your first host}
-        other {Add hosts}
-      }
-    content: |
-      You must add at least {expectHosts, plural,
-        =1 {a single Linux host that supports}
-        other {# Linux hosts that support}
-      } Docker {minVersion} or higher and be able to reach the {appName} server via HTTP.<br/>
-      {appName} supports adding Linux hosts in the form of a virtual or physical machine from any public cloud providers, privately hosted clouds, or even bare metal servers.
     contentLink: اطلاعات بیشتر
     linkToHost: افزودن هاست
     setup:
       mesos: در حال تنظیم Mesos
       swarm: در حال تنظیم Swarm
       kubernetes: در حال تنظیم Kubernetes
-
-##############################
-# Partials
-##############################
 aliasServicePartial:
   serviceLinks:
     labelText: لینک سرویس ها
     linkTo: مشاهده جزئیات
   links: پیوند ها
-  noLinks: No Links
   description: 'توضیح:'
-
 externalServicePartial:
   extService:
     labelText: سرویس خارجی
     linkTo: مشاهده جزئیات
-  ips: IPs
   hostname: 'نام هاست:'
   description: 'توضیح:'
-
 hostPartial:
   host:
     addCommon:
-      quanity: Quantity
       new:
         form:
           name:
             placeholder: مثال. host01
     addOptions:
       labels: برچسب ها
-
 ldap:
-  providerName:
-    openldap: OpenLDAP
-    ad: Active Directory
   header:
     enabled:
       label: "{providerName} فعال است"
       required: |
         {appName} تنظیم شده تا دسترسی را بدهد به {groups, plural,
-          =0 {no groups}
-          =1 {# group}
-          other {# groups}
+        =0 {no groups}
+        =1 {# group}
+        other {# groups}
         } and {users, plural,
-          =0 {no users}
-          =1 {# user}
-          other {# users}
+        =0 {no users}
+        =1 {# user}
+        other {# users}
         }.
       restricted: |
         {appName} تنظیم شده تا دسترسی را به اعضای محیط بدهد, {groups, plural,
-          =0 {no groups}
-          =1 {# group}
-          other {# groups}
+        =0 {no groups}
+        =1 {# group}
+        other {# groups}
         } and {users, plural,
-          =0 {no users}
-          =1 {# user}
-          other {# users}
+        =0 {no users}
+        =1 {# user}
+        other {# users}
         }.
       unrestricted: "{appName} تنظیم شده تا دسترسی را به هر کاربر {providerName} بدهد."
     disabled:
       label: "{providerName} تنظیم نشده"
-      warning: "{appName} can be configured to restrict access to a set of {providerName} users and groups.  This is not currently set up, so anybody that reach this page (or the API) has full control over the system."
-
   accessEnabled:
     header: اهراز هویت
     subtext: "برای تغییر تنظیمات سرور, کنترل دسترسی را در بخش پایین غیر فعال کرده و دوباره تنظیم کنید."
     general:
-      header: General
       server: "سرور:"
-      tls: "TLS:"
       serviceAccount: "حصاب سرویس:"
-      searchBase: "Search Base:"
       defaultDomain: "دامنه پیش فرض:"
     users:
       header: کاربران
-      objectClass: "Object Class:"
       login: "فیلد ورود:"
       name: "فیلد نام:"
       search: "فیلد جستجو:"
       enabled: "فیلد وضعیت:"
-      disabledBitMask: "Disabled BitMask:"
     group:
       header: گروه
-      objectClass: "Object Class:"
       name: "فیلد نام:"
       search: "فیلد جستجو:"
     disable:
-      header: "Danger Zone&trade;"
       warning: '<b class="text-danger">هشدار:</b> غیر فعال سازی کنترل دسترسی دسترسی کامل به {appName} را به هر شخصی که به این صفحه دسترسی پیدا کند می دهد'
       confirmDisable:
         pre: غیر فعال سازی کنترل دسترسی
         post: "آیا مطمئن هستید؟  برای غیر فعال سازی کنترل دسترسی دوباره کلیک کنید"
   accessConfig:
     header: "1. تنظیم یک سرور {providerName}"
-    subtext1: "Enter the address, port, and protocol to connect to your {providerName} server.  <code>389</code> is the standard port for insecure, <code>636</code> for TLS."
-    subtext2: "{appName} needs a service account that has (read-only) access to all of the domains that will be able to login, so that we can determine what groups a user is a member of when they make a request with an API key."
     hostName:
       labelText: نام هاست یا آدرس آی پی
     port:
       labelText: پورت
-      checkbox: TLS
     serviceUsername:
       labelText: نام کاربری حساب سرویس
     servicePassword:
       labelText: رمز عبور حساب سرویس
     searchBase:
-      helpText: "Only users and groups below the base will be used."
-      labelText: Search Base
       placeholder: "مثال. dc=mycompany,dc=com"
     defaultDomain:
-      helpText: "This domain will be used if a user logs in without specifing one."
       labelText: دامنه پیش فرض ورود
       placeholder: "مثال. mycompany"
   customizeSchema:
-    header: "2. Customize Schema"
-    helpText: "If your schema does not match the standard ActiveDirectory format, you can customize it here."
     users:
       header: کاربران
-      objectClass:
-        labelText: Object Class
       login:
         labelText: فیلد ورود
       name:
@@ -1352,15 +863,12 @@ ldap:
         labelText: غیر فعال سازیd Status Bitmask
     groups:
       header: گروه ها
-      objectClass:
-        labelText: Object Class
       name:
         labelText: فیلد نام
       search:
         labelText: فیلد جستجو
   testAuth:
     header: "3. تست و فعال سازی اعراز هویت"
-    helpText: "Check that everything is configured correctly by testing authentication with your {providerName} account:"
     userName:
       labelText: نام کاربری شما
     password:
@@ -1368,120 +876,57 @@ ldap:
     authenticate:
       pre: اهراز هویت
       post: "در حال تست..."
-
 servicePartial:
   noContainers:
-    label: No containers yet.
     inactive:
       start: شروع
-
 serviceInfoPartial:
   info:
     label: اطلاعات
     linkTo: مشاهده جزئیات
   image: 'تصویر:'
-  entryPoint: 'Entrypoint:'
   command: 'دستور:'
   description: 'توضیح:'
-  containers: Containers
-  scale: Scale
   global: سراسری
-  noContainers: No Containers
   ports: پورت ها
-  noPublicPorts: No Public Ports
   links: پیوند ها
-  noLinks: No Links
-  fqdn: 'FQDN:'
-
-##############################
-# Components
-##############################
-advancedSection:
-  hrText: Advanced Options
-
 catalogSettings:
   header: کاتالوگ
   subtext: کاتالوگ ها contain templates that allow users to easily deploy applications by answering a few questions
-  system:
-    header:
-      rancher: "{appName} Infrastructure"
-      pl: Infrastructure
-    detail:
-      rancher: Templates required for core Rancher infrastructure features such as Kubernetes/Mesos/Swarm support.  Maintained and supported by Rancher Labs.
-      pl: Officially maintained templates required for core infrastructure features such as Kubernetes/Mesos/Swarm support.
   certified:
-    header:
-      rancher: "{appName} Certified Library"
-      pl: Certified Library
     detail:
       rancher: Optional templates maintained and supported by Rancher Labs.
       pl: Officially maintained and supported optional templates.
-  community:
-    header:
-      rancher: Community Contributed
-      pl: Community Contributed
-    detail:
-      rancher: Templates created and maintained by community members.  Not certified by Rancher Labs.
-      pl: Templates created and maintained by community members.
   more:
-    header: Custom
-    helpText: You can define your own custom catalog sources here.  Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> for more info).
     addActionLabel: افزودن Catalog
     name:
       label: نام
       placeholder: مثال. mycatalog
     url:
-      label: URL
       placeholder: 'مثال. https://github.com/mycompany/mycatalog.git'
     branch:
       label: شاخه
       placeholder: 'مثال. master'
-
 confirmDelete:
-  title: 'Are you sure you want to delete'
   environmentNote: 'توجه: همه resources inside this Environment will be permanently removed, including any Hosts that were created through {appName}.'
-  protip: 'ProTip: Hold the {key} key while clicking Delete to bypass this confirmation.'
-  confirmAction: Delete
   cancelAction: لغو
-
 containerLogs:
-  title: "Logs: {instanceName}"
   onlyCombined: "<b>توجه:</b> Only combined stdout/stderr logs are available for this container because it was run with the TTY (-t) flag."
-  combined: Combined
-  stdout: Standard Out
-  stderr: Standard Error
-  protip: "ProTip: Hold the {key} key when opening logs to launch a new window."
-  scrollTop: Scroll to Top
-  scrollBottom: Scroll to Bottom
-  clear: Clear Screen
   status:
-    initializing: Initializing...
     connecting: در حال اتصال
     connected: متصل
     disconnected: اتصال قطع شده
     closed: بسته شده
-
 containerShell:
-  protip: "ProTip: Hold the {key} key when opening shell access to launch a new window."
   status:
-    initializing: Initializing...
-    error: "خطا: {error}"
+    error: 'خطا: {error}'
     connecting: در حال اتصال
     connected: متصل
     disconnected: اتصال قطع شده
     closed: بسته شده
-
-copyToClipboard:
-  tooltip: Copy to Clipboard
-  copied: Copied!
-
 devicePermissions:
   all: همه
   none: هیچ یک
-  read: Read
-  write: Write
-  mknod: Mknod
-
 editAccount:
   title: ویرایش Account
   form:
@@ -1489,66 +934,30 @@ editAccount:
       label: نام
       placeholder: مثال. John Smith
     kind:
-      label: Account Type
-      user: User
       admin: مدیر
     description:
       label: توضیح
       placeholder: مثال. This account is for John Smith
-    publicValue:
-      label: Login Username
-    oldPassword:
-      label: Current Password
-    newPassword:
-      label: New Password
-    confirmPassword:
-      label: Confirm Password
-    identity:
-      label: Identity
-
 editAliasService:
   title: ویرایش Service Alias
-
 editApiKey:
   title:
     justCreated: کلید API Created
     editing: ویرایش API Key
-    new: New API Key
-  publicValue:
-    label: Access Key (Username)
-  secretValue:
-    label: Secret Key (Password)
   name:
     placeholder: مثال. App servers
   description:
     placeholder: مثال. This key is used by the app servers to deploy containers
-  saveWarning1: Save the keys above!  This is the only time you'll be able to see the secret.
-  saveWarning2: If you lose it, you'll need to create a new API key.
   noteOptional: نام and/or description are optional to help you remember what it's used for.  You can just create a key by clicking Create.
-  #' fixes syntax highlighting so i dont go crazy
-
 editBalancerService:
   title: ویرایش Load Balancer
-  haproxy:
-    label: haproxy.cfg
-    help: |
-      Additional <a href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html" target="_blank">haproxy.cfg</a>
-      configuration can be put here and will be appended to the configuration generated by {appName}.
-    global:
-      label: '<code>global</code> section'
-      prompt: Custom global section lines
-    defaults:
-      label: '<code>defaults</code> section'
-      prompt: Custom defaults section lines
-
 editCertificate:
   title: ویرایش Certificate
   name:
     placeholder: مثال. mydomain.com
   description:
     placeholder: مثال. EV cert for mydomain.com
-  noteKeyWriteOnly: "توجه: The Private Key is intentionally blank because the field is write-only.  You will need to provide the Private Key again to update the certificate, even if it hasn't changed."
-
+  noteKeyWriteOnly: 'توجه: The Private Key is intentionally blank because the field is write-only.  You will need to provide the Private Key again to update the certificate, even if it hasn''t changed.'
 editContainer:
   title:
     vm: ویرایش VM
@@ -1557,21 +966,17 @@ editContainer:
     placeholder: مثال. myapp
   description:
     placeholder: مثال. My Application
-
 editExternalService:
   title: ویرایش External Service
   name:
     placeholder: مثال. external-db
   description:
     placeholder: مثال. External physical database server
-
 editHost:
   title: ویرایش هاست
   hostname:
     label: نام هاست
-    help: As reported by the host operating system.
   customName:
-    label: Custom Name
     placeholder: مثال. dev1
     help: اگر این بخش خالی باشد, نام هاست به عنوان نام نمایش داده خواهد شد.
   description:
@@ -1579,7 +984,6 @@ editHost:
     placeholder: مثال. My development host
   labels:
     label: برچسب ها
-
 editRegistry:
   title: ویرایش Registry
   address:
@@ -1593,10 +997,8 @@ editRegistry:
   password:
     label: رمز عبور
     placeholder: مثال. password
-
 editService:
   title: ویرایش Service
-
 editStack:
   title: ویرایش Stack
   name:
@@ -1606,12 +1008,9 @@ editStack:
     label: توضیح
     placeholder: مثال. MyApp Stack
   group:
-    label: Tags
     placeholder: مثال. frontend, production
     help: The stacks list can be filtered by tags (comma-separated)
-
 stackHeader:
-  backLink: "Stack:"
   outputs: خروجی ها
   add:
     service: افزودن سرویس
@@ -1619,62 +1018,27 @@ stackHeader:
     external: افزودن External Service
     alias: افزودن سرویس Alias
     vm: افزودن ماشین مجازی
-
 formatIp:
   noIp: هیچ یک
   unknownIp: ناشناخته
-
-formBalancerListeners:
-  label: Listening Ports
-  addAction: افزودن Port
-  table:
-    host: Source IP/Port
-    protocol: پروتوکل
-    ssl: SSL
-    container: پورت Target پیش فرض
-    listener: دسترسی
-  host:
-    placeholder: "On Host, مثال. 80 or 1.2.3.4:80"
-  protocol:
-    placeholder: "یک پروتوکل انتخاب کنید:"
-  container:
-    placeholder: "In Container, مثال. 8080"
-  selectAccess: "دسترسی را انتخاب کنید:"
-  listen:
-    public: عمومی
-    internal: داخلی
-
 formCommand:
   command:
     label: دستور
     placeholder: مثال. /usr/sbin/httpd -f httpd.conf
   entryPoint:
-    label: Entry Point
     placeholder: مثال. /bin/sh -c
   workingDir:
-    label: Working Dir
     placeholder: مثال. /myapp
   user:
     label: کاربر
     placeholder: مثال. apache
   console:
     label: کنسول
-    both: 'Interactive &amp; TTY <span class="text-muted">(-i -t)</span>'
-    interactive: 'Interactive <span class="text-muted">(-i)</span>'
-    terminal: 'TTY <span class="text-muted">(-t)</span>'
     none: هیچ یک
   autoRestart:
-    label: Auto Restart
     startOnceFalse: همیشه
     startOnceTrue: هرگز (یک بار اجرا)
-    no: هرگز
-    onFailure: 'On failure <span class="text-muted">(non-0 exit code)</span>, forever'
-    onFailureCondPrefix: On failure, up to
-    onFailureCondSuffix: |
-      {limit, plural,
-        =1 {time}
-        other {times}
-      }
+    "no": هرگز
     always: همیشه
   environment:
     label: محیط Vars
@@ -1683,19 +1047,12 @@ formCommand:
     keyPlaceholder: مثال. FOO
     valueLabel: ارزش
     valuePlaceholder: مثال. bar
-
 formContainerLinks:
   label: پیوند ها
   addActionLabel: افزودن پیوند
-  noContainers: There are no other containers to link to.
-  noLinks: This container has no links.
-  targetInstance:
-    label: Destination Container
-    prompt: Select a Container...
   name:
     label: به عنوان
     placeholder: مثال. database
-
 formDisks:
   addDiskLabel: افزودن Disk
   addRootDiskLabel: افزودن Root Disk
@@ -1705,121 +1062,64 @@ formDisks:
     placeholder: مثال. data
   size:
     label: اندازه
-    rootDisk: Determined by root image
   readIops:
-    label: Read Iops
     placeholder: مثال. 1000
   writeIops:
-    label: Write Iops
     placeholder: مثال. 1000
-  driver:
-    label: Driver
-
 formEngineOpts:
   engineInstallUrl:
-    label: Docker Install URL
-    placeholder: مثال. http://get.docker.com/
-    recommended: Recommended
+    placeholder: 'مثال. http://get.docker.com/'
     latest: آخرین
   engineStorageDriver:
-    label: Storage Driver
     placeholder: مثال. overlay
   engineOpts:
-    label: Engine Options
     addActionLabel: افزودن Engine Option
     keyPlaceholder: مثال. log-driver
     valuePlaceholder: مثال. syslog
   engineLabels:
-    label: Engine Labels
     addActionLabel: افزودن Engine Label
     keyLabel: برچسب
   engineEnv:
-    label: Engine Environment
     addActionLabel: افزودن Environment Variable
     keyLabel: متغیر
     keyPlaceholder: مثال. HTTP_PROXY
-    valuePlaceholder: مثال. http://your-proxy:8080
+    valuePlaceholder: 'مثال. http://your-proxy:8080'
   engineInsecureRegistry:
-    label: Insecure Registries
     addActionLabel: افزودن Insecure Registry
-    valueLabel: Registry Domain
     valuePlaceholder: مثال. registry.example.com
   engineRegistryMirror:
-    label: Registry Mirrors
     addActionLabel: افزودن Registry Mirror
-    valueLabel: Mirror URL
-    valuePlaceholder: مثال. https://my-mirror.example.com:5000
-
+    valuePlaceholder: 'مثال. https://my-mirror.example.com:5000'
 formHealthCheck:
   label: Health Check
   checkType:
     none: هیچ یک
-    tcp: TCP Connection Opens
-    http: HTTP Responds 2xx/3xx
-  request:
-    label: HTTP Request
-  method:
-    prompt: "Select a HTTP Method:"
   path:
     placeholder: Request Path مثال. /healthcheck
-  version:
-    prompt: "Select a HTTP Version:"
   host:
     label: میزبان Header
     placeholder: مثال. www.example.com
   port:
-    label: Port
     placeholder: مثال. 80
-  initializingTimeout:
-    label: Initializing Timeout
-    unit: ms
-  reinitializingTimeout:
-    label: Reinitializing Timeout
-    unit: ms
-  interval:
-    label: Check Interval
-    unit: ms
-  timeout:
-    label: Check Timeout
-    unit: ms
   healthyThreshold:
     label: Healthy Threshold
-    unit: successes
   unhealthyThreshold:
     label: Unhealthy Threshold
-    unit: failures
-  strategy:
-    label: When Unhealthy
-    none: Take no action
-    recreate: Re-create
-    recreateOnQuorumPrefix: Re-create, only when at least
-    recreateOnQuorumSuffix: |
-      {quorum, plural,
-        =1 {container is}
-        other {containers are}
-      } healthy
-
 formKeyValue:
   addAction: افزودن Pair
   key:
     label: کلید
     placeholder: کلید
-  separator: "="
   value:
     label: ارزش
     placeholder: ارزش
-  protip: 'ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry.'
-
 formImage:
-  label: Select Image
   vm:
     placeholder: مثال. rancher/vm-ubuntu
-    dropdownLabel: "{appName} Images"
   container:
     placeholder: "مثال. ubuntu:trusty"
   pullImage:
     label: همیشه pull image before creating
-
 formNameDescription:
   name:
     label: نام
@@ -1827,33 +1127,19 @@ formNameDescription:
   description:
     label: توضیح
     placeholder: توضیح
-
 formNetwork:
   links:
     table:
-      dest: Destination Container
       as: به عنوان
       data:
-        dest: 'Destination Container:'
         as: 'به عنوان:'
   networkMode:
     label: شبکه
-    bridge: Bridge
-    container: container
     host: میزبان
-    managed: Managed
     none: هیچ یک
-  container:
-    label: container
   requestedIp:
-    label: Requested IP
     placeholder: مثال. 10.42.2.24
-    help: Request a specific IP in the 10.42.0.0/16 block.  If the IP is already in use a random one will be assigned.
-  retainIp:
-    label: Retain IP
-    reuse: Reuse IP addresses when upgrading or replacing unhealthy instances.
   dns:
-    label: DNS
     enable: فعال سازی {appName} DNS service discovery
   hostname:
     label: نام هاست
@@ -1865,62 +1151,30 @@ formNetwork:
     label: نام دامنه
     placeholder: مثال. example.com
   resolvingServers:
-    label: Resolving Servers
     placeholder: مثال. 8.8.4.4
   searchDomains:
-    label: Search Domains
     placeholder: مثال. prod.example.com
-
 formPorts:
   addAction: Port maps
   public:
-    label: Public Host [IP:]Port
     placeholderWithIp: "مثال. 80 or 1.2.3.4:80"
     placeholderWithoutIp: "مثال. 80"
   private:
-    label: Private Container Port
     placeholder: "مثال. 8080"
   protocol:
     label: پروتوکل
-  noPorts: This container has no port maps.
-
 formScale:
-  label: Scale
   global:
     vm: همیشه run one instance of this virtual machine on every host
     container: همیشه run one instance of this container on every host
-  regular:
-    vm: |
-      Run {scale, plural,
-        =0 {no virtual machines}
-        =1 {1 virtual machine}
-        other {# virtual machines}
-      }
-    container: |
-      Run {scale, plural,
-        =0 {no containers}
-        =1 {1 container}
-        other {# containers}
-      }
-
 formScheduling:
   canRequestHost:
     vm: اجرای <b>همه</b> ماشین های مجازی بر روی یک هاست مشخص
     containers: اجرای <b>همه</b> containers بر روی یک هاست مشخص
-  runSpecific: Run on a specific host
-  noRules: No scheduling rules
-  autoRun: "Automatically run on every host matching scheduling rules:"
-  autoPick:
-    vm: "Automatically pick hosts for each virtual machine matching scheduling rules:"
-    container: "Automatically pick hosts for each container matching scheduling rules:"
-    host: "Automatically pick a host matching scheduling rules:"
   addRule: افزودن Scheduling Rule
-  condition: Condition
   field: فیلد
   key: کلید
   value: ارزش
-
-
 formSecurity:
   key: کلید
   value: ارزش
@@ -1929,99 +1183,61 @@ formSecurity:
     keyPlaceholder: مثال. syslog-facility
     valuePlaceholder: مثال. daemon
   privileged:
-    label: Privileged
     checkbox: دسترسی کامل به هاست
   pidMode:
-    label: PID Mode
     checkbox: میزبان
   memoryLimit:
     label: حافظه محدود
     placeholder: نامحدود
-    mb: MB
   swapLimit:
-    label: + Swap Limit
-    mb: MB
     placeholder1: دارای محدودیت حافظه
     placeholder2: نامحدود
   cpuPinning:
-    label: CPU Pinning
-    placeholder: "مثال. 0,3; Default: همه"
+    placeholder: 'مثال. 0,3; Default: همه'
   shares:
-    label: Shares
     placeholder: مثال. 1024
   capabilities:
     add: افزودن
-    drop: Drop
-    label: Capabilities
     helpBlock:
-      text: Capabilities allow you to provide fine-grained control over superuser privileges available to the container.
       link: اطلاعات بیشتر
   deviceBinding:
-    label: Device Binding
     pathHost:
-      label: Path in Host
       placeholder: مثال. /dev/sdc
     pathContainer:
-      label: Path in Container
       placeholder: مثال. /dev/xsdc
     permissions:
       label: دسترسی ها
-      placeholder: "مثال. 0,3; Default: همه"
+      placeholder: 'مثال. 0,3; Default: همه'
   logDriver:
     label: درایور Log
     placeholder: مثال. syslog
-  logOptions:
-    label: Log Options
-
 formServiceLinks:
   addAction: سرویس Links
-  noServices: There are no other services to link to.
-  noLinks: This service has no service links.
   service:
-    label: Destination Service
     prompt: یک سرویس انتخاب کنید...
   name:
     label: به عنوان
     placeholder: مثال. database
-
 formSslTermination:
-  defaultCertificate:
-    prompt: Choose a Certificate...
-  alternateCertificate:
-    prompt: Choose a Certificate...
-  certificate: Certificate*
-  alternateCerts: Alternate Certs
   addAlternate: افزودن Alternate Certificate
   noCertificates: There are no other certificates to use.
   helpBlock: |
     "توجه: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
-  muted: There are no SSL listening ports configured.
-
 formStickiness:
-  stickiness: Stickiness
   none: هیچ یک
   newCookie: ساختن کوکی جدید
   cookieName: نام کوکی
-  mode: Mode
   domain: دامنه
   options: گزینه ها
-  indirect: Indirect
-  sendHeader: Send no-cache header
-  onPost: Only set cookie on POST
   noPorts: There are no HTTP listening ports configured.
-
   placeholder:
     sticky: مثال. sticky
     domain: مثال. mydomain.com
-
 formTarget:
-  target: Target
   pointAddress: اشاره به آدرس آی پی(es)
   pointHostname: اشاره به نام هاست
   addTarget: افزودن Target IP
-
 formTargets:
-  title: Targets
   addAction: افزودن سرویس
   hostname:
     label: هاست درخواست
@@ -2040,15 +1256,6 @@ formTargets:
     placeholder: مثال. 8080
   advanced:
     toggle: نمایش تنظیمات پیشرفته ی routing
-    detail: Direct requests to different services based on port, Host header, or request path
-    help1: |
-      If Request Host and/or Path are specified, connections to HTTP listening ports will be routed to the appropriate target based on the request.
-      For example, you could use this to send traffic for domain1.com to a different service than domain2.com, or domain3.com/admin to a different service than domain3.com.
-    help2: |
-      Matching requests will be sent to the Target Service on the Target Port.
-      If that is not set, then the Default Target port for the Source Port.  If that is also not set, then the Source Port.
-  noHostnames: "(Can't balance to hostnames)"
-
 formUserData:
   placeholder: "مثال. اطلاعات تنظیمات برای container"
   isVmPlaceholder: "مثال. اطلاعات تنظیمات برای ماشین مجازی"
@@ -2057,74 +1264,43 @@ formUserLabels:
   key:
     label: کلید
     placeholder: مثال. foo
-  separator: "="
   value:
     label: ارزش
     placeholder: مثال. bar
-  protip: "نکته: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
-
+  protip: 'نکته: Paste one or more lines of key=value pairs into any key field for easy bulk entry.'
 formUpgrade:
-  size: Batch Size
-  interval: Batch Interval
-  sec: sec
   behavior: شروع Behavior
   startStop: شروع قبل از توقف
   whichServices: کدام سرویس ها
-
 formValueArray:
   addActionLabel: افزودن Value
   valueLabel: ارزش
   valuePlacholder: ارزش
-  protip: "نکته: Paste one or more lines of values into any field for easy bulk entry."
-
+  protip: 'نکته: Paste one or more lines of values into any field for easy bulk entry.'
 formVirtualMachines:
-  vcpus: vCPUs
   memory: حافظه
-
 formVolumes:
   value:
     prompt: یک Container انتخاب کنید...
-  volumes: Volumes
-  volumesFrom: Volumes From
-  volumeDriver:
-    label: Volume Driver
-    placeholder: 'مثال. convoy-nfs'
-  noLaunchConfigs: There are no other launch configs in this service to share volumes with.
-  noHostContainers: This host has no containers to use the volumes from.
-  onlySingleHost: Only available when adding a container to a particular host.
-
 heroAddService:
   infra:
     header: افزودن Infrastructure Stacks
-    paragraph: Infrastructure stacks add capabilities like new Orchestration engines, storage and networking providers to {appName}.
   service:
     header: افزودن اولین Stack شما
-    paragraph1: |
-      A service is simply a group of containers created from the same Docker image but extends Docker's 'link' concept to leverage {appName}'s lightweight distributed DNS service for service discovery.
-      Services can be added individually or by deploying an item from the Catalog.
-    paragraph2: "A service is also capable of leveraging other {appName} built-in services such as load balancers, health monitoring, upgrade support, and high-availability."
     contentLink: اطلاعات بیشتر
   addService: تعریف یک سرویس
   addCatalog: تنظیم
   linkToCatalog: Browse کاتالوگ
-
 hostSettings:
   header: میزبان Registration URL
-  subtext: What base URL should hosts use to connect to the {appName} API?
   hostUrl:
     local: "آدرس این سایت:"
     new:
       labelText: "چیز دیگر:"
       placeholder: "مثال. http://example.com:8080"
-  helpText:
-    static1: "Don't include <code>/v1</code> or any other path, but if you are doing"
-    static2: "in front of {appName}, be sure to use <code>https://</code>."
-    isRancher: '<a href="{docsBase}/installing-rancher/installing-server/basic-ssl-config/" target="_blank">SSL termination</a>'
-    sslTerm: SSL termination
   notPublic:
     alert: |
       آیا مطمئن هستید تمام هاست های شما به  <code>{activeValue}</code> دسترسی خواهند داشت ?<br/> این آدرس به نظر یک آی پی خصوصی یا داخلی است.
-
 hostPod:
   machineInfo:
     active:
@@ -2134,44 +1310,22 @@ hostPod:
     deactivated:
       error: خطا در ساخت ماشین
       setup: در حال تنظیم ماشین...
-    groupedInstances:
-      namespace: 'Namespace:'
-      stack: 'Stack:'
-      standalone: Standalone Containers
-
 identityBlock:
   loading: در حال بارگزاری...
-
 infoMultiStats:
   connecting: در حال اتصال
-  utilizationStats: Utilization stats are only available while active/running.
   cpuSection:
-    labelText: CPU
     system: سیستم
     user: کاربر
   networkSection:
     labelText: شبکه
-    transmit: Transmit
     receive: دریافت
   memorySection:
     labelText: حافظه
     used: استفاده شده
   storageSection:
-    labelText: Storage
     read: خواندن
     write: نوشتن
-
-inputCertificate:
-  key:
-    label: Private Key
-    placeholder: "Paste in the private key, starting with -----BEGIN RSA PRIVATE KEY-----"
-  cert:
-    label: Certificate
-    placeholder: "Paste in the primary certificate, starting with -----BEGIN CERTIFICATE-----"
-  certChain:
-    label: Chain Certs
-    placeholder: "Optional; Paste in the additional chained certificates, starting with -----BEGIN CERTIFICATE-----"
-
 inputIdentity:
   placeholder:
     github: افزودن یک کاربر GitHub یا نام سازمان
@@ -2179,30 +1333,17 @@ inputIdentity:
   dropdownLabel:
     teams: تیم ها و سازمان های شما
     groups: گروه های شما
-
 inputPassword:
   buttonText: تولید
-
 inputTextFile:
   tooltip: خواندن از یک فایل
-
 k8s:
   containerSection:
     name: نام Container
     status: وضعیت
     message: پیغام
     ready: آماده
-    restarts: Restarts
-    noData: No Containers
-  deploymentSection:
-    name: Deployment Name
-    generation: Generation
-    replicas: Replicas
-    selectors: Selectors
-    containers: Containers
-    noData: No Deployments
   formContainerPorts:
-    portMap: Port Map
     addPort: پورت افزودن
     table:
       header:
@@ -2215,218 +1356,99 @@ k8s:
         hostIp: مثال. 19.82.8.24
         hostPort: مثال. 80
         containerPort: مثال. 8080
-    noPorts: This container has no port maps.
   heroAddStack:
     header: افزودن اولین Stack شما
-    content: |
-      Stacks are deployed from the {appName} Catalog and keep a group of related Deployments, Replication Controllers, or other resources organized.
     linkToCatalog: افزودن از کاتالوگ
   newOrEditResource:
     edit: ویرایش {type}
     add: افزودن {type}
-    placeholder: Resouce YAML or JSON definition
   podSection:
     name: نام Pod
     status: وضعیت
-    containers: Containers
     hostIp: آی پی میزبان
-    podIp: Pod IP
-    noData: No Pods
   rcSection:
     name: نام RC
-    replicas: Replicas
-    selectors: Selectors
-    containers: Containers
-    noData: No Replication Controllers
   replicasetSection:
     name: نام Replica Set
-    replicas: Replicas
-    selectors: Selectors
-    containers: Containers
-    noData: No Replica Sets
   servicePorts:
     port: پورت
     containerPort: پورت Container
     nodePort: پورت Node
     protocol: پروتوکل
     noPorts: بدون پورت
-  serviceRow:
-    defaultType: ClusterIP
   serviceSection:
     name: نام سرویس
-    clusterIp: Cluster IP
-    pods: Pods
-    clusterPorts: Cluster Ports
-    nodePorts: Node Ports
-    selectors: Selectors
     noData: سرویسی وجود ندارد
-
 lbAddtlInfo:
   info: اطلاعات
   viewDetails: مشاهده جزئیات
   defaultCertificate: Certificate پیش فرض
-  alternateCertificate: Alternate Certificate
   description: 'توضیح: '
-  containers: Containers
-  noContainers: No Containers
-  scale: Scale
-  global: Globl
   ports: پورت ها
-  noPorts: No public host ports
-  targets: Targets
   to: به
-
 labelsSection:
   kind: نوع
   key: کلید
   value: ارزش
   noData: بدون برچسب
-
 loginShibboleth:
   buttonText: اهراز هویت با Shibboleth
-
 loginGithub:
   buttonText: اهراز هویت با GitHub
-
 loginUserPass:
   userLabel: نام کاربری
   userPlaceholder: مثال. jsmith
   loginLabel: ورود
   loggingInLabel: در حال ورود...
   passwordLabel: رمز عبور
-
 machine:
   driverAmazon:
     accessSection: دسترسی به حساب
-    accessKey:
-      label: Access Key
-      placeholder: Your AWS access key
-    secretKey:
-      label: Secret Key
-      placeholder: Your AWS secret key
-      provided: Provided
-    region:
-      label: Region
-    accessKeyHelp: "Paste in your AWS key pair here. We'll use this key to create your new Instances."
-    loginAction: "بعدی: اهراز هویت & انتخاب یک شبکه"
+    loginAction: 'بعدی: اهراز هویت & انتخاب یک شبکه'
     loadingAvailability: در حال بارگزاری Availablility Zone and VPC info from EC2...
-    vpcSection: Availability Zone & VPC
-    availabilityZone: Availability Zone
-    subnet: VPC/Subnet
-    securityGroupSelect: "بعدی: انتخاب یک گروه امنیت"
+    securityGroupSelect: 'بعدی: انتخاب یک گروه امنیت'
     loadingSecurity: در حال بارگزاری اطلاعات گروه از EC2...
     securityGroupSection: گروه امنیت
     securityGroup:
       label: گروه امنیت
-      defaultExisting: "استاندارد: استفاده از گروه <code>{groupName}</code> کنونی"
-      defaultCreate: "استاندارد: ایجاد خودکار یک گروه <code>{groupName}</code>"
-      custom: "Custom: انتخاب یک گروه موجود"
+      defaultExisting: 'استاندارد: استفاده از گروه <code>{groupName}</code> کنونی'
+      defaultCreate: 'استاندارد: ایجاد خودکار یک گروه <code>{groupName}</code>'
+      custom: 'Custom: انتخاب یک گروه موجود'
       updating: بروز رسانی گروه امنیت...
       creating: ساخت گروه امنیت...
     portHelp:
       link: اطلاعات بیشتر
       text: در مورد پورت هایی که باز خواهند بود
     needs:
-      label: "For {appName} to work correctly your security group will need to allow traffic:"
-      item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
       item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(برای شبکه IPsec)</span></li>
       item3: این قوانین بطور خودکار اضافه <b>نخواهند شد</b>.
-    setInstanceAction: "بعدی: Set Instance options"
-    instanceSection: Instance
-    instanceOptionsSection: Instance Options
-    instanceType:
-      label: Instance Type
+    setInstanceAction: 'بعدی: Set Instance options'
     rootSize:
       label: روت Size
-      unit: GB
-    ami:
-      label: AMI
-      placeholder: An Ubuntu AMI
-      rancherList: RancherOS AMI List
     sshUser:
       label: کاربر SSH
       placeholder: مثال. ubuntu
-    iam:
-      label: IAM Profile
     privateIp:
       label: IP خصوصی
     onlyPrivate:
       label: فقط از IP خصوصی استفاده شود
-
   driverAzure:
-    helpBlock: 'You can find instructions on how to create a Client ID and Secret <a href="https://www.packer.io/docs/builders/azure-setup.html" target="_blank">here</a>.'
-    accountAccessSection: Account Access
-    placementSection: Placement
     networkSection: شبکه
-    subscriptionId:
-      label: Subscription ID
-      placeholder: Your Azure subscription ID
-    subscriptionCert:
-      label: Subscription Cert
-      placeholder: Your Azure subscription certificate
-    instanceSection: Instance
     image:
       label: تصویر
-      placeholder: 'canonical:UbuntuServer:16.04.0-LTS:latest'
     size:
       label: اندازه
-    dockerPort:
-      label: Docker Port
-      placeholder: '2376'
-    publishSettingsFile:
-      label: Publish Settings
-      placeholder: Your Publish Settings file
     environment:
       label: محیط
-      placeholder: 'AzurePublicCloud'
-    resourceGroup:
-      label: Resource Group
-      placeholder: 'docker-machine'
-    sshUser:
-      label: SSH User
-      placeholder: usr1
-    storageType:
-      label: Storage Type
-    vnet:
-      label: VNet
-      placeholder: '[resourcegroup:]name'
-    subnet:
-      label: Subnet
-      placeholder: example-sub-name
-    subnetPrefix:
-      label: Subnet Prefix
-      placeholder: 128.42.0.0/21
-    availabilitySet:
-      label: Availability Set
-      placeholder: availability-set-name
     openPort:
-      label: Open Port
       placeholder: 'Comma-separated, مثال. 80,443'
-    privateIpAddress:
-      label: Private IP
-      placeholder: 127.0.0.1
-    usePrivateIp:
-      label: Use Private IP To Connect
-    staticPublicIp:
-      label: Public IP
-    noPublicIp:
-      label: No Public IP
     clientId:
       label: شناسه کلاینت
-      placeholder: Your Client ID
-    clientSecret:
-      label: Client Secret
-      placeholder: Your Client Secret
-    regionSection: Region
-    region:
-      label: Region
-
   driverCustom:
-    step1: یک ماشین لینوکس را اجرا کرده و آخرین نسخه <a href="http://www.docker.com/" target="_blank">Docker</a> را بر روی آن نصب کنید.
-    step2: "Make sure any security groups or firewalls allow traffic:"
+    step1: 'یک ماشین لینوکس را اجرا کرده و آخرین نسخه <a href="http://www.docker.com/" target="_blank">Docker</a> را بر روی آن نصب کنید.'
     step2li: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(برای شبکه IPsec)</span>
-    step3: "اختیاری: افزودن برچسب برای هاست."
-    step4: "اختیاری: آی پی عمومی این هاست را مشخص کنید.  This is required if you're trying to add the host the <code>{rancherImage}</code> container is on."
+    step3: 'اختیاری: افزودن برچسب برای هاست.'
+    step4: 'اختیاری: آی پی عمومی این هاست را مشخص کنید.  This is required if you''re trying to add the host the <code>{rancherImage}</code> container is on.'
     step5Copy: دستور زیر را کپی و پیست و اجرا کرده تا هاست شما ثبت شود
     generating: "در حال ایجاد registration URL..."
     step5Close:
@@ -2434,13 +1456,7 @@ machine:
       link: میزبان ها
       part2: صفحه نمایش ظاهر خواهد شد.
     close: بستن
-
   driverDigitalocean:
-    sizeLabel: |
-      {slug} RAM, {disk}gb Disk, {vcpus, plural,
-        =1 {# vCPU}
-        other {# vCPUs}
-      }
     accountSection: دسترسی به حساب
     authAccountButton: 'بعدی: تنظیم Droplet'
     accessToken:
@@ -2449,14 +1465,10 @@ machine:
       help: |
         یک شناسه دسترسی خصوصی از DigitalOcean
         <a href="https://cloud.digitalocean.com/settings/applications" target="_blank">Apps & API</a> screen
-    instanceSection: Instance
     image:
       label: تصویر
     size:
       label: اندازه
-    regionSection: Region
-    region:
-      label: Region
     optionsSection: گزینه ها
     backups:
       label: فعال سازی Backups
@@ -2464,206 +1476,86 @@ machine:
       label: فعال سازی IPv6
     privateNetworking:
       label: فعال سازی شبکه خصوصی
-
   driverExoscale:
     accountSection: دسترسی به حساب
     apiKey:
       label: کلید API
-      placeholder: Your Exoscale API Key
-    secretKey:
-      label: Secret Key
-      placeholder: Your Exoscale secret key
-      provided: Provided
-    accountHelp: Paste in your Exoscale key pair here.  We'll use this key to create your new Instances.
-    loginAction: "بعدی: اهراز هویت & انتخاب یک گروه امنیت"
+    loginAction: 'بعدی: اهراز هویت & انتخاب یک گروه امنیت'
     loadingSecurity: در حال بارگزاری اطلاعات گروه امنیت از Exoscale...
     securityGroupSection: گروه امنیت
     securityGroup:
       label: گروه امنیت
-      defaultExisting: "استاندارد: استفاده از گروه <code>{groupName}</code> کنونی"
-      defaultCreate: "استاندارد: ساخت خودکار گروه <code>{groupName}</code>"
-      custom: "Custom: انتخاب یک گروه موجود"
+      defaultExisting: 'استاندارد: استفاده از گروه <code>{groupName}</code> کنونی'
+      defaultCreate: 'استاندارد: ساخت خودکار گروه <code>{groupName}</code>'
+      custom: 'Custom: انتخاب یک گروه موجود'
       updating: در حال بروز رسانی گروه امنیت...
       creating: در حال ساخت گروه امنیت...
     portHelp:
       link: اطلاعات بیشتر
       text: در مورد پورت هایی که باز خواهند بود.
-    needs:
-      label: "For {appName} to work correctly your security group will need to allow traffic:"
-      item1: From the {appName} server to <code>TCP</code> port <code>22</code> <span class="text-muted">(SSH to install and configure Docker)</span>
-      item2: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span></li>
-      item3: These rules will <b>not</b> be added automatically.
-    selectSecurityGroupAction: "بعدی: Set Instance options"
-    loadingInstance: Fetching available Instance settings...
-    instanceSection: Instance
-    instanceProfile:
-      label: Instance Profile
+    selectSecurityGroupAction: 'بعدی: Set Instance options'
     diskSize:
       label: روت Size
-    sshUser:
-      label: SSH User
-      placeholder: 'usr1'
-
-
-  driverOther:
-    driverSection: Driver
-    driver:
-      label: Driver
-    optionsSection: "{driverName} Options"
-
   driverPacket:
     accountSection: دسترسی به حساب
     projectId:
       label: پروژه
-      placeholder: Your Packet project ID
     apiKey:
       label: کلید API
-      placeholder: Your Packet API key
-    apiKeyHelp: From the Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API Keys</a> screen
-    instanceSection: Instance
     image:
       label: تصویر
     size:
       label: اندازه
-    regionSection: Region
-    region:
-      label: Region
-
   driverRackspace:
     accountSection: دسترسی به حساب
     username:
       label: نام کاربری
-      placeholder: Your RackSpace username
     apiKey:
       label: کلید API
-      placeholder: Your RackSpace API key
-    accountHelp: From the Account Settings screen of the RackSpace control panel
-    regionSection: Region
-    region:
-      label: Region
-    instanceSection: Instance
-    flavor:
-      label: Flavor
-
   driverUbiquity:
     accountSection: دسترسی به حساب
-    clientId:
-      label: Reseller ID
-      placeholder: Your Ubiquity Hosting API Reseller ID
-    apiUsername:
-      label: Remote ID
-      placeholder: Your Ubiquity Hosting Remote ID
     apiToken:
       label: کلید دسترسی
-      placeholder: Your Ubiquity Hosting Access Key
-      provided: Provided
-    accountHelp: You can find your Ubiquity Hosting API credentials <a href="https://motion.ubiquityhosting.com/api">here</a>. Don't have an account? Learn more about <a href="http://www.ubiquityhosting.com/">Ubiquity Hosting</a> today!
-    loginAction: "بعدی: اهراز هویت & ساخت a New Cloud Instance"
+    loginAction: 'بعدی: اهراز هویت & ساخت a New Cloud Instance'
     loadingInstance: در حال بارگزاری cloud instance creation details...
-    instanceSection: Instance
-    regionSection: Region
-    region:
-      label: Region
     image:
       label: تصویر
-    flavor:
-      label: Flavor
-
   driverVsphere:
     accountSection: دسترسی به حساب
     vcenter:
       label: هاست vCenter
-      placeholder: vCenter or ESXi hostname/IP
     vcenterPort:
       label: پورت vCenter
     username:
       label: نام کاربری
     password:
       label: رمز عبور
-    instanceSection: Instance
     cpuCount:
       label: پردازنده ها
     memorySize:
       label: حافظه
-      unit: MB
     diskSize:
       label: دیسک
-      unit: MB
     boot2dockerUrl:
-      label: OS ISO URL
-      placeholder: "پیش فرض: آخرین boot2docker image"
-    schedulingSection: Scheduling
-    dataCenter:
-      label: Data Center
-    pool:
-      label: Pool
+      placeholder: 'پیش فرض: آخرین boot2docker image'
     host:
       label: میزبان
-      placeholder: "Use '/' if using a cluster"
     network:
       label: شبکه
-    dataStore:
-      label: Data Store
-
   driverAliyunecs:
-    accountSection: Account Access Section
-    accessKey:
-      label: Access Key*
-      placeholder: Your Aliyun Account Access Key
-    accessKeySecret:
-      label: Access Key Secret*
-      placeholder: Your Key's secret
-    apiEndpoint:
-      label: Api Endpoint
-      placeholder: Private Aliyun Api Server Endpoint
-    instanceSection: Instance Section
-    instanceDescription:
-      label: Instance Description
-      placeholder: Instance Description
-    instanceType:
-      label: Instance Type
-      placeholder: Instance Type
-    systemImage:
-      label: System image
-      placeholder: System image
-    instanceTag:
-      label: Instance Tag
-      placeholder: Your Instance Tag in Aliyun
     internetMaxBandwidth:
       label: حداکثر پهنای باند اینترنت
       placeholder: 1 تا 100
-    aliyunSLB:
-      label: Aliyun SLB ID
-      placeholder: Aliyun SLB ID
     storageSection: اطلاعات فضای ذخیره سازی
     isOptimized:
-      label: Instance Storage I/O Optimized
       placeholder: هیچکدام یا بهینه شده
-    systemDiskCategory:
-      label: System Disk Category
-      placeholder: When Storage is optimized, you can input cloud_efficiency, cloud_ssd or ephemeral_ssd.
-    dataDiskCategory:
-      label: Data Disk Category
-      placeholder: When Storage is optimized, you can input cloud_efficiency, cloud_ssd or ephemeral_ssd.
     dataDiskSize:
-      label: Data Disk Size
       placeholder: اندازه دیسک
-    region:
-      label: Region
-      placeholder: Region
     zone:
-      label: Available Zone
       placeholder: خالی برای انتخاب خودکار
     networkSection: بخش شبکه
     routeCIDR:
-      label: Route CIDR
       placeholder: مثال. 192.168.1.0/24
-    vpcId:
-      label: Aliyun VPC ID
-      placeholder: Aliyun VPC ID
-    vswitchId:
-      label: Aliyun Vswitch ID
-      placeholder: Aliyun Vswitch ID
     privateIp:
       label: آی پی خصوصی
       placeholder: آی پی خصوصی در شبکه خصوصی
@@ -2675,28 +1567,15 @@ machine:
       placeholder: گروه امنیت
     sshPassword:
       label: رمز عبور SSH
-      placeholder: Set Instance SSH Password, Blank for Auto set
-
-
-
 modalAboutComponent:
-  component: Component
   version: نسخه
-  cattle: Cattle
   ui: رابط کاربری
-  compose: Compose
   machineService: سرویس ماشین
-  docerkMachine: docker-machine
   close: بستن
-
 modalAuditlogInfo:
   header: افزودنitional Log Info
-  request: "Request Object:"
-  response: "Response Object:"
-
 modalConfirmDeactiviate:
   header: آیا اطمینان دارید
-  protip: "ProTip: Hold the {alternateLabel} key while clicking {isServiceButton} to bypass this confirmation."
   cancel: لغو
   buttons:
     project:
@@ -2708,78 +1587,40 @@ modalConfirmDeactiviate:
     default:
       message: غیر فعال سازی
       button: غیر فعال سازی
-
 modalEditBackup:
   edit: ویرایش Backup
   create: ساختن Backup
   nameLabel: نام Backup
-  backupTarget: Backup Target
-  backupTargetPlaceholder: 'Select a Backup target...'
-
 modalEditDriver:
   header:
     create: افزودن درایور ماشین
     edit: ویرایش درایور ماشین
   url:
     label: دانلود URL
-    help: The URL to download the machine driver binary 64-bit Linux.
   uiUrl:
-    label: Custom UI URL
-    help: "اختیاری: The URL to load for customized Add Hosts screen for this driver."
-    link: See <a href="https://github.com/rancher/ui-driver-skel" target="_blank">ui-driver-skel</a> for more info.
+    help: 'اختیاری: The URL to load for customized Add Hosts screen for this driver.'
   checksum:
-    label: Checksum
-    help: "اختیاری: Verify that the downloaded driver matches the expected checksum."
-
+    help: 'اختیاری: Verify that the downloaded driver matches the expected checksum.'
 modalEditSnapshot:
   edit: ویرایش Snapshot
   create: ساختن Snapshot
   nameLabel: نام Snapshot
-
 modalFeedback:
   header: از {appName} لذت می برید?
   send: ارسال
   later: بعدا
   never: هرگز
-
 modalProcessError:
-  header: Exception Info
   cause: "علت:"
-  none: N/A
-  stackTrace: "Stack Trace:"
   close: بستن
-
-modalRollbackVolume:
- title:
-  snapshot: Rollback to a Snapshot
-  backup: Rollback to a Backup
-
 modalWelcome:
   header: به {appName} خوش آمدید!
   closeModal: بستن
-
-modalShell:
-  title: "Shell: {instanceName}"
-
 newAliasService:
   header: افزودن سرویس Alias
-
 newBalancer:
-  header: افزودن Load Balancer
-  note: |
-    <p><strong>توجه:</strong> Requests that do not match any of the &quot;advanced request options&quot; will be sent to the <strong>all</strong> ({targetResources}) of the configured target services (round-robin) on the default target port corresponding to the source port of the request.</p>
   tabs:
-    ssl: SSL Termination
-    stickiness: Stickiness
-    custom: Custom haproxy.cfg
     labels: برچسب ها
-    scheduling: Scheduling
-  helpBlock: |
-    <p class="help-block">Additional <a href="http://cbonte.github.io/haproxy-dconv/configuration-1.5.html" target="_blank">haproxy.cfg</a> configuration can be put here and will be appended to the configuration generated by {appName}.</p>
-  labelGlobal: <code>global</code> section
-  labelDefault: <code>defaults</code> section
-
-
 newCatalog:
   version:
     prompt: انتخاب یک نسخه...
@@ -2790,53 +1631,36 @@ newCatalog:
   catalog: "کاتالوگ:"
   category: "دسته بندی:"
   support: "پشتیبانی:"
-  official: Officially Certified
-  maintainedBy: Maintained by community members
-  maintainer: "Maintainer:"
-  license: "License:"
-  url: "Project URL:"
-  titleAdd: "Add {name} Stack"
-  titleUpgrade: "Upgrade {name} Stack"
-  titleConfigure: "Configure {name} Stack"
-  templateVersion: نسخه Template 
+  templateVersion: نسخه Template
   selectVersionAdd: یک نسخه از template را برای deploy انتخاب کنید
   selectVersionUpgrade: یک نسخه از template را برای ارتقا انتخاب کنید
   selectVersionConfigure: یک نسخه از template را برای تنظیم کردن انتخاب کنید
-  newStack: New Stack
-  config: Configuration Options
-  unknownType: "Unrecognized question type:"
   startService: شروع سرویس ها بعد ایجاد
   preview: پیش نمایش
-  txt: answers.txt
   noConfig: این template تنظیماتی ندارد.
-
 newContainer:
   add:
     container: افزودن Container
     vm: افزودن ماشین مجازی
     service: |
       افزودن {numServices, plural,
-        =1 {Service}
-        other {Services}
+      =1 {Service}
+      other {Services}
       }
   upgrade:
     container: ارتقای Container
     vm: ارتقای ماشین مجازی
     service: |
       ارتقا {numServices, plural,
-        =1 {Service}
-        other {# Services}
+      =1 {Service}
+      other {# Services}
       }
   tabs:
     disks: دیسک ها
     userData: داده های کاربر
     command: دستور
-    volumes: Volumes
     networking: شبکه
-    security: Security/Host
-    healthCheck: Health Check
     labels: برچسب ها
-    scheduling: Scheduling
   selectUpgrade: یک یا چند سرویس برای ارتقا انتخاب کنید.
   saveUpgrade: ارتقا
   saveNew: ساختن
@@ -2845,15 +1669,11 @@ newContainer:
     placeholder: مثال. myapp
   description:
     placeholder: مثال. My Application
-  emptyPrimaryService: "(Primary Service)"
-  emptySidekick: "(Sidekick #{num})"
   addSidekickContainer: افزودن Sidekick Container
   addSidekickVm: افزودن Sidekick VM
-
 newExternalService:
   header: افزودن سرویس خارجی
-  alert: "توجه: This will only be used if the external service is a target of a load balancer."
-
+  alert: 'توجه: This will only be used if the external service is a target of a load balancer.'
 pageFooter:
   notARelease: (نسخه آزمایشی)
   help: راهنمایی
@@ -2863,43 +1683,29 @@ pageFooter:
   forums: تالار های گفتگو
   download:
     link: دانلود CLI
-    headerCli: Rancher CLI (beta)
-    headerCompose: Rancher Compose
-    mac: Mac OS X
-    windows: Windows
-    linux: Linux
-
-pageHeaderEnvironment:
-  namespace: Namespace
-
 projectRow:
   none: بدون توضیح
-  orchestration: Orchestration
-
 registryRow:
   address: آدرس
   email: ایمیل
   username: نام کاربری
   created: ساخته شد
-
 saveCancel:
   saving: در حال ذخیره سازی...
   saved: ذخیره شد!
   edit: ذخیره
   create: ساختن
   cancel: لغو
-
 schema:
   inputBoolean:
-    y: "درست"
-    n: "غلط"
+    "y": "درست"
+    "n": "غلط"
   inputCertificate:
     prompt: یک Certificate انتخاب کنید...
   inputEnum:
     option: یک گزینه انتخاب کنید...
   inputService:
     prompt: یک سرویس انتخاب کنید...
-
 schedulingRuleRow:
   theHost: هاست
   must: باید
@@ -2912,59 +1718,25 @@ schedulingRuleRow:
   containerLabel: container با برچسب
   serviceName: سرویس با نام
   containerName: container با نام
-
 serviceLink:
-    withAlias:
-        sameStack: "{service} به عنوان {alias}"
-        differentStack: "{stack}/{service} به عنوان {alias}"
-    noAlias:
-        sameStack: "{service}"
-        differentStack: "{stack}/{service}"
-
+  withAlias:
+    sameStack: '{service} به عنوان {alias}'
+    differentStack: '{stack}/{service} به عنوان {alias}'
 sidekickAddtlInfo:
   info: اطلاعات
   image: تصویر
-  entryPoint: Entrypoint
   command: دستور
-  containers: Containers
-  noContainers: No Containers
   labels: برچسب ها
-  noLabels: No Labels
-
 siteAccess:
   header: دسترسی سایت
-  helpText: "Configure who should be allowed to log in and use {appName}."
-  unrestricted: "Allow any valid {individuals}"
-  restricted: "Allow members of Environments, plus Authorized {individuals} and {collection}"
-  required: "Restrict access to only Authorized {individuals} and {collection}"
-  listHeader: "Authorized {individuals} and {collection}"
   noIdentity: هیچ یک
   users: کاربران
   groups: گروه ها
   organizations: سازمان ها
-
-snapshotTimeline:
-  noData: No Snapshot Data
-
 stackSection:
   outputs: خروجی ها
   description: توضیح
   none: سرویسی وجود ندارد
-  container: |
-    {numContainers, plural,
-      =1 {Container}
-      other {Containers}
-    }
-  service: |
-    {numServices, plural,
-      =1 {Service}
-      other {Services}
-    }
-  sidekick: |
-    {numSidekicks, plural,
-      =1 {+ 1 Sidekick}
-      other {+ # Sidekicks}
-    }
   add:
     service: افزودن سرویس
     loadBalancer: افزودن Load Balancer
@@ -2977,85 +1749,39 @@ stackSection:
       serviceName: نام سرویس
       kind: نوع
       details: جزئیات
-      containers: Containers
       actions: اکشن ها
-
-
-snapshotSection:
-  none: Not backed up
-  multiple: 'Multiple: {latestDate}'
-
 storagePoolSection:
   outputs: خروجی ها
-  readOnly: "(read-only)"
   hosts:
     header: میزبان ها
     none: هاستی وجود ندارد
   volumes:
-    header: Volumes
     add: افزودن Volume
-    none: No Volumes
-  models:
-    table:
-      header:
-        volumeName: 'Volume Name'
-        snapshotState: 'Snapshot State'
-        snapshotName: 'Snapshot Name'
-        backedUp: 'Backed Up'
-        activeMounts: 'Mounts (Container: Path)'
-
-svgServiceContainer:
-  sidekicks: Sidekicks
-
 swarm:
   containerSection:
     state: وضعیت
     name: Container نام
     image: تصویر
-    none: No Containers
   serviceSection:
     state: وضعیت
     name: نام سرویس
     ports: پورت ها
-    containers: Containers
     none: سرویسی وجود ندارد
-
 telemetryOpt:
-  header: Statistics
-  subtext: |
-    Rancher Labs would like to collect anonymous information about the configuration of your installation to help make {appName} better.<br/>Your data will not be shared with anyone else, and no specific resource names or addresses are collected.
   learnMore:
-    link: "http://docs.rancher.com/rancher/telemetry"
     label: اطلاعات بیشتر
   label: همهow collection of anonymous statistics
-
 tooltipLink:
   list: لیست
-  linkGraph: Link Graph
-  composeYaml: Compose YAML
-
-tooltipWarning:
-  notConfigured: Access Control Not Configured
-  dismiss: Dismiss
-
 upgradeBtn:
   status:
     none: 'هیچ یک'
-    loading: 'Checking upgrades...'
-    current: 'Up to date'
-    available: 'Upgrade available'
-    inprogress: 'Upgrade in progress'
-    upgraded: 'Upgraded: Finish Upgrade'
-    notfound: 'Template version not found'
-    error: 'Error checking for upgrade'
-
 viewEditDescription:
   form:
     name:
       placeholder: مثال. lab
     description:
       placeholder: مثال. Environment for developer experimentation
-
 viewEditProject:
   showEdit:
     edit: "ویرایش محیط:"
@@ -3064,135 +1790,57 @@ viewEditProject:
     noMembers: افزودن اعضایی که می توانند از این محیط استفاده کنند.
   header: "محیط:"
   description: توضیح
-  helpBlock: |
-    Access Control is not enabled.<br/>
-    Anybody with access to the API/UI acts as an admin and will be able to use any environment.
-
-
 vmConsole:
-  header: "Console:"
-  protip: "ProTip: Hold the {alternateLabel} key when opening shell access to launch a new window."
   canvas: Canvas پشتیبانی نمی شود.
   footerActions:
-    buttonSend: Send Ctrl-Alt-Delete
     buttonCancel: بستن
-
-volumeRow:
-  activeMounts:
-    readOnly: "(read-only)"
-
-waitOrchestration:
-  count: '({sub} of {count})'
-
 waitKubernetes:
   addHost: 'حداقل یک هاست اضافه کنید'
   activateHost: 'در انتظار فعال سازی هاست'
-  createStack: 'Creating Kubernetes system stack'
   startServices: 'در حال شروع سرویس ها'
-  waitApi: 'Waiting for Kubernetes API'
-  createNamespace: 'Creating Namespace'
-
 waitMesos:
   addHost: 'حداقل سه هاست اضافه کنید'
   activateHost: 'در انتظار فعال سازی هاست ها'
-  createStack: 'Creating Mesos system stack'
   startServices: 'در حال شروع سرویس ها'
   waitApi: 'در انتظار leading Mesos Master'
-
 waitSwarm:
   addHost: 'حداقل یک هاست اضافه کنید'
-  activateHost: 'Waiting for a host to be active'
-  createStack: 'Creating Swarm system stack'
   startServices: 'در حال شروع سرویس ها'
-
-##############################
-# Mixins
-##############################
 containerChoices:
-  hostGroup: "هاست: {name}"
-  hostGroupWithState: "Host: {name} ({state})"
-  unknownHost: "هاست: ???"
-  containerOption: "{name}"
-  containerOptionWithState: "{name} ({state})"
-
+  hostGroup: 'هاست: {name}'
+  unknownHost: 'هاست: ???'
 driver:
   multiHostNames: "هاست ها <b>{first}</b> &mdash; <b>{last}</b> نامیده خواهند شد"
-
-##############################
-# Services
-##############################
-allServices:
-  stackGroup: "Stack: {name}"
-  noName: "(Stack: {id})"
-
-##############################
-# Navigation
-##############################
 nav:
-  srToggleNav: Toggle Navigation
-  srToggleDropdown: Toggle Dropdown
   environment:
     label: محیط
     all: همه محیط ها
     your: محیط های شما
     selected: محیط انتخاب شده
     manage: مدیریت محیط ها
-  namespace:
-    label: Namespace
-    manage: Manage Namespaces
   k8s:
-    tab: Kubernetes
-    stacks: Stacks
-    deployments: Deployments
     services: سرویس ها
-    replicasets: Replica Sets
-    rcs: Replication Controllers
-    pods: Pods
-    cli: Kubectl
-    system: Infrastructure Stacks
   swarm:
-    tab: Swarm
     projects: پروژه ها
     services: سرویس ها
-    cli: CLI
-    system: Infrastructure
-  mesos:
-    tab: Mesos
-    web: Overview
-    system: Infrastructure
   cattle:
-    tab: Stacks
     all: همه
     user: کاربر
-    system: Infrastructure
   catalog:
     tab: کاتالوگ
     all: همه
-    infra: Infrastructure
     library: کتابخانه
-    community: Community
   infra:
-    tab: Infrastructure
     hosts: میزبان ها
-    containers: Containers
     vms: ماشین های مجازی
-    storagePage: Storage
-    backupTarget: Backup Targets
-    certificates: Certificates
-    registries: Registries
   admin:
     tab: مدیر
-    audit: Audit Log
-    processes: Processes
     accounts: حساب ها
     access: کنترل دسترسی
     machine: درایور های ماشین
     settings: تنظیمات
-    ha: High-Availability
-  api:
-    tab: API
   user:
-    label: "منوی کاربر: {username}"
+    label: 'منوی کاربر: {username}'
     logout: خروج
     yourAccount: حساب شما
     changePassword: تغییر رمز عبور
@@ -3203,56 +1851,32 @@ nav:
   noHosts:
     prefix: "قبل از افزودن اولین سریس یا اجرای یک container, شما باید یک هاست لینوکسی که از Docker {minVersion} یا بالاتر پشتیبانی می کند اضافه کنید.  "
     link: "افزودن هاست"
-    suffix: ""
-
-##############################
-# Resource Actions
-##############################
 action:
   activate: فعال سازی
-  backup: Backup Snapshot
   deleteBackup: حذف Backup
   cancelUpgrade: لغو ارتقا
   cancelRollback: لغو Rollback
-  clone: Clone
-  console: Open Console
   deactivate: غیر فعال سازی
   edit: ویرایش
-  execute: Execute Shell
   exportConfig: خروجی گرفتن از تنظیمات
   finishUpgrade: پایان ارتقا
   logs: مشاهده لاگ ها
   machineConfig: کانفیگ ماشین
-  purge: Purge
   remove: حذف
-  restart: Restart
-  restore: Restore
-  retry: Retry
-  rollback: Rollback
-  revertToSnapshot: Revert Volume to Snapshot
-  restoreFromBackup: Restore Volume from Backup
   setDefault: انتخاب به عنوان پیش فرض
-  snapshot: Snapshot
   start: شروع
   startServices: شروع سرویس ها
   stop: توقف
   stopServices: توقف سرویس ها
-  switchNamespace: Switch to this Namespace
   switchEnvironment: جابجایی به این محیط
   upgrade: ارتقا
   viewConfig: مشاهده تنظییمات
   viewGraph: مشاهده گراف
   viewInApi: viewGraph in API
   viewInstance: مشاهده Instance
-
-##############################
-# Model Properties
-##############################
 model:
   account:
     kind:
-      registeredAgent: Registered Agent
-      agent: Agent
       service: سرویس
       user: کاربر
       admin: مدیر
@@ -3264,7 +1888,6 @@ model:
       group: گروه
       org: سازمان
       localUser: کاربر محلی
-      unknown: "{type}?"
   projectMember:
     role:
       member: عضو

@@ -1,7 +1,7 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
-let ACTIVEISH = ['active','upgrading'];
+let ACTIVEISH = ['active','upgrading','updating-active'];
 
 export default Ember.Service.extend({
   access: Ember.inject.service(),

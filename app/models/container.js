@@ -12,7 +12,6 @@ var Container = Instance.extend({
   primaryAssociatedIpAddress : null,
   projects                   : Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
-
   // Container-specific
   type                       : 'container',
   imageUuid                  : null,
@@ -31,6 +30,7 @@ var Container = Instance.extend({
   primaryHost                : denormalizeId('hostId'),
   services                   : denormalizeIdArray('serviceIds'),
   primaryService             : Ember.computed.alias('services.firstObject'),
+  primaryStack               : Ember.computed.alias('primaryService.stack'),
 
   actions: {
     restart: function() {
@@ -43,7 +43,7 @@ var Container = Instance.extend({
 
     promptStop: function() {
       this.get('modalService').toggleModal('modal-container-stop', {
-        model: this
+        model: [this]
       });
     },
 
@@ -106,10 +106,10 @@ var Container = Instance.extend({
     var isK8s = labelKeys.indexOf(C.LABEL.K8S_POD_NAME) >= 0;
 
     var choices = [
-      { label: 'action.restart',    icon: 'icon icon-refresh',      action: 'restart',      enabled: !!a.restart },
-      { label: 'action.start',      icon: 'icon icon-play',         action: 'start',        enabled: !!a.start },
-      { label: 'action.stop',       icon: 'icon icon-stop',         action: 'promptStop',         enabled: !!a.stop, altAction: 'stop' },
-      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete' },
+      { label: 'action.restart',    icon: 'icon icon-refresh',      action: 'restart',      enabled: !!a.restart, bulkable: true, bulkActionName: 'Restart'},
+      { label: 'action.start',      icon: 'icon icon-play',         action: 'start',        enabled: !!a.start, bulkable: true, bulkActionName:  'Start'},
+      { label: 'action.stop',       icon: 'icon icon-stop',         action: 'promptStop',   enabled: !!a.stop, altAction: 'stop', bulkable: true, bulkActionName: 'Stop' },
+      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete', bulkable: true, bulkActionName: 'Delete' },
       { label: 'action.purge',      icon: '',                       action: 'purge',        enabled: !!a.purge },
       { divider: true },
       { label: 'action.execute',    icon: '',                       action: 'shell',        enabled: !!a.execute && !isVm, altAction:'popoutShell'},

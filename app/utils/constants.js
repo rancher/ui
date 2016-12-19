@@ -10,6 +10,32 @@ const KIND_INFRA = 'infra';
 const KIND_NOT_ORCHESTRATION = 'cattle';
 
 var C = {
+  BULK_ACTIONS: [
+    {
+      "label": "action.start",
+      "icon": "icon icon-play",
+      "action": "start",
+      "bulkActionName": "Start",
+    },
+    {
+      "label": "action.stop",
+      "icon": "icon icon-stop",
+      "action": "promptStop",
+      "bulkActionName": "Stop",
+    },
+    {
+      "label": "action.restart",
+      "icon": "icon icon-refresh",
+      "action": "restart",
+      "bulkActionName": "Restart",
+    },
+    {
+      "label": "action.remove",
+      "icon": "icon icon-trash",
+      "action": "promptDelete",
+      "bulkActionName": "Delete",
+    },
+  ],
   COOKIE: {
     TOKEN: 'token',
     PL: 'PL',
@@ -131,9 +157,12 @@ var C = {
     K8S_POD_NAMESPACE: 'io.kubernetes.pod.namespace',
     K8S_POD_NAME: 'io.kubernetes.pod.name',
     K8S_KUBECTL: 'io.rancher.k8s.kubectld',
-    K8S_API: 'io.rancher.k8s.api-server',
+    K8S_DASHBOARD: 'io.rancher.k8s.kubernetes-dashboard',
     ORCHESTRATION_SUPPORTED: 'io.rancher.orchestration.supported',
     CERTIFIED: 'io.rancher.certified',
+    CERTIFIED_RANCHER: 'rancher',
+    CERTIFIED_PARTNER: 'partner',
+
   },
 
   PREFS: {
@@ -143,17 +172,24 @@ var C = {
     EXPANDED_STACKS : 'expandedStacks',
     SORT_STACKS_BY  : 'sortStacksBy',
     THEME           : 'theme',
+    TABLE_COUNT     : 'tableCount',
     LANGUAGE        : 'language',
     I_HATE_SPINNERS : 'ihatespinners',
     FEEDBACK        : 'feedback',
     FEEDBACK_TIME   : 'feedbackTime',
     FEEDBACK_DELAY  : 60000, //7*24*60*60*1000,
+    SHOW_SYSTEM     : 'showSystem',
   },
 
   LANGUAGE: {
     DEFAULT: 'en-us',
     FORMAT_RELATIVE_TIMEOUT: 1000,
     DOCS: ['en'],
+  },
+
+  TABLES: {
+    DEFAULT_COUNT: 50
+
   },
 
   THEME: {

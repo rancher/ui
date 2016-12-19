@@ -40,9 +40,13 @@ export default Ember.Component.extend({
       this.get('prefs').set(C.PREFS.EXPANDED_STACKS, list);
     },
 
-    addtlInfo: function(service) {
+    addtlInfo(service) {
       this.sendAction('showAddtlInfo', service);
     },
+
+    upgradeImage(service) {
+      service.send('upgrade','true');
+    }
   },
 
   init() {

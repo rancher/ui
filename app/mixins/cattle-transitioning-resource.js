@@ -52,6 +52,7 @@ export default Ember.Mixin.create({
   endpointSvc: Ember.inject.service('endpoint'), // Some machine drivers have a property called 'endpoint'
   cookies: Ember.inject.service(),
   growl: Ember.inject.service(),
+  intl: Ember.inject.service(),
 
   modalService: Ember.inject.service('modal'),
   reservedKeys: ['waitInterval','waitTimeout'],
@@ -78,6 +79,17 @@ export default Ember.Mixin.create({
     */
     return [];
   }.property(),
+
+  translatedAvaileableActions: Ember.computed(function() {
+    // use this if you need to pass translated actions to addons
+    var availableActions = this.get('availableActions');
+    if (availableActions) {
+      availableActions.forEach((action) => {
+        action.translatedLabel = this.get('intl').findTranslationByKey(action.label);
+      });
+    }
+    return availableActions;
+  }),
 
   primaryAction: function() {
     // The default implementation returns the first enabled item that has an icon
@@ -152,7 +164,7 @@ export default Ember.Mixin.create({
 
   isTransitioning: Ember.computed.equal('transitioning','yes'),
   isError: Ember.computed.equal('transitioning','error'),
-  isDeleted: Ember.computed.equal('state','removed'),
+  isRemoved: Ember.computed('state', () => { return !C.REMOVEDISH_STATES.includes(this.state); }),
   isPurged: Ember.computed.equal('state','purged'),
   isActive: Ember.computed.equal('state','active'),
 

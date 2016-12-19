@@ -242,11 +242,11 @@ export function formatKbps(value) {
   return formatSi(value*1000,  1000, "bps", "Bps");
 }
 
-export function formatSi(inValue, increment=1000, suffix="", firstSuffix=null)
+export function formatSi(inValue, increment=1000, suffix="", firstSuffix=null, startingExponent=0)
 {
   var units = ['B','K','M','G','T','P'];
   var val = inValue;
-  var exp = 0;
+  var exp = startingExponent;
   while ( val >= increment && exp+1 < units.length )
   {
     val = val/increment;

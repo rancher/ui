@@ -19,7 +19,7 @@ export default Ember.Route.extend({
     }
   },
 
-  intervalId: null,
+  timer: null,
 
   redirect: function() {
     this.transitionTo('admin-tab.processes.index', {
@@ -50,18 +50,22 @@ export default Ember.Route.extend({
   },
 
   scheduleTimer: function() {
-    this.set('intervalId', Ember.run.later(() => {
+    Ember.run.cancel(this.get('timer'));
+    this.set('timer', Ember.run.later(() => {
       var params = this.paramsFor('admin-tab.processes');
 
       this.get('userStore').find('processinstance', null, this.parseParams(params)).then((response) => {
         this.controller.get('model.processInstance').replaceWith(response);
-        this.scheduleTimer();
+        if ( this.get('timer') ) {
+          this.scheduleTimer();
+        }
       }, ( /*error*/ ) => {});
     }, INTERVALCOUNT));
   },
 
   deactivate: function() {
-    Ember.run.cancel(this.get('intervalId'));
+    Ember.run.cancel(this.get('timer'));
+    this.set('timer', null); // This prevents scheduleTimer from rescheduling if deactivate happened at just the wrong time.
   },
 
   parseParams: function(params) {

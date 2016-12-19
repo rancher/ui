@@ -12,6 +12,7 @@ export default Ember.Component.extend(NewOrEdit, {
   allHosts                  : null,
   allServices               : null,
   allCertificates           : null,
+  upgradeImage              : null,
 
   isGlobal                  : null,
   isRequestedHost           : null,
@@ -92,6 +93,17 @@ export default Ember.Component.extend(NewOrEdit, {
 
       let entry = src+":"+src+"/"+rule.get('ipProtocol');
       if ( rule.get('access') === 'public' ) {
+        // Source IP applies only to public rules
+        let ip = rule.get('sourceIp');
+        if ( ip ) {
+          // IPv6
+          if ( ip.indexOf(":") >= 0 && ip.substr(0,1) !== '[' ) {
+            entry = '['+ip+']:' + entry;
+          } else {
+            entry = ip + ':' + entry;
+          }
+        }
+
         publish.push(entry);
       } else {
         expose.push(entry);
@@ -106,11 +118,7 @@ export default Ember.Component.extend(NewOrEdit, {
 
   shouldUpdatePorts: function() {
     Ember.run.once(this,'updatePorts');
-  }.observes(
-    'service.lbConfig.portRules.@each.sourcePort',
-    'service.lbConfig.portRules.@each.access',
-    'service.lbConfig.portRules.@each.protocol'
-  ),
+  }.observes('service.lbConfig.portRules.@each.{sourceIp,sourcePort,access,protocol}'),
 
 
   validateRules() {
@@ -145,21 +153,30 @@ export default Ember.Component.extend(NewOrEdit, {
         return;
       }
 
-      let access = rule.get('access');
-      let id = 'rule-' + access + '-' + rule.get('protocol') + '-' + src;
+      let sourceIp = rule.get('sourceIp');
+      let key;
+      if ( sourceIp ) {
+        key = '['+sourceIp+']:' + src;
+      } else {
+        key = '[0.0.0.0]:' + src;
+      }
 
-      if ( seen[src] ) {
-        if ( seen[src] !== id ) {
+      let access = rule.get('access');
+      let id = access + '-' + rule.get('protocol') + '-' + src;
+
+      if ( seen[key] ) {
+        if ( seen[key] !== id ) {
           errors.push(intl.t('newBalancer.error.mixedPort', {num: src}));
         }
       } else {
-        seen[src] = id;
+        seen[key] = id;
       }
 
       if ( !rule.get('serviceId') && !rule.get('selector') ) {
         errors.push(intl.t('newBalancer.error.noTarget'));
       }
 
+      // Make ports always numeric
       rule.setProperties({
         sourcePort: src,
         targetPort: tgt,
@@ -196,6 +213,10 @@ export default Ember.Component.extend(NewOrEdit, {
       return false;
     }
 
+    if ( this.get('upgradeImage')+'' === 'true' ) {
+      return true;
+    }
+
     // Label arrays are updated one at a time and make this flap,
     // so ignore them until they're all set
     if ( !this.get('labelsReady') ) {
@@ -206,8 +227,22 @@ export default Ember.Component.extend(NewOrEdit, {
     let neu = removeKeys(this.get('service.launchConfig.labels'),C.LABELS_TO_IGNORE);
     return arrayToStr(old) !== arrayToStr(neu);
   }.property(
+    'editing',
+    'upgradeImage',
     'service.launchConfig.labels'
   ),
+
+  upgradeInfo: function() {
+    let from = (this.get('existing.launchConfig.imageUuid')||'').replace(/^docker:/,'');
+    let to = (this.get('service.launchConfig.imageUuid')||'').replace(/^docker:/,'');
+
+    if ( this.get('upgradeImage')+'' === 'true' ) {
+      return Ember.Object.create({
+        from: from,
+        to: to,
+      });
+    }
+  }.property('existing.launchConfig.imageUuid','service.launchConfig.imageUuid'),
 
   // ----------------------------------
   // Labels
