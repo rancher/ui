@@ -79,6 +79,10 @@ export default Ember.Service.extend({
     let lang = this.get(`session.${C.SESSION.LANGUAGE}`);
     var direction = '';
 
+    if ( !theme || !lang ) {
+      return;
+    }
+
     $body.attr('class').split(/\s+/).forEach((cls) => {
       if ( cls.indexOf('theme-') === 0 )
       {

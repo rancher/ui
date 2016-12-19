@@ -1,0 +1,22 @@
+{{~#link-to 'service' link.service.stackId link.service.id~}}
+  {{~#if (eq link.service.name link.name)~}}
+    {{t (if (eq link.service.stackId model.stackId) 'serviceLink.noAlias.sameStack' 'serviceLink.noAlias.differentStack')
+      stack=link.service.displayStack
+      service=link.service.displayName
+      alias=link.name
+    }}
+  {{~else~}}
+    {{~#if link.name~}}
+      {{t (if (eq link.service.stackId model.stackId) 'serviceLink.withAlias.sameStack' 'serviceLink.withAlias.differentStack')
+        stack=link.service.displayStack
+        service=link.service.displayName
+        alias=link.name
+      }}
+    {{~else~}}
+      {{t (if (eq link.service.stackId model.stackId) 'serviceLink.noAlias.sameStack' 'serviceLink.noAlias.differentStack')
+        stack=link.service.displayStack
+        service=link.service.displayName
+      }}
+    {{~/if~}}
+  {{~/if~}}
+{{/link-to}}
