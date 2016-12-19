@@ -55,12 +55,16 @@ export default Ember.Service.extend({
       });
     }
 
-    obj.set('value', JSON.stringify(value));
-    obj.save().then(() => {
-      Ember.run(() => {
-        this.notifyPropertyChange(key);
+    let neu = JSON.stringify(value);
+    if ( obj.get('value') !== neu ) {
+      obj.set('value', neu);
+      obj.save().then(() => {
+        Ember.run(() => {
+          this.notifyPropertyChange(key);
+        });
       });
-    });
+    }
+
     return value;
   },
 
