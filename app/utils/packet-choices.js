@@ -27,7 +27,7 @@ export let PacketFacilities = [
   },
   {
     "id": "8ea03255-89f9-4e62-9d3f-8817db82ceed",
-    "name": "Tokyo, JP (Beta)",
+    "name": "Tokyo, JP",
     "code": "nrt1",
     "features": [
       "baremetal"
@@ -136,6 +136,19 @@ export let PacketOs = [
     "name": "Ubuntu 16.04 LTS",
     "distro": "ubuntu",
     "version": "16.04",
+    "provisionable_on": [
+      "baremetal_0",
+      "baremetal_1",
+      "baremetal_2",
+      "baremetal_2a",
+      "baremetal_3"
+    ]
+  },
+  {
+    "slug": "rancher",
+    "name": "RancherOS",
+    "distro": "rancher",
+    "version": "0.7.0",
     "provisionable_on": [
       "baremetal_0",
       "baremetal_1",
