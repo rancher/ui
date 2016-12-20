@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   value        : null,
   placeholder  : "",
   accept       : "text/*",
-  btnClass     : "btn btn-primary",
+  btnClass     : "btn bg-primary",
   encode       : false,
   minHeight    : 0,
   maxHeight    : 200,

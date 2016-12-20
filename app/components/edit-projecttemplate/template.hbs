@@ -8,24 +8,24 @@
   </h1>
 </section>
 
-<section class="well r-mb0">
+<section class="well mb-0">
   {{form-name-description
     model=projectTemplate
   }}
 
   {{#if access.admin}}
     <div class="row">
-      <div class="col-xs-12">
+      <div class="">
         <label>{{t 'editProjectTemplate.access.label'}}</label>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6">
+      <div class="col span-6">
         <div class="radio">
           <label>{{radio-button selection=projectTemplate.isPublic value=false}} {{t 'editProjectTemplate.access.private'}}</label>
         </div>
       </div>
-      <div class="col-md-6">
+      <div class="col span-6">
         <div class="radio">
           <label>{{radio-button selection=projectTemplate.isPublic value=true}} {{t 'editProjectTemplate.access.public'}}</label>
         </div>
@@ -34,21 +34,21 @@
   {{/if}}
 </section>
 
-<section class="well r-mb0">
+<section class="well mb-0">
   <div class="row">
-    <div class="col-xs-12">
+    <div class="">
       <label>{{t 'editProjectTemplate.orchestration'}}</label>
       <div class="nav nav-boxes checked-active">
         {{#each orchestrationChoices as |driver|}}
-          <a href="#" tabindex="1" {{action "selectOrchestration" driver.name}} title="{{driver.title}}" class="nav-box-item driver orchestration-driver r-p5 {{if driver.active 'active'}}">
+          <a href="#" tabindex="1" {{action "selectOrchestration" driver.name}} title="{{driver.title}}" class="nav-box-item driver orchestration-driver pl-5 {{if driver.active 'active'}}">
             <img src="{{driver.image}}"/>
-            {{#if showOrchestrationOrigin}}<div class="small clip r-pt5">{{driver.source}}</div>{{/if}}
+            {{#if showOrchestrationOrigin}}<div class="small clip pt-5">{{driver.source}}</div>{{/if}}
           </a>
         {{/each}}
       </div>
       {{#if (not-eq activeOrchestration 'cattle')}}
         <div class="text-center">
-          <button type="button" class="btn btn-default" {{action "editOrchestration"}}>{{t 'editProjectTemplate.stackEdit'}}</button>
+          <button type="button" class="btn bg-default" {{action "editOrchestration"}}>{{t 'editProjectTemplate.stackEdit'}}</button>
         </div>
       {{/if}}
     </div>
@@ -65,13 +65,12 @@
           {{#catalog-box model=obj.tpl active=obj.enabled showSource=true as |section|}}
             {{#if (eq section 'footer')}}
               {{#if (and obj.required obj.enabled)}}
-                <button type="button" class="btn btn-primary" {{action "enableStack" obj}}>{{t 'editProjectTemplate.stackEdit'}}</button>
-                <button type="button" class="btn btn-default btn-disabled" {{action "disableStack" obj true allowedKeys="meta ctrl"}}>{{t 'editProjectTemplate.stackRequired'}}</button>
+                <button type="button" class="btn bg-default bg-disabled" {{action "disableStack" obj true allowedKeys="meta ctrl"}}>{{t 'editProjectTemplate.stackRequired'}}</button>
               {{else if obj.enabled}}
-                <button type="button" class="btn btn-primary" {{action "enableStack" obj}}>{{t 'editProjectTemplate.stackEdit'}}</button>
-                <button type="button" class="btn btn-danger" {{action "disableStack" obj}}>{{t 'generic.disable'}}</button>
+                <button type="button" class="btn bg-default" {{action "enableStack" obj}}>{{t 'editProjectTemplate.stackEdit'}}</button>
+                <button type="button" class="btn bg-error" {{action "disableStack" obj}}>{{t 'generic.disable'}}</button>
               {{else if obj.supported}}
-                <button type="button" class="btn btn-primary" {{action "enableStack" obj}}>{{t 'generic.enable'}}</button>
+                <button type="button" class="btn bg-primary" {{action "enableStack" obj}}>{{t 'generic.enable'}}</button>
               {{/if}}
             {{/if}}
           {{/catalog-box}}

@@ -1,13 +1,13 @@
 {{#unless single}}
-  <div class="clearfix well r-p0 r-m0">
-    <div class="stack-state pull-left {{model.stateBackground}}">
+  <div class="clearfix pl-0 m-0">
+    <div class="stack-state pull-left {{model.stateColor}}">
       {{#tooltip-element type="tooltip-basic" model=model.displayState tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="stackSection"}}
         <i class="{{model.stateIcon}}" aria-label="{{model.displayState}}"></i>
       {{/tooltip-element}}
     </div>
 
     <div class="header-left collapser">
-      <a {{action "toggleCollapse"}} class="btn btn-link"><i class="icon {{if collapsed 'icon-plus' 'icon-minus'}}" alt="Toggle stack details" title=""></i></a>
+      <a {{action "toggleCollapse"}} class="btn bg-transparent"><i class="icon {{if collapsed 'icon-plus' 'icon-minus'}}" alt="Toggle stack details" title=""></i></a>
     </div>
 
     <div class="header-left name {{if model.description 'with-description'}}">
@@ -21,8 +21,8 @@
 
     {{#if outputs.length}}
       <div class="header-left">
-        <div class="btn-group r-ml10">
-          <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <div class="btn-group ml-10">
+          <button type="button" class="btn btn-sm bg-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             {{t 'stackSection.outputs'}} <i class="icon icon-chevron-down"></i>
           </button>
           <ul class="dropdown-menu dropdown-menu-right" role="dropdown">
@@ -52,8 +52,8 @@
       {{upgrade-btn model=model}}
       {{#if showAddService}}
         <div class="btn-group">
-          {{#link-to "service.new" (query-params stackId=model.id) classNames="btn btn-default btn-sm"}}{{t 'stackSection.add.service'}}{{/link-to}}
-          <button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+          {{#link-to "service.new" (query-params stackId=model.id) classNames="btn bg-default btn-sm"}}{{t 'stackSection.add.service'}}{{/link-to}}
+          <button type="button" class="btn btn-info btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
             <i class="icon icon-fw icon-chevron-down"></i>
             <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
           </button>
@@ -75,7 +75,7 @@
   <div class="stack-body {{if single 'single-body'}}">
     {{#if single}}
       {{#if model.description}}
-      <div class="r-pt20 r-pr20 r-pb20 r-pl20">
+      <div class="pt-20 pr-20 pb-20 pl-20">
           <label>{{t 'generic.description'}}:&nbsp;</label>{{model.description}}
         </div>
       {{/if}}
@@ -96,19 +96,12 @@
                 {{#if service.showTransitioningMessage}}
                   <span class="{{service.stateColor}}">({{service.transitioningMessage}})</span>
                 {{/if}}
-                <button type="button" class="btn-link service-icon-button" role="button" {{action 'addtlInfo' service}}>
-                  <i class="icon icon-info"/>
-                </button>
-                {{~#if service.imageUpgradeAvailable~}}
-                  {{#tooltip-element type="tooltip-basic" model=(t 'stackSection.upgradeImage') tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="upgradeImage"}}
-                    <button type="button" class="btn-link text-warning service-icon-button r-pl0" role="button" {{action 'upgradeImage' service}}>
-                      <i class="icon icon-arrow-circle-up"/>
-                    </button>
-                  {{/tooltip-element}}
-                {{~/if~}}
-                {{~#if service.isError~}}
-                  {{#link-to "service.log" service.stackId service.id class="btn-link service-icon-button"}}<i class="icon icon-alert"/>{{/link-to}}
-                {{~/if~}}
+                <a type="button" class="bg-transparent" role="button" {{action 'addtlInfo' service}}>
+                  <i class="icon icon-info addtl-info-trigger"/>
+                </a>
+                {{#if service.isError}}
+                  {{#link-to "service.log" service.stackId service.id class="bg-transparent"}}<i class="icon icon-alert"/>{{/link-to}}
+                {{/if}}
               </td>
               <td data-title="{{t 'stackSection.table.dataTitle.details'}}:" class="force-wrap service-detail">{{service.displayDetail}}{{service.displayPorts}}</td>
               <td data-title="{{t 'stackSection.table.dataTitle.kind'}}:">
@@ -130,7 +123,7 @@
       </table>
     {{else}}
       <div class="stack-section">
-        <div class="text-muted text-center r-p10">{{t 'stackSection.none'}}</div>
+        <div class="text-muted text-center pl-10">{{t 'stackSection.none'}}</div>
       </div>
     {{/if}}
   </div>

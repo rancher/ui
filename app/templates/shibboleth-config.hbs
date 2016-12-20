@@ -12,25 +12,25 @@
   <h2>{{t 'authPage.shibboleth.disabled.header'}}</h2>
   <hr />
   <div class="row">
-    <div class="col-md-6">
+    <div class="col span-6">
       <div class="form-group">
         <label>{{t 'authPage.shibboleth.disabled.name.labelText'}}*</label>
         {{input type="text" value=config.displayNameField classNames="form-control"}}
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col span-6">
       <div class="form-group">
         <label>{{t 'authPage.shibboleth.disabled.username.labelText'}}*</label>
         {{input type="text" value=config.userNameField classNames="form-control"}}
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col span-6">
       <div class="form-group">
         <label>{{t 'authPage.shibboleth.disabled.uid.labelText'}}*</label>
         {{input type="text" value=config.uidField classNames="form-control"}}
       </div>
     </div>
-    <div class="col-md-6">
+    <div class="col span-6">
       <div class="form-group">
         <label>{{t 'authPage.shibboleth.disabled.groups.labelText'}}*</label>
         {{input type="text" value=config.groupsField classNames="form-control"}}
@@ -38,9 +38,9 @@
     </div>
   </div>
   <div class="row">
-    <div class="col-md-4">
+    <div class="col span-4">
       <div class="form-group">
-        <label class="r-pt5">{{t 'inputCertificate.key.label'}}*</label>
+        <label class="pt-5">{{t 'inputCertificate.key.label'}}*</label>
         {{input-text-file
           value=config.spKey
           accept="text/*, .pem, .pkey, .key"
@@ -49,9 +49,9 @@
         }}
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col span-4">
       <div class="form-group">
-        <label class="r-pt5">{{t 'inputCertificate.cert.label'}}*</label>
+        <label class="pt-5">{{t 'inputCertificate.cert.label'}}*</label>
         {{input-text-file
           accept="text/*, .pem, .crt"
           value=config.spCert
@@ -60,9 +60,9 @@
         }}
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col span-4">
       <div class="form-group">
-        <label class="r-pt5">{{t 'inputCertificate.metaXML.label'}}*</label>
+        <label class="pt-5">{{t 'inputCertificate.metaXML.label'}}*</label>
         {{input-text-file
           accept="text/xml"
           value=config.idpMetadataContent
@@ -71,10 +71,10 @@
         }}
       </div>
     </div>
-    <div class="col-md-12">
+    <div class="col span-12">
       <div class="form-group">
         <label>&nbsp;</label>
-        <button class="btn btn-primary" style="display: block;margin: 0 auto;" {{action "save"}}>
+        <button class="btn bg-primary" style="display: block;margin: 0 auto;" {{action "save"}}>
           {{#if saving}}
             <i class="icon icon-spinner icon-spin"></i> {{t 'generic.saving'}}
           {{else if saved}}
@@ -92,11 +92,11 @@
   <hr/>
   {{top-errors errors=errors}}
   <div class="row">
-    <div class="col-md-6">
+    <div class="col span-6">
       <p>{{t 'authPage.github.testAuth.subtext'}}</p>
     </div>
-    <div class="col-md-6">
-      <button class="btn btn-primary" {{action "authTest"}} disabled={{disableAuth}}>
+    <div class="col span-6">
+      <button class="btn bg-primary" {{action "authTest"}} disabled={{disableAuth}}>
         {{#if testing}}
           <i class="icon icon-spinner icon-spin"></i> {{t 'generic.testing'}}
         {{else}}

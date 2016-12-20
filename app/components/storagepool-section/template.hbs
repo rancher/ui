@@ -18,26 +18,26 @@
 
   <div class="header-right right-divider stack-actions" style="width: auto">
     {{#unless single}}
-      {{#link-to "storagepools.new-volume" (query-params driverName=model.driverName) classNames="btn btn-primary btn-sm"}}{{t 'storagePoolSection.volumes.add'}}{{/link-to}}
+      {{#link-to "storagepools.new-volume" (query-params driverName=model.driverName) classNames="btn bg-primary btn-sm"}}{{t 'storagePoolSection.volumes.add'}}{{/link-to}}
     {{/unless}}
   </div>
 </div>
 
 <hr/>
 
-<div class="stack-body r-p10 row row-full-height">
-  <div class="subsection gutter col-xs-12 col-md-3 col-full-height">
+<div class="stack-body pl-10 row row-full-height">
+  <div class="subsection gutter  col span-3 col-full-height">
     <h6>{{t 'storagePoolSection.hosts.header'}}</h6>
-    <div class="clearfix r-p10 hosts">
+    <div class="clearfix pl-10 hosts">
       {{#each hostsByName as |host|}}
-        <div class="r-m10"><i class="icon {{host.stateIcon}} {{host.stateBackground}}"></i> {{#link-to "host" host.id}}{{host.displayName}}{{/link-to}}</div>
+        <div class="m-10"><i class="icon {{host.stateIcon}} {{host.stateBackground}}"></i> {{#link-to "host" host.id}}{{host.displayName}}{{/link-to}}</div>
       {{else}}
         <div class="text-center text-muted">{{t 'storagePoolSection.hosts.none'}}</div>
       {{/each}}
     </div>
   </div>
   {{#if model.volumes.length}}
-    <div class="subsection gutter col-xs-12 col-md-9 col-full-height">
+    <div class="subsection gutter  col span-9 col-full-height">
       <h6>{{t 'storagePoolSection.volumes.header'}}</h6>
       <table class="grid" style="margin-bottom: 0">
         <thead>
@@ -56,7 +56,7 @@
               </td>
               <td class="force-wrap">
                 {{#tooltip-element type="tooltip-basic" model=vol tooltipTemplate="tooltip-storage" tooltipFor="storagePoolSection"}}
-                  <p class="hand force-wrap clip r-m0">{{vol.displayName}}</p> <i classs="icon icon-info"></i>
+                  <p class="hand force-wrap clip m-0">{{vol.displayName}}</p> <i classs="icon icon-info"></i>
                 {{/tooltip-element}}
               </td>
               <td class="force-wrap">
@@ -84,7 +84,7 @@
             </tr>
             {{#if vol.snapshots.length}}
               <tr class="nohover">
-                <td colspan="4" class="subtable r-p10">
+                <td colspan="4" class="subtable pl-10">
                   <table class="grid fixed no-lines">
                     <thead>
                       <tr>
@@ -107,6 +107,6 @@
       </table>
     </div>
   {{else}}
-    <div class="text-muted text-center r-p10">{{t 'storagePoolSection.volumes.none'}}</div>
+    <div class="text-muted text-center pl-10">{{t 'storagePoolSection.volumes.none'}}</div>
   {{/if}}
 </div>

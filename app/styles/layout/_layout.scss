@@ -9,7 +9,7 @@ BODY {
   direction: ltr;
   background-color : $body-bg;
   min-height       : 100%;
-  font-weight      : $normal-weight;
+  // font-weight      : normal;
   position         : relative;
 
   &.no-spin .icon-spin {
@@ -125,10 +125,10 @@ MAIN {
 }
 
 BODY.white MAIN {
-  margin-top    : $main-padding/2;
-  margin-right  : $main-padding;
-  margin-bottom : $main-padding;
-  margin-left   : $main-padding;
+  // margin-top    : $main-padding/2;
+  // margin-right  : $main-padding;
+  // margin-bottom : $main-padding;
+  // margin-left   : $main-padding;
   border-radius : 5px;
 }
 
@@ -151,12 +151,22 @@ SECTION {
   }
 }
 
+.well {
+  background-color: $well-bg;
+  box-shadow: none;
+  padding: 20px;
+
+  &.section {
+    margin: 20px 20px 0 20px;
+  }
+}
+
 .overlay SECTION {
   padding: 20px 0 0 0;
 }
 
 UL.list-circles {
-  @extend .list-unstyled;
+  margin: 0;
   margin-top  : 10px;
   font-weight : $bold-weight;
 
@@ -190,7 +200,7 @@ UL.list-circles {
 
   &.list-circles-clear > LI {
     background-image : url('images/info-bubble-clear.svg');
-    font-weight      : $normal-weight;
+    font-weight      : normal;
     padding-bottom   : 20px;
 
     &:last-child {
@@ -211,16 +221,16 @@ UL.with-room {
 }
 
 UL.list-lines {
-  @extend .list-unstyled;
+  margin: 0;
 
   &>LI {
     margin-top    : 5px;
     border-bottom : 1px solid #e8ecf2;
-    font-size     : $font-size-small;
+    font-size     : 0.85em;
     padding       : 5px 0 5px 15px;
 
     LABEL {
-      font-weight   : $normal-weight;
+      font-weight   : normal;
       color         : #9da0ae;
       display       : inline-block;
       width         : 100px;
@@ -325,7 +335,7 @@ UL.list-lines {
   font-size : 14px;
 
   LABEL {
-    font-weight   : $normal-weight;
+    font-weight   : normal;
     display       : block;
     /* the radio button gets clipped with no padding */
     padding-left  : 2px;
@@ -342,7 +352,7 @@ UL.list-lines {
 
 SECTION .well H5,
 .graphs LABEL {
-  font-weight   : $normal-weight;
+  font-weight   : normal;
   color         : #da8456;
   display       : block;
   margin-bottom : 5px;
@@ -417,7 +427,7 @@ TABLE.graphs {
 
 .btn-circle {
   display           : inline-block;
-  line-height       : $line-height-base;
+  // line-height       : $base-line-height;
   vertical-align    : middle;
   touch-action      : manipulation;
   background-color  : transparent;
@@ -476,7 +486,7 @@ max-width        : 100%;
 .grid {
   width            : 100%;
   max-width        : 100%;
-  margin-bottom    : $line-height-computed;
+  // margin-bottom    : $line-height-computed;
   // Cells
   > thead,
   > tbody,
@@ -484,9 +494,10 @@ max-width        : 100%;
     > tr {
       > th,
       > td {
-        padding          : $table-cell-padding;
-        line-height      : $line-height-base;
+        padding          : 8px;
+        line-height      : $base-line-height;
         vertical-align   : top;
+        border: none;
         border-top       : 1px solid $table-border-color;
       }
 
@@ -876,6 +887,17 @@ SECTION.header {
   margin            : 0 auto;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
 .top-errors {
   position : relative;
 
@@ -902,4 +924,12 @@ SECTION.header {
 
 .valign-bottom {
   vertical-align: bottom;
+}
+
+.pull-right {
+  float: right;
+}
+
+.pull-left {
+  float: left;
 }
