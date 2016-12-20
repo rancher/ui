@@ -10,7 +10,15 @@
             </li>
             <li>
               <i>2</i>
-              {{t 'machine.driverCustom.windows.step2' appName=settings.appName}}
+              {{format-html-message 'machine.driverCustom.windows.step2'}}
+              <div class="copy-pre">
+                <pre id="network-command">{{t 'machine.driverCustom.windows.step2Copy'}}</pre>
+                {{copy-to-clipboard clipboardText=(t 'machine.driverCustom.windows.step2Copy')}}
+              </div>
+            </li>
+            <li>
+              <i>3</i>
+              {{t 'machine.driverCustom.windows.step3' appName=settings.appName}}
               <div class="copy-pre">
                 <pre id="registration-command">{{registrationCommandWindows}}</pre>
                 {{copy-to-clipboard clipboardText=registrationCommandWindows}}
