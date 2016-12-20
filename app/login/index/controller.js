@@ -35,10 +35,10 @@ export default Ember.Controller.extend({
         }).catch((err) => {
           this.set('waiting', false);
 
-          if ( err.status === 401 ) {
+          if ( err && err.status === 401 ) {
             this.set('errorMsg', this.get('intl').t('loginPage.error.authFailed'));
           } else {
-            this.set('errorMsg', err.message);
+            this.set('errorMsg', (err ? err.message : "No response received"));
           }
         }).finally(() => {
           this.set('waiting',false);
