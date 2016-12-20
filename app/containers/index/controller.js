@@ -75,6 +75,10 @@ export default Ember.Controller.extend({
       name: 'command',
       type: 'string',
     },
+    {
+      isActions: true,
+      width: '110px',
+    },
   ],
   tableCount: Ember.computed(function() {
     return this.get(`session.${C.PREFS.TABLE_COUNT}`) ? this.get(`session.${C.PREFS.TABLE_COUNT}`) : C.TABLES.DEFAULT_COUNT;

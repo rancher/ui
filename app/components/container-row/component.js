@@ -12,6 +12,7 @@ export default Ember.Component.extend({
   memoryMax: null,
   storageMax: null,
   networkMax: null,
+  showPrimaryActions: true,
   tagName: '',
 
   statsAvailable: function() {
