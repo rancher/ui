@@ -56,7 +56,7 @@ export default Ember.Service.extend({
     }
 
     let neu = JSON.stringify(value);
-    if ( obj.get('value') !== neu ) {
+    if ( !obj.get('id') || obj.get('value') !== neu ) {
       obj.set('value', neu);
       obj.save().then(() => {
         Ember.run(() => {
