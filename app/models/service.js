@@ -204,7 +204,7 @@ var Service = Resource.extend({
       });
     });
 
-    return out;
+    return out.sortBy('name');
   }.property('linkedServices'),
 
   // Only for old Load Balancer to get ports map
