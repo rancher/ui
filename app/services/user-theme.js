@@ -12,12 +12,8 @@ export default Ember.Service.extend({
     var userTheme    = this.get(`prefs.${C.PREFS.THEME}`);
     var defaultTheme = this.get('session').get(C.PREFS.THEME);
 
-    // does the uitheme exist in prefs
     if (userTheme) {
-
-      // dooes the user pref'd theme match the default theme from local storage
       if (userTheme !== defaultTheme) {
-
         if (defaultTheme !== 'ui-auto') {
           this.setTheme(userTheme);
         } else {
@@ -31,19 +27,20 @@ export default Ember.Service.extend({
     }
   },
 
-  setTheme: function(newTheme) {
-    this.set(`prefs.${C.PREFS.THEME}`, newTheme);
+  setTheme: function(newTheme, save=true) {
+    if ( save ) {
+      this.set(`prefs.${C.PREFS.THEME}`, newTheme);
+    }
 
     if (this.get('updateTimer')) {
       Ember.run.cancel(this.get('updateTimer'));
     }
 
-
     if (newTheme === 'ui-auto') {
       this.setAutoUpdate();
     } else {
       this.set('currentTheme', newTheme);
-      this.writeStyleNode(newTheme);
+      this.writeStyleNode();
       this.get('session').set(C.PREFS.THEME, newTheme);
     }
 
@@ -54,7 +51,6 @@ export default Ember.Service.extend({
   },
 
   setAutoUpdate: function() {
-
     var hour         = new Date().getHours();
     var newTheme     = 'ui-light';
     var nextHalfHour = C.THEME.AUTO_UPDATE_TIMER - Math.round(new Date().getTime())%C.THEME.AUTO_UPDATE_TIMER;
@@ -66,10 +62,9 @@ export default Ember.Service.extend({
 
     if (userTheme !== newTheme) {
       this.set('currentTheme', newTheme);
-      this.writeStyleNode(newTheme);
+      this.writeStyleNode();
       this.get('session').set(C.PREFS.THEME, newTheme);
     }
-
 
     this.set('updateTimer', Ember.run.later(() => {
       return this.setAutoUpdate();
@@ -77,11 +72,17 @@ export default Ember.Service.extend({
 
   },
 
-  writeStyleNode: function(theme) {
+  writeStyleNode() {
     var application = this.get('app');
     var $body = $('BODY');
+    let theme = this.get('currentTheme');
     let lang = this.get(`session.${C.SESSION.LANGUAGE}`);
     var direction = '';
+
+    if ( !theme || !lang ) {
+      return;
+    }
+
     $body.attr('class').split(/\s+/).forEach((cls) => {
       if ( cls.indexOf('theme-') === 0 )
       {

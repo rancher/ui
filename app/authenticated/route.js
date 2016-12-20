@@ -205,13 +205,12 @@ export default Ember.Route.extend(Subscribe, {
         this.set(`session.${C.SESSION.ACCOUNT_ID}`, res.xhr.headers.get(C.HEADER.ACCOUNT_ID));
       }
 
+      this.get('language').initLanguage(true);
       this.get('userTheme').setupTheme();
 
       if (this.get(`prefs.${C.PREFS.I_HATE_SPINNERS}`)) {
         Ember.$('BODY').addClass('i-hate-spinners');
       }
-
-      this.get('language').setLanguage();
 
       return res;
     });
