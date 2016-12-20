@@ -5,9 +5,11 @@ import ManageLabels from 'ui/mixins/manage-labels';
 // Remember the last value and use that for new one
 var lastContainer = 'ubuntu:14.04.3';
 var lastVm = 'rancher/vm-ubuntu';
+var lastWindows = 'microsoft/iis';
 
 export default Ember.Component.extend(ManageLabels, {
   settings: Ember.inject.service(),
+  projects: Ember.inject.service(),
 
   // Inputs
   initialValue: null,
@@ -40,7 +42,11 @@ export default Ember.Component.extend(ManageLabels, {
 
     if ( !initial )
     {
-      initial = ( this.get('isVm') ? lastVm : lastContainer);
+      if ( this.get('projects.current.isWindows') ) {
+        initial = lastWindows
+      } else {
+        initial = ( this.get('isVm') ? lastVm : lastContainer);
+      }
     }
 
     Ember.run.scheduleOnce('afterRender', () => {
@@ -75,7 +81,9 @@ export default Ember.Component.extend(ManageLabels, {
     }
     else if ( input && input.length )
     {
-      if ( this.get('isVm') )
+      if ( this.get('projects.current.isWindows') ) {
+        lastWindows = input;
+      } else if ( this.get('isVm') )
       {
         lastVm = input;
       }

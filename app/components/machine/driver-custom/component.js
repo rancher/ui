@@ -81,7 +81,7 @@ export default Ember.Component.extend(ManageLabels, {
     let url = this.get('model.registrationUrl');
 
     return `New-Item -Path 'C:\\Program Files\\rancher' -Type Directory
-Invoke-WebRequest -UseBasicParsing 'https://github.com/rancher/agent/releases/download/v0.3.0/agent.exe' -OutFile 'C:\\Program Files\\rancher\\agent.exe'
+Invoke-WebRequest -UseBasicParsing 'https://github.com/rancher/agent/releases/download/v0.6.0/agent.exe' -OutFile 'C:\\Program Files\\rancher\\agent.exe'
 & 'C:\\Program Files\\rancher\\agent.exe' -register-service ${url}
 Start-Service rancher-agent`;
   }.property('model.command'),
