@@ -3,10 +3,10 @@
 </section>
 <section>
   <div class="well">
-    <div class="form-inline r-mb25 inline-block">
+    <div class="form-inline mb-25 inline-block">
       <div class="form-group">
-        {{input class="form-control input-sm r-mr5" value=filters.eventType placeholder=(t "auditLogsPage.form.eventType.placeholder")}}
-        <div class="input-group r-mr5">
+        {{input class="form-control input-sm mr-5" value=filters.eventType placeholder=(t "auditLogsPage.form.eventType.placeholder")}}
+        <div class="input-group mr-5">
           <span class="input-group-btn">
             {{input class="form-control input-sm pull-right" value=filters.resourceId  placeholder=(t "auditLogsPage.form.resourceId.placeholder") disabled=resourceIdReady}}
             <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if filters.resourceType filters.resourceType (t "auditLogsPage.form.resourceType.placeholder")}} <i class="icon icon-chevron-down"></i></button>
@@ -22,7 +22,7 @@
             </ul>
           </span>
         </div>
-        {{input class="form-control input-sm r-mr5" value=filters.clientIp placeholder=(t "auditLogsPage.form.requestIp.placeholder")}}
+        {{input class="form-control input-sm mr-5" value=filters.clientIp placeholder=(t "auditLogsPage.form.requestIp.placeholder")}}
         <span class="dropdown">
           <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if authTypeReadable authTypeReadable (t "auditLogsPage.form.authType.placeholder")}} <i class="icon icon-chevron-down"></i></button>
           <ul class="dropdown-menu" role="menu">
@@ -36,19 +36,19 @@
             {{/each}}
           </ul>
         </span>
-        <button role="button" class="btn btn-sm btn-danger r-ml5" {{action "clearAll"}}> {{t 'auditLogsPage.form.clearButtonText'}}</button>
-        <button role="button" class="btn btn-sm btn-primary r-ml5" {{action "search"}}> {{t 'auditLogsPage.form.searchButtonText'}}</button>
+        <button role="button" class="btn btn-sm btn-danger ml-5" {{action "clearAll"}}> {{t 'auditLogsPage.form.clearButtonText'}}</button>
+        <button role="button" class="btn btn-sm btn-primary ml-5" {{action "search"}}> {{t 'auditLogsPage.form.searchButtonText'}}</button>
       </div>
     </div>
-    <table class="grid fixed table table-hover r-mb15">
+    <table class="grid fixed table table-hover mb-15">
       <thead>
-        {{sortable-th sortable=this action="changeSort" name="id" label="auditLogsPage.table.time" width="115" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="eventType" label="auditLogsPage.table.eventType" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="description" label="auditLogsPage.table.description" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="accountId" label="auditLogsPage.table.environment" width="125" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="resourceType" label="auditLogsPage.table.resourceTypeId" class="r-pl10"}}
-        {{sortable-th sortable=this action="changeSort" name="authenticatedAsIdentityId" label="auditLogsPage.table.identity" width="175" class="r-pl10"}}
-        <th width="150" class="r-pl10">{{t 'auditLogsPage.table.authIp'}}</th>
+        {{sortable-th sortable=this action="changeSort" name="id" label="auditLogsPage.table.time" width="115" class="pl-10"}}
+        {{sortable-th sortable=this action="changeSort" name="eventType" label="auditLogsPage.table.eventType" class="pl-10"}}
+        {{sortable-th sortable=this action="changeSort" name="description" label="auditLogsPage.table.description" class="pl-10"}}
+        {{sortable-th sortable=this action="changeSort" name="accountId" label="auditLogsPage.table.environment" width="125" class="pl-10"}}
+        {{sortable-th sortable=this action="changeSort" name="resourceType" label="auditLogsPage.table.resourceTypeId" class="pl-10"}}
+        {{sortable-th sortable=this action="changeSort" name="authenticatedAsIdentityId" label="auditLogsPage.table.identity" width="175" class="pl-10"}}
+        <th width="150" class="pl-10">{{t 'auditLogsPage.table.authIp'}}</th>
       </thead>
       <tbody>
         {{#each model.auditLog as |log|}}

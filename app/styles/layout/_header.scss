@@ -1,6 +1,12 @@
+@import "app/styles/base/colors";
+@import "app/styles/themes/light";
+
 /**********
  * Header (top bar)
  **********/
+// Basics of a navbar
+$navbar-height:                    45px;
+$navbar-collapse-max-height:       340px;
 
 HEADER {
   position : relative;
@@ -11,7 +17,7 @@ HEADER {
     height: $navbar-height;
     width: 68px;
     background-image: url('images/logos/main.svg');
-    background-color: $logo-bg;
+    // background-color: $logo-bg;
     background-position: center center;
     background-repeat: no-repeat;
   }
@@ -40,19 +46,26 @@ HEADER {
   .lang-select {
     height: 45px;
     line-height: 32px;
-    color: $lightTeal;
+    // color: $lightTeal;
   }
 
+
   NAV.navbar {
-    background-color: $top-row;
+    background-color: $top-row; //$top-row
     min-height: $navbar-height;
     border: 0;
     margin: 0;
     padding: 0;
     font-size : 14px;
 
+    ul {
+      @extend .bg-transparent;
+      margin: 0;
+    }
+
     & .navbar-header {
-      margin-left: -15px;
+      // margin-left: -15px;
+      float: left;
 
       .btn-group {
         > .btn {
@@ -65,6 +78,10 @@ HEADER {
       margin: 0!important;
       float: none;
       background-size: auto 25px;
+    }
+
+    .navbar-right {
+      float: right;
     }
 
     .navbar-toggle {
@@ -286,7 +303,7 @@ HEADER {
         &.project-menu {
           z-index: 2000;
           .active a {
-            cursor: $cursor-disabled;
+            cursor: none; // $cursor-disabled;
           }
           a {
             position: relative;

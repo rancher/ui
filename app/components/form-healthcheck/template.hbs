@@ -1,6 +1,29 @@
-{{#if projects.current.isWindows}}
-  <div class="text-center r-p20">Healthcheck support is not currently available for Windows.</div>
-{{else}}
+<div class="row form-group">
+  <div class="col-sm-12 col-md-2 form-label">
+    <label class="form-control-static">{{t 'formHealthCheck.label'}}</label>
+  </div>
+  <div class="col-sm-12 col-md-9">
+    {{#if editing}}
+      <div class="radio input pull-left mr-20">
+        <label class="form-control-static">{{radio-button selection=checkType value="none"}} {{t 'formHealthCheck.checkType.none'}}</label>
+      </div>
+      <div class="radio input pull-left mr-20">
+        <label class="form-control-static">{{radio-button selection=checkType value="tcp"}} {{t 'formHealthCheck.checkType.tcp'}}</label>
+      </div>
+      <div class="radio input pull-left">
+        <label class="form-control-static">{{radio-button selection=checkType value="http"}} {{t 'formHealthCheck.checkType.http'}}</label>
+      </div>
+    {{else}}
+      {{#if checkType}}
+        <div class="form-control-static">{{checkType}}</div>
+      {{else}}
+        <div class="form-control-static">{{t 'generic.none'}}</div>
+      {{/if}}
+    {{/if}}
+  </div>
+</div>
+
+{{#if (not (eq checkType "none"))}}
   <div class="row form-group">
     <div class="col-sm-12 col-md-2 form-label">
       <label class="form-control-static">{{t 'formHealthCheck.label'}}</label>
