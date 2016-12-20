@@ -43,7 +43,7 @@ export default Ember.Component.extend(ManageLabels, {
     if ( !initial )
     {
       if ( this.get('projects.current.isWindows') ) {
-        initial = lastWindows
+        initial = lastWindows;
       } else {
         initial = ( this.get('isVm') ? lastVm : lastContainer);
       }

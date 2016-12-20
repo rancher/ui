@@ -66,12 +66,8 @@ function gcs_upload_asset() {
     runCmd gsutil -m cp "${tgz_file} ${upload_target}"
     runCmd gsutil -m cp -z "${gzip_settings}" -R "${upload_source} ${upload_target}"
   else
-    runCmd gsutil -h "$cache_settings" -m cp -z "$gzip_settings" -R "${upload_source} ${upload_target}/_upload"
-    # cp is eventually consistent.. hopefully eventually comes soon.
+    runCmd gsutil -h "$cache_settings" -m cp -z "$gzip_settings" -R "${upload_source} ${upload_target}/${version}"
     sleep 5
-    runCmd gsutil -h "$cache_settings" -m rsync -c -r -d "${upload_target}/_upload ${upload_target}/${version}"
-    sleep 5
-    runCmd gsutil -h "$cache_settings" -m rsync -c -r -d "${upload_target}/_upload ${upload_target}/${version}"
-    gsutil -m rm -a -f -R "${upload_target}/_upload" # not runcmd, don't care if it fails
+    runCmd gsutil -h "$cache_settings" -m rsync -C -c -r -d "${upload_source} ${upload_target}/${version}"
   fi
 }
