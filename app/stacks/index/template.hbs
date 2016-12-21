@@ -24,7 +24,7 @@
 <section class="stacks-wrap r-pl0 r-pr0">
   <div>
     {{#each arranged as |stack|}}
-      {{stack-section model=stack showAddtlInfo='showAddtlInfo' showAddService=(not stack.system)}}
+      {{stack-card model=stack showAddtlInfo='showAddtlInfo' showAddService=(not stack.system)}}
     {{else}}
       {{#if (and model.stacks.length tags)}}
         <div class="r-m20 text-center text-muted">{{t 'stacksPage.noMatch'}}</div>
@@ -38,3 +38,7 @@
 </section>
 
 {{service-addtl-info service=selectedService dismiss='dismiss' show=showAddtlInfo}}
+
+<div class='navigation-link'>
+  {{#link-to 'environments.advanced'}}{{t 'stacksPage.advancedDashboard'}}{{/link-to}}
+</div>

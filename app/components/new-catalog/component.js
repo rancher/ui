@@ -121,6 +121,7 @@ export default Ember.Component.extend(NewOrEdit, {
         url = Util.addQueryParam(url, 'minimumRancherVersion_lte', version);
       }
 
+
       var current = this.get('stackResource.environment');
       if ( !current ) {
         current = {};

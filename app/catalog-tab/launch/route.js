@@ -9,6 +9,13 @@ export default Ember.Route.extend({
 
   model: function(params/*, transition*/) {
     var store = this.get('store');
+    var version = this.get('settings.rancherVersion');
+
+    let url = this.get('app.catalogEndpoint')+'/templates/'+params.template;
+    if ( version )
+    {
+      url = Util.addQueryParam(url, 'minimumRancherVersion_lte', version);
+    }
 
     var dependencies = {
       tpl: this.get('catalog').fetchTemplate(params.template),

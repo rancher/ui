@@ -148,6 +148,7 @@ Router.map(function() {
 
         this.route('stacks', {path: '/stacks', resetNamespace: true}, function() {
           this.route('index', {path: '/'});
+          this.route('advanced', {path: '/advanced'});
           this.route('new', {path: '/add'});
 
           this.route('stack', {path: '/:stack_id', resetNamespace: true}, function() {
