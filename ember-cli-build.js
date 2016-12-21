@@ -54,8 +54,10 @@ module.exports = function(defaults) {
 
         // These get version added to the query string so JS doesn't have to know the fingerprint
         'assets/intl',
-        'ui-light.css', 'ui-dark.css', 'ui-light.rtl.css', 'ui-dark.rtl.css', 'ui.css',
-        'vendor.css','vendor.rtl.css',
+        'ui-light.css', 'ui-light.rtl.css',
+        'ui-dark.css',  'ui-dark.rtl.css',
+        'ui.css',       'ui.rtl.css',
+        'vendor.css',   'vendor.rtl.css',
       ],
       extensions: (appConfig.fingerprint === 'no' ? [] : ['js', 'css', 'png', 'jpg', 'gif', 'svg', 'map', 'woff', 'woff2', 'ttf']),
     },
