@@ -1,0 +1,28 @@
+<section class="header">
+  <h1>{{t 'hookPage.receiver.header'}}</h1>
+
+  <button class="btn btn-sm btn-primary" {{action "newReceiver"}}>{{t 'hookPage.receiver.buttonText'}}</button>
+</section>
+
+<section class="well">
+  <p>{{t 'hookPage.receiver.content'}}</p>
+  <table class="grid fixed r-mb0 r-mt10">
+    <thead>
+      <tr>
+        {{sortable-th sortable=this action="changeSort" name="state" width="125" label="generic.state"}}
+        {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
+        {{sortable-th sortable=this action="changeSort" name="kind"  label="hookPage.receiver.fields.kind.label"}}
+        {{sortable-th sortable=this action="changeSort" name="detail" label="hookPage.receiver.fields.detail.label"}}
+        {{sortable-th sortable=this action="changeSort" name="url"  label="hookPage.receiver.fields.url.label"}}
+        <th width="75">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each arranged as |row|}}
+        {{hook-row model=row}}
+      {{else}}
+        <tr><td colspan="6" class="text-center text-muted">{{t 'hookPage.receiver.noData'}}</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>

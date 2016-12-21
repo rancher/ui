@@ -370,10 +370,24 @@ const navTree = [
     id: 'api',
     localizedLabel: 'nav.api.tab',
     icon: 'icon icon-terminal',
-    route: 'authenticated.project.apikeys',
+    route: 'authenticated.project.api.keys',
     ctx: [getProjectId],
     condition: function() { return this.get('hasProject'); },
-  }
+    submenu: [
+      {
+        id: 'api-keys',
+        localizedLabel: 'nav.api.keys',
+        icon: 'icon icon-key',
+        route: 'authenticated.project.api.keys',
+      },
+      {
+        id: 'api-hooks',
+        localizedLabel: 'nav.api.hooks',
+        icon: 'icon icon-link',
+        route: 'authenticated.project.api.hooks',
+      },
+    ],
+  },
 ];
 
 export function addItem(opt) {
