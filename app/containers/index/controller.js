@@ -80,8 +80,8 @@ export default Ember.Controller.extend({
       width: '110px',
     },
   ],
-  tableCount: Ember.computed(function() {
-    return this.get(`session.${C.PREFS.TABLE_COUNT}`) ? this.get(`session.${C.PREFS.TABLE_COUNT}`) : C.TABLES.DEFAULT_COUNT;
+  tableCount: Ember.computed(`prefs.${C.PREFS.TABLE_COUNT}`, function() {
+    return this.get(`prefs.${C.PREFS.TABLE_COUNT}`) ? this.get(`prefs.${C.PREFS.TABLE_COUNT}`) : C.TABLES.DEFAULT_COUNT;
   }),
 
 
