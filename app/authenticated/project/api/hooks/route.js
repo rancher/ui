@@ -5,7 +5,7 @@ export default Ember.Route.extend({
 
   model: function() {
     return Ember.RSVP.hash({
-      receivers: this.get('webhookStore').findAll('receiver', null, {url: '', forceReload: true}),
+      receivers: this.get('webhookStore').findAll('webhookreceiver', {url: 'receivers', forceReload: true}),
     });
   },
 });
