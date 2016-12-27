@@ -37,6 +37,12 @@ export default Ember.Mixin.create({
            ( this.get('state') === 'requested' );
   }.property('transitioning','state'),
 
+  remove: function() {
+    return this._super().finally(() => {
+      this.reload();
+    });
+  },
+
   transitioningChanged: function() {
     var delay = this.constructor.pollTransitioningDelay;
     var interval = this.constructor.pollTransitioningInterval;

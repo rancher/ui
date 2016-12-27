@@ -1,5 +1,5 @@
 import StoreTweaks from 'ui/mixins/store-tweaks';
-import C from 'ui/utils/constants';
+import Util from 'ui/utils/util';
 
 export function initialize(instance) {
   var application = instance.lookup('application:main');
@@ -8,14 +8,16 @@ export function initialize(instance) {
 
   store.reopen(StoreTweaks);
   store.reopen({
-    removeAfterDelete: false,
+    removeAfterDelete: true,
     baseUrl: application.webhookEndpoint,
 
-    headers: function() {
-      return {
-        [C.HEADER.PROJECT]: projects.get('current.id'),
-      };
-    }.property().volatile(),
+    normalizeUrl() {
+      let out = this._super(...arguments);
+      if ( out.indexOf('projectId=') === -1 ) {
+        out = Util.addQueryParam(out, 'projectId', projects.get('current.id'));
+      }
+      return out;
+    }
   });
 }
 
