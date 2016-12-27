@@ -2134,6 +2134,30 @@ heroAddService:
   addCatalog: Configure
   linkToCatalog: Browse Catalog
 
+hookPage:
+  scaleService:
+    label: Scale a Service
+    detailPrefix: "Scale {action} "
+    detailLink: "{displayService}"
+    detailSuffix: |
+      {amount, plural,
+        =1 {}
+        other {by #}
+      }
+  receiver:
+    header: Receiver Hooks
+    buttonText: Add Receiver
+    content: "Receiver hooks give you a URL that can be hit to trigger an action inside of {appName}."
+    noData: No receiver hooks.
+  fields:
+    kind:
+      label: Kind
+    detail:
+      label: Detail
+    url:
+      label: Trigger URL
+
+
 hostSettings:
   header: Host Registration URL
   subtext: What base URL should hosts use to connect to the {appName} API?
@@ -2910,6 +2934,23 @@ newExternalService:
   header: Add External Service
   alert: "Note: This will only be used if the external service is a target of a load balancer."
 
+newReceiver:
+  title:
+    edit: Edit Receiver
+    add: Add Recevier
+  name:
+    placeholder: "e.g. scale-web"
+  driver:
+    label: Kind
+  action:
+    label: Action
+  service:
+    label: Target Service
+    prompt: Select a Service...
+  amount:
+    label: By
+
+
 pageFooter:
   notARelease: (Not a Release)
   help: Help
@@ -3271,6 +3312,8 @@ nav:
     ha: High Availability
   api:
     tab: API
+    keys: Keys
+    hooks: Webhooks
   user:
     label: "User Menu: {username}"
     logout: Log Out

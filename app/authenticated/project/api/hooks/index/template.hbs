@@ -1,0 +1,37 @@
+<div class="lacsso banner bg-info m-0 p-0">
+  <div class="lacsso banner-icon" style="width: 68px;"><span class="icon icon-2x icon-notification"></span></div>
+  <div class="lacsso banner-message">
+    <p class="lacsso mt-15 mb-15">
+      Experimental: More webhook features will be added in future releases, and the existing capabilities may change.
+    </p>
+  </div>
+</div>
+
+<section class="header">
+  <h1>{{t 'hookPage.receiver.header'}}</h1>
+
+  {{#link-to "authenticated.project.api.hooks.new-receiver" class="btn btn-sm btn-primary"}}{{t 'hookPage.receiver.buttonText'}}{{/link-to}}
+</section>
+
+<section class="well">
+  <p>{{t 'hookPage.receiver.content' appName=settings.appName}}</p>
+  <table class="grid fixed r-mb0 r-mt10">
+    <thead>
+      <tr>
+        {{sortable-th sortable=this action="changeSort" name="state" width="125" label="generic.state"}}
+        {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
+        {{sortable-th sortable=this action="changeSort" name="kind" width="125" label="hookPage.fields.kind.label"}}
+        {{sortable-th sortable=this action="changeSort" name="detail" label="hookPage.fields.detail.label"}}
+        {{sortable-th sortable=this action="changeSort" name="url" width="100"  label="hookPage.fields.url.label"}}
+        <th width="75">&nbsp;</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each arranged as |row|}}
+        {{hook-row model=row}}
+      {{else}}
+        <tr><td colspan="6" class="text-center text-muted">{{t 'hookPage.receiver.noData'}}</td></tr>
+      {{/each}}
+    </tbody>
+  </table>
+</section>

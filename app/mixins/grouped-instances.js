@@ -48,6 +48,7 @@ export default Ember.Mixin.create({
 
       let labels = instance.get('labels')||{};
       let deploymentUnit = labels[C.LABEL.DEPLOYMENT_UNIT] || null;
+//      let version = instance.get('version')||"";
 
       let k8sName = (instance.get('labels')||{})[C.LABEL.K8S_POD_NAMESPACE] || '';
       let stackId = instance.get('primaryStack.id') || '';
@@ -68,6 +69,8 @@ export default Ember.Mixin.create({
 
       if ( deploymentUnit ) {
         let related = labelsMatching(remaining, C.LABEL.DEPLOYMENT_UNIT, deploymentUnit);
+//        related = related.filterBy('version', version);
+
         let primary = labelsMatching(related, C.LABEL.LAUNCH_CONFIG, C.LABEL.LAUNCH_CONFIG_PRIMARY).sortBy('createdTS').reverse()[0];
 
         // Normal case, there's a primary service and maybe some sidekicks and/or old primary.

@@ -103,8 +103,8 @@ export default Ember.Mixin.create({
     return true;
   },
 
-  doSave: function() {
-    return this.get('primaryResource').save().then((newData) => {
+  doSave: function(opt) {
+    return this.get('primaryResource').save(opt).then((newData) => {
       return this.mergeResult(newData);
     });
   },

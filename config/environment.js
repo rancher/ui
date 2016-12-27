@@ -94,6 +94,7 @@ module.exports = function(environment) {
       authServer: '',
       authEndpoint: '/v1-auth',
       telemetryEndpoint: '/v1-telemetry',
+      webhookEndpoint: '/v1-webhooks',
       projectToken: '%PROJECTID%',
       magicEndpoint: '/r',
       kubernetesEndpoint: '/r/projects/%PROJECTID%/kubernetes',

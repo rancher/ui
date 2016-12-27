@@ -29,6 +29,7 @@ module.exports = function(app, options) {
     'Legacy API': config.legacyApiEndpoint,
     'Magic': config.magicEndpoint,
     'Telemetry': config.telemetryEndpoint,
+    'WebHook': config.webhookEndpoint,
   }
 
   // Rancher API

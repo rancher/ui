@@ -228,7 +228,13 @@ Router.map(function() {
 
       this.route('help');
 
-      this.route('apikeys', {path: '/api'});
+      this.route('api', {path: '/api'}, function() {
+        this.route('keys', {path: '/keys'});
+        this.route('hooks', {path: '/hooks'}, function() {
+          this.route('new-receiver', {path: '/add-receiver'});
+          this.route('edit-receiver', {path: '/receiver/:receiver_id'});
+        });
+      });
       // End: Authenticated
     });
   });

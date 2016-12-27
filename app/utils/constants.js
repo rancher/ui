@@ -100,7 +100,6 @@ var C = {
   },
 
   HEADER: {
-    //PROJECT: 'X-Api-Project-Id',
     ACCOUNT_ID: 'X-Api-Account-Id',
     ACTIONS: 'X-Api-Action-Links',
     ACTIONS_VALUE: 'actionLinks',
