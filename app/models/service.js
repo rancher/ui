@@ -144,7 +144,7 @@ var Service = Resource.extend({
     var canUpgrade = !!a.upgrade && this.get('canUpgrade');
     var isK8s = this.get('isK8s');
     var isSwarm = this.get('isSwarm');
-    var hasContainers = this.get('hasContainers');
+    var canHaveContainers = this.get('canHaveContainers');
     var isBalancer = this.get('isBalancer');
     var isDriver = ['networkdriverservice','storagedriverservice'].includes(this.get('type').toLowerCase());
 
@@ -156,7 +156,7 @@ var Service = Resource.extend({
       { label: 'action.cancelUpgrade',  icon: 'icon icon-life-ring',        action: 'cancelUpgrade',  enabled: !!a.cancelupgrade },
       { label: 'action.cancelRollback', icon: 'icon icon-life-ring',        action: 'cancelRollback', enabled: !!a.cancelrollback },
       { divider: true },
-      { label: 'action.restart',        icon: 'icon icon-refresh'    ,      action: 'restart',        enabled: !!a.restart && hasContainers },
+      { label: 'action.restart',        icon: 'icon icon-refresh'    ,      action: 'restart',        enabled: !!a.restart && canHaveContainers },
       { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate'},
       { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete'},
       { label: 'action.purge',          icon: '',                           action: 'purge',          enabled: !!a.purge},
@@ -167,7 +167,7 @@ var Service = Resource.extend({
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type','isK8s','isSwarm','hasContainers','canUpgrade','isBalancer'),
+  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type','isK8s','isSwarm','canHaveContainers','canUpgrade','isBalancer'),
 
 
   serviceLinks: null, // Used for clone
@@ -256,7 +256,7 @@ var Service = Resource.extend({
     }
   }.property('type'),
 
-  hasContainers: function() {
+  canHaveContainers: function() {
     return [
       'service',
       'networkdriverservice',
@@ -284,6 +284,14 @@ var Service = Resource.extend({
   isBalancer: function() {
     return ['loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0;
   }.property('type'),
+
+  canBalanceTo: function() {
+    if ( this.get('type').toLowerCase() === 'externalservice' && this.get('hostname') !== null) {
+      return false;
+    }
+
+    return true;
+  }.property('type','hostname'),
 
   isK8s: function() {
     return ['kubernetesservice'].indexOf(this.get('type').toLowerCase()) >= 0;

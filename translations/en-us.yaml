@@ -1633,8 +1633,6 @@ formBalancerRules:
     moveDown: Move Down
   serviceId:
     label: Service
-    prompt: Select a Service...
-    noHostnames: "(Can't balance to hostnames)"
   selector:
     label: Selector
     placeholder: e.g. foo=bar
@@ -2000,7 +1998,6 @@ formServiceLinks:
   noLinks: This service has no service links.
   service:
     label: Destination Service
-    prompt: Select a Service...
   name:
     label: As Name
     placeholder: e.g. database
@@ -2053,7 +2050,6 @@ formTargets:
     placeholder: e.g. 80
   value:
     label: Target Service
-    prompt: Select a Service...
   path:
     label: Request Path
     placeholder: e.g. /svc
@@ -2139,11 +2135,7 @@ hookPage:
     label: Scale a Service
     detailPrefix: "Scale {action} "
     detailLink: "{displayService}"
-    detailSuffix: |
-      {amount, plural,
-        =1 {}
-        other {by #}
-      }
+    detailSuffix: "by {amount}"
   receiver:
     header: Receiver Hooks
     buttonText: Add Receiver
@@ -2946,10 +2938,8 @@ newReceiver:
     label: Action
   service:
     label: Target Service
-    prompt: Select a Service...
   amount:
     label: By
-
 
 pageFooter:
   notARelease: (Not a Release)

@@ -10,7 +10,6 @@ export default Ember.Component.extend(NewOrEdit, {
   editing                   : null,
   existing                  : null,
   allHosts                  : null,
-  allServices               : null,
   allCertificates           : null,
   upgradeImage              : null,
 

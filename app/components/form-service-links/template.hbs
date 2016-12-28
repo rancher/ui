@@ -1,13 +1,9 @@
 <div class="row">
   <div class="col-sm-12 col-md-12">
     <div class="over-hr r-p10">
-      {{#if serviceChoices.length}}
-      <span>
-        <button class="btn-circle" {{action "addServiceLink"}}><i class="icon icon-plus-circle"/> {{t 'formServiceLinks.addAction'}}</button>
-      </span>
-      {{else}}
-        <span class="text-muted">{{t 'formServiceLinks.noServices'}}</span>
-      {{/if}}
+    <span>
+      <button class="btn-circle" {{action "addServiceLink"}}><i class="icon icon-plus-circle"/> {{t 'formServiceLinks.addAction'}}</button>
+    </span>
     </div>
     {{#if serviceLinksArray.length}}
       <table class="table fixed no-lines no-top-padding tight small">
@@ -22,14 +18,10 @@
         {{#each serviceLinksArray as |link|}}
           <tr class="sm-noborder">
             <td data-title="{{t 'formServiceLinks.service.label'}}">
-              {{new-select
-                classNames="form-control service-link input-sm"
-                prompt="formServiceLinks.service.prompt"
-                value=link.serviceId
-                content=serviceChoices
-                optionValuePath="id"
-                optionLabelPath="name"
-                optionGroupPath="group"
+              {{schema/input-service
+                selectClass="form-control input-sm service-link"
+                selected=link.serviceId
+                exclude=service.id
               }}
             </td>
             {{#if withAlias}}

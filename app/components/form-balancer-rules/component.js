@@ -5,7 +5,6 @@ export default Ember.Component.extend({
   intl: Ember.inject.service(),
 
   service: null,
-  allServices: null,
   ruleType: 'portRule',
   showListeners: Ember.computed.equal('ruleType','portRule'),
 
@@ -134,26 +133,4 @@ export default Ember.Component.extend({
 
     return val;
   }.property('rules.@each.priority'),
-
-  serviceChoices: function() {
-    let out = {};
-
-    this.get('allServices').slice().sortBy('group','name','id').forEach((service) => {
-      if ( !service.lbSafe )
-      {
-        service.disabled = true;
-        service.name += " " + this.get('intl').t('formBalancerRules.serviceId.noHostnames');
-      }
-
-      let ary = out[service.group];
-      if( !ary ) {
-        ary = [];
-        out[service.group] = ary;
-      }
-
-      ary.push(service);
-    });
-
-    return out;
-  }.property('allServices.@each.{id,group,name,lbSafe}'),
 });

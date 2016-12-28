@@ -31,7 +31,13 @@
         </thead>
         <tbody>
           {{#each targetsArray as |tgt|}}
-            {{loadbalancer-target-row tgt=tgt targetChoices=serviceChoices remove="removeTarget" isAdvanced=isAdvanced}}
+            {{form-target-row
+              remove="removeTarget"
+              tgt=tgt
+              exclude=exclude
+              isAdvanced=isAdvanced
+              isBalancer=isBalancer
+            }}
           {{/each}}
         </tbody>
       </table>

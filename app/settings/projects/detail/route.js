@@ -1,8 +1,6 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  allServices: Ember.inject.service(),
-
   queryParams: {
     editing: {
       refreshModel: true

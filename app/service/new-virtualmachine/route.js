@@ -1,14 +1,11 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  allServices: Ember.inject.service(),
-
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
     var dependencies = {
       allHosts: store.findAll('host'), // Need inactive ones in case a link points to an inactive host
-      allServices: this.get('allServices').choices(),
       allStoragePools: store.findAll('storagepool'),
     };
 
@@ -32,7 +29,6 @@ export default Ember.Route.extend({
         return Ember.Object.create({
           service: serviceOrVm.clone(),
           allHosts: results.allHosts,
-          allServices: results.allServices,
           allStoragePools: results.allStoragePools,
         });
       }
@@ -101,7 +97,6 @@ export default Ember.Route.extend({
       return Ember.Object.create({
         service: service,
         allHosts: results.allHosts,
-        allServices: results.allServices,
         allStoragePools: results.allStoragePools,
       });
     });

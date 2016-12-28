@@ -5,7 +5,6 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 export default Ember.Mixin.create(NewOrEdit, {
   service         : null,
   existing        : null,
-  allServices     : null,
   targetResources : null,
   targetsArray    : null,
   primaryResource : Ember.computed.alias('service'),
