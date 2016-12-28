@@ -1,10 +1,13 @@
 import Ember from 'ember';
 import Resource from 'ember-api-store/models/resource';
 import PolledResource from 'ui/mixins/cattle-polled-resource';
+import { denormalizeId } from 'ember-api-store/utils/denormalize';
 
 var Receiver = Resource.extend(PolledResource, {
   regularStore: Ember.inject.service('store'),
   intl: Ember.inject.service(),
+
+  service: denormalizeId('opt.serviceId','service','regularStore'),
 
   displayKind: function() {
     return this.get('intl').t('hookPage.' + this.get('driver') + '.label');
@@ -16,7 +19,11 @@ var Receiver = Resource.extend(PolledResource, {
 
   displayService: function() {
     let service = this.get('regularStore').getById('service', this.get('opt.serviceId'));
-    return service.get('displayStack') +'/'+ service.get('displayName');
+    if ( service ) {
+      return service.get('displayStack') +'/'+ service.get('displayName');
+    } else {
+      return '?';
+    }
   }.property('opt.serviceId'),
 
   actions: {
