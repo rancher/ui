@@ -5,7 +5,7 @@ import ManageLabels from 'ui/mixins/manage-labels';
 // Remember the last value and use that for new one
 var lastContainer = 'ubuntu:14.04.3';
 var lastVm = 'rancher/vm-ubuntu';
-var lastWindows = 'microsoft/iis';
+var lastWindows = 'microsoft/nanoserver';
 
 export default Ember.Component.extend(ManageLabels, {
   settings: Ember.inject.service(),
