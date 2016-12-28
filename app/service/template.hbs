@@ -1,4 +1,4 @@
-<section class="header r-pt20 clearfix">
+<section class="header clearfix">
   <h1>{{t 'servicePage.header'}}</h1>
   {{#power-select options=model.stack.services selected=service onchange=(action "changeService") searchField="displayName" as |obj|}}
     {{select-dot model=obj}}
@@ -121,7 +121,7 @@
         </section>
       {{/if}}
 
-      {{#if (or (or service.hasLabels service.hasContainers) service.consumedServicesWithNames.length) }}
+      {{#if (or (or service.hasLabels service.canHaveContainers) service.consumedServicesWithNames.length) }}
         <section>
           <ul class="nav nav-tabs nav-tabs-well">
             {{#if (eq service.kind 'dnsService')}}
@@ -134,7 +134,7 @@
                 {{#link-to "service.port-rules" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.portRules'}}</a>{{/link-to}}
                 {{#link-to "service.certificates" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.certificates'}}</a>{{/link-to}}
               {{/if}}
-              {{#if service.hasContainers}}
+              {{#if service.canHaveContainers}}
                 {{#link-to "service.containers" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.containers'}}</a>{{/link-to}}
               {{/if}}
               {{#if service.hasLabels}}
@@ -143,7 +143,7 @@
               {{#if service.consumedServicesWithNames.length}}
                 {{#link-to 'service.links' tagName='li' href=false}}<a href="#">{{t 'servicePage.navTabs.links'}}</a>{{/link-to}}
               {{/if}}
-              {{#if service.hasContainers}}
+              {{#if service.canHaveContainers}}
                 {{#link-to "service.log" tagName="li" href=false}}<a href="#">{{t 'servicePage.navTabs.log'}}</a>{{/link-to}}
               {{/if}}
             {{/if}}

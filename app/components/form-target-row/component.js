@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   tgt: null,
-  targetChoices: null,
+  exclude: null,
   isAdvanced: null,
   isBalancer: null,
 

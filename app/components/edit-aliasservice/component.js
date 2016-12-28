@@ -5,9 +5,7 @@ import NewServiceAlias from 'ui/mixins/new-service-alias';
 export default ModalBase.extend(NewServiceAlias, {
   classNames: ['lacsso', 'modal-container', 'large-modal'],
   originalModel  : Ember.computed.alias('modalService.modalOpts'),
-  allServicesService: Ember.inject.service('all-services'),
   editing: true,
-  loading: true,
   existing: Ember.computed.alias('originalModel'),
 
 
@@ -17,28 +15,12 @@ export default ModalBase.extend(NewServiceAlias, {
     },
   },
 
-  didInsertElement: function() {
-    Ember.run.next(this, 'loadDependencies');
+  init() {
+    this._super(...arguments);
+    this.set('service', this.get('originalModel').clone());
   },
 
   doneSaving() {
     this.send('cancel');
-  },
-
-  loadDependencies: function() {
-    var service = this.get('originalModel');
-
-    var dependencies = [
-      this.get('allServicesService').choices(),
-    ];
-
-    Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
-      var clone = service.clone();
-      this.setProperties({
-        service: clone,
-        allServices: results[0],
-        loading: false,
-      });
-    });
   },
 });

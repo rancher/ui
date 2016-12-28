@@ -9,6 +9,7 @@ export default Ember.Controller.extend(Sortable, {
   sorts: {
     state:        ['stateSort','name','id'],
     name:         ['name','id'],
+    kind:         ['displayKind','id'],
   },
 
 });

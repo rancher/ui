@@ -13,13 +13,11 @@
   </td>
 {{/if}}
 <td data-title="{{t 'formTargets.value.label'}}">
-  {{new-select
-    classNames="form-control input-sm lb-target"
-    prompt="formTargets.value.prompt"
-    value=tgt.value
-    content=targetChoices
-    optionValuePath="id"
-    optionLabelPath="name"
+  {{schema/input-service
+    selectClass="form-control input-sm lb-target"
+    selected=tgt.value
+    canBalanceTo=isBalancer
+    exclude=exclude
   }}
 </td>
 {{#if isAdvanced}}

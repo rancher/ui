@@ -108,16 +108,7 @@
                   {{#if rule.isSelector}}
                     {{input type="text" class="form-control input-sm" value=rule.selector placeholder=(t 'formBalancerRules.selector.placeholder')}}
                   {{else}}
-                    <select class="form-control input-sm" onchange={{action (mut rule.serviceId) value="target.value"}}>
-                      <option>{{t 'formBalancerRules.serviceId.prompt'}}</option>
-                      {{#each-in serviceChoices as |group list|}}
-                        <optgroup label={{group}}>
-                          {{#each list as |svc|}}
-                            <option selected={{eq svc.id rule.serviceId}} value={{svc.id}}>{{svc.name}}</option>
-                          {{/each}}
-                        </optgroup>
-                      {{/each-in}}
-                    </select>
+                    {{schema/input-service selectClass="form-control input-sm" canBalanceTo=true selected=rule.serviceId}}
                   {{/if}}
                 </td>
               {{/if}}

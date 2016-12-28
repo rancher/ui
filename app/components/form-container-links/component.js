@@ -90,12 +90,4 @@ export default Ember.Component.extend(ContainerChoices, {
     this.set('errors', errors);
     this.sendAction('changed', this.get('linksArray'));
   }.observes('linksArray.@each.{targetInstanceId,name}'),
-
-  serviceChoices: function() {
-    return this.get('allServices').sortBy('group','name','id');
-  }.property('allServices.@each.{id,name,state,stackId}'),
-
-  lbSafeServiceChoices: function() {
-    return this.get('allServices').filterBy('lbSafe',true).sortBy('group','name','id');
-  }.property('allServices.@each.{id,name,state,stackId}'),
 });

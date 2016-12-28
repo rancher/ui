@@ -4,7 +4,6 @@ export default Ember.Component.extend({
   // Inputs
   service           : null,
   withAlias         : true,
-  allServices       : null,
   serviceLinksArray : null,
 
   tagName: '',
@@ -52,12 +51,4 @@ export default Ember.Component.extend({
       this.get('serviceLinksArray').removeObject(obj);
     },
   },
-
-  serviceChoices: function() {
-    return this.get('allServices').sortBy('group','name','id');
-  }.property('allServices.@each.{id,name,state,stackId}'),
-
-  lbSafeServiceChoices: function() {
-    return this.get('allServices').filterBy('lbSafe',true).sortBy('group','name','id');
-  }.property('allServices.@each.{id,name,state,stackId}'),
 });

@@ -1,27 +1,19 @@
-{{#liquid-if loading}}
-  <div class="text-center">
-    <p>
-      <i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}
-    </p>
-  </div>
-{{else}}
-  <section class="horizontal-form container-fluid">
-    <h2>{{t 'editAliasService.title'}}</h2>
+<section class="horizontal-form container-fluid">
+  <h2>{{t 'editAliasService.title'}}</h2>
 
-    {{form-name-description
-      model=service
-      namePlaceholder="servicePage.newAlias.form.name.placeholder"
-      descriptionPlaceholder="servicePage.newAlias.form.description.placeholder"
-    }}
+  {{form-name-description
+    model=service
+    namePlaceholder="servicePage.newAlias.form.name.placeholder"
+    descriptionPlaceholder="servicePage.newAlias.form.description.placeholder"
+  }}
 
-    {{form-targets
-      isBalancer=false
-      existing=existing
-      allServices=allServices
-      changed=(action "setTargets")
-    }}
-  </section>
+  {{form-targets
+    isBalancer=false
+    existing=existing
+    exclude=service.id
+    changed=(action "setTargets")
+  }}
+</section>
 
-  {{top-errors errors=errors}}
-  {{save-cancel editing=editing save="save" cancel="cancel"}}
-{{/liquid-if}}
+{{top-errors errors=errors}}
+{{save-cancel editing=editing save="save" cancel="cancel"}}

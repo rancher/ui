@@ -3,14 +3,12 @@ import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   settings: Ember.inject.service(),
-  allServices: Ember.inject.service(),
 
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
     var dependencies = {
       allHosts: store.findAll('hosts'),
-      allServices: this.get('allServices').choices(),
       allCertificates: store.findAll('certificate'),
     };
 

@@ -4,7 +4,7 @@
   <div class="row form-group">
     <div class="col-md-6 col-md-offset-3">
       <div class="form-label form-control-static">
-        <label>{{t 'generic.name'}}</label>
+        <label>{{t 'generic.name'}}*</label>
       </div>
       <div>
         {{input type="text" value=model.name classNames="form-control" placeholder=(t 'newReceiver.name.placeholder')}}
@@ -44,19 +44,10 @@
   <div class="row form-group">
     <div class="col-md-6 col-md-offset-3">
       <div class="form-label form-control-static">
-        <label>{{t 'newReceiver.service.label'}}</label>
+        <label>{{t 'newReceiver.service.label'}}*</label>
       </div>
       <div>
-        <select class="form-control" onchange={{action (mut model.scaleServiceConfig.serviceId) value="target.value"}}>
-          <option selected={{eq model.scaleServiceConfig.serviceId null}}>{{t 'newReceiver.service.prompt'}}</option>
-          {{#each-in allServices.grouped as |group list|}}
-            <optgroup label={{group}}>
-              {{#each list as |svc|}}
-                <option selected={{eq svc.id model.scaleServiceConfig.serviceId}} value={{svc.id}}>{{svc.name}}</option>
-              {{/each}}
-            </optgroup>
-          {{/each-in}}
-        </select>
+        {{schema/input-service selected=model.scaleServiceConfig.serviceId canHaveContainers=true}}
       </div>
     </div>
   </div>

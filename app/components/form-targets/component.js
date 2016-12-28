@@ -5,8 +5,8 @@ export default Ember.Component.extend({
   intl        : Ember.inject.service(),
 
   existing    : null,
+  exclude     : null,
   isBalancer  : null,
-  allServices : null,
   editing     : false,
 
   classNames  : ['form-group'],
@@ -113,18 +113,4 @@ export default Ember.Component.extend({
       return parseInt(target.get('srcPort'),10) > 0;
     }).get('length') > 0;
   }.property('targetsArray.@each.{isService,srcPort}'),
-
-  serviceChoices: function() {
-    var isBalancer = this.get('isBalancer');
-
-    return this.get('allServices').slice().sortBy('group','name','id').map((service) => {
-      if ( isBalancer && !service.lbSafe )
-      {
-        service.disabled = true;
-        service.name += " " + this.get('intl').t('formTargets.noHostnames');
-      }
-
-      return service;
-    });
-  }.property('isBalancer','allServices.@each.{id,name,state,stackId}'),
 });

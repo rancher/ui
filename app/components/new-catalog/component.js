@@ -16,7 +16,6 @@ export default Ember.Component.extend(NewOrEdit, {
   stackResource: null,
   versionsArray: null,
   versionsLinks: null,
-  serviceChoices: null,
   actuallySave: true,
   showHeader: true,
   showPreview: true,

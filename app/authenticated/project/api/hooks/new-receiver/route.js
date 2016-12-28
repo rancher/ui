@@ -2,7 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   webhookStore: Ember.inject.service(),
-  allServices: Ember.inject.service(),
 
   model(params) {
     let promise;
@@ -24,7 +23,6 @@ export default Ember.Route.extend({
     return promise.then((receiver) => {
       return Ember.Object.create({
         receiver: receiver.cloneForNew(),
-        allServices: this.get('allServices').choices(),
       });
     });
   },

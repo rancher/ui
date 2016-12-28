@@ -1,14 +1,10 @@
 import Ember from 'ember';
 
 export default Ember.Route.extend({
-  allServices: Ember.inject.service(),
-
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
-    var dependencies = [
-      this.get('allServices').choices(),
-    ];
+    var dependencies = [];
 
     if ( params.serviceId )
     {
@@ -16,8 +12,7 @@ export default Ember.Route.extend({
     }
 
     return Ember.RSVP.all(dependencies, 'Load dependencies').then(function(results) {
-      var allServices = results[0];
-      var existing = results[1];
+      var existing = results[0];
 
       var dns;
       if ( existing )
@@ -36,7 +31,6 @@ export default Ember.Route.extend({
       }
 
       return {
-        allServices: allServices,
         service: dns,
         existing: existing,
       };

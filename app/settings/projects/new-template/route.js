@@ -3,12 +3,10 @@ import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   catalog: Ember.inject.service(),
-  allServices: Ember.inject.service(),
 
   model() {
     return Ember.RSVP.hash({
       catalogInfo: this.get('catalog').fetchTemplates({templateBase: C.EXTERNAL_ID.KIND_INFRA, category: C.EXTERNAL_ID.KIND_ALL}),
-      serviceChoices: this.get('allServices').choices(),
     }).then((hash) => {
       let existing = this.modelFor('settings.projects').projectTemplates;
 

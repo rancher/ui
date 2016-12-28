@@ -8,12 +8,9 @@ export default ModalBase.extend(NewOrEdit, {
   service: null,
 
   primaryResource: Ember.computed.alias('service'),
-  allServicesService: Ember.inject.service('all-services'),
-  allServices: null,
 
   editing: true,
   isService: true,
-  loading: true,
 
   actions: {
     done() {
@@ -28,25 +25,9 @@ export default ModalBase.extend(NewOrEdit, {
 
   },
 
-  didInsertElement: function() {
-    Ember.run.next(this, 'loadDependencies');
-  },
-
-  loadDependencies: function() {
-    var service = this.get('originalModel');
-
-    var dependencies = [
-      this.get('allServicesService').choices(),
-    ];
-
-    Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
-      var clone = service.clone();
-      this.setProperties({
-        service: clone,
-        allServices: results[0],
-        loading: false,
-      });
-    });
+  init() {
+    this._super(...arguments);
+    this.set('service', this.get('originalModel').clone());
   },
 
   didSave() {

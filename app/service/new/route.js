@@ -3,14 +3,11 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 
 export default Ember.Route.extend({
-  allServices: Ember.inject.service(),
-
   model: function(params/*, transition*/) {
     var store = this.get('store');
 
     var dependencies = [
       store.findAll('host'), // Need inactive ones in case a link points to an inactive host
-      this.get('allServices').choices(),
     ];
 
     if ( params.serviceId )
@@ -25,8 +22,7 @@ export default Ember.Route.extend({
     return Ember.RSVP.all(dependencies, 'Load container dependencies').then((results) => {
       var store = this.get('store');
       var allHosts = results[0];
-      var allServices = results[1];
-      var serviceOrContainer = results[2];
+      var serviceOrContainer = results[1];
       var serviceLinks = [];
       var secondaryLaunchConfigs = [];
 
@@ -35,7 +31,6 @@ export default Ember.Route.extend({
         return Ember.Object.create({
           service: serviceOrContainer.clone(),
           allHosts: allHosts,
-          allServices: allServices,
         });
       }
 
@@ -102,7 +97,6 @@ export default Ember.Route.extend({
       return Ember.Object.create({
         service: service,
         allHosts: allHosts,
-        allServices: allServices,
       });
     });
   },
