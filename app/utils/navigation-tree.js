@@ -109,6 +109,14 @@ const navTree = [
         divider: true,
       },
       {
+        id: 'k8s-dashboard',
+        localizedLabel: 'nav.k8s.dashboard',
+        icon: 'icon icon-kubernetes',
+        route: 'k8s-tab.dashboard',
+        ctx: [getProjectId],
+        condition: k8sReady,
+      },
+      {
         id: 'k8s-cli',
         localizedLabel: 'nav.k8s.cli',
         icon: 'icon icon-terminal',
@@ -116,16 +124,6 @@ const navTree = [
         ctx: [getProjectId],
         condition: k8sReady,
       },
-      /*
-      {
-        id: 'k8s-dashboard',
-        localizedLabel: 'nav.k8s.dashboard',
-        icon: 'icon icon-external-link',
-        route: 'k8s-tab.dashboard',
-        ctx: [getProjectId],
-        condition: k8sReady,
-      },
-      */
       {
         id: 'k8s-notready',
         icon: 'icon icon-spinner icon-spin',
