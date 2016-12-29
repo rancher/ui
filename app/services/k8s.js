@@ -104,6 +104,10 @@ export default Ember.Service.extend({
     return this.get('app.kubectlEndpoint').replace(this.get('app.projectToken'), this.get(`tab-session.${C.TABSESSION.PROJECT}`));
   }.property(`tab-session.${C.TABSESSION.PROJECT}`,'app.kubectlEndpoint'),
 
+  kubernetesDashboard: function() {
+    return this.get('app.kubernetesDashboard').replace(this.get('app.projectToken'), this.get(`tab-session.${C.TABSESSION.PROJECT}`));
+  }.property(`tab-session.${C.TABSESSION.PROJECT}`,'app.kubernetesDashboard'),
+
   clusterIp: function() {
     return this.get('hosts.firstObject.displayIp');
   }.property('hosts.@each.displayIp'),

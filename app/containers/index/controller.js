@@ -47,7 +47,7 @@ export default Ember.Controller.extend({
       searchField: 'displayState',
       type: 'string',
       classNames: '',
-      width: '115px'
+      width: '125px'
     },
     {
       displayName: 'Name',
