@@ -44,6 +44,7 @@ export default Ember.Service.extend({
         }
       }
 
+      $menu.css('visibility','hidden');
       $menu.removeClass('hide');
       $toggle.addClass('open');
       $parent.addClass('open');
@@ -51,9 +52,10 @@ export default Ember.Service.extend({
       this.set('open',true);
       // Delay ensure it works in firefox
       Ember.run.next(() => {
+        BootstrapFixes.positionDropdown($menu, trigger, true);
         $('#resource-actions-first')[0].focus();
+        $menu.css('visibility','visible');
       });
-      BootstrapFixes.positionDropdown($menu, trigger, true);
     });
   },
 

@@ -6,8 +6,8 @@ export default Ember.Controller.extend(Sortable, {
   sortBy: 'ip',
   sorts: {
     ip:       ['ipAddress','port'],
-    port:     ['port','serviceId','instanceId'],
+    port:     ['port','ipAddress','instanceId'],
     service:  ['service.displayName','port','ipAddress'],
-    instance: ['instance.displayName','port','ipAddress'],
+    container: ['instance.displayName','port','ipAddress'],
   },
 });

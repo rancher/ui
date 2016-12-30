@@ -371,6 +371,7 @@ const navTree = [
     route: 'authenticated.project.api.keys',
     ctx: [getProjectId],
     condition: function() { return this.get('hasProject'); },
+    /*
     submenu: [
       {
         id: 'api-keys',
@@ -385,6 +386,7 @@ const navTree = [
         route: 'authenticated.project.api.hooks',
       },
     ],
+    */
   },
 ];
 
