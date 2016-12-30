@@ -80,7 +80,7 @@ export default Ember.Mixin.create({
     return [];
   }.property(),
 
-  translatedAvaileableActions: Ember.computed(function() {
+  translatedAvailableActions: Ember.computed('availableActions','intl._locale', function() {
     // use this if you need to pass translated actions to addons
     var availableActions = this.get('availableActions');
     if (availableActions) {
