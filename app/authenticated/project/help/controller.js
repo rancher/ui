@@ -10,7 +10,7 @@ export default Ember.Controller.extend({
   forumsLink: C.EXT_REFERENCES.FORUM,
   companyLink: C.EXT_REFERENCES.COMPANY,
   githubLink: C.EXT_REFERENCES.GITHUB,
-  docsLink: C.EXT_REFERENCES.DOCS,
+  docsLink: Ember.computed.alias('settings.docsBase'),
 
   latestAnnouncement: Ember.computed('model.announcements', function() {
     if (this.get('model.announcements.topics')) {
