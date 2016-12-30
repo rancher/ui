@@ -76,7 +76,7 @@ export default Ember.Component.extend(NewOrEdit, {
   // Ports
   // ----------------------------------
   updatePorts() {
-    let rules = this.get('service.lbConfig.portRules');
+    let rules = this.get('service.lbConfig.portRules')||[];
     let publish = [];
     let expose = [];
 
