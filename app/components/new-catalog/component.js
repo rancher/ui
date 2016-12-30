@@ -60,8 +60,8 @@ export default Ember.Component.extend(NewOrEdit, {
     },
   },
 
-  onInit: function() {
-    this._super();
+  didReceiveAttrs: function() {
+    this._super(...arguments);
     this.set('selectedTemplateModel', null);
 
     Ember.run.scheduleOnce('afterRender', () => {
@@ -77,7 +77,7 @@ export default Ember.Component.extend(NewOrEdit, {
         }
       }
     });
-  }.on('init'),
+  },
 
   updateReadme: function() {
     let model = this.get('selectedTemplateModel');
