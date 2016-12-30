@@ -80,7 +80,7 @@ export default Ember.Component.extend(ThrottledResize, {
   columns: function() {
     let i;
     let idx                           = 0;
-    let pods                          = this.get('pods')||[];
+    let pods                          = (this.get('pods')||[]).sortBy('displayName');
     let columnCount                   = this.get('columnCount');
 
     // Pre-initialize all the columns
