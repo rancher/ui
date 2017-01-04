@@ -325,6 +325,7 @@ var C = {
     GENERIC: 'generic',
     OPENSTACK: 'openstack',
     PACKET: 'packet',
+    PROFITBRICKS: 'profitbricks',
     RACKSPACE: 'rackspace',
     UBIQUITY: 'ubiquity',
     VMWAREVSPHERE: 'vmwarevsphere',
