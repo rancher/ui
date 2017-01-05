@@ -1,5 +1,5 @@
 <div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
+  <div class="col span-2 form-label">
     <label class="form-control-static">{{t 'formNetwork.networkMode.label'}}</label>
   </div>
 
@@ -15,10 +15,10 @@
   </div>
 
   {{#if isContainerNetwork}}
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formNetwork.container.label'}}</label>
     </div>
-    <div class="col-sm-12 col-md-3">
+    <div class="col span-3">
       {{#input-or-display editable=editing value=instance.networkContainerId}}
         {{new-select
           classNames="form-control"
@@ -35,11 +35,11 @@
 
 {{#if isManagedNetwork}}
   <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formNetwork.requestedIp.label'}}</label>
     </div>
 
-    <div class="col-sm-12 col-md-8">
+    <div class="col span-8">
       {{#input-or-display editable=editing value=requestedIp}}
         {{input type="text" value=requestedIp classNames="form-control" placeholder=(t 'formNetwork.requestedIp.placeholder')}}
         <p class="help-block">{{t 'formNetwork.requestedIp.help'}}</p>
@@ -48,11 +48,11 @@
   </div>
   {{#if (and isService (not isSidekick))}}
     <div class="row">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'formNetwork.retainIp.label'}}</label>
       </div>
 
-      <div class="col-sm-12 col-md-8">
+      <div class="col span-8">
         {{#input-or-display editable=editing value=service.retainIp}}
           <label class="form-control-static radio small">{{input type="checkbox" checked=service.retainIp disabled=disableRetainIp}} {{t 'formNetwork.retainIp.reuse'}}</label>
         {{/input-or-display}}
@@ -62,11 +62,11 @@
 {{else}}
   {{#if isHostNetwork}}
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'formNetwork.dns.label'}}</label>
       </div>
 
-      <div class="col-sm-12 col-md-8">
+      <div class="col span-8">
         {{#input-or-display editable=editing value=dnsDiscovery}}
           <label class="form-control-static checkbox small r-ml20">{{input type="checkbox" checked=dnsDiscovery}}{{t 'formNetwork.dns.enable' appName=settings.appName}}</label>
         {{/input-or-display}}
@@ -80,10 +80,10 @@
     {{form-container-links initialLinks=instance.instanceLinks instance=instance allHosts=allHosts}}
   {{else}}
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label>{{t 'formContainerLinks.label'}}</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col span-8">
         {{#if instance.instanceLinks}}
           <table class="grid fixed">
             <thead>
@@ -110,11 +110,11 @@
 {{/unless}}
 
 <div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
+  <div class="col span-2 form-label">
     <label class="form-control-static">{{t 'formNetwork.hostname.label'}}</label>
   </div>
 
-  <div class="col-sm-12 col-md-8">
+  <div class="col span-8">
     {{#if isService}}
       {{#input-or-display editable=editing value=hostname}}
         <div class="radio small r-mt10">
@@ -137,11 +137,11 @@
 </div>
 
 <div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
+  <div class="col span-2 form-label">
     <label class="form-control-static">{{t 'formNetwork.domainName.label'}}</label>
   </div>
 
-  <div class="col-sm-12 col-md-8">
+  <div class="col span-8">
     {{#input-or-display editable=editing value=instance.domainName}}
       {{input type="text" value=instance.domainName classNames="form-control" placeholder=(t 'formNetwork.domainName.placeholder')}}
     {{/input-or-display}}
@@ -150,11 +150,11 @@
 
 {{#unless projects.current.isWindows}}
   <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formNetwork.resolvingServers.label'}}</label>
     </div>
 
-    <div class="col-sm-12 col-md-8">
+    <div class="col span-8">
       {{#if editing}}
         <div>
           <button class="btn-circle-text" {{action "addDnsResolver"}}><i class="icon icon-plus-circle"/> <span>{{t 'formNetwork.resolvingServers.addActionLabel'}}</span></button>
@@ -167,7 +167,7 @@
                   {{input type="text" value=dns.value classNames="form-control dns-value input-sm" placeholder=(t 'formNetwork.resolvingServers.placeholder')}}
                 </td>
                 <td width="30" class="text-right">
-                  <button class="btn btn-primary btn-sm" {{action "removeDnsResolver" dns}}><i class="icon icon-minus"/></button>
+                  <button class="btn bg-primary btn-sm" {{action "removeDnsResolver" dns}}><i class="icon icon-minus"/></button>
                 </td>
               </tr>
             {{/each}}
@@ -192,11 +192,11 @@
   </div>
 
   <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formNetwork.searchDomains.label'}}</label>
     </div>
 
-    <div class="col-sm-12 col-md-8">
+    <div class="col span-8">
       {{#if editing}}
         <div>
           <button class="btn-circle-text" {{action "addDnsSearch"}}><i class="icon icon-plus-circle"/> <span>{{t 'formNetwork.searchDomains.addActionLabel'}}</span></button>
@@ -209,7 +209,7 @@
                   {{input type="text" value=dnsSearch.value classNames="form-control dns-search-value input-sm" placeholder=(t 'formNetwork.searchDomains.placeholder')}}
                 </td>
                 <td width="30" class="text-right">
-                  <button class="btn btn-primary btn-sm" {{action "removeDnsSearch" dnsSearch}}><i class="icon icon-minus"/></button>
+                  <button class="btn bg-primary btn-sm" {{action "removeDnsSearch" dnsSearch}}><i class="icon icon-minus"/></button>
                 </td>
               </tr>
             {{/each}}

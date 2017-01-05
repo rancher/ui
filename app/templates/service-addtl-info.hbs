@@ -1,4 +1,4 @@
-<div class="content-box col-md-3 col-md-height col-md-full-height">
+<div class="content-box col span-3 col span-height col span-full-height">
   <label class="text-muted">{{t 'serviceInfoPartial.info.label'}} (<small>{{#link-to 'service' service.stackId service.id class=''}} {{t 'serviceInfoPartial.info.linkTo'}} {{/link-to}}</small>)</label>
   <div class="content">
     <div class="state">
@@ -12,13 +12,13 @@
     </div>
 
     <div>
-      <label class="text-muted r-mt10">{{t 'serviceInfoPartial.image'}} </label>
+      <label class="text-muted mt-10">{{t 'serviceInfoPartial.image'}} </label>
       <span class="force-wrap">
         {{service.launchConfig.displayImage}}
       </span>
     </div>
     <div>
-      <label class="text-muted r-mt10">{{t 'serviceInfoPartial.entryPoint'}} </label>
+      <label class="text-muted mt-10">{{t 'serviceInfoPartial.entryPoint'}} </label>
       <span class="force-wrap">
         {{#if service.launchConfig.entryPoint}}
           {{concat-str service.launchConfig.entryPoint}}
@@ -28,7 +28,7 @@
       </span>
     </div>
     <div>
-      <label class="text-muted r-mt10">{{t 'serviceInfoPartial.command'}} </label>
+      <label class="text-muted mt-10">{{t 'serviceInfoPartial.command'}} </label>
       <span class="force-wrap">
         {{#if service.launchConfig.command}}
           {{concat-str service.launchConfig.command}}
@@ -39,23 +39,23 @@
     </div>
     <div>
       {{#if service.description}}
-        <label class="text-muted r-mt10">{{t 'serviceInfoPartial.description'}}</label>
+        <label class="text-muted mt-10">{{t 'serviceInfoPartial.description'}}</label>
         {{service.description}}
       {{/if}}
     </div>
   </div>
 </div>
-<div class="content-box col-md-3 col-md-height col-md-full-height">
+<div class="content-box col span-3 col span-height col span-full-height">
   <label class="text-muted">{{t 'serviceInfoPartial.containers'}} ({{primaryContainers.length}})</label>
   <div class="content">
     <div class="container-dots clearfix">
       <div>
         <label class="text-muted">{{t 'serviceInfoPartial.scale'}}</label>
         {{#if service.canScale}}
-          <span class="r-ml20 r-mr20">{{service.scale}}</span>
+          <span class="ml-20 mr-20">{{service.scale}}</span>
           <div class="btn-group btn-group-xs">
-            <button class="btn btn-default btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
-            <button class="btn btn-default btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
+            <button class="btn bg-default btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
+            <button class="btn bg-default btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
           </div>
         {{else}}
           {{if service.isGlobalScale (t 'serviceInfoPartial.global')}}
@@ -72,7 +72,7 @@
     </div>
   </div>
 </div>
-<div class="content-box col-md-3 col-md-height col-md-full-height">
+<div class="content-box col span-3 col span-height col span-full-height">
   <label class="text-muted">{{t 'serviceInfoPartial.ports'}}</label>
   <div class="content" style="overflow: auto;">
     <ul class="list-unstyled">
@@ -86,7 +86,7 @@
     </ul>
   </div>
 </div>
-<div class="content-box col-md-3 col-md-height col-md-full-height">
+<div class="content-box col span-3 col span-height col span-full-height">
   <label class="text-muted">{{t 'serviceInfoPartial.links'}}</label>
 
   {{#if service.fqdn}}

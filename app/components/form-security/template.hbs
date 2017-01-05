@@ -1,6 +1,6 @@
 {{#if projects.current.isWindows}}
   <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formSecurity.isolation.label'}}</label>
     </div>
     <div class="col-sm-12 {{if editing "col-md-4" "col-md-3"}}">
@@ -16,10 +16,10 @@
   </div>
 {{else}}
   <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formSecurity.privileged.label'}}</label>
     </div>
-    <div class="col-sm-12 col-md-3 form-label">
+    <div class="col span-3 form-label">
       {{#input-or-display editable=editing value=instance.privileged}}
         <div class="checkbox form-control-static text-left">
           <label>{{input type="checkbox" checked=instance.privileged}} {{t 'formSecurity.privileged.checkbox'}}</label>
@@ -27,10 +27,10 @@
       {{/input-or-display}}
     </div>
     <hr class="visible-xs-block visible-sm-block" />
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formSecurity.pidMode.label'}}</label>
     </div>
-    <div class="col-sm-12 col-md-3 form-label">
+    <div class="col span-3 form-label">
       {{#input-or-display editable=editing value=pidHost}}
         <div class="checkbox form-control-static text-left">
           <label>{{input type="checkbox" checked=pidHost}} {{t 'formSecurity.pidMode.checkbox'}}</label>
@@ -40,10 +40,10 @@
   </div>
 
   <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formSecurity.memoryLimit.label'}}</label>
     </div>
-    <div class="col-sm-12 col-md-3">
+    <div class="col span-3">
       {{#input-or-display editable=editing value=memoryMb}}
         <div class="input-group">
           {{input type="number" min="1" step="1" value=memoryMb classNames="form-control" placeholder=(t 'formSecurity.memoryLimit.placeholder')}}
@@ -52,10 +52,10 @@
       {{/input-or-display}}
     </div>
     <hr class="visible-xs-block visible-sm-block" />
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formSecurity.swapLimit.label'}}</label>
     </div>
-    <div class="col-sm-12 col-md-3">
+    <div class="col span-3">
       {{#input-or-display editable=editing value=swapMb}}
         <div class="input-group">
           {{input type="number" min="1" step="1" value=swapMb classNames="form-control" placeholder=(if memoryMb 'Requires Memory Limit' 'Unlimited') disabled=(not memoryMb)}}
@@ -65,10 +65,10 @@
     </div>
   </div>
   <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formSecurity.memoryReservation.label'}}</label>
     </div>
-    <div class="col-sm-12 col-md-3">
+    <div class="col span-3">
       {{#input-or-display editable=editing value=memoryReservationMb}}
         <div class="input-group">
           {{input type="number" min="1" step="1" value=memoryReservationMb classNames="form-control" placeholder=(t 'formSecurity.memoryLimit.placeholder')}}
@@ -77,10 +77,10 @@
       {{/input-or-display}}
     </div>
     <hr class="visible-xs-block visible-sm-block" />
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formSecurity.milliCpuReservation.label'}}</label>
     </div>
-    <div class="col-sm-12 col-md-3">
+    <div class="col span-3">
       {{#input-or-display editable=editing value=instance.milliCpuReservation}}
         <div class="input-group">
           {{input type="number" min="1" step="1" value=instance.milliCpuReservation classNames="form-control"}}
@@ -90,27 +90,27 @@
   </div>
 
   <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formSecurity.cpuPinning.label'}}</label>
     </div>
 
-    <div class="col-sm-12 col-md-3">
+    <div class="col span-3">
       {{#input-or-display editable=editing value=instance.cpuSet}}
         {{input type="text" value=instance.cpuSet classNames="form-control" placeholder=(t 'formSecurity.cpuPinning.placeholder')}}
       {{/input-or-display}}
     </div>
     <hr class="visible-xs-block visible-sm-block" />
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formSecurity.shares.label'}}</label>
     </div>
-    <div class="col-sm-12 col-md-3">
+    <div class="col span-3">
       {{#input-or-display editable=editing value=instance.cpuShares}}
         {{input type="number" value=instance.cpuShares step=128 min=0 classNames="form-control" placeholder=(t 'formSecurity.shares.placeholder')}}
       {{/input-or-display}}
     </div>
   </div>
   <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formSecurity.capabilities.label'}}{{#unless editing}}({{t 'formSecurity.capabilities.add'}}){{/unless}}</label>
     </div>
 
@@ -133,12 +133,12 @@
     </div>
     <hr class="visible-xs-block visible-sm-block" />
     {{#unless editing}}
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formSecurity.capabilities.label'}}({{t 'formSecurity.capabilities.drop'}})</label>
     </div>
     {{/unless}}
 
-    <div class="col-sm-12 col-md-4">
+    <div class="col span-4">
       {{#if editing}}
         <select class="form-control select-cap-drop" multiple="true" onchange={{action 'modifyCapabilities' 'capDrop'}}>
           {{#each capabilityChoices as |choice|}}
@@ -157,7 +157,7 @@
     </div>
   {{#if editing}}
     <div class="row">
-      <div class="col-sm-12 col-md-8 col-md-offset-2">
+      <div class="col span-8 offset-2">
         <span class="help-block">
           {{t 'formSecurity.capabilities.helpBlock.text'}}
           <a href="http://man7.org/linux/man-pages/man7/capabilities.7.html" target="_blank">{{t 'formSecurity.capabilities.helpBlock.link'}}</a>
@@ -168,11 +168,11 @@
   </div>
 
   <div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label">
+    <div class="col span-2 form-label">
       <label class="form-control-static">{{t 'formSecurity.deviceBinding.label'}}</label>
     </div>
 
-    <div class="col-sm-12 col-md-8">
+    <div class="col span-8">
       {{#if editing}}
         <div>
           <button class="btn-circle-text" {{action "addDevice"}}><i class="icon icon-plus-circle"/> <span>{{t 'formSecurity.deviceBinding.addActionLabel'}}</span></button>
@@ -203,7 +203,7 @@
                   {{device-permissions buttonClass="btn-sm" initialSelection=device.permissions changed=(action (mut device.permissions))}}
                 </td>
                 <td class="text-right">
-                  <button class="btn btn-primary btn-sm" {{action "removeDevice" device}}><i class="icon icon-minus"/></button>
+                  <button class="btn bg-primary btn-sm" {{action "removeDevice" device}}><i class="icon icon-minus"/></button>
                 </td>
               </tr>
             {{/each}}
@@ -226,7 +226,7 @@
                   {{device.host}}
                 </td>
                 <td style="text-align: center">
-                  <p class="form-control-static input-sm r-pt10"><i class="icon icon-chevron-right"></i></p>
+                  <p class="form-control-static input-sm pt-10"><i class="icon icon-chevron-right"></i></p>
                 </td>
                 <td>
                   {{device.container}}
@@ -250,16 +250,16 @@
 {{/if}}
 
 <div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
+  <div class="col span-2 form-label">
     <label class="form-control-static">{{t 'formSecurity.logDriver.label'}}</label>
   </div>
 
-  <div class="col-sm-12 col-md-8">
+  <div class="col span-8">
     {{#input-or-display editable=editing value=instance.logConfig.driver}}
       <div class="input-group">
         {{input type="text" value=instance.logConfig.driver classNames="form-control" placeholder=(t 'formSecurity.logDriver.placeholder')}}
         <div class="input-group-btn">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
+          <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
           <ul class="dropdown-menu dropdown-menu-right" role="menu">
             {{#each logDriverChoices as |value|}}
               <li><a {{action "setLogDriver" value}}>{{value}}</a></li>
@@ -272,11 +272,11 @@
 </div>
 
 <div class="row">
-  <div class="col-sm-12 col-md-2 form-label">
+  <div class="col span-2 form-label">
     <label class="form-control-static">{{t 'formSecurity.logOptions.label'}}</label>
   </div>
 
-  <div class="col-sm-12 col-md-8">
+  <div class="col span-8">
     {{form-key-value
       initialMap=instance.logConfig.config
       changed=(action (mut instance.logConfig.config))

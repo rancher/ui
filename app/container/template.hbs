@@ -1,21 +1,21 @@
 <section class="header clearfix">
   <h1>{{#link-to "containers"}}{{t 'containersPage.containerPage.header'}}{{/link-to}}</h1>
   {{#power-select options=model.primaryHost.arrangedInstances selected=model onchange=(action "changeContainer") searchField="displayName" as |obj|}}
-    <span class="clip r-mr15">
+    <span class="clip mr-15">
       {{select-dot model=obj}}
     </span>
   {{/power-select}}
 
   <div class="pull-right">
-    {{action-menu model=model  classNames="r-ml5 pull-right" size="sm"}}
-    {{header-state model=model classNames="pull-right"}}
+    {{action-menu model=model  classNames="ml-5 pull-right" size="sm"}}
+    {{header-state model=model}}
   </div>
 
 </section>
 
 <section>
   <div class="row">
-    <div class="col-md-3 r-mb15">
+    <div class="col span-3 mb-15">
       {{#if model.description}}
         <div>
           <label class="block">{{t 'containersPage.containerPage.infoMultiStats.description'}}</label>
@@ -85,12 +85,12 @@
         </span>
       </div>
     </div>
-    <div class="col-md-9">
+    <div class="col span-9">
       <div class="row">
         {{info-multi-stats model=model linkName="containerStats" single=true}}
       </div>
-      <div class="row r-p15">
-        <ul class="nav nav-tabs nav-tabs-well shadowed">
+      <div class="row tabs">
+        <ul class="tab-header shadowed">
           {{#link-to "container.ports" tagName="li" href=false replace=true}}<a href="#">{{t 'containersPage.containerPage.navTabs.ports'}}</a>{{/link-to}}
           {{#link-to "container.commands" tagName="li" href=false replace=true}}<a href="#">{{t 'containersPage.containerPage.navTabs.command'}}</a>{{/link-to}}
           {{#link-to "container.volumes" tagName="li" href=false replace=true}}<a href="#">{{t 'containersPage.containerPage.navTabs.volumes'}}</a>{{/link-to}}

@@ -1,10 +1,10 @@
 {{#liquid-if lbConfig.needsCertificate}}
   {{#if allCertificates.length}}
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'formSslTermination.certificate'}}</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col span-8">
         {{new-select
           classNames="form-control"
           prompt="formSslTermination.defaultCertificate.prompt"
@@ -17,10 +17,10 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-2 form-label">
+      <div class="col span-2 form-label">
         <label class="form-control-static">{{t 'formSslTermination.alternateCerts'}}</label>
       </div>
-      <div class="col-sm-12 col-md-8">
+      <div class="col span-8">
         <table class="table fixed no-lines no-top-padding tight small">
           <thead>
             <tr>
@@ -49,7 +49,7 @@
                 </td>
                 <td class="text-right">
                   {{#unless link.existing}}
-                    <button class="btn btn-primary btn-sm" {{action "removeAlternate" alt}}><i class="icon icon-minus"/></button>
+                    <button class="btn bg-primary btn-sm" {{action "removeAlternate" alt}}><i class="icon icon-minus"/></button>
                   {{/unless}}
                 </td>
               </tr>
@@ -60,7 +60,7 @@
     </div>
 
     <div class="row form-group">
-      <div class="col-sm-12 col-md-offset-2 col-md-8">
+      <div class="col-sm-12 offset-2 col offset-8">
         <p class="help-block">{{format-html-message 'formSslTermination.helpBlock'}}</p>
       </div>
     </div>

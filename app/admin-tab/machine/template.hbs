@@ -1,6 +1,6 @@
 <section class="header clearfix">
   <h1>{{t 'machinePage.header'}}</h1>
-  <button class="btn btn-sm btn-primary right-divider-btn" {{action 'addNewDriver'}}>{{t 'machinePage.add'}}</button>
+  <button class="btn btn-sm bg-primary right-divider-btn" {{action 'addNewDriver'}}>{{t 'machinePage.add'}}</button>
 </section>
 
 <section>
@@ -8,7 +8,7 @@
   <hr>
 </section>
 
-<section class="r-plr15 clearfix">
+<section class="pl-15 pr-15 clearfix">
   {{#each arranged as |driver|}}
     {{#catalog-box
       model=driver
@@ -19,19 +19,19 @@
       as |section|
     }}
       {{#if (eq section 'header')}}
-        <div class='catalog-header r-mt5'>
-          <div class="clearfix r-mb5 r-pl10 r-pr10">
+        <div class='catalog-header mt-5'>
+          <div class="clearfix mb-5 pl-10 pr-10">
             {{#if driver.state}}
               {{badge-state model=driver class="pull-left"}}
             {{else}}
-              <span class="state badge text-danger bg-danger pull-left">
+              <span class="state badge text-danger bg-error pull-left">
                 <i class="icon icon-circle"></i> {{t 'machinePage.inactive'}}
               </span>
             {{/if}}
             {{#if driver.catalogId}}
               <div class=" btn-group resource-actions action-menu pull-right">
                 {{#tooltip-element inlineBlock=true type="tooltip-basic" tooltipTemplate="tooltip-static" model=(t 'generic.activate') tagName="span" tooltipFor="catalogMachine"}}
-                  <button class="btn btn-default btn-xs" aria-label={{t 'generic.activate'}} {{action 'addCatalogDriver' driver}}>
+                  <button class="btn bg-default btn-xs" aria-label={{t 'generic.activate'}} {{action 'addCatalogDriver' driver}}>
                     <i class="icon-fw icon icon-play" alt={{t 'generic.activate'}}></i>
                   </button>
                 {{/tooltip-element~}}
@@ -42,11 +42,11 @@
           </div>
         </div>
         {{#if driver.externalId}}
-          <div class="catalog-icon r-mb10" style="background-image:url({{driver.catalogTemplateIcon}});"/>
+          <div class="catalog-icon mb-10" style="background-image:url({{driver.catalogTemplateIcon}});"/>
         {{else if driver.machineHasIcon}}
-          <div class="catalog-icon r-mb10" style="background-image:url({{driver.machineHasIcon}});"/>
+          <div class="catalog-icon mb-10" style="background-image:url({{driver.machineHasIcon}});"/>
         {{else}}
-          <div class="catalog-icon r-mb10 {{driver.iconMapFromConstants}}"/>
+          <div class="catalog-icon mb-10 {{driver.iconMapFromConstants}}"/>
         {{/if}}
       {{else if (eq section 'footer')}}
         {{#if (and driver.externalId (not-eq driver.state 'inactive'))}}

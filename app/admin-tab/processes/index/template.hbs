@@ -1,8 +1,8 @@
 <section class="header clearfix">
   <h1>{{t 'processesPage.indexPage.header'}}</h1>
 </section>
-<section class="processes">
-  <ul class="nav nav-tabs nav-tabs-well shadowed" role="tablist">
+<section class="processes tabs">
+  <ul class="tab-header shadowed" role="tablist">
     <li role="tab" aria-controls="panel" class={{if showRunning 'active' ''}}>
       <a href="#" {{action 'showRunningProcesses'}}>{{t 'processesPage.indexPage.tabNav.running'}}</a>
     </li>
@@ -11,10 +11,10 @@
     </li>
   </ul>
   <div  class="well" role="tabpanel">
-    <div class="row r-mb20">
-      <div class="form-inline r-ml15 inline-block">
+    <div class="row mb-20">
+      <div class="inline-form ml-15 inline-block">
         <div class="form-group">
-          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if resourceTypeReadable resourceTypeReadable (t 'processesPage.indexPage.form.resourceType')}} <i class="icon icon-chevron-down"></i></button>
+          <button type="button" class="btn btn-sm bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if resourceTypeReadable resourceTypeReadable (t 'processesPage.indexPage.form.resourceType')}} <i class="icon icon-chevron-down"></i></button>
           <ul class="dropdown-menu" role="menu">
             {{#each model.resourceTypes as |resource|}}
             <li {{action 'updateType' resource}}>
@@ -23,10 +23,10 @@
             {{/each}}
           </ul>
 
-          {{input value=ownResourceId class="form-control input-sm r-mr5" enter='submit' placeholder=(t 'processesPage.indexPage.form.resourceId.placeholder') disabled=disableId}}
-          {{input value=ownProcessName class="form-control input-sm r-mr5" enter='submit' placeholder=(t 'processesPage.indexPage.form.processName.placeholder')}}
-          <button class="btn btn-primary btn-danger btn-sm inline-block" {{action 'reset'}}>{{t 'processesPage.indexPage.form.clear'}}</button>
-          <button class="btn btn-primary btn-sm inline-block" {{action 'submit'}}>{{t 'processesPage.indexPage.form.search'}}</button>
+          {{input value=ownResourceId class="form-control input-sm mr-5" enter='submit' placeholder=(t 'processesPage.indexPage.form.resourceId.placeholder') disabled=disableId}}
+          {{input value=ownProcessName class="form-control input-sm mr-5" enter='submit' placeholder=(t 'processesPage.indexPage.form.processName.placeholder')}}
+          <button class="btn bg-primary bg-error btn-sm inline-block" {{action 'reset'}}>{{t 'processesPage.indexPage.form.clear'}}</button>
+          <button class="btn bg-primary btn-sm inline-block" {{action 'submit'}}>{{t 'processesPage.indexPage.form.search'}}</button>
         </div>
       </div>
     </div>
