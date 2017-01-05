@@ -176,8 +176,6 @@ var C = {
     LANGUAGE        : 'language',
     I_HATE_SPINNERS : 'ihatespinners',
     FEEDBACK        : 'feedback',
-    FEEDBACK_TIME   : 'feedbackTime',
-    FEEDBACK_DELAY  : 60000, //7*24*60*60*1000,
     SHOW_SYSTEM     : 'showSystem',
   },
 
@@ -275,6 +273,7 @@ var C = {
     AUTH_LOCAL_VALIDATE_DESC:  'api$auth$local$validate$description',
     BALANCER_IMAGE:            'lb$instance$image',
     PROJECT_VERSION:           'account$version',
+    FEEDBACK_FORM:             'ui$feedback$form',
   },
 
   USER: {

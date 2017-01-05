@@ -45,7 +45,7 @@ export default Ember.Component.extend(Driver, {
     getData() {
       let promises = {
         regions:  this.apiRequest('regions'),
-        images:   this.apiRequest('images', {type:  'distribution'}),
+        images:   this.apiRequest('images', {params: {type:  'distribution'}}),
         sizes:    this.apiRequest('sizes')
       };
 
@@ -57,9 +57,13 @@ export default Ember.Component.extend(Driver, {
           return region.available && (region.features.indexOf('metadata') >= 0);
         }).sortBy('name');
 
-        let filteredSizes = hash.sizes.sizes.filter((size) => {
+        let filteredSizes = hash.sizes.sizes.map((size) => {
+          size.memoryGb = size.memory/1024;
+          size.highMem = size.slug.indexOf('m-') >= 0;
+          return size;
+        }).filter((size) => {
           return size.available;
-        });
+        }).sortBy('highMem','memory');
 
         let filteredImages = hash.images.images.filter(function(image) {
           // 64-bit only
@@ -138,19 +142,41 @@ export default Ember.Component.extend(Driver, {
     return true;
   },
 
-  apiRequest: function(command, params) {
-    let proxyEndpoint = this.get('app.proxyEndpoint');
-    let url           = `${proxyEndpoint}/${DIGITALOCEAN_API}/${command}?per_page=100`;
-    url = Util.addQueryParams(url,params);
-    let accessToken   = this.get('model.digitaloceanConfig.accessToken');
+  apiRequest: function(command, opt, out) {
+    opt = opt || {};
+
+    let url = this.get('app.proxyEndpoint')+'/';
+    if ( opt.url ) {
+      url += opt.url.replace(/^http[s]?\/\//,'');
+    } else {
+      url += `${DIGITALOCEAN_API}/${command}`;
+      url = Util.addQueryParam(url,'per_page', opt.per_page || 100);
+      url = Util.addQueryParams(url,opt.params||{});
+    }
 
     return fetch(url, {
       headers: {
         'Accept': 'application/json',
-        'X-Api-Auth-Header': 'Bearer ' + accessToken
+        'X-Api-Auth-Header': 'Bearer ' + this.get('model.digitaloceanConfig.accessToken'),
       },
     }).then((res) => {
-      return res.body;
+      let body = res.body;
+
+      if ( out ) {
+        out[command].pushObjects(body[command]);
+      } else {
+        out = body;
+      }
+
+      // De-paging
+      if ( body && body.links && body.links.pages && body.links.pages.next ) {
+        opt.url = body.links.pages.next;
+        return this.apiRequest(command, opt, out).then(() => {
+          return out;
+        });
+      } else {
+        return out;
+      }
     });
   }
 });
