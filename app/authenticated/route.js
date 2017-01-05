@@ -117,6 +117,8 @@ export default Ember.Route.extend(Subscribe, {
 
     if ( this.get('settings.isRancher') && !app.get('isPopup') )
     {
+      let form = this.get(`settings.${C.SETTING.FEEDBACK_FORM}`);
+
      //Show the telemetry opt-in
       let opt = this.get(`settings.${C.SETTING.TELEMETRY}`);
       if ( this.get('access.admin') && (!opt || opt === 'prompt') )
@@ -125,22 +127,11 @@ export default Ember.Route.extend(Subscribe, {
           this.get('modalService').toggleModal('modal-welcome');
         });
       }
-      else if ( false && this.get('settings.isOSS') && !this.get(`prefs.${C.PREFS.FEEDBACK}`) )
+      else if ( form && !this.get(`prefs.${C.PREFS.FEEDBACK}`) )
       {
-       //Show the feedback form
-        let time = this.get(`prefs.${C.PREFS.FEEDBACK_TIME}`);
-        if ( !time ) {
-          time = (new Date()).getTime() + C.PREFS.FEEDBACK_DELAY;
-          this.set(`prefs.${C.PREFS.FEEDBACK_TIME}`, time);
-        }
-
-        let now = (new Date()).getTime();
-        if ( (now - time) >= 0 )
-        {
-          Ember.run.scheduleOnce('afterRender', this, function() {
-            this.get('modalService').toggleModal('modal-feedback');
-          });
-        }
+        Ember.run.scheduleOnce('afterRender', this, function() {
+          this.get('modalService').toggleModal('modal-feedback');
+        });
       }
     }
   },
