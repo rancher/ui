@@ -7,6 +7,7 @@ export default ModalBase.extend({
   classNames: ['lacsso', 'modal-container', 'span-8', 'offset-2', 'modal-welcome'],
   settings: Ember.inject.service(),
   prefs: Ember.inject.service(),
+  access: Ember.inject.service(),
 
   loading: true,
 
@@ -26,6 +27,8 @@ export default ModalBase.extend({
           errorClass: 'form-control',
           onFormReady: function() {
             self.styleForm();
+            $('INPUT[name=rancher_account_id]')[0].value = self.get(`session.${C.SESSION.ACCOUNT_ID}`);
+            $('INPUT[name=github_username]')[0].value = self.get('access.identity.login');
             self.set('loading',false);
           },
           onFormSubmit: function() {
