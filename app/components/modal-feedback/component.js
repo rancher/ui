@@ -43,6 +43,8 @@ export default ModalBase.extend({
   },
 
   styleForm() {
+    var self = this;
+
     let form = $('#feedback-form');
 
     form.find('.field').not('.hs_sandbox_acknowledgement').addClass('col-md-6');
@@ -56,6 +58,10 @@ export default ModalBase.extend({
     form.find('UL').addClass('list-unstyled');
     form.find('INPUT[type=checkbox]').addClass('r-mr10');
     form.find('.hs-form-booleancheckbox-display').css('font-weight', 'normal');
+
+    form.find('SELECT').on('change', function() {
+      self.styleForm();
+    });
   },
 
   actions: {
