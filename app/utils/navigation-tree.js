@@ -54,59 +54,10 @@ const navTree = [
     condition: function() { return this.get('hasKubernetes'); },
     submenu: [
       {
-        id: 'k8s-stacks',
-        localizedLabel: 'nav.k8s.stacks',
-        icon: 'icon icon-stacks',
-        route: 'k8s-tab.namespace.stacks',
-        ctx: [getProjectId, getNamespaceId],
-        condition: k8sReady,
-      },
-      {
-        id: 'k8s-deployments',
-        localizedLabel: 'nav.k8s.deployments',
-        icon: 'icon icon-tachometer',
-        route: 'k8s-tab.namespace.deployments',
-        ctx: [getProjectId, getNamespaceId],
-        condition: k8sReady,
-      },
-      {
-        id: 'k8s-services',
-        localizedLabel: 'nav.k8s.services',
-        icon: 'icon icon-compass',
-        route: 'k8s-tab.namespace.services',
-        ctx: [getProjectId, getNamespaceId],
-        condition: k8sReady,
-      },
-      {
-        divider: true,
-        condition: k8sReady,
-      },
-      {
-        id: 'k8s-replicasets',
-        localizedLabel: 'nav.k8s.replicasets',
-        icon: 'icon icon-services',
-        route: 'k8s-tab.namespace.replicasets',
-        ctx: [getProjectId, getNamespaceId],
-        condition: k8sReady,
-      },
-      {
-        id: 'k8s-rcs',
-        localizedLabel: 'nav.k8s.rcs',
-        icon: 'icon icon-services',
-        route: 'k8s-tab.namespace.rcs',
-        ctx: [getProjectId, getNamespaceId],
-        condition: k8sReady,
-      },
-      {
-        id: 'k8s-pods',
-        localizedLabel: 'nav.k8s.pods',
-        icon: 'icon icon-containers',
-        route: 'k8s-tab.namespace.pods',
-        ctx: [getProjectId, getNamespaceId],
-        condition: k8sReady,
-      },
-      {
-        divider: true,
+        id: 'k8s-notready',
+        icon: 'icon icon-spinner icon-spin',
+        localizedLabel: 'nav.notReady',
+        condition: k8sNotReady,
       },
       {
         id: 'k8s-dashboard',
@@ -123,15 +74,6 @@ const navTree = [
         route: 'k8s-tab.kubectl',
         ctx: [getProjectId],
         condition: k8sReady,
-      },
-      {
-        id: 'k8s-notready',
-        icon: 'icon icon-spinner icon-spin',
-        localizedLabel: 'nav.notReady',
-        condition: k8sNotReady,
-      },
-      {
-        divider: true,
       },
       {
         id: 'k8s-system',
@@ -235,6 +177,7 @@ const navTree = [
     condition: function() {
       return this.get('hasProject') &&
       this.get(`settings.${C.SETTING.CATALOG_URL}`) &&
+      !this.get('hasKubernetes') &&
       !this.get('hasSwarm');
     },
     submenu: getCatalogSubtree,
