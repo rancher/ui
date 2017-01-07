@@ -2,8 +2,6 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
-  k8s: Ember.inject.service(),
-
   model() {
     return this.get('store').findAll('container').then((containers) => {
       let inst = null;

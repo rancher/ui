@@ -48,31 +48,3 @@
     </ul>
   </li>
 {{~/if~}}
-{{~#if (and hasKubernetes k8s.namespace)~}}
-  <li class="dropdown project-btn kub-btn pl-0">
-    <a role="button" class="btn bg-transparent dropdown-toggle text-left" href="#" aria-haspopup="true" aria-expanded="false" aria-label="{{t 'nav.namespace.label'}}">
-      <label>{{t 'nav.namespace.label'}}</label>
-      <span class="clip">
-        <i class="icon icon-folder-open icon-fw project-icon"></i>&nbsp;{{k8s.namespace.displayName}}
-      </span>
-      <i class="icon icon-chevron-down project-chevron"></i>
-      <span class="sr-only">{{nav.srToggleDropdown}}</span>
-    </a>
-    <ul class="dropdown-menu dropdown-menu-right project-menu" role="menu" data-dropdown-id="namespace">
-      {{#if k8s.namespaces.length}}
-        <li role="presentation" class="dropdown-header">{{t 'pageHeaderEnvironment.namespace'}}</li>
-        {{#each k8s.namespaces as |ns|}}
-          <li class="{{if (eq ns k8s.namespace) 'active selected'}}">
-            <a href="#" {{action "switchNamespace" ns.id}} class="clip">
-              <i class="{{ns.icon}}"></i>
-              &nbsp;
-              {{ns.displayName}}
-            </a>
-          </li>
-        {{/each}}
-        <li role="presentation" class="divider"></li>
-      {{/if}}
-      <li>{{#link-to "k8s-tab.namespaces"}}{{t 'nav.namespace.manage'}}{{/link-to}}</li>
-    </ul>
-  </li>
-{{~/if~}}

@@ -9,7 +9,6 @@ export default Ember.Route.extend(Subscribe, {
   prefs     : Ember.inject.service(),
   projects  : Ember.inject.service(),
   settings  : Ember.inject.service(),
-  k8s       : Ember.inject.service(),
   access    : Ember.inject.service(),
   userTheme : Ember.inject.service('user-theme'),
   language  : Ember.inject.service('user-language'),
@@ -90,14 +89,7 @@ export default Ember.Route.extend(Subscribe, {
     }, 'Load all the things');
 
     return promise.then((hash) => {
-      if ( hash.orchestrationState.kubernetesReady ) {
-        return this.loadKubernetes().then((k8sHash) => {
-          Ember.merge(hash, k8sHash);
-          return Ember.Object.create(hash);
-        });
-      } else {
-        return Ember.Object.create(hash);
-      }
+      return Ember.Object.create(hash);
     }).catch((err) => {
       return this.loadingError(err, transition, Ember.Object.create({
         projects: [],
@@ -207,25 +199,6 @@ export default Ember.Route.extend(Subscribe, {
     });
   },
 
-  loadKubernetes() {
-    let k8s = this.get('k8s');
-
-    return k8s.allNamespaces().then((all) => {
-      k8s.set('namespaces', all);
-      return k8s.selectNamespace().then((ns) => {
-        return {
-          namespaces: all,
-          namespace: ns,
-        };
-      });
-    }).catch(() => {
-      return {
-        namespaces: null,
-        namespace: null,
-      };
-    });
-  },
-
   loadProjectSchemas() {
     var store = this.get('store');
     store.resetType('schema');
@@ -304,33 +277,8 @@ export default Ember.Route.extend(Subscribe, {
         this.intermediateTransitionTo('authenticated');
       }
       this.set(`tab-session.${C.TABSESSION.PROJECT}`, projectId);
-      this.set(`tab-session.${C.TABSESSION.NAMESPACE}`, undefined);
       this.refresh();
       console.log('Switch finished');
-    },
-
-    refreshKubernetes() {
-      let model = this.get('controller.model');
-      let project = model.get('project');
-      if ( project && project.get('kubernetes') ) {
-        this.loadKubernetes(project).then((hash) => {
-          model.setProperties(hash);
-        });
-      }
-    },
-
-    switchNamespace(namespaceId) {
-      let route = this.get('app.currentRouteName');
-
-      if ( route !== 'k8s-tab.namespaces' && !route.match(/^k8s-tab\.namespace\.[^.]+.index$/) )
-      {
-        route = 'k8s-tab.namespace';
-      }
-
-      // This will return a different one if the one you ask for doesn't exist
-      this.get('k8s').selectNamespace(namespaceId).then((ns) => {
-        this.transitionTo(route, ns.get('id'));
-      });
     },
   },
 });

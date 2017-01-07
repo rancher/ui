@@ -700,24 +700,14 @@ hostsPage:
           noData: This host does not have any volumes.
 
 k8sTab:
-  types:
-    namespace: Namespace
-    service: Service
-    deployment: Deployment
-    replicationcontroller: Replication Controller
-    replicaset: Replica Set
-    petset: Pet Set
-    pod: Pod
-
   dashboard:
     header: Kubernetes Dashboard
     dashboard:
       header: Dashboard
       content: Kubernetes Dashboard is a general purpose, web-based UI for Kubernetes clusters. It allows users to manage applications running in the cluster and troubleshoot them, as well as manage the cluster itself.
       button: Kubernetes UI
-
   kubectl:
-    header: kubectl
+    header: Kubernetes CLI
     stepOne:
       generateConfigText: |
         To use <a href="{downloadUrl}" target="_blank">kubectl</a> (v1.4+ only) on your workstation, click the button to generate an API key and config file:
@@ -732,88 +722,6 @@ k8sTab:
     shell:
       helpText: |
         Or use this handy shell to directly execute <code>kubectl</code> commands:
-  multistat:
-    header:
-      type: 'Type:'
-      pod: 'Pod IP:'
-      host: 'Host IP:'
-      cluster: 'Cluster IP:'
-      balancer: 'Balancer IP:'
-      session: 'Session Affinity:'
-      external: 'External IPs:'
-      selectors: 'Selectors:'
-      replicas: 'Replicas:'
-      generation: 'Generation:'
-      phase: 'Phase:'
-      startTime: 'Started:'
-      created: 'Created:'
-  navTabs:
-    labels: Labels
-    pods: Pods
-    ports: Ports
-    replicasets: Replica Sets
-  namespace:
-    pods:
-      index:
-        header: Pods
-        linkTo: Add Pod
-      pod:
-        header:
-          linkTo: 'Pod:'
-        type:
-          header: 'Type:'
-        navTabs:
-          containers: Containers
-    deployments:
-      index:
-        header: Deployments
-        linkTo: Add Deployment
-      deployment:
-        header: 'Deployment:'
-        navTabs:
-          pods: Pods
-          labels: Labels
-          ports: Ports
-    replicasets:
-      index:
-        header: Replica Sets
-        linkTo: Add Replica Set
-      replicaset:
-        header: 'Replica Set:'
-    rcs:
-      index:
-        header: Replication Controllers
-        linkTo: Add RC
-      rc:
-        header: 'RC:'
-        navTabs:
-          pods: Pods
-          labels: Labels
-          ports: Ports
-    services:
-      header: Services
-      linkTo: Add Service
-      service:
-        index:
-          header: 'Service:'
-    stacks:
-      index:
-        header: Stacks
-        linkTo: Add From Catalog
-  namespaces:
-    header: Namespaces
-    linkTo: Add Namespace
-    table:
-      body:
-        noData: You do not have any Namespaces yet.
-  error:
-    header: Error
-    linkTo: Reload
-    detail: |
-      {count, plural,
-        =1 {An error}
-        other {# Errors }
-      } occured while trying to talk to the Kubernetes API.
 
 loginPage:
   greeting: "Howdy!<br>Welcome to {appName}"
@@ -2489,7 +2397,7 @@ machine:
 
   driverDigitalocean:
     sizeLabel: |
-      {highMem, select, true {High Memory: } other {}}{memoryGb} RAM, {disk}gb Disk, {vcpus, plural,
+      {highMem, select, true {High Memory: } other {}}{memoryGb} GB RAM, {disk} GB Disk, {vcpus, plural,
         =1 {# vCPU}
         other {# vCPUs}
       }
@@ -3199,7 +3107,6 @@ waitKubernetes:
   createStack: 'Creating Kubernetes system stack'
   startServices: 'Starting services'
   waitApi: 'Waiting for Kubernetes API'
-  createNamespace: 'Creating Namespace'
 
 waitMesos:
   addHost: 'Add at least three hosts'
@@ -3253,13 +3160,7 @@ nav:
   notReady: Setting Up...
   k8s:
     tab: Kubernetes
-    stacks: Stacks
-    deployments: Deployments
-    services: Services
-    replicasets: Replica Sets
-    rcs: Replication Controllers
-    pods: Pods
-    cli: Kubectl
+    cli: CLI
     dashboard: Dashboard
     system: Infrastructure Stacks
   swarm:

@@ -23,10 +23,7 @@ export default Ember.Component.extend(HoverDropdown, {
   // Injections
   projects             : Ember.inject.service(),
   project              : Ember.computed.alias('projects.current'),
-  k8s                  : Ember.inject.service(),
-  namespace            : Ember.computed.alias('k8s.namespace'),
   projectId            : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
-  namespaceId          : Ember.computed.alias('k8s.namespace.id'),
   settings             : Ember.inject.service(),
   access               : Ember.inject.service(),
   prefs                : Ember.inject.service(),
@@ -47,10 +44,6 @@ export default Ember.Component.extend(HoverDropdown, {
   actions: {
     switchProject(id) {
       this.sendAction('switchProject', id);
-    },
-
-    switchNamespace(id) {
-      this.sendAction('switchNamespace', id);
     },
   },
 
@@ -112,13 +105,11 @@ export default Ember.Component.extend(HoverDropdown, {
     Ember.run.once(this, 'updateNavTree');
   }.observes(
     'projectId',
-    'namespaceId',
     'projects.orchestrationState',
     'project.virtualMachine',
     'stacks.@each.group',
     `settings.${C.SETTING.CATALOG_URL}`,
     `prefs.${C.PREFS.ACCESS_WARNING}`,
-    `k8s.supportsStacks`,
     'access.enabled',
     'isAdmin'
   ),
@@ -136,7 +127,6 @@ export default Ember.Component.extend(HoverDropdown, {
 
   kubernetesReady: function() {
     return this.get('hasKubernetes') &&
-    this.get('projects.orchestrationState.kubernetesReady') &&
-    this.get('namespaceId');
-  }.property('hasKubernetes','projects.orchestrationState.kubernetesReady','namespaceId'),
+    this.get('projects.orchestrationState.kubernetesReady');
+  }.property('hasKubernetes','projects.orchestrationState.kubernetesReady'),
 });
