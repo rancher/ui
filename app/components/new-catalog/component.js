@@ -6,7 +6,6 @@ import Util from 'ui/utils/util';
 import { compare as compareVersion } from 'ui/utils/parse-version';
 
 export default Ember.Component.extend(NewOrEdit, {
-  k8s: Ember.inject.service(),
   intl: Ember.inject.service(),
   projects: Ember.inject.service(),
   settings: Ember.inject.service(),
@@ -249,46 +248,7 @@ export default Ember.Component.extend(NewOrEdit, {
 
   doSave() {
     var stack = this.get('stackResource');
-    if ( this.get('templateBase') === 'kubernetes' ) {
-      if ( this.get('k8s.supportsStacks') ) {
-        if ( this.get('editing') ) {
-          return stack.doAction('upgrade', {
-            templates: this.get('selectedTemplateModel.files'),
-            environment: stack.get('environment'),
-            externalId: this.get('newExternalId'),
-            namespace: this.get('k8s.namespace.metadata.name'),
-          });
-        } else {
-          return this.get('store').createRecord({
-            type: 'kubernetesStack',
-            name: stack.get('name'),
-            description: stack.get('description'),
-            templates: this.get('selectedTemplateModel.files'),
-            environment: stack.get('environment'),
-            externalId: this.get('newExternalId'),
-            namespace: this.get('k8s.namespace.metadata.name'),
-          }).save().then((newData) => {
-            return this.mergeResult(newData);
-          });
-        }
-      } else {
-        return this.get('k8s').catalog({
-          files: this.get('selectedTemplateModel.files'),
-          environment: stack.get('environment')
-        });
-      }
-    } else if ( this.get('templateBase') === 'swarm' ) {
-      return this.get('store').createRecord({
-        type: 'composeProject',
-        name: stack.get('name'),
-        description: stack.get('description'),
-        templates: this.get('selectedTemplateModel.files'),
-        externalId: this.get('newExternalId'),
-        environment: stack.get('environment')
-      }).save().then((newData) => {
-        return this.mergeResult(newData);
-      });
-    } else if (this.get('editing')) {
+    if (this.get('editing')) {
       return stack.doAction('upgrade', {
         dockerCompose: stack.get('dockerCompose'),
         rancherCompose: stack.get('rancherCompose'),
@@ -301,32 +261,14 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   doneSaving() {
-    var base = this.get('templateBase');
     var projectId = this.get('projects.current.id');
-    if ( base === 'kubernetes' )
+    if ( this.get('stackResource.system') )
     {
-      var nsId = this.get('k8s.namespace.id');
-      if ( this.get('k8s.supportsStacks') ) {
-        return this.get('router').transitionTo('k8s-tab.namespace.stacks', projectId, nsId);
-      } else {
-        return this.get('router').transitionTo('k8s-tab.namespace.services', projectId, nsId);
-      }
-    }
-    else if ( base === 'swarm' )
-    {
-      return this.get('router').transitionTo('swarm-tab.projects', projectId);
+      return this.get('router').transitionTo('stack', projectId, this.get('primaryResource.id'), {queryParams: {which: 'infra'}});
     }
     else
     {
-      if ( this.get('stackResource.system') )
-      {
-        return this.get('router').transitionTo('stack', projectId, this.get('primaryResource.id'), {queryParams: {which: 'infra'}});
-      }
-      else
-      {
-        return this.get('router').transitionTo('stack', projectId, this.get('primaryResource.id'));
-      }
+      return this.get('router').transitionTo('stack', projectId, this.get('primaryResource.id'));
     }
   }
-
 });

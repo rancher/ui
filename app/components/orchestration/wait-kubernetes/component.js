@@ -36,7 +36,6 @@ export default Ember.Component.extend({
     'waitKubernetes.createStack',
     'waitKubernetes.startServices',
     'waitKubernetes.waitApi',
-    'waitKubernetes.createNamespace',
   ],
 
   updateStep: debouncedObserver('hosts.@each.state','stacks.@each.{state,externalId}','services.@each.{state,healthState}', function() {
@@ -90,12 +89,7 @@ export default Ember.Component.extend({
     this.get('k8s').isReady().then((ready) => {
       if ( ready )
       {
-        this.get('k8s').getNamespace('default',true).then(() => {
-          this.set('currentStep', 6);
-        }).catch(() => {
-          this.set('currentStep', 5);
-          reschedule();
-        });
+        this.set('currentStep', 5);
       }
       else
       {

@@ -105,9 +105,7 @@ module.exports = function(environment) {
       proxyEndpoint: '/v2-beta/proxy',
       wsEndpoint: '/v2-beta/projects/%PROJECTID%/subscribe' +
                     '?eventNames=resource.change' +
-                    '&eventNames=service.kubernetes.change' +
-                    '&limit=-1' +
-                    '&include=instanceLinks',
+                    '&limit=-1',
       baseAssets: '/',
       locales: readLocales(environment)
     },

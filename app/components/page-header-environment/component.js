@@ -8,8 +8,6 @@ export default Ember.Component.extend({
 
   projects    : Ember.inject.service(),
   project     : Ember.computed.alias('projects.current'),
-  k8s         : Ember.inject.service(),
-  namespace   : Ember.computed.alias('k8s.namespace'),
 
   projectChoices: function() {
     return this.get('projects.active').sortBy('name','id');
@@ -18,8 +16,6 @@ export default Ember.Component.extend({
   projectIsMissing: function() {
     return this.get('projectChoices').filterBy('id', this.get('project.id')).get('length') === 0;
   }.property('project.id','projectChoices.@each.id'),
-
-  hasKubernetes : Ember.computed.alias('projects.orchestrationState.hasKubernetes'),
 
   actions: {
     switchProject(id) {
