@@ -186,43 +186,8 @@ Router.map(function() {
       // Kubernetes
       this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('error', {path: '/error'});
-
-        this.route('apply', {path: '/apply'});
         this.route('kubectl', {path: '/kubectl'});
         this.route('dashboard', {path: '/dashboard'});
-
-        this.route('namespaces', {path: '/namespaces'}, function() {
-          this.route('index', {path: '/'});
-        });
-
-        this.route('namespace', {path: '/:namespace_id'}, function() {
-          this.route('index', {path: '/'});
-
-          this.route('stacks', {path: '/stacks'}, function() {
-            this.route('stack', {path: '/:name'});
-          });
-
-          this.route('deployments', {path: '/deployments'}, function() {
-            this.route('deployment', {path: '/:name'});
-          });
-
-          this.route('services', {path: '/services'}, function() {
-            this.route('service', {path: '/:name'});
-          });
-
-          this.route('replicasets', {path: '/replicasets'}, function() {
-            this.route('replicaset', {path: '/:name'});
-          });
-
-          this.route('rcs', {path: '/rcs'}, function() {
-            this.route('rc', {path: '/:name'});
-          });
-
-          this.route('pods', {path: '/pods'}, function() {
-            this.route('pod', {path: '/:name'});
-          });
-        });
       });
 
 

@@ -68,15 +68,6 @@ export default Ember.Mixin.create({
           }
 
         }
-        else if ( d.name === 'service.kubernetes.change' )
-        {
-          var changeType = (Ember.get(d, 'data.type')||'').toLowerCase();
-          var obj = Ember.get(d, 'data.object');
-          if ( changeType && obj )
-          {
-            this.k8sResourceChanged(changeType, obj);
-          }
-        }
         else if ( d.name === 'ping' )
         {
           this.subscribePing(d);
@@ -179,23 +170,6 @@ export default Ember.Mixin.create({
           this.get('projects').updateOrchestrationState();
         });
       });
-    }
-  },
-
-  k8sResourceChanged: function(changeType, obj) {
-    //console.log('k8s change', changeType, (obj && obj.metadata && obj.metadata.uid ? obj.metadata.uid : 'none'));
-    if ( obj && obj.metadata && obj.metadata.uid && this.get('k8sUidBlacklist').indexOf(obj.metadata.uid) >= 0 )
-    {
-      //console.log('^-- Ignoring', changeType, 'for removed resource');
-      return;
-    }
-
-    var resource = this.get('k8s')._typeify(obj);
-
-    if ( changeType === 'deleted' )
-    {
-      this.get('k8sUidBlacklist').addObject(obj.metadata.uid);
-      this.get('store')._remove(resource.get('type'), resource);
     }
   },
 });

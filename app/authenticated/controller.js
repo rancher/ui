@@ -13,6 +13,12 @@ export default Ember.Controller.extend({
 
   bootstrap: function() {
     Ember.run.schedule('afterRender', this, () => {
+      this.get('application').setProperties({
+        error: null,
+        error_description: null,
+        state: null,
+      });
+
       let bg = this.get(`prefs.${C.PREFS.BODY_BACKGROUND}`);
       if ( bg ) {
         $('BODY').css('background', bg);
