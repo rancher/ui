@@ -42,6 +42,7 @@ generic:
   total: Total
   type: Catégorie
   unknown: Inconnu
+  uuid: UUID
   "yes": true
 accountsPage:
   index:
@@ -486,11 +487,18 @@ containersPage:
 containerSubpod:
   childContainers: Conteneurs
   childSidekicks: Compagnons
+dockerCLI:
+  header: Interface en Ligne de Commande Swarm
 failWhalePage:
   header: Erreur
   reloadButton: |
     <a href="#" onclick="window.location.href = window.location.href; return false;">Rechargez</a> pour essayer de nouveau ou
   logoutButton: déconnexion
+haPage:
+  header: Haute-Disponibilité
+  setup:
+    link: Consultez la documentation
+    suffix: "pour plus d’informations sur l’installation et l’utilisation."
 helpPage:
   header: Liens utiles & Information
   banner: Annonces
@@ -632,17 +640,10 @@ hostsPage:
         body:
           noData: Cet hôte n’a pas de volumes.
 k8sTab:
-  types:
-    namespace: Espace de noms
-    service: Service
-    deployment: Déploiement
-    replicationcontroller: Contrôleur de réplication
-    replicaset: Jeu de réplicas
-    petset: Application Example
-    pod: Pod
   kubectl:
-    header: kubectl
     stepOne:
+      generateConfigText: |
+        Pour utiliser <a href="{downloadUrl}" target="_blank"> kubectl</a> (v1.4 + seulement) sur votre poste de travail, cliquez sur le bouton pour générer une clé d’API et un fichier de configuration :
       generateButton: Générer la Configuration
     stepTwo:
       progress: Génération...
@@ -654,85 +655,6 @@ k8sTab:
     shell:
       helpText: |
         Ou utilisez ce shell très pratique pour exécuter directement des commandes <code>kubectl</code> :
-  multistat:
-    header:
-      type: 'Type :'
-      pod: 'IP du Pode :'
-      host: 'IP de l''Hôte :'
-      cluster: 'IP de la Grappe :'
-      balancer: 'IP de l''Équilibreur :'
-      session: 'Affinité de session :'
-      external: 'IPs externes :'
-      selectors: 'Selectors'
-      replicas: 'Réplicats :'
-      generation: 'Génération :'
-      phase: 'Phase :'
-      startTime: 'Démarré :'
-      created: 'Créé :'
-  navTabs:
-    labels: Étiquettes
-    pods: Pods
-    ports: Ports
-    replicasets: Jeu de Réplicats
-  namespace:
-    pods:
-      index:
-        header: Pods
-        linkTo: Ajouter un Pod
-      pod:
-        header:
-          linkTo: 'Pod:'
-        type:
-          header: 'Type :'
-        navTabs:
-          containers: Conteneurs
-    deployments:
-      index:
-        header: Deploiements
-        linkTo: Ajouter un déploiement
-      deployment:
-        header: 'Déploiement :'
-        navTabs:
-          pods: Pods
-          labels: Étiquettes
-          ports: Ports
-    replicasets:
-      index:
-        header: Jeu de Réplicats
-        linkTo: Ajouter un Jeu de Réplicats
-      replicaset:
-        header: 'Jeu de Réplicats :'
-    rcs:
-      index:
-        header: RCs
-        linkTo: Ajouter un contrôleur de Réplication
-      rc:
-        header: 'Contrôleur de Réplication (RC) :'
-        navTabs:
-          pods: Pods
-          labels: Étiquettes
-          ports: Ports
-    services:
-      header: Services
-      linkTo: Ajouter un Service
-      service:
-        index:
-          header: 'Service :'
-    stacks:
-      index:
-        header: Piles
-        linkTo: Ajouter depuis le Catalogue
-  namespaces:
-    header: Espaces de noms
-    linkTo: Ajouter un espace de noms
-    table:
-      body:
-        noData: Aucun espace de nom.
-  error:
-    header: Erreur
-    linkTo: Recharger
-    detail: |
-      {count, plural, =1 {An error} other {# Errors }} s’est produite en essayant de communiquer avec l’API Kubernetes.
 loginPage:
   greeting: "Howdy!<br>Bienvenue a {appName}"
   githubMessage: "{appName} Utilise GitHub pour gerer l'authentifiation.  Cliquer sur le bouton ci-dessous pour se connecter (en lecture seule) pour acceder aux information de compte Github."
@@ -741,6 +663,9 @@ loginPage:
     401: "Non autorisé"
     500: "Erreur interne du serveur"
     generic: "Un problème a eu lieu ({errorCode}) pendant votre connexion. Veuillez essayer à nouveau."
+  error:
+    authFailed: Nom d'utilisateur ou Mot de passe incorrect.
+    timedOut: Votre session a expiré.  Connectez-vous à nouveau pour continuer.
 machinePage:
   header: Pilotes Docker Machine
   inactive: Inactif
@@ -901,9 +826,6 @@ settingsPage:
   indexTemplate:
     header: Modèles d'Environnement
     new: Ajouter un Modèle
-    subtext: |
-      <p>{appName} permet de regrouper les ressources en de multiples <b>environnements</b>.  Chacun ayant ses propres ressources d'infrastructure et services, et appartenant à un ou plusieurs utilisateurs ou groupes.</p>
-      <p>Il est possible de créer des environnements de &quot;dev&quot;, &quot;test&quot; et &quot;production&quot; séparés les uns des autres, et de ne restreindre que les accès à l'environnement de &quot;production&quot;. </p>
     table:
       header:
         stacks: Piles
@@ -1446,6 +1368,9 @@ formBalancerRules:
     internal: Interne
   protocol:
     label: Protocole 
+  sourceIp:
+    label: IP de l'Hôte
+    placeholder: par exemple 1.2.3.4
   sourcePort:
     label: Port
     placeholder: par exemple 80
@@ -1467,13 +1392,13 @@ formBalancerRules:
     moveDown: Déplacer Vers le Bas
   serviceId:
     label: Service
-    prompt: Sélectionnez un Service ...
-    noHostnames: "(Ne peut pas équilibrer vers des noms d’hôtes)"
   selector:
+    label: Sélecteur
     placeholder: par exemple foo=bar
   help:
     prefix: "Les règles d'Hôte et de Chemin d'accès sont évaluées du haut vers le bas dans l'ordre affiché. Les infrastructures seront nommées au hasard par défaut ; pour choisir les noms des infrastructures générées, fournissez un nom et référez-vous y dans le fichier haproxy.cfg spécifique.  "
     showBackendLink: "Montrer les noms spécifiques d'infrastructure"
+    showIpLink: "Afficher les options concernant l'adresse IP de l'hôte."
 formCommand:
   command:
     label: Commande
@@ -1690,10 +1615,6 @@ formNetwork:
     addActionLabel: Ajouter un Domaine
 formPorts:
   addAction: Correspondance des Ports
-  public:
-    label: 'Hôte Publique [IP :] Port'
-    placeholderWithIp: "par exemple, 80 ou 1.2.3.4:80"
-    placeholderWithoutIp: "par exemple 80"
   private:
     label: Port Privé de Conteneur
     placeholder: "par exemple 8080"
@@ -1792,7 +1713,6 @@ formServiceLinks:
   noLinks: Ce service n’a aucun lien de service.
   service:
     label: Service de Destination
-    prompt: Sélectionnez un Service ...
   name:
     label: Avec pour Nom
     placeholder: par exemple base de données
@@ -1840,7 +1760,6 @@ formTargets:
     placeholder: par exemple 80
   value:
     label: Service Cible
-    prompt: Sélectionnez un Service ...
   path:
     label: Chemin de la Requête 
     placeholder: par exemple /svc
@@ -1869,7 +1788,6 @@ formUserLabels:
     label: Valeur 
     placeholder: par exemple bar
   protip: 'Astuce : Coller une ou plusieurs lignes de paires clé=valeur dans n’importe quel champ clé pour une saisie facilitée en masse.'
-  noLabels: Pas d'étiquette
 formUpgrade:
   size: Taille du Lot
   interval: Intervalle des Lots
@@ -1892,10 +1810,13 @@ formVolumes:
   volumesFrom: Volumes Depuis
   volumeDriver:
     label: Pilote de Volume
+    placeholder: 'par exemple, rancher-nfs'
   noLaunchConfigs: Il n’y a aucune autres configurations de lancement de ce service pour partager des volumes avec celui-ci.
   noHostContainers: Cet hôte n’a aucun conteneurs ayant des volumes sur lesquels se connecter.
   onlySingleHost: Disponible uniquement lorsque vous ajoutez un conteneur à un hôte particulier.
   addActionLabel: Ajouter un Volume
+  errors:
+    invalidName: Les noms de volume peuvent uniquement contenir des lettres, chiffres, traits d’union, tirets bas et des points.
 heroAddService:
   infra:
     header: Ajouter des Piles d’Infrastructure
@@ -2209,11 +2130,9 @@ machine:
     region:
       label: Région
   driverCustom:
-    step1: 'Démarrer une machine Linux quelque part et installer la dernière version de <a href="http://www.docker.com/" target="_blank"> Docker</a> sur elle.'
     step2: "Assurez-vous que tous les groupes de sécurité ou pare-feus autorisent le trafic :"
     step2li: Depuis et vers tous les autres hôtes sur les ports<code>UDP</code> <code>500</code> et <code>4500</code> <span class="text-muted"> (pour la gestion de réseau IPsec)</span>
     step3: 'Facultatif : Ajouter des étiquettes à appliquer à l’hôte.'
-    step4: 'Facultatif : Spécifiez l’adresse IP publique qui doit être utilisé pour cet hôte.  Ceci est nécessaire si vous essayez d’ajouter l’hôte sur lequel est le conteneur <code>{rancherImage}</code>.'
     step5Copy: Copiez, collez et exécutez la commande ci-dessous pour inscrire l'hôte
     generating: "Génération d'une URL d'inscription ..."
     step5Close:
@@ -2222,8 +2141,6 @@ machine:
       part2: écran dans une minute.
     close: Fermer
   driverDigitalocean:
-    sizeLabel: |
-      {slug} RAM, disque {disk}gb, {vcpus, plural, =1 {# vCPU} other {# vCPUs}}
     accountSection: Accès du Compte
     authAccountButton: 'Suivant : Configurer Droplet'
     accessToken:
@@ -2234,6 +2151,9 @@ machine:
     instanceSection: Instance
     image:
       label: Image
+    sshUser:
+      label: Utilisateur SSH
+      placeholder: 'utilisateur1'
     size:
       label: Taille
     regionSection: Région
@@ -2457,7 +2377,6 @@ modalAboutComponent:
   ui: Interface Utilisateur
   compose: Compose
   machineService: Service de la Machine
-  docerkMachine: docker-machine
   close: Fermer
 modalAuditlogInfo:
   header: Info complémentaires de connexion
@@ -2467,13 +2386,13 @@ modalContainerStop:
   uom: secondes
   header: "Êtes-vous sûr de vouloir l'arrêter"
   helpText: "Le conteneur sera arrêté de force si il ne se stoppe pas lui-même avant le délai d'expiration"
-  protip: 'Astuce Pro : Maintenez la touche {alternateLabel} tout en cliquant sur arrêter afin de contourner cette confirmation.'
+  protip: 'Astuce Pro : Maintenez la touche {key} tout en cliquant sur arrêter afin de contourner cette confirmation.'
   label: Délai d'expiration
   placeholder: '10'
   button: Arrêter
-modalConfirmDeactiviate:
+modalConfirmDeactivate:
   header: Êtes-vous sur de vouloir
-  protip: 'Astuce Pro : Maintenez la touche {alternateLabel} tout en cliquant sur {isServiceButton} afin de contourner cette confirmation.'
+  protip: 'Astuce Pro : Maintenez la touche {key} tout en cliquant sur {isServiceButton} afin de contourner cette confirmation.'
   cancel: Annuler
   buttons:
     project:
@@ -2509,11 +2428,6 @@ modalEditSnapshot:
   edit: Modifier l'instantané
   create: Créer l'instantané
   nameLabel: Nom de l'Instantané
-modalFeedback:
-  header: Vous appréciez {appName} ?
-  send: Envoyer
-  later: Peut-être plus tard
-  never: Laissez-moi tranquille
 modalProcessError:
   header: Information de l'exception
   cause: "Cause:"
@@ -2640,21 +2554,17 @@ pageHeaderEnvironment:
 projectRow:
   none: Aucune description
   orchestration: Orchestration
+projectUpgrade:
+  header: Mettre à jour l'Environnement
+  detail: "{appName} {appVersion} inclut des modifications qui nécessitent la mise à niveau des services système existants et des conteneurs de l’équilibreur de charge."
+  notOwner: "Seul un propriétaire de cet environnement ou un administrateur peut effectuer la mise à niveau."
+  actionButton: Mettre à jour Maintenant
+  banner: Mise à jour de l'Environnement ...
 registryRow:
   address: Adresse
   email: Mél
   username: Nom d'Utilisateur
   created: Crée
-reservationParameters:
-  localStorage:
-    labelText: 'Limite de stockage local'
-    placeholder: '1024'
-  memory:
-    labelText: 'Limite Mémoire'
-    placeholder: '2048'
-  milliCpu:
-    labelText: Limite mCPU
-    placeholder: '1000'
 saveCancel:
   saving: Sauvegarde en cours ...
   saved: Sauvegardé !
@@ -2685,11 +2595,11 @@ schedulingRuleRow:
   containerName: conteneur avec le nom
 serviceLink:
   withAlias:
-    sameStack: '{service} en tant que {alias}'
-    differentStack: '{stack}/{service} en tant que {alias}'
+    sameStack: "{service} en tant que {alias}"
+    differentStack: "{stack}/{service} en tant que {alias}"
   noAlias:
-    sameStack: '{service}'
-    differentStack: '{stack}/{service}'
+    sameStack: "{service}"
+    differentStack: "{stack}/{service}"
 sidekickAddtlInfo:
   info: Info
   image: Image
@@ -2759,6 +2669,7 @@ storagePoolSection:
         snapshotState: 'État de l''Instantané'
         snapshotName: 'Nom de l’Instantané'
         backedUp: 'Sauvegardé'
+        mounts: 'Points de Montage (Conteneur : Chemin d''accès)'
 svgServiceContainer:
   sidekicks: Compagnons
 swarm:
@@ -2778,7 +2689,6 @@ telemetryOpt:
   subtext: |
     Rancher Labs souhaite recueillir des informations anonymes sur la configuration de votre installation pour aider à améliorer {appName}. <br/> Vos données ne seront pas partagées avec une autre personne, et aucun des noms de ressources spécifiques ou les adresses ne sont collectées.
   learnMore:
-    link: "http://docs.rancher.com/rancher/telemetry"
     label: En savoir Plus
   label: Permettre la collecte de statistiques anonymes
 tooltipLink:
@@ -2819,11 +2729,14 @@ viewEditProject:
     Le contrôle d’accès n’est pas activé. <br/> Toute personne ayant accès à l’API/interface utilisateur agit en tant qu’administrateur et sera en mesure d’utiliser n’importe quel environnement.
 vmConsole:
   header: "Console :"
-  protip: 'Astuce : Maintenez la touche {alternateLabel} lors de l’ouverture de la console pour lancer une nouvelle fenêtre.'
+  protip: 'Astuce : Maintenez la touche {key} lors de l’ouverture de la console pour lancer une nouvelle fenêtre.'
   canvas: Canvas non supporté.
   footerActions:
     buttonSend: Envoyer Ctrl-Alt-Delete
     buttonCancel: Fermer
+volumeRow:
+  mounts:
+    readOnly: "(lecture seule)"
 waitOrchestration:
   count: '({sub} sur {count})'
 waitKubernetes:
@@ -2832,7 +2745,6 @@ waitKubernetes:
   createStack: 'En création de la pile système Kubernetes'
   startServices: 'Démarrage des services'
   waitApi: 'En attente de l''API Kubernetes'
-  createNamespace: 'Création d''un espace de noms'
 waitMesos:
   addHost: 'Ajouter au moins trois hôtes'
   activateHost: 'En attente que les hôtes soient actifs'
@@ -2871,13 +2783,6 @@ nav:
   notReady: En cours...
   k8s:
     tab: Kubernetes
-    stacks: Piles
-    deployments: Deploiements
-    services: Services
-    replicasets: Jeux de Réplicats
-    rcs: Contrôleurs de réplication
-    pods: Pods
-    cli: Kubectl
     system: Piles d’infrastructure
   swarm:
     tab: Swarm
@@ -2916,7 +2821,6 @@ nav:
     access: Authentification
     machine: Pilotes Docker Machine
     settings: Préférences
-    ha: Haute-Disponibilité
   api:
     tab: API
   user:
