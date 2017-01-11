@@ -463,63 +463,11 @@ hostsPage:
         body:
           noData: این هاست هیچ volumes ندارد.
 k8sTab:
-  types:
-    service: سرویس
   kubectl:
     stepOne:
       generateButton: تولید تنظیمات
     stepTwo:
       progress: در حال تولید...
-  multistat:
-    header:
-      type: 'نوع:'
-      host: 'آی پی میزبان:'
-      startTime: 'شروع شده:'
-      created: 'ساخته شده:'
-  navTabs:
-    labels: برچسب ها
-    ports: پورت ها
-  namespace:
-    pods:
-      index:
-        linkTo: افزودن Pod
-      pod:
-        type:
-          header: 'نوع:'
-    deployments:
-      index:
-        linkTo: افزودن Deployment
-      deployment:
-        navTabs:
-          labels: برچسب ها
-          ports: پورت ها
-    replicasets:
-      index:
-        linkTo: افزودن Replica Set
-    rcs:
-      index:
-        linkTo: افزودن RC
-      rc:
-        navTabs:
-          labels: برچسب ها
-          ports: پورت ها
-    services:
-      header: سرویس ها
-      linkTo: افزودن سرویس
-      service:
-        index:
-          header: 'سرویس:'
-    stacks:
-      index:
-        linkTo: افزودن از کاتالوگ
-  namespaces:
-    linkTo: افزودن Namespace
-    table:
-      body:
-        noData: شما هنوز هیچ Namespaces yet.
-  error:
-    header: خطا
-    linkTo: بارگزاری مجدد
 loginPage:
   greeting: "سلام!<br>به {appName} خوش آمدید"
   githubMessage: "{appName} از GitHub برای مدیریت حساب ها و تیم ها استفاده می کند.  دکمه زیر را فشار دهید و وارد شوید و به ما دسترسی خواندن اطلاعات اولیه خساب GitHub تان را بدهید."
@@ -1156,9 +1104,6 @@ formNetwork:
     placeholder: مثال. prod.example.com
 formPorts:
   addAction: Port maps
-  public:
-    placeholderWithIp: "مثال. 80 or 1.2.3.4:80"
-    placeholderWithoutIp: "مثال. 80"
   private:
     placeholder: "مثال. 8080"
   protocol:
@@ -1213,8 +1158,6 @@ formSecurity:
     placeholder: مثال. syslog
 formServiceLinks:
   addAction: سرویس Links
-  service:
-    prompt: یک سرویس انتخاب کنید...
   name:
     label: به عنوان
     placeholder: مثال. database
@@ -1247,7 +1190,6 @@ formTargets:
     placeholder: مثال. 80
   value:
     label: سرویس Target
-    prompt: یک سرویس انتخاب کنید...
   path:
     label: مسیر درخواست
     placeholder: مثال. /svc
@@ -1445,10 +1387,8 @@ machine:
     clientId:
       label: شناسه کلاینت
   driverCustom:
-    step1: 'یک ماشین لینوکس را اجرا کرده و آخرین نسخه <a href="http://www.docker.com/" target="_blank">Docker</a> را بر روی آن نصب کنید.'
     step2li: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(برای شبکه IPsec)</span>
     step3: 'اختیاری: افزودن برچسب برای هاست.'
-    step4: 'اختیاری: آی پی عمومی این هاست را مشخص کنید.  This is required if you''re trying to add the host the <code>{rancherImage}</code> container is on.'
     step5Copy: دستور زیر را کپی و پیست و اجرا کرده تا هاست شما ثبت شود
     generating: "در حال ایجاد registration URL..."
     step5Close:
@@ -1574,7 +1514,7 @@ modalAboutComponent:
   close: بستن
 modalAuditlogInfo:
   header: افزودنitional Log Info
-modalConfirmDeactiviate:
+modalConfirmDeactivate:
   header: آیا اطمینان دارید
   cancel: لغو
   buttons:
@@ -1605,11 +1545,6 @@ modalEditSnapshot:
   edit: ویرایش Snapshot
   create: ساختن Snapshot
   nameLabel: نام Snapshot
-modalFeedback:
-  header: از {appName} لذت می برید?
-  send: ارسال
-  later: بعدا
-  never: هرگز
 modalProcessError:
   cause: "علت:"
   close: بستن
@@ -1720,8 +1655,8 @@ schedulingRuleRow:
   containerName: container با نام
 serviceLink:
   withAlias:
-    sameStack: '{service} به عنوان {alias}'
-    differentStack: '{stack}/{service} به عنوان {alias}'
+    sameStack: "{service} به عنوان {alias}"
+    differentStack: "{stack}/{service} به عنوان {alias}"
 sidekickAddtlInfo:
   info: اطلاعات
   image: تصویر
@@ -1818,8 +1753,6 @@ nav:
     your: محیط های شما
     selected: محیط انتخاب شده
     manage: مدیریت محیط ها
-  k8s:
-    services: سرویس ها
   swarm:
     projects: پروژه ها
     services: سرویس ها

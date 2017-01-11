@@ -536,13 +536,6 @@ hostsPage:
         body:
           noData: 主机未使用任何数据卷
 k8sTab:
-  types:
-    namespace: 命名空间
-    service: 服务
-    deployment: 部署
-    replicationcontroller: 复制控制器
-    replicaset: 副本集
-    petset: Pet集
   kubectl:
     stepOne:
       generateButton: 生成配置
@@ -556,58 +549,6 @@ k8sTab:
     shell:
       helpText: |
         或通过下面的命令行直接运行 <code>kubectl</code> 命令:
-  multistat:
-    header:
-      type: '类型:'
-      session: '会话关联:'
-      external: '外部IPs:'
-      selectors: '选择器'
-  navTabs:
-    labels: 标签
-    ports: 端口
-  namespace:
-    pods:
-      index:
-        linkTo: 添加Pod
-      pod:
-        type:
-          header: '类型:'
-        navTabs:
-          containers: 容器
-    deployments:
-      index:
-        header: 部署
-        linkTo: 添加部署
-      deployment:
-        header: '部署:'
-        navTabs:
-          labels: 标签
-          ports: 端口
-    replicasets:
-      index:
-        header: 副本集
-        linkTo: 添加副本集
-    rcs:
-      index:
-        header: 复制控制器
-        linkTo: 添加复制控制器
-      rc:
-        header: '复制控制器:'
-        navTabs:
-          labels: 标签
-          ports: 端口
-    services:
-      header: 服务
-      linkTo: 添加服务
-      service:
-        index:
-          header: '服务:'
-  namespaces:
-    header: 命名空间
-    linkTo: 添加命名空间
-    table:
-      body:
-        noData: 当前未创建任何命名空间
 loginPage:
   greeting: "你好！<br>欢迎使用 {appName}"
   githubMessage: "{appName} 使用GitHub管理账号和团队。点击以下按钮以登录，我们将仅使用基本的GitHub账号信息。"
@@ -1421,10 +1362,6 @@ formNetwork:
     placeholder: '例如: prod.example.com'
 formPorts:
   addAction: 端口映射
-  public:
-    label: '公开主机[IP:]端口'
-    placeholderWithIp: "例如:80 或 1.2.3.4:80"
-    placeholderWithoutIp: "例如:80"
   private:
     label: 私有容器端口
     placeholder: "例如:8080"
@@ -1515,7 +1452,6 @@ formServiceLinks:
   noLinks: 当前服务没有服务链接
   service:
     label: 目标服务
-    prompt: 选择服务...
   name:
     label: 名称
     placeholder: '例如:database'
@@ -1558,7 +1494,6 @@ formTargets:
     placeholder: '例如:80'
   value:
     label: 目标服务
-    prompt: 选择服务...
   path:
     label: 请求路径
     placeholder: '例如: /svc'
@@ -1846,11 +1781,9 @@ machine:
     region:
       label: 区域
   driverCustom:
-    step1: '启动一台Linux机器并安装最新版本的 <a href="http://www.docker.com/" target="_blank">Docker</a> 。'
     step2: "确认安全组或防火墙允许以下通讯:"
     step2li: 与其他所有主机之间的 <code>UDP</code> 端口 <code>500</code> 和 <code>4500</code> <span class="text-muted">(用于IPsec网络)</span>
     step3: '可选项: 在主机上增加标签'
-    step4: '可选项:设置主机使用的Public IP。如果添加的是运行 <code>rancher/server</code> 容器的主机则必须设置此选项。'
     step5Copy: 将下列脚本拷贝到每一台主机上运行以注册
     generating: "生成注册URL..."
     step5Close:
@@ -1859,11 +1792,6 @@ machine:
       part2: 页面。
     close: 关闭
   driverDigitalocean:
-    sizeLabel: |
-      {slug} 内存, {disk}gb 磁盘, {vcpus, plural,
-      =1 {# vCPU}
-      other {# vCPUs}
-      }
     accountSection: 账户访问
     authAccountButton: '下一步: 配置 Droplet'
     accessToken:
@@ -2074,9 +2002,9 @@ modalAuditlogInfo:
   header: 额外日志信息
   request: "请求对象:"
   response: "响应对象:"
-modalConfirmDeactiviate:
+modalConfirmDeactivate:
   header: 是否确认要
-  protip: '高级技巧:在点击 {isServiceButton} 时按住 {alternateLabel}  键以跳过确认操作'
+  protip: '高级技巧:在点击 {isServiceButton} 时按住 {key}  键以跳过确认操作'
   cancel: 取消
   buttons:
     project:
@@ -2225,8 +2153,8 @@ schedulingRuleRow:
   containerName: 容器名称
 serviceLink:
   withAlias:
-    sameStack: '{service} 链接为 {alias}'
-    differentStack: '{stack}/{service} 链接为 {alias}'
+    sameStack: "{service} 链接为 {alias}"
+    differentStack: "{stack}/{service} 链接为 {alias}"
 sidekickAddtlInfo:
   info: 信息
   image: 镜像
@@ -2342,7 +2270,7 @@ viewEditProject:
     任何访问API/UI的人都具有管理员权限，并能够使用任何环境。
 vmConsole:
   header: "控制台:"
-  protip: '高级技巧:启动命令行时按下 {alternateLabel} 键可在新窗口中打开.'
+  protip: '高级技巧:启动命令行时按下 {key} 键可在新窗口中打开.'
   canvas: 暂不提供Canvas支持
   footerActions:
     buttonSend: 发送Ctrl-Alt-Delete
@@ -2353,7 +2281,6 @@ waitKubernetes:
   createStack: '创建 Kubernetes 系统应用栈'
   startServices: '启动服务 ({sub} / {count})'
   waitApi: '等待 Kubernetes API'
-  createNamespace: '创建命名空间'
 waitMesos:
   addHost: '添加至少三台主机'
   activateHost: '等待主机激活'
@@ -2388,11 +2315,6 @@ nav:
     manage: 命名空间管理
   k8s:
     tab: Kubernets
-    stacks: 应用栈
-    deployments: 部署
-    services: 服务
-    replicasets: 副本集
-    rcs: 复制控制器
   swarm:
     projects: 项目
     services: 服务
@@ -2422,7 +2344,6 @@ nav:
     access: 访问控制
     machine: 主机驱动
     settings: 系统设置
-    ha: 高可用
   user:
     label: '用户菜单:{username}'
     logout: 注销

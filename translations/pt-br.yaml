@@ -457,45 +457,6 @@ k8sTab:
     shell:
       helpText: |
         Ou Utilize este prático shell diretamente para executar os comandos <code>kubectl</code>:
-  multistat:
-    header:
-      type: 'Tipo:'
-      cluster: 'IP do Cluster:'
-      balancer: 'IP do Balanceador:'
-      session: 'Afinidade de Sessão:'
-      external: 'IPs Externos:'
-      selectors: 'Seletores'
-  navTabs:
-    labels: Rótulos
-    ports: Portas
-  namespace:
-    pods:
-      index:
-        linkTo: Adicionar Pod
-      pod:
-        type:
-          header: 'Tipo:'
-        navTabs:
-          containers: Contêineres
-    rcs:
-      index:
-        header: RCs
-        linkTo: Adicionar RC
-      rc:
-        navTabs:
-          labels: Rótulos
-          ports: Portas
-    services:
-      header: Serviços
-      linkTo: Adicionar Serviços
-      service:
-        index:
-          header: 'Serviço:'
-  namespaces:
-    linkTo: Adicionar Namespace
-    table:
-      body:
-        noData: Você não tem nenhum Namespaces ainda.
 loginPage:
   greeting: "Olá!<br>Bem-vindo à {appName}"
   githubMessage: "{appName} usar GitHub para gerenciar contas e equipes.  Clique no botão a seguir para entrar e dar-nos acesso somente leitura às suas informações básicas sobre a conta GitHub."
@@ -1181,10 +1142,6 @@ formNameDescription:
     placeholder: Descrição
 formPorts:
   addAction: Mapa de Porta
-  public:
-    label: 'Host Público [IP:]Porta'
-    placeholderWithIp: "p.ex. 80 ou 1.2.3.4:80"
-    placeholderWithoutIp: "p.ex. 80"
   private:
     label: Porta Privata do Contêiner
     placeholder: "p.ex. 8080"
@@ -1220,7 +1177,6 @@ formServiceLinks:
   noLinks: Este serviço não tem ligações de serviços.
   service:
     label: Serviço de Destino
-    prompt: Selecione um Serviço...
   name:
     label: Como Nome
     placeholder: p.ex. database
@@ -1239,7 +1195,6 @@ formTargets:
     placeholder: p.ex. 80
   value:
     label: Serviço de Destino
-    prompt: Selecione um Serviço...
   path:
     label: Caminho do Pedido
     placeholder: p.ex. /svc
@@ -1481,11 +1436,9 @@ machine:
     region:
       label: Região
   driverCustom:
-    step1: 'Iniciar uma máquina Linux em algum lugar e instalar a versão mais recente do <a href="http://www.docker.com/" target="_blank">Docker</a> nele.'
     step2: "Certifique-se de que quaisquer grupos de segurança ou firewalls permitam tráfego:"
     step2li: De e para todos os outros hosts nas portas <code>UDP</code> <code>500</code> e <code>4500</code> <span class="text-muted">(para redes de IPsec)</span>
     step3: 'Opcional: Adicionar rótulos a ser aplicado para o host.'
-    step4: 'Opcional: Especificar o IP público que deve ser usado para este host.  Isso é necessário se você está tentando adicionar o host que possui o contêiner <code>rancher/server</code>.'
     step5Copy: Copiar, colar e executar o comando abaixo para registrar o host com
     generating: "Gerando URL de registro..."
     step5Close:
@@ -1638,9 +1591,9 @@ modalAuditlogInfo:
   header: Informação de Log Adicionais
   request: "Objeto do Pedido:"
   response: "Objeto de Resposta:"
-modalConfirmDeactiviate:
+modalConfirmDeactivate:
   header: Tem certeza que você quer
-  protip: 'Dica: Mantenha pressionada a tecla {alternateLabel} enquanto clicar em {isServiceButton} para contornar essa confirmação.'
+  protip: 'Dica: Mantenha pressionada a tecla {key} enquanto clicar em {isServiceButton} para contornar essa confirmação.'
   cancel: Cancelar
 modalEditDriver:
   header:
@@ -1819,7 +1772,7 @@ viewEditProject:
     Controle de acesso não está habilitado.<br/>
     Qualquer pessoa com acesso à API/interface do usuário atua como um administrador e será capaz de usar qualquer ambiente.
 vmConsole:
-  protip: 'Dica: Mantenha pressionada a tecla {alternateLabel} ao abrir acesso shell para iniciar uma nova janela.'
+  protip: 'Dica: Mantenha pressionada a tecla {key} ao abrir acesso shell para iniciar uma nova janela.'
   canvas: Canvas não é suportado.
   footerActions:
     buttonSend: Enviar Ctrl-Alt-Delete
@@ -1840,9 +1793,6 @@ nav:
     manage: Gerenciar Ambientes
   namespace:
     manage: Gerenciar Namespaces
-  k8s:
-    services: Serviços
-    rcs: Controladores de replicação
   swarm:
     projects: Projetos
     services: Serviços
@@ -1868,7 +1818,6 @@ nav:
     accounts: Contas
     access: Controle de Acesso
     settings: Configurações
-    ha: Alta disponibilidade(HA)
   user:
     label: 'Menu do Usuário: {username}'
     logout: Sair
