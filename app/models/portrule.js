@@ -28,6 +28,10 @@ let PortRule = Resource.extend({
 
   service: denormalizeId('serviceId'),
 
+  isTls: function() {
+    return ['tls','https','sni'].includes(this.get('protocol'));
+  }.property('protocol'),
+
   needsCertificate: function() {
     return ['tls','https'].includes(this.get('protocol'));
   }.property('protocol'),

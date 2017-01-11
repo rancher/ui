@@ -127,42 +127,52 @@ var C = {
 
   LABEL: {
     SYSTEM_PREFIX: 'io.rancher.',
-    AFFINITY_PREFIX: 'io.rancher.scheduler.affinity:',
 
-    SYSTEM_TYPE: 'io.rancher.container.system',
-    SERVICE_NAME: 'io.rancher.stack_service.name',
-    STACK_NAME: 'io.rancher.stack.name',
-    STACK_UUID: 'io.rancher.stack.uuid',
-    EXTERNAL_ID: 'io.rancher.external_id',
-    SCHED_GLOBAL: 'io.rancher.scheduler.global',
-    SCHED_CONTAINER: 'io.rancher.scheduler.affinity:container',
-    SCHED_HOST_LABEL: 'io.rancher.scheduler.affinity:host_label',
-    SCHED_CONTAINER_LABEL: 'io.rancher.scheduler.affinity:container_label',
+    // Container
+    DNS: 'io.rancher.container.dns',
     HOSTNAME_OVERRIDE: 'io.rancher.container.hostname_override',
     HOSTNAME_OVERRIDE_VALUE: 'container_name',
-    BALANCER_SSL_PORTS: 'io.rancher.loadbalancer.ssl.ports',
-    SIDEKICK: 'io.rancher.sidekicks',
-    DEPLOYMENT_UNIT: 'io.rancher.service.deployment.unit',
-    LAUNCH_CONFIG: 'io.rancher.service.launch.config',
-    LAUNCH_CONFIG_PRIMARY: 'io.rancher.service.primary.launch.config',
-    START_ONCE: 'io.rancher.container.start_once',
-    HASH: 'io.rancher.service.hash',
-    DNS: 'io.rancher.container.dns',
-    DOCKER_VERSION: 'io.rancher.host.docker_version',
-    KERNEL_VERSION: 'io.rancher.host.linux_kernel_version',
-    REQUESTED_IP: 'io.rancher.container.requested_ip',
     PULL_IMAGE: 'io.rancher.container.pull_image',
     PULL_IMAGE_VALUE: 'always',
-    KVM: 'io.rancher.host.kvm',
-    K8S_POD_NAMESPACE: 'io.kubernetes.pod.namespace',
-    K8S_POD_NAME: 'io.kubernetes.pod.name',
-    K8S_KUBECTL: 'io.rancher.k8s.kubectld',
-    K8S_DASHBOARD: 'io.rancher.k8s.kubernetes-dashboard',
-    ORCHESTRATION_SUPPORTED: 'io.rancher.orchestration.supported',
-    CERTIFIED: 'io.rancher.certified',
-    CERTIFIED_RANCHER: 'rancher',
-    CERTIFIED_PARTNER: 'partner',
+    REQUESTED_IP: 'io.rancher.container.requested_ip',
+    SERVICE_NAME: 'io.rancher.stack_service.name',
+    START_ONCE: 'io.rancher.container.start_once',
+    STACK_NAME: 'io.rancher.stack.name',
+    STACK_UUID: 'io.rancher.stack.uuid',
+    SYSTEM_TYPE: 'io.rancher.container.system',
 
+    // Catalog
+    CERTIFIED: 'io.rancher.certified',
+    CERTIFIED_PARTNER: 'partner',
+    CERTIFIED_RANCHER: 'rancher',
+    ORCHESTRATION_SUPPORTED: 'io.rancher.orchestration.supported',
+
+    // Host
+    AGENT_IMAGE: 'io.rancher.host.agent_image',
+    DOCKER_VERSION: 'io.rancher.host.docker_version',
+    KERNEL_VERSION: 'io.rancher.host.linux_kernel_version',
+    KVM: 'io.rancher.host.kvm',
+    SCHED_IPS: 'io.rancher.host.ip_set',
+
+    // Kubernetes
+    K8S_DASHBOARD: 'io.rancher.k8s.kubernetes-dashboard',
+    K8S_KUBECTL: 'io.rancher.k8s.kubectld',
+    K8S_POD_NAME: 'io.kubernetes.pod.name',
+    K8S_POD_NAMESPACE: 'io.kubernetes.pod.namespace',
+
+    // Scheduling
+    AFFINITY_PREFIX: 'io.rancher.scheduler.affinity:',
+    SCHED_CONTAINER: 'io.rancher.scheduler.affinity:container',
+    SCHED_CONTAINER_LABEL: 'io.rancher.scheduler.affinity:container_label',
+    SCHED_GLOBAL: 'io.rancher.scheduler.global',
+    SCHED_HOST_LABEL: 'io.rancher.scheduler.affinity:host_label',
+
+    // Service
+    DEPLOYMENT_UNIT: 'io.rancher.service.deployment.unit',
+    HASH: 'io.rancher.service.hash',
+    LAUNCH_CONFIG: 'io.rancher.service.launch.config',
+    LAUNCH_CONFIG_PRIMARY: 'io.rancher.service.primary.launch.config',
+    SIDEKICK: 'io.rancher.sidekicks',
   },
 
   PREFS: {
@@ -349,6 +359,11 @@ C.SYSTEM_LABELS_WITH_CONTROL = [
   C.LABEL.START_ONCE,
   C.LABEL.REQUESTED_IP,
   C.LABEL.PULL_IMAGE,
+  C.LABEL.SCHED_IPS,
+  C.LABEL.AGENT_IMAGE,
+  C.LABEL.DOCKER_VERSION,
+  C.LABEL.KERNEL_VERSION,
+  C.LABEL.KVM,
 ];
 
 C.ACTIVEISH_STATES = [

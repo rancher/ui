@@ -47,10 +47,9 @@ var LoadBalancerService = Service.extend({
   },
 
   sslPorts: function() {
-    return (((this.get('launchConfig.labels')||{})[C.LABEL.BALANCER_SSL_PORTS]||'')).split(',').map((str) => {
-      return parseInt(str,10);
-    });
-  }.property(`launchConfig.labels`),
+    let out = this.get('lbConfig.portRules').filterBy('isTls',true).map((x) => x.get('sourcePort')).uniq();
+    return out;
+  }.property(`lbConfig.portRules.@each.{isTls,sourcePort}`),
 
   endpointsByPort: function() {
     var sslPorts = this.get('sslPorts');
