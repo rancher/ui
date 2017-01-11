@@ -37,7 +37,6 @@ function normalizedLabels(objects) {
 export default Ember.Component.extend({
   rule: null,
   instance: null,
-  allHosts: null,
 
   tagName: 'TR',
 
@@ -63,6 +62,8 @@ export default Ember.Component.extend({
 
   init: function() {
     this._super();
+
+    this.set('allHosts', this.get('store').all('host'));
 
     var key = this.get('rule.key')||'';
     var value = this.get('rule.value')||'';

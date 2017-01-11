@@ -377,6 +377,8 @@ C.ACTIVEISH_STATES = [
   'degraded',
   'unhealthy',
   'started-once',
+  'upgrading',
+  'upgraded',
 ];
 
 C.READY_STATES = [

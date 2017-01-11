@@ -122,7 +122,7 @@ var LoadBalancerService = Service.extend({
     var out = '<label>'+ intl.t('generic.to')+': </label>' + str;
 
     return out.htmlSafe();
-  }.property('consumedServicesWithNames.@each.{name,service}', 'intl._locale'),
+  }.property('lbConfig.portRules.@each.{service,selector}', 'intl._locale'),
 
   imageUpgradeAvailable: function() {
     let cur = this.get('launchConfig.imageUuid').replace(/^docker:/,'');

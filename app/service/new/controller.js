@@ -9,7 +9,11 @@ export default Ember.Controller.extend({
 
   actions: {
     done() {
-      return this.transitionToRoute('stack', this.get('model.service.stackId'));
+      if ( this.get('upgrade') ) {
+        this.send('goToPrevious','stacks');
+      } else {
+        return this.transitionToRoute('stack', this.get('model.service.stackId'));
+      }
     },
 
     cancel() {
