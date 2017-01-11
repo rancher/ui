@@ -6,6 +6,27 @@ const USER     = 'user';
 const SYSTEM   = 'system';
 const AFFINITY = 'affinity';
 
+export function flattenLabelArrays(...lists) {
+  let out = {};
+
+  function flatten(row) {
+    if ( row.value === undefined )
+    {
+      delete out[row.key];
+    }
+    else
+    {
+      out[row.key] = row.value;
+    }
+  }
+
+  for ( let i = 0 ; i < lists.length ; i++ ) {
+    (lists[i]||[]).forEach(flatten);
+  }
+
+  return out;
+}
+
 function isSoftUser(type,key) {
   // Include actual user labels
   if ( type === USER )
@@ -345,6 +366,5 @@ export default Ember.Mixin.create({
 
   updateLabels(/*labels*/) {
     // Override me to do something
-  }
-
+  },
 });

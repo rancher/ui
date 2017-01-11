@@ -4,7 +4,6 @@ export default Ember.Controller.extend({
 
   actions: {
     kubernetesReady() {
-      this.send('refreshKubernetes');
       this.get('projects').updateOrchestrationState().then(() => {
         this.transitionToRoute('k8s-tab.index');
       });

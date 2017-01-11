@@ -72,7 +72,10 @@ export default Ember.Mixin.create({
   instancesByExternalId: function() {
     var out = Ember.Object.create();
     (this.get('sparkInstances')||[]).forEach((instance) => {
-      out.set(instance.get('externalId'), instance);
+      let id = instance.get('externalId');
+      if ( id ) {
+        out.set(id, instance);
+      }
     });
     return out;
   }.property('sparkInstances.@each.id'),
@@ -81,7 +84,10 @@ export default Ember.Mixin.create({
   instancesById: function() {
     var out = Ember.Object.create();
     (this.get('sparkInstances')||[]).forEach((instance) => {
-      out.set(instance.get('id'), instance);
+      let id = instance.get('id');
+      if ( id ) {
+        out.set(id, instance);
+      }
     });
     return out;
   }.property('sparkInstances.@each.id'),
