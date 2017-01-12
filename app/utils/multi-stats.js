@@ -143,11 +143,18 @@ export default Ember.Object.extend(Ember.Evented, {
       {
         count = data.cpu.usage.per_cpu_usage.length;
       }
-
-      out.cpu_user    = toPercent((data.cpu.usage.user    - prev.cpu.usage.user   )/time_diff_ns, count*100);
-      out.cpu_system  = toPercent((data.cpu.usage.system  - prev.cpu.usage.system )/time_diff_ns, count*100);
-      out.cpu_total   = toPercent((data.cpu.usage.total   - prev.cpu.usage.total  )/time_diff_ns, count*100);
-      out.cpu_count   = count;
+      if (data.resourceType === "host")
+      {
+        out.cpu_user = cpuPercentage(data.cpu.usage, prev.cpu.usage, "user");
+        out.cpu_system = cpuPercentage(data.cpu.usage, prev.cpu.usage, "system");
+        out.cpu_total = cpuPercentage(data.cpu.usage, prev.cpu.usage, "total");
+      } else
+      {
+        out.cpu_user    = toPercent((data.cpu.usage.user    - prev.cpu.usage.user   )/time_diff_ns, count*100);
+        out.cpu_system  = toPercent((data.cpu.usage.system  - prev.cpu.usage.system )/time_diff_ns, count*100);
+        out.cpu_total   = toPercent((data.cpu.usage.total   - prev.cpu.usage.total  )/time_diff_ns, count*100);
+      }
+      out.cpu_count = count;
 
       var read = 0;
       var write = 0;
@@ -254,6 +261,45 @@ function toPercent(decimal,max=100) {
   else
   {
     return percent;
+  }
+}
+
+function cpuPercentage(now, prev, type) {
+  var nowAll = now.total, nowUser = now.user, nowSystem = now.system;
+  var prevAll = prev.total, prevUser = prev.user, prevSystem = prev.system;
+  if (type === "user")
+  {
+    if (nowUser <= prevUser)
+    {
+      return 0;
+    }
+    if (nowAll <= prevAll)
+    {
+      return 100;
+    }
+    return (nowUser - prevUser) / (nowAll - prevAll) * 100;
+  } else if (type === "system")
+  {
+    if (nowSystem <= prevSystem)
+    {
+          return 0;
+    }
+    if (nowAll <= prevAll)
+    {
+          return 100;
+    }
+    return (nowSystem - prevSystem) / (nowAll - prevAll) * 100;
+  } else
+  {
+    if (nowSystem + nowUser <= prevSystem + prevUser)
+        {
+              return 0;
+        }
+        if (nowAll <= prevAll)
+        {
+              return 100;
+        }
+        return (nowSystem + nowAll - prevSystem - prevUser) / (nowAll - prevAll) * 100;
   }
 }
 
