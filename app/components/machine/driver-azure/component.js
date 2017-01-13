@@ -5,7 +5,7 @@ import Driver from 'ui/mixins/driver';
 export default Ember.Component.extend(Driver, {
   azureConfig      : Ember.computed.alias('model.azureConfig'),
   regionChoices    : regions.sortBy('name'),
-  sizeChoices      : sizes.sort(),
+  sizeChoices      : sizes.sortBy('value'),
   driverName       : 'azure',
   model            : null,
   openPorts        : null,

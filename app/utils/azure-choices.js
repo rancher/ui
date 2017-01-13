@@ -226,21 +226,6 @@ export let sizes = [
   {
     value: 'Standard_GS5'
   },
-  {
-    value: 'ExtraSmall'
-  },
-  {
-    value: 'Small'
-  },
-  {
-    value: 'Medium'
-  },
-  {
-    value: 'Large'
-  },
-  {
-    value: 'ExtraLarge'
-  },
 ];
 
 export let storageTypes = [
