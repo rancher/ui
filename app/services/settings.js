@@ -89,6 +89,10 @@ export default Ember.Service.extend(Ember.Evented, {
     return this.get('asMap')[normalizeName(name)];
   },
 
+  loadAll() {
+    return this.get('userStore').find('setting');
+  },
+
   load(names) {
     if ( !Ember.isArray(names) ) {
       names = [names];
