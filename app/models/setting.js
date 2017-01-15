@@ -1,5 +1,12 @@
 import Resource from 'ember-api-store/models/resource';
 
-var Setting = Resource.extend();
+export default Resource.extend({
+  isDefault: function() {
+    let source = this.get('source');
+    if ( !source ) {
+      return true;
+    }
 
-export default Setting;
+    return source !== 'Database';
+  }.property('source'),
+});
