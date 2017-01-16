@@ -4,6 +4,7 @@ languageContribute: "Aider à traduire Rancher"
 generic:
   actions: Actions
   activate: Activé
+  any: N’importe quel
   as: Comme
   cancel: Annuler
   closeModal: Fermer
@@ -132,10 +133,10 @@ authPage:
     enabled:
       header: "{providerName} est activé"
       required: |
-        {appname} est configurée pour permettre l'accès à {orgs, plural, =0 {no organizations} =1 {# organization} other {# organizations} } et {users, plural, =0 {no users} =1 {# user} other {# users} }.
+        {appName} est configurée pour permettre l'accès à {orgs, plural, =0 {no organizations} =1 {# organization} other {# organizations} } et {users, plural, =0 {no users} =1 {# user} other {# users} }.
       restricted: |
-        {appname} est configurée pour permettre l'accès aux membres de l'environnement, {orgs, plural, =0 {no organizations} =1 {# organization} other {# organizations} } et {users, plural, =0 {no users} =1 {# user} other {# users} }.
-      unrestricted: "{appname} est configuré pour autoriser l’accès à n’importe quel utilisateur {providerName}."
+        {appName} est configurée pour permettre l'accès aux membres de l'environnement, {orgs, plural, =0 {no organizations} =1 {# organization} other {# organizations} } et {users, plural, =0 {no users} =1 {# user} other {# users} }.
+      unrestricted: "{appName} est configuré pour autoriser l’accès à n’importe quel utilisateur {providerName}."
       authenticated:
         header:
           text: Authentification
@@ -497,8 +498,14 @@ failWhalePage:
 haPage:
   header: Haute-Disponibilité
   setup:
+    prefix: "Plusieurs conteneurs de serveur peuvent être déployés sur des hôtes différents pour que {appName} continue à fonctionner même si un des hôtes échoue.  "
     link: Consultez la documentation
     suffix: "pour plus d’informations sur l’installation et l’utilisation."
+  table:
+    address: Adresse Publiée
+    port: Port
+    heartbeat: Dernière Activité détectée
+    clustered: Mis en Grappe
 helpPage:
   header: Liens utiles & Information
   banner: Annonces
@@ -640,7 +647,14 @@ hostsPage:
         body:
           noData: Cet hôte n’a pas de volumes.
 k8sTab:
+  dashboard:
+    header: Tableau de bord Kubernetes
+    dashboard:
+      header: Tableau de bord
+      content: Le tableau de bord Kubernetes est généraliste, une interface utilisateur web pour les clusters Kubernetes. Il permet aux utilisateurs de gérer les applications en cours d’exécution dans le cluster, résoudre les problèmes, ainsi que gérer le cluster proprement dit.
+      button: Interface graphique Kubernetes
   kubectl:
+    header: Ligne de commande Kubernetes
     stepOne:
       generateConfigText: |
         Pour utiliser <a href="{downloadUrl}" target="_blank"> kubectl</a> (v1.4 + seulement) sur votre poste de travail, cliquez sur le bouton pour générer une clé d’API et un fichier de configuration :
@@ -708,6 +722,29 @@ mesosPage:
 notFoundPage:
   header: "Cette page n'existe pas!"
   linkTo: Acceuil
+projectList:
+  index:
+    header: Environnements
+    new: Ajouter un Environnement
+    subtext: |
+      <p>{appName} permet de regrouper les ressources en de multiples <b>environnements</b>.  Chacun ayant ses propres ressources d'infrastructure et services, et appartenant à un ou plusieurs utilisateurs ou groupes.</p>
+      <p>Il est possible de créer des environnements de &quot;dev&quot;, &quot;test&quot; et &quot;production&quot; séparés les uns des autres, et de ne restreindre que les accès à l'environnement de &quot;production&quot;. </p>
+    alert: Aucun environnement actif.  You will need to create or activate one before you can do anything else.
+    table:
+      header:
+        projectTemplate: Modèle
+      body:
+        noData: "Aucun Environnement."
+  indexTemplate:
+    header: Modèles d'Environnement
+    new: Ajouter un Modèle
+    subtext: |
+      <p>Un modèle d’environnement permet aux utilisateurs de définir une combinaison différente de services d’infrastructure à déployer. <p>Les services d’infrastructure se chargent, mais ne sont pas limités à l’orchestration de conteneurs (cattle, kubernetes, mesos, swarm, gestion du réseau) ou les services Rancher (c’est à dire healthcheck, dns, métadonnées, ordonnancement, découverte du service et stockage)</p>
+    table:
+      header:
+        stacks: Piles
+      body:
+        noData: "Vous n'avez pas encore de modèles d'environnement."
 registriesPage:
   index:
     header: Registres
@@ -787,6 +824,7 @@ servicePage:
       description:
         placeholder: par exemple la version actuelle de MyApp
   newBalancer:
+    upgradeImage: "L’image de l'équilibreur sera mis à jour depuis <code>{from}</code> vers <code>{to}</code>."
     form:
       name:
         placeholder: 'par exemple : site web'
@@ -809,29 +847,15 @@ servicePage:
         description: Description
       body:
         noData: Il n’y a eu encore aucun événement de journal.
-settingsPage:
-  index:
-    header: Environnements
-    new: Ajouter un Environnement
-    subtext: |
-      <p>{appName} permet de regrouper les ressources en de multiples <b>environnements</b>.  Chacun ayant ses propres ressources d'infrastructure et services, et appartenant à un ou plusieurs utilisateurs ou groupes.</p>
-      <p>Il est possible de créer des environnements de &quot;dev&quot;, &quot;test&quot; et &quot;production&quot; séparés les uns des autres, et de ne restreindre que les accès à l'environnement de &quot;production&quot;. </p>
-    alert: Aucun environnement actif.  You will need to create or activate one before you can do anything else.
-    table:
-      header:
-        orchestration: Orchestration
-        projectTemplate: Modèle
-      body:
-        noData: "Aucun Environnement."
-  indexTemplate:
-    header: Modèles d'Environnement
-    new: Ajouter un Modèle
-    table:
-      header:
-        stacks: Piles
-        isPublic: Public
-      body:
-        noData: "Vous n'avez pas encore de modèles d'environnement."
+  type:
+    service: Service
+    loadbalancerservice: Équilibreur de Charge
+    dnsservice: Alias de Service
+    externalservice: Externe
+    kubernetesservice: Service K8s
+    composeservice: Composer le Service
+    networkdriverservice: Service Réseau
+    storagedriverservice: Service de Stockage
 stacksPage:
   header:
     all: Toutes les Piles
@@ -921,32 +945,6 @@ swarmPage:
         containers: Conteneur
       body:
         noData: Vous n’avez pas encore de Services.
-processesPage:
-  indexPage:
-    header: Processus
-    tabNav:
-      running: En cours
-      all: tout
-    form:
-      resourceType: 'Selectionner une ressource: '
-      resourceId:
-        placeholder: Id de la Ressource
-      processName:
-        placeholder: Nom du Processus
-      clear: Effacer
-      search: Rechercher
-    table:
-      header:
-        id: Id
-        processName: Nom
-        resource: 'Type de Ressource : Id'
-        exitReason: Raison de la Sortie
-        startTime: Démarré le
-        endTime: Terminé le
-        duration: Durée
-      noData: Aucun processus.
-  processPage:
-    header: Préférences
 virtualMachinePage:
   header: 'Machine Virtuelle :'
   multistat:
@@ -1180,6 +1178,7 @@ confirmDelete:
   protip: 'Astuce Pro : Maintenez la touche {key} tout en cliquant sur Supprimer afin de contourner cette confirmation.'
   confirmAction: Supprimer
   cancelAction: Annuler
+  largeDeleteText: '{key} et {othersCount} d’autres'
 containerLogs:
   title: 'Journaux : {instanceName}'
   onlyCombined: "<b>Remarque :</b> Seuls les journaux combinés des sorties standard et d'erreurs est disponible pour ce conteneur parce qu’il a été exécuté avec l'option TTY (-t) ."
@@ -1302,6 +1301,12 @@ editHost:
     placeholder: par exemple mon hôte de développement
   labels:
     label: Étiquettes
+  ips:
+    label: IPs de l'Orchestrateur
+    valueLabel: Adresse IP
+    valuePlaceholder: par exemple 1.2.3.4
+    addActionLabel: Ajouter une adresse IP
+    help: Si fourni, l'orchestrateur sélectionnera et reliera les ports publiés à une des adresses IP publiques données.
 editProjectTemplate:
   title:
     add: Ajouter un Modèle
@@ -1583,6 +1588,8 @@ formNetwork:
     container: conteneur
     host: Hôte
     managed: Géré
+    nat: NAT
+    transparent: Transparent
     none: Aucun
   container:
     label: ontainer
@@ -1615,12 +1622,24 @@ formNetwork:
     addActionLabel: Ajouter un Domaine
 formPorts:
   addAction: Correspondance des Ports
+  bindAddress:
+    label: IP Publique de l’hôte (facultatif)
+    placeholder: 'par exemple, 1.2.3.4 ; Par défaut : aucun'
+  public:
+    label: Port de l'hôte public
+    placeholder: "par exemple 80"
   private:
     label: Port Privé de Conteneur
     placeholder: "par exemple 8080"
   protocol:
     label: Protocole 
   noPorts: Ce conteneur n'expose aucun port.
+  error:
+    privateRequired: Le Port privé de conteneur est requis pour chaque règle de port.
+    publicRequired: Le Port hôte public est requis si l’IP de l’hôte est spécifiée.
+    mixedIpPort: "Port {ip}:{port} /{proto} a plus d’une correspondance."
+    mixedPort: "Le Port {port}/{proto} a plus d’une correspondance."
+  showIpLink: Afficher le champ IP de l'Hôte
 formScale:
   label: Échelle
   global:
@@ -1707,6 +1726,10 @@ formSecurity:
     label: Mémoire Allouée
   milliCpuReservation:
     label: Allocation mCPU
+  isolation:
+    label: Isolation
+    default: Par défaut (conteneur)
+    hyperv: HyperV (VM)
 formServiceLinks:
   addAction: Liens des Services
   noServices: Il n’y a aucun autre service à lier.
@@ -1830,6 +1853,24 @@ heroAddService:
   addService: Définir un Service
   addCatalog: Configurer
   linkToCatalog: Parcourir le Catalogue
+hookPage:
+  scaleService:
+    label: Mettre à l’échelle un Service
+    detailPrefix: "Échelle {action} "
+    detailLink: "{displayService}"
+    detailSuffix: "par {amount}"
+  receiver:
+    header: Récepteurs de déclencheurs
+    buttonText: Ajouter un Récepteur
+    content: "Les récepteurs de déclencheurs vous donnent une URL qui peut être utilisée pour déclencher une action dans {appName}."
+    noData: Pas de récepteurs de déclencheurs.
+  fields:
+    kind:
+      label: Type
+    detail:
+      label: Détail
+    url:
+      label: URL du Déclencheur
 hostSettings:
   header: URL d’Enregistrement de l'Hôte
   subtext: Quelle URL de base les hôtes doivent utiliser pour se connecter à l’API de {appName} ?
@@ -2130,9 +2171,13 @@ machine:
     region:
       label: Région
   driverCustom:
+    step1: 'Démarrer une machine Linux quelque part et installer la dernière version de <a href="http://www.docker.com/" target="_blank"> Docker</a> sur elle.'
     step2: "Assurez-vous que tous les groupes de sécurité ou pare-feus autorisent le trafic :"
     step2li: Depuis et vers tous les autres hôtes sur les ports<code>UDP</code> <code>500</code> et <code>4500</code> <span class="text-muted"> (pour la gestion de réseau IPsec)</span>
     step3: 'Facultatif : Ajouter des étiquettes à appliquer à l’hôte.'
+    step4: "Spécifiez l’adresse IP publique qui doit être enregistré pour cet hôte.  Si laissé vide, Rancher détectera automatiquement l’adresse IP à utiliser.  Cela fonctionne en général pour les machines avec IPs public uniques, mais ne fonctionnera pas si la machine est derrière un pare-feu/NAT ou si c’est le même ordinateur qui exécute le conteneur <code>{rancherImage}</code>."
+    agentIp:
+      placeholder: par exemple 1.2.3.4
     step5Copy: Copiez, collez et exécutez la commande ci-dessous pour inscrire l'hôte
     generating: "Génération d'une URL d'inscription ..."
     step5Close:
@@ -2140,7 +2185,17 @@ machine:
       link: Hôtes
       part2: écran dans une minute.
     close: Fermer
+    windows:
+      step1: 'Démarrage d’une machine Windows Server 2016 quelque part et installer la dernière version de <a href="https://msdn.microsoft.com/en-us/virtualization/windowscontainers/quick_start/quick_start_windows_server" target="_blank" rel="noreferrer nofollow"> Docker</a> sur elle.'
+      step2: "Créer un réseau Docker transparent :"
+      step2Copy: docker network create -d transparent transparent
+      step3: Copiez, collez et exécutez la commande ci-dessous dans PowerShell pour démarrer l’agent de {appName}.
   driverDigitalocean:
+    sizeLabel: |
+      {highMem, select, true {High Memory: } other {}}{memoryGb} GB RAM, {disk} GB Disque, {vcpus, plural,
+      =1 {# vCPU}
+      other {# vCPUs}
+      }
     accountSection: Accès du Compte
     authAccountButton: 'Suivant : Configurer Droplet'
     accessToken:
@@ -2428,6 +2483,10 @@ modalEditSnapshot:
   edit: Modifier l'instantané
   create: Créer l'instantané
   nameLabel: Nom de l'Instantané
+modalFeedback:
+  header: Bienvenue sur {appName} !
+  subtitle: "Avant de commencer, s’il vous plaît parlez-nous un peu de vous..."
+  send: Pour Commencer
 modalProcessError:
   header: Information de l'exception
   cause: "Cause:"
@@ -2535,6 +2594,26 @@ newContainer:
 newExternalService:
   header: Ajouter un Service Externe
   alert: 'Remarque : Cela seulement servira si le service externe est une cible d’un équilibreur de charge.'
+newReceiver:
+  title:
+    edit: Modifier le Récepteur
+    add: Ajouter un Récepteur
+  name:
+    placeholder: "p. ex. scale-web"
+  driver:
+    label: Type
+  action:
+    label: Action
+  service:
+    label: Service Cible
+  amount:
+    label: Par
+  min:
+    label: Échelle Minimale
+    placeholder: par exemple 1
+  max:
+    label: Échelle Maximale
+    placeholder: par exemple 80
 pageFooter:
   notARelease: (Pas une Version)
   help: Aide
@@ -2565,6 +2644,20 @@ registryRow:
   email: Mél
   username: Nom d'Utilisateur
   created: Crée
+reservationParameters:
+  label: Limite de Ressource
+  localStorage:
+    labelText: 'Stockage Local'
+    placeholder: 'par exemple 40960'
+    unit: 'MB'
+  memory:
+    labelText: 'Mémoire'
+    placeholder: 'par exemple 2048'
+    unit: 'MB'
+  milliCpu:
+    labelText: Processeur
+    placeholder: 'par exemple 1000'
+    unit: 'mCPU'
 saveCancel:
   saving: Sauvegarde en cours ...
   saved: Sauvegardé !
@@ -2649,6 +2742,7 @@ stackSection:
       details: Détails
       containers: Conteneurs
       actions: Actions
+  upgradeImage: Mise à niveau de l'image du Conteneur
 snapshotSection:
   none: Non sauvegardé
   multiple: 'Multiples : {latestDate}'
@@ -2783,6 +2877,8 @@ nav:
   notReady: En cours...
   k8s:
     tab: Kubernetes
+    cli: Interface de Ligne de Commande (CLI)
+    dashboard: Tableau de bord
     system: Piles d’infrastructure
   swarm:
     tab: Swarm
@@ -2821,8 +2917,11 @@ nav:
     access: Authentification
     machine: Pilotes Docker Machine
     settings: Préférences
+    ha: Haute-Disponibilité
   api:
     tab: API
+    keys: Clés
+    hooks: Déclencheurs Web
   user:
     label: 'Menu Utilisateur : {username}'
     logout: Deconnecter
@@ -2834,6 +2933,9 @@ nav:
     themeDark: Sombre
   noHosts:
     prefix: "Avant d’ajouter votre premier service ou lancer un conteneur, vous aurez besoin d’ajouter un hôte Linux qui prend en charge Docker {minVersion} ou supérieur.  "
+    link: "Ajouter un Hôte"
+  noHostsWindows:
+    prefix: "Avant d’ajouter votre premier service ou lancer un conteneur, vous aurez besoin d’ajouter un hôte Windows.  "
     link: "Ajouter un Hôte"
 action:
   activate: Activer
