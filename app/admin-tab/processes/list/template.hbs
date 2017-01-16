@@ -1,6 +1,7 @@
 {{arranged.length}}
 {{#sortable-table
   classNames="lacsso grid sortable-table"
+  prefix=true
   bulkActions=false
   paging=true
   search=true
@@ -9,39 +10,55 @@
   headers=headers
   body=model.processInstances
   perPage=prefs.tablePerPage
-  as |row kind|
+  as |row kind dt|
 }}
   {{#if (eq kind "row")}}
-    <td data-title="{{headers.0.displayName}}: ">
+    <td data-title="{{dt.id}}">
       <span class={{if row.endTime 'label label-success' 'label label-warning'}}>{{row.id}}</span>
     </td>
-    <td data-title="{{headers.1.displayName}}: " class="clip">
+
+    <td data-title="{{dt.processName}}" class="clip">
       {{#link-to 'admin-tab.process' row.id classNames='hand'}}{{row.processName}}{{/link-to}}
     </td>
-    <td data-title="{{headers.2.displayName}}: " class="clip">
+
+    <td data-title="{{dt.resource}}" class="clip">
       {{process-link model=row}}
     </td>
-    <td data-title="{{headers.3.displayName}}: ">
-      {{row.exitReason}}
-    </td>
-    <td data-title="{{headers.4.displayName}}: ">
+
+    {{#if (eq which "completed")}}
+      <td data-title="{{dt.exitReason}}">
+        {{row.exitReason}}
+      </td>
+    {{/if}}
+
+    <td data-title="{{dt.startTime}}">
       {{#if row.startTime}}
         {{date-from-now row.startTime}}
       {{else}}
         <span class="text-muted">&mdash;</span>
       {{/if}}
     </td>
-    <td data-title="{{headers.5.displayName}}: ">
-      {{#if row.endTime}}
-        {{date-from-now row.endTime}}
-      {{else}}
-        <span class="text-muted">&mdash;</span>
-      {{/if}}
-    </td>
-    <td data-title="{{headers.6.displayName}}: ">
+
+    {{#if (eq which "completed")}}
+      <td data-title="{{dt.endTime}}">
+        {{#if row.endTime}}
+          {{date-from-now row.endTime}}
+        {{else}}
+          <span class="text-muted">&mdash;</span>
+        {{/if}}
+      </td>
+    {{/if}}
+
+    <td data-title="{{dt.runTime}}">
       {{run-time row.startTimeTS row.endTimeTS}}
     </td>
+
+    {{#if (eq which "delayed")}}
+      <td data-title="{{t 'generic.actions'}}:" class="actions">
+        <i {{action "replay" row}} class="icon icon-refresh hand"></i>
+      </td>
+    {{/if}}
   {{else if (eq kind "norows")}}
-    <td colspan="7" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.list.noData'}}</td>
+    <td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.list.noData'}}</td>
   {{/if}}
 {{/sortable-table}}
