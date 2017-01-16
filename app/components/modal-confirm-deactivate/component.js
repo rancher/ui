@@ -32,16 +32,16 @@ export default ModalBase.extend({
 
     switch (type) {
       case 'project':
-        out.message = intl.t('modalConfirmDeactiviate.buttons.project.message');
-        out.button  = intl.t('modalConfirmDeactiviate.buttons.project.button');
+        out.message = intl.t('modalConfirmDeactivate.buttons.project.message');
+        out.button  = intl.t('modalConfirmDeactivate.buttons.project.button');
         break;
       case 'environment':
-        out.message = intl.t('modalConfirmDeactiviate.buttons.environment.message');
-        out.button  = intl.t('modalConfirmDeactiviate.buttons.environment.button');
+        out.message = intl.t('modalConfirmDeactivate.buttons.environment.message');
+        out.button  = intl.t('modalConfirmDeactivate.buttons.environment.button');
         break;
       default:
-        out.message = intl.t('modalConfirmDeactiviate.buttons.default.message');
-        out.button  = intl.t('modalConfirmDeactiviate.buttons.default.button');
+        out.message = intl.t('modalConfirmDeactivate.buttons.default.message');
+        out.button  = intl.t('modalConfirmDeactivate.buttons.default.button');
         break;
     }
 

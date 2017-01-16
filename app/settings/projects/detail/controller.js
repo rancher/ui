@@ -9,9 +9,7 @@ export default Ember.Controller.extend({
 
   actions: {
     done() {
-      this.transitionToRoute('settings.projects').then(() => {
-        this.send('refreshKubernetes');
-      });
+      this.transitionToRoute('settings.projects');
     },
 
     cancel() {

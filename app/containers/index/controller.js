@@ -24,16 +24,6 @@ export default Ember.Controller.extend({
     return this.get('showSystem') === false ? 'standard' : 'all';
   }),
 
-  // @@TODO - need to fix prop names here, i feel like they shouldnt have to matcht the primary sort in the array
-  sorts: {
-    stateSort:    ['stateSort','name','id'],
-    name:     ['name','id'],
-    displayIp:       ['displayIp','name','id'],
-    imageUuid:    ['imageUuid','id'],
-    command:  ['command','name','id'],
-    "primaryHost.displayName":     ['primaryHost.displayName','name','id'],
-  },
-
   actions: {
     parseBulkActions: function(name, selectedElements) {
       this.get('bulkActionHandler')[name](selectedElements);
@@ -44,35 +34,41 @@ export default Ember.Controller.extend({
     {
       displayName: 'State',
       name: 'stateSort',
-      searchField: 'displayState',
+      sort: ['stateSort','name','id'],
       type: 'string',
+      searchField: 'displayState',
       classNames: '',
       width: '125px'
     },
     {
       displayName: 'Name',
       name: 'name',
+      sort: ['name','id'],
       type: 'string',
     },
     {
       displayName: 'IP',
       name: 'displayIp',
+      sort: ['displayIp','name','id'],
       type: 'string',
       width: '110px',
     },
     {
       displayName: 'Host',
       name: 'primaryHost.displayName',
+      sort: ['primaryHost.displayName','name','id'],
       type: 'string',
     },
     {
       displayName: 'Image',
       name: 'imageUuid',
+      sort: ['imageUuid','id'],
       type: 'string',
     },
     {
       displayName: 'Command',
       name: 'command',
+      sort: ['command','name','id'],
       type: 'string',
     },
     {
@@ -80,10 +76,6 @@ export default Ember.Controller.extend({
       width: '110px',
     },
   ],
-  tableCount: Ember.computed(`prefs.${C.PREFS.TABLE_COUNT}`, function() {
-    return this.get(`prefs.${C.PREFS.TABLE_COUNT}`) ? this.get(`prefs.${C.PREFS.TABLE_COUNT}`) : C.TABLES.DEFAULT_COUNT;
-  }),
-
 
   // showChanged should be an observer rather then init to correctly set the showSystem checkbox
   // if showSystem is set on init show does not contain the correct qp as the router has not set it

@@ -1,5 +1,3 @@
-import Resource from 'ember-api-store/models/resource';
+import Setting from 'ui/models/setting';
 
-var ActiveSetting = Resource.extend();
-
-export default ActiveSetting;
+export default Setting.extend();

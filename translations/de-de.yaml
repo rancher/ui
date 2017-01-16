@@ -10,8 +10,10 @@ generic:
   created: Erstellt
   default: Standard
   description: Beschreibung
+  disable: Deaktivieren
   disabled: Deaktiviert
   domainName: Domainname
+  enable: Aktivieren
   enabled: Aktiviert
   expires: Läuft ab
   healthy: Bereit
@@ -19,6 +21,7 @@ generic:
   image: Image
   internal: Intern
   ipAddress: IP Addresse
+  limit: Grenze
   loading: "Laden..."
   missing: "*%FEHLT%*"
   moreActions: Weitere Aktionen
@@ -29,6 +32,8 @@ generic:
   ports: Ports
   remove: Entfernen
   role: Rolle
+  save: Speichern
+  saved: Gespeichert
   state: Status
   to: Zu
   type: Typ
@@ -68,6 +73,8 @@ apiPage:
   actionButton: API Key zur Umgebung hinzufügen
   content: |
     Environment API Keys sind mit dieser spezifischen Umgebung verbunden (<code>{displayName}</code>) und können daher auch nur Ressourcen in diesem Environment modifizieren. Andere Zugänge mit Zugriff auf diese Umgebung können diese Keys ebenfalls verwalten.
+  currentEndpoint: 'Endpunkt (v2-Beta):'
+  legacyEndpoint: 'Endpunkt (v1):'
   table:
     state: Status
     name: Name
@@ -113,6 +120,14 @@ auditLogsPage:
   first: Erste Seite
   next: Nächste Seite
 authPage:
+  shibboleth:
+    enabled:
+      authenticated:
+        header:
+          text: Authentifizierung
+      groupsField: 'Gruppen:'
+      displayName: 'Anzeigename:'
+      userName: 'Benutzername:'
   root:
     header: Access Control
   github:
@@ -293,6 +308,7 @@ catalogPage:
       singular: Keine kompatiblen Templates vorhanden.
       plural: Keine kompatiblen Templates in diesem Katalog vorhanden.
 consolePage:
+  header: 'Shell:'
   closeButton: Schließen
 certificatesPage:
   table:
@@ -409,6 +425,11 @@ failWhalePage:
   reloadButton: |
     <a href="#" onclick="window.location.href = window.location.href; return false;">Neu laden</a> um es nochmal zu versuchen oder
   logoutButton: Abmelden
+haPage:
+  header: Hohe Verfügbarkeit
+  setup:
+    link: Siehe Dokumentation
+    suffix: "für Informationen zur Einrichtung und Nutzung."
 helpPage:
   header: Hilfreiche Links und Informationen
   banner: Ankündigungen
@@ -515,6 +536,8 @@ hostsPage:
       docker: 'Docker:'
       os: 'Betriebssystem:'
       description: 'Beschreibung:'
+      milliCpu:
+        labelText: mCPU
     navTabs:
       containers: Container
       ports: Ports
@@ -548,16 +571,10 @@ hostsPage:
         body:
           noData: Dieser Host hat noch keine Volumes.
 k8sTab:
-  types:
-    namespace: Namensraum
-    service: Service
-    deployment: Deployment
-    replicationcontroller: Replikation-Controller
-    replicaset: Replikatgruppe
-    pod: Pod
   kubectl:
-    header: kubectl
     stepOne:
+      generateConfigText: |
+        Klicken Sie <a href="{downloadUrl}" target="_blank"> Kubectl</a> (nur v1. 4 +) auf Ihrer Workstation verwenden die Schaltfläche, um einen API-Schlüssel und eine Konfigurationsdatei zu generieren:
       generateButton: Konfiguration generieren
     stepTwo:
       progress: Generiere...
@@ -569,60 +586,16 @@ k8sTab:
     shell:
       helpText: |
         Oder verwenden Sie dieses praktische Shell Skript um direkt <code>kubectl</code> Befehle auszuführen:
-  multistat:
-    header:
-      type: 'Typ:'
-      pod: 'IP-Pod:'
-      host: 'Host-IP:'
-      cluster: 'Cluster-IP:'
-      balancer: 'Balancer IP:'
-      session: 'Session Affinität:'
-      external: 'Externe IPs:'
-      selectors: 'Selektoren'
-      replicas: 'Repliken:'
-      startTime: 'Gestartet:'
-      created: 'Erstellt:'
-  navTabs:
-    labels: Labels
-  namespace:
-    pods:
-      index:
-        linkTo: Pod hinzufügen
-      pod:
-        navTabs:
-          containers: Container
-    deployments:
-      index:
-        linkTo: Deployment hinzufügen
-    replicasets:
-      index:
-        linkTo: Replica Set hinzufügen
-    rcs:
-      index:
-        header: RCs
-        linkTo: RC hinzufügen
-    services:
-      header: Dienste
-      linkTo: Service hinzufügen
-      service:
-        index:
-          header: 'Dienst:'
-    stacks:
-      index:
-        header: Stapel
-        linkTo: Aus dem Katalog hinzufügen
-  namespaces:
-    header: Namensräume
-    linkTo: Namensraum hinzufügen
-    table:
-      body:
-        noData: Noch keine Namensräume verfügbar.
-  error:
-    header: Fehler
-    linkTo: Aktualisieren
 loginPage:
   greeting: "Howdy!<br>Willkommen bei {appName}"
   githubMessage: "{appName} nutzt GitHub um Acocunts und Teams zu verwalten.  Klicken Sie den Button um sich einzuloggen und uns lesenden Zugriff auf ihre GitHub Zugangsinformationen zu geben."
+  shibbolethMessage: "{appName} benutzt Shibboleth zur Verwaltung von Accounts.  Für die Anmeldung bei der Shibboleth IDP auf den nachstehenden Button klicken."
+  shibbolethError:
+    401: "Nicht autorisiert"
+    500: "Interner Serverfehler"
+    generic: "Bei der Anmeldung ist ein Problem ({errorCode}) aufgetreten, bitte versuchen Sie es erneut."
+  error:
+    authFailed: Benutzername oder Passwort falsch.
 machinePage:
   header: Machine Treiber
   inactive: Inaktiv
@@ -638,6 +611,7 @@ machinePage:
   table:
     header:
       state: Status
+      name: Name
       url: Treiber URL
       uiUrl: UI-URL
       checksum: Prüfsumme
@@ -707,6 +681,8 @@ servicePage:
     externalIp: Externe IPs
     externalHostname: 'Externer Hostname:'
   navTabs:
+    portRules: Balancer-Regeln
+    certificates: Zertifikate
     ports: Ports
     containers: Container
     labels: Labels
@@ -724,6 +700,8 @@ servicePage:
   linksTab:
     header: Links
     noData: Keine Links
+  certsTab:
+    default: Standardzertifikat
   new:
     form:
       name:
@@ -761,12 +739,20 @@ servicePage:
 settingsPage:
   index:
     header: Umgebungen
+    new: Umgebung hinzufügen
     alert: Keine aktiven Umgebungen vorhanden. Sie müssen zuerst eine Umgebung erstellen..
     table:
       header:
         orchestration: Orchestrierung
+        projectTemplate: Vorlage
       body:
         noData: "Sie haben noch keine Umgebungen."
+  indexTemplate:
+    header: Umgebungs Vorlagen
+    new: Vorlage hinzufügen
+    table:
+      body:
+        noData: "Sie haben noch keine Vorlagen für Umgebungen."
 stacksPage:
   header:
     all: Alle Stacks
@@ -1096,13 +1082,12 @@ catalogSettings:
 confirmDelete:
   title: 'Sind SIe sicher, dass Sie Löschen wollen?'
   environmentNote: 'Hinweis: Alle Ressourcen in dieser Umgebung werden permanent entfernt, inklusive aller Hosts die durch {appName} erstellt wurden.'
-  protip: 'ProTip: Die {alternateLabel} taste während dem Klicken von {isServiceButton} halten um diese Abfrage zu überspringen.'
   confirmAction: Löschen
   cancelAction: Abbrechen
 containerLogs:
   onlyCombined: "<b>Hinweis:</b> Für diesen Container sind nur kombinierte stdout/stderr Logs verfügbar, da dieser mit dem TTY (-t) Flag gestartet wurde."
   combined: Kombiniert
-  protip: 'ProTip: Die {alternateLabel} Taste beim Öffnen von Logs gedrückt halten um in einem neuen Fenster zu öffnen.'
+  protip: 'ProTip: Die {key} Taste beim Öffnen von Logs gedrückt halten um in einem neuen Fenster zu öffnen.'
   scrollTop: Nach oben scrollen
   scrollBottom: Nach unten scrollen
   clear: Bildschirminhalt löschen
@@ -1113,7 +1098,7 @@ containerLogs:
     disconnected: Getrennt
     closed: Geschlossen
 containerShell:
-  protip: 'ProTip: Die {alternateLabel} Taste beim Öffnen der Shell halten um in einem neuen Fenster zu öffnen.'
+  protip: 'ProTip: Die {key} Taste beim Öffnen der Shell halten um in einem neuen Fenster zu öffnen.'
   status:
     initializing: Initialisieren...
     error: 'Fehler: {error}'
@@ -1212,11 +1197,15 @@ editHost:
   description:
     label: Beschreibung
     placeholder: z.B. Mein Entwicklungssystem
+editProjectTemplate:
+  error:
+    conflict: Konflikt
 editRegistry:
   title: Registry bearbeiten
   address:
     label: Addresse
   email:
+    label: E-Mail
     placeholder: z.B. you@example.com
   username:
     label: Benutzername
@@ -1234,6 +1223,8 @@ editStack:
   description:
     label: Beschreibung
     placeholder: z.B. MyApp Stack
+  group:
+    label: Tags
 stackHeader:
   add:
     service: Service hinzufügen
@@ -1244,6 +1235,18 @@ stackHeader:
 formatIp:
   noIp: Keine
   unknownIp: Unbekannt
+formBalancerRules:
+  label: Port-Regeln
+  noRules: Keine Regeln
+  addServiceLabel: Service-Regel hinzufügen
+  addSelectorLabel: Selector-Regel hinzufügen
+  target: Ziel
+  access:
+    label: Zugang
+    public: Öffentlich
+    internal: Intern
+  protocol:
+    label: Protokoll
 formCommand:
   command:
     label: Befehl
@@ -1276,6 +1279,7 @@ formCommand:
       }
     always: Immer
   environment:
+    label: Umgebung
     addAction: Umgebungsvariable hinzufügen
     keyLabel: Variable
     keyPlaceholder: z.B. FOO
@@ -1426,10 +1430,6 @@ formNetwork:
     placeholder: z. B. prod.example.com
 formPorts:
   addAction: Portverknüpfung
-  public:
-    label: 'Öffentlicher Host [IP:]Port'
-    placeholderWithIp: "z.B. 80 oder 1.2.3.4:80"
-    placeholderWithoutIp: "z.B. 80"
   private:
     label: Privater Container Port
     placeholder: "z.B. 8080"
@@ -1516,7 +1516,6 @@ formServiceLinks:
   noLinks: Dieser Service hat keine Service Links.
   service:
     label: Ziel Service
-    prompt: Einen Service auswählen...
   name:
     label: Name
     placeholder: z.B. Datenbank
@@ -1557,7 +1556,6 @@ formTargets:
     placeholder: z.B. 80
   value:
     label: Ziel Service
-    prompt: Serviceauswahl...
   path:
     label: Anfrage Pfad
     placeholder: z.B. /svc
@@ -1788,11 +1786,9 @@ machine:
     environment:
       label: Umgebung
   driverCustom:
-    step1: 'Starten Sie irgendwo eine Linux Maschine und installieren Sie die letzte Version von <a href="http://www.docker.com/" target="_blank">Docker</a> darauf.'
     step2: "Stellen Sie sicher, dass alle Sicherheitsrichtlinien oder Firewalls den folgenden Netzwerkverkehr erlauben:"
     step2li: Von und zu anderen Hosts auf <code>UDP</code> Ports <code>500</code> und <code>4500</code> <span class="text-muted">(für IPsec Netzwerk)</span>
     step3: 'Optional: Labels für den host hinzufügen.'
-    step4: 'Optional: Doe öffentliche IP für diesen Host festlegen.  Das ist notwendig wenn Sie versuchen den Host hinzuzufügen auf dem der <code>{rancherImage}</code> Container selbst läuft.'
     step5Copy: Kopieren Sie den folgenden Bfehl in die zwischenablage und führen Sie ihn auf dem Host aus um diesen bei Rancher zu registrieren
     generating: "Generiere URL für die Registrierung..."
     step5Close:
@@ -1902,9 +1898,9 @@ modalAuditlogInfo:
   header: Zusätzliche Loginformationen
   request: "Anfrage Objekt:"
   response: "Antwort Objekt:"
-modalConfirmDeactiviate:
+modalConfirmDeactivate:
   header: Sind Sie sicher, dass sie
-  protip: 'ProTip: Die {alternateLabel} taste während dem Klicken von {isServiceButton} halten um diese Abfrage zu überspringen.'
+  protip: 'ProTip: Die {key} taste während dem Klicken von {isServiceButton} halten um diese Abfrage zu überspringen.'
   cancel: Abbrechen
   buttons:
     project:
@@ -2038,8 +2034,8 @@ schedulingRuleRow:
   containerName: Container mit Namen
 serviceLink:
   withAlias:
-    sameStack: '{service} als {alias}'
-    differentStack: '{stack}/{service} als {alias}'
+    sameStack: "{service} als {alias}"
+    differentStack: "{stack}/{service} als {alias}"
 sidekickAddtlInfo:
   info: Info
   containers: Container
@@ -2135,7 +2131,7 @@ viewEditProject:
     Jeder mit Zugriff auf API/UI ist Administrator und kann alle Umgebungen verwenden.
 vmConsole:
   header: "Shell:"
-  protip: 'ProTip: Die {alternateLabel} Taste beim Öffnen der Shell halten um in einem neuen Fenster zu öffnen.'
+  protip: 'ProTip: Die {key} Taste beim Öffnen der Shell halten um in einem neuen Fenster zu öffnen.'
   canvas: Canvas nicht unterstützt.
   footerActions:
     buttonSend: Ctrl-Alt-Delete Senden
@@ -2169,9 +2165,6 @@ nav:
   namespace:
     label: Namensraum
     manage: Namensräume verwalten
-  k8s:
-    services: Dienste
-    rcs: Replications Controller
   swarm:
     projects: Projekte
     services: Dienste
@@ -2207,7 +2200,6 @@ nav:
     access: Zugriffskontrolle
     machine: Machine Treiber
     settings: Einstellungen
-    ha: Hochverfügbarkeit
   api:
     tab: API
   user:

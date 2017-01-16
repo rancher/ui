@@ -74,11 +74,19 @@
 {{/unless}}
 
 {{#liquid-if (not collapsed)}}
-  <div class="stack-body {{if single 'single-body'}}">
+  <div class="stack-body {{if single 'single-body'}} clearfix">
     {{#if single}}
       {{#if model.description}}
-      <div class="pt-20 pr-20 pb-20 pl-20">
+      <div class="p-20 pull-left">
           <label>{{t 'generic.description'}}:&nbsp;</label>{{model.description}}
+        </div>
+      {{/if}}
+      {{#if model.tags}}
+      <div class="p-20 pull-right">
+        <label>{{t 'stackSection.tags'}}:&nbsp;</label>
+          {{#each model.tags as |tag|}}
+            {{#link-to "stacks" (query-params tags=tag)}}<span class="badge">{{tag}}</span>{{/link-to}}
+          {{/each}}
         </div>
       {{/if}}
     {{/if}}
@@ -87,7 +95,7 @@
         <tbody>
           {{#each sortedServices as |service|}}
             <tr>
-              <td data-title="{{t 'stackSection.table.dataTitle.state'}}:" class="state r-pl10">
+              <td data-title="{{t 'stackSection.table.dataTitle.state'}}:" class="state pl-10">
                 {{badge-state model=service}}
               </td>
               <td data-title="{{t 'stackSection.table.dataTitle.serviceName'}}:" class="force-wrap">

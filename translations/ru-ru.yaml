@@ -42,6 +42,7 @@ generic:
   total: Всего
   type: Тип
   unknown: Неизвестный
+  uuid: UUID
   "yes": true
 accountsPage:
   index:
@@ -88,6 +89,7 @@ apiPage:
     noData: У этого Окружения пока нет API ключей.
     noName: Нету
     noDescription: Нету
+    noPublicValue: Нет публичного значения
   account:
     header: API Ключи Учётки
     buttonText: Добавить API Ключ Учётки
@@ -125,19 +127,30 @@ auditLogsPage:
   next: Дальше
 authPage:
   shibboleth:
+    header:
+      title: Shibboleth аутентификация
     enabled:
       header: "{providerName} включен"
       authenticated:
         header:
           text: Аунтификация
+          helpText: "Чтобы перенастроить Shibboleth интеграцию - отключите контроль доступа чуть ниже и настройте всё по-новой."
       disableAccess:
         warning: '<b class="text-danger">Внимание:</b> Отключение контроля доступа предоставит полный доступ к Системе {appName} любому, кто может зайти на эту страницу или достучаться до API. Мы предупреждали.'
+        disable: Отключить контроль доступа
       groupsField: 'Группы:'
       displayName: 'Отображаемое имя:'
       userName: 'Логин:'
       userId: 'ID пользователя:'
     disabled:
       warning: "Система {appName} может быть настроена на предоставление доступа набору пользователей и/или групп директории {providerName}. Прямо сейчас это не настроено, так что все, кто могут зайти на эту страницу (или достучаться до API) имеют полный контроль над системой. Не порядок."
+      username:
+        labelText: Поле имени пользователя
+      groups:
+        labelText: Поле группы
+      testAuth:
+        header: '2. Протестируйте и включите аунтификацию'
+        subtext: 'Проверьте правильность настройки приложения путем проверки подлинности с ним:'
   root:
     header: Access Control
   github:
@@ -442,11 +455,17 @@ containersPage:
 containerSubpod:
   childContainers: Контейнеры
   childSidekicks: Сайдкики
+dockerCLI:
+  header: Swarm CLI
 failWhalePage:
   header: Эвакуация!
   reloadButton: |
     Если <a href="#" onclick="window.location.href = window.location.href; return false;">перезагрузка страницы</a> не помоглает -
   logoutButton: попробуйте разлогиниться
+haPage:
+  header: Высокая доступность
+  setup:
+    suffix: "сведения об установке и использовании."
 helpPage:
   header: Полезные ссылки и информация
   banner: Анонсы
@@ -497,6 +516,8 @@ helpPage:
     header: Из Форума
     tagline: Присоединитесь к обсуждениям
     buttonText: На Форуме
+    announcements:
+      header: Объявления
     general:
       header: Обо всем подряд
       buttonText: Больше тем обо всем подряд
@@ -582,77 +603,19 @@ hostsPage:
         body:
           noData: На этом хосте пока нет разделов.
 k8sTab:
-  types:
-    namespace: Пространство имен
-    service: Сервис
-    deployment: Развертывание
-    pod: Pod
   kubectl:
-    header: kubectl
+    stepOne:
+      generateButton: Создать конфигурацию
     stepTwo:
       progress: Генерируем...
-  multistat:
-    header:
-      type: 'Тип:'
-      pod: 'Pod IP:'
-      host: 'IP хоста:'
-      cluster: 'Кластер IP:'
-      external: 'Внешние IP:'
-      generation: 'Генерация:'
-      startTime: 'Запущен:'
-      created: 'Был создан:'
-  navTabs:
-    labels: Метки
-    pods: Pods
-    ports: Порты
-  namespace:
-    pods:
-      index:
-        header: Pods
-        linkTo: Добавить Pod
-      pod:
-        header:
-          linkTo: 'Pod:'
-        type:
-          header: 'Тип:'
-        navTabs:
-          containers: Контейнеры
-    deployments:
-      index:
-        header: Развертывание
-      deployment:
-        header: 'Развертывание:'
-        navTabs:
-          pods: Pods
-          labels: Метки
-          ports: Порты
-    rcs:
-      index:
-        linkTo: Добавить RC
-      rc:
-        header: 'RC:'
-        navTabs:
-          pods: Pods
-          labels: Метки
-          ports: Порты
-    services:
-      header: Сервисы
-      linkTo: Добавить Сервис
-      service:
-        index:
-          header: 'Сервис:'
-    stacks:
-      index:
-        header: Стеки
-        linkTo: Добавить из Каталога
-  error:
-    header: Ошибка
-    linkTo: Перезагрузка
 loginPage:
   greeting: "Система {appName} приветствует Вас!<br/>Представьтесь."
   githubMessage: "Система {appName} использует ГитХаб для управления пользователями и командами. Нажмите на кнопку чуть ниже, чтобы войти в систему и предоставить нам права на чтение базовой информации вашей учетной записи на ГитХабе."
   shibbolethError:
     500: "Внутренняя ошибка сервера"
+  error:
+    authFailed: Неверное имя пользователя или пароль.
+    timedOut: Время сессии истекло, войдите снова, чтобы продолжить.
 machinePage:
   header: Драйвера Машин
   inactive: Выключен
@@ -1114,6 +1077,12 @@ advancedSection:
 catalogSettings:
   header: Каталог
   subtext: Каталоги содержат шаблоны, которые позволяют пользователям легко развертывать приложения, ответив на несколько вопросов
+  certified:
+    detail:
+      rancher: Шаблоны, необходимые для основных Rancher функций, таких как Kubernetes/Mesos/Swarm поддержки оркестровки.  И поддерживающиеся Rancher Labs.
+  community:
+    detail:
+      rancher: Шаблоны созданные и поддерживающиеся членами сообщества. Не сертифицированные компанией Rancher Labs.
   more:
     header: Пользовательский
     addActionLabel: Добавить каталог
@@ -1133,6 +1102,8 @@ confirmDelete:
   cancelAction: Отмена
 containerLogs:
   title: 'Логи: {instanceName}'
+  combined: Комбинированный
+  stderr: Ошибки
   scrollTop: Прокрутка к началу
   scrollBottom: Прокрутка вниз
   clear: Очистить экран
@@ -1193,6 +1164,10 @@ editBalancerService:
   title: Изменить систему балансировки нагрузки
   haproxy:
     label: haproxy.cfg
+    global:
+      label: '<code>общий</code> раздел'
+    defaults:
+      label: '<code>по умолчанию</code> раздел'
 editCertificate:
   title: Редактировать сертификат
   name:
@@ -1266,6 +1241,7 @@ formatIp:
   noIp: Отсутсвует
   unknownIp: Неизвестный
 formBalancerRules:
+  label: Правила порта
   addServiceLabel: Добавить сервис
   addSelectorLabel: Добавить правило
   target: Цель
@@ -1275,12 +1251,18 @@ formBalancerRules:
     internal: Внутренний
   protocol:
     label: Протокол
+  sourceIp:
+    label: IP хоста
+    placeholder: напр. 1.2.3.4
   sourcePort:
     label: Порт
     placeholder: напр. 80
   path:
     label: Путь
     placeholder: напр. /foo
+  hostname:
+    label: Запрос хоста
+    placeholder: напр. example.com
   backendName:
     label: Бэкенд
     placeholder: напр. webapp
@@ -1293,7 +1275,6 @@ formBalancerRules:
     moveDown: Вниз
   serviceId:
     label: Сервис
-    prompt: Выберите сервис...
   selector:
     placeholder: напр. foo=бар
   help:
@@ -1470,10 +1451,6 @@ formNetwork:
     addActionLabel: Добавить домен
 formPorts:
   addAction: Прокинуть порт
-  public:
-    label: 'Публичный Хост [IP:] Порт'
-    placeholderWithIp: "напр. 80 или 1.2.3.4:80"
-    placeholderWithoutIp: "напр. 80"
   private:
     label: Порт Частного Контейнера
     placeholder: "напр. 8080"
@@ -1535,7 +1512,6 @@ formServiceLinks:
   noLinks: Этот сервис не имеет никаких сервисных ссылок.
   service:
     label: Укажите сервис
-    prompt: Выберите сервис...
   name:
     label: Имя
     placeholder: напр. database
@@ -1561,8 +1537,6 @@ formTargets:
   srcPort:
     label: Порт источника
     placeholder: напр. 80
-  value:
-    prompt: Выберите сервис...
   path:
     placeholder: напр. /svc
   dstPort:
@@ -1615,6 +1589,7 @@ hostPod:
     groupedInstances:
       namespace: 'Пространство имен:'
       stack: 'Стек:'
+      standalone: Автономные контейнеры
 identityBlock:
   loading: Загрузка...
 infoMultiStats:
@@ -1735,6 +1710,7 @@ loginUserPass:
   passwordLabel: Пароль
 machine:
   driverAmazon:
+    accessSection: Доступ к Учетной Записи
     accessKey:
       label: Ключ доступа
       placeholder: Ваш ключ доступа AWS
@@ -1768,6 +1744,7 @@ machine:
     privateIp:
       label: Частный IP
   driverAzure:
+    accountAccessSection: Доступ к Учетной Записи
     networkSection: Сеть
     instanceSection: Инстанс
     image:
@@ -1789,6 +1766,7 @@ machine:
       label: Тип хранения
     vnet:
       label: VNet
+      placeholder: '[resourcegroup:] имя'
     subnet:
       label: Подсеть
     subnetPrefix:
@@ -1813,9 +1791,12 @@ machine:
       link: Хосты
     close: Закрыть
   driverDigitalocean:
+    accountSection: Доступ к Учетной Записи
     instanceSection: Инстанс
     image:
       label: Образ
+    sshUser:
+      label: SSH пользователь
     size:
       label: Размер
     regionSection: Регион
@@ -1825,6 +1806,7 @@ machine:
     ipv6:
       label: Включить IPv6
   driverExoscale:
+    accountSection: Доступ к Учетной Записи
     apiKey:
       label: API Key
     secretKey:
@@ -1846,6 +1828,7 @@ machine:
       label: Драйвер
     optionsSection: "{driverName} параметры"
   driverPacket:
+    accountSection: Доступ к Учетной Записи
     projectId:
       label: Проект
     apiKey:
@@ -1859,6 +1842,7 @@ machine:
     region:
       label: Регион
   driverRackspace:
+    accountSection: Доступ к Учетной Записи
     username:
       label: Имя пользователя
       placeholder: Ваше имя пользователя RackSpace
@@ -1868,7 +1852,10 @@ machine:
     region:
       label: Регион
     instanceSection: Инстанс
+    flavor:
+      label: Формат
   driverUbiquity:
+    accountSection: Доступ к Учетной Записи
     apiUsername:
       label: Удаленный ID
     apiToken:
@@ -1879,7 +1866,10 @@ machine:
       label: Регион
     image:
       label: Образ
+    flavor:
+      label: Формат
   driverVsphere:
+    accountSection: Доступ к Учетной Записи
     vcenterPort:
       label: Порт vCenter
     username:
@@ -1933,12 +1923,13 @@ modalAboutComponent:
   version: Версия
   cattle: Cattle
   ui: Пользовательский интерфейс
-  docerkMachine: docker-machine
   close: Закрыть
 modalContainerStop:
   uom: сек
+  label: Задержка
   placeholder: '10'
-modalConfirmDeactiviate:
+  button: Остановить
+modalConfirmDeactivate:
   cancel: Отмена
   buttons:
     project:
@@ -1956,8 +1947,6 @@ modalEditDriver:
     label: Контрольная сумма
 modalEditSnapshot:
   edit: Редактировать снимок
-modalFeedback:
-  send: Отправить
 modalProcessError:
   cause: "Причина:"
   none: Н/Д
@@ -1974,6 +1963,7 @@ newBalancer:
     add: Добавить систему балансировки нагрузки
     edit: Изменить систему балансировки нагрузки
   tabs:
+    custom: Пользовательские haproxy.cfg
     labels: Метки
     scheduling: Назначить
 newCatalog:
@@ -2054,13 +2044,6 @@ registryRow:
   email: Эл. адрес
   username: Имя пользователя
   created: Создан
-reservationParameters:
-  localStorage:
-    placeholder: '1024'
-  memory:
-    placeholder: '2048'
-  milliCpu:
-    placeholder: '1000'
 saveCancel:
   saving: Сохранение...
   saved: Сохранено!
@@ -2080,11 +2063,11 @@ schedulingRuleRow:
   containerLabel: контейнер с меткой
 serviceLink:
   withAlias:
-    sameStack: '{service} как {alias}'
-    differentStack: '{stack}/{service} как {alias}'
+    sameStack: "{service} как {alias}"
+    differentStack: "{stack}/{service} как {alias}"
   noAlias:
-    sameStack: '{service}'
-    differentStack: '{stack}/{service}'
+    sameStack: "{service}"
+    differentStack: "{stack}/{service}"
 sidekickAddtlInfo:
   info: Информация
   image: Образ
@@ -2142,7 +2125,6 @@ telemetryOpt:
   subtext: |
     Компании Rancher Labs нужно собирать анонимную информацию о конфигурации вашей установки для улучшения работы сервиса. <br/> Ваши данные не будут переданы третьим лицам, никакие конкретные имена или адреса ресурсом не собираются.
   learnMore:
-    link: "http://docs.rancher.com/rancher/telemetry"
     label: Подробнее
   label: Разрешить сбор анонимной статистики
 tooltipLink:
@@ -2158,7 +2140,7 @@ upgradeBtn:
     loading: 'Проверка обновления...'
     current: 'Актуально'
     available: 'Доступно обновление'
-    inprogress: 'Обновление выполняется'
+    inprogress: 'Выполняется обновление '
     upgraded: 'Обновление: Готово'
     notfound: 'Версия не найдена'
     error: 'Ошибка проверки обновления'
@@ -2198,7 +2180,6 @@ containerChoices:
   hostGroupWithState: 'Хост: {name} ({state})'
   unknownHost: 'Хост:?'
   containerOption: "{name}"
-  containerOptionWithState: "{name} ({state})"
 allServices:
   stackGroup: 'Стек: {name}'
   noName: '(Стек: {id})'
@@ -2217,10 +2198,6 @@ nav:
     manage: Управление пространствами
   k8s:
     tab: Kubernetes
-    stacks: Стеки
-    services: Сервисы
-    pods: Pods
-    cli: Kubectl
   swarm:
     tab: Swarm
     projects: Проекты
@@ -2258,7 +2235,6 @@ nav:
     access: Контроль доступа
     machine: Драйвера машин
     settings: Настройки
-    ha: Высокодоступность
   api:
     tab: АПИ
   user:
@@ -2282,7 +2258,7 @@ action:
   console: Открыть консоль
   deactivate: Деактивировать
   edit: Редактировать
-  execute: Подключиться к Консоле
+  execute: Подключиться к Консоли
   exportConfig: Экспортировать конфиг
   finishUpgrade: Закончить обновление
   logs: Смотреть логи

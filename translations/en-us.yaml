@@ -1022,31 +1022,20 @@ swarmPage:
         noData: You do not have any Services yet.
 
 processesPage:
-  indexPage:
-    header: Processes
-    tabNav:
-      running: Running
-      all: All
-    form:
-      resourceType: 'Select a Resource type: '
-      resourceId:
-        placeholder: Resource ID
-      processName:
-        placeholder: Process Name
-      clear: Clear
-      search: Search
-    table:
-      header:
-        id: ID
-        processName: Name
-        resource: 'Resource Type:ID'
-        exitReason: Exit Reason
-        startTime: Started
-        endTime: Ended
-        duration: Duration
-      noData: There are no recent processes.
-  processPage:
-    header: Settings
+  header: Processes
+  tab:
+    summary: Summary
+    pools: Pools
+    running: Running
+    delayed: Delayed
+    ready: Ready
+    completed: Recently Completed
+  summary:
+    noData: No processes are currently running
+  pools:
+    noData: No pools found
+  list:
+    noData: No processes found
 
 virtualMachinePage:
   header: 'Virtual Machine:'
@@ -1340,6 +1329,11 @@ copyToClipboard:
   tooltip: Copy to Clipboard
   copied: Copied!
 
+dangerZone:
+  header: Advanced Settings
+  subtext: "Proceed with caution; typical users will not need to change these.  Incorrect values can break your {appName} installation.  Settings which have been changed are shown in bold."
+  showLabel: I understand that I can break things by changing advanced settings.
+
 devicePermissions:
   all: All
   none: None
@@ -1444,6 +1438,12 @@ editHost:
     placeholder: e.g. My development host
   labels:
     label: Labels
+  ips:
+    label: Scheduler IPs
+    valueLabel: IP Address
+    valuePlaceholder: e.g. 1.2.3.4
+    addActionLabel: Add IP
+    help:  If provided, the scheduler will select and bind published ports to one of the given public IP addresses.
 
 editProjectTemplate:
   title:
@@ -1988,7 +1988,6 @@ formUserLabels:
     label: Value
     placeholder: e.g. bar
   protip: "ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry."
-  noLabels: No Labels
 
 formUpgrade:
   size: Batch Size
@@ -2649,7 +2648,6 @@ modalAboutComponent:
   ui: User Interface
   compose: Compose
   machineService: Machine Service
-  docerkMachine: docker-machine
   close: Close
 
 modalAuditlogInfo:
@@ -2661,14 +2659,14 @@ modalContainerStop:
   uom: seconds
   header: "Are you sure you want to stop"
   helpText: "The container will be forcibly terminated if it does not stop itself before the timeout expires"
-  protip: "ProTip: Hold the {alternateLabel} key while clicking stop to bypass this confirmation."
+  protip: "ProTip: Hold the {key} key while clicking stop to bypass this confirmation."
   label: Timeout
   placeholder: '10'
   button: Stop
 
-modalConfirmDeactiviate:
+modalConfirmDeactivate:
   header: Are you sure you want to
-  protip: "ProTip: Hold the {alternateLabel} key while clicking {isServiceButton} to bypass this confirmation."
+  protip: "ProTip: Hold the {key} key while clicking {isServiceButton} to bypass this confirmation."
   cancel: Cancel
   buttons:
     project:
@@ -2702,6 +2700,15 @@ modalEditDriver:
   checksum:
     label: Checksum
     help: "Optional: Verify that the downloaded driver matches the expected checksum."
+
+modalEditSetting:
+  title: Edit Advanced Setting
+  name:
+    label: Name
+  value:
+    label: Value
+  reset:
+    label: Reset to Default
 
 modalEditSnapshot:
   edit: Edit Snapshot
@@ -2849,6 +2856,12 @@ newReceiver:
     label: Target Service
   amount:
     label: By
+  min:
+    label: Minimum Scale
+    placeholder: e.g. 1
+  max:
+    label: Maximum Scale
+    placeholder: e.g. 20
 
 pageFooter:
   notARelease: (Not a Release)
@@ -2886,15 +2899,19 @@ registryRow:
   created: Created
 
 reservationParameters:
+  label: Resource Limit
   localStorage:
-    labelText: 'Local Storage Limit'
-    placeholder: '1024'
+    labelText: 'Local Storage'
+    placeholder: 'e.g. 40960'
+    unit: 'MB'
   memory:
-    labelText: 'Memory Limit'
-    placeholder: '2048'
+    labelText: 'Memory'
+    placeholder: 'e.g. 2048'
+    unit: 'MB'
   milliCpu:
-    labelText: mCPU Limit
-    placeholder: '1000'
+    labelText: CPU
+    placeholder: 'e.g. 1000'
+    unit: 'mCPU'
 
 saveCancel:
   saving: Saving...
@@ -2964,6 +2981,7 @@ stackSection:
   outputs: Outputs
   description: Description
   none: No Services
+  tags: Tags
   container: |
     {numContainers, plural,
       =1 {Container}
@@ -3088,7 +3106,7 @@ viewEditProject:
 
 vmConsole:
   header: "Console:"
-  protip: "ProTip: Hold the {alternateLabel} key when opening shell access to launch a new window."
+  protip: "ProTip: Hold the {key} key when opening shell access to launch a new window."
   canvas: Canvas not supported.
   footerActions:
     buttonSend: Send Ctrl-Alt-Delete

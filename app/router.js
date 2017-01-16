@@ -52,8 +52,10 @@ Router.map(function() {
 
       this.route('processes', {path: '/processes'}, function() {
         this.route('index', {path: '/'});
-        this.route('process', {path: '/:process_id'});
+        this.route('pools', {path: '/pools'});
+        this.route('list', {path: '/list'});
       });
+      this.route('process', {path: '/processes/:process_id'});
 
       this.route('audit-logs');
       this.route('machine');

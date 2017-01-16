@@ -15,10 +15,12 @@ export default Ember.Route.extend({
   model() {
     let settings = this.get('settings');
 
-    return Ember.Object.create({
-      host:      settings.get(C.SETTING.API_HOST),
-      catalog:   settings.get(C.SETTING.CATALOG_URL),
-      telemetry: settings.get(C.SETTING.TELEMETRY),
+    return this.get('userStore').find('setting').then(() => {
+      return Ember.Object.create({
+        host:      settings.get(C.SETTING.API_HOST),
+        catalog:   settings.get(C.SETTING.CATALOG_URL),
+        telemetry: settings.get(C.SETTING.TELEMETRY),
+      });
     });
   },
 

@@ -488,11 +488,18 @@ containersPage:
 containerSubpod:
   childContainers: コンテナ
   childSidekicks: サイドキック
+dockerCLI:
+  header: Swarm CLI
 failWhalePage:
   header: エラー
   reloadButton: |
     再度試してみるために以下を実施してください<br> <a href="#" onclick="window.location.href = window.location.href; return false;">再読み込み</a>または
   logoutButton: ログアウト
+haPage:
+  header: 高可用性
+  setup:
+    link: ドキュメントを参照してください
+    suffix: "セットアップと使用方法についてご確認ください。"
 helpPage:
   header: リンク & インフォメーション
   banner: アナウンス
@@ -632,17 +639,10 @@ hostsPage:
         body:
           noData: まだこのホストにはボリュームがありません
 k8sTab:
-  types:
-    namespace: 名前空間
-    service: サービス
-    deployment: デプロイメント
-    replicationcontroller: レプリケーションコントローラー
-    replicaset: レプリカセット
-    petset: ペットセット
-    pod: ポッド
   kubectl:
-    header: kubectl
     stepOne:
+      generateConfigText: |
+        <a href="{downloadUrl}"target="_blank"> kubectl </a> (v1.4+ のみ) をあなたのワークステーションで利用するには、API キーと構成ファイルを生成する為にボタンをクリックしてください:
       generateButton: 設定を生成
     stepTwo:
       progress: 生成中...
@@ -654,88 +654,6 @@ k8sTab:
     shell:
       helpText: |
         または以下のシェルから直接<code>kubectl</code>コマンドを実行します:
-  multistat:
-    header:
-      type: 'タイプ:'
-      pod: 'ポッド IP:'
-      host: 'ホスト IP:'
-      cluster: 'クラスター IP:'
-      balancer: 'バランサー IP:'
-      session: 'セッションアフィニティ:'
-      external: '外部 IP:'
-      selectors: 'セレクター'
-      replicas: 'レプリカ:'
-      generation: '世代:'
-      phase: 'フェイズ:'
-      startTime: '起動日:'
-      created: '作成日:'
-  navTabs:
-    labels: ラベル
-    pods: ポッド
-    ports: ポート
-    replicasets: レプリカセット
-  namespace:
-    pods:
-      index:
-        header: ポッド
-        linkTo: ポッドを追加
-      pod:
-        header:
-          linkTo: 'ポッド:'
-        type:
-          header: 'タイプ:'
-        navTabs:
-          containers: コンテナ
-    deployments:
-      index:
-        header: デプロイメント
-        linkTo: デプロイメントを追加
-      deployment:
-        header: 'デプロイメント:'
-        navTabs:
-          pods: ポッド
-          labels: ラベル
-          ports: ポート
-    replicasets:
-      index:
-        header: レプリカセット
-        linkTo: レプリカセットを追加
-      replicaset:
-        header: 'レプリカセット:'
-    rcs:
-      index:
-        header: レプリケーションコントローラー
-        linkTo: レプリケーションコントローラーを追加
-      rc:
-        header: 'レプリケーションコントローラー:'
-        navTabs:
-          pods: ポッド
-          labels: ラベル
-          ports: ポート
-    services:
-      header: サービス
-      linkTo: サービスを追加
-      service:
-        index:
-          header: 'サービス:'
-    stacks:
-      index:
-        header: スタック
-        linkTo: カタログから追加
-  namespaces:
-    header: 名前空間
-    linkTo: 名前空間を追加
-    table:
-      body:
-        noData: まだ名前空間はありません
-  error:
-    header: エラー
-    linkTo: 再読み込み
-    detail: |
-      Kubernetes API との通信中に {count, plural,
-      =1 {エラー}
-      other {エラー}
-      } が発生しました。
 loginPage:
   greeting: "<br>ようこそ {appName} へ!"
   githubMessage: "{appName} はアカウントやチームの管理に GitHub を利用しています。 ログインしてあなたの GitHub アカウント情報に読み込み権限でアクセスするために以下のボタンを押して下さい。"
@@ -744,6 +662,9 @@ loginPage:
     401: "認証に失敗しました"
     500: "サーバ内部エラー"
     generic: "ログイン中にエラー {{errorCode}} が発生しました。もう一度やり直してください。"
+  error:
+    authFailed: ユーザーネームまたはパスワードが正しくありません。
+    timedOut: セッションがタイムアウトしました。 続けるには再度ログインをしてください。
 machinePage:
   header: マシンドライバー
   inactive: 休止
@@ -886,9 +807,6 @@ settingsPage:
   indexTemplate:
     header: 環境のテンプレート
     new: テンプレートを追加
-    subtext: |
-      <p>{appName} は複数の<b>環境</b>に対してリソースのグループ化をサポートします。 それぞれ、個別に複数サービスやインフラストラクチャのリソースを持ち、1人もしくは複数のユーザーやグループにより管理されます。</p>
-      <p>例えば、 それぞれの環境を隔離するために &quot;dev&quot;, &quot;test&quot; もしくは &quot;production&quot; といった分離された環境を作成し、 &quot;dev&quot; に対しては組織の全員がアクセスできるが、 &quot;production&quot; に対しては小さなチームのみに制限するといったことが可能です。</p>
     table:
       header:
         stacks: スタック
@@ -1325,6 +1243,8 @@ editContainer:
     container: コンテナを編集
 editExternalService:
   title: 外部サービスを編集
+  name:
+    placeholder: 例えば外部の db
 editHost:
   title: ホストを編集
   hostname:
@@ -1397,6 +1317,8 @@ formBalancerRules:
     internal: 内部
   protocol:
     label: プロトコル
+  sourceIp:
+    label: ホスト IP
   sourcePort:
     label: ポート
     placeholder: '例: 80'
@@ -1414,11 +1336,12 @@ formBalancerRules:
     moveDown: 下に移動
   serviceId:
     label: サービス
-    prompt: サービスを選択してください...
-    noHostnames: "(ホスト名でバランシングできません)"
+  selector:
+    label: セレクタ
   help:
     prefix: "ホストとパスルールは上位から下位への順番でマッチングが評価されます。バックエンドはデフォルトでランダム名が利用され、生成されるバックエンドをカスタマイズするには名前を入力しカスタマイズされた haproxy.cfg を参照してください。"
     showBackendLink: "カスタムバックエンド名を見る"
+    showIpLink: "ホストの IP アドレスのオプションを表示します。"
 formCommand:
   command:
     label: コマンド
@@ -1611,8 +1534,6 @@ formNetwork:
     addActionLabel: ドメインを追加
 formPorts:
   addAction: ポートマップ
-  public:
-    label: 'パブリックホスト [IP:]ポート'
   private:
     label: プライベートコンテナポート
   protocol:
@@ -1708,7 +1629,6 @@ formServiceLinks:
   noLinks: このサービスにはサービスリンクがありません。
   service:
     label: 対象サービス
-    prompt: サービスを選択してください...
   name:
     label: 名前
 formSslTermination:
@@ -1750,7 +1670,6 @@ formTargets:
     label: 元ポート
   value:
     label: 対象サービス
-    prompt: サービスを選択してください...
   path:
     label: リクエストパス
   dstPort:
@@ -1776,7 +1695,6 @@ formUserLabels:
   value:
     label: 値
   protip: 'ProTip: 簡単に入力するには1行以上の key=value ペアをペースト>してください。'
-  noLabels: ラベルはありません
 formUpgrade:
   size: バッチサイズ
   interval: バッチ間隔
@@ -1803,6 +1721,8 @@ formVolumes:
   noHostContainers: このホストには他コンテナのボリュームを利用するためのコンテナがありません。
   onlySingleHost: 特定ホストにコンテナを追加した場合のみ利用できます
   addActionLabel: ボリュームを追加
+  errors:
+    invalidName: ボリューム名は、文字、数字、ハイフン、アンダー スコア、およびドットのみ含めることができます。
 heroAddService:
   infra:
     header: インフラストラクチャ スタックを追加
@@ -2109,11 +2029,9 @@ machine:
     region:
       label: リージョン
   driverCustom:
-    step1: 'Linux マシンを起動し最新版の<a href="http://www.docker.com/" target="_blank">Docker</a>をインストールします。'
     step2: "セキュリティグループやファイアウォールが以下のトラフィックを許可していることを確認してください:"
     step2li: 他のホストへ、または他のホストからの <code>UDP 500</code> 番ポートと <code>4500</code> 番ポート <span class="text-muted">(IPsec ネットワークのため)</span>
     step3: 'オプション: ホストに適用するためのラベルを追加します。'
-    step4: 'オプション: ホストが利用するパブリック IP を指定します。 <code>{rancherImage}</code> コンテナが動作するホストを追加する場合は必要となります。'
     step5Copy: 以下のコマンドをコピー&ペーストし実行しホストを登録します
     generating: "登録用 URL を生成中..."
     step5Close:
@@ -2122,11 +2040,6 @@ machine:
       part2: 画面にポップアップ表示されます。
     close: 閉じる
   driverDigitalocean:
-    sizeLabel: |
-      {slug} RAM, {disk}gb ディスク, {vcpus, plural,
-      =1 {# vCPU}
-      other {# vCPUs}
-      }
     accountSection: アカウントアクセス
     authAccountButton: '次へ: ドロップレットの設定'
     accessToken:
@@ -2137,6 +2050,8 @@ machine:
     instanceSection: インスタンス
     image:
       label: イメージ
+    sshUser:
+      label: SSH ユーザー
     size:
       label: サイズ
     regionSection: リージョン
@@ -2359,7 +2274,6 @@ modalAboutComponent:
   ui: User Interface
   compose: Compose
   machineService: Machine Service
-  docerkMachine: docker-machine
   close: 閉じる
 modalAuditlogInfo:
   header: 追加のログ情報
@@ -2369,13 +2283,13 @@ modalContainerStop:
   uom: 秒
   header: "本当に停止してもよろしいですか?"
   helpText: "タイムアウト時間内に停止しない場合、コンテナは強制終了されます"
-  protip: 'ProTip: この確認画面を飛ばす場合は停止ボタンのクリック時に {alternateLabel} キーを長押ししてください。'
+  protip: 'ProTip: この確認画面を飛ばす場合は停止ボタンのクリック時に {key} キーを長押ししてください。'
   label: タイムアウト
   placeholder: '10'
   button: 停止
-modalConfirmDeactiviate:
+modalConfirmDeactivate:
   header: 本当にこの処理を行ってよろしいですか?
-  protip: 'ProTip: この確認画面を飛ばす場合は {isServiceButton} クリック時に {alternateLabel} キーを長押ししてください。'
+  protip: 'ProTip: この確認画面を飛ばす場合は {isServiceButton} クリック時に {key} キーを長押ししてください。'
   cancel: キャンセル
   buttons:
     project:
@@ -2411,11 +2325,6 @@ modalEditSnapshot:
   edit: スナップショットを編集
   create: スナップショットを作成
   nameLabel: スナップショット名
-modalFeedback:
-  header: '{appName} を楽しんでますか?'
-  send: 送信
-  later: あとで
-  never: そのままにする
 modalProcessError:
   header: 例外情報
   cause: "理由:"
@@ -2542,21 +2451,17 @@ pageHeaderEnvironment:
 projectRow:
   none: 詳細情報はありません
   orchestration: オーケストレーション
+projectUpgrade:
+  header: 環境をアップグレード
+  detail: "{appName} {appVersion} には、既存のシステムサービスやロードバランサーコンテナをアップグレードする必要がある変更が含まれています。"
+  notOwner: "この環境のオーナーまたは管理者だけがアップグレードを実行できます。"
+  actionButton: 今すぐアップグレード
+  banner: 環境をアップグレード中...
 registryRow:
   address: アドレス
   email: Email
   username: ユーザー名
   created: 作成日
-reservationParameters:
-  localStorage:
-    labelText: 'ローカルストレージ制限'
-    placeholder: '1024'
-  memory:
-    labelText: 'メモリ制限'
-    placeholder: '2048'
-  milliCpu:
-    labelText: mCPU制限
-    placeholder: '1000'
 saveCancel:
   saving: 保存中...
   saved: 完了!
@@ -2573,13 +2478,18 @@ schema:
     option: オプションを選択してください...
   inputService:
     prompt: サービスを選択してください...
+schedulingRuleRow:
+  hostLabel: ホストラベル
+  containerLabel: ラベル付きコンテナ
+  serviceName: 名前付きサービス
+  containerName: 名前付きコンテナ
 serviceLink:
   withAlias:
-    sameStack: '{service} を {alias} とする'
-    differentStack: '{stack}/{service} を {alias} とする'
+    sameStack: "{service} を {alias} とする"
+    differentStack: "{stack}/{service} を {alias} とする"
   noAlias:
-    sameStack: '{service}'
-    differentStack: '{stack}/{service}'
+    sameStack: "{service}"
+    differentStack: "{stack}/{service}"
 sidekickAddtlInfo:
   info: 情報
   image: イメージ
@@ -2655,6 +2565,7 @@ storagePoolSection:
         snapshotState: 'スナップショットの状態'
         snapshotName: 'スナップショット名'
         backedUp: 'バックアップ済み'
+        mounts: 'マウント(コンテナ:パス)'
 svgServiceContainer:
   sidekicks: サイドキック
 swarm:
@@ -2674,7 +2585,6 @@ telemetryOpt:
   subtext: |
     Rancher Labs では {appName} のインストール構成に関する匿名の情報を収集したいと思います<br/>。特定のリソース名、IP アドレス、その他識別情報などは収集されません<br/>。収集された情報はどのようにユーザーが Rancher を利用しているかを理解し、将来の開発における優先度を決めるために利用されます。
   learnMore:
-    link: "http://docs.rancher.com/rancher/telemetry"
     label: 詳細を見る
   label: 匿名の統計情報の収集を許可する
 tooltipLink:
@@ -2714,7 +2624,7 @@ viewEditProject:
     API/UI にアクセスできる誰でも管理者として全ての環境を利用できます。
 vmConsole:
   header: "コンソール:"
-  protip: 'ProTip: 新しいウィンドウで起動する場合はシェルアクセスを開く際に {alternateLabel} を長押ししてください。'
+  protip: 'ProTip: 新しいウィンドウで起動する場合はシェルアクセスを開く際に {key} を長押ししてください。'
   canvas: キャンバスがサポートされていません。
   footerActions:
     buttonSend: Ctrl-Alt-Delete を送る
@@ -2725,7 +2635,6 @@ waitKubernetes:
   createStack: 'Kubernetes のシステムスタックを作成中'
   startServices: 'サービスを起動中'
   waitApi: 'Kubernetes API を待っています'
-  createNamespace: '名前空間を作成中'
 waitMesos:
   addHost: '3台のホストを追加しています'
   activateHost: 'ホストがアクティブになるのを待っています'
@@ -2764,13 +2673,6 @@ nav:
   notReady: セットアップ中...
   k8s:
     tab: Kubernetes
-    stacks: スタック
-    deployments: デプロイメント
-    services: サービス
-    replicasets: レプリカセット
-    rcs: レプリケーションコントローラー
-    pods: ポッド
-    cli: Kubectl
     system: インフラストラクチャ スタック
   swarm:
     tab: Swarm
@@ -2809,7 +2711,6 @@ nav:
     access: アクセスコントロール
     machine: マシンドライバー
     settings: 設定
-    ha: 高可用性
   api:
     tab: API
   user:

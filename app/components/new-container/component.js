@@ -4,6 +4,7 @@ import SelectTab from 'ui/mixins/select-tab';
 import { debouncedObserver } from 'ui/utils/debounce';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
+import { flattenLabelArrays } from 'ui/mixins/manage-labels';
 
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
   intl                      : Ember.inject.service(),
@@ -248,25 +249,14 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     'schedulingLabels.@each.{key,value}',
     'networkingLabels.@each.{key,value}',
     function() {
-      var out = {};
-
-      function flatten(row) {
-        if ( row.value === undefined )
-        {
-          delete out[row.key];
-        }
-        else
-        {
-          out[row.key] = row.value;
-        }
-      }
-
-      (this.get('userLabels')||[]).forEach(flatten);
-      (this.get('scaleLabels')||[]).forEach(flatten);
-      (this.get('imageLabels')||[]).forEach(flatten);
-      (this.get('commandLabels')||[]).forEach(flatten);
-      (this.get('schedulingLabels')||[]).forEach(flatten);
-      (this.get('networkingLabels')||[]).forEach(flatten);
+      let out = flattenLabelArrays(
+        this.get('userLabels'),
+        this.get('scaleLabels'),
+        this.get('imageLabels'),
+        this.get('commandLabels'),
+        this.get('schedulingLabels'),
+        this.get('networkingLabels')
+      );
 
       var config = this.get('launchConfig');
       if ( config )

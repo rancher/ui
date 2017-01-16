@@ -15,9 +15,6 @@ export default Ember.Component.extend(ManageLabels, {
   // Is requesting a specific host allowed
   canRequestHost: true,
 
-  // All the hosts, for generating dropdowns
-  allHosts: null,
-
   // Initial labels and host to start with
   initialLabels: null,
   initialHostId: null,
@@ -48,6 +45,8 @@ export default Ember.Component.extend(ManageLabels, {
 
   init() {
     this._super(...arguments);
+
+    this.set('allHosts', this.get('store').all('host'));
 
     this.initLabels(this.get('initialLabels'), 'affinity');
 

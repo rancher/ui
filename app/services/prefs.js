@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Service.extend({
   userStore: Ember.inject.service('user-store'),
@@ -77,4 +78,13 @@ export default Ember.Service.extend({
 
     this.endPropertyChanges();
   },
+
+  tablePerPage: Ember.computed(`${C.PREFS.TABLE_COUNT}`, function() {
+    let out = this.get(`${C.PREFS.TABLE_COUNT}`);
+    if ( !out ) {
+      out = C.TABLES.DEFAULT_COUNT;
+    }
+
+    return out;
+  }),
 });

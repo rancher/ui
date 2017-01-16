@@ -1,0 +1,21 @@
+<h3>{{t 'dangerZone.header'}}</h3>
+<h5>{{t 'dangerZone.subtext' appName=settings.appName}}</h5>
+<hr>
+
+{{#if loading}}
+  <div class="lacsso p-20 text-center"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</div>
+{{else if show}}
+  <div>
+    {{#each current as |row|}}
+      <div class="advanced-setting">
+        <div class="edit btn btn-warning" {{action "showEdit" row.key}}><i class="icon icon-edit"></i></div>
+        <div class="text-mono force-wrap lacsso mr-50 {{unless (or (not row.obj) row.obj.isDefault) 'text-bold'}}">{{row.key}}={{#if row.obj.value}}{{row.obj.value}}{{else}}<span class="text-muted">&lt;none&gt;</span>{{/if}}</div>
+        <p class="help-block">{{row.description}}</p>
+      </div>
+    {{/each}}
+  </div>
+{{else}}
+  <div class="text-center">
+    <a class="btn btn-link" {{action "show"}}><i class="icon icon-purge"></i> {{t 'dangerZone.showLabel'}}</a>
+  </div>
+{{/if}}
