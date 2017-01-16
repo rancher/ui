@@ -4,6 +4,7 @@ languageContribute: "Помощь для перевода Rancher"
 generic:
   actions: Действия
   activate: Активировать
+  any: Любой
   as: Как
   cancel: Отмена
   closeModal: Закрыть
@@ -646,6 +647,24 @@ mesosPage:
 notFoundPage:
   header: "Вы запросили несуществующую страницу. Пожалуйста, аккуратнее."
   linkTo: Начать сначала
+projectList:
+  index:
+    header: Окружения
+    new: Добавить окружение
+    alert: У Вас нет активных Окружений. Создайте или активируйте хотя бы одно, иначе у нас с Вами ничего не получится.
+    table:
+      header:
+        orchestration: Оркестрирование
+        projectTemplate: Шаблон
+      body:
+        noData: "У вас пока нет Окружений."
+  indexTemplate:
+    header: Шаблоны окружения
+    new: Добавить Шаблон
+    table:
+      header:
+        stacks: Стеки
+        isPublic: Публичный
 registriesPage:
   index:
     header: Реестры Контейнеров
@@ -740,24 +759,6 @@ servicePage:
         level: Уровень
         event: Событие
         description: Описание
-settingsPage:
-  index:
-    header: Окружения
-    new: Добавить окружение
-    alert: У Вас нет активных Окружений. Создайте или активируйте хотя бы одно, иначе у нас с Вами ничего не получится.
-    table:
-      header:
-        orchestration: Оркестрирование
-        projectTemplate: Шаблон
-      body:
-        noData: "У вас пока нет Окружений."
-  indexTemplate:
-    header: Шаблоны окружения
-    new: Добавить Шаблон
-    table:
-      header:
-        stacks: Стеки
-        isPublic: Публичный
 stacksPage:
   header:
     all: Все Стеки
@@ -845,32 +846,6 @@ swarmPage:
         containers: Контейнеры
       body:
         noData: У вас пока нет ни одного Сервиса. Это ненадолго!
-processesPage:
-  indexPage:
-    header: Процессы
-    tabNav:
-      running: Запущеные
-      all: Все
-    form:
-      resourceType: 'Выберите тип Ресурса: '
-      resourceId:
-        placeholder: ID Ресурса
-      processName:
-        placeholder: Имя процесса
-      clear: Очистить
-      search: Искать
-    table:
-      header:
-        id: ID
-        processName: Имя
-        resource: 'Тип ресурса:ID'
-        exitReason: Причина завершения
-        startTime: Запущен
-        endTime: Закончен
-        duration: Длительность
-      noData: Давненько не было процессов.
-  processPage:
-    header: Настройки
 virtualMachinePage:
   header: 'Виртуальная машина:'
   multistat:
@@ -1457,10 +1432,20 @@ formPorts:
   protocol:
     label: Протокол
 formScale:
-  label: Масштаб
+  label: Количество
   global:
     vm: Всегда запускать один инстанс этой виртуальной машины на каждом хосте
     container: Всегда запускать один инстанс этого контейнера на каждом хосте
+  regular:
+    container: |
+      Запустить {scale, plural,
+      =0 {нет контейнеров}
+      =1 {1 контейнер}
+      =2 {2 контейнера}
+      =3 {3 контейнера}
+      =4 {4 контейнера}
+      other {# контейнеров}
+      }
 formScheduling:
   canRequestHost:
     containers: Запуск <b>всех</b> контейнеров на конкретном хосте
@@ -1575,6 +1560,7 @@ heroAddService:
     paragraph1: |
       Сервис - это всего-навсего группа контейнеров, созданная из одного и того же образа Docker, которая умеет использовать распределенный лекговесный DNS Системы {appName} для нахождения сервисов, дополнительно к концепциио Docker "линка". Сервисы могут быть добавлены вручную или путем разворачивания их из Каталога.
     contentLink: Читать подробнее
+  addService: Добавить сервис
   addCatalog: Настроить
   linkToCatalog: Просмотреть каталог
 hostSettings:
@@ -1692,7 +1678,7 @@ lbAddtlInfo:
   description: 'Описание: '
   containers: Контейнеры
   noContainers: Нет контейнеров
-  scale: Масштаб
+  scale: Количество
   ports: Порты
   targets: Цели
 labelsSection:
@@ -2247,7 +2233,7 @@ nav:
     themeAuto: Авто
     themeDark: Ночь
   noHosts:
-    link: "Добавление хоста"
+    link: "Добавить Хост"
 action:
   activate: Активировать
   backup: Забекапить
