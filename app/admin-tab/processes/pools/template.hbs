@@ -1,0 +1,29 @@
+{{#sortable-table
+  classNames="lacsso grid sortable-table"
+  bulkActions=false
+  paging=false
+  search=false
+  sortBy=sortBy
+  headers=headers
+  body=model.pools
+  as |row kind|
+}}
+  {{#if (eq kind "row")}}
+    <td data-title="{{headers.0.displayName}}: ">{{row.displayName}}</td>
+    <td data-title="{{headers.1.displayName}}: ">{{format-number row.activeTasks}}</td>
+    <td data-title="{{headers.2.displayName}}: ">{{format-number row.rejectedTasks}}</td>
+    <td data-title="{{headers.3.displayName}}: ">{{format-number row.completedTasks}}</td>
+    <td data-title="{{headers.4.displayName}}: ">
+      {{~format-number row.poolSize~}}
+      <span class="text-muted"> (
+        {{~format-number row.minPoolSize~}}
+        -
+        {{~#if (eq row.maxPoolSize 2147483647)}}&infin;{{else}}{{format-number row.maxPoolSize}}{{/if~}}
+      )</span>
+    </td>
+    <td data-title="{{headers.5.displayName}}: ">{{format-number row.queueSize}}</td>
+    <td data-title="{{headers.6.displayName}}: ">{{#if (eq row.queueRemainingCapacity 2147483647)}}&infin;{{else}}{{format-number row.queueRemainingCapacity}}{{/if}}</td>
+  {{else if (eq kind "norows")}}
+    <td colspan="4" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.pools.noData'}}</td>
+  {{/if}}
+{{/sortable-table}}

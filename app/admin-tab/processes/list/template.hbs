@@ -1,0 +1,47 @@
+{{arranged.length}}
+{{#sortable-table
+  classNames="lacsso grid sortable-table"
+  bulkActions=false
+  paging=true
+  search=true
+  sortBy=sortBy
+  descending=descending
+  headers=headers
+  body=model.processInstances
+  perPage=prefs.tablePerPage
+  as |row kind|
+}}
+  {{#if (eq kind "row")}}
+    <td data-title="{{headers.0.displayName}}: ">
+      <span class={{if row.endTime 'label label-success' 'label label-warning'}}>{{row.id}}</span>
+    </td>
+    <td data-title="{{headers.1.displayName}}: " class="clip">
+      {{#link-to 'admin-tab.process' row.id classNames='hand'}}{{row.processName}}{{/link-to}}
+    </td>
+    <td data-title="{{headers.2.displayName}}: " class="clip">
+      {{process-link model=row}}
+    </td>
+    <td data-title="{{headers.3.displayName}}: ">
+      {{row.exitReason}}
+    </td>
+    <td data-title="{{headers.4.displayName}}: ">
+      {{#if row.startTime}}
+        {{date-from-now row.startTime}}
+      {{else}}
+        <span class="text-muted">&mdash;</span>
+      {{/if}}
+    </td>
+    <td data-title="{{headers.5.displayName}}: ">
+      {{#if row.endTime}}
+        {{date-from-now row.endTime}}
+      {{else}}
+        <span class="text-muted">&mdash;</span>
+      {{/if}}
+    </td>
+    <td data-title="{{headers.6.displayName}}: ">
+      {{run-time row.startTimeTS row.endTimeTS}}
+    </td>
+  {{else if (eq kind "norows")}}
+    <td colspan="7" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.list.noData'}}</td>
+  {{/if}}
+{{/sortable-table}}
