@@ -1,72 +1,19 @@
-<section class="header clearfix">
-  <h1>{{t 'processesPage.indexPage.header'}}</h1>
-</section>
-<section class="processes">
-  <ul class="nav nav-tabs nav-tabs-well shadowed" role="tablist">
-    <li role="tab" aria-controls="panel" class={{if showRunning 'active' ''}}>
-      <a href="#" {{action 'showRunningProcesses'}}>{{t 'processesPage.indexPage.tabNav.running'}}</a>
-    </li>
-    <li role="tab" aria-controls="panel" class={{if showRunning '' 'active'}}>
-      <a href="#" {{action 'showRunningProcesses'}}>{{t 'processesPage.indexPage.tabNav.all'}}</a>
-    </li>
-  </ul>
-  <div  class="well" role="tabpanel">
-    <div class="row r-mb20">
-      <div class="form-inline r-ml15 inline-block">
-        <div class="form-group">
-          <button type="button" class="btn btn-sm btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if resourceTypeReadable resourceTypeReadable (t 'processesPage.indexPage.form.resourceType')}} <i class="icon icon-chevron-down"></i></button>
-          <ul class="dropdown-menu" role="menu">
-            {{#each model.resourceTypes as |resource|}}
-            <li {{action 'updateType' resource}}>
-              <a href="#">{{resource}}</a>
-            </li>
-            {{/each}}
-          </ul>
-
-          {{input value=ownResourceId class="form-control input-sm r-mr5" enter='submit' placeholder=(t 'processesPage.indexPage.form.resourceId.placeholder') disabled=disableId}}
-          {{input value=ownProcessName class="form-control input-sm r-mr5" enter='submit' placeholder=(t 'processesPage.indexPage.form.processName.placeholder')}}
-          <button class="btn btn-primary btn-danger btn-sm inline-block" {{action 'reset'}}>{{t 'processesPage.indexPage.form.clear'}}</button>
-          <button class="btn btn-primary btn-sm inline-block" {{action 'submit'}}>{{t 'processesPage.indexPage.form.search'}}</button>
-        </div>
-      </div>
-    </div>
-    <table class="grid fixed table table-hover">
-      <thead>
-        {{sortable-th sortable=this action="changeSort" name="id" label='processesPage.indexPage.table.header.id' width="75"}}
-        {{sortable-th sortable=this action="changeSort" name="processName" label='processesPage.indexPage.table.header.processName'}}
-        {{sortable-th sortable=this action="changeSort" name="resource" label='processesPage.indexPage.table.header.resource'}}
-        {{sortable-th sortable=this action="changeSort" name="exitReason" label='processesPage.indexPage.table.header.exitReason' width="150"}}
-        {{sortable-th sortable=this action="changeSort" name="startTime" label='processesPage.indexPage.table.header.startTime' width="100"}}
-        {{sortable-th sortable=this action="changeSort" name="endTime" label='processesPage.indexPage.table.header.endTime' width="100"}}
-        {{sortable-th sortable=this action="changeSort" name="runTime" label='processesPage.indexPage.table.header.duration' width="100"}}
-      </thead>
-      <tbody>
-        {{#each arranged as |instance|}}
-          <tr>
-            <td data-title="{{t 'processesPage.indexPage.table.header.id'}}:">
-              <span class={{if instance.endTime 'label label-success' 'label label-warning'}}>{{instance.id}}</span>
-            </td>
-            <td data-title="{{t 'processesPage.indexPage.table.header.processName'}}:" class="clip">{{#link-to 'admin-tab.processes.process' instance.id classNames='hand'}}<span title={{instance.processName}}>{{instance.processName}}</span>{{/link-to}}</td>
-            <td data-title="{{t 'processesPage.indexPage.table.header.resource'}}:" class="clip">
-              {{process-link model=instance}}
-            </td>
-            <td data-title="{{t 'processesPage.indexPage.table.header.processName'}}:">{{instance.exitReason}}</td>
-            {{#if instance.startTime}}
-              <td data-title="{{t 'processesPage.indexPage.table.header.startTime'}}:">{{date-from-now instance.startTime}}</td>
-            {{else}}
-              <td></td>
-            {{/if}}
-            {{#if instance.endTime}}
-              <td data-title="{{t 'processesPage.indexPage.table.header.endTime'}}:">{{date-from-now instance.endTime}}</td>
-            {{else}}
-              <td></td>
-            {{/if}}
-            <td data-title="{{t 'processesPage.indexPage.table.header.duration'}}:">{{run-time instance.startTimeTS instance.endTimeTS}}</td>
-          </tr>
-        {{else}}
-          <tr><td colspan="7" class="text-center text-muted">{{t 'processesPage.indexPage.table.noData'}}</td></tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </div>
-</section>
+{{#sortable-table
+  classNames="lacsso grid sortable-table"
+  bulkActions=false
+  paging=false
+  search=false
+  sortBy=sortBy
+  headers=headers
+  body=model.summary
+  as |row kind|
+}}
+  {{#if (eq kind "row")}}
+    <td data-title="{{headers.0.displayName}}: ">{{row.processName}}</td>
+    <td data-title="{{headers.1.displayName}}: ">{{row.running}}</td>
+    <td data-title="{{headers.2.displayName}}: ">{{row.ready}}</td>
+    <td data-title="{{headers.3.displayName}}: ">{{row.delay}}</td>
+  {{else if (eq kind "norows")}}
+    <td colspan="4" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.summary.noData'}}</td>
+  {{/if}}
+{{/sortable-table}}
