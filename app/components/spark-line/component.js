@@ -34,6 +34,7 @@ export default Ember.Component.extend({
   dot           : null,
   x             : null,
   y             : null,
+  tooltipModel: null,
 
   init() {
     window.spark = this;
@@ -72,7 +73,10 @@ export default Ember.Component.extend({
     } else {
       out = ` ${formatters[this.get('formatter')](this.get('lastValue'))}`;
     }
-    return out;
+
+    Ember.run.next(() => {
+      this.set('tooltipModel', out)
+    });
   }.property('prefix', 'lastValue', 'formatter'),
 
   create() {

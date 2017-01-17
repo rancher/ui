@@ -2,7 +2,7 @@
   <div class="subpod-name clip">
     <i class="{{model.stateIcon}} {{model.stateColor}} dot "></i>
     <a class="{{if showEllipsis 'tiny-hellip'}}" href="{{href-to (if model.isVm "virtualmachine" "container") model.id}}">
-      {{#tooltip-element tagName="span" inlineBlock=false type="tooltip-basic" model=model tooltipTemplate='tooltip-container-subpod' tooltipFor="containerSubpod"}}
+      {{#tooltip-element tagName="span" inlineBlock=false type="tooltip-action-menu" model=model tooltipTemplate='tooltip-action-menu' tooltipFor="containerSubpod"}}
         {{displayName}}
       {{/tooltip-element}}
     </a>
@@ -19,12 +19,12 @@
   {{action-menu model=model showPrimary=false}}
 </div>
 {{#if children}}
-<div class="subpod-children clearfix">
-  <h6 class="pull-left">{{t (if isKubernetes 'containerSubpod.childContainers' 'containerSubpod.childSidekicks')}}</h6>
-  {{#each children as |child|}}
-     {{container-dot model=child type='tooltip-action-menu' template='tooltip-select-dot'}}
-  {{else}}
-    &nbsp;
-  {{/each}}
-</div>
+  <div class="subpod-children clearfix">
+    <h6 class="pull-left">{{t (if isKubernetes 'containerSubpod.childContainers' 'containerSubpod.childSidekicks')}}</h6>
+    {{#each children as |child|}}
+       {{container-dot model=child type='tooltip-action-menu' template='tooltip-select-dot'}}
+    {{else}}
+      &nbsp;
+    {{/each}}
+  </div>
 {{/if}}
