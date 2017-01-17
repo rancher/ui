@@ -15,6 +15,11 @@ export default Ember.Controller.extend({
       sort: ['activeTasks','name'],
     },
     {
+      displayName: 'Pool Size',
+      name: 'poolSize',
+      sort: ['poolSize','name'],
+    },
+    {
       displayName: 'Rejected',
       name: 'rejectedTasks',
       sort: ['rejectedTasks','name'],
@@ -23,11 +28,6 @@ export default Ember.Controller.extend({
       displayName: 'Completed',
       name: 'completedTasks',
       sort: ['completedTasks','name'],
-    },
-    {
-      displayName: 'Pool Size',
-      name: 'poolSize',
-      sort: ['poolSize','name'],
     },
     {
       displayName: 'Queue Size',
