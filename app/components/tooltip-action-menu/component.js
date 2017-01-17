@@ -3,13 +3,12 @@ import Tooltip from 'ui/mixins/tooltip';
 import StrippedName from 'ui/mixins/stripped-name';
 
 export default Ember.Component.extend(Tooltip, StrippedName, {
-  resourceActions : Ember.inject.service('resource-actions'),
-
-  needs           : ['application'],
-  model           : Ember.computed.alias('tooltipService.tooltipOpts.model'),
-  actionsOpen     : Ember.computed.alias('resourceActions.open'),
-  inTooltip       : false,
-  layoutName: 'tooltip-action-menu',
+  resourceActions:  Ember.inject.service('resource-actions'),
+  needs:            ['application'],
+  model:            Ember.computed.alias('tooltipService.tooltipOpts.model'),
+  actionsOpen:      Ember.computed.alias('resourceActions.open'),
+  inTooltip:        false,
+  layoutName:       'tooltip-action-menu',
 
   init: function() {
     if (this.get('tooltipTemplate')) {
