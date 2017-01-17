@@ -37,6 +37,7 @@ generic:
   total: 合計
   type: タイプ
   unknown: 不明
+  uuid: UUID
   "yes": true
 accountsPage:
   index:
@@ -126,7 +127,7 @@ authPage:
     enabled:
       header: "{providerName} は有効です"
       required: |
-        {appname} は {orgs, plural,
+        {appName} は {orgs, plural,
         =0 {0 組織}
         =1 {# 組織}
         other {# 組織}
@@ -136,7 +137,7 @@ authPage:
         other {# ユーザー}
         }に対してアクセス許可が設定されています。
       restricted: |
-        {appname} は {orgs, plural,
+        {appName} は {orgs, plural,
         =0 {0 組織}
         =1 {# 組織}
         other {# 組織}
@@ -145,7 +146,7 @@ authPage:
         =1 {# ユーザー}
         other {# ユーザー}
         }の環境メンバーに対してアクセス許可が設定されています。
-      unrestricted: "{appname} は全ての {providerName} ユーザーに対しアクセス許可が設定されています。"
+      unrestricted: "{appName} は全ての {providerName} ユーザーに対しアクセス許可が設定されています。"
       authenticated:
         header:
           text: 認証
@@ -498,8 +499,14 @@ failWhalePage:
 haPage:
   header: 高可用性
   setup:
+    prefix: "ホストの障害時に {{appName}} が稼働し続けるよう複数のサーバーコンテナを異なるホストにデプロイ出来ます。  "
     link: ドキュメントを参照してください
     suffix: "セットアップと使用方法についてご確認ください。"
+  table:
+    address: 通知アドレス
+    port: ポート
+    heartbeat: 最終通知時刻
+    clustered: クラスター
 helpPage:
   header: リンク & インフォメーション
   banner: アナウンス
@@ -639,7 +646,14 @@ hostsPage:
         body:
           noData: まだこのホストにはボリュームがありません
 k8sTab:
+  dashboard:
+    header: Kubernetes ダッシュ ボード
+    dashboard:
+      header: ダッシュボード
+      content: Kubernetes ダッシュ ボードは、汎用的な Kubernetes クラスター用の web ベースの UI です。ユーザーはクラスター上で実行されているアプリケーションの管理やそれらのトラブルシューティング、また、同様にクラスター自体を管理することができます。
+      button: Kubernetes UI
   kubectl:
+    header: Kubernetes CLI
     stepOne:
       generateConfigText: |
         <a href="{downloadUrl}"target="_blank"> kubectl </a> (v1.4+ のみ) をあなたのワークステーションで利用するには、API キーと構成ファイルを生成する為にボタンをクリックしてください:
@@ -707,6 +721,31 @@ mesosPage:
 notFoundPage:
   header: "お探しのページは存在しません!"
   linkTo: ホームに戻る
+projectList:
+  index:
+    header: 環境
+    new: 環境を追加
+    subtext: |
+      <p>{appName} は複数の<b>環境</b>に対してリソースのグループ化をサポートします。 それぞれ、個別に複数サービスやインフラストラクチャのリソースを持ち、1人もしくは複数のユーザーやグループにより管理されます。</p>
+      <p>例えば、 それぞれの環境を隔離するために &quot;dev&quot;, &quot;test&quot; もしくは &quot;production&quot; といった分離された環境を作成し、 &quot;dev&quot; に対しては組織の全員がアクセスできるが、 &quot;production&quot; に対しては小さなチームのみに制限するといったことが可能です。</p>
+    alert: アクティブな環境がありません。 他の作業を実施する前に環境を作成もしくはアクティブ化する必要があります。
+    table:
+      header:
+        orchestration: オーケストレーション
+        projectTemplate: テンプレート
+      body:
+        noData: "まだ環境はありません"
+  indexTemplate:
+    header: 環境のテンプレート
+    new: テンプレートを追加
+    subtext: |
+      <p>環境のテンプレートにより、ユーザーはデプロイするための異なるインフラストラクチャサービスの組み合わせを定義することができます。<p>インフラストラクチャサービスにはコンテナオーケストレーション (cattle、kubernetes、mesos、swarm、ネットワーク等) または rancher  サービス (ヘルスチェック、dns、メタデータ、スケジューリング、サービス検出およびストレージ) が含まれますがこれらに限定されるものではありません</p>
+    table:
+      header:
+        stacks: スタック
+        isPublic: パブリック
+      body:
+        noData: "まだ環境のテンプレートはありません"
 registriesPage:
   index:
     header: レジストリ
@@ -770,6 +809,7 @@ servicePage:
     default: デフォルト証明書
     additional: 追加の SNI 証明書
   newBalancer:
+    upgradeImage: "バランサーのソフトウェア イメージは、<code>{from}</code> から <code>{to}</code> にアップグレードされます。"
     form:
       name:
         placeholder: '例: ウェブサイト'
@@ -790,29 +830,15 @@ servicePage:
         description: 詳細情報
       body:
         noData: ログイベントはまだありません。
-settingsPage:
-  index:
-    header: 環境
-    new: 環境を追加
-    subtext: |
-      <p>{appName} は複数の<b>環境</b>に対してリソースのグループ化をサポートします。 それぞれ、個別に複数サービスやインフラストラクチャのリソースを持ち、1人もしくは複数のユーザーやグループにより管理されます。</p>
-      <p>例えば、 それぞれの環境を隔離するために &quot;dev&quot;, &quot;test&quot; もしくは &quot;production&quot; といった分離された環境を作成し、 &quot;dev&quot; に対しては組織の全員がアクセスできるが、 &quot;production&quot; に対しては小さなチームのみに制限するといったことが可能です。</p>
-    alert: アクティブな環境がありません。 他の作業を実施する前に環境を作成もしくはアクティブ化する必要があります。
-    table:
-      header:
-        orchestration: オーケストレーション
-        projectTemplate: テンプレート
-      body:
-        noData: "まだ環境はありません"
-  indexTemplate:
-    header: 環境のテンプレート
-    new: テンプレートを追加
-    table:
-      header:
-        stacks: スタック
-        isPublic: パブリック
-      body:
-        noData: "まだ環境のテンプレートはありません"
+  type:
+    service: サービス
+    loadbalancerservice: ロードバランサー
+    dnsservice: サービスのエイリアス
+    externalservice: 外部
+    kubernetesservice: K8s サービス
+    composeservice: 構成サービス
+    networkdriverservice: ネットワークサービス
+    storagedriverservice: ストレージサービス
 stacksPage:
   header:
     all: 全てのスタック
@@ -892,32 +918,6 @@ swarmPage:
         containers: コンテナ
       body:
         noData: まだサービスはありません
-processesPage:
-  indexPage:
-    header: プロセス
-    tabNav:
-      running: 起動中
-      all: 全て
-    form:
-      resourceType: 'リソースタイプを選択: '
-      resourceId:
-        placeholder: リソース ID
-      processName:
-        placeholder: プロセス名
-      clear: クリア
-      search: 検索
-    table:
-      header:
-        id: ID
-        processName: 名前
-        resource: 'リソースタイプ:ID'
-        exitReason: 終了理由
-        startTime: 開始済み
-        endTime: 終了済み
-        duration: 動作時間
-      noData: 直近でのプロセスはありません。
-  processPage:
-    header: 設定
 virtualMachinePage:
   header: '仮想マシン:'
   multistat:
@@ -1257,6 +1257,11 @@ editHost:
     label: 詳細情報
   labels:
     label: ラベル
+  ips:
+    label: スケジューラ IP
+    valueLabel: IP アドレス
+    addActionLabel: IP アドレスを追加
+    help: 入力された場合、スケジューラが与えられたパブリック IP アドレス群から対象を選択し公開ポートをバインドします。
 editProjectTemplate:
   title:
     add: テンプレートを追加
@@ -1507,6 +1512,8 @@ formNetwork:
     container: コンテナ
     host: ホスト
     managed: 管理
+    nat: NAT
+    transparent: 透過
     none: None
   container:
     label: コンテナ
@@ -1534,11 +1541,21 @@ formNetwork:
     addActionLabel: ドメインを追加
 formPorts:
   addAction: ポートマップ
+  bindAddress:
+    label: パブリックホスト IP (オプション)
+  public:
+    label: パブリックホスト ポート
   private:
     label: プライベートコンテナポート
   protocol:
     label: プロトコル
   noPorts: このコンテナにはポートマップがありません
+  error:
+    privateRequired: 各ポートルールにはプライベートコンテナ ポートが必要になります。
+    publicRequired: ホスト IP を指定した場合はパブリックホスト ポートを指定する必要があります。
+    mixedIpPort: "ポート {ip}:{port}/{proto} は、1 つ以上のマッピングを保持しています。"
+    mixedPort: "ポート {port}/{proto} は、1 つ以上のマッピングを保持しています。"
+  showIpLink: ホストの IP アドレスフィールドを表示
 formScale:
   label: スケール
   global:
@@ -1623,6 +1640,10 @@ formSecurity:
     label: メモリ予約
   milliCpuReservation:
     label: mCPU予約
+  isolation:
+    label: 分離
+    default: デフォルト(コンテナ)
+    hyperv: HyperV (VM)
 formServiceLinks:
   addAction: サービスリンク
   noServices: リンクする他のサービスはありません。
@@ -1737,6 +1758,22 @@ heroAddService:
   addService: サービスを定義する
   addCatalog: 設定
   linkToCatalog: カタログを参照
+hookPage:
+  scaleService:
+    label: サービスを拡張
+    detailPrefix: "{action} を拡張"
+    detailLink: "{displayService}"
+  receiver:
+    header: レシーバー フック
+    buttonText: レシーバーを追加
+    noData: レシーバーフックはありません
+  fields:
+    kind:
+      label: 種類
+    detail:
+      label: 詳細
+    url:
+      label: トリガー URL
 hostSettings:
   header: ホスト登録 URL
   subtext: '{appName} API に接続するための URL は何にしますか?'
@@ -2029,9 +2066,11 @@ machine:
     region:
       label: リージョン
   driverCustom:
+    step1: 'Linux マシンを起動し最新版の <a href="http://www.docker.com/" target="_blank" rel="noreferrer nofollow">Docker</a> をインストールします。'
     step2: "セキュリティグループやファイアウォールが以下のトラフィックを許可していることを確認してください:"
     step2li: 他のホストへ、または他のホストからの <code>UDP 500</code> 番ポートと <code>4500</code> 番ポート <span class="text-muted">(IPsec ネットワークのため)</span>
     step3: 'オプション: ホストに適用するためのラベルを追加します。'
+    step4: "このホストに登録されるパブリック IP アドレスを指定します。空の場合、Rancher は自動的に利用する IP を検出します。この機能は一般的にマシンがユニークなパブリック IP を利用するために動作しますがファイアウォールやNAT環境下、もしくは<code>{rancherImage}</code>が起動している同一マシンでは動作しません。"
     step5Copy: 以下のコマンドをコピー&ペーストし実行しホストを登録します
     generating: "登録用 URL を生成中..."
     step5Close:
@@ -2039,6 +2078,11 @@ machine:
       link: ホスト
       part2: 画面にポップアップ表示されます。
     close: 閉じる
+    windows:
+      step1: 'Windows Server 2016 マシンを起動し最新版の <a href="https://msdn.microsoft.com/en-us/virtualization/windowscontainers/quick_start/quick_start_windows_server"target="_blank"rel="noreferrer nofollow">Docker</a> をインストールします。'
+      step2: "透過 Docker ネットワークを作成:"
+      step2Copy: docker network create -d transparent transparent
+      step3: '{appName} エージェントを起動するため、以下のコマンド をPowerShell にコピー&ペーストし実行してください。'
   driverDigitalocean:
     accountSection: アカウントアクセス
     authAccountButton: '次へ: ドロップレットの設定'
@@ -2462,6 +2506,14 @@ registryRow:
   email: Email
   username: ユーザー名
   created: 作成日
+reservationParameters:
+  localStorage:
+    unit: 'MB'
+  memory:
+    labelText: 'メモリ'
+    unit: 'MB'
+  milliCpu:
+    labelText: CPU
 saveCancel:
   saving: 保存中...
   saved: 完了!
@@ -2545,6 +2597,7 @@ stackSection:
       details: 詳細
       containers: コンテナ
       actions: アクション
+  upgradeImage: コンテナイメージをアップグレード
 snapshotSection:
   none: バックアップされていません
   multiple: '複数: {latestDate}'
@@ -2673,6 +2726,8 @@ nav:
   notReady: セットアップ中...
   k8s:
     tab: Kubernetes
+    cli: CLI
+    dashboard: ダッシュボード
     system: インフラストラクチャ スタック
   swarm:
     tab: Swarm
@@ -2711,8 +2766,10 @@ nav:
     access: アクセスコントロール
     machine: マシンドライバー
     settings: 設定
+    ha: 高可用性
   api:
     tab: API
+    keys: キー
   user:
     label: 'ユーザーメニュー: {username}'
     logout: ログアウト
@@ -2722,6 +2779,8 @@ nav:
     themeAuto: 自動
   noHosts:
     prefix: "最初のサービスまたはコンテナを起動する前に Docker {minVersion} もしくはそれ以上のバージョンをサポートしている Linux ホストを追加する必要があります。"
+    link: "ホストを追加"
+  noHostsWindows:
     link: "ホストを追加"
 action:
   activate: アクティブ化

@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Service.extend({
   store: Ember.inject.service(),
   userStore: Ember.inject.service('user-store'),
+  webhookStore: Ember.inject.service('webhook-store'),
   catalog: Ember.inject.service(),
 
   reset: function() {
@@ -11,5 +12,6 @@ export default Ember.Service.extend({
     this.get('userStore').reset();
     this.get('store').reset();
     this.get('catalog').reset();
+    this.get('webhookStore').reset();
   },
 });

@@ -6,7 +6,7 @@ export default ModalBase.extend({
   settings: Ember.inject.service(),
   growl: Ember.inject.service(),
 
-  classNames: ['lacsso', 'modal-container', 'span-6', 'offset-3'],
+  classNames: ['lacsso', 'modal-container', 'span-8', 'offset-2'],
   model: Ember.computed.alias('modalService.modalOpts'),
 
   value: null,
