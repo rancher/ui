@@ -246,7 +246,7 @@ var Service = Resource.extend({
   }.property('launchConfig.labels'),
 
   canScale: function() {
-    if ( ['service','networkdriverservice','storagedriverservice','loadbalancerservice'].includes(this.get('type').toLowerCase()) )
+    if ( this.get('isReal') )
     {
       return !this.get('isGlobalScale');
     }
@@ -254,18 +254,18 @@ var Service = Resource.extend({
     {
       return false;
     }
-  }.property('type'),
+  }.property('isReal','isGlobalScale'),
 
   canHaveContainers: function() {
+    if ( this.get('isReal') ) {
+      return true;
+    }
+
     return [
-      'service',
-      'networkdriverservice',
-      'storagedriverservice',
-      'loadbalancerservice',
       'kubernetesservice',
       'composeservice',
     ].includes(this.get('type').toLowerCase());
-  }.property('type'),
+  }.property('isReal','type'),
 
   isReal: function() {
     return [

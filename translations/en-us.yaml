@@ -3285,6 +3285,28 @@ action:
   viewInstance: View Instance
 
 ##############################
+# Resource Actions
+##############################
+validation:
+  required: '"{key}" is required'
+  arrayLength:
+    exactly: '"{key}" should contain {count, plural, =1 {# item} other {# items}}'
+    between: '"{key}" should contain between {min} and {max} {max, plural, =1 {item} other {items}}'
+    min: '"{key}" should contain at least {count} {count, plural, =1 {item} other {items}}'
+    max: '"{key}" should contain at most {count} {count, plural, =1 {item} other {items}}'
+  stringLength:
+    exactly: '"{key}" should be {count, plural, =1 {# character} other {# characters}}'
+    between: '"{key}" should be between {min} and {max} {max, plural, =1 {character} other {characters}}'
+    min: '"{key}" should be at least {count} {count, plural, =1 {character} other {characters}}'
+    max: '"{key}" should be at most {count} {count, plural, =1 {character} other {characters}}'
+  number:
+    exactly: '"{key}" should be exactly {val}'
+    between: '"{key}" should be between {min} and {max}'
+    min: '"{key}" should be at least {val}'
+    max: '"{key}" should be at most {val}'
+  chars: '"{key}" contains {count, plural, =1 {an invalid character} other {# invalid characters}}: {chars}'
+
+##############################
 # Model Properties
 ##############################
 model:
@@ -3310,3 +3332,7 @@ model:
       owner: Owner
       readonly: Read-Only
       restricted: Restricted
+  scaleService:
+    min: Minimum Scale
+    max: Maximum Scale
+    amount: By

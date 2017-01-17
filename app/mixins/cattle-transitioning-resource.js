@@ -334,6 +334,8 @@ export default Ember.Mixin.create({
   },
 
   validationErrors: function() {
+    let intl = this.get('intl');
+
     var errors = [];
     var type = this.get('type');
     if ( type )
@@ -359,13 +361,19 @@ export default Ember.Mixin.create({
     var fields = schema.resourceFields;
     var keys = Object.keys(fields);
     var field, key, val;
-    var more;
+    let displayKey, intlKey;
     for ( var i = 0 ; i < keys.length ; i++ )
     {
       key = keys[i];
       field = fields[key];
       val = this.get(key);
-      var displayKey = Util.camelToTitle(key);
+
+      intlKey = `model.${this.get('type')}.${key}`;
+      if ( intl.exists(intlKey) ) {
+        displayKey = intl.t(intlKey);
+      } else {
+        displayKey = Util.camelToTitle(key);
+      }
 
       if ( val === undefined )
       {
@@ -375,15 +383,14 @@ export default Ember.Mixin.create({
       if ( field.type.indexOf('[') >= 0 )
       {
         // array, map, reference
-        // @todo
+        // @TODO something...
       }
       else if ( ['string','password','float','int','date','blob','boolean','enum'].indexOf(field.type) === -1 )
       {
         // embedded schema type
         if ( val && val.validationErrors )
         {
-          more = val.validationErrors();
-          errors.pushObjects(more);
+          errors.pushObjects(val.validationErrors());
         }
       }
 
@@ -401,7 +408,7 @@ export default Ember.Mixin.create({
       }
 
       // Empty strings on nullable fields -> null
-      if ( ['string','password','float','int','date','blob','enum'].indexOf(field.type) >= 0 )
+      if ( ['string','password','float','int','date','blob','enum','multiline','masked'].indexOf(field.type) >= 0 )
       {
         if ( (typeof val === 'string' && !val) || val === null ) // empty/null strings or null numbers
         {
@@ -414,71 +421,64 @@ export default Ember.Mixin.create({
       }
 
       var len = (val ? Ember.get(val,'length') : 0);
+
       if ( field.required && (val === null || (typeof val === 'string' && len === 0) || (Ember.isArray(val) && len === 0) ) )
       {
-        errors.push('"' + displayKey + '" is required');
+        errors.push(intl.t('validation.required', {key: displayKey}));
         continue;
       }
 
-      var min, max;
-      var desc = (field.type.indexOf('array[') === 0 ? 'item' : 'character');
+      let min, max;
+      let lengthKey = (field.type.indexOf('array[') === 0 ? 'arrayLength' : 'stringLength');
       if ( val !== null )
       {
         // String and array length:
         min = field.minLength;
         max = field.maxLength;
-        if ( min && max )
-        {
-          if ( (len < min) || (len > max) )
-          {
-            errors.push(displayKey + ' should be ' + min + '-' + max + ' ' + desc + (min === 1 && max === 1 ? '' : 's') + ' long');
+        if ( min && max ) {
+          if ( (len < min) || (len > max) ) {
+            if ( min === max ) {
+              errors.push(intl.t(`validation.${lengthKey}.exactly`, {key: displayKey, count: min}));
+            } else {
+              errors.push(intl.t(`validation.${lengthKey}.between`, {key: displayKey, min: min, max: max}));
+            }
           }
-        }
-        else if ( min && (len < min) )
-        {
-          errors.push(displayKey + ' should be at least ' + min + ' ' + desc + (min === 1 ? '' : 's') + ' long');
-        }
-        else if ( max && (len > max) )
-        {
-          errors.push(displayKey + ' should be at most ' + max + ' ' + desc + (min === 1 ? '' : 's') + ' long');
+        } else if ( min && (len < min) ) {
+          errors.push(intl.t(`validation.${lengthKey}.min`, {key: displayKey, count: min}));
+        } else if ( max && (len > max) ) {
+          errors.push(intl.t(`validation.${lengthKey}.max`, {key: displayKey, count: max}));
         }
 
         // Number min/max
         min = field.min;
         max = field.max;
-        if ( val !== null && min && max )
-        {
-          if ( (val < min) || (val > max) )
-          {
-            errors.push(displayKey + ' should be between ' + min + ' and ' + max);
+        if ( val !== null && min && max ) {
+          if ( (val < min) || (val > max) ) {
+            if ( min === max ) {
+              errors.push(intl.t('validation.number.exactly', {key: displayKey, val: max}));
+            } else {
+              errors.push(intl.t('validation.number.between', {key: displayKey, min: min, max: max}));
+            }
           }
-        }
-        else if ( min && (val < min) )
-        {
-          errors.push(displayKey + ' should be at least ' + min + ' ' + desc);
-        }
-        else if ( max && (val > max) )
-        {
-          errors.push(displayKey + ' should be at most ' + max + ' ' + desc);
+        } else if ( min && (val < min) ) {
+          errors.push(intl.t('validation.number.min', {key: displayKey, val: min}));
+        } else if ( max && (val > max) ) {
+          errors.push(intl.t('validation.number.max', {key: displayKey, val: max}));
         }
 
         var test = [];
-        if ( field.validChars )
-        {
+        if ( field.validChars ) {
           test.push('[^'+ field.validChars + ']');
         }
 
-        if ( field.invalidChars )
-        {
+        if ( field.invalidChars ) {
           test.push('['+ field.invalidChars + ']');
         }
 
-        if ( test.length )
-        {
+        if ( test.length ) {
           var regex = new RegExp('('+ test.join('|') + ')','g');
           var match = val.match(regex);
-          if ( match )
-          {
+          if ( match ) {
             match = match.uniq().map((chr) => {
               if ( chr === ' ' ) {
                 return '[space]';
@@ -487,14 +487,7 @@ export default Ember.Mixin.create({
               }
             });
 
-            if ( match.length === 1 )
-            {
-              errors.push(displayKey + ' contains an invalid character: ' + match[0]);
-            }
-            else
-            {
-              errors.push(displayKey + ' contains ' + match.length + ' invalid characters: ' + match.join(' '));
-            }
+            errors.push(intl.t('validation.chars', {key: displayKey, count: match.length, chars: match.join(' ')}));
           }
         }
       }
