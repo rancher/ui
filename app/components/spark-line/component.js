@@ -75,7 +75,7 @@ export default Ember.Component.extend({
     }
 
     Ember.run.next(() => {
-      this.set('tooltipModel', out)
+      this.set('tooltipModel', out);
     });
   }.property('prefix', 'lastValue', 'formatter'),
 
