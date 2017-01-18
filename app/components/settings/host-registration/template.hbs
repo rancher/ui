@@ -21,14 +21,22 @@
   </p>
 </div>
 
-{{#unless looksPublic}}
+{{#if looksPrivate}}
   <div class="alert alert-info" style="margin-top: 30px;">
     <i class="icon icon-info" style="font-size: 35px; float: left;"></i>
     <p style="margin-left: 50px;">
-      {{format-html-message 'hostSettings.notPublic.alert' activeValue=activeValue}}
+      {{format-html-message 'hostSettings.notPublic.alert' activeValue=activeValue appName=settings.appName}}
     </p>
   </div>
-{{/unless}}
+{{/if}}
+{{#if badTld}}
+  <div class="alert alert-danger" style="margin-top: 30px;">
+    <i class="icon icon-info" style="font-size: 35px; float: left;"></i>
+    <p style="margin-left: 50px;">
+      {{format-html-message 'hostSettings.badTld.alert' activeValue=activeValue appName=settings.appName}}
+    </p>
+  </div>
+{{/if}}
 
 {{top-errors errors=errors}}
 {{save-cancel cancelDisabled=true editing=true save="save"}}
