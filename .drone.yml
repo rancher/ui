@@ -20,12 +20,12 @@ pipeline:
        exclude: ["master"]
 
   # Needs envvar SLACK_TOKEN
-  slack_blame:
-    image: plugins/slack-blame
-    channel: ui
-    success_template: |
-      {{repo.owner}}/{{repo.name}} branch: {{build.branch}} commit: {{build.commit}} by {{build.author}} <{{build.email}}> - {{commit.message}} - {{build.link}}
-    failure_template: |
-      {{repo.owner}}/{{repo.name}} branch: {{build.branch}} commit: {{build.commit}} by {{build.author}} <{{build.email}}> - {{commit.message}} - {{build.link}}
-    when:
-      status: [ success, failure ]
+  #  slack_blame:
+  #    image: plugins/slack-blame
+  #    channel: ui
+  #    success_template: |
+  #      {{repo.owner}}/{{repo.name}} branch: {{build.branch}} commit: {{build.commit}} by {{build.author}} <{{build.email}}> - {{commit.message}} - {{build.link}}
+  #    failure_template: |
+  #      {{repo.owner}}/{{repo.name}} branch: {{build.branch}} commit: {{build.commit}} by {{build.author}} <{{build.email}}> - {{commit.message}} - {{build.link}}
+  #    when:
+  #      status: [ success, failure ]
