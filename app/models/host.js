@@ -82,6 +82,7 @@ var Host = Resource.extend({
     var out = this.get('info.osInfo.operatingSystem')||'';
 
     out = out.replace(/\s+\(.*?\)/,''); // Remove details in parens
+    out = out.replace(/;.*$/,''); // Or after semicolons
     out = out.replace('Red Hat Enterprise Linux Server','RHEL'); // That's kinda long
 
     var hasKvm = (this.get('labels')||{})[C.LABEL.KVM] === 'true';
