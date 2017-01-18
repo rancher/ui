@@ -1,12 +1,23 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
-function isPublic(name) {
-  if ((name || '').trim().replace(/^https?:\/\//, '').match(/^(localhost|192\.168\.|172\.1[6789]\.|172\.2[0123456789]\.|172\.3[01]\.|10\.)/)) {
+function hostname(str) {
+  return (str||'').trim().replace(/^[a-z0-9]+:\/+/i, '').replace(/\/.*$/g,'');
+}
+function isPrivate(name) {
+  if ( hostname(name).match(/^(localhost|192\.168\.|172\.0?1[6789]\.|172\.0?2[0123456789]\.|172\.0?3[01]\.|0?10\.)/) ) {
+    return true;
+  } else {
     return false;
   }
+}
 
-  return true;
+function isBadTld(name) {
+  if ( hostname(name).match(/\.local$/) ) {
+    return true;
+  } else {
+    return false;
+  }
 }
 
 export default Ember.Component.extend({
@@ -79,8 +90,12 @@ export default Ember.Component.extend({
     });
   },
 
-  looksPublic: function() {
-    return isPublic(this.get('activeValue'));
+  looksPrivate: function() {
+    return isPrivate(this.get('activeValue'));
+  }.property('activeValue'),
+
+  badTld: function() {
+    return isBadTld(this.get('activeValue'));
   }.property('activeValue'),
 
   activeValue: function() {
