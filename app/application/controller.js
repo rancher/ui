@@ -25,18 +25,6 @@ export default Ember.Controller.extend({
     },
   },
 
-  bootstrap: function() {
-    Ember.run.schedule('afterRender', this, () => {
-      Ember.$().tooltip({
-        selector: '*[tooltip]',
-        animation: false,
-        title: function() {
-          return $(this).attr('tooltip');
-        }
-      });
-    });
-  }.on('init'),
-
   // currentRouteName is set by Ember.Router
   // but getting the application controller to get it is inconvenient sometimes
   currentRouteNameChanged: function() {
