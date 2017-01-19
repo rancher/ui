@@ -32,44 +32,44 @@ export default Ember.Controller.extend({
 
   headers: [
     {
+      classNames: '',
       displayName: 'State',
       name: 'stateSort',
-      sort: ['stateSort','name','id'],
-      type: 'string',
       searchField: 'displayState',
-      classNames: '',
+      sort: ['stateSort','name','id'],
+      translationKey: 'containersPage.index.table.header.state',
       width: '125px'
     },
     {
       displayName: 'Name',
       name: 'name',
       sort: ['name','id'],
-      type: 'string',
+      translationKey: 'containersPage.index.table.header.name',
     },
     {
       displayName: 'IP',
       name: 'displayIp',
       sort: ['displayIp','name','id'],
-      type: 'string',
       width: '110px',
+      translationKey: 'containersPage.index.table.header.ip',
     },
     {
       displayName: 'Host',
       name: 'primaryHost.displayName',
       sort: ['primaryHost.displayName','name','id'],
-      type: 'string',
+      translationKey: 'containersPage.index.table.header.host',
     },
     {
       displayName: 'Image',
       name: 'imageUuid',
       sort: ['imageUuid','id'],
-      type: 'string',
+      translationKey: 'containersPage.index.table.header.image',
     },
     {
       displayName: 'Command',
       name: 'command',
       sort: ['command','name','id'],
-      type: 'string',
+      translationKey: 'containersPage.index.table.header.command',
     },
     {
       isActions: true,
