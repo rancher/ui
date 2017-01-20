@@ -33,7 +33,7 @@ export default Ember.Controller.extend({
       {
         displayName: 'Resource',
         name: 'resource',
-        sort: ['typeAndId','id:desc'],
+        sort: ['resourceType','id:desc'],
         searchField: ['typeAndId', 'resourceType','resourceId'],
       }
     ];
@@ -42,7 +42,7 @@ export default Ember.Controller.extend({
       out.push({
         displayName: 'Exit Reason',
         name: 'exitReason',
-        sort: ['exitReason','id'],
+        sort: ['exitReason','id:desc'],
         width: '150px',
       });
     }
@@ -50,7 +50,7 @@ export default Ember.Controller.extend({
     out.push({
       displayName: 'Start Time',
       name: 'startTime',
-      sort: ['startTime','id:desc'],
+      sort: ['startTime:desc','id:desc'],
       width: '150px',
       searchField: false,
     });
@@ -68,7 +68,7 @@ export default Ember.Controller.extend({
     out.push({
       displayName: 'Run Time',
       name: 'runTime',
-      sort: ['runTime:desc','id'],
+      sort: ['runTime:desc','id:desc'],
       width: '100px',
       searchField: false,
     });
