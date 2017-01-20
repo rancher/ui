@@ -9,6 +9,7 @@ export default Ember.Component.extend({
   settings: Ember.inject.service(),
   githubBase: C.EXT_REFERENCES.GITHUB,
   forumBase: C.EXT_REFERENCES.FORUM,
+  slackBase: C.EXT_REFERENCES.SLACK,
 
   projectId        : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
 

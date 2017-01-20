@@ -21,9 +21,11 @@ const ALLOWED = {
   'graphite.port': {description: 'Graphite: Server port', kind: 'int'},
   'lb.instance.image': {description: 'Default docker image for Load Balancer Services'},
   'main_tables.purge.after.seconds': {description: 'Auto-purge deleted entries from most tables after this long (seconds)', kind: 'int'},
+  'newest.docker.version': {description: 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported.docker.range but is newer than this will be marked as untested'},
   'registry.default': {description: 'Pull images with no registry specified from this registry instead of DockerHub'},
   'registry.whitelist': {description: 'Allow containers images only from the specified registries (if specified; comma-separated)'},
   'service_log.purge.after.seconds': {description: 'Auto-purge Service Log entries after this long (seconds)', kind: 'int'},
+  'supported.docker.range': {description: 'Semver range for suported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI'},
   'ui.pl': {description: 'Private-Label company name'},
 };
 

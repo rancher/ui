@@ -306,6 +306,9 @@ export default Ember.Component.extend(NewOrEdit, {
 
     if ( this.get('service.lbConfig.needsCertificate') && !this.get('service.lbConfig.defaultCertificateId')) {
       errors.push(intl.t('newBalancer.error.needsCertificate'));
+    } else if ( !this.get('service.lbConfig.needsCertificate') ) {
+      this.set('service.lbConfig.defaultCertificateId', null);
+      this.set('service.lbConfig.certificateIds', []);
     }
 
     if ( errors.length )

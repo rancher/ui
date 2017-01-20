@@ -1,4 +1,20 @@
+import Semver from 'npm:semver';
 
+export function satisfies(version, range) {
+  if ( !Semver.validRange(range) ) {
+    console.error('Invalid semver range:', range);
+    return false;
+  }
+
+  if ( !Semver.valid(version) ) {
+    console.error('Invalid semver version:', version);
+    return false;
+  }
+
+  return Semver.satisfies(version, range);
+}
+
+// @TODO replace with semver calls and verify compare works the same for -preX tags
 export function parse(str) {
   str = str+'';
 
