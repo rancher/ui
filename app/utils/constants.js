@@ -278,7 +278,8 @@ var C = {
     CATALOG_URL:               'catalog$url',
     SWARM_PORT:                'swarm$tls$port',
     ENGINE_URL:                'engine$install$url',
-    MIN_DOCKER:                'ui$min$docker$version',
+    SUPPORTED_DOCKER:          'supported$docker$range',
+    NEWEST_DOCKER:             'newest$docker$version',
     TELEMETRY:                 'telemetry$opt',
     AUTH_LOCAL_VALIDATE_DESC:  'api$auth$local$validate$description',
     BALANCER_IMAGE:            'lb$instance$image',
@@ -306,6 +307,7 @@ var C = {
     COMPANY: 'http://rancher.com',
     GITHUB: 'https://github.com/rancher/rancher',
     DOCS: 'http://docs.rancher.com/rancher',
+    SLACK: 'https://slack.rancher.io',
   },
 
   K8S: {
