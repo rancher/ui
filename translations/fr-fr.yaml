@@ -732,6 +732,7 @@ projectList:
     alert: Aucun environnement actif.  You will need to create or activate one before you can do anything else.
     table:
       header:
+        orchestration: Orchestration
         projectTemplate: Modèle
       body:
         noData: "Aucun Environnement."
@@ -743,6 +744,7 @@ projectList:
     table:
       header:
         stacks: Piles
+        isPublic: Public
       body:
         noData: "Vous n'avez pas encore de modèles d'environnement."
 registriesPage:
@@ -856,6 +858,8 @@ servicePage:
     composeservice: Composer le Service
     networkdriverservice: Service Réseau
     storagedriverservice: Service de Stockage
+settingsPage:
+  header: Paramétrages
 stacksPage:
   header:
     all: Toutes les Piles
@@ -945,6 +949,21 @@ swarmPage:
         containers: Conteneur
       body:
         noData: Vous n’avez pas encore de Services.
+processesPage:
+  header: Processus
+  tab:
+    summary: Récapitulatif
+    pools: Réserves
+    running: En cours
+    delayed: Retardé
+    ready: Prêt
+    completed: Récemment Terminé
+  summary:
+    noData: Aucun processus en cours d’exécution
+  pools:
+    noData: Aucune Réserve trouvée
+  list:
+    noData: Aucun processus trouvé
 virtualMachinePage:
   header: 'Machine Virtuelle :'
   multistat:
@@ -1207,6 +1226,10 @@ containerShell:
 copyToClipboard:
   tooltip: Copier dans le Presse-papiers
   copied: Copié !
+dangerZone:
+  header: Paramètres Avancés
+  subtext: "Procéder avec prudence ; les utilisateurs classiques ne devraient pas modifier ces paramètres.  Des valeurs incorrectes peuvent briser votre installation {appName}.  Les paramètres qui ont été modifiés sont indiqués en gras."
+  showLabel: Je comprends que je peux casser des choses en changeant les paramètres avancés.
 devicePermissions:
   all: Tous
   none: Aucun
@@ -1888,17 +1911,10 @@ hostSettings:
     alert: |
       Êtes-vous certain que tous les hôtes que vous créerez seront en mesure d’atteindre <code>{activeValue}</code> ? <br/> Cette adresse IP semble privée, ou appartenir à un réseau local.
 hostPod:
-  machineInfo:
-    active:
-      activating: |
-        Presque là &hellip; <br/> <i class="icon icon-spinner icon-spin"></i> en attente de connexion de l’agent
-    deactivated:
-      error: Erreur à la création de la machine
-      setup: Configuration de la machine...
-    groupedInstances:
-      namespace: 'Espace de noms:'
-      stack: 'Pile :'
-      standalone: Conteneurs Autonomes
+  groupedInstances:
+    namespace: 'Espace de noms:'
+    stack: 'Pile :'
+    standalone: Conteneurs Autonomes
 identityBlock:
   loading: Chargement...
 infoMultiStats:
@@ -2479,6 +2495,14 @@ modalEditDriver:
   checksum:
     label: Somme de contrôle
     help: 'En option : Vérifiez que le pilote téléchargé correspond à la somme de contrôle attendue.'
+modalEditSetting:
+  title: Modifier le paramètre avancé
+  name:
+    label: Nom
+  value:
+    label: Valeur
+  reset:
+    label: Rétablir les valeurs par défaut
 modalEditSnapshot:
   edit: Modifier l'instantané
   create: Créer l'instantané
@@ -2719,6 +2743,7 @@ stackSection:
   outputs: Sorties
   description: Description
   none: Aucun Service
+  tags: Étiquettes
   container: |
     {numContainers, plural, =1 {Container} other {Containers}}
   service: |
