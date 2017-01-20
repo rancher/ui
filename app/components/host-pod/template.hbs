@@ -23,8 +23,9 @@
         <div class="pod-info-item"><i class="icon icon-link"></i> {{format-ip model.displayIp}}</div>
       {{/if}}
 
-      {{#if model.dockerBlurb}}
-        <div class="pod-info-item"><i class="icon icon-docker"></i> {{model.dockerBlurb}}</div>
+      {{#if model.dockerEngineVersion}}
+        <div class="pod-info-item"><i class="icon icon-docker"></i> {{model.dockerEngineVersion}}
+        </div>
       {{/if}}
     </div>
     <div class="pod-info-container">
@@ -49,9 +50,18 @@
       {{/if}}
     </div>
   </div>
+  {{#if (eq model.supportState 'unsupported')}}
+    <div class="pod-info lacsso pt-5">
+      <a href="{{settings.docsBase}}" target="_blank" rel="nofollow noreferrer"><span class="lacsso tag bg-error force-wrap"><i class="icon icon-alert"></i> {{t 'hostPod.supportState.unsupported'}}</span></a>
+    </div>
+  {{else if (eq model.supportState 'untested')}}
+    <div class="pod-info lacsso pt-5">
+      <a href="{{settings.docsBase}}" target="_blank" rel="nofollow noreferrer"><span class="lacsso tag bg-warning force-wrap"><i class="icon icon-alert"></i> {{t 'hostPod.supportState.untested'}}</span></a>
+    </div>
+  {{/if}}
   <div class="pod-info r-mb10">
     {{#if strictUserLabelArray.length}}
-      <div class="" style="white-space: normal; padding-top: 5px;">
+      <div class="lacsso pt-5" style="white-space: normal;">
         {{#each strictUserLabelArray as |label|}}
           <span class="label label-default clip" style="display: inline-block; max-width: 100%;">{{label.key}}{{#if label.value}}={{label.value}}{{/if}}</span>
         {{/each}}
@@ -72,14 +82,14 @@
               <h6 class="clip">
                 {{~#if group.name~}}
                   {{#if group.kubernetes}}
-                    {{t 'hostPod.machineInfo.groupedInstances.namespace'}}
+                    {{t 'hostPod.groupedInstances.namespace'}}
                     {{group.name}}
                   {{else}}
-                    {{t 'hostPod.machineInfo.groupedInstances.stack'}}
+                    {{t 'hostPod.groupedInstances.stack'}}
                     {{#link-to "stack" group.id}}{{group.name}}{{/link-to}}
                   {{/if}}
                 {{else}}
-                  {{t 'hostPod.machineInfo.groupedInstances.standalone'}}
+                  {{t 'hostPod.groupedInstances.standalone'}}
                 {{/if}}
               </h6>
             </div>
