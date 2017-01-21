@@ -125,9 +125,9 @@ var LoadBalancerService = Service.extend({
   }.property('lbConfig.portRules.@each.{service,selector}', 'intl._locale'),
 
   imageUpgradeAvailable: function() {
-    let cur = this.get('launchConfig.imageUuid').replace(/^docker:/,'');
+    let cur = (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'');
     let available = this.get(`settings.${C.SETTING.BALANCER_IMAGE}`);
-    return cur !== available && !!this.get('actionLinks.upgrade');
+    return cur && cur !== available && !!this.get('actionLinks.upgrade');
   }.property('launchConfig.imageUuid',`settings.${C.SETTING.BALANCER_IMAGE}`,'actionLinks.upgrade'),
 });
 

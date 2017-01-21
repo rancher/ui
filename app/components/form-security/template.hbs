@@ -46,7 +46,7 @@
     <div class="col span-3">
       {{#input-or-display editable=editing value=memoryMb}}
         <div class="input-group">
-          {{input type="number" min="1" step="1" value=memoryMb classNames="form-control" placeholder=(t 'formSecurity.memoryLimit.placeholder')}}
+          {{input-integer min="1" step="1" value=memoryMb classNames="form-control" placeholder=(t 'formSecurity.memoryLimit.placeholder')}}
           <div class="input-group-addon">{{t 'formSecurity.memoryLimit.mb'}}</div>
         </div>
       {{/input-or-display}}
@@ -58,7 +58,7 @@
     <div class="col span-3">
       {{#input-or-display editable=editing value=swapMb}}
         <div class="input-group">
-          {{input type="number" min="1" step="1" value=swapMb classNames="form-control" placeholder=(if memoryMb 'Requires Memory Limit' 'Unlimited') disabled=(not memoryMb)}}
+          {{input-integer min="1" step="1" value=swapMb classNames="form-control" placeholder=(if memoryMb 'Requires Memory Limit' 'Unlimited') disabled=(not memoryMb)}}
           <div class="input-group-addon">{{t 'formSecurity.swapLimit.mb'}}</div>
         </div>
       {{/input-or-display}}
@@ -71,7 +71,7 @@
     <div class="col span-3">
       {{#input-or-display editable=editing value=memoryReservationMb}}
         <div class="input-group">
-          {{input type="number" min="1" step="1" value=memoryReservationMb classNames="form-control" placeholder=(t 'formSecurity.memoryLimit.placeholder')}}
+          {{input-integer min="1" step="1" value=memoryReservationMb classNames="form-control" placeholder=(t 'formSecurity.memoryLimit.placeholder')}}
           <div class="input-group-addon">{{t 'formSecurity.memoryLimit.mb'}}</div>
         </div>
       {{/input-or-display}}
@@ -83,7 +83,7 @@
     <div class="col span-3">
       {{#input-or-display editable=editing value=instance.milliCpuReservation}}
         <div class="input-group">
-          {{input type="number" min="1" step="1" value=instance.milliCpuReservation classNames="form-control"}}
+          {{input-integer min="1" step="1" value=instance.milliCpuReservation classNames="form-control"}}
         </div>
       {{/input-or-display}}
     </div>
@@ -105,7 +105,7 @@
     </div>
     <div class="col span-3">
       {{#input-or-display editable=editing value=instance.cpuShares}}
-        {{input type="number" value=instance.cpuShares step=128 min=0 classNames="form-control" placeholder=(t 'formSecurity.shares.placeholder')}}
+        {{input-integer value=instance.cpuShares step=128 min=0 classNames="form-control" placeholder=(t 'formSecurity.shares.placeholder')}}
       {{/input-or-display}}
     </div>
   </div>
