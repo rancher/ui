@@ -3,7 +3,14 @@ import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   bulkActionHandler: Ember.inject.service(),
-  bulkActionsList: C.BULK_ACTIONS,
+  bulkActionsList: [
+    {
+      "label": "action.remove",
+      "icon": "icon icon-trash",
+      "action": "promptDelete",
+      "bulkActionName": "Delete",
+    },
+  ],
   sortBy: 'name',
   prefs: Ember.inject.service(),
 
@@ -47,31 +54,20 @@ export default Ember.Controller.extend({
       type: 'string',
     },
     {
-      displayName: 'IP',
-      name: 'displayIp',
-      sort: ['displayIp','name','id'],
+      displayName: 'Description',
+      name: 'description',
+      sort: ['description','name','id'],
       type: 'string',
-      width: '110px',
     },
     {
-      displayName: 'Host',
-      name: 'primaryHost.displayName',
+      displayName: 'Created',
+      name: 'created',
       sort: ['primaryHost.displayName','name','id'],
+      searchField: false,
       type: 'string',
     },
     {
-      displayName: 'Image',
-      name: 'imageUuid',
-      sort: ['imageUuid','id'],
-      type: 'string',
-    },
-    {
-      displayName: 'Command',
-      name: 'command',
-      sort: ['command','name','id'],
-      type: 'string',
-    },
-    {
+      displayName: 'Actions',
       isActions: true,
       width: '110px',
     },
@@ -88,6 +84,7 @@ export default Ember.Controller.extend({
     this.set('show', (this.get('showSystem') ? 'all' : 'standard'));
   }.observes('showSystem'),
 
+  sortableContent: Ember.computed.alias('filtered'),
   filtered: function() {
     let all = this.get('model');
     if ( this.get('showSystem') ) {

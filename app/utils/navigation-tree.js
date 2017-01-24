@@ -220,6 +220,13 @@ const navTree = [
         route: 'storagepools',
         ctx: [getProjectId],
       },
+      {
+        id: 'infra-secrets',
+        localizedLabel: 'nav.infra.secrets',
+        icon: 'icon icon-lock',
+        route: 'secrets',
+        ctx: [getProjectId],
+      },
       /*
       {
         id: 'infra-backuptargets',

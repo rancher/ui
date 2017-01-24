@@ -466,7 +466,8 @@ containersPage:
         image: Image
         command: Command
       body:
-        noData: You do not have any containers yet.
+        noData: You do not have any containers yet
+        noMatch: No containers match the current search
   new:
     form:
       name:
@@ -510,7 +511,7 @@ containersPage:
           private: Private in Container
           protocol: Protocol
         body:
-          noData: 'This container has no ports.'
+          noData: This container has no ports
     volumesTab:
       table:
         header:
@@ -523,7 +524,7 @@ containersPage:
           error:
             data: 'Note:'
             error: Error
-            noData: This container has no volumes.
+            noData: This container has no volumes
           noContainers: No other containers
 
 containerSubpod:
@@ -680,7 +681,7 @@ hostsPage:
           image: Image (Command)
           stats: Stats
         body:
-          noData: 'This host does not have any containers yet.'
+          noData: This host does not have any containers yet
     portsTab:
       table:
         header:
@@ -689,7 +690,7 @@ hostsPage:
           service: Service
           container: Container
         body:
-          noData: This host does not have any ports.
+          noData: This host does not have any ports
     storageTab:
       table:
         header:
@@ -697,7 +698,7 @@ hostsPage:
           hostPath: Host Path
           mounts: Mounts
         body:
-          noData: This host does not have any volumes.
+          noData: This host does not have any volumes
 
 k8sTab:
   dashboard:
@@ -801,7 +802,7 @@ projectList:
         orchestration: Orchestration
         projectTemplate: Template
       body:
-        noData: "You don't have any environments yet."
+        noData: "You don't have any environments yet"
   indexTemplate:
     header: Environment Templates
     new: Add Template
@@ -813,7 +814,7 @@ projectList:
         stacks: Stacks
         isPublic: Public
       body:
-        noData: "You don't have any environment templates yet."
+        noData: "You don't have any environment templates yet"
 
 registriesPage:
   index:
@@ -827,7 +828,7 @@ registriesPage:
         username: Username
         created: Created
       body:
-        noData: "You don't have any registries yet."
+        noData: "You don't have any registries yet"
   new:
     header: Add Registry
     form:
@@ -844,6 +845,13 @@ registriesPage:
       password:
         labelText: Password
         placeholder: e.g. password
+
+secretsPage:
+  index:
+    header: Secrets
+    linkTo: Add Secret
+    noData: You do not have any Secrets yet
+    noMatch: No Secrets match the current search
 
 servicePage:
   header: 'Service:'
@@ -1036,8 +1044,10 @@ processesPage:
     noData: No processes are currently scheduled
   pools:
     noData: No pools found
+    noMatch: No pools match the current search
   list:
     noData: No processes found
+    noMatch: No processes match the current search
 
 virtualMachinePage:
   header: 'Virtual Machine:'
@@ -1751,7 +1761,7 @@ formNetwork:
   networkMode:
     label: Network
     bridge: Bridge
-    tontainer: Container
+    container: Container
     host: Host
     managed: Managed
     nat: NAT
@@ -1844,6 +1854,27 @@ formScheduling:
   key: Key
   value: Value
 
+formSecrets:
+  label: Secrets
+  noData: No Secrets
+  addLabel: Add Secret
+  name:
+    placeholder: e.g. db_password
+  secret:
+    label: Secret
+  uid:
+    label: User ID
+    placeholder: e.g. 0 (root)
+  gid:
+    label: Group ID
+    placeholder: e.g. 0 (wheel)
+  mode:
+    label: File Mode
+    placeholder: e.g. 0600 (octal)
+  help:
+    prefix: "Secrets will be placed in <code>/mnt/secrets????</code> in the Container with the given filename and are readable only by <code>root</code> by default.  "
+    showPermissionsLink: "Customize file ownership & permissions"
+    suffix: ""
 
 formSecurity:
   key: Key
@@ -2643,12 +2674,11 @@ machine:
       label: SSH Password
       placeholder: Set Instance SSH Password, Blank for Auto set
 
-
-
 modalAboutComponent:
   component: Component
   version: Version
   cattle: Cattle
+  cli: CLI
   ui: User Interface
   compose: Compose
   machineService: Machine Service
@@ -2829,6 +2859,7 @@ newContainer:
     labels: Labels
     scheduling: Scheduling
     balancing: Balancing
+    secrets: Secrets
   selectUpgrade: Select one or more services to upgrade.
   saveUpgrade: Upgrade
   saveNew: Create
@@ -2866,6 +2897,18 @@ newReceiver:
   max:
     label: Maximum Scale
     placeholder: e.g. 20
+
+newSecret:
+  title:
+    edit: Edit Secret
+    add: Add Secret
+  name:
+    placeholder: e.g. api-token
+  description:
+    placeholder: e.g. Secret token for the API
+  value:
+    label: Secret Value
+    placeholder: The secret value
 
 pageFooter:
   notARelease: (Not a Release)
@@ -2935,6 +2978,8 @@ schema:
     option: Choose an option...
   inputService:
     prompt: Choose a Service...
+  inputSecret:
+    prompt: Choose a Secret...
 
 schedulingRuleRow:
   theHost: The host
@@ -3215,6 +3260,7 @@ nav:
     backupTarget: Backup Targets
     certificates: Certificates
     registries: Registries
+    secrets: Secrets
   admin:
     tab: Admin
     audit: Audit Log

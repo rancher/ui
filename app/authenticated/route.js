@@ -67,6 +67,7 @@ export default Ember.Route.extend(Subscribe, {
         snapshots:          ['projectSchemas',          this.cbFind('snapshot')],
         backups:            ['projectSchemas',          this.cbFind('backup')],
         certificate:        ['projectSchemas',          this.cbFind('certificate')],
+        secret:             ['projectSchemas',          this.toCb('loadSecrets')],
         identities:         ['userSchemas', this.cbFind('identity', 'userStore')],
       };
 
@@ -231,6 +232,14 @@ export default Ember.Route.extend(Subscribe, {
     return this.get('userStore').find('setting', null, {url: 'setting', forceReload: true, filter: {all: 'false'}});
   },
 
+  loadSecrets() {
+    if ( this.get('store').getById('schema','secret') ) {
+      return this.get('store').find('secret');
+    } else {
+      return Ember.RSVP.resolve();
+    }
+  },
+
   selectProject(transition) {
     let projectId = null;
     if ( transition.params && transition.params['authenticated.project'] && transition.params['authenticated.project'].project_id )
@@ -243,7 +252,6 @@ export default Ember.Route.extend(Subscribe, {
   },
 
   actions: {
-
     error(err,transition) {
       // Unauthorized error, send back to login screen
       if ( err.status === 401 )
