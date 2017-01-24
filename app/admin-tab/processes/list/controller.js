@@ -20,18 +20,18 @@ export default Ember.Controller.extend({
     let which = this.get('which');
     let out = [
       {
-        displayName: 'ID',
         name: 'id',
+        translationKey: 'generic.id',
         sort: ['id:desc'],
         width: '75px',
       },
       {
-        displayName: 'Name',
         name: 'processName',
+        translationKey: 'generic.name',
         sort: ['processName','id:desc'],
       },
       {
-        displayName: 'Resource',
+        translationKey: 'processesPage.list.table.resource',
         name: 'resource',
         sort: ['resourceType','id:desc'],
         searchField: ['typeAndId', 'resourceType','resourceId'],
@@ -40,7 +40,7 @@ export default Ember.Controller.extend({
 
     if ( which === 'completed' ) {
       out.push({
-        displayName: 'Exit Reason',
+        translationKey: 'processesPage.list.table.exitReason',
         name: 'exitReason',
         sort: ['exitReason','id:desc'],
         width: '150px',
@@ -48,37 +48,45 @@ export default Ember.Controller.extend({
     }
 
     out.push({
-      displayName: 'Start Time',
+      translationKey: 'processesPage.list.table.startTime',
       name: 'startTime',
       sort: ['startTime:desc','id:desc'],
-      width: '150px',
+      width: '120px',
       searchField: false,
     });
 
     if ( which === 'completed' ) {
       out.push({
-        displayName: 'End Time',
+        translationKey: 'processesPage.list.table.endTime',
         name: 'endTime',
         sort: ['endTime:desc','id:desc'],
-        width: '150px',
+        width: '120px',
+        searchField: false,
+      });
+    }
+
+    if ( which === 'delayed' ) {
+      out.push({
+        translationKey: 'processesPage.list.table.runAfter',
+        name: 'runAfter',
+        sort: ['runAfter:desc','id:desc'],
+        width: '120px',
+        searchField: false,
+      });
+    } else {
+      out.push({
+        translationKey: 'processesPage.list.table.runTime',
+        name: 'runTime',
+        sort: ['runTime:desc','id:desc'],
+        width: '100px',
         searchField: false,
       });
     }
 
     out.push({
-      displayName: 'Run Time',
-      name: 'runTime',
-      sort: ['runTime:desc','id:desc'],
-      width: '100px',
-      searchField: false,
+      isActions: true,
+      width: '40px',
     });
-
-    if ( which === 'delayed' ) {
-      out.push({
-        isActions: true,
-        width: '50px',
-      });
-    }
 
     return out;
   }.property('which'),
