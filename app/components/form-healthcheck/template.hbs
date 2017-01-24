@@ -33,7 +33,7 @@
       </div>
       <div class="col-sm-12 col-md-3">
         {{#input-or-display editable=editing value=healthCheck.port}}
-          {{input type="number" min="1" max="65535" classNames="form-control" placeholder=(t 'formHealthCheck.port.placeholder') value=healthCheck.port}}
+          {{input-integer min="1" max="65535" classNames="form-control" placeholder=(t 'formHealthCheck.port.placeholder') value=healthCheck.port}}
         {{/input-or-display}}
       </div>
     </div>
@@ -101,7 +101,7 @@
       <div class="col-sm-12 col-md-3">
         {{#input-or-display editable=editing value=healthCheck.initializingTimeout}}
           <div class="input-group">
-            {{input type="number" step=100 classNames="form-control" value=healthCheck.initializingTimeout}}
+            {{input-integer step=100 classNames="form-control" value=healthCheck.initializingTimeout}}
             <span class="input-group-addon">{{t 'formHealthCheck.initializingTimeout.unit'}}</span>
           </div>
         {{/input-or-display}}
@@ -112,7 +112,7 @@
       <div class="col-sm-12 col-md-3">
         {{#input-or-display editable=editing value=healthCheck.reinitializingTimeout}}
           <div class="input-group">
-            {{input type="number" step=100 classNames="form-control" value=healthCheck.reinitializingTimeout}}
+            {{input-integer step=100 classNames="form-control" value=healthCheck.reinitializingTimeout}}
             <span class="input-group-addon">{{t 'formHealthCheck.reinitializingTimeout.unit'}}</span>
           </div>
         {{/input-or-display}}
@@ -127,7 +127,7 @@
       <div class="col-sm-12 col-md-3">
         {{#input-or-display editable=editing value=healthCheck.interval}}
           <div class="input-group">
-            {{input type="number" min=1 step=1000 classNames="form-control" value=healthCheck.interval}}
+            {{input-integer min=1 step=1000 classNames="form-control" value=healthCheck.interval}}
             <span class="input-group-addon">{{t 'formHealthCheck.interval.unit'}}</span>
           </div>
         {{/input-or-display}}
@@ -138,7 +138,7 @@
       <div class="col-sm-12 col-md-3">
         {{#input-or-display editable=editing value=healthCheck.responseTimeout}}
           <div class="input-group">
-            {{input type="number" min=1 step=100 classNames="form-control" value=healthCheck.responseTimeout}}
+            {{input-integer min=1 step=100 classNames="form-control" value=healthCheck.responseTimeout}}
             <span class="input-group-addon">{{t 'formHealthCheck.timeout.unit'}}</span>
           </div>
         {{/input-or-display}}
@@ -152,7 +152,7 @@
       <div class="col-sm-12 col-md-3">
         {{#input-or-display editable=editing value=healthCheck.healthyThreshold}}
           <div class="input-group">
-            {{input type="number" min=1 step=1 classNames="form-control" value=healthCheck.healthyThreshold}}
+            {{input-integer min=1 step=1 classNames="form-control" value=healthCheck.healthyThreshold}}
             <span class="input-group-addon">{{t 'formHealthCheck.healthyThreshold.unit'}}</span>
           </div>
         {{/input-or-display}}
@@ -163,7 +163,7 @@
       <div class="col-sm-12 col-md-3">
         {{#input-or-display editable=editing value=healthCheck.unhealthyThreshold}}
           <div class="input-group">
-            {{input type="number" min=1 step=1 classNames="form-control" value=healthCheck.unhealthyThreshold}}
+            {{input-integer min=1 step=1 classNames="form-control" value=healthCheck.unhealthyThreshold}}
             <span class="input-group-addon">{{t 'formHealthCheck.unhealthyThreshold.unit'}}</span>
           </div>
         {{/input-or-display}}
@@ -188,7 +188,7 @@
               {{radio-button selection=strategy value="recreateOnQuorum"}}
               <span class="with-input">
                 {{t 'formHealthCheck.strategy.recreateOnQuorumPrefix' quorum=quorum}}
-                {{input type="number" min=1 safeStyle="width: 60px; display: inline-block;" class="form-control input-sm" value=quorum}}
+                {{input-integer min=1 safeStyle="width: 60px; display: inline-block;" class="form-control input-sm" value=quorum}}
                 {{t 'formHealthCheck.strategy.recreateOnQuorumSuffix' quorum=quorum}}
               </span>
             </label>

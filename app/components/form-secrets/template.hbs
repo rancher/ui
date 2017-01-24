@@ -1,0 +1,71 @@
+<div class="row">
+  <div class="col-xs-6 col-md-2 form-label form-control-static">
+    <label>{{t 'formSecrets.label'}}</label>
+  </div>
+  <div class="col-xs-6 col-md-8">
+    <button class="btn-circle-text" {{action "addSecret"}}><i class="icon icon-plus-circle"/> <span>{{t 'formSecrets.addLabel'}}</span></button>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xs-12">
+    {{#if secrets.length}}
+      <table class="grid fixed no-lines no-top-padding tight r-mb0">
+        <thead>
+          <tr>
+            <th>{{t 'generic.name'}}*</th>
+            <th>{{t 'formSecrets.secret.label'}}*</th>
+            {{#if showPermissions}}
+              <th class="divided">{{t 'formSecrets.uid.label'}}</th>
+              <th>{{t 'formSecrets.gid.label'}}</th>
+              <th>{{t 'formSecrets.mode.label'}}</th>
+            {{/if}}
+            <th width="40">&nbsp;</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {{#each secrets as |row|}}
+            <tr>
+              <td data-title="{{t 'generic.name'}}: ">
+                {{input type="text" class="form-control input-sm" value=row.name placeholder=(t 'formSecrets.name.placeholder')}}
+              </td>
+
+              <td data-title="{{t 'formSecrets.secret.label'}}: ">
+                {{schema/input-secret selectClass="form-control input-sm" selected=row.secretId}}
+              </td>
+
+              {{#if showPermissions}}
+                <td class="divided" data-title="{{t 'formSecrets.uid.label'}}: ">
+                  {{input type="text" class="form-control input-sm" value=row.uid placeholder=(t 'formSecrets.uid.placeholder')}}
+                </td>
+                <td data-title="{{t 'formSecrets.gid.label'}}: ">
+                  {{input type="text" class="form-control input-sm" value=row.gid placeholder=(t 'formSecrets.gid.placeholder')}}
+                </td>
+
+                <td data-title="{{t 'formSecrets.mode.label'}}: ">
+                  {{input type="text" class="form-control input-sm" value=row.mode placeholder=(t 'formSecrets.mode.placeholder')}}
+                </td>
+              {{/if}}
+
+              <td class="text-right">
+                <button class="btn btn-primary btn-sm" {{action "removeSecret" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+              </td>
+            </tr>
+          {{/each}}
+        </tbody>
+      </table>
+      <p class="help-block">
+        {{format-html-message 'formSecrets.help.prefix'}}
+        {{#unless showPermissions}}
+          <a href="#" {{action "showPermissions"}}>
+            {{t 'formSecrets.help.showPermissionsLink'}}
+          </a>
+        {{/unless}}
+        {{format-html-message 'formSecrets.help.suffix'}}
+      </p>
+    {{else}}
+      <span class="text-muted">{{t 'formSecrets.noData'}}</span>
+    {{/if}}
+  </div>
+</div>

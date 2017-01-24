@@ -24,8 +24,16 @@
     <td data-title="{{headers.3.displayName}}: ">{{format-number row.rejectedTasks}}</td>
     <td data-title="{{headers.4.displayName}}: ">{{format-number row.completedTasks}}</td>
     <td data-title="{{headers.5.displayName}}: ">{{format-number row.queueSize}}</td>
-    <td data-title="{{headers.6.displayName}}: ">{{#if (eq row.queueRemainingCapacity 2147483647)}}&infin;{{else}}{{format-number row.queueRemainingCapacity}}{{/if}}</td>
+    <td data-title="{{headers.6.displayName}}: ">
+      {{#if (eq row.queueRemainingCapacity 2147483647)}}
+        &infin;
+      {{else}}
+        {{format-number row.queueRemainingCapacity}}
+      {{/if}}
+    </td>
+  {{else if (eq kind "nomatch")}}
+    <td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.pools.noMatch'}}</td>
   {{else if (eq kind "norows")}}
-    <td colspan="4" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.pools.noData'}}</td>
+    <td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.pools.noData'}}</td>
   {{/if}}
 {{/sortable-table}}

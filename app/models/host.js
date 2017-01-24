@@ -110,7 +110,9 @@ var Host = Resource.extend({
     let supported = this.get(`settings.${C.SETTING.SUPPORTED_DOCKER}`);
     let newest = this.get(`settings.${C.SETTING.NEWEST_DOCKER}`);
 
-    if ( satisfies(my, supported) ) {
+    if ( !my || !supported || !newest) {
+      return 'unknown';
+    } else if ( satisfies(my, supported) ) {
       return 'supported';
     } else if ( compare(my, newest) > 0 ) {
       return 'untested';

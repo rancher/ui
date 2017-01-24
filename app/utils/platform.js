@@ -37,6 +37,8 @@ export var isGecko = userAgent.indexOf('Gecko/') >= 0;
 export var isBlink = userAgent.indexOf('Chrome/') >= 0;
 export var isWebKit = !isBlink && userAgent.indexOf('AppleWebKit/') >= 0;
 export var isSafari = !isBlink && userAgent.indexOf('Safari/') >= 0;
+export var isMobile = /Android|webOS|iPhone|iPad|iPod|IEMobile/i.test(userAgent);
+
 
 // Only intended to work for Mobile Safari at the moment...
 export function version() {

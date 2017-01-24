@@ -158,6 +158,7 @@ export default Ember.Service.extend(Ember.Evented, {
   rancherVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_RANCHER}.value`),
   composeVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_COMPOSE}.value`),
   cattleVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_CATTLE}.value`),
+  cliVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_CLI}.value`),
   dockerMachineVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_MACHINE}.value`),
   goMachineVersion: Ember.computed.alias(`asMap.${C.SETTING.VERSION_GMS}.value`),
 
