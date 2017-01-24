@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import { parsePortSpec } from 'ui/utils/parse-port';
 
 const DEFAULT_UID = '0';
 const DEFAULT_GID = '0';
@@ -23,9 +22,9 @@ export default Ember.Component.extend({
       let uid = secret.get('uid');
       let gid = secret.get('gid');
       let mode = secret.get('mode');
-      if ( (uid && uid != DEFAULT_UID) ||
-           (gid && gid != DEFAULT_GID) ||
-           (mode && mode != DEFAULT_MODE) ) {
+      if ( (uid && uid !== DEFAULT_UID) ||
+           (gid && gid !== DEFAULT_GID) ||
+           (mode && mode !== DEFAULT_MODE) ) {
         this.set('showPermissions', true);
         break;
       }
