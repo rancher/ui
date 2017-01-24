@@ -223,7 +223,7 @@ const navTree = [
       {
         id: 'infra-secrets',
         localizedLabel: 'nav.infra.secrets',
-        icon: 'icon icon-lock',
+        icon: 'icon icon-secrets',
         route: 'secrets',
         ctx: [getProjectId],
       },
