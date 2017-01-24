@@ -4,38 +4,38 @@ export default Ember.Controller.extend({
   sortBy: 'name',
   headers: [
     {
-      displayName: 'Name',
+      translationKey: 'generic.name',
       name: 'name',
       sort: ['name'],
       width: '150px'
     },
     {
-      displayName: 'Active',
+      translationKey: 'processesPage.pools.table.activeTasks',
       name: 'activeTasks',
       sort: ['activeTasks','name'],
     },
     {
-      displayName: 'Pool Size',
+      translationKey: 'processesPage.pools.table.poolSize',
       name: 'poolSize',
       sort: ['poolSize','name'],
     },
     {
-      displayName: 'Rejected',
+      translationKey: 'processesPage.pools.table.rejectedTasks',
       name: 'rejectedTasks',
       sort: ['rejectedTasks','name'],
     },
     {
-      displayName: 'Completed',
+      translationKey: 'processesPage.pools.table.completedTasks',
       name: 'completedTasks',
       sort: ['completedTasks','name'],
     },
     {
-      displayName: 'Queue Size',
+      translationKey: 'processesPage.pools.table.queueSize',
       name: 'queueSize',
       sort: ['queueSize','name'],
     },
     {
-      displayName: 'Queue Remain',
+      translationKey: 'processesPage.pools.table.queueRemainingCapacity',
       name: 'queueRemainingCapacity',
       sort: ['queueRemainingCapacity','name'],
     },

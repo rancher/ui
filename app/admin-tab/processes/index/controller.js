@@ -4,22 +4,22 @@ export default Ember.Controller.extend({
   sortBy: 'name',
   headers: [
     {
-      displayName: 'Name',
+      translationKey: 'generic.name',
       name: 'name',
       sort: ['name'],
     },
     {
-      displayName: 'Running',
+      translationKey: 'processesPage.summary.table.running',
       name: 'running',
       sort: ['running','name'],
     },
     {
-      displayName: 'Ready',
+      translationKey: 'processesPage.summary.table.ready',
       name: 'ready',
       sort: ['ready','name'],
     },
     {
-      displayName: 'Delayed',
+      translationKey: 'processesPage.summary.table.delay',
       name: 'delay',
       sort: ['delay','name'],
     },

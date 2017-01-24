@@ -9,9 +9,9 @@
   as |row kind|
 }}
   {{#if (eq kind "row")}}
-    <td data-title="{{headers.0.displayName}}: ">{{row.displayName}}</td>
-    <td data-title="{{headers.1.displayName}}: " class="{{if (gte row.activeTasks row.poolSize) 'text-warning text-bold'}}">{{format-number row.activeTasks}}</td>
-    <td data-title="{{headers.2.displayName}}: ">
+    <td data-title="{{dt.name}}">{{row.displayName}}</td>
+    <td data-title="{{dt.activeTasks}}" class="{{if (gte row.activeTasks row.poolSize) 'text-warning text-bold'}}">{{format-number row.activeTasks}}</td>
+    <td data-title="{{dt.poolSize}}">
       {{~format-number row.poolSize~}}
       {{#if (or (not-eq row.poolSize row.minPoolSize) (not-eq row.poolSize row.maxPoolSize))}}
         <span class="text-muted"> (
@@ -21,10 +21,10 @@
         )</span>
       {{/if}}
     </td>
-    <td data-title="{{headers.3.displayName}}: ">{{format-number row.rejectedTasks}}</td>
-    <td data-title="{{headers.4.displayName}}: ">{{format-number row.completedTasks}}</td>
-    <td data-title="{{headers.5.displayName}}: ">{{format-number row.queueSize}}</td>
-    <td data-title="{{headers.6.displayName}}: ">
+    <td data-title="{{dt.rejectedTasks}}">{{format-number row.rejectedTasks}}</td>
+    <td data-title="{{dt.completedTasks}}">{{format-number row.completedTasks}}</td>
+    <td data-title="{{dt.queueSize}}">{{format-number row.queueSize}}</td>
+    <td data-title="{{dt.queueRemainingCapacity}}">
       {{#if (eq row.queueRemainingCapacity 2147483647)}}
         &infin;
       {{else}}
