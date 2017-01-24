@@ -31,6 +31,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   commandErrors             : null,
   volumeErrors              : null,
   networkingErrors          : null,
+  secretErrors              : null,
   healthCheckErrors         : null,
   schedulingErrors          : null,
   securityErrors            : null,
@@ -128,6 +129,10 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   init() {
     this._super(...arguments);
+
+    if ( !this.get('launchConfig.secrets') ) {
+      this.set('launchConfig.secrets', []);
+    }
 
     this.labelsChanged();
   },
@@ -297,6 +302,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     errors.pushObjects(this.get('commandErrors')||[]);
     errors.pushObjects(this.get('volumeErrors')||[]);
     errors.pushObjects(this.get('networkingErrors')||[]);
+    errors.pushObjects(this.get('secretErrors')||[]);
     errors.pushObjects(this.get('healthCheckErrors')||[]);
     errors.pushObjects(this.get('schedulingErrors')||[]);
     errors.pushObjects(this.get('securityErrors')||[]);
@@ -398,4 +404,8 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
     return this.get('intl').t(k, {numServices: count});
   }.property('intl._locale','isUpgrade','isService','isVm','service.secondaryLaunchConfigs.length'),
+
+  supportsSecrets: function() {
+    return !!this.get('store').getById('schema','secret');
+  }.property(),
 });

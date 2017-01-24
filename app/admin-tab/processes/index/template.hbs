@@ -7,21 +7,23 @@
   sortBy=sortBy
   headers=headers
   body=model.summary
-  as |row kind|
+  as |row kind dt|
 }}
   {{#if (eq kind "row")}}
-    <td data-title="{{headers.0.displayName}}: ">{{row.processName}}</td>
-    <td data-title="{{headers.1.displayName}}: ">{{row.running}}</td>
-    <td data-title="{{headers.2.displayName}}: ">{{row.ready}}</td>
-    <td data-title="{{headers.3.displayName}}: ">{{row.delay}}</td>
+    <td data-title="{{dt.name}}">{{row.processName}}</td>
+    <td data-title="{{dt.running}}">{{row.running}}</td>
+    <td data-title="{{dt.ready}}">{{row.ready}}</td>
+    <td data-title="{{dt.delay}}">{{row.delay}}</td>
+  {{else if (eq kind "nomatch")}}
+    <td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.summary.noMatch'}}</td>
   {{else if (eq kind "norows")}}
-    <td colspan="4" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.summary.noData'}}</td>
+    <td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.summary.noData'}}</td>
   {{else if (and model.summary.length (eq kind "prefix"))}}
     <tr class="total">
-      <td data-title="{{headers.0.displayName}}: ">{{total.processName}}</td>
-      <td data-title="{{headers.1.displayName}}: ">{{total.running}}</td>
-      <td data-title="{{headers.2.displayName}}: ">{{total.ready}}</td>
-      <td data-title="{{headers.3.displayName}}: ">{{total.delay}}</td>
+      <td data-title="{{dt.name}}">{{total.processName}}</td>
+      <td data-title="{{dt.running}}">{{total.running}}</td>
+      <td data-title="{{dt.ready}}">{{total.ready}}</td>
+      <td data-title="{{dt.delay}}">{{total.delay}}</td>
     </tr>
   {{/if}}
 {{/sortable-table}}

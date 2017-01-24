@@ -261,6 +261,7 @@ var C = {
     IMAGE_RANCHER:             'rancher$server$image',
     VERSION_RANCHER:           'rancher$server$version',
     VERSION_COMPOSE:           'rancher$compose$version',
+    VERSION_CLI:               'rancher$cli$version',
     VERSION_CATTLE:            'cattle$version',
     VERSION_MACHINE:           'docker$machine$version',
     VERSION_GMS:               'go$machine$service$version',
