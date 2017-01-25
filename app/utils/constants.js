@@ -21,6 +21,7 @@ var C = {
       "label": "action.stop",
       "icon": "icon icon-stop",
       "action": "promptStop",
+      "altAction": "stop",
       "bulkActionName": "Stop",
     },
     {
@@ -33,6 +34,7 @@ var C = {
       "label": "action.remove",
       "icon": "icon icon-trash",
       "action": "promptDelete",
+      "altAction": "delete",
       "bulkActionName": "Delete",
     },
   ],
