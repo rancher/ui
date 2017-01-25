@@ -106,6 +106,7 @@ auditLogsPage:
       placeholder: IP Запиту
     authType:
       placeholder: "Тип автентифікації:"
+      dropdownPlaceholder: 'Виберіть Тип входу:'
     clearButtonText: Очистити фільтри
     searchButtonText: Пошук
   table:
@@ -298,7 +299,7 @@ catalogPage:
       plural: В каталозі немає відповідних шаблонів.
     action:
       launch: Детальніше
-      alreadyDeployed: Уже розгорнуто
+      alreadyDeployed: Вже розгорнуто
 consolePage:
   header: 'Консоль:'
   closeButton: Закрити
@@ -389,7 +390,7 @@ containersPage:
         labelText: 'розподіл mCPU: '
     navTabs:
       labels: Етикетки
-      volumes: Томи
+      volumes: Диски
       ports: Порти
       command: Команда
       networking: Мережа
@@ -406,10 +407,14 @@ containersPage:
         header:
           name: Ім'я
           mount: Точка монтування
+          shared: Спільно з
+          writable: З правом на запис
         body:
           error:
             data: 'Примітка:'
             error: Помилка
+            noData: У цього контейнера немає дисків.
+          noContainers: У вас немає інших контейнерів
 containerSubpod:
   childContainers: Контейнери
   childSidekicks: Sidekicks
@@ -434,7 +439,7 @@ helpPage:
     header: Що таке Середовище?
     content: |
       <p>{appName} підтримує груповання ресурсів в різних середовищах. Кожен з них отримує свій власний набір послуг і ресурсів, інфраструктури, а також знаходиться у власності одного або кількох GitHub користувачів, груп або організацій.</p><p>Наприклад, можна створити окремо "dev", "test", і "production" середовище, щоб тримати речі, обмежені один від одного, а також дати "Dev" доступ до всієї організації, а обмежити «production» середовище для меньшої команди.</p>
-    manageLink: Управляти Середовищем
+    manageLink: Управляти Середовищами
   host:
     header: Що таке хост?
     contentLink: Детальніше
@@ -528,7 +533,7 @@ hostsPage:
           image: Образ (Команда)
           stats: Статистика
         body:
-          noData: 'На цьому хості поки немає контейнерів.'
+          noData: На цьому хості поки немає контейнерів.
     portsTab:
       table:
         header:
@@ -543,6 +548,8 @@ hostsPage:
         header:
           state: Статус
           hostPath: Шлях на хості
+        body:
+          noData: На цьому хості поки немає дисків.
 k8sTab:
   dashboard:
     dashboard:
@@ -687,6 +694,7 @@ servicePage:
       description:
         placeholder: напр. Поточна версія програми MyApp
   newBalancer:
+    upgradeImage: "Система балансування навантажень буде оновлена з <code>{from}</code> до <code>{to}</code>."
     form:
       name:
         placeholder: напр. сайт
@@ -740,12 +748,14 @@ stacksPage:
       rancherCompose:
         label: 'Додатково: rancher-compose.yml'
 storagePoolsPage:
+  volume: ID Диска
   nav:
     pools: Пули
     backups: Резервні копії
   newVolume:
-    header: Додати розділ
+    header: Додати Диск
     form:
+      driverOptions: Опції Драйвера
       addActionLabel: Додати параметр
 swarmPage:
   projects:
@@ -949,6 +959,7 @@ catalogSettings:
   certified:
     header:
       rancher: "{appName}, сертифікована бібліотека"
+      pl: Сертифікована бібліотека
   more:
     header: Інший
     addActionLabel: Додати каталог
@@ -1189,7 +1200,9 @@ formContainerLinks:
     label: Як ім'я
     placeholder: напр. database
 formDisks:
+  addRootDiskLabel: Додати Кореневий Диск
   name:
+    rootDisk: Кореневий Диск
     label: Ім'я
     placeholder: напр. data
   size:
@@ -1262,7 +1275,7 @@ formImage:
   container:
     placeholder: "наприклад, ubuntu:trusty"
   pullImage:
-    label: Завжди отримувати образ перед створенням
+    label: Завжди отримувати новий образ перед створенням
 formNameDescription:
   name:
     label: Ім'я
@@ -1279,7 +1292,6 @@ formNetwork:
   networkMode:
     label: Мережа
     bridge: Міст
-    container: контейнер
     host: Хост
     nat: NAT
     none: Немає
@@ -1307,8 +1319,10 @@ formNetwork:
 formPorts:
   addAction: Прокинути порт
   public:
+    label: Публічний порт хоста
     placeholder: "напр. 80"
   private:
+    label: Порт приватного контейнера
     placeholder: "напр. 8080"
   protocol:
     label: Протокол
@@ -1389,6 +1403,8 @@ formSecurity:
     hyperv: HyperV (VM)
 formServiceLinks:
   addAction: Сервіси посилань
+  service:
+    label: Вкажіть сервіс
   name:
     label: Як ім'я
     placeholder: напр. database
@@ -1436,12 +1452,18 @@ formVirtualMachines:
 formVolumes:
   value:
     prompt: Виберіть контейнер...
+  volumes: Диски
+  volumesFrom: Диск від
   volumeDriver:
+    label: Драйвер Диска
     placeholder: 'напр. rancher-nfs'
-  addActionLabel: Додати розділ
+  addActionLabel: Додати Диск
+  errors:
+    invalidName: Імена дисків можуть містити тільки букви, цифри, знаки дефіса, підкреслення і точки (латиницею).
 heroAddService:
   service:
     contentLink: Детальніше
+  addService: Додати сервіс
   addCatalog: Налаштувати
   linkToCatalog: Переглянути каталог
 hookPage:
@@ -1458,9 +1480,6 @@ hostSettings:
   hostUrl:
     new:
       placeholder: "напр. http://example.com:8080"
-hostPod:
-  groupedInstances:
-    stack: 'Стек:'
 identityBlock:
   loading: Завантажується...
 infoMultiStats:
@@ -1597,6 +1616,7 @@ machine:
       link: Дізнатися більше
     instanceSection: Інстанс
     rootSize:
+      label: Розмір кореневого диска
       unit: Гб
     ami:
       label: АМІ
@@ -1699,6 +1719,8 @@ machine:
     portHelp:
       link: Дізнатися більше
     instanceSection: Інстанс
+    diskSize:
+      label: Розмір кореневого диска
     sshUser:
       label: SSH користувач
       placeholder: 'usr1'
@@ -1737,6 +1759,8 @@ machine:
       label: Формат
   driverUbiquity:
     accountSection: Доступ до облікового запису
+    apiUsername:
+      label: Віддалений ID
     apiToken:
       label: Ключ доступу
     instanceSection: Інстанс
@@ -1787,6 +1811,8 @@ machine:
     aliyunSLB:
       label: Aliyun SLB ID
       placeholder: Aliyun SLB ID
+    dataDiskSize:
+      placeholder: Розмір диска
     region:
       label: Регіон
       placeholder: Регіон
@@ -1831,6 +1857,8 @@ modalConfirmDeactivate:
       message: деактивувати
       button: Деактивувати
 modalEditBackup:
+  edit: Редагувати резервну копію
+  create: Створити резервну копію
   nameLabel: Назва резервної копії
 modalEditDriver:
   url:
@@ -1840,6 +1868,8 @@ modalEditDriver:
 modalEditSetting:
   name:
     label: Ім'я
+  value:
+    label: Значення
 modalFeedback:
   header: Ласкаво просимо в {appName}!
   send: Розпочати
@@ -1848,6 +1878,10 @@ modalProcessError:
   cause: "Причина:"
   none: Н/Д
   close: Закрити
+modalRollbackVolume:
+  title:
+    snapshot: Відкат до знімка
+    backup: Відкат до резервної копії
 modalShell:
   title: 'Shell : {instanceName}'
 modalWelcome:
@@ -1863,6 +1897,8 @@ newBalancer:
   tabs:
     labels: Ярлики
     scheduling: Призначити
+  error:
+    invalidSourcePort: 'Невірний Порт: ''{num}'''
 newCatalog:
   version:
     prompt: Вибрати версію...
@@ -1883,7 +1919,7 @@ newCatalog:
   newStack: Новий стек
   config: Параметри конфігурації
   startService: Запустити сервіс після створення
-  preview: Предпросмотр
+  preview: Попередній перегляд
   txt: answers.txt
 newContainer:
   add:
@@ -1911,7 +1947,7 @@ newContainer:
     disks: Диски
     userData: Дані користувача
     command: Команда
-    volumes: Томи
+    volumes: Диски
     networking: Мережа
     security: Безпека/Хост
     healthCheck: Перевірка працездатності
@@ -1919,12 +1955,15 @@ newContainer:
     balancing: Балансування
   saveUpgrade: Оновити
   saveNew: Створити
+  removeSidekick: Видалити цей Sidekick
   name:
     placeholder: напр. myapp
   description:
     placeholder: напр. мій додаток
+  emptyPrimaryService: "(Основний сервіс)"
   emptySidekick: "(Sidekick #{num})"
   addSidekickContainer: Додати Sidekick контейнер
+  addSidekickVm: Додати Sidekick VM
 newExternalService:
   header: Додати зовнішній сервіс
 newReceiver:
@@ -1967,6 +2006,7 @@ registryRow:
   created: Створено
 reservationParameters:
   localStorage:
+    labelText: 'Локальне сховище'
     placeholder: 'напр. 40960'
     unit: 'МБ'
   memory:
@@ -1986,6 +2026,8 @@ saveCancel:
 schema:
   inputCertificate:
     prompt: Виберіть сертифікат...
+  inputEnum:
+    option: Виберіть варіант...
   inputService:
     prompt: Виберіть сервіс...
 schedulingRuleRow:
@@ -2025,7 +2067,7 @@ stackSection:
     =2 {Контейнера}
     =3 {Контейнера}
     =4 {Контейнера}
-    other {Контейнеров}
+    other {Контейнерів}
     }
   service: |
     {numServices, plural,
@@ -2060,12 +2102,13 @@ storagePoolSection:
     header: Хости
     none: Немає хостів
   volumes:
-    header: Томи
-    add: Додати розділ
+    header: Диски
+    add: Додати Диск
+    none: Диски відсутні
   models:
     table:
       header:
-        volumeName: 'Ім''я тома'
+        volumeName: 'Ім''я Диска'
 svgServiceContainer:
   sidekicks: Sidekicks
 swarm:
@@ -2149,7 +2192,7 @@ nav:
     all: Всі середовища
     your: Мої Середовища
     selected: Вибрані середовища
-    manage: Управляти Середовищем
+    manage: Управляти Середовищами
     edit: 'Редагувати "{name}"'
   notReady: Налаштування...
   k8s:
@@ -2184,7 +2227,7 @@ nav:
     storagePage: Сховище
     certificates: Сертифікати
   admin:
-    tab: Адмін
+    tab: Адміністратор
     audit: Журнал аудиту
     processes: Процеси
     accounts: Облікові записи
@@ -2222,12 +2265,15 @@ action:
   exportConfig: Експорт конфігурації
   finishUpgrade: Закінчити оновлення
   logs: Перегляд журналів
+  machineConfig: Конфігурація машини
   purge: Очистити
   remove: Видалити
   restart: Перезапустити
   restore: Відновити
   retry: Повторити
   rollback: Відкат
+  revertToSnapshot: Відновити Диск, з знімка
+  restoreFromBackup: Відновити Диск з резервної копії
   setDefault: Зробити за замовчуванням
   snapshot: Снепшот
   start: Запустити
