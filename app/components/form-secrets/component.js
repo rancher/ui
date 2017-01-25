@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 const DEFAULT_UID = '0';
 const DEFAULT_GID = '0';
-const DEFAULT_MODE = '0600';
+const DEFAULT_MODE = '444';
 
 export default Ember.Component.extend({
   intl: Ember.inject.service(),
