@@ -7,6 +7,11 @@ export default Ember.Service.extend({
       model: nodes
     });
   },
+  stop: function(nodes) {
+    nodes.forEach((node) => {
+      node.send('stop');
+    });
+  },
   start: function(nodes) {
     nodes.forEach((node) => {
       node.send('start');
@@ -19,5 +24,10 @@ export default Ember.Service.extend({
   },
   promptDelete: function(nodes) {
     this.get('modalService').toggleModal('confirm-delete', nodes);
+  },
+  delete: function(nodes) {
+    nodes.forEach((node) => {
+      node.send('delete');
+    });
   },
 });
