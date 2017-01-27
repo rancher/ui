@@ -136,17 +136,15 @@ export default Ember.Mixin.create({
   }),
 
   doUpgrade() {
-    let upgradeInfo = this.get('upgradeInfo');
     let status = this.get('upgradeStatus');
 
     if ( [AVAILABLE,CURRENT].indexOf(status) >= 0 )
     {
-      // Hackery, but no good way to get the template from upgradeInfo
-      var tpl = upgradeInfo.id;
-
-      this.get('application').transitionToRoute('catalog-tab.launch', tpl, {queryParams: {
+      let templateId = this.get('model.externalIdInfo.templateId');
+      let versionId = this.get('upgradeInfo.id');
+      this.get('application').transitionToRoute('catalog-tab.launch', templateId, {queryParams: {
         stackId: this.get('model.id'),
-        upgrade: this.get('upgradeInfo.id'),
+        upgrade: versionId
       }});
     }
     else if ( status === UPGRADED )
