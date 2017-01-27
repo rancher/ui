@@ -1,6 +1,39 @@
 import Ember from 'ember';
 import ShellQuote from 'npm:shell-quote';
 
+export const OPS = ['||','&&',';;','|&','&',';','(',')','|','<','>'];
+export function reop(xs) {
+  return xs.map(function(s) {
+    if ( OPS.includes(s) ) {
+      return {op: s};
+    } else {
+      return s;
+    }
+  });
+}
+
+export function unparse(xs) {
+    return xs.map(function (s) {
+        if (s && typeof s === 'object') {
+            if (s.hasOwnProperty('pattern')) {
+                return '"' + s.pattern + '"';
+            } else {
+                return s.op;
+            }
+        }
+        else if (/["\s]/.test(s) && !/'/.test(s)) {
+            return "'" + s.replace(/(['\\])/g, '\\$1') + "'";
+        }
+        else if (/["'\s]/.test(s)) {
+            return '"' + s.replace(/(["\\$`!])/g, '\\$1') + '"';
+        }
+        else {
+            return String(s).replace(/([\\$`()!#&*|])/g, '\\$1');
+        }
+    }).join(' ');
+}
+
+
 export default Ember.TextField.extend({
   type: 'text',
 
@@ -10,7 +43,7 @@ export default Ember.TextField.extend({
     let initial = this.get('initialValue')||'';
     if ( Ember.isArray(initial) )
     {
-      this.set('value', ShellQuote.quote(initial));
+      this.set('value', unparse(reop(initial)));
     }
     else
     {
