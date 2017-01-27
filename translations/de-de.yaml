@@ -4,6 +4,7 @@ languageContribute: "Helfen Sie bei der Übersetzung von Rancher"
 generic:
   actions: Aktionen
   activate: Aktivieren
+  any: Irgendein
   as: Als
   cancel: Abbrechen
   closeModal: Schließen
@@ -34,10 +35,15 @@ generic:
   role: Rolle
   save: Speichern
   saved: Gespeichert
+  saving: Speichern
   state: Status
+  test: Test
+  testing: Testet
   to: Zu
+  total: Gesamt
   type: Typ
   unknown: Unbekannt
+  uuid: UUID
   "yes": true
 accountsPage:
   index:
@@ -117,17 +123,53 @@ auditLogsPage:
     environment: Umgebung
     resourceTypeId: "Ressource Zeit:Id"
     identity: Iditität
+    authIp: "Auth & IP"
   first: Erste Seite
   next: Nächste Seite
 authPage:
   shibboleth:
+    header:
+      title: Shibboleth Authentifizierung
     enabled:
+      header: "{providerName} ist aktiviert"
+      required: |
+        {appName} ist so eingestellt, dass {orgs, plural, =0 {keine Organisationen} =1 {# Organisation} other {# Organisationen} } und {users, plural, =0 {keine Spieler} =1 {# Spieler} other {# Spieler} } zugreifen dürfen.
+      restricted: |
+        {appName} ist so eingestellt, dass die Spieler in der Umgebung {orgs, plural, =0 {keiner Organisation} =1 {# Organisation} other {# Organisationen} } und {users, plural, =0 {keine Spieler} =1 {# Spieler} other {# Spieler} } Zugriff haben.
+      unrestricted: "{appName} ist so eingestellt, dass jeder {providerName} Spieler Zugriff hat."
       authenticated:
         header:
           text: Authentifizierung
+          helpText: "Um die Einstellungen der Shibboleth Anwendung zu ändern, deaktiviere hier drunter die Zugriffssteuerung und stelle sie danach neu ein."
+      disableAccess:
+        header: "Gefahrenzone&trade;"
+        warning: '<b class="text-danger">Achtung:</b> Das deaktivieren der Zugriffskontrolle wird jedem, der diese Seite oder API erreicht, volle Kontrolle über {appName} geben.'
+        confirmDisable: "Bist du dir sicher? Klicke noch einmal um die Zugriffskontrolle wirklich zu deaktivieren"
+        disable: Zugriffskontrolle deaktivieren
       groupsField: 'Gruppen:'
       displayName: 'Anzeigename:'
       userName: 'Benutzername:'
+      userId: 'Benutzer ID:'
+    disabled:
+      header: '1. Bearbeite Shibboleth Account'
+      label: "{providerName} ist nicht eingestellt"
+      warning: "{appName} kann so eingestellt werden, dass es den Zugriff eines {providerName} Nutzers und einer Gruppe verbietet. Momentan wurde keine Einstellung getroffen, also hat jeder, der diese Seite (oder API) erreicht, volle Kontrolle über das System."
+      name:
+        labelText: Zeige Namensfeld
+      username:
+        labelText: Benutzer Namensfeld
+      uid:
+        labelText: UID Feld
+      groups:
+        labelText: Gruppen Feld
+      testAuth:
+        header: '2. Teste und aktiviere die Authentifizierung'
+        subtext: 'Überprüfe ob deine Applikation richtig eingestellt ist, indem du sie hier mit testest:'
+        buttonText:
+          pre: Authentifizierung mit IDP
+          post: Warte auf Antwort von IDP
+    providerName:
+      shibboleth: Shibboleth
   root:
     header: Access Control
   github:
@@ -183,6 +225,7 @@ authPage:
           text: 'Klicken Sie auf "Neue Anwendung registrieren" und füllen Sie das Formular aus:'
           ul:
             li1: '<b>Name der Anwendung:</b> <span class="text-muted">z.B. Meine {appName}</span>'
+            li2: '<b>Homepage URL: </b> '
             li3: '<b>Beschreibung der Anwendung:</b> <span class="text-muted">optional</span>'
             li4: Authorisierungs-URL
         li3:
@@ -199,6 +242,7 @@ authPage:
         isGHEnterprise:
           labelText: Sichere Verbindung verwenden
         enterpriseHost:
+          labelText: Enterprise Host
           placeholder: 'z.B. github.example.com'
     testAuth:
       header: '3. Test u Aktivieren der Authentifizierung'
@@ -304,9 +348,20 @@ catalogPage:
     search:
       placeholder: Suche...
     category: "Kategorie:"
+    certified:
+      rancher:
+        rancher: Zertifiziert
+        partner: Partner
+      pl:
+        rancher: Zertifiziert
+        partner: Partner
     noData:
       singular: Keine kompatiblen Templates vorhanden.
       plural: Keine kompatiblen Templates in diesem Katalog vorhanden.
+    action:
+      launch: Detailansicht
+      notCompatible: Nicht kompatibel
+      alreadyDeployed: Bereits eingesetzt
 consolePage:
   header: 'Shell:'
   closeButton: Schließen
@@ -349,6 +404,7 @@ certificatesPage:
 containersPage:
   table:
     ipAddress: IP Addresse
+    primaryHost: Hauptveranstalter
     primaryHostUnknown: Unbekannt
     image: Image
     stats: Statistiken
@@ -381,19 +437,29 @@ containersPage:
     header: 'Container:'
     subtext:
       "on": true
+      in: in
     infoMultiStats:
       tooltip:
         host: IP in Zwischenablage kopieren
+      host: 'Veranstalter:'
+      ip: 'Container IP:'
       docker: 'Docker ID:'
       image: 'Image:'
       command: 'Befehl:'
       entryPoint: 'Einstiegspunkt:'
       description: 'Beschreibung:'
+      memoryReservation:
+        labelText: 'Speicher Reservierung: '
+      milliCpuReservation:
+        labelText: 'mCPU Reservierung: '
     navTabs:
       labels: Labels
       volumes: Volumes
       ports: Ports
+      command: Befehl
       networking: Netzwerk
+      healthCheck: Gesundheitsüberprüfung
+      scheduling: Planen
       security: Sicherheit
     portsTab:
       table:
@@ -403,10 +469,11 @@ containersPage:
           private: Private im Container
           protocol: Protokoll
         body:
-          noData: 'Dieser Container hat keine Ports.'
+          noData: Dieser Container hat keine Ports.
     volumesTab:
       table:
         header:
+          name: Name
           mount: Einhängepunkt
           shared: Geteilt mit
           writable: Beschreibbar
@@ -428,8 +495,14 @@ failWhalePage:
 haPage:
   header: Hohe Verfügbarkeit
   setup:
+    prefix: "Mehrere Server-Container können auf verschiedenen Hosts hochgeladen werden, damit {appName} selbst beim Absturz eines Hosts weiterlaufen kann.  "
     link: Siehe Dokumentation
     suffix: "für Informationen zur Einrichtung und Nutzung."
+  table:
+    address: Beworbene Adresse
+    port: Port
+    heartbeat: Zulezt gesehen
+    clustered: Gruppiert
 helpPage:
   header: Hilfreiche Links und Informationen
   banner: Ankündigungen
@@ -538,6 +611,8 @@ hostsPage:
       description: 'Beschreibung:'
       milliCpu:
         labelText: mCPU
+      localStorageMb:
+        labelText: Lokales Limit
     navTabs:
       containers: Container
       ports: Ports
@@ -552,7 +627,7 @@ hostsPage:
           image: Image (Befehl)
           stats: Statistiken
         body:
-          noData: 'Dieser Host enthält noch keine Container.'
+          noData: Dieser Host enthält noch keine Container.
     portsTab:
       table:
         header:
@@ -571,6 +646,9 @@ hostsPage:
         body:
           noData: Dieser Host hat noch keine Volumes.
 k8sTab:
+  dashboard:
+    dashboard:
+      header: Hauptmenü
   kubectl:
     stepOne:
       generateConfigText: |
@@ -638,6 +716,23 @@ mesosPage:
 notFoundPage:
   header: "Diese Seite existiert nicht!"
   linkTo: Zur Startseite
+projectList:
+  index:
+    header: Umgebungen
+    new: Umgebung hinzufügen
+    alert: Keine aktiven Umgebungen vorhanden. Sie müssen zuerst eine Umgebung erstellen..
+    table:
+      header:
+        orchestration: Orchestrierung
+        projectTemplate: Vorlage
+      body:
+        noData: "Sie haben noch keine Umgebungen."
+  indexTemplate:
+    header: Umgebungs Vorlagen
+    new: Vorlage hinzufügen
+    table:
+      body:
+        noData: "Sie haben noch keine Vorlagen für Umgebungen."
 registriesPage:
   index:
     header: Registries
@@ -736,23 +831,6 @@ servicePage:
         description: Beschreibung
       body:
         noData: Noch keine Ereignisse aufgezeichnet.
-settingsPage:
-  index:
-    header: Umgebungen
-    new: Umgebung hinzufügen
-    alert: Keine aktiven Umgebungen vorhanden. Sie müssen zuerst eine Umgebung erstellen..
-    table:
-      header:
-        orchestration: Orchestrierung
-        projectTemplate: Vorlage
-      body:
-        noData: "Sie haben noch keine Umgebungen."
-  indexTemplate:
-    header: Umgebungs Vorlagen
-    new: Vorlage hinzufügen
-    table:
-      body:
-        noData: "Sie haben noch keine Vorlagen für Umgebungen."
 stacksPage:
   header:
     all: Alle Stacks
@@ -837,32 +915,6 @@ swarmPage:
         containers: Container
       body:
         noData: Keine Services vorhanden.
-processesPage:
-  indexPage:
-    header: Prozesse
-    tabNav:
-      running: Laufen
-      all: Alle
-    form:
-      resourceType: 'Wählen Sie einen Resourcentyp: '
-      resourceId:
-        placeholder: Resourcen Id
-      processName:
-        placeholder: Prozess Name
-      clear: zurücksetzen
-      search: Suchen
-    table:
-      header:
-        id: Id
-        processName: Name
-        resource: 'Ressourcen Typ:'
-        exitReason: Grund für Abbruch
-        startTime: Gestartet
-        endTime: Beendet
-        duration: Dauer
-      noData: Es existieren keine neuen Prozesse.
-  processPage:
-    header: Einstellungen
 virtualMachinePage:
   header: 'Virtuelle Maschine:'
   multistat:
@@ -1082,6 +1134,7 @@ catalogSettings:
 confirmDelete:
   title: 'Sind SIe sicher, dass Sie Löschen wollen?'
   environmentNote: 'Hinweis: Alle Ressourcen in dieser Umgebung werden permanent entfernt, inklusive aller Hosts die durch {appName} erstellt wurden.'
+  protip: 'ProTip: Die {key} taste während dem Klicken von {isServiceButton} halten um diese Abfrage zu überspringen.'
   confirmAction: Löschen
   cancelAction: Abbrechen
 containerLogs:
@@ -1630,18 +1683,6 @@ hostSettings:
   notPublic:
     alert: |
       Sind Sie sicher, dass alle Hosts die erstellt werden <code>{activeValue}</code> erreichen können?<br/>Es sieht nach einer privaten IP oder einem lokalen Netzwerk aus.
-hostPod:
-  machineInfo:
-    active:
-      activating: |
-        Fast fertig&hellip;<br/>
-        <i class="icon icon-spinner icon-spin"></i> Warte auf die Agent Verbindung
-    deactivated:
-      error: Fehler bei der Erstellung der Maschine
-      setup: Setze Maschine auf...
-    groupedInstances:
-      namespace: 'Namensraum:'
-      standalone: Standalone Container
 identityBlock:
   loading: Laden...
 infoMultiStats:

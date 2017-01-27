@@ -40,6 +40,7 @@ generic:
   save: Save
   saved: Saved
   saving: Saving
+  search: Search
   state: State
   test: Test
   testing: Testing
@@ -148,7 +149,7 @@ authPage:
     enabled:
       header: "{providerName} is enabled"
       required: |
-        {appname} is configured to allow access to {orgs, plural,
+        {appName} is configured to allow access to {orgs, plural,
           =0 {no organizations}
           =1 {# organization}
           other {# organizations}
@@ -158,7 +159,7 @@ authPage:
           other {# users}
         }.
       restricted: |
-        {appname} is configured to allow access to environment members, {orgs, plural,
+        {appName} is configured to allow access to environment members, {orgs, plural,
           =0 {no organizations}
           =1 {# organization}
           other {# organizations}
@@ -167,7 +168,7 @@ authPage:
           =1 {# user}
           other {# users}
         }.
-      unrestricted: "{appname} is configured to allow access to any {providerName} user."
+      unrestricted: "{appName} is configured to allow access to any {providerName} user."
       authenticated:
         header:
           text: Authentication
@@ -466,7 +467,8 @@ containersPage:
         image: Image
         command: Command
       body:
-        noData: You do not have any containers yet.
+        noData: You do not have any containers yet
+        noMatch: No containers match the current search
   new:
     form:
       name:
@@ -510,7 +512,7 @@ containersPage:
           private: Private in Container
           protocol: Protocol
         body:
-          noData: 'This container has no ports.'
+          noData: This container has no ports
     volumesTab:
       table:
         header:
@@ -523,7 +525,7 @@ containersPage:
           error:
             data: 'Note:'
             error: Error
-            noData: This container has no volumes.
+            noData: This container has no volumes
           noContainers: No other containers
 
 containerSubpod:
@@ -680,7 +682,7 @@ hostsPage:
           image: Image (Command)
           stats: Stats
         body:
-          noData: 'This host does not have any containers yet.'
+          noData: This host does not have any containers yet
     portsTab:
       table:
         header:
@@ -689,7 +691,7 @@ hostsPage:
           service: Service
           container: Container
         body:
-          noData: This host does not have any ports.
+          noData: This host does not have any ports
     storageTab:
       table:
         header:
@@ -697,7 +699,7 @@ hostsPage:
           hostPath: Host Path
           mounts: Mounts
         body:
-          noData: This host does not have any volumes.
+          noData: This host does not have any volumes
 
 k8sTab:
   dashboard:
@@ -787,6 +789,34 @@ notFoundPage:
   header: "The page you were looking for doesn't exist!"
   linkTo: Go Home
 
+projectList:
+  index:
+    header: Environments
+    new: Add Environment
+    subtext: |
+      <p>{appName} supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more users or groups.</p>
+      <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
+
+    alert: There are no active environments.  You will need to create or activate one before you can do anything else.
+    table:
+      header:
+        orchestration: Orchestration
+        projectTemplate: Template
+      body:
+        noData: "You don't have any environments yet"
+  indexTemplate:
+    header: Environment Templates
+    new: Add Template
+    subtext: |
+      <p>An environment template allows users to define a different combination of infrastructure services to be deployed.
+      <p>The infrastructure services includes but not limited to container orchestration (i.e. cattle, kubernetes, mesos, swarm, networking) or rancher services (i.e healthcheck, dns, metadata, scheduling, service discovery and storage)</p>
+    table:
+      header:
+        stacks: Stacks
+        isPublic: Public
+      body:
+        noData: "You don't have any environment templates yet"
+
 registriesPage:
   index:
     header: Registries
@@ -799,7 +829,7 @@ registriesPage:
         username: Username
         created: Created
       body:
-        noData: "You don't have any registries yet."
+        noData: "You don't have any registries yet"
   new:
     header: Add Registry
     form:
@@ -816,6 +846,13 @@ registriesPage:
       password:
         labelText: Password
         placeholder: e.g. password
+
+secretsPage:
+  index:
+    header: Secrets
+    linkTo: Add Secret
+    noData: You do not have any Secrets yet
+    noMatch: No Secrets match the current search
 
 servicePage:
   header: 'Service:'
@@ -901,33 +938,7 @@ servicePage:
     storagedriverservice: Storage Service
 
 settingsPage:
-  index:
-    header: Environments
-    new: Add Environment
-    subtext: |
-      <p>{appName} supports grouping resources into multiple <b>environments</b>.  Each one gets its own set of services and infrastructure resources, and is owned by one or more users or groups.</p>
-      <p>For example, you might create separate &quot;dev&quot;, &quot;test&quot;, and &quot;production&quot; environments to keep things isolated from each other, and give &quot;dev&quot; access to your entire organization but restrict the &quot;production&quot; environment to a smaller team.</p>
-
-    alert: There are no active environments.  You will need to create or activate one before you can do anything else.
-    table:
-      header:
-        orchestration: Orchestration
-        projectTemplate: Template
-      body:
-        noData: "You don't have any environments yet."
-  indexTemplate:
-    header: Environment Templates
-    new: Add Template
-    subtext: |
-      <p>An environment template allows users to define a different combination of infrastructure services to be deployed.
-      <p>The infrastructure services includes but not limited to container orchestration (i.e. cattle, kubernetes, mesos, swarm, networking) or rancher services (i.e healthcheck, dns, metadata, scheduling, service discovery and storage)</p>
-
-    table:
-      header:
-        stacks: Stacks
-        isPublic: Public
-      body:
-        noData: "You don't have any environment templates yet."
+  header: Settings
 
 stacksPage:
   header:
@@ -1031,11 +1042,32 @@ processesPage:
     ready: Ready
     completed: Recently Completed
   summary:
-    noData: No processes are currently running
+    noData: No processes are currently scheduled
+    table:
+      running: Running
+      ready: Ready
+      delay: Delayed
   pools:
     noData: No pools found
+    noMatch: No pools match the current search
+    table:
+      activeTasks: Active
+      poolSize: Pool Size
+      rejectedTasks: Rejected
+      completedTasks: Completed
+      queueSize: Queue Size
+      queueRemainingCapacity: Queue Remain
+
   list:
-    noData: No processes found
+    table:
+      resource: Resource
+      exitReason: Exit Reason
+      startTime: Start Time
+      endTime: End Time
+      runTime: Run Time
+      runAfter: Run After
+    noData: 'No processes are currently {which}'
+    noMatch: No processes match the current search
 
 virtualMachinePage:
   header: 'Virtual Machine:'
@@ -1204,6 +1236,8 @@ ldap:
         labelText: Status Field
       disabledBitMask:
         labelText: Disabled Status Bitmask
+      userMemberAttribute:
+        labelText: User Member Attribue
     groups:
       header: Groups
       objectClass:
@@ -1215,6 +1249,8 @@ ldap:
       groupMemberUser:
         labelText: Group Member User Attribute
         placeholder: uid
+      groupMemberMapping:
+        labelText: Group Member Mapping Attribute
       groupDN:
         labelText: Group DN Field
         placeholder: distinguishedName
@@ -1745,7 +1781,7 @@ formNetwork:
   networkMode:
     label: Network
     bridge: Bridge
-    container: container
+    container: Container
     host: Host
     managed: Managed
     nat: NAT
@@ -1838,6 +1874,27 @@ formScheduling:
   key: Key
   value: Value
 
+formSecrets:
+  label: Secrets
+  noData: No Secrets
+  addLabel: Add Secret
+  name:
+    placeholder: e.g. db_password
+  secret:
+    label: Secret
+  uid:
+    label: User ID
+    placeholder: e.g. 0 (root)
+  gid:
+    label: Group ID
+    placeholder: e.g. 0 (wheel)
+  mode:
+    label: File Mode
+    placeholder: e.g. 0444 (octal)
+  help:
+    prefix: "Secrets will be placed in <code>/run/secrets/</code> in the Container with the given filename and are readable only by <code>root</code> by default.  "
+    showPermissionsLink: "Customize file ownership & permissions"
+    suffix: ""
 
 formSecurity:
   key: Key
@@ -2073,20 +2130,18 @@ hostSettings:
   notPublic:
     alert: |
       Are you sure all the hosts you will create will be able to reach <code>{activeValue}</code> ?<br/>It looks like a private IP or local network.
+  badTld:
+    alert: |
+      The <code>.local</code> Top-Level Domain is reserved by RFC6762 for Multicast DNS.  Using this as your Registration URL is not recommended and may cause DNS resolution issues.  Please choose a different hostname or IP.
 
 hostPod:
-  machineInfo:
-    active:
-      activating: |
-        Almost there&hellip;<br/>
-        <i class="icon icon-spinner icon-spin"></i> Waiting for agent connection
-    deactivated:
-      error: Error creating machine
-      setup: Setting up machine...
-    groupedInstances:
-      namespace: 'Namespace:'
-      stack: 'Stack:'
-      standalone: Standalone Containers
+  supportState:
+    unsupported: Unsupported Docker version
+    untested: Untested Docker version
+  groupedInstances:
+    namespace: 'Namespace:'
+    stack: 'Stack:'
+    standalone: Standalone Containers
 
 identityBlock:
   loading: Loading...
@@ -2639,12 +2694,11 @@ machine:
       label: SSH Password
       placeholder: Set Instance SSH Password, Blank for Auto set
 
-
-
 modalAboutComponent:
   component: Component
   version: Version
   cattle: Cattle
+  cli: CLI
   ui: User Interface
   compose: Compose
   machineService: Machine Service
@@ -2825,6 +2879,7 @@ newContainer:
     labels: Labels
     scheduling: Scheduling
     balancing: Balancing
+    secrets: Secrets
   selectUpgrade: Select one or more services to upgrade.
   saveUpgrade: Upgrade
   saveNew: Create
@@ -2863,6 +2918,18 @@ newReceiver:
     label: Maximum Scale
     placeholder: e.g. 20
 
+newSecret:
+  title:
+    edit: Edit Secret
+    add: Add Secret
+  name:
+    placeholder: e.g. api-token
+  description:
+    placeholder: e.g. Secret token for the API
+  value:
+    label: Secret Value
+    placeholder: The secret value
+
 pageFooter:
   notARelease: (Not a Release)
   help: Help
@@ -2870,6 +2937,7 @@ pageFooter:
   faq: FAQs
   issues: File an Issue
   forums: Forums
+  slack: Slack
   download:
     link: Download CLI
     headerCli: Rancher CLI (beta)
@@ -2877,6 +2945,13 @@ pageFooter:
     mac: Mac OS X
     windows: Windows
     linux: Linux
+
+pagination:
+  multi: |
+    {pages, plural,
+    =0 {0 Items}
+    =1 {{count} {count, select, =1 {Item} other {Items}}}
+    other {{from} - {to} of {count}}}
 
 pageHeaderEnvironment:
   namespace: Namespace
@@ -2930,6 +3005,8 @@ schema:
     option: Choose an option...
   inputService:
     prompt: Choose a Service...
+  inputSecret:
+    prompt: Choose a Secret...
 
 schedulingRuleRow:
   theHost: The host
@@ -3210,6 +3287,7 @@ nav:
     backupTarget: Backup Targets
     certificates: Certificates
     registries: Registries
+    secrets: Secrets
   admin:
     tab: Admin
     audit: Audit Log
@@ -3261,6 +3339,7 @@ action:
   machineConfig: Machine Config
   purge: Purge
   remove: Delete
+  replay: Replay
   restart: Restart
   restore: Restore
   retry: Retry
@@ -3281,6 +3360,28 @@ action:
   viewGraph: View Graph
   viewInApi: View in API
   viewInstance: View Instance
+
+##############################
+# Resource Actions
+##############################
+validation:
+  required: '"{key}" is required'
+  arrayLength:
+    exactly: '"{key}" should contain {count, plural, =1 {# item} other {# items}}'
+    between: '"{key}" should contain between {min} and {max} {max, plural, =1 {item} other {items}}'
+    min: '"{key}" should contain at least {count} {count, plural, =1 {item} other {items}}'
+    max: '"{key}" should contain at most {count} {count, plural, =1 {item} other {items}}'
+  stringLength:
+    exactly: '"{key}" should be {count, plural, =1 {# character} other {# characters}}'
+    between: '"{key}" should be between {min} and {max} {max, plural, =1 {character} other {characters}}'
+    min: '"{key}" should be at least {count} {count, plural, =1 {character} other {characters}}'
+    max: '"{key}" should be at most {count} {count, plural, =1 {character} other {characters}}'
+  number:
+    exactly: '"{key}" should be exactly {val}'
+    between: '"{key}" should be between {min} and {max}'
+    min: '"{key}" should be at least {val}'
+    max: '"{key}" should be at most {val}'
+  chars: '"{key}" contains {count, plural, =1 {an invalid character} other {# invalid characters}}: {chars}'
 
 ##############################
 # Model Properties
@@ -3308,3 +3409,8 @@ model:
       owner: Owner
       readonly: Read-Only
       restricted: Restricted
+  scaleService:
+    min: Minimum Scale
+    max: Maximum Scale
+    amount: By
+

@@ -64,7 +64,7 @@ export default Ember.Component.extend(NewOrEdit, {
     this.set('selectedTemplateModel', null);
 
     Ember.run.scheduleOnce('afterRender', () => {
-      if ( this.get('selectedTemplateUrl') === 'default') {
+      if ( this.get('selectedTemplateUrl') ) {
         this.templateChanged();
       } else {
         var def = this.get('templateResource.defaultVersion');

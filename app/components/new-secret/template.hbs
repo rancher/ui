@@ -1,0 +1,22 @@
+<section class="header clearfix">
+  <h1>{{t (if editing 'newSecret.title.edit' 'newSecret.title.add')}}</h1>
+</section>
+
+<section class="horizontal-form container-fluid well">
+  {{form-name-description
+    model=primaryResource
+    nameRequired=true
+    namePlaceholder="newSecret.name.placeholder"
+    descriptionPlaceholder="newSecret.description.placeholder"
+  }}
+
+  <div class="row">
+    <div class="col-xs-12">
+      <label class="form-control-static">{{t 'newSecret.value.label'}}*</label>
+      {{textarea-autogrow class="form-control" value=userValue placeholder="newSecret.value.placeholder"}}
+    </div>
+  </div>
+</section>
+
+{{top-errors errors=errors}}
+{{save-cancel editing=true save="save" cancel="cancel"}}

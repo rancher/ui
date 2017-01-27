@@ -4,24 +4,43 @@ export default Ember.Controller.extend({
   sortBy: 'name',
   headers: [
     {
-      displayName: 'Name',
+      translationKey: 'generic.name',
       name: 'name',
       sort: ['name'],
     },
     {
-      displayName: 'Running',
+      translationKey: 'processesPage.summary.table.running',
       name: 'running',
       sort: ['running','name'],
     },
     {
-      displayName: 'Ready',
+      translationKey: 'processesPage.summary.table.ready',
       name: 'ready',
       sort: ['ready','name'],
     },
     {
-      displayName: 'Delayed',
+      translationKey: 'processesPage.summary.table.delay',
       name: 'delay',
       sort: ['delay','name'],
     },
   ],
+
+  total: Ember.computed('model.summary.[]', function() {
+    let running = 0;
+    let ready = 0;
+    let delay = 0;
+
+    this.get('model.summary').forEach((summary) => {
+      running += summary.get('running')||0;
+      ready += summary.get('ready')||0;
+      delay += summary.get('delay')||0;
+    });
+
+    return Ember.Object.create({
+      processName: 'Total',
+      running: running,
+      ready: ready,
+      delay: delay,
+    });
+  }),
 });

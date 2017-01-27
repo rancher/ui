@@ -95,7 +95,7 @@
         <div class="form-group">
           <label>{{t 'ldap.accessConfig.port.labelText'}}</label>
           <div class="input-group">
-            {{input type="text" value=model.port type="number" min=1 max=65535 classNames="form-control"}}
+            {{input-integer value=model.port min=1 max=65535 classNames="form-control"}}
             <span class="input-group-addon">
               <label>{{t 'ldap.accessConfig.port.checkbox'}} {{input type="checkbox" checked=model.tls}}</label>
             </span>
@@ -173,7 +173,11 @@
         </div>
         <div class="form-group">
           <label>{{t 'ldap.customizeSchema.users.disabledBitMask.labelText'}}</label>
-          {{input type="number" value=model.userDisabledBitMask min=1 classNames="form-control"}}
+          {{input-integer value=model.userDisabledBitMask min=1 classNames="form-control"}}
+        </div>
+        <div class="form-group">
+          <label>{{t 'ldap.customizeSchema.users.userMemberAttribute.labelText'}}</label>
+          {{input type="text" value=model.userMemberAttribute classNames="form-control"}}
         </div>
       </div>
       <div class="col span-6">
@@ -193,6 +197,10 @@
         <div class="form-group">
           <label>{{t 'ldap.customizeSchema.groups.groupMemberUser.labelText'}}</label>
           {{input type="text" value=model.groupMemberUserAttribute classNames="form-control" placeholder=(t 'ldap.customizeSchema.groups.groupMemberUser.placeholder')}}
+        </div>
+        <div class="form-group">
+          <label>{{t 'ldap.customizeSchema.groups.groupMemberMapping.labelText'}}</label>
+          {{input type="text" value=model.groupMemberMappingAttribute classNames="form-control"}}
         </div>
         <div class="form-group">
           <label>{{t 'ldap.customizeSchema.groups.groupDN.labelText'}}</label>

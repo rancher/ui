@@ -4,10 +4,11 @@
 <div class="col span-4 {{if (eq fieldDef.type 'boolean') 'form-control-static'}}">
   {{#if (eq fieldDef.type 'boolean')}}
     {{input type="checkbox" checked=value}}
+  {{else if (eq fieldDef.type 'float')}}
+    {{input type="number" value=value classNames="form-control" placeholder=placeholder min=fieldDef.min max=fieldDef.max}}
+  {{else if (eq fieldDef.type 'int')}}
+    {{input-integer value=value classNames="form-control" placeholder=placeholder min=fieldDef.min max=fieldDef.max}}
   {{else}}
-    {{#if (or (eq fieldDef.type 'float') (eq fieldDef.type 'int'))}}
-      {{input type="number" value=value classNames="form-control" placeholder=placeholder min=fieldDef.min max=fieldDef.max step=1}}
-    {{/if}}
     {{input type="text" value=value classNames="form-control" placeholder=fieldDef.placeholder}}
   {{/if}}
 </div>

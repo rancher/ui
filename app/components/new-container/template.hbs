@@ -94,6 +94,9 @@
         <li role="tab" aria-controls="panel" class="tab" data-section="security" {{action "selectTab" "security"}}><a href="#">{{t 'newContainer.tabs.security'}}</a></li>
       {{/if}}
 
+      {{#if supportsSecrets}}
+        <li role="tab" aria-controls="panel" class="tab" data-section="secrets" {{action "selectTab" "secrets"}}><a href="#">{{t 'newContainer.tabs.secrets'}}</a></li>
+      {{/if}}
       <li role="tab" aria-controls="panel" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}><a href="#">{{t 'newContainer.tabs.healthCheck'}}</a></li>
       <li role="tab" aria-controls="panel" class="tab" data-section="labels" {{action "selectTab" "labels"}}><a href="#">{{t 'newContainer.tabs.labels'}}</a></li>
       <li role="tab" aria-controls="panel" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}><a href="#">{{t 'newContainer.tabs.scheduling'}}</a></li>
@@ -150,6 +153,15 @@
 
       <div class="section" data-section="security">
         {{form-security instance=launchConfig errors=securityErrors editing=true}}
+      </div>
+    {{/if}}
+
+    {{#if supportsSecrets}}
+      <div class="section" data-section="secrets">
+        {{form-secrets
+          secrets=launchConfig.secrets
+          errors=secretErrors
+          editing=true}}
       </div>
     {{/if}}
 

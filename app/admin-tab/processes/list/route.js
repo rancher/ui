@@ -19,10 +19,11 @@ export default Ember.Route.extend(PolledModel, {
     } else if ( params.which === 'delayed' ) {
       filters['runAfter_gt'] = now;
       filters['endTime_null'] = 'true';
+      filters['runningProcessServiceId_null'] = 'true';
     } else if ( params.which === 'ready' ) {
       filters['runAfter_lte'] = now;
       filters['endTime_null'] = 'true';
-    } else if ( params.whcih === 'completed' ) {
+    } else if ( params.which === 'completed' ) {
       filters['endTime_notnull'] = 'true';
     }
 

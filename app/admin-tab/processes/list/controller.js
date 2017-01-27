@@ -8,50 +8,86 @@ export default Ember.Controller.extend({
   sortBy: 'id',
   descending: false,
 
-  headers: [
-    {
-      displayName: 'ID',
-      name: 'id',
-      sort: ['id:desc'],
-      width: '75px',
-    },
-    {
-      displayName: 'Name',
-      name: 'processName',
-      sort: ['processName','id:desc'],
-    },
-    {
-      displayName: 'Resource',
-      name: 'resource',
-      sort: ['resourceType','resourceId','id:desc'],
-      searchField: ['resourceType','resourceId'],
-    },
-    {
-      displayName: 'Exit Reason',
-      name: 'exitReason',
-      sort: ['exitReason','id'],
-      width: '150px',
-    },
-    {
-      displayName: 'Start Time',
+  actions: {
+    replay(process) {
+      if ( process.hasAction('replay') ) {
+        process.doAction('replay');
+      }
+    }
+  },
+
+  headers: function() {
+    let which = this.get('which');
+    let out = [
+      {
+        name: 'id',
+        translationKey: 'generic.id',
+        sort: ['id:desc'],
+        width: '75px',
+      },
+      {
+        name: 'processName',
+        translationKey: 'generic.name',
+        sort: ['processName','id:desc'],
+      },
+      {
+        translationKey: 'processesPage.list.table.resource',
+        name: 'resource',
+        sort: ['resourceType','id:desc'],
+        searchField: ['typeAndId', 'resourceType','resourceId'],
+      }
+    ];
+
+    if ( which === 'completed' ) {
+      out.push({
+        translationKey: 'processesPage.list.table.exitReason',
+        name: 'exitReason',
+        sort: ['exitReason','id:desc'],
+        width: '150px',
+      });
+    }
+
+    out.push({
+      translationKey: 'processesPage.list.table.startTime',
       name: 'startTime',
-      sort: ['startTime','id:desc'],
-      width: '100px',
+      sort: ['startTime:desc','id:desc'],
+      width: '120px',
       searchField: false,
-    },
-    {
-      displayName: 'End Time',
-      name: 'endTime',
-      sort: ['endTime:desc','id:desc'],
-      width: '100px',
-      searchField: false,
-    },
-    {
-      displayName: 'Run Time',
-      name: 'runTime',
-      sort: ['runTime:desc','id'],
-      width: '100px',
-      searchField: false,
-    },
-  ],
+    });
+
+    if ( which === 'completed' ) {
+      out.push({
+        translationKey: 'processesPage.list.table.endTime',
+        name: 'endTime',
+        sort: ['endTime:desc','id:desc'],
+        width: '120px',
+        searchField: false,
+      });
+    }
+
+    if ( which === 'delayed' ) {
+      out.push({
+        translationKey: 'processesPage.list.table.runAfter',
+        name: 'runAfter',
+        sort: ['runAfter:desc','id:desc'],
+        width: '120px',
+        searchField: false,
+      });
+    } else {
+      out.push({
+        translationKey: 'processesPage.list.table.runTime',
+        name: 'runTime',
+        sort: ['runTime:desc','id:desc'],
+        width: '100px',
+        searchField: false,
+      });
+    }
+
+    out.push({
+      isActions: true,
+      width: '40px',
+    });
+
+    return out;
+  }.property('which'),
 });

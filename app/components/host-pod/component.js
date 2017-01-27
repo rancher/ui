@@ -3,11 +3,13 @@ import ManageLabels from 'ui/mixins/manage-labels';
 import GroupedInstances from 'ui/mixins/grouped-instances';
 
 export default Ember.Component.extend(ManageLabels, GroupedInstances, {
-  model             : null,
-  mode              : null,
-  show              : null,
+  settings: Ember.inject.service(),
 
-  classNames        : ['pod','host'],
+  model: null,
+  mode: null,
+  show: null,
+
+  classNames: ['pod','host'],
 
   init() {
     this._super(...arguments);

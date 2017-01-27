@@ -4,10 +4,12 @@ import Resource from 'ember-api-store/models/resource';
 import { formatMib, formatSi } from 'ui/utils/util';
 import C from 'ui/utils/constants';
 import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
+import { satisfies, compare } from 'ui/utils/parse-version';
 
 var Host = Resource.extend({
   type: 'host',
   modalService: Ember.inject.service('modal'),
+  settings: Ember.inject.service(),
 
   instances: denormalizeIdArray('instanceIds'),
   arrangedInstances: function() {
@@ -82,6 +84,7 @@ var Host = Resource.extend({
     var out = this.get('info.osInfo.operatingSystem')||'';
 
     out = out.replace(/\s+\(.*?\)/,''); // Remove details in parens
+    out = out.replace(/;.*$/,''); // Or after semicolons
     out = out.replace('Red Hat Enterprise Linux Server','RHEL'); // That's kinda long
 
     var hasKvm = (this.get('labels')||{})[C.LABEL.KVM] === 'true';
@@ -95,12 +98,28 @@ var Host = Resource.extend({
 
   osDetail: Ember.computed.alias('info.osInfo.operatingSystem'),
 
-  dockerBlurb: function() {
+  dockerEngineVersion: function() {
     if ( this.get('info.osInfo') )
     {
-      return (this.get('info.osInfo.dockerVersion')||'').replace(/^Docker version\s*/i,'').replace(/, build.*/,'');
+      return (this.get('info.osInfo.dockerVersion')||'').replace(/^Docker version\s*/i,'').replace(/,.*/,'');
     }
   }.property('info.osInfo.dockerVersion'),
+
+  supportState: function() {
+    let my = this.get('dockerEngineVersion');
+    let supported = this.get(`settings.${C.SETTING.SUPPORTED_DOCKER}`);
+    let newest = this.get(`settings.${C.SETTING.NEWEST_DOCKER}`);
+
+    if ( !my || !supported || !newest) {
+      return 'unknown';
+    } else if ( satisfies(my, supported) ) {
+      return 'supported';
+    } else if ( compare(my, newest) > 0 ) {
+      return 'untested';
+    } else {
+      return 'unsupported';
+    }
+  }.property('dockerEngineVersion',`settings.${C.SETTING.SUPPORTED_DOCKER}`,`settings.${C.SETTING.NEWEST_DOCKER}`),
 
   dockerDetail: Ember.computed.alias('info.osInfo.operatingSystem'),
 

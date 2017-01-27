@@ -1,14 +1,14 @@
 <section class="header clearfix">
-  <h1>{{t 'settingsPage.index.header'}}</h1>
-  {{#link-to "settings.projects.new" class="btn btn-sm bg-primary"}}{{t 'settingsPage.index.new'}}{{/link-to}}
+  <h1>{{t 'projectList.index.header'}}</h1>
+  {{#link-to "settings.projects.new" class="btn btn-sm bg-primary"}}{{t 'projectList.index.new'}}{{/link-to}}
 </section>
 <section>
   <div class="well">
-    {{format-html-message 'settingsPage.index.subtext' appName=settings.appName}}
+    {{format-html-message 'projectList.index.subtext' appName=settings.appName}}
   </div>
 
   {{#unless projects.current}}
-    <div class="alert alert-danger"><i class="icon icon-alert"></i> {{t 'settingsPage.index.alert'}}</div>
+    <div class="alert alert-danger"><i class="icon icon-alert"></i> {{t 'projectList.index.alert'}}</div>
   {{/unless}}
 </section>
 
@@ -19,8 +19,8 @@
         {{sortable-th sortable=this action="changeSort" name="state" label='generic.state' width="125"}}
         {{sortable-th sortable=this action="changeSort" name="name" label='generic.name'}}
         {{sortable-th sortable=this action="changeSort" name="description" label='generic.description'}}
-        {{sortable-th sortable=this action="changeSort" name="projectTemplate" label='settingsPage.index.table.header.projectTemplate'}}
-        {{sortable-th sortable=this action="changeSort" name="orchestration" label='settingsPage.index.table.header.orchestration'}}
+        {{sortable-th sortable=this action="changeSort" name="projectTemplate" label='projectList.index.table.header.projectTemplate'}}
+        {{sortable-th sortable=this action="changeSort" name="orchestration" label='projectList.index.table.header.orchestration'}}
         <th width="80">{{t 'generic.default'}}</th>
         <th width="75">&nbsp;</th>
       </tr>
@@ -29,7 +29,7 @@
       {{#each arranged as |p|}}
         {{project-row model=p}}
       {{else}}
-        <tr><td colspan="5" class="text-center text-muted">{{t 'settingsPage.index.table.body.noData'}}</td></tr>
+        <tr><td colspan="5" class="text-center text-muted">{{t 'projectList.index.table.body.noData'}}</td></tr>
       {{/each}}
     </tbody>
   </table>

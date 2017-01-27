@@ -9,7 +9,11 @@ export default {
     }
     else if ( err instanceof ApiError )
     {
-      if ( err.get('status') === 422 )
+      if ( err.get('code') === 'ActionNotAvailable' )
+      {
+        str = 'This action is not currently available';
+      }
+      else if ( err.get('status') === 422 )
       {
         str = 'Validation failed in API:';
         var something = false;

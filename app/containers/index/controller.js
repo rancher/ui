@@ -25,51 +25,45 @@ export default Ember.Controller.extend({
   }),
 
   actions: {
-    parseBulkActions: function(name, selectedElements) {
+    applyBulkAction: function(name, selectedElements) {
       this.get('bulkActionHandler')[name](selectedElements);
     },
   },
 
   headers: [
     {
-      displayName: 'State',
-      name: 'stateSort',
-      sort: ['stateSort','name','id'],
-      type: 'string',
-      searchField: 'displayState',
       classNames: '',
+      name: 'stateSort',
+      searchField: 'displayState',
+      sort: ['stateSort','name','id'],
+      translationKey: 'containersPage.index.table.header.state',
       width: '125px'
     },
     {
-      displayName: 'Name',
       name: 'name',
       sort: ['name','id'],
-      type: 'string',
+      translationKey: 'containersPage.index.table.header.name',
     },
     {
-      displayName: 'IP',
       name: 'displayIp',
       sort: ['displayIp','name','id'],
-      type: 'string',
       width: '110px',
+      translationKey: 'containersPage.index.table.header.ip',
     },
     {
-      displayName: 'Host',
       name: 'primaryHost.displayName',
       sort: ['primaryHost.displayName','name','id'],
-      type: 'string',
+      translationKey: 'containersPage.index.table.header.host',
     },
     {
-      displayName: 'Image',
       name: 'imageUuid',
       sort: ['imageUuid','id'],
-      type: 'string',
+      translationKey: 'containersPage.index.table.header.image',
     },
     {
-      displayName: 'Command',
       name: 'command',
       sort: ['command','name','id'],
-      type: 'string',
+      translationKey: 'containersPage.index.table.header.command',
     },
     {
       isActions: true,
@@ -88,7 +82,6 @@ export default Ember.Controller.extend({
     this.set('show', (this.get('showSystem') ? 'all' : 'standard'));
   }.observes('showSystem'),
 
-  sortableContent: Ember.computed.alias('filtered'),
   filtered: function() {
     let all = this.get('model');
     if ( this.get('showSystem') ) {
