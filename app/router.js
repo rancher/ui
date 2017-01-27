@@ -12,6 +12,10 @@ Router.map(function() {
   this.route('failWhale', {path: '/fail'});
   this.route('not-found', {path: '*path'});
 
+
+  this.route('signup', {path: '/signup'});
+  this.route('verify', {path: '/verify/:verify_token'});
+  this.route('verify-reset-password', {path: '/verify-reset-password/:verify_token'});
   this.route('login', function() {
     this.route('index', {path: '/'});
     this.route('shibboleth-auth');
