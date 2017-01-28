@@ -22,6 +22,12 @@
         <div class="radio">
           <label>{{radio-button selection=value value="false"}} False</label>
         </div>
+      {{else if (eq model.kind 'enum')}}
+        <select class="form-control" onchange={{action (mut value) value="target.value"}}>
+          {{#each model.options as |choice|}}
+            <option value="{{choice}}" selected={{eq choice value}}>{{choice}}</option>
+          {{/each}}
+        </select>
       {{else}}
         {{input type="text" value=value class="form-control"}}
       {{/if}}
