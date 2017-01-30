@@ -421,6 +421,7 @@ C.SUPPORTED_SCHEMA_INPUTS= [
   'service',
   'string',
   'masked',
+  'secret',
 ];
 
 
