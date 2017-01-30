@@ -24,6 +24,7 @@ const ALLOWED = {
   'newest.docker.version': {description: 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported.docker.range but is newer than this will be marked as untested'},
   'registry.default': {description: 'Pull images with no registry specified from this registry instead of DockerHub'},
   'registry.whitelist': {description: 'Allow containers images only from the specified registries (if specified; comma-separated)'},
+  'secrets.backend': {description: 'Backend storage provider for secrets', kind: 'enum', options: ['localkey','vault']},
   'service_log.purge.after.seconds': {description: 'Auto-purge Service Log entries after this long (seconds)', kind: 'int'},
   'supported.docker.range': {description: 'Semver range for suported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI'},
   'ui.pl': {description: 'Private-Label company name'},
@@ -56,6 +57,7 @@ export default Ember.Component.extend({
         key: key,
         description: details.description,
         kind: details.kind,
+        options: details.options,
         obj: obj,
         canDelete: obj && !obj.get('isDefault'),
       }));
