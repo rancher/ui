@@ -15,7 +15,6 @@ export default ModalBase.extend(NewOrEdit, ManageLabels, {
   ips: null,
   ipLabels: null,
   userLabels: null,
-  showIps: false,
 
   init() {
     this._super(...arguments);
