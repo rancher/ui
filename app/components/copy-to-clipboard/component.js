@@ -51,7 +51,7 @@ export default Ember.Component.extend({
     if (status) {
       out = `btn btn-success`;
     } else {
-      out = `btn bg-primary`;
+      out = `btn bg-muted`;
     }
 
     if (this.get('size')) {
