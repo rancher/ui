@@ -10,12 +10,14 @@
     descriptionPlaceholder="newSecret.description.placeholder"
   }}
 
-  <div class="row">
-    <div class="col-xs-12">
-      <label class="form-control-static">{{t 'newSecret.value.label'}}*</label>
-      {{textarea-autogrow class="form-control" value=userValue placeholder="newSecret.value.placeholder"}}
+  {{#unless editing}}
+    <div class="row">
+      <div class="col-xs-12">
+        <label class="form-control-static">{{t 'newSecret.value.label'}}*</label>
+        {{textarea-autogrow class="form-control" value=userValue placeholder="newSecret.value.placeholder"}}
+      </div>
     </div>
-  </div>
+  {{/unless}}
 </section>
 
 {{top-errors errors=errors}}
