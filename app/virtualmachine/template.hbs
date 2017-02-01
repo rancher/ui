@@ -1,10 +1,6 @@
 <section class="header clearfix">
   <h1>{{#link-to "virtualmachines"}}{{t 'virtualMachinePage.header'}}{{/link-to}}</h1>
 
-  {{#power-select options=model.vm.primaryHost.instances selected=model.vm onchange=(action "changeVirtualMachine") searchField="displayName" as |obj|}}
-    {{select-dot model=obj}}
-  {{/power-select}}
-
   {{#if model.vm.primaryHost}}
     <strong class="mr-5 ml-5">on {{#link-to "host" model.vm.primaryHost.id}}{{model.vm.primaryHost.displayName}}{{/link-to}}</strong>
   {{/if}}

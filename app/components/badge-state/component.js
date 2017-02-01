@@ -2,6 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   tagName: 'SPAN',
-  classNames: ['state', 'badge'],
+  classNames: ['badge-state'],
   classNameBindings: ['model.stateBackground'],
 });
