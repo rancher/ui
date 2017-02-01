@@ -10,15 +10,16 @@
 <div class="row">
   <div class="col-xs-12">
     {{#if secrets.length}}
-      <table class="grid fixed no-lines no-top-padding tight r-mb0">
+      <table class="grid fixed no-lines no-top-padding tight small r-mb0">
         <thead>
           <tr>
-            <th>{{t 'generic.name'}}*</th>
-            <th>{{t 'formSecrets.secret.label'}}*</th>
+            <th class="text-muted">{{t 'formSecrets.secret.label'}}*</th>
+            <th width="30">&nbsp;</th>
+            <th class="text-muted">{{t 'formSecrets.name.label'}}</th>
             {{#if showPermissions}}
-              <th class="divided">{{t 'formSecrets.uid.label'}}</th>
-              <th>{{t 'formSecrets.gid.label'}}</th>
-              <th>{{t 'formSecrets.mode.label'}}</th>
+              <th class="divided text-muted">{{t 'formSecrets.uid.label'}}</th>
+              <th class="text-muted">{{t 'formSecrets.gid.label'}}</th>
+              <th class="text-muted">{{t 'formSecrets.mode.label'}}</th>
             {{/if}}
             <th width="40">&nbsp;</th>
           </tr>
@@ -27,24 +28,28 @@
         <tbody>
           {{#each secrets as |row|}}
             <tr>
-              <td data-title="{{t 'generic.name'}}: ">
-                {{input type="text" class="form-control input-sm" value=row.name placeholder=(t 'formSecrets.name.placeholder')}}
-              </td>
-
               <td data-title="{{t 'formSecrets.secret.label'}}: ">
                 {{schema/input-secret selectClass="form-control input-sm" selected=row.secretId}}
               </td>
 
+              <td class="text-center">
+                <p class="form-control-static"><i class="icon icon-chevron-right"></i></p>
+              </td>
+
+              <td data-title="{{t 'formSecrets.name.label'}}: ">
+                {{input type="text" class="form-control input-sm" value=row.name placeholder=(t 'formSecrets.name.placeholder')}}
+              </td>
+
               {{#if showPermissions}}
                 <td class="divided" data-title="{{t 'formSecrets.uid.label'}}: ">
-                  {{input type="text" class="form-control input-sm" value=row.uid placeholder=(t 'formSecrets.uid.placeholder')}}
+                  {{input-integer type="text" class="form-control input-sm" value=row.uid placeholder=(t 'formSecrets.uid.placeholder')}}
                 </td>
                 <td data-title="{{t 'formSecrets.gid.label'}}: ">
-                  {{input type="text" class="form-control input-sm" value=row.gid placeholder=(t 'formSecrets.gid.placeholder')}}
+                  {{input-integer class="form-control input-sm" value=row.gid placeholder=(t 'formSecrets.gid.placeholder')}}
                 </td>
 
                 <td data-title="{{t 'formSecrets.mode.label'}}: ">
-                  {{input type="text" class="form-control input-sm" value=row.mode placeholder=(t 'formSecrets.mode.placeholder')}}
+                  {{input-integer class="form-control input-sm" value=row.mode placeholder=(t 'formSecrets.mode.placeholder')}}
                 </td>
               {{/if}}
 
