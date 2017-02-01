@@ -1,10 +1,5 @@
 <section class="header clearfix">
   <h1>{{#link-to "hosts"}}{{t 'hostsPage.hostPage.header.linkTo'}}{{/link-to}}</h1>
-
-  {{#power-select options=model.all selected=host onchange=(action "changeHost") searchField="displayName" as |obj|}}
-    {{select-dot model=obj}}
-  {{/power-select}}
-
   <div class="pull-right">
     {{#action-menu model=host size="sm" classNames="ml-10 pull-right"}}
       {{#link-to "containers.new" (query-params hostId=host.id) classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.hostPage.addContainer.linkTo'}}{{/link-to}}

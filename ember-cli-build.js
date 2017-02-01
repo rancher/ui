@@ -106,37 +106,15 @@ module.exports = function(defaults) {
 
   app.import('vendor/bootstrap-dropdown/css/bootstrap.css');
   app.import('vendor/bootstrap-dropdown/js/bootstrap.js');
+
   app.import('vendor/icons/style.css');
-  app.import('vendor/icons/fonts/rancher-icons.svg', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/icons/fonts/rancher-icons.ttf', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/icons/fonts/rancher-icons.woff', {
-    destDir: 'assets/fonts'
-  });
-
-
-  // Google Font Downloader thing: https://google-webfonts-helper.herokuapp.com/
-  app.import('vendor/lato/lato-v11-latin-300.woff', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/lato/lato-v11-latin-300.woff2', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/lato/lato-v11-latin-700.woff', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/lato/lato-v11-latin-700.woff2', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/lato/lato-v11-latin-regular.woff', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/lato/lato-v11-latin-regular.woff2', {
-    destDir: 'assets/fonts'
-  });
+  app.import('vendor/icons/fonts/rancher-icons.svg',   { destDir: 'assets/fonts/'});
+  app.import('vendor/icons/fonts/rancher-icons.ttf',   { destDir: 'assets/fonts/'});
+  app.import('vendor/icons/fonts/rancher-icons.woff',  { destDir: 'assets/fonts/'});
+  app.import('vendor/prompt/prompt-v1-latin-300.woff', { destDir: 'assets/fonts/'});
+  app.import('vendor/prompt/prompt-v1-latin-300.woff2',{ destDir: 'assets/fonts/'});
+  app.import('vendor/prompt/prompt-v1-latin-600.woff', { destDir: 'assets/fonts/'});
+  app.import('vendor/prompt/prompt-v1-latin-600.woff2',{ destDir: 'assets/fonts/'});
 
   return app.toTree();
 };

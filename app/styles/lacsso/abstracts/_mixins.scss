@@ -1,0 +1,71 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass mixins.
+// -----------------------------------------------------------------------------
+
+/// Event wrapper
+/// @author Harry Roberts
+/// @param {Bool} $self [false] - Whether or not to include current selector
+/// @link https://twitter.com/csswizardry/status/478938530342006784 Original tweet from Harry Roberts
+@mixin on-event($self: false) {
+  @if $self {
+    &,
+    &:hover,
+    &:active,
+    &:focus {
+      @content;
+    }
+  } @else {
+    &:hover,
+    &:active,
+    &:focus {
+      @content;
+    }
+  }
+}
+
+/// Make a context based selector a little more friendly
+/// @author Hugo Giraudel
+/// @param {String} $context
+@mixin when-inside($context) {
+  #{$context} & {
+    @content;
+  }
+}
+
+///Place holder
+@mixin placeholder {
+  &.placeholder { @content; }
+  &:-moz-placeholder { @content; }
+  &::-moz-placeholder { @content; }
+  &::-webkit-input-placeholder { @content; }
+}
+
+///Sets the specified background color and calculates a dark or light contrasted text color.
+@mixin contrasted($background-color, $dark: $contrasted-dark-default, $light: $contrasted-light-default, $threshold: null) {
+  @if $threshold {
+    // Deprecated in Compass 0.13
+    @warn "The $threshold argment to contrasted is no longer needed and will be removed in the next release.";
+  }
+  background-color: $background-color;
+  color: contrast-color($background-color, $dark, $light);
+}
+
+///Sets base color and darkens bg on hover
+@mixin bg-color($bg) {
+  background: $bg;
+  // &.btn:hover, a:hover {
+  //   background:darken($bg,10%);
+  //   transition: all 0.3s ease;
+  // }
+  // &.btn:active, a:focus {
+  //   background:darken($bg,25%);
+  // } 
+}
+
+///Sets base color and darkens bg on hover
+@mixin bg-lighten($bg) {
+  background: $bg;
+  * {
+    background:lighten($bg,20%);
+  }
+}
