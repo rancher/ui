@@ -1,22 +1,18 @@
 <section class="header clearfix">
   <h1>{{#link-to "virtualmachines"}}{{t 'virtualMachinePage.header'}}{{/link-to}}</h1>
 
-  {{#power-select options=model.vm.primaryHost.instances selected=model.vm onchange=(action "changeVirtualMachine") searchField="displayName" as |obj|}}
-    {{select-dot model=obj}}
-  {{/power-select}}
-
   {{#if model.vm.primaryHost}}
-    <strong class="r-mr5 r-ml5">on {{#link-to "host" model.vm.primaryHost.id}}{{model.vm.primaryHost.displayName}}{{/link-to}}</strong>
+    <strong class="mr-5 ml-5">on {{#link-to "host" model.vm.primaryHost.id}}{{model.vm.primaryHost.displayName}}{{/link-to}}</strong>
   {{/if}}
   <div class="pull-right">
-    {{action-menu model=model.vm size="sm" classNames="r-ml5 pull-right"}}
-    {{header-state model=model.vm classNames="pull-right"}}
+    {{action-menu model=model.vm size="sm" classNames="ml-5 pull-right"}}
+    {{header-state model=model.vm}}
   </div>
 </section>
 
 <section>
   <div class="row">
-    <div class="col-md-3">
+    <div class="col span-3">
       {{#if model.vm.description}}
         <div>
           <label>{{t 'virtualMachinePage.multistat.description'}} </label>
@@ -56,9 +52,9 @@
         </span>
       </div>
     </div>
-    <div class="col-md-9">
-      <div class="row r-p15">
-        <ul class="nav nav-tabs nav-tabs-well shadowed">
+    <div class="col span-9">
+      <div class="row pl-15">
+        <ul class="tab-header shadowed">
           {{#link-to "virtualmachine.labels" tagName="li" href=false}}<a href="#"><i class="icon icon-tag"></i> {{t 'virtualMachinePage.navTabs.labels'}}</a>{{/link-to}}
         </ul>
         <div class="table-flat well">

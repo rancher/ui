@@ -1,0 +1,374 @@
+/**********
+ * Header (top bar)
+ **********/
+// Basics of a navbar
+$navbar-height:                    45px;
+$navbar-collapse-max-height:       340px;
+
+HEADER {
+  position : relative;
+  z-index  : 5;
+
+  .logo {
+    display: inline-block;
+    height: $navbar-height;
+    width: 68px;
+    background-image: url('images/logos/main.svg');
+    background-color: $logo-bg;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
+
+  &.mesos {
+    .logo {
+      width: 80px;
+      background-image: url('images/logos/main-mesos.svg');
+    }
+  }
+
+  &.swarm {
+    .logo {
+      width: 90px;
+      background-image: url('images/logos/main-swarm.svg');
+    }
+  }
+
+  &.kubernetes {
+    .logo {
+      width: 90px;
+      background-image: url('images/logos/main-k8s.svg');
+    }
+  }
+
+  .lang-select {
+    height: 45px;
+    line-height: 32px;
+    color: $lightTeal;
+  }
+
+  > NAV.navbar {
+    background-color: $top-row; //$top-row
+    min-height: $navbar-height;
+    border: 0;
+    margin: 0;
+    padding: 0;
+    font-size : 14px;
+    line-height: 0;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      border: 0;
+
+      li {
+        display: block;
+        padding: 0;
+
+        a {
+          padding: 10px;
+        }
+      }
+    }
+
+    ul {
+      margin: 0;
+    }
+
+    & .navbar-header {
+      // margin-left: -15px;
+      float: left;
+
+      .btn-group {
+        > .btn {
+          margin-left: -5px;
+        }
+      }
+    }
+
+    .navbar-brand {
+      margin: 0!important;
+      float: none;
+      background-size: auto 25px;
+      border-radius: 0;
+    }
+
+    .navbar-right {
+      float: right;
+    }
+
+    .navbar-toggle {
+      padding: 11px;
+      margin: 0;
+      background: $logo-bg;
+      color: white;
+      position: relative;
+
+      &.navbar-toggle:before {
+        content: "";
+        border-color: transparent;
+        border-style: solid;
+        border-right-color: $logo-bg;
+        position: absolute;
+        // left: -15px;
+        top: 12px;
+      }
+    }
+
+    .navbar-collapse {
+      padding: 0;
+    }
+
+    .nav > LI {
+      list-style       : none;
+      display          : inline-block;
+
+      &.dropdown-header {
+        font-size: 15px;
+      };
+
+      & > A {
+        min-height     : $navbar-height;
+        line-height    : $navbar-height;
+        padding        : 0 13px;
+        font-weight    : normal;
+        text-transform : uppercase;
+        color          : $lightGray;
+        font-size      : 13px;
+        display        : block;
+
+        &.user-toggle {
+          line-height: 42px;
+        }
+
+        &:hover, &:focus {
+          color: $lightTeal;
+          background: rgba(0,0,0,.15);
+        }
+
+        &.active,
+         {
+          color       : white;
+          font-weight : bold;
+
+          &:after{
+            content             : "";
+            border-width        : 5px;
+            border-color        : transparent;
+            border-style        : solid;
+            position            : absolute;
+            bottom              : -2px;
+            left                : 45%;
+          }
+        }
+      }
+
+      &:first-of-type > A {
+        padding-left: 20px;
+        padding-right: 10px;
+      }
+    }
+
+    .icon-chevron-down {
+      color: $lightGray;
+      font-size: 10px;
+    }
+
+    .user-menu {
+      max-height: 300px;
+      width: 300px;
+      overflow-y: auto;
+      box-shadow: none;
+      background: $dropdown-bg;
+      color: #334851;
+      margin: 0;
+      padding-top: 0;
+      border-radius: 2px;
+      right: 0;
+      // left: -170px;
+
+      & .theme-toggle, .dropdown-header {
+        padding: 5px 20px;
+        color: $lightTeal;
+
+      .icon-chevron-down {
+        color: $lightGray;
+        height: 45px;
+        line-height: 45px;
+      }
+
+        & button {
+          width: 86px;
+        }
+      }
+    }
+
+   .user-btn {
+      vertical-align: top;
+    }
+
+    .user-noauth,
+    .user-auth {
+      border-top-left-radius: 2px;
+      border-top-right-radius: 2px;
+    }
+
+    .user-noauth {
+      background-color: $brand-warning;
+      color: darken($brand-warning,40%);
+      text-align: center;
+    }
+
+    .user-auth {
+      position: relative;
+      border-bottom: solid 1px $dropdown-border;
+      padding: 10px 20px;
+
+      .gh-block {
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      .gh-block-name {
+        font-weight: bold;
+        A, A:hover, A:focus, A:visited, A:active {
+          color: $link-color;
+        }
+      }
+
+      .gh-block-detail {
+        color: $text-color;
+        max-width: 175px;
+        font-size: .85em;
+      }
+
+      .user-logout {
+        background-color: rgba($btn-default-color,.75);
+        color: #fff;
+        border-top-right-radius: 2px;
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 17px 10px;
+        font-size: 12px;
+        text-align: center;
+        vertical-align: middle;
+        display: inline-block;
+        &:hover {
+          background: $dropdown-link-active-bg;
+          color: #fff;
+        }
+        I {
+          font-size: 20px;
+          vertical-align: middle;
+        }
+      }
+    }
+
+    .project-btn {
+      max-width: 200px;
+      // height: $navbar-height;
+      color: white;
+      background: $project-btn;
+      position: relative;
+      float: none;
+      border: 0;
+      font-size: 15px;
+
+      label {
+        visibility: hidden;
+      }
+
+      &:hover {
+        label {
+          visibility: visible;
+        }
+      }
+
+      span {
+        color: white;
+        display: inline-block;
+        vertical-align: middle;
+      }
+
+      &:after {
+        content: "";
+        border-color: transparent transparent transparent $project-btn;
+        border-style: solid;
+        border-width: 8px;
+        position: absolute;
+        right: -14px;
+        top: 33%;
+        z-index: 2;
+      }
+
+      .dropdown-menu {
+        background-color: $dropdown-bg;
+
+        > li {
+          display: block;
+
+          > a {
+            display: block;
+            width: 100%;
+          }
+        }
+
+        &.project-menu {
+          z-index: 2000;
+          .active a {
+            cursor: none; // $cursor-disabled;
+          }
+          a {
+            position: relative;
+            display: block;
+            &:after {
+              content: " ";
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 177px;
+              height: 31px;
+            }
+          }
+        }
+      }
+
+      .btn {
+        text-transform: inherit;
+        position: relative;
+
+        &.dropdown-toggle {
+          &:focus {
+            outline: -webkit-focus-ring-color auto 5px !important;
+          }
+        }
+
+        .clip {
+          max-width: 155px;
+        }
+
+        .project-icon {
+          line-height: 10px;
+          text-align: center;
+          margin-top: -3px;
+        }
+
+        .project-chevron {
+          font-size: .75em;
+        }
+
+        LABEL {
+          font-weight: normal;
+          color: $text-muted;
+          font-size: 11px;
+          display: block;
+          margin: 0;
+          top: -16px;
+          position: absolute;
+        }
+      }
+    }
+  }
+}
+
+//nav

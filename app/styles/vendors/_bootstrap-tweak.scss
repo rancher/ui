@@ -1,5 +1,4 @@
 $normal-weight: normal;
-$bold-weight: 700;
 
 a {
   color: $link-color;
@@ -26,10 +25,6 @@ H1, H2, H3, H4, H5, H6, SECTION.header {
     &:not(:first-child) {
       border-left: 1px solid #e3e5e6;
     }
-  }
-
-  .breadcrumb + .left-divider:not(.pull-right) {
-    margin-left: 7px;
   }
 
   .right-divider {
@@ -245,9 +240,9 @@ fieldset[disabled] .btn {
   }
 }
 
-.btn-danger {
+.bg-danger {
   &:hover {
-    background: $btn-danger-hover;
+    background: $bg-danger-hover;
   }
 }
 
@@ -380,89 +375,6 @@ fieldset[disabled] .btn {
       color: $lightGray;
       margin-right: 0;
     }
-  }
-}
-
-.text-normal {
-  font-weight: $normal-weight;
-}
-
-.text-bold {
-  font-weight: $bold-weight;
-}
-
-.text-uppercase {
-  text-transform: uppercase;
-}
-
-.text-italic { font-style: italic; }
-.text-left   { text-align: left; }
-.text-center { text-align: center; }
-.text-right  { text-align: right; }
-
-
-
-.bg-default { background-color: $lightGrayTwo; color: $midGray; }
-.bg-primary { background-color: $brand-primary; color:white;}
-.bg-success { background-color: transparent; color:$brand-success;}
-.bg-danger  { background-color: $brand-danger; color:$body-bg;}
-.bg-warning { background-color: $brand-warning; color:$well-bg;}
-.bg-info    { background-color: $brand-info; color:$body-bg;}
-
-.bg-lightgray { background-color: $lightGray;}
-
-.badge {
-  display: inline-block;
-  min-width: 10px;
-  font-size: 13px;
-  padding: 5px;
-  font-weight: 400;
-  color: $well-bg;
-  line-height: 1;
-  vertical-align: middle;
-  white-space: nowrap;
-  text-align: center;
-  background-color: #0075a8;
-
-  &.bg-default { background-color: $lightGrayTwo; color: $midGray; }
-  &.bg-primary { background-color: $brand-primary; color: white;}
-  &.bg-success { background-color: transparent; color: $well-bg;}
-  &.bg-danger  { background-color: $brand-danger; color: $well-bg;}
-  &.bg-warning { background-color: $brand-warning; color: $well-bg;}
-  &.bg-info    { background-color: $brand-info; }
-
-  &.bg-default,   &.badge-default { background-color: $btn-default-bg; color: $btn-default-color;}
-  &.bg-primary ,  &.badge-primary { background-color: rgba($primary, .15); color: $primary; }
-  &.bg-success,   &.badge-success { background-color: $brand-success; }
-  &.bg-danger,    &.badge-danger  { background-color: $brand-danger; }
-  &.bg-warning,   &.badge-warning { background-color: $brand-warning; }
-  &.bg-info,      &.badge-info    { background-color: $brand-info; }
-
-  &.state {
-    text-transform: capitalize;
-
-    // Successful states are de-emphasized by using [text-]color instead of background-color
-    &.bg-success {
-    background-color: transparent;
-    color: $brand-success;
-    }
-
-    &.text-success:hover {
-      color: $brand-success;
-    }
-  }
-
-  &.text-default:hover,
-  &.text-primary:hover,
-  &.text-success:hover,
-  &.text-danger:hover,
-  &.text-warning:hover,
-  &.text-info:hover  {
-    color: $table-bg;
-  }
-
-  &:hover {
-    background-color: $primaryDark;
   }
 }
 
@@ -683,7 +595,8 @@ HR {
 }
 
 LABEL {
-  @extend .no-select;
+  @include no-select
+
   font-weight: $bold-weight;
 }
 
@@ -788,67 +701,6 @@ LABEL.checkbox, LABEL.radio {
 .form-group {
   padding-bottom: 15px;
   margin-bottom: 0;
-}
-
-
-.breadcrumb {
-  display: inline-block;
-  padding: 0;
-  margin: 0;
-  line-height: 28px;
-
-  A {
-    cursor: pointer;
-  }
-
-  .ember-power-select-wrapper {
-    font-size: 16px;
-    vertical-align: middle;
-  }
-
-  .ember-power-select:not([dir=rtl]) .ember-power-select-trigger {
-    padding: 1px 15px 1px 5px;
-  }
-
-  .ember-power-select-trigger {
-    border-color: $lightGray;
-    background-image: none;
-    position: relative;
-    background: $input-bg;
-
-    &:after {
-      content: $icon-chevron-down;
-      font-family: 'rancher-icons';
-      position: absolute;
-      right: 5px;
-      font-size: 10px;
-      top: 25%;
-    }
-
-  }
-
-  .ember-power-select.opened {
-    .ember-power-select-trigger {
-      background-image: none;
-
-      &:after {
-        content: $icon-chevron-up;
-        font-family: 'rancher-icons';
-        position: absolute;
-        right: 5px;
-        top: 0;
-      }
-    }
-  }
-
-  LI {
-    cursor: pointer;
-
-    &.active {
-      cursor: default;
-      color: $midGrayDark;
-    }
-  }
 }
 
 .tooltip {

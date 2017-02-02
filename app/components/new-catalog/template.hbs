@@ -4,17 +4,14 @@
       <h1>{{t 'newCatalog.upgrade'}} <span style="font-weight: normal">{{stackResource.name}}</span></h1>
     {{else}}
       <h1>{{#link-to parentRoute}}{{t 'newCatalog.catalog'}}{{/link-to}}</h1>
-      {{#power-select options=allTemplates selected=templateResource onchange=(action "changeTemplate") searchField="name" as |obj|}}
-        <span class="clip">{{obj.name}}</span>
-      {{/power-select}}
     {{/if}}
   </section>
 {{/if}}
 
 <section class="{{sectionClass}} row">
-  <div class="col-sm-12 col-md-3">
+  <div class="col span-3">
     {{#if templateResource.links.icon}}
-      <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="r-mr20" style="height:75px;max-width: 100%;">
+      <img src={{templateResource.links.icon}} alt={{templateResource.name}} class="mr-20" style="height:75px;max-width: 100%;">
     {{/if}}
 
     <div>
@@ -43,11 +40,11 @@
     {{/if}}
   </div>
   {{#if readmeContent}}
-    <div class="col-sm-12 col-md-9" style="overflow-y: auto; max-height: 500px;">
+    <div class="col span-9" style="overflow-y: auto; max-height: 500px;">
       {{common-mark markdown=readmeContent}}
     </div>
   {{else}}
-    <h2 class="r-mb10">
+    <h2 class="mb-10">
       {{t (if editing titleUpgrade titleAdd) name=templateResource.name}}
     </h2>
     <p>{{templateResource.description}}</p>
@@ -58,7 +55,7 @@
   <h4>{{t 'newCatalog.templateVersion'}}</h4>
   <hr/>
   <div class="row">
-    <div class="col-sm-12 col-md-6">
+    <div class="col span-6">
       {{new-select
         classNames="form-control"
         content=sortedVersions
@@ -101,7 +98,7 @@
       <div class="container-flex">
         {{#each selectedTemplateModel.questions as |question|}}
           <div class="flex-item-half">
-            <div class="col-sm-12 form-label r-mb10">
+            <div class="col span-12 form-label m-10">
               <label class="form-label form-control-static">{{question.label}}{{if question.required "*"}}</label>
 
               {{#if question.supported}}
@@ -119,8 +116,8 @@
         {{/each}}
       </div>
       {{#if (and (not editing) (eq templateBase ""))}}
-        <div class="row r-mt20">
-          <div class="col-md-12">
+        <div class="row mt-20">
+          <div class="col span-12">
             <label class="checkbox small">{{input type="checkbox" checked=stackResource.startOnCreate}} {{t 'newCatalog.startService'}}</label>
           </div>
         </div>
@@ -135,12 +132,14 @@
       <div class="over-hr"><span {{action "togglePreview"}}>{{t 'newCatalog.preview'}} <i class="icon {{if previewOpen 'icon-chevron-up' 'icon-chevron-down'}}"></i></span></div>
 
       {{#if previewOpen}}
-        <ul class="nav nav-tabs nav-tabs-well" role="tablist">
+        <div class="tabs">
+        <ul class="tab-header" role="tablist">
           {{#each selectedTemplateModel.filesAsArray as |file|}}
             <li role="tab" class="{{if (eq previewTab file.name) 'active'}}" {{action "selectPreviewTab" file.name}}><a href="#">{{file.name}} {{copy-to-clipboard clipboardText=file.body size="small"}}</a></li>
           {{/each}}
           <li role="tab" class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a href="#">{{t 'newCatalog.txt'}} {{copy-to-clipboard clipboardText=answersString size="small"}}</a></li>
         </ul>
+        </div>
         <div class="well nav-well preview-content" role="tabpanel">
           {{#each selectedTemplateModel.filesAsArray as |file|}}
             {{code-block code=file.body language="yaml" hide=(not-eq previewTab file.name)}}
@@ -154,7 +153,7 @@
   {{#if errors.length}}
     <section>
       <div class="row">
-        <div class="col-sm-12">
+        <div class="col span-12">
           {{top-errors errors=errors}}
         </div>
       </div>
@@ -166,6 +165,6 @@
   </div>
 {{else}}
   <div class="footer-actions">
-    <button {{action "cancel"}} class="btn btn-default">{{t 'saveCancel.cancel'}}</button>
+    <button {{action "cancel"}} class="btn bg-transparent">{{t 'saveCancel.cancel'}}</button>
   </div>
 {{/if}}

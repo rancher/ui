@@ -1,0 +1,123 @@
+<table class="fixed grid sortable-table lacsso">
+  <thead class="lacsso">
+    <tr class="fixed-header-placeholder lacsso">
+      {{#if bulkActions}}
+        <th class="lacsso" width="40"></th>
+      {{/if}}
+      {{#each headers as |header idx|}}
+        <th class="lacsso" width={{if header.width header.width}}></th>
+      {{/each}}
+    </tr>
+    {{#if (or paging search bulkActions)}}
+      <div class="fixed-header-actions row lacsso">
+        <div class="col span-4 lacsso">
+          {{#if bulkActions}}
+            <div class="container-actions lacsso">
+              {{#if availableActions}}
+                {{#rl-dropdown-container class="dropdown lacsso"}}
+                  {{#rl-dropdown-toggle class="btn btn-sm bg-primary lacsso"}}
+                    {{t 'generic.actions'}} {{#if (gt selectedNodes.length 1)}}({{selectedNodes.length}}) {{/if}}<span class="icon icon-chevron-down"></span>
+                  {{/rl-dropdown-toggle}}
+
+                  {{#rl-dropdown tagName="ul" class="resource-actions global-actions dropdown-menu dropdown-menu-right lacsso" closeOnChildClick="a:link"}}
+                    <li class="resource-actions-tabbable"><a tabindex="-1" id="resource-actions-first" aria-label="Select an Action below"></a></li>
+                    {{#each availableActions as | action index|}}
+                      {{#if action.disabled}}
+                        <li class="disabled">
+                          <a href="#" onclick="return false;" tabindex={{index}}>
+                            {{if action.bulkActionName action.bulkActionName action.translatedLabel}}
+                            <i class="{{action.icon}}"></i>
+                          </a>
+                        </li>
+                      {{else}}
+                        <li>
+                          <a href="#" onclick={{action 'executeBulkAction' action.action}} tabindex={{index}}>
+                            {{if action.bulkActionName action.bulkActionName action.translatedLabel}}
+                            <i class="{{action.icon}}"></i>
+                          </a>
+                        </li>
+                      {{/if}}
+                    {{/each}}
+                  {{/rl-dropdown}}
+                {{/rl-dropdown-container}}
+              {{else}}
+                <button class="btn btn-sm bg-primary lacsso" disabled>
+                  {{t 'generic.actions'}} <span class="icon icon-chevron-down"></span>
+                </button>
+              {{/if}}
+            </div>
+          {{/if}}
+        </div>
+        <div class="col span-4 lacsso">
+          {{#if search}}
+            <div class="row inline-form gutless lacsso">
+              <span class="col span-3 input-label bg-default input-sm lacsso">
+                <label>{{t 'generic.search'}}:</label>
+              </span>
+              {{input value=searchText type="search" class="col span-8 input-sm lacsso"}}
+              {{#if searchText}}
+                <span class="col span-1 lacsso">
+                  <button class="btn btn-sm bg-default" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
+                </span>
+              {{/if}}
+            </div>
+          {{/if}}
+        </div>
+        <div class="col span-4 lacsso">
+          {{#if paging}}
+            {{page-numbers content=pagedContent class="pull-right no-select" indexTo=indexTo indexFrom=indexFrom totalCount=filtered.length}}
+          {{/if}}
+        </div>
+      </div>
+    {{/if}}
+
+    <tr class="fixed-header lacsso">
+      {{#if bulkActions}}
+        <th width="40" class="select-for-action">
+          {{check-box classNames="select-all-check" checked=isAll}}
+        </th>
+      {{/if}}
+      {{#each headers as | header |}}
+        {{sortable-thead
+          sortable=this
+          current=sortBy
+          descending=descending
+          action="changeSort"
+          name=header.name
+          isActions=header.isActions
+          label=header.displayName
+          translationKey=header.translationKey
+          classNames=header.classNames
+          }}
+      {{/each}}
+    </tr>
+  </thead>
+  <tbody class="lacsso striped">
+    {{#if prefix}}
+      {{yield null 'prefix'}}
+    {{/if}}
+    {{#each pagedContent as |content|}}
+      <tr>
+        {{#if bulkActions}}
+          <td width="40" class="select-for-action">
+            {{check-box nodeId=content.id}}
+          </td>
+        {{/if}}
+        {{#if hasBlock}}
+          {{yield content 'row' dt}}
+        {{else}}
+          {{#each headers as |header|}}
+            <td data-title={{header.displayName}} data-id={{content.id}}>{{select-property content header.name}}</td>
+          {{/each}}
+        {{/if}}
+      </tr>
+    {{else}}
+      {{#if hasBlock}}
+        {{yield null (if arranged.length 'nomatch' 'norows')}}
+      {{/if}}
+    {{/each}}
+    {{#if suffix}}
+      {{yield null 'suffix'}}
+    {{/if}}
+  </tbody>
+</table>

@@ -1,0 +1,97 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+
+/// Regular font family
+/// @type List
+$text-font-stack: 'Prompt', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif !default;
+$bold-weight: bold;
+$base-font-size: 15px;
+$base-line-height: 1.5em;
+
+/// Code (monospace) font family
+/// @type List
+$code-font-stack: Consolas, "Andale Mono", "Lucida Console", Monaco, "Courier New", Courier,  monospace !default;
+
+/// Theme colors
+$primary: #0075A8 !default;
+$secondary: #34495E !default;
+
+///State colors
+$success: #27AE5F !default;
+$warning: #F1C40F !default;
+$error: #F15354 !default;
+$info: #78C9CF !default;
+
+//Contrast colors
+$contrasted-dark-default: #3d3d3d !default;
+$contrasted-light-default: white !default;
+
+
+/// Copy text color
+/// @type Color
+$text-color: #454545 !default;
+
+/// Light grey
+/// @type Color
+$light-grey: #ecf0f1 !default;
+
+/// Medium grey
+/// @type Color
+$mid-grey: #99a3a8 !default;
+
+/// Dark grey
+/// @type Color
+$dark-grey: #3d3d3d !default;
+
+/// Main brand color
+/// @type Color
+$brand-color: $primary !default;
+$brand-accent: $light-grey !default;
+
+/// Container's maximum width
+/// @type Length
+$max-width: 1280px !default;
+
+/// Breakpoints map
+/// @prop {String} keys - Keys are identifiers mapped to a given length
+/// @prop {Map} values - Values are actual breakpoints expressed in pixels
+$breakpoints: (
+  'small': 414px, //small max
+  'medium': 768px, //med max
+  'large': 769px, //large min
+) !default;
+
+/// Relative or absolute URL where all assets are served from
+/// @type String
+/// @example scss - When using a CDN
+///   $base-url: 'http://cdn.example.com/assets/';
+$base-url: '/assets/' !default;
+$base-url-fonts: #{$base-url}/fonts !default;
+
+/// RANCHER BREAKPOINTS
+// Extra small screen / phone
+//** Deprecated `$screen-xs` as of v3.0.1
+$screen-xs:                  480px;
+//** Deprecated `$screen-xs-min` as of v3.2.0
+$screen-xs-min:              $screen-xs;
+
+// Small screen / tablet
+//** Deprecated `$screen-sm` as of v3.0.1
+$screen-sm:                  695px;
+$screen-sm-min:              $screen-sm;
+
+// Medium screen / desktop
+//** Deprecated `$screen-md` as of v3.0.1
+$screen-md:                  960px;
+$screen-md-min:              $screen-md;
+
+// Large screen / wide desktop
+//** Deprecated `$screen-lg` as of v3.0.1
+$screen-lg:                  1200px;
+$screen-lg-min:              $screen-lg;
+
+// So media queries don't overlap when required, provide a maximum
+$screen-xs-max:              ($screen-sm-min - 1);
+$screen-sm-max:              ($screen-md-min - 1);
+$screen-md-max:              ($screen-lg-min - 1);

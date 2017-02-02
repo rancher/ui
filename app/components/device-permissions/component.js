@@ -33,7 +33,7 @@ export default Ember.Component.extend({
     if (get(this, 'editing')) {
       var moreClass = get(this, 'buttonClass')||'';
       var opts = {
-        buttonClass: 'btn btn-default' + (moreClass ? ' '+moreClass : ''),
+        buttonClass: 'btn bg-default' + (moreClass ? ' '+moreClass : ''),
         numberDisplayed: 2,
         nonSelectedText: get(this, 'intl').t('devicePermissions.none'),
         allSelectedText: get(this, 'intl').t('devicePermissions.all'),

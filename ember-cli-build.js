@@ -37,9 +37,6 @@ module.exports = function(defaults) {
     nodeAssets: {
       'xterm': {
         import: ['src/xterm.css']
-      },
-      'lacsso': {
-        import: ['lacsso.css']
       }
     },
 
@@ -80,17 +77,13 @@ module.exports = function(defaults) {
   // modules that you would like to import into your application
   // please specify an object with the list of modules as keys
   // along with the exports of each module as its value.
-  app.import('bower_components/bootstrap-sass-official/assets/javascripts/bootstrap.js');
   app.import('bower_components/jgrowl/jquery.jgrowl.js');
   app.import('bower_components/jgrowl/jquery.jgrowl.css');
-  app.import('bower_components/jquery.cookie/jquery.cookie.js');
   app.import('bower_components/d3/d3.js');
   app.import('bower_components/c3/c3.js');
   app.import('bower_components/c3/c3.css');
   //app.import('vendor/term.js/src/term.js');
   //app.import('bower_components/xterm.js/src/xterm.css');
-  app.import('bower_components/bootstrap-multiselect/dist/js/bootstrap-multiselect.js');
-  app.import('bower_components/bootstrap-multiselect/dist/css/bootstrap-multiselect.css');
   app.import('bower_components/prism/prism.js');
   app.import('bower_components/prism/components/prism-yaml.js');
   app.import('bower_components/prism/components/prism-bash.js');
@@ -111,37 +104,17 @@ module.exports = function(defaults) {
   app.import('bower_components/ember-shortcuts/ember-shortcuts.js');
 
 
+  app.import('vendor/bootstrap-dropdown/css/bootstrap.css');
+  app.import('vendor/bootstrap-dropdown/js/bootstrap.js');
+
   app.import('vendor/icons/style.css');
-  app.import('vendor/icons/fonts/rancher-icons.svg', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/icons/fonts/rancher-icons.ttf', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/icons/fonts/rancher-icons.woff', {
-    destDir: 'assets/fonts'
-  });
-
-
-  // Google Font Downloader thing: https://google-webfonts-helper.herokuapp.com/
-  app.import('vendor/lato/lato-v11-latin-300.woff', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/lato/lato-v11-latin-300.woff2', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/lato/lato-v11-latin-700.woff', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/lato/lato-v11-latin-700.woff2', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/lato/lato-v11-latin-regular.woff', {
-    destDir: 'assets/fonts'
-  });
-  app.import('vendor/lato/lato-v11-latin-regular.woff2', {
-    destDir: 'assets/fonts'
-  });
+  app.import('vendor/icons/fonts/rancher-icons.svg',   { destDir: 'assets/fonts/'});
+  app.import('vendor/icons/fonts/rancher-icons.ttf',   { destDir: 'assets/fonts/'});
+  app.import('vendor/icons/fonts/rancher-icons.woff',  { destDir: 'assets/fonts/'});
+  app.import('vendor/prompt/prompt-v1-latin-300.woff', { destDir: 'assets/fonts/'});
+  app.import('vendor/prompt/prompt-v1-latin-300.woff2',{ destDir: 'assets/fonts/'});
+  app.import('vendor/prompt/prompt-v1-latin-600.woff', { destDir: 'assets/fonts/'});
+  app.import('vendor/prompt/prompt-v1-latin-600.woff2',{ destDir: 'assets/fonts/'});
 
   return app.toTree();
 };

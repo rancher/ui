@@ -1,23 +1,23 @@
 <div class="row">
-  <div class="col-xs-6 col-md-2 form-label">
+  <div class="col span-2 form-label">
     <label>{{t 'formTarget.target'}}</label>
   </div>
-  <div class="col-sm-5 col-md-4 radio">
+  <div class="col span-4 radio">
     <label>{{radio-button selection=which value="ip"}} {{t 'formTarget.pointAddress'}}</label>
   </div>
-  <div class="col-sm-5 col-md-4 radio">
+  <div class="col span-4 radio">
     <label>{{radio-button selection=which value="hostname"}} {{t 'formTarget.pointHostname'}}</label>
   </div>
 </div>
 
 {{#if (eq which "ip")}}
   <div class="row">
-    <div class="col-xs-6 col-md-8 col-md-offset-2">
+    <div class="col span-8 offset-2">
       <button class="btn-circle" {{action "addTargetIp"}}><i class="icon icon-plus-circle"/> {{t 'formTarget.addTarget'}}</button>
     </div>
   </div>
   <div class="row">
-    <div class="col-sm-12 col-md-8 col-md-offset-2">
+    <div class="col span-8 offset-2">
       {{#if targetIpArray.length}}
         <table class="table fixed no-lines no-top-padding tight">
           {{#each targetIpArray as |tgt|}}
@@ -26,7 +26,7 @@
                 {{input type="text" class="form-control input-sm target-ip" value=tgt.value placeholder="e.g. 192.168.2.24"}}
               </td>
               <td width="30" class="text-right">
-                <button class="btn btn-primary btn-sm" {{action "removeTargetIp" tgt}}><i class="icon icon-minus"/></button>
+                <button class="btn bg-primary btn-sm" {{action "removeTargetIp" tgt}}><i class="icon icon-minus"/></button>
               </td>
             </tr>
           {{/each}}
@@ -38,7 +38,7 @@
 
 {{#if (eq which "hostname")}}
   <div class="row">
-    <div class="col-sm-12 col-md-8 col-md-offset-2">
+    <div class="col span-8 offset-2">
       {{input type="text" class="form-control input-sm target-hostname" value=userHostname placeholder="e.g. mysql.example.com"}}
     </div>
   </div>
