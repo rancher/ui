@@ -1,4 +1,4 @@
-<nav class="navbar clearfix">
+{{!-- <nav class="navbar clearfix">
   <div class="container-fluid">
     <div class="navbar-header">
       <a role="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-controls="navbar" aria-expanded="false">
@@ -125,3 +125,92 @@
     </div>
   </div>
 {{/if}}
+ --}}
+
+ <!--so lauren can test-->
+<nav class="navbar clearfix"> 
+<div id="navbar" class="">
+      <ul class="nav navbar-nav bg-transparent">
+        {{#each navTree as |item|}}
+          {{#if item.url}}
+            <li>
+              <a href="{{item.url}}" target="{{item.target}}">{{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}}</a>
+            </li>
+          {{else if item.submenu.length}}
+            {{! Has a submenu }}
+            <li>
+              {{#link-to-as-attrs
+                item.route
+                models=item.ctx
+                queryParams=item.queryParams
+                moreCurrentWhen=item.moreCurrentWhen
+                activeParent=true
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+              }}
+                {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}} <span class="icon icon-chevron-down"/>
+              {{/link-to-as-attrs}}
+              <ul>
+                {{#each item.submenu as |subitem|}}
+                  {{#if subitem.divider}}
+                    <li class="divider"></li>
+                  {{else if subitem.url}}
+                    <li>
+                      <a href="{{subitem.url}}" target="{{subitem.target}}">
+                        <i class="{{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
+                      </a>
+                    </li>
+                  {{else if subitem.route}}
+                    <li>
+                      {{#link-to-as-attrs
+                        subitem.route
+                        models=subitem.ctx
+                        queryParams=subitem.queryParams
+                        activeParent=true
+                        moreCurrentWhen=subitem.moreCurrentWhen
+                      }}
+                        <i class="{{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
+                      {{/link-to-as-attrs}}
+                    </li>
+                  {{else}}
+                    {{! Just a label }}
+                    <li class="dropdown-header">
+                     <i class="{{subitem.icon}}"/> {{#if subitem.localizedLabel}}{{t subitem.localizedLabel}}{{else}}{{subitem.label}}{{/if}}
+                    </li>
+                  {{/if}}
+                {{/each}}
+              </ul>
+              {{#if item.showAlert}}
+                {{#tooltip-element class="tooltip-warning" type='tooltip-warning' tooltipFor="showAlert"}}
+                  {{#link-to item.alertRoute data-toggle="tooltip" data-placement="bottom"}}!{{/link-to}}
+                {{/tooltip-element}}
+              {{/if}}
+            </li>
+          {{else if item.route}}
+            {{! No submenu }}
+            <li>
+              {{#link-to-as-attrs
+                item.route
+                models=item.ctx
+                queryParams=item.queryParams
+                activeParent=true
+                moreCurrentWhen=item.moreCurrentWhen
+              }}
+                {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}}
+              {{/link-to-as-attrs}}
+            </li>
+          {{else}}
+            {{! Just a label }}
+            <li class="dropdown-header">
+              {{#if item.localizedLabel}}{{t item.localizedLabel}}{{else}}{{item.label}}{{/if}}
+            </li>
+          {{/if}}
+        {{/each}}
+      </ul>
+
+      <ul class="nav navbar-nav navbar-right bg-transparent">
+        <li>{{page-header-user}}</li>
+      </ul>
+    </div>
+</nav>
