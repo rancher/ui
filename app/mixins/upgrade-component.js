@@ -5,6 +5,7 @@ const NONE       = 'none',
       LOADING    = 'loading',
       CURRENT    = 'current',
       AVAILABLE  = 'available',
+      REQUIRED   = 'required',
       INPROGRESS = 'inprogress',
       UPGRADED   = 'upgraded',
       NOTFOUND   = 'notfound',
@@ -68,8 +69,17 @@ function getUpgradeInfo(task, cb) {
     }
 
     if (upgradeVersions && obj.get('upgradeStatus') !== UPGRADED) {
+      let status = CURRENT;
+      if ( Object.keys(upgradeVersions).length ) {
+        if ( upgradeInfo.catalogId === C.CATALOG.LIBRARY_KEY && upgradeInfo.templateBase === C.EXTERNAL_ID.KIND_INFRA ) {
+          status = REQUIRED;
+        } else {
+          status = AVAILABLE;
+        }
+      }
+
       obj.setProperties({
-        upgradeStatus: Object.keys(upgradeVersions).length ? AVAILABLE : CURRENT,
+        upgradeStatus: status,
         upgradeVersions: upgradeVersions,
         allVersions: allVersions,
       });
@@ -119,6 +129,8 @@ export default Ember.Mixin.create({
       case ERROR:
       case INPROGRESS:
         return 'bg-disabled';
+      case REQUIRED:
+        return 'bg-error';
       case AVAILABLE:
       case UPGRADED:
         return 'bg-warning';
@@ -138,7 +150,7 @@ export default Ember.Mixin.create({
   doUpgrade() {
     let status = this.get('upgradeStatus');
 
-    if ( [AVAILABLE,CURRENT].indexOf(status) >= 0 )
+    if ( [REQUIRED,AVAILABLE,CURRENT].indexOf(status) >= 0 )
     {
       let templateId = this.get('model.externalIdInfo.templateId');
       let versionId = this.get('upgradeInfo.id');
