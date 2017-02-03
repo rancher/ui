@@ -2,7 +2,8 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 const DROPDOWNCLOSETIMER = 250;
-const SELECTOR           = '.navbar .dropdown';
+const PARENT             = 'HEADER NAV';
+const SELECTOR           = 'NAV .dropdown';
 const WINDOW_SM          = 694;
 let timerObj             = null;
 let dropdown             = null;
@@ -238,7 +239,7 @@ export default Ember.Mixin.create({
     if (body.hasClass('touch')) {
       Ember.$('BODY').removeClass('nav-dropdown-open');
     }
-    const navbar       = Ember.$('.navbar');
+    const navbar       = Ember.$(PARENT);
 
     dropdown = null;
 

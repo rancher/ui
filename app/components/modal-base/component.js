@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   modalService: Ember.inject.service('modal'),
@@ -12,11 +13,13 @@ export default Ember.Component.extend({
       //this.$().focus();
     //});
   //},
+  //
   keyUp(e) {
-    if (e.which === 27 && this.escToClose()) {
+    if (e.which === C.KEY.ESCAPE && this.escToClose()) {
       this.get('modalService').toggleModal();
     }
   },
+
   escToClose() {
     var modalService = this.get('modalService');
     if (modalService.get('modalVisible') && modalService.get('modalOpts.escToClose')) {

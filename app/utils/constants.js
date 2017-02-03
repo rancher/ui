@@ -177,6 +177,11 @@ var C = {
     SIDEKICK: 'io.rancher.sidekicks',
   },
 
+  MODE: {
+    OSS: 'oss', // Regular community UI
+    CAAS: 'caas', // Container cloud UI
+  },
+
   PREFS: {
     ACCESS_WARNING  : 'accessWarning',
     BODY_BACKGROUND : 'bodyBackground',
