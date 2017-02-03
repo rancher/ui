@@ -154,7 +154,7 @@ var C = {
     DOCKER_VERSION: 'io.rancher.host.docker_version',
     KERNEL_VERSION: 'io.rancher.host.linux_kernel_version',
     KVM: 'io.rancher.host.kvm',
-    SCHED_IPS: 'io.rancher.host.ip_set',
+    SCHED_IPS: 'io.rancher.scheduler.ips',
 
     // Kubernetes
     K8S_DASHBOARD: 'io.rancher.k8s.kubernetes-dashboard',
