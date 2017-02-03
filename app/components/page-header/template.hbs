@@ -82,35 +82,37 @@
     {{/each}}
   </ul>
 
-  <div class="dropdown nav-user">
-    <button class="btn bg-primary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-      {{#if accessEnabled}}
-        {{identity-avatar link=false identity=access.identity}}
-      {{else}}
-        <div class="gh-avatar">
-          <div class="gh-placeholder">
-            <i class="icon icon-user"></i>
+  <ul class="nav-user dropdown">
+    <li>
+      <a class="btn bg-primary dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" aria-label={{t 'nav.user.label' username=session.user}}>
+        {{#if accessEnabled}}
+          {{identity-avatar link=false identity=access.identity}}
+        {{else}}
+          <div class="gh-avatar">
+            <div class="gh-placeholder">
+              <i class="icon icon-user"></i>
+            </div>
           </div>
-        </div>
-      {{/if}}
-      <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
-      <i class="icon icon-chevron-down"></i>
-    </button>
+        {{/if}}
+        <span class="sr-only">{{t 'nav.srToggleDropdown'}}</span>
+        <i class="icon icon-chevron-down"></i>
+      </a>
 
-    <ul class="dropdown-menu dropdown-menu-right" data-dropdown-id="header-user-menu">
-r     {{#if accessEnabled}}
-        <li role="presentation" class="user-auth">
-          {{identity-block avatar=false identity=access.identity}}
-          {{#link-to "logout" class="user-logout"}}<i class="icon icon-logout"></i> {{t 'nav.user.logout'}}{{/link-to}}
-        </li>
-      {{/if}}
+      <ul class="dropdown-menu dropdown-menu-right" data-dropdown-id="header-user-menu">
+      {{#if accessEnabled}}
+          <li role="presentation" class="user-auth">
+            {{identity-block avatar=false identity=access.identity}}
+          </li>
+        {{/if}}
 
-      <li><a href="#"></a></li>
-      <li><a href="#">Something else here</a></li>
-      <li role="separator" class="divider"></li>
-      {{#link-to "logout" class="user-logout"}}<i class="icon icon-logout"></i> {{t 'nav.user.logout'}}{{/link-to}}
-    </ul>
-  </div>
+        <li role="separator" class="divider"></li>
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Billing</a></li>
+        <li role="separator" class="divider"></li>
+        {{#link-to "logout" class="user-logout"}}<i class="icon icon-logout"></i> {{t 'nav.user.logout'}}{{/link-to}}
+      </ul>
+    </li>
+  </ul>
 </nav>
 
 {{#if (and projects.current (not hosts.length))}}

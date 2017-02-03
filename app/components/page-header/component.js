@@ -36,6 +36,8 @@ export default Ember.Component.extend(HoverDropdown, {
   mesosReady           : Ember.computed.alias('projects.orchestrationState.mesosReady'),
   isCaas               : Ember.computed.equal('app.mode',C.MODE.CAAS),
   isOss                : Ember.computed.equal('app.mode',C.MODE.OSS),
+  accessEnabled        : Ember.computed.alias('access.enabled'),
+
   stacks               : null,
 
   // Component options
