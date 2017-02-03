@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import ModalBase from 'lacsso/components/modal-base';
 import { loadScript } from 'ui/utils/load-script';
+import ModalBase from 'ui/mixins/modal-base';
 
-export default ModalBase.extend({
-  classNames: ['lacsso', 'modal-container', 'span-8', 'offset-2', 'modal-welcome'],
+export default Ember.Component.extend(ModalBase, {
+  classNames: ['span-8', 'offset-2', 'modal-welcome'],
   settings: Ember.inject.service(),
   prefs: Ember.inject.service(),
   access: Ember.inject.service(),

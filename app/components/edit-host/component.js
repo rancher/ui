@@ -2,12 +2,12 @@ import Ember from 'ember';
 import ManageLabels from 'ui/mixins/manage-labels';
 import { flattenLabelArrays } from 'ui/mixins/manage-labels';
 import NewOrEdit from 'ui/mixins/new-or-edit';
-import ModalBase from 'lacsso/components/modal-base';
 import C from 'ui/utils/constants';
 import { debouncedObserver } from 'ui/utils/debounce';
+import ModalBase from 'ui/mixins/modal-base';
 
-export default ModalBase.extend(NewOrEdit, ManageLabels, {
-  classNames: ['lacsso', 'modal-container', 'large-modal'],
+export default Ember.Component.extend(ModalBase, NewOrEdit, ManageLabels, {
+  classNames: ['large-modal'],
   originalModel: Ember.computed.alias('modalService.modalOpts'),
   model: null,
   editing: true,

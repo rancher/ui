@@ -1,7 +1,9 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 
-export default Ember.Component.extend({
+export default Ember.Mixin.create({
+  classNames: ['modal-container'],
+
   modalService: Ember.inject.service('modal'),
   modalOpts: Ember.computed.alias('modalService.modalOpts'),
   // Focus does not want to focus on modal el here, dont know why but

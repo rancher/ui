@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   tagName: 'TH',
-  classNames: ['sortable', 'lacsso'],
+  classNames: ['sortable'],
   name: null,
   sortable: null,
   width: null,

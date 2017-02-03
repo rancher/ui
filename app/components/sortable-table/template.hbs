@@ -1,25 +1,25 @@
-<table class="fixed grid sortable-table lacsso">
-  <thead class="lacsso">
-    <tr class="fixed-header-placeholder lacsso">
+<table class="fixed grid sortable-table">
+  <thead>
+    <tr class="fixed-header-placeholder">
       {{#if bulkActions}}
-        <th class="lacsso" width="40"></th>
+        <th width="40"></th>
       {{/if}}
       {{#each headers as |header idx|}}
-        <th class="lacsso" width={{if header.width header.width}}></th>
+        <th width={{if header.width header.width}}></th>
       {{/each}}
     </tr>
     {{#if (or paging search bulkActions)}}
-      <div class="fixed-header-actions row lacsso">
-        <div class="col span-4 lacsso">
+      <div class="fixed-header-actions row">
+        <div class="col span-4">
           {{#if bulkActions}}
-            <div class="container-actions lacsso">
+            <div class="container-actions">
               {{#if availableActions}}
-                {{#rl-dropdown-container class="dropdown lacsso"}}
-                  {{#rl-dropdown-toggle class="btn btn-sm bg-primary lacsso"}}
+                {{#rl-dropdown-container class="dropdown"}}
+                  {{#rl-dropdown-toggle class="btn btn-sm bg-primary"}}
                     {{t 'generic.actions'}} {{#if (gt selectedNodes.length 1)}}({{selectedNodes.length}}) {{/if}}<span class="icon icon-chevron-down"></span>
                   {{/rl-dropdown-toggle}}
 
-                  {{#rl-dropdown tagName="ul" class="resource-actions global-actions dropdown-menu dropdown-menu-right lacsso" closeOnChildClick="a:link"}}
+                  {{#rl-dropdown tagName="ul" class="resource-actions global-actions dropdown-menu dropdown-menu-right" closeOnChildClick="a:link"}}
                     <li class="resource-actions-tabbable"><a tabindex="-1" id="resource-actions-first" aria-label="Select an Action below"></a></li>
                     {{#each availableActions as | action index|}}
                       {{#if action.disabled}}
@@ -41,29 +41,29 @@
                   {{/rl-dropdown}}
                 {{/rl-dropdown-container}}
               {{else}}
-                <button class="btn btn-sm bg-primary lacsso" disabled>
+                <button class="btn btn-sm bg-primary" disabled>
                   {{t 'generic.actions'}} <span class="icon icon-chevron-down"></span>
                 </button>
               {{/if}}
             </div>
           {{/if}}
         </div>
-        <div class="col span-4 lacsso">
+        <div class="col span-4">
           {{#if search}}
-            <div class="row inline-form gutless lacsso">
-              <span class="col span-3 input-label bg-default input-sm lacsso">
+            <div class="row inline-form gutless">
+              <span class="col span-3 input-label bg-default input-sm">
                 <label>{{t 'generic.search'}}:</label>
               </span>
-              {{input value=searchText type="search" class="col span-8 input-sm lacsso"}}
+              {{input value=searchText type="search" class="col span-8 input-sm"}}
               {{#if searchText}}
-                <span class="col span-1 lacsso">
+                <span class="col span-1">
                   <button class="btn btn-sm bg-default" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
                 </span>
               {{/if}}
             </div>
           {{/if}}
         </div>
-        <div class="col span-4 lacsso">
+        <div class="col span-4">
           {{#if paging}}
             {{page-numbers content=pagedContent class="pull-right no-select" indexTo=indexTo indexFrom=indexFrom totalCount=filtered.length}}
           {{/if}}
@@ -71,7 +71,7 @@
       </div>
     {{/if}}
 
-    <tr class="fixed-header lacsso">
+    <tr class="fixed-header">
       {{#if bulkActions}}
         <th width="40" class="select-for-action">
           {{check-box classNames="select-all-check" checked=isAll}}
@@ -92,7 +92,7 @@
       {{/each}}
     </tr>
   </thead>
-  <tbody class="lacsso striped">
+  <tbody class="striped">
     {{#if prefix}}
       {{yield null 'prefix'}}
     {{/if}}
