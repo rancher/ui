@@ -103,10 +103,6 @@ module.exports = function(defaults) {
   app.import('bower_components/momentjs/moment.js');
   app.import('bower_components/ember-shortcuts/ember-shortcuts.js');
 
-
-  app.import('vendor/bootstrap-dropdown/css/bootstrap.css');
-  app.import('vendor/bootstrap-dropdown/js/bootstrap.js');
-
   app.import('vendor/icons/style.css');
   app.import('vendor/icons/fonts/rancher-icons.svg',   { destDir: 'assets/fonts/'});
   app.import('vendor/icons/fonts/rancher-icons.ttf',   { destDir: 'assets/fonts/'});
