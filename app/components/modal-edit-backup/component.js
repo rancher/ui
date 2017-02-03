@@ -1,8 +1,8 @@
 import Ember from 'ember';
-import ModalBase from 'lacsso/components/modal-base';
+import ModalBase from 'ui/mixins/modal-base';
 
-export default ModalBase.extend({
-  classNames: ['lacsso', 'modal-container', 'large-modal'],
+export default Ember.Component.extend(ModalBase, {
+  classNames: ['large-modal'],
   originalModel: Ember.computed.alias('modalService.modalOpts.originalModel'),
   backupTargets : Ember.computed.alias('modalService.modalOpts.backupTargets'),
   editing       : false,

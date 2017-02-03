@@ -1,8 +1,8 @@
 import Ember from 'ember';
-import ModalBase from 'lacsso/components/modal-base';
+import ModalBase from 'ui/mixins/modal-base';
 
-export default ModalBase.extend({
-  classNames: ['lacsso', 'modal-container', 'generic', 'full-width-modal'],
+export default Ember.Component.extend(ModalBase, {
+  classNames: ['generic', 'full-width-modal'],
 
   serviceChoices: Ember.computed.alias('modalService.modalOpts.serviceChoices'),
   originalModel: Ember.computed.alias('modalService.modalOpts.originalModel'),
