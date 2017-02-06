@@ -139,12 +139,13 @@
           {{/each}}
           <li role="tab" class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a href="#">{{t 'newCatalog.txt'}} {{copy-to-clipboard clipboardText=answersString size="small"}}</a></li>
         </ul>
-        </div>
-        <div class="well nav-well preview-content" role="tabpanel">
+        
+        <div class="tab-content" role="tabpanel">
           {{#each selectedTemplateModel.filesAsArray as |file|}}
             {{code-block code=file.body language="yaml" hide=(not-eq previewTab file.name)}}
           {{/each}}
           {{code-block code=answersString language="bash" hide=(not-eq  previewTab 'answers')}}
+        </div>
         </div>
       {{/if}}
     </section>
