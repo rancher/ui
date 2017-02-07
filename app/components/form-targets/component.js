@@ -9,7 +9,7 @@ export default Ember.Component.extend({
   isBalancer  : null,
   editing     : false,
 
-  classNames  : ['form-group'],
+  classNames  : ['inline-form'],
 
   actions: {
     addTargetService: function() {
