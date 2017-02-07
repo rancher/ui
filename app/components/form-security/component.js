@@ -49,7 +49,7 @@ export default Ember.Component.extend({
 
   didInsertElement() {
     if ( ! this.get('projects.current.isWindows') ) {
-      this.initMultiselect();
+//      this.initMultiselect();
       this.privilegedDidChange();
     }
   },
@@ -249,12 +249,12 @@ export default Ember.Component.extend({
           });
         }
 
-        this.$select.multiselect('refresh');
+//        this.$select.multiselect('refresh');
       }
     };
 
-    this.$('.select-cap-add').multiselect(opts);
-    this.$('.select-cap-drop').multiselect(opts);
+//    this.$('.select-cap-add').multiselect(opts);
+//    this.$('.select-cap-drop').multiselect(opts);
   },
 
   privilegedDidChange: function() {
@@ -264,13 +264,13 @@ export default Ember.Component.extend({
     {
       if ( this.get('instance.privileged') )
       {
-        add.multiselect('disable');
-        drop.multiselect('disable');
+//        add.multiselect('disable');
+//        drop.multiselect('disable');
       }
       else
       {
-        add.multiselect('enable');
-        drop.multiselect('enable');
+//        add.multiselect('enable');
+//        drop.multiselect('enable');
       }
     }
   }.observes('instance.privileged'),

@@ -5,14 +5,26 @@
 /**
  * Clear inner floats
  */
-@mixin clearfix {
-  clear: both;
-  content: '';
-  display: table;
+@mixin clearfix() {
+  &:before,
+  &:after {
+    content: " "; // 1
+    display: table; // 2
+  }
+  &:after {
+    clear: both;
+  }
 }
 
-.clearfix::after {
+.clearfix {
   @include clearfix;
+}
+
+.pull-right {
+  float: right !important;
+}
+.pull-left {
+  float: left !important;
 }
 
 /**

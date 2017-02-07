@@ -389,21 +389,27 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     this.sendAction('done');
   },
 
-  headerLabel: function() {
+  headerToken: function() {
     let k = 'newContainer.';
     k += (this.get('isUpgrade') ? 'upgrade' : 'add') + '.';
     if ( this.get('isService') ) {
       k += 'service';
-    } else if ( this.get('isVm') ) {
-      k += 'vm';
     } else {
       k += 'container';
     }
 
-    let count = this.get('service.secondaryLaunchConfigs.length') + 1;
+    return k;
+  }.property('isUpgrade','isService'),
 
-    return this.get('intl').t(k, {numServices: count});
-  }.property('intl._locale','isUpgrade','isService','isVm','service.secondaryLaunchConfigs.length'),
+  nameToken: function() {
+    let k = 'newContainer.name.label.';
+    if ( this.get('isService') ) {
+      k += 'service';
+    } else {
+      k += 'container';
+    }
+    return k;
+  }.property('isService'),
 
   supportsSecrets: function() {
     return !!this.get('store').getById('schema','secret');
