@@ -2,61 +2,58 @@
   <h1>{{t headerToken}}</h1>
 </section>
 
-{{#if isService}}
-  <section class="horizontal-form well">
-      {{#if isUpgrade}}
-        {{form-upgrade
-          switch=(action 'selectLaunchConfig')
-          optionsChanged=(action 'setUpgrade')
-          choices=launchConfigChoices
-          index=activeLaunchConfigIndex
-        }}
-      {{/if}}
-
-      {{form-scale
-        initialLabels=launchConfig.labels
-        initialScale=service.scale
-        isGlobal=isGlobal
-        errors=scaleErrors
-        setLabels=(action 'setLabels' 'scale')
-        setGlobal=(action 'setGlobal')
-        setScale=(action  'setScale')
-        classNames=(if isUpgrade 'hide')
-      }}
-  </section>
-{{/if}}
-
-<section class="horizontal-form well">
-  {{#unless isUpgrade}}
+<section class="row">
+  <div class="col span-11-of-23">
     {{form-name-description
       model=primaryResource
       nameLabel=nameToken
       namePlaceholder="newContainer.name.placeholder"
+      nameDisabled=isUpgrade
       descriptionPlaceholder="newContainer.description.placeholder"
+      descriptionDisabled=isUpgrade
+      rowClass=""
+      colClass=""
     }}
-  {{/unless}}
 
-  {{form-image
-    initialValue=launchConfig.imageUuid
-    errors=imageErrors
-    changed=(action 'setImage')
-    initialLabels=launchConfig.labels
-    setLabels=(action 'setLabels' 'image')
-  }}
-
-  {{form-ports
-    initialPorts=launchConfig.ports
-    errors=portErrors
-    changedStr=(action (mut launchConfig.ports))
-    portsAsStrArray=launchConfig.ports
-  }}
-
-  {{#if (and isService (not isSidekick))}}
-    {{form-service-links
-      service=service
-      changed=(action 'setServiceLinks')
+    {{container/form-image
+      initialValue=launchConfig.imageUuid
+      errors=imageErrors
+      changed=(action 'setImage')
     }}
-  {{/if}}
+  </div>
+  <div class="col span-1-of-23"></div>
+  <div class="col span-11-of-23">
+    {{form-scale
+      initialLabels=launchConfig.labels
+      initialScale=service.scale
+      isGlobal=isGlobal
+      errors=scaleErrors
+      setLabels=(action 'setLabels' 'scale')
+      setGlobal=(action 'setGlobal')
+      setScale=(action  'setScale')
+      classNames=(if isUpgrade 'hide')
+    }}
+  </div>
+</section>
+
+<section class="row">
+  <div class="col span-6">
+    {{form-ports
+      initialPorts=launchConfig.ports
+      errors=portErrors
+      changedStr=(action (mut launchConfig.ports))
+      portsAsStrArray=launchConfig.ports
+    }}
+  </div>
+
+  <div class="col span-6">
+    {{#if (and isService (not isSidekick))}}
+      {{form-service-links
+        service=service
+        changed=(action 'setServiceLinks')
+      }}
+    {{/if}}
+  </div>
 </section>
 
   <section>

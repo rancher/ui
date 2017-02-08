@@ -1,19 +1,26 @@
-<div class="row inline-form">
-  <div class="col span-6">
-    <div class="inline-label">
-      <label class="form-control-static">{{t nameLabel}}{{if nameRequired '*'}}</label>
+<div class="inline-form {{rowClass}}">
+  <div class="{{colClass}}">
+    <div class="inline-label clearfix">
+      <label>{{t nameLabel}}{{if nameRequired '*'}}</label>
+      {{#unless descriptionExpanded}}
+        <div class="pull-right text-small">
+          <a role="button" class="btn bg-transparent p-0" {{action "expandDescription"}}>{{t expandDescriptionAction}}</a>
+        </div>
+      {{/unless}}
     </div>
     {{input type="text" value=_name classNames="form-control" placeholder=(t namePlaceholder) disabled=nameDisabled}}
     {{#if nameHelpText}}<p class="text-info">{{nameHelpText}}</p>{{/if}}
   </div>
 
-  <div class="col span-6">
+  <div class="{{colClass}}">
     {{#if descriptionShown}}
-      <div class="inline-label">
-        <label class="form-control-static">{{t descriptionLabel}}{{if descriptionRequired '*'}}</label>
-      </div>
-      {{textarea-autogrow value=_description classNames="form-control no-resize" rows="1" placeholder=descriptionPlaceholder disabled=descriptionDisabled}}
-      {{#if descriptionHelp}}<p class="text-info">{{t descriptionHelp}}</p>{{/if}}
+      {{#if descriptionExpanded}}
+        <div class="inline-label">
+          <label>{{t descriptionLabel}}{{if descriptionRequired '*'}}</label>
+        </div>
+        {{textarea-autogrow value=_description classNames="form-control no-resize description" rows="1" placeholder=descriptionPlaceholder disabled=descriptionDisabled}}
+        {{#if descriptionHelp}}<p class="text-info">{{t descriptionHelp}}</p>{{/if}}
+      {{/if}}
     {{else}}
       {{yield}}
     {{/if}}

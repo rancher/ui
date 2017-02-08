@@ -44,7 +44,6 @@ input[type='tel'],
 input[type='url'],
 textarea {
     display: block;
-    width: 100%;
     box-sizing: border-box;
     border-width: 2px;
     border-color: $light-grey;
@@ -55,30 +54,17 @@ textarea {
     padding: 5px 10px;
     font-size: 15px;
     transition: all ease-in-out .3s;
+    width: 100%;
+
+    &[size] {
+      display: inline-block;
+      width: auto;
+    }
+
     @include placeholder {
         color: $mid-grey;
     }
-    &.error {
-        border-color: $error;
-        background: rgba($error, .05);
-        @include placeholder {
-            color: $error;
-        }
-    }
-    &.success {
-        border-color: $success;
-        background: rgba($success, .05);
-        @include placeholder {
-            color: $success;
-        }
-    }
-    &.warning {
-        border-color: $warning;
-        background: rgba($warning, .05);
-        @include placeholder {
-            color: $warning;
-        }
-    }
+
     &:hover {
         border-color: $mid-grey;
         background: rgba($mid-grey, .2);
@@ -113,21 +99,12 @@ textarea {
         overflow: hidden;
         // padding: 16px;
         position: relative;
-        &:after {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            height: 3px;
-            background-color: rgba(0, 0, 0, .3);
-        }
     }
     .input-label {
         @extend .btn;
         // @extend .gutless;
         display: block;
-        
+
         &.input-xs {
             padding: 2px 3px;
             line-height: initial;
@@ -157,14 +134,6 @@ textarea {
     border-collapse: separate;
 }
 
-.input-group .form-control {
-    position: relative;
-    z-index: 2;
-    float: left;
-    width: 100%;
-    margin-bottom: 0;
-}
-
 .input-group .form-control:focus {
     z-index: 3;
 }
@@ -173,12 +142,6 @@ textarea {
 .input-group-btn,
 .input-group .form-control {
     display: table-cell;
-}
-
-.input-group-addon:not(:first-child):not(:last-child),
-.input-group-btn:not(:first-child):not(:last-child),
-.input-group .form-control:not(:first-child):not(:last-child) {
-    border-radius: 0;
 }
 
 .input-group-addon,
@@ -212,12 +175,12 @@ textarea {
 
 .input-group-btn {
     position: relative;
-    font-size: 0;
     white-space: nowrap;
 }
 
 .input-group-btn > .btn {
     position: relative;
+    border-radius: 0;
 }
 
 .input-group-btn > .btn + .btn {

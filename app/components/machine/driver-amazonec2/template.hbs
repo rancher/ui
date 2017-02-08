@@ -7,7 +7,7 @@
 
       <div class="row {{if isStep1 'inline-form'}}">
         <div class="col span-2 inline-label">
-          <label class="form-control-static">{{t 'machine.driverAmazon.region.label'}}</label>
+          <label>{{t 'machine.driverAmazon.region.label'}}</label>
         </div>
         <div class="col span-8">
           {{#if isStep1}}
@@ -17,31 +17,31 @@
               {{/each}}
             </select>
           {{else}}
-            <div class="form-control-static">{{amazonec2Config.region}}</div>
+            <div>{{amazonec2Config.region}}</div>
           {{/if}}
         </div>
       </div>
       <div class="row {{if isStep1 'inline-form'}}">
         <div class="col span-2 inline-label">
-          <label class="form-control-static">{{t 'machine.driverAmazon.accessKey.label'}}</label>
+          <label>{{t 'machine.driverAmazon.accessKey.label'}}</label>
         </div>
         <div class="col span-8">
           {{#if isStep1}}
             {{input type="text" name="username" classNames="form-control" placeholder=(t 'machine.driverAmazon.accessKey.placeholder') value=amazonec2Config.accessKey}}
           {{else}}
-            <div class="form-control-static">{{amazonec2Config.accessKey}}</div>
+            <div>{{amazonec2Config.accessKey}}</div>
           {{/if}}
         </div>
       </div>
       <div class="row {{if isStep1 'inline-form'}}">
         <div class="col span-2 inline-label">
-          <label class="form-control-static">{{t 'machine.driverAmazon.secretKey.label'}}</label>
+          <label>{{t 'machine.driverAmazon.secretKey.label'}}</label>
         </div>
         <div class="col span-8">
           {{#if isStep1}}
             {{input type="password" name="password" classNames="form-control" placeholder=(t 'machine.driverAmazon.secretKey.placeholder') value=amazonec2Config.secretKey}}
           {{else}}
-            <div class="form-control-static text-muted text-italic">{{t 'machine.driverAmazon.secretKey.provided'}}</div>
+            <div class="text-muted text-italic">{{t 'machine.driverAmazon.secretKey.provided'}}</div>
           {{/if}}
           {{#if isStep1}}
             <p class="text-info">{{t 'machine.driverAmazon.accessKeyHelp'}}</p>
@@ -73,7 +73,7 @@
     </div>
     <div class="row {{if isStep3 'inline-form'}}">
       <div class="col span-2 inline-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.availabilityZone'}}</label>
+        <label>{{t 'machine.driverAmazon.availabilityZone'}}</label>
       </div>
       <div class="col span-8">
         {{#if isStep3}}
@@ -83,7 +83,7 @@
             {{/each}}
           </select>
         {{else}}
-          <div class="form-control-static">
+          <div>
             {{amazonec2Config.region}}{{amazonec2Config.zone}}
           </div>
         {{/if}}
@@ -91,7 +91,7 @@
     </div>
     <div class="row {{if isStep3 'inline-form'}}">
       <div class="col span-2 inline-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.subnet'}}</label>
+        <label>{{t 'machine.driverAmazon.subnet'}}</label>
       </div>
       <div class="col span-8">
         {{#if isStep3}}
@@ -109,7 +109,7 @@
             {{/each}}
           {{/if}}
         {{else}}
-          <div class="form-control-static">
+          <div>
             {{#if amazonec2Config.subnetId}}
               {{amazonec2Config.subnetId}}
             {{else}}
@@ -144,7 +144,7 @@
 
     <div class="row {{if isStep5 'inline-form'}}">
       <div class="col span-2 inline-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.securityGroup.label'}}</label>
+        <label>{{t 'machine.driverAmazon.securityGroup.label'}}</label>
       </div>
       <div class="col span-8">
         {{#if isStep5}}
@@ -185,7 +185,7 @@
             </ul>
           {{/if}}
         {{else}}
-          <div class="form-control-static">
+          <div>
             {{#if (is-array amazonec2Config.securityGroup)}}
               <div class="comma-seperated-list">
                 {{#each amazonec2Config.securityGroup as |group|}}
@@ -235,7 +235,7 @@
 
     <div class="row inline-form">
       <div class="col span-2 inline-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.instanceType.label'}}</label>
+        <label>{{t 'machine.driverAmazon.instanceType.label'}}</label>
       </div>
       <div class="col span-4">
         <select class="form-control" onchange={{action (mut amazonec2Config.instanceType) value="target.value"}}>
@@ -245,7 +245,7 @@
         </select>
       </div>
       <div class="col span-2 inline-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.rootSize.label'}}</label>
+        <label>{{t 'machine.driverAmazon.rootSize.label'}}</label>
       </div>
       <div class="col span-4">
         <div class="input-group">
@@ -257,7 +257,7 @@
 
     <div class="row inline-form">
       <div class="col span-2 inline-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.ami.label'}}</label>
+        <label>{{t 'machine.driverAmazon.ami.label'}}</label>
       </div>
       <div class="col span-4">
         {{input type="text" classNames="form-control" placeholder=(t 'machine.driverAmazon.ami.placeholder') value=amazonec2Config.ami}}
@@ -268,7 +268,7 @@
         {{/if}}
       </div>
       <div class="col span-2 inline-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.sshUser.label'}}</label>
+        <label>{{t 'machine.driverAmazon.sshUser.label'}}</label>
       </div>
       <div class="col span-4">
         {{input type="text" classNames="form-control" placeholder=(t 'machine.driverAmazon.sshUser.placeholder') value=amazonec2Config.sshUser}}
@@ -276,16 +276,16 @@
     </div>
     <div class="row inline-form">
       <div class="col span-2 inline-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.iam.label'}}</label>
+        <label>{{t 'machine.driverAmazon.iam.label'}}</label>
       </div>
       <div class="col span-4">
         {{input type="text" classNames="form-control" value=amazonec2Config.iamInstanceProfile}}
       </div>
       <div class="col span-2 inline-label">
-        <label class="form-control-static">{{t 'machine.driverAmazon.privateIp.label'}}</label>
+        <label>{{t 'machine.driverAmazon.privateIp.label'}}</label>
       </div>
       <div class="col span-4">
-        <div class="checkbox form-control-static">
+        <div class="checkbox">
           <label>{{input type="checkbox" checked=amazonec2Config.privateAddressOnly}} {{t 'machine.driverAmazon.onlyPrivate.label'}}</label>
         </div>
       </div>
