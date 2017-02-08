@@ -1,25 +1,21 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import ManageLabels from 'ui/mixins/manage-labels';
 
 // Remember the last value and use that for new one
-var lastContainer = 'ubuntu:14.04.3';
-var lastVm = 'rancher/vm-ubuntu';
+var lastContainer = 'ubuntu:xenial';
 var lastWindows = 'microsoft/nanoserver';
 
-export default Ember.Component.extend(ManageLabels, {
-  settings: Ember.inject.service(),
+export default Ember.Component.extend({
   projects: Ember.inject.service(),
 
   // Inputs
   initialValue: null,
   errors: null,
-  isVm: null,
 
   userInput: null,
   tagName: '',
-  pullImage: null,
   value: null,
+  allContainers: null,
 
   actions: {
     setInput(str) {
@@ -29,10 +25,7 @@ export default Ember.Component.extend(ManageLabels, {
 
   init() {
     this._super(...arguments);
-    this.initLabels(this.get('initialLabels'), null, C.LABEL.PULL_IMAGE);
-
-    var pull = this.getLabel(C.LABEL.PULL_IMAGE) === C.LABEL.PULL_IMAGE_VALUE;
-    this.set('pullImage', pull);
+    this.set('allContainers', this.get('store').all('container'));
 
     var initial;
     if ( this.get('initialValue') )
@@ -45,30 +38,15 @@ export default Ember.Component.extend(ManageLabels, {
       if ( this.get('projects.current.isWindows') ) {
         initial = lastWindows;
       } else {
-        initial = ( this.get('isVm') ? lastVm : lastContainer);
+        initial = lastContainer;
       }
     }
 
     Ember.run.scheduleOnce('afterRender', () => {
-      this.set('userInput', initial);
+      this.send('setInput', initial);
       this.userInputDidChange();
     });
   },
-
-  updateLabels(labels) {
-    this.sendAction('setLabels', labels);
-  },
-
-  pullImageDidChange: function() {
-    if ( this.get('pullImage') )
-    {
-      this.setLabel(C.LABEL.PULL_IMAGE, C.LABEL.PULL_IMAGE_VALUE);
-    }
-    else
-    {
-      this.removeLabel(C.LABEL.PULL_IMAGE, true);
-    }
-  }.observes('pullImage'),
 
   userInputDidChange: function() {
     var input = (this.get('userInput')||'').trim();
@@ -83,12 +61,7 @@ export default Ember.Component.extend(ManageLabels, {
     {
       if ( this.get('projects.current.isWindows') ) {
         lastWindows = input;
-      } else if ( this.get('isVm') )
-      {
-        lastVm = input;
-      }
-      else
-      {
+      } else {
         lastContainer = input;
       }
       out += input;
@@ -112,4 +85,17 @@ export default Ember.Component.extend(ManageLabels, {
 
     this.set('errors', errors);
   },
+
+  suggestions: function() {
+    let inUse = this.get('allContainers')
+      .map((obj) => (obj.get('imageUuid')||'').replace(/^docker:/,''))
+      .filter((str) => str.indexOf('rancher/') !== 0)
+      .uniq()
+      .sort();
+
+    return {
+      'Used by other containers': inUse,
+    };
+  }.property('allContainers.@each.imageUuid'),
+
 });

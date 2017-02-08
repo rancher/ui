@@ -9,87 +9,36 @@ import { flattenLabelArrays } from 'ui/mixins/manage-labels';
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
   intl                      : Ember.inject.service(),
 
-  isStandalone              : true,
-  isService                 : false,
-  isSidekick                : false,
-  isUpgrade                 : false,
-  primaryResource           : null,
-  primaryService            : null,
-  launchConfig              : null,
-  service                   : null,
-  allHosts                  : null,
-  allStoragePools           : null,
+  isService:                  false,
+  isUpgrade:                  false,
+  primaryResource:            null,
+  primaryService:             null,
+  launchConfig:               null,
+  service:                    null,
+  allHosts:                   null,
+  allStoragePools:            null,
 
-  serviceLinksArray         : null,
-  isGlobal                  : null,
-  isRequestedHost           : null,
-  portsAsStrArray           : null,
-  launchConfigIndex         : -1,
-  upgradeOptions            : null,
+  serviceLinksArray:          null,
+  isGlobal:                   null,
+  isRequestedHost:            null,
+  portsAsStrArray:            null,
+  launchConfigIndex:          -1,
+  upgradeOptions:             null,
 
   // Errors from components
-  commandErrors             : null,
-  volumeErrors              : null,
-  networkingErrors          : null,
-  secretErrors              : null,
-  healthCheckErrors         : null,
-  schedulingErrors          : null,
-  securityErrors            : null,
-  scaleErrors               : null,
-  imageErrors               : null,
-  portErrors                : null,
-  diskErrors                : null,
-  activeLaunchConfigIndex   : -1,
+  commandErrors:              null,
+  volumeErrors:               null,
+  networkingErrors:           null,
+  secretErrors:               null,
+  healthCheckErrors:          null,
+  schedulingErrors:           null,
+  securityErrors:             null,
+  scaleErrors:                null,
+  imageErrors:                null,
+  portErrors:                 null,
+  diskErrors:                 null,
 
   actions: {
-    selectLaunchConfig(index) {
-      this.set('activeLaunchConfigIndex', index);
-      if ( this.$() )
-      {
-        this.$().children('[data-launchindex]').addClass('hide');
-        var body = this.$().children('[data-launchindex="'+index+'"]')[0];
-        if ( body )
-        {
-          $(body).removeClass('hide');
-          $("INPUT[type='text']", body)[0].focus();
-        }
-      }
-    },
-
-    addSidekick(vm) {
-      var ary = this.get('service.secondaryLaunchConfigs');
-      ary.pushObject(this.get('store').createRecord({
-        type: 'secondaryLaunchConfig',
-        kind: (vm === true ? 'virtualMachine' : 'container'),
-        tty: true,
-        stdinOpen: true,
-        restartPolicy: {name: 'always'},
-        labels: { [C.LABEL.PULL_IMAGE]: C.LABEL.PULL_IMAGE_VALUE },
-        uiId: Util.randomStr(),
-      }));
-
-      // Wait for it to be added to the DOM...
-      Ember.run.next(() => {
-        this.send('selectLaunchConfig', ary.get('length')-1);
-      });
-    },
-
-    removeSidekick() {
-      var idx = this.get('activeLaunchConfigIndex');
-      var ary = this.get('service.secondaryLaunchConfigs');
-      ary.removeAt(idx);
-
-      // If you remove the last one, go to the previous one
-      if ( idx >= ary.get('length') )
-      {
-        idx = ary.get('length')-1;
-      }
-
-      Ember.run.next(() => {
-        this.send('selectLaunchConfig', idx);
-      });
-    },
-
     setScale(scale) {
       this.set('service.scale', scale);
     },
@@ -138,103 +87,9 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   didInsertElement() {
-    if ( this.get('isVm') )
-    {
-      this.send('selectTab','disks');
-    }
-    else
-    {
-      this.send('selectTab','command');
-    }
-
+    this.send('selectTab','command');
     this.$("INPUT[type='text']")[0].focus();
   },
-
-  hasSidekicks: function() {
-    return this.get('service.secondaryLaunchConfigs.length') > 0;
-  }.property('service.secondaryLaunchConfigs.length'),
-
-  activeLaunchConfig: function() {
-    var idx = this.get('launchConfigIndex');
-    if( idx === -1 )
-    {
-      return this.get('launchConfig');
-    }
-    else
-    {
-      return this.get('service.secondaryLaunchConfigs').objectAt(idx);
-    }
-  }.property('launchConfigIndex'),
-
-  launchConfigChoices: function() {
-    var isUpgrade = this.get('isUpgrade');
-    let intl = this.get('intl');
-
-    // Enabled is only for upgrade, and isn't maintained if the names change, but they can't on upgrade.
-    var out = [
-      {
-        index: -1,
-        name: this.get('service.name') || intl.t('newContainer.emptyPrimaryService'),
-        enabled: true
-      }
-    ];
-
-    (this.get('service.secondaryLaunchConfigs')||[]).forEach((item, index) => {
-      out.push({
-        index: index,
-        name: item.get('name') || intl.t('newContainer.emptySidekick', {num: index+1}),
-        enabled: !isUpgrade
-      });
-    });
-
-    return out;
-  }.property('service.name','service.secondaryLaunchConfigs.@each.name','intl._locale'),
-
-  noLaunchConfigsEnabled: function() {
-    return this.get('launchConfigChoices').filterBy('enabled',true).get('length') === 0;
-  }.property('launchConfigChoices.@each.enabled'),
-
-  activeLabel: function() {
-    var idx = this.get('launchConfigIndex');
-    var str = '';
-
-    if ( this.get('hasSidekicks') )
-    {
-      if ( idx === -1 )
-      {
-        str = 'Primary Service: ';
-      }
-      else
-      {
-        str += 'Sidekick Service: ';
-      }
-    }
-
-    if ( idx === -1 )
-    {
-      if ( this.get('service.name') )
-      {
-        str += this.get('service.name');
-      }
-      else
-      {
-        str += '(No name)';
-      }
-    }
-    else
-    {
-      if ( this.get('activeLaunchConfig.name') )
-      {
-        str += this.get('activeLaunchConfig.name');
-      }
-      else
-      {
-        str += '(Sidekick #' + (idx+1) + ')';
-      }
-    }
-
-    return str;
-  }.property('service.name','activeLaunchConfig.name','launchConfigIndex','hasSidekicks'),
 
   // ----------------------------------
   // Labels
@@ -389,21 +244,27 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     this.sendAction('done');
   },
 
-  headerLabel: function() {
+  headerToken: function() {
     let k = 'newContainer.';
     k += (this.get('isUpgrade') ? 'upgrade' : 'add') + '.';
     if ( this.get('isService') ) {
       k += 'service';
-    } else if ( this.get('isVm') ) {
-      k += 'vm';
     } else {
       k += 'container';
     }
 
-    let count = this.get('service.secondaryLaunchConfigs.length') + 1;
+    return k;
+  }.property('isUpgrade','isService'),
 
-    return this.get('intl').t(k, {numServices: count});
-  }.property('intl._locale','isUpgrade','isService','isVm','service.secondaryLaunchConfigs.length'),
+  nameToken: function() {
+    let k = 'newContainer.name.label.';
+    if ( this.get('isService') ) {
+      k += 'service';
+    } else {
+      k += 'container';
+    }
+    return k;
+  }.property('isService'),
 
   supportsSecrets: function() {
     return !!this.get('store').getById('schema','secret');

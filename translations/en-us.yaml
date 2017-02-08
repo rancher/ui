@@ -1753,14 +1753,9 @@ formKeyValue:
   protip: 'ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry.'
 
 formImage:
-  label: Select Image
-  vm:
-    placeholder: e.g. rancher/vm-ubuntu
-    dropdownLabel: "{appName} Images"
+  label: Docker Image
   container:
-    placeholder: "e.g. ubuntu:trusty"
-  pullImage:
-    label: Always pull image before creating
+    placeholder: "e.g. ubuntu:xenial"
 
 formNameDescription:
   name:
@@ -1769,6 +1764,7 @@ formNameDescription:
   description:
     label: Description
     placeholder: Description
+    expand: Add a Description
 
 formNetwork:
   links:
@@ -1840,22 +1836,10 @@ formPorts:
 
 formScale:
   label: Scale
-  global:
-    vm: Always run one instance of this virtual machine on every host
-    container: Always run one instance of this container on every host
-  regular:
-    vm: |
-      Run {scale, plural,
-        =0 {no virtual machines}
-        =1 {1 virtual machine}
-        other {# virtual machines}
-      }
-    container: |
-      Run {scale, plural,
-        =0 {no containers}
-        =1 {1 container}
-        other {# containers}
-      }
+  mode:
+    container: "{scale, plural, =1 {Just create a container} other {Create # separate containers}}"
+    service: "Create a service with scale of {scale, plural, =1 {# container} other {# containers}}"
+    global: "Create a global service with {scale, plural, =1 {# container} other {# containers}} per host"
 
 formScheduling:
   canRequestHost:
@@ -2855,20 +2839,10 @@ newCatalog:
 newContainer:
   add:
     container: Add Container
-    vm: Add Virtual Machine
-    service: |
-      Add {numServices, plural,
-        =1 {Service}
-        other {Services}
-      }
+    service: Add Service
   upgrade:
     container: Upgrade Container
-    vm: Upgrade Virtual Machine
-    service: |
-      Upgrade {numServices, plural,
-        =1 {Service}
-        other {# Services}
-      }
+    service: Upgrade Service
   tabs:
     disks: Disks
     userData: User Data
@@ -2886,6 +2860,9 @@ newContainer:
   saveNew: Create
   removeSidekick: Remove this Sidekick
   name:
+    label:
+      container: Container Name
+      service: Service Name
     placeholder: e.g. myapp
   description:
     placeholder: e.g. My Application
