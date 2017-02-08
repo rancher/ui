@@ -4,12 +4,14 @@
 <section>
   <div class="well">
     <div class="inline-form mb-25 inline-block">
-      <div class="inline-form">
-        {{input class="form-control input-sm mr-5" value=filters.eventType placeholder=(t "auditLogsPage.form.eventType.placeholder")}}
-        <div class="input-group mr-5">
-          <span class="input-group-btn">
-            {{input class="form-control input-sm pull-right" value=filters.resourceId  placeholder=(t "auditLogsPage.form.resourceId.placeholder") disabled=resourceIdReady}}
-            <button type="button" class="btn btn-sm bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if filters.resourceType filters.resourceType (t "auditLogsPage.form.resourceType.placeholder")}} <i class="icon icon-chevron-down"></i></button>
+      <div class="inline-form row">
+        {{input class="col span-2" value=filters.eventType placeholder=(t "auditLogsPage.form.eventType.placeholder")}}
+        <div class="row inline-form gutless">
+          {{!-- <span class="input-group-btn"> --}}
+            {{input class="col span-3" value=filters.resourceId  placeholder=(t "auditLogsPage.form.resourceId.placeholder") disabled=resourceIdReady}}
+            <div class="col span-1">
+              <button type="button" class="btn btn-sm bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if filters.resourceType filters.resourceType (t "auditLogsPage.form.resourceType.placeholder")}} <i class="icon icon-chevron-down"></i></button>
+              </div>
             <ul class="dropdown-menu" role="menu">
               <li role="presentation" class="dropdown-header">
                 {{t 'auditLogsPage.form.resourceType.dropdownPlaceholder'}}
@@ -20,9 +22,9 @@
                 </li>
               {{/each}}
             </ul>
-          </span>
+          {{!-- </span> --}}
         </div>
-        {{input class="form-control input-sm mr-5" value=filters.clientIp placeholder=(t "auditLogsPage.form.requestIp.placeholder")}}
+        {{input class="col span-3" value=filters.clientIp placeholder=(t "auditLogsPage.form.requestIp.placeholder")}}
         <span class="dropdown">
           <button type="button" class="btn btn-sm bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if authTypeReadable authTypeReadable (t "auditLogsPage.form.authType.placeholder")}} <i class="icon icon-chevron-down"></i></button>
           <ul class="dropdown-menu" role="menu">

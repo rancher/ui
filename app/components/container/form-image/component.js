@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
 
 // Remember the last value and use that for new one
 var lastContainer = 'ubuntu:xenial';
