@@ -1,7 +1,7 @@
 <nav class="clearfix" role="navigation">
   <button class="nav-logo logo-{{app.mode}} btn bg-transparent"><span class="sr-only">{{settings.appName}}</span></button>
 
-  <ul class="nav-main">
+  <ul class="nav-main m-0">
     {{#if (or isOss (gt projects.active.length 1))}}
       {{~page-header-environment
         currentPath=currentPath
@@ -106,10 +106,11 @@
         {{/if}}
 
         <li role="separator" class="divider"></li>
+        <li>{{#link-to "settings.projects"}}{{t 'nav.environment.manage'}}{{/link-to}}</li>
         <li><a href="#">Settings</a></li>
         <li><a href="#">Billing</a></li>
         <li role="separator" class="divider"></li>
-        {{#link-to "logout" class="user-logout"}}<i class="icon icon-logout"></i> {{t 'nav.user.logout'}}{{/link-to}}
+        <li>{{#link-to "logout" class="user-logout"}}<i class="icon icon-logout"></i> {{t 'nav.user.logout'}}{{/link-to}}</li>
       </ul>
     </li>
   </ul>
