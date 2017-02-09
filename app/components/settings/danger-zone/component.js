@@ -5,7 +5,7 @@ const ALLOWED = {
   'access.log': {description: 'Path to write access logs to (HA installation only)'},
   'api.auth.jwt.token.expiry': {description: 'Authorization token/UI session lifetime (milliseconds)', kind: 'int'},
   'api.auth.realm': {description: 'HTTP Basic Auth realm for requests without Authorization header'},
-//  'api.filter.proxy.config': {description: 'JSON configuration file for API Filter Proxy (see [docs link])', kind: 'multiline'},
+  'api.interceptor.config': {description: 'JSON configuration for API Interceptor', kind: 'multiline'},
   'api.proxy.allow': {description: 'Allow use of /v1/proxy to talk to whitelisted domains, for custom Add Host UIs', kind: 'boolean'},
   'api.proxy.whitelist': {description: 'Whitelist of domains to that can be proxied through /v1/proxy to, for custom Add Host UIs'},
   'api.ui.css.url': {description: 'API UI CSS URL'},
