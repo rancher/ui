@@ -3,7 +3,6 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 import SelectTab from 'ui/mixins/select-tab';
 import { debouncedObserver } from 'ui/utils/debounce';
 import C from 'ui/utils/constants';
-import Util from 'ui/utils/util';
 import { flattenLabelArrays } from 'ui/mixins/manage-labels';
 
 export default Ember.Component.extend(NewOrEdit, SelectTab, {

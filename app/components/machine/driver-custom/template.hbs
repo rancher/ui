@@ -2,14 +2,12 @@
   <div class="container-fluid">
     <div class="row inline-form">
       {{#if projects.current.isWindows}}
-        <div class="col span-8 offset-2">
-          <ul class="list-circles list-circles-clear">
+        {{!-- <div class="col span-8 offset-2"> --}}
+          <ol>
             <li>
-              <i>1</i>
               {{format-html-message 'machine.driverCustom.windows.step1'}}
             </li>
             <li>
-              <i>2</i>
               {{format-html-message 'machine.driverCustom.windows.step2'}}
               <div class="copy-pre">
                 <pre id="network-command">{{t 'machine.driverCustom.windows.step2Copy'}}</pre>
@@ -17,7 +15,6 @@
               </div>
             </li>
             <li>
-              <i>3</i>
               {{t 'machine.driverCustom.windows.step3' appName=settings.appName}}
               <div class="copy-pre">
                 <pre id="registration-command">{{registrationCommandWindows}}</pre>
@@ -25,41 +22,35 @@
               </div>
             </li>
             <li>
-              <i>3</i>
               {{t 'machine.driverCustom.step5Close.part1'}} {{#link-to "hosts"}}{{t 'machine.driverCustom.step5Close.link'}}{{/link-to}} {{t 'machine.driverCustom.step5Close.part2'}}
             </li>
-          </ul>
-        </div>
+          </ol>
+        {{!-- </div> --}}
       {{else}}
-        <div class="col span-8 offset-2">
-          <ul class="list-circles list-circles-clear">
+        {{!-- <div class="col span-8 offset-2"> --}}
+          <ol>
             <li>
-              <i>1</i>
               {{format-html-message 'machine.driverCustom.step1'}}
             </li>
             <li>
-              <i>2</i>
               {{t 'machine.driverCustom.step2'}}
               <ul>
                 <li>{{format-html-message 'machine.driverCustom.step2li'}}</li>
               </ul>
             </li>
             <li>
-              <i>3</i>
               {{t 'machine.driverCustom.step3'}}
               <div class="r-mt10">
                 {{form-user-labels setLabels=(action 'setLabels')}}
               </div>
             </li>
             <li>
-              <i>4</i>
               {{format-html-message 'machine.driverCustom.step4' rancherImage=settings.rancherImage}}
               <div class="checkbox r-mt10">
                 {{input type="text" value=cattleAgentIp classNames="form-control" placeholder=(t 'machine.driverCustom.agentIp.placeholder')}}
               </div>
             </li>
             <li>
-              <i>5</i>
               {{t 'machine.driverCustom.step5Copy'}} {{settings.appName}}:
               {{#if registrationCommand}}
                 <div class="copy-pre">
@@ -71,11 +62,10 @@
               {{/if}}
             </li>
             <li>
-              <i>6</i>
               {{t 'machine.driverCustom.step5Close.part1'}} {{#link-to "hosts"}}{{t 'machine.driverCustom.step5Close.link'}}{{/link-to}} {{t 'machine.driverCustom.step5Close.part2'}}
             </li>
-          </ul>
-        </div>
+          </ol>
+        {{!-- </div> --}}
       {{/if}}
     </div>
   </div>
