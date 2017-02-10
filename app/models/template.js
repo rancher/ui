@@ -89,7 +89,12 @@ export default Resource.extend({
   }.property('catalogId'),
 
   certifiedClass: function() {
-    return 'badge-' + this.get('certifiedType');
+    let type = this.get('certifiedType');
+    if ( type === 'rancher' && this.get('settings.isRancher') ) {
+      return 'badge-rancher-logo';
+    } else {
+      return 'badge-' + type;
+    }
   }.property('certifiedType'),
 
   certified: function() {

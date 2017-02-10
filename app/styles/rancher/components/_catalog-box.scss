@@ -108,8 +108,8 @@ $lines-to-show: 4;
     position: absolute;
     z-index: 1;
     background: $primary;
-    color: black;
-    padding: 0 10px;
+    color: white;
+    padding: 3px 10px;
     right: -13px;
     top: 5px;
     font-size: .75em;
@@ -139,9 +139,29 @@ $lines-to-show: 4;
     }
   }
 
+  .badge-rancher-logo {
+    @extend .badge-rancher;
+
+    STRONG {
+      padding-left: 30px;
+      position: relative;
+
+      &:after {
+        content: $icon-rancher-cow;
+        font-family: 'rancher-icons';
+        font-size: 24px;
+        font-weight: normal;
+        position: absolute;
+        top: -8px;
+        left: 0;
+      }
+    }
+  }
+
   .badge-partner {
     @extend .badge-rancher;
     background-color: $warning;
+    color: black;
 
     &:before {
       border-color: $warning;
@@ -156,6 +176,7 @@ $lines-to-show: 4;
   .badge-thirdparty {
     @extend .badge-rancher;
     background-color: $success;
+    color: black;
 
     &:before {
       border-color: $success;
