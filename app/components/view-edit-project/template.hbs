@@ -17,7 +17,7 @@
 </section>
 
 {{#if showEdit}}
-  <section class="well mb-0">
+  <section class="well pt-10">
     {{form-name-description
       model=project
       namePlaceholder="viewEditDescription.form.name.placeholder"
@@ -30,9 +30,9 @@
       <div class="row">
         <div class="">
           <label>{{t 'viewEditProject.showEdit.template'}}</label>
-          <div class="nav nav-boxes checked-active">
+          <div class="row nav nav-boxes checked-active">
             {{#each templateChoices as |tpl|}}
-              <a href="#" tabindex="1" {{action "selectTemplate" tpl.id}} class="nav-box-item driver orchestration-driver pl-5 {{if (eq project.projectTemplateId tpl.id) 'active'}}">
+              <a href="#" tabindex="1" {{action "selectTemplate" tpl.id}} class="col nav-box-item driver orchestration-driver pl-5 {{if (eq project.projectTemplateId tpl.id) 'active'}}">
                 <img src="{{tpl.image}}"/>
                 <div class="clip">{{tpl.name}}</div>
               </a>
@@ -53,7 +53,7 @@
     </section>
   {{/unless}}
 {{else if project.description}}
-  <section class="well mb-0">
+  <section class="well pt-10">
     <label class="inline-block m-0">{{t 'viewEditProject.description'}}: </label>
     <p class="inline-block m-0">{{project.description}}</p>
   </section>

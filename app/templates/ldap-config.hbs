@@ -1,11 +1,15 @@
 <section class="well">
-  <h2>
     {{#if access.enabled}}
-      <b>{{t 'ldap.header.enabled.label' providerName=(t providerName)}}</b>
+      <p>{{t 'ldap.header.enabled.label' providerName=(t providerName)}}</p>
     {{else}}
-      <b class="text-warning">{{t 'ldap.header.disabled.label' providerName=(t providerName)}}</b>
+      <div class="banner bg-warning">
+        <div class="banner-icon"><span class="icon icon-alert"></span></div>
+        <div class="banner-message">
+          <p>{{t 'ldap.header.disabled.label' providerName=(t providerName)}}</p>
+         </div>
+      </div>
     {{/if}}
-  </h2>
+  
   <div>
     {{#if access.enabled}}
       {{t (concat-str 'ldap.header.enabled.' model.accessMode character='') appName=settings.appName providerName=(t providerName) users=numUsers groups=numGroups}}
