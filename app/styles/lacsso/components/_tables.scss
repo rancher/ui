@@ -1,123 +1,119 @@
 table {
-  position: relative;
-
-  &.fixed {
-    table-layout: fixed;
-    width: 100%;
-  }
-
-  .fixed-header-actions {
-    padding-top: 5px;
-    min-height: 40px;
-    width: 100%;
-    z-index: 3;
-  }
-
-  .fixed-header {
-    z-index: 2;
-  }
-
-  .fixed-header {
-    th {
-      button {
-        padding: 0;
-      }
+    position: relative;
+    &.fixed {
+        table-layout: fixed;
+        width: 100%;
     }
-  }
-  .fixed-header-placeholder {
-    visibility: hidden;
-
-    //padding: 0;
-    th {
-      padding: 0 !important;
-      height: 0 !important;
+    .fixed-header-actions {
+        padding-top: 5px;
+        min-height: 40px;
+        width: 100%;
+        z-index: 3;
+        background: white;
     }
-  }
-
-  tr {
-    td {
-      padding: 10px;
-    }
-  }
-
-  thead {
-    tr {
-      width: 100%;
-      box-sizing: border-box;
-      border-width: 0 0 3px 0;
-      border-color: rgba($mid-grey, .2);
-      border-radius: 0;
-      background: $light-grey;
-      outline: none;
-      transition: all ease-in-out .3s;
-
-      th {
-        border-width: 0 0 3px 0;
-        border-color: rgba($mid-grey, .2);
-        text-align: left;
-
-        &.select-for-action {
-          text-align: center;
+    .fixed-header {
+        z-index: 2;
+        tr {
+            background: $link-color;
         }
-      }
     }
-  }
-
-  tbody {
-    background-color: rgba($light-grey, .5);
+    .fixed-header {
+        th {
+            button {
+                padding: 0;
+            }
+        }
+    }
+    .fixed-header-placeholder {
+        visibility: hidden;
+        //padding: 0;
+        th {
+            padding: 0 !important;
+            height: 0 !important;
+        }
+    }
     tr {
-      border-bottom: solid thin $light-grey;
-
-      td {
-        border: solid thin $light-grey;
-      }
-    }
-
-    &.striped {
-      tr {
-        border: none;
-
         td {
-          border: none;
+            padding: 10px;
         }
-
-        &:nth-child(even) {
-          background-color: $light-grey;
-        }
-      }
     }
-  }
+    thead {
+        tr {
+            width: 100%;
+            box-sizing: border-box;
+            border-width: 0 0 3px 0;
+            border-color: rgba($mid-grey, .2);
+            border-radius: 0;
+            outline: none;
+            transition: all ease-in-out .3s;
 
-  tbody {
-    &.striped {
-      tr {
-        &:hover {
-          background-color: rgba($info, 0.15);
+            &.fixed-header {
+              background: $primary;
+
+              th .btn {
+                color: white;
+              }
+            }
+
+            th {
+                border-width: 0 0 3px 0;
+                border-color: rgba($mid-grey, .2);
+                text-align: left;
+                .btn {
+                    color: white;
+                }
+                &.select-for-action {
+                    text-align: center;
+                }
+            }
         }
-      }
     }
-  }
-
-  &.solid {
-    background: $light-grey;
-
     tbody {
-      tr {
-        &:hover {
-          background-color: rgba($info, 0.3);
+        background-color: rgba($light-grey, .5);
+        tr {
+            border-bottom: solid thin $light-grey;
+            td {
+                border: solid thin $light-grey;
+            }
         }
-
-        td {
-          border: solid 2px white;
-
-          &:hover {
-            background-color: $info;
-          }
+        &.striped {
+            tr {
+                border: none;
+                td {
+                    border: none;
+                }
+                &:nth-child(even) {
+                    background-color: $light-grey;
+                }
+            }
         }
-      }
     }
-  }
-  .select-for-action {
-    text-align: center;
-  }
+    tbody {
+        &.striped {
+            tr {
+                &:hover {
+                    background-color: rgba($info, 0.15);
+                }
+            }
+        }
+    }
+    &.solid {
+        background: $light-grey;
+        tbody {
+            tr {
+                &:hover {
+                    background-color: rgba($info, 0.3);
+                }
+                td {
+                    border: solid 2px white;
+                    &:hover {
+                        background-color: $info;
+                    }
+                }
+            }
+        }
+    }
+    .select-for-action {
+        text-align: center;
+    }
 }
