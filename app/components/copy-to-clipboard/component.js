@@ -6,7 +6,7 @@ const DEFAULT_TEXT = 'copyToClipboard.tooltip';
 
 export default Ember.Component.extend({
   tagName          : 'div',
-  classNames       : ['copy-button-container', 'inline-block'],
+  classNames       : ['copy-button-container', 'vertical-center'],
 
   model            : null,
 
