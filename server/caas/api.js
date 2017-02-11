@@ -439,4 +439,28 @@ module.exports = function(app/*, options*/) {
     var err = ERRORS[code];
     return response.status(err.status).send(err);
   }
+
+  function isAccountActive(model, cb) {
+
+    var selfLink = model.links.self;
+    var count = 30;
+
+    setTimeout(function(){
+      count--;
+      if (count > 0) {
+        newRequest({
+          url: selfLink,
+          method: 'GET',
+        }, function(response, body) {
+          if (body) {
+            if (body.state === 'active') {
+              return cb(true);
+            }
+          }
+        }, null);
+      } else {
+        return cb(false);
+      }
+    }, 1000);
+  }
 };
