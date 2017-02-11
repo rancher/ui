@@ -48,7 +48,10 @@ export default Ember.Route.extend({
             this.set('hideTimer', Ember.run.next(hide));
           } else {
             //console.log('Loading finished', id, this.get('loadingId'));
-            hide();
+            //needed to set this to run after render as there was wierdness wiht new register page
+            Ember.run.scheduleOnce('afterRender', () => {
+              hide();
+            });
           }
         }
       });

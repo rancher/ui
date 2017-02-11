@@ -1,0 +1,19 @@
+{{#if hasBlock}}
+  {{yield}}
+{{else}}
+  <div class="mb-10">
+    <label>{{t 'newPassword.password'}}*</label>
+    <div class="inline-form">
+      {{input type="password" placeholder=(t 'newPassword.placeholder') value=newPassword}}
+    </div>
+  </div>
+  <div class="mb-10">
+    <label>{{t 'newPassword.confirmPassword'}}*</label>
+    <div class="inline-form">
+      {{input type="password" placeholder=(t 'newPassword.placeholder') value=confirmPassword}}
+    </div>
+  </div>
+  <div class="{{if passwordsMatch 'hide' ''}}">
+    <p>{{t 'newPassword.passwordNoMatch'}}</p>
+  </div>
+{{/if}}

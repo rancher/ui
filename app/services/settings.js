@@ -175,13 +175,19 @@ export default Ember.Service.extend(Ember.Evented, {
   }.property('rancherImage'),
 
   appName: function() {
-    if ( this.get('isRancher') )
-    {
-      return this.get('app.appName'); // Rancher
-    }
-    else
-    {
-      return this.get('_plValue');
+    var isCaas = this.get('app.mode') === 'caas' ? true : false;
+
+    if (isCaas) {
+      return 'Rancher Container Cloud';
+    } else {
+      if ( this.get('isRancher') )
+      {
+        return this.get('app.appName'); // Rancher
+      }
+      else
+      {
+        return this.get('_plValue');
+      }
     }
   }.property('isRancher','_plValue'),
 
