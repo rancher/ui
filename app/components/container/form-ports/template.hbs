@@ -1,10 +1,8 @@
 <div class="row inline-form">
   <div class="col span-12">
     {{#unless editing}}
-      <div class="over-hr pl-10">
-        <span>
-          <button class="bg-transparent text-primary" {{action "addPort"}}><i class="icon icon-plus-circle"/> {{t 'formPorts.addAction'}}</button>
-        </span>
+      <div>
+        <button class="bg-transparent text-primary p-0" {{action "addPort"}}><i class="icon icon-plus-circle"/> {{t 'formPorts.addAction'}}</button>
       </div>
     {{/unless}}
     {{#if portsArray.length}}
@@ -12,12 +10,9 @@
         <tr class="text-muted hidden-sm">
           {{#if showIp}}
             <th>{{t 'formPorts.bindAddress.label'}}</th>
-            <th class="hidden-sm" width="30">&nbsp;</th>
           {{/if}}
           <th>{{t 'formPorts.public.label'}}</th>
-          <th class="hidden-sm" width="30">&nbsp;</th>
           <th>{{t 'formPorts.private.label'}}</th>
-          <th class="hidden-sm" width="30">&nbsp;</th>
           <th width="60">{{t 'formPorts.protocol.label'}}</th>
           <th class="hidden-sm" width="40">&nbsp;</th>
         </tr>
@@ -41,9 +36,6 @@
             <td data-title="{{t 'formPorts.public.label'}}">
               {{input-integer class="form-control input-sm" min="1" max="65535" value=port.public placeholder=(t 'formPorts.public.placeholder')}}
             </td>
-            <td class="text-center hidden-sm">
-              <p><i class="icon icon-chevron-right"></i></p>
-            </td>
             <td data-title="{{t 'formPorts.private.label'}}">
               {{#if port.existing}}
                 <div class="text-muted">{{port.private}}</div>
@@ -51,7 +43,6 @@
                 {{input-integer class="form-control input-sm" min="1" max="65535" value=port.private placeholder=(t 'formPorts.private.placeholder')}}
               {{/if}}
             </td>
-            <td class="text-center hidden-sm">/</td>
             <td data-title="{{t 'formPorts.protocol.label'}}">
               {{#if port.existing}}
                 <div class="text-muted">{{upper-case port.protocol}}</div>

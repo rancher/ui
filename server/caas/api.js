@@ -1,7 +1,6 @@
-module.exports = function(app, options) {
-  var path = require('path');
+module.exports = function(app/*, options*/) {
   var bodyParser = require('body-parser');
-  var mysql      = require('mysql');
+  var mysql = require('mysql');
   var config = require('../../config/environment')().APP;
   var request = require('request');
 
@@ -53,56 +52,51 @@ module.exports = function(app, options) {
   app.use(bodyParser.json()); // for parsing application/json
 
   var pool = mysql.createPool({
-    host     : process.env.DB_HOST,
-    user : process.env.DB_USER,
-    password : process.env.DB_PASSWORD,
-    database : process.env.DB_NAME,
+    host: process.env.DB_HOST,
+    user: process.env.DB_USER,
+    password: process.env.DB_PASSWORD,
+    database: process.env.DB_NAME,
   });
 
-  app.use('/register-new', function(req, res, next) {
-    generateAndInsertToken(null, req.body.name, req.body.email, "create", function(error, results, fields, token) {
-      if (error) {
-        generateError('auth', error, res);
-      } else {
-        sendVerificationEmail(req.body.email, req.body.name, req.headers.origin, token, function(error, resp) {
-          if (error) {
-            generateError('email', error, res);
-          } else {
-            res.status(200).json();
-          }
-        });
+  app.use('/register-new', function(req, res) {
+    generateAndInsertToken(null, req.body.name, req.body.email, "create", function(err, token) {
+      if (err) {
+        return generateError('auth', err, res);
       }
-    });
-  });
 
-
-  app.use('/verify-token', function(req, res, next) {
-    getChallengeToken(req.body.token, function(error, results, fields) {
-      if (error) {
-        generateError('token', error, res);
-      } else {
-        if (results.length) {
-          var row = results[0];
-          var out = {
-            email: row.email,
-            name: row.name,
-          };
-          res.status(200).send(out);
-        } else {
-          generateError('token', error, res);
+      sendVerificationEmail(req.body.email, req.body.name, req.headers.origin, token, function(err) {
+        if (err) {
+          return generateError('email', err, res);
         }
-      }
+
+        res.status(200).json();
+      });
     });
   });
 
-  app.use('/create-user', function(req, res, next) {
+
+  app.use('/verify-token', function(req, res) {
+    getChallengeToken(req.body.token, function(err, row) {
+      if (err || !row) {
+        return generateError('token', err, res);
+      }
+
+      var out = {
+        email: row.email,
+        name: row.name,
+      };
+      res.status(200).send(out);
+    });
+  });
+
+  app.use('/create-user', function(req, res) {
     var user = req.body;
-    // {kind: "user", type: "account", name: "wes"}
+
     var account = {
       type: 'user',
       name: user.name
     };
-    // {type: "password", publicValue: "wes1@rancher.com", secretValue: "asdf", accountId: "1a28"}
+
     var credential = {
       type: 'password',
       publicValue: user.email,
@@ -110,157 +104,143 @@ module.exports = function(app, options) {
       accountId: null
     };
 
-    getChallengeToken(user.token, function(error, results, fields) {
-      if (error) {
-        generateError('token', error, res);
-      } else {
-        if (results.length) {
-          var accountModel = null;
-          var credentialModel = null;
-          newRequest({
-            url: `${rancherApiUrl}/account`,
-            method: 'POST',
-            body: account
-          }, function(response, body) {
-
-            accountModel = body;
-            credential.accountId = body.id;
-
-            newRequest({
-              url: `${rancherApiUrl}/passwords`,
-              method: 'POST',
-              body: credential
-            }, function(response, body) {
-              credentialModel = body;
-              removeUserFromTable(user.email, function(results, fields) {
-                getTokenForLogin(user.email, user.pw, function(response, body) {
-                  var opts = {};
-                  if (req.secure) {
-                    opts.secure = true;
-                  }
-                  res.cookie('token', body.jwt, opts).status(200).send({type: 'success'});
-                });
-              }, res);
-            }, res);
-          }, res);
-        } else {
-          generateError('token', error, res);
-        }
+    getChallengeToken(user.token, function(err, row) {
+      if (err || !row ) {
+        return generateError('token', err, res);
       }
+
+      newRequest({
+        url: `${rancherApiUrl}/account`,
+        method: 'POST',
+        body: account
+      }, function(accountModel) {
+        credential.accountId = accountModel.id;
+
+        newRequest({
+          url: `${rancherApiUrl}/passwords`,
+          method: 'POST',
+          body: credential
+        }, function(/*credentialModel*/) {
+          removeUserFromTable(user.email, function(err) {
+            if ( err ) {
+              return generateError('db', err, res);
+            }
+
+            getTokenForLogin(user.email, user.pw, function(err, token, serverResponse) {
+              if (err) {
+                return res.status(serverResponse.status).send(token);
+              }
+
+              res.cookie('token', token.jwt, {secure: req.secure}).status(200).send({type: 'success'});
+            });
+          });
+        }, res);
+      }, res);
     });
   });
 
-  app.use('/reset-password', function(req, res, next) {
+  app.use('/reset-password', function(req, res) {
     var user = req.body;
     var userEmail = user.email;
     var name = user.name;
-    var url = `${rancherApiUrl}/credentials?kind=password&publicValue=${userEmail}&limit=-1&sort=name`;
+    var url = `${rancherApiUrl}/credentials?kind=password&publicValue=${encodeURIComponent(userEmail)}&limit=1&sort=name`;
 
-    if (user.email) {
+    if (!user.email) {
+      return generateError('account', 'No email for account', res);
+    }
+
+    newRequest({
+      url: url,
+      method: 'GET',
+    }, function(body) {
+      if (!body || !body.data || !body.data.length ) {
+        return generateError('account', 'No password found ', res);
+      }
+
+      var credential = body.data[0];
+      var url = `${rancherApiUrl}/accounts/${encodeURIComponent(credential.accountId)}`;
+      var credEmail = credential.publicValue;
+
       newRequest({
         url: url,
-        method: 'GET',
-      }, function(response, body) {
-
-        if (body.data && body.data.length) {
-
-          var credential = body.data[0];
-          var credId = credential.id;
-          var url = `${rancherApiUrl}/accounts/${credential.accountId}`;
-          var credEmail = credential.publicValue;
-
-          newRequest({
-            url: url,
-            method: 'GET'
-          }, function(response, body) {
-
-            if (body.type === 'account') {
-              generateAndInsertToken(body.id, name, credEmail, "reset", function(error, results, fields, token) {
-                if (error) {
-                  generateError('token', error, res);
-                } else {
-
-                  sendPasswordReset(req.body.email, response.body.name, req.headers.origin, token, function(error, resp) {
-                    if (error) {
-                      generateError('email', error, res);
-                    } else {
-                      res.status(200).json({success: 'Email sent'});
-                    }
-                  });
-                }
-              });
-            } else {
-              generateError('account', error, res);
-            }
-          });
-        } else {
-          generateError('account', error, res);
+        method: 'GET'
+      }, function(body) {
+        if (body.type !== 'account') {
+          return generateError('account', 'Body type is not account', res);
         }
+
+        generateAndInsertToken(body.id, name, credEmail, "reset", function(err, token) {
+          if (err) {
+            return generateError('token', err, res);
+          }
+
+          sendPasswordReset(req.body.email, body.name, req.headers.origin, token, function(err) {
+            if (err) {
+              return generateError('email', err, res);
+            }
+
+            res.status(200).json({success: 'Email sent'});
+          });
+        });
       });
-    } else {
-      generateError('account', error, res);
-    }
+    });
   });
 
-  app.use('/update-password', function(req, res, next) {
+  app.use('/update-password', function(req, res) {
     var user = req.body;
 
-    getChallengeToken(user.token, function(error, results, fields) {
-      if (error) generateError('token', error, res);;
+    getChallengeToken(user.token, function(err, credential) {
+      if (err || !credential || !credential.email) {
+        return generateError('token', err, res);
+      }
 
-      if (results.length) {
-        var credential = results[0];
+      newRequest({
+        url: `${rancherApiUrl}/passwords?publicValue=${encodeURIComponent(credential.email)}`,
+        method: 'GET'
+      }, function(body) {
 
-        if (credential.email) {
-          newRequest({
-            url: `${rancherApiUrl}/passwords?publicValue=${credential.email}`,
-            method: 'GET'
-          }, function(response, body) {
-
-            if (body.data && body.data.length) {
-              newRequest({
-                url: `${rancherApiUrl}/passwords/${body.data[0].id}?action=changesecret`,
-                method: 'POST',
-                body: {newSecret: user.pw, oldSecret: ''}
-              }, function(response, body) {
-                removeUserFromTable(credential.email, function(results, fields) {
-                  getTokenForLogin(credential.email, user.pw, function(response, body) {
-                    sendPasswordVerificationEmail(credential.email, credential.name, req.headers.origin, function(error, resp) {
-                      if (error) {
-                        generateError('email', error, res);
-                      } else {
-                        var opts = {};
-                        if (req.secure) {
-                          opts.secure = true;
-                        }
-                        res.cookie('token', body.jwt, opts).status(200).send({type: 'success'});
-                      }
-                    });
-                  }, res);
-                });
-              }, res);
-            }
-          });
-        } else {
-          generateError('account', error, res);
+        if ( !body || !body.data || !body.data.length ) {
+          return generateError('token', err, res);
         }
 
-      } else {
+        newRequest({
+          url: body.data[0].actions.changesecret,
+          method: 'POST',
+          body: {newSecret: user.pw, oldSecret: ''}
+        }, function(/*body*/) {
+          removeUserFromTable(credential.email, function(err) {
+            if ( err ) {
+              return generateError('db', err, res);
+            }
 
-        generateError('token', error, res);
-      }
+            getTokenForLogin(credential.email, user.pw, function(err, body, serverResponse) {
+              if (err) {
+                return res.status(serverResponse.status).send(body);
+              }
+
+              sendPasswordVerificationEmail(credential.email, credential.name, req.headers.origin, function(err) {
+                if (err) {
+                  return generateError('email', err, res);
+                }
+
+                res.cookie('token', body.jwt, {secure: req.secure}).status(200).send({type: 'success'});
+              });
+            }, res);
+          });
+        }, res);
+      });
     });
   });
 
   function generateAndInsertToken(id, name, email, request, cb) {
     var challengeToken = crypto.randomBytes(20);
     challengeToken = challengeToken.toString('hex');
-    return pool.query(`INSERT INTO ${tablePrefix}challenge SET account_id = ?, name = ?, email = ?, token = ?, request = ?, created = NOW()`, [id, name, email, challengeToken, request], function(error, results, fields) {
-      cb(error, results, fields, challengeToken);
+    return pool.query(`INSERT INTO ${tablePrefix}challenge SET account_id = ?, name = ?, email = ?, token = ?, request = ?, created = NOW()`, [id, name, email, challengeToken, request], function(err) {
+      cb(err, challengeToken);
     });
-  };
+  }
 
-  function getTokenForLogin(username, password, cb, ogRes) {
+  function getTokenForLogin(username, password, cb) {
     return request({
       method: 'POST',
       json: true,
@@ -268,22 +248,27 @@ module.exports = function(app, options) {
       body: {
         code: `${username}:${password}`
       }
-    }, function(error, response, body) {
-      if (error) console.log('getTokenForLogin error: ', error);
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        cb(response, body);
-      } else {
-        var errOut = null;
-        if (error) {
-          errOut = error;
-        } else {
-          errOut = response;
-        }
-        // cattle error just pass it along
-        ogRes.status(body.status).send(body);
+    }, function(err, response, body) {
+      if (err) {
+        console.log('getTokenForLogin error: ', err);
       }
+
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        return cb(null, body, response);
+      }
+
+      var errOut = null;
+      if (err) {
+        errOut = err;
+      } else {
+        errOut = response;
+      }
+
+      // cattle error just pass it along
+      cb(errOut, body, response);
     });
-  };
+  }
+
   // opts should only contain url, method and data
   function newRequest(opts, cb, ogRes) {
     var optsOut = {
@@ -296,57 +281,65 @@ module.exports = function(app, options) {
 
     Object.assign(optsOut, opts);
 
-    encodeURIComponent(optsOut.url);
-    return request(optsOut, function(error, response, body) {
+    return request(optsOut, function(err, response, body) {
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        cb(response, body);
+        return cb(body, response);
+      }
+
+      var errOut = null;
+      if (err) {
+        errOut = err;
       } else {
-        var errOut = null;
-        if (error) {
-          errOut = error;
-        } else {
-          errOut = response;
-        }
-        console.log('error:', errOut);
-        if (ogRes) {
-          generateError('account', error, ogRes);
-        }
+        errOut = response;
+      }
+
+      console.log('error:', errOut);
+      if (ogRes) {
+        generateError('account', err, ogRes);
       }
     });
   }
 
   function removeUserFromTable(email, cb) {
-    return pool.query(`DELETE FROM ${tablePrefix}challenge WHERE email = ? OR created > DATE_SUB(NOW(), INTERVAL 24 HOUR)`, [email], function(error, results, fields){
-      if (error) console.log('error', 'could not delete records');
-      cb(results, fields);
+    return pool.query(`DELETE FROM ${tablePrefix}challenge WHERE email = ? OR created > DATE_SUB(NOW(), INTERVAL 24 HOUR)`, [email], function(err){
+      if (err) {
+        console.log('error', 'could not delete record:', email);
+        return cb(err);
+      }
+
+      cb(null);
     });
   }
 
   function getChallengeToken(token, cb) {
-    return pool.query(`SELECT * FROM ${tablePrefix}challenge WHERE token = ? AND created > DATE_SUB(NOW(), INTERVAL 24 HOUR)`, [token], function(error, results, fields) {
-      if (error) console.log('error', 'could not retrieve token');
-      cb(error, results, fields);
+    return pool.query(`SELECT * FROM ${tablePrefix}challenge WHERE token = ? AND created > DATE_SUB(NOW(), INTERVAL 24 HOUR)`, [token], function(err, results) {
+      if (err) {
+        console.log('error', 'could not retrieve token');
+        return cb(err);
+      }
+
+      return cb(null, results[0]);
     });
   }
 
   function fetchSendGridApiDetails(detail, cb) {
-    var url = `${rancherApiUrl}/settings/`;
+    var base = `${rancherApiUrl}/settings`;
 
     return newRequest({
-      url: `${url}ui.sendgrid.api_key`,
+      url: `${base}/ui.sendgrid.api_key`,
       method: 'GET',
-    }, function(response, body) {
+    }, function(body) {
 
       if (body) {
         var apiKey = body.activeValue;
 
         return newRequest({
-          url: `${url}${detail}`,
+          url: `${base}/${detail}`,
           method: 'GET'
-        }, function(response, body) {
+        }, function(body) {
 
           if (body) {
-            cb({apiKey: apiKey, id: body.activeValue});
+            cb({apiKey: apiKey, id: body.value});
           } else {
             cb(false);
           }
@@ -362,8 +355,6 @@ module.exports = function(app, options) {
   function sendPasswordReset(email, name, host, token, cb) {
     fetchSendGridApiDetails('ui.sendgrid.template.password_reset', function(response) {
       if (response) {
-        var apiKey = response.apiKey;
-        var templateId = response.id;
         var from_email = new helper.Email('no-reply@rancher.com');
         var to_email = new helper.Email(email);
         var subject = 'Password Reset Request';
@@ -373,9 +364,9 @@ module.exports = function(app, options) {
         var mail = new helper.Mail(from_email, subject, to_email, content);
         mail.personalizations[0].addSubstitution(
           new helper.Substitution("-username-", name));
-        mail.setTemplateId(templateId);
+        mail.setTemplateId(response.id);
 
-        var sg = require('sendgrid')(apiKey);
+        var sg = require('sendgrid')(response.apiKey);
         var request = sg.emptyRequest({
           method: 'POST',
           path: '/v3/mail/send',
@@ -391,59 +382,60 @@ module.exports = function(app, options) {
 
   function sendVerificationEmail(email, name, host, token, cb) {
     fetchSendGridApiDetails('ui.sendgrid.template.create_user', function(response) {
-      if (response) {
-        var from_email = new helper.Email('no-reply@rancher.com');
-        var to_email = new helper.Email(email);
-        var subject = 'Verify your Rancher Cloud Account';
-        var contentLink = `<html><a href="${host}/verify/${token}">Verify Email</a></html>`;
-        var content = new helper.Content(
-          'text/html', contentLink);
-        var mail = new helper.Mail(from_email, subject, to_email, content);
-        mail.setTemplateId(process.env.CREATE_USER_TEMPLATE_ID);
-
-        var sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
-        var request = sg.emptyRequest({
-          method: 'POST',
-          path: '/v3/mail/send',
-          body: mail.toJSON(),
-        });
-
-        return sg.API(request, cb);
-      } else {
-        cb('There was a problem retrieving the email api key or email template id.', null);
+      if (!response) {
+        return cb('There was a problem retrieving the email api key or email template id.', null);
       }
+
+      var from_email = new helper.Email('no-reply@rancher.com');
+      var to_email = new helper.Email(email);
+      var subject = 'Verify your Rancher Cloud Account';
+      var contentLink = `<html><a href="${host}/verify/${token}">Verify Email</a></html>`;
+      var content = new helper.Content(
+        'text/html', contentLink);
+      var mail = new helper.Mail(from_email, subject, to_email, content);
+      mail.setTemplateId(response.id);
+
+      var sg = require('sendgrid')(response.apiKey);
+      var request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON(),
+      });
+
+      return sg.API(request, cb);
     });
   }
 
   function sendPasswordVerificationEmail(email, name, host, cb) {
     fetchSendGridApiDetails('ui.sendgrid.template.verify_password', function(response) {
-      if (response) {
-        var from_email = new helper.Email('no-reply@rancher.com');
-        var to_email = new helper.Email(email);
-        var subject = 'Password Reset Confirmation';
-        var contentLink = `<html><a href="${host}/login?resetpw=true">Reset Password</a></html>`;
-        var content = new helper.Content(
-          'text/html', contentLink);
-        var mail = new helper.Mail(from_email, subject, to_email, content);
-        mail.setTemplateId(process.env.PASSWORD_VERIFY_RESET_TEMPLATE_ID);
-
-        var sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
-        var request = sg.emptyRequest({
-          method: 'POST',
-          path: '/v3/mail/send',
-          body: mail.toJSON(),
-        });
-
-        return sg.API(request, cb);
-      } else {
-        cb('There was a problem retrieving the email api key or email template id.', null);
+      if (!response) {
+        return cb('There was a problem retrieving the email api key or email template id.', null);
       }
+
+      var from_email = new helper.Email('no-reply@rancher.com');
+      var to_email = new helper.Email(email);
+      var subject = 'Password Reset Confirmation';
+      var contentLink = `<html><a href="${host}/login?resetpw=true">Reset Password</a></html>`;
+      var content = new helper.Content(
+        'text/html', contentLink);
+      var mail = new helper.Mail(from_email, subject, to_email, content);
+      mail.setTemplateId(response.id);
+
+      var sg = require('sendgrid')(response.apiKey);
+      var request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON(),
+      });
+
+      return sg.API(request, cb);
     });
 
   }
-  function generateError(code, error, response) {
+
+  function generateError(code, detail, response) {
     // eventually put real error log in this function
-    console.log('Error Generator: ', error);
+    console.log('Error Generator: ', detail);
     var err = ERRORS[code];
     return response.status(err.status).send(err);
   }
