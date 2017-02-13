@@ -79,7 +79,7 @@ module.exports = function(app/*, options*/) {
               return generateError('email', err, res);
             }
 
-            res.status(200).send();
+            res.status(200).json({success: 'User registration email sent'});
           });
         });
       }
