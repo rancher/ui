@@ -28,8 +28,9 @@ export default Ember.Controller.extend({
         this.set('saving', false);
         this.set('emailSent', true);
         cb(true);
-      }).catch(() => {
+      }).catch((err) => {
         this.set('saving', false);
+        this.set('errors', [err.body.detail]);
         cb(false);
       });
     },
@@ -39,10 +40,12 @@ export default Ember.Controller.extend({
   },
   validate: Ember.observer('model.name', 'model.email', function() {
     if (this.get('model.name') && this.get('model.email')) {
+      if (this.get('errors')) {
+        this.set('errors', []);
+      }
       this.set('saveDisabled', false);
     } else {
       this.set('saveDisabled', true);
     }
-  })
-
+  }),
 });

@@ -35,6 +35,12 @@ module.exports = function(app/*, options*/) {
       type: 'error',
       detail: 'There was an error with your email, ensure you have entered the correct email and try again'
     },
+    exists: {
+      message: 'Account Exists',
+      status: 409,
+      type: 'error',
+      detail: 'That account exists already, please use the reset password tool or create a new account with a different email.'
+    },
     generic: {
       message: 'Internal Server Error',
       status: 500,
@@ -59,19 +65,23 @@ module.exports = function(app/*, options*/) {
   });
 
   app.use('/register-new', function(req, res) {
-    generateAndInsertToken(null, req.body.name, req.body.email, "create", function(err, token) {
-      if (err) {
-        return generateError('auth', err, res);
-      }
-
-      sendVerificationEmail(req.body.email, req.body.name, req.headers.origin, token, function(err) {
+    if (checkExistingAccount(req.body.email)) {
+      return generateError('exists', 'Account exists', res);
+    } else {
+      generateAndInsertToken(null, req.body.name, req.body.email, "create", function(err, token) {
         if (err) {
-          return generateError('email', err, res);
+          return generateError('auth', err, res);
         }
 
-        res.status(200).json();
+        sendVerificationEmail(req.body.email, req.body.name, req.headers.origin, token, function(err) {
+          if (err) {
+            return generateError('email', err, res);
+          }
+
+          res.status(200).json();
+        });
       });
-    });
+    }
   });
 
 
@@ -445,6 +455,19 @@ module.exports = function(app/*, options*/) {
     console.log('Error Generator: ', detail);
     var err = ERRORS[code];
     return response.status(err.status).send(err);
+  }
+
+  function checkExistingAccount(email) {
+    return newRequest({
+      url: `${rancherApiUrl}/passwords?publicValue=${email}`,
+      method: 'GET',
+    }, function(body, response) {
+      if (body) {
+        return true;
+      } else {
+        return false;
+      }
+    }, null);
   }
 
   function isAccountActive(model, cb) {

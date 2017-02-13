@@ -21,6 +21,9 @@ export default Ember.Controller.extend({
       }).then(() => {
         this.set('loading', false);
         window.location.href = '/';
+      }).catch((err) => {
+        this.set('loading', false);
+        this.set('errors', [err.body.detail]);
       });
     }
   },
