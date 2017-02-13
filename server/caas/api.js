@@ -65,23 +65,25 @@ module.exports = function(app/*, options*/) {
   });
 
   app.use('/register-new', function(req, res) {
-    if (checkExistingAccount(req.body.email)) {
-      return generateError('exists', 'Account exists', res);
-    } else {
-      generateAndInsertToken(null, req.body.name, req.body.email, "create", function(err, token) {
-        if (err) {
-          return generateError('auth', err, res);
-        }
-
-        sendVerificationEmail(req.body.email, req.body.name, req.headers.origin, token, function(err) {
+    checkExistingAccount(req.body.email, function(exists) {
+      if (exists) {
+        return generateError('exists', 'Account exists', res);
+      } else {
+        generateAndInsertToken(null, req.body.name, req.body.email, "create", function(err, token) {
           if (err) {
-            return generateError('email', err, res);
+            return generateError('auth', err, res);
           }
 
-          res.status(200).json();
+          sendVerificationEmail(req.body.email, req.body.name, req.headers.origin, token, function(err) {
+            if (err) {
+              return generateError('email', err, res);
+            }
+
+            res.status(200).send();
+          });
         });
-      });
-    }
+      }
+    });
   });
 
 
@@ -457,15 +459,15 @@ module.exports = function(app/*, options*/) {
     return response.status(err.status).send(err);
   }
 
-  function checkExistingAccount(email) {
+  function checkExistingAccount(email, cb) {
     return newRequest({
       url: `${rancherApiUrl}/passwords?publicValue=${email}`,
       method: 'GET',
     }, function(body, response) {
-      if (body) {
-        return true;
+      if (body && body.data.length) {
+        return cb(true);
       } else {
-        return false;
+        return cb(false);
       }
     }, null);
   }
