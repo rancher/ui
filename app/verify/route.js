@@ -2,6 +2,15 @@ import Ember from 'ember';
 import fetch from 'ember-api-store/utils/fetch';
 
 export default Ember.Route.extend({
+
+  activate: function() {
+    $('BODY').addClass('container-farm');
+  },
+
+  deactivate: function() {
+    $('BODY').removeClass('container-farm');
+  },
+
   model: function(params) {
     if (params.verify_token) {
       this.set('params', params);
