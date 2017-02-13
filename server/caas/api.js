@@ -116,25 +116,32 @@ module.exports = function(app/*, options*/) {
       }, function(accountModel) {
         credential.accountId = accountModel.id;
 
-        newRequest({
-          url: `${rancherApiUrl}/passwords`,
-          method: 'POST',
-          body: credential
-        }, function(/*credentialModel*/) {
-          removeUserFromTable(user.email, function(err) {
-            if ( err ) {
-              return generateError('db', err, res);
-            }
+        console.log('checking account');
+        isAccountActive(accountModel, function(isActive){
+          if (isActive) {
+            newRequest({
+              url: `${rancherApiUrl}/passwords`,
+              method: 'POST',
+              body: credential
+            }, function(/*credentialModel*/) {
+              removeUserFromTable(user.email, function(err) {
+                if ( err ) {
+                  return generateError('db', err, res);
+                }
 
-            getTokenForLogin(user.email, user.pw, function(err, token, serverResponse) {
-              if (err) {
-                return res.status(serverResponse.status).send(token);
-              }
+                getTokenForLogin(user.email, user.pw, function(err, token, serverResponse) {
+                  if (err) {
+                    return res.status(serverResponse.status).send(token);
+                  }
 
-              res.cookie('token', token.jwt, {secure: req.secure}).status(200).send({type: 'success'});
-            });
-          });
-        }, res);
+                  res.cookie('token', token.jwt, {secure: req.secure}).status(200).send({type: 'success'});
+                });
+              });
+            }, res);
+          } else {
+            return generateError('account', 'Account never became active', res);
+          }
+        });
       }, res);
     });
   });
@@ -438,5 +445,34 @@ module.exports = function(app/*, options*/) {
     console.log('Error Generator: ', detail);
     var err = ERRORS[code];
     return response.status(err.status).send(err);
+  }
+
+  function isAccountActive(model, cb) {
+
+    var selfLink = model.links.self;
+    var count = 30;
+
+    function getStatus() {
+      setTimeout(function(){
+        count--;
+        if (count > 0) {
+          newRequest({
+            url: selfLink,
+            method: 'GET',
+          }, function(body, response) {
+            if (body) {
+              if (body.state === 'active') {
+                return cb(true);
+              } else {
+                getStatus();
+              }
+            }
+          }, null);
+        } else {
+          return cb(false);
+        }
+      }, 1000);
+    }
+    getStatus();
   }
 };
