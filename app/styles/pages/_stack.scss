@@ -9,7 +9,8 @@ $singleCountWidth : 120px;
   clear: both;
   position: relative;
   background-color: $table-bg;
-  margin: 0 20px 10px 20px;
+  border: solid 2px $table-border-color;
+  margin: 20px 0;
 
   &.clear-section {
     margin: 0px;
@@ -173,13 +174,13 @@ $singleCountWidth : 120px;
 
   .subsection {
     H6 {
-      background-color: $brand-info;
+      background-color: $info;
       color: white;
       padding: 10px;
     }
 
     & .hosts {
-      background: rgba($brand-info, .15);
+      background: rgba($info, .15);
     }
 
     .clip {
@@ -189,7 +190,7 @@ $singleCountWidth : 120px;
 
   .single {
     color: white;
-    background: $midGray;
+    background: $mid-grey;
 
     .count {
       width: $singleCountWidth;
@@ -254,23 +255,23 @@ $singleCountWidth : 120px;
     }
 
     &.success rect {
-      stroke: $brand-success;
+      stroke: $success;
     }
 
     &.info rect {
-      stroke: $brand-info;
+      stroke: $info;
     }
 
     &.warning rect {
-      stroke: $brand-warning;
+      stroke: $warning;
     }
 
     &.danger rect {
-      stroke: $brand-danger;
+      stroke: $error;
     }
 
     .highlighted {
-      box-shadow: 2px 2px 10px $blueDark;
+      box-shadow: 2px 2px 10px $primary-dark;
     }
 
     g {
@@ -339,19 +340,19 @@ $singleCountWidth : 120px;
         text-transform: uppercase;
 
         &.success {
-          background-color: $brand-success;
+          background-color: $success;
         }
 
         &.info {
-          background-color: $brand-info;
+          background-color: $info;
         }
 
         &.warning {
-          background-color: $brand-warning;
+          background-color: $warning;
         }
 
         &.danger {
-          background-color: $brand-danger;
+          background-color: $error;
         }
       }
     }
@@ -371,40 +372,33 @@ $singleCountWidth : 120px;
     }
 
     &.success path.path {
-      stroke: $brand-success;
+      stroke: $success;
     }
     &.info path.path {
-      stroke: $brand-info;
+      stroke: $info;
     }
     &.warning path.path {
-      stroke: $brand-warning;
+      stroke: $warning;
     }
     &.danger path.path {
-      stroke: $brand-danger;
+      stroke: $error;
     }
   }
   marker path {
     &.success-fill {
-      fill: $brand-success;
+      fill: $success;
     }
     &.info-fill {
-      fill: $brand-info;
+      fill: $info;
     }
     &.warning-fill {
-      fill: $brand-warning;
+      fill: $warning;
     }
     &.danger-fill {
-      fill: $brand-danger;
+      fill: $error;
     }
   }
 }
-
-$light-grey: #9CB6B5;
-$tiffany-blue: #0ABFB2;
-$mabel: #CCE3EE;
-$regal-blue: #034967;
-$orange-white: #FFF9EC;
-$light-yellow: #FFBE18;
 
 #chart-svg {
   @extend #stack-svg;
@@ -423,8 +417,8 @@ $light-yellow: #FFBE18;
     .badge {
       margin-right: 5px;
       margin-top: 6px;
-      background-color: $orange-white;
-      color: $light-yellow;
+      background-color: mix($warning, $error, 20%)-white;
+      color: $warning;
     }
     .container-badge {
       width: 100%;
@@ -432,15 +426,15 @@ $light-yellow: #FFBE18;
     }
     .badge {
       &.service {
-        color: $regal-blue;
-        background-color: $mabel;
+        color: $info;
+        background-color: $light-grey;
         font-size: 12px;
         padding: 2px 15px;
         text-transform: uppercase;
       }
     }
     .label-sidekick {
-      background: lightgray;
+      background: light-grey;
       font-size: 10px;
       padding: 1px 13px;
       margin-top: 7px;
