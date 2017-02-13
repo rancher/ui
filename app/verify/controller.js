@@ -24,7 +24,6 @@ export default Ember.Controller.extend({
       }).catch((err) => {
         this.set('saving', false);
         this.set('errors', [err.body.detail]);
-        cb(false);
       });
     },
   }
