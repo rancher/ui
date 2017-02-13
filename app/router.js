@@ -24,6 +24,7 @@ Router.map(function() {
   this.route('authenticated', {path: '/'}, function() {
 
     this.route('dummy-dev', {path: '/dev'});
+    this.route('user-settings', {path: '/user-settings', resetNamespace: true});
     // Settings
     this.route('settings', {resetNamespace: true}, function() {
       this.route('projects', {path: '/env'}, function() {
