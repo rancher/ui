@@ -8,7 +8,7 @@ table {
         min-height: 40px;
         width: 100%;
         z-index: 1;
-        background: white;
+        background: $body-bg;
     }
     .fixed-header {
         z-index: 2;
@@ -37,25 +37,11 @@ table {
         }
     }
     thead {
-
-      &:after {
-        content: "";
-        background: rgba(0,0,0,1);
-background: -moz-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 100%);
-background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(0,0,0,1)), color-stop(100%, rgba(255,255,255,0)));
-background: -webkit-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 100%);
-background: -o-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 100%);
-background: -ms-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 100%);
-background: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#ffffff', GradientType=0 );
-height: 25px;
-      }
-        
         tr {
             width: 100%;
             box-sizing: border-box;
             border-width: 0 0 3px 0;
-            border-color: rgba($mid-grey, .2);
+            border-color: $table-border-color;
             border-radius: 0;
             outline: none;
             transition: all ease-in-out .3s;
@@ -67,7 +53,7 @@ height: 25px;
             }
             th {
                 border-width: 0 0 3px 0;
-                border-color: rgba($mid-grey, .2);
+                border-color: $table-border-color;
                 text-align: left;
                 padding: 5px 0;
                 font-weight: normal;
@@ -82,11 +68,11 @@ height: 25px;
     }
     tbody {
         border: none;
-        background-color: rgba($light-grey, .5);
+        background-color: $table-bg;
         tr {
-            border-bottom: solid thin $light-grey;
+            border-bottom: solid thin $table-border-color;
             td {
-                border: solid thin $light-grey;
+                border: solid thin $table-border-color;
             }
         }
         &.striped {
@@ -96,7 +82,7 @@ height: 25px;
                     border: none;
                 }
                 &:nth-child(even) {
-                    background-color: $light-grey;
+                    background-color: $table-bg-accent;
                 }
             }
         }
@@ -105,7 +91,7 @@ height: 25px;
         &.striped {
             tr {
                 &:hover {
-                    background-color: rgba($info, 0.15);
+                    background-color: $table-bg-hover;
                 }
             }
         }
@@ -115,7 +101,7 @@ height: 25px;
         tbody {
             tr {
                 &:hover {
-                    background-color: rgba($info, 0.3);
+                    background-color: $table-bg-hover;
                 }
                 td {
                     border: solid 2px white;
