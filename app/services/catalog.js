@@ -2,8 +2,7 @@ import Ember from 'ember';
 import { addQueryParams, uniqKeys } from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
-const MIN_VERSION = 'minimumRancherVersion_lte';
-const MAX_VERSION = 'maximumRancherVersion_gte';
+const RANCHER_VERSION = 'rancherVersion';
 
 export default Ember.Service.extend({
   settings: Ember.inject.service(),
@@ -146,8 +145,7 @@ export default Ember.Service.extend({
     qp = qp || {};
 
     if (version) {
-      qp[MIN_VERSION] = version;
-      qp[MAX_VERSION] = version;
+      qp[RANCHER_VERSION] = version;
     }
 
     url = addQueryParams(url, qp);
