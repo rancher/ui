@@ -115,11 +115,13 @@ export default Ember.Service.extend({
       bases.push(C.EXTERNAL_ID.KIND_INFRA);
     }
 
-    let categories = uniqKeys(data, 'category');
+    let categories = [];
+    data.forEach((obj) => { categories.pushObjects(obj.get('categoryArray')); });
+    categories = uniqKeys(categories);
     categories.unshift('all');
 
     data = data.filter((tpl) => {
-      if ( category !== 'all' && (tpl.get('category')||'').toLowerCase() !== category ) {
+      if ( category !== 'all' && !tpl.get('categoryLowerArray').includes(category) ) {
         return false;
       }
 
