@@ -107,9 +107,9 @@ $lines-to-show: 4;
   .badge-rancher {
     position: absolute;
     z-index: 1;
-    background: $primary;
+    background: $warning;
     color: black;
-    padding: 0 10px;
+    padding: 3px 10px;
     right: -13px;
     top: 5px;
     font-size: .75em;
@@ -118,7 +118,7 @@ $lines-to-show: 4;
     &:before {
       content: "";
       border-style: solid;
-      border-color: $primary;
+      border-color: $warning;
       border-left-color: transparent;
       position: absolute;
       top: 0;
@@ -129,7 +129,7 @@ $lines-to-show: 4;
 
     &:after {
       content: "";
-      border-color: darken($primary, 20%) transparent transparent darken($primary, 20%);
+      border-color: darken($warning, 20%) transparent transparent darken($warning, 20%);
       border-style: solid;
       border-width: 5px;
       right: 0px;
@@ -139,22 +139,28 @@ $lines-to-show: 4;
     }
   }
 
-  .badge-partner {
+  .badge-rancher-logo {
     @extend .badge-rancher;
-    background-color: $warning;
 
-    &:before {
-      border-color: $warning;
-      border-left-color: transparent;
-    }
+    STRONG {
+      padding-left: 30px;
+      position: relative;
 
-    &:after {
-      border-color: darken($warning, 20%) transparent transparent darken($warning, 20%);
+      &:after {
+        content: $icon-rancher-cow;
+        font-family: 'rancher-icons';
+        font-size: 24px;
+        font-weight: normal;
+        position: absolute;
+        top: -8px;
+        left: 0;
+      }
     }
   }
 
-  .badge-thirdparty {
+  .badge-partner {
     @extend .badge-rancher;
+    color: black;
     background-color: $success;
 
     &:before {
@@ -164,6 +170,21 @@ $lines-to-show: 4;
 
     &:after {
       border-color: darken($success, 20%) transparent transparent darken($success, 20%);
+    }
+  }
+
+  .badge-thirdparty {
+    @extend .badge-rancher;
+    background-color: $primary;
+    color: black;
+
+    &:before {
+      border-color: $primary;
+      border-left-color: transparent;
+    }
+
+    &:after {
+      border-color: darken($primary, 20%) transparent transparent darken($primary, 20%);
     }
   }
 

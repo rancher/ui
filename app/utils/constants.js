@@ -108,6 +108,7 @@ var C = {
     CSRF: 'X-Api-Csrf',
     NO_CHALLENGE: 'X-Api-No-Challenge',
     NO_CHALLENGE_VALUE: 'true',
+    PROJECT_ID: 'X-Api-Project-Id',
     RANCHER_VERSION: 'X-Rancher-Version',
   },
 
@@ -154,7 +155,7 @@ var C = {
     DOCKER_VERSION: 'io.rancher.host.docker_version',
     KERNEL_VERSION: 'io.rancher.host.linux_kernel_version',
     KVM: 'io.rancher.host.kvm',
-    SCHED_IPS: 'io.rancher.host.ip_set',
+    SCHED_IPS: 'io.rancher.scheduler.ips',
 
     // Kubernetes
     K8S_DASHBOARD: 'io.rancher.k8s.kubernetes-dashboard',
@@ -234,6 +235,11 @@ var C = {
 
     ROLE_MEMBER:  'member',
     ROLE_OWNER:   'owner',
+
+    SUPPORTS_NETWORK_POLICY: [
+      'ipsec',
+      'vxlan',
+    ]
   },
 
   PROJECT_TEMPLATE: {

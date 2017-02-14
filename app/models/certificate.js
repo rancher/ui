@@ -52,7 +52,12 @@ export default Resource.extend({
 
   displaySans: function() {
     // subjectAlternativeNames can be null:
-    return (this.get('subjectAlternativeNames')||[]).slice().removeObject(this.get('CN'));
+    return (this.get('subjectAlternativeNames')||[])
+      .slice()
+      .removeObject(this.get('CN'))
+      .filter((san) => {
+        return (san+'').indexOf('@') === -1;
+      });
   }.property('CN','subjectAlternativeNames.[]'),
 
   countableSans: function() {

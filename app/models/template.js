@@ -62,9 +62,27 @@ export default Resource.extend({
     return list.length === 0 || list.includes(orch);
   },
 
+  categoryArray: function() {
+    let out = this.get('categories');
+    if ( !out || !out.length ) {
+      let single = this.get('category');
+      if ( single ) {
+        out = [single];
+      } else {
+        out = [];
+      }
+    }
+
+    return out;
+  }.property('category','categories.[]'),
+
+  categoryLowerArray: function() {
+    return this.get('categoryArray').map(x => (x||'').toLowerCase());
+  }.property('categoryArray.[]'),
+
   supported: function() {
     let orch = this.get('projects.current.orchestration')||'cattle';
-    if ( (this.get('category')||'').toLowerCase() === 'orchestration' ) {
+    if ( this.get('categoryLowerArray').includes('orchestration') ) {
       return orch === 'cattle';
     } else {
       return this.supportsOrchestration(orch);
@@ -89,7 +107,12 @@ export default Resource.extend({
   }.property('catalogId'),
 
   certifiedClass: function() {
-    return 'badge-' + this.get('certifiedType');
+    let type = this.get('certifiedType');
+    if ( type === 'rancher' && this.get('settings.isRancher') ) {
+      return 'badge-rancher-logo';
+    } else {
+      return 'badge-' + type;
+    }
   }.property('certifiedType'),
 
   certified: function() {

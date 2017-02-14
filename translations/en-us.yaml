@@ -388,11 +388,11 @@ catalogPage:
     category: "Category:"
     certified:
       rancher:
-        rancher: Certified
-        partner: Partner
+        rancher: Rancher Labs
+        partner: Official
       pl:
-        rancher: Certified
-        partner: Partner
+        rancher: Core
+        partner: Official
     noData:
       singular: There are no compatible templates.
       plural: There are no compatible templates in this catalog.
@@ -2462,7 +2462,7 @@ machine:
       label: Region
 
   driverCustom:
-    step1: Start up a Linux machine somewhere and install the latest version of <a href="http://www.docker.com/" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
+    step1: Start up a Linux machine somewhere and install a <a href="{docsBase}/hosts/#supported-docker-versions" target="_blank">supported version</a> of <a href="http://www.docker.com/" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
     step2: "Make sure any security groups or firewalls allow traffic:"
     step2li: From and To all other hosts on <code>UDP</code> ports <code>500</code> and <code>4500</code> <span class="text-muted">(for IPsec networking)</span>
     step3: "Optional: Add labels to be applied to the host."
@@ -2477,6 +2477,8 @@ machine:
       part2: screen within a minute.
     close: Close
     windows:
+      windowsHeader: Windows Host
+      linuxHeader: Linux Host
       step1: Start up a Windows Server 2016 machine somewhere and install the latest version of <a href="https://msdn.microsoft.com/en-us/virtualization/windowscontainers/quick_start/quick_start_windows_server" target="_blank" rel="noreferrer nofollow">Docker</a> on it.
       step2: "Create a transparent Docker Network:"
       step2Copy: docker network create -d transparent transparent
@@ -3191,6 +3193,7 @@ upgradeBtn:
     upgraded: 'Upgraded: Finish Upgrade'
     notfound: 'Template version not found'
     error: 'Error checking for upgrade'
+    required: 'Upgrade required'
 
 viewEditDescription:
   form:
@@ -3206,6 +3209,16 @@ viewEditProject:
     template: Environment Template
     accessControl: Access Control
     noMembers: Add one or more members who can use this environment.
+  networkPolicy:
+    label: Network Policy
+    description: Control what containers are allowed to communicate with each other over the Managed Network.
+    unsupported: This environment has network policy rules which are not yet supported by the UI.  Please use the API to manage the policy.
+    withinStack: Within Stack
+    withinService: Within Service
+    withinLinked: Between Linked Services
+    default: Everything Else
+    allow: Allow
+    deny: Deny
   header: "Environment:"
   description: Description
   helpBlock: |
@@ -3343,7 +3356,7 @@ nav:
     themeAuto: Auto
     themeDark: Dark
   noHosts:
-    prefix: "Before adding your first service or launching a container, you'll need to add a Linux host that supports Docker {minVersion} or higher.  "
+    prefix: "Before adding your first service or launching a container, you'll need to add a Linux host with a <a href=\"{docsBase}/hosts/#supported-docker-versions\" target=\"_blank\">supported version</a> of Docker.  "
     link: "Add a host"
     suffix: ""
   noHostsWindows:

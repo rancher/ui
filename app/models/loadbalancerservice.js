@@ -47,7 +47,7 @@ var LoadBalancerService = Service.extend({
   },
 
   sslPorts: function() {
-    let out = this.get('lbConfig.portRules').filterBy('isTls',true).map((x) => x.get('sourcePort')).uniq();
+    let out = (this.get('lbConfig.portRules')||[]).filterBy('isTls',true).map((x) => x.get('sourcePort')).uniq();
     return out;
   }.property(`lbConfig.portRules.@each.{isTls,sourcePort}`),
 

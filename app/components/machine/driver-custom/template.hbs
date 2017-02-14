@@ -1,75 +1,83 @@
+{{#if projects.current.isWindows}}
+  <section>
+    <h3>{{t 'machine.driverCustom.windows.windowsHeader'}}</h3>
+    <div class="container-fluid">
+      <div class="row inline-form">
+        <ol>
+          <li>
+            {{format-html-message 'machine.driverCustom.windows.step1'}}
+          </li>
+          <li>
+            {{format-html-message 'machine.driverCustom.windows.step2'}}
+            <div class="copy-pre">
+              <pre id="network-command">{{t 'machine.driverCustom.windows.step2Copy'}}</pre>
+              {{copy-to-clipboard clipboardText=(t 'machine.driverCustom.windows.step2Copy')}}
+            </div>
+          </li>
+          <li>
+            {{t 'machine.driverCustom.windows.step3' appName=settings.appName}}
+            <div class="copy-pre">
+              <pre id="registration-command">{{registrationCommandWindows}}</pre>
+              {{copy-to-clipboard clipboardText=registrationCommandWindows}}
+            </div>
+          </li>
+          <li>
+            {{t 'machine.driverCustom.step5Close.part1'}} {{#link-to "hosts"}}{{t 'machine.driverCustom.step5Close.link'}}{{/link-to}} {{t 'machine.driverCustom.step5Close.part2'}}
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+{{/if}}
+
 <section>
   <div class="container-fluid">
+    {{#if projects.current.isWindows}}
+      <h3>{{t 'machine.driverCustom.windows.linuxHeader'}}</h3>
+    {{/if}}
     <div class="row inline-form">
-      {{#if projects.current.isWindows}}
-        {{!-- <div class="col span-8 offset-2"> --}}
-          <ol>
-            <li>
-              {{format-html-message 'machine.driverCustom.windows.step1'}}
-            </li>
-            <li>
-              {{format-html-message 'machine.driverCustom.windows.step2'}}
-              <div class="copy-pre">
-                <pre id="network-command">{{t 'machine.driverCustom.windows.step2Copy'}}</pre>
-                {{copy-to-clipboard clipboardText=(t 'machine.driverCustom.windows.step2Copy')}}
-              </div>
-            </li>
-            <li>
-              {{t 'machine.driverCustom.windows.step3' appName=settings.appName}}
-              <div class="copy-pre">
-                <pre id="registration-command">{{registrationCommandWindows}}</pre>
-                {{copy-to-clipboard clipboardText=registrationCommandWindows}}
-              </div>
-            </li>
-            <li>
-              {{t 'machine.driverCustom.step5Close.part1'}} {{#link-to "hosts"}}{{t 'machine.driverCustom.step5Close.link'}}{{/link-to}} {{t 'machine.driverCustom.step5Close.part2'}}
-            </li>
-          </ol>
-        {{!-- </div> --}}
-      {{else}}
-        {{!-- <div class="col span-8 offset-2"> --}}
-          <ol>
-            <li>
-              {{format-html-message 'machine.driverCustom.step1'}}
-            </li>
-            <li>
-              {{t 'machine.driverCustom.step2'}}
-              <ul>
-                <li>{{format-html-message 'machine.driverCustom.step2li'}}</li>
-              </ul>
-            </li>
-            <li>
-              {{t 'machine.driverCustom.step3'}}
-              <div class="r-mt10">
-                {{form-user-labels setLabels=(action 'setLabels')}}
-              </div>
-            </li>
-            <li>
-              {{format-html-message 'machine.driverCustom.step4' rancherImage=settings.rancherImage}}
-              <div class="checkbox r-mt10">
-                {{input type="text" value=cattleAgentIp classNames="form-control" placeholder=(t 'machine.driverCustom.agentIp.placeholder')}}
-              </div>
-            </li>
-            <li>
-              {{t 'machine.driverCustom.step5Copy'}} {{settings.appName}}:
-              {{#if registrationCommand}}
-                <div class="copy-pre">
-                  <pre id="registration-command">{{registrationCommand}}</pre>
-                  {{copy-to-clipboard clipboardText=registrationCommand}}
-                </div>
-              {{else}}
-                <div><i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverCustom.generating'}}</div>
-              {{/if}}
-            </li>
-            <li>
-              {{t 'machine.driverCustom.step5Close.part1'}} {{#link-to "hosts"}}{{t 'machine.driverCustom.step5Close.link'}}{{/link-to}} {{t 'machine.driverCustom.step5Close.part2'}}
-            </li>
-          </ol>
-        {{!-- </div> --}}
-      {{/if}}
+      <ol>
+        <li>
+          {{format-html-message 'machine.driverCustom.step1' docsBase=settings.docsBase}}
+        </li>
+        <li>
+          {{t 'machine.driverCustom.step2'}}
+          <ul>
+            <li>{{format-html-message 'machine.driverCustom.step2li'}}</li>
+          </ul>
+        </li>
+        <li>
+          {{t 'machine.driverCustom.step3'}}
+          <div class="r-mt10">
+            {{form-user-labels setLabels=(action 'setLabels')}}
+          </div>
+        </li>
+        <li>
+          {{format-html-message 'machine.driverCustom.step4' rancherImage=settings.rancherImage}}
+          <div class="checkbox r-mt10">
+            {{input type="text" value=cattleAgentIp classNames="form-control" placeholder=(t 'machine.driverCustom.agentIp.placeholder')}}
+          </div>
+        </li>
+        <li>
+          {{t 'machine.driverCustom.step5Copy'}} {{settings.appName}}:
+          {{#if registrationCommand}}
+            <div class="copy-pre">
+              <pre id="registration-command">{{registrationCommand}}</pre>
+              {{copy-to-clipboard clipboardText=registrationCommand}}
+            </div>
+          {{else}}
+            <div><i class="icon icon-spinner icon-spin"></i> {{t 'machine.driverCustom.generating'}}</div>
+          {{/if}}
+        </li>
+        <li>
+          {{t 'machine.driverCustom.step5Close.part1'}} {{#link-to "hosts"}}{{t 'machine.driverCustom.step5Close.link'}}{{/link-to}} {{t 'machine.driverCustom.step5Close.part2'}}
+        </li>
+      </ol>
     </div>
   </div>
+</section>
 
+<section>
   <div class="footer-actions">
     <button {{action "cancel"}} class="btn bg-primary">{{t 'machine.driverCustom.close'}}</button>
   </div>

@@ -60,11 +60,9 @@
 {{/if}}
 
 <section>
-  <div class="section container-fluid" data-section="access">
-    <div class="inline-label">
-      <label>{{t 'viewEditProject.showEdit.accessControl'}}</label>
-    </div>
-
+  <h4>{{t 'viewEditProject.showEdit.accessControl'}}</h4>
+  <hr/>
+  <div class="well">
     {{#if (and accessEnabled showEdit)}}
       <div class="inline-form">
         {{input-identity action="checkMember" onError="error"}}
@@ -126,6 +124,87 @@
     {{/if}}
   </div>
 </section>
+
+{{#if network}}
+  <section>
+    <h4>{{t 'viewEditProject.networkPolicy.label'}}</h4>
+    <hr/>
+    <div class="well">
+      <div class="row">
+        <div class="col-xs-12">
+          <p>{{t 'viewEditProject.networkPolicy.description'}}</p>
+          <hr/>
+        </div>
+      </div>
+      {{#if hasUnsupportedPolicy}}
+        <div class="row">
+          <div class="col-xs-12">
+            <p>{{t 'viewEditProject.networkPolicy.unsupported'}}</p>
+          </div>
+        </div>
+      {{else}}
+        <div class="row">
+          <div class="col-md-3 col-sm-6">
+            <label>{{t 'viewEditProject.networkPolicy.withinLinked'}}</label>
+            {{#if showEdit}}
+              <div class="radio">
+                <label>{{radio-button selection=npWithinLinked.action value="allow"}}&nbsp;{{t 'viewEditProject.networkPolicy.allow'}}</label>
+              </div>
+              <div class="radio">
+                <label>{{radio-button selection=npWithinLinked.action value="deny"}}&nbsp;{{t 'viewEditProject.networkPolicy.deny'}}</label>
+              </div>
+            {{else}}
+              <div class="row">
+                <div class="col-xs-12">
+                  <p class="text-muted">{{t 'viewEditProject.networkPolicy.description'}}</p>
+                </div>
+              </div>
+            {{/if}}
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <label>{{t 'viewEditProject.networkPolicy.withinService'}}</label>
+            {{#if showEdit}}
+              <div class="radio">
+                <label>{{radio-button selection=npWithinService.action value="allow"}}&nbsp;{{t 'viewEditProject.networkPolicy.allow'}}</label>
+              </div>
+              <div class="radio">
+                <label>{{radio-button selection=npWithinService.action value="deny"}}&nbsp;{{t 'viewEditProject.networkPolicy.deny'}}</label>
+              </div>
+            {{else}}
+              <div>{{uc-first npWithinService.action}}</div>
+            {{/if}}
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <label>{{t 'viewEditProject.networkPolicy.withinStack'}}</label>
+            {{#if showEdit}}
+              <div class="radio">
+                <label>{{radio-button selection=npWithinStack.action value="allow"}}&nbsp;{{t 'viewEditProject.networkPolicy.allow'}}</label>
+              </div>
+              <div class="radio">
+                <label>{{radio-button selection=npWithinStack.action value="deny"}}&nbsp;{{t 'viewEditProject.networkPolicy.deny'}}</label>
+              </div>
+            {{else}}
+              <div>{{uc-first npWithinStack.action}}</div>
+            {{/if}}
+          </div>
+          <div class="col-md-3 col-sm-6">
+            <label>{{t 'viewEditProject.networkPolicy.default'}}</label>
+            {{#if showEdit}}
+              <div class="radio">
+                <label>{{radio-button selection=network.defaultPolicyAction value="allow"}}&nbsp;{{t 'viewEditProject.networkPolicy.allow'}}</label>
+              </div>
+              <div class="radio">
+                <label>{{radio-button selection=network.defaultPolicyAction value="deny"}}&nbsp;{{t 'viewEditProject.networkPolicy.deny'}}</label>
+              </div>
+            {{else}}
+              <div>{{uc-first network.defaultPolicyAction}}</div>
+            {{/if}}
+          </div>
+        </div>
+      {{/if}}
+    </div>
+  </section>
+{{/if}}
 
 {{#if showEdit}}
   {{top-errors errors=errors}}
