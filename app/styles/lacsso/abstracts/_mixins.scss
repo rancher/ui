@@ -3,6 +3,20 @@
 // -----------------------------------------------------------------------------
 
 
+
+
+///Sets base color and darkens bg on hover
+@mixin bg-color($bg) {
+  background: $bg;
+  &.btn:hover, a:hover {
+    background:darken($bg,10%);
+    transition: all 0.3s ease;
+  }
+  &.btn:active, a:focus {
+    background:darken($bg,25%);
+  } 
+}
+
 ///Sets the specified background color and calculates a dark or light contrasted text color.
 @mixin contrasted($background-color, $dark: $contrasted-dark-default, $light: $contrasted-light-default, $threshold: null) {
   @if $threshold {
@@ -11,18 +25,6 @@
   }
   background-color: $background-color;
   color: contrast-color($background-color, $dark, $light);
-}
-
-///Sets base color and darkens bg on hover
-@mixin bg-color($bg) {
-  background: $bg;
-  // &.btn:hover, a:hover {
-  //   background:darken($bg,10%);
-  //   transition: all 0.3s ease;
-  // }
-  // &.btn:active, a:focus {
-  //   background:darken($bg,25%);
-  // } 
 }
 
 ///Sets base color and darkens bg on hover
