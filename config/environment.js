@@ -60,6 +60,9 @@ module.exports = function(environment) {
         // e.g. 'with-controller': true
       }
     },
+    stripe: {
+      publishableKey: 'pk_test_g925RcuVORh2KgHWfFbE80by'
+    },
 
     minifyCSS: {
         enabled: false
