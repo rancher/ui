@@ -229,6 +229,11 @@ var C = {
 
     ROLE_MEMBER:  'member',
     ROLE_OWNER:   'owner',
+
+    SUPPORTS_NETWORK_POLICY: [
+      'ipsec',
+      'vxlan',
+    ]
   },
 
   PROJECT_TEMPLATE: {
