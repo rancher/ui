@@ -111,9 +111,10 @@ $lines-to-show: 4;
     z-index: 1;
     background: $warning;
     color: black;
-    padding: 3px 10px;
-    right: -13px;
+    padding: 0 10px;
+    right: -15px;
     top: 5px;
+    font-size: .75em;
 
     &:before {
       content: "";
@@ -123,8 +124,7 @@ $lines-to-show: 4;
       position: absolute;
       top: 0;
       left: -16px;
-      border-width: 13.5px;
-      height: 28px;
+      border-width: 11.5px;
       z-index: 2;
     }
 
@@ -142,21 +142,29 @@ $lines-to-show: 4;
 
   .badge-partner {
     @extend .badge-rancher;
+    background-color: $primary;
+
+    &:before {
+      border-color: $primary;
+      border-left-color: transparent;
+    }
+
+    &:after {
+      border-color: darken($primary, 20%) transparent transparent darken($primary, 20%);
+    }
+  }
+
+  .badge-thirdparty {
+    @extend .badge-rancher;
     background-color: $success;
 
     &:before {
       border-color: $success;
       border-left-color: transparent;
     }
-  }
 
-  .badge-thirdparty {
-    @extend .badge-rancher;
-    background-color: $primary;
-
-    &:before {
-      border-color: $primary;
-      border-left-color: transparent;
+    &:after {
+      border-color: darken($success, 20%) transparent transparent darken($success, 20%);
     }
   }
 
