@@ -7,7 +7,7 @@ export default Ember.Component.extend(ModalBase, {
   classNames: ['generic', 'medium-modal', 'add-new-payment'],
   creditCard: null,
   errors: null,
-  customer: null,
+  // customer: null,
   suToken: null,
   init() {
     this._super(...arguments);
@@ -17,22 +17,22 @@ export default Ember.Component.extend(ModalBase, {
       expiry: null,
       cvc: null,
     });
-    this.set('customer', {
-      name: null,
-      address_line1: null,
-      address_line2: null,
-      address_city: null,
-      address_state: null,
-      address_zip: null,
-      address_country: null,
-    });
+    // this.set('customer', {
+    //   name: null,
+    //   address_line1: null,
+    //   address_line2: null,
+    //   address_city: null,
+    //   address_state: null,
+    //   address_zip: null,
+    //   address_country: null,
+    // });
   },
   actions: {
     validate() {
       // stripe card validate
       var stripe = this.get('stripe');
       var card = this.get('creditCard');
-      var customer = this.get('customer');
+      // var customer = this.get('customer');
       var errors = [];
       var intl = this.get('intl');
 
@@ -48,24 +48,24 @@ export default Ember.Component.extend(ModalBase, {
         errors.push(intl.t('modalAddPayment.errors.cvc'));
       }
 
-      if ( (customer.address_line1||'').trim().length === 0 )
-      {
-        errors.push(intl.t('modalAddPayment.errors.street'));
-      }
+      // if ( (customer.address_line1||'').trim().length === 0 )
+      // {
+      //   errors.push(intl.t('modalAddPayment.errors.street'));
+      // }
 
-      if ( (customer.address_city||'').trim().length === 0 )
-      {
-        errors.push(intl.t('modalAddPayment.errors.city'));
-      }
+      // if ( (customer.address_city||'').trim().length === 0 )
+      // {
+      //   errors.push(intl.t('modalAddPayment.errors.city'));
+      // }
 
-      if ( (customer.address_state||'').trim().length === 0 )
-      {
-        errors.push(intl.t('modalAddPayment.errors.state'));
-      }
-      if ( (customer.address_zip||'').trim().length === 0 )
-      {
-        errors.push(intl.t('modalAddPayment.errors.zip'));
-      }
+      // if ( (customer.address_state||'').trim().length === 0 )
+      // {
+      //   errors.push(intl.t('modalAddPayment.errors.state'));
+      // }
+      // if ( (customer.address_zip||'').trim().length === 0 )
+      // {
+      //   errors.push(intl.t('modalAddPayment.errors.zip'));
+      // }
 
       if (errors.length) {
         this.set('errors', errors);
@@ -76,7 +76,7 @@ export default Ember.Component.extend(ModalBase, {
     createCustomer() {
       var stripe = this.get('stripe');
       var card = this.get('creditCard');
-      var customer = this.get('customer');
+      // var customer = this.get('customer');
       var cardOut = {};
 
       // card.js returns the expiry in a single string, stripe expects the expiry in two (month and year)
@@ -90,8 +90,7 @@ export default Ember.Component.extend(ModalBase, {
         }
       });
 
-      this.$().extend(cardOut, customer);
-      debugger;
+      // this.$().extend(cardOut, customer);
       stripe.card.createToken(cardOut).then((response) => {
         // you get access to your newly created token here
         cardOut.token = response.id;
