@@ -1,8 +1,21 @@
 table {
-    position: relative;
-    &.fixed {
-        table-layout: fixed;
-        width: 100%;
+  position: relative;
+
+  &.fixed {
+    table-layout: fixed;
+    width: 100%;
+  }
+  .fixed-header-actions {
+    min-height: 40px;
+    width: 100%;
+    z-index: 1;
+    background: white;
+  }
+
+  .fixed-header {
+    z-index: 2;
+    tr {
+      background: $link-color;
     }
     .fixed-header-actions {
         min-height: 40px;
@@ -10,31 +23,65 @@ table {
         z-index: 1;
         background: $body-bg;
     }
-    .fixed-header {
-        z-index: 2;
-        tr {
-            background: $link-color;
-        }
+  }
+
+  .fixed-header-placeholder {
+    visibility: hidden;
+    //padding: 0;
+    th {
+      padding: 0 !important;
+      height: 0 !important;
     }
-    .fixed-header {
-        th {
-            button {
-                padding: 0;
-            }
-        }
+  }
+
+  tr td,
+  tr th {
+    padding: 7px 5px;
+  }
+
+  &.small {
+    tr td,
+    tr th {
+    padding: 2px 5px;
     }
-    .fixed-header-placeholder {
-        visibility: hidden;
-        //padding: 0;
-        th {
-            padding: 0 !important;
-            height: 0 !important;
-        }
+
+    tr:first-child th {
+    padding-bottom: 0;
     }
+
+    tr:first-child td {
+    padding-top: 0;
+    }
+  }
+
+  thead {
+    &:after {
+      content: "";
+      background: rgba(0,0,0,1);
+      background: -moz-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 100%);
+      background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(0,0,0,1)), color-stop(100%, rgba(255,255,255,0)));
+      background: -webkit-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 100%);
+      background: -o-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 100%);
+      background: -ms-linear-gradient(top, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 100%);
+      background: linear-gradient(to bottom, rgba(0,0,0,1) 0%, rgba(255,255,255,0) 100%);
+      height: 25px;
+    }
+
     tr {
-        td {
-            padding: 10px;
+      width: 100%;
+      box-sizing: border-box;
+      border-width: 0 0 3px 0;
+      border-color: rgba($mid-grey, .2);
+      border-radius: 0;
+      outline: none;
+      transition: all ease-in-out .3s;
+
+      &.fixed-header {
+        background: $link-color;
+        th .btn {
+          color: white;
         }
+<<<<<<< HEAD:app/styles/components/_tables.scss
     }
     thead {
         tr {
@@ -64,10 +111,52 @@ table {
                     text-align: center;
                 }
             }
+=======
+      }
+
+      th {
+        border-width: 0 0 3px 0;
+        border-color: rgba($mid-grey, .2);
+        text-align: left;
+        font-weight: normal;
+        .btn {
+          color: white;
+>>>>>>> Fixes:app/styles/lacsso/components/_tables.scss
         }
+        &.select-for-action {
+          text-align: center;
+        }
+      }
     }
-    tbody {
+  }
+
+  tbody {
+    border: none;
+    background-color: rgba($light-grey, .5);
+
+    tr {
+      border-bottom: solid thin $light-grey;
+
+      td {
+        border: solid thin $light-grey;
+      }
+    }
+  }
+
+  &.no-lines {
+    tbody, tbody tr, tbody tr td {
+      border: 0;
+      background-color: transparent;
+    }
+  }
+
+  &.striped {
+    tr {
+      border: none;
+
+      td {
         border: none;
+<<<<<<< HEAD:app/styles/components/_tables.scss
         background-color: $table-bg;
         tr {
             border-bottom: solid thin $table-border-color;
@@ -86,8 +175,24 @@ table {
                 }
             }
         }
+=======
+      }
+
+      &:nth-child(even) {
+        background-color: $light-grey;
+      }
+
+      &:hover {
+        background-color: rgba($info, 0.15);
+      }
+>>>>>>> Fixes:app/styles/lacsso/components/_tables.scss
     }
+  }
+
+  &.solid {
+    background: $light-grey;
     tbody {
+<<<<<<< HEAD:app/styles/components/_tables.scss
         &.striped {
             tr {
                 &:hover {
@@ -110,9 +215,23 @@ table {
                     }
                 }
             }
+=======
+      tr {
+        &:hover {
+          background-color: rgba($info, 0.3);
         }
+        td {
+          border: solid 2px white;
+          &:hover {
+            background-color: $info;
+          }
+>>>>>>> Fixes:app/styles/lacsso/components/_tables.scss
+        }
+      }
     }
-    .select-for-action {
-        text-align: center;
-    }
+  }
+
+  .select-for-action {
+    text-align: center;
+  }
 }

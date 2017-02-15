@@ -67,7 +67,7 @@ export default Ember.Controller.extend({
     },
     {
       isActions: true,
-      width: '110px',
+      width: '40px',
     },
   ],
 

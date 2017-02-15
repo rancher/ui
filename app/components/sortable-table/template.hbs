@@ -1,4 +1,4 @@
-<table class="fixed grid sortable-table">
+<table class="fixed grid sortable-table striped">
   <thead>
     <tr class="fixed-header-placeholder">
       {{#if bulkActions}}
@@ -15,7 +15,7 @@
             <div class="container-actions">
               {{#if availableActions}}
                 {{#rl-dropdown-container class="dropdown"}}
-                  {{#rl-dropdown-toggle class="btn btn-sm bg-primary"}}
+                  {{#rl-dropdown-toggle class="btn bg-primary"}}
                     {{t 'generic.actions'}} {{#if (gt selectedNodes.length 1)}}({{selectedNodes.length}}) {{/if}}<span class="icon icon-chevron-down"></span>
                   {{/rl-dropdown-toggle}}
 
@@ -41,23 +41,23 @@
                   {{/rl-dropdown}}
                 {{/rl-dropdown-container}}
               {{else}}
-                <button class="btn btn-sm bg-primary" disabled>
+                <button class="btn bg-primary" disabled>
                   {{t 'generic.actions'}} <span class="icon icon-chevron-down"></span>
                 </button>
               {{/if}}
             </div>
           {{/if}}
         </div>
-        <div class="col span-4 text-right">
+        <div class="col offset-4 span-4 clearfix">
           {{#if search}}
-            <div class="row inline-form gutless">
-              <span class="col span-3 input-label bg-default input-sm">
+            <div class="pull-right input-group">
+              <span class="input-group-addon btn-sm input-label bg-default">
                 <label>{{t 'generic.search'}}:</label>
               </span>
-              {{input value=searchText type="search" class="col span-8 input-sm"}}
+              {{input value=searchText type="search"}}
               {{#if searchText}}
-                <span class="col span-1">
-                  <button class="btn btn-sm bg-default" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
+                <span class="input-group-btn">
+                  <button class="btn bg-primary" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
                 </span>
               {{/if}}
             </div>
@@ -87,7 +87,7 @@
       {{/each}}
     </tr>
   </thead>
-  <tbody class="striped">
+  <tbody>
     {{#if prefix}}
       {{yield null 'prefix'}}
     {{/if}}
@@ -116,8 +116,6 @@
     {{/if}}
   </tbody>
 </table>
-<div class="text-center">
-  {{#if paging}}
-    {{page-numbers content=pagedContent class="pull-right no-select" indexTo=indexTo indexFrom=indexFrom totalCount=filtered.length}}
-  {{/if}}
-</div>
+{{#if paging}}
+  {{page-numbers content=pagedContent class="text-center mt-10 mb-10 no-select" indexTo=indexTo indexFrom=indexFrom totalCount=filtered.length}}
+{{/if}}
