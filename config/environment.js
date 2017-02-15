@@ -63,6 +63,8 @@ module.exports = function(environment) {
     stripe: {
       publishableKey: 'pk_test_g925RcuVORh2KgHWfFbE80by'
     },
+    LOG_STRIPE_SERVICE: true,
+
 
     minifyCSS: {
         enabled: false

@@ -1,0 +1,82 @@
+{{top-errors errors=errors}}
+<h2 class="text-center">{{t 'modalAddPayment.header'}}</h2>
+<hr/>
+{{#credit-card form="#new-cc"}}
+  <form class="horizontal-form container-fluid" id="new-cc">
+    <div class="row inline-form">
+      <label>{{t 'modalAddPayment.form.cc.label'}}*</label>
+      <div class="">
+        {{input type="text" name="number" value=creditCard.number classNames="form-control" placeholder=(t 'modalAddPayment.form.cc.placeholder')}}
+      </div>
+    </div>
+    <div class="row inline-form">
+      <div class="col span-6">
+      <label>{{t 'modalAddPayment.form.exp.label'}}*</label>
+      <div class="">
+        {{input type="text" name="expiry" value=creditCard.expiry classNames="form-control" placeholder=(t 'modalAddPayment.form.exp.placeholder')}}
+      </div>
+      </div>
+      <div class="col span-6">
+        <label>{{t 'modalAddPayment.form.cvc.label'}}*</label>
+        <div class="">
+          {{input type="text" name="cvc" value=creditCard.cvc classNames="form-control" placeholder=(t 'modalAddPayment.form.cvc.placeholder')}}
+        </div>
+      </div>
+    </div>
+    <div class="row inline-form">
+      <label>{{t 'modalAddPayment.form.name.label'}}*</label>
+      <div class="">
+        {{input type="text" name="name" value=creditCard.name classNames="form-control" placeholder=(t 'modalAddPayment.form.name.placeholder')}}
+      </div>
+    </div>
+    <div class="row inline-form">
+      <label>{{t 'modalAddPayment.form.address.addressLine1.label'}}*</label>
+      <div class="">
+        {{input type="text" name="" value=customer.address_line1 classNames="form-control" placeholder=(t 'modalAddPayment.form.address.addressLine1.placeholder')}}
+      </div>
+    </div>
+    <div class="row inline-form">
+      <label>{{t 'modalAddPayment.form.address.addressLine2.label'}}</label>
+      <div class="">
+        {{input type="text" name="" value=customer.address_line2 classNames="form-control" placeholder=(t 'modalAddPayment.form.address.addressLine2.placeholder')}}
+      </div>
+    </div>
+    <div class="row inline-form">
+      <div class="col span-3">
+        <label>{{t 'modalAddPayment.form.address.city.label'}}*</label>
+        <div class="">
+          {{input type="text" name="" value=customer.address_city classNames="form-control" placeholder=(t 'modalAddPayment.form.address.city.placeholder')}}
+        </div>
+      </div>
+      <div class="col span-3">
+        <label>{{t 'modalAddPayment.form.address.state.label'}}*</label>
+        <div class="">
+          {{input type="text" name="" value=customer.address_state classNames="form-control" placeholder=(t 'modalAddPayment.form.address.state.placeholder')}}
+        </div>
+      </div>
+      <div class="col span-3">
+        <label>{{t 'modalAddPayment.form.address.zip.label'}}*</label>
+        <div class="">
+          {{input type="text" name="" value=customer.address_zip classNames="form-control" placeholder=(t 'modalAddPayment.form.address.zip.placeholder')}}
+        </div>
+      </div>
+    </div>
+    <div class="row inline-form">
+      <div class="col span-4">
+        <label>{{t 'modalAddPayment.form.address.country.label'}}</label>
+        <div class="">
+          {{input type="text" name="" value=customer.address_country classNames="form-control" placeholder=(t 'modalAddPayment.form.address.country.placeholder')}}
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="footer-actions">
+    {{#if canValidate}}
+      <button {{action "validate"}} class="btn bg-primary">{{t 'modalAddPayment.save'}}</button>
+    {{else}}
+      <button class="btn bg-primary btn-disbaled" disabled>{{t 'modalAddPayment.save'}}</button>
+    {{/if}}
+
+    <button {{action "cancel"}} class="btn bg-primary">{{t 'generic.closeModal'}}</button>
+  </div>
+{{/credit-card}}
