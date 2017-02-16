@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import ModalBase from 'ui/mixins/modal-base';
 import fetch from 'ember-api-store/utils/fetch';
+import C from 'ui/utils/constants';
 
 const CURRENCIES = [
   {
@@ -19,6 +20,8 @@ const CURRENCIES = [
 
 export default Ember.Component.extend(ModalBase, {
   intl: Ember.inject.service(),
+  session: Ember.inject.service(),
+  account: Ember.computed.alias(`session.${C.SESSION.ACCOUNT_ID}`),
   classNames: ['generic', 'medium-modal', 'add-new-payment'],
   creditCard: null,
   errors: null,
@@ -120,13 +123,17 @@ export default Ember.Component.extend(ModalBase, {
   },
 
   createCustomer(card) {
-    card.currency = this.get('selectedCurrency');
+    var bodyOut = {
+      card: card,
+      subscription: {id: this.get('selectedCurrency')},
+      account: {id: this.get('account')}
+    }
     fetch('/customer', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(card),
+      body: JSON.stringify(bodyOut),
     }).then(() => {
       this.set('loading', false);
     }).catch(() => {

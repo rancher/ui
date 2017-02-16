@@ -1,59 +1,17 @@
 module.exports = function(app/*, options*/) {
-  var bodyParser = require('body-parser');
-  var mysql = require('mysql');
-  var config = require('../../../config/environment')().APP;
-  var request = require('request');
+  const bodyParser = require('body-parser');
+  const mysql = require('mysql');
+  const config = require('../../../config/environment')().APP;
+  const request = require('request');
 
-  var helper = require('sendgrid').mail;
-  var crypto = require('crypto');
+  const helper = require('sendgrid').mail;
+  const crypto = require('crypto');
 
-  var rancherApiUrl = `${config.apiServer}${config.apiEndpoint}`;
-  var tablePrefix = process.env.DB_TABLE_PREFIX || '';
+  const newRequest = require('../../util/util.js').newRequest;
+  const generateError = require('../../util/util.js').generateError;
 
-  const ERRORS = {
-    auth: {
-      message: 'Unauthorized',
-      status: 401,
-      type: 'error',
-      detail: 'Unauthorized'
-    },
-    account: {
-      message: 'Unauthorized',
-      status: 401,
-      type: 'error',
-      detail: 'There was an error trying to retrieve that account, ensure you have entered the correct credentials and try again later'
-    },
-    db: {
-      message: 'Internal Server Error',
-      status: 500,
-      type: 'error',
-      detail: 'There was an error retrieving your data, ensure the info you entered is correct and try again'
-    },
-    email: {
-      message: 'Internal Server Error',
-      status: 500,
-      type: 'error',
-      detail: 'There was an error with your email, ensure you have entered the correct email and try again'
-    },
-    exists: {
-      message: 'Account Exists',
-      status: 409,
-      type: 'error',
-      detail: 'That account exists already, please use the reset password tool or create a new account with a different email.'
-    },
-    generic: {
-      message: 'Internal Server Error',
-      status: 500,
-      type: 'error',
-      detail: 'Internal Server Error'
-    },
-    token: {
-      message: 'Internal Server Error',
-      status: 500,
-      type: 'error',
-      detail: 'There was an error trying to retrieve that token, try again later'
-    },
-  };
+  const rancherApiUrl = `${config.apiServer}${config.apiEndpoint}`;
+  const tablePrefix = process.env.DB_TABLE_PREFIX || '';
 
   app.use(bodyParser.json()); // for parsing application/json
 
@@ -128,7 +86,6 @@ module.exports = function(app/*, options*/) {
       }, function(accountModel) {
         credential.accountId = accountModel.id;
 
-        console.log('checking account');
         isAccountActive(accountModel, function(isActive){
           if (isActive) {
             newRequest({
@@ -288,37 +245,6 @@ module.exports = function(app/*, options*/) {
     });
   }
 
-  // opts should only contain url, method and data
-  function newRequest(opts, cb, ogRes) {
-    var optsOut = {
-      auth: {
-        user: process.env.CATTLE_ACCESS_KEY,
-        pass: process.env.CATTLE_SECRET_KEY,
-      },
-      json: true,
-    };
-
-    Object.assign(optsOut, opts);
-
-    return request(optsOut, function(err, response, body) {
-      if (response.statusCode >= 200 && response.statusCode < 300) {
-        return cb(body, response);
-      }
-
-      var errOut = null;
-      if (err) {
-        errOut = err;
-      } else {
-        errOut = response;
-      }
-
-      console.log('error:', errOut);
-      if (ogRes) {
-        generateError('account', err, ogRes);
-      }
-    });
-  }
-
   function removeUserFromTable(email, cb) {
     return pool.query(`DELETE FROM ${tablePrefix}challenge WHERE email = ? OR created > DATE_SUB(NOW(), INTERVAL 24 HOUR)`, [email], function(err){
       if (err) {
@@ -450,13 +376,6 @@ module.exports = function(app/*, options*/) {
       return sg.API(request, cb);
     });
 
-  }
-
-  function generateError(code, detail, response) {
-    // eventually put real error log in this function
-    console.log('Error Generator: ', detail);
-    var err = ERRORS[code];
-    return response.status(err.status).send(err);
   }
 
   function checkExistingAccount(email, cb) {
