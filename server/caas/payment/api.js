@@ -1,6 +1,6 @@
 module.exports = function(app/*, options*/) {
   var bodyParser = require('body-parser');
-  var config = require('../../config/environment')().APP;
+  var config = require('../../../config/environment')().APP;
   var request = require('request');
 
   var rancherApiUrl = `${config.apiServer}${config.apiEndpoint}`;

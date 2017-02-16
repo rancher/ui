@@ -1,14 +1,30 @@
 import Ember from 'ember';
 import ModalBase from 'ui/mixins/modal-base';
+import fetch from 'ember-api-store/utils/fetch';
+
+const CURRENCIES = [
+  {
+    value: 'utility-cny',
+    label: 'modalAddPayment.currencies.yuan',
+  },
+  {
+    value: 'utility-eur',
+    label: 'modalAddPayment.currencies.euro',
+  },
+  {
+    value: 'utility-usd',
+    label: 'modalAddPayment.currencies.dollar',
+  },
+];
 
 export default Ember.Component.extend(ModalBase, {
-  stripe: Ember.inject.service(),
   intl: Ember.inject.service(),
   classNames: ['generic', 'medium-modal', 'add-new-payment'],
   creditCard: null,
   errors: null,
+  selectedCurrency: 'utility-usd',
+  currencies: CURRENCIES,
   // customer: null,
-  suToken: null,
   init() {
     this._super(...arguments);
     this.set('creditCard', {
@@ -30,7 +46,6 @@ export default Ember.Component.extend(ModalBase, {
   actions: {
     validate() {
       // stripe card validate
-      var stripe = this.get('stripe');
       var card = this.get('creditCard');
       // var customer = this.get('customer');
       var errors = [];
@@ -38,13 +53,13 @@ export default Ember.Component.extend(ModalBase, {
 
       this.set('errors', errors);
 
-      if (!stripe.card.validateCardNumber(card.number)) {
+      if (!Stripe.card.validateCardNumber(card.number)) {
         errors.push(intl.t('modalAddPayment.errors.cc'));
       }
-      if (!stripe.card.validateExpiry(card.expiry)) {
+      if (!Stripe.card.validateExpiry(card.expiry)) {
         errors.push(intl.t('modalAddPayment.errors.exp'));
       }
-      if (!stripe.card.validateCVC(card.cvc)) {
+      if (!Stripe.card.validateCVC(card.cvc)) {
         errors.push(intl.t('modalAddPayment.errors.cvc'));
       }
 
@@ -70,11 +85,11 @@ export default Ember.Component.extend(ModalBase, {
       if (errors.length) {
         this.set('errors', errors);
       } else {
-        this.send('createCustomer');
+        this.send('getToken');
       }
     },
-    createCustomer() {
-      var stripe = this.get('stripe');
+    getToken() {
+      this.set('loading', true);
       var card = this.get('creditCard');
       // var customer = this.get('customer');
       var cardOut = {};
@@ -91,20 +106,35 @@ export default Ember.Component.extend(ModalBase, {
       });
 
       // this.$().extend(cardOut, customer);
-      stripe.card.createToken(cardOut).then((response) => {
-        // you get access to your newly created token here
-        cardOut.token = response.id;
-      }).then(() => {
-        // post to our server
-      }).catch((response) => {
-        // if there was an error retrieving the token you could get it here
+      Stripe.card.createToken(cardOut, (status, response) => {
+        if (status === 200) {
+          // you get access to your newly created token here
+          cardOut.token = response.id;
+          this.createCustomer(cardOut);
+          // post to our server
+        } else {
 
-        if (response.error.type === 'card_error') {
-          // show the error in the form or something
         }
       });
     }
   },
+
+  createCustomer(card) {
+    card.currency = this.get('selectedCurrency');
+    fetch('/customer', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(card),
+    }).then(() => {
+      this.set('loading', false);
+    }).catch(() => {
+      this.set('errMsg', this.get('intl').t('caasLogin.error'));
+      this.set('loading', false);
+    });
+  },
+
   canValidate: Ember.computed('creditCard.name', 'creditCard.number', 'creditCard.expiry', 'creditCard.cvc', function() {
     var out = false;
     var cc = this.get('creditCard');

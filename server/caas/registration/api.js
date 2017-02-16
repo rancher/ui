@@ -1,7 +1,7 @@
 module.exports = function(app/*, options*/) {
   var bodyParser = require('body-parser');
   var mysql = require('mysql');
-  var config = require('../../config/environment')().APP;
+  var config = require('../../../config/environment')().APP;
   var request = require('request');
 
   var helper = require('sendgrid').mail;
