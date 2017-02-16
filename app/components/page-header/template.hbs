@@ -107,9 +107,9 @@
     <div class="lacsso banner-icon" style="width: 68px;"><span class="icon icon-2x icon-alert"></span></div>
     <div class="lacsso banner-message">
       <p class="lacsso mt-15 mb-15">
-        {{~t (if projects.current.isWindows 'nav.noHostsWindows.prefix' 'nav.noHosts.prefix') appName=settings.appName minVersion=settings.minDockerVersion~}}
-        <a href="{{href-to 'hosts.new' projects.current.id}}">{{~t (if projects.current.isWindows 'nav.noHostsWindows.link' 'nav.noHosts.link') appName=settings.appName minVersion=settings.minDockerVersion~}}</a>
-        {{~t (if projects.current.isWindows 'nav.noHostsWindows.suffix' 'nav.noHosts.suffix') appName=settings.appName minVersion=settings.minDockerVersion~}}
+        {{~format-html-message (if projects.current.isWindows 'nav.noHostsWindows.prefix' 'nav.noHosts.prefix') appName=settings.appName docsBase=settings.docsBase minVersion=settings.minDockerVersion~}}
+        <a href="{{href-to 'hosts.new' projects.current.id}}">{{~t (if projects.current.isWindows 'nav.noHostsWindows.link' 'nav.noHosts.link') appName=settings.appName docsBase=settings.docsBase minVersion=settings.minDockerVersion~}}</a>
+        {{~format-html-message (if projects.current.isWindows 'nav.noHostsWindows.suffix' 'nav.noHosts.suffix') appName=settings.appName docsBase=settings.docsBase minVersion=settings.minDockerVersion~}}
       </p>
     </div>
   </div>

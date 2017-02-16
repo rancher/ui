@@ -1,11 +1,12 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Subscribe from 'ui/mixins/subscribe';
-import { isSafari, version as safariVersion } from 'ui/utils/platform';
+import { xhrConcur } from 'ui/utils/platform';
+import PromiseToCb from 'ui/mixins/promise-to-cb';
 
 const CHECK_AUTH_TIMER = 60*10*1000;
 
-export default Ember.Route.extend(Subscribe, {
+export default Ember.Route.extend(Subscribe, PromiseToCb, {
   prefs     : Ember.inject.service(),
   projects  : Ember.inject.service(),
   settings  : Ember.inject.service(),
@@ -71,16 +72,7 @@ export default Ember.Route.extend(Subscribe, {
         identities:         ['userSchemas', this.cbFind('identity', 'userStore')],
       };
 
-      let concur = 99;
-      if ( isSafari ) {
-        let version = safariVersion();
-        if ( version && version < 10 ) {
-          // Safari for iOS9 has problems with multiple simultaneous requests
-          concur = 1;
-        }
-      }
-
-      async.auto(tasks, concur, function(err, res) {
+      async.auto(tasks, xhrConcur, function(err, res) {
         if ( err ) {
           reject(err);
         } else {
@@ -149,21 +141,6 @@ export default Ember.Route.extend(Subscribe, {
 
     this.replaceWith('settings.projects');
     return ret;
-  },
-
-  toCb(name, ...args) {
-    return (results, cb) => {
-      if ( typeof results === 'function' ) {
-        cb = results;
-        results = null;
-      }
-
-      this[name](...args).then(function(res) {
-        cb(null, res);
-      }).catch(function(err) {
-        cb(err, null);
-      });
-    };
   },
 
   cbFind(type, store='store') {
