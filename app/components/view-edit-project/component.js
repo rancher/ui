@@ -14,6 +14,7 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   project: null,
   originalProject: null,
   allProjects: null,
+  policyManager: null,
   editing: false,
   tab: 'access',
 
@@ -124,6 +125,10 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   npWithinLinked: function() {
     return this.get('network.policy').findBy('within','linked');
   }.property('network.policy.@each.within'),
+
+  missingManager: function() {
+    return !this.get('policyManager');
+  }.property('policyManager'),
 
   hasUnsupportedPolicy: function() {
     return this.get('network.policy').filter((x) => { return !!!(x.get('within')); }).length > 0;

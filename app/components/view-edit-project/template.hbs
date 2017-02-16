@@ -125,6 +125,7 @@
   </div>
 </section>
 
+
 {{#if network}}
   <section>
     <h4>{{t 'viewEditProject.networkPolicy.label'}}</h4>
@@ -136,7 +137,13 @@
           <hr/>
         </div>
       </div>
-      {{#if hasUnsupportedPolicy}}
+      {{#if missingManager}}
+        <div class="row">
+          <div class="col-xs-12">
+            <p>{{t 'viewEditProject.networkPolicy.noManager'}}</p>
+          </div>
+        </div>
+      {{else if hasUnsupportedPolicy}}
         <div class="row">
           <div class="col-xs-12">
             <p>{{t 'viewEditProject.networkPolicy.unsupported'}}</p>

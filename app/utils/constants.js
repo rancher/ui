@@ -38,6 +38,12 @@ var C = {
       "bulkActionName": "Delete",
     },
   ],
+
+  CAPABILITY: {
+    NETWORK_POLICIES: 'network-policy-manager',
+    SECRETS: 'secrets',
+  },
+
   COOKIE: {
     TOKEN: 'token',
     PL: 'PL',
