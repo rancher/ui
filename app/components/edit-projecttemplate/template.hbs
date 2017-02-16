@@ -62,7 +62,7 @@
     <hr/>
     <div class="section container-fluid container-catalog clearfix">
       {{#each-in stacksMap as |id obj|}}
-        {{#if (and obj.supported (eq obj.tpl.category category))}}
+        {{#if (and obj.supported (array-includes obj.tpl.categoryArray category))}}
           {{#catalog-box model=obj.tpl active=obj.enabled showSource=true as |section|}}
             {{#if (eq section 'footer')}}
               {{#if (and obj.required obj.enabled)}}
