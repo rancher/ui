@@ -5,7 +5,7 @@ export default Ember.Component.extend({
   prefs     : Ember.inject.service(),
   userTheme : Ember.inject.service('user-theme'),
 
-  classNames : ['btn-group', 'btn-group-sm'],
+  classNames : ['btn-group-sm', 'text-center'],
 
   theme: Ember.computed(`prefs.${C.PREFS.THEME}`, function() {
     return this.get(`prefs.${C.PREFS.THEME}`);
