@@ -82,6 +82,7 @@
           isActions=header.isActions
           label=header.displayName
           translationKey=header.translationKey
+          icon=header.icon
           classNames=header.classNames
           }}
       {{/each}}
@@ -106,6 +107,9 @@
           {{/each}}
         {{/if}}
       </tr>
+      {{#if hasBlock}}
+        {{yield content 'subrow' dt}}
+      {{/if}}
     {{else}}
       {{#if hasBlock}}
         {{yield null (if arranged.length 'nomatch' 'norows')}}

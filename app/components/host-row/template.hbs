@@ -1,0 +1,37 @@
+<td data-title="{{dt.stateSort}}" class="state">
+  {{badge-state model=model}}
+</td>
+<td data-title="{{dt.name}}" class="clip">
+  <i {{action "toggleExpand"}} class="icon mr-5 {{if isExpanded 'icon-minus-square' 'icon-plus-square'}}"></i>
+  <a href="{{href-to "host" model.id}}">{{model.displayName}}</a>
+</td>
+<td data-title="{{dt.ip}}">
+  {{format-ip model.displayIp}}
+</td>
+<td data-title="{{dt.docker}}">
+  {{model.dockerEngineVersion}}
+</td>
+<td data-title="{{dt.os}}">
+  {{model.osBlurb}}
+</td>
+<td data-title="{{dt.cpu}}">
+  {{model.cpuBlurb}}
+</td>
+<td data-title="{{dt.memory}}">
+  {{model.memoryBlurb}}
+</td>
+<td data-title="{{dt.disk}}">
+  {{model.diskBlurb}}
+</td>
+<td data-title="{{dt.good}}" class="text-success">
+  {{model.instanceGoodCount}}
+</td>
+<td data-title="{{dt.other}}" class="{{if model.instanceOtherCount 'text-warning text-bold' 'text-muted'}}">
+  {{model.instanceOtherCount}}
+</td>
+<td data-title="{{dt.bad}}" class="{{if model.instanceBadCount 'text-error text-bold' 'text-muted'}}">
+  {{model.instanceBadCount}}
+</td>
+<td data-title="{{dt.actions}}" class="actions">
+  {{action-menu model=model showPrimary=false}}
+</td>

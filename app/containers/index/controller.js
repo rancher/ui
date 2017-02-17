@@ -24,12 +24,6 @@ export default Ember.Controller.extend({
     return this.get('showSystem') === false ? 'standard' : 'all';
   }),
 
-  actions: {
-    applyBulkAction: function(name, selectedElements) {
-      this.get('bulkActionHandler')[name](selectedElements);
-    },
-  },
-
   headers: [
     {
       classNames: '',

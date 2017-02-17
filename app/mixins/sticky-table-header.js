@@ -7,29 +7,53 @@ const tableProps = {
 };
 
 export default Ember.Mixin.create(ThrottledResize, {
+  stickyHeader: true,
+
   didInsertElement() {
+    this._super(...arguments);
+
+    if ( !this.get('stickyHeader') ) {
+      return;
+    }
+
     let $offset = Ember.$(this.element).find('thead tr').offset().top;
     this.buildTableWidths();
 
     if (this.get('showHeader')) {
       Ember.$(this.element).find('thead .fixed-header-actions, thead .fixed-header').css('width', Ember.$(this.element).find('table').outerWidth());
     }
+
     Ember.$(window).scroll(() => {
       this.updateHeaders($offset);
     });
 
   },
+
   willDestroyElement() {
     this._super(...arguments);
+
+    if ( !this.get('stickyHeader') ) {
+      return;
+    }
+
     Ember.$(window).unbind('scroll');
   },
 
   onResize() {
+    this._super(...arguments);
+
+    if ( !this.get('stickyHeader') ) {
+      return;
+    }
+
     this.buildTableWidths();
   },
 
-
   buildTableWidths() {
+    if ( !this.get('stickyHeader') ) {
+      return;
+    }
+
     let ths = Ember.$(this.element).find('thead tr.fixed-header th');
 
     Ember.$(this.element).find('thead tr.fixed-header-placeholder th').each((idx, th) => {
@@ -44,12 +68,20 @@ export default Ember.Mixin.create(ThrottledResize, {
   },
 
   tearDownTableWidths() {
+    if ( !this.get('stickyHeader') ) {
+      return;
+    }
+
     Ember.$(this.element).find('thead tr.fixed-header th').each((idx, td) => {
       Ember.$(td).removeAttr('width');
     });
   },
 
   positionHeaders() {
+    if ( !this.get('stickyHeader') ) {
+      return;
+    }
+
     let $table       = Ember.$(this.element).find('table');
     let $actionRow   = $table.find('thead .fixed-header-actions');
     let $fixedHeader = $table.find('thead tr.fixed-header');
@@ -74,6 +106,10 @@ export default Ember.Mixin.create(ThrottledResize, {
   },
 
   removePositions() {
+    if ( !this.get('stickyHeader') ) {
+      return;
+    }
+
     let $table       = Ember.$(this.element).find('table');
     let $actionRow   = $table.find('thead .fixed-header-actions');
     let $fixedHeader = $table.find('thead tr.fixed-header');
@@ -96,6 +132,10 @@ export default Ember.Mixin.create(ThrottledResize, {
   },
 
   updateHeaders(offset) {
+    if ( !this.get('stickyHeader') ) {
+      return;
+    }
+
     let $windowScroll   = Ember.$(window).scrollTop();
     let $table          = Ember.$(this.element).find('table');
     let $floatingHeader = $table.find('thead tr.fixed-header');

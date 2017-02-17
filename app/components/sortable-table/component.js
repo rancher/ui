@@ -7,6 +7,9 @@ import {isAlternate, isMore, isRange} from 'ui/utils/platform';
 const {get,set} = Ember;
 
 export default Ember.Component.extend(Sortable, StickyHeader, {
+  prefs: Ember.inject.service(),
+  bulkActionHandler: Ember.inject.service(),
+
   body:              null,
   sortBy:            null,
   descending:        false,
@@ -17,8 +20,7 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   search:            true,
   paging:            true,
   bulkActionsList:   null,
-  bulkActionCallee:  null,
-  perPage:           10,
+  perPage:           Ember.computed.alias('prefs.tablePerPage'),
 
   availableActions:  null,
   selectedNodes:     null,
@@ -65,12 +67,12 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
         var aa = this.get('availableActions');
         var action = aa.findBy('action', name);
         if (get(action, 'altAction')) {
-          this.get('bulkActionCallee')(get(action, 'altAction'), this.get('selectedNodes'));
+          this.get('bulkActionHandler')[get(action, 'altAction')](this.get('selectedNodes'));
         } else {
-          this.get('bulkActionCallee')(name, this.get('selectedNodes'));
+          this.get('bulkActionHandler')[name](this.get('selectedNodes'));
         }
       } else {
-        this.get('bulkActionCallee')(name, this.get('selectedNodes'));
+        this.get('bulkActionHandler')[name](this.get('selectedNodes'));
       }
     },
 

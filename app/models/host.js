@@ -86,12 +86,15 @@ var Host = Resource.extend({
     out = out.replace(/\s+\(.*?\)/,''); // Remove details in parens
     out = out.replace(/;.*$/,''); // Or after semicolons
     out = out.replace('Red Hat Enterprise Linux Server','RHEL'); // That's kinda long
+    out = out.replace('Boot2Docker','B2D'); // That's kinda long
 
+    /*
     var hasKvm = (this.get('labels')||{})[C.LABEL.KVM] === 'true';
     if ( hasKvm && out )
     {
       out += ' (with KVM)';
     }
+    */
 
     return out;
   }.property('info.osInfo.operatingSystem','labels'),
@@ -220,15 +223,38 @@ var Host = Resource.extend({
       return endpoint;
     });
   }.property('publicEndpoints.@each.{ipAddress,port,serviceId,instanceId}'),
+
+  instanceCounts: function() {
+    let out = {
+      good: 0,
+      other: 0,
+      bad: 0,
+    };
+
+    this.get('instances').forEach((inst) => {
+      switch ( inst.get('stateColor') ) {
+        case 'text-success':
+          out.good++;
+          break;
+        case 'text-error':
+          out.bad++;
+          break;
+        default:
+          out.other++;
+          break;
+      }
+    });
+
+  return out;
+  }.property('instances.@each.stateColor'),
+
+  instanceGoodCount:  Ember.computed.alias('instanceCounts.good'),
+  instanceOtherCount: Ember.computed.alias('instanceCounts.other'),
+  instanceBadCount:   Ember.computed.alias('instanceCounts.bad'),
 });
 
 Host.reopenClass({
   defaultSortBy: 'name,hostname',
-  stateMap: {
-    'active':           {icon: 'icon icon-host',    color: 'text-success'},
-    'provisioning':     {icon: 'icon icon-host',    color: 'text-info'},
-    'reconnecting':     {icon: 'icon icon-help',    color: 'text-danger'},
-  }
 });
 
 export default Host;
