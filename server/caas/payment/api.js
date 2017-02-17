@@ -18,22 +18,16 @@ module.exports = function(app/*, options*/) {
     var account = req.body.account;
 
     getUserEmail(account.id, res, (err, email) => {
-      if (err) {
-        return generateError('account', 'No email found ', res);
-      }
+      if (err) return generateError('account', 'No email found ', res);
 
       stripe.customers.create({
         source: card.token,
         email: email
       }, function(err, customer) {
-        if (err) {
-          return generateError('subscription', err, res);
-        }
+        if (err) return generateError('subscription', err, res);
 
         addCustomerToAccount(account.id, customer.id, (err, account) => {
-          if (err) {
-            return generateError('subscription', err, res);
-          }
+          if (err) return generateError('subscription', err, res);
 
           stripe.subscriptions.create({
             customer: customer.id,
@@ -44,11 +38,40 @@ module.exports = function(app/*, options*/) {
             }
             // return res.status(200).json({type: 'success', message: 'found email', customer: customer, account: account, subscription: subscription});
             return res.status(200).json({type: 'success', message: 'subscription activated'});
-          }
-                                     );
+          });
         });
       });
     });
+  });
+
+  app.use('/account-info', function(req, res) {
+    var type = req.query.type;
+    var stripeId = req.query.accountId;
+
+    if (type === 'stripe') {
+
+      stripe.customers.retrieve(
+        stripeId,
+        function(err, customer) {
+
+          if (err) return generateError('db', err, res);
+
+          let model = [];
+
+          if (!customer.deleted && customer.sources.data.length) {
+
+            customer.sources.data.forEach((card) => {
+              model.push({brand: card.brand, id: card.id, last4: card.last4, name: card.name, expiry: `${card.exp_month}/${card.exp_year}`});
+            });
+
+            return res.status(200).json(model);
+          } else {
+
+            return generateError('db', err, res);
+          }
+        }
+      );
+    }
   });
 
   function addCustomerToAccount(accountId, stripeAccountId, cb) {
