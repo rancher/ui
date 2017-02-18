@@ -3,6 +3,7 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   prefs: Ember.inject.service(),
 
+  stickyHeader: true,
   showHost: true,
 
   sortBy: 'name',

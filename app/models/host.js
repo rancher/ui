@@ -86,15 +86,12 @@ var Host = Resource.extend({
     out = out.replace(/\s+\(.*?\)/,''); // Remove details in parens
     out = out.replace(/;.*$/,''); // Or after semicolons
     out = out.replace('Red Hat Enterprise Linux Server','RHEL'); // That's kinda long
-    out = out.replace('Boot2Docker','B2D'); // That's kinda long
 
-    /*
     var hasKvm = (this.get('labels')||{})[C.LABEL.KVM] === 'true';
     if ( hasKvm && out )
     {
       out += ' (with KVM)';
     }
-    */
 
     return out;
   }.property('info.osInfo.operatingSystem','labels'),

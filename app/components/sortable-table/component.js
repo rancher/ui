@@ -20,13 +20,14 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   search:            true,
   paging:            true,
   bulkActionsList:   null,
-  perPage:           Ember.computed.alias('prefs.tablePerPage'),
+  subRows: false, 
 
   availableActions:  null,
   selectedNodes:     null,
   prevNode:          null,
   searchText:        null,
   page:              1,
+  perPage:           Ember.computed.alias('prefs.tablePerPage'),
 
   showHeader: Ember.computed.or('bulkActions','search','paging'),
 
@@ -138,7 +139,6 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   }),
 
   filtered: Ember.computed('arranged.[]','searchText', function() {
-    console.log('updateFiltered');
     let out = this.get('arranged').slice();
     let searchFields = this.get('searchFields');
     let searchText =  (this.get('searchText')||'').trim().toLowerCase();

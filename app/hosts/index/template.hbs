@@ -22,23 +22,42 @@
     bulkActions=true
     bulkActionCallee=(action 'applyBulkAction')
     bulkActionsList=bulkActionsList
-    perPage=prefs.tablePerPage
+    subRows=true
     headers=headers as |host kind|}}
     {{#if (eq kind "row")}}
-      {{host-row model=host toggleExpand=(action "toggleExpand") isExpanded=(array-includes expandedHosts host.id)}}
-    {{else if (and (eq kind "subrow") (array-includes expandedHosts host.id))}}
+      {{host-row model=host}}
+    {{else if (eq kind "subrow")}}
       <tr class="hide">{{! make the alternating color match }}</tr>
-      <tr class="subrow">
-        <td colspan="{{add 1 headers.length}}">
-          {{container-table
-            body=host.instances
-            stickyHeader=false
-            showHost=false
-            bulkActions=false
-            search=false
-          }}
+      <tr class="subrow text-muted">
+        <td></td>
+        <td colspan="{{headers.length}}" class="text-small">
+          <span class="host-blurb" role="button" {{action "toggleExpand" host.id}}>
+            {{#if (array-includes expandedHosts host.id)}}
+              <i class="icon icon-minus-square"></i> Hide Containers
+            {{else}}
+              <i  class="icon icon-plus-square"></i> Show Containers
+            {{/if}}
+          </span>
+          <span class="host-blurb"><i class="icon icon-cpu"></i> {{host.cpuBlurb}}</span>
+          <span class="host-blurb"><i class="icon icon-memory"></i> {{host.memoryBlurb}}</span>
+          <span class="host-blurb"><i class="icon icon-hdd"></i> {{host.diskBlurb}}</span>
+          <span class="host-blurb"><i class="icon icon-host"></i> {{host.osBlurb}}</span>
         </td>
-      </tr>
+      <//tr>
+      {{#if (array-includes expandedHosts host.id)}}
+        <tr class="hide">{{! make the alternating color match }}</tr>
+        <tr class="subrow">
+          <td colspan="{{add 1 headers.length}}" class="pl-40 pr-40">
+            {{container-table
+              body=host.instances
+              stickyHeader=false
+              showHost=false
+              bulkActions=false
+              search=false
+            }}
+          </td>
+        </tr>
+      {{/if}}
     {{else if (eq kind "nomatch")}}
       <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.body.noMatch'}}</td></tr>
     {{else if (eq kind "norows")}}

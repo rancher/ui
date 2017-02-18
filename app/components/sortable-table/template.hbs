@@ -1,4 +1,4 @@
-<table class="fixed grid sortable-table striped">
+<table class="fixed grid sortable-table striped {{if bulkActions 'has-actions'}} {{if subRows 'has-subrows'}}">
   <thead>
     <tr class="fixed-header-placeholder">
       {{#if bulkActions}}
@@ -51,10 +51,7 @@
         <div class="col offset-4 span-4 clearfix">
           {{#if search}}
             <div class="pull-right input-group">
-              <span class="input-group-addon btn-sm input-label bg-default">
-                <label>{{t 'generic.search'}}:</label>
-              </span>
-              {{input value=searchText type="search"}}
+              {{input value=searchText type="search" placeholder=(t 'generic.search')}}
               {{#if searchText}}
                 <span class="input-group-btn">
                   <button class="btn bg-primary" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
@@ -93,7 +90,7 @@
       {{yield null 'prefix'}}
     {{/if}}
     {{#each pagedContent as |content|}}
-      <tr>
+      <tr class="main-row">
         {{#if bulkActions}}
           <td width="40" class="select-for-action">
             {{check-box nodeId=content.id}}
