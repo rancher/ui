@@ -97,21 +97,21 @@ export default Ember.Controller.extend({
       name: 'good',
       sort: ['instanceGoodCount','displayName'],
       searchField: null,
-      width: '75px',
+      width: '60px',
       icon: 'icon icon-circle text-success',
     },
     {
       name: 'other',
       sort: ['instanceOtherCount','displayName'],
       searchField: null,
-      width: '75px',
+      width: '60px',
       icon: 'icon icon-circle text-warning',
     },
     {
       name: 'bad',
       sort: ['instanceBadCount','displayName'],
       searchField: null,
-      width: '75px',
+      width: '60px',
       icon: 'icon icon-circle text-error',
     },
     {
@@ -119,4 +119,13 @@ export default Ember.Controller.extend({
       width: '40px',
     },
   ],
+
+  modeChanged: function() {
+    let key = `prefs.${C.PREFS.HOST_VIEW}`;
+    let cur = this.get(key);
+    let neu = this.get('mode');
+    if ( cur !== neu ) {
+      this.set(key,neu);
+    }
+  }.observes('mode'),
 });

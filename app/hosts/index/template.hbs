@@ -30,19 +30,22 @@
       <tr class="hide">{{! make the alternating color match }}</tr>
       <tr class="subrow text-muted">
         <td></td>
-        <td colspan="{{headers.length}}" class="text-small">
-          <span class="host-blurb" role="button" {{action "toggleExpand" host.id}}>
-            {{#if (array-includes expandedHosts host.id)}}
-              <i class="icon icon-minus-square"></i> Hide Containers
-            {{else}}
-              <i  class="icon icon-plus-square"></i> Show Containers
-            {{/if}}
-          </span>
+        <td colspan="{{sub headers.length 4}}" class="text-small">
           <span class="host-blurb"><i class="icon icon-cpu"></i> {{host.cpuBlurb}}</span>
           <span class="host-blurb"><i class="icon icon-memory"></i> {{host.memoryBlurb}}</span>
           <span class="host-blurb"><i class="icon icon-hdd"></i> {{host.diskBlurb}}</span>
           <span class="host-blurb"><i class="icon icon-host"></i> {{host.osBlurb}}</span>
         </td>
+        <td class="text-right" colspan="3">
+          <span class="host-blurb text-small" role="button" {{action "toggleExpand" host.id}}>
+            {{#if (array-includes expandedHosts host.id)}}
+              Hide Containers <i class="icon icon-minus-square"></i>
+            {{else}}
+              Show Containers <i class="icon icon-plus-square"></i>
+            {{/if}}
+          </span>
+        </td>
+        <td></td>
       <//tr>
       {{#if (array-includes expandedHosts host.id)}}
         <tr class="hide">{{! make the alternating color match }}</tr>

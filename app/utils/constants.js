@@ -195,6 +195,7 @@ var C = {
     PROJECT_DEFAULT : 'defaultProjectId',
     EXPANDED_STACKS : 'expandedStacks',
     SORT_STACKS_BY  : 'sortStacksBy',
+    HOST_VIEW       : 'hostView',
     THEME           : 'theme',
     TABLE_COUNT     : 'tableCount',
     LANGUAGE        : 'language',
