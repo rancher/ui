@@ -21,12 +21,13 @@ const CURRENCIES = [
 export default Ember.Component.extend(ModalBase, {
   intl: Ember.inject.service(),
   session: Ember.inject.service(),
-  account: Ember.computed.alias(`session.${C.SESSION.ACCOUNT_ID}`),
+  account: Ember.computed.alias('modalOpts'),
   classNames: ['generic', 'medium-modal', 'add-new-payment'],
   creditCard: null,
   errors: null,
   selectedCurrency: 'utility-usd',
   currencies: CURRENCIES,
+  saveDisabled: true,
   // customer: null,
   init() {
     this._super(...arguments);
@@ -35,6 +36,7 @@ export default Ember.Component.extend(ModalBase, {
       number: null,
       expiry: null,
       cvc: null,
+      // default: true,
     });
     // this.set('customer', {
     //   name: null,
@@ -48,6 +50,7 @@ export default Ember.Component.extend(ModalBase, {
   },
   actions: {
     validate() {
+      this.set('saving', true);
       // stripe card validate
       var card = this.get('creditCard');
       // var customer = this.get('customer');
@@ -87,12 +90,12 @@ export default Ember.Component.extend(ModalBase, {
 
       if (errors.length) {
         this.set('errors', errors);
+        this.set('saving', false);
       } else {
         this.send('getToken');
       }
     },
     getToken() {
-      this.set('loading', true);
       var card = this.get('creditCard');
       // var customer = this.get('customer');
       var cardOut = {};
@@ -116,7 +119,7 @@ export default Ember.Component.extend(ModalBase, {
           this.createCustomer(cardOut);
           // post to our server
         } else {
-
+          this.set('errors', ['There was an issue saving your card. Please ensure the information is correct and try again.']);
         }
       });
     }
@@ -126,7 +129,7 @@ export default Ember.Component.extend(ModalBase, {
     var bodyOut = {
       card: card,
       subscription: {id: this.get('selectedCurrency')},
-      account: {id: this.get('account')}
+      account: {id: this.get('account.id'), stripeId: JSON.parse(this.get('account.description')).stripeAccountId}
     }
     fetch('/customer', {
       method: 'POST',
@@ -135,21 +138,20 @@ export default Ember.Component.extend(ModalBase, {
       },
       body: JSON.stringify(bodyOut),
     }).then(() => {
-      this.set('loading', false);
+      this.set('saving', false);
+      this.send('cancel');
     }).catch(() => {
       this.set('errMsg', this.get('intl').t('caasLogin.error'));
-      this.set('loading', false);
+      this.set('saving', false);
     });
   },
 
-  canValidate: Ember.computed('creditCard.name', 'creditCard.number', 'creditCard.expiry', 'creditCard.cvc', function() {
-    var out = false;
+  canValidate: Ember.observer('creditCard.name', 'creditCard.number', 'creditCard.expiry', 'creditCard.cvc', function() {
     var cc = this.get('creditCard');
+    var out = true;
     if (cc.name && cc.number && cc.cvc && cc.expiry) {
-      out = true;
-    } else {
       out = false;
     }
-    return out;
+    this.set('saveDisabled', out);
   }),
 });

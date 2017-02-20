@@ -30,8 +30,8 @@
       </div>
     </div>
     <div class="row inline-form">
-      <label>{{t 'modalAddPayment.form.currency.label'}}*</label>
-      <div class="">
+      <div class="col span-6">
+        <label>{{t 'modalAddPayment.form.currency.label'}}*</label>
         {{new-select
           localizedLabel=true
           classNames="form-control"
@@ -39,6 +39,12 @@
           value=selectedCurrency
         }}
       </div>
+      <!-- <div class="col span-6"> -->
+      <!-- <label>{{t 'modalAddPayment.form.default.label'}}*</label> -->
+      <!-- <div class=""> -->
+      <!-- {{input type="checkbox" name="default-card" checked=creditCard.default classNames="form-control"}} -->
+      <!-- </div> -->
+      <!-- </div> -->
     </div>
     <!-- <div class="row inline-form"> -->
     <!-- <label>{{t 'modalAddPayment.form.address.addressLine1.label'}}*</label> -->
@@ -82,12 +88,6 @@
     <!-- </div> -->
   </form>
   <div class="footer-actions">
-    {{#if canValidate}}
-      <button {{action "validate"}} class="btn bg-primary">{{t 'modalAddPayment.save'}}</button>
-    {{else}}
-      <button class="btn bg-primary btn-disbaled" disabled>{{t 'modalAddPayment.save'}}</button>
-    {{/if}}
-
-    <button {{action "cancel"}} class="btn bg-primary">{{t 'generic.closeModal'}}</button>
+    {{save-cancel save="validate" cancel="cancel" createLabel='modalAddPayment.save' saveDisabled=saveDisabled}}
   </div>
 {{/credit-card}}
