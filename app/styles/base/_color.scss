@@ -31,44 +31,9 @@
   color: $error;
 }
 
-*[class*=" bg-"] a {
-  color: white;
-  position: relative;
-  overflow: hidden;
-  display: inline-block;
-  border-bottom: solid 2px white;
-  vertical-align: middle;
-  padding: 4px 4px 2px 4px;
-
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(255, 255, 255, .2);
-    -webkit-transition: -webkit-transform 400ms;
-    -moz-transition: -moz-transform 400ms;
-    transition: transform 400ms;
-    -webkit-transform: translateX(-100%);
-  }
-
-  &:hover {
-    text-decoration: none;
-    background-color: transparent;
-
-    &:before {
-      -webkit-transform: translateX(0%);
-      -moz-transform: translateX(0%);
-      transform: translateX(0%);
-    }
-  }
-}
-
 .bg-default {
-  @include bg-color($light-grey);
-  @include contrasted($light-grey);
+  @include bg-color($bg-default);
+  @include contrasted($bg-default);
 
   a {
     color: $primary;
@@ -81,32 +46,32 @@
 }
 
 .bg-disabled {
-  background-color: rgba($mid-grey, .65);
+  background-color: $bg-disabled;
   color: $mid-grey;
 }
 
 .bg-primary {
-  @include bg-color($primary);
+  @include bg-color($bg-primary);
   @include contrasted($primary);
 }
 .bg-secondary {
-  @include bg-color($secondary);
+  @include bg-color($bg-secondary);
   @include contrasted($secondary);
 }
 .bg-success {
-  @include bg-color($success);
+  @include bg-color($bg-success);
   @include contrasted($success);
 }
 .bg-info {
-  @include bg-color($info);
+  @include bg-color($bg-info);
   @include contrasted($info);
 }
 .bg-warning {
-  @include bg-color($warning);
+  @include bg-color($bg-warning);
   @include contrasted($warning);
 }
 .bg-error {
-  @include bg-color($error);
+  @include bg-color($bg-error);
   @include contrasted($error);
 }
 .bg-transparent {

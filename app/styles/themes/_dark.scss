@@ -8,86 +8,73 @@ $primary                             : $primary; //button non state
 $primary-dark                        : darken($primary, 20%);
 
 //states
-$success                             : rgba($success, .75); //good
-$info                                : rgba($info, .75); //transitioning
-$warning                             : rgba($warning, .75); // orange degraded
-$error                               : rgba($error, .75); // stopped inactive bad
+$success                             : desaturate($success, .75); //good
+$info                                : desaturate($info, .75); //transitioning
+$warning                             : desaturate($warning, .75); // orange degraded
+$error                               : desaturate($error, .75); // stopped inactive bad
+
+$bg-default                          : mix($mid-grey, $dark-grey);
+$bg-disabled                         : desaturate($mid-grey, .65);
+$bg-primary                          : desaturate($primary, 20%);
+$bg-secondary                        : desaturate($secondary, 20%);
+$bg-success                          : desaturate($success, 20%);
+$bg-info                             : desaturate($info, 20%);
+$bg-warning                          : desaturate($warning, 20%);
+$bg-error                            : desaturate($error, 20%);
 
 //** Global textual link color.
-$link-color                          : lighten($primary, 12%);
+$link-color                          : desaturate($primary, 1%);
 //** Link hover color set via `darken()` function.
 $link-hover-color                    : lighten($primary, 15%);
 //** Link hover decoration.
 $link-hover-decoration               : none;
 
 //accent colors
-$accent-one                          : rgba($light-grey,.05);
+$accent-one                          : $mid-grey;
 $accent-two                          : $dark-grey;
 $accent-three                        : darken($black, 20%);
 
 
 /*header*/
-$header                              : rgba($primary, .75);
+$header                              : $bg-secondary;
 $header-link                         : $light-grey;
 $header-link-active                  : $primary;
 $user-btn                            : darken($header, 5%);
+
+$header-text                         : $mid-grey;
 
 /*footer*/
 $footer                              : darken($black, 20%);
 
 // Horizontal line color.
-$border                              : $mid-grey;
+$border                              : $dark-grey;
 
 /*shadow colors*/
-$shadow                              : #000;
+$shadow                              : rgba($black, .75);
 
 //** Default background color used for all tables.
 $table-bg                            : rgba($dark-grey, .7);
+$table-header                        : $link-color;
+
 //** Background color used for `.table-striped`.
 $table-bg-accent                     : rgba($mid-grey, .1);
 
 //** Background color used for `.table-hover`.
-$table-bg-hover                      : rgba($warning, .85);
+$table-bg-hover                      : rgba($info, .25);
 $table-bg-active                     : $table-bg-hover;
 //** Border color for table and cell borders.
 $table-border-color                  : rgba(255,255,255,.15);
 
-
-/*ButtonsFor each of Bootstrap's buttons, define text, background and border color.*/
-$btn-default-color                   : $mid-grey;
-$btn-default-bg                      : transparent;
-$btn-default-border                  : $mid-grey;
-$btn-default-hover                   : rgba($mid-grey,.3);
-
-$btn-primary-color                   : $link-color ;
-$btn-primary-bg                      : transparent;
-$btn-primary-border                  : $primary;
-$btn-primary-hover                   : rgba($link-color,.15);
-
-$btn-success-color                   : $success;
-$btn-success-bg                      : transparent;
-$btn-success-border                  : $success;
-$btn-success-hover                   : rgba($success,.15);
-
-$btn-info-color                      : $info;
-$btn-info-bg                         : transparent;
-$btn-info-border                     : $info;
-$btn-info-hover                      : rgba($info,.15);
-
-$btn-warning-color                   : $warning;
-$btn-warning-bg                      : transparent;
-$btn-warning-border                  : $warning;
-$btn-warning-hover                   : rgba($warning,.15);
-
-$bg-danger-color                     : $error;
-$bg-danger-bg                        : transparent;
-$bg-danger-border                    : $error;
-$bg-danger-hover                     : rgba($error,.15);
-
-$btn-disabled-color                  : $text-color;
-$btn-disabled-bg                     : $dark-grey;
-$btn-link-disabled-color             : $mid-grey;
-$btn-disabled-hover                  : rgba($text-color,.3);
+// banners
+$banner-default                      : $light-grey;
+$banner-disabled                     : rgba($mid-grey, .65);
+$banner-primary                      : rgba($primary, .3);
+$banner-secondary                    : rgba($secondary, .3);
+$banner-success                      : rgba($success, .3);
+$banner-info                         : rgba($info, .3);
+$banner-warning                      : rgba($warning, .3);
+$banner-error                        : rgba($error, .3);
+$banner-color                        : white;
 
 
 //** Global color for active items (e.g., navs or dropdowns).
@@ -129,7 +116,7 @@ $input-group-addon-bg                : $mid-grey;
 //** Background for the dropdown menu.
 
 
-$dropdown-bg                         : mix(rgba($mid-grey, .9), rgba($dark-grey, .95));
+$dropdown-bg                         : $bg-default;
 
 //** Dropdown menu `border-color`.
 $dropdown-border                     : transparent;
@@ -224,61 +211,25 @@ $tooltip-arrow-color                 : $tooltip-bg;
 
 
 //** Background color of modal content area
-$modal-content-bg                    : white;
+$modal-content-bg                    : $dark-grey;
 //** Modal content border color
 $modal-content-border-color          : transparent;
 //** Modal content border color **for IE8**
 $modal-content-fallback-border-color : #999;
 
 //** Modal backdrop background color
-$modal-backdrop-bg                   : #000;
-//** Modal backdrop opacity
-$modal-backdrop-opacity              : .5;
+$modal-overlay                       : rgba($black, 0.85);
+
 //** Modal header border color
 $modal-header-border-color           : #e5e5e5;
 //** Modal footer border color
 $modal-footer-border-color           : $modal-header-border-color;
 
-
-/*Labels*/
-//** Default label background color
-$label-default-bg                    : #777;
-//** Primary label background color
-$label-primary-bg                    : $primary;
-//** Success label background color
-$label-success-bg                    : $success;
-//** Info label background color
-$label-info-bg                       : $info;
-//** Warning label background color
-$label-warning-bg                    : $warning;
-//** Danger label background color
-$label-danger-bg                     : $error;
-
 //** Default label text color
-$label-color                         : white;
-//** Default text color of a linked label
-$label-link-hover-color              : white;
+$label-color                         : lighten($mid-grey, 20%);
 
 $header-link-text                    : #afb9c8;
 $nav-link-hover-bg                   : $mid-grey;
-
-
-/*alerts*/
-$alert-success-bg                    : $state-success-bg;
-$alert-success-text                  : $state-success-text;
-$alert-success-border                : $state-success-border;
-
-$alert-info-bg                       : $state-info-bg;
-$alert-info-text                     : $state-info-text;
-$alert-info-border                   : $state-info-border;
-
-$alert-warning-bg                    : $state-warning-bg;
-$alert-warning-text                  : $state-warning-text;
-$alert-warning-border                : $state-warning-border;
-
-$alert-danger-bg                     : $state-danger-bg;
-$alert-danger-text                   : $state-danger-text;
-$alert-danger-border                 : $state-danger-border;
 
 
 /*Progress bars*/
@@ -307,17 +258,6 @@ $tab-active-bg                       : lighten($dark-grey, 5%);
 $tab-hover                           : darken($primary, 5%);
 $tab-color                           : $primary;
 $tab-accent                          : $dark-grey;
-
-/*badges*/
-$badge-color                         : white;
-//** Linked badge text color on hover
-$badge-link-hover-color              : white;
-$badge-bg                            : $primary;
-
-//** Badge text color in active nav link
-$badge-active-color                  : $link-color;
-//** Badge background color in active nav link
-$badge-active-bg                     : white;
 
 $close-color                         : white;
 $close-text-shadow                   : 0 1px 0 white;
