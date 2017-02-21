@@ -44,7 +44,7 @@ export default Ember.Component.extend({
       list = list.filter(x => !exclude.includes(x.id));
     }
 
-    return list;
+    return list.sortBy('name','id');
   }.property('allSecrets.[]','exclude.[]'),
 
   selectedChanged: function() {

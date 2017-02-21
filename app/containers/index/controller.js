@@ -26,7 +26,11 @@ export default Ember.Controller.extend({
 
   actions: {
     applyBulkAction: function(name, selectedElements) {
-      this.get('bulkActionHandler')[name](selectedElements);
+      if ( selectedElements.length === 1 ) {
+        selectedElements.objectAt(0).send(name);
+      } else {
+        this.get('bulkActionHandler')[name](selectedElements);
+      }
     },
   },
 

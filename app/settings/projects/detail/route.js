@@ -63,7 +63,7 @@ export default Ember.Route.extend(PromiseToCb, {
             policy.pushObject(userStore.createRecord({
               type: 'networkPolicyRule',
               within: field,
-              action: 'allow'
+              action: network.get('defaultPolicyAction'),
             }));
           }
         });

@@ -13,13 +13,13 @@ export default ModalBase.extend(NewOrEdit, ManageLabels, {
   editing: true,
 
   ips: null,
-  ipLabels: null,
+  systemLabels: null,
   userLabels: null,
 
   init() {
     this._super(...arguments);
     this.set('model', this.get('originalModel').clone());
-    this.initLabels(this.get('model.labels'), 'system');
+    this.initLabels(this.get('model.labels'), null, [C.LABEL.SCHED_IPS]);
 
     let ips = [];
     let str = this.getLabel(C.LABEL.SCHED_IPS);
@@ -35,16 +35,16 @@ export default ModalBase.extend(NewOrEdit, ManageLabels, {
   }.observes('ips.[]'),
 
   updateLabels(labels) {
-    this.set('ipLabels', labels);
+    this.set('systemLabels', labels);
   },
 
   mergeAllLabels: debouncedObserver(
+    'systemLabels.@each.{key,value}',
     'userLabels.@each.{key,value}',
-    'ipLabels.@each.{key,value}',
   function() {
     let out = flattenLabelArrays(
-      this.get('userLabels'),
-      this.get('ipLabels')
+      this.get('systemLabels'),
+      this.get('userLabels')
     );
 
     this.set('model.labels', out);
