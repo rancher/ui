@@ -143,7 +143,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     return ret;
   },
 
-  cbFind(type, store='store', opt) {
+  cbFind(type, store='store', opt=null) {
     return (results, cb) => {
       if ( typeof results === 'function' ) {
         cb = results;
