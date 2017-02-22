@@ -31,7 +31,6 @@ generic:
   missing: "*%MISSING%*"
   moreActions: More Actions
   na: 'n/a'
-  no: No
   name: Name
   none: None
   ports: Ports
@@ -49,7 +48,9 @@ generic:
   type: Type
   unknown: Unknown
   uuid: UUID
-  yes: Yes
+  # These are not "yes" and "no" to avoid being parsed as bools by yaml parser.
+  noo: No
+  yess: Yes
 
 
 ##############################
@@ -1480,6 +1481,10 @@ editHost:
     valuePlaceholder: e.g. 1.2.3.4
     addActionLabel: Add IP
     help:  If provided, the scheduler will select and bind published ports to one of the given public IP addresses.
+  requireAny:
+    label: Require Container Label
+    help: If provided, containers must have one or more of the given labels in order to be eligible for scheduling onto this host.  If the value is left empty, a container with a matching key is eligible regardless of value.
+    addActionLabel: Add Required Label
 
 editProjectTemplate:
   title:
@@ -3347,6 +3352,7 @@ action:
   console: Open Console
   deactivate: Deactivate
   edit: Edit
+  evacuate: Evacuate
   execute: Execute Shell
   exportConfig: Export Config
   finishUpgrade: Finish Upgrade

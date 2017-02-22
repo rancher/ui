@@ -36,6 +36,7 @@ generic:
   save: Enregistrer
   saved: Enregistré
   saving: Enregistrement en cours
+  search: Rechercher
   state: Etat
   test: Test
   testing: En test
@@ -427,6 +428,7 @@ containersPage:
         command: Commande
       body:
         noData: Aucun conteneur.
+        noMatch: Aucun Conteneur ne correspond à la recherche en cours
   new:
     form:
       name:
@@ -776,6 +778,12 @@ registriesPage:
       password:
         labelText: Mot de passe
         placeholder: e.g. mot de passe
+secretsPage:
+  index:
+    header: Secrets
+    linkTo: Ajouter un Secret
+    noData: Vous n’avez pas encore de Secrets
+    noMatch: Aucun Secret ne correspond à la recherche en cours
 servicePage:
   header: 'Service :'
   multistat:
@@ -958,8 +966,31 @@ processesPage:
     delayed: Retardé
     ready: Prêt
     completed: Récemment Terminé
+  summary:
+    noData: Aucun processus n'est planifié
+    table:
+      running: En Cours d'Exécution
+      ready: Prêt
+      delay: Retardé
   pools:
     noData: Aucune Réserve trouvée
+    noMatch: Aucun pool ne correspondre à la recherche en cours
+    table:
+      activeTasks: Actif
+      poolSize: Taille du Pool
+      rejectedTasks: Rejeté
+      completedTasks: Terminée
+      queueSize: Taille de la file d’attente
+      queueRemainingCapacity: File d'attente
+  list:
+    table:
+      resource: Ressource
+      exitReason: Raison de la Sortie
+      startTime: Heure de début
+      endTime: Heure de fin
+      runTime: Durée
+      runAfter: Exécuter Après
+    noMatch: Aucun processus ne correspond à la recherche en cours
 virtualMachinePage:
   header: 'Machine Virtuelle :'
   multistat:
@@ -1109,6 +1140,8 @@ ldap:
         labelText: Champ Statut
       disabledBitMask:
         labelText: Masque de bits du Statut Désactivé
+      userMemberAttribute:
+        labelText: Attribut de l’utilisateur
     groups:
       header: Groupes
       objectClass:
@@ -1604,6 +1637,7 @@ formNetwork:
   networkMode:
     label: Réseau
     bridge: Pont
+    container: Conteneur
     host: Hôte
     managed: Géré
     nat: NAT
@@ -1688,6 +1722,24 @@ formScheduling:
   field: Champ
   key: Clé
   value: Valeur
+formSecrets:
+  label: Secrets
+  noData: Pas de Secrets
+  addLabel: Ajouter un Secret
+  name:
+    placeholder: par exemple db_password
+  secret:
+    label: Secret
+  uid:
+    label: Identifiant utilisateur
+    placeholder: par exemple 0 (root)
+  gid:
+    label: Identifiant du Groupe
+    placeholder: par exemple 0 (wheel)
+  mode:
+    placeholder: p. ex. 0444 (octal)
+  help:
+    prefix: "Les Secrets seront placés dans <code>/run/secrets/</code> dans le conteneur avec le nom de fichier donné et ne sont lisibles que par <code>root</code> par défaut.  "
 formSecurity:
   key: Clé
   value: Valeur
@@ -1905,6 +1957,14 @@ hostSettings:
   notPublic:
     alert: |
       Êtes-vous certain que tous les hôtes que vous créerez seront en mesure d’atteindre <code>{activeValue}</code> ? <br/> Cette adresse IP semble privée, ou appartenir à un réseau local.
+hostPod:
+  supportState:
+    unsupported: Version de Docker non supportée
+    untested: Version de Docker non testée
+  groupedInstances:
+    namespace: 'Espace de noms :'
+    stack: 'Pile :'
+    standalone: Conteneurs Autonomes
 identityBlock:
   loading: Chargement...
 infoMultiStats:
@@ -2435,6 +2495,7 @@ modalAboutComponent:
   component: Composant
   version: Version
   cattle: Cattle
+  cli: Interface de Ligne de Commande (CLI)
   ui: Interface Utilisateur
   compose: Compose
   machineService: Service de la Machine
@@ -2581,7 +2642,7 @@ newContainer:
     container: Mise à niveau du Conteneur
     vm: Mettre à niveau la Machine virtuelle
     service: |
-      Mise à niveau {numServices, pluriel, = 1 {Service} autres {# Services}}
+      Mise à niveau {numServices, plural, =1 {Service} other {# Services}}
   tabs:
     disks: Disques
     userData: Données de l’Utilisateur
@@ -2593,6 +2654,7 @@ newContainer:
     labels: Étiquettes
     scheduling: Planification en cours
     balancing: Équilibrage
+    secrets: Secrets
   selectUpgrade: Sélectionnez un ou plusieurs services à mettre à niveau.
   saveUpgrade: Mettre à niveau
   saveNew: Créer
@@ -2628,6 +2690,17 @@ newReceiver:
   max:
     label: Échelle Maximale
     placeholder: par exemple 80
+newSecret:
+  title:
+    edit: Modifier le Secret
+    add: Ajouter un Secret
+  name:
+    placeholder: par exemple api-token
+  description:
+    placeholder: p. ex. jeton Secret pour l’API
+  value:
+    label: Valeur Secrète
+    placeholder: La valeur secrète
 pageFooter:
   notARelease: (Pas une Version)
   help: Aide
@@ -2635,6 +2708,7 @@ pageFooter:
   faq: FAQs
   issues: Renseigner un Problème
   forums: Forums
+  slack: Slack
   download:
     link: Télécharger l'Interface de Ligne de Commande (CLI)
     headerCli: Rancher CLI (bêta)
@@ -2688,6 +2762,8 @@ schema:
     option: Choisissez une option...
   inputService:
     prompt: Choisissez un Service...
+  inputSecret:
+    prompt: Choisissez un Secret...
 schedulingRuleRow:
   theHost: L’hôte
   must: doit
@@ -2924,6 +3000,7 @@ nav:
     backupTarget: Espace de sauvegarde
     certificates: Certificats
     registries: Registres
+    secrets: Secrets
   admin:
     tab: Administrateur
     audit: Journaux de Logs
@@ -2969,6 +3046,7 @@ action:
   machineConfig: Configuration de Docker Machine
   purge: Purger
   remove: Supprimmer
+  replay: Rejouer
   restart: Redemarrer
   restore: Restaurer
   retry: Relancer
@@ -2989,6 +3067,13 @@ action:
   viewGraph: Voir Graph
   viewInApi: Vue dans l'API
   viewInstance: Voir l'Instance
+validation:
+  required: '« {key} » est requis'
+  number:
+    exactly: '« {key} » devrait être exactement {val}'
+    between: '« {key} » doit être comprise entre {min} et {max}'
+    min: '« {key} » doit être au moins {val}'
+    max: '« {key} » doit être au plus {val}'
 model:
   account:
     kind:
@@ -3012,3 +3097,7 @@ model:
       owner: Propriétaire
       readonly: Lecture Seule
       restricted: Restreint
+  scaleService:
+    min: Échelle Minimale
+    max: Échelle Maximale
+    amount: Par
