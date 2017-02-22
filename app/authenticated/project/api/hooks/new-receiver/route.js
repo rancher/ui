@@ -12,25 +12,6 @@ export default Ember.Route.extend({
       promise = Ember.RSVP.resolve(store.createRecord({
         type: 'receiver',
         driver: 'scaleService',
-        scaleServiceConfig: store.createRecord({
-          type: 'scaleService',
-          action: 'up',
-          amount: 1,
-          serviceId: null,
-        }),
-        scaleHostConfig: store.createRecord({
-          type: 'scaleHost',
-          action: 'up',
-          amount: 1,
-          hostSelector: '',
-          deleteOption: 'leastRecent',
-        }),
-        serviceUpgrade: store.createRecord({
-          type: 'serviceUpgrade',
-          image: '',
-          tag: '',
-          serviceSelector: '',
-        }),
       }));
     }
 
