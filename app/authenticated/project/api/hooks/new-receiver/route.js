@@ -5,18 +5,13 @@ export default Ember.Route.extend({
 
   model(params) {
     let promise;
+    let store = this.get('webhookStore');
     if ( params.receiverId ) {
-      promise = this.get('webhookStore').find('receiver', params.receiverId);
+      promise = store.find('receiver', params.receiverId);
     } else {
-      promise = Ember.RSVP.resolve(this.get('webhookStore').createRecord({
+      promise = Ember.RSVP.resolve(store.createRecord({
         type: 'receiver',
         driver: 'scaleService',
-        scaleServiceConfig: {
-          type: 'scaleService',
-          action: 'up',
-          amount: 1,
-          serviceId: null,
-        }
       }));
     }
 

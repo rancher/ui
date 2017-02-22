@@ -20,6 +20,7 @@ generic:
   image: イメージ
   internal: 内部
   ipAddress: IP アドレス
+  limit: 制限
   loading: "読込中..."
   moreActions: その他の操作
   "no": false
@@ -31,6 +32,7 @@ generic:
   save: 保存
   saved: 保存済み
   saving: 保存中
+  search: 検索
   state: 状態
   test: テスト
   testing: テスト中
@@ -431,6 +433,7 @@ containersPage:
         command: コマンド
       body:
         noData: まだコンテナはありません
+        noMatch: 検索条件に一致するコンテナがありません
   new:
     form:
       description:
@@ -771,6 +774,12 @@ registriesPage:
         labelText: ユーザー名
       password:
         labelText: パスワード
+secretsPage:
+  index:
+    header: シークレット
+    linkTo: シークレットを追加
+    noData: まだシークレットはありません
+    noMatch: 検索条件に一致するシークレットがありません
 servicePage:
   header: 'サービス:'
   multistat:
@@ -926,10 +935,35 @@ processesPage:
     summary: 概要
     pools: プール
     running: 起動中
+    delayed: 遅延
     ready: 準備完了
     completed: 直近で完了
+  summary:
+    noData: スケジュールされているプロセスはありません
+    table:
+      running: 起動中
+      ready: 準備完了
+      delay: 遅延
   pools:
     noData: プールはありません
+    noMatch: 検索条件に一致するプールがありません
+    table:
+      activeTasks: アクティブ
+      poolSize: プールサイズ
+      rejectedTasks: 却下
+      completedTasks: 完了
+      queueSize: キューサイズ
+      queueRemainingCapacity: 残りキュー
+  list:
+    table:
+      resource: リソース
+      exitReason: 終了理由
+      startTime: 開始日時
+      endTime: 終了日時
+      runTime: 実行時間
+      runAfter: 実開始時間
+    noData: '{which} のプロセスはありません'
+    noMatch: 検索条件に一致するプロセスがありません
 virtualMachinePage:
   header: '仮想マシン:'
   multistat:
@@ -1081,6 +1115,8 @@ ldap:
         labelText: Status Field
       disabledBitMask:
         labelText: Disabled Status Bitmask
+      userMemberAttribute:
+        labelText: ユーザーメンバー属性
     groups:
       header: グループ
       objectClass:
@@ -1092,8 +1128,11 @@ ldap:
       groupMemberUser:
         labelText: グループメンバーのユーザー属性
         placeholder: uid
+      groupMemberMapping:
+        labelText: グループメンバー マッピング属性
       groupDN:
         labelText: グループ DN フィールド
+        placeholder: 識別名
   testAuth:
     header: "3. テストのうえ認証を有効化する"
     helpText: "あなたの {providerName} アカウントで認証テストを行うことで全てが正常に設定されたことを確認します:"
@@ -1192,6 +1231,8 @@ copyToClipboard:
   copied: コピーしました!
 dangerZone:
   header: 拡張設定
+  subtext: "注意して進めてください; 通常、ユーザーはこの設定を変更する必要はありません。間違った値を入力すると {appName} のインストレーションに問題が生じることがあります。変更のあった部分は太字で表示されます。"
+  showLabel: 私は拡張設定を変更することで問題が生じる可能性があると理解しています。
 devicePermissions:
   all: 全て
   none: None
@@ -1476,8 +1517,10 @@ formHealthCheck:
     label: チェックタイムアウト
     unit: ms
   healthyThreshold:
+    label: 正常とする回数
     unit: 成功
   unhealthyThreshold:
+    label: 異常とする回数
     unit: 失敗
   strategy:
     label: 異常時
@@ -1523,6 +1566,7 @@ formNetwork:
   networkMode:
     label: ネットワーク
     bridge: ブリッジ
+    container: コンテナ
     host: ホスト
     managed: 管理
     nat: NAT
@@ -1603,6 +1647,21 @@ formScheduling:
   field: フィールド
   key: キー
   value: 値
+formSecrets:
+  label: シークレット
+  noData: シークレットはありません
+  addLabel: シークレットを追加
+  secret:
+    label: シークレット
+  uid:
+    label: ユーザー ID
+  gid:
+    label: グループ ID
+  mode:
+    label: ファイルモード
+  help:
+    prefix: "シークレットはコンテナ内の <code>/run/secrets</code> に指定したファイル名で配置され、デフォルトでは <code>root</code> からのみ読み込み可能です。"
+    showPermissionsLink: "ファイルの所有権 & 権限のカスタマイズ"
 formSecurity:
   key: キー
   value: 値
@@ -1776,6 +1835,7 @@ hookPage:
     label: サービスを拡張
     detailPrefix: "{action} を拡張"
     detailLink: "{displayService}"
+    detailSuffix: "by {amount}"
   receiver:
     header: レシーバー フック
     buttonText: レシーバーを追加
@@ -1803,6 +1863,17 @@ hostSettings:
   notPublic:
     alert: |
       作成された全てのホストは<code>{activeValue}</code>にアクセスできますか?<br/>プライベート IP や ローカルネットワークに見受けられます。
+  badTld:
+    alert: |
+      トップレベルドメインである <code>.local</code> はRFC6742 でマルチキャスト DNS 向けに予約されています。そのため登録 URL に利用することは推奨されず、利用した場合 DNS 上の問題が発生する可能性があります。他のホスト名または IP を指定してください。
+hostPod:
+  supportState:
+    unsupported: サポートされていない Docker バージョン
+    untested: 未テストの Docker バージョン
+  groupedInstances:
+    namespace: '名前空間:'
+    stack: 'スタック:'
+    standalone: 独立型コンテナ
 identityBlock:
   loading: 読込中...
 infoMultiStats:
@@ -2316,6 +2387,7 @@ modalAboutComponent:
   component: コンポーネント
   version: バージョン
   cattle: Cattle
+  cli: CLI
   ui: User Interface
   compose: Compose
   machineService: Machine Service
@@ -2366,10 +2438,22 @@ modalEditDriver:
   checksum:
     label: チェックサム
     help: 'オプション: 期待されたチェックサムかどうかダウンロードされたマシンドライバーの整合性を確認します。'
+modalEditSetting:
+  title: 拡張設定を編集
+  name:
+    label: 名前
+  value:
+    label: 値
+  reset:
+    label: ディフォルトにリセット
 modalEditSnapshot:
   edit: スナップショットを編集
   create: スナップショットを作成
   nameLabel: スナップショット名
+modalFeedback:
+  header: '{appName} へようこそ!'
+  subtitle: "開始する前にあなたのことについて少し教えてください..."
+  send: はじめに
 modalProcessError:
   header: 例外情報
   cause: "理由:"
@@ -2466,6 +2550,7 @@ newContainer:
     labels: ラベル
     scheduling: スケジューリング
     balancing: バランシング
+    secrets: シークレット
   selectUpgrade: アップグレードするサービスを1つ以上選択してください
   saveUpgrade: アップグレード
   saveNew: 作成
@@ -2487,6 +2572,19 @@ newReceiver:
     label: アクション
   service:
     label: 対象サービス
+  amount:
+    label: Scale up/down 単位
+  min:
+    label: 最小スケール
+  max:
+    label: 最大スケール
+newSecret:
+  title:
+    edit: シークレットを編集
+    add: シークレットを追加
+  value:
+    label: シークレットの値
+    placeholder: シークレットの値
 pageFooter:
   notARelease: (未リリース)
   help: ヘルプ
@@ -2494,6 +2592,7 @@ pageFooter:
   faq: FAQ
   issues: バグを報告
   forums: フォーラム
+  slack: Slack
   download:
     link: CLI をダウンロード
     headerCli: Rancher CLI (beta)
@@ -2501,6 +2600,12 @@ pageFooter:
     mac: Mac OS X
     windows: Windows
     linux: Linux
+pagination:
+  multi: |
+    {pages, plural,
+    =0 {0 項目}
+    =1 {{count} {count, select, =1 {項目} other {項目}}}
+    other {{from} - {to} of {count}}}
 pageHeaderEnvironment:
   namespace: 名前空間
 projectRow:
@@ -2518,13 +2623,16 @@ registryRow:
   username: ユーザー名
   created: 作成日
 reservationParameters:
+  label: リソース制限
   localStorage:
+    labelText: 'ローカルストレージ'
     unit: 'MB'
   memory:
     labelText: 'メモリ'
     unit: 'MB'
   milliCpu:
     labelText: CPU
+    unit: 'mCPU'
 saveCancel:
   saving: 保存中...
   saved: 完了!
@@ -2541,7 +2649,16 @@ schema:
     option: オプションを選択してください...
   inputService:
     prompt: サービスを選択してください...
+  inputSecret:
+    prompt: シークレットを選択してください...
 schedulingRuleRow:
+  theHost: ホスト
+  must: must
+  should: should
+  shouldNot: should not
+  mustNot: must not
+  haveA: have a
+  of: of
   hostLabel: ホストラベル
   containerLabel: ラベル付きコンテナ
   serviceName: 名前付きサービス
@@ -2579,6 +2696,7 @@ stackSection:
   outputs: 出力
   description: 詳細情報
   none: サービスはありません
+  tags: タグ
   container: |
     {numContainers, plural,
     =1 {コンテナ}
@@ -2769,6 +2887,7 @@ nav:
     backupTarget: バックアップ対象
     certificates: 証明書
     registries: レジストリ
+    secrets: シークレット
   admin:
     tab: 管理者
     audit: 監査ログ
@@ -2781,6 +2900,7 @@ nav:
   api:
     tab: API
     keys: キー
+    hooks: Webhooks
   user:
     label: 'ユーザーメニュー: {username}'
     logout: ログアウト
@@ -2792,6 +2912,7 @@ nav:
     prefix: "最初のサービスまたはコンテナを起動する前に Docker {minVersion} もしくはそれ以上のバージョンをサポートしている Linux ホストを追加する必要があります。"
     link: "ホストを追加"
   noHostsWindows:
+    prefix: "最初のサービスまたはコンテナを起動する前に Windows ホストが必要となります。"
     link: "ホストを追加"
 action:
   activate: アクティブ化
@@ -2810,6 +2931,7 @@ action:
   machineConfig: マシン設定
   purge: 除去
   remove: 削除
+  replay: 再実行
   restart: 再起動
   restore: リストア
   retry: リトライ
@@ -2853,3 +2975,7 @@ model:
       owner: オーナー
       readonly: Read-Only
       restricted: 制限済み
+  scaleService:
+    min: 最小スケール
+    max: 最大スケール
+    amount: Scale up/down 単位

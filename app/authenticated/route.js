@@ -62,7 +62,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
         services:           ['projectSchemas',          this.cbFind('service')],
         hosts:              ['projectSchemas',          this.cbFind('host')],
         stacks:             ['projectSchemas',          this.cbFind('stack')],
-        mounts:             ['projectSchemas',          this.cbFind('mount')],
+        mounts:             ['projectSchemas',          this.cbFind('mount', 'store', {filter: {state_ne: 'inactive'}})],
         storagePools:       ['projectSchemas',          this.cbFind('storagepool')],
         volumes:            ['projectSchemas',          this.cbFind('volume')],
         snapshots:          ['projectSchemas',          this.cbFind('snapshot')],
@@ -143,14 +143,14 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     return ret;
   },
 
-  cbFind(type, store='store') {
+  cbFind(type, store='store', opt=null) {
     return (results, cb) => {
       if ( typeof results === 'function' ) {
         cb = results;
         results = null;
       }
 
-      return this.get(store).find(type).then(function(res) {
+      return this.get(store).find(type,null,opt).then(function(res) {
         cb(null, res);
       }).catch(function(err) {
         cb(err, null);

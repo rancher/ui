@@ -17,7 +17,7 @@ export default Resource.extend({
     }
 
     var choices = [
-      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
+      { label: 'action.remove',     icon: 'icon icon-trash',          action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', bulkable: true },
       { divider: true },
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',  action: 'goToApi',      enabled: true },
       { divider: true },

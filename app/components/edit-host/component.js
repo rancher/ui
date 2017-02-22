@@ -13,13 +13,14 @@ export default ModalBase.extend(NewOrEdit, ManageLabels, {
   editing: true,
 
   ips: null,
-  ipLabels: null,
+  requireAny: null,
+  systemLabels: null,
   userLabels: null,
 
   init() {
     this._super(...arguments);
     this.set('model', this.get('originalModel').clone());
-    this.initLabels(this.get('model.labels'), 'system');
+    this.initLabels(this.get('model.labels'), null, [C.LABEL.SCHED_IPS, C.LABEL.REQUIRE_ANY]);
 
     let ips = [];
     let str = this.getLabel(C.LABEL.SCHED_IPS);
@@ -27,6 +28,8 @@ export default ModalBase.extend(NewOrEdit, ManageLabels, {
       ips = str.split(/\s*,\s*/).filter(x => x.length);
     }
     this.set('ips', ips);
+
+    this.set('requireAny', this.getLabel(C.LABEL.REQUIRE_ANY));
   },
 
   ipsChanged: function() {
@@ -34,17 +37,22 @@ export default ModalBase.extend(NewOrEdit, ManageLabels, {
     this.setLabel(C.LABEL.SCHED_IPS, ips.join(', '));
   }.observes('ips.[]'),
 
+  requireAnyChanged: function() {
+    let any = this.get('requireAny');
+    this.setLabel(C.LABEL.REQUIRE_ANY, any||undefined);
+  }.observes('requireAny'),
+
   updateLabels(labels) {
-    this.set('ipLabels', labels);
+    this.set('systemLabels', labels);
   },
 
   mergeAllLabels: debouncedObserver(
+    'systemLabels.@each.{key,value}',
     'userLabels.@each.{key,value}',
-    'ipLabels.@each.{key,value}',
   function() {
     let out = flattenLabelArrays(
-      this.get('userLabels'),
-      this.get('ipLabels')
+      this.get('systemLabels'),
+      this.get('userLabels')
     );
 
     this.set('model.labels', out);

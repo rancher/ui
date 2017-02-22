@@ -59,15 +59,24 @@
       <a href="{{settings.docsBase}}/hosts/#supported-docker-versions" target="_blank" rel="nofollow noreferrer"><span class="lacsso tag bg-warning force-wrap"><i class="icon icon-alert"></i> {{t 'hostPod.supportState.untested'}}</span></a>
     </div>
   {{/if}}
-  <div class="pod-info r-mb10">
-    {{#if strictUserLabelArray.length}}
-      <div class="lacsso pt-5" style="white-space: normal;">
-        {{#each strictUserLabelArray as |label|}}
-          <span class="label label-default clip" style="display: inline-block; max-width: 100%;">{{label.key}}{{#if label.value}}={{label.value}}{{/if}}</span>
-        {{/each}}
-      </div>
-    {{/if}}
-  </div>
+  {{#if strictUserLabelArray.length}}
+    <div class="pod-info r-mb10">
+        <div class="lacsso pt-5" style="white-space: normal;">
+          {{#each strictUserLabelArray as |label|}}
+            <span class="label label-default clip" style="display: inline-block; max-width: 100%;">{{label.key}}{{#if label.value}}={{label.value}}{{/if}}</span>
+          {{/each}}
+        </div>
+    </div>
+  {{/if}}
+  {{#if model.requireAnyLabels.length}}
+    <div class="pod-info r-mb10">
+        <div class="lacsso pt-5" style="white-space: normal;">
+          {{#each model.requireAnyLabels as |label|}}
+            <span class="label label-warning clip" style="display: inline-block; max-width: 100%;">{{label}}</span>
+          {{/each}}
+        </div>
+    </div>
+  {{/if}}
 
   <div class="clearfix {{if (eq mode "dot") 'r-p5'}}" style="white-space: normal">
     {{#if (eq mode "dot")}}

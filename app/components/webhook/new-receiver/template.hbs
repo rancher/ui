@@ -1,0 +1,40 @@
+<section class="horizontal-form container-fluid">
+  <h2>{{t (if editing 'newReceiver.title.edit' 'newReceiver.title.add')}}</h2>
+
+  <div class="row form-group">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="form-label form-control-static">
+        <label>{{t 'generic.name'}}*</label>
+      </div>
+      <div>
+        {{input type="text" value=model.name classNames="form-control" placeholder=(t 'newReceiver.name.placeholder')}}
+      </div>
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="form-label form-control-static">
+        <label>{{t 'newReceiver.driver.label'}}</label>
+      </div>
+      <div>
+        <select class="form-control" onchange={{action "changeDriver"}}>
+          <option value="scaleService">{{t 'hookPage.scaleService.label'}}</option>
+          <option value="scaleHost">{{t 'hookPage.scaleHost.label'}}</option>
+          <option value="serviceUpgrade">{{t 'hookPage.serviceUpgrade.label'}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  {{#if (eq model.driver "scaleService")}}
+    {{webhook/scale-service-config model=model.scaleServiceConfig}}
+  {{else if (eq model.driver "scaleHost")}}
+    {{webhook/scale-host-config model=model.scaleHostConfig}}
+  {{else if (eq model.driver "serviceUpgrade")}}
+    {{webhook/service-upgrade-config model=model.serviceUpgradeConfig}}
+  {{/if}}
+</section>
+
+{{top-errors errors=errors}}
+{{save-cancel editing=editing save="save" cancel="cancel"}}

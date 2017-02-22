@@ -5,7 +5,7 @@ export default Ember.Route.extend({
     let store = this.get('store');
     return Ember.RSVP.hash({
       pools:     store.findAll('storagepool'),
-      mounts:    store.findAll('mounts'),
+      mounts:    store.findAll('mounts', {filter: {'state_ne': 'inactive'}}),
     }).then((hash) => {
       return hash.pools.filter((pool) => {
         return !!pool.get('driverName');
