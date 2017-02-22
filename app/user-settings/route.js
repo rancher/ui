@@ -23,7 +23,7 @@ export default Ember.Route.extend({
       modelOut.account = resp;
 
       if (stripeAccountId) {
-        return fetch(`/account-info?type=stripe&accountId=${stripeAccountId}`, {
+        return fetch(`/payment?type=stripe&accountId=${stripeAccountId}`, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json'
