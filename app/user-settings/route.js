@@ -31,7 +31,7 @@ export default Ember.Route.extend({
         }).then((customer) => {
           modelOut.stripeCards = customer.body;
           return modelOut;
-        }).catch((err) => {
+        }).catch(() => {
           return modelOut;
         });
       } else {

@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import ModalBase from 'ui/mixins/modal-base';
 import fetch from 'ember-api-store/utils/fetch';
-import C from 'ui/utils/constants';
 
 const CURRENCIES = [
   {
@@ -130,7 +129,7 @@ export default Ember.Component.extend(ModalBase, {
       card: card,
       subscription: {id: this.get('selectedCurrency')},
       account: {id: this.get('account.id'), stripeId: JSON.parse(this.get('account.description')).stripeAccountId}
-    }
+    };
     fetch('/customer', {
       method: 'POST',
       headers: {
@@ -138,8 +137,9 @@ export default Ember.Component.extend(ModalBase, {
       },
       body: JSON.stringify(bodyOut),
     }).then(() => {
-      this.set('saving', false);
-      this.send('cancel');
+      window.location.reload();
+      // this.set('saving', false);
+      // this.send('cancel');
     }).catch(() => {
       this.set('errMsg', this.get('intl').t('caasLogin.error'));
       this.set('saving', false);

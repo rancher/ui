@@ -37,7 +37,6 @@ module.exports = function(app/*, options*/) {
             if (err) {
               return generateError('subscription', err, res);
             }
-            // return res.status(200).json({type: 'success', message: 'found email', customer: customer, account: account, subscription: subscription});
             return res.status(200).json({type: 'success', message: 'subscription activated'});
           });
         });
@@ -53,8 +52,8 @@ module.exports = function(app/*, options*/) {
           return res.status(200).json({type: 'success', status: 200, message: confirmation});
         });
         break;
-      case 'GET':
       case 'POST':
+      case 'GET':
       case 'UPDATE':
       default:
         return res.status(405).send();
