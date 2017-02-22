@@ -1,6 +1,10 @@
 import Semver from 'npm:semver';
 
 export function satisfies(version, range) {
+  // Semver doesn't take padding zeros like 17.03.1
+  range = range.replace(/\.0+(\d+)/g,'.$1');
+  version = version.replace(/\.0+(\d+)/g,'.$1');
+
   if ( !Semver.validRange(range) ) {
     console.error('Invalid semver range:', range);
     return false;
