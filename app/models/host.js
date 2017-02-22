@@ -25,6 +25,10 @@ var Host = Resource.extend({
       return this.doAction('deactivate');
     },
 
+    evacuate: function() {
+      return this.doAction('evacuate');
+    },
+
     purge: function() {
       return this.doAction('purge');
     },
@@ -57,6 +61,7 @@ var Host = Resource.extend({
     var out = [
       { label: 'action.activate',   icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
       { label: 'action.deactivate', icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate},
+      { label: 'action.evacuate',   icon: 'icon icon-snapshot',     action: 'evacuate',     enabled: !!a.evacuate},
       { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete'},
       { label: 'action.purge',      icon: '',                       action: 'purge',        enabled: !!a.purge},
       { divider: true },
@@ -72,7 +77,7 @@ var Host = Resource.extend({
     out.push({ label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!a.update });
 
     return out;
-  }.property('actionLinks.{activate,deactivate,remove,purge,update}','links.config','driver'),
+  }.property('actionLinks.{activate,deactivate,evacuate,remove,purge,update}','links.config','driver'),
 
   displayIp: Ember.computed.alias('agentIpAddress'),
 
@@ -220,6 +225,10 @@ var Host = Resource.extend({
       return endpoint;
     });
   }.property('publicEndpoints.@each.{ipAddress,port,serviceId,instanceId}'),
+
+  requireAnyLabels: function() {
+    return  (this.get('labels')[C.LABEL.REQUIRE_ANY]||'').split(/\s*,\s*/).filter((x) => x.length > 0);
+  }.property(`labels.${C.LABEL.REQUIRE_ANY}`),
 });
 
 Host.reopenClass({

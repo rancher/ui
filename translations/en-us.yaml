@@ -2101,16 +2101,25 @@ heroAddService:
   linkToCatalog: Browse Catalog
 
 hookPage:
-  scaleService:
-    label: Scale a Service
-    detailPrefix: "Scale {action} "
-    detailLink: "{displayService}"
-    detailSuffix: "by {amount}"
   receiver:
     header: Receiver Hooks
     buttonText: Add Receiver
     content: "Receiver hooks give you a URL that can be hit to trigger an action inside of {appName}."
     noData: No receiver hooks.
+  scaleService:
+    label: Scale a Service
+    detailPrefix: "Scale {action} "
+    detailLink: "{displayService}"
+    detailSuffix: "by {amount}"
+  scaleHost:
+    label: Scale a Host
+    detailPrefix: "Scale {action} "
+    detailLink: "{displaySelector}"
+    detailSuffix: "by {amount}"
+  serviceUpgrade:
+    label: Upgrade a Service
+    detailPrefix: "Upgrade"
+    detailLink: "{displayService}"
   fields:
     kind:
       label: Kind
@@ -2915,8 +2924,24 @@ newReceiver:
     label: Kind
   action:
     label: Action
+    up: Scale Up
+    down: Scale Down
+  batchSize:
+    label: Upgrade batch size
+  deleteOption:
+    label: Remove
+    mostRecent: Most recently created Host
+    leastRecent: Oldest Host
+  hostSelector:
+    label: Host Selector
+    help: A label which selects the hosts that will be scaled
+  image:
+    label: Docker Image name
   service:
     label: Target Service
+  serviceSelector:
+    label: Service Selector
+    help: A label which selects the service(s) that will be scaled
   amount:
     label: By
   min:
