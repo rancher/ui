@@ -12,6 +12,10 @@
     {{t 'hookPage.scaleService.detailPrefix' displayService=model.displayService action=model.opt.action amount=model.opt.amount}}
     <a href="{{href-to "service" model.service.stack.id model.service.id}}">{{t 'hookPage.scaleService.detailLink' displayService=model.displayService action=model.opt.action amount=model.opt.amount}}</a>
     {{t 'hookPage.scaleService.detailSuffix' displayService=model.displayService action=model.opt.action amount=model.opt.amount}}
+  {{else if (eq model.driver 'scaleHost')}}
+    {{t 'hookPage.scaleHost.detail' labels=model.opt.hostSelectorStr action=model.opt.action amount=model.opt.amount}}
+  {{else if (eq model.driver 'serviceUpgrade')}}
+    {{format-html-message 'hookPage.serviceUpgrade.detail' labels=model.opt.serviceSelectorStr tag=model.opt.tag}}
   {{/if}}
 </td>
 <td data-title="{{t 'hookPage.fields.url.label'}}">

@@ -1,0 +1,62 @@
+<div class="row form-group">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="form-label form-control-static">
+      <label>{{t 'newReceiver.tag.label'}}*</label>
+    </div>
+    <div>
+      {{input type="text" class="form-control" value=model.tag}}
+    </div>
+    <p class="help-block">{{t 'newReceiver.tag.help'}}</p>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="form-label form-control-static">
+      <label>{{t 'newReceiver.serviceSelector.label'}}*</label>
+    </div>
+    <div>
+      {{form-key-value
+        initialMap=model.serviceSelector
+        changed=(action (mut model.serviceSelector))
+        addActionLabel="newReceiver.serviceSelector.addActionLabel"
+        allowEmptyValue=true
+      }}
+      <p class="help-block">{{t 'newReceiver.serviceSelector.help'}}</p>
+    </div>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="form-label form-control-static">
+      <label>{{t 'formUpgrade.size'}}</label>
+    </div>
+    <div>
+      {{input-integer min="1" class="form-control" value=model.batchSize}}
+    </div>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="form-label form-control-static">
+      <label>{{t 'formUpgrade.interval'}}</label>
+    </div>
+    <div class="input-group">
+      {{input-integer class="form-control" value=model.interval}}
+      <span class="input-group-addon">{{t 'formUpgrade.sec'}}</span>
+    </div>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="form-label form-control-static">
+      <label>{{t 'formUpgrade.behavior'}}</label>
+    </div>
+    <div class="form-control-static">
+      <label class="checkbox r-ml20" style="color: inherit; text-transform: none;">{{input type="checkbox" checked=model.startFirst}} {{t 'formUpgrade.startStop'}}</label>
+    </div>
+  </div>
+</div>

@@ -29,21 +29,7 @@ export default ModalBase.extend(NewOrEdit, ManageLabels, {
     }
     this.set('ips', ips);
 
-    let requireAny = {};
-    str = this.getLabel(C.LABEL.REQUIRE_ANY);
-    if ( str ) {
-      str.split(/\s*,\s*/).forEach((pair) => {
-        let index = pair.indexOf('=');
-        if ( index > 0 ) {
-          let key = pair.substr(0,index);
-          let val = pair.substr(index+1);
-          requireAny[key] = val;
-        } else {
-          requireAny[pair] = '';
-        }
-      });
-    }
-    this.set('requireAny', requireAny);
+    this.set('requireAny', this.getLabel(C.LABEL.REQUIRE_ANY));
   },
 
   ipsChanged: function() {
@@ -53,20 +39,7 @@ export default ModalBase.extend(NewOrEdit, ManageLabels, {
 
   requireAnyChanged: function() {
     let any = this.get('requireAny');
-    let keys = Object.keys(any);
-    let ary = [];
-    keys.forEach((key) => {
-      if ( key ) {
-        let val = (any[key]||'').trim();
-        if ( val ) {
-          ary.push(key+'='+val);
-        } else {
-          ary.push(key);
-        }
-      }
-    });
-
-    this.setLabel(C.LABEL.REQUIRE_ANY, ary.join(', '));
+    this.setLabel(C.LABEL.REQUIRE_ANY, any||undefined);
   }.observes('requireAny'),
 
   updateLabels(labels) {
@@ -88,10 +61,6 @@ export default ModalBase.extend(NewOrEdit, ManageLabels, {
   actions: {
     setUserLabels(labels) {
       this.set('userLabels', labels);
-    },
-
-    updateRequireAny(any) {
-      this.set('requireAny', any);
     },
   },
 

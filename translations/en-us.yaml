@@ -2112,14 +2112,11 @@ hookPage:
     detailLink: "{displayService}"
     detailSuffix: "by {amount}"
   scaleHost:
-    label: Scale a Host
-    detailPrefix: "Scale {action} "
-    detailLink: "{displaySelector}"
-    detailSuffix: "by {amount}"
+    label: Scale the number of Hosts
+    detail: "Matching {labels} {action} by {amount}"
   serviceUpgrade:
     label: Upgrade a Service
-    detailPrefix: "Upgrade"
-    detailLink: "{displayService}"
+    detail: "Matching {labels} when <code>{tag}</code> changes"
   fields:
     kind:
       label: Kind
@@ -2929,19 +2926,23 @@ newReceiver:
   batchSize:
     label: Upgrade batch size
   deleteOption:
-    label: Remove
-    mostRecent: Most recently created Host
-    leastRecent: Oldest Host
+    label: When Scaling Down, Remove
+    mostRecent: The most recently created Host
+    leastRecent: The oldest Host
   hostSelector:
     label: Host Selector
-    help: A label which selects the hosts that will be scaled
+    addActionLabel: Add Selector Label
+    help:
+      up: Hosts with matching labels will be used as the template for deploying the new {by, plural, =1 {host} other {hosts}}.
+      down: Hosts with matching labels will be candidates for being removed during scale down.
   image:
     label: Docker Image name
   service:
     label: Target Service
   serviceSelector:
     label: Service Selector
-    help: A label which selects the service(s) that will be scaled
+    addActionLabel: Add Selector Label
+    help: Services matching the given label will be upgraded
   amount:
     label: By
   min:
@@ -2950,6 +2951,10 @@ newReceiver:
   max:
     label: Maximum Scale
     placeholder: e.g. 20
+  tag:
+    label: Image Tag
+    placeholder: "e.g. latest"
+    help: Only registry pushes to the given tag will cause a service upgrade.
 
 newSecret:
   title:
