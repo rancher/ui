@@ -79,7 +79,7 @@ module.exports = function(app/*, options*/) {
           );
         }
         break;
-      case 'UPDATE':
+      case 'PUT':
       default:
         return res.status(405).send();
         break;

@@ -98,8 +98,8 @@
       <div class="container-flex">
         {{#each selectedTemplateModel.questions as |question|}}
           <div class="flex-item-half">
-            <div class="col span-12 inline-label m-10">
-              <label class="inline-label">{{question.label}}{{if question.required "*"}}</label>
+            <div class="col span-12 col-inline m-10">
+              <label class="col-inline">{{question.label}}{{if question.required "*"}}</label>
 
               {{#if question.supported}}
                 {{component question.inputComponent field=question value=question.answer}}
@@ -139,7 +139,7 @@
           {{/each}}
           <li role="tab" class="{{if (eq previewTab 'answers') 'active'}}" {{action "selectPreviewTab" "answers"}}><a href="#">{{t 'newCatalog.txt'}} {{copy-to-clipboard clipboardText=answersString size="small"}}</a></li>
         </ul>
-        
+
         <div class="tab-content" role="tabpanel">
           {{#each selectedTemplateModel.filesAsArray as |file|}}
             {{code-block code=file.body language="yaml" hide=(not-eq previewTab file.name)}}
