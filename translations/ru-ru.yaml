@@ -36,6 +36,7 @@ generic:
   save: Сохранить
   saved: Сохранено
   saving: Сохранение
+  search: Искать
   state: Состояние
   test: Тест
   testing: Тестирование
@@ -137,6 +138,7 @@ authPage:
           text: Аунтификация
           helpText: "Чтобы перенастроить Shibboleth интеграцию - отключите контроль доступа чуть ниже и настройте всё по-новой."
       disableAccess:
+        header: "Опасная Зона&trade;"
         warning: '<b class="text-danger">Внимание:</b> Отключение контроля доступа предоставит полный доступ к Системе {appName} любому, кто может зайти на эту страницу или достучаться до API. Мы предупреждали.'
         disable: Отключить контроль доступа
       groupsField: 'Группы:'
@@ -145,13 +147,19 @@ authPage:
       userId: 'ID пользователя:'
     disabled:
       warning: "Система {appName} может быть настроена на предоставление доступа набору пользователей и/или групп директории {providerName}. Прямо сейчас это не настроено, так что все, кто могут зайти на эту страницу (или достучаться до API) имеют полный контроль над системой. Не порядок."
+      name:
+        labelText: Отображаемое имя поля
       username:
         labelText: Поле имени пользователя
+      uid:
+        labelText: Поле UID
       groups:
         labelText: Поле группы
       testAuth:
         header: '2. Протестируйте и включите аунтификацию'
         subtext: 'Проверьте правильность настройки приложения путем проверки подлинности с ним:'
+        buttonText:
+          pre: Аунтефицироваться с IDP
   root:
     header: Access Control
   github:
@@ -426,6 +434,10 @@ containersPage:
       entryPoint: 'Точка входа:'
       description: 'Описание:'
       stack: 'Стек/Сервисы:'
+      memoryReservation:
+        labelText: 'Резервирование памяти: '
+      milliCpuReservation:
+        labelText: 'Резервирование mCPU: '
     navTabs:
       labels: Лейблы
       volumes: Разделы
@@ -648,6 +660,7 @@ mesosPage:
     content: Вы можете запустить фреймворки из нашего каталога.
     button: Запуск фреймворк
   manage:
+    content: Управление Mesos из Mesos UI.
     button: Mesos UI
 notFoundPage:
   header: "Вы запросили несуществующую страницу. Пожалуйста, аккуратнее."
@@ -731,6 +744,8 @@ servicePage:
   linksTab:
     header: Привязки
     noData: Нет привязок
+  certsTab:
+    default: Сертификат по умолчанию
   new:
     form:
       name:
@@ -765,6 +780,8 @@ servicePage:
         event: Событие
         description: Описание
   type:
+    externalservice: Внешний
+    kubernetesservice: K8s сервис
     networkdriverservice: Сетевая служба
     storagedriverservice: Служба хранилища
 settingsPage:
@@ -859,7 +876,18 @@ swarmPage:
 processesPage:
   header: Процессы
   tab:
+    summary: Описание
     pools: Пулы хранилищ
+    running: Запущеные
+  summary:
+    table:
+      ready: Готов
+      delay: Задержка
+  pools:
+    table:
+      activeTasks: Активный
+      completedTasks: Завершено
+      queueSize: Размер очереди
 virtualMachinePage:
   header: 'Виртуальная машина:'
   multistat:
