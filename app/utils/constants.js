@@ -162,6 +162,7 @@ var C = {
     KERNEL_VERSION: 'io.rancher.host.linux_kernel_version',
     KVM: 'io.rancher.host.kvm',
     SCHED_IPS: 'io.rancher.scheduler.ips',
+    REQUIRE_ANY: 'io.rancher.scheduler.require_any',
 
     // Kubernetes
     K8S_DASHBOARD: 'io.rancher.k8s.kubernetes-dashboard',
@@ -382,6 +383,7 @@ C.SYSTEM_LABELS_WITH_CONTROL = [
   C.LABEL.START_ONCE,
   C.LABEL.REQUESTED_IP,
   C.LABEL.PULL_IMAGE,
+  C.LABEL.REQUIRE_ANY,
   C.LABEL.SCHED_IPS,
   C.LABEL.AGENT_IMAGE,
   C.LABEL.DOCKER_VERSION,
