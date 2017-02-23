@@ -1,40 +1,90 @@
-table {
-    position: relative;
-    &.fixed {
-        table-layout: fixed;
-        width: 100%;
-    }
-    .fixed-header-actions {
-        min-height: 40px;
-        width: 100%;
-        z-index: 1;
+//
+// Important: Almost all selectors in here need to be ">"-ed together so they
+// apply only to the current table, not one nested inside another table.
+//
+
+TABLE {
+  position: relative;
+
+  &.fixed {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  .fixed-header-actions {
+    min-height: 40px;
+    width: 100%;
+    z-index: 1;
         background: $body-bg;
+  }
+
+  .fixed-header {
+    z-index: 2;
+    background: $link-color;
+
+    > TH {
+      BUTTON {
+        padding: 0;
+      }
     }
-    .fixed-header {
-        z-index: 2;
-        tr {
-            background: $link-color;
-        }
+  }
+
+  .fixed-header-placeholder {
+    visibility: hidden;
+
+    TH {
+      padding: 0 !important;
+      height: 0 !important;
     }
-    .fixed-header {
-        th {
-            button {
-                padding: 0;
-            }
-        }
+  }
+
+  > THEAD > TR > TH,
+  > TBODY > TR > TD {
+    padding: 5px;
+  }
+
+  &.small {
+    > THEAD {
+      > TR > TH {
+        padding: 2px 5px;
+      }
     }
-    .fixed-header-placeholder {
-        visibility: hidden;
-        //padding: 0;
-        th {
-            padding: 0 !important;
-            height: 0 !important;
-        }
+
+    > TBODY > TR > TD {
+      padding: 2px 5px;
     }
-    tr {
-        td {
-            padding: 10px;
+  }
+
+  > THEAD > TR {
+    width: 100%;
+    box-sizing: border-box;
+    border-width: 0 0 3px 0;
+    border-color: $table-border-color;
+    border-radius: 0;
+    outline: none;
+    transition: all ease-in-out .2s;
+
+    &.fixed-header {
+      background: $link-color;
+      th .btn {
+        color: white;
+      }
+    }
+
+    > TH {
+      border-width: 0 0 3px 0;
+<<<<<<< HEAD
+      border-color: rgba($mid-grey, .2);
+      border-radius: 0;
+      outline: none;
+      transition: all ease-in-out .3s;
+
+      &.fixed-header {
+        background: $link-color;
+        th .btn {
+          color: white;
         }
+<<<<<<< HEAD:app/styles/components/_tables.scss
     }
     thead {
         tr {
@@ -64,55 +114,70 @@ table {
                     text-align: center;
                 }
             }
-        }
+=======
+      }
+=======
+      border-color: $table-border-color;
+      text-align: left;
+      font-weight: normal;
+>>>>>>> Host list tweaks
+
+      .btn {
+        color: white;
+      }
     }
-    tbody {
-        border: none;
-        background-color: $table-bg;
-        tr {
-            border-bottom: solid thin $table-border-color;
-            td {
-                border: solid thin $table-border-color;
-            }
-        }
-        &.striped {
-            tr {
-                border: none;
-                td {
-                    border: none;
-                }
-                &:nth-child(even) {
-                    background-color: $table-bg-accent;
-                }
-            }
-        }
+  }
+
+  > TBODY {
+    border: none;
+    background-color: $table-bg;
+
+    > TR {
+      > TD {
+        border: solid thin $table-border-color;
+      }
+
+      &.row-selected {
+        background-color: yellow;
+      }
+
+      &:hover {
+        background-color: orange;
+      }
+
+      &.subrow:hover {
+        background-color: inherit;
+      }
     }
-    tbody {
-        &.striped {
-            tr {
-                &:hover {
-                    background-color: $table-bg-hover;
-                }
-            }
-        }
+  }
+
+  &.striped > TBODY > TR {
+    > TD {
+      border: none;
     }
-    &.solid {
-        background: $light-grey;
-        tbody {
-            tr {
-                &:hover {
-                    background-color: $table-bg-hover;
-                }
-                td {
-                    border: solid 2px white;
-                    &:hover {
-                        background-color: $info;
-                    }
-                }
-            }
-        }
+
+    &:nth-child(odd) {
+      background-color: $table-bg;
     }
-    .select-for-action {
-        text-align: center;
+
+    &:nth-child(even) {
+      background-color: $table-bg-accent;
     }
+
+    &.row-selected {
+      background-color: yellow;
+    }
+
+    &:hover {
+      background-color: orange;
+    }
+
+    &.subrow:hover {
+      background-color: inherit;
+    }
+  }
+
+  .select-for-action {
+    text-align: center;
+  }
 }

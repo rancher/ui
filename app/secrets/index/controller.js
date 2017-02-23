@@ -8,6 +8,7 @@ export default Ember.Controller.extend({
       "label": "action.remove",
       "icon": "icon icon-trash",
       "action": "promptDelete",
+      "altAction": "delete",
       "bulkActionName": "Delete",
     },
   ],

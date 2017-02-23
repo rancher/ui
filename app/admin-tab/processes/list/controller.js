@@ -38,7 +38,7 @@ export default Ember.Controller.extend({
       }
     ];
 
-    if ( which === 'completed' ) {
+    if ( which === 'delayed' || which === 'completed' ) {
       out.push({
         translationKey: 'processesPage.list.table.exitReason',
         name: 'exitReason',

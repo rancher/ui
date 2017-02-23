@@ -1,0 +1,81 @@
+<div class="row form-group">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="form-label form-control-static">
+      <label>{{t 'newReceiver.action.label'}}</label>
+    </div>
+    <div>
+      <span class="radio inline-block r-mr10">
+        <label>{{radio-button selection=model.action value="up"}}&nbsp;{{t 'newReceiver.action.up'}}</label>
+      </span>
+      <span class="radio inline-block">
+        <label>{{radio-button selection=model.action value="down"}}&nbsp;{{t 'newReceiver.action.down'}}</label>
+      </span>
+    </div>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="form-label form-control-static">
+      <label>{{t 'newReceiver.hostSelector.label'}}*</label>
+    </div>
+    <div>
+      {{form-key-value
+        initialMap=model.hostSelector
+        changed=(action (mut model.hostSelector))
+        addActionLabel="newReceiver.hostSelector.addActionLabel"
+        allowEmptyValue=true
+      }}
+      <p class="help-block">{{t (concat-str 'newReceiver.hostSelector.help.' model.action character='') by=model.amount}}</p>
+    </div>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-md-6 col-md-offset-3">
+    <div class="form-label form-control-static">
+      <label>{{t 'newReceiver.amount.label'}}</label>
+    </div>
+    <div class="row">
+      <div class="col-xs-3 col-sm-2">
+        {{format-number model.amount}}
+      </div>
+      <div class="col-xs-9 col-sm-10">
+        {{input-slider value=model.amount valueMin=1 valueMax=11}}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row form-group">
+  <div class="col-md-3 col-md-offset-3">
+    <div class="form-label form-control-static">
+      <label>{{t 'newReceiver.min.label'}}</label>
+    </div>
+    {{input-integer min=1 value=model.min class="form-control" placeholder=(t 'newReceiver.min.placeholder')}}
+  </div>
+  <div class="col-md-3">
+    <div class="form-label form-control-static">
+      <label>{{t 'newReceiver.max.label'}}</label>
+    </div>
+    {{input-integer min=1 value=model.max class="form-control" placeholder=(t 'newReceiver.max.placeholder')}}
+  </div>
+</div>
+
+{{#if (eq model.action "down")}}
+  <div class="row form-group">
+    <div class="col-md-6 col-md-offset-3">
+      <div class="form-label form-control-static">
+        <label>{{t 'newReceiver.deleteOption.label'}}</label>
+      </div>
+      <div>
+        <span class="radio inline-block r-mr10">
+          <label>{{radio-button selection=model.deleteOption value="leastRecent"}}&nbsp;{{t 'newReceiver.deleteOption.leastRecent'}}</label>
+        </span>
+        <span class="radio inline-block">
+          <label>{{radio-button selection=model.deleteOption value="mostRecent"}}&nbsp;{{t 'newReceiver.deleteOption.mostRecent'}}</label>
+        </span>
+      </div>
+    </div>
+  </div>
+{{/if}}

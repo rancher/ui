@@ -31,7 +31,6 @@ generic:
   missing: "*%MISSING%*"
   moreActions: More Actions
   na: 'n/a'
-  no: No
   name: Name
   none: None
   ports: Ports
@@ -49,7 +48,9 @@ generic:
   type: Type
   unknown: Unknown
   uuid: UUID
-  yes: Yes
+  # These are not "yes" and "no" to avoid being parsed as bools by yaml parser.
+  noo: No
+  yess: Yes
 
 
 ##############################
@@ -635,10 +636,25 @@ hostsPage:
     addHost: Add Host
     tooltip:
       listView: List
+      iconView: State Icons
       groupedView: Grouped Stacks & Sidekicks
     columns:
       emptyMessage: No hosts or containers yet.
     showSystem: Show System
+    table:
+      state: State
+      name: Name
+      ip: IP Address
+      host: Host
+      image: Image
+      command: Command
+      docker: Docker
+      os: OS
+      cpu: CPU
+      memory: RAM
+      disk: Disk
+      noData: You do not have any hosts yet
+      noMatch: No hosts match the current search
   new:
     header:
       linkTo: "Hosts: "
@@ -1527,6 +1543,10 @@ editHost:
     valuePlaceholder: e.g. 1.2.3.4
     addActionLabel: Add IP
     help:  If provided, the scheduler will select and bind published ports to one of the given public IP addresses.
+  requireAny:
+    label: Require Container Label
+    help: If provided, containers must have one or more of the given labels in order to be eligible for scheduling onto this host.  If the value is left empty, a container with a matching key is eligible regardless of value.
+    addActionLabel: Add Required Label
 
 editProjectTemplate:
   title:
@@ -2128,16 +2148,22 @@ heroAddService:
   linkToCatalog: Browse Catalog
 
 hookPage:
-  scaleService:
-    label: Scale a Service
-    detailPrefix: "Scale {action} "
-    detailLink: "{displayService}"
-    detailSuffix: "by {amount}"
   receiver:
     header: Receiver Hooks
     buttonText: Add Receiver
     content: "Receiver hooks give you a URL that can be hit to trigger an action inside of {appName}."
     noData: No receiver hooks.
+  scaleService:
+    label: Scale a Service
+    detailPrefix: "Scale {action} "
+    detailLink: "{displayService}"
+    detailSuffix: "by {amount}"
+  scaleHost:
+    label: Scale the number of Hosts
+    detail: "Matching {labels} {action} by {amount}"
+  serviceUpgrade:
+    label: Upgrade a Service
+    detail: "Matching {labels} when <code>{tag}</code> changes"
   fields:
     kind:
       label: Kind
@@ -2941,8 +2967,28 @@ newReceiver:
     label: Kind
   action:
     label: Action
+    up: Scale Up
+    down: Scale Down
+  batchSize:
+    label: Upgrade batch size
+  deleteOption:
+    label: When Scaling Down, Remove
+    mostRecent: The most recently created Host
+    leastRecent: The oldest Host
+  hostSelector:
+    label: Host Selector
+    addActionLabel: Add Selector Label
+    help:
+      up: Hosts with matching labels will be used as the template for deploying the new {by, plural, =1 {host} other {hosts}}.
+      down: Hosts with matching labels will be candidates for being removed during scale down.
+  image:
+    label: Docker Image name
   service:
     label: Target Service
+  serviceSelector:
+    label: Service Selector
+    addActionLabel: Add Selector Label
+    help: Services matching the given label will be upgraded
   amount:
     label: By
   min:
@@ -2951,6 +2997,10 @@ newReceiver:
   max:
     label: Maximum Scale
     placeholder: e.g. 20
+  tag:
+    label: Image Tag
+    placeholder: "e.g. latest"
+    help: Only registry pushes to the given tag will cause a service upgrade.
 
 newSecret:
   title:
@@ -2984,8 +3034,8 @@ pagination:
   multi: |
     {pages, plural,
     =0 {0 Items}
-    =1 {{count} {count, select, =1 {Item} other {Items}}}
-    other {{from} - {to} of {count}}}
+    =1 {{count} {count, plural, =1 {Item} other {Items}}}
+    other {{from} - {to} of {count} Items}}
 
 pageHeaderEnvironment:
   namespace: Namespace
@@ -3011,15 +3061,15 @@ reservationParameters:
   label: Resource Limit
   localStorage:
     labelText: 'Local Storage'
-    placeholder: 'e.g. 40960'
+    placeholder: 'Default: Entire host'
     unit: 'MB'
   memory:
     labelText: 'Memory'
-    placeholder: 'e.g. 2048'
+    placeholder: 'Default: Entire host'
     unit: 'MB'
   milliCpu:
     labelText: CPU
-    placeholder: 'e.g. 1000'
+    placeholder: 'Default: Entire host'
     unit: 'mCPU'
 
 saveCancel:
@@ -3213,6 +3263,7 @@ viewEditProject:
     label: Network Policy
     description: Control what containers are allowed to communicate with each other over the Managed Network.
     unsupported: This environment has network policy rules which are not yet supported by the UI.  Please use the API to manage the policy.
+    noManager: Network Policies are available only for environments using Cattle Orchestration with the Network Policy Manager infrastructure template deployed.
     withinStack: Within Stack
     withinService: Within Service
     withinLinked: Between Linked Services
@@ -3377,6 +3428,7 @@ action:
   console: Open Console
   deactivate: Deactivate
   edit: Edit
+  evacuate: Evacuate
   execute: Execute Shell
   exportConfig: Export Config
   finishUpgrade: Finish Upgrade

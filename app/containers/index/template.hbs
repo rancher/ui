@@ -9,22 +9,11 @@
 </section>
 
 <section class="instances r-pt5 r-pb5">
-  {{#sortable-table
-    classNames="grid sortable-table"
-    sorts=sorts
+  {{container-table
     body=filtered
     sortBy=sortBy
     bulkActions=true
-    bulkActionCallee=(action 'applyBulkAction')
     bulkActionsList=bulkActionsList
-    perPage=prefs.tablePerPage
-    headers=headers as |container kind|}}
-    {{#if (eq kind "row")}}
-      {{container-row model=container showCommand="column" showHost=true showActions=true showPrimaryActions=false}}
-    {{else if (eq kind "nomatch")}}
-      <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.index.table.body.noMatch'}}</td></tr>
-    {{else if (eq kind "norows")}}
-      <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.index.table.body.noData'}}</td></tr>
-    {{/if}}
-  {{/sortable-table}}
+    showHost=true
+  }}
 </section>

@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
-import Util from 'ui/utils/util';
+import { uniqKeys, ucFirst } from 'ui/utils/util';
 import { isAlternate } from 'ui/utils/platform';
 
 export default Ember.Component.extend(NewOrEdit, {
@@ -40,7 +40,7 @@ export default Ember.Component.extend(NewOrEdit, {
             intl.t('editProjectTemplate.error.changing', {
               tplCategory: tpl.get('category'),
               stackName: tpl.get('name'),
-              orchestration: Util.ucFirst(orch),
+              orchestration: ucFirst(orch),
             })
           );
           return;
@@ -96,15 +96,15 @@ export default Ember.Component.extend(NewOrEdit, {
 
     this.get('catalogInfo.catalog').forEach((tpl) => {
       let tplId = tpl.get('id');
-      let category = (tpl.get('category')||'').toLowerCase();
+      let categories = tpl.get('categoryLowerArray');
 
-      if ( category === 'orchestration')
+      if ( categories.includes('orchestration') )
       {
         orch.push(tpl.get('id'));
       }
 
       let cur = stacks.findBy('externalIdInfo.templateId', tplId);
-      let required = category === 'framework';
+      let required = categories.includes('framework');
 
       if ( cur ) {
         map[tplId] = Ember.Object.create({
@@ -167,14 +167,19 @@ export default Ember.Component.extend(NewOrEdit, {
   },
 
   categories: function() {
-    let out = this.get('catalogInfo.catalog').map(tpl => tpl.category).uniq().sort();
+    let out = [];
+    this.get('catalogInfo.catalog').forEach((obj) => { out.pushObjects(obj.get('categoryArray')); });
+    out = uniqKeys(out);
+
     out.removeObject('Orchestration');
+
     if ( out.includes('Framework') ) {
+      // Move to the bottom
       out.removeObject('Framework');
       out.push('Framework');
     }
     return out;
-  }.property('catalogInfo.catalog.@each.category'),
+  }.property('catalogInfo.catalog.@each.categoryArray'),
 
   showOrchestrationOrigin: false,
   orchestrationChoices: function() {
@@ -189,7 +194,7 @@ export default Ember.Component.extend(NewOrEdit, {
     this.get('orchestrationIds').forEach((id) => {
       let tpl = (map[id]||{}).tpl;
       if ( tpl ) {
-        drivers.push({name: id, title: tpl.name, source: 'in ' + Util.ucFirst(tpl.catalogId), image: tpl.links.icon});
+        drivers.push({name: id, title: tpl.name, source: 'in ' + ucFirst(tpl.catalogId), image: tpl.links.icon});
         seen[tpl.name] = (seen[tpl.name]||0)+1;
       }
     });
@@ -223,9 +228,9 @@ export default Ember.Component.extend(NewOrEdit, {
         this.get('growl').error(
           intl.t('editProjectTemplate.error.conflict'),
           intl.t('editProjectTemplate.error.enabling', {
-            tplCategory: tpl.get('category'),
+            tplCategory: tpl.get('categoryArray.firstObject'),
             stackName: tpl.get('name'),
-            orchestration: Util.ucFirst(orch),
+            orchestration: ucFirst(orch),
           })
         );
 
