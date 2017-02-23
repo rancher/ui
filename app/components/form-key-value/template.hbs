@@ -14,7 +14,7 @@
       <tr>
         <td class="valign-top" data-title="{{t keyLabel}}:">
           {{#if editing}}
-            {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=row.key placeholder=keyPlaceholder}}
+            {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=row.key placeholder=keyPlaceholder disabled=(eq row.editable false)}}
           {{else}}
             {{row.key}}
           {{/if}}
@@ -29,9 +29,9 @@
         <td class="valign-top" data-title="{{t valueLabel}}:">
           {{#if editing}}
             {{#if allowMultilineValue}}
-              {{textarea-autogrow class="form-control input-sm value" value=row.value placeholder=valuePlaceholder}}
+              {{textarea-autogrow class="form-control input-sm value" value=row.value placeholder=valuePlaceholder disabled=(eq row.editable false)}}
             {{else}}
-              {{input class="form-control input-sm value" type="text" value=row.value placeholder=valuePlaceholder}}
+              {{input class="form-control input-sm value" type="text" value=row.value placeholder=valuePlaceholder disabled=(eq row.editable false)}}
             {{/if}}
           {{else}}
             {{row.value}}

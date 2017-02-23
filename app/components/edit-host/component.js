@@ -14,6 +14,7 @@ export default ModalBase.extend(NewOrEdit, ManageLabels, {
 
   ips: null,
   requireAny: null,
+  requiredIfAny: {[C.LABEL.SYSTEM_TYPE]: ''},
   systemLabels: null,
   userLabels: null,
 
