@@ -128,8 +128,13 @@ export default Ember.Component.extend(ModalBase, {
     var bodyOut = {
       card: card,
       subscription: {id: this.get('selectedCurrency')},
-      account: {id: this.get('account.id'), stripeId: JSON.parse(this.get('account.description')).stripeAccountId}
+      account: {id: this.get('account.id')}
     };
+
+    if (this.get('account.description')) {
+      bodyOut.account.stripeId = JSON.parse(this.get('account.description')).stripeAccountId;
+    }
+
     fetch('/payment', {
       method: 'POST',
       headers: {

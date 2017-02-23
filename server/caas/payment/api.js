@@ -1,7 +1,8 @@
+/* jshint esversion: 6 */
 module.exports = function(app/*, options*/) {
   const bodyParser = require('body-parser');
   const config = require('../../../config/environment')().APP;
-  const stripe = require('stripe')('sk_test_QweblcKcSrTBP2Z9UkzFHyDU');
+  const stripe = require('stripe')(process.env.STRIPE_TOKEN);
   const request = require('request');
 
   const rancherApiUrl = `${config.apiServer}${config.apiEndpoint}`;
@@ -15,10 +16,14 @@ module.exports = function(app/*, options*/) {
   app.use('/payment', function(req, res) {
     switch (req.method) {
       case 'DELETE':
-        removeCard(req.body.customerId, req.body.cardId, function(err, confirmation) {
-          if (err) return generateError('payment', err, res);
-          return res.status(200).json({type: 'success', status: 200, message: confirmation});
-        });
+        stripe.customers.deleteCard(
+          req.body.customerId,
+          req.body.cardId,
+          function(err, confirmation) {
+            if (err) return generateError('payment', err, res);
+            return res.status(200).json({type: 'success', status: 200, message: confirmation});
+          }
+        );
         break;
       case 'POST':
         var card = req.body.card;
@@ -64,41 +69,34 @@ module.exports = function(app/*, options*/) {
 
               let model = [];
 
-              if (!customer.deleted) {
-
+              if (customer.deleted) {
+                return generateError('db', err, res);
+              } else {
                 customer.sources.data.forEach((card) => {
                   model.push({brand: card.brand, id: card.id, last4: card.last4, name: card.name, expiry: `${card.exp_month}/${card.exp_year}`});
                 });
 
                 return res.status(200).json(model);
-              } else {
-
-                return generateError('db', err, res);
               }
             }
           );
         }
         break;
+      /* jshint ignore:start */
       case 'PUT':
       default:
         return res.status(405).send();
         break;
+      /* jshint ignore:end */
     }
   });
 
   function removeCard(customerId, cardId, cb) {
-    stripe.customers.deleteCard(
-      customerId,
-      cardId,
-      function(err, confirmation) {
-        return cb(err||null, confirmation);
-      }
-    );
   }
 
   function addCustomerToAccount(accountId, stripeAccountId, cb) {
     // right now we'll be adding this to description field but that wont be perm and will need to change whent he field is added to cattle
-    var url = `${rancherApiUrl}/accounts/${accountId}`;
+    var url = `${rancherApiUrl}/accounts/${encodeURIComponent(accountId)}`;
     newRequest({
       url: url,
       method: 'PUT',
@@ -107,7 +105,7 @@ module.exports = function(app/*, options*/) {
       }
     }, function(body, response) {
       if (!body || !body.data) {
-        return cb(body, null);
+        return cb(new Error('Could not add the stripe id to the account'));
       }
       return cb(null, body.data);
     });
@@ -121,7 +119,7 @@ module.exports = function(app/*, options*/) {
       method: 'GET',
     }, function(body, response) {
       if (!body || !body.data || !body.data.length ) {
-        return cb(response, null);
+        return cb(new Error('Could not get the users email'));
       }
       return cb(null, body.data[0].publicValue);
     });
