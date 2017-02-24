@@ -61,6 +61,7 @@ module.exports = function(environment) {
       }
     },
 
+
     minifyCSS: {
         enabled: false
     },
@@ -109,7 +110,10 @@ module.exports = function(environment) {
                     '?eventNames=resource.change' +
                     '&limit=-1',
       baseAssets: '/',
-      locales: readLocales(environment)
+      locales: readLocales(environment),
+      stripe: {
+        publishableKey: 'pk_test_g925RcuVORh2KgHWfFbE80by'
+      },
     },
   };
 

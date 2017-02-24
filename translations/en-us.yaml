@@ -12,6 +12,7 @@ generic:
   cancel: Cancel
   closeModal: Close
   created: Created
+  confirm: Confirm
   default: Default
   description: Description
   disable: Disable
@@ -1063,6 +1064,29 @@ swarmPage:
       body:
         noData: You do not have any Services yet.
 
+userSettingsPage:
+  header: Preferences
+  theme: Theme
+  themeAuto: Auto will transition to dark from 6pm-6am
+  tableRows: Table Rows per Page
+  generalInfo:
+    header: My Account
+    form:
+      name:
+        label: Name
+        placeholder: John Smith
+        help: "(To change your email, contact support)"
+        lastChanged: "Your password was last changed on: <\br> {date}"
+      username:
+        label: Username/Email
+        placeholder: johnsmith@example.com
+      password:
+        label: Password
+        text: Change Password
+
+
+
+
 processesPage:
   header: Processes
   tab:
@@ -1348,6 +1372,22 @@ serviceInfoPartial:
 advancedSection:
   hrText: Advanced Options
 
+
+billingInfo:
+  header: Billing Info
+  addNew: Add Payment Method
+  card: "{brand}: ...{last}"
+  noSub: You do not have an active description
+  table:
+    title:
+      cardType: "Brand: {brand}"
+      last4: "Last Four: {last}"
+      exp: "Exp Date: {exp}"
+      name: "Name On Card: {name}"
+      actions: Actions
+
+
+
 caasLogin:
   resetHeader: Reset Password
   new: Create Account
@@ -1388,6 +1428,7 @@ catalogSettings:
     branch:
       label: Branch
       placeholder: 'e.g. master'
+
 
 confirmDelete:
   title: 'Are you sure you want to delete'
@@ -2765,6 +2806,59 @@ modalAboutComponent:
   machineService: Machine Service
   close: Close
 
+modalAddPayment:
+  header: Add New Payment Method
+  save: Save
+  errors:
+    cc: Invalid credit card number
+    exp: Invalid Expiry
+    cvc: Invalid CVC number
+    street: A street is required.
+    city: A city is required.
+    state: A state is required.
+    zip: A zipcode is required.
+  form:
+    currency:
+      label: Select your currency
+    cc:
+      label: Credit Card Number
+      placeholder: '•••• •••• •••• ••••'
+    default:
+      label: Default Card
+    name:
+      label: Name On Credit Card
+      placeholder: 'John Smith'
+    exp:
+      label: Expiration
+      placeholder: '••/••'
+    cvc:
+      label: CVC
+      placeholder: '•••'
+    address:
+      addressLine1:
+        label: Address
+        placeholder: 742 Evergreen Terrace
+      addressLine2:
+        label: Address (cont)
+        placeholder: Apt. 123
+      city:
+        label: City
+        placeholder: Springfield
+      state:
+        label: State
+        placeholder: OR
+      zip:
+        label: Zip Code
+        placeholder: '99999'
+      country:
+        label: Country
+        placeholder: United States
+  currencies:
+    yuan: "Chinese Yuan (¥)"
+    euro: "Euro (€)"
+    dollar: "US Dollar ($)"
+
+
 modalAuditlogInfo:
   header: Additional Log Info
   request: "Request Object:"
@@ -2800,6 +2894,12 @@ modalEditBackup:
   nameLabel: Backup Name
   backupTarget: Backup Target
   backupTargetPlaceholder: 'Select a Backup target...'
+
+modalConfirmRemovePayment:
+  header: 'Confirm Payment Removal'
+  title: 'Are you sure you want to delete'
+  card: 'Card ending in {card}'
+  note: 'This will also cancel your Cloud subscription'
 
 modalEditDriver:
   header:
@@ -3414,6 +3514,8 @@ nav:
     prefix: "Before adding your first service or launching a container, you'll need to add a Windows host.  "
     link: "Add a host"
     suffix: ""
+  userSettings:
+    link: "User Settings"
 
 ##############################
 # Resource Actions
