@@ -20,7 +20,7 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   search:            true,
   paging:            true,
   bulkActionsList:   null,
-  subRows: false, 
+  subRows:           false,
 
   availableActions:  null,
   selectedNodes:     null,
@@ -223,18 +223,33 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   // ------
   rowClick(e) {
     let tagName = e.target.tagName;
+    if ( tagName === 'A'  || $(e.target).data('ember-action') ) {
+      return;
+    }
+
     let content = this.get('pagedContent');
     let selection = this.get('selectedNodes');
     let isCheckbox = tagName === 'INPUT' || Ember.$(e.target).hasClass('select-for-action');
-    let nodeId = Ember.$(e.currentTarget).find('input[type="checkbox"]').attr('nodeid');
-    let node = content.findBy('id', nodeId);
+    let tgtRow = Ember.$(e.currentTarget);
+    while ( tgtRow && !tgtRow.hasClass('main-row') ) {
+      tgtRow = tgtRow.prev();
+    }
 
-    if ( !node || tagName === 'A' ) {
+    if ( !tgtRow ) {
+      return;
+    }
+
+    let nodeId = tgtRow.find('input[type="checkbox"]').attr('nodeid');
+    if ( !nodeId ) {
+      return;
+    }
+
+    let node = content.findBy('id', nodeId);
+    if ( !node ) {
       return;
     }
 
     let isSelected = selection.includes(node);
-
     let prevNode = this.get('prevNode');
     // PrevNode is only valid if it's in the current content
     if ( !content.includes(prevNode) ) {
@@ -321,7 +336,13 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
         let input = Ember.$(`input[nodeid=${id}]`);
         if ( input && input.length ) {
           Ember.run.next(function() { input[0].checked = on; });
-          Ember.$(input).closest('tr').toggleClass('row-selected', on);
+          let tr = Ember.$(input).closest('tr');
+          let first = true;
+          while ( tr && (first || tr.hasClass('sub-row') ) ) {
+            tr.toggleClass('row-selected', on);
+            tr = tr.next();
+            first = false;
+          }
         }
       }
     }

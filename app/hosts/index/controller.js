@@ -71,7 +71,7 @@ export default Ember.Controller.extend({
       searchField: 'displayState',
       sort: ['stateSort','displayName'],
       translationKey: 'hostsPage.index.table.state',
-      width: '160px'
+      width: '120px'
     },
     {
       name: 'name',
@@ -95,21 +95,21 @@ export default Ember.Controller.extend({
     },
     {
       name: 'good',
-      sort: ['instanceGoodCount','displayName'],
+      sort: ['instanceGoodCount:desc','displayName'],
       searchField: null,
       width: '60px',
       icon: 'icon icon-circle text-success',
     },
     {
       name: 'other',
-      sort: ['instanceOtherCount','displayName'],
+      sort: ['instanceOtherCount:desc','displayName'],
       searchField: null,
       width: '60px',
       icon: 'icon icon-circle text-warning',
     },
     {
       name: 'bad',
-      sort: ['instanceBadCount','displayName'],
+      sort: ['instanceBadCount:desc','displayName'],
       searchField: null,
       width: '60px',
       icon: 'icon icon-circle text-error',

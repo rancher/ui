@@ -26,31 +26,30 @@
     headers=headers as |host kind|}}
     {{#if (eq kind "row")}}
       {{host-row model=host}}
-    {{else if (eq kind "subrow")}}
-      <tr class="hide">{{! make the alternating color match }}</tr>
-      <tr class="subrow text-muted">
+    {{else if (eq kind "sub-row")}}
+      <tr class="sub-row hide">{{! make the alternating color match }}</tr>
+      <tr class="sub-row text-muted">
         <td></td>
-        <td colspan="{{sub headers.length 4}}" class="text-small">
+        <td>
+          <span class="host-blurb text-small" role="button" {{action "toggleExpand" host.id}}>
+            {{#if (array-includes expandedHosts host.id)}}
+              <i class="icon icon-minus-square"></i> Hide Containers
+            {{else}}
+              <i class="icon icon-plus-square"></i> Show Containers
+            {{/if}}
+          </span>
+        </td>
+        <td colspan="{{sub headers.length 1}}" class="text-small">
           <span class="host-blurb"><i class="icon icon-cpu"></i> {{host.cpuBlurb}}</span>
           <span class="host-blurb"><i class="icon icon-memory"></i> {{host.memoryBlurb}}</span>
           <span class="host-blurb"><i class="icon icon-hdd"></i> {{host.diskBlurb}}</span>
           <span class="host-blurb"><i class="icon icon-host"></i> {{host.osBlurb}}</span>
         </td>
-        <td class="text-right" colspan="3">
-          <span class="host-blurb text-small" role="button" {{action "toggleExpand" host.id}}>
-            {{#if (array-includes expandedHosts host.id)}}
-              Hide Containers <i class="icon icon-minus-square"></i>
-            {{else}}
-              Show Containers <i class="icon icon-plus-square"></i>
-            {{/if}}
-          </span>
-        </td>
-        <td></td>
       <//tr>
-      {{#if (array-includes expandedHosts host.id)}}
-        <tr class="hide">{{! make the alternating color match }}</tr>
-        <tr class="subrow">
-          <td colspan="{{add 1 headers.length}}" class="pl-40 pr-40">
+      <tr class="sub-row hide">{{! make the alternating color match }}</tr>
+      <tr class="sub-row">
+        <td colspan="{{add 1 headers.length}}" class="pl-40 pr-40">
+          {{#if (array-includes expandedHosts host.id)}}
             {{container-table
               body=host.instances
               stickyHeader=false
@@ -58,13 +57,13 @@
               bulkActions=false
               search=false
             }}
-          </td>
-        </tr>
-      {{/if}}
+          {{/if}}
+        </td>
+      </tr>
     {{else if (eq kind "nomatch")}}
-      <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.body.noMatch'}}</td></tr>
+      <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noMatch'}}</td></tr>
     {{else if (eq kind "norows")}}
-      <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.body.noData'}}</td></tr>
+      <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noData'}}</td></tr>
     {{/if}}
   {{/sortable-table}}
 {{else}}

@@ -1,25 +1,42 @@
-<section class="header clearfix">
-  <h1>{{#link-to "hosts"}}{{t 'hostsPage.hostPage.header.linkTo'}}{{/link-to}}</h1>
-  <div class="pull-right">
-    {{#action-menu model=host size="sm" classNames="ml-10 pull-right"}}
-      {{#link-to "containers.new" (query-params hostId=host.id) classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.hostPage.addContainer.linkTo'}}{{/link-to}}
-    {{/action-menu}}
-
-    {{header-state model=host}}
+<section class="header">
+  <div class="banner bg-info mt-0">
+    <div class="banner-message clearfix">
+      <p class="pull-left">{{t 'hostsPage.hostPage.header.singleBanner'}}</p>
+      <p class="pull-right">
+        <a href="{{href-to "hosts"}}">{{t 'hostsPage.hostPage.header.backLink'}}</a>
+      </p>
+    </div>
   </div>
+
+  <div class="clearfix">
+    <h1>
+      {{t 'hostsPage.hostPage.header.title' name=host.displayName}}
+      {{#ember-wormhole destinationElement=graphNode renderInPlace=(not graphExpand)}}
+        {{info-multi-stats model=host linkName="hostStats" single=true}}
+      {{/ember-wormhole}}
+    </h1>
+    {{action-menu model=host showPrimary=false showLabel=true size="md" classNames="ml-10 pull-right"}}
+    {{header-state model=host classNames="pull-right"}}
+  </div>
+
+  {{#if host.description}}
+    <div class="force-wrap mt-5">
+      {{host.description}}
+    </div>
+  {{/if}}
+
+  {{#if host.showTransitioningMessage}}
+    <div class="force-wrap text-right mt-5 {{host.stateColor}}">
+      {{host.transitioningMessage}}
+    </div>
+  {{/if}}
+
+  <div class="expanded-graph"></div>
 </section>
 
 <section>
   <div class="row">
     <div class="col span-3 mb-15">
-      {{#if host.description}}
-        <div>
-          <label>{{t 'hostsPage.hostPage.infoMultiStats.description'}} </label>
-          <div>{{host.description}}</div>
-        </div>
-        <hr>
-      {{/if}}
-
       <div>
         <label>{{t 'hostsPage.hostPage.infoMultiStats.ip'}}</label>
         <div>{{copy-ip ip=host.displayIp}}</div>

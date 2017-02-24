@@ -15,6 +15,13 @@ export default Ember.Component.extend({
 
   primaryAction   : Ember.computed.alias('model.primaryAction'),
 
+  sizeClass: function() {
+    let size = this.get('size');
+    if ( size && size !== 'md' ) {
+      return 'btn-'+size;
+    }
+  }.property('size'),
+
   click(e) {
     var tgt = Ember.$(e.target);
     var more = tgt.closest('.more-actions');
