@@ -227,7 +227,7 @@ var Host = Resource.extend({
   }.property('publicEndpoints.@each.{ipAddress,port,serviceId,instanceId}'),
 
   requireAnyLabels: function() {
-    return  (this.get('labels')[C.LABEL.REQUIRE_ANY]||'').split(/\s*,\s*/).filter((x) => x.length > 0);
+    return  ((this.get('labels')||{})[C.LABEL.REQUIRE_ANY]||'').split(/\s*,\s*/).filter((x) => x.length > 0);
   }.property(`labels.${C.LABEL.REQUIRE_ANY}`),
 });
 
