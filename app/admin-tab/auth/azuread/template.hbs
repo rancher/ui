@@ -1,4 +1,4 @@
-<section class="well">
+<section>
   <h2>{{headerText}}</h2>
   <div>
     {{#if access.enabled}}
@@ -10,7 +10,7 @@
 </section>
 
 {{#if access.enabled}}
-  <section class="well">
+  <section>
     <h3>{{format-html-message 'authPage.azuread.enabled.header'}}</h3>
     <hr/>
 
@@ -19,11 +19,11 @@
     </p>
 
     {{#if confirmDisable}}
-      <button class="btn btn-danger" {{action "disable"}}>
+      <button class="btn bg-error" {{action "disable"}}>
         <i class="icon icon-alert"></i> {{t 'authPage.azuread.enabled.reallyDisable'}}
       </button>
     {{else}}
-      <button class="btn btn-danger" {{action "promptDisable"}}>
+      <button class="btn bg-error" {{action "promptDisable"}}>
         <i class="icon icon-umbrella"></i> {{t 'authPage.azuread.enabled.promptDisable'}}
       </button>
     {{/if}}
@@ -32,26 +32,26 @@
 {{/if}}
 
 {{#unless access.enabled}}
-  <section class="well">
+  <section>
     <h3>{{t 'authPage.azuread.configure.header'}}</h3>
     <hr/>
 
     <div class="row">
-      <div class="col-md-4">
-        <div class="form-group">
+      <div class="col span-4">
+        <div class="inline-form">
           <label>{{t 'authPage.azuread.configure.tenantId.label'}}*</label>
           {{input type="text" value=model.tenantId placeholder=(t 'authPage.azuread.configure.tenantId.placeholder') classNames="form-control"}}
-          <p class="help-block">{{t 'authPage.azuread.configure.tenantId.help'}}</p>
+          <p class="text-info">{{t 'authPage.azuread.configure.tenantId.help'}}</p>
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="form-group">
+      <div class="col span-4">
+        <div class="inline-form">
           <label>{{t 'authPage.azuread.configure.clientId.label'}}*</label>
           {{input type="text" value=model.clientId placeholder=(t 'authPage.azuread.configure.clientId.placeholder') classNames="form-control"}}
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="form-group">
+      <div class="col span-4">
+        <div class="inline-form">
           <label>{{t 'authPage.azuread.configure.domain.label'}}*</label>
           {{input type="text" value=model.domain placeholder=(t 'authPage.azuread.configure.domain.placeholder') classNames="form-control"}}
         </div>
@@ -59,15 +59,15 @@
     </div>
 
     <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
+      <div class="col span-6">
+        <div class="inline-form">
           <label>{{t 'authPage.azuread.configure.adminAccountUsername.label'}}*</label>
           {{input type="text" value=model.adminAccountUsername placeholder=(t 'authPage.azuread.configure.adminAccountUsername.placeholder') classNames="form-control"}}
-          <p class="help-block">{{t 'authPage.azuread.configure.adminAccountUsername.help'}}</p>
+          <p class="text-info">{{t 'authPage.azuread.configure.adminAccountUsername.help'}}</p>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="form-group">
+      <div class="col span-6">
+        <div class="inline-form">
           <label>{{t 'authPage.azuread.configure.adminAccountPassword.label'}}*</label>
           {{input type="password" value=model.adminAccountPassword classNames="form-control"}}
         </div>
@@ -75,29 +75,29 @@
     </div>
   </section>
 
-  <section class="well">
+  <section>
     <h3>{{t 'authPage.azuread.test.header'}}</h3>
     <hr/>
-    <p class="help-block">{{t 'authPage.azuread.test.help'}}</p>
+    <p class="text-info">{{t 'authPage.azuread.test.help'}}</p>
     {{top-errors errors=errors}}
 
     <div class="row">
-      <div class="col-md-4">
-        <div class="form-group">
+      <div class="col span-4">
+        <div class="inline-form">
           <label>{{t 'authPage.azuread.test.username.label'}}*</label>
           {{input type="text" value=loginUsername prompt=(t 'authPage.azuread.test.username.placeholder') classNames="form-control"}}
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="form-group">
+      <div class="col span-4">
+        <div class="inline-form">
           <label>{{t 'authPage.azuread.test.password.label'}}*</label>
           {{input type="password" value=loginPassword classNames="form-control"}}
         </div>
       </div>
-      <div class="col-md-4">
-        <div class="form-group">
+      <div class="col span-4">
+        <div class="inline-form">
           <label>&nbsp;</label>
-          <button class="btn btn-primary" style="display: block;" {{action "test"}}>
+          <button class="btn bg-primary" style="display: block;" {{action "test"}}>
             {{#if testing}}
               <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.azuread.test.post'}}
             {{else}}

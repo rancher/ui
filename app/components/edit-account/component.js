@@ -1,10 +1,10 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import C from 'ui/utils/constants';
-import ModalBase from 'lacsso/components/modal-base';
+import ModalBase from 'ui/mixins/modal-base';
 
-export default ModalBase.extend(NewOrEdit, {
-  classNames: ['lacsso', 'modal-container', 'large-modal'],
+export default Ember.Component.extend(ModalBase, NewOrEdit, {
+  classNames: ['large-modal'],
   access: Ember.inject.service(),
   primaryResource: Ember.computed.alias('model.account'),
   settings: Ember.inject.service(),

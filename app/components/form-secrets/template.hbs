@@ -1,9 +1,9 @@
 <div class="row">
-  <div class="col-xs-6 col-md-2 form-label form-control-static">
+  <div class="col-xs-6 col-md-2 col-inline">
     <label>{{t 'formSecrets.label'}}</label>
   </div>
   <div class="col-xs-6 col-md-8">
-    <button class="btn-circle-text" {{action "addSecret"}}><i class="icon icon-plus-circle"/> <span>{{t 'formSecrets.addLabel'}}</span></button>
+    <button class="bg-transparent text-primary" {{action "addSecret"}}><i class="icon icon-plus-circle"/> <span>{{t 'formSecrets.addLabel'}}</span></button>
   </div>
 </div>
 
@@ -33,7 +33,7 @@
               </td>
 
               <td class="text-center">
-                <p class="form-control-static"><i class="icon icon-chevron-right"></i></p>
+                <p><i class="icon icon-chevron-right"></i></p>
               </td>
 
               <td data-title="{{t 'formSecrets.name.label'}}: ">
@@ -54,13 +54,13 @@
               {{/if}}
 
               <td class="text-right">
-                <button class="btn btn-primary btn-sm" {{action "removeSecret" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+                <button class="btn bg-primary btn-sm" {{action "removeSecret" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
               </td>
             </tr>
           {{/each}}
         </tbody>
       </table>
-      <p class="help-block">
+      <p class="text-info">
         {{format-html-message 'formSecrets.help.prefix'}}
         {{#unless showPermissions}}
           <a href="#" {{action "showPermissions"}}>

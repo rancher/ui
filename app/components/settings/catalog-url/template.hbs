@@ -3,17 +3,17 @@
 <hr>
 
 <div class="row row-same-height">
-  <div class="col-md-6">
+  <div class="col span-6">
     <h5>{{t (if settings.isRancher 'catalogSettings.certified.header.rancher' 'catalogSettings.certified.header.pl') appName=settings.appName}}</h5>
-    <div class="r-pt10">
-      <label class="r-mr20 hand">
+    <div class="pt-10">
+      <label class="mr-20 hand">
         {{radio-button selection=enableLibrary value=true}} {{t 'generic.enabled'}}
       </label>
       <label class="hand">
         {{radio-button selection=enableLibrary value=false}} {{t 'generic.disabled'}}
       </label>
     </div>
-    <p class="help-block">
+    <p class="text-info">
       {{#if settings.isRancher}}
         {{t 'catalogSettings.certified.detail.rancher'}}
       {{else}}
@@ -21,17 +21,17 @@
       {{/if}}
     </p>
   </div>
-  <div class="col-md-6">
+  <div class="col span-6">
     <h5>{{t (if settings.isRancher 'catalogSettings.community.header.rancher' 'catalogSettings.community.header.pl') appName=settings.appName}}</h5>
-    <div class="r-pt10">
-      <label class="r-mr20 hand">
+    <div class="pt-10">
+      <label class="mr-20 hand">
         {{radio-button selection=enableCommunity value=true}} {{t 'generic.enabled'}}
       </label>
       <label class="hand">
         {{radio-button selection=enableCommunity value=false}} {{t 'generic.disabled'}}
       </label>
     </div>
-    <p class="help-block">
+    <p class="text-info">
       {{#if settings.isRancher}}
         {{t 'catalogSettings.community.detail.rancher'}}
       {{else}}
@@ -44,9 +44,9 @@
 <hr>
 
 <h5>{{t 'catalogSettings.more.header'}}</h5>
-<p class="help-block">{{format-html-message 'catalogSettings.more.helpText'}}</p>
+<p class="text-info">{{format-html-message 'catalogSettings.more.helpText'}}</p>
 
-<button class="btn-circle-text" {{action "add"}}><i class="icon icon-plus-circle"/> <span>{{t 'catalogSettings.more.addActionLabel'}}</span></button>
+<button class="bg-transparent text-primary" {{action "add"}}><i class="icon icon-plus-circle"/> <span>{{t 'catalogSettings.more.addActionLabel'}}</span></button>
 
 {{#if ary.length}}
   <table class="table fixed no-lines no-top-padding tight small">
@@ -73,7 +73,7 @@
         </td>
 
         <td class="valign-top text-right">
-          <button class="btn btn-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+          <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
         </td>
       </tr>
     {{/each}}

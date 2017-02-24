@@ -30,7 +30,6 @@ export const isOwner = function() { return this.get('isOwner'); };
       // return true if the alert (!) icon should be displayed
       // can depend on anything page-header/component.js shouldUpdateNavTree() depends on
     }
-    url: 'http://any/url', (url or route required)
     target: '_blank', (for url only)
     route: 'target.route.path', // as in link-to
     ctx: ['values', 'asContextToRoute', orFunctionThatReturnsValue, anotherFunction]
@@ -204,14 +203,6 @@ const navTree = [
         icon: 'icon icon-box',
         route: 'containers',
         ctx: [getProjectId],
-      },
-      {
-        id: 'infra-vms',
-        localizedLabel: 'nav.infra.vms',
-        icon: 'icon icon-vm',
-        route: 'virtualmachines',
-        ctx: [getProjectId],
-        condition: function() { return this.get('hasVm'); },
       },
       {
         id: 'infra-storagepools',

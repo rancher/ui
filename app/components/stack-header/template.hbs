@@ -1,15 +1,10 @@
 <section class="header clearfix">
   <h1>{{#link-to "stacks"}}{{t 'stackHeader.backLink'}}{{/link-to}}</h1>
 
-  {{#power-select options=all selected=model onchange=(action "changeStack") searchField="displayName" as |obj|}}
-      {{select-dot model=obj}}
-  {{/power-select}}
-
-
   <div class="pull-right">
     {{#if outputs.length}}
       <div class="btn-group">
-        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-sm bg-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           {{t 'stackHeader.outputs'}} <i class="icon icon-chevron-down"></i>
         </button>
         <ul class="dropdown-menu dropdown-menu-right">
@@ -20,10 +15,10 @@
       </div>
     {{/if}}
 
-    <div class="btn-group r-ml10">
-      {{#link-to "service.new" (query-params stackId=model.id) classNames="btn btn-primary btn-sm"}}{{t 'stackHeader.add.service'}}{{/link-to}}
+    <div class="btn-group ml-10">
+      {{#link-to "service.new" (query-params stackId=model.id) classNames="btn bg-primary btn-sm"}}{{t 'stackHeader.add.service'}}{{/link-to}}
       {{#unless projects.current.isWindows}}
-        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+        <button type="button" class="btn bg-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
           <i class="icon icon-chevron-down"></i>
           <span class="sr-only">{{t 'nav.srToggleNav'}}</span>
         </button>
@@ -38,17 +33,17 @@
       {{/unless}}
     </div>
 
-    {{action-menu model=model classNames="r-ml10 pull-right" size="sm"}}
+    {{action-menu model=model classNames="ml-10" size="sm"}}
     {{header-state model=model classNames="pull-right"}}
 
-    <div class="btn-group r-ml10">
-      {{#link-to "stack.index" classNames="btn btn-sm btn-default"}}{{tooltip-link icon="icon-tasks" text=(t 'tooltipLink.list') options=listLinkOptions}}{{/link-to}}
-      {{#link-to "stack.graph" classNames="btn btn-sm btn-default"}}{{tooltip-link icon="icon-share" text=(t 'tooltipLink.linkGraph') options=graphLinkOptions}}{{/link-to}}
+    <div class="btn-group ml-10">
+      {{#link-to "stack.index" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-tasks" text=(t 'tooltipLink.list') options=listLinkOptions}}{{/link-to}}
+      {{#link-to "stack.graph" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-share" text=(t 'tooltipLink.linkGraph') options=graphLinkOptions}}{{/link-to}}
       {{#if model.canViewConfig}}
-        {{#link-to "stack.code" classNames="btn btn-sm btn-default"}}{{tooltip-link icon="icon-file" text=(t 'tooltipLink.composeYaml') options=yamlLinkOptions}}{{/link-to}}
+        {{#link-to "stack.code" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-file" text=(t 'tooltipLink.composeYaml') options=yamlLinkOptions}}{{/link-to}}
       {{/if}}
     </div>
 
-    {{upgrade-btn model=model classNames="r-ml10"}}
+    {{upgrade-btn model=model classNames="ml-10"}}
   </div>
 </section>

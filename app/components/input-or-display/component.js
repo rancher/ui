@@ -5,5 +5,5 @@ export default Ember.Component.extend({
   value:              null,
   editable:           true,
   classesForInput:    'form-control',
-  classesForDisplay:  'form-control-static',
+  classesForDisplay:  '',
 });

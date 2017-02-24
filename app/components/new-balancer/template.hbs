@@ -2,7 +2,7 @@
   <h1>{{headerLabel}} {{help-btn link="/cattle/adding-load-balancers/"}}</h1>
 </section>
 
-<section class="horizontal-form container-fluid well">
+<section class="horizontal-form container-fluid">
   {{#liquid-if needsUpgrade}}
     {{form-upgrade
       optionsChanged=(action 'setUpgrade')
@@ -10,7 +10,7 @@
   {{/liquid-if}}
 
   <div class="{{if needsUpgrade 'hide'}}">
-    {{form-scale
+    {{container/form-scale
       initialLabels=launchConfig.labels
       initialScale=service.scale
       editing=editing
@@ -23,7 +23,7 @@
   </div>
 </section>
 
-<section class="horizontal-form container-fluid well">
+<section class="horizontal-form container-fluid">
   {{form-name-description
     model=service
     namePlaceholder="servicePage.newBalancer.form.name.placeholder"
@@ -36,7 +36,8 @@
 </section>
 
 {{#select-tab initialTab='ssl' as |component|}}
-  <ul class="nav nav-tabs nav-tabs-well shadowed" style="display: inline-block" role="tablist">
+<div class="tabs">
+  <ul class="tab-header" style="display: inline-block" role="tablist">
     <li role="tab" class="tab" data-section="ssl" {{action "selectTab" "ssl" target=component}}><a href="#">{{t 'newBalancer.tabs.ssl'}}</a></li>
     <li role="tab" class="tab" data-section="stickiness" {{action "selectTab" "stickiness" target=component}}><a href="#">{{t 'newBalancer.tabs.stickiness'}}</a></li>
     <li role="tab" class="tab" data-section="custom" {{action "selectTab" "custom" target=component}}><a href="#">{{t 'newBalancer.tabs.custom'}}</a></li>
@@ -44,8 +45,7 @@
     <li role="tab" class="tab" data-section="scheduling" {{action "selectTab" "scheduling" target=component}}><a href="#">{{t 'newBalancer.tabs.scheduling'}}</a></li>
   </ul>
 
-
-<div class="horizontal-form well" role="tabpanel">
+<div class="tab-content" role="tabpanel">
   <div class="section container-fluid tab-section" data-section="ssl">
     {{form-ssl-termination
       service=service
@@ -60,7 +60,7 @@
   </div>
 
   <div class="section container-fluid tab-section" data-section="custom">
-    <div class="r-mb10">{{format-html-message 'newBalancer.custom' appName=settings.appName}}</div>
+    <div class="mb-10">{{format-html-message 'newBalancer.custom' appName=settings.appName}}</div>
     <hr/>
 
     {{textarea
@@ -92,13 +92,14 @@
     }}
   </div>
 </div>
+</div>
 {{/select-tab}}
 
 {{#if upgradeInfo}}
-  <div class="lacsso banner bg-info m-20 p-0">
-    <div class="lacsso banner-icon" style="width: 68px;"><span class="icon icon-2x icon-info"></span></div>
-    <div class="lacsso banner-info">
-      <p class="lacsso p-15 ">
+  <div class="banner bg-info m-20 p-0">
+    <div class="banner-icon" style="width: 68px;"><span class="icon icon-2x icon-info"></span></div>
+    <div class="banner-info">
+      <p class="p-15 ">
         {{format-html-message 'servicePage.newBalancer.upgradeImage' from=upgradeInfo.from to=upgradeInfo.to}}
       </p>
     </div>

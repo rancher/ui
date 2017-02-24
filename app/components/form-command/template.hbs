@@ -1,69 +1,69 @@
-<div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formCommand.command.label'}}</label>
+<div class="row inline-form">
+  <div class="col span-2 col-inline">
+    <label>{{t 'formCommand.command.label'}}</label>
   </div>
 
-  <div class="col-sm-12 col-md-8">
-    {{#input-or-display editable=editing value=instance.command}}
+  <div class="col span-8">
+    {{#input-or-display editable=editing value=instance.command classesForDisplay="clip"}}
       {{input-command class="form-control" type="text" changed=(action (mut instance.command)) initialValue=instance.command placeholder=(t 'formCommand.command.placeholder')}}
     {{/input-or-display}}
   </div>
 </div>
-<div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formCommand.entryPoint.label'}}</label>
+<div class="row inline-form">
+  <div class="col span-2 col-inline">
+    <label>{{t 'formCommand.entryPoint.label'}}</label>
   </div>
-  <div class="col-sm-12 col-md-8">
+  <div class="col span-8">
     {{#input-or-display editable=editing value=instance.entryPoint}}
       {{input-command class="form-control" type="text" changed=(action (mut instance.entryPoint)) initialValue=instance.entryPoint placeholder=(t 'formCommand.entryPoint.placeholder')}}
     {{/input-or-display}}
   </div>
 </div>
-<div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formCommand.workingDir.label'}}</label>
+<div class="row inline-form">
+  <div class="col span-2 col-inline">
+    <label>{{t 'formCommand.workingDir.label'}}</label>
   </div>
-  <div class="col-sm-12 col-md-4">
+  <div class="col span-4">
     {{#input-or-display editable=editing value=instance.workingDir}}
       {{input type="text" value=instance.workingDir classNames="form-control" placeholder=(t 'formCommand.workingDir.placeholder')}}
     {{/input-or-display}}
   </div>
   {{#if editing}}
-    <div class="col-sm-12 col-md-1 form-label" style="text-align: left">
-      <label class="form-control-static">{{t 'formCommand.user.label'}}</label>
+    <div class="col span-1 col-inline" style="text-align: left">
+      <label>{{t 'formCommand.user.label'}}</label>
     </div>
-    <div class="col-sm-12 col-md-3">
+    <div class="col span-3">
       {{input type="text" value=instance.user classNames="form-control" placeholder=(t 'formCommand.user.placeholder')}}
     </div>
   {{/if}}
 </div>
 
 {{#unless editing}}
-<div class="row form-group">
-    <div class="col-sm-12 col-md-2 form-label" style="text-align: left">
-      <label class="form-control-static">{{t 'formCommand.user.label'}}</label>
+<div class="row inline-form">
+    <div class="col span-2 col-inline" style="text-align: left">
+      <label>{{t 'formCommand.user.label'}}</label>
     </div>
-    <div class="col-sm-12 col-md-8">
+    <div class="col span-8">
       {{#if instance.user}}
-        <div class='form-control-static text-muted'>{{instance.user}}</div>
+        <div class='text-muted'>{{instance.user}}</div>
       {{else}}
-        <div class="form-control-static text-muted">{{t 'generic.na'}}</div>
+        <div class="text-muted">{{t 'generic.na'}}</div>
       {{/if}}
     </div>
 </div>
 {{/unless}}
 <div class="row">
-  <div class="col-sm-12 col-md-2 form-label">
+  <div class="col span-2 col-inline">
     <label>{{t 'formCommand.console.label'}}</label>
   </div>
 
-  {{#input-or-display editable=editing value=terminal.name classesForDisplay="col-sm-12 col-md-8"}}
-    <div class="col-xs-12 col-sm-6 col-md-4">
+  {{#input-or-display editable=editing value=terminal.name classesForDisplay="col span-8"}}
+    <div class="col span-4">
       <div class="radio small">
         <label>{{radio-button selection=terminal.type value="both"}} {{format-html-message 'formCommand.console.both'}}</label>
       </div>
     </div>
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col span-4">
       <div class="radio small">
         <label>{{radio-button selection=terminal.type value="interactive"}} {{format-html-message 'formCommand.console.interactive'}}</label>
       </div>
@@ -71,14 +71,14 @@
   {{/input-or-display}}
 </div>
 {{#if editing}}
-  <div class="row form-group">
-    <div class="hidden-xs hidden-sm col-md-2 form-label">&nbsp;</div>
-    <div class="col-xs-12 col-sm-6 col-md-4">
+  <div class="row inline-form">
+    <div class="hidden-xs hidden-sm col span-2 col-inline">&nbsp;</div>
+    <div class="col span-4">
       <div class="radio small">
         <label>{{radio-button selection=terminal.type value="terminal"}} {{format-html-message 'formCommand.console.terminal'}}</label>
       </div>
     </div>
-    <div class="col-xs-12 col-sm-6 col-md-4">
+    <div class="col span-4">
       <div class="radio small">
         <label>{{radio-button selection=terminal.type value="none"}} {{format-html-message 'formCommand.console.none'}}</label>
       </div>
@@ -87,18 +87,18 @@
 {{/if}}
 
 {{#if isService}}
-  <div class="row {{unless editing 'form-group'}}">
-    <div class="col-sm-12 col-md-2 form-label">
+  <div class="row {{unless editing 'inline-form'}}">
+    <div class="col span-2 col-inline">
       <label>{{t 'formCommand.autoRestart.label'}}</label>
     </div>
 
     {{#if editing}}
-      <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="col span-4">
         <div class="radio small">
           <label>{{radio-button selection=startOnce value=false}} {{t 'formCommand.autoRestart.startOnceFalse'}}</label>
         </div>
       </div>
-      <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="col span-4">
         <div class="radio small">
           <label>{{radio-button selection=startOnce value=true}} {{t 'formCommand.autoRestart.startOnceTrue'}}</label>
         </div>
@@ -112,24 +112,24 @@
     {{/if}}
   </div>
 {{else}}
-  <div class="row {{unless editing 'form-group'}}">
-    <div class="col-sm-12 col-md-2 form-label">
+  <div class="row {{unless editing 'inline-form'}}">
+    <div class="col span-2 col-inline">
       <label>{{t 'formCommand.autoRestart.label'}}</label>
     </div>
 
     {{#if editing}}
-      <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="col span-4">
         <div class="radio small">
           <label>{{radio-button selection=restart value="no"}} {{t 'formCommand.autoRestart.no'}}</label>
         </div>
       </div>
-      <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="col span-4">
         <div class="radio small">
           <label>{{radio-button selection=restart value="on-failure"}} {{format-html-message 'formCommand.autoRestart.onFailure'}}</label>
         </div>
       </div>
     {{else}}
-      <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="col span-4">
         {{#if restart}}
           <div>{{restart}}</div>
         {{else}}
@@ -140,13 +140,13 @@
   </div>
   {{#if editing}}
     <div class="row">
-      <div class="hidden-xs hidden-sm col-md-2 form-label">&nbsp;</div>
-      <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="hidden-xs hidden-sm col span-2 col-inline">&nbsp;</div>
+      <div class="col span-4">
         <div class="radio small">
           <label>{{radio-button selection=restart value="always"}} {{t 'formCommand.autoRestart.always'}}</label>
         </div>
       </div>
-      <div class="col-xs-12 col-sm-6 col-md-4">
+      <div class="col span-4">
         <div class="radio small">
           <label>
             {{radio-button selection=restart value="on-failure-cond"}}
@@ -163,11 +163,11 @@
 {{/if}}
 
 <div class="row">
-  <div class="col-sm-12 col-md-2 form-label">
-    <label class="form-control-static">{{t 'formCommand.environment.label'}}</label>
+  <div class="col span-2 col-inline">
+    <label>{{t 'formCommand.environment.label'}}</label>
   </div>
 
-  <div class="col-sm-12 col-md-8">
+  <div class="col span-8">
     {{form-key-value
       initialMap=instance.environment
       changed=(action (mut instance.environment))
@@ -181,4 +181,3 @@
     }}
   </div>
 </div>
-

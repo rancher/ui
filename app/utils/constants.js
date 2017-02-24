@@ -185,12 +185,18 @@ var C = {
     SIDEKICK: 'io.rancher.sidekicks',
   },
 
+  MODE: {
+    OSS: 'oss', // Regular community UI
+    CAAS: 'caas', // Container cloud UI
+  },
+
   PREFS: {
     ACCESS_WARNING  : 'accessWarning',
     BODY_BACKGROUND : 'bodyBackground',
     PROJECT_DEFAULT : 'defaultProjectId',
     EXPANDED_STACKS : 'expandedStacks',
     SORT_STACKS_BY  : 'sortStacksBy',
+    HOST_VIEW       : 'hostView',
     THEME           : 'theme',
     TABLE_COUNT     : 'tableCount',
     LANGUAGE        : 'language',

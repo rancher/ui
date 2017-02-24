@@ -21,7 +21,6 @@
   bottom: 0;
   left: 0;
   height: 260px;
-  background-color: $tab-active-bg;
   width: 100%;
   box-shadow: 0px -1px 14px $shadow;
   z-index: 4;
@@ -33,19 +32,22 @@
     font-size: 11px;
   }
   hr {
-    border-color: $page-header-border-color;
+    border-color: $accent-one;
     margin: 5px 0;
   }
-  .tab-content {
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-  .tab-content,
-  .tab-pane {
-    height: 100%;
-  }
-  .nav-tabs > li.active > a:focus {
-    background: $tab-active-bg;
+  .tabs {
+    .tab-header li a{
+      background-color: $tab-active-bg;
+    }
+    .tab-content {
+      overflow-y: auto;
+      overflow-x: hidden;
+      background-color: $tab-active-bg;
+    }
+    .tab-content,
+    .tab-pane {
+      height: 100%;
+    }
   }
   table {
     &.tight {
@@ -55,37 +57,38 @@
       }
     }
   }
-  ul.nav-tabs {
-    position: absolute;
-    top: -38px;
-    left: 15px;
-    border-bottom: none;
-    li {
-      &.active {
-        background: $well-bg;
-      }
-      a {
-        max-width: 125px;
-      }
-    }
-    .close {
-      position: absolute;
-      top: -10px;
-      background: $red;
-      color: white;
-      height: 20px;
-      width: 20px;
-      border-radius: 50%;
-      text-align: center;
-      padding-top: 0.2em;
-      z-index: 10;
-      opacity: 1;
-      left: -10px;
-      font-size: 12px;
-    }
-  }
+  // ul.nav-tabs {
+  //   position: absolute;
+  //   top: -38px;
+  //   left: 15px;
+  //   border-bottom: none;
+  //   li {
+  //     &.active {
+  //       background: $body-bg;
+  //     }
+  //     a {
+  //       max-width: 125px;
+  //     }
+  //   }
+  //   .close {
+  //     position: absolute;
+  //     top: -10px;
+  //     background: $error;
+  //     color: white;
+  //     height: 20px;
+  //     width: 20px;
+  //     border-radius: 50%;
+  //     text-align: center;
+  //     padding-top: 0.2em;
+  //     z-index: 10;
+  //     opacity: 1;
+  //     left: -10px;
+  //     font-size: 12px;
+  //   }
+  // }
   .description {
-    @extend .clip;
+    @include clip;
+
     padding: 5px 25px 0 25px;
     div:first-of-type {
       padding-top: 2px;
@@ -119,13 +122,6 @@
     border-right: 1px solid $table-border-color;
     max-height: 215px;
     overflow-y: auto;
-  }
-  .state {
-    h3 {
-      display: inline-block;
-      width: 40%;
-      vertical-align: middle;
-    }
   }
   .action-menu {
     margin-right: 15px;

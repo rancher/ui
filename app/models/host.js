@@ -226,6 +226,34 @@ var Host = Resource.extend({
     });
   }.property('publicEndpoints.@each.{ipAddress,port,serviceId,instanceId}'),
 
+  instanceCounts: function() {
+    let out = {
+      good: 0,
+      other: 0,
+      bad: 0,
+    };
+
+    this.get('instances').forEach((inst) => {
+      switch ( inst.get('stateColor') ) {
+        case 'text-success':
+          out.good++;
+          break;
+        case 'text-error':
+          out.bad++;
+          break;
+        default:
+          out.other++;
+          break;
+      }
+    });
+
+  return out;
+  }.property('instances.@each.stateColor'),
+
+  instanceGoodCount:  Ember.computed.alias('instanceCounts.good'),
+  instanceOtherCount: Ember.computed.alias('instanceCounts.other'),
+  instanceBadCount:   Ember.computed.alias('instanceCounts.bad'),
+
   requireAnyLabels: function() {
     return  (this.get('labels')[C.LABEL.REQUIRE_ANY]||'').split(/\s*,\s*/).filter((x) => x.length > 0);
   }.property(`labels.${C.LABEL.REQUIRE_ANY}`),
@@ -233,11 +261,6 @@ var Host = Resource.extend({
 
 Host.reopenClass({
   defaultSortBy: 'name,hostname',
-  stateMap: {
-    'active':           {icon: 'icon icon-host',    color: 'text-success'},
-    'provisioning':     {icon: 'icon icon-host',    color: 'text-info'},
-    'reconnecting':     {icon: 'icon icon-help',    color: 'text-danger'},
-  }
 });
 
 export default Host;

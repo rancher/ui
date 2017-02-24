@@ -17,7 +17,7 @@ export default Ember.TextArea.extend(IntlPlaceholder, {
 
   initHeights() {
     if ( this.get('minHeight') === 0 ) {
-      this.set('minHeight', ( this.get('isSmall') ? 31 : 43));
+      this.set('minHeight', ( this.get('isSmall') ? 31 : 36));
     }
 
     this.autoSize();

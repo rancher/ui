@@ -1,0 +1,188 @@
+<section class="header clearfix">
+  <h1>{{t headerToken}}</h1>
+</section>
+
+<section class="row">
+  <div class="col span-11-of-23">
+    {{form-name-description
+      model=primaryResource
+      nameLabel=nameToken
+      namePlaceholder="newContainer.name.placeholder"
+      nameDisabled=isUpgrade
+      descriptionPlaceholder="newContainer.description.placeholder"
+      descriptionDisabled=isUpgrade
+      rowClass=""
+      colClass=""
+    }}
+
+    {{container/form-image
+      initialValue=launchConfig.imageUuid
+      errors=imageErrors
+      changed=(action 'setImage')
+    }}
+  </div>
+  <div class="col span-1-of-23"></div>
+  <div class="col span-11-of-23">
+    {{container/form-scale
+      initialLabels=launchConfig.labels
+      initialScale=service.scale
+      isGlobal=isGlobal
+      errors=scaleErrors
+      setLabels=(action 'setLabels' 'scale')
+      setGlobal=(action 'setGlobal')
+      setScale=(action  'setScale')
+      classNames=(if isUpgrade 'hide')
+    }}
+  </div>
+</section>
+
+<section class="row">
+  <div class="col span-6">
+    {{container/form-ports
+      initialPorts=launchConfig.ports
+      errors=portErrors
+      changedStr=(action (mut launchConfig.ports))
+      portsAsStrArray=launchConfig.ports
+    }}
+  </div>
+
+  <div class="col span-6">
+    {{#if (and isService (not isSidekick))}}
+      {{form-service-links
+        service=service
+        changed=(action 'setServiceLinks')
+      }}
+    {{/if}}
+  </div>
+</section>
+
+  <section>
+  <div class="tabs">
+    <ul class="tab-header" style="display: inline-block" role="tablist">
+      <li role="tab" aria-controls="panel" class="tab" data-section="command" {{action "selectTab" "command"}}>
+        <a href="#">{{t 'newContainer.tabs.command'}}</a>
+      </li>
+      <li role="tab" aria-controls="panel" class="tab" data-section="volumes" {{action "selectTab" "volumes"}}>
+        <a href="#">{{t 'newContainer.tabs.volumes'}}</a>
+      </li>
+      <li role="tab" aria-controls="panel" class="tab" data-section="network" {{action "selectTab" "network"}}>
+        <a href="#">{{t 'newContainer.tabs.networking'}}</a>
+      </li>
+      <li role="tab" aria-controls="panel" class="tab" data-section="security" {{action "selectTab" "security"}}>
+        <a href="#">{{t 'newContainer.tabs.security'}}</a>
+      </li>
+
+      {{#if supportsSecrets}}
+        <li role="tab" aria-controls="panel" class="tab" data-section="secrets" {{action "selectTab" "secrets"}}><a href="#">{{t 'newContainer.tabs.secrets'}}</a></li>
+      {{/if}}
+
+      <li role="tab" aria-controls="panel" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}>
+        <a href="#">{{t 'newContainer.tabs.healthCheck'}}</a>
+      </li>
+
+      <li role="tab" aria-controls="panel" class="tab" data-section="labels" {{action "selectTab" "labels"}}>
+        <a href="#">{{t 'newContainer.tabs.labels'}}</a>
+      </li>
+      <li role="tab" aria-controls="panel" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}>
+        <a href="#">{{t 'newContainer.tabs.scheduling'}}</a>
+      </li>
+
+      {{#if (and false isService)}}
+        <li role="tab" aria-controls="panel" class="tab" data-section="balancing" {{action "selectTab" "balancing"}}><a href="#">{{t 'newContainer.tabs.balancing'}}</a></li>
+      {{/if}}
+    </ul>
+  </div>
+  <div class="horizontal-form" role="tabpanel">
+    <div class="section" data-section="command">
+      {{form-command
+        instance=launchConfig
+        initialLabels=launchConfig.labels
+        errors=commandErrors
+        isService=isService
+        setLabels=(action 'setLabels' 'command')
+      }}
+    </div>
+
+    <div class="section" data-section="volumes">
+      {{form-volumes
+        instance=launchConfig
+        isService=isService
+        service=service
+        primaryService=primaryService
+        launchConfigIndex=launchConfigIndex
+        errors=volumeErrors
+        allHosts=allHosts}}
+    </div>
+
+    <div class="section" data-section="network">
+      {{form-networking
+        editing=true
+        instance=launchConfig
+        errors=networkingErrors
+        allHosts=allHosts
+        service=service
+        isService=isService
+        isSidekick=isSidekick
+        initialLabels=launchConfig.labels
+        isUpgrade=isUpgrade
+        setLabels=(action 'setLabels' 'networking')
+      }}
+    </div>
+
+    <div class="section" data-section="security">
+      {{form-security instance=launchConfig errors=securityErrors editing=true}}
+    </div>
+
+    {{#if supportsSecrets}}
+      <div class="section" data-section="secrets">
+        {{form-secrets
+          secrets=launchConfig.secrets
+          errors=secretErrors
+          editing=true}}
+      </div>
+    {{/if}}
+
+    <div class="section" data-section="healthcheck">
+      {{form-healthcheck
+        isService=isService
+        healthCheck=launchConfig.healthCheck
+        errors=healthCheckErrors
+        editing=true}}
+    </div>
+
+    <div class="section" data-section="labels">
+      {{form-user-labels
+        initialLabels=launchConfig.labels
+        setLabels=(action 'setLabels' 'user')
+      }}
+    </div>
+
+    <div class="section" data-section="scheduling">
+      {{form-scheduling
+        isService=isService
+        isGlobal=isGlobal
+        initialHostId=launchConfig.requestedHostId
+        initialLabels=launchConfig.labels
+        errors=schedulingErrors
+        editing=true
+        allHosts=allHosts
+        setLabels=(action 'setLabels' 'scheduling')
+        setGlobal=(action 'setGlobal')
+        setRequestedHost=(action 'setRequestedHostId')
+      }}
+    </div>
+
+    {{#if (and false isService)}}
+      <div class="section" data-section="balancing">
+        {{form-balancer-rules
+          service=service
+          showListeners=false
+        }}
+      </div>
+    {{/if}}
+
+  </div>
+</section>
+
+{{top-errors errors=errors}}
+{{save-cancel saveDisabled=noLaunchConfigsEnabled createLabel=(if isUpgrade 'newContainer.saveUpgrade' 'newContainer.saveNew') save="save" cancel="cancel"}}

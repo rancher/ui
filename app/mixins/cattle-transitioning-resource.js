@@ -13,12 +13,14 @@ const defaultStateMap = {
   'deactivating':             {icon: 'icon icon-adjust',        color: 'text-info'   },
   'degraded':                 {icon: 'icon icon-alert',         color: 'text-warning'},
   'disconnected':             {icon: 'icon icon-alert',         color: 'text-warning' },
-  'error':                    {icon: 'icon icon-alert',         color: 'text-danger' },
-  'inactive':                 {icon: 'icon icon-circle',        color: 'text-danger' },
+  'error':                    {icon: 'icon icon-alert',         color: 'text-error' },
+  'inactive':                 {icon: 'icon icon-circle',        color: 'text-error' },
   'initializing':             {icon: 'icon icon-alert',         color: 'text-warning'},
-  'purged':                   {icon: 'icon icon-purged',        color: 'text-danger' },
+  'provisioning':             {icon: 'icon icon-circle',        color: 'text-info'},
+  'purged':                   {icon: 'icon icon-purged',        color: 'text-error' },
   'purging':                  {icon: 'icon icon-purged',        color: 'text-info'   },
-  'removed':                  {icon: 'icon icon-trash',         color: 'text-danger' },
+  'reconnecting':             {icon: 'icon icon-alert',         color: 'text-error' },
+  'removed':                  {icon: 'icon icon-trash',         color: 'text-error' },
   'removing':                 {icon: 'icon icon-trash',         color: 'text-info'   },
   'requested':                {icon: 'icon icon-tag',           color: 'text-info'   },
   'registering':              {icon: 'icon icon-tag',           color: 'text-info'   },
@@ -28,9 +30,9 @@ const defaultStateMap = {
   'snapshotted':              {icon: 'icon icon-snapshot',      color: 'text-warning'},
   'started-once':             {icon: 'icon icon-dot-circlefill',color: 'text-success'},
   'starting':                 {icon: 'icon icon-adjust',        color: 'text-info'   },
-  'stopped':                  {icon: 'icon icon-circle',        color: 'text-danger' },
+  'stopped':                  {icon: 'icon icon-circle',        color: 'text-error' },
   'stopping':                 {icon: 'icon icon-adjust',        color: 'text-info'   },
-  'unhealthy':                {icon: 'icon icon-alert',         color: 'text-danger' },
+  'unhealthy':                {icon: 'icon icon-alert',         color: 'text-error' },
   'updating':                 {icon: 'icon icon-tag',           color: 'text-info'   },
   'updating-active':          {icon: 'icon icon-tag',           color: 'text-info'   },
   'updating-healthy':         {icon: 'icon icon-tag',           color: 'text-info'   },
@@ -41,7 +43,7 @@ const defaultStateMap = {
 };
 
 const stateColorSortMap = {
-  'danger':   1,
+  'error':   1,
   'warning':  2,
   'info':     3,
   'success':  4
@@ -232,7 +234,7 @@ export default Ember.Mixin.create({
 
   stateColor: function() {
     if ( this.get('isError') ) {
-      return 'text-danger';
+      return 'text-error';
     }
 
     var map = this.constructor.stateMap;

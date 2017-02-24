@@ -1,30 +1,19 @@
 <section class="header clearfix">
   <h1>{{t 'containersPage.index.header'}}</h1>
 
-  {{#link-to "containers.new" classNames="btn btn-sm btn-primary"}}{{t 'containersPage.index.linkTo'}}{{/link-to}}
 
-  <div class="btn-group r-mr10 r-mt5" style="float: right;">
+  <div class="btn-group pull-right mr-10 mt-5">
     <label style="font-weight: normal;">{{input type="checkbox" checked=showSystem}} {{t 'hostsPage.index.showSystem'}}</label>
+    {{#link-to "containers.new" classNames="btn btn-sm bg-primary"}}{{t 'containersPage.index.linkTo'}}{{/link-to}}
   </div>
 </section>
 
-<section class="well instances r-pt5 r-pb5">
-  {{#sortable-table
-    classNames="lacsso grid sortable-table"
-    sorts=sorts
+<section class="instances r-pt5 r-pb5">
+  {{container-table
     body=filtered
     sortBy=sortBy
     bulkActions=true
-    bulkActionCallee=(action 'applyBulkAction')
     bulkActionsList=bulkActionsList
-    perPage=prefs.tablePerPage
-    headers=headers as |container kind|}}
-    {{#if (eq kind "row")}}
-      {{container-row model=container showCommand="column" showHost=true showActions=true showPrimaryActions=false}}
-    {{else if (eq kind "nomatch")}}
-      <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.index.table.body.noMatch'}}</td></tr>
-    {{else if (eq kind "norows")}}
-      <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.index.table.body.noData'}}</td></tr>
-    {{/if}}
-  {{/sortable-table}}
+    showHost=true
+  }}
 </section>

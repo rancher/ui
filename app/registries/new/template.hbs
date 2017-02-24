@@ -2,30 +2,30 @@
   <h1>{{t 'registriesPage.new.header'}}</h1>
 </section>
 <section class="horizontal-form container-fluid">
-  <section class="well">
-    <div class="nav nav-boxes checked-active">
+  <section>
+    <div class="row nav nav-boxes checked-active">
       {{#each drivers as |driver|}}
-        <a href="false" {{action "selectDriver" driver.name}} alt={{driver.label}} class="nav-box-item driver registry-driver {{if driver.active 'active'}} {{driver.css}}"></a>
+        <a href="false" {{action "selectDriver" driver.name}} alt={{driver.label}} class="col nav-box-item driver registry-driver {{if driver.active 'active'}} {{driver.css}}"></a>
       {{/each}}
     </div>
   </section>
 </section>
 
-<section class="horizontal-form container-fluid r-ml20 r-mr20" role="tabpanel">
+<section class="horizontal-form container-fluid ml-20 mr-20" role="tabpanel">
   {{#if isCustom}}
-    <div class="row form-group">
-      <div class="form-label form-control-static">
+    <div class="row inline-form">
+      <div class="col-inline">
         <label>{{t 'registriesPage.new.form.custom.labelText'}}{{#if isCustom}}*{{/if}}</label>
       </div>
       <div>
         {{input type="text" value=model.registry.serverAddress classNames="form-control" placeholder=(t 'registriesPage.new.form.custom.placeholder')}}
       </div>
-      <p class="help-block">{{t 'registriesPage.new.form.custom.help'}}</p>
+      <p class="text-info">{{t 'registriesPage.new.form.custom.help'}}</p>
     </div>
   {{/if}}
 
-  <div class="row form-group">
-    <div class="form-label form-control-static">
+  <div class="row inline-form">
+    <div class="col-inline">
       <label>{{t 'registriesPage.new.form.username.labelText'}}</label>
     </div>
     <div>
@@ -33,8 +33,8 @@
     </div>
   </div>
 
-  <div class="row form-group">
-    <div class="form-label form-control-static">
+  <div class="row inline-form">
+    <div class="col-inline">
       <label>{{t 'registriesPage.new.form.password.labelText'}}</label>
     </div>
     <div>

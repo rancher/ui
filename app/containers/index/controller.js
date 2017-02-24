@@ -24,16 +24,6 @@ export default Ember.Controller.extend({
     return this.get('showSystem') === false ? 'standard' : 'all';
   }),
 
-  actions: {
-    applyBulkAction: function(name, selectedElements) {
-      if ( selectedElements.length === 1 ) {
-        selectedElements.objectAt(0).send(name);
-      } else {
-        this.get('bulkActionHandler')[name](selectedElements);
-      }
-    },
-  },
-
   headers: [
     {
       classNames: '',
@@ -71,7 +61,7 @@ export default Ember.Controller.extend({
     },
     {
       isActions: true,
-      width: '110px',
+      width: '40px',
     },
   ],
 

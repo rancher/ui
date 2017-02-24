@@ -1,13 +1,13 @@
-<div class="row form-group">
-  <div class="col-sm-12 col-md-2 form-label">
+<div class="row inline-form">
+  <div class="col span-2 col-inline">
     <label>{{t 'formContainerLinks.label'}}</label>
   </div>
 
-  <div class="col-sm-12 col-md-8">
+  <div class="col span-8">
     {{#unless editing}}
       <div>
         {{#if containersOnRequestedHostIfUnmanaged.length}}
-          <button class="btn-circle" {{action "addLink"}}><i class="icon icon-plus-circle"/> {{t 'formContainerLinks.addActionLabel'}}</button>
+          <button class="bg-transparent text-primary" {{action "addLink"}}><i class="icon icon-plus-circle"/> {{t 'formContainerLinks.addActionLabel'}}</button>
         {{else}}
           <span class="text-muted">{{t 'formContainerLinks.noContainers'}}</span>
         {{/if}}
@@ -35,18 +35,18 @@
               }}
             </td>
             <td class="text-center">
-              <p class="form-control-static"><i class="icon icon-chevron-right"></i></p>
+              <p><i class="icon icon-chevron-right"></i></p>
             </td>
             <td>
               {{#if editing}}
-                <p class="form-control-static input-sm text-muted">{{link.name}}</p>
+                <p class="input-sm text-muted">{{link.name}}</p>
               {{else}}
                 {{input class="form-control input-sm" type="text" value=link.name placeholder=(t 'formContainerLinks.name.placeholder')}}
               {{/if}}
             </td>
             <td class="text-right">
               {{#unless link.existing}}
-                <button class="btn btn-primary btn-sm" {{action "removeLink" link}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+                <button class="btn bg-primary btn-sm" {{action "removeLink" link}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
               {{/unless}}
             </td>
           </tr>

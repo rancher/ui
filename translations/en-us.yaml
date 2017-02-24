@@ -12,6 +12,7 @@ generic:
   cancel: Cancel
   closeModal: Close
   created: Created
+  confirm: Confirm
   default: Default
   description: Description
   disable: Disable
@@ -332,7 +333,7 @@ authPage:
   localAuth:
     header:
       enabled: 'Local Authentication is <b>enabled</b>'
-      disabled: 'Local Authentication is <b class="text-warning">not configured</b>'
+      disabled: '<p>Local Authentication is not configured</p>'
     subtext:
       enabled:
         text: '{appName} is configured to allow access to accounts in its local database.'
@@ -477,7 +478,7 @@ containersPage:
       description:
         placeholder: e.g. My Application
   containerPage:
-    header: 'Container:'
+    header: 'Container'
     subtext:
       on: on
       in: in
@@ -636,10 +637,25 @@ hostsPage:
     addHost: Add Host
     tooltip:
       listView: List
+      iconView: State Icons
       groupedView: Grouped Stacks & Sidekicks
     columns:
       emptyMessage: No hosts or containers yet.
     showSystem: Show System
+    table:
+      state: State
+      name: Name
+      ip: IP Address
+      host: Host
+      image: Image
+      command: Command
+      docker: Docker
+      os: OS
+      cpu: CPU
+      memory: RAM
+      disk: Disk
+      noData: You do not have any hosts yet
+      noMatch: No hosts match the current search
   new:
     header:
       linkTo: "Hosts: "
@@ -856,7 +872,7 @@ secretsPage:
     noMatch: No Secrets match the current search
 
 servicePage:
-  header: 'Service:'
+  header: 'Service'
   multistat:
     type: 'Type:'
     fqdn: 'FQDN:'
@@ -940,6 +956,21 @@ servicePage:
 
 settingsPage:
   header: Settings
+
+signupPage:
+  header: Signup for Rancher Container Cloud
+  form:
+    button: Register
+    labels:
+      loginUsername: Name*
+      email: Email*
+      cc: Credit Card Info
+      pw: Password*
+  emailSuccess:
+    header: Welcome to Container Cloud
+    confirm:
+      subtext: Confirm your email by clicking the verification link we just sent to your inbox.
+      resend: Resend Email
 
 stacksPage:
   header:
@@ -1033,6 +1064,29 @@ swarmPage:
       body:
         noData: You do not have any Services yet.
 
+userSettingsPage:
+  header: Preferences
+  theme: Theme
+  themeAuto: Auto will transition to dark from 6pm-6am
+  tableRows: Table Rows per Page
+  generalInfo:
+    header: My Account
+    form:
+      name:
+        label: Name
+        placeholder: John Smith
+        help: "(To change your email, contact support)"
+        lastChanged: "Your password was last changed on: <\br> {date}"
+      username:
+        label: Username/Email
+        placeholder: johnsmith@example.com
+      password:
+        label: Password
+        text: Change Password
+
+
+
+
 processesPage:
   header: Processes
   tab:
@@ -1069,6 +1123,28 @@ processesPage:
       runAfter: Run After
     noData: 'No processes are currently {which}'
     noMatch: No processes match the current search
+
+verifyPage:
+  header: "You've successfully verified your email!"
+  subtext: We need a few more pieces of information before we can finalize your account.
+  form:
+    name: Name
+    email: Email
+    password: Password*
+    submit: Finish
+  account:
+    header: Account Created
+    subtext: Click the link below to be to taken to the login page.
+    linkText: Login
+
+verifyResetPasswordPage:
+  header: Reset Password
+  button: Update password
+  success:
+    header: Password Reset!
+    subtext: Click the link below to be to taken to the login page.
+    linkText: Login
+
 
 virtualMachinePage:
   header: 'Virtual Machine:'
@@ -1296,6 +1372,32 @@ serviceInfoPartial:
 advancedSection:
   hrText: Advanced Options
 
+
+billingInfo:
+  header: Billing Info
+  addNew: Add Payment Method
+  card: "{brand}: ...{last}"
+  noSub: You do not have an active description
+  table:
+    title:
+      cardType: "Brand: {brand}"
+      last4: "Last Four: {last}"
+      exp: "Exp Date: {exp}"
+      name: "Name On Card: {name}"
+      actions: Actions
+
+
+
+caasLogin:
+  resetHeader: Reset Password
+  new: Create Account
+  reset: Reset Password
+  resetSuccess: Success! Check your email for a link to change your password.
+  error: There was an error retrieving your email. Ensure your email is correct and try again.
+  login: Login Page
+  form:
+    email: Email
+
 catalogSettings:
   header: Catalog
   subtext: Catalogs contain templates that allow users to easily deploy applications by answering a few questions
@@ -1326,6 +1428,7 @@ catalogSettings:
     branch:
       label: Branch
       placeholder: 'e.g. master'
+
 
 confirmDelete:
   title: 'Are you sure you want to delete'
@@ -1758,14 +1861,9 @@ formKeyValue:
   protip: 'ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry.'
 
 formImage:
-  label: Select Image
-  vm:
-    placeholder: e.g. rancher/vm-ubuntu
-    dropdownLabel: "{appName} Images"
+  label: Docker Image
   container:
-    placeholder: "e.g. ubuntu:trusty"
-  pullImage:
-    label: Always pull image before creating
+    placeholder: "e.g. ubuntu:xenial"
 
 formNameDescription:
   name:
@@ -1774,6 +1872,7 @@ formNameDescription:
   description:
     label: Description
     placeholder: Description
+    expand: Add a Description
 
 formNetwork:
   links:
@@ -1825,7 +1924,7 @@ formNetwork:
 formPorts:
   addAction: Port Map
   bindAddress:
-    label: Public Host IP (Optional)
+    label: Public Host IP
     placeholder: "e.g. 1.2.3.4; Default: any"
   public:
     label: Public Host Port
@@ -1845,22 +1944,11 @@ formPorts:
 
 formScale:
   label: Scale
-  global:
-    vm: Always run one instance of this virtual machine on every host
-    container: Always run one instance of this container on every host
-  regular:
-    vm: |
-      Run {scale, plural,
-        =0 {no virtual machines}
-        =1 {1 virtual machine}
-        other {# virtual machines}
-      }
-    container: |
-      Run {scale, plural,
-        =0 {no containers}
-        =1 {1 container}
-        other {# containers}
-      }
+  showAdvanced: Other scaling options
+  mode:
+    container: "{scale, plural, =1 {Just create a container} other {Create # separate containers}}"
+    service: "Create a service with scale of {scale}"
+    global: "Create a global service with {scale, plural, =1 {# container} other {# containers}} per host"
 
 formScheduling:
   canRequestHost:
@@ -2718,6 +2806,59 @@ modalAboutComponent:
   machineService: Machine Service
   close: Close
 
+modalAddPayment:
+  header: Add New Payment Method
+  save: Save
+  errors:
+    cc: Invalid credit card number
+    exp: Invalid Expiry
+    cvc: Invalid CVC number
+    street: A street is required.
+    city: A city is required.
+    state: A state is required.
+    zip: A zipcode is required.
+  form:
+    currency:
+      label: Select your currency
+    cc:
+      label: Credit Card Number
+      placeholder: '•••• •••• •••• ••••'
+    default:
+      label: Default Card
+    name:
+      label: Name On Credit Card
+      placeholder: 'John Smith'
+    exp:
+      label: Expiration
+      placeholder: '••/••'
+    cvc:
+      label: CVC
+      placeholder: '•••'
+    address:
+      addressLine1:
+        label: Address
+        placeholder: 742 Evergreen Terrace
+      addressLine2:
+        label: Address (cont)
+        placeholder: Apt. 123
+      city:
+        label: City
+        placeholder: Springfield
+      state:
+        label: State
+        placeholder: OR
+      zip:
+        label: Zip Code
+        placeholder: '99999'
+      country:
+        label: Country
+        placeholder: United States
+  currencies:
+    yuan: "Chinese Yuan (¥)"
+    euro: "Euro (€)"
+    dollar: "US Dollar ($)"
+
+
 modalAuditlogInfo:
   header: Additional Log Info
   request: "Request Object:"
@@ -2753,6 +2894,12 @@ modalEditBackup:
   nameLabel: Backup Name
   backupTarget: Backup Target
   backupTargetPlaceholder: 'Select a Backup target...'
+
+modalConfirmRemovePayment:
+  header: 'Confirm Payment Removal'
+  title: 'Are you sure you want to delete'
+  card: 'Card ending in {card}'
+  note: 'This will also cancel your Cloud subscription'
 
 modalEditDriver:
   header:
@@ -2868,20 +3015,10 @@ newCatalog:
 newContainer:
   add:
     container: Add Container
-    vm: Add Virtual Machine
-    service: |
-      Add {numServices, plural,
-        =1 {Service}
-        other {Services}
-      }
+    service: Add Service
   upgrade:
     container: Upgrade Container
-    vm: Upgrade Virtual Machine
-    service: |
-      Upgrade {numServices, plural,
-        =1 {Service}
-        other {# Services}
-      }
+    service: Upgrade Service
   tabs:
     disks: Disks
     userData: User Data
@@ -2899,6 +3036,9 @@ newContainer:
   saveNew: Create
   removeSidekick: Remove this Sidekick
   name:
+    label:
+      container: Container Name
+      service: Service Name
     placeholder: e.g. myapp
   description:
     placeholder: e.g. My Application
@@ -2910,6 +3050,12 @@ newContainer:
 newExternalService:
   header: Add External Service
   alert: "Note: This will only be used if the external service is a target of a load balancer."
+
+newPassword:
+  placeholder: New Password
+  password: New Password
+  confirmPassword: Confirm Password
+  passwordNoMatch: Passwords do not match
 
 newReceiver:
   title:
@@ -2988,8 +3134,8 @@ pagination:
   multi: |
     {pages, plural,
     =0 {0 Items}
-    =1 {{count} {count, select, =1 {Item} other {Items}}}
-    other {{from} - {to} of {count}}}
+    =1 {{count} {count, plural, =1 {Item} other {Items}}}
+    other {{from} - {to} of {count} Items}}
 
 pageHeaderEnvironment:
   namespace: Namespace
@@ -3368,6 +3514,8 @@ nav:
     prefix: "Before adding your first service or launching a container, you'll need to add a Windows host.  "
     link: "Add a host"
     suffix: ""
+  userSettings:
+    link: "User Settings"
 
 ##############################
 # Resource Actions
@@ -3464,4 +3612,3 @@ model:
     min: Minimum Scale
     max: Maximum Scale
     amount: By
-

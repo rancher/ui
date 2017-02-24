@@ -1,0 +1,153 @@
+//
+// Important: Almost all selectors in here need to be ">"-ed together so they
+// apply only to the current table, not one nested inside another table.
+//
+
+TABLE {
+  &.no-lines {
+    * {
+      border: none;
+    }
+  }
+  position: relative;
+
+  &.fixed {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  .fixed-header-actions {
+    min-height: 40px;
+    width: 100%;
+    z-index: 1;
+    background: $body-bg;
+  }
+
+  .fixed-header {
+    z-index: 2;
+    background: $link-color;
+
+    > TH {
+      BUTTON {
+        padding: 0;
+      }
+    }
+  }
+
+  .fixed-header-placeholder {
+    visibility: hidden;
+
+    TH {
+      padding: 0 !important;
+      height: 0 !important;
+    }
+  }
+
+  > THEAD > TR > TH,
+  > TBODY > TR > TD {
+    padding: 5px;
+  }
+
+  &.small {
+    > THEAD {
+      > TR > TH {
+        padding: 2px 5px;
+      }
+    }
+
+    > TBODY > TR > TD {
+      padding: 2px 5px;
+    }
+  }
+
+  > THEAD > TR {
+    width: 100%;
+    box-sizing: border-box;
+    border-width: 0 0 3px 0;
+    border-color: $table-border-color;
+    border-radius: 0;
+    outline: none;
+    transition: all ease-in-out .2s;
+
+    &.fixed-header {
+      background: $link-color;
+      th .btn {
+        color: white;
+      }
+    }
+
+    > TH {
+      border-width: 0 0 3px 0;
+      border-color: $table-border-color;
+      border-radius: 0;
+      outline: none;
+      transition: all ease-in-out .3s;
+      text-align: left;
+      font-weight: normal;
+
+      &.fixed-header {
+        background: $table-header;
+        th .btn {
+          color: white;
+        }
+      }
+
+      .btn {
+        color: white;
+      }
+    }
+  }
+
+  > TBODY {
+    border: none;
+    background-color: $table-bg;
+
+    > TR {
+      > TD {
+        border: solid thin $table-border-color;
+      }
+
+      &.row-selected {
+        background-color: yellow;
+      }
+
+      &:hover {
+        background-color: orange;
+      }
+
+      &.subrow:hover {
+        background-color: inherit;
+      }
+    }
+  }
+
+  &.striped > TBODY > TR {
+    > TD {
+      border: none;
+    }
+
+    &:nth-child(odd) {
+      background-color: $table-bg;
+    }
+
+    &:nth-child(even) {
+      background-color: $table-bg-accent;
+    }
+
+    &.row-selected {
+      background-color: yellow;
+    }
+
+    &:hover {
+      background-color: orange;
+    }
+
+    &.subrow:hover {
+      background-color: inherit;
+    }
+  }
+
+  .select-for-action {
+    text-align: center;
+  }
+}

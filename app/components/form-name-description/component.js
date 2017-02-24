@@ -22,6 +22,11 @@ export default Ember.Component.extend({
   descriptionRequired    : false,
   descriptionDisabled    : false,
   descriptionShown       : true,
+  descriptionExpanded    : false,
+  expandDescriptionAction: 'formNameDescription.description.expand',
+
+  rowClass: 'row',
+  colClass: 'col span-6',
 
   init() {
     this._super(...arguments);
@@ -34,6 +39,26 @@ export default Ember.Component.extend({
         _description: this.get('description'),
       });
     }
+
+    if ( (this.get('_description')||'').length ) {
+      this.set('descriptionExpanded', true);
+    }
+  },
+
+  actions: {
+    expandDescription() {
+      this.set('descriptionExpanded', true);
+      Ember.run.next(() => {
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
+        }
+
+        var el = this.$('.description')[0];
+        if ( el ) {
+          el.focus();
+        }
+      });
+    },
   },
 
   modelChanged: function() {
@@ -41,6 +66,10 @@ export default Ember.Component.extend({
       _name: this.get('model.name'),
       _description: this.get('model.description'),
     });
+
+    if ( (this.get('model.description')||'').length ) {
+      this.set('descriptionExpanded', true);
+    }
   }.observes('model'),
 
   nameChanged: function() {

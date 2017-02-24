@@ -34,11 +34,15 @@ export default Ember.Component.extend(HoverDropdown, {
   hasMesos             : Ember.computed.alias('projects.orchestrationState.hasMesos'),
   swarmReady           : Ember.computed.alias('projects.orchestrationState.swarmReady'),
   mesosReady           : Ember.computed.alias('projects.orchestrationState.mesosReady'),
+  isCaas               : Ember.computed.equal('app.mode',C.MODE.CAAS),
+  isOss                : Ember.computed.equal('app.mode',C.MODE.OSS),
+  accessEnabled        : Ember.computed.alias('access.enabled'),
+
   stacks               : null,
 
   // Component options
   tagName              : 'header',
-  classNames           : ['clearfix','no-select'],
+  classNames           : ['page-header'],
   dropdownSelector     : '.navbar .dropdown',
 
   actions: {

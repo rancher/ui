@@ -1,0 +1,122 @@
+<table class="fixed grid sortable-table striped {{if bulkActions 'has-actions'}} {{if subRows 'has-subrows'}}">
+  <thead>
+    <tr class="fixed-header-placeholder">
+      {{#if bulkActions}}
+        <th width="40"></th>
+      {{/if}}
+      {{#each headers as |header idx|}}
+        <th width={{if header.width header.width}}></th>
+      {{/each}}
+    </tr>
+    {{#if (or paging search bulkActions)}}
+      <div class="fixed-header-actions row">
+        <div class="col span-4">
+          {{#if bulkActions}}
+            <div class="container-actions">
+              {{#if availableActions}}
+                {{#rl-dropdown-container class="dropdown"}}
+                  {{#rl-dropdown-toggle class="btn bg-primary"}}
+                    {{t 'generic.actions'}} {{#if (gt selectedNodes.length 1)}}({{selectedNodes.length}}) {{/if}}<span class="icon icon-chevron-down"></span>
+                  {{/rl-dropdown-toggle}}
+
+                  {{#rl-dropdown tagName="ul" class="resource-actions global-actions dropdown-menu dropdown-menu-right" closeOnChildClick="a:link"}}
+                    <li class="resource-actions-tabbable"><a tabindex="-1" id="resource-actions-first" aria-label="Select an Action below"></a></li>
+                    {{#each availableActions as | action index|}}
+                      {{#if action.disabled}}
+                        <li class="disabled">
+                          <a href="#" onclick="return false;" tabindex={{index}}>
+                            {{if action.bulkActionName action.bulkActionName action.translatedLabel}}
+                            <i class="{{action.icon}}"></i>
+                          </a>
+                        </li>
+                      {{else}}
+                        <li>
+                          <a href="#" onclick={{action 'executeBulkAction' action.action}} tabindex={{index}}>
+                            {{if action.bulkActionName action.bulkActionName action.translatedLabel}}
+                            <i class="{{action.icon}}"></i>
+                          </a>
+                        </li>
+                      {{/if}}
+                    {{/each}}
+                  {{/rl-dropdown}}
+                {{/rl-dropdown-container}}
+              {{else}}
+                <button class="btn bg-primary" disabled>
+                  {{t 'generic.actions'}} <span class="icon icon-chevron-down"></span>
+                </button>
+              {{/if}}
+            </div>
+          {{/if}}
+        </div>
+        <div class="col offset-4 span-4 clearfix">
+          {{#if search}}
+            <div class="pull-right input-group">
+              {{input value=searchText type="search" placeholder=(t 'generic.search')}}
+              {{#if searchText}}
+                <span class="input-group-btn">
+                  <button class="btn bg-primary" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
+                </span>
+              {{/if}}
+            </div>
+          {{/if}}
+        </div>
+      </div>
+    {{/if}}
+
+    <tr class="fixed-header">
+      {{#if bulkActions}}
+        <th width="40" class="select-for-action">
+          {{check-box classNames="select-all-check" checked=isAll}}
+        </th>
+      {{/if}}
+      {{#each headers as | header |}}
+        {{sortable-thead
+          sortable=this
+          current=sortBy
+          descending=descending
+          action="changeSort"
+          name=header.name
+          isActions=header.isActions
+          label=header.displayName
+          translationKey=header.translationKey
+          icon=header.icon
+          classNames=header.classNames
+          }}
+      {{/each}}
+    </tr>
+  </thead>
+  <tbody>
+    {{#if prefix}}
+      {{yield null 'prefix'}}
+    {{/if}}
+    {{#each pagedContent as |content|}}
+      <tr class="main-row">
+        {{#if bulkActions}}
+          <td width="40" class="select-for-action">
+            {{check-box nodeId=content.id}}
+          </td>
+        {{/if}}
+        {{#if hasBlock}}
+          {{yield content 'row' dt}}
+        {{else}}
+          {{#each headers as |header|}}
+            <td data-title={{header.displayName}} data-id={{content.id}}>{{select-property content header.name}}</td>
+          {{/each}}
+        {{/if}}
+      </tr>
+      {{#if hasBlock}}
+        {{yield content 'subrow' dt}}
+      {{/if}}
+    {{else}}
+      {{#if hasBlock}}
+        {{yield null (if arranged.length 'nomatch' 'norows')}}
+      {{/if}}
+    {{/each}}
+    {{#if suffix}}
+      {{yield null 'suffix'}}
+    {{/if}}
+  </tbody>
+</table>
+{{#if paging}}
+  {{page-numbers content=pagedContent class="text-center mt-10 mb-10 no-select" indexTo=indexTo indexFrom=indexFrom totalCount=filtered.length}}
+{{/if}}
