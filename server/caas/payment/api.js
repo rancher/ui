@@ -86,13 +86,9 @@ module.exports = function(app/*, options*/) {
       case 'PUT':
       default:
         return res.status(405).send();
-        break;
       /* jshint ignore:end */
     }
   });
-
-  function removeCard(customerId, cardId, cb) {
-  }
 
   function addCustomerToAccount(accountId, stripeAccountId, cb) {
     // right now we'll be adding this to description field but that wont be perm and will need to change whent he field is added to cattle
