@@ -60,6 +60,7 @@ export default Ember.Component.extend({
   initialStr:           null,
   initialMap:           null,
   kvSeparator:          '=',
+  requiredIfAny:        null,
   addActionLabel:       'formKeyValue.addAction',
   keyLabel:             'formKeyValue.key.label',
   valueLabel:           'formKeyValue.value.label',
@@ -73,7 +74,15 @@ export default Ember.Component.extend({
 
   actions: {
     add() {
-      this.get('ary').pushObject(Ember.Object.create({key: '', value: ''}));
+      let ary = this.get('ary');
+      let required = this.get('requiredIfAny');
+      if ( required && !ary.get('length') ) {
+        Object.keys(required).forEach((k) => {
+          ary.pushObject(Ember.Object.create({key: k, value: required[k], editable: false}));
+        });
+      }
+
+      ary.pushObject(Ember.Object.create({key: '', value: ''}));
       Ember.run.next(() => {
         if ( this.isDestroyed || this.isDestroying ) {
           return;
