@@ -97,7 +97,7 @@
           </td>
         {{/if}}
         {{#if hasBlock}}
-          {{yield content 'row' dt}}
+          {{yield content 'row' dt (array-includes selectedNodes content)}}
         {{else}}
           {{#each headers as |header|}}
             <td data-title={{header.displayName}} data-id={{content.id}}>{{select-property content header.name}}</td>
@@ -105,7 +105,7 @@
         {{/if}}
       </tr>
       {{#if hasBlock}}
-        {{yield content 'sub-row' dt}}
+        {{yield content 'sub-row' dt (array-includes selectedNodes content)}}
       {{/if}}
     {{else}}
       {{#if hasBlock}}

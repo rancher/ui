@@ -48,15 +48,27 @@ TABLE {
     padding: 5px;
   }
 
-  &.has-sub-rows > TBODY {
-    > TR.main-row > TD {
-      padding-bottom: 0;
-    }
+  &.has-sub-rows > TBODY > TR.sub-row.hide-unless-selected {
+    display: none;
 
-    > TR.sub-row > TD {
-      padding-top: 0;
+    &.selected {
+      display: table-row;
     }
   }
+
+  > TBODY > TR.separator-row > TD {
+    background-color: $body-bg;
+  }
+
+//  &.has-sub-rows > TBODY {
+//    > TR.main-row > TD {
+//      padding-bottom: 0;
+//    }
+//
+//    > TR.sub-row > TD {
+//      padding-top: 0;
+//    }
+//  }
 
   &.small {
     > THEAD {

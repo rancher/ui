@@ -226,33 +226,51 @@ var Host = Resource.extend({
     });
   }.property('publicEndpoints.@each.{ipAddress,port,serviceId,instanceId}'),
 
-  instanceCounts: function() {
-    let out = {
-      good: 0,
-      other: 0,
-      bad: 0,
-    };
+  instanceStates: function() {
+    let byName = [];
+    let byColor = [
+      {color: 'text-success', count: 0},
+      {color: 'text-info',    count: 0},
+      {color: 'text-warning', count: 0},
+      {color: 'text-error',   count: 0},
+    ];
 
     this.get('instances').forEach((inst) => {
-      switch ( inst.get('stateColor') ) {
-        case 'text-success':
-          out.good++;
-          break;
-        case 'text-error':
-          out.bad++;
-          break;
-        default:
-          out.other++;
-          break;
+      let color = inst.get('stateColor');
+      let state = inst.get('state');
+      let entry = byName.findBy('state', state);
+      if ( entry ) {
+        entry.count++;
+      } else {
+        entry = {state: state, color: color, count: 1};
+        byName.push(entry);
+      }
+
+      entry = byColor.findBy('color', color);
+      if ( entry ) {
+        entry.count++;
+      } else {
+        entry = {color: color, count: 1};
+        byColor.push(entry);
       }
     });
 
-  return out;
-  }.property('instances.@each.stateColor'),
+    return {
+      byName: byName,
+      byColor: byColor
+    };
+  }.property('instances.@each.state'),
 
-  instanceGoodCount:  Ember.computed.alias('instanceCounts.good'),
-  instanceOtherCount: Ember.computed.alias('instanceCounts.other'),
-  instanceBadCount:   Ember.computed.alias('instanceCounts.bad'),
+  instanceCountSort: function() {
+    let colors = this.get('instanceStates.byColor');
+    let success = (colors.findBy('text-success')||{}).count;
+    let error = (colors.findBy('text-error')||{}).count;
+    let other = this.get('instances.length') - success - error;
+
+    return Util.strPad(error,   6, '0') +
+           Util.strPad(other,   6, '0') +
+           Util.strPad(success, 6, '0');
+  }.property('instanceStates','instances.length'),
 
   requireAnyLabels: function() {
     return  ((this.get('labels')||{})[C.LABEL.REQUIRE_ANY]||'').split(/\s*,\s*/).filter((x) => x.length > 0);

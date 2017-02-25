@@ -2,22 +2,26 @@
   {{badge-state model=model}}
 </td>
 <td data-title="{{dt.name}}" class="clip">
+  <i role="button" {{action "toggle"}} class="icon {{if expanded 'icon-minus-square' 'icon-plus-square'}}"></i>
   <a href="{{href-to "host" model.id}}">{{model.displayName}}</a>
 </td>
 <td data-title="{{dt.ip}}">
   {{format-ip model.displayIp}}
+  {{copy-to-clipboard clipboardText=model.displayIp size="small"}}
+</td>
+<td data-title="{{dt.memory}}">
+  {{model.memoryBlurb}}
 </td>
 <td data-title="{{dt.docker}}">
   {{model.dockerEngineVersion}}
 </td>
-<td data-title="{{dt.good}}" class="text-success">
-  {{model.instanceGoodCount}}
+<td data-title="{{dt.containers}}">
+  {{model.instances.length}}
 </td>
-<td data-title="{{dt.other}}" class="{{if model.instanceOtherCount 'text-warning text-bold' 'text-muted'}}">
-  {{model.instanceOtherCount}}
-</td>
-<td data-title="{{dt.bad}}" class="{{if model.instanceBadCount 'text-error text-bold' 'text-muted'}}">
-  {{model.instanceBadCount}}
+<td data-title="{{dt.instanceState}}">
+  {{#each model.instanceStates.byName as |s|}}
+    <span class="{{s.color}}">{{s.state}}:{{s.count}}</span>
+  {{/each}}
 </td>
 <td data-title="{{dt.actions}}" class="actions">
   {{action-menu model=model showPrimary=false}}

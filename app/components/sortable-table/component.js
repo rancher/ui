@@ -223,7 +223,7 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   // ------
   rowClick(e) {
     let tagName = e.target.tagName;
-    if ( tagName === 'A'  || $(e.target).data('ember-action') ) {
+    if ( tagName === 'A'  || tagName === 'BUTTON' || $(e.target).parents('.btn').length || $(e.target).data('ember-action') ) {
       return;
     }
 
@@ -231,6 +231,10 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     let selection = this.get('selectedNodes');
     let isCheckbox = tagName === 'INPUT' || Ember.$(e.target).hasClass('select-for-action');
     let tgtRow = Ember.$(e.currentTarget);
+    if ( tgtRow.hasClass('separator-row') ) {
+      return;
+    }
+
     while ( tgtRow && !tgtRow.hasClass('main-row') ) {
       tgtRow = tgtRow.prev();
     }

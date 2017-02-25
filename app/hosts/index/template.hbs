@@ -23,31 +23,12 @@
     bulkActionCallee=(action 'applyBulkAction')
     bulkActionsList=bulkActionsList
     subRows=true
-    headers=headers as |host kind|}}
+    headers=headers as |host kind dt|}}
     {{#if (eq kind "row")}}
-      {{host-row model=host}}
+      {{host-row model=host toggle=(action "toggleExpand" host.id) expanded=(array-includes expandedHosts host.id)}}
     {{else if (eq kind "sub-row")}}
       <tr class="sub-row hide">{{! make the alternating color match }}</tr>
-      <tr class="sub-row text-muted">
-        <td></td>
-        <td>
-          <span class="host-blurb text-small" role="button" {{action "toggleExpand" host.id}}>
-            {{#if (array-includes expandedHosts host.id)}}
-              <i class="icon icon-minus-square"></i> Hide Containers
-            {{else}}
-              <i class="icon icon-plus-square"></i> Show Containers
-            {{/if}}
-          </span>
-        </td>
-        <td colspan="{{sub headers.length 1}}" class="text-small">
-          <span class="host-blurb"><i class="icon icon-cpu"></i> {{host.cpuBlurb}}</span>
-          <span class="host-blurb"><i class="icon icon-memory"></i> {{host.memoryBlurb}}</span>
-          <span class="host-blurb"><i class="icon icon-hdd"></i> {{host.diskBlurb}}</span>
-          <span class="host-blurb"><i class="icon icon-host"></i> {{host.osBlurb}}</span>
-        </td>
-      <//tr>
-      <tr class="sub-row hide">{{! make the alternating color match }}</tr>
-      <tr class="sub-row">
+      <tr class="sub-row {{unless (array-includes expandedHosts host.id) 'hide'}}">
         <td colspan="{{add 1 headers.length}}" class="pl-40 pr-40">
           {{#if (array-includes expandedHosts host.id)}}
             {{container-table
@@ -60,6 +41,8 @@
           {{/if}}
         </td>
       </tr>
+      <tr class="sub-row hide">{{! make the alternating color match }}</tr>
+      <tr class="separator-row"><td colspan="{{add 1 headers.length}}"></td></tr>
     {{else if (eq kind "nomatch")}}
       <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noMatch'}}</td></tr>
     {{else if (eq kind "norows")}}
