@@ -83,7 +83,7 @@ export default Ember.Controller.extend({
       name: 'ip',
       sort: ['displayIp','displayName'],
       searchField: 'displayIp',
-      width: '130px',
+      width: '160px',
       translationKey: 'hostsPage.index.table.ip',
     },
     {
