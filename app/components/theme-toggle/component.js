@@ -5,7 +5,6 @@ export default Ember.Component.extend({
   prefs     : Ember.inject.service(),
   userTheme : Ember.inject.service('user-theme'),
 
-  classNames : ['p-20'],
 
   theme: Ember.computed(`prefs.${C.PREFS.THEME}`, function() {
     return this.get(`prefs.${C.PREFS.THEME}`);
