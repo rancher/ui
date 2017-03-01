@@ -19,9 +19,12 @@
   {{model.instances.length}}
 </td>
 <td data-title="{{dt.instanceState}}">
-  {{#each model.instanceStates.byName as |s|}}
-    <span class="{{s.color}}">{{s.state}}:{{s.count}}</span>
-  {{/each}}
+  {{progress-bar-multi
+    labelKey="state"
+    valueKey="count"
+    values=model.instanceStates.byColor
+    tooltipValues=model.instanceStates.byName
+  }}
 </td>
 <td data-title="{{dt.actions}}" class="actions">
   {{action-menu model=model showPrimary=false}}

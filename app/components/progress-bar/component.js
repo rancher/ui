@@ -5,7 +5,6 @@ export default Ember.Component.extend({
   classNames: ['progress'],
 
   color: '',
-  textSuffix: '% Complete',
   min: 0,
   value: 0,
   max: 100,
@@ -20,10 +19,6 @@ export default Ember.Component.extend({
     per = Math.round(per*100)/100; // Round to 2 decimal places
     return per;
   }.property('min','max','value'),
-
-  textLabel: function() {
-    return this.get('percent') + this.get('textSuffix');
-  }.property('percent','textSuffix'),
 
   colorClass: function() {
     var color = this.get('color');

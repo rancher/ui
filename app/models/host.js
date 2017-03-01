@@ -228,16 +228,11 @@ var Host = Resource.extend({
 
   instanceStates: function() {
     let byName = [];
-    let byColor = [
-      {color: 'text-success', count: 0},
-      {color: 'text-info',    count: 0},
-      {color: 'text-warning', count: 0},
-      {color: 'text-error',   count: 0},
-    ];
+    let byColor = [];
 
-    this.get('instances').forEach((inst) => {
-      let color = inst.get('stateColor');
-      let state = inst.get('state');
+    this.get('instances').sortBy('stateSort').forEach((inst) => {
+      let color = inst.get('stateBackground');
+      let state = inst.get('displayState');
       let entry = byName.findBy('state', state);
       if ( entry ) {
         entry.count++;
@@ -263,8 +258,8 @@ var Host = Resource.extend({
 
   instanceCountSort: function() {
     let colors = this.get('instanceStates.byColor');
-    let success = (colors.findBy('text-success')||{}).count;
-    let error = (colors.findBy('text-error')||{}).count;
+    let success = (colors.findBy('bg-success')||{}).count;
+    let error = (colors.findBy('bg-error')||{}).count;
     let other = this.get('instances.length') - success - error;
 
     return Util.strPad(error,   6, '0') +
