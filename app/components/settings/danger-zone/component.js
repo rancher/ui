@@ -28,6 +28,7 @@ const ALLOWED = {
   'service_log.purge.after.seconds': {description: 'Auto-purge Service Log entries after this long (seconds)', kind: 'int'},
   'supported.docker.range': {description: 'Semver range for suported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI'},
   'ui.pl': {description: 'Private-Label company name'},
+  'upgrade.mananger': {description: 'Automatic upgrades of infrastructure stacks', kind: 'boolean'},
 };
 
 export default Ember.Component.extend({
