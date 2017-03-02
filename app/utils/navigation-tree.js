@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import { getCatalogNames } from 'ui/utils/parse-catalog-setting';
+// import { getCatalogNames } from 'ui/utils/parse-catalog-setting';
 import { tagChoices } from 'ui/models/stack';
 import { uniqKeys } from 'ui/utils/util';
 

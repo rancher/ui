@@ -22,21 +22,21 @@ export default Ember.Component.extend({
       this.get('aryToRemove').pushObject(obj);
     },
     save() {
-      var newCatalogs = this.get('ary');
-      var catalogsToRemove = this.get('aryToRemove');
+      // var newCatalogs = this.get('ary');
+      // var catalogsToRemove = this.get('aryToRemove');
 
-      this.addCatalogs(newCatalogs).then((response) => {
-        debugger;
-        this.removeCatalogs(catalogsToRemove).then((removed) => {
-          this.set('saving', false);
-          debugger;
-        }).catch((err) => {
-          debugger;
-        });
-      }).catch((err) => {
-        this.set('saving', false);
-        debugger;
-      })
+      // this.addCatalogs(newCatalogs).then((response) => {
+      //   debugger;
+      //   this.removeCatalogs(catalogsToRemove).then((removed) => {
+      //     this.set('saving', false);
+      //     debugger;
+      //   }).catch((err) => {
+      //     debugger;
+      //   });
+      // }).catch((err) => {
+      //   this.set('saving', false);
+      //   debugger;
+      // })
 
     }
   },
