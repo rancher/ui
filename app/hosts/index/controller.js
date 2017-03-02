@@ -5,7 +5,6 @@ export default Ember.Controller.extend({
   prefs: Ember.inject.service(),
 
   bulkActionHandler: Ember.inject.service(),
-  bulkActionsList: C.BULK_ACTIONS,
 
   mode: 'list',
   sortBy: 'name',

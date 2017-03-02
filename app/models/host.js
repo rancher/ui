@@ -59,10 +59,10 @@ var Host = Resource.extend({
     var a = this.get('actionLinks');
 
     var out = [
-      { label: 'action.activate',   icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
-      { label: 'action.deactivate', icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate},
-      { label: 'action.evacuate',   icon: 'icon icon-snapshot',     action: 'evacuate',     enabled: !!a.evacuate},
-      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete'},
+      { label: 'action.activate',   icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate, bulkable: true},
+      { label: 'action.deactivate', icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate, bulkable: true},
+      { label: 'action.evacuate',   icon: 'icon icon-snapshot',     action: 'evacuate',     enabled: !!a.evacuate, bulkable: true},
+      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', bulkable: true},
       { label: 'action.purge',      icon: '',                       action: 'purge',        enabled: !!a.purge},
       { divider: true },
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true},

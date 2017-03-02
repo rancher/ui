@@ -10,45 +10,27 @@
     </tr>
     {{#if (or paging search bulkActions)}}
       <div class="fixed-header-actions row">
-        <div class="col span-4">
-          {{#if bulkActions}}
-            <div class="container-actions">
-              {{#if availableActions}}
-                {{#rl-dropdown-container class="dropdown"}}
-                  {{#rl-dropdown-toggle class="btn bg-primary"}}
-                    {{t 'generic.actions'}} {{#if (gt selectedNodes.length 1)}}({{selectedNodes.length}}) {{/if}}<span class="icon icon-chevron-down"></span>
-                  {{/rl-dropdown-toggle}}
-
-                  {{#rl-dropdown tagName="ul" class="resource-actions global-actions dropdown-menu dropdown-menu-right" closeOnChildClick="a:link"}}
-                    <li class="resource-actions-tabbable"><a tabindex="-1" id="resource-actions-first" aria-label="Select an Action below"></a></li>
-                    {{#each availableActions as | action index|}}
-                      {{#if action.disabled}}
-                        <li class="disabled">
-                          <a href="#" onclick="return false;" tabindex={{index}}>
-                            {{if action.bulkActionName action.bulkActionName action.translatedLabel}}
-                            <i class="{{action.icon}}"></i>
-                          </a>
-                        </li>
-                      {{else}}
-                        <li>
-                          <a href="#" onclick={{action 'executeBulkAction' action.action}} tabindex={{index}}>
-                            {{if action.bulkActionName action.bulkActionName action.translatedLabel}}
-                            <i class="{{action.icon}}"></i>
-                          </a>
-                        </li>
-                      {{/if}}
-                    {{/each}}
-                  {{/rl-dropdown}}
-                {{/rl-dropdown-container}}
-              {{else}}
-                <button class="btn bg-primary" disabled>
-                  {{t 'generic.actions'}} <span class="icon icon-chevron-down"></span>
-                </button>
-              {{/if}}
+        <div class="col span-8">
+          {{#if (and bulkActions availableActions)}}
+            <div class="bulk-actions">
+              {{#each availableActions as |action index|}}
+                {{#if action.enabled}}
+                  <a class="btn btn-sm bg-primary" href="#" onclick={{action 'executeBulkAction' action.action}} tabindex={{index}}>
+                    {{t action.label}}
+                    <i class="{{action.icon}}"></i>
+                  </a>
+                {{else}}
+                  <a class="btn btn-sm bg-default btn-disabled" href="#" onclick="return false;" tabindex={{index}}>
+                    {{t action.label}}
+                    <i class="{{action.icon}}"></i>
+                  </a>
+                {{/if}}
+              {{/each}}
+              {{t itemCountLabel count=selectedNodes.length}}
             </div>
           {{/if}}
         </div>
-        <div class="col offset-4 span-4 clearfix">
+        <div class="col span-4 clearfix">
           {{#if search}}
             <div class="pull-right input-group">
               {{input value=searchText type="search" placeholder=(t 'generic.search')}}

@@ -19,7 +19,6 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   bulkActions:       true,
   search:            true,
   paging:            true,
-  bulkActionsList:   null,
   subRows:           false,
 
   availableActions:  null,
@@ -28,6 +27,7 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   searchText:        null,
   page:              1,
   perPage:           Ember.computed.alias('prefs.tablePerPage'),
+  itemCountLabel:    'generic.items',
 
   showHeader: Ember.computed.or('bulkActions','search','paging'),
 
@@ -352,58 +352,32 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     }
   },
 
-  actionsChanged: Ember.observer('selectedNodes.@each.translatedAvailableActions', function() {
-    let data = this.get('selectedNodes');
+  actionsChanged: Ember.observer('selectedNodes.@each.availableActions', function() {
+    let nodes = this.get('selectedNodes');
     var out = null;
 
-    if (data.length > 1) {
-      out = this.mergeBulkActions(data);
-    } else if (data.length === 1) {
-      out = this.mergeSingleActions(data[0]);
+    if (nodes.length >= 1) {
+      // Find all the bulkable actions from the first item (all items have all the actions, but some will be disabled
+      out = nodes.get('firstObject.availableActions').filterBy('bulkable',true).map((act) => {
+        return Ember.$().extend(true, {}, act);
+      });
+
+      // Make a list of ones that should be disabled because they are not available for one or more selected items
+      let toDisable = [];
+      nodes.forEach((node) => {
+        let bad = get(node,'availableActions').filterBy('enabled',false).map(act => act.action);
+        toDisable.addObjects(bad);
+      });
+
+      // Disable the bulk actions from the toDisable list
+      toDisable.forEach((name) => {
+        let obj = out.findBy('action', name);
+        if ( obj ) {
+          set(obj, 'enabled', false);
+        }
+      });
     }
 
     this.set('availableActions', out);
   }),
-
-  mergeBulkActions(nodes) {
-    var commonActions =  Ember.$().extend(true, [], this.get('bulkActionsList'));
-
-    // loop over every selectedNode to find available actions
-    nodes.forEach((item) => {
-      let actions = get(item, 'translatedAvailableActions').filter((action) => {
-        return action.enabled && action.bulkable;
-      });
-
-      commonActions.forEach((action) => {
-        if (!actions.findBy('action', action.action)) {
-          set(action, 'disabled', true);
-        }
-      });
-
-    });
-
-    return commonActions;
-  },
-
-  mergeSingleActions(node) {
-    var commonActions =  Ember.$().extend(true, [], this.get('bulkActionsList'));
-    var localActions =   [];
-
-    // no others selected just push the availabe actions out
-    localActions = get(node, 'translatedAvailableActions').filter((action) => {
-      return action.enabled;
-    });
-
-    // combine both arrays into a unique set
-    commonActions = commonActions.concat(localActions).uniqBy('action');
-
-    // find items that need to be disbaled
-    commonActions.forEach((action) => {
-      if (!localActions.findBy('action', action.action)) {
-        set(action, 'disabled', true);
-      }
-    });
-
-    return commonActions;
-  },
 });

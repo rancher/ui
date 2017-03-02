@@ -9,6 +9,7 @@ function toPercent(value,min,max) {
 
 export default Ember.Component.extend({
   tagName: 'div',
+  classNames: ['progress-bar-multi'],
 
   values: null,
   colorKey: 'color',
@@ -17,7 +18,7 @@ export default Ember.Component.extend({
   tooltipValues: null,
   min: 0,
   max: null,
-  minPercent: 5,
+  minPercent: 10,
   zIndex: null,
 
   init() {
@@ -75,9 +76,11 @@ export default Ember.Component.extend({
         out.push(Ember.get(obj, labelKey)+ ": " + Ember.get(obj, valueKey));
       });
 
-      return "Hello\nWorld\n"+out.join("\n");
+      return out.join("\n");
     }));
   },
+
+   
 
   zIndexDidChange: function() {
     this.$().css('zIndex', this.get('zIndex') || "inherit");
