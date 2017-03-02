@@ -105,6 +105,14 @@ const navTree = [
         condition: swarmReady,
       },
       {
+        id: 'swarm-dashboard',
+        localizedLabel: 'nav.swarm.dashboard',
+        icon: 'icon icon-link',
+        route: 'swarm-tab.dashboard',
+        ctx: [getProjectId],
+        condition: swarmReady,
+      },
+      {
         id: 'swarm-notready',
         icon: 'icon icon-spinner icon-spin',
         localizedLabel: 'nav.notReady',
