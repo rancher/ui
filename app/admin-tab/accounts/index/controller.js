@@ -1,23 +1,45 @@
 import Ember from 'ember';
-import Sortable from 'ui/mixins/sortable';
 import FilterState from 'ui/mixins/filter-state';
 
 const showKinds = ['user','admin'];
 
-export default Ember.Controller.extend(FilterState, Sortable, {
+export default Ember.Controller.extend(FilterState, {
   access: Ember.inject.service(),
-
-  sortableContent: Ember.computed.alias('filteredByKind'),
   sortBy: 'name',
-  sorts: {
-    state:    ['stateSort','name','id'],
-    name:     ['name','id'],
-    username: ['username','id'],
-    kind:     ['kind','name','id'],
-    ip:       ['displayIp','name','id'],
-    image:    ['imageUuid','id'],
-    command:  ['command','name','id'],
-  },
+  headers: [
+    {
+      translationKey: 'generic.state',
+      name: 'state',
+      sort: ['state'],
+      width: '125px'
+    },
+    {
+      translationKey: 'generic.id',
+      name: 'id',
+      sort: ['id'],
+      width: '120px'
+    },
+    {
+      translationKey: 'accountsPage.index.table.kind',
+      name: 'kind',
+      sort: ['kind'],
+      width: '120px'
+    },
+    {
+      translationKey: 'accountsPage.index.table.username',
+      name: 'username',
+      sort: ['username'],
+    },
+    {
+      translationKey: 'accountsPage.index.table.identity',
+      name: 'name',
+      sort: ['name'],
+    },
+    {
+      isActions: true,
+      width: '75px',
+    },
+  ],
 
   filteredByKind: function() {
     return this.get('filtered').filter((row) => {

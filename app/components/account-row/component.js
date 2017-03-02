@@ -4,5 +4,5 @@ export default Ember.Component.extend({
   model: null,
   isLocal: null,
 
-  tagName: 'TR',
+  tagName: '',
 });
