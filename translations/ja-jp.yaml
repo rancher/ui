@@ -23,7 +23,6 @@ generic:
   limit: 制限
   loading: "読込中..."
   moreActions: その他の操作
-  "no": false
   name: 名前
   none: None
   ports: ポート
@@ -40,7 +39,8 @@ generic:
   type: タイプ
   unknown: 不明
   uuid: UUID
-  "yes": true
+  noo: false
+  yess: true
 accountsPage:
   index:
     header: アカウント
@@ -356,11 +356,11 @@ catalogPage:
     category: "カテゴリー:"
     certified:
       rancher:
-        rancher: 認証済み
-        partner: パートナー
+        rancher: Rancher Labs
+        partner: 公式
       pl:
-        rancher: 認証済み
-        partner: パートナー
+        rancher: コア
+        partner: 公式
     noData:
       singular: 互換性のあるテンプレートがありません
       plural: このカタログには互換性のあるテンプレートがありません
@@ -1660,7 +1660,7 @@ formSecrets:
   mode:
     label: ファイルモード
   help:
-    prefix: "シークレットはコンテナ内の <code>/run/secrets</code> に指定したファイル名で配置され、デフォルトでは <code>root</code> からのみ読み込み可能です。"
+    prefix: "シークレットはコンテナの <code>/run/secrets/</code> 内にある指定されたファイル名で利用できます。"
     showPermissionsLink: "ファイルの所有権 & 権限のカスタマイズ"
 formSecurity:
   key: キー
@@ -2138,7 +2138,7 @@ machine:
     region:
       label: リージョン
   driverCustom:
-    step1: 'Linux マシンを起動し最新版の <a href="http://www.docker.com/" target="_blank" rel="noreferrer nofollow">Docker</a> をインストールします。'
+    step1: 'Linux マシンを起動し <a href="{docsBase}/hosts/#supported-docker-versions" target="_blank">サポートされるバージョン</a> の <a href="http://www.docker.com/" target="_blank" rel="noreferrer nofollow">Docker</a> をインストールします。'
     step2: "セキュリティグループやファイアウォールが以下のトラフィックを許可していることを確認してください:"
     step2li: 他のホストへ、または他のホストからの <code>UDP 500</code> 番ポートと <code>4500</code> 番ポート <span class="text-muted">(IPsec ネットワークのため)</span>
     step3: 'オプション: ホストに適用するためのラベルを追加します。'
@@ -2151,6 +2151,8 @@ machine:
       part2: 画面にポップアップ表示されます。
     close: 閉じる
     windows:
+      windowsHeader: Windows ホスト
+      linuxHeader: Linux ホスト
       step1: 'Windows Server 2016 マシンを起動し最新版の <a href="https://msdn.microsoft.com/en-us/virtualization/windowscontainers/quick_start/quick_start_windows_server"target="_blank"rel="noreferrer nofollow">Docker</a> をインストールします。'
       step2: "透過 Docker ネットワークを作成:"
       step2Copy: docker network create -d transparent transparent
@@ -2788,6 +2790,7 @@ upgradeBtn:
     upgraded: 'アップグレード完了: アップグレードが終了しました'
     notfound: 'テンプレートバージョンが見つかりません'
     error: 'アップグレードのチェックに失敗しました'
+    required: 'アップグレードが必要です'
 viewEditDescription:
   form:
     description:
@@ -2799,6 +2802,17 @@ viewEditProject:
     template: 環境のテンプレート
     accessControl: アクセスコントロール
     noMembers: この環境を利用することができる 1 つまたは複数のメンバーを追加します。
+  networkPolicy:
+    label: ネットワークポリシー
+    description: 管理ネットワーク経由での相互通信を許可するコンテナをコントロールします。
+    unsupported: この環境には UI ではサポートされていない ネットワークポリシー ルール が存在します。ポリシーを管理するには API を利用してください。
+    noManager: ネットワークポリシーは Network Policy Manager テンプレートがデプロイされており Cattle オーケストレーションを利用している環境下でのみ利用できます。
+    withinStack: スタック内
+    withinService: サービス内
+    withinLinked: リンクされたサービス間
+    default: その他全て
+    allow: 許可
+    deny: 拒否
   header: "環境:"
   description: 詳細情報
   helpBlock: |
@@ -2909,7 +2923,7 @@ nav:
     theme: テーマ
     themeAuto: 自動
   noHosts:
-    prefix: "最初のサービスまたはコンテナを起動する前に Docker {minVersion} もしくはそれ以上のバージョンをサポートしている Linux ホストを追加する必要があります。"
+    prefix: "最初のサービスまたはコンテナを起動する前に <a href=\"{docsBase}/hosts/#supported-docker-versions\" target=\"_blank\">サポートされるバージョン</a> の Docker がインストールされた Linux ホストを追加する必要があります。"
     link: "ホストを追加"
   noHostsWindows:
     prefix: "最初のサービスまたはコンテナを起動する前に Windows ホストが必要となります。"
