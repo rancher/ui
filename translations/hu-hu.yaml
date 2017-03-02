@@ -1,0 +1,2434 @@
+---
+languageName: "Magyar"
+languageContribute: "Segíts lefordítani a Ranchert"
+generic:
+  actions: Műveletek
+  activate: Engedélyezés
+  any: Bármely
+  as: Mint
+  cancel: Mégsem
+  closeModal: Bezár
+  created: Létrehozva
+  default: Alapértelmezett
+  description: Leírás
+  disable: Letilt
+  disabled: Letiltott
+  domainName: Tartománynév
+  enable: Engedélyez
+  enabled: Engedélyezve
+  expires: Lejár
+  healthy: Egészséges
+  id: ID
+  image: Kép
+  internal: Belső
+  ipAddress: IP Cím
+  limit: Korlát
+  loading: "Betöltés..."
+  missing: "*%MISSING%*"
+  moreActions: További műveletek
+  na: 'nincs adat'
+  name: Név
+  none: Semmi
+  ports: Portok
+  remove: Töröl
+  role: Szerep
+  save: Mentés
+  saved: Mentett
+  saving: Mentés
+  search: Keresés
+  state: Állapot
+  test: Teszt
+  testing: Tesztelés
+  to: Címzett
+  total: Összesen
+  type: Típus
+  unknown: Ismeretlen
+  uuid: UUID
+  noo: false
+  yess: true
+accountsPage:
+  index:
+    header: Fiókok
+    localLink: Fiók hozzáadása
+    table:
+      state: Állapot
+      id: ID
+      kind: Milyen
+      username: Felhasználói név
+      name: Név
+      identity: Azonosító
+      noData: Még nincsenek fiókok
+      noName: Semmi
+  new:
+    header: Fiók hozzáadása
+    form:
+      username:
+        labelText: Felhasználónév a bejelentkezéshez
+        placeholder: "pl. kovacsj"
+      password:
+        labelText: Jelszó
+      name:
+        labelText: Név
+        placeholder: "pl. Kovács János"
+      type:
+        labelText: Fióktípus
+      description:
+        labelText: Leírás
+        placeholder: "pl. Ez a fiók Kovács Jánosé"
+apiPage:
+  header: Környezeti API kulcsok
+  actionButton: Környezeti API kulcsok hozzáadása
+  content: |
+    A Környezeti API kulcsok hozzá vannak kötve egy adott Környezethez (<code>{displayName}</code>) és csak ezen belül tudnak erőforrásokat módosítani. Más fiókok is tudják kezelni ezeket a kulcsokat amelyek hozzáférnek ehhez a Környezethez.
+  currentEndpoint: 'Végpont (v2-beta):'
+  legacyEndpoint: 'Végpont (v1):'
+  table:
+    state: Állapot
+    name: Név
+    description: Leírás
+    publicValue: Hozzáférési kulcs
+    created: Létrehozva
+    noData: Nincsenek még kulcsok ehhez a Környezethez.
+    noName: Semmi
+    noDescription: Semmi
+    noPublicValue: Nincs nyilvános érték
+  account:
+    header: Fiók API kulcsai
+    buttonText: Fiók API kulcs hozzáadása
+    content:
+      paragraph1: A fiók API kulcsok az adott fiókodhoz kötődnek
+      paragraph2: "és létrehozhatsz, törölhetsz vagy módosíthatsz minden környezeti változót amelyhez hozzáférésed van."
+    table:
+      noData: "Nincsenek még Fiók API kulcsaid."
+auditLogsPage:
+  header: Hozzáférési naplók
+  form:
+    eventType:
+      placeholder: Esemény típusa
+    resourceType:
+      placeholder: "Erőforrás típusa:"
+      dropdownPlaceholder: 'Válassz egy erőforrás típust:'
+    resourceId:
+      placeholder: Erőforrás ID
+    requestIp:
+      placeholder: Kérelmező IPje
+    authType:
+      placeholder: "Hitelesítés típus:"
+      dropdownPlaceholder: 'Válassz egy hitelesítés típust:'
+    clearButtonText: Szűrők törlése
+    searchButtonText: Keresés
+  table:
+    time: Időpont
+    eventType: Esemény típusa
+    description: Leírás
+    environment: Környezet
+    resourceTypeId: "Erőforrás típusa: ID"
+    identity: Azonosító
+    authIp: "Hitelesítés és IP"
+  first: Első Oldal
+  next: Következő oldal
+authPage:
+  shibboleth:
+    header:
+      title: Shibboleth hitelesítés
+    enabled:
+      header: "{providerName} engedélyezve van"
+      required: |
+        {appName} úgy van beállítva, hogy {orgs, plural,
+        =0 {ne férjen hozzá szervezethez}
+        =1 {hozzáférjen # szervezethez}
+        other {hozzáférjen # szervezethez}
+        } és {users, plural,
+        =0 {ne férjen hozzá felhasználóhoz}
+        =1 {hozzáférjen # felhasználóhoz}
+        other {hozzáférjen # felhasználóhoz}
+        }.
+      restricted: |
+        {appName} úgy van beállítva, hogy hozzáférjen a környezeti változókhoz, {orgs, plural,
+        =0 {ne férjen hozzá a szervezetekhez}
+        =1 {# szervezethez}
+        other {# szervezethez}
+        } és {users, plural,
+        =0 {ne férjen hozzá a felhasználókhoz}
+        =1 {hozzáférjen # felhasználóhoz}
+        other {hozzáférjen # felhasználóhoz}
+        }.
+      unrestricted: "{appName} úgy van beállítva, hogy bármely {providerName} felhasználó hozzáférjen."
+      authenticated:
+        header:
+          text: Hitelesítés
+          helpText: "A beállított Shibboleth alkalmazás módosításához tiltsa le a hozzáférés-szabályozást alább és majd engedélyezze újra."
+      disableAccess:
+        header: "Veszélyes Terület&trade;"
+        warning: '<b class="text-danger"> Figyelmeztetés:</b> A hozzáférés-szabályozás letiltása teljes hozzáférést biztosít az {appName} felett bárki számára, aki elérheti ezt az oldalt, vagy az API-t.'
+        confirmDisable: "Biztos vagy benne?  Kattints újra, hogy valóban letiltsd a hozzáférés-szabályozást"
+        disable: Hozzáférés-szabályozás letiltása
+      groupsField: 'Csoportok:'
+      displayName: 'Megjelenített név:'
+      userName: 'Felhasználói név:'
+      userId: 'Felhasználó ID:'
+    disabled:
+      header: '1. Shibboleth fiók beállítása'
+      label: "{providerName} nincs beállítva"
+      name:
+        labelText: Megjelenítendő név mező
+      username:
+        labelText: Felhasználó név mező
+      uid:
+        labelText: UID mező
+      groups:
+        labelText: Csoportok mező
+      testAuth:
+        header: '2. Hitelesítés tesztelése és engedélyezése'
+        subtext: 'Ellenőrizd ennek a hitelesítésnek a vizsgálatával, hogy az alkalmazásod megfelelően van beállítva:'
+        buttonText:
+          pre: Hitelesítés IDP-vel
+          post: Várakozás az IDP viszontválaszára
+    providerName:
+      shibboleth: Shibboleth
+  root:
+    header: Access Control
+  github:
+    standard: GitHub
+    enterprise: Vállalati GitHub
+    header:
+      enabled:
+        label: "{github} engedélyezve van"
+      disabled:
+        label: Nincs beállítva a GitHub
+    authenticated:
+      header:
+        text: Hitelesítés
+        enterpriseHostName: "Vállalati hoszt:"
+        clientId:
+          text: "Kliens ID:"
+      disableAccess:
+        header: "Veszélyes Terület&trade;"
+        confirmDisable: "Biztos vagy benne?  Kattints újra, hogy valóban letiltsd a hozzáférés-szabályozást"
+        disable: Hozzáférés-szabályozás letiltása
+    notAuthenticated:
+      header: "1. GitHub alkalmazás beállítása"
+      ul:
+        li2:
+          ul:
+            li2: '<b>Honlap URL-címe:</b> '
+            li3: '<b>Alkalmazás leírás:</b> <span class="text-muted">bármi, amit szeretnél, opcionális</span>'
+            li4: Hitelesítés visszahívási URL
+        li3:
+          text: 'Kattints az "Alkalmazás regisztrálásához" '
+      form:
+        header: '2. {appName} hitelesítése beállítása az alkalmazásodhoz'
+        subtext: 'Másold be a kliens ID-t és a titkos kódot az újonnan létrehozott alkalmazás jobb felső sarkából.'
+        clientId:
+          labelText: Kliens ID
+        clientSecret:
+          labelText: Kliens titkos kódja
+        ghEnterprise:
+          labelText: Bizalmas Vállalati GitHub telepítés használata
+        isGHEnterprise:
+          labelText: Biztonságos kapcsolat használata
+        enterpriseHost:
+          labelText: Vállalati hoszt
+          placeholder: 'pl. github.sajatdomain.hu'
+    testAuth:
+      header: '3. Hitelesítés tesztelése és engedélyezése'
+      subtext: 'Ellenőrizd ennek a hitelesítésnek a vizsgálatával, hogy az alkalmazásod megfelelően van beállítva:'
+      buttonText:
+        pre: Hitelesítés GitHub használatával
+        post: Várakozás a GitHub viszontválaszára
+  azuread:
+    header:
+      enabled: 'Azure AD hitelesítés <b>engedélyezve</b>'
+      disabled: 'Azure AD hitelesítés <b class="text-warning">nincs beállítva</b>'
+    subtext:
+      enabled: '{appName} úgy van beállítva, hogy hozzáférjen fiókokhoz az Azure AD-ben'
+    enabled:
+      header: 'Veszélyes Terület&trade;'
+      promptDisable: Hozzáférés-szabályozás letiltása
+    configure:
+      header: '1. Azure AD fiók beállítása'
+      tenantId:
+        label: Bérlő ID
+        placeholder: Egy hosszú UUID-karakterlánc
+        help: Az Azure AD portálból
+      clientId:
+        label: Kliens ID
+        placeholder: Egy hosszú UUID-karakterlánc
+      domain:
+        label: Tartomány
+        placeholder: pl. cegneved.onmicrosoft.com
+      adminAccountUsername:
+        label: Adminisztrátor felhasználói név
+        placeholder: pl. rancher-admin
+        help: A felhasználó olvasni tudja más felhasználók adatait
+      adminAccountPassword:
+        label: Admin fiók jelszó
+    test:
+      header: '2. Hitelesítés tesztelése és engedélyezése'
+      help: 'Ellenőrizd a fiókod hitelesítésnek vizsgálatával, hogy az alkalmazásod megfelelően van beállítva:'
+      username:
+        label: Felhasználónév a bejelentkezéshez
+        placeholder: 'pl. kovacsj'
+      password:
+        label: Bejelentkezési jelszó
+      pre: Hitelesítés Azure használatával
+      post: Várakozás az Azure viszontválaszára
+  localAuth:
+    header:
+      enabled: 'Helyi hitelesítés <b>engedélyezve</b>'
+      disabled: 'Helyi hitelesítés <b class="text-warning">nincs beállítva</b>'
+    subtext:
+      enabled:
+        text: '{appName} úgy van beállítva, hogy hozzáférjen fiókokhoz a lokális adatbázisában.'
+        linkText: Fiókok kezelése
+    accessEnabled:
+      header: 'Veszélyes Terület&trade;'
+      buttonText:
+        disable: 'Biztos vagy benne?  Kattints újra, hogy valóban letiltsd a hozzáférés-szabályozást'
+        prompt: Hozzáférés-szabályozás letiltása
+    accessDisabled:
+      header: '1. Admin felhasználó beállítása'
+      helpText: 'Ez a felhasználó lesz az admin, aki teljes felügyeletet kap {appName} felett.'
+      form:
+        login:
+          labelText: Felhasználónév a bejelentkezéshez
+          placeholder: 'pl. kovacsj'
+        name:
+          labelText: Teljes név
+          placeholder: 'pl. Kovács János'
+        password:
+          labelText: Jelszó
+        confirmPassword:
+          labelText: Jelszó megerősítése
+    accessControl:
+      header: '2. Hozzáférés-szabályozás engedélyezése'
+      helpText: 'Kattintson a hozzáférés-szabályozás engedélyezéséhez és jelentkezzen be.'
+      buttonText:
+        pre: Helyi hitelesítés engedélyezése
+        post: 'Engedélyezés...'
+  0:
+    header: Hozzáférés-vezérlés
+backupTargetsPage:
+  header: Biztonsági mentések helyei
+  linkTo: Biztonsági mentés helyének hozzáadása
+  newTarget:
+    hr: NFS-konfigurációs beállítások
+    header: Biztonsági mentés helyének hozzáadása
+  server:
+    label: NFS-kiszolgáló
+    placeholder: 'pl. az en-nfs-szerverem.sajatdomain.hu'
+  share:
+    label: NFS-megosztás
+    placeholder: 'pl. /mnt/volume-backups'
+  mountOptions:
+    label: NFS csatolási beállítások
+    placeholder: 'pl. nfsvers=4, proto=udp'
+catalogPage:
+  index:
+    header: 'Katalógus:'
+    search:
+      placeholder: Keresés...
+    category: "Kategória:"
+    certified:
+      rancher:
+        rancher: Rancher Labs
+        partner: Hivatalos
+      pl:
+        rancher: Mag
+        partner: Hivatalos
+    noData:
+      singular: Nincsenek kompatibilis sablonok.
+      plural: Nincsenek kompatibilis sablonok ebben a katalógusban.
+    action:
+      launch: Részletek megtekintése
+      notCompatible: Nem kompatibilis
+      alreadyDeployed: Már telepítve
+consolePage:
+  header: 'Rendszerhéj:'
+  closeButton: Bezár
+certificatesPage:
+  table:
+    cn: Tartománynév
+    expiresDate: Lejár
+    noCn: Semmi
+  detail:
+    header: 'Tanúsítvány:'
+    description: Leírás
+    info:
+      labelText: Infó
+      valid: Érvényesség kezdete
+      expires: Lejár
+      algorithm: Algoritmus
+      issuer: Kibocsátó
+      serialNumber: Sorozatszám
+      version: Verzió
+    domainNames:
+      labelText: Tartománynevek
+  index:
+    header: Tanúsítványok
+    linkTo: Tanúsítvány hozzáadása
+    table:
+      header:
+        state: Állapot
+        name: Név
+        domain: Tartománynév
+        expires: Lejár
+      body:
+        noData: Még egyetlen tanúsítványod sincs.
+  new:
+    header: Tanúsítvány hozzáadása
+    form:
+      name:
+        placeholder: pl. sajat-domain-nevem.hu
+      description:
+        placeholder: pl. EV tanúsítvány a sajat-domain-nevem.hu webhelyhez
+containersPage:
+  table:
+    ipAddress: IP Cím
+    primaryHost: Elsődleges hoszt
+    primaryHostUnknown: Ismeretlen
+    image: Kép
+    stats: Statisztikák
+    sparkPrefixCpu: 'Processzor: '
+    sparkPrefixMemory: 'Memória: '
+    sparkPrefixNetwork: 'Hálózat: '
+    sparkPrefixStorage: 'Tároló: '
+    command: Parancs
+    noCommand: Semmi
+  index:
+    header: Konténerek
+    linkTo: Konténer hozzáadása
+    table:
+      header:
+        state: Állapot
+        name: Név
+        ip: IP Cím
+        host: Hoszt
+        image: Kép
+        command: Parancs
+      body:
+        noData: Még egyetlen Konténered sincs
+        noMatch: A keresési feltételnek egy konténer sem felel meg
+  new:
+    form:
+      name:
+        placeholder: pl. sajat-app
+      description:
+        placeholder: pl. SajátAlkalmazásom
+  containerPage:
+    header: 'Konténer:'
+    subtext:
+      "on": true
+      in: itt
+    infoMultiStats:
+      tooltip:
+        host: IP Cím másolása a vágólapra
+      host: 'Hoszt:'
+      ip: 'Konténer IP:'
+      docker: 'Docker ID:'
+      image: 'Kép:'
+      command: 'Parancs:'
+      entryPoint: 'Belépési pont:'
+      description: 'Leírás:'
+      stack: 'Köteg/Szolgáltatás:'
+      memoryReservation:
+        labelText: 'Memória foglalása: '
+      milliCpuReservation:
+        labelText: 'mCPU foglalás: '
+    navTabs:
+      labels: Címkék
+      volumes: Kötetek
+      ports: Portok
+      command: Parancs
+      networking: Hálózat
+      healthCheck: Állapotfelmérés
+      scheduling: Ütemezés
+      security: Biztonság
+    portsTab:
+      table:
+        header:
+          ip: IP Cím
+          public: Nyilvános a hoszton
+          private: Privát a konténerben
+          protocol: Protokoll
+        body:
+          noData: Ez a Konténer nem tartalmaz portokat
+    volumesTab:
+      table:
+        header:
+          name: Név
+          mount: Csatolási pont
+          shared: Megosztva
+          writable: Írható
+          snapshot: Pillanatkép idővonal
+        body:
+          error:
+            data: 'Megjegyzés:'
+            error: Hiba
+            noData: Ez a Konténer nem tartalmaz Köteteket
+          noContainers: Nincs más Konténer
+containerSubpod:
+  childContainers: Konténerek
+  childSidekicks: Társak
+dockerCLI:
+  header: Swarm CLI
+failWhalePage:
+  header: Hiba
+  reloadButton: |
+    <a href="#" onclick="window.location.href = window.location.href; return false;">Újratöltés</a> hogy próbálja újra, vagy
+  logoutButton: kijelentkezés
+haPage:
+  header: Magas rendelkezésre állás
+  setup:
+    link: Dokumentáció
+  table:
+    address: Meghirdetett cím
+    port: Port
+    heartbeat: Utolsó aktivitás
+    clustered: Fürtözött
+helpPage:
+  header: Hasznos linkek & információk
+  banner: Bejelentések
+  releaseText: "Megjelent:"
+  environment:
+    header: Mi az a Környezet?
+    manageLink: Környezetek kezelése
+  host:
+    header: Mi a hoszt?
+    contentLink: Tudj meg többet
+    addHostLink: Hoszt hozzáadása
+  stacks:
+    header: Mik azok a Kötegek és Szolgáltatások?
+    content:
+      link: Tudj meg többet
+    addServiceLink: Szolgáltatások kezelése
+    addCatalogLink: Hozzáadás Katalógusból
+    noHosts: Jelenleg nincsenek hosztjaid. Kérlek adj hozzá egy hosztot mielőtt szolgáltatást adnál hozzá.
+    manageServiceLink: Szolgáltatások kezelése
+  issues:
+    header:
+      text: Problémák és Dokumentáció
+      tagline: Húha, hibát találtál?
+      fileBug: Hiba jelentése
+    content:
+      graphic1:
+        text: Hibát talált?
+        link: Hiba jelentése a GitHubon.
+      graphic2:
+        text: További információhoz
+      graphic3:
+        link: Nézd meg a GYIK oldalunkon
+  forums:
+    header: A fórumokból
+    tagline: Csatlakozz a beszélgetéshez
+    buttonText: A fórumokon
+    announcements:
+      header: Bejelentések
+      buttonText: További bejelentések megtekintése
+    general:
+      header: Általános
+      buttonText: További általános témák megtekintése
+    rancherOs:
+      header: RancherOS
+      buttonText: További RancherOS témák megtekintése
+    rancher:
+      header: Rancher
+      buttonText: További Rancher témák megtekintése
+    convoy:
+      header: Convoy
+      buttonText: További Convoy témák megtekintése
+  commercial:
+    header: Kereskedelmi támogatás
+hostsPage:
+  addContainer: Konténer hozzáadása
+  index:
+    header: Hosztok
+    addHost: Hoszt hozzáadása
+    tooltip:
+      listView: Lista
+      groupedView: Csoportosított Kötegek és Társak
+    columns:
+      emptyMessage: Nincs még hoszt vagy konténer.
+    showSystem: Rendszer megtekintése
+  new:
+    header:
+      linkTo: 'Hosztok: '
+      text: Hoszt hozzáadása
+    manageLink: Elérhető Gép illesztőprogramok kezelése
+    form:
+      name:
+        placeholder: pl. host01
+  hostPage:
+    header:
+      linkTo: 'Hoszt:'
+    addContainer:
+      linkTo: Konténer hozzáadása
+    infoMultiStats:
+      ip: 'IP:'
+      cpu: 'CPU:'
+      memory: 'Memória:'
+      storage: 'Tároló:'
+      provider:
+        labelText: 'Szolgáltató:'
+        noHost: Egyéni
+      kernel: 'Kernel:'
+      docker: 'Docker:'
+      os: 'OS:'
+      description: 'Leírás:'
+      milliCpu:
+        labelText: mCPU
+      localStorageMb:
+        labelText: Helyi Limit
+    navTabs:
+      containers: Konténerek
+      ports: Portok
+      labels: Címkék
+      storage: Tároló
+    containersTab:
+      table:
+        header:
+          state: Állapot
+          name: Név
+          ip: IP Cím
+          image: Kép (Parancs)
+          stats: Statisztikák
+        body:
+          noData: Ez a hoszt még nem tartalmaz konténereket
+    portsTab:
+      table:
+        header:
+          ip: IP Cím
+          port: Port
+          service: Szolgáltatás
+          container: Konténer
+        body:
+          noData: Ez a hoszt nem rendelkezik egyetlen porttal sem
+    storageTab:
+      table:
+        header:
+          state: Állapot
+          hostPath: Hoszt elérési útvonal
+          mounts: Csatolások
+        body:
+          noData: Ez a hoszt nem rendelkezik egyetlen Kötettel sem
+k8sTab:
+  dashboard:
+    header: Kubernetes irányítópult
+    dashboard:
+      header: Irányítópult
+      content: A Kubernetes irányítópult egy általános célú, web alapú felhasználói felület a Kubernetes fürtökhöz. Lehetővé teszi a felhasználóknak hogy alkalmazásokat kezeljenek a fürtben és hibaelhárítást végezhessenek, valamint kezelhessék magát a fürtöt.
+      button: Kubernetes felhasználói felület
+  kubectl:
+    header: Kubernetes CLI
+    stepOne:
+      generateButton: Konfiguráció létrehozása
+    stepTwo:
+      progress: Generálás...
+    stepThree:
+      helpText: |
+        Tedd ezt bele a <code>~/.kube/config</code> fájlba:
+      downloadText: |
+        Majd <a href="{downloadUrl}" target="_blank">töltsd le</a> (ha szükséges) és futtasd a <code>kubectl</code> parancsot
+    shell:
+      helpText: |
+        Vagy használd a következő praktikus shell parancsot a <code>kubectl</code> parancsok futtatásához:
+loginPage:
+  greeting: "Szervusz! <br>Üdvözöljük a {appName}-ban"
+  githubMessage: "{appName} a GitHub segítségével kezeli a fiókokat és a csoportokat.  Kattints az alábbi gombra a bejelentkezéshez, és adj nekünk csak olvasható hozzáférést az alapvető GitHun fiókinformációidhoz."
+  shibbolethMessage: "{appName} a Shibboleth-et használja a fiókok kezeléséhez.  Kattints az alábbi gombra hogy bejelentkezz a beállított Shibboleth IDP-re."
+  shibbolethError:
+    401: "Jogosulatlan"
+    500: "Belső kiszolgálóhiba"
+    generic: "Hiba lépett fel ({errorCode}) miközben megpróbáltál bejelentkezni. Kérlek próbáld meg újra."
+  error:
+    authFailed: Felhasználónév vagy jelszó helytelen.
+    timedOut: A munkamenet túllépte az időkorlátot.  Jelentkezz be ismét a folytatáshoz.
+machinePage:
+  header: Gép-illesztőprogramok
+  inactive: Inaktív
+  download: Csomag letöltése
+  upgradeAvailable: Frissítés érhető el
+  upgrading: Frissítés
+  activating: Aktiválás folyamatban
+  viewUi: UI megnyitása
+  subtext: "További <code>docker-machine</code> illesztőprogram tölthető be és használható a Hoszt hozzáadása képernyőn."
+  add: Gép-illesztőprogram hozzáadása
+  builtin: Beépített
+  other: Egyéb
+  table:
+    header:
+      state: Állapot
+      name: Név
+      url: Illesztőprogram URL
+      uiUrl: Felhasználói felület URL címe
+      checksum: Ellenőrző összeg
+    noData: Nincsenek Gép-illesztőprogramjaid
+mesosPage:
+  header: Áttekintés
+  actionLink: Mesos felhasználói felületének megnyitása
+  banner:
+    header: A fürtöd
+    content: |
+      Pillanatnyilag {hosts, plural,
+      =1 {# aktív hoszt}
+      other {# aktív hoszt}
+      } található a Mesos fürtödben
+      
+    link: Hoszt megtekintése vagy hozzáadása
+  launch:
+    header: Indítás
+    content: Keretrendszereket tudsz elindítani a Katalógusunkból.
+    button: Keretrendszer indítása
+  manage:
+    header: Kezelés
+    content: Mesos kezelése a Mesos felhasználói felületről.
+    button: Mesos felhasználói felület
+notFoundPage:
+  header: "A keresett oldal nem létezik!"
+  linkTo: Nyitóoldalra
+projectList:
+  index:
+    header: Környezetek
+    new: Környezet hozzáadása
+    alert: Nincs aktív környezet. Létre kell hoznod vagy aktiválnod kell egyet mielőtt bármi mást csinálnál.
+    table:
+      header:
+        orchestration: Számítógépfürt rendszer (Orchestration)
+        projectTemplate: Sablon
+      body:
+        noData: "Nincs még egyetlen környezeted sem"
+  indexTemplate:
+    header: Környezet sablonok
+    new: Sablon hozzáadása
+    table:
+      header:
+        stacks: Kötegek
+        isPublic: Publikus
+      body:
+        noData: "Nincs még egyetlen környezet sablonod sem"
+registriesPage:
+  index:
+    header: Registry-k
+    linkTo: Registry hozzáadása
+    table:
+      header:
+        state: Állapot
+        address: Cím
+        email: Email-cím
+        username: Felhasználói név
+        created: Létrehozva
+      body:
+        noData: "Nincs még egyetlen registry-d sem"
+  new:
+    header: Registry hozzáadása
+    form:
+      custom:
+        labelText: Cím
+        placeholder: pl. registry.sajatdomain.hu
+        help: 'Csak a hosztnév vagy az IP-cím, ne tartalmazza a protokollt (https://)'
+      email:
+        labelText: Email-cím
+        placeholder: pl. te@sajat.email.cimed.hu
+      username:
+        labelText: Felhasználói név
+        placeholder: pl. felhasználói név
+      password:
+        labelText: Jelszó
+        placeholder: pl. jelszó
+secretsPage:
+  index:
+    header: Titkos kódok
+    linkTo: Titkos kód hozzáadása
+    noData: Még nincs titkos kódod
+    noMatch: A keresési feltételnek egy titkos kód sem felel meg
+servicePage:
+  header: 'Szolgáltatás:'
+  multistat:
+    type: 'Típus:'
+    fqdn: 'FQDN:'
+    scale: 'Skála:'
+    image: 'Kép:'
+    entryPoint: 'Belépési pont:'
+    command: 'Parancs:'
+    description: 'Leírás:'
+    global: Globális
+  external:
+    externalIp: Külső IP-k
+    externalHostname: 'Külső hosztnév:'
+  navTabs:
+    portRules: Terheléselosztó szabályok
+    certificates: Tanúsítványok
+    ports: Portok
+    containers: Konténerek
+    labels: Címkék
+    links: Linkek
+    log: Napló
+  containersTab:
+    table:
+      header:
+        ipAddress: IP Cím
+        host: Hoszt
+        image: Kép
+        stats: Statisztikák
+      body:
+        noData: Ez a szolgáltatás még nem tartalmaz konténereket.
+  linksTab:
+    header: Linkek
+    noData: Nincsenek linkek
+  certsTab:
+    default: Alapértelmezett tanúsítvány
+    additional: További SNI tanúsítványok
+  new:
+    form:
+      name:
+        placeholder: pl. sajat-app
+      description:
+        placeholder: pl. SajátAlkalmazásom
+  newAlias:
+    form:
+      name:
+        placeholder: pl. sajat-app
+      description:
+        placeholder: pl. SajátAlkalmazásom jelenlegi verziója
+  newBalancer:
+    upgradeImage: "A terheléselosztó szoftver kép frissítve lesz <code>{from}</code> -ról <code>{to}</code>-ra."
+    form:
+      name:
+        placeholder: pl. weboldal
+      description:
+        placeholder: pl. terheléselosztó a sajatcegem.hu-hoz
+  portsTab:
+    table:
+      header:
+        port: Port
+        host: Hoszt IP
+      body:
+        noData: Ez a szolgáltatás nem tartalmaz portokat.
+    notActive: A portok csak addig érhetők el, amíg a szolgáltatás aktív.
+  logTab:
+    table:
+      header:
+        date: Dátum
+        level: Szint
+        event: Esemény
+        description: Leírás
+      body:
+        noData: Még nincsen naplóbejegyzés eseményekhez.
+  type:
+    service: Szolgáltatás
+    loadbalancerservice: Terheléselosztó
+    dnsservice: Szolgáltatás álnév
+    externalservice: Külső
+    kubernetesservice: K8s szolgáltatás
+    composeservice: Szolgáltatás összeállítása
+    networkdriverservice: Hálózati szolgáltatás
+    storagedriverservice: Tároló szolgáltatás
+settingsPage:
+  header: Beállítások
+stacksPage:
+  header:
+    all: Minden Köteg
+    user: Felhasználói Kötegek
+    custom: '{name} Kötegek'
+    tags: '"{tags}" Kötegek'
+    infra: Infrastuktúra Kötegek
+  actionButton: Köteg hozzáadása
+  catalogButton: Hozzáadás Katalógusból
+  sort:
+    label: Rendezés
+    state: Állapot
+    name: Név
+  tags:
+    all: Az összes címke
+    one: 'Címke: {name}'
+  noInfra: Jelenleg egyetlen Infrastruktúra Köteged sincs
+  noMatch: Nincsenek Kötegek a kiválasztott címkével
+  new:
+    header: Köteg hozzáadása
+    composeLabel: 'Opcionális: összeállítás importálása'
+    form:
+      name:
+        placeholder: pl. sajat-app
+      description:
+        placeholder: pl. SajatApp Köteg
+      dockerCompose:
+        label: 'Opcionális: docker-compose.yml'
+storagePoolsPage:
+  volume: Kötet ID
+  newVolume:
+    header: Kötet hozzáadása
+    form:
+      driverOptions: Illesztőprogram-beállítások
+      addActionLabel: Opció hozzáadása
+swarmPage:
+  projects:
+    new:
+      form:
+        variables:
+          addActionLabel: Változó helyettesítés hozzáadása
+          valuePlaceholder: pl. bar
+    project:
+      linkTo: 'Projekt:'
+      table:
+        header:
+          ports: Portok
+          containers: Konténerek
+        body:
+          noData: Ez a projekt még nem tartalmaz szolgáltatásokat.
+  services:
+    header: Szolgáltatások
+    table:
+      header:
+        ports: Portok
+        containers: Konténerek
+      body:
+        noData: Még egyetlen szolgáltatásod sincs.
+processesPage:
+  header: Folyamatok
+  tab:
+    summary: Összegzés
+    running: Fut
+    delayed: Késleltetett
+    ready: Kész
+    completed: Nemrég fejezte be
+  summary:
+    noData: Nincsenek folyamatok ütemezve
+    table:
+      running: Fut
+      ready: Kész
+      delay: Késleltetett
+  pools:
+    noData: Nem található pool
+    noMatch: A keresési feltételnek egy pool sem felel meg
+    table:
+      activeTasks: Aktív
+      poolSize: Pool mérete
+      rejectedTasks: Elutasítva
+      completedTasks: Befejezett
+      queueSize: Várólista mérete
+      queueRemainingCapacity: Várólistán maradtak
+  list:
+    table:
+      resource: Erőforrás
+      exitReason: Kilépési ok
+      startTime: Kezdési időpont
+      endTime: Befejezési idő
+      runTime: Futási idő
+      runAfter: Fuss utána
+    noData: 'Jelenleg nincsenek {which} folyamatok'
+    noMatch: A keresési feltételnek egy folyamat sem felel meg
+virtualMachinePage:
+  header: 'Virtuális gép:'
+  multistat:
+    host: 'Hoszt:'
+    hostIp: 'Hoszt IP:'
+    vmIp: 'VM IP:'
+    image: 'Kép:'
+    description: 'Leírás:'
+  navTabs:
+    labels: Címkék
+virtualMachinesPage:
+  header: Virtuális gépek
+  linkTo: Virtuális gép hozzáadása
+  table:
+    body:
+      noData: Még egyetlen virtuális géped sincs.
+waitingPage:
+  hosts:
+    header: |
+      {expectHosts, plural,
+      =1 {Az első hosztod hozzáadása}
+      other {Hoszt hozzáadása}
+      }
+    content: |
+      Hozzá kell adnod legalább {expectHosts, plural,
+      =1 {egy Linux hosztot}
+      other {# Linux hosztot}
+      } hogy támogassa a Docker {minVersion} vagy magasabb verziót és képes legyél elérni az {appName} szervert HTTP-n keresztül.<br/>
+      {appName} támogatja Linux hosztok hozzáadását virtuális vagy fizikai gép formájában bármely nyilvános felhő szolgáltatótól, privát felhőből vagy akár "csupasz vasról".
+    contentLink: Tudj meg többet
+    linkToHost: Hoszt hozzáadása
+    setup:
+      mesos: Mesos beállítása
+      swarm: Swarm beállítása
+      kubernetes: Kubernetes beállítása
+aliasServicePartial:
+  serviceLinks:
+    labelText: Szolgáltatás linkek
+    linkTo: Részletek megtekintése
+  links: Linkek
+  noLinks: Nincsenek linkek
+  description: 'Leírás:'
+externalServicePartial:
+  extService:
+    labelText: Külső szolgáltatás
+    linkTo: Részletek megtekintése
+  ips: IP-k
+  hostname: 'Hoszt neve:'
+  description: 'Leírás:'
+hostPartial:
+  host:
+    addCommon:
+      quanity: Mennyiség
+      new:
+        form:
+          name:
+            placeholder: pl. host01
+    addOptions:
+      labels: Címkék
+ldap:
+  providerName:
+    openldap: OpenLDAP
+    ad: Active Directory
+  header:
+    enabled:
+      label: "{providerName} engedélyezve van"
+  accessEnabled:
+    header: Hitelesítés
+    general:
+      header: Általános
+      server: "Szerver:"
+      tls: "TLS:"
+      serviceAccount: "Szolgáltatási fiók:"
+      searchBase: "Keresési alap:"
+      defaultDomain: "Alapértelmezett tartomány:"
+    users:
+      header: Felhasználók
+      objectClass: "Objektum osztály:"
+      login: "Login mező:"
+      name: "Név mező:"
+      search: "Keresési mező:"
+      enabled: "Állapot mező:"
+    group:
+      header: Csoport
+      objectClass: "Objektum osztály:"
+      name: "Név mező:"
+      search: "Keresési mező:"
+    disable:
+      header: "Veszélyes Terület&trade;"
+      confirmDisable:
+        pre: Hozzáférés-szabályozás letiltása
+        post: "Biztos vagy benne?  Kattints újra, hogy valóban letiltsd a hozzáférés-szabályozást"
+  accessConfig:
+    hostName:
+      labelText: Hosztnév vagy IP-cím
+    port:
+      labelText: Port
+      checkbox: TLS
+    serviceUsername:
+      labelText: Szolgáltatás felhasználóneved
+    servicePassword:
+      labelText: Szolgáltatás fiók jelszó
+    searchBase:
+      labelText: Keresési alap
+      placeholder: "pl. dc=sajatvallalat,dc=hu"
+    defaultDomain:
+      helpText: "Ezzel a tartománynévvel lép be a felhasználó, ha nem adott meg semmit sem."
+      labelText: Alapértelmezett bejelentkezési tartománynév
+      placeholder: "pl. sajatvallalat"
+  customizeSchema:
+    users:
+      header: Felhasználók
+      objectClass:
+        labelText: Objektum osztály
+      login:
+        labelText: Login mező
+      name:
+        labelText: Név mező
+      search:
+        labelText: Keresési mező
+      status:
+        labelText: Állapot mező
+    groups:
+      header: Csoportok
+      objectClass:
+        labelText: Objektum osztály
+      name:
+        labelText: Név mező
+      search:
+        labelText: Keresési mező
+      groupMemberUser:
+        placeholder: uid
+      groupDN:
+        labelText: DN Csoportok mező
+  testAuth:
+    helpText: "Ellenőrizd {providerName} fiókod hitelesítésnek vizsgálatával, hogy az alkalmazásod megfelelően van beállítva:"
+    userName:
+      labelText: A felhasználóneved
+    password:
+      labelText: Jelszavad
+    authenticate:
+      pre: Hitelesítés
+      post: "Tesztelés..."
+servicePartial:
+  noContainers:
+    label: Még nincs konténerek.
+    inactive:
+      start: Start
+serviceInfoPartial:
+  info:
+    label: Infó
+    linkTo: Részletek megtekintése
+  image: 'Kép:'
+  entryPoint: 'Belépési pont:'
+  command: 'Parancs:'
+  description: 'Leírás:'
+  containers: Konténerek
+  scale: Skála
+  global: Globális
+  noContainers: Nincsenek konténerek
+  ports: Portok
+  noPublicPorts: Nincs nyilvános port
+  links: Linkek
+  noLinks: Nincsenek linkek
+  fqdn: 'FQDN:'
+advancedSection:
+  hrText: Haladó beállítások
+catalogSettings:
+  header: Katalógus
+  subtext: A Katalógusok sablonokat tartalmaznak, amelyek megkönnyítik a felhasználók számára az alkalmazások telepítését pusztán néhány kérdés megválaszolásával
+  certified:
+    header:
+      rancher: "Minősített könyvtár {appName}"
+      pl: Minősített könyvtár
+    detail:
+      rancher: A Sablonokhoz szükség van a Rancher néhány alapvető funkciójára, mint például a Kubernetes/Mesos/Swarm számítógépfürtözési támogatás. Ezeket a Rancher Labs tartja fenn és nyújt hozzájuk támogatást.
+  more:
+    header: Egyéni
+    addActionLabel: Katalógus hozzáadása
+    name:
+      label: Név
+    url:
+      label: URL
+    branch:
+      label: Branch
+      placeholder: 'pl. master'
+confirmDelete:
+  title: 'Biztosan törölni szeretné?'
+  environmentNote: 'Megjegyzés: Minden erőforrás ebben a Környezetben végérvényesen törlődik, beleértve a létrehozott {appName} által létrehozott hosztokat is.'
+  protip: 'Profi tipp: Tartsd nyomva a {key} billenytűt, miközben a Törlés-re kattintasz, hogy kikerüld a megerősítést.'
+  confirmAction: Törlés
+  cancelAction: Mégsem
+  largeDeleteText: '{key} és {othersCount} mások'
+containerLogs:
+  title: 'Naplók: {instanceName}'
+  combined: Kombinált
+  stderr: Standard hiba
+  scrollTop: Vissza a tetejére
+  scrollBottom: Tekerj az aljára
+  clear: Képernyő törlése
+  status:
+    initializing: Inicializálás...
+    connecting: Csatlakozás…
+    connected: Csatlakozva
+    disconnected: Lecsatlakozva
+    closed: Lezárva
+containerShell:
+  status:
+    initializing: Inicializálás...
+    error: 'Hiba: {error}'
+    connecting: Csatlakozás...
+    connected: Csatlakozva
+    disconnected: Lecsatlakozva
+    closed: Lezárva
+copyToClipboard:
+  tooltip: Másolás a vágólapra
+  copied: Másolva!
+dangerZone:
+  header: Speciális beállítások
+devicePermissions:
+  all: Összes
+  none: Semmi
+  read: Olvasás
+  write: Írás
+  mknod: Mknod
+editAccount:
+  title: Fiók szerkesztése
+  form:
+    name:
+      label: Név
+      placeholder: pl. Kovács János
+    kind:
+      label: Fióktípus
+      user: Felhasználó
+      admin: Admin
+    description:
+      label: Leírás
+      placeholder: pl. Ez a fiók Kovács Jánosé
+    publicValue:
+      label: Felhasználónév a bejelentkezéshez
+    oldPassword:
+      label: Jelenlegi Jelszó
+    newPassword:
+      label: Új Jelszó
+    confirmPassword:
+      label: Jelszó megerősítése
+    identity:
+      label: Azonosító
+editAliasService:
+  title: Szolgáltatás álnév szerkesztése
+editApiKey:
+  title:
+    justCreated: API kulcs létrehozva
+    editing: API kulcs szerkesztése
+    new: Új API kulcs
+  publicValue:
+    label: Hozzáférési kulcs (Felhasználónév)
+  secretValue:
+    label: Titkos kulcs (jelszó)
+  name:
+    placeholder: pl. App kiszolgálók
+  description:
+    placeholder: pl. ezt a kulcsot az alkalmazás szerverek használják a konténerek telepítésére
+  saveWarning1: Mentsd el a fenti kulcsokat! Ez az egyetlen alkalom, hogy láthatod a titkos kódot.
+  saveWarning2: Ha elveszíted, új API-kulcsot kell létrehoznod.
+editBalancerService:
+  title: Terheléselosztó szerkesztése
+  haproxy:
+    label: haproxy.cfg
+    global:
+      label: '<code>global</code> szakasz'
+    defaults:
+      label: '<code>defaults</code> szakasz'
+editCertificate:
+  title: Tanúsítvány szerkesztése
+  name:
+    placeholder: pl. sajat-domain-nevem.hu
+  description:
+    placeholder: pl. EV tanúsítvány a sajat-domain-nevem.hu webhelyhez
+  noteKeyWriteOnly: 'Megjegyzés: A privát kulcs szándékosan üres, mivel a mező csak írható.  A tanúsítvány módosításához szükséged lesz a privát kulcsra ismét, akkor is ha az nem változott.'
+editContainer:
+  title:
+    vm: VM szerkesztése
+    container: Konténer szerkesztése
+  name:
+    placeholder: pl. sajat-app
+  description:
+    placeholder: pl. SajátAlkalmazásom
+editExternalService:
+  title: Külső szolgáltatás szerkesztése
+  name:
+    placeholder: pl. kulso-adatbazis
+  description:
+    placeholder: pl. külső fizikai adatbázis kiszolgáló
+editHost:
+  title: Hoszt szerkesztése
+  hostname:
+    label: Hosztnév
+    help: A hoszt operációs rendszer által jelentett.
+  customName:
+    label: Egyedi név
+    placeholder: pl. dev1
+    help: Ha ez üresen marad, a Hosztnév jelenik meg, mint Név.
+  description:
+    label: Leírás
+    placeholder: pl. saját fejlesztői gépem
+  labels:
+    label: Címkék
+  ips:
+    label: Feladatütemező IP-k
+    valueLabel: IP Cím
+    valuePlaceholder: pl. 1.2.3.4
+    addActionLabel: IP hozzáadása
+    help: Ha megadod, a feladatütemező választja ki és köti a publikált portokat a megadott nyilvános IP-címek egyikéhez.
+  requireAny:
+    label: Konténer elnevezés szükséges
+    addActionLabel: Szükséges címke hozzáadása
+editProjectTemplate:
+  title:
+    add: Sablon hozzáadása
+    edit: 'Sablon szerkesztése: {displayName}'
+  orchestration: Számítógépfürt rendszer (Orchestration)
+  stackEdit: Konfiguráció szerkesztése
+  stackRequired: Kötelező
+  access:
+    label: Megosztás
+    private: 'Privát: csak számomra elérhető'
+    public: 'Publikus: minden felhasználó számára elérhető (csak adminoknak)'
+  error:
+    conflict: Ütközés
+    enabling: "A kiválasztott {tplCategory} {stackName} köteg nem támogatja a {orchestration} számítógépfürt rendszert."
+    changing: "A jelenleg engedélyezett {tplCategory} {stackName} köteg nem támogatja a {orchestration} számítógépfürt rendszert."
+editRegistry:
+  title: Registry szerkesztése
+  address:
+    label: Cím
+  email:
+    label: Email-cím
+    placeholder: pl. te@sajat.email.cimed.hu
+  username:
+    label: Felhasználói név
+    placeholder: pl. felhasználói név
+  password:
+    label: Jelszó
+    placeholder: pl. jelszó
+editStack:
+  title: Köteg szerkesztése
+  name:
+    label: Név
+  description:
+    label: Leírás
+    placeholder: pl. SajatApp Köteg
+  group:
+    help: Vesszővel elválasztott címkék listája.  A Kötet lista az egyes címkékkel szűrhető.
+stackHeader:
+  backLink: "Köteg:"
+  add:
+    service: Szolgáltatás hozzáadása
+    balancer: Terheléselosztó hozzáadása
+    external: Külső szolgáltatás hozzáadása
+    alias: Szolgáltatás álnév hozzáadása
+    vm: Virtuális gép hozzáadása
+formatIp:
+  noIp: Semmi
+  unknownIp: Ismeretlen
+formBalancerRules:
+  addServiceLabel: Szolgáltatás szabály hozzáadása
+  addSelectorLabel: Választó szabály hozzáadása
+  target: Cél
+  access:
+    label: Hozzáférés
+    public: Publikus
+    internal: Belső
+  protocol:
+    label: Protokoll
+  sourceIp:
+    label: Hoszt IP
+    placeholder: pl. 1.2.3.4
+  sourcePort:
+    label: Port
+    placeholder: pl. 80
+  path:
+    label: Elérési út
+    placeholder: pl. /foo
+  hostname:
+    placeholder: pl. sajatdomain.hu
+  backendName:
+    label: Backend
+  targetPort:
+    label: Port
+    placeholder: pl. 80
+  priority:
+    label: Prioritás
+    moveUp: Mozgatás felfelé
+    moveDown: Mozgatás lefelé
+  serviceId:
+    label: Szolgáltatás
+  selector:
+    label: Választó
+    placeholder: pl. foo=bar
+  help:
+    showBackendLink: "Egyéni backend nevek megjelenítése."
+    showIpLink: "Mutasd a hoszt IP-címére vonatkozó beállításokat."
+formCommand:
+  command:
+    label: Parancs
+    placeholder: pl. /usr/sbin/httpd -f httpd.conf
+  entryPoint:
+    label: Belépési pont
+    placeholder: pl. /bin/sh
+  workingDir:
+    label: Munkakönyvtár
+    placeholder: pl. /sajat-app
+  user:
+    label: Felhasználó
+    placeholder: pl. apache
+  console:
+    label: Konzol
+    interactive: 'Interaktív <span class="text-muted">(-i)</span>'
+    terminal: 'TTY-<span class="text-muted">(-t)</span>'
+    none: Semmi
+  autoRestart:
+    label: Automatikus újraindítás
+    startOnceFalse: Mindig
+    startOnceTrue: Soha (egyszer indítsd csak)
+    "no": Soha
+    onFailure: 'Hiba esetén <span class="text-muted">(nem 0 kilépési kód)</span>, örökké'
+    onFailureCondPrefix: Hiba esetén, legfeljebb
+    always: Mindig
+  environment:
+    label: Környezet
+    addAction: Környezeti változó hozzáadása
+    keyLabel: Változó
+    keyPlaceholder: pl. FOO
+    valueLabel: Érték
+    valuePlaceholder: pl. bar
+formContainerLinks:
+  label: Linkek
+  addActionLabel: Link hozzáadása
+  noContainers: Nem kapcsolódik ide más konténer.
+  noLinks: Ez a Konténer nem tartalmaz linkeket.
+  targetInstance:
+    label: Cél konténer
+    prompt: Válassz egy konténert...
+  name:
+    placeholder: pl. adatbazis
+formDisks:
+  addDiskLabel: Lemez hozzáadása
+  addRootDiskLabel: Root lemez hozzáadása
+  name:
+    rootDisk: Root lemez
+    label: Név
+    placeholder: pl. adatok
+  size:
+    label: Méret
+    rootDisk: A root kép által meghatározott
+  readIops:
+    placeholder: pl. 1000
+  writeIops:
+    placeholder: pl. 1000
+  driver:
+    label: Meghajtó
+formEngineOpts:
+  engineInstallUrl:
+    label: Docker telepítési URL
+    placeholder: 'pl. http://get.docker.com/'
+    recommended: Ajánlott
+    latest: Legújabb
+  engineStorageDriver:
+    label: Tároló illesztőprogram
+    placeholder: pl. overlay
+  engineOpts:
+    label: Motor beállítások
+    addActionLabel: Motor beállítás hozzáadása
+    keyPlaceholder: pl. log-driver
+    valuePlaceholder: pl. syslog
+  engineLabels:
+    label: Motor címkék
+    addActionLabel: Motor címke hozzáadása
+    keyLabel: Címke
+  engineEnv:
+    label: Motor környezet
+    addActionLabel: Környezeti változó hozzáadása
+    keyLabel: Változó
+    keyPlaceholder: pl. HTTP_PROXY
+    valuePlaceholder: 'pl. http://sajat-proxy:8080'
+  engineInsecureRegistry:
+    addActionLabel: Insecure Registry hozzáadása
+    valueLabel: Registry tartomány
+    valuePlaceholder: pl. registry.sajatdomain.hu
+  engineRegistryMirror:
+    label: Registry tükrök
+    addActionLabel: Registry Mirror hozzáadása
+    valueLabel: Tükör URL
+    valuePlaceholder: 'pl. https://sajat-tukor.szerver.hu:5000'
+formHealthCheck:
+  label: Típus
+  checkType:
+    none: Semmi
+  request:
+    label: HTTP lekérés
+  method:
+    prompt: "Válassz egy HTTP metódust:"
+  version:
+    prompt: "Válassz egy HTTP verziót:"
+  host:
+    placeholder: pl. www.sajatdomain.hu
+  port:
+    label: Port
+    placeholder: pl. 80
+  initializingTimeout:
+    unit: ms
+  reinitializingTimeout:
+    unit: ms
+  interval:
+    unit: ms
+  timeout:
+    unit: ms
+  strategy:
+    none: Nincs művelet
+formKeyValue:
+  addAction: Kulcs-értékpár hozzáadása
+  key:
+    label: Kulcs
+    placeholder: Kulcs
+  separator: "="
+  value:
+    label: Érték
+    placeholder: Érték
+formImage:
+  label: Válassz képet
+  vm:
+    placeholder: pl. rancher/vm-ubuntu
+    dropdownLabel: "{appName} képek"
+  container:
+    placeholder: "pl. ubuntu:trusty"
+  pullImage:
+    label: Mindig húzza le a képet a létrehozása előtt
+formNameDescription:
+  name:
+    label: Név
+    placeholder: Név
+  description:
+    label: Leírás
+    placeholder: Leírás
+formNetwork:
+  links:
+    table:
+      dest: Cél konténer
+      data:
+        dest: 'Cél konténer:'
+  networkMode:
+    bridge: Híd
+    container: Konténer
+    host: Hoszt
+    managed: Kezelt
+    nat: NAT
+    transparent: Átlátszó
+    none: Semmi
+  container:
+    label: konténer
+  requestedIp:
+    label: Kért IP
+    placeholder: pl. 10.42.2.24
+  retainIp:
+    reuse: IP-címek újbóli felhasználása az elromlott példányok frissítése vagy cserélése esetén.
+  dns:
+    label: DNS
+  hostname:
+    label: Hosztnév
+    placeholder: pl. web
+    dockerId: A Docker konténer ID használata
+    containerName: Konténer név használata
+    custom: Adott hosztnév beállítása
+  domainName:
+    label: Tartománynév
+    placeholder: pl. sajatdomain.hu
+  resolvingServers:
+    label: Szerverek feloldása
+    addActionLabel: Kiszolgáló hozzáadása
+  searchDomains:
+    label: Tartománynevek keresése
+    placeholder: pl. kiszolgalo.sajatdomain.hu
+    addActionLabel: Tartomány hozzáadása
+formPorts:
+  addAction: Port térkép
+  bindAddress:
+    label: Hoszt nyilvános IP-címe (nem kötelező)
+    placeholder: 'pl. 1.2.3.4; Default: any'
+  public:
+    label: Nyilvános hoszt port
+    placeholder: "pl. 80"
+  private:
+    label: Privát konténer port
+    placeholder: "pl. 8080"
+  protocol:
+    label: Protokoll
+  noPorts: Ez a Konténer nem tartalmaz port térképeket.
+  error:
+    privateRequired: Privát konténer port szükséges minden portszabály számára.
+    publicRequired: Nyilvános hoszt port kötelező, ha a hoszt IP be van állítva.
+formScheduling:
+  noRules: Nincs ütemezési szabály
+  addRule: Ütemezési szabály hozzáadása
+  condition: Feltétel
+  key: Kulcs
+  value: Érték
+formSecrets:
+  label: Titkos kódok
+  noData: Nincsenek titkos kódok
+  addLabel: Titkos kód hozzáadása
+  name:
+    placeholder: pl. adatbazis_jelszo
+  secret:
+    label: Titkos kód
+  uid:
+    label: Felhasználó ID
+    placeholder: pl. 0 (root)
+  gid:
+    label: Csoport ID
+    placeholder: pl. 0 (wheel)
+  mode:
+    label: Fájl hozzáférési jogok (oktális)
+    placeholder: pl. 0444 (oktális)
+  help:
+    prefix: "A titkos kód a megadott fájlnévvel a <code>/run/secrets/</code> könyvtárban lesz elérhető a konténer belsejében.  "
+    showPermissionsLink: "Fájl hozzáférési jogainak testreszabása"
+formSecurity:
+  key: Kulcs
+  value: Érték
+  logConfig:
+    addActionLabel: Opció hozzáadása
+    valuePlaceholder: pl. daemon
+  cpuPinning:
+    placeholder: 'pl. 0,3; Default: All'
+  capabilities:
+    add: Hozzáadás
+    drop: Eldob
+    label: Képességek
+    helpBlock:
+      link: További információ
+  deviceBinding:
+    addActionLabel: Kötés hozzáadása
+    pathHost:
+      label: Útvonal a hoszton
+      placeholder: pl. /dev/sdc
+    pathContainer:
+      label: Útvonal a konténerben
+      placeholder: pl. /dev/xsdc
+    permissions:
+      label: Jogosultságok
+      placeholder: 'pl. 0,3; Default: All'
+  logDriver:
+    label: Napló illesztőprogramja
+    placeholder: pl. syslog
+  logOptions:
+    label: Napló beállításai
+  memoryReservation:
+    label: Memória foglalása
+  milliCpuReservation:
+    label: mCPU foglalás
+  isolation:
+    label: Elszigetelés
+    default: Alapértelmezett (Konténer)
+    hyperv: HyperV (VM)
+formServiceLinks:
+  addAction: Szolgáltatás linkek
+  noServices: Nem kapcsolódik ide más szolgáltatás.
+  noLinks: Ez a szolgáltatás nem tartalmaz szolgáltatás linkeket.
+  service:
+    label: Cél szolgáltatás
+  name:
+    placeholder: pl. adatbazis
+formSslTermination:
+  defaultCertificate:
+    prompt: Válassz egy tanúsítványt...
+  alternateCertificate:
+    prompt: Válassz egy tanúsítványt...
+  certificate: Tanúsítvány*
+  alternateCerts: Alternatív tanúsítványok
+  addAlternate: Alternatív tanúsítvány hozzáadása
+  noCertificates: Nincs tanúsítvány használat alatt.
+  noAlternateCertificates: Nincsenek más tanúsítványok használat alatt.
+  helpBlock: |
+    "Megjegyzés: néhány régebbi SSL/TLS ügyfél nem támogatja az <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a> funkciót; ezek az ügyfelek mindig a fő tanúsítványt kapják. A modern ügyfelek a megfelelő tanúsítványt fogják megkapni az alternatív tanúsítványok listájáról, ha egyezés található."
+  notNeeded: Nincs konfigurálva SSL/TLS port.
+formStickiness:
+  none: Semmi
+  newCookie: Új süti létrehozása
+  cookieName: Süti neve
+  mode: Mód
+  domain: Tartomány
+  options: Beállítások
+  indirect: Közvetett
+  sendHeader: No-cache fejlécet küld
+  onPost: Csak POST metódusnál állít be sütit
+  noPorts: Nincs konfigurálva HTTP port szabály.
+  placeholder:
+    domain: pl. sajat-domain-nevem.hu
+formTarget:
+  target: Cél
+  pointAddress: Mutasson az IP-cím(ek)re
+  pointHostname: Mutasson egy hosztnévre
+  addTarget: Cél IP-cím hozzáadása
+formTargets:
+  title: Célok
+  addAction: Szolgáltatás hozzáadása
+  hostname:
+    placeholder: pl. svc.com
+  srcPort:
+    label: Forrás port
+    placeholder: pl. 80
+  value:
+    label: Cél szolgáltatás
+  path:
+    placeholder: pl. /svc
+  dstPort:
+    label: Cél Port
+    placeholder: pl. 8080
+formUserLabels:
+  addAction: Címke hozzáadása
+  key:
+    label: Kulcs
+    placeholder: pl. foo
+  separator: "="
+  value:
+    label: Érték
+    placeholder: pl. bar
+  protip: 'Profi tipp: illessz be egy vagy több sor kulcs=érték párost bármely kulcs mezőbe a tömeges bejegyzés készítéséhez.'
+formUpgrade:
+  size: Feldolgozási mennyiség nagysága
+  interval: Feladatköteg időköze
+  sec: mp
+  whichServices: Mely szolgáltatások
+formValueArray:
+  addActionLabel: Érték hozzáadása
+  valueLabel: Érték
+  valuePlacholder: Érték
+formVirtualMachines:
+  vcpus: vCPUs
+  memory: Memória
+formVolumes:
+  value:
+    prompt: Konténer kiválasztása...
+  volumes: Kötetek
+  volumesFrom: Kötet innen
+  volumeDriver:
+    label: Kötet illesztőprogramja
+    placeholder: 'pl. rancher-nfs'
+  onlySingleHost: Csak akkor érhető el, ha egy Konténer hozzá van adva egy megadott hoszthoz.
+  addActionLabel: Kötet hozzáadása
+  errors:
+    invalidName: A Kötetnevek csak betűket, számokat, kötőjelet, aláhúzást és pontot tartalmazhatnak.
+heroAddService:
+  infra:
+    header: Infrastuktúra Kötegek hozzáadása
+    paragraph: Az Infrastruktúra kötegek új képességeket, pl új számítógépfürt rendszereket, adattárolási és hálózati szolgáltatókat ad az {appName} alkalmazáshoz.
+  service:
+    header: Az első Köteg hozzáadása
+    contentLink: Tudj meg többet
+  addService: Szolgáltatás meghatározása
+  linkToCatalog: Katalógus böngészése
+hookPage:
+  scaleService:
+    label: Szolgáltatás skálázása
+  fields:
+    kind:
+      label: Milyen
+    detail:
+      label: Részlet
+hostSettings:
+  hostUrl:
+    local: "A webhely címe:"
+    new:
+      labelText: "Valami más:"
+  helpText:
+    sslTerm: SSL lezárás
+hostPod:
+  supportState:
+    unsupported: Nem támogatott Docker változat
+    untested: Nem tesztelt Docker változat
+  groupedInstances:
+    namespace: 'Névtér:'
+    stack: 'Köteg:'
+    standalone: Önálló konténerek
+identityBlock:
+  loading: Betöltés...
+infoMultiStats:
+  connecting: Csatlakozás...
+  cpuSection:
+    labelText: CPU
+    system: Rendszer
+    user: Felhasználó
+  networkSection:
+    labelText: Hálózat
+inputCertificate:
+  key:
+    label: Privát kulcs
+    placeholder: "Illessze be a privát kulcsot a -----BEGIN RSA PRIVATE KEY----- kezdettel együtt"
+  cert:
+    label: Tanúsítvány
+    placeholder: "Illeszd be az elsődleges tanúsítványt, a -----BEGIN CERTIFICATE----- kezdettel együtt"
+  certChain:
+    label: Lánc tanúsítványok
+    placeholder: "Nem kötelező: Illessz be további lánc tanúsítványokat, a -----BEGIN CERTIFICATE----- kezdettel együtt"
+  metaXML:
+    label: XML metaadatok
+    placeholder: "Beillesztés az IDP XML metaadatokba"
+k8s:
+  formContainerPorts:
+    portMap: Port térkép
+    addPort: Port hozzáadása
+    table:
+      header:
+        hostIp: Hoszt IP
+        hostPort: Hoszt port
+        containerPort: Konténer port
+      body:
+        name: pl. web
+        hostIp: pl. 19.82.8.24
+        hostPort: pl. 80
+        containerPort: pl. 8080
+    noPorts: Ez a Konténer nem tartalmaz port térképeket.
+  heroAddStack:
+    header: Az első Köteg hozzáadása
+    linkToCatalog: Hozzáadás Katalógusból
+  newOrEditResource:
+    edit: '{type} szerkesztése'
+    add: '{type} hozzáadása'
+    placeholder: YAML vagy JSON definíciós erőforrás
+  podSection:
+    name: Pod neve
+    status: Állapot
+    containers: Konténerek
+    hostIp: Hoszt IP
+    podIp: Pod IP
+    noData: Nincs Pod
+  rcSection:
+    name: RC név
+    replicas: Replikák
+    selectors: Választók
+    containers: Konténerek
+  replicasetSection:
+    selectors: Választók
+    containers: Konténerek
+  servicePorts:
+    port: Port
+    containerPort: Konténer port
+    nodePort: Csomópont port
+    protocol: Protokoll
+    noPorts: Nincs portja
+  serviceRow:
+    defaultType: Fürt IP
+  serviceSection:
+    name: Szolgáltatás neve
+    clusterIp: Fürt IP-je
+    pods: Pod-ok
+    clusterPorts: Fürtszolgáltatás portjai
+    nodePorts: Csomópont portok
+    selectors: Választók
+    noData: Nincsenek szolgáltatások
+lbAddtlInfo:
+  info: Infó
+  viewDetails: Részletek megtekintése
+  defaultCertificate: Alapértelmezett tanúsítvány
+  alternateCertificate: Alternatív tanúsítvány
+  description: 'Leírás: '
+  containers: Konténerek
+  noContainers: Nincsenek konténerek
+  scale: Skála
+  ports: Portok
+  noPorts: Nincs nyilvános hoszt port
+labelsSection:
+  key: Kulcs
+  value: Érték
+loginUserPass:
+  userLabel: Felhasználói név
+machine:
+  driverAmazon:
+    accessSection: Fiókhozzáférés
+    accessKey:
+      label: Hozzáférési kulcs
+      placeholder: Az AWS-hozzáférési kulcs
+    secretKey:
+      label: Titkos kulcs
+      placeholder: Az AWS-titkos kulcs
+    securityGroupSection: Biztonsági csoport
+    securityGroup:
+      label: Biztonsági csoport
+      updating: Biztonsági csoport frissítése...
+      creating: Biztonsági csoport létrehozása...
+    portHelp:
+      link: Tudj meg többet
+    instanceSection: Példány
+    instanceOptionsSection: Példány beállítások
+    instanceType:
+      label: Példány típusa
+    rootSize:
+      label: Root mérete
+      unit: GB
+    ami:
+      label: AMI
+      placeholder: Egy Ubuntu AMI
+      rancherList: RancherOS AMI lista
+    sshUser:
+      label: SSH felhasználó
+      placeholder: pl. ubuntu
+    iam:
+      label: IAM profil
+    privateIp:
+      label: Privát IP
+    onlyPrivate:
+      label: Csak a privát IP-cím használata
+  driverAzure:
+    helpBlock: 'További instrukciókat a kliens ID és a titkos kód létrehozására <a href="https://www.packer.io/docs/builders/azure-setup.html" target="_blank">itt</a> találsz.'
+    accountAccessSection: Fiókhozzáférés
+    placementSection: Elhelyezés
+    networkSection: Hálózat
+    subscriptionId:
+      label: Feliratkozás ID
+      placeholder: Az Azure feliratkozás ID-d
+    subscriptionCert:
+      label: Feliratkozás tanúsítvány
+      placeholder: Azure feliratkozás tanúsítványod
+    instanceSection: Példány
+    image:
+      label: Kép
+      placeholder: 'canonical:UbuntuServer:16.04.0-LTS:latest'
+    size:
+      label: Méret
+    dockerPort:
+      label: Docker port
+      placeholder: '2376'
+    publishSettingsFile:
+      label: Közzétételi beállítások
+      placeholder: A közzétételi beállítás fájlod
+    environment:
+      label: Környezet
+      placeholder: 'AzurePublicCloud'
+    resourceGroup:
+      label: Erőforrás csoport
+      placeholder: 'docker-machine'
+    sshUser:
+      label: SSH felhasználó
+      placeholder: usr1
+    storageType:
+      label: Tároló típusa
+    vnet:
+      label: VNet
+      placeholder: '[resourcegroup:]name'
+    subnet:
+      label: Alhálózat
+      placeholder: pelda-al-halozat
+    subnetPrefix:
+      label: Alhálózati előtag
+      placeholder: 128.42.0.0/21
+    privateIpAddress:
+      label: Privát IP
+      placeholder: 127.0.0.1
+    staticPublicIp:
+      label: Nyilvános IP
+    clientId:
+      label: Kliens ID
+      placeholder: A kliens ID-d
+    clientSecret:
+      label: Kliens titkos kódja
+      placeholder: Kliensed titkos kódja
+    regionSection: Régió
+    region:
+      label: Régió
+  driverCustom:
+    agentIp:
+      placeholder: pl. 1.2.3.4
+    step5Close:
+      link: Hosztok
+      part2: képernyőn egy percen belül.
+    close: Bezár
+    windows:
+      windowsHeader: Windows hoszt
+      linuxHeader: Linux hoszt
+  driverDigitalocean:
+    sizeLabel: |
+      {highMem, select, true {High Memory: } other {}}{memoryGb} GB RAM, {disk} GB Disk, {vcpus, plural,
+      =1 {# vCPU}
+      other {# vCPU-k}
+      }
+    accountSection: Fiókhozzáférés
+    authAccountButton: 'Következő: Droplet konfigurálása'
+    image:
+      label: Kép
+  driverExoscale:
+    accountSection: Fiókhozzáférés
+    apiKey:
+      label: API kulcs
+      placeholder: Exoscale API kulcsod
+    secretKey:
+      label: Titkos kulcs
+      placeholder: Exoscale titkos kulcsod
+    loadingSecurity: Biztonsági csoport info betöltése az Exoscale-ből...
+    securityGroupSection: Biztonsági csoport
+    securityGroup:
+      label: Biztonsági csoport
+      updating: Biztonsági csoport frissítése...
+      creating: Biztonsági csoport létrehozása...
+    portHelp:
+      link: Tudj meg többet
+  driverOther:
+    driver:
+      label: Meghajtó
+    optionsSection: "{driverName} beállítások"
+  driverPacket:
+    accountSection: Fiókhozzáférés
+    projectId:
+      label: Projekt
+      placeholder: Packet projekt ID
+    apiKey:
+      label: API kulcs
+      placeholder: Packet API kulcsod
+    apiKeyHelp: 'A Packet <a href="https://app.packet.net/portal#/api-keys" target="_blank">API kuicsok</a> képernyőről'
+    instanceSection: Példány
+    image:
+      label: Kép
+    size:
+      label: Méret
+    regionSection: Régió
+    region:
+      label: Régió
+  driverRackspace:
+    accountSection: Fiókhozzáférés
+    username:
+      label: Felhasználói név
+      placeholder: RackSpace felhasználóneved
+    apiKey:
+      label: API kulcs
+      placeholder: RackSpace API-kulcsod
+    regionSection: Régió
+    region:
+      label: Régió
+    instanceSection: Példány
+    flavor:
+      label: Változat
+  driverUbiquity:
+    accountSection: Fiókhozzáférés
+    clientId:
+      label: Viszonteladói ID
+    apiUsername:
+      label: Távoli ID
+      placeholder: A Ubiquity megosztás távoli azonosítója
+    apiToken:
+      label: Hozzáférési kulcs
+    instanceSection: Példány
+    regionSection: Régió
+    region:
+      label: Régió
+    image:
+      label: Kép
+    flavor:
+      label: Változat
+  driverVsphere:
+    accountSection: Fiókhozzáférés
+    vcenter:
+      label: vCenter Hoszt
+      placeholder: vCenter vagy ESXi hosztnév/IP
+    vcenterPort:
+      label: vCenter Port
+    username:
+      label: Felhasználói név
+    password:
+      label: Jelszó
+    instanceSection: Példány
+    cpuCount:
+      label: CPU-k
+    memorySize:
+      label: Memória
+      unit: MB
+    diskSize:
+      label: Lemez
+      unit: MB
+    boot2dockerUrl:
+      label: OS ISO URL
+      placeholder: 'Alapértelmezett: legújabb boot2docker kép'
+    schedulingSection: Ütemezés
+    dataCenter:
+      label: Adatközpont
+    host:
+      label: Hoszt
+    network:
+      label: Hálózat
+    dataStore:
+      label: Adattároló
+  driverAliyunecs:
+    accountSection: Fiók hozzáférési szakasz
+    accessKey:
+      label: Hozzáférési kulcs*
+    accessKeySecret:
+      label: Hozzáférési titkos kulcs*
+      placeholder: Titkos kulcsod
+    apiEndpoint:
+      label: API végpont
+    instanceSection: Példány szakasz
+    instanceDescription:
+      label: Példány leírás
+      placeholder: Példány leírás
+    instanceType:
+      label: Példány típus
+      placeholder: Példány típus
+    systemImage:
+      label: Rendszerkép
+      placeholder: Rendszerkép
+    instanceTag:
+      label: Példány címke
+      placeholder: Aliyun példány címkéd
+    isOptimized:
+      placeholder: none vagy optimized
+    securitySection: Biztonsági szakasz
+    securityGroup:
+      label: Biztonsági csoport
+      placeholder: Biztonsági csoport
+modalAboutComponent:
+  close: Bezár
+modalContainerStop:
+  header: "Biztosan le akarod állítani?"
+  helpText: "A konténer erőszakkal megszűnik, ha nem áll meg magától az időtúllépés lejárta előtt"
+  protip: 'Profi tipp: Tartsd nyomva a {key} billenytűt, miközben a Leállításra kattintasz, hogy kikerüld a megerősítést.'
+  label: Időtúllépés
+  placeholder: '10'
+  button: Leállítás
+modalConfirmDeactivate:
+  cancel: Mégsem
+modalEditSetting:
+  value:
+    label: Érték
+modalProcessError:
+  cause: "Ok:"
+  none: N/A
+  stackTrace: "Veremnyomkövetés:"
+  close: Bezár
+modalRollbackVolume:
+  title:
+    snapshot: Visszaállítás egy pillanatkép alapján
+    backup: Visszaállítás egy biztonsági másolat alapján
+modalShell:
+  title: 'Rendszerhéj: {instanceName}'
+modalWelcome:
+  header: Üdvözöljük az {appName}-ban!
+  closeModal: Értem
+newAliasService:
+  header: Szolgáltatás álnév hozzáadása
+newBalancer:
+  header:
+    add: Terheléselosztó hozzáadása
+    edit: Terheléselosztó szerkesztése
+    upgrade: Terheléselosztó frissítése
+  tabs:
+    ssl: SSL lezárás
+    labels: Címkék
+  error:
+    needsCertificate: "Egy tanúsítványra szükség van az SSL/TLS port szabályok miatt"
+newCatalog:
+  category: "Kategória:"
+  support: "Támogatás:"
+  official: Hivatalosan tanúsított
+  maintainedBy: Közösségi tagok által fenntartott
+  maintainer: "Karbantartó:"
+  license: "Licenc:"
+  url: "Projekt URL:"
+  titleAdd: "{name} Köteg hozzáadása"
+  titleUpgrade: "{name} Köteg frissítése"
+  titleConfigure: "{name} Köteg beállítása"
+  templateVersion: Sablon verziója
+  selectVersionAdd: Válaszd ki a sablon egy verzióját telepítésre
+  selectVersionUpgrade: Válaszd ki a sablon egy verzióját frissítésre
+  newStack: Új Köteg
+  config: Konfigurációs beállítások
+  unknownType: "Ismeretlen kérdéstípus:"
+  preview: Előnézet
+  txt: answers.txt
+  noConfig: Ennek a sablonnak a nincs beállításai
+newContainer:
+  add:
+    container: Konténer hozzáadása
+    vm: Virtuális gép hozzáadása
+    service: |
+      {numServices, plural,
+      =1{Szolgáltatás}
+      other{Szolgáltatások}
+      } hozzáadása
+  upgrade:
+    container: Konténer frissítése
+    vm: Virtuális gép frissítése
+    service: |
+      {numServices, plural,
+      =1{Szolgáltatás}
+      other {# Szolgáltatás}
+      } frissítése
+  tabs:
+    disks: Lemezek
+    userData: Felhasználói adatok
+    command: Parancs
+    volumes: Kötetek
+    networking: Hálózat
+    security: Biztonság/Hoszt
+    healthCheck: Állapotfelmérés
+    labels: Címkék
+    scheduling: Ütemezés
+    balancing: Terheléselosztás
+    secrets: Titkos kódok
+  selectUpgrade: Válassz egy vagy több szolgáltatást a frissítéshez.
+  saveUpgrade: Frissítés
+  saveNew: Létrehozás
+  removeSidekick: Társ eltávolítása
+  name:
+    placeholder: pl. sajat-app
+  description:
+    placeholder: pl. SajátAlkalmazásom
+  emptyPrimaryService: "(Elsődleges szolgáltatás)"
+  emptySidekick: "(#{num} Társ)"
+  addSidekickContainer: Társ konténer hozzáadása
+  addSidekickVm: Társ VM hozzáadása
+newExternalService:
+  header: Külső szolgáltatás hozzáadása
+  alert: 'Megjegyzés: Ez kizárólag akkor lesz használva, ha a külső szolgáltatás a célpontja a terheléselosztónak.'
+newReceiver:
+  title:
+    edit: Vevő szerkesztése
+    add: Vevő hozzáadása
+  name:
+    placeholder: "pl. web-skalazo"
+  driver:
+    label: Milyen
+  action:
+    label: Művelet
+  service:
+    label: Cél szolgáltatás
+  amount:
+    label: Által
+  min:
+    label: Skála minimuma
+    placeholder: pl. 1
+  max:
+    label: Skála maximuma
+    placeholder: pl. 20
+newSecret:
+  title:
+    edit: Titkos kód szerkesztése
+    add: Titkos kód hozzáadása
+  name:
+    placeholder: pl. api-token
+  description:
+    placeholder: pl. titkos API token
+  value:
+    label: Titkos érték
+    placeholder: A titkos érték
+pageFooter:
+  notARelease: (Nem egy Kiadás)
+  help: Súgó
+  documentation: Dokumentáció
+  faq: GYIK
+  issues: Hiba jelentése
+  forums: Fórumok
+  slack: Slack
+  download:
+    link: CLI letöltése
+    headerCli: Rancher CLI (béta)
+    headerCompose: Rancher Compose
+    mac: Mac OS X
+    windows: Windows
+projectRow:
+  none: Nincs leírás
+  orchestration: Számítógépfürt rendszer (Orchestration)
+registryRow:
+  address: Cím
+  email: Email-cím
+  username: Felhasználói név
+  created: Létrehozva
+reservationParameters:
+  milliCpu:
+    labelText: CPU
+    placeholder: 'Alapértelmezett: Teljes hoszt'
+    unit: 'mCPU'
+schema:
+  inputCertificate:
+    prompt: Válassz egy tanúsítványt...
+  inputSecret:
+    prompt: Válassz egy titkos kódot...
+schedulingRuleRow:
+  theHost: A hoszt
+  hostLabel: hoszt címke
+serviceLink:
+  withAlias:
+    differentStack: "{stack}/{service} mint {alias}"
+  noAlias:
+    differentStack: "{stack}/{service}"
+sidekickAddtlInfo:
+  image: Kép
+  entryPoint: Belépési pont
+  command: Parancs
+siteAccess:
+  noIdentity: Semmi
+  users: Felhasználók
+snapshotTimeline:
+  noData: Nincs pillanatkép
+stackSection:
+  outputs: Kimenetek
+  description: Leírás
+  none: Nincs szolgáltatás
+  tags: Címkék
+  sidekick: |
+    {numSidekicks, plural,
+    =1 {+ 1 Társ}
+    other {+ # Társ}
+    }
+  add:
+    service: Szolgáltatás hozzáadása
+    loadBalancer: Terheléselosztó hozzáadása
+    serviceAlias: Szolgáltatás álnév hozzáadása
+    externalService: Külső szolgáltatás hozzáadása
+    virtualMachine: Virtuális gép hozzáadása
+  table:
+    dataTitle:
+      state: Állapot
+      serviceName: Szolgáltatás neve
+      kind: Milyen
+      details: Részletek
+      containers: Konténerek
+      actions: Műveletek
+  upgradeImage: Konténer kép frissítése
+snapshotSection:
+  none: Nem mentett
+  multiple: 'Többszörözés: {latestDate}'
+storagePoolSection:
+  outputs: Kimenetek
+  readOnly: "(csak olvasható)"
+  hosts:
+    header: Hosztok
+    none: Nincs hoszt
+  volumes:
+    header: Kötetek
+    add: Kötet hozzáadása
+    none: Nincsenek Kötetek
+  models:
+    table:
+      header:
+        volumeName: 'Kötet neve'
+        snapshotState: 'Pillanatkép állapota'
+        snapshotName: 'Pillanatkép neve'
+        backedUp: 'Biztonsági másolattal támogatva'
+        mounts: 'Csatolások (Konténer: elérési út)'
+svgServiceContainer:
+  sidekicks: Társak
+swarm:
+  containerSection:
+    state: Állapot
+    name: Konténer név
+    image: Kép
+    none: Nincsenek konténerek
+  serviceSection:
+    state: Állapot
+    name: Szolgáltatás neve
+    ports: Portok
+    containers: Konténerek
+    none: Nincsenek szolgáltatások
+telemetryOpt:
+  header: Statisztika
+  subtext: |
+    Rancher Labs szeretne névtelen információkat gyűjteni a telepítésed beállításairól hogy jobbá tudja tenni a {appName} alkalmazást. <br/>Az adataid nem lesznek megosztva senki mással és a konkrét erőforrás nevét vagy címét sem gyűjtik össze.
+  learnMore:
+    label: Tudj meg többet
+  label: Engedélyezed a névtelen statisztikai adatgyűjtést
+tooltipLink:
+  list: Lista
+  linkGraph: Link grafikon
+  composeYaml: YAML összeállítása
+tooltipWarning:
+  notConfigured: A hozzáférés-vezérlés nincs beállítva
+  dismiss: Elutasítás
+upgradeBtn:
+  version:
+    current: 'Jelenlegi'
+  status:
+    none: 'Semmi'
+    loading: 'Frissítések ellenőrzése...'
+    current: 'Naprakész'
+    available: 'Frissítés érhető el'
+    inprogress: 'Frissítés folyamatban'
+    upgraded: 'Frissítve: frissítés befejezése'
+    notfound: 'Sablon verziója nem található'
+    error: 'Frissítés hiba ellenőrzése'
+    required: 'Frissítés szükséges'
+viewEditDescription:
+  form:
+    name:
+      placeholder: pl. labor
+    description:
+      placeholder: pl. Környezet a fejlesztői kísérletezéshez
+viewEditProject:
+  showEdit:
+    edit: "Környezet szerkesztése:"
+    add: Környezet hozzáadása
+    template: Környezet sablon
+    accessControl: Hozzáférés-vezérlés
+    noMembers: Egy vagy több tag hozzáadása ehhez a környezethez.
+  networkPolicy:
+    label: Hálózati házirend
+    description: Szabályozhatod, hogy mely konténerek kommunikálhatnak egymással a kezelt hálózaton keresztül.
+    withinStack: Kötegen belül
+  description: Leírás
+vmConsole:
+  footerActions:
+    buttonSend: Ctrl-Alt-Delete küldése
+    buttonCancel: Bezár
+volumeRow:
+  mounts:
+    readOnly: "(csak olvasható)"
+waitKubernetes:
+  addHost: 'Adj hozzá legalább egy hosztot'
+  activateHost: 'Várakozás a hosztra, hogy aktív legyen'
+  createStack: 'Kubernetes rendszer köteg létrehozása'
+waitMesos:
+  addHost: 'Adj hozzá legalább három hosztot'
+  createStack: 'Mesos rendszer köteg létrehozása'
+waitSwarm:
+  addHost: 'Adj hozzá legalább egy hosztot'
+  createStack: 'Swarm rendszer köteg létrehozása'
+containerChoices:
+  hostGroupWithState: 'Hoszt: {name} ({state})'
+  unknownHost: 'Hoszt: ???'
+  containerOptionWithState: "{name} ({state})"
+allServices:
+  stackGroup: 'Köteg: {name}'
+  noName: '(Köteg: {id})'
+nav:
+  k8s:
+    system: Infrastuktúra kötegek
+  cattle:
+    tab: Kötegek
+  catalog:
+    tab: Katalógus
+    all: Összes
+    library: Könyvtár
+    community: Közösség
+  infra:
+    tab: Infrastruktúra
+    hosts: Hosztok
+    containers: Konténerek
+    vms: Virtuális gépek
+    storagePage: Tároló
+    backupTarget: Biztonsági mentések helyei
+    certificates: Tanúsítványok
+    registries: Registry-k
+    secrets: Titkos kódok
+  admin:
+    tab: Admin
+    audit: Hozzáférési naplók
+    processes: Folyamatok
+    accounts: Fiókok
+    access: Hozzáférés-vezérlés
+    machine: Gép-illesztőprogramok
+    settings: Beállítások
+    ha: Magas rendelkezésre állás
+  api:
+    tab: API
+    keys: Kulcsok
+    hooks: Webhook-ok
+  user:
+    label: 'Felhasználói menü: {username}'
+    logout: Kijelentkezés
+    yourAccount: Fiókod
+    changePassword: Jelszó Módosítása
+    theme: Téma
+    themeLight: Világos
+    themeAuto: Automatikus
+    themeDark: Sötét
+  noHosts:
+    link: "Hoszt hozzáadása"
+  noHostsWindows:
+    link: "Hoszt hozzáadása"
+action:
+  activate: Engedélyezés
+  backup: Biztonsági pillanatkép
+  deleteBackup: Biztonsági mentés törlése
+  cancelUpgrade: Frissítés megszakítása
+  cancelRollback: Visszavonás megszakítása
+  clone: Klónoz
+  console: Konzol megnyitása
+  deactivate: Deaktiválás
+  edit: Szerkesztés
+  execute: Rendszerhéj végrehajtása
+  exportConfig: Beállítások exportálása
+  finishUpgrade: Frissítés befejezése
+  logs: Naplók megtekintése
+  machineConfig: Gép beállítása
+  purge: Tisztítás
+  remove: Törlés
+  replay: Visszajátszás
+  restart: Újraindítás
+  restore: Visszaállítás
+  retry: Próbáld újra
+  rollback: Visszaállítás
+  revertToSnapshot: Kötet visszaállítása egy pillanatképből
+  restoreFromBackup: Kötet visszaállítása biztonsági másolatból
+validation:
+  required: '"{key}" kötelező'
+model:
+  account:
+    kind:
+      registeredAgent: Bejegyzett ügynök
+      agent: Ügynök
+      service: Szolgáltatás
+      user: Felhasználó
+      admin: Admin
+      project: Környezet
+  identity:
+    displayType:
+      unknown: "{type}?"
