@@ -21,55 +21,75 @@
 
 <section class="pl-15 pr-15 clearfix">
   <div class="row">
-    <div class="col span-3 catalog-search">
-      <div class="mb-15">
-        <label>{{t 'catalogPage.index.search.label'}}</label>
-        <div class="input-group full-width">
-          {{input value=search type="search" placeholder=(t 'generic.search')}}
-          {{#if search}}
-            <span class="input-group-btn">
-              <button class="btn bg-primary" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
-            </span>
-          {{/if}}
+    <div class="col span-3">
+      <div class="catalog-search">
+        <div class="mb-15">
+          <label>{{t 'catalogPage.index.search.label'}}</label>
+          <div class="input-group full-width">
+            {{input value=search type="search" placeholder=(t 'generic.search')}}
+            {{#if search}}
+              <span class="input-group-btn">
+                <button class="btn bg-primary" {{action 'clearSearch'}}><i class="icon icon-close"/></button>
+              </span>
+            {{/if}}
+          </div>
         </div>
-      </div>
-      <div>
-        <label>{{t 'catalogPage.index.filters.label'}}</label>
-        <div class="dropdown btn-group filter-group">
-          <button type="button" class="btn bg-default btn-md dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;"><i class="icon icon-chevron-down pull-right"></i><span class="text-capitalize">{{catalogId}}</span></button>
-          <ul class="dropdown-menu dropdown-menu-right">
-            {{#each filters as |opt|}}
-              <li class="text-capitalize {{if (eq catalogId opt.queryParams.catalogId) 'active'}}">
-                {{#link-to parentRoute (query-params catalogId=opt.queryParams.catalogId)}}
-                  <i class="{{opt.icon}}"></i>
-                  {{#if opt.localizedLabel}}
-                    {{t opt.localizedLabel}}
-                  {{else}}
-                    {{opt.label}}
-                  {{/if}}
-                {{/link-to}}
-              </li>
-            {{/each}}
-          </ul>
+        <div>
+          <label>{{t 'catalogPage.index.filters.label'}}</label>
+          <div class="dropdown filter-group">
+            <button type="button" class="btn bg-default btn-md dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left;"><i class="icon icon-chevron-down pull-right"></i><span class="text-capitalize">{{catalogId}}</span></button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              {{#each filters as |opt|}}
+                <li class="text-capitalize {{if (eq catalogId opt.queryParams.catalogId) 'active'}}">
+                  {{#link-to parentRoute (query-params catalogId=opt.queryParams.catalogId)}}
+                    <i class="{{opt.icon}}"></i>
+                    {{#if opt.localizedLabel}}
+                      {{t opt.localizedLabel}}
+                    {{else}}
+                      {{opt.label}}
+                    {{/if}}
+                  {{/link-to}}
+                </li>
+              {{/each}}
+            </ul>
 
+          </div>
         </div>
       </div>
+      <ul class="container-categories list-unstyled">
+        <li class=" {{if (eq category 'all') 'active' ''}}">
+          {{#link-to parentRoute (query-params category='all') classNames="btn has-label bg-default btn-md"}}
+            {{t 'generic.all'}} <span class="btn-label">{{categories.length}}</span>
+          {{/link-to}}
+        </li>
+        {{#each categoryWithCounts as |cat|}}
+          <li class=" {{if (eq cat.name category) 'active' ''}}">
+            {{#link-to parentRoute (query-params category=cat.name) classNames="btn has-label bg-default btn-md"}}
+              {{cat.name}} <span class="btn-label">{{cat.count}}</span>
+            {{/link-to}}
+          </li>
+        {{/each}}
+      </ul>
     </div>
     <div class="col span-9">
       {{#each arrangedContent as |catalogItem|}}
         {{#catalog-box model=catalogItem showSource=showCatalogDropdown as |section|}}
-          {{#if (eq section 'footer')}}
-            {{#if (eq catalogItem.templateBase 'infra')}}
-              {{#if catalogItem.exists}}
-                <button type="button" class="btn btn-sm bg-default bg-disabled" {{action "launch" catalogItem.id true allowedKeys="meta ctrl"}}>{{t 'catalogPage.index.action.alreadyDeployed'}}</button>
-              {{else if catalogItem.supported}}
-                <button class="btn btn-sm bg-primary" {{action "launch" catalogItem.id}}>{{t 'catalogPage.index.action.launch'}}</button>
+          {{#if (eq section 'body')}}
+            <hr class="m-10" />
+            <h4>
+              {{#if (eq catalogItem.templateBase 'infra')}}
+                {{#if catalogItem.exists}}
+                  <a href="#" {{action "launch" catalogItem.id true allowedKeys="meta ctrl"}}>{{catalogItem.name}}</a>
+                {{else if catalogItem.supported}}
+                  <a href="#"  {{action "launch" catalogItem.id}}>{{catalogItem.name}}</a>
+                {{else}}
+                  <a href="#"  {{action "launch" catalogItem.id true allowedKeys="meta ctrl"}}>{{catalogItem.name}}</a>
+                {{/if}}
               {{else}}
-                <button type="button" class="btn btn-sm bg-default bg-disabled" {{action "launch" catalogItem.id true allowedKeys="meta ctrl"}}>{{t 'catalogPage.index.action.notCompatible'}}</button>
+                  <a href="#"  {{action "launch" catalogItem.id}}>{{catalogItem.name}}</a>
               {{/if}}
-            {{else}}
-              <button type="button" class="btn btn-sm bg-primary" {{action "launch" catalogItem.id}}>{{t 'catalogPage.index.action.launch'}}</button>
-            {{/if}}
+            </h4>
+            <div class="mt-10 description">{{catalogItem.description}}</div>
           {{/if}}
         {{/catalog-box}}
       {{else}}

@@ -64,7 +64,14 @@
       {{#each-in stacksMap as |id obj|}}
         {{#if (and obj.supported (array-includes obj.tpl.categoryArray category))}}
           {{#catalog-box model=obj.tpl active=obj.enabled showSource=true as |section|}}
-            {{#if (eq section 'footer')}}
+            {{#if (eq section 'body')}}
+              <h5>
+                {{obj.tpl.name}}
+              </h5>
+              <span class="small">in <span class="text-capitalize">{{obj.tpl.catalogId}}</span></span>
+              <hr class="m-10" />
+              <div class="mt-10 description">{{obj.tpl.description}}</div>
+            {{else if (eq section 'footer')}}
               {{#if (and obj.required obj.enabled)}}
                 <button type="button" class="btn bg-default bg-disabled" {{action "disableStack" obj true allowedKeys="meta ctrl"}}>{{t 'editProjectTemplate.stackRequired'}}</button>
               {{else if obj.enabled}}

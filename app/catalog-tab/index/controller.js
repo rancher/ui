@@ -22,6 +22,9 @@ export default Ember.Controller.extend({
   updating: 'no',
 
   actions: {
+    clearSearch() {
+      this.set('search', '');
+    },
     launch(id, onlyAlternate) {
       if ( onlyAlternate && !isAlternate(event) ) {
         return false;
@@ -40,6 +43,25 @@ export default Ember.Controller.extend({
       });
     }
   },
+
+  categoryWithCounts: Ember.computed('category', 'categories', 'search', function() {
+    var categories = [];
+    var catalogs = this.get('arrangedContent');
+
+    catalogs.forEach((cat) => {
+      if (cat.categories) {
+        cat.categories.forEach((category) => {
+          if (categories.findBy('name', category)) {
+            categories.findBy('name', category).count++;
+          } else {
+            categories.pushObject({name: category, count: 1});
+          }
+        });
+      }
+    });
+
+    return categories.sortBy('name');
+  }),
 
   filters: Ember.computed(`settings.${C.SETTING.CATALOG_URL}`, function() {
     return getCatalogSubtree(this.get(`settings.${C.SETTING.CATALOG_URL}`), this.get('projectId'));
