@@ -179,6 +179,7 @@ Router.map(function() {
 
       this.route('swarm-tab', {path: '/swarm', resetNamespace: true}, function() {
         this.route('console');
+        this.route('dashboard');
       });
 
       // Mesos
