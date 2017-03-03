@@ -3,8 +3,9 @@ import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import Sortable from 'ui/mixins/sortable';
 
+
 export default Ember.Controller.extend(Sortable, {
-  access: Ember.inject.service(),
+  access:        Ember.inject.service(),
   'tab-session': Ember.inject.service(),
 
   sortBy: 'name',
@@ -16,13 +17,48 @@ export default Ember.Controller.extend(Sortable, {
     created:      ['created','name','id'],
   },
 
-  application: Ember.inject.controller(),
-  cookies: Ember.inject.service(),
-  projects: Ember.inject.service(),
-  growl: Ember.inject.service(),
-  project: Ember.computed.alias('projects.current'),
-  endpointService: Ember.inject.service('endpoint'),
-  modalService: Ember.inject.service('modal'),
+  application:        Ember.inject.controller(),
+  cookies:            Ember.inject.service(),
+  projects:           Ember.inject.service(),
+  growl:              Ember.inject.service(),
+  project:            Ember.computed.alias('projects.current'),
+  endpointService:    Ember.inject.service('endpoint'),
+  modalService:       Ember.inject.service('modal'),
+  bulkActionHandler: Ember.inject.service(),
+
+  headers:     [
+    {
+      name:           'state',
+      sort:           ['stateSort','name','id'],
+      translationKey: 'apiPage.table.state',
+      width:          '125',
+    },
+    {
+      name:           'name',
+      sort:           ['name','id'],
+      translationKey: 'apiPage.table.name',
+    },
+    {
+      name:           'description',
+      sort:           ['description','name','id'],
+      translationKey: 'apiPage.table.description',
+    },
+    {
+      name:           'publicValue',
+      sort:           ['publicValue','id'],
+      width:          '',
+    },
+    {
+      name:           'created',
+      sort:           ['created','name','id'],
+      translationKey: 'apiPage.table.created',
+      width:          '',
+    },
+    {
+      isActions: true,
+      width: '75',
+    },
+  ],
 
   accountArranged: function() {
     var me = this.get(`session.${C.SESSION.ACCOUNT_ID}`);
@@ -55,6 +91,10 @@ export default Ember.Controller.extend(Sortable, {
   }.property('model.environment.@each.{accountId,name,createdTs}','sortBy','descending'),
 
   actions: {
+    applyBulkAction(name, selectedElements) {
+      this.get('bulkActionHandler')[name](selectedElements);
+    },
+
     newApikey: function(kind) {
       var cred;
       if ( kind === 'account' )
