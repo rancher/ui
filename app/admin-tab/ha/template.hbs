@@ -7,27 +7,24 @@
 </section>
 
 <section class="instances">
-  <table class="grid fixed r-mb0">
-    <thead>
-      <tr>
-        {{sortable-th sortable=this action="changeSort" name="uuid" label="generic.uuid" width="280"}}
-        {{sortable-th sortable=this action="changeSort" name="address" label="haPage.table.address"}}
-        {{sortable-th sortable=this action="changeSort" name="port" label="haPage.table.port" width="80"}}
-        {{sortable-th sortable=this action="changeSort" name="clustered" label="haPage.table.clustered" width="80"}}
-        {{sortable-th sortable=this action="changeSort" name="heartbeat" label="haPage.table.heartbeat" width="200"}}
-      </tr>
-    </thead>
-    <tbody>
-      {{#each arranged as |member|}}
-        <tr>
-          <td>{{member.uuid}}</td>
-          <td>{{member.advertiseAddress}}</td>
-          <td>{{member.httpPort}}</td>
-          <td>{{#if member.clustered}}{{t 'generic.yess'}}{{else}}{{t 'generic.noo'}}{{/if}}</td>
-          <td>{{date-str member.heartbeat}}</td>
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
+  {{#sortable-table
+      classNames="lacsso grid sortable-table"
+      bulkActions=false
+      paging=false
+      search=false
+      sortBy=sortBy
+      headers=headers
+      body=model
+      as |member kind|
+  }}
+    {{#if (eq kind "row")}}
+      <td>{{member.uuid}}</td>
+      <td>{{member.advertiseAddress}}</td>
+      <td>{{member.httpPort}}</td>
+      <td>{{#if member.clustered}}{{t 'generic.yess'}}{{else}}{{t 'generic.noo'}}{{/if}}</td>
+      <td>{{date-str member.heartbeat}}</td>
+    {{else if (eq kind "norows")}}
+      <td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.summary.noData'}}</td>
+    {{/if}}
+  {{/sortable-table}}
 </section>
-
