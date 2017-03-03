@@ -1,15 +1,39 @@
 import Ember from 'ember';
-import Sortable from 'ui/mixins/sortable';
 
-export default Ember.Controller.extend(Sortable, {
-  settings: Ember.inject.service(),
+export default Ember.Controller.extend({
+  settings:        Ember.inject.service(),
+  sortBy:          'name',
 
-  sortableContent: Ember.computed.alias('model.receivers'),
-  sortBy: 'name',
-  sorts: {
-    state:        ['stateSort','name','id'],
-    name:         ['name','id'],
-    kind:         ['displayKind','id'],
-  },
+  headers: [
+    {
+      translationKey: 'generic.state',
+      name: 'state',
+      sort: ['stateSort','name','id'],
+      width: '121'
+    },
+    {
+      translationKey: 'generic.name',
+      name: 'name',
+      sort: ['name','id'],
+    },
+    {
+      translationKey: 'hookPage.fields.kind.label',
+      name: 'kind',
+      sort: ['displayKind','id'],
+    },
+    {
+      translationKey: 'hookPage.fields.detail.label',
+      noSort: true,
+    },
+    {
+      translationKey: 'hookPage.fields.url.label',
+      noSort: true,
+      width: '100'
+    },
+    {
+      noSort: true,
+      width: '75'
+    },
+  ],
 
 });
