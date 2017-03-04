@@ -6,6 +6,7 @@ export default Ember.Component.extend({
   className: 'clearfix',
 
   settings: Ember.inject.service(),
+  prefs: Ember.inject.service(),
   githubBase: C.EXT_REFERENCES.GITHUB,
   forumBase: C.EXT_REFERENCES.FORUM,
   slackBase: C.EXT_REFERENCES.SLACK,

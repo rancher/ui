@@ -25,6 +25,12 @@ var Host = Resource.extend({
       return this.doAction('deactivate');
     },
 
+    promptEvacuate: function() {
+      this.get('modalService').toggleModal('modal-host-evacuate', {
+        model: [this]
+      });
+    },
+
     evacuate: function() {
       return this.doAction('evacuate');
     },
@@ -59,10 +65,10 @@ var Host = Resource.extend({
     var a = this.get('actionLinks');
 
     var out = [
-      { label: 'action.activate',   icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
-      { label: 'action.deactivate', icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate},
-      { label: 'action.evacuate',   icon: 'icon icon-snapshot',     action: 'evacuate',     enabled: !!a.evacuate},
-      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete'},
+      { label: 'action.activate',   icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate, bulkable: true},
+      { label: 'action.deactivate', icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate, bulkable: true},
+      { label: 'action.evacuate',   icon: 'icon icon-snapshot',     action: 'promptEvacuate',enabled: !!a.evacuate, altAction: 'evacuate', bulkable: true},
+      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', bulkable: true},
       { label: 'action.purge',      icon: '',                       action: 'purge',        enabled: !!a.purge},
       { divider: true },
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true},
@@ -111,7 +117,9 @@ var Host = Resource.extend({
   }.property('info.osInfo.dockerVersion'),
 
   supportState: function() {
-    let my = this.get('dockerEngineVersion');
+    let my = this.get('dockerEngineVersion')||'';
+    my = my.replace('-ce','').replace('-ee','');
+
     let supported = this.get(`settings.${C.SETTING.SUPPORTED_DOCKER}`);
     let newest = this.get(`settings.${C.SETTING.NEWEST_DOCKER}`);
 
@@ -228,16 +236,11 @@ var Host = Resource.extend({
 
   instanceStates: function() {
     let byName = [];
-    let byColor = [
-      {color: 'text-success', count: 0},
-      {color: 'text-info',    count: 0},
-      {color: 'text-warning', count: 0},
-      {color: 'text-error',   count: 0},
-    ];
+    let byColor = [];
 
-    this.get('instances').forEach((inst) => {
-      let color = inst.get('stateColor');
-      let state = inst.get('state');
+    this.get('instances').sortBy('stateSort').forEach((inst) => {
+      let color = inst.get('stateBackground');
+      let state = inst.get('displayState');
       let entry = byName.findBy('state', state);
       if ( entry ) {
         entry.count++;
@@ -263,8 +266,8 @@ var Host = Resource.extend({
 
   instanceCountSort: function() {
     let colors = this.get('instanceStates.byColor');
-    let success = (colors.findBy('text-success')||{}).count;
-    let error = (colors.findBy('text-error')||{}).count;
+    let success = (colors.findBy('bg-success')||{}).count;
+    let error = (colors.findBy('bg-error')||{}).count;
     let other = this.get('instances.length') - success - error;
 
     return Util.strPad(error,   6, '0') +

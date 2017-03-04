@@ -33,10 +33,12 @@ export function positionDropdown(menu, trigger, right) {
   var posResult = calculator.calculate();
 
   // set new position
-  $menu.css({
-    top: posResult.moveBy.y + 'px',
-    left: posResult.moveBy.x + 'px'
-  });
+  if ( $menu && posResult && posResult.moveBy ) {
+    $menu.css({
+      top: posResult.moveBy.y + 'px',
+      left: posResult.moveBy.x + 'px'
+    });
+  }
   return null;
 }
 

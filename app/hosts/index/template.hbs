@@ -8,41 +8,54 @@
 
     {{#link-to "hosts.new" classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
   </div>
-
-  <div class="btn-group pull-right mr-10 mt-5">
-    <label style="font-weight: normal;">{{input type="checkbox" checked=showSystem}} {{t 'hostsPage.index.showSystem'}}</label>
-  </div>
 </section>
 
 {{#if (eq mode "list")}}
   {{#sortable-table
     classNames="grid sortable-table"
     body=model.hosts
+    searchText=searchText
     sortBy=sortBy
     bulkActions=true
     bulkActionCallee=(action 'applyBulkAction')
     bulkActionsList=bulkActionsList
     subRows=true
-    headers=headers as |host kind dt|}}
+    fullRows=true
+    pagingLabel="pagination.host"
+    subHeaders=containerHeaders
+    subSearchField="instances"
+    headers=headers as |sortable kind host dt|}}
     {{#if (eq kind "row")}}
-      {{host-row model=host toggle=(action "toggleExpand" host.id) expanded=(array-includes expandedHosts host.id)}}
-    {{else if (eq kind "sub-row")}}
+      <tr class="main-row">
+        <td width="40" class="select-for-action">
+          {{check-box nodeId=host.id}}
+        </td>
+        {{host-row
+          model=host
+          toggle=(action "toggleExpand" host.id)
+          expanded=(array-includes expandedHosts host.id)
+          subMatches=sortable.subMatches
+        }}
+      </tr>
       <tr class="sub-row hide">{{! make the alternating color match }}</tr>
       <tr class="sub-row {{unless (array-includes expandedHosts host.id) 'hide'}}">
-        <td colspan="{{add 1 headers.length}}" class="pl-40 pr-40">
+        <td colspan="{{add 1 headers.length}}" class="p-0">
           {{#if (array-includes expandedHosts host.id)}}
             {{container-table
               body=host.instances
               stickyHeader=false
-              showHost=false
-              bulkActions=false
+              bulkActions=true
               search=false
+              searchText=searchText
+              subRow=true
             }}
           {{/if}}
         </td>
       </tr>
       <tr class="sub-row hide">{{! make the alternating color match }}</tr>
-      <tr class="separator-row"><td colspan="{{add 1 headers.length}}"></td></tr>
+      <tr class="separator-row {{unless (array-includes expandedHosts host.id) 'hide'}}">
+        <td colspan="{{add 1 headers.length}}"></td>
+      </tr>
     {{else if (eq kind "nomatch")}}
       <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noMatch'}}</td></tr>
     {{else if (eq kind "norows")}}
@@ -51,6 +64,6 @@
   {{/sortable-table}}
 {{else}}
   {{#columns-section pods=model.hosts emptyMessage=(t 'hostsPage.index.columns.emptyMessage') as |item| }}
-    {{host-pod model=item mode=mode newContainer="newContainer" show=show}}
+    {{host-pod model=item mode=mode newContainer="newContainer"}}
   {{/columns-section}}
 {{/if}}

@@ -1,13 +1,16 @@
 {{#sortable-table
   classNames="grid sortable-table"
-  body=body
+  body=filtered
   sortBy=sortBy
   bulkActions=bulkActions
   search=search
+  searchText=searchText
   paging=paging
   stickyHeader=stickyHeader
+  subRow=subRow
   bulkActionsList=bulkActionsList
-  headers=headers as |container kind|}}
+  pagingLabel=pagingLabel
+  headers=headers as |sortable kind container|}}
   {{#if (eq kind "row")}}
     {{container-row model=container showCommand="column" showHost=showHost showActions=true showPrimaryActions=false}}
   {{else if (eq kind "nomatch")}}

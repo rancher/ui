@@ -1,16 +1,19 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
+import { headersWithoutHost as containerHeaders } from 'ui/components/container-table/component';
 
 export default Ember.Controller.extend({
   prefs: Ember.inject.service(),
 
   bulkActionHandler: Ember.inject.service(),
-  bulkActionsList: C.BULK_ACTIONS,
 
   mode: 'list',
   sortBy: 'name',
   queryParams: ['mode','sortBy'],
   expandedHosts: null,
+  searchText: '',
+
+  containerHeaders: containerHeaders,
 
   init() {
     this._super(...arguments);
@@ -36,21 +39,6 @@ export default Ember.Controller.extend({
     },
   },
 
-  showSystem: Ember.computed(`prefs.${C.PREFS.SHOW_SYSTEM}`, {
-    get() {
-      return this.get(`prefs.${C.PREFS.SHOW_SYSTEM}`) !== false;
-    },
-
-    set(key, value) {
-      this.set(`prefs.${C.PREFS.SHOW_SYSTEM}`, value);
-      return value;
-    }
-  }),
-
-  show: Ember.computed('showSystem', function() {
-    return this.get('showSystem') === false ? 'standard' : 'all';
-  }),
-
   listLinkOptions: {
     route: 'hosts',
     options: {
@@ -68,8 +56,8 @@ export default Ember.Controller.extend({
   headers: [
     {
       name: 'stateSort',
-      searchField: 'displayState',
       sort: ['stateSort','displayName'],
+      searchField: 'displayState',
       translationKey: 'hostsPage.index.table.state',
       width: '120px'
     },
@@ -83,8 +71,8 @@ export default Ember.Controller.extend({
       name: 'ip',
       sort: ['displayIp','displayName'],
       searchField: 'displayIp',
-      width: '160px',
       translationKey: 'hostsPage.index.table.ip',
+      width: '160px',
     },
     {
       name: 'memory',

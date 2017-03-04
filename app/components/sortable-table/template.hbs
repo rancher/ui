@@ -10,45 +10,29 @@
     </tr>
     {{#if (or paging search bulkActions)}}
       <div class="fixed-header-actions row">
-        <div class="col span-4">
+        <div class="col span-8">
           {{#if bulkActions}}
-            <div class="container-actions">
-              {{#if availableActions}}
-                {{#rl-dropdown-container class="dropdown"}}
-                  {{#rl-dropdown-toggle class="btn bg-primary"}}
-                    {{t 'generic.actions'}} {{#if (gt selectedNodes.length 1)}}({{selectedNodes.length}}) {{/if}}<span class="icon icon-chevron-down"></span>
-                  {{/rl-dropdown-toggle}}
-
-                  {{#rl-dropdown tagName="ul" class="resource-actions global-actions dropdown-menu dropdown-menu-right" closeOnChildClick="a:link"}}
-                    <li class="resource-actions-tabbable"><a tabindex="-1" id="resource-actions-first" aria-label="Select an Action below"></a></li>
-                    {{#each availableActions as | action index|}}
-                      {{#if action.disabled}}
-                        <li class="disabled">
-                          <a href="#" onclick="return false;" tabindex={{index}}>
-                            {{if action.bulkActionName action.bulkActionName action.translatedLabel}}
-                            <i class="{{action.icon}}"></i>
-                          </a>
-                        </li>
-                      {{else}}
-                        <li>
-                          <a href="#" onclick={{action 'executeBulkAction' action.action}} tabindex={{index}}>
-                            {{if action.bulkActionName action.bulkActionName action.translatedLabel}}
-                            <i class="{{action.icon}}"></i>
-                          </a>
-                        </li>
-                      {{/if}}
-                    {{/each}}
-                  {{/rl-dropdown}}
-                {{/rl-dropdown-container}}
-              {{else}}
-                <button class="btn bg-primary" disabled>
-                  {{t 'generic.actions'}} <span class="icon icon-chevron-down"></span>
-                </button>
+            <div class="bulk-actions">
+              {{#each availableActions as |action index|}}
+                {{#if action.enabled}}
+                  <a class="btn btn-sm bg-primary" href="#" onclick={{action 'executeBulkAction' action.action}} tabindex={{index}}>
+                    {{t action.label}}
+                    <i class="{{action.icon}}"></i>
+                  </a>
+                {{else}}
+                  <a class="btn btn-sm bg-default btn-disabled" href="#" onclick="return false;" tabindex={{index}}>
+                    {{t action.label}}
+                    <i class="{{action.icon}}"></i>
+                  </a>
+                {{/if}}
+              {{/each}}
+              {{#if selectedNodes.length}}
+                {{t pagingLabel pages=1 count=selectedNodes.length}}
               {{/if}}
             </div>
           {{/if}}
         </div>
-        <div class="col offset-4 span-4 clearfix">
+        <div class="col span-4 clearfix">
           {{#if search}}
             <div class="pull-right input-group">
               {{input value=searchText type="search" placeholder=(t 'generic.search')}}
@@ -87,36 +71,42 @@
   </thead>
   <tbody>
     {{#if prefix}}
-      {{yield null 'prefix'}}
+      {{yield this 'prefix'}}
     {{/if}}
-    {{#each pagedContent as |content|}}
-      <tr class="main-row">
-        {{#if bulkActions}}
-          <td width="40" class="select-for-action">
-            {{check-box nodeId=content.id}}
-          </td>
-        {{/if}}
-        {{#if hasBlock}}
-          {{yield content 'row' dt (array-includes selectedNodes content)}}
-        {{else}}
-          {{#each headers as |header|}}
-            <td data-title={{header.displayName}} data-id={{content.id}}>{{select-property content header.name}}</td>
-          {{/each}}
-        {{/if}}
-      </tr>
-      {{#if hasBlock}}
-        {{yield content 'sub-row' dt (array-includes selectedNodes content)}}
-      {{/if}}
+    {{#if fullRows}}
+      {{#each pagedContent as |row|}}
+        {{yield this 'row' row dt (array-includes childFilterNodes row.id)}}
+      {{else}}
+        {{yield this (if arranged.length 'nomatch' 'norows')}}
+      {{/each}}
     {{else}}
-      {{#if hasBlock}}
-        {{yield null (if arranged.length 'nomatch' 'norows')}}
-      {{/if}}
-    {{/each}}
+      {{#each pagedContent as |row|}}
+        <tr class="main-row">
+          <td width="40" class="select-for-action">
+            {{check-box nodeId=row.id}}
+          </td>
+          {{#if hasBlock}}
+            {{yield this 'row' row dt}}
+          {{else}}
+            {{#each headers as |header|}}
+              <td data-title={{header.displayName}} data-id={{row.id}}>{{select-property row header.name}}</td>
+            {{/each}}
+          {{/if}}
+        </tr>
+        {{#if hasBlock}}
+          {{yield this 'sub-row' row dt}}
+        {{/if}}
+      {{else}}
+        {{#if hasBlock}}
+          {{yield this (if arranged.length 'nomatch' 'norows')}}
+        {{/if}}
+      {{/each}}
+    {{/if}}
     {{#if suffix}}
-      {{yield null 'suffix'}}
+      {{yield this 'suffix'}}
     {{/if}}
   </tbody>
 </table>
 {{#if paging}}
-  {{page-numbers content=pagedContent class="text-center mt-10 mb-10 no-select" indexTo=indexTo indexFrom=indexFrom totalCount=filtered.length}}
+  {{page-numbers content=pagedContent class="text-center mt-10 mb-10 no-select" indexTo=indexTo indexFrom=indexFrom totalCount=filtered.length textLabel=pagingLabel}}
 {{/if}}

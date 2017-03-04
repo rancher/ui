@@ -24,6 +24,9 @@
         </div>
       {{else if (eq model.kind 'enum')}}
         <select class="form-control" onchange={{action (mut value) value="target.value"}}>
+          {{#unless (array-includes model.options value)}}
+            <option value="" selected=true>{{t 'modalEditSetting.value.prompt'}}</option>
+          {{/unless}}
           {{#each model.options as |choice|}}
             <option value="{{choice}}" selected={{eq choice value}}>{{choice}}</option>
           {{/each}}

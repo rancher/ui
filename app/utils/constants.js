@@ -10,35 +10,6 @@ const KIND_INFRA = 'infra';
 const KIND_NOT_ORCHESTRATION = 'cattle';
 
 var C = {
-  BULK_ACTIONS: [
-    {
-      "label": "action.start",
-      "icon": "icon icon-play",
-      "action": "start",
-      "bulkActionName": "Start",
-    },
-    {
-      "label": "action.stop",
-      "icon": "icon icon-stop",
-      "action": "promptStop",
-      "altAction": "stop",
-      "bulkActionName": "Stop",
-    },
-    {
-      "label": "action.restart",
-      "icon": "icon icon-refresh",
-      "action": "restart",
-      "bulkActionName": "Restart",
-    },
-    {
-      "label": "action.remove",
-      "icon": "icon icon-trash",
-      "action": "promptDelete",
-      "altAction": "delete",
-      "bulkActionName": "Delete",
-    },
-  ],
-
   CAPABILITY: {
     NETWORK_POLICIES: 'network-policy-manager',
     SECRETS: 'secrets',
@@ -307,6 +278,7 @@ var C = {
     BALANCER_IMAGE:            'lb$instance$image',
     PROJECT_VERSION:           'account$version',
     FEEDBACK_FORM:             'ui$feedback$form',
+    SHOW_SYSTEM:               'ui$show$system',
   },
 
   USER: {

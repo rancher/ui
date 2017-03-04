@@ -237,8 +237,8 @@ export default Ember.Component.extend(NewOrEdit, {
 
     if ( this.get('actuallySave') ) {
       stack.setProperties({
-        dockerCompose: files['docker-compose.yml'],
-        rancherCompose: files['rancher-compose.yml'],
+        dockerCompose: files['docker-compose.yml.tpl'] || files['docker-compose.yml'],
+        rancherCompose: files['rancher-compose.yml.tpl'] || files['rancher-compose.yml'],
         environment: this.get('answers'),
         externalId: this.get('newExternalId'),
       });

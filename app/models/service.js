@@ -207,20 +207,6 @@ var Service = Resource.extend({
     return out.sortBy('name');
   }.property('linkedServices'),
 
-  // Only for old Load Balancer to get ports map
-  consumedServicesWithNamesAndPorts: function() {
-    let store = this.get('store');
-    return store.all('serviceconsumemap').filterBy('serviceId', this.get('id')).map((map) => {
-      return Ember.Object.create({
-        name: map.get('name'),
-        service: store.getById('service', map.get('consumedServiceId')),
-        ports: map.get('ports')||[],
-      });
-    }).filter((obj) => {
-      return obj && obj.get('service.id');
-    });
-  }.property('id','state').volatile(),
-
   combinedState: function() {
     var service = this.get('state');
     var health = this.get('healthState');

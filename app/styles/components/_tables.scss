@@ -34,6 +34,25 @@ TABLE {
     }
   }
 
+  > THEAD .bulk-actions {
+    margin: 0 3px;
+  }
+
+  &.has-sub-rows {
+    TABLE > THEAD > .fixed-header-actions {
+      z-index: 3;
+      background-color: transparent;
+    }
+
+    TABLE > THEAD > .fixed-header {
+      z-index: 4;
+    }
+
+    TABLE  .bulk-actions {
+      margin: 0 18px;
+    }
+  }
+
   .fixed-header-placeholder {
     visibility: hidden;
 
@@ -106,17 +125,13 @@ TABLE {
       transition: all ease-in-out .3s;
       text-align: left;
       font-weight: normal;
+    }
+  }
 
-      &.fixed-header {
-        background: $table-header;
-        th .btn {
-          color: white;
-        }
-      }
-
-      .btn {
-        color: white;
-      }
+  &.has-sub-rows TABLE > THEAD > TR.fixed-header {
+    background: lighten($link-color, 30);
+    th .btn {
+      color: black;
     }
   }
 

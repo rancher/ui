@@ -82,17 +82,6 @@ export default Ember.Mixin.create({
     return [];
   }.property(),
 
-  translatedAvailableActions: Ember.computed('availableActions','intl._locale', function() {
-    // use this if you need to pass translated actions to addons
-    var availableActions = this.get('availableActions');
-    if (availableActions) {
-      availableActions.forEach((action) => {
-        action.translatedLabel = this.get('intl').findTranslationByKey(action.label);
-      });
-    }
-    return availableActions;
-  }),
-
   primaryAction: function() {
     // The default implementation returns the first enabled item that has an icon
     // and is before the first divider.  If you want a different behavior or

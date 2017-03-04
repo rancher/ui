@@ -6,6 +6,20 @@ import {isAlternate, isMore, isRange} from 'ui/utils/platform';
 
 const {get,set} = Ember;
 
+function matches(fields, token, item) {
+  for ( let i = 0 ; i < fields.length ; i++ ) {
+    let field = fields[i];
+    if ( field ) {
+      let val = (get(item,field)+'').toLowerCase();
+      if ( val && val.indexOf(token) >= 0) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 export default Ember.Component.extend(Sortable, StickyHeader, {
   prefs: Ember.inject.service(),
   bulkActionHandler: Ember.inject.service(),
@@ -19,7 +33,6 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   bulkActions:       true,
   search:            true,
   paging:            true,
-  bulkActionsList:   null,
   subRows:           false,
 
   availableActions:  null,
@@ -28,6 +41,7 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   searchText:        null,
   page:              1,
   perPage:           Ember.computed.alias('prefs.tablePerPage'),
+  pagingLabel:       'pagination.generic',
 
   showHeader: Ember.computed.or('bulkActions','search','paging'),
 
@@ -39,6 +53,7 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     }
 
     this.set('selectedNodes', []);
+    this.actionsChanged();
 
     Ember.run.schedule('afterRender', () => {
       let tbody = Ember.$(this.element).find('table tbody');
@@ -118,52 +133,63 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   }),
 
   searchFields: Ember.computed('headers.@each.{searchField,name}', function() {
-    let out = [];
+    return headersToSearchField(this.get('headers'));
+  }),
 
-    this.get('headers').forEach((header) => {
-      let field = get(header, 'searchField');
-      if ( field ) {
-        if ( typeof field === 'string' ) {
-          out.addObject(field);
-        } else if ( Ember.isArray(field) ) {
-          out.addObjects(field);
-        }
-      } else if ( field === false ) {
-        // Don't add the name
-      } else {
-        out.addObject(get(header,'name'));
-      }
-    });
-
-    return out;
+  subFields: Ember.computed('subHeaders.@each.{searchField,name}', function() {
+    return headersToSearchField(this.get('subHeaders'));
   }),
 
   filtered: Ember.computed('arranged.[]','searchText', function() {
     let out = this.get('arranged').slice();
     let searchFields = this.get('searchFields');
     let searchText =  (this.get('searchText')||'').trim().toLowerCase();
+    let subSearchField = this.get('subSearchField');
+    let subFields = this.get('subFields');
+    let subMatches = null;
 
     if ( searchText.length ) {
+      subMatches = {};
       let searchTokens = searchText.split(/\s*[, ]\s*/);
 
-      for ( let j = 0 ; j < searchTokens.length ; j++ ) {
-        out = out.filter(matches.bind(null,searchTokens[j]));
-      }
-    }
-
-    return out;
-
-    function matches(token, item) {
-      for ( let i = 0 ; i < searchFields.length ; i++ ) {
-        let field = searchFields[i];
-        if ( field ) {
-          let val = (item.get(field)+'').toLowerCase();
-          if ( val && val.indexOf(token) >= 0) {
-            return true;
+      for ( let i = out.length-1 ; i >= 0 ; i-- ) {
+        let hits = 0;
+        let row = out[i];
+        let mainFound = true;
+        for ( let j = 0 ; j < searchTokens.length ; j++ ) {
+          if ( !matches(searchFields, searchTokens[j], row) ) {
+            mainFound = false;
+            break;
           }
+        }
+
+        if ( subFields && subSearchField) {
+          let subRows = (row.get(subSearchField)||[]);
+          for ( let k = subRows.length-1 ; k >= 0 ; k-- ) {
+            let subFound = true;
+            for ( let l = 0 ; l < searchTokens.length ; l++ ) {
+              if ( !matches(subFields, searchTokens[l], subRows[k]) ) {
+                subFound = false;
+                break;
+              }
+            }
+
+            if ( subFound ) {
+              hits++;
+            }
+          }
+
+          subMatches[row.get('id')] = hits;
+        }
+
+        if ( !mainFound && hits === 0 ) {
+          out.removeAt(i);
         }
       }
     }
+
+    this.set('subMatches', subMatches);
+    return out;
   }),
 
   pagedContentChanged: Ember.observer('pagedContent.[]', function() {
@@ -229,17 +255,18 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
 
     let content = this.get('pagedContent');
     let selection = this.get('selectedNodes');
-    let isCheckbox = tagName === 'INPUT' || Ember.$(e.target).hasClass('select-for-action');
+    let tgt = Ember.$(e.target);
+    let isCheckbox = tagName === 'INPUT' || tgt.hasClass('select-for-action');
     let tgtRow = Ember.$(e.currentTarget);
-    if ( tgtRow.hasClass('separator-row') ) {
+    if ( tgtRow.hasClass('separator-row') || tgt.hasClass('select-all-check')) {
       return;
     }
 
-    while ( tgtRow && !tgtRow.hasClass('main-row') ) {
+    while ( tgtRow && tgtRow.length && !tgtRow.hasClass('main-row') ) {
       tgtRow = tgtRow.prev();
     }
 
-    if ( !tgtRow ) {
+    if ( !tgtRow || !tgtRow.length ) {
       return;
     }
 
@@ -284,6 +311,7 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     }
 
     this.set('prevNode', node);
+    e.stopPropagation();
   },
 
   isAll: Ember.computed('selectedNodes.length', 'pagedContent.length', {
@@ -352,58 +380,68 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     }
   },
 
-  actionsChanged: Ember.observer('selectedNodes.@each.translatedAvailableActions', function() {
-    let data = this.get('selectedNodes');
-    var out = null;
+  actionsChanged: Ember.observer('selectedNodes.@each.availableActions','pagedContent.firstObject.availableActions', function() {
+    let nodes = this.get('selectedNodes');
+    let out = null;
+    let disableAll = false;
 
-    if (data.length > 1) {
-      out = this.mergeBulkActions(data);
-    } else if (data.length === 1) {
-      out = this.mergeSingleActions(data[0]);
+    if ( !nodes.length ) {
+      disableAll = true;
+      let firstNode = this.get('pagedContent.firstObject');
+      if ( firstNode ) {
+        nodes = [firstNode];
+      }
+    }
+
+    if (nodes.length >= 1) {
+      // Find all the bulkable actions from the first item (all items have all the actions, but some will be disabled
+      out = nodes.get('firstObject.availableActions').filterBy('bulkable',true).map((act) => {
+        return Ember.$().extend(true, {}, act);
+      });
+
+      // Make a list of ones that should be disabled because they are not available for one or more selected items
+      let toDisable = [];
+      nodes.forEach((node) => {
+        let bad;
+        if ( disableAll ) {
+          bad = get(node,'availableActions').map(act => act.action);
+        } else {
+          bad = get(node,'availableActions').filterBy('enabled',false).map(act => act.action);
+        }
+
+        toDisable.addObjects(bad);
+      });
+
+      // Disable the bulk actions from the toDisable list
+      toDisable.forEach((name) => {
+        let obj = out.findBy('action', name);
+        if ( obj ) {
+          set(obj, 'enabled', false);
+        }
+      });
     }
 
     this.set('availableActions', out);
   }),
-
-  mergeBulkActions(nodes) {
-    var commonActions =  Ember.$().extend(true, [], this.get('bulkActionsList'));
-
-    // loop over every selectedNode to find available actions
-    nodes.forEach((item) => {
-      let actions = get(item, 'translatedAvailableActions').filter((action) => {
-        return action.enabled && action.bulkable;
-      });
-
-      commonActions.forEach((action) => {
-        if (!actions.findBy('action', action.action)) {
-          set(action, 'disabled', true);
-        }
-      });
-
-    });
-
-    return commonActions;
-  },
-
-  mergeSingleActions(node) {
-    var commonActions =  Ember.$().extend(true, [], this.get('bulkActionsList'));
-    var localActions =   [];
-
-    // no others selected just push the availabe actions out
-    localActions = get(node, 'translatedAvailableActions').filter((action) => {
-      return action.enabled;
-    });
-
-    // combine both arrays into a unique set
-    commonActions = commonActions.concat(localActions).uniqBy('action');
-
-    // find items that need to be disbaled
-    commonActions.forEach((action) => {
-      if (!localActions.findBy('action', action.action)) {
-        set(action, 'disabled', true);
-      }
-    });
-
-    return commonActions;
-  },
 });
+
+function headersToSearchField(headers) {
+  let out = [];
+
+  (headers||[]).forEach((header) => {
+    let field = get(header, 'searchField');
+    if ( field ) {
+      if ( typeof field === 'string' ) {
+        out.addObject(field);
+      } else if ( Ember.isArray(field) ) {
+        out.addObjects(field);
+      }
+    } else if ( field === false ) {
+      // Don't add the name
+    } else {
+      out.addObject(get(header,'name'));
+    }
+  });
+
+  return out;
+}
