@@ -1,10 +1,13 @@
 import Ember from 'ember';
 import { isAlternate } from 'ui/utils/platform';
+import C from 'ui/utils/constants';
+import { getCatalogSubtree } from 'ui/utils/parse-catalog-setting';
 
 export default Ember.Controller.extend({
   application: Ember.inject.controller(),
   catalog: Ember.inject.service(),
   settings: Ember.inject.service(),
+  projectId: Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
 
   catalogController: Ember.inject.controller('catalog-tab'),
   category: Ember.computed.alias('catalogController.category'),
@@ -19,6 +22,9 @@ export default Ember.Controller.extend({
   updating: 'no',
 
   actions: {
+    clearSearch() {
+      this.set('search', '');
+    },
     launch(id, onlyAlternate) {
       if ( onlyAlternate && !isAlternate(event) ) {
         return false;
@@ -38,8 +44,28 @@ export default Ember.Controller.extend({
     }
   },
 
-  init() {
-  },
+  categoryWithCounts: Ember.computed('category', 'categories', 'search', function() {
+    var categories = [];
+    var catalogs = this.get('arrangedContent');
+
+    catalogs.forEach((cat) => {
+      if (cat.categories) {
+        cat.categories.forEach((category) => {
+          if (categories.findBy('name', category)) {
+            categories.findBy('name', category).count++;
+          } else {
+            categories.pushObject({name: category, count: 1});
+          }
+        });
+      }
+    });
+
+    return categories.sortBy('name');
+  }),
+
+  filters: Ember.computed(`settings.${C.SETTING.CATALOG_URL}`, function() {
+    return getCatalogSubtree(this.get(`settings.${C.SETTING.CATALOG_URL}`), this.get('projectId'));
+  }),
 
   arrangedContent: Ember.computed('model.catalog', 'search', function() {
     var search = this.get('search').toUpperCase();

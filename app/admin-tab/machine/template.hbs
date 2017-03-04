@@ -51,6 +51,12 @@
         {{else}}
           <div class="catalog-icon mb-10 {{driver.iconMapFromConstants}}"/>
         {{/if}}
+      {{else if (eq section 'body')}}
+        <h5>
+          {{driver.name}}
+        </h5>
+        <hr class="m-10" />
+        <div class="mt-10 description">{{driver.description}}</div>
       {{else if (eq section 'footer')}}
         {{#if (and driver.externalId (not-eq driver.state 'inactive'))}}
           {{upgrade-dropdown model=driver btnClass="btn-sm" currentId=driver.externalId upgradeOnly=false changeVersion=(action "upgradeDriver" driver)}}
