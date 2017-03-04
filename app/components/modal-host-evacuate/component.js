@@ -2,7 +2,6 @@ import Ember from 'ember';
 import ModalBase from 'lacsso/components/modal-base';
 import { alternateLabel } from 'ui/utils/platform';
 
-const TIMEOUT = 10;
 export default ModalBase.extend({
   classNames: ['lacsso', 'modal-container', 'medium-modal'],
   resources: Ember.computed.alias('modalService.modalOpts.model'),

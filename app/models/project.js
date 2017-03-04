@@ -72,9 +72,6 @@ var Project = Resource.extend(PolledResource, {
     var a = this.get('actionLinks');
 
     var choices = [
-      { label: 'action.switchEnvironment',icon: 'icon icon-folder-open',  action: 'switchTo',     enabled: this.get('canSwitchTo')},
-      { label: 'action.setDefault',       icon: 'icon icon-home',         action: 'setAsDefault', enabled: this.get('canSetDefault')},
-      { divider: true },
       { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
       { label: 'action.activate',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
       { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate,        altAction: 'deactivate'},

@@ -117,7 +117,7 @@ var Host = Resource.extend({
   }.property('info.osInfo.dockerVersion'),
 
   supportState: function() {
-    let my = this.get('dockerEngineVersion');
+    let my = this.get('dockerEngineVersion')||'';
     my = my.replace('-ce','').replace('-ee','');
 
     let supported = this.get(`settings.${C.SETTING.SUPPORTED_DOCKER}`);

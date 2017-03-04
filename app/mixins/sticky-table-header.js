@@ -2,32 +2,42 @@ import Ember from 'ember';
 import ThrottledResize from './throttled-resize';
 
 const tableProps = {
-  actionsHeight: '60px',
-  fixedHeaderHeight: '40px',
+  actionsHeight: 60,
+  fixedHeaderHeight: 40,
 };
 
 export default Ember.Mixin.create(ThrottledResize, {
   stickyHeader: true,
+  subRow: false,
+
+  init() {
+    this._super(...arguments);
+  },
 
   didInsertElement() {
     this._super(...arguments);
+
+    this.buildTableWidths();
+
+    if (this.get('showHeader')) {
+      Ember.$(this.element).find('> table > thead > .fixed-header-actions, > table > thead > .fixed-header').css('width', Ember.$(this.element).find('> table').outerWidth());
+    }
 
     if ( !this.get('stickyHeader') ) {
       return;
     }
 
-    let $offset = Ember.$(this.element).find('> table > thead tr').offset().top;
-    this.buildTableWidths();
-
-    if (this.get('showHeader')) {
-      Ember.$(this.element).find('> table > thead .fixed-header-actions, > table > thead .fixed-header').css('width', Ember.$(this.element).find('table').outerWidth());
-    }
-
-    Ember.$(window).scroll(() => {
-      this.updateHeaders($offset);
-    });
-
+    this.set('_boundScroll', this._scroll.bind(this));
+    Ember.$(window).on('scroll', this.get('_boundScroll'));
   },
+
+  _boundScroll: null,
+  _scroll() {
+    Ember.run.throttle(() => {
+      this.updateHeaders();
+    }, 30);
+  },
+
 
   willDestroyElement() {
     this._super(...arguments);
@@ -36,33 +46,24 @@ export default Ember.Mixin.create(ThrottledResize, {
       return;
     }
 
-    Ember.$(window).unbind('scroll');
+    Ember.$(window).off('scroll', this.get('_boundScroll'));
   },
 
   onResize() {
     this._super(...arguments);
-
-    if ( !this.get('stickyHeader') ) {
-      return;
-    }
-
     this.buildTableWidths();
   },
 
   buildTableWidths() {
-    if ( !this.get('stickyHeader') ) {
-      return;
-    }
+    let ths = Ember.$(this.element).find('> table > thead > tr.fixed-header > th');
 
-    let ths = Ember.$(this.element).find('> table > thead tr.fixed-header th');
-
-    Ember.$(this.element).find('> table > thead tr.fixed-header-placeholder th').each((idx, th) => {
+    Ember.$(this.element).find('> table > thead > tr.fixed-header-placeholder > th').each((idx, th) => {
       Ember.$(ths[idx]).attr('width', Ember.$(th).outerWidth());
     });
 
     if (this.get('showHeader')) {
-      Ember.$(this.element).find('> table > thead .fixed-header-actions, > table > thead .fixed-header').css({
-        'width': Ember.$(this.element).find('table').width(),
+      Ember.$(this.element).find('> table > thead > .fixed-header-actions, > table > thead > .fixed-header').css({
+        'width': Ember.$(this.element).find('> table').width(),
       });
     }
   },
@@ -72,7 +73,7 @@ export default Ember.Mixin.create(ThrottledResize, {
       return;
     }
 
-    Ember.$(this.element).find('> table > thead tr.fixed-header th').each((idx, td) => {
+    Ember.$(this.element).find('> table > thead > tr.fixed-header > th').each((idx, td) => {
       Ember.$(td).removeAttr('width');
     });
   },
@@ -82,26 +83,29 @@ export default Ember.Mixin.create(ThrottledResize, {
       return;
     }
 
-    let $table       = Ember.$(this.element).find('> table');
-    let $actionRow   = $table.find('> thead .fixed-header-actions');
-    let $fixedHeader = $table.find('> thead tr.fixed-header');
+    let elem         = Ember.$(this.element);
+    let $table       = elem.find('> table');
+    let $actionRow   = $table.find('> thead > .fixed-header-actions');
+    let $fixedHeader = $table.find('> thead > tr.fixed-header');
     let showHeader  = this.get('showHeader');
+
+    let fudge = (this.get('subRow') ? 100 : 0);
 
     if (showHeader) {
       $actionRow.css({
         'position': 'fixed',
-        'top': 0,
-        'height': tableProps.actionsHeight,
+        'top': fudge,
+        'height': tableProps.actionsHeight + 'px',
       });
     }
     $fixedHeader.css({
       'position': 'fixed',
-      'top': showHeader ? tableProps.actionsHeight : 0,
-      'height': tableProps.fixedHeaderHeight,
+      'top': (showHeader ? fudge+tableProps.actionsHeight : 0) + 'px',
+      'height': tableProps.fixedHeaderHeight + 'px',
     });
 
-    $table.css({
-      'margin-top': (parseInt(tableProps.actionsHeight,10) + parseInt(tableProps.fixedHeaderHeight,10)) + 'px'
+    elem.css({
+      'padding-top': (tableProps.actionsHeight + tableProps.fixedHeaderHeight) + 'px'
     });
   },
 
@@ -110,9 +114,10 @@ export default Ember.Mixin.create(ThrottledResize, {
       return;
     }
 
-    let $table       = Ember.$(this.element).find('> table');
-    let $actionRow   = $table.find('> thead .fixed-header-actions');
-    let $fixedHeader = $table.find('> thead tr.fixed-header');
+    let elem         = Ember.$(this.element);
+    let $table       = elem.find('> table');
+    let $actionRow   = $table.find('> thead > .fixed-header-actions');
+    let $fixedHeader = $table.find('> thead > tr.fixed-header');
 
     if (this.get('showHeader')) {
       $actionRow.css({
@@ -125,30 +130,29 @@ export default Ember.Mixin.create(ThrottledResize, {
       'position': '',
       'top': '',
     });
-    $table.css({
-      'margin-top': ''
+
+   elem.css({
+      'padding-top': ''
     });
     this.buildTableWidths();
   },
 
-  updateHeaders(offset) {
+  updateHeaders() {
     if ( !this.get('stickyHeader') ) {
       return;
     }
 
-    let $windowScroll   = Ember.$(window).scrollTop();
-    let $table          = Ember.$(this.element).find('> table');
-    let $floatingHeader = $table.find('> thead tr.fixed-header');
+    let elem            = Ember.$(this.element);
+    let $table          = elem.find('> table');
+    let $floatingHeader = $table.find('> thead > tr.fixed-header');
     let $scrollTop      = Ember.$(window).scrollTop();
     let containerBottom = $table.height() + $table.offset().top;
+    let offset = elem.find('> table > thead > tr').offset().top - parseInt(elem.css('padding-top'),10);
 
-    if ($windowScroll < containerBottom ) {
-      if ($scrollTop > offset) {
+    if ($scrollTop < containerBottom && $scrollTop > offset) {
+      if ($floatingHeader.css('position') !== 'fixed') {
         this.buildTableWidths();
         this.positionHeaders();
-      } else if ($scrollTop <= offset) {
-        this.tearDownTableWidths();
-        this.removePositions();
       }
     } else {
       if ($floatingHeader.css('position') === 'fixed') {

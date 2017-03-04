@@ -6,8 +6,9 @@
   <a href="{{href-to "host" model.id}}">{{model.displayName}}</a>
 </td>
 <td data-title="{{dt.ip}}">
-  {{format-ip model.displayIp}}
-  {{copy-to-clipboard clipboardText=model.displayIp size="small"}}
+  {{#copy-to-clipboard clipboardText=model.displayIp size="small"}}
+    {{format-ip model.displayIp}}
+  {{/copy-to-clipboard}}
 </td>
 <td data-title="{{dt.memory}}">
   {{model.memoryBlurb}}
@@ -16,7 +17,11 @@
   {{model.dockerEngineVersion}}
 </td>
 <td data-title="{{dt.containers}}">
-  {{model.instances.length}}
+  {{#if subMatches}}
+    <b>{{get subMatches model.id}}/{{model.instances.length}}</b>
+  {{else}}
+    {{model.instances.length}}
+  {{/if}}
 </td>
 <td data-title="{{dt.instanceState}}">
   {{progress-bar-multi

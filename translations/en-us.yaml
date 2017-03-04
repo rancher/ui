@@ -28,7 +28,6 @@ generic:
   image: Image
   internal: Internal
   ipAddress: IP Address
-  items: "{count, plural, =1 {# Item} other {# Items}}"
   limit: Limit
   loading: "Loading..."
   missing: "*%MISSING%*"
@@ -2925,6 +2924,7 @@ modalEditSetting:
     label: Name
   value:
     label: Value
+    prompt: Select a Value...
   reset:
     label: Reset to Default
 
@@ -3125,26 +3125,34 @@ newSecret:
 
 pageFooter:
   notARelease: (Not a Release)
-  help: Help
-  documentation: Documentation
+  help: 'Help & Docs'
   faq: FAQs
   issues: File an Issue
   forums: Forums
   slack: Slack
   download:
     link: Download CLI
-    headerCli: Rancher CLI (beta)
-    headerCompose: Rancher Compose
-    mac: Mac OS X
+    mac: macOS
     windows: Windows
     linux: Linux
+  showSystem: Show System Containers
 
 pagination:
-  multi: |
+  generic: |
     {pages, plural,
-    =0 {0 Items}
+    =0 {No Items}
     =1 {{count} {count, plural, =1 {Item} other {Items}}}
     other {{from} - {to} of {count} Items}}
+  host: |
+    {pages, plural,
+    =0 {No Hosts}
+    =1 {{count} {count, plural, =1 {Host} other {Hosts}}}
+    other {{from} - {to} of {count} Hosts}}
+  container: |
+    {pages, plural,
+    =0 {No Containers}
+    =1 {{count} {count, plural, =1 {Containers} other {Containers}}}
+    other {{from} - {to} of {count} Containers}}
 
 pageHeaderEnvironment:
   namespace: Namespace

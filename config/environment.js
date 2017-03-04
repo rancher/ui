@@ -89,6 +89,7 @@ module.exports = function(environment) {
       version: pkg.version,
       appName: 'Rancher',
       mode: mode,
+      isCaas: mode === 'caas',
       apiServer: 'http://localhost:8080',
       legacyApiEndpoint: '/v1',
       apiEndpoint: '/v2-beta',

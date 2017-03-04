@@ -278,6 +278,7 @@ var C = {
     BALANCER_IMAGE:            'lb$instance$image',
     PROJECT_VERSION:           'account$version',
     FEEDBACK_FORM:             'ui$feedback$form',
+    SHOW_SYSTEM:               'ui$show$system',
   },
 
   USER: {

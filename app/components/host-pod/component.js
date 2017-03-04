@@ -4,10 +4,10 @@ import GroupedInstances from 'ui/mixins/grouped-instances';
 
 export default Ember.Component.extend(ManageLabels, GroupedInstances, {
   settings: Ember.inject.service(),
+  prefs: Ember.inject.service(),
 
   model: null,
   mode: null,
-  show: null,
 
   classNames: ['pod','host'],
 
@@ -31,13 +31,12 @@ export default Ember.Component.extend(ManageLabels, GroupedInstances, {
     let out = this.get('model.instances')||[];
     //out = out.filterBy('isRemoved', false);
 
-    if ( this.get('show') === 'standard' ) {
+    if ( !this.get('prefs.showSystemContainers') ) {
       out = out.filterBy('isSystem', false);
     }
 
-
     return out;
-  }.property('model.instances.@each.labels','show'),
+  }.property('model.instances.@each.isSystem','prefs.showSystemContainers'),
 
   arrangedInstances: function() {
     return this.get('filteredInstances').sortBy('name','id');

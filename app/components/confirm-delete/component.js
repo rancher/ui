@@ -33,14 +33,6 @@ export default Ember.Component.extend(ModalBase, {
     return out;
   }),
 
-  largeDeleteText: Ember.computed(function() {
-    var resources = this.get('resources');
-    return this.get('intl').t('confirmDelete.largeDeleteText', {
-      key: resources[0].get('displayName'),
-      othersCount: resources.length
-    });
-  }),
-
   didRender: function() {
     setTimeout(() => {
       try {

@@ -7,6 +7,7 @@ export default Ember.Component.extend({
 
   model: null,
   tagName: '',
+  subMatches: null,
 
   actions: {
     toggle() {
