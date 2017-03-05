@@ -8,10 +8,31 @@ export default Ember.Controller.extend(Sortable, {
     });
   }.property('model.@each.{instanceId,state}'),
 
-  sortableContent: Ember.computed.alias('nonRootVolumes'),
+  sortableContent: Ember.computed.alias(''),
   sortBy: 'name',
   sorts: {
     state:    ['stateSort','displayUri','id'],
     hostPath: ['displayUri','id'],
   },
+  headers:  [
+    {
+      name:           'state',
+      sort:           ['stateSort','displayUri','id'],
+      translationKey: 'hostsPage.hostPage.storageTab.table.header.state',
+      width:          '125',
+    },
+    {
+      name:           'hostPath',
+      sort:           ['displayUri','id'],
+      translationKey: 'hostsPage.hostPage.storageTab.table.header.hostPath',
+    },
+    {
+      noSort:           true,
+      translationKey: 'hostsPage.hostPage.storageTab.table.header.mounts',
+    },
+    {
+      isActions: true,
+      width: '75',
+    },
+  ],
 });
