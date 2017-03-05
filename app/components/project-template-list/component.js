@@ -25,7 +25,7 @@ export default Ember.Component.extend({
     },
     {
       isActions: true,
-      width: '75px',
+      width: '75',
     },
   ],
 });
