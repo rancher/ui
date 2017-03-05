@@ -7,22 +7,20 @@
 </section>
 
 <section class="instances">
-  <table class="grid fixed" style="margin-bottom: 0">
-    <thead>
-      <tr>
-        {{sortable-th sortable=this action="changeSort" name="state" label='registriesPage.index.table.header.state' width="125"}}
-        {{sortable-th sortable=this action="changeSort" name="address" label='registriesPage.index.table.header.address'}}
-        {{sortable-th sortable=this action="changeSort" name="username" label='registriesPage.index.table.header.username'}}
-        {{sortable-th sortable=this action="changeSort" name="created" label='registriesPage.index.table.header.created'}}
-        <th width="75">&nbsp;</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each arranged as |registry|}}
-        {{registry-row model=registry}}
-      {{else}}
-        <tr><td colspan="6" class="text-center text-muted">{{t 'registriesPage.index.table.body.noData'}}</td></tr>
-      {{/each}}
-    </tbody>
-  </table>
+  {{#sortable-table
+      classNames="grid fixed mb-0 sortable-table"
+      bulkActions=false
+      paging=false
+      search=false
+      sortBy=sortBy
+      headers=headers
+      body=model
+      as |registry kind|
+  }}
+    {{#if (eq kind "row")}}
+      {{registry-row model=registry}}
+    {{else if (eq kind "norows")}}
+      <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'registriesPage.index.table.body.noData'}}</td>
+    {{/if}}
+  {{/sortable-table}}
 </section>
