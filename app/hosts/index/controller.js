@@ -5,8 +5,6 @@ import { headersWithoutHost as containerHeaders } from 'ui/components/container-
 export default Ember.Controller.extend({
   prefs: Ember.inject.service(),
 
-  bulkActionHandler: Ember.inject.service(),
-
   mode: 'list',
   sortBy: 'name',
   queryParams: ['mode','sortBy'],
@@ -23,10 +21,6 @@ export default Ember.Controller.extend({
   actions: {
     newContainer(hostId) {
       this.transitionToRoute('containers.new', {queryParams: {hostId: hostId}});
-    },
-
-    applyBulkAction(name, selectedElements) {
-      this.get('bulkActionHandler')[name](selectedElements);
     },
 
     toggleExpand(hostId) {
@@ -92,7 +86,7 @@ export default Ember.Controller.extend({
       name: 'instanceCount',
       sort: ['instances.length:desc','displayName'],
       searchField: null,
-      width: '50px',
+      width: '80px',
       icon: 'icon icon-lg icon-container',
     },
     {
@@ -104,7 +98,7 @@ export default Ember.Controller.extend({
     },
     {
       isActions: true,
-      width: '30px',
+      width: '40px',
     },
   ],
 

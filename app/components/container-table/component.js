@@ -6,7 +6,7 @@ export const headersWithHost =  [
     searchField: 'displayState',
     sort: ['stateSort','name','id'],
     translationKey: 'containersPage.index.table.header.state',
-    width: '125px'
+    width: '120px'
   },
   {
     name: 'name',

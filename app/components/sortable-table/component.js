@@ -79,16 +79,24 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
 
     executeBulkAction(name, e) {
       e.preventDefault();
+      let handler = this.get('bulkActionHandler');
+      let nodes = this.get('selectedNodes');
+
       if (isAlternate(e)) {
-        var aa = this.get('availableActions');
-        var action = aa.findBy('action', name);
-        if (get(action, 'altAction')) {
-          this.get('bulkActionHandler')[get(action, 'altAction')](this.get('selectedNodes'));
-        } else {
-          this.get('bulkActionHandler')[name](this.get('selectedNodes'));
+        var available= this.get('availableActions');
+        var action = available.findBy('action', name);
+        let alt = get(action, 'altAction');
+        if ( alt ) {
+          name = alt;
         }
+      }
+
+      if ( typeof handler[name] === 'function' ) {
+        this.get('bulkActionHandler')[name](nodes);
       } else {
-        this.get('bulkActionHandler')[name](this.get('selectedNodes'));
+        nodes.forEach((node) => {
+          node.send(name);
+        });
       }
     },
 

@@ -2,8 +2,6 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
-  bulkActionHandler: Ember.inject.service(),
-  bulkActionsList: C.BULK_ACTIONS,
   sortBy: 'name',
   prefs: Ember.inject.service(),
 
