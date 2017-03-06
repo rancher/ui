@@ -353,6 +353,7 @@ var C = {
     RACKSPACE: 'rackspace',
     UBIQUITY: 'ubiquity',
     VMWAREVSPHERE: 'vmwarevsphere',
+    HWCLOUDS: 'hwclouds',
     OTHER: 'other',
     CUSTOM: 'custom',
     ALIYUNECS: 'aliyunecs',
