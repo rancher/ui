@@ -8,14 +8,14 @@
 
 <section class="instances">
   {{#sortable-table
-      classNames="lacsso grid sortable-table"
-      bulkActions=false
-      paging=false
-      search=false
-      sortBy=sortBy
-      headers=headers
-      body=model
-      as |member kind|
+       classNames="lacsso grid sortable-table"
+       bulkActions=false
+       paging=false
+       search=false
+       sortBy=sortBy
+       headers=headers
+       body=model
+       as |sortable kind member dt|
   }}
     {{#if (eq kind "row")}}
       <td>{{member.uuid}}</td>
@@ -24,7 +24,9 @@
       <td>{{#if member.clustered}}{{t 'generic.yess'}}{{else}}{{t 'generic.noo'}}{{/if}}</td>
       <td>{{date-str member.heartbeat}}</td>
     {{else if (eq kind "norows")}}
-      <td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.summary.noData'}}</td>
+      <tr>
+        <td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.summary.noData'}}</td>
+      </tr>
     {{/if}}
   {{/sortable-table}}
 </section>

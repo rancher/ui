@@ -26,12 +26,14 @@
       sortBy=sortBy
       headers=headers
       body=model.account
-      as |key kind|
+      as |sortable kind key|
   }}
     {{#if (eq kind "row")}}
-        {{apikey-row model=key}}
+      {{apikey-row model=key}}
     {{else if (eq kind "norows")}}
-      <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'apiPage.account.table.noData'}}</td>
+      <tr>
+        <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'apiPage.account.table.noData'}}</td>
+      </tr>
     {{/if}}
   {{/sortable-table}}
 </section>
@@ -68,12 +70,14 @@
         sortBy=sortBy
         headers=headers
         body=model.environment
-        as |key kind|
+        as |sortable kind key|
     }}
       {{#if (eq kind "row")}}
           {{apikey-row model=key}}
       {{else if (eq kind "norows")}}
-        <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'apiPage.account.table.noData'}}</td>
+        <tr>
+          <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'apiPage.account.table.noData'}}</td>
+        </tr>
       {{/if}}
     {{/sortable-table}}
   </section>

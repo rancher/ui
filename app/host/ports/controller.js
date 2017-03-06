@@ -2,12 +2,6 @@ import Ember from 'ember';
 
 export default Ember.Controller.extend({
   sortBy: 'ip',
-  sorts: {
-    ip:       ['ipAddress','port'],
-    port:     ['port','ipAddress','instanceId'],
-    service:  ['service.displayName','port','ipAddress'],
-    container: ['instance.displayName','port','ipAddress'],
-  },
   headers:  [
     {
       name:           'ip',

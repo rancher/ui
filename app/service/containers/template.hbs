@@ -6,7 +6,7 @@
     sortBy=sortBy
     headers=headers
     body=model.instances
-    as |container kind|
+    as |sortable kind container|
 }}
   {{#if (eq kind "row")}}
     {{container-row
@@ -21,6 +21,8 @@
       storageMax=storageMax
       networkMax=networkMax}}
   {{else if (eq kind "norows")}}
-    <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'servicePage.containersTab.table.body.noData'}}</td>
+    <tr>
+      <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'servicePage.containersTab.table.body.noData'}}</td>
+    </tr>
   {{/if}}
 {{/sortable-table}}

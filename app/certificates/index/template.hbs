@@ -15,12 +15,14 @@
       sortBy=sortBy
       headers=headers
       body=model
-      as |cert kind|
+      as |sortable kind cert|
   }}
     {{#if (eq kind "row")}}
       {{certificate-row model=cert}}
     {{else if (eq kind "norows")}}
-      <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'certificatesPage.index.table.body.noData'}}</td>
+      <tr>
+        <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'certificatesPage.index.table.body.noData'}}</td>
+      </tr>
     {{/if}}
   {{/sortable-table}}
 </section>

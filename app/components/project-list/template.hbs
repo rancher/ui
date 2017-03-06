@@ -22,12 +22,14 @@
     descending=descending
     headers=headers
     body=model
-    as |p kind|
+    as |sortable kind p|
   }}
     {{#if (eq kind "row")}}
       {{project-row model=p}}
     {{else if (eq kind "norows")}}
-      <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'labelsSection.noData'}}</td>
+      <tr>
+        <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'labelsSection.noData'}}</td>
+      </tr>
     {{/if}}
   {{/sortable-table}}
 </section>

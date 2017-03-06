@@ -7,14 +7,14 @@
 
 <section>
   {{#sortable-table
-       classNames="grid fixed mb-0 sortable-table"
-       bulkActions=false
-       paging=false
-       search=false
-       sortBy=sortBy
-       headers=headers
-       body=model.all
-       as |target kind|
+      classNames="grid fixed mb-0 sortable-table"
+      bulkActions=false
+      paging=false
+      search=false
+      sortBy=sortBy
+      headers=headers
+      body=model.all
+      as |sortable kind target|
   }}
     {{#if (eq kind "row")}}
       <td class="state">
@@ -40,7 +40,9 @@
         {{action-menu model=target}}
       </td>
     {{else if (eq kind "norows")}}
-      <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'apiPage.account.table.noData'}}</td>
+      <tr>
+        <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'apiPage.account.table.noData'}}</td>
+      </tr>
     {{/if}}
   {{/sortable-table}}
 </section>
