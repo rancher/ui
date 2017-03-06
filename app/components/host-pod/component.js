@@ -10,6 +10,7 @@ export default Ember.Component.extend(ManageLabels, GroupedInstances, {
   mode: null,
 
   classNames: ['pod','host'],
+  showLabelRow: Ember.computed.or('model.displayUserLabelStrings.length','model.requireAnyLabelStrings.length'),
 
   init() {
     this._super(...arguments);
@@ -31,12 +32,12 @@ export default Ember.Component.extend(ManageLabels, GroupedInstances, {
     let out = this.get('model.instances')||[];
     //out = out.filterBy('isRemoved', false);
 
-    if ( !this.get('prefs.showSystemContainers') ) {
+    if ( !this.get('prefs.showSystemResources') ) {
       out = out.filterBy('isSystem', false);
     }
 
     return out;
-  }.property('model.instances.@each.isSystem','prefs.showSystemContainers'),
+  }.property('model.instances.@each.isSystem','prefs.showSystemResources'),
 
   arrangedInstances: function() {
     return this.get('filteredInstances').sortBy('name','id');

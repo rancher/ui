@@ -6,7 +6,7 @@ export const headersWithHost =  [
     searchField: 'displayState',
     sort: ['stateSort','name','id'],
     translationKey: 'containersPage.index.table.header.state',
-    width: '125px'
+    width: '120px'
   },
   {
     name: 'name',
@@ -64,10 +64,10 @@ export default Ember.Component.extend({
   filtered: function() {
     let out = this.get('body')||[];
 
-    if ( !this.get('prefs.showSystemContainers') ) {
+    if ( !this.get('prefs.showSystemResources') ) {
       out = out.filterBy('isSystem', false);
     }
 
     return out;
-  }.property('body.@each.isSystem','prefs.showSystemContainers'),
+  }.property('body.@each.isSystem','prefs.showSystemResources'),
 });

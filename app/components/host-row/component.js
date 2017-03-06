@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   projects: Ember.inject.service(),
@@ -8,14 +7,13 @@ export default Ember.Component.extend({
   model: null,
   tagName: '',
   subMatches: null,
+  expanded: null,
+
+  showLabelRow: Ember.computed.or('model.displayUserLabelStrings.length','model.requireAnyLabelStrings.length'),
 
   actions: {
     toggle() {
       this.sendAction('toggle');
     },
   },
-
-  statsAvailable: function() {
-    return C.ACTIVEISH_STATES.indexOf(this.get('model.state')) >= 0 && this.get('model.healthState') !== 'started-once';
-  }.property('model.{state,healthState}'),
 });

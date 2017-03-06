@@ -159,7 +159,7 @@ Router.map(function() {
         this.route('service.new-alias', {path: '/add-alias', resetNamespace: true});
         this.route('service.new-external', {path: '/add-external', resetNamespace: true});
 
-        this.route('stacks', {path: '/stacks', resetNamespace: true}, function() {
+        this.route('stacks', {path: '/containers', resetNamespace: true}, function() {
           this.route('index', {path: '/'});
           this.route('new', {path: '/add'});
 

@@ -575,4 +575,23 @@ export default Ember.Mixin.create({
       return this.doAction(name, data);
     }, 'Wait for and do action='+name);
   },
+
+  displayUserLabelStrings: function() {
+    let out = [];
+    let labels = this.get('labels')||{};
+    Object.keys(labels).forEach(function(key) {
+      if ( key.indexOf(C.LABEL.AFFINITY_PREFIX) === 0 ||
+           key.indexOf(C.LABEL.SYSTEM_PREFIX) === 0 ||
+          C.LABELS_TO_IGNORE.indexOf(key) >= 0
+        )
+      {
+        // Skip ignored labels
+        return;
+      }
+
+      out.push(key + (labels[key] ? '='+labels[key] : ''));
+    });
+
+    return out;
+  }.property('labels'),
 });

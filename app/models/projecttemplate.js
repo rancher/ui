@@ -40,20 +40,22 @@ var ProjectTemplate = Resource.extend(PolledResource, {
     };
 
     this.get('stacks').forEach((stack) => {
-      let category = stack.get('category')||'Unknown';
-      if ( !map[category] ) {
-        map[category] = '';
-      }
+      let categories = stack.get('categories')||['Unknown'];
+      categories.forEach((category) => {
+        if ( !map[category] ) {
+          map[category] = '';
+        }
 
-      let tpl = stack.get('catalogTemplate');
-      let name;
-      if ( tpl ) {
-        name = tpl.get('name');
-      } else {
-        name = stack.get('name');
-      }
+        let tpl = stack.get('catalogTemplate');
+        let name;
+        if ( tpl ) {
+          name = tpl.get('name');
+        } else {
+          name = stack.get('name');
+        }
 
-      map[category] += (map[category] ? ', ' : '') + name;
+        map[category] += (map[category] ? ', ' : '') + name;
+      });
     });
 
     if ( !map['Orchestration'] ) {
@@ -75,7 +77,10 @@ var ProjectTemplate = Resource.extend(PolledResource, {
   }.property('stacks.[]'),
 
   orchestrationIcon: function() {
-    let orch = this.get('stacks').findBy('catalogTemplate.category','Orchestration');
+    let orch = this.get('stacks').find((stack) => {
+      return stack.get('categories').includes('Orchestration');
+    });
+
     if ( orch ) {
       return orch.get('icon');
     } else {

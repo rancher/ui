@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-// import { getCatalogNames } from 'ui/utils/parse-catalog-setting';
 import { tagChoices } from 'ui/models/stack';
 import { uniqKeys } from 'ui/utils/util';
 
@@ -168,7 +167,7 @@ const navTree = [
     id: 'cattle',
     localizedLabel: 'nav.cattle.tab',
     route: 'stacks',
-    queryParams: {which: C.EXTERNAL_ID.KIND_USER, tags: ''},
+    queryParams: {which: 'containers', tags: ''},
     ctx: [getProjectId],
     condition: function() { return this.get('hasProject') && !this.get('hasKubernetes') && !this.get('hasSwarm') && !this.get('hasMesos'); },
     submenu: getStacksSubtree,
@@ -187,7 +186,6 @@ const navTree = [
       !this.get('hasKubernetes') &&
       !this.get('hasSwarm');
     },
-    // submenu: getCatalogSubtree,
   },
 
   // Infrastructure
@@ -248,6 +246,20 @@ const navTree = [
         localizedLabel: 'nav.infra.registries',
         icon: 'icon icon-database',
         route: 'registries',
+        ctx: [getProjectId],
+      },
+      {
+        id: 'infra-keys',
+        localizedLabel: 'nav.infra.keys',
+        icon: 'icon icon-key',
+        route: 'authenticated.project.api.keys',
+        ctx: [getProjectId],
+      },
+      {
+        id: 'infra-hooks',
+        localizedLabel: 'nav.infra.hooks',
+        icon: 'icon icon-link',
+        route: 'authenticated.project.api.hooks',
         ctx: [getProjectId],
       },
     ],
@@ -312,31 +324,6 @@ const navTree = [
     ],
   },
 
-  // API
-  {
-    id: 'api',
-    localizedLabel: 'nav.api.tab',
-    icon: 'icon icon-terminal',
-    route: 'authenticated.project.api.keys',
-    ctx: [getProjectId],
-    condition: function() { return this.get('hasProject'); },
-    submenu: [
-      {
-        id: 'api-keys',
-        localizedLabel: 'nav.api.keys',
-        icon: 'icon icon-key',
-        route: 'authenticated.project.api.keys',
-        ctx: [getProjectId],
-      },
-      {
-        id: 'api-hooks',
-        localizedLabel: 'nav.api.hooks',
-        icon: 'icon icon-link',
-        route: 'authenticated.project.api.hooks',
-        ctx: [getProjectId],
-      },
-    ],
-  },
 ];
 
 export function addItem(opt) {
@@ -365,40 +352,22 @@ export function get() {
 }
 
 function getStacksSubtree() {
-  let out = [
-    {
-      id: 'cattle-all',
-      localizedLabel: 'nav.cattle.all',
-      icon: 'icon icon-globe',
-      route: 'stacks',
-      ctx: [getProjectId],
-      queryParams: {which: C.EXTERNAL_ID.KIND_ALL, tags: ''},
-    },
-    { divider: true },
-    {
-      id: 'cattle-user',
-      localizedLabel: 'nav.cattle.user',
-      icon: 'icon icon-layers',
-      route: 'stacks',
-      ctx: [getProjectId],
-      queryParams: {which: C.EXTERNAL_ID.KIND_USER, tags: ''},
-      condition: isOwner,
-    },
-    {
-      id: 'cattle-infra',
-      localizedLabel: 'nav.cattle.system',
-      icon: 'icon icon-gear',
-      route: 'stacks',
-      ctx: [getProjectId],
-      condition: isOwner,
-      queryParams: {which: C.EXTERNAL_ID.KIND_INFRA, tags: ''},
-    }
-  ];
-
   let stacks = this.get('store').all('stack');
   let choices = uniqKeys(tagChoices(stacks)).sort();
 
   if ( choices.length ) {
+    let out = [
+      {
+        id: 'cattle-all',
+        localizedLabel: 'nav.cattle.all',
+        icon: 'icon icon-globe',
+        route: 'stacks',
+        ctx: [getProjectId],
+        queryParams: {which: C.EXTERNAL_ID.KIND_ALL, tags: ''},
+      },
+      { divider: true },
+    ];
+
     out.push({divider: true});
 
     choices.forEach((choice) => {
@@ -412,8 +381,7 @@ function getStacksSubtree() {
         queryParams: {which: C.EXTERNAL_ID.KIND_ALL, tags: choice},
       });
     });
+
+    return out;
   }
-
-
-  return out;
 }
