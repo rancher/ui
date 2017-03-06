@@ -102,6 +102,15 @@ export default Ember.Controller.extend({
     },
   ],
 
+  extraSearchFields: [
+    'displayUserLabelStrings',
+    'requireAnyLabelStrings',
+  ],
+
+  extraSearchSubFields: [
+    'displayUserLabelStrings',
+  ],
+
   modeChanged: function() {
     let key = `prefs.${C.PREFS.HOST_VIEW}`;
     let cur = this.get(key);

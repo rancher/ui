@@ -28,6 +28,8 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   sortBy:            null,
   descending:        false,
   headers:           null,
+  extraSearchFields: null,
+  extraSearchSubFields: null,
   prefix:            false,
   suffix:            false,
   bulkActions:       true,
@@ -140,12 +142,14 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     }
   }),
 
-  searchFields: Ember.computed('headers.@each.{searchField,name}', function() {
-    return headersToSearchField(this.get('headers'));
+  searchFields: Ember.computed('headers.@each.{searchField,name}','extraSearchFields.[]', function() {
+    let out = headersToSearchField(this.get('headers'));
+    return out.addObjects(this.get('extraSearchFields')||[]);
   }),
 
-  subFields: Ember.computed('subHeaders.@each.{searchField,name}', function() {
-    return headersToSearchField(this.get('subHeaders'));
+  subFields: Ember.computed('subHeaders.@each.{searchField,name}','extraSearchSubFields.[]', function() {
+    let out = headersToSearchField(this.get('subHeaders'));
+    return out.addObjects(this.get('extraSearchSubFields')||[]);
   }),
 
   filtered: Ember.computed('arranged.[]','searchText', function() {
@@ -451,5 +455,5 @@ function headersToSearchField(headers) {
     }
   });
 
-  return out;
+  return out.filter(x => !!x);
 }

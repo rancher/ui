@@ -94,7 +94,7 @@ export default Ember.Service.extend({
     return ['always','never'].includes(def) === false;
   }),
 
-  showSystemContainers: Ember.computed(C.PREFS.SHOW_SYSTEM,`settings.${C.SETTING.SHOW_SYSTEM}`, function() {
+  showSystemResources: Ember.computed(C.PREFS.SHOW_SYSTEM,`settings.${C.SETTING.SHOW_SYSTEM}`, function() {
     let def = this.get(`settings.${C.SETTING.SHOW_SYSTEM}`);
     let user = this.get(C.PREFS.SHOW_SYSTEM);
 

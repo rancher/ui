@@ -275,8 +275,10 @@ var Host = Resource.extend({
            Util.strPad(success, 6, '0');
   }.property('instanceStates','instances.length'),
 
-  requireAnyLabels: function() {
-    return  ((this.get('labels')||{})[C.LABEL.REQUIRE_ANY]||'').split(/\s*,\s*/).filter((x) => x.length > 0);
+  requireAnyLabelStrings: function() {
+    return  ((this.get('labels')||{})[C.LABEL.REQUIRE_ANY]||'')
+              .split(/\s*,\s*/)
+              .filter((x) => x.length > 0 && x !== C.LABEL.SYSTEM_TYPE);
   }.property(`labels.${C.LABEL.REQUIRE_ANY}`),
 });
 

@@ -37,6 +37,10 @@ export default Ember.Controller.extend(Sortable, {
     var needTags = tagsToArray(this.get('tags'));
     var out = this.get('model.stacks');
 
+    if ( !this.get('prefs.showSystemResources') ) {
+      out = out.filterBy('system', false);
+    }
+
     if ( which === C.EXTERNAL_ID.KIND_NOT_ORCHESTRATION )
     {
       out = out.filter(function(obj) {
@@ -57,7 +61,7 @@ export default Ember.Controller.extend(Sortable, {
     return out;
 
   // state isn't really a dependency here, but sortable won't recompute when it changes otherwise
-  }.property('model.stacks.[]','model.stacks.@each.{state,grouping}','which','tags'),
+  }.property('model.stacks.[]','model.stacks.@each.{state,grouping,system}','which','tags','prefs.showSystemResources'),
 
   sortableContent: Ember.computed.alias('filteredStacks'),
   sortBy: 'name',
@@ -73,7 +77,7 @@ export default Ember.Controller.extend(Sortable, {
     if ( tags && tags.length ) {
       return 'stacksPage.header.tags';
     } else if ( which === C.EXTERNAL_ID.KIND_ALL ) {
-      return 'stacksPage.header.all';
+      return 'stacksPage.header.containers';
     } else if ( C.EXTERNAL_ID.SHOW_AS_SYSTEM.indexOf(which) >= 0 ) {
       return 'stacksPage.header.infra';
     } else if ( which.toLowerCase() === 'user') {

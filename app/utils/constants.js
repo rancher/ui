@@ -28,7 +28,7 @@ var C = {
     GROUP_SEPARATOR: ':',
     BASE_SEPARATOR: '*',
     ID_SEPARATOR: ':',
-    KIND_ALL: 'all',
+    KIND_ALL: 'containers',
     KIND_USER: KIND_USER,
     KIND_CATALOG: KIND_CATALOG,
     KIND_SYSTEM: KIND_SYSTEM,

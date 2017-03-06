@@ -22,39 +22,18 @@
     pagingLabel="pagination.host"
     subHeaders=containerHeaders
     subSearchField="instances"
+    extraSearchFields=extraSearchFields
+    extraSearchSubFields=extraSearchSubFields
     headers=headers as |sortable kind host dt|}}
     {{#if (eq kind "row")}}
-      <tr class="main-row">
-        <td width="40" class="select-for-action">
-          {{check-box nodeId=host.id}}
-        </td>
-        {{host-row
-          model=host
-          toggle=(action "toggleExpand" host.id)
-          expanded=(array-includes expandedHosts host.id)
-          subMatches=sortable.subMatches
-        }}
-      </tr>
-      <tr class="sub-row hide">{{! make the alternating color match }}</tr>
-      <tr class="sub-row {{unless (array-includes expandedHosts host.id) 'hide'}}">
-        <td colspan="{{add 1 headers.length}}" class="p-0">
-          {{#if (array-includes expandedHosts host.id)}}
-            {{container-table
-              body=host.instances
-              stickyHeader=false
-              bulkActions=true
-              search=false
-              searchText=searchText
-              subRow=true
-              showHost=false
-            }}
-          {{/if}}
-        </td>
-      </tr>
-      <tr class="sub-row hide">{{! make the alternating color match }}</tr>
-      <tr class="separator-row {{unless (array-includes expandedHosts host.id) 'hide'}}">
-        <td colspan="{{add 1 headers.length}}"></td>
-      </tr>
+      {{host-row
+        model=host
+        toggle=(action "toggleExpand" host.id)
+        expanded=(array-includes expandedHosts host.id)
+        subMatches=sortable.subMatches
+        fullColspan=(add 1 headers.length)
+        dt=dt
+      }}
     {{else if (eq kind "nomatch")}}
       <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noMatch'}}</td></tr>
     {{else if (eq kind "norows")}}
