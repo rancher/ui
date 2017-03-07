@@ -10,10 +10,15 @@ var Host = Resource.extend({
   type: 'host',
   modalService: Ember.inject.service('modal'),
   settings: Ember.inject.service(),
+  prefs: Ember.inject.service(),
 
   instances: denormalizeIdArray('instanceIds'),
   arrangedInstances: function() {
-    return this.get('instances').sortBy('isSystem','displayName');
+    let out = this.get('instances').sortBy('isSystem','displayName');
+    if ( !this.get('prefs.showSystemResources') ) {
+      out = out.filterBy('system',false);
+    }
+    return out;
   }.property('instances.@each.{isSystem,displayName}'),
 
   actions: {

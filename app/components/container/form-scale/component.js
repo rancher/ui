@@ -1,5 +1,9 @@
 import Ember from 'ember';
 
+function newMax(val, curMax, absoluteMax) {
+  return Math.min(absoluteMax, Math.max(curMax, Math.ceil(val/10)*10));
+}
+
 export default Ember.Component.extend({
   initialLabel:   null,
   initialScale:   null,
@@ -17,6 +21,7 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
     this.set('userInput', (this.get('initialScale')||1)+'');
+    this.set('sliderMax', newMax(tihs.get('asInteger'), this.get('sliderMax'), this.get('max')));
     if ( this.get('mode') !== 'container' ) {
       this.set('showAdvanced', true);
     }
@@ -44,6 +49,6 @@ export default Ember.Component.extend({
     let cur = this.get('asInteger');
     this.sendAction('setScale', cur);
 
-    this.set('sliderMax', Math.min(this.get('max'), Math.max(this.get('sliderMax'), Math.ceil(cur/10)*10)));
+    this.set('sliderMax', newMax(cur, this.get('sliderMax'), this.get('max')));
   }),
 });
