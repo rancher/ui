@@ -90,6 +90,18 @@
               {{/if}}
             </h4>
             <div class="mt-10 description">{{catalogItem.description}}</div>
+          {{else if (eq section 'footer')}}
+            {{#if (eq catalogItem.templateBase 'infra')}}
+              {{#if catalogItem.exists}}
+                <button type="button" class="btn btn-sm bg-default bg-disabled" {{action "launch" catalogItem.id true allowedKeys="meta ctrl"}}>{{t 'catalogPage.index.action.alreadyDeployed'}}</button>
+              {{else if catalogItem.supported}}
+                <button class="btn btn-sm bg-primary" {{action "launch" catalogItem.id}}>{{t 'catalogPage.index.action.launch'}}</button>
+              {{else}}
+                <button type="button" class="btn btn-sm bg-default bg-disabled" {{action "launch" catalogItem.id true allowedKeys="meta ctrl"}}>{{t 'catalogPage.index.action.notCompatible'}}</button>
+              {{/if}}
+            {{else}}
+              <button type="button" class="btn btn-sm bg-primary" {{action "launch" catalogItem.id}}>{{t 'catalogPage.index.action.launch'}}</button>
+            {{/if}}
           {{/if}}
         {{/catalog-box}}
       {{else}}
