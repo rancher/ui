@@ -82,9 +82,11 @@
     {{else}}
       {{#each pagedContent as |row|}}
         <tr class="main-row">
-          <td width="40" class="select-for-action">
-            {{check-box nodeId=row.id}}
-          </td>
+          {{#if bulkActions}}
+            <td width="40" class="select-for-action">
+              {{check-box nodeId=row.id}}
+            </td>
+          {{/if}}
           {{#if hasBlock}}
             {{yield this 'row' row dt}}
           {{else}}
