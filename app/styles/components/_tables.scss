@@ -2,172 +2,160 @@
 // Important: Almost all selectors in here need to be ">"-ed together so they
 // apply only to the current table, not one nested inside another table.
 //
-
 TABLE {
-  &.no-lines {
-    * {
-      border: none;
+    position: relative;
+    &.no-lines {
+        * {
+            border: none;
+        }
     }
-  }
-  position: relative;
-
-  &.fixed {
-    table-layout: fixed;
-    width: 100%;
-  }
-
-  .fixed-header-actions {
-    min-height: 40px;
-    width: 100%;
-    z-index: 1;
-    background: $body-bg;
-  }
-
-  .fixed-header {
-    z-index: 2;
-    background: $link-color;
-
-    > TH {
-      BUTTON {
-        padding: 0;
-      }
+    .faded {
+        opacity: .5;
     }
-  }
-
-  > THEAD .bulk-actions {
-    margin: 0 3px;
-  }
-
-  &.has-sub-rows {
-    TABLE > THEAD > .fixed-header-actions {
-      z-index: 3;
-      background-color: transparent;
+    &.fixed {
+        table-layout: fixed;
+        width: 100%;
     }
-
-    TABLE > THEAD > .fixed-header {
-      z-index: 4;
+    .fixed-header-actions {
+        min-height: 40px;
+        width: 100%;
+        z-index: 1;
+        background: $body-bg;
     }
-
-    TABLE  .bulk-actions {
-      margin: 0 18px;
+    .fixed-header {
+        z-index: 2;
+        background: $link-color;
+        > TH {
+            BUTTON {
+                padding: 0;
+            }
+        }
     }
-  }
-
-  .fixed-header-placeholder {
-    visibility: hidden;
-
-    TH {
-      padding: 0 !important;
-      height: 0 !important;
+    > THEAD .bulk-actions {
+        margin: 0 3px;
     }
-  }
-
-  > THEAD > TR > TH,
-  > TBODY > TR > TD {
-    padding: 5px;
-  }
-
-  > TBODY > TR.separator-row > TD {
-    background-color: $body-bg;
-  }
-
-  > TBODY > TR.no-bottom TD {
-    padding-bottom: 0;
-  }
-
-  > TBODY > TR.no-top TD {
-    padding-top: 0;
-  }
-//  &.has-sub-rows > TBODY {
-//    > TR.main-row > TD {
-//      padding-bottom: 0;
-//    }
-//
-//    > TR.sub-row > TD {
-//      padding-top: 0;
-//    }
-//  }
-
-  &.small {
-    > THEAD {
-      > TR > TH {
-        padding: 2px 5px;
-      }
+    &.has-sub-rows {
+        TABLE > THEAD > .fixed-header-actions {
+            z-index: 3;
+            background-color: transparent;
+        }
+        TABLE > THEAD > .fixed-header {
+            z-index: 4;
+        }
+        TABLE .bulk-actions {
+            margin: 0 18px;
+        }
     }
-
+    .fixed-header-placeholder {
+        visibility: hidden;
+        TH {
+            padding: 0 !important;
+            height: 0 !important;
+        }
+    }
+    > THEAD > TR > TH,
     > TBODY > TR > TD {
-      padding: 2px 5px;
+        padding: 5px;
     }
-  }
-
-  > THEAD > TR {
-    width: 100%;
-    box-sizing: border-box;
-    border-width: 0 0 3px 0;
-    border-color: $table-border-color;
-    border-radius: 0;
-    outline: none;
-    transition: all ease-in-out .2s;
-
-    &.fixed-header {
-      background: $link-color;
-      th .btn {
-        color: white;
-      }
+    > TBODY > TR.separator-row > TD {
+        background-color: $body-bg;
     }
-
-    > TH {
-      border-width: 0 0 3px 0;
-      border-color: $table-border-color;
-      border-radius: 0;
-      outline: none;
-      transition: all ease-in-out .3s;
-      text-align: left;
-      font-weight: normal;
+    > TBODY > TR.no-bottom TD {
+        padding-bottom: 0;
     }
-  }
-
-  &.has-sub-rows TABLE > THEAD > TR.fixed-header {
-    background: lighten($link-color, 30);
-    th .btn {
-      color: black;
+    > TBODY > TR.no-top TD {
+        padding-top: 0;
     }
-  }
-
-  > TBODY {
-    border: none;
-    background-color: $table-bg;
-
-    > TR {
-      > TD {
-        border: solid thin $table-border-color;
-      }
-
-      &.row-selected {
-        background-color: $table-bg-hover;
-      }
+    //  &.has-sub-rows > TBODY {
+    //    > TR.main-row > TD {
+    //      padding-bottom: 0;
+    //    }
+    //
+    //    > TR.sub-row > TD {
+    //      padding-top: 0;
+    //    }
+    //  }
+    &.small {
+        > THEAD {
+            > TR > TH {
+                padding: 2px 5px;
+            }
+        }
+        > TBODY > TR > TD {
+            padding: 2px 5px;
+        }
     }
-  }
-
-  &.striped > TBODY > TR {
-    > TD {
-      border: none;
+    > THEAD > TR {
+        width: 100%;
+        box-sizing: border-box;
+        border-width: 0 0 3px 0;
+        border-color: $table-border-color;
+        border-radius: 0;
+        outline: none;
+        transition: all ease-in-out .2s;
+        &.fixed-header {
+            background: $link-color;
+            th .btn {
+                color: white;
+            }
+        }
+        > TH {
+            border-width: 0 0 3px 0;
+            border-color: $table-border-color;
+            border-radius: 0;
+            outline: none;
+            transition: all ease-in-out .3s;
+            text-align: left;
+            font-weight: normal;
+        }
     }
-
-    &:nth-child(odd) {
-      background-color: $table-bg;
+    &.has-sub-rows TABLE > THEAD > TR.fixed-header {
+        background: lighten($link-color, 20);
+        th .btn {
+            color: black;
+        }
     }
-
-    &:nth-child(even) {
-      background-color: $table-bg-accent;
+    > TBODY {
+        border: none;
+        background-color: $table-bg;
+        > TR {
+            > TD {
+                border: solid thin $table-border-color;
+            }
+            &.row-selected {
+                background-color: $table-bg-hover;
+            }
+        }
     }
-
-    &.row-selected {
-      background-color: $table-bg-selected;
+    &.striped > TBODY > TR {
+        > TD {
+            border: none;
+        }
+        &:nth-child(odd) {
+            background-color: $table-bg;
+        }
+        &:nth-child(even) {
+            background-color: $table-bg-accent;
+        }
+        &.row-selected {
+            background-color: $table-bg-selected;
+        }
     }
-  }
-
-  .select-for-action {
-    text-align: center;
-  }
+    &.solid > TBODY {
+        background: $light-grey;
+        tr {
+            &:hover {
+                background-color: lighten($info, 25%);
+            }
+            td {
+                border: solid 2px white;
+                &:hover {
+                    background-color: $info;
+                }
+            }
+        }
+    }
+    .select-for-action {
+        text-align: center;
+    }
 }

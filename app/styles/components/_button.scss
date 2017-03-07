@@ -6,7 +6,8 @@ $lg-padding: 18px 30px;
 // This file contains all styles related to the button component.
 // -----------------------------------------------------------------------------
 .btn,
-button {
+button,
+[class^='btn-'] {
     display: inline-block;
     text-align: center;
     white-space: nowrap;
@@ -30,14 +31,15 @@ button {
     }
     &.has-label {
       text-align: left;
-      padding-right: 0;
+      padding: 0 0 0 15px;
+      clear: both;
 
       .btn-label {
+        @extend .pull-right;
         text-align: center;
         min-width:60px;
-        padding: 5px 15px;
-        margin-top: -5px;
-        float: right;
+        padding: 5px 10px;
+        border-radius : 0 3px 3px 0;
         background: rgba($accent-two, .3);
       }
     }
@@ -86,6 +88,10 @@ button {
 fieldset[disabled] .btn {
     @extend .bg-disabled;
     cursor: not-allowed;
+
+    &:hover {
+        background: $bg-disabled;
+    }
 }
 
 //button group

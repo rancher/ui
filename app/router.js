@@ -12,7 +12,6 @@ Router.map(function() {
   this.route('failWhale', {path: '/fail'});
   this.route('not-found', {path: '*path'});
 
-
   this.route('signup', {path: '/signup'});
   this.route('verify', {path: '/verify/:verify_token'});
   this.route('verify-reset-password', {path: '/verify-reset-password/:verify_token'});
@@ -23,6 +22,7 @@ Router.map(function() {
   this.route('logout');
   this.route('authenticated', {path: '/'}, function() {
 
+    this.route('style-guide', {path: '/style-guide'});
     this.route('dummy-dev', {path: '/dev'});
     this.route('user-settings', {path: '/user-settings', resetNamespace: true});
     // Settings
