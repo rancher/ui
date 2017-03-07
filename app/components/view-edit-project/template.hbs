@@ -64,59 +64,56 @@
   <hr/>
   <div class="well">
     {{#if (and accessEnabled showEdit)}}
-      <div class="inline-form">
+      <div class="inline-form mb-20">
         {{input-identity action="checkMember" onError="error"}}
       </div>
     {{/if}}
 
     {{#if accessEnabled}}
-      <table class="grid fixed" style="margin-bottom: 0;">
-        <thead>
-          <tr>
-            {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
-            {{sortable-th sortable=this action="changeSort" name="type" label="generic.type"}}
-            {{sortable-th sortable=this action="changeSort" name="role" label="generic.role"}}
-            {{#if showEdit}}<th width="40">&nbsp;</th>{{/if}}
-          </tr>
-        </thead>
-        <tbody>
-          {{#each arranged as |member|}}
-            <tr>
+      {{#sortable-table
+          classNames="grid fixed mb-0 sortable-table"
+          bulkActions=false
+          paging=false
+          search=false
+          sortBy=sortBy
+          headers=headers
+          body=project.projectMembers
+          as |sortable kind member|
+      }}
+        {{#if (eq kind "row")}}
+            <td>
+              {{identity-block identity=member}}
+            </td>
+            <td>{{member.displayType}}</td>
+            <td>
+              {{#if showEdit}}
+                <select class="form-control input-sm" onchange={{action (mut member.role) value="target.value"}}>
+                  {{#each roleOptions as |choice|}}
+                    <option value={{choice.value}} selected={{eq member.role choice.value}}>{{t choice.label}}</option>
+                  {{/each}}
+                </select>
+              {{else}}
+                {{uc-first member.role}}
+              {{/if}}
+            </td>
+            {{#if showEdit}}
               <td>
-                {{identity-block identity=member}}
-              </td>
-              <td>{{member.displayType}}</td>
-              <td>
-                {{#if showEdit}}
-                  <select class="form-control input-sm" onchange={{action (mut member.role) value="target.value"}}>
-                    {{#each roleOptions as |choice|}}
-                      <option value={{choice.value}} selected={{eq member.role choice.value}}>{{t choice.label}}</option>
-                    {{/each}}
-                  </select>
+                {{#if accessEnabled}}
+                  <button class="btn bg-primary btn-sm pull-right gh-action" {{action "removeMember" member}}><i class="icon icon-minus"/></button>
                 {{else}}
-                  {{uc-first member.role}}
+                  &nbsp;
                 {{/if}}
               </td>
-              {{#if showEdit}}
-                <td>
-                  {{#if accessEnabled}}
-                    <button class="btn bg-primary btn-sm pull-right gh-action" {{action "removeMember" member}}><i class="icon icon-minus"/></button>
-                  {{else}}
-                    &nbsp;
-                  {{/if}}
-                </td>
-              {{/if}}
-            </tr>
-          {{else}}
-            <tr>
-              <td colspan="3" class="text-center text-muted">
-                {{t 'viewEditProject.showEdit.noMembers'}}
-              </td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-      <hr class="m-0" />
+            {{/if}}
+        {{else if (eq kind "norows")}}
+          <tr>
+            <td colspan="{{headers.length}}" class="text-center text-muted">
+              {{t 'viewEditProject.showEdit.noMembers'}}
+            </td>
+          </tr>
+        {{/if}}
+      {{/sortable-table}}
+      <hr />
     {{else}}
       <p class="text-info text-center">
         {{format-html-message 'viewEditProject.helpBlock'}}

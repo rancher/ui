@@ -1,12 +1,32 @@
 import Ember from 'ember';
-import Sortable from 'ui/mixins/sortable';
 
-export default Ember.Controller.extend(Sortable, {
+export default Ember.Controller.extend({
   sortBy: 'address',
-  sorts: {
-    state:        ['stateSort','displayAddress','id'],
-    address:      ['displayAddress','id'],
-    username:     ['credential.publicValue','displayAddress','id'],
-    created:      ['created','id']
-  },
+  headers:  [
+    {
+      name:           'state',
+      sort:           ['stateSort','displayAddress','id'],
+      translationKey: 'registriesPage.index.table.header.state',
+      width:          '125',
+    },
+    {
+      name:           'address',
+      sort:           ['displayAddress','id'],
+      translationKey: 'registriesPage.index.table.header.address',
+    },
+    {
+      name:           'username',
+      sort:           ['credential.publicValue','displayAddress','id'],
+      translationKey: 'registriesPage.index.table.header.username',
+    },
+    {
+      name:           'created',
+      sort:           ['created','id'],
+      translationKey: 'registriesPage.index.table.header.created',
+    },
+    {
+      isActions: true,
+      width: '75',
+    },
+  ],
 });

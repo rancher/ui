@@ -1,40 +1,40 @@
-<table class="grid fixed" style="margin-bottom: 0;">
-  <thead>
+{{#sortable-table
+     classNames="grid fixed mb-0 sortable-table"
+     bulkActions=false
+     paging=false
+     search=false
+     sortBy=sortBy
+     descending=descending
+     headers=headers
+     body=model.displayEndpoints
+     as |sortable kind port|
+}}
+  {{#if (eq kind "row")}}
+    <td>{{port.ipAddress}}</td>
+    <td>{{port.port}}</td>
+    <td>
+      {{#if port.service}}
+        <i class="{{port.service.stateIcon}} {{port.service.stateColor}}" />
+        {{#link-to "service" port.service.stackId port.service.id}}{{port.service.displayName}}{{/link-to}}
+      {{else}}
+        <span class="text-muted">-</span>
+      {{/if}}
+    </td>
+    <td>
+      {{#if port.instance}}
+        <i class="{{port.instance.stateIcon}} {{port.instance.stateColor}}" />
+        {{#if (eq port.instance.kind "virtualMachine")}}
+          {{#link-to "virtualmachine" port.instance.id}}{{port.instance.displayName}}{{/link-to}}
+        {{else}}
+          {{#link-to "container" port.instance.id}}{{port.instance.displayName}}{{/link-to}}
+        {{/if}}
+      {{else}}
+        <span class="text-muted">-</span>
+      {{/if}}
+    </td>
+  {{else if (eq kind "norows")}}
     <tr>
-      {{sortable-th sortable=this action="changeSort" name="ip" label='hostsPage.hostPage.portsTab.table.header.ip'}}
-      {{sortable-th sortable=this action="changeSort" name="port" label='hostsPage.hostPage.portsTab.table.header.port'}}
-      {{sortable-th sortable=this action="changeSort" name="service" label='hostsPage.hostPage.portsTab.table.header.service'}}
-      {{sortable-th sortable=this action="changeSort" name="container" label='hostsPage.hostPage.portsTab.table.header.container'}}
+      <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'hostsPage.hostPage.portsTab.table.body.noData'}}</td>
     </tr>
-  </thead>
-  <tbody>
-    {{#each arranged as |port|}}
-      <tr>
-        <td>{{port.ipAddress}}</td>
-        <td>{{port.port}}</td>
-        <td>
-          {{#if port.service}}
-            <i class="{{port.service.stateIcon}} {{port.service.stateColor}}" />
-            {{#link-to "service" port.service.stackId port.service.id}}{{port.service.displayName}}{{/link-to}}
-          {{else}}
-            <span class="text-muted">-</span>
-          {{/if}}
-        </td>
-        <td>
-          {{#if port.instance}}
-            <i class="{{port.instance.stateIcon}} {{port.instance.stateColor}}" />
-            {{#if (eq port.instance.kind "virtualMachine")}}
-              {{#link-to "virtualmachine" port.instance.id}}{{port.instance.displayName}}{{/link-to}}
-            {{else}}
-              {{#link-to "container" port.instance.id}}{{port.instance.displayName}}{{/link-to}}
-            {{/if}}
-          {{else}}
-            <span class="text-muted">-</span>
-          {{/if}}
-        </td>
-      </tr>
-    {{else}}
-      <tr><td colspan="4" class="text-center text-muted">{{t 'hostsPage.hostPage.portsTab.table.body.noData'}}</td></tr>
-    {{/each}}
-  </tbody>
-</table>
+  {{/if}}
+{{/sortable-table}}

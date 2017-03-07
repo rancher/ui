@@ -1,15 +1,37 @@
 import Ember from 'ember';
-import Sortable from 'ui/mixins/sortable';
 
-export default Ember.Controller.extend(Sortable, {
-  sortableContent   : Ember.computed.alias('model.all'),
-  sortBy: 'name',
-  sorts: {
-    state        : ['stateSort','name','id'],
-    name         : ['name','id'],
-    server       : ['nfsConfig.server','name','id'],
-    label        : ['nfsConfig.label','name','id'],
-    mountOptions : ['nfsConfig.mountOptions','name','id'],
-  },
-
+export default Ember.Controller.extend({
+  sortBy:  'name',
+  headers: [
+    {
+      name:           'state',
+      sort:           ['stateSort','name','id'],
+      translationKey: 'generic.state',
+      width:          '125',
+    },
+    {
+      name:           'name',
+      sort:           ['name','id'],
+      translationKey: 'generic.name',
+    },
+    {
+      name:           'server',
+      sort:           ['nfsConfig.server','name','id'],
+      translationKey: 'backupTargetsPage.server.label',
+    },
+    {
+      name:           'share',
+      sort:           ['nfsConfig.label','name','id'],
+      translationKey: 'backupTargetsPage.share.label',
+    },
+    {
+      name:           'mountOptions',
+      sort:           ['nfsConfig.mountOptions','name','id'],
+      translationKey: 'backupTargetsPage.mountOptions.label',
+    },
+    {
+      noSort:         true,
+      width:          '75',
+    },
+  ],
 });

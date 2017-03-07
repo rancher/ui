@@ -7,23 +7,22 @@
 </section>
 
 <section class="instances">
-  <table class="grid fixed" style="margin-bottom: 0;">
-    <thead>
+  {{#sortable-table
+      classNames="grid fixed mb-0 sortable-table"
+      bulkActions=false
+      paging=false
+      search=false
+      sortBy=sortBy
+      headers=headers
+      body=model
+      as |sortable kind cert|
+  }}
+    {{#if (eq kind "row")}}
+      {{certificate-row model=cert}}
+    {{else if (eq kind "norows")}}
       <tr>
-        {{sortable-th sortable=this action="changeSort" name="state" label='certificatesPage.index.table.header.state' width="125"}}
-        {{sortable-th sortable=this action="changeSort" name="name" label='certificatesPage.index.table.header.name'}}
-        {{sortable-th sortable=this action="changeSort" name="cn" label='certificatesPage.index.table.header.domain'}}
-        {{sortable-th sortable=this action="changeSort" name="expires" label='certificatesPage.index.table.header.expires' width="120"}}
-        <th class="actions" width="75">&nbsp;</th>
+        <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'certificatesPage.index.table.body.noData'}}</td>
       </tr>
-    </thead>
-    <tbody>
-      {{#each arranged as |cert|}}
-        {{certificate-row model=cert}}
-      {{else}}
-        <tr><td colspan="5" class="text-center text-muted">{{t 'certificatesPage.index.table.body.noData'}}</td></tr>
-      {{/each}}
-    </tbody>
-  </table>
+    {{/if}}
+  {{/sortable-table}}
 </section>
-

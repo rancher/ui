@@ -54,18 +54,26 @@
         </th>
       {{/if}}
       {{#each headers as | header |}}
-        {{sortable-thead
-          sortable=this
-          current=sortBy
-          descending=descending
-          action="changeSort"
-          name=header.name
-          isActions=header.isActions
-          label=header.displayName
-          translationKey=header.translationKey
-          icon=header.icon
-          classNames=header.classNames
-        }}
+        {{#if header.sort}}
+          {{sortable-thead
+            sortable=this
+            current=sortBy
+            descending=descending
+            action="changeSort"
+            name=header.name
+            isActions=header.isActions
+            label=header.displayName
+            translationKey=header.translationKey
+            icon=header.icon
+            classNames=header.classNames
+          }}
+        {{else}}
+          {{#if header.translationKey}}
+            <th width="{{header.width}}" class="{{header.classNames}}"> {{t header.translationKey}} </th>
+          {{else}}
+            <th width="{{header.width}}" class="{{header.classNames}}">&nbsp;</th>
+          {{/if}}
+        {{/if}}
       {{/each}}
     </tr>
   </thead>

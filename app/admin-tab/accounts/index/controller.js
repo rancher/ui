@@ -11,19 +11,19 @@ export default Ember.Controller.extend(FilterState, {
       translationKey: 'generic.state',
       name: 'state',
       sort: ['state'],
-      width: '125px'
+      width: '125'
     },
     {
       translationKey: 'generic.id',
       name: 'id',
       sort: ['id'],
-      width: '120px'
+      width: '120'
     },
     {
       translationKey: 'accountsPage.index.table.kind',
       name: 'kind',
       sort: ['kind'],
-      width: '120px'
+      width: '120'
     },
     {
       translationKey: 'accountsPage.index.table.username',
@@ -37,7 +37,7 @@ export default Ember.Controller.extend(FilterState, {
     },
     {
       isActions: true,
-      width: '75px',
+      width: '75',
     },
   ],
 

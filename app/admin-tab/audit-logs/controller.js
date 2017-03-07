@@ -3,11 +3,10 @@ import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   application       : Ember.inject.controller(),
-  prefs: Ember.inject.service(),
+  prefs:              Ember.inject.service(),
   queryParams       : ['sortBy', 'sortOrder', 'eventType', 'resourceType', 'resourceId', 'clientIp', 'authType'],
-
   resourceTypeAndId : null,
-  modalService: Ember.inject.service('modal'),
+  modalService:       Ember.inject.service('modal'),
 
   headers: [
     {
@@ -15,7 +14,7 @@ export default Ember.Controller.extend({
       name: 'id',
       sort: ['id'],
       classNames: 'pl-10',
-      width: '115px'
+      width: '115'
     },
     {
       translationKey: 'auditLogsPage.table.eventType',
@@ -40,7 +39,7 @@ export default Ember.Controller.extend({
       name: 'accountId',
       sort: ['accountId'],
       classNames: 'pl-10',
-      width: '125px'
+      width: '125'
     },
     {
       translationKey: 'auditLogsPage.table.resourceTypeId',
@@ -53,7 +52,7 @@ export default Ember.Controller.extend({
       name: 'authenticatedAsIdentityId',
       sort: ['authenticatedAsIdentityId'],
       classNames: 'pl-10',
-      width: '175px'
+      width: '175'
     },
   ],
 

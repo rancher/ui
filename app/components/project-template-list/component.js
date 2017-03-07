@@ -1,13 +1,31 @@
 import Ember from 'ember';
-import Sortable from 'ui/mixins/sortable';
 
-export default Ember.Component.extend(Sortable, {
+export default Ember.Component.extend({
   settings: Ember.inject.service(),
-
-  sortBy: 'name',
-  sorts: {
-    state:        ['stateSort','name','id'],
-    name:         ['name','id'],
-    description:  ['description','name','id'],
-  },
+  sortBy:   'name',
+  headers:  [
+    {
+      name:           'name',
+      sort:           ['name','id'],
+      translationKey: 'generic.name',
+    },
+    {
+      name:           'description',
+      sort:           ['description','name','id'],
+      translationKey: 'generic.description',
+    },
+    {
+      translationKey: 'projectList.indexTemplate.table.header.stacks',
+      noSort:         true,
+    },
+    {
+      translationKey: 'projectList.indexTemplate.table.header.isPublic',
+      noSort:         true,
+      width:          '80',
+    },
+    {
+      isActions: true,
+      width: '75',
+    },
+  ],
 });

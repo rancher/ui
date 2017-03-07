@@ -1,17 +1,19 @@
-<table class="grid fixed" style="margin-bottom: 0;">
-  <thead>
+{{#sortable-table
+     classNames="grid fixed mb-0 sortable-table"
+     bulkActions=false
+     paging=false
+     search=false
+     sortBy=sortBy
+     descending=descending
+     headers=headers
+     body=nonRootVolumes
+     as |sortable kind volume|
+}}
+  {{#if (eq kind "row")}}
+    {{volume-row model=volume}}
+  {{else if (eq kind "norows")}}
     <tr>
-      {{sortable-th sortable=this action="changeSort" name="state" label='hostsPage.hostPage.storageTab.table.header.state' width="125"}}
-      {{sortable-th sortable=this action="changeSort" name="hostPath" label='hostsPage.hostPage.storageTab.table.header.hostPath'}}
-      <th> {{t 'hostsPage.hostPage.storageTab.table.header.mounts'}}</th>
-      <th class="actions" width="75">&nbsp;</th>
+      <td colspan="{{header.length}}" class="text-center text-muted">{{t 'hostsPage.hostPage.storageTab.table.body.noData'}}</td>
     </tr>
-  </thead>
-  <tbody>
-    {{#each arranged as |volume|}}
-      {{volume-row model=volume}}
-    {{else}}
-      <tr><td colspan="4" class="text-center text-muted">{{t 'hostsPage.hostPage.storageTab.table.body.noData'}}</td></tr>
-    {{/each}}
-  </tbody>
-</table>
+  {{/if}}
+{{/sortable-table}}

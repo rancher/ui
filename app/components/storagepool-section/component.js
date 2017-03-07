@@ -12,6 +12,27 @@ export default Ember.Component.extend(Sortable, {
     name:   ['displayName','id'],
     mounts: ['mounts.length','displayName','id'],
   },
+  headers:  [
+    {
+      name:           'state',
+      sort:           ['state','displayName','id'],
+      translationKey: 'generic.state',
+      width:          '115',
+    },
+    {
+      name:           'name',
+      sort:           ['displayName','id'],
+      translationKey: 'storagePoolSection.models.table.header.volumeName',
+      width:          '350',
+    },
+    {
+      translationKey: 'storagePoolSection.models.table.header.mounts',
+    },
+    {
+      isActions:      true,
+      width:          '75',
+    },
+  ],
 
 
   init: function() {

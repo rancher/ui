@@ -11,14 +11,13 @@
     classNames="lacsso grid sortable-table"
     bulkActions=false
     paging=false
+    fullRows=true
     search=false
     sortBy=sortBy
     headers=headers
     body=filteredByKind
-    as |row kind|
+    as |sortable kind row dt|
   }}
-    {{log 'row' row}}
-    {{log 'kind' kind}}
     {{#if (eq kind "row")}}
       {{account-row model=row isLocal=isLocal}}
     {{else if (eq kind "norows")}}
