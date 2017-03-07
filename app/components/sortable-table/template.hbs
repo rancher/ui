@@ -54,7 +54,7 @@
         </th>
       {{/if}}
       {{#each headers as | header |}}
-        {{#unless header.noSort}}
+        {{#if header.sort}}
           {{sortable-thead
             sortable=this
             current=sortBy
@@ -73,7 +73,7 @@
           {{else}}
             <th width="{{header.width}}" class="{{header.classNames}}">&nbsp;</th>
           {{/if}}
-        {{/unless}}
+        {{/if}}
       {{/each}}
     </tr>
   </thead>

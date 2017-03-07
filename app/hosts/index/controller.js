@@ -53,7 +53,7 @@ export default Ember.Controller.extend({
       sort: ['stateSort','displayName'],
       searchField: 'displayState',
       translationKey: 'hostsPage.index.table.state',
-      width: '120px'
+      width: '120'
     },
     {
       name: 'name',
@@ -66,39 +66,39 @@ export default Ember.Controller.extend({
       sort: ['displayIp','displayName'],
       searchField: 'displayIp',
       translationKey: 'hostsPage.index.table.ip',
-      width: '160px',
+      width: '160',
     },
     {
       name: 'memory',
       sort: ['memory','displayName'],
       searchField: 'memoryBlurb',
-      width: '80px',
+      width: '80',
       icon: 'icon icon-lg icon-memory',
     },
     {
       name: 'docker',
       sort: ['dockerEngineVersion','displayName'],
       searchField: 'dockerEngineVersion',
-      width: '75px',
+      width: '125',
       icon: 'icon icon-lg icon-docker',
     },
     {
       name: 'instanceCount',
       sort: ['instances.length:desc','displayName'],
       searchField: null,
-      width: '80px',
+      width: '80',
       icon: 'icon icon-lg icon-container',
     },
     {
       name: 'instanceState',
       sort: ['instanceCountSort:desc','displayName'],
       searchField: null,
-      width: '150px',
+      width: '150',
       translationKey: 'hostsPage.index.table.instanceState',
     },
     {
       isActions: true,
-      width: '40px',
+      width: '40',
     },
   ],
 

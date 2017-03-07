@@ -23,15 +23,12 @@ export default Ember.Controller.extend({
     },
     {
       translationKey: 'hookPage.fields.detail.label',
-      noSort: true,
     },
     {
       translationKey: 'hookPage.fields.url.label',
-      noSort: true,
       width: '100'
     },
     {
-      noSort: true,
       width: '75'
     },
   ],
