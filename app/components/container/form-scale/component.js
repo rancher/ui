@@ -21,7 +21,7 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
     this.set('userInput', (this.get('initialScale')||1)+'');
-    this.set('sliderMax', newMax(tihs.get('asInteger'), this.get('sliderMax'), this.get('max')));
+    this.set('sliderMax', newMax(this.get('asInteger'), this.get('sliderMax'), this.get('max')));
     if ( this.get('mode') !== 'container' ) {
       this.set('showAdvanced', true);
     }
