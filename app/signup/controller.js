@@ -15,7 +15,7 @@ export default Ember.Controller.extend({
     });
   },
   actions: {
-    register: function(cb) {
+    register: function() {
       this.set('saving', true);
 
       fetch('/register-new', {
@@ -27,11 +27,9 @@ export default Ember.Controller.extend({
       }).then(() => {
         this.set('saving', false);
         this.set('emailSent', true);
-        cb(true);
       }).catch((err) => {
         this.set('saving', false);
         this.set('errors', [err.body.detail]);
-        cb(false);
       });
     },
     cancel: function() {
