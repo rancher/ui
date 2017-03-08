@@ -314,7 +314,7 @@ var Service = Resource.extend({
   displayDetail: function() {
     let translation = this.get('intl').findTranslationByKey('generic.image');
     translation = this.get('intl').formatMessage(translation);
-      return ('<label>'+ translation +': </label><span>' + (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'') + '</span>').htmlSafe();
+      return ('<span class="text-muted">'+ translation +': </span><span>' + (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'') + '</span>').htmlSafe();
   }.property('launchConfig.imageUuid', 'intl._locale'),
 
 
@@ -377,7 +377,7 @@ var Service = Resource.extend({
     {
       let out = this.get('intl').findTranslationByKey('generic.ports');
       out = this.get('intl').formatMessage(out);
-      return ('<label>'+out+': </label>' + pub).htmlSafe();
+      return ('<span class="text-muted">'+out+': </span>' + pub).htmlSafe();
     }
     else
     {
