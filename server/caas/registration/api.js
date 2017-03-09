@@ -93,20 +93,27 @@ module.exports = function(app/*, options*/) {
               url: `${rancherApiUrl}/passwords`,
               method: 'POST',
               body: credential
-            }, function(/*credentialModel*/) {
-              removeUserFromTable(user.email, function(err) {
-                if ( err ) {
-                  return generateError('db', err, res);
+            }, function(credentialModel) {
+              isPasswordActive(credentialModel.accountId, function(passwordActive) {
+                if (passwordActive) {
+                  removeUserFromTable(user.email, function(err) {
+                    if ( err ) {
+                      return generateError('db', err, res);
+                    }
+
+                    getTokenForLogin(user.email, user.pw, function(err, token, serverResponse) {
+                      if (err) {
+                        return res.status(serverResponse.status).send(token);
+                      }
+
+                      res.cookie('token', token.jwt, {secure: req.secure}).status(200).send({type: 'success'});
+                    });
+                  });
+                } else {
+                  return generateError('account', 'Account never became active', res);
                 }
-
-                getTokenForLogin(user.email, user.pw, function(err, token, serverResponse) {
-                  if (err) {
-                    return res.status(serverResponse.status).send(token);
-                  }
-
-                  res.cookie('token', token.jwt, {secure: req.secure}).status(200).send({type: 'success'});
-                });
               });
+
             }, res);
           } else {
             return generateError('account', 'Account never became active', res);
@@ -392,12 +399,49 @@ module.exports = function(app/*, options*/) {
     }, null);
   }
 
+  function isPasswordActive(accountId, cb) {
+    var count = 30;
+    var id = accountId;
+
+    function getPasswordStatus() {
+      setTimeout(function(){
+        count--;
+        if (count > 0) {
+          newRequest({
+            url: `${rancherApiUrl}/passwords?accountId=${id}`,
+            method: 'GET',
+          }, function(body, response) {
+            if (body && body.data && body.data.length) {
+              var okay = true;
+              body.data.forEach((pw) => {
+                if (pw.state !== 'active') {
+                  okay = false;
+                }
+              });
+              if (okay) {
+                return cb(true);
+              } else {
+                getPasswordStatus();
+              }
+            } else {
+              return cb(false);
+            }
+          }, null);
+        } else {
+          return cb(false);
+        }
+      }, 1000);
+    }
+
+    getPasswordStatus();
+  }
+
   function isAccountActive(model, cb) {
 
     var selfLink = model.links.self;
     var count = 30;
 
-    function getStatus() {
+    function getAccountStatus() {
       setTimeout(function(){
         count--;
         if (count > 0) {
@@ -409,7 +453,7 @@ module.exports = function(app/*, options*/) {
               if (body.state === 'active') {
                 return cb(true);
               } else {
-                getStatus();
+                getAccountStatus();
               }
             }
           }, null);
@@ -418,6 +462,8 @@ module.exports = function(app/*, options*/) {
         }
       }, 1000);
     }
-    getStatus();
+
+
+    getAccountStatus();
   }
 };
