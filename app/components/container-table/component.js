@@ -6,7 +6,7 @@ export const headersWithHost =  [
     searchField: 'displayState',
     sort: ['stateSort','name','id'],
     translationKey: 'containersPage.index.table.header.state',
-    width: '120px'
+    width: 120
   },
   {
     name: 'name',
@@ -16,7 +16,7 @@ export const headersWithHost =  [
   {
     name: 'displayIp',
     sort: ['displayIp','name','id'],
-    width: '110px',
+    width: 110,
     translationKey: 'containersPage.index.table.header.ip',
   },
   {
@@ -38,7 +38,7 @@ export const headersWithHost =  [
   },
   {
     isActions: true,
-    width: '40px',
+    width: 30,
   },
 ];
 

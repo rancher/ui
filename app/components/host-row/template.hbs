@@ -2,11 +2,13 @@
   <td class="select-for-action">
     {{check-box nodeId=model.id}}
   </td>
+  <td>
+    <i role="button" {{action "toggle"}} class="icon icon-play eased {{if expanded 'icon-rotate-90'}}"></i>
+  </td>
   <td data-title="{{dt.stateSort}}" class="state">
     {{badge-state model=model}}
   </td>
   <td data-title="{{dt.name}}" class="clip">
-    <i role="button" {{action "toggle"}} class="icon {{if expanded 'icon-minus-square' 'icon-plus-square'}}"></i>
     <a href="{{href-to "host" model.id}}">{{model.displayName}}</a>
   </td>
   <td data-title="{{dt.ip}}">
@@ -43,8 +45,8 @@
 {{#if showLabelRow}}
   <tr class="sub-row hide">{{! make the alternating color match }}</tr>
   <tr class="sub-row no-top">
-    <td>{{! actions}}</td>
-    <td colspan="{{sub fullColspan 1}}" class="pr-20">
+    <td colspan="2">{{! checkbox and expand}}</td>
+    <td colspan="{{sub fullColspan 3}}">
       {{#each model.displayUserLabelStrings as |label|}}
         <span class="tag-xs bg-info">{{label}}</span>
       {{/each}}
@@ -52,13 +54,15 @@
         <span class="tag-xs bg-warning">{{label}}</span>
       {{/each}}
     </td>
+    <td>{{! actions}}</td>
   </tr>
 {{/if}}
 
 {{#if expanded}}
   <tr class="sub-row hide">{{! make the alternating color match }}</tr>
   <tr class="sub-row no-top">
-    <td colspan="{{fullColspan}}" class="pr-40 pl-40">
+    <td colspan="2">{{! checkbox and expand}}</td>
+    <td colspan="{{sub fullColspan 3}}">
       {{container-table
         body=model.instances
         stickyHeader=false
@@ -69,6 +73,7 @@
         showHost=false
       }}
     </td>
+    <td>{{! actions}}</td>
   </tr>
 
   <tr class="sub-row hide">{{! make the alternating color match }}</tr>
