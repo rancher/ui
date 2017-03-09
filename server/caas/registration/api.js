@@ -14,7 +14,7 @@ module.exports = function(app/*, options*/) {
   const rancherApiUrl = `${config.apiServer}${config.apiEndpoint}`;
   const tablePrefix = process.env.DB_TABLE_PREFIX || '';
 
-  const baseUrl = process.env.BASE_URL || ('https://' + process.env.RANCHER);
+  const siteUrl = process.env.SITE_URL || ('https://' + process.env.RANCHER);
 
   app.use(bodyParser.json()); // for parsing application/json
 
@@ -313,7 +313,7 @@ module.exports = function(app/*, options*/) {
         var from_email = new helper.Email('no-reply@rancher.com');
         var to_email = new helper.Email(email);
         var subject = 'Password Reset Request';
-        var contentLink = `<html><a href="${baseUrl}/verify-reset-password/${token}">Reset Password</a></html>`;
+        var contentLink = `<html><a href="${siteUrl}/verify-reset-password/${token}">Reset Password</a></html>`;
         var content = new helper.Content(
           'text/html', contentLink);
         var mail = new helper.Mail(from_email, subject, to_email, content);
@@ -344,7 +344,7 @@ module.exports = function(app/*, options*/) {
       var from_email = new helper.Email('no-reply@rancher.com');
       var to_email = new helper.Email(email);
       var subject = 'Verify your Rancher Cloud Account';
-      var contentLink = `<html><a href="${baseUrl}/verify/${token}">Verify Email</a></html>`;
+      var contentLink = `<html><a href="${siteUrl}/verify/${token}">Verify Email</a></html>`;
       var content = new helper.Content(
         'text/html', contentLink);
       var mail = new helper.Mail(from_email, subject, to_email, content);
@@ -370,7 +370,7 @@ module.exports = function(app/*, options*/) {
       var from_email = new helper.Email('no-reply@rancher.com');
       var to_email = new helper.Email(email);
       var subject = 'Password Reset Confirmation';
-      var contentLink = `<html><a href="${baseUrl}/login?resetpw=true">Reset Password</a></html>`;
+      var contentLink = `<html><a href="${siteUrl}/login?resetpw=true">Reset Password</a></html>`;
       var content = new helper.Content(
         'text/html', contentLink);
       var mail = new helper.Mail(from_email, subject, to_email, content);
