@@ -1,6 +1,10 @@
 <form {{action "authenticate" on="submit"}} class="text-left">
   <div class="inline-form">
-    <label>{{t 'loginUserPass.userLabel'}}</label>
+    {{#if isCaas}}
+      <label>{{t 'loginUserPass.caasLabel'}}</label>
+    {{else}}
+      <label>{{t 'loginUserPass.userLabel'}}</label>
+    {{/if}}
     <div>
       {{input type="text" class="form-control login-user" value=username placeholder=(t 'loginUserPass.userPlaceholder')}}
     </div>

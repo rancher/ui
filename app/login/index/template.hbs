@@ -1,10 +1,11 @@
+<span class="text-info">{{access.provider}}</span>
 {{#authorize-user}}
   <h1>
     {{format-html-message 'loginPage.greeting' appName=settings.appName}}
     <div class="logo"></div>
   </h1>
   <section class="pb-0">
-    {{language-dropdown login=true class='mt-10 mb-10'}}
+    {{language-dropdown login=true class='mt-10'}}
     <br/>
     {{#unless promptPasswordReset}}
       {{#if isGithub}}
@@ -36,6 +37,5 @@
     {{#if isCaas}}
       {{caas-login promptReset=(mut promptPasswordReset) errMsg=(mut errorMsg)}}
     {{/if}}
-    <span style="color: white">{{access.provider}}</span>
   </section>
 {{/authorize-user}}

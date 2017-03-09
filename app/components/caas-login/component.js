@@ -2,7 +2,7 @@ import Ember from 'ember';
 import fetch from 'ember-api-store/utils/fetch';
 
 export default Ember.Component.extend({
-  classNames: ['caas-login', 'text-center'],
+  classNames: ['caas-login', 'text-left'],
   showReset: Ember.computed.alias('promptReset'),
   userEmail: null,
   passwordResetSent: false,
