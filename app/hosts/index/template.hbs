@@ -10,6 +10,11 @@
       {{#link-to "hosts" (query-params mode="grouped") classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-layeredgroup" text=(t 'hostsPage.index.tooltip.groupedView') options=groupLinkOptions}}{{/link-to}}
     </div>
 
+    {{#if app.isCaas}}
+      {{#link-to "hosts.cloud-new" classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
+    {{else}}
+      {{#link-to "hosts.new" classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
+    {{/if}}
   </div>
 </section>
 
