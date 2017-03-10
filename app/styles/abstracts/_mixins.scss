@@ -168,3 +168,36 @@
   &::-moz-placeholder { @content; }
   &::-webkit-input-placeholder { @content; }
 }
+
+//table mixins 
+@mixin solid {
+          background: $light-grey;
+    tr {
+        &:hover {
+            background-color: lighten($info, 25%);
+        }
+        td {
+            border: solid 2px white;
+            &:hover {
+                background-color: $info;
+            }
+        }
+    }  
+}
+
+@mixin striped {
+  > TBODY > TR {
+        > TD {
+            border: none;
+        }
+        &:nth-child(odd) {
+            background-color: $table-bg;
+        }
+        &:nth-child(even) {
+            background-color: $table-bg-accent;
+        }
+        &.row-selected {
+            background-color: $table-bg-selected;
+        }
+    }
+  }

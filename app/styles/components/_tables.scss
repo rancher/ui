@@ -35,6 +35,11 @@ TABLE {
         margin: 0 3px;
     }
     &.has-sub-rows {
+        TABLE {
+            > TBODY {
+                @include solid;
+            }
+        }
         TABLE > THEAD > .fixed-header-actions {
             z-index: 3;
             background-color: transparent;
@@ -124,33 +129,11 @@ TABLE {
             }
         }
     }
-    &.striped > TBODY > TR {
-        > TD {
-            border: none;
-        }
-        &:nth-child(odd) {
-            background-color: $table-bg;
-        }
-        &:nth-child(even) {
-            background-color: $table-bg-accent;
-        }
-        &.row-selected {
-            background-color: $table-bg-selected;
-        }
+    &.striped {
+        @include striped;
     }
     &.solid > TBODY {
-        background: $light-grey;
-        tr {
-            &:hover {
-                background-color: lighten($info, 25%);
-            }
-            td {
-                border: solid 2px white;
-                &:hover {
-                    background-color: $info;
-                }
-            }
-        }
+        @include solid;
     }
     .select-for-action {
         text-align: center;
