@@ -324,8 +324,8 @@ export default Ember.Component.extend(Driver, {
   getFlavors: function() {
     return this.apiRequest({
       method: 'GET',
-      endpoint: 'flavors',
-      version: 'v2',
+      endpoint: 'cloudservers/flavors',
+      version: 'v1',
       queryParams: ''
     }).then((resp) => {
       return this.set('flavors', resp.flavors.sortBy('name'));
