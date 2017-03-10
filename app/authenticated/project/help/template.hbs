@@ -3,16 +3,16 @@
 </section>
 
 {{#if (and settings.isRancher latestAnnouncement (not modelError))}}
-  <div class="alert alert-info alert-header ml-20 mr-20 mt-10">
-    <span class="banner-head">{{t 'helpPage.banner'}}</span>
-    {{#if modelResolved}}
-      <span class="banner-content">
-          <span><strong>Latest: </strong><a href="{{latestAnnouncement.link}}" target="_blank">{{latestAnnouncement.title}}</a></span>
-          <span><strong>{{t 'helpPage.releaseText'}} </strong>{{format-relative latestAnnouncement.created interval=C.LANGUAGE.FORMAT_RELATIVE_TIMEOUT}}</span>
-      </span>
+  <div class="banner bg-info">
+    <div class="banner-icon p-20"><i class="icon icon-info"></i></div>
+    <div class="banner-message p-20">
+      {{#if modelResolved}}
+        {{t 'helpPage.banner' released=(format-relative latestAnnouncement.created interval=C.LANGUAGE.FORMAT_RELATIVE_TIMEOUT)}}
+        <a href="{{latestAnnouncement.link}}" target="_blank">{{latestAnnouncement.title}}</a>
       {{else}}
-        <div class="loading text-center"></div>
-    {{/if}}
+        <i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}
+      {{/if}}
+    </div>
   </div>
 {{/if}}
 

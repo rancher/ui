@@ -2,12 +2,15 @@
   <button class="btn bg-transparent">
     {{#if hasBlock}}
       {{yield}}
-    {{else if translationKey}}
-      {{t translationKey}}
-    {{else if icon}}
-      <i class="{{icon}}"></i>
     {{else}}
-      {{label}}
+      {{#if icon}}
+        <i class="{{icon}}"></i>
+      {{/if}}
+      {{#if translationKey}}
+        {{t translationKey}}
+      {{else if label}}
+        {{label}}
+      {{/if}}
     {{/if}}
     <span class="icon-stack">
       <i class="icon icon-sort icon-stack-1x faded"></i>

@@ -21,6 +21,7 @@ const ALLOWED = {
   'graphite.host': {description: 'Graphite: Server hostname or IP (change requires restart)'},
   'graphite.options': {description: 'Graphite: Additional options'},
   'graphite.port': {description: 'Graphite: Server port', kind: 'int'},
+  'host.remove.delay.seconds': {description: 'Automatically remove hosts that are disconnected for more than this long (seconds)', kind: 'int'},
   'lb.instance.image': {description: 'Default docker image for Load Balancer Services'},
   'main_tables.purge.after.seconds': {description: 'Auto-purge deleted entries from most tables after this long (seconds)', kind: 'int'},
   'newest.docker.version': {description: 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported.docker.range but is newer than this will be marked as untested'},

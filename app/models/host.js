@@ -14,12 +14,12 @@ var Host = Resource.extend({
 
   instances: denormalizeIdArray('instanceIds'),
   arrangedInstances: function() {
-    let out = this.get('instances').sortBy('isSystem','displayName');
+    let out = this.get('instances').sortBy('system','displayName');
     if ( !this.get('prefs.showSystemResources') ) {
-      out = out.filterBy('system',false);
+      out = out.filterBy('isSystem',false);
     }
     return out;
-  }.property('instances.@each.{isSystem,displayName}'),
+  }.property('instances.@each.{isSystem,displayName}','prefs.showSystemResources'),
 
   actions: {
     activate: function() {
@@ -243,7 +243,7 @@ var Host = Resource.extend({
     let byName = [];
     let byColor = [];
 
-    this.get('instances').sortBy('stateSort').forEach((inst) => {
+    this.get('arrangedInstances').sortBy('stateSort').forEach((inst) => {
       let color = inst.get('stateBackground');
       let state = inst.get('displayState');
       let entry = byName.findBy('state', state);
@@ -267,18 +267,18 @@ var Host = Resource.extend({
       byName: byName,
       byColor: byColor
     };
-  }.property('instances.@each.state'),
+  }.property('arrangedInstances.@each.state'),
 
   instanceCountSort: function() {
     let colors = this.get('instanceStates.byColor');
     let success = (colors.findBy('bg-success')||{}).count;
     let error = (colors.findBy('bg-error')||{}).count;
-    let other = this.get('instances.length') - success - error;
+    let other = this.get('arrangedInstances.length') - success - error;
 
     return Util.strPad(error,   6, '0') +
            Util.strPad(other,   6, '0') +
            Util.strPad(success, 6, '0');
-  }.property('instanceStates','instances.length'),
+  }.property('instanceStates','arrangedInstances.length'),
 
   requireAnyLabelStrings: function() {
     return  ((this.get('labels')||{})[C.LABEL.REQUIRE_ANY]||'')

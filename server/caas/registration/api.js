@@ -14,6 +14,8 @@ module.exports = function(app/*, options*/) {
   const rancherApiUrl = `${config.apiServer}${config.apiEndpoint}`;
   const tablePrefix = process.env.DB_TABLE_PREFIX || '';
 
+  const siteUrl = process.env.SITE_URL || ('https://' + process.env.RANCHER);
+
   app.use(bodyParser.json()); // for parsing application/json
 
   var pool = mysql.createPool({
@@ -33,7 +35,7 @@ module.exports = function(app/*, options*/) {
             return generateError('auth', err, res);
           }
 
-          sendVerificationEmail(req.body.email, req.body.name, req.headers.origin, token, function(err) {
+          sendVerificationEmail(req.body.email, req.body.name, token, function(err) {
             if (err) {
               return generateError('email', err, res);
             }
@@ -158,7 +160,7 @@ module.exports = function(app/*, options*/) {
             return generateError('token', err, res);
           }
 
-          sendPasswordReset(req.body.email, body.name, req.headers.origin, token, function(err) {
+          sendPasswordReset(req.body.email, body.name, token, function(err) {
             if (err) {
               return generateError('email', err, res);
             }
@@ -202,7 +204,7 @@ module.exports = function(app/*, options*/) {
                 return res.status(serverResponse.status).send(body);
               }
 
-              sendPasswordVerificationEmail(credential.email, credential.name, req.headers.origin, function(err) {
+              sendPasswordVerificationEmail(credential.email, credential.name, function(err) {
                 if (err) {
                   return generateError('email', err, res);
                 }
@@ -305,13 +307,13 @@ module.exports = function(app/*, options*/) {
     });
   }
 
-  function sendPasswordReset(email, name, host, token, cb) {
+  function sendPasswordReset(email, name, token, cb) {
     fetchSendGridApiDetails('ui.sendgrid.template.password_reset', function(response) {
       if (response) {
         var from_email = new helper.Email('no-reply@rancher.com');
         var to_email = new helper.Email(email);
         var subject = 'Password Reset Request';
-        var contentLink = `<html><a href="${host}/verify-reset-password/${token}">Reset Password</a></html>`;
+        var contentLink = `<html><a href="${siteUrl}/verify-reset-password/${token}">Reset Password</a></html>`;
         var content = new helper.Content(
           'text/html', contentLink);
         var mail = new helper.Mail(from_email, subject, to_email, content);
@@ -333,7 +335,7 @@ module.exports = function(app/*, options*/) {
     });
   }
 
-  function sendVerificationEmail(email, name, host, token, cb) {
+  function sendVerificationEmail(email, name, token, cb) {
     fetchSendGridApiDetails('ui.sendgrid.template.create_user', function(response) {
       if (!response) {
         return cb('There was a problem retrieving the email api key or email template id.', null);
@@ -342,7 +344,7 @@ module.exports = function(app/*, options*/) {
       var from_email = new helper.Email('no-reply@rancher.com');
       var to_email = new helper.Email(email);
       var subject = 'Verify your Rancher Cloud Account';
-      var contentLink = `<html><a href="${host}/verify/${token}">Verify Email</a></html>`;
+      var contentLink = `<html><a href="${siteUrl}/verify/${token}">Verify Email</a></html>`;
       var content = new helper.Content(
         'text/html', contentLink);
       var mail = new helper.Mail(from_email, subject, to_email, content);
@@ -359,7 +361,7 @@ module.exports = function(app/*, options*/) {
     });
   }
 
-  function sendPasswordVerificationEmail(email, name, host, cb) {
+  function sendPasswordVerificationEmail(email, name, cb) {
     fetchSendGridApiDetails('ui.sendgrid.template.verify_password', function(response) {
       if (!response) {
         return cb('There was a problem retrieving the email api key or email template id.', null);
@@ -368,7 +370,7 @@ module.exports = function(app/*, options*/) {
       var from_email = new helper.Email('no-reply@rancher.com');
       var to_email = new helper.Email(email);
       var subject = 'Password Reset Confirmation';
-      var contentLink = `<html><a href="${host}/login?resetpw=true">Reset Password</a></html>`;
+      var contentLink = `<html><a href="${siteUrl}/login?resetpw=true">Reset Password</a></html>`;
       var content = new helper.Content(
         'text/html', contentLink);
       var mail = new helper.Mail(from_email, subject, to_email, content);
