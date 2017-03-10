@@ -8,7 +8,6 @@ export default Ember.Component.extend(StrippedName, {
   groupHasChildren: false,
 
   classNames: ['subpod','instance'],
-  classNameBindings: ['model.isManaged:managed'],
 
   stateBackground: function() {
     return 'bg-'+this.get('model.stateColor').substr(5);

@@ -1,8 +1,8 @@
 <tr class="main-row {{if (or expanded showLabelRow) 'no-bottom'}}">
-  <td class="select-for-action">
+  <td class="select-for-action" rowspan={{if showLabelRow 2 1}}>
     {{check-box nodeId=model.id}}
   </td>
-  <td>
+  <td rowspan={{if showLabelRow 2 1}}>
     <i role="button" {{action "toggle"}} class="icon icon-play eased {{if expanded 'icon-rotate-90'}}"></i>
   </td>
   <td data-title="{{dt.stateSort}}" class="state">
@@ -45,7 +45,6 @@
 {{#if showLabelRow}}
   <tr class="sub-row hide">{{! make the alternating color match }}</tr>
   <tr class="sub-row no-top">
-    <td colspan="2">{{! checkbox and expand}}</td>
     <td colspan="{{sub fullColspan 3}}">
       {{#each model.displayUserLabelStrings as |label|}}
         <span class="tag-xs bg-info">{{label}}</span>
@@ -58,26 +57,28 @@
   </tr>
 {{/if}}
 
-{{#if expanded}}
   <tr class="sub-row hide">{{! make the alternating color match }}</tr>
-  <tr class="sub-row no-top">
+  <tr class="sub-row {{unless expanded 'hide'}}">
     <td colspan="2">{{! checkbox and expand}}</td>
     <td colspan="{{sub fullColspan 3}}">
-      {{container-table
-        body=model.instances
-        stickyHeader=false
-        bulkActions=false
-        search=false
-        searchText=searchText
-        subRow=true
-        showHost=false
-      }}
+      {{#liquid-if expanded}}
+        {{container-table
+          body=model.instances
+          stickyHeader=false
+          bulkActions=false
+          search=false
+          searchText=searchText
+          subRow=true
+          showHost=false
+        }}
+      {{/liquid-if}}
     </td>
     <td>{{! actions}}</td>
   </tr>
 
-  <tr class="sub-row hide">{{! make the alternating color match }}</tr>
-  <tr class="separator-row">
-    <td colspan="{{fullColspan}}"></td>
-  </tr>
-{{/if}}
+  {{#if expanded}}
+    <tr class="sub-row hide">{{! make the alternating color match }}</tr>
+    <tr class="separator-row">
+      <td colspan="{{fullColspan}}"></td>
+    </tr>
+  {{/if}}
