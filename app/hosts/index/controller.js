@@ -79,14 +79,14 @@ export default Ember.Controller.extend({
       sort: ['memory','displayName'],
       searchField: 'memoryBlurb',
       width: 80,
-      icon: 'icon icon-lg icon-memory',
+      translationKey: 'hostsPage.index.table.memory',
     },
     {
       name: 'docker',
       sort: ['dockerEngineVersion','displayName'],
       searchField: 'dockerEngineVersion',
-      width: 125,
-      icon: 'icon icon-lg icon-docker',
+      width: 110,
+      translationKey: 'hostsPage.index.table.docker',
     },
     {
       name: 'instanceCount',

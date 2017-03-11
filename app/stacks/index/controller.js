@@ -9,28 +9,8 @@ export default Ember.Controller.extend(Sortable, {
   prefs: Ember.inject.service(),
   intl: Ember.inject.service(),
 
-  infraTemplates: Ember.computed.alias('stacksController.infraTemplates'),
   which: Ember.computed.alias('stacksController.which'),
   tags: Ember.computed.alias('stacksController.tags'),
-  showAddtlInfo: false,
-  selectedService: null,
-
-  actions: {
-    showAddtlInfo(service) {
-      this.set('selectedService', service);
-      this.set('showAddtlInfo', true);
-    },
-
-    dismiss() {
-      this.set('showAddtlInfo', false);
-      this.set('selectedService', null);
-    },
-
-    sortResults(name) {
-      this.get('prefs').set(C.PREFS.SORT_STACKS_BY, name);
-      this.send('setSort', name);
-    },
-  },
 
   filteredStacks: function() {
     var which = this.get('which');
@@ -61,7 +41,21 @@ export default Ember.Controller.extend(Sortable, {
     return out;
 
   // state isn't really a dependency here, but sortable won't recompute when it changes otherwise
-  }.property('model.stacks.[]','model.stacks.@each.{state,grouping,system}','which','tags','prefs.showSystemResources'),
+  }.property('model.stacks.@each.{state,grouping,system}','which','tags','prefs.showSystemResources'),
+
+  simpleMode: function() {
+    if ( this.get('which') !== C.EXTERNAL_ID.KIND_ALL ) {
+      return false;
+    }
+
+    let all = this.get('model.stacks');
+    if ( all.get('length') > 1 ) {
+      return false;
+    }
+
+    let stack = all.objectAt(0);
+    return (stack.get('name')||'').toLowerCase() === 'default';
+  }.property('which','model.stacks.@each.name'),
 
   sortableContent: Ember.computed.alias('filteredStacks'),
   sortBy: 'name',
