@@ -176,17 +176,30 @@
             border: none;
         }
             background-color: $table-bg;
-            border: $table-border-color solid 2px;
+            border: $table-border-color solid 1px;
         &.row-selected {
             background-color: $table-bg-selected;
+        }
+        &.no-bottom {
+          border-bottom: none;
+        }
+        &.sub-row {
+          border-top: none;
+        }
+
+        &.separator-row {
+          border: none;
         }
     }
 }
 
 @mixin solid {
     
-    > TBODY > TR {
-      background-color: darken($table-bg, 5%);
+    > TBODY {
+      background: $table-bg;
+      > TR {
+        background-color: darken($table-bg, 5%);
+      }
     }
 
     > tr {
