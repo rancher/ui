@@ -4,7 +4,7 @@ import { isAlternate } from 'ui/utils/platform';
 export default Ember.Component.extend({
   model           : null,
   size            : 'xs',
-  showPrimary     : true,
+  showPrimary     : false,
   inTooltip       : false,
 
   resourceActions : Ember.inject.service('resource-actions'),

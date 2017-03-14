@@ -9,7 +9,6 @@ export default Ember.Route.extend({
     if (isExiting)
     {
       controller.setProperties({
-        showServiceInfo: false,
         selectedService: null,
       });
     }

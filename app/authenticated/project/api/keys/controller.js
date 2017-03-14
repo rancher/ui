@@ -47,16 +47,17 @@ export default Ember.Controller.extend(Sortable, {
       name:           'publicValue',
       sort:           ['publicValue','id'],
       width:          '',
+      translationKey: 'apiPage.table.publicValue',
     },
     {
       name:           'created',
       sort:           ['created','name','id'],
       translationKey: 'apiPage.table.created',
-      width:          '',
+      width:          130,
     },
     {
       isActions: true,
-      width: '75',
+      width: 30,
     },
   ],
 

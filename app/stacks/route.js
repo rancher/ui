@@ -16,7 +16,7 @@ export default Ember.Route.extend({
         this.get('projects.current.orchestrationState.hasMesos') ) {
       controller.set('which', C.EXTERNAL_ID.KIND_INFRA);
     } else {
-      controller.set('which', C.EXTERNAL_ID.KIND_USER);
+      controller.set('which', C.EXTERNAL_ID.KIND_ALL);
     }
   },
 });

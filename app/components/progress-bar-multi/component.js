@@ -43,7 +43,10 @@ export default Ember.Component.extend({
       });
 
       if ( !max ) {
-        max = out.map((x) => x.value).reduce((a,b) => a+b) || 100;
+        max = 100;
+        if ( out.length ) {
+          max = out.map((x) => x.value).reduce((a,b) => a+b);
+        }
       }
 
       let sum = 0;

@@ -5,8 +5,9 @@ import { formatMib, formatSi } from 'ui/utils/util';
 import C from 'ui/utils/constants';
 import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 import { satisfies, compare } from 'ui/utils/parse-version';
+import InstanceStateCount from 'ui/mixins/instance-state-count';
 
-var Host = Resource.extend({
+var Host = Resource.extend(InstanceStateCount,{
   type: 'host',
   modalService: Ember.inject.service('modal'),
   settings: Ember.inject.service(),
@@ -238,47 +239,6 @@ var Host = Resource.extend({
       return endpoint;
     });
   }.property('publicEndpoints.@each.{ipAddress,port,serviceId,instanceId}'),
-
-  instanceStates: function() {
-    let byName = [];
-    let byColor = [];
-
-    this.get('arrangedInstances').sortBy('stateSort').forEach((inst) => {
-      let color = inst.get('stateBackground');
-      let state = inst.get('displayState');
-      let entry = byName.findBy('state', state);
-      if ( entry ) {
-        entry.count++;
-      } else {
-        entry = {state: state, color: color, count: 1};
-        byName.push(entry);
-      }
-
-      entry = byColor.findBy('color', color);
-      if ( entry ) {
-        entry.count++;
-      } else {
-        entry = {color: color, count: 1};
-        byColor.push(entry);
-      }
-    });
-
-    return {
-      byName: byName,
-      byColor: byColor
-    };
-  }.property('arrangedInstances.@each.state'),
-
-  instanceCountSort: function() {
-    let colors = this.get('instanceStates.byColor');
-    let success = (colors.findBy('bg-success')||{}).count;
-    let error = (colors.findBy('bg-error')||{}).count;
-    let other = this.get('arrangedInstances.length') - success - error;
-
-    return Util.strPad(error,   6, '0') +
-           Util.strPad(other,   6, '0') +
-           Util.strPad(success, 6, '0');
-  }.property('instanceStates','arrangedInstances.length'),
 
   requireAnyLabelStrings: function() {
     return  ((this.get('labels')||{})[C.LABEL.REQUIRE_ANY]||'')

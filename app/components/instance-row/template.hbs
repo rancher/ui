@@ -3,7 +3,7 @@
     {{check-box nodeId=model.id}}
   </td>
   <td rowspan={{if showLabelRow 2 1}}>
-    <i role="button" {{action "toggle"}} class="icon icon-play eased text-small text-muted {{if expanded 'icon-rotate-90'}}"></i>
+    {{#if canExpand}}<i role="button" {{action "toggle"}} class="icon icon-play eased {{if expanded 'icon-rotate-90'}}"></i>{{/if}}
   </td>
   <td data-title="{{dt.state}}" class="state">
     {{badge-state model=model}}
@@ -12,33 +12,40 @@
     <a href="{{href-to "host" model.id}}">{{model.displayName}}</a>
   </td>
   <td data-title="{{dt.ip}}">
-    {{#copy-to-clipboard clipboardText=model.displayIp size="small"}}
-      {{format-ip model.displayIp}}
-    {{/copy-to-clipboard}}
+    {{model.displayPorts}}
   </td>
-  <td data-title="{{dt.memory}}">
-    {{model.memoryBlurb}}
-  </td>
-  <td data-title="{{dt.docker}}">
-    {{model.dockerEngineVersion}}
+  <td data-title="{{dt.image}}">
+    {{model.displayImage}}
   </td>
   <td data-title="{{dt.instanceCount}}">
     {{#if subMatches}}
-      <b>{{get subMatches model.id}}/{{model.arrangedInstances.length}}</b>
+      {{#if (lt (get submatches model.id) model.instances.length)}}
+        <b>{{get subMatches model.id}}/{{model.instances.length}}</b>
+      {{else}}
+        <b>{{model.instances.length}}</b>
+      {{/if}}
     {{else}}
-      {{model.arrangedInstances.length}}
+      {{model.instances.length}}
     {{/if}}
   </td>
   <td data-title="{{dt.instanceState}}">
-    {{progress-bar-multi
-      labelKey="state"
-      valueKey="count"
-      values=model.instanceStates.byColor
-      tooltipValues=model.instanceStates.byName
-    }}
+    {{#if canExpand}}
+      {{#if model.instances.length}}
+        {{progress-bar-multi
+          labelKey="state"
+          valueKey="count"
+          values=model.instanceStates.byColor
+          tooltipValues=model.instanceStates.byName
+        }}
+      {{else}}
+        <span class="text-muted">{{t 'generic.na'}}</span>
+      {{/if}}
+    {{else}}
+      <span class="text-muted">{{t 'stacksPage.table.standalone'}}</span>
+    {{/if}}
   </td>
   <td data-title="{{dt.actions}}" class="actions">
-    {{action-menu model=model showPrimary=false}}
+    {{action-menu model=model}}
   </td>
 </tr>
 
@@ -49,14 +56,12 @@
       {{#each model.displayUserLabelStrings as |label|}}
         <span class="tag-xs bg-info">{{label}}</span>
       {{/each}}
-      {{#each model.requireAnyLabelStrings as |label|}}
-        <span class="tag-xs bg-warning">{{label}}</span>
-      {{/each}}
     </td>
     <td>{{! actions}}</td>
   </tr>
 {{/if}}
 
+{{#if canExpand}}
   <tr class="sub-row hide">{{! make the alternating color match }}</tr>
   <tr class="sub-row {{unless expanded 'hide'}}">
     <td colspan="2">{{! checkbox and expand}}</td>
@@ -69,7 +74,7 @@
           search=false
           searchText=searchText
           subRow=true
-          showHost=false
+          showHost=true
         }}
       {{/liquid-if}}
     </td>
@@ -82,3 +87,4 @@
       <td colspan="{{fullColspan}}"></td>
     </tr>
   {{/if}}
+{{/if}}

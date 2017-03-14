@@ -94,7 +94,7 @@ apiPage:
   actionButton: Add Environment API Key
   content: |
     Environment API keys are tied to this specific Environment (<code>{displayName}</code>) and can only manipulate resources within there.  Other accounts with access to this Environment can also manage these keys.
-  currentEndpoint: 'Endpoint (v2-beta):'
+  currentEndpoint: 'Endpoint:'
   legacyEndpoint: 'Endpoint (v1):'
   table:
     state: State
@@ -113,7 +113,7 @@ apiPage:
       paragraph1: Account API Keys are tied to your specific account
       paragraph2: "and can create, delete, and manipulate all Environments which you have access to."
     table:
-      noData: "You don't have any Account API keys yet."
+      noData: There are no keys for this Account yet.
 
 auditLogsPage:
   header: Audit Logs
@@ -451,7 +451,6 @@ certificatesPage:
 
 containersPage:
   table:
-    ipAddress: IP Address
     primaryHost: Primary Host
     primaryHostUnknown: Unknown
     image: Image
@@ -646,12 +645,12 @@ hostsPage:
     columns:
       emptyMessage: No hosts or containers yet.
     table:
-      state: State
-      name: Name
-      ip: IP Address
       host: Host
+      memory: RAM
       docker: Docker
-      instanceState: States
+      instanceCount: Container Count
+      instanceState: Container States
+      instanceStateWithIcon: States
       noData: You do not have any hosts yet
       noMatch: No hosts match the current search
   new:
@@ -974,15 +973,18 @@ signupPage:
 
 stacksPage:
   header:
+    addContainer: Add Container
+    uploadCompose: Upload compose.yml
     containers: Containers
     volumes: Volumes
-    balancers: Load balancers
-  actionButton: Add Stack
-  catalogButton: Add from Catalog
-  sort:
-    label: Sort By
-    state: State
-    name: Name
+    balancers: Balancers
+    dns: DNS
+  table:
+    standalone: Standalone
+    endpoints: Endpoints
+    instanceCount: Container Count
+    instanceState: Container States
+    instanceStateWithIcon: States
   tags:
     all: All Tags
     one: 'Tag: {name}'
@@ -3148,7 +3150,7 @@ pagination:
   container: |
     {pages, plural,
     =0 {No Containers}
-    =1 {{count} {count, plural, =1 {Containers} other {Containers}}}
+    =1 {{count} {count, plural, =1 {Container} other {Containers}}}
     other {{from} - {to} of {count} Containers}}
 
 pageHeaderEnvironment:
@@ -3530,14 +3532,6 @@ nav:
     themeLight: Light
     themeAuto: Auto
     themeDark: Dark
-  noHosts:
-    prefix: "Before adding your first service or launching a container, you'll need to add a Linux host with a <a href=\"{docsBase}/hosts/#supported-docker-versions\" target=\"_blank\">supported version</a> of Docker.  "
-    link: "Add a host"
-    suffix: ""
-  noHostsWindows:
-    prefix: "Before adding your first service or launching a container, you'll need to add a Windows host.  "
-    link: "Add a host"
-    suffix: ""
   userSettings:
     link: "User Settings"
 

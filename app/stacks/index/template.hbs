@@ -1,40 +1,69 @@
-<section class="header clearfix">
+<section class="header has-tabs clearfix">
   <h1>
     {{t pageHeader name=which tags=tags}}
   </h1>
 
-  <div class="pull-right">
-    <label class="text-muted pr-5" style="font-size: 13px;">{{t 'stacksPage.sort.label'}}: </label>
-    <div class="btn-group pr-0" role="group" aria-label="{{t 'stacksPage.sort.label'}}">
-      <button {{action 'sortResults' 'state'}} type="button" class="btn btn-sm bg-default {{if (eq sortBy "state") 'active'}}">{{t 'stacksPage.sort.state'}}</button>
-      <button {{action 'sortResults' 'name'}}  type="button" class="btn btn-sm bg-default {{if (eq sortBy "name") 'active'}}">{{t 'stacksPage.sort.name'}}</button>
-    </div>
+  <ul class="tab-nav">
+    <li><a>Volumes</a></li>
+    <li><a>Balancers</a></li>
+    <li><a>DNS</a></li>
+    <li><a>Volumes</a></li>
+  </ul>
 
-    {{#if (eq which "infra")}}
-      {{#link-to "catalog-tab" projects.current.id (query-params catalogId="all" templateBase="infra") classNames="btn btn-sm bg-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
-    {{else}}
-      {{#link-to "stacks.new" classNames="btn btn-sm bg-primary"}}{{t 'stacksPage.actionButton'}}{{/link-to}}
-      {{#if arranged.length}}
-        {{#link-to "catalog-tab" projects.current.id (query-params catalogId="all") classNames="btn btn-sm bg-primary"}}{{t 'stacksPage.catalogButton'}}{{/link-to}}
-      {{/if}}
-    {{/if}}
+  <div class="right-buttons">
+    {{#link-to "service.new" projects.current.id class="btn btn-sm bg-primary pull-right"}}{{t 'stacksPage.header.addContainer'}}{{/link-to}}
+    {{#link-to "stacks.new" classNames="btn btn-sm bg-primary pull-right mr-20"}}{{t 'stacksPage.header.uploadCompose'}}{{/link-to}}
   </div>
 </section>
 
 <section class="stacks-wrap pl-0 pr-0">
-  <div>
-    {{#each arranged as |stack|}}
-      {{stack-section model=stack showAddtlInfo='showAddtlInfo' showAddService=(not stack.system)}}
-    {{else}}
-      {{#if (and model.stacks.length tags)}}
-        <div class="m-20 text-center text-muted">{{t 'stacksPage.noMatch'}}</div>
-      {{else if (eq which "infra")}}
-        <div class="m-20 text-center text-muted">{{t 'stacksPage.noInfra'}}</div>
-      {{else}}
-        {{hero-add-service}}
+  {{#if combinedInstances.length}}
+    {{#sortable-table
+      classNames="grid sortable-table"
+      body=combinedInstances
+      searchText=searchText
+      sortBy=sortBy
+      bulkActions=true
+      subRows=true
+      fullRows=true
+      groupByKey=(if simpleMode null "stack.id")
+      groupByRef="stack"
+      pagingLabel="pagination.container"
+      subHeaders=containerHeaders
+      subSearchField="instances"
+      headers=headers as |sortable kind inst dt|}}
+      {{#if (eq kind "group")}}
+        <tr class="group-row">
+          <td colspan={{sub headers.length 1}}>Stack: {{inst.ref.displayName}}</td>
+          <td data-title="{{dt.instanceState}}">
+            {{progress-bar-multi
+              labelKey="state"
+              valueKey="count"
+              values=inst.ref.instanceStates.byColor
+              tooltipValues=inst.ref.instanceStates.byName
+            }}
+          </td>
+          <td data-title="{{dt.actions}}" class="actions">
+            {{action-menu model=inst.ref}}
+          </td>
+        </tr>
+      {{else if (eq kind "row")}}
+        {{instance-row
+          model=inst
+          toggle=(action "toggleExpand" inst.id)
+          expanded=(array-includes expandedInstances inst.id)
+          searchText=searchText
+          subMatches=sortable.subMatches
+          fullColspan=(add 1 headers.length)
+          dt=dt
+        }}
+      {{else if (eq kind "nomatch")}}
+        <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.index.table.noMatch'}}</td></tr>
+      {{else if (eq kind "norows")}}
+        <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.index.table.noData'}}</td></tr>
       {{/if}}
-    {{/each}}
-  </div>
+    {{/sortable-table}}
+  {{else}}
+    <h1>You should add a container...</h1>
+  {{/if}}
 </section>
-
-{{service-addtl-info service=selectedService dismiss='dismiss' show=showAddtlInfo}}
