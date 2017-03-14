@@ -8,10 +8,16 @@
   {{#if model.description}}{{model.description}}{{else}}<span class="text-muted">{{t 'apiPage.table.noDescription'}}</span>{{/if}}
 </td>
 <td data-title="{{t 'apiPage.table.publicValue'}}:">
-  {{#if model.publicValue}}{{model.publicValue}}{{else}}<span class="text-muted">{{t 'apiPage.table.noPublicValue'}}</span>{{/if}}
+  {{#if model.publicValue}}
+    {{#copy-to-clipboard clipboardText=model.publicValue size="small"}}
+      {{model.publicValue}}
+    {{/copy-to-clipboard}}
+  {{else}}
+    <span class="text-muted">{{t 'apiPage.table.noPublicValue'}}</span>
+  {{/if}}
 </td>
 <td data-title="{{t 'apiPage.table.created'}}:">
-  <div class="text-muted">{{date-calendar model.created}}</div>
+  {{date-calendar model.created}}
 </td>
 <td data-title="{{t 'generic.actions'}}:" class="actions">
   {{action-menu model=model}}

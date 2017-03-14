@@ -62,13 +62,8 @@ var LoadBalancerService = Service.extend({
 
   displayPorts: function() {
     var sslPorts = this.get('sslPorts');
+    var pieces = [];
 
-    var internal = '';
-    (this.get('launchConfig.expose')||[]).forEach((portSpec, idx) => {
-      internal += '<span>' + (idx === 0 ? '' : ', ') + esc(portToStr(portSpec)) + '</span>';
-    });
-
-    var pub = '';
     var fqdn = this.get('fqdn');
     let ports = (this.get('launchConfig.ports')||[]);
     ports.forEach((portSpec, idx) => {
@@ -77,52 +72,24 @@ var LoadBalancerService = Service.extend({
       if ( endpoints )
       {
         var url = Util.constructUrl((sslPorts.indexOf(portNum) >= 0), fqdn||endpoints[0], portNum);
-        pub += '<span>' +
-        '<a href="'+ url +'" target="_blank">' +
+        pieces.push('<span>' +
+        '<a href="'+ url +'" target="_blank" rel="nofollow noopener">' +
         esc(portToStr(portSpec)) +
         '</a>' + (idx+1 === ports.length ? '' : ', ') +
-        '</span>';
+        '</span>');
       }
       else
       {
-        pub += '<span>' + (idx === 0 ? '' : ', ') + esc(portToStr(portSpec)) + '</span>';
+        pieces.push('<span>' + (idx === 0 ? '' : ', ') + esc(portToStr(portSpec)) + '</span>');
       }
     });
 
-    let intl = this.get('intl');
-    let portsTranslation = intl.t('generic.ports');
-    let internalTranslation = intl.t('generic.internal');
+    (this.get('launchConfig.expose')||[]).forEach((portSpec, idx) => {
+      pieces.push('<span>' + (idx === 0 ? '' : ', ') + esc(portToStr(portSpec)) + '</span>');
+    });
 
-    var out = (pub      ? ' <label>'+portsTranslation+': </label>'   + pub : '') +
-              (internal ? '<label>'+internalTranslation+': </label>' + internal : '');
-
-    return out.htmlSafe();
+    return pieces.join(', ').htmlSafe();
   }.property('launchConfig.ports.[]','launchConfig.expose.[]','endpointsMap', 'intl._locale'),
-
-  displayDetail: function() {
-    var services = (this.get('lbConfig.portRules')||[]).map((rule) => {
-      if ( rule.get('selector') ) {
-        return rule.get('selector');
-      } else {
-
-        let out = '';
-        if ( rule.get('service.stackId') !== this.get('stackId') ) {
-          out += esc(rule.get('service.displayStack'))+'/';
-        }
-
-        return out + esc(rule.get('service.displayName'));
-      }
-    }).uniq();
-
-    services.sort();
-
-    let str = '<span>' + services.join('</span><span>') + '</span>';
-
-    let intl = this.get('intl');
-    var out = '<label>'+ intl.t('generic.to')+': </label>' + str;
-
-    return out.htmlSafe();
-  }.property('lbConfig.portRules.@each.{service,selector}', 'intl._locale'),
 
   imageUpgradeAvailable: function() {
     let cur = (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'');

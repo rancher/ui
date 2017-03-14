@@ -3,7 +3,6 @@ import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   application       : Ember.inject.controller(),
-  prefs:              Ember.inject.service(),
   queryParams       : ['sortBy', 'sortOrder', 'eventType', 'resourceType', 'resourceId', 'clientIp', 'authType'],
   resourceTypeAndId : null,
   modalService:       Ember.inject.service('modal'),

@@ -2,7 +2,7 @@
   <thead>
     <tr class="fixed-header-placeholder">
       {{#if bulkActions}}
-        <th width="30"></th>
+        <th width="20"></th>
       {{/if}}
       {{#each headers as |header idx|}}
         <th width={{if header.width header.width}}></th>
@@ -71,23 +71,40 @@
           {{#if header.translationKey}}
             <th width="{{header.width}}" class="{{header.classNames}}"> {{t header.translationKey}} </th>
           {{else}}
-            <th width="{{header.width}}" class="{{header.classNames}}">&nbsp;</th>
+            <th width="{{header.width}}" class="{{header.classNames}}">{{header.label}}</th>
           {{/if}}
         {{/if}}
       {{/each}}
     </tr>
   </thead>
-  <tbody>
-    {{#if prefix}}
+  {{#if prefix}}
+    <tbody>
       {{yield this 'prefix'}}
-    {{/if}}
-    {{#if fullRows}}
-      {{#each pagedContent as |row|}}
+    </tbody>
+  {{/if}}
+
+  {{#if groupByKey}}
+    {{! Note: Grouping requires fullRows}}
+    {{#each groupedContent as |group|}}
+      <tbody class="group">
+        {{yield this 'group' group}}
+        {{#each group.items as |row|}}
+          {{yield this 'row' row dt (array-includes childFilterNodes row.id)}}
+        {{/each}}
+      </tbody>
+    {{/each}}
+  {{else if fullRows}}
+    {{#each pagedContent as |row|}}
+      <tbody>
         {{yield this 'row' row dt (array-includes childFilterNodes row.id)}}
-      {{else}}
-        {{yield this (if arranged.length 'nomatch' 'norows')}}
-      {{/each}}
+      </tbody>
     {{else}}
+      <tbody>
+        {{yield this (if arranged.length 'nomatch' 'norows')}}
+      </tbody>
+    {{/each}}
+  {{else}}
+    <tbody>
       {{#each pagedContent as |row|}}
         <tr class="main-row">
           {{#if bulkActions}}
@@ -111,11 +128,14 @@
           {{yield this (if arranged.length 'nomatch' 'norows')}}
         {{/if}}
       {{/each}}
-    {{/if}}
-    {{#if suffix}}
+    </tbody>
+  {{/if}}
+
+  {{#if suffix}}
+    <tbody>
       {{yield this 'suffix'}}
-    {{/if}}
-  </tbody>
+    </tbody>
+  {{/if}}
 </table>
 {{#if (and paging filtered.length)}}
   {{page-numbers content=pagedContent class="text-center mt-10 mb-10 no-select" indexTo=indexTo indexFrom=indexFrom totalCount=filtered.length textLabel=pagingLabel}}

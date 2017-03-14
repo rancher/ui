@@ -55,24 +55,24 @@ export default Ember.Controller.extend({
       width: 30
     },
     {
-      name: 'stateSort',
+      name: 'state',
       sort: ['stateSort','displayName'],
       searchField: 'displayState',
-      translationKey: 'hostsPage.index.table.state',
+      translationKey: 'generic.state',
       width: 120
     },
     {
       name: 'name',
       sort: ['displayName','id'],
       searchField: 'displayName',
-      translationKey: 'hostsPage.index.table.name',
+      translationKey: 'generic.name',
     },
     {
       name: 'ip',
       sort: ['displayIp','displayName'],
       searchField: 'displayIp',
-      translationKey: 'hostsPage.index.table.ip',
-      width: 160,
+      translationKey: 'generic.ipAddress',
+      width: 130,
     },
     {
       name: 'memory',
@@ -85,7 +85,7 @@ export default Ember.Controller.extend({
       name: 'docker',
       sort: ['dockerEngineVersion','displayName'],
       searchField: 'dockerEngineVersion',
-      width: 110,
+      width: 90,
       translationKey: 'hostsPage.index.table.docker',
     },
     {
@@ -94,6 +94,7 @@ export default Ember.Controller.extend({
       searchField: null,
       width: 80,
       icon: 'icon icon-lg icon-container',
+      dtTranslationKey: 'hostsPage.index.table.instanceCount'
     },
     {
       name: 'instanceState',
@@ -101,7 +102,8 @@ export default Ember.Controller.extend({
       searchField: null,
       width: 100,
       icon: 'icon icon-lg icon-container',
-      translationKey: 'hostsPage.index.table.instanceState',
+      dtTranslationKey: 'hostsPage.index.table.instanceState',
+      translationKey: 'hostsPage.index.table.instanceStateWithIcon',
     },
     {
       isActions: true,

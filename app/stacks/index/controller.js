@@ -1,9 +1,9 @@
 import Ember from 'ember';
-import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
 import { tagsToArray } from 'ui/models/stack';
+import { headersWithHost as containerHeaders } from 'ui/components/container-table/component';
 
-export default Ember.Controller.extend(Sortable, {
+export default Ember.Controller.extend({
   stacksController: Ember.inject.controller('stacks'),
   projects: Ember.inject.service(),
   prefs: Ember.inject.service(),
@@ -11,6 +11,81 @@ export default Ember.Controller.extend(Sortable, {
 
   which: Ember.computed.alias('stacksController.which'),
   tags: Ember.computed.alias('stacksController.tags'),
+  sortBy: 'name',
+
+  expandedInstances: null,
+
+  init() {
+    this._super(...arguments);
+    this.set('expandedInstances',[]);
+  },
+
+  actions: {
+    toggleExpand(instId) {
+      let list = this.get('expandedInstances');
+      if ( list.includes(instId) ) {
+        list.removeObject(instId);
+      } else {
+        list.addObject(instId);
+      }
+    },
+  },
+
+  containerHeaders: containerHeaders,
+  headers: [
+    {
+      name: 'expand',
+      sort: false,
+      searchField: null,
+      width: 30
+    },
+    {
+      name: 'state',
+      sort: ['stack.isDefault:desc','stack.displayName','stateSort','displayName'],
+      searchField: 'displayState',
+      translationKey: 'generic.state',
+      width: 120
+    },
+    {
+      name: 'name',
+      sort: ['stack.isDefault:desc','stack.displayName','displayName','id'],
+      searchField: 'displayName',
+      translationKey: 'generic.name',
+    },
+    {
+      name: 'endpoints',
+      sort: null,
+      searchField: 'endpointPorts',
+      translationKey: 'stacksPage.table.endpoints',
+    },
+    {
+      name: 'image',
+      sort: ['stack.isDefault:desc','stack.displayName','displayImage','displayName'],
+      searchField: 'displayImage',
+      translationKey: 'generic.image',
+    },
+    {
+      name: 'instanceCount',
+      sort: ['stack.isDefault:desc','stack.displayName','instanceCount:desc','displayName'],
+      searchField: null,
+      width: 80,
+      icon: 'icon icon-lg icon-container',
+      dtTranslationKey: 'stacksPage.table.instanceCount'
+    },
+    {
+      name: 'instanceState',
+      sort: ['stack.isDefault:desc','stack.displayName', 'instanceCountSort:desc','displayName'],
+      searchField: null,
+      width: 100,
+      icon: 'icon icon-lg icon-container',
+      dtTranslationKey: 'stacksPage.table.instanceState',
+      translationKey: 'stacksPage.table.instanceStateWithIcon',
+    },
+    {
+      isActions: true,
+      width: 30,
+    },
+  ],
 
   filteredStacks: function() {
     var which = this.get('which');
@@ -40,29 +115,34 @@ export default Ember.Controller.extend(Sortable, {
 
     return out;
 
-  // state isn't really a dependency here, but sortable won't recompute when it changes otherwise
-  }.property('model.stacks.@each.{state,grouping,system}','which','tags','prefs.showSystemResources'),
+  }.property('model.stacks.@each.{grouping,system}','which','tags','prefs.showSystemResources'),
+
+  combinedInstances: function() {
+    let out = [];
+    this.get('filteredStacks').forEach((stack) => {
+      out.pushObjects(stack.get('services').filterBy('isReal', true));
+    });
+
+    return out;
+  }.property('filteredStacks.@each.services'),
 
   simpleMode: function() {
     if ( this.get('which') !== C.EXTERNAL_ID.KIND_ALL ) {
       return false;
     }
 
-    let all = this.get('model.stacks');
+    let all = this.get('filteredStacks');
     if ( all.get('length') > 1 ) {
       return false;
     }
 
     let stack = all.objectAt(0);
-    return (stack.get('name')||'').toLowerCase() === 'default';
-  }.property('which','model.stacks.@each.name'),
+    if ( stack.get('isDefault') ) {
+      return true;
+    }
 
-  sortableContent: Ember.computed.alias('filteredStacks'),
-  sortBy: 'name',
-  sorts: {
-    state: ['stateSort','name','id'],
-    name: ['name','id']
-  },
+    return false;
+  }.property('which','filteredStacks.@each.name'),
 
   pageHeader: function() {
     let which = this.get('which');

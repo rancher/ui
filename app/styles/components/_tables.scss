@@ -9,19 +9,19 @@ TABLE {
             border: none;
         }
     }
-    .faded {
-        opacity: .5;
-    }
+
     &.fixed {
         table-layout: fixed;
         width: 100%;
     }
+
     .fixed-header-actions {
         min-height: 40px;
         width: 100%;
         z-index: 1;
         background: $body-bg;
     }
+
     .fixed-header {
         z-index: 2;
         background: $link-color;
@@ -31,9 +31,23 @@ TABLE {
             }
         }
     }
+
+    .fixed-header-placeholder {
+        visibility: hidden;
+        TH {
+            padding: 0 !important;
+            height: 0 !important;
+        }
+    }
+
+    .select-for-action {
+        text-align: center;
+    }
+
     > THEAD .bulk-actions {
         margin: 0 3px;
     }
+
     &.has-sub-rows {
         TABLE {
             > TBODY {
@@ -51,35 +65,28 @@ TABLE {
             margin: 0 18px;
         }
     }
-    .fixed-header-placeholder {
-        visibility: hidden;
-        TH {
-            padding: 0 !important;
-            height: 0 !important;
-        }
-    }
+
     > THEAD > TR > TH,
     > TBODY > TR > TD {
         padding: 5px;
     }
+
     > TBODY > TR.separator-row > TD {
         background-color: $body-bg;
     }
+
+    > TBODY > TR.group-row > TD {
+        background-color: #ddd; /* @TODO lvuch */
+    }
+
     > TBODY > TR.no-bottom > TD {
         padding-bottom: 0;
     }
+
     > TBODY > TR.no-top > TD {
         padding-top: 0;
     }
-    //  &.has-sub-rows > TBODY {
-    //    > TR.main-row > TD {
-    //      padding-bottom: 0;
-    //    }
-    //
-    //    > TR.sub-row > TD {
-    //      padding-top: 0;
-    //    }
-    //  }
+
     &.small {
         > THEAD {
             > TR > TH {
@@ -90,6 +97,7 @@ TABLE {
             padding: 2px 5px;
         }
     }
+
     > THEAD > TR {
         width: 100%;
         box-sizing: border-box;
@@ -133,21 +141,20 @@ TABLE {
             }
         }
     }
+
     &.basic-table {
         @include basic-table;
-    }
-    &.basic-table {
+
         table {
             @include solid;
         }
     }
+
     &.striped {
         @include striped;
     }
+
     &.solid {
         @include solid;
-    }
-    .select-for-action {
-        text-align: center;
     }
 }

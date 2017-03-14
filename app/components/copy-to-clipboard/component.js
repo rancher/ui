@@ -13,6 +13,7 @@ export default Ember.Component.extend({
   buttonText       : null,
   tooltipText      : null,
   status           : null,
+  icon             : null,
   size             : null,
   target           : null,
   clipboardText    : null,

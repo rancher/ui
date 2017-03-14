@@ -22,9 +22,12 @@ function matches(fields, token, item) {
 
 export default Ember.Component.extend(Sortable, StickyHeader, {
   prefs: Ember.inject.service(),
+  intl: Ember.inject.service(),
   bulkActionHandler: Ember.inject.service(),
 
   body:              null,
+  groupByKey:        null,
+  groupByRef:        null,
   sortBy:            null,
   descending:        false,
   headers:           null,
@@ -72,6 +75,28 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
 
       });
     });
+
+    this.set('groupedContent', Ember.computed(`pagedContent.@each.${this.get('groupByKey')}`, () => {
+      let ary = [];
+      let map = {};
+
+      let groupKey = this.get('groupByKey');
+      let refKey = this.get('groupByRef');
+      this.get('pagedContent').forEach((obj) => {
+        let group = obj.get(groupKey)||'';
+        let ref = obj.get(refKey);
+        let entry = map[group];
+        if ( entry ) {
+          entry.items.push(obj);
+        } else {
+          entry = {group: group, ref: ref, items: [obj]};
+          map[group] = entry;
+          ary.push(entry);
+        }
+      });
+
+      return ary;
+    }));
   },
 
   actions: {
@@ -110,18 +135,25 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
 
   // -----
   // Table content
-  // Flow: body [-> sortableContent] -> arranged -> filtered -> pagedContent
+  // Flow: body [-> sortableContent] -> arranged -> filtered -> pagedContent [-> groupedContent]
   // -----
   sortableContent: Ember.computed.alias('body'),
   pagedContent: pagedArray('filtered', {pageBinding:  "page", perPageBinding:  "perPage"}),
 
   // For data-title properties on <td>s
-  dt: Ember.computed('headers.@each.{name,displayName}', function() {
+  dt: Ember.computed('headers.@each.{name,label,translationKey}','intl._locale', function() {
+    let intl = this.get('intl');
     let out = {};
     this.get('headers').forEach((header) => {
-      let name = get(header,'name');
-      if ( name ) {
-        out[name] = get(header, 'displayName') + ': ';
+      let name = get(header, 'name');
+      let dtKey = get(header,'dtTranslationKey');
+      let key = get(header,'translationKey');
+      if ( dtKey ) {
+        out[name] = intl.t(dtKey) + ': ';
+      } else if ( key ) {
+        out[name] = intl.t(key) + ': ';
+      } else {
+        out[name] = (get(header, 'label') || name) + ': ';
       }
     });
 
