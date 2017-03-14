@@ -13,8 +13,8 @@ export default Ember.Controller.extend({
   costSort:    20,
   sortBy:      'provider',
   actions: {
-    selectMachine() {
-      console.log('selected');
+    selectMachine(id) {
+      this.transitionToRoute('hosts.container-cloud.add', id);
     }
   },
   headers:     [
@@ -60,7 +60,7 @@ export default Ember.Controller.extend({
     },
   ],
   tabObserve: Ember.observer('tab', function() {
-    this.transitionToRoute('hosts.cloud-new', {queryParams: {from: this.get('tab')}});
+    this.transitionToRoute('hosts.container-cloud', {queryParams: {from: this.get('tab')}});
   }),
   filteredContent: Ember.computed('model.plans', 'realmSort', 'costSort', 'storageSort', 'memSort', function() {
     var rs = this.get('realmSort');
