@@ -1,415 +1,547 @@
 var CLOUD_PLANS = {
-  "logicalRegions" : [
+  "realmNames": [
     {
-      id: "us-west",
-      name: "US West",
-      "instanceTypes": [
-        {
-          "id": "t1.micro",
-          "displayName": "",
-          "driver": "amazon",
-          "memory": "0.0613GB",
-          "storage": "EBS-Only",
-          "availabilityZone": "us-west-1",
-          "pricePerHour": "0.020",
-          "pricePerMonth": "",
-          "amazonPricing": true,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "t1.micro",
-          "driver": "amazon",
-          "memory": "0.0613GB",
-          "storage": "EBS-Only",
-          "availabilityZone": "us-west-2",
-          "pricePerHour": "0.020",
-          "pricePerMonth": "",
-          "amazonPricing": true,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "t2.micro",
-          "driver": "amazon",
-          "memory": "1.0GB",
-          "storage": "EBS-Only",
-          "availabilityZone": "us-west-1",
-          "pricePerHour": "0.015",
-          "pricePerMonth": "",
-          "amazonPricing": true,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "t2.micro",
-          "driver": "amazon",
-          "memory": "1.0GB",
-          "storage": "EBS-Only",
-          "availabilityZone": "us-west-2",
-          "pricePerHour": "0.015",
-          "pricePerMonth": "",
-          "amazonPricing": true,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "t2.nano",
-          "driver": "amazon",
-          "memory": "0.5GB",
-          "storage": "EBS-Only",
-          "availabilityZone": "us-west-1",
-          "pricePerHour": "0.008",
-          "pricePerMonth": "",
-          "amazonPricing": true,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "t2.nano",
-          "driver": "amazon",
-          "memory": "0.5GB",
-          "storage": "EBS-Only",
-          "availabilityZone": "us-west-2",
-          "pricePerHour": "0.008",
-          "pricePerMonth": "",
-          "amazonPricing": true,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "sfo1-small",
-          "driver": "digitalOcean",
-          "memory": "512MB",
-          "storage": "20GB",
-          "availabilityZone":"sfo1",
-          "pricePerHour": "0.007439999841153622",
-          "pricePerMonth": "5.00",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "sfo2-medium",
-          "driver": "digitalOcean",
-          "memory": "1GB",
-          "storage": "30GB",
-          "availabilityZone": "sfo2",
-          "pricePerHour": "0.014879999682307243",
-          "pricePerMonth": "10.00",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "sfo1-medium",
-          "driver": "digitalOcean",
-          "memory": "1GB",
-          "storage": "30GB",
-          "availabilityZone": "sfo1",
-          "pricePerHour": "0.014879999682307243",
-          "pricePerMonth": "10.00",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "sfo1-large",
-          "driver": "digitalOcean",
-          "memory": "2GB",
-          "storage": "40GB",
-          "availabilityZone": "sfo1",
-          "pricePerHour": "0.029759999364614487",
-          "pricePerMonth": "20.00",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "sfo2-large",
-          "driver": "digitalOcean",
-          "memory": "2GB",
-          "storage": "40GB",
-          "availabilityZone": "sfo2",
-          "pricePerHour": "0.029759999364614487",
-          "pricePerMonth": "20.00",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "baremetal_type0",
-          "driver": "packet",
-          "memory": "8GB",
-          "storage": "80GB",
-          "availabilityZone": "sjc1",
-          "pricePerHour": "0.05",
-          "pricePerMonth": "",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "baremetal_type1",
-          "driver": "packet",
-          "memory": "32GB",
-          "storage": "120GB",
-          "availabilityZone": "sjc1",
-          "pricePerHour": "0.4",
-          "pricePerMonth": "",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "baremetal_type2",
-          "driver": "packet",
-          "memory": "256GB",
-          "storage": "480GB",
-          "availabilityZone": "sjc1",
-          "pricePerHour": "1.25",
-          "pricePerMonth": "",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-      ]
+      "id": "all",
+      "name": "All",
+      "translationKey": "realmNames.all"
+    },
+    {
+      "id": "us-west",
+      "name": "US West",
+      "translationKey": "realmNames.usWest"
     },
     {
       "id": "us-east",
       "name": "US East",
-      "instanceTypes": [
-        {
-          "id": "t1.micro",
-          "displayName": "",
-          "driver": "amazon",
-          "memory": "0.0613GB",
-          "storage": "EBS-Only",
-          "availabilityZone": "us-east-1",
-          "pricePerHour": "0.020",
-          "pricePerMonth": "",
-          "amazonPricing": true,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "t1.micro",
-          "driver": "amazon",
-          "memory": "0.0613GB",
-          "storage": "EBS-Only",
-          "availabilityZone": "us-east-2",
-          "pricePerHour": "0.020",
-          "pricePerMonth": "",
-          "amazonPricing": true,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "t2.micro",
-          "driver": "amazon",
-          "memory": "1.0GB",
-          "storage": "EBS-Only",
-          "availabilityZone": "us-east-1",
-          "pricePerHour": "0.015",
-          "pricePerMonth": "",
-          "amazonPricing": true,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "t2.micro",
-          "driver": "amazon",
-          "memory": "1.0GB",
-          "storage": "EBS-Only",
-          "availabilityZone": "us-east-2",
-          "pricePerHour": "0.015",
-          "pricePerMonth": "",
-          "amazonPricing": true,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "t2.nano",
-          "driver": "amazon",
-          "memory": "0.5GB",
-          "storage": "EBS-Only",
-          "availabilityZone": "us-east-1",
-          "pricePerHour": "0.008",
-          "pricePerMonth": "",
-          "amazonPricing": true,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "t2.nano",
-          "driver": "amazon",
-          "memory": "0.5GB",
-          "storage": "EBS-Only",
-          "availabilityZone": "us-east-2",
-          "pricePerHour": "0.008",
-          "pricePerMonth": "",
-          "amazonPricing": true,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "nyc1-small",
-          "driver": "digitalOcean",
-          "memory": "512MB",
-          "storage": "20GB",
-          "availabilityZone":"nyc1",
-          "pricePerHour": "0.007439999841153622",
-          "pricePerMonth": "5.00",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "nyc2-small",
-          "driver": "digitalOcean",
-          "memory": "512MB",
-          "storage": "20GB",
-          "availabilityZone":"nyc2",
-          "pricePerHour": "0.007439999841153622",
-          "pricePerMonth": "5.00",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "nyc1-medium",
-          "driver": "digitalOcean",
-          "memory": "1GB",
-          "storage": "30GB",
-          "availabilityZone": "nyc1",
-          "pricePerHour": "0.014879999682307243",
-          "pricePerMonth": "10.00",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "nyc2-medium",
-          "driver": "digitalOcean",
-          "memory": "1GB",
-          "storage": "30GB",
-          "availabilityZone": "nyc2",
-          "pricePerHour": "0.014879999682307243",
-          "pricePerMonth": "10.00",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "nyc3-medium",
-          "driver": "digitalOcean",
-          "memory": "1GB",
-          "storage": "30GB",
-          "availabilityZone": "nyc3",
-          "pricePerHour": "0.014879999682307243",
-          "pricePerMonth": "10.00",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "nyc1-large",
-          "driver": "digitalOcean",
-          "memory": "2GB",
-          "storage": "40GB",
-          "availabilityZone": "nyc1",
-          "pricePerHour": "0.029759999364614487",
-          "pricePerMonth": "20.00",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "nyc2-large",
-          "driver": "digitalOcean",
-          "memory": "2GB",
-          "storage": "40GB",
-          "availabilityZone": "nyc2",
-          "pricePerHour": "0.029759999364614487",
-          "pricePerMonth": "20.00",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "baremetal_0",
-          "driver": "packet",
-          "memory": "8GB",
-          "storage": "80GB",
-          "availabilityZone": "ewr1",
-          "pricePerHour": "0.05",
-          "pricePerMonth": "",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "baremetal_1",
-          "driver": "packet",
-          "memory": "32GB",
-          "storage": "120GB",
-          "availabilityZone": "ewr1",
-          "pricePerHour": "0.4",
-          "pricePerMonth": "",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-        {
-          "id": "baremetal_2",
-          "driver": "packet",
-          "memory": "256GB",
-          "storage": "480GB",
-          "availabilityZone": "ewr1",
-          "pricePerHour": "1.25",
-          "pricePerMonth": "",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-      ]
-    },
-    {
-      "id": "eu-west",
-      "name": "EU West",
-      "instanceTypes": [
-        {
-          "id": "",
-          "driver": "",
-          "memory": "",
-          "storage": "",
-          "availabilityZone": "",
-          "pricePerHour": "",
-          "pricePerMonth": "",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-      ]
+      "translationKey": "realmNames.usEast"
     },
     {
       "id": "asia",
-      "name": "Asia",
-      "instanceTypes": [
-        {
-          "id": "",
-          "driver": "",
-          "memory": "",
-          "storage": "",
-          "availabilityZone": "",
-          "pricePerHour": "",
-          "pricePerMonth": "",
-          "amazonPricing": false,
-          "instanceConfig": { // this will be the config that passes to the machine driver create
-          }
-        },
-      ]
-    }
+      "name": "asia",
+      "translationKey": "realmNames.asia"
+    },
+    {
+      "id": "eu-west",
+      "name": "eu-west",
+      "translationKey": "realmNames.euWest"
+    },
+    {
+      "id": "eu-east",
+      "name": "eu-east",
+      "translationKey": "realmNames.euEast"
+    },
+  ],
+  "realms": [
+    {
+      "id": "t1.micro.us.west-1",
+      "displayName": "T1 Micro (West 1)",
+      "provider": "Amazon",
+      "memory": "0.0613",
+      "storage": "EBS-Only",
+      "availabilityRealm": "us-west-1",
+      "pricePerHour": "0.020",
+      "pricePerMonth": "",
+      "amazonPricing": true,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-west',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "t1.micro.us.west-2",
+      "displayName": "T1 Micro (West 2)",
+      "provider": "Amazon",
+      "memory": "0.0613",
+      "storage": "EBS-Only",
+      "availabilityRealm": "us-west-2",
+      "pricePerHour": "0.020",
+      "pricePerMonth": "",
+      "amazonPricing": true,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-west',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "t2.micro.us.west-1",
+      "displayName": "T2 Micro (West 1)",
+      "provider": "Amazon",
+      "memory": "1.0",
+      "storage": "EBS-Only",
+      "availabilityRealm": "us-west-1",
+      "pricePerHour": "0.015",
+      "pricePerMonth": "",
+      "amazonPricing": true,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-west',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "t2.micro.us.west-2",
+      "displayName": "T2 Micro (West 2)",
+      "provider": "Amazon",
+      "memory": "1.0",
+      "storage": "EBS-Only",
+      "availabilityRealm": "us-west-2",
+      "pricePerHour": "0.015",
+      "pricePerMonth": "",
+      "amazonPricing": true,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-west',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "t2.nano.us.west-1",
+      "displayName": "T2 Nano (West 1)",
+      "provider": "Amazon",
+      "memory": "0.5",
+      "storage": "EBS-Only",
+      "availabilityRealm": "us-west-1",
+      "pricePerHour": "0.008",
+      "pricePerMonth": "",
+      "amazonPricing": true,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-west',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "t2.nano.us.west-2",
+      "displayName": "T2 Nano (West 2)",
+      "provider": "Amazon",
+      "memory": "0.5",
+      "storage": "EBS-Only",
+      "availabilityRealm": "us-west-2",
+      "pricePerHour": "0.008",
+      "pricePerMonth": "",
+      "amazonPricing": true,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-west',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "do.sfo1-small",
+      "displayName": "Small (West 1)",
+      "provider": "Digital Ocean",
+      "memory": "512MB",
+      "storage": "20",
+      "availabilityRealm":"sfo1",
+      "pricePerHour": "0.007439999841153622",
+      "pricePerMonth": "5.00",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-west',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "do.sfo2-medium",
+      "displayName": "Medium (West 2)",
+      "provider": "Digital Ocean",
+      "memory": "1",
+      "storage": "30",
+      "availabilityRealm": "sfo2",
+      "pricePerHour": "0.014879999682307243",
+      "pricePerMonth": "10.00",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-west',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "do.sfo1-medium",
+      "displayName": "Medium (West 1)",
+      "provider": "Digital Ocean",
+      "memory": "1",
+      "storage": "30",
+      "availabilityRealm": "sfo1",
+      "pricePerHour": "0.014879999682307243",
+      "pricePerMonth": "10.00",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-west',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "do.sfo1-large",
+      "displayName": "Large (West 1)",
+      "provider": "Digital Ocean",
+      "memory": "2",
+      "storage": "40",
+      "availabilityRealm": "sfo1",
+      "pricePerHour": "0.029759999364614487",
+      "pricePerMonth": "20.00",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-west',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "do.sfo2-large",
+      "displayName": "Large (West 2)",
+      "provider": "Digital Ocean",
+      "memory": "2",
+      "storage": "40",
+      "availabilityRealm": "sfo2",
+      "pricePerHour": "0.029759999364614487",
+      "pricePerMonth": "20.00",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-west',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "packet.sjc1.baremetal_type0",
+      "displayName": "Packet Type 0",
+      "provider": "Packet",
+      "memory": "8",
+      "storage": "80",
+      "availabilityRealm": "sjc1",
+      "pricePerHour": "0.05",
+      "pricePerMonth": "",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-west',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "packet.sjc1.baremetal_type1",
+      "displayName": "Packet Type 1",
+      "provider": "Packet",
+      "memory": "32",
+      "storage": "120",
+      "availabilityRealm": "sjc1",
+      "pricePerHour": "0.4",
+      "pricePerMonth": "",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-west',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "packet.sjc1.baremetal_type2",
+      "displayName": "Packet Type 2",
+      "provider": "Packet",
+      "memory": "256",
+      "storage": "480",
+      "availabilityRealm": "sjc1",
+      "pricePerHour": "1.25",
+      "pricePerMonth": "",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-west',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "t1.micro.us.east-1",
+      "displayName": "T1 Micro (East 1)",
+      "provider": "Amazon",
+      "memory": "0.0613",
+      "storage": "EBS-Only",
+      "availabilityRealm": "us-east-1",
+      "pricePerHour": "0.020",
+      "pricePerMonth": "",
+      "amazonPricing": true,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "t1.micro.us.east-2",
+      "displayName": "T1 Micro (East 2)",
+      "provider": "Amazon",
+      "memory": "0.0613",
+      "storage": "EBS-Only",
+      "availabilityRealm": "us-east-2",
+      "pricePerHour": "0.020",
+      "pricePerMonth": "",
+      "amazonPricing": true,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "t2.micro.us.east-1",
+      "displayName": "T2 Micro (East 1)",
+      "provider": "Amazon",
+      "memory": "1.0",
+      "storage": "EBS-Only",
+      "availabilityRealm": "us-east-1",
+      "pricePerHour": "0.015",
+      "pricePerMonth": "",
+      "amazonPricing": true,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "t2.micro.us.east-2",
+      "displayName": "T2 Micro (East 2)",
+      "provider": "Amazon",
+      "memory": "1.0",
+      "storage": "EBS-Only",
+      "availabilityRealm": "us-east-2",
+      "pricePerHour": "0.015",
+      "pricePerMonth": "",
+      "amazonPricing": true,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "t2.nano.us.east-1",
+      "displayName": "T2 Nano (East 1)",
+      "provider": "Amazon",
+      "memory": "0.5",
+      "storage": "EBS-Only",
+      "availabilityRealm": "us-east-1",
+      "pricePerHour": "0.008",
+      "pricePerMonth": "",
+      "amazonPricing": true,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "t2.nano.us.east-2",
+      "displayName": "T2 Nano (East 2)",
+      "provider": "Amazon",
+      "memory": "0.5",
+      "storage": "EBS-Only",
+      "availabilityRealm": "us-east-2",
+      "pricePerHour": "0.008",
+      "pricePerMonth": "",
+      "amazonPricing": true,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "do.nyc1-small",
+      "displayName": "Small (East 1)",
+      "provider": "Digital Ocean",
+      "memory": "512MB",
+      "storage": "20",
+      "availabilityRealm":"nyc1",
+      "pricePerHour": "0.007439999841153622",
+      "pricePerMonth": "5.00",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "do.nyc2-small",
+      "displayName": "Small (East 2)",
+      "provider": "Digital Ocean",
+      "memory": "512MB",
+      "storage": "20",
+      "availabilityRealm":"nyc2",
+      "pricePerHour": "0.007439999841153622",
+      "pricePerMonth": "5.00",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "do.nyc1-medium",
+      "displayName": "Medium (East 1)",
+      "provider": "Digital Ocean",
+      "memory": "1",
+      "storage": "30",
+      "availabilityRealm": "nyc1",
+      "pricePerHour": "0.014879999682307243",
+      "pricePerMonth": "10.00",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "do.nyc2-medium",
+      "displayName": "Medium (East 2)",
+      "provider": "Digital Ocean",
+      "memory": "1",
+      "storage": "30",
+      "availabilityRealm": "nyc2",
+      "pricePerHour": "0.014879999682307243",
+      "pricePerMonth": "10.00",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "do.nyc3-medium",
+      "displayName": "Medium (East 3)",
+      "provider": "Digital Ocean",
+      "memory": "1",
+      "storage": "30",
+      "availabilityRealm": "nyc3",
+      "pricePerHour": "0.014879999682307243",
+      "pricePerMonth": "10.00",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "do.nyc1-large",
+      "displayName": "Large (East 1)",
+      "provider": "Digital Ocean",
+      "memory": "2",
+      "storage": "40",
+      "availabilityRealm": "nyc1",
+      "pricePerHour": "0.029759999364614487",
+      "pricePerMonth": "20.00",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "do.nyc2-large",
+      "displayName": "Large (East 2)",
+      "provider": "Digital Ocean",
+      "memory": "2",
+      "storage": "40",
+      "availabilityRealm": "nyc2",
+      "pricePerHour": "0.029759999364614487",
+      "pricePerMonth": "20.00",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "packet.ewr1.baremetal_type0",
+      "displayName": "Packet Type 0 (US East)",
+      "provider": "Packet",
+      "memory": "8",
+      "storage": "80",
+      "availabilityRealm": "ewr1",
+      "pricePerHour": "0.05",
+      "pricePerMonth": "",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "packet.ewr1.baremetal_type1",
+      "displayName": "Packet Type 1 (US East)",
+      "provider": "Packet",
+      "memory": "32",
+      "storage": "120",
+      "availabilityRealm": "ewr1",
+      "pricePerHour": "0.4",
+      "pricePerMonth": "",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
+    {
+      "id": "packet.ewr1.baremetal_type2",
+      "displayName": "Packet Type 2 (US East)",
+      "provider": "Packet",
+      "memory": "256",
+      "storage": "480",
+      "availabilityRealm": "ewr1",
+      "pricePerHour": "1.25",
+      "pricePerMonth": "",
+      "amazonPricing": false,
+      "cpuRating": "3",
+      "diskRating": "3",
+      "transfer": "???",
+      "realm": 'us-east',
+      "instanceConfig": { // this will be the config that passes to the machine driver create
+      }
+    },
   ]
 };
 export default CLOUD_PLANS;
