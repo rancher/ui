@@ -62,14 +62,24 @@
     {{#if (eq kind "row")}}
         <td>{{row.provider}}</td>
         <td>{{row.displayName}}</td>
+        <td>{{row.availabilityRealm}}</td>
         <td>{{row.storage}}</td>
         <td>{{row.transfer}}</td>
         <td>{{star-rating rating=row.cpuRating}}</td>
         <td>{{star-rating rating=row.diskRating}}</td>
-        <td>{{row.pricePerMonth}}</td>
-        <td><button role="button" class="btn bg-primary" {{action "selectMachine" row.id}}> {{t 'generic.select'}}</button></td>
+        <td>
+          {{#if row.provider}}
+            {{#if (eq row.provider 'Digital Ocean') }}
+              ${{row.pricePerMonth}}
+            {{else}}
+              ${{row.pricePerMonth}}*
+            {{/if}}
+          {{/if}}
+        </td>
+        <td class="text-right"><button role="button" class="btn bg-primary" {{action "selectMachine" row.id}}> {{t 'generic.select'}}</button></td>
     {{else if (eq kind "norows")}}
       <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'accountsPage.index.table.noData'}}</td>
     {{/if}}
   {{/sortable-table}}
+  <div class="pull-right text-small mt-10">{{t 'hostsPage.cloudHostsPage.browsePage.table.help'}}</div>
 </div>

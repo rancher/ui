@@ -1,14 +1,8 @@
-<section class="header clearfix hosts-cloud-new">
+<section class="header has-tabs clearfix hosts-cloud-new">
   <div class="row">
-    <div class="col span-2 mb-0">
-      <h1>
-        {{#link-to "infrastructure-tab"}}{{t 'hostsPage.new.header.linkTo'}}{{/link-to}}
-        {{t 'hostsPage.new.header.text'}}
-      </h1>
-    </div>
-    {{#select-tab initialTab=initialTab tab=(mut tab) tagName='div' classNames='col span-10 mb-0' as |component|}}
-      <div class="tabs">
-        <ul class="tab-header" style="display: inline-block" role="tablist">
+    <h1>{{t 'hostsPage.new.header.text'}}</h1>
+    {{#select-tab initialTab=initialTab tab=(mut tab) tagName='div' classNames='inline-block' as |component|}}
+        <ul class="tab-nav" style="display: inline-block" role="tablist">
           <li role="tab" aria-controls="panel" class="tab" data-section="favorites" {{action "selectTab" "favorites" target=component}}>
             <a href="#">{{t 'hostsPage.cloudHostsPage.tabs.fav'}}</a>
           </li>
@@ -19,7 +13,6 @@
             <a href="#">{{t 'hostsPage.cloudHostsPage.tabs.browse'}}</a>
           </li>
         </ul>
-      </div>
     {{/select-tab}}
   </div>
 </section>

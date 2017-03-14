@@ -8,9 +8,9 @@ export default Ember.Controller.extend({
   initialTab:  'browse',
   tab:         null,
   realmSort:  DEFAULT_REALM,
-  memSort:     2,
-  storageSort: 8,
-  costSort:    20,
+  memSort:     null,
+  storageSort: null,
+  costSort:    null,
   sortBy:      'provider',
   actions: {
     selectMachine(id) {
@@ -28,6 +28,11 @@ export default Ember.Controller.extend({
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.instance',
       name: 'displayName',
       sort: ['displayName', 'id'],
+    },
+    {
+      translationKey: 'hostsPage.cloudHostsPage.browsePage.table.realm',
+      name: 'availabilityRealm',
+      sort: ['realm', 'id'],
     },
     {
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.storage',
