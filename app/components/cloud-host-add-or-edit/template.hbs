@@ -1,0 +1,23 @@
+<form>
+  <section class="horizontal-form">
+    <div class="nav-boxes driver">
+      <div class="nav-box-item driver machine-driver active {{providerClass}}"></div>
+    </div>
+    <div class="container-fluid">
+      {{partial "host/add-common"}}
+      <hr />
+      {{add-host-template templates=hostTemplates provider=host.provider selectedKey=(mut selectedTemplateKey)}}
+      <div class="row">
+        <div class="col span-2 col-inline">
+          <label>{{t 'hostPartial.host.addOptions.labels'}}</label>
+        </div>
+        <div class="col span-10">
+          {{form-user-labels initialLabels=model.labels setLabels=(action 'setLabels')}}
+        </div>
+      </div>
+    </div>
+    {{top-errors errors=errors}}
+    {{save-cancel save="saveTemp" cancel=cancel}}
+  </section>
+
+</form>
