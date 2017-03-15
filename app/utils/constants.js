@@ -1,5 +1,4 @@
-const KIND_USER = 'user';
-const KIND_CATALOG = 'catalog';
+const KIND_USER = 'user'; const KIND_CATALOG = 'catalog';
 const KIND_SYSTEM = 'system';
 const KIND_SYSTEM_CATALOG = 'system-catalog';
 const KIND_LEGACY_KUBERNETES = 'kubernetes';
@@ -45,8 +44,7 @@ var C = {
     GROUP_SEPARATOR: ':',
     BASE_SEPARATOR: '*',
     ID_SEPARATOR: ':',
-    KIND_ALL: 'containers',
-    KIND_USER: KIND_USER,
+    KIND_ALL: 'containers', KIND_USER: KIND_USER,
     KIND_CATALOG: KIND_CATALOG,
     KIND_SYSTEM: KIND_SYSTEM,
     KIND_SYSTEM_CATALOG: KIND_SYSTEM_CATALOG,

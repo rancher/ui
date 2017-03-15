@@ -35,6 +35,7 @@ generic:
   na: 'n/a'
   name: Name
   none: None
+  noRating: No Rating
   ports: Ports
   remove: Remove
   role: Role
@@ -42,6 +43,7 @@ generic:
   saved: Saved
   saving: Saving
   search: Search
+  select: Select
   state: State
   test: Test
   testing: Testing
@@ -54,6 +56,13 @@ generic:
   noo: No
   yess: Yes
 
+realmNames:
+  all: All
+  usWest: US West
+  usEast: US East
+  asia: Asia
+  euWest: EU West
+  euEast: EU East
 
 ##############################
 # Routes
@@ -633,7 +642,43 @@ helpPage:
     content: |
       At Rancher Labs we provide commercial, enterprise-grade support for {appName}, including an available 24x7 support team, and priority bug fixes.  In addition we provide implementation, integration and consulting services for organizations looking to implement and scale {appName}.  For more information on any of these services, please email our sales team: <a href="mailto:sales@rancher.com">sales@rancher.com</a>
 
+
+
 hostsPage:
+  cloudHostsPage:
+    header: Add Host
+    addPage:
+      header: Add {hostName}
+      memStUnit: GB
+    tabs:
+      fav: Favorites
+      prov: Providers
+      browse: Browse
+    browsePage:
+      table:
+        provider: Provider
+        instance: Type
+        realm: Zone
+        mem: Memory
+        storage: Storage
+        transfer: Transfer
+        cpu: CPU
+        disk: Disk
+        ppm: "Price /month"
+        help: "*Note: Variable Price (Price Per Hour * Hours In Month)"
+      sorts:
+        realm:
+          label: 'Region'
+        mem:
+          label: 'Min Memory'
+          unit: GB
+        storage:
+          label: 'Min Storage'
+          unit: GB
+        cost:
+          label: 'Max Cost'
+          preUnit: '$'
+          unit: '/month'
   addContainer: Add Container
   index:
     header: Hosts
@@ -1372,6 +1417,13 @@ serviceInfoPartial:
 advancedSection:
   hrText: Advanced Options
 
+addHostTemplate:
+  add:
+    header: Add New Host Key
+  choose:
+    label: Template Keys*
+    add: Add a new key
+    prompt: Select A Template Key
 
 billingInfo:
   header: Billing Info

@@ -58,7 +58,9 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     }
 
     this.set('selectedNodes', []);
-    this.actionsChanged();
+    if (this.get('bulkActions')) {
+      this.actionsChanged();
+    }
 
     Ember.run.schedule('afterRender', () => {
       let tbody = Ember.$(this.element).find('table tbody');
@@ -425,6 +427,9 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   },
 
   actionsChanged: Ember.observer('selectedNodes.@each.availableActions','pagedContent.firstObject.availableActions', function() {
+
+    if (!this.get('bulkActions')) { return; }
+
     let nodes = this.get('selectedNodes');
     let out = null;
     let disableAll = false;

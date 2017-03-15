@@ -83,6 +83,12 @@ Router.map(function() {
 
         this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
           this.route('index', {path: '/'});
+
+          this.route('container-cloud', {path: '/container-cloud'}, function() {
+            this.route('index', {path: '/'});
+            this.route('add', {path: '/add/:cloud_id'});
+          });
+
           this.route('new', {path: '/add'}, function() {
             this.route('index', {path: '/'});
           });
