@@ -94,20 +94,27 @@ export default Ember.Service.extend({
     return ['always','never'].includes(def) === false;
   }),
 
-  showSystemResources: Ember.computed(C.PREFS.SHOW_SYSTEM,`settings.${C.SETTING.SHOW_SYSTEM}`, function() {
-    let def = this.get(`settings.${C.SETTING.SHOW_SYSTEM}`);
-    let user = this.get(C.PREFS.SHOW_SYSTEM);
+  showSystemResources: Ember.computed(C.PREFS.SHOW_SYSTEM,`settings.${C.SETTING.SHOW_SYSTEM}`, {
+    get() {
+      let def = this.get(`settings.${C.SETTING.SHOW_SYSTEM}`);
+      let user = this.get(C.PREFS.SHOW_SYSTEM);
 
-    switch ( def ) {
-      case 'always':
-        return true;
-      case 'never':
-        return false;
-      case 'default_hide':
-        return user !== true;
-      default:
-        // also 'default_show':
-        return user !== false;
+      switch ( def ) {
+        case 'always':
+          return true;
+        case 'never':
+          return false;
+        case 'default_hide':
+          return user !== true;
+        default:
+          // also 'default_show':
+          return user !== false;
+      }
+    },
+
+    set(key, value) {
+      this.set(C.PREFS.SHOW_SYSTEM, value);
+      return value;
     }
   }),
 });
