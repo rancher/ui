@@ -2,39 +2,39 @@ import Ember from 'ember';
 
 const HOST_DETAILS = [
   {
-    provider: 'Amazon',
-    keys: [
+    provider:   'Amazon',
+    keys:       [
       {
-        type: 'accessKey',
-        name: 'Access Key',
+        type:   'accessKey',
+        name:   'Access Key',
         public: true
       },
       {
-        type: 'secretKey',
-        name: 'Secret Key',
+        type:   'secretKey',
+        name:   'Secret Key',
       },
     ],
   },
   {
-    provider: 'Digital Ocean',
-    keys: [
+    provider:   'Digital Ocean',
+    keys:       [
       {
-        type: 'accessToken',
-        name: 'Access Token',
+        type:   'accessToken',
+        name:   'Access Token',
       },
     ],
   },
   {
-    provider: 'Packet',
-    keys: [
+    provider:   'Packet',
+    keys:       [
       {
-        type: 'projectId',
-        name: 'Project ID',
+        type:   'projectId',
+        name:   'Project ID',
         public: true,
       },
       {
-        type: 'apiKey',
-        name: 'API Key',
+        type:   'apiKey',
+        name:   'API Key',
       },
     ],
   },
@@ -43,13 +43,13 @@ const HOST_DETAILS = [
 // all its going to do is validate and save so the partial could
 // load the template for adding and saving keys
 export default Ember.Component.extend({
-  add: false,
-  templates: null,
-  selectedKey: null,
-  provider: null,
+  add:                false,
+  templates:          null,
+  selectedKey:        null,
+  provider:           null,
   providerKeyDetails: HOST_DETAILS,
-  newKeys: null,
-  actions: {
+  newKeys:            null,
+  actions:            {
     addKey() {
       var provider = this.get('providerKeyDetails').findBy('provider', this.get('provider'));
       this.set('newKeys', provider.keys);
