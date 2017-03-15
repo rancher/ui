@@ -11,62 +11,67 @@ export default Ember.Controller.extend({
   memSort:     null,
   storageSort: null,
   costSort:    null,
-  sortBy:      'provider',
+  sortBy:      'price',
   actions:     {
     selectMachine(id) {
       this.transitionToRoute('hosts.container-cloud.add', id);
     }
   },
-  headers:     [
+  headers: [
     {
+      name: 'provider',
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.provider',
-      name:           'provider',
-      sort:           ['provider', 'id'],
-      width:          '175'
+      sort: ['provider', 'pricePerMonth', 'id'],
+      width: '175'
     },
     {
+      name: 'zone',
+      translationKey: 'hostsPage.cloudHostsPage.browsePage.table.zone',
+      sort: ['zone', 'provider', 'id'],
+    },
+    {
+      name: 'displayName',
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.instance',
-      name:           'displayName',
-      sort:           ['displayName', 'id'],
+      sort: ['displayName', 'pricePerMonth', 'id'],
     },
     {
-      translationKey: 'hostsPage.cloudHostsPage.browsePage.table.realm',
-      name:           'availabilityRealm',
-      sort:           ['realm', 'id'],
+      name: 'memory',
+      translationKey: 'hostsPage.cloudHostsPage.browsePage.table.memory',
+      sort: ['memory', 'pricePerMonth','displayName'],
     },
     {
-      translationKey: 'hostsPage.cloudHostsPage.browsePage.table.storage',
-      name:           'storage',
-      sort:           ['storage', 'id',],
-    },
-    {
+      name: 'transfer',
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.transfer',
-      name:           'transfer',
-      sort:           ['transfer'],
+      sort: ['transfer'],
     },
     {
+      name: 'cpuRating',
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.cpu',
-      name:           'cpuRating',
-      sort:           ['cpuRating'],
-      width:          ''
+      sort: ['cpuRating:desc','displayName'],
+      width: 120,
     },
     {
+      name: 'diskRating',
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.disk',
-      name:           'diskRating',
-      sort:           ['diskRating'],
-      width:          ''
+      sort: ['diskRating','displayName','zome'],
+      width: 120
     },
     {
-      translationKey: 'hostsPage.cloudHostsPage.browsePage.table.ppm',
-      width:          '75',
+      name: 'price',
+      translationKey: 'hostsPage.cloudHostsPage.browsePage.table.price',
+      sort: ['pricePerMonth','memory:desc','displayName'],
+      width: 75,
     },
+
     {
-      width:          '125',
+      width: 100,
     },
   ],
+
   tabObserve: Ember.observer('tab', function() {
     this.transitionToRoute('hosts.container-cloud', {queryParams: {from: this.get('tab')}});
   }),
+
   filteredContent: Ember.computed('model.plans', 'realmSort', 'costSort', 'storageSort', 'memSort', function() {
     var rs = this.get('realmSort');
     var cs = this.get('costSort');
@@ -77,7 +82,12 @@ export default Ember.Controller.extend({
       return this.get('model.plans');
     } else {
       return this.get('model.plans').filter((plan) => {
-        return ((!rs || plan.realm === rs) && (!ms || plan.memory >= ms) && (!ss || plan.storage >= ss) && (!cs || plan.pricePerMonth >= cs));
+        return (
+          (!rs || plan.realm === rs) &&
+          (!ms || plan.memory >= ms) &&
+          (!ss || plan.storage >= ss) && 
+          (!cs || plan.pricePerMonth >= cs)
+        );
       });
     }
   }),

@@ -164,8 +164,15 @@ const navTree = [
 
   // Cattle
   {
-    id: 'cattle',
-    localizedLabel: 'nav.cattle.tab',
+    id: 'containers',
+    localizedLabel: 'nav.containers.tab',
+    route: 'containers',
+    ctx: [getProjectId],
+  },
+
+  {
+    id: 'services',
+    localizedLabel: 'nav.services.tab',
     route: 'stacks',
     queryParams: {which: 'containers', tags: ''},
     ctx: [getProjectId],
@@ -201,13 +208,6 @@ const navTree = [
         localizedLabel: 'nav.infra.hosts',
         icon: 'icon icon-host',
         route: 'hosts',
-        ctx: [getProjectId],
-      },
-      {
-        id: 'infra-containers',
-        localizedLabel: 'nav.infra.containers',
-        icon: 'icon icon-box',
-        route: 'containers',
         ctx: [getProjectId],
       },
       {
