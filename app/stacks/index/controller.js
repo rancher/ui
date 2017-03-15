@@ -151,7 +151,7 @@ export default Ember.Controller.extend({
     if ( tags && tags.length ) {
       return 'stacksPage.header.tags';
     } else if ( which === C.EXTERNAL_ID.KIND_ALL ) {
-      return 'stacksPage.header.containers';
+      return 'stacksPage.header.services';
     } else if ( C.EXTERNAL_ID.SHOW_AS_SYSTEM.indexOf(which) >= 0 ) {
       return 'stacksPage.header.infra';
     } else if ( which.toLowerCase() === 'user') {

@@ -39,7 +39,9 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   actions: {
     setScale(scale) {
-      this.set('service.scale', scale);
+      if ( this.get('service') ) {
+        this.set('service.scale', scale);
+      }
     },
 
     setImage(uuid) {
