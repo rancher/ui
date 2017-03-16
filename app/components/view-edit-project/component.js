@@ -16,6 +16,7 @@ export default Ember.Component.extend(NewOrEdit, {
   policyManager: null,
   editing: false,
   tab: 'access',
+  primaryResource: Ember.computed.alias('project'),
 
   sortBy: 'name',
   headers:  [
