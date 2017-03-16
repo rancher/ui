@@ -63,8 +63,22 @@ export default Ember.Controller.extend({
     return categories.sortBy('name');
   }),
 
-  filters: Ember.computed(`settings.${C.SETTING.CATALOG_URL}`, function() {
-    return getCatalogSubtree(this.get(`settings.${C.SETTING.CATALOG_URL}`), this.get('projectId'));
+  catalogURL: Ember.computed('model.catalogs', function() {
+    var neu = {
+      catalogs: {}
+    };
+    this.get('model.catalogs.content').forEach((cat) => {
+      neu.catalogs[cat.id] = {
+        branch: cat.branch,
+        url: cat.url
+      };
+    });
+    return JSON.stringify(neu);
+  }),
+
+  filters: Ember.computed('model.catalogs', function() {
+    this.get(`settings.${C.SETTING.CATALOG_URL}`);
+    return getCatalogSubtree(this.get('catalogURL'), this.get('projectId'));
   }),
 
   arrangedContent: Ember.computed('model.catalog', 'search', function() {

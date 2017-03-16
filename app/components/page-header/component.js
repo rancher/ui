@@ -112,7 +112,6 @@ export default Ember.Component.extend(HoverDropdown, {
     'projects.orchestrationState',
     'project.virtualMachine',
     'stacks.@each.group',
-    `settings.${C.SETTING.CATALOG_URL}`,
     `prefs.${C.PREFS.ACCESS_WARNING}`,
     'access.enabled',
     'isAdmin'
