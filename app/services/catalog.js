@@ -35,8 +35,9 @@ export default Ember.Service.extend({
     });
   },
 
-  fetchCatalogs() {
-    return this.get('store').request({url: `${this.get('app.catalogEndpoint')}/catalogs`});
+  fetchCatalogs(opts) {
+    var neu = $.extend({}, {url: `${this.get('app.catalogEndpoint')}/catalogs`}, opts||{});
+    return this.get('store').request(neu);
   },
 
   getTemplateFromCache(id) {

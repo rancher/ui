@@ -1,38 +1,41 @@
-<h4>{{t 'viewEditProject.environtmentCatalogs.header'}}</h4>
-<h5>{{format-html-message 'viewEditProject.environtmentCatalogs.subtext'}}</h5>
-<hr/>
-<button class="bg-transparent text-primary" {{action "add"}}><i class="icon icon-plus-circle"/> <span>{{t 'viewEditProject.environtmentCatalogs.addActionLabel'}}</span></button>
-
-{{#if ary.length}}
-  <table class="table fixed no-lines no-top-padding tight small">
-    <tr class="text-muted hidden-xs hidden-sm">
-      <th width="25%">{{t 'catalogSettings.more.name.label'}}</th>
-      <td width="30">&nbsp;</td>
-      <th width="50%">{{t 'catalogSettings.more.url.label'}}</th>
-      <td width="30">&nbsp;</td>
-      <th width="25%">{{t 'catalogSettings.more.branch.label'}}</th>
-      <th width="30">&nbsp;</th>
-    </tr>
-    {{#each ary as |row|}}
-      <tr>
-        <td class="valign-top" data-title="{{t 'catalogSettings.more.name.label'}}:">
-          {{input class="form-control input-sm name" type="text" value=row.name placeholder=(t 'catalogSettings.more.name.placeholder')}}
-        </td>
-        <td>&nbsp;</td>
-        <td class="valign-top" data-title="{{t 'catalogSettings.more.url.label'}}:">
-          {{input class="form-control input-sm" type="text" value=row.url placeholder=(t 'catalogSettings.more.url.placeholder')}}
-        </td>
-        <td>&nbsp;</td>
-        <td class="valign-top" data-title="{{t 'catalogSettings.more.branch.label'}}:">
-          {{input class="form-control input-sm" type="text" value=row.branch placeholder=(t 'catalogSettings.more.branch.placeholder')}}
-        </td>
-
-        <td class="valign-top text-right">
-          <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
-        </td>
+<div>
+  <h4>{{t 'viewEditProject.environtmentCatalogs.header'}}</h4>
+  <h5>{{format-html-message 'viewEditProject.environtmentCatalogs.subtext'}}</h5>
+  <hr/>
+  <button class="bg-transparent text-primary" {{action "add"}}><i class="icon icon-plus-circle"/> <span>{{t 'viewEditProject.environtmentCatalogs.addActionLabel'}}</span></button>
+</div>
+<div>
+  {{#if ary.length}}
+    <table class="table fixed no-lines no-top-padding tight small">
+      <tr class="text-muted hidden-xs hidden-sm">
+        <th width="25%">{{t 'catalogSettings.more.name.label'}}</th>
+        <td width="30">&nbsp;</td>
+        <th width="50%">{{t 'catalogSettings.more.url.label'}}</th>
+        <td width="30">&nbsp;</td>
+        <th width="25%">{{t 'catalogSettings.more.branch.label'}}</th>
+        <th width="30">&nbsp;</th>
       </tr>
-    {{/each}}
-  </table>
-{{/if}}
+      {{#each ary as |row|}}
+        <tr>
+          <td class="valign-top" data-title="{{t 'catalogSettings.more.name.label'}}:">
+            {{input class="form-control input-sm name" type="text" value=row.name placeholder=(t 'catalogSettings.more.name.placeholder')}}
+          </td>
+          <td>&nbsp;</td>
+          <td class="valign-top" data-title="{{t 'catalogSettings.more.url.label'}}:">
+            {{input class="form-control input-sm" type="text" value=row.url placeholder=(t 'catalogSettings.more.url.placeholder')}}
+          </td>
+          <td>&nbsp;</td>
+          <td class="valign-top" data-title="{{t 'catalogSettings.more.branch.label'}}:">
+            {{input class="form-control input-sm" type="text" value=row.branch placeholder=(t 'catalogSettings.more.branch.placeholder')}}
+          </td>
 
-{{save-cancel cancelDisabled=true editing=true save="save"}}
+          <td class="valign-top text-right">
+            <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+          </td>
+        </tr>
+      {{/each}}
+    </table>
+  {{/if}}
+</div>
+{{top-errors errors=errors}}
+{{save-cancel classNames="pt-20" cancelDisabled=true editing=true save="save"}}

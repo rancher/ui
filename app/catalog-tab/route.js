@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   access: Ember.inject.service(),
@@ -28,10 +29,18 @@ export default Ember.Route.extend({
   beforeModel: function() {
     this._super(...arguments);
 
+    var neuOpts = {};
+
+    neuOpts = {
+      headers: {
+        [C.HEADER.PROJECT_ID]: this.get('projects.current.id')
+      },
+    };
+
     return this.get('projects').updateOrchestrationState().then(() => {
       return Ember.RSVP.hash({
         stacks: this.get('store').find('stack'),
-        catalogs: this.get('catalog').fetchCatalogs(),
+        catalogs: this.get('catalog').fetchCatalogs(neuOpts),
       }).then((hash) => {
         this.set('catalogs', hash.catalogs);
         this.set('stacks', this.get('store').all('stack'));
