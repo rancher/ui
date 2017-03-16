@@ -3,8 +3,6 @@
 // -----------------------------------------------------------------------------
 
 
-
-
 ///Sets base color and darkens bg on hover
 @mixin bg-color($bg) {
   background: $bg;
@@ -168,72 +166,3 @@
   &::-moz-placeholder { @content; }
   &::-webkit-input-placeholder { @content; }
 }
-
-//table mixins 
-@mixin basic-table {
-  > TBODY {
-      &:after{
-        content: "";
-        display: block;
-        width: 100%;
-        height: 25px;
-      }
-
-    > TR {
-        > TD {
-            border: none;
-        }
-            background-color: $table-bg;
-            border: $table-border-color solid 1px;
-        &.row-selected {
-            background-color: $table-bg-selected;
-        }
-        &.no-bottom {
-          border-bottom: none;
-        }
-        &.sub-row {
-          border-top: none;
-        }
-
-        &.separator-row {
-          border: none;
-        }
-    }
-  }
-}
-
-@mixin solid {
-    
-    > TBODY {
-      background: $table-bg;
-      > TR {
-        background-color: darken($table-bg, 5%);
-      }
-    }
-
-    > tr {
-        &:hover {
-            background-color: $table-bg-hover;
-        }
-        td {
-            border: solid 2px white;
-        }
-    }  
-}
-
-@mixin striped {
-  > TBODY > TR {
-        > TD {
-            border: none;
-        }
-        &:nth-child(odd) {
-            background-color: $table-bg;
-        }
-        &:nth-child(even) {
-            background-color: $table-bg-accent;
-        }
-        &.row-selected {
-            background-color: $table-bg-selected;
-        }
-    }
-  }
