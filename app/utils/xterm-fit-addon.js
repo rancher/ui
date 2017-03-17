@@ -25,8 +25,8 @@ export function proposeGeometry(term) {
   characterHeight = parseInt(subjectRow.offsetHeight);
   subjectRow.innerHTML = contentBuffer;
 
-  rows = parseInt(availableHeight / characterHeight);
-  cols = parseInt(availableWidth / characterWidth);
+  rows = Math.floor(availableHeight / characterHeight);
+  cols = Math.floor(availableWidth / characterWidth);
 
   geometry = { cols: cols, rows: rows };
   return geometry;
