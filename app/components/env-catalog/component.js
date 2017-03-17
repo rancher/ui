@@ -6,12 +6,9 @@ export default Ember.Component.extend({
   project:     null,
   catalogs:    null,
   ary:         null,
-  aryToAdd:    null,
-  aryToRemove: null,
   actions:     {
     add() {
-      var neu = {name: '', branch: C.CATALOG.DEFAULT_BRANCH, url: ''};
-      this.get('ary').pushObject(Ember.Object.create(neu));
+      this.get('ary').pushObject(Ember.Object.create({name: '', branch: C.CATALOG.DEFAULT_BRANCH, url: '', toAdd: true}));
       Ember.run.next(() => {
         if ( this.isDestroyed || this.isDestroying ) {
           return;
@@ -21,13 +18,11 @@ export default Ember.Component.extend({
       });
     },
     remove(obj) {
-      this.get('ary').removeObject(obj);
-      this.get('aryToRemove').pushObject(obj);
+      Ember.set(obj, 'toRemove', true);
     },
     save(cb) {
-      // var newCatalogs = this.get('aryToAdd');
-      var newCatalogs = this.get('ary');
-      var catalogsToRemove = this.get('aryToRemove')||[];
+      var newCatalogs = this.get('ary').filterBy('toAdd', true);
+      var catalogsToRemove = this.get('ary').filterBy('toRemove', true);
       var all = [];
 
       newCatalogs.forEach((cat) => {
@@ -41,15 +36,17 @@ export default Ember.Component.extend({
       Ember.RSVP.all(all).then(() => {
         this.set('saving', false);
         cb(true);
+        Ember.run.later(() => {
+          this.sendAction('cancel');
+        }, 500);
       }).catch((err) => {
         this.set('errors',err);
         cb(true);
         this.set('saving', false);
       });
-          }
+    }
   },
   addCatalogs(catalogs) {
-    debugger;
     return this.get('store').request({
       url: `${this.get('app.catalogEndpoint')}/catalogs`,
       method: 'POST',
@@ -73,8 +70,6 @@ export default Ember.Component.extend({
     this._super(...arguments);
     this.setProperties({
       ary: this.get('catalogs').filterBy('environmentId', this.get('project.id')),
-      aryToAdd: [],
-      aryToRemove: []
     });
   }
 });

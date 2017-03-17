@@ -11,10 +11,4 @@ export default Ember.Component.extend(ModalBase, {
   classNames: ['large-modal'],
   project: Ember.computed.alias('modalService.modalOpts.project'),
   catalogs: Ember.computed.alias('modalService.modalOpts.catalogs'),
-  actions: {
-    cancel() {
-      debugger;
-      this.get('modalService').toggleModal();
-    },
-  },
 });

@@ -25,10 +25,9 @@ export default Ember.Controller.extend({
 
   actions: {
     addEnvCatalog() {
-      debugger;
       this.get('modalService').toggleModal('modal-edit-env-catalogs', {
         project: this.get('projects.current'),
-        catalogs: this.get('model.catalogs.content')
+        catalogs: this.get('model.catalogs.content'),
       });
     },
     clearSearch() {

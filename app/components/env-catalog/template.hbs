@@ -16,26 +16,28 @@
         <th width="30">&nbsp;</th>
       </tr>
       {{#each ary as |row|}}
-        <tr>
-          <td class="valign-top" data-title="{{t 'catalogSettings.more.name.label'}}:">
-            {{input class="form-control input-sm name" type="text" value=row.name placeholder=(t 'catalogSettings.more.name.placeholder')}}
-          </td>
-          <td>&nbsp;</td>
-          <td class="valign-top" data-title="{{t 'catalogSettings.more.url.label'}}:">
-            {{input class="form-control input-sm" type="text" value=row.url placeholder=(t 'catalogSettings.more.url.placeholder')}}
-          </td>
-          <td>&nbsp;</td>
-          <td class="valign-top" data-title="{{t 'catalogSettings.more.branch.label'}}:">
-            {{input class="form-control input-sm" type="text" value=row.branch placeholder=(t 'catalogSettings.more.branch.placeholder')}}
-          </td>
+        {{#unless row.toRemove}}
+          <tr>
+            <td class="valign-top" data-title="{{t 'catalogSettings.more.name.label'}}:">
+              {{input class="form-control input-sm name" type="text" value=row.name placeholder=(t 'catalogSettings.more.name.placeholder')}}
+            </td>
+            <td>&nbsp;</td>
+            <td class="valign-top" data-title="{{t 'catalogSettings.more.url.label'}}:">
+              {{input class="form-control input-sm" type="text" value=row.url placeholder=(t 'catalogSettings.more.url.placeholder')}}
+            </td>
+            <td>&nbsp;</td>
+            <td class="valign-top" data-title="{{t 'catalogSettings.more.branch.label'}}:">
+              {{input class="form-control input-sm" type="text" value=row.branch placeholder=(t 'catalogSettings.more.branch.placeholder')}}
+            </td>
 
-          <td class="valign-top text-right">
-            <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
-          </td>
-        </tr>
+            <td class="valign-top text-right">
+              <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+            </td>
+          </tr>
+        {{/unless}}
       {{/each}}
     </table>
   {{/if}}
 </div>
 {{top-errors errors=errors}}
-{{save-cancel classNames="pt-20" editing=true save="save"}}
+{{save-cancel classNames="pt-20" cancel=(action cancel) editing=true save="save"}}
