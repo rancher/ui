@@ -52,6 +52,17 @@ export default Ember.Controller.extend({
     }
   },
 
+  init() {
+    this._super(...arguments);
+    this.get('catalog.componentRequestingRefresh');
+  },
+
+  childRequestiongRefresh: Ember.observer('catalog.componentRequestingRefresh', function() {
+    if (this.get('catalog.componentRequestingRefresh')) {
+      this.send('update');
+    }
+  }),
+
   categoryWithCounts: Ember.computed('category', 'categories', 'search', function() {
     var categories = [];
     var catalogs = this.get('arrangedContent');

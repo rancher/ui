@@ -5,13 +5,14 @@ import C from 'ui/utils/constants';
 const RANCHER_VERSION = 'rancherVersion';
 
 export default Ember.Service.extend({
-  settings: Ember.inject.service(),
-  store: Ember.inject.service('store'),
-  userStore: Ember.inject.service('user-store'),
-  projects : Ember.inject.service(),
+  settings:                   Ember.inject.service(),
+  store:                      Ember.inject.service('store'),
+  userStore:                  Ember.inject.service('user-store'),
+  projects:                   Ember.inject.service(),
 
-  templateCache    : null,
-  catalogs         : null,
+  templateCache:              null,
+  catalogs:                   null,
+  componentRequestingRefresh: false, // this is only present to deal with modals. this can be observed to issue a refresh command
 
   templateBase: Ember.computed('projects.current.orchestration', function() {
     return this.get('projects.current.orchestration') || 'cattle';

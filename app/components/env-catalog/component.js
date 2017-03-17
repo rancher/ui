@@ -34,6 +34,7 @@ export default Ember.Component.extend({
       });
 
       Ember.RSVP.all(all).then(() => {
+        this.set('catalog.componentRequestingRefresh', true);
         this.set('saving', false);
         cb(true);
         Ember.run.later(() => {
