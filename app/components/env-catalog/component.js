@@ -49,6 +49,7 @@ export default Ember.Component.extend({
           }
   },
   addCatalogs(catalogs) {
+    debugger;
     return this.get('store').request({
       url: `${this.get('app.catalogEndpoint')}/catalogs`,
       method: 'POST',

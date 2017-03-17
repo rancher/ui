@@ -32,6 +32,7 @@ export default Ember.Mixin.create({
   },
   actions: {
     cancel() {
+      debugger;
       this.get('modalService').toggleModal();
     },
   },
