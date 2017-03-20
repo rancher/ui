@@ -36,9 +36,12 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   prefix:            false,
   suffix:            false,
   bulkActions:       true,
+  rowActions:        true,
   search:            true,
   paging:            true,
   subRows:           false,
+  checkWidth:        40,
+  actionsWidth:      40,
 
   availableActions:  null,
   selectedNodes:     null,
@@ -145,7 +148,11 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   // For data-title properties on <td>s
   dt: Ember.computed('headers.@each.{name,label,translationKey}','intl._locale', function() {
     let intl = this.get('intl');
-    let out = {};
+    let out = {
+      select: intl.t('generic.select') + ': ',
+      actions: intl.t('generic.actions') + ': ',
+    };
+
     this.get('headers').forEach((header) => {
       let name = get(header, 'name');
       let dtKey = get(header,'dtTranslationKey');
@@ -176,6 +183,10 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     }
   }),
 
+  fullColspan: Ember.computed('headers.length','bulkActions','rowActions', function() {
+    return (this.get('headers.length')||0) + (this.get('bulkActions') ? 1 : 0 ) + (this.get('rowActions') ? 1 : 0);
+  }),
+
   searchFields: Ember.computed('headers.@each.{searchField,name}','extraSearchFields.[]', function() {
     let out = headersToSearchField(this.get('headers'));
     return out.addObjects(this.get('extraSearchFields')||[]);
@@ -203,7 +214,15 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
         let row = out[i];
         let mainFound = true;
         for ( let j = 0 ; j < searchTokens.length ; j++ ) {
-          if ( !matches(searchFields, searchTokens[j], row) ) {
+          let expect = true;
+          let token = searchTokens[j];
+
+          if ( token.substr(0,1) === '!' ) {
+            expect = false;
+            token = token.substr(1);
+          }
+
+          if ( token && matches(searchFields, token, row) !== expect ) {
             mainFound = false;
             break;
           }
@@ -302,7 +321,7 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     let content = this.get('pagedContent');
     let selection = this.get('selectedNodes');
     let tgt = Ember.$(e.target);
-    let isCheckbox = tagName === 'INPUT' || tgt.hasClass('select-for-action');
+    let isCheckbox = tagName === 'INPUT' || tgt.hasClass('row-check');
     let tgtRow = Ember.$(e.currentTarget);
     if ( tgtRow.hasClass('separator-row') || tgt.hasClass('select-all-check')) {
       return;

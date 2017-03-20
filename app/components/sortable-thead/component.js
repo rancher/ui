@@ -3,27 +3,27 @@ import Ember from 'ember';
 export default Ember.Component.extend({
   tagName: 'TH',
   classNames: ['sortable'],
-  name: null,
-  sortable: null,
-  width: null,
-  label: null,
+  classNameBindings: ['header.classNames'],
   ariaRole: ['columnheader'],
-  isActions: false,
+  attributeBindings: ['width'],
+
+  sortable: null,
+  header: null,
 
   current: Ember.computed.alias('sortable.sortBy'),
   descending: Ember.computed.alias('sortable.descending'),
 
-  activeAscending: Ember.computed('name','current','descending', function() {
-    return !this.get('descending') && this.get('current') === this.get('name');
+  activeAscending: Ember.computed('header.name','current','descending', function() {
+    return !this.get('descending') && this.get('current') === this.get('header.name');
   }),
 
-  activeDescending: Ember.computed('name','current','descending', function() {
-    return this.get('descending') && this.get('current') === this.get('name');
+  activeDescending: Ember.computed('header.name','current','descending', function() {
+    return this.get('descending') && this.get('current') === this.get('header.name');
   }),
-
-  attributeBindings: ['width'],
 
   click: function() {
-    this.sendAction('action', this.get('name'));
+    if ( this.get('header.sort') ) {
+      this.sendAction('action', this.get('header.name'));
+    }
   }
 });

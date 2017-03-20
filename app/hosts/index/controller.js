@@ -105,10 +105,6 @@ export default Ember.Controller.extend({
       dtTranslationKey: 'hostsPage.index.table.instanceState',
       translationKey: 'hostsPage.index.table.instanceStateWithIcon',
     },
-    {
-      isActions: true,
-      width: 30,
-    },
   ],
 
   extraSearchFields: [

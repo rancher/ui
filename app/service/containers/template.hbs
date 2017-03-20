@@ -6,7 +6,7 @@
     sortBy=sortBy
     headers=headers
     body=model.instances
-    as |sortable kind container|
+    as |sortable kind container dt|
 }}
   {{#if (eq kind "row")}}
     {{container-row
@@ -19,7 +19,9 @@
       cpuMax=cpuMax
       memoryMax=memoryMax
       storageMax=storageMax
-      networkMax=networkMax}}
+      networkMax=networkMax
+      dt=dt
+    }}
   {{else if (eq kind "norows")}}
     <tr>
       <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'servicePage.containersTab.table.body.noData'}}</td>

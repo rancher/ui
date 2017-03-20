@@ -1,7 +1,5 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import { tagChoices } from 'ui/models/stack';
-import { uniqKeys } from 'ui/utils/util';
 
 // Useful context/condition shortcuts
 export const getProjectId = function() { return this.get('projectId'); };
@@ -166,18 +164,16 @@ const navTree = [
   {
     id: 'containers',
     localizedLabel: 'nav.containers.tab',
-    route: 'containers',
+    route: 'authenticated.project.index',
     ctx: [getProjectId],
+    moreCurrentWhen: ['containers','stacks'],
   },
 
   {
-    id: 'services',
-    localizedLabel: 'nav.services.tab',
-    route: 'stacks',
-    queryParams: {which: 'containers', tags: ''},
+    id: 'hosts',
+    localizedLabel: 'nav.hosts.tab',
+    route: 'hosts',
     ctx: [getProjectId],
-    condition: function() { return this.get('hasProject') && !this.get('hasKubernetes') && !this.get('hasSwarm') && !this.get('hasMesos'); },
-    submenu: getStacksSubtree,
   },
 
   // Catalog
@@ -203,13 +199,6 @@ const navTree = [
     ctx: [getProjectId],
     condition: function() { return this.get('hasProject'); },
     submenu: [
-      {
-        id: 'infra-hosts',
-        localizedLabel: 'nav.infra.hosts',
-        icon: 'icon icon-host',
-        route: 'hosts',
-        ctx: [getProjectId],
-      },
       {
         id: 'infra-storagepools',
         localizedLabel: 'nav.infra.storagePage',
@@ -351,6 +340,7 @@ export function get() {
   return Ember.copy(navTree,true);
 }
 
+/*
 function getStacksSubtree() {
   let stacks = this.get('store').all('stack');
   let choices = uniqKeys(tagChoices(stacks)).sort();
@@ -385,3 +375,4 @@ function getStacksSubtree() {
     return out;
   }
 }
+*/

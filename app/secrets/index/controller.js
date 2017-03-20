@@ -24,37 +24,30 @@ export default Ember.Controller.extend({
 
   headers: [
     {
-      displayName: 'State',
       name: 'stateSort',
       sort: ['stateSort','name','id'],
       type: 'string',
       searchField: 'displayState',
-      classNames: '',
-      width: '125px'
+      translationKey: 'generic.state',
+      width: 125,
     },
     {
       displayName: 'Name',
       name: 'name',
       sort: ['name','id'],
-      type: 'string',
+      translationKey: 'generic.name',
     },
     {
-      displayName: 'Description',
       name: 'description',
+      translationKey: 'generic.description',
       sort: ['description','name','id'],
-      type: 'string',
     },
     {
-      displayName: 'Created',
       name: 'created',
-      sort: ['primaryHost.displayName','name','id'],
+      translationKey: 'generic.created',
+      sort: ['created:desc','name','id'],
       searchField: false,
       type: 'string',
-    },
-    {
-      displayName: 'Actions',
-      isActions: true,
-      width: '110px',
     },
   ],
 

@@ -259,18 +259,19 @@ var C = {
 
   // Ephemeral but same but across all browser tabs
   SESSION: {
-    BACK_TO        : 'backTo',
-    USER_ID        : 'user',
     ACCOUNT_ID     : 'accountId',
-    USER_TYPE      : 'userType',
-    PROJECT        : 'projectId',
-    IDENTITY       : 'userIdentity',
-    IDENTITY_TYPE  : 'userType',
+    BACK_TO        : 'backTo',
+    CONTAINER_ROUTE: 'containerSubRoute',
     GITHUB_CACHE   : 'githubCache',
     GITHUB_ORGS    : 'orgs',
     GITHUB_TEAMS   : 'teams',
+    IDENTITY       : 'userIdentity',
+    IDENTITY_TYPE  : 'userType',
     LANGUAGE       : 'language',
     LOGIN_LANGUAGE : 'loginLanguage',
+    PROJECT        : 'projectId',
+    USER_ID        : 'user',
+    USER_TYPE      : 'userType',
   },
 
   SETTING: {

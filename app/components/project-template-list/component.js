@@ -15,17 +15,16 @@ export default Ember.Component.extend({
       translationKey: 'generic.description',
     },
     {
+      name:           'stacks',
       translationKey: 'projectList.indexTemplate.table.header.stacks',
-      noSort:         true,
+      sort:           false,
     },
     {
+      name:           'isPublic',
       translationKey: 'projectList.indexTemplate.table.header.isPublic',
-      noSort:         true,
-      width:          '80',
-    },
-    {
-      isActions: true,
-      width: '75',
+      sort:           false,
+      searchField:    false,
+      width:          80,
     },
   ],
 });

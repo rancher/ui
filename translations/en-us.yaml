@@ -12,8 +12,9 @@ generic:
   as: As
   cancel: Cancel
   closeModal: Close
-  created: Created
+  command: Command
   confirm: Confirm
+  created: Created
   default: Default
   description: Description
   disable: Disable
@@ -24,6 +25,7 @@ generic:
   enabled: Enabled
   expires: Expires
   healthy: Healthy
+  host: Host
   id: ID
   image: Image
   internal: Internal
@@ -463,28 +465,17 @@ containersPage:
   table:
     primaryHost: Primary Host
     primaryHostUnknown: Unknown
-    image: Image
     stats: Stats
     sparkPrefixCpu: "CPU: "
     sparkPrefixMemory: "Memory: "
     sparkPrefixNetwork: "Network: "
     sparkPrefixStorage: "Storage: "
-    command: Command
     noCommand: None
+    noData: There are no containers to show.
+    noMatch: No containers match the current search.
   index:
     header: Containers
     linkTo: Add Container
-    table:
-      header:
-        state: State
-        name: Name
-        ip: IP Address
-        host: Host
-        image: Image
-        command: Command
-      body:
-        noData: You do not have any containers yet
-        noMatch: No containers match the current search
   new:
     form:
       name:
@@ -503,7 +494,6 @@ containersPage:
       ip: 'Container IP:'
       docker: 'Docker ID:'
       image: 'Image:'
-      command: 'Command:'
       entryPoint: 'Entry Point:'
       description: 'Description:'
       stack: 'Stack/Service:'
@@ -692,7 +682,6 @@ hostsPage:
     columns:
       emptyMessage: No hosts or containers yet.
     table:
-      host: Host
       memory: RAM
       docker: Docker
       instanceCount: Container Count
@@ -943,7 +932,6 @@ servicePage:
     table:
       header:
         ipAddress: IP Address
-        host: Host
         image: Image
         stats: Stats
       body:
@@ -1394,24 +1382,6 @@ servicePartial:
     label: No containers yet.
     inactive:
       start: Start
-
-serviceInfoPartial:
-  info:
-    label: Info
-    linkTo: View Details
-  image: 'Image:'
-  entryPoint: 'Entrypoint:'
-  command: 'Command:'
-  description: 'Description:'
-  containers: Containers
-  scale: Scale
-  global: Global
-  noContainers: No Containers
-  ports: Ports
-  noPublicPorts: No Public Ports
-  links: Links
-  noLinks: No Links
-  fqdn: 'FQDN:'
 
 ##############################
 # Components
@@ -2422,21 +2392,6 @@ k8s:
     selectors: Selectors
     noData: No Services
 
-lbAddtlInfo:
-  info: Info
-  viewDetails: View Details
-  defaultCertificate: Default Certificate
-  alternateCertificate: Alternate Certificate
-  description: 'Description: '
-  containers: Containers
-  noContainers: No Containers
-  scale: Scale
-  global: Global
-  ports: Ports
-  noPorts: No public host ports
-  targets: Targets
-  to: to
-
 labelsSection:
   kind: Kind
   key: Key
@@ -3283,17 +3238,7 @@ serviceLink:
       sameStack: "{service}"
       differentStack: "{stack}/{service}"
 
-sidekickAddtlInfo:
-  info: Info
-  image: Image
-  entryPoint: Entrypoint
-  command: Command
-  containers: Containers
-  noContainers: No Containers
-  labels: Labels
-  noLabels: No Labels
-
-siteAccess:
+:iteAccess:
   header: Site Access
   helpText: "Configure who should be allowed to log in and use {appName}."
   unrestricted: "Allow any valid {individuals}"
@@ -3550,9 +3495,12 @@ nav:
     system: Infrastructure
   containers:
     tab: Containers
-  services:
-    tab: Services
-    all: All
+    containers: Containers
+    services: Services
+    dns: DNS
+    volumes: Volumes
+  hosts:
+    tab: Hosts
   catalog:
     tab: Catalog
     all: All
@@ -3560,11 +3508,7 @@ nav:
     community: Community
   infra:
     tab: Resources
-    hosts: Hosts
-    containers: Containers
-    vms: Virtual Machines
     storagePage: Storage
-    backupTarget: Backup Targets
     certificates: Certificates
     registries: Registries
     secrets: Secrets

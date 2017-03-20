@@ -7,7 +7,7 @@ export default Ember.Controller.extend({
       name:           'state',
       sort:           ['stateSort','name','id'],
       translationKey: 'generic.state',
-      width:          '125',
+      width:          125,
     },
     {
       name:           'name',
@@ -30,8 +30,8 @@ export default Ember.Controller.extend({
       translationKey: 'backupTargetsPage.mountOptions.label',
     },
     {
-      noSort:         true,
-      width:          '75',
+      sort:           false,
+      width:          75,
     },
   ],
 });
