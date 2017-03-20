@@ -2,16 +2,6 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
-  bulkActionHandler: Ember.inject.service(),
-  bulkActionsList: [
-    {
-      "label": "action.remove",
-      "icon": "icon icon-trash",
-      "action": "promptDelete",
-      "altAction": "delete",
-      "bulkActionName": "Delete",
-    },
-  ],
   sortBy: 'name',
   prefs: Ember.inject.service(),
 
@@ -31,12 +21,6 @@ export default Ember.Controller.extend({
   show: Ember.computed('showSystem', function() {
     return this.get('showSystem') === false ? 'standard' : 'all';
   }),
-
-  actions: {
-    applyBulkAction: function(name, selectedElements) {
-      this.get('bulkActionHandler')[name](selectedElements);
-    },
-  },
 
   headers: [
     {

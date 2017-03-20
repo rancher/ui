@@ -12,36 +12,43 @@ const defaultStateMap = {
   'creating':                 {icon: 'icon icon-tag',           color: 'text-info'   },
   'deactivating':             {icon: 'icon icon-adjust',        color: 'text-info'   },
   'degraded':                 {icon: 'icon icon-alert',         color: 'text-warning'},
-  'disconnected':             {icon: 'icon icon-alert',         color: 'text-warning' },
-  'error':                    {icon: 'icon icon-alert',         color: 'text-danger' },
-  'inactive':                 {icon: 'icon icon-circle',        color: 'text-danger' },
+  'disconnected':             {icon: 'icon icon-alert',         color: 'text-warning'},
+  'error':                    {icon: 'icon icon-alert',         color: 'text-error'  },
+  'erroring':                 {icon: 'icon icon-alert',         color: 'text-error'  },
+  'inactive':                 {icon: 'icon icon-circle',        color: 'text-error'  },
   'initializing':             {icon: 'icon icon-alert',         color: 'text-warning'},
-  'purged':                   {icon: 'icon icon-purged',        color: 'text-danger' },
+  'migrating':                {icon: 'icon icon-info',          color: 'text-info'   },
+  'provisioning':             {icon: 'icon icon-circle',        color: 'text-info'   },
+  'purged':                   {icon: 'icon icon-purged',        color: 'text-error'  },
   'purging':                  {icon: 'icon icon-purged',        color: 'text-info'   },
-  'removed':                  {icon: 'icon icon-trash',         color: 'text-danger' },
+  'reconnecting':             {icon: 'icon icon-alert',         color: 'text-error'  },
+  'removed':                  {icon: 'icon icon-trash',         color: 'text-error'  },
   'removing':                 {icon: 'icon icon-trash',         color: 'text-info'   },
   'requested':                {icon: 'icon icon-tag',           color: 'text-info'   },
   'registering':              {icon: 'icon icon-tag',           color: 'text-info'   },
   'reinitializing':           {icon: 'icon icon-alert',         color: 'text-warning'},
   'restoring':                {icon: 'icon icon-medicalcross',  color: 'text-info'   },
+  'restarting':               {icon: 'icon icon-adjust',        color: 'text-info'   },
   'running':                  {icon: 'icon icon-circle-o',      color: 'text-success'},
   'snapshotted':              {icon: 'icon icon-snapshot',      color: 'text-warning'},
   'started-once':             {icon: 'icon icon-dot-circlefill',color: 'text-success'},
   'starting':                 {icon: 'icon icon-adjust',        color: 'text-info'   },
-  'stopped':                  {icon: 'icon icon-circle',        color: 'text-danger' },
+  'stopped':                  {icon: 'icon icon-circle',        color: 'text-error'  },
   'stopping':                 {icon: 'icon icon-adjust',        color: 'text-info'   },
-  'unhealthy':                {icon: 'icon icon-alert',         color: 'text-danger' },
+  'unhealthy':                {icon: 'icon icon-alert',         color: 'text-error'  },
   'updating':                 {icon: 'icon icon-tag',           color: 'text-info'   },
   'updating-active':          {icon: 'icon icon-tag',           color: 'text-info'   },
   'updating-healthy':         {icon: 'icon icon-tag',           color: 'text-info'   },
-  'updating-unhealthy':       {icon: 'icon icon-tag',           color: 'text-info'   },
-  'updating-reinitializing':  {icon: 'icon icon-alert',         color: 'text-info'   },
   'updating-inactive':        {icon: 'icon icon-tag',           color: 'text-info'   },
+  'updating-unhealthy':       {icon: 'icon icon-tag',           color: 'text-info'   },
+  'updating-reinitializing':  {icon: 'icon icon-alert',         color: 'text-warning'},
+  'updating-running':         {icon: 'icon icon-tag',           color: 'text-info'   },
+  'updating-stopped':         {icon: 'icon icon-tag',           color: 'text-info'   },
   'waiting':                  {icon: 'icon icon-tag',           color: 'text-info'   },
 };
 
 const stateColorSortMap = {
-  'danger':   1,
+  'error':   1,
   'warning':  2,
   'info':     3,
   'success':  4
@@ -79,17 +86,6 @@ export default Ember.Mixin.create({
     */
     return [];
   }.property(),
-
-  translatedAvailableActions: Ember.computed('availableActions','intl._locale', function() {
-    // use this if you need to pass translated actions to addons
-    var availableActions = this.get('availableActions');
-    if (availableActions) {
-      availableActions.forEach((action) => {
-        action.translatedLabel = this.get('intl').findTranslationByKey(action.label);
-      });
-    }
-    return availableActions;
-  }),
 
   primaryAction: function() {
     // The default implementation returns the first enabled item that has an icon
@@ -232,7 +228,7 @@ export default Ember.Mixin.create({
 
   stateColor: function() {
     if ( this.get('isError') ) {
-      return 'text-danger';
+      return 'text-error';
     }
 
     var map = this.constructor.stateMap;
@@ -584,4 +580,23 @@ export default Ember.Mixin.create({
       return this.doAction(name, data);
     }, 'Wait for and do action='+name);
   },
+
+  displayUserLabelStrings: function() {
+    let out = [];
+    let labels = this.get('labels')||{};
+    Object.keys(labels).forEach(function(key) {
+      if ( key.indexOf(C.LABEL.AFFINITY_PREFIX) === 0 ||
+           key.indexOf(C.LABEL.SYSTEM_PREFIX) === 0 ||
+          C.LABELS_TO_IGNORE.indexOf(key) >= 0
+        )
+      {
+        // Skip ignored labels
+        return;
+      }
+
+      out.push(key + (labels[key] ? '='+labels[key] : ''));
+    });
+
+    return out;
+  }.property('labels'),
 });

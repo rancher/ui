@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import { alternateLabel } from 'ui/utils/platform';
-import ModalBase from 'lacsso/components/modal-base';
+import ModalBase from 'ui/mixins/modal-base';
 
-export default ModalBase.extend({
-  classNames: ['lacsso', 'modal-container', 'medium-modal', 'modal-logs'],
+export default Ember.Component.extend(ModalBase, {
+  classNames: ['medium-modal', 'modal-logs'],
   originalModel  : Ember.computed.alias('modalService.modalOpts.originalModel'),
   action         : Ember.computed.alias('modalService.modalOpts.action'),
   alternateLabel : alternateLabel,

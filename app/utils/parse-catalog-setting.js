@@ -1,6 +1,6 @@
 import C from 'ui/utils/constants';
 
-// New JSON format: {"catalogs": {"foo": {"url":"...", "branch": "master"}, ...}} 
+// New JSON format: {"catalogs": {"foo": {"url":"...", "branch": "master"}, ...}}
 export function parseCatalogSetting(str) {
   let out = {
     catalogs: {}
@@ -58,4 +58,70 @@ export function parseCatalogSetting(str) {
 
 export function getCatalogNames(str) {
   return Object.keys(parseCatalogSetting(str).catalogs).sort();
+}
+
+
+export function getCatalogSubtree(str, projId) {
+  let repos = getCatalogNames(str);
+  let showAll = repos.length > 1;
+
+  let out = [];
+  if ( showAll ) {
+    out.push({
+      id: 'catalog-all',
+      localizedLabel: 'nav.catalog.all',
+      icon: 'icon icon-globe',
+      route: 'catalog-tab',
+      ctx: [projId],
+      queryParams: {catalogId: 'all'}
+    });
+
+    // out.push({divider: true});
+  }
+
+  if (repos.indexOf(C.CATALOG.LIBRARY_KEY) >= 0 ) {
+    repos.removeObject(C.CATALOG.LIBRARY_KEY);
+    out.push({
+      id: 'catalog-library',
+      localizedLabel: 'nav.catalog.library',
+      icon: 'icon icon-catalog',
+      route: 'catalog-tab',
+      ctx: [projId],
+      queryParams: {catalogId: 'library'}
+    });
+  }
+
+  if (repos.indexOf(C.CATALOG.COMMUNITY_KEY) >= 0 ) {
+    repos.removeObject(C.CATALOG.COMMUNITY_KEY);
+    out.push({
+      id: 'catalog-community',
+      localizedLabel: 'nav.catalog.community',
+      icon: 'icon icon-users',
+      route: 'catalog-tab',
+      ctx: [projId],
+      queryParams: {catalogId: 'community'}
+    });
+  }
+
+  // if ( out.length > 2 ) {
+  //   out.push({divider: true});
+  // }
+
+  repos.forEach((repo) => {
+    out.push({
+      id: 'catalog-'+repo,
+      label: repo,
+      icon: 'icon icon-user',
+      route: 'catalog-tab',
+      ctx: [projId],
+      queryParams: {catalogId: repo}
+    });
+  });
+
+
+  if ( out.length === 1 ) {
+    return [];
+  } else {
+    return out;
+  }
 }

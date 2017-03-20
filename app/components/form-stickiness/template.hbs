@@ -1,29 +1,29 @@
 {{#liquid-if lbConfig.canSticky}}
-  <div class="row {{unless isNone 'form-group'}}">
-    <div class="col-sm-12 col-md-2 form-label">
+  <div class="row {{unless isNone 'inline-form'}}">
+    <div class="col span-2 col-inline">
       <label>{{t 'formStickiness.stickiness'}}</label>
     </div>
-    <div class="col-sm-6 col-md-2 radio">
+    <div class="col span-2 radio">
       <label>{{radio-button selection=stickiness value="none"}} {{t 'formStickiness.none'}}</label>
     </div>
-    <div class="col-sm-6 col-md-4 radio">
+    <div class="col span-4 radio">
       <label>{{radio-button selection=stickiness value="cookie"}} {{t 'formStickiness.newCookie'}}</label>
     </div>
   </div>
 
   {{#liquid-if isCookie}}
     <div>
-      <div class="row form-group">
-        <div class="col-sm-12 col-md-2 form-label">
-          <label class="form-control-static">{{t 'formStickiness.cookieName'}}</label>
+      <div class="row inline-form">
+        <div class="col span-2 col-inline">
+          <label>{{t 'formStickiness.cookieName'}}</label>
         </div>
-        <div class="col-sm-12 col-md-3">
+        <div class="col span-3">
           {{input type="text" classNames="form-control" value=policy.cookie placeholder=(t 'formStickiness.placeholder.sticky')}}
         </div>
-        <div class="col-sm-12 col-md-2 form-label">
-          <label class="form-control-static">{{t 'formStickiness.mode'}}</label>
+        <div class="col span-2 col-inline">
+          <label>{{t 'formStickiness.mode'}}</label>
         </div>
-        <div class="col-sm-12 col-md-3">
+        <div class="col span-3">
           {{new-select
             class="form-control"
             content=modeChoices
@@ -31,19 +31,19 @@
           }}
         </div>
       </div>
-      <div class="row form-group">
-        <div class="col-sm-12 col-md-2 form-label">
-          <label class="form-control-static">{{t 'formStickiness.domain'}}</label>
+      <div class="row inline-form">
+        <div class="col span-2 col-inline">
+          <label>{{t 'formStickiness.domain'}}</label>
         </div>
-        <div class="col-sm-12 col-md-8">
+        <div class="col span-8">
           {{input type="text" classNames="form-control" value=policy.domain placeholder=(t 'formStickiness.placeholder.domain')}}
         </div>
       </div>
-      <div class="row form-group">
-        <div class="col-sm-12 col-md-2 form-label">
-          <label class="form-control-static">{{t 'formStickiness.options'}}</label>
+      <div class="row inline-form">
+        <div class="col span-2 col-inline">
+          <label>{{t 'formStickiness.options'}}</label>
         </div>
-        <div class="col-sm-12 col-md-8">
+        <div class="col span-8">
           <div class="checkbox">
             <label>{{input type="checkbox" checked=policy.indirect}} {{t 'formStickiness.indirect'}}</label>
           </div>

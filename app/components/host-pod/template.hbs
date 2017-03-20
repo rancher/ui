@@ -1,6 +1,5 @@
 <div class="pod-header clearfix">
-
-  <div class="pull-left pod-state {{stateBackground}}"><span>{{model.displayState}}</span></div>
+  {{badge-state classNames="pull-left pod-state" model=model}}
   <div class="pull-right">{{action-menu model=model}}</div>
 </div>
   <div class="pod-name">
@@ -51,34 +50,28 @@
     </div>
   </div>
   {{#if (eq model.supportState 'unsupported')}}
-    <div class="pod-info lacsso pt-5">
-      <a href="{{settings.docsBase}}/hosts/#supported-docker-versions" target="_blank" rel="nofollow noreferrer"><span class="lacsso tag bg-error force-wrap"><i class="icon icon-alert"></i> {{t 'hostPod.supportState.unsupported'}}</span></a>
+    <div class="pod-info pt-5">
+      <a href="{{settings.docsBase}}/hosts/#supported-docker-versions" target="_blank" rel="nofollow noreferrer"><span class="tag bg-error force-wrap"><i class="icon icon-alert"></i> {{t 'hostPod.supportState.unsupported'}}</span></a>
     </div>
   {{else if (eq model.supportState 'untested')}}
-    <div class="pod-info lacsso pt-5">
-      <a href="{{settings.docsBase}}/hosts/#supported-docker-versions" target="_blank" rel="nofollow noreferrer"><span class="lacsso tag bg-warning force-wrap"><i class="icon icon-alert"></i> {{t 'hostPod.supportState.untested'}}</span></a>
+    <div class="pod-info pt-5">
+      <a href="{{settings.docsBase}}/hosts/#supported-docker-versions" target="_blank" rel="nofollow noreferrer"><span class="tag bg-warning force-wrap"><i class="icon icon-alert"></i> {{t 'hostPod.supportState.untested'}}</span></a>
     </div>
   {{/if}}
-  {{#if strictUserLabelArray.length}}
-    <div class="pod-info r-mb10">
-        <div class="lacsso pt-5" style="white-space: normal;">
-          {{#each strictUserLabelArray as |label|}}
-            <span class="label label-default clip" style="display: inline-block; max-width: 100%;">{{label.key}}{{#if label.value}}={{label.value}}{{/if}}</span>
-          {{/each}}
-        </div>
-    </div>
-  {{/if}}
-  {{#if model.requireAnyLabels.length}}
-    <div class="pod-info r-mb10">
-        <div class="lacsso pt-5" style="white-space: normal;">
-          {{#each model.requireAnyLabels as |label|}}
-            <span class="label label-warning clip" style="display: inline-block; max-width: 100%;">{{label}}</span>
-          {{/each}}
-        </div>
+  {{#if showLabelRow}}
+    <div class="pod-info mb-10">
+      <div class="pt-5" style="white-space: normal;">
+        {{#each model.displayUserLabelStrings as |label|}}
+          <span class="tag-xs bg-info clip" style="display: inline-block; max-width: 100%;">{{label}}</span>
+        {{/each}}
+        {{#each model.requireAnyLabelStrings as |label|}}
+          <span class="tag-xs bg-warning clip" style="display: inline-block; max-width: 100%;">{{label}}</span>
+        {{/each}}
+      </div>
     </div>
   {{/if}}
 
-  <div class="clearfix {{if (eq mode "dot") 'r-p5'}}" style="white-space: normal">
+  <div class="clearfix {{if (eq mode "dot") 'pl-5'}}" style="white-space: normal">
     {{#if (eq mode "dot")}}
       {{#each arrangedInstances as |item|}}
         {{container-dot model=item}}

@@ -1,0 +1,168 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass mixins.
+// -----------------------------------------------------------------------------
+
+
+///Sets base color and darkens bg on hover
+@mixin bg-color($bg) {
+  background: $bg;
+  &.btn:hover, a:hover {
+    background:darken($bg,10%);
+    transition: all 0.3s ease;
+  }
+  &.btn:active, a:focus {
+    background:darken($bg,25%);
+  } 
+}
+
+///Sets the specified background color and calculates a dark or light contrasted text color.
+@mixin contrasted($background-color, $dark: $contrasted-dark-default, $light: $contrasted-light-default, $threshold: null) {
+  @if $threshold {
+    // Deprecated in Compass 0.13
+    @warn "The $threshold argment to contrasted is no longer needed and will be removed in the next release.";
+  }
+  background-color: $background-color;
+  color: contrast-color($background-color, $dark, $light);
+
+  &:hover {
+    color: contrast-color($background-color, $dark, $light);
+  }
+}
+
+///Sets base color and darkens bg on hover
+@mixin bg-lighten($bg) {
+  background: $bg;
+  * {
+    background:lighten($bg,20%);
+  }
+}
+
+///from rancher (may not need all)
+@mixin diagonal-gradient-3($one, $two, $three) {
+  background: $one; /* Old browsers */
+  background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,$one), color-stop(50%,$two), color-stop(100%,$three)); /* Chrome,Safari4+ */
+  background:    -moz-linear-gradient(-45deg,  $one 0%, $two 50%, $three 100%); /* FF3.6+ */
+  background: -webkit-linear-gradient(-45deg,  $one 0%, $two 50%, $three 100%); /* Chrome10+,Safari5.1+ */
+  background:      -o-linear-gradient(-45deg,  $one 0%, $two 50%, $three 100%); /* Opera 11.10+ */
+  background:     -ms-linear-gradient(-45deg,  $one 0%, $two 50%, $three 100%); /* IE10+ */
+  background:         linear-gradient(135deg,  $one 0%, $two 50%, $three 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='$one', endColorstr='$three',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+}
+
+@mixin link-color($color) {
+  color: $color;
+
+  &:visited,
+  &:focus,
+  &:hover,
+  &:active {
+    color: $color;
+  }
+}
+
+// Rotated
+@mixin icon-rotate($degrees, $rotation) {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=#{$rotation});
+  -webkit-transform: rotate($degrees);
+      -ms-transform: rotate($degrees);
+          transform: rotate($degrees);
+}
+
+@mixin icon-flip($horiz, $vert, $rotation) {
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=#{$rotation});
+  -webkit-transform: scale($horiz, $vert);
+      -ms-transform: scale($horiz, $vert);
+          transform: scale($horiz, $vert);
+}
+
+// driver names are mapped in MACHINE_DRIVER_IMAGES app/utils/constants.js for the machine driver page
+// Add a new one? Change an existing one? make sure you update the map as well
+@mixin amazonec2 {
+  background-image: url('images/providers/amazonec2.svg');
+}
+
+@mixin azure {
+  background-image: url('images/providers/azure.svg');
+}
+
+@mixin digitalocean {
+  background-image: url('images/providers/digitalocean.svg');
+}
+
+@mixin exoscale {
+  background-image: url('images/providers/exoscale.svg');
+}
+
+@mixin openstack {
+  background-image: url('images/providers/openstack.svg');
+}
+
+@mixin packet {
+  background-image: url('images/providers/packet.svg');
+}
+
+@mixin rackspace {
+  background-image: url('images/providers/rackspace.svg');
+}
+
+@mixin ubiquity {
+  background-image: url('images/providers/ubiquity.svg');
+}
+
+@mixin vmwarevsphere {
+  background-image: url('images/providers/vmwarevsphere.png');
+}
+
+@mixin other {
+  background-image: url('images/providers/machine.svg');
+}
+
+@mixin custom {
+  background-image: url('images/logos/provider-custom.svg');
+}
+
+@mixin generic {
+  background-image: url('images/providers/generic-driver.svg');
+}
+
+@mixin aliyunecs {
+  background-image: url('images/providers/aliyunecs.png');
+}
+
+/// Event wrapper
+/// @author Harry Roberts
+/// @param {Bool} $self [false] - Whether or not to include current selector
+/// @link https://twitter.com/csswizardry/status/478938530342006784 Original tweet from Harry Roberts
+@mixin on-event($self: false) {
+  @if $self {
+    &,
+    &:hover,
+    &:active,
+    &:focus {
+      @content;
+    }
+  } @else {
+    &:hover,
+    &:active,
+    &:focus {
+      @content;
+    }
+  }
+}
+
+/// Make a context based selector a little more friendly
+/// @author Hugo Giraudel
+/// @param {String} $context
+@mixin when-inside($context) {
+  #{$context} & {
+    @content;
+  }
+}
+
+///Place holder
+@mixin placeholder {
+  &.placeholder { @content; }
+  &:-moz-placeholder { @content; }
+  &::-moz-placeholder { @content; }
+  &::-webkit-input-placeholder { @content; }
+}

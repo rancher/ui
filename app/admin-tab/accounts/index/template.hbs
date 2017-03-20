@@ -2,33 +2,26 @@
   <h1>{{t 'accountsPage.index.header'}}</h1>
 
   {{#if isLocal}}
-    {{#link-to "admin-tab.accounts.new" classNames="btn btn-sm btn-primary right-divider-btn"}}{{t 'accountsPage.index.localLink'}}{{/link-to}}
+    {{#link-to "admin-tab.accounts.new" classNames="btn btn-sm bg-primary right-divider-btn"}}{{t 'accountsPage.index.localLink'}}{{/link-to}}
   {{/if}}
 </section>
 
-<section class="well instances">
-  <table class="grid fixed" style="margin-bottom: 0;">
-    <thead>
-      <tr>
-        {{sortable-th sortable=this action="changeSort" name="state" label="generic.state" width="125"}}
-        {{sortable-th sortable=this action="changeSort" name="id" label="generic.id" width="120"}}
-        {{sortable-th sortable=this action="changeSort" name="kind" label="accountsPage.index.table.kind" width="120"}}
-        {{#if isLocal}}
-          {{sortable-th sortable=this action="changeSort" name="username" label="accountsPage.index.table.username"}}
-          {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
-        {{else}}
-          <th>{{t 'accountsPage.index.table.identity'}}</th>
-        {{/if}}
-        <th class="actions" width="75">&nbsp;</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each arranged as |account|}}
-        {{account-row model=account isLocal=isLocal}}
-      {{else}}
-        <tr><td colspan="{{if isLocal '6' '5'}}" class="text-center text-muted">{{t 'accountsPage.index.table.noData'}}</td></tr>
-      {{/each}}
-    </tbody>
-  </table>
+<section class="instances">
+  {{#sortable-table
+    classNames="grid sortable-table"
+    bulkActions=false
+    paging=false
+    fullRows=true
+    search=false
+    sortBy=sortBy
+    headers=headers
+    body=filteredByKind
+    as |sortable kind row dt|
+  }}
+    {{#if (eq kind "row")}}
+      {{account-row model=row isLocal=isLocal}}
+    {{else if (eq kind "norows")}}
+      <td colspan="{{if isLocal '6' '5'}}" class="text-center text-muted">{{t 'accountsPage.index.table.noData'}}</td>
+    {{/if}}
+  {{/sortable-table}}
 </section>
-

@@ -1,0 +1,23 @@
+<section class="header clearfix">
+  <h1>{{t 'userSettingsPage.header'}}</h1>
+</section>
+<section class="row">
+  <div class="col span-6">
+    <div>
+      {{theme-toggle}}
+    </div>
+    <div class="col span-12">
+      {{table-count-select}}
+    </div>
+  </div>
+  <div class="col span-6">
+    <div>
+      {{settings/user-info account=model.account}}
+    </div>
+    {{#if isCaas}}
+      <div>
+          {{settings/billing-info cards=model.stripeCards account=model.account}}
+      </div>
+    {{/if}}
+  </div>
+</section>

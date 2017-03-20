@@ -1,7 +1,7 @@
-<div class="lacsso banner bg-info m-0 p-0">
-  <div class="lacsso banner-icon" style="width: 68px;"><span class="icon icon-2x icon-notification"></span></div>
-  <div class="lacsso banner-message">
-    <p class="lacsso mt-15 mb-15">
+<div class="banner bg-info mb-0 p-0">
+  <div class="banner-icon" style="width: 68px;"><span class="icon icon-2x icon-notification"></span></div>
+  <div class="banner-message">
+    <p class="mt-15 mb-15">
       Experimental: More webhook features will be added in future releases, and the existing capabilities may change.
     </p>
   </div>
@@ -10,28 +10,29 @@
 <section class="header clearfix">
   <h1>{{t 'hookPage.receiver.header'}}</h1>
 
-  {{#link-to "authenticated.project.api.hooks.new-receiver" class="btn btn-sm btn-primary"}}{{t 'hookPage.receiver.buttonText'}}{{/link-to}}
+  <div class="pull-right">
+    {{#link-to "authenticated.project.api.hooks.new-receiver" class="btn btn-sm bg-primary"}}{{t 'hookPage.receiver.buttonText'}}{{/link-to}}
+  </div>
 </section>
 
-<section class="well">
+<section>
   <p>{{t 'hookPage.receiver.content' appName=settings.appName}}</p>
-  <table class="grid fixed r-mb0 r-mt10">
-    <thead>
-      <tr>
-        {{sortable-th sortable=this action="changeSort" name="state" width="121" label="generic.state"}}
-        {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
-        {{sortable-th sortable=this action="changeSort" name="kind" label="hookPage.fields.kind.label"}}
-        <th>{{t 'hookPage.fields.detail.label'}}</th>
-        <th width="100">{{t 'hookPage.fields.url.label'}}</th>
-        <th width="75">&nbsp;</th>
-      </tr>
-    </thead>
-    <tbody>
-      {{#each arranged as |row|}}
+  {{#sortable-table
+      classNames="grid fixed r-mb0 r-mt10 sortable-table"
+      bulkActions=false
+      paging=false
+      search=false
+      sortBy=sortBy
+      headers=headers
+      body=model.receivers
+      as |sortable kind row|
+  }}
+    {{#if (eq kind "row")}}
         {{hook-row model=row}}
-      {{else}}
-        <tr><td colspan="6" class="text-center text-muted">{{t 'hookPage.receiver.noData'}}</td></tr>
-      {{/each}}
-    </tbody>
-  </table>
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'hookPage.receiver.noData'}}</td>
+      </tr>
+    {{/if}}
+  {{/sortable-table}}
 </section>

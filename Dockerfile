@@ -3,6 +3,7 @@ RUN mkdir /source
 WORKDIR /source
 COPY package.json bower.json ./
 COPY scripts ./scripts
-RUN npm install && npm install -g bower && bower --allow-root  install && npm cache clean && bower --allow-root cache clean
+RUN npm install && npm install -g bower phantomjs && bower --allow-root  install && npm cache clean && bower --allow-root cache clean
 COPY . /source
-CMD ["npm","start","--","--ssl=false"]
+RUN ./node_modules/.bin/ember build --environment=production
+CMD ["npm","start","--","--environment=production","--ssl=false"]

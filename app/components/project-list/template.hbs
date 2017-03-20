@@ -1,9 +1,9 @@
 <section class="header clearfix">
   <h1>{{t 'projectList.index.header'}}</h1>
-  {{#link-to "settings.projects.new" class="btn btn-sm btn-primary"}}{{t 'projectList.index.new'}}{{/link-to}}
+  {{#link-to "settings.projects.new" class="btn btn-sm bg-primary"}}{{t 'projectList.index.new'}}{{/link-to}}
 </section>
 <section>
-  <div class="well">
+  <div>
     {{format-html-message 'projectList.index.subtext' appName=settings.appName}}
   </div>
 
@@ -12,26 +12,24 @@
   {{/unless}}
 </section>
 
-<section class="well">
-  <table class="grid fixed" style="margin-bottom: 0">
-    <thead>
+<section>
+  {{#sortable-table
+    classNames="grid fixed mb-0 sortable-table"
+    bulkActions=false
+    paging=false
+    search=false
+    sortBy=sortBy
+    descending=descending
+    headers=headers
+    body=model
+    as |sortable kind p|
+  }}
+    {{#if (eq kind "row")}}
+      {{project-row model=p}}
+    {{else if (eq kind "norows")}}
       <tr>
-        {{sortable-th sortable=this action="changeSort" name="state" label='generic.state' width="125"}}
-        {{sortable-th sortable=this action="changeSort" name="name" label='generic.name'}}
-        {{sortable-th sortable=this action="changeSort" name="description" label='generic.description'}}
-        {{sortable-th sortable=this action="changeSort" name="projectTemplate" label='projectList.index.table.header.projectTemplate'}}
-        {{sortable-th sortable=this action="changeSort" name="orchestration" label='projectList.index.table.header.orchestration'}}
-        <th width="80">{{t 'generic.default'}}</th>
-        <th width="75">&nbsp;</th>
+        <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'labelsSection.noData'}}</td>
       </tr>
-    </thead>
-    <tbody>
-      {{#each arranged as |p|}}
-        {{project-row model=p}}
-      {{else}}
-        <tr><td colspan="5" class="text-center text-muted">{{t 'projectList.index.table.body.noData'}}</td></tr>
-      {{/each}}
-    </tbody>
-  </table>
+    {{/if}}
+  {{/sortable-table}}
 </section>
-

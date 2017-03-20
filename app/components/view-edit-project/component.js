@@ -1,10 +1,9 @@
 import Ember from 'ember';
-import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 import { sortInsensitiveBy } from 'ui/utils/sort';
 
-export default Ember.Component.extend(NewOrEdit, Sortable, {
+export default Ember.Component.extend(NewOrEdit, {
   projects: Ember.inject.service(),
   access: Ember.inject.service(),
   growl: Ember.inject.service(),
@@ -17,16 +16,32 @@ export default Ember.Component.extend(NewOrEdit, Sortable, {
   policyManager: null,
   editing: false,
   tab: 'access',
-
   primaryResource: Ember.computed.alias('project'),
-  sortableContent: Ember.computed.alias('project.projectMembers'),
-  sortBy: 'name',
-  sorts: {
-    name:   ['name', 'externalId'],
-    type:   ['externalIdType','externalId'],
-    role:   ['role','externalId'],
-  },
 
+  sortBy: 'name',
+  headers:  [
+    {
+      name:           'name',
+      sort:           ['name', 'externalId'],
+      translationKey: 'generic.name',
+    },
+    {
+      name:           'type',
+      sort:           ['externalIdType','externalId'],
+      translationKey: 'generic.type',
+    },
+    {
+      name:           'role',
+      sort:           ['role','externalId'],
+      translationKey: 'generic.role',
+      width:          '',
+    },
+    {
+      sort:           [],
+      translationKey: '',
+      width:          '40',
+    },
+  ],
   stacks: null,
 
   actions: {

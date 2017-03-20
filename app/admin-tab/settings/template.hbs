@@ -2,20 +2,20 @@
   <h1>{{t 'settingsPage.header'}}</h1>
 </section>
 
-<section class="well">
+<section class="box mb-20">
   {{settings/host-registration initialValue=model.host}}
 </section>
 
-<section class="well">
+<section class="box mb-20">
   {{settings/catalog-url initialValue=model.catalog}}
 </section>
 
-{{#if (and settings.isOSS settings.isRancher)}}
-  <section class="well">
+{{#if (and (not settings.isEnterprise) settings.isRancher)}}
+  <section class="box mb-20">
     {{settings/telemetry-opt initialValue=model.telemetry}}
   </section>
 {{/if}}
 
-<section class="well">
+<section class="box">
   {{settings/danger-zone}}
 </section>

@@ -1,84 +1,92 @@
 <section class="header clearfix">
   <h1>{{t 'apiPage.account.header'}}</h1>
 
-  <button class="btn btn-sm btn-primary" {{action "newApikey" "account"}}>{{t 'apiPage.account.buttonText'}}</button>
+  <div class="right-buttons">
+    <button class="btn btn-sm bg-primary" {{action "newApikey" "account"}}>{{t 'apiPage.account.buttonText'}}</button>
+  </div>
 </section>
 
-<section class="well">
+<section>
   <p>{{t 'apiPage.account.content.paragraph1'}} {{#if access.identity.name}}(<code>{{access.identity.displayName}}</code>){{/if}} {{t 'apiPage.account.content.paragraph2'}}</p>
   <p>
     <label>{{t 'apiPage.currentEndpoint'}}</label>
     <code><a href="{{endpoint.auth.account.current}}" target="_blank">{{endpoint.display.account.current}}</a></code>
     {{copy-to-clipboard clipboardText=endpoint.auth.account.current size="sm"}}
   </p>
+  <!--
   <p>
     <label>{{t 'apiPage.legacyEndpoint'}}</label>
     <code><a href="{{endpoint.auth.account.legacy}}" target="_blank">{{endpoint.display.account.legacy}}</a></code>
     {{copy-to-clipboard clipboardText=endpoint.auth.account.legacy size="sm"}}
   </p>
-  <table class="grid fixed r-mb0 r-mt10">
-    <thead>
+  -->
+
+  {{#sortable-table
+      classNames="grid fixed mt-10 sortable-table"
+      bulkActions=false
+      paging=false
+      search=false
+      sortBy=sortBy
+      headers=headers
+      body=model.account
+      as |sortable kind key|
+  }}
+    {{#if (eq kind "row")}}
+      {{apikey-row model=key}}
+    {{else if (eq kind "norows")}}
       <tr>
-        {{sortable-th sortable=this action="changeSort" name="state" width="125" label="apiPage.table.state"}}
-        {{sortable-th sortable=this action="changeSort" name="name" label="apiPage.table.name"}}
-        {{sortable-th sortable=this action="changeSort" name="description"  label="apiPage.table.description"}}
-        {{sortable-th sortable=this action="changeSort" name="publicValue" label="apiPage.table.publicValue"}}
-        {{sortable-th sortable=this action="changeSort" name="created"  label="apiPage.table.created"}}
-        <th width="75">&nbsp;</th>
+        <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'apiPage.account.table.noData'}}</td>
       </tr>
-    </thead>
-    <tbody>
-      {{#each accountArranged as |key|}}
-        {{apikey-row model=key}}
-      {{else}}
-        <tr><td colspan="6" class="text-center text-muted">{{t 'apiPage.account.table.noData'}}</td></tr>
-      {{/each}}
-    </tbody>
-  </table>
+    {{/if}}
+  {{/sortable-table}}
 </section>
 
-{{#advanced-section}}
-  <section class="header">
-    <h1>{{t 'apiPage.header'}}</h1>
+<hr/>
 
-    <button class="btn btn-sm btn-primary" {{action "newApikey" "environment"}}>{{t 'apiPage.actionButton'}}</button>
-  </section>
+<section class="header clearfix">
+  <h1>{{t 'apiPage.header'}}</h1>
 
-  <section class="well">
-    <p>
-      {{format-html-message 'apiPage.content'
-        displayName=project.displayName
-      }}
-    </p>
-    <p>
-      <label>{{t 'apiPage.currentEndpoint'}}</label>
-      <code><a href="{{endpoint.auth.environment.current}}" target="_blank">{{endpoint.display.environment.current}}</a></code>
-      {{copy-to-clipboard clipboardText=endpoint.auth.environment.current size="sm"}}
-    </p>
-    <p>
-      <label>{{t 'apiPage.legacyEndpoint'}}</label>
-      <code><a href="{{endpoint.auth.environment.legacy}}" target="_blank">{{endpoint.display.environment.legacy}}</a></code>
-      {{copy-to-clipboard clipboardText=endpoint.auth.environment.legacy size="sm"}}
-    </p>
+  <div class="right-buttons">
+    <button class="btn btn-sm bg-primary" {{action "newApikey" "environment"}}>{{t 'apiPage.actionButton'}}</button>
+  </div>
+</section>
 
-    <table class="grid fixed r-mb0 r-mt10">
-      <thead>
-        <tr>
-          {{sortable-th sortable=this action="changeSort" name="state" width="125" label="apiPage.table.state"}}
-          {{sortable-th sortable=this action="changeSort" name="name" label="apiPage.table.name"}}
-          {{sortable-th sortable=this action="changeSort" name="description"  label="apiPage.table.description"}}
-          {{sortable-th sortable=this action="changeSort" name="publicValue" label="apiPage.table.publicValue"}}
-          {{sortable-th sortable=this action="changeSort" name="created"  label="apiPage.table.created"}}
-          <th width="75">&nbsp;</th>
-        </tr>
-      </thead>
-      <tbody>
-        {{#each environmentArranged as |key|}}
-          {{apikey-row model=key}}
-        {{else}}
-          <tr><td colspan="6" class="text-center text-muted">{{t 'apiPage.table.noData'}}</td></tr>
-        {{/each}}
-      </tbody>
-    </table>
-  </section>
-{{/advanced-section}}
+<section>
+  <p>
+    {{format-html-message 'apiPage.content'
+      displayName=project.displayName
+    }}
+  </p>
+  <p>
+    <label>{{t 'apiPage.currentEndpoint'}}</label>
+    <code><a href="{{endpoint.auth.environment.current}}" target="_blank">{{endpoint.display.environment.current}}</a></code>
+    {{copy-to-clipboard clipboardText=endpoint.auth.environment.current size="sm"}}
+  </p>
+
+  <!--
+  <p>
+    <label>{{t 'apiPage.legacyEndpoint'}}</label>
+    <code><a href="{{endpoint.auth.environment.legacy}}" target="_blank">{{endpoint.display.environment.legacy}}</a></code>
+    {{copy-to-clipboard clipboardText=endpoint.auth.environment.legacy size="sm"}}
+  </p>
+  -->
+
+  {{#sortable-table
+      classNames="grid fixed r-mt10 sortable-table"
+      bulkActions=false
+      paging=false
+      search=false
+      sortBy=sortBy
+      headers=headers
+      body=model.environment
+      as |sortable kind key|
+  }}
+    {{#if (eq kind "row")}}
+        {{apikey-row model=key}}
+    {{else if (eq kind "norows")}}
+      <tr>
+        <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'apiPage.table.noData'}}</td>
+      </tr>
+    {{/if}}
+  {{/sortable-table}}
+</section>

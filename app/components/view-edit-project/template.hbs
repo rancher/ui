@@ -9,19 +9,15 @@
     </h1>
   {{else}}
     <h1>{{#link-to "settings.projects"}}{{t 'viewEditProject.header'}}{{/link-to}}</h1>
-      {{#power-select options=allProjects selected=project onchange=(action "changeProject") searchField="displayName" as |obj|}}
-          {{select-dot model=obj}}
-      {{/power-select}}
-
     <div class="pull-right">
       {{header-state model=project}}
-      {{action-menu model=project size="sm" classNames="r-ml10"}}
+      {{action-menu model=project size="sm" classNames="ml-10"}}
     </div>
   {{/if}}
 </section>
 
 {{#if showEdit}}
-  <section class="well r-mb0">
+  <section class="pt-10">
     {{form-name-description
       model=project
       namePlaceholder="viewEditDescription.form.name.placeholder"
@@ -30,13 +26,13 @@
   </section>
 
   {{#unless editing}}
-    <section class="well">
+    <section>
       <div class="row">
-        <div class="col-xs-12">
+        <div class="">
           <label>{{t 'viewEditProject.showEdit.template'}}</label>
-          <div class="nav nav-boxes checked-active">
+          <div class="row nav nav-boxes checked-active">
             {{#each templateChoices as |tpl|}}
-              <a href="#" tabindex="1" {{action "selectTemplate" tpl.id}} class="nav-box-item driver orchestration-driver r-p5 {{if (eq project.projectTemplateId tpl.id) 'active'}}">
+              <a href="#" tabindex="1" {{action "selectTemplate" tpl.id}} class="col nav-box-item driver orchestration-driver pl-5 {{if (eq project.projectTemplateId tpl.id) 'active'}}">
                 <img src="{{tpl.image}}"/>
                 <div class="clip">{{tpl.name}}</div>
               </a>
@@ -57,9 +53,9 @@
     </section>
   {{/unless}}
 {{else if project.description}}
-  <section class="well r-mb0">
-    <label class="inline-block r-m0">{{t 'viewEditProject.description'}}: </label>
-    <p class="inline-block r-m0">{{project.description}}</p>
+  <section class="pt-10">
+    <label class="inline-block m-0">{{t 'viewEditProject.description'}}: </label>
+    <p class="inline-block m-0">{{project.description}}</p>
   </section>
 {{/if}}
 
@@ -68,61 +64,58 @@
   <hr/>
   <div class="well">
     {{#if (and accessEnabled showEdit)}}
-      <div class="form-group">
+      <div class="inline-form mb-20">
         {{input-identity action="checkMember" onError="error"}}
       </div>
     {{/if}}
 
     {{#if accessEnabled}}
-      <table class="grid fixed" style="margin-bottom: 0;">
-        <thead>
-          <tr>
-            {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
-            {{sortable-th sortable=this action="changeSort" name="type" label="generic.type"}}
-            {{sortable-th sortable=this action="changeSort" name="role" label="generic.role"}}
-            {{#if showEdit}}<th width="40">&nbsp;</th>{{/if}}
-          </tr>
-        </thead>
-        <tbody>
-          {{#each arranged as |member|}}
-            <tr>
+      {{#sortable-table
+          classNames="grid fixed mb-0 sortable-table"
+          bulkActions=false
+          paging=false
+          search=false
+          sortBy=sortBy
+          headers=headers
+          body=project.projectMembers
+          as |sortable kind member|
+      }}
+        {{#if (eq kind "row")}}
+            <td>
+              {{identity-block identity=member}}
+            </td>
+            <td>{{member.displayType}}</td>
+            <td>
+              {{#if showEdit}}
+                <select class="form-control input-sm" onchange={{action (mut member.role) value="target.value"}}>
+                  {{#each roleOptions as |choice|}}
+                    <option value={{choice.value}} selected={{eq member.role choice.value}}>{{t choice.label}}</option>
+                  {{/each}}
+                </select>
+              {{else}}
+                {{uc-first member.role}}
+              {{/if}}
+            </td>
+            {{#if showEdit}}
               <td>
-                {{identity-block identity=member}}
-              </td>
-              <td>{{member.displayType}}</td>
-              <td>
-                {{#if showEdit}}
-                  <select class="form-control input-sm" onchange={{action (mut member.role) value="target.value"}}>
-                    {{#each roleOptions as |choice|}}
-                      <option value={{choice.value}} selected={{eq member.role choice.value}}>{{t choice.label}}</option>
-                    {{/each}}
-                  </select>
+                {{#if accessEnabled}}
+                  <button class="btn bg-primary btn-sm pull-right gh-action" {{action "removeMember" member}}><i class="icon icon-minus"/></button>
                 {{else}}
-                  {{uc-first member.role}}
+                  &nbsp;
                 {{/if}}
               </td>
-              {{#if showEdit}}
-                <td>
-                  {{#if accessEnabled}}
-                    <button class="btn btn-primary btn-sm pull-right gh-action" {{action "removeMember" member}}><i class="icon icon-minus"/></button>
-                  {{else}}
-                    &nbsp;
-                  {{/if}}
-                </td>
-              {{/if}}
-            </tr>
-          {{else}}
-            <tr>
-              <td colspan="3" class="text-center text-muted">
-                {{t 'viewEditProject.showEdit.noMembers'}}
-              </td>
-            </tr>
-          {{/each}}
-        </tbody>
-      </table>
-      <hr class="r-m0" />
+            {{/if}}
+        {{else if (eq kind "norows")}}
+          <tr>
+            <td colspan="{{headers.length}}" class="text-center text-muted">
+              {{t 'viewEditProject.showEdit.noMembers'}}
+            </td>
+          </tr>
+        {{/if}}
+      {{/sortable-table}}
+      <hr />
     {{else}}
-      <p class="help-block text-center">
+      <p class="text-info text-center">
         {{format-html-message 'viewEditProject.helpBlock'}}
       </p>
     {{/if}}
@@ -220,4 +213,10 @@
 {{#if showEdit}}
   {{top-errors errors=errors}}
   {{save-cancel editing=editing save="save" cancel="cancel"}}
+{{/if}}
+
+{{#if editing}}
+  <section class="pt-20">
+    {{env-catalog project=project catalogs=catalogs}}
+  </section>
 {{/if}}

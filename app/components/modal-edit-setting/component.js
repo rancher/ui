@@ -1,12 +1,12 @@
 import Ember from 'ember';
-import ModalBase from 'lacsso/components/modal-base';
 import { normalizeName } from 'ui/services/settings';
+import ModalBase from 'ui/mixins/modal-base';
 
-export default ModalBase.extend({
+export default Ember.Component.extend(ModalBase, {
   settings: Ember.inject.service(),
   growl: Ember.inject.service(),
 
-  classNames: ['lacsso', 'modal-container', 'span-8', 'offset-2'],
+  classNames: ['span-8', 'offset-2'],
   model: Ember.computed.alias('modalService.modalOpts'),
 
   value: null,

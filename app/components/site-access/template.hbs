@@ -1,11 +1,11 @@
 <h3>{{t 'siteAccess.header'}}</h3>
-<p class="help-block">
+<p class="text-info">
   {{format-html-message 'siteAccess.helpText' appName=settings.appName}}
 </p>
 <hr/>
 
 <div class="row">
-  <div class="col-md-6">
+  <div class="col span-6">
     <div class="radio">
       <label>{{radio-button selection=copy.accessMode value="unrestricted"}} {{t 'siteAccess.unrestricted' individuals=(t individuals) collection=(t collection)}}</label>
     </div>
@@ -16,18 +16,18 @@
       <label>{{radio-button selection=copy.accessMode value="required"}} {{t 'siteAccess.required' individuals=(t individuals) collection=(t collection)}}</label>
     </div>
   </div>
-  <div class="col-md-6">
+  <div class="col span-6">
     {{#if showList}}
       {{input-identity allowTeams=false action="addAuthorized" onError="showError"}}
 
       <hr/>
       <h5>{{t 'siteAccess.listHeader' individuals=(t individuals) collection=(t collection)}}</h5>
 
-      <ul class="list-unstyled gh-block-list r-mt10">
+      <ul class="list-unstyled gh-block-list mt-10">
         {{#each copy.allowedIdentities as |item|}}
           <li>
             {{#identity-block identity=item}}
-              <button class="btn btn-primary btn-sm pull-right gh-action" {{action "removeIdentity" item}} disabled={{eq item.id access.identity.id}}><i class="icon icon-minus"/></button>
+              <button class="btn bg-primary btn-sm pull-right gh-action" {{action "removeIdentity" item}} disabled={{eq item.id access.identity.id}}><i class="icon icon-minus"/></button>
             {{/identity-block}}
           </li>
         {{/each}}

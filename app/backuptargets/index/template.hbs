@@ -1,49 +1,48 @@
 <section class="header clearfix">
   <h1>{{t 'backupTargetsPage.header'}}</h1>
   <div class="header-right right-divider stack-actions" style="width: auto">
-    {{#link-to "backuptargets.new-target" classNames="btn btn-primary btn-sm"}}{{t 'backupTargetsPage.linkTo'}}{{/link-to}}
+    {{#link-to "backuptargets.new-target" classNames="btn bg-primary btn-sm"}}{{t 'backupTargetsPage.linkTo'}}{{/link-to}}
   </div>
 </section>
 
-<section class="well">
-  <table class="grid" style="margin-bottom: 0">
-    <thead>
+<section>
+  {{#sortable-table
+      classNames="grid fixed mb-0 sortable-table"
+      bulkActions=false
+      paging=false
+      search=false
+      sortBy=sortBy
+      headers=headers
+      body=model.all
+      as |sortable kind target|
+  }}
+    {{#if (eq kind "row")}}
+      <td class="state">
+        {{badge-state model=target}}
+      </td>
+      <td class="force-wrap">
+        {{target.name}}
+      </td>
+      <td class="force-wrap">
+        {{target.nfsConfig.server}}
+      </td>
+      <td class="force-wrap">
+        {{target.nfsConfig.share}}
+      </td>
+      <td class="force-wrap">
+        {{#if target.nfsConfig.mountOptions}}
+          {{target.nfsConfig.mountOptions}}
+        {{else}}
+          <span class="text-muted">{{t 'generic.none'}}</span>
+        {{/if}}
+      </td>
+      <td class="actions wide">
+        {{action-menu model=target}}
+      </td>
+    {{else if (eq kind "norows")}}
       <tr>
-        {{sortable-th sortable=this action="changeSort" name="state" width="125" label="generic.state"}}
-        {{sortable-th sortable=this action="changeSort" name="name" label="generic.name"}}
-        {{sortable-th sortable=this action="changeSort" name="server" label="backupTargetsPage.server.label"}}
-        {{sortable-th sortable=this action="changeSort" name="share" label="backupTargetsPage.share.label"}}
-        {{sortable-th sortable=this action="changeSort" name="mountOptions" label="backupTargetsPage.mountOptions.label"}}
-        <th width="70">&nbsp;</th>
+        <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'apiPage.account.table.noData'}}</td>
       </tr>
-    </thead>
-    <tbody>
-      {{#each arranged as |target|}}
-        <tr>
-          <td class="state">
-            {{badge-state model=target}}
-          </td>
-          <td class="force-wrap">
-            {{target.name}}
-          </td>
-          <td class="force-wrap">
-            {{target.nfsConfig.server}}
-          </td>
-          <td class="force-wrap">
-            {{target.nfsConfig.share}}
-          </td>
-          <td class="force-wrap">
-            {{#if target.nfsConfig.mountOptions}}
-              {{target.nfsConfig.mountOptions}}
-            {{else}}
-              <span class="text-muted">{{t 'generic.none'}}</span>
-            {{/if}}
-          </td>
-          <td class="actions wide">
-            {{action-menu model=target}}
-          </td>
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
+    {{/if}}
+  {{/sortable-table}}
 </section>

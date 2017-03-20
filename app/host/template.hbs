@@ -1,30 +1,43 @@
-<section class="header clearfix">
-  <h1>{{#link-to "hosts"}}{{t 'hostsPage.hostPage.header.linkTo'}}{{/link-to}}</h1>
+<section class="header">
+  <div class="banner bg-info mt-0">
+    <div class="banner-message clearfix">
+      <p class="pull-left">{{t 'hostsPage.hostPage.header.singleBanner'}}</p>
+      <p class="pull-right">
+        {{#link-to "hosts"}}{{t 'hostsPage.hostPage.header.backLink'}}{{/link-to}}
+      </p>
+    </div>
+  </div>
 
-  {{#power-select options=model.all selected=host onchange=(action "changeHost") searchField="displayName" as |obj|}}
-    {{select-dot model=obj}}
-  {{/power-select}}
-
-  <div class="pull-right">
-    {{#action-menu model=host size="sm" classNames="r-ml10 pull-right"}}
-      {{#link-to "containers.new" (query-params hostId=host.id) classNames="btn btn-sm btn-primary"}}{{t 'hostsPage.hostPage.addContainer.linkTo'}}{{/link-to}}
-    {{/action-menu}}
-
+  <div class="clearfix">
+    <h1>
+      {{t 'hostsPage.hostPage.header.title' name=host.displayName}}
+    </h1>
+      {{#ember-wormhole destinationElement=graphNode renderInPlace=(not graphExpand)}}
+        {{info-multi-stats model=host linkName="hostStats" single=true}}
+      {{/ember-wormhole}}
+    
+    {{action-menu model=host showPrimary=false showLabel=true size="md" classNames="ml-10 pull-right"}}
     {{header-state model=host classNames="pull-right"}}
   </div>
+
+  {{#if host.description}}
+    <div class="force-wrap mt-5">
+      {{host.description}}
+    </div>
+  {{/if}}
+
+  {{#if host.showTransitioningMessage}}
+    <div class="force-wrap text-right mt-5 {{host.stateColor}}">
+      {{host.transitioningMessage}}
+    </div>
+  {{/if}}
+
+  <div class="expanded-graph"></div>
 </section>
 
 <section>
   <div class="row">
-    <div class="col-md-3 r-mb15">
-      {{#if host.description}}
-        <div>
-          <label>{{t 'hostsPage.hostPage.infoMultiStats.description'}} </label>
-          <div>{{host.description}}</div>
-        </div>
-        <hr>
-      {{/if}}
-
+    <div class="col span-3 mb-15">
       <div>
         <label>{{t 'hostsPage.hostPage.infoMultiStats.ip'}}</label>
         <div>{{copy-ip ip=host.displayIp}}</div>
@@ -35,7 +48,7 @@
       <div>
         <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
         <div class="row">
-          <div class="col-md-6 r-p0">
+          <div class="col span-6 pl-0">
             {{#if host.milliCpu}}{{t 'generic.total'}}{{/if}}: {{host.cpuBlurb}}
             {{#if host.cpuTooltip}}
               {{#tooltip-element type='tooltip-basic' model=host tooltipTemplate='tooltip-cpu' tooltipFor="tooltipCPU"}}
@@ -44,7 +57,7 @@
             {{/if}}
           </div>
           {{#if host.milliCpu}}
-            <div class="col-md-6 r-p0">
+            <div class="col span-6 pl-0">
               {{t 'generic.limit'}}: {{host.milliCpu}} {{t 'hostsPage.hostPage.infoMultiStats.milliCpu.labelText'}}
             </div>
           {{/if}}
@@ -56,7 +69,7 @@
       <div>
         <label>{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
         <div class="row">
-          <div class="col-md-6 r-p0">
+          <div class="col span-6 pl-0">
             {{#if host.memory}}{{t 'generic.total'}}{{/if}}:
             {{#if host.memoryBlurb}}
               {{host.memoryBlurb}}
@@ -65,7 +78,7 @@
             {{/if}}
           </div>
           {{#if host.memory}}
-            <div class="col-md-6 r-p0">
+            <div class="col span-6 pl-0">
               {{t 'generic.limit'}}: {{host.memoryLimitBlurb}}
             </div>
           {{/if}}
@@ -80,16 +93,16 @@
           {{#if host.diskBlurb}}
             {{#if host.diskDetail}}
               {{#each host.diskDetail as |disk|}}
-                <div class="col-md-6 r-p0">{{disk.value}}
+                <div class="col span-6 pl-0">{{disk.value}}
                   {{#tooltip-element type='tooltip-basic' tooltipTemplate='tooltip-basic-literal' model=disk tooltipFor="hostDisk"}}
                     <i class="icon icon-info"></i>
                   {{/tooltip-element}}
                </div>
               {{/each}}
             {{else}}
-              <div class="col-md-6 r-p0">{{host.diskBlurb}} (total)</div>
+              <div class="col span-6 pl-0">{{host.diskBlurb}} (total)</div>
             {{/if}}
-            <div class="col-md-6 r-p0">
+            <div class="col span-6 pl-0">
               {{t 'hostsPage.hostPage.infoMultiStats.localStorageMb.labelText'}}: {{host.localStorageBlurb}}
             </div>
           {{else}}
@@ -139,18 +152,18 @@
       </div>
 
     </div>
-    <div class="col-md-9">
+    <div class="col span-9">
       <div class="row">
         {{info-multi-stats model=host linkName="hostStats" single=true}}
       </div>
-      <div class="row r-p15">
-        <ul class="nav nav-tabs nav-tabs-well shadowed" role="tablist">
+      <div class="row tabs">
+        <ul class="tab-header" role="tablist">
           {{#link-to "host.containers" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.containers'}}</a>{{/link-to}}
           {{#link-to "host.ports" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.ports'}}</a>{{/link-to}}
           {{#link-to "host.labels" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.labels'}}</a>{{/link-to}}
           {{#link-to "host.storage" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.storage'}}</a>{{/link-to}}
         </ul>
-        <div class="table-flat well">
+        <div class="tab-content">
           {{outlet}}
         </div>
       </div>

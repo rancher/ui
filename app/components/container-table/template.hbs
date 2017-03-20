@@ -1,0 +1,20 @@
+{{#sortable-table
+  classNames="grid sortable-table"
+  body=filtered
+  sortBy=sortBy
+  bulkActions=bulkActions
+  search=search
+  searchText=searchText
+  paging=paging
+  stickyHeader=stickyHeader
+  subRow=subRow
+  pagingLabel=pagingLabel
+  headers=headers as |sortable kind container|}}
+  {{#if (eq kind "row")}}
+    {{container-row model=container showCommand="column" showHost=showHost showActions=true showPrimaryActions=false}}
+  {{else if (eq kind "nomatch")}}
+    <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.index.table.body.noMatch'}}</td></tr>
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.index.table.body.noData'}}</td></tr>
+  {{/if}}
+{{/sortable-table}}

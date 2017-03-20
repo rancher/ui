@@ -1,0 +1,158 @@
+$xs-padding: 2px 3px;
+$sm-padding: 5px 10px;
+$lg-padding: 18px 30px;
+
+// -----------------------------------------------------------------------------
+// This file contains all styles related to the button component.
+// -----------------------------------------------------------------------------
+.btn,
+button,
+[class^='btn-'] {
+    display: inline-block;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    border: 0 solid transparent;
+    padding: 5px 15px;
+    border-radius: .25rem;
+    letter-spacing: .5px;
+    border-radius: 2px;
+    line-height: 1.5;
+    &.bg-transparent {
+        color: $link-color;
+    }
+    &:hover {
+        text-decoration: none;
+    }
+    &.has-label {
+      text-align: left;
+      padding: 5px 0 5px 15px;
+      clear: both;
+
+      .btn-label {
+        @extend .pull-right;
+        text-align: center;
+        min-width:60px;
+        padding: 5px 10px;
+        border-radius : 0 3px 3px 0;
+        background: rgba($accent-two, .3);
+        margin-top: -5px;
+      }
+
+      .clip {
+        max-width: calc(100% - 75px);
+        display: inline-block;
+        vertical-align: middle;
+      }
+    }
+}
+
+//dropdown button
+.dropdown-menu {
+    max-width: 250px;
+    &.hidden {
+        display: none;
+    }
+    li {
+        a {
+            text-decoration: none;
+        }
+    }
+}
+
+//btn sizes
+.btn-xs,
+.btn-group-xs > .btn,
+.btn-xs .btn-label {
+    padding: $xs-padding;
+    font-size: .65em;
+}
+
+.btn-sm,
+.btn-group-sm .btn,
+.btn-sm .btn-label {
+    padding: $sm-padding;
+    font-size: 0.87em;
+    margin-left: -3px;
+}
+
+.btn-lg,
+.btn-group-lg > .btn,
+.btn-lg .btn-label {
+    padding: $lg-padding;
+    font-size: 1.25em;
+}
+
+//diabled
+.btn-disabled,
+.btn.disabled,
+.btn[disabled],
+fieldset[disabled] .btn {
+    @extend .bg-disabled;
+    cursor: not-allowed;
+
+    &:hover {
+        background: $bg-disabled;
+    }
+}
+
+//button group
+[class^='btn-group'] {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+
+    .btn,  .btn-xs{
+        position: relative;
+        display: inline-block;
+        border-radius: 0;
+        margin-left: -3px;
+
+        &:first-child {
+            border-radius: 3px 0 0 3px;
+            margin-left: 0;
+        }
+        &:last-child {
+            border-radius: 0 3px 3px 0;
+        }
+        &.active {
+            @extend .bg-primary;
+        }
+        &:focus {
+            z-index: 2;
+        }
+    }
+    &.action-menu {
+        .btn {
+            font-size: .75em;
+            margin-left: -6px;
+            .dropdown {
+                &:first-child {
+                    margin-left: 0;
+                }
+                &:last-child {
+                    position: relative;
+                    &:before {
+                        content: "";
+                        background: rgba(0, 0, 0, .5);
+                        position: absolute;
+                        left: 0;
+                        right: 0;
+                        bottom: 0;
+                        top: 0;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.copy-btn.small {
+  color: inherit;
+}

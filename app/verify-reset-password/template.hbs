@@ -1,0 +1,29 @@
+{{#authorize-user}}
+  {{#unless passwordReset}}
+    <div>
+      <label>{{t 'verifyResetPasswordPage.header'}}</label>
+      <form class="form text-left" {{action 'resetPassword' on="submit"}}>
+        {{new-password passwordOkay=(mut canSend) passwordOut=(mut password)}}
+        <div class="text-center">
+          {{#if loading}}
+            <button class="btn bg-primary mt-10" disabled><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
+          {{else}}
+            {{#if canSend}}
+              <button {{action 'resetPassword'}} class="btn bg-primary mt-10" name="submit">{{t 'verifyResetPasswordPage.button'}}</button>
+            {{else}}
+              <button class="btn bg-primary mt-10" disabled>{{t 'verifyResetPasswordPage.button'}}</button>
+            {{/if}}
+          {{/if}}
+        </div>
+      </form>
+    </div>
+  {{else}}
+    <div class="row" style="max-widht: 500px;">
+      <div class="col span-12 text-center">
+        <h1>{{t 'verifyResetPasswordPage.success.header'}}</h1>
+        <h2>{{t 'verifyResetPasswordPage.success.subtext'}}</h2>
+        {{link-to (t 'verifyResetPasswordPage.success.linkText') 'login'}}
+      </div>
+    </div>
+  {{/unless}}
+{{/authorize-user}}

@@ -3,31 +3,43 @@
     <h2>{{t 'editApiKey.title.justCreated'}}</h2>
     <p>
       <label>{{t 'editApiKey.publicValue.label'}}</label>
-      <h4>{{clone.publicValue}} {{copy-to-clipboard clipboardText=clone.publicValue size='small'}}</h4>
+      <div style="font-size: 150%;">
+        {{#copy-to-clipboard clipboardText=clone.publicValue}}
+          <code>{{clone.publicValue}}</code>
+        {{/copy-to-clipboard}}
+      </div>
     </p>
 
     <p>
       <label>{{t 'editApiKey.secretValue.label'}}</label>
-      <h4>{{clone.secretValue}} {{copy-to-clipboard clipboardText=clone.secretValue size='small'}}</h4>
+      <div style="font-size: 150%;">
+        {{#copy-to-clipboard clipboardText=clone.secretValue}}
+          <code>{{clone.secretValue}}</code>
+        {{/copy-to-clipboard}}
+      </div>
     </p>
 
-    <div class="alert alert-warning">
-      <i class="pull-left icon icon-alert icon-3x"></i>
-      <p class="r-ml50">{{t 'editApiKey.saveWarning1'}}</p>
-      <p class="r-ml50">{{t 'editApiKey.saveWarning2'}}</p>
+    <div class="banner bg-warning">
+      <div class="banner-icon">
+        <i class="icon icon-alert"></i>
+      </div>
+      <div class="banner-message">
+        <p>{{t 'editApiKey.saveWarning1'}}</p>
+        <p>{{t 'editApiKey.saveWarning2'}}</p>
+      </div>
     </div>
 
     <div class="footer-actions">
-      <button {{action "cancel"}} class="btn btn-primary">{{t 'generic.closeModal'}}</button>
+      <button {{action "cancel"}} class="btn bg-primary">{{t 'generic.closeModal'}}</button>
     </div>
   {{else}}
     <h2>{{t (if editing 'editApiKey.title.editing' 'editApiKey.title.new')}}</h2>
 
     {{#if editing}}
       <div class="row">
-        <div class="col-xs-12">
+        <div class="">
           <label>{{t 'editApiKey.publicValue.label'}}</label>
-          <div class="form-control-static">{{originalModel.publicValue}}</div>
+          <div>{{originalModel.publicValue}}</div>
         </div>
       </div>
     {{/if}}
@@ -40,8 +52,8 @@
 
     {{#unless editing}}
       <div class="row">
-        <div class="col-xs-12">
-          <p class="help-block">{{t 'editApiKey.noteOptional'}}</p>
+        <div class="">
+          <p class="text-info">{{t 'editApiKey.noteOptional'}}</p>
         </div>
       </div>
     {{/unless}}

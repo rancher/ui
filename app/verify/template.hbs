@@ -1,0 +1,43 @@
+{{#authorize-user}}
+  {{top-errors errors=errors}}
+  {{#unless accountCreated}}
+    <div>
+      <h1>{{t 'verifyPage.header'}}</h1>
+      <h2>{{t 'verifyPage.subtext'}}</h2>
+      <form class="form text-left" {{action 'createAcct' on="submit"}}>
+        <div class="inline-form mb-10">
+          <label for="login-user-name">{{t 'signupPage.form.labels.loginUsername'}}</label>
+          <div>
+            {{input type="text" value=model.name  id="login-user-name"}}
+          </div>
+        </div>
+        <div class="inline-form mb-10">
+          <label>{{t 'signupPage.form.labels.email'}}</label>
+          <div>
+            {{model.email}}
+          </div>
+        </div>
+        {{new-password passwordOkay=(mut canSend) passwordOut=(mut model.pw)}}
+        <div class="text-center">
+          {{#if loading}}
+            <button class="btn bg-primary mt-10 btn-disabled" disabled><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
+          {{else}}
+            {{#if canSend}}
+              <button {{action 'createAcct'}} class="btn bg-primary mt-10" name="submit">{{t 'generic.save'}}</button>
+            {{else}}
+              <button class="btn bg-primary mt-10" disabled>{{t 'generic.save'}}</button>
+            {{/if}}
+          {{/if}}
+        </div>
+      </form>
+    </div>
+  {{else}}
+    <div>
+      <div class="col span-12 text-center">
+        <h1>{{t 'verifyPage.account.header'}}</h1>
+        <h2>{{t 'verifyPage.account.subtext'}}</h2>
+        {{link-to (t 'verifyPage.account.linkText') 'login'}}
+      </div>
+    </div>
+  {{/unless}}
+{{/authorize-user}}

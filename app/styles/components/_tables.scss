@@ -1,0 +1,245 @@
+//
+// Important: Almost all selectors in here need to be ">"-ed together so they
+// apply only to the current table, not one nested inside another table.
+//
+
+//table variables
+$table-bg                            : lighten($light-grey, 5%)!default;
+$table-header                        : $link-color!default;
+$table-bg-accent                     : $light-grey!default;
+$table-bg-hover                      : lighten($info, 15)!default;
+$table-bg-active                     : $table-bg-hover!default;
+$table-bg-selected                   : lighten($link-color, 35%)!default;
+$table-border-color                  : lighten($mid-grey, 20)!default;
+
+//table mixins 
+@mixin basic-table {
+  > TBODY {
+    background: transparent;
+      &:after{
+        content: "";
+        display: block;
+        width: 100%;
+        height: 25px;
+      }
+
+    > TR {
+        > TD {
+            border: none;
+        }
+            background-color: $table-bg;
+            border: $table-border-color solid 1px;
+        &.row-selected {
+            background-color: $table-bg-selected;
+        }
+        &.no-bottom {
+          border-bottom: none;
+        }
+        &.sub-row {
+          border-top: none;
+        }
+
+        &.separator-row {
+          border: none;
+        }
+    }
+  }
+}
+
+@mixin solid {
+    
+    > TBODY {
+      background: $table-bg;
+      > TR {
+        background-color: darken($table-bg, 5%);
+      }
+    }
+
+    > tr {
+        &:hover {
+            background-color: $table-bg-hover;
+        }
+        td {
+            border: solid 2px white;
+        }
+    }  
+}
+
+@mixin striped {
+  > TBODY > TR {
+        > TD {
+            border: none;
+        }
+        &:nth-child(odd) {
+            background-color: $table-bg;
+        }
+        &:nth-child(even) {
+            background-color: $table-bg-accent;
+        }
+        &.row-selected {
+            background-color: $table-bg-selected;
+        }
+    }
+  }
+
+TABLE {
+    position: relative;
+    &.no-lines {
+        * {
+            border: none;
+        }
+    }
+
+    &.fixed {
+        table-layout: fixed;
+        width: 100%;
+    }
+
+    .fixed-header-actions {
+        min-height: 40px;
+        width: 100%;
+        z-index: 1;
+        background: $body-bg;
+    }
+
+    .fixed-header {
+        z-index: 2;
+        background: $link-color;
+        > TH {
+            BUTTON {
+                padding: 0;
+
+                I.faded {
+                    opacity: .3;
+                }
+            }
+        }
+    }
+
+    .fixed-header-placeholder {
+        visibility: hidden;
+        TH {
+            padding: 0 !important;
+            height: 0 !important;
+        }
+    }
+
+    .select-for-action {
+        text-align: center;
+    }
+
+    > THEAD .bulk-actions {
+        margin: 0 3px;
+    }
+
+    &.has-sub-rows {
+        TABLE {
+            > TBODY {
+                @include solid;
+            }
+        }
+        TABLE > THEAD > .fixed-header-actions {
+            z-index: 3;
+            background-color: transparent;
+        }
+        TABLE > THEAD > .fixed-header {
+            z-index: 4;
+        }
+        TABLE .bulk-actions {
+            margin: 0 18px;
+        }
+    }
+
+    > THEAD > TR > TH,
+    > TBODY > TR > TD {
+        padding: 5px;
+    }
+
+    > TBODY > TR.separator-row > TD {
+        background-color: $body-bg;
+    }
+
+    > TBODY > TR.group-row > TD {
+        background-color: $table-bg-accent;
+    }
+
+    > TBODY > TR.no-bottom > TD {
+        padding-bottom: 0;
+    }
+
+    > TBODY > TR.no-top > TD {
+        padding-top: 0;
+    }
+
+    &.small {
+        > THEAD {
+            > TR > TH {
+                padding: 2px 5px;
+            }
+        }
+        > TBODY > TR > TD {
+            padding: 2px 5px;
+        }
+    }
+
+    > THEAD > TR {
+        width: 100%;
+        box-sizing: border-box;
+        border-width: 0 0 3px 0;
+        border-color: $table-border-color;
+        border-radius: 0;
+        outline: none;
+        transition: all ease-in-out .2s;
+        &.fixed-header {
+            background: $link-color;
+            th .btn {
+                color: white;
+            }
+        }
+        > TH {
+            border-width: 0 0 3px 0;
+            border-color: $table-border-color;
+            border-radius: 0;
+            outline: none;
+            transition: all ease-in-out .3s;
+            text-align: left;
+            font-weight: normal;
+            color: white;
+        }
+    }
+
+    &.has-sub-rows TABLE {
+      > THEAD > TR.fixed-header {
+        background: darken($link-color, 15);
+      }
+      > TBODY > TR > TD {
+          border: solid 2px $table-bg;
+      }
+    }
+
+    > TBODY {
+        border: none;
+        background-color: $table-bg;
+        > TR {
+            &.row-selected {
+                background-color: $table-bg-selected;
+            }
+        }
+    }
+
+    &.basic-table {
+        @include basic-table;
+
+        table {
+            @include solid;
+        }
+    }
+
+    &.striped {
+        @include striped;
+    }
+
+    &.solid {
+        @include solid;
+    }
+}

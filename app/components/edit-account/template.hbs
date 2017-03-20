@@ -2,15 +2,15 @@
   <h2>{{t 'editAccount.title'}}</h2>
   <hr>
 
-  <div class="row form-group r-mt20">
-    <div class="col-sm-12 col-md-3 form-label">
-      <label class="form-control-static">{{t 'editAccount.form.name.label'}}</label>
+  <div class="row inline-form mt-20">
+    <div class="col span-3 col-inline">
+      <label>{{t 'editAccount.form.name.label'}}</label>
     </div>
-    <div class="col-sm-12 col-md-7">
+    <div class="col span-7">
       {{#if isAdmin}}
         {{input type="text" value=model.account.name classNames="form-control" placeholder=(t 'editAccount.form.name.placeholder')}}
       {{else}}
-        <div class="form-control-static">
+        <div>
           {{model.account.name}}
         </div>
       {{/if}}
@@ -18,11 +18,11 @@
   </div>
 
   {{#if isAdmin}}
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-3 form-label">
-        <label class="form-control-static">{{t 'editAccount.form.kind.label'}}</label>
+    <div class="row inline-form">
+      <div class="col span-3 col-inline">
+        <label>{{t 'editAccount.form.kind.label'}}</label>
       </div>
-      <div class="col-sm-12 col-md-7">
+      <div class="col span-7">
         {{new-select
           classNames="form-control"
           content=accountTypeChoices
@@ -34,69 +34,69 @@
   {{/if}}
 
   {{#if isAdmin}}
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-3 form-label">
+    <div class="row inline-form">
+      <div class="col span-3 col-inline">
         <label for="description">{{t 'editAccount.form.description.label'}}</label>
       </div>
-      <div class="col-sm-12 col-md-7">
+      <div class="col span-7">
         {{textarea value=model.account.description classNames="form-control no-resize" rows="2" placeholder=(t 'editAccount.form.description.placeholder')}}
       </div>
     </div>
   {{/if}}
 
   {{#if isLocalAuth}}
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-3 form-label">
-        <label class="form-control-static">{{t 'editAccount.form.publicValue.label'}}</label>
+    <div class="row inline-form">
+      <div class="col span-3 col-inline">
+        <label>{{t 'editAccount.form.publicValue.label'}}</label>
       </div>
-      <div class="col-sm-12 col-md-7">
-        <div class="form-control-static">
+      <div class="col span-7">
+        <div>
           {{model.credential.publicValue}}
         </div>
       </div>
     </div>
 
     {{#if needOld}}
-      <div class="row form-group">
-        <div class="col-sm-12 col-md-3 form-label">
-          <label class="form-control-static">{{t 'editAccount.form.oldPassword.label'}}</label>
+      <div class="row inline-form">
+        <div class="col span-3 col-inline">
+          <label>{{t 'editAccount.form.oldPassword.label'}}</label>
         </div>
-        <div class="col-sm-12 col-md-7">
+        <div class="col span-7">
           {{input type="password" value=oldPassword classNames="form-control"}}
         </div>
       </div>
     {{/if}}
 
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-3 form-label">
-        <label class="form-control-static">{{t 'editAccount.form.newPassword.label'}}</label>
+    <div class="row inline-form">
+      <div class="col span-3 col-inline">
+        <label>{{t 'editAccount.form.newPassword.label'}}</label>
       </div>
-      <div class="col-sm-12 col-md-7">
+      <div class="col span-7">
         {{schema/input-password value=newPassword generated="generated"}}
-        <div class="help-block">{{validateDescription}}</div>
+        <div class="text-info">{{validateDescription}}</div>
       </div>
     </div>
 
     {{#liquid-if showConfirm}}
-      <div class="row form-group">
-        <div class="col-sm-12 col-md-3 form-label">
-          <label class="form-control-static">{{t 'editAccount.form.confirmPassword.label'}}</label>
+      <div class="row inline-form">
+        <div class="col span-3 col-inline">
+          <label>{{t 'editAccount.form.confirmPassword.label'}}</label>
         </div>
-        <div class="col-sm-12 col-md-7">
+        <div class="col span-7">
           {{input type="password" value=newPassword2 classNames="form-control"}}
         </div>
       </div>
     {{/liquid-if}}
   {{else}}
-    <div class="row form-group">
-      <div class="col-sm-12 col-md-3 form-label">
-        <label class="form-control-static">{{t 'editAccount.form.identity.label'}}</label>
+    <div class="row inline-form">
+      <div class="col span-3 col-inline">
+        <label>{{t 'editAccount.form.identity.label'}}</label>
       </div>
-      <div class="col-sm-12 col-md-7">
+      <div class="col span-7">
         {{#if (and model.account.externalId model.account.externalIdType)}}
           {{identity-block externalIdType=model.account.externalIdType externalId=model.account.externalId}}
         {{else}}
-          <div class="form-control-static text-muted">
+          <div class="text-muted">
             {{t 'generic.none'}}
           </div>
         {{/if}}

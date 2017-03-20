@@ -1,4 +1,4 @@
-<section class="well">
+<section>
   <h2>{{headerText}}</h2>
   <div>
     {{#if access.enabled}}
@@ -9,7 +9,7 @@
   </div>
 </section>
 {{#if access.enabled}}
-  <section class="well">
+  <section>
     <h3>{{format-html-message 'authPage.localAuth.accessEnabled.header'}}</h3>
     <hr/>
 
@@ -18,11 +18,11 @@
     </p>
 
     {{#if confirmDisable}}
-      <button class="btn btn-danger" {{action "disable"}}>
+      <button class="btn bg-error" {{action "disable"}}>
         <i class="icon icon-alert"></i> {{t 'authPage.localAuth.accessEnabled.buttonText.disable'}}
       </button>
     {{else}}
-      <button class="btn btn-danger" {{action "promptDisable"}}>
+      <button class="btn bg-error" {{action "promptDisable"}}>
         <i class="icon icon-umbrella"></i> {{t 'authPage.localAuth.accessEnabled.buttonText.prompt'}}
       </button>
     {{/if}}
@@ -31,34 +31,34 @@
 {{/if}}
 
 {{#unless access.enabled}}
-  <section class="well">
+  <section>
     <h3>{{t 'authPage.localAuth.accessDisabled.header'}}</h3>
     <hr/>
-    <p class="help-block">{{t 'authPage.localAuth.accessDisabled.helpText' appName=settings.appName}}</p>
+    <p class="text-info">{{t 'authPage.localAuth.accessDisabled.helpText' appName=settings.appName}}</p>
     <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
+      <div class="col span-6">
+        <div class="inline-form">
           <label>{{t 'authPage.localAuth.accessDisabled.form.login.labelText'}}*</label>
           {{input type="text" value=adminPublicValue placeholder=(t 'authPage.localAuth.accessDisabled.form.login.placeholder') classNames="form-control"}}
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="form-group">
+      <div class="col span-6">
+        <div class="inline-form">
           <label>{{t 'authPage.localAuth.accessDisabled.form.name.labelText'}}</label>
           {{input type="text" value=adminName placeholder=(t 'authPage.localAuth.accessDisabled.form.name.placeholder') classNames="form-control"}}
         </div>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-6">
-        <div class="form-group">
+      <div class="col span-6">
+        <div class="inline-form">
           <label>{{t 'authPage.localAuth.accessDisabled.form.password.labelText'}}*</label>
           {{input type="password" value=adminSecretValue classNames="form-control"}}
-          <div class="help-block">{{validateDescription}}</div>
+          <div class="text-info">{{validateDescription}}</div>
         </div>
       </div>
-      <div class="col-md-6">
-        <div class="form-group">
+      <div class="col span-6">
+        <div class="inline-form">
           <label>{{t 'authPage.localAuth.accessDisabled.form.confirmPassword.labelText'}}*</label>
           {{input type="password" value=adminSecretValue2 classNames="form-control"}}
         </div>
@@ -66,13 +66,13 @@
     </div>
   </section>
 
-  <section class="well">
+  <section>
     <h3>{{t 'authPage.localAuth.accessControl.header'}}</h3>
     <hr/>
-    <p class="help-block">{{t 'authPage.localAuth.accessControl.helpText'}}</p>
+    <p class="text-info">{{t 'authPage.localAuth.accessControl.helpText'}}</p>
     {{top-errors errors=errors}}
 
-    <button disabled={{createDisabled}} class="btn btn-primary" style="display: block;" {{action "test"}}>
+    <button disabled={{createDisabled}} class="btn bg-primary" style="display: block;" {{action "test"}}>
       {{#if testing}}
         <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.localAuth.accessControl.buttonText.post'}}
       {{else}}

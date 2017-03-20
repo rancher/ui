@@ -1,0 +1,83 @@
+<form>
+  <section class="horizontal-form">
+    <div class="row addtl-info">
+      <div class="col span-4">
+        <div class="nav-boxes driver">
+          <div class="nav-box-item driver machine-driver active {{providerClass}}"></div>
+        </div>
+      </div>
+      <div class="col span-8">
+        <div>
+          <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.table.provider'}}</label>
+          <div>
+            {{host.provider}}
+          </div>
+        </div>
+        <hr/>
+        <div>
+          <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.table.instance'}}</label>
+          <div>
+            {{host.displayName}}
+          </div>
+        </div>
+        <hr/>
+        <div>
+          <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.table.realm'}}</label>
+          <div>
+            {{host.availabilityRealm}}
+          </div>
+        </div>
+        <hr/>
+        <div>
+          <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.table.mem'}}</label>
+          <div>
+            {{host.memory}}
+          </div>
+        </div>
+        <hr/>
+        <div>
+          <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.table.storage'}}</label>
+          <div>
+            {{host.storage}}
+          </div>
+        </div>
+        <hr/>
+        <div>
+          <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.table.transfer'}}</label>
+          <div>
+            {{host.transfer}}
+          </div>
+        </div>
+        <hr/>
+        <div>
+          <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.table.ppm'}}</label>
+          <div>
+            {{#if host.provider}}
+              {{#if (eq host.provider 'Digital Ocean') }}
+                ${{host.pricePerMonth}}
+              {{else}}
+                ${{host.pricePerMonth}}*
+              {{/if}}
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-fluid">
+      {{partial "host/add-common"}}
+      <hr />
+      {{add-host-template templates=hostTemplates provider=host.provider selectedKey=(mut selectedTemplateKey)}}
+      <div class="row">
+        <div class="col span-2 col-inline">
+          <label>{{t 'hostPartial.host.addOptions.labels'}}</label>
+        </div>
+        <div class="col span-10">
+          {{form-user-labels initialLabels=model.labels setLabels=(action 'setLabels')}}
+        </div>
+      </div>
+    </div>
+    {{top-errors errors=errors}}
+    {{save-cancel save="saveTemp" cancel=cancel}}
+  </section>
+
+</form>

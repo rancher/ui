@@ -1,4 +1,4 @@
-<section class="well">
+<section>
   <h2>
     <b class="text-warning">{{t 'authPage.shibboleth.enabled.header' providerName=(t providerName)}}</b>
   </h2>
@@ -7,11 +7,11 @@
   </div>
 </section>
 
-<section class="well">
+<section>
   <div class="row">
     <h3>{{t 'authPage.shibboleth.enabled.authenticated.header.text'}}</h3>
     <hr/>
-    <div class="col-md-4 r-pl0">
+    <div class="col span-4 pl-0">
       <div>
         <b>{{t 'authPage.shibboleth.enabled.displayName'}}</b> <span class="text-muted">{{config.displayNameField}}</span>
       </div>
@@ -19,7 +19,7 @@
         <b>{{t 'authPage.shibboleth.enabled.userName'}}</b> <span class="text-muted">{{config.userNameField}}</span>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col span-4">
       <div>
         <b>{{t 'authPage.shibboleth.enabled.userId'}}</b> <span class="text-muted">{{config.uidField}}</span>
       </div>
@@ -28,7 +28,6 @@
       </div>
     </div>
   </div>
-
 </section>
 
 {{site-access
@@ -36,7 +35,7 @@
   collection='siteAccess.organizations'
 }}
 
-<section class="well">
+<section>
   <h3>{{format-html-message 'authPage.shibboleth.enabled.disableAccess.header'}}</h3>
   <hr/>
 
@@ -45,11 +44,11 @@
   </p>
 
   {{#if confirmDisable}}
-    <button class="btn btn-danger" {{action "disable"}}>
+    <button class="btn bg-error" {{action "disable"}}>
       <i class="icon icon-alert"></i> {{t 'authPage.shibboleth.enabled.disableAccess.confirmDisable'}}
     </button>
   {{else}}
-    <button class="btn btn-danger" {{action "promptDisable"}}>
+    <button class="btn bg-error" {{action "promptDisable"}}>
       <i class="icon icon-umbrella"></i> {{t 'authPage.shibboleth.enabled.disableAccess.disable'}}
     </button>
   {{/if}}

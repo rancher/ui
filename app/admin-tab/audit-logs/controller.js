@@ -1,14 +1,60 @@
 import Ember from 'ember';
-import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
 
-export default Ember.Controller.extend(Sortable, {
+export default Ember.Controller.extend({
   application       : Ember.inject.controller(),
   queryParams       : ['sortBy', 'sortOrder', 'eventType', 'resourceType', 'resourceId', 'clientIp', 'authType'],
-
-  sortableContent   : Ember.computed.alias('model.auditLog'),
   resourceTypeAndId : null,
-  modalService: Ember.inject.service('modal'),
+  modalService:       Ember.inject.service('modal'),
+
+  headers: [
+    {
+      translationKey: 'auditLogsPage.table.time',
+      name: 'id',
+      sort: ['id'],
+      classNames: 'pl-10',
+      width: '115'
+    },
+    {
+      translationKey: 'auditLogsPage.table.eventType',
+      name: 'eventType',
+      sort: ['eventType'],
+      classNames: 'pl-10',
+    },
+    {
+      translationKey: '',
+      name: '',
+      sort: [''],
+      classNames: 'pl-10',
+    },
+    {
+      translationKey: 'auditLogsPage.table.description',
+      name: 'description',
+      sort: ['description'],
+      classNames: 'pl-10',
+    },
+    {
+      translationKey: 'auditLogsPage.table.environment',
+      name: 'accountId',
+      sort: ['accountId'],
+      classNames: 'pl-10',
+      width: '125'
+    },
+    {
+      translationKey: 'auditLogsPage.table.resourceTypeId',
+      name: 'resourceType',
+      sort: ['resourceType'],
+      classNames: 'pl-10',
+    },
+    {
+      translationKey: 'auditLogsPage.table.identity',
+      name: 'authenticatedAsIdentityId',
+      sort: ['authenticatedAsIdentityId'],
+      classNames: 'pl-10',
+      width: '175'
+    },
+  ],
+
 
   actions: {
     updateResourceType: function(type) {
@@ -18,10 +64,6 @@ export default Ember.Controller.extend(Sortable, {
     updateAuthType: function(type) {
       this.set('filters.authType', type.name);
       this.set('authTypeReadable', type.value);
-    },
-
-    changeSort: function(name) {
-      this._super(name);
     },
 
     search: function() {
@@ -146,9 +188,5 @@ export default Ember.Controller.extend(Sortable, {
       return false;
     }
   }.property('model.auditLog.pagination'),
-
-  // implemented here cause we're using sortable kinda but not really. Basically want the
-  // actions but not the implmentation
-  arranged: function() {}
 
 });

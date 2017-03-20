@@ -1,0 +1,86 @@
+// -----------------------------------------------------------------------------
+// This file contains very basic styles.
+// -----------------------------------------------------------------------------
+
+// Text indent, margins, and paddings from 5-50px in 5px increments
+// e.g. in-10 - {text-indent: 10px}
+// e.g. p-10 - {padding: 10px}
+// e.g. mt-20 - {margin-top: 20px}
+$spacing-property-map: (
+    m:  margin,
+    mt: margin-top,
+    mr: margin-right,
+    ml: margin-left,
+    mb: margin-bottom,
+    p:  padding,
+    pt: padding-top,
+    pb: padding-bottom,
+    pl: padding-left,
+    pr: padding-right,
+    in: text-indent,
+);
+
+@each $keyword, $property in $spacing-property-map {
+  .#{$keyword}-0 { #{$property}: 0 !important; }
+
+  @for $size from 1 through 10 {
+    $val: $size * 5;
+    .#{$keyword}-#{$val} { #{$property}: $val * 1px !important; }
+  }
+}
+
+html {
+  height: 100%;
+}
+body {
+  direction: ltr;
+  &.container-farm {
+    background: url('images/login-containerfarm-fullcolor.svg') center center no-repeat;
+    background-size: cover;
+  }
+}
+
+
+/**
+ * Set up a decent box model on the root element
+ */
+html {
+  box-sizing: border-box;
+  height: 100%;
+}
+
+body {
+  position: relative;
+  margin: 0;
+  min-height: 100%;
+}
+
+/**
+ * Make all elements from the DOM inherit from the parent box-sizing
+ * Since `*` has a specificity of 0, it does not override the `html` value
+ * making all elements inheriting from the root box-sizing value
+ * See: https://css-tricks.com/inheriting-box-sizing-probably-slightly-better-best-practice/
+ */
+*, *::before, *::after {
+  box-sizing: inherit;
+}
+
+/**
+ * Basic styles for links
+ */
+a {
+  color: $link-color;
+  text-decoration: none;
+
+  @include on-event {
+    color: $text-color;
+    text-decoration: underline;
+  }
+}
+
+hr {
+    border: 0;
+    height: 0;
+    border-top: 1px solid $border;
+    border-bottom: 1px solid $border;
+}

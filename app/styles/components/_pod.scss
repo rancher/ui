@@ -1,4 +1,4 @@
-$pod-border      : $lightGray;
+$pod-border      : $table-border-color;
 $pod-border-dark : $table-border-color;
 $pod-bg          : $table-bg;
 $subpod-detail   : $table-bg-accent;
@@ -10,10 +10,11 @@ $subpod-detail   : $table-bg-accent;
 
 .pod-column {
   /* width is set dynamically */
+  border: solid 1px $pod-border;
+  background: $pod-bg;
+  padding: 10px;
   width          : 260px;
-  display        : inline-block;
   vertical-align : top;
-  margin         : 0 10px 10px 0;
 
   &:last-of-type {
     margin-right: 0;
@@ -21,15 +22,14 @@ $subpod-detail   : $table-bg-accent;
 }
 
 .pod {
-  background    : $accent-one;
+  // background    : $pod-bg;
   border        : solid transparent;
   position      : relative;
-  padding       : 5px;
+  // padding       : 5px;
   margin-bottom : 10px;
-  border-radius : $border-radius-base;
 
   .pod-header {
-    font-weight    : $normal-weight;
+    // font-weight    : $normal-weight;
   }
   .pod-name {
     margin-top: 5px;
@@ -37,14 +37,13 @@ $subpod-detail   : $table-bg-accent;
 
   .pod-state {
     font-size                  : 11px;
+    font-weight                : 300;
     text-align                 : center;
     padding                    : 5px 10px;
     vertical-align             : top;
     display                    : inline-block;
-    border-bottom-left-radius  : $border-radius-base;
-    border-bottom-right-radius : $border-radius-base;
-    font-weight                : $normal-weight;
     text-transform             : uppercase;
+    line-height                : 1.364em;
 
     SPAN {
       position : relative;
@@ -68,7 +67,7 @@ $subpod-detail   : $table-bg-accent;
       margin-top   : 5px;
       font-size    : 12px;
       color        : #8a919c;
-      border-right : 1px solid $table-border-color;
+      border-right : 1px solid $pod-border-dark;
 
       &:last-of-type {
         border-right: 0;
@@ -77,7 +76,8 @@ $subpod-detail   : $table-bg-accent;
   }
 
   .pod-message {
-    @extend .clip;
+    @include clip;
+
     text-align     : center;
     font-size      : 12px;
   }
@@ -128,13 +128,14 @@ $subpod-detail   : $table-bg-accent;
 
   .subpod-header {
     margin           : -5px -5px 0 -5px;
-    background-color : $table-border-color;
-    background-color: mix($brand-primary-dark, $table-bg-accent, 15%);
+    background-color : $pod-border-dark;
+    background-color: mix($primary-dark, $table-bg-accent, 15%);
     padding          : 5px;
 
 
     H6 {
-      margin-top: 3px;
+      margin: 3px 0;
+      font-size: 13px;
     }
 
     .icon-chevron-down {
@@ -164,8 +165,7 @@ $subpod-detail   : $table-bg-accent;
     display: block;
     padding    : 7px;
     font-size  : 12px;
-    background: $btn-default-bg;
-    color: $btn-default-color;
+    background: $bg-default;
     border: none;
   }
 
@@ -191,7 +191,7 @@ $subpod-detail   : $table-bg-accent;
       float  : right;
       border : none;
       &:hover {
-        background : $btn-default-bg;
+        // background : $btn-default-bg;
         color      : inherit;
       }
 
@@ -205,7 +205,7 @@ $subpod-detail   : $table-bg-accent;
 .subpod {
   position         : relative;
   min-height       : 30px;
-  background-color : $table-bg;
+  background-color : $pod-bg;
   border           : 1px dotted $pod-border-dark;
   margin-top       : 5px;
 
@@ -238,13 +238,13 @@ $subpod-detail   : $table-bg-accent;
 
 
 .subpod-children {
-  border                    : 1px solid $table-bg-accent;
+  border                    : 1px solid $subpod-detail;
   border-bottom-left-radius : 5px;
-  background-color          : $table-bg-accent;
+  background-color          : $subpod-detail;
   padding                   : 5px 5px 0 5px;
 
   H6 {
-    margin-right: 5px;
+    margin: 0 5px 0 0;
   }
 }
 

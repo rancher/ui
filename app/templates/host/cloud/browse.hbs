@@ -1,0 +1,87 @@
+<div class="row">
+    <div class="col span-3">
+      <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.sorts.realm.label'}}</label>
+      {{new-select
+          classNames="form-control"
+          content=model.realms
+          optionLabelPath="translationKey"
+          optionValuePath="id"
+          localizedLabel=true
+          value=realmSort
+      }}
+    </div>
+    <div class="col span-3">
+      <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.sorts.mem.label'}}</label>
+      <div class="row inline-form gutless">
+        <div class="col span-10">
+
+          {{input type='text' value=memSort}}
+        </div>
+        <div class="col span-2">
+          <span class="input-label bg-default" type="button">{{t 'hostsPage.cloudHostsPage.browsePage.sorts.mem.unit'}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col span-3">
+      <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.sorts.storage.label'}}</label>
+      <div class="row inline-form gutless">
+        <div class="col span-10">
+          {{input type='text' value=storageSort}}
+        </div>
+        <div class="col span-2">
+          <span class="input-label bg-default" type="button">{{t 'hostsPage.cloudHostsPage.browsePage.sorts.storage.unit'}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="col span-3">
+      <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.sorts.cost.label'}}</label>
+      <div class="row inline-form gutless">
+        <div class="col span-2">
+          <span class="input-label bg-default" type="button">{{t 'hostsPage.cloudHostsPage.browsePage.sorts.cost.preUnit'}}</span>
+        </div>
+        <div class="col span-6">
+          {{input type='text' value=costSort}}
+        </div>
+        <div class="col span-4">
+          <span class="input-label bg-default" type="button">{{t 'hostsPage.cloudHostsPage.browsePage.sorts.cost.unit'}}</span>
+        </div>
+      </div>
+    </div>
+</div>
+<div class="row">
+  {{#sortable-table
+    classNames="grid sortable-table"
+    bulkActions=false
+    paging=false
+    search=false
+    sortBy=sortBy
+    headers=headers
+    body=filteredContent
+    as |sortable kind row dt|
+  }}
+    {{#if (eq kind "row")}}
+        <td>{{row.provider}}</td>
+        <td>{{row.zone}}</td>
+        <td>{{row.displayName}}</td>
+        <td>{{row.memory}} GB</td>
+        <td>
+          {{#if (eq row.transfer -1)}}
+            Unlimited
+          {{else if (eq row.transfer 0)}}
+            None
+          {{else}}
+           {{format-si row.transfer suffix="B" startingExponent=2}}
+         {{/if}}
+        </td>
+        <td>{{star-rating rating=row.cpuRating}}</td>
+        <td>{{star-rating rating=row.diskRating}}</td>
+        <td>
+          ${{row.pricePerMonth}}{{#if row.variableFees}}<sup>&#10746;</sup>{{/if}}
+        </td>
+        <td class="text-right"><button role="button" class="btn bg-primary" {{action "selectMachine" row.id}}> {{t 'generic.select'}}</button></td>
+    {{else if (eq kind "norows")}}
+      <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'accountsPage.index.table.noData'}}</td>
+    {{/if}}
+  {{/sortable-table}}
+  <div class="pull-right text-small mt-10">{{format-html-message 'hostsPage.cloudHostsPage.browsePage.table.help'}}</div>
+</div>

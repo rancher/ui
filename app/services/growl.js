@@ -5,7 +5,7 @@ export default Ember.Service.extend({
   init: function() {
     $.jGrowl.defaults.pool = 6;
     $.jGrowl.defaults.closeTemplate = '<i class="icon icon-x"></i>';
-    $.jGrowl.defaults.closerTemplate = '<div><button type="button" class="btn btn-info btn-xs btn-block">Dismiss All Notifications</button></div>';
+    $.jGrowl.defaults.closerTemplate = '<div><button type="button" class="btn bg-info btn-xs btn-block">Dismiss All Notifications</button></div>';
   },
 
   raw: function(title, body, opt) {

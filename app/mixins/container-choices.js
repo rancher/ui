@@ -6,6 +6,11 @@ export default Ember.Mixin.create({
 
   isManagedNetwork: Ember.computed.equal('instance.networkMode','managed'),
 
+  init() {
+    this.set('allHosts', this.get('store').all('host'));
+    this._super(...arguments);
+  },
+
   containerChoices: function() {
     var list = [];
     var id = this.get('id');

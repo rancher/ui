@@ -2,15 +2,8 @@
 <div id="loading-underlay" class="underlay"></div>
 <div id="loading-overlay" class="loading-overlay">
   {{#if settings.isRancher}}
-    <div class="loader">
-      <div class="orbit">
-        <div class="sun"></div>
-        <div class="moon"></div>
-      </div>
-
-      <div class="loadfield">
-        <div class="grass"></div>
-        <img class="cow" src="{{app.baseAssets}}assets/images/logos/main-loading.svg" />
+    <div class="square">
+      <div class="lid">
       </div>
     </div>
   {{else}}
@@ -25,31 +18,32 @@
 
 {{outlet "overlay"}}
 {{outlet "error"}}
-<div id="application">
-  {{outlet}}
 
-  <div class="dropdown" id="resource-actions-parent">
-    <ul role="menu" id="resource-actions" class="hide resource-actions global-actions dropdown-menu dropdown-menu-right">
-      <li class="resource-actions-tabbable"><a tabindex="-1" id="resource-actions-first" aria-label="Select an Action below"></a></li>
-      {{#each resourceActions.activeActions as |item|}}
-        {{#if item.divider}}
-          <li class="divider"></li>
-        {{else}}
-          <li>
-            {{action-menu-item
-              label=item.label
-              icon=item.icon
-              action="clickedAction"
-              actionArg=item.action
-              altActionArg=item.altAction
-            }}
-          </li>
-        {{/if}}
+<div id="application" class="container">
+  {{outlet}}
+</div>
+
+<div class="dropdown" id="resource-actions-parent">
+  <ul role="menu" id="resource-actions" class="hide resource-actions global-actions dropdown-menu dropdown-menu-right">
+    <li class="resource-actions-tabbable"><a tabindex="-1" id="resource-actions-first" aria-label="Select an Action below"></a></li>
+    {{#each resourceActions.activeActions as |item|}}
+      {{#if item.divider}}
+        <li class="divider"></li>
       {{else}}
-        <li><a href="#" onclick="return false;" disabled="true">No actions available</a></li>
-      {{/each}}
-    </ul>
-  </div>
+        <li>
+          {{action-menu-item
+            label=item.label
+            icon=item.icon
+            action="clickedAction"
+            actionArg=item.action
+            altActionArg=item.altAction
+          }}
+        </li>
+      {{/if}}
+    {{else}}
+      <li><a href="#" onclick="return false;" disabled="true">No actions available</a></li>
+    {{/each}}
+  </ul>
 </div>
 
 {{component tooltip tooltipTemplate=tooltipTemplate class="container-tooltip" id="tooltip-base" role="tooltip" aria-hidden="false"}}

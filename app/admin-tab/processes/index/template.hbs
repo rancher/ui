@@ -1,5 +1,5 @@
 {{#sortable-table
-  classNames="lacsso grid sortable-table"
+  classNames="grid sortable-table"
   bulkActions=false
   prefix=true
   paging=false
@@ -7,7 +7,7 @@
   sortBy=sortBy
   headers=headers
   body=model.summary
-  as |row kind dt|
+  as |sortable kind row dt|
 }}
   {{#if (eq kind "row")}}
     <td data-title="{{dt.name}}">{{row.processName}}</td>
@@ -15,9 +15,9 @@
     <td data-title="{{dt.ready}}">{{row.ready}}</td>
     <td data-title="{{dt.delay}}">{{row.delay}}</td>
   {{else if (eq kind "nomatch")}}
-    <td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.summary.noMatch'}}</td>
+    <td colspan="{{headers.length}}" class="text-center text-muted pt-20 pb-20">{{t 'processesPage.summary.noMatch'}}</td>
   {{else if (eq kind "norows")}}
-    <td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.summary.noData'}}</td>
+    <td colspan="{{headers.length}}" class="text-center text-muted pt-20 pb-20">{{t 'processesPage.summary.noData'}}</td>
   {{else if (and model.summary.length (eq kind "prefix"))}}
     <tr class="total">
       <td data-title="{{dt.name}}">{{total.processName}}</td>

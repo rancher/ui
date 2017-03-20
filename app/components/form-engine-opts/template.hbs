@@ -1,13 +1,13 @@
 {{#if showEngineUrl}}
-  <div class="row form-group">
-    <div class="col-md-2 form-label">
-      <label class="form-control-static">{{t 'formEngineOpts.engineInstallUrl.label'}}</label>
+  <div class="row inline-form">
+    <div class="col span-2 col-inline">
+      <label>{{t 'formEngineOpts.engineInstallUrl.label'}}</label>
     </div>
-    <div class="col-md-10">
+    <div class="col span-10">
       <div class="input-group">
         {{input type="text" value=machine.engineInstallUrl classNames="form-control" placeholder=(t 'formEngineOpts.engineInstallUrl.placeholder')}}
         <div class="input-group-btn">
-          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
+          <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
           <ul class="dropdown-menu dropdown-menu-right" role="menu" style="min-width: 250px; max-height: 300px; overflow-y: auto;">
             {{#each engineUrlChoices as |choice|}}
               <li><a href="#" {{action "setEngine" choice.value}}>{{choice.label}}</a></li>
@@ -19,20 +19,20 @@
   </div>
 {{/if}}
 
-<div class="row form-group">
-  <div class="col-md-2 form-label">
-    <label class="form-control-static">{{t 'formEngineOpts.engineStorageDriver.label'}}</label>
+<div class="row inline-form">
+  <div class="col span-2 col-inline">
+    <label>{{t 'formEngineOpts.engineStorageDriver.label'}}</label>
   </div>
-  <div class="col-md-10">
+  <div class="col span-10">
     {{input type="text" value=machine.engineStorageDriver classNames="form-control" placeholder=(t 'formEngineOpts.engineStorageDriver.placeholder')}}
   </div>
 </div>
 
-<div class="row form-group">
-  <div class="col-md-2 form-label">
-    <label class="form-control-static">{{t 'formEngineOpts.engineOpts.label'}}</label>
+<div class="row inline-form">
+  <div class="col span-2 col-inline">
+    <label>{{t 'formEngineOpts.engineOpts.label'}}</label>
   </div>
-  <div class="col-md-10">
+  <div class="col span-10">
     {{form-key-value
       initialMap=machine.engineOpt
       changed=(action (mut machine.engineOpt))
@@ -43,11 +43,11 @@
   </div>
 </div>
 
-<div class="row form-group">
-  <div class="col-md-2 form-label">
-    <label class="form-control-static">{{t 'formEngineOpts.engineLabels.label'}}</label>
+<div class="row inline-form">
+  <div class="col span-2 col-inline">
+    <label>{{t 'formEngineOpts.engineLabels.label'}}</label>
   </div>
-  <div class="col-md-10">
+  <div class="col span-10">
     {{form-key-value
       initialMap=machine.engineLabel
       changed=(action (mut machine.engineLabel))
@@ -57,11 +57,11 @@
   </div>
 </div>
 
-<div class="row form-group">
-  <div class="col-md-2 form-label">
-    <label class="form-control-static">{{t 'formEngineOpts.engineEnv.label'}}</label>
+<div class="row inline-form">
+  <div class="col span-2 col-inline">
+    <label>{{t 'formEngineOpts.engineEnv.label'}}</label>
   </div>
-  <div class="col-md-10">
+  <div class="col span-10">
     {{form-key-value
       initialMap=machine.engineEnv
       changed=(action (mut machine.engineEnv))
@@ -73,11 +73,11 @@
   </div>
 </div>
 
-<div class="row form-group">
-  <div class="col-md-2 form-label">
-    <label class="form-control-static">{{t 'formEngineOpts.engineInsecureRegistry.label'}}</label>
+<div class="row inline-form">
+  <div class="col span-2 col-inline">
+    <label>{{t 'formEngineOpts.engineInsecureRegistry.label'}}</label>
   </div>
-  <div class="col-md-10">
+  <div class="col span-10">
     {{form-value-array
       initialValues=machine.engineInsecureRegistry
       changed=(action (mut machine.engineInsecureRegistry))
@@ -88,11 +88,11 @@
   </div>
 </div>
 
-<div class="row form-group">
-  <div class="col-md-2 form-label">
-    <label class="form-control-static">{{t 'formEngineOpts.engineRegistryMirror.label'}}</label>
+<div class="row inline-form">
+  <div class="col span-2 col-inline">
+    <label>{{t 'formEngineOpts.engineRegistryMirror.label'}}</label>
   </div>
-  <div class="col-md-10">
+  <div class="col span-10">
     {{form-value-array
       initialValues=machine.engineRegistryMirror
       changed=(action (mut machine.engineRegistryMirror))
@@ -102,4 +102,3 @@
     }}
   </div>
 </div>
-

@@ -1,12 +1,12 @@
 {{#sortable-table
-  classNames="lacsso grid sortable-table"
+  classNames="grid sortable-table"
   bulkActions=false
   paging=false
   search=false
   sortBy=sortBy
   headers=headers
   body=model.pools
-  as |row kind|
+  as |sortable kind row|
 }}
   {{#if (eq kind "row")}}
     <td data-title="{{dt.name}}">{{row.displayName}}</td>
@@ -32,8 +32,12 @@
       {{/if}}
     </td>
   {{else if (eq kind "nomatch")}}
-    <td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.pools.noMatch'}}</td>
+    <tr>
+      <td colspan="{{headers.length}}" class="text-center text-muted pt-20 pb-20">{{t 'processesPage.pools.noMatch'}}</td>
+    </tr>
   {{else if (eq kind "norows")}}
-    <td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'processesPage.pools.noData'}}</td>
+    <tr>
+      <td colspan="{{headers.length}}" class="text-center text-muted pt-20 pb-20">{{t 'processesPage.pools.noData'}}</td>
+    </tr>
   {{/if}}
 {{/sortable-table}}

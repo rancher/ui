@@ -1,18 +1,15 @@
-<section class="header clearfix">
+<section class="header has-tabs clearfix">
   <h1>{{t 'processesPage.header'}}</h1>
+
+  <ul class="tab-nav">
+    <li>{{#link-to 'admin-tab.processes.index' replace=true}}{{t 'processesPage.tab.summary'}}{{/link-to}}</li>
+    <li class="hide">{{#link-to 'admin-tab.processes.pools' replace=true}}{{t 'processesPage.tab.pools'}}{{/link-to}}</li>
+    <li>{{#link-to 'admin-tab.processes.list' (query-params which="running") replace=true}}{{t 'processesPage.tab.running'}}{{/link-to}}</li>
+    <li>{{#link-to 'admin-tab.processes.list' (query-params which="ready") replace=true}}{{t 'processesPage.tab.ready'}}{{/link-to}}</li>
+    <li>{{#link-to 'admin-tab.processes.list' (query-params which="delayed") replace=true}}{{t 'processesPage.tab.delayed'}}{{/link-to}}</li>
+    <li>{{#link-to 'admin-tab.processes.list' (query-params which="completed") replace=true}}{{t 'processesPage.tab.completed'}}{{/link-to}}</li>
+  </ul>
 </section>
-<section class="processes">
-  <div class="lacsso tabs">
-    <ul class="lacsso tab-header">
-      <li class="lacsso">{{#link-to 'admin-tab.processes.index' replace=true class="lacsso"}}{{t 'processesPage.tab.summary'}}{{/link-to}}</li>
-      <li class="lacsso hide">{{#link-to 'admin-tab.processes.pools' replace=true class="lacsso"}}{{t 'processesPage.tab.pools'}}{{/link-to}}</li>
-      <li class="lacsso">{{#link-to 'admin-tab.processes.list' (query-params which="running") replace=true class="lacsso"}}{{t 'processesPage.tab.running'}}{{/link-to}}</li>
-      <li class="lacsso">{{#link-to 'admin-tab.processes.list' (query-params which="ready") replace=true class="lacsso"}}{{t 'processesPage.tab.ready'}}{{/link-to}}</li>
-      <li class="lacsso">{{#link-to 'admin-tab.processes.list' (query-params which="delayed") replace=true class="lacsso"}}{{t 'processesPage.tab.delayed'}}{{/link-to}}</li>
-      <li class="lacsso">{{#link-to 'admin-tab.processes.list' (query-params which="completed") replace=true class="lacsso"}}{{t 'processesPage.tab.completed'}}{{/link-to}}</li>
-    </ul>
-    <div class="lacsso tab-content">
-      {{outlet}}
-    </div>
-  </div>
-</section>
+<div class="tab-content">
+  {{outlet}}
+</div>

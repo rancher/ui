@@ -20,7 +20,6 @@
   }
 }
 
-
 .machine-driver {
   &.amazonec2 {
     @include amazonec2;
@@ -93,10 +92,166 @@
   }
 
   .c3-axis .domain {
-    stroke: #f3f5f7;
+    stroke: $light-grey;
   }
 }
 
 .api-field LABEL {
   text-transform: initial;
+}
+
+/**********
+* Nav boxes (chooes a host/registry driver)
+**********/
+.nav-boxes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  & > .nav-box-item {
+    width            : 100px;
+    min-height       : 100px;
+    flex             : 0 1 auto;
+    position         : relative;
+    outline          : 0;
+    opacity          : 0.5;
+    background-color : $light-grey;
+    border           : 2px solid $light-grey;
+    color            : $mid-grey;
+    width            : 100px;
+    min-height       : 100px;
+    text-align       : center;
+    padding          : 0;
+
+    &:focus {
+      outline: -webkit-focus-ring-color auto 5px;
+      filter         : none;
+      -webkit-filter : none;
+      -moz-filter    : none;
+      -ms-filter     : none;
+      -o-filter      : none;
+    }
+
+    &.active {
+      opacity           : 1;
+      background-color  : white;
+      border-color      : $light-grey;
+      border-width      : 2px;
+    }
+  }
+
+  .driver {
+    background-position : center center;
+    background-size     : 90%;
+    background-repeat   : no-repeat;
+    filter              : grayscale(100%);
+    -webkit-filter      : grayscale(100%);
+    -moz-filter         : grayscale(100%);
+    -ms-filter          : grayscale(100%);
+    -o-filter           : grayscale(100%);
+
+    &.active {
+      filter         : none;
+      -webkit-filter : none;
+      -moz-filter    : none;
+      -ms-filter     : none;
+      -o-filter      : none;
+    }
+  }
+
+  .driver-coming-soon {
+    opacity : 0.5;
+    border: 0;
+    background-color: transparent;
+
+    &:after {
+      content: 'Coming Soon';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  &.checked-active .active:after {
+    content          : $icon-check;
+    top              : -15px;
+    right            : -15px;
+    font-family      : 'rancher-icons';
+    font-size        : 18px;
+    position         : absolute;
+    background-color : $info;
+    height           : 29px;
+    width            : 29px;
+    line-height      : 30px;
+    border-radius    : 50%;
+    color            : white;
+  }
+}
+
+ol {
+  counter-reset: li;
+  margin: 20px 0;
+  padding-left: 0;
+}
+ol > li {
+    position: relative;
+    margin: 0 0 25px 2em;
+    padding: 10px 20px;
+    list-style: none;
+    background: $light-grey;
+}
+ol > li::before {
+    content: counter(li);
+    counter-increment: li;
+    position: absolute;
+    top: 0;
+    left: -2em;
+    bottom: 0;
+    width: 2em;
+    margin-right: 8px;
+    padding: 10px 4px;
+    font-weight: bold;
+    text-align: center;
+    background: rgba($mid-grey, .6);
+    color: white;
+}
+
+.host-blurb {
+  margin-right: 10px;
+}
+
+
+.hosts-cloud-add {
+  .addtl-info {
+    .nav-boxes {
+      .nav-box-item {
+        height: 250px;
+        width: 250px;
+        border: none;
+      }
+    }
+  }
+}
+
+.hosts-cloud-new {
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+  .tabs {
+    ul.tab-header {
+      li.active {
+        a {
+          background-color: transparent;
+          border-bottom: 2px solid $link-color;
+        }
+      }
+      li {
+        a {
+          font-size: 18px;
+          border: 0px;
+          background-color: transparent;
+        }
+      }
+    }
+  }
 }

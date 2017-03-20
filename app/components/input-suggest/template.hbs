@@ -1,0 +1,28 @@
+{{input
+  type="text"
+  class="form-control"
+  value=value
+}}
+
+<div class="rl-dropdown-toggle btn bg-primary input-group-btn" {{action "toggleDropdown"}}>
+  <i class="icon icon-chevron-down"></i>
+</div>
+
+<div class="user-controls-dropdown rl-dropdown">
+  <ul class="dropdown-menu {{if dropdownExpanded 'block'}}">
+    {{#if grouped}}
+      {{#each-in grouped as |group choices|}}
+        {{#if choices.length}}
+          <li class="dropdown-header">{{group}}</li>
+          {{#each choices as |value|}}
+            <li {{action "select" value}}><a href="#">{{value}}</a></li>
+          {{/each}}
+        {{/if}}
+      {{/each-in}}
+    {{else}}
+      {{#each choices as |value|}}
+        <li {{action "select" value}}><a href="#">{{value}}</a></li>
+      {{/each}}
+    {{/if}}
+  </ul>
+</div>

@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import {parseTarget, stringifyTarget} from 'ui/utils/parse-target';
+import {stringifyTarget} from 'ui/utils/parse-target';
 
 export default Ember.Component.extend({
   intl        : Ember.inject.service(),
@@ -9,7 +9,7 @@ export default Ember.Component.extend({
   isBalancer  : null,
   editing     : false,
 
-  classNames  : ['form-group'],
+  classNames  : ['inline-form'],
 
   actions: {
     addTargetService: function() {
@@ -37,31 +37,12 @@ export default Ember.Component.extend({
     var existing = this.get('existing');
     if ( existing )
     {
-      existing.get('consumedServicesWithNamesAndPorts').forEach((map) => {
-        if ( map.get('ports.length') )
-        {
-          map.get('ports').forEach((str) => {
-            var obj = parseTarget(str);
-            if ( obj )
-            {
-              this.set('isAdvanced', true);
-
-              obj.setProperties({
-                isService: true,
-                value: map.get('service.id'),
-              });
-
-              out.pushObject(obj);
-            }
-          });
-        }
-        else
-        {
-          out.pushObject(Ember.Object.create({
-            isService: true,
-            value: map.get('service.id'),
-          }));
-        }
+      let links = existing.get('linkedServices');
+      Object.keys(links).forEach((key) => {
+        out.pushObject(Ember.Object.create({
+          isService: true,
+          value: links[key],
+        }));
       });
     }
     else

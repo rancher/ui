@@ -1,0 +1,37 @@
+$progress-bg                         : $light-grey !default;
+$progress-bar-bg                     : $primary !default;
+$progress-divider-bg                 : white !default;
+$progress-divider-width              : 1px !default;
+$progress-border-radius              : 90px !default;
+$progress-height                     : 10px !default;
+
+.progress {
+  display: block;
+  border-radius: $progress-border-radius;
+  background-color: $progress-bg;
+  height: $progress-height;
+
+  .progress-bar {
+    display: inline-block;
+    vertical-align: top;
+    height: $progress-height;
+    border-radius: 0;
+    border-right: $progress-divider-width solid $progress-divider-bg;
+    vertical-align: top;
+
+    &:first-child {
+      border-top-left-radius: $progress-border-radius;
+      border-bottom-left-radius: $progress-border-radius;
+    }
+
+    &:last-child {
+      border-top-right-radius: $progress-border-radius;
+      border-bottom-right-radius: $progress-border-radius;
+      border-right: 0;
+    }
+  }
+}
+
+.progress-bar-multi .progress-bar.bg-success:only-child {
+  background-color: rgba($success, 0.25);
+}

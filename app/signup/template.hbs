@@ -1,0 +1,38 @@
+{{#authorize-user}}
+  {{top-errors errors=errors}}
+  {{#if emailSent}}
+    <div class="row" style="max-width: 500px;">
+      <div class="col span-12 text-center">
+        <h1>{{t 'signupPage.emailSuccess.header'}}</h1>
+        <p>{{t 'signupPage.emailSuccess.confirm.subtext'}}</p>
+      </div>
+      {{#if loading}}
+        <button class="btn bg-primary mt-10 btn-disabled"><i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}</button>
+      {{else}}
+        <button class="btn bg-primary mt-10" name="submit" {{action "register"}}>{{t 'signupPage.emailSuccess.confirm.resend'}}</button>
+      {{/if}}
+    </div>
+  {{else}}
+    <div>
+      <h1>{{t 'signupPage.header'}}</h1>
+      <form class="form text-left"  {{action "register" on='submit'}}>
+        <div class="row">
+          <label for="login-user-name">{{t 'signupPage.form.labels.loginUsername'}}</label>
+          <div name="login-user-name">
+            {{input type="text" value=model.name}}
+          </div>
+        </div>
+
+        <div class="row">
+          <label for="email">{{t 'signupPage.form.labels.email'}}</label>
+          <div name="email">
+            {{input type="email" value=model.email}}
+          </div>
+        </div>
+        <div class="text-center mt-15">
+          {{save-cancel save="register" cancel="cancel" createLabel='signupPage.form.button' saveDisabled=saveDisabled}}
+        </div>
+      </form>
+    </div>
+  {{/if}}
+{{/authorize-user}}

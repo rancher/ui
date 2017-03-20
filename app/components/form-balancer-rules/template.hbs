@@ -1,19 +1,19 @@
 <div class="row">
-  <div class="col-xs-6 col-md-2 form-label form-control-static">
+  <div class="col span-2 col-inline">
     <label>{{t 'formBalancerRules.label'}}</label>
   </div>
-  <div class="col-xs-6 col-md-8">
+  <div class="col span-8">
     {{#unless editing}}
-      <button class="btn-circle-text" {{action "addRule" false}}><i class="icon icon-plus-circle"/> <span>{{t 'formBalancerRules.addServiceLabel'}}</span></button>
-      <button class="btn-circle-text r-pl20" {{action "addRule" true}}><i class="icon icon-plus-circle"/> <span>{{t 'formBalancerRules.addSelectorLabel'}}</span></button>
+      <button class="bg-transparent text-primary" {{action "addRule" false}}><i class="icon icon-plus-circle"/> <span>{{t 'formBalancerRules.addServiceLabel'}}</span></button>
+      <button class="bg-transparent text-primary pl-20" {{action "addRule" true}}><i class="icon icon-plus-circle"/> <span>{{t 'formBalancerRules.addSelectorLabel'}}</span></button>
     {{/unless}}
   </div>
 </div>
 
 <div class="row">
-  <div class="col-xs-12">
+  <div class="">
     {{#if rules.length}}
-      <table class="grid fixed no-lines no-top-padding tight r-mb0">
+      <table class="grid fixed no-lines no-top-padding tight mb-0">
         <thead>
           <tr>
             {{#if showListeners}}
@@ -47,10 +47,10 @@
             <tr>
               {{#if showListeners}}
                 <td data-title="{{t 'formBalancerRules.priority.label'}}">
-                  <button class="btn btn-primary btn-xs" {{action "moveUp" rule}} disabled={{eq rule.priority minPriority}}>
+                  <button class="btn bg-default btn-xs" {{action "moveUp" rule}} disabled={{eq rule.priority minPriority}}>
                     <i class="icon icon-chevron-up"></i>
                   </button>
-                  <button class="btn btn-primary btn-xs" {{action "moveDown" rule}} disabled={{eq rule.priority maxPriority}}>
+                  <button class="btn bg-default btn-xs" {{action "moveDown" rule}} disabled={{eq rule.priority maxPriority}}>
                     <i class="icon icon-chevron-down"></i>
                   </button>
                 </td>
@@ -125,14 +125,14 @@
 
               {{#if showListeners}}
                 <td class="text-right">
-                  <button class="btn btn-primary btn-sm" {{action "removeRule" rule}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+                  <button class="btn bg-primary btn-sm" {{action "removeRule" rule}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
                 </td>
               {{/if}}
             </tr>
           {{/each}}
         </tbody>
       </table>
-      <p class="help-block">
+      <p class="text-info">
         {{t 'formBalancerRules.help.prefix'}}
         {{#unless showBackend}}
           <a href="#" {{action "showBackend"}}>

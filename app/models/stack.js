@@ -4,6 +4,7 @@ import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
 import { download } from 'ui/utils/util';
 import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
+import InstanceStateCount from 'ui/mixins/instance-state-count';
 
 export function activeIcon(stack)
 {
@@ -36,13 +37,16 @@ export function tagChoices(all) {
   return choices;
 }
 
-var Stack = Resource.extend({
+var Stack = Resource.extend(InstanceStateCount,{
+  instanceStatesInput: Ember.computed.alias('services'),
+
   type: 'stack',
   k8s: Ember.inject.service(),
   modalService: Ember.inject.service('modal'),
   projectsService: Ember.inject.service('projects'),
 
   services: denormalizeIdArray('serviceIds'),
+  realServices: Ember.computed.filterBy('services','isReal',true),
 
   actions: {
     activateServices: function() {
@@ -207,6 +211,10 @@ var Stack = Resource.extend({
   externalIdInfo: function() {
     return parseExternalId(this.get('externalId'));
   }.property('externalId'),
+
+  isDefault: function() {
+    return (this.get('name')||'').toLowerCase() === 'default';
+  }.property('name'),
 
   grouping: function() {
     var kind = this.get('externalIdInfo.kind');

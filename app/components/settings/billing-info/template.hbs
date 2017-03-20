@@ -1,0 +1,27 @@
+<h2>{{t 'billingInfo.header'}}</h2>
+<hr/>
+{{#if cards}}
+  <table class="grid table table-hover mb-15 no-lines">
+    <tbody>
+      {{#each cards as |card|}}
+        <tr>
+          <td data-title="{{t 'billingInfo.table.title.cardType' brand=card.brand}}:" title="{{t 'billingInfo.table.title.cardType' brand=card.brand}}"><div class="credit-card-logo {{get-card-class card.brand}}"></div></td>
+          <td data-title="{{t 'billingInfo.table.title.last4' last=card.last4}}:" class="" title="{{t 'billingInfo.table.title.last4' last=card.last4}}">{{t 'billingInfo.card' brand=card.brand last=card.last4}}</td>
+          <td data-title="{{t 'billingInfo.table.title.name' name=card.name}}:" class="" title="{{t 'billingInfo.table.title.name' name=card.name}}">{{card.name}}</td>
+          <td data-title="{{t 'billingInfo.table.title.exp' exp=card.expiry}}:" title="{{t 'billingInfo.table.title.exp' exp=card.expiry}}">{{card.expiry}}</td>
+          <td data-title="{{t 'billingInfo.table.title.actions'}}:">
+            <div class="btn bg-default btn-sm" aria-label="remove" {{action 'remove' card}}>
+              <i class="icon-fw icon icon-trash"></i>
+            </div>
+          </td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+{{else}}
+  <div class="text-center">{{t 'billingInfo.noSub'}}</div>
+{{/if}}
+<hr/>
+<div class="text-center">
+  <button class="btn bg-primary" onclick={{action 'addNew'}} disabled={{if (gte cards.length 1) 'true' ''}}>{{t 'billingInfo.addNew'}}</button>
+</div>

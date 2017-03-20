@@ -4,6 +4,7 @@ import { xhrConcur } from 'ui/utils/platform';
 import PromiseToCb from 'ui/mixins/promise-to-cb';
 
 export default Ember.Route.extend(PromiseToCb, {
+  catalog: Ember.inject.service(),
   queryParams: {
     editing: {
       refreshModel: true
@@ -29,6 +30,7 @@ export default Ember.Route.extend(PromiseToCb, {
         importMembers:      ['project',     this.toCb((results) => { return results.project.importLink('projectMembers'); })],
         networks:                           this.toCb(() => { return userStore.find('network', null, {filter: {accountId: params.project_id}}); }),
         policyManagers:                     this.toCb(() => { return userStore.find('stack', null, policyManagerOpt); }),
+        catalogs:                           this.toCb(() => { return this.get('catalog').fetchCatalogs({headers: {[C.HEADER.PROJECT_ID]: params.project_id},});}),
       };
 
       async.auto(tasks, xhrConcur, function(err, res) {
@@ -73,6 +75,7 @@ export default Ember.Route.extend(PromiseToCb, {
         all: hash.allProjects,
         network: network,
         policyManager: hash.policyManagers.objectAt(0),
+        catalogs: hash.catalogs.content,
       });
 
       if ( params.editing ) {

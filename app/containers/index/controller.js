@@ -2,8 +2,6 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
-  bulkActionHandler: Ember.inject.service(),
-  bulkActionsList: C.BULK_ACTIONS,
   sortBy: 'name',
   prefs: Ember.inject.service(),
 
@@ -23,16 +21,6 @@ export default Ember.Controller.extend({
   show: Ember.computed('showSystem', function() {
     return this.get('showSystem') === false ? 'standard' : 'all';
   }),
-
-  actions: {
-    applyBulkAction: function(name, selectedElements) {
-      if ( selectedElements.length === 1 ) {
-        selectedElements.objectAt(0).send(name);
-      } else {
-        this.get('bulkActionHandler')[name](selectedElements);
-      }
-    },
-  },
 
   headers: [
     {
@@ -71,7 +59,7 @@ export default Ember.Controller.extend({
     },
     {
       isActions: true,
-      width: '110px',
+      width: '40px',
     },
   ],
 

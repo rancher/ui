@@ -18,95 +18,77 @@
 
   <div class="header-right right-divider stack-actions" style="width: auto">
     {{#unless single}}
-      {{#link-to "storagepools.new-volume" (query-params driverName=model.driverName) classNames="btn btn-primary btn-sm"}}{{t 'storagePoolSection.volumes.add'}}{{/link-to}}
+      {{#link-to "storagepools.new-volume" (query-params driverName=model.driverName) classNames="btn bg-primary btn-sm"}}{{t 'storagePoolSection.volumes.add'}}{{/link-to}}
     {{/unless}}
   </div>
 </div>
 
 <hr/>
 
-<div class="stack-body r-p10 row row-full-height">
-  <div class="subsection gutter col-xs-12 col-md-3 col-full-height">
+<div class="stack-body pl-10 row row-full-height">
+  <div class="subsection gutter  col span-3 col-full-height">
     <h6>{{t 'storagePoolSection.hosts.header'}}</h6>
-    <div class="clearfix r-p10 hosts">
+    <div class="clearfix pl-10 hosts">
       {{#each hostsByName as |host|}}
-        <div class="r-m10"><i class="icon {{host.stateIcon}} {{host.stateBackground}}"></i> {{#link-to "host" host.id}}{{host.displayName}}{{/link-to}}</div>
+        <div class="m-10"><i class="icon {{host.stateIcon}} {{host.stateBackground}}"></i> {{#link-to "host" host.id}}{{host.displayName}}{{/link-to}}</div>
       {{else}}
         <div class="text-center text-muted">{{t 'storagePoolSection.hosts.none'}}</div>
       {{/each}}
     </div>
   </div>
   {{#if model.volumes.length}}
-    <div class="subsection gutter col-xs-12 col-md-9 col-full-height">
+    <div class="subsection gutter  col span-9 col-full-height">
       <h6>{{t 'storagePoolSection.volumes.header'}}</h6>
-      <table class="grid" style="margin-bottom: 0">
-        <thead>
-          <tr>
-            {{sortable-th sortable=this action="changeSort" name="state" width="115" label="generic.state"}}
-            {{sortable-th sortable=this action="changeSort" name="name" width="350" label="storagePoolSection.models.table.header.volumeName"}}
-            <th>{{t 'storagePoolSection.models.table.header.mounts'}}</th>
-            <th width="75">&nbsp;</th>
-          </tr>
-        </thead>
-        <tbody>
-          {{#each arranged as |vol|}}
-            <tr>
-              <td class="state">
-                {{badge-state model=vol}}
-              </td>
-              <td class="force-wrap">
-                {{#tooltip-element type="tooltip-basic" model=vol tooltipTemplate="tooltip-storage" tooltipFor="storagePoolSection"}}
-                  <p class="hand force-wrap clip r-m0">{{vol.displayName}}</p> <i classs="icon icon-info"></i>
-                {{/tooltip-element}}
-              </td>
-              <td class="force-wrap">
-                {{#if vol.mounts.length}}
-                  {{#each vol.mounts as |mount|}}
-                    <div>
-                      {{~#if mount.instance.isVm~}}
-                        {{#link-to "virtualmachine" mount.instanceId}}{{mount.instance.displayName}}{{/link-to}}
-                      {{~else~}}
-                        {{#link-to "container" mount.instanceId}}{{mount.instance.displayName}}{{/link-to}}
-                      {{~/if~}}
-                      : {{mount.path}}
-                      {{#if (eq mount.permissions "ro")}}
-                        <span class="text-muted">{{t 'storagePoolSection.readOnly'}}</span>
-                      {{/if}}
-                    </div>
-                  {{/each}}
-                {{else}}
-                  <span class="text-muted">{{t 'generic.none'}}</span>
-                {{/if}}
-              </td>
-              <td class="actions wide">
-                {{action-menu model=vol}}
-              </td>
-            </tr>
-            {{#if vol.snapshots.length}}
-              <tr class="nohover">
-                <td colspan="4" class="subtable r-p10">
-                  <table class="grid fixed no-lines">
-                    <thead>
-                      <tr>
-                        <th width="125">{{t 'storagePoolSection.models.table.header.snapshotState'}}</th>
-                        <th>{{t 'storagePoolSection.models.table.header.snapshotName'}}</th>
-                        <th width="70">&nbsp;</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {{#each vol.snapshots as |snapshot|}}
-                        {{snapshot-section volume=vol snapshot=snapshot}}
-                      {{/each}}
-                    </tbody>
-                  </table>
-                </td>
-              </tr>
+      {{#sortable-table
+          classNames="grid mb-0 sortable-table"
+          bulkActions=false
+          paging=false
+          search=false
+          sortBy=sortBy
+          descending=descending
+          headers=headers
+          body=model
+          as |sortable kind vol|
+      }}
+        {{#if (eq kind "row")}}
+          <td class="state">
+            {{badge-state model=vol}}
+          </td>
+          <td class="force-wrap">
+            {{#tooltip-element type="tooltip-basic" model=vol tooltipTemplate="tooltip-storage" tooltipFor="storagePoolSection"}}
+              <p class="hand force-wrap clip m-0">{{vol.displayName}}</p> <i classs="icon icon-info"></i>
+            {{/tooltip-element}}
+          </td>
+          <td class="force-wrap">
+            {{#if vol.mounts.length}}
+              {{#each vol.mounts as |mount|}}
+                <div>
+                  {{~#if mount.instance.isVm~}}
+                    {{#link-to "virtualmachine" mount.instanceId}}{{mount.instance.displayName}}{{/link-to}}
+                  {{~else~}}
+                    {{#link-to "container" mount.instanceId}}{{mount.instance.displayName}}{{/link-to}}
+                  {{~/if~}}
+                  : {{mount.path}}
+                  {{#if (eq mount.permissions "ro")}}
+                    <span class="text-muted">{{t 'storagePoolSection.readOnly'}}</span>
+                  {{/if}}
+                </div>
+              {{/each}}
+            {{else}}
+              <span class="text-muted">{{t 'generic.none'}}</span>
             {{/if}}
-          {{/each}}
-        </tbody>
-      </table>
+          </td>
+          <td class="actions wide">
+            {{action-menu model=vol}}
+          </td>
+        {{else if (eq kind "norows")}}
+          <tr>
+            <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'storagePoolSection.volumes.none'}}</td>
+          </tr>
+        {{/if}}
+      {{/sortable-table}}
     </div>
   {{else}}
-    <div class="text-muted text-center r-p10">{{t 'storagePoolSection.volumes.none'}}</div>
+    <div class="text-muted text-center pl-10">{{t 'storagePoolSection.volumes.none'}}</div>
   {{/if}}
 </div>

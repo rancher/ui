@@ -4,7 +4,7 @@ import { isAlternate } from 'ui/utils/platform';
 export default Ember.Component.extend({
   model           : null,
   size            : 'xs',
-  showPrimary     : true,
+  showPrimary     : false,
   inTooltip       : false,
 
   resourceActions : Ember.inject.service('resource-actions'),
@@ -14,6 +14,13 @@ export default Ember.Component.extend({
   tooltipService  : Ember.inject.service('tooltip'),
 
   primaryAction   : Ember.computed.alias('model.primaryAction'),
+
+  sizeClass: function() {
+    let size = this.get('size');
+    if ( size && size !== 'md' ) {
+      return 'btn-'+size;
+    }
+  }.property('size'),
 
   click(e) {
     var tgt = Ember.$(e.target);

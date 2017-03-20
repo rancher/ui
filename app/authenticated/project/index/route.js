@@ -20,7 +20,7 @@ export default Ember.Route.extend({
     }
     else
     {
-      this.replaceWith('applications-tab');
+      this.replaceWith('containers');
     }
   },
 });

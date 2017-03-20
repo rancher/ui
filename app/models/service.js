@@ -3,8 +3,11 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
+import InstanceStateCount from 'ui/mixins/instance-state-count';
 
-var Service = Resource.extend({
+var Service = Resource.extend(InstanceStateCount,{
+  instanceStatesInput: Ember.computed.alias('instances'),
+
   type: 'service',
   intl: Ember.inject.service(),
   growl: Ember.inject.service(),
@@ -149,16 +152,16 @@ var Service = Resource.extend({
     var isDriver = ['networkdriverservice','storagedriverservice'].includes(this.get('type').toLowerCase());
 
     var choices = [
-      { label: 'action.start',          icon: 'icon icon-play',             action: 'activate',       enabled: !!a.activate},
-      { label: 'action.finishUpgrade',  icon: 'icon icon-success',          action: 'finishUpgrade',  enabled: !!a.finishupgrade },
+      { label: 'action.finishUpgrade',  icon: 'icon icon-success',          action: 'finishUpgrade',  enabled: !!a.finishupgrade, bulkable: true },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback },
       { label: (isBalancer ? 'action.upgradeOrEdit' : 'action.upgrade'),        icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: canUpgrade },
       { label: 'action.cancelUpgrade',  icon: 'icon icon-life-ring',        action: 'cancelUpgrade',  enabled: !!a.cancelupgrade },
       { label: 'action.cancelRollback', icon: 'icon icon-life-ring',        action: 'cancelRollback', enabled: !!a.cancelrollback },
       { divider: true },
-      { label: 'action.restart',        icon: 'icon icon-refresh'    ,      action: 'restart',        enabled: !!a.restart && canHaveContainers },
-      { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate'},
-      { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete'},
+      { label: 'action.start',          icon: 'icon icon-play',             action: 'activate',       enabled: !!a.activate, bulkable: true},
+      { label: 'action.restart',        icon: 'icon icon-refresh'    ,      action: 'restart',        enabled: !!a.restart && canHaveContainers, bulkable: true },
+      { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate', bulkable: true},
+      { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete', bulkable: true},
       { label: 'action.purge',          icon: '',                           action: 'purge',          enabled: !!a.purge},
       { divider: true },
       { label: 'action.viewInApi',      icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
@@ -178,6 +181,10 @@ var Service = Resource.extend({
   init() {
     this._super();
   },
+
+  displayImage: function() {
+    return (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'');
+  }.property('launchConfig.imageUuid'),
 
   displayStack: function() {
     var stack = this.get('stack');
@@ -206,20 +213,6 @@ var Service = Resource.extend({
 
     return out.sortBy('name');
   }.property('linkedServices'),
-
-  // Only for old Load Balancer to get ports map
-  consumedServicesWithNamesAndPorts: function() {
-    let store = this.get('store');
-    return store.all('serviceconsumemap').filterBy('serviceId', this.get('id')).map((map) => {
-      return Ember.Object.create({
-        name: map.get('name'),
-        service: store.getById('service', map.get('consumedServiceId')),
-        ports: map.get('ports')||[],
-      });
-    }).filter((obj) => {
-      return obj && obj.get('service.id');
-    });
-  }.property('id','state').volatile(),
 
   combinedState: function() {
     var service = this.get('state');
@@ -325,13 +318,6 @@ var Service = Resource.extend({
     return this.get('secondaryLaunchConfigs.length') > 0;
   }.property('secondaryLaunchConfigs.length'),
 
-  displayDetail: function() {
-    let translation = this.get('intl').findTranslationByKey('generic.image');
-    translation = this.get('intl').formatMessage(translation);
-      return ('<label>'+ translation +': </label><span>' + (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'') + '</span>').htmlSafe();
-  }.property('launchConfig.imageUuid', 'intl._locale'),
-
-
   activeIcon: function() {
     return activeIcon(this);
   }.property('type'),
@@ -371,13 +357,15 @@ var Service = Resource.extend({
     return out;
   }.property('endpointsMap'),
 
+  endpointPorts: Ember.computed.mapBy('endpointsByPort','port'),
+
   displayPorts: function() {
     var pub = '';
 
     this.get('endpointsByPort').forEach((obj) => {
       var url = Util.constructUrl(false, obj.ipAddresses[0], obj.port);
       pub += '<span>' +
-        '<a href="'+ url +'" target="_blank">' +
+        '<a href="'+ url +'" target="_blank" rel="nofollow noopener">' +
           obj.port +
         '</a>,' +
       '</span> ';
@@ -389,9 +377,7 @@ var Service = Resource.extend({
 
     if ( pub )
     {
-      let out = this.get('intl').findTranslationByKey('generic.ports');
-      out = this.get('intl').formatMessage(out);
-      return ('<label>'+out+': </label>' + pub).htmlSafe();
+      return pub.htmlSafe();
     }
     else
     {

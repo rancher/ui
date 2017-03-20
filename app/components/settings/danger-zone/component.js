@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { normalizeName } from 'ui/services/settings';
+import C from 'ui/utils/constants';
 
 const ALLOWED = {
   'access.log': {description: 'Path to write access logs to (HA installation only)'},
@@ -13,12 +14,14 @@ const ALLOWED = {
   'audit_log.purge.after.seconds': {description: 'Auto-purge Audit Log entries after this long (seconds)', kind: 'int'},
   'catalog.refresh.interval.seconds': {description: 'Refresh Catalog git repos after this long (seconds)', kind: 'int'},
   'container.event.max.size': {description: 'Maximum number of outstanding container events allowed per host before dropping events', kind: 'int'},
+  'db.cattle.maxidle': {description: 'Database pool: maximum idle connections (change requires restart)', kind: 'int'},
+  'db.cattle.maxtotal': {description: 'Database pool: maximum total connections (change requires restart)', kind: 'int'},
+  'db.prep.stmt.cache.size': {description: 'Database pool: Prepared statement cache size (per connection; change requires restart)', kind: 'int'},
   'events.purge.after.seconds': {description: 'Auto-purge Event entries after this long (seconds)', kind: 'int'},
-  'global.pool.maxidle': {description: 'Database pool: maximum idle connections', kind: 'int'},
-  'global.pool.maxtotal': {description: 'Database pool: maximum total connections', kind: 'int'},
-  'graphite.host': {description: 'Graphite: Server hostname or IP (must restart server container(s) after changing)'},
+  'graphite.host': {description: 'Graphite: Server hostname or IP (change requires restart)'},
   'graphite.options': {description: 'Graphite: Additional options'},
   'graphite.port': {description: 'Graphite: Server port', kind: 'int'},
+  'host.remove.delay.seconds': {description: 'Automatically remove hosts that are disconnected for more than this long (seconds)', kind: 'int'},
   'lb.instance.image': {description: 'Default docker image for Load Balancer Services'},
   'main_tables.purge.after.seconds': {description: 'Auto-purge deleted entries from most tables after this long (seconds)', kind: 'int'},
   'newest.docker.version': {description: 'The newest supported version of Docker at the time of this release.  A Docker version that does not satisfy supported.docker.range but is newer than this will be marked as untested'},
@@ -28,6 +31,12 @@ const ALLOWED = {
   'service_log.purge.after.seconds': {description: 'Auto-purge Service Log entries after this long (seconds)', kind: 'int'},
   'supported.docker.range': {description: 'Semver range for suported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI'},
   'ui.pl': {description: 'Private-Label company name'},
+  'ui.show.system': {description: 'Show or hide System Containers from container views', kind: 'enum', options: ['always','default_show','default_hide','never']},
+  'ui.sendgrid.api_key': {description: 'SendGrid API key', mode: C.MODE.CAAS},
+  'ui.sendgrid.template.password_reset': {description: 'SendGrid template for initiating password reset', mode: C.MODE.CAAS},
+  'ui.sendgrid.template.create_user': {description: 'SendGrid template for confirming email', mode: C.MODE.CAAS},
+  'ui.sendgrid.template.verify_password': {description: 'SendGrid template for confirming password reset', mode: C.MODE.CAAS},
+  'upgrade.mananger': {description: 'Automatic upgrades of infrastructure stacks', kind: 'boolean'},
 };
 
 export default Ember.Component.extend({
@@ -66,8 +75,12 @@ export default Ember.Component.extend({
 
   current: function() {
     let all = this.get('settings.asMap');
+    let mode = this.get('app.mode');
 
-    return Object.keys(ALLOWED).map((key) => {
+    return Object.keys(ALLOWED).filter((key) => {
+      let details = ALLOWED[key];
+      return  !details['mode'] || details['mode'] === mode;
+    }).map((key) => {
       let obj = all[normalizeName(key)];
       let details = ALLOWED[key];
 

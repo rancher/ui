@@ -1,9 +1,9 @@
 import Ember from 'ember';
 import { alternateLabel } from 'ui/utils/platform';
-import ModalBase from 'lacsso/components/modal-base';
+import ModalBase from 'ui/mixins/modal-base';
 
-export default ModalBase.extend({
-  classNames: ['lacsso', 'modal-container', 'medium-modal'],
+export default Ember.Component.extend(ModalBase, {
+  classNames: ['medium-modal'],
   resources: Ember.computed.alias('modalService.modalOpts'),
   alternateLabel: alternateLabel,
   settings: Ember.inject.service(),
@@ -31,14 +31,6 @@ export default ModalBase.extend({
     });
 
     return out;
-  }),
-
-  largeDeleteText: Ember.computed(function() {
-    var resources = this.get('resources');
-    return this.get('intl').t('confirmDelete.largeDeleteText', {
-      key: resources[0].get('displayName'),
-      othersCount: resources.length
-    });
   }),
 
   didRender: function() {

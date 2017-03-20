@@ -1,0 +1,13 @@
+<div class="pagination-container">
+  {{#if (gte content.totalPages 2)}}
+    <div class="btn-group btn-group-sm">
+      <a class="arrow prev enabled-arrow btn bg-default" disabled={{unless (gte content.page 2) 'disabled'}} {{action "pageClicked" 1}}><span class="icon icon-chevron-beginning"></span></a>
+      <a class="arrow prev enabled-arrow btn bg-default" disabled={{unless canStepBackward 'disabled'}} {{action "incrementPage" -1}}><span class="icon icon-chevron-left"></span></a>
+      <div class="overview-text inline-block ml-5 mr-5">{{t textLabel pages=content.totalPages to=indexTo from=indexFrom count=totalCount}}</div>
+      <a class="arrow next enabled-arrow btn bg-default" disabled={{unless canStepForward 'disabled'}} {{action "incrementPage" 1}}><span class="icon icon-chevron-right"></span></a>
+      <a class="arrow prev enabled-arrow btn bg-default" disabled={{if (gte content.page content.totalPages) 'disabled'}} {{action "pageClicked" content.totalPages}}><span class="icon icon-chevron-end"></span></a>
+    </div>
+  {{else}}
+    <div class="overview-text">{{t textLabel pages=content.totalPages to=indexTo from=indexFrom count=totalCount}}</div>
+  {{/if}}
+</div>

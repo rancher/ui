@@ -75,6 +75,10 @@ export default Ember.Component.extend({
     }
 
     Ember.run.next(() => {
+      if ( this.isDestoyed || this.isDestroying ) {
+        return;
+      }
+
       this.set('tooltipModel', out);
     });
   }.property('prefix', 'lastValue', 'formatter'),
@@ -135,13 +139,13 @@ export default Ember.Component.extend({
         out = '#2ecc71'; //$green
         break;
       case 'memory':
-        out = '#00558b'; //$blueDark
+        out = '#00558b'; //$primary-dark
         break;
       case 'network':
-        out = '#d35401'; //$orangeDark
+        out = '#d35401'; //mix($warning, $error, 20%)Dark
         break;
       case 'storage':
-        out = '#3a6f81'; //$teal
+        out = '#3a6f81'; //$info
         break;
       default:
         break;

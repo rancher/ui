@@ -2,10 +2,10 @@
   <h1 style="display: block">{{t 'k8sTab.kubectl.header'}}</h1>
 </section>
 
-<section class="well">
+<section>
   {{#if (eq step 1)}}
     <p>{{format-html-message 'k8sTab.kubectl.stepOne.generateConfigText' downloadUrl=downloadUrl}}</p>
-    <button {{action "generate"}} class="btn btn-primary">{{t 'k8sTab.kubectl.stepOne.generateButton'}}</button>
+    <button {{action "generate"}} class="btn bg-primary">{{t 'k8sTab.kubectl.stepOne.generateButton'}}</button>
   {{/if}}
   {{#if (eq step 2)}}
     <i class="icon icon-spinner icon-spin"></i> {{t 'k8sTab.kubectl.stepTwo.progress'}}
@@ -14,11 +14,11 @@
     <p>{{format-html-message 'k8sTab.kubectl.stepThree.helpText'}}</p>
     <pre><code>{{kubeconfig}}</code></pre>
     {{copy-to-clipboard tooltipText="" buttonText="copyToClipboard.tooltip" clipboardText=kubeconfig class="with-clip"}}
-    <p class="r-mt10 r-mb0">{{format-html-message 'k8sTab.kubectl.stepThree.downloadText' downloadUrl=downloadUrl}}</p>
+    <p class="mt-10 mb-0">{{format-html-message 'k8sTab.kubectl.stepThree.downloadText' downloadUrl=downloadUrl}}</p>
   {{/if}}
 </section>
 
-<section class="well">
+<section>
   <p>{{format-html-message 'k8sTab.kubectl.shell.helpText'}}</p>
 
   {{container-shell

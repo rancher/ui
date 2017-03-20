@@ -1,31 +1,31 @@
 <section class="header clearfix">
   <h1>{{t 'projectList.indexTemplate.header'}}</h1>
-  {{#link-to "settings.projects.new-template" class="btn btn-sm btn-primary"}}{{t 'projectList.indexTemplate.new'}}{{/link-to}}
+  {{#link-to "settings.projects.new-template" class="btn btn-sm bg-primary"}}{{t 'projectList.indexTemplate.new'}}{{/link-to}}
 </section>
 <section>
-  <div class="well">
+  <div>
     {{format-html-message 'projectList.indexTemplate.subtext' appName=settings.appName}}
   </div>
 </section>
 
-<section class="well">
-  <table class="grid fixed" style="margin-bottom: 0">
-    <thead>
+<section>
+  {{#sortable-table
+      classNames="grid fixed mb-0 sortable-table"
+      bulkActions=false
+      paging=false
+      search=false
+      sortBy=sortBy
+      descending=descending
+      headers=headers
+      body=model
+      as |sortable kind row|
+  }}
+    {{#if (eq kind "row")}}
+      {{project-template-row model=row}}
+    {{else if (eq kind "norows")}}
       <tr>
-        {{sortable-th sortable=this action="changeSort" name="name" label='generic.name'}}
-        {{sortable-th sortable=this action="changeSort" name="description" label='generic.description'}}
-        <th>{{t 'projectList.indexTemplate.table.header.stacks'}}</th>
-        <th width="80">{{t 'projectList.indexTemplate.table.header.isPublic'}}</th>
-        <th width="75">&nbsp;</th>
+        <td colspan="{{headers.length}}" class="text-center text-muted">{{t 'projectList.indexTemplate.table.body.noData'}}</td>
       </tr>
-    </thead>
-    <tbody>
-      {{#each arranged as |row|}}
-        {{project-template-row model=row}}
-      {{else}}
-        <tr><td colspan="5" class="text-center text-muted">{{t 'projectList.indexTemplate.table.body.noData'}}</td></tr>
-      {{/each}}
-    </tbody>
-  </table>
+    {{/if}}
+  {{/sortable-table}}
 </section>
-

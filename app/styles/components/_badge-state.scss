@@ -1,0 +1,32 @@
+.badge-state {
+  @include badge;
+
+  padding: 2px 7px 2px 5px;
+  text-transform: capitalize;
+
+  // Successful states are de-emphasized by using [text-]color instead of background-color
+  &.bg-success {
+    background-color: transparent;
+    color: $success;
+  }
+
+  &.text-success:hover {
+    color: $success;
+  }
+}
+
+.grid TD.state {
+  .badge-state {
+    @include clip;
+    display: inline-block;
+    max-width: 100%;
+    position: relative;
+  }
+}
+
+.grid.has-actions > TBODY > TR > TD.state {
+  padding-left: 0;
+  .badge-state {
+    left: -3px;
+  }
+}

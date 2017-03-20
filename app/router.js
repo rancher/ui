@@ -12,6 +12,9 @@ Router.map(function() {
   this.route('failWhale', {path: '/fail'});
   this.route('not-found', {path: '*path'});
 
+  this.route('signup', {path: '/signup'});
+  this.route('verify', {path: '/verify/:verify_token'});
+  this.route('verify-reset-password', {path: '/verify-reset-password/:verify_token'});
   this.route('login', function() {
     this.route('index', {path: '/'});
     this.route('shibboleth-auth');
@@ -19,7 +22,9 @@ Router.map(function() {
   this.route('logout');
   this.route('authenticated', {path: '/'}, function() {
 
+    this.route('style-guide', {path: '/style-guide'});
     this.route('dummy-dev', {path: '/dev'});
+    this.route('user-settings', {path: '/user-settings', resetNamespace: true});
     // Settings
     this.route('settings', {resetNamespace: true}, function() {
       this.route('projects', {path: '/env'}, function() {
@@ -65,6 +70,22 @@ Router.map(function() {
       this.route('index', {path: '/'});
       this.route('waiting');
 
+      this.route('containers', {resetNamespace: true}, function() {
+        this.route('new', {path: '/add'});
+        this.route('index', {path: '/'});
+
+        this.route('container', {path: '/:container_id', resetNamespace: true}, function() {
+          this.route('ports');
+          this.route('volumes');
+          this.route('labels');
+          this.route('commands');
+          this.route('networking');
+          this.route('healthcheck');
+          this.route('scheduling');
+          this.route('security');
+        });
+      });
+
       // Infrastructure
       this.route('infrastructure-tab', {path: '/infra', resetNamespace: true}, function() {
         // console popup route
@@ -78,6 +99,12 @@ Router.map(function() {
 
         this.route('hosts', {path: '/hosts', resetNamespace: true}, function() {
           this.route('index', {path: '/'});
+
+          this.route('container-cloud', {path: '/container-cloud'}, function() {
+            this.route('index', {path: '/'});
+            this.route('add', {path: '/add/:cloud_id'});
+          });
+
           this.route('new', {path: '/add'}, function() {
             this.route('index', {path: '/'});
           });
@@ -87,22 +114,6 @@ Router.map(function() {
             this.route('ports');
             this.route('storage', {path: '/storage'});
             this.route('labels');
-          });
-        });
-
-        this.route('containers', {resetNamespace: true}, function() {
-          this.route('new', {path: '/add'});
-          this.route('index', {path: '/'});
-
-          this.route('container', {path: '/:container_id', resetNamespace: true}, function() {
-            this.route('ports');
-            this.route('volumes');
-            this.route('labels');
-            this.route('commands');
-            this.route('networking');
-            this.route('healthcheck');
-            this.route('scheduling');
-            this.route('security');
           });
         });
 
@@ -145,40 +156,37 @@ Router.map(function() {
         });
       });
 
-      // Applications
-      this.route('applications-tab', {path: '/apps', resetNamespace: true}, function() {
+      this.route('service.new', {path: '/add-service', resetNamespace: true});
+      this.route('service.new-virtualmachine', {path: '/add-vm-service', resetNamespace: true});
+      this.route('service.new-balancer', {path: '/add-balancer', resetNamespace: true});
+      this.route('service.new-alias', {path: '/add-alias', resetNamespace: true});
+      this.route('service.new-external', {path: '/add-external', resetNamespace: true});
+
+      this.route('stacks', {path: '/services', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('service.new', {path: '/add-service', resetNamespace: true});
-        this.route('service.new-virtualmachine', {path: '/add-vm-service', resetNamespace: true});
-        this.route('service.new-balancer', {path: '/add-balancer', resetNamespace: true});
-        this.route('service.new-alias', {path: '/add-alias', resetNamespace: true});
-        this.route('service.new-external', {path: '/add-external', resetNamespace: true});
+        this.route('new', {path: '/add'});
 
-        this.route('stacks', {path: '/stacks', resetNamespace: true}, function() {
+        this.route('stack', {path: '/stack/:stack_id', resetNamespace: true}, function() {
           this.route('index', {path: '/'});
-          this.route('new', {path: '/add'});
+          this.route('code', {path: '/code'});
+          this.route('graph', {path: '/graph'});
+          this.route('chart', {path: '/chart'});
 
-          this.route('stack', {path: '/:stack_id', resetNamespace: true}, function() {
-            this.route('index', {path: '/'});
-            this.route('code', {path: '/code'});
-            this.route('graph', {path: '/graph'});
-            this.route('chart', {path: '/chart'});
-
-            this.route('service', {path: '/services/:service_id', resetNamespace: true}, function() {
-              this.route('containers');
-              this.route('labels');
-              this.route('ports');
-              this.route('links');
-              this.route('log');
-              this.route('port-rules');
-              this.route('certificates');
-            });
+          this.route('service', {path: '/:service_id', resetNamespace: true}, function() {
+            this.route('containers');
+            this.route('labels');
+            this.route('ports');
+            this.route('links');
+            this.route('log');
+            this.route('port-rules');
+            this.route('certificates');
           });
         });
       });
 
       this.route('swarm-tab', {path: '/swarm', resetNamespace: true}, function() {
         this.route('console');
+        this.route('dashboard');
       });
 
       // Mesos

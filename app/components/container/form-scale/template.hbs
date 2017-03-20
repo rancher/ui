@@ -1,0 +1,29 @@
+<div class="col-inline clearfix">
+  <label>{{t 'formScale.label'}}</label>
+  {{#unless showAdvanced}}
+    <div class="pull-right text-small">
+      <a role="button" class="btn bg-transparent p-0" {{action "showAdvanced"}}>{{t 'formScale.showAdvanced'}}</a>
+    </div>
+  {{/unless}}
+</div>
+
+<div class="row gutless">
+  <div class="col span-2 m-0">
+    {{input-integer value=userInput min=min max=max}}
+  </div>
+  <div class="col offset-1 span-9 hidden-md">
+    {{input-slider value=userInput valueMin=1 scaleMin=0 valueMax=sliderMax}}
+  </div>
+</div>
+
+{{#if showAdvanced}}
+  <div class="radio">
+    <label>{{radio-button selection=mode value="container"}} {{t 'formScale.mode.container' scale=asInteger}}</label>
+  </div>
+  <div class="radio">
+    <label>{{radio-button selection=mode value="service"}} {{t 'formScale.mode.service' scale=asInteger}}</label>
+  </div>
+  <div class="radio">
+    <label>{{radio-button selection=mode value="global"}} {{t 'formScale.mode.global' scale=asInteger}}</label>
+  </div>
+{{/if}}

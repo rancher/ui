@@ -123,28 +123,9 @@ export default Ember.Component.extend(ThrottledResize, {
     $('#stack-svg svg').css('height', height);
   },
 
-  showService: function(id) {
-    let svgHeight;
-    if ( id ) {
-        svgHeight = $('#stack-svg').height() - 260; // svg minus the height of info service-addtl-info.scss
-        this.styleSvg(`${svgHeight}px`);
-
-        if (!this.get('model.showServiceInfo')) {
-          this.zoomAndScale(1.5);
-        }
-
-        this.set('model.showServiceInfo', true);
-        this.set('model.selectedService', this.get('model.stack.services').findBy('id', id));
-    } else {
-      svgHeight = $('#stack-svg').height() - 0; // svg minus the height of info service-addtl-info.scss
-      this.styleSvg(svgHeight);
-
-      if (this.get('model.showServiceInfo')) {
-        this.zoomAndScale(2);
-      }
-
-      this.set('model.showServiceInfo', null);
-    }
+  showService: function() {
+    let svgHeight = $('#stack-svg').height() - 0; // svg minus the height of info service-addtl-info.scss
+    this.styleSvg(svgHeight);
   },
 
   crosslinkServices: function() {

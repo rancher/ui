@@ -49,7 +49,6 @@ export default Ember.Component.extend({
 
   didInsertElement() {
     if ( ! this.get('projects.current.isWindows') ) {
-      this.initMultiselect();
       this.privilegedDidChange();
     }
   },
@@ -185,78 +184,6 @@ export default Ember.Component.extend({
     out.endPropertyChanges();
   }.observes('devicesArray.@each.{host,container,permissions}'),
 
-  initMultiselect: function() {
-    var view = this;
-
-    var opts = {
-      maxHeight: 200,
-      buttonClass: 'btn btn-default',
-      buttonWidth: '100%',
-
-      templates: {
-        li: '<li><a tabindex="0"><label></label></a></li>',
-      },
-
-      buttonText: function(options, select) {
-        var label = (select.hasClass('select-cap-add') ? 'Add' : 'Drop') + ": ";
-        if ( options.length === 0 )
-        {
-          label += 'None';
-        }
-        else if ( options.length === 1 )
-        {
-          label += $(options[0]).text();
-        }
-        else
-        {
-          label += options.length + ' Selected';
-        }
-
-        return label;
-      },
-
-      onChange: function(/*option, checked*/) {
-        var self = this;
-        var options = $('option', this.$select);
-        var selectedOptions = this.getSelected();
-        var allOption = $('option[value="ALL"]',this.$select)[0];
-
-        var isAll = $.inArray(allOption, selectedOptions) >= 0;
-
-        if ( isAll )
-        {
-          options.each(function(k, option) {
-            var $option = $(option);
-            if ( option !== allOption )
-            {
-              self.deselect($(option).val());
-              $option.prop('disabled',true);
-              $option.parent('li').addClass('disabled');
-            }
-          });
-
-          // @TODO Figure out why deslect()/select() doesn't fix the state in the ember object and remove this hackery...
-          var ary = view.get('instance.' + (this.$select.hasClass('select-cap-add') ? 'capAdd' : 'capDrop'));
-          ary.clear();
-          ary.pushObject('ALL');
-        }
-        else
-        {
-          options.each(function(k, option) {
-            var $option = $(option);
-            $option.prop('disabled',false);
-            $option.parent('li').removeClass('disabled');
-          });
-        }
-
-        this.$select.multiselect('refresh');
-      }
-    };
-
-    this.$('.select-cap-add').multiselect(opts);
-    this.$('.select-cap-drop').multiselect(opts);
-  },
-
   privilegedDidChange: function() {
     var add = this.$('.select-cap-add');
     var drop = this.$('.select-cap-drop');
@@ -264,13 +191,13 @@ export default Ember.Component.extend({
     {
       if ( this.get('instance.privileged') )
       {
-        add.multiselect('disable');
-        drop.multiselect('disable');
+//        add.multiselect('disable');
+//        drop.multiselect('disable');
       }
       else
       {
-        add.multiselect('enable');
-        drop.multiselect('enable');
+//        add.multiselect('enable');
+//        drop.multiselect('enable');
       }
     }
   }.observes('instance.privileged'),

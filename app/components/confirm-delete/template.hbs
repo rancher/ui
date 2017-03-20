@@ -8,18 +8,18 @@
           <div>{{resource.displayName}}</div>
       {{/each}}
     {{else}}
-      <div>{{largeDeleteText}}</div>
+      <div>{{t 'confirmDelete.largeDeleteText' key=resources.firstObject.displayName othersCount=(sub resources.length 1)}}</div>
     {{/if}}
   </div>
 </div>
 
 {{#if isEnvironment}}
-  <div class="r-mb15">
+  <div class="mb-15">
     {{t 'confirmDelete.environmentNote' appName=settings.appName}}
   </div>
 {{/if}}
 
 <div class="footer-actions">
-  <button {{action "confirm"}} class="btn btn-danger">{{t 'confirmDelete.confirmAction'}}</button>
-  <button {{action "cancel"}} class="btn btn-link">{{t 'confirmDelete.cancelAction'}}</button>
+  <button {{action "confirm"}} class="btn bg-error">{{t 'confirmDelete.confirmAction'}}</button>
+  <button {{action "cancel"}} class="btn bg-transparent">{{t 'confirmDelete.cancelAction'}}</button>
 </div>

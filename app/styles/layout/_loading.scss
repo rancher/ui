@@ -1,0 +1,118 @@
+.loading-overlay {
+  position         : absolute;
+  top              : 50vh;
+  left             : 0;
+  right            : 0;
+  z-index: 13;
+}
+
+.i-hate-spinners {
+  .lid:before,
+  .lid:after,
+  .lid,
+  .square,
+  .square:before,
+  .square:after,
+  .icon-spin {
+    animation: none;
+    -webkit-animation:: none;
+  }
+}
+
+.underlay {
+  z-index: 10;
+  background-color: rgba($light-grey, 0.5);
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+
+.square {
+  background: $secondary;
+  height: 25px;
+  width: 25px;
+  margin: 0 auto;
+  position: relative;
+  animation: "";
+
+  &:before, &:after {
+    content: "";
+    height: 20px;
+    width: 20px;
+    background: $info;
+    display: block;
+    position: absolute;
+    animation: ball ease 3s;
+    animation-iteration-count: infinite;
+    transform-origin: 50% 50%;
+    z-index: -1;
+    border-radius: 90px;
+  }
+
+  &:after {
+    animation-delay: .5s;
+  }
+}
+
+.lid {
+  &:before, &:after {
+    content: "";
+    height: 3px;
+    width: 12.5px;
+    background: $secondary;
+    position: absolute;
+    animation: lid ease-in-out 3s;
+    animation-iteration-count: infinite;
+    transform-origin: 0% 50%;
+    left: 2px
+  }
+  &:after {
+    right: 0;
+    animation: lidLeft ease-in-out 3s;
+    animation-iteration-count: infinite;
+    transform-origin: 100% 50%;
+    left:10.5px;
+  }
+}
+
+@keyframes ball {
+  0% {
+    transform: scaleX(0.25) scaleY(0.25);
+    top: -40px;
+    opacity: 0;
+  }
+  50% {
+    opacity: .75;
+  }
+  100% {
+    transform: scaleX(1.0) scaleY(1.0);
+    top: 0;
+    opacity: 1;
+  }
+}
+
+@keyframes lid {
+  0% {
+    transform:  rotate(0);
+  }
+  50% {
+    transform:  rotate(-90deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}
+
+@keyframes lidLeft {
+  0% {
+    transform:  rotate(0);
+  }
+  50% {
+    transform:  rotate(90deg);
+  }
+  100% {
+    transform: rotate(0);
+  }
+}

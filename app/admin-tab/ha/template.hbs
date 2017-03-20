@@ -2,32 +2,31 @@
   <h1>{{t 'haPage.header'}}</h1>
 </section>
 
-<section class="well">
+<section>
   {{t 'haPage.setup.prefix' appName=settings.appName}}<a href="{{settings.docsBase}}/installing-rancher/installing-server/#multi-nodes" target="_blank" rel="nofollow noreferrer">{{t 'haPage.setup.link' appName=settings.appName}}</a>{{t 'haPage.setup.suffix' appName=settings.appName}}
 </section>
 
-<section class="well instances">
-  <table class="grid fixed r-mb0">
-    <thead>
+<section class="instances">
+  {{#sortable-table
+       classNames="grid sortable-table"
+       bulkActions=false
+       paging=false
+       search=false
+       sortBy=sortBy
+       headers=headers
+       body=model
+       as |sortable kind member dt|
+  }}
+    {{#if (eq kind "row")}}
+      <td>{{member.uuid}}</td>
+      <td>{{member.advertiseAddress}}</td>
+      <td>{{member.httpPort}}</td>
+      <td>{{#if member.clustered}}{{t 'generic.yess'}}{{else}}{{t 'generic.noo'}}{{/if}}</td>
+      <td>{{date-str member.heartbeat}}</td>
+    {{else if (eq kind "norows")}}
       <tr>
-        {{sortable-th sortable=this action="changeSort" name="uuid" label="generic.uuid" width="280"}}
-        {{sortable-th sortable=this action="changeSort" name="address" label="haPage.table.address"}}
-        {{sortable-th sortable=this action="changeSort" name="port" label="haPage.table.port" width="80"}}
-        {{sortable-th sortable=this action="changeSort" name="clustered" label="haPage.table.clustered" width="80"}}
-        {{sortable-th sortable=this action="changeSort" name="heartbeat" label="haPage.table.heartbeat" width="200"}}
+        <td colspan="{{headers.length}}" class="text-center text-muted pt-20 pb-20">{{t 'processesPage.summary.noData'}}</td>
       </tr>
-    </thead>
-    <tbody>
-      {{#each arranged as |member|}}
-        <tr>
-          <td>{{member.uuid}}</td>
-          <td>{{member.advertiseAddress}}</td>
-          <td>{{member.httpPort}}</td>
-          <td>{{#if member.clustered}}{{t 'generic.yess'}}{{else}}{{t 'generic.noo'}}{{/if}}</td>
-          <td>{{date-str member.heartbeat}}</td>
-        </tr>
-      {{/each}}
-    </tbody>
-  </table>
+    {{/if}}
+  {{/sortable-table}}
 </section>
-
