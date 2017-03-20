@@ -2,7 +2,7 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Mixin.create({
-  classNames: ['modal-container'],
+  classNames: ['modal-container', 'box'],
 
   modalService: Ember.inject.service('modal'),
   modalOpts: Ember.computed.alias('modalService.modalOpts'),
