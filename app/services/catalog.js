@@ -5,13 +5,14 @@ import C from 'ui/utils/constants';
 const RANCHER_VERSION = 'rancherVersion';
 
 export default Ember.Service.extend({
-  settings: Ember.inject.service(),
-  store: Ember.inject.service('store'),
-  userStore: Ember.inject.service('user-store'),
-  projects : Ember.inject.service(),
+  settings:                   Ember.inject.service(),
+  store:                      Ember.inject.service('store'),
+  userStore:                  Ember.inject.service('user-store'),
+  projects:                   Ember.inject.service(),
 
-  templateCache    : null,
-  catalogs         : null,
+  templateCache:              null,
+  catalogs:                   null,
+  componentRequestingRefresh: false, // this is only present to deal with modals. this can be observed to issue a refresh command
 
   templateBase: Ember.computed('projects.current.orchestration', function() {
     return this.get('projects.current.orchestration') || 'cattle';
@@ -87,7 +88,7 @@ export default Ember.Service.extend({
     }
 
     let url = this._addLimits(`${this.get('app.catalogEndpoint')}/templates`, qp);
-    return this.get('store').request({url: url}).then((res) => {
+    return this.get('store').request({url: url, headers: {[C.HEADER.PROJECT_ID]: this.get('projects.current.id')},}).then((res) => {
       res.catalogId = catalogId;
       this.set('templateCache', res);
       return this.filter(res, params.category, templateBase, plusInfra);

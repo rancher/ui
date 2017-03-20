@@ -4,24 +4,32 @@ import C from 'ui/utils/constants';
 import { getCatalogSubtree } from 'ui/utils/parse-catalog-setting';
 
 export default Ember.Controller.extend({
-  application: Ember.inject.controller(),
-  catalog: Ember.inject.service(),
-  settings: Ember.inject.service(),
-  projectId: Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
+  application:       Ember.inject.controller(),
+  catalog:           Ember.inject.service(),
+  settings:          Ember.inject.service(),
+  projects:          Ember.inject.service(),
+  projectId:         Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
 
   catalogController: Ember.inject.controller('catalog-tab'),
-  category: Ember.computed.alias('catalogController.category'),
-  categories: Ember.computed.alias('model.categories'),
-  catalogId: Ember.computed.alias('catalogController.catalogId'),
+  category:          Ember.computed.alias('catalogController.category'),
+  categories:        Ember.computed.alias('model.categories'),
+  catalogId:         Ember.computed.alias('catalogController.catalogId'),
+  modalService:      Ember.inject.service('modal'),
 
-  parentRoute: 'catalog-tab',
-  launchRoute: 'catalog-tab.launch',
+  parentRoute:       'catalog-tab',
+  launchRoute:       'catalog-tab.launch',
 
-  search: '',
+  search:            '',
 
-  updating: 'no',
+  updating:          'no',
 
   actions: {
+    addEnvCatalog() {
+      this.get('modalService').toggleModal('modal-edit-env-catalogs', {
+        project: this.get('projects.current'),
+        catalogs: this.get('model.catalogs.content'),
+      });
+    },
     clearSearch() {
       this.set('search', '');
     },
@@ -44,27 +52,51 @@ export default Ember.Controller.extend({
     }
   },
 
-  categoryWithCounts: Ember.computed('category', 'categories', 'search', function() {
-    var categories = [];
-    var catalogs = this.get('arrangedContent');
+  init() {
+    this._super(...arguments);
+    this.get('catalog.componentRequestingRefresh');
+  },
 
-    catalogs.forEach((cat) => {
-      if (cat.categories) {
-        cat.categories.forEach((category) => {
-          if (categories.findBy('name', category)) {
-            categories.findBy('name', category).count++;
+  childRequestiongRefresh: Ember.observer('catalog.componentRequestingRefresh', function() {
+    if (this.get('catalog.componentRequestingRefresh')) {
+      this.send('update');
+    }
+  }),
+
+  categoryWithCounts: Ember.computed('category', 'categories', function() {
+    var categories = [];
+    var templates = this.get('catalog.templateCache');
+
+    templates.forEach((tpl) => {
+      if (tpl.categories) {
+        tpl.categories.forEach((ctgy) => {
+          if (categories.findBy('name', ctgy) && ctgy !== 'all') {
+            categories.findBy('name', ctgy).count++;
           } else {
-            categories.pushObject({name: category, count: 1});
+            categories.pushObject({name: ctgy, count: 1});
           }
         });
       }
     });
-
     return categories.sortBy('name');
   }),
 
-  filters: Ember.computed(`settings.${C.SETTING.CATALOG_URL}`, function() {
-    return getCatalogSubtree(this.get(`settings.${C.SETTING.CATALOG_URL}`), this.get('projectId'));
+  catalogURL: Ember.computed('model.catalogs', function() {
+    var neu = {
+      catalogs: {}
+    };
+    this.get('model.catalogs.content').forEach((cat) => {
+      neu.catalogs[cat.id] = {
+        branch: cat.branch,
+        url: cat.url
+      };
+    });
+    return JSON.stringify(neu);
+  }),
+
+  filters: Ember.computed('model.catalogs', function() {
+    this.get(`settings.${C.SETTING.CATALOG_URL}`);
+    return getCatalogSubtree(this.get('catalogURL'), this.get('projectId'));
   }),
 
   arrangedContent: Ember.computed('model.catalog', 'search', function() {
