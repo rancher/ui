@@ -63,22 +63,21 @@ export default Ember.Controller.extend({
     }
   }),
 
-  categoryWithCounts: Ember.computed('category', 'categories', 'search', function() {
+  categoryWithCounts: Ember.computed('category', 'categories', function() {
     var categories = [];
-    var catalogs = this.get('arrangedContent');
+    var templates = this.get('catalog.templateCache');
 
-    catalogs.forEach((cat) => {
-      if (cat.categories) {
-        cat.categories.forEach((category) => {
-          if (categories.findBy('name', category)) {
-            categories.findBy('name', category).count++;
+    templates.forEach((tpl) => {
+      if (tpl.categories) {
+        tpl.categories.forEach((ctgy) => {
+          if (categories.findBy('name', ctgy) && ctgy !== 'all') {
+            categories.findBy('name', ctgy).count++;
           } else {
-            categories.pushObject({name: category, count: 1});
+            categories.pushObject({name: ctgy, count: 1});
           }
         });
       }
     });
-
     return categories.sortBy('name');
   }),
 
