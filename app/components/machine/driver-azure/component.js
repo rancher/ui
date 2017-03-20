@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import { regions, sizes, storageTypes } from 'ui/utils/azure-choices';
+import { regions, sizes, storageTypes, environments } from 'ui/utils/azure-choices';
 import Driver from 'ui/mixins/driver';
 
 export default Ember.Component.extend(Driver, {
   azureConfig      : Ember.computed.alias('model.azureConfig'),
-  regionChoices    : regions.sortBy('name'),
+  environments     : environments.sortBy('value'),
   sizeChoices      : sizes.sortBy('value'),
   driverName       : 'azure',
   model            : null,
@@ -65,6 +65,17 @@ export default Ember.Component.extend(Driver, {
       return this.get('publicIpChoices').findBy('name', 'Dynamic').value;
     }
   },
+
+  regionChoices: Ember.computed('azureConfig.environment', function() {
+      let environment = this.get('azureConfig.environment');
+      return regions[environment];
+  }),
+
+  evironmentChoiceObserver: Ember.observer('azureConfig.environment', function() {
+      let environment = this.get('azureConfig.environment');
+      this.set('azureConfig.location', regions[environment][0].name);
+  }),
+
   privateSet: Ember.computed('publicIpChoice', function() {
       let publicIpChoice = this.get('publicIpChoice');
       if (publicIpChoice && this.get('publicIpChoices').findBy('value', publicIpChoice).name === 'None') {
