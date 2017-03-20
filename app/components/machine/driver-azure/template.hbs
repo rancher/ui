@@ -10,7 +10,12 @@
         <label class="form-control-static">{{t 'machine.driverAzure.environment.label'}}</label>
       </div>
       <div class="col-md-4">
-        {{input type="text" value=azureConfig.environment classNames="form-control" placeholder=(t 'machine.driverAzure.environment.placeholder')}}
+        {{new-select
+          classNames="form-control"
+          content=environments
+          optionLabelPath='value'
+          value=azureConfig.environment
+        }}
       </div>
       <div class="col-md-2 form-label">
         <label class="form-control-static">{{t 'machine.driverAzure.region.label'}}</label>
