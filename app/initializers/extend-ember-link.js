@@ -20,7 +20,7 @@ export function initialize(/*application */) {
         return;
       }
 
-      this.$().parent().toggleClass('active', this.get('active'));
+      this.$().parent().toggleClass('active', !!this.get('active'));
     }
   });
 

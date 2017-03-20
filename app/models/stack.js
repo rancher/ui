@@ -4,7 +4,7 @@ import { parseExternalId } from 'ui/utils/parse-externalid';
 import C from 'ui/utils/constants';
 import { download } from 'ui/utils/util';
 import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
-import InstanceStateCount from 'ui/mixins/instance-state-count';
+import StateCounts from 'ui/mixins/state-counts';
 
 export function activeIcon(stack)
 {
@@ -37,8 +37,7 @@ export function tagChoices(all) {
   return choices;
 }
 
-var Stack = Resource.extend(InstanceStateCount,{
-  instanceStatesInput: Ember.computed.alias('services'),
+var Stack = Resource.extend(StateCounts, {
 
   type: 'stack',
   k8s: Ember.inject.service(),
@@ -47,6 +46,11 @@ var Stack = Resource.extend(InstanceStateCount,{
 
   services: denormalizeIdArray('serviceIds'),
   realServices: Ember.computed.filterBy('services','isReal',true),
+
+  init() {
+    this._super(...arguments);
+    this.defineStateCounts('services', 'serviceStates', 'serviceCountSort');
+  },
 
   actions: {
     activateServices: function() {

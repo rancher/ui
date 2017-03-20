@@ -9,7 +9,7 @@ export default Ember.Component.extend({
       name:           'state',
       sort:           ['stateSort','name','id'],
       translationKey: 'generic.state',
-      width:          '125',
+      width:          125,
     },
     {
       name:           'name',
@@ -33,13 +33,9 @@ export default Ember.Component.extend({
     },
     {
       name:           'default',
-      noSort:         true,
+      sort:           false,
       translationKey: 'generic.default',
-      width:          '80',
-    },
-    {
-      noSort:         true,
-      width:          '75',
+      width:          80,
     },
   ],
 });

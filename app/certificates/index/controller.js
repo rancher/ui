@@ -4,18 +4,12 @@ import FilterState from 'ui/mixins/filter-state';
 
 export default Ember.Controller.extend(FilterState, Sortable, {
   sortBy: 'name',
-  sorts: {
-    state:    ['stateSort','name','id'],
-    name:     ['name','id'],
-    cn:       ['CN','id'],
-    expires:  ['expiresDate','id'],
-  },
-  headers:     [
+  headers: [
     {
       name:           'state',
       sort:           ['stateSort','name','id'],
       translationKey: 'certificatesPage.index.table.header.state',
-      width:          '125',
+      width:          125,
     },
     {
       name:           'name',
@@ -24,6 +18,7 @@ export default Ember.Controller.extend(FilterState, Sortable, {
     },
     {
       name:           'cn',
+      searchField:    ['CN'],
       sort:           ['CN','id'],
       translationKey: 'certificatesPage.index.table.header.domain',
     },
@@ -31,11 +26,7 @@ export default Ember.Controller.extend(FilterState, Sortable, {
       name:           'expires',
       sort:           ['expiresDate','id'],
       translationKey: 'certificatesPage.index.table.header.expires',
-      width:          '120',
-    },
-    {
-      noSort:         true,
-      width:          '75',
+      width:          120,
     },
   ],
 });

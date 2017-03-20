@@ -1,26 +1,16 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
+
+const DEFAULT_ROUTE = 'containers';
+const VALID_ROUTES = [DEFAULT_ROUTE,'stacks','dns','volumes'];
 
 export default Ember.Route.extend({
-  projects: Ember.inject.service(),
-
   redirect() {
-    let orch = this.get('projects.current.orchestration');
+    let route = this.get(`session.${C.SESSION.CONTAINER_ROUTE}`);
+    if ( !VALID_ROUTES.includes(route) ) {
+      route = DEFAULT_ROUTE;
+    }
 
-    if ( orch === 'kubernetes' )
-    {
-      this.replaceWith('k8s-tab');
-    }
-    else if ( orch === 'swarm' )
-    {
-      this.replaceWith('swarm-tab');
-    }
-    else if ( orch === 'mesos' )
-    {
-      this.replaceWith('mesos-tab');
-    }
-    else
-    {
-      this.replaceWith('containers');
-    }
+    this.replaceWith(route);
   },
 });

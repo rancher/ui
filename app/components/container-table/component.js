@@ -1,60 +1,63 @@
 import Ember from 'ember';
 
-export const headersWithHost =  [
+export const headersAll =  [
   {
-    name: 'stateSort',
-    searchField: 'displayState',
+    name: 'state',
     sort: ['stateSort','name','id'],
-    translationKey: 'containersPage.index.table.header.state',
-    width: 120
+    searchField: 'displayState',
+    translationKey: 'generic.state',
+    width: 120,
   },
   {
     name: 'name',
     sort: ['name','id'],
-    translationKey: 'containersPage.index.table.header.name',
+    translationKey: 'generic.name',
   },
   {
-    name: 'displayIp',
+    name: 'ip',
     sort: ['displayIp','name','id'],
+    searchField: 'displayIp',
+    translationKey: 'generic.ipAddress',
     width: 110,
-    translationKey: 'containersPage.index.table.header.ip',
   },
   {
     name: 'hostName',
-    searchField: 'primaryHost.displayName',
     sort: ['primaryHost.displayName','name','id'],
-    translationKey: 'containersPage.index.table.header.host',
+    searchField: 'primaryHost.displayName',
+    translationKey: 'generic.host',
   },
   {
-    name: 'imageUuid',
+    name: 'image',
     sort: ['imageUuid','id'],
     searchField: 'displayImage',
-    translationKey: 'containersPage.index.table.header.image',
+    translationKey: 'generic.image',
   },
   {
     name: 'command',
     sort: ['command','name','id'],
-    translationKey: 'containersPage.index.table.header.command',
-  },
-  {
-    isActions: true,
-    width: 30,
+    translationKey: 'generic.command',
   },
 ];
 
+export const headersWithHost = headersAll.filter((x) => x.name !== 'stats');
 export const headersWithoutHost = headersWithHost.filter((x) => x.name !== 'hostName');
+export const headersWithStats = headersAll.filter((x) => x.name !== 'hostName');
 
 export default Ember.Component.extend({
   prefs: Ember.inject.service(),
 
   stickyHeader: true,
+
   showHost: true,
+  showStats: false,
   pagingLabel: 'pagination.container',
 
   sortBy: 'name',
 
   headers: function() {
-    if ( this.get('showHost') ) {
+    if ( this.get('showStats') ) {
+      return headersWithStats;
+    } else if ( this.get('showHost') ) {
       return headersWithHost;
     } else {
       return headersWithoutHost;

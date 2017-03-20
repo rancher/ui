@@ -23,7 +23,7 @@ export default Ember.Controller.extend({
         name: 'id',
         translationKey: 'generic.id',
         sort: ['id:desc'],
-        width: '75px',
+        width: 75,
       },
       {
         name: 'processName',
@@ -43,7 +43,7 @@ export default Ember.Controller.extend({
         translationKey: 'processesPage.list.table.exitReason',
         name: 'exitReason',
         sort: ['exitReason','id:desc'],
-        width: '150px',
+        width: 150,
       });
     }
 
@@ -51,7 +51,7 @@ export default Ember.Controller.extend({
       translationKey: 'processesPage.list.table.startTime',
       name: 'startTime',
       sort: ['startTime:desc','id:desc'],
-      width: '120px',
+      width: 120,
       searchField: false,
     });
 
@@ -60,7 +60,7 @@ export default Ember.Controller.extend({
         translationKey: 'processesPage.list.table.endTime',
         name: 'endTime',
         sort: ['endTime:desc','id:desc'],
-        width: '120px',
+        width: 120,
         searchField: false,
       });
     }
@@ -70,7 +70,7 @@ export default Ember.Controller.extend({
         translationKey: 'processesPage.list.table.runAfter',
         name: 'runAfter',
         sort: ['runAfter:desc','id:desc'],
-        width: '120px',
+        width: 120,
         searchField: false,
       });
     } else {
@@ -78,15 +78,10 @@ export default Ember.Controller.extend({
         translationKey: 'processesPage.list.table.runTime',
         name: 'runTime',
         sort: ['runTime:desc','id:desc'],
-        width: '100px',
+        width: 100,
         searchField: false,
       });
     }
-
-    out.push({
-      isActions: true,
-      width: '40px',
-    });
 
     return out;
   }.property('which'),

@@ -13,7 +13,7 @@ export default Ember.Controller.extend({
       name:           'state',
       sort:           ['stateSort','displayUri','id'],
       translationKey: 'hostsPage.hostPage.storageTab.table.header.state',
-      width:          '125',
+      width:          125,
     },
     {
       name:           'hostPath',
@@ -21,12 +21,9 @@ export default Ember.Controller.extend({
       translationKey: 'hostsPage.hostPage.storageTab.table.header.hostPath',
     },
     {
-      noSort:           true,
+      name:           'mounts',
+      sort:           false,
       translationKey: 'hostsPage.hostPage.storageTab.table.header.mounts',
-    },
-    {
-      isActions: true,
-      width: '75',
     },
   ],
 });

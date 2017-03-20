@@ -26,12 +26,12 @@ export default Ember.Controller.extend(Sortable, {
   modalService:       Ember.inject.service('modal'),
   bulkActionHandler: Ember.inject.service(),
 
-  headers:     [
+  headers: [
     {
       name:           'state',
       sort:           ['stateSort','name','id'],
       translationKey: 'apiPage.table.state',
-      width:          '125',
+      width:          125,
     },
     {
       name:           'name',
@@ -46,7 +46,6 @@ export default Ember.Controller.extend(Sortable, {
     {
       name:           'publicValue',
       sort:           ['publicValue','id'],
-      width:          '',
       translationKey: 'apiPage.table.publicValue',
     },
     {
@@ -54,10 +53,6 @@ export default Ember.Controller.extend(Sortable, {
       sort:           ['created','name','id'],
       translationKey: 'apiPage.table.created',
       width:          130,
-    },
-    {
-      isActions: true,
-      width: 30,
     },
   ],
 

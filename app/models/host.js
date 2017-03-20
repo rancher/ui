@@ -5,13 +5,18 @@ import { formatMib, formatSi } from 'ui/utils/util';
 import C from 'ui/utils/constants';
 import { denormalizeIdArray } from 'ember-api-store/utils/denormalize';
 import { satisfies, compare } from 'ui/utils/parse-version';
-import InstanceStateCount from 'ui/mixins/instance-state-count';
+import StateCounts from 'ui/mixins/state-counts';
 
-var Host = Resource.extend(InstanceStateCount,{
+var Host = Resource.extend(StateCounts,{
   type: 'host',
   modalService: Ember.inject.service('modal'),
   settings: Ember.inject.service(),
   prefs: Ember.inject.service(),
+
+  init() {
+    this._super(...arguments);
+    this.defineStateCounts('arrangedInstances', 'instanceStates', 'instanceCountSort');
+  },
 
   instances: denormalizeIdArray('instanceIds'),
   arrangedInstances: function() {

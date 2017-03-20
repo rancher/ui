@@ -35,10 +35,6 @@ export default Ember.Controller.extend(FilterState, {
       name: 'name',
       sort: ['name'],
     },
-    {
-      isActions: true,
-      width: '75',
-    },
   ],
 
   filteredByKind: function() {

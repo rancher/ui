@@ -10,7 +10,7 @@ export default Ember.Controller.extend(ContainerSparkStats, {
       name:           'state',
       sort:           ['stateSort','name','id'],
       translationKey: 'generic.state',
-      width:          '125',
+      width:          125,
     },
     {
       name:           'name',
@@ -21,7 +21,7 @@ export default Ember.Controller.extend(ContainerSparkStats, {
       name:           'ip',
       sort:           ['sortIp','name','id'],
       translationKey: 'servicePage.containersTab.table.header.ipAddress',
-      width:          '110',
+      width:          110,
     },
     {
       name:           'host',
@@ -35,11 +35,7 @@ export default Ember.Controller.extend(ContainerSparkStats, {
     },
     {
       translationKey: 'servicePage.containersTab.table.header.stats',
-      noSort:         true,
-    },
-    {
-      isActions: true,
-      width: '75',
+      sort:           false,
     },
   ],
 });

@@ -3,11 +3,9 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import { denormalizeId, denormalizeIdArray } from 'ember-api-store/utils/denormalize';
-import InstanceStateCount from 'ui/mixins/instance-state-count';
+import StateCounts from 'ui/mixins/state-counts';
 
-var Service = Resource.extend(InstanceStateCount,{
-  instanceStatesInput: Ember.computed.alias('instances'),
-
+var Service = Resource.extend(StateCounts, {
   type: 'service',
   intl: Ember.inject.service(),
   growl: Ember.inject.service(),
@@ -16,6 +14,11 @@ var Service = Resource.extend(InstanceStateCount,{
   instances: denormalizeIdArray('instanceIds'),
   instanceCount: Ember.computed.alias('instances.length'),
   stack: denormalizeId('stackId'),
+
+  init() {
+    this._super(...arguments);
+    this.defineStateCounts('instances', 'instanceStates', 'instanceCountSort');
+  },
 
   actions: {
     edit() {
@@ -177,10 +180,6 @@ var Service = Resource.extend(InstanceStateCount,{
   reservedKeys: [
     'serviceLinks',
   ],
-
-  init() {
-    this._super();
-  },
 
   displayImage: function() {
     return (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'');

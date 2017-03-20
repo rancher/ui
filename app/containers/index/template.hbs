@@ -1,10 +1,13 @@
-<section class="header clearfix">
-  <h1>{{t 'containersPage.index.header'}}</h1>
+{{#containers-header tags=tags}}
+  {{#unless simpleMode}}
+    <div class="btn-group p-0 mr-10">
+      {{#link-to "containers.index" projects.current.id (query-params mode="list") classNames="btn btn-sm bg-default"}}<i class="icon icon-hamburger-nav"></i>{{/link-to}}
+      {{#link-to "containers.index" projects.current.id (query-params mode="grouped") classNames="btn btn-sm bg-default"}}<i class="icon icon-tasks"></i>{{/link-to}}
+    </div>
+  {{/unless}}
 
-  <div class="right-buttons">
-    {{#link-to "containers.new" classNames="btn btn-sm bg-primary"}}{{t 'containersPage.index.linkTo'}}{{/link-to}}
-  </div>
-</section>
+  {{#link-to "containers.new" classNames="btn btn-sm bg-primary"}}{{t 'containersPage.index.linkTo'}}{{/link-to}}
+{{/containers-header}}
 
 <section class="instances r-pt5 r-pb5">
   {{container-table
@@ -14,5 +17,7 @@
     search=true
     paging=true
     showHost=true
+    groupByKey=groupBy
+    groupByRef="stack"
   }}
 </section>

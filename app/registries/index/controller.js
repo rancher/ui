@@ -7,7 +7,7 @@ export default Ember.Controller.extend({
       name:           'state',
       sort:           ['stateSort','displayAddress','id'],
       translationKey: 'registriesPage.index.table.header.state',
-      width:          '125',
+      width:          125,
     },
     {
       name:           'address',
@@ -23,10 +23,6 @@ export default Ember.Controller.extend({
       name:           'created',
       sort:           ['created','id'],
       translationKey: 'registriesPage.index.table.header.created',
-    },
-    {
-      isActions: true,
-      width: '75',
     },
   ],
 });

@@ -2,18 +2,17 @@
   <h1>{{t 'hostsPage.index.header'}}</h1>
 
   <div class="right-buttons">
-    {{#if app.isCaas}}
-      {{#link-to "hosts.container-cloud" classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
-    {{else}}
-      {{#link-to "hosts.new" classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
-    {{/if}}
-
-    <div class="btn-group pull-right p-0 ml-5 mr-20">
+    <div class="btn-group p-0 mr-10">
       {{#link-to "hosts" (query-params mode="list") classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-hamburger-nav" text=(t 'hostsPage.index.tooltip.listView') options=listLinkOptions}}{{/link-to}}
       {{#link-to "hosts" (query-params mode="dot") classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-ellipsis" text=(t 'hostsPage.index.tooltip.iconView') options=listLinkOptions}}{{/link-to}}
       {{#link-to "hosts" (query-params mode="grouped") classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-layeredgroup" text=(t 'hostsPage.index.tooltip.groupedView') options=groupLinkOptions}}{{/link-to}}
     </div>
 
+    {{#if app.isCaas}}
+      {{#link-to "hosts.container-cloud" classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
+    {{else}}
+      {{#link-to "hosts.new" classNames="btn btn-sm bg-primary"}}{{t 'hostsPage.index.addHost'}}{{/link-to}}
+    {{/if}}
   </div>
 </section>
 
@@ -39,13 +38,13 @@
         expanded=(array-includes expandedHosts host.id)
         searchText=searchText
         subMatches=sortable.subMatches
-        fullColspan=(add 1 headers.length)
+        fullColspan=sortable.fullColspan
         dt=dt
       }}
     {{else if (eq kind "nomatch")}}
-      <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noMatch'}}</td></tr>
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noMatch'}}</td></tr>
     {{else if (eq kind "norows")}}
-      <tr><td colspan="{{headers.length}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noData'}}</td></tr>
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'hostsPage.index.table.noData'}}</td></tr>
     {{/if}}
   {{/sortable-table}}
 {{else}}

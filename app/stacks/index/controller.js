@@ -81,10 +81,6 @@ export default Ember.Controller.extend({
       dtTranslationKey: 'stacksPage.table.instanceState',
       translationKey: 'stacksPage.table.instanceStateWithIcon',
     },
-    {
-      isActions: true,
-      width: 30,
-    },
   ],
 
   filteredStacks: function() {
