@@ -86,7 +86,7 @@ var Stack = Resource.extend(StateCounts, {
 
 
     addService: function() {
-      this.get('router').transitionTo('service.new', {
+      this.get('router').transitionTo('scalin-groups.new', {
         queryParams: {
           stackId: this.get('id'),
         },
@@ -94,7 +94,7 @@ var Stack = Resource.extend(StateCounts, {
     },
 
     addBalancer: function() {
-      this.get('router').transitionTo('service.new-balancer', {
+      this.get('router').transitionTo('scaling-groups.new-balancer', {
         queryParams: {
           stackId: this.get('id'),
         },

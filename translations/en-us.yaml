@@ -1009,11 +1009,8 @@ signupPage:
 stacksPage:
   header:
     addContainer: Add Service
-    uploadCompose: Upload compose.yml
-    services: Services
-    volumes: Volumes
-    balancers: Balancers
-    dns: DNS
+    addBalancer: Add Balancer
+    importCompose: Import compose.yml
   table:
     standalone: Standalone
     endpoints: Endpoints
@@ -1025,22 +1022,23 @@ stacksPage:
     one: 'Tag: {name}'
   noInfra: You do not currently have any Infrastructure Stacks
   noMatch: No Stacks match the selected tag
-  new:
-    header: Import Compose File(s)
-    composeLabel: "Optional: Import Compose"
-    form:
-      name:
-        placeholder: e.g. myapp
-      description:
-        placeholder: e.g. MyApp Stack
-      dockerCompose:
-        label: "Optional: docker-compose.yml"
-        placeholder: Contents of docker-compose.yml
-      rancherCompose:
-        label: "Optional: rancher-compose.yml"
-        placeholder: Contents of rancher-compose.yml
-      startOnCreate:
-        label: Start services after creating
+
+newStack:
+  header: Import Compose.yml
+  name:
+    placeholder: e.g. myapp
+  description:
+    placeholder: e.g. MyApp Stack
+  dockerCompose:
+    label: "compose.yml"
+    placeholder: Contents of compose.yml
+  rancherCompose:
+    label: "rancher-compose.yml"
+    placeholder: Contents of rancher-compose.yml
+  startOnCreate:
+    label: Create Behavior
+    off: Create but do not start/activarte resources
+    on: Create and start/activate resources
 
 storagePoolsPage:
   header: Storage Drivers
@@ -3499,7 +3497,7 @@ nav:
   containers:
     tab: Containers
     containers: Containers
-    services: Services
+    scalingGroups: Scaling Groups
     dns: DNS
     volumes: Volumes
   hosts:

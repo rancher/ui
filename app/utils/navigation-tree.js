@@ -75,7 +75,7 @@ const navTree = [
         id: 'k8s-system',
         localizedLabel: 'nav.k8s.system',
         icon: 'icon icon-network',
-        route: 'stacks',
+        route: 'scaling-groups',
         condition: isOwner,
         ctx: [getProjectId],
         queryParams: {which: C.EXTERNAL_ID.KIND_NOT_ORCHESTRATION},
@@ -90,7 +90,6 @@ const navTree = [
     condition: function() { return this.get('hasProject') && this.get('hasSwarm'); },
     route: 'swarm-tab',
     ctx: [getProjectId],
-    moreCurrentWhen: ['stacks'],
     submenu: [
       {
         id: 'swarm-cli',
@@ -118,7 +117,7 @@ const navTree = [
         id: 'swarm-system',
         localizedLabel: 'nav.swarm.system',
         icon: 'icon icon-network',
-        route: 'stacks',
+        route: 'scaling-groups',
         condition: isOwner,
         ctx: [getProjectId],
         queryParams: {which: C.EXTERNAL_ID.KIND_NOT_ORCHESTRATION},
@@ -152,7 +151,7 @@ const navTree = [
         id: 'mesos-system',
         localizedLabel: 'nav.mesos.system',
         icon: 'icon icon-network',
-        route: 'stacks',
+        route: 'scaling-groups',
         condition: isOwner,
         ctx: [getProjectId],
         queryParams: {which: C.EXTERNAL_ID.KIND_NOT_ORCHESTRATION},
@@ -166,7 +165,7 @@ const navTree = [
     localizedLabel: 'nav.containers.tab',
     route: 'authenticated.project.index',
     ctx: [getProjectId],
-    moreCurrentWhen: ['containers','stacks'],
+    moreCurrentWhen: ['containers','scaling-groups'],
   },
 
   {
@@ -339,40 +338,3 @@ export function removeId(id) {
 export function get() {
   return Ember.copy(navTree,true);
 }
-
-/*
-function getStacksSubtree() {
-  let stacks = this.get('store').all('stack');
-  let choices = uniqKeys(tagChoices(stacks)).sort();
-
-  if ( choices.length ) {
-    let out = [
-      {
-        id: 'cattle-all',
-        localizedLabel: 'nav.cattle.all',
-        icon: 'icon icon-globe',
-        route: 'stacks',
-        ctx: [getProjectId],
-        queryParams: {which: C.EXTERNAL_ID.KIND_ALL, tags: ''},
-      },
-      { divider: true },
-    ];
-
-    out.push({divider: true});
-
-    choices.forEach((choice) => {
-      out.push({
-        id: 'cattle-tag-'+choice,
-        label: choice,
-        icon: 'icon icon-tag',
-        route: 'stacks',
-        ctx: [getProjectId],
-        condition: isOwner,
-        queryParams: {which: C.EXTERNAL_ID.KIND_ALL, tags: choice},
-      });
-    });
-
-    return out;
-  }
-}
-*/

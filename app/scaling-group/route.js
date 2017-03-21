@@ -2,21 +2,20 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function(params) {
-    var stack = this.modelFor('stack');
-    var service = this.get('store').getById('service', params.service_id);
+    var service = this.get('store').getById('service', params.scaling_group_id);
     if ( service )
     {
       return Ember.Object.create({
         service: service,
-        stack: stack.get('stack'),
+        stack: service.get('stack'),
       });
     }
     else
     {
-      return this.get('store').find('service', params.service_id).then((service) => {
+      return this.get('store').find('service', params.scaling_group_id).then((service) => {
         return Ember.Object.create({
           service: service,
-          stack: stack.get('stack'),
+          stack: service.get('stack'),
         });
       });
     }
