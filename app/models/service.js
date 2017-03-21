@@ -86,11 +86,11 @@ var Service = Resource.extend(StateCounts, {
     },
 
     upgrade(upgradeImage='false') {
-      var route = 'service.new';
+      var route = 'scaling-groups.new';
       if ( (this.get('launchConfig.kind')||'').toLowerCase() === 'virtualmachine') {
-        route = 'service.new-virtualmachine';
+        route = 'scaling-groups.new-virtualmachine';
       } else if ( this.get('type').toLowerCase() === 'loadbalancerservice' ) {
-        route = 'service.new-balancer';
+        route = 'scaling-groups.new-balancer';
       }
 
       this.get('application').transitionToRoute(route, {queryParams: {
@@ -108,16 +108,16 @@ var Service = Resource.extend(StateCounts, {
         case 'service':
           if ( (this.get('launchConfig.kind')||'').toLowerCase() === 'virtualmachine')
           {
-            route = 'service.new-virtualmachine';
+            route = 'scaling-groups.new-virtualmachine';
           }
           else
           {
-            route = 'service.new';
+            route = 'scaling-groups.new';
           }
           break;
-        case 'dnsservice':          route = 'service.new-alias';    break;
-        case 'loadbalancerservice': route = 'service.new-balancer'; break;
-        case 'externalservice':     route = 'service.new-external'; break;
+        case 'dnsservice':          route = 'scaling-groups.new-alias';    break;
+        case 'loadbalancerservice': route = 'scaling-groups.new-balancer'; break;
+        case 'externalservice':     route = 'scaling-groups.new-external'; break;
         default: return void this.send('error','Unknown service type: ' + this.get('type'));
       }
 

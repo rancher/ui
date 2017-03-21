@@ -1,4 +1,4 @@
-<table class="fixed grid sortable-table striped {{if bulkActions 'has-actions'}} {{if subRows 'basic-table has-sub-rows'}}">
+<table class="fixed grid sortable-table striped {{if bulkActions 'has-actions'}} {{if groupByKey 'basic-table'}} {{if subRows 'has-sub-rows'}}">
   <thead>
     <tr class="fixed-header-placeholder">
       {{#if bulkActions}}
@@ -87,15 +87,13 @@
       </tbody>
     {{/each}}
   {{else if fullRows}}
-    {{#each pagedContent as |row|}}
-      <tbody>
-        {{yield this 'row' row dt (array-includes childFilterNodes row.id)}}
-      </tbody>
-    {{else}}
-      <tbody>
-        {{yield this (if arranged.length 'nomatch' 'norows')}}
-      </tbody>
-    {{/each}}
+    <tbody>
+      {{#each pagedContent as |row|}}
+          {{yield this 'row' row dt (array-includes childFilterNodes row.id)}}
+      {{else}}
+          {{yield this (if arranged.length 'nomatch' 'norows')}}
+      {{/each}}
+    </tbody>
   {{else}}
     <tbody>
       {{#each pagedContent as |row|}}

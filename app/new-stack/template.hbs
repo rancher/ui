@@ -1,0 +1,56 @@
+<section class="header clearfix">
+  <h1>{{t 'stacksPage.new.header'}}</h1>
+</section>
+
+<section class="container-fluid">
+  {{form-name-description
+    model=primaryResource
+    namePlaceholder="stacksPage.new.name.placeholder"
+    descriptionPlaceholder="stacksPage.new.description.placeholder"
+  }}
+
+  <label class="pt-5">{{t 'stacksPage.new.dockerCompose.label'}}</label>
+  {{input-text-file
+    accept=".yml, .yaml"
+    value=primaryResource.dockerCompose
+    placeholder="stacksPage.new.dockerCompose.placeholder"
+  }}
+
+  {{#advanced-section}}
+    <div>
+      <label>{{t 'stacksPage.new.rancherCompose.label'}}</label>
+      {{input-text-file
+        accept=".yml, .yaml"
+        value=primaryResource.rancherCompose
+        placeholder="stacksPage.new.rancherCompose.placeholder"
+      }}
+    </div>
+
+    <div>
+      <label>{{t 'stacksPage.new.startOnCreate.label'}}</label>
+      <div class="radio">
+        <label>{{radio-button selection=primaryResource.startOnCreate value=true}}&nbsp;{{t 'stacksPage.new.startOnCreate.on'}}</label>
+      </div>
+      <div class="radio">
+        <label>{{radio-button selection=primaryResource.startOnCreate value=false}}&nbsp;{{t 'stacksPage.new.startOnCreate.off'}}</label>
+      </div>
+    </div>
+
+    <label class="pt-5">{{t 'editStack.group.label'}}</label>
+    <div class="input-group">
+      {{input type="text" value=primaryResource.group classNames="form-control" placeholder=(t 'editStack.group.placeholder')}}
+      <div class="input-group-btn">
+        <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
+        <ul class="dropdown-menu dropdown-menu-right" role="menu">
+          {{#each tagChoices as |key|}}
+            <li><a {{action "addTag" key}}>{{key}}</a></li>
+          {{/each}}
+        </ul>
+      </div>
+    </div>
+    <p class="text-info">{{t 'editStack.group.help'}}</p>
+  {{/advanced-section}}
+</section>
+
+{{top-errors errors=errors}}
+{{save-cancel save="save" cancel="cancel"}}
