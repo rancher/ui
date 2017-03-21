@@ -32,12 +32,16 @@
       {{else if (eq kind "group")}}
         <tr class="group-row">
           {{#if inst.ref}}
-            <td colspan={{sub sortable.fullColspan 2}}>
+            <td colspan={{sub sortable.fullColspan 4}}>
               Stack: {{inst.ref.displayName}}
               {{#each inst.ref.tags as |tag|}}
                 <span class="tag-xs bg-info"><i class="icon icon-tag"></i> {{tag}}</span>
               {{/each}}
             </td>
+            <td>
+              {{upgrade-btn classNames="btn-sm pt-0 pb-0" model=inst.ref}}
+            </td>
+            <td></td>
             <td data-title="{{dt.instanceState}}">
               {{progress-bar-multi
                 labelKey="state"

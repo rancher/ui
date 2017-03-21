@@ -48,7 +48,6 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   prevNode:          null,
   searchText:        null,
   page:              1,
-  perPage:           Ember.computed.alias('prefs.tablePerPage'),
   pagingLabel:       'pagination.generic',
 
   showHeader: Ember.computed.or('bulkActions','search','paging'),
@@ -56,24 +55,20 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   init: function() {
     this._super(...arguments);
 
-    if ( !this.get('paging') ) {
-      this.set('perPage', 100000);
-    }
-
     this.set('selectedNodes', []);
     if (this.get('bulkActions')) {
       this.actionsChanged();
     }
 
     Ember.run.schedule('afterRender', () => {
-      let tbody = Ember.$(this.element).find('table tbody');
+      let table = Ember.$(this.element).find('> TABLE');
       let self = this; // need this context in click function and can't use arrow func there
 
-      tbody.on('click', 'tr', function(e) {
+      table.on('click', '> TBODY > TR', function(e) {
         self.rowClick(e);
       });
 
-      tbody.on('mousedown', 'tr', function(e) {
+      table.on('mousedown', '> TBODY > TR', function(e) {
         if ( isRange(e) || e.target.tagName === 'INPUT') {
           e.preventDefault();
         }
@@ -102,6 +97,19 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
 
       return ary;
     }));
+  },
+
+  perPage: Ember.computed('paging', 'prefs.tablePerPage', function() {
+    if ( this.get('paging') ) {
+      return this.get('prefs.tablePerPage');
+    } else {
+      return 100000;
+    }
+  }),
+
+  didUpdateAttrs() {
+    this._super(...arguments);
+    this.cleanupOrphans();
   },
 
   actions: {
@@ -257,14 +265,25 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
     return out;
   }),
 
-  pagedContentChanged: Ember.observer('pagedContent.[]', function() {
+  cleanupOrphans() {
     // Remove selected items not in the current content
     let content = this.get('pagedContent');
-    let nodesToRemove = this.get('selectedNodes').filter((node) => {
-      return !content.includes(node);
+    let nodesToAdd = [];
+    let nodesToRemove = [];
+
+    this.get('selectedNodes').forEach((node) => {
+      if ( content.includes(node) ) {
+        nodesToAdd.push(node);
+      } else {
+        nodesToRemove.push(node);
+      }
     });
 
-    this.toggleMulti([], nodesToRemove);
+    this.toggleMulti(nodesToAdd, nodesToRemove);
+  },
+
+  pagedContentChanged: Ember.observer('pagedContent.[]', function() {
+    this.cleanupOrphans();
   }),
 
   indexFrom: Ember.computed('page','perPage', function() {

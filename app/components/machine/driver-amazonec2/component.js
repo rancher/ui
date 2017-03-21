@@ -54,7 +54,7 @@ let RANCHER_INGRESS_RULES = [
 ];
 
 let INSTANCE_TYPES = [
-  't2.nano','t2.micro','t2.small','t2.medium', 't2.large',
+  't2.nano','t2.micro','t2.small','t2.medium', 't2.large','t2.xlarge','t2.2xlarge',
   'm3.medium','m3.large','m3.xlarge','m3.2xlarge',
   'm4.large','m4.xlarge','m4.2xlarge','m4.4xlarge','m4.10xlarge',
   'c4.large','c4.xlarge','c4.2xlarge','c4.4xlarge','c4.8xlarge',
@@ -73,10 +73,10 @@ let REGIONS = [
   "ap-southeast-1",
   "ap-southeast-2",
   "ap-south-1",
-//  "ca-central-1",
+  "ca-central-1",
   "cn-north-1",
   "eu-west-1",
-//  "eu-west-2",
+  "eu-west-2",
   "eu-central-1",
   "sa-east-1",
   "us-east-1",

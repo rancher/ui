@@ -81,7 +81,7 @@ export default Ember.Service.extend({
   },
 
   tablePerPage: Ember.computed(C.PREFS.TABLE_COUNT, function() {
-    let out = this.get(C.PREFS.TABLE_COUNT);
+    let out = parseInt(this.get(C.PREFS.TABLE_COUNT),10);
     if ( !out ) {
       out = C.TABLES.DEFAULT_COUNT;
     }

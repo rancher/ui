@@ -3,7 +3,7 @@ import UpgradeComponent from 'ui/mixins/upgrade-component';
 
 export default Ember.Component.extend(UpgradeComponent, {
   tagName             : 'button',
-  classNames          : ['btn','btn-sm'],
+  classNames          : ['btn'],
   classNameBindings   : ['color'],
 
   click: function() {
