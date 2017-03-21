@@ -1,29 +1,50 @@
 .login {
-  background-color: white;
-  color: $text-color;
-  margin: 100px auto 0 auto;
-  padding: 40px;
-  max-width: 440px;
-  position: relative;
-  text-align: center;
-  box-shadow: 0 0 10px rgba($dark-grey, .25);
-
-  h1 {
-    span {
-      @extend .text-small;
-      padding-top: 10px;
-      display: block;
+    background-color: $body-bg;
+    color: $text-color;
+    margin: 100px auto 0 auto;
+    padding: 40px;
+    max-width: 440px;
+    position: relative;
+    text-align: center;
+    box-shadow: 0 0 10px rgba($dark-grey, .25);
+    h1 {
+        span {
+            @extend .text-small;
+            padding-top: 10px;
+            display: block;
+        }
     }
-  }
-
-  .language-dropdown {
-    ul {
-      margin-left: -5px;
+    .language-dropdown {
+        ul {
+            margin-left: -5px;
+        }
+        > a {
+            border: solid $link-color 2px;
+            white-space: line-wrap;
+        }
     }
+}
 
-    > a {
-      border: solid $link-color 2px;
-      white-space: line-wrap;
+//if dark
+.theme-ui-dark {
+    h1 + span {
+        color: $body-bg!important; //auth hidden text
     }
-  }
+    &.container-farm {
+      background: $body-bg;
+        &:before {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            top: 0;
+            background: url('images/login-containerfarm-fullcolor.svg') center center no-repeat;
+            -webkit-filter: grayscale(0.95) opacity(0.15);
+            -moz-filter: grayscale(0.95) opacity(0.15);
+            -o-filter: grayscale(0.95) opacity(0.15);
+            -ms-filter: grayscale(0.95) opacity(0.15);
+            filter: grayscale(0.95) opacity(0.15);
+        }
+    }
 }

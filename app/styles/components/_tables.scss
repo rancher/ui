@@ -13,7 +13,7 @@ $table-bg-selected                   : lighten($link-color, 35%)!default;
 $table-border-color                  : lighten($mid-grey, 20)!default;
 
 //table mixins 
-@mixin basic-table {
+@mixin bordered {
   > TBODY {
     background: transparent;
       &:after{
@@ -104,6 +104,10 @@ TABLE {
         width: 100%;
         z-index: 1;
         background: $body-bg;
+
+        input[type='search'] {
+            width: auto;
+        }
     }
 
     .fixed-header {
@@ -231,8 +235,8 @@ TABLE {
         }
     }
 
-    &.basic-table {
-        @include basic-table;
+    &.bordered {
+        @include bordered;
 
         table {
             @include solid;
