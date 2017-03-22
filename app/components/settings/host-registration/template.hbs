@@ -3,12 +3,12 @@
 <hr>
 
 <div class="mt-15">
-  <label style="width: 150px;">{{radio-button selection=customRadio value="no"}}&nbsp;{{t 'hostSettings.hostUrl.local'}}&nbsp;&nbsp;</label>
+  <label style="width: 164px;">{{radio-button selection=customRadio value="no"}}&nbsp;{{t 'hostSettings.hostUrl.local'}}&nbsp;&nbsp;</label>
   <code class="pl-20 pr-20">{{thisPage}}</code>
 </div>
 
 <div class="mt-10">
-  <label style="width: 150px;">{{radio-button selection=customRadio value="yes"}}&nbsp;{{t 'hostSettings.hostUrl.new.labelText'}}&nbsp;&nbsp;</label>
+  <label style="width: 164px;">{{radio-button selection=customRadio value="yes"}}&nbsp;{{t 'hostSettings.hostUrl.new.labelText'}}&nbsp;&nbsp;</label>
   {{input type="text" class="form-control" value=customValue placeholder=(t 'hostSettings.hostUrl.new.placeholder') safeStyle="width: calc(100% - 170px); display: inline-block;  min-width: 300px;"}}
   <p class="text-info">
     {{format-html-message 'hostSettings.helpText.static1'}}
@@ -22,16 +22,16 @@
 </div>
 
 {{#if looksPrivate}}
-  <div class="alert alert-info" style="margin-top: 30px;">
-    <i class="icon icon-info" style="font-size: 35px; float: left;"></i>
-    <p style="margin-left: 50px;">
+  <div class="banner bg-info" style="margin-top: 30px;">
+    <div class="banner-icon"><i class="icon icon-info" style="font-size: 35px; float: left;"></i></div>
+    <div class="banner-message">
       {{format-html-message 'hostSettings.notPublic.alert' activeValue=activeValue appName=settings.appName}}
-    </p>
+    </div>
   </div>
 {{/if}}
 {{#if badTld}}
   <div class="alert alert-danger" style="margin-top: 30px;">
-    <i class="icon icon-info" style="font-size: 35px; float: left;"></i>
+    <i class="icon icon-info"></i>
     <p style="margin-left: 50px;">
       {{format-html-message 'hostSettings.badTld.alert' activeValue=activeValue appName=settings.appName}}
     </p>
