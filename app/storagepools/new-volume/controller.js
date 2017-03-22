@@ -12,7 +12,7 @@ export default Ember.Controller.extend(NewOrEdit, {
   validate: function() {
     var errors = [];
 
-    if ( this.get('primaryResource.name').match(/[^a-z0-9._-]/i) ) {
+    if ( this.get('primaryResource.name').match(/[^a-z0-9._@-]/i) ) {
       errors.push(this.get('intl').t('formVolumes.errors.invalidName'));
     }
 
