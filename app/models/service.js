@@ -20,9 +20,13 @@ var Service = Resource.extend(StateCounts, {
     this.defineStateCounts('instances', 'instanceStates', 'instanceCountSort');
   },
 
+  lcType: Ember.computed('type', function() {
+    return (this.get('type')||'').toLowerCase();
+  }),
+
   actions: {
     edit() {
-      var type = this.get('type').toLowerCase();
+      var type = this.get('lcType');
       if ( type === 'dnsservice' )
       {
         this.get('modalService').toggleModal('edit-aliasservice', this);
@@ -87,9 +91,7 @@ var Service = Resource.extend(StateCounts, {
 
     upgrade(upgradeImage='false') {
       var route = 'scaling-groups.new';
-      if ( (this.get('launchConfig.kind')||'').toLowerCase() === 'virtualmachine') {
-        route = 'scaling-groups.new-virtualmachine';
-      } else if ( this.get('type').toLowerCase() === 'loadbalancerservice' ) {
+      if ( this.get('lcType') === 'loadbalancerservice' ) {
         route = 'scaling-groups.new-balancer';
       }
 
@@ -103,18 +105,9 @@ var Service = Resource.extend(StateCounts, {
 
     clone() {
       var route;
-      switch ( this.get('type').toLowerCase() )
+      switch ( this.get('lcType') )
       {
-        case 'service':
-          if ( (this.get('launchConfig.kind')||'').toLowerCase() === 'virtualmachine')
-          {
-            route = 'scaling-groups.new-virtualmachine';
-          }
-          else
-          {
-            route = 'scaling-groups.new';
-          }
-          break;
+        case 'service':             route = 'scaling-groups.new';          break;
         case 'dnsservice':          route = 'scaling-groups.new-alias';    break;
         case 'loadbalancerservice': route = 'scaling-groups.new-balancer'; break;
         case 'externalservice':     route = 'scaling-groups.new-external'; break;
@@ -152,7 +145,7 @@ var Service = Resource.extend(StateCounts, {
     var isSwarm = this.get('isSwarm');
     var canHaveContainers = this.get('canHaveContainers');
     var isBalancer = this.get('isBalancer');
-    var isDriver = ['networkdriverservice','storagedriverservice'].includes(this.get('type').toLowerCase());
+    var isDriver = ['networkdriverservice','storagedriverservice'].includes(this.get('lcType'));
 
     var choices = [
       { label: 'action.finishUpgrade',  icon: 'icon icon-success',          action: 'finishUpgrade',  enabled: !!a.finishupgrade, bulkable: true },
@@ -173,7 +166,7 @@ var Service = Resource.extend(StateCounts, {
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','type','isK8s','isSwarm','canHaveContainers','canUpgrade','isBalancer'),
+  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','lcType','isK8s','isSwarm','canHaveContainers','canUpgrade','isBalancer'),
 
 
   serviceLinks: null, // Used for clone
@@ -249,49 +242,58 @@ var Service = Resource.extend(StateCounts, {
   }.property('isReal','isGlobalScale'),
 
   canHaveContainers: function() {
-    if ( this.get('isReal') ) {
+    if ( this.get('isReal') || this.get('isSelector') ) {
       return true;
     }
 
     return [
       'kubernetesservice',
       'composeservice',
-    ].includes(this.get('type').toLowerCase());
-  }.property('isReal','type'),
+    ].includes(this.get('lcType'));
+  }.property('isReal','isSelector','lcType'),
 
   isReal: function() {
+    let type = this.get('lcType');
+    if ( this.get('isSelector') ) {
+      return false;
+    }
+
     return [
       'service',
       'networkdriverservice',
       'storagedriverservice',
       'loadbalancerservice',
-    ].includes(this.get('type').toLowerCase());
-  }.property('type'),
+    ].includes(type);
+  }.property('lcType','isSelector'),
 
   hasPorts: Ember.computed.alias('isReal'),
   hasImage: Ember.computed.alias('isReal'),
   hasLabels: Ember.computed.alias('isReal'),
   canUpgrade: Ember.computed.alias('isReal'),
 
+  isSelector: function() {
+    return !!this.get('selectorContainer');
+  }.property('selectorContainer'),
+
   isBalancer: function() {
-    return ['loadbalancerservice'].indexOf(this.get('type').toLowerCase()) >= 0;
-  }.property('type'),
+    return ['loadbalancerservice'].indexOf(this.get('lcType')) >= 0;
+  }.property('lcType'),
 
   canBalanceTo: function() {
-    if ( this.get('type').toLowerCase() === 'externalservice' && this.get('hostname') !== null) {
+    if ( this.get('lcType') === 'externalservice' && this.get('hostname') !== null) {
       return false;
     }
 
     return true;
-  }.property('type','hostname'),
+  }.property('lcType','hostname'),
 
   isK8s: function() {
-    return ['kubernetesservice'].indexOf(this.get('type').toLowerCase()) >= 0;
-  }.property('type'),
+    return ['kubernetesservice'].indexOf(this.get('lcType')) >= 0;
+  }.property('lcType'),
 
   isSwarm: function() {
-    return ['composeservice'].indexOf(this.get('type').toLowerCase()) >= 0;
-  }.property('type'),
+    return ['composeservice'].indexOf(this.get('lcType')) >= 0;
+  }.property('lcType'),
 
   displayType: function() {
     let known = [
@@ -301,17 +303,22 @@ var Service = Resource.extend(StateCounts, {
       'kubernetesservice',
       'composeservice',
       'networkdriverservice',
+      'selectorservice',
       'storagedriverservice',
       'service'
     ];
 
-    let type = this.get('type').toLowerCase();
+    let type = this.get('lcType');
+    if ( this.get('isSelector') ) {
+      type = 'selectorservice';
+    }
+
     if ( !known.includes(type) ) {
       type = 'service';
     }
 
     return this.get('intl').t('servicePage.type.'+ type);
-  }.property('type','intl._locale'),
+  }.property('lcType','isSelector','intl._locale'),
 
   hasSidekicks: function() {
     return this.get('secondaryLaunchConfigs.length') > 0;
@@ -319,7 +326,7 @@ var Service = Resource.extend(StateCounts, {
 
   activeIcon: function() {
     return activeIcon(this);
-  }.property('type'),
+  }.property('lcType'),
 
   endpointsMap: function() {
     var out = {};
@@ -394,7 +401,7 @@ var Service = Resource.extend(StateCounts, {
 export function activeIcon(service)
 {
   var out = 'icon icon-services';
-  switch ( service.get('type').toLowerCase() )
+  switch ( service.get('lcType') )
   {
     case 'loadbalancerservice': out = 'icon icon-fork';    break;
     case 'dnsservice':          out = 'icon icon-compass'; break;

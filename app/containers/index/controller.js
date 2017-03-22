@@ -1,8 +1,11 @@
 import Ember from 'ember';
+import {tagsToArray} from 'ui/models/stack';
 
 export default Ember.Controller.extend({
   projects: Ember.inject.service(),
+  projectController: Ember.inject.controller('authenticated.project'),
   prefs: Ember.inject.service(),
+  tags: Ember.computed.alias('projectController.tags'),
 
   queryParams: ['sortBy','mode'],
   sortBy: 'name',
@@ -14,13 +17,21 @@ export default Ember.Controller.extend({
   },
 
   filtered: function() {
-    let all = this.get('model');
-    if ( this.get('prefs.showSystemResources') ) {
-      return all;
-    } else {
-      return all.filterBy('isSystem', false);
+    let out = this.get('model');
+    if ( !this.get('prefs.showSystemResources') ) {
+      out = out.filterBy('isSystem', false);
     }
-  }.property('model.@each.system','prefs.showSystemResources'),
+
+    var needTags = tagsToArray(this.get('tags'));
+    if ( needTags.length ) {
+      out = out.filter((obj) => {
+        let stack = obj.get('stack');
+        return stack && stack.hasTags(needTags);
+      });
+    }
+
+    return out;
+  }.property('model.@each.system','prefs.showSystemResources','tags'),
 
   simpleMode: function() {
     let list = this.get('_allStacks');

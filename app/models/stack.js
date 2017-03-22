@@ -254,7 +254,7 @@ var Stack = Resource.extend(StateCounts, {
 
     let have = this.get('tags');
     for ( let i = 0 ; i < want.length ; i++ ) {
-      if ( !have.contains(want[i]) ) {
+      if ( !have.includes(want[i]) ) {
         return false;
       }
     }

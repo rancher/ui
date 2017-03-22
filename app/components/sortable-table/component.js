@@ -76,7 +76,7 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
       });
     });
 
-    this.set('groupedContent', Ember.computed(`pagedContent.@each.${this.get('groupByKey')}`, () => {
+    this.set('groupedContent', Ember.computed(`pagedContent.@each.${this.get('groupByKey').replace(/\..*/g,'')}`, () => {
       let ary = [];
       let map = {};
 

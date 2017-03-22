@@ -51,33 +51,16 @@ export default Ember.Controller.extend({
       translationKey: 'generic.name',
     },
     {
-      name: 'endpoints',
-      sort: null,
-      searchField: 'endpointPorts',
-      translationKey: 'stacksPage.table.endpoints',
+      name: 'displayType',
+      sort: ['displayType','displayName','id'],
+      searchField: 'displayType',
+      translationKey: 'generic.type',
     },
     {
-      name: 'image',
-      sort: ['stack.isDefault:desc','stack.displayName','displayImage','displayName'],
-      searchField: 'displayImage',
-      translationKey: 'generic.image',
-    },
-    {
-      name: 'instanceCount',
-      sort: ['stack.isDefault:desc','stack.displayName','instanceCount:desc','displayName'],
-      searchField: null,
-      width: 80,
-      icon: 'icon icon-lg icon-container',
-      dtTranslationKey: 'stacksPage.table.instanceCount'
-    },
-    {
-      name: 'instanceState',
-      sort: ['stack.isDefault:desc','stack.displayName', 'instanceCountSort:desc','displayName'],
-      searchField: null,
-      width: 100,
-      icon: 'icon icon-lg icon-container',
-      dtTranslationKey: 'stacksPage.table.instanceState',
-      translationKey: 'stacksPage.table.instanceStateWithIcon',
+      name: 'target',
+      sort: false,
+      searchField: 'displayTargets',
+      translationKey: 'dnsPage.table.target',
     },
   ],
 
@@ -102,7 +85,7 @@ export default Ember.Controller.extend({
   combinedInstances: function() {
     let out = [];
     this.get('filteredStacks').forEach((stack) => {
-      out.pushObjects(stack.get('services').filterBy('isReal', true));
+      out.pushObjects(stack.get('services').filterBy('isReal', false));
     });
 
     return out;

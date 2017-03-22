@@ -108,9 +108,14 @@ Router.map(function() {
         });
       });
 
+      this.route('dns', {path: '/dns', resetNamespace: true}, function() {
+        this.route('index', {path: '/'});
+        this.route('new',   {path: '/add'});
+      });
+
       this.route('stack', {path: '/stack/:stack_id', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('code', {path: '/code'});
+        this.route('code',  {path: '/code'});
         this.route('graph', {path: '/graph'});
         this.route('chart', {path: '/chart'});
       });

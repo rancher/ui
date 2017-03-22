@@ -1,13 +1,9 @@
 import Ember from 'ember';
-import NewServiceAlias from 'ui/mixins/new-service-alias';
 import ModalBase from 'ui/mixins/modal-base';
 
-export default Ember.Component.extend(ModalBase, NewServiceAlias, {
+export default Ember.Component.extend(ModalBase, {
   classNames: ['large-modal'],
   originalModel  : Ember.computed.alias('modalService.modalOpts'),
-  editing: true,
-  existing: Ember.computed.alias('originalModel'),
-
 
   actions: {
     done() {
@@ -17,7 +13,7 @@ export default Ember.Component.extend(ModalBase, NewServiceAlias, {
 
   init() {
     this._super(...arguments);
-    this.set('service', this.get('originalModel').clone());
+    this.set('record', this.get('originalModel').clone());
   },
 
   doneSaving() {

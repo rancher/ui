@@ -165,7 +165,7 @@ const navTree = [
     localizedLabel: 'nav.containers.tab',
     route: 'authenticated.project.index',
     ctx: [getProjectId],
-    moreCurrentWhen: ['containers','scaling-groups'],
+    moreCurrentWhen: ['containers','scaling-groups','dns'],
   },
 
   {

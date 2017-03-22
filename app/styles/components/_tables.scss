@@ -16,7 +16,7 @@ $table-border-color                  : lighten($mid-grey, 20)!default;
 @mixin bordered {
   > TBODY {
     background: transparent;
-      &:after{
+      &:not(:last-of-type):after{
         content: "";
         display: block;
         width: 100%;
@@ -51,7 +51,6 @@ $table-border-color                  : lighten($mid-grey, 20)!default;
 }
 
 @mixin solid {
-    
     > TBODY {
       background: $table-bg;
       > TR {
@@ -66,7 +65,7 @@ $table-border-color                  : lighten($mid-grey, 20)!default;
         td {
             border: solid 2px white;
         }
-    }  
+    }
 }
 
 @mixin striped {
