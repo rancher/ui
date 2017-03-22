@@ -226,7 +226,7 @@ export default Ember.Component.extend({
       }
 
       val = val.replace(/:.*/,'');
-      if ( val.match(/[^a-z0-9._-]/i) ) {
+      if ( val.match(/[^a-z0-9._@-]/i) ) {
         errors.push(this.get('intl').t('formVolumes.errors.invalidName'));
       }
     });
