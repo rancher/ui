@@ -3,7 +3,7 @@
 {{/if}}
 
 {{#if ary.length}}
-  <table class="table fixed no-lines no-top-padding tight small">
+  <table class="table fixed no-lines no-top-padding">
     <tr class="text-muted hidden-xs hidden-sm">
       <th>{{t keyLabel}}</th>
       <th width="30">&nbsp;</th>
@@ -12,7 +12,7 @@
     </tr>
     {{#each ary as |row|}}
       <tr>
-        <td class="valign-top" data-title="{{t keyLabel}}:">
+        <td data-title="{{t keyLabel}}:">
           {{#if editing}}
             {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=row.key placeholder=keyPlaceholder disabled=(eq row.editable false)}}
           {{else}}
@@ -26,7 +26,7 @@
           {{/if}}
         </td>
 
-        <td class="valign-top" data-title="{{t valueLabel}}:">
+        <td data-title="{{t valueLabel}}:">
           {{#if editing}}
             {{#if allowMultilineValue}}
               {{textarea-autogrow class="form-control input-sm value" value=row.value placeholder=valuePlaceholder disabled=(eq row.editable false)}}
