@@ -19,6 +19,7 @@ export default Ember.Component.extend({
       });
     },
     completed(value){
+      //before we send this back just strip the name/quanity values out of the hostconfig
       this.setProperties({
         hostConfig: value, // probably use this when we are sending it back up on edit
         value: JSON.stringify(value)
