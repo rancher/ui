@@ -10,13 +10,18 @@ export default Ember.Component.extend({
   allowOther:    true,
   forCatalog:    true,
   inModal:       false,
+  goBack:        null,
 
   sortBy:        ['name'],
   sortedDrivers: Ember.computed.sort('model.availableDrivers','sortBy'),
 
   didReceiveAttrs() {
     if (!this.get('driver')) {
-      this.set('driver', this.get('hostService.defaultDriver'));
+      if (this.get('inModal')) {
+        this.set('driver', this.get('sortedDrivers.firstObject.name'));
+      } else {
+        this.set('driver', this.get('hostService.defaultDriver'));
+      }
     }
   },
 

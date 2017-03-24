@@ -8,6 +8,7 @@ export default Ember.Component.extend(ModalBase, {
   loading:     true,
   model:       null,
   hostConfig: null,
+  goBack:     null,
   actions: {
     completed(hostConfig) {
       this.get('modalService.modalOpts.callee').send('completed', hostConfig);

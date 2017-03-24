@@ -27,7 +27,9 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
       this.attrs.cancel();
     },
     goBack() {
-      this.attrs.goBack();
+      if (Ember.typeOf(this.attrs.goBack) === 'function') {
+        this.attrs.goBack();
+      }
     },
     passConfigBack(cb) {
       this.sendAction('completed', this.get('model'));
