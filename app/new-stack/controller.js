@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
-import C from 'ui/utils/constants';
 import {tagChoices, tagsToArray} from 'ui/models/stack';
 
 export default Ember.Controller.extend(NewOrEdit, {

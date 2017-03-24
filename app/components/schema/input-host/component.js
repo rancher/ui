@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   modalService: Ember.inject.service('modal'),
-  hostConfig:   Ember.computed.alias('modalService.modalOpts.hostConfig'),
+  hostConfig:   null,
   actions: {
     launchHost() {
       this.get('modalService').toggleModal('modal-catalog-host', {
@@ -10,7 +10,11 @@ export default Ember.Component.extend({
       });
     },
     completed(value){
-      this.set('hostConfig', value);
+      Object.keys(value).forEach((key) => {
+        if (key.indexOf('Config') >= 0) {
+          this.set('hostConfig', key.slice(0, key.indexOf('Config').capitalize()));
+        }
+      });
     }
   }
 });
