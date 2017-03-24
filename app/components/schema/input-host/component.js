@@ -4,6 +4,7 @@ export default Ember.Component.extend({
   modalService: Ember.inject.service('modal'),
   hostConfig:   null,
   hostName:   null,
+  value: null,
   actions: {
     launchHost() {
       // we should reall not kill the previous driver if they edit, fix this in the future
@@ -18,7 +19,10 @@ export default Ember.Component.extend({
       });
     },
     completed(value){
-      this.set('hostConfig', value);
+      this.setProperties({
+        hostConfig: value, // probably use this when we are sending it back up on edit
+        value: JSON.stringify(value)
+      });
       Object.keys(value).forEach((key) => {
         if (key.indexOf('Config') >= 0) {
           this.set('hostName', key.slice(0, key.indexOf('Config')).capitalize());
