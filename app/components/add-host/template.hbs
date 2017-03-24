@@ -27,12 +27,13 @@
   {{#if driver}}
     {{component (if (or (not driverObj) driverObj.hasUi) (concat "machine/driver-" driver) 'machine/driver-other')
       cancel=(route-action 'cancel')
-      goBack=(route-action 'goBack')
       clonedModel=model.clonedModel
       driver=(concat driver 'Config')
       schemas=model.schemas
       typeDocumentations=model.typeDocumentations
       availableDrivers=model.availableDrivers
+      inModal=inModal
+      completed=(action completed)
     }}
   {{/if}}
 {{else}}

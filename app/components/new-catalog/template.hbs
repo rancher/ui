@@ -102,7 +102,7 @@
               <label class="col-inline">{{question.label}}{{if question.required "*"}}</label>
 
               {{#if question.supported}}
-                {{component question.inputComponent field=question value=question.answer}}
+                {{component question.inputComponent field=question value=question.answer completed=(action "completed")}}
               {{else}}
                 {{input type="text" value=question.answer class="form-control"}}
                 <p>{{t 'newCatalog.unknownType'}} {{question.type}}</p>
