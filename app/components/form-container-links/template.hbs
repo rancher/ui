@@ -7,14 +7,17 @@
     {{#unless editing}}
       <div>
         {{#if containersOnRequestedHostIfUnmanaged.length}}
-          <button class="bg-transparent text-primary" {{action "addLink"}}><i class="icon icon-plus-circle"/> {{t 'formContainerLinks.addActionLabel'}}</button>
+          <button class="btn bg-link icon-btn" {{action "addLink"}}>
+            <i class="icon icon-plus text-small"></i> 
+            <span>{{t 'formContainerLinks.addActionLabel'}}</span>
+          </button>
         {{else}}
           <span class="text-muted">{{t 'formContainerLinks.noContainers'}}</span>
         {{/if}}
       </div>
     {{/unless}}
     {{#if linksArray.length}}
-      <table class="table fixed no-lines no-top-padding tight small">
+      <table class="table fixed no-lines no-top-padding">
         <tr class="text-muted">
           <th>{{t 'formContainerLinks.targetInstance.label'}}</th>
           <th width="30">&nbsp;</th>
