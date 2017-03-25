@@ -19,6 +19,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
   multiTemplate : null,
   clonedModel   : null,
   useHost       : true,
+  hostConfig    : null,
 
   actions: {
     addLabel: addAction('addLabel', '.key'),
@@ -26,7 +27,13 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
       this.attrs.cancel();
     },
     goBack() {
-      this.attrs.goBack();
+      if (Ember.typeOf(this.attrs.goBack) === 'function') {
+        this.attrs.goBack();
+      }
+    },
+    passConfigBack(cb) {
+      this.sendAction('completed', this.get('model'));
+      cb(true);
     },
     setLabels(labels) {
       let out = {};
@@ -51,6 +58,14 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
       this.bootstrap();
     }
   },
+
+  driverSaveAction: Ember.computed('inModal', function() {
+    if (this.get('inModal')) {
+      return 'passConfigBack';
+    } else {
+      return 'save';
+    }
+  }),
 
   nameParts: function() {
     let input = this.get('prefix')||'';

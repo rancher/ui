@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import C from 'ui/utils/constants';
 import { tagsToArray } from 'ui/models/stack';
 import { headersWithHost as containerHeaders } from 'ui/components/container-table/component';
 

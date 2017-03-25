@@ -2,10 +2,16 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
-  catalog: Ember.inject.service(),
+  modalService: Ember.inject.service('modal'),
+  catalog:      Ember.inject.service(),
 
-  parentRoute: 'catalog-tab',
+  parentRoute:  'catalog-tab',
 
+  actions: {
+    cancel() {
+      this.get('modalService').toggleModal();
+    },
+  },
   model: function(params/*, transition*/) {
     var store = this.get('store');
 

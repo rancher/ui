@@ -27,7 +27,9 @@
     </form>
   {{else}}
     <div class="container-fluid">
-      {{partial "host/add-common"}}
+      {{#unless inModal}}
+        {{partial "host/add-common"}}
+      {{/unless}}
 
       <div class="over-hr mt-20 mb-20">
         <span>{{t 'machine.driverDigitalocean.regionSection'}}</span>
@@ -109,6 +111,6 @@
     </div>
 
     {{top-errors errors=errors}}
-    {{save-cancel save="save" cancel="cancel"}}
+    {{save-cancel save=driverSaveAction cancel="cancel"}}
   {{/if}}
 </section>

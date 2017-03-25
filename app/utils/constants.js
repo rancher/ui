@@ -405,6 +405,7 @@ C.SUPPORTED_SCHEMA_INPUTS= [
   'date',
   'enum',
   'float',
+  'host',
   'int',
   'multiline',
   'password',
