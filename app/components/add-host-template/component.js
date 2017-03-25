@@ -2,41 +2,34 @@ import Ember from 'ember';
 
 const HOST_DETAILS = [
   {
-    provider:   'Amazon',
-    keys:       [
-      {
-        type:   'accessKey',
-        name:   'Access Key',
-        public: true
-      },
-      {
-        type:   'secretKey',
-        name:   'Secret Key',
-      },
-    ],
+    driver: 'rancher',
+    flavorPrefix: 'Amazon',
+    name: null,
+    publicValues: {
+      accessKey: ''
+    },
+    secretValues: {
+      secretKey: ''
+    },
   },
   {
-    provider:   'Digital Ocean',
-    keys:       [
-      {
-        type:   'accessToken',
-        name:   'Access Token',
-      },
-    ],
+    driver: 'rancher',
+    flavorPrefix: 'Digital Ocean',
+    name: null,
+    secretValues: {
+      accessToken: ''
+    },
   },
   {
-    provider:   'Packet',
-    keys:       [
-      {
-        type:   'projectId',
-        name:   'Project ID',
-        public: true,
-      },
-      {
-        type:   'apiKey',
-        name:   'API Key',
-      },
-    ],
+    driver: 'rancher',
+    flavorPrefix: 'Packet',
+    name: null,
+    publicValues: {
+      projectId: '',
+    },
+    secretValues: {
+      apiKey: ''
+    },
   },
 ];
 // this component really doesn't care about the host provider
@@ -45,18 +38,53 @@ const HOST_DETAILS = [
 export default Ember.Component.extend({
   add:                false,
   templates:          null,
+  hostTemplate:       null,
   selectedKey:        null,
+  newSelectedKey:     null,
   provider:           null,
   providerKeyDetails: HOST_DETAILS,
   newKeys:            null,
+  name:               null,
+  secretValue:        null,
+  publicValue:        null,
+  newKeyObserver: Ember.observer('name', 'secretValue', 'publicValue', function() {
+    var {name, secretValue, publicValue} = this.getProperties('name', 'secretValue', 'publicValue');
+    var selectedKey = this.get('selectedKey');
+    if (this.get('add')) {
+      this.set('selectedKey.name', name);
+      if (selectedKey.publicValues) {
+        Object.keys(selectedKey.publicValues).forEach((pvk) => {
+          selectedKey.publicValues[pvk] = publicValue;
+        });
+      }
+      if (selectedKey.secretValues) {
+        Object.keys(selectedKey.secretValues).forEach((svk) => {
+          selectedKey.secretValues[svk] = secretValue;
+        });
+      }
+    }
+  }),
   actions:            {
     addKey() {
-      var provider = this.get('providerKeyDetails').findBy('provider', this.get('provider'));
-      this.set('newKeys', provider.keys);
-      this.set('selectedKey', null);
+      var provider = this.get('providerKeyDetails').findBy('flavorPrefix', this.get('provider'));
+      this.set('selectedKey', this.set('newSelectedKey', provider));
       this.set('add', true);
+    },
+    add() {
+      this.set('selectedKey', this.set('selectedKey'))
+    },
+    cancelAdd(){
+      this.set('selectedKey', null);
+      this.set('add', false);
     }
   },
+  setHostTemplate: Ember.observer('hostTemplate', function() {
+    if (this.get('hostTemplate')) {
+      this.set('selectedKey', this.get('templates').findBy('id', this.get('hostTemplate')));
+    } else {
+      this.set('selectedKey', null);
+    }
+  }),
   keyObserver: Ember.observer('newKeys.@each.value', function() {
     this.set('selectedTemplateKey', this.get('newKeys'));
   })

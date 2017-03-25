@@ -20,7 +20,8 @@ const HOST_TEMPLATES = [
 
 export default Ember.Component.extend({
   host: null,
-  hostTemplates: HOST_TEMPLATES,
+  hostTemplates: null,
+  selectedHostTemplate: null,
   selectedTemplateKey: null,
   providerClass: Ember.computed('host.provider', function() {
     var provider = this.get('host.provider');

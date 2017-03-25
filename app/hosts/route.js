@@ -14,10 +14,13 @@ export default Ember.Route.extend({
     });
   },
 
-  redirect: function() {
+  redirect: function(model, transition) {
     let mode = this.get(`prefs.${C.PREFS.HOST_VIEW}`)||'list';
-    this.transitionTo('hosts.index', {queryParams: {
-      mode: mode,
-    }});
+
+    if (transition.targetName !== 'hosts.container-cloud.index') {
+      this.transitionTo('hosts.index', {queryParams: {
+        mode: mode,
+      }});
+    }
   }
 });
