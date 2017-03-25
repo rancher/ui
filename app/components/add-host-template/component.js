@@ -36,6 +36,7 @@ const HOST_DETAILS = [
 // all its going to do is validate and save so the partial could
 // load the template for adding and saving keys
 export default Ember.Component.extend({
+  store: Ember.inject.service(),
   add:                false,
   templates:          null,
   hostTemplate:       null,
@@ -43,7 +44,6 @@ export default Ember.Component.extend({
   newSelectedKey:     null,
   provider:           null,
   providerKeyDetails: HOST_DETAILS,
-  newKeys:            null,
   name:               null,
   secretValue:        null,
   publicValue:        null,
@@ -63,15 +63,14 @@ export default Ember.Component.extend({
         });
       }
     }
+    console.log(selectedKey);
   }),
   actions:            {
     addKey() {
-      var provider = this.get('providerKeyDetails').findBy('flavorPrefix', this.get('provider'));
+      var hostTemplate = this.get('store').createRecord({type: 'hostTemplate'});
+      var provider = Ember.$.extend(hostTemplate, this.get('providerKeyDetails').findBy('flavorPrefix', this.get('provider')));
       this.set('selectedKey', this.set('newSelectedKey', provider));
       this.set('add', true);
-    },
-    add() {
-      this.set('selectedKey', this.set('selectedKey'))
     },
     cancelAdd(){
       this.set('selectedKey', null);
@@ -85,7 +84,4 @@ export default Ember.Component.extend({
       this.set('selectedKey', null);
     }
   }),
-  keyObserver: Ember.observer('newKeys.@each.value', function() {
-    this.set('selectedTemplateKey', this.get('newKeys'));
-  })
 });
