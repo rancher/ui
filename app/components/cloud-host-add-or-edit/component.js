@@ -43,6 +43,10 @@ export default Ember.Component.extend({
       if (this.get('selectedTemplateKey')) {
         if (this.get('selectedTemplateKey.accountId')) {
           // we have a hosttemplate so well send it with the driver
+          Ember.run.later(() => {
+            // TODO Actually save this model now that the template is saved
+            this.sendAction('save');
+          }, 1000);
         } else {
           this.get('selectedTemplateKey').save().then((hstTemplate) => {
             hstTemplate.waitForNotTransitioning(() => {
