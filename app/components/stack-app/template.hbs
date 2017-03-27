@@ -1,0 +1,45 @@
+<table class="fixed">
+  <tbody>
+    <tr>
+      <td>
+        <i role="button" {{action "toggle"}} class="icon icon-play eased text-small text-muted {{if expanded 'icon-rotate-90'}}"></i>
+        {{#link-to "stack" projects.current.id model.id}}{{model.displayName}}{{/link-to}}
+      </td>
+      <td width="100">
+        {{progress-bar-multi
+          labelKey="state"
+          valueKey="count"
+          values=model.serviceStates.byColor
+          tooltipValues=model.serviceStates.byName
+        }}
+      </td>
+      <td width="40" class="text-center">{{action-menu model=model}}</td>
+    </tr>
+    <tr>
+      <td colspan="3">
+        {{badge-state model=model}}
+        {{#if model.showTransitioningMessage}}
+          <div class="force-wrap {{model.stateColor}}">
+            {{model.transitioningMessage}}
+          </div>
+        {{/if}}
+      </td>
+    </tr>
+  </tbody>
+</table>
+{{#if expanded}}
+<div class="p-20">
+  {{#multi-container-stats model=model as |stats|}}
+    {{#if (and stats.active stats.cpuUser.length)}}
+      {{spark-line
+        data=stats.cpuUser
+        width=120 height=50
+        prefix="containersPage.table.sparkPrefixCpu"
+        formatter="percent"
+        type="cpu"
+      }}
+    {{/if}}
+  {{/multi-container-stats}}
+  <h2>Links to outputs of stack, stack-level graphs, and other cool things</h2>
+</div>
+{{/if}}

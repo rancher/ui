@@ -13,7 +13,7 @@ var ExternalService = Service.extend({
       return hostname;
     }
 
-    return this.get('externalIpAddresses').join(', ');
+    return (this.get('externalIpAddresses')||[]).join(', ');
   }.property('hostname','externalIpAddresses')
 });
 

@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Route.extend({
   model: function() {
-    let service = this.modelFor('scaling-group').get('service');
+    let service = this.modelFor('service').get('service');
     service.initPorts();
     return service;
   }

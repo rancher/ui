@@ -1,5 +1,5 @@
 <section class="header clearfix">
-  <h1>{{#link-to "scaling-groups"}}{{t 'stackHeader.backLink'}}{{/link-to}}</h1>
+  <h1>{{#link-to "containers.index"}}{{t 'stackHeader.backLink'}}{{/link-to}}</h1>
 
   <div class="right-buttons">
     {{#if outputs.length}}
@@ -14,24 +14,6 @@
         </ul>
       </div>
     {{/if}}
-
-    <div class="btn-group ml-10">
-      {{#link-to "scaling-groups.new" (query-params stackId=model.id) classNames="btn bg-primary btn-sm"}}{{t 'stackHeader.add.service'}}{{/link-to}}
-      {{#unless projects.current.isWindows}}
-        <button type="button" class="btn bg-primary btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-          <i class="icon icon-chevron-down"></i>
-          <span class="sr-only">{{t 'nav.srToggleNav'}}</span>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-          <li>{{#link-to "scaling-groups.new-balancer" (query-params stackId=model.id)}}{{t 'stackHeader.add.balancer'}}{{/link-to}}</li>
-          <li>{{#link-to "scaling-groups.new-alias" (query-params stackId=model.id)}}{{t 'stackHeader.add.alias'}}{{/link-to}}</li>
-          <li>{{#link-to "scaling-groups.new-external" (query-params stackId=model.id)}}{{t 'stackHeader.add.external'}}{{/link-to}}</li>
-          {{#if hasVm}}
-            <li>{{#link-to "scaling-groups.new-virtualmachine" (query-params stackId=model.id)}}{{t 'stackHeader.add.vm'}}{{/link-to}}</li>
-          {{/if}}
-        </ul>
-      {{/unless}}
-    </div>
 
     {{action-menu model=model classNames="ml-10" size="sm"}}
     {{header-state model=model classNames="pull-right"}}

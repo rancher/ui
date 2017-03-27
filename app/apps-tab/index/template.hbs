@@ -1,0 +1,19 @@
+<section class="header has-tabs clearfix">
+  <h1>{{t 'nav.apps.apps'}}</h1>
+
+  <div class="right-buttons">
+    {{#link-to "catalog-tab" classNames="btn btn-sm bg-primary mr-10"}}{{t 'nav.apps.launch'}}{{/link-to}}
+  </div>
+</section>
+
+<section class="stacks-wrap pl-0 pr-0">
+  {{#each filteredStacks as |stack|}}
+    {{stack-app
+      model=stack
+      toggle=(action "toggleExpand" stack.id)
+      expanded=(array-includes expandedStacks stack.id)
+    }}
+  {{else}}
+    <h1>You should add a catalog item...</h1>
+  {{/each}}
+</section>

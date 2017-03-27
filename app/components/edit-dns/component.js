@@ -1,8 +1,13 @@
 import Ember from 'ember';
 import NewOrEdit from 'ui/mixins/new-or-edit';
 
+const HOSTNAME = 'externalhostname';
+const IP = 'externalip';
+const ALIAS = 'dnsservice';
+const SELECTOR = 'service';
+
 function modeToType(mode) {
-  if ( mode === 'externalhostname' || mode === 'externalip' ) {
+  if ( mode === HOSTNAME || mode === IP ) {
     return 'externalservice';
   } else {
     return mode;
@@ -23,7 +28,11 @@ export default Ember.Component.extend(NewOrEdit, {
 
   actions: {
     done() {
-      this.send('cancel');
+      this.sendAction('done');
+    },
+
+    cancel() {
+      this.sendAction('cancel');
     },
 
     setTargetServices(array, resources) {
@@ -46,9 +55,9 @@ export default Ember.Component.extend(NewOrEdit, {
     let mode = type;
     if ( type === 'externalservice' ) {
       if ( this.get('record.hostname') ) {
-        mode = 'externalhostname';
+        mode = HOSTNAME;
       } else {
-        mode = 'externalip';
+        mode = IP;
       }
     }
 
@@ -62,11 +71,35 @@ export default Ember.Component.extend(NewOrEdit, {
     let mode = this.get('mode');
     let type = modeToType(mode);
     let neu = this.get('store').createRecord(this.get('record').serialize(), {type: type});
+    neu.set('type', type);
     this.set('record', neu);
   }.observes('mode'),
 
+  validate() {
+    let errors = this._super(...arguments);
+    switch ( this.get('mode') ) {
+      case HOSTNAME:
+        if ( !this.get('model.hostname') ) {
+          return false;
+        }
+    }
+
+    this.set('errors', errors);
+    return errors.length === 0;
+  },
+
+  willSave() {
+    if ( this.get('mode') === IP ) {
+      this.set('record.hostname', null);
+    } else if ( this.get('mode') === HOSTNAME ) {
+      this.set('record.externalIpAddresses', null);
+    }
+
+    return true;
+  },
+
   didSave() {
-    if ( this.get('mode') === 'dnsservice' ) {
+    if ( this.get('mode') === ALIAS ) {
       return this.get('record').doAction('setservicelinks', {
         serviceLinks: this.get('targetServicesMap'),
       });
@@ -77,68 +110,3 @@ export default Ember.Component.extend(NewOrEdit, {
     this.send('cancel');
   },
 });
-
-/*
-  },
-
-  which         : null,
-  showWhich     : true,
-  userHostname  : null,
-  targetIpArray : null,
-
-  init() {
-    this._super(...arguments);
-
-    var hostname = this.get('service.hostname');
-    if ( hostname )
-    {
-      this.set('userHostname', hostname);
-      this.set('which','hostname');
-      this.set('targetIpArray',[]);
-    }
-    else
-    {
-      var ips = this.get('service.externalIpAddresses');
-      var out = [];
-      if ( ips )
-      {
-        ips.forEach((ip) => {
-          out.push({ value: ip });
-        });
-      }
-      else
-      {
-        out.push({value: null});
-      }
-
-      this.set('targetIpArray', out);
-      this.set('which','ip');
-    }
-  },
-
-  valuesDidChange: function() {
-    if ( this.get('which') === 'hostname' )
-    {
-      this.setProperties({
-        'service.hostname': this.get('userHostname'),
-        'service.externalIpAddresses': null
-      });
-    }
-    else
-    {
-      var targets = this.get('targetIpArray');
-      if ( targets )
-      {
-        var out =  targets.filterBy('value').map((choice) => {
-          return Ember.get(choice,'value');
-        }).uniq();
-
-        this.setProperties({
-          'service.hostname': null,
-          'service.externalIpAddresses': out
-        });
-      }
-    }
-  }.observes('targetIpArray.@each.{value}','userHostname','which'),
-});
-*/

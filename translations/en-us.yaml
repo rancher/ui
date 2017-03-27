@@ -546,6 +546,9 @@ dockerCLI:
   header: Swarm CLI
 
 editDns:
+  title:
+    new: Add DNS Record
+    edit: Edit DNS Record
   name:
     placeholder: e.g. myapp
   description:
@@ -556,9 +559,9 @@ editDns:
   healthCheckNote: "The health check will only be used if the external entry is used as the target of a load balancer."
   mode:
     label: "Resolves To"
-    dnsservice: A balancer or scaling-group
-    service: Containers that match a selector
-    externalip: External IP Addresses
+    dnsservice: One or more other services
+    service: The set of containers which match a selector
+    externalip: One or more external IP Addresses
     externalhostname: An external hostname
   targetIp:
     label: Target IP Addresses
@@ -800,9 +803,6 @@ k8sTab:
         Put this into <code>~/.kube/config</code>:
       downloadText: |
         Then <a href="{downloadUrl}" target="_blank">download</a> (if needed) and run <code>kubectl</code>
-    shell:
-      helpText: |
-        Or use this handy shell to directly execute <code>kubectl</code> commands:
 
 loginPage:
   greeting: "Howdy!<br><span>Welcome to {appName}</span>"
@@ -1549,9 +1549,6 @@ editAccount:
     identity:
       label: Identity
 
-editAliasService:
-  title: Edit Service Alias
-
 editApiKey:
   title:
     justCreated: API Key Created
@@ -1853,7 +1850,7 @@ formEngineOpts:
     valuePlaceholder: e.g. https://my-mirror.example.com:5000
 
 formHealthCheck:
-  label: Type
+  label: Health Check
   checkType:
     none: None
     tcp: TCP Connection Opens
@@ -2146,7 +2143,7 @@ formStickiness:
 
 formTargets:
   title: Targets
-  addAction: Add Scaling Group
+  addAction: Add Target
   hostname:
     label: Request Host Header
     placeholder: e.g. svc.com
@@ -3478,17 +3475,25 @@ nav:
     system: Infrastructure
   containers:
     tab: Containers
+    systemTab: System
+    balancers: Load Balancers
     containers: Containers
     scalingGroups: Scaling Groups
     dns: DNS
     volumes: Volumes
+    addContainer: Add Container
+    addScalingGroup: Add Scaling Group
+    addBalancer: Add Balancer
+    addDns: Add Record
+    groupNone: Flat List
+    groupStack: Group by Stack
+    importCompose: Import compose.yml
   hosts:
     tab: Hosts
-  catalog:
-    tab: Catalog
-    all: All
-    library: Library
-    community: Community
+  apps:
+    tab: Apps
+    apps: Applications
+    launch: Launch from Catalog
   infra:
     tab: Resources
     storagePage: Storage

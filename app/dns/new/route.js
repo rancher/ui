@@ -34,7 +34,7 @@ export default Ember.Route.extend({
       else
       {
         record = store.createRecord({
-          type: 'dnsservice',
+          type: 'externalservice',
           name: '',
           description: '',
           stackId: stackId,

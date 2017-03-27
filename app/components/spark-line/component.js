@@ -36,15 +36,6 @@ export default Ember.Component.extend({
   y             : null,
   tooltipModel: null,
 
-  init() {
-    window.spark = this;
-    this._super();
-  },
-
-  didInsertElement() {
-    this._super();
-  },
-
   hasData: function() {
     if (this.get('data.length') > 0 && !this.get('svg')) {
       this.create();

@@ -99,10 +99,10 @@ export default Ember.Controller.extend({
 
   }.property('model.stacks.@each.{grouping,system}','tags','prefs.showSystemResources'),
 
-  combinedInstances: function() {
+  instances: function() {
     let out = [];
     this.get('filteredStacks').forEach((stack) => {
-      out.pushObjects(stack.get('services').filterBy('isReal', true));
+      out.pushObjects(stack.get('services').filter((x) => x.get('isReal') && !x.get('isBalancer')));
     });
 
     return out;

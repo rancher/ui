@@ -5,6 +5,7 @@ export default Ember.Mixin.create({
   // defineStateCounts('arrangedInstances', 'instanceStates', 'instanceCountSort');
   defineStateCounts(inputKey, countsProperty, sortProperty) {
 
+    this.get('reservedKeys').pushObjects([countsProperty, sortProperty]);
     this.set(countsProperty, Ember.computed(`${inputKey}.@each.state`, () => {
       let byName = [];
       let byColor = [];

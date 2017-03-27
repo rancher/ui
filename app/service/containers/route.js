@@ -6,7 +6,7 @@ export default Ember.Route.extend({
 
   model() {
     // Load the hosts for the instances if they're not already there
-    var service = this.modelFor('scaling-group').get('service');
+    var service = this.modelFor('service').get('service');
     return service;
   },
 
@@ -23,7 +23,7 @@ export default Ember.Route.extend({
     }
 
     stats = MultiStatsSocket.create({
-      resource: this.modelFor('scaling-group').get('service'),
+      resource: this.modelFor('service').get('service'),
       linkName: 'containerStats',
     });
 

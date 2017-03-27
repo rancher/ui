@@ -94,7 +94,7 @@ var Stack = Resource.extend(StateCounts, {
     },
 
     addBalancer: function() {
-      this.get('router').transitionTo('scaling-groups.new-balancer', {
+      this.get('router').transitionTo('balancers.new', {
         queryParams: {
           stackId: this.get('id'),
         },
@@ -219,6 +219,11 @@ var Stack = Resource.extend(StateCounts, {
   isDefault: function() {
     return (this.get('name')||'').toLowerCase() === 'default';
   }.property('name'),
+
+  isFromCatalog: function() {
+    let kind = this.get('externalIdInfo.kind');
+    return kind === C.EXTERNAL_ID.KIND_CATALOG || kind === C.EXTERNAL_ID.KIND_SYSTEM_CATALOG;
+  }.property('externalIdInfo.kind'),
 
   grouping: function() {
     var kind = this.get('externalIdInfo.kind');

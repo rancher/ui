@@ -162,10 +162,16 @@ const navTree = [
   // Cattle
   {
     id: 'containers',
-    localizedLabel: 'nav.containers.tab',
+    localizedLabel: function() {
+      if ( this.get('hasKubernetes') || this.get('hasMesos') || this.get('hasSwarm') ) {
+        return 'nav.containers.systemTab';
+      } else {
+        return 'nav.containers.tab';
+      }
+    },
     route: 'authenticated.project.index',
     ctx: [getProjectId],
-    moreCurrentWhen: ['containers','scaling-groups','dns'],
+    moreCurrentWhen: ['containers','scaling-groups','balancers','dns'],
   },
 
   {
@@ -175,18 +181,15 @@ const navTree = [
     ctx: [getProjectId],
   },
 
-  // Catalog
+  // App Catalog
   {
-    id: 'catalog',
-    localizedLabel: 'nav.catalog.tab',
-    route: 'catalog-tab',
-    queryParams: {catalogId: 'all'},
+    id: 'apps',
+    localizedLabel: 'nav.apps.tab',
+    route: 'apps-tab',
     ctx: [getProjectId],
     condition: function() {
       return this.get('hasProject') &&
-      this.get(`settings.${C.SETTING.CATALOG_URL}`) &&
-      !this.get('hasKubernetes') &&
-      !this.get('hasSwarm');
+      this.get(`settings.${C.SETTING.CATALOG_URL}`);
     },
   },
 

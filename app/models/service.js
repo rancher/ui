@@ -26,19 +26,7 @@ var Service = Resource.extend(StateCounts, {
 
   actions: {
     edit() {
-      var type = this.get('lcType');
-      if ( type === 'dnsservice' )
-      {
-        this.get('modalService').toggleModal('edit-aliasservice', this);
-      }
-      else if ( type === 'externalservice' )
-      {
-        this.get('modalService').toggleModal('edit-externalservice', this);
-      }
-      else
-      {
-        this.get('modalService').toggleModal('edit-service', this);
-      }
+      this.get('modalService').toggleModal('modal-edit-dns', this);
     },
 
     activate() {
@@ -92,7 +80,7 @@ var Service = Resource.extend(StateCounts, {
     upgrade(upgradeImage='false') {
       var route = 'scaling-groups.new';
       if ( this.get('lcType') === 'loadbalancerservice' ) {
-        route = 'scaling-groups.new-balancer';
+        route = 'balancers.new';
       }
 
       this.get('application').transitionToRoute(route, {queryParams: {
@@ -107,10 +95,10 @@ var Service = Resource.extend(StateCounts, {
       var route;
       switch ( this.get('lcType') )
       {
-        case 'service':             route = 'scaling-groups.new';          break;
-        case 'dnsservice':          route = 'scaling-groups.new-alias';    break;
-        case 'loadbalancerservice': route = 'scaling-groups.new-balancer'; break;
-        case 'externalservice':     route = 'scaling-groups.new-external'; break;
+        case 'service':             route = 'scaling-groups.new'; break;
+        case 'dnsservice':          route = 'dns.new';            break;
+        case 'loadbalancerservice': route = 'balancers.new';      break;
+        case 'externalservice':     route = 'dns.new';            break;
         default: return void this.send('error','Unknown service type: ' + this.get('type'));
       }
 

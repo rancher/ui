@@ -1,36 +1,32 @@
-<div class="row">
-  <div class="col span-2 col-inline">
-    <label>{{t 'formTargets.title'}}</label>
-  </div>
-  <div class="col span-8">
-    <button class="btn bg-link icon-btn" {{action "addTargetService"}}>
-    <i class="icon icon-plus text-small"/> 
-    <span>{{t 'formTargets.addAction'}}</span>
-    </button>
-  </div>
+<div class="mb-20">
+  <label>{{t 'formTargets.title'}}</label>
 </div>
-<div class="row">
+<div>
+  <button class="btn bg-link icon-btn" {{action "addTargetService"}}>
+    <i class="icon icon-plus text-small"/>
+    <span>{{t 'formTargets.addAction'}}</span>
+  </button>
+</div>
+<div>
   {{#if targetsArray.length}}
-    <table class="fixed">
-      <thead>
-        <tr>
-          {{#if isAdvanced}}
-            <th>{{t 'formTargets.hostname.label'}}</th>
-            <th width="90">{{t 'formTargets.srcPort.label'}}</th>
-            <th>{{t 'formTargets.path.label'}}</th>
-            <th width="30">&nbsp;</th>
-          {{/if}}
-          {{#if isBalancer}}
+    <table class="fixed mt-10">
+      {{#if (or isAdvanced isBalancer)}}
+        <thead>
+          <tr>
+            {{#if isAdvanced}}
+              <th>{{t 'formTargets.hostname.label'}}</th>
+              <th width="90">{{t 'formTargets.srcPort.label'}}</th>
+              <th>{{t 'formTargets.path.label'}}</th>
+              <th width="30">&nbsp;</th>
+            {{/if}}
             <th>{{t 'formTargets.value.label'}}*</th>
-          {{else}}
-            <th>&nbsp;</th>
-          {{/if}}
-          {{#if isAdvanced}}
-            <th width="90">{{t 'formTargets.dstPort.label'}}</th>
-          {{/if}}
-          <th width="30">&nbsp;</th>
-        </tr>
-      </thead>
+            {{#if isAdvanced}}
+              <th width="90">{{t 'formTargets.dstPort.label'}}</th>
+            {{/if}}
+            <th width="30">&nbsp;</th>
+          </tr>
+        </thead>
+      {{/if}}
       <tbody>
         {{#each targetsArray as |tgt|}}
           {{form-target-row
@@ -39,12 +35,14 @@
             exclude=exclude
             isAdvanced=isAdvanced
             isBalancer=isBalancer
+            rowClass="pl-0 pr-0 pb-10"
           }}
         {{/each}}
       </tbody>
     </table>
   {{/if}}
 </div>
+
 {{#if isAdvanced}}
   <div class="row">
       <div class="">

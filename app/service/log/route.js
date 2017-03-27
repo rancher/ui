@@ -3,7 +3,7 @@ import FilteredSorted from 'ui/utils/filtered-sorted-array-proxy';
 
 export default Ember.Route.extend({
   model: function() {
-    let par = this.modelFor('scaling-group');
+    let par = this.modelFor('service');
     let serviceId = par.get('service.id');
 
     // Find just the recent ones for this service

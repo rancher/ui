@@ -17,17 +17,19 @@
   <td data-title="{{dt.image}}">
     {{model.displayImage}}
   </td>
-  <td data-title="{{dt.instanceCount}}">
-    {{#if subMatches}}
-      {{#if (lt (get submatches model.id) model.instances.length)}}
-        <b>{{get subMatches model.id}}/{{model.instances.length}}</b>
+  {{#if showInstanceCount}}
+    <td data-title="{{dt.instanceCount}}">
+      {{#if subMatches}}
+        {{#if (lt (get submatches model.id) model.instances.length)}}
+          <b>{{get subMatches model.id}}/{{model.instances.length}}</b>
+        {{else}}
+          <b>{{model.instances.length}}</b>
+        {{/if}}
       {{else}}
-        <b>{{model.instances.length}}</b>
+        {{model.instances.length}}
       {{/if}}
-    {{else}}
-      {{model.instances.length}}
-    {{/if}}
-  </td>
+    </td>
+  {{/if}}
   <td data-title="{{dt.instanceState}}">
     {{#if canExpand}}
       {{#if model.instances.length}}

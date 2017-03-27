@@ -11,6 +11,8 @@ $table-bg-hover                      : lighten($info, 15)!default;
 $table-bg-active                     : $table-bg-hover!default;
 $table-bg-selected                   : lighten($link-color, 35%)!default;
 $table-border-color                  : lighten($mid-grey, 20)!default;
+$table-body-separation               : 25px;
+$group-row-height                    : 40px;
 
 //table mixins 
 @mixin bordered {
@@ -20,7 +22,7 @@ $table-border-color                  : lighten($mid-grey, 20)!default;
         content: "";
         display: block;
         width: 100%;
-        height: 25px;
+        height: $table-body-separation;
       }
 
     > TR {
@@ -168,6 +170,7 @@ TABLE {
 
     > TBODY > TR.group-row > TD {
         background: darken($table-bg-accent,15);
+        height: $group-row-height;
     }
 
     > TBODY > TR.no-bottom > TD {

@@ -31,7 +31,10 @@ export default Ember.Component.extend({
   linkName: 'containerStats',
   single: true,
   showGraphs: true,
-  showMultiStat: true,
+  showCpu: true,
+  showNetwork: true,
+  showMemory: true,
+  showStorage: true,
 
   renderSeconds: null,
 

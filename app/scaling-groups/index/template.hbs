@@ -1,14 +1,13 @@
 {{#containers-header tags=tags}}
-  {{#link-to "new-stack" classNames="btn btn-sm bg-primary mr-10"}}{{t 'stacksPage.header.importCompose'}}{{/link-to}}
-  {{#link-to "scaling-groups.new-balancer" projects.current.id class="btn btn-sm bg-primary mr-10"}}{{t 'stacksPage.header.addBalancer'}}{{/link-to}}
-  {{#link-to "scaling-groups.new" projects.current.id class="btn btn-sm bg-primary"}}{{t 'stacksPage.header.addContainer'}}{{/link-to}}
+  {{#link-to "new-stack" classNames="btn btn-sm bg-primary mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
+  {{#link-to "scaling-groups.new" projects.current.id class="btn btn-sm bg-primary"}}{{t 'nav.containers.addScalingGroup'}}{{/link-to}}
 {{/containers-header}}
 
 <section class="stacks-wrap pl-0 pr-0">
-  {{#if combinedInstances.length}}
+  {{#if instances.length}}
     {{#sortable-table
       classNames="grid sortable-table"
-      body=combinedInstances
+      body=instances
       searchText=searchText
       sortBy=sortBy
       bulkActions=true
@@ -37,7 +36,7 @@
               {{stack-row model=inst.ref}}
             </td>
             <td>
-              {{upgrade-btn classNames="btn-sm pt-0 pb-0" model=inst.ref}}
+              {{upgrade-btn classNames="btn-sm" model=inst.ref}}
             </td>
             <td></td>
             <td data-title="{{dt.instanceState}}">

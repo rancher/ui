@@ -91,26 +91,27 @@ Router.map(function() {
 
       this.route('scaling-groups', {path: '/scaling-groups', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-
         this.route('new',          {path: '/add'});
-        this.route('new-balancer', {path: '/add-balancer'});
-        this.route('new-alias',    {path: '/add-alias'});
-        this.route('new-external', {path: '/add-external'});
+      });
 
-        this.route('scaling-group', {path: '/:scaling_group_id', resetNamespace: true}, function() {
-          this.route('containers');
-          this.route('labels');
-          this.route('ports');
-          this.route('links');
-          this.route('log');
-          this.route('port-rules');
-          this.route('certificates');
-        });
+      this.route('balancers', {path: '/balancers', resetNamespace: true}, function() {
+        this.route('index', {path: '/'});
+        this.route('new',          {path: '/add'});
       });
 
       this.route('dns', {path: '/dns', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
         this.route('new',   {path: '/add'});
+      });
+
+      this.route('service', {path: '/services/:scaling_group_id', resetNamespace: true}, function() {
+        this.route('containers');
+        this.route('labels');
+        this.route('ports');
+        this.route('links');
+        this.route('log');
+        this.route('port-rules');
+        this.route('certificates');
       });
 
       this.route('stack', {path: '/stack/:stack_id', resetNamespace: true}, function() {
@@ -188,9 +189,13 @@ Router.map(function() {
       });
 
       // Catalog
-      this.route('catalog-tab', {path: '/catalog', resetNamespace: true}, function() {
+      this.route('apps-tab', {path: '/apps', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('launch', {path: '/:template'});
+
+        this.route('catalog-tab', {path: '/catalog', resetNamespace: true}, function() {
+          this.route('index', {path: '/'});
+          this.route('launch', {path: '/:template'});
+        });
       });
 
       // Kubernetes
