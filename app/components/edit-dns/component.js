@@ -82,6 +82,13 @@ export default Ember.Component.extend(NewOrEdit, {
         if ( !this.get('model.hostname') ) {
           return false;
         }
+        break;
+      case ALIAS:
+        break;
+      case IP:
+        break;
+      case SELECTOR:
+        break;
     }
 
     this.set('errors', errors);
