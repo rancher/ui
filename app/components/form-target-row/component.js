@@ -5,6 +5,7 @@ export default Ember.Component.extend({
   exclude: null,
   isAdvanced: null,
   isBalancer: null,
+  rowClass: '',
 
   tagName: 'TR',
 

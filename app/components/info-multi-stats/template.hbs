@@ -1,7 +1,7 @@
 {{#if showGraphs}}
   <div class="row">
       <div class="col span-6">
-        <div >
+        {{#if showCpu}}
           <div>
             <label class="section text-muted">{{t 'infoMultiStats.cpuSection.labelText'}}</label>
             <div class="container-legend pull-right">
@@ -19,10 +19,10 @@
               {{t 'infoMultiStats.utilizationStats'}}
             </div>
           </div>
-        </div>
+        {{/if}}
 
-        <div class="no-padding-margin mt-20">
-          <div>
+        {{#if showNetwork}}
+          <div class="no-padding-margin mt-20">
             <label class="section text-muted">{{t 'infoMultiStats.networkSection.labelText'}}</label>
             <div class="container-legend pull-right">
               <span class="ml-20 legend-circle-transmit"></span> {{t 'infoMultiStats.networkSection.transmit'}}
@@ -39,11 +39,11 @@
               {{t 'infoMultiStats.utilizationStats'}}
             </div>
           </div>
-        </div>
+        {{/if}}
       </div>
 
       <div class="col span-6">
-        <div>
+        {{#if showMemory}}
           <div>
             <label class="section text-muted">{{t 'infoMultiStats.memorySection.labelText'}}</label>
             <div class="container-legend pull-right">
@@ -60,10 +60,10 @@
               {{t 'infoMultiStats.utilizationStats'}}
             </div>
           </div>
-        </div>
+        {{/if}}
 
-        <div class="no-padding-margin mt-20">
-          <div>
+        {{#if showStorage}}
+          <div class="no-padding-margin mt-20">
             <label class="section text-muted">{{t 'infoMultiStats.storageSection.labelText'}}</label>
             <div class="container-legend pull-right">
               <span class="ml-20 legend-circle-write"></span> {{t 'infoMultiStats.storageSection.write'}}
@@ -80,7 +80,7 @@
               {{t 'infoMultiStats.utilizationStats'}}
             </div>
           </div>
-        </div>
+        {{/if}}
       </div>
   </div>
 {{/if}}

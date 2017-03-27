@@ -20,6 +20,6 @@ export default Ember.Helper.extend({
       _haystack = new Ember.A(haystack);
       this.set('_haystack', _haystack);
     }
-    return _haystack.contains(needle);
+    return _haystack.includes(needle);
   }
 });

@@ -1,12 +1,13 @@
 {{#containers-header tags=tags}}
   {{#unless simpleMode}}
     <div class="btn-group p-0 mr-10">
-      {{#link-to "containers.index" projects.current.id (query-params mode="list") classNames="btn btn-sm bg-default"}}<i class="icon icon-hamburger-nav"></i>{{/link-to}}
-      {{#link-to "containers.index" projects.current.id (query-params mode="grouped") classNames="btn btn-sm bg-default"}}<i class="icon icon-tasks"></i>{{/link-to}}
+      {{#link-to "containers.index" projects.current.id (query-params mode="list") classNames="btn btn-sm bg-default" tooltip=(t 'nav.containers.groupNone')}}<i class="icon icon-hamburger-nav"></i>{{/link-to}}
+      {{#link-to "containers.index" projects.current.id (query-params mode="grouped") classNames="btn btn-sm bg-default" tooltip=(t 'nav.containers.groupStack')}}<i class="icon icon-tasks"></i>{{/link-to}}
     </div>
   {{/unless}}
 
-  {{#link-to "containers.new" classNames="btn btn-sm bg-primary"}}{{t 'containersPage.index.linkTo'}}{{/link-to}}
+  {{#link-to "new-stack" classNames="btn btn-sm bg-primary mr-10"}}{{t 'nav.containers.importCompose'}}{{/link-to}}
+  {{#link-to "containers.new" classNames="btn btn-sm bg-primary"}}{{t 'nav.containers.addContainer'}}{{/link-to}}
 {{/containers-header}}
 
 <section class="instances r-pt5 r-pb5">

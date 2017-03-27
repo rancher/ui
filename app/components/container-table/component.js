@@ -32,11 +32,6 @@ export const headersAll =  [
     searchField: 'displayImage',
     translationKey: 'generic.image',
   },
-  {
-    name: 'command',
-    sort: ['command','name','id'],
-    translationKey: 'generic.command',
-  },
 ];
 
 export const headersWithHost = headersAll.filter((x) => x.name !== 'stats');

@@ -99,10 +99,10 @@ export default Ember.Controller.extend({
 
   }.property('model.stacks.@each.{grouping,system}','tags','prefs.showSystemResources'),
 
-  combinedInstances: function() {
+  instances: function() {
     let out = [];
     this.get('filteredStacks').forEach((stack) => {
-      out.pushObjects(stack.get('services').filterBy('isReal', true));
+      out.pushObjects(stack.get('services').filter((x) => x.get('isReal') && !x.get('isBalancer')));
     });
 
     return out;
@@ -121,14 +121,4 @@ export default Ember.Controller.extend({
 
     return false;
   }.property('filteredStacks.@each.name'),
-
-  pageHeader: function() {
-    let tags = this.get('tags');
-
-    if ( tags && tags.length ) {
-      return 'stacksPage.header.tags';
-    } else {
-      return 'stacksPage.header.services';
-    }
-  }.property('tags'),
 });

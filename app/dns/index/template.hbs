@@ -1,0 +1,57 @@
+{{#containers-header tags=tags}}
+  {{#link-to "new-stack" classNames="btn btn-sm bg-primary mr-10"}}{{t 'stacksPage.header.importCompose'}}{{/link-to}}
+  {{#link-to "dns.new" projects.current.id class="btn btn-sm bg-primary"}}{{t 'stacksPage.header.addRecord'}}{{/link-to}}
+{{/containers-header}}
+
+<section class="stacks-wrap pl-0 pr-0">
+  {{#if combinedInstances.length}}
+    {{#sortable-table
+      classNames="grid sortable-table"
+      body=combinedInstances
+      searchText=searchText
+      sortBy=sortBy
+      bulkActions=true
+      subRows=true
+      fullRows=true
+      groupByKey=(if simpleMode null "stack.id")
+      groupByRef="stack"
+      pagingLabel="pagination.container"
+      subHeaders=containerHeaders
+      subSearchField="instances"
+      headers=headers as |sortable kind inst dt|}}
+      {{#if (eq kind "row")}}
+        {{dns-row
+          model=inst
+          toggle=(action "toggleExpand" inst.id)
+          expanded=(array-includes expandedInstances inst.id)
+          searchText=searchText
+          subMatches=sortable.subMatches
+          fullColspan=sortable.fullColspan
+          dt=dt
+        }}
+      {{else if (eq kind "group")}}
+        <tr class="group-row">
+          {{#if inst.ref}}
+            <td colspan={{sub sortable.fullColspan 2}}>
+              {{stack-row model=inst.ref}}
+            </td>
+            <td>
+              {{upgrade-btn classNames="btn-sm" model=inst.ref}}
+            </td>
+            <td data-title="{{dt.actions}}" class="actions">
+              {{action-menu model=inst.ref}}
+            </td>
+          {{else}}
+            <td colspan={{sortable.fullColspan}}>{{t 'hostPod.groupedInstances.standalone'}}</td>
+          {{/if}}
+        </tr>
+      {{else if (eq kind "nomatch")}}
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.index.table.noMatch'}}</td></tr>
+      {{else if (eq kind "norows")}}
+        <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted lacsso pt-20 pb-20">{{t 'containersPage.index.table.noData'}}</td></tr>
+      {{/if}}
+    {{/sortable-table}}
+  {{else}}
+    <h1>You should add a container...</h1>
+  {{/if}}
+</section>

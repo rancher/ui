@@ -538,8 +538,38 @@ containerSubpod:
   childContainers: Containers
   childSidekicks: Sidekicks
 
+dnsPage:
+  table:
+    target: Target
+
 dockerCLI:
   header: Swarm CLI
+
+editDns:
+  title:
+    new: Add DNS Record
+    edit: Edit DNS Record
+  name:
+    placeholder: e.g. myapp
+  description:
+    placeholder: e.g. Current version of MyApp
+  selectorContainer:
+    label: Container Selector
+    placeholder: e.g. mylabel=somevalue
+  healthCheckNote: "The health check will only be used if the external entry is used as the target of a load balancer."
+  mode:
+    label: "Resolves To"
+    dnsservice: One or more other services
+    service: The set of containers which match a selector
+    externalip: One or more external IP Addresses
+    externalhostname: An external hostname
+  targetIp:
+    label: Target IP Addresses
+    add: Add Target IP Address
+  hostname:
+    label: Target Hostname
+    placeholder: e.g. foobar.com
+
 
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
 # those are present incase we have an error in the app and can not load the translations file
@@ -773,9 +803,6 @@ k8sTab:
         Put this into <code>~/.kube/config</code>:
       downloadText: |
         Then <a href="{downloadUrl}" target="_blank">download</a> (if needed) and run <code>kubectl</code>
-    shell:
-      helpText: |
-        Or use this handy shell to directly execute <code>kubectl</code> commands:
 
 loginPage:
   greeting: "Howdy!<br><span>Welcome to {appName}</span>"
@@ -948,12 +975,6 @@ servicePage:
         placeholder: e.g. myapp
       description:
         placeholder: e.g. My application
-  newAlias:
-    form:
-      name:
-        placeholder: e.g. myapp
-      description:
-        placeholder: e.g. Current version of MyApp
   newBalancer:
     upgradeImage: "The balancer software image will be upgraded from <code>{from}</code> to <code>{to}</code>."
     form:
@@ -979,9 +1000,10 @@ servicePage:
       body:
         noData: There have been no log events yet.
   type:
-    service: Service
+    service: Scaling Group
+    selectorservice: Selector
     loadbalancerservice: Load Balancer
-    dnsservice: Service Alias
+    dnsservice: Alias
     externalservice: External
     kubernetesservice: K8s Service
     composeservice: Compose Service
@@ -1010,6 +1032,7 @@ stacksPage:
   header:
     addContainer: Add Service
     addBalancer: Add Balancer
+    addRecord: Add Record
     importCompose: Import compose.yml
   table:
     standalone: Standalone
@@ -1526,9 +1549,6 @@ editAccount:
     identity:
       label: Identity
 
-editAliasService:
-  title: Edit Service Alias
-
 editApiKey:
   title:
     justCreated: API Key Created
@@ -1668,7 +1688,7 @@ stackHeader:
   backLink: "Stack:"
   outputs: Outputs
   add:
-    service: Add Service
+    service: Add Scaling Group
     balancer: Add Load Balancer
     external: Add External Service
     alias: Add Service Alias
@@ -1681,7 +1701,7 @@ formatIp:
 formBalancerRules:
   label: Port Rules
   noRules: No Rules
-  addServiceLabel: Add Service Rule
+  addServiceLabel: Add Scaling Group Rule
   addSelectorLabel: Add Selector Rule
   target: Target
   access:
@@ -1830,7 +1850,7 @@ formEngineOpts:
     valuePlaceholder: e.g. https://my-mirror.example.com:5000
 
 formHealthCheck:
-  label: Type
+  label: Health Check
   checkType:
     none: None
     tcp: TCP Connection Opens
@@ -2121,15 +2141,9 @@ formStickiness:
     sticky: e.g. sticky
     domain: e.g. mydomain.com
 
-formTarget:
-  target: Target
-  pointAddress: Point to IP Address(es)
-  pointHostname: Point to a Hostname
-  addTarget: Add Target IP
-
 formTargets:
   title: Targets
-  addAction: Add Service
+  addAction: Add Target
   hostname:
     label: Request Host Header
     placeholder: e.g. svc.com
@@ -2977,7 +2991,7 @@ modalWelcome:
   closeModal: Got It
 
 newAliasService:
-  header: Add Service Alias
+  header: Add Alias
 
 newBalancer:
   header:
@@ -3037,10 +3051,10 @@ newCatalog:
 newContainer:
   add:
     container: Add Container
-    service: Add Service
+    scalingGroup: Add Scaling Group
   upgrade:
     container: Upgrade Container
-    service: Upgrade Service
+    scalingGroup: Upgrade Scaling Group
   tabs:
     disks: Disks
     userData: User Data
@@ -3068,10 +3082,6 @@ newContainer:
   emptySidekick: "(Sidekick #{num})"
   addSidekickContainer: Add Sidekick Container
   addSidekickVm: Add Sidekick VM
-
-newExternalService:
-  header: Add External Service
-  alert: "Note: This will only be used if the external service is a target of a load balancer."
 
 newPassword:
   placeholder: New Password
@@ -3245,7 +3255,7 @@ serviceLink:
       sameStack: "{service}"
       differentStack: "{stack}/{service}"
 
-:iteAccess:
+siteAccess:
   header: Site Access
   helpText: "Configure who should be allowed to log in and use {appName}."
   unrestricted: "Allow any valid {individuals}"
@@ -3260,46 +3270,13 @@ serviceLink:
 snapshotTimeline:
   noData: No Snapshot Data
 
-stackSection:
-  outputs: Outputs
-  description: Description
-  none: No Services
-  tags: Tags
-  container: |
-    {numContainers, plural,
-      =1 {Container}
-      other {Containers}
-    }
-  service: |
-    {numServices, plural,
-      =1 {Service}
-      other {Services}
-    }
-  sidekick: |
-    {numSidekicks, plural,
-      =1 {+ 1 Sidekick}
-      other {+ # Sidekicks}
-    }
-  add:
-    service: Add Service
-    loadBalancer: Add Load Balancer
-    serviceAlias: Add Service Alias
-    externalService: Add External Service
-    virtualMachine: Add Virtual Machine
-  table:
-    dataTitle:
-      state: State
-      serviceName: Service Name
-      kind: Kind
-      details: Details
-      containers: Containers
-      actions: Actions
-  upgradeImage: Upgrade Container Image
-
-
 snapshotSection:
   none: Not backed up
   multiple: 'Multiple: {latestDate}'
+
+stackRow:
+  label: "Stack: {name}"
+  standalone: Standalone
 
 storagePoolSection:
   outputs: Outputs
@@ -3498,17 +3475,25 @@ nav:
     system: Infrastructure
   containers:
     tab: Containers
+    systemTab: System
+    balancers: Load Balancers
     containers: Containers
     scalingGroups: Scaling Groups
     dns: DNS
     volumes: Volumes
+    addContainer: Add Container
+    addScalingGroup: Add Scaling Group
+    addBalancer: Add Balancer
+    addDns: Add Record
+    groupNone: Flat List
+    groupStack: Group by Stack
+    importCompose: Import compose.yml
   hosts:
     tab: Hosts
-  catalog:
-    tab: Catalog
-    all: All
-    library: Library
-    community: Community
+  apps:
+    tab: Apps
+    apps: Applications
+    launch: Launch from Catalog
   infra:
     tab: Resources
     storagePage: Storage

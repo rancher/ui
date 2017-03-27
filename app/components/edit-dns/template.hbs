@@ -1,0 +1,97 @@
+<section class="header clearfix">
+  <h1>{{t (if editing 'editDns.title.edit' 'editDns.title.new')}}</h1>
+</section>
+
+<section class="horizontal-form container-fluid">
+  {{form-name-description
+    model=record
+    namePlaceholder="editDns.name.placeholder"
+    descriptionPlaceholder="editDns.description.placeholder"
+    colClass="col span-12"
+  }}
+
+  <div class="mb-20">
+    <label>{{t 'editDns.mode.label'}}</label>
+  </div>
+  <div class="mb-20">
+    <div class="radio">
+      <label>{{radio-button selection=mode value="externalip"}}&nbsp;{{t 'editDns.mode.externalip'}}</label>
+    </div>
+    <div class="radio">
+      <label>{{radio-button selection=mode value="externalhostname"}}&nbsp;{{t 'editDns.mode.externalhostname'}}</label>
+    </div>
+    <div class="radio">
+      <label>{{radio-button selection=mode value="dnsservice"}}&nbsp;{{t 'editDns.mode.dnsservice'}}</label>
+    </div>
+    <div class="radio">
+      <label>{{radio-button selection=mode value="service"}}&nbsp;{{t 'editDns.mode.service'}}</label>
+    </div>
+  </div>
+
+  <div class="box">
+    {{#if (eq mode "dnsservice")}}
+      {{form-targets
+        isBalancer=false
+        existing=existing
+        exclude=service.id
+        changed=(action "setTargetServices")
+      }}
+    {{else if (or (eq mode "externalip") (eq mode "externalhostname"))}}
+      {{#if (eq mode "externalip")}}
+        <div class="mb-20">
+          <label>{{t 'editDns.targetIp.label'}}</label>
+        </div>
+        <div>
+          <button class="btn bg-link icon-btn" {{action "addTargetIp"}}>
+            <i class="icon icon-plus text-small"/>
+            <span>{{t 'editDns.targetIp.add'}}</span>
+          </button>
+        </div>
+        {{#if targetIpArray.length}}
+          <div class="row">
+            <div class="col span-12">
+              <table class="table fixed no-lines no-top-padding">
+                <tbody>
+                  {{#each targetIpArray as |tgt|}}
+                    <tr>
+                      <td class="pr-0 pl-0 pb-10">
+                        {{input type="text" class="form-control input-sm target-ip" value=tgt.value placeholder="e.g. 192.168.2.24"}}
+                      </td>
+                      <td width="30" class="text-right pr-0 pl-0 pb-10">
+                        <button class="btn bg-primary btn-sm" {{action "removeTargetIp" tgt}}><i class="icon icon-minus"/></button>
+                      </td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        {{/if}}
+      {{else}}
+        <div class="mb-20">
+          <label>{{t 'editDns.hostname.label'}}</label>
+        </div>
+        {{input value=record.hostname placeholder=(t 'editDns.hostname.placeholder')}}
+      {{/if}}
+    {{else}}
+      <div class="mb-20">
+        <label>{{t 'editDns.selectorContainer.label'}}</label>
+      </div>
+      {{input value=record.selectorContainer placeholder=(t 'editDns.selectorContainer.placeholder')}}
+    {{/if}}
+  </div>
+</section>
+
+{{#if (or (eq mode "externalip") (eq mode "externalhostname"))}}
+  <section class="box mt-20">
+    {{form-healthcheck
+      isService=true
+      showStrategy=false
+      healthCheck=record.healthCheck
+    }}
+    <div class="alert alert-info">{{t 'editDns.healthCheckNote'}}</div>
+  </section>
+{{/if}}
+
+{{top-errors errors=errors}}
+{{save-cancel editing=editing save="save" cancel="cancel"}}

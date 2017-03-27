@@ -2,7 +2,7 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 const DEFAULT_ROUTE = 'containers';
-const VALID_ROUTES = [DEFAULT_ROUTE,'scaling-groups','dns','volumes'];
+const VALID_ROUTES = [DEFAULT_ROUTE,'scaling-groups','balancers', 'dns','volumes'];
 
 export default Ember.Route.extend({
   redirect() {

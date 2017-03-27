@@ -6,6 +6,15 @@ var ExternalService = Service.extend({
   healthState: function() {
     return 'healthy';
   }.property(),
+
+  displayTargets: function() {
+    let hostname = this.get('hostname');
+    if ( hostname ) {
+      return hostname;
+    }
+
+    return (this.get('externalIpAddresses')||[]).join(', ');
+  }.property('hostname','externalIpAddresses')
 });
 
 export default ExternalService;
