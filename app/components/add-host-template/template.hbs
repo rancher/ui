@@ -1,12 +1,35 @@
 <div class="row mt-10">
   {{#if add}}
     <h3>{{t 'addHostTemplate.add.header'}}</h3>
-    {{#each newKeys as |key|}}
-      <div class="col span-6">
-        <label for="">{{key.name}}</label>
-        {{input type=(if key.public 'text' 'password') value=key.value}}
-      </div>
-    {{/each}}
+    {{#each-in newSelectedKey as |key value|}}
+      {{#if (eq key 'name')}}
+        <div class="col span-6">
+          <label for="">{{key}}</label>
+          {{input type='text' value=name}}
+        </div>
+      {{/if}}
+      {{#if (eq key 'publicValues')}}
+        {{#each-in (get selectedKey key) as |pKey pValue|}}
+          <div class="col span-6 pt-5">
+            <label for="">{{pKey}}</label>
+            {{input type='text' value=publicValue}}
+          </div>
+        {{/each-in}}
+      {{/if}}
+      {{#if (eq key 'secretValues')}}
+        <div class="col span-6">
+          {{#each-in (get selectedKey key) as |sKey sValue|}}
+            <div class="col span-12">
+              <label for="">{{sKey}}</label>
+              {{input type='password' value=secretValue}}
+            </div>
+          {{/each-in}}
+          <div class="col span-12">
+            <a class="pull-right" href="#" {{action 'cancelAdd'}}>{{t 'generic.cancel'}}</a>
+          </div>
+        </div>
+      {{/if}}
+    {{/each-in}}
   {{else}}
     <div class="col span-6">
       <div class="col-inline clearfix">
@@ -19,11 +42,11 @@
           classNames="form-control"
           content=templates
           optionLabelPath="name"
-          optionValuePath="as"
+          optionValuePath="id"
           localizedLabel=false
           localizedPrompt=true
           prompt='addHostTemplate.choose.prompt'
-          value=selectedKey
+          value=hostTemplate
       }}
     </div>
   {{/if}}

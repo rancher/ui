@@ -20,8 +20,8 @@ const HOST_TEMPLATES = [
 
 export default Ember.Component.extend({
   host: null,
-  hostTemplates: HOST_TEMPLATES,
-  selectedTemplateKey: null,
+  hostTemplates: null,
+  selectedHostTemplate: null,
   providerClass: Ember.computed('host.provider', function() {
     var provider = this.get('host.provider');
 
@@ -40,9 +40,24 @@ export default Ember.Component.extend({
     setLabels() {
     },
     saveTemp() {
-      Ember.run.later(() => {
-        this.sendAction('save');
-      }, 1000);
+      if (this.get('selectedTemplateKey')) {
+        if (this.get('selectedTemplateKey.accountId')) {
+          // we have a hosttemplate so well send it with the driver
+          Ember.run.later(() => {
+            // TODO Actually save this model now that the template is saved
+            this.sendAction('save');
+          }, 1000);
+        } else {
+          this.get('selectedTemplateKey').save().then((hstTemplate) => {
+            hstTemplate.waitForNotTransitioning(() => {
+              Ember.run.later(() => {
+                // TODO Actually save this model now that the template is saved
+                this.sendAction('save');
+              }, 1000);
+            });
+          });
+        }
+      }
     },
   },
 });
