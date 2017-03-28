@@ -40,6 +40,10 @@ export default Ember.Component.extend({
   },
 
   onActiveChanged: function() {
+    if ( this.isDestroyed || this.isDestroying ) {
+      return;
+    }
+
     if ( this.get('active') )
     {
       this.setUp();

@@ -1,0 +1,19 @@
+{{#if loading}}
+  <div class="m-20">
+    <i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}
+  </div>
+{{else if error}}
+  <div class="alert bg-error">{{error}}</div>
+{{else}}
+  {{#container-shell
+    instance=model
+    command=command
+    dismiss=(action "cancel")
+    disconncted=(action "cancel")
+  }}
+  {{/container-shell}}
+{{/if}}
+
+<div class="footer-actions">
+  <button {{action "cancel"}} class="btn bg-primary">{{t 'generic.closeModal'}}</button>
+</div>

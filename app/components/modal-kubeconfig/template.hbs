@@ -1,0 +1,14 @@
+<section>
+  {{#if (eq step 1)}}
+    <i class="icon icon-spinner icon-spin"></i> {{t 'k8sTab.kubectl.stepTwo.progress'}}
+  {{/if}}
+  {{#if (eq step 2)}}
+    <p>{{format-html-message 'k8sTab.kubectl.stepThree.helpText'}}</p>
+    <pre><code>{{kubeconfig}}</code></pre>
+    {{copy-to-clipboard tooltipText="" buttonText="copyToClipboard.tooltip" clipboardText=kubeconfig class="with-clip"}}
+    <p class="mt-10 mb-0">{{format-html-message 'k8sTab.kubectl.stepThree.downloadText' downloadUrl=downloadUrl}}</p>
+  {{/if}}
+</section>
+<div class="footer-actions">
+  <button {{action "cancel"}} class="btn bg-primary">{{t 'generic.closeModal'}}</button>
+</div>

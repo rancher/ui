@@ -18,6 +18,15 @@ export default Ember.Service.extend({
     return this.get('app.kubernetesDashboard').replace(this.get('app.projectToken'), this.get(`tab-session.${C.TABSESSION.PROJECT}`));
   }.property(`tab-session.${C.TABSESSION.PROJECT}`,'app.kubernetesDashboard'),
 
+  workload() {
+    let url = this.get('app.kubernetesWorkload').replace(this.get('app.projectToken'), this.get(`tab-session.${C.TABSESSION.PROJECT}`));
+    return this.get('store').rawRequest({
+      url: url
+    }).then(function(res) {
+      return res.body;
+    });
+  },
+
   isReady() {
     let store = this.get('store');
     return store.find('stack').then((stacks) => {

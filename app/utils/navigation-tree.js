@@ -48,39 +48,6 @@ const navTree = [
     route: 'k8s-tab',
     ctx: [getProjectId],
     condition: function() { return this.get('hasKubernetes'); },
-    submenu: [
-      {
-        id: 'k8s-notready',
-        icon: 'icon icon-spinner icon-spin',
-        localizedLabel: 'nav.notReady',
-        condition: k8sNotReady,
-      },
-      {
-        id: 'k8s-dashboard',
-        localizedLabel: 'nav.k8s.dashboard',
-        icon: 'icon icon-kubernetes',
-        route: 'k8s-tab.dashboard',
-        ctx: [getProjectId],
-        condition: k8sReady,
-      },
-      {
-        id: 'k8s-cli',
-        localizedLabel: 'nav.k8s.cli',
-        icon: 'icon icon-terminal',
-        route: 'k8s-tab.kubectl',
-        ctx: [getProjectId],
-        condition: k8sReady,
-      },
-      {
-        id: 'k8s-system',
-        localizedLabel: 'nav.k8s.system',
-        icon: 'icon icon-network',
-        route: 'scaling-groups',
-        condition: isOwner,
-        ctx: [getProjectId],
-        queryParams: {which: C.EXTERNAL_ID.KIND_NOT_ORCHESTRATION},
-      },
-    ],
   },
 
   // Swarm
