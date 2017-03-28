@@ -85,7 +85,8 @@ export default Ember.Component.extend({
         data[i] = 0;
       }
       this.set(field, data);
-      this.set(field+'Last', {});
+      this.set(field+'_A', {});
+      this.set(field+'_B', {});
     });
 
     this.startTimer();
@@ -94,7 +95,8 @@ export default Ember.Component.extend({
   tearDown() {
     FIELDS.forEach((field) => {
       this.set(field, null);
-      this.set(field+'Last', null);
+      this.set(field+'_A', null);
+      this.set(field+'_B', null);
     });
   },
 
@@ -114,34 +116,46 @@ export default Ember.Component.extend({
 
     let key = point.key;
 
-    this.get('cpuSystemLast')[key] = point.cpu_system || 0;
-    this.get('cpuUserLast')[key] = point.cpu_user || 0;
-    this.get('cpuTotalLast')[key] = point.cpu_total || 0;
+    this.get('cpuSystem_A')[key] = point.cpu_system || 0;
+    this.get('cpuUser_A')[key] = point.cpu_user || 0;
+    this.get('cpuTotal_A')[key] = point.cpu_total || 0;
 
-    this.get('memoryLast')[key] = point.mem_used_mb || 0;
+    this.get('memory_A')[key] = point.mem_used_mb || 0;
 
-    this.get('networkTxLast')[key] = point.net_tx_kb*8 || 0;
-    this.get('networkRxLast')[key] = point.net_rx_kb*8 || 0;
+    this.get('networkTx_A')[key] = point.net_tx_kb*8 || 0;
+    this.get('networkRx_A')[key] = point.net_rx_kb*8 || 0;
 
-    this.get('storageWriteLast')[key] = point.disk_write_kb*8 || 0;
-    this.get('storageReadLast')[key] = point.disk_read_kb*8 || 0;
+    this.get('storageWrite_A')[key] = point.disk_write_kb*8 || 0;
+    this.get('storageRead_A')[key] = point.disk_read_kb*8 || 0;
   },
 
   emit() {
-    let ary, field, valueMap, keys, sum;
+    let ary, field, valueMapA, valueMapB, keys, sum;
     let maxPoints = this.get('maxPoints');
 
     for ( let i = 0 ; i < FIELDS.length ; i++ ) {
       field = FIELDS[i];
-      valueMap = this.get(field+'Last');
-      this.set(field+'Last',{});
+      // Average out the last 2 points from each field.
+      valueMapA = this.get(field+'_A');
+      valueMapB = this.get(field+'_B');
+      this.set(field+'_B',valueMapA);
+      this.set(field+'_A',{});
 
       ary = this.get(field);
       sum = 0;
       field = FIELDS[i];
-      keys = Object.keys(valueMap);
+      keys = Object.keys(valueMapA);
       for ( let j = 0 ; j < keys.length ; j++ ) {
-        sum += valueMap[keys[j]];
+        sum += valueMapA[keys[j]];
+      }
+
+      keys = Object.keys(valueMapB);
+      if ( keys && keys.length ) {
+        for ( let j = 0 ; j < keys.length ; j++ ) {
+          sum += valueMapB[keys[j]];
+        }
+
+        sum = Math.round(sum/2);
       }
 
       while ( ary.get('length') >= maxPoints ) {

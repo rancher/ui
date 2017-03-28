@@ -76,10 +76,7 @@ export default Ember.Controller.extend({
       out = out.filter((obj) => obj.hasTags(needTags));
     }
 
-    out = out.filter((obj) => obj.get('type').toLowerCase() !== 'kubernetesstack');
-
     return out;
-
   }.property('model.stacks.@each.{grouping,system}','tags','prefs.showSystemResources'),
 
   combinedInstances: function() {
