@@ -198,13 +198,7 @@ Router.map(function() {
         });
       });
 
-      // Kubernetes
-      this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true}, function() {
-        this.route('index', {path: '/'});
-        this.route('kubectl', {path: '/kubectl'});
-        this.route('dashboard', {path: '/dashboard'});
-      });
-
+      this.route('k8s-tab', {path: '/kubernetes', resetNamespace: true});
 
       this.route('help');
 

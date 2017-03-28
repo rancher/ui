@@ -1,2 +1,83 @@
 {{waiting-orchestration}}
-{{outlet}}
+
+<div class="k8s-tab">
+  <h1 class="mt-10 mb-0">Status</h1>
+  <div class="row text-center">
+    <div class="col span-3 count-box {{if etcd 'text-success' 'bg-warning'}}">
+      <h1>{{#if etcd}}<i class="icon icon-face-open-smile"></i>{{else}}<i class="icon icon-alert text-error"></i>{{/if}}</h1>
+      <h2>etcd</h2>
+    </div>
+    <div class="col span-3 count-box {{if kubelet 'text-success' 'bg-warning'}}">
+      <h1>{{#if kubelet}}<i class="icon icon-face-open-smile"></i>{{else}}<i class="icon icon-alert text-error"></i>{{/if}}</h1>
+      <h2>Kubelet</h2>
+    </div>
+    <div class="col span-3 count-box {{if controlPlane 'text-success' 'bg-warning'}}">
+      <h1>{{#if controlPlane}}<i class="icon icon-face-open-smile"></i>{{else}}<i class="icon icon-alert text-error"></i>{{/if}}</h1>
+      <h2>Control Plane</h2>
+    </div>
+    <div class="col span-3 count-box {{if systemStacks 'text-success' 'bg-warning'}}">
+      <h1>{{#if systemStacks}}<i class="icon icon-face-open-smile"></i>{{else}}<i class="icon icon-alert text-error"></i>{{/if}}</h1>
+      <h2>System Services</h2>
+    </div>
+  </div>
+
+  <h1 class="mt-10 mb-0">Resources</h1>
+  <div class="row text-center">
+    <div class="col span-4">
+      <div class="count-box">
+        <h1>{{model.workload.deploymentList.listMeta.totalItems}}</h1>
+        <h2>Deployments</h2>
+      </div>
+    </div>
+    <div class="col span-4">
+      <div class="count-box">
+        <h1>{{model.workload.replicaSetList.listMeta.totalItems}}</h1>
+        <h2>Replica Sets</h2>
+      </div>
+    </div>
+    <div class="col span-4">
+      <div class="count-box">
+        <h1>{{model.workload.podList.listMeta.totalItems}}</h1>
+        <h2>Pods</h2>
+      </div>
+    </div>
+  </div>
+  <div class="row text-center">
+    <div class="col span-3">
+      <div class="count-box">
+        <h1>{{model.workload.daemonSetList.listMeta.totalItems}}</h1>
+        <h2>Daemon Sets</h2>
+      </div>
+    </div>
+    <div class="col span-3">
+      <div class="count-box">
+        <h1>{{model.workload.replicationControllerList.listMeta.totalItems}}</h1>
+        <h2>RCs</h2>
+      </div>
+    </div>
+    <div class="col span-3">
+      <div class="count-box">
+        <h1>{{model.workload.statefulSetList.listMeta.totalItems}}</h1>
+        <h2>Stateful Sets</h2>
+      </div>
+    </div>
+    <div class="col span-3">
+      <div class="count-box">
+        <h1>{{model.workload.jobList.listMeta.totalItems}}</h1>
+        <h2>Job Lists</h2>
+      </div>
+    </div>
+  </div>
+
+  <div class="row text-center">
+    <div class="col span-4">
+      <a href="{{k8s.kubernetesDashboard}}" target="_blank" rel="noopener nofollow" class="btn bg-primary btn-lg"><i class="icon icon-external-link"></i> Launch Dashboard</a>
+    </div>
+    <div class="col span-4">
+      <button {{action "kubectl"}} class="btn bg-primary btn-lg"><i class="icon icon-terminal"></i> Launch kubectl Shell</button>
+    </div>
+    <div class="col span-4">
+      <button {{action "kubeconfig"}} class="btn bg-primary btn-lg"><i class="icon icon-file"></i> Generate Config File</button>
+    </div>
+  </div>
+</div>
