@@ -22,6 +22,9 @@ export function parseCatalogSetting(str) {
           if ( !entry.branch ) {
             entry.branch = C.CATALOG.DEFAULT_BRANCH;
           }
+          if ( !entry.kind ) {
+            entry.kind = 'native';
+          }
         });
 
         return json;
@@ -49,7 +52,7 @@ export function parseCatalogSetting(str) {
     key = key.trim();
     val = val.trim();
     if (key && val) {
-      out.catalogs[key] = {url: val, branch: C.CATALOG.DEFAULT_BRANCH};
+      out.catalogs[key] = {url: val, kind: 'native', branch: C.CATALOG.DEFAULT_BRANCH};
     }
   });
 

@@ -93,7 +93,7 @@ export default Ember.Component.extend({
 
     var ary = [];
     Object.keys(map).forEach((name) => {
-      ary.push(Ember.Object.create({name: name, branch: map[name].branch, url: map[name].url}));
+      ary.push(Ember.Object.create({name: name, kind: map[name].kind||'native', branch: map[name].branch, url: map[name].url}));
     });
 
     this.setProperties({
