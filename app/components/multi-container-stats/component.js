@@ -93,6 +93,7 @@ export default Ember.Component.extend({
   },
 
   tearDown() {
+    this.stopTimer();
     FIELDS.forEach((field) => {
       this.set(field, null);
       this.set(field+'_A', null);
