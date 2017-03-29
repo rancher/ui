@@ -275,13 +275,6 @@ export default Ember.Component.extend(NewOrEdit, {
 
   doneSaving() {
     var projectId = this.get('projects.current.id');
-    if ( this.get('stackResource.system') )
-    {
-      return this.get('router').transitionTo('stack', projectId, this.get('primaryResource.id'), {queryParams: {which: 'infra'}});
-    }
-    else
-    {
-      return this.get('router').transitionTo('stack', projectId, this.get('primaryResource.id'));
-    }
+    return this.get('router').transitionTo('apps-tab.index', projectId);
   }
 });
