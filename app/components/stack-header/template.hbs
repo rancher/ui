@@ -1,31 +1,70 @@
-<section class="header clearfix">
-  <h1>{{#link-to "containers.index"}}{{t 'stackHeader.backLink'}}{{/link-to}}</h1>
-
-  <div class="right-buttons">
-    {{#if outputs.length}}
-      <div class="btn-group">
-        <button type="button" class="btn btn-sm bg-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          {{t 'stackHeader.outputs'}} <i class="icon icon-chevron-down"></i>
-        </button>
-        <ul class="dropdown-menu dropdown-menu-right">
-          {{#each outputs as |obj|}}
-            <li><a href="{{obj.value}}" target="_blank">{{obj.key}}</a></li>
-          {{/each}}
-        </ul>
-      </div>
-    {{/if}}
-
-    {{action-menu model=model classNames="ml-10" size="sm"}}
-    {{header-state model=model classNames="pull-right"}}
-
-    <div class="btn-group ml-10">
-      {{#link-to "stack.index" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-tasks" text=(t 'tooltipLink.list') options=listLinkOptions}}{{/link-to}}
-      {{#link-to "stack.graph" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-share" text=(t 'tooltipLink.linkGraph') options=graphLinkOptions}}{{/link-to}}
+<section class="header">
+  <div class="clearfix">
+    <h1>{{t 'stackHeader.title' name=model.displayName}}</h1>
+    <div class="right-buttons">
       {{#if model.canViewConfig}}
-        {{#link-to "stack.code" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-file" text=(t 'tooltipLink.composeYaml') options=yamlLinkOptions}}{{/link-to}}
+        <div class="btn-group ml-10">
+          {{#link-to "stack.index" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-tasks" text=(t 'tooltipLink.list') options=listLinkOptions}}{{/link-to}}
+          {{#link-to "stack.code" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-file" text=(t 'tooltipLink.composeYaml') options=yamlLinkOptions}}{{/link-to}}
+        </div>
+      {{/if}}
+      {{action-menu model=model classNames="ml-10 pull-right" size="sm"}}
+    </div>
+  </div>
+  <div class="clearfix">
+    {{header-state model=model}}
+    <div class="right-buttons">
+      {{upgrade-btn model=model classNames="ml-10"}}
+      {{#if outputs.length}}
+        <div class="btn-group">
+          <button type="button" class="btn btn-sm bg-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            {{t 'stackHeader.outputs'}} <i class="icon icon-chevron-down"></i>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-right">
+            {{#each outputs as |obj|}}
+              <li><a href="{{obj.value}}" target="_blank">{{obj.key}}</a></li>
+            {{/each}}
+          </ul>
+        </div>
       {{/if}}
     </div>
-
-    {{upgrade-btn model=model classNames="ml-10"}}
   </div>
+</section>
+<section>
+  {{#multi-container-stats model=model as |stats|}}
+    {{#if (and stats.active stats.cpuUser.length)}}
+      {{spark-line
+        data=stats.cpuUser
+        width=120 height=50
+        prefix="containersPage.table.sparkPrefixCpu"
+        formatter="percent"
+        type="cpu"
+      }}
+
+      {{spark-line
+        data=stats.memory
+        width=120 height=50
+        prefix="containersPage.table.sparkPrefixCpu"
+        formatter="mib"
+        type="memory"
+      }}
+
+      {{spark-line
+        data=stats.networkTx
+        width=120 height=50
+        prefix="containersPage.table.sparkPrefixCpu"
+        formatter="kbps"
+        type="network"
+      }}
+
+      {{spark-line
+        data=stats.storageWrite
+        width=120 height=50
+        prefix="containersPage.table.sparkPrefixCpu"
+        formatter="kbps"
+        type="storage"
+      }}
+    {{/if}}
+  {{/multi-container-stats}}
+
 </section>

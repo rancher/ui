@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 import {tagsToArray} from 'ui/models/stack';
 
 export default Ember.Controller.extend({
@@ -32,6 +33,14 @@ export default Ember.Controller.extend({
 
     return out;
   }.property('model.@each.system','prefs.showSystemResources','tags'),
+
+  showWelcome: function() {
+    return this.get('projects.current.orchestration') === 'cattle' && !this.get('filtered.length');
+  }.property('filtered.length','projects.current.orchestration'),
+
+  showOrchestration: function() {
+    return this.get('app.mode') !== C.MODE.CAAS;
+  }.property('app.mode'),
 
   simpleMode: function() {
     let list = this.get('_allStacks');

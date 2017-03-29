@@ -41,5 +41,5 @@ export default Ember.Controller.extend({
     }
 
     return out;
-  }.property('model.stacks.@each.{type,isFromCatalog,tags}','tags'),
+  }.property('model.stacks.@each.{type,isFromCatalog,tags}','tags','prefs.showSystemResources'),
 });
