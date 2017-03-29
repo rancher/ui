@@ -23,6 +23,10 @@ export default Ember.Controller.extend({
       });
     },
 
+    dashboard() {
+      window.open(this.get('k8s.kubernetesDashboard'),'_blank');
+    },
+
     kubectl() {
       this.get('modalService').toggleModal('modal-kubectl');
     },

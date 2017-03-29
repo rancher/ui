@@ -5,6 +5,10 @@ import { parseCatalogSetting } from 'ui/utils/parse-catalog-setting';
 export default Ember.Component.extend({
   settings: Ember.inject.service(),
   catalog: Ember.inject.service(),
+  kindChoices: [
+    {translationKey: 'catalogSettings.more.kind.native', value: 'native'},
+    {translationKey: 'catalogSettings.more.kind.helm', value: 'helm'},
+  ],
 
   initialValue: null,
 
@@ -15,7 +19,7 @@ export default Ember.Component.extend({
 
   actions: {
     add() {
-      this.get('ary').pushObject(Ember.Object.create({name: '', branch: C.CATALOG.DEFAULT_BRANCH, url: ''}));
+      this.get('ary').pushObject(Ember.Object.create({name: '', branch: C.CATALOG.DEFAULT_BRANCH, kind: 'native', url: ''}));
       Ember.run.next(() => {
         if ( this.isDestroyed || this.isDestroying ) {
           return;
@@ -47,9 +51,10 @@ export default Ember.Component.extend({
         let name = (row.name||'').trim();
         let url = (row.url||'').trim();
         let branch = (row.branch||'').trim() || def;
+        let kind = (row.kind||'').trim() || 'native';
 
         if (name && url) {
-          map[name] = {url: url, branch: branch};
+          map[name] = {url: url, branch: branch, kind: kind};
         }
       });
 
