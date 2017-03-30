@@ -7,9 +7,22 @@ export default Ember.Component.extend({
   catalogs:    null,
   ary:         null,
   global:      null,
+
+  kindChoices: [
+    {translationKey: 'catalogSettings.more.kind.native', value: 'native'},
+    {translationKey: 'catalogSettings.more.kind.helm', value: 'helm'},
+  ],
+
   actions:     {
     add() {
-      this.get('ary').pushObject(Ember.Object.create({name: '', branch: C.CATALOG.DEFAULT_BRANCH, url: '', toAdd: true}));
+      this.get('ary').pushObject(Ember.Object.create({
+        name: '',
+        branch: C.CATALOG.DEFAULT_BRANCH,
+        url: '',
+        kind: 'native',
+        toAdd: true
+      }));
+
       Ember.run.next(() => {
         if ( this.isDestroyed || this.isDestroying ) {
           return;

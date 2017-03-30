@@ -482,6 +482,16 @@ containersPage:
         placeholder: e.g. myapp
       description:
         placeholder: e.g. My Application
+  welcome:
+    container1: Get started right away
+    container2: With the native Docker experience
+    containerLink: Add a container
+    orchestrator1: I'd like to use...
+    orchestrator2: Kubernetes, Mesos, or Swarm
+    kubernetesLink: Kubernetes
+    mesosLink: Mesos
+    swarmLink: Swarm
+
   containerPage:
     header: 'Container'
     subtext:
@@ -1028,23 +1038,10 @@ signupPage:
       subtext: Confirm your email by clicking the verification link we just sent to your inbox.
       resend: Resend Email
 
-stacksPage:
+stackPage:
   header:
-    addContainer: Add Service
-    addBalancer: Add Balancer
-    addRecord: Add Record
-    importCompose: Import compose.yml
-  table:
-    standalone: Standalone
-    endpoints: Endpoints
-    instanceCount: Container Count
-    instanceState: Container States
-    instanceStateWithIcon: States
-  tags:
-    all: All Tags
-    one: 'Tag: {name}'
-  noInfra: You do not currently have any Infrastructure Stacks
-  noMatch: No Stacks match the selected tag
+    singleBanner: Viewing a single Stack
+    backLink: Back to all stacks
 
 newStack:
   header: Import Compose.yml
@@ -1469,6 +1466,10 @@ catalogSettings:
     url:
       label: URL
       placeholder: 'e.g. https://github.com/mycompany/mycatalog.git'
+    kind:
+      label: Kind
+      native: Native
+      helm: Helm
     branch:
       label: Branch
       placeholder: 'e.g. master'
@@ -1676,7 +1677,7 @@ editStack:
     placeholder: e.g. frontend, production
     help: Comma-separated list of tags.  The Stacks list can be filtered by individual tags.
 
-environtmentCatalogs:
+envCatalog:
   header: Catalog
   subtext: You can define your own custom catalog sources here. Catalogs added here will only be availabel to the environemnt in which they were added. Each one needs a unique name and a URL that <code>git clone</code> can handle (see <a href="https://git-scm.com/docs/git-clone#_git_urls_a_id_urls_a" target="_blank">docs</a> for more info).
   addActionLabel: Add Catalog
@@ -1685,7 +1686,7 @@ environtmentCatalogs:
 
 
 stackHeader:
-  backLink: "Stack:"
+  title: 'Stack: {name}'
   outputs: Outputs
   add:
     service: Add Scaling Group
@@ -1693,6 +1694,24 @@ stackHeader:
     external: Add External Service
     alias: Add Service Alias
     vm: Add Virtual Machine
+
+stacksPage:
+  header:
+    addContainer: Add Service
+    addBalancer: Add Balancer
+    addRecord: Add Record
+    importCompose: Import compose.yml
+  table:
+    standalone: Standalone
+    endpoints: Endpoints
+    instanceCount: Container Count
+    instanceState: Container States
+    instanceStateWithIcon: States
+  tags:
+    all: All Tags
+    one: 'Tag: {name}'
+  noInfra: You do not currently have any Infrastructure Stacks
+  noMatch: No Stacks match the selected tag
 
 formatIp:
   noIp: None
@@ -3490,6 +3509,10 @@ nav:
     importCompose: Import compose.yml
   hosts:
     tab: Hosts
+  catalog:
+    all: All
+    library: Library
+    community: Community
   apps:
     tab: Apps
     apps: Applications

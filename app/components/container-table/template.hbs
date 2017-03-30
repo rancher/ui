@@ -23,14 +23,16 @@
       <td>
         {{upgrade-btn classNames="btn-sm" model=inst.ref}}
       </td>
-      <td data-title="{{dt.instanceState}}">
-        {{progress-bar-multi
-          labelKey="state"
-          valueKey="count"
-          values=inst.ref.instanceStates.byColor
-          tooltipValues=inst.ref.instanceStates.byName
-        }}
-      </td>
+      {{#if showInstanceState}}
+        <td data-title="{{dt.instanceState}}">
+          {{progress-bar-multi
+            labelKey="state"
+            valueKey="count"
+            values=inst.ref.instanceStates.byColor
+            tooltipValues=inst.ref.instanceStates.byName
+          }}
+        </td>
+      {{/if}}
       <td data-title="{{dt.actions}}" class="actions">
         {{action-menu model=inst.ref}}
       </td>

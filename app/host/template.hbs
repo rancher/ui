@@ -1,12 +1,10 @@
 <section class="header">
-  <div class="banner bg-info mt-0">
-    <div class="banner-message clearfix">
-      <p class="pull-left">{{t 'hostsPage.hostPage.header.singleBanner'}}</p>
-      <p class="pull-right">
-        {{#link-to "hosts"}}{{t 'hostsPage.hostPage.header.backLink'}}{{/link-to}}
-      </p>
-    </div>
-  </div>
+  {{#banner-message showIcon=false}}
+    <p class="pull-left">{{t 'hostsPage.hostPage.header.singleBanner'}}</p>
+    <p class="pull-right">
+      {{#link-to "hosts"}}{{t 'hostsPage.hostPage.header.backLink'}}{{/link-to}}
+    </p>
+  {{/banner-message}}
 
   <div class="clearfix">
     <h1>
@@ -15,7 +13,7 @@
       {{#ember-wormhole destinationElement=graphNode renderInPlace=(not graphExpand)}}
         {{info-multi-stats model=host linkName="hostStats" single=true}}
       {{/ember-wormhole}}
-    
+
     {{action-menu model=host showPrimary=false showLabel=true size="md" classNames="ml-10 pull-right"}}
     {{header-state model=host classNames="pull-right"}}
   </div>
