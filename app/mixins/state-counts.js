@@ -5,7 +5,11 @@ export default Ember.Mixin.create({
   // defineStateCounts('arrangedInstances', 'instanceStates', 'instanceCountSort');
   defineStateCounts(inputKey, countsProperty, sortProperty) {
 
-    this.get('reservedKeys').pushObjects([countsProperty, sortProperty]);
+    // after a mixin is instantiated they seal the props which prevents us from pushing more objs into reservedKeys
+    // BUT they dont freeze them so we can set it again. just clone it push the new values in and then set it
+    var rkCln = this.get('reservedKeys').slice(0);
+    rkCln.pushObjects([countsProperty, sortProperty]);
+    this.set('reservedKeys', rkCln);
     this.set(countsProperty, Ember.computed(`${inputKey}.@each.state`, () => {
       let byName = [];
       let byColor = [];

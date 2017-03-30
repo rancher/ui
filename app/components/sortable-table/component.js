@@ -155,7 +155,10 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   // Flow: body [-> sortableContent] -> arranged -> filtered -> pagedContent [-> groupedContent]
   // -----
   sortableContent: Ember.computed.alias('body'),
-  pagedContent: pagedArray('filtered', {pageBinding:  "page", perPageBinding:  "perPage"}),
+  pagedContent: pagedArray('filtered', {
+    page: Ember.computed.alias("parent.page"),
+    perPage: Ember.computed.alias("parent.perPage")
+  }),
 
   // For data-title properties on <td>s
   dt: Ember.computed('headers.@each.{name,label,translationKey}','intl._locale', function() {

@@ -20,7 +20,7 @@ module.exports = function(defaults) {
   });
 
   var app = new EmberApp(defaults, {
-    babel: {
+    "ember-cli-babel": {
       includePolyfill: true,
     },
     storeConfigInMeta: false,
