@@ -9,7 +9,7 @@ export default Ember.Component.extend({
   optionLabelPath: 'label',
   optionGroupPath: 'group',
   optionDisabledPath: 'disabled',
-  action: Ember.K, // action to fire on change
+  action: function() {return this;}, // Used to be Ember.K but that has been depreciated - action to fire on change
   value: null,
   localizedPrompt: false,
   localizedLabel: false,

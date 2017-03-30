@@ -39,7 +39,7 @@ export default Ember.Controller.extend({
   }.property('githubConfig.{clientId,clientSecret,hostname}','testing','isEnterprise', 'haveToken'),
 
   providerName: function() {
-    if ( !!this.get('githubConfig.hostname') ) {
+    if ( !!this.get('githubConfig.hostname') ) { // eslint-disable-line
       return 'authPage.github.enterprise';
     } else {
       return 'authPage.github.standard';
@@ -60,10 +60,10 @@ export default Ember.Controller.extend({
 
   updateEnterprise: function() {
     if ( this.get('isEnterprise') ) {
-      var match;
       var hostname = this.get('githubConfig.hostname')||'';
+      var match = hostname.match(/^http(s)?:\/\//i);
 
-      if ( match = hostname.match(/^http(s)?:\/\//i) ) {
+      if ( match ) {
         this.set('secure', ((match[1]||'').toLowerCase() === 's'));
         hostname = hostname.substr(match[0].length).replace(/\/.*$/,'');
         this.set('githubConfig.hostname', hostname);
