@@ -1,3 +1,4 @@
+/* eslint-env node */
 var pkg  = require('../package.json');
 var fs   = require('fs');
 var YAML = require('yamljs');
@@ -51,12 +52,16 @@ module.exports = function(environment) {
     modulePrefix: 'ui',
     environment: environment,
     exportApplicationGlobal: true,
-    rootURL: '/',
+    baseURL: '/',
     locationType: 'auto',
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. 'with-controller': true
+      },
+      EXTEND_PROTOTYPES: {
+        // Prevent Ember Data from overriding Date.parse.
+        Date: false
       }
     },
 
@@ -129,7 +134,7 @@ module.exports = function(environment) {
 
   if (environment === 'test') {
     // Testem prefers this...
-    ENV.rootURL = '/';
+    ENV.baseURL = '/';
     ENV.locationType = 'none';
 
     // keep test console output quieter
@@ -140,10 +145,10 @@ module.exports = function(environment) {
   }
 
   if (process.env.BASE_URL) {
-    ENV.rootURL = process.env.BASE_URL;
+    ENV.baseURL = process.env.BASE_URL;
   }
 
-  ENV.APP.rootURL = ENV.rootURL;
+  ENV.APP.baseURL = ENV.baseURL;
 
   if (process.env.FINGERPRINT) {
     ENV.APP.fingerprint = process.env.FINGERPRINT;
