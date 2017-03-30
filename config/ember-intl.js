@@ -1,5 +1,3 @@
-/*jshint node:true*/
-
 // Override translation-reducer to not tell us about missing 'none' keys
 var TranslationReducer = require('ember-intl/lib/broccoli/translation-reducer');
 

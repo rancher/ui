@@ -1,4 +1,3 @@
-/* jshint node: true */
 var pkg  = require('../package.json');
 var fs   = require('fs');
 var YAML = require('yamljs');
