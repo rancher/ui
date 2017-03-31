@@ -17,7 +17,7 @@ const URLS = {
 const SERVICE = 'ecs';
 
 export default Ember.Component.extend(Driver, {
-  driverName:       'hwcloudsConfig',
+  driverName:       'otcConfig',
   catalogUrls:      null,
   step:             1,
   intl:             Ember.inject.service(),
@@ -38,7 +38,7 @@ export default Ember.Component.extend(Driver, {
 
   initModel: function() {
     var config = this.get('store').createRecord({
-      type:             'hwcloudsConfig',
+      type:             'otcConfig',
       serviceEndpoint:  URLS.ecs,
       region:           'eu-de',
       sshUser:          'linux',
@@ -52,7 +52,7 @@ export default Ember.Component.extend(Driver, {
 
     this.set('model', this.get('store').createRecord({
       type:              type,
-      'hwcloudsConfig':  config,
+      'otcConfig':  config,
     }));
   },
 
@@ -83,7 +83,7 @@ export default Ember.Component.extend(Driver, {
   getURL: function(type, version, endpoint, qp) {
     var proxyEndpoint =  this.get('app.proxyEndpoint');
     var catalog =        URLS;
-    var url =            `${catalog[type]}/${version}/${this.get('model.hwcloudsConfig.tenantId')}`;
+    var url =            `${catalog[type]}/${version}/${this.get('model.otcConfig.tenantId')}`;
     var proxyUrl =       `${proxyEndpoint}/${url}`;
     var parsedURL =      parseURL(url);
     var host =         parsedURL.host;
@@ -154,9 +154,9 @@ export default Ember.Component.extend(Driver, {
     function signature(credentials) {
       var canonicalRequest =    buildCanonicalRequest(request);
       var hashedSigingString =  AWS.util.crypto.sha256(canonicalRequest, 'hex');
-      var credScope =           credentialScope(request.params.ShortTimestamp, self.get('model.hwcloudsConfig.region'), SERVICE);
+      var credScope =           credentialScope(request.params.ShortTimestamp, self.get('model.otcConfig.region'), SERVICE);
       var sts =                 stringToSign(hashedSigingString, credScope, request.params.Timestamp);
-      var key =                 generateSigningKey(credentials.secretAccessKey, self.get('model.hwcloudsConfig.region'), SERVICE, request.params.ShortTimestamp);
+      var key =                 generateSigningKey(credentials.secretAccessKey, self.get('model.otcConfig.region'), SERVICE, request.params.ShortTimestamp);
 
       return AWS.util.crypto.hmac(key, sts, 'hex');
     }
@@ -234,7 +234,7 @@ export default Ember.Component.extend(Driver, {
     function buildAuth(params) {
       var out = [];
 
-      out.push(`${params.SignatureMethod} Credential=${params.accessKeyId}/${params.ShortTimestamp}/${self.get('model.hwcloudsConfig.region')}/${SERVICE}/sdk_request`);
+      out.push(`${params.SignatureMethod} Credential=${params.accessKeyId}/${params.ShortTimestamp}/${self.get('model.otcConfig.region')}/${SERVICE}/sdk_request`);
       out.push('SignedHeaders=content-type;host;x-sdk-date');
       out.push(`Signature=${params.Signature}`);
 
@@ -246,8 +246,8 @@ export default Ember.Component.extend(Driver, {
   apiRequest: function(params) {
     var time = moment.utc();
     var signature = this.signAuth({
-      accessKeyId: this.get('model.hwcloudsConfig.accessKeyId'),
-      secretAccessKey: this.get('model.hwcloudsConfig.accessKeySecret')
+      accessKeyId: this.get('model.otcConfig.accessKeyId'),
+      secretAccessKey: this.get('model.otcConfig.accessKeySecret')
     }, this.describeRequest(this.getURL(SERVICE, params.version, params.endpoint, params.queryParams), params.method, `${time.format('YYYYMMDDTHHmmss')}Z`, ''), time);
 
     this.set('itemsLoading', true);
@@ -280,7 +280,7 @@ export default Ember.Component.extend(Driver, {
       method: 'GET',
       endpoint: 'security-groups',
       version: 'v1',
-      queryParams: `vpc_id=${this.get('model.hwcloudsConfig.vpcId')}`
+      queryParams: `vpc_id=${this.get('model.otcConfig.vpcId')}`
     }).then((resp) => {
       return this.set('securityGroups', resp.security_groups.sortBy('name'));
     });
@@ -291,9 +291,9 @@ export default Ember.Component.extend(Driver, {
       method: 'GET',
       endpoint: 'subnets',
       version: 'v1',
-      queryParams: `vpc_id=${this.get('model.hwcloudsConfig.vpcId')}`
+      queryParams: `vpc_id=${this.get('model.otcConfig.vpcId')}`
     }).then((resp) => {
-      return this.set('subnets', resp.subnets.filterBy('availability_zone', this.get('model.hwcloudsConfig.availableZone')));
+      return this.set('subnets', resp.subnets.filterBy('availability_zone', this.get('model.otcConfig.availableZone')));
     });
   },
 
