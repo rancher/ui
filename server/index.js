@@ -6,13 +6,13 @@
 //     res.send('hello');
 //   });
 // };
-
+/* eslint-env node */
 module.exports = function(app, options) {
-  var dotenv = require('dotenv').config();
-  var globSync =     require('glob').sync;
-  var mocks =        globSync('./mocks/**/*.js', { cwd: __dirname }).map(require);
-  var proxies =      globSync('./proxies/**/*.js', { cwd: __dirname }).map(require);
-  var caasProxies =  globSync('./caas/**/*.js', { cwd: __dirname }).map(require);
+  var dotenv      = require('dotenv').config(); // eslint-disable-line
+  var globSync    = require('glob').sync;
+  var mocks       = globSync('./mocks/**/*.js', { cwd: __dirname }).map(require);
+  var proxies     = globSync('./proxies/**/*.js', { cwd: __dirname }).map(require);
+  var caasProxies = globSync('./caas/**/*.js', { cwd: __dirname }).map(require);
 
 
   mocks.forEach(function(route) { route(app, options); });

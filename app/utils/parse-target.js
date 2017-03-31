@@ -6,8 +6,8 @@ export function parseTarget(str) {
   var srcPort = null, dstPort = null, hostname = null, path = null;
   str = str.trim();
 
-  var match;
-  if ( match = str.match(/^(\d+)$/) )
+  var match = str.match(/^(\d+)$/);
+  if ( match )
   {
     // New Format: just a dstPort
     hostname = null;
@@ -32,7 +32,7 @@ export function parseTarget(str) {
     path = match[3] || null;
     dstPort = parseInt(match[1], 10);
   }
-  else if ( match = str.match(/^([^/=:]+)?(:(\d+))?(\/[^=]+)?(=(\d+))?$/) )
+  else if ( match = str.match(/^([^/=:]+)?(:(\d+))?(\/[^=]+)?(=(\d+))?$/) ) // eslint-disable-line
   {
     // New Format: [hostname][:srcPort][/path][=dstPort]
     if ( match[1] && match[1].match(/^\d+$/) && !match[2] )

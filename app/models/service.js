@@ -158,9 +158,7 @@ var Service = Resource.extend(StateCounts, {
 
 
   serviceLinks: null, // Used for clone
-  reservedKeys: [
-    'serviceLinks',
-  ],
+  reservedKeys: ['serviceLinks'],
 
   displayImage: function() {
     return (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'');

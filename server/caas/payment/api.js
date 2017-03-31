@@ -1,4 +1,3 @@
-/* jshint esversion: 6 */
 module.exports = function(app/*, options*/) {
   const bodyParser = require('body-parser');
   const config = require('../../../config/environment')().APP;
@@ -82,11 +81,9 @@ module.exports = function(app/*, options*/) {
           );
         }
         break;
-      /* jshint ignore:start */
       case 'PUT':
       default:
         return res.status(405).send();
-      /* jshint ignore:end */
     }
   });
 

@@ -1,4 +1,4 @@
-/* jshint node: true */
+/* eslint-env node */
 var pkg  = require('../package.json');
 var fs   = require('fs');
 var YAML = require('yamljs');
@@ -58,6 +58,10 @@ module.exports = function(environment) {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. 'with-controller': true
+      },
+      EXTEND_PROTOTYPES: {
+        // Prevent Ember Data from overriding Date.parse.
+        Date: false
       }
     },
 

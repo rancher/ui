@@ -11,12 +11,15 @@ export default Ember.LinkComponent.extend({
     }
   }.property('moreCurrentWhen'),
 
+  queryParams: Ember.computed('attrs.queryParams.value', function(){
+    return {
+      isQueryParams: true,
+      values: this.get('attrs.queryParams.value')||{}
+    };
+  }),
+
   willRender() {
     this._super(...arguments);
     this.set('models', this.get('attrs.models.value')||[]);
-    this.set('queryParams', {
-      isQueryParams: true,
-      values: this.get('attrs.queryParams.value')||{}
-    });
   }
 });

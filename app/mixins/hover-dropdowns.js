@@ -204,7 +204,7 @@ export default Ember.Mixin.create({
         items.eq(currentIndex).focus();
         break;
       case C.KEY.DOWN:
-        let $currentTarget = $(e.currentTarget);
+        var $currentTarget = $(e.currentTarget);
         if (dropdownMenu && !$currentTarget.parent().parent('ul.dropdown-menu').length) {
           this.clearHeaderMenus();
           this.showMenu(element, dropdownMenu);

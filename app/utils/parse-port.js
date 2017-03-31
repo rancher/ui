@@ -7,10 +7,10 @@ import Ember from 'ember';
 export function parsePortSpec(str, defaultProtocol='http') {
   str = str.trim();
 
-  var match, parts, hostIp = '', hostPort, containerPort, protocol;
+  var match = str.match(/\/([a-z]+)$/i), parts, hostIp = '', hostPort, containerPort, protocol;
 
   // Protocol
-  if ( match = str.match(/\/([a-z]+)$/i) )
+  if ( match )
   {
     protocol = match[1].toLowerCase();
     str = str.substr(0, str.length - match[0].length);
@@ -61,8 +61,8 @@ export function parsePortSpec(str, defaultProtocol='http') {
 
 export function stringifyPortSpec(port, defaultProtocol='http') {
   var hostStr = Ember.get(port,'host')||'';
-  var match, hostIp, hostPort;
-  if ( match = hostStr.match(/^((.*):)?([^:]+)$/) )
+  var match = hostStr.match(/^((.*):)?([^:]+)$/), hostIp, hostPort;
+  if ( match )
   {
     hostIp = match[2];
     hostPort = match[3];

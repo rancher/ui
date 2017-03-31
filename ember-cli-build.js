@@ -1,8 +1,6 @@
-/*jshint node:true*/
-/* global require, module */
-var EmberApp = require('ember-cli/lib/broccoli/ember-app');
-var util     = require('util');
-var env      = EmberApp.env();
+/* eslint-env node */
+const EmberApp = require('ember-cli/lib/broccoli/ember-app');
+const env      = EmberApp.env();
 
 module.exports = function(defaults) {
   // Pull in a few useful environment settings for index.html to use
@@ -20,7 +18,7 @@ module.exports = function(defaults) {
   });
 
   var app = new EmberApp(defaults, {
-    babel: {
+    "ember-cli-babel": {
       includePolyfill: true,
     },
     storeConfigInMeta: false,
