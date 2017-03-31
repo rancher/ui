@@ -15,20 +15,28 @@
       {{#if item.submenu.length}}
         {{! Has a submenu }}
         <li class="dropdown">
-          {{#link-to-as-attrs
-            item.route
-            models=item.ctx
-            queryParams=item.queryParams
-            moreCurrentWhen=item.moreCurrentWhen
-            activeParent=true
-            class="dropdown-toggle"
-            role="button"
-            aria-haspopup="true"
-            aria-expanded="false"
-          }}
-            {{maybe-t item.localizedLabel item.label}}
-            <span class="icon icon-chevron-down"/>
-          {{/link-to-as-attrs}}
+          {{#if item.route}}
+            {{#link-to-as-attrs
+                item.route
+                models=item.ctx
+                queryParams=item.queryParams
+                moreCurrentWhen=item.moreCurrentWhen
+                activeParent=true
+                class="dropdown-toggle"
+                role="button"
+                aria-haspopup="true"
+                aria-expanded="false"
+            }}
+              {{maybe-t item.localizedLabel item.label}}
+              <span class="icon icon-chevron-down"/>
+            {{/link-to-as-attrs}}
+
+          {{else}}
+            <a class="dropdown-toggle" role="button" aria-haspopup="true" aria-expanded="false" aria-label={{maybe-t item.localizedLabel item.label}}>
+              {{maybe-t item.localizedLabel item.label}}
+              <span class="icon icon-chevron-down"/>
+            </a>
+          {{/if}}
 
           <ul class="dropdown-menu" data-dropdown-id={{item.id}}>
             {{#each item.submenu as |subitem|}}
