@@ -1,10 +1,11 @@
 import Ember from 'ember';
+import { GRADIENT_COLORS } from 'ui/components/svg-gradients/component';
 import {
   formatPercent, formatMib, formatKbps
 }
 from 'ui/utils/util';
 
-const formatters = {
+const FORMATTERS = {
   value: (value) => {
     return value;
   },
@@ -14,27 +15,29 @@ const formatters = {
 };
 
 export default Ember.Component.extend({
-  attributeBindings: ['cssSize:style', 'tooltip'],
-  tagName       : 'span',
+  tagName       : 'svg',
   classNames    : ['spark-line'],
+  attributeBindings: ['cssSize:style'],
 
   intl          : Ember.inject.service(),
   data          : null,
   width         : null,
   height        : 20,
+  margin        : 2,
   min           : 0,
   max           : null,
-  interpolation : 'step-after',
+  gradient      : null,
+  colorIdx      : 0,
+  interpolation : 'basis', //'step-after',
   formatter     : 'value',
-  prefix        : '',
-  type          : null,
 
   svg           : null,
   line          : null,
   dot           : null,
+  text          : null,
+  textBg        : null,
   x             : null,
   y             : null,
-  tooltipModel: null,
 
   hasData: function() {
     if (this.get('data.length') > 0 && !this.get('svg')) {
@@ -43,7 +46,10 @@ export default Ember.Component.extend({
   }.observes('data.length'),
 
   cssSize: function() {
-    return new Ember.String.htmlSafe('width: ' + this.get('width') + 'px; height: ' + this.get('height') + 'px');
+    let margin = parseInt(this.get('margin',10));
+    let width  = (parseInt(this.get('width'), 10)  + 2*margin);
+    let height = (parseInt(this.get('height'),10) + 2*margin);
+    return new Ember.String.htmlSafe(`width: ${width}px; height: ${height}px`);
   }.property('width', 'height'),
 
   lastValue: function() {
@@ -53,62 +59,21 @@ export default Ember.Component.extend({
     }
   }.property('data.[]'),
 
-  tooltip: function() {
-    let prefix     = this.get('prefix');
-    let prefixI18n = null;
-    let out        = null;
-
-    if (prefix) {
-      prefixI18n = this.get('intl').findTranslationByKey(prefix);
-      out = `${this.get('intl').formatMessage(prefixI18n)} ${formatters[this.get('formatter')](this.get('lastValue'))}`;
-    } else {
-      out = ` ${formatters[this.get('formatter')](this.get('lastValue'))}`;
-    }
-
-    Ember.run.next(() => {
-      if ( this.isDestoyed || this.isDestroying ) {
-        return;
-      }
-
-      this.set('tooltipModel', out);
-    });
-  }.property('prefix', 'lastValue', 'formatter'),
-
   create() {
+    let margin = this.get('margin');
     var svg = d3.select(this.$()[0])
-      .append('svg:svg')
-      .attr('width', '100%')
-      .attr('height', '100%');
-
-    var gradient = svg.append('svg:defs')
-      .append("svg:linearGradient")
-      .attr('id', `${this.get('type')}-gradient`)
-      .attr('x1', '0%')
-      .attr('y1', '0%')
-      .attr('x2', '100%')
-      .attr('y2', '100%')
-      .attr('spreadMethod', 'pad');
-
-    gradient.append('svg:stop')
-      .attr('offset', '0%')
-      .attr('stop-color', this.typePath())
-      .attr('stop-opacity', '1');
-
-    gradient.append('svg:stop')
-      .attr('offset', '100%')
-      .attr('stop-color', this.typePath())
-      .attr('stop-opacity', '.1');
+      .attr('transform', 'translate(' + margin + ',' + margin + ')');
 
     this.set('svg', svg);
     this.set('x', d3.scale.linear());
     this.set('y', d3.scale.linear());
 
-    var line = d3.svg.area()
+    var line = d3.svg.line()
+      .defined(function(d) { return (typeof d === 'number'); })
       .x((d, i) => {
         return this.get('x')(i);
       })
-      .y0(this.get('height'))
-      .y1((d) => {
+      .y((d) => {
         return this.get('y')(d);
       });
 
@@ -117,32 +82,33 @@ export default Ember.Component.extend({
     this.updateLine();
 
     svg.append('path')
-      .attr('class', `spark-path ${this.get('type')}-path`)
+      .attr('class', `spark-path`)
+      .style('stroke', GRADIENT_COLORS[this.get('gradient')][this.get('colorIdx')])
       .attr('d', line(this.get('data')));
 
-  },
+    var dot = svg.append('circle')
+      .attr('class', 'spark-dot')
+      .attr('cx', 0)
+      .attr('cy', 0)
+      .attr('r', 2);
 
-  typePath: function() {
-    var out;
+    this.set('dot', dot);
 
-    switch (this.get('type')) {
-      case 'cpu':
-        out = '#2ecc71'; //$green
-        break;
-      case 'memory':
-        out = '#00558b'; //$primary-dark
-        break;
-      case 'network':
-        out = '#d35401'; //mix($warning, $error, 20%)Dark
-        break;
-      case 'storage':
-        out = '#3a6f81'; //$info
-        break;
-      default:
-        break;
-    }
+    var textBg = svg.append('text')
+      .attr('class', `spark-text-bg`)
+      .attr('alignment-baseline','middle')
+      .attr('text-anchor','middle')
+      .attr('x', 0)
+      .attr('y', 0);
+    this.set('textBg', textBg);
 
-    return out;
+    var text = svg.append('text')
+      .attr('class', `spark-text`)
+      .attr('alignment-baseline','middle')
+      .attr('text-anchor','middle')
+      .attr('x', 0)
+      .attr('y', 0);
+    this.set('text', text);
   },
 
   updateLine: function() {
@@ -161,24 +127,47 @@ export default Ember.Component.extend({
     var x = this.get('x');
     var y = this.get('y');
     var line = this.get('line');
+    var text = this.get('text');
+    var textBg = this.get('textBg');
     var width = this.get('width');
     var height = this.get('height');
+    var margin = this.get('margin');
 
     if (svg && data && x && y && line) {
       x.domain([0, data.get('length') - 1]);
-      x.range([0, width - 1]);
+      x.range([0, width - margin]);
 
       var min = this.get('min') === null ? d3.min(data) : this.get('min');
       var max = this.get('max') === null ? d3.max(data) : this.get('max');
       y.domain([min, max]);
-      y.range([height, 0]);
-      y.rangeRound([height, 0]);
+      y.range([height-margin, margin]);
+      y.rangeRound([height-margin, margin]);
 
       //console.log('update', data[data.length-2], data[data.length-1], x.domain(), x.range(), y.domain(), y.range());
       svg.selectAll('path')
         .data([data])
-        .style('fill', `url(${window.location.pathname}#${this.get('type')}-gradient)`)
         .attr('d', line);
+
+      this.get('dot')
+        .attr('cx', x(data.length-1))
+        .attr('cy', y(data[data.length-1]));
+
+      var str = FORMATTERS[this.get('formatter')](this.get('lastValue'));
+      text.text(str);
+      textBg.text(str);
+
+      var bbox = text.node().getBBox();
+      var padding = 2;
+      var textY =  (height-bbox.height)/2+10;
+
+      text
+        .attr('x', width/2)
+        .attr('y', textY)
+
+      textBg
+        .attr('x', width/2)
+        .attr('y', textY);
+
     }
   }.observes('data', 'data.[]'),
 });

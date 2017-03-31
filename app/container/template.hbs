@@ -1,11 +1,19 @@
 <section class="header clearfix">
-  <h1>{{#link-to "containers"}}{{t 'containersPage.containerPage.header'}}{{/link-to}}</h1>
+  <h1 class="pull-left">
+    {{t 'containersPage.containerPage.header' name=model.displayName}}
+  </h1>
+  <div class="pull-left mt-10">
+    {{info-multi-stats model=model largeTargetId="largeStats"}}
+  </div>
   <div class="right-buttons">
     {{header-state model=model}}
-    {{action-menu model=model  classNames="ml-5" size="sm"}}
+    {{action-menu model=model classNames="ml-10 pull-right" size="sm"}}
   </div>
-
 </section>
+
+<div class="row">
+  <div class="col span-12" id="largeStats"></div>
+</div>
 
 <section>
   <div class="row">
@@ -81,7 +89,6 @@
     </div>
     <div class="col span-9">
       <div class="row">
-        {{info-multi-stats model=model linkName="containerStats" single=true}}
       </div>
       <div class="row tabs">
         <ul class="tab-header">

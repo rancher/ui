@@ -1,18 +1,19 @@
 import Ember from 'ember';
 import MultiStatsSocket from 'ui/utils/multi-stats';
 
-const FIELDS = ['cpuUser','cpuSystem','cpuTotal','networkTx','networkRx','memory','storageWrite','storageRead'];
+const FIELDS = ['cpuUser','cpuSystem','cpuTotal','networkTx','networkRx','networkTotal','memory','storageWrite','storageRead','storageTotal'];
 
 export default Ember.Component.extend({
   model: null,
   linkName: 'containerStats',
   maxPoints: 60,
   emitInterval: 1000,
-
+  emitMaps: false,
   available: Ember.computed.alias('statsSocket.available'),
   active: Ember.computed.alias('statsSocket.active'),
   loading: Ember.computed.alias('statsSocket.loading'),
 
+  tagName: '',
   statsSocket: null,
   emitTimer: null,
 
@@ -81,19 +82,22 @@ export default Ember.Component.extend({
     let maxPoints = this.get('maxPoints');
     FIELDS.forEach((field) => {
       let data = [];
-      for ( let i = 0 ; i < maxPoints ; i++ ) {
-        data[i] = 0;
-      }
       this.set(field, data);
       this.set(field+'_A', {});
       this.set(field+'_B', {});
     });
+
+    if ( this.get('emitMaps') ) {
+      let mapAry = [];
+      this.set('maps', mapAry);
+    }
 
     this.startTimer();
   },
 
   tearDown() {
     this.stopTimer();
+    this.set('maps', null);
     FIELDS.forEach((field) => {
       this.set(field, null);
       this.set(field+'_A', null);
@@ -125,14 +129,20 @@ export default Ember.Component.extend({
 
     this.get('networkTx_A')[key] = point.net_tx_kb*8 || 0;
     this.get('networkRx_A')[key] = point.net_rx_kb*8 || 0;
+    this.get('networkTotal_A')[key] = this.get('networkTx_A')[key] + this.get('networkRx_A')[key];
+
 
     this.get('storageWrite_A')[key] = point.disk_write_kb*8 || 0;
     this.get('storageRead_A')[key] = point.disk_read_kb*8 || 0;
+    this.get('storageTotal_A')[key] = this.get('storageWrite_A')[key] + this.get('storageRead_A')[key];
   },
 
   emit() {
     let ary, field, valueMapA, valueMapB, keys, sum;
     let maxPoints = this.get('maxPoints');
+
+    let map = {};
+    let emitMaps = this.get('emitMaps');
 
     for ( let i = 0 ; i < FIELDS.length ; i++ ) {
       field = FIELDS[i];
@@ -163,6 +173,18 @@ export default Ember.Component.extend({
         ary.removeAt(0);
       }
       ary.pushObject(sum);
+
+      if ( emitMaps ) {
+        map[field] = sum;
+      }
+    }
+
+    if ( emitMaps ) {
+      let mapAry = this.get('maps');
+      while ( mapAry.get('length') >= maxPoints ) {
+        mapAry.removeAt(0);
+      }
+      mapAry.push(map);
     }
   },
 });
