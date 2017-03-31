@@ -11,11 +11,12 @@ Prerequisites:
 * [Bower](from http://bower.io/)
 * [Git](http://git-scm.com/)
 * [Node.js](http://nodejs.org/) 0.12.x (with NPM)
+* [Yarn](https://yarnpkg.com/en/docs/install) (Note Path Setup)
 
 If you're on a Mac and use Homebrew, you can follow these steps:
 ```bash
-  brew install node watchman
-  npm install -g bower
+  brew install node watchman yarn
+  yarn global add bower
 ```
 
 Setup:
@@ -27,19 +28,19 @@ Setup:
 
 Run development server:
 ```bash
-  npm start
+  yarn start
 ```
 
 Connect to UI at https://localhost:8000/ .  The server automatically picks up file changes, restarts itself, and reloads the web browser.  This is intended only for development, see below for distributing customizations.
 
 Run development server pointed at another instance of the Rancher API
 ```bash
-  RANCHER="http://rancher:8080/" npm start
+  RANCHER="http://rancher:8080/" yarn start
 ```
 
 and/or pointed at another instance of the Catalog API
 ```bash
-  CATALOG="http://catalog:8088/" npm start
+  CATALOG="http://catalog:8088/" yarn start
 ```
 
 RANCHER and CATALOG can also be `hostname[:port]` or `ip[:port]`.
@@ -77,7 +78,7 @@ If you want to customize the UI, re-packaging all of Rancher to distribute the U
 ### Running Tests
 
 ```bash
-  npm install -g ember-cli
+  yarn global add ember-cli
 ```
 
 * `ember test`
