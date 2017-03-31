@@ -13,7 +13,7 @@ export default Ember.Component.extend({
   buttonText       : null,
   tooltipText      : null,
   status           : null,
-  icon             : null,
+  icon             : 'icon-copy',
   size             : null,
   target           : null,
   clipboardText    : null,
@@ -46,7 +46,7 @@ export default Ember.Component.extend({
 
   buttonClasses: Ember.computed('status', function() {
     let status = this.get('status');
-    let out = 'btn bg-transparent';
+    let out = 'btn';
 
     if (status) {
       out += ' text-success';
