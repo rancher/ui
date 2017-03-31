@@ -2,19 +2,6 @@
   <div class="clearfix">
     <h1>{{t 'stackHeader.title' name=model.displayName}}</h1>
     <div class="right-buttons">
-      {{#if model.canViewConfig}}
-        <div class="btn-group ml-10">
-          {{#link-to "stack.index" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-tasks" text=(t 'tooltipLink.list') options=listLinkOptions}}{{/link-to}}
-          {{#link-to "stack.code" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-file" text=(t 'tooltipLink.composeYaml') options=yamlLinkOptions}}{{/link-to}}
-        </div>
-      {{/if}}
-      {{action-menu model=model classNames="ml-10 pull-right" size="sm"}}
-    </div>
-  </div>
-  <div class="clearfix">
-    {{header-state model=model}}
-    <div class="right-buttons">
-      {{upgrade-btn model=model classNames="ml-10"}}
       {{#if outputs.length}}
         <div class="btn-group">
           <button type="button" class="btn btn-sm bg-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -25,6 +12,19 @@
               <li><a href="{{obj.value}}" target="_blank">{{obj.key}}</a></li>
             {{/each}}
           </ul>
+        </div>
+      {{/if}}
+      {{header-state model=model}}
+      {{action-menu model=model classNames="ml-10 pull-right" size="sm"}}
+    </div>
+  </div>
+  <div class="clearfix">
+    {{upgrade-btn model=model}}
+    <div class="right-buttons">
+      {{#if model.canViewConfig}}
+        <div class="btn-group ml-10 p-0">
+          {{#link-to "stack.index" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-tasks" text=(t 'tooltipLink.list') options=listLinkOptions}}{{/link-to}}
+          {{#link-to "stack.code" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-file" text=(t 'tooltipLink.composeYaml') options=yamlLinkOptions}}{{/link-to}}
         </div>
       {{/if}}
     </div>

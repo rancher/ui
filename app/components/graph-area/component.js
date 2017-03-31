@@ -53,27 +53,6 @@ export default Ember.Component.extend({
     }
   }.property('data.[]'),
 
-  tooltip: function() {
-    let prefix     = this.get('prefix');
-    let prefixI18n = null;
-    let out        = null;
-
-    if (prefix) {
-      prefixI18n = this.get('intl').findTranslationByKey(prefix);
-      out = `${this.get('intl').formatMessage(prefixI18n)} ${formatters[this.get('formatter')](this.get('lastValue'))}`;
-    } else {
-      out = ` ${formatters[this.get('formatter')](this.get('lastValue'))}`;
-    }
-
-    Ember.run.next(() => {
-      if ( this.isDestoyed || this.isDestroying ) {
-        return;
-      }
-
-      this.set('tooltipModel', out);
-    });
-  }.property('prefix', 'lastValue', 'formatter'),
-
   create() {
     var svg = d3.select(this.$()[0])
       .append('svg:svg')
@@ -99,9 +78,25 @@ export default Ember.Component.extend({
       .attr('stop-color', this.typePath())
       .attr('stop-opacity', '.1');
 
-    this.set('svg', svg);
-    this.set('x', d3.scale.linear());
-    this.set('y', d3.scale.linear());
+    var x = d3.scale.linear();
+    var y = d3.scale.linar();
+
+    var xAxis = d3.svg.axis()
+      .scale(x)
+      .orient('bottom')
+      .ticks(10);
+
+    var yAxis = d3.svg.axis()
+      .scale(y)
+      .orient('left');
+
+    this.setProperties({
+      svg: svg,
+      x: x,
+      y: y,
+      xAxis: xAxis,
+      yAxis: yAxis,
+    });
 
     var line = d3.svg.area()
       .x((d, i) => {

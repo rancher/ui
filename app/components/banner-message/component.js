@@ -5,12 +5,12 @@ export default Ember.Component.extend({
   classNameBindings: ['color'],
 
   showIcon: function() {
-    let value = this.get('value');
-    return value === null || value === undefined;
-  }.property('value'),
+    let title = this.get('title');
+    return title === null || title === undefined;
+  }.property('title'),
 
   color: 'bg-default',
   icon: 'icon icon-info',
-  value: null,
+  title: null,
   message: '',
 });
