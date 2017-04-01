@@ -24,8 +24,14 @@ export default Ember.Component.extend({
   width         : null,
   height        : 20,
   margin        : 2,
+
   min           : 0,
-  max           : null,
+
+  minMax        : null,  // lower bound on how small automatic max can be
+  max           : null,  // set an explicit max
+  maxDoubleInital:false, // if true, set max to double the initial non-zero data point
+  scaleDown     : false, // if true, max is allowed to go back down.  If false it can only go up.
+
   gradient      : null,
   colorIdx      : 0,
   interpolation : 'basis', //'step-after',
@@ -38,6 +44,7 @@ export default Ember.Component.extend({
   textBg        : null,
   x             : null,
   y             : null,
+  observedMax   : null, // The largest max seen so far
 
   hasData: function() {
     if (this.get('data.length') > 0 && !this.get('svg')) {
@@ -121,6 +128,32 @@ export default Ember.Component.extend({
 
   }.observes('interpolation'),
 
+  getMax(dataMax) {
+    let optMinMax = this.get('minMax');
+    let optMax = this.get('max');
+    let optScaleDown = this.get('scaleDown');
+    let observedMax = this.get('observedMax');
+
+    let out = dataMax;
+
+    if ( optMax ) {
+      out = optMax;
+    } else if ( optMinMax ) {
+      out = Math.max(optMinMax, out);
+    }
+
+    if ( observedMax && !optScaleDown ) {
+      out = Math.max(observedMax, out);
+    }
+
+    if ( !observedMax && out > 0 && this.get('maxDoubleInital') ) {
+      out *= 2;
+    }
+
+    this.set('observedMax', out);
+    return out;
+  },
+
   update: function() {
     var svg = this.get('svg');
     var data = (this.get('data') || []).slice();
@@ -137,8 +170,12 @@ export default Ember.Component.extend({
       x.domain([0, data.get('length') - 1]);
       x.range([0, width - margin]);
 
+      var _optMin = this.get('min');
+      var _optMinMax = this.get('minMax');
+
       var min = this.get('min') === null ? d3.min(data) : this.get('min');
-      var max = this.get('max') === null ? d3.max(data) : this.get('max');
+      var max = this.getMax(d3.max(data));
+
       y.domain([min, max]);
       y.range([height-margin, margin]);
       y.rangeRound([height-margin, margin]);
@@ -158,7 +195,7 @@ export default Ember.Component.extend({
 
       var bbox = text.node().getBBox();
       var padding = 2;
-      var textY =  (height-bbox.height)/2+10;
+      var textY = height;
 
       text
         .attr('x', width/2)

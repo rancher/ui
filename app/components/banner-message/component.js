@@ -12,5 +12,13 @@ export default Ember.Component.extend({
   color: 'bg-default',
   icon: 'icon icon-info',
   title: null,
+  titleWidth: null,
   message: '',
+
+  titleStyle: function() {
+    let width = this.get('titleWidth');
+    if ( width) {
+      return ('width: ' + width + 'px').htmlSafe();
+    }
+  }.property('width'),
 });

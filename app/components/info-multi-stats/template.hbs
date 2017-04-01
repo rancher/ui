@@ -1,5 +1,5 @@
 {{#multi-container-stats model=model linkName=linkName emitMaps=true as |stats|}}
-  {{#if (eq mode "small")}}
+  {{#liquid-if (eq mode "small")}}
     {{#if stats.loading}}
       Connecting...
     {{else if stats.active}}
@@ -9,6 +9,7 @@
         prefix="containersPage.table.sparkPrefixCpu"
         formatter="percent"
         gradient="cpu"
+        minMax=100
       }}
 
       {{spark-line
@@ -17,6 +18,7 @@
         prefix="containersPage.table.sparkPrefixCpu"
         formatter="mib"
         gradient="memory"
+        maxDoubleInital=true
       }}
 
       {{spark-line
@@ -25,6 +27,7 @@
         prefix="containersPage.table.sparkPrefixCpu"
         formatter="kbps"
         gradient="network"
+        minMax=100
       }}
 
       {{spark-line
@@ -33,12 +36,16 @@
         prefix="containersPage.table.sparkPrefixCpu"
         formatter="kbps"
         gradient="storage"
+        minMax=100
       }}
+
+      <button class="btn btn-sm bg-transparent" style="vertical-align: top" {{action "toggle"}}><i class="icon icon-plus-circle"></i></button>
     {{else}}
       Stats not available
     {{/if}}
-  {{else}}
-    {{#ember-wormhole to=largeTargetId renderInPlace=(if largeTargetId 'false' 'true')}}
+  {{/liquid-if}}
+  {{#if (eq mode "large")}}
+    {{#ember-wormhole to=largeTargetId}}
       <div class="row">
         <div class="col span-6">
           {{graph-area data=stats.map opts=cpuOpts}}
@@ -55,6 +62,7 @@
           Storage
         </div>
       </div>
+      <button class="btn btn-sm bg-transparent" style="vertical-align: top" {{action "toggle"}}><i class="icon icon-minus-circle"></i></button>
     {{/ember-wormhole}}
   {{/if}}
 {{/multi-container-stats}}

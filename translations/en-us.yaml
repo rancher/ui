@@ -46,6 +46,8 @@ generic:
   saving: Saving
   search: Search
   select: Select
+  service: Service
+  stack: Stack
   state: State
   test: Test
   testing: Testing
@@ -461,6 +463,53 @@ certificatesPage:
       description:
         placeholder: e.g. EV cert for mydomain.com
 
+containerPage:
+  header: 'Container: {name}'
+  summary:
+    host: 'Host:'
+    ip: 'Container IP:'
+    docker: 'Docker ID:'
+    image: 'Image:'
+    entryPoint: 'Entry Point:'
+    description: 'Description:'
+    stack: 'Stack/Service:'
+    memoryReservation:
+      labelText: 'Memory Reservation: '
+    milliCpuReservation:
+      labelText: 'mCPU Reservation: '
+  navTabs:
+    labels: Labels
+    volumes: Volumes
+    ports: Ports
+    command: Command
+    networking: Networking
+    healthCheck: Health Check
+    scheduling: Scheduling
+    security: Security
+  portsTab:
+    table:
+      header:
+        ip: IP Address
+        public: Public on Host
+        private: Private in Container
+        protocol: Protocol
+      body:
+        noData: This container has no ports
+  volumesTab:
+    table:
+      header:
+        name: Name
+        mount: Mount Point
+        shared: Shared With
+        writable: Writable
+        snapshot: Snapshot Timeline
+      body:
+        error:
+          data: 'Note:'
+          error: Error
+          noData: This container has no volumes
+        noContainers: No other containers
+
 containersPage:
   table:
     primaryHost: Primary Host
@@ -493,57 +542,6 @@ containersPage:
     mesosLink: Mesos
     swarmLink: Swarm
 
-  containerPage:
-    header: 'Container: {name}'
-    subtext:
-      on: on
-      in: in
-    infoMultiStats:
-      tooltip:
-        host: Copy IP To Clipboard
-      host: 'Host:'
-      ip: 'Container IP:'
-      docker: 'Docker ID:'
-      image: 'Image:'
-      entryPoint: 'Entry Point:'
-      description: 'Description:'
-      stack: 'Stack/Service:'
-      memoryReservation:
-        labelText: 'Memory Reservation: '
-      milliCpuReservation:
-        labelText: 'mCPU Reservation: '
-    navTabs:
-      labels: Labels
-      volumes: Volumes
-      ports: Ports
-      command: Command
-      networking: Networking
-      healthCheck: Health Check
-      scheduling: Scheduling
-      security: Security
-    portsTab:
-      table:
-        header:
-          ip: IP Address
-          public: Public on Host
-          private: Private in Container
-          protocol: Protocol
-        body:
-          noData: This container has no ports
-    volumesTab:
-      table:
-        header:
-          name: Name
-          mount: Mount Point
-          shared: Shared With
-          writable: Writable
-          snapshot: Snapshot Timeline
-        body:
-          error:
-            data: 'Note:'
-            error: Error
-            noData: This container has no volumes
-          noContainers: No other containers
 
 containerSubpod:
   childContainers: Containers

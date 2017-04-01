@@ -15,4 +15,10 @@ export default Ember.Component.extend({
 
   tagName: '',
   cpuOpts: CPU_OPTS,
+
+  actions: {
+    toggle() {
+      this.set('mode', (this.get('mode') === 'small' ? 'large' : 'small'));
+    },
+  },
 });
