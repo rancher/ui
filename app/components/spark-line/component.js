@@ -128,7 +128,7 @@ export default Ember.Component.extend({
 
   }.observes('interpolation'),
 
-  getMax(dataMax) {
+  adjustMax(dataMax) {
     let optMinMax = this.get('minMax');
     let optMax = this.get('max');
     let optScaleDown = this.get('scaleDown');
@@ -170,11 +170,8 @@ export default Ember.Component.extend({
       x.domain([0, data.get('length') - 1]);
       x.range([0, width - margin]);
 
-      var _optMin = this.get('min');
-      var _optMinMax = this.get('minMax');
-
       var min = this.get('min') === null ? d3.min(data) : this.get('min');
-      var max = this.getMax(d3.max(data));
+      var max = this.adjustMax(d3.max(data));
 
       y.domain([min, max]);
       y.range([height-margin, margin]);

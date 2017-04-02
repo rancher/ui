@@ -39,7 +39,7 @@
         minMax=100
       }}
 
-      <button class="btn btn-sm bg-transparent" style="vertical-align: top" {{action "toggle"}}><i class="icon icon-plus-circle"></i></button>
+      <button class="btn btn-sm bg-transparent hide" style="vertical-align: top" {{action "toggle"}}><i class="icon icon-plus-circle"></i></button>
     {{else}}
       Stats not available
     {{/if}}
@@ -48,18 +48,15 @@
     {{#ember-wormhole to=largeTargetId}}
       <div class="row">
         <div class="col span-6">
-          {{graph-area data=stats.map opts=cpuOpts}}
         </div>
         <div class="col span-6">
-          Memory
         </div>
       </div>
       <div class="row">
         <div class="col span-6">
-          Network
+          {{graph-area data=stats.maps fields=networkFields gradient="network"}}
         </div>
         <div class="col span-6">
-          Storage
         </div>
       </div>
       <button class="btn btn-sm bg-transparent" style="vertical-align: top" {{action "toggle"}}><i class="icon icon-minus-circle"></i></button>

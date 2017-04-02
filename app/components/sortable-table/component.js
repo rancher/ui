@@ -340,13 +340,13 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   // ------
   rowClick(e) {
     let tagName = e.target.tagName;
-    if ( tagName === 'A'  || tagName === 'BUTTON' || $(e.target).parents('.btn').length || $(e.target).data('ember-action') ) {
+    let tgt = Ember.$(e.target);
+    if ( tagName === 'A'  || tagName === 'BUTTON' || tgt.parents('.btn').length || typeof tgt.data('ember-action') !== 'undefined' || tgt.hasClass('copy-btn') ) {
       return;
     }
 
     let content = this.get('pagedContent');
     let selection = this.get('selectedNodes');
-    let tgt = Ember.$(e.target);
     let isCheckbox = tagName === 'INPUT' || tgt.hasClass('row-check');
     let tgtRow = Ember.$(e.currentTarget);
     if ( tgtRow.hasClass('separator-row') || tgt.hasClass('select-all-check')) {

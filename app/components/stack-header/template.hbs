@@ -1,21 +1,28 @@
 <section class="header">
   <div class="clearfix">
-    <h1>{{t 'stackHeader.title' name=model.displayName}}</h1>
+    <h1 class="pull-left">
+      {{t 'stackHeader.title' name=model.displayName}}
+    </h1>
+    <div class="pull-left mt-10">
+      {{info-multi-stats model=model largeTargetId="largeStats"}}
+    </div>
     <div class="right-buttons">
-      {{#if outputs.length}}
-        <div class="btn-group">
-          <button type="button" class="btn btn-sm bg-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            {{t 'stackHeader.outputs'}} <i class="icon icon-chevron-down"></i>
-          </button>
-          <ul class="dropdown-menu dropdown-menu-right">
-            {{#each outputs as |obj|}}
-              <li><a href="{{obj.value}}" target="_blank">{{obj.key}}</a></li>
-            {{/each}}
-          </ul>
-        </div>
-      {{/if}}
+      <div class="right-buttons">
+        {{#if outputs.length}}
+          <div class="btn-group">
+            <button type="button" class="btn btn-sm bg-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{t 'stackHeader.outputs'}} <i class="icon icon-chevron-down"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-right">
+              {{#each outputs as |obj|}}
+                <li><a href="{{obj.value}}" target="_blank">{{obj.key}}</a></li>
+              {{/each}}
+            </ul>
+          </div>
+        {{/if}}
+      </div>
       {{header-state model=model}}
-      {{action-menu model=model classNames="ml-10 pull-right" size="sm"}}
+      {{action-menu model=model showPrimary=false classNames="ml-10 pull-right" size="sm"}}
     </div>
   </div>
   <div class="clearfix">

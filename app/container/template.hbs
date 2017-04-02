@@ -7,7 +7,7 @@
   </div>
   <div class="right-buttons">
     {{header-state model=model}}
-    {{action-menu model=model classNames="ml-10 pull-right" size="sm"}}
+    {{action-menu model=model showPrimary=false classNames="ml-10 pull-right" size="sm"}}
   </div>
 </section>
 
@@ -43,25 +43,39 @@
 
   {{#if model.displayExternalId}}
     {{#banner-message class='tight inline' color='bg-info' title=(t 'generic.uuid')}}
-      <p>
-        {{model.displayExternalId}}
+     <p>
+        {{#copy-inline clipboardText=model.externalId}}
+          {{model.displayExternalId}}
+        {{/copy-inline}}
       </p>
     {{/banner-message}}
   {{/if}}
 
   {{#if model.displayIp}}
-    {{#banner-message class='tight inline' color='bg-info' title=(t 'generic.image')}}
+    {{#banner-message class='tight inline' color='bg-info' title=(t 'generic.ipAddress')}}
       <p>
-        {{#copy-inline clipboardText=model.displayIp}}{{model.displayIp}}{{/copy-inline}}
+        {{#copy-inline clipboardText=model.displayIp}}
+          {{model.displayIp}}
+        {{/copy-inline}}
       </p>
     {{/banner-message}}
   {{/if}}
 
   {{#banner-message class='tight inline' color='bg-info' title=(t 'generic.image')}}
     <p>
-      {{model.displayImage}}
+      {{#copy-inline clipboardText=model.displayImage}}
+        {{model.displayImage}}
+      {{/copy-inline}}
     </p>
   {{/banner-message}}
+
+  {{#if model.entrypoint}}
+    {{#banner-message class='tight inline' color='bg-info' title=(t 'generic.entrypoint')}}
+      <p>
+        {{model.entrypoint}}
+      </p>
+    {{/banner-message}}
+  {{/if}}
 
   {{#if model.command}}
     {{#banner-message class='tight inline' color='bg-info' title=(t 'generic.command')}}
@@ -73,63 +87,19 @@
 </section>
 
 <section>
-  <div class="row">
-    <div class="col span-3 mb-15">
-      {{#if model.service}}
-          <label class="block">{{t 'containerPage.infoMultiStats.stack'}}</label>
-
-          <div>{{#link-to "stack" model.service.stackId}}{{model.service.stack.displayName}}{{/link-to}}/{{#link-to "service" projects.current.id model.service.id}}{{model.service.displayName}}{{/link-to}}</div>
-        <hr>
-      {{/if}}
-
-
-      {{#if model.memoryReservation}}
-        <hr/>
-        <div>
-          <label class="block">{{t 'containerPage.infoMultiStats.memoryReservation.labelText'}}</label>
-          {{model.memoryReservationBlurb}}
-        </div>
-
-      {{/if}}
-
-      {{#if model.milliCpuReservation}}
-        <hr/>
-        <div>
-          <label class="block">{{t 'containerPage.infoMultiStats.milliCpuReservation.labelText'}}</label>
-          {{model.milliCpuReservation}}
-        </div>
-      {{/if}}
-      <hr>
-
-      <div>
-        <label class="block">{{t 'containerPage.infoMultiStats.ip'}}</label>
-        {{copy-ip ip=model.displayIp showCopy=true}}
-      </div>
-
-      <hr>
-
-
-      <hr>
-    </div>
-    <div class="col span-9">
-      <div class="row">
-      </div>
-      <div class="row tabs">
-        <ul class="tab-header">
-          {{#link-to "container.ports" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.ports'}}</a>{{/link-to}}
-          {{#link-to "container.commands" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.command'}}</a>{{/link-to}}
-          {{#link-to "container.volumes" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.volumes'}}</a>{{/link-to}}
-          {{#link-to "container.networking" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.networking'}}</a>{{/link-to}}
-          {{#link-to "container.security" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.security'}}</a>{{/link-to}}
-          {{#link-to "container.healthcheck" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.healthCheck'}}</a>{{/link-to}}
-          {{#link-to "container.labels" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.labels'}}</a>{{/link-to}}
-          {{#link-to "container.scheduling" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.scheduling'}}</a>{{/link-to}}
-        </ul>
-        <div class="tab-content">
-          {{outlet}}
-        </div>
-      </div>
-
+  <div class="row tabs">
+    <ul class="tab-header">
+      {{#link-to "container.ports" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.ports'}}</a>{{/link-to}}
+      {{#link-to "container.commands" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.command'}}</a>{{/link-to}}
+      {{#link-to "container.volumes" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.volumes'}}</a>{{/link-to}}
+      {{#link-to "container.networking" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.networking'}}</a>{{/link-to}}
+      {{#link-to "container.security" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.security'}}</a>{{/link-to}}
+      {{#link-to "container.healthcheck" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.healthCheck'}}</a>{{/link-to}}
+      {{#link-to "container.labels" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.labels'}}</a>{{/link-to}}
+      {{#link-to "container.scheduling" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.scheduling'}}</a>{{/link-to}}
+    </ul>
+    <div class="tab-content">
+      {{outlet}}
     </div>
   </div>
 </section>
