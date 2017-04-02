@@ -190,17 +190,13 @@ export default Ember.Component.extend({
       text.text(str);
       textBg.text(str);
 
-      var bbox = text.node().getBBox();
-      var padding = 2;
-      var textY = height;
-
       text
         .attr('x', width/2)
-        .attr('y', textY)
+        .attr('y', height)
 
       textBg
         .attr('x', width/2)
-        .attr('y', textY);
+        .attr('y', height);
 
     }
   }.observes('data', 'data.[]'),

@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import { isAlternate } from 'ui/utils/platform';
 
 export default Ember.Component.extend({
   model           : null,

@@ -12,7 +12,7 @@ export default Ember.Component.extend({
   cpuFields: ['cpuUser','cpuSystem'],
   memoryFields: ['memory'],
   networkFields: ['networkTx','networkRx'],
-  cpuFields: ['storageWrite','storageRead'],
+  storageFields: ['storageWrite','storageRead'],
 
   actions: {
     toggle() {
