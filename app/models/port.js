@@ -7,7 +7,11 @@ var Port = Resource.extend({
     var bind = this.get('bindAddress');
     if ( bind )
     {
-      return bind;
+      if ( bind === '0.0.0.0' ) {
+        return 'All';
+      } else {
+        return bind;
+      }
     }
     else if ( !this.get('publicPort') )
     {

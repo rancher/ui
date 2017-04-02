@@ -1,10 +1,5 @@
 import Ember from 'ember';
 
-const CPU_OPTS = {
-  fields: ['cpuUser','cpuSystem'],
-  fill: 'cpu',
-};
-
 export default Ember.Component.extend({
   model: null,
   mode: 'small',
@@ -14,5 +9,14 @@ export default Ember.Component.extend({
   linkName: 'containerStats',
 
   tagName: '',
-  cpuOpts: CPU_OPTS,
+  cpuFields: ['cpuUser','cpuSystem'],
+  memoryFields: ['memory'],
+  networkFields: ['networkTx','networkRx'],
+  storageFields: ['storageWrite','storageRead'],
+
+  actions: {
+    toggle() {
+      this.set('mode', (this.get('mode') === 'small' ? 'large' : 'small'));
+    },
+  },
 });

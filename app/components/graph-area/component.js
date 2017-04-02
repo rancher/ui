@@ -1,10 +1,10 @@
 import Ember from 'ember';
+import { GRADIENT_COLORS } from 'ui/components/svg-gradients/component';
 import {
   formatPercent, formatMib, formatKbps
-}
-from 'ui/utils/util';
+} from 'ui/utils/util';
 
-const formatters = {
+const FORMATTERS = {
   value: (value) => {
     return value;
   },
@@ -14,27 +14,39 @@ const formatters = {
 };
 
 export default Ember.Component.extend({
-  attributeBindings: ['cssSize:style', 'tooltip'],
-  tagName       : 'span',
+  tagName       : 'svg',
   classNames    : ['spark-line'],
+  attributeBindings: ['cssSize:style'],
 
   intl          : Ember.inject.service(),
   data          : null,
+  fields        : null,
+  gradient      : null,
   width         : null,
-  height        : 20,
+  height        : 110,
+  margin        : 2,
+
   min           : 0,
-  max           : null,
-  interpolation : 'step-after',
+  minMax        : null,  // lower bound on how small automatic max can be
+  max           : null,  // set an explicit max
+  maxDoubleInital:false, // if true, set max to double the initial non-zero data point
+  scaleDown     : false, // if true, max is allowed to go back down.  If false it can only go up.
+
+  interpolation : 'basis', //'step-after',
   formatter     : 'value',
-  prefix        : '',
-  type          : null,
 
   svg           : null,
   line          : null,
   dot           : null,
+  text          : null,
+  textBg        : null,
   x             : null,
   y             : null,
-  tooltipModel: null,
+  observedMax   : null, // The largest max seen so far
+
+  init() {
+    this._super(...arguments);
+  },
 
   hasData: function() {
     if (this.get('data.length') > 0 && !this.get('svg')) {
@@ -43,7 +55,9 @@ export default Ember.Component.extend({
   }.observes('data.length'),
 
   cssSize: function() {
-    return new Ember.String.htmlSafe('width: ' + this.get('width') + 'px; height: ' + this.get('height') + 'px');
+    let width = this.get('width')||'100%';
+    let height = this.get('height')||'100%';
+    return new Ember.String.htmlSafe(`width: ${width}; height: ${height}`);
   }.property('width', 'height'),
 
   lastValue: function() {
@@ -54,32 +68,13 @@ export default Ember.Component.extend({
   }.property('data.[]'),
 
   create() {
+    let fields = this.get('fields');
+    let margin = this.get('margin');
     var svg = d3.select(this.$()[0])
-      .append('svg:svg')
-      .attr('width', '100%')
-      .attr('height', '100%');
+      .attr('transform', 'translate(' + margin + ',' + margin + ')');
 
-    var gradient = svg.append('svg:defs')
-      .append("svg:linearGradient")
-      .attr('id', `${this.get('type')}-gradient`)
-      .attr('x1', '0%')
-      .attr('y1', '0%')
-      .attr('x2', '100%')
-      .attr('y2', '100%')
-      .attr('spreadMethod', 'pad');
-
-    gradient.append('svg:stop')
-      .attr('offset', '0%')
-      .attr('stop-color', this.typePath())
-      .attr('stop-opacity', '1');
-
-    gradient.append('svg:stop')
-      .attr('offset', '100%')
-      .attr('stop-color', this.typePath())
-      .attr('stop-opacity', '.1');
-
-    var x = d3.scale.linear();
-    var y = d3.scale.linar();
+    let x = d3.scale.linear();
+    let y = d3.scale.linear();
 
     var xAxis = d3.svg.axis()
       .scale(x)
@@ -90,54 +85,46 @@ export default Ember.Component.extend({
       .scale(y)
       .orient('left');
 
-    this.setProperties({
-      svg: svg,
-      x: x,
-      y: y,
-      xAxis: xAxis,
-      yAxis: yAxis,
-    });
-
     var line = d3.svg.area()
       .x((d, i) => {
-        return this.get('x')(i);
+        return x(i);
       })
-      .y0(this.get('height'))
-      .y1((d) => {
-        return this.get('y')(d);
-      });
+      .y0(function(d) { return this.get('y')(d.y0); })
+      .y1(function(d) { return this.get('y')(d.y0 + d.y); });
 
-    this.set('line', line);
+    var stack = d3.layout.stack()
+      .values(function(d) { return d.values; });
 
+    var areas = stack(fields.map(function(name) {
+      return {
+        name: name,
+        values: data.map(function(d,idx) {
+          return {idx: idx, y: d[name]};
+        })
+      };
+    }));
+
+    var slices = svg.selectAll(".slice")
+      .data(areas)
+      .enter().append("g")
+      .attr("class", "slice");
+
+    area.append("path")
+      .attr("class", "area")
+      .attr("d", function(d) { return area(d.values); })
+      .style('fill', `url(${window.location.pathname}#${this.get('gradient')}-${d.idx}-gradient)`)
+
+    this.setProperties({
+      svg,
+      x,
+      y,
+      xAxis,
+      yAxis,
+      stack,
+      areas,
+      line
+    });
     this.updateLine();
-
-    svg.append('path')
-      .attr('class', `spark-path ${this.get('type')}-path`)
-      .attr('d', line(this.get('data')));
-
-  },
-
-  typePath: function() {
-    var out;
-
-    switch (this.get('type')) {
-      case 'cpu':
-        out = '#2ecc71'; //$green
-        break;
-      case 'memory':
-        out = '#00558b'; //$primary-dark
-        break;
-      case 'network':
-        out = '#d35401'; //mix($warning, $error, 20%)Dark
-        break;
-      case 'storage':
-        out = '#3a6f81'; //$info
-        break;
-      default:
-        break;
-    }
-
-    return out;
   },
 
   updateLine: function() {
@@ -150,6 +137,32 @@ export default Ember.Component.extend({
 
   }.observes('interpolation'),
 
+  adjustMax(dataMax) {
+    let optMinMax = this.get('minMax');
+    let optMax = this.get('max');
+    let optScaleDown = this.get('scaleDown');
+    let observedMax = this.get('observedMax');
+
+    let out = dataMax;
+
+    if ( optMax ) {
+      out = optMax;
+    } else if ( optMinMax ) {
+      out = Math.max(optMinMax, out);
+    }
+
+    if ( observedMax && !optScaleDown ) {
+      out = Math.max(observedMax, out);
+    }
+
+    if ( !observedMax && out > 0 && this.get('maxDoubleInital') ) {
+      out *= 2;
+    }
+
+    this.set('observedMax', out);
+    return out;
+  },
+
   update: function() {
     var svg = this.get('svg');
     var data = (this.get('data') || []).slice();
@@ -158,22 +171,27 @@ export default Ember.Component.extend({
     var line = this.get('line');
     var width = this.get('width');
     var height = this.get('height');
+    var margin = this.get('margin');
 
     if (svg && data && x && y && line) {
       x.domain([0, data.get('length') - 1]);
-      x.range([0, width - 1]);
+      x.range([0, width - margin]);
 
       var min = this.get('min') === null ? d3.min(data) : this.get('min');
-      var max = this.get('max') === null ? d3.max(data) : this.get('max');
+
+      var max = d3.max(data, function(d) {
+        return d3.sum(d3.keys(d).map((k) => d[k]));
+      });
+      max = this.adjustMax(max);
+
       y.domain([min, max]);
-      y.range([height, 0]);
-      y.rangeRound([height, 0]);
+      y.range([height-margin, margin]);
+      y.rangeRound([height-margin, margin]);
 
       //console.log('update', data[data.length-2], data[data.length-1], x.domain(), x.range(), y.domain(), y.range());
       svg.selectAll('path')
         .data([data])
-        .style('fill', `url(${window.location.pathname}#${this.get('type')}-gradient)`)
         .attr('d', line);
     }
-  }.observes('data', 'data.[]'),
+  }.observes('data.[]'),
 });

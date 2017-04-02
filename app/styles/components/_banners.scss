@@ -5,21 +5,40 @@
   margin: 15px 0;
   width: 100%;
 
-  .banner-icon {
+  &.tight {
+    margin-top: 0;
 
+    P {
+      margin-top: 5px;
+      margin-bottom: 5px;
+    }
+  }
+
+  &.inline {
+    width: initial;
+    display: inline-block;
+    margin: 0 5px 0 0;
   }
 
   .banner-icon {
     display: table-cell;
     vertical-align: middle;
-    width: 50px;    
+    width: 50px;
     text-align: center;
     background-color: rgba(black, 0.05);
-    
+
     > .icon {
       width: 20px;
       font-size: 20px;
     }
+  }
+
+  .banner-title {
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    padding: 0 20px;
+    background-color: rgba(black, 0.05);
   }
 
   .banner-message {
@@ -33,53 +52,64 @@
     border: solid 1px $primary;
     color: $banner-color;
 
-      .banner-icon {
-        background-color: $primary;
-      }
+    .banner-icon, .banner-title {
+      @include bg-color($banner-primary);
+      @include contrasted($primary);
+    }
   }
+
   &.bg-secondary {
     background: $banner-secondary;
     border: solid 1px $secondary;
     color: $banner-color;
 
-      .banner-icon {
-        background-color: $secondary;
-      }
+    .banner-icon, .banner-title {
+      @include bg-color($banner-secondary);
+      @include contrasted($secondary);
+    }
   }
+
   &.bg-success {
     background: $banner-success;
     border: solid 1px $success;
     color: $banner-color;
 
-      .banner-icon {
-        background-color: $success;
-      }
+    .banner-icon, .banner-title {
+      @include bg-color($banner-success);
+      @include contrasted($success);
+    }
   }
+
   &.bg-info {
     background: $banner-info;
     border: solid 1px $info;
     color: $banner-color;
 
-      .banner-icon {
-        background-color: $info;
-      }
-  } 
+    .banner-icon, .banner-title {
+      @include bg-color($banner-info);
+      @include contrasted($info);
+    }
+  }
+
   &.bg-warning {
     background: $banner-warning;
     border: solid 1px $warning;
     color: $banner-color;
 
-      .banner-icon {
-        background-color: $warning;
-      }
+    .banner-icon, .banner-title {
+      @include bg-color($banner-warning);
+      @include contrasted($warning);
+    }
   }
+
   &.bg-error {
     background: $banner-error;
     border: solid 1px $error;
     color: $error;
 
-      .banner-icon {
-        background-color: $error;
-      }
-  } 
+    .banner-icon, .banner-title {
+      @include bg-color($banner-error);
+      @include contrasted($error);
+    }
+  }
 }

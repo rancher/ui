@@ -1,34 +1,27 @@
-<table class="grid fixed">
-  <thead>
-    <tr>
-      <th width="80">{{t 'containersPage.containerPage.volumesTab.table.header.name'}}</th>
-      <th width="175">{{t 'containersPage.containerPage.volumesTab.table.header.mount'}}</th>
-      <th>{{t 'containersPage.containerPage.volumesTab.table.header.snapshot'}}</th>
-      <th width="80">{{t 'generic.actions'}}</th>
-    </tr>
-  </thead>
-  <tbody>
-    {{#each model.mounts as |mount|}}
-      <tr>
-        <td data-title="{{t 'containersPage.containerPage.volumesTab.table.header.name'}}:">
-          {{mount.volumeName}}
-        </td>
-        <td data-title="{{t 'containersPage.containerPage.volumesTab.table.header.mount'}}:">
-          {{mount.path}} {{if mount.isReadWrite '' '(ro)'}} {{copy-to-clipboard size='small' clipboardText=mount.path}}
-        </td>
-        <td data-title="{{t 'containersPage.containerPage.volumesTab.table.header.snapshot'}}:">
-          {{snapshot-timeline model=mount.volume.snapshots}}
-        </td>
-        <td data-title="{{t 'generic.actions'}}:">
-          {{action-menu model=mount.volume}}
-        </td>
-      </tr>
-    {{else}}
-      <tr>
-        <td data-title={{t 'containersPage.containerPage.volumesTab.table.body.error.data'}} colspan="4">
-          <div class="text-muted text-center" style="display:inline-block;">{{t 'containersPage.containerPage.volumesTab.table.body.error.noData'}}</div>
-        </td>
-      </tr>
-    {{/each}}
-  </tbody>
-</table>
+{{#sortable-table
+  classNames="grid sortable-table"
+  body=model.mounts
+  searchText=searchText
+  sortBy=sortBy
+  bulkActions=false
+  pagingLabel="pagination.volume"
+  headers=headers as |sortable kind mount dt|}}
+  {{#if (eq kind "row")}}
+    <td data-title="{{dt.name}}">
+      {{mount.displayVolumeName}}
+    </td>
+    <td data-title="{{dt.path}}">
+      {{mount.path}}
+    </td>
+    <td data-title="{{dt.writable}}">
+      {{#if mount.isReadWrite}}<i class="icon icon-check"></i>{{else}}<i class="icon icon-x text-muted"></i>{{/if}}
+    </td>
+    <td data-title="{{dt.actions}}">
+      {{action-menu model=mount.volume}}
+    </td>
+  {{else if (eq kind "nomatch")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.volumesTab.table.noMatch'}}</td></tr>
+  {{else if (eq kind "norows")}}
+    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.volumesTab.table.noData'}}</td></tr>
+  {{/if}}
+{{/sortable-table}}

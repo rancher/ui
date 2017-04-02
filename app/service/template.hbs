@@ -1,22 +1,29 @@
 <section class="header clearfix">
-  <h1>{{t 'servicePage.header'}} <span class="text-muted">(in {{#link-to "stack" model.stack.id}}{{model.stack.displayName}}{{/link-to}})</span></h1>
+  <h1 class="pull-left">
+    {{t 'servicePage.header' name=service.displayName}}
+  </h1>
+  {{#if service.canHaveContainers}}
+    <div class="pull-left mt-10">
+      {{info-multi-stats model=service largeTargetId="largeStats"}}
+    </div>
+  {{/if}}
   <div class="right-buttons">
-    {{action-menu model=service classNames="ml-5 pull-right" size="sm"}}
     {{header-state model=service}}
+    {{action-menu model=service showPrimary=false classNames="ml-10 pull-right" size="sm"}}
   </div>
 </section>
+
+<div id="largeStats">
+</div>
+
+{{#if model.description}}
+  {{banner-message color='bg-secondary mb-0 mt-10' message=model.description}}
+{{/if}}
 
 {{!todo copy pasta}}
 <section>
   <div class="row">
     <div class="col span-3 mb-15">
-        {{#if service.description}}
-          <div>
-            <label class="block">{{t 'servicePage.multistat.description'}} </label>
-            <div>{{service.description}}</div>
-          </div>
-          <hr>
-        {{/if}}
         <div>
           <label class="block">{{t 'servicePage.multistat.type'}}</label>
           <div>{{service.displayType}}</div>

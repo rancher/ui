@@ -1,30 +1,4 @@
-{{#sortable-table
-    classNames="grid fixed mb-0 sortable-table"
-    bulkActions=false
-    paging=false
-    search=false
-    sortBy=sortBy
-    headers=headers
-    body=model.instances
-    as |sortable kind container dt|
+{{container-table
+  body=model.instances
+  showHost=true
 }}
-  {{#if (eq kind "row")}}
-    {{container-row
-      tagName=""
-      model=container
-      showStats=true
-      showActions=true
-      showHost=true
-      showCommand="no"
-      cpuMax=cpuMax
-      memoryMax=memoryMax
-      storageMax=storageMax
-      networkMax=networkMax
-      dt=dt
-    }}
-  {{else if (eq kind "norows")}}
-    <tr>
-      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted">{{t 'servicePage.containersTab.table.body.noData'}}</td>
-    </tr>
-  {{/if}}
-{{/sortable-table}}

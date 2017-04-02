@@ -8,4 +8,13 @@ export default Resource.extend({
 
   instance: denormalizeId('instanceId'),
   volume: denormalizeId('volumeId'),
+
+  displayVolumeName: function() {
+    let name = this.get('volumeName');
+    if ( name.match(/^[0-9a-f]{64}$/) ) {
+      return (name.substr(0,12)+'&hellip;').htmlSafe();
+    }
+
+    return name;
+  }.property('volumeName'),
 });

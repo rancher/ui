@@ -1,4 +1,4 @@
-<section class="header">
+<section class="header clearfix">
   {{#banner-message showIcon=false}}
     <p class="pull-left">{{t 'hostsPage.hostPage.header.singleBanner'}}</p>
     <p class="pull-right">
@@ -6,32 +6,26 @@
     </p>
   {{/banner-message}}
 
-  <div class="clearfix">
-    <h1>
-      {{t 'hostsPage.hostPage.header.title' name=host.displayName}}
-    </h1>
-      {{#ember-wormhole destinationElement=graphNode renderInPlace=(not graphExpand)}}
-        {{info-multi-stats model=host linkName="hostStats" single=true}}
-      {{/ember-wormhole}}
-
-    {{action-menu model=host showPrimary=false showLabel=true size="md" classNames="ml-10 pull-right"}}
-    {{header-state model=host classNames="pull-right"}}
+  <h1 class="pull-left">
+    {{t 'hostsPage.hostPage.header.title' name=host.displayName}}
+  </h1>
+  <div class="pull-left mt-10">
+    {{info-multi-stats model=host linkName="hostStats" largeTargetId="largeStats"}}
   </div>
-
-  {{#if host.description}}
-    <div class="force-wrap mt-5">
-      {{host.description}}
-    </div>
-  {{/if}}
-
-  {{#if host.showTransitioningMessage}}
-    <div class="force-wrap text-right mt-5 {{host.stateColor}}">
-      {{host.transitioningMessage}}
-    </div>
-  {{/if}}
-
-  <div class="expanded-graph"></div>
+  <div class="right-buttons">
+    {{header-state model=model}}
+    {{action-menu model=model showPrimary=false classNames="ml-10 pull-right" size="sm"}}
+  </div>
 </section>
+
+<div id="largeStats">
+</div>
+
+{{#if host.showTransitioningMessage}}
+  <div class="force-wrap text-right mt-5 {{host.stateColor}}">
+    {{host.transitioningMessage}}
+  </div>
+{{/if}}
 
 <section>
   <div class="row">
@@ -151,9 +145,6 @@
 
     </div>
     <div class="col span-9">
-      <div class="row">
-        {{info-multi-stats model=host linkName="hostStats" single=true}}
-      </div>
       <div class="row tabs">
         <ul class="tab-header" role="tablist">
           {{#link-to "host.containers" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.containers'}}</a>{{/link-to}}

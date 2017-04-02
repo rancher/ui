@@ -79,7 +79,6 @@ export default Ember.Component.extend({
   },
 
   setUp() {
-    let maxPoints = this.get('maxPoints');
     FIELDS.forEach((field) => {
       let data = [];
       this.set(field, data);
