@@ -3,13 +3,18 @@
     <div class="row">
       <div class="mb-0">
         <h1>
-          {{format-html-message 'hostsPage.cloudHostsPage.addPage.header' hostName=model.displayName}}
+          {{t 'hostsPage.cloudHostsPage.addPage.header' hostName=model.displayName}}
         </h1>
       </div>
     </div>
   </section>
 
   <section class="mt-20">
-    {{cloud-host-add-or-edit host=model.plans hostTemplates=model.hostTemplates cancel=(action 'cancel') save='save'}}
+    {{cloud-host-add-or-edit
+        host=newHost
+        config=model.plans
+        hostTemplates=model.hostTemplates
+        cancel=(action 'cancel')
+        save='save'}}
   </section>
 </div>
