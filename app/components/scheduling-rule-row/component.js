@@ -39,6 +39,7 @@ export default Ember.Component.extend({
   instance: null,
 
   tagName: 'TR',
+  classNames: 'main-row',
 
   isGlobal: null,
   kind: null,

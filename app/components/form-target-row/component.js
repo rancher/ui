@@ -8,6 +8,7 @@ export default Ember.Component.extend({
   rowClass: '',
 
   tagName: 'TR',
+  classNames: 'main-row',
 
   actions: {
     remove: function() {
