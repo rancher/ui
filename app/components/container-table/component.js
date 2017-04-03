@@ -6,25 +6,12 @@ export const headersAll =  [
     sort: ['stateSort','name','id'],
     searchField: 'displayState',
     translationKey: 'generic.state',
-    width: 120,
+    width: 150,
   },
   {
     name: 'name',
     sort: ['name','id'],
     translationKey: 'generic.name',
-  },
-  {
-    name: 'ip',
-    sort: ['displayIp','name','id'],
-    searchField: 'displayIp',
-    translationKey: 'generic.ipAddress',
-    width: 110,
-  },
-  {
-    name: 'hostName',
-    sort: ['primaryHost.displayName','name','id'],
-    searchField: 'primaryHost.displayName',
-    translationKey: 'generic.host',
   },
   {
     name: 'image',
@@ -49,6 +36,8 @@ export default Ember.Component.extend({
   pagingLabel: 'pagination.container',
 
   sortBy: 'name',
+
+  extraSearchFields: ['displayIp','primaryHost.displayName'],
 
   headers: function() {
     if ( this.get('showStats') ) {

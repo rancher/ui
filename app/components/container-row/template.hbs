@@ -1,27 +1,15 @@
 <tr class="main-row">
   {{#if bulkActions}}
-    <td class="row-check">
+    <td rowspan="2" class="row-check">
       {{check-box nodeId=model.id}}
     </td>
   {{/if}}
-  <td data-title="{{dt.state}}" class="state">
+  <td rowspan="2" data-title="{{dt.state}}" class="state">
     {{badge-state model=model}}
   </td>
-  <td data-title="{{dt.name}}" class="clip">
+  <td rowspan="2" data-title="{{dt.name}}" class="clip">
     <a href="{{href-to detailRoute model.id}}">{{model.displayName}}</a>
   </td>
-  <td data-title="{{dt.ip}}">
-    {{#copy-inline clipboardText=model.displayIp}}{{format-ip model.displayIp}}{{/copy-inline}}
-  </td>
-  {{#if showHost}}
-    <td data-title="{{dt.hostName}}" class="clip">
-      {{#if model.primaryHost}}
-        <a href="{{href-to "host" model.primaryHost.id}}">{{model.primaryHost.displayName}}</a>
-      {{else}}
-        <span class="text-muted">{{t 'containersPage.table.primaryHostUnknown'}}</span>
-      {{/if}}
-    </td>
-  {{/if}}
   <td data-title="{{dt.image}}" class="clip">
     {{model.displayImage}}
     {{#if (and (eq showCommand "inline") model.command)~}}
@@ -77,8 +65,20 @@
     </td>
   {{/if}}
   {{#if showActions}}
-    <td data-title="{{dt.actions}}" class="actions">
+    <td rowspan="2" data-title="{{dt.actions}}" class="actions">
       {{action-menu model=model showPrimary=showPrimaryActions}}
     </td>
   {{/if}}
+</tr>
+<tr class="sub-row hide">{{! make the alternating color match }}</tr>
+<tr class="sub-row">
+  <td data-title="{{t 'generic.details'}}" class="text-small text-muted">
+    {{#if model.displayIp}}
+      {{#copy-inline clipboardText=model.displayIp}}{{format-ip model.displayIp}}{{/copy-inline}} /
+    {{/if}}
+    {{#if (and showHost model.primaryHost)}}
+      <a href="{{href-to "host" model.primaryHost.id}}">{{model.primaryHost.displayName}}</a> /
+    {{/if}}
+    {{t 'generic.createdDate' date=(date-from-now model.created)}}
+  </td>
 </tr>

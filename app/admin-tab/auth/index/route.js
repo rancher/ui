@@ -16,7 +16,7 @@ export default Ember.Route.extend({
     }
     else
     {
-      this.replaceWith('admin-tab.auth.github');
+      this.replaceWith('admin-tab.auth.localauth');
     }
   },
 });
