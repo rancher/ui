@@ -164,7 +164,6 @@ const navTree = [
   {
     id: 'infra',
     localizedLabel: 'nav.infra.tab',
-    route: 'infrastructure-tab',
     ctx: [getProjectId],
     condition: function() { return this.get('hasProject'); },
     submenu: [
@@ -227,7 +226,6 @@ const navTree = [
   {
     id: 'admin',
     localizedLabel: 'nav.admin.tab',
-    route: 'admin-tab',
     condition: function() { return this.get('isAdmin'); },
     alertRoute: 'admin-tab.auth',
     alertCondition: function() {

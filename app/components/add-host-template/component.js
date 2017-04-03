@@ -47,9 +47,10 @@ export default Ember.Component.extend({
   name:               null,
   secretValue:        null,
   publicValue:        null,
-  newKeyObserver: Ember.observer('name', 'secretValue', 'publicValue', function() {
+  newKeyObserver: Ember.on('init', Ember.observer('name', 'secretValue', 'publicValue', function() {
     var {name, secretValue, publicValue} = this.getProperties('name', 'secretValue', 'publicValue');
     var selectedKey = this.get('selectedKey');
+
     if (this.get('add')) {
       this.set('selectedKey.name', name);
       if (selectedKey.publicValues) {
@@ -63,9 +64,8 @@ export default Ember.Component.extend({
         });
       }
     }
-    console.log(selectedKey);
-  }),
-  actions:            {
+  })),
+  actions: {
     addKey() {
       var hostTemplate = this.get('store').createRecord({type: 'hostTemplate'});
       var provider = Ember.$.extend(hostTemplate, this.get('providerKeyDetails').findBy('flavorPrefix', this.get('provider')));

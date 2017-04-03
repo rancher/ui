@@ -77,7 +77,7 @@ var CLOUD_PLANS = {
 
     // DigitalOcean
     {
-      "id": "do.sfo1-small",
+      "id": "digitalocean-sfo1-small",
       "displayName": "Small",
       "provider": "Digital Ocean",
       "memory": 1,
@@ -92,7 +92,7 @@ var CLOUD_PLANS = {
       "realm": 'us-west',
     },
     {
-      "id": "do.sfo1-medium",
+      "id": "digitalocean-sfo1-medium",
       "displayName": "Medium",
       "provider": "Digital Ocean",
       "memory": 2,
@@ -107,7 +107,7 @@ var CLOUD_PLANS = {
       "realm": 'us-west',
     },
     {
-      "id": "do.sfo1-large",
+      "id": "digitalocean-sfo1-large",
       "displayName": "Large",
       "provider": "Digital Ocean",
       "memory": 4,
@@ -123,7 +123,7 @@ var CLOUD_PLANS = {
     },
 
     {
-      "id": "do.sfo2-small",
+      "id": "digitalocean-sfo2-small",
       "displayName": "Small",
       "provider": "Digital Ocean",
       "memory": 1,
@@ -138,7 +138,7 @@ var CLOUD_PLANS = {
       "realm": 'us-west',
     },
     {
-      "id": "do.sfo2-medium",
+      "id": "digitalocean-sfo2-medium",
       "displayName": "Medium",
       "provider": "Digital Ocean",
       "memory": 2,
@@ -153,7 +153,7 @@ var CLOUD_PLANS = {
       "realm": 'us-west',
     },
     {
-      "id": "do.sfo2-large",
+      "id": "digitalocean-sfo2-large",
       "displayName": "Large",
       "provider": "Digital Ocean",
       "memory": 4,

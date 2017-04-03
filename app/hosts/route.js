@@ -17,10 +17,17 @@ export default Ember.Route.extend({
   redirect: function(model, transition) {
     let mode = this.get(`prefs.${C.PREFS.HOST_VIEW}`)||'list';
 
-    if (transition.targetName !== 'hosts.container-cloud.index') {
+    if (!this.isContinerCloud(transition)) {
       this.transitionTo('hosts.index', {queryParams: {
         mode: mode,
       }});
+    }
+  },
+  isContinerCloud: function(trans) {
+    if (trans.targetName === 'hosts.container-cloud.index' || trans.targetName === 'hosts.container-cloud.add') {
+      return true;
+    } else {
+      return false;
     }
   }
 });
