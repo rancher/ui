@@ -9,7 +9,9 @@
   headers=headers as |sortable kind port dt|}}
   {{#if (eq kind "row")}}
     <td data-title="{{dt.publicIp}}">
-      {{#if port.displayPublicIp}}
+      {{#if (eq "0.0.0.0" port.displayPublicIp)}}
+        {{port.displayPublicIp}} {{t 'containerPage.portsTab.hostPrimaryIp' ip=model.container.primaryHost.displayIp}}
+      {{else if port.displayPublicIp}}
         {{port.displayPublicIp}}
       {{else}}
         <span class="text-muted">{{t 'generic.none'}}</span>

@@ -168,29 +168,12 @@ const navTree = [
     condition: function() { return this.get('hasProject'); },
     submenu: [
       {
-        id: 'infra-storagepools',
-        localizedLabel: 'nav.infra.storagePage',
-        icon: 'icon icon-hdd',
-        route: 'storagepools',
+        id: 'infra-keys',
+        localizedLabel: 'nav.infra.keys',
+        icon: 'icon icon-key',
+        route: 'authenticated.project.api.keys',
         ctx: [getProjectId],
       },
-      {
-        id: 'infra-secrets',
-        localizedLabel: 'nav.infra.secrets',
-        icon: 'icon icon-secrets',
-        route: 'secrets',
-        ctx: [getProjectId],
-      },
-      /*
-      {
-        id: 'infra-backuptargets',
-        localizedLabel: 'nav.infra.backupTarget',
-        icon: 'icon icon-target',
-        route: 'backuptargets',
-        ctx: [getProjectId],
-        condition: function() { return this.get('hasVm'); },
-      },
-      */
       {
         id: 'infra-certificates',
         localizedLabel: 'nav.infra.certificates',
@@ -206,10 +189,17 @@ const navTree = [
         ctx: [getProjectId],
       },
       {
-        id: 'infra-keys',
-        localizedLabel: 'nav.infra.keys',
-        icon: 'icon icon-key',
-        route: 'authenticated.project.api.keys',
+        id: 'infra-secrets',
+        localizedLabel: 'nav.infra.secrets',
+        icon: 'icon icon-secrets',
+        route: 'secrets',
+        ctx: [getProjectId],
+      },
+      {
+        id: 'infra-storagepools',
+        localizedLabel: 'nav.infra.storagePage',
+        icon: 'icon icon-hdd',
+        route: 'storagepools',
         ctx: [getProjectId],
       },
       {
@@ -254,16 +244,16 @@ const navTree = [
         divider: true
       },
       {
-        id: 'admin-ha',
-        localizedLabel: 'nav.admin.ha',
-        icon: 'icon icon-umbrella',
-        route: 'admin-tab.ha',
-      },
-      {
         id: 'admin-access',
         localizedLabel: 'nav.admin.access',
         icon: 'icon icon-key',
         route: 'admin-tab.auth',
+      },
+      {
+        id: 'admin-ha',
+        localizedLabel: 'nav.admin.ha',
+        icon: 'icon icon-umbrella',
+        route: 'admin-tab.ha',
       },
       {
         id: 'admin-machine',
