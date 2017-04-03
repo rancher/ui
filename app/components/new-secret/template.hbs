@@ -3,21 +3,22 @@
 </section>
 
 <section class="horizontal-form container-fluid">
+  <div class="row">
   {{form-name-description
     model=primaryResource
     nameRequired=true
     namePlaceholder="newSecret.name.placeholder"
     descriptionPlaceholder="newSecret.description.placeholder"
+    className="col"
   }}
 
   {{#unless editing}}
-    <div class="row">
-      <div class="col-xs-12">
+      <div class="col span-6">
         <label>{{t 'newSecret.value.label'}}*</label>
         {{textarea-autogrow class="form-control" value=userValue placeholder="newSecret.value.placeholder"}}
       </div>
-    </div>
   {{/unless}}
+  </div>
 </section>
 
 {{top-errors errors=errors}}
