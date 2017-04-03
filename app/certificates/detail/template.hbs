@@ -1,61 +1,63 @@
 <section class="header clearfix">
   <h1>{{#link-to "certificates"}}{{t 'certificatesPage.detail.header'}}{{/link-to}}</h1>
-  {{action-menu model=model.certificate size="sm"}}
+  <div class="right-buttons">{{action-menu model=model.certificate size="sm"}}</div>
 </section>
-
-{{#if model.certificate.description}}
-  <section>
-    <div class="description">
-      <label>{{t 'certificatesPage.detail.description'}}</label>
-      <p>{{model.certificate.description}}</p>
-    </div>
-  </section>
-{{/if}}
 
 <section>
   <div class="row">
     <div class="row-same-height row-full-height">
       <div class="col span-6 col span-height col span-full-height col-top" style="margin-bottom: 20px;">
         <div class="no-padding-margin" style="height: 100%;">
-          <div style="padding: 20px;">
-            <label class="section">{{t 'certificatesPage.detail.info.labelText'}}</label>
+          <div>
+            <label class="section">{{t 'certificatesPage.detail.info.labelText'}}:</label>
             <div>
-              <ul class="list-lines">
-                <li>
-                  <label>{{t 'certificatesPage.detail.info.valid'}}</label>
-                  {{date-calendar model.certificate.issuedAt}} ({{date-from-now model.certificate.issuedDate}})
-                </li>
-                <li>
-                  <label>{{t 'certificatesPage.detail.info.expires'}}</label>
-                  <span class="{{if model.certificate.expiresSoon "text-bold text-danger"}}">
-                    {{date-calendar model.certificate.expiresAt}}
-                    ({{date-from-now model.certificate.expiresDate}})
-                  </span>
-                </li>
-                <li class="force-wrap">
-                  <label>{{t 'certificatesPage.detail.info.algorithm'}}</label>
-                  {{model.certificate.algorithm}}{{#if model.certificate.keySize}} - {{model.certificate.keySize}} bits{{/if}}
-                </li>
-                <li class="force-wrap">
-                  <label>{{t 'certificatesPage.detail.info.issuer'}}</label>
-                  {{model.certificate.displayIssuer}}
-                </li>
-                <li class="force-wrap">
-                  <label>{{t 'certificatesPage.detail.info.serialNumber'}}</label>
-                  {{model.certificate.serialNumber}}
-                </li>
-                <li>
-                  <label>{{t 'certificatesPage.detail.info.version'}}</label>
-                  {{model.certificate.version}}
-                </li>
-              </ul>
+              <div>
+                <label>{{t 'certificatesPage.detail.info.valid'}}:</label>
+                <div>{{date-calendar model.certificate.issuedAt}} ({{date-from-now model.certificate.issuedDate}})</div>
+              </div>
+              <div>
+              <hr/>
+                <label>{{t 'certificatesPage.detail.info.expires'}}:</label>
+                <span class="{{if model.certificate.expiresSoon "text-bold text-danger"}}">
+                  <div>{{date-calendar model.certificate.expiresAt}}
+                  ({{date-from-now model.certificate.expiresDate}})</div>
+                </span>
+              </div>
+              <hr/>
+              <div class="force-wrap">
+                <label>{{t 'certificatesPage.detail.info.algorithm'}}:</label>
+                <div>{{model.certificate.algorithm}}{{#if model.certificate.keySize}} - {{model.certificate.keySize}} bits{{/if}}</div>
+              </div>
+              <hr/>
+              <div class="force-wrap">
+                <label>{{t 'certificatesPage.detail.info.issuer'}}:</label>
+                <div>{{model.certificate.displayIssuer}}</div>
+              </div>
+              <hr/>
+              <div class="force-wrap">
+                <label>{{t 'certificatesPage.detail.info.serialNumber'}}:</label>
+                <div>{{model.certificate.serialNumber}}</div>
+              </div>
+              <hr/>
+              <div>
+                <label>{{t 'certificatesPage.detail.info.version'}}:</label>
+                <div>{{model.certificate.version}}</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="col span-6 col span-height col span-full-height col-top" style="margin-bottom: 20px;">
+      <div class="col span-6 box">
+        {{#if model.certificate.description}}
+          <section>
+            <div class="description">
+              <label>{{t 'certificatesPage.detail.description'}}</label>
+              <p>{{model.certificate.description}}</p>
+            </div>
+          </section>
+        {{/if}}
         <div class="no-padding-margin" style="height: 100%;">
-          <div style="padding: 20px;">
+          <div>
             <label class="section">{{t 'certificatesPage.detail.domainNames.labelText'}}</label>
             <div>
               <ul class="list-unstyled">

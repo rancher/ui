@@ -2,7 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
   model: null,
-  tagName: '',
+  tagName: 'TR',
+  classNames: 'main-row',
 
   projects: Ember.inject.service(),
 
