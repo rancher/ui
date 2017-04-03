@@ -5,4 +5,5 @@ export default Ember.Component.extend({
   isLocal: null,
 
   tagName: 'TR',
+  classNames: 'main-row',
 });
