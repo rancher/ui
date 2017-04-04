@@ -46,7 +46,7 @@ export default Ember.Component.extend({
 
   buttonClasses: Ember.computed('status', function() {
     let status = this.get('status');
-    let out = 'btn';
+    let out = 'btn bg-transparent';
 
     if (status) {
       out += ' text-success';
