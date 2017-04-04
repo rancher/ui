@@ -107,6 +107,21 @@ var Service = Resource.extend(StateCounts, {
         stackId: this.get('stackId'),
       }});
     },
+
+    shell() {
+      this.get('modalService').toggleModal('modal-shell', {
+        model: this.get('containerForShell'),
+        escToClose: false,
+      });
+    },
+
+    popoutShell: function() {
+      let proj = this.get('projects.current.id');
+      let id = this.get('containerForShell.id');
+      Ember.run.later(() => {
+        window.open(`//${window.location.host}/env/${proj}/infra/console?instanceId=${id}&isPopup=true`, '_blank', "toolbars=0,width=900,height=700,left=200,top=200");
+      });
+    },
   },
 
   scaleTimer: null,
@@ -132,6 +147,7 @@ var Service = Resource.extend(StateCounts, {
     var isK8s = this.get('isK8s');
     var isSwarm = this.get('isSwarm');
     var canHaveContainers = this.get('canHaveContainers');
+    var containerForShell = this.get('containerForShell');
     var isBalancer = this.get('isBalancer');
     var isDriver = ['networkdriverservice','storagedriverservice'].includes(this.get('lcType'));
 
@@ -142,6 +158,7 @@ var Service = Resource.extend(StateCounts, {
       { label: 'action.cancelUpgrade',  icon: 'icon icon-life-ring',        action: 'cancelUpgrade',  enabled: !!a.cancelupgrade },
       { label: 'action.cancelRollback', icon: 'icon icon-life-ring',        action: 'cancelRollback', enabled: !!a.cancelrollback },
       { divider: true },
+      { label: 'action.execute',        icon: '',                           action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
       { label: 'action.start',          icon: 'icon icon-play',             action: 'activate',       enabled: !!a.activate, bulkable: true},
       { label: 'action.restart',        icon: 'icon icon-refresh'    ,      action: 'restart',        enabled: !!a.restart && canHaveContainers, bulkable: true },
       { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate', bulkable: true},
@@ -154,7 +171,7 @@ var Service = Resource.extend(StateCounts, {
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','lcType','isK8s','isSwarm','canHaveContainers','canUpgrade','isBalancer'),
+  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','lcType','isK8s','isSwarm','canHaveContainers','canUpgrade','isBalancer','containerForShell'),
 
 
   serviceLinks: null, // Used for clone
@@ -382,6 +399,10 @@ var Service = Resource.extend(StateCounts, {
       return Util.formatSi(this.get('launchConfig.memoryReservation'), 1024, 'iB', 'B');
     }
   }),
+
+  containerForShell: function() {
+    return this.get('instances').findBy('combinedState','running');
+  }.property('instances.@each.combinedState'),
 });
 
 export function activeIcon(service)

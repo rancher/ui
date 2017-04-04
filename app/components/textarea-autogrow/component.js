@@ -6,13 +6,15 @@ export default Ember.TextArea.extend(IntlPlaceholder, {
   intl: Ember.inject.service(),
 
   minHeight: 0,
+  curHeight: null,
   maxHeight: 200,
 
   tagName: 'textarea',
-  classNames: ['no-resize'],
+  classNames: ['no-resize','no-ease'],
 
   didInsertElement() {
     Ember.run.scheduleOnce('afterRender', this, 'initHeights');
+    this.$().removeClass('no-ease');
   },
 
   initHeights() {
@@ -56,6 +58,7 @@ export default Ember.TextArea.extend(IntlPlaceholder, {
 
       $el.css('overflowY', (el.scrollHeight > neu ? 'auto' : 'hidden'));
       $el.css('height', neu + 'px');
+      this.set('curHeight', neu);
     });
   }
 });
