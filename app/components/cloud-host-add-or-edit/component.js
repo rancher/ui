@@ -2,6 +2,7 @@ import Ember from 'ember';
 import Driver from 'ui/mixins/driver';
 
 export default Ember.Component.extend(Driver, {
+  errors: null,
   model: null,
   config: null,
   hostTemplates: null,
@@ -21,53 +22,43 @@ export default Ember.Component.extend(Driver, {
     }
   }),
   actions: {
-    setLabels() {
-    },
     saveTemp() {
       if (this.get('selectedHostTemplate')) {
         if (this.get('selectedHostTemplate.accountId')) {
-          // we have a hosttemplate so well send it with the driver
-          // debugger;
-          Ember.run.later(() => {
-            // TODO Actually save this model now that the template is saved
-            this.buildModelOut(this.get('model'), this.get('selectedHostTemplate.id')).then((result) => {
-              result;
-              debugger;
-              this.sendAction('save');
-            }).catch((err) => {
-              console.log('err: ', err);
-            });
-          }, 1000);
+          this.buildModelOut(this.get('model'), this.get('selectedHostTemplate.id')).then((/*result*/) => {
+            this.sendAction('save');
+          });
         } else {
           this.get('selectedHostTemplate').save().then((hstTemplate) => {
             hstTemplate.waitForNotTransitioning.then(() => {
-              Ember.run.later(() => {
-                // TODO Actually save this model now that the template is saved
-                this.buildModelOut(this.get('model'), this.get('selectedHostTemplate.id')).then((result) => {
-                  result;
-                  debugger;
-                  this.sendAction('save');
-                }).catch((err) => {
-                  console.log('err: ', err);
-                });
-              }, 1000);
+              this.buildModelOut(this.get('model'), this.get('selectedHostTemplate.id')).then((/*result*/) => {
+                this.sendAction('save');
+              });
             });
           });
         }
       } else {
-        // debugger;
+        this.buildModelOut(this.get('model')).then((/*result*/) => {
+          this.sendAction('save');
+        });
       }
     },
   },
-  buildModelOut: function(modelIn, hostId) {
+  buildModelOut: function(modelIn, hostId=null) {
     var modelOut = modelIn;
 
+    if (hostId) {
+      Ember.$.extend(modelOut, {hostTemplateId: hostId});
+    }
+
     modelOut.setProperties({
-      hostTemplateId: hostId,
       rancherConfig: {
         flavor: this.get('config.id')
       }
     });
-    return modelOut.save();
+
+    return modelOut.save().catch((err) => {
+      this.get('errors').pushObject(err);
+    });
   }
 });

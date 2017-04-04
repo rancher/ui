@@ -9,11 +9,19 @@ export default Ember.Route.extend({
         var plan = Plans.realms.findBy('id', params.cloud_id);
         return Ember.Object.create({
           plans: plan,
-          hostTemplates: templates.filterBy('flavorPrefix', plan.provider)
+          hostTemplates: templates.filterBy('flavorPrefix', plan.provider),
+          host: this.get('store').createRecord({type: 'host'}),
         });
       });
     } else {
      return this.transitionTo('hosts.container-cloud');
+    }
+  },
+  resetController(controller, isExisting /*, transition*/) {
+    if ( isExisting )
+    {
+      controller.set('host', null);
+      controller.set('model', null);
     }
   },
 });
