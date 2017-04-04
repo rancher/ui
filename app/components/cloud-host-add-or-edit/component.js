@@ -30,16 +30,9 @@ export default Ember.Component.extend(Driver, {
           // debugger;
           Ember.run.later(() => {
             // TODO Actually save this model now that the template is saved
-            var model = this.get('model');
-            model.setProperties({
-              hostTemplateId: this.get('selectedHostTemplate.id'),
-              rancherConfig: {
-                flavor: this.get('config.id')
-              }
-            });
-            model.save().then((result) => {
-              // result;
-              // debugger;
+            this.buildModelOut(this.get('model'), this.get('selectedHostTemplate.id')).then((result) => {
+              result;
+              debugger;
               this.sendAction('save');
             }).catch((err) => {
               console.log('err: ', err);
@@ -50,16 +43,9 @@ export default Ember.Component.extend(Driver, {
             hstTemplate.waitForNotTransitioning.then(() => {
               Ember.run.later(() => {
                 // TODO Actually save this model now that the template is saved
-                var model = this.get('model');
-                model.setProperties({
-                  hostTemplateId: this.get('selectedHostTemplate.id'),
-                  rancherConfig: {
-                    flavor: this.get('config.id')
-                  }
-                });
-                model.save().then((result) => {
-                  // result;
-                  // debugger;
+                this.buildModelOut(this.get('model'), this.get('selectedHostTemplate.id')).then((result) => {
+                  result;
+                  debugger;
                   this.sendAction('save');
                 }).catch((err) => {
                   console.log('err: ', err);
@@ -73,4 +59,15 @@ export default Ember.Component.extend(Driver, {
       }
     },
   },
+  buildModelOut: function(modelIn, hostId) {
+    var modelOut = modelIn;
+
+    modelOut.setProperties({
+      hostTemplateId: hostId,
+      rancherConfig: {
+        flavor: this.get('config.id')
+      }
+    });
+    return modelOut.save();
+  }
 });

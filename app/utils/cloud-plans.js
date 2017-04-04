@@ -14,6 +14,7 @@ function awsT2(realm,zone,name,memory) {
     "diskRating": 2,
     "transfer": 0,
     "realm": realm,
+    "apiKeySupport": "byokey",
   };
 }
 
@@ -90,6 +91,7 @@ var CLOUD_PLANS = {
       "diskRating": 4,
       "transfer": -1,
       "realm": 'us-west',
+      "apiKeySupport": "managed",
     },
     {
       "id": "digitalocean-sfo1-medium",
@@ -105,6 +107,7 @@ var CLOUD_PLANS = {
       "diskRating": 4,
       "transfer": -1,
       "realm": 'us-west',
+      "apiKeySupport": "managed",
     },
     {
       "id": "digitalocean-sfo1-large",
@@ -120,6 +123,7 @@ var CLOUD_PLANS = {
       "diskRating": 4,
       "transfer": -1,
       "realm": 'us-west',
+      "apiKeySupport": "managed",
     },
 
     {
@@ -136,6 +140,7 @@ var CLOUD_PLANS = {
       "diskRating": 4,
       "transfer": -1,
       "realm": 'us-west',
+      "apiKeySupport": "managed",
     },
     {
       "id": "digitalocean-sfo2-medium",
@@ -151,6 +156,7 @@ var CLOUD_PLANS = {
       "diskRating": 4,
       "transfer": -1,
       "realm": 'us-west',
+      "apiKeySupport": "managed",
     },
     {
       "id": "digitalocean-sfo2-large",
@@ -166,6 +172,7 @@ var CLOUD_PLANS = {
       "diskRating": 4,
       "transfer": -1,
       "realm": 'us-west',
+      "apiKeySupport": "managed",
     },
 
 
@@ -184,6 +191,7 @@ var CLOUD_PLANS = {
       "diskRating": 5,
       "transfer": 0,
       "realm": 'us-west',
+      "apiKeySupport": "byokey",
     },
     {
       "id": "packet.sjc1.baremetal_type1",
@@ -199,6 +207,7 @@ var CLOUD_PLANS = {
       "diskRating": 5,
       "transfer": 0,
       "realm": 'us-west',
+      "apiKeySupport": "byokey",
     },
     {
       "id": "packet.sjc1.baremetal_type2",
@@ -214,6 +223,7 @@ var CLOUD_PLANS = {
       "diskRating": 5,
       "transfer": 0,
       "realm": 'us-west',
+      "apiKeySupport": "byokey",
     },
     {
       "id": "packet.sjc1.baremetal_type3",
@@ -229,6 +239,7 @@ var CLOUD_PLANS = {
       "diskRating": 5,
       "transfer": 0,
       "realm": 'us-west',
+      "apiKeySupport": "byokey",
     },
 
     {
@@ -245,6 +256,7 @@ var CLOUD_PLANS = {
       "diskRating": 5,
       "transfer": 0,
       "realm": 'us-east',
+      "apiKeySupport": "byokey",
     },
     {
       "id": "packet.ewr1.baremetal_type1",
@@ -260,6 +272,7 @@ var CLOUD_PLANS = {
       "diskRating": 5,
       "transfer": 2*1024*1024,
       "realm": 'us-east',
+      "apiKeySupport": "byokey",
     },
     {
       "id": "packet.ewr1.baremetal_type2",
@@ -275,6 +288,7 @@ var CLOUD_PLANS = {
       "diskRating": 5,
       "transfer": 0,
       "realm": 'us-east',
+      "apiKeySupport": "byokey",
     },
     {
       "id": "packet.ewr1.baremetal_type3",
@@ -290,6 +304,7 @@ var CLOUD_PLANS = {
       "diskRating": 5,
       "transfer": 0,
       "realm": 'us-east',
+      "apiKeySupport": "byokey",
     },
   ]
 };

@@ -1,3 +1,4 @@
+{{log config}}
 <form>
   <section class="horizontal-form">
     <div class="row addtl-info">
@@ -66,11 +67,18 @@
     <div class="container-fluid">
       {{partial "host/add-common"}}
       <hr />
-      {{add-host-template
-        templates=hostTemplates
-        provider=config.provider
-        selectedKey=(mut selectedHostTemplate)
-      }}
+        {{add-host-template
+          templates=hostTemplates
+          provider=config.provider
+          selectedKey=(mut selectedHostTemplate)
+        }}
+      {{#if (or (eq config.apiKeySupport 'byokey') (eq config.apiKeySupport 'both'))}}
+        {{add-host-template
+          templates=hostTemplates
+          provider=config.provider
+          selectedKey=(mut selectedHostTemplate)
+        }}
+      {{/if}}
       <div class="row">
         <div class="col span-2 col-inline">
           <label>{{t 'hostPartial.host.addOptions.labels'}}</label>
