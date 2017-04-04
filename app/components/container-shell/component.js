@@ -89,7 +89,7 @@ export default Ember.Component.extend(ThrottledResize, {
 
       term.on('data', function(data) {
         //console.log('To Server:',data);
-        socket.send(btoa(unescape(encodeURIComponent(data))));
+        socket.send(AWS.util.base64.encode(data));
       });
 
       term.open(this.$('.shell-body')[0]);
@@ -98,7 +98,7 @@ export default Ember.Component.extend(ThrottledResize, {
         this.set('status','connected');
         this.sendAction('connected');
         //console.log('From Server:',message.data);
-        term.write(decodeURIComponent(escape(atob(message.data))));
+        term.write(AWS.util.base64.decode(message.data).toString());
       };
 
       socket.onclose = () => {
