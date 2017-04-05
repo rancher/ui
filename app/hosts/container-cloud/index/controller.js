@@ -85,8 +85,8 @@ export default Ember.Controller.extend({
         return (
           (!rs || plan.realm === rs) &&
           (!ms || plan.memory >= ms) &&
-          (!ss || plan.storage >= ss) && 
-          (!cs || plan.pricePerMonth >= cs)
+          (!ss || plan.storage >= ss) &&
+          (!cs || plan.pricePerMonth <= cs)
         );
       });
     }
