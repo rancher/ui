@@ -22,7 +22,7 @@
       <div class="flex-content">
         <h3>{{t 'helpPage.environment.header'}}</h3>
         <hr/>
-        {{format-html-message 'helpPage.environment.content' appName=settings.appName}}
+        {{t 'helpPage.environment.content' appName=settings.appName htmlSafe=true}}
         {{#link-to 'settings.projects' class="btn bg-primary right-divider-btn"}} {{t 'helpPage.environment.manageLink'}} {{/link-to}}
       </div>
     </div>
@@ -87,10 +87,12 @@
         <p>
           {{t 'helpPage.issues.content.graphic2.text'}}
           <br/>
-          {{format-html-message 'helpPage.issues.content.graphic2.link'
+          {{t 'helpPage.issues.content.graphic2.link'
             appName=settings.appName
             companyLink=companyLink
-            docsLink=docsLink}}
+            docsLink=docsLink
+            htmlSafe=true
+            }}
         </p>
       </div>
 
@@ -172,8 +174,10 @@
     <h3>{{t 'helpPage.commercial.header'}}</h3>
     <hr/>
     <p>
-      {{format-html-message 'helpPage.commercial.content'
-        appName=settings.appName}}
+      {{t 'helpPage.commercial.content'
+        appName=settings.appName
+        htmlSafe=true
+        }}
     </p>
   </section>
 {{/if}}

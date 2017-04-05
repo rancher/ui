@@ -9,46 +9,64 @@
     descriptionPlaceholder="newStack.description.placeholder"
   }}
 
-  <label class="pt-5">{{t 'newStack.dockerCompose.label'}}</label>
   {{input-text-file
     accept=".yml, .yaml"
-    value=primaryResource.dockerCompose
+    name="compose.yml"
+    canChangeName=false
+    value=compose
     placeholder="newStack.dockerCompose.placeholder"
   }}
 
   {{#advanced-section}}
-    <div>
-      <label>{{t 'newStack.rancherCompose.label'}}</label>
-      {{input-text-file
-        accept=".yml, .yaml"
-        value=primaryResource.rancherCompose
-        placeholder="newStack.rancherCompose.placeholder"
+    <div class="box p-10">
+      {{input-files
+        changed=(action (mut files))
+        header='newStack.files.label'
+        addActionLabel='newStack.files.addActionLabel'
+        namePlaceholder='newStack.files.namePlaceholder'
+        valuePlaceholder='newStack.files.valuePlaceholder'
       }}
     </div>
 
-    <div>
-      <label>{{t 'newStack.startOnCreate.label'}}</label>
-      <div class="radio">
-        <label>{{radio-button selection=primaryResource.startOnCreate value=true}}&nbsp;{{t 'newStack.startOnCreate.on'}}</label>
-      </div>
-      <div class="radio">
-        <label>{{radio-button selection=primaryResource.startOnCreate value=false}}&nbsp;{{t 'newStack.startOnCreate.off'}}</label>
-      </div>
+    <hr/>
+
+    <div class="box p-10">
+      {{form-key-value
+        header=(t 'newStack.answers.label')
+        changed=(action "answersChanged")
+        allowMultilineValue=true
+        addActionLabel="newStack.answers.addActionLabel"
+      }}
     </div>
 
-    <label class="pt-5">{{t 'editStack.group.label'}}</label>
-    <div class="input-group">
-      {{input type="text" value=primaryResource.group classNames="form-control" placeholder=(t 'editStack.group.placeholder')}}
-      <div class="input-group-btn">
-        <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
-        <ul class="dropdown-menu dropdown-menu-right" role="menu">
-          {{#each tagChoices as |key|}}
-            <li><a {{action "addTag" key}}>{{key}}</a></li>
-          {{/each}}
-        </ul>
+    <hr/>
+
+    <div class="row">
+      <div class="col span-6">
+        <label>{{t 'newStack.startOnCreate.label'}}</label>
+        <div class="radio">
+          <label>{{radio-button selection=primaryResource.startOnCreate value=true}}&nbsp;{{t 'newStack.startOnCreate.on'}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=primaryResource.startOnCreate value=false}}&nbsp;{{t 'newStack.startOnCreate.off'}}</label>
+        </div>
+      </div>
+      <div class="col span-6">
+        <label class="pt-5">{{t 'editStack.group.label'}}</label>
+        <div class="input-group">
+          {{input type="text" value=primaryResource.group classNames="form-control" placeholder=(t 'editStack.group.placeholder')}}
+          <div class="input-group-btn">
+            <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
+            <ul class="dropdown-menu dropdown-menu-right" role="menu">
+              {{#each tagChoices as |key|}}
+                <li><a {{action "addTag" key}}>{{key}}</a></li>
+              {{/each}}
+            </ul>
+          </div>
+        </div>
+        <p class="help-block">{{t 'editStack.group.help'}}</p>
       </div>
     </div>
-    <p class="help-block">{{t 'editStack.group.help'}}</p>
   {{/advanced-section}}
 </section>
 

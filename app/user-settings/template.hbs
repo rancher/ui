@@ -2,22 +2,15 @@
   <h1>{{t 'userSettingsPage.header'}}</h1>
 </section>
 <section class="row">
-  <div class="col span-6">
-    <div>
-      {{theme-toggle}}
-    </div>
-    <div class="col span-12">
-      {{table-count-select}}
-    </div>
+  <div class="col span-11-of-23">
+    {{settings/theme-toggle}}
+    <hr/>
+    {{settings/table-rows}}
   </div>
-  <div class="col span-6">
-    <div>
-      {{settings/user-info account=model.account}}
-    </div>
+  <div class="col offset-1-of-23 span-11-of-23">
+    {{settings/user-info account=model.account}}
     {{#if isCaas}}
-      <div>
-          {{settings/billing-info cards=model.stripeCards account=model.account}}
-      </div>
+      {{settings/billing-info cards=model.stripeCards account=model.account}}
     {{/if}}
   </div>
 </section>

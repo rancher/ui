@@ -1035,13 +1035,19 @@ newStack:
   dockerCompose:
     label: "compose.yml"
     placeholder: Contents of compose.yml
-  rancherCompose:
-    label: "rancher-compose.yml"
-    placeholder: Contents of rancher-compose.yml
+  files:
+    label: Additional Compose Files
+    addActionLabel: Add Compose File
+    namePlaceholder: File Name
+    valuePlaceholder: File Contents
+  answers:
+    label: Answers (variable substitutions)
+    addActionLabel: Add Answer
+
   startOnCreate:
-    label: Create Behavior
-    off: Create but do not start/activarte resources
-    on: Create and start/activate resources
+    label: After creating services
+    on: Automatically start them
+    off: Leave them stopped
 
 storagePoolsPage:
   header: Storage Drivers
@@ -1102,25 +1108,28 @@ swarmPage:
 
 userSettingsPage:
   header: Preferences
-  theme: Theme
-  themeAuto: Auto will transition to dark from 6pm-6am
+  theme:
+    header: Theme
+    light: Light
+    auto: Auto
+    autoDetail: Auto will transition to dark from 6pm-6am
+    dark: Dark
   generalInfo:
     header: My Account
-    form:
-      name:
-        label: Name
-        placeholder: John Smith
-        help: "(To change your email, contact support)"
-        lastChanged: "Your password was last changed on: <\br> {date}"
-      username:
-        label: Username/Email
-        placeholder: johnsmith@example.com
-      password:
-        label: Password
-        text: Change Password
-
-
-
+    name:
+      label: Name
+      placeholder: John Smith
+      help: "(To change your email, contact support)"
+      lastChanged: "Your password was last changed on: <\br> {date}"
+    username:
+      label: Username
+      placeholder: johnsmith
+    email:
+      label: Email
+      placeholder: johnsmith@example.com
+    password:
+      label: Password
+      text: Change Password
 
 processesPage:
   header: Processes

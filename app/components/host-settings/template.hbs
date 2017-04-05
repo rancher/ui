@@ -11,13 +11,13 @@
   <label style="width: 250px;">{{radio-button selection=customRadio value="yes"}}&nbsp;{{t 'hostSettings.hostUrl.new.labelText'}}&nbsp;&nbsp;</label>
   {{input type="text" class="form-control" value=customValue placeholder=(t 'hostSettings.hostUrl.new.placeholder') safeStyle="width: calc(100% - 170px); display: inline-block;  min-width: 300px;"}}
   <p class="text-info">
-    {{format-html-message 'hostSettings.helpText.static1'}}
+    {{t 'hostSettings.helpText.static1' htmlSafe=true}}
     {{#if settings.isRancher}}
-      {{format-html-message 'hostSettings.helpText.isRancher' docsBase=settings.docsBase}}
+      {{t 'hostSettings.helpText.isRancher' docsBase=settings.docsBase htmlSafe=true}}
     {{else}}
       {{t 'hostSettings.helpText.sslTerm'}}
     {{/if}}
-    {{format-html-message 'hostSettings.helpText.static2' appName=settings.appName}}
+    {{t 'hostSettings.helpText.static2' appName=settings.appName htmlSafe=true}}
   </p>
 </div>
 
@@ -25,7 +25,7 @@
   <div class="banner bg-info" style="margin-top: 30px;">
     <i class="icon icon-info" style="font-size: 35px; float: left;"></i>
     <p style="margin-left: 50px;">
-      {{format-html-message 'hostSettings.notPublic.alert' activeValue=activeValue}}
+      {{t 'hostSettings.notPublic.alert' activeValue=activeValue htmlSafe=true}}
     </p>
   </div>
 {{/unless}}

@@ -26,7 +26,8 @@ export default Ember.Component.extend({
   expandDescriptionAction: 'formNameDescription.description.expand',
 
   rowClass: 'row',
-  colClass: 'col span-6',
+  bothColClass: 'col span-6',
+  colClass: 'col span-12',
 
   init() {
     this._super(...arguments);
