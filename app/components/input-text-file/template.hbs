@@ -1,13 +1,40 @@
-{{textarea-autogrow
-  value=value
-  classNames="form-control"
-  placeholder=placeholder
-  minHeight=minHeight
-  maxHeight=maxHeight
-}}
-<span class="input-group-btn input-group-btn-textarea align-top">
-  {{#tooltip-element type="tooltip-basic" model=(t 'inputTextFile.tooltip') tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="inputTextFile"}}
-    <button type="button" class="{{btnClass}}" style="height: 38px" {{action "click"}}><i class="icon icon-upload"></i></button>
-  {{/tooltip-element}}
-  <input type="file" accept="{{actualAccept}}" class="hide">
-</span>
+<div class="row">
+  <div class="col clip {{if showUploadLabel 'span-6' 'span-10'}} mb-0" style="{{unless inputName 'margin-top: 8px;'}}">
+    {{#if inputName}}
+      {{input value=name placeholder=(if namePlaceholder (t namePlaceholder) '')}}
+    {{else}}
+      <label>
+        {{#if label}}
+          {{t label}}
+        {{else}}
+          {{name}}
+        {{/if}}
+      </label>
+    {{/if}}
+  </div>
+  <div class="col {{if showUploadLabel 'span-6' 'span-2'}} mt-0 mb-0 text-right">
+    {{#if showUploadLabel}}
+      <button class="btn bg-link icon-btn" {{action "click"}}>
+        <i class="icon icon-upload text-small"/>
+        <span>{{t 'inputTextFile.tooltip'}}</span>
+      </button>
+    {{else}}
+      {{#tooltip-element type="tooltip-basic" model=(t 'inputTextFile.tooltip') tooltipTemplate="tooltip-static" aria-describedby="tooltip-base" tooltipFor="inputTextFile"}}
+        <button type="button" class="btn bg-link icon-btn" {{action "click"}}><i class="icon icon-upload"></i></button>
+      {{/tooltip-element}}
+    {{/if}}
+    {{yield}}
+  </div>
+</div>
+<div class="row">
+  <div class="col span-12 mb-0">
+    {{textarea-autogrow
+      value=value
+      classNames="form-control"
+      placeholder=placeholder
+      minHeight=minHeight
+      maxHeight=maxHeight
+    }}
+  </div>
+</div>
+<input type="file" accept="{{actualAccept}}" class="hide">

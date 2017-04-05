@@ -1,31 +1,28 @@
 <div class="inline-form {{rowClass}}">
-  <div class="{{colClass}}">
-    <div>
-      <div class="col-inline clearfix">
-        <label>{{t nameLabel}}{{if nameRequired '*'}}</label>
-        {{#unless (or descriptionExpanded (not descriptionShown))}}
-          <div class="pull-right text-small">
-            <a role="button" class="btn bg-transparent p-0" {{action "expandDescription"}}>{{t expandDescriptionAction}}</a>
-          </div>
-        {{/unless}}
-      </div>
-      {{input type="text" value=_name classNames="form-control" placeholder=(t namePlaceholder) disabled=nameDisabled}}
-      {{#if nameHelpText}}<p class="text-info">{{nameHelpText}}</p>{{/if}}
+  <div class="{{if descriptionExpanded bothColClass colClass}}">
+    <div class="col-inline clearfix">
+      <label>{{t nameLabel}}{{if nameRequired '*'}}</label>
+      {{#unless descriptionExpanded}}
+        <div class="pull-right text-small">
+          <a role="button" class="btn bg-transparent p-0" {{action "expandDescription"}}>{{t expandDescriptionAction}}</a>
+        </div>
+      {{/unless}}
     </div>
-    <div>
-      {{#if descriptionShown}}
-        {{#if descriptionExpanded}}
-          <div class="col-inline">
-            <label>{{t descriptionLabel}}{{if descriptionRequired '*'}}</label>
-          </div>
-          {{textarea-autogrow value=_description classNames="form-control no-resize description" rows="1" placeholder=descriptionPlaceholder disabled=descriptionDisabled}}
-          {{#if descriptionHelp}}<p class="text-info">{{t descriptionHelp}}</p>{{/if}}
-        {{/if}}
-      {{/if}}
-    </div>
+    {{input type="text" value=_name classNames="form-control" placeholder=(t namePlaceholder) disabled=nameDisabled}}
+    {{#if nameHelpText}}<p class="text-info">{{nameHelpText}}</p>{{/if}}
   </div>
 
-  <div class="{{colClass}}">
-    {{yield}}
+  <div class="{{if descriptionExpanded bothColClass colClass}}">
+    {{#if descriptionShown}}
+      {{#if descriptionExpanded}}
+        <div class="col-inline">
+          <label>{{t descriptionLabel}}{{if descriptionRequired '*'}}</label>
+        </div>
+        {{textarea-autogrow value=_description classNames="form-control no-resize description" rows="1" placeholder=descriptionPlaceholder disabled=descriptionDisabled}}
+        {{#if descriptionHelp}}<p class="text-info">{{t descriptionHelp}}</p>{{/if}}
+      {{/if}}
+    {{else}}
+      {{yield}}
+    {{/if}}
   </div>
 </div>

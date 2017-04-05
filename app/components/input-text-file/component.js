@@ -2,16 +2,20 @@ import Ember from 'ember';
 import { isSafari } from 'ui/utils/platform';
 
 export default Ember.Component.extend({
+  label        : null,
+  namePlaceholder: '',
+  name         : null,
   value        : null,
   placeholder  : "",
   accept       : "text/*",
-  btnClass     : "btn bg-primary",
-  encode       : false,
   minHeight    : 0,
   maxHeight    : 200,
+  inputName    : false,
+  canChangeName: true,
+  showUploadLabel: true,
 
   tagName      : ['div'],
-  classNames   : ['input-group'],
+  classNames   : ['box','p-10'],
 
   _boundChange : null,
 
@@ -33,18 +37,19 @@ export default Ember.Component.extend({
   change(event) {
     var input = event.target;
     if ( input.files && input.files[0] ) {
+      let file = input.files[0];
+      if ( this.get('canChangeName') ) {
+        this.set('name', file.name);
+      }
+
       var reader = new FileReader();
       reader.onload = (event2) => {
         var out = event2.target.result;
 
-        if (this.get('encode')) {
-          out = btoa(out);
-        }
-
         this.set('value', out);
         input.value = '';
       };
-      reader.readAsText(input.files[0]);
+      reader.readAsText(file);
     }
   },
 

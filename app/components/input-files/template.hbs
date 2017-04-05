@@ -1,0 +1,24 @@
+<div class="clearfix">
+  {{#if header}}
+    <label style="margin-top: 8px;">{{t header}}</label>
+  {{/if}}
+    <button class="btn bg-link icon-btn pull-right" {{action "add"}}>
+      <i class="icon icon-plus text-small"/>
+      <span>{{t addActionLabel}}</span>
+    </button>
+</div>
+
+{{#each ary as |file|}}
+  {{#input-text-file
+    accept=accept
+    name=file.name
+    inputName=true
+    namePlaceholder=namePlaceholder
+    canChangeName=true
+    value=file.value
+    placeholder=valuePlaceholder
+  }}
+  <button class="btn bg-primary" {{action "remove" file}}><i class="icon icon-minus"></i></button>
+  {{/input-text-file}}
+{{/each}}
+
