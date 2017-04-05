@@ -9,49 +9,43 @@ export default Ember.Controller.extend({
 
   headers: [
     {
+      name: 'created',
+      sort: ['created:desc'],
       translationKey: 'auditLogsPage.table.time',
-      name: 'id',
-      sort: ['id'],
-      classNames: 'pl-10',
-      width: '115'
+      width: 115
     },
     {
-      translationKey: 'auditLogsPage.table.eventType',
       name: 'eventType',
-      sort: ['eventType'],
-      classNames: 'pl-10',
+      sort: ['id','created:desc'],
+      translationKey: 'auditLogsPage.table.eventType',
     },
     {
-      translationKey: '',
-      name: '',
-      sort: [''],
-      classNames: 'pl-10',
-    },
-    {
-      translationKey: 'auditLogsPage.table.description',
       name: 'description',
-      sort: ['description'],
-      classNames: 'pl-10',
+      translationKey: 'auditLogsPage.table.description',
     },
     {
-      translationKey: 'auditLogsPage.table.environment',
       name: 'accountId',
+      translationKey: 'auditLogsPage.table.environment',
       sort: ['accountId'],
-      classNames: 'pl-10',
-      width: '125'
+      width: 125
     },
     {
-      translationKey: 'auditLogsPage.table.resourceTypeId',
       name: 'resourceType',
+      translationKey: 'auditLogsPage.table.resourceTypeId',
       sort: ['resourceType'],
-      classNames: 'pl-10',
     },
     {
-      translationKey: 'auditLogsPage.table.identity',
       name: 'authenticatedAsIdentityId',
+      translationKey: 'auditLogsPage.table.identity',
       sort: ['authenticatedAsIdentityId'],
-      classNames: 'pl-10',
-      width: '175'
+      width: 175
+    },
+    {
+      name: 'authIp',
+      translationKey: 'auditLogsPage.table.authIp',
+      sort: ['clientIp'],
+      searchFields: ['authType','clientIp'],
+      width: 150
     },
   ],
 

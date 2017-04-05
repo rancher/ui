@@ -6,36 +6,44 @@ const showKinds = ['user','admin'];
 export default Ember.Controller.extend(FilterState, {
   access: Ember.inject.service(),
   sortBy: 'name',
-  headers: [
-    {
-      translationKey: 'generic.state',
-      name: 'state',
-      sort: ['state'],
-      width: '125'
-    },
-    {
-      translationKey: 'generic.id',
-      name: 'id',
-      sort: ['id'],
-      width: '120'
-    },
-    {
-      translationKey: 'accountsPage.index.table.kind',
-      name: 'kind',
-      sort: ['kind'],
-      width: '120'
-    },
-    {
-      translationKey: 'accountsPage.index.table.username',
-      name: 'username',
-      sort: ['username'],
-    },
-    {
+  headers: Ember.computed('isLocal', function() {
+    let out = [
+      {
+        translationKey: 'generic.state',
+        name: 'state',
+        sort: ['state'],
+        width: '125'
+      },
+      {
+        translationKey: 'generic.id',
+        name: 'id',
+        sort: ['id'],
+        width: '120'
+      },
+      {
+        translationKey: 'accountsPage.index.table.kind',
+        name: 'kind',
+        sort: ['kind'],
+        width: '120'
+      },
+    ];
+
+    if ( this.get('isLocal') ) {
+      out.push({
+        translationKey: 'accountsPage.index.table.username',
+        name: 'username',
+        sort: ['username'],
+      });
+    }
+
+    out.push({
       translationKey: 'accountsPage.index.table.identity',
       name: 'name',
       sort: ['name'],
-    },
-  ],
+    });
+
+    return out;
+  }),
 
   filteredByKind: function() {
     return this.get('filtered').filter((row) => {

@@ -19,7 +19,7 @@ export default Ember.Component.extend({
 
   init() {
     this._super(...arguments);
-    this.set('selectedCount', this.get('perPage'));
+    this.set('selectedCount', this.get('perPage')+"");
   },
 
   actions: {

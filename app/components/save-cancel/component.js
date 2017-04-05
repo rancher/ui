@@ -9,8 +9,9 @@ export default Ember.Component.extend({
   saveDisabled: false,
   cancelDisabled: false,
   savedLabel: 'saveCancel.saved',
+  forFooter: true,
 
-  classNames: ['footer-actions'],
+  classNamesBindings: ['forFooter:footer-actions'],
   saving: false,
   saved: false,
 

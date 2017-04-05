@@ -29,7 +29,7 @@
         <div class="col span-2">
           {{input class="input-sm" value=filters.clientIp placeholder=(t "auditLogsPage.form.requestIp.placeholder")}}
         </div>
-        <div class="col span-3">
+        <div class="col span-4">
           <span class="dropdown">
             <button type="button" class="btn btn-sm bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">{{if authTypeReadable authTypeReadable (t "auditLogsPage.form.authType.placeholder")}} <i class="icon icon-chevron-down"></i></button>
             <ul class="dropdown-menu" role="menu">
@@ -51,6 +51,7 @@
     {{#sortable-table
          classNames="grid sortable-table"
          bulkActions=false
+         rowActions=false
          paging=showPagination
          search=false
          sortBy=sortBy
@@ -60,23 +61,27 @@
          as |sortable kind log dt|
     }}
       {{#if (eq kind "row")}}
-        <td data-title="{{t 'auditLogsPage.table.time'}}:">{{log.created}}</td>
-        <td data-title="{{t 'auditLogsPage.table.eventType'}}:" class="force-wrap" title="{{log.eventType}}">
+        <td data-title="{{dt.created}}">
+          {{#tooltip-element type="tooltip-basic" model=log.created tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="audit-log"}}
+            {{date-from-now log.created}}
+          {{/tooltip-element}}
+        </td>
+        <td data-title="{{dt.eventType}}" class="force-wrap" title="{{log.eventType}}">
           {{log.eventType}} <i class="icon icon-info service-icon-button" {{action 'showResponseObjects' log.requestObject log.responseObject }}></i>
         </td>
-        <td data-title="{{t 'auditLogsPage.table.description'}}:">{{#if log.description}}{{log.description}}{{else}}<span class="text-muted">None</span>{{/if}}</td>
-        <td data-title="{{t 'auditLogsPage.table.environment'}}:" class="clip">
+        <td data-title="{{dt.description}}">{{#if log.description}}{{log.description}}{{else}}<span class="text-muted">None</span>{{/if}}</td>
+        <td data-title="{{dt.accountId}}" class="clip">
           {{environment-name environmentId=log.accountId onlyType="project"}}
         </td>
-        <td data-title="{{t 'auditLogsPage.table.resourceTypeId'}}:" class="clip" title="{{log.resourceType}}">
+        <td data-title="{{dt.resourceType}}" class="clip" title="{{log.resourceType}}">
           {{#if log.links.resource}}
             <a href="{{log.links.resource}}" target="_blank">{{log.resourceType}}{{#if log.resourceId}}: {{log.resourceId}}{{/if}}</a>
           {{else}}
             {{log.resourceType}}{{#if log.resourceId}}: {{log.resourceId}}{{/if}}
           {{/if}}
         </td>
-        <td data-title="{{t 'auditLogsPage.table.identity'}}:">{{identity-block identityNotParsed=log.authenticatedAsIdentityId}}</td>
-        <td data-title="{{t 'auditLogsPage.table.authIp'}}:" class="clip">{{auth-type log.authType}}<div>{{format-ip log.clientIp noIp='generic.emptyString'}}</div></td>
+        <td data-title="{{dt.authenticatedAsIdentityId}}">{{identity-block identityNotParsed=log.authenticatedAsIdentityId}}</td>
+        <td data-title="{{dt.authIp}}" class="clip">{{auth-type log.authType}}<div>{{format-ip log.clientIp noIp='generic.emptyString'}}</div></td>
       {{else if (eq kind "norows")}}
         <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'processesPage.summary.noData'}}</td>
       {{/if}}

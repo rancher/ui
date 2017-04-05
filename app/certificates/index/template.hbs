@@ -6,24 +6,28 @@
   </div>
 </section>
 
-<section class="instances">
-  {{#sortable-table
-      classNames="grid fixed mb-0 sortable-table"
-      bulkActions=false
-      paging=false
-      search=false
-      sortBy=sortBy
-      headers=headers
-      body=model
-      fullRows=true
-      as |sortable kind cert|
-  }}
-    {{#if (eq kind "row")}}
-      {{certificate-row model=cert}}
-    {{else if (eq kind "norows")}}
-      <tr>
-        <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'certificatesPage.index.table.body.noData'}}</td>
-      </tr>
-    {{/if}}
-  {{/sortable-table}}
+<section>
+  {{#if model.length}}
+    {{#sortable-table
+        classNames="grid fixed mb-0 sortable-table"
+        bulkActions=false
+        paging=false
+        search=false
+        sortBy=sortBy
+        headers=headers
+        body=model
+        fullRows=true
+        as |sortable kind cert|
+    }}
+      {{#if (eq kind "row")}}
+        {{certificate-row model=cert}}
+      {{else if (eq kind "norows")}}
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'certificatesPage.index.table.body.noData'}}</td>
+        </tr>
+      {{/if}}
+    {{/sortable-table}}
+  {{else}}
+    {{empty-table resource="certificate" newRoute="certificates.new" newTranslationKey="certificatesPage.index.linkTo"}}
+  {{/if}}
 </section>
