@@ -13,7 +13,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   isService:                  false,
   isUpgrade:                  false,
-  primaryResource:            null,
+  primaryResource:            Ember.computed.alias('launchConfig'),
   primaryService:             null,
   launchConfig:               null,
   service:                    null,
