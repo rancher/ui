@@ -1,22 +1,23 @@
 {{#if showReset}}
-  <label>{{t 'caasLogin.resetHeader'}}</label>
+  <div class="pt-15"><label>{{t 'caasLogin.resetHeader'}}</label>
   {{#if showSuccess}}
     <p>{{t 'caasLogin.resetSuccess'}}</p>
     <a href="#" class="mt-10" {{action "cancel"}}>{{t 'caasLogin.login'}}</a>
   {{else}}
     <form class="form mb-10"  {{action "resetPw" on='submit'}}>
-      <div class="row inline-form">
-        <div class="col span-12 pt-15 pb-30" name="user-email">
+      <div class="row">
+        <div class="col span-12" name="user-email">
           {{input type="email" placeholder=(t 'caasLogin.form.email') value=userEmail}}
         </div>
       </div>
-      <div class="text-center">
+      <div class="text-center mt-15">
         {{save-cancel save="resetPw" cancel="cancel" createLabel='caasLogin.reset'}}
       </div>
     </form>
   {{/if}}
+  </div>
 {{else}}
-  <div class="text-center">
+  <div class="text-center mt-15">
     {{#link-to 'signup' classNames="mr-10"}}{{t 'caasLogin.new'}}{{/link-to}}
     <a href="#" onclick={{action 'toggleReset'}}>{{t 'caasLogin.reset'}}</a>
   </div>
