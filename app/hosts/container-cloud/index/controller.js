@@ -3,6 +3,7 @@ import Ember from 'ember';
 const DEFAULT_REALM = 'us-west';
 
 export default Ember.Controller.extend({
+  prefs        : Ember.inject.service(),
   queryParams: ['from'],
   from:        'browse',
   initialTab:  'browse',
@@ -18,6 +19,11 @@ export default Ember.Controller.extend({
     }
   },
   headers: [
+    {
+      name: 'favorite',
+      translationKey: 'hostsPage.cloudHostsPage.browsePage.table.favorite',
+      width: '125'
+    },
     {
       name: 'provider',
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.provider',

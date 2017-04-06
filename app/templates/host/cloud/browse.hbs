@@ -46,25 +46,28 @@
     as |sortable kind row dt|
   }}
     {{#if (eq kind "row")}}
-        <td>{{row.provider}}</td>
-        <td>{{row.zone}}</td>
-        <td>{{row.displayName}}</td>
-        <td>{{row.memory}} GB</td>
-        <td>
-          {{#if (eq row.transfer -1)}}
-            Unlimited
-          {{else if (eq row.transfer 0)}}
-            None
-          {{else}}
-           {{format-si row.transfer suffix="B" startingExponent=2}}
-         {{/if}}
-        </td>
-        <td>{{star-rating rating=row.cpuRating}}</td>
-        <td>{{star-rating rating=row.diskRating}}</td>
-        <td>
-          ${{row.pricePerMonth}}{{#if row.variableFees}}<sup>&#10746;</sup>{{/if}}
-        </td>
-        <td class="text-right"><button role="button" class="btn bg-primary" {{action "selectMachine" row.id}}> {{t 'generic.select'}}</button></td>
+      <td>
+        {{mark-favorite id=row.id}}
+      </td>
+      <td>{{row.provider}}</td>
+      <td>{{row.zone}}</td>
+      <td>{{row.displayName}}</td>
+      <td>{{row.memory}} GB</td>
+      <td>
+        {{#if (eq row.transfer -1)}}
+          Unlimited
+        {{else if (eq row.transfer 0)}}
+          None
+        {{else}}
+          {{format-si row.transfer suffix="B" startingExponent=2}}
+        {{/if}}
+      </td>
+      <td>{{star-rating rating=row.cpuRating}}</td>
+      <td>{{star-rating rating=row.diskRating}}</td>
+      <td>
+        ${{row.pricePerMonth}}{{#if row.variableFees}}<sup>&#10746;</sup>{{/if}}
+      </td>
+      <td class="text-right"><button role="button" class="btn bg-primary" {{action "selectMachine" row.id}}> {{t 'generic.select'}}</button></td>
     {{else if (eq kind "norows")}}
       <td colspan="{{sortable.fullColspan}}" class="text-center text-muted">{{t 'accountsPage.index.table.noData'}}</td>
     {{/if}}
