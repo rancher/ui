@@ -14,7 +14,7 @@
     {{#if (or paging search bulkActions)}}
       <div class="fixed-header-actions row">
         <div class="col span-8 mt-0">
-          {{#if bulkActions}}
+          {{#if (and selectedNodes bulkActions)}}
             <div class="bulk-actions">
               {{#each availableActions as |action index|}}
                 {{#if action.enabled}}
@@ -29,9 +29,7 @@
                   </a>
                 {{/if}}
               {{/each}}
-              {{#if selectedNodes.length}}
-                {{t pagingLabel pages=1 count=selectedNodes.length}}
-              {{/if}}
+              {{t pagingLabel pages=1 count=selectedNodes.length}}
             </div>
           {{/if}}
         </div>

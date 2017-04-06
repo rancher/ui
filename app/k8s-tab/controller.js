@@ -3,7 +3,7 @@ import Ember from 'ember';
 function allOk(list) {
   for ( let i = 0 ; i < list.get('length') ; i++ ) {
     let item = list.objectAt(i);
-    if ( !item || item.get('healthState') !== 'healthy' || item.get('state') !== 'active') {
+    if ( !item || ['healthy','started-once'].includes(item.get('healthState')) || item.get('state') !== 'active') {
       return false;
     }
   }

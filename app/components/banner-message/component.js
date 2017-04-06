@@ -15,6 +15,15 @@ export default Ember.Component.extend({
   titleWidth: null,
   message: '',
 
+  titleStr: function(){
+    let title = this.get('title');
+    if ( typeof title === 'number' ) {
+      title = ""+title;
+    }
+
+    return title;
+  }.property('title'),
+
   titleStyle: function() {
     let width = this.get('titleWidth');
     if ( width) {

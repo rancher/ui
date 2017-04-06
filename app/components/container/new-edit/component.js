@@ -17,6 +17,8 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   allHosts:                   null,
   allStoragePools:            null,
 
+  stack:                      null,
+
   serviceLinksArray:          null,
   isGlobal:                   null,
   isRequestedHost:            null,
@@ -36,6 +38,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   imageErrors:                null,
   portErrors:                 null,
   diskErrors:                 null,
+  stackErrors:                null,
 
   actions: {
     setScale(scale) {
@@ -166,6 +169,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     errors.pushObjects(this.get('imageErrors')||[]);
     errors.pushObjects(this.get('portErrors')||[]);
     errors.pushObjects(this.get('diskErrors')||[]);
+    errors.pushObjects(this.get('stackErrors')||[]);
 
 
     errors = errors.uniq();
