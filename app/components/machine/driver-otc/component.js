@@ -280,7 +280,7 @@ export default Ember.Component.extend(Driver, {
       method: 'GET',
       endpoint: 'security-groups',
       version: 'v1',
-      queryParams: `vpc_id=${this.get('model.otcConfig.vpcId')}`
+      queryParams: '',
     }).then((resp) => {
       return this.set('securityGroups', resp.security_groups.sortBy('name'));
     });
