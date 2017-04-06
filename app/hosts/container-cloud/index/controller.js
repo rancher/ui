@@ -22,7 +22,7 @@ export default Ember.Controller.extend({
     {
       name: 'favorite',
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.favorite',
-      width: '125'
+      width: '100'
     },
     {
       name: 'provider',
