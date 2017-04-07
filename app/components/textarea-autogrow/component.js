@@ -14,7 +14,6 @@ export default Ember.TextArea.extend(IntlPlaceholder, {
 
   didInsertElement() {
     Ember.run.scheduleOnce('afterRender', this, 'initHeights');
-    this.$().removeClass('no-ease');
   },
 
   initHeights() {

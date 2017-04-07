@@ -1395,6 +1395,15 @@ servicePartial:
 ##############################
 # Components
 ##############################
+accordionRow:
+  status:
+    none: None
+    incomplete: Incomplete
+    error: Error
+    notConfigured: Not Configured
+    configured: Configured
+    countConfigured: "{count} Configured"
+
 advancedSection:
   hrText: Advanced Options
 
@@ -1759,7 +1768,7 @@ formCommand:
     label: Command
     placeholder: e.g. /usr/sbin/httpd -f httpd.conf
   entryPoint:
-    label: Entry Point
+    label: Entrypoint
     placeholder: e.g. /bin/sh
   workingDir:
     label: Working Dir
@@ -1786,13 +1795,6 @@ formCommand:
         other {times}
       }
     always: Always
-  environment:
-    label: Environment
-    addAction: Add Environment Variable
-    keyLabel: Variable
-    keyPlaceholder: e.g. FOO
-    valueLabel: Value
-    valuePlaceholder: e.g. bar
 
 formContainerLinks:
   label: Links
@@ -1918,7 +1920,7 @@ formKeyValue:
   value:
     label: Value
     placeholder: Value
-  protip: 'ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry.'
+  protip: 'ProTip: Paste lines of key=value pairs into any key field for easy bulk entry.'
 
 formImage:
   label: Docker Image
@@ -1982,15 +1984,16 @@ formNetwork:
     addActionLabel: Add Domain
 
 formPorts:
-  addAction: Port Map
+  header: Port Mapping
+  addAction: Add Port
   bindAddress:
-    label: Public Host IP
-    placeholder: "e.g. 1.2.3.4; Default: any"
+    label: Host IP
+    placeholder: "Default: All"
   public:
-    label: Public Host Port
+    label: Host Port
     placeholder: "e.g. 80"
   private:
-    label: Private Container Port
+    label: Container Port
     placeholder: "e.g. 8080"
   protocol:
     label: Protocol
@@ -2004,11 +2007,11 @@ formPorts:
 
 formScale:
   label: Scale
-  showAdvanced: Other scaling options
+  showAdvanced: More scaling options
   mode:
     container: "{scale, plural, =1 {Just create a container} other {Create # separate containers}}"
-    service: "Create a service with scale of {scale}"
-    global: "Create a global service with {scale, plural, =1 {# container} other {# containers}} per host"
+    service: "Create a scaling group with a scale of {scale}"
+    global: "Create a global scaling group with {scale, plural, =1 {# container} other {# containers}} per host"
 
 formScheduling:
   canRequestHost:
@@ -2134,6 +2137,23 @@ formSslTermination:
   helpBlock: |
     "Note: Some older SSL/TLS clients do not support <a href="https://en.wikipedia.org/wiki/Server_Name_Indication" target="_blank">Server Name Indication (SNI)</a>; these clients will always be offered the main Certificate  Modern clients will be offered an appropriate certificate from the Alternate Certificates list if a match is found."
   notNeeded: There are no SSL/TLS ports configured.
+
+formStack:
+  label:
+    simple: Stack
+    reuse: Use an existing Stack
+    create: Add to a new Stack
+  toggle:
+    simple: Customize
+    reuse: Use existing
+    create: Add to a new stack
+  reuse:
+    prompt: Choose a Stack...
+  create:
+    placeholder: e.g. myapp
+  errors:
+    noneChosen: You must choose a stack.
+    validation: "Stack: {error}"
 
 formStickiness:
   stickiness: Stickiness
@@ -3066,6 +3086,17 @@ newContainer:
   upgrade:
     container: Upgrade Container
     scalingGroup: Upgrade Scaling Group
+  accordion:
+    healthCheck:
+      title: Health Check
+      detail: A health check allows {appName} to know if your container is healthy.  For scaling groups, an unhealthy container can be automatically replaced.
+    labels:
+      title: Labels
+      detail: Labels are key/value pairs that can be used to annotate containers and make scheduling decisions.
+    secrets:
+      title: Secrets
+      detail: Secrets allow you to inject passwords, keys, or other sensitive information into the containers that need them.
+
   tabs:
     disks: Disks
     userData: User Data
@@ -3089,6 +3120,13 @@ newContainer:
     placeholder: e.g. myapp
   description:
     placeholder: e.g. My Application
+  environment:
+    label: Environment Variables
+    addAction: Add Variable
+    keyLabel: Variable
+    keyPlaceholder: e.g. FOO
+    valueLabel: Value
+    valuePlaceholder: e.g. bar
   emptyPrimaryService: "(Primary Service)"
   emptySidekick: "(Sidekick #{num})"
   addSidekickContainer: Add Sidekick Container
