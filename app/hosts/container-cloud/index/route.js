@@ -30,8 +30,6 @@ export default Ember.Route.extend({
       model.realms = plans.realmNames;
       // get the fav's from user store or reg store?
       break;
-    case 'provider':
-      break;
     default:
     case 'browse':
       model.plans = plans.realms.sortBy('name');

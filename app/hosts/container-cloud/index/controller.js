@@ -5,8 +5,8 @@ const DEFAULT_REALM = 'us-west';
 export default Ember.Controller.extend({
   prefs        : Ember.inject.service(),
   queryParams: ['from'],
-  from:        'browse',
-  initialTab:  'browse',
+  from:        'favorites',
+  initialTab:  'favorites',
   tab:         null,
   realmSort:   DEFAULT_REALM,
   memSort:     null,
@@ -16,8 +16,25 @@ export default Ember.Controller.extend({
   actions:     {
     selectMachine(id) {
       this.transitionToRoute('hosts.container-cloud.add', id);
+    },
+    favoriteChanged(id) {
+      if (this.get('from') === 'favorites') {
+        this.set('model.plans', this.get('model.plans').filter((item) => {
+          if (item.id !== id) {
+            return true;
+          }
+          return false;
+        }));
+      }
     }
   },
+  noDataMessage: Ember.computed('from', function() {
+    if (this.get('from') === 'favorites') {
+      return 'hostsPage.cloudHostsPage.browsePage.table.noFavs';
+    }
+
+    return 'hostsPage.cloudHostsPage.browsePage.table.noData';
+  }),
   headers: [
     {
       name: 'favorite',

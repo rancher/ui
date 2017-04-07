@@ -58,6 +58,7 @@ export default Ember.Component.extend({
       // if we dont notify the pefs service that the prop changed then the computed props never update
       // again this should be removed when we have a normal api for this call.
       this.get('prefs').notifyPropertyChange(C.PREFS.HOST_FAVORITES);
+      this.sendAction('rowRemoved', this.get('id'));
     }
   }).drop(),
 });
