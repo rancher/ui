@@ -5,8 +5,11 @@ import { debouncedObserver } from 'ui/utils/debounce';
 import C from 'ui/utils/constants';
 import { flattenLabelArrays } from 'ui/mixins/manage-labels';
 
+import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-row/component';
+
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
   intl                      : Ember.inject.service(),
+  settings                  : Ember.inject.service(),
 
   isService:                  false,
   isUpgrade:                  false,
@@ -30,7 +33,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   commandErrors:              null,
   volumeErrors:               null,
   networkingErrors:           null,
-  secretErrors:               null,
+  secretsErrors:              null,
   healthCheckErrors:          null,
   schedulingErrors:           null,
   securityErrors:             null,
@@ -161,7 +164,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     errors.pushObjects(this.get('commandErrors')||[]);
     errors.pushObjects(this.get('volumeErrors')||[]);
     errors.pushObjects(this.get('networkingErrors')||[]);
-    errors.pushObjects(this.get('secretErrors')||[]);
+    errors.pushObjects(this.get('secretsErrors')||[]);
     errors.pushObjects(this.get('healthCheckErrors')||[]);
     errors.pushObjects(this.get('schedulingErrors')||[]);
     errors.pushObjects(this.get('securityErrors')||[]);
@@ -274,4 +277,46 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   supportsSecrets: function() {
     return !!this.get('store').getById('schema','secret');
   }.property(),
+
+  healthCheckColor: null,
+  healthCheckStatus: function() {
+    let k = STATUS.NOTCONFIGURED;
+
+    if ( this.get('launchConfig.healthCheck') ) {
+      if ( this.get('healthCheckErrors.length') ) {
+        k = STATUS.INCOMPLETE;
+      } else {
+        k = STATUS.CONFIGURED;
+      }
+    }
+
+    this.set('healthCheckColor', classForStatus(k));
+    return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`);
+  }.property('launchConfig.healthCheck','healthCheckErrors.length'),
+
+  labelsColor: null,
+  labelsStatus: function() {
+    let k = STATUS.NONE;
+    let count = this.get('userLabels.length') || 0;
+
+    if ( count ) {
+      k = STATUS.COUNTCONFIGURED;
+    }
+
+    this.set('labelsColor', classForStatus(k));
+    return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`, {count: count});
+  }.property('userLabels.length'),
+
+  secretsColor: null,
+  secretsStatus: function() {
+    let k = STATUS.NONE;
+    let count = this.get('launchConfig.secrets.length') || 0;
+
+    if ( count ) {
+      k = STATUS.COUNTCONFIGURED;
+    }
+
+    this.set('secretsColor', classForStatus(k));
+    return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`, {count: count});
+  }.property('launchConfig.secrets.length','secretsErrors.length')
 });

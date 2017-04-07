@@ -72,10 +72,10 @@
 <hr/>
 
 {{#accordion-row
-  title="Health Check"
-  status=(if launchConfig.healthCheck (if healthCheckErrors.length "Incomplete" "Configured") "Not Configured")
-  statusClass=(if launchConfig.healthCheck (if healthCheckErrors.length "text-bold text-error" "text-bold text-success") "text-muted")
-  detail="A health check allows Rancher to know whether your container is healthy.  For scaling groups, an unhealthy container can be automatically replaced with a new one."
+  title=(t 'newContainer.accordion.healthCheck.title')
+  detail=(t 'newContainer.accordion.healthCheck.detail' appName=settings.appName)
+  status=healthCheckStatus
+  statusClass=healthCheckColor
 }}
   {{form-healthcheck
     isService=isService
@@ -86,16 +86,31 @@
 {{/accordion-row}}
 
 {{#accordion-row
-  title="Labels"
-  status=(if userLabels.length (concat-str userLabels.length "Configured") "None")
-  statusClass=(if userLabels.length "text-bold text-success" "text-muted")
-  detail="Labels are key/value pairs that can be used to annotate containers and make scheduling decisions."
+  title=(t 'newContainer.accordion.labels.title')
+  detail=(t 'newContainer.accordion.labels.detail' appName=settings.appName)
+  status=labelsStatus
+  statusClass=labelsColor
 }}
   {{form-user-labels
     initialLabels=launchConfig.labels
     setLabels=(action 'setLabels' 'user')
   }}
 {{/accordion-row}}
+
+{{#if supportsSecrets}}
+  {{#accordion-row
+    title=(t 'newContainer.accordion.secrets.title')
+    detail=(t 'newContainer.accordion.secrets.detail' appName=settings.appName)
+    status=secretsStatus
+    statusClass=secretsColor
+  }}
+    {{form-secrets
+      secrets=launchConfig.secrets
+      errors=secretErrors
+      editing=true
+    }}
+  {{/accordion-row}}
+{{/if}}
 
 <hr/>
 
@@ -123,10 +138,6 @@
       <li role="tab" aria-controls="panel" class="tab" data-section="security" {{action "selectTab" "security"}}>
         <a href="#">{{t 'newContainer.tabs.security'}}</a>
       </li>
-
-      {{#if supportsSecrets}}
-        <li role="tab" aria-controls="panel" class="tab" data-section="secrets" {{action "selectTab" "secrets"}}><a href="#">{{t 'newContainer.tabs.secrets'}}</a></li>
-      {{/if}}
 
       <li role="tab" aria-controls="panel" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}>
         <a href="#">{{t 'newContainer.tabs.scheduling'}}</a>
@@ -177,15 +188,6 @@
     <div class="section" data-section="security">
       {{form-security instance=launchConfig errors=securityErrors editing=true}}
     </div>
-
-    {{#if supportsSecrets}}
-      <div class="section" data-section="secrets">
-        {{form-secrets
-          secrets=launchConfig.secrets
-          errors=secretErrors
-          editing=true}}
-      </div>
-    {{/if}}
 
     <div class="section" data-section="scheduling">
       {{form-scheduling
