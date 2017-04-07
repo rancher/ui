@@ -1759,7 +1759,7 @@ formCommand:
     label: Command
     placeholder: e.g. /usr/sbin/httpd -f httpd.conf
   entryPoint:
-    label: Entry Point
+    label: Entrypoint
     placeholder: e.g. /bin/sh
   workingDir:
     label: Working Dir
@@ -1786,13 +1786,6 @@ formCommand:
         other {times}
       }
     always: Always
-  environment:
-    label: Environment
-    addAction: Add Environment Variable
-    keyLabel: Variable
-    keyPlaceholder: e.g. FOO
-    valueLabel: Value
-    valuePlaceholder: e.g. bar
 
 formContainerLinks:
   label: Links
@@ -1918,7 +1911,7 @@ formKeyValue:
   value:
     label: Value
     placeholder: Value
-  protip: 'ProTip: Paste one or more lines of key=value pairs into any key field for easy bulk entry.'
+  protip: 'ProTip: Paste lines of key=value pairs into any key field for easy bulk entry.'
 
 formImage:
   label: Docker Image
@@ -1982,15 +1975,16 @@ formNetwork:
     addActionLabel: Add Domain
 
 formPorts:
-  addAction: Port Map
+  header: Port Mapping
+  addAction: Add Port
   bindAddress:
-    label: Public Host IP
-    placeholder: "e.g. 1.2.3.4; Default: any"
+    label: Host IP
+    placeholder: "Default: All"
   public:
-    label: Public Host Port
+    label: Host Port
     placeholder: "e.g. 80"
   private:
-    label: Private Container Port
+    label: Container Port
     placeholder: "e.g. 8080"
   protocol:
     label: Protocol
@@ -2004,10 +1998,10 @@ formPorts:
 
 formScale:
   label: Scale
-  showAdvanced: Other scaling options
+  showAdvanced: More scaling options
   mode:
     container: "{scale, plural, =1 {Just create a container} other {Create # separate containers}}"
-    service: "Create a scaling group with scale of {scale}"
+    service: "Create a scaling group with a scale of {scale}"
     global: "Create a global scaling group with {scale, plural, =1 {# container} other {# containers}} per host"
 
 formScheduling:
@@ -3106,6 +3100,13 @@ newContainer:
     placeholder: e.g. myapp
   description:
     placeholder: e.g. My Application
+  environment:
+    label: Environment Variables
+    addAction: Add Variable
+    keyLabel: Variable
+    keyPlaceholder: e.g. FOO
+    valueLabel: Value
+    valuePlaceholder: e.g. bar
   emptyPrimaryService: "(Primary Service)"
   emptySidekick: "(Sidekick #{num})"
   addSidekickContainer: Add Sidekick Container

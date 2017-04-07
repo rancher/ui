@@ -57,8 +57,15 @@ export default Ember.Component.extend(Driver, {
       }
     });
 
+    let errors = [];
     return modelOut.save().catch((err) => {
-      this.get('errors').pushObject(err);
+      errors.pushObject(err);
+    }).finally(() => {
+      if ( errors.length ) {
+        this.set('errors', errors);
+      } else {
+        this.set('errors', null);
+      }
     });
   }
 });

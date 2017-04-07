@@ -14,7 +14,6 @@ export default Ember.Component.extend({
 
   // Ignore the ID and force each initial port to be considered 'new' (for clone)
   editing         : false,
-  tagName         : '',
   portsArray      : null,
   portsAsStrArray : null,
   protocolOptions : protocolOptions,
@@ -85,6 +84,13 @@ export default Ember.Component.extend({
   actions: {
     addPort() {
       this.get('portsArray').pushObject({public: '', private: '', protocol: 'tcp'});
+      Ember.run.next(() => {
+        if ( this.isDestroyed || this.isDestroying ) {
+          return;
+        }
+
+        this.$('INPUT.public').last()[0].focus();
+      });
     },
 
     removePort(obj) {

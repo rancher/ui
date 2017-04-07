@@ -2,8 +2,8 @@
   <h1>{{t headerToken}}</h1>
 </section>
 
-<section class="row">
-  <div class="col span-6">
+<div class="row">
+  <div class="col span-11-of-24">
     {{form-name-description
       model=primaryResource
       nameLabel=nameToken
@@ -22,7 +22,8 @@
       changed=(action 'setImage')
     }}
   </div>
-<div class="col span-5 offset-1">
+
+  <div class="col span-11-of-24 offset-1-of-24">
     {{container/form-scale
       initialLabels=launchConfig.labels
       initialScale=service.scale
@@ -39,10 +40,12 @@
       errors=stackErrors
     }}
   </div>
-</section>
+</div>
 
-<section class="row">
-  <div class="col span-6">
+<hr/>
+
+<div class="row">
+  <div class="col span-11-of-24">
     {{container/form-ports
       initialPorts=launchConfig.ports
       errors=portErrors
@@ -50,18 +53,62 @@
       portsAsStrArray=launchConfig.ports
     }}
   </div>
-
-  <div class="col span-6">
-    {{#if (and isService (not isSidekick))}}
-      {{form-service-links
-        service=service
-        changed=(action 'setServiceLinks')
-      }}
-    {{/if}}
+  <div class="col span-11-of-24 offset-1-of-24">
+    {{form-key-value
+      initialMap=launchConfig.environment
+      changed=(action (mut launchConfig.environment))
+      allowEmptyValue=true
+      editing=true
+      header=(t 'newContainer.environment.label')
+      addActionLabel="newContainer.environment.addAction"
+      keyLabel="newContainer.environment.keyLabel"
+      keyPlaceholder="newContainer.environment.keyPlaceholder"
+      valueLabel="newContainer.environment.valueLabel"
+      valuePlaceholder="newContainer.environment.valuePlaceholder"
+    }}
   </div>
-</section>
+</div>
 
-  <section>
+<hr/>
+
+{{#accordion-row
+  title="Health Check"
+  status=(if launchConfig.healthCheck (if healthCheckErrors.length "Incomplete" "Configured") "Not Configured")
+  statusClass=(if launchConfig.healthCheck (if healthCheckErrors.length "text-bold text-error" "text-bold text-success") "text-muted")
+  detail="A health check allows Rancher to know whether your container is healthy.  For scaling groups, an unhealthy container can be automatically replaced with a new one."
+}}
+  {{form-healthcheck
+    isService=isService
+    healthCheck=launchConfig.healthCheck
+    errors=healthCheckErrors
+    editing=true
+  }}
+{{/accordion-row}}
+
+{{#accordion-row
+  title="Labels"
+  status=(if userLabels.length (concat-str userLabels.length "Configured") "None")
+  statusClass=(if userLabels.length "text-bold text-success" "text-muted")
+  detail="Labels are key/value pairs that can be used to annotate containers and make scheduling decisions."
+}}
+  {{form-user-labels
+    initialLabels=launchConfig.labels
+    setLabels=(action 'setLabels' 'user')
+  }}
+{{/accordion-row}}
+
+<hr/>
+
+<div class="col span-11-of-24 offset-1-of-24">
+  {{#if (and isService (not isSidekick))}}
+    {{form-service-links
+      service=service
+      changed=(action 'setServiceLinks')
+    }}
+  {{/if}}
+</div>
+
+<section>
   <div class="tabs">
     <ul class="tab-header" style="display: inline-block" role="tablist">
       <li role="tab" aria-controls="panel" class="tab" data-section="command" {{action "selectTab" "command"}}>
@@ -81,13 +128,6 @@
         <li role="tab" aria-controls="panel" class="tab" data-section="secrets" {{action "selectTab" "secrets"}}><a href="#">{{t 'newContainer.tabs.secrets'}}</a></li>
       {{/if}}
 
-      <li role="tab" aria-controls="panel" class="tab" data-section="healthcheck" {{action "selectTab" "healthcheck"}}>
-        <a href="#">{{t 'newContainer.tabs.healthCheck'}}</a>
-      </li>
-
-      <li role="tab" aria-controls="panel" class="tab" data-section="labels" {{action "selectTab" "labels"}}>
-        <a href="#">{{t 'newContainer.tabs.labels'}}</a>
-      </li>
       <li role="tab" aria-controls="panel" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}>
         <a href="#">{{t 'newContainer.tabs.scheduling'}}</a>
       </li>
@@ -146,21 +186,6 @@
           editing=true}}
       </div>
     {{/if}}
-
-    <div class="section" data-section="healthcheck">
-      {{form-healthcheck
-        isService=isService
-        healthCheck=launchConfig.healthCheck
-        errors=healthCheckErrors
-        editing=true}}
-    </div>
-
-    <div class="section" data-section="labels">
-      {{form-user-labels
-        initialLabels=launchConfig.labels
-        setLabels=(action 'setLabels' 'user')
-      }}
-    </div>
 
     <div class="section" data-section="scheduling">
       {{form-scheduling
