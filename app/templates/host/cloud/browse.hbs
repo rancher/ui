@@ -33,45 +33,4 @@
       </div>
     </div>
 </div>
-<div class="row">
-  {{#sortable-table
-    classNames="grid sortable-table"
-    bulkActions=false
-    rowActions=false
-    paging=false
-    search=false
-    sortBy=sortBy
-    headers=headers
-    body=filteredContent
-    as |sortable kind row dt|
-  }}
-    {{#if (eq kind "row")}}
-      <td>
-        {{mark-favorite id=row.id}}
-      </td>
-      <td>{{row.provider}}</td>
-      <td>{{row.zone}}</td>
-      <td>{{row.displayName}}</td>
-      <td>{{row.memory}} GB</td>
-      <td>
-        {{#if (eq row.transfer -1)}}
-          Unlimited
-        {{else if (eq row.transfer 0)}}
-          None
-        {{else}}
-          {{format-si row.transfer suffix="B" startingExponent=2}}
-        {{/if}}
-      </td>
-      <td>{{star-rating rating=row.cpuRating}}</td>
-      <td>{{star-rating rating=row.diskRating}}</td>
-      <td>
-        ${{row.pricePerMonth}}{{#if row.variableFees}}<sup>&#10746;</sup>{{/if}}
-      </td>
-      <td class="text-right"><button role="button" class="btn bg-primary" {{action "selectMachine" row.id}}> {{t 'generic.select'}}</button></td>
-    {{else if (eq kind "norows")}}
-      <td colspan="{{sortable.fullColspan}}" class="text-center text-muted">{{t 'accountsPage.index.table.noData'}}</td>
-    {{/if}}
-  {{/sortable-table}}
-    <div class="pull-left text-small mt-10">{{#link-to "hosts.new"}}{{t 'hostsPage.cloudHostsPage.browsePage.table.classic'}}{{/link-to}}</div>
-    <div class="pull-right text-small mt-10">{{t 'hostsPage.cloudHostsPage.browsePage.table.help' htmlSafe=true}}</div>
-</div>
+{{ partial 'host/cloud/table-content' }}

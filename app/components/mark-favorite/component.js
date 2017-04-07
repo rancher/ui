@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { task } from 'ember-concurrency';
+import { task/*, timeout*/ } from 'ember-concurrency';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
@@ -50,6 +50,7 @@ export default Ember.Component.extend({
     }
 
     try {
+        // yield timeout(5000);
       yield favsPref.save();
     } catch (e) {
       console.log(e);
