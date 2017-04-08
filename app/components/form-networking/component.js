@@ -16,8 +16,6 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   retainWasSetOnInit:  false,
   editing:             true,
 
-  classNameBindings: ['editing:component-editing:component-static'],
-
   init() {
     this._super(...arguments);
     this.initLabels(this.get('initialLabels'), null, [C.LABEL.DNS, C.LABEL.HOSTNAME_OVERRIDE, C.LABEL.REQUESTED_IP]);

@@ -277,46 +277,4 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   supportsSecrets: function() {
     return !!this.get('store').getById('schema','secret');
   }.property(),
-
-  healthCheckColor: null,
-  healthCheckStatus: function() {
-    let k = STATUS.NOTCONFIGURED;
-
-    if ( this.get('launchConfig.healthCheck') ) {
-      if ( this.get('healthCheckErrors.length') ) {
-        k = STATUS.INCOMPLETE;
-      } else {
-        k = STATUS.CONFIGURED;
-      }
-    }
-
-    this.set('healthCheckColor', classForStatus(k));
-    return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`);
-  }.property('launchConfig.healthCheck','healthCheckErrors.length'),
-
-  labelsColor: null,
-  labelsStatus: function() {
-    let k = STATUS.NONE;
-    let count = this.get('userLabels.length') || 0;
-
-    if ( count ) {
-      k = STATUS.COUNTCONFIGURED;
-    }
-
-    this.set('labelsColor', classForStatus(k));
-    return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`, {count: count});
-  }.property('userLabels.length'),
-
-  secretsColor: null,
-  secretsStatus: function() {
-    let k = STATUS.NONE;
-    let count = this.get('launchConfig.secrets.length') || 0;
-
-    if ( count ) {
-      k = STATUS.COUNTCONFIGURED;
-    }
-
-    this.set('secretsColor', classForStatus(k));
-    return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`, {count: count});
-  }.property('launchConfig.secrets.length','secretsErrors.length')
 });

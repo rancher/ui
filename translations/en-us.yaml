@@ -1867,11 +1867,12 @@ formEngineOpts:
     valuePlaceholder: e.g. https://my-mirror.example.com:5000
 
 formHealthCheck:
-  label: Health Check
+  title: Health Check
+  detail: A health check allows {appName} to know if your container is healthy.  For scaling groups, an unhealthy container can be automatically replaced.
   checkType:
     none: None
-    tcp: TCP Connection Opens
-    http: HTTP Responds 2xx/3xx
+    tcp: Check that a TCP connection opens successfully
+    http: Check that a HTTP reqeust responds with a successful (2xx or 3xx) status code
   request:
     label: HTTP Request
   method:
@@ -2035,7 +2036,9 @@ formScheduling:
   value: Value
 
 formSecrets:
-  label: Secrets
+  title: Secrets
+  detail: Secrets allow you to inject passwords, keys, or other sensitive information into the containers that need them.
+  noneDefined: You do not have any secrets to use.
   noData: No Secrets
   addLabel: Add Secret
   name:
@@ -2207,7 +2210,10 @@ formTargets:
 formUserData:
   placeholder: "e.g. Configuration information for the container"
   isVmPlaceholder: "e.g. Configuration information for the virtual machine"
+
 formUserLabels:
+  title: Labels
+  detail: Labels are key/value pairs that can be used to annotate containers and make scheduling decisions.
   addAction: Add Label
   key:
     label: Key
@@ -3090,17 +3096,6 @@ newContainer:
   upgrade:
     container: Upgrade Container
     scalingGroup: Upgrade Scaling Group
-  accordion:
-    healthCheck:
-      title: Health Check
-      detail: A health check allows {appName} to know if your container is healthy.  For scaling groups, an unhealthy container can be automatically replaced.
-    labels:
-      title: Labels
-      detail: Labels are key/value pairs that can be used to annotate containers and make scheduling decisions.
-    secrets:
-      title: Secrets
-      detail: Secrets allow you to inject passwords, keys, or other sensitive information into the containers that need them.
-
   tabs:
     disks: Disks
     userData: User Data

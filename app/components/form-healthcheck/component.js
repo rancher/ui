@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import { parseRequestLine } from 'ui/utils/parse-healthcheck';
+import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-row/component';
 
 const NONE = 'none';
 const TCP = 'tcp';
@@ -23,6 +24,9 @@ const HTTP_1_1 = 'HTTP/1.1';
 
 export default Ember.Component.extend({
   projects: Ember.inject.service(),
+  intl: Ember.inject.service(),
+
+  tagName: '',
 
   // Inputs
   healthCheck: null,
@@ -30,7 +34,6 @@ export default Ember.Component.extend({
   isService: null,
   showStrategy: true,
 
-  classNameBindings: ['editing:component-editing:component-static'],
   editing: true,
 
   uriMethodChoices: METHOD_CHOICES,
@@ -193,4 +196,21 @@ export default Ember.Component.extend({
 
     this.set('errors', errors);
   }.observes('checkType','healthCheck.port','healthCheck.requestLine'),
+
+  statusClass: null,
+  status: function() {
+    let k = STATUS.NOTCONFIGURED;
+
+    if ( this.get('healthCheck') ) {
+      if ( this.get('errors.length') ) {
+        k = STATUS.INCOMPLETE;
+      } else {
+        k = STATUS.CONFIGURED;
+      }
+    }
+
+    this.set('statusClass', classForStatus(k));
+    return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`);
+  }.property('healthCheck','errors.length'),
+
 });

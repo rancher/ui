@@ -29,7 +29,6 @@ export default Ember.Component.extend(ManageLabels, {
   // Internal properties
   isRequestedHost: false,
 
-  classNameBindings: ['editing:component-editing:component-static'],
   editing: true,
 
 

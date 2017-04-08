@@ -33,6 +33,13 @@ export function classForStatus(status) {
 
 export default Ember.Component.extend({
   projects: Ember.inject.service(),
+
+  name: null,
+  title: null,
+  detail: null,
+  status: null,
+  statusClass: null,
+
   classNames: ['accordion'],
   expanded: false,
 

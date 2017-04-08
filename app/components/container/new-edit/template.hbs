@@ -71,45 +71,24 @@
 
 <hr/>
 
-{{#accordion-row
-  title=(t 'newContainer.accordion.healthCheck.title')
-  detail=(t 'newContainer.accordion.healthCheck.detail' appName=settings.appName)
-  status=healthCheckStatus
-  statusClass=healthCheckColor
+{{form-healthcheck
+  isService=isService
+  healthCheck=launchConfig.healthCheck
+  errors=healthCheckErrors
+  editing=true
 }}
-  {{form-healthcheck
-    isService=isService
-    healthCheck=launchConfig.healthCheck
-    errors=healthCheckErrors
-    editing=true
-  }}
-{{/accordion-row}}
 
-{{#accordion-row
-  title=(t 'newContainer.accordion.labels.title')
-  detail=(t 'newContainer.accordion.labels.detail' appName=settings.appName)
-  status=labelsStatus
-  statusClass=labelsColor
+{{form-user-labels
+  initialLabels=launchConfig.labels
+  setLabels=(action 'setLabels' 'user')
 }}
-  {{form-user-labels
-    initialLabels=launchConfig.labels
-    setLabels=(action 'setLabels' 'user')
-  }}
-{{/accordion-row}}
 
 {{#if supportsSecrets}}
-  {{#accordion-row
-    title=(t 'newContainer.accordion.secrets.title')
-    detail=(t 'newContainer.accordion.secrets.detail' appName=settings.appName)
-    status=secretsStatus
-    statusClass=secretsColor
+  {{container/form-secrets
+    secrets=launchConfig.secrets
+    errors=secretErrors
+    editing=true
   }}
-    {{form-secrets
-      secrets=launchConfig.secrets
-      errors=secretErrors
-      editing=true
-    }}
-  {{/accordion-row}}
 {{/if}}
 
 <hr/>

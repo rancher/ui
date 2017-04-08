@@ -1,39 +1,44 @@
-<div>
+{{#accordion-row
+  title=(t 'formUserLabels.title')
+  detail=(t 'formUserLabels.detail' appName=settings.appName)
+  status=status
+  statusClass=statusClass
+}}
   <button class="btn bg-link icon-btn" {{action "addUserLabel"}}>
-  <i class="icon icon-plus text-small"/> 
-  <span>{{t 'formUserLabels.addAction'}}</span>
+    <i class="icon icon-plus text-small"/>
+    <span>{{t 'formUserLabels.addAction'}}</span>
   </button>
-</div>
 
-{{#if userLabelArray.length}}
-  <table class="table fixed no-lines mt-20">
-    <tr class="text-muted hidden-xs hidden-sm">
-      <th>{{t 'formUserLabels.key.label'}}</th>
-      <th width="30">&nbsp;</th>
-      <th>{{t 'formUserLabels.value.label'}}</th>
-      <th width="30">&nbsp;</th>
-    </tr>
-    {{#each userLabelArray as |label|}}
-      <tr>
-        <td data-title="key">
-          {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=label.key placeholder="formUserLabels.key.placeholder"}}
-        </td>
-
-        <td class="text-center">
-          <p class="input-sm">{{t 'formUserLabels.separator'}}</p>
-        </td>
-
-        <td data-title="label">
-          {{input class="form-control input-sm" type="text" value=label.value placeholder=(t 'formUserLabels.value.placeholder')}}
-        </td>
-
-        <td class="text-right">
-          <button class="btn bg-primary btn-sm" {{action "removeLabel" label}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
-        </td>
+  {{#if userLabelArray.length}}
+    <table class="table fixed no-lines mt-20">
+      <tr class="text-muted hidden-xs hidden-sm">
+        <th>{{t 'formUserLabels.key.label'}}{{field-required}}</th>
+        <th width="30">&nbsp;</th>
+        <th>{{t 'formUserLabels.value.label'}}</th>
+        <th width="30">&nbsp;</th>
       </tr>
-    {{/each}}
-  </table>
-  <div class="text-info" style="font-size: 12px; margin-bottom: 12px;">
-    {{t 'formUserLabels.protip'}}
-  </div>
-{{/if}}
+      {{#each userLabelArray as |label|}}
+        <tr>
+          <td data-title="key">
+            {{input-paste pasted="pastedLabels" class="form-control input-sm key" type="text" value=label.key placeholder="formUserLabels.key.placeholder"}}
+          </td>
+
+          <td class="text-center">
+            <p class="input-sm">{{t 'formUserLabels.separator'}}</p>
+          </td>
+
+          <td data-title="label">
+            {{input class="form-control input-sm" type="text" value=label.value placeholder=(t 'formUserLabels.value.placeholder')}}
+          </td>
+
+          <td class="text-right">
+            <button class="btn bg-primary btn-sm" {{action "removeLabel" label}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+          </td>
+        </tr>
+      {{/each}}
+    </table>
+    <div class="text-info" style="font-size: 12px; margin-bottom: 12px;">
+      {{t 'formUserLabels.protip'}}
+    </div>
+  {{/if}}
+{{/accordion-row}}
