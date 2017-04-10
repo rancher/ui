@@ -11,7 +11,7 @@ var Receiver = Resource.extend(PolledResource, {
 
   displayKind: function() {
     return this.get('intl').t('hookPage.' + this.get('driver') + '.label');
-  }.property('driver','intl._locale'),
+  }.property('driver','intl.locale'),
 
   opt: function() {
     return this.get(this.get('driver')+'Config');

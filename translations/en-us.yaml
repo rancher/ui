@@ -884,7 +884,7 @@ projectList:
     header: Environment Templates
     new: Add Template
     subtext: |
-      <p>An environment template allows users to define a different combination of infrastructure services to be deployed.
+      <p>An environment template allows users to define a different combination of infrastructure services to be deployed.</p>
       <p>The infrastructure services includes but not limited to container orchestration (i.e. cattle, kubernetes, mesos, swarm, networking) or rancher services (i.e healthcheck, dns, metadata, scheduling, service discovery and storage)</p>
     table:
       header:
@@ -1124,7 +1124,7 @@ userSettingsPage:
       label: Name
       placeholder: John Smith
       help: "(To change your email, contact support)"
-      lastChanged: "Your password was last changed on: <\br> {date}"
+      lastChanged: "Your password was last changed on: <br/> {date}"
     username:
       label: Username
       placeholder: johnsmith
@@ -1407,6 +1407,8 @@ accordionRow:
     notConfigured: Not Configured
     configured: Configured
     countConfigured: "{count} Configured"
+    standard: Standard
+    custom: Customized
 
 advancedSection:
   hrText: Advanced Options
@@ -1768,6 +1770,8 @@ formBalancerRules:
     suffix: ""
 
 formCommand:
+  title: Command
+  detail: These properties control the executable that will be run when the container is started.
   command:
     label: Command
     placeholder: e.g. /usr/sbin/httpd -f httpd.conf
@@ -1867,11 +1871,12 @@ formEngineOpts:
     valuePlaceholder: e.g. https://my-mirror.example.com:5000
 
 formHealthCheck:
-  label: Health Check
+  title: Health Check
+  detail: A health check allows {appName} to know if your container is healthy.  For scaling groups, an unhealthy container can be automatically replaced.
   checkType:
     none: None
-    tcp: TCP Connection Opens
-    http: HTTP Responds 2xx/3xx
+    tcp: Check that a TCP connection opens successfully
+    http: Check that a HTTP reqeust responds with a successful (2xx or 3xx) status code
   request:
     label: HTTP Request
   method:
@@ -2035,7 +2040,9 @@ formScheduling:
   value: Value
 
 formSecrets:
-  label: Secrets
+  title: Secrets
+  detail: Secrets allow you to inject passwords, keys, or other sensitive information into the containers that need them.
+  noneDefined: You do not have any secrets to use.
   noData: No Secrets
   addLabel: Add Secret
   name:
@@ -2207,7 +2214,10 @@ formTargets:
 formUserData:
   placeholder: "e.g. Configuration information for the container"
   isVmPlaceholder: "e.g. Configuration information for the virtual machine"
+
 formUserLabels:
+  title: Labels
+  detail: Labels are key/value pairs that can be used to annotate containers and make scheduling decisions.
   addAction: Add Label
   key:
     label: Key
@@ -2237,13 +2247,16 @@ formVirtualMachines:
   memory: Memory
 
 formVolumes:
+  title: Volumes
+  detail: Persist and share data separate from the lifecycle of an individual container.
   value:
     prompt: Select a Container...
   volumes: Volumes
   volumesFrom: Volumes From
   volumeDriver:
     label: Volume Driver
-    placeholder: 'e.g. rancher-nfs'
+    placeholder: 'e.g. rancher-nfs; Default: local'
+    suggestion: 'Volume drivers in use:'
   noLaunchConfigs: There are no other launch configs in this service to share volumes with.
   noHostContainers: This host has no containers to use the volumes from.
   onlySingleHost: Only available when adding a container to a particular host.
@@ -3090,17 +3103,6 @@ newContainer:
   upgrade:
     container: Upgrade Container
     scalingGroup: Upgrade Scaling Group
-  accordion:
-    healthCheck:
-      title: Health Check
-      detail: A health check allows {appName} to know if your container is healthy.  For scaling groups, an unhealthy container can be automatically replaced.
-    labels:
-      title: Labels
-      detail: Labels are key/value pairs that can be used to annotate containers and make scheduling decisions.
-    secrets:
-      title: Secrets
-      detail: Secrets allow you to inject passwords, keys, or other sensitive information into the containers that need them.
-
   tabs:
     disks: Disks
     userData: User Data

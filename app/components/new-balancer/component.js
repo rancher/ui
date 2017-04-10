@@ -70,7 +70,7 @@ export default Ember.Component.extend(NewOrEdit, {
     }
 
     return this.get('intl').t(k);
-  }.property('intl._locale','needsUpgrade','isService','isVm','service.secondaryLaunchConfigs.length'),
+  }.property('intl.locale','needsUpgrade','isService','isVm','service.secondaryLaunchConfigs.length'),
 
   // ----------------------------------
   // Ports

@@ -89,5 +89,5 @@ export default Ember.Component.extend({
       out = intl.findTranslationByKey('inputIdentity.dropdownLabel.groups');
     }
     return intl.formatMessage(out);
-  }.property('access.provider', 'intl._locale'),
+  }.property('access.provider', 'intl.locale'),
 });

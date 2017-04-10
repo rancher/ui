@@ -1,0 +1,109 @@
+{{#accordion-row
+  title=(t 'formCommand.title')
+  detail=(t 'formCommand.detail' appName=settings.appName)
+  status=status
+  statusClass=statusClass
+}}
+  <div class="row">
+    <div class="col span-6 col-inline">
+      <label>{{t 'formCommand.command.label'}}</label>
+      {{#input-or-display editable=editing value=instance.command classesForDisplay="clip"}}
+        {{input-command class="form-control" type="text" changed=(action (mut instance.command)) initialValue=instance.command placeholder=(t 'formCommand.command.placeholder')}}
+      {{/input-or-display}}
+    </div>
+    <div class="col span-6 col-inline">
+      <label>{{t 'formCommand.entryPoint.label'}}</label>
+      {{#input-or-display editable=editing value=instance.entryPoint}}
+        {{input-command class="form-control" type="text" changed=(action (mut instance.entryPoint)) initialValue=instance.entryPoint placeholder=(t 'formCommand.entryPoint.placeholder')}}
+      {{/input-or-display}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6 col-inline">
+      <label>{{t 'formCommand.workingDir.label'}}</label>
+      {{#input-or-display editable=editing value=instance.workingDir}}
+        {{input type="text" value=instance.workingDir classNames="form-control" placeholder=(t 'formCommand.workingDir.placeholder')}}
+      {{/input-or-display}}
+    </div>
+    <div class="col span-6 col-inline">
+      <label>{{t 'formCommand.user.label'}}</label>
+      {{#if editing}}
+        {{input type="text" value=instance.user classNames="form-control" placeholder=(t 'formCommand.user.placeholder')}}
+      {{else if instance.user}}
+        <div class='text-muted'>{{instance.user}}</div>
+      {{else}}
+        <div class="text-muted">{{t 'generic.na'}}</div>
+      {{/if}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col span-6 col-inline">
+      <label>{{t 'formCommand.console.label'}}</label>
+      {{#input-or-display editable=editing value=terminal.name}}
+        <div class="radio small">
+          <label>{{radio-button selection=terminal.type value="both"}} {{t 'formCommand.console.both' htmlSafe=true}}</label>
+        </div>
+        <div class="radio small">
+          <label>{{radio-button selection=terminal.type value="interactive"}} {{t 'formCommand.console.interactive' htmlSafe=true}}</label>
+        </div>
+        <div class="radio small">
+          <label>{{radio-button selection=terminal.type value="terminal"}} {{t 'formCommand.console.terminal' htmlSafe=true}}</label>
+        </div>
+        <div class="radio small">
+          <label>{{radio-button selection=terminal.type value="none"}} {{t 'formCommand.console.none' htmlSafe=true}}</label>
+        </div>
+      {{/input-or-display}}
+    </div>
+
+    <div class="col span-6 col-inline">
+      <label>{{t 'formCommand.autoRestart.label'}}</label>
+      {{#if isService}}
+        {{#if editing}}
+          <div class="radio small">
+            <label>{{radio-button selection=startOnce value=false}} {{t 'formCommand.autoRestart.startOnceFalse'}}</label>
+          </div>
+          <div class="radio small">
+            <label>{{radio-button selection=startOnce value=true}} {{t 'formCommand.autoRestart.startOnceTrue'}}</label>
+          </div>
+        {{else if startOnce}}
+            <div>{{startOnce}}</div>
+        {{else}}
+          <div>{{t 'generic.none'}}</div>
+        {{/if}}
+      {{else}}
+        <div class="row {{unless editing 'inline-form'}}">
+          {{#if editing}}
+            <div class="radio small">
+              <label>{{radio-button selection=restart value="no"}} {{t 'formCommand.autoRestart.no'}}</label>
+            </div>
+
+            <div class="radio small">
+              <label>{{radio-button selection=restart value="on-failure"}} {{t 'formCommand.autoRestart.onFailure' htmlSafe=true}}</label>
+            </div>
+
+            <div class="radio small">
+              <label>
+                {{radio-button selection=restart value="on-failure-cond"}}
+                <span class="with-input">
+                  {{t 'formCommand.autoRestart.onFailureCondPrefix' limit=restartLimit}}
+                  {{input-integer min=1 safeStyle="width: 60px; padding: 0 2px; display: inline-block;" class="form-control input-sm" value=restartLimit}}
+                  {{t 'formCommand.autoRestart.onFailureCondSuffix' limit=restartLimit}}
+                </span>
+              </label>
+            </div>
+
+            <div class="radio small">
+              <label>{{radio-button selection=restart value="always"}} {{t 'formCommand.autoRestart.always'}}</label>
+            </div>
+          {{else if restart}}
+              <div>{{restart}}</div>
+          {{else}}
+              <div>{{t 'generic.none'}}</div>
+          {{/if}}
+        </div>
+      {{/if}}
+    </div>
+  </div>
+{{/accordion-row}}

@@ -321,7 +321,7 @@ var Service = Resource.extend(StateCounts, {
     }
 
     return this.get('intl').t('servicePage.type.'+ type);
-  }.property('lcType','isSelector','intl._locale'),
+  }.property('lcType','isSelector','intl.locale'),
 
   hasSidekicks: function() {
     return this.get('secondaryLaunchConfigs.length') > 0;
@@ -392,7 +392,7 @@ var Service = Resource.extend(StateCounts, {
     {
       return '';
     }
-  }.property('endpointsByPort.@each.{port,ipAddresses}', 'intl._locale'),
+  }.property('endpointsByPort.@each.{port,ipAddresses}', 'intl.locale'),
 
   memoryReservationBlurb: Ember.computed('launchConfig.memoryReservation', function() {
     if ( this.get('launchConfig.memoryReservation') ) {

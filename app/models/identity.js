@@ -92,7 +92,7 @@ var Identity = Resource.extend({
     }
 
     return this.get('intl').t(key, {type: type});
-  }.property('externalIdType','intl._locale'),
+  }.property('externalIdType','intl.locale'),
 });
 
 export default Identity;

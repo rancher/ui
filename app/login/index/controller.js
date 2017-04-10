@@ -84,5 +84,5 @@ export default Ember.Controller.extend({
     } else {
       return '';
     }
-  }.property('timedOut','errorMsg','intl._locale'),
+  }.property('timedOut','errorMsg','intl.locale'),
 });

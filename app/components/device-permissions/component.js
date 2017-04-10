@@ -81,5 +81,5 @@ export default Ember.Component.extend({
         this.$('SELECT').multiselect('rebuild');
       }
     });
-  }.observes('intl._locale'),
+  }.observes('intl.locale'),
 });

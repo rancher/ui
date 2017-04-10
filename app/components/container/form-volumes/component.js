@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-row/component';
 
 export default Ember.Component.extend({
   intl: Ember.inject.service(),
@@ -13,14 +14,14 @@ export default Ember.Component.extend({
   allHosts            : null,
   errors              : null,
 
-  tagName: '',
-
+  _storagePools       : null,
   init() {
     this._super(...arguments);
 
     this.initVolumes();
     this.initVolumesFrom();
     this.initVolumesFromLaunchConfig();
+    this.set('_storagePools', this.get('store').all('storagepool'));
   },
 
   initVolumesFromLaunchConfig() {
@@ -233,4 +234,35 @@ export default Ember.Component.extend({
 
     this.set('errors', errors.uniq());
   }.observes('volumesArray.@each.value'),
+
+  driverChoices: function() {
+    let drivers = this.get('_storagePools')
+      .map((x) => x.get('driverName'))
+      .filter((x) => !!x)
+      .uniq().sort();
+
+    return {
+      [this.get('intl').t('formVolumes.volumeDriver.suggestion')]: drivers,
+    };
+  }.property('_storagePools.@each.driverName'),
+
+  statusClass: null,
+  status: function() {
+    let k = STATUS.NONE;
+    let count = (this.get('instance.dataVolumes.length') || 0) +
+                (this.get('instance.dataVolumesFrom.length') || 0) +
+                (this.get('instance.dataVolumesFromLaunchConfigs.length') || 0);
+
+    if ( count ) {
+      if ( this.get('errors.length') ) {
+        k = STATUS.INCOMPLETE;
+      } else {
+        k = STATUS.COUNTCONFIGURED;
+      }
+    }
+
+    this.set('statusClass', classForStatus(k));
+    return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`, {count: count});
+  }.property('instance.{dataVolumes,dataVolumesFrom,dataVolumesFromLaunchConfigs}.length','errors.length'),
+
 });

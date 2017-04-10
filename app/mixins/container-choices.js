@@ -75,7 +75,7 @@ export default Ember.Mixin.create({
     }
 
     return list.sortBy('group','name','id');
-  }.property('allHosts.@each.instances','intl._locale'),
+  }.property('allHosts.@each.instances','intl.locale'),
 
   containersOnRequestedHost: function() {
     var requestedHostId = this.get('instance.requestedHostId');
@@ -104,5 +104,5 @@ export default Ember.Mixin.create({
     {
       return all;
     }
-  }.property('containerChoices.@each.hostId','instance.requestedHostId','isManagedNetwork','intl._locale'),
+  }.property('containerChoices.@each.hostId','instance.requestedHostId','isManagedNetwork','intl.locale'),
 });

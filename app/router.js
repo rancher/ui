@@ -91,17 +91,17 @@ Router.map(function() {
 
       this.route('scaling-groups', {path: '/scaling-groups', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('new',          {path: '/add'});
+        this.route('new', {path: '/add'});
       });
 
       this.route('balancers', {path: '/balancers', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('new',          {path: '/add'});
+        this.route('new', {path: '/add'});
       });
 
       this.route('dns', {path: '/dns', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
-        this.route('new',   {path: '/add'});
+        this.route('new', {path: '/add'});
       });
 
       this.route('service', {path: '/services/:scaling_group_id', resetNamespace: true}, function() {

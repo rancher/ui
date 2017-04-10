@@ -26,7 +26,7 @@ export default Ember.Component.extend({
     ];
 
     return out;
-  }.property('intl._locale',`settings.${C.SETTING.ENGINE_URL}`),
+  }.property('intl.locale',`settings.${C.SETTING.ENGINE_URL}`),
 
   actions: {
     setEngine(url) {

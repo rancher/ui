@@ -57,21 +57,19 @@
   {{else if isGlobal}}
     {{t 'formScheduling.autoRun'}}
   {{else if requestedHostId}}
-    <div class="component-static">
-      <div class="row">
-        <label>
-          {{#if isService}}
-            {{#if (eq isVm 'virtual machines')}}
-              {{t 'formScheduling.canRequestHost.vm' htmlSafe=true}}
-            {{else}}
-              {{t 'formScheduling.canRequestHost.containers' htmlSafe=true}}
-            {{/if~}}
+    <div class="row">
+      <label>
+        {{#if isService}}
+          {{#if (eq isVm 'virtual machines')}}
+            {{t 'formScheduling.canRequestHost.vm' htmlSafe=true}}
           {{else}}
-            {{t 'formScheduling.runSpecific'}}
-          {{/if}}
-        </label>
-        <span class="form-static-control">{{selectedChoice.name}}</span>
-      </div>
+            {{t 'formScheduling.canRequestHost.containers' htmlSafe=true}}
+          {{/if~}}
+        {{else}}
+          {{t 'formScheduling.runSpecific'}}
+        {{/if}}
+      </label>
+      <span class="form-static-control">{{selectedChoice.name}}</span>
     </div>
   {{else if (eq isVm 'virtual machines')}}
     {{t 'formScheduling.autoPick.vm'}}

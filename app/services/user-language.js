@@ -67,7 +67,7 @@ export default Ember.Service.extend({
   },
 
   getLocale() {
-    return this.get('intl._locale')[0];
+    return this.get('intl.locale')[0];
   },
 
   setLanguage(lang, savePref=true) {

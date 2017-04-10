@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-row/component';
 
 const DEFAULT_UID = '0';
 const DEFAULT_GID = '0';
@@ -9,8 +10,14 @@ export default Ember.Component.extend({
   secrets: null,
   showPermissions: false,
 
+  allSecrets: null,
+  haveAny: Ember.computed.gte('allSecrets.length',1),
+
   init: function() {
     this._super(...arguments);
+
+    this.set('allSecrets', this.get('store').all('secret'));
+
     let secrets = this.get('secrets');
     if ( !secrets ) {
       secrets = [];
@@ -51,4 +58,21 @@ export default Ember.Component.extend({
       this.set('showPermissions', true);
     },
   },
+
+  statusClass: null,
+  status: function() {
+    let k = STATUS.NONE;
+    let count = this.get('secrets').filter((x) => !!x.get('secretId')).get('length') || 0;
+
+    if ( count ) {
+      if ( this.get('errors.length') ){
+        k = STATUS.INCOMPLETE;
+      } else {
+        k = STATUS.COUNTCONFIGURED;
+      }
+    }
+
+    this.set('statusClass', classForStatus(k));
+    return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`, {count: count});
+  }.property('secrets.@each.secretId','errors.length')
 });
