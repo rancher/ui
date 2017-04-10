@@ -5,20 +5,26 @@ const DEFAULT_REALM = 'us-west';
 const PROVIDERS = [{id: 'All'}, {id: 'Amazon'}, {id: 'Digital Ocean' }, {id: 'Packet' }];
 export default Ember.Controller.extend({
   prefs        : Ember.inject.service(),
-  queryParams: ['from'],
-  from:        'favorites',
-  initialTab:  'favorites',
-  tab:         null,
-  realmSort:   DEFAULT_REALM,
-  providers:   PROVIDERS,
-  memSort:     null,
-  storageSort: null,
-  costSort:    null,
-  providerSort: 'All',
-  sortBy:      'price',
+  queryParams:   ['from'],
+  from:          'favorites',
+  initialTab:    'favorites',
+  tab:           null,
+  realmSort:     DEFAULT_REALM,
+  providers:     PROVIDERS,
+  memSort:       null,
+  storageSort:   null,
+  costSort:      null,
+  providerSort:  'All',
+  sortBy:        'price',
   actions:     {
     selectMachine(id) {
-      this.set('providerSort', 'All');
+      this.setProperties({
+        providerSort: 'All',
+        memSort:      null,
+        storageSort:  null,
+        costSort:     null,
+        realmSort:    DEFAULT_REALM,
+      });
       this.transitionToRoute('hosts.container-cloud.add', id);
     },
     favoriteChanged(id) {
