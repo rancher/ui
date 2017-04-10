@@ -7,5 +7,5 @@ export default Ember.Mixin.create({
 
   i18nPlaceholder: function() {
     return this.get('intl').t(this.get('placeholder'));
-  }.property('placeholder','intl._locale'),
+  }.property('placeholder','intl.locale'),
 });

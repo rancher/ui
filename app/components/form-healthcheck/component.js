@@ -25,8 +25,7 @@ const HTTP_1_1 = 'HTTP/1.1';
 export default Ember.Component.extend({
   projects: Ember.inject.service(),
   intl: Ember.inject.service(),
-
-  tagName: '',
+  settings: Ember.inject.service(),
 
   // Inputs
   healthCheck: null,

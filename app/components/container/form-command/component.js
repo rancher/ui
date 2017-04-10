@@ -1,6 +1,7 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
 import ManageLabels from 'ui/mixins/manage-labels';
+import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-row/component';
 
 export default Ember.Component.extend(ManageLabels, {
   // Inputs
@@ -137,4 +138,21 @@ export default Ember.Component.extend(ManageLabels, {
   restartLimitDidChange: function() {
     this.set('restart', 'on-failure-cond');
   }.observes('restartLimit'),
+
+  statusClass: null,
+  status: function() {
+    let k = STATUS.STANDARD;
+    let inst = this.get('instance');
+
+    if ( inst.get('command') || inst.get('entryPoint') || inst.get('workingDir') ) {
+      if ( this.get('errors.length') ) {
+        k = STATUS.INCOMPLETE;
+      } else {
+        k = STATUS.CUSTOM;
+      }
+    }
+
+    this.set('statusClass', classForStatus(k));
+    return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`);
+  }.property('instance.{command,entryPoint,workingDir}','errors.length'),
 });

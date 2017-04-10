@@ -3,6 +3,7 @@ import DropdownComponentMixin from 'ember-rl-dropdown/mixins/rl-dropdown-compone
 
 export default Ember.Component.extend(DropdownComponentMixin, {
   value: null,
+  placheolder: null,
 
   grouped: null, // {group1: [val1, val2], group2: [val3, val4]}
   choices: null, // or [val1, val2, val3, val4]

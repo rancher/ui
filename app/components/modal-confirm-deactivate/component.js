@@ -25,7 +25,7 @@ export default Ember.Component.extend(ModalBase, {
     }, 500);
   },
 
-  isService: Ember.computed('originalModel.type','intl._locale', function() {
+  isService: Ember.computed('originalModel.type','intl.locale', function() {
     let type = this.get('originalModel.type');
     let out  = {};
     let intl = this.get('intl');

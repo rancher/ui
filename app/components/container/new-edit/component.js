@@ -5,8 +5,6 @@ import { debouncedObserver } from 'ui/utils/debounce';
 import C from 'ui/utils/constants';
 import { flattenLabelArrays } from 'ui/mixins/manage-labels';
 
-import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-row/component';
-
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
   intl                      : Ember.inject.service(),
   settings                  : Ember.inject.service(),
@@ -94,7 +92,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   didInsertElement() {
-    this.send('selectTab','command');
     this.$("INPUT[type='text']")[0].focus();
   },
 

@@ -6,6 +6,8 @@ const ERROR = 'error';
 const NOTCONFIGURED = 'notConfigured';
 const CONFIGURED = 'configured';
 const COUNTCONFIGURED = 'countConfigured';
+const STANDARD = 'standard';
+const CUSTOM = 'custom';
 
 export const STATUS = {
   NONE,
@@ -14,6 +16,8 @@ export const STATUS = {
   NOTCONFIGURED,
   CONFIGURED,
   COUNTCONFIGURED,
+  STANDARD,
+  CUSTOM
 }
 
 export const STATUS_INTL_KEY = 'accordionRow.status';
@@ -22,6 +26,7 @@ export function classForStatus(status) {
   switch (status) {
     case NONE:
     case NOTCONFIGURED:
+    case STANDARD:
       return 'text-muted';
     case INCOMPLETE:
     case ERROR:

@@ -212,11 +212,11 @@ export default Ember.Service.extend(Ember.Evented, {
       version = minorVersion(this.get('uiVersion'));
     }
 
-    let lang = ((this.get('intl._locale')||[])[0]||'').replace(/-.*$/,'');
+    let lang = ((this.get('intl.locale')||[])[0]||'').replace(/-.*$/,'');
     if ( !lang || lang === 'none' || C.LANGUAGE.DOCS.indexOf(lang) === -1 ) {
       lang = 'en';
     }
 
     return `${C.EXT_REFERENCES.DOCS}/${version}/${lang}`;
-  }.property('intl._locale','minorVersion')
+  }.property('intl.locale','minorVersion')
 });

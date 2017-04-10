@@ -1,39 +1,35 @@
-{{#if projects.current.isWindows}}
-  <div class="text-center p-20">Volume support is not currently available for Windows.</div>
-{{else}}
-  <div class="row inline-form">
-    <div class="col span-2 col-inline">
-      <label>{{t 'formVolumes.volumes'}}</label>
-    </div>
+{{#accordion-row
+  title=(t 'formVolumes.title')
+  detail=(t 'formVolumes.detail' appName=settings.appName)
+  status=status
+  statusClass=statusClass
+}}
+  {{#if projects.current.isWindows}}
+    <div class="text-center p-20">Volume support is not currently available for Windows.</div>
+  {{else}}
+    <button class="btn bg-link icon-btn" {{action "addVolume"}}>
+      <i class="icon icon-plus text-small"/>
+      <span>{{t 'formVolumes.addActionLabel'}}</span>
+    </button>
 
-    <div class="col span-8">
-      <div>
-        <button class="btn bg-link icon-btn" {{action "addVolume"}}><i class="icon icon-plus text-small"/> <span>{{t 'formVolumes.addActionLabel'}}</span></button>
-      </div>
-      {{#if volumesArray.length}}
-        <table class="table fixed no-lines no-top-padding tight">
-          {{#each volumesArray as |vol|}}
-            <tr>
-              <td>
-                {{input type="text" class="form-control volume-path" value=vol.value placeholder="e.g. [volumename: or /path/on/host:]/path/in/container[:ro]"}}
-              </td>
-              <td width="30" class="text-right">
-                <button class="btn bg-primary btn-sm" {{action "removeVolume" vol}}><i class="icon icon-minus"/></button>
-              </td>
-            </tr>
-          {{/each}}
-        </table>
-      {{/if}}
-    </div>
-  </div>
+    {{#if volumesArray.length}}
+      <table class="table fixed no-lines no-top-padding tight mt-10">
+        {{#each volumesArray as |vol|}}
+          <tr>
+            <td>
+              {{input type="text" class="form-control volume-path" value=vol.value placeholder="e.g. [volumename: or /path/on/host:]/path/in/container[:ro]"}}
+            </td>
+            <td width="30" class="text-right">
+              <button class="btn bg-primary btn-sm" {{action "removeVolume" vol}}><i class="icon icon-minus"/></button>
+            </td>
+          </tr>
+        {{/each}}
+      </table>
+    {{/if}}
 
-  {{#if isService}}
-    <div class="row inline-form">
-      <div class="col span-2 col-inline">
-        <label>{{t 'formVolumes.volumesFrom'}}</label>
-      </div>
-
-      <div class="col span-8">
+    <div class="mt-10">
+      <label>{{t 'formVolumes.volumesFrom'}}</label>
+      {{#if isService}}
         {{#if volumesFromLaunchConfigChoices.length}}
           {{#each volumesFromLaunchConfigChoices as |choice|}}
             <label class="mr-10 radio small" style="color: inherit; text-transform: none;">{{input type="checkbox" checked=choice.enabled}} {{choice.displayName}}</label>
@@ -41,15 +37,7 @@
         {{else}}
           <span class="text-muted">{{t 'formVolumes.noLaunchConfigs'}}</span>
         {{/if}}
-      </div>
-    </div>
-  {{else}}
-    <div class="row inline-form">
-      <div class="col span-2 col-inline">
-        <label>{{t 'formVolumes.volumesFrom'}}</label>
-      </div>
-
-      <div class="col span-8">
+      {{else}}
         <div>
           {{#if instance.requestedHostId}}
             {{#if hostContainerChoices.length}}
@@ -83,17 +71,16 @@
             {{/each}}
           </table>
         {{/if}}
-      </div>
+      {{/if}}
+    </div>
+
+    <div class="mt-10">
+      <label for="volumeDriver">{{t 'formVolumes.volumeDriver.label'}}</label>
+      {{input-suggest
+        value=instance.volumeDriver
+        grouped=driverChoices
+        placeholder=(t 'formVolumes.volumeDriver.placeholder')
+      }}
     </div>
   {{/if}}
-
-  <div class="row inline-form">
-    <div class="col span-2 col-inline">
-      <label for="volumeDriver">{{t 'formVolumes.volumeDriver.label'}}</label>
-    </div>
-
-    <div class="col span-8">
-      {{input type="text" class="form-control" value=instance.volumeDriver placeholder=(t 'formVolumes.volumeDriver.placeholder')}}
-    </div>
-  </div>
-{{/if}}
+{{/accordion-row}}

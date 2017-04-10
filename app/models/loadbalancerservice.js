@@ -89,7 +89,7 @@ var LoadBalancerService = Service.extend({
     });
 
     return pieces.join(', ').htmlSafe();
-  }.property('launchConfig.ports.[]','launchConfig.expose.[]','endpointsMap', 'intl._locale'),
+  }.property('launchConfig.ports.[]','launchConfig.expose.[]','endpointsMap', 'intl.locale'),
 
   imageUpgradeAvailable: function() {
     let cur = (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'');

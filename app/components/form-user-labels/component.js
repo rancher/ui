@@ -8,8 +8,6 @@ export default Ember.Component.extend(ManageLabels, {
   // Inputs
   initialLabels: null,
 
-  classNames: ['accordion'],
-
   actions: {
     addUserLabel() {
       this._super();

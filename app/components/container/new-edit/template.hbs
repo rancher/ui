@@ -72,6 +72,7 @@
 <hr/>
 
 {{form-healthcheck
+  classNames="accordion-wrapper"
   isService=isService
   healthCheck=launchConfig.healthCheck
   errors=healthCheckErrors
@@ -79,17 +80,38 @@
 }}
 
 {{form-user-labels
+  classNames="accordion-wrapper"
   initialLabels=launchConfig.labels
   setLabels=(action 'setLabels' 'user')
 }}
 
 {{#if supportsSecrets}}
   {{container/form-secrets
+    classNames="accordion-wrapper"
     secrets=launchConfig.secrets
     errors=secretErrors
     editing=true
   }}
 {{/if}}
+
+{{container/form-command
+  classNames="accordion-wrapper"
+  instance=launchConfig
+  initialLabels=launchConfig.labels
+  errors=commandErrors
+  isService=isService
+  setLabels=(action 'setLabels' 'command')
+}}
+
+{{container/form-volumes
+  classNames="accordion-wrapper"
+  instance=launchConfig
+  isService=isService
+  service=service
+  primaryService=primaryService
+  launchConfigIndex=launchConfigIndex
+  errors=volumeErrors
+}}
 
 <hr/>
 
@@ -105,12 +127,6 @@
 <section>
   <div class="tabs">
     <ul class="tab-header" style="display: inline-block" role="tablist">
-      <li role="tab" aria-controls="panel" class="tab" data-section="command" {{action "selectTab" "command"}}>
-        <a href="#">{{t 'newContainer.tabs.command'}}</a>
-      </li>
-      <li role="tab" aria-controls="panel" class="tab" data-section="volumes" {{action "selectTab" "volumes"}}>
-        <a href="#">{{t 'newContainer.tabs.volumes'}}</a>
-      </li>
       <li role="tab" aria-controls="panel" class="tab" data-section="network" {{action "selectTab" "network"}}>
         <a href="#">{{t 'newContainer.tabs.networking'}}</a>
       </li>
@@ -128,25 +144,7 @@
     </ul>
   
   <div class="horizontal-form tab-content" role="tabpanel">
-    <div class="section" data-section="command">
-      {{form-command
-        instance=launchConfig
-        initialLabels=launchConfig.labels
-        errors=commandErrors
-        isService=isService
-        setLabels=(action 'setLabels' 'command')
-      }}
-    </div>
-
     <div class="section" data-section="volumes">
-      {{form-volumes
-        instance=launchConfig
-        isService=isService
-        service=service
-        primaryService=primaryService
-        launchConfigIndex=launchConfigIndex
-        errors=volumeErrors
-        allHosts=allHosts}}
     </div>
 
     <div class="section" data-section="network">

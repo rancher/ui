@@ -884,7 +884,7 @@ projectList:
     header: Environment Templates
     new: Add Template
     subtext: |
-      <p>An environment template allows users to define a different combination of infrastructure services to be deployed.
+      <p>An environment template allows users to define a different combination of infrastructure services to be deployed.</p>
       <p>The infrastructure services includes but not limited to container orchestration (i.e. cattle, kubernetes, mesos, swarm, networking) or rancher services (i.e healthcheck, dns, metadata, scheduling, service discovery and storage)</p>
     table:
       header:
@@ -1124,7 +1124,7 @@ userSettingsPage:
       label: Name
       placeholder: John Smith
       help: "(To change your email, contact support)"
-      lastChanged: "Your password was last changed on: <\br> {date}"
+      lastChanged: "Your password was last changed on: <br/> {date}"
     username:
       label: Username
       placeholder: johnsmith
@@ -1407,6 +1407,8 @@ accordionRow:
     notConfigured: Not Configured
     configured: Configured
     countConfigured: "{count} Configured"
+    standard: Standard
+    custom: Customized
 
 advancedSection:
   hrText: Advanced Options
@@ -1768,6 +1770,8 @@ formBalancerRules:
     suffix: ""
 
 formCommand:
+  title: Command
+  detail: These properties control the executable that will be run when the container is started.
   command:
     label: Command
     placeholder: e.g. /usr/sbin/httpd -f httpd.conf
@@ -2243,13 +2247,16 @@ formVirtualMachines:
   memory: Memory
 
 formVolumes:
+  title: Volumes
+  detail: Persist and share data separate from the lifecycle of an individual container.
   value:
     prompt: Select a Container...
   volumes: Volumes
   volumesFrom: Volumes From
   volumeDriver:
     label: Volume Driver
-    placeholder: 'e.g. rancher-nfs'
+    placeholder: 'e.g. rancher-nfs; Default: local'
+    suggestion: 'Volume drivers in use:'
   noLaunchConfigs: There are no other launch configs in this service to share volumes with.
   noHostContainers: This host has no containers to use the volumes from.
   onlySingleHost: Only available when adding a container to a particular host.

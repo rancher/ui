@@ -10,8 +10,6 @@ export default Ember.Component.extend({
   secrets: null,
   showPermissions: false,
 
-  classNames: ['accordion'],
-
   allSecrets: null,
   haveAny: Ember.computed.gte('allSecrets.length',1),
 

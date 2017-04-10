@@ -161,7 +161,7 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   }),
 
   // For data-title properties on <td>s
-  dt: Ember.computed('headers.@each.{name,label,translationKey}','intl._locale', function() {
+  dt: Ember.computed('headers.@each.{name,label,translationKey}','intl.locale', function() {
     let intl = this.get('intl');
     let out = {
       select: intl.t('generic.select') + ': ',

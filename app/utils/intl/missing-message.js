@@ -8,7 +8,7 @@ export default function missingMessage(key, locales) {
     locales = locales||['unknown'];
     if ( locales[0] !== 'none' )
     {
-      logger.warn(`translation not found: locale='${locales.join(', ')}', key='${key}'.`);
+      logger.warn(`Translation not found: locale='${locales.join(', ')}', key='${key}'.`);
     }
 
     return `*%${key}%*`;

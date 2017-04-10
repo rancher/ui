@@ -116,7 +116,7 @@ export default Ember.Mixin.create(NewOrEdit, ManageLabels, {
     let first = parts.prefix + Util.strPad(parts.start, parts.minLength, '0');
     let last = parts.prefix + Util.strPad(parts.end, parts.minLength, '0');
     return this.get('intl').tHtml('driver.multiHostNames',{first: first, last: last});
-  }.property('nameParts','intl._locale'),
+  }.property('nameParts','intl.locale'),
 
   nameDidChange: function() {
     let parts = this.get('nameParts');
