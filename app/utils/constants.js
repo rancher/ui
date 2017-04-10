@@ -224,6 +224,7 @@ var C = {
     I_HATE_SPINNERS : 'ihatespinners',
     FEEDBACK        : 'feedback',
     SHOW_SYSTEM     : 'showSystem',
+    HOST_FAVORITES  : 'hostFavorites',
   },
 
   PROJECT: {

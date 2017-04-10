@@ -1,8 +1,10 @@
 import Ember from 'ember';
 import Plans from 'ui/utils/cloud-plans';
+import C from 'ui/utils/constants';
 
 
 export default Ember.Route.extend({
+  prefs: Ember.inject.service(),
   queryParams: {
     from: {
       refreshModel: true
@@ -14,9 +16,18 @@ export default Ember.Route.extend({
 
     switch(params.from) {
     case 'favorites':
-      // get the fav's from user store or reg store?
-      break;
-    case 'provider':
+      var favs = this.get(`prefs.${C.PREFS.HOST_FAVORITES}`);
+      if (favs) {
+        model.plans = plans.realms.filter((plan) => {
+          if (favs.contains(plan.id)) {
+            return true;
+          }
+          return false;
+        });
+      } else {
+        model.plans = [];
+      }
+      model.realms = plans.realmNames;
       break;
     default:
     case 'browse':
