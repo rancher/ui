@@ -1803,6 +1803,14 @@ formCommand:
         other {times}
       }
     always: Always
+  logDriver:
+    label: Log Driver
+    placeholder: "e.g. syslog; Default: The driver configured on the host daemon"
+  logConfig:
+    label: Log Options
+    addActionLabel: Add Option
+    keyPlaceholder: e.g. syslog-facility
+    valuePlaceholder: e.g. daemon
 
 formContainerLinks:
   label: Links
@@ -2085,12 +2093,12 @@ formSecrets:
     suffix: ""
 
 formSecurity:
-  title: Security
+  title: Security & Host Config
   detail: Grant or limit the abilities of the container to affect the host it is running on.
-  logConfig:
-    addActionLabel: Add Option
-    keyPlaceholder: e.g. syslog-facility
-    valuePlaceholder: e.g. daemon
+  pullImage:
+    label: Pull Image
+    enable: Every time a new container is created
+    disable: Only if not already present on the host
   privileged:
     label: Privileged
     disable: Disabled
@@ -2133,11 +2141,6 @@ formSecurity:
     permissions:
       label: Permissions
       placeholder: "e.g. 0,3; Default: All"
-  logDriver:
-    label: Log Driver
-    placeholder: e.g. syslog
-  logOptions:
-    label: Log Options
   memoryReservation:
     label: Memory Reservation
   milliCpuReservation:

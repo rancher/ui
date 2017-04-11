@@ -106,4 +106,30 @@
       {{/if}}
     </div>
   </div>
+
+  <div class="row inline-form">
+    <div class="col span-6">
+      <div class="col-inline">
+        <label>{{t 'formCommand.logDriver.label'}}</label>
+      </div>
+      {{#input-or-display editable=editing value=instance.logConfig.driver}}
+        {{input-suggest
+          value=instance.logConfig.driver
+          choices=logDriverChoices
+          placeholder=(t 'formCommand.logDriver.placeholder')
+        }}
+      {{/input-or-display}}
+    </div>
+    <div class="col span-6 col-inline">
+      <label>{{t 'formCommand.logConfig.label'}}</label>
+      {{form-key-value
+        initialMap=instance.logConfig.config
+        changed=(action (mut instance.logConfig.config))
+        addActionLabel="formCommand.logConfig.addActionLabel"
+        keyPlaceholder="formCommand.logConfig.keyPlaceholder"
+        valuePlaceholder="formCommand.logConfig.valuePlaceholder"
+        editing=editing
+      }}
+    </div>
+  </div>
 {{/accordion-row}}
