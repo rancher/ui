@@ -162,7 +162,7 @@ const navTree = [
     },
   },
 
-  // Infrastructure
+  // Infrastructure = Resources
   {
     id: 'infra',
     localizedLabel: 'nav.infra.tab',
@@ -209,6 +209,13 @@ const navTree = [
         localizedLabel: 'nav.infra.hooks',
         icon: 'icon icon-link',
         route: 'authenticated.project.api.hooks',
+        ctx: [getProjectId],
+      },
+      {
+        id: 'infra-template-keys',
+        localizedLabel: 'nav.infra.templateKeys',
+        icon: 'icon icon-key',
+        route: 'authenticated.project.host-template.keys',
         ctx: [getProjectId],
       },
     ],

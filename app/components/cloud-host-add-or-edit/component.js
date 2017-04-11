@@ -30,7 +30,7 @@ export default Ember.Component.extend(Driver, {
           });
         } else {
           this.get('selectedHostTemplate').save().then((hstTemplate) => {
-            hstTemplate.waitForNotTransitioning.then(() => {
+            hstTemplate.waitForNotTransitioning().then(() => {
               this.buildModelOut(this.get('model'), this.get('selectedHostTemplate.id')).then((/*result*/) => {
                 this.sendAction('save');
               });
