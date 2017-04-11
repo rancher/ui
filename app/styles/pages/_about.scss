@@ -1,7 +1,6 @@
 .about {
   TD, TH {
     padding: 5px 10px;
-    text-align: center;
   }
 
   TH {
@@ -18,10 +17,12 @@
 
   .parachute {
     opacity: 0.75;
-    -webkit-animation: parachute-animation 20s cubic-bezier(0.05, -0.23, 0.13, 0.6) forwards;
-    -moz-animation: parachute-animation 20s cubic-bezier(0.05, -0.23, 0.13, 0.6) forwards;
-    -ms-animation: parachute-animation 20s cubic-bezier(0.05, -0.23, 0.13, 0.6) forwards;
-    animation: parachute-animation 20s cubic-bezier(0.05, -0.23, 0.13, 0.6) forwards;
+    -webkit-animation: parachute-animation 10s cubic-bezier(0.05, -0.23, 0.13, 0.6) forwards;
+    -moz-animation: parachute-animation 10s cubic-bezier(0.05, -0.23, 0.13, 0.6) forwards;
+    -ms-animation: parachute-animation 10s cubic-bezier(0.05, -0.23, 0.13, 0.6) forwards;
+    animation: parachute-animation 10s cubic-bezier(0.05, -0.23, 0.13, 0.6) forwards;
+    // -webkit-animation-delay: -2s; /* Chrome, Safari, Opera */
+    // animation-delay: 2s;
     background-image: url(images/logos/graphic.svg);
     background-repeat: no-repeat;
     position: relative;
@@ -44,13 +45,18 @@
 @keyframes parachute-animation {
   0% {
     transform: translate(0,0) scale(1);
+    opacity: 1;
   }
 
   25% {
     transform: translate(0,0) scale(1);
+    opacity: 1;
   }
-
+  50% {
+    opacity: 0;
+  }
   100% {
     transform: translate(-100px,500px) scale(0);
+    opacity: 0;
   }
 }
