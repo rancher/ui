@@ -5,6 +5,8 @@ import ManageLabels from 'ui/mixins/manage-labels';
 export default Ember.Component.extend(ManageLabels, {
   projects: Ember.inject.service(),
 
+  classNames: ['accordion-wrapper'],
+
   // Inputs
   instance: null,
   editing: true,
@@ -18,10 +20,6 @@ export default Ember.Component.extend(ManageLabels, {
 
     removeDevice: function(obj) {
       this.get('devicesArray').removeObject(obj);
-    },
-
-    setLogDriver: function(driver) {
-      this.set('instance.logConfig.driver', driver);
     },
 
     modifyCapabilities: function(type, select) {
@@ -44,15 +42,12 @@ export default Ember.Component.extend(ManageLabels, {
     var pull = this.getLabel(C.LABEL.PULL_IMAGE) === C.LABEL.PULL_IMAGE_VALUE;
     this.set('pullImage', pull);
 
-    if ( this.get('projects.current.isWindows') ) {
-    } else {
+    if ( !this.get('projects.current.isWindows') ) {
       this.initCapability();
       this.initDevices();
       this.initMemory();
       this.initPidMode();
     }
-
-    this.initLogging();
   },
 
   // ----------------------------------
@@ -199,37 +194,6 @@ export default Ember.Component.extend(ManageLabels, {
     });
     out.endPropertyChanges();
   }.observes('devicesArray.@each.{host,container,permissions}'),
-
-  initLogging: function() {
-    if (!this.get('instance.logConfig') ) {
-      this.set('instance.logConfig', {});
-    }
-
-    if (!this.get('instance.logConfig.driver') ) {
-      this.set('instance.logConfig.driver', '');
-    }
-
-    if (!this.get('instance.logConfig.config') ) {
-      this.set('instance.logConfig.config', {});
-    }
-  },
-
-  logDriverChoices: [
-    'none',
-    'json-file',
-    'awslogs',
-    'etwlogs',
-    'fluentd',
-    'gcplogs',
-    'gelf',
-    'journald',
-    'splunk',
-    'syslog',
-  ],
-
-  hasLogConfig: Ember.computed('instance.logConfig.config', function() {
-    return Ember.isEmpty(this.get('instance.logConfig.config'));
-  }),
 
   isolationChoices: function() {
     return [

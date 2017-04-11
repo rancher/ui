@@ -6,7 +6,16 @@
 }}
   <div class="row">
     <div class="col span-12 radio r-mb0">
-      <label class="form-control-static r-pl0">{{input type="checkbox" checked=pullImage}} {{t 'formImage.pullImage.label'}}</label>
+      <label>{{t 'formSecurity.pullImage.label'}}</label>
+      {{#if editing}}
+        <div class="radio small mt-10">
+          <label>{{radio-button selection=pullImage value=false}} {{t 'formSecurity.pullImage.disable'}}</label>
+        </div>
+        <div class="radio small mt-10">
+          <label>{{radio-button selection=pullImage value=true}} {{t 'formSecurity.pullImage.enable'}}</label>
+        </div>
+      {{else}}
+      {{/if}}
     </div>
   </div>
 
@@ -262,43 +271,4 @@
       </div>
     </div>
   {{/if}}
-
-  <div class="row">
-    <div class="col span-2 col-inline">
-      <label>{{t 'formSecurity.logDriver.label'}}</label>
-    </div>
-
-    <div class="col span-8">
-      {{#input-or-display editable=editing value=instance.logConfig.driver}}
-        <div class="input-group">
-          {{input type="text" value=instance.logConfig.driver classNames="form-control" placeholder=(t 'formSecurity.logDriver.placeholder')}}
-          <div class="input-group-btn">
-            <button type="button" class="btn bg-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="icon icon-chevron-down"></i></button>
-            <ul class="dropdown-menu dropdown-menu-right" role="menu">
-              {{#each logDriverChoices as |value|}}
-                <li><a {{action "setLogDriver" value}}>{{value}}</a></li>
-              {{/each}}
-            </ul>
-          </div>
-        </div>
-      {{/input-or-display}}
-    </div>
-  </div>
-
-  <div class="row">
-    <div class="col span-2 col-inline">
-      <label>{{t 'formSecurity.logOptions.label'}}</label>
-    </div>
-
-    <div class="col span-8">
-      {{form-key-value
-        initialMap=instance.logConfig.config
-        changed=(action (mut instance.logConfig.config))
-        addActionLabel="formSecurity.logConfig.addActionLabel"
-        keyPlaceholder="formSecurity.logConfig.keyPlaceholder"
-        valuePlaceholder="formSecurity.logConfig.valuePlaceholder"
-        editing=editing
-      }}
-    </div>
-  </div>
 {{/accordion-row}}

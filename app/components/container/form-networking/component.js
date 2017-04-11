@@ -17,6 +17,8 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   retainWasSetOnInit:  false,
   editing:             true,
 
+  classNames: ['accordion-wrapper'],
+
   init() {
     this._super(...arguments);
     this.initLabels(this.get('initialLabels'), null, [C.LABEL.DNS, C.LABEL.HOSTNAME_OVERRIDE, C.LABEL.REQUESTED_IP]);

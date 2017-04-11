@@ -18,6 +18,13 @@ export default Ember.Component.extend(ManageLabels, {
     this.initTerminal();
     this.initStartOnce();
     this.initRestart();
+    this.initLogging();
+  },
+
+  actions: {
+    setLogDriver: function(driver) {
+      this.set('instance.logConfig.driver', driver);
+    },
   },
 
   updateLabels(labels) {
@@ -155,4 +162,39 @@ export default Ember.Component.extend(ManageLabels, {
     this.set('statusClass', classForStatus(k));
     return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`);
   }.property('instance.{command,entryPoint,workingDir}','errors.length'),
+
+  // ----------------------------------
+  // Logging
+  // ----------------------------------
+  initLogging: function() {
+    if (!this.get('instance.logConfig') ) {
+      this.set('instance.logConfig', {});
+    }
+
+    if (!this.get('instance.logConfig.driver') ) {
+      this.set('instance.logConfig.driver', '');
+    }
+
+    if (!this.get('instance.logConfig.config') ) {
+      this.set('instance.logConfig.config', {});
+    }
+  },
+
+  logDriverChoices: [
+    'none',
+    'json-file',
+    'awslogs',
+    'etwlogs',
+    'fluentd',
+    'gcplogs',
+    'gelf',
+    'journald',
+    'splunk',
+    'syslog',
+  ],
+
+  hasLogConfig: Ember.computed('instance.logConfig.config', function() {
+    return Ember.isEmpty(this.get('instance.logConfig.config'));
+  }),
+
 });
