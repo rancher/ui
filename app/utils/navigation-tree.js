@@ -138,6 +138,7 @@ const navTree = [
     },
     route: 'authenticated.project.index',
     ctx: [getProjectId],
+    condition: function() { return this.get('hasProject'); },
     moreCurrentWhen: ['containers','scaling-groups','balancers','dns'],
   },
 
@@ -146,6 +147,7 @@ const navTree = [
     localizedLabel: 'nav.hosts.tab',
     route: 'hosts',
     ctx: [getProjectId],
+    condition: function() { return this.get('hasProject'); },
   },
 
   // App Catalog

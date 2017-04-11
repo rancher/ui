@@ -2,6 +2,7 @@ import Ember from 'ember';
 import ContainerChoices from 'ui/mixins/container-choices';
 import ManageLabels from 'ui/mixins/manage-labels';
 import C from 'ui/utils/constants';
+import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-row/component';
 
 export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   projects:            Ember.inject.service(),
@@ -65,6 +66,9 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   // ----------------------------------
   networkChoices: null,
   isContainerNetwork: Ember.computed.equal('instance.networkMode','container'),
+  isManagedNetwork: Ember.computed.equal('instance.networkMode','managed'),
+  isHostNetwork: Ember.computed.equal('instance.networkMode','host'),
+
   initNetwork: function() {
     var isService = this.get('isService')||false;
 
@@ -83,7 +87,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
         return;
       }
 
-      out.push({label: 'formNetwork.networkMode.'+option, value: option});
+      out.push({label: 'formNetwork.networkMode.'+option+'.label', value: option});
     });
 
     this.set('networkChoices', out);
@@ -95,9 +99,6 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
       this.set('instance.networkContainerId', null);
     }
   }.observes('instance.networkMode'),
-
-  isManagedNetwork: Ember.computed.equal('instance.networkMode','managed'),
-  isHostNetwork: Ember.computed.equal('instance.networkMode','host'),
 
   // ----------------------------------
   // Requested IP
@@ -255,4 +256,26 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
     });
     out.endPropertyChanges();
   }.observes('dnsSearchArray.@each.value'),
+
+  statusClass: null,
+  status: function() {
+    let k;
+    let str;
+    let mode = this.get('instance.networkMode');
+
+    if ( this.get('errors.length') ) {
+      k = STATUS.INCOMPLETE;
+      str = this.get('intl').t(`${STATUS_INTL_KEY}.${k}`);
+    } else {
+      if ( this.get('isManagedNetwork') ) {
+        k = STATUS.STANDARD;
+      } else {
+        k = STATUS.CUSTOM;
+      }
+      str = this.get('intl').t(`formNetwork.networkMode.${mode}.label`);
+    }
+
+    this.set('statusClass', classForStatus(k));
+    return str;
+  }.property('isManagedNetwork','errors.length'),
 });

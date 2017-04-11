@@ -1,11 +1,15 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
+import ManageLabels from 'ui/mixins/manage-labels';
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(ManageLabels, {
   projects: Ember.inject.service(),
 
   // Inputs
   instance: null,
   editing: true,
+
+  pullImage: null,
 
   actions: {
     addDevice: function() {
@@ -35,6 +39,11 @@ export default Ember.Component.extend({
   init() {
     this._super(...arguments);
 
+    this.initLabels(this.get('initialLabels'), null, C.LABEL.PULL_IMAGE);
+
+    var pull = this.getLabel(C.LABEL.PULL_IMAGE) === C.LABEL.PULL_IMAGE_VALUE;
+    this.set('pullImage', pull);
+
     if ( this.get('projects.current.isWindows') ) {
     } else {
       this.initCapability();
@@ -46,11 +55,19 @@ export default Ember.Component.extend({
     this.initLogging();
   },
 
-  didInsertElement() {
-    if ( ! this.get('projects.current.isWindows') ) {
-      this.privilegedDidChange();
+  // ----------------------------------
+  // Capability
+  // ----------------------------------
+  pullImageDidChange: function() {
+    if ( this.get('pullImage') )
+    {
+      this.setLabel(C.LABEL.PULL_IMAGE, C.LABEL.PULL_IMAGE_VALUE);
     }
-  },
+    else
+    {
+      this.removeLabel(C.LABEL.PULL_IMAGE, true);
+    }
+  }.observes('pullImage'),
 
   // ----------------------------------
   // Capability
@@ -182,24 +199,6 @@ export default Ember.Component.extend({
     });
     out.endPropertyChanges();
   }.observes('devicesArray.@each.{host,container,permissions}'),
-
-  privilegedDidChange: function() {
-    var add = this.$('.select-cap-add');
-    var drop = this.$('.select-cap-drop');
-    if ( add && drop )
-    {
-      if ( this.get('instance.privileged') )
-      {
-//        add.multiselect('disable');
-//        drop.multiselect('disable');
-      }
-      else
-      {
-//        add.multiselect('enable');
-//        drop.multiselect('enable');
-      }
-    }
-  }.observes('instance.privileged'),
 
   initLogging: function() {
     if (!this.get('instance.logConfig') ) {

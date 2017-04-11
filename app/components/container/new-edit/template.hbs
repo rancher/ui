@@ -113,6 +113,25 @@
   errors=volumeErrors
 }}
 
+{{container/form-networking
+  editing=true
+  instance=launchConfig
+  errors=networkingErrors
+  service=service
+  isService=isService
+  isSidekick=isSidekick
+  initialLabels=launchConfig.labels
+  isUpgrade=isUpgrade
+  setLabels=(action 'setLabels' 'networking')
+}}
+
+{{container/form-security
+  instance=launchConfig
+  errors=securityErrors editing=true
+  initialLabels=launchConfig.labels
+  setLabels=(action 'setLabels' 'security')
+}}
+
 <hr/>
 
 <div class="col span-11-of-24 offset-1-of-24">
@@ -121,19 +140,45 @@
       service=service
       changed=(action 'setServiceLinks')
     }}
+    {{#unless isService}}
+      {{#if editing}}
+        {{form-container-links initialLinks=instance.instanceLinks instance=instance}}
+      {{else}}
+        <div class="row inline-form">
+          <div class="col span-2 col-inline">
+            <label>{{t 'formContainerLinks.label'}}</label>
+          </div>
+          <div class="col span-8">
+            {{#if instance.instanceLinks}}
+              <table class="grid fixed">
+                <thead>
+                  <tr>
+                    <th>{{t 'formNetwork.links.table.dest'}}</th>
+                    <th>{{t 'formNetwork.links.table.as'}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each-in instance.instanceLinks as |key value|}}
+                    <tr>
+                      <td class="force-wrap valign-top" data-title={{t 'formNetwork.links.table.data.dest'}}>{{key}}</td>
+                      <td class="force-wrap valign-top" data-title={{t 'formNetwork.links.table.data.as'}}>{{value}}</td>
+                    </tr>
+                  {{/each-in}}
+                </tbody>
+              </table>
+            {{else}}
+              <div>{{t 'generic.none'}}</div>
+            {{/if}}
+          </div>
+        </div>
+      {{/if}}
+    {{/unless}}
   {{/if}}
 </div>
 
 <section>
   <div class="tabs">
     <ul class="tab-header" style="display: inline-block" role="tablist">
-      <li role="tab" aria-controls="panel" class="tab" data-section="network" {{action "selectTab" "network"}}>
-        <a href="#">{{t 'newContainer.tabs.networking'}}</a>
-      </li>
-      <li role="tab" aria-controls="panel" class="tab" data-section="security" {{action "selectTab" "security"}}>
-        <a href="#">{{t 'newContainer.tabs.security'}}</a>
-      </li>
-
       <li role="tab" aria-controls="panel" class="tab" data-section="scheduling" {{action "selectTab" "scheduling"}}>
         <a href="#">{{t 'newContainer.tabs.scheduling'}}</a>
       </li>
@@ -142,30 +187,7 @@
         <li role="tab" aria-controls="panel" class="tab" data-section="balancing" {{action "selectTab" "balancing"}}><a href="#">{{t 'newContainer.tabs.balancing'}}</a></li>
       {{/if}}
     </ul>
-  
   <div class="horizontal-form tab-content" role="tabpanel">
-    <div class="section" data-section="volumes">
-    </div>
-
-    <div class="section" data-section="network">
-      {{form-networking
-        editing=true
-        instance=launchConfig
-        errors=networkingErrors
-        allHosts=allHosts
-        service=service
-        isService=isService
-        isSidekick=isSidekick
-        initialLabels=launchConfig.labels
-        isUpgrade=isUpgrade
-        setLabels=(action 'setLabels' 'networking')
-      }}
-    </div>
-
-    <div class="section" data-section="security">
-      {{form-security instance=launchConfig errors=securityErrors editing=true}}
-    </div>
-
     <div class="section" data-section="scheduling">
       {{form-scheduling
         isService=isService
