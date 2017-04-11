@@ -1,5 +1,5 @@
-<div class="inline-form {{rowClass}}">
-  <div class="{{if descriptionExpanded bothColClass colClass}}">
+<div class="inline-form {{rowClass}} gutless">
+  <div class="{{if (or hasBlock descriptionExpanded) bothColClass colClass}}" style="padding-right: 1%">
     <div class="col-inline clearfix">
       <label>{{t nameLabel}}{{if nameRequired '*'}}</label>
       {{#unless descriptionExpanded}}
@@ -11,18 +11,19 @@
     {{input type="text" value=_name classNames="form-control" placeholder=(t namePlaceholder) disabled=nameDisabled}}
     {{#if nameHelpText}}<p class="text-info">{{nameHelpText}}</p>{{/if}}
   </div>
-
-  <div class="{{if descriptionExpanded bothColClass colClass}}">
-    {{#if descriptionShown}}
-      {{#if descriptionExpanded}}
-        <div class="col-inline">
-          <label>{{t descriptionLabel}}{{if descriptionRequired '*'}}</label>
-        </div>
-        {{textarea-autogrow value=_description classNames="form-control no-resize description" rows="1" placeholder=descriptionPlaceholder disabled=descriptionDisabled}}
-        {{#if descriptionHelp}}<p class="text-info">{{t descriptionHelp}}</p>{{/if}}
-      {{/if}}
-    {{else}}
+  {{#if hasBlock}}
+    <div class="{{if (or hasBlock descriptionExpanded) bothColClass colClass}}" style="padding-left: 1%;">
       {{yield}}
-    {{/if}}
-  </div>
+    </div>
+  {{/if }}
+
+  {{#if (and descriptionShown descriptionExpanded)}}
+    <div class="{{if (or hasBlock descriptionExpanded) bothColClass colClass}}" style="padding-right: 1%;">
+      <div class="col-inline">
+        <label>{{t descriptionLabel}}{{if descriptionRequired '*'}}</label>
+      </div>
+      {{textarea-autogrow value=_description classNames="form-control no-resize description" rows="1" placeholder=descriptionPlaceholder disabled=descriptionDisabled}}
+      {{#if descriptionHelp}}<p class="text-info">{{t descriptionHelp}}</p>{{/if}}
+    </div>
+  {{/if}}
 </div>
