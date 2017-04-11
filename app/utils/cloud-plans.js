@@ -19,6 +19,38 @@ function awsT2(realm,zone,name,memory) {
 }
 
 var CLOUD_PLANS = {
+  "hostDetails": [
+    {
+      driver: 'rancher',
+      flavorPrefix: 'Amazon',
+      name: null,
+      publicValues: {
+        accessKey: ''
+      },
+      secretValues: {
+        secretKey: ''
+      },
+    },
+    {
+      driver: 'rancher',
+      flavorPrefix: 'Digital Ocean',
+      name: null,
+      secretValues: {
+        accessToken: ''
+      },
+    },
+    {
+      driver: 'rancher',
+      flavorPrefix: 'Packet',
+      name: null,
+      publicValues: {
+        projectId: '',
+      },
+      secretValues: {
+        apiKey: ''
+      },
+    },
+  ],
   "realmNames": [
     {
       "id": "all",
