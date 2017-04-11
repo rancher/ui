@@ -53,14 +53,6 @@ var Stack = Resource.extend(StateCounts, {
   },
 
   actions: {
-    activateServices: function() {
-      return this.doAction('activateservices');
-    },
-
-    deactivateServices: function() {
-      return this.doAction('deactivateservices');
-    },
-
     cancelUpgrade: function() {
       return this.doAction('cancelupgrade');
     },
@@ -76,14 +68,6 @@ var Stack = Resource.extend(StateCounts, {
     rollback: function() {
       return this.doAction('rollback');
     },
-
-    promptStop: function() {
-      this.get('modalService').toggleModal('modal-confirm-deactivate', {
-        originalModel: this,
-        action: 'deactivateServices'
-      });
-    },
-
 
     addService: function() {
       this.get('router').transitionTo('scalin-groups.new', {
@@ -142,8 +126,6 @@ var Stack = Resource.extend(StateCounts, {
       { label: 'action.rollback',       icon: 'icon icon-history',        action: 'rollback',         enabled: !!a.rollback },
       { label: 'action.cancelUpgrade',  icon: 'icon icon-life-ring',      action: 'cancelUpgrade',    enabled: !!a.cancelupgrade },
       { label: 'action.cancelRollback', icon: 'icon icon-life-ring',      action: 'cancelRollback',   enabled: !!a.cancelrollback },
-      { label: 'action.startServices',  icon: 'icon icon-play',           action: 'activateServices', enabled: this.get('canActivate') },
-      { label: 'action.stopServices',   icon: 'icon icon-stop',           action: 'promptStop',       enabled: this.get('canDeactivate'), altAction: 'deactivateServices' },
       { divider: true },
       { label: 'action.viewGraph',      icon: 'icon icon-share',          action: 'viewGraph',        enabled: true },
       { label: 'action.viewConfig',     icon: 'icon icon-files',          action: 'viewCode',         enabled: !!a.exportconfig },
@@ -156,7 +138,7 @@ var Stack = Resource.extend(StateCounts, {
     ];
 
     return out;
-  }.property('actionLinks.{remove,purge,exportconfig,finishupgrade,cancelupgrade,rollback,cancelrollback,update}','canActivate','canDeactivate','externalIdInfo.kind'),
+  }.property('actionLinks.{remove,purge,exportconfig,finishupgrade,cancelupgrade,rollback,cancelrollback,update}','externalIdInfo.kind'),
 
   canViewConfig: function() {
     return !!this.get('actionLinks.exportconfig');
@@ -180,37 +162,6 @@ var Stack = Resource.extend(StateCounts, {
       return health;
     }
   }.property('state', 'healthState'),
-
-  canActivate: function() {
-    if ( !this.hasAction('activateservices') )
-    {
-      return false;
-    }
-
-    var count = this.get('services.length') || 0;
-    if ( count === 0 )
-    {
-      return false;
-    }
-
-    return this.get('services').filterBy('actionLinks.activate').get('length') > 0;
-  }.property('services.@each.state','actionLinks.activateservices'),
-
-  canDeactivate: function() {
-    if ( !this.hasAction('deactivateservices') )
-    {
-      return false;
-    }
-
-    var count = this.get('services.length') || 0;
-    if ( count === 0 )
-    {
-      return false;
-    }
-
-    return this.get('services').filterBy('actionLinks.deactivate').get('length') > 0;
-  }.property('services.@each.state','actionLinks.deactivateservices'),
-
 
   externalIdInfo: function() {
     return parseExternalId(this.get('externalId'));

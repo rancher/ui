@@ -82,6 +82,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   init() {
+    window.nec = this;
     this._super(...arguments);
 
     if ( !this.get('launchConfig.secrets') ) {
@@ -100,7 +101,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   // ----------------------------------
   userLabels: null,
   scaleLabels: null,
-  imageLabels: null,
+  securityLabels: null,
   commandLabels: null,
   schedulingLabels: null,
   networkingLabels: null,
@@ -108,7 +109,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   labelsChanged: debouncedObserver(
     'userLabels.@each.{key,value}',
     'scaleLabels.@each.{key,value}',
-    'imageLabels.@each.{key,value}',
+    'securityLabels.@each.{key,value}',
     'commandLabels.@each.{key,value}',
     'schedulingLabels.@each.{key,value}',
     'networkingLabels.@each.{key,value}',
@@ -116,7 +117,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       let out = flattenLabelArrays(
         this.get('userLabels'),
         this.get('scaleLabels'),
-        this.get('imageLabels'),
+        this.get('securityLabels'),
         this.get('commandLabels'),
         this.get('schedulingLabels'),
         this.get('networkingLabels')
@@ -182,6 +183,23 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
     this.set('errors', null);
     return true;
+  },
+
+  willSave() {
+    let ok = this._super(...arguments);
+    if ( ok ) {
+      if ( this.get('stack.id') ) {
+        this.set('primaryResource.stackId', this.get('stack.id'));
+        return true;
+      } else if ( this.get('stack') ) {
+        return this.get('stack').save().then((newStack) => {
+          this.set('primaryResource.stackId', newStack.get('id'));
+          return true;
+        });
+      }
+    }
+
+    return false;
   },
 
   doSave() {

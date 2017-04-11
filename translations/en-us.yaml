@@ -1407,7 +1407,7 @@ accordionRow:
     notConfigured: Not Configured
     configured: Configured
     countConfigured: "{count} Configured"
-    standard: Standard
+    standard: Default
     custom: Customized
 
 advancedSection:
@@ -1876,7 +1876,7 @@ formHealthCheck:
   checkType:
     none: None
     tcp: Check that a TCP connection opens successfully
-    http: Check that a HTTP reqeust responds with a successful (2xx or 3xx) status code
+    http: Check that a HTTP request responds with a successful (2xx or 3xx) status code
   request:
     label: HTTP Request
   method:
@@ -1946,6 +1946,8 @@ formNameDescription:
     expand: Add a Description
 
 formNetwork:
+  title: Networking
+  detail: Configure the networking and DNS options for the container.
   links:
     table:
       dest: Destination Container
@@ -1955,25 +1957,40 @@ formNetwork:
         as: 'As Name:'
   networkMode:
     label: Network
-    bridge: Bridge
-    container: Container
-    host: Host
-    managed: Managed
-    nat: NAT
-    transparent: Transparent
-    none: None
+    bridge:
+      label: Bridged
+      detail: Attach to the default docker0 bridge
+    container:
+      label: Container
+      detail: Attach to the network namespace of an existing container
+    host:
+      label: Host
+      detail: Attach to the network namespace of the host
+    managed:
+      label: Managed
+      detail: Automatic IPSec or VXLAN mesh network between all containers
+    nat:
+      label: NAT
+      detail: Network Address Translation on the physical host
+    transparent:
+      label: Transparent
+      detail: Direct access to the physical host network
+    none:
+      label: None
+      detail: No networking
   container:
-    label: container
+    label: Container
   requestedIp:
-    label: Requested IP
-    placeholder: e.g. 10.42.2.24
-    help: Request a specific IP in the 10.42.0.0/16 block.  If the IP is already in use a random one will be assigned.
+    label: Request IP
+    placeholder: Optional; e.g. 10.42.2.24
+    help: Request a specific IP in the 10.42.0.0/16 block.  If already in use, a random one will be assigned.
   retainIp:
     label: Retain IP
-    reuse: Reuse IP addresses when upgrading or replacing unhealthy instances.
+    reuse: Reuse existing IP on upgrade or replace
   dns:
-    label: DNS
-    enable: Enable {appName} DNS service discovery
+    label: Service Discovery
+    enable: Enable discovery and use local caching resolver
+    disable: Disable discovery and directly use remote resolving servers
   hostname:
     label: Hostname
     placeholder: e.g. web
@@ -2015,7 +2032,10 @@ formPorts:
   showIpLink: Show Host IP field
 
 formScale:
-  label: Scale
+  label:
+    container: Count
+    service: Scale
+    global: Scale per Host
   showAdvanced: More scaling options
   mode:
     container: "{scale, plural, =1 {Just create a container} other {Create # separate containers}}"
@@ -2065,18 +2085,20 @@ formSecrets:
     suffix: ""
 
 formSecurity:
-  key: Key
-  value: Value
+  title: Security
+  detail: Grant or limit the abilities of the container to affect the host it is running on.
   logConfig:
     addActionLabel: Add Option
     keyPlaceholder: e.g. syslog-facility
     valuePlaceholder: e.g. daemon
   privileged:
     label: Privileged
-    checkbox: Full access to the host
+    disable: Disabled
+    enable: "Enabled: Container has full access to the host"
   pidMode:
     label: PID Mode
-    checkbox: Host
+    disable: Normal
+    enable: Host
   memoryLimit:
     label: Memory Limit
     placeholder: Unlimited
@@ -2286,7 +2308,7 @@ hookPage:
     content: "Receiver hooks give you a URL that can be hit to trigger an action inside of {appName}."
     noData: No receiver hooks.
   scaleService:
-    label: Scale a Service
+    label: Scale a Scaling Group or Load Balancer
     detailPrefix: "Scale {action} "
     detailLink: "{displayService}"
     detailSuffix: "by {amount}"
