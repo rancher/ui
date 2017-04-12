@@ -25,7 +25,7 @@ export default Ember.Component.extend(NewOrEdit, {
   selectVersionUpgrade: 'newCatalog.selectVersionUpgrade',
   saveUpgrade: 'newCatalog.saveUpgrade',
   saveNew: 'newCatalog.saveNew',
-  sectionClass: 'well',
+  sectionClass: 'box mb-20',
   showDefaultVersionOption: false,
 
   classNames: ['launch-catalog'],

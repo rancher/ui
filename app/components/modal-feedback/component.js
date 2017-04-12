@@ -51,12 +51,12 @@ export default Ember.Component.extend(ModalBase, {
     form.find('.field.hs_sandbox_acknowledgement').addClass('span-12');
 
     form.find('INPUT[type=text],INPUT[type=email],SELECT').addClass('form-control');
-    form.find('LABEL').addClass('r-pt10');
+    form.find('LABEL').addClass('pt-10');
 
     form.find('INPUT[type=submit]').addClass('hide');
 
     form.find('UL').addClass('list-unstyled');
-    form.find('INPUT[type=checkbox]').addClass('r-mr10');
+    form.find('INPUT[type=checkbox]').addClass('mr-10');
     form.find('.hs-form-booleancheckbox-display').css('font-weight', 'normal');
 
     form.find('SELECT').on('change', function() {
