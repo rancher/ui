@@ -35,6 +35,18 @@ export default Ember.Component.extend({
     },
   },
 
+  driverComponent: Ember.computed('driver', function() {
+    var driverName = 'other';
+    var driverComponent = 'machine/driver';
+
+    if (this.get('driverObj.hasUi')) {
+      driverComponent = `${driverComponent}-${this.get('driver')}`;
+    } else {
+      driverComponent = `${driverComponent}-${driverName}`;
+    }
+    return driverComponent;
+  }),
+
   driverObj: Ember.computed('driver', function() {
     return this.get('model.availableDrivers').filterBy('name', this.get('driver'))[0];
   }),

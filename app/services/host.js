@@ -26,24 +26,22 @@ export default Ember.Service.extend({
     let us = this.get('userStore');
     let drivers = [];
 
-    return new Ember.RSVP.Promise((resolve, reject) => {
-      us.find('machinedriver', null, {forceReload: true}).then((possible) => {
-        let promises = [];
+    return us.find('machinedriver', null, {forceReload: true}).then((possible) => {
+      let promises = [];
 
-        possible.filterBy('state','active').forEach((driver) => {
-          let schemaName = driver.get('name') + 'Config';
-          promises.push(us.find('schema', schemaName).then(() => {
-            drivers.push(driver);
-          }).catch(() => {
-            reject();
-          }));
-        });
-
-        Ember.RSVP.all(promises);
-      }).then(() => {
-        this.set('machineDrivers', drivers);
-        resolve(drivers);
+      possible.filterBy('state','active').forEach((driver) => {
+        let schemaName = driver.get('name') + 'Config';
+        promises.push(us.find('schema', schemaName).then(() => {
+          drivers.push(driver);
+        }).catch(() => {
+          return Ember.RSVP.resolve();
+        }));
       });
+
+      return Ember.RSVP.all(promises);
+    }).then(() => {
+      this.set('machineDrivers', drivers);
+      return Ember.RSVP.resolve(drivers);
     });
   },
   getHost(hostId) {
