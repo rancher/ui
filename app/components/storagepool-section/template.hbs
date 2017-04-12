@@ -1,44 +1,44 @@
-<div class="clearfix {{if single model.stateBackground}} {{if single 'single'}}">
-  <div class="header-left collapser"></div>
+<div class="banner bg-info {{if single model.stateBackground}} {{if single 'single'}}">
+  <div class="collapser"></div>
 
-  <div class="header-left">
+  <div class="pull-left">
     {{#unless single}}
-      <div class="pull-left">{{badge-state model=model}}</div>
+      <div class="banner-message">
+        <p>{{badge-state model=model}}</p>
+      </div>
     {{/unless}}
-    <h4>
-      <span class="divider clip">{{model.name}}</span>
+    <div class="banner-message">
+      <p class="divider clip">{{model.name}}</p>
       {{!-- when storage pools details ready --}}
       {{!-- {{#if single}} --}}
         {{!-- <span class="divider clip">{{model.name}}</span> --}}
       {{!-- {{else}} --}}
         {{!-- <span class="divider clip">{{#link-to "storagepools.detail" model.id}} {{model.name}}{{/link-to}}</span> --}}
       {{!-- {{/if}} --}}
-    </h4>
+    </div>
   </div>
 
-  <div class="header-right right-divider stack-actions" style="width: auto">
+  <div class="stack-actions pull-right mt-10 mr-10">
     {{#unless single}}
       {{#link-to "storagepools.new-volume" (query-params driverName=model.driverName) classNames="btn bg-primary btn-sm"}}{{t 'storagePoolSection.volumes.add'}}{{/link-to}}
     {{/unless}}
   </div>
 </div>
 
-<hr/>
-
-<div class="stack-body pl-10 row row-full-height">
-  <div class="subsection gutter  col span-3 col-full-height">
-    <h6>{{t 'storagePoolSection.hosts.header'}}</h6>
-    <div class="clearfix pl-10 hosts">
+<div class="stack-body row">
+  <div class="box col span-3">
+    <h2>{{t 'storagePoolSection.hosts.header'}}</h2>
+    <div class="clearfix hosts">
       {{#each hostsByName as |host|}}
-        <div class="m-10"><i class="icon {{host.stateIcon}} {{host.stateBackground}}"></i> {{#link-to "host" host.id}}{{host.displayName}}{{/link-to}}</div>
+        <div class="mb-10"><i class="badge-state icon {{host.stateIcon}} {{host.stateBackground}}"></i> {{#link-to "host" host.id}}{{host.displayName}}{{/link-to}}</div>
       {{else}}
         <div class="text-center text-muted">{{t 'storagePoolSection.hosts.none'}}</div>
       {{/each}}
     </div>
   </div>
   {{#if model.volumes.length}}
-    <div class="subsection gutter  col span-9 col-full-height">
-      <h6>{{t 'storagePoolSection.volumes.header'}}</h6>
+    <div class="col span-9 col-full-height">
+      <h2>{{t 'storagePoolSection.volumes.header'}}</h2>
       {{#sortable-table
           classNames="grid mb-0 sortable-table"
           bulkActions=false

@@ -50,7 +50,7 @@ export default Ember.Component.extend(ManageLabels, GroupedInstances, {
   showOnlyMessage: Ember.computed.or('isProvisioning','isError'),
 
   stateBackground: function() {
-    return this.get('model.stateColor').replace("text-","bg-");
+    return this.get('model.stateColor').replace("text-");
   }.property('model.stateColor'),
 
 });
