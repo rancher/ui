@@ -10,6 +10,7 @@ export default Ember.Component.extend({
   allowOther:    true,
   forCatalog:    true,
   inModal:       false,
+  showNameScale: true,
   goBack:        null,
 
   sortBy:        ['name'],

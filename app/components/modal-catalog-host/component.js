@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import ModalBase from 'ui/mixins/modal-base';
+import { task } from 'ember-concurrency';
 
 export default Ember.Component.extend(ModalBase, {
   modalService: Ember.inject.service('modal'),
@@ -8,25 +9,21 @@ export default Ember.Component.extend(ModalBase, {
   loading:     true,
   model:       null,
   hostConfig: null,
-  goBack:     null,
+  getDrivers: task(function * () {
+    var hs = this.get('hostService');
+
+    var drivers = yield hs.loadAllDrivers()
+    this.set('machineDrivers', drivers);
+    var model = yield hs.getModel();
+    this.set('model', model);
+  }).on('init'),
   actions: {
+    goBack() {debugger;},
     completed(hostConfig) {
       this.get('modalService.modalOpts.callee').send('completed', hostConfig);
       Ember.run.next(() => {
         this.get('modalService').toggleModal();
       });
-    }
+    },
   },
-  init() {
-    this._super(...arguments);
-    var hs = this.get('hostService');
-
-    hs.loadAllDrivers().then((drivers) => {
-      this.set('machineDrivers', drivers);
-      hs.getModel().then((hash) => {
-        this.set('model', hash);
-        this.set('loading', false);
-      });
-    });
-  }
 });
