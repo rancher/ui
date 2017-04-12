@@ -63,7 +63,7 @@
         optionLabelPath="version"
         optionValuePath="link"
         value=selectedTemplateUrl
-        disabled=loading
+        disabled=getTemplate.isRunning
       }}
       <p class="text-info">{{t (if editing selectVersionUpgrade selectVersionAdd)}}</p>
     </div>
@@ -84,14 +84,14 @@
 {{/if}}
 
 <section class="{{sectionClass}}">
-  {{#if loading}}
+  {{#if getTemplate.isRunning}}
     <div class="text-center">
       <i class="icon icon-spinner icon-spin" style="font-size:36px;"></i>
     </div>
   {{/if}}
 
   {{#if selectedTemplateModel}}
-    <form {{action "submitTemplate" on="submit"}} class="{{if loading 'hide'}}">
+    <form {{action "submitTemplate" on="submit"}} class="{{if getTemplate.isRunning 'hide'}}">
       <h4>{{t 'newCatalog.config'}}</h4>
       <hr/>
 
@@ -126,7 +126,7 @@
   {{/if}}
 </section>
 
-{{#if (and selectedTemplateModel (not loading))}}
+{{#if (and selectedTemplateModel (not getTemplate.isRunning))}}
   {{#if showPreview}}
     <section>
       <div class="over-hr"><span {{action "togglePreview"}}>{{t 'newCatalog.preview'}} <i class="icon {{if previewOpen 'icon-chevron-up' 'icon-chevron-down'}}"></i></span></div>
