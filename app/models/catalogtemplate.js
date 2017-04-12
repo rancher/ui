@@ -34,7 +34,9 @@ export default Resource.extend({
   categories: function() {
     let tpl = this.get('catalogTemplate');
     if ( tpl ) {
-      return tpl.get('categories');
+      return tpl.get('categories')||[];
     }
+
+    return [];
   }.property('catalogTemplate.categories'),
 });
