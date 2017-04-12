@@ -34,6 +34,11 @@ var ProjectTemplate = Resource.extend(PolledResource, {
 
   icon: 'icon icon-file',
 
+  allThere: function() {
+    let bad = this.get('stacks').find((stack) => { return !stack.get('catalogTemplate') });
+    return !bad;
+  }.property('stacks.@each.catalogTemplate'),
+
   summary: function() {
     let map = {
       'Orchestration': '',

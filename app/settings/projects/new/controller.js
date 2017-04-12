@@ -9,5 +9,7 @@ export default Ember.Controller.extend({
     cancel() {
       this.send('goToPrevious');
     }
-  }
+  },
+
+  availableProjectTemplates: Ember.computed.filterBy('model.projectTemplates','allThere',true),
 });
