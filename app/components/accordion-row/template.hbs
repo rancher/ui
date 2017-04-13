@@ -1,21 +1,16 @@
-<table width="100%" class="hand" {{action "toggle"}}>
-  <tbody>
-    <tr>
-      <td class="pl-10 pt-0">
-        <i role="button" class="icon icon-play eased text-small text-muted {{if expanded 'icon-rotate-90'}}"></i>
-        {{title}}
-      </td>
-      <td rowspan="2" class="pr-10 text-right {{statusClass}}">
-        {{status}}
-      </td>
-    </tr>
-    <tr>
-      <td class="pl-10">
-        <p class="help-block pl-20">{{detail}}</p>
-      </td>
-    </tr>
-  </tbody>
-</table>
-<div class="p-10 {{unless expanded 'hide'}}">
+<div width="100%" class="hand bg-default clearfix" {{action "toggle"}}>
+  <div class="inline-block">
+    <div class="pull-left"><i role="button" class="icon icon-chevron-right eased text-small btn bg-transparent p-10 {{if expanded 'icon-rotate-90'}}"></i></div>
+    <div class="inline-block">
+      <span class="m-0">{{title}}</span>
+      <p class="help-block">{{detail}}</p>
+    </div>
+  </div>
+
+  <div rowspan="2" class="pull-right p-10 {{statusClass}}">
+    {{status}}
+  </div>
+</div>
+<div class="accordion-content {{unless expanded 'hide'}}">
   {{yield}}
 </div>
