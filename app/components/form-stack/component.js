@@ -50,12 +50,18 @@ export default Ember.Component.extend({
   },
 
   updateStack: Ember.observer('reuseStackId','mode', function() {
+    let stack;
     if ( this.get('mode') === REUSE ) {
-      let stack = this.get('choices').findBy('id', this.get('reuseStackId'));
-      this.set('stack', stack);
-    } else {
-      this.set('stack', this.get('createStack'));
+      stack = this.get('choices').findBy('id', this.get('reuseStackId'));
     }
+
+    if ( !stack ) {
+      stack = this.get('createStack');
+    }
+
+    Ember.run.next(() => {
+      this.set('stack', stack);
+    });
   }),
 
   validate: Ember.observer('stack.{id,name}', function() {

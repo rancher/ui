@@ -35,6 +35,8 @@ generic:
   ipAddress: IP Address
   limit: Limit
   loading: "Loading..."
+  megabyte: 'MB'
+  mibibyte: 'MiB'
   missing: "*%MISSING%*"
   moreActions: More Actions
   na: 'n/a'
@@ -1835,7 +1837,8 @@ formCommand:
     valuePlaceholder: e.g. daemon
 
 formContainerLinks:
-  label: Links
+  title: Links
+  detail: Define relationships between this container and others
   addActionLabel: Add Link
   noContainers: There are no other containers to link to.
   noLinks: This container has no links.
@@ -2059,7 +2062,7 @@ formPorts:
     publicRequired: Public Host Port is required if Host IP is specified.
     mixedIpPort: "Port {ip}:{port}/{proto} has more than one mapping."
     mixedPort: "Port {port}/{proto} has more than one mapping."
-  showIpLink: Show Host IP field
+  showIpLink: Customize Host IPs
 
 formScale:
   label:
@@ -2073,6 +2076,8 @@ formScale:
     global: "Create a global scaling group with {scale, plural, =1 {# container} other {# containers}} per host"
 
 formScheduling:
+  title: Host Scheduling
+  detail: Choose what hosts containers will be deployed to
   canRequestHost:
     vm: Run <b>all</b> virtual machines on a specific host
     containers: Run <b>all</b> containers on a specific host
@@ -2123,31 +2128,38 @@ formSecurity:
     disable: Only if not already present on the host
   privileged:
     label: Privileged
-    disable: Disabled
-    enable: "Enabled: Container has full access to the host"
+    disable: No
+    enable: "Yes: Container has full access to the Host"
   pidMode:
     label: PID Mode
     disable: Normal
     enable: Host
   memoryLimit:
-    label: Memory Limit
-    placeholder: Unlimited
+    label: Physical Memory
+    unlimited: Unlimited
+    set: Limit to
     mb: MB
   swapLimit:
-    label: + Swap Limit
+    label: Swap Memory
+    unlimited: Unlimited
+    set: Limit to
+    default: Limit to double the physical limit
+    none: Do not allow swap
     mb: MB
-    placeholder1: Requires Memory Limit
-    placeholder2: Unlimited
+  swappiness:
+    label: Swappiness
+    default: Default on the Host
+    none: Minimum
+    set: Custom (1-100)
   cpuPinning:
     label: CPU Pinning
-    placeholder: "e.g. 0,3; Default: All"
+    placeholder: "e.g. 0,1,3; Default: All"
   shares:
-    label: Shares
+    label: CPU Shares
     placeholder: e.g. 1024
   capabilities:
-    add: Add
-    drop: Drop
-    label: Capabilities
+    add: Add Capabilities
+    drop: Drop Capabilities
     helpBlock:
       text: Capabilities allow you to provide fine-grained control over superuser privileges available to the container.
       link: More information
@@ -2165,15 +2177,20 @@ formSecurity:
       placeholder: "e.g. 0,3; Default: All"
   memoryReservation:
     label: Memory Reservation
+    placeholder: Scheduling will reserve this much RAM for the container
   milliCpuReservation:
-    label: mCPU Reservation
+    label: CPU Reservation
+    unit: milli CPUs
+    placeholder: Scheduling will reserve this much CPU for the container
   isolation:
     label: Isolation
     default: Default (Container)
     hyperv: HyperV (VM)
 
 formServiceLinks:
-  addAction: Service Links
+  title: Links
+  detail: Define relationships between this scaling group and other services
+  addAction: Add Link
   noServices: There are no other services to link to.
   noLinks: This service has no service links.
   service:
@@ -2198,9 +2215,9 @@ formSslTermination:
 
 formStack:
   label:
-    simple: Stack
-    reuse: Use an existing Stack
-    create: Add to a new Stack
+    simple: Deploying into the {name} Stack
+    reuse: Deploy into an existing Stack
+    create: Deploy into a new Stack
   toggle:
     simple: Customize
     reuse: Use existing
@@ -3164,7 +3181,8 @@ newContainer:
     secrets: Secrets
   selectUpgrade: Select one or more services to upgrade.
   saveUpgrade: Upgrade
-  saveNew: Create
+  saveNew: Launch
+  addSidekick: Add a Sidekick
   removeSidekick: Remove this Sidekick
   name:
     label:

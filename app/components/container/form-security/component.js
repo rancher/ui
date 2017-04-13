@@ -78,81 +78,119 @@ export default Ember.Component.extend(ManageLabels, {
   // ----------------------------------
   // Memory
   // ----------------------------------
+  memoryMode: 'unlimited', // unlimited, set
   memoryMb: null,
-  memoryReservationMb: null,
+  swapMode: 'default', // default, none, unlimited, set
+  swappinesMode: 'default', // default, min, set
   swapMb: null,
+  memoryReservationMb: null,
   initMemory: function() {
     var memBytes = this.get('instance.memory') || 0;
     var memPlusSwapBytes = this.get('instance.memorySwap') || 0;
-    var memReservation = this.get('instance.memoryReservation');
     var swapBytes = Math.max(0, memPlusSwapBytes - memBytes);
+    var memReservation = this.get('instance.memoryReservation');
+    var swappiness = this.get('instance.memorySwappiness');
 
     if (memReservation) {
       this.set('memoryReservationMb', parseInt(memReservation,10)/1048576);
     } else {
       this.set('memoryReservationMb', '');
     }
-    if ( memBytes )
-    {
+
+    if ( memBytes ) {
       this.set('memoryMb', parseInt(memBytes,10)/1048576);
-    }
-    else
-    {
-      this.set('memoryMb','');
+      this.set('memoryMode', 'set');
+    } else {
+      this.set('memoryMb', 128);
+      this.set('memoryMode', 'unlimited');
     }
 
     if ( swapBytes )
     {
-      this.set('swapMb', parseInt(swapBytes,10)/1048576);
+      let bytes = parseInt(swapBytes,10);
+      if ( memBytes && memBytes === swapBytes ) {
+        this.set('swapMode', 'none');
+        this.set('swapMb', 0);
+      } else if ( bytes >= 0 ) {
+        this.set('swapMode', 'set');
+        this.set('swapMb', parseInt(swapBytes,10)/1048576);
+      } else {
+        this.set('swapMode', 'unlimited');
+        this.set('swapMb', bytes);
+      }
     }
     else
     {
-      this.set('swapMb','');
+      this.set('swapMode','default');
+      if ( memBytes ) {
+        this.set('swapMb', 2*memBytes);
+      } else {
+        this.set('swapMb', 256);
+      }
     }
 
+    if ( this.get('swapMode') === 'none'  || swappiness === null || swappiness === undefined ) {
+      this.set('instance.memorySwappiness', null);
+      this.set('swappinessMode','default');
+    } else if ( swappiness === 0 ) {
+      this.set('instance.memorySwappiness', 0);
+      this.set('swappinessMode', 'min');
+    } else {
+      this.set('instance.memorySwappiness', swappiness);
+      this.set('swappinessMode', 'set');
+    }
   },
+
+  memoryDidChange: function() {
+    // The actual parameter we're interested in is 'memory', in bytes.
+    let mem = parseInt(this.get('memoryMb'),10);
+    let swap = parseInt(this.get('swapMb'),10);
+    let memoryMode = this.get('memoryMode');
+    let swapMode = this.get('swapMode');
+
+    if ( memoryMode === 'unlimited' || isNaN(mem) || mem <= 0) {
+      this.setProperties({
+        'instance.memory': null,
+        'instance.memorySwap': null,
+        'swapMode': 'unlimited',
+        'swappinessMode': 'set',
+        'instance.memorySwappiness': 0,
+      });
+      return;
+    }
+
+    this.set('instance.memory', mem * 1048576);
+
+    switch (swapMode) {
+      case 'default':
+        this.set('instance.memorySwap', null);
+        this.set('swapMb', 2*mem);
+        break;
+      case 'unlimited':
+        this.set('instance.memorySwap', -1);
+        break;
+      case 'none':
+        this.set('instance.memorySwap', mem*1048576);
+        this.set('swappinessMode', 'min');
+        this.set('instance.memorySwappiness', 0);
+        break;
+      case 'set':
+        this.set('instance.memorySwap', (mem+swap)*1048576);
+        break;
+    }
+  }.observes('memoryMb','memoryMode','swapMb','swapMode'),
 
   memoryReservationChanged: Ember.observer('memoryReservationMb', function() {
     var mem = this.get('memoryReservationMb');
 
     if ( isNaN(mem) || mem <= 0) {
-      this.set('instance.memoryReservation', '');
+      this.set('instance.memoryReservation', null);
     }
     else {
       this.set('instance.memoryReservation', mem * 1048576);
     }
   }),
 
-  memoryDidChange: function() {
-    // The actual parameter we're interested in is 'memory', in bytes.
-    var mem = parseInt(this.get('memoryMb'),10);
-    if ( isNaN(mem) || mem <= 0)
-    {
-      this.setProperties({
-        'memoryMb': '',
-        'swapMb': '',
-        'instance.memory': null,
-        'instance.memorySwap': null,
-      });
-    }
-    else
-    {
-      this.set('instance.memory', mem * 1048576);
-
-      var swap = parseInt(this.get('swapMb'),10);
-      if ( isNaN(swap) || swap <= 0)
-      {
-        this.setProperties({
-          'swapMb': '',
-          'instance.memorySwap': null
-        });
-      }
-      else
-      {
-        this.set('instance.memorySwap', (mem+swap) * 1048576);
-      }
-    }
-  }.observes('memoryMb','swapMb'),
 
   // ----------------------------------
   // PID Mode

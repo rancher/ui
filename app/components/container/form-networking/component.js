@@ -74,11 +74,13 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   initNetwork: function() {
     var isService = this.get('isService')||false;
 
+    let mode = this.get('instance.networkMode') || 'managed';
+
     var choices = ['bridge','container','host','managed','none'];
     if ( this.get('projects.current.isWindows') ) {
       choices = ['nat','transparent'];
-      if ( this.get('instance.networkMode') === 'managed' ) {
-        this.set('instance.networkMode','nat');
+      if ( mode === 'managed' ) {
+        mode = 'nat';
       }
     }
 
@@ -93,6 +95,7 @@ export default Ember.Component.extend(ManageLabels, ContainerChoices,{
     });
 
     this.set('networkChoices', out);
+    this.set('instance.networkMode', mode);
   },
 
   networkModeChanged: function() {

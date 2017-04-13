@@ -13,7 +13,7 @@ export default Ember.Component.extend({
   mode:           'container',
 
   userInput:      null,
-  showAdvanced:   false,
+  advancedShown:   false,
   sliderMax:      10,
 
   classNames: ['inline-form'],
@@ -22,8 +22,17 @@ export default Ember.Component.extend({
     this._super(...arguments);
     this.set('userInput', (this.get('initialScale')||1)+'');
     this.set('sliderMax', newMax(this.get('asInteger'), this.get('sliderMax'), this.get('max')));
+
+    if ( this.get('isGlobal') ) {
+      this.set('mode', 'global');
+    } else if ( this.get('isService') ) {
+      this.set('mode', 'service');
+    } else {
+      this.set('mode', 'container');
+    }
+
     if ( this.get('mode') !== 'container' ) {
-      this.set('showAdvanced', true);
+      this.set('advancedShown', true);
     }
   },
 
@@ -37,7 +46,7 @@ export default Ember.Component.extend({
     },
 
     showAdvanced() {
-      this.set('showAdvanced', true);
+      this.set('advancedShown', true);
     },
   },
 

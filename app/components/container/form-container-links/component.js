@@ -1,5 +1,6 @@
 import Ember from 'ember';
 import ContainerChoices from 'ui/mixins/container-choices';
+import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-row/component';
 
 export default Ember.Component.extend(ContainerChoices, {
   // Inputs
@@ -90,4 +91,21 @@ export default Ember.Component.extend(ContainerChoices, {
     this.set('errors', errors);
     this.sendAction('changed', this.get('linksArray'));
   }.observes('linksArray.@each.{targetInstanceId,name}'),
+
+  statusClass: null,
+  status: function() {
+    let k = STATUS.NONE;
+    let count = (this.get('linksArray')||[]).filterBy('targetInstanceId').get('length') || 0;
+
+    if ( count ) {
+      if ( this.get('errors.length') ) {
+        k = STATUS.INCOMPLETE;
+      } else {
+        k = STATUS.CONFIGURED;
+      }
+    }
+
+    this.set('statusClass', classForStatus(k));
+    return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`, {count: count});
+  }.property('userLabelArray.@each.key'),
 });
