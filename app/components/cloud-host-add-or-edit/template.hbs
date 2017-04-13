@@ -18,7 +18,7 @@
               <div class="nav-box-item driver machine-driver active {{providerClass}}"></div>
             </div>
           </div>
-          <div class="col span-8">
+          <div class="col span-4">
             {{ log config }}
             <div>
               <label for="">{{t 'hostsPage.cloudHostsPage.addPage.instance'}}</label>
@@ -44,17 +44,20 @@
               <label for="">{{t 'hostsPage.cloudHostsPage.addPage.transfer'}}</label>
               {{config.transfer}}{{t 'hostsPage.cloudHostsPage.addPage.transferUnit'}}
             </div>
-            <hr/>
-            <div>
-              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.price'}}</label>
-              {{#if config.provider}}
-                {{#if (eq config.provider 'Digital Ocean') }}
-                  ${{config.pricePerMonth}}
-                {{else}}
-                  ${{config.pricePerMonth}}{{field-required}}
+          </div>
+          <div class="col span-4 price">
+            {{#tooltip-element type="tooltip-basic" model=(concat (format-number config.pricePerHour style='currency' currency='USD') (t 'hostsPage.cloudHostsPage.favoritesPage.pricePerHour')) tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="cloud-host-launch"}}
+              <div class="inline-block">
+                {{#if config.provider}}
+                  {{#if (eq config.provider 'Digital Ocean') }}
+                    {{format-number config.pricePerMonth style='currency' currency='USD'}}
+                  {{else}}
+                    {{format-number config.pricePerMonth style='currency' currency='USD'}}{{field-required}}
+                  {{/if}}
                 {{/if}}
-              {{/if}}
-            </div>
+                <span class="addon">{{t 'hostsPage.cloudHostsPage.favoritesPage.price'}}</span>
+              </div>
+            {{/tooltip-element}}
           </div>
         </div>
         <div class="container-fluid">
@@ -66,11 +69,13 @@
                 provider=config.provider
                 selectedKey=(mut selectedHostTemplate)
             }}
+            <hr/>
           {{/if}}
-          <hr/>
           <div class="row">
             <div class="col span-12">
-              {{form-user-labels initialLabels=model.labels setLabels=(action 'setLabels')}}
+              {{#advanced-section}}
+                {{form-user-labels initialLabels=model.labels setLabels=(action 'setLabels')}}
+              {{/advanced-section}}
             </div>
           </div>
         </div>

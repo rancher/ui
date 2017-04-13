@@ -24,8 +24,8 @@ export default Ember.Route.extend({
 
     switch(params.from) {
     case 'favorites':
-      var favs = this.get(`prefs.${C.PREFS.HOST_FAVORITES}`);
-      if (favs) {
+      var favs = this.get(`prefs.${C.PREFS.HOST_FAVORITES}`) || [];
+      if (favs.length) {
         model.plans = plans.realms.filter((plan) => {
           if (favs.contains(plan.id)) {
             return true;
@@ -33,7 +33,13 @@ export default Ember.Route.extend({
           return false;
         });
       } else {
-        model.plans = [];
+        let defaults = ['Small', 'Medium', 'Large', 'Extralarge'];
+        model.plans = plans.realms.filter((plan) => {
+          if (plan.provider === 'Digital Ocean' && plan.zone === 'sfo2' && defaults.includes(plan.displayName)) {
+            return true;
+          }
+        });
+        this.set(`prefs.${C.PREFS.HOST_FAVORITES}`, model.plans.mapBy('id'));
       }
       model.realms = plans.realmNames;
       break;

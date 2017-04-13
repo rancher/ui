@@ -22,14 +22,14 @@
             <div class="storage">
               <strong>{{host.storage}}{{#if (not (eq host.provider 'Amazon'))}}{{t 'hostsPage.cloudHostsPage.favoritesPage.memStUnit'}}{{/if}}</strong> {{#if (not (eq host.provider 'Amazon'))}}<span class="help-text">{{t 'hostsPage.cloudHostsPage.favoritesPage.help.storage'}}</span>{{/if}}
             </div>
-            <div class="price">
-              <strong>{{host.pricePerHour}}{{t 'hostsPage.cloudHostsPage.favoritesPage.pricePerHour'}}&nbsp;({{host.pricePerMonth}}{{t 'hostsPage.cloudHostsPage.favoritesPage.price'}})</strong> <span class="help-text">{{t 'hostsPage.cloudHostsPage.favoritesPage.help.transfer'}}</span>
+            <div class="transfer">
+              <strong>{{host.transfer}}</strong> <span class="help-text">{{t 'hostsPage.cloudHostsPage.favoritesPage.help.transfer'}}</span>
             </div>
           </div>
 
         </div>
       {{else if (eq section 'footer')}}
-          <button role="button" class="btn bg-primary" {{action "selectMachine" host.id}}> {{t 'generic.select'}}</button>
+        <button role="button" class="btn bg-primary" {{action "selectMachine" host.id}}>{{format-number host.pricePerMonth style='currency' currency='USD'}}{{t 'hostsPage.cloudHostsPage.favoritesPage.price'}}</button>
       {{/if}}
     {{/catalog-box}}
   {{/each}}
