@@ -1,90 +1,83 @@
-<form>
-  <section class="horizontal-form">
-    <div class="row addtl-info">
-      <div class="col span-4">
-        <div class="nav-boxes driver">
-          <div class="nav-box-item driver machine-driver active {{providerClass}}"></div>
-        </div>
-      </div>
-      <div class="col span-8">
-        <div>
-          <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.table.provider'}}</label>
-          <div>
-            {{config.provider}}
-          </div>
-        </div>
-        <hr/>
-        <div>
-          <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.table.instance'}}</label>
-          <div>
-            {{config.displayName}}
-          </div>
-        </div>
-        <hr/>
-        <div>
-          <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.table.zone'}}</label>
-          <div>
-            {{config.availabilityRealm}}
-          </div>
-        </div>
-        <hr/>
-        <div>
-          <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.table.memory'}}</label>
-          <div>
-            {{config.memory}}
-          </div>
-        </div>
-        <hr/>
-        <div>
-          <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.table.storage'}}</label>
-          <div>
-            {{config.storage}}
-          </div>
-        </div>
-        <hr/>
-        <div>
-          <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.table.transfer'}}</label>
-          <div>
-            {{config.transfer}}
-          </div>
-        </div>
-        <hr/>
-        <div>
-          <label for="">{{t 'hostsPage.cloudHostsPage.browsePage.table.price'}}</label>
-          <div>
-            {{#if config.provider}}
-              {{#if (eq config.provider 'Digital Ocean') }}
-                ${{config.pricePerMonth}}
-              {{else}}
-                ${{config.pricePerMonth}}{{field-required}}
-              {{/if}}
-            {{/if}}
-          </div>
-        </div>
+<div class="hosts-cloud-add">
+  <section class="header clearfix">
+    <div class="row">
+      <div class="mb-0">
+        <h1>
+          {{t 'hostsPage.cloudHostsPage.addPage.header'}}
+        </h1>
       </div>
     </div>
-    <div class="container-fluid">
-      {{partial "host/add-common"}}
-      <hr />
-      {{#if (or (eq config.apiKeySupport 'byokey') (eq config.apiKeySupport 'both'))}}
-        {{add-host-template
-          templates=hostTemplates
-          provider=config.provider
-          selectedKey=(mut selectedHostTemplate)
-        }}
-      {{/if}}
-      <hr/>
-      <div class="row">
-        <div class="col span-2 col-inline">
-          <label>{{t 'hostPartial.host.addOptions.labels'}}</label>
-        </div>
-        <div class="col span-10">
-          {{form-user-labels initialLabels=model.labels setLabels=(action 'setLabels')}}
-        </div>
-      </div>
-    </div>
-    {{top-errors errors=errors}}
-    {{save-cancel save="saveTemp" cancel=cancel}}
   </section>
 
-</form>
+  <section class="mt-20">
+    <form>
+      <section class="horizontal-form">
+        <div class="row addtl-info">
+          <div class="col span-4">
+            <div class="nav-boxes driver">
+              <div class="nav-box-item driver machine-driver active {{providerClass}}"></div>
+            </div>
+          </div>
+          <div class="col span-8">
+            {{ log config }}
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.instance'}}</label>
+              {{config.displayName}}
+            </div>
+            <hr/>
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.zone'}}</label>
+              {{config.realm}}
+            </div>
+            <hr/>
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.memory'}}</label>
+              {{config.memory}}{{t 'hostsPage.cloudHostsPage.addPage.memStUnit'}}
+            </div>
+            <hr/>
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.storage'}}</label>
+              {{config.storage}}{{t 'hostsPage.cloudHostsPage.addPage.memStUnit'}}
+            </div>
+            <hr/>
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.transfer'}}</label>
+              {{config.transfer}}{{t 'hostsPage.cloudHostsPage.addPage.transferUnit'}}
+            </div>
+            <hr/>
+            <div>
+              <label for="">{{t 'hostsPage.cloudHostsPage.addPage.price'}}</label>
+              {{#if config.provider}}
+                {{#if (eq config.provider 'Digital Ocean') }}
+                  ${{config.pricePerMonth}}
+                {{else}}
+                  ${{config.pricePerMonth}}{{field-required}}
+                {{/if}}
+              {{/if}}
+            </div>
+          </div>
+        </div>
+        <div class="container-fluid">
+          {{partial "host/add-common"}}
+          <hr />
+          {{#if (or (eq config.apiKeySupport 'byokey') (eq config.apiKeySupport 'both'))}}
+            {{add-host-template
+                templates=hostTemplates
+                provider=config.provider
+                selectedKey=(mut selectedHostTemplate)
+            }}
+          {{/if}}
+          <hr/>
+          <div class="row">
+            <div class="col span-12">
+              {{form-user-labels initialLabels=model.labels setLabels=(action 'setLabels')}}
+            </div>
+          </div>
+        </div>
+        {{top-errors errors=errors}}
+        {{save-cancel save="saveTemp" cancel=cancel createLabel='hostsPage.cloudHostsPage.addPage.launch'}}
+      </section>
+
+    </form>
+  </section>
+</div>
