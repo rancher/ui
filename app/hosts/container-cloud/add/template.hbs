@@ -1,20 +1,7 @@
-<div class="hosts-cloud-add">
-  <section class="header clearfix">
-    <div class="row">
-      <div class="mb-0">
-        <h1>
-          {{t 'hostsPage.cloudHostsPage.addPage.header' hostName=model.displayName}}
-        </h1>
-      </div>
-    </div>
-  </section>
-
-  <section class="mt-20">
-    {{cloud-host-add-or-edit
-        model=model.host
-        config=model.plans
-        hostTemplates=model.hostTemplates
-        cancel=(action 'cancel')
-        save='save'}}
-  </section>
-</div>
+{{cloud-host-add-or-edit
+    model=model.host
+    config=model.plans
+    hostTemplates=model.hostTemplates
+    cancel=(route-action 'cancel')
+    save=(route-action 'save')
+}}

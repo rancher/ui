@@ -33,13 +33,7 @@ export default Ember.Route.extend({
       if ( this.get('backTo') === 'waiting' ) {
         this.transitionTo('authenticated.project.waiting');
       } else {
-        let appRoute = getOwner(this).lookup('route:application');
-        let opts     = this.get('previousOpts');
-
-        appRoute.set('previousRoute', opts.name);
-        appRoute.set('previousParams', opts.params);
-
-        this.send('goToPrevious','hosts');
+        this.transitionTo('hosts.index');
       }
     }
   },

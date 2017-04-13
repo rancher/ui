@@ -3,6 +3,14 @@ import Plans from 'ui/utils/cloud-plans';
 
 
 export default Ember.Route.extend({
+  actions: {
+    save() {
+      this.transitionTo('hosts');
+    },
+    cancel() {
+      this.transitionTo('hosts.container-cloud');
+    }
+  },
   model(params/*, transition*/){
     if (params.cloud_id) {
       return this.get('store').find('hostTemplates', null, {forceReload: true}).then((templates) => {

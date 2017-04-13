@@ -2,7 +2,7 @@
   <section class="pt-10">
     {{#if showPicker}}
       <div class="row nav nav-boxes checked-active">
-        {{#if (and allowCustom (not inModal))}}
+        {{#if allowCustom}}
           <a {{action "switchDriver" "custom"}} alt="custom" class="col nav-box-item driver machine-driver custom {{if (eq driver 'custom') 'active'}}" href="#"></a>
         {{/if}}
 
@@ -25,16 +25,17 @@
   </section>
 
   {{#if driver}}
-    {{component (if (or (not driverObj) driverObj.hasUi) (concat "machine/driver-" driver) 'machine/driver-other')
-      cancel=(route-action 'cancel')
-      clonedModel=model.clonedModel
-      driver=(concat driver 'Config')
-      schemas=model.schemas
-      typeDocumentations=model.typeDocumentations
-      availableDrivers=model.availableDrivers
-      inModal=inModal
-      completed=(action completed)
-      goBack=goBack
+    {{component driverComponent
+        cancel=(route-action 'cancel')
+        clonedModel=model.clonedModel
+        driver=(concat driver 'Config')
+        schemas=model.schemas
+        typeDocumentations=model.typeDocumentations
+        availableDrivers=model.availableDrivers
+        inModal=inModal
+        showNameScale=showNameScale
+        completed=(action completed)
+        goBack=(action goBack)
     }}
   {{/if}}
 {{else}}

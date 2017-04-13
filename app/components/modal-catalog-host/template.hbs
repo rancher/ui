@@ -1,7 +1,14 @@
-{{#if loading}}
+{{#if getDrivers.isRunning}}
   <div class="text-center">
     <i class="icon icon-spinner icon-spin"></i> {{t 'generic.loading'}}
   </div>
 {{else}}
-  {{add-host model=model inModal=true completed=(action 'completed')}}
+  {{add-host
+      model=model
+      inModal=true
+      showNameScale=false
+      completed=(action 'completed')
+      goBack=(action 'goBack')
+      allowCustom=false
+  }}
 {{/if}}

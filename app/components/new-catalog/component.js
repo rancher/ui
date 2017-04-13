@@ -4,6 +4,8 @@ import ShellQuote from 'npm:shell-quote';
 import C from 'ui/utils/constants';
 import Util from 'ui/utils/util';
 import { compare as compareVersion } from 'ui/utils/parse-version';
+import { task } from 'ember-concurrency';
+
 
 export default Ember.Component.extend(NewOrEdit, {
   intl: Ember.inject.service(),
@@ -112,7 +114,7 @@ export default Ember.Component.extend(NewOrEdit, {
     return null;
   }.property('templateResource.defaultVersion','versionLinks'),
 
-  templateChanged: function() {
+  getTemplate: task(function * () {
     var url = this.get('selectedTemplateUrl');
 
     if ( url === 'default' ) {
@@ -125,20 +127,20 @@ export default Ember.Component.extend(NewOrEdit, {
     }
 
     if (url) {
-      this.set('loading', true);
-
       var version = this.get('settings.rancherVersion');
+
       if ( version ) {
         url = Util.addQueryParam(url, 'rancherVersion', version);
       }
 
       var current = this.get('stackResource.environment');
+
       if ( !current ) {
         current = {};
         this.set('stackResource.environment', current);
       }
 
-      this.get('store').request({
+      var selectedTemplateModel = yield this.get('store').request({
         url: url
       }).then((response) => {
         if (response.questions) {
@@ -162,18 +164,23 @@ export default Ember.Component.extend(NewOrEdit, {
               item.answer = item.default;
             }
           });
+          return response;
         }
 
-        this.set('selectedTemplateModel', response);
-        this.set('previewTab', Object.keys(response.get('files')||[])[0]);
-        this.updateReadme();
-        this.set('loading', false);
-      }, ( /*error*/ ) => {});
+      });
+
+      this.set('selectedTemplateModel', selectedTemplateModel);
+      this.set('previewTab', Object.keys(selectedTemplateModel.get('files')||[])[0]);
     } else {
       this.set('selectedTemplateModel', null);
-      this.updateReadme();
       this.set('readmeContent', null);
     }
+
+    this.updateReadme();
+  }),
+
+  templateChanged: function() {
+    this.get('getTemplate').perform();
   }.observes('selectedTemplateUrl','templateResource.defaultVersion'),
 
   answers: function() {

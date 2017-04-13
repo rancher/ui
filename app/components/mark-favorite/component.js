@@ -7,6 +7,7 @@ export default Ember.Component.extend({
   prefs:   Ember.inject.service(),
   userStore: Ember.inject.service('user-store'),
   id:      null,
+  iconSize: null,
   exists: Ember.computed(`prefs.${C.PREFS.HOST_FAVORITES}`, function() {
 
     var favs = this.get(`prefs.${C.PREFS.HOST_FAVORITES}`);
