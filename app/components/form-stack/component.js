@@ -22,7 +22,6 @@ export default Ember.Component.extend({
   choices: null,
 
   init() {
-    window.x = this;
     this._super(...arguments);
     let all = this.get('store').all('stack');
     this.set('choices', all);
@@ -59,9 +58,7 @@ export default Ember.Component.extend({
       stack = this.get('createStack');
     }
 
-    Ember.run.next(() => {
-      this.set('stack', stack);
-    });
+    this.set('stack', stack);
   }),
 
   validate: Ember.observer('stack.{id,name}', function() {
