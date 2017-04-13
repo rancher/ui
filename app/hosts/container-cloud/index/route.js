@@ -10,6 +10,14 @@ export default Ember.Route.extend({
       refreshModel: true
     },
   },
+  actions: {
+    selectMachine(id) {
+      this.transitionTo('hosts.container-cloud.add', id);
+    },
+    selectTab(from) {
+      this.transitionTo('hosts.container-cloud', {queryParams: {from: from}});
+    },
+  },
   model(params/*, transition*/){
     var model = {};
     var plans = Plans;
