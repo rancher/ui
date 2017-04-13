@@ -1,1 +1,36 @@
-{{ partial 'host/cloud/table-content' }}
+<section class="pl-15 pr-15 clearfix">
+  {{#each filteredContent as |host|}}
+    {{#catalog-box
+         model=host
+         active=(not (eq host.state 'inactive'))
+         classNames='cloud-host'
+         showIcon=false
+         showDescription=false
+         as |section|
+    }}
+      {{#if (eq section 'header')}}
+        {{mark-favorite classNames="pull-left" tagName="span" id=host.id rowRemoved=(action 'favoriteChanged') iconSize='icon-2x'}}
+        <div class="catalog-icon mb-10 mt-10 {{parse-host-icon host.provider}}"/>
+      {{else if (eq section 'body')}}
+        <hr class="m-10" />
+        <h2>{{host.displayName}}</h2>
+        <div>
+          <div class="details">
+            <div class="memory">
+              <strong>{{host.memory}}{{t 'hostsPage.cloudHostsPage.favoritesPage.memStUnit'}}</strong> <span class="help-text">{{t 'hostsPage.cloudHostsPage.favoritesPage.help.ram'}}</span>
+            </div>
+            <div class="storage">
+              <strong>{{host.storage}}{{#if (not (eq host.provider 'Amazon'))}}{{t 'hostsPage.cloudHostsPage.favoritesPage.memStUnit'}}{{/if}}</strong> {{#if (not (eq host.provider 'Amazon'))}}<span class="help-text">{{t 'hostsPage.cloudHostsPage.favoritesPage.help.storage'}}</span>{{/if}}
+            </div>
+            <div class="price">
+              <strong>{{host.pricePerHour}}{{t 'hostsPage.cloudHostsPage.favoritesPage.pricePerHour'}}&nbsp;({{host.pricePerMonth}}{{t 'hostsPage.cloudHostsPage.favoritesPage.price'}})</strong> <span class="help-text">{{t 'hostsPage.cloudHostsPage.favoritesPage.help.transfer'}}</span>
+            </div>
+          </div>
+
+        </div>
+      {{else if (eq section 'footer')}}
+          <button role="button" class="btn bg-primary" {{action "selectMachine" host.id}}> {{t 'generic.select'}}</button>
+      {{/if}}
+    {{/catalog-box}}
+  {{/each}}
+</section>
