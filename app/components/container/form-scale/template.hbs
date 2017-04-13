@@ -1,6 +1,6 @@
 <div class="col-inline clearfix">
   <label>{{t (concat-str 'formScale.label' mode character='.')}}</label>
-  {{#unless showAdvanced}}
+  {{#unless (or isUpgrade advancedShown)}}
     <div class="pull-right text-small">
       <a role="button" class="btn bg-transparent p-0" {{action "showAdvanced"}}>{{t 'formScale.showAdvanced'}}</a>
     </div>
@@ -16,11 +16,13 @@
   </div>
 </div>
 
-{{#if showAdvanced}}
+{{#if (and advancedShown (or isService (not isUpgrade)))}}
   <div class="pt-10">
-    <div class="radio">
-      <label>{{radio-button selection=mode value="container"}} {{t 'formScale.mode.container' scale=asInteger}}</label>
-    </div>
+    {{#unless (and isUpgrade isService)}}
+      <div class="radio">
+        <label>{{radio-button selection=mode value="container"}} {{t 'formScale.mode.container' scale=asInteger}}</label>
+      </div>
+    {{/unless}}
     <div class="radio">
       <label>{{radio-button selection=mode value="service"}} {{t 'formScale.mode.service' scale=asInteger}}</label>
     </div>

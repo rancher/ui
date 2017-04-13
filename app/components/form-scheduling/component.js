@@ -31,6 +31,7 @@ export default Ember.Component.extend(ManageLabels, {
 
   editing: true,
 
+  classNames: ['accordion-wrapper'],
 
   actions: {
     addSchedulingRule() {
@@ -43,9 +44,8 @@ export default Ember.Component.extend(ManageLabels, {
   },
 
   init() {
-    this._super(...arguments);
-
     this.set('allHosts', this.get('store').all('host'));
+    this._super(...arguments);
 
     this.initLabels(this.get('initialLabels'), 'affinity');
 

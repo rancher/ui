@@ -79,6 +79,25 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     cancel() {
       this.sendAction('cancel');
     },
+
+    addSidekick() {
+      var ary = this.get('service.secondaryLaunchConfigs');
+      ary.pushObject(this.get('store').createRecord({
+        type: 'secondaryLaunchConfig',
+        kind: 'container',
+        tty: true,
+        stdinOpen: true,
+        restartPolicy: {name: 'always'},
+        labels: { [C.LABEL.PULL_IMAGE]: C.LABEL.PULL_IMAGE_VALUE },
+        uiId: Util.randomStr(),
+      }));
+    },
+
+    removeSidekick(idx) {
+      var idx = this.get('activeLaunchConfigIndex');
+      var ary = this.get('service.secondaryLaunchConfigs');
+    },
+
   },
 
   init() {
@@ -95,6 +114,41 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   didInsertElement() {
     this.$("INPUT[type='text']")[0].focus();
   },
+
+  // ----------------------------------
+  // Sidekicks
+  // ----------------------------------
+  hasSidekicks: function() {
+    return this.get('service.secondaryLaunchConfigs.length') > 0;
+  }.property('service.secondaryLaunchConfigs.length'),
+
+  launchConfigChoices: function() {
+    var isUpgrade = this.get('isUpgrade');
+    let intl = this.get('intl');
+
+    // Enabled is only for upgrade, and isn't maintained if the names change, but they can't on upgrade.
+    var out = [
+      {
+        index: -1,
+        name: this.get('service.name') || intl.t('newContainer.emptyPrimaryService'),
+        enabled: true
+      }
+    ];
+
+    (this.get('service.secondaryLaunchConfigs')||[]).forEach((item, index) => {
+      out.push({
+        index: index,
+        name: item.get('name') || intl.t('newContainer.emptySidekick', {num: index+1}),
+        enabled: !isUpgrade
+      });
+    });
+
+    return out;
+  }.property('service.name','service.secondaryLaunchConfigs.@each.name','intl._locale'),
+
+  noLaunchConfigsEnabled: function() {
+    return this.get('launchConfigChoices').filterBy('enabled',true).get('length') === 0;
+  }.property('launchConfigChoices.@each.enabled'),
 
   // ----------------------------------
   // Labels
@@ -271,7 +325,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     let k = 'newContainer.';
     k += (this.get('isUpgrade') ? 'upgrade' : 'add') + '.';
     if ( this.get('isService') ) {
-      k += 'service';
+      k += 'scalingGroup';
     } else {
       k += 'container';
     }

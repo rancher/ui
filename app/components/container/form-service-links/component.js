@@ -1,12 +1,16 @@
 import Ember from 'ember';
+import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-row/component';
 
 export default Ember.Component.extend({
+  intl: Ember.inject.service(),
+  settings: Ember.inject.service(),
+
   // Inputs
   service           : null,
   withAlias         : true,
   serviceLinksArray : null,
 
-  tagName: '',
+  classNames: ['accordion-wrapper'],
 
   init() {
     this._super(...arguments);
@@ -39,10 +43,6 @@ export default Ember.Component.extend({
     this.serviceLinksArrayDidChange();
   },
 
-  serviceLinksArrayDidChange: function() {
-    this.sendAction('changed', this.get('serviceLinksArray'));
-  }.observes('serviceLinksArray.@each.{name,serviceId}'),
-
   actions: {
     addServiceLink: function() {
       this.get('serviceLinksArray').pushObject(Ember.Object.create({name: '', serviceId: null}));
@@ -51,4 +51,21 @@ export default Ember.Component.extend({
       this.get('serviceLinksArray').removeObject(obj);
     },
   },
+
+  serviceLinksArrayDidChange: function() {
+    this.sendAction('changed', this.get('serviceLinksArray'));
+  }.observes('serviceLinksArray.@each.{name,serviceId}'),
+
+  statusClass: null,
+  status: function() {
+    let k = STATUS.NONE;
+    let count = this.get('serviceLinksArray').filter((x) => !!x.get('serviceId')).get('length') || 0;
+
+    if ( count ) {
+      k = STATUS.COUNTCONFIGURED;
+    }
+
+    this.set('statusClass', classForStatus(k));
+    return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`, {count: count});
+  }.property('serviceLinksArray.@each.serviceId')
 });

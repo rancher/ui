@@ -9,7 +9,6 @@ export default Ember.Mixin.create({
 
   actions: {
     changeSort: function(name) {
-      console.log('changeSort', name);
       if ( this.get('sortBy') === name )
       {
         this.set('descending', !this.get('descending'));

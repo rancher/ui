@@ -32,7 +32,6 @@ export default Ember.Component.extend(ManageLabels, {
     this.sendAction('setLabels', labels);
   },
 
-
   statusClass: null,
   status: function() {
     let k = STATUS.NONE;

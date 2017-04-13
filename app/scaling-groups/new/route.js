@@ -37,7 +37,7 @@ export default Ember.Route.extend({
       var instanceData, serviceData, healthCheckData;
       if ( serviceOrContainer )
       {
-        if ( serviceOrContainer.get('type') === 'service' )
+        if ( serviceOrContainer.get('type').toLowerCase() === 'scalinggroup' )
         {
           serviceData = serviceOrContainer.serializeForNew();
           serviceLinks = serviceOrContainer.get('consumedServicesWithNames');
@@ -73,7 +73,7 @@ export default Ember.Route.extend({
       if ( !serviceData )
       {
         serviceData = {
-          type: 'service',
+          type: 'scalingGroup',
           stackId: params.stackId,
           scale: 1,
           startOnCreate: true,
