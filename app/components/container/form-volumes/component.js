@@ -11,12 +11,13 @@ export default Ember.Component.extend({
   launchConfigChoices : null,
   launchConfigIndex   : null,
   isService           : null,
-  allHosts            : null,
   errors              : null,
 
   _storagePools       : null,
   init() {
     this._super(...arguments);
+
+    this.set('allHosts', this.get('store').all('host'));
 
     this.initVolumes();
     this.initVolumesFrom();

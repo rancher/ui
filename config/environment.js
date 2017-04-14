@@ -4,6 +4,7 @@ var fs   = require('fs');
 var YAML = require('yamljs');
 
 var mode = process.env.UI_MODE || 'oss'; // 'caas' or 'oss'
+var signup = process.env.UI_SIGNUP !== 'false'; // set to false to hide signup
 
 // host can be an ip "1.2.3.4" -> http://1.2.3.4:8080
 // or a URL+port
@@ -94,6 +95,7 @@ module.exports = function(environment) {
       appName: 'Rancher',
       mode: mode,
       isCaas: mode === 'caas',
+      caasSignup: signup,
       apiServer: 'http://localhost:8080',
       legacyApiEndpoint: '/v1',
       apiEndpoint: '/v2-beta',

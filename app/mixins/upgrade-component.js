@@ -89,6 +89,10 @@ function getUpgradeInfo(task, cb) {
       });
     }
   }).catch((err) => {
+    if ( obj.isDestroyed || obj.isDestroying ) {
+      return;
+    }
+
     if ( err.status === 404 )
     {
       obj.set('upgradeStatus', NOTFOUND);
@@ -98,6 +102,10 @@ function getUpgradeInfo(task, cb) {
       obj.set('upgradeStatus', ERROR);
     }
   }).finally(() => {
+    if ( obj.isDestroyed || obj.isDestroying ) {
+      return;
+    }
+
     cb();
   });
 }
