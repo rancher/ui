@@ -6,7 +6,7 @@ const PROVIDERS = [
   },
   {
     id: 'Digital Ocean',
-    class: 'digitalocean'
+    class: 'rancherdo'
   },
   {
     id: 'Packet',
