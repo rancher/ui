@@ -5,7 +5,6 @@ const PROVIDERS     = [{id: 'All'}, {id: 'Amazon'}, {id: 'Digital Ocean' }, {id:
 
 export default Ember.Component.extend({
   prefs:        Ember.inject.service(),
-  initialTab:   'favorites',
   from:         null,
   tab:          Ember.computed.alias('from'),
   realmSort:    DEFAULT_REALM,
@@ -16,6 +15,9 @@ export default Ember.Component.extend({
   providerSort: 'All',
   sortBy:       'price',
   actions:     {
+    sendTab(id) {
+      this.get('triggerTabChange')(id);
+    },
     selectMachine(id) {
       this.setProperties({
         providerSort: 'All',
@@ -99,10 +101,6 @@ export default Ember.Component.extend({
       width: 100,
     },
   ],
-
-  tabObserve: Ember.observer('tab', function() {
-    this.get('triggerTabChange')(this.get('tab'));
-  }),
 
   providerContent: Ember.computed('model.plans', 'providerSort', function() {
     var content = this.get('model.plans');
