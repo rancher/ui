@@ -1,10 +1,10 @@
 import Ember from 'ember';
-import Plans from 'ui/utils/cloud-plans';
 import C from 'ui/utils/constants';
 
 
 export default Ember.Route.extend({
   prefs: Ember.inject.service(),
+  cloudPlans: Ember.inject.service(),
   queryParams: {
     from: {
       refreshModel: true
@@ -20,33 +20,33 @@ export default Ember.Route.extend({
   },
   model(params/*, transition*/){
     var model = {};
-    var plans = Plans;
+    var plans = this.get('cloudPlans.plans');
+
+    model.realms = this.get('cloudPlans.realms');
 
     switch(params.from) {
     case 'favorites':
       var favs = this.get(`prefs.${C.PREFS.HOST_FAVORITES}`) || [];
       if (favs.length) {
-        model.plans = plans.realms.filter((plan) => {
-          if (favs.contains(plan.id)) {
+        model.plans = plans.filter((plan) => {
+          if (favs.includes(plan.uiOptions.id)) {
             return true;
           }
           return false;
         });
       } else {
-        let defaults = ['Small', 'Medium', 'Large', 'Extralarge'];
-        model.plans = plans.realms.filter((plan) => {
-          if (plan.provider === 'Digital Ocean' && plan.zone === 'sfo2' && defaults.includes(plan.displayName)) {
+        let defaults = ['digitalocean-sfo2-2gb', 'digitalocean-sfo2-4gb', 'digitalocean-sfo2-8gb', 'digitalocean-sfo2-16gb'];
+        model.plans = plans.filter((plan) => {
+          if (defaults.includes(plan.uiOptions.id)) {
             return true;
           }
         });
-        this.set(`prefs.${C.PREFS.HOST_FAVORITES}`, model.plans.mapBy('id'));
+        this.set(`prefs.${C.PREFS.HOST_FAVORITES}`, model.plans.mapBy('uiOptions.id'));
       }
-      model.realms = plans.realmNames;
       break;
     default:
     case 'browse':
-      model.plans = plans.realms.sortBy('name');
-      model.realms = plans.realmNames;
+      model.plans = plans;
       break;
     }
 
