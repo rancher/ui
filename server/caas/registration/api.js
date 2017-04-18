@@ -1,3 +1,4 @@
+/* eslint-env node */
 module.exports = function(app/*, options*/) {
   const bodyParser = require('body-parser');
   const mysql = require('mysql');

@@ -20,6 +20,17 @@ export function initialize(/*application */) {
         return;
       }
 
+      // need to mark the parent drop down as active as well
+      if (this.get('submenuItem')) {
+        if (!!this.get('active')) {
+          if (!this.$().closest('li.dropdown.active').length) {
+            var $dropdown = this.$().closest('li.dropdown');
+            $dropdown.addClass('active');
+            $dropdown.siblings('li.active').removeClass('active');
+          }
+        }
+      }
+
       this.$().parent().toggleClass('active', !!this.get('active'));
     }
   });

@@ -1,8 +1,8 @@
+/* eslint-env node */
 module.exports = function(app/*, options*/) {
   const bodyParser = require('body-parser');
   const config = require('../../../config/environment')().APP;
   const stripe = require('stripe')(process.env.STRIPE_TOKEN);
-  const request = require('request');
 
   const rancherApiUrl = `${config.apiServer}${config.apiEndpoint}`;
 
@@ -39,13 +39,13 @@ module.exports = function(app/*, options*/) {
           }, function(err, customer) {
             if (err) return generateError('subscription', err, res);
 
-            addCustomerToAccount(account.id, customer.id, (err, account) => {
+            addCustomerToAccount(account.id, customer.id, (err/* , account */) => {
               if (err) return generateError('subscription', err, res);
 
               stripe.subscriptions.create({
                 customer: customer.id,
                 plan: planId
-              }, function(err, subscription) {
+              }, function(err/* , subscription */) {
                 if (err) {
                   return generateError('subscription', err, res);
                 }
@@ -96,7 +96,7 @@ module.exports = function(app/*, options*/) {
       body: {
         description: JSON.stringify({stripeAccountId: stripeAccountId}) // this will get its own field
       }
-    }, function(body, response) {
+    }, function(body/* , response */) {
       if (!body || !body.data) {
         return cb(new Error('Could not add the stripe id to the account'));
       }
@@ -110,7 +110,7 @@ module.exports = function(app/*, options*/) {
     newRequest({
       url: url,
       method: 'GET',
-    }, function(body, response) {
+    }, function(body/* , response */) {
       if (!body || !body.data || !body.data.length ) {
         return cb(new Error('Could not get the users email'));
       }

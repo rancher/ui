@@ -22,6 +22,7 @@ export default Ember.Component.extend({
     this.initVolumesFrom();
     this.initVolumesFromLaunchConfig();
     this.set('_storagePools', this.get('store').all('storagepool'));
+    this.set('allHosts', this.get('store').all('host'));
   },
 
   initVolumesFromLaunchConfig() {

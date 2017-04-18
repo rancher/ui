@@ -1,18 +1,18 @@
 import Ember from 'ember';
-import Plans from 'ui/utils/cloud-plans';
 
 // this component really doesn't care about the host provider
 // all its going to do is validate and save so the partial could
 // load the template for adding and saving keys
 export default Ember.Component.extend({
   store:              Ember.inject.service(),
+  cloudPlans:         Ember.inject.service(),
   add:                false,
   templates:          null,
   hostTemplate:       null,
   selectedKey:        null,
   newSelectedKey:     null,
   provider:           null,
-  providerKeyDetails: Plans.hostDetails,
+  providerKeyDetails: Ember.computed.alias('cloudPlans.hostDetails'),
   name:               null,
   secretValue:        null,
   publicValue:        null,
