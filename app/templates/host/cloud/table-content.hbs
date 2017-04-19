@@ -12,27 +12,27 @@
   }}
     {{#if (eq kind "row")}}
       <td>
-        {{mark-favorite id=row.id rowRemoved=(action 'favoriteChanged')}}
+        {{mark-favorite id=row.uiOptions.id rowRemoved=(action 'favoriteChanged')}}
       </td>
-      <td>{{row.provider}}</td>
-      <td>{{row.zone}}</td>
-      <td>{{row.displayName}}</td>
-      <td>{{row.memory}} GB</td>
+      <td>{{row.pretty_provider}}</td>
+      <td>{{row.uiOptions.zone}}</td>
+      <td>{{row.uiOptions.displayName}}</td>
+      <td>{{row.uiOptions.memory}} GB</td>
       <td>
-        {{#if (eq row.transfer -1)}}
+        {{#if (eq row.uiOptions.transfer -1)}}
           Unlimited
-        {{else if (eq row.transfer 0)}}
+        {{else if (eq row.uiOptions.transfer 0)}}
           None
         {{else}}
-          {{format-si row.transfer suffix="B" startingExponent=2}}
+          {{format-si row.uiOptions.transfer suffix="B" startingExponent=2}}
         {{/if}}
       </td>
-      <!-- <td>{{star-rating rating=row.cpuRating}}</td> -->
-      <!-- <td>{{star-rating rating=row.diskRating}}</td> -->
+      <!-- <td>{{star-rating rating=row.uiOptions.cpuRating}}</td> -->
+      <!-- <td>{{star-rating rating=row.uiOptions.diskRating}}</td> -->
       <td>
-        ${{row.pricePerMonth}}{{#if row.variableFees}}<sup>&#10746;</sup>{{/if}}
+        {{format-number row.uiOptions.pricePerMonth style='currency' currency='USD' maximumFractionDigits=2}}{{#if row.uiOptions.variableFees}}<sup>&#10746;</sup>{{/if}}
       </td>
-      <td class="text-right"><button role="button" class="btn bg-primary" {{action "selectMachine" row.id}}> {{t 'generic.select'}}</button></td>
+      <td class="text-right"><button role="button" class="btn bg-primary" {{action "selectMachine" row.uiOptions.id}}> {{t 'generic.select'}}</button></td>
     {{else if (eq kind "norows")}}
       <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t noDataMessage}}</td>
     {{/if}}
