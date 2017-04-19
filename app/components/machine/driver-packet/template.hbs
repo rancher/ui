@@ -10,19 +10,12 @@
     </div>
 
     <div class="row inline-form">
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverPacket.projectId.label'}}{{field-required}}</label>
-      </div>
-      <div class="col span-10">
+      <div class="col span-6">
+      <label>{{t 'machine.driverPacket.projectId.label'}}{{field-required}}</label>
         {{input type="text" name="username" value=packetConfig.projectId classNames="form-control" placeholder=(t 'machine.driverPacket.projectId.placeholder')}}
       </div>
-    </div>
-
-    <div class="row inline-form">
-      <div class="col span-2 col-inline">
+      <div class="col span-6">
         <label>{{t 'machine.driverPacket.apiKey.label'}}{{field-required}}</label>
-      </div>
-      <div class="col span-10">
         {{input type="password" name="password" value=packetConfig.apiKey classNames="form-control" placeholder=(t 'machine.driverPacket.apiKey.placeholder')}}
         <p class="text-info">{{t 'machine.driverPacket.apiKeyHelp' htmlSafe=true}}</p>
       </div>
@@ -33,20 +26,17 @@
     </div>
 
     <div class="row inline-form">
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverPacket.image.label'}}</label>
-      </div>
-      <div class="col span-4">
+      <div class="col span-6">
+        <label class="pb-10">{{t 'machine.driverPacket.image.label'}}</label>
         <select class="form-control" onchange={{action (mut packetConfig.os) value="target.value"}}>
           {{#each osChoices as |choice|}}
             <option disabled={{not choice.enabled}} value={{choice.slug}} selected={{eq packetConfig.os choice.slug}}>{{choice.name}}</option>
           {{/each}}
         </select>
       </div>
-      <div class="col span-2 col-inline">
-        <label>{{t 'machine.driverPacket.size.label'}}</label>
-      </div>
-      <div class="col span-4">
+
+      <div class="col span-6">
+      <label class="pb-10">{{t 'machine.driverPacket.size.label'}}</label>
         <select class="form-control" onchange={{action (mut packetConfig.plan) value="target.value"}}>
           {{#each planChoices as |choice|}}
             <option disabled={{not choice.enabled}} value={{choice.slug}} selected={{eq packetConfig.plan choice.slug}}>{{choice.name}}</option>
