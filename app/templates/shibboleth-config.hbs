@@ -8,36 +8,28 @@
   <div>
     {{t 'authPage.shibboleth.disabled.warning' appName=settings.appName providerName=(t providerName)}}
   </div>
-
-
 </section>
-<section>
+<section class="pt-40">
   <h2>{{t 'authPage.shibboleth.disabled.header'}}</h2>
   <hr />
   <div class="row">
     <div class="col span-6">
-      <div class="inline-form">
-        <label>{{t 'authPage.shibboleth.disabled.name.labelText'}}{{field-required}}</label>
+        <label class="pb-5">{{t 'authPage.shibboleth.disabled.name.labelText'}}{{field-required}}</label>
         {{input type="text" value=config.displayNameField classNames="form-control"}}
-      </div>
     </div>
     <div class="col span-6">
-      <div class="inline-form">
-        <label>{{t 'authPage.shibboleth.disabled.username.labelText'}}{{field-required}}</label>
+        <label class="pb-5">{{t 'authPage.shibboleth.disabled.username.labelText'}}{{field-required}}</label>
         {{input type="text" value=config.userNameField classNames="form-control"}}
-      </div>
     </div>
+    </div>
+    <div class="row">
     <div class="col span-6">
-      <div class="inline-form">
-        <label>{{t 'authPage.shibboleth.disabled.uid.labelText'}}{{field-required}}</label>
+        <label class="pb-5">{{t 'authPage.shibboleth.disabled.uid.labelText'}}{{field-required}}</label>
         {{input type="text" value=config.uidField classNames="form-control"}}
-      </div>
     </div>
     <div class="col span-6">
-      <div class="inline-form">
-        <label>{{t 'authPage.shibboleth.disabled.groups.labelText'}}{{field-required}}</label>
-        {{input type="text" value=config.groupsField classNames="form-control"}}
-      </div>
+      <label class="pb-5">{{t 'authPage.shibboleth.disabled.groups.labelText'}}{{field-required}}</label>
+      {{input type="text" value=config.groupsField classNames="form-control"}}
     </div>
   </div>
   <div class="row">
@@ -74,9 +66,10 @@
         }}
       </div>
     </div>
-    <div class="col span-12">
+  </div>
+  <div class="row">
       <div class="inline-form">
-        <label>&nbsp;</label>
+        <label class="pb-5">&nbsp;</label>
         <button class="btn bg-primary" style="display: block;margin: 0 auto;" {{action "save"}}>
           {{#if saving}}
             <i class="icon icon-spinner icon-spin"></i> {{t 'generic.saving'}}
@@ -88,9 +81,8 @@
         </button>
       </div>
     </div>
-  </div>
 </section>
-<section>
+<section class="pt-40">
   <h3>{{t 'authPage.shibboleth.disabled.testAuth.header'}}</h3>
   <hr/>
   {{top-errors errors=errors}}
