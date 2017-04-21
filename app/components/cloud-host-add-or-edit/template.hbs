@@ -15,18 +15,18 @@
         <div class="row addtl-info">
           <div class="col span-4">
             <div class="nav-boxes driver">
-              <div class="nav-box-item driver machine-driver active {{providerClass}}"></div>
+              <div class="nav-box-item driver machine-driver active {{config.provider}}"></div>
             </div>
           </div>
           <div class="col span-8">
             <div class="price">
-              {{#tooltip-element type="tooltip-basic" model=(concat (format-number config.pricePerHour style='currency' currency='USD') (t 'hostsPage.cloudHostsPage.favoritesPage.pricePerHour')) tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="cloud-host-launch"}}
+              {{#tooltip-element type="tooltip-basic" model=(concat (format-number config.uiOptions.pricePerHour style='currency' currency='USD') (t 'hostsPage.cloudHostsPage.favoritesPage.pricePerHour')) tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="cloud-host-launch"}}
                 <div class="inline-block">
                   {{#if config.provider}}
-                    {{#if (eq config.provider 'Digital Ocean') }}
-                      {{format-number config.pricePerMonth style='currency' currency='USD'}}<span class="addon">{{t 'hostsPage.cloudHostsPage.favoritesPage.price'}}</span>
+                    {{#if (eq config.provider 'digitalocean') }}
+                      {{format-number config.uiOptions.pricePerMonth style='currency' currency='USD'}}<span class="addon">{{t 'hostsPage.cloudHostsPage.favoritesPage.price'}}</span>
                     {{else}}
-                      {{format-number config.pricePerMonth style='currency' currency='USD'}}<span class="addon">{{t 'hostsPage.cloudHostsPage.favoritesPage.price'}}</span>
+                      {{format-number config.uiOptions.pricePerMonth style='currency' currency='USD'}}<span class="addon">{{t 'hostsPage.cloudHostsPage.favoritesPage.price'}}</span>
                     {{/if}}
                   {{/if}}
 
@@ -35,37 +35,37 @@
             </div>
             <div>
               <label for="">{{t 'hostsPage.cloudHostsPage.addPage.instance'}}</label>
-              {{config.displayName}}
+              {{config.uiOptions.displayName}}
             </div>
             <hr/>
             <div>
               <label for="">{{t 'hostsPage.cloudHostsPage.addPage.zone'}}</label>
-              {{config.realm}}
+              {{config.uiOptions.realm}}
             </div>
             <hr/>
             <div>
               <label for="">{{t 'hostsPage.cloudHostsPage.addPage.memory'}}</label>
-              {{config.memory}}{{t 'hostsPage.cloudHostsPage.addPage.memStUnit'}}
+              {{config.uiOptions.memory}}{{t 'hostsPage.cloudHostsPage.addPage.memStUnit'}}
             </div>
             <hr/>
             <div>
               <label for="">{{t 'hostsPage.cloudHostsPage.addPage.storage'}}</label>
-              {{config.storage}}{{t 'hostsPage.cloudHostsPage.addPage.memStUnit'}}
+              {{config.uiOptions.storage}}{{t 'hostsPage.cloudHostsPage.addPage.memStUnit'}}
             </div>
             <hr/>
             <div>
               <label for="">{{t 'hostsPage.cloudHostsPage.addPage.transfer'}}</label>
-              {{config.transfer}}{{t 'hostsPage.cloudHostsPage.addPage.transferUnit'}}
+              {{config.uiOptions.transfer}}{{t 'hostsPage.cloudHostsPage.addPage.transferUnit'}}
             </div>
           </div>
         </div>
         <div class="container-fluid">
           {{partial "host/add-common"}}
           <hr />
-          {{#if (or (eq config.apiKeySupport 'byokey') (eq config.apiKeySupport 'both'))}}
+          {{#if (or (eq config.uiOptions.apiKeySupport 'byokey') (eq config.uiOptions.apiKeySupport 'both'))}}
             {{add-host-template
                 templates=hostTemplates
-                provider=config.provider
+                provider=config.pretty_provider
                 selectedKey=(mut selectedHostTemplate)
             }}
             <hr/>

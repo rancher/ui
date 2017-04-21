@@ -1,15 +1,15 @@
 import Ember from 'ember';
 const PROVIDERS = [
   {
-    id: 'Amazon',
+    id: 'amazonec2',
     class: 'amazonec2'
   },
   {
-    id: 'Digital Ocean',
+    id: 'digitalocean',
     class: 'rancherdo'
   },
   {
-    id: 'Packet',
+    id: 'packet',
     class: 'packet '
   },
 ]

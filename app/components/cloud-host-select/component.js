@@ -13,7 +13,7 @@ export default Ember.Component.extend({
   storageSort:  null,
   costSort:     null,
   providerSort: 'All',
-  sortBy:       'price',
+  sortBy:       'uiOptions.pricePerMonth',
   actions:     {
     sendTab(id) {
       this.get('triggerTabChange')(id);
@@ -48,35 +48,35 @@ export default Ember.Component.extend({
   }),
   headers: [
     {
-      name: 'favorite',
+      name: 'uiOptions.favorite',
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.favorite',
       width: '100'
     },
     {
       name: 'provider',
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.provider',
-      sort: ['provider', 'pricePerMonth', 'id'],
+      sort: ['provider', 'uiOptions.pricePerMonth', 'uiOptions.id'],
       width: '175'
     },
     {
-      name: 'zone',
+      name: 'uiOptions.zone',
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.zone',
-      sort: ['zone', 'provider', 'id'],
+      sort: ['uiOptions.zone', 'provider', 'uiOptions.id'],
     },
     {
-      name: 'displayName',
+      name: 'uiOptions.displayName',
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.instance',
-      sort: ['displayName', 'pricePerMonth', 'id'],
+      sort: ['uiOptions.displayName', 'uiOptions.pricePerMonth', 'uiOptions.id'],
     },
     {
-      name: 'memory',
+      name: 'uiOptions.memory',
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.memory',
-      sort: ['memory', 'pricePerMonth','displayName'],
+      sort: ['uiOptions.memory', 'uiOptions.pricePerMonth','uiOptions.displayName'],
     },
     {
-      name: 'transfer',
+      name: 'uiOptions.transfer',
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.transfer',
-      sort: ['transfer'],
+      sort: ['uiOptions.transfer'],
     },
     // {
     //   name: 'cpuRating',
@@ -91,9 +91,9 @@ export default Ember.Component.extend({
     //   width: 120
     // },
     {
-      name: 'price',
+      name: 'uiOptions.pricePerMonth',
       translationKey: 'hostsPage.cloudHostsPage.browsePage.table.price',
-      sort: ['pricePerMonth','memory:desc','displayName'],
+      sort: ['uiOptions.pricePerMonth','uiOptions.memory:desc','uiOptions.displayName'],
       width: 75,
     },
 
@@ -124,10 +124,10 @@ export default Ember.Component.extend({
     } else {
       return this.get('providerContent').filter((plan) => {
         return (
-          (!rs || plan.realm === rs) &&
-          (!ms || plan.memory >= ms) &&
-          (!ss || plan.storage >= ss) &&
-          (!cs || plan.pricePerMonth <= cs)
+          (!rs || plan.uiOptions.realm === rs) &&
+          (!ms || plan.uiOptions.memory >= ms) &&
+          (!ss || plan.uiOptions.storage >= ss) &&
+          (!cs || plan.uiOptions.pricePerMonth <= cs)
         );
       });
     }

@@ -13,7 +13,7 @@ export default Ember.Component.extend({
     var favs = this.get(`prefs.${C.PREFS.HOST_FAVORITES}`);
 
     if (favs) {
-      return favs.contains(this.get('id'));
+      return favs.includes(this.get('id'));
     }
 
     return false;

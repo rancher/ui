@@ -1,3 +1,4 @@
+/* eslint-env node */
 const ERRORS = {
   auth: {
     message: 'Unauthorized',

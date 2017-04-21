@@ -7,20 +7,6 @@ export default Ember.Component.extend(Driver, {
   config: null,
   hostTemplates: null,
   selectedHostTemplate: null,
-  providerClass: Ember.computed('config.provider', function() {
-    var provider = this.get('config.provider');
-
-    switch (provider) {
-    case 'Amazon':
-      return 'amazonec2';
-    case 'Digital Ocean':
-      return 'digitalocean';
-    case 'Packet':
-      return 'packet';
-    default:
-      return '';
-    }
-  }),
   actions: {
     saveTemp() {
       if (this.get('selectedHostTemplate')) {
@@ -53,7 +39,7 @@ export default Ember.Component.extend(Driver, {
 
     modelOut.setProperties({
       rancherConfig: {
-        flavor: this.get('config.id')
+        flavor: this.get('config.uiOptions.id')
       }
     });
 

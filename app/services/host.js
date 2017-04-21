@@ -89,22 +89,25 @@ export default Ember.Service.extend({
         hash.availableDrivers = [];
       }
 
-      let defaultDriver = this.get('defaultDriver');
-      let targetDriver = params && params.driver ? params.driver :  defaultDriver;
+      // This was used when we may not have a direct link to the add host but since we no longer have a way to get to hosts added
+      // without a direct link its causing problems. but we may need it in the future.
+      // let defaultDriver = this.get('defaultDriver');
+      // let targetDriver = params && params.driver ? params.driver :  defaultDriver;
 
-      if ( ['custom','other'].indexOf(targetDriver) === -1 && hash.availableDrivers.filterBy('name', targetDriver).length === 0 )
-      {
-        targetDriver = defaultDriver;
-      }
+      // if ( ['custom','other'].indexOf(targetDriver) === -1 && hash.availableDrivers.filterBy('name', targetDriver).length === 0 )
+      // {
+      //   targetDriver = defaultDriver;
+      // }
 
-      if (params && params.driver !== targetDriver )
-      {
-        return {transition: true, driver: targetDriver};
-      }
-      else
-      {
-        return Ember.Object.create(hash);
-      }
+      // if (params && params.driver !== targetDriver )
+      // {
+      //   return {transition: true, driver: targetDriver};
+      // }
+      // else
+      // {
+      //   return Ember.Object.create(hash);
+      // }
+      return Ember.Object.create(hash);
     });
   },
   // Loads the custom UI CSS/JS for drivers that have a uiUrl,

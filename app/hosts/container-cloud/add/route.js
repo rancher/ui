@@ -1,8 +1,8 @@
 import Ember from 'ember';
-import Plans from 'ui/utils/cloud-plans';
 
 
 export default Ember.Route.extend({
+  cloudPlans: Ember.inject.service(),
   actions: {
     save() {
       this.transitionTo('hosts');
@@ -14,10 +14,10 @@ export default Ember.Route.extend({
   model(params/*, transition*/){
     if (params.cloud_id) {
       return this.get('store').find('hostTemplates', null, {forceReload: true}).then((templates) => {
-        var plan = Plans.realms.findBy('id', params.cloud_id);
+        var plan = this.get('cloudPlans.plans').findBy('uiOptions.id', params.cloud_id);
         return Ember.Object.create({
           plans: plan,
-          hostTemplates: templates.filterBy('flavorPrefix', plan.provider),
+          hostTemplates: templates.filterBy('flavorPrefix', plan.pretty_provider),
           host: this.get('store').createRecord({type: 'host'}),
         });
       });
