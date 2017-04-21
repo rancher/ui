@@ -10,13 +10,13 @@ $table-bg-accent                     : darken($light-grey, 2)!default;
 $table-bg-hover                      : lighten($info, 15)!default;
 $table-bg-active                     : $table-bg-hover!default;
 $table-bg-selected                   : lighten($link-color, 35%)!default;
-$table-border-color                  : lighten($mid-grey, 20)!default;
+$table-border-color                  : lighten($mid-grey, 30)!default;
 $table-body-separation               : 25px;
 $group-row-height                    : 40px;
 
 //table mixins 
 @mixin bordered {
-  border-bottom: $table-border-color solid 1px;
+  border-bottom: $table-border-color solid 2px;
 
   > TBODY {
     background: transparent;
@@ -28,12 +28,12 @@ $group-row-height                    : 40px;
       }
 
     > TR {
-        background-color: $table-bg;
-        border: $table-border-color solid 1px;
+        background-color: $body-bg;
+        border-top: $table-border-color solid 2px;
 
-        &:not(:last-of-type) {
-          border-bottom: 0;
-        }
+          &:first-child {
+            border-top: none;
+          }
 
         > TD {
             border: none;
@@ -49,6 +49,7 @@ $group-row-height                    : 40px;
 
         &.sub-row {
           border-top: none;
+          border-bottom: none;
         }
 
         &.separator-row {
@@ -94,7 +95,8 @@ TABLE {
     // General padding
     > THEAD > TR > TH,
     > TBODY > TR > TD {
-        padding: 5px;
+        padding: 0;
+        height: 50px;
     }
     &.no-lines {
         * {
