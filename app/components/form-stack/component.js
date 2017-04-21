@@ -34,17 +34,18 @@ export default Ember.Component.extend({
     // Find the default stack if none is passed in
     if ( this.get('mode') === REUSE && !this.get('stack') ) {
       let stack = all.findBy('name', this.get('defaultName'))
-      if ( stack ) {
+      if ( stack  && stack.get('id') ) {
         this.set('reuseStackId', stack.get('id'));
-        Ember.run.next(() => {
-          this.updateStack();
-        });
       } else {
         Ember.run.next(() => {
           this.set('mode', CREATE);
           this.set('showAdvanced', true);
         });
       }
+
+      Ember.run.next(() => {
+        this.updateStack();
+      });
     }
   },
 

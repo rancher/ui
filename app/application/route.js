@@ -7,6 +7,7 @@ export default Ember.Route.extend({
   github         : Ember.inject.service(),
   language       : Ember.inject.service('user-language'),
   modal          : Ember.inject.service(),
+  prefs          : Ember.inject.service(),
   settings       : Ember.inject.service(),
 
   previousParams : null,
@@ -122,11 +123,16 @@ export default Ember.Route.extend({
         this.set('previousLang', cur);
         svc.sideLoadLanguage('none');
       }
+    },
+
+    systemToggle() {
+      this.get('prefs').toggleProperty('showSystemResources');
     }
   },
 
   shortcuts: {
     'shift+l': 'langToggle',
+    'shift+s': 'systemToggle',
   },
 
   finishLogin() {

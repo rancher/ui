@@ -1,4 +1,4 @@
-<tr class="main-row {{if (or expanded showLabelRow) 'no-bottom'}}">
+<tr class="main-row">
   <td class="row-check" rowspan={{if showLabelRow 2 1}}>
     {{check-box nodeId=model.id}}
   </td>
@@ -63,12 +63,14 @@
   </tr>
 {{/if}}
 
+{{partial "error-sub-row"}}
+
 {{#if canExpand}}
   <tr class="sub-row hide">{{! make the alternating color match }}</tr>
   <tr class="sub-row {{unless expanded 'hide'}}">
     <td colspan="2">{{! checkbox and expand}}</td>
     <td colspan="{{sub fullColspan 3}}">
-      {{#liquid-if expanded}}
+      {{#if expanded}}
         {{container-table
           body=model.instances
           stickyHeader=false
@@ -78,7 +80,7 @@
           subRow=true
           showHost=true
         }}
-      {{/liquid-if}}
+      {{/if}}
     </td>
     <td>{{! actions}}</td>
   </tr>

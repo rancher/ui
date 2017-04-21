@@ -265,5 +265,28 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
       this.refresh();
       console.log('Switch finished');
     },
+
+    gotoA() { this.transitionTo('apps-tab.index',                 this.get('projects.current.id')); },
+    gotoC() { this.transitionTo('containers.index',               this.get('projects.current.id')); },
+    gotoD() { this.transitionTo('dns.index',                      this.get('projects.current.id')); },
+    gotoE() { this.transitionTo('settings.projects.index'                                        ); },
+    gotoH() { this.transitionTo('hosts.index',                    this.get('projects.current.id')); },
+    gotoK() { this.transitionTo('authenticated.project.api.keys', this.get('projects.current.id')); },
+    gotoL() { this.transitionTo('balancers.index',                this.get('projects.current.id')); },
+    gotoS() { this.transitionTo('scaling-groups.index',           this.get('projects.current.id')); },
+    help()  { this.get('modalService').toggleModal('modal-shortcuts'); },
   },
+
+  shortcuts: {
+    'a': 'gotoA',
+    'c': 'gotoC',
+    'd': 'gotoD',
+    'e': 'gotoE',
+    'h': 'gotoH',
+    'k': 'gotoK',
+    'l': 'gotoL',
+    's': 'gotoS',
+    'shift+/': 'help',
+  },
+
 });

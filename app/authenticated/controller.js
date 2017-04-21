@@ -47,8 +47,13 @@ export default Ember.Controller.extend({
     return this.get('projects.isReady') && this.get('hasHosts');
   }.property('projects.isReady','hasHosts'),
 
-  forceUpgrade: function() {
-    return this.get('currentPath').indexOf('authenticated.settings.projects') !== 0 &&
-      this.get('currentPath').indexOf('authenticated.admin-tab.') !== 0;
-  }.property('currentPath'),
+  forceUpgrade: false,
+  checkForUpgrade: function() {
+    let path = this.get('currentPath');
+    Ember.run.next(() => {
+      let force = path.indexOf('authenticated.settings.projects') !== 0 &&
+                  path.indexOf('authenticated.admin-tab.') !== 0;
+      this.set('forceUpgrade', force);
+    });
+  }.observes('currentPath'),
 });

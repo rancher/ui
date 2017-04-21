@@ -90,8 +90,7 @@ var Stack = Resource.extend(StateCounts, {
     },
 
     exportConfig: function() {
-      var url = this.get('endpointSvc').addAuthParams(this.linkFor('composeConfig'));
-      download(url);
+      download(this.linkFor('composeConfig'));
     },
 
     viewCode: function() {
