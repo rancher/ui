@@ -28,9 +28,6 @@ export default Ember.Controller.extend({
       translationKey: 'hookPage.fields.url.label',
       width: '100'
     },
-    {
-      width: '75'
-    },
   ],
 
 });
