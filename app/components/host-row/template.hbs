@@ -1,4 +1,4 @@
-<tr class="main-row {{if (or expanded showLabelRow) 'no-bottom'}}">
+<tr class="main-row {{if showLabelRow 'no-bottom'}}">
   <td class="row-check" rowspan={{if showLabelRow 2 1}}>
     {{check-box nodeId=model.id}}
   </td>
@@ -24,7 +24,7 @@
   </td>
   <td data-title="{{dt.instanceCount}}">
     {{#if subMatches}}
-      <b>{{get subMatches model.id}}/{{model.arrangedInstances.length}}</b>
+      {{get subMatches model.id}}/{{model.arrangedInstances.length}}
     {{else}}
       {{model.arrangedInstances.length}}
     {{/if}}

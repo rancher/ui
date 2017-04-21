@@ -7,19 +7,16 @@
 </section>
 
 <section>
-  <p>{{t 'apiPage.account.content.paragraph1'}} {{#if access.identity.name}}(<code>{{access.identity.displayName}}</code>){{/if}} {{t 'apiPage.account.content.paragraph2'}}</p>
-  <p>
-    <label>{{t 'apiPage.currentEndpoint'}}</label>
-    <code><a href="{{endpoint.auth.account.current}}" target="_blank">{{endpoint.display.account.current}}</a></code>
-    {{copy-to-clipboard clipboardText=endpoint.auth.account.current size="sm"}}
-  </p>
-  <!--
-  <p>
-    <label>{{t 'apiPage.legacyEndpoint'}}</label>
-    <code><a href="{{endpoint.auth.account.legacy}}" target="_blank">{{endpoint.display.account.legacy}}</a></code>
-    {{copy-to-clipboard clipboardText=endpoint.auth.account.legacy size="sm"}}
-  </p>
-  -->
+  <div class="row">
+    <div class="col span-7">
+      {{t 'apiPage.account.content.paragraph1'}} {{#if access.identity.name}}(<code>{{access.identity.displayName}}</code>){{/if}} {{t 'apiPage.account.content.paragraph2'}}
+      </div>
+    <code class="col span-5 input-group p-0">
+      <div class="input-group-addon p-5 bg-code">{{t 'apiPage.currentEndpoint'}}</div>
+      <div class="form-control p-5"><a href="{{endpoint.auth.account.current}}" target="_blank">{{endpoint.display.account.current}}</a></div>
+      <div class="input-group-addon">{{copy-to-clipboard clipboardText=endpoint.auth.account.current size="sm"}}</div>
+    </code>
+    </div>
 
   {{#sortable-table
       classNames="grid fixed mt-10 sortable-table"
@@ -42,9 +39,7 @@
   {{/sortable-table}}
 </section>
 
-<hr/>
-
-<section class="header clearfix">
+<section class="header clearfix pt-40">
   <h1>{{t 'apiPage.header'}}</h1>
 
   <div class="right-buttons">
@@ -53,17 +48,19 @@
 </section>
 
 <section>
-  <p>
-    {{t 'apiPage.content'
-      displayName=project.displayName
-      htmlSafe=true
-    }}
-  </p>
-  <p>
-    <label>{{t 'apiPage.currentEndpoint'}}</label>
-    <code><a href="{{endpoint.auth.environment.current}}" target="_blank">{{endpoint.display.environment.current}}</a></code>
-    {{copy-to-clipboard clipboardText=endpoint.auth.environment.current size="sm"}}
-  </p>
+  <div class="row">
+    <div class="col span-6">
+      {{t 'apiPage.content'
+        displayName=project.displayName
+        htmlSafe=true
+      }}
+    </div>
+    <code class="col span-6 input-group p-0">
+      <div class="input-group-addon p-5 bg-code">{{t 'apiPage.currentEndpoint'}}</div>
+      <div class="form-control p-5"><a href="{{endpoint.auth.environment.current}}" target="_blank">{{endpoint.display.environment.current}}</a></div>
+      <div class="input-group-addon">{{copy-to-clipboard clipboardText=endpoint.auth.environment.current size="sm"}}</div>
+    </code>
+  </div>
 
   <!--
   <p>

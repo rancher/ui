@@ -10,7 +10,7 @@
 </section>
 
 {{#if access.enabled}}
-  <section>
+  <section class="pt-40">
     <h3>{{t 'authPage.azuread.enabled.header' htmlSafe=true}}</h3>
     <hr/>
 
@@ -32,27 +32,27 @@
 {{/if}}
 
 {{#unless access.enabled}}
-  <section>
+  <section class="pt-40">
     <h3>{{t 'authPage.azuread.configure.header'}}</h3>
     <hr/>
 
     <div class="row">
       <div class="col span-4">
         <div class="inline-form">
-          <label>{{t 'authPage.azuread.configure.tenantId.label'}}{{field-required}}</label>
+          <label class="pb-5">{{t 'authPage.azuread.configure.tenantId.label'}}{{field-required}}</label>
           {{input type="text" value=model.tenantId placeholder=(t 'authPage.azuread.configure.tenantId.placeholder') classNames="form-control"}}
           <p class="text-info">{{t 'authPage.azuread.configure.tenantId.help'}}</p>
         </div>
       </div>
       <div class="col span-4">
         <div class="inline-form">
-          <label>{{t 'authPage.azuread.configure.clientId.label'}}{{field-required}}</label>
+          <label class="pb-5">{{t 'authPage.azuread.configure.clientId.label'}}{{field-required}}</label>
           {{input type="text" value=model.clientId placeholder=(t 'authPage.azuread.configure.clientId.placeholder') classNames="form-control"}}
         </div>
       </div>
       <div class="col span-4">
         <div class="inline-form">
-          <label>{{t 'authPage.azuread.configure.domain.label'}}{{field-required}}</label>
+          <label class="pb-5">{{t 'authPage.azuread.configure.domain.label'}}{{field-required}}</label>
           {{input type="text" value=model.domain placeholder=(t 'authPage.azuread.configure.domain.placeholder') classNames="form-control"}}
         </div>
       </div>
@@ -61,21 +61,21 @@
     <div class="row">
       <div class="col span-6">
         <div class="inline-form">
-          <label>{{t 'authPage.azuread.configure.adminAccountUsername.label'}}{{field-required}}</label>
+          <label class="pb-5">{{t 'authPage.azuread.configure.adminAccountUsername.label'}}{{field-required}}</label>
           {{input type="text" value=model.adminAccountUsername placeholder=(t 'authPage.azuread.configure.adminAccountUsername.placeholder') classNames="form-control"}}
           <p class="text-info">{{t 'authPage.azuread.configure.adminAccountUsername.help'}}</p>
         </div>
       </div>
       <div class="col span-6">
         <div class="inline-form">
-          <label>{{t 'authPage.azuread.configure.adminAccountPassword.label'}}{{field-required}}</label>
+          <label class="pb-5">{{t 'authPage.azuread.configure.adminAccountPassword.label'}}{{field-required}}</label>
           {{input type="password" value=model.adminAccountPassword classNames="form-control"}}
         </div>
       </div>
     </div>
   </section>
 
-  <section>
+  <section class="pt-40">
     <h3>{{t 'authPage.azuread.test.header'}}</h3>
     <hr/>
     <p class="text-info">{{t 'authPage.azuread.test.help'}}</p>
@@ -84,19 +84,19 @@
     <div class="row">
       <div class="col span-4">
         <div class="inline-form">
-          <label>{{t 'authPage.azuread.test.username.label'}}{{field-required}}</label>
+          <label class="pb-5">{{t 'authPage.azuread.test.username.label'}}{{field-required}}</label>
           {{input type="text" value=loginUsername prompt=(t 'authPage.azuread.test.username.placeholder') classNames="form-control"}}
         </div>
       </div>
       <div class="col span-4">
         <div class="inline-form">
-          <label>{{t 'authPage.azuread.test.password.label'}}{{field-required}}</label>
+          <label class="pb-5">{{t 'authPage.azuread.test.password.label'}}{{field-required}}</label>
           {{input type="password" value=loginPassword classNames="form-control"}}
         </div>
       </div>
       <div class="col span-4">
         <div class="inline-form">
-          <label>&nbsp;</label>
+          <label class="pb-5">&nbsp;</label>
           <button class="btn bg-primary" style="display: block;" {{action "test"}}>
             {{#if testing}}
               <i class="icon icon-spinner icon-spin"></i> {{t 'authPage.azuread.test.post'}}
