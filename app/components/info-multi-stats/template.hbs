@@ -1,5 +1,5 @@
 {{#multi-container-stats model=model linkName=linkName emitMaps=true as |stats|}}
-  {{#liquid-if (eq mode "small")}}
+  {{#liquid-if (eq mode "small") class=(if stats.loading 'child-loading')}}
     {{#if stats.loading}}
       <span class="text-muted" style="position: relative; top: 3px;">Connecting&hellip;</span>
     {{else if stats.active}}
