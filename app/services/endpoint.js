@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
 export default Ember.Service.extend({
@@ -33,22 +32,6 @@ export default Ember.Service.extend({
     a.href = this.get('absolute');
     return a.origin;
   }.property('absolute'),
-
-  addAuthParams: function(url) {
-    var token = this.get('cookies').get(C.COOKIE.TOKEN);
-    if ( token )
-    {
-      url = Util.addQueryParam(url, 'token', token);
-    }
-
-    var projectId = this.get(`tab-session.${C.TABSESSION.PROJECT}`);
-    if ( projectId )
-    {
-      url = Util.addQueryParam(url, 'projectId', projectId);
-    }
-
-    return url;
-  },
 
   swarm: function() {
     var port = this.get(`settings.${C.SETTING.SWARM_PORT}`);
