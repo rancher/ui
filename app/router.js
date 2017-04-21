@@ -26,7 +26,7 @@ Router.map(function() {
     this.route('style-guide', {path: '/style-guide'});
     this.route('dummy-dev', {path: '/dev'});
 
-    this.route('user-settings', {path: '/user-settings', resetNamespace: true});
+    this.route('user-preferences', {path: '/user-preferences', resetNamespace: true});
 
     // Settings
     this.route('settings', {resetNamespace: true}, function() {

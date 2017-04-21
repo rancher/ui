@@ -2,12 +2,14 @@ import Ember from 'ember';
 import fetch from 'ember-api-store/utils/fetch';
 
 export default Ember.Component.extend({
+  intl: Ember.inject.service(),
+
   classNames: ['caas-login', 'text-left'],
   showReset: Ember.computed.alias('promptReset'),
   userEmail: null,
   passwordResetSent: false,
   showSuccess: false,
-  intl: Ember.inject.service(),
+
   actions: {
     toggleReset: function(e) {
       e.preventDefault();
@@ -36,5 +38,5 @@ export default Ember.Component.extend({
         this.set('loading', false);
       });
     }
-  }
+  },
 });

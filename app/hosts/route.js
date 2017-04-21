@@ -1,4 +1,3 @@
-import C from 'ui/utils/constants';
 import Ember from 'ember';
 
 export default Ember.Route.extend({

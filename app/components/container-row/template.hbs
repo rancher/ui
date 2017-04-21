@@ -12,58 +12,7 @@
   </td>
   <td data-title="{{dt.image}}" class="clip top-half">
     {{model.displayImage}}
-    {{#if (and (eq showCommand "inline") model.command)~}}
-      ({{model.command}})
-    {{/if}}
   </td>
-  {{#if showStats}}
-    <td data-title="{{dt.stats}}" class="spark-td">
-      {{#if (and statsAvailable model.cpuSpark)}}
-        {{#tooltip-element tagName="span" inlineBlock=false type="tooltip-basic" model=sparkCPUModel tooltipTemplate='tooltip-static' tooltipFor="sparkCPU"}}
-          {{spark-line
-            data=model.cpuSpark
-            width=60 height=25 max=cpuMax
-            prefix="containersPage.table.sparkPrefixCpu"
-            formatter="percent"
-            type="cpu"
-            tooltipModel=(mut sparkCPUModel)
-          }}
-        {{/tooltip-element}}
-        {{#tooltip-element tagName="span" inlineBlock=false type="tooltip-basic" model=sparkMemoryModel tooltipTemplate='tooltip-static' tooltipFor="sparkMemory"}}
-          {{spark-line
-            data=model.memorySpark
-            width=60 height=25 max=memoryMax
-            prefix="containersPage.table.sparkPrefixMemory"
-            formatter="mib"
-            type="memory"
-            tooltipModel=(mut sparkMemoryModel)
-          }}
-        {{/tooltip-element}}
-        {{#tooltip-element tagName="span" inlineBlock=false type="tooltip-basic" model=sparkNetworkModel tooltipTemplate='tooltip-static' tooltipFor="sparkNetwork"}}
-        {{spark-line
-          data=model.networkSpark
-          width=60 height=25 max=networkMax
-          prefix="containersPage.table.sparkPrefixNetwork"
-          formatter="kbps"
-          type="network"
-          tooltipModel=(mut sparkNetworkModel)
-        }}
-        {{/tooltip-element}}
-        {{#tooltip-element tagName="span" inlineBlock=false type="tooltip-basic" model=sparkStorageModel tooltipTemplate='tooltip-static' tooltipFor="sparkStorage"}}
-          {{spark-line
-            data=model.storageSpark
-            width=60 height=25 max=storageMax
-            prefix="containersPage.table.sparkPrefixStorage"
-            formatter="kbps"
-            type="storage"
-            tooltipModel=(mut sparkStorageModel)
-          }}
-        {{/tooltip-element}}
-      {{else}}
-        <span class="text-muted">{{t 'generic.na'}}</span>
-      {{/if}}
-    </td>
-  {{/if}}
   {{#if showActions}}
     <td rowspan="2" data-title="{{dt.actions}}" class="actions">
       {{action-menu model=model showPrimary=showPrimaryActions}}
@@ -82,3 +31,4 @@
     {{t 'generic.createdDate' date=(date-from-now model.created)}}
   </td>
 </tr>
+{{partial "error-sub-row"}}

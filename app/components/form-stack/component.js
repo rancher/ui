@@ -22,7 +22,6 @@ export default Ember.Component.extend({
   choices: null,
 
   init() {
-    window.x = this;
     this._super(...arguments);
     let all = this.get('store').all('stack');
     this.set('choices', all);
@@ -35,17 +34,18 @@ export default Ember.Component.extend({
     // Find the default stack if none is passed in
     if ( this.get('mode') === REUSE && !this.get('stack') ) {
       let stack = all.findBy('name', this.get('defaultName'))
-      if ( stack ) {
+      if ( stack  && stack.get('id') ) {
         this.set('reuseStackId', stack.get('id'));
-        Ember.run.next(() => {
-          this.updateStack();
-        });
       } else {
         Ember.run.next(() => {
           this.set('mode', CREATE);
           this.set('showAdvanced', true);
         });
       }
+
+      Ember.run.next(() => {
+        this.updateStack();
+      });
     }
   },
 
@@ -59,9 +59,7 @@ export default Ember.Component.extend({
       stack = this.get('createStack');
     }
 
-    Ember.run.next(() => {
-      this.set('stack', stack);
-    });
+    this.set('stack', stack);
   }),
 
   validate: Ember.observer('stack.{id,name}', function() {

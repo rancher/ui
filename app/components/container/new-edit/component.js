@@ -4,6 +4,7 @@ import SelectTab from 'ui/mixins/select-tab';
 import { debouncedObserver } from 'ui/utils/debounce';
 import C from 'ui/utils/constants';
 import { flattenLabelArrays } from 'ui/mixins/manage-labels';
+import Util from 'ui/utils/util';
 
 export default Ember.Component.extend(NewOrEdit, SelectTab, {
   intl                      : Ember.inject.service(),
@@ -94,8 +95,8 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     },
 
     removeSidekick(idx) {
-      var idx = this.get('activeLaunchConfigIndex');
       var ary = this.get('service.secondaryLaunchConfigs');
+      ary.removeAt(idx);
     },
 
   },
@@ -297,10 +298,10 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   },
 
   didSave() {
-    if ( this.get('isService') )
-    {
+    if ( this.get('isService') ) {
       // Returns a promise
       return this.setServiceLinks();
+    } else {
     }
   },
 

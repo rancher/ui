@@ -263,6 +263,7 @@ var Service = Resource.extend(StateCounts, {
 
     return [
       'service',
+      'scalinggroup',
       'networkdriverservice',
       'storagedriverservice',
       'loadbalancerservice',

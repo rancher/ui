@@ -24,6 +24,7 @@ var queue = async.queue(getUpgradeInfo, 2);
 
 function getUpgradeInfo(task, cb) {
   var obj = task.obj;
+  console.log('Upgrade info', obj.model.id);
 
   let deps = {
     upgradeInfo: obj.get('catalog').fetchTemplate(task.id, true)
@@ -89,6 +90,10 @@ function getUpgradeInfo(task, cb) {
       });
     }
   }).catch((err) => {
+    if ( obj.isDestroyed || obj.isDestroying ) {
+      return;
+    }
+
     if ( err.status === 404 )
     {
       obj.set('upgradeStatus', NOTFOUND);
@@ -115,6 +120,7 @@ export default Ember.Mixin.create({
 
   init() {
     this._super(...arguments);
+    console.log('init', this.get('model.id'));
     this.updateStatus();
   },
 
@@ -204,6 +210,9 @@ export default Ember.Mixin.create({
   },
 
   externalIdChanged: function() {
-    Ember.run.once(this, 'updateStatus');
+    Ember.run.once(() => {
+      console.log('externalIdChange', this.get('model.id'));
+      this.updateStatus();
+    });
   }.observes('model.{externalId,state}'),
 });
