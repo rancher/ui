@@ -1,31 +1,31 @@
-<div class="row mt-10">
+<div class="row">
   {{#if add}}
     <h3>{{t 'addHostTemplate.add.header'}}</h3>
     {{#each-in newSelectedKey as |key value|}}
       {{#if (eq key 'name')}}
-        <div class="col span-6">
-          <label for="">{{key}}</label>
+        <div class="col span-4">
+          <label class="pb-5" for="">{{key}}</label>
           {{input type='text' value=name}}
         </div>
       {{/if}}
       {{#if (eq key 'publicValues')}}
         {{#each-in (get selectedKey key) as |pKey pValue|}}
-          <div class="col span-6" style="padding-top: 7px;">
-            <label for="">{{pKey}}</label>
+          <div class="col span-4">
+            <label class="pb-5" for="">{{pKey}}</label>
             {{input type='text' value=publicValue}}
           </div>
         {{/each-in}}
       {{/if}}
       {{#if (eq key 'secretValues')}}
-        <div class="col span-6">
+        <div class="col span-4">
           {{#each-in (get selectedKey key) as |sKey sValue|}}
-            <div class="col span-12">
-              <label for="">{{sKey}}</label>
+            <div>
+              <label class="pb-5" for="">{{sKey}}</label>
               {{input type='password' value=secretValue}}
             </div>
           {{/each-in}}
           {{#unless noSelect}}
-          <div class="col span-12">
+          <div class="col span-4">
             <a class="pull-right" href="#" {{action 'cancelAdd'}}>{{t 'generic.cancel'}}</a>
           </div>
           {{/unless}}
@@ -33,9 +33,9 @@
       {{/if}}
     {{/each-in}}
   {{else}}
-    <div class="col span-6">
+    <div class="col span-4">
       <div class="col-inline clearfix">
-        <label for="">{{t 'addHostTemplate.choose.label'}}</label>
+        <label class="pb-5" for="">{{t 'addHostTemplate.choose.label'}}</label>
         <div class="pull-right text-small">
           <a class="btn bg-transparent p-0" role="button" {{action "addKey"}}>{{t 'addHostTemplate.choose.add'}}</a>
         </div>
