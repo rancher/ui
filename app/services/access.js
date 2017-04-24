@@ -12,7 +12,24 @@ export default Ember.Service.extend({
   token: null,
   loadedVersion: null,
 
-  testAuth: function() {
+  // These are set by authenticated/route
+  // Is access control enabled
+  enabled: null,
+
+  // What kind of access control
+  provider: null,
+
+  // Are you an admin
+  admin: null,
+
+  // The identity from the session isn't an actual identity model...
+  identity: function() {
+    var obj = this.get('session.'+C.SESSION.IDENTITY) || {};
+    obj.type = 'identity';
+    return this.get('userStore').createRecord(obj);
+  }.property('session.'+C.SESSION.IDENTITY),
+
+  testAuth() {
     // make a call to api base because it is authenticated
     return this.get('userStore').rawRequest({
       url: '',
@@ -34,24 +51,7 @@ export default Ember.Service.extend({
     });
   },
 
-  // The identity from the session isn't an actual identity model...
-  identity: function() {
-    var obj = this.get('session.'+C.SESSION.IDENTITY) || {};
-    obj.type = 'identity';
-    return this.get('userStore').createRecord(obj);
-  }.property('session.'+C.SESSION.IDENTITY),
-
-  // These are set by authenticated/route
-  // Is access control enabled
-  enabled: null,
-
-  // What kind of access control
-  provider: null,
-
-  // Are you an admin
-  admin: null,
-
-  detect: function() {
+  detect() {
     if ( this.get('enabled') !== null ) {
       return Ember.RSVP.resolve();
     }
@@ -88,7 +88,7 @@ export default Ember.Service.extend({
     });
   },
 
-  shibbolethConfigured: function(token) {
+  shibbolethConfigured(token) {
     let rv = false;
     if ((token.authProvider||'') === 'shibbolethconfig' && token.userIdentity) {
       rv = true;
@@ -96,7 +96,7 @@ export default Ember.Service.extend({
     return rv;
   },
 
-  login: function(code) {
+  login(code) {
     var session = this.get('session');
 
     return this.get('userStore').rawRequest({
@@ -134,7 +134,16 @@ export default Ember.Service.extend({
     });
   },
 
-  clearSessionKeys: function(all) {
+  clearToken() {
+    return this.get('userStore').rawRequest({
+      url: 'token/current',
+      method: 'DELETE',
+    }).then(() => {
+      return true;
+    });
+  },
+
+  clearSessionKeys(all) {
     if ( all === true )
     {
       this.get('session').clear();
@@ -152,11 +161,11 @@ export default Ember.Service.extend({
     this.get('cookies').remove(C.COOKIE.TOKEN);
   },
 
-  isLoggedIn: function() {
+  isLoggedIn() {
     return !!this.get('cookies').get(C.COOKIE.TOKEN);
   },
 
-  isOwner: function() {
+  isOwner() {
     let schema = this.get('store').getById('schema','stack');
     if ( schema && schema.resourceFields.system ) {
       return schema.resourceFields.system.create;
