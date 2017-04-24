@@ -71,6 +71,10 @@ export default Ember.Route.extend({
       controller.set('hostId', null);
       controller.set('stackId', null);
       controller.set('containerId', null);
+      controller.set('stackId', null);
+      controller.set('serviceId', null);
+      controller.set('upgrade', null);
+      controller.set('mode', null);
     }
   }
 });
