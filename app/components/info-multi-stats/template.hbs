@@ -1,88 +1,65 @@
-{{#if showGraphs}}
-  <div class="row">
-    <div class="row-same-height row-full-height">
-      <div class="col-sm-12 col-md-4 col-md-height col-md-full-height col-top" style="margin-bottom: 20px;">
-        <div class="well no-padding-margin">
-          <div style="padding: 20px;">
-            <label class="section text-muted">{{t 'infoMultiStats.cpuSection.labelText'}}</label>
-            <div class="container-legend pull-right">
-              <span class="r-ml20 legend-circle-system"></span> {{t 'infoMultiStats.cpuSection.system'}}
-              <span class="r-ml10 legend-circle-user"></span> {{t 'infoMultiStats.cpuSection.user'}}
-            </div>
-            <hr>
-            <div class="info-graph {{unless active 'hide'}}">
-              <div id="cpuGraph"></div>
-            </div>
-            <div class="text-center text-muted {{unless loading 'hide'}}" style="height: 100px; padding-top: 30px;">
-              <i class="icon icon-spinner icon-spin"></i> {{t 'infoMultiStats.connecting'}}
-            </div>
-            <div class="text-center text-muted {{if available 'hide'}}" style="height: 100px; padding-top: 30px;">
-              {{t 'infoMultiStats.utilizationStats'}}
-            </div>
-          </div>
-        </div>
+{{#multi-container-stats model=model linkName=linkName emitMaps=true as |stats|}}
+  {{#liquid-if (eq mode "small") class=(if stats.loading 'child-loading')}}
+    {{#if stats.loading}}
+      <span class="text-muted" style="position: relative; top: 3px;">Connecting&hellip;</span>
+    {{else if stats.active}}
+      {{spark-line
+        data=stats.cpuTotal
+        width=smallWidth height=smallHeight
+        prefix="containersPage.table.sparkPrefixCpu"
+        formatter="percent"
+        gradient="cpu"
+        minMax=100
+      }}
 
-        <div class="well no-padding-margin" style="margin-top: 20px;">
-          <div style="padding: 20px;">
-            <label class="section text-muted">{{t 'infoMultiStats.networkSection.labelText'}}</label>
-            <div class="container-legend pull-right">
-              <span class="r-ml20 legend-circle-transmit"></span> {{t 'infoMultiStats.networkSection.transmit'}}
-              <span class="r-ml10 legend-circle-receive"></span> {{t 'infoMultiStats.networkSection.receive'}}
-            </div>
-            <hr>
-            <div class="info-graph {{unless active 'hide'}}">
-              <div id="networkGraph"></div>
-            </div>
-            <div class="text-center text-muted {{unless loading 'hide'}}" style="height: 100px; padding-top: 30px;">
-              <i class="icon icon-spinner icon-spin"></i> {{t 'infoMultiStats.connecting'}}
-            </div>
-            <div class="text-center text-muted {{if available 'hide'}}" style="height: 100px; padding-top: 30px;">
-              {{t 'infoMultiStats.utilizationStats'}}
-            </div>
-          </div>
+      {{spark-line
+        data=stats.memory
+        width=smallWidth height=smallHeight
+        prefix="containersPage.table.sparkPrefixCpu"
+        formatter="mib"
+        gradient="memory"
+        maxDoubleInital=true
+      }}
+
+      {{spark-line
+        data=stats.networkTotal
+        width=smallWidth height=smallHeight
+        prefix="containersPage.table.sparkPrefixCpu"
+        formatter="kbps"
+        gradient="network"
+        minMax=100
+      }}
+
+      {{spark-line
+        data=stats.storageTotal
+        width=smallWidth height=smallHeight
+        prefix="containersPage.table.sparkPrefixCpu"
+        formatter="kbps"
+        gradient="storage"
+        minMax=100
+      }}
+
+      <button class="btn btn-sm bg-transparent hide" style="vertical-align: top" {{action "toggle"}}><i class="icon icon-plus-circle"></i></button>
+    {{else}}
+      <span class="text-muted" style="position: relative; top: 3px;">Stats not available</span>
+    {{/if}}
+  {{/liquid-if}}
+  {{#if (eq mode "large")}}
+    {{#ember-wormhole to=largeTargetId}}
+      <div class="row">
+        <div class="col span-6">
+        </div>
+        <div class="col span-6">
         </div>
       </div>
-
-      <div class="col-sm-12 col-md-4 col-md-height col-md-full-height col-top" style="margin-bottom: 20px;">
-        <div class="well no-padding-margin">
-          <div style="padding: 20px;">
-            <label class="section text-muted">{{t 'infoMultiStats.memorySection.labelText'}}</label>
-            <div class="container-legend pull-right">
-              <span class="r-ml20 legend-circle-used"></span> {{t 'infoMultiStats.memorySection.used'}}
-            </div>
-            <hr>
-            <div class="{{unless active 'hide'}}">
-              <div id="memoryGraph"></div>
-            </div>
-            <div class="text-center text-muted {{unless loading 'hide'}}" style="height: 100px; padding-top: 30px;">
-              <i class="icon icon-spinner icon-spin"></i> {{t 'infoMultiStats.connecting'}}
-            </div>
-            <div class="text-center text-muted {{if available 'hide'}}" style="height: 100px; padding-top: 30px;">
-              {{t 'infoMultiStats.utilizationStats'}}
-            </div>
-          </div>
+      <div class="row">
+        <div class="col span-6">
+          {{graph-area data=stats.maps fields=networkFields gradient="network"}}
         </div>
-
-        <div class="well no-padding-margin" style="margin-top: 20px;">
-          <div style="padding: 20px;">
-            <label class="section text-muted">{{t 'infoMultiStats.storageSection.labelText'}}</label>
-            <div class="container-legend pull-right">
-              <span class="r-ml20 legend-circle-write"></span> {{t 'infoMultiStats.storageSection.write'}}
-              <span class="r-ml10 legend-circle-read"></span> {{t 'infoMultiStats.storageSection.read'}}
-            </div>
-            <hr>
-            <div class="info-graph {{unless active 'hide'}}">
-              <div id="storageGraph"></div>
-            </div>
-            <div class="text-center text-muted {{unless loading 'hide'}}" style="height: 100px; padding-top: 30px;">
-              <i class="icon icon-spinner icon-spin"></i> {{t 'infoMultiStats.connecting'}}
-            </div>
-            <div class="text-center text-muted {{if available 'hide'}}" style="height: 100px; padding-top: 30px;">
-              {{t 'infoMultiStats.utilizationStats'}}
-            </div>
-          </div>
+        <div class="col span-6">
         </div>
       </div>
-    </div>
-  </div>
-{{/if}}
+      <button class="btn btn-sm bg-transparent" style="vertical-align: top" {{action "toggle"}}><i class="icon icon-minus-circle"></i></button>
+    {{/ember-wormhole}}
+  {{/if}}
+{{/multi-container-stats}}

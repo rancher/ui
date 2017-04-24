@@ -44,6 +44,14 @@ var C = {
     SECRETS: 'secrets',
   },
 
+  CATALOG: {
+    LIBRARY_KEY: 'library',
+    LIBRARY_VALUE: 'https://git.rancher.io/rancher-catalog.git',
+    COMMUNITY_KEY: 'community',
+    COMMUNITY_VALUE: 'https://git.rancher.io/community-catalog.git',
+    DEFAULT_BRANCH: 'master',
+  },
+
   COOKIE: {
     TOKEN: 'token',
     PL: 'PL',

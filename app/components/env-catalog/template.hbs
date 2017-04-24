@@ -1,0 +1,100 @@
+<div>
+  <h2>{{t 'envCatalog.header'}}</h2>
+  <h5 class="help-block">{{format-html-message 'envCatalog.subtext'}}</h5>
+  <hr/>
+</div>
+<div>
+  {{#if global.length}}
+    <h3>{{t 'envCatalog.global'}}</h3>
+    <h5>{{t 'envCatalog.globalNote'}}</h5>
+    <table class="table fixed no-lines no-top-padding">
+      <tr class="text-muted hidden-xs hidden-sm text-left">
+        <th>{{t 'catalogSettings.more.name.label'}}</th>
+        <th width="30">&nbsp;</th>
+        <th>{{t 'catalogSettings.more.url.label'}}</th>
+        <th width="30">&nbsp;</th>
+        <th>{{t 'catalogSettings.more.kind.label'}}</th>
+        <th width="30">&nbsp;</th>
+        <th>{{t 'catalogSettings.more.branch.label'}}</th>
+        <th width="30">&nbsp;</th>
+      </tr>
+      {{#each global as |row|}}
+        {{#unless row.toRemove}}
+          <tr>
+            <td class="valign-top pt-5 pb-5" data-title="{{t 'catalogSettings.more.name.label'}}:">
+              {{row.name}}
+            </td>
+            <td>&nbsp;</td>
+            <td class="valign-top pt-5 pb-5" data-title="{{t 'catalogSettings.more.url.label'}}:">
+              {{row.url}}
+            </td>
+            <td>&nbsp;</td>
+            <td class="valign-top pt-5 pb-5" data-title="{{t 'catalogSettings.more.kind.label'}}:">
+              {{row.kind}}
+            </td>
+            <td>&nbsp;</td>
+            <td class="valign-top pt-5 pb-5" data-title="{{t 'catalogSettings.more.branch.label'}}:">
+              {{row.branch}}
+            </td>
+          </tr>
+        {{/unless}}
+      {{/each}}
+    </table>
+  {{/if}}
+  <hr/>
+</div>
+<div>
+  <button class="btn btn-sm btn-primary r-mb10" {{action "add"}}>
+    <i class="icon icon-plus text-small"/>
+    <span>{{t 'envCatalog.addActionLabel'}}</span>
+  </button>
+
+  {{#if ary.length}}
+    <table class="table fixed no-lines no-top-padding">
+      <tr class="text-muted hidden-xs hidden-sm text-left">
+        <th width="200">{{t 'catalogSettings.more.name.label'}}</th>
+        <th width="30">&nbsp;</th>
+        <th>{{t 'catalogSettings.more.url.label'}}</th>
+        <th width="30">&nbsp;</th>
+        <th width="100">{{t 'catalogSettings.more.kind.label'}}</th>
+        <th width="30">&nbsp;</th>
+        <th width="200">{{t 'catalogSettings.more.branch.label'}}</th>
+        <th width="30">&nbsp;</th>
+      </tr>
+      {{#each ary as |row|}}
+        {{#unless row.toRemove}}
+          <tr>
+            <td data-title="{{t 'catalogSettings.more.name.label'}}:">
+              {{input class="form-control input-sm name" type="text" value=row.name placeholder=(t 'catalogSettings.more.name.placeholder')}}
+            </td>
+            <td>&nbsp;</td>
+            <td data-title="{{t 'catalogSettings.more.url.label'}}:">
+              {{input class="form-control input-sm" type="text" value=row.url placeholder=(t 'catalogSettings.more.url.placeholder')}}
+            </td>
+            <td>&nbsp;</td>
+            <td data-title="{{t 'catalogSettings.more.kind.label'}}:">
+              {{new-select
+                classNames="form-control"
+                content=kindChoices
+                optionLabelPath="translationKey"
+                optionValuePath="value"
+                localizedLabel=true
+                value=row.kind
+              }}
+            </td>
+            <td>&nbsp;</td>
+            <td data-title="{{t 'catalogSettings.more.branch.label'}}:">
+              {{input class="form-control input-sm" type="text" value=row.branch placeholder=(t 'catalogSettings.more.branch.placeholder')}}
+            </td>
+
+            <td class="valign-top text-right">
+              <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+            </td>
+          </tr>
+        {{/unless}}
+      {{/each}}
+    </table>
+  {{/if}}
+</div>
+{{top-errors errors=errors}}
+{{save-cancel classNames="pt-20" cancel=(action cancel) editing=true save="save"}}
