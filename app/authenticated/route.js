@@ -275,6 +275,14 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     gotoL() { this.transitionTo('balancers.index',                this.get('projects.current.id')); },
     gotoS() { this.transitionTo('scaling-groups.index',           this.get('projects.current.id')); },
     help()  { this.get('modalService').toggleModal('modal-shortcuts'); },
+    search(event)  {
+      let elem = $("INPUT[type='search']")[0];
+      if ( elem ) {
+        event.stopPropagation();
+        event.preventDefault();
+        elem.focus();
+      }
+    }
   },
 
   shortcuts: {
@@ -286,6 +294,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     'k': 'gotoK',
     'l': 'gotoL',
     's': 'gotoS',
+    '/': 'search',
     'shift+/': 'help',
   },
 
