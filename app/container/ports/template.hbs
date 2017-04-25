@@ -1,42 +1,49 @@
-{{#sortable-table
-  classNames="grid sortable-table"
-  body=model.ports
-  searchText=searchText
-  sortBy=sortBy
-  bulkActions=false
-  rowActions=false
-  pagingLabel="pagination.port"
-  headers=headers as |sortable kind port dt|}}
-  {{#if (eq kind "row")}}
-    <td data-title="{{dt.publicIp}}">
-      {{#if (eq "0.0.0.0" port.displayPublicIp)}}
-        {{port.displayPublicIp}} {{t 'containerPage.portsTab.hostPrimaryIp' ip=model.container.primaryHost.displayIp}}
-      {{else if port.displayPublicIp}}
-        {{port.displayPublicIp}}
-      {{else}}
-        <span class="text-muted">{{t 'generic.none'}}</span>
-      {{/if}}
-    </td>
-    <td data-title="{{dt.publicPort}}">
-      {{#if port.publicPort}}
-        {{port.publicPort}}
-      {{else}}
-        <span class="text-muted">{{t 'generic.none'}}</span>
-      {{/if}}
-    </td>
-    <td data-title="{{dt.privatePort}}">
-      {{#if port.privatePort}}
-        {{port.privatePort}}
-      {{else}}
-        <span class="text-muted">{{t 'generic.none'}}</span>
-      {{/if}}
-    </td>
-    <td data-title="{{dt.protocol}}">
-      {{upper-case port.protocol}}
-    </td>
-  {{else if (eq kind "nomatch")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.portsTab.table.noMatch'}}</td></tr>
-  {{else if (eq kind "norows")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.portsTab.table.noData'}}</td></tr>
-  {{/if}}
-{{/sortable-table}}
+{{#accordion-row
+  title='Ports'
+  detail='Some details'
+  status=status
+  statusClass=statusClass
+}}
+  {{#sortable-table
+       classNames="grid sortable-table"
+       body=model.ports
+       searchText=searchText
+       sortBy=sortBy
+       bulkActions=false
+       rowActions=false
+       pagingLabel="pagination.port"
+       headers=headers as |sortable kind port dt|}}
+    {{#if (eq kind "row")}}
+      <td data-title="{{dt.publicIp}}">
+        {{#if (eq "0.0.0.0" port.displayPublicIp)}}
+          {{port.displayPublicIp}} {{t 'containerPage.portsTab.hostPrimaryIp' ip=model.container.primaryHost.displayIp}}
+        {{else if port.displayPublicIp}}
+          {{port.displayPublicIp}}
+        {{else}}
+          <span class="text-muted">{{t 'generic.none'}}</span>
+        {{/if}}
+      </td>
+      <td data-title="{{dt.publicPort}}">
+        {{#if port.publicPort}}
+          {{port.publicPort}}
+        {{else}}
+          <span class="text-muted">{{t 'generic.none'}}</span>
+        {{/if}}
+      </td>
+      <td data-title="{{dt.privatePort}}">
+        {{#if port.privatePort}}
+          {{port.privatePort}}
+        {{else}}
+          <span class="text-muted">{{t 'generic.none'}}</span>
+        {{/if}}
+      </td>
+      <td data-title="{{dt.protocol}}">
+        {{upper-case port.protocol}}
+      </td>
+    {{else if (eq kind "nomatch")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.portsTab.table.noMatch'}}</td></tr>
+    {{else if (eq kind "norows")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.portsTab.table.noData'}}</td></tr>
+    {{/if}}
+  {{/sortable-table}}
+{{/accordion-row}}

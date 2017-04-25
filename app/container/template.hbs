@@ -1,105 +1,203 @@
 <section class="header clearfix">
   <h1 class="pull-left">
-    {{t 'containerPage.header' name=model.displayName}}
+    {{t 'containerPage.header' name=model.container.displayName}}
   </h1>
   <div class="pull-left mt-10">
-    {{info-multi-stats model=model largeTargetId="largeStats"}}
+    {{info-multi-stats model=model.container largeTargetId="largeStats"}}
   </div>
   <div class="right-buttons">
-    {{badge-state model=model}}
-    {{action-menu model=model showPrimary=false classNames="ml-10 inline-block" size="sm"}}
+    {{badge-state model=model.container}}
+    {{action-menu model=model.container showPrimary=false classNames="ml-10 inline-block" size="sm"}}
   </div>
 </section>
 
 <div id="largeStats">
 </div>
 
-{{#if model.description}}
-  {{banner-message color='bg-secondary mb-0 mt-10' message=model.description}}
+{{#if model.container.description}}
+  {{banner-message color='bg-secondary mb-0 mt-10' message=model.container.description}}
 {{/if}}
 
 <section class="pt-10 pb-10">
-  {{#if model.stack}}
-    {{#banner-message class='tight inline' color='bg-info' title=(t 'generic.stack')}}
-      <p>
-        {{#link-to "stack" projects.current.id model.stack.id}}{{model.stack.displayName}}{{/link-to}}
-      </p>
-    {{/banner-message}}
-  {{/if}}
-  {{#if model.service}}
-    {{#banner-message class='tight inline' color='bg-info' title=(t 'generic.service')}}
-      <p>
-        {{#link-to "service" projects.current.id model.service.id}}{{model.service.displayName}}{{/link-to}}
-      </p>
-    {{/banner-message}}
-  {{/if}}
-  {{#if model.primaryHost}}
-    {{#banner-message class='tight inline' color='bg-info' title=(t 'generic.host')}}
-      <p>
-        {{#link-to "host" model.primaryHost.id}}{{model.primaryHost.displayName}}{{/link-to}}
-      </p>
-    {{/banner-message}}
-  {{/if}}
-
-  {{#if model.displayExternalId}}
-    {{#banner-message class='tight inline' color='bg-info' title=(t 'generic.uuid')}}
-     <p>
-        {{#copy-inline clipboardText=model.externalId}}
-          {{model.displayExternalId}}
+  <div class="row container-info">
+    <div class="">Basic Info</div>
+    {{#if model.container.stack}}
+      <div class="col">
+        <label class="inline-label">{{t 'generic.stack'}}</label>
+        {{#link-to "stack" projects.current.id model.container.stack.id}}{{model.container.stack.displayName}}{{/link-to}}
+      </div>
+    {{/if}}
+    {{#if model.container.service}}
+      <div class="col">
+        <label class="inline-label">{{t 'generic.service'}}</label>
+        {{#link-to "service" projects.current.id model.container.service.id}}{{model.container.service.displayName}}{{/link-to}}
+      </div>
+    {{/if}}
+    {{#if model.container.primaryHost}}
+      <div class="col">
+        <label class="inline-label">{{t 'generic.host'}}</label>
+        {{#link-to "host" model.container.primaryHost.id}}{{model.container.primaryHost.displayName}}{{/link-to}}
+      </div>
+    {{/if}}
+    {{#if model.container.displayExternalId}}
+      <div class="col">
+        <label class="inline-label">{{t 'generic.uuid'}}</label>
+        {{#copy-inline clipboardText=model.container.externalId}}
+          {{model.container.displayExternalId}}
         {{/copy-inline}}
-      </p>
-    {{/banner-message}}
-  {{/if}}
-
-  {{#if model.displayIp}}
-    {{#banner-message class='tight inline' color='bg-info' title=(t 'generic.ipAddress')}}
-      <p>
-        {{#copy-inline clipboardText=model.displayIp}}
-          {{model.displayIp}}
+      </div>
+    {{/if}}
+    {{#if model.container.displayIp}}
+      <div class="col">
+        <label class="inline-label">{{t 'generic.ipAddress'}}</label>
+        {{#copy-inline clipboardText=model.container.displayIp}}
+          {{model.container.displayIp}}
         {{/copy-inline}}
-      </p>
-    {{/banner-message}}
-  {{/if}}
-
-  {{#banner-message class='tight inline' color='bg-info' title=(t 'generic.image')}}
-    <p>
-      {{#copy-inline clipboardText=model.displayImage}}
-        {{model.displayImage}}
+      </div>
+    {{/if}}
+    <div class="col">
+      <label class="inline-label">{{t 'generic.image'}}</label>
+      {{#copy-inline clipboardText=model.container.displayImage}}
+        {{model.container.displayImage}}
       {{/copy-inline}}
-    </p>
-  {{/banner-message}}
-
-  {{#if model.entrypoint}}
-    {{#banner-message class='tight inline' color='bg-info' title=(t 'generic.entrypoint')}}
-      <p>
-        {{model.entrypoint}}
-      </p>
-    {{/banner-message}}
-  {{/if}}
-
-  {{#if model.command}}
-    {{#banner-message class='tight inline' color='bg-info' title=(t 'generic.command')}}
-      <p>
-        {{model.command}}
-      </p>
-    {{/banner-message}}
-  {{/if}}
+    </div>
+    {{#if model.container.entrypoint}}
+      <div class="col">
+        <label class="inline-label">{{t 'generic.entrypoint'}}</label>
+        {{model.container.entrypoint}}
+      </div>
+    {{/if}}
+    {{#if model.container.command}}
+      <div class="col">
+        <label class="inline-label">{{t 'generic.command'}}</label>
+        {{model.container.command}}
+      </div>
+    {{/if}}
+  </div>
 </section>
 
 <section>
-  <div class="row tabs">
-    <ul class="tab-header">
-      {{#link-to "container.ports" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.ports'}}</a>{{/link-to}}
-      {{#link-to "container.commands" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.command'}}</a>{{/link-to}}
-      {{#link-to "container.volumes" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.volumes'}}</a>{{/link-to}}
-      {{#link-to "container.networking" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.networking'}}</a>{{/link-to}}
-      {{#link-to "container.security" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.security'}}</a>{{/link-to}}
-      {{#link-to "container.healthcheck" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.healthCheck'}}</a>{{/link-to}}
-      {{#link-to "container.labels" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.labels'}}</a>{{/link-to}}
-      {{#link-to "container.scheduling" tagName="li" href=false replace=true}}<a href="#">{{t 'containerPage.navTabs.scheduling'}}</a>{{/link-to}}
-    </ul>
-    <div class="tab-content">
-      {{outlet}}
-    </div>
+  <div class="mt-10">
+    {{#accordion-row
+         title='Ports'
+         detail='Some details'
+         status=status
+         statusClass=statusClass
+    }}
+      {{#sortable-table
+           classNames="grid sortable-table"
+           body=model.ports
+           searchText=searchText
+           sortBy=sortBy
+           bulkActions=false
+           rowActions=false
+           pagingLabel="pagination.port"
+           headers=headers as |sortable kind port dt|}}
+        {{#if (eq kind "row")}}
+          <td data-title="{{dt.publicIp}}">
+            {{#if (eq "0.0.0.0" port.displayPublicIp)}}
+              {{port.displayPublicIp}} {{t 'containerPage.portsTab.hostPrimaryIp' ip=model.container.primaryHost.displayIp}}
+            {{else if port.displayPublicIp}}
+              {{port.displayPublicIp}}
+            {{else}}
+              <span class="text-muted">{{t 'generic.none'}}</span>
+            {{/if}}
+          </td>
+          <td data-title="{{dt.publicPort}}">
+            {{#if port.publicPort}}
+              {{port.publicPort}}
+            {{else}}
+              <span class="text-muted">{{t 'generic.none'}}</span>
+            {{/if}}
+          </td>
+          <td data-title="{{dt.privatePort}}">
+            {{#if port.privatePort}}
+              {{port.privatePort}}
+            {{else}}
+              <span class="text-muted">{{t 'generic.none'}}</span>
+            {{/if}}
+          </td>
+          <td data-title="{{dt.protocol}}">
+            {{upper-case port.protocol}}
+          </td>
+        {{else if (eq kind "nomatch")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.portsTab.table.noMatch'}}</td></tr>
+        {{else if (eq kind "norows")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.portsTab.table.noData'}}</td></tr>
+        {{/if}}
+      {{/sortable-table}}
+    {{/accordion-row}}
+  </div>
+  <div class="mt-20">
+    {{container/form-command
+        instance=model.container
+        initialLabels=model.labels
+        editing=false
+    }}
+  </div>
+  <div class="mt-20">
+    {{#accordion-row
+         title='Volumes'
+         detail='Some details'
+         status=status
+         statusClass=statusClass
+    }}
+      {{#sortable-table
+           classNames="grid sortable-table"
+           body=model.container.mounts
+           searchText=searchText
+           sortBy=sortBy
+           bulkActions=false
+           pagingLabel="pagination.volume"
+           headers=headers as |sortable kind mount dt|}}
+        {{#if (eq kind "row")}}
+          <td data-title="{{dt.name}}">
+            {{mount.displayVolumeName}}
+          </td>
+          <td data-title="{{dt.path}}">
+            {{mount.path}}
+          </td>
+          <td data-title="{{dt.writable}}">
+            {{#if mount.isReadWrite}}<i class="icon icon-check"></i>{{else}}<i class="icon icon-x text-muted"></i>{{/if}}
+          </td>
+          <td data-title="{{dt.actions}}">
+            {{action-menu model=mount.volume}}
+          </td>
+        {{else if (eq kind "nomatch")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.volumesTab.table.noMatch'}}</td></tr>
+        {{else if (eq kind "norows")}}
+          <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.volumesTab.table.noData'}}</td></tr>
+        {{/if}}
+      {{/sortable-table}}
+    {{/accordion-row}}
+  </div>
+  <div class="mt-20">
+    {{container/form-networking
+        editing=false
+        instance=model.container
+        initialLabels=model.container.labels
+        allHosts=model.hosts
+    }}
+  </div>
+  <div class="mt-20">
+    {{container/form-security
+        instance=model.container
+        editing=false
+    }}
+  </div>
+  <div class="mt-20">
+    {{form-healthcheck healthCheck=model.container.healthCheck editing=false}}
+  </div>
+  <div class="mt-20">
+    {{labels-section model=model.container}}
+  </div>
+  <div class="mt-20">
+    {{form-scheduling
+        initialHostId=model.container.requestedHostId
+        initialLabels=model.container.labels
+        isGlobal=model.container.isGlobalScale
+        allHosts=model.hosts
+        editing=false
+    }}
   </div>
 </section>

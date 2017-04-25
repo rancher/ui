@@ -1,27 +1,34 @@
-{{#sortable-table
-  classNames="grid sortable-table"
-  body=model.mounts
-  searchText=searchText
-  sortBy=sortBy
-  bulkActions=false
-  pagingLabel="pagination.volume"
-  headers=headers as |sortable kind mount dt|}}
-  {{#if (eq kind "row")}}
-    <td data-title="{{dt.name}}">
-      {{mount.displayVolumeName}}
-    </td>
-    <td data-title="{{dt.path}}">
-      {{mount.path}}
-    </td>
-    <td data-title="{{dt.writable}}">
-      {{#if mount.isReadWrite}}<i class="icon icon-check"></i>{{else}}<i class="icon icon-x text-muted"></i>{{/if}}
-    </td>
-    <td data-title="{{dt.actions}}">
-      {{action-menu model=mount.volume}}
-    </td>
-  {{else if (eq kind "nomatch")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.volumesTab.table.noMatch'}}</td></tr>
-  {{else if (eq kind "norows")}}
-    <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.volumesTab.table.noData'}}</td></tr>
-  {{/if}}
-{{/sortable-table}}
+{{#accordion-row
+  title='Volumes'
+  detail='Some details'
+  status=status
+  statusClass=statusClass
+}}
+  {{#sortable-table
+       classNames="grid sortable-table"
+       body=model.mounts
+       searchText=searchText
+       sortBy=sortBy
+       bulkActions=false
+       pagingLabel="pagination.volume"
+       headers=headers as |sortable kind mount dt|}}
+    {{#if (eq kind "row")}}
+      <td data-title="{{dt.name}}">
+        {{mount.displayVolumeName}}
+      </td>
+      <td data-title="{{dt.path}}">
+        {{mount.path}}
+      </td>
+      <td data-title="{{dt.writable}}">
+        {{#if mount.isReadWrite}}<i class="icon icon-check"></i>{{else}}<i class="icon icon-x text-muted"></i>{{/if}}
+      </td>
+      <td data-title="{{dt.actions}}">
+        {{action-menu model=mount.volume}}
+      </td>
+    {{else if (eq kind "nomatch")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.volumesTab.table.noMatch'}}</td></tr>
+    {{else if (eq kind "norows")}}
+      <tr><td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'containerPage.volumesTab.table.noData'}}</td></tr>
+    {{/if}}
+  {{/sortable-table}}
+{{/accordion-row}}
