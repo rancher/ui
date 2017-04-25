@@ -9,7 +9,7 @@ $table-header                        : $body-bg!default;
 $table-bg-accent                     : darken($light-grey, 2)!default;
 $table-bg-hover                      : lighten($info, 15)!default;
 $table-bg-active                     : $table-bg-hover!default;
-$table-bg-selected                   : lighten($link-color, 35%)!default;
+$table-bg-selected                   : lighten($info, 30)!default;
 $table-border-color                  : lighten($mid-grey, 30)!default;
 $table-body-separation               : 25px;
 $group-row-height                    : 40px;
@@ -19,7 +19,7 @@ $group-row-height                    : 40px;
   border-bottom: $table-border-color solid 2px;
 
   > TBODY {
-    background: transparent;
+    // background: transparent;
       &:not(:last-of-type):after{
         content: "";
         display: block;
@@ -28,11 +28,15 @@ $group-row-height                    : 40px;
       }
 
     > TR {
-        background-color: $body-bg;
         border-top: $table-border-color solid 2px;
 
           &:first-child {
             border-top: none;
+          }
+
+          &.main-row, 
+          &.sub-row {
+            background-color: $body-bg;
           }
 
         > TD {
@@ -153,7 +157,7 @@ TABLE {
     &.has-sub-rows {
         TABLE {
             > TBODY {
-                @include solid;
+                @include striped;
             }
         }
         TABLE > THEAD > .fixed-header-actions {
@@ -243,14 +247,24 @@ TABLE {
     }
 
     &.has-sub-rows TABLE {
+        border-collapse: separate;
+        border-spacing: 2px;
+
       > THEAD > TR.fixed-header {
         background: $link-color;
+
         > TH .btn {
             color: $body-bg;
+            padding: 0 10px;
         }
       }
       > TBODY > TR > TD {
-          border: solid 2px $table-bg;
+          // border-right: solid 2px $body-bg;
+          // border-bottom: solid 2px $body-bg;
+          // margin-bottom: 2px;
+
+          background: $table-bg;
+          padding: 0 5px;
       }
     }
 
@@ -258,7 +272,7 @@ TABLE {
         border: none;
         background-color: $table-bg;
         > TR {
-            &.row-selected {
+            &.row-selected{
                 background-color: $table-bg-selected;
             }
         }
