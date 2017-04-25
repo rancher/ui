@@ -145,7 +145,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     });
 
     return out;
-  }.property('service.name','service.secondaryLaunchConfigs.@each.name','intl._locale'),
+  }.property('service.name','service.secondaryLaunchConfigs.@each.name','intl.locale'),
 
   noLaunchConfigsEnabled: function() {
     return this.get('launchConfigChoices').filterBy('enabled',true).get('length') === 0;
