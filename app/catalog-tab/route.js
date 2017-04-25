@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Route.extend({
   access: Ember.inject.service(),
@@ -31,7 +32,11 @@ export default Ember.Route.extend({
     return this.get('projects').updateOrchestrationState().then(() => {
       return Ember.RSVP.hash({
         stacks: this.get('store').find('stack'),
-        catalogs: this.get('catalog').fetchCatalogs(),
+        catalogs: this.get('catalog').fetchCatalogs({
+          headers: {
+            [C.HEADER.PROJECT_ID]: this.get('projects.current.id')
+          },
+        }),
       }).then((hash) => {
         this.set('catalogs', hash.catalogs);
         this.set('stacks', this.get('store').all('stack'));
@@ -47,6 +52,7 @@ export default Ember.Route.extend({
         let exists = stacks.findBy('externalIdInfo.templateId', tpl.get('id'));
         tpl.set('exists', !!exists);
       });
+      res.catalogs = this.get('catalogs');
 
       return res;
     });

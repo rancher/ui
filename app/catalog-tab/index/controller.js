@@ -1,15 +1,20 @@
 import Ember from 'ember';
 import { isAlternate } from 'ui/utils/platform';
+import C from 'ui/utils/constants';
+import { getCatalogSubtree } from 'ui/utils/parse-catalog-setting';
 
 export default Ember.Controller.extend({
-  application: Ember.inject.controller(),
-  catalog: Ember.inject.service(),
-  settings: Ember.inject.service(),
+  application:       Ember.inject.controller(),
+  catalog:           Ember.inject.service(),
+  settings:          Ember.inject.service(),
+  projects:          Ember.inject.service(),
+  projectId:         Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
 
   catalogController: Ember.inject.controller('catalog-tab'),
-  category: Ember.computed.alias('catalogController.category'),
-  categories: Ember.computed.alias('model.categories'),
-  catalogId: Ember.computed.alias('catalogController.catalogId'),
+  category:          Ember.computed.alias('catalogController.category'),
+  categories:        Ember.computed.alias('model.categories'),
+  catalogId:         Ember.computed.alias('catalogController.catalogId'),
+  modalService:      Ember.inject.service('modal'),
 
   parentRoute: 'catalog-tab',
   launchRoute: 'catalog-tab.launch',
@@ -19,6 +24,15 @@ export default Ember.Controller.extend({
   updating: 'no',
 
   actions: {
+    addEnvCatalog() {
+      this.get('modalService').toggleModal('modal-edit-env-catalogs', {
+        project: this.get('projects.current'),
+        catalogs: this.get('model.catalogs.content'),
+      });
+    },
+    clearSearch() {
+      this.set('search', '');
+    },
     launch(id, onlyAlternate) {
       if ( onlyAlternate && !isAlternate(event) ) {
         return false;
@@ -39,8 +53,15 @@ export default Ember.Controller.extend({
   },
 
   init() {
+    this._super(...arguments);
+    this.get('catalog.componentRequestingRefresh');
   },
 
+  childRequestiongRefresh: Ember.observer('catalog.componentRequestingRefresh', function() {
+    if (this.get('catalog.componentRequestingRefresh')) {
+      this.send('update');
+    }
+  }),
   arrangedContent: Ember.computed('model.catalog', 'search', function() {
     var search = this.get('search').toUpperCase();
     var result = [];
