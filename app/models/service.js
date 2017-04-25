@@ -297,7 +297,8 @@ var Service = Resource.extend({
       'composeservice',
       'networkdriverservice',
       'storagedriverservice',
-      'service'
+      'service',
+      'scalinggroup'
     ];
 
     let type = this.get('type').toLowerCase();
