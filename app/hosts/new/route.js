@@ -131,10 +131,17 @@ export default Ember.Route.extend({
       let defaultDriver = this.get('defaultDriver');
       let targetDriver = params.driver || this.get('lastDriver') || defaultDriver;
 
+      // If custom is disabled, pick the first one as default
+      if ( this.get(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`) === false && targetDriver === 'custom') {
+        targetDriver = hash.availableDrivers.map(x => x.get('name')).sort()[0];
+      }
+
+      // If a specific driver is chosen and not available, switch to default
       if ( ['custom','other'].indexOf(targetDriver) === -1 && hash.availableDrivers.filterBy('name', targetDriver).length === 0 )
       {
         targetDriver = defaultDriver;
       }
+
 
       if ( params.driver !== targetDriver )
       {
