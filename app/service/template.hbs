@@ -21,86 +21,78 @@
 {{/if}}
 
 {{!todo copy pasta}}
-<section>
-  <div class="row">
-    <div class="col span-3 mb-15">
-        {{#if service.launchConfig.memoryReservation}}
-          <hr/>
-          <div>
-            <label class="block">{{t 'containersPage.containerPage.infoMultiStats.memoryReservation.labelText'}}</label>
-            {{service.memoryReservationBlurb}}
-          </div>
+<section class="pt-10 pb-10">
+  <div class="row container-info">
+    <div class="">{{ t 'containerPage.containerInfo.basicInfo' }}</div>
 
-        {{/if}}
+    {{#if service.launchConfig.memoryReservation}}
+      <div class="col">
+        <label>{{t 'containersPage.containerPage.infoMultiStats.memoryReservation.labelText'}}</label>
+        {{service.memoryReservationBlurb}}
+      </div>
+    {{/if}}
 
-        {{#if service.launchConfig.milliCpuReservation}}
-          <hr/>
-          <div>
-            <label class="block">{{t 'containersPage.containerPage.infoMultiStats.milliCpuReservation.labelText'}}</label>
-            {{service.launchConfig.milliCpuReservation}}
-          </div>
-        {{/if}}
-        <hr>
-        {{#if service.fqdn}}
-          <div>
-            <label class="block">{{t 'servicePage.multistat.fqdn'}}</label>
-            <span><a href="http://{{service.fqdn}}">{{service.fqdn}}</a> {{copy-to-clipboard clipboardText=service.fqdn size="small"}}</span>
-          </div>
-          <hr>
-        {{/if}}
-        <div>
-          <label class="block">{{t 'servicePage.multistat.scale'}}</label>
-          {{#if service.canScale}}
-            {{service.scale}}
-            &nbsp;
+    {{#if service.launchConfig.milliCpuReservation}}
+      <div class="col">
+        <label>{{t 'containersPage.containerPage.infoMultiStats.milliCpuReservation.labelText'}}</label>
+        {{service.launchConfig.milliCpuReservation}}
+      </div>
+    {{/if}}
 
-            &nbsp;
-            <div class="btn-group btn-group-xs">
-              <button class="btn bg-default btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
-              <button class="btn bg-default btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
-            </div>
-          {{else}}
-            {{if service.isGlobalScale (t 'servicePage.multistat.global') (t 'generic.na')}}
-          {{/if}}
+    {{#if service.fqdn}}
+      <div class="col">
+        <label>{{t 'servicePage.multistat.fqdn'}}</label>
+        <a href="http://{{service.fqdn}}">{{service.fqdn}}</a> {{copy-to-clipboard clipboardText=service.fqdn size="small"}}
+      </div>
+      <hr>
+    {{/if}}
+
+    <div class="col">
+      <label>{{t 'servicePage.multistat.scale'}}</label>
+      {{#if service.canScale}}
+        {{service.scale}}
+        &nbsp;
+        &nbsp;
+        <div class="btn-group btn-group-xs">
+          <button class="btn bg-default btn-xs" {{action "scaleDown" target=service}} disabled={{eq service.scale 1}}><i class="icon icon-minus"></i></button>
+          <button class="btn bg-default btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
         </div>
-        {{#if service.hasImage}}
-        <hr>
+      {{else}}
+        {{if service.isGlobalScale (t 'servicePage.multistat.global') (t 'generic.na')}}
+      {{/if}}
+    </div>
 
-            <div>
-              <label class="block">{{t 'servicePage.multistat.image'}}</label>
-              <div>
-                {{service.launchConfig.displayImage}} {{copy-to-clipboard clipboardText=service.launchConfig.displayImage size="small"}}
-              </div>
-            </div>
-            <hr>
-            <div>
-              <label class="block">{{t 'servicePage.multistat.entryPoint'}}</label>
-              <div>
-                {{#if service.launchConfig.entryPoint}}
-                  {{service.launchConfig.entryPoint}}
-                {{else}}
-                  <span class="text-muted">{{t 'generic.none'}}</span>
-                {{/if}}
-              </div>
-            </div>
-            <hr>
-            <div>
-              <label class="block">{{t 'servicePage.multistat.command'}}</label>
-              <div>
-                {{#if service.launchConfig.command}}
-                  {{concat-str service.launchConfig.command}}
-                {{else}}
-                  <span class="text-muted">{{t 'generic.none'}}</span>
-                {{/if}}
-              </div>
-            </div>
+    {{#if service.hasImage}}
 
+      <div class="col">
+        <label>{{t 'servicePage.multistat.image'}}</label>
+        {{service.launchConfig.displayImage}} {{copy-to-clipboard clipboardText=service.launchConfig.displayImage size="small"}}
+      </div>
+      <div class="col">
+        <label>{{t 'servicePage.multistat.entryPoint'}}</label>
+        {{#if service.launchConfig.entryPoint}}
+          {{service.launchConfig.entryPoint}}
+        {{else}}
+          <span class="text-muted">{{t 'generic.none'}}</span>
         {{/if}}
       </div>
-
+      <div class="col">
+        <label>{{t 'servicePage.multistat.command'}}</label>
+        {{#if service.launchConfig.command}}
+          {{concat-str service.launchConfig.command}}
+        {{else}}
+          <span class="text-muted">{{t 'generic.none'}}</span>
+        {{/if}}
+      </div>
+    {{/if}}
+  </div>
+</section>
+<section>
+  <div class="row">
       <div class="col span-9">
       {{#if (eq service.kind 'externalService')}}
         {{!-- since external services are the only ones that have externalIp/hostname it didnt make sense to give extIps its own route like other services  --}}
+        <hr/>
         <section>
           <div>
             {{#if service.externalIpAddresses}}
@@ -117,6 +109,7 @@
             {{/if}}
           </div>
         </section>
+        <hr/>
       {{/if}}
 
       {{#if (or (or service.hasLabels service.canHaveContainers) service.consumedServicesWithNames.length) }}
