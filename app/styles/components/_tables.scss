@@ -15,6 +15,8 @@ $group-row-height: 40px;
 //table mixins 
 @mixin bordered {
     border-bottom: $table-border-color solid 2px;
+    border-collapse: collapse;
+
     > TBODY {
 
         &:not(:last-of-type):after {
@@ -90,6 +92,7 @@ TABLE {
     > TBODY > TR > TD {
         padding: 0;
         height: 50px;
+        transition: ease-in-out all 200ms;
     }
     &.no-lines {
         * {
@@ -136,13 +139,15 @@ TABLE {
         margin: 0 3px;
     }
     &.has-sub-rows {
+        tr.row-selected TABLE > TBODY > TR > TD {
+            background: $body-bg;
+        }
         TABLE {
+
             > TBODY {
                 @include striped;
                 
-                 > .row-selected {
-                    background-color: $table-bg-selected;
-                }
+                
                 TR:last-child{
                     background: transparent;
                     &:after {
