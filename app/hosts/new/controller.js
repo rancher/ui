@@ -1,7 +1,9 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Controller.extend({
   access: Ember.inject.service(),
+  settings: Ember.inject.service(),
   projects: Ember.inject.service(),
 
   queryParams : ['backTo', 'driver', 'hostId'],
@@ -9,7 +11,6 @@ export default Ember.Controller.extend({
   driver      : null,
   hostId      : null,
 
-  allowCustom : true,
   allowOther  : true,
 
   actions: {
@@ -21,6 +22,10 @@ export default Ember.Controller.extend({
       this.set('driver', name);
     },
   },
+
+  allowCustom: function() {
+    return this.get(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`) !== false;
+  }.property(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`),
 
   driverObj: function() {
     return this.get('model.availableDrivers').filterBy('name', this.get('driver'))[0];
