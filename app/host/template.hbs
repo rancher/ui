@@ -29,135 +29,174 @@
   </div>
 {{/if}}
 
-<section>
-  <div class="row">
-    <div class="col span-3 mb-15">
-      <div>
-        <label>{{t 'hostsPage.hostPage.infoMultiStats.ip'}}</label>
-        <div>{{copy-ip ip=host.displayIp}}</div>
-      </div>
-
-      <hr>
-
-      <div>
-        <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
-        <div class="row">
-          <div class="col span-6 pl-0">
-            {{#if host.milliCpu}}{{t 'generic.total'}}{{/if}}: {{host.cpuBlurb}}
-            {{#if host.cpuTooltip}}
-              {{#tooltip-element type='tooltip-basic' model=host tooltipTemplate='tooltip-cpu' tooltipFor="tooltipCPU"}}
-                <i class="icon icon-info"></i>
-              {{/tooltip-element}}
-            {{/if}}
-          </div>
-          {{#if host.milliCpu}}
-            <div class="col span-6 pl-0">
-              {{t 'generic.limit'}}: {{host.milliCpu}} {{t 'hostsPage.hostPage.infoMultiStats.milliCpu.labelText'}}
-            </div>
-          {{/if}}
-        </div>
-      </div>
-
-      <hr>
-
-      <div>
-        <label>{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
-        <div class="row">
-          <div class="col span-6 pl-0">
-            {{#if host.memory}}{{t 'generic.total'}}{{/if}}:
-            {{#if host.memoryBlurb}}
-              {{host.memoryBlurb}}
-            {{else}}
-              <span class="text-muted">{{t 'generic.unknown'}}</span>
-            {{/if}}
-          </div>
-          {{#if host.memory}}
-            <div class="col span-6 pl-0">
-              {{t 'generic.limit'}}: {{host.memoryLimitBlurb}}
-            </div>
-          {{/if}}
-        </div>
-      </div>
-
-      <hr>
-
-      <div>
-        <label>{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
-        <div class="row">
-          {{#if host.diskBlurb}}
-            {{#if host.diskDetail}}
-              {{#each host.diskDetail as |disk|}}
-                <div class="col span-6 pl-0">{{disk.value}}
-                  {{#tooltip-element type='tooltip-basic' tooltipTemplate='tooltip-basic-literal' model=disk tooltipFor="hostDisk"}}
-                    <i class="icon icon-info"></i>
-                  {{/tooltip-element}}
-               </div>
-              {{/each}}
-            {{else}}
-              <div class="col span-6 pl-0">{{host.diskBlurb}} (total)</div>
-            {{/if}}
-            <div class="col span-6 pl-0">
-              {{t 'hostsPage.hostPage.infoMultiStats.localStorageMb.labelText'}}: {{host.localStorageBlurb}}
-            </div>
-          {{else}}
-            <div class="text-muted">{{t 'generic.unknown'}}</div>
-          {{/if}}
-        </div>
-      </div>
-
-      <hr>
-
-      <div>
-        <label>{{t 'hostsPage.hostPage.infoMultiStats.provider.labelText'}}</label>
-        {{#if host.driver}}
-          <div>{{host.driver}}</div>
-        {{else}}
-          <div class="text-muted">{{t 'hostsPage.hostPage.infoMultiStats.provider.noHost'}}</div>
-        {{/if}}
-      </div>
-
-      <hr>
-
-      <div>
-        <label>{{t 'hostsPage.hostPage.infoMultiStats.kernel'}}</label>
-        <div>{{host.info.osInfo.kernelVersion}}</div>
-      </div>
-
-      <hr>
-
-      <div>
-        <label>{{t 'hostsPage.hostPage.infoMultiStats.docker'}}</label>
-        {{#if host.dockerEngineVersion}}
-          <div>{{host.dockerEngineVersion}}</div>
-        {{else}}
-          <div class="text-muted">{{t 'generic.unknown'}}</div>
-        {{/if}}
-      </div>
-
-      <hr>
-
-      <div>
-        <label>{{t 'hostsPage.hostPage.infoMultiStats.os'}}</label>
-        {{#if host.osDetail}}
-          <div>{{host.osDetail}}</div>
-        {{else}}
-          <div class="text-muted">{{t 'generic.unknown'}}</div>
-        {{/if}}
-      </div>
-
+<section class="pt-10 pb-10">
+  <div class="row container-info">
+    <div class="">{{ t 'containerPage.containerInfo.basicInfo' }}</div>
+    <div class="col">
+      <label class="inline-label">{{t 'hostsPage.hostPage.infoMultiStats.ip'}}</label>
+      {{copy-ip ip=host.displayIp}}
     </div>
-    <div class="col span-9">
-      <div class="row tabs">
-        <ul class="tab-header" role="tablist">
-          {{#link-to "host.containers" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.containers'}}</a>{{/link-to}}
-          {{#link-to "host.ports" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.ports'}}</a>{{/link-to}}
-          {{#link-to "host.labels" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.labels'}}</a>{{/link-to}}
-          {{#link-to "host.storage" tagName="li" href=false}}<a href="#">{{t 'hostsPage.hostPage.navTabs.storage'}}</a>{{/link-to}}
-        </ul>
-        <div class="tab-content">
-          {{outlet}}
-        </div>
-      </div>
+    <div class="col">
+      <label class="inline-label">{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
+      {{#if host.milliCpu}}{{t 'generic.total'}}{{/if}}: {{host.cpuBlurb}}
+      {{#if host.cpuTooltip}}
+        {{#tooltip-element type='tooltip-basic' model=host tooltipTemplate='tooltip-cpu' tooltipFor="tooltipCPU"}}
+          <i class="icon icon-info"></i>
+        {{/tooltip-element}}
+      {{/if}}
+      {{t 'generic.limit'}}: {{host.milliCpu}} {{t 'hostsPage.hostPage.infoMultiStats.milliCpu.labelText'}}
+    </div>
+    <div class="col">
+      <label class="inline-label">{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
+      {{#if host.memory}}{{t 'generic.total'}}{{/if}}:
+      {{#if host.memoryBlurb}}
+        {{host.memoryBlurb}}
+      {{else}}
+        <span class="text-muted">{{t 'generic.unknown'}}</span>
+      {{/if}}
+      {{t 'generic.limit'}}: {{host.memoryLimitBlurb}}
+    </div>
+    <div class="col">
+      <label class="inline-label">{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
+      {{#if host.diskBlurb}}
+        {{#if host.diskDetail}}
+          {{#each host.diskDetail as |disk|}}
+            {{disk.value}}
+            {{#tooltip-element type='tooltip-basic' tooltipTemplate='tooltip-basic-literal' model=disk tooltipFor="hostDisk"}}
+              <i class="icon icon-info"></i>
+            {{/tooltip-element}}
+          {{/each}}
+          {{else}}
+          {{host.diskBlurb}} (total)
+        {{/if}}
+        {{t 'hostsPage.hostPage.infoMultiStats.localStorageMb.labelText'}}: {{host.localStorageBlurb}}
+        {{else}}
+        <span class="text-muted">{{t 'generic.unknown'}}</span>
+      {{/if}}
+    </div>
+    <div class="col">
+      <label class="inline-label">{{t 'hostsPage.hostPage.infoMultiStats.provider.labelText'}}</label>
+      {{#if host.driver}}
+        {{host.driver}}
+      {{else}}
+        <span class="text-muted">{{t 'hostsPage.hostPage.infoMultiStats.provider.noHost'}}</span>
+      {{/if}}
+    </div>
+    <div class="col">
+      <label class="inline-label">{{t 'hostsPage.hostPage.infoMultiStats.kernel'}}</label>
+      {{host.info.osInfo.kernelVersion}}
+    </div>
+    <div class="col">
+      <label class="inline-label">{{t 'hostsPage.hostPage.infoMultiStats.docker'}}</label>
+      {{#if host.dockerEngineVersion}}
+        {{host.dockerEngineVersion}}
+      {{else}}
+        <span class="text-muted">{{t 'generic.unknown'}}</span>
+      {{/if}}
+    </div>
+    <div class="col">
+      <label class="inline-label">{{t 'hostsPage.hostPage.infoMultiStats.os'}}</label>
+      {{#if host.osDetail}}
+        {{host.osDetail}}
+      {{else}}
+        <span class="text-muted">{{t 'generic.unknown'}}</span>
+      {{/if}}
     </div>
   </div>
+</section>
+<section>
+  {{#accordion-row
+       title=(t 'hostsPage.hostPage.containersTab.header')
+       detail=(t 'hostsPage.hostPage.containersTab.detail')
+       status=status
+       statusClass=statusClass
+       as |parent|
+  }}
+    {{container-table
+        body=model.host.arrangedInstances
+        sortBy=sortBy
+        bulkActions=true
+        showHost=false
+    }}
+  {{/accordion-row}}
+
+  {{#accordion-row
+       title=(t 'hostsPage.hostPage.portsTab.header')
+       detail=(t 'hostsPage.hostPage.portsTab.detail')
+       status=status
+       statusClass=statusClass
+       as |parent|
+  }}
+    {{#sortable-table
+         classNames="grid fixed mb-0 sortable-table"
+         bulkActions=false
+         paging=false
+         search=false
+         sortBy=sortBy
+         descending=descending
+         headers=portHeaders
+         body=model.host.displayEndpoints
+         as |sortable kind port|
+    }}
+      {{#if (eq kind "row")}}
+        <td>{{port.ipAddress}}</td>
+        <td>{{port.port}}</td>
+        <td>
+          {{#if port.service}}
+            <i class="{{port.service.stateIcon}} {{port.service.stateColor}}" />
+            {{#link-to "service" port.service.stackId port.service.id}}{{port.service.displayName}}{{/link-to}}
+          {{else}}
+            <span class="text-muted">-</span>
+          {{/if}}
+        </td>
+        <td>
+          {{#if port.instance}}
+            <i class="{{port.instance.stateIcon}} {{port.instance.stateColor}}" />
+            {{#if (eq port.instance.kind "virtualMachine")}}
+              {{#link-to "virtualmachine" port.instance.id}}{{port.instance.displayName}}{{/link-to}}
+            {{else}}
+              {{#link-to "container" port.instance.id}}{{port.instance.displayName}}{{/link-to}}
+            {{/if}}
+          {{else}}
+            <span class="text-muted">-</span>
+          {{/if}}
+        </td>
+      {{else if (eq kind "norows")}}
+        <tr>
+          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'hostsPage.hostPage.portsTab.table.body.noData'}}</td>
+        </tr>
+      {{/if}}
+    {{/sortable-table}}
+  {{/accordion-row}}
+
+  {{labels-section model=model.host tagName=''}}
+
+  {{#accordion-row
+       title=(t 'hostsPage.hostPage.portsTab.header')
+       detail=(t 'hostsPage.hostPage.portsTab.detail')
+       status=status
+       statusClass=statusClass
+       as |parent|
+  }}
+    {{#sortable-table
+         classNames="grid fixed mb-0 sortable-table"
+         bulkActions=false
+         paging=false
+         search=false
+         sortBy=sortBy
+         descending=descending
+         headers=storageHeaders
+         body=nonRootVolumes
+         fullRows=true
+         as |sortable kind volume|
+    }}
+      {{#if (eq kind "row")}}
+        {{volume-row model=volume}}
+      {{else if (eq kind "norows")}}
+        <tr>
+          <td colspan="{{header.length}}" class="text-center text-muted">{{t 'hostsPage.hostPage.storageTab.table.body.noData'}}</td>
+        </tr>
+      {{/if}}
+    {{/sortable-table}}
+  {{/accordion-row}}
 </section>
