@@ -1,12 +1,15 @@
 import Ember from 'ember';
 import { alternateLabel } from 'ui/utils/platform';
+import ThrottledResize from 'ui/mixins/throttled-resize';
 import Terminal from 'npm:xterm';
+import 'npm:xterm/addons/fit';
 
 const DEFAULT_COMMAND = ["/bin/sh","-c",'TERM=xterm-256color; export TERM; [ -x /bin/bash ] && ([ -x /usr/bin/script ] && /usr/bin/script -q -c "/bin/bash" /dev/null || exec /bin/bash) || exec /bin/sh'];
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(ThrottledResize, {
   instance: null,
   command: null,
+  fullscreen: false,
   cols: 80,
   rows: 24,
   alternateLabel: alternateLabel,
@@ -16,6 +19,37 @@ export default Ember.Component.extend({
   error: null,
   socket: null,
   term: null,
+
+  actions: {
+    dismiss() {
+      this.sendAction('dismiss');
+    }
+  },
+
+  fit() {
+    var term = this.get('term');
+    if (term)
+    {
+      var geometry = term.proposeGeometry(term);
+      term.resize(geometry.cols, geometry.rows - 1);
+    }
+  },
+
+  fitOnToggleFullscreen: function () {
+    if (this.get('fullscreen'))
+    {
+      setTimeout(() => {
+        this.fit();
+      }, 100);
+    }
+  }.observes('fullscreen'),
+
+  onResize: function () {
+    if (this.get('fullscreen'))
+    {
+      this.fit();
+    }
+  },
 
   didInsertElement: function() {
     this._super();
@@ -67,6 +101,10 @@ export default Ember.Component.extend({
       });
 
       term.open(this.$('.shell-body')[0]);
+
+      if (this.get('fullscreen')) {
+        this.fit();
+      }
 
       socket.onmessage = (message) => {
         this.set('status','connected');
