@@ -83,6 +83,7 @@
          detail='Some details'
          status=status
          statusClass=statusClass
+         as |parent|
     }}
       {{#sortable-table
            classNames="grid sortable-table"
@@ -92,6 +93,7 @@
            bulkActions=false
            rowActions=false
            pagingLabel="pagination.port"
+           isVisible=parent.expanded
            headers=headers as |sortable kind port dt|}}
         {{#if (eq kind "row")}}
           <td data-title="{{dt.publicIp}}">
@@ -141,6 +143,7 @@
          detail='Some details'
          status=status
          statusClass=statusClass
+         as |parent|
     }}
       {{#sortable-table
            classNames="grid sortable-table"
@@ -149,6 +152,7 @@
            sortBy=sortBy
            bulkActions=false
            pagingLabel="pagination.volume"
+           isVisible=parent.expanded
            headers=headers as |sortable kind mount dt|}}
         {{#if (eq kind "row")}}
           <td data-title="{{dt.name}}">

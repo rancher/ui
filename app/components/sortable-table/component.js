@@ -47,10 +47,18 @@ export default Ember.Component.extend(Sortable, StickyHeader, {
   selectedNodes:     null,
   prevNode:          null,
   searchText:        null,
+  isVisible:         true,
   page:              1,
   pagingLabel:       'pagination.generic',
 
   showHeader: Ember.computed.or('bulkActions','search','paging'),
+
+  didReceiveAttrs: function() {
+    this._super(...arguments);
+    if (this.get('isVisible')) {
+      this.triggerResize();
+    }
+  },
 
   init: function() {
     this._super(...arguments);
