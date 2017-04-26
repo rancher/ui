@@ -24,6 +24,7 @@ $group-row-height: 40px;
             height: $table-body-separation;
             background: $body-bg;
         }
+
         > TR {
             border-top: $table-border-color solid 2px;
             &:first-child {
@@ -142,6 +143,15 @@ TABLE {
                  > .row-selected {
                     background-color: $table-bg-selected;
                 }
+                TR:last-child{
+                    background: transparent;
+                    &:after {
+                        content: "";
+                        height: $table-body-separation;
+                        display: block;
+                        background: transparent;
+                    }
+                }   
             }
         }
         TABLE > THEAD > .fixed-header-actions {
@@ -252,9 +262,9 @@ TABLE {
     }
     &.bordered {
         @include bordered;
-        table {
-            @include solid;
-        }
+        // table {
+        //     @include solid;
+        // }
     }
     &.striped {
         @include striped;
