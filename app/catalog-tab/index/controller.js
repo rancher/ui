@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import { isAlternate } from 'ui/utils/platform';
 import C from 'ui/utils/constants';
-import { getCatalogSubtree } from 'ui/utils/parse-catalog-setting';
 
 export default Ember.Controller.extend({
   application:       Ember.inject.controller(),

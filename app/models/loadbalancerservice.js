@@ -127,7 +127,7 @@ var LoadBalancerService = Service.extend({
   imageUpgradeAvailable: function() {
     let cur = (this.get('launchConfig.imageUuid')||'').replace(/^docker:/,'');
     let available = this.get(`settings.${C.SETTING.BALANCER_IMAGE}`);
-    return cur !== available && !!this.get('actionLinks.upgrade');
+    return cur.indexOf(available) === -1 && !!this.get('actionLinks.upgrade');
   }.property('launchConfig.imageUuid',`settings.${C.SETTING.BALANCER_IMAGE}`,'actionLinks.upgrade'),
 });
 
