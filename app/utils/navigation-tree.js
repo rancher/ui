@@ -188,7 +188,6 @@ const navTree = [
       !this.get('hasKubernetes') &&
       !this.get('hasSwarm');
     },
-    submenu: getCatalogSubtree,
   },
 
   // Infrastructure
@@ -425,69 +424,4 @@ function getStacksSubtree() {
 
 
   return out;
-}
-
-function getCatalogSubtree() {
-  let repos = getCatalogNames(this.get(`settings.${C.SETTING.CATALOG_URL}`));
-  let showAll = repos.length > 1;
-
-  let out = [];
-  if ( showAll ) {
-    out.push({
-      id: 'catalog-all',
-      localizedLabel: 'nav.catalog.all',
-      icon: 'icon icon-globe',
-      route: 'catalog-tab',
-      ctx: [getProjectId],
-      queryParams: {catalogId: 'all'}
-    });
-
-    out.push({divider: true});
-  }
-
-  if (repos.indexOf(C.CATALOG.LIBRARY_KEY) >= 0 ) {
-    repos.removeObject(C.CATALOG.LIBRARY_KEY);
-    out.push({
-      id: 'catalog-library',
-      localizedLabel: 'nav.catalog.library',
-      icon: 'icon icon-catalog',
-      route: 'catalog-tab',
-      ctx: [getProjectId],
-      queryParams: {catalogId: 'library'}
-    });
-  }
-
-  if (repos.indexOf(C.CATALOG.COMMUNITY_KEY) >= 0 ) {
-    repos.removeObject(C.CATALOG.COMMUNITY_KEY);
-    out.push({
-      id: 'catalog-community',
-      localizedLabel: 'nav.catalog.community',
-      icon: 'icon icon-users',
-      route: 'catalog-tab',
-      ctx: [getProjectId],
-      queryParams: {catalogId: 'community'}
-    });
-  }
-
-  if ( out.length > 2 ) {
-    out.push({divider: true});
-  }
-
-  repos.forEach((repo) => {
-    out.push({
-      id: 'catalog-'+repo,
-      label: repo,
-      icon: 'icon icon-user',
-      route: 'catalog-tab',
-      ctx: [getProjectId],
-      queryParams: {catalogId: repo}
-    });
-  });
-
-
-  if ( out.length === 1 ) {
-    return [];
-  } else {
-    return out;
-  }
 }

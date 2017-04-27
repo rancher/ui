@@ -37,7 +37,7 @@ export default Ember.Service.extend({
   },
 
   fetchCatalogs(opts) {
-    var neu = $.extend({}, {url: `${this.get('app.catalogEndpoint')}/catalogs`}, opts||{});
+    var neu = $.extend({headers: {[C.HEADER.PROJECT_ID]: this.get('projects.current.id')}}, {url: `${this.get('app.catalogEndpoint')}/catalogs`}, opts||{});
     return this.get('store').request(neu);
   },
 

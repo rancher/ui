@@ -1,5 +1,15 @@
 <section class="header clearfix">
-  <h1>{{t 'catalogPage.index.header'}} <span class="text-capitalize">{{catalogId}}</span></h1>
+  <h1>{{t 'catalogPage.index.header'}}</h1>
+  {{#power-select options=filters selected=selectedCatalogId onchange=(action "switch") searchField="displayName" as |opt|}}
+    <span class="clip">
+      <i class="{{opt.icon}}"></i>
+      {{#if opt.localizedLabel}}
+        {{t opt.localizedLabel}}
+      {{else}}
+        {{opt.label}}
+      {{/if}}
+    </span>
+  {{/power-select}}
 
   <div class="pull-right">
     <button type="button" class="btn btn-default btn-sm" disabled={{eq updating 'yes'}} {{action "update"}}>
