@@ -36,6 +36,7 @@ $group-row-height: 40px;
             &.main-row,
             &.sub-row {
                 background-color: $body-bg;
+                border-bottom: 0;
             }
             > TD {
                 border: none;
@@ -94,6 +95,10 @@ TABLE {
         padding: 0;
         height: 50px;
         transition: ease-in-out all 200ms;
+
+        &:last-child {
+            height: 0;
+        }
     }
     &.no-lines {
         * {
@@ -154,15 +159,15 @@ TABLE {
                 @include striped;
                 
                 
-                // TR:last-child{
-                //     background: transparent;
-                //     &:after {
-                //         content: "";
-                //         height: $table-body-separation;
-                //         display: block;
-                //         background: transparent;
-                //     }
-                // }   
+                TR:last-child{
+                    background: transparent;
+                    &:after {
+                        content: "";
+                        height: $table-body-separation;
+                        display: block;
+                        background: transparent;
+                    }
+                }   
             }
         }
         TABLE > THEAD > .fixed-header-actions {
@@ -278,9 +283,9 @@ TABLE {
             &.row-selected {
                 background-color: $table-bg-selected;
 
-               // td > div > div > table > tbody > td{
-               //      background: red!important;
-               //  }
+               td > div > div > table > tbody > td{
+                    // background: red!important;
+                }
             }
         }
     }
