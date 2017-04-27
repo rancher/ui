@@ -5,6 +5,7 @@
 //table variables
 $table-bg: lighten($light-grey, 2)!default;
 $table-header: $body-bg!default;
+$table-nested-header: lighten($mid-grey, 15)!default;
 $table-bg-accent: darken($light-grey, 2)!default;
 $table-bg-hover: lighten($info, 15)!default;
 $table-bg-active: $table-bg-hover!default;
@@ -19,13 +20,13 @@ $group-row-height: 40px;
 
     > TBODY {
 
-        &:not(:last-of-type):after {
-            content: "";
-            display: block;
-            width: 100%;
-            height: $table-body-separation;
-            background: $body-bg;
-        }
+        // &:not(:last-of-type):after {
+        //     content: "";
+        //     display: block;
+        //     width: 100%;
+        //     height: $table-body-separation;
+        //     background: $body-bg;
+        // }
 
         > TR {
             border-top: $table-border-color solid 2px;
@@ -153,15 +154,15 @@ TABLE {
                 @include striped;
                 
                 
-                TR:last-child{
-                    background: transparent;
-                    &:after {
-                        content: "";
-                        height: $table-body-separation;
-                        display: block;
-                        background: transparent;
-                    }
-                }   
+                // TR:last-child{
+                //     background: transparent;
+                //     &:after {
+                //         content: "";
+                //         height: $table-body-separation;
+                //         display: block;
+                //         background: transparent;
+                //     }
+                // }   
             }
         }
         TABLE > THEAD > .fixed-header-actions {
@@ -243,7 +244,7 @@ TABLE {
         border-collapse: separate;
         border-spacing: 2px;
         > THEAD > TR.fixed-header {
-            background: $link-color;
+            background: $table-nested-header;
             > TH .btn {
                 color: $body-bg;
                 padding: 0 10px;
@@ -259,14 +260,27 @@ TABLE {
     }
     > TBODY {
         border: none;
+
+        &.group {
+            border-bottom: solid $table-border-color;
+
+            &:before {
+                content: "";
+                display: block;
+                width: 100%;
+                height: $table-body-separation;
+                background: $body-bg;
+            }
+        }
+
         > TR {
             border-bottom: solid 2px $table-border-color;
             &.row-selected {
                 background-color: $table-bg-selected;
 
-               td > div > div > table > tbody > td{
-                    background: red!important;
-                }
+               // td > div > div > table > tbody > td{
+               //      background: red!important;
+               //  }
             }
         }
     }

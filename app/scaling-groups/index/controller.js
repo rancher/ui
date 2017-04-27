@@ -62,14 +62,6 @@ export default Ember.Controller.extend({
       searchField: 'displayImage',
       translationKey: 'generic.image',
     },
-    // {
-    //   name: 'instanceCount',
-    //   sort: ['stack.isDefault:desc','stack.displayName','instanceCount:desc','displayName'],
-    //   searchField: null,
-    //   width: 80,
-    //   icon: 'icon icon-lg icon-container',
-    //   dtTranslationKey: 'stacksPage.table.instanceCount'
-    // },
     {
       name: 'instanceState',
       sort: ['stack.isDefault:desc','stack.displayName', 'instanceCountSort:desc','displayName'],

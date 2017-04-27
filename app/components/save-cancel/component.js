@@ -10,7 +10,7 @@ export default Ember.Component.extend({
   cancelDisabled: false,
   savedLabel: 'saveCancel.saved',
   forFooter: true,
-  classNames: ['text-center' , 'p-20'],
+  classNames: ['text-center'],
 
   classNamesBindings: ['forFooter:footer-actions'],
   saving: false,
