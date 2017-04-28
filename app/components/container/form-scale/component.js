@@ -30,10 +30,6 @@ export default Ember.Component.extend({
     } else {
       this.set('mode', 'container');
     }
-
-    if ( this.get('mode') !== 'container' ) {
-      this.set('advancedShown', true);
-    }
   },
 
   actions: {

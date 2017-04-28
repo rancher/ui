@@ -88,10 +88,13 @@ export default Ember.Component.extend({
 
     this.updateLine();
 
-    svg.append('path')
+    let path = svg.append('path')
       .attr('class', `spark-path`)
-      .style('stroke', GRADIENT_COLORS[this.get('gradient')][this.get('colorIdx')])
       .attr('d', line(this.get('data')));
+
+    if ( this.get('gradient') ) {
+      path.style('stroke', GRADIENT_COLORS[this.get('gradient')][this.get('colorIdx')])
+    }
 
     var dot = svg.append('circle')
       .attr('class', 'spark-dot')

@@ -2095,10 +2095,10 @@ formScale:
     service: Scale
     global: Scale per Host
   showAdvanced: More scaling options
+  containerHelp: "{scale} independent containers will be created.  Consider using a Scaling Group if you want to manage multiple containers as one unit."
   mode:
-    container: "{scale, plural, =1 {Just create a container} other {Create # separate containers}}"
-    service: "Create a scaling group with a scale of {scale}"
-    global: "Create a global scaling group with {scale, plural, =1 {# container} other {# containers}} per host"
+    service: "Create a scaling group and run {scale, plural, =1 {# container} other {# containers}}}"
+    global: "Create a global scaling group and {scale, plural, =1 {# container} other {# containers}} per host"
 
 formScheduling:
   title: Host Scheduling
@@ -3039,6 +3039,13 @@ modalContainerStop:
   placeholder: '10'
   button: Stop
 
+modalContainerToService:
+  title: 'Convert "{instanceName}" to a Scaling Group'
+  name:
+    label: New Scaling Group Name
+    placeholder: e.g. myapp
+  action: Convert
+
 modalConfirmDeactivate:
   header: Are you sure you want to
   protip: "ProTip: Hold the {key} key while clicking {isServiceButton} to bypass this confirmation."
@@ -3126,7 +3133,9 @@ modalShell:
 modalShortcuts:
   world: World
   time: Time
-  title: "WELCOME TO WARP ZONE!"
+  title:
+    rancher: "WELCOME TO WARP ZONE!"
+    pl: Keyboard Shortcuts
   navigation: Page Navigation
   a: Apps
   c: Containers
@@ -3136,11 +3145,15 @@ modalShortcuts:
   k: API Keys
   l: Load Balancers
   s: Scaling Groups
-  slash: Focus search field
-  question: You are here
   other: Other Stuff
   g: Toggle view grouping
+  n: "Add New [current resource]"
   shiftS: Toggle show system
+  t: Next page tab
+  slash: Focus search field
+  question: You are here
+  admin: Only For Admins
+  p: Processes
 
 
 modalWelcome:
@@ -3714,12 +3727,14 @@ action:
   cancelRollback: Cancel Rollback
   clone: Clone
   console: Open Console
+  convertToService: Convert to Scaling Group
   deactivate: Deactivate
   edit: Edit
   evacuate: Evacuate
   execute: Execute Shell
   exportConfig: Export Config
   finishUpgrade: Finish Upgrade
+  garbageCollect: Garbage Collect
   logs: View Logs
   machineConfig: Machine Config
   purge: Purge

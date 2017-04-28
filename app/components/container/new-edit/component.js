@@ -20,6 +20,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   allStoragePools:            null,
 
   stack:                      null,
+  count:                      1,
 
   serviceLinksArray:          null,
   isGlobal:                   null,
@@ -44,8 +45,10 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   actions: {
     setScale(scale) {
-      if ( this.get('service') ) {
+      if ( this.get('isService') ) {
         this.set('service.scale', scale);
+      } else {
+        this.set('launchConfig.count', scale);
       }
     },
 
@@ -242,7 +245,8 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
   willSave() {
     let ok = this._super(...arguments);
-    if ( ok ) {
+    if ( ok && !this.get('isUpgrade') ) {
+      // Set the stack ID
       if ( this.get('stack.id') ) {
         this.set('primaryResource.stackId', this.get('stack.id'));
         return true;
@@ -301,7 +305,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     if ( this.get('isService') ) {
       // Returns a promise
       return this.setServiceLinks();
-    } else {
     }
   },
 

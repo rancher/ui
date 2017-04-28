@@ -2,11 +2,11 @@
   <div class="{{if (or hasBlock descriptionExpanded) bothColClass colClass}}" style="padding-right: 1%">
     <div class="col-inline clearfix">
       <label>{{t nameLabel}}{{if nameRequired '*'}}</label>
-      {{#unless descriptionExpanded}}
+      {{#if (and descriptionShown (not descriptionExpanded))}}
         <div class="pull-right text-small">
           <a role="button" class="btn bg-transparent p-0" {{action "expandDescription"}}>{{t expandDescriptionAction}}</a>
         </div>
-      {{/unless}}
+      {{/if}}
     </div>
     {{input type="text" value=_name classNames="form-control" placeholder=(t namePlaceholder) disabled=nameDisabled}}
     {{#if nameHelpText}}<p class="text-info">{{nameHelpText}}</p>{{/if}}

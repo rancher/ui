@@ -96,8 +96,8 @@ var Container = Instance.extend({
       this.get('router').transitionTo('containers.new', {queryParams: {containerId: this.get('id')}});
     },
 
-    cloneToService: function() {
-      this.get('router').transitionTo('service.new', {queryParams: {containerId: this.get('id')}});
+    convertToService: function() {
+      this.get('modalService').toggleModal('modal-container-to-service', this);
     },
   },
 
@@ -126,11 +126,12 @@ var Container = Instance.extend({
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
       { divider: true },
       { label: 'action.clone',      icon: 'icon icon-copy',         action: 'clone',        enabled: !isSystem && !isService && !isK8s},
+      { label: 'action.convertToService', icon: 'icon icon-service',action: 'convertToService', enabled: !!a.converttoservice && !isSystem && !isService && !isK8s},
       { label: 'action.edit',       icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update && !isK8s },
     ];
 
     return choices;
-  }.property('actionLinks.{restart,start,stop,restore,purge,execute,logs,update}','canDelete','isSystem'),
+  }.property('actionLinks.{restart,start,stop,restore,purge,execute,logs,update,converttoservice}','canDelete','isSystem'),
 
 
   memoryReservationBlurb: Ember.computed('memoryReservation', function() {

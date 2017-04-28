@@ -1,10 +1,10 @@
 <div class="col-inline clearfix">
   <label>{{t (concat-str 'formScale.label' mode character='.')}}</label>
-  {{#unless (or isUpgrade advancedShown)}}
+  {{#if (and isService (not (or isUpgrade advancedShown)))}}
     <div class="pull-right text-small">
       <a role="button" class="btn bg-transparent p-0" {{action "showAdvanced"}}>{{t 'formScale.showAdvanced'}}</a>
     </div>
-  {{/unless}}
+  {{/if}}
 </div>
 
 <div class="row gutless">
@@ -16,18 +16,25 @@
   </div>
 </div>
 
-{{#if (and advancedShown (or isService (not isUpgrade)))}}
-  <div class="pt-10">
-    {{#unless (and isUpgrade isService)}}
+{{#if isService}}
+  {{#if (or advancedShown isUpgrade)}}
+    <div class="pt-10">
       <div class="radio">
-        <label>{{radio-button selection=mode value="container"}} {{t 'formScale.mode.container' scale=asInteger}}</label>
+        <label>{{radio-button selection=mode value="service"}} {{t 'formScale.mode.service' scale=asInteger}}</label>
       </div>
-    {{/unless}}
-    <div class="radio">
-      <label>{{radio-button selection=mode value="service"}} {{t 'formScale.mode.service' scale=asInteger}}</label>
+      <div class="radio">
+        <label>{{radio-button selection=mode value="global"}} {{t 'formScale.mode.global' scale=asInteger}}</label>
+      </div>
     </div>
-    <div class="radio">
-      <label>{{radio-button selection=mode value="global"}} {{t 'formScale.mode.global' scale=asInteger}}</label>
+  {{else}}
+    <div class="col-inline clearfix">
+      <label>&nbsp;</label>
     </div>
+  {{/if}}
+{{else if (gt userInput 1)}}
+  <p class="help-block">{{t 'formScale.containerHelp' scale=userInput}}</p>
+{{else}}
+  <div class="col-inline clearfix">
+    <label>&nbsp;</label>
   </div>
 {{/if}}
