@@ -118,12 +118,7 @@ Router.map(function() {
           this.route('index', {path: '/'});
         });
 
-        this.route('host', {path: '/:host_id', resetNamespace: true}, function() {
-          this.route('containers');
-          this.route('ports');
-          this.route('storage', {path: '/storage'});
-          this.route('labels');
-        });
+        this.route('host', {path: '/:host_id', resetNamespace: true});
       });
 
       // Infrastructure
