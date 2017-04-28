@@ -5,6 +5,7 @@
 //table variables
 $table-bg: lighten($light-grey, 2)!default;
 $table-header: $body-bg!default;
+$table-nested-header: lighten($mid-grey, 15)!default;
 $table-bg-accent: darken($light-grey, 2)!default;
 $table-bg-hover: lighten($info, 15)!default;
 $table-bg-active: $table-bg-hover!default;
@@ -15,15 +16,10 @@ $group-row-height: 40px;
 //table mixins 
 @mixin bordered {
     border-bottom: $table-border-color solid 2px;
+    border-collapse: collapse;
+
     > TBODY {
 
-        &:not(:last-of-type):after {
-            content: "";
-            display: block;
-            width: 100%;
-            height: $table-body-separation;
-            background: $body-bg;
-        }
         > TR {
             border-top: $table-border-color solid 2px;
             &:first-child {
@@ -32,6 +28,7 @@ $group-row-height: 40px;
             &.main-row,
             &.sub-row {
                 background-color: $body-bg;
+                border-bottom: 0;
             }
             > TD {
                 border: none;
@@ -89,6 +86,11 @@ TABLE {
     > TBODY > TR > TD {
         padding: 0;
         height: 50px;
+        transition: ease-in-out all 200ms;
+
+        &:last-child {
+            height: 0;
+        }
     }
     &.no-lines {
         * {
@@ -98,6 +100,11 @@ TABLE {
     &.fixed {
         table-layout: fixed;
         width: 100%;
+            &.no-bottom {
+                tbody > tr:last-child{
+                    border-bottom: none;
+                }
+            }
     }
     .fixed-header-actions {
         min-height: 40px;
@@ -122,6 +129,8 @@ TABLE {
     }
     .fixed-header-placeholder {
         visibility: hidden;
+        border-bottom: 0;
+
         TH {
             padding: 0 !important;
             height: 0 !important;
@@ -135,13 +144,24 @@ TABLE {
         margin: 0 3px;
     }
     &.has-sub-rows {
+        tr.row-selected TABLE > TBODY > TR > TD {
+            background: $body-bg;
+        }
         TABLE {
+
             > TBODY {
                 @include striped;
                 
-                 > .row-selected {
-                    background-color: $table-bg-selected;
-                }
+                
+                TR:last-child{
+                    background: transparent;
+                    &:after {
+                        content: "";
+                        height: $table-body-separation;
+                        display: block;
+                        background: transparent;
+                    }
+                }   
             }
         }
         TABLE > THEAD > .fixed-header-actions {
@@ -188,15 +208,19 @@ TABLE {
         border-radius: 0;
         outline: none;
         transition: all ease-in-out .2s;
-        &.fixed-header {
-            background: $table-header;
-            border-bottom: 3px solid $link-color;
-            TH {
+        background: $table-header;
+        border-bottom: 3px solid $link-color;
+
+
+        TH {
+            color: $link-color;
+            .btn {
                 color: $link-color;
-                .btn {
-                    color: $link-color;
-                }
             }
+        }
+
+        &.fixed-header {
+          
         }
         > TH {
             border-width: 0 0 3px 0;
@@ -223,7 +247,7 @@ TABLE {
         border-collapse: separate;
         border-spacing: 2px;
         > THEAD > TR.fixed-header {
-            background: $link-color;
+            background: $table-nested-header;
             > TH .btn {
                 color: $body-bg;
                 padding: 0 10px;
@@ -239,22 +263,35 @@ TABLE {
     }
     > TBODY {
         border: none;
-        background-color: $table-bg;
+
+        &.group {
+            border-bottom: solid $table-border-color;
+
+            &:before {
+                content: "";
+                display: block;
+                height: $table-body-separation;
+                background: $body-bg;
+            }
+
+            &:first-of-type:before {
+                height: 0;
+            }
+        }
+
         > TR {
+            border-bottom: solid 2px $table-border-color;
             &.row-selected {
                 background-color: $table-bg-selected;
 
                td > div > div > table > tbody > td{
-                    background: red!important;
+                    // background: red!important;
                 }
             }
         }
     }
     &.bordered {
         @include bordered;
-        table {
-            @include solid;
-        }
     }
     &.striped {
         @include striped;

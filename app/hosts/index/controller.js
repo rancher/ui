@@ -89,18 +89,10 @@ export default Ember.Controller.extend({
       translationKey: 'hostsPage.index.table.docker',
     },
     {
-      name: 'instanceCount',
-      sort: ['arrangedInstances.length:desc','displayName'],
-      searchField: null,
-      width: 80,
-      icon: 'icon icon-lg icon-container',
-      dtTranslationKey: 'hostsPage.index.table.instanceCount'
-    },
-    {
       name: 'instanceState',
       sort: ['instanceCountSort:desc','displayName'],
       searchField: null,
-      width: 100,
+      width: 140,
       icon: 'icon icon-lg icon-container',
       dtTranslationKey: 'hostsPage.index.table.instanceState',
       translationKey: 'hostsPage.index.table.instanceStateWithIcon',

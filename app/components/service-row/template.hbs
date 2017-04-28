@@ -17,34 +17,37 @@
   <td data-title="{{dt.image}}">
     {{model.displayImage}}
   </td>
-  {{#if showInstanceCount}}
-    <td data-title="{{dt.instanceCount}}">
-      {{#if subMatches}}
-        {{#if (lt (get submatches model.id) model.instances.length)}}
-          <b>{{get subMatches model.id}}/{{model.instances.length}}</b>
+
+  <td data-title="{{dt.instanceState}}">
+     <div class="col span-3 text-right">
+       {{#if showInstanceCount}}
+         {{#if subMatches}}
+          {{#if (lt (get submatches model.id) model.instances.length)}}
+            <small><b>{{get subMatches model.id}}/{{model.instances.length}}</b></small>
+          {{else}}
+            <small><b>{{model.instances.length}}</b></small>
+          {{/if}}
         {{else}}
-          <b>{{model.instances.length}}</b>
+          <small class="m-0">{{model.instances.length}}</small>
+        {{/if}}
+      {{/if}}
+    </div>
+    <div class="col span-9 pt-5">
+      {{#if canExpand}}
+        {{#if model.instances.length}}
+          {{progress-bar-multi
+            labelKey="state"
+            valueKey="count"
+            values=model.instanceStates.byColor
+            tooltipValues=model.instanceStates.byName
+          }}
+        {{else}}
+          <span class="text-muted">{{t 'generic.na'}}</span>
         {{/if}}
       {{else}}
-        {{model.instances.length}}
+        <span class="text-muted">{{t 'stacksPage.table.standalone'}}</span>
       {{/if}}
-    </td>
-  {{/if}}
-  <td data-title="{{dt.instanceState}}">
-    {{#if canExpand}}
-      {{#if model.instances.length}}
-        {{progress-bar-multi
-          labelKey="state"
-          valueKey="count"
-          values=model.instanceStates.byColor
-          tooltipValues=model.instanceStates.byName
-        }}
-      {{else}}
-        <span class="text-muted">{{t 'generic.na'}}</span>
-      {{/if}}
-    {{else}}
-      <span class="text-muted">{{t 'stacksPage.table.standalone'}}</span>
-    {{/if}}
+    </div>
   </td>
   <td data-title="{{dt.actions}}" class="actions">
     {{action-menu model=model}}

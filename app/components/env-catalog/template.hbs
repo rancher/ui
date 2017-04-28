@@ -7,17 +7,20 @@
   {{#if global.length}}
     <h4>{{t 'envCatalog.global'}}</h4>
     <h5>{{t 'envCatalog.globalNote'}}</h5>
-    <table class="table fixed no-lines no-top-padding">
-      <tr class="text-muted hidden-xs hidden-sm text-left">
-        <th>{{t 'catalogSettings.more.name.label'}}</th>
-        <th width="30">&nbsp;</th>
-        <th>{{t 'catalogSettings.more.url.label'}}</th>
-        <th width="30">&nbsp;</th>
-        <th>{{t 'catalogSettings.more.kind.label'}}</th>
-        <th width="30">&nbsp;</th>
-        <th>{{t 'catalogSettings.more.branch.label'}}</th>
-        <th width="30">&nbsp;</th>
-      </tr>
+    <table class="table fixed bordered no-top-padding">
+      <thead>
+        <tr>
+          <th>{{t 'catalogSettings.more.name.label'}}</th>
+          <th width="30">&nbsp;</th>
+          <th>{{t 'catalogSettings.more.url.label'}}</th>
+          <th width="30">&nbsp;</th>
+          <th>{{t 'catalogSettings.more.kind.label'}}</th>
+          <th width="30">&nbsp;</th>
+          <th>{{t 'catalogSettings.more.branch.label'}}</th>
+          <th width="30">&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
       {{#each global as |row|}}
         {{#unless row.toRemove}}
           <tr>
@@ -39,11 +42,11 @@
           </tr>
         {{/unless}}
       {{/each}}
+      </tbody>
     </table>
   {{/if}}
-  <hr/>
 </div>
-<div>
+<div class="pt-20">
   <button class="btn bg-link icon-btn" {{action "add"}}>
     <i class="icon icon-plus text-small"/> 
     <span>{{t 'envCatalog.addActionLabel'}}</span>
