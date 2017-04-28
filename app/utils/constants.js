@@ -307,6 +307,7 @@ var C = {
     PROJECT_VERSION:           'account$version',
     FEEDBACK_FORM:             'ui$feedback$form',
     SHOW_SYSTEM:               'ui$show$system',
+    SHOW_CUSTOM_HOST:          'ui$show$custom$host',
   },
 
   TABLES: {

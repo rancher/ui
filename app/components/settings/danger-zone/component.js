@@ -29,14 +29,16 @@ const ALLOWED = {
   'registry.whitelist': {description: 'Allow containers images only from the specified registries (if specified; comma-separated)'},
   'secrets.backend': {description: 'Backend storage provider for secrets', kind: 'enum', options: ['localkey','vault']},
   'service_log.purge.after.seconds': {description: 'Auto-purge Service Log entries after this long (seconds)', kind: 'int'},
+  'settings.public': {description: 'The settings that are visible to non-admin users.  These are primarily needed for the UI.', devOnly: true},
   'supported.docker.range': {description: 'Semver range for suported Docker engine versions.  Versions which do not satisfy this range will be marked unsupported in the UI'},
   'ui.pl': {description: 'Private-Label company name'},
+  'ui.show.custom.host': {description: 'Show the Custom host option on the Add Host screen.  Note that disabling this does not prevent a user from using the API to add custom hosts.', kind: 'boolean'},
   'ui.show.system': {description: 'Show or hide System Containers from container views', kind: 'enum', options: ['always','default_show','default_hide','never']},
   'ui.sendgrid.api_key': {description: 'SendGrid API key', mode: C.MODE.CAAS},
   'ui.sendgrid.template.password_reset': {description: 'SendGrid template for initiating password reset', mode: C.MODE.CAAS},
   'ui.sendgrid.template.create_user': {description: 'SendGrid template for confirming email', mode: C.MODE.CAAS},
   'ui.sendgrid.template.verify_password': {description: 'SendGrid template for confirming password reset', mode: C.MODE.CAAS},
-  'upgrade.mananger': {description: 'Automatic upgrades of infrastructure stacks', kind: 'boolean'},
+  'upgrade.manager': {description: 'Automatic upgrades of infrastructure stacks', kind: 'boolean'},
 };
 
 export default Ember.Component.extend({
@@ -76,10 +78,12 @@ export default Ember.Component.extend({
   current: function() {
     let all = this.get('settings.asMap');
     let mode = this.get('app.mode');
+    let isLocalDev = window.location.host === 'localhost:8000';
 
     return Object.keys(ALLOWED).filter((key) => {
       let details = ALLOWED[key];
-      return  !details['mode'] || details['mode'] === mode;
+      return  (!details['mode'] || details['mode'] === mode) &&
+              (!details['devOnly'] || isLocalDev);;
     }).map((key) => {
       let obj = all[normalizeName(key)];
       let details = ALLOWED[key];
