@@ -22,20 +22,30 @@
   <td data-title="{{dt.docker}}">
     {{model.dockerEngineVersion}}
   </td>
-  <td data-title="{{dt.instanceCount}}">
+{{!--   <td data-title="{{dt.instanceCount}}">
     {{#if subMatches}}
       {{get subMatches model.id}}/{{model.arrangedInstances.length}}
     {{else}}
       {{model.arrangedInstances.length}}
     {{/if}}
-  </td>
+  </td> --}}
   <td data-title="{{dt.instanceState}}">
-    {{progress-bar-multi
-      labelKey="state"
-      valueKey="count"
-      values=model.instanceStates.byColor
-      tooltipValues=model.instanceStates.byName
-    }}
+    <div class="col span-3 text-right">
+      {{#if subMatches}}
+        {{get subMatches model.id}}/{{model.arrangedInstances.length}}
+      {{else}}
+        {{model.arrangedInstances.length}}
+      {{/if}}
+    </div>
+
+    <div class="col span-9 pt-5">
+      {{progress-bar-multi
+        labelKey="state"
+        valueKey="count"
+        values=model.instanceStates.byColor
+        tooltipValues=model.instanceStates.byName
+      }}
+    </div>
   </td>
   <td data-title="{{dt.actions}}" class="actions">
     {{action-menu model=model showPrimary=false}}

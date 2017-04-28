@@ -20,14 +20,6 @@ $group-row-height: 40px;
 
     > TBODY {
 
-        // &:not(:last-of-type):after {
-        //     content: "";
-        //     display: block;
-        //     width: 100%;
-        //     height: $table-body-separation;
-        //     background: $body-bg;
-        // }
-
         > TR {
             border-top: $table-border-color solid 2px;
             &:first-child {
@@ -138,7 +130,7 @@ TABLE {
     .fixed-header-placeholder {
         visibility: hidden;
         border-bottom: 0;
-        
+
         TH {
             padding: 0 !important;
             height: 0 !important;
@@ -278,9 +270,12 @@ TABLE {
             &:before {
                 content: "";
                 display: block;
-                width: 100%;
                 height: $table-body-separation;
                 background: $body-bg;
+            }
+
+            &:first-of-type:before {
+                height: 0;
             }
         }
 
@@ -297,9 +292,6 @@ TABLE {
     }
     &.bordered {
         @include bordered;
-        // table {
-        //     @include solid;
-        // }
     }
     &.striped {
         @include striped;
