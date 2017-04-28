@@ -77,16 +77,7 @@ Router.map(function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
 
-        this.route('container', {path: '/:container_id', resetNamespace: true}, function() {
-          this.route('commands');
-          this.route('healthcheck');
-          this.route('labels');
-          this.route('networking');
-          this.route('ports');
-          this.route('scheduling');
-          this.route('security');
-          this.route('volumes');
-        });
+        this.route('container', {path: '/:container_id', resetNamespace: true});
       });
 
       this.route('scaling-groups', {path: '/scaling-groups', resetNamespace: true}, function() {
