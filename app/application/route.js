@@ -149,6 +149,22 @@ export default Ember.Route.extend({
 
     this.get('language').initLanguage();
 
+    transition.finally(() => {
+      this.controllerFor('application').setProperties({
+        state: null,
+        code: null,
+        error_description: null,
+        redirectTo: null,
+      });
+    })
+
+    if ( params.redirectTo ) {
+      let path = params.redirectTo;
+      if ( path.substr(0,1) === '/' ) {
+        this.get('session').set(C.SESSION.BACK_TO, path);
+      }
+    }
+
     if (params.isPopup) {
       this.controllerFor('application').set('isPopup', true);
     }
@@ -224,10 +240,4 @@ export default Ember.Route.extend({
     // Find out if auth is enabled
     return this.get('access').detect();
   },
-
-  setupController(controller/*, model*/) {
-    controller.set('code',null);
-    controller.set('state',null);
-    controller.set('error_description',null);
-  }
 });
