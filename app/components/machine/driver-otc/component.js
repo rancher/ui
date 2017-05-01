@@ -12,6 +12,7 @@ const VOLUME_TYPES = [{
 
 const URLS = {
   ecs:  'https://ecs.eu-de.otc.t-systems.com',
+  vpc: 'https://vpc.eu-de.otc.t-systems.com'
 };
 
 const SERVICE = 'ecs';
@@ -131,7 +132,7 @@ export default Ember.Component.extend(Driver, {
     };
   },
 
-  signAuth: function(credentials, req, time) {
+  signAuth: function(credentials, req, time, serviceEndpoint=null) {
     var self = this;
     var request = req;
     var addAuthorization = (credentials) => {
@@ -141,22 +142,22 @@ export default Ember.Component.extend(Driver, {
       r.params.ShortTimestamp =         time.format('YYYYMMDD');
       r.params.SignatureMethod =        'SDK-HMAC-SHA256';
       r.params.accessKeyId =            credentials.accessKeyId;
-      r.params.Signature =              signature(credentials);
+      r.params.Signature =              signature(credentials, serviceEndpoint);
       r['Content-Length'] =             r.body.length;
       r.headers['content-type'] +=      ' rancher:';
-      r.headers['x-api-auth-header'] =  buildAuth(r.params);
+      r.headers['x-api-auth-header'] =  buildAuth(r.params, serviceEndpoint);
 
       return r;
     };
 
     return addAuthorization(credentials);
 
-    function signature(credentials) {
+    function signature(credentials, serviceEndpoint=null) {
       var canonicalRequest =    buildCanonicalRequest(request);
       var hashedSigingString =  AWS.util.crypto.sha256(canonicalRequest, 'hex');
-      var credScope =           credentialScope(request.params.ShortTimestamp, self.get('model.otcConfig.region'), SERVICE);
+      var credScope =           credentialScope(request.params.ShortTimestamp, self.get('model.otcConfig.region'), serviceEndpoint || SERVICE);
       var sts =                 stringToSign(hashedSigingString, credScope, request.params.Timestamp);
-      var key =                 generateSigningKey(credentials.secretAccessKey, self.get('model.otcConfig.region'), SERVICE, request.params.ShortTimestamp);
+      var key =                 generateSigningKey(credentials.secretAccessKey, self.get('model.otcConfig.region'), serviceEndpoint || SERVICE, request.params.ShortTimestamp);
 
       return AWS.util.crypto.hmac(key, sts, 'hex');
     }
@@ -231,10 +232,10 @@ export default Ember.Component.extend(Driver, {
       return parts.join('\n');
     }
 
-    function buildAuth(params) {
+    function buildAuth(params, serviceEndpoint) {
       var out = [];
 
-      out.push(`${params.SignatureMethod} Credential=${params.accessKeyId}/${params.ShortTimestamp}/${self.get('model.otcConfig.region')}/${SERVICE}/sdk_request`);
+      out.push(`${params.SignatureMethod} Credential=${params.accessKeyId}/${params.ShortTimestamp}/${self.get('model.otcConfig.region')}/${serviceEndpoint || SERVICE}/sdk_request`);
       out.push('SignedHeaders=content-type;host;x-sdk-date');
       out.push(`Signature=${params.Signature}`);
 
@@ -248,7 +249,7 @@ export default Ember.Component.extend(Driver, {
     var signature = this.signAuth({
       accessKeyId: this.get('model.otcConfig.accessKeyId'),
       secretAccessKey: this.get('model.otcConfig.accessKeySecret')
-    }, this.describeRequest(this.getURL(SERVICE, params.version, params.endpoint, params.queryParams), params.method, `${time.format('YYYYMMDDTHHmmss')}Z`, ''), time);
+    }, this.describeRequest(this.getURL(params.serviceEndpoint || SERVICE, params.version, params.endpoint, params.queryParams), params.method, `${time.format('YYYYMMDDTHHmmss')}Z`, ''), time);
 
     this.set('itemsLoading', true);
 
@@ -280,6 +281,7 @@ export default Ember.Component.extend(Driver, {
       method: 'GET',
       endpoint: 'security-groups',
       version: 'v1',
+      serviceEndpoint: 'vpc',
       queryParams: '',
     }).then((resp) => {
       return this.set('securityGroups', resp.security_groups.sortBy('name'));
@@ -290,6 +292,7 @@ export default Ember.Component.extend(Driver, {
     return this.apiRequest({
       method: 'GET',
       endpoint: 'subnets',
+      serviceEndpoint: 'vpc',
       version: 'v1',
       queryParams: `vpc_id=${this.get('model.otcConfig.vpcId')}`
     }).then((resp) => {
@@ -302,6 +305,7 @@ export default Ember.Component.extend(Driver, {
     return this.apiRequest({
       method: 'GET',
       endpoint: 'vpcs',
+      serviceEndpoint: 'vpc',
       version: 'v1',
       queryParams: ''
     }).then((resp) => {
