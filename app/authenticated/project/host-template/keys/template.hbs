@@ -22,6 +22,7 @@
 
 <section>
   <p>{{t 'hostTemplatesPage.keys.header'}}</p>
+  {{#if instances.length}}
   {{#sortable-table
       classNames="grid fixed mt-10 sortable-table"
       bulkActions=false
@@ -67,5 +68,7 @@
       </tr>
     {{/if}}
   {{/sortable-table}}
+    {{else}}
+    {{empty-table resource="container" showNew=false}}
+  {{/if}}
 </section>
-<hr/>
