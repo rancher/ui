@@ -22,6 +22,7 @@ generic:
   disable: Disable
   disabled: Disabled
   domainName: Domain Name
+  dockerId: Docker ID
   emptyString: ""
   enable: Enable
   enabled: Enabled
@@ -470,6 +471,8 @@ certificatesPage:
 
 containerPage:
   header: 'Container: {name}'
+  containerInfo:
+    basicInfo: Basic Info
   navTabs:
     labels: Labels
     volumes: Volumes
@@ -480,6 +483,8 @@ containerPage:
     scheduling: Scheduling
     security: Security
   portsTab:
+    header: Ports
+    detail: 'These properties show what ports have been mapped and where.'
     table:
       public: Public on Host
       private: Private in Container
@@ -488,6 +493,8 @@ containerPage:
       noMatch: No ports match the current search
     hostPrimaryIp: '({ip})'
   volumesTab:
+    header: Volumes
+    detail: 'These properties show the volumes attached to your container.'
     table:
       path: Mount Point
       shared: Shared With
@@ -771,6 +778,8 @@ hostsPage:
       labels: Labels
       storage: Storage
     containersTab:
+      header: Containers
+      detail: A list of containers running on this host
       table:
         header:
           state: State
@@ -781,6 +790,8 @@ hostsPage:
         body:
           noData: This host does not have any containers yet
     portsTab:
+      header: Ports
+      detail: 'These properties show what ports have been mapped and where.'
       table:
         header:
           ip: IP Address
@@ -790,6 +801,8 @@ hostsPage:
         body:
           noData: This host does not have any ports
     storageTab:
+      header: Storage
+      detail: 'These properties show the storage details of your host.'
       table:
         header:
           state: State
@@ -972,6 +985,7 @@ secretsPage:
 
 servicePage:
   header: '{type}: {name}'
+  globalScale: ' per host'
   multistat:
     type: 'Type:'
     fqdn: 'FQDN:'
@@ -993,6 +1007,8 @@ servicePage:
     links: Links
     log: Log
   containersTab:
+    title: 'Containers'
+    detail: 'The containers running in this service.'
     table:
       header:
         ipAddress: IP Address
@@ -1002,8 +1018,11 @@ servicePage:
         noData: This service does not have any containers yet.
   linksTab:
     header: Links
+    detail: 'These properties show the links between containers in this service.'
     noData: No Links
   certsTab:
+    title: Certificates
+    detail: 'Certificates added to service.'
     default: Default Certificate
     additional: Additional SNI Certificates
   new:
@@ -1020,6 +1039,8 @@ servicePage:
       description:
         placeholder: e.g. Balancer for mycompany.com
   portsTab:
+    title: Ports
+    detail: 'These properties show what ports have been mapped and where.'
     table:
       header:
         port: Port
@@ -1028,6 +1049,8 @@ servicePage:
         noData: This Service has no ports.
     notActive: Ports are only available while the service is Active.
   logTab:
+    title: Logs
+    detail: 'These properties show the log options for this serivce.'
     table:
       header:
         date: Date
@@ -1771,6 +1794,7 @@ formatIp:
 
 formBalancerRules:
   label: Port Rules
+  detail: 'These properties show the port mapping details of your container'
   noRules: No Rules
   addServiceLabel: Add Scaling Group Rule
   addSelectorLabel: Add Selector Rule
@@ -2550,6 +2574,8 @@ k8s:
 
 labelsSection:
   kind: Kind
+  title: Labels
+  detail: These properties show what labels exist.
   key: Key
   value: Value
   noData: No labels

@@ -77,16 +77,7 @@ Router.map(function() {
         this.route('new', {path: '/add'});
         this.route('index', {path: '/'});
 
-        this.route('container', {path: '/:container_id', resetNamespace: true}, function() {
-          this.route('commands');
-          this.route('healthcheck');
-          this.route('labels');
-          this.route('networking');
-          this.route('ports');
-          this.route('scheduling');
-          this.route('security');
-          this.route('volumes');
-        });
+        this.route('container', {path: '/:container_id', resetNamespace: true});
       });
 
       this.route('scaling-groups', {path: '/scaling-groups', resetNamespace: true}, function() {
@@ -104,15 +95,7 @@ Router.map(function() {
         this.route('new', {path: '/add'});
       });
 
-      this.route('service', {path: '/services/:scaling_group_id', resetNamespace: true}, function() {
-        this.route('containers');
-        this.route('labels');
-        this.route('ports');
-        this.route('links');
-        this.route('log');
-        this.route('port-rules');
-        this.route('certificates');
-      });
+      this.route('service', {path: '/services/:scaling_group_id', resetNamespace: true});
 
       this.route('stack', {path: '/stack/:stack_id', resetNamespace: true}, function() {
         this.route('index', {path: '/'});
@@ -135,12 +118,7 @@ Router.map(function() {
           this.route('index', {path: '/'});
         });
 
-        this.route('host', {path: '/:host_id', resetNamespace: true}, function() {
-          this.route('containers');
-          this.route('ports');
-          this.route('storage', {path: '/storage'});
-          this.route('labels');
-        });
+        this.route('host', {path: '/:host_id', resetNamespace: true});
       });
 
       // Infrastructure

@@ -2,302 +2,281 @@
 // Important: Almost all selectors in here need to be ">"-ed together so they
 // apply only to the current table, not one nested inside another table.
 //
+
 //table variables
-$table-bg: lighten($light-grey, 2)!default;
-$table-header: $body-bg!default;
-$table-nested-header: lighten($mid-grey, 15)!default;
-$table-bg-accent: darken($light-grey, 2)!default;
-$table-bg-hover: lighten($info, 15)!default;
-$table-bg-active: $table-bg-hover!default;
-$table-bg-selected: lighten($info, 30)!default;
-$table-border-color: lighten($mid-grey, 30)!default;
-$table-body-separation: 50px;
-$group-row-height: 40px;
-//table mixins 
+$table-bg                            : lighten($light-grey,2)!default;
+$table-header                        : $body-bg!default;
+$table-bg-accent                     : darken($light-grey, 2)!default;
+$table-bg-hover                      : lighten($info, 15)!default;
+$table-bg-active                     : $table-bg-hover!default;
+$table-bg-selected                   : lighten($link-color, 35%)!default;
+$table-border-color                  : lighten($mid-grey, 30)!default;
+$table-body-separation               : 25px;
+$group-row-height                    : 40px;
+
+//table mixins
 @mixin bordered {
-    border-bottom: $table-border-color solid 2px;
-    border-collapse: collapse;
+  border-bottom: $table-border-color solid 2px;
 
-    > TBODY {
-
-        > TR {
-            border-top: $table-border-color solid 2px;
-            &:first-child {
-                border-top: none;
-            }
-            &.main-row,
-            &.sub-row {
-                background-color: $body-bg;
-                border-bottom: 0;
-            }
-            > TD {
-                border: none;
-            }
-            &.row-selected {
-                background-color: $table-bg-selected;
-            }
-            &.no-bottom {
-                border-bottom: none;
-            }
-            &.sub-row {
-                border-top: none;
-                border-bottom: none;
-            }
-            &.separator-row {
-                border: none;
-            }
-        }
+  > TBODY {
+    background: transparent;
+    &:not(:last-of-type):after{
+      content: "";
+      display: block;
+      width: 100%;
+      height: $table-body-separation;
     }
+
+    > TR {
+      background-color: $body-bg;
+      border-top: $table-border-color solid 2px;
+
+      &:first-child {
+        border-top: none;
+      }
+
+      > TD {
+        border: none;
+      }
+
+      &.row-selected {
+        background-color: $table-bg-selected;
+      }
+
+      &.no-bottom {
+        border-bottom: none;
+      }
+
+      &.sub-row {
+        border-top: none;
+        border-bottom: none;
+      }
+
+      &.separator-row {
+        border: none;
+      }
+    }
+  }
 }
 
 @mixin solid {
-    > TBODY {
-        background: $table-bg;
-        > TR {
-            background-color: darken($table-bg, 5%);
-        }
+  > TBODY {
+    background: $table-bg;
+    > TR {
+      background-color: darken($table-bg, 5%);
     }
+  }
 }
 
 @mixin striped {
-    > TBODY > TR {
-        > TD {
-            border: none;
-        }
-        &:nth-child(odd) {
-            background-color: $table-bg;
-        }
-        &:nth-child(even) {
-            background-color: $table-bg-accent;
-        }
-        &.row-selected {
-            background-color: $table-bg-selected;
-        }
+  > TBODY > TR {
+    > TD {
+      border: none;
     }
+    &:nth-child(odd) {
+      background-color: $table-bg;
+    }
+    &:nth-child(even) {
+      background-color: $table-bg-accent;
+    }
+    &.row-selected {
+      background-color: $table-bg-selected;
+    }
+  }
 }
 
 TABLE {
-    position: relative;
-    TH {
-        text-align: left;
+  position: relative;
+
+  TH {
+    text-align: left;
+  }
+
+  // General padding
+  > THEAD > TR > TH,
+  > TBODY > TR > TD {
+    padding: 0;
+    height: 50px;
+  }
+  &.no-lines {
+    * {
+      border: none;
     }
-    // General padding
-    > THEAD > TR > TH,
-    > TBODY > TR > TD {
+  }
+
+  &.fixed {
+    table-layout: fixed;
+    width: 100%;
+  }
+
+  .fixed-header-actions {
+    min-height: 40px;
+    width: 100%;
+    z-index: 1;
+    background: $body-bg;
+
+    input[type='search'] {
+      width: auto;
+    }
+  }
+
+  .fixed-header {
+    z-index: 2;
+    background: $table-header;
+    > TH {
+      BUTTON {
         padding: 0;
-        height: 50px;
-        transition: ease-in-out all 200ms;
 
-        &:last-child {
-            height: 0;
+        I.faded {
+          opacity: .3;
         }
+      }
     }
-    &.no-lines {
-        * {
-            border: none;
-        }
-    }
-    &.fixed {
-        table-layout: fixed;
-        width: 100%;
-            &.no-bottom {
-                tbody > tr:last-child{
-                    border-bottom: none;
-                }
-            }
-    }
-    .fixed-header-actions {
-        min-height: 40px;
-        width: 100%;
-        z-index: 1;
-        background: $body-bg;
-        input[type='search'] {
-            width: auto;
-        }
-    }
-    .fixed-header {
-        z-index: 2;
-        background: $table-header;
-        > TH {
-            BUTTON {
-                padding: 0;
-                I.faded {
-                    opacity: .3;
-                }
-            }
-        }
-    }
-    .fixed-header-placeholder {
-        visibility: hidden;
-        border-bottom: 0;
+  }
 
-        TH {
-            padding: 0 !important;
-            height: 0 !important;
-        }
+  .fixed-header-placeholder {
+    visibility: hidden;
+    TH {
+      padding: 0 !important;
+      height: 0 !important;
     }
-    .row-check,
-    .actions {
-        text-align: center;
-    }
-    > THEAD .bulk-actions {
-        margin: 0 3px;
-    }
-    &.has-sub-rows {
-        tr.row-selected TABLE > TBODY > TR > TD {
-            background: $body-bg;
-        }
-        TABLE {
+  }
 
-            > TBODY {
-                @include striped;
-                
-                
-                TR:last-child{
-                    background: transparent;
-                    &:after {
-                        content: "";
-                        height: $table-body-separation;
-                        display: block;
-                        background: transparent;
-                    }
-                }   
-            }
-        }
-        TABLE > THEAD > .fixed-header-actions {
-            z-index: 3;
-            background-color: transparent;
-        }
-        TABLE > THEAD > .fixed-header {
-            z-index: 4;
-        }
-        TABLE .bulk-actions {
-            margin: 0 18px;
-        }
-    }
-    &.small {
-        > THEAD {
-            > TR > TH {
-                padding: 2px 5px;
-            }
-        }
-        > TBODY > TR > TD {
-            padding: 2px 5px;
-        }
-    }
-    > TBODY {
-        > TR.separator-row > TD {
-            background-color: $body-bg;
-        }
-        > TR.group-row > TD {
-            background: lighten($table-border-color, 4);
-            height: $group-row-height;
-        }
-        > TR.no-bottom > TD {
-            padding-bottom: 0;
-        }
-        > TR.no-top > TD {
-            padding-top: 0;
-        }
-    }
-    > THEAD > TR {
-        width: 100%;
-        box-sizing: border-box;
-        border-width: 0 0 3px 0;
-        border-color: $table-border-color;
-        border-radius: 0;
-        outline: none;
-        transition: all ease-in-out .2s;
-        background: $table-header;
-        border-bottom: 3px solid $link-color;
+  .row-check, .actions {
+    text-align: center;
+  }
 
+  > THEAD .bulk-actions {
+    margin: 0 3px;
+  }
 
-        TH {
-            color: $link-color;
-            .btn {
-                color: $link-color;
-            }
-        }
-
-        &.fixed-header {
-          
-        }
-        > TH {
-            border-width: 0 0 3px 0;
-            border-color: $table-border-color;
-            border-radius: 0;
-            outline: none;
-            transition: all ease-in-out .3s;
-            text-align: left;
-            font-weight: normal;
-        }
-    }
-    &.double-rows > TBODY {
-        > TR.main-row > TD {
-            padding-bottom: 0;
-            &.top-half {
-                border-bottom: 1px solid transparent;
-            }
-        }
-        > TR.sub-row > TD {
-            padding-top: 0;
-        }
-    }
-    &.has-sub-rows TABLE {
-        border-collapse: separate;
-        border-spacing: 2px;
-        > THEAD > TR.fixed-header {
-            background: $table-nested-header;
-            > TH .btn {
-                color: $body-bg;
-                padding: 0 10px;
-            }
-        }
-        > TBODY > TR > TD {
-            // border-right: solid 2px $body-bg;
-            // border-bottom: solid 2px $body-bg;
-            // margin-bottom: 2px;
-            background: $table-bg;
-            padding: 0 5px;
-        }
-    }
-    > TBODY {
-        border: none;
-
-        &.group {
-            border-bottom: solid $table-border-color;
-
-            &:before {
-                content: "";
-                display: block;
-                height: $table-body-separation;
-                background: $body-bg;
-            }
-
-            &:first-of-type:before {
-                height: 0;
-            }
-        }
-
-        > TR {
-            border-bottom: solid 2px $table-border-color;
-            &.row-selected {
-                background-color: $table-bg-selected;
-
-               td > div > div > table > tbody > td{
-                    // background: red!important;
-                }
-            }
-        }
-    }
-    &.bordered {
-        @include bordered;
-    }
-    &.striped {
-        @include striped;
-    }
-    &.solid {
+  &.has-sub-rows {
+    TABLE {
+      > TBODY {
         @include solid;
+      }
     }
-}
+    TABLE > THEAD > .fixed-header-actions {
+      z-index: 3;
+      background-color: transparent;
+    }
+    TABLE > THEAD > .fixed-header {
+      z-index: 4;
+    }
+    TABLE .bulk-actions {
+      margin: 0 18px;
+    }
+  }
 
+  &.small {
+    > THEAD {
+      > TR > TH {
+        padding: 2px 5px;
+      }
+    }
+    > TBODY > TR > TD {
+      padding: 2px 5px;
+    }
+  }
+
+  > TBODY {
+    > TR.separator-row > TD {
+      background-color: $body-bg;
+    }
+
+    > TR.group-row > TD {
+      background: lighten($table-bg-accent, 10);
+      height: $group-row-height;
+    }
+
+    > TR.no-bottom > TD {
+      padding-bottom: 0;
+    }
+
+    > TR.no-top > TD {
+      padding-top: 0;
+    }
+  }
+
+  > THEAD > TR {
+    width: 100%;
+    box-sizing: border-box;
+    border-width: 0 0 3px 0;
+    border-color: $table-border-color;
+    border-radius: 0;
+    outline: none;
+    transition: all ease-in-out .2s;
+    &.fixed-header {
+      background: $table-header;
+      border-bottom: 3px solid $link-color;
+      TH {
+        color: $link-color;
+
+        .btn {
+          color: $link-color;
+        }
+      }
+    }
+    > TH {
+      border-width: 0 0 3px 0;
+      border-color: $table-border-color;
+      border-radius: 0;
+      outline: none;
+      transition: all ease-in-out .3s;
+      text-align: left;
+      font-weight: normal;
+    }
+  }
+
+  &.double-rows > TBODY {
+    > TR.main-row > TD {
+      padding-bottom: 0;
+
+      &.top-half {
+        border-bottom: 1px solid transparent;
+      }
+    }
+
+    > TR.sub-row > TD {
+      padding-top: 0;
+    }
+  }
+
+  &.has-sub-rows TABLE {
+    > THEAD > TR.fixed-header {
+      background: $link-color;
+      > TH .btn {
+        color: $body-bg;
+      }
+    }
+    > TBODY > TR > TD {
+      border: solid 2px $table-bg;
+    }
+  }
+
+  > TBODY {
+    border: none;
+    background-color: $table-bg;
+    > TR {
+      &.row-selected {
+        background-color: $table-bg-selected;
+      }
+    }
+  }
+
+  &.bordered {
+    @include bordered;
+
+    table {
+      @include solid;
+    }
+  }
+
+  &.striped {
+    @include striped;
+  }
+
+  &.solid {
+    @include solid;
+  }
+}

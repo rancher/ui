@@ -4,6 +4,7 @@ export default Ember.Controller.extend({
   service: Ember.computed.alias('model.service'),
   stack: Ember.computed.alias('model.stack'),
   application: Ember.inject.controller(),
+  rules: Ember.computed.alias('model.lbConfig.portRules'),
 
   actions: {
     changeService(service) {
