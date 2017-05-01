@@ -49,6 +49,8 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     let isAdmin = (type === C.USER.TYPE_ADMIN) || !this.get('access.enabled');
     this.set('access.admin', isAdmin);
 
+    this.get('session').set(C.SESSION.BACK_TO, undefined);
+
     let promise = new Ember.RSVP.Promise((resolve, reject) => {
       let tasks = {
         userSchemas:                                    this.toCb('loadUserSchemas'),
@@ -274,7 +276,41 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     gotoK() { this.transitionTo('authenticated.project.api.keys', this.get('projects.current.id')); },
     gotoL() { this.transitionTo('balancers.index',                this.get('projects.current.id')); },
     gotoS() { this.transitionTo('scaling-groups.index',           this.get('projects.current.id')); },
-    help()  { this.get('modalService').toggleModal('modal-shortcuts'); },
+
+    help()  {
+      this.get('modalService').toggleModal('modal-shortcuts');
+    },
+
+    gotoP() {
+      if ( this.get('access.admin') ) {
+        this.transitionTo('admin-tab.processes');
+      };
+    },
+
+    nextTab() {
+      if ( $('.tab-nav').length ) {
+        let cur = $('.tab-nav .active');
+        let next = cur.closest('li').next().find('a');
+        if ( next && next.length ) {
+          next.click();
+        } else {
+          next = $('.tab-nav li:first-child a');
+          if ( next && next.length ) {
+            next.click();
+          }
+        }
+      }
+    },
+
+    neu() {
+      let elem = $('.right-buttons a:last')[0];
+      if ( elem ) {
+        event.stopPropagation();
+        event.preventDefault();
+        elem.click();
+      }
+    },
+
     search(event)  {
       let elem = $("INPUT[type='search']")[0];
       if ( elem ) {
@@ -282,7 +318,11 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
         event.preventDefault();
         elem.focus();
       }
-    }
+    },
+
+    delete() {
+      $('.bulk-actions .icon-trash').closest('a').click();
+    },
   },
 
   shortcuts: {
@@ -291,11 +331,16 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     'd': 'gotoD',
     'e': 'gotoE',
     'h': 'gotoH',
-    'k': 'gotoK',
+    'shift+k': 'gotoK',
     'l': 'gotoL',
+    'n': 'neu',
+    'p': 'gotoP',
     's': 'gotoS',
+    't': 'nextTab',
     '/': 'search',
     'shift+/': 'help',
+    'backspace': 'delete',
+    'delete': 'delete',
   },
 
 });

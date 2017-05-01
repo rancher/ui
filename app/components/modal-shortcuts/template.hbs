@@ -1,18 +1,20 @@
-<table width="100%" class="text-mono">
-  <tr>
-    <td colspan="2">{{settings.appName}}</td>
-    <td class="text-center">{{t 'modalShortcuts.world'}}</td>
-    <td class="text-right">{{t 'modalShortcuts.time'}}</td>
-  </tr>
-  <tr>
-    <td>022482</td>
-    <td class="text-center"><i class="icon icon-container"/> x {{containerCount}}</td>
-    <td class="text-center">1-2</td>
-    <td class="text-right">{{time}}</td>
-  </tr>
-</table>
+{{#if settings.isRancher}}
+  <table width="100%" class="text-mono">
+    <tr>
+      <td colspan="2">{{settings.appName}}</td>
+      <td class="text-center">{{t 'modalShortcuts.world'}}</td>
+      <td class="text-right">{{t 'modalShortcuts.time'}}</td>
+    </tr>
+    <tr>
+      <td>022482</td>
+      <td class="text-center"><i class="icon icon-container"/> x {{containerCount}}</td>
+      <td class="text-center">1-2</td>
+      <td class="text-right">{{time}}</td>
+    </tr>
+  </table>
+{{/if}}
 
-<h1 class="text-mono text-center pt-20">{{t 'modalShortcuts.title'}}</h1>
+<h1 class="text-mono text-center pt-20">{{t (if settings.isRancher 'modalShortcuts.title.rancher' 'modalShortcuts.title.pl')}}</h1>
 
 <div class="row">
   <div class="col span-6">
@@ -64,8 +66,16 @@
         <td>{{t 'modalShortcuts.g'}}</td>
       </tr>
       <tr>
+        <td width="90" class="pb-5"><code>n</code></td>
+        <td>{{t 'modalShortcuts.n'}}</td>
+      </tr>
+      <tr>
         <td class="pb-5"><code>Shift+S</code></td>
         <td>{{t 'modalShortcuts.shiftS'}}</td>
+      </tr>
+      <tr>
+        <td width="90" class="pb-5"><code>t</code></td>
+        <td>{{t 'modalShortcuts.t'}}</td>
       </tr>
       <tr>
         <td class="pb-5"><code>/</code></td>
@@ -76,6 +86,18 @@
         <td>{{t 'modalShortcuts.question'}}</td>
       </tr>
     </table>
+
+    {{#if isAdmin}}
+      <table class="mt-10">
+        <tr>
+          <td colspan="2" class="text-bold">{{t 'modalShortcuts.admin'}}</td>
+        </tr>
+        <tr>
+          <td width="90" class="pb-5"><code>p</code></td>
+          <td>{{t 'modalShortcuts.p'}}</td>
+        </tr>
+      </table>
+    {{/if}}
   </div>
 </div>
 

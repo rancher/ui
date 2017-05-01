@@ -6,6 +6,9 @@ let DEFAULT_TIME = 400;
 export default Ember.Component.extend(ModalBase, {
   classNames: ['generic', 'medium-modal'],
   settings: Ember.inject.service(),
+  access: Ember.inject.service(),
+
+  isAdmin: Ember.computed.alias('access.admin'),
 
   containerCount: Ember.computed.alias('containers.length'),
   time: DEFAULT_TIME,

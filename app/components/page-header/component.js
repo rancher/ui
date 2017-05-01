@@ -21,6 +21,7 @@ export default Ember.Component.extend(HoverDropdown, {
   currentPath          : null,
 
   // Injections
+  intl                 : Ember.inject.service(),
   projects             : Ember.inject.service(),
   project              : Ember.computed.alias('projects.current'),
   projectId            : Ember.computed.alias(`tab-session.${C.TABSESSION.PROJECT}`),
@@ -53,6 +54,7 @@ export default Ember.Component.extend(HoverDropdown, {
 
   init() {
     this._super(...arguments);
+    this.get('intl.locale');
     this.set('stacks', this.get('store').all('stack'));
     this.set('hosts', this.get('store').all('host'));
     this.set('stackSchema', this.get('store').getById('schema','stack'));
@@ -114,7 +116,8 @@ export default Ember.Component.extend(HoverDropdown, {
     'stacks.@each.group',
     `prefs.${C.PREFS.ACCESS_WARNING}`,
     'access.enabled',
-    'isAdmin'
+    'isAdmin',
+    'intl.locale'
   ),
 
   // Utilities you can use in the condition() function to decide if an item is shown or hidden,

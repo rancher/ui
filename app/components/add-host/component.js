@@ -1,12 +1,14 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
   access:        Ember.inject.service(),
   projects:      Ember.inject.service(),
+  settings:      Ember.inject.service(),
   hostService: Ember.inject.service('host'),
+
   driver:        null,
   hostId:        null,
-  allowCustom:   true,
   allowOther:    true,
   forCatalog:    true,
   inModal:       false,
@@ -17,12 +19,17 @@ export default Ember.Component.extend({
   sortedDrivers: Ember.computed.sort('model.availableDrivers','sortBy'),
 
   didReceiveAttrs() {
-    if (!this.get('driver')) {
-      if (this.get('inModal')) {
-        this.set('driver', this.get('sortedDrivers.firstObject.name'));
-      } else {
-        this.set('driver', this.get('hostService.defaultDriver'));
-      }
+    if (this.get('driver')) {
+      return;
+    }
+
+    let def = this.get('hostService.defaultDriver');
+    if ( def === 'custom'  && this.get('allowCustom') ) {
+      this.set('driver', 'custom');
+    } else if ( !this.get('inModal') && def && this.get('sortedDrivers').map((x) => x.name).includes(def) ) {
+      this.set('driver', def);
+    } else {
+      this.set('driver', this.get('sortedDrivers.firstObject.name'));
     }
   },
 
@@ -43,6 +50,10 @@ export default Ember.Component.extend({
   hasOther: Ember.computed('model.availableDrivers.@each.hasUi', function() {
     return this.get('model.availableDrivers').filterBy('hasUi',false).length > 0;
   }),
+
+  allowCustom: function() {
+    return this.get(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`) !== false;
+  }.property(`settings.${C.SETTING.SHOW_CUSTOM_HOST}`),
 
   showPicker: Ember.computed('model.availableDrivers.length','allowOther','hasOther','allowCustom', function() {
     return !this.get('projects.current.isWindows') && (

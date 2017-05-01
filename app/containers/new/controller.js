@@ -1,15 +1,19 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
-  queryParams: ['stackId','containerId','hostId'],
+  queryParams: ['stackId','scalingGroupId','containerId','hostId','upgrade'],
+  editing: false,
   hostId: null,
   stackId: null,
   containerId: null,
-  editing: false,
+  scalingGroupId: null,
+  mode: 'container',
+
+  upgrade: null,
 
   actions: {
     done() {
-      this.transitionToRoute('container', this.get('model.instance.id'));
+      this.send('goToPrevious','containers.index');
     },
 
     cancel() {

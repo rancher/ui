@@ -57,6 +57,10 @@ var Service = Resource.extend(StateCounts, {
       return this.doAction('rollback');
     },
 
+    garbageCollect() {
+      return this.doAction('garbagecollect');
+    },
+
     promptStop: function() {
       this.get('modalService').toggleModal('modal-confirm-deactivate', {
         originalModel: this,
@@ -164,6 +168,7 @@ var Service = Resource.extend(StateCounts, {
       { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate', bulkable: true},
       { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete', bulkable: true},
       { label: 'action.purge',          icon: '',                           action: 'purge',          enabled: !!a.purge},
+      { label: 'action.garbageCollect', icon: '',                           action: 'garbageCollect', enabled: !!a.garbagecollect},
       { divider: true },
       { label: 'action.viewInApi',      icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isSwarm && !isDriver },
@@ -171,7 +176,7 @@ var Service = Resource.extend(StateCounts, {
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback}','lcType','isK8s','isSwarm','canHaveContainers','canUpgrade','isBalancer','containerForShell'),
+  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback,garbagecollect}','lcType','isK8s','isSwarm','canHaveContainers','canUpgrade','isBalancer','containerForShell'),
 
 
   serviceLinks: null, // Used for clone

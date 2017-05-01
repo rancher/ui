@@ -7,13 +7,15 @@ export default Ember.Route.extend({
   }),
 
   actions: {
-    toggleGrouping() {
+    toggleContainerGrouping(event) {
       let cur = this.get('controller.mode');
-      this.set('controller.mode', (cur === 'list' ? 'grouped' : 'list'));
+      Ember.run.next(() => {
+        this.set('controller.mode', (cur === 'list' ? 'grouped' : 'list'));
+      });
     },
   },
 
   shortcuts: {
-    'g': 'toggleGrouping',
+    'g': 'toggleContainerGrouping',
   }
 });

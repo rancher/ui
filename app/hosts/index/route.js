@@ -14,7 +14,9 @@ export default Ember.Route.extend({
       let choices = ['list','dot','grouped'];
       let cur = this.get('controller.mode');
       let neu = choices[((choices.indexOf(cur)+1) % choices.length)];
-      this.set('controller.mode', neu);
+      Ember.run.next(() => {
+        this.set('controller.mode', neu);
+      });
     },
   },
 
