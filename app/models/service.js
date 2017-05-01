@@ -37,6 +37,10 @@ var Service = Resource.extend(StateCounts, {
       return this.doAction('deactivate');
     },
 
+    pause() {
+      return this.doAction('pause');
+    },
+
     restart() {
       return this.doAction('restart', {rollingRestartStrategy: {}});
     },
@@ -152,31 +156,29 @@ var Service = Resource.extend(StateCounts, {
     var isSwarm = this.get('isSwarm');
     var canHaveContainers = this.get('canHaveContainers');
     var containerForShell = this.get('containerForShell');
-    var isBalancer = this.get('isBalancer');
     var isDriver = ['networkdriverservice','storagedriverservice'].includes(this.get('lcType'));
 
     var choices = [
-      { label: 'action.finishUpgrade',  icon: 'icon icon-success',          action: 'finishUpgrade',  enabled: !!a.finishupgrade, bulkable: true },
+      { label: 'action.upgradeOrEdit',  icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: canUpgrade },
       { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback },
-      { label: (isBalancer ? 'action.upgradeOrEdit' : 'action.upgrade'),        icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: canUpgrade },
-      { label: 'action.cancelUpgrade',  icon: 'icon icon-life-ring',        action: 'cancelUpgrade',  enabled: !!a.cancelupgrade },
-      { label: 'action.cancelRollback', icon: 'icon icon-life-ring',        action: 'cancelRollback', enabled: !!a.cancelrollback },
+      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isSwarm && !isDriver },
       { divider: true },
-      { label: 'action.execute',        icon: '',                           action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
+      { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
+//      { label: 'action.logs',           icon: 'icon icon-file',             action: 'logs',           enabled: !!a.logs, altAction: 'popoutLogs' },
+      { divider: true },
+      { label: 'action.pause',          icon: 'icon icon-pause',            action: 'pause',          enabled: !!a.pause, bulkable: true},
       { label: 'action.start',          icon: 'icon icon-play',             action: 'activate',       enabled: !!a.activate, bulkable: true},
-      { label: 'action.restart',        icon: 'icon icon-refresh'    ,      action: 'restart',        enabled: !!a.restart && canHaveContainers, bulkable: true },
+      { label: 'action.restart',        icon: 'icon icon-refresh',          action: 'restart',        enabled: !!a.restart && canHaveContainers, bulkable: true },
       { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate', bulkable: true},
-      { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete', bulkable: true},
-      { label: 'action.purge',          icon: '',                           action: 'purge',          enabled: !!a.purge},
+      { divider: true },
       { label: 'action.garbageCollect', icon: '',                           action: 'garbageCollect', enabled: !!a.garbagecollect},
+      { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete', bulkable: true},
       { divider: true },
       { label: 'action.viewInApi',      icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
-      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isSwarm && !isDriver },
-      { label: 'action.edit',           icon: 'icon icon-edit',             action: 'edit',           enabled: !!a.update && !isK8s && !isSwarm && !isBalancer},
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,restart,update,remove,purge,finishupgrade,cancelupgrade,rollback,cancelrollback,garbagecollect}','lcType','isK8s','isSwarm','canHaveContainers','canUpgrade','isBalancer','containerForShell'),
+  }.property('actionLinks.{activate,deactivate,pause,restart,update,remove,rollback,garbagecollect}','lcType','isK8s','isSwarm','canHaveContainers','canUpgrade','containerForShell'),
 
 
   serviceLinks: null, // Used for clone

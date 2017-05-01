@@ -284,7 +284,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     gotoP() {
       if ( this.get('access.admin') ) {
         this.transitionTo('admin-tab.processes');
-      };
+      }
     },
 
     nextTab() {

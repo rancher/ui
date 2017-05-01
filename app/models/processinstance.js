@@ -15,6 +15,7 @@ var ProcessInstance = Resource.extend({
 
     return [
       { label: 'action.replay',    icon: 'icon icon-refresh',      action: 'replay',  enabled: !!a.replay },
+      { divider: true },
       { label: 'action.viewInApi', icon: 'icon icon-external-link',action: 'goToApi', enabled: true },
     ];
   }.property('actionLinks.replay'),

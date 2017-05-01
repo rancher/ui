@@ -83,7 +83,7 @@ export default Ember.Component.extend({
     return Object.keys(ALLOWED).filter((key) => {
       let details = ALLOWED[key];
       return  (!details['mode'] || details['mode'] === mode) &&
-              (!details['devOnly'] || isLocalDev);;
+              (!details['devOnly'] || isLocalDev);
     }).map((key) => {
       let obj = all[normalizeName(key)];
       let details = ALLOWED[key];

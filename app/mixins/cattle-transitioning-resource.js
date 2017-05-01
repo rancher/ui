@@ -87,37 +87,6 @@ export default Ember.Mixin.create({
     return [];
   }.property(),
 
-  primaryAction: function() {
-    // The default implementation returns the first enabled item that has an icon
-    // and is before the first divider.  If you want a different behavior or
-    // multiple primaryActions, you can override this in a specific model.
-    var all = this.get('availableActions');
-    var obj;
-    var seenAnAction = false;
-    for ( var i = 0 ; i < all.get('length') ; i++ )
-    {
-      obj = all.objectAt(i);
-      if ( Ember.get(obj,'divider') )
-      {
-        // Nothing was found, stop at the first divider;
-        if ( seenAnAction )
-        {
-          return null;
-        }
-      }
-      else if ( Ember.get(obj,'enabled') )
-      {
-        seenAnAction = true;
-        if ( Ember.get(obj,'icon') && Ember.get(obj,'action') !== 'promptDelete')
-        {
-          return obj;
-        }
-      }
-    }
-
-    return null;
-  }.property('availableActions.@each.enabled'),
-
   actions: {
     promptDelete: function() {
       this.get('modalService').toggleModal('confirm-delete', [this]);

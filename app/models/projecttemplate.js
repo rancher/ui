@@ -22,9 +22,9 @@ var ProjectTemplate = Resource.extend(PolledResource, {
   availableActions: function() {
     var choices = [
       { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: this.get('canEdit')},
-//      { label: 'action.clone',            icon: 'icon icon-copy',         action: 'clone',        enabled: true},
       { divider: true },
       { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canEdit'), altAction: 'delete' },
+      { divider: true },
       { label: 'action.viewInApi',        icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
 

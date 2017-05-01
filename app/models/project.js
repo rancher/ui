@@ -73,18 +73,18 @@ var Project = Resource.extend(PolledResource, {
 
     var choices = [
       { label: 'action.edit',             icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
+      { divider: true },
       { label: 'action.activate',         icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate},
       { label: 'action.deactivate',       icon: 'icon icon-pause',        action: 'promptStop',   enabled: !!a.deactivate,        altAction: 'deactivate'},
       { divider: true },
       { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canRemove'), altAction: 'delete' },
-      { label: 'action.restore',          icon: '',                       action: 'restore',      enabled: !!a.restore },
-      { label: 'action.purge',            icon: '',                       action: 'purge',        enabled: !!a.purge },
+      { divider: true },
       { label: 'action.viewInApi',        icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
     ];
 
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,update,restore,purge}','state','canRemove','canSetDefault','canSwitchTo'),
+  }.property('actionLinks.{activate,deactivate,update}','state','canRemove','canSetDefault','canSwitchTo'),
 
   icon: function() {
     if ( this.get('isDefault') )

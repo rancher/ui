@@ -89,7 +89,7 @@ var Container = Instance.extend({
     },
 
     edit: function() {
-      this.get('modalService').toggleModal('edit-container', this);
+      this.get('router').transitionTo('containers.new', {queryParams: {containerId: this.get('id'), upgrade: true}});
     },
 
     clone: function() {
@@ -112,26 +112,28 @@ var Container = Instance.extend({
     var isSystem = this.get('isSystem');
     var isService = labelKeys.indexOf(C.LABEL.SERVICE_NAME) >= 0;
     var isK8s = labelKeys.indexOf(C.LABEL.K8S_POD_NAME) >= 0;
+    var canConvert = !!a.converttoservice && !isSystem && !isService && !isK8s;
 
     var choices = [
-      { label: 'action.restart',    icon: 'icon icon-refresh',      action: 'restart',      enabled: !!a.restart, bulkable: true},
-      { label: 'action.start',      icon: 'icon icon-play',         action: 'start',        enabled: !!a.start, bulkable: true},
-      { label: 'action.stop',       icon: 'icon icon-stop',         action: 'promptStop',   enabled: !!a.stop, altAction: 'stop', bulkable: true},
-      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: this.get('canDelete'), altAction: 'delete', bulkable: true},
-      { label: 'action.purge',      icon: '',                       action: 'purge',        enabled: !!a.purge },
+      { label: 'action.upgradeOrEdit',    icon: 'icon icon-edit',         action: 'edit',             enabled: !!a.update && !isK8s },
+      { label: 'action.convertToService', icon: 'icon icon-service',      action: 'convertToService', enabled: canConvert},
+      { label: 'action.clone',            icon: 'icon icon-copy',         action: 'clone',            enabled: !isSystem && !isService && !isK8s},
       { divider: true },
-      { label: 'action.execute',    icon: '',                       action: 'shell',        enabled: !!a.execute, altAction:'popoutShell'},
-      { label: 'action.console',    icon: '',                       action: 'console',      enabled: !!a.console, altAction:'popoutShellVm' },
-      { label: 'action.logs',       icon: '',                       action: 'logs',         enabled: !!a.logs, altAction: 'popoutLogs' },
-      { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
+      { label: 'action.execute',          icon: 'icon icon-terminal',     action: 'shell',            enabled: !!a.execute, altAction:'popoutShell'},
+      { label: 'action.console',          icon: 'icon icon-terminal',     action: 'console',          enabled: !!a.console, altAction:'popoutShellVm' },
+      { label: 'action.logs',             icon: 'icon icon-file',         action: 'logs',             enabled: !!a.logs, altAction: 'popoutLogs' },
       { divider: true },
-      { label: 'action.clone',      icon: 'icon icon-copy',         action: 'clone',        enabled: !isSystem && !isService && !isK8s},
-      { label: 'action.convertToService', icon: 'icon icon-service',action: 'convertToService', enabled: !!a.converttoservice && !isSystem && !isService && !isK8s},
-      { label: 'action.edit',       icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update && !isK8s },
+      { label: 'action.restart',          icon: 'icon icon-refresh',      action: 'restart',          enabled: !!a.restart, bulkable: true},
+      { label: 'action.start',            icon: 'icon icon-play',         action: 'start',            enabled: !!a.start, bulkable: true},
+      { label: 'action.stop',             icon: 'icon icon-stop',         action: 'promptStop',       enabled: !!a.stop, altAction: 'stop', bulkable: true},
+      { divider: true },
+      { label: 'action.remove',           icon: 'icon icon-trash',        action: 'promptDelete',     enabled: this.get('canDelete'), altAction: 'delete', bulkable: true},
+      { divider: true },
+      { label: 'action.viewInApi',        icon: 'icon icon-external-link',action: 'goToApi',          enabled: true },
     ];
 
     return choices;
-  }.property('actionLinks.{restart,start,stop,restore,purge,execute,logs,update,converttoservice}','canDelete','isSystem'),
+  }.property('actionLinks.{restart,start,stop,restore,execute,logs,update,converttoservice}','canDelete','isSystem'),
 
 
   memoryReservationBlurb: Ember.computed('memoryReservation', function() {
@@ -139,10 +141,6 @@ var Container = Instance.extend({
       return formatSi(this.get('memoryReservation'), 1024, 'iB', 'B');
     }
   }),
-  // Hacks
-  hasManagedNetwork: function() {
-    return this.get('primaryIpAddress') && this.get('primaryIpAddress').indexOf('10.') === 0;
-  }.property('primaryIpAddress'),
 
   combinedState: function() {
     var resource = this.get('state');

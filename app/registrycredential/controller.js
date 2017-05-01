@@ -34,12 +34,10 @@ var RegistryController = Cattle.LegacyTransitioningResourceController.extend({
     return [
       { label: 'Activate',      icon: 'icon icon-play',   action: 'activate',     enabled: !!a.activate },
       { label: 'Deactivate',    icon: 'icon icon-pause',  action: 'deactivate',   enabled: !!a.deactivate },
-      { label: 'Delete',        icon: 'icon icon-trash',  action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
       { divider: true },
-      { label: 'Restore',       icon: '',                 action: 'restore',      enabled: !!a.restore },
-      { label: 'Purge',         icon: '',                 action: 'purge',        enabled: !!a.purge },
+      { label: 'Delete',        icon: 'icon icon-trash',  action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
     ];
-  }.property('actionLinks.{update,activate,deactivate,restore,remove,purge}'),
+  }.property('actionLinks.{activate,deactivate,remove}'),
 });
 
 export default RegistryController;
