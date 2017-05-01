@@ -84,7 +84,17 @@ export default Ember.Component.extend({
 
   actions: {
     toggle() {
-      this.set('mode', (this.get('mode') === REUSE ? CREATE : REUSE));
+      let mode = (this.get('mode') === REUSE ? CREATE : REUSE);
+      this.set('mode', mode);
+      if ( mode === CREATE ) {
+        Ember.run.next(() => {
+          let elem = this.$('.new-name')[0];
+          if ( elem ) {
+            elem.focus();
+            elem.select();
+          }
+        });
+      }
     },
 
     showAdvanced() {
