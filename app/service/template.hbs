@@ -56,31 +56,14 @@
           <button class="btn bg-default btn-xs" {{action "scaleUp" target=service}}><i class="icon icon-plus"></i></button>
         </div>
       {{else}}
-        {{if service.isGlobalScale (t 'servicePage.multistat.global') (t 'generic.na')}}
+        {{if service.isGlobalScale (concat service.scale (t 'servicePage.globalScale')) (t 'generic.na')}}
       {{/if}}
     </div>
 
     {{#if service.hasImage}}
-
       <div class="col">
         <label>{{t 'servicePage.multistat.image'}}</label>
         {{service.launchConfig.displayImage}} {{copy-to-clipboard clipboardText=service.launchConfig.displayImage size="small"}}
-      </div>
-      <div class="col">
-        <label>{{t 'servicePage.multistat.entryPoint'}}</label>
-        {{#if service.launchConfig.entryPoint}}
-          {{service.launchConfig.entryPoint}}
-        {{else}}
-          <span class="text-muted">{{t 'generic.none'}}</span>
-        {{/if}}
-      </div>
-      <div class="col">
-        <label>{{t 'servicePage.multistat.command'}}</label>
-        {{#if service.launchConfig.command}}
-          {{concat-str service.launchConfig.command}}
-        {{else}}
-          <span class="text-muted">{{t 'generic.none'}}</span>
-        {{/if}}
       </div>
     {{/if}}
   </div>
@@ -278,6 +261,14 @@
           {{/if}}
         </div>
       {{/accordion-row}}
+
+      {{container/form-command
+          tagName=''
+          instance=service
+          isService=true
+          initialLabels=service.launchConfig.labels
+          editing=false
+      }}
 
       {{#accordion-row
            title=(t 'servicePage.containersTab.title')
