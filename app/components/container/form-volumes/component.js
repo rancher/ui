@@ -224,7 +224,7 @@ export default Ember.Component.extend({
 
     this.get('volumesArray').forEach((row) => {
       let val = row.value;
-      if ( val.substr(0,1) === '/' ) {
+      if ( val.substr(0,1) === '/' || !Ember.isEmpty(this.get('instance.volumeDriver'))) {
         return;
       }
 
@@ -235,7 +235,7 @@ export default Ember.Component.extend({
     });
 
     this.set('errors', errors.uniq());
-  }.observes('volumesArray.@each.value'),
+  }.observes('volumesArray.@each.value', 'instance.volumeDriver'),
 
   driverChoices: function() {
     let drivers = this.get('_storagePools')
