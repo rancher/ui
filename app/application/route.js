@@ -91,7 +91,7 @@ export default Ember.Route.extend({
 
         access.clearSessionKeys();
 
-        if ( transition ) {
+        if ( transition && !session.get(C.SESSION.BACK_TO) ) {
           session.set(C.SESSION.BACK_TO, window.location.href);
         }
 
@@ -156,7 +156,7 @@ export default Ember.Route.extend({
         error_description: null,
         redirectTo: null,
       });
-    })
+    });
 
     if ( params.redirectTo ) {
       let path = params.redirectTo;
