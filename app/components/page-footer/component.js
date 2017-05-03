@@ -2,6 +2,8 @@ import Ember from 'ember';
 import C from 'ui/utils/constants';
 
 export default Ember.Component.extend({
+  intl: Ember.inject.service(),
+
   tagName: 'footer',
   className: 'clearfix',
 
@@ -34,9 +36,22 @@ export default Ember.Component.extend({
     });
   },
 
+  showWechat : Ember.computed('intl._locale', function() {
+    let locale = this.get('intl._locale');
+    if (locale) {
+      return locale[0] === 'zh-hans';
+    }
+    return false;
+  }),
+
   actions: {
     showAbout() {
       this.get('modalService').toggleModal('modal-about', {
+        closeWithOutsideClick: true
+      });
+    },
+    showWechat() {
+      this.get('modalService').toggleModal('modal-wechat', {
         closeWithOutsideClick: true
       });
     },
