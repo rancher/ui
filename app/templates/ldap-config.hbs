@@ -43,10 +43,9 @@
       </div>
       <div class="col-md-4">
         <h4>{{t 'ldap.accessEnabled.group.header'}}</h4>
-        <div><b>{{t 'ldap.accessEnabled.general.searchBase'}} </b> <span class="text-muted">{{model.groupDomain}}</span></div>
+        <div><b>{{t 'ldap.accessEnabled.general.searchBase'}} </b> <span class="text-muted">{{model.groupSearchDomain}}</span></div>
         <div><b>{{t 'ldap.accessEnabled.group.objectClass'}} </b> <span class="text-muted">{{model.groupObjectClass}}</span></div>
         <div><b>{{t 'ldap.accessEnabled.group.name'}} </b> <span class="text-muted">{{model.groupNameField}}</span></div>
-        <div><b>{{t 'ldap.accessEnabled.general.groupSearchBase'}} </b> <span class="text-muted">{{model.groupDomain}}</span></div>
         <div><b>{{t 'ldap.accessEnabled.group.search'}} </b> <span class="text-muted">{{model.groupSearchField}}</span></div>
       </div>
     </div>
@@ -119,13 +118,13 @@
           </div>
         </div>
       {{/unless}}
-      <div class="col-md-4">
+      <div class="{{if isOpenLdap 'col-md-6' 'col-md-4'}}">
         <div class="form-group">
           <label>{{t 'ldap.accessConfig.serviceUsername.labelText'}}*</label>
           {{input value=model.serviceAccountUsername classNames="form-control"}}
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="{{if isOpenLdap 'col-md-6' 'col-md-4'}}">
         <div class="form-group">
           <label>{{t 'ldap.accessConfig.servicePassword.labelText'}}*</label>
           {{input type="password" value=model.serviceAccountPassword classNames="form-control"}}
@@ -143,7 +142,7 @@
       <div class="col-md-6">
         <div class="form-group">
           <label>{{t 'ldap.accessConfig.groupSearchBase.labelText'}}</label>
-          {{input value=model.groupDomain classNames="form-control" placeholder=(t 'ldap.accessConfig.groupSearchBase.placeholder')}}
+          {{input value=model.groupSearchDomain classNames="form-control" placeholder=(t 'ldap.accessConfig.groupSearchBase.placeholder')}}
           <p class="help-block">{{t 'ldap.accessConfig.groupSearchBase.helpText'}}</p>
         </div>
       </div>

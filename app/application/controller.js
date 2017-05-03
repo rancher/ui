@@ -4,13 +4,13 @@ export default Ember.Controller.extend({
   settings: Ember.inject.service(),
 
   // GitHub auth params
-  queryParams     : ['error_description','state','code','isTest', 'isPopup'],
+  queryParams     : ['error_description','state','code','isTest', 'isPopup','redirectTo'],
 
   resourceActions : Ember.inject.service('resource-actions'),
   tooltipService  : Ember.inject.service('tooltip'),
 
   tooltip         : Ember.computed.alias('tooltipService.tooltipOpts.type'),
-  tooltipTemplate         : Ember.computed.alias('tooltipService.tooltipOpts.template'),
+  tooltipTemplate : Ember.computed.alias('tooltipService.tooltipOpts.template'),
 
   error             : null,
   error_description : null,
@@ -18,6 +18,7 @@ export default Ember.Controller.extend({
   code              : null,
   isTest            : null,
   isPopup           : null,
+  redirectTo        : null,
 
   actions: {
     clickedAction: function(actionName) {
