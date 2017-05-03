@@ -230,6 +230,18 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     return this.get('projects').selectDefault(projectId);
   },
 
+  _gotoRoute(name, withProjectId=true) {
+    // Don't go to routes if in a form page, because you can easily not be on an input
+    // and leave the page accidentally.
+    if ( $('FORM').length === 0 ) {
+      if ( withProjectId ) {
+        this.transitionTo(name, this.get('projects.current.id'));
+      } else {
+        this.transitionTo(name);
+      }
+    }
+  },
+
   actions: {
     error(err,transition) {
       // Unauthorized error, send back to login screen
@@ -268,14 +280,14 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
       console.log('Switch finished');
     },
 
-    gotoA() { this.transitionTo('apps-tab.index',                 this.get('projects.current.id')); },
-    gotoC() { this.transitionTo('containers.index',               this.get('projects.current.id')); },
-    gotoD() { this.transitionTo('dns.index',                      this.get('projects.current.id')); },
-    gotoE() { this.transitionTo('settings.projects.index'                                        ); },
-    gotoH() { this.transitionTo('hosts.index',                    this.get('projects.current.id')); },
-    gotoK() { this.transitionTo('authenticated.project.api.keys', this.get('projects.current.id')); },
-    gotoL() { this.transitionTo('balancers.index',                this.get('projects.current.id')); },
-    gotoS() { this.transitionTo('scaling-groups.index',           this.get('projects.current.id')); },
+    gotoA() { this._gotoRoute('apps-tab.index'); },
+    gotoC() { this._gotoRoute('containers.index'); },
+    gotoD() { this._gotoRoute('dns.index'); },
+    gotoE() { this._gotoRoute('settings.projects.index', false); },
+    gotoH() { this._gotoRoute('hosts.index'); },
+    gotoK() { this._gotoRoute('authenticated.project.api.keys'); },
+    gotoL() { this._gotoRoute('balancers.index'); },
+    gotoS() { this._gotoRoute('scaling-groups.index'); },
 
     help()  {
       this.get('modalService').toggleModal('modal-shortcuts');
@@ -283,7 +295,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
 
     gotoP() {
       if ( this.get('access.admin') ) {
-        this.transitionTo('admin-tab.processes');
+        this._gotoRoute('admin-tab.processes');
       }
     },
 

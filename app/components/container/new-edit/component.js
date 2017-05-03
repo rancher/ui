@@ -10,9 +10,11 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   intl                      : Ember.inject.service(),
   settings                  : Ember.inject.service(),
 
+  tagName: 'form',
+
   isService:                  false,
   isUpgrade:                  false,
-  primaryResource:            Ember.computed.alias('launchConfig'),
+  //primaryResource:            Ember.computed.alias('launchConfig'),
   primaryService:             null,
   launchConfig:               null,
   service:                    null,
