@@ -218,10 +218,11 @@ export default Ember.Component.extend({
 
   validate: function() {
     var errors = [];
+    var volumeDriver = this.get('instance.volumeDriver');
 
     this.get('volumesArray').forEach((row) => {
       let val = row.value;
-      if ( val.substr(0,1) === '/' ) {
+      if ( val.substr(0,1) === '/' || !Ember.isEmpty(volumeDriver)) {
         return;
       }
 
@@ -232,5 +233,5 @@ export default Ember.Component.extend({
     });
 
     this.set('errors', errors.uniq());
-  }.observes('volumesArray.@each.value'),
+  }.observes('volumesArray.@each.value', 'instance.volumeDriver'),
 });
