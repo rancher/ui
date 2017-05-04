@@ -56,7 +56,7 @@ export default Ember.Controller.extend(Sortable, {
     },
   ],
 
-  accountArranged: function() {
+  arranged: function() {
     var me = this.get(`session.${C.SESSION.ACCOUNT_ID}`);
     let sort = this.get('sorts')[this.get('sortBy')];
 
@@ -70,21 +70,6 @@ export default Ember.Controller.extend(Sortable, {
 
     return out;
   }.property('model.account.@each.{accountId,name,createdTs}','sortBy','descending'),
-
-  environmentArranged: function() {
-    var project = this.get('project.id');
-    let sort = this.get('sorts')[this.get('sortBy')];
-
-    let out = this.get('model.environment').filter((row) => {
-      return row.get('accountId') === project;
-    }).sortBy(...sort);
-
-    if ( this.get('descending') ) {
-      out = out.reverse();
-    }
-
-    return out;
-  }.property('model.environment.@each.{accountId,name,createdTs}','sortBy','descending'),
 
   actions: {
     applyBulkAction(name, selectedElements) {
@@ -108,58 +93,7 @@ export default Ember.Controller.extend(Sortable, {
         });
       }
 
-      this.get('modalService').toggleModal('edit-apikey', cred);
+      this.get('modalService').toggleModal('modal-edit-apikey', cred);
     },
   },
-
-  endpoint: function() {
-    // Strip trailing slash off of the absoluteEndpoint
-    var base = this.get('endpointService.absolute').replace(/\/+$/,'');
-    // Add a single slash
-    base += '/';
-
-    var current = this.get('app.apiEndpoint').replace(/^\/+/,'');
-    var legacy = this.get('app.legacyApiEndpoint').replace(/^\/+/,'');
-
-    // Go to the project-specific version
-    var projectId = this.get('tab-session').get(C.TABSESSION.PROJECT);
-    var project = '';
-    if ( projectId )
-    {
-      project = '/projects/' + projectId;
-    }
-
-    // For local development where API doesn't match origin, add basic auth token
-    var authBase = base;
-    if ( base.indexOf(window.location.origin) !== 0 )
-    {
-      var token = this.get('cookies').get(C.COOKIE.TOKEN);
-      if ( token ) {
-        authBase = Util.addAuthorization(base, C.USER.BASIC_BEARER, token);
-      }
-    }
-
-    return {
-      auth: {
-        account: {
-          current: authBase + current,
-          legacy:  authBase + legacy
-        },
-        environment: {
-          current: authBase + current + project,
-          legacy:  authBase + legacy + project
-        }
-      },
-      display: {
-        account: {
-          current: base + current,
-          legacy:  base + legacy
-        },
-        environment: {
-          current: base + current + project,
-          legacy:  base + legacy + project
-        }
-      },
-    };
-  }.property('endpointService.absolute', 'app.{apiEndpoint,legacyApiEndpoint}', `tab-session.${C.TABSESSION.PROJECT}`),
 });

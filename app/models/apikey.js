@@ -20,7 +20,7 @@ var ApiKey = Resource.extend(PolledResource,{
     },
 
     edit: function() {
-      this.get('modalService').toggleModal('edit-apikey', this);
+      this.get('modalService').toggleModal('modal-edit-apikey', this);
     },
   },
 

@@ -3,6 +3,9 @@ import NewOrEdit from 'ui/mixins/new-or-edit';
 import ModalBase from 'ui/mixins/modal-base';
 
 export default Ember.Component.extend(ModalBase, NewOrEdit, {
+  endpointService: Ember.inject.service('endpoint'),
+  projects: Ember.inject.service(),
+
   classNames: ['large-modal'],
   originalModel: Ember.computed.alias('modalService.modalOpts'),
   model: null,
@@ -14,6 +17,24 @@ export default Ember.Component.extend(ModalBase, NewOrEdit, {
     this.set('model', this.get('originalModel').clone());
     this.set('justCreated', false);
   },
+
+  isAccount: Ember.computed.equal('model.accountId','projects.current.id'),
+
+  displayEndpoint: function() {
+    if ( this.get('isAccount') ) {
+      return this.get('endpointService.api.display.account.current');
+    } else {
+      return this.get('endpointService.api.display.environment.current');
+    }
+  }.property('isAccount'),
+
+  linkEndpoint: function() {
+    if ( this.get('isAccount') ) {
+      return this.get('endpointService.api.auth.account.current');
+    } else {
+      return this.get('endpointService.api.auth.environment.current');
+    }
+  }.property('model.accountId'),
 
   didInsertElement() {
     setTimeout(() => {

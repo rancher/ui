@@ -285,7 +285,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
     gotoD() { this._gotoRoute('dns.index'); },
     gotoE() { this._gotoRoute('settings.projects.index', false); },
     gotoH() { this._gotoRoute('hosts.index'); },
-    gotoK() { this._gotoRoute('authenticated.project.api.keys'); },
+    gotoK() { this._gotoRoute('authenticated.project.apikeys'); },
     gotoL() { this._gotoRoute('balancers.index'); },
     gotoS() { this._gotoRoute('scaling-groups.index'); },
 

@@ -28,11 +28,11 @@ var Receiver = Resource.extend(PolledResource, {
 
   actions: {
     edit() {
-      this.get('router').transitionTo('authenticated.project.api.hooks.edit-receiver', this.get('id'));
+      this.get('router').transitionTo('authenticated.project.hooks.edit-receiver', this.get('id'));
     },
 
     clone: function() {
-      this.get('router').transitionTo('authenticated.project.api.hooks.new-receiver', {queryParams: {receiverId: this.get('id')}});
+      this.get('router').transitionTo('authenticated.project.hooks.new-receiver', {queryParams: {receiverId: this.get('id')}});
     },
   },
 

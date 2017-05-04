@@ -173,7 +173,7 @@ const navTree = [
         id: 'infra-keys',
         localizedLabel: 'nav.infra.keys',
         icon: 'icon icon-key',
-        route: 'authenticated.project.api.keys',
+        route: 'authenticated.project.apikeys',
         ctx: [getProjectId],
       },
       {
@@ -208,7 +208,7 @@ const navTree = [
         id: 'infra-hooks',
         localizedLabel: 'nav.infra.hooks',
         icon: 'icon icon-link',
-        route: 'authenticated.project.api.hooks',
+        route: 'authenticated.project.hooks',
         ctx: [getProjectId],
       },
       {
