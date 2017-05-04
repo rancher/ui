@@ -4,28 +4,25 @@
 //
 
 //table variables
-$table-bg                            : lighten($light-grey,2)!default;
-$table-header                        : $body-bg!default;
-$table-bg-accent                     : darken($light-grey, 2)!default;
-$table-bg-hover                      : lighten($info, 15)!default;
-$table-bg-active                     : $table-bg-hover!default;
-$table-bg-selected                   : lighten($link-color, 35%)!default;
-$table-border-color                  : lighten($mid-grey, 30)!default;
-$table-body-separation               : 25px;
-$group-row-height                    : 40px;
+$table-bg              : lighten($light-grey,5)!default;
+$table-header          : $body-bg!default;
+$table-nested-header   : lighten($mid-grey, 15)!default;
+$table-bg-accent       : darken($light-grey, .5)!default;
+$table-bg-hover        : lighten($info, 15)!default;
+$table-bg-active       : $table-bg-hover!default;
+$table-bg-selected     : lighten($info, 30)!default;
+$table-border-color    : lighten($mid-grey, 30)!default;
+$table-body-separation : 50px;
+$table-body-separation : 25px;
+$group-row-height      : 40px;
 
 //table mixins
 @mixin bordered {
   border-bottom: $table-border-color solid 2px;
+  border-collapse: collapse;
 
   > TBODY {
     background: transparent;
-    &:not(:last-of-type):after{
-      content: "";
-      display: block;
-      width: 100%;
-      height: $table-body-separation;
-    }
 
     > TR {
       background-color: $body-bg;
@@ -33,6 +30,12 @@ $group-row-height                    : 40px;
 
       &:first-child {
         border-top: none;
+      }
+
+      &.main-row,
+      &.sub-row {
+        background-color: $body-bg;
+        border-bottom: 0;
       }
 
       > TD {
@@ -97,6 +100,11 @@ TABLE {
   > TBODY > TR > TD {
     padding: 0;
     height: 50px;
+    transition: ease-in-out all 200ms;
+
+    &:last-child {
+    height: 0;
+    }
   }
   &.no-lines {
     * {
@@ -107,6 +115,12 @@ TABLE {
   &.fixed {
     table-layout: fixed;
     width: 100%;
+
+      &.no-bottom {
+        tbody > tr:last-child{
+        border-bottom: none;
+      }
+    }
   }
 
   .fixed-header-actions {
@@ -136,6 +150,8 @@ TABLE {
 
   .fixed-header-placeholder {
     visibility: hidden;
+    border-bottom: 0;
+
     TH {
       padding: 0 !important;
       height: 0 !important;
@@ -151,9 +167,25 @@ TABLE {
   }
 
   &.has-sub-rows {
+
+    tr.row-selected TABLE > TBODY > TR > TD {
+      background: $body-bg;
+    }
+
     TABLE {
       > TBODY {
-        @include solid;
+        @include striped;
+
+         TR:last-child{
+          visibility: hidden;
+
+          &:after {
+          content: "";
+          height: $table-body-separation;
+          display: block;
+          background: transparent;
+          }
+        }
       }
     }
     TABLE > THEAD > .fixed-header-actions {
@@ -185,7 +217,7 @@ TABLE {
     }
 
     > TR.group-row > TD {
-      background: lighten($table-bg-accent, 10);
+      background: $table-bg-accent;
       height: $group-row-height;
     }
 
@@ -243,21 +275,50 @@ TABLE {
   }
 
   &.has-sub-rows TABLE {
+    border-collapse: separate;
+    border-spacing: 2px;
+
     > THEAD > TR.fixed-header {
-      background: $link-color;
+      background: $table-nested-header;
       > TH .btn {
         color: $body-bg;
+        padding: 0 10px;
       }
     }
     > TBODY > TR > TD {
-      border: solid 2px $table-bg;
+      background: $table-bg;
+      padding: 0 5px;
     }
   }
 
   > TBODY {
     border: none;
-    background-color: $table-bg;
+
+       &.group {
+            &:after {
+              content: "";
+              display: table-row;
+              height: $table-body-separation;
+              border-top: 2px solid $table-border-color;
+              position: absolute;
+              width: 99.7%;
+            }
+
+            &:before {
+                content: "";
+                display: block;
+                height: $table-body-separation;
+            }
+
+            &:first-of-type:before {
+                height: 0;
+            }
+        }
+
+
     > TR {
+      border-bottom: solid 2px $table-border-color;
+
       &.row-selected {
         background-color: $table-bg-selected;
       }
