@@ -18,6 +18,16 @@ export default Ember.Service.extend({
     return this.get('app.kubernetesDashboard').replace(this.get('app.projectToken'), this.get(`tab-session.${C.TABSESSION.PROJECT}`));
   }.property(`tab-session.${C.TABSESSION.PROJECT}`,'app.kubernetesDashboard'),
 
+  supportsAuth: function() {
+    let v = this.get('version');
+    if ( v && v['major'] )
+    {
+      let major = parseInt(v['major'],10);
+      let minor = parseInt(v['minor'],10);
+      return (major > 1) || (major === 1 && minor >= 6);
+    }
+  }.property('version.{minor,major}'),
+
   isReady() {
     let store = this.get('store');
     return store.find('stack').then((stacks) => {
@@ -26,19 +36,16 @@ export default Ember.Service.extend({
       {
         return store.rawRequest({
           url: `${this.get('kubernetesEndpoint')}/version`
-        }).then(() => {
-          console.log('isReady: true');
+        }).then((res) => {
+          this.set('version', res.body);
           return true;
         }).catch(() => {
-          console.log('isReady: false');
           return false;
         });
       }
 
-      console.log('isReady: false2');
       return false;
     }).catch(() => {
-      console.log('isReady: false3');
       return Ember.RSVP.resolve(false);
     });
   },
