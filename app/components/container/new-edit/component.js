@@ -263,46 +263,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     return false;
   },
 
-  doSave() {
-    if ( this.get('isService') && this.get('isUpgrade') )
-    {
-      var choices = this.get('launchConfigChoices');
-      var primary = null;
-      var slc = [];
-      var secondaries = this.get('service.secondaryLaunchConfigs');
-
-      choices.filterBy('enabled',true).forEach((choice) => {
-        if ( choice.index === -1 )
-        {
-          primary = this.get('service.launchConfig');
-        }
-        else
-        {
-          slc.push(secondaries.objectAt(choice.index).serialize());
-        }
-      });
-
-      let service = this.get('service');
-      return this._super.apply(this,arguments).then(() => {
-        return service.waitForAction('upgrade').then(() => {
-          return service.doAction('upgrade', {
-            inServiceStrategy: {
-              batchSize: this.get('upgradeOptions.batchSize'),
-              intervalMillis: this.get('upgradeOptions.intervalMillis'),
-              startFirst: this.get('upgradeOptions.startFirst'),
-              launchConfig: primary,
-              secondaryLaunchConfigs: slc
-            },
-          });
-        });
-      });
-    }
-    else
-    {
-      return this._super.apply(this,arguments);
-    }
-  },
-
   didSave() {
     if ( this.get('isService') ) {
       // Returns a promise
@@ -330,7 +290,9 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   headerToken: function() {
     let k = 'newContainer.';
     k += (this.get('isUpgrade') ? 'upgrade' : 'add') + '.';
-    if ( this.get('isService') ) {
+    if ( this.get('isSidekick') ) {
+      k += 'sidekick';
+    } else if ( this.get('isService') ) {
       k += 'scalingGroup';
     } else {
       k += 'container';

@@ -1,39 +1,45 @@
 <div class="col-inline clearfix">
   <label>{{t (concat-str 'formScale.label' mode character='.')}}</label>
-  {{#if (and isService (not (or isUpgrade advancedShown)))}}
+  {{#if (and isService (not (or isSidekick isUpgrade advancedShown)))}}
     <div class="pull-right text-small">
       <a role="button" class="btn bg-transparent p-0" {{action "showAdvanced"}}>{{t 'formScale.showAdvanced'}}</a>
     </div>
   {{/if}}
 </div>
 
-<div class="row gutless">
-  <div class="col span-2 m-0">
-    {{input-integer value=userInput min=min max=max}}
+{{#if isSidekick}}
+  <div class="form-control-static">
+    {{t 'formScale.mode.sidekick'}}
   </div>
-  <div class="col offset-1 span-9 hidden-md">
-    {{input-slider value=userInput valueMin=1 scaleMin=0 valueMax=sliderMax}}
+{{else}}
+  <div class="row gutless">
+    <div class="col span-2 m-0">
+      {{input-integer value=userInput min=min max=max}}
+    </div>
+    <div class="col offset-1 span-9 hidden-md">
+      {{input-slider value=userInput valueMin=1 scaleMin=0 valueMax=sliderMax}}
+    </div>
   </div>
-</div>
 
-{{#if isService}}
-  {{#if (or advancedShown isUpgrade)}}
-    <div class="pt-10">
-      <div class="radio">
-        <label>{{radio-button selection=mode value="service"}} {{t 'formScale.mode.service' scale=asInteger}}</label>
+  {{#if isService}}
+    {{#if (or advancedShown isUpgrade)}}
+      <div class="pt-10">
+        <div class="radio">
+          <label>{{radio-button selection=mode value="service"}} {{t 'formScale.mode.service' scale=asInteger}}</label>
+        </div>
+        <div class="radio">
+          <label>{{radio-button selection=mode value="global"}} {{t 'formScale.mode.global' scale=asInteger}}</label>
+        </div>
       </div>
-      <div class="radio">
-        <label>{{radio-button selection=mode value="global"}} {{t 'formScale.mode.global' scale=asInteger}}</label>
-      </div>
+    {{/if}}
+    <div class="col-inline clearfix">
+      <label>&nbsp;</label>
+    </div>
+  {{else if (gt userInput 1)}}
+    <p class="help-block">{{t 'formScale.containerHelp' scale=userInput}}</p>
+  {{else}}
+    <div class="col-inline clearfix">
+      <label>&nbsp;</label>
     </div>
   {{/if}}
-  <div class="col-inline clearfix">
-    <label>&nbsp;</label>
-  </div>
-{{else if (gt userInput 1)}}
-  <p class="help-block">{{t 'formScale.containerHelp' scale=userInput}}</p>
-{{else}}
-  <div class="col-inline clearfix">
-    <label>&nbsp;</label>
-  </div>
 {{/if}}
