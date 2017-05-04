@@ -61,4 +61,3 @@ export default Ember.Mixin.create({
 
   removeItem() {}
 });
-

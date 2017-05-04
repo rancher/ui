@@ -55,7 +55,12 @@
   </div>
 </section>
 <section>
-  {{#physical-stats}}
+  {{#accordion-row
+       title=(t 'physicalStats.title')
+       detail=(t 'physicalStats.detail')
+       status=status
+       statusClass=statusClass
+  }}
     <div class="row">
       <div class="col span-6">
         <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
@@ -112,12 +117,13 @@
         {{/if}}
       </div>
     </div>
-  {{/physical-stats}}
+  {{/accordion-row}}
+
   {{#accordion-row
        title=(t 'hostsPage.hostPage.containersTab.header')
        detail=(t 'hostsPage.hostPage.containersTab.detail')
-       status=status
-       statusClass=statusClass
+       status=(t 'hostsPage.hostPage.containersTab.status' count=model.host.arrangedInstances.length)
+       statusClass=(if model.host.arrangedInstances.length 'bg-success' 'text-muted')
        as |parent|
   }}
     {{container-table
@@ -131,8 +137,8 @@
   {{#accordion-row
        title=(t 'hostsPage.hostPage.portsTab.header')
        detail=(t 'hostsPage.hostPage.portsTab.detail')
-       status=status
-       statusClass=statusClass
+       status=(t 'containerPage.portsTab.status' count=model.host.displayEndpoints.length)
+       statusClass=(if model.host.displayEndpoints.length 'bg-success' 'text-muted')
        as |parent|
   }}
     {{#sortable-table
@@ -182,8 +188,8 @@
   {{#accordion-row
        title=(t 'hostsPage.hostPage.storageTab.header')
        detail=(t 'hostsPage.hostPage.storageTab.detail')
-       status=status
-       statusClass=statusClass
+       status=(t 'hostsPage.hostPage.storageTab.status' count=nonRootVolumes.length)
+       statusClass=(if nonRootVolumes.length 'bg-success' 'text-muted')
        as |parent|
   }}
     {{#sortable-table

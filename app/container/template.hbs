@@ -46,7 +46,12 @@
 
 <section>
   <div class="mt-10">
-    {{#physical-stats}}
+    {{#accordion-row
+         title=(t 'physicalStats.title')
+         detail=(t 'physicalStats.detail')
+         status=status
+         statusClass=statusClass
+    }}
       <div class="row">
         <div class="col span-6">
           <label>{{t 'generic.service'}}:</label>
@@ -93,12 +98,12 @@
           {{/if}}
         </div>
       </div>
-    {{/physical-stats}}
+    {{/accordion-row}}
     {{#accordion-row
          title=(t 'containerPage.portsTab.header')
          detail=(t 'containerPage.portsTab.detail')
-         status=status
-         statusClass=statusClass
+         status=(t 'containerPage.portsTab.status' count=model.ports.length)
+         statusClass=(if model.ports.length 'bg-success' 'text-muted')
          as |parent|
     }}
       {{#sortable-table
@@ -157,8 +162,8 @@
     {{#accordion-row
          title=(t 'containerPage.volumesTab.header')
          detail=(t 'containerPage.volumesTab.detail')
-         status=status
-         statusClass=statusClass
+         status=(t 'containerPage.volumesTab.status' count=(or model.container.mounts.length 0))
+         statusClass=(if model.container.mounts.length 'bg-success' 'text-muted')
          as |parent|
     }}
       {{#sortable-table

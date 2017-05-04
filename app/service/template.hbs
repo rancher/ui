@@ -94,10 +94,10 @@
       {{/if}}
 
       {{#accordion-row
-          title=(t 'servicePage.portsTab.title')
-          detail=(t 'servicePage.portsTab.detail')
-          status=status
-          statusClass=statusClass
+           title=(t 'servicePage.portsTab.title')
+           detail=(t 'servicePage.portsTab.detail')
+           status=(t 'servicePage.portsTab.status' count=model.service.endpointsByPort.length)
+           statusClass=(if model.service.endpointsByPort.length 'bg-success' 'text-muted')
       }}
         {{#if model.service.isActive}}
           <table class="grid fixed">
@@ -136,8 +136,8 @@
       {{#accordion-row
            title=(t 'formBalancerRules.label')
            detail=(t 'formBalancerRules.detail')
-           status=status
-           statusClass=statusClass
+           status=(t 'formBalancerRules.status' count=(if rules.length rules.length 0))
+           statusClass=(if rules.length 'bg-success' 'text-muted')
       }}
         {{#if rules.length}}
           <table class="grid fixed no-lines no-top-padding tight mb-0">
@@ -228,14 +228,14 @@
           </table>
         {{else}}
           <div class="text-muted text-center">{{t 'formBalancerRules.noRules'}}</div>
-        {{/if}}
+                        {{/if}}
       {{/accordion-row}}
 
       {{#accordion-row
            title=(t 'servicePage.certsTab.title')
            detail=(t 'servicePage.certsTab.detail')
-           status=status
-           statusClass=statusClass
+           status=(t 'servicePage.certsTab.status' count=(if model.service.lbConfig.certificateIds.length model.service.lbConfig.certificateIds.length 0))
+           statusClass=(if model.service.lbConfig.certificateIds.length 'bg-success' 'text-muted')
       }}
         <div>
           <label>{{t 'servicePage.certsTab.default'}}:</label>
@@ -273,8 +273,8 @@
       {{#accordion-row
            title=(t 'servicePage.containersTab.title')
            detail=(t 'servicePage.containersTab.detail')
-           status=status
-           statusClass=statusClass
+           status=(t 'servicePage.containersTab.status' count=model.service.instances.length)
+           statusClass=(if model.service.instances.length 'bg-success' 'text-muted')
       }}
         {{container-table
             body=model.service.instances
@@ -287,8 +287,8 @@
       {{#accordion-row
            title=(t 'servicePage.linksTab.header')
            detail=(t 'servicePage.linksTab.detail')
-           status=status
-           statusClass=statusClass
+           status=(t 'servicePage.linksTab.status' count=model.service.consumedServicesWithNames.length)
+           statusClass=(if model.service.consumedServicesWithNames.length 'bg-success' 'text-muted')
       }}
         <label class="text-muted ml-15">{{t 'servicePage.linksTab.header'}}</label>
         <ul class="list-unstyled list-inline with-room">
@@ -303,8 +303,8 @@
       {{#accordion-row
            title=(t 'servicePage.logTab.title')
            detail=(t 'servicePage.logTab.detail')
-           status=status
-           statusClass=statusClass
+           status=(t 'servicePage.logTab.status' count=model.logs.arrangedContent.length)
+           statusClass=(if model.logs.arrangedContent.length 'bg-success' 'text-muted')
       }}
         <table class="grid fixed">
           <thead>
