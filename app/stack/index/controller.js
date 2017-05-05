@@ -16,6 +16,58 @@ export default Ember.Controller.extend({
     }
   },
 
+  sgHeaders: [
+    {
+      name: 'expand',
+      sort: false,
+      searchField: null,
+      width: 30
+    },
+    {
+      name: 'state',
+      sort: ['stateSort','displayName'],
+      searchField: 'displayState',
+      translationKey: 'generic.state',
+      width: 120
+    },
+    {
+      name: 'name',
+      sort: ['displayName','id'],
+      searchField: 'displayName',
+      translationKey: 'generic.name',
+    },
+    {
+      name: 'endpoints',
+      sort: null,
+      searchField: 'endpointPorts',
+      translationKey: 'stacksPage.table.endpoints',
+    },
+    {
+      name: 'image',
+      sort: ['displayImage','displayName'],
+      searchField: 'displayImage',
+      translationKey: 'generic.image',
+    },
+    {
+      name: 'instanceState',
+      sort: ['instanceCountSort:desc','displayName'],
+      searchField: null,
+      width: 140,
+      icon: 'icon icon-lg icon-container',
+      dtTranslationKey: 'stacksPage.table.instanceState',
+      translationKey: 'stacksPage.table.instanceStateWithIcon',
+    },
+  ],
+
+
+  stackContainers: Ember.computed('model.stack.services.@each.healthState', function() {
+    var neu = [];
+    this.get('model.stack.services').forEach((service) => {
+      neu = neu.concat(service.get('instances'));
+    });
+    return neu;
+  }),
+
   instanceCount: function() {
     var count = 0;
     (this.get('model.stack.services')||[]).forEach((service) => {
