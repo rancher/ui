@@ -9,7 +9,6 @@ export default Ember.Route.extend({
       stack.get('services').forEach((service) => {
         neu = neu.concat(service.get('instances'));
       });
-      // debugger;
       return Ember.Object.create({
         stack: stack,
         all: all,

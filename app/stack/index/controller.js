@@ -4,6 +4,8 @@ export default Ember.Controller.extend({
   showAddtlInfo: false,
   selectedService: null,
 
+  sortBy: 'name',
+
   actions: {
     showAddtlInfo: function(service) {
       this.set('selectedService', service);
@@ -59,13 +61,33 @@ export default Ember.Controller.extend({
     },
   ],
 
-
   stackContainers: Ember.computed('model.stack.services.@each.healthState', function() {
     var neu = [];
     this.get('model.stack.services').forEach((service) => {
       neu = neu.concat(service.get('instances'));
     });
     return neu;
+  }),
+
+  getType(ownType, real=true) {
+    return this.get('model.services').filter((service) => {
+      if (real ? (service.get('isReal') && service.get('kind') === ownType) : (service.get('kind') === ownType)) {
+        return true;
+      }
+      return false;
+    });
+  },
+
+  scalingGroups: Ember.computed('model.services.@each.healthState', function() {
+    return this.getType('scalingGroup');
+  }),
+
+  loadBalancers: Ember.computed('model.services.@each.healthState', function() {
+    return this.getType('loadBalancerService');
+  }),
+
+  dnsServices: Ember.computed('model.services.@each.healthState', function() {
+    return this.getType('dnsService', false).concat(this.getType('externalService', false));
   }),
 
   instanceCount: function() {
