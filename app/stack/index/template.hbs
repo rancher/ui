@@ -6,3 +6,102 @@
 {{/banner-message}}
 
 {{stack-header model=model.stack all=model.all.stacks}}
+
+<section>
+  {{#accordion-row
+       title=(t 'stackPage.containers.header')
+       detail=(t 'stackPage.containers.detail')
+       status=(t 'stackPage.containers.status' count=model.instances.length)
+       statusClass=(if model.instances.length 'bg-success' 'text-muted')
+       as |parent|
+  }}
+    {{container-table
+        body=model.instances
+        sortBy=sortBy
+        bulkActions=true
+        showHost=false
+    }}
+  {{/accordion-row}}
+
+  {{#accordion-row
+       title=(t 'stackPage.scalingGroups.header')
+       detail=(t 'stackPage.scalingGroups.detail')
+       status=(t 'stackPage.scalingGroups.status' count=scalingGroups.length)
+       statusClass=(if scalingGroups.length 'bg-success' 'text-muted')
+       as |parent|
+  }}
+    {{#sortable-table
+      classNames="grid sortable-table"
+      body=scalingGroups
+      sortBy=sortBy
+      bulkActions=true
+      fullRows=true
+      pagingLabel="pagination.container"
+      headers=sgHeaders as |sortable kind serv dt|}}
+      {{#if (eq kind "row")}}
+        {{service-row
+            model=serv
+            canExpand=false
+            showInstanceCount=false
+            dt=dt
+        }}
+      {{else if (eq kind "nomatch")}}
+        <tr><td class="text-center text-muted pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+      {{/if}}
+    {{/sortable-table}}
+  {{/accordion-row}}
+
+  {{#accordion-row
+       title=(t 'stackPage.loadBalancers.header')
+       detail=(t 'stackPage.loadBalancers.detail')
+       status=(t 'stackPage.loadBalancers.status' count=loadBalancers.length)
+       statusClass=(if loadBalancers.length 'bg-success' 'text-muted')
+  }}
+    {{#sortable-table
+      classNames="grid sortable-table"
+      body=loadBalancers
+      sortBy=sortBy
+      bulkActions=true
+      fullRows=true
+      pagingLabel="pagination.container"
+      headers=sgHeaders as |sortable kind serv dt|}}
+      {{#if (eq kind "row")}}
+        {{service-row
+            model=serv
+            canExpand=false
+            showInstanceCount=false
+            dt=dt
+        }}
+      {{else if (eq kind "nomatch")}}
+        <tr><td class="text-center text-muted pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+      {{/if}}
+    {{/sortable-table}}
+  {{/accordion-row}}
+
+  {{#accordion-row
+       title=(t 'stackPage.dnsServices.header')
+       detail=(t 'stackPage.dnsServices.detail')
+       status=(t 'stackPage.dnsServices.status' count=dnsServices.length)
+       statusClass=(if dnsServices.length 'bg-success' 'text-muted')
+  }}
+    {{#sortable-table
+      classNames="grid sortable-table"
+      body=dnsServices
+      sortBy=sortBy
+      bulkActions=true
+      fullRows=true
+      pagingLabel="pagination.container"
+      headers=sgHeaders as |sortable kind serv dt|}}
+      {{#if (eq kind "row")}}
+        {{service-row
+            model=serv
+            canExpand=false
+            showInstanceCount=false
+            dt=dt
+        }}
+      {{else if (eq kind "nomatch")}}
+        <tr><td class="text-center text-muted pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
+      {{/if}}
+    {{/sortable-table}}
+  {{/accordion-row}}
+</section>

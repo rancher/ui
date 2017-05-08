@@ -70,5 +70,6 @@ export default Ember.Component.extend({
     }
 
     this.set('value', str);
+    console.log('val', str);
   }.observes('selected'),
 });
