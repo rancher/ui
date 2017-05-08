@@ -77,111 +77,131 @@
   </div>
   <div class="col span-11-of-24 offset-1-of-24">
     {{form-key-value
-      initialMap=launchConfig.environment
-      changed=(action (mut launchConfig.environment))
-      allowEmptyValue=true
-      editing=true
-      header=(t 'newContainer.environment.label')
-      addActionLabel="newContainer.environment.addAction"
-      keyLabel="newContainer.environment.keyLabel"
-      keyPlaceholder="newContainer.environment.keyPlaceholder"
-      valueLabel="newContainer.environment.valueLabel"
-      valuePlaceholder="newContainer.environment.valuePlaceholder"
+        initialMap=launchConfig.environment
+        changed=(action (mut launchConfig.environment))
+        allowEmptyValue=true
+        editing=true
+        header=(t 'newContainer.environment.label')
+        addActionLabel="newContainer.environment.addAction"
+        keyLabel="newContainer.environment.keyLabel"
+        keyPlaceholder="newContainer.environment.keyPlaceholder"
+        valueLabel="newContainer.environment.valueLabel"
+        valuePlaceholder="newContainer.environment.valuePlaceholder"
     }}
   </div>
 </div>
 
 {{#if (and isService (not isSidekick))}}
   {{container/form-scheduling
-    isService=isService
-    isGlobal=isGlobal
-    initialHostId=launchConfig.requestedHostId
-    initialLabels=launchConfig.labels
-    errors=schedulingErrors
-    editing=true
-    setLabels=(action 'setLabels' 'scheduling')
-    setGlobal=(action 'setGlobal')
-    setRequestedHost=(action 'setRequestedHostId')
+      isService=isService
+      isGlobal=isGlobal
+      initialHostId=launchConfig.requestedHostId
+      initialLabels=launchConfig.labels
+      errors=schedulingErrors
+      editing=true
+      setLabels=(action 'setLabels' 'scheduling')
+      setGlobal=(action 'setGlobal')
+      setRequestedHost=(action 'setRequestedHostId')
   }}
 {{/if}}
 
 {{form-healthcheck
-  classNames="accordion-wrapper"
-  isService=isService
-  healthCheck=launchConfig.healthCheck
-  errors=healthCheckErrors
-  editing=true
+    classNames="accordion-wrapper"
+    isService=isService
+    healthCheck=launchConfig.healthCheck
+    errors=healthCheckErrors
+    editing=true
 }}
 
-
 {{#advanced-section advanced=false}}
-  {{container/form-command
-    classNames="accordion-wrapper"
-    instance=launchConfig
-    initialLabels=launchConfig.labels
-    errors=commandErrors
-    isService=isService
-    setLabels=(action 'setLabels' 'command')
-  }}
+  {{#accordion-list as | al expandFn | }}
 
-  {{form-user-labels
-    classNames="accordion-wrapper"
-    initialLabels=launchConfig.labels
-    setLabels=(action 'setLabels' 'user')
-  }}
+    {{container/form-command
+        classNames="accordion-wrapper"
+        instance=launchConfig
+        initialLabels=launchConfig.labels
+        errors=commandErrors
+        isService=isService
+        setLabels=(action 'setLabels' 'command')
+        expandAll=al.expandAll
+        expandFn=expandFn
+    }}
 
-  {{#if isService}}
-    {{#unless isSidekick}}
-      {{container/form-service-links
-        service=service
-        changed=(action 'setServiceLinks')
+    {{form-user-labels
+        classNames="accordion-wrapper"
+        initialLabels=launchConfig.labels
+        setLabels=(action 'setLabels' 'user')
+        expandAll=al.expandAll
+        expandFn=expandFn
+    }}
+
+    {{#if isService}}
+      {{#unless isSidekick}}
+        {{container/form-service-links
+            service=service
+            changed=(action 'setServiceLinks')
+            expandAll=al.expandAll
+            expandFn=expandFn
+        }}
+      {{/unless}}
+    {{else}}
+      {{container/form-container-links
+          initialLinks=launchConfig.instanceLinks
+          instance=launchConfig
+          expandAll=al.expandAll
+          expandFn=expandFn
       }}
-    {{/unless}}
-  {{else}}
-    {{container/form-container-links
-      initialLinks=launchConfig.instanceLinks
-      instance=launchConfig
+    {{/if}}
+
+    {{container/form-networking
+        editing=true
+        instance=launchConfig
+        errors=networkingErrors
+        service=service
+        isService=isService
+        isSidekick=isSidekick
+        initialLabels=launchConfig.labels
+        isUpgrade=isUpgrade
+        setLabels=(action 'setLabels' 'networking')
+        expandAll=al.expandAll
+        expandFn=expandFn
     }}
-  {{/if}}
 
+    {{#if supportsSecrets}}
+      {{container/form-secrets
+          classNames="accordion-wrapper"
+          secrets=launchConfig.secrets
+          errors=secretErrors
+          editing=true
+          expandAll=al.expandAll
+          expandFn=expandFn
+      }}
+    {{/if}}
 
-  {{container/form-networking
-    editing=true
-    instance=launchConfig
-    errors=networkingErrors
-    service=service
-    isService=isService
-    isSidekick=isSidekick
-    initialLabels=launchConfig.labels
-    isUpgrade=isUpgrade
-    setLabels=(action 'setLabels' 'networking')
-  }}
-
-  {{#if supportsSecrets}}
-    {{container/form-secrets
-      classNames="accordion-wrapper"
-      secrets=launchConfig.secrets
-      errors=secretErrors
-      editing=true
+    {{container/form-security
+        instance=launchConfig
+        errors=securityErrors editing=true
+        initialLabels=launchConfig.labels
+        setLabels=(action 'setLabels' 'security')
+        expandAll=al.expandAll
+        expandFn=expandFn
     }}
-  {{/if}}
 
-  {{container/form-security
-    instance=launchConfig
-    errors=securityErrors editing=true
-    initialLabels=launchConfig.labels
-    setLabels=(action 'setLabels' 'security')
-  }}
 
-  {{container/form-volumes
-    classNames="accordion-wrapper"
-    instance=launchConfig
-    isService=isService
-    service=service
-    primaryService=primaryService
-    launchConfigIndex=launchConfigIndex
-    errors=volumeErrors
-  }}
+    {{container/form-volumes
+        classNames="accordion-wrapper"
+        instance=launchConfig
+        isService=isService
+        service=service
+        primaryService=primaryService
+        launchConfigIndex=launchConfigIndex
+        errors=volumeErrors
+        expandAll=al.expandAll
+        expandFn=expandFn
+    }}
+
+  {{/accordion-list}}
+
 {{/advanced-section}}
 
 {{#if (and isService (not isSidekick))}}

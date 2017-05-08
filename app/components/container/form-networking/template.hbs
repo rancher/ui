@@ -1,8 +1,10 @@
-{{#accordion-row
-  title=(t 'formNetwork.title')
-  detail=(t 'formNetwork.detail' appName=settings.appName)
-  status=status
-  statusClass=statusClass
+{{#accordion-list-item
+     title=(t 'formNetwork.title')
+     detail=(t 'formNetwork.detail' appName=settings.appName)
+     status=status
+     statusClass=statusClass
+     expandAll=expandAll
+     expand=(action expandFn)
 }}
   <div class="row inline-form">
     <div class="col {{if (or isContainerNetwork isHostNetwork) 'span-6' (if isManagedNetwork 'span-4' 'span-12')}}">
@@ -161,4 +163,4 @@
       </div>
     </div>
   {{/unless}}
-{{/accordion-row}}
+{{/accordion-list-item}}

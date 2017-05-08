@@ -1,6 +1,6 @@
 import Ember from 'ember';
 import { parseRequestLine } from 'ui/utils/parse-healthcheck';
-import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-row/component';
+import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-list-item/component';
 
 const NONE = 'none';
 const TCP = 'tcp';

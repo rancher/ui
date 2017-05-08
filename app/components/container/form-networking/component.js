@@ -2,7 +2,7 @@ import Ember from 'ember';
 import ContainerChoices from 'ui/mixins/container-choices';
 import ManageLabels from 'ui/mixins/manage-labels';
 import C from 'ui/utils/constants';
-import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-row/component';
+import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-list-item/component';
 
 export default Ember.Component.extend(ManageLabels, ContainerChoices,{
   projects:            Ember.inject.service(),

@@ -1,8 +1,10 @@
-{{#accordion-row
-  title=(t 'formVolumes.title')
-  detail=(t 'formVolumes.detail' appName=settings.appName)
-  status=status
-  statusClass=statusClass
+{{#accordion-list-item
+     title=(t 'formVolumes.title')
+     detail=(t 'formVolumes.detail' appName=settings.appName)
+     status=status
+     statusClass=statusClass
+     expandAll=expandAll
+     expand=(action expandFn)
 }}
   {{#if projects.current.isWindows}}
     <div class="text-center p-20">Volume support is not currently available for Windows.</div>
@@ -83,4 +85,4 @@
       }}
     </div>
   {{/if}}
-{{/accordion-row}}
+{{/accordion-list-item}}
