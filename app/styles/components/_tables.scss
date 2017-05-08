@@ -6,7 +6,7 @@
 //table variables
 $table-bg              : lighten($light-grey,5)!default;
 $table-header          : $body-bg!default;
-$table-nested-header   : lighten($mid-grey, 15)!default;
+$table-nested-header   : lighten($mid-grey, 32)!default;
 $table-bg-accent       : darken($light-grey, .5)!default;
 $table-bg-hover        : lighten($info, 15)!default;
 $table-bg-active       : $table-bg-hover!default;
@@ -14,7 +14,7 @@ $table-bg-selected     : lighten($info, 30)!default;
 $table-border-color    : lighten($mid-grey, 30)!default;
 $table-body-separation : 50px;
 $table-body-separation : 25px;
-$group-row-height      : 40px;
+$group-row-height      : 50px;
 
 //table mixins
 @mixin bordered {
@@ -99,12 +99,15 @@ TABLE {
   > THEAD > TR > TH,
   > TBODY > TR > TD {
     padding: 0;
-    height: 50px;
+    height: 40px;
     transition: ease-in-out all 200ms;
 
     &:last-child {
     height: 0;
     }
+  }
+  > TBODY > TR > TD {
+    height: 50px;
   }
   &.no-lines {
     * {
@@ -277,11 +280,15 @@ TABLE {
   &.has-sub-rows TABLE {
     border-collapse: separate;
     border-spacing: 2px;
+    // border: $border solid 2px;
 
     > THEAD > TR.fixed-header {
       background: $table-nested-header;
+      // color: $text-color;
+      border: 0;
+
       > TH .btn {
-        color: $body-bg;
+        color: $text-color;
         padding: 0 10px;
       }
     }
