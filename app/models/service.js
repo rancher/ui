@@ -25,7 +25,7 @@ var Service = Resource.extend(StateCounts, {
   }),
 
   actions: {
-    edit() {
+    editDns() {
       this.get('modalService').toggleModal('modal-edit-dns', this);
     },
 
@@ -154,13 +154,15 @@ var Service = Resource.extend(StateCounts, {
     var canUpgrade = !!a.upgrade && this.get('canUpgrade');
     var isK8s = this.get('isK8s');
     var isSwarm = this.get('isSwarm');
+    var isReal = this.get('isReal');
     var canHaveContainers = this.get('canHaveContainers');
     var containerForShell = this.get('containerForShell');
     var isDriver = ['networkdriverservice','storagedriverservice'].includes(this.get('lcType'));
 
     var choices = [
       { label: 'action.upgradeOrEdit',  icon: 'icon icon-arrow-circle-up',  action: 'upgrade',        enabled: canUpgrade },
-      { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback },
+      { label: 'action.edit',           icon: 'icon icon-pencil',           action: 'editDns',        enabled: !isReal },
+      { label: 'action.rollback',       icon: 'icon icon-history',          action: 'rollback',       enabled: !!a.rollback && isReal },
       { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: !isK8s && !isSwarm && !isDriver },
       { divider: true },
       { label: 'action.execute',        icon: 'icon icon-terminal',         action: 'shell',          enabled: !!containerForShell, altAction:'popoutShell'},
@@ -171,14 +173,16 @@ var Service = Resource.extend(StateCounts, {
       { label: 'action.restart',        icon: 'icon icon-refresh',          action: 'restart',        enabled: !!a.restart && canHaveContainers, bulkable: true },
       { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate', bulkable: true},
       { divider: true },
-      { label: 'action.garbageCollect', icon: '',                           action: 'garbageCollect', enabled: !!a.garbagecollect},
+      { label: 'action.garbageCollect', icon: '',                           action: 'garbageCollect', enabled: !!a.garbagecollect && isReal},
       { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete', bulkable: true},
       { divider: true },
       { label: 'action.viewInApi',      icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
     ];
 
     return choices;
-  }.property('actionLinks.{activate,deactivate,pause,restart,update,remove,rollback,garbagecollect}','lcType','isK8s','isSwarm','canHaveContainers','canUpgrade','containerForShell'),
+  }.property('actionLinks.{activate,deactivate,pause,restart,update,remove,rollback,garbagecollect}',
+    'lcType','isK8s','isSwarm','canHaveContainers','canUpgrade','containerForShell'
+  ),
 
 
   serviceLinks: null, // Used for clone

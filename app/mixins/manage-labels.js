@@ -6,6 +6,12 @@ const USER     = 'user';
 const SYSTEM   = 'system';
 const AFFINITY = 'affinity';
 
+export const TYPE = {
+  USER,
+  SYSTEM,
+  AFFINITY
+}
+
 export function flattenLabelArrays(...lists) {
   let out = {};
 

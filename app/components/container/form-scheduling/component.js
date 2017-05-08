@@ -1,7 +1,10 @@
 import Ember from 'ember';
 import ManageLabels from 'ui/mixins/manage-labels';
+import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-row/component';
 
 export default Ember.Component.extend(ManageLabels, {
+  intl: Ember.inject.service(),
+
   // Inputs
   // Global scale scheduling
   isGlobal: false,
@@ -130,4 +133,22 @@ export default Ember.Component.extend(ManageLabels, {
     return list.sortBy('name','id');
   }.property('allHosts.@each.{id,name,state}'),
 
+  statusClass: null,
+  status: function() {
+    let k = STATUS.ANY;
+    let count = this.get('labelArray').filterBy('type','affinity').length;
+
+    if ( this.get('isRequestedHost') ) {
+      k = STATUS.SPECIFIC;
+    } else if ( count ) {
+      if ( this.get('errors.length') ) {
+        k = STATUS.INCOMPLETE;
+      } else {
+        k = STATUS.RULE;
+      }
+    }
+
+    this.set('statusClass', classForStatus(k));
+    return this.get('intl').t(`${STATUS_INTL_KEY}.${k}`, {count: count});
+  }.property('isRequestedHost','labelArray.@each.type','errors.length'),
 });

@@ -15,16 +15,18 @@ function modeToType(mode) {
 }
 
 export default Ember.Component.extend(NewOrEdit, {
+  intl: Ember.inject.service(),
+
   record: null,
   editing: true,
 
-  classNames: ['inline-form'],
   primaryResource: Ember.computed.alias('record'),
 
   mode: null,
-  targetServicesMap: null,
+  targetServicesAsMaps: null,
   targetIpArray: null,
-
+  stack: null,
+  stackErrors:                null,
 
   actions: {
     done() {
@@ -36,7 +38,7 @@ export default Ember.Component.extend(NewOrEdit, {
     },
 
     setTargetServices(array, resources) {
-      this.set('targetServicesMap', resources);
+      this.set('targetServicesAsMaps', resources);
     },
 
     addTargetIp() {
@@ -63,9 +65,14 @@ export default Ember.Component.extend(NewOrEdit, {
 
     this.set('mode', mode);
 
-    this.set('targetServicesMap',[]);
+    this.set('targetServicesAsMaps',[]);
     this.set('targetIpArray',[]);
   },
+
+  canHealthCheck: function() {
+    let mode = this.get('mode');
+    return (mode === IP) || (mode === HOSTNAME);
+  }.property('mode'),
 
   modeChanged: function() {
     let mode = this.get('mode');
@@ -75,21 +82,38 @@ export default Ember.Component.extend(NewOrEdit, {
     this.set('record', neu);
   }.observes('mode'),
 
+  targetIpArrayChanged: function() {
+    this.set('record.externalIpAddresses', this.get('targetIpArray').map((x) => x.value).filter((x) => !!x));
+  }.observes('targetIpArray.@each.value'),
+
   validate() {
-    let errors = this._super(...arguments);
+    this._super(...arguments);
+    let errors = this.get('errors')||[];
+
     switch ( this.get('mode') ) {
       case HOSTNAME:
-        if ( !this.get('model.hostname') ) {
-          return false;
+        if ( !this.get('record.hostname') ) {
+          errors.pushObject(this.get('intl').t('editDns.errors.hostnameRequired'));
         }
         break;
       case ALIAS:
+        if ( !this.get('targetServicesAsMaps.length') ) {
+          errors.pushObject(this.get('intl').t('editDns.errors.serviceRequired'));
+        }
         break;
       case IP:
+        if ( !this.get('record.externalIpAddresses.length') ) {
+          errors.pushObject(this.get('intl').t('editDns.errors.ipRequired'));
+        }
         break;
       case SELECTOR:
+        if ( !this.get('record.selectorContainer.length') ) {
+          errors.pushObject(this.get('intl').t('editDns.errors.selectorRequired'));
+        }
         break;
     }
+
+    errors.pushObjects(this.get('stackErrors')||[]);
 
     this.set('errors', errors);
     return errors.length === 0;
@@ -102,13 +126,24 @@ export default Ember.Component.extend(NewOrEdit, {
       this.set('record.externalIpAddresses', null);
     }
 
-    return true;
+    if ( !this.get('id') ) {
+      // Set the stack ID
+      if ( this.get('stack.id') ) {
+        this.set('record.stackId', this.get('stack.id'));
+      } else if ( this.get('stack') ) {
+        return this.get('stack').save().then((newStack) => {
+          this.set('record.stackId', newStack.get('id'));
+        });
+      }
+    }
+
+    return this._super(...arguments);
   },
 
   didSave() {
     if ( this.get('mode') === ALIAS ) {
       return this.get('record').doAction('setservicelinks', {
-        serviceLinks: this.get('targetServicesMap'),
+        serviceLinks: this.get('targetServicesAsMaps'),
       });
     }
   },

@@ -18,23 +18,25 @@ export default Ember.Component.extend(ModalBase, NewOrEdit, {
     this.set('justCreated', false);
   },
 
-  isAccount: Ember.computed.equal('model.accountId','projects.current.id'),
+  isEnvironment: function() {
+    return this.get('model.accountId') === this.get('projects.current.id');
+  }.property('model.accountId','projects.current.id'),
 
   displayEndpoint: function() {
-    if ( this.get('isAccount') ) {
-      return this.get('endpointService.api.display.account.current');
-    } else {
+    if ( this.get('isEnvironment') ) {
       return this.get('endpointService.api.display.environment.current');
+    } else {
+      return this.get('endpointService.api.display.account.current');
     }
-  }.property('isAccount'),
+  }.property('isEnvironment'),
 
   linkEndpoint: function() {
-    if ( this.get('isAccount') ) {
-      return this.get('endpointService.api.auth.account.current');
-    } else {
+    if ( this.get('isEnvironment') ) {
       return this.get('endpointService.api.auth.environment.current');
+    } else {
+      return this.get('endpointService.api.auth.account.current');
     }
-  }.property('model.accountId'),
+  }.property('isEnvironment'),
 
   didInsertElement() {
     setTimeout(() => {

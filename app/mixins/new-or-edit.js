@@ -5,7 +5,6 @@ import Errors from 'ui/utils/errors';
 export default Ember.Mixin.create({
   originalModel: null,
   errors: null,
-  saving: false,
   editing: true,
   primaryResource: Ember.computed.alias('model'),
   originalPrimaryResource: Ember.computed.alias('originalModel'),
@@ -13,13 +12,11 @@ export default Ember.Mixin.create({
   initFields: function() {
     this._super();
     this.set('errors',null);
-    this.set('saving',false);
   },
 
   didReceiveAttrs: function() {
     this._super();
     this.set('errors',null);
-    this.set('saving',false);
   },
 
   validate: function() {
@@ -69,8 +66,6 @@ export default Ember.Mixin.create({
           this.errorSaving(err);
         }).finally(() => {
           try {
-            this.set('saving',false);
-
             if ( cb )
             {
               cb();
@@ -87,20 +82,7 @@ export default Ember.Mixin.create({
   willSave: function() {
     this.set('errors',null);
     var ok = this.validate();
-    if ( !ok )
-    {
-      // Validation failed
-      return false;
-    }
-
-    if ( this.get('saving') )
-    {
-      // Already saving
-      return false;
-    }
-
-    this.set('saving',true);
-    return true;
+    return ok;
   },
 
   doSave: function(opt) {

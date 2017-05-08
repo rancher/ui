@@ -100,15 +100,19 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     },
 
     removeSidekick(idx) {
-      var ary = this.get('service.secondaryLaunchConfigs');
+      var ary = this.get('primaryService.secondaryLaunchConfigs');
       ary.removeAt(idx);
     },
-
   },
 
   init() {
     window.nec = this;
     this._super(...arguments);
+
+    // Tell cattle that we're sending the whole thing, not a diff.
+    if ( this.get('service') ) {
+      this.set('service.completeLaunchConfigs', true);
+    }
 
     if ( !this.get('launchConfig.secrets') ) {
       this.set('launchConfig.secrets', []);
@@ -260,7 +264,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       }
     }
 
-    return false;
+    return ok;
   },
 
   didSave() {
@@ -300,16 +304,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
     return k;
   }.property('isUpgrade','isService'),
-
-  nameToken: function() {
-    let k = 'newContainer.name.label.';
-    if ( this.get('isService') ) {
-      k += 'service';
-    } else {
-      k += 'container';
-    }
-    return k;
-  }.property('isService'),
 
   supportsSecrets: function() {
     return !!this.get('store').getById('schema','secret');

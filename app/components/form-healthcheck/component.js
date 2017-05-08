@@ -32,6 +32,7 @@ export default Ember.Component.extend({
   errors: null,
   isService: null,
   showStrategy: true,
+  dnsNote: false,
 
   editing: true,
 

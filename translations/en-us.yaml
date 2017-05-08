@@ -575,7 +575,7 @@ editDns:
     label: "Resolves To"
     dnsservice: One or more other services
     service: The set of containers which match a selector
-    externalip: One or more external IP Addresses
+    externalip: One or more external IP addresses
     externalhostname: An external hostname
   targetIp:
     label: Target IP Addresses
@@ -583,6 +583,11 @@ editDns:
   hostname:
     label: Target Hostname
     placeholder: e.g. foobar.com
+  errors:
+    ipRequired: 'One or more "Target IP Addresses" are requried'
+    hostnameRequired: '"Target Hostname" is required'
+    serviceRequired: 'One or more "Targets" are required'
+    selectorRequired: '"Container Selector" is required'
 
 
 # If you change translations here also change the translation in app/utils/constants.js under the FALLBACK_TRANSLATIONS key
@@ -1572,6 +1577,9 @@ accordionRow:
     countConfigured: "{count} Configured"
     standard: Default
     custom: Customized
+    specific: Specific
+    any: Any
+    rule: "{count, plural, =1 {# Rule} other {# Rules}}"
 
 advancedSection:
   showText: Show Advanced Options
@@ -2057,6 +2065,7 @@ formEngineOpts:
 formHealthCheck:
   title: Health Check
   detail: A health check allows {appName} to know if your container is healthy.  For scaling groups, an unhealthy container can be automatically replaced.
+  detailDns: A health check allows {appName} to know if the external resource is healty or not.  This will be used when this record is the target of a Load Balancer.
   checkType:
     none: None
     tcp: Check that a TCP connection opens successfully
@@ -2230,7 +2239,7 @@ formScale:
 
 formScheduling:
   title: Host Scheduling
-  detail: Choose what hosts containers will be deployed to
+  detail: Configure what hosts the containers can be deployed to.
   status: |
     {count, plural,
     =0 {No rules}
@@ -2348,7 +2357,7 @@ formSecurity:
 
 formServiceLinks:
   title: Links
-  detail: Define relationships between this scaling group and other services
+  detail: Define relationships between this scaling group and other services.
   addAction: Add Link
   noServices: There are no other services to link to.
   noLinks: This service has no service links.
@@ -3387,9 +3396,6 @@ newContainer:
   addSidekick: Add a Sidekick
   removeSidekick: Remove this Sidekick
   name:
-    label:
-      container: Container Name
-      service: Service Name
     placeholder: e.g. myapp
   description:
     placeholder: e.g. My Application
@@ -3498,6 +3504,21 @@ pagination:
     =0 {No Containers}
     =1 {{count} {count, plural, =1 {Container} other {Containers}}}
     other {{from} - {to} of {count} Containers}}
+  scalingGroup: |
+    {pages, plural,
+    =0 {No Scaling Groups}
+    =1 {{count} {count, plural, =1 {Scaling Group} other {Scaling Groups}}}
+    other {{from} - {to} of {count} Scaling Groups}}
+  loadBalancers: |
+    {pages, plural,
+    =0 {No Load Balancers}
+    =1 {{count} {count, plural, =1 {Load Balancer} other {Load Balancers}}}
+    other {{from} - {to} of {count} Load Balancers}}
+  dnsRecord: |
+    {pages, plural,
+    =0 {No DNS Records}
+    =1 {{count} {count, plural, =1 {DNS Record} other {DNS Records}}}
+    other {{from} - {to} of {count} DNS Records}}
   port: |
     {pages, plural,
     =0 {No Ports}
