@@ -34,7 +34,9 @@
     <div class="">{{ t 'containerPage.containerInfo.basicInfo' }}</div>
     <div class="col">
       <label class="inline-label">{{t 'hostsPage.hostPage.infoMultiStats.ip'}}</label>
-      {{copy-ip ip=host.displayIp}}
+      {{#copy-inline clipboardText=host.displayIp}}
+        {{host.displayIp}}
+      {{/copy-inline}}
     </div>
     <div class="col">
       <label class="inline-label">{{t 'hostsPage.hostPage.infoMultiStats.docker'}}</label>
@@ -64,57 +66,65 @@
     <div class="row">
       <div class="col span-6">
         <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
-        {{#if host.milliCpu}}{{t 'generic.total'}}{{/if}}: {{host.cpuBlurb}}
-        {{#if host.cpuTooltip}}
-          {{#tooltip-element type='tooltip-basic' model=host tooltipTemplate='tooltip-cpu' tooltipFor="tooltipCPU"}}
-            <i class="icon icon-info"></i>
-          {{/tooltip-element}}
-        {{/if}}
-        {{t 'generic.limit'}}: {{host.milliCpu}} {{t 'hostsPage.hostPage.infoMultiStats.milliCpu.labelText'}}
+        <div>
+          {{#if host.milliCpu}}{{t 'generic.total'}}{{/if}}: {{host.cpuBlurb}}
+          {{t 'generic.limit'}}: {{host.milliCpu}} {{t 'hostsPage.hostPage.infoMultiStats.milliCpu.labelText'}}
+        </div>
+        <div>
+          {{#if host.cpuTooltip}}
+            {{host.cpuTooltip}}
+          {{/if}}
+        </div>
       </div>
       <div class="col span-6">
         <label>{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
-        {{#if host.memory}}{{t 'generic.total'}}{{/if}}:
-        {{#if host.memoryBlurb}}
-          {{host.memoryBlurb}}
-        {{else}}
-          <span class="text-muted">{{t 'generic.unknown'}}</span>
-        {{/if}}
-        {{t 'generic.limit'}}: {{host.memoryLimitBlurb}}
+        <div>
+          {{#if host.memory}}{{t 'generic.total'}}{{/if}}:
+          {{#if host.memoryBlurb}}
+            {{host.memoryBlurb}}
+          {{else}}
+            <span class="text-muted">{{t 'generic.unknown'}}</span>
+          {{/if}}
+          {{t 'generic.limit'}}: {{host.memoryLimitBlurb}}
+        </div>
       </div>
     </div>
     <div class="row">
       <div class="col span-6">
         <label>{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
-        {{#if host.diskBlurb}}
-          {{#if host.diskDetail}}
-            {{#each host.diskDetail as |disk|}}
-              {{disk.value}}
-              {{#tooltip-element type='tooltip-basic' tooltipTemplate='tooltip-basic-literal' model=disk tooltipFor="hostDisk"}}
-                <i class="icon icon-info"></i>
-              {{/tooltip-element}}
-            {{/each}}
+        <div>
+          {{#if host.diskBlurb}}
+            {{#if host.diskDetail}}
+              {{#each host.diskDetail as |disk|}}
+                {{disk.value}}
+                ( {{disk.label}} )
+              {{/each}}
     {{else}}
-            {{host.diskBlurb}} (total)
+              {{host.diskBlurb}} (total)
+            {{/if}}
+            {{t 'hostsPage.hostPage.infoMultiStats.localStorageMb.labelText'}}: {{host.localStorageBlurb}}
+    {{else}}
+            <span class="text-muted">{{t 'generic.unknown'}}</span>
           {{/if}}
-          {{t 'hostsPage.hostPage.infoMultiStats.localStorageMb.labelText'}}: {{host.localStorageBlurb}}
-    {{else}}
-          <span class="text-muted">{{t 'generic.unknown'}}</span>
-        {{/if}}
+        </div>
       </div>
       <div class="col span-6">
         <label>{{t 'hostsPage.hostPage.infoMultiStats.kernel'}}</label>
-        {{host.info.osInfo.kernelVersion}}
+        <div>
+          {{host.info.osInfo.kernelVersion}}
+        </div>
       </div>
     </div>
     <div class="row">
       <div class="col span-12">
         <label>{{t 'hostsPage.hostPage.infoMultiStats.os'}}</label>
-        {{#if host.osDetail}}
-          {{host.osDetail}}
-        {{else}}
-          <span class="text-muted">{{t 'generic.unknown'}}</span>
-        {{/if}}
+        <div>
+          {{#if host.osDetail}}
+            {{host.osDetail}}
+          {{else}}
+            <span class="text-muted">{{t 'generic.unknown'}}</span>
+          {{/if}}
+        </div>
       </div>
     </div>
   {{/accordion-row}}

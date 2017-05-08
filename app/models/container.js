@@ -207,7 +207,7 @@ var Container = Instance.extend({
     var id = this.get('externalId');
     if ( id )
     {
-      return (Ember.Handlebars.Utils.escapeExpression(id.substr(0,12))+"&hellip;").htmlSafe();
+      return (Ember.Handlebars.Utils.escapeExpression(id.substr(0,6))+"&hellip;").htmlSafe();
     }
   }.property('externalId'),
 

@@ -21,6 +21,22 @@
 <section>
   <div class="row container-info banner bg-info">
     <div class="">{{ t 'containerPage.containerInfo.basicInfo' }}</div>
+    <div class="col">
+      <label class="inline-label">{{t 'generic.image'}}:</label>
+      {{#copy-inline clipboardText=model.container.displayImage}}
+        {{model.container.displayImage}}
+      {{/copy-inline}}
+    </div>
+    <div class="col">
+      <label class="inline-label">{{t 'generic.ipAddress'}}:</label>
+      {{#if model.container.displayIp}}
+        {{#copy-inline clipboardText=model.container.displayIp}}
+          {{model.container.displayIp}}
+        {{/copy-inline}}
+      {{else}}
+        {{t 'generic.none'}}
+      {{/if}}
+    </div>
     {{#if model.container.stack}}
       <div class="col">
         <label class="inline-label">{{t 'generic.stack'}}:</label>
@@ -55,47 +71,35 @@
       <div class="row">
         <div class="col span-6">
           <label>{{t 'generic.service'}}:</label>
-          {{#if model.container.service}}
-            {{#link-to "service" projects.current.id model.container.service.id}}{{model.container.service.displayName}}{{/link-to}}
-          {{else}}
-            {{t 'generic.none'}}
-          {{/if}}
-        </div>
-        <div class="col span-6">
-          <label>{{t 'generic.ipAddress'}}:</label>
-          {{#if model.container.displayIp}}
-            {{#copy-inline clipboardText=model.container.displayIp}}
-              {{model.container.displayIp}}
-            {{/copy-inline}}
-          {{else}}
-            {{t 'generic.none'}}
-          {{/if}}
-        </div>
-      </div>
-      <div class="row">
-        <div class="col span-6">
-          <label>{{t 'generic.image'}}:</label>
-          {{#copy-inline clipboardText=model.container.displayImage}}
-            {{model.container.displayImage}}
-          {{/copy-inline}}
+          <div>
+            {{#if model.container.service}}
+              {{#link-to "service" projects.current.id model.container.service.id}}{{model.container.service.displayName}}{{/link-to}}
+            {{else}}
+              {{t 'generic.none'}}
+            {{/if}}
+          </div>
         </div>
         <div class="col span-6">
           <label>{{t 'generic.entrypoint'}}:</label>
-          {{#if model.container.entrypoint}}
-            {{model.container.entrypoint}}
-          {{else}}
-            {{t 'generic.none'}}
-          {{/if}}
+          <div>
+            {{#if model.container.entrypoint}}
+              {{model.container.entrypoint}}
+            {{else}}
+              {{t 'generic.none'}}
+            {{/if}}
+          </div>
         </div>
       </div>
       <div class="row">
         <div class="col">
           <label class="inline-label">{{t 'generic.command'}}:</label>
-          {{#if model.container.command}}
-            {{model.container.command}}
-          {{else}}
-            {{t 'generic.none'}}
-          {{/if}}
+          <div>
+            {{#if model.container.command}}
+              {{model.container.command}}
+            {{else}}
+              {{t 'generic.none'}}
+            {{/if}}
+          </div>
         </div>
       </div>
     {{/accordion-row}}
