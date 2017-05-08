@@ -1,16 +1,18 @@
 <section class="header clearfix">
-  <h1>{{t headerToken}}</h1>
+  <h1>{{t headerToken name=primaryResource.name}}</h1>
+  {{#if isSidekick}}
+    <div class="right-buttons">
+      <button class="btn bg-transparent" {{action "removeSidekick" launchConfigIndex}}>{{t 'newContainer.removeSidekick'}}</button>
+    </div>
+  {{/if}}
 </section>
 
 <div class="row">
   <div class="col span-11-of-24">
     {{form-name-description
       model=primaryResource
-      nameLabel=nameToken
       namePlaceholder="newContainer.name.placeholder"
-      nameDisabled=isUpgrade
       descriptionPlaceholder="newContainer.description.placeholder"
-      descriptionDisabled=isUpgrade
       rowClass=""
       colClass=""
       bothColClass=""
@@ -24,7 +26,11 @@
   </div>
 
   <div class="col span-11-of-24 offset-1-of-24">
-    {{#if isService}}
+    {{#if isSidekick}}
+      {{!-- Sidekicks don't have their own scale --}}
+      {{container/form-scale isSidekick=true}}
+    {{else if isService}}
+      {{!-- Normal primary service --}}
       {{container/form-scale
         initialLabels=launchConfig.labels
         initialScale=service.scale
@@ -35,7 +41,10 @@
         setGlobal=(action 'setGlobal')
         setScale=(action  'setScale')
       }}
-    {{else if (not isUpgrade)}}
+    {{else if isUpgrade}}
+      {{!-- Containers can't set count on upgrade --}}
+    {{else}}
+      {{!-- Container count --}}
       {{container/form-scale
         isService=false
         initialScale=1
@@ -44,12 +53,14 @@
       }}
     {{/if}}
 
-    {{#unless isUpgrade}}
+    {{#if (or isSidekick isUpgrade)}}
+      {{!-- Only a new primary service or container picks stack --}}
+    {{else}}
       {{form-stack
         stack=stack
         errors=stackErrors
       }}
-    {{/unless}}
+    {{/if}}
   </div>
 </div>
 
@@ -80,8 +91,8 @@
   </div>
 </div>
 
-{{#advanced-section advanced=false}}
-  {{form-scheduling
+{{#if (and isService (not isSidekick))}}
+  {{container/form-scheduling
     isService=isService
     isGlobal=isGlobal
     initialHostId=launchConfig.requestedHostId
@@ -92,13 +103,31 @@
     setGlobal=(action 'setGlobal')
     setRequestedHost=(action 'setRequestedHostId')
   }}
+{{/if}}
 
-  {{form-healthcheck
+{{form-healthcheck
+  classNames="accordion-wrapper"
+  isService=isService
+  healthCheck=launchConfig.healthCheck
+  errors=healthCheckErrors
+  editing=true
+}}
+
+
+{{#advanced-section advanced=false}}
+  {{container/form-command
     classNames="accordion-wrapper"
+    instance=launchConfig
+    initialLabels=launchConfig.labels
+    errors=commandErrors
     isService=isService
-    healthCheck=launchConfig.healthCheck
-    errors=healthCheckErrors
-    editing=true
+    setLabels=(action 'setLabels' 'command')
+  }}
+
+  {{form-user-labels
+    classNames="accordion-wrapper"
+    initialLabels=launchConfig.labels
+    setLabels=(action 'setLabels' 'user')
   }}
 
   {{#if isService}}
@@ -116,40 +145,6 @@
   {{/if}}
 
 
-  {{form-user-labels
-    classNames="accordion-wrapper"
-    initialLabels=launchConfig.labels
-    setLabels=(action 'setLabels' 'user')
-  }}
-
-  {{#if supportsSecrets}}
-    {{container/form-secrets
-      classNames="accordion-wrapper"
-      secrets=launchConfig.secrets
-      errors=secretErrors
-      editing=true
-    }}
-  {{/if}}
-
-  {{container/form-command
-    classNames="accordion-wrapper"
-    instance=launchConfig
-    initialLabels=launchConfig.labels
-    errors=commandErrors
-    isService=isService
-    setLabels=(action 'setLabels' 'command')
-  }}
-
-  {{container/form-volumes
-    classNames="accordion-wrapper"
-    instance=launchConfig
-    isService=isService
-    service=service
-    primaryService=primaryService
-    launchConfigIndex=launchConfigIndex
-    errors=volumeErrors
-  }}
-
   {{container/form-networking
     editing=true
     instance=launchConfig
@@ -162,18 +157,37 @@
     setLabels=(action 'setLabels' 'networking')
   }}
 
+  {{#if supportsSecrets}}
+    {{container/form-secrets
+      classNames="accordion-wrapper"
+      secrets=launchConfig.secrets
+      errors=secretErrors
+      editing=true
+    }}
+  {{/if}}
+
   {{container/form-security
     instance=launchConfig
     errors=securityErrors editing=true
     initialLabels=launchConfig.labels
     setLabels=(action 'setLabels' 'security')
   }}
+
+  {{container/form-volumes
+    classNames="accordion-wrapper"
+    instance=launchConfig
+    isService=isService
+    service=service
+    primaryService=primaryService
+    launchConfigIndex=launchConfigIndex
+    errors=volumeErrors
+  }}
 {{/advanced-section}}
 
 {{#if (and isService (not isSidekick))}}
   {{#each service.secondaryLaunchConfigs as |slc index|}}
     <hr/>
-    <div data-launchindex="{{index}}" class="hide">
+    <div class="box">
       {{container/new-edit
         isService=true
         isSidekick=true
@@ -188,9 +202,11 @@
   {{/each}}
 {{/if}}
 
-{{top-errors errors=errors}}
-{{#save-cancel saveDisabled=noLaunchConfigsEnabled createLabel=(if isUpgrade 'newContainer.saveUpgrade' 'newContainer.saveNew') save="save" cancel="cancel"}}
-  {{#if isService}}
-    <button class="btn bg-transparent" {{action "addSidekick"}}>{{t 'newContainer.addSidekick'}}</button>
-  {{/if}}
-{{/save-cancel}}
+{{#unless isSidekick}}
+  {{top-errors errors=errors}}
+  {{#save-cancel saveDisabled=noLaunchConfigsEnabled createLabel=(if isUpgrade 'newContainer.saveUpgrade' 'newContainer.saveNew') save="save" cancel="cancel"}}
+    {{#if isService}}
+      <button class="btn bg-transparent" {{action "addSidekick"}}>{{t 'newContainer.addSidekick'}}</button>
+    {{/if}}
+  {{/save-cancel}}
+{{/unless}}

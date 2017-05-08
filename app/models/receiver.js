@@ -28,21 +28,22 @@ var Receiver = Resource.extend(PolledResource, {
 
   actions: {
     edit() {
-      this.get('router').transitionTo('authenticated.project.api.hooks.edit-receiver', this.get('id'));
+      this.get('router').transitionTo('authenticated.project.hooks.edit-receiver', this.get('id'));
     },
 
     clone: function() {
-      this.get('router').transitionTo('authenticated.project.api.hooks.new-receiver', {queryParams: {receiverId: this.get('id')}});
+      this.get('router').transitionTo('authenticated.project.hooks.new-receiver', {queryParams: {receiverId: this.get('id')}});
     },
   },
 
   availableActions: function() {
     var choices = [
+//      { label: 'action.edit',           icon: 'icon icon-edit',             action: 'edit',           enabled: true },
+      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: true },
+      { divider: true },
       { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: true, altAction: 'delete'},
       { divider: true },
       { label: 'action.viewInApi',      icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
-      { label: 'action.clone',          icon: 'icon icon-copy',             action: 'clone',          enabled: true },
-//      { label: 'action.edit',           icon: 'icon icon-edit',             action: 'edit',           enabled: true },
     ];
 
     return choices;

@@ -1,11 +1,7 @@
 import Service from 'ui/models/service';
 
-var ExternalService = Service.extend({
+export default Service.extend({
   type: 'externalService',
-
-  healthState: function() {
-    return 'healthy';
-  }.property(),
 
   displayTargets: function() {
     let hostname = this.get('hostname');
@@ -16,5 +12,3 @@ var ExternalService = Service.extend({
     return (this.get('externalIpAddresses')||[]).join(', ');
   }.property('hostname','externalIpAddresses')
 });
-
-export default ExternalService;

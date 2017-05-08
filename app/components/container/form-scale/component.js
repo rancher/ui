@@ -1,10 +1,12 @@
 import Ember from 'ember';
+import C from 'ui/utils/constants';
+import ManageLabels from 'ui/mixins/manage-labels';
 
 function newMax(val, curMax, absoluteMax) {
   return Math.min(absoluteMax, Math.max(curMax, Math.ceil(val/10)*10));
 }
 
-export default Ember.Component.extend({
+export default Ember.Component.extend(ManageLabels, {
   initialLabel:   null,
   initialScale:   null,
   editing:        false,
@@ -23,12 +25,12 @@ export default Ember.Component.extend({
     this.set('userInput', (this.get('initialScale')||1)+'');
     this.set('sliderMax', newMax(this.get('asInteger'), this.get('sliderMax'), this.get('max')));
 
-    if ( this.get('isGlobal') ) {
+    this.initLabels(this.get('initialLabels'), null, C.LABEL.SCHED_GLOBAL);
+    var glb = this.getLabel(C.LABEL.SCHED_GLOBAL) === 'true';
+    if ( glb ) {
       this.set('mode', 'global');
-    } else if ( this.get('isService') ) {
-      this.set('mode', 'service');
     } else {
-      this.set('mode', 'container');
+      this.set('mode', 'service');
     }
   },
 
@@ -56,4 +58,21 @@ export default Ember.Component.extend({
 
     this.set('sliderMax', newMax(cur, this.get('sliderMax'), this.get('max')));
   }),
+
+  modeChanged: Ember.observer('mode', function() {
+    var mode = this.get('mode');
+    if ( mode === 'global' ) {
+      this.setLabel(C.LABEL.SCHED_GLOBAL,'true');
+      this.sendAction('setGlobal', true);
+    } else {
+      this.removeLabel(C.LABEL.SCHED_GLOBAL);
+      this.sendAction('setGlobal', false);
+    }
+
+  }),
+
+  updateLabels(labels) {
+    this.sendAction('setLabels', labels);
+  },
 });
+

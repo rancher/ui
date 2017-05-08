@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import Util from 'ui/utils/util';
 import C from 'ui/utils/constants';
 
 export default Ember.Service.extend({
@@ -45,5 +44,56 @@ export default Ember.Service.extend({
     }
 
     return `tcp://${window.location.hostname}:${port}`;
-  }.property(`settings.${C.SETTING.SWARM_PORT}`)
+  }.property(`settings.${C.SETTING.SWARM_PORT}`),
+
+  api: function() {
+    // Strip trailing slash off of the absoluteEndpoint
+    var base = this.get('absolute').replace(/\/+$/,'');
+    // Add a single slash
+    base += '/';
+
+    var current = this.get('app.apiEndpoint').replace(/^\/+/,'');
+    var legacy = this.get('app.legacyApiEndpoint').replace(/^\/+/,'');
+
+    // Go to the project-specific version
+    var projectId = this.get('tab-session').get(C.TABSESSION.PROJECT);
+    var project = '';
+    if ( projectId )
+    {
+      project = '/projects/' + projectId;
+    }
+
+    // For local development where API doesn't match origin, add basic auth token
+    var authBase = base;
+    if ( base.indexOf(window.location.origin) !== 0 )
+    {
+      var token = this.get('cookies').get(C.COOKIE.TOKEN);
+      if ( token ) {
+        authBase = Util.addAuthorization(base, C.USER.BASIC_BEARER, token);
+      }
+    }
+
+    return {
+      auth: {
+        account: {
+          current: authBase + current,
+          legacy:  authBase + legacy
+        },
+        environment: {
+          current: authBase + current + project,
+          legacy:  authBase + legacy + project
+        }
+      },
+      display: {
+        account: {
+          current: base + current,
+          legacy:  base + legacy
+        },
+        environment: {
+          current: base + current + project,
+          legacy:  base + legacy + project
+        }
+      },
+    };
+  }.property('absolute', 'app.{apiEndpoint,legacyApiEndpoint}', `tab-session.${C.TABSESSION.PROJECT}`),
 });

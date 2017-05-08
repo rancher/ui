@@ -46,10 +46,6 @@ var Host = Resource.extend(StateCounts,{
       return this.doAction('evacuate');
     },
 
-    purge: function() {
-      return this.doAction('purge');
-    },
-
     newContainer: function() {
       this.get('application').transitionToRoute('containers.new', {queryParams: {hostId: this.get('model.id')}});
     },
@@ -75,25 +71,29 @@ var Host = Resource.extend(StateCounts,{
     var a = this.get('actionLinks');
 
     var out = [
-      { label: 'action.activate',   icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate, bulkable: true},
-      { label: 'action.deactivate', icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate, bulkable: true},
-      { label: 'action.evacuate',   icon: 'icon icon-snapshot',     action: 'promptEvacuate',enabled: !!a.evacuate, altAction: 'evacuate', bulkable: true},
-      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', bulkable: true},
-      { label: 'action.purge',      icon: '',                       action: 'purge',        enabled: !!a.purge},
-      { divider: true },
-      { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true},
+      { label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!a.update },
+      { label: 'action.clone', icon: 'icon icon-copy', action: 'clone', enabled: !!this.get('driver') }
     ];
 
     if ( this.get('links.config') )
     {
-      out.push({ label: 'action.machineConfig', icon: 'icon icon-download', action: 'machineConfig', enabled: true});
+      out.pushObjects([
+        { label: 'action.machineConfig', icon: 'icon icon-download', action: 'machineConfig', enabled: true}
+      ]);
     }
 
-    out.push({ label: 'action.clone', icon: 'icon icon-copy', action: 'clone', enabled: !!this.get('driver') });
-    out.push({ label: 'action.edit', icon: 'icon icon-edit', action: 'edit', enabled: !!a.update });
+    out.pushObjects([
+      { label: 'action.activate',   icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate, bulkable: true},
+      { label: 'action.deactivate', icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate, bulkable: true},
+      { label: 'action.evacuate',   icon: 'icon icon-snapshot',     action: 'promptEvacuate',enabled: !!a.evacuate, altAction: 'evacuate', bulkable: true},
+      { divider: true },
+      { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete', bulkable: true},
+      { divider: true },
+      { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true},
+    ]);
 
     return out;
-  }.property('actionLinks.{activate,deactivate,evacuate,remove,purge,update}','links.config','driver'),
+  }.property('actionLinks.{activate,deactivate,evacuate,remove,update}','links.config','driver'),
 
   displayIp: Ember.computed.alias('agentIpAddress'),
 

@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import NewOrEdit from 'ui/mixins/new-or-edit';
 import ModalBase from 'ui/mixins/modal-base';
 
 export default Ember.Component.extend(ModalBase, {
@@ -14,7 +13,7 @@ export default Ember.Component.extend(ModalBase, {
       this.set('error', null);
       this.get('model').doAction('converttoservice', {
         name: this.get('name'),
-      }).then(() => {;
+      }).then(() => {
         this.send('cancel');
         Ember.run.next(() => {
           this.get('router').transitionTo('scaling-groups.index');

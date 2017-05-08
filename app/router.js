@@ -180,12 +180,14 @@ Router.map(function() {
 
       this.route('help');
 
-      this.route('api', {path: '/api'}, function() {
-        this.route('keys', {path: '/keys'});
-        this.route('hooks', {path: '/hooks'}, function() {
-          this.route('new-receiver', {path: '/add-receiver'});
-          this.route('edit-receiver', {path: '/receiver/:receiver_id'});
-        });
+      this.route('apikeys', {path: '/api/keys'}, function() {
+        this.route('account', {path: '/account'});
+        this.route('environment', {path: '/environment'});
+      });
+
+      this.route('hooks', {path: '/api/hooks'}, function() {
+        this.route('new-receiver', {path: '/add-receiver'});
+        this.route('edit-receiver', {path: '/receiver/:receiver_id'});
       });
 
       this.route('host-template', {path: '/host-template'}, function(){

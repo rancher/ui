@@ -10,9 +10,11 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   intl                      : Ember.inject.service(),
   settings                  : Ember.inject.service(),
 
+  tagName: 'form',
+
   isService:                  false,
   isUpgrade:                  false,
-  primaryResource:            Ember.computed.alias('launchConfig'),
+  //primaryResource:            Ember.computed.alias('launchConfig'),
   primaryService:             null,
   launchConfig:               null,
   service:                    null,
@@ -98,15 +100,19 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
     },
 
     removeSidekick(idx) {
-      var ary = this.get('service.secondaryLaunchConfigs');
+      var ary = this.get('primaryService.secondaryLaunchConfigs');
       ary.removeAt(idx);
     },
-
   },
 
   init() {
     window.nec = this;
     this._super(...arguments);
+
+    // Tell cattle that we're sending the whole thing, not a diff.
+    if ( this.get('service') ) {
+      this.set('service.completeLaunchConfigs', true);
+    }
 
     if ( !this.get('launchConfig.secrets') ) {
       this.set('launchConfig.secrets', []);
@@ -258,47 +264,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
       }
     }
 
-    return false;
-  },
-
-  doSave() {
-    if ( this.get('isService') && this.get('isUpgrade') )
-    {
-      var choices = this.get('launchConfigChoices');
-      var primary = null;
-      var slc = [];
-      var secondaries = this.get('service.secondaryLaunchConfigs');
-
-      choices.filterBy('enabled',true).forEach((choice) => {
-        if ( choice.index === -1 )
-        {
-          primary = this.get('service.launchConfig');
-        }
-        else
-        {
-          slc.push(secondaries.objectAt(choice.index).serialize());
-        }
-      });
-
-      let service = this.get('service');
-      return this._super.apply(this,arguments).then(() => {
-        return service.waitForAction('upgrade').then(() => {
-          return service.doAction('upgrade', {
-            inServiceStrategy: {
-              batchSize: this.get('upgradeOptions.batchSize'),
-              intervalMillis: this.get('upgradeOptions.intervalMillis'),
-              startFirst: this.get('upgradeOptions.startFirst'),
-              launchConfig: primary,
-              secondaryLaunchConfigs: slc
-            },
-          });
-        });
-      });
-    }
-    else
-    {
-      return this._super.apply(this,arguments);
-    }
+    return ok;
   },
 
   didSave() {
@@ -328,7 +294,9 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
   headerToken: function() {
     let k = 'newContainer.';
     k += (this.get('isUpgrade') ? 'upgrade' : 'add') + '.';
-    if ( this.get('isService') ) {
+    if ( this.get('isSidekick') ) {
+      k += 'sidekick';
+    } else if ( this.get('isService') ) {
       k += 'scalingGroup';
     } else {
       k += 'container';
@@ -336,16 +304,6 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
     return k;
   }.property('isUpgrade','isService'),
-
-  nameToken: function() {
-    let k = 'newContainer.name.label.';
-    if ( this.get('isService') ) {
-      k += 'service';
-    } else {
-      k += 'container';
-    }
-    return k;
-  }.property('isService'),
 
   supportsSecrets: function() {
     return !!this.get('store').getById('schema','secret');

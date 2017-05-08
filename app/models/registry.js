@@ -30,17 +30,16 @@ var Registry = Resource.extend({
     var a = this.get('actionLinks');
 
     return [
+      { label: 'action.edit',       icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
+      { divider: true },
       { label: 'action.activate',   icon: 'icon icon-play',         action: 'activate',     enabled: !!a.activate },
       { label: 'action.deactivate', icon: 'icon icon-pause',        action: 'deactivate',   enabled: !!a.deactivate },
+      { divider: true },
       { label: 'action.remove',     icon: 'icon icon-trash',        action: 'promptDelete', enabled: !!a.remove, altAction: 'delete' },
       { divider: true },
-      { label: 'action.purge',      icon: '',                       action: 'purge',        enabled: !!a.purge },
-      { label: 'action.restore',    icon: 'icon icon-medicalcross', action: 'restore',      enabled: !!a.restore },
       { label: 'action.viewInApi',  icon: 'icon icon-external-link',action: 'goToApi',      enabled: true },
-      { divider: true },
-      { label: 'action.edit',       icon: 'icon icon-edit',         action: 'edit',         enabled: !!a.update },
     ];
-  }.property('actionLinks.{update,activate,deactivate,restore,remove,purge}'),
+  }.property('actionLinks.{update,activate,deactivate,remove}'),
 
   displayName: Ember.computed.alias('displayAddress'),
   displayAddress: function() {
