@@ -4,10 +4,9 @@
   <hr/>
 </div>
 <div>
-  <button class="btn btn-sm btn-primary r-mb10" {{action "add"}}>
-    <i class="icon icon-plus text-small"/>
-    <span>{{t 'envCatalog.addActionLabel'}}</span>
-  </button>
+  <div class="form-control-static">
+    <button class="btn-circle-text" {{action "add"}}><i class="icon icon-plus-circle"/> <span>{{t 'envCatalog.addActionLabel'}}</span></button>
+  </div>
 
   {{#if (or global.length ary.length)}}
     <table class="table fixed no-lines no-top-padding">
@@ -24,53 +23,51 @@
       {{#each global as |row|}}
         <tr>
           <td class="r-pt5 r-pb5" data-title="{{t 'catalogSettings.more.name.label'}}:">
-            <div class="form-control-static">{{row.name}}</div>
+            {{row.name}}
           </td>
           <td>&nbsp;</td>
           <td class="r-pt5 r-pb5" data-title="{{t 'catalogSettings.more.url.label'}}:">
-            <div class="form-control-static">{{row.url}}</div>
+            {{row.url}}
           </td>
           <td>&nbsp;</td>
           <td class="r-pt5 r-pb5" data-title="{{t 'catalogSettings.more.kind.label'}}:">
-            <div class="form-control-static">Global</div>
+            Global
           </td>
           <td>&nbsp;</td>
           <td class="r-pt5 r-pb5" data-title="{{t 'catalogSettings.more.branch.label'}}:">
-            <div class="form-control-static">{{row.branch}}</div>
+            {{row.branch}}
           </td>
         </tr>
       {{/each}}
       {{#each ary as |row|}}
-        {{#unless row.toRemove}}
-          <tr>
-            <td class="r-pt5 r-pb5" data-title="{{t 'catalogSettings.more.name.label'}}:">
-              {{input class="form-control input-sm name" type="text" value=row.name placeholder=(t 'catalogSettings.more.name.placeholder')}}
-            </td>
-            <td>&nbsp;</td>
-            <td class="r-pt5 r-pb5" data-title="{{t 'catalogSettings.more.url.label'}}:">
-              {{input class="form-control input-sm" type="text" value=row.url placeholder=(t 'catalogSettings.more.url.placeholder')}}
-            </td>
-            <td>&nbsp;</td>
-            <td class="r-pt5 r-pb5" data-title="{{t 'catalogSettings.more.kind.label'}}:">
-              {{new-select
-                classNames="form-control input-sm"
-                content=kindChoices
-                optionLabelPath="translationKey"
-                optionValuePath="value"
-                localizedLabel=true
-                value=row.kind
-              }}
-            </td>
-            <td>&nbsp;</td>
-            <td class="r-pt5 r-pb5" data-title="{{t 'catalogSettings.more.branch.label'}}:">
-              {{input class="form-control input-sm" type="text" value=row.branch placeholder=(t 'catalogSettings.more.branch.placeholder')}}
-            </td>
+        <tr>
+          <td class="r-pt5 r-pb5" data-title="{{t 'catalogSettings.more.name.label'}}:">
+            {{input class="form-control input-sm name" type="text" value=row.name placeholder=(t 'catalogSettings.more.name.placeholder')}}
+          </td>
+          <td>&nbsp;</td>
+          <td class="r-pt5 r-pb5" data-title="{{t 'catalogSettings.more.url.label'}}:">
+            {{input class="form-control input-sm" type="text" value=row.url placeholder=(t 'catalogSettings.more.url.placeholder')}}
+          </td>
+          <td>&nbsp;</td>
+          <td class="r-pt5 r-pb5" data-title="{{t 'catalogSettings.more.kind.label'}}:">
+            {{new-select
+              classNames="form-control input-sm"
+              content=kindChoices
+              optionLabelPath="translationKey"
+              optionValuePath="value"
+              localizedLabel=true
+              value=row.kind
+            }}
+          </td>
+          <td>&nbsp;</td>
+          <td class="r-pt5 r-pb5" data-title="{{t 'catalogSettings.more.branch.label'}}:">
+            {{input class="form-control input-sm" type="text" value=row.branch placeholder=(t 'catalogSettings.more.branch.placeholder')}}
+          </td>
 
-            <td class="r-pt5 r-pb5 text-right">
-              <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
-            </td>
-          </tr>
-        {{/unless}}
+          <td class="r-pt5 r-pb5 text-right">
+            <button class="btn bg-primary btn-sm" {{action "remove" row}}><i class="icon icon-minus"/><span class="sr-only">{{t 'generic.remove'}}</span></button>
+          </td>
+        </tr>
       {{/each}}
     </table>
   {{/if}}

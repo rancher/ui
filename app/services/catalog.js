@@ -12,7 +12,6 @@ export default Ember.Service.extend({
 
   templateCache:              null,
   catalogs:                   null,
-  componentRequestingRefresh: false, // this is only present to deal with modals. this can be observed to issue a refresh command
 
   templateBase: Ember.computed('projects.current.orchestration', function() {
     return this.get('projects.current.orchestration') || 'cattle';
