@@ -1,8 +1,10 @@
-{{#accordion-row
-  title=(t 'formSecrets.title')
-  detail=(t 'formSecrets.detail' appName=settings.appName)
-  status=status
-  statusClass=statusClass
+{{#accordion-list-item
+    title=(t 'formSecrets.title')
+    detail=(t 'formSecrets.detail' appName=settings.appName)
+    status=status
+    statusClass=statusClass
+    expandAll=expandAll
+    expand=(action expandFn)
 }}
   {{#if haveAny}}
     <button class="btn bg-link icon-btn" {{action "addSecret"}}>
@@ -71,4 +73,4 @@
   {{else}}
     {{t 'formSecrets.noneDefined'}}
   {{/if}}
-{{/accordion-row}}
+{{/accordion-list-item}}

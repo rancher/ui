@@ -54,10 +54,14 @@ export default Ember.Component.extend({
 
   classNames: ['accordion'],
   expanded: false,
+  expandAll: false,
 
-  actions: {
-    toggle() {
-      this.toggleProperty('expanded');
-    },
-  },
+  expandAllObserver: Ember.on('init', Ember.observer('expandAll', function() {
+    var ea = this.get('expandAll');
+    if (ea) {
+      this.set('expanded', true);
+    } else {
+      this.set('expanded', false);
+    }
+  })),
 });

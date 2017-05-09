@@ -1,8 +1,10 @@
-{{#accordion-row
-  title=(t 'formSecurity.title')
-  detail=(t 'formSecurity.detail' appName=settings.appName)
-  status=status
-  statusClass=statusClass
+{{#accordion-list-item
+      title=(t 'formSecurity.title')
+      detail=(t 'formSecurity.detail' appName=settings.appName)
+      status=status
+      statusClass=statusClass
+      expandAll=expandAll
+      expand=(action expandFn)
 }}
   <div class="row">
     <div class="col span-4 col-inline">
@@ -218,7 +220,7 @@
         {{#if editing}}
           <div>
             <button class="btn bg-link icon-btn" {{action "addDevice"}}>
-              <i class="icon icon-plus text-small"/> 
+              <i class="icon icon-plus text-small"/>
               <span>{{t 'formSecurity.deviceBinding.addActionLabel'}}</span>
             </button>
           </div>
@@ -294,4 +296,4 @@
       </div>
     </div>
   {{/if}}
-{{/accordion-row}}
+{{/accordion-list-item}}

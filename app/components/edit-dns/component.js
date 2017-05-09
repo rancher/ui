@@ -50,6 +50,9 @@ export default Ember.Component.extend(NewOrEdit, {
     },
   },
 
+  expand(item) {
+    item.toggleProperty('expanded');
+  },
   init() {
     this._super(...arguments);
     this.set('record', this.get('originalModel').clone());

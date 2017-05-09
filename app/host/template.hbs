@@ -57,170 +57,187 @@
   </div>
 </section>
 <section>
-  {{#accordion-row
-       title=(t 'physicalStats.title')
-       detail=(t 'physicalStats.detail')
-       status=status
-       statusClass=statusClass
-  }}
-    <div class="row">
-      <div class="col span-6">
-        <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
-        <div>
-          {{#if host.milliCpu}}{{t 'generic.total'}}{{/if}}: {{host.cpuBlurb}}
-          {{t 'generic.limit'}}: {{host.milliCpu}} {{t 'hostsPage.hostPage.infoMultiStats.milliCpu.labelText'}}
-        </div>
-        <div>
-          {{#if host.cpuTooltip}}
-            {{host.cpuTooltip}}
-          {{/if}}
-        </div>
-      </div>
-      <div class="col span-6">
-        <label>{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
-        <div>
-          {{#if host.memory}}{{t 'generic.total'}}{{/if}}:
-          {{#if host.memoryBlurb}}
-            {{host.memoryBlurb}}
-          {{else}}
-            <span class="text-muted">{{t 'generic.unknown'}}</span>
-          {{/if}}
-          {{t 'generic.limit'}}: {{host.memoryLimitBlurb}}
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col span-6">
-        <label>{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
-        <div>
-          {{#if host.diskBlurb}}
-            {{#if host.diskDetail}}
-              {{#each host.diskDetail as |disk|}}
-                {{disk.value}}
-                ( {{disk.label}} )
-              {{/each}}
-    {{else}}
-              {{host.diskBlurb}} (total)
+
+  {{#accordion-list as |al expandFn| }}
+
+    {{#accordion-list-item
+         title=(t 'physicalStats.title')
+         detail=(t 'physicalStats.detail')
+         status=status
+         statusClass=statusClass
+         expandAll=al.expandAll
+         expand=(action expandFn)
+    }}
+      <div class="row">
+        <div class="col span-6">
+          <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
+          <div>
+            {{#if host.milliCpu}}{{t 'generic.total'}}{{/if}}: {{host.cpuBlurb}}
+            {{t 'generic.limit'}}: {{host.milliCpu}} {{t 'hostsPage.hostPage.infoMultiStats.milliCpu.labelText'}}
+          </div>
+          <div>
+            {{#if host.cpuTooltip}}
+              {{host.cpuTooltip}}
             {{/if}}
-            {{t 'hostsPage.hostPage.infoMultiStats.localStorageMb.labelText'}}: {{host.localStorageBlurb}}
-    {{else}}
-            <span class="text-muted">{{t 'generic.unknown'}}</span>
-          {{/if}}
+          </div>
         </div>
-      </div>
-      <div class="col span-6">
-        <label>{{t 'hostsPage.hostPage.infoMultiStats.kernel'}}</label>
-        <div>
-          {{host.info.osInfo.kernelVersion}}
-        </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col span-12">
-        <label>{{t 'hostsPage.hostPage.infoMultiStats.os'}}</label>
-        <div>
-          {{#if host.osDetail}}
-            {{host.osDetail}}
-          {{else}}
-            <span class="text-muted">{{t 'generic.unknown'}}</span>
-          {{/if}}
-        </div>
-      </div>
-    </div>
-  {{/accordion-row}}
-
-  {{#accordion-row
-       title=(t 'hostsPage.hostPage.containersTab.header')
-       detail=(t 'hostsPage.hostPage.containersTab.detail')
-       status=(t 'hostsPage.hostPage.containersTab.status' count=model.host.arrangedInstances.length)
-       statusClass=(if model.host.arrangedInstances.length 'bg-success' 'text-muted')
-       as |parent|
-  }}
-    {{container-table
-        body=model.host.arrangedInstances
-        sortBy=sortBy
-        bulkActions=true
-        showHost=false
-    }}
-  {{/accordion-row}}
-
-  {{#accordion-row
-       title=(t 'hostsPage.hostPage.portsTab.header')
-       detail=(t 'hostsPage.hostPage.portsTab.detail')
-       status=(t 'containerPage.portsTab.status' count=model.host.displayEndpoints.length)
-       statusClass=(if model.host.displayEndpoints.length 'bg-success' 'text-muted')
-       as |parent|
-  }}
-    {{#sortable-table
-         classNames="grid fixed mb-0 sortable-table"
-         bulkActions=false
-         paging=false
-         search=false
-         sortBy=sortBy
-         descending=descending
-         headers=portHeaders
-         body=model.host.displayEndpoints
-         as |sortable kind port|
-    }}
-      {{#if (eq kind "row")}}
-        <td>{{port.ipAddress}}</td>
-        <td>{{port.port}}</td>
-        <td>
-          {{#if port.service}}
-            <i class="{{port.service.stateIcon}} {{port.service.stateColor}}" />
-            {{#link-to "service" port.service.stackId port.service.id}}{{port.service.displayName}}{{/link-to}}
-          {{else}}
-            <span class="text-muted">-</span>
-          {{/if}}
-        </td>
-        <td>
-          {{#if port.instance}}
-            <i class="{{port.instance.stateIcon}} {{port.instance.stateColor}}" />
-            {{#if (eq port.instance.kind "virtualMachine")}}
-              {{#link-to "virtualmachine" port.instance.id}}{{port.instance.displayName}}{{/link-to}}
+        <div class="col span-6">
+          <label>{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
+          <div>
+            {{#if host.memory}}{{t 'generic.total'}}{{/if}}:
+            {{#if host.memoryBlurb}}
+              {{host.memoryBlurb}}
             {{else}}
-              {{#link-to "container" port.instance.id}}{{port.instance.displayName}}{{/link-to}}
+              <span class="text-muted">{{t 'generic.unknown'}}</span>
             {{/if}}
-          {{else}}
-            <span class="text-muted">-</span>
-          {{/if}}
-        </td>
-      {{else if (eq kind "norows")}}
-        <tr>
-          <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'hostsPage.hostPage.portsTab.table.body.noData'}}</td>
-        </tr>
-      {{/if}}
-    {{/sortable-table}}
-  {{/accordion-row}}
+            {{t 'generic.limit'}}: {{host.memoryLimitBlurb}}
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-6">
+          <label>{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
+          <div>
+            {{#if host.diskBlurb}}
+              {{#if host.diskDetail}}
+                {{#each host.diskDetail as |disk|}}
+                  {{disk.value}}
+                  ( {{disk.label}} )
+                {{/each}}
+    {{else}}
+                {{host.diskBlurb}} (total)
+              {{/if}}
+              {{t 'hostsPage.hostPage.infoMultiStats.localStorageMb.labelText'}}: {{host.localStorageBlurb}}
+    {{else}}
+              <span class="text-muted">{{t 'generic.unknown'}}</span>
+            {{/if}}
+          </div>
+        </div>
+        <div class="col span-6">
+          <label>{{t 'hostsPage.hostPage.infoMultiStats.kernel'}}</label>
+          <div>
+            {{host.info.osInfo.kernelVersion}}
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col span-12">
+          <label>{{t 'hostsPage.hostPage.infoMultiStats.os'}}</label>
+          <div>
+            {{#if host.osDetail}}
+              {{host.osDetail}}
+            {{else}}
+              <span class="text-muted">{{t 'generic.unknown'}}</span>
+            {{/if}}
+          </div>
+        </div>
+      </div>
+    {{/accordion-list-item}}
 
-  {{labels-section model=model.host tagName=''}}
-
-  {{#accordion-row
-       title=(t 'hostsPage.hostPage.storageTab.header')
-       detail=(t 'hostsPage.hostPage.storageTab.detail')
-       status=(t 'hostsPage.hostPage.storageTab.status' count=nonRootVolumes.length)
-       statusClass=(if nonRootVolumes.length 'bg-success' 'text-muted')
-       as |parent|
-  }}
-    {{#sortable-table
-         classNames="grid fixed mb-0 sortable-table"
-         bulkActions=false
-         paging=false
-         search=false
-         sortBy=sortBy
-         descending=descending
-         headers=storageHeaders
-         body=nonRootVolumes
-         fullRows=true
-         as |sortable kind volume|
+    {{#accordion-list-item
+         title=(t 'hostsPage.hostPage.containersTab.header')
+         detail=(t 'hostsPage.hostPage.containersTab.detail')
+         status=(t 'hostsPage.hostPage.containersTab.status' count=model.host.arrangedInstances.length)
+         statusClass=(if model.host.arrangedInstances.length 'bg-success' 'text-muted')
+         expandAll=al.expandAll
+         expand=(action expandFn)
+         as | parent |
     }}
-      {{#if (eq kind "row")}}
-        {{volume-row model=volume}}
-      {{else if (eq kind "norows")}}
-        <tr>
-          <td colspan="{{header.length}}" class="text-center text-muted">{{t 'hostsPage.hostPage.storageTab.table.body.noData'}}</td>
-        </tr>
-      {{/if}}
-    {{/sortable-table}}
-  {{/accordion-row}}
+      {{container-table
+          body=model.host.arrangedInstances
+          sortBy=sortBy
+          bulkActions=true
+          showHost=false
+      }}
+    {{/accordion-list-item}}
+
+    {{#accordion-list-item
+         title=(t 'hostsPage.hostPage.portsTab.header')
+         detail=(t 'hostsPage.hostPage.portsTab.detail')
+         status=(t 'containerPage.portsTab.status' count=model.host.displayEndpoints.length)
+         statusClass=(if model.host.displayEndpoints.length 'bg-success' 'text-muted')
+         expandAll=al.expandAll
+         expand=(action expandFn)
+         as | parent |
+    }}
+      {{#sortable-table
+           classNames="grid fixed mb-0 sortable-table"
+           bulkActions=false
+           paging=false
+           search=false
+           sortBy=sortBy
+           descending=descending
+           headers=portHeaders
+           body=model.host.displayEndpoints
+           as |sortable kind port|
+      }}
+        {{#if (eq kind "row")}}
+          <td>{{port.ipAddress}}</td>
+          <td>{{port.port}}</td>
+          <td>
+            {{#if port.service}}
+              <i class="{{port.service.stateIcon}} {{port.service.stateColor}}" />
+              {{#link-to "service" port.service.stackId port.service.id}}{{port.service.displayName}}{{/link-to}}
+            {{else}}
+              <span class="text-muted">-</span>
+            {{/if}}
+          </td>
+          <td>
+            {{#if port.instance}}
+              <i class="{{port.instance.stateIcon}} {{port.instance.stateColor}}" />
+              {{#if (eq port.instance.kind "virtualMachine")}}
+                {{#link-to "virtualmachine" port.instance.id}}{{port.instance.displayName}}{{/link-to}}
+              {{else}}
+                {{#link-to "container" port.instance.id}}{{port.instance.displayName}}{{/link-to}}
+              {{/if}}
+            {{else}}
+              <span class="text-muted">-</span>
+            {{/if}}
+          </td>
+        {{else if (eq kind "norows")}}
+          <tr>
+            <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'hostsPage.hostPage.portsTab.table.body.noData'}}</td>
+          </tr>
+        {{/if}}
+      {{/sortable-table}}
+    {{/accordion-list-item}}
+
+    {{labels-section
+        model=model.host
+        tagName=''
+        expandAll=al.expandAll
+        expandFn=expandFn
+    }}
+
+    {{#accordion-list-item
+         title=(t 'hostsPage.hostPage.storageTab.header')
+         detail=(t 'hostsPage.hostPage.storageTab.detail')
+         status=(t 'hostsPage.hostPage.storageTab.status' count=nonRootVolumes.length)
+         statusClass=(if nonRootVolumes.length 'bg-success' 'text-muted')
+         expandAll=al.expandAll
+         expand=(action expandFn)
+         as | parent |
+    }}
+      {{#sortable-table
+           classNames="grid fixed mb-0 sortable-table"
+           bulkActions=false
+           paging=false
+           search=false
+           sortBy=sortBy
+           descending=descending
+           headers=storageHeaders
+           body=nonRootVolumes
+           fullRows=true
+           as |sortable kind volume|
+      }}
+        {{#if (eq kind "row")}}
+          {{volume-row model=volume}}
+        {{else if (eq kind "norows")}}
+          <tr>
+            <td colspan="{{header.length}}" class="text-center text-muted">{{t 'hostsPage.hostPage.storageTab.table.body.noData'}}</td>
+          </tr>
+        {{/if}}
+      {{/sortable-table}}
+    {{/accordion-list-item}}
+  {{/accordion-list}}
 </section>

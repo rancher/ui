@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-row/component';
+import { STATUS, STATUS_INTL_KEY, classForStatus } from 'ui/components/accordion-list-item/component';
 
 const DEFAULT_UID = '0';
 const DEFAULT_GID = '0';

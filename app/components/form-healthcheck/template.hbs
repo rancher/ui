@@ -1,8 +1,10 @@
-{{#accordion-row
-  title=(t 'formHealthCheck.title')
-  detail=(t (if dnsNote 'formHealthCheck.detailDns' 'formHealthCheck.detail') appName=settings.appName)
-  status=status
-  statusClass=statusClass
+{{#accordion-list-item
+     title=(t 'formHealthCheck.title')
+     detail=(t (if dnsNote 'formHealthCheck.detailDns' 'formHealthCheck.detail') appName=settings.appName)
+     status=status
+     statusClass=statusClass
+     expandAll=expandAll
+     expand=(action expandFn)
 }}
   {{#if projects.current.isWindows}}
     <div class="text-center p-20">Healthcheck support is not currently available for Windows.</div>
@@ -164,4 +166,4 @@
       {{/if}}
     {{/if}}
   {{/if}}
-{{/accordion-row}}
+{{/accordion-list-item}}
