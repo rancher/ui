@@ -1,7 +1,6 @@
 import Ember from 'ember';
 import { isAlternate } from 'ui/utils/platform';
 import C from 'ui/utils/constants';
-import { getCatalogSubtree } from 'ui/utils/parse-catalog-setting';
 
 export default Ember.Controller.extend({
   application:       Ember.inject.controller(),
@@ -15,7 +14,6 @@ export default Ember.Controller.extend({
   categories:        Ember.computed.alias('model.categories'),
   catalogId:         Ember.computed.alias('catalogController.catalogId'),
   modalService:      Ember.inject.service('modal'),
-  selectedCatalogId: null,
 
   parentRoute: 'catalog-tab',
   launchRoute: 'catalog-tab.launch',
@@ -28,7 +26,7 @@ export default Ember.Controller.extend({
     addEnvCatalog() {
       this.get('modalService').toggleModal('modal-edit-env-catalogs', {
         project: this.get('projects.current'),
-        catalogs: this.get('model.catalogs.content'),
+        catalogs: this.get('model.catalogs'),
       });
     },
     clearSearch() {
@@ -50,6 +48,7 @@ export default Ember.Controller.extend({
       }).catch(() => {
         this.set('updating', 'error');
       });
+
     },
     switch(catalog) {
       this.transitionToRoute(this.get('parentRoute'), this.get('projectId'), {queryParams: catalog.queryParams} );
@@ -66,25 +65,18 @@ export default Ember.Controller.extend({
       this.send('update');
     }
   }),
+
   catalogURL: Ember.computed('model.catalogs', function() {
     var neu = {
       catalogs: {}
     };
-    this.get('model.catalogs.content').forEach((cat) => {
+    this.get('model.catalogs').forEach((cat) => {
       neu.catalogs[cat.id] = {
         branch: cat.branch,
         url: cat.url
       };
     });
     return JSON.stringify(neu);
-  }),
-
-  filters: Ember.computed('model.catalogs', function() {
-    let catalogs = getCatalogSubtree(this.get('catalogURL'), this.get('projectId'));
-    if (!this.get('selectedCatalogId')) {
-      this.set('selectedCatalogId', catalogs.findBy('queryParams.catalogId', this.get('catalogId')));
-    }
-    return catalogs;
   }),
 
   arrangedContent: Ember.computed('model.catalog', 'search', function() {

@@ -12,7 +12,7 @@ var ProjectTemplate = Resource.extend(PolledResource, {
   },
 
   displayStacks: function() {
-    return (this.get('stacks')||[]).map((s) => s.get('name')).join(', ');
+    return (this.get('stacks')||[]).map((s) => s.name).join(', ');
   }.property('stacks.@each.name'),
 
   canEdit: function() {

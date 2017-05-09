@@ -1,6 +1,5 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import { getCatalogNames } from 'ui/utils/parse-catalog-setting';
 import { tagChoices } from 'ui/models/stack';
 import { uniqKeys } from 'ui/utils/util';
 
@@ -188,6 +187,7 @@ const navTree = [
       !this.get('hasKubernetes') &&
       !this.get('hasSwarm');
     },
+    submenu: getCatalogSubtree,
   },
 
   // Infrastructure
@@ -424,4 +424,71 @@ function getStacksSubtree() {
 
 
   return out;
+}
+
+function getCatalogSubtree() {
+  let repos = this.get('catalog.catalogs').slice();
+  let showAll = repos.length > 1;
+
+  let out = [];
+  if ( showAll ) {
+    out.push({
+      id: 'catalog-all',
+      localizedLabel: 'nav.catalog.all',
+      icon: 'icon icon-globe',
+      route: 'catalog-tab',
+      ctx: [getProjectId],
+      queryParams: {catalogId: 'all'}
+    });
+
+    out.push({divider: true});
+  }
+
+  let match = repos.findBy('id','library');
+  if ( match ) {
+    repos.removeObject(match);
+    out.push({
+      id: 'catalog-library',
+      localizedLabel: 'nav.catalog.library',
+      icon: 'icon icon-catalog',
+      route: 'catalog-tab',
+      ctx: [getProjectId],
+      queryParams: {catalogId: 'library'}
+    });
+  }
+
+  match = repos.findBy('id','community');
+  if ( match ) {
+    repos.removeObject(match);
+    out.push({
+      id: 'catalog-community',
+      localizedLabel: 'nav.catalog.community',
+      icon: 'icon icon-users',
+      route: 'catalog-tab',
+      ctx: [getProjectId],
+      queryParams: {catalogId: 'community'}
+    });
+  }
+
+  if ( out.length > 2 ) {
+    out.push({divider: true});
+  }
+
+  repos.forEach((repo) => {
+    out.push({
+      id: 'catalog-'+repo.get('id'),
+      label: repo.get('name'),
+      icon: 'icon icon-user',
+      route: 'catalog-tab',
+      ctx: [getProjectId],
+      queryParams: {catalogId: repo.get('id')}
+    });
+  });
+
+
+  if ( out.length === 1 ) {
+    return [];
+  } else {
+    return out;
+  }
 }

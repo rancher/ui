@@ -28,17 +28,24 @@ export default Ember.Service.extend({
   refresh() {
     const store = this.get('store');
 
-    this.reset();
-    return store.request({
-      url: `${this.get('app.catalogEndpoint')}/templates?refresh&action=refresh`,
-      method: 'POST',
-      timeout: null, // I'm willing to wait...
+    return this.fetchCatalogs().then(() => {
+      this.set('templateCache', null);
+      return store.request({
+        url: `${this.get('app.catalogEndpoint')}/templates?refresh&action=refresh`,
+        method: 'POST',
+        timeout: null, // I'm willing to wait...
+      });
     });
   },
 
   fetchCatalogs(opts) {
     var neu = $.extend({headers: {[C.HEADER.PROJECT_ID]: this.get('projects.current.id')}}, {url: `${this.get('app.catalogEndpoint')}/catalogs`}, opts||{});
-    return this.get('store').request(neu);
+    return this.get('store').request(neu).then((catalogs) => {
+      // @TODO fix this in API
+      catalogs = catalogs.map((x) => { x.type = 'catalog'; return this.get('store').createRecord(x); });
+      this.set('catalogs', catalogs);
+      return catalogs;
+    });
   },
 
   getTemplateFromCache(id) {
