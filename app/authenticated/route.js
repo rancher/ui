@@ -7,6 +7,7 @@ import PromiseToCb from 'ui/mixins/promise-to-cb';
 const CHECK_AUTH_TIMER = 60*10*1000;
 
 export default Ember.Route.extend(Subscribe, PromiseToCb, {
+  catalog   : Ember.inject.service(),
   prefs     : Ember.inject.service(),
   projects  : Ember.inject.service(),
   settings  : Ember.inject.service(),
@@ -59,6 +60,7 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
         settings:                                       this.toCb('loadPublicSettings'),
         project:            ['projects', 'preferences', this.toCb('selectProject',transition)],
         projectSchemas:     ['project',                 this.toCb('loadProjectSchemas')],
+        catalogs:           ['project',                 this.toCb('loadCatalogs')],
         orchestrationState: ['projectSchemas',          this.toCb('updateOrchestration')],
         instances:          ['projectSchemas',          this.cbFind('instance')],
         services:           ['projectSchemas',          this.cbFind('service')],
@@ -201,6 +203,10 @@ export default Ember.Route.extend(Subscribe, PromiseToCb, {
       svc.set('all', all);
       return all;
     });
+  },
+
+  loadCatalogs() {
+    return this.get('catalog').fetchCatalogs();
   },
 
   updateOrchestration() {

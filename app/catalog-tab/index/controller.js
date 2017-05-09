@@ -26,7 +26,7 @@ export default Ember.Controller.extend({
     addEnvCatalog() {
       this.get('modalService').toggleModal('modal-edit-env-catalogs', {
         project: this.get('projects.current'),
-        catalogs: this.get('model.catalogs.content'),
+        catalogs: this.get('model.catalogs'),
       });
     },
     clearSearch() {
@@ -48,6 +48,10 @@ export default Ember.Controller.extend({
       }).catch(() => {
         this.set('updating', 'error');
       });
+
+    },
+    switch(catalog) {
+      this.transitionToRoute(this.get('parentRoute'), this.get('projectId'), {queryParams: catalog.queryParams} );
     }
   },
 
@@ -61,6 +65,20 @@ export default Ember.Controller.extend({
       this.send('update');
     }
   }),
+
+  catalogURL: Ember.computed('model.catalogs', function() {
+    var neu = {
+      catalogs: {}
+    };
+    this.get('model.catalogs').forEach((cat) => {
+      neu.catalogs[cat.id] = {
+        branch: cat.branch,
+        url: cat.url
+      };
+    });
+    return JSON.stringify(neu);
+  }),
+
   arrangedContent: Ember.computed('model.catalog', 'search', function() {
     var search = this.get('search').toUpperCase();
     var result = [];
