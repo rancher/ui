@@ -70,45 +70,11 @@
     }}
       <div class="row">
         <div class="col span-6">
-          <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
+          <label>{{t 'hostsPage.hostPage.infoMultiStats.os'}}</label>
           <div>
-            {{#if host.milliCpu}}{{t 'generic.total'}}{{/if}}: {{host.cpuBlurb}}
-            {{t 'generic.limit'}}: {{host.milliCpu}} {{t 'hostsPage.hostPage.infoMultiStats.milliCpu.labelText'}}
-          </div>
-          <div>
-            {{#if host.cpuTooltip}}
-              {{host.cpuTooltip}}
-            {{/if}}
-          </div>
-        </div>
-        <div class="col span-6">
-          <label>{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
-          <div>
-            {{#if host.memory}}{{t 'generic.total'}}{{/if}}:
-            {{#if host.memoryBlurb}}
-              {{host.memoryBlurb}}
+            {{#if host.osDetail}}
+              {{host.osDetail}}
             {{else}}
-              <span class="text-muted">{{t 'generic.unknown'}}</span>
-            {{/if}}
-            {{t 'generic.limit'}}: {{host.memoryLimitBlurb}}
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col span-6">
-          <label>{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
-          <div>
-            {{#if host.diskBlurb}}
-              {{#if host.diskDetail}}
-                {{#each host.diskDetail as |disk|}}
-                  {{disk.value}}
-                  ( {{disk.label}} )
-                {{/each}}
-    {{else}}
-                {{host.diskBlurb}} (total)
-              {{/if}}
-              {{t 'hostsPage.hostPage.infoMultiStats.localStorageMb.labelText'}}: {{host.localStorageBlurb}}
-    {{else}}
               <span class="text-muted">{{t 'generic.unknown'}}</span>
             {{/if}}
           </div>
@@ -120,15 +86,69 @@
           </div>
         </div>
       </div>
+      <hr/>
       <div class="row">
-        <div class="col span-12">
-          <label>{{t 'hostsPage.hostPage.infoMultiStats.os'}}</label>
-          <div>
-            {{#if host.osDetail}}
-              {{host.osDetail}}
+        <div class="col span-6">
+          <label>{{t 'generic.hardware'}}: </label>
+          <div class="col span-12">
+            <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
+            <div>
+              {{#if host.milliCpu}}{{t 'generic.total'}}{{/if}}: {{host.cpuBlurb}}
+            </div>
+            <div>
+              {{#if host.cpuTooltip}}
+                {{host.cpuTooltip}}
+              {{/if}}
+            </div>
+          </div>
+          <div class="col span-12">
+            <label>{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
+            <div>
+              {{#if host.memory}}{{t 'generic.total'}}{{/if}}:
+              {{#if host.memoryBlurb}}
+                {{host.memoryBlurb}}
+              {{else}}
+                <span class="text-muted">{{t 'generic.unknown'}}</span>
+              {{/if}}
+            </div>
+          </div>
+          <div class="col span-12">
+            <label>{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
+            <div>
+              {{#if host.diskBlurb}}
+                {{#if host.diskDetail}}
+                  {{#each host.diskDetail as |disk|}}
+                    {{disk.value}}
+                    ( {{disk.label}} )
+                  {{/each}}
+              {{else}}
+                  {{host.diskBlurb}} (total)
+                {{/if}}
             {{else}}
-              <span class="text-muted">{{t 'generic.unknown'}}</span>
-            {{/if}}
+                <span class="text-muted">{{t 'generic.unknown'}}</span>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+        <div class="col span-6">
+          <label>{{t 'generic.limits'}}: </label>
+          <div class="col span-12">
+            <label>{{t 'hostsPage.hostPage.limits.cpu'}}</label>
+            <div>
+              {{host.milliCpu}} {{t 'hostsPage.hostPage.infoMultiStats.milliCpu.labelText'}}
+            </div>
+          </div>
+          <div class="col span-12">
+            <label>{{t 'hostsPage.hostPage.limits.memory'}}</label>
+            <div>
+              {{host.memoryLimitBlurb}}
+            </div>
+          </div>
+          <div class="col span-12">
+            <label>{{t 'hostsPage.hostPage.limits.storage'}}</label>
+            <div>
+              {{host.localStorageBlurb}}
+            </div>
           </div>
         </div>
       </div>
