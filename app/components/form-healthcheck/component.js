@@ -59,6 +59,14 @@ export default Ember.Component.extend({
     },
   },
 
+  didReceiveAttrs() {
+    if (!this.get('expandFn')) {
+      this.set('expandFn', function(item) {
+          item.toggleProperty('expanded');
+      });
+    }
+  },
+
   init() {
     this._super(...arguments);
     var check = this.get('healthCheck');
