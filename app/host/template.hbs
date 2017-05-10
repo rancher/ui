@@ -70,45 +70,11 @@
     }}
       <div class="row">
         <div class="col span-6">
-          <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
+          <label>{{t 'hostsPage.hostPage.infoMultiStats.os'}}</label>
           <div>
-            {{#if host.milliCpu}}{{t 'generic.total'}}{{/if}}: {{host.cpuBlurb}}
-            {{t 'generic.limit'}}: {{host.milliCpu}} {{t 'hostsPage.hostPage.infoMultiStats.milliCpu.labelText'}}
-          </div>
-          <div>
-            {{#if host.cpuTooltip}}
-              {{host.cpuTooltip}}
-            {{/if}}
-          </div>
-        </div>
-        <div class="col span-6">
-          <label>{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
-          <div>
-            {{#if host.memory}}{{t 'generic.total'}}{{/if}}:
-            {{#if host.memoryBlurb}}
-              {{host.memoryBlurb}}
+            {{#if host.osDetail}}
+              {{host.osDetail}}
             {{else}}
-              <span class="text-muted">{{t 'generic.unknown'}}</span>
-            {{/if}}
-            {{t 'generic.limit'}}: {{host.memoryLimitBlurb}}
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col span-6">
-          <label>{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
-          <div>
-            {{#if host.diskBlurb}}
-              {{#if host.diskDetail}}
-                {{#each host.diskDetail as |disk|}}
-                  {{disk.value}}
-                  ( {{disk.label}} )
-                {{/each}}
-    {{else}}
-                {{host.diskBlurb}} (total)
-              {{/if}}
-              {{t 'hostsPage.hostPage.infoMultiStats.localStorageMb.labelText'}}: {{host.localStorageBlurb}}
-    {{else}}
               <span class="text-muted">{{t 'generic.unknown'}}</span>
             {{/if}}
           </div>
@@ -120,15 +86,69 @@
           </div>
         </div>
       </div>
+      <hr/>
       <div class="row">
-        <div class="col span-12">
-          <label>{{t 'hostsPage.hostPage.infoMultiStats.os'}}</label>
-          <div>
-            {{#if host.osDetail}}
-              {{host.osDetail}}
+        <div class="col span-6">
+          <label>{{t 'generic.hardware'}}: </label>
+          <div class="col span-12">
+            <label>{{t 'hostsPage.hostPage.infoMultiStats.cpu'}}</label>
+            <div>
+              {{#if host.milliCpu}}{{t 'generic.total'}}{{/if}}: {{host.cpuBlurb}}
+            </div>
+            <div>
+              {{#if host.cpuTooltip}}
+                {{host.cpuTooltip}}
+              {{/if}}
+            </div>
+          </div>
+          <div class="col span-12">
+            <label>{{t 'hostsPage.hostPage.infoMultiStats.memory'}}</label>
+            <div>
+              {{#if host.memory}}{{t 'generic.total'}}{{/if}}:
+              {{#if host.memoryBlurb}}
+                {{host.memoryBlurb}}
+              {{else}}
+                <span class="text-muted">{{t 'generic.unknown'}}</span>
+              {{/if}}
+            </div>
+          </div>
+          <div class="col span-12">
+            <label>{{t 'hostsPage.hostPage.infoMultiStats.storage'}}</label>
+            <div>
+              {{#if host.diskBlurb}}
+                {{#if host.diskDetail}}
+                  {{#each host.diskDetail as |disk|}}
+                    {{disk.value}}
+                    ( {{disk.label}} )
+                  {{/each}}
+              {{else}}
+                  {{host.diskBlurb}} (total)
+                {{/if}}
             {{else}}
-              <span class="text-muted">{{t 'generic.unknown'}}</span>
-            {{/if}}
+                <span class="text-muted">{{t 'generic.unknown'}}</span>
+              {{/if}}
+            </div>
+          </div>
+        </div>
+        <div class="col span-6">
+          <label>{{t 'generic.limits'}}: </label>
+          <div class="col span-12">
+            <label>{{t 'hostsPage.hostPage.limits.cpu'}}</label>
+            <div>
+              {{host.milliCpu}} {{t 'hostsPage.hostPage.infoMultiStats.milliCpu.labelText'}}
+            </div>
+          </div>
+          <div class="col span-12">
+            <label>{{t 'hostsPage.hostPage.limits.memory'}}</label>
+            <div>
+              {{host.memoryLimitBlurb}}
+            </div>
+          </div>
+          <div class="col span-12">
+            <label>{{t 'hostsPage.hostPage.limits.storage'}}</label>
+            <div>
+              {{host.localStorageBlurb}}
+            </div>
           </div>
         </div>
       </div>
@@ -141,12 +161,15 @@
          statusClass=(if model.host.arrangedInstances.length 'bg-success' 'text-muted')
          expandAll=al.expandAll
          expand=(action expandFn)
+         componentName='container-table'
          as | parent |
     }}
-      {{container-table
+      {{component parent.intent
           body=model.host.arrangedInstances
           sortBy=sortBy
           bulkActions=true
+          search=true
+          paging=true
           showHost=false
       }}
     {{/accordion-list-item}}
@@ -158,13 +181,14 @@
          statusClass=(if model.host.displayEndpoints.length 'bg-success' 'text-muted')
          expandAll=al.expandAll
          expand=(action expandFn)
+         componentName='sortable-table'
          as | parent |
     }}
-      {{#sortable-table
+      {{#component parent.intent
            classNames="grid fixed mb-0 sortable-table"
            bulkActions=false
-           paging=false
-           search=false
+           paging=true
+           search=true
            sortBy=sortBy
            descending=descending
            headers=portHeaders
@@ -199,7 +223,7 @@
             <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'hostsPage.hostPage.portsTab.table.body.noData'}}</td>
           </tr>
         {{/if}}
-      {{/sortable-table}}
+      {{/component}}
     {{/accordion-list-item}}
 
     {{labels-section
@@ -216,13 +240,14 @@
          statusClass=(if nonRootVolumes.length 'bg-success' 'text-muted')
          expandAll=al.expandAll
          expand=(action expandFn)
+         componentName='sortable-table'
          as | parent |
     }}
-      {{#sortable-table
+      {{#component parent.intent
            classNames="grid fixed mb-0 sortable-table"
            bulkActions=false
-           paging=false
-           search=false
+           paging=true
+           search=true
            sortBy=sortBy
            descending=descending
            headers=storageHeaders
@@ -237,7 +262,7 @@
             <td colspan="{{header.length}}" class="text-center text-muted">{{t 'hostsPage.hostPage.storageTab.table.body.noData'}}</td>
           </tr>
         {{/if}}
-      {{/sortable-table}}
+      {{/component}}
     {{/accordion-list-item}}
   {{/accordion-list}}
 </section>

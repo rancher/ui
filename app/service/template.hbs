@@ -286,9 +286,12 @@
              statusClass=(if model.service.instances.length 'bg-success' 'text-muted')
              expandAll=al.expandAll
              expand=(action expandFn)
+             componentName='container-table'
+             as | parent |
         }}
-          {{container-table
+          {{component parent.intent
               body=model.service.instances
+              bulkActions=true
               showHost=true
           }}
         {{/accordion-list-item}}

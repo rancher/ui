@@ -5,8 +5,10 @@
      statusClass=(if labelArray.length 'bg-success' 'text-muted')
      expandAll=expandAll
      expand=(action expandFn)
+     componentName='sortable-table'
+     as | parent |
 }}
-  {{#sortable-table
+  {{#component parent.intent
        classNames="grid fixed mb-0 sortable-table"
        bulkActions=false
        paging=false
@@ -26,5 +28,5 @@
         <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
       </tr>
     {{/if}}
-  {{/sortable-table}}
+  {{/component}}
 {{/accordion-list-item}}
