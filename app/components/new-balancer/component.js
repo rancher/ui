@@ -53,10 +53,6 @@ export default Ember.Component.extend(NewOrEdit, {
     setUpgrade(upgrade) {
       this.set('upgradeOptions', upgrade);
     },
-
-    setGlobal(bool) {
-      this.set('isGlobal', bool);
-    },
   },
 
   headerLabel: function() {

@@ -63,10 +63,8 @@ export default Ember.Component.extend(ManageLabels, {
     var mode = this.get('mode');
     if ( mode === 'global' ) {
       this.setLabel(C.LABEL.SCHED_GLOBAL,'true');
-      this.sendAction('setGlobal', true);
     } else {
       this.removeLabel(C.LABEL.SCHED_GLOBAL);
-      this.sendAction('setGlobal', false);
     }
 
   }),

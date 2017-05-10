@@ -26,7 +26,6 @@ export default Ember.Component.extend(ManageLabels, {
 
   // Actions output
   // setLabels(labelArray)
-  // setGlobal(boolean)
   // setRequestedHost(hostId)
 
   // Internal properties
@@ -59,7 +58,6 @@ export default Ember.Component.extend(ManageLabels, {
         requestedHostId: null,
       });
       Ember.run.scheduleOnce('afterRender', () => {
-        this.sendAction('setGlobal', true);
         this.sendAction('setRequestedHost', null);
       });
     }
@@ -69,24 +67,12 @@ export default Ember.Component.extend(ManageLabels, {
         isRequestedHost: true,
         requestedHostId: this.get('initialHostId'),
       });
-
-      Ember.run.scheduleOnce('afterRender', () => {
-        this.sendAction('setGlobal', false);
-        this.sendAction('setRequestedHost', this.get('requestedHostId'));
-      });
     }
   },
 
   updateLabels(labels) {
     this.sendAction('setLabels', labels);
   },
-
-  globalDidChange: function() {
-    if ( this.get('isGlobal') )
-    {
-      this.set('isRequestedHost',false);
-    }
-  }.observes('isGlobal'),
 
   isRequestedHostDidChange: function() {
     if ( this.get('isRequestedHost') )
@@ -102,13 +88,6 @@ export default Ember.Component.extend(ManageLabels, {
 
   requestedHostIdDidChange: function() {
     var hostId = this.get('requestedHostId');
-
-    if ( hostId )
-    {
-      this.set('isRequestedHost', true);
-      this.sendAction('setGlobal', false);
-    }
-
     this.sendAction('setRequestedHost', hostId);
   }.observes('requestedHostId'),
 

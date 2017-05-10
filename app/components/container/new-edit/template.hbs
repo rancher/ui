@@ -1,14 +1,20 @@
-<section class="header clearfix">
-  <h1>{{t headerToken name=primaryResource.name}}</h1>
-  {{#if isSidekick}}
-    <div class="right-buttons">
+{{#if isSidekick}}
+  <hr class="mt-20 mb-20" />
+
+  <section class="header header-sidekick clearfix">
+    <h2 class="inline-block">{{t headerToken name=configName}}</h2>
+    <div class="right-buttons p-0">
       <button class="btn bg-transparent" {{action "removeSidekick" launchConfigIndex}}>{{t 'newContainer.removeSidekick'}}</button>
     </div>
-  {{/if}}
-</section>
+  </section>
+{{else}}
+  <section class="header clearfix">
+    <h1>{{t headerToken name=configName}}</h1>
+  </section>
+{{/if}}
 
 <div class="row">
-  <div class="col span-11-of-24">
+  <div class="col span-11-of-23">
     {{form-name-description
       model=primaryResource
       namePlaceholder="newContainer.name.placeholder"
@@ -17,15 +23,8 @@
       colClass=""
       bothColClass=""
     }}
-
-    {{container/form-image
-      initialValue=launchConfig.imageUuid
-      errors=imageErrors
-      changed=(action 'setImage')
-    }}
   </div>
-
-  <div class="col span-11-of-24 offset-1-of-24">
+  <div class="col span-11-of-23 offset-1-of-23">
     {{#if isSidekick}}
       {{!-- Sidekicks don't have their own scale --}}
       {{container/form-scale isSidekick=true}}
@@ -38,7 +37,6 @@
         isService=true
         errors=scaleErrors
         setLabels=(action 'setLabels' 'scale')
-        setGlobal=(action 'setGlobal')
         setScale=(action  'setScale')
       }}
     {{else if isUpgrade}}
@@ -53,6 +51,19 @@
       }}
     {{/if}}
 
+  </div>
+</div>
+
+<div class="row">
+  <div class="col span-11-of-23">
+    {{container/form-image
+      initialValue=launchConfig.imageUuid
+      errors=imageErrors
+      changed=(action 'setImage')
+    }}
+  </div>
+
+  <div class="col span-11-of-23 offset-1-of-23">
     {{#if (or isSidekick isUpgrade)}}
       {{!-- Only a new primary service or container picks stack --}}
     {{else}}
@@ -64,10 +75,8 @@
   </div>
 </div>
 
-<hr class="mt-20 mb-20" />
-
 <div class="row">
-  <div class="col span-11-of-24">
+  <div class="col span-11-of-23">
     {{container/form-ports
       initialPorts=launchConfig.ports
       errors=portErrors
@@ -75,7 +84,7 @@
       portsAsStrArray=launchConfig.ports
     }}
   </div>
-  <div class="col span-11-of-24 offset-1-of-24">
+  <div class="col span-11-of-23 offset-1-of-23">
     {{form-key-value
         initialMap=launchConfig.environment
         changed=(action (mut launchConfig.environment))
@@ -91,17 +100,16 @@
   </div>
 </div>
 
-{{#if (and isService (not isSidekick))}}
+{{#if (not isSidekick)}}
   {{container/form-scheduling
-      isService=isService
-      isGlobal=isGlobal
-      initialHostId=launchConfig.requestedHostId
-      initialLabels=launchConfig.labels
-      errors=schedulingErrors
-      editing=true
-      setLabels=(action 'setLabels' 'scheduling')
-      setGlobal=(action 'setGlobal')
-      setRequestedHost=(action 'setRequestedHostId')
+    isService=isService
+    isGlobal=isGlobal
+    initialHostId=launchConfig.requestedHostId
+    initialLabels=launchConfig.labels
+    errors=schedulingErrors
+    editing=true
+    setLabels=(action 'setLabels' 'scheduling')
+    setRequestedHost=(action 'setRequestedHostId')
   }}
 {{/if}}
 
@@ -206,19 +214,16 @@
 
 {{#if (and isService (not isSidekick))}}
   {{#each service.secondaryLaunchConfigs as |slc index|}}
-    <hr/>
-    <div class="box">
-      {{container/new-edit
-        isService=true
-        isSidekick=true
-        isUpgrade=isUpgrade
-        launchConfig=slc
-        service=slc
-        primaryResource=slc
-        primaryService=primaryService
-        launchConfigIndex=index
-      }}
-    </div>
+    {{container/new-edit
+      isService=true
+      isSidekick=true
+      isUpgrade=isUpgrade
+      launchConfig=slc
+      service=slc
+      primaryResource=slc
+      primaryService=primaryService
+      launchConfigIndex=index
+    }}
   {{/each}}
 {{/if}}
 

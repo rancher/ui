@@ -55,6 +55,7 @@ fi
 PKG_VERSION=$(cat package.json | grep version | head -n 1 | cut -f4 -d'"')
 FORCE=0
 LATEST=0
+MODE=""
 UPLOAD=0
 TAG=0
 TEST=1
@@ -63,7 +64,7 @@ FINGERPRINT="yes"
 : ${FORCE_VERSION:=""}
 GS_PROJECT_NAME="${GS_PROJECT_NAME:-Rancher}"
 
-while getopts ":dlustfv:c:p:" opt;do
+while getopts ":dlustfv:c:p:m:" opt;do
     case $opt in
     d)
         ENVIRONMENT="development"
@@ -73,6 +74,9 @@ while getopts ":dlustfv:c:p:" opt;do
         ;;
     l)
         LATEST=1
+        ;;
+    m)
+        MODE=$OPTARG
         ;;
     s)
         TEST=0
@@ -161,7 +165,7 @@ if [[ "${VERSION}" != "${PKG_VERSION}" ]]; then
 fi
 echo "Version: ${VERSION}"
 echo "Build Dir: ${BUILD_DIR}"
-echo "Options: Force=${FORCE}, Latest=${LATEST}, Test=${TEST}, Upload=${UPLOAD}, Tag=${TAG}"
+echo "Options: Force=${FORCE}, Mode=${MODE}, Latest=${LATEST}, Test=${TEST}, Upload=${UPLOAD}, Tag=${TAG}"
 echo "Current Directory: $(pwd)"
 
 if [[ $TEST -eq 1 ]]; then
@@ -174,7 +178,7 @@ fi
 
 if [[ $LATEST -ne 1 ]]; then
   echo "Building Static Tarball..."
-  RANCHER="" CATALOG="" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
+  UI_MODE="${MODE}" RANCHER="" CATALOG="" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
 
   # Create a file containing the version
   echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
@@ -184,7 +188,7 @@ if [[ $LATEST -ne 1 ]]; then
 fi;
 
 echo "Building Hosted Version..."
-FINGERPRINT="${FINGERPRINT}" RANCHER="" CATALOG="" BASE_ASSETS="//${CDN}/${VERSION}/" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
+UI_MODE="${MODE}" FINGERPRINT="${FINGERPRINT}" RANCHER="" CATALOG="" BASE_ASSETS="//${CDN}/${VERSION}/" runCmd ./node_modules/.bin/ember build --environment=${ENVIRONMENT} --output-path=${BUILD_DIR}
 
 # Create a file containing the version
 echo "${PKG_VERSION}" > ${BUILD_DIR}/VERSION.txt
