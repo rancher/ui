@@ -55,6 +55,13 @@ export default Ember.Component.extend({
   classNames: ['accordion'],
   expanded: false,
   expandAll: false,
+  intent: null,
+
+  expdObserver: Ember.on('init', Ember.observer('expanded', function() {
+    if (this.get('expanded') && !this.get('intent')) {
+      this.set('intent', this.get('componentName'));
+    }
+  })),
 
   expandAllObserver: Ember.on('init', Ember.observer('expandAll', function() {
     var ea = this.get('expandAll');

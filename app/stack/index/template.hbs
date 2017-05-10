@@ -16,9 +16,10 @@
          statusClass=(if model.instances.length 'bg-success' 'text-muted')
          expandAll=al.expandAll
          expand=(action expandFn)
-         as |parent|
+         componentName='container-table'
+         as | parent |
     }}
-      {{container-table
+      {{component parent.intent
           body=model.instances
           sortBy=sortBy
           bulkActions=true
@@ -27,15 +28,16 @@
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-    title=(t 'stackPage.scalingGroups.header')
-    detail=(t 'stackPage.scalingGroups.detail')
-    status=(t 'stackPage.scalingGroups.status' count=scalingGroups.length)
-    statusClass=(if scalingGroups.length 'bg-success' 'text-muted')
-        expandAll=al.expandAll
+         title=(t 'stackPage.scalingGroups.header')
+         detail=(t 'stackPage.scalingGroups.detail')
+         status=(t 'stackPage.scalingGroups.status' count=scalingGroups.length)
+         statusClass=(if scalingGroups.length 'bg-success' 'text-muted')
+         expandAll=al.expandAll
          expand=(action expandFn)
-         as |parent|
+         componentName='sortable-table'
+         as | parent |
     }}
-      {{#sortable-table
+      {{#component parent.intent
            classNames="grid sortable-table"
            body=scalingGroups
            sortBy=sortBy
@@ -53,18 +55,20 @@
         {{else if (eq kind "nomatch")}}
           <tr><td class="text-center text-muted pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
         {{/if}}
-      {{/sortable-table}}
+      {{/component}}
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-    title=(t 'stackPage.loadBalancers.header')
-    detail=(t 'stackPage.loadBalancers.detail')
-    status=(t 'stackPage.loadBalancers.status' count=loadBalancers.length)
-    statusClass=(if loadBalancers.length 'bg-success' 'text-muted')
-        expandAll=al.expandAll
+         title=(t 'stackPage.loadBalancers.header')
+         detail=(t 'stackPage.loadBalancers.detail')
+         status=(t 'stackPage.loadBalancers.status' count=loadBalancers.length)
+         statusClass=(if loadBalancers.length 'bg-success' 'text-muted')
+         expandAll=al.expandAll
          expand=(action expandFn)
+         componentName='sortable-table'
+         as | parent |
     }}
-      {{#sortable-table
+      {{#component parent.intent
            classNames="grid sortable-table"
            body=loadBalancers
            sortBy=sortBy
@@ -82,18 +86,20 @@
         {{else if (eq kind "nomatch")}}
           <tr><td class="text-center text-muted pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
         {{/if}}
-      {{/sortable-table}}
+      {{/component}}
     {{/accordion-list-item}}
 
     {{#accordion-list-item
-    title=(t 'stackPage.dnsServices.header')
-    detail=(t 'stackPage.dnsServices.detail')
-    status=(t 'stackPage.dnsServices.status' count=dnsServices.length)
-    statusClass=(if dnsServices.length 'bg-success' 'text-muted')
-        expandAll=al.expandAll
+         title=(t 'stackPage.dnsServices.header')
+         detail=(t 'stackPage.dnsServices.detail')
+         status=(t 'stackPage.dnsServices.status' count=dnsServices.length)
+         statusClass=(if dnsServices.length 'bg-success' 'text-muted')
+         expandAll=al.expandAll
          expand=(action expandFn)
+         componentName='sortable-table'
+         as | parent |
     }}
-      {{#sortable-table
+      {{#component parent.intent
            classNames="grid sortable-table"
            body=dnsServices
            sortBy=sortBy
@@ -111,7 +117,7 @@
         {{else if (eq kind "nomatch")}}
           <tr><td class="text-center text-muted pt-20 pb-20">{{t 'containersPage.table.noMatch'}}</td></tr>
         {{/if}}
-      {{/sortable-table}}
+      {{/component}}
     {{/accordion-list-item}}
   {{/accordion-list}}
 </section>

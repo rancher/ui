@@ -161,9 +161,10 @@
          statusClass=(if model.host.arrangedInstances.length 'bg-success' 'text-muted')
          expandAll=al.expandAll
          expand=(action expandFn)
+         componentName='container-table'
          as | parent |
     }}
-      {{container-table
+      {{component parent.intent
           body=model.host.arrangedInstances
           sortBy=sortBy
           bulkActions=true
@@ -178,9 +179,10 @@
          statusClass=(if model.host.displayEndpoints.length 'bg-success' 'text-muted')
          expandAll=al.expandAll
          expand=(action expandFn)
+         componentName='sortable-table'
          as | parent |
     }}
-      {{#sortable-table
+      {{#component parent.intent
            classNames="grid fixed mb-0 sortable-table"
            bulkActions=false
            paging=false
@@ -219,7 +221,7 @@
             <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'hostsPage.hostPage.portsTab.table.body.noData'}}</td>
           </tr>
         {{/if}}
-      {{/sortable-table}}
+      {{/component}}
     {{/accordion-list-item}}
 
     {{labels-section
@@ -236,9 +238,10 @@
          statusClass=(if nonRootVolumes.length 'bg-success' 'text-muted')
          expandAll=al.expandAll
          expand=(action expandFn)
+         componentName='sortable-table'
          as | parent |
     }}
-      {{#sortable-table
+      {{#component parent.intent
            classNames="grid fixed mb-0 sortable-table"
            bulkActions=false
            paging=false
@@ -257,7 +260,7 @@
             <td colspan="{{header.length}}" class="text-center text-muted">{{t 'hostsPage.hostPage.storageTab.table.body.noData'}}</td>
           </tr>
         {{/if}}
-      {{/sortable-table}}
+      {{/component}}
     {{/accordion-list-item}}
   {{/accordion-list}}
 </section>
