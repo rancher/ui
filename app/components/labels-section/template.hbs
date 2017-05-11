@@ -11,6 +11,7 @@
   {{#component parent.intent
        classNames="grid fixed mb-0 sortable-table"
        bulkActions=false
+       rowActions=false
        paging=false
        search=true
        sortBy=sortBy
@@ -21,8 +22,8 @@
   }}
     {{#if (eq kind "row")}}
       {{#if showKind}}<td data-title="{{t 'labelsSection.kind'}}:"  >{{uc-first label.type}}</td>{{/if}}
-      <td data-title="{{t 'labelsSection.key'}}:" class="force-wrap valign-top">{{label.key}}</td>
-      <td data-title="{{t 'labelsSection.value'}}:" class="force-wrap valign-top">{{pretty-json value=label.value}}</td>
+      <td data-title="{{t 'labelsSection.key'}}:" class="force-wrap">{{label.key}}</td>
+      <td data-title="{{t 'labelsSection.value'}}:" class="force-wrap">{{pretty-json value=label.value}}</td>
     {{else if (eq kind "norows")}}
       <tr>
         <td colspan="{{sortable.fullColspan}}" class="text-center text-muted pt-20 pb-20">{{t 'labelsSection.noData'}}</td>
