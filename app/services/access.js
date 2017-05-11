@@ -23,11 +23,12 @@ export default Ember.Service.extend({
   admin: null,
 
   // The identity from the session isn't an actual identity model...
-  identity: function() {
-    var obj = this.get('session.'+C.SESSION.IDENTITY) || {};
-    obj.type = 'identity';
-    return this.get('userStore').createRecord(obj);
-  }.property('session.'+C.SESSION.IDENTITY),
+  // identity: function() {
+  //   var obj = this.get('session.'+C.SESSION.IDENTITY) || {};
+  //   obj.type = 'identity';
+  //   return this.get('userStore').createRecord(obj);
+  // }.property('session.'+C.SESSION.IDENTITY),
+  identity: null,
 
   testAuth() {
     // make a call to api base because it is authenticated
