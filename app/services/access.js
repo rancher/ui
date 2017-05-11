@@ -24,11 +24,11 @@ export default Ember.Service.extend({
 
   // The identity from the session isn't an actual identity model...
   identity: null,
-  identityObsvr: Ember.observer(`session.${C.SESSION.IDENTITY}`, function() {
-    var obj = this.get(`session.${C.SESSION.IDENTITY}`);
+  identityObsvr: Ember.on('init', Ember.observer(`session.${C.SESSION.IDENTITY}`, function() {
+    var obj = this.get(`session.${C.SESSION.IDENTITY}`) || {};
     obj.type = 'identity';
     this.set('identity', this.get('userStore').createRecord(obj));
-  }),
+  })),
 
   testAuth() {
     // make a call to api base because it is authenticated
