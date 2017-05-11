@@ -94,7 +94,7 @@ export default Ember.Component.extend({
           }
         });
 
-        Ember.RSVP.allSettled(changes).then((results) => {
+        Ember.RSVP.allSettled(changes).then(() => {
           return this.get('catalog').refresh().then(() => {
             this.set('saving', false);
             cb(true);

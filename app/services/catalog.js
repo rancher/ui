@@ -31,6 +31,7 @@ export default Ember.Service.extend({
       this.set('templateCache', null);
       return store.request({
         url: `${this.get('app.catalogEndpoint')}/templates?refresh&action=refresh`,
+        headers: {[C.HEADER.PROJECT_ID]: this.get('projects.current.id')},
         method: 'POST',
         timeout: null, // I'm willing to wait...
       });
@@ -70,7 +71,7 @@ export default Ember.Service.extend({
     }
 
     let url = this._addLimits(`${this.get('app.catalogEndpoint')}/${type}/${id}`);
-    return this.get('store').request({url: url});
+    return this.get('store').request({url: url, headers: {[C.HEADER.PROJECT_ID]: this.get('projects.current.id')}});
   },
 
   fetchTemplates(params) {
