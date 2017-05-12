@@ -42,14 +42,14 @@
           <ul class="dropdown-menu dropdown-menu-right">
             {{#each filters as |opt|}}
               <li class="text-capitalize {{if (eq catalogId opt.queryParams.catalogId) 'active'}}">
-                {{#link-to parentRoute (query-params catalogId=opt.queryParams.catalogId)}}
+                <a href="{{href-to parentRoute (query-params catalogId=opt.queryParams.catalogId)}}">
                   <i class="{{opt.icon}}"></i>
                   {{#if opt.localizedLabel}}
                     {{t opt.localizedLabel}}
                   {{else}}
                     {{opt.label}}
                   {{/if}}
-                {{/link-to}}
+                </a>
               </li>
             {{/each}}
           </ul>
@@ -65,9 +65,7 @@
       </li>
       {{#each categoryWithCounts as |cat|}}
         <li class=" {{if (eq cat.name category) 'active' ''}}">
-          {{#link-to parentRoute (query-params category=cat.name) classNames="btn has-label bg-default btn-md"}}
-            <span class="clip">{{cat.name}}</span> <span class="btn-label">{{cat.count}}</span>
-          {{/link-to}}
+          <a href="{{href-to parentRoute (query-params category=cat.name)}}" class="btn has-label bg-default btn-md"><span class="clip">{{cat.name}}</span> <span class="btn-label">{{cat.count}}</span></a>
         </li>
       {{/each}}
     </ul>
