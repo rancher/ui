@@ -427,7 +427,7 @@ function getStacksSubtree() {
 }
 
 function getCatalogSubtree() {
-  let repos = this.get('catalog.catalogs').slice();
+  let repos = (this.get('catalog.catalogs')||[]).slice();
   let showAll = repos.length > 1;
 
   let out = [];
@@ -478,7 +478,7 @@ function getCatalogSubtree() {
     out.push({
       id: 'catalog-'+repo.get('id'),
       label: repo.get('name'),
-      icon: 'icon icon-user',
+      icon: (repo.get('environmentId') === 'global' ? 'icon icon-users' : 'icon icon-user'),
       route: 'catalog-tab',
       ctx: [getProjectId],
       queryParams: {catalogId: repo.get('id')}

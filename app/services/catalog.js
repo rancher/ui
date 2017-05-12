@@ -12,7 +12,6 @@ export default Ember.Service.extend({
 
   templateCache:              null,
   catalogs:                   null,
-  componentRequestingRefresh: false, // this is only present to deal with modals. this can be observed to issue a refresh command
 
   templateBase: Ember.computed('projects.current.orchestration', function() {
     return this.get('projects.current.orchestration') || 'cattle';
@@ -32,6 +31,7 @@ export default Ember.Service.extend({
       this.set('templateCache', null);
       return store.request({
         url: `${this.get('app.catalogEndpoint')}/templates?refresh&action=refresh`,
+        headers: {[C.HEADER.PROJECT_ID]: this.get('projects.current.id')},
         method: 'POST',
         timeout: null, // I'm willing to wait...
       });
@@ -71,7 +71,7 @@ export default Ember.Service.extend({
     }
 
     let url = this._addLimits(`${this.get('app.catalogEndpoint')}/${type}/${id}`);
-    return this.get('store').request({url: url});
+    return this.get('store').request({url: url, headers: {[C.HEADER.PROJECT_ID]: this.get('projects.current.id')}});
   },
 
   fetchTemplates(params) {
