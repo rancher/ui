@@ -1,10 +1,10 @@
 <section class="header clearfix">
   {{#banner-message showIcon=false}}
-    <div class="banner-message pull-left">
+    <div class="pull-left">
       <p>{{t 'hostsPage.hostPage.header.singleBanner'}}</p>
     </div>
-    <div class="banner-link pull-right">
-      <p>{{#link-to "hosts"}}{{t 'hostsPage.hostPage.header.backLink'}}{{/link-to}}</p>
+    <div class="pull-right">
+      {{#link-to "hosts"}}{{t 'hostsPage.hostPage.header.backLink'}}{{/link-to}}
     </div>
   {{/banner-message}}
 
@@ -201,7 +201,7 @@
           <td>
             {{#if port.service}}
               <i class="{{port.service.stateIcon}} {{port.service.stateColor}}" />
-              {{#link-to "service" port.service.stackId port.service.id}}{{port.service.displayName}}{{/link-to}}
+              <a href="{{href-to "service" port.service.stackId port.service.id}}">{{port.service.displayName}}</a>
             {{else}}
               <span class="text-muted">-</span>
             {{/if}}
@@ -210,9 +210,9 @@
             {{#if port.instance}}
               <i class="{{port.instance.stateIcon}} {{port.instance.stateColor}}" />
               {{#if (eq port.instance.kind "virtualMachine")}}
-                {{#link-to "virtualmachine" port.instance.id}}{{port.instance.displayName}}{{/link-to}}
+                <a href="{{href-to "virtualmachine" port.instance.id}}">{{port.instance.displayName}}</a>
               {{else}}
-                {{#link-to "container" port.instance.id}}{{port.instance.displayName}}{{/link-to}}
+                <a href="{{href-to "container" port.instance.id}}">{{port.instance.displayName}}</a>
               {{/if}}
             {{else}}
               <span class="text-muted">-</span>

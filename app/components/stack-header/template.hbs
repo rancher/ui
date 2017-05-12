@@ -25,8 +25,12 @@
       {{badge-state model=model}}
       {{#if model.canViewConfig}}
         <div class="btn-group ml-10 p-0">
-          {{#link-to "stack.index" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-tasks" text=(t 'tooltipLink.list') options=listLinkOptions}}{{/link-to}}
-          {{#link-to "stack.code" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-file" text=(t 'tooltipLink.composeYaml') options=yamlLinkOptions}}{{/link-to}}
+          {{#tooltip-element type="tooltip-basic" model=(t 'tooltipLink.list') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
+            {{#link-to "stack.index" classNames="btn btn-sm bg-default"}}<i class="icon icon-tasks"></i>{{/link-to}}
+          {{/tooltip-element}}
+          {{#tooltip-element type="tooltip-basic" model=(t 'tooltipLink.composeYaml') tooltipTemplate='tooltip-static' aria-describedby="tooltip-base" tooltipFor="tooltipLink"}}
+            {{#link-to "stack.code" classNames="btn btn-sm bg-default"}}<i class="icon icon-file"></i>{{/link-to}}
+          {{/tooltip-element}}
         </div>
       {{/if}}
       {{action-menu model=model showPrimary=false classNames="ml-10 pull-right" size="sm"}}
