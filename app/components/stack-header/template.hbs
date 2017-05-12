@@ -21,19 +21,17 @@
           </div>
         {{/if}}
       </div>
-      {{header-state model=model}}
-      {{action-menu model=model showPrimary=false classNames="ml-10 pull-right" size="sm"}}
-    </div>
-  </div>
-  <div class="clearfix">
-    {{upgrade-btn model=model}}
-    <div class="right-buttons">
+      {{upgrade-btn model=model}}
+      {{badge-state model=model}}
       {{#if model.canViewConfig}}
         <div class="btn-group ml-10 p-0">
           {{#link-to "stack.index" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-tasks" text=(t 'tooltipLink.list') options=listLinkOptions}}{{/link-to}}
           {{#link-to "stack.code" classNames="btn btn-sm bg-default"}}{{tooltip-link icon="icon-file" text=(t 'tooltipLink.composeYaml') options=yamlLinkOptions}}{{/link-to}}
         </div>
       {{/if}}
+      {{action-menu model=model showPrimary=false classNames="ml-10 pull-right" size="sm"}}
     </div>
+  </div>
+  <div class="clearfix">
   </div>
 </section>
