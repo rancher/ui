@@ -10,6 +10,16 @@
   </td>
   <td data-title="{{dt.name}}" class="clip">
     <a href="{{href-to "host" model.id}}">{{model.displayName}}</a>
+{{!--     labels--}}
+    {{#if showLabelRow}}
+      {{#each model.displayUserLabelStrings as |label|}}
+        <span class="tag-xs bg-info">{{label}}</span>
+      {{/each}}
+      {{#each model.requireAnyLabelStrings as |label|}}
+        <span class="tag-xs bg-warning">{{label}}</span>
+      {{/each}}
+    {{/if}}
+
   </td>
   <td data-title="{{dt.ip}}">
     {{#copy-inline clipboardText=model.displayIp size="small"}}
@@ -22,40 +32,36 @@
   <td data-title="{{dt.docker}}">
     {{model.dockerEngineVersion}}
   </td>
-{{!--   <td data-title="{{dt.instanceCount}}">
-    {{#if subMatches}}
-      {{get subMatches model.id}}/{{model.arrangedInstances.length}}
-    {{else}}
-      {{model.arrangedInstances.length}}
-    {{/if}}
-  </td> --}}
-  <td data-title="{{dt.instanceState}}">
-    <div class="col span-3 text-right">
-      {{#if subMatches}}
-        {{get subMatches model.id}}/{{model.arrangedInstances.length}}
-      {{else}}
-        {{model.arrangedInstances.length}}
-      {{/if}}
-    </div>
 
-    <div class="col span-9 pt-5">
+  <td data-title="{{dt.instanceState}}">
+    <div style="margin-top:2px;">
       {{progress-bar-multi
         labelKey="state"
         valueKey="count"
         values=model.instanceStates.byColor
         tooltipValues=model.instanceStates.byName
       }}
+      <!--count-->
+      <p class="text-muted m-0">
+        <small>
+        {{#if subMatches}}
+          {{get subMatches model.id}}/{{model.arrangedInstances.length}} containers
+        {{else}}
+          {{model.arrangedInstances.length}} containers
+        {{/if}}
+        </small>
+      </p>
     </div>
   </td>
   <td data-title="{{dt.actions}}" class="actions">
     {{action-menu model=model showPrimary=false}}
   </td>
 </tr>
-
-{{#if showLabelRow}}
+<tr class="sub-row"></tr>
+{{!-- {{#if showLabelRow}}
   <tr class="sub-row hide">{{! make the alternating color match }}</tr>
   <tr class="sub-row no-top">
-    <td colspan="{{sub fullColspan 3}}">
+    <td colspan="{{sub fullColspan 3}}" style="height: 30px; vertical-align:top;">
       {{#each model.displayUserLabelStrings as |label|}}
         <span class="tag-xs bg-info">{{label}}</span>
       {{/each}}
@@ -65,7 +71,7 @@
     </td>
     <td>{{! actions}}</td>
   </tr>
-{{/if}}
+{{/if}} --}}
 
   <tr class="sub-row hide">{{! make the alternating color match }}</tr>
   <tr class="sub-row {{unless expanded 'hide'}}">
