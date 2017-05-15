@@ -63,22 +63,46 @@ export default Ember.Controller.extend({
     }
   }),
 
+  totalCategories: Ember.computed('categoryWithCounts', function() {
+    var categories = this.get('categoryWithCounts');
+    var count = 0;
+    Object.keys(categories).forEach((cat) => {
+      count = count + categories[cat].count;
+    });
+    return count;
+  }),
+
   categoryWithCounts: Ember.computed('category', 'categories', function() {
     var categories = [];
-    var templates = this.get('catalog.templateCache');
+    var out        = {};
+    var templates  = this.get('catalog.templateCache');
+    var base       = this.get('catalog.templateBase');
 
     templates.forEach((tpl) => {
-      if (tpl.categories) {
-        tpl.categories.forEach((ctgy) => {
-          if (categories.findBy('name', ctgy) && ctgy !== 'all') {
-            categories.findBy('name', ctgy).count++;
-          } else {
-            categories.pushObject({name: ctgy, count: 1});
-          }
-        });
+      if (base.includes(tpl.get('templateBase')||'')) {
+        if (tpl.categories) {
+
+          tpl.categories.forEach((ctgy) => {
+            categories.push(ctgy);
+          });
+        }
       }
     });
-    return categories.sortBy('name');
+
+    categories.sort().forEach((ctgy) => {
+      let normalized = ctgy.underscore();
+
+      if (out[normalized] && ctgy !== 'all') {
+        out[normalized].count++;
+      } else {
+        out[normalized] = {
+          name: ctgy,
+          count: 1,
+        };
+      }
+    });
+
+    return out;
   }),
 
   catalogURL: Ember.computed('model.catalogs', function() {

@@ -60,14 +60,14 @@
     <ul class="container-categories list-unstyled">
       <li class=" {{if (eq category 'all') 'active' ''}}">
         {{#link-to parentRoute (query-params category='all') classNames="btn has-label bg-default btn-md"}}
-          <span class="clip">{{t 'generic.all'}}</span> <span class="btn-label">{{categories.length}}</span>
+          <span class="clip">{{t 'generic.all'}}</span> <span class="btn-label">{{totalCategories}}</span>
         {{/link-to}}
       </li>
-      {{#each categoryWithCounts as |cat|}}
+      {{#each-in categoryWithCounts as |norm cat|}}
         <li class=" {{if (eq cat.name category) 'active' ''}}">
           <a href="{{href-to parentRoute (query-params category=cat.name)}}" class="btn has-label bg-default btn-md"><span class="clip">{{cat.name}}</span> <span class="btn-label">{{cat.count}}</span></a>
         </li>
-      {{/each}}
+      {{/each-in}}
     </ul>
   </div>
   <div class="col span-9">
