@@ -1,11 +1,11 @@
 import Ember from 'ember';
-import Sortable from 'ui/mixins/sortable';
 
-export default Ember.Component.extend(Sortable, {
+export default Ember.Component.extend({
   model: null,
   single: false,
 
-  sortableContent: Ember.computed.alias('model.volumes'),
+  classNames: ['stack-section','storage', 'clear-section'],
+
   sortBy: 'name',
   headers: [
     {
@@ -30,6 +30,4 @@ export default Ember.Component.extend(Sortable, {
   hostsByName: function() {
     return (this.get('model.hosts')||[]).sortBy('displayName');
   }.property('model.hosts.@each.displayName'),
-
-  classNames: ['stack-section','storage', 'clear-section'],
 });

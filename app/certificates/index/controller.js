@@ -1,8 +1,6 @@
 import Ember from 'ember';
-import Sortable from 'ui/mixins/sortable';
-import FilterState from 'ui/mixins/filter-state';
 
-export default Ember.Controller.extend(FilterState, Sortable, {
+export default Ember.Controller.extend({
   sortBy: 'name',
   headers: [
     {

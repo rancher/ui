@@ -210,7 +210,7 @@ export default Ember.Component.extend(NewOrEdit, SelectTab, {
 
     if ( this.get('isService') )
     {
-      (this.get('service.secondaryLaunchConfigs')||[]).forEach((slc, idx) => {
+      (this.get('service.secondaryLaunchConfigs')||[]).forEach((slc) => {
         slc.validationErrors().forEach((err) => {
           errors.push(slc.get('displayName') + ': ' + err);
         });

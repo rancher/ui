@@ -120,7 +120,6 @@ export default Ember.Mixin.create({
 
   init() {
     this._super(...arguments);
-    console.log('init', this.get('model.id'));
     this.updateStatus();
   },
 
@@ -211,7 +210,6 @@ export default Ember.Mixin.create({
 
   externalIdChanged: function() {
     Ember.run.once(() => {
-      console.log('externalIdChange', this.get('model.id'));
       this.updateStatus();
     });
   }.observes('model.{externalId,state}'),

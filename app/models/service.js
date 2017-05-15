@@ -173,7 +173,7 @@ var Service = Resource.extend(StateCounts, {
       { label: 'action.restart',        icon: 'icon icon-refresh',          action: 'restart',        enabled: !!a.restart && canHaveContainers, bulkable: true },
       { label: 'action.stop',           icon: 'icon icon-stop',             action: 'promptStop',     enabled: !!a.deactivate, altAction: 'deactivate', bulkable: true},
       { divider: true },
-      { label: 'action.garbageCollect', icon: '',                           action: 'garbageCollect', enabled: !!a.garbagecollect && isReal},
+      { label: 'action.garbageCollect', icon: 'icon icon-garbage',          action: 'garbageCollect', enabled: !!a.garbagecollect && isReal},
       { label: 'action.remove',         icon: 'icon icon-trash',            action: 'promptDelete',   enabled: !!a.remove, altAction: 'delete', bulkable: true},
       { divider: true },
       { label: 'action.viewInApi',      icon: 'icon icon-external-link',    action: 'goToApi',        enabled: true },
@@ -230,15 +230,14 @@ var Service = Resource.extend(StateCounts, {
       return service;
     }
 
-    if ( health === 'healthy' )
-    {
+    let hasCheck = !!this.get('launchConfig.healthCheck');
+
+    if ( hasCheck && health ) {
+      return health;
+    } else {
       return service;
     }
-    else
-    {
-      return health;
-    }
-  }.property('state', 'healthState'),
+  }.property('state', 'healthState', 'launchConfig.healthCheck'),
 
   isGlobalScale: function() {
     return (this.get('launchConfig.labels')||{})[C.LABEL.SCHED_GLOBAL] + '' === 'true';

@@ -70,6 +70,14 @@ export default Ember.Component.extend(ManageLabels, {
     }
   },
 
+  didReceiveAttrs() {
+    if (!this.get('expandFn')) {
+      this.set('expandFn', function(item) {
+          item.toggleProperty('expanded');
+      });
+    }
+  },
+
   updateLabels(labels) {
     this.sendAction('setLabels', labels);
   },

@@ -23,9 +23,9 @@ export function normalizeTag(name) {
 }
 
 export function tagsToArray(str) {
-  return (str||'').split(/\s*,\s*/).
-    map((tag) => normalizeTag(tag)).
-    filter((tag) => tag.length > 0);
+  return (str||'').split(/\s*,\s*/)
+    .map((tag) => normalizeTag(tag))
+    .filter((tag) => tag.length > 0);
 }
 
 export function tagChoices(all) {
@@ -51,6 +51,17 @@ var Stack = Resource.extend(StateCounts, {
     this._super(...arguments);
     this.defineStateCounts('services', 'serviceStates', 'serviceCountSort');
   },
+
+  _allInstances: null,
+  instances: Ember.computed('_allInstances.@each.stackId', function() {
+    let all = this.get('_allInstances');
+    if ( !all ) {
+      all = this.get('store').all('instance');
+      this.set('_allInstances', all);
+    }
+
+    return all.filterBy('stackId', this.get('id'));
+  }),
 
   actions: {
     cancelUpgrade: function() {
@@ -148,13 +159,13 @@ var Stack = Resource.extend(StateCounts, {
       return stack;
     }
 
-    if ( health === 'healthy' )
-    {
-      return stack;
-    }
-    else
-    {
+    // @TODO include individual containers
+    let hasCheck = !!this.get('realServices').findBy('launchConfig.healthCheck')
+
+    if ( hasCheck && health ) {
       return health;
+    } else {
+      return stack;
     }
   }.property('state', 'healthState'),
 

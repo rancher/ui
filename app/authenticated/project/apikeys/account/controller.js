@@ -1,10 +1,7 @@
 import Ember from 'ember';
 import C from 'ui/utils/constants';
-import Util from 'ui/utils/util';
-import Sortable from 'ui/mixins/sortable';
 
-
-export default Ember.Controller.extend(Sortable, {
+export default Ember.Controller.extend({
   access:        Ember.inject.service(),
   'tab-session': Ember.inject.service(),
 
@@ -56,20 +53,12 @@ export default Ember.Controller.extend(Sortable, {
     },
   ],
 
-  arranged: function() {
+  filtered: function() {
     var me = this.get(`session.${C.SESSION.ACCOUNT_ID}`);
-    let sort = this.get('sorts')[this.get('sortBy')];
-
-    let out = this.get('model.account').filter((row) => {
+    return this.get('model.account').filter((row) => {
       return row.get('accountId') === me;
-    }).sortBy(...sort);
-
-    if ( this.get('descending') ) {
-      out = out.reverse();
-    }
-
-    return out;
-  }.property('model.account.@each.{accountId,name,createdTs}','sortBy','descending'),
+    });
+  }.property('model.account.@each.accountId'),
 
   actions: {
     applyBulkAction(name, selectedElements) {

@@ -2,20 +2,21 @@
   <h1>{{t 'catalogPage.index.header'}}</h1>
 
   <div class="right-buttons">
-    <button type="button" class="btn bg-primary btn-sm" disabled={{eq updating 'yes'}} {{action "update"}}>
+    <button type="button" class="btn bg-primary icon-btn" disabled={{eq updating 'yes'}} {{action "update"}}>
       {{#if (eq updating "yes")}}
         <i class="icon icon-spinner icon-spin"></i>
       {{else}}
         {{#if (eq updating "error")}}
           <i class="icon icon-spinner icon-alert"></i>
         {{else}}
-          {{t 'catalogPage.index.refreshBtn'}}
           <i class="icon icon-refresh"></i>
         {{/if}}
       {{/if}}
+      <span>{{t 'catalogPage.index.refreshBtn'}}</span>
     </button>
-    <button type="button" class="btn bg-primary btn-sm" {{ action "addEnvCatalog" }}>
-      {{t 'catalogPage.index.manage'}} <i class="icon icon-edit"></i>
+    <button type="button" class="btn bg-primary icon-btn" {{ action "addEnvCatalog" }}>
+      <i class="icon icon-edit"></i>
+      <span>{{t 'catalogPage.index.manage'}}</span>
     </button>
   </div>
 </section>

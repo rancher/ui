@@ -83,13 +83,15 @@
           {{yield this 'row' row dt (array-includes childFilterNodes row.id)}}
         {{/each}}
       </tbody>
+    {{else}}
+      {{yield this (if arranged.length 'nomatch' 'norows')}}
     {{/each}}
   {{else if fullRows}}
     <tbody>
       {{#each pagedContent as |row|}}
-          {{yield this 'row' row dt (array-includes childFilterNodes row.id)}}
+        {{yield this 'row' row dt (array-includes childFilterNodes row.id)}}
       {{else}}
-          {{yield this (if arranged.length 'nomatch' 'norows')}}
+        {{yield this (if arranged.length 'nomatch' 'norows')}}
       {{/each}}
     </tbody>
   {{else}}

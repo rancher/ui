@@ -31,33 +31,37 @@ export default Ember.Mixin.create({
     },
   },
 
-  currentSort: Ember.computed('sortBy','headers.@each.{sortBy}', function() {
+  currentSort: Ember.computed('sortBy','headers.@each.{sortBy}','descending', function() {
     var headers = this.get('headers');
+    var desc = this.get('descending');
     if ( headers )
     {
       var header = headers.findBy('name', this.get('sortBy'));
       if ( header ) {
         let sort = get(header,'sort');
         if ( sort && sort.length) {
-          return sort;
+          if ( desc ) {
+            return sort.map((x) => {
+              let parts = x.split(/:/);
+              if ( parts.length === 2 && parts[1] === 'desc' ) {
+                return parts[0];
+              } else {
+                return x+':desc';
+              }
+            });
+          } else {
+            return sort;
+          }
         }
       }
     }
 
-    return ['id'];
-  }),
-
-  _sorted: Ember.computed.sort('sortableContent','currentSort'),
-
-  arranged: Ember.computed('_sorted.[]','descending', function(){
-    let out = this.get('_sorted');
-    if ( this.get('descending') )
-    {
-      return out.slice().reverse();
-    }
-    else
-    {
-      return out;
+    if ( desc ) {
+      return ['id:desc'];
+    } else {
+      return ['id'];
     }
   }),
+
+  arranged: Ember.computed.sort('sortableContent','currentSort'),
 });

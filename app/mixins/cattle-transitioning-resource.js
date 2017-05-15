@@ -251,7 +251,6 @@ export default Ember.Mixin.create({
     function recurse(val, depth) {
       if ( depth > 10 )
       {
-        console.log(val);
         return val;
       }
       else if ( typeof val === 'string' )

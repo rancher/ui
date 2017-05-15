@@ -1,14 +1,11 @@
 import Ember from 'ember';
-import Sortable from 'ui/mixins/sortable';
 import C from 'ui/utils/constants';
 import { parseExternalId } from 'ui/utils/parse-externalid';
 
-export default Ember.Controller.extend(Sortable, {
+export default Ember.Controller.extend({
   application : Ember.inject.controller(),
   growl       : Ember.inject.service(),
   settings    : Ember.inject.service(),
-  sortBy      : 'name',
-  sorts       : {name: ['name']},
   modalService: Ember.inject.service('modal'),
 
   actions: {
@@ -73,7 +70,7 @@ export default Ember.Controller.extend(Sortable, {
     };
   },
 
-  sortableContent: Ember.computed('model.drivers.@each.{state,id,version,externalId}', 'model.catalogDrivers.@each.{id,catalogId,name}', function() {
+  arranged: Ember.computed('model.drivers.@each.{state,id,version,externalId}', 'model.catalogDrivers.@each.{id,catalogId,name}', function() {
     // possibly add some search here
     let cDrivers   = this.get('model.catalogDrivers.catalog');
     let drivers    = this.get('model.drivers.content');
@@ -98,6 +95,6 @@ export default Ember.Controller.extend(Sortable, {
     });
 
     newContent = newContent.concat(drivers);
-    return newContent;
+    return newContent.sortBy('name');
   }),
 });
