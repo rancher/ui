@@ -14,8 +14,33 @@ $accordion-header-border: $bg-default;
 
   .accordion-header {
     @include no-select;
+    @extend .hand;
+    @extend .bg-default;
+    @extend .clearfix;
     background: $accordion-header;
     border: solid $accordion-header-border thin;
+    padding: 10px;
+    display: table;
+    vertical-align: middle;
+    width: 100%;
+
+    .expand,
+    .title,
+    .badge-state, {
+      display: table-cell;
+      height: 100%;
+      vertical-align: middle;
+    }
+
+    .expand {
+      width: 40px;
+    }
+
+    .badge-state {
+      padding: 10px;
+      width: 140px;
+      text-align: right;
+    }
   }
 
   .accordion-content {
